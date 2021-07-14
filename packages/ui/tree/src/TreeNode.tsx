@@ -37,7 +37,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       onDrop,
     } = useTreeContext()
 
-    const [direction, setDirection] = useState<'UP' | 'IN' | 'DOWN' | null>(null)
+    const [direction, setDirection] = useState<'before' | 'inside' | 'after' | null>(null)
     const dragIdRef = useRef<React.ReactText | null>(null)
 
     // TODO: 控制优先级 父子组件传递
@@ -104,11 +104,11 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
 
             // 将当前元素垂直平分为三层，每一层用来对应其放置的位置
             if (hoverClientY < hoverTargetSortY) {
-              setDirection('UP')
+              setDirection('before')
             } else if (hoverClientY < hoverTargetInsideY) {
-              setDirection('IN')
+              setDirection('inside')
             } else {
-              setDirection('DOWN')
+              setDirection('after')
             }
           }
 
@@ -219,6 +219,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     const cls = cx(
       prefixCls,
       className,
+      direction && `${prefixCls}--drag-${direction}`,
       selectedId === node.id && `${prefixCls}--selected`,
       node.disabled && `${prefixCls}--disabled`
     )

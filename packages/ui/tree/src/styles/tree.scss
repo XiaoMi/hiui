@@ -26,6 +26,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     display: flex;
     border-radius: 1px;
     color: inherit;
+    position: relative;
 
     .title__text {
       line-height: $line-height-size-large;
@@ -38,6 +39,36 @@ $prefix: '#{$component-prefix}-tree' !default;
       &:hover {
         background-color: use-color('primary-20');
       }
+    }
+
+    // 拖拽指示器-小圆球
+    &::before {
+      position: absolute;
+      left: 0;
+      z-index: 9999;
+      display: none;
+      box-sizing: border-box;
+      width: 8px;
+      height: 8px;
+      content: '';
+      background: #fff;
+      border: 2px solid use-color('primary');
+      border-radius: 100%;
+    }
+
+    // 拖拽指示器-线条
+    &::after {
+      position: absolute;
+      content: '';
+      // TODO: zIndex 全局约定设置
+      z-index: 9998;
+      display: block;
+      box-sizing: border-box;
+      border-bottom-width: 0;
+      border-bottom-style: solid;
+      border-bottom-color: use-color('primary');
+      left: 0;
+      width: 100%;
     }
   }
 
@@ -85,6 +116,43 @@ $prefix: '#{$component-prefix}-tree' !default;
         &:hover {
           background: use-color('white');
         }
+      }
+    }
+  }
+
+  &--drag-before {
+    #{$this}__title {
+      &::before {
+        display: block;
+        top: 0;
+        transform: translateY(-3px);
+      }
+
+      &::after {
+        top: 0;
+        border-bottom-width: 2px;
+      }
+    }
+  }
+
+  &--drag-inside {
+    #{$this}__title {
+      background: use-color('primary');
+      color: use-color('white');
+    }
+  }
+
+  &--drag-after {
+    #{$this}__title {
+      &::before {
+        display: block;
+        bottom: 0;
+        transform: translateY(3px);
+      }
+
+      &::after {
+        bottom: 0;
+        border-bottom-width: 2px;
       }
     }
   }

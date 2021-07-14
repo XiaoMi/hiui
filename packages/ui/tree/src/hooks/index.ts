@@ -69,61 +69,61 @@ export const useSingleSelect = (
 
 // ----
 
+const hasOwnProperty = Object.prototype.hasOwnProperty
+
+// 删除指定的节点
+const deleteNode = (targetId, data) => {
+  data.forEach((d, index) => {
+    if (d.id === targetId) {
+      data.splice(index, 1)
+    } else {
+      if (d.children) {
+        deleteNode(targetId, d.children)
+      }
+    }
+  })
+}
+
+// 为指定节点添加孩子节点
+const addChildNode = (targetId, sourceNode, data) => {
+  for (const key in data) {
+    if (hasOwnProperty.call(data, key)) {
+      const node = data[key]
+      const { id, children } = node
+
+      if (id === targetId) {
+        node.children = (children || []).concat(sourceNode)
+        return
+      }
+
+      if (children) {
+        addChildNode(targetId, sourceNode, children)
+      }
+    }
+  }
+}
+
+// 插入节点到指定节点之前或之后
+const insertNode = (targetId, sourceNode, data, position) => {
+  const index = data.findIndex((node) => node.id === targetId)
+  if (index !== -1) {
+    data.splice(index + position, 0, sourceNode)
+    return
+  }
+
+  for (const key in data) {
+    if (hasOwnProperty.call(data, key)) {
+      const node = data[key]
+      const { children } = node
+
+      if (children) {
+        insertNode(targetId, sourceNode, children, position)
+      }
+    }
+  }
+}
+
 export const useTreeDrop = (treeData, flattedData, onDrop, onDropEnd) => {
-  // 移动节点
-  const switchNode = useCallback(
-    (targetItemId, sourceItemId, data, allData, dropDividerPosition) => {
-      const sourceNode = findNode(sourceItemId, allData)
-      const _data = [...data]
-      _data.forEach((item, idx) => {
-        if (item.id === targetItemId) {
-          const position = dropDividerPosition === 'down' ? idx + 1 : idx
-          data.splice(position, 0, sourceNode)
-        } else {
-          if (item.children) {
-            if (item.children.some((e) => e.id === targetItemId)) {
-              const index = item.children.findIndex((i) => i.id === targetItemId)
-              const position = dropDividerPosition === 'down' ? index + 1 : index
-              item.children.splice(position, 0, sourceNode)
-            } else {
-              switchNode(targetItemId, sourceItemId, item.children, allData, dropDividerPosition)
-            }
-          }
-        }
-      })
-    },
-    []
-  )
-
-  const addDropNode = useCallback((targetId, sourceId, data, allData) => {
-    data.forEach((d) => {
-      if (d.id === targetId) {
-        const sourceNode = findNode(sourceId, allData)
-        if (!d.children) {
-          d.children = []
-        }
-        d.children.push(sourceNode)
-      } else {
-        if (d.children) {
-          addDropNode(targetId, sourceId, d.children, allData)
-        }
-      }
-    })
-  }, [])
-
-  // 删除拖动的节点
-  const _delDragNode = useCallback((itemId, data) => {
-    data.forEach((d, index) => {
-      if (d.id === itemId) {
-        data.splice(index, 1)
-      } else {
-        if (d.children) {
-          _delDragNode(itemId, d.children)
-        }
-      }
-    })
-  }, [])
-
   const moveNode = useCallback(
     ({ targetId, sourceId, direction, depth }) => {
       const nextTreeData = cloneDeep(treeData)
@@ -141,16 +141,20 @@ export const useTreeDrop = (treeData, flattedData, onDrop, onDropEnd) => {
         return
       }
 
-      _delDragNode(sourceId, nextTreeData)
-
-      //
+      // 在老树上面查找节点信息
       const sourceNode = findNode(sourceId, treeData)
       const targetNode = findNode(targetId, treeData)
 
-      if (direction === 'in') {
-        addDropNode(targetId, sourceId, nextTreeData, treeData)
+      // 先从树中删除原节点
+      deleteNode(sourceId, nextTreeData)
+
+      // 插入到指定节点内部
+      if (direction === 'inside') {
+        addChildNode(targetId, sourceNode, nextTreeData)
       } else {
-        switchNode(targetId, sourceId, nextTreeData, treeData, direction)
+        // 插入到指定节点之前（-1）或者之后（0）
+        const position = direction === 'after' ? 1 : 0
+        insertNode(targetId, sourceNode, nextTreeData, position)
       }
 
       if (onDrop) {
@@ -160,27 +164,23 @@ export const useTreeDrop = (treeData, flattedData, onDrop, onDropEnd) => {
           sourceNode,
           targetNode,
           { before: treeData, after: nextTreeData },
-          { before: depth.source, after: direction === 'in' ? depth.target + 1 : depth.target }
+          { before: depth.source, after: direction === 'inside' ? depth.target + 1 : depth.target }
         )
 
         if (result === true) {
           // setTreeData(nextTreeData)
-          if (onDropEnd) {
-            onDropEnd(sourceNode, targetNode)
-          }
+          onDropEnd?.(sourceNode, targetNode)
         } else if (result && typeof result.then === 'function') {
           result.then((res) => {
             // setTreeData(nextTreeData)
-            if (onDropEnd) {
-              onDropEnd(sourceNode, targetNode)
-            }
+            onDropEnd?.(sourceNode, targetNode)
           })
         }
       } else {
         // setTreeData(nextTreeData)
       }
     },
-    [treeData, _delDragNode, addDropNode, switchNode, onDrop, onDropEnd]
+    [treeData, flattedData, onDrop, onDropEnd]
   )
 
   return moveNode
