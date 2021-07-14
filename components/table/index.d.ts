@@ -2,13 +2,13 @@ import {PaginationProps} from '../pagination'
 type ColumnItem = {
   title: string | JSX.Element
   dataKey: string
-  align?: 'left' | 'right'
+  align?: 'left' | 'right' | 'center'
   sorter?: () => boolean
   avg?: boolean
   total?: boolean
   width?: number
   children?: ColumnItem[]
-  render?: (text: string, record: object, index: number, dataKey: string) => JSX.Element
+  render?: (text: string, record: object, index: number, dataKey: string) => any
 }
 
 type Origin = {

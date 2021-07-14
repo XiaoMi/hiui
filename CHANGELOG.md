@@ -1,10 +1,13 @@
 # 更新日志
 # 3.7.1
+- 新增 `Table` 组件 align 属性接受 center 属性 [#1835](https://github.com/XiaoMi/hiui/issues/1835)
+- 优化 `Carousel` 内容宽度根据容器改变自适应 [#1834](https://github.com/XiaoMi/hiui/issues/1834)
 - 修复 `Preview` 组件，图片打开失败时，页面一直处在加载状态 [#1816](https://github.com/XiaoMi/hiui/issues/1816)
 - 修复 `HiRequest` 在 type='download'时 不能正确解析filename问题 [#1820](https://github.com/XiaoMi/hiui/issues/1820)
 - 优化 `Carousel` 内容宽度根据容器改变自适应 [#1834](https://github.com/XiaoMi/hiui/issues/1834)
 - 修复 `SelectTree` searchMode 为 filter 时，搜索后勾选，SelectTree 已选节点被清空 [#1791](https://github.com/XiaoMi/hiui/issues/#1791)
 - 修复 `Select` data 属性发生改变，选中值未更新问题 [#1823](https://github.com/XiaoMi/hiui/issues/1823)
+
 # 3.7.0
 - 新增 `Collapse` 组件 extra 属性作为标题额外元素扩展[#1831](https://github.com/XiaoMi/hiui/issues/1831)
 - 新增 `Message` 组件 onClick、onClose方法[#1727](https://github.com/XiaoMi/hiui/issues/1727)
