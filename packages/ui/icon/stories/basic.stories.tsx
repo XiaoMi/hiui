@@ -6,7 +6,14 @@ export const Basic = () => {
     <>
       <h1>Icon</h1>
       <div className="icon-basic__wrap">
-        <Icon></Icon>
+        <span style={{ color: 'royalblue', fontSize: '32px' }}>
+          <Icon.AdditionalBusinessOutlined
+            onClick={(e) => console.error(e)}
+          ></Icon.AdditionalBusinessOutlined>
+        </span>
+        <span style={{ color: 'red', fontSize: '64px' }}>
+          <Icon.FileFilled />
+        </span>
       </div>
     </>
   )

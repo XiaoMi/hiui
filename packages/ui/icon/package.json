@@ -37,7 +37,8 @@
     "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
     "build:cjs": "hi-build ./src/index.ts --format cjs -d ./lib/cjs",
     "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
-    "build": "concurrently yarn:build:*"
+    "build": "concurrently yarn:build:*",
+    "auto-generate": "node ./scripts/auto-generate.js"
   },
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
