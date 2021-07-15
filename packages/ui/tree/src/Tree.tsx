@@ -47,11 +47,14 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       !selectable
     )
 
-    const [expandedNodeIds, tryToggleNode, expandedNodeIdsMp] = useExpand(
+    const [expandedNodeIds, tryToggleNode, expandedNodeIdsMp, transitionData] = useExpand(
       defaultExpandedIds,
       expandedIds,
-      onExpand
+      onExpand,
+      flattedData
     )
+
+    console.log(transitionData)
 
     const dropTree = useTreeDrop(data, flattedData, onDrop, onDropEnd)
 

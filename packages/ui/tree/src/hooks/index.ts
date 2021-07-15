@@ -1,12 +1,15 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { findNode } from '../utils'
 import cloneDeep from 'lodash.clonedeep'
 
+export const ANIMATION_KEY = `RC_TREE_MOTION_${Math.random()}`
+
 export const useExpand = (
   defaultExpandedIds: React.ReactText[],
   expandedIds?: React.ReactText[],
-  onExpand?: (node: any) => void
+  onExpand?: (node: any) => void,
+  flattedData
 ) => {
   const [_expandedIds, tryToggleExpandedIds] = useUncontrolledState(
     defaultExpandedIds,
@@ -16,6 +19,9 @@ export const useExpand = (
 
   const expandedNodeIdsMp = useMemo(() => new Set<React.ReactText>(), [])
 
+  // animation
+  const [transitionData, setTransitionData] = React.useState(flattedData)
+
   const onExpandNode = useCallback(
     (expandedNode, isExpanded) => {
       // TODO：多选逻辑抽离复用
@@ -23,14 +29,41 @@ export const useExpand = (
         expandedNodeIdsMp.add(expandedNode.id)
       } else {
         expandedNodeIdsMp.delete(expandedNode.id)
+
+        // 设置删除的子节点集合用一个 节点 包裹，用来实现动画隐藏效果
+        // 获取到范围节点
+        const expandedNodeIndex = transitionData.findIndex((item) => {
+          return item.id === expandedNode.id
+        })
+
+        const childrenStartIndex = expandedNodeIndex + 1
+        let childrenEndIndex = childrenStartIndex
+        for (let i = childrenStartIndex; i < transitionData.length; ++i) {
+          const item = transitionData[i]
+          // 找到后面连续部分层级大于当前展开元素
+          if (item.depth <= expandedNode.depth) {
+            childrenEndIndex = i
+            break
+          }
+        }
+
+        const rangeData = flattedData.slice(childrenStartIndex, childrenEndIndex)
+        const newTransitionData = cloneDeep(flattedData)
+
+        // 给动画元素打上标记占位标记
+        newTransitionData.splice(childrenStartIndex, rangeData.length, {
+          key: ANIMATION_KEY,
+        })
+
+        setTransitionData(newTransitionData)
       }
 
       tryToggleExpandedIds(Array.from(expandedNodeIdsMp))
     },
-    [expandedNodeIdsMp, tryToggleExpandedIds]
+    [expandedNodeIdsMp, tryToggleExpandedIds, flattedData, transitionData]
   )
 
-  return [_expandedIds, onExpandNode, expandedNodeIdsMp] as const
+  return [_expandedIds, onExpandNode, expandedNodeIdsMp, transitionData] as const
 }
 
 // ----
@@ -185,3 +218,5 @@ export const useTreeDrop = (treeData, flattedData, onDrop, onDropEnd) => {
 
   return moveNode
 }
+
+export const useCollapseAnimation = () => {}
