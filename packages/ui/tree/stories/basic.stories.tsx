@@ -14,7 +14,7 @@ export const Basic = () => {
               children: [
                 {
                   id: 2,
-                  title: '技术',
+                  title: '研发',
                   children: [
                     { id: 3, title: '后端' },
                     { id: 4, title: '运维' },
@@ -26,10 +26,10 @@ export const Basic = () => {
             },
             {
               id: 11,
-              title: '小米',
+              title: '大米',
               children: [
-                { id: 22, title: '技术' },
-                { id: 66, title: '产品' },
+                { id: 22, title: '可视化' },
+                { id: 66, title: 'HiUI' },
               ],
             },
           ]}

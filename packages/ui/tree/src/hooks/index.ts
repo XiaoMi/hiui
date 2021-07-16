@@ -5,6 +5,30 @@ import cloneDeep from 'lodash.clonedeep'
 
 export const ANIMATION_KEY = `RC_TREE_MOTION_${Math.random()}`
 
+function flattenTreeDataWithExpand(flattedData, expandedIds) {
+  const expandedKeySet = new Set(expandedIds)
+  const nextData = []
+  // 处理只展示 未折叠内容
+  for (let i = 0; i < flattedData.length; ) {
+    const node = flattedData[i]
+    nextData.push(node)
+    if (expandedKeySet.has(node.id) || node.id === ANIMATION_KEY) {
+      // 继续遍历 children
+      i++
+    } else {
+      // 过滤掉所有children
+      let child = flattedData[++i]
+
+      while (child && child.depth > node.depth) {
+        child = flattedData[++i]
+      }
+    }
+  }
+  console.log('nextData', nextData)
+
+  return nextData
+}
+
 export const useExpand = (
   defaultExpandedIds: React.ReactText[],
   expandedIds?: React.ReactText[],
@@ -21,17 +45,24 @@ export const useExpand = (
 
   // TODO: 假如非受控模式，需要支持默认展开全部或者默认关闭收起，需要率先更新一次 _expandedIds
   // 默认全折叠
-  React.useEffect(() => {
-    if (!flattedData.length) return
-    const pDepth = flattedData[0].depth
+  // React.useEffect(() => {
+  //   if (!flattedData.length) return
 
-    setTransitionData(flattedData.filter((item) => item.depth === pDepth))
-  }, [flattedData])
+  //   const nextData = flattenTreeDataWithExpand(flattedData, _expandedIds)
+  //   setTransitionData(nextData)
+  // }, [flattedData])
 
   // animation
-  const [transitionData, setTransitionData] = React.useState(flattedData)
+  const [transitionData, setTransitionData] = React.useState(() => {
+    return flattenTreeDataWithExpand(flattedData, _expandedIds)
+  })
 
   const isExpandingRef = React.useRef(false)
+
+  const trySetTransitionData = (data) => {
+    const nextData = flattenTreeDataWithExpand(data, _expandedIds)
+    setTransitionData(nextData)
+  }
 
   const onExpandNode = useCallback(
     (expandedNode, isExpanded) => {
@@ -42,6 +73,8 @@ export const useExpand = (
         console.log('展开ing---------------', expandedNode.id)
         expandedNodeIdsMp.add(expandedNode.id)
 
+        // TODO: flattedData 改成 prevData
+        // 通过新旧 diff 来实现展开当前层节点
         // 设置展开的子节点集合用一个 节点 包裹，用来实现动画展开效果
         // 获取到范围节点
         let expandedNodeIndex = flattedData.findIndex((item) => {
@@ -75,7 +108,7 @@ export const useExpand = (
           type: 'show',
         })
 
-        setTransitionData(newTransitionData)
+        trySetTransitionData(newTransitionData)
       } else {
         console.log('收起ing---------------', expandedNode.id)
         expandedNodeIdsMp.delete(expandedNode.id)
@@ -107,12 +140,12 @@ export const useExpand = (
           type: 'hide',
         })
 
-        setTransitionData(newTransitionData)
+        trySetTransitionData(newTransitionData)
       }
 
       tryToggleExpandedIds(Array.from(expandedNodeIdsMp))
     },
-    [expandedNodeIdsMp, tryToggleExpandedIds, flattedData, transitionData]
+    [expandedNodeIdsMp, tryToggleExpandedIds, flattedData, transitionData, trySetTransitionData]
   )
 
   return [

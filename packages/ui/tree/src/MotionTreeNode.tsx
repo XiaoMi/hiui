@@ -29,9 +29,7 @@ export const MotionTreeNode = forwardRef<HTMLLIElement | null, MotionTreeNodePro
     React.useEffect(() => {
       if (isHide && visible) {
         setVisible(false)
-      }
-
-      if (isShow && !visible) {
+      } else if (isShow && !visible) {
         setVisible(true)
       }
     }, [isHide, isShow, visible])
