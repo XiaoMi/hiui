@@ -6,6 +6,11 @@ $prefix: '#{$component-prefix}-tree' !default;
   @extend %component-reset;
 
   list-style-type: none;
+
+  .motion-tree-node {
+    transition: all 0.3s;
+    overflow-y: hidden;
+  }
 }
 
 .#{$prefix}-node {
@@ -157,3 +162,4 @@ $prefix: '#{$component-prefix}-tree' !default;
     }
   }
 }
+

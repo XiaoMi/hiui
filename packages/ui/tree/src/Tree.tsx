@@ -2,9 +2,10 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
-import { useExpand, useSingleSelect, useTreeDrop } from './hooks'
-import { TreeNode, TreeNodeData } from './TreeNode'
+import { ANIMATION_KEY, useExpand, useSingleSelect, useTreeDrop } from './hooks'
+import { TreeNodeData } from './TreeNode'
 import { TreeProvider } from './context'
+import { MotionTreeNode } from './MotionTreeNode'
 
 const _role = 'tree'
 const _prefix = getPrefixCls(_role)
@@ -27,7 +28,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       defaultSelectedId,
       onSelect,
       selectable = true,
-      draggable = true,
+      draggable = false,
       disabled = false,
       onDragStart,
       onDragEnd,
@@ -39,6 +40,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     ref
   ) => {
     const flattedData: TreeNodeData[] = useMemo(() => flattenTreeData(data), [data])
+    const [prevData, setPrevData] = React.useState(flattedData)
 
     const [selectedNodeId, trySelectNode] = useSingleSelect(
       defaultSelectedId,
@@ -47,14 +49,14 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       !selectable
     )
 
-    const [expandedNodeIds, tryToggleNode, expandedNodeIdsMp, transitionData] = useExpand(
-      defaultExpandedIds,
-      expandedIds,
-      onExpand,
-      flattedData
-    )
-
-    console.log(transitionData)
+    const [
+      expandedNodeIds,
+      tryToggleNode,
+      expandedNodeIdsMp,
+      transitionData,
+      setTransitionData,
+      isExpandingRef,
+    ] = useExpand(defaultExpandedIds, expandedIds, onExpand, flattedData)
 
     const dropTree = useTreeDrop(data, flattedData, onDrop, onDropEnd)
 
@@ -86,27 +88,44 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     )
 
     console.log('selectedNodeId', selectedNodeId)
-    console.log(expandedNodeIdsMp)
+    console.log(expandedNodeIdsMp, transitionData)
+
+    const onMotionEnd = () => {
+      setTransitionData(
+        transitionData.reduce((prev, cur) => {
+          if (cur.id !== ANIMATION_KEY) {
+            prev.push(cur)
+            return prev
+          }
+
+          if (cur.type === 'show') {
+            cur.children.forEach((item) => prev.push(item))
+            return prev
+          }
+
+          return prev
+        }, [])
+      )
+
+      // 闭环结束列表展开或收起动画
+      isExpandingRef.current = false
+    }
 
     return (
       <TreeProvider value={providedValue}>
         <ul ref={ref} role={role} className={cls} {...rest}>
-          {flattedData
-            // .filter((node) => {
-            //   const ancestors = node.ancestors || []
-            //   return ancestors.every((ancestor) => expandedNodeIds.includes(ancestor.id))
-            // })
-            .map((node, index) => {
-              return (
-                <TreeNode
-                  key={node.id}
-                  data={node}
-                  // idx={index}
-                  // tabIndex={index === defaultFocus ? 0 : -1}
-                  expanded={expandedNodeIdsMp.has(node.id)}
-                />
-              )
-            })}
+          {transitionData.map((node, index) => {
+            return (
+              <MotionTreeNode
+                key={node.id}
+                data={node}
+                onMotionEnd={onMotionEnd}
+                // idx={index}
+                // tabIndex={index === defaultFocus ? 0 : -1}
+                expanded={expandedNodeIdsMp.has(node.id)}
+              />
+            )
+          })}
         </ul>
       </TreeProvider>
     )
