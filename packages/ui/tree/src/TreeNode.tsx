@@ -1,7 +1,8 @@
 import React, { forwardRef, useCallback, useRef, useState, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { times } from './utils/index'
+import { times } from '@hi-ui/times'
+
 import { useTreeContext } from './context'
 import { IconLoading } from './Icon'
 
@@ -24,12 +25,11 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     },
     ref
   ) => {
-    const treeNodeRef = useRef(null)
     const {
       disabled = false,
       draggable = false,
-      onSelect,
       selectedId,
+      onSelect,
       onExpand,
       onDragStart,
       onDragEnd,
@@ -38,13 +38,13 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       onLoadChildren,
     } = useTreeContext()
 
-    const [direction, setDirection] = useState<'before' | 'inside' | 'after' | null>(null)
+    const [direction, setDirection] = useState<TreeNodeDragDirection>(null)
+
+    const treeNodeTitleRef = useRef<HTMLDivElement>(null)
     const dragIdRef = useRef<React.ReactText | null>(null)
 
     // TODO: 控制优先级 父子组件传递
     const enableDraggable = draggable && !disabled
-
-    const treeNodeTitleRef = useRef<HTMLDivElement>(null)
 
     // 拖拽管理
     const dragEventHandlers = useMemo(() => {
@@ -140,45 +140,6 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       }
     }, [node, enableDraggable, direction, onDragStart, onDragEnd, onDragOver, onDrop])
 
-    // 渲染标题
-    const renderTitle = (node, selectedId) => {
-      const { id, title, depth } = node
-      return (
-        <div
-          ref={treeNodeTitleRef}
-          draggable={enableDraggable}
-          className={`${prefixCls}__title`}
-          {...dragEventHandlers}
-        >
-          <div
-            className="title__text"
-            onClick={() => {
-              onSelect?.(node)
-            }}
-          >
-            {title}
-          </div>
-        </div>
-      )
-    }
-
-    // 渲染空白占位
-    const renderIndent = useCallback(
-      (depth) => {
-        return times(depth, (index: number) => {
-          return (
-            <span
-              className={cx(`${prefixCls}__indent`)}
-              id={`${index}`}
-              key={index}
-              style={{ alignSelf: 'stretch' }}
-            />
-          )
-        })
-      },
-      [prefixCls]
-    )
-
     const [loading, setLoading] = useState(false)
 
     // 处理 Switch 点击
@@ -210,6 +171,23 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       [node, expanded, onExpand, onLoadChildren]
     )
 
+    // 渲染空白占位
+    const renderIndent = useCallback(
+      (depth) => {
+        return times(depth, (index: number) => {
+          return (
+            <span
+              className={cx(`${prefixCls}__indent`)}
+              id={`${index}`}
+              key={index}
+              style={{ alignSelf: 'stretch' }}
+            />
+          )
+        })
+      },
+      [prefixCls]
+    )
+
     // 渲染子树折叠切换器
     const renderSwitcher = useCallback(
       (data) => {
@@ -217,6 +195,29 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       },
       [handleSwitcherClick]
     )
+
+    // 渲染标题
+    const renderTitle = (node: TreeNodeData, selectedId: React.ReactText) => {
+      const { id, title, depth } = node
+
+      return (
+        <div
+          ref={treeNodeTitleRef}
+          draggable={enableDraggable}
+          className={`${prefixCls}__title`}
+          {...dragEventHandlers}
+        >
+          <div
+            className="title__text"
+            onClick={() => {
+              onSelect?.(node)
+            }}
+          >
+            {title}
+          </div>
+        </div>
+      )
+    }
 
     const cls = cx(
       prefixCls,
@@ -255,18 +256,57 @@ export interface TreeNodeProps {
    * 组件的注入样式
    */
   style?: React.CSSProperties
+  /**
+   * 控制是否可以触发拖拽
+   */
+  tabIndex?: number
+  /**
+   * 该节点的数据信息
+   */
   data: TreeNodeData
+  /**
+   * 该节点是否被展开
+   */
   expanded?: boolean
+  /**
+   * 该节点所在扁平化后的树中的位置
+   */
+  index?: number
 }
 
+export type TreeNodeDragDirection = 'before' | 'inside' | 'after' | null
+
 export interface TreeNodeData {
+  /**
+   * 树节点唯一 id
+   */
   id: React.ReactText
+  /**
+   * 树节点标题
+   */
   title: React.ReactNode
+  /**
+   * 该节点的子节点
+   */
   children?: TreeNodeData[]
+  /**
+   * 是否为叶子节点
+   */
   isLeaf?: boolean
+  /**
+   * 是否禁用节点
+   */
   disabled?: boolean
+  /**
+   * 该节点的层级，从 0（顶层）开始
+   * @private
+   */
   depth?: number
-  ancestors?: any[]
+  /**
+   * 该节点的所有祖先节点
+   * @private
+   */
+  ancestors?: TreeNodeData[]
 }
 
 if (__DEV__) {

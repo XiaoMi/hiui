@@ -46,6 +46,7 @@
     "@hi-ui/classname": "^1.0.0",
     "@hi-ui/core-css": "^1.0.0",
     "@hi-ui/env": "^1.0.0",
+    "@hi-ui/times": "^1.0.0",
     "@hi-ui/use-uncontrolled-state": "^1.0.0",
     "lodash.clonedeep": "^4.5.0",
     "react-transition-group": "^4.4.2"

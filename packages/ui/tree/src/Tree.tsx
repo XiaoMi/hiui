@@ -88,7 +88,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     )
 
     console.log('selectedNodeId', selectedNodeId)
-    console.log(expandedNodeIdsMp, transitionData)
+    console.log(expandedNodeIdsMp, transitionData, flattedData)
 
     const onMotionEnd = () => {
       setTransitionData(

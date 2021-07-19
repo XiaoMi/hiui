@@ -118,21 +118,3 @@ export const flattenTreeData = (data) => {
   }
   return treeData
 }
-
-const MAX_ARRAY_LENGTH = 4294967295
-
-export const times = (n: number, iteratee: Function) => {
-  if (n < 1) {
-    return []
-  }
-
-  let index = -1
-  const length = Math.min(n, MAX_ARRAY_LENGTH)
-  const result = new Array(length)
-
-  while (++index < length) {
-    result[index] = iteratee(index)
-  }
-
-  return result
-}
