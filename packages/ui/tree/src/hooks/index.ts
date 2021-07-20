@@ -335,6 +335,7 @@ const fFindNestedChildNodesById = (
     const node = flattedTreeData[i]
 
     if (node.depth! > boundNodeDepth) {
+      // TODO: 改成 callback，类似于 Array.prototype.find
       childrenNodes.push(node)
     } else {
       break
@@ -344,13 +345,39 @@ const fFindNestedChildNodesById = (
   return childrenNodes
 }
 
-// const moveNode = (
-//   treeData: TreeNodeData[],
-//   sourceId: React.ReactText,
-//   targetId: React.ReactText
-// ) => {
+const moveNodeById = (
+  treeData: TreeNodeData[],
+  flattedTreeData: TreeNodeData[],
+  sourceId: React.ReactText,
+  targetId: React.ReactText,
+  direction: TreeNodeDragDirection
+) => {
+  // 阻止将节点拖拽到自己
+  if (targetId === sourceId) return
 
-// }
+  const sourceChildrenIds = fFindNestedChildNodesById(flattedTreeData, sourceId).map(
+    (node) => node.id
+  )
+  // 阻止将节点拖拽到自己的子树当中
+  if (sourceChildrenIds.includes(targetId) || sourceId === targetId) return
+
+  const sourceNode = findNodeById(treeData, sourceId)
+  const targetNode = findNodeById(treeData, targetId)
+
+  if (!sourceNode || !targetNode) return
+
+  const nextTreeData = cloneDeep(treeData)
+  const isInsertToInside = direction === 'inside'
+
+  // 正式开始进行节点位置替换
+  deleteNodeById(nextTreeData, sourceId)
+
+  if (isInsertToInside) {
+    addChildNodeById(nextTreeData, targetId, sourceNode)
+  } else {
+    insertNodeById(nextTreeData, targetId, sourceNode, direction === 'before' ? 0 : 1)
+  }
+}
 
 export const useTreeDrop = (
   treeData: TreeNodeData[],
@@ -360,6 +387,8 @@ export const useTreeDrop = (
 ) => {
   const moveNode = useCallback(
     ({ targetId, sourceId, direction, depth }) => {
+      // moveNodeById(treeData, flattedData, sourceId, targetId, direction)
+
       // 阻止将节点拖拽到自己
       if (targetId === sourceId) return
 

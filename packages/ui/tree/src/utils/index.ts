@@ -101,7 +101,7 @@ export const flattenTreeData = (data) => {
     }
 
     if (children) {
-      const _children = children.map((child) => {
+      const _children = children.map((child, index) => {
         // 层级
         child.depth = depth + 1
         child.parentId = id
