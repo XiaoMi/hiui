@@ -22,20 +22,27 @@ export const findNodeById = (
   treeData: TreeNodeData[],
   targetId: React.ReactText
 ): TreeNodeData | null => {
-  const { length } = treeData
-  for (let i = 0; i < length; ++i) {
-    const node = treeData[i]
+  let ret = null
 
-    if (targetId === node.id) {
-      return node
-    }
+  const _findNode = (treeData: TreeNodeData[], targetId: React.ReactText) => {
+    const { length } = treeData
 
-    if (node.children) {
-      return findNodeById(node.children, targetId)
+    for (let i = 0; i < length; ++i) {
+      const node = treeData[i]
+
+      if (targetId === node.id) {
+        ret = node
+        return
+      }
+
+      if (node.children) {
+        _findNode(node.children, targetId)
+      }
     }
   }
 
-  return null
+  _findNode(treeData, targetId)
+  return ret
 }
 
 /**
@@ -206,21 +213,38 @@ export const useTreeDrop = (
       // moveNodeById(treeData, flattedData, sourceId, targetId, direction)
 
       // 阻止将节点拖拽到自己
-      if (targetId === sourceId) return
+      if (targetId === sourceId) {
+        console.log('阻止将节点拖拽到自己')
+        return
+      }
 
       const sourceChildrenIds = fFindNestedChildNodesById(flattedData, sourceId).map(
         (node) => node.id
       )
       // 阻止将节点拖拽到自己的子树当中
-      if (sourceChildrenIds.includes(targetId) || sourceId === targetId) return
+      if (sourceChildrenIds.includes(targetId) || sourceId === targetId) {
+        console.log('阻止将节点拖拽到自己的子树当中')
+        return
+      }
 
       const sourceNode = findNodeById(treeData, sourceId)
       const targetNode = findNodeById(treeData, targetId)
 
-      if (!sourceNode || !targetNode) return
+      if (!sourceNode || !targetNode) {
+        console.log(
+          '未找到任何节点(sourceNode, targetNode)',
+          sourceId,
+          sourceNode,
+          targetId,
+          targetNode
+        )
+        return
+      }
 
       const nextTreeData = cloneDeep(treeData)
       const isInsertToInside = direction === 'inside'
+
+      console.log('Moving Node---------------', sourceId, targetId)
 
       // 正式开始进行节点位置替换
       deleteNodeById(nextTreeData, sourceId)
@@ -390,5 +414,5 @@ export const useDataCache = (data: TreeNodeData[]) => {
     setInternalData(data)
   }, [data])
 
-  return [internalData, setInternalData]
+  return [internalData, setInternalData] as const
 }

@@ -1,8 +1,10 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState, useRef, useEffect } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import cloneDeep from 'lodash.clonedeep'
 import { TreeNodeData } from '../TreeNode'
 import { fFindNestedChildNodesById } from '../utils/index'
+
+export const ANIMATION_KEY = `TREE_MOTION_NODE_${Math.random()}`
 
 export const useExpand = (
   flattedData: TreeNodeData[],
@@ -21,14 +23,17 @@ export const useExpand = (
     onExpand
   )
 
+  const prevExpandedIds = useRef(_expandedIds)
+  useEffect(() => {
+    prevExpandedIds.current = _expandedIds
+  })
+
   // TODO: 假如非受控模式，需要支持默认展开全部或者默认关闭收起，需要率先更新一次 _expandedIds
   // 默认全折叠
-  // React.useEffect(() => {
-  //   if (!flattedData.length) return
-
-  //   const nextData = flattenTreeDataWithExpand(flattedData, _expandedIds)
-  //   setTransitionData(nextData)
-  // }, [flattedData])
+  React.useEffect(() => {
+    const nextData = flattenTreeDataWithExpand(flattedData, prevExpandedIds.current)
+    setTransitionData(nextData)
+  }, [flattedData])
 
   // animation
   const [transitionData, setTransitionData] = useState(() => {
@@ -119,7 +124,7 @@ export const useExpand = (
         }
 
         return prev
-      }, [])
+      }, [] as TreeNodeData[])
     )
 
     // 闭环结束列表展开或收起动画
@@ -134,8 +139,6 @@ export const useExpand = (
     checkIfExpanded,
   ] as const
 }
-
-export const ANIMATION_KEY = `RC_TREE_MOTION_${Math.random()}`
 
 function flattenTreeDataWithExpand(
   flattedTreeData: TreeNodeData[],

@@ -13,18 +13,18 @@ export const isObject = (arg: unknown): arg is Dict =>
   isObjectLike(arg) && arg.constructor === Object
 
 /**
- * Assert is an PromiseLike
+ * Assert is an Promise
  */
-export const isPromise = <T>(arg: unknown): arg is PromiseLike<T> =>
+export const isPromise = <T>(arg: unknown): arg is Promise<T> =>
   (isObjectLike(arg) || typeof arg === 'function') && typeof arg.then === 'function'
 
 /**
  * Assert is an array
  */
-export const isArray = <T>(arg: unknown): arg is Array<T> => Array.isArray(arg)
+export const isArray = <T>(arg: unknown): arg is T[] => Array.isArray(arg)
 
 /**
  * Assert is an array but `length === 0`
  */
-export const isEmptyArray = (arg: unknown): arg is [] & { length: 0 } =>
+export const isEmptyArray = <T>(arg: unknown): arg is T[] & { length: 0 } =>
   isArray(arg) && arg.length === 0

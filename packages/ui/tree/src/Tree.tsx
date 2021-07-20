@@ -63,7 +63,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onExpand
     )
 
-    const dropTree = useTreeDrop(data, flattedData, onDrop, onDropEnd)
+    const dropTree = useTreeDrop(treeData, flattedData, onDrop, onDropEnd)
 
     // const dragDropTree =  useTreeDragDrop({
     //   onDragStart,
