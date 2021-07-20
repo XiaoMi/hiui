@@ -1,4 +1,6 @@
+import React from 'react'
 import cloneDeep from 'lodash.clonedeep'
+import { TreeNodeData } from '../TreeNode'
 
 // 寻找某一节点的父节点
 export const getParentId = (id, data) => {
@@ -117,4 +119,43 @@ export const flattenTreeData = (data) => {
     }
   }
   return treeData
+}
+
+/**
+ * 从扁平的树数据结构中找到指定 id 的节点的所有孩子节点的 ids，包含嵌套节点
+ *
+ * 不同于增删改原 data 数据，查询操作使用扁平化的树数据结构，可以避免函数递归，加快查询
+ *
+ * @param flattedTreeData
+ * @param targetId
+ * @returns
+ */
+
+export const fFindNestedChildNodesById = (
+  flattedTreeData: TreeNodeData[],
+  targetId: React.ReactText
+): TreeNodeData[] => {
+  const targetNodeIndex = flattedTreeData.findIndex((node) => node.id === targetId)
+
+  const { length } = flattedTreeData
+  const childrenNodes = [] as TreeNodeData[]
+
+  if (targetNodeIndex < 0 || targetNodeIndex === length - 1) return childrenNodes
+
+  const boundNodeDepth = flattedTreeData[targetNodeIndex].depth!
+
+  // 判定子节点：后面连续部分层级大于目标元素的层级
+  for (let i = targetNodeIndex + 1; i < length; ++i) {
+    const node = flattedTreeData[i]
+
+    if (node.depth! > boundNodeDepth) {
+      // TODO: 改成 callback，类似于 Array.prototype.find
+      // 方便和 expandIds 进行过滤查找
+      childrenNodes.push(node)
+    } else {
+      break
+    }
+  }
+
+  return childrenNodes
 }

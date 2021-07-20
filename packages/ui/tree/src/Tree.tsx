@@ -1,11 +1,12 @@
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
-import { ANIMATION_KEY, useExpand, useSingleSelect, useTreeDrop } from './hooks'
+import { useExpand, useSelect, useTreeDragDrop, useTreeDrop } from './hooks'
 import { TreeNodeData } from './TreeNode'
 import { TreeProvider } from './context'
 import { MotionTreeNode } from './MotionTreeNode'
+import { useDataCache } from './hooks/index'
 
 const _role = 'tree'
 const _prefix = getPrefixCls(_role)
@@ -34,31 +35,42 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onDragEnd,
       onDrop,
       onDropEnd,
+      onDragOver,
       onLoadChildren,
       ...rest
     },
     ref
   ) => {
-    const flattedData: TreeNodeData[] = useMemo(() => flattenTreeData(data), [data])
-    const [prevData, setPrevData] = React.useState(flattedData)
+    // TODO: 考虑是否要做成 value-onChange 的受控模式
+    // 目前修改来源有拖拽、编辑，通过回调函数的返回布尔值来进行是否内部以非受控模式更新 data
+    // 在这种模式，当外部 data 一旦改变，内部的非受控状态 data 的所有改变都可能会被抹除
+    const [treeData, setTreeData] = useDataCache(data)
 
-    const [selectedNodeId, trySelectNode] = useSingleSelect(
+    const flattedData: TreeNodeData[] = useMemo(() => flattenTreeData(treeData), [treeData])
+
+    const disabledSelect = disabled || !selectable
+    const [selectedNodeId, trySelectNode] = useSelect(
       defaultSelectedId,
       selectedId,
       onSelect,
-      !selectable
+      disabledSelect
     )
 
-    const [
-      expandedNodeIds,
-      tryToggleNode,
-      expandedNodeIdsMp,
-      transitionData,
-      setTransitionData,
-      isExpandingRef,
-    ] = useExpand(defaultExpandedIds, expandedIds, onExpand, flattedData)
+    const [transitionData, onNodeToggleStart, onNodeToggleEnd, checkIfExpanded] = useExpand(
+      flattedData,
+      defaultExpandedIds,
+      expandedIds,
+      onExpand
+    )
 
     const dropTree = useTreeDrop(data, flattedData, onDrop, onDropEnd)
+
+    // const dragDropTree =  useTreeDragDrop({
+    //   onDragStart,
+    //   onDragEnd,
+    //   onDragOver,
+    //   onDrop,
+    // })
 
     const cls = cx(prefixCls, className)
 
@@ -66,7 +78,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       () => ({
         selectedId: selectedNodeId,
         onSelect: trySelectNode,
-        onExpand: tryToggleNode,
+        onExpand: onNodeToggleStart,
         draggable,
         disabled,
         onDragStart,
@@ -77,7 +89,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       [
         selectedNodeId,
         trySelectNode,
-        tryToggleNode,
+        onNodeToggleStart,
         draggable,
         disabled,
         onDragStart,
@@ -88,28 +100,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     )
 
     console.log('selectedNodeId', selectedNodeId)
-    console.log(expandedNodeIdsMp, transitionData, flattedData)
-
-    const onMotionEnd = () => {
-      setTransitionData(
-        transitionData.reduce((prev, cur) => {
-          if (cur.id !== ANIMATION_KEY) {
-            prev.push(cur)
-            return prev
-          }
-
-          if (cur.type === 'show') {
-            cur.children.forEach((item) => prev.push(item))
-            return prev
-          }
-
-          return prev
-        }, [])
-      )
-
-      // 闭环结束列表展开或收起动画
-      isExpandingRef.current = false
-    }
+    console.log(transitionData, flattedData)
 
     return (
       <TreeProvider value={providedValue}>
@@ -117,12 +108,12 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
           {transitionData.map((node, index) => {
             return (
               <MotionTreeNode
-                key={node.id}
-                data={node}
-                onMotionEnd={onMotionEnd}
                 // idx={index}
                 // tabIndex={index === defaultFocus ? 0 : -1}
-                expanded={expandedNodeIdsMp.has(node.id)}
+                key={node.id}
+                data={node}
+                onMotionEnd={onNodeToggleEnd}
+                expanded={checkIfExpanded(node.id)}
               />
             )
           })}
@@ -152,7 +143,7 @@ export interface TreeProps {
   /**
    * 展示数据
    */
-  data?: TreeNodeData[]
+  data: TreeNodeData[]
   /**
    * 展开的节点
    */
@@ -164,7 +155,7 @@ export interface TreeProps {
   /**
    * 节点被点击(展开/收起)时触发
    */
-  onExpand?: (expandedNode: TreeNodeData, expanded: boolean, expandIds: string[]) => void
+  onExpand?: (expandIds: React.ReactText[], expandedNode: TreeNodeData, expanded: boolean) => void
   /**
    * 选中的节点
    */
@@ -176,7 +167,7 @@ export interface TreeProps {
   /**
    * 点击节点时触发选中
    */
-  onSelect?: (selectedNode: TreeNodeData) => void
+  onSelect?: (selectedId: React.ReactText | null, selectedNode: TreeNodeData | null) => void
   /**
    * 节点是否可选中
    */
