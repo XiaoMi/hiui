@@ -24,8 +24,6 @@ export const decorators = [
   function withThemeProvider(Story, context) {
     const theme = context.globals.theme
     console.log('[ theme ] >', theme)
-    console.dir(Story())
-    console.dir(context)
 
     // TODO: Inject HiUI ThemeProvider
     return (

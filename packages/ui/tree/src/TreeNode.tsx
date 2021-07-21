@@ -221,7 +221,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
               onSelect?.(node)
             }}
           >
-            {title}
+            -{depth}--{title}--{id}
           </div>
         </div>
       )

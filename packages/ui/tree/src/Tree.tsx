@@ -38,7 +38,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onLoadChildren,
       checkable = false,
       defaultCheckedIds = [],
-      checkedIds,
+      checkedIds: checkedIdsProp,
       onCheck,
       ...rest
     },
@@ -75,15 +75,12 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     //   onDrop,
     // })
 
-    const [{ checkedNodes, semiCheckedIds }, onNodeCheck] = useCheck({
-      defaultCheckedIds,
-      checkedIds,
-      onCheck,
-      data: treeData,
+    const [checkedIds, semiCheckedIds, onNodeCheck] = useCheck(
       flattedData,
-    })
-
-    // console.log('checkedNodes', checkedNodes, semiCheckedIds)
+      defaultCheckedIds,
+      checkedIdsProp,
+      onCheck
+    )
 
     const cls = cx(prefixCls, className)
 
@@ -116,8 +113,6 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       ]
     )
 
-    console.log(transitionData, flattedData)
-
     return (
       <TreeProvider value={providedValue}>
         <ul ref={ref} role={role} className={cls} {...rest}>
@@ -131,7 +126,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
                 onMotionEnd={onNodeToggleEnd}
                 // TODO: 注意这些属性对于动画节点并不生效
                 expanded={checkIfExpanded(node.id)}
-                checked={checkedNodes.indexOf(node.id) !== -1}
+                checked={checkedIds.indexOf(node.id) !== -1}
                 semiChecked={semiCheckedIds.indexOf(node.id) !== -1}
               />
             )
