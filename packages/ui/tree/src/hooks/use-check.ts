@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import _ from 'lodash'
+import { TreeNodeData } from '../TreeNode'
 
 export const useCheck = ({
   defaultCheckedIds,
@@ -17,58 +18,63 @@ export const useCheck = ({
 
   const checkedIdSet = useMemo(() => new Set(checkedIds), [checkedIds])
 
-  const getSemiChecked = (checkedId, flattedData, data) => {
-    const semiCheckedIds = []
+  // const onNodeCheck = useCallback(
+  //   (checkedNode, checked) => {
+  //     let nextCheckedIds: React.ReactText[]
+  //     if (checked) {
+  //       nextCheckedIds = checkedIds.concat(checkedNode.id)
+  //     } else {
+  //       nextCheckedIds = checkedIds.filter((id) => id !== checkedNode.id)
+  //     }
 
-    // 对所有选中节点的祖先节点进行半选（如果其兄弟存在未选中）
+  //     console.log('onCheckNode--------------', checkedNode, checked)
 
-    flattedData.forEach((node) => {
-      if (node.parentId && !checkedIdSet.has(node.parentId) && checkedIdSet.has(node.id)) {
-        semiCheckedIds.push(node.parentId)
-      }
-    })
+  //     const semiCheckedIds = getSemiChecked(checkedIds, flattedData, data)
 
-    // 需要考虑兄弟节点，一次性过滤：半选，如下操作有大量的重复数据（多个兄弟的组件是共同的）
+  //     const checkedIdSet = new Set(nextCheckedIds)
+  //     const allChildrenNodes = getChildrenIds(checkedNode)
+  //     const ancestors = getAncestorIds(checkedNode, data)
+  //   },
+  //   [checkedIds]
+  // )
 
-    return _.uniq(
-      semiCheckedIds
-        .map((s) => getAncestorIds(s, data))
-        .concat(semiCheckedIds)
-        .flat()
-    )
-  }
+  const onNodeCheck = useCallback(
+    (checkedNode, checked) => {
+      let _checkedIds = [...checkedIds, checkedNode.id]
 
-  const onCheckNode = useCallback(
-    (checkedNode, checked, _checkedIds) => {
-      let semiCheckedIds = getSemiChecked(_checkedIds, flattedData, data)
+      console.log('onCheckNode--------------', checkedNode, checked)
+      const checkedIdSet = new Set(_checkedIds)
 
-      let checkedNodes = [..._checkedIds]
+      let semiCheckedIds = getSemiChecked(checkedIdSet, flattedData, data)
+      console.log('semiCheckedIds', semiCheckedIds)
 
       const children = getChildrenIds(checkedNode)
-      const ancestors = getAncestorIds(checkedNode.id, data)
+      const ancestors = getAncestorIds(checkedNode, data)
 
       if (checked) {
         // 选中对后代的影响
         children.forEach((child) => {
-          if (!checkedNodes.includes(child)) {
-            checkedNodes.push(child)
+          if (!_checkedIds.includes(child)) {
+            _checkedIds.push(child)
           }
+
           if (semiCheckedIds.includes(child)) {
             semiCheckedIds = semiCheckedIds.filter((id) => id !== child)
           }
         })
 
-        checkedNodes.push(checkedNode.id)
+        _checkedIds.push(checkedNode.id)
         semiCheckedIds = semiCheckedIds.filter((id) => id !== checkedNode.id)
+
         // 选中对所有父辈的影响
         ancestors.forEach((ancestor) => {
           if (
             findNode(ancestor, data)
               .children.map((child) => child.id)
-              .every((childId) => checkedNodes.includes(childId))
+              .every((childId) => _checkedIds.includes(childId))
           ) {
             semiCheckedIds = semiCheckedIds.filter((id) => id !== ancestor)
-            checkedNodes.push(ancestor)
+            _checkedIds.push(ancestor)
           } else {
             semiCheckedIds.push(ancestor)
           }
@@ -76,15 +82,15 @@ export const useCheck = ({
       } else {
         // 不选中对祖先的影响
         ancestors.forEach((ancestor) => {
-          if (checkedNodes.includes(ancestor)) {
+          if (_checkedIds.includes(ancestor)) {
             semiCheckedIds.push(ancestor)
           }
-          checkedNodes = checkedNodes.filter((id) => id !== ancestor)
+          _checkedIds = _checkedIds.filter((id) => id !== ancestor)
           // 还要考虑这个不选中，父辈 semi 也没有了的情况
           let checkChildrenNum = 0
           const ancestorChildren = findNode(ancestor, data).children.map((child) => child.id)
           ancestorChildren.forEach((childId) => {
-            if (checkedNodes.includes(childId)) {
+            if (_checkedIds.includes(childId)) {
               checkChildrenNum = checkChildrenNum + 1
             }
           })
@@ -94,53 +100,39 @@ export const useCheck = ({
         })
         // 不选中对后代的影响
         children.forEach((child) => {
-          if (checkedNodes.includes(child)) {
-            checkedNodes = checkedNodes.filter((id) => id !== child)
+          if (_checkedIds.includes(child)) {
+            _checkedIds = _checkedIds.filter((id) => id !== child)
           }
           if (semiCheckedIds.includes(child)) {
             semiCheckedIds = semiCheckedIds.filter((id) => id !== child)
           }
         })
-        checkedNodes = checkedNodes.filter((id) => id !== checkedNode.id)
+        _checkedIds = _checkedIds.filter((id) => id !== checkedNode.id)
       }
 
-      if (!checkedIds) {
-        setCheckedIds(checkedNodes)
-      }
+      // if (!_checkedIds) {
+      trySetCheckedIds(_checkedIds)
+      // }
       if (onCheck) {
-        onCheck(checked, { checkedIds: checkedNodes, semiCheckedIds }, checkedNode)
+        onCheck(checked, { checkedIds: _checkedIds, semiCheckedIds }, checkedNode)
       }
     },
-    [checkedIds, flattedData, data]
+    [checkedIds, flattedData, data, onCheck]
   )
 
   return [
-    { checkedNodes: checkedIds, semiCheckedIds: getSemiChecked(checkedIds, flattedData, data) },
-    onCheckNode,
+    { checkedNodes: checkedIds, semiCheckedIds: getSemiChecked(checkedIdSet, flattedData, data) },
+    onNodeCheck,
   ]
-}
-
-// 寻找某一节点的父节点
-export const getParentId = (id, data) => {
-  let parentId
-  data.forEach((item) => {
-    if (item.children) {
-      if (item.children.some((item) => item.id === id)) {
-        parentId = item.id
-      } else if (getParentId(id, item.children)) {
-        parentId = getParentId(id, item.children)
-      }
-    }
-  })
-  return parentId
 }
 
 // 寻找某一节点的所有祖先节点
 export const getAncestorIds = (id, data, arr = []) => {
-  if (getParentId(id, data)) {
-    arr.push(getParentId(id, data))
-    getAncestorIds(getParentId(id, data), data, arr)
+  if (id.parent) {
+    arr.push(id.parentId)
+    getAncestorIds(id.parent, data, arr)
   }
+
   return arr
 }
 
@@ -169,19 +161,70 @@ export const findNode = (itemId, data) => {
   return node
 }
 
-export const getSemiChecked = (checkedIds, data, allData, semiChecked = []) => {
-  data.forEach((node) => {
-    const ancestorIds = getAncestorIds(node.id, allData)
-    if (checkedIds.includes(node.id)) {
-      ancestorIds.forEach((ancestorId) => {
-        if (!checkedIds.includes(ancestorId) && !semiChecked.includes(ancestorId)) {
-          semiChecked.push(ancestorId)
-        }
-      })
-    }
-    if (node.children) {
-      getSemiChecked(checkedIds, node.children, allData, semiChecked)
+const getSemiChecked = (
+  checkedIdSet: Set<React.ReactText>,
+  flattedData: TreeNodeData[],
+  data: TreeNodeData[]
+) => {
+  const semiCheckedIds = [] as React.ReactText[]
+
+  // 对所有选中节点的祖先节点进行半选（如果其兄弟存在未选中）
+
+  const semiCheckedParentIds = [] as TreeNodeData[]
+
+  flattedData.forEach((node) => {
+    // 父节点没选中，但是当前节点被选中
+    if (node.parent && !checkedIdSet.has(node.parent.id) && checkedIdSet.has(node.id)) {
+      semiCheckedParentIds.push(node.parent)
     }
   })
-  return semiChecked
+
+  // 需要考虑兄弟节点，一次性过滤：半选，如下操作有大量的重复数据（多个兄弟的组件是共同的）
+  console.log('getSemiChecked', semiCheckedParentIds)
+  // const a = getAncestorIds(6, data)
+  // console.log('getAncestorIds', a)
+
+  return _.uniq(
+    semiCheckedParentIds
+      .map((s) => {
+        const a = getAncestorIds(s, data)
+
+        return a
+      })
+      .concat(semiCheckedParentIds.map((v) => v.id))
+      .flat()
+  )
+}
+
+const getSemiCheckedIds = (checkedIdSet: Set<React.ReactText>, flattedData: TreeNodeData[]) => {
+  const semiCheckedIds = []
+
+  const [depthGroupMap, maxDepth] = groupByDepth(flattedData)
+}
+
+// TODO: 用户传进来的数据都需要做一层去重（然后警告⚠️拦截）
+
+// 抽离 groupBy 函数
+const groupByDepth = (flattedData: TreeNodeData[]) => {
+  const depthGroupMap = new Map<number, TreeNodeData[]>()
+
+  let maxDepth = 0
+
+  flattedData.forEach((node) => {
+    const depth = node.depth!
+
+    let depthGroup = depthGroupMap.get(depth)
+    if (!depthGroup) {
+      depthGroup = []
+      depthGroupMap.set(depth!, depthGroup)
+    }
+
+    depthGroup.push(node)
+
+    if (depth > maxDepth) {
+      maxDepth = depth
+    }
+  })
+
+  return [depthGroupMap, maxDepth]
 }

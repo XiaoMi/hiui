@@ -21,8 +21,6 @@ export const MotionTreeNode = forwardRef<HTMLLIElement | null, MotionTreeNodePro
 
     const motionNodeRef = useRef<HTMLLIElement>(null)
 
-    console.log('in', type, isHide)
-
     const [visible, setVisible] = useState(isHide)
     const [height, setHeight] = useState<number | undefined>()
 
@@ -44,12 +42,10 @@ export const MotionTreeNode = forwardRef<HTMLLIElement | null, MotionTreeNodePro
           timeout={320}
           // 0 => scrollHeight
           onEnter={() => {
-            console.log('enter', 0)
             setHeight(0)
           }}
           onEntering={() => {
             const nextHeight = motionNodeRef.current?.scrollHeight ?? 0
-            console.log('onEntering', nextHeight)
             setHeight(nextHeight)
           }}
           onEntered={onMotionEnd}
@@ -57,11 +53,9 @@ export const MotionTreeNode = forwardRef<HTMLLIElement | null, MotionTreeNodePro
           // scrollHeight => 0
           onExit={() => {
             const nextHeight = motionNodeRef.current?.scrollHeight ?? 0
-            console.log('onExit', nextHeight)
             setHeight(nextHeight)
           }}
           onExiting={() => {
-            console.log('onExiting', 0)
             setHeight(0)
           }}
           onExited={onMotionEnd}
@@ -75,6 +69,10 @@ export const MotionTreeNode = forwardRef<HTMLLIElement | null, MotionTreeNodePro
                   className={className}
                   data={treeNode}
                   {...rest}
+                  // TODO: 需要赋予以下必要的值，用于过渡动画时也能正确展示一些状态
+                  // expanded={checkIfExpanded(node.id)}
+                  // checked={checkedNodes.indexOf(node.id) !== -1}
+                  // semiChecked={semiCheckedIds.indexOf(node.id) !== -1}
                 />
               )
             })}

@@ -5,7 +5,8 @@ import { times } from '@hi-ui/times'
 
 import { useTreeContext } from './context'
 import { IconLoading } from './Icon'
-import { Checkbox } from '@hi-ui/Checkbox'
+// TODO: error import when using
+// import Checkbox from '@hi-ui/checkbox'
 
 const _role = 'tree-node'
 const _prefix = getPrefixCls(_role)
@@ -40,7 +41,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       onDrop,
       onLoadChildren,
       checkable = false,
-      onCheckNode,
+      onNodeCheck,
     } = useTreeContext()
 
     const [direction, setDirection] = useState<TreeNodeDragDirection>(null)
@@ -227,24 +228,25 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     }
 
     // 渲染复选框
-    // const renderCheckbox = useCallback(
-    //   (node, checked, semiChecked) => {
-    //     console.log(checked, semiChecked)
-
-    //     return (
-    //       <Checkbox
-    //         indeterminate={semiChecked}
-    //         checked={checked}
-    //         disabled={disabled}
-    //         focusable={false}
-    //         onChange={() => {
-    //           onCheckNode(node, checked)
-    //         }}
-    //       />
-    //     )
-    //   },
-    //   [disabled, onCheckNode]
-    // )
+    const renderCheckbox = useCallback(
+      (node, checked, semiChecked) => {
+        return (
+          <span
+            indeterminate={semiChecked}
+            checked={checked}
+            disabled={disabled}
+            focusable={false}
+            onClick={() => onNodeCheck(node, !checked)}
+            // onChange={() => {
+            //   onNodeCheck(node, checked)
+            // }}
+          >
+            {semiChecked ? '☑️' : checked ? '✅' : '⭕'}
+          </span>
+        )
+      },
+      [disabled, onNodeCheck]
+    )
 
     const cls = cx(
       prefixCls,
@@ -260,7 +262,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
 
         {renderSwitcher(node)}
 
-        {/* {checkable ? renderCheckbox(node, checked, semiChecked) : null} */}
+        {checkable ? renderCheckbox(node, checked, semiChecked) : null}
 
         {renderTitle(node, selectedId)}
       </li>
@@ -336,6 +338,9 @@ export interface TreeNodeData {
    * @private
    */
   ancestors?: TreeNodeData[]
+
+  parent?: TreeNodeData
+  parentId?: React.ReactText
 }
 
 if (__DEV__) {

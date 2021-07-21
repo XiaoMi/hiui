@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
-import { useExpand, useSelect, useTreeDrop, useDataCache } from './hooks'
+import { useExpand, useSelect, useTreeDrop, useDataCache, useCheck } from './hooks'
 import { TreeNodeData } from './TreeNode'
 import { TreeProvider } from './context'
 import { MotionTreeNode } from './MotionTreeNode'
@@ -75,15 +75,15 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     //   onDrop,
     // })
 
-    // const [{ checkedNodes, semiCheckedIds }, onCheckNode] = useCheck({
-    //   defaultCheckedIds,
-    //   checkedIds,
-    //   onCheck,
-    //   data: treeData,
-    //   flattedData,
-    // })
+    const [{ checkedNodes, semiCheckedIds }, onNodeCheck] = useCheck({
+      defaultCheckedIds,
+      checkedIds,
+      onCheck,
+      data: treeData,
+      flattedData,
+    })
 
-    // console.log(checkedNodes, semiCheckedIds)
+    // console.log('checkedNodes', checkedNodes, semiCheckedIds)
 
     const cls = cx(prefixCls, className)
 
@@ -92,8 +92,10 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         selectedId: selectedNodeId,
         onSelect: trySelectNode,
         onExpand: onNodeToggleStart,
-        draggable,
         disabled,
+        draggable,
+        checkable,
+        onNodeCheck,
         onDragStart,
         onDragEnd,
         onDrop: dropTree,
@@ -104,7 +106,9 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         trySelectNode,
         onNodeToggleStart,
         draggable,
+        checkable,
         disabled,
+        onNodeCheck,
         onDragStart,
         onDragEnd,
         dropTree,
@@ -112,7 +116,6 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       ]
     )
 
-    console.log('selectedNodeId', selectedNodeId)
     console.log(transitionData, flattedData)
 
     return (
@@ -126,7 +129,10 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
                 key={node.id}
                 data={node}
                 onMotionEnd={onNodeToggleEnd}
+                // TODO: 注意这些属性对于动画节点并不生效
                 expanded={checkIfExpanded(node.id)}
+                checked={checkedNodes.indexOf(node.id) !== -1}
+                semiChecked={semiCheckedIds.indexOf(node.id) !== -1}
               />
             )
           })}
