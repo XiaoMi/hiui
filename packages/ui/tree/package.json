@@ -43,6 +43,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/checkbox": "^1.0.0",
     "@hi-ui/classname": "^1.0.0",
     "@hi-ui/core-css": "^1.0.0",
     "@hi-ui/env": "^1.0.0",

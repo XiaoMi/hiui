@@ -5,6 +5,7 @@ import { times } from '@hi-ui/times'
 
 import { useTreeContext } from './context'
 import { IconLoading } from './Icon'
+import { Checkbox } from '@hi-ui/Checkbox'
 
 const _role = 'tree-node'
 const _prefix = getPrefixCls(_role)
@@ -21,12 +22,14 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       children,
       data: node,
       expanded = false,
+      checked = false,
+      semiChecked = false,
       ...rest
     },
     ref
   ) => {
     const {
-      disabled = false,
+      disabled: disabledContext = false,
       draggable = false,
       selectedId,
       onSelect,
@@ -36,12 +39,16 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       onDragOver,
       onDrop,
       onLoadChildren,
+      checkable = false,
+      onCheckNode,
     } = useTreeContext()
 
     const [direction, setDirection] = useState<TreeNodeDragDirection>(null)
 
     const treeNodeTitleRef = useRef<HTMLDivElement>(null)
     const dragIdRef = useRef<React.ReactText | null>(null)
+
+    const disabled = disabledContext || node.disabled
 
     // TODO: 控制优先级 父子组件传递
     const enableDraggable = draggable && !disabled
@@ -219,12 +226,32 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       )
     }
 
+    // 渲染复选框
+    // const renderCheckbox = useCallback(
+    //   (node, checked, semiChecked) => {
+    //     console.log(checked, semiChecked)
+
+    //     return (
+    //       <Checkbox
+    //         indeterminate={semiChecked}
+    //         checked={checked}
+    //         disabled={disabled}
+    //         focusable={false}
+    //         onChange={() => {
+    //           onCheckNode(node, checked)
+    //         }}
+    //       />
+    //     )
+    //   },
+    //   [disabled, onCheckNode]
+    // )
+
     const cls = cx(
       prefixCls,
       className,
       direction && `${prefixCls}--drag-${direction}`,
       selectedId === node.id && `${prefixCls}--selected`,
-      node.disabled && `${prefixCls}--disabled`
+      disabled && `${prefixCls}--disabled`
     )
 
     return (
@@ -232,6 +259,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
         {renderIndent(node.depth)}
 
         {renderSwitcher(node)}
+
+        {/* {checkable ? renderCheckbox(node, checked, semiChecked) : null} */}
 
         {renderTitle(node, selectedId)}
       </li>

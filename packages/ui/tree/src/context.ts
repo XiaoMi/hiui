@@ -10,12 +10,7 @@ interface TreeContext {
   onDragStart?: (dragNode: TreeNodeData) => void
   onDragEnd?: (dragNode: TreeNodeData) => void
   onDragOver?: any
-  onDrop?: (
-    dragNode: TreeNodeData,
-    dropNode: TreeNodeData,
-    data: { before: any; after: any },
-    level: number
-  ) => boolean | void
+  onDrop?: any
   onLoadChildren?: () => void
 }
 

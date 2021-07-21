@@ -1,12 +1,11 @@
-import React, { forwardRef, useMemo, useState } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
-import { useExpand, useSelect, useTreeDragDrop, useTreeDrop } from './hooks'
+import { useExpand, useSelect, useTreeDrop, useDataCache } from './hooks'
 import { TreeNodeData } from './TreeNode'
 import { TreeProvider } from './context'
 import { MotionTreeNode } from './MotionTreeNode'
-import { useDataCache } from './hooks/index'
 
 const _role = 'tree'
 const _prefix = getPrefixCls(_role)
@@ -37,6 +36,10 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onDropEnd,
       onDragOver,
       onLoadChildren,
+      checkable = false,
+      defaultCheckedIds = [],
+      checkedIds,
+      onCheck,
       ...rest
     },
     ref
@@ -71,6 +74,16 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     //   onDragOver,
     //   onDrop,
     // })
+
+    // const [{ checkedNodes, semiCheckedIds }, onCheckNode] = useCheck({
+    //   defaultCheckedIds,
+    //   checkedIds,
+    //   onCheck,
+    //   data: treeData,
+    //   flattedData,
+    // })
+
+    // console.log(checkedNodes, semiCheckedIds)
 
     const cls = cx(prefixCls, className)
 
@@ -205,6 +218,22 @@ export interface TreeProps {
    * 点击异步加载子项
    */
   onLoadChildren?: (selectedNode: TreeNodeData) => TreeNodeData
+  /**
+   * 节点前添加 Checkbox 复选框（暂不支持与 draggable 和 editable 同时使用）
+   */
+  checkable?: boolean
+  /**
+   * 默认选中的复选框的节点
+   */
+  defaultCheckedIds?: React.ReactText[]
+  /**
+   * 选中的复选框的节点
+   */
+  checkedIds?: React.ReactText[]
+  /**
+   * 点击节点多选框触发
+   */
+  onCheck?: (checkedIds: React.ReactText[], checkedNode: TreeNodeData, checked: boolean) => void
 }
 
 if (__DEV__) {

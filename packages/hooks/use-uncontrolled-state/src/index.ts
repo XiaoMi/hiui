@@ -14,9 +14,9 @@ export function useUncontrolledState<T>(
 ) {
   const [internalState, setInternalState] = useState<T>(defaultState)
   const uncontrolled = controlledState === undefined
-  const _state = uncontrolled ? internalState : (controlledState as T)
+  const state = uncontrolled ? internalState : (controlledState as T)
 
-  const tryChange = useCallback(
+  const tryChangeState = useCallback(
     (newState: T, ...args: any[]) => {
       if (uncontrolled) {
         setInternalState(newState)
@@ -26,5 +26,5 @@ export function useUncontrolledState<T>(
     [uncontrolled, onChange]
   )
 
-  return [_state, tryChange] as const
+  return [state, tryChangeState] as const
 }
