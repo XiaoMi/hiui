@@ -157,6 +157,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
         if (node.isLeaf) return
 
         if (node.children) {
+          console.log('onExpand', node)
+
           onExpand(node, !expanded)
           // 避免重复调用 onLoadChildren 异步加载子节点
           return

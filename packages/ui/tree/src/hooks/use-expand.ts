@@ -48,7 +48,7 @@ export const useExpand = (
     [_expandedIds]
   )
 
-  // 用来确保一次折叠动画是一次最小单元任务，防止频繁折叠导致动画渲染（存在 DOM 操作）异常
+  // 用来确保一次折叠动画是一次加锁的单元任务，防止频繁折叠导致动画渲染（存在 DOM 操作）异常
   const isExpandingRef = React.useRef(false)
 
   const onNodeToggleStart = useCallback(

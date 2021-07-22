@@ -10,7 +10,7 @@ type ReactRef<T> = React.RefCallback<T> | React.MutableRefObject<T>
 export const useMergeRefs = <T>(...refs: (ReactRef<T> | null)[]) => {
   return useMemo(() => {
     // Empty check
-    if (refs.every((ref) => ref === null)) return null
+    if (refs.some((ref) => ref) === false) return null
 
     return (value: T) => {
       refs.forEach((ref) => {

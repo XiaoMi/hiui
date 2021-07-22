@@ -50,6 +50,7 @@
     "@hi-ui/times": "^1.0.0",
     "@hi-ui/use-uncontrolled-state": "^1.0.0",
     "lodash.clonedeep": "^4.5.0",
+    "react-tiny-virtual-list": "^2.2.0",
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {

@@ -6,6 +6,7 @@ import { useExpand, useSelect, useTreeDrop, useDataCache, useCheck } from './hoo
 import { TreeNodeData } from './TreeNode'
 import { TreeProvider } from './context'
 import { MotionTreeNode } from './MotionTreeNode'
+import VirtualList from 'react-tiny-virtual-list'
 
 const _role = 'tree'
 const _prefix = getPrefixCls(_role)
@@ -23,6 +24,8 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       data,
       expandedIds,
       defaultExpandedIds = [],
+      height = 200,
+      virtual = true,
       onExpand,
       selectedId,
       defaultSelectedId,
@@ -116,7 +119,32 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     return (
       <TreeProvider value={providedValue}>
         <ul ref={ref} role={role} className={cls} {...rest}>
-          {transitionData.map((node, index) => {
+          <VirtualList
+            height={height}
+            itemCount={transitionData.length}
+            itemSize={28}
+            renderItem={({ index, style }) => {
+              const node = transitionData[index]
+              console.log(node)
+
+              return (
+                <MotionTreeNode
+                  // idx={index}
+                  // tabIndex={index === defaultFocus ? 0 : -1}
+                  key={node.id}
+                  data={node}
+                  style={style}
+                  onMotionEnd={onNodeToggleEnd}
+                  // TODO: 注意这些属性对于动画节点并不生效
+                  expanded={checkIfExpanded(node.id)}
+                  checked={checkedIds.indexOf(node.id) !== -1}
+                  semiChecked={semiCheckedIds.indexOf(node.id) !== -1}
+                />
+              )
+            }}
+          />
+
+          {/* {transitionData.map((node, index) => {
             return (
               <MotionTreeNode
                 // idx={index}
@@ -130,7 +158,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
                 semiChecked={semiCheckedIds.indexOf(node.id) !== -1}
               />
             )
-          })}
+          })} */}
         </ul>
       </TreeProvider>
     )
@@ -215,6 +243,7 @@ export interface TreeProps {
    * 节点拖拽成功时触发
    */
   onDropEnd?: (dragNode: TreeNodeData, dropNode: TreeNodeData) => void
+  onDragOver?: any
   /**
    * 点击异步加载子项
    */
@@ -235,6 +264,14 @@ export interface TreeProps {
    * 点击节点多选框触发
    */
   onCheck?: (checkedIds: React.ReactText[], checkedNode: TreeNodeData, checked: boolean) => void
+  /**
+   * 设置虚拟滚动容器高度
+   */
+  height?: number
+  /**
+   * 	设置 `true` 开启虚拟滚动
+   */
+  virtual?: boolean
 }
 
 if (__DEV__) {

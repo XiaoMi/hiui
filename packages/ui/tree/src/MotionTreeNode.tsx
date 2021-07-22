@@ -12,7 +12,7 @@ const _prefix = getPrefixCls(_role)
  * TODO: What is MotionTreeNode
  */
 export const MotionTreeNode = forwardRef<HTMLLIElement | null, MotionTreeNodeProps>(
-  ({ prefixCls = _prefix, role = _role, className, data, onMotionEnd, ...rest }, ref) => {
+  ({ prefixCls = _prefix, role = _role, className, data, onMotionEnd, style, ...rest }, ref) => {
     // 根据 type 控制显隐过渡动画
     const { id, children, type } = data
     const isMotion = id === ANIMATION_KEY
@@ -81,7 +81,7 @@ export const MotionTreeNode = forwardRef<HTMLLIElement | null, MotionTreeNodePro
       )
     }
 
-    return <TreeNode ref={ref} className={className} data={data} {...rest} />
+    return <TreeNode ref={ref} className={className} data={data} style={style} {...rest} />
   }
 )
 
@@ -104,6 +104,7 @@ export interface MotionTreeNodeProps {
   style?: React.CSSProperties
   data: MotionTreeNodeData
   expanded?: boolean
+  onMotionEnd?: any
 }
 
 export interface MotionTreeNodeData {
