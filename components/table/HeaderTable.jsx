@@ -50,6 +50,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
   const [minColWidth, setMinColWidth] = useState(Array(columns.length).fill(0))
   useEffect(() => {
     const onwheel = (e) => {
+      e.stopPropagation()
       const { deltaX } = e
       headerTableRef.current.scrollLeft = headerTableRef.current.scrollLeft + deltaX
       syncScrollLeft(headerTableRef.current.scrollLeft, bodyTableRef.current)

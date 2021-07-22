@@ -1,6 +1,7 @@
 # 更新日志
 # 3.7.1
 - 新增 `Table` 组件 align 属性接受 center 属性 [#1835](https://github.com/XiaoMi/hiui/issues/1835)
+- 优化 `DatePicker` 组件在 `Table` 组件中受控形态下无法选中问题 [#1844](https://github.com/XiaoMi/hiui/issues/1844)
 - 优化 `Carousel` 内容宽度根据容器改变自适应 [#1834](https://github.com/XiaoMi/hiui/issues/1834)
 - 修复 `Preview` 组件，图片打开失败时，页面一直处在加载状态 [#1816](https://github.com/XiaoMi/hiui/issues/1816)
 - 修复 `HiRequest` 在 type='download'时 不能正确解析filename问题 [#1820](https://github.com/XiaoMi/hiui/issues/1820)

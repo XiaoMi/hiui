@@ -177,6 +177,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       }}
       ref={bodyTableRef}
       onScroll={(e) => {
+        e.stopPropagation()
         syncScrollLeft(bodyTableRef.current.scrollLeft, headerTableRef.current)
       }}
     >
