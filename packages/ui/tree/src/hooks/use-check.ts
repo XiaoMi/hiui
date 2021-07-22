@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import _ from 'lodash'
 import { TreeNodeData } from '../TreeNode'
 
 export const useCheck = (
@@ -21,13 +20,14 @@ export const useCheck = (
     [onCheck]
   )
 
+  // TODO: 用户传进来的数据都需要做一层去重（然后警告⚠️拦截）
   const [checkedIds, trySetCheckedIds] = useUncontrolledState(
     defaultCheckedIds,
     checkedIdsProp,
     proxyOnCheck
   )
 
-  const semiCheckedIds = useMemo(() => getSemiChecked(new Set(checkedIds), flattedData), [
+  const semiCheckedIds = useMemo(() => getSemiCheckedIds(new Set(checkedIds), flattedData), [
     checkedIds,
     flattedData,
   ])
@@ -35,45 +35,34 @@ export const useCheck = (
 
   const onNodeCheck = useCallback(
     (checkedNode: TreeNodeData, checked: boolean) => {
-      let nextCheckedIds = [...checkedIds]
-      const checkedIdsSet = new Set(nextCheckedIds)
-
-      let semiCheckedIds = getSemiChecked(checkedIdsSet, flattedData)
+      const checkedIdsSet = new Set(checkedIds)
       const semiCheckedIdsSet = new Set(semiCheckedIds)
 
       const children = getChildrenNodeIds(checkedNode)
       const ancestors = getAncestorNodes(checkedNode)
 
-      console.log(
-        'onCheckNode--------------',
-        children,
-        ancestors,
-        checkedIdsSet,
-        semiCheckedIdsSet
-      )
+      console.log('onCheckNode--------------', children, ancestors)
 
       if (checked) {
+        // - 对于选中节点自身的处理
+        semiCheckedIdsSet.delete(checkedNode.id)
+        checkedIdsSet.add(checkedNode.id)
+
         // - 对于选中节点的后代影响处理
         children.forEach((child) => {
           // 将未选中标记为选中态
           if (!checkedIdsSet.has(child)) {
             checkedIdsSet.add(child)
           }
-
-          // 维护半选中列表
           if (semiCheckedIdsSet.has(child)) {
             semiCheckedIdsSet.delete(child)
           }
         })
 
-        // - 对于选中节点自身的处理
-        semiCheckedIdsSet.delete(checkedNode.id)
-        checkedIdsSet.add(checkedNode.id)
-
         // - 对于选中节点的祖先影响处理
         ancestors.forEach((ancestor) => {
-          // 子节点都选中，则该节点为标记为全选，否则为半选
-          if (ancestor.children?.every((child) => checkedIdsSet.has(child.id))) {
+          // 当该节点的子节点都被全选中时，则该节点为标记为全选，否则为半选
+          if (!ancestor.children?.some((child) => !checkedIdsSet.has(child.id))) {
             semiCheckedIdsSet.delete(ancestor.id)
             checkedIdsSet.add(ancestor.id)
           } else {
@@ -84,43 +73,42 @@ export const useCheck = (
         // - 对于取消选中节点自身的处理
         checkedIdsSet.delete(checkedNode.id)
 
-        // - 取消选中节点对祖先的影响处理
+        // - 对于取消选中节点对祖先的影响处理
         ancestors.forEach((ancestor) => {
           if (checkedIdsSet.has(ancestor.id)) {
             checkedIdsSet.delete(ancestor.id)
             semiCheckedIdsSet.add(ancestor.id)
           }
 
-          // 当该节点的孩子都是非选中时，需要变成未选中状态
+          // 当该节点的子节点都未被选中时，则该节点为标记为未选中
           if (
-            ancestor.children?.every(
-              (child) => !checkedIdsSet.has(child.id) && !semiCheckedIdsSet.has(child.id)
+            !ancestor.children?.some(
+              (child) => checkedIdsSet.has(child.id) || semiCheckedIdsSet.has(child.id)
             )
           ) {
             semiCheckedIdsSet.delete(ancestor.id)
           }
         })
 
-        // - 取消选中节点对后代的影响处理
+        // - 对于取消选中节点对后代的影响处理
         children.forEach((child) => {
+          // 将选中标记为未选中态
           if (checkedIdsSet.has(child)) {
             checkedIdsSet.delete(child)
           }
-
           if (semiCheckedIdsSet.has(child)) {
             semiCheckedIdsSet.delete(child)
           }
         })
       }
 
-      nextCheckedIds = Array.from(checkedIdsSet)
-      // TODO: 存在bug，数据存在异常
-      semiCheckedIds = Array.from(semiCheckedIdsSet)
+      const nextCheckedIds = Array.from(checkedIdsSet)
+      const nextSemiCheckedIds = Array.from(semiCheckedIdsSet)
 
-      console.log('trySetCheckedIds', nextCheckedIds, semiCheckedIds)
-      trySetCheckedIds(nextCheckedIds, checkedNode, checked, semiCheckedIds)
+      console.log('trySetCheckedIds', nextCheckedIds, nextSemiCheckedIds)
+      trySetCheckedIds(nextCheckedIds, checkedNode, checked, nextSemiCheckedIds)
     },
-    [checkedIds, trySetCheckedIds, flattedData]
+    [checkedIds, trySetCheckedIds, semiCheckedIds]
   )
 
   return [checkedIds, semiCheckedIds, onNodeCheck] as const
@@ -136,7 +124,6 @@ const getAncestorNodes = (node: TreeNodeData) => {
   const ancestors = []
 
   let parentNode = node.parent
-
   while (parentNode) {
     ancestors.push(parentNode)
     parentNode = parentNode.parent
@@ -152,8 +139,7 @@ const getAncestorNodes = (node: TreeNodeData) => {
  * @returns
  */
 const getChildrenNodeIds = (node: TreeNodeData, childrenIds: React.ReactText[] = []) => {
-  const children = node.children
-
+  const { children } = node
   if (children) {
     children.forEach((child) => {
       childrenIds.push(child.id)
@@ -164,52 +150,49 @@ const getChildrenNodeIds = (node: TreeNodeData, childrenIds: React.ReactText[] =
   return childrenIds
 }
 
-const getSemiChecked = (checkedIdsSet: Set<React.ReactText>, flattedData: TreeNodeData[]) => {
-  // 对所有选中节点的祖先节点进行半选（如果其兄弟存在未选中）
+/**
+ * 在 checkedIdsSet 为数据合法的情况下，查找所有的半选中态的节点 ids
+ *
+ * @param checkedIdsSet
+ * @param flattedData
+ * @returns
+ */
+const getSemiCheckedIds = (checkedIdsSet: Set<React.ReactText>, flattedData: TreeNodeData[]) => {
+  const semiCheckedNodes = [] as TreeNodeData[]
+  const semiCheckedIdsSet = new Set<React.ReactText>()
 
-  const semiCheckedParentIds = [] as TreeNodeData[]
+  let parent: TreeNodeData | undefined
+  let parentId: React.ReactText | undefined
 
   flattedData.forEach((node) => {
-    // 父节点没选中，但是当前节点被选中
-    if (node.parent && !checkedIdsSet.has(node.parent.id) && checkedIdsSet.has(node.id)) {
-      semiCheckedParentIds.push(node.parent)
+    parent = node.parent
+    if (parent) {
+      parentId = parent.id
+      if (semiCheckedIdsSet.has(parentId)) return
+
+      // 父节点没选中，但是当前节点被选中，则视为半选
+      if (!checkedIdsSet.has(parentId) && checkedIdsSet.has(node.id)) {
+        semiCheckedIdsSet.add(parentId)
+        semiCheckedNodes.push(parent)
+      }
     }
   })
 
-  // TODO: 需要考虑兄弟节点，一次性过滤：半选，如下操作有大量的重复数据（多个兄弟的组件是共同的）
-  const semiCheckedIds = _.uniq(
-    semiCheckedParentIds
-      .map((s) => getAncestorNodes(s).map((v) => v.id))
-      .concat(semiCheckedParentIds.map((v) => v.id))
-      .flat()
-  )
+  // 自下而上设置半选态
+  semiCheckedNodes.forEach((node) => {
+    parent = node.parent
+    while (parent) {
+      parentId = parent.id
+      // 可能存在兄弟节点，共同祖先需要去重，避免重复计算
+      if (semiCheckedIdsSet.has(parentId)) return
 
+      semiCheckedIdsSet.add(parentId)
+      parent = parent.parent
+    }
+  })
+
+  const semiCheckedIds = Array.from(semiCheckedIdsSet)
+
+  console.log('getSemiCheckedIds', semiCheckedIds, semiCheckedNodes)
   return semiCheckedIds
 }
-
-// TODO: 用户传进来的数据都需要做一层去重（然后警告⚠️拦截）
-
-// 抽离 groupBy 函数
-// const groupByDepth = (flattedData: TreeNodeData[]) => {
-//   const depthGroupMap = new Map<number, TreeNodeData[]>()
-
-//   let maxDepth = 0
-
-//   flattedData.forEach((node) => {
-//     const depth = node.depth!
-
-//     let depthGroup = depthGroupMap.get(depth)
-//     if (!depthGroup) {
-//       depthGroup = []
-//       depthGroupMap.set(depth!, depthGroup)
-//     }
-
-//     depthGroup.push(node)
-
-//     if (depth > maxDepth) {
-//       maxDepth = depth
-//     }
-//   })
-
-//   return [depthGroupMap, maxDepth]
-// }

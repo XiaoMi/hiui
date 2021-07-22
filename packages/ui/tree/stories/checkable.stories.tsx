@@ -16,7 +16,22 @@ export const Checkable = () => {
             { id: 5, title: '前端' },
           ],
         },
-        { id: 6, title: '产品' },
+        {
+          id: 6,
+          title: '产品',
+
+          children: [
+            { id: 61, title: '后端' },
+            { id: 62, title: '运维' },
+            { id: 63, title: '前端' },
+          ],
+        },
+        {
+          id: 8,
+          title: '发发发',
+
+          children: [],
+        },
       ],
     },
     {
