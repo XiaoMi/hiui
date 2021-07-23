@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
@@ -27,7 +27,7 @@ const Table = ({
   size,
   errorRowKeys = [],
   rowSelection,
-  data,
+  data: propsData,
   highlightedRowKeys = [],
   highlightedColKeys = [],
   expandedRowKeys: propsExpandRowKeys,
@@ -56,9 +56,42 @@ const Table = ({
   setCacheVisibleCols,
   scrollWidth,
   theme,
+  draggable,
   localeDatas,
+  fieldKey,
   emptyContent = localeDatas.table.emptyContent
 }) => {
+  const dragIndex = useRef()
+  const dropIndex = useRef()
+
+  const [data, setData] = useState(propsData)
+
+  useEffect(() => {
+    const _data = () => {
+      if (fieldKey) {
+        return propsData.map((item) => {
+          item.key = item[fieldKey]
+          return item
+        })
+      }
+      return propsData
+    }
+    setData(_data)
+  }, [propsData, fieldKey])
+
+  const updateData = useCallback(() => {
+    const _data = _.cloneDeep(data)
+    const _dropIndex = dropIndex.current
+    const _dragIndex = dragIndex.current
+    dropIndex.current = null
+    dragIndex.current = null
+    const dragRow = _data[_dragIndex]
+    const direction = _dragIndex - _dropIndex < 0 ? 1 : 0
+    _data.splice(_dropIndex + direction, 0, dragRow)
+    _data.splice(_dragIndex - direction + 1, 1)
+    setData(_data)
+  }, [data])
+
   const expandedRowKeys = propsExpandRowKeys || expandRowKeys
   const [columns, setColumns] = useState(propsColumns)
   const hiTable = useRef(null)
@@ -211,14 +244,18 @@ const Table = ({
       })
     }
   }, [dataSource, currentPage])
+ 
   return (
     <TableContext.Provider
       value={{
         disabledData,
         rowExpandable,
+        dragIndex,
+        dropIndex,
         setting,
         firstRowRef,
         prefix,
+        updateData,
         errorRowKeys,
         bordered: _bordered,
         resizable,
@@ -284,7 +321,8 @@ const Table = ({
         expandedTreeRows,
         setExpandedTreeRows,
         onLoadChildren,
-        loadChildren
+        loadChildren,
+        draggable
       }}
     >
       <div
@@ -293,6 +331,9 @@ const Table = ({
           [`${prefix}--bordered`]: _bordered,
           [`${prefix}--${size}`]: size
         })}
+        onDrop={() => {
+          console.log('opDROP')
+        }}
         ref={hiTable}
       >
         {/* Normal table 普通表格 */}

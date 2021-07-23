@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
 import Cell from './Cell'
 import TableContext from './context'
 import classNames from 'classnames'
@@ -43,7 +43,11 @@ const Row = ({
     prefix,
     rowExpandable,
     onExpand,
-    disabledData
+    disabledData,
+    draggable,
+    dragIndex,
+    dropIndex,
+    updateData
   } = useContext(TableContext)
 
   const _columns = _.cloneDeep(columns)
@@ -57,15 +61,49 @@ const Row = ({
   const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false
   checkboxDisabled && disabledData.current.push(allRowData.key)
   const rowExpand = rowExpandable && rowExpandable(rowData)
+  const [dropHightLineStatus, setDropHightLineStatus] = useState(null)
+  const [dragStatus, setDragStatus] = useState(null)
   return [
     <tr
       style={isFixed && rowHeight ? { height: rowHeight } : {}}
       ref={innerRef}
       id={allRowData.key}
+      draggable={draggable}
+      // onMouseMove={() => {
+      //   console.log('123')
+      //   setDragStatus(false)
+      // }}
+      onDrag={(e) => {
+        console.log('拖拽')
+      }}
+      onDragStart={() => {
+        setDragStatus(true)
+        dragIndex.current = index
+      }}
+      onDragEnd={() => {
+        setDropHightLineStatus(null)
+        updateData()
+      }}
+      onDragEnter={() => {
+        if (dragIndex.current !== index) {
+          dropIndex.current = index
+          setDropHightLineStatus(dragIndex.current > index ? 'top' : 'bottom')
+        }
+      }}
+      onDragOver={(e) => {
+        e.preventDefault()
+      }}
+      onDragLeave={() => {
+        setDropHightLineStatus(null)
+      }}
       className={classNames(`${prefix}__row`, {
         [`${prefix}__row--error`]: errorRowKeys.includes(rowData.key),
         [`${prefix}__row--highlight`]: hoverRow === rowData.key || highlightedRowKeys.includes(rowData.key),
         [`${prefix}__row--total`]: isSumRow,
+        [`${prefix}__row--draggable`]: draggable,
+        [`${prefix}__row--draging`]: dragStatus,
+        [`${prefix}__row--draggable__border--top`]: dragIndex.current !== null && dropHightLineStatus === 'top',
+        [`${prefix}__row--draggable__border--bottom`]: dragIndex.current !== null && dropHightLineStatus === 'bottom',
         [`${prefix}__row--avg`]: isAvgRow
       })}
       key="row"

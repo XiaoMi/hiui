@@ -185,7 +185,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} resizable fixedToColumn={{left:'type', right: 'address'}} data={this.data}/>
+        return <Table columns={this.columns} draggable resizable fixedToColumn={{left:'type', right: 'address'}} data={this.data}/>
       }
     }`,
     opt: ['基础']
