@@ -8,7 +8,7 @@ $prefix: '#{$component-prefix}-tree' !default;
   list-style-type: none;
 
   .motion-tree-node {
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     overflow-y: hidden;
   }
 }

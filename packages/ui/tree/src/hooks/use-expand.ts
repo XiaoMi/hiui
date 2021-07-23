@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState, useRef, useEffect } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import cloneDeep from 'lodash.clonedeep'
 import { TreeNodeData } from '../TreeNode'
-import { fFindNestedChildNodesById } from '../utils/index'
+import { fFindNestedChildNodesById } from '../utils'
 
 export const ANIMATION_KEY = `TREE_MOTION_NODE_${Math.random()}`
 

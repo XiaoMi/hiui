@@ -142,7 +142,7 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
           extensions: ['.scss', '.css'],
           // Extract styleInject as a external module
           inject: (variableName) =>
-            `;var __styleInject__=require('style-inject/dist/style-inject.es.js');__styleInject__(${variableName});`,
+            `;var __styleInject__=require('style-inject/dist/style-inject.es.js').default;__styleInject__(${variableName});`,
           extract: cssExtract,
           modules: cssModules,
         }),
@@ -151,7 +151,7 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
     }
 
     const outputOptions = {
-      // Match rollup type rule of output
+      // Adapt rollup type rule of output
       format: isESM ? 'es' : type,
       dir: outputPath,
       sourcemap: sourceMaps,

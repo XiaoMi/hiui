@@ -6,7 +6,7 @@ import { useExpand, useSelect, useTreeDrop, useDataCache, useCheck } from './hoo
 import { TreeNodeData } from './TreeNode'
 import { TreeProvider } from './context'
 import { MotionTreeNode } from './MotionTreeNode'
-import VirtualList from 'react-tiny-virtual-list'
+import VirtualList from 'rc-virtual-list'
 
 const _role = 'tree'
 const _prefix = getPrefixCls(_role)
@@ -25,6 +25,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       expandedIds,
       defaultExpandedIds = [],
       height = 200,
+      itemHeight = 28,
       virtual = true,
       onExpand,
       selectedId,
@@ -66,7 +67,10 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       flattedData,
       defaultExpandedIds,
       expandedIds,
-      onExpand
+      onExpand,
+      virtual,
+      height,
+      itemHeight
     )
 
     const dropTree = useTreeDrop(treeData, flattedData, onDrop, onDropEnd)
@@ -78,7 +82,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     //   onDrop,
     // })
 
-    const [checkedIds, semiCheckedIds, onNodeCheck] = useCheck(
+    const [isCheckedId, isSemiCheckedId, onNodeCheck] = useCheck(
       flattedData,
       defaultCheckedIds,
       checkedIdsProp,
@@ -116,49 +120,43 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       ]
     )
 
+    // 呈现在可视范围的列表个数，undefined 表示没有限制
+    const overscanCount = useMemo(() => {
+      if (virtual === false || !height) {
+        return undefined
+      }
+      return Math.ceil(height / itemHeight) + 1
+    }, [virtual, height, itemHeight])
+
     return (
       <TreeProvider value={providedValue}>
         <ul ref={ref} role={role} className={cls} {...rest}>
           <VirtualList
+            data={transitionData}
+            itemKey={(item) => item.id}
             height={height}
-            itemCount={transitionData.length}
-            itemSize={28}
-            renderItem={({ index, style }) => {
-              const node = transitionData[index]
-              console.log(node)
-
+            fullHeight={false}
+            virtual={virtual}
+            itemHeight={itemHeight}
+            prefixCls={`${prefixCls}-list`}
+          >
+            {(node: TreeNodeData) => {
               return (
                 <MotionTreeNode
                   // idx={index}
                   // tabIndex={index === defaultFocus ? 0 : -1}
                   key={node.id}
                   data={node}
-                  style={style}
                   onMotionEnd={onNodeToggleEnd}
                   // TODO: 注意这些属性对于动画节点并不生效
-                  expanded={checkIfExpanded(node.id)}
-                  checked={checkedIds.indexOf(node.id) !== -1}
-                  semiChecked={semiCheckedIds.indexOf(node.id) !== -1}
+                  isExpanded={checkIfExpanded}
+                  isChecked={isCheckedId}
+                  isSemiChecked={isSemiCheckedId}
+                  overscanCount={overscanCount}
                 />
               )
             }}
-          />
-
-          {/* {transitionData.map((node, index) => {
-            return (
-              <MotionTreeNode
-                // idx={index}
-                // tabIndex={index === defaultFocus ? 0 : -1}
-                key={node.id}
-                data={node}
-                onMotionEnd={onNodeToggleEnd}
-                // TODO: 注意这些属性对于动画节点并不生效
-                expanded={checkIfExpanded(node.id)}
-                checked={checkedIds.indexOf(node.id) !== -1}
-                semiChecked={semiCheckedIds.indexOf(node.id) !== -1}
-              />
-            )
-          })} */}
+          </VirtualList>
         </ul>
       </TreeProvider>
     )
@@ -265,9 +263,13 @@ export interface TreeProps {
    */
   onCheck?: (checkedIds: React.ReactText[], checkedNode: TreeNodeData, checked: boolean) => void
   /**
-   * 设置虚拟滚动容器高度
+   * 设置虚拟滚动容器的可视高度
    */
   height?: number
+  /**
+   * 设置虚拟列表每项的固定高度
+   */
+  itemHeight?: number
   /**
    * 	设置 `true` 开启虚拟滚动
    */

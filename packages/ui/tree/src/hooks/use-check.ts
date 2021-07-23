@@ -9,12 +9,7 @@ export const useCheck = (
   onCheck?: (checkedIds: React.ReactText[], checkedNode: TreeNodeData, checked: boolean) => void
 ) => {
   const proxyOnCheck = useCallback(
-    (
-      checkedIds: React.ReactText[],
-      checkedNode: TreeNodeData,
-      checked: boolean,
-      semiCheckedIds: React.ReactText[]
-    ) => {
+    (checkedIds, checkedNode, checked, semiCheckedIds) => {
       onCheck?.(checkedIds, checkedNode, checked)
     },
     [onCheck]
@@ -27,11 +22,27 @@ export const useCheck = (
     proxyOnCheck
   )
 
-  const semiCheckedIds = useMemo(() => getSemiCheckedIds(new Set(checkedIds), flattedData), [
-    checkedIds,
-    flattedData,
-  ])
-  console.log('semiCheckedIds', semiCheckedIds)
+  const checkedIdsSet = useMemo(() => new Set(checkedIds), [checkedIds])
+  const [semiCheckedIds, semiCheckedIdsSet] = useMemo(
+    () => getSemiCheckedIdsWithSet(checkedIdsSet, flattedData),
+    [checkedIdsSet, flattedData]
+  )
+
+  const isCheckedId = useCallback(
+    (id: React.ReactText) => {
+      return checkedIdsSet.has(id)
+    },
+    [checkedIdsSet]
+  )
+
+  const isSemiCheckedId = useCallback(
+    (id: React.ReactText) => {
+      return semiCheckedIdsSet.has(id)
+    },
+    [semiCheckedIdsSet]
+  )
+
+  console.log('semiCheckedIds ---------- semiCheckedIdsSet', checkedIdsSet, semiCheckedIdsSet)
 
   const onNodeCheck = useCallback(
     (checkedNode: TreeNodeData, checked: boolean) => {
@@ -111,7 +122,7 @@ export const useCheck = (
     [checkedIds, trySetCheckedIds, semiCheckedIds]
   )
 
-  return [checkedIds, semiCheckedIds, onNodeCheck] as const
+  return [isCheckedId, isSemiCheckedId, onNodeCheck] as const
 }
 
 /**
@@ -157,7 +168,10 @@ const getChildrenNodeIds = (node: TreeNodeData, childrenIds: React.ReactText[] =
  * @param flattedData
  * @returns
  */
-const getSemiCheckedIds = (checkedIdsSet: Set<React.ReactText>, flattedData: TreeNodeData[]) => {
+const getSemiCheckedIdsWithSet = (
+  checkedIdsSet: Set<React.ReactText>,
+  flattedData: TreeNodeData[]
+) => {
   const semiCheckedNodes = [] as TreeNodeData[]
   const semiCheckedIdsSet = new Set<React.ReactText>()
 
@@ -192,7 +206,6 @@ const getSemiCheckedIds = (checkedIdsSet: Set<React.ReactText>, flattedData: Tre
   })
 
   const semiCheckedIds = Array.from(semiCheckedIdsSet)
-
-  console.log('getSemiCheckedIds', semiCheckedIds, semiCheckedNodes)
-  return semiCheckedIds
+  console.log('getSemiCheckedIds', semiCheckedIdsSet, semiCheckedNodes)
+  return [semiCheckedIds, semiCheckedIdsSet] as const
 }
