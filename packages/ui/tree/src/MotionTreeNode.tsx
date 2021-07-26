@@ -1,7 +1,7 @@
 import React, { forwardRef, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { TreeNode } from './TreeNode'
+import { EditableTreeNode as TreeNode } from './EditableTreeNode'
 import { ANIMATION_KEY } from './hooks'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import { times } from '@hi-ui/times'

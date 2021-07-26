@@ -7,28 +7,16 @@ import { useTreeContext } from './context'
 import { IconLoading } from './Icon'
 // TODO: error import when using
 import Checkbox from '@hi-ui/checkbox'
+import { TreeNode } from './TreeNode'
 
 const _role = 'tree-node'
 const _prefix = getPrefixCls(_role)
 
 /**
- * TODO: What is TreeNode
+ * TODO: What is EditableTreeNode
  */
-export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
-  (
-    {
-      prefixCls = _prefix,
-      role = _role,
-      className,
-      children,
-      data: node,
-      expanded = false,
-      checked = false,
-      semiChecked = false,
-      ...rest
-    },
-    ref
-  ) => {
+export const EditableTreeNode = forwardRef<HTMLLIElement | null, EditableTreeNodeProps>(
+  ({ prefixCls = _prefix, role = _role, className, data: node, ...rest }, ref) => {
     const {
       disabled: disabledContext = false,
       draggable = false,
@@ -42,234 +30,87 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       onLoadChildren,
       checkable = false,
       onNodeCheck,
+      onSave,
+      onCancel,
+      // type = 'add',
     } = useTreeContext()
 
-    const [direction, setDirection] = useState<TreeNodeDragDirection>(null)
+    const cls = cx(prefixCls, className)
 
-    const treeNodeTitleRef = useRef<HTMLDivElement>(null)
-    const dragIdRef = useRef<React.ReactText | null>(null)
+    const [editing, setEditing] = useState(false)
+    const [inputValue, setInputValue] = useState('')
 
-    const disabled = disabledContext || node.disabled
+    // TODO: 写成高阶组件
 
-    // TODO: 控制优先级 父子组件传递
-    const enableDraggable = draggable && !disabled
+    let children = null
 
-    // 拖拽管理
-    const dragEventHandlers = useMemo(() => {
-      if (!enableDraggable) return
-
-      const { id, depth } = node
-
-      return {
-        onDragStart: (evt: React.DragEvent) => {
-          console.log('onDragStart')
-
-          evt.stopPropagation()
-
-          dragIdRef.current = id
-          evt.dataTransfer.setData('treeNode', JSON.stringify({ id, depth }))
-
-          onDragStart?.(node)
-        },
-        onDragEnd: (evt: React.DragEvent) => {
-          console.log('onDragEnd')
-
-          evt.preventDefault()
-          evt.stopPropagation()
-          evt.dataTransfer.clearData()
-          dragIdRef.current = null
-          setDirection(null)
-
-          onDragEnd?.(node)
-        },
-        onDragLeave: (evt: React.DragEvent) => {
-          console.log('onDragLeave')
-
-          evt.preventDefault()
-          evt.stopPropagation()
-          setDirection(null)
-        },
-        // 拖至到目标元素上时触发事件
-        onDragOver: (evt: React.DragEvent) => {
-          const dragId = dragIdRef.current
-          console.log('onDragOver', dragId)
-
-          evt.preventDefault()
-          evt.stopPropagation()
-
-          // 这里需要考虑3点：
-          // 拖到自己的老位置，不处理
-          // 父树不能拖到其子树内
-          // 不同于简单的文件夹拖拽，同层可以拖拽进行排序
-          if (dragId !== id) {
-            const targetBoundingRect = treeNodeTitleRef.current?.getBoundingClientRect()
-            if (!targetBoundingRect) return
-
-            const hoverTargetSortY = (targetBoundingRect.bottom - targetBoundingRect.top) / 3
-            const hoverTargetInsideY = hoverTargetSortY + hoverTargetSortY
-
-            // 鼠标垂直移动距离
-            const hoverClientY = evt.clientY - targetBoundingRect.top
-
-            // 将当前元素垂直平分为三层，每一层用来对应其放置的位置
-            if (hoverClientY < hoverTargetSortY) {
-              setDirection('before')
-            } else if (hoverClientY < hoverTargetInsideY) {
-              setDirection('inside')
-            } else {
-              setDirection('after')
-            }
-          }
-
-          onDragOver?.(node)
-        },
-        // 放置目标元素时触发事件
-        onDrop: (evt: React.DragEvent) => {
-          const dragId = dragIdRef.current
-
-          evt.preventDefault()
-          evt.stopPropagation()
-          setDirection(null)
-
-          // 在拖拽的过程中，该节点可能已经不是该节点了
-          // 次数 dragId 为 null，node.id 变成了目标节点
-          if (onDrop && dragId !== id) {
-            const passedData = JSON.parse(evt.dataTransfer.getData('treeNode'))
-            console.log('onDrop', passedData, dragId, id)
-
-            onDrop({
-              targetId: id,
-              sourceId: passedData.id,
-              depth: { source: passedData.depth, target: depth },
-              direction,
-            })
-          }
-        },
-      }
-    }, [node, enableDraggable, direction, onDragStart, onDragEnd, onDragOver, onDrop])
-
-    const [loading, setLoading] = useState(false)
-
-    // 处理 Switch 点击
-    const handleSwitcherClick = useCallback(
-      (evt: React.MouseEvent) => {
-        // evt.stopPropagation()
-        if (node.isLeaf) return
-
-        if (node.children) {
-          console.log('onExpand', node)
-
-          onExpand(node, !expanded)
-          // 避免重复调用 onLoadChildren 异步加载子节点
-          return
-        }
-
-        if (onLoadChildren) {
-          setLoading(true)
-
-          // 如何设计请求数据，异步插入
-          onLoadChildren(node)
-            .then((res) => {
-              setLoading(false)
-              onExpand(node, !expanded)
-            })
-            .catch(() => {
-              setLoading(false)
-            })
-        }
-      },
-      [node, expanded, onExpand, onLoadChildren]
-    )
-
-    // 渲染空白占位
-    const renderIndent = useCallback(
-      (depth) => {
-        return times(depth, (index: number) => {
-          return (
-            <span
-              className={cx(`${prefixCls}__indent`)}
-              id={`${index}`}
-              key={index}
-              style={{ alignSelf: 'stretch' }}
-            />
-          )
-        })
-      },
-      [prefixCls]
-    )
-
-    // 渲染子树折叠切换器
-    const renderSwitcher = useCallback(
-      (data) => {
-        return <span onClick={handleSwitcherClick}>⑥</span>
-      },
-      [handleSwitcherClick]
-    )
-
-    // 渲染标题
-    const renderTitle = (node: TreeNodeData, selectedId: React.ReactText) => {
-      const { id, title, depth } = node
-
-      return (
-        <div
-          ref={treeNodeTitleRef}
-          draggable={enableDraggable}
-          className={`${prefixCls}__title`}
-          {...dragEventHandlers}
-        >
-          <div
-            className="title__text"
+    if (editing) {
+      children = (
+        <div className={`${prefixCls}--editing`}>
+          <input
+            style={{ width: 240, marginRight: 20 }}
+            onKeyDown={(e) => {
+              e.stopPropagation()
+            }}
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(e.target.value, node.id)
+            }}
+          />
+          <span
+            className={cx('save-btn', {
+              'save-btn-disabled': inputValue === '',
+            })}
             onClick={() => {
-              onSelect?.(node)
+              if (inputValue === '') {
+                return
+              }
+              onSave?.(node)
+              setEditing(false)
             }}
           >
-            {/* TODO: update to title */}-{depth}--{title}--{id}
-          </div>
+            确认
+          </span>
+          <span
+            style={{ cursor: 'pointer', color: '#999' }}
+            onClick={() => {
+              onCancel?.(node.id)
+
+              if (node.type === 'add') {
+                // cancelAddNode(node)
+              }
+            }}
+          >
+            取消
+          </span>
         </div>
       )
     }
 
-    // 渲染复选框
-    const renderCheckbox = useCallback(
-      (node, checked, semiChecked) => {
-        return (
-          <Checkbox
-            indeterminate={semiChecked}
-            checked={checked}
-            disabled={disabled}
-            focusable={false}
-            onChange={() => {
-              onNodeCheck(node, !checked)
-            }}
-          />
-        )
-      },
-      [disabled, onNodeCheck]
-    )
-
-    const cls = cx(
-      prefixCls,
-      className,
-      direction && `${prefixCls}--drag-${direction}`,
-      selectedId === node.id && `${prefixCls}--selected`,
-      disabled && `${prefixCls}--disabled`
-    )
-
     return (
-      <li ref={ref} role={role} className={cls} {...rest}>
-        {renderIndent(node.depth)}
-
-        {renderSwitcher(node)}
-
-        {checkable ? renderCheckbox(node, checked, semiChecked) : null}
-
-        {renderTitle(node, selectedId)}
-      </li>
+      <TreeNode data={node} {...rest}>
+        <div>
+          {/* 保存：插入孩子、插入兄弟、
+           */}
+          {children || (
+            <div>
+              {children}
+              <span
+                onClick={() => {
+                  setEditing(true)
+                }}
+              >
+                点击编辑
+              </span>
+            </div>
+          )}
+        </div>
+      </TreeNode>
     )
   }
 )
 
-export interface TreeNodeProps {
+export interface EditableTreeNodeProps {
   /**
    * 组件默认的选择器类
    */
@@ -293,7 +134,7 @@ export interface TreeNodeProps {
   /**
    * 该节点的数据信息
    */
-  data: TreeNodeData
+  data: EditableTreeNodeData
   /**
    * 该节点是否被展开
    */
@@ -304,9 +145,9 @@ export interface TreeNodeProps {
   index?: number
 }
 
-export type TreeNodeDragDirection = 'before' | 'inside' | 'after' | null
+export type EditableTreeNodeDragDirection = 'before' | 'inside' | 'after' | null
 
-export interface TreeNodeData {
+export interface EditableTreeNodeData {
   /**
    * 树节点唯一 id
    */
@@ -318,7 +159,7 @@ export interface TreeNodeData {
   /**
    * 该节点的子节点
    */
-  children?: TreeNodeData[]
+  children?: EditableTreeNodeData[]
   /**
    * 是否为叶子节点
    */
@@ -336,12 +177,12 @@ export interface TreeNodeData {
    * 该节点的所有祖先节点
    * @private
    */
-  ancestors?: TreeNodeData[]
+  ancestors?: EditableTreeNodeData[]
 
-  parent?: TreeNodeData
+  parent?: EditableTreeNodeData
   parentId?: React.ReactText
 }
 
 if (__DEV__) {
-  TreeNode.displayName = 'TreeNode'
+  EditableTreeNode.displayName = 'EditableTreeNode'
 }

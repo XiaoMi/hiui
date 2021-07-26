@@ -223,7 +223,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
               onSelect?.(node)
             }}
           >
-            {/* TODO: update to title */}-{depth}--{title}--{id}
+            {/* TODO: update to title */}
+            {children || `-${depth}--${title}--${id}`}
           </div>
         </div>
       )
