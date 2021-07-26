@@ -226,7 +226,7 @@
     overflow-x: hidden;
   }
 
-  &__body--darging {
+  &__body--draging {
     table tr {
       &:hover:not(.hi-table__row--draging) {
         background: use-color('white');

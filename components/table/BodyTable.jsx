@@ -184,7 +184,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       }}
       ref={bodyTableRef}
       className={classNames({
-        [`${prefix}__body--darging`]: dragStatus
+        [`${prefix}__body--draging`]: dragStatus
       })}
       onScroll={(e) => {
         e.stopPropagation()
