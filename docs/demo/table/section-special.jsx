@@ -117,7 +117,6 @@ const code = [
         return <Table
         expandRowKeys={[1]}
         fixedToColumn={'a'}
-        draggable
         data={[
           {
             a: 'a-1',
