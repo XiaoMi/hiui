@@ -45,10 +45,12 @@ type HeaderRowFunc = (colums: ColumnItem[], index: number) => HeaderRowReturn
 
 interface Props {
   size?: 'small' | 'large' | 'default' | 'mini'
+  fieldKey?: string
   bordered?: boolean
   striped?: boolean
   loading?: boolean
   sticky?: boolean
+  draggable?: boolean
   stickyTop?: number
   expandRowKeys?: number[]
   highlightedColKeys?: string[] | number[]
@@ -77,6 +79,9 @@ interface Props {
   style?: CSSProperties
   className?: string
   scrollWidth?: React.ReactText
+  onDragStart?: (rowData: object) => void 
+  onDrop?: (dragRowData: object, dropRowData: object, data: object, level: Level) => boolean | Promise
+  onDropEnd?: (dragRowData: object, dropRowData: object) => void 
 }
 declare const Table: React.ComponentType<Props>
 export default Table

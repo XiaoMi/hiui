@@ -226,6 +226,26 @@
     overflow-x: hidden;
   }
 
+  &__body--darging {
+    table tr {
+      &:hover:not(.hi-table__row--draging) {
+        background: use-color('white');
+
+        .hi-table__col--sticky {
+          background: use-color('white');
+        }
+      }
+
+      &.hi-table__row--draging {
+        background: use-color('primary-20');
+
+        .hi-table__col--sticky {
+          background: use-color('primary-20');
+        }
+      }
+    }
+  }
+
   table {
     table-layout: fixed;
 
@@ -249,16 +269,12 @@
         background: use-color('white');
       }
 
-      &:hover:not(.hi-table__row--draging) {
+      &:hover {
         background: use-color('primary-20');
 
         .hi-table__col--sticky {
           background: use-color('primary-20');
         }
-      }
-
-      &.hi-table__row--draging {
-        background: use-color('white');
       }
 
       & > td {

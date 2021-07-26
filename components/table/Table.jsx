@@ -1,9 +1,16 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
 import classnames from 'classnames'
-import { flatTreeData, parseFixedcolumns, setColumnsDefaultWidth, getMaskNums } from './util'
+import {
+  flatTreeData,
+  parseFixedcolumns,
+  setColumnsDefaultWidth,
+  getMaskNums,
+  setRowByKey,
+  deleteRowByKey
+} from './util'
 import Pagination from '../pagination'
 import axios from 'axios'
 import _ from 'lodash'
@@ -59,11 +66,12 @@ const Table = ({
   draggable,
   localeDatas,
   fieldKey,
+  onDragStart,
+  onDrop,
+  onDropEnd,
   emptyContent = localeDatas.table.emptyContent
 }) => {
-  const dragIndex = useRef()
-  const dropIndex = useRef()
-
+  const dargInfo = useRef({ dragKey: null })
   const [data, setData] = useState(propsData)
 
   useEffect(() => {
@@ -80,16 +88,14 @@ const Table = ({
   }, [propsData, fieldKey])
 
   const updateData = useCallback(() => {
-    const _data = _.cloneDeep(data)
-    const _dropIndex = dropIndex.current
-    const _dragIndex = dragIndex.current
-    dropIndex.current = null
-    dragIndex.current = null
-    const dragRow = _data[_dragIndex]
-    const direction = _dragIndex - _dropIndex < 0 ? 1 : 0
-    _data.splice(_dropIndex + direction, 0, dragRow)
-    _data.splice(_dragIndex - direction + 1, 1)
-    setData(_data)
+    if (typeof dargInfo.current.dropKey !== 'undefined') {
+      const { rowData, dropRowData } = dargInfo.current
+      const restData = deleteRowByKey(_.cloneDeep(data), dargInfo.current)
+      const _data = setRowByKey(_.cloneDeep(restData), dargInfo.current)
+      dargInfo.current = {}
+      onDropEnd && onDropEnd(rowData, dropRowData)
+      setData(_data)
+    }
   }, [data])
 
   const expandedRowKeys = propsExpandRowKeys || expandRowKeys
@@ -244,18 +250,26 @@ const Table = ({
       })
     }
   }, [dataSource, currentPage])
- 
+
+  const onDropCallback = useCallback(() => {
+    const { rowData, dropRowData, level } = dargInfo.current
+    const onDropCallback = onDrop ? onDrop(rowData, dropRowData, data, level) : true
+    if (onDropCallback.toString() === '[object Promise]') {
+      onDropCallback.then((res) => {
+        res && updateData()
+      })
+    } else {
+      onDropCallback && updateData()
+    }
+  }, [data])
   return (
     <TableContext.Provider
       value={{
         disabledData,
         rowExpandable,
-        dragIndex,
-        dropIndex,
         setting,
         firstRowRef,
         prefix,
-        updateData,
         errorRowKeys,
         bordered: _bordered,
         resizable,
@@ -322,7 +336,11 @@ const Table = ({
         setExpandedTreeRows,
         onLoadChildren,
         loadChildren,
-        draggable
+        draggable,
+        dargInfo,
+        onDragStart,
+        onDrop,
+        onDropEnd
       }}
     >
       <div
@@ -331,9 +349,7 @@ const Table = ({
           [`${prefix}--bordered`]: _bordered,
           [`${prefix}--${size}`]: size
         })}
-        onDrop={() => {
-          console.log('opDROP')
-        }}
+        onDrop={onDropCallback}
         ref={hiTable}
       >
         {/* Normal table 普通表格 */}
