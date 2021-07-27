@@ -83,9 +83,54 @@ $prefix: '#{$component-prefix}-tree' !default;
     outline: 0;
     color: use-color('gray-80');
 
-    .tree-node__title {
+    #{$this}__title {
       .title__text {
         background: use-color('primary-20');
+      }
+    }
+  }
+
+  // 线性连接展示
+  &--linear {
+    position: relative;
+
+    #{$this}__indents--tail {
+      #{$this}__indent {
+        &::after {
+          content: '';
+          position: absolute;
+          width: 50%;
+          height: 1px;
+          background-color: use-color('gray-70');
+          left: calc(50% - 4px);
+          top: 50%;
+        }
+      }
+    }
+
+    #{$this}__indent {
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: calc(100% + 4px);
+        background-color: use-color('gray-70');
+        left: 8px;
+      }
+
+      &--parent-tail {
+        &::before {
+          content: none;
+        }
+      }
+
+      &--tail {
+        &::before {
+          content: '';
+          height: calc(50%);
+        }
       }
     }
   }

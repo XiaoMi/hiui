@@ -3,7 +3,7 @@ const MAX_ARRAY_LENGTH = 4294967295
 
 /**
  * Invokes the iteratee `length` times, returning an array of the results of
- * each `iteratee(index)`.
+ * each `iteratee(index)` and the index start with `0`.
  *
  * @param length number of iteratee
  * @param iteratee function of each iteratee

@@ -54,6 +54,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       checkable = false,
       defaultCheckedIds = [],
       checkedIds: checkedIdsProp,
+      appearance = 'linear',
       onCheck,
       ...rest
     },
@@ -130,6 +131,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         addChildNode,
         addSiblingNode,
         tryToggleExpandedIds,
+        appearance,
       }),
       [
         selectedNodeId,
@@ -149,6 +151,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         addChildNode,
         addSiblingNode,
         tryToggleExpandedIds,
+        appearance,
       ]
     )
 

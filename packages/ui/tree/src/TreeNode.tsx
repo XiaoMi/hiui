@@ -32,6 +32,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     const {
       disabled: disabledContext = false,
       draggable = false,
+      appearance,
       selectedId,
       onSelect,
       onExpand,
@@ -181,21 +182,51 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       [node, expanded, onExpand, onLoadChildren]
     )
 
+    const isSiblingLast = node.id === (node.sibling && node.sibling[node.sibling.length - 1].id)
+
     // 渲染空白占位
     const renderIndent = useCallback(
-      (depth) => {
+      (node) => {
+        const { depth, ancestors } = node
+        const isAncestorSiblingLast = []
+
+        if (ancestors) {
+          ancestors.forEach((a, idx) => {
+            if (idx < ancestors.length - 1) {
+              isAncestorSiblingLast.push(
+                a.id === ancestors[idx + 1].children[ancestors[idx + 1].children.length - 1].id
+              )
+            }
+          })
+        }
+
+        const _isAncestorSiblingLast = isAncestorSiblingLast.reverse()
+
         return times(depth, (index: number) => {
           return (
             <span
-              className={cx(`${prefixCls}__indent`)}
+              className={cx(
+                `${prefixCls}__indents`,
+                depth === 1 + index && `${prefixCls}__indents--tail`
+              )}
               id={`${index}`}
               key={index}
               style={{ alignSelf: 'stretch' }}
-            />
+            >
+              <span
+                className={cx(
+                  `${prefixCls}__indent`,
+                  isSiblingLast && depth - 1 === index && `${prefixCls}__indent--tail`,
+                  _isAncestorSiblingLast[index] &&
+                    index !== depth - 1 &&
+                    `${prefixCls}__indent--parent-tail`
+                )}
+              />
+            </span>
           )
         })
       },
-      [prefixCls]
+      [prefixCls, isSiblingLast]
     )
 
     // 渲染子树折叠切换器
@@ -251,6 +282,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     const cls = cx(
       prefixCls,
       className,
+      appearance && `${prefixCls}--${appearance}`,
       direction && `${prefixCls}--drag-${direction}`,
       selectedId === node.id && `${prefixCls}--selected`,
       disabled && `${prefixCls}--disabled`
@@ -258,7 +290,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
 
     return (
       <li ref={ref} role={role} className={cls} {...rest}>
-        {renderIndent(node.depth)}
+        {renderIndent(node)}
 
         {renderSwitcher(node)}
 
