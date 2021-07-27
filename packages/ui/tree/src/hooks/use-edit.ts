@@ -1,8 +1,13 @@
 import React, { useCallback } from 'react'
 import { TreeNodeData } from '../TreeNode'
 import cloneDeep from 'lodash.clonedeep'
+import { addChildNodeById, deleteNodeById, insertNodeById } from '../utils'
+
+const uuid = () => (Math.random() * 1000).toString(36)
+const genTreeNode = () => ({ id: uuid(), title: '', type: 'add' })
 
 export const useEdit = (
+  data: TreeNodeData[],
   treeData: TreeNodeData[],
   setTreeData: any,
   onBeforeSave: any,
@@ -10,13 +15,43 @@ export const useEdit = (
   onSave: any,
   onDelete: any
 ) => {
-  const deleteNode = useCallback(
+  const addSiblingNode = useCallback(
+    (node) => {
+      console.log('添加兄弟节点')
+
+      const nextTreeData = cloneDeep(treeData)
+      const nodeToAdd = genTreeNode()
+
+      insertNodeById(nextTreeData, node.id, nodeToAdd, 1)
+      setTreeData(nextTreeData)
+    },
+    [treeData, setTreeData]
+  )
+
+  const addChildNode = useCallback(
     (node) => {
       const nextTreeData = cloneDeep(treeData)
-      _deleteNode(node.id, nextTreeData)
+      const nodeToAdd = genTreeNode()
+      console.log('添加子节点', node, nextTreeData)
 
+      addChildNodeById(nextTreeData, node.id, nodeToAdd)
+      console.log('添加后子节点', nextTreeData)
+      setTreeData(nextTreeData)
+    },
+    [treeData, setTreeData]
+  )
+
+  const deleteNode = useCallback(
+    (node) => {
+      console.log('删除当前节点')
+      const nextTreeData = cloneDeep(treeData)
+      deleteNodeById(nextTreeData, node.id)
+
+      // TODO: 拦截方法提取出去
+      // 默认不拦截（不传或者返回 true）则非受控删除
       if (onBeforeDelete) {
         const result = onBeforeDelete(node, { before: treeData, after: nextTreeData }, node.depth)
+
         if (result === true) {
           setTreeData(nextTreeData)
           onDelete?.(node, nextTreeData)
@@ -31,10 +66,15 @@ export const useEdit = (
 
   const cancelAddNode = useCallback(
     (node) => {
-      const nextTreeData = cloneDeep(treeData)
+      // 取消添加节点（需要移除）
+      if (node.type === 'add') {
+        const nextTreeData = cloneDeep(treeData)
 
-      _cancelAddNode(node, nextTreeData)
-      setTreeData(nextTreeData)
+        deleteNodeById(nextTreeData, node.id)
+        setTreeData(nextTreeData)
+      } else {
+        // 编辑态取消，什么也不做
+      }
     },
     [treeData, setTreeData]
   )
@@ -56,8 +96,6 @@ export const useEdit = (
         if (result === true) {
           setTreeData(nextTreeData)
           onSave?.(targetNode, nextTreeData)
-        } else {
-          // 取消编辑
         }
       } else {
         // 没有 onBeforeSave 的情况下，直接非受控修改数据
@@ -68,33 +106,7 @@ export const useEdit = (
     [onBeforeSave, onSave, setTreeData, treeData]
   )
 
-  return [saveEdit, cancelAddNode, deleteNode] as const
-}
-
-// 删除节点
-const _deleteNode = (itemId: React.ReactText, data: TreeNodeData[]) => {
-  data.forEach((d, index) => {
-    if (d.id === itemId) {
-      data.splice(index, 1)
-    } else {
-      if (d.children) {
-        _deleteNode(itemId, d.children)
-      }
-    }
-  })
-}
-
-// 取消添加节点
-const _cancelAddNode = (node: TreeNodeData, data: TreeNodeData[]) => {
-  data.forEach((d, index) => {
-    if (d.id === node.id) {
-      data.splice(index, 1)
-    } else {
-      if (d.children) {
-        _cancelAddNode(node, d.children)
-      }
-    }
-  })
+  return [saveEdit, cancelAddNode, deleteNode, addChildNode, addSiblingNode] as const
 }
 
 // 修改指定的 id 的 node 内容
@@ -104,7 +116,7 @@ const _saveEdit = (targetNode: TreeNodeData, treeData: TreeNodeData[]) => {
   treeData.forEach((node, index) => {
     if (node.id === id) {
       node.title = title
-      // delete node.TREE_NODE_TYPE
+      delete node.type
     } else {
       if (node.children) {
         _saveEdit(targetNode, node.children)

@@ -93,3 +93,123 @@ export const fFindNestedChildNodesById = (
 
   return childrenNodes
 }
+
+// TODO: 使用 扁平数据结构优化查找
+// 自定义数据结构：关联扁平数据节点和原生用户节点
+/**
+ * 根据指定 id 查找对应节点
+ * @param treeData
+ * @param targetId
+ * @returns 返回第一个被查找到的节点
+ */
+export const findNodeById = (
+  treeData: TreeNodeData[],
+  targetId: React.ReactText
+): TreeNodeData | null => {
+  let ret = null
+
+  const _findNode = (treeData: TreeNodeData[], targetId: React.ReactText) => {
+    const { length } = treeData
+
+    for (let i = 0; i < length; ++i) {
+      const node = treeData[i]
+
+      if (targetId === node.id) {
+        ret = node
+        return
+      }
+
+      if (node.children) {
+        _findNode(node.children, targetId)
+      }
+    }
+  }
+
+  _findNode(treeData, targetId)
+  return ret
+}
+
+/**
+ * 从树中删除指定 id 的第一个被找到的节点
+ * 采用递归遍历
+ *
+ * @param treeData
+ * @param targetId
+ * @returns
+ */
+export const deleteNodeById = (treeData: TreeNodeData[], targetId: React.ReactText) => {
+  const { length } = treeData
+  for (let i = 0; i < length; ++i) {
+    const node = treeData[i]
+
+    if (targetId === node.id) {
+      return treeData.splice(i, 1)
+    }
+    if (node.children) {
+      deleteNodeById(node.children, targetId)
+    }
+  }
+}
+
+/**
+ * 为指定 id 的第一个被找到的节点添加孩子节点
+ *
+ * @param treeData
+ * @param targetId
+ * @param sourceNode
+ * @returns
+ */
+export const addChildNodeById = (
+  treeData: TreeNodeData[],
+  targetId: React.ReactText,
+  sourceNode: TreeNodeData
+) => {
+  const { length } = treeData
+  for (let i = 0; i < length; ++i) {
+    const node = treeData[i]
+
+    if (targetId === node.id) {
+      if (!node.children) {
+        node.children = []
+      }
+
+      node.children.push(sourceNode)
+      return
+    }
+
+    if (node.children) {
+      addChildNodeById(node.children, targetId, sourceNode)
+    }
+  }
+}
+
+/**
+ * 插入节点到指定 id 的节点之前或之后
+ *
+ * @param treeData
+ * @param targetId
+ * @param sourceNode
+ * @param position 0 表示插入到指定节点之前，1 表示之后
+ * @returns
+ */
+export const insertNodeById = (
+  treeData: TreeNodeData[],
+  targetId: React.ReactText,
+  sourceNode: TreeNodeData,
+  position: 0 | 1
+) => {
+  const { length } = treeData
+  for (let i = 0; i < length; ++i) {
+    const node = treeData[i]
+
+    if (targetId === node.id) {
+      treeData.splice(i + position, 0, sourceNode)
+
+      return
+    }
+
+    if (node.children) {
+      insertNodeById(node.children, targetId, sourceNode, position)
+    }
+  }
+}

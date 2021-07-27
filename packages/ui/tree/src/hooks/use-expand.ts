@@ -111,6 +111,7 @@ export const useExpand = (
   )
 
   const onNodeToggleEnd = useCallback(() => {
+    // 动画结束后回恢复成真正的原始数据结构
     setTransitionData(
       transitionData.reduce((prev, cur) => {
         if (cur.id !== ANIMATION_KEY) {
@@ -134,6 +135,7 @@ export const useExpand = (
   return [
     transitionData,
     // expandedNodeIds: _expandedIds,
+    tryToggleExpandedIds,
     onNodeToggleStart,
     onNodeToggleEnd,
     checkIfExpanded,

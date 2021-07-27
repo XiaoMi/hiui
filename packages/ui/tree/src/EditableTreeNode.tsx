@@ -16,12 +16,18 @@ export const EditableTreeNode = forwardRef<HTMLLIElement | null, EditableTreeNod
       onSave,
       onCancel,
       onDelete,
+      addChildNode,
+      addSiblingNode,
+      tryToggleExpandedIds,
       // type = 'add',
     } = useTreeContext()
 
     const cls = cx(prefixCls, className)
 
-    const [editing, setEditing] = useState(false)
+    const [editing, setEditing] = useState(() => {
+      return node.type === 'add' || false
+    })
+
     const [inputValue, setInputValue] = useState('')
 
     // TODO: 写成高阶组件
@@ -43,8 +49,7 @@ export const EditableTreeNode = forwardRef<HTMLLIElement | null, EditableTreeNod
             onClick={() => {
               if (!inputValue) return
 
-              // 2种情况：添加子节点（操作缓存节点数据）或者编辑当前节点（仅切换输入态）
-              onSave?.(node)
+              onSave?.({ ...node, title: inputValue })
               setEditing(false)
             }}
           >
@@ -53,12 +58,8 @@ export const EditableTreeNode = forwardRef<HTMLLIElement | null, EditableTreeNod
           <span
             style={{ cursor: 'pointer', color: '#999' }}
             onClick={() => {
-              onCancel?.(node.id)
               setEditing(false)
-              // 取消添加节点
-              if (node.type === 'add') {
-                // cancelAddNode(node)
-              }
+              onCancel?.(node)
             }}
           >
             取消
@@ -73,13 +74,44 @@ export const EditableTreeNode = forwardRef<HTMLLIElement | null, EditableTreeNod
           {child || (
             <div>
               {node.title}
+              {/* 编辑节点 */}
               <span
                 style={{ marginLeft: 12 }}
                 onClick={() => {
                   setEditing(true)
                 }}
               >
-                😈
+                edit
+              </span>
+              {/* 添加兄弟节点 */}
+              <span
+                style={{ marginLeft: 12 }}
+                onClick={() => {
+                  addSiblingNode(node)
+                }}
+              >
+                add
+              </span>
+              {/* 添加子节点 */}
+              <span
+                style={{ marginLeft: 12 }}
+                onClick={() => {
+                  addChildNode(node)
+                  // TODO: 动画丢失，动画触发来源有多个，如何将展开收起和动画触发解耦
+                  tryToggleExpandedIds((prev) => prev.concat(node.id))
+                }}
+              >
+                child
+              </span>
+
+              {/* 删除当前子节点 */}
+              <span
+                style={{ marginLeft: 12 }}
+                onClick={() => {
+                  onDelete(node)
+                }}
+              >
+                del
               </span>
             </div>
           )}

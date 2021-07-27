@@ -74,12 +74,13 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       disabledSelect
     )
 
-    const [transitionData, onNodeToggleStart, onNodeToggleEnd, checkIfExpanded] = useExpand(
-      flattedData,
-      defaultExpandedIds,
-      expandedIds,
-      onExpand
-    )
+    const [
+      transitionData,
+      tryToggleExpandedIds,
+      onNodeToggleStart,
+      onNodeToggleEnd,
+      checkIfExpanded,
+    ] = useExpand(flattedData, defaultExpandedIds, expandedIds, onExpand)
 
     const dropTree = useTreeDrop(treeData, flattedData, onDrop, onDropEnd)
 
@@ -97,7 +98,8 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onCheck
     )
 
-    const [saveEdit, cancelAddNode, deleteNode] = useEdit(
+    const [saveEdit, cancelAddNode, deleteNode, addChildNode, addSiblingNode] = useEdit(
+      data,
       treeData,
       setTreeData,
       onBeforeSave,
@@ -125,6 +127,9 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         onSave: saveEdit,
         onCancel: cancelAddNode,
         onDelete: deleteNode,
+        addChildNode,
+        addSiblingNode,
+        tryToggleExpandedIds,
       }),
       [
         selectedNodeId,
@@ -141,6 +146,9 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         saveEdit,
         cancelAddNode,
         deleteNode,
+        addChildNode,
+        addSiblingNode,
+        tryToggleExpandedIds,
       ]
     )
 
@@ -151,6 +159,8 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       }
       return Math.ceil(height / itemHeight) + 1
     }, [virtual, height, itemHeight])
+
+    console.log(flattedData, transitionData)
 
     return (
       <TreeProvider value={providedValue}>
