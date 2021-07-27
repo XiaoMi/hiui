@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback } from 'react'
+import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
@@ -6,58 +6,49 @@ const _role = 'breadcrumb'
 const _prefix = getPrefixCls(_role)
 
 /**
-* TODO: What is Breadcrumb
-*/
+ * TODO: What is Breadcrumb
+ */
 export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
-  (
-    {
-      prefixCls = _prefix,
-      role = _role,
-      className,
-      data,
-      separator,
-      onClick,
-      ...rest
-    },
-    ref
-  ) => {
+  ({ prefixCls = _prefix, role = _role, className, data, separator, onClick, ...rest }, ref) => {
     const cls = cx(prefixCls, className)
 
     return (
       <ul ref={ref} role={role} className={cls} {...rest}>
-        {data?.map((item, index) => <li key={index} className={`${cls}__item`}>
-          {item.href && index !== data.length - 1 ? (
-            <a
-              href={item.href}
-              target={item.target}
-              onClick={(e) => {
-                if (onClick) {
-                  onClick(e, item, index)
-                }
-              }}
-              className={cx(`${cls}__content`, {
-                [`${cls}__content--active`]: index === data.length - 1
-              })}
-            >
-              {item.content}
-            </a>
-          ) : (
-            <span
-              className={cx(`${cls}__content`, {
-                [`${cls}__content--active`]: index === data.length - 1
-              })}
-              onClick={(e) => {
-                if (onClick) {
-                  onClick(e, item, index)
-                }
-              }}
-            >
-              {item.content}
-            </span>
-          )}
+        {data?.map((item, index) => (
+          <li key={index} className={`${cls}__item`}>
+            {item.href && index !== data.length - 1 ? (
+              <a
+                href={item.href}
+                target={item.target}
+                onClick={(e) => {
+                  if (onClick) {
+                    onClick(e, item, index)
+                  }
+                }}
+                className={cx(`${cls}__content`, {
+                  [`${cls}__content--active`]: index === data.length - 1,
+                })}
+              >
+                {item.content}
+              </a>
+            ) : (
+              <span
+                className={cx(`${cls}__content`, {
+                  [`${cls}__content--active`]: index === data.length - 1,
+                })}
+                onClick={(e) => {
+                  if (onClick) {
+                    onClick(e, item, index)
+                  }
+                }}
+              >
+                {item.content}
+              </span>
+            )}
 
-          <span className={`${cls}__separator`}>{separator}</span>
-        </li>)}
+            <span className={`${cls}__separator`}>{separator}</span>
+          </li>
+        ))}
       </ul>
     )
   }
@@ -76,8 +67,6 @@ export interface BreadcrumbItemProps {
    * 要跳转的打开方式
    */
   target?: '_self' | '_blank' | '_parent' | '_top'
-
-
 }
 
 export interface BreadcrumbProps {
@@ -109,7 +98,6 @@ export interface BreadcrumbProps {
    * 点击事件
    */
   onClick?: (e: React.MouseEvent, item: BreadcrumbItemProps, index: number) => void
-
 }
 
 if (__DEV__) {

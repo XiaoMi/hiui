@@ -6,8 +6,8 @@ const _role = 'switch'
 const _prefix = getPrefixCls(_role)
 
 /**
-* TODO: What is Switch
-*/
+ * TODO: What is Switch
+ */
 export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
   (
     {
@@ -57,7 +57,6 @@ export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
       [changeSwitch]
     )
 
-
     return (
       <span
         ref={ref}
@@ -69,8 +68,11 @@ export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
         tabIndex={disabled ? -1 : 0}
         onClick={changeSwitch}
         onKeyDown={handleKeydown}
-        {...rest}>
-        {content && content.length === 2 && <span className={`${cls}__text`}>{value ? content[0] : content[1]}</span>}
+        {...rest}
+      >
+        {content && content.length === 2 && (
+          <span className={`${cls}__text`}>{value ? content[0] : content[1]}</span>
+        )}
       </span>
     )
   }
