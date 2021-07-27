@@ -43,6 +43,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       onLoadChildren,
       checkable = false,
       onNodeCheck,
+      searchValue,
     } = useTreeContext()
 
     const [direction, setDirection] = useState<TreeNodeDragDirection>(null)
@@ -237,6 +238,19 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       [handleSwitcherClick]
     )
 
+    const renderHighlight = (node: any) => {
+      const index = node.title.indexOf(searchValue)
+      const beforeStr = node.title.substr(0, index)
+      const afterStr = node.title.substr(index + searchValue.length)
+      return (
+        <span>
+          {beforeStr}
+          <span className="title__text--matched">{searchValue}</span>
+          {afterStr}
+        </span>
+      )
+    }
+
     // 渲染标题
     const renderTitle = (node: TreeNodeData, selectedId: React.ReactText) => {
       const { id, title, depth } = node
@@ -254,8 +268,9 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
               onSelect?.(node)
             }}
           >
+            {children || renderHighlight(node)}
             {/* TODO: update to title */}
-            {children || `-${depth}--${title}--${id}`}
+            {/* {children || `-${depth}--${title}--${id}`} */}
           </div>
         </div>
       )

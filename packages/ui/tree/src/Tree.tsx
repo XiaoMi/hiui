@@ -113,6 +113,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
 
     const providedValue = useMemo(
       () => ({
+        searchValue: '米',
         selectedId: selectedNodeId,
         onSelect: trySelectNode,
         onExpand: onNodeToggleStart,

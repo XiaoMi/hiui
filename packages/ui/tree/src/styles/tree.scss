@@ -44,6 +44,10 @@ $prefix: '#{$component-prefix}-tree' !default;
       &:hover {
         background-color: use-color('primary-20');
       }
+
+      &--matched {
+        color: use-color('primary');
+      }
     }
 
     // 拖拽指示器-小圆球
