@@ -235,7 +235,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     const renderSwitcher = useCallback(
       (data) => {
         return (
-          <span onClick={handleSwitcherClick}>
+          <span className={`${prefixCls}__switcher`} onClick={handleSwitcherClick}>
             <CaretDownOutlined />
           </span>
         )
@@ -305,7 +305,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       appearance && `${prefixCls}--${appearance}`,
       direction && `${prefixCls}--drag-${direction}`,
       selectedId === node.id && `${prefixCls}--selected`,
-      disabled && `${prefixCls}--disabled`
+      disabled && `${prefixCls}--disabled`,
+      !node.isLeaf && `${prefixCls}--${expanded ? 'open' : 'closed'}`
     )
 
     return (

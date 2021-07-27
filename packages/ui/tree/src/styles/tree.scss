@@ -26,6 +26,10 @@ $prefix: '#{$component-prefix}-tree' !default;
     display: inline-block;
   }
 
+  &__switcher {
+    transition: transform .3s;
+  }
+
   &__title {
     flex: 1;
     display: flex;
@@ -91,6 +95,18 @@ $prefix: '#{$component-prefix}-tree' !default;
       .title__text {
         background: use-color('primary-20');
       }
+    }
+  }
+
+  &--open {
+    #{$this}__switcher {
+      transform: rotate(0);
+    }
+  }
+
+  &--closed {
+    #{$this}__switcher {
+      transform: rotate(-90deg);
     }
   }
 
