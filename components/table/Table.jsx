@@ -93,7 +93,7 @@ const Table = ({
       const restData = deleteRowByKey(_.cloneDeep(data), dargInfo.current)
       const _data = setRowByKey(_.cloneDeep(restData), dargInfo.current)
       dargInfo.current = {}
-      onDropEnd && onDropEnd(rowData, dropRowData)
+      onDropEnd && onDropEnd(rowData, dropRowData, _data)
       setData(_data)
     }
   }, [data])

@@ -81,7 +81,7 @@ interface Props {
   scrollWidth?: React.ReactText
   onDragStart?: (rowData: object) => void 
   onDrop?: (dragRowData: object, dropRowData: object, data: object, level: Level) => boolean | Promise
-  onDropEnd?: (dragRowData: object, dropRowData: object) => void 
+  onDropEnd?: (dragRowData: object, dropRowData: object, data: object) => void 
 }
 declare const Table: React.ComponentType<Props>
 export default Table

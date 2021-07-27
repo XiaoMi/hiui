@@ -93,7 +93,7 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | onLoadChildren     | 点击异步加载子项                                                                                      | (row: DataItem) => object[] \| Promise  | -                                         | -          |
 | onDragStart    | 开始拖拽时触发                                          | (rowData: object) => void                                                        | rowData: 当前行的数据                                                                                                                    | -                                                         |
 | onDrop         | 拖拽行放开时触发                                              | (dragRowData: object, dropRowData: object, data: object, level: Level) => boolean | Promise | dragRowData: 拖拽的行数据 <br/>dropRowData: 目标行数据 <br/>data:当前结构数据 <br/>level:当前级别数据                              | -                                                         |
-| onDropEnd      | 拖拽成功时触发                                          | (dragRowData: object, dropRowData: object) => void                                    | dragRowData: 拖拽的行数据 <br/>dropRowData: 目标行数据                                                                                        | -                                                         |
+| onDropEnd      | 拖拽成功时触发                                          | (dragRowData: object, dropRowData: object) => void                                    | dragRowData: 拖拽的行数据 <br/>dropRowData: 目标行数据 <br/> data: 拖拽完成后的结构数据                                                                                       | -                                                         |
 
 > 在 onLoadChildren 方法中，返回的数据中会根据 `isLeaf` 字符控制左侧展开按钮的显示状态
 
