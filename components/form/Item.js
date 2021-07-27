@@ -273,8 +273,8 @@ const FormItem = (props) => {
       value = args[0]
     }
     eventInfo.current = { eventName, e, args, componentProps, value }
-    setValue(value)
     handleField(eventName, value)
+    setValue(value)
   }
   useEffect(() => {
     return () => {
