@@ -1,0 +1,11 @@
+@import "~@hi-ui/core-css/lib/index.scss";
+
+$prefix: "#{$component-prefix}-icon" !default;
+
+[class^=#{$prefix}] {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  stroke: currentColor;
+  display: inline-block;
+}
