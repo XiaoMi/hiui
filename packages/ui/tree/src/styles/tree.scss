@@ -3,7 +3,7 @@
 $prefix: '#{$component-prefix}-tree' !default;
 
 .#{$prefix} {
-  @extend %component-reset;
+  @include component-reset;
 
   list-style-type: none;
 
@@ -100,7 +100,6 @@ $prefix: '#{$component-prefix}-tree' !default;
       }
     }
   }
-
 
   &--disabled {
     cursor: not-allowed;

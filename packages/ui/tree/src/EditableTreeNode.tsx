@@ -1,12 +1,7 @@
 import React, { forwardRef, useCallback, useRef, useState, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { times } from '@hi-ui/times'
-
 import { useTreeContext } from './context'
-import { IconLoading } from './Icon'
-// TODO: error import when using
-import Checkbox from '@hi-ui/checkbox'
 import { TreeNode } from './TreeNode'
 
 const _role = 'tree-node'
@@ -18,20 +13,9 @@ const _prefix = getPrefixCls(_role)
 export const EditableTreeNode = forwardRef<HTMLLIElement | null, EditableTreeNodeProps>(
   ({ prefixCls = _prefix, role = _role, className, data: node, ...rest }, ref) => {
     const {
-      disabled: disabledContext = false,
-      draggable = false,
-      selectedId,
-      onSelect,
-      onExpand,
-      onDragStart,
-      onDragEnd,
-      onDragOver,
-      onDrop,
-      onLoadChildren,
-      checkable = false,
-      onNodeCheck,
       onSave,
       onCancel,
+      onDelete,
       // type = 'add',
     } = useTreeContext()
 
@@ -42,29 +26,24 @@ export const EditableTreeNode = forwardRef<HTMLLIElement | null, EditableTreeNod
 
     // TODO: 写成高阶组件
 
-    let children = null
+    let child = null
 
     if (editing) {
-      children = (
+      child = (
         <div className={`${prefixCls}--editing`}>
           <input
             style={{ width: 240, marginRight: 20 }}
-            onKeyDown={(e) => {
-              e.stopPropagation()
-            }}
             value={inputValue}
             onChange={(e) => {
-              setInputValue(e.target.value, node.id)
+              setInputValue(e.target.value)
             }}
           />
           <span
-            className={cx('save-btn', {
-              'save-btn-disabled': inputValue === '',
-            })}
+            className={cx('save-btn', !inputValue && 'save-btn-disabled')}
             onClick={() => {
-              if (inputValue === '') {
-                return
-              }
+              if (!inputValue) return
+
+              // 2种情况：添加子节点（操作缓存节点数据）或者编辑当前节点（仅切换输入态）
               onSave?.(node)
               setEditing(false)
             }}
@@ -75,7 +54,8 @@ export const EditableTreeNode = forwardRef<HTMLLIElement | null, EditableTreeNod
             style={{ cursor: 'pointer', color: '#999' }}
             onClick={() => {
               onCancel?.(node.id)
-
+              setEditing(false)
+              // 取消添加节点
               if (node.type === 'add') {
                 // cancelAddNode(node)
               }
@@ -90,17 +70,16 @@ export const EditableTreeNode = forwardRef<HTMLLIElement | null, EditableTreeNod
     return (
       <TreeNode data={node} {...rest}>
         <div>
-          {/* 保存：插入孩子、插入兄弟、
-           */}
-          {children || (
+          {child || (
             <div>
-              {children}
+              {node.title}
               <span
+                style={{ marginLeft: 12 }}
                 onClick={() => {
                   setEditing(true)
                 }}
               >
-                点击编辑
+                😈
               </span>
             </div>
           )}

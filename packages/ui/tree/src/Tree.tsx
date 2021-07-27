@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
-import { useExpand, useSelect, useTreeDrop, useDataCache, useCheck } from './hooks'
+import { useExpand, useSelect, useTreeDrop, useDataCache, useCheck, useEdit } from './hooks'
 import { TreeNodeData } from './TreeNode'
 import { TreeProvider } from './context'
 import { MotionTreeNode } from './MotionTreeNode'
@@ -22,24 +22,35 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       className,
       children,
       data,
+      // expand
       expandedIds,
       defaultExpandedIds = [],
+      onExpand,
+      // virtual list
       height = 200,
       itemHeight = 28,
       virtual = true,
-      onExpand,
+      // select
       selectedId,
       defaultSelectedId,
       onSelect,
       selectable = true,
       draggable = false,
       disabled = false,
+      // edit
+      onBeforeSave,
+      onBeforeDelete,
+      onSave,
+      onDelete,
+      // drag or drop
       onDragStart,
       onDragEnd,
       onDrop,
       onDropEnd,
       onDragOver,
+      // async load
       onLoadChildren,
+      // check
       checkable = false,
       defaultCheckedIds = [],
       checkedIds: checkedIdsProp,
@@ -86,6 +97,15 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onCheck
     )
 
+    const [saveEdit, cancelAddNode, deleteNode] = useEdit(
+      treeData,
+      setTreeData,
+      onBeforeSave,
+      onBeforeDelete,
+      onSave,
+      onDelete
+    )
+
     const cls = cx(prefixCls, className)
 
     const providedValue = useMemo(
@@ -101,6 +121,10 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         onDragEnd,
         onDrop: dropTree,
         onLoadChildren,
+        // TODO: 抽离
+        onSave: saveEdit,
+        onCancel: cancelAddNode,
+        onDelete: deleteNode,
       }),
       [
         selectedNodeId,
@@ -114,6 +138,9 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         onDragEnd,
         dropTree,
         onLoadChildren,
+        saveEdit,
+        cancelAddNode,
+        deleteNode,
       ]
     )
 

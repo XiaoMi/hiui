@@ -1,47 +1,114 @@
 import React, { useCallback } from 'react'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { TreeNodeData } from '../TreeNode'
+import cloneDeep from 'lodash.clonedeep'
 
-export const useEdit = (data: TreeNodeData[], onBeforeSave: any) => {
-  const _saveEdit = (itemId, data, nodeEdited) => {
-    data.forEach((d, index) => {
-      if (d.id === itemId) {
-        d.title = nodeEdited.title
-        delete d.TREE_NODE_TYPE
-      } else {
-        if (d.children) {
-          _saveEdit(itemId, d.children, nodeEdited)
+export const useEdit = (
+  treeData: TreeNodeData[],
+  setTreeData: any,
+  onBeforeSave: any,
+  onBeforeDelete: any,
+  onSave: any,
+  onDelete: any
+) => {
+  const deleteNode = useCallback(
+    (node) => {
+      const nextTreeData = cloneDeep(treeData)
+      _deleteNode(node.id, nextTreeData)
+
+      if (onBeforeDelete) {
+        const result = onBeforeDelete(node, { before: treeData, after: nextTreeData }, node.depth)
+        if (result === true) {
+          setTreeData(nextTreeData)
+          onDelete?.(node, nextTreeData)
         }
+      } else {
+        setTreeData(nextTreeData)
+        onDelete?.(node, nextTreeData)
       }
-    })
-  }
+    },
+    [treeData, onBeforeDelete, onDelete, setTreeData]
+  )
+
+  const cancelAddNode = useCallback(
+    (node) => {
+      const nextTreeData = cloneDeep(treeData)
+
+      _cancelAddNode(node, nextTreeData)
+      setTreeData(nextTreeData)
+    },
+    [treeData, setTreeData]
+  )
 
   const saveEdit = useCallback(
-    (enode: TreeNodeData) => {
-      // const dataCache = _.cloneDeep(cacheData)
-      // _saveEdit(enode.id, dataCache, nodeEdited)
+    (targetNode: TreeNodeData, type: 'add' | 'edit') => {
+      const nextTreeData = cloneDeep(treeData)
+
+      _saveEdit(targetNode, nextTreeData)
 
       if (onBeforeSave) {
         const result = onBeforeSave(
-          nodeEdited,
-          { before: cacheData, after: dataCache },
-          enode.depth
+          targetNode,
+          { before: treeData, after: nextTreeData },
+          targetNode.depth
         )
 
+        // 根据返回结果 非受控更新数据
         if (result === true) {
-          updateCacheData(dataCache)
-          onSave(nodeEdited, dataCache)
+          setTreeData(nextTreeData)
+          onSave?.(targetNode, nextTreeData)
         } else {
-          cancelAddNode(enode)
+          // 取消编辑
         }
       } else {
-        updateCacheData(dataCache)
-        onSave(enode, dataCache)
+        // 没有 onBeforeSave 的情况下，直接非受控修改数据
+        setTreeData(nextTreeData)
+        onSave?.(targetNode, nextTreeData)
       }
-      setEditingNodes(editingNodes.filter((n) => n.id !== enode.id))
     },
-    [editingNodes, cacheData, _saveEdit]
+    [onBeforeSave, onSave, setTreeData, treeData]
   )
 
-  return [_selectedId, _onSelect] as const
+  return [saveEdit, cancelAddNode, deleteNode] as const
+}
+
+// 删除节点
+const _deleteNode = (itemId: React.ReactText, data: TreeNodeData[]) => {
+  data.forEach((d, index) => {
+    if (d.id === itemId) {
+      data.splice(index, 1)
+    } else {
+      if (d.children) {
+        _deleteNode(itemId, d.children)
+      }
+    }
+  })
+}
+
+// 取消添加节点
+const _cancelAddNode = (node: TreeNodeData, data: TreeNodeData[]) => {
+  data.forEach((d, index) => {
+    if (d.id === node.id) {
+      data.splice(index, 1)
+    } else {
+      if (d.children) {
+        _cancelAddNode(node, d.children)
+      }
+    }
+  })
+}
+
+// 修改指定的 id 的 node 内容
+const _saveEdit = (targetNode: TreeNodeData, treeData: TreeNodeData[]) => {
+  const { id, title } = targetNode
+
+  treeData.forEach((node, index) => {
+    if (node.id === id) {
+      node.title = title
+      // delete node.TREE_NODE_TYPE
+    } else {
+      if (node.children) {
+        _saveEdit(targetNode, node.children)
+      }
+    }
+  })
 }
