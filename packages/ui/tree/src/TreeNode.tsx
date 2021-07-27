@@ -7,6 +7,7 @@ import { useTreeContext } from './context'
 import { IconLoading } from './Icon'
 // TODO: error import when using
 import Checkbox from '@hi-ui/checkbox'
+import { CaretDownOutlined } from '@hi-ui/icon/lib/esm/components/caret-down-outlined'
 
 const _role = 'tree-node'
 const _prefix = getPrefixCls(_role)
@@ -233,7 +234,11 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     // 渲染子树折叠切换器
     const renderSwitcher = useCallback(
       (data) => {
-        return <span onClick={handleSwitcherClick}>⑥</span>
+        return (
+          <span onClick={handleSwitcherClick}>
+            <CaretDownOutlined />
+          </span>
+        )
       },
       [handleSwitcherClick]
     )
