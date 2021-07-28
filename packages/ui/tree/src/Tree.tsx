@@ -2,7 +2,15 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
-import { useExpand, useSelect, useTreeDrop, useDataCache, useCheck, useEdit } from './hooks'
+import {
+  useExpand,
+  useSelect,
+  useTreeDrop,
+  useDataCache,
+  useCheck,
+  useEdit,
+  useTreeDragDrop,
+} from './hooks'
 import { TreeNodeData } from './TreeNode'
 import { TreeProvider } from './context'
 import { MotionTreeNode } from './MotionTreeNode'
@@ -28,7 +36,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onExpand,
       // virtual list
       height = 200,
-      itemHeight = 28,
+      itemHeight = 32,
       virtual = true,
       // select
       selectedId,
@@ -84,7 +92,6 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     ] = useExpand(flattedData, defaultExpandedIds, expandedIds, onExpand)
 
     const dropTree = useTreeDrop(treeData, flattedData, onDrop, onDropEnd)
-
     // const dragDropTree =  useTreeDragDrop({
     //   onDragStart,
     //   onDragEnd,

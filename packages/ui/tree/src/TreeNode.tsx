@@ -54,6 +54,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
 
     const enableDraggable = draggable && !disabled
 
+    const [isDragging, setIsDragging] = useState(false)
+
     // 拖拽管理
     const dragEventHandlers = useMemo(() => {
       if (!enableDraggable) return
@@ -66,6 +68,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
 
           evt.stopPropagation()
 
+          setIsDragging(true)
           dragIdRef.current = id
           evt.dataTransfer.setData('treeNode', JSON.stringify({ id, depth }))
 
@@ -79,6 +82,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
           evt.dataTransfer.clearData()
           dragIdRef.current = null
           setDirection(null)
+          setIsDragging(false)
 
           onDragEnd?.(node)
         },
@@ -184,8 +188,21 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     // 渲染空白占位
     const renderIndent = useCallback(
       (node) => {
-        const { id, depth, sibling } = node
+        const { id, depth, sibling, ancestors } = node
         const isSiblingLast = sibling && sibling[sibling.length - 1].id === id
+
+        // const isAncestorSiblingLast = []
+        // if (ancestors) {
+        //   ancestors.forEach((a, idx) => {
+        //     if (idx < ancestors.length - 1) {
+        //       isAncestorSiblingLast.push(
+        //         a.id === ancestors[idx + 1].children[ancestors[idx + 1].children.length - 1].id
+        //       )
+        //     }
+        //   })
+        // }
+
+        // const _isAncestorSiblingLast = isAncestorSiblingLast.reverse()
 
         return times(depth, (index: number) => {
           index++
@@ -197,6 +214,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
                   `${prefixCls}__indent`,
                   isDepthLast && `${prefixCls}__indent--depth-tail`,
                   isSiblingLast && isDepthLast && `${prefixCls}__indent--tail`
+                  // _isAncestorSiblingLast[index] && !isDepthLast && 'tree-node__indent--parent-tail'
                 )}
               />
             </span>
@@ -210,12 +228,12 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     const renderSwitcher = useCallback(
       (data) => {
         return (
-          <span className={`${prefixCls}__switcher`} onClick={handleSwitcherClick}>
-            <CaretDownOutlined />
-          </span>
+          <button className={`${prefixCls}-switcher`} onClick={handleSwitcherClick}>
+            <CaretDownOutlined className={`${prefixCls}-switcher__icon`} />
+          </button>
         )
       },
-      [handleSwitcherClick]
+      [handleSwitcherClick, prefixCls]
     )
 
     const renderHighlight = (node: any) => {
@@ -238,19 +256,13 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       return (
         <div
           ref={treeNodeTitleRef}
-          draggable={enableDraggable}
           className={`${prefixCls}__title`}
-          {...dragEventHandlers}
+          onClick={() => onSelect?.(node)}
         >
-          <div
-            className="title__text"
-            onClick={() => {
-              onSelect?.(node)
-            }}
-          >
-            {children || renderHighlight(node)}
+          <div className="title__text">
+            {/* {children || renderHighlight(node)} */}
             {/* TODO: update to title */}
-            {/* {children || `-${depth}--${title}--${id}`} */}
+            {children || `${depth}--${title}--${id}`}
           </div>
         </div>
       )
@@ -286,13 +298,19 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
 
     return (
       <li ref={ref} role={role} className={cls} {...rest}>
-        {renderIndent(node)}
+        <div
+          className={cx(`${prefixCls}__wrap`, isDragging && 'dragging')}
+          draggable={enableDraggable}
+          {...dragEventHandlers}
+        >
+          {renderIndent(node)}
 
-        {renderSwitcher(node)}
+          {renderSwitcher(node)}
 
-        {checkable ? renderCheckbox(node, checked, semiChecked) : null}
+          {checkable ? renderCheckbox(node, checked, semiChecked) : null}
 
-        {renderTitle(node, selectedId)}
+          {renderTitle(node, selectedId)}
+        </div>
       </li>
     )
   }

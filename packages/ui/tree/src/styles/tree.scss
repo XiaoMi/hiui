@@ -7,6 +7,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   list-style-type: none;
 
+  // 控制折叠收起动画
   .motion-tree-node {
     transition: all 0.3s ease;
     overflow-y: hidden;
@@ -14,11 +15,31 @@ $prefix: '#{$component-prefix}-tree' !default;
 }
 
 .#{$prefix}-node {
-  display: flex;
-  align-items: center;
-  padding-bottom: 4px;
+  // display: flex;
+  // align-items: center;
   color: use-color('gray-80');
   cursor: pointer;
+  // 节点间隔控制
+  // padding: 4px 0;
+
+  // 用于选中涂色
+  &__wrap {
+    display: flex;
+    align-items: center;
+    justify-items: stretch;
+    // width: 100%;
+    border-radius: 4px;
+    padding-left: 4px;
+
+    &:hover {
+      background-color: use-color('primary-20');
+    }
+
+    &.dragging {
+      // cursor: move;
+      opacity: 0.7;
+    }
+  }
 
   &__indent {
     width: 24px;
@@ -26,34 +47,39 @@ $prefix: '#{$component-prefix}-tree' !default;
     display: inline-block;
   }
 
-  &__switcher {
+  &-switcher {
     display: flex;
     justify-content: center;
     align-items: center;
+    appearance: none;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
 
-    svg {
+    &__icon {
       transition: transform .3s;
     }
   }
 
   &__title {
     flex: 1;
-    display: flex;
+    display: inline-flex;
     border-radius: 1px;
     color: inherit;
     position: relative;
+    padding: 4px;
 
     .title__text {
       line-height: $line-height-size-large;
       font-size: $font-size-normal;
-      padding: 0 4px;
       cursor: inherit;
       color: inherit;
       background-color: transparent;
 
-      &:hover {
-        background-color: use-color('primary-20');
-      }
 
       &--matched {
         color: use-color('primary');
@@ -105,18 +131,14 @@ $prefix: '#{$component-prefix}-tree' !default;
   }
 
   &--open {
-    #{$this}__switcher {
-        svg {
-          transform: rotate(0);
-        }
+    #{$this}-switcher__icon {
+      transform: rotate(0);
     }
   }
 
   &--closed {
-    #{$this}__switcher {
-      svg {
-        transform: rotate(-90deg);
-      }
+    #{$this}-switcher__icon {
+      transform: rotate(-90deg);
     }
   }
 
@@ -159,11 +181,11 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   // TODO: 约定好组件的修饰词和元素书写顺序
   &--selected {
-    .title__text {
-      background: use-color('primary-40');
+    #{$this}__wrap {
+      background: use-color('primary-20');
 
-      &:hover {
-        background: use-color('primary-40');
+      .title__text {
+        color: #4284F5;
       }
     }
   }
