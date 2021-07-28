@@ -2,10 +2,8 @@ import React, { forwardRef, useCallback, useRef, useState, useMemo } from 'react
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { times } from '@hi-ui/times'
-
 import { useTreeContext } from './context'
 import { IconLoading } from './Icon'
-// TODO: error import when using
 import Checkbox from '@hi-ui/checkbox'
 import { CaretDownOutlined } from '@hi-ui/icon/lib/esm/components/caret-down-outlined'
 
@@ -33,7 +31,9 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     const {
       disabled: disabledContext = false,
       draggable = false,
+      checkable = false,
       appearance,
+      searchValue,
       selectedId,
       onSelect,
       onExpand,
@@ -42,9 +42,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       onDragOver,
       onDrop,
       onLoadChildren,
-      checkable = false,
       onNodeCheck,
-      searchValue,
     } = useTreeContext()
 
     const [direction, setDirection] = useState<TreeNodeDragDirection>(null)
@@ -52,9 +50,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     const treeNodeTitleRef = useRef<HTMLDivElement>(null)
     const dragIdRef = useRef<React.ReactText | null>(null)
 
-    const disabled = disabledContext || node.disabled
+    const disabled = node.disabled || disabledContext
 
-    // TODO: 控制优先级 父子组件传递
     const enableDraggable = draggable && !disabled
 
     // 拖拽管理
@@ -184,51 +181,29 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       [node, expanded, onExpand, onLoadChildren]
     )
 
-    const isSiblingLast = node.id === (node.sibling && node.sibling[node.sibling.length - 1].id)
-
     // 渲染空白占位
     const renderIndent = useCallback(
       (node) => {
-        const { depth, ancestors } = node
-        const isAncestorSiblingLast = []
-
-        if (ancestors) {
-          ancestors.forEach((a, idx) => {
-            if (idx < ancestors.length - 1) {
-              isAncestorSiblingLast.push(
-                a.id === ancestors[idx + 1].children[ancestors[idx + 1].children.length - 1].id
-              )
-            }
-          })
-        }
-
-        const _isAncestorSiblingLast = isAncestorSiblingLast.reverse()
+        const { id, depth, sibling } = node
+        const isSiblingLast = sibling && sibling[sibling.length - 1].id === id
 
         return times(depth, (index: number) => {
+          index++
+          const isDepthLast = depth === index
           return (
-            <span
-              className={cx(
-                `${prefixCls}__indents`,
-                depth === 1 + index && `${prefixCls}__indents--tail`
-              )}
-              id={`${index}`}
-              key={index}
-              style={{ alignSelf: 'stretch' }}
-            >
+            <span id={`${index}`} key={index} style={{ alignSelf: 'stretch' }}>
               <span
                 className={cx(
                   `${prefixCls}__indent`,
-                  isSiblingLast && depth - 1 === index && `${prefixCls}__indent--tail`,
-                  _isAncestorSiblingLast[index] &&
-                    index !== depth - 1 &&
-                    `${prefixCls}__indent--parent-tail`
+                  isDepthLast && `${prefixCls}__indent--depth-tail`,
+                  isSiblingLast && isDepthLast && `${prefixCls}__indent--tail`
                 )}
               />
             </span>
           )
         })
       },
-      [prefixCls, isSiblingLast]
+      [prefixCls]
     )
 
     // 渲染子树折叠切换器
@@ -356,6 +331,14 @@ export interface TreeNodeProps {
    * 该节点所在扁平化后的树中的位置
    */
   index?: number
+  /**
+   * 表示该节点被选中
+   */
+  checked?: boolean
+  /**
+   * 表示该节点被半选中
+   */
+  semiChecked?: boolean
 }
 
 export type TreeNodeDragDirection = 'before' | 'inside' | 'after' | null

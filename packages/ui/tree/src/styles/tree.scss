@@ -27,7 +27,13 @@ $prefix: '#{$component-prefix}-tree' !default;
   }
 
   &__switcher {
-    transition: transform .3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      transition: transform .3s;
+    }
   }
 
   &__title {
@@ -100,33 +106,23 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &--open {
     #{$this}__switcher {
-      transform: rotate(0);
+        svg {
+          transform: rotate(0);
+        }
     }
   }
 
   &--closed {
     #{$this}__switcher {
-      transform: rotate(-90deg);
+      svg {
+        transform: rotate(-90deg);
+      }
     }
   }
 
   // 线性连接展示
   &--linear {
     position: relative;
-
-    #{$this}__indents--tail {
-      #{$this}__indent {
-        &::after {
-          content: '';
-          position: absolute;
-          width: 50%;
-          height: 1px;
-          background-color: use-color('gray-70');
-          left: calc(50% - 4px);
-          top: 50%;
-        }
-      }
-    }
 
     #{$this}__indent {
       position: relative;
@@ -140,16 +136,22 @@ $prefix: '#{$component-prefix}-tree' !default;
         left: 8px;
       }
 
-      &--parent-tail {
-        &::before {
-          content: none;
-        }
-      }
-
       &--tail {
         &::before {
           content: '';
           height: calc(50%);
+        }
+      }
+
+      &--depth-tail {
+        &::after {
+          content: '';
+          position: absolute;
+          width: 50%;
+          height: 1px;
+          background-color: use-color('gray-70');
+          left: calc(50% - 4px);
+          top: 50%;
         }
       }
     }

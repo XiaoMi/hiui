@@ -12,6 +12,10 @@ interface TreeContext {
   onDragOver?: any
   onDrop?: any
   onLoadChildren?: () => void
+  appearance?: 'linear' | 'normal'
+  checkable?: boolean
+  onNodeCheck?: any
+  searchValue?: string
 }
 
 const treeContext = createContext<TreeContext>({})
