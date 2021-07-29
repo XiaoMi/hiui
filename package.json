@@ -19,7 +19,7 @@
     "lerna": "lerna",
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
-    "hi-publish": "lerna publish",
+    "publish:pkg": "lerna publish",
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",
     "build": "lerna run build --no-private --sort --ignore @hi-ui/popper",
