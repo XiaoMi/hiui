@@ -195,7 +195,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       return Math.ceil(height / itemHeight) + 1
     }, [virtual, height, itemHeight])
 
-    // console.log(flattedData, transitionData)
+    console.log(flattedData, transitionData)
 
     return (
       <TreeProvider value={providedValue}>

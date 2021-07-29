@@ -25,6 +25,7 @@ export const getAncestors = (id, data, arr = []) => {
   return arr
 }
 
+// DFS 扁平化树结构
 export const flattenTreeData = (data) => {
   const treeData = cloneDeep(data)
 

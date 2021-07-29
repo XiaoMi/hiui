@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react'
-import { addDecorator } from '@storybook/react'
+import React, { useRef, useState } from "react";
+import { addDecorator } from "@storybook/react";
 // import DocViewer from '../externals/doc-viewer'
-import theme from './themes/code-theme'
-import '@hi-ui/hiui/es/base-css'
+import theme from "./themes/code-theme";
+import "@hi-ui/hiui/es/base-css";
 // import { Badge } from '../externals/doc-components'
-import { withPerformance } from 'storybook-addon-performance'
+import { withPerformance } from "storybook-addon-performance";
 // import { Meta, ArgsTable, Source, Story, Canvas } from '@storybook/addon-docs/blocks'
 // import { Title, Subtitle, Description, Primary, ArgsTable, Stories, PRIMARY_STORY } from '@storybook/addon-docs/blocks'
 // import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live'
@@ -22,23 +22,23 @@ import { withPerformance } from 'storybook-addon-performance'
  */
 export const decorators = [
   function withThemeProvider(Story, context) {
-    const theme = context.globals.theme
-    console.log('[ theme ] >', theme)
+    const theme = context.globals.theme;
+    console.log("[ theme ] >", theme);
 
     // TODO: Inject HiUI ThemeProvider
     return (
       <div theme={theme}>
         <Story {...context} />
       </div>
-    )
+    );
   },
   function withLayout(Story, context) {
     // TODO: Inject Container placed UI
     return (
-      <div className="hix-box">
+      <div className="hi-v4-box">
         <Story {...context} />
       </div>
-    )
+    );
   },
   // function withCodeEditor (cb, props) {
   //   const { argTypes, args } = props
@@ -59,54 +59,54 @@ export const decorators = [
   //     />
   //   )
   // },
-  withPerformance
-]
+  withPerformance,
+];
 
 /**
  * Add global stories context config
  */
 export const parameters = {
-  actions: { argTypesRegex: '^on[A-Z].*' },
-  layout: 'centered',
+  actions: { argTypesRegex: "^on[A-Z].*" },
+  layout: "centered",
   options: {
     storySort: {
-      locales: 'en-US',
+      locales: "en-US",
     },
   },
-}
+};
 
 /**
  * Add global toolbar menus for switching to theme, i18n and RTL-LTR
  */
 export const globalTypes = {
   theme: {
-    name: 'Theme',
-    description: 'Global theme for components',
-    defaultValue: 'light',
+    name: "Theme",
+    description: "Global theme for components",
+    defaultValue: "light",
     toolbar: {
-      icon: 'circlehollow',
-      items: ['light', 'dark'],
+      icon: "circlehollow",
+      items: ["light", "dark"],
     },
   },
   locale: {
-    name: 'Locale',
-    description: 'Internationalization locale',
-    defaultValue: 'zh',
+    name: "Locale",
+    description: "Internationalization locale",
+    defaultValue: "zh",
     toolbar: {
-      icon: 'globe',
+      icon: "globe",
       items: [
-        { value: 'zh', right: '🇨🇳', title: '中文' },
-        { value: 'en', right: '🇺🇸', title: 'English' },
+        { value: "zh", right: "🇨🇳", title: "中文" },
+        { value: "en", right: "🇺🇸", title: "English" },
       ],
     },
   },
   direction: {
-    name: 'Direction',
-    description: 'Direction for layout',
-    defaultValue: 'LTR',
+    name: "Direction",
+    description: "Direction for layout",
+    defaultValue: "LTR",
     toolbar: {
-      icon: 'transfer',
-      items: ['LTR', 'RTL'],
+      icon: "transfer",
+      items: ["LTR", "RTL"],
     },
   },
-}
+};
