@@ -1,18 +1,18 @@
 import React from 'react'
-import Icon from '../src'
+import * as Icons from '../src'
 
 export const Basic = () => {
   return (
     <>
-      <h1>Icon</h1>
-      <div className="icon-basic__wrap">
+      <h1>Icons</h1>
+      <div className="icons-basic__wrap">
         <span style={{ color: 'royalblue', fontSize: '32px' }}>
-          <Icon.AdditionalBusinessOutlined
+          <Icons.AdditionalBusinessOutlined
             onClick={(e) => console.error(e)}
-          ></Icon.AdditionalBusinessOutlined>
+          ></Icons.AdditionalBusinessOutlined>
         </span>
         <span style={{ color: 'red', fontSize: '64px' }}>
-          <Icon.FileFilled />
+          <Icons.FileFilled />
         </span>
       </div>
     </>
