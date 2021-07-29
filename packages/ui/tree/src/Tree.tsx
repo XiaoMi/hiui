@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { forwardRef, useMemo, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'

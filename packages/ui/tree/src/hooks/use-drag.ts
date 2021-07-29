@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useCallback, useRef, useState, useEffect } from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import { TreeNodeData, TreeNodeDragDirection } from '../TreeNode'

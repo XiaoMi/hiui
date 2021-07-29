@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useCallback } from 'react'
 import { TreeNodeData } from '../TreeNode'
 import cloneDeep from 'lodash.clonedeep'

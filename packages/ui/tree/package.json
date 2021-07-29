@@ -36,7 +36,7 @@
     "prebuild": "yarn clean",
     "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
     "build:cjs": "hi-build ./src/index.ts --format cjs -d ./lib/cjs",
-    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
+    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types --noEmitOnError",
     "build": "concurrently yarn:build:*"
   },
   "bugs": {

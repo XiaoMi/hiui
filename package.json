@@ -16,16 +16,15 @@
     ]
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "publish": "npm run compile && lerna publish",
     "lerna": "lerna",
+    "clean": "lerna clean",
+    "bootstrap": "lerna bootstrap",
+    "publish": "npm run build && lerna publish",
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",
-    "clean": "lerna clean",
     "build": "lerna run build --no-private --sort --ignore @hi-ui/popper",
     "storybook": "start-storybook --no-manager-cache false -p 6006",
     "build-storybook": "build-storybook",
-    "compile": "lerna run compile",
     "fix": "standard --fix && stylelint --config .stylelintrc 'components/**/*.scss' --fix",
     "eslint": "eslint --fix ./packages/**/*.tsx",
     "precommit": "lint-staged"

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import { TreeNodeData } from '../TreeNode'

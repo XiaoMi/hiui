@@ -1,4 +1,5 @@
 import './styles/index.scss'
 
 export * from './Tree'
+export * from './TreeNode'
 export { Tree as default } from './Tree'

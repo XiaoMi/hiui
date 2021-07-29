@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react'
 import { CaretDownOutlined } from '@hi-ui/icon/lib/esm/components/caret-down-outlined'
 
