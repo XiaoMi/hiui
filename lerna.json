@@ -1,5 +1,5 @@
 {
-  "version": "independent",
+  "version": "3.0.0",
   "useWorkspaces": true,
   "packages": [
     "packages/ui/*",
