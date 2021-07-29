@@ -65,6 +65,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       showLine = false,
       highlightText = '',
       appearance = 'normal',
+      titleRender,
       ...rest
     },
     ref
@@ -138,6 +139,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         collapseIcon,
         expandIcon,
         leafIcon,
+        titleRender,
       }),
       [
         selectedId,
@@ -163,6 +165,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         collapseIcon,
         expandIcon,
         leafIcon,
+        titleRender,
       ]
     )
 
@@ -334,11 +337,11 @@ export interface TreeProps {
    * 高亮节点的文本内容
    */
   highlightText?: string
-  onBeforeSave: any
-  onBeforeDelete: any
-  onSave: any
-  onDelete: any
-  appearance: 'normal' | 'folder'
+  onBeforeSave?: any
+  onBeforeDelete?: any
+  onSave?: any
+  onDelete?: any
+  // appearance?: 'normal' | 'folder'
   /**
    * 节点收起时的默认图标
    */
@@ -351,6 +354,10 @@ export interface TreeProps {
    * 叶子结点的默认图标
    */
   leafIcon?: React.ReactNode
+  /**
+   * 自定义渲染节点的 title 内容
+   */
+  titleRender?: (node: TreeNodeData) => React.ReactNode
 }
 
 if (__DEV__) {

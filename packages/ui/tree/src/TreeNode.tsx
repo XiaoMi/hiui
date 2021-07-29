@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { times } from '@hi-ui/times'
 import { useTreeContext } from './context'
-import { IconLoading } from './Icon'
+import { defaultLoadingIcon } from './icons'
 import Checkbox from '@hi-ui/checkbox'
 
 const _role = 'tree-node'
@@ -47,6 +47,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       collapseIcon,
       expandIcon,
       leafIcon,
+      titleRender,
     } = useTreeContext()
 
     const [direction, setDirection] = useState<TreeNodeDragDirection>(null)
@@ -158,6 +159,10 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
 
     const [loading, setLoading] = useState(false)
 
+    const onExpandRef = useRef(onExpand)
+    React.useEffect(() => {
+      onExpandRef.current = onExpand
+    })
     // 处理 Switch 点击
     const handleSwitcherClick = useCallback(
       (evt: React.MouseEvent) => {
@@ -167,7 +172,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
         if (node.children) {
           console.log('onExpand', node)
 
-          onExpand(node, !expanded)
+          onExpandRef.current?.(node, !expanded)
           // 避免重复调用 onLoadChildren 异步加载子节点
           return
         }
@@ -179,14 +184,17 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
           onLoadChildren(node)
             .then((res) => {
               setLoading(false)
-              onExpand(node, !expanded)
+              // 由于闭包，这里通过 setTimeout 拿取最新的 onExpand
+              setTimeout(() => {
+                onExpandRef.current?.(node, !expanded)
+              })
             })
             .catch(() => {
               setLoading(false)
             })
         }
       },
-      [node, expanded, onExpand, onLoadChildren]
+      [node, expanded, onLoadChildren]
     )
 
     // 渲染空白占位
@@ -231,6 +239,10 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     // 渲染子树折叠切换器
     const renderSwitcher = useCallback(
       (node) => {
+        if (loading) {
+          return defaultLoadingIcon
+        }
+
         const hasChildren = node.children && node.children.length > 0
         const canLoadChildren = onLoadChildren && !node.isLeaf && !node.children
 
@@ -244,7 +256,16 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
 
         return leafIcon
       },
-      [handleSwitcherClick, prefixCls, onLoadChildren, expanded, expandIcon, collapseIcon, leafIcon]
+      [
+        handleSwitcherClick,
+        prefixCls,
+        onLoadChildren,
+        expanded,
+        expandIcon,
+        collapseIcon,
+        leafIcon,
+        loading,
+      ]
     )
 
     const renderHighlight = (node: any) => {
@@ -271,11 +292,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
           className={`${prefixCls}__title`}
           onClick={() => onSelect?.(node)}
         >
-          <div className="title__text">
-            {children || renderHighlight(node)}
-            {/* TODO: update to title */}
-            {/* {children || `${depth}--${title}--${id}`} */}
-          </div>
+          {titleRender ? titleRender(node) : <span className="title__text">{title}</span>}
         </div>
       )
     }

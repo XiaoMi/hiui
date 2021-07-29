@@ -59,7 +59,6 @@ export const Dynamic = () => {
           const loadNode = findNode(node.id, dataCache)
           loadNode.children = data
           console.log(loadNode)
-
           setTreeData(dataCache)
 
           return data

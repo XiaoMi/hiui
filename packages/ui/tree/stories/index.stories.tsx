@@ -8,6 +8,7 @@ export * from './virtual-list.stories'
 export * from './editable.stories'
 export * from './search.stories'
 export * from './expand.stories'
+export * from './custom-title.stories'
 
 export default {
   title: 'Tree',

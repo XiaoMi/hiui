@@ -253,3 +253,20 @@ $prefix: '#{$component-prefix}-tree' !default;
     }
   }
 }
+
+// TODO: 迁移
+.hi-btn--loading--icon {
+  animation-name: hi-rotate;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes hi-rotate {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -42,7 +42,7 @@ export const useCheck = (
     [semiCheckedIdsSet]
   )
 
-  console.log('semiCheckedIds ---------- semiCheckedIdsSet', checkedIdsSet, semiCheckedIdsSet)
+  // console.log('semiCheckedIds ---------- semiCheckedIdsSet', checkedIdsSet, semiCheckedIdsSet)
 
   const onNodeCheck = useCallback(
     (checkedNode: TreeNodeData, checked: boolean) => {
@@ -52,7 +52,7 @@ export const useCheck = (
       const children = getChildrenNodeIds(checkedNode)
       const ancestors = getAncestorNodes(checkedNode)
 
-      console.log('onCheckNode--------------', children, ancestors)
+      // console.log('onCheckNode--------------', children, ancestors)
 
       if (checked) {
         // - 对于选中节点自身的处理
@@ -116,7 +116,7 @@ export const useCheck = (
       const nextCheckedIds = Array.from(checkedIdsSet)
       const nextSemiCheckedIds = Array.from(semiCheckedIdsSet)
 
-      console.log('trySetCheckedIds', nextCheckedIds, nextSemiCheckedIds)
+      // console.log('trySetCheckedIds', nextCheckedIds, nextSemiCheckedIds)
       trySetCheckedIds(nextCheckedIds, checkedNode, checked, nextSemiCheckedIds)
     },
     [checkedIds, trySetCheckedIds, semiCheckedIds]
@@ -206,6 +206,6 @@ const getSemiCheckedIdsWithSet = (
   })
 
   const semiCheckedIds = Array.from(semiCheckedIdsSet)
-  console.log('getSemiCheckedIds', semiCheckedIdsSet, semiCheckedNodes)
+  // console.log('getSemiCheckedIds', semiCheckedIdsSet, semiCheckedNodes)
   return [semiCheckedIds, semiCheckedIdsSet] as const
 }

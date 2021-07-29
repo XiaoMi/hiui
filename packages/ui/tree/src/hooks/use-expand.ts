@@ -59,6 +59,8 @@ export const useExpand = (
   // 防止用户频繁折叠展开导致动画渲染（存在 DOM 操作）异常
   const isExpandingRef = useRef(false)
 
+  console.log('flattedData', flattedData)
+
   const onNodeToggleStart = useCallback(
     (expandedNode, isExpanded) => {
       if (isExpandingRef.current) return
@@ -78,6 +80,8 @@ export const useExpand = (
         const expandedNodeIndex = transitionData.findIndex((node) => node.id === expandedNode.id)
         const childrenStartIndex = expandedNodeIndex + 1
         const newTransitionData = cloneDeep(transitionData)
+
+        console.log('rangeData', rangeData, flattedData)
 
         newTransitionData.splice(childrenStartIndex, 0, {
           id: MOTION_NODE_KEY,
