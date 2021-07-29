@@ -1,5 +1,7 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react'
 import _ from 'lodash'
+import classNames from 'classnames'
+
 import {
   getLabelKey,
   getValueKey,
@@ -9,7 +11,6 @@ import {
   getSearchId,
   getfilterOptions
 } from './utils'
-import classNames from 'classnames'
 import Popper from '../popper'
 
 import Menu from './Menu'
