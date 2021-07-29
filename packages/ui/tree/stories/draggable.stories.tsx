@@ -34,6 +34,7 @@ export const Draggable = () => {
       <h1>draggable for Tree</h1>
       <div className="tree-basic__wrap">
         <Tree
+          showLine
           draggable
           onDrop={(dragNode, dropNode, data, level) => {
             console.log('onDrop', dragNode, dropNode, data, level)

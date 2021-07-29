@@ -213,3 +213,5 @@ export const insertNodeById = (
     }
   }
 }
+
+export const uuid = () => Math.random().toString(36).substring(5).split('').join('.')

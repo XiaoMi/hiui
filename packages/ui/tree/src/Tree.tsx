@@ -2,19 +2,12 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
-import {
-  useExpand,
-  useSelect,
-  useTreeDrop,
-  useDataCache,
-  useCheck,
-  useEdit,
-  useTreeDragDrop,
-} from './hooks'
+import { useExpand, useSelect, useTreeDrop, useDataCache, useCheck, useEdit } from './hooks'
 import { TreeNodeData } from './TreeNode'
 import { TreeProvider } from './context'
 import { MotionTreeNode } from './MotionTreeNode'
 import VirtualList from 'rc-virtual-list'
+import { defaultCollapseIcon, defaultExpandIcon, defaultLeafIcon } from './icons'
 
 const _role = 'tree'
 const _prefix = getPrefixCls(_role)
@@ -30,7 +23,9 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       className,
       children,
       data,
-      // expand
+      disabled = false,
+      // expand or collapse
+      defaultExpandAll = false,
       expandedIds,
       defaultExpandedIds = [],
       onExpand,
@@ -38,19 +33,18 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       height = 200,
       itemHeight = 32,
       virtual = true,
-      // select
-      selectedId,
+      // selectable
+      selectable = true,
+      selectedId: selectedIdProp,
       defaultSelectedId,
       onSelect,
-      selectable = true,
-      draggable = false,
-      disabled = false,
-      // edit
+      // editable
       onBeforeSave,
       onBeforeDelete,
       onSave,
       onDelete,
       // drag or drop
+      draggable = false,
       onDragStart,
       onDragEnd,
       onDrop,
@@ -58,12 +52,19 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onDragOver,
       // async load
       onLoadChildren,
-      // check
+      // checkable
       checkable = false,
       defaultCheckedIds = [],
       checkedIds: checkedIdsProp,
-      appearance = 'linear',
       onCheck,
+      // custom switcher
+      collapseIcon = defaultCollapseIcon,
+      expandIcon = defaultExpandIcon,
+      leafIcon = defaultLeafIcon,
+      // others
+      showLine = false,
+      highlightText = '',
+      appearance = 'normal',
       ...rest
     },
     ref
@@ -72,13 +73,12 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     // 目前修改来源有拖拽、编辑，通过回调函数的返回布尔值来进行是否内部以非受控模式更新 data
     // 在这种模式，当外部 data 一旦改变，内部的非受控状态 data 的所有改变都可能会被抹除
     const [treeData, setTreeData] = useDataCache(data)
-
     const flattedData: TreeNodeData[] = useMemo(() => flattenTreeData(treeData), [treeData])
 
     const disabledSelect = disabled || !selectable
-    const [selectedNodeId, trySelectNode] = useSelect(
+    const [selectedId, trySelectNode] = useSelect(
       defaultSelectedId,
-      selectedId,
+      selectedIdProp,
       onSelect,
       disabledSelect
     )
@@ -89,15 +89,9 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onNodeToggleStart,
       onNodeToggleEnd,
       checkIfExpanded,
-    ] = useExpand(flattedData, defaultExpandedIds, expandedIds, onExpand)
+    ] = useExpand(flattedData, defaultExpandedIds, expandedIds, onExpand, defaultExpandAll)
 
     const dropTree = useTreeDrop(treeData, flattedData, onDrop, onDropEnd)
-    // const dragDropTree =  useTreeDragDrop({
-    //   onDragStart,
-    //   onDragEnd,
-    //   onDragOver,
-    //   onDrop,
-    // })
 
     const [isCheckedId, isSemiCheckedId, onNodeCheck] = useCheck(
       flattedData,
@@ -120,8 +114,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
 
     const providedValue = useMemo(
       () => ({
-        searchValue: '米',
-        selectedId: selectedNodeId,
+        selectedId: selectedId,
         onSelect: trySelectNode,
         onExpand: onNodeToggleStart,
         disabled,
@@ -140,9 +133,14 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         addSiblingNode,
         tryToggleExpandedIds,
         appearance,
+        showLine,
+        highlightText,
+        collapseIcon,
+        expandIcon,
+        leafIcon,
       }),
       [
-        selectedNodeId,
+        selectedId,
         trySelectNode,
         onNodeToggleStart,
         draggable,
@@ -160,6 +158,11 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         addSiblingNode,
         tryToggleExpandedIds,
         appearance,
+        showLine,
+        highlightText,
+        collapseIcon,
+        expandIcon,
+        leafIcon,
       ]
     )
 
@@ -171,7 +174,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       return Math.ceil(height / itemHeight) + 1
     }, [virtual, height, itemHeight])
 
-    console.log(flattedData, transitionData)
+    // console.log(flattedData, transitionData)
 
     return (
       <TreeProvider value={providedValue}>
@@ -229,6 +232,10 @@ export interface TreeProps {
    * 展示数据
    */
   data: TreeNodeData[]
+  /**
+   * 默认展开所有树节点（非受控时才有效）
+   */
+  defaultExpandAll?: boolean
   /**
    * 展开的节点
    */
@@ -319,6 +326,31 @@ export interface TreeProps {
    * 	设置 `true` 开启虚拟滚动
    */
   virtual?: boolean
+  /**
+   * 展示连接线
+   */
+  showLine?: boolean
+  /**
+   * 高亮节点的文本内容
+   */
+  highlightText?: string
+  onBeforeSave: any
+  onBeforeDelete: any
+  onSave: any
+  onDelete: any
+  appearance: 'normal' | 'folder'
+  /**
+   * 节点收起时的默认图标
+   */
+  collapseIcon?: React.ReactNode
+  /**
+   * 节点展开时的默认图标
+   */
+  expandIcon?: React.ReactNode
+  /**
+   * 叶子结点的默认图标
+   */
+  leafIcon?: React.ReactNode
 }
 
 if (__DEV__) {

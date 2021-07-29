@@ -8,7 +8,7 @@ import { useCallback, useState } from 'react'
  * @param onChange
  */
 export function useUncontrolledState<T>(
-  defaultState: T,
+  defaultState: T | (() => T),
   controlledState?: T,
   onChange?: (next: T, ...args: any[]) => void
 ) {

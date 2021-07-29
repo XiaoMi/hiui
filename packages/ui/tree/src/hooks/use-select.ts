@@ -2,39 +2,48 @@ import React, { useCallback } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { TreeNodeData } from '../TreeNode'
 
+/**
+ * 一个用于 tree 组件选择的 hook
+ *
+ * @param defaultSelectedId 非受控默认选中的 id，默认为 `null`，唯一表示不选中任何实体
+ * @param selectedIdProp
+ * @param onSelectProp
+ * @param disabled
+ * @returns
+ */
 export const useSelect = (
-  // 使用 `null` 来唯一表示不选中任何实体
   defaultSelectedId: React.ReactText | null = null,
-  selectedId?: React.ReactText | null,
-  onSelect?: (selectedId: React.ReactText | null, item: TreeNodeData | null) => void,
+  selectedIdProp?: React.ReactText | null,
+  onSelectProp?: (selectedId: React.ReactText | null, item: TreeNodeData | null) => void,
   disabled = false
 ) => {
   const proxyOnSelect = useCallback(
     (id: React.ReactText | null, item: TreeNodeData | null) => {
-      onSelect?.(id, item)
+      onSelectProp?.(id, item)
     },
-    [onSelect]
+    [onSelectProp]
   )
 
-  const [_selectedId, tryChangeSelectedId] = useUncontrolledState(
+  const [selectedId, tryChangeSelectedId] = useUncontrolledState(
     defaultSelectedId,
-    selectedId,
+    selectedIdProp,
     proxyOnSelect
   )
 
-  const _onSelect = useCallback(
+  const onSelect = useCallback(
     (selectedItem: TreeNodeData) => {
       if (disabled) return
 
-      if (_selectedId === selectedItem.id) {
-        // 取消选中
+      if (selectedId === selectedItem.id) {
+        // 允许取消选中
         tryChangeSelectedId(null, null)
-      } else {
-        tryChangeSelectedId(selectedItem.id, selectedItem)
+        return
       }
+
+      tryChangeSelectedId(selectedItem.id, selectedItem)
     },
-    [disabled, _selectedId, tryChangeSelectedId]
+    [disabled, selectedId, tryChangeSelectedId]
   )
 
-  return [_selectedId, _onSelect] as const
+  return [selectedId, onSelect] as const
 }

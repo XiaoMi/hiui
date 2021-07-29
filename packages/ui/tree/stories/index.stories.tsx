@@ -6,6 +6,8 @@ export * from './dynamic.stories'
 export * from './checkable.stories'
 export * from './virtual-list.stories'
 export * from './editable.stories'
+export * from './search.stories'
+export * from './expand.stories'
 
 export default {
   title: 'Tree',

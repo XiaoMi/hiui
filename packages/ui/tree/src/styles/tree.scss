@@ -20,7 +20,7 @@ $prefix: '#{$component-prefix}-tree' !default;
   color: use-color('gray-80');
   cursor: pointer;
   // 节点间隔控制
-  // padding: 4px 0;
+  padding: 4px 0;
 
   // 用于选中涂色
   &__wrap {
@@ -42,7 +42,7 @@ $prefix: '#{$component-prefix}-tree' !default;
   }
 
   &__indent {
-    width: 24px;
+    width: 20px;
     height: 100%;
     display: inline-block;
   }
@@ -59,10 +59,12 @@ $prefix: '#{$component-prefix}-tree' !default;
     padding: 0;
     margin: 0;
     font-size: 16px;
+    cursor: pointer;
+    padding-right:  4px;
 
-    &__icon {
-      transition: transform .3s;
-    }
+    // &__icon {
+    //   transition: transform .3s;
+    // }
   }
 
   &__title {
@@ -97,7 +99,7 @@ $prefix: '#{$component-prefix}-tree' !default;
       height: 8px;
       content: '';
       background: #fff;
-      border: 2px solid use-color('primary');
+      border: 1px solid use-color('primary');
       border-radius: 100%;
     }
 
@@ -130,17 +132,17 @@ $prefix: '#{$component-prefix}-tree' !default;
     }
   }
 
-  &--open {
-    #{$this}-switcher__icon {
-      transform: rotate(0);
-    }
-  }
+  // &--open {
+  //   #{$this}-switcher__icon {
+  //     transform: rotate(0);
+  //   }
+  // }
 
-  &--closed {
-    #{$this}-switcher__icon {
-      transform: rotate(-90deg);
-    }
-  }
+  // &--closed {
+  //   #{$this}-switcher__icon {
+  //     transform: rotate(-90deg);
+  //   }
+  // }
 
   // 线性连接展示
   &--linear {
@@ -153,29 +155,30 @@ $prefix: '#{$component-prefix}-tree' !default;
         content: '';
         position: absolute;
         width: 1px;
-        height: calc(100% + 4px);
-        background-color: use-color('gray-70');
+        height: calc(100% + 8px);
+        background-color: #eee;
         left: 8px;
       }
 
       &--tail {
         &::before {
           content: '';
-          height: calc(50%);
+          // height: calc(50%);
+          height: 76%;
         }
       }
 
-      &--depth-tail {
-        &::after {
-          content: '';
-          position: absolute;
-          width: 50%;
-          height: 1px;
-          background-color: use-color('gray-70');
-          left: calc(50% - 4px);
-          top: 50%;
-        }
-      }
+      // &--depth-tail {
+      //   &::after {
+      //     content: '';
+      //     position: absolute;
+      //     width: 50%;
+      //     height: 1px;
+      //     background-color: use-color('gray-70');
+      //     left: calc(50% - 4px);
+      //     top: 50%;
+      //   }
+      // }
     }
   }
 
@@ -223,7 +226,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 
       &::after {
         top: 0;
-        border-bottom-width: 2px;
+        border-bottom-width: 1px;
       }
     }
   }
@@ -245,7 +248,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 
       &::after {
         bottom: 0;
-        border-bottom-width: 2px;
+        border-bottom-width: 1px;
       }
     }
   }

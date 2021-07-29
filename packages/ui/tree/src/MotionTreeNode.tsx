@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 // import { EditableTreeNode as TreeNode } from './EditableTreeNode'
 import { TreeNode } from './TreeNode'
 
-import { ANIMATION_KEY } from './hooks'
+import { MOTION_NODE_KEY } from './hooks'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import { times } from '@hi-ui/times'
 
@@ -33,26 +33,25 @@ export const MotionTreeNode = forwardRef<HTMLLIElement | null, MotionTreeNodePro
   ) => {
     // 根据 type 控制显隐过渡动画
     const { id, children, type } = data
-    const isMotion = id === ANIMATION_KEY
+    const isMotion = id === MOTION_NODE_KEY
     const isHide = isMotion && type === 'hide'
     const isShow = isMotion && type === 'show'
 
-    const motionNodeRef = useRef<HTMLLIElement>(null)
+    const motionNodeRef = useRef<HTMLDivElement>(null)
 
     const [visible, setVisible] = useState(isHide)
     const [height, setHeight] = useState<number | undefined>()
 
     React.useEffect(() => {
-      if (isHide && visible) {
-        setVisible(false)
-      } else if (isShow && !visible) {
-        setVisible(true)
+      if (visible) {
+        isHide && setVisible(false)
+      } else {
+        isShow && setVisible(true)
       }
     }, [isHide, isShow, visible])
-    // console.log(motionCount)
 
     // 使用一个 dom 包裹，给过渡的列表集合体添加过渡动画
-    if (id === ANIMATION_KEY) {
+    if (id === MOTION_NODE_KEY) {
       const motionCount = Math.min(children.length, overscanCount ?? children.length)
 
       return (
@@ -84,7 +83,6 @@ export const MotionTreeNode = forwardRef<HTMLLIElement | null, MotionTreeNodePro
           <div ref={motionNodeRef} className={'motion-tree-node'}>
             {times(motionCount, (index) => {
               const treeNode = children[index]
-              // TODO:优化在一个地方统一处理或者缓存，不然会执行多次
 
               return (
                 <TreeNode
@@ -92,6 +90,7 @@ export const MotionTreeNode = forwardRef<HTMLLIElement | null, MotionTreeNodePro
                   ref={ref}
                   className={className}
                   data={treeNode}
+                  // TODO:优化在一个地方统一处理或者缓存，不然会执行多次
                   // 需要赋予以下必要的值，用于过渡动画时也能正确展示一些状态
                   expanded={isExpanded(treeNode.id)}
                   checked={isChecked(treeNode.id)}
@@ -140,6 +139,10 @@ export interface MotionTreeNodeProps {
   data: MotionTreeNodeData
   expanded?: boolean
   onMotionEnd?: any
+  isExpanded: (id: React.ReactText) => boolean
+  isChecked: (id: React.ReactText) => boolean
+  isSemiChecked: (id: React.ReactText) => boolean
+  overscanCount: number
 }
 
 export interface MotionTreeNodeData {

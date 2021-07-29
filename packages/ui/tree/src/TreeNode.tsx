@@ -5,7 +5,6 @@ import { times } from '@hi-ui/times'
 import { useTreeContext } from './context'
 import { IconLoading } from './Icon'
 import Checkbox from '@hi-ui/checkbox'
-import { CaretDownOutlined } from '@hi-ui/icon/lib/esm/components/caret-down-outlined'
 
 const _role = 'tree-node'
 const _prefix = getPrefixCls(_role)
@@ -43,6 +42,11 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       onDrop,
       onLoadChildren,
       onNodeCheck,
+      showLine,
+      highlightText,
+      collapseIcon,
+      expandIcon,
+      leafIcon,
     } = useTreeContext()
 
     const [direction, setDirection] = useState<TreeNodeDragDirection>(null)
@@ -226,24 +230,32 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
 
     // 渲染子树折叠切换器
     const renderSwitcher = useCallback(
-      (data) => {
-        return (
-          <button className={`${prefixCls}-switcher`} onClick={handleSwitcherClick}>
-            <CaretDownOutlined className={`${prefixCls}-switcher__icon`} />
-          </button>
-        )
+      (node) => {
+        const hasChildren = node.children && node.children.length > 0
+        const canLoadChildren = onLoadChildren && !node.isLeaf && !node.children
+
+        if (hasChildren || canLoadChildren) {
+          return (
+            <button className={`${prefixCls}-switcher`} onClick={handleSwitcherClick}>
+              {expanded ? expandIcon : collapseIcon}
+            </button>
+          )
+        }
+
+        return leafIcon
       },
-      [handleSwitcherClick, prefixCls]
+      [handleSwitcherClick, prefixCls, onLoadChildren, expanded, expandIcon, collapseIcon, leafIcon]
     )
 
     const renderHighlight = (node: any) => {
-      const index = node.title.indexOf(searchValue)
+      const index = node.title.indexOf(highlightText)
       const beforeStr = node.title.substr(0, index)
-      const afterStr = node.title.substr(index + searchValue.length)
+      const afterStr = node.title.substr(index + highlightText?.length)
+
       return (
         <span>
           {beforeStr}
-          <span className="title__text--matched">{searchValue}</span>
+          <span className="title__text--matched">{highlightText}</span>
           {afterStr}
         </span>
       )
@@ -260,9 +272,9 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
           onClick={() => onSelect?.(node)}
         >
           <div className="title__text">
-            {/* {children || renderHighlight(node)} */}
+            {children || renderHighlight(node)}
             {/* TODO: update to title */}
-            {children || `${depth}--${title}--${id}`}
+            {/* {children || `${depth}--${title}--${id}`} */}
           </div>
         </div>
       )
@@ -289,7 +301,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     const cls = cx(
       prefixCls,
       className,
-      appearance && `${prefixCls}--${appearance}`,
+      appearance && `${prefixCls}--appearance-${appearance}`,
+      showLine && `${prefixCls}--linear`,
       direction && `${prefixCls}--drag-${direction}`,
       selectedId === node.id && `${prefixCls}--selected`,
       disabled && `${prefixCls}--disabled`,

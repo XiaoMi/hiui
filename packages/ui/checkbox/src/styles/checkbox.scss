@@ -83,6 +83,10 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     line-height: 1;
     flex: none;
 
+    &:hover {
+      border-color: get-color($palette-primary, 'hiui-blue');
+    }
+
     &--indeterminate {
       &::after {
         transform: rotate(90deg) scaleY(1);

@@ -1,6 +1,15 @@
 import React from 'react'
+import { CaretDownOutlined } from '@hi-ui/icon/lib/esm/components/caret-down-outlined'
 
-export const IconLoading = ({ name }) => {
+export const defaultCollapseIcon = (
+  <CaretDownOutlined style={{ transition: 'transform 0.3s', transform: 'rotate(-90deg)' }} />
+)
+export const defaultExpandIcon = (
+  <CaretDownOutlined style={{ transition: 'transform 0.3s', transform: 'rotate(0)' }} />
+)
+export const defaultLeafIcon = <span style={{ width: 20 }} />
+
+export const IconLoading = () => {
   const size = '0.8em'
 
   return (
