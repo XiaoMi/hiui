@@ -1,6 +1,6 @@
 {
   "name": "hiui",
-  "private": true,
+  "version": "4.0.0-alpha",
   "workspaces": {
     "packages": [
       "packages/ui/*",
