@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Hiui = require('@md-ui/hiui');
+const Hiui = require('@hi-ui/hiui');
 
 // TODO: DEMONSTRATE API
 ```

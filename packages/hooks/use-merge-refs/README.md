@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const useMergeRefs = require('@md-ui/use-merge-refs');
+const useMergeRefs = require('@hi-ui/use-merge-refs');
 
 // TODO: DEMONSTRATE API
 ```

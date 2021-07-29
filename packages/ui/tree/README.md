@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Tree = require('@md-ui/tree');
+const Tree = require('@hi-ui/tree');
 
 // TODO: DEMONSTRATE API
 ```

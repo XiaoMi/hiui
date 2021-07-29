@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Checkbox = require('@md-ui/checkbox');
+const Checkbox = require('@hi-ui/checkbox');
 
 // TODO: DEMONSTRATE API
 ```

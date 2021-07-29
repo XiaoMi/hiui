@@ -8,7 +8,7 @@ to: <%= h.uiDir(`${name}/README.md`) %>
 ## Usage
 
 ```
-const <%= h.camelCase(name) %> = require('@md-ui/<%= name %>');
+const <%= h.camelCase(name) %> = require('@hi-ui/<%= name %>');
 
 // TODO: DEMONSTRATE API
 ```

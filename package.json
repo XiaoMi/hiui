@@ -1,6 +1,7 @@
 {
   "name": "hiui",
   "version": "4.0.0-alpha",
+  "private": true,
   "workspaces": {
     "packages": [
       "packages/ui/*",
@@ -8,6 +9,7 @@
       "packages/hooks/*",
       "packages/core/*",
       "packages/icons/*",
+      "packages/*",
       "scripts/*",
       "docs/*",
       "plugins/*",

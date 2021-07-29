@@ -1,10 +1,10 @@
 {
-  "name": "@hi-ui/icon",
+  "name": "@hi-ui/icons",
   "version": "1.0.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/icon#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/icons#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",

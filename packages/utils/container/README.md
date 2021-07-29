@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const container = require('@md-ui/container');
+const container = require('@hi-ui/container');
 
 // TODO: DEMONSTRATE API
 ```

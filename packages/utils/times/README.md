@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const times = require('@md-ui/times');
+const times = require('@hi-ui/times');
 
 // TODO: DEMONSTRATE API
 ```

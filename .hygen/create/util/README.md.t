@@ -8,7 +8,7 @@ to: <%= h.utilsDir(`${name}/README.md`) %>
 ## Usage
 
 ```
-const <%= h.hump(name) %> = require('@md-ui/<%= name %>');
+const <%= h.hump(name) %> = require('@hi-ui/<%= name %>');
 
 // TODO: DEMONSTRATE API
 ```

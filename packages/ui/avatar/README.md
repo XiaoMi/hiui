@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Avatar = require('@md-ui/avatar');
+const Avatar = require('@hi-ui/avatar');
 
 // TODO: DEMONSTRATE API
 ```

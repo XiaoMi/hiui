@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const typeAssertion = require('@md-ui/type-assertion');
+const typeAssertion = require('@hi-ui/type-assertion');
 
 // TODO: DEMONSTRATE API
 ```

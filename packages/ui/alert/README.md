@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Alert = require('@md-ui/alert');
+const Alert = require('@hi-ui/alert');
 
 // TODO: DEMONSTRATE API
 ```

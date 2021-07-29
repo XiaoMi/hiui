@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Counter = require('@md-ui/counter');
+const Counter = require('@hi-ui/counter');
 
 // TODO: DEMONSTRATE API
 ```

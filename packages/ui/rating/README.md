@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Rating = require('@md-ui/rating');
+const Rating = require('@hi-ui/rating');
 
 // TODO: DEMONSTRATE API
 ```

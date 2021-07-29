@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const use-uncontrolled-state = require('@md-ui/use-uncontrolled-state');
+const use-uncontrolled-state = require('@hi-ui/use-uncontrolled-state');
 
 // TODO: DEMONSTRATE API
 ```

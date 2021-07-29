@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Loading = require('@md-ui/loading');
+const Loading = require('@hi-ui/loading');
 
 // TODO: DEMONSTRATE API
 ```

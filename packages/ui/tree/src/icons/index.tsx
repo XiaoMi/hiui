@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from 'react'
-import { CaretDownOutlined } from '@hi-ui/icon/lib/esm/components/caret-down-outlined'
+import { CaretDownOutlined } from '@hi-ui/icons'
 
 export const defaultCollapseIcon = (
   <CaretDownOutlined style={{ transition: 'transform 0.3s', transform: 'rotate(-90deg)' }} />

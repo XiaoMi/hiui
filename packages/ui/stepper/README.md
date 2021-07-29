@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Stepper = require('@md-ui/stepper');
+const Stepper = require('@hi-ui/stepper');
 
 // TODO: DEMONSTRATE API
 ```

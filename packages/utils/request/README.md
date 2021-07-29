@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const request = require('@md-ui/request');
+const request = require('@hi-ui/request');
 
 // TODO: DEMONSTRATE API
 ```

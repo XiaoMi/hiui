@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Tag = require('@md-ui/tag');
+const Tag = require('@hi-ui/tag');
 
 // TODO: DEMONSTRATE API
 ```

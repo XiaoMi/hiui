@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Collapse = require('@md-ui/collapse');
+const Collapse = require('@hi-ui/collapse');
 
 // TODO: DEMONSTRATE API
 ```

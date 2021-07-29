@@ -110,16 +110,11 @@ componentFileInfo.forEach(({ name, path }) => {
 
 const indexTsContent = `
 import './styles/index.scss'
+
 ${componentFileInfo
-  .map(({ name }) => `import { ${transformToUpperCamelCase(name)} } from './components/${name}'`)
+  .map(({ name }) => `export { ${transformToUpperCamelCase(name)} } from './components/${name}'`)
   .join('\n')}
 
-const Icon = {
-  ${componentFileInfo.map(({ name }) => transformToUpperCamelCase(name)).join(',\n')}
-}
-
 export * from './@types/props'
-export { Icon }
-export default Icon
 `
 Fs.writeFileSync(Path.join(__dirname, '../src/index.ts'), indexTsContent)

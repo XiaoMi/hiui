@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Switch = require('@md-ui/switch');
+const Switch = require('@hi-ui/switch');
 
 // TODO: DEMONSTRATE API
 ```

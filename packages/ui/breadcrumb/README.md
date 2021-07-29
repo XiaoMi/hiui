@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Breadcrumb = require('@md-ui/breadcrumb');
+const Breadcrumb = require('@hi-ui/breadcrumb');
 
 // TODO: DEMONSTRATE API
 ```
