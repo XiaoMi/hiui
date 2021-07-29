@@ -37,7 +37,8 @@ const Cascader = (props) => {
     bordered = true,
     data: propsData,
     options: propsOptions,
-    onOpen
+    onOpen,
+    onClose
   } = props
   const initData = _.cloneDeep(propsData || propsOptions)
   const cacheData = useRef([])
@@ -447,6 +448,7 @@ const Cascader = (props) => {
         placement="top-bottom-start"
         onClickOutside={() => {
           setPopperShow(false)
+          onClose && onClose()
         }}
       >
         <Menu

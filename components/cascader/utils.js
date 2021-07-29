@@ -54,6 +54,9 @@ export const getCascaderLabel = (values, fieldNames, displayRender, data, dataLi
         }
       })
     }
+    if (!(Array.isArray(data) && data.length > 0) && labels.length === 0) {
+      return values.join(' / ')
+    }
     return labels.join(' / ')
   }
 }

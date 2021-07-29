@@ -177,6 +177,7 @@ class Demo extends React.Component {
         }}
         data={this.state.options}
         style={{ width: 240 }}
+        defaultValue={['电视','小米电视4C']}
         onOpen={()=>{
           const {options} = this.state
           if(options.length === 0){
