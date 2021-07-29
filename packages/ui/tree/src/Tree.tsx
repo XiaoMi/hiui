@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef, useMemo, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
@@ -111,6 +111,23 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onDelete
     )
 
+    const treeRef = React.useRef<HTMLUListElement>(null)
+    useImperativeHandle(
+      ref,
+      () =>
+        ({
+          ...treeRef.current,
+          // TODO: 类型未声明
+          // 约定内部向外暴露的自定义方法形式以 `$` 开头，避免和原生混合
+          $saveNode: saveEdit,
+          // $cancelAddNode: cancelAddNode,
+          $deleteNode: deleteNode,
+          $addChildNode: addChildNode,
+          $addSiblingNode: addSiblingNode,
+        } as HTMLUListElement),
+      [deleteNode, addChildNode, addSiblingNode, saveEdit]
+    )
+
     const cls = cx(prefixCls, className)
 
     const providedValue = useMemo(
@@ -181,7 +198,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
 
     return (
       <TreeProvider value={providedValue}>
-        <ul ref={ref} role={role} className={cls} {...rest}>
+        <ul ref={treeRef} role={role} className={cls} {...rest}>
           <VirtualList
             data={transitionData}
             itemKey={(item) => item.id}

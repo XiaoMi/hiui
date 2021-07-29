@@ -292,6 +292,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
           className={`${prefixCls}__title`}
           onClick={() => onSelect?.(node)}
         >
+          {/* TODO: 对 titleRender 注入 context ？ */}
           {titleRender ? titleRender(node) : <span className="title__text">{title}</span>}
         </div>
       )
