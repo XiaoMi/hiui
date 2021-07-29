@@ -70,7 +70,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
 
       return {
         onDragStart: (evt: React.DragEvent) => {
-          console.log('onDragStart')
+          // console.log('onDragStart')
 
           evt.stopPropagation()
 
@@ -81,7 +81,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
           onDragStart?.(node)
         },
         onDragEnd: (evt: React.DragEvent) => {
-          console.log('onDragEnd')
+          // console.log('onDragEnd')
 
           evt.preventDefault()
           evt.stopPropagation()
@@ -93,7 +93,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
           onDragEnd?.(node)
         },
         onDragLeave: (evt: React.DragEvent) => {
-          console.log('onDragLeave')
+          // console.log('onDragLeave')
 
           evt.preventDefault()
           evt.stopPropagation()
@@ -102,7 +102,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
         // 拖至到目标元素上时触发事件
         onDragOver: (evt: React.DragEvent) => {
           const dragId = dragIdRef.current
-          console.log('onDragOver', dragId)
+          // console.log('onDragOver', dragId)
 
           evt.preventDefault()
           evt.stopPropagation()
@@ -145,7 +145,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
           // 次数 dragId 为 null，node.id 变成了目标节点
           if (onDrop && dragId !== id) {
             const passedData = JSON.parse(evt.dataTransfer.getData('treeNode'))
-            console.log('onDrop', passedData, dragId, id)
+            // console.log('onDrop', passedData, dragId, id)
 
             onDrop({
               targetId: id,
@@ -171,7 +171,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
         if (node.isLeaf) return
 
         if (node.children) {
-          console.log('onExpand', node)
+          // console.log('onExpand', node)
 
           onExpandRef.current?.(node, !expanded)
           // 避免重复调用 onLoadChildren 异步加载子节点
@@ -201,8 +201,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     // 渲染空白占位
     const renderIndent = useCallback(
       (node) => {
-        const { id, depth, sibling, ancestors } = node
-        const isSiblingLast = sibling && sibling[sibling.length - 1].id === id
+        const { id, depth, siblings, ancestors } = node
+        const isSiblingLast = siblings && siblings[siblings.length - 1].id === id
 
         // const isAncestorSiblingLast = []
         // if (ancestors) {
@@ -424,9 +424,11 @@ export interface TreeNodeData {
    * @private
    */
   ancestors?: TreeNodeData[]
+  siblings?: TreeNodeData[]
 
   parent?: TreeNodeData
   parentId?: React.ReactText
+  raw?: TreeNodeData
 }
 
 if (__DEV__) {

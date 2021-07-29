@@ -70,7 +70,7 @@ export const useExpand = (
       const expandedNodeIdSet = new Set<React.ReactText>(expandedIds)
 
       if (isExpanded) {
-        console.log('展开ing---------------', expandedNode.id)
+        // console.log('展开ing---------------', expandedNode.id)
         expandedNodeIdSet.add(expandedNode.id)
 
         // TODO: flattedData 改成 prevData
@@ -92,7 +92,7 @@ export const useExpand = (
 
         trySetTransitionData(newTransitionData)
       } else {
-        console.log('收起ing---------------', expandedNode.id)
+        // console.log('收起ing---------------', expandedNode.id)
         expandedNodeIdSet.delete(expandedNode.id)
 
         // 设置隐藏的子节点集合用一个 节点 包裹，用来实现动画隐藏效果

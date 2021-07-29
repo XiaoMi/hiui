@@ -3,7 +3,7 @@ import React, { forwardRef, useMemo, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
-import { useExpand, useSelect, useTreeDrop, useDataCache, useCheck, useEdit } from './hooks'
+import { useExpand, useSelect, useTreeDrop, useCache, useCheck, useEdit } from './hooks'
 import { TreeNodeData } from './TreeNode'
 import { TreeProvider } from './context'
 import { MotionTreeNode } from './MotionTreeNode'
@@ -74,7 +74,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     // TODO: 考虑是否要做成 value-onChange 的受控模式
     // 目前修改来源有拖拽、编辑，通过回调函数的返回布尔值来进行是否内部以非受控模式更新 data
     // 在这种模式，当外部 data 一旦改变，内部的非受控状态 data 的所有改变都可能会被抹除
-    const [treeData, setTreeData] = useDataCache(data)
+    const [treeData, setTreeData] = useCache(data)
     const flattedData: TreeNodeData[] = useMemo(() => flattenTreeData(treeData), [treeData])
 
     const disabledSelect = disabled || !selectable
@@ -195,7 +195,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       return Math.ceil(height / itemHeight) + 1
     }, [virtual, height, itemHeight])
 
-    console.log(flattedData, transitionData)
+    // console.log(flattedData, transitionData)
 
     return (
       <TreeProvider value={providedValue}>

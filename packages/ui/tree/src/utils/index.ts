@@ -1,80 +1,63 @@
-// @ts-nocheck
 import React from 'react'
-import cloneDeep from 'lodash.clonedeep'
 import { TreeNodeData } from '../TreeNode'
 
-export const getParent = (id, data) => {
-  let parent
-  data.forEach((item) => {
-    if (item.children) {
-      if (item.children.some((item) => item.id === id)) {
-        parent = item
-      } else if (getParent(id, item.children)) {
-        parent = getParent(id, item.children)
-      }
-    }
-  })
-  return parent
-}
+/**
+ * 扁平化树数据结构，基于前序遍历
+ *
+ * @param data
+ * @returns
+ */
+export const flattenTreeData = (data: TreeNodeData[]) => {
+  const flattedTreeData: TreeNodeData[] = []
 
-export const getAncestors = (id, data, arr = []) => {
-  if (getParent(id, data)) {
-    arr.push(getParent(id, data))
-    getAncestors(getParent(id, data).id, data, arr)
-  }
-  return arr
-}
+  const dig = (
+    node: TreeNodeData,
+    depth = 0,
+    parent?: TreeNodeData,
+    ancestors?: TreeNodeData[],
+    siblings?: TreeNodeData[]
+  ) => {
+    const flattedNode = { ...node }
+    flattedTreeData.push(flattedNode)
 
-// DFS 扁平化树结构
-export const flattenTreeData = (data) => {
-  const treeData = cloneDeep(data)
+    // 关联用户传入的原始节点
+    flattedNode.raw = node
+    flattedNode.depth = depth
+    flattedNode.parent = parent
+    flattedNode.ancestors = ancestors
+    // 兄弟节点，注意其中会包含本身节点
+    flattedNode.siblings = siblings
 
-  // 动态数组
-  for (let i = 0; i < treeData.length; ++i) {
-    const parent = treeData[i]
-    const { depth = 0, children, id } = parent
+    if (flattedNode.children) {
+      const { children } = flattedNode
+      const childDepth = depth + 1
+      // 祖先节点顺序由下至上
+      const childAncestors = [flattedNode].concat(ancestors || [])
 
-    if (!depth) {
-      parent.depth = 0
-    }
-
-    if (children) {
-      const _children = children.map((child, index) => {
-        // 层级
-        child.depth = depth + 1
-        child.parentId = id
-        // siblings
-        child.sibling = children
-        child.parent = parent
-        // 组件节点
-        child.ancestors = getAncestors(child.id, treeData)
-        return child
-      })
-      // 优化递归
-      treeData.splice(i + 1, 0, ..._children)
+      children.forEach((child) => dig(child, childDepth, flattedNode, childAncestors, children))
     }
   }
-  return treeData
+
+  data.forEach((node) => dig(node))
+
+  return flattedTreeData
 }
 
 /**
- * 从扁平的树数据结构中找到指定 id 的节点的所有孩子节点的 ids，包含嵌套节点
- *
- * 不同于增删改原 data 数据，查询操作使用扁平化的树数据结构，可以避免函数递归，加快查询
+ * 根据指定 id 的节点查找其所有（包含嵌套）孩子节点的 ids
  *
  * @param flattedTreeData
  * @param targetId
  * @returns
  */
-
 export const fFindNestedChildNodesById = (
   flattedTreeData: TreeNodeData[],
   targetId: React.ReactText
 ): TreeNodeData[] => {
-  const targetNodeIndex = flattedTreeData.findIndex((node) => node.id === targetId)
+  const childrenNodes: TreeNodeData[] = []
 
   const { length } = flattedTreeData
-  const childrenNodes = [] as TreeNodeData[]
+  const targetNodeIndex = flattedTreeData.findIndex((node) => node.id === targetId)
 
   if (targetNodeIndex < 0 || targetNodeIndex === length - 1) return childrenNodes
 
@@ -85,8 +68,6 @@ export const fFindNestedChildNodesById = (
     const node = flattedTreeData[i]
 
     if (node.depth! > boundNodeDepth) {
-      // TODO: 改成 callback，类似于 Array.prototype.find
-      // 方便和 expandIds 进行过滤查找
       childrenNodes.push(node)
     } else {
       break
@@ -96,44 +77,19 @@ export const fFindNestedChildNodesById = (
   return childrenNodes
 }
 
-// TODO: 使用 扁平数据结构优化查找
-// 自定义数据结构：关联扁平数据节点和原生用户节点
 /**
  * 根据指定 id 查找对应节点
- * @param treeData
+ *
+ * @param flattedTreeData
  * @param targetId
  * @returns 返回第一个被查找到的节点
  */
-export const findNodeById = (
-  treeData: TreeNodeData[],
-  targetId: React.ReactText
-): TreeNodeData | null => {
-  let ret = null
-
-  const _findNode = (treeData: TreeNodeData[], targetId: React.ReactText) => {
-    const { length } = treeData
-
-    for (let i = 0; i < length; ++i) {
-      const node = treeData[i]
-
-      if (targetId === node.id) {
-        ret = node
-        return
-      }
-
-      if (node.children) {
-        _findNode(node.children, targetId)
-      }
-    }
-  }
-
-  _findNode(treeData, targetId)
-  return ret
+export const fFindNodeById = (flattedTreeData: TreeNodeData[], targetId: React.ReactText) => {
+  return flattedTreeData.find((node) => node.id === targetId)?.raw
 }
 
 /**
  * 从树中删除指定 id 的第一个被找到的节点
- * 采用递归遍历
  *
  * @param treeData
  * @param targetId
@@ -206,7 +162,6 @@ export const insertNodeById = (
 
     if (targetId === node.id) {
       treeData.splice(i + position, 0, sourceNode)
-
       return
     }
 
@@ -216,4 +171,9 @@ export const insertNodeById = (
   }
 }
 
+/**
+ * 生成 uuid
+ *
+ * @returns uuid
+ */
 export const uuid = () => Math.random().toString(36).substring(5).split('').join('.')

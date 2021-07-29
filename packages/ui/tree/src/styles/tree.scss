@@ -158,13 +158,13 @@ $prefix: '#{$component-prefix}-tree' !default;
         height: calc(100% + 8px);
         background-color: #eee;
         left: 8px;
+        top: -8px;
       }
 
       &--tail {
         &::before {
           content: '';
-          // height: calc(50%);
-          height: 76%;
+          // height: 76%;
         }
       }
 

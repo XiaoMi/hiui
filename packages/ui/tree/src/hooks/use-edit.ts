@@ -18,7 +18,7 @@ export const useEdit = (
 ) => {
   const addSiblingNode = useCallback(
     (node) => {
-      console.log('添加兄弟节点')
+      // console.log('添加兄弟节点')
 
       const nextTreeData = cloneDeep(treeData)
       const nodeToAdd = genTreeNode()
@@ -33,10 +33,10 @@ export const useEdit = (
     (node) => {
       const nextTreeData = cloneDeep(treeData)
       const nodeToAdd = genTreeNode()
-      console.log('添加子节点', node, nextTreeData)
+      // console.log('添加子节点', node, nextTreeData)
 
       addChildNodeById(nextTreeData, node.id, nodeToAdd)
-      console.log('添加后子节点', nextTreeData)
+      // console.log('添加后子节点', nextTreeData)
       setTreeData(nextTreeData)
     },
     [treeData, setTreeData]
@@ -44,7 +44,7 @@ export const useEdit = (
 
   const deleteNode = useCallback(
     (node) => {
-      console.log('删除当前节点')
+      // console.log('删除当前节点')
       const nextTreeData = cloneDeep(treeData)
       deleteNodeById(nextTreeData, node.id)
 
