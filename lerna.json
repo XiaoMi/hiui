@@ -24,7 +24,7 @@
       "npmClient": "yarn"
     },
     "publish": {
-      "allowBranch": "master",
+      "allowBranch": "next/4.0",
       "message": "chore(release): publish %v"
     }
   }
