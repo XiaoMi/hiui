@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback } from 'react'
+import React, { useContext, useEffect, useCallback, useState } from 'react'
 import classNames from 'classnames'
 
 import Row from './Row'
@@ -36,6 +36,9 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     onLoadChildren,
     loadChildren
   } = useContext(TableContext)
+  const [dragStatus, setDragStatus] = useState(null)
+  const [dragRowKey, setDragRowKey] = useState(null)
+
   // **************** 获取colgroup
   const _columns = _.cloneDeep(columns)
   const depthArray = []
@@ -126,6 +129,10 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
           rowData={row}
           allRowData={row}
           level={level}
+          dragStatus={dragStatus}
+          dragRowKey={dragRowKey}
+          setDragRowKey={setDragRowKey}
+          setDragStatus={setDragStatus}
           index={index}
           hoverColIndex={hoverColIndex}
           setHoverColIndex={setHoverColIndex}
@@ -176,6 +183,9 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
             : null // 表格宽度大于div宽度才展示横向滚动条
       }}
       ref={bodyTableRef}
+      className={classNames({
+        [`${prefix}__body--draging`]: dragStatus
+      })}
       onScroll={(e) => {
         e.stopPropagation()
         syncScrollLeft(bodyTableRef.current.scrollLeft, headerTableRef.current)

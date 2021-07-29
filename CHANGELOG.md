@@ -2,6 +2,7 @@
 # 3.7.1
 - 新增 `Cascader` onOpen 下拉菜单打开、onClose 下拉菜单关闭回调方法，优化动态加载数据功能 [#1854](https://github.com/XiaoMi/hiui/issues/1854)
 - 新增 `Table` 组件 align 属性接受 center 属性 [#1835](https://github.com/XiaoMi/hiui/issues/1835)
+- 新增 `Table` 组件 拖拽功能 [#1851](https://github.com/XiaoMi/hiui/issues/1851)
 - 优化 `DatePicker` 组件在 `Table` 组件中受控形态下无法选中问题 [#1844](https://github.com/XiaoMi/hiui/issues/1844)
 - 优化 `Carousel` 内容宽度根据容器改变自适应 [#1834](https://github.com/XiaoMi/hiui/issues/1834)
 - 修复 `Preview` 组件，图片打开失败时，页面一直处在加载状态 [#1816](https://github.com/XiaoMi/hiui/issues/1816)

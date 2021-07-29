@@ -12,6 +12,7 @@
 ## 特别说明
 - 按照 React 的规范，所有的数组组件必须绑定 key。Table 组件的 data 属性的每一列也需要指定一个 key 值来表明每一行数据的唯一性。同时基于综合考虑（性能、维护性、功能间的组合性等），当没有 key 传入的时候，组件内部并不会帮您生成 key。当 key 不存在时可能会引起一系列的问题，还请注意。
 - 在进行列冻结时，一定要传入**列宽(width)**！
+
 ## 基础用法
 
 import DemoBase from '../../demo/table/section-base.jsx'
@@ -37,6 +38,7 @@ import DemoSize from '../../demo/table/section-size.jsx'
 
 <DemoSize />
 
+
 ## 特殊表格
 
 import DemoSpecial from '../../demo/table/section-special.jsx'
@@ -54,12 +56,12 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | 属性名             | 描述                                                                                                    | 类型                                           | 可选值                                    | 默认值     |
 | ------------------ | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------- | ---------- |
 | data               | 表格数据                                                                                                | object[]                                       | -                                         | -          |
+| fieldKey           | 指定 data 表格数据中某一属性为 key                                                                                          | string                                  | -                                         | 'key'        |
 | columns            | 表格列配置信息                                                                                          | ColumnItem[]                                   | -                                         | -          |
 | bordered           | 是否显示边框（表头分组模式下，表格自带边框）                                                            | boolean                                        | true \| false                             | false      |
 | sticky             | 是否支持表头吸顶                                                                                        | boolean                                        | true \| false                             | false      |
 | stickyTop          | 表头吸顶距离视口顶部距离                                                                                | number                                         | -                                         | 0          |
 | highlightedColKeys | 高亮列（受控）                                                                                          | string[]                                       | -                                         | []         |
-| onLoadChildren     | 点击异步加载子项                                                                                      | (row: DataItem) => object[] \| Promise  | -                                         | -          |
 | expandedRender     | 表格展开项                                                                                              | (record: dataItem, index: number) => ReactNode \| Promise | -                                         | -          |
 | rowExpandable     | 设置是否允许行展开                                                                                              | (record: dataItem ) => ReactNode \| Boolean | -                                         | true        |
 | onExpand          | 表格展开时的回调函数                                                                                             | (expanded, row: object) => void | -                                         | -          |
@@ -81,7 +83,17 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | loading            | 加载中状态 | boolean                                        | true \| false                             | false      |
 | scrollWidth        | 表格滚动的宽度（当表格总设置宽度（含自适应列）大于表格父级容器宽度时需要设置）**3.7.0版本以后，该属性不建议使用** |  number                                        | -                            | -      |
 | showColHighlight   | 表格某一列`hover`时，该列高亮 |  boolean                                        | true \| false                            | false      |
+| draggable          | 表格行可拖拽                                                              | boolean                                                                       | true \| false                   | false     |
+
+## Event
+
+| 属性名             | 描述                                                                                                    | 类型                                           | 可选值                                    | 默认值     |
+| ------------------ | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------- | ---------- |
 | onHeaderRow        | 行标题事件处理函数 |  (item: ColumnItem[], index: number) => object                                        | -                           | -      |
+| onLoadChildren     | 点击异步加载子项                                                                                      | (row: DataItem) => object[] \| Promise  | -                                         | -          |
+| onDragStart    | 开始拖拽时触发                                          | (rowData: object) => void                                                        | rowData: 当前行的数据                                                                                                                    | -                                                         |
+| onDrop         | 拖拽行放开时触发                                              | (dragRowData: object, dropRowData: object, data: object, level: Level) => boolean | Promise | dragRowData: 拖拽的行数据 <br/>dropRowData: 目标行数据 <br/>data:当前结构数据 <br/>level:当前级别数据                              | -                                                         |
+| onDropEnd      | 拖拽成功时触发                                          | (dragRowData: object, dropRowData: object, data: object) => void                                    | dragRowData: 拖拽的行数据 <br/>dropRowData: 目标行数据 <br/> data: 拖拽完成后的结构数据                                                                                       | -                                                         |
 
 > 在 onLoadChildren 方法中，返回的数据中会根据 `isLeaf` 字符控制左侧展开按钮的显示状态
 
