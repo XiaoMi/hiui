@@ -44,7 +44,6 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       onLoadChildren,
       onNodeCheck,
       showLine,
-      highlightText,
       collapseIcon,
       expandIcon,
       leafIcon,
@@ -268,20 +267,6 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
         loading,
       ]
     )
-
-    const renderHighlight = (node: any) => {
-      const index = node.title.indexOf(highlightText)
-      const beforeStr = node.title.substr(0, index)
-      const afterStr = node.title.substr(index + highlightText?.length)
-
-      return (
-        <span>
-          {beforeStr}
-          <span className="title__text--matched">{highlightText}</span>
-          {afterStr}
-        </span>
-      )
-    }
 
     // 渲染标题
     const renderTitle = (node: TreeNodeData, selectedId: React.ReactText) => {

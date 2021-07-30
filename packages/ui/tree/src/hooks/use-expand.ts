@@ -140,7 +140,7 @@ export const useExpand = (
 
   return [
     transitionData,
-    // expandedNodeIds: expandedIds,
+    expandedIds,
     tryToggleExpandedIds,
     onNodeToggleStart,
     onNodeToggleEnd,

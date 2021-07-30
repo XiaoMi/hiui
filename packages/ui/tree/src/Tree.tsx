@@ -64,7 +64,6 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       leafIcon = defaultLeafIcon,
       // others
       showLine = false,
-      highlightText = '',
       appearance = 'normal',
       titleRender,
       ...rest
@@ -87,6 +86,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
 
     const [
       transitionData,
+      expandedNodeIds,
       tryToggleExpandedIds,
       onNodeToggleStart,
       onNodeToggleEnd,
@@ -153,7 +153,6 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         tryToggleExpandedIds,
         appearance,
         showLine,
-        highlightText,
         collapseIcon,
         expandIcon,
         leafIcon,
@@ -179,7 +178,6 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         tryToggleExpandedIds,
         appearance,
         showLine,
-        highlightText,
         collapseIcon,
         expandIcon,
         leafIcon,
@@ -260,11 +258,11 @@ export interface TreeProps {
   /**
    * 展开的节点
    */
-  expandedIds?: string[]
+  expandedIds?: React.ReactText[]
   /**
    * 默认展开的节点
    */
-  defaultExpandedIds?: string[]
+  defaultExpandedIds?: React.ReactText[]
   /**
    * 节点被点击(展开/收起)时触发
    */
@@ -272,11 +270,11 @@ export interface TreeProps {
   /**
    * 选中的节点
    */
-  selectedId?: string
+  selectedId?: React.ReactText
   /**
    * 默认选中的节点
    */
-  defaultSelectedId?: string
+  defaultSelectedId?: React.ReactText
   /**
    * 点击节点时触发选中
    */
@@ -351,10 +349,6 @@ export interface TreeProps {
    * 展示连接线
    */
   showLine?: boolean
-  /**
-   * 高亮节点的文本内容
-   */
-  highlightText?: string
   onBeforeSave?: any
   onBeforeDelete?: any
   onSave?: any
