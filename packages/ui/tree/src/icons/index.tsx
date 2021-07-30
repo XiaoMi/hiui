@@ -7,11 +7,11 @@ export const defaultCollapseIcon = (
 export const defaultExpandIcon = (
   <CaretDownOutlined style={{ transition: 'transform 0.3s', transform: 'rotate(0)' }} />
 )
-export const defaultLeafIcon = <span style={{ display: 'inline-block', width: 20 }} />
+export const defaultLeafIcon = <span style={{ display: 'inline-block', width: 16 }} />
 
 export const defaultLoadingIcon = (
   <svg
-    style={{ display: 'inline-block', width: 16, marginRight: 4 }}
+    style={{ display: 'inline-block', width: 16 }}
     className="hi-btn--loading--icon"
     viewBox="0 0 18 18"
     width="0.8em"

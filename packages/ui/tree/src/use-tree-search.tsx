@@ -12,7 +12,7 @@ import cloneDeep from 'lodash.clonedeep'
  * @param props
  * @returns
  */
-export const useTreeSearch = (props: SearchTreeProps) => {
+export const useTreeSearch = (props: SearchableTreeProps) => {
   const {
     data,
     searchable = false,
@@ -84,11 +84,11 @@ export const useTreeSearch = (props: SearchTreeProps) => {
     [titleRender, renderTitleWithHighlight]
   )
 
-  const inSearch = !!searchValue
+  const inSearch = searchable && !!searchValue
 
   const treeProps = {
     ...nativeTreeProps,
-    data: searchable && inSearch ? showData : data,
+    data: inSearch ? showData : data,
     expandedIds,
     onExpand: tryToggleExpandedIds,
     titleRender: proxyTitleRender,
@@ -117,7 +117,7 @@ export const useTreeSearch = (props: SearchTreeProps) => {
   return [treeProps, inputProps] as const
 }
 
-export interface SearchTreeProps extends TreeProps {
+export interface SearchableTreeProps extends TreeProps {
   searchable?: boolean
 }
 

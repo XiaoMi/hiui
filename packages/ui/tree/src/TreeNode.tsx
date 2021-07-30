@@ -322,7 +322,10 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
         >
           {renderIndent(node)}
 
-          {renderSwitcher(node)}
+          {/* 提取 */}
+          <span style={{ fontSize: 16, width: '1em', height: '1em', marginRight: 4 }}>
+            {renderSwitcher(node)}
+          </span>
 
           {checkable ? renderCheckbox(node, checked, semiChecked) : null}
 

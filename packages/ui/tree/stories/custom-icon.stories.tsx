@@ -1,8 +1,8 @@
+import { FileOutlined, FolderOpenOutlined, FolderOutlined } from '@hi-ui/icons'
 import React from 'react'
 import Tree from '../src'
-import { TreeNodeData } from '../src/TreeNode'
 
-export const CustomTitle = () => {
+export const CustomIcon = () => {
   const [treeData, setTreeData] = React.useState([
     {
       id: 1,
@@ -45,38 +45,16 @@ export const CustomTitle = () => {
     },
   ])
 
-  const CustomTreeNodeTitle = (node: TreeNodeData) => {
-    return (
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <div>
-          {/* 自定义 title 的前缀 icon */}
-          <span className="custom-left-icon" style={{ marginRight: 12 }}>
-            😄
-          </span>
-          <span>{node.title}</span>
-        </div>
-        {/* 自定义 title 的后缀 icon */}
-        <div>
-          {Array.isArray(node.children) && node.children.length > 0 ? null : (
-            <span className="custom-right-icon">❤</span>
-          )}
-        </div>
-      </div>
-    )
-  }
-
   return (
     <>
-      <h1>CustomTitle for Tree</h1>
+      <h1>CustomIcon for Tree</h1>
       <div className="tree-basic__wrap">
-        <Tree data={treeData} titleRender={CustomTreeNodeTitle}></Tree>
+        <Tree
+          data={treeData}
+          collapseIcon={<FolderOutlined />}
+          expandIcon={<FolderOpenOutlined />}
+          leafIcon={<FileOutlined />}
+        />
       </div>
     </>
   )
