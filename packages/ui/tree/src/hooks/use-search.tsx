@@ -1,10 +1,11 @@
+import { Tree } from '../Tree'
 // @ts-nocheck
 import React, { useState, useCallback } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { TreeNodeData } from '../TreeNode'
 import cloneDeep from 'lodash.clonedeep'
 
-export const useTreeSearch = (
+const useSearch = (
   // 使用 `null` 来唯一表示不选中任何实体
   defaultSelectedId: React.ReactText | null = null,
   selectedId?: React.ReactText | null,

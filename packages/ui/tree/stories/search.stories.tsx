@@ -1,13 +1,19 @@
 import React from 'react'
-import Tree from '../src'
+import Tree, { useTreeSearch } from '../src'
 
 export const Search = () => {
+  const [SearchTree, searchInputProps] = useTreeSearch(Tree)
+
   return (
     <>
       <h1>Search for Tree</h1>
       <div className="tree-search__wrap">
-        <Tree
-          highlightText="米"
+        <div>
+          <input type="text" {...searchInputProps} />
+        </div>
+        <SearchTree
+          // searchable={true}
+          // highlightText="米"
           data={[
             {
               id: 1,
@@ -34,7 +40,7 @@ export const Search = () => {
               ],
             },
           ]}
-        ></Tree>
+        ></SearchTree>
       </div>
     </>
   )
