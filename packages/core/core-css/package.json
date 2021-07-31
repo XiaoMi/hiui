@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/core-css",
-  "version": "1.0.0",
+  "version": "4.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/core.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
