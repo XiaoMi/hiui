@@ -3,5 +3,5 @@
 const env = require('..')
 
 describe('@hi-ui/env', () => {
-  it('needs tests')
+  it('needs tests', () => {})
 })

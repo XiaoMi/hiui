@@ -1,5 +1,5 @@
-const Icons = require("../src");
+const Icons = require('../src')
 
-describe("@hi-ui/icons", () => {
-  it("needs tests");
-});
+describe('@hi-ui/icons', () => {
+  it('needs tests', () => {})
+})

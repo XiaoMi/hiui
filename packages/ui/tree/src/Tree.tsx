@@ -31,7 +31,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       defaultExpandedIds = [],
       onExpand,
       // virtual list
-      height = 200,
+      height,
       itemHeight = 32,
       virtual = true,
       // selectable

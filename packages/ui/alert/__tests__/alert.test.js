@@ -1,5 +1,7 @@
-const Alert = require('../src');
+const Alert = require('../src')
 
 describe('@hi-ui/alert', () => {
-  it('needs tests');
-});
+  it('needs tests', () => {
+    expect(Array.isArray([])).toEqual(true)
+  })
+})

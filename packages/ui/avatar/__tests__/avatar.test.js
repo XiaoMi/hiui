@@ -1,5 +1,5 @@
-const Avatar = require('../src');
+const Avatar = require('../src')
 
 describe('@hi-ui/avatar', () => {
-  it('needs tests');
-});
+  it('needs tests', () => {})
+})

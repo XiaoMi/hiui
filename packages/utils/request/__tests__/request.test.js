@@ -1,5 +1,5 @@
-const request = require('../src');
+const request = require('../src')
 
 describe('@hi-ui/request', () => {
-  it('needs tests');
-});
+  it('needs tests', () => {})
+})

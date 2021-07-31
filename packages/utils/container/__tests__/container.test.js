@@ -1,5 +1,5 @@
-const container = require('../src');
+const container = require('../src')
 
 describe('@hi-ui/container', () => {
-  it('needs tests');
-});
+  it('needs tests', () => {})
+})

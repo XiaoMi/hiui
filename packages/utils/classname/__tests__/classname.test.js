@@ -3,5 +3,5 @@
 const classname = require('..')
 
 describe('@hi-ui/classname', () => {
-  it('needs tests')
+  it('needs tests', () => {})
 })

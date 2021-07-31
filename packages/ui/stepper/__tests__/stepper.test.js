@@ -1,5 +1,5 @@
-const Stepper = require('../src');
+const Stepper = require('../src')
 
 describe('@hi-ui/stepper', () => {
-  it('needs tests');
-});
+  it('needs tests', () => {})
+})
