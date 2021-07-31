@@ -3,11 +3,10 @@ import { TreeProps } from './Tree'
 import { TreeNodeData } from './TreeNode'
 import { flattenTreeData } from './utils'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-// @ts-ignore
 import cloneDeep from 'lodash.clonedeep'
 
 /**
- * 将 BaseTree 添加定制搜索功能
+ * 将 BaseTree 添加定制搜索功能，返回 SearchableTree
  *
  * @param props
  * @returns
@@ -27,6 +26,7 @@ export const useTreeSearch = (props: SearchableTreeProps) => {
   const flattedData: TreeNodeData[] = useMemo(() => flattenTreeData(data), [data])
 
   // 拦截 expand：用于搜索时控制将搜到的结果高亮，并且自动展开节点
+  // 但是对外仍然暴露 expand 相关 props 原有的功能
   const [expandedIds, tryToggleExpandedIds] = useUncontrolledState(
     function getDefaultExpandedId() {
       // 开启默认展开全部
@@ -79,9 +79,13 @@ export const useTreeSearch = (props: SearchableTreeProps) => {
   // 拦截 titleRender，自定义高亮展示
   const proxyTitleRender = useCallback(
     (node: TreeNodeData) => {
-      return titleRender?.(node) || renderTitleWithHighlight(node) || node.title
+      if (titleRender) {
+        return titleRender(node)
+      }
+
+      return searchable ? renderTitleWithHighlight(node) : node.title
     },
-    [titleRender, renderTitleWithHighlight]
+    [titleRender, searchable, renderTitleWithHighlight]
   )
 
   const inSearch = searchable && !!searchValue

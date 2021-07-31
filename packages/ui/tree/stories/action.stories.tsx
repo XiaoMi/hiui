@@ -29,7 +29,7 @@ const data = [
 ]
 
 export const Action = () => {
-  const a = useTreeEdit({
+  const treeProps = useTreeEdit({
     editable: true,
     data,
   })
@@ -38,7 +38,7 @@ export const Action = () => {
     <>
       <h1>Action for Tree</h1>
       <div className="tree-search__wrap">
-        <Tree data={[]} />
+        <Tree {...treeProps} />
       </div>
     </>
   )

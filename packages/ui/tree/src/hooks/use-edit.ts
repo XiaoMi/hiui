@@ -2,9 +2,8 @@
 import React, { useCallback } from 'react'
 import { TreeNodeData } from '../TreeNode'
 import cloneDeep from 'lodash.clonedeep'
-import { addChildNodeById, deleteNodeById, insertNodeById } from '../utils'
+import { addChildNodeById, deleteNodeById, insertNodeById, uuid } from '../utils'
 
-const uuid = () => (Math.random() * 1000).toString(36)
 const genTreeNode = () => ({ id: uuid(), title: '', type: 'add' })
 
 export const useEdit = (
@@ -35,7 +34,7 @@ export const useEdit = (
       const nodeToAdd = genTreeNode()
       // console.log('添加子节点', node, nextTreeData)
 
-      addChildNodeById(nextTreeData, node.id, nodeToAdd)
+      addChildNodeById(nextTreeData, node.id, nodeToAdd, 0)
       // console.log('添加后子节点', nextTreeData)
       setTreeData(nextTreeData)
     },
@@ -68,7 +67,7 @@ export const useEdit = (
   const cancelAddNode = useCallback(
     (node) => {
       // 取消添加节点（需要移除）
-      if (node.type === 'add') {
+      if (node.raw.type === 'add') {
         const nextTreeData = cloneDeep(treeData)
 
         deleteNodeById(nextTreeData, node.id)

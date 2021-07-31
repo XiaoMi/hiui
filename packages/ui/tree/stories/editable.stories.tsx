@@ -33,6 +33,7 @@ export const Editable = () => {
               setInputValue(e.target.value)
             }}
           />
+          {/* 添加节点，之后进入编辑态，根据 id 激活输入框 */}
           <span
             className={cx('save-btn', !inputValue && 'save-btn-disabled')}
             onClick={() => {

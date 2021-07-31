@@ -7,7 +7,7 @@ import { TreeNodeData } from '../TreeNode'
  * @param data
  * @returns
  */
-export const flattenTreeData = (data: TreeNodeData[]) => {
+export const flattenTreeData = (treeData: TreeNodeData[]) => {
   const flattedTreeData: TreeNodeData[] = []
 
   const dig = (
@@ -17,29 +17,37 @@ export const flattenTreeData = (data: TreeNodeData[]) => {
     ancestors?: TreeNodeData[],
     siblings?: TreeNodeData[]
   ) => {
-    const flattedNode = { ...node }
+    const { id, title, isLeaf, disabled, children } = node
+    const flattedNode: TreeNodeData = {
+      id,
+      title,
+      isLeaf,
+      disabled,
+      depth,
+      parent,
+      ancestors,
+      // 兄弟节点，注意其中会包含本身节点
+      siblings,
+      // 关联用户传入的原始节点
+      raw: node,
+    }
+
     flattedTreeData.push(flattedNode)
 
-    // 关联用户传入的原始节点
-    flattedNode.raw = node
-    flattedNode.depth = depth
-    flattedNode.parent = parent
-    flattedNode.ancestors = ancestors
-    // 兄弟节点，注意其中会包含本身节点
-    flattedNode.siblings = siblings
-
-    if (flattedNode.children) {
-      const { children } = flattedNode
+    if (children) {
       const childDepth = depth + 1
       // 祖先节点顺序由下至上
       const childAncestors = [flattedNode].concat(ancestors || [])
 
-      children.forEach((child) => dig(child, childDepth, flattedNode, childAncestors, children))
+      flattedNode.children = children.map((child) => {
+        return dig(child, childDepth, flattedNode, childAncestors, children)
+      })
     }
+
+    return flattedNode
   }
 
-  data.forEach((node) => dig(node))
-
+  treeData.forEach((node) => dig(node))
   return flattedTreeData
 }
 
@@ -115,12 +123,14 @@ export const deleteNodeById = (treeData: TreeNodeData[], targetId: React.ReactTe
  * @param treeData
  * @param targetId
  * @param sourceNode
+ * @param position 0 表示插入到孩子节点之前，1 表示之后
  * @returns
  */
 export const addChildNodeById = (
   treeData: TreeNodeData[],
   targetId: React.ReactText,
-  sourceNode: TreeNodeData
+  sourceNode: TreeNodeData,
+  position: 0 | 1 = 1
 ) => {
   const { length } = treeData
   for (let i = 0; i < length; ++i) {
@@ -131,12 +141,16 @@ export const addChildNodeById = (
         node.children = []
       }
 
-      node.children.push(sourceNode)
+      if (position === 1) {
+        node.children.push(sourceNode)
+      } else {
+        node.children = [sourceNode].concat(node.children)
+      }
       return
     }
 
     if (node.children) {
-      addChildNodeById(node.children, targetId, sourceNode)
+      addChildNodeById(node.children, targetId, sourceNode, position)
     }
   }
 }
@@ -174,6 +188,6 @@ export const insertNodeById = (
 /**
  * 生成 uuid
  *
- * @returns uuid
+ * @returns unique id
  */
 export const uuid = () => Math.random().toString(36).substring(5).split('').join('.')

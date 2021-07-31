@@ -60,6 +60,7 @@
   },
   "devDependencies": {
     "@hi-ui/hi-build": "^4.0.0-alpha.0",
+    "@types/lodash.clonedeep": "^4.5.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

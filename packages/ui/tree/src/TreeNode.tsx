@@ -415,8 +415,8 @@ export interface TreeNodeData {
   siblings?: TreeNodeData[]
 
   parent?: TreeNodeData
-  parentId?: React.ReactText
   raw?: TreeNodeData
+  type?: 'add'
 }
 
 if (__DEV__) {
