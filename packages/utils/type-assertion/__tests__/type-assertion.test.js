@@ -1,5 +1,5 @@
-const typeAssertion = require('../src');
+const typeAssertion = require('../src')
 
 describe('@hi-ui/type-assertion', () => {
-  it('needs tests');
-});
+  it('needs tests', () => {})
+})

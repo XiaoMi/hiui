@@ -1,5 +1,5 @@
-const Checkbox = require('../src');
+const Checkbox = require('../src')
 
 describe('@hi-ui/checkbox', () => {
-  it('needs tests');
-});
+  it('needs tests', () => {})
+})

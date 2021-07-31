@@ -1,5 +1,5 @@
-const Counter = require('../src');
+const Counter = require('../src')
 
 describe('@hi-ui/counter', () => {
-  it('needs tests');
-});
+  it('needs tests', () => {})
+})

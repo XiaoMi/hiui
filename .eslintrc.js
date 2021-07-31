@@ -6,6 +6,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    'jest/globals': true,
   },
   extends: ['plugin:react/recommended', 'standard', 'prettier', 'prettier/@typescript-eslint'],
   parserOptions: {
@@ -15,7 +16,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'prettier'],
+  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'prettier', 'jest'],
   settings: {
     react: {
       version: 'detect',

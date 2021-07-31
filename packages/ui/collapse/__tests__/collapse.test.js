@@ -1,5 +1,5 @@
-const Collapse = require('../src');
+const Collapse = require('../src')
 
 describe('@hi-ui/collapse', () => {
-  it('needs tests');
-});
+  it('needs tests', () => {})
+})

@@ -1,5 +1,5 @@
-const Switch = require('../src');
+const Switch = require('../src')
 
 describe('@hi-ui/switch', () => {
-  it('needs tests');
-});
+  it('needs tests', () => {})
+})
