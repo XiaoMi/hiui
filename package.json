@@ -21,7 +21,7 @@
     "lerna": "lerna",
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
-    "publish:pkg": "lerna publish",
+    "publish:pkg": "lerna publish --dist-tag feature",
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",
     "build": "lerna run build --no-private --sort --ignore @hi-ui/popper",
