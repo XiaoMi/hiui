@@ -5,7 +5,7 @@
     "lib": ["dom", "esnext"],
     "strict": true,
     "sourceMap": true,
-    "allowJs": false,
+    "allowJs": true,
     "declaration": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
