@@ -1,9 +1,14 @@
-import React, { forwardRef, useCallback, useRef, useState, useMemo } from 'react'
+import React, { forwardRef, useCallback, useRef, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { times } from '@hi-ui/times'
 import Checkbox from '@hi-ui/checkbox'
-import { defaultLoadingIcon } from './icons'
+import {
+  defaultLoadingIcon,
+  defaultCollapseIcon,
+  defaultExpandIcon,
+  defaultLeafIcon,
+} from './icons'
 import { useTreeContext } from './context'
 import { FlattedTreeNodeData, TreeNodeDragDirection } from './types'
 
@@ -23,6 +28,11 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       expanded = false,
       checked = false,
       semiChecked = false,
+      selected = false,
+      // custom switcher
+      collapseIcon: collapseIconProp = defaultCollapseIcon,
+      expandIcon: expandIconProp = defaultExpandIcon,
+      leafIcon: leafIconProp = defaultLeafIcon,
       ...rest
     },
     ref
@@ -30,21 +40,25 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     const {
       draggable = false,
       checkable = false,
-      selectedId,
       onSelect,
       onExpand,
-      onDragStart,
-      onDragEnd,
-      onDragOver,
-      onDrop,
+      onDragStart: onDragStartContext,
+      onDragEnd: onDragEndContext,
+      onDragOver: onDragOverContext,
+      onDrop: onDropContext,
+      onDragLeave: onDragLeaveContext,
       onLoadChildren,
       onNodeCheck,
       showLine,
-      collapseIcon,
-      expandIcon,
-      leafIcon,
       titleRender,
+      collapseIcon: collapseIconContext,
+      expandIcon: expandIconContext,
+      leafIcon: leafIconContext,
     } = useTreeContext()
+
+    const collapseIcon = collapseIconContext || collapseIconProp
+    const expandIcon = expandIconContext || expandIconProp
+    const leafIcon = leafIconContext || leafIconProp
 
     const { disabled } = node
     const enableDraggable = draggable && !disabled
@@ -56,105 +70,116 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     const dragIdRef = useRef<React.ReactText | null>(null)
 
     // 拖拽管理
-    const dragEventHandlers = useMemo(() => {
-      if (!enableDraggable) return
+    const onDragStart = useCallback(
+      (evt: React.DragEvent) => {
+        if (!enableDraggable) return
 
-      const { id, depth } = node
+        const { id, depth } = node
 
-      return {
-        onDragStart: (evt: React.DragEvent) => {
-          // console.log('onDragStart')
+        evt.stopPropagation()
 
-          evt.stopPropagation()
+        setIsDragging(true)
+        dragIdRef.current = id
+        evt.dataTransfer.setData('treeNode', JSON.stringify({ id, depth }))
 
-          setIsDragging(true)
-          dragIdRef.current = id
-          evt.dataTransfer.setData('treeNode', JSON.stringify({ id, depth }))
+        onDragStartContext?.(node)
+      },
+      [node, onDragStartContext, enableDraggable]
+    )
 
-          onDragStart?.(node)
-        },
-        onDragEnd: (evt: React.DragEvent) => {
-          // console.log('onDragEnd')
+    const onDragEnd = useCallback(
+      (evt: React.DragEvent) => {
+        // console.log('onDragEnd')
 
-          evt.preventDefault()
-          evt.stopPropagation()
-          evt.dataTransfer.clearData()
-          dragIdRef.current = null
-          setDirection(null)
-          setIsDragging(false)
+        evt.preventDefault()
+        evt.stopPropagation()
+        evt.dataTransfer.clearData()
+        dragIdRef.current = null
+        setDirection(null)
+        setIsDragging(false)
 
-          onDragEnd?.(node)
-        },
-        onDragLeave: (evt: React.DragEvent) => {
-          // console.log('onDragLeave')
+        onDragEndContext?.(node)
+      },
+      [node, onDragEndContext]
+    )
 
-          evt.preventDefault()
-          evt.stopPropagation()
-          setDirection(null)
-        },
-        // 拖至到目标元素上时触发事件
-        onDragOver: (evt: React.DragEvent) => {
-          const dragId = dragIdRef.current
-          // console.log('onDragOver', dragId)
+    const onDragLeave = useCallback(
+      (evt: React.DragEvent) => {
+        evt.preventDefault()
+        evt.stopPropagation()
+        setDirection(null)
+        onDragLeaveContext?.(node)
+      },
+      [node, onDragLeaveContext]
+    )
 
-          evt.preventDefault()
-          evt.stopPropagation()
+    // 拖至到目标元素上时触发事件
+    const onDragOver = useCallback(
+      (evt: React.DragEvent) => {
+        const dragId = dragIdRef.current
 
-          // 这里需要考虑3点：
-          // 拖到自己的老位置，不处理
-          // 父树不能拖到其子树内
-          // 不同于简单的文件夹拖拽，同层可以拖拽进行排序
-          if (dragId !== id) {
-            const targetBoundingRect = treeNodeTitleRef.current?.getBoundingClientRect()
-            if (!targetBoundingRect) return
+        evt.preventDefault()
+        evt.stopPropagation()
 
-            const hoverTargetSortY = (targetBoundingRect.bottom - targetBoundingRect.top) / 3
-            const hoverTargetInsideY = hoverTargetSortY + hoverTargetSortY
+        // 这里需要考虑3点：
+        // 拖到自己的老位置，不处理
+        // 父树不能拖到其子树内
+        // 不同于简单的文件夹拖拽，同层可以拖拽进行排序
+        if (dragId !== node.id) {
+          const targetBoundingRect = treeNodeTitleRef.current?.getBoundingClientRect()
+          if (!targetBoundingRect) return
 
-            // 鼠标垂直移动距离
-            const hoverClientY = evt.clientY - targetBoundingRect.top
+          const hoverTargetSortY = (targetBoundingRect.bottom - targetBoundingRect.top) / 3
+          const hoverTargetInsideY = hoverTargetSortY + hoverTargetSortY
 
-            // 将当前元素垂直平分为三层，每一层用来对应其放置的位置
-            if (hoverClientY < hoverTargetSortY) {
-              setDirection(TreeNodeDragDirection.BEFORE)
-            } else if (hoverClientY < hoverTargetInsideY) {
-              setDirection(TreeNodeDragDirection.INSIDE)
-            } else {
-              setDirection(TreeNodeDragDirection.AFTER)
-            }
+          // 鼠标垂直移动距离
+          const hoverClientY = evt.clientY - targetBoundingRect.top
+
+          // 将当前元素垂直平分为三层，每一层用来对应其放置的位置
+          if (hoverClientY < hoverTargetSortY) {
+            setDirection(TreeNodeDragDirection.BEFORE)
+          } else if (hoverClientY < hoverTargetInsideY) {
+            setDirection(TreeNodeDragDirection.INSIDE)
+          } else {
+            setDirection(TreeNodeDragDirection.AFTER)
           }
+        }
 
-          onDragOver?.(node)
-        },
-        // 放置目标元素时触发事件
-        onDrop: (evt: React.DragEvent) => {
-          const dragId = dragIdRef.current
+        onDragOverContext?.(node)
+      },
+      [node, onDragOverContext]
+    )
 
-          evt.preventDefault()
-          evt.stopPropagation()
-          setDirection(null)
+    // 放置目标元素时触发事件
+    const onDrop = useCallback(
+      (evt: React.DragEvent) => {
+        const dragId = dragIdRef.current
 
-          // 在拖拽的过程中，该节点可能已经不是该节点了
-          // 次数 dragId 为 null，node.id 变成了目标节点
-          if (onDrop && dragId !== id) {
-            const passedData = JSON.parse(evt.dataTransfer.getData('treeNode'))
-            // console.log('onDrop', passedData, dragId, id)
+        evt.preventDefault()
+        evt.stopPropagation()
+        setDirection(null)
 
-            onDrop({
-              targetId: id,
-              sourceId: passedData.id,
-              depth: { source: passedData.depth, target: depth },
-              direction,
-            })
-          }
-        },
-      }
-    }, [node, enableDraggable, direction, onDragStart, onDragEnd, onDragOver, onDrop])
+        // 在拖拽的过程中，该节点可能已经不是该节点了
+        // 次数 dragId 为 null，node.id 变成了目标节点
+        if (onDropContext && dragId !== node.id) {
+          const passedData = JSON.parse(evt.dataTransfer.getData('treeNode'))
+          // console.log('onDrop', passedData, dragId, id)
+
+          onDropContext({
+            targetId: node.id,
+            sourceId: passedData.id,
+            depth: { source: passedData.depth, target: node.depth },
+            direction,
+          })
+        }
+      },
+      [node, onDropContext, direction]
+    )
 
     const [loading, setLoading] = useState(false)
 
     const onExpandRef = useRef(onExpand)
-    React.useEffect(() => {
+    useEffect(() => {
       onExpandRef.current = onExpand
     })
 
@@ -212,7 +237,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       className,
       showLine && `${prefixCls}--linear`,
       direction && `${prefixCls}--drag-${direction}`,
-      selectedId === node.id && `${prefixCls}--selected`,
+      selected && `${prefixCls}--selected`,
       disabled && `${prefixCls}--disabled`,
       !node.isLeaf && `${prefixCls}--${expanded ? 'open' : 'closed'}`
     )
@@ -222,7 +247,11 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
         <div
           className={cx(`${prefixCls}__wrap`, isDragging && 'dragging')}
           draggable={enableDraggable}
-          {...dragEventHandlers}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onDragLeave={onDragLeave}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
         >
           {renderIndent(prefixCls, node)}
 
@@ -238,7 +267,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
             onLoadChildren
           )}
 
-          {renderCheckbox(node, onNodeCheck, checkable, disabled, checked, semiChecked)}
+          {renderCheckbox(node, checkable, disabled, checked, semiChecked, onNodeCheck)}
 
           {renderTitle(node, titleRender, onSelect)}
         </div>
@@ -273,21 +302,33 @@ export interface TreeNodeProps {
    */
   data: FlattedTreeNodeData
   /**
+   * 该节点是否被单选
+   */
+  selected?: boolean
+  /**
    * 该节点是否被展开
    */
   expanded?: boolean
   /**
-   * 该节点所在扁平化后的树中的位置
-   */
-  index?: number
-  /**
-   * 表示该节点被选中
+   * 表示该节点被复选
    */
   checked?: boolean
   /**
-   * 表示该节点被半选中
+   * 表示该节点被半选
    */
   semiChecked?: boolean
+  /**
+   * 节点收起时的默认图标
+   */
+  collapseIcon?: React.ReactNode
+  /**
+   * 节点展开时的默认图标
+   */
+  expandIcon?: React.ReactNode
+  /**
+   * 叶子结点的默认图标
+   */
+  leafIcon?: React.ReactNode
 }
 
 if (__DEV__) {
@@ -323,11 +364,11 @@ const renderIndent = (prefixCls: string, node: FlattedTreeNodeData) => {
  */
 const renderCheckbox = (
   node: FlattedTreeNodeData,
-  onNodeCheck: (checkedNode: FlattedTreeNodeData, checked: boolean) => void,
   checkable: boolean,
   disabled: boolean | undefined,
   checked: boolean | undefined,
-  semiChecked: boolean | undefined
+  semiChecked: boolean | undefined,
+  onNodeCheck?: (checkedNode: FlattedTreeNodeData, checked: boolean) => void
 ) => {
   return checkable ? (
     <Checkbox
@@ -336,7 +377,7 @@ const renderCheckbox = (
       disabled={disabled}
       focusable={false}
       onChange={() => {
-        onNodeCheck(node, !checked)
+        onNodeCheck?.(node, !checked)
       }}
     />
   ) : null

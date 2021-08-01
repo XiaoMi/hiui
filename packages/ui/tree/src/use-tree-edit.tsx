@@ -1,10 +1,8 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { cx } from '@hi-ui/classname'
 import { TreeProps } from './Tree'
-import { TreeNodeData } from './types'
-
-import { useEdit, useCache } from './hooks'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { FlattedTreeNodeData } from './types'
+import { useEdit, useCache, useExpandProps } from './hooks'
 import { flattenTreeData } from './utils'
 
 /**
@@ -28,7 +26,7 @@ export const useTreeEdit = (props: EditableTreeProps) => {
     onDelete,
     ...nativeTreeProps
   } = props
-  const flattedData: TreeNodeData[] = useMemo(() => flattenTreeData(data), [data])
+  const flattedData = useMemo(() => flattenTreeData(data), [data])
 
   const [treeData, setTreeData] = useCache(data)
   const [saveEdit, cancelAddNode, deleteNode, addChildNode, addSiblingNode] = useEdit(
@@ -43,16 +41,12 @@ export const useTreeEdit = (props: EditableTreeProps) => {
 
   // 拦截 expand：用于添加子节点时自动展开当前节点
   // 但是对外仍然暴露 expand 相关 props 原有的功能
-  const [expandedIds, tryToggleExpandedIds] = useUncontrolledState(
-    function getDefaultExpandedId() {
-      // 开启默认展开全部
-      if (defaultExpandAll) {
-        return flattedData.map((node) => node.id)
-      }
-      return defaultExpandedIds
-    },
+  const [expandedIds, tryToggleExpandedIds] = useExpandProps(
+    flattedData,
+    defaultExpandedIds,
     expandedIdsProp,
-    onExpand
+    onExpand,
+    defaultExpandAll
   )
 
   const renderTitleWithEditable = useCallback(
@@ -73,7 +67,7 @@ export const useTreeEdit = (props: EditableTreeProps) => {
   )
 
   const proxyTitleRender = useCallback(
-    (node: TreeNodeData) => {
+    (node: FlattedTreeNodeData) => {
       if (titleRender) {
         return titleRender(node)
       }
@@ -102,22 +96,22 @@ export interface EditableTreeProps extends TreeProps {
   /**
    * 节点保存新增、编辑状态时触发，返回 false 则节点保持失败，不会触发 onSave
    */
-  onBeforeSave?: (savedNode: TreeNodeData, data: any, level: number) => boolean
+  onBeforeSave?: (savedNode: FlattedTreeNodeData, data: any, level: number) => boolean
   /**
    * 	节点保存新增、编辑状态后触发
    */
-  onSave?: (savedNode: TreeNodeData, data: TreeNodeData[]) => void
+  onSave?: (savedNode: FlattedTreeNodeData, data: FlattedTreeNodeData[]) => void
   /**
    * 节点删除前触发，返回 false 则节点删除失败，不会触发 onDelete
    */
-  onBeforeDelete?: (deletedNode: TreeNodeData, data: any, level: number) => boolean
+  onBeforeDelete?: (deletedNode: FlattedTreeNodeData, data: any, level: number) => boolean
   /**
    * 节点删除后触发
    */
-  onDelete?: (deletedNode: TreeNodeData, data: TreeNodeData[]) => void
+  onDelete?: (deletedNode: FlattedTreeNodeData, data: FlattedTreeNodeData[]) => void
 }
 
-const EditableTreeNode = (props) => {
+const EditableTreeNode = (props: any) => {
   const { node, onSave, onCancel, onDelete, addChildNode, addSiblingNode, onExpand } = props
 
   // 待添加
@@ -202,7 +196,7 @@ const EditableTreeNode = (props) => {
             addChildNode(node)
             // 展开子节点列表
             // TODO: 动画丢失，动画触发来源有多个，如何将展开收起和动画触发解耦
-            onExpand((prev) => Array.from(new Set(prev.concat(node.id))))
+            onExpand((prev: any) => Array.from(new Set(prev.concat(node.id))))
           }}
         >
           addChild

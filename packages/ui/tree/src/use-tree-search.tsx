@@ -1,10 +1,9 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import { TreeProps } from './Tree'
-import { TreeNodeData } from './types'
-
+import { TreeNodeData, FlattedTreeNodeData } from './types'
 import { flattenTreeData } from './utils'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import cloneDeep from 'lodash.clonedeep'
+import { useExpandProps } from './hooks/use-expand'
 
 /**
  * 将 BaseTree 添加定制搜索功能，返回 SearchableTree
@@ -24,20 +23,16 @@ export const useTreeSearch = (props: SearchableTreeProps) => {
     ...nativeTreeProps
   } = props
 
-  const flattedData: TreeNodeData[] = useMemo(() => flattenTreeData(data), [data])
+  const flattedData = useMemo(() => flattenTreeData(data), [data])
 
   // 拦截 expand：用于搜索时控制将搜到的结果高亮，并且自动展开节点
   // 但是对外仍然暴露 expand 相关 props 原有的功能
-  const [expandedIds, tryToggleExpandedIds] = useUncontrolledState(
-    function getDefaultExpandedId() {
-      // 开启默认展开全部
-      if (defaultExpandAll) {
-        return flattedData.map((node) => node.id)
-      }
-      return defaultExpandedIds
-    },
+  const [expandedIds, tryToggleExpandedIds] = useExpandProps(
+    flattedData,
+    defaultExpandedIds,
     expandedIdsProp,
-    onExpand
+    onExpand,
+    defaultExpandAll
   )
 
   const [searchValue, setSearchValue] = useState('')
@@ -79,7 +74,7 @@ export const useTreeSearch = (props: SearchableTreeProps) => {
 
   // 拦截 titleRender，自定义高亮展示
   const proxyTitleRender = useCallback(
-    (node: TreeNodeData) => {
+    (node: FlattedTreeNodeData) => {
       if (titleRender) {
         return titleRender(node)
       }
@@ -111,7 +106,7 @@ export const useTreeSearch = (props: SearchableTreeProps) => {
 
       // TODO: 是否当做 props 可以自动展开被展开节点的所有祖先节点
       const filteredNodeIds = matchedNodes
-        .reduce((prev, node) => prev.concat(node.ancestors ?? []), [] as TreeNodeData[])
+        .reduce((prev, node) => prev.concat(node.ancestors || []), [] as FlattedTreeNodeData[])
         .map((node) => node.id)
 
       setMatchedNodes(matchedNodes)
@@ -130,9 +125,9 @@ export interface SearchableTreeProps extends TreeProps {
 }
 
 const getMatchedNodes = (
-  flattedData: TreeNodeData[],
+  flattedData: FlattedTreeNodeData[],
   searchValue: React.ReactText
-): TreeNodeData[] => {
+): FlattedTreeNodeData[] => {
   if (!searchValue) return []
 
   // @ts-ignore

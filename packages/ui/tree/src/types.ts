@@ -48,26 +48,48 @@ export interface FlattedTreeNodeData extends TreeNodeData {
    * 该节点的兄弟节点列表，注意其中包含节点本身
    */
   siblings?: TreeNodeData[]
+  /**
+   * 节点类型，控制操作节点的行为
+   */
+  type?: TreeNodeType
 }
 
 type ValueOf<T> = T[keyof T]
 
 // 表示拖拽
 export const TreeNodeDragDirection = {
-  BEFORE: 'BEFORE',
-  INSIDE: 'INSIDE',
-  AFTER: 'AFTER',
+  BEFORE: 'before',
+  INSIDE: 'inside',
+  AFTER: 'after',
 } as const
 
 // eslint-disable-next-line no-redeclare
 export type TreeNodeDragDirection = ValueOf<typeof TreeNodeDragDirection> | null
 
+// 表示节点类型
+export const TreeNodeType = {
+  SHOW: 'show',
+  HIDE: 'hide',
+  ADD: 'add',
+} as const
+
+// eslint-disable-next-line no-redeclare
+export type TreeNodeType = ValueOf<typeof TreeNodeType> | null
+
 export type TreeDataStatus = {
-  before: FlattedTreeNodeData[]
-  after: FlattedTreeNodeData[]
+  before: TreeNodeData[]
+  after: TreeNodeData[]
 }
 
 export type TreeLevelStatus = {
   before: number
   after: number
 }
+
+export interface MotionTreeNodeData {
+  id: React.ReactText
+  type: TreeNodeType
+  children: FlattedTreeNodeData[]
+}
+
+export type TreeNodeTransitionData = MotionTreeNodeData | FlattedTreeNodeData

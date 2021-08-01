@@ -1,14 +1,14 @@
-import React, { forwardRef, useMemo, useImperativeHandle } from 'react'
+import React, { forwardRef, useMemo, useCallback, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
-import { useExpand, useSelect, useTreeDrop, useCache, useCheck, useEdit } from './hooks'
+import { useExpand, useSelect, useTreeDrop, useCheck, isMotionNodeData } from './hooks'
 import { TreeNodeData, FlattedTreeNodeData, TreeDataStatus, TreeLevelStatus } from './types'
-
 import { TreeProvider } from './context'
-import { MotionTreeNode } from './MotionTreeNode'
 import VirtualList from 'rc-virtual-list'
-import { defaultCollapseIcon, defaultExpandIcon, defaultLeafIcon } from './icons'
+import { MotionTreeNode } from './MotionTreeNode'
+import { TreeNode } from './TreeNode'
+import { useCache } from './hooks/use-cache'
 
 const _role = 'tree'
 const _prefix = getPrefixCls(_role)
@@ -29,6 +29,8 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       expandedIds,
       defaultExpandedIds = [],
       onExpand,
+      // async load
+      onLoadChildren,
       // virtual list
       height,
       itemHeight = 32,
@@ -38,11 +40,6 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       selectedId: selectedIdProp,
       defaultSelectedId,
       onSelect,
-      // editable
-      onBeforeSave,
-      onBeforeDelete,
-      onSave,
-      onDelete,
       // drag or drop
       draggable = false,
       onDragStart,
@@ -50,67 +47,50 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onDrop,
       onDropEnd,
       onDragOver,
-      // async load
-      onLoadChildren,
+      onDragLeave,
       // checkable
       checkable = false,
       defaultCheckedIds = [],
       checkedIds: checkedIdsProp,
       onCheck,
       // custom switcher
-      collapseIcon = defaultCollapseIcon,
-      expandIcon = defaultExpandIcon,
-      leafIcon = defaultLeafIcon,
+      collapseIcon,
+      expandIcon,
+      leafIcon,
       // others
       showLine = false,
-      appearance = 'normal',
       titleRender,
+      onContextMenu,
       ...rest
     },
     ref
   ) => {
-    // TODO: 考虑是否要做成 value-onChange 的受控模式
-    // 目前修改来源有拖拽、编辑，通过回调函数的返回布尔值来进行是否内部以非受控模式更新 data
-    // 在这种模式，当外部 data 一旦改变，内部的非受控状态 data 的所有改变都可能会被抹除
     const [treeData, setTreeData] = useCache(data)
-    const flattedData: TreeNodeData[] = useMemo(() => flattenTreeData(treeData), [treeData])
 
-    console.log('treeData', treeData)
+    const flattedData = useMemo(() => flattenTreeData(treeData), [treeData])
 
-    const disabledSelect = !selectable
-    const [selectedId, trySelectNode] = useSelect(
+    const [selectedId, onNodeSelect] = useSelect(
       defaultSelectedId,
       selectedIdProp,
       onSelect,
-      disabledSelect
+      !selectable
     )
 
-    const [
-      transitionData,
-      expandedNodeIds,
-      tryToggleExpandedIds,
-      onNodeToggleStart,
-      onNodeToggleEnd,
-      checkIfExpanded,
-    ] = useExpand(flattedData, defaultExpandedIds, expandedIds, onExpand, defaultExpandAll)
+    const dropTree = useTreeDrop(treeData, flattedData, setTreeData, onDrop, onDropEnd)
 
-    const dropTree = useTreeDrop(treeData, flattedData, onDrop, onDropEnd)
+    const [transitionData, onNodeToggleStart, onNodeToggleEnd, isExpandedId] = useExpand(
+      flattedData,
+      defaultExpandedIds,
+      expandedIds,
+      onExpand,
+      defaultExpandAll
+    )
 
-    const [isCheckedId, isSemiCheckedId, onNodeCheck] = useCheck(
+    const [onNodeCheck, isCheckedId, isSemiCheckedId] = useCheck(
       flattedData,
       defaultCheckedIds,
       checkedIdsProp,
       onCheck
-    )
-
-    const [saveEdit, cancelAddNode, deleteNode, addChildNode, addSiblingNode] = useEdit(
-      data,
-      treeData,
-      setTreeData,
-      onBeforeSave,
-      onBeforeDelete,
-      onSave,
-      onDelete
     )
 
     const treeRef = React.useRef<HTMLUListElement>(null)
@@ -121,37 +101,25 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
           ...treeRef.current,
           // TODO: 类型未声明
           // 约定内部向外暴露的自定义方法形式以 `$` 开头，避免和原生混合
-          $saveNode: saveEdit,
-          // $cancelAddNode: cancelAddNode,
-          $deleteNode: deleteNode,
-          $addChildNode: addChildNode,
-          $addSiblingNode: addSiblingNode,
         } as HTMLUListElement),
-      [deleteNode, addChildNode, addSiblingNode, saveEdit]
+      []
     )
 
     const cls = cx(prefixCls, className)
 
     const providedValue = useMemo(
       () => ({
-        selectedId: selectedId,
-        onSelect: trySelectNode,
+        onSelect: onNodeSelect,
         onExpand: onNodeToggleStart,
         draggable,
         checkable,
         onNodeCheck,
         onDragStart,
         onDragEnd,
+        onDragOver,
+        onDragLeave,
         onDrop: dropTree,
         onLoadChildren,
-        // TODO: 抽离
-        onSave: saveEdit,
-        onCancel: cancelAddNode,
-        onDelete: deleteNode,
-        addChildNode,
-        addSiblingNode,
-        tryToggleExpandedIds,
-        appearance,
         showLine,
         collapseIcon,
         expandIcon,
@@ -159,23 +127,17 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         titleRender,
       }),
       [
-        selectedId,
-        trySelectNode,
+        onNodeSelect,
         onNodeToggleStart,
         draggable,
         checkable,
         onNodeCheck,
         onDragStart,
         onDragEnd,
+        onDragOver,
+        onDragLeave,
         dropTree,
         onLoadChildren,
-        saveEdit,
-        cancelAddNode,
-        deleteNode,
-        addChildNode,
-        addSiblingNode,
-        tryToggleExpandedIds,
-        appearance,
         showLine,
         collapseIcon,
         expandIcon,
@@ -194,6 +156,18 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
 
     // console.log(flattedData, transitionData)
 
+    const getTreeNodeProps = useCallback(
+      (id: React.ReactText) => {
+        return {
+          expanded: isExpandedId(id),
+          checked: isCheckedId(id),
+          semiChecked: isSemiCheckedId(id),
+          selected: selectedId === id,
+        }
+      },
+      [isExpandedId, isCheckedId, isSemiCheckedId, selectedId]
+    )
+
     return (
       <TreeProvider value={providedValue}>
         <ul ref={treeRef} role={role} className={cls} {...rest}>
@@ -206,20 +180,18 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
             itemHeight={itemHeight}
             prefixCls={`${prefixCls}-list`}
           >
-            {(node: TreeNodeData) => {
-              return (
+            {(node) => {
+              return isMotionNodeData(node) ? (
                 <MotionTreeNode
-                  // idx={index}
-                  // tabIndex={index === defaultFocus ? 0 : -1}
                   key={node.id}
                   data={node}
+                  prefixCls={prefixCls}
                   onMotionEnd={onNodeToggleEnd}
-                  // TODO: 注意这些属性对于动画节点并不生效
-                  isExpanded={checkIfExpanded}
-                  isChecked={isCheckedId}
-                  isSemiChecked={isSemiCheckedId}
                   overscanCount={overscanCount}
+                  getTreeNodeProps={getTreeNodeProps}
                 />
+              ) : (
+                <TreeNode key={node.id} data={node} {...getTreeNodeProps(node.id)} />
               )
             }}
           </VirtualList>
@@ -269,7 +241,7 @@ export interface TreeProps {
   /**
    * 点击异步加载子项
    */
-  onLoadChildren?: (node: FlattedTreeNodeData) => FlattedTreeNodeData[]
+  onLoadChildren?: (node: FlattedTreeNodeData) => Promise<any>
   /**
    * 选中的节点
    */
@@ -306,7 +278,7 @@ export interface TreeProps {
     dropNode: FlattedTreeNodeData,
     dataStatus: TreeDataStatus,
     level: TreeLevelStatus
-  ) => boolean
+  ) => boolean | Promise<any>
   /**
    * 节点拖拽成功时触发，`onDrop` 不拦截或者返回 `false` 才会触发
    */

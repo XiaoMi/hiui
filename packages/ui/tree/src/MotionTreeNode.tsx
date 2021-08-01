@@ -1,120 +1,71 @@
-import React, { forwardRef, useRef, useState } from 'react'
-import { cx, getPrefixCls } from '@hi-ui/classname'
-import { __DEV__ } from '@hi-ui/env'
-// import { EditableTreeNode as TreeNode } from './EditableTreeNode'
-import { TreeNode } from './TreeNode'
-
-import { MOTION_NODE_KEY } from './hooks'
+import React, { useRef, useState, useEffect, forwardRef } from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import { times } from '@hi-ui/times'
-
-const _role = 'tree-node'
-const _prefix = getPrefixCls(_role)
+import { TreeNode } from './TreeNode'
+import { TreeNodeType, MotionTreeNodeData } from './types'
+import { __DEV__ } from '@hi-ui/env'
+import { useMergeRefs } from '@hi-ui/use-merge-refs'
 
 /**
  * TODO: What is MotionTreeNode
  */
-export const MotionTreeNode = forwardRef<HTMLLIElement | null, MotionTreeNodeProps>(
-  (
-    {
-      prefixCls = _prefix,
-      role = _role,
-      className,
-      data,
-      onMotionEnd,
-      style,
-      isExpanded,
-      isChecked,
-      isSemiChecked,
-      overscanCount,
-      ...rest
-    },
-    ref
-  ) => {
+export const MotionTreeNode = forwardRef<HTMLDivElement | null, MotionTreeNodeProps>(
+  ({ prefixCls, data, onMotionEnd, overscanCount, getTreeNodeProps }, ref) => {
+    const { children: childrenNodes, type } = data
     // 根据 type 控制显隐过渡动画
-    const { id, children, type } = data
-    const isMotion = id === MOTION_NODE_KEY
-    const isHide = isMotion && type === 'hide'
-    const isShow = isMotion && type === 'show'
+    const [visible, setVisible] = useState(() => type === TreeNodeType.HIDE)
+    const [height, setHeight] = useState<number | undefined>()
 
     const motionNodeRef = useRef<HTMLDivElement>(null)
 
-    const [visible, setVisible] = useState(isHide)
-    const [height, setHeight] = useState<number | undefined>()
-
-    React.useEffect(() => {
+    useEffect(() => {
       if (visible) {
-        isHide && setVisible(false)
+        if (type === TreeNodeType.HIDE) {
+          setVisible(false)
+        }
       } else {
-        isShow && setVisible(true)
+        if (type === TreeNodeType.SHOW) {
+          setVisible(true)
+        }
       }
-    }, [isHide, isShow, visible])
+    }, [visible, type])
 
-    // 使用一个 dom 包裹，给过渡的列表集合体添加过渡动画
-    if (id === MOTION_NODE_KEY) {
-      const motionCount = Math.min(children.length, overscanCount ?? children.length)
-
-      return (
-        <CSSTransition
-          classNames={`${prefixCls}__motion`}
-          in={visible}
-          unmountOnExit
-          timeout={320}
-          // 0 => scrollHeight
-          onEnter={() => {
-            setHeight(0)
-          }}
-          onEntering={() => {
-            const nextHeight = motionNodeRef.current?.scrollHeight ?? 0
-            setHeight(nextHeight)
-          }}
-          onEntered={onMotionEnd}
-          style={{ height: height }}
-          // scrollHeight => 0
-          onExit={() => {
-            const nextHeight = motionNodeRef.current?.scrollHeight ?? 0
-            setHeight(nextHeight)
-          }}
-          onExiting={() => {
-            setHeight(0)
-          }}
-          onExited={onMotionEnd}
-        >
-          <div ref={motionNodeRef} className={'motion-tree-node'}>
-            {times(motionCount, (index) => {
-              const treeNode = children[index]
-
-              return (
-                <TreeNode
-                  key={treeNode.id}
-                  ref={ref}
-                  className={className}
-                  data={treeNode}
-                  // TODO:优化在一个地方统一处理或者缓存，不然会执行多次
-                  // 需要赋予以下必要的值，用于过渡动画时也能正确展示一些状态
-                  expanded={isExpanded(treeNode.id)}
-                  checked={isChecked(treeNode.id)}
-                  semiChecked={isSemiChecked(treeNode.id)}
-                  {...rest}
-                />
-              )
-            })}
-          </div>
-        </CSSTransition>
-      )
-    }
+    const motionCount = Math.min(childrenNodes.length, overscanCount ?? childrenNodes.length)
 
     return (
-      <TreeNode
-        ref={ref}
-        className={className}
-        data={data}
-        style={style}
-        expanded={isExpanded(id)}
-        checked={isChecked(id)}
-        semiChecked={isSemiChecked(id)}
-        {...rest}
-      />
+      <CSSTransition
+        classNames={`${prefixCls}-motion`}
+        style={{ height }}
+        in={visible}
+        timeout={320}
+        unmountOnExit
+        // 0 => scrollHeight
+        onEnter={() => {
+          setHeight(0)
+        }}
+        onEntering={() => {
+          const nextHeight = motionNodeRef.current?.scrollHeight ?? 0
+          setHeight(nextHeight)
+        }}
+        onEntered={onMotionEnd}
+        // scrollHeight => 0
+        onExit={() => {
+          const nextHeight = motionNodeRef.current?.scrollHeight ?? 0
+          setHeight(nextHeight)
+        }}
+        onExiting={() => {
+          setHeight(0)
+        }}
+        onExited={onMotionEnd}
+      >
+        {/* 使用一个 dom 包裹，给过渡的列表集合体添加过渡动画 */}
+        <div ref={useMergeRefs(ref, motionNodeRef)} className={`${prefixCls}-motion-node`}>
+          {times(motionCount, (index) => {
+            const treeNode = childrenNodes[index]
+            return <TreeNode key={treeNode.id} data={treeNode} {...getTreeNodeProps(treeNode.id)} />
+          })}
+        </div>
+      </CSSTransition>
     )
   }
 )
@@ -123,36 +74,30 @@ export interface MotionTreeNodeProps {
   /**
    * 组件默认的选择器类
    */
-  prefixCls?: string
+  prefixCls: string
   /**
-   * 组件的语义化 Role 属性
+   * 树节点过渡数据
    */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
   data: MotionTreeNodeData
-  expanded?: boolean
-  onMotionEnd?: any
-  isExpanded: (id: React.ReactText) => boolean
-  isChecked: (id: React.ReactText) => boolean
-  isSemiChecked: (id: React.ReactText) => boolean
-  overscanCount: number
-}
-
-export interface MotionTreeNodeData {
-  id: React.ReactText
-  title: React.ReactNode
-  children?: MotionTreeNodeData[]
-  isLeaf?: boolean
-  disabled?: boolean
-  depth?: number
-  ancestors?: any[]
+  /**
+   * 在可视区中可展示的树节点个数
+   */
+  overscanCount: number | undefined
+  /**
+   * 过渡动画结束后回调
+   */
+  onMotionEnd: () => void
+  /**
+   * 获取节点的基础状态 props
+   */
+  getTreeNodeProps: (
+    id: React.ReactText
+  ) => {
+    expanded: boolean
+    checked: boolean
+    semiChecked: boolean
+    selected: boolean
+  }
 }
 
 if (__DEV__) {

@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { TreeNodeData } from '../TreeNode'
+import { FlattedTreeNodeData } from '../types'
 
 /**
- * 一个用于 tree 组件选择的 hook
+ * 一个用于 tree 组件选中的 hook
  *
- * @param defaultSelectedId 非受控默认选中的 id，默认为 `null`，唯一表示不选中任何实体
+ * @param defaultSelectedId 非受控默认选中的 id，其值默认为 `null`，表示不选中任何实体
  * @param selectedIdProp
  * @param onSelectProp
  * @param disabled
@@ -14,11 +14,14 @@ import { TreeNodeData } from '../TreeNode'
 export const useSelect = (
   defaultSelectedId: React.ReactText | null = null,
   selectedIdProp?: React.ReactText | null,
-  onSelectProp?: (selectedId: React.ReactText | null, item: TreeNodeData | null) => void,
+  onSelectProp?: (
+    selectedId: React.ReactText | null,
+    selectedNode: FlattedTreeNodeData | null
+  ) => void,
   disabled = false
 ) => {
   const proxyOnSelect = useCallback(
-    (id: React.ReactText | null, item: TreeNodeData | null) => {
+    (id: React.ReactText | null, item: FlattedTreeNodeData | null) => {
       onSelectProp?.(id, item)
     },
     [onSelectProp]
@@ -31,16 +34,15 @@ export const useSelect = (
   )
 
   const onSelect = useCallback(
-    (selectedItem: TreeNodeData) => {
-      if (disabled) return
+    (selectedItem: FlattedTreeNodeData) => {
+      if (disabled || selectedItem.disabled) return
 
       if (selectedId === selectedItem.id) {
         // 允许取消选中
         tryChangeSelectedId(null, null)
-        return
+      } else {
+        tryChangeSelectedId(selectedItem.id, selectedItem)
       }
-
-      tryChangeSelectedId(selectedItem.id, selectedItem)
     },
     [disabled, selectedId, tryChangeSelectedId]
   )

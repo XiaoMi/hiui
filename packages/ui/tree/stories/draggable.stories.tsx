@@ -38,7 +38,8 @@ export const Draggable = () => {
           draggable
           onDrop={(dragNode, dropNode, data, level) => {
             console.log('onDrop', dragNode, dropNode, data, level)
-            setTreeData(data.after)
+            // setTreeData(data.after)
+            return true
           }}
           data={treeData}
         ></Tree>
