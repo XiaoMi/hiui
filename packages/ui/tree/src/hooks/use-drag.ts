@@ -1,7 +1,7 @@
-// @ts-nocheck
 import React, { useCallback, useRef, useState, useEffect } from 'react'
-import { TreeNodeData, TreeNodeDragDirection } from '../TreeNode'
+import { TreeNodeData } from '../TreeNode'
 import cloneDeep from 'lodash.clonedeep'
+import { TreeNodeDragDirection } from '../types'
 import {
   fFindNodeById,
   deleteNodeById,
@@ -42,7 +42,7 @@ export const useTreeDrop = (
       }
 
       const nextTreeData = cloneDeep(treeData)
-      const isInsertToInside = direction === 'inside'
+      const isInsertToInside = direction === TreeNodeDragDirection.INSIDE
 
       // console.log('Moving Node---------------', sourceId, targetId)
 
@@ -52,7 +52,12 @@ export const useTreeDrop = (
       if (isInsertToInside) {
         addChildNodeById(nextTreeData, targetId, sourceNode)
       } else {
-        insertNodeById(nextTreeData, targetId, sourceNode, direction === 'before' ? 0 : 1)
+        insertNodeById(
+          nextTreeData,
+          targetId,
+          sourceNode,
+          direction === TreeNodeDragDirection.BEFORE ? 0 : 1
+        )
       }
 
       if (onDrop) {
@@ -157,11 +162,11 @@ export const useTreeDragDrop = (props) => {
 
         // 将当前元素垂直平分为三层，每一层用来对应其放置的位置
         if (hoverClientY < hoverTargetSortY) {
-          setDirection('before')
+          setDirection(TreeNodeDragDirection.BEFORE)
         } else if (hoverClientY < hoverTargetInsideY) {
-          setDirection('inside')
+          setDirection(TreeNodeDragDirection.INSIDE)
         } else {
-          setDirection('after')
+          setDirection(TreeNodeDragDirection.AFTER)
         }
       }
 

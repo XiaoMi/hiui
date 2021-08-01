@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { cx } from '@hi-ui/classname'
 import { TreeProps } from './Tree'
-import { TreeNodeData } from './TreeNode'
+import { TreeNodeData } from './types'
+
 import { useEdit, useCache } from './hooks'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { flattenTreeData } from './utils'
@@ -200,6 +201,7 @@ const EditableTreeNode = (props) => {
           onClick={() => {
             addChildNode(node)
             // 展开子节点列表
+            // TODO: 动画丢失，动画触发来源有多个，如何将展开收起和动画触发解耦
             onExpand((prev) => Array.from(new Set(prev.concat(node.id))))
           }}
         >

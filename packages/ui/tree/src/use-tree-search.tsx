@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import { TreeProps } from './Tree'
-import { TreeNodeData } from './TreeNode'
+import { TreeNodeData } from './types'
+
 import { flattenTreeData } from './utils'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import cloneDeep from 'lodash.clonedeep'
@@ -122,6 +123,9 @@ export const useTreeSearch = (props: SearchableTreeProps) => {
 }
 
 export interface SearchableTreeProps extends TreeProps {
+  /**
+   * 节点可搜索
+   */
   searchable?: boolean
 }
 

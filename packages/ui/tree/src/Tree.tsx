@@ -1,10 +1,10 @@
-// @ts-nocheck
 import React, { forwardRef, useMemo, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
 import { useExpand, useSelect, useTreeDrop, useCache, useCheck, useEdit } from './hooks'
-import { TreeNodeData } from './TreeNode'
+import { TreeNodeData, FlattedTreeNodeData, TreeDataStatus, TreeLevelStatus } from './types'
+
 import { TreeProvider } from './context'
 import { MotionTreeNode } from './MotionTreeNode'
 import VirtualList from 'rc-virtual-list'
@@ -24,7 +24,6 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       className,
       children,
       data,
-      disabled = false,
       // expand or collapse
       defaultExpandAll = false,
       expandedIds,
@@ -76,7 +75,9 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     const [treeData, setTreeData] = useCache(data)
     const flattedData: TreeNodeData[] = useMemo(() => flattenTreeData(treeData), [treeData])
 
-    const disabledSelect = disabled || !selectable
+    console.log('treeData', treeData)
+
+    const disabledSelect = !selectable
     const [selectedId, trySelectNode] = useSelect(
       defaultSelectedId,
       selectedIdProp,
@@ -136,7 +137,6 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         selectedId: selectedId,
         onSelect: trySelectNode,
         onExpand: onNodeToggleStart,
-        disabled,
         draggable,
         checkable,
         onNodeCheck,
@@ -164,7 +164,6 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         onNodeToggleStart,
         draggable,
         checkable,
-        disabled,
         onNodeCheck,
         onDragStart,
         onDragEnd,
@@ -266,7 +265,11 @@ export interface TreeProps {
   /**
    * 节点被点击(展开/收起)时触发
    */
-  onExpand?: (expandIds: React.ReactText[], expandedNode: TreeNodeData, expanded: boolean) => void
+  onExpand?: (expandIds: React.ReactText[], node: FlattedTreeNodeData, expanded: boolean) => void
+  /**
+   * 点击异步加载子项
+   */
+  onLoadChildren?: (node: FlattedTreeNodeData) => FlattedTreeNodeData[]
   /**
    * 选中的节点
    */
@@ -276,9 +279,9 @@ export interface TreeProps {
    */
   defaultSelectedId?: React.ReactText
   /**
-   * 点击节点时触发选中
+   * 点击节点时触发选中，null 表示未选中
    */
-  onSelect?: (selectedId: React.ReactText | null, selectedNode: TreeNodeData | null) => void
+  onSelect?: (selectedId: React.ReactText | null, selectedNode: FlattedTreeNodeData | null) => void
   /**
    * 节点是否可选中
    */
@@ -288,35 +291,34 @@ export interface TreeProps {
    */
   draggable?: boolean
   /**
-   * 是否禁用节点
-   */
-  disabled?: boolean
-  /**
    * 节点开始拖拽时触发
    */
-  onDragStart?: (dragNode: TreeNodeData) => void
+  onDragStart?: (dragNode: FlattedTreeNodeData) => void
   /**
    * 节点结束拖拽时触发
    */
-  onDragEnd?: (dragNode: TreeNodeData) => void
+  onDragEnd?: (dragNode: FlattedTreeNodeData) => void
   /**
-   * 节点放开时触发
+   * 节点放开时触发，返回 true 表示允许更新拖拽后数据
    */
   onDrop?: (
-    dragNode: TreeNodeData,
-    dropNode: TreeNodeData,
-    data: TreeNodeData[],
-    level: number
+    dragNode: FlattedTreeNodeData,
+    dropNode: FlattedTreeNodeData,
+    dataStatus: TreeDataStatus,
+    level: TreeLevelStatus
   ) => boolean
   /**
-   * 节点拖拽成功时触发
+   * 节点拖拽成功时触发，`onDrop` 不拦截或者返回 `false` 才会触发
    */
-  onDropEnd?: (dragNode: TreeNodeData, dropNode: TreeNodeData) => void
-  onDragOver?: any
+  onDropEnd?: (dragNode: FlattedTreeNodeData, dropNode: FlattedTreeNodeData) => void
   /**
-   * 点击异步加载子项
+   * 节点 drag leaver 时调用
    */
-  onLoadChildren?: (selectedNode: TreeNodeData) => TreeNodeData
+  onDragLeave?: (node: FlattedTreeNodeData) => void
+  /**
+   * 节点 drag over 时调用
+   */
+  onDragOver?: (node: FlattedTreeNodeData) => void
   /**
    * 节点前添加 Checkbox 复选框（暂不支持与 draggable 和 editable 同时使用）
    */
@@ -332,7 +334,14 @@ export interface TreeProps {
   /**
    * 点击节点多选框触发
    */
-  onCheck?: (checkedIds: React.ReactText[], checkedNode: TreeNodeData, checked: boolean) => void
+  onCheck?: (
+    checkedInfo: {
+      checkedIds: React.ReactText[]
+      semiCheckedIds: React.ReactText[]
+    },
+    node: FlattedTreeNodeData,
+    checked: boolean
+  ) => void
   /**
    * 设置虚拟滚动容器的可视高度
    */
@@ -349,11 +358,6 @@ export interface TreeProps {
    * 展示连接线
    */
   showLine?: boolean
-  onBeforeSave?: any
-  onBeforeDelete?: any
-  onSave?: any
-  onDelete?: any
-  // appearance?: 'normal' | 'folder'
   /**
    * 节点收起时的默认图标
    */
@@ -369,7 +373,11 @@ export interface TreeProps {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (node: TreeNodeData) => React.ReactNode
+  titleRender?: (node: FlattedTreeNodeData) => React.ReactNode
+  /**
+   * 自定义节点右键菜单
+   */
+  onContextMenu?: (event: React.MouseEvent, node: FlattedTreeNodeData) => void
 }
 
 if (__DEV__) {

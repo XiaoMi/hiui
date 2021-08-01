@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { forwardRef, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'

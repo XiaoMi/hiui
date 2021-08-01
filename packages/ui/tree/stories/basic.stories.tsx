@@ -2,6 +2,12 @@ import React from 'react'
 import Tree from '../src'
 
 export const Basic = () => {
+  const [state, setState] = React.useState('')
+  React.useEffect(() => {
+    setState('22')
+  }, [])
+  console.log('render')
+
   return (
     <>
       <h1>Basic for Tree</h1>

@@ -1,21 +1,24 @@
-import { createContext, useContext } from 'react'
-import { TreeNodeData } from './TreeNode'
+import React, { createContext, useContext } from 'react'
+import { FlattedTreeNodeData } from './types'
 
 interface TreeContext {
   selectedId?: string
-  onSelect?: (node: any) => void
+  onSelect?: (node: FlattedTreeNodeData) => void
   disabled?: boolean
   draggable?: boolean
-  onExpand?: () => void
-  onDragStart?: (dragNode: TreeNodeData) => void
-  onDragEnd?: (dragNode: TreeNodeData) => void
+  onExpand?: (expandedNode: FlattedTreeNodeData, isExpanded: boolean) => void
+  onDragStart?: (dragNode: FlattedTreeNodeData) => void
+  onDragEnd?: (dragNode: FlattedTreeNodeData) => void
   onDragOver?: any
   onDrop?: any
-  onLoadChildren?: () => void
-  appearance?: 'linear' | 'normal'
+  onLoadChildren?: (node: FlattedTreeNodeData) => Promise<any>
   checkable?: boolean
-  onNodeCheck?: any
-  searchValue?: string
+  onNodeCheck: (checkedNode: FlattedTreeNodeData, checked: boolean) => void
+  showLine?: boolean
+  collapseIcon?: React.ReactNode
+  expandIcon?: React.ReactNode
+  leafIcon?: React.ReactNode
+  titleRender?: (node: FlattedTreeNodeData) => React.ReactNode
 }
 
 const treeContext = createContext<TreeContext>({})

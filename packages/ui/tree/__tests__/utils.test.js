@@ -2,31 +2,30 @@ import { flattenTreeData } from '../src/utils'
 
 describe('utils', () => {
   describe('flatten treeNode', () => {
-    function getNode(id, children) {
+    function gNode(id, children) {
       return {
         id,
-        title: id,
         children,
       }
     }
 
     it('order should pre-order', () => {
       const flattedData = flattenTreeData([
-        getNode('0', [
-          getNode('0-0'),
-          getNode('0-1'),
-          getNode('0-2', [
-            getNode('0-2-0'),
-            getNode('0-2-1'),
-            getNode('0-2-2'),
-            getNode('0-2-3', [
+        gNode('0', [
+          gNode('0-0'),
+          gNode('0-1'),
+          gNode('0-2', [
+            gNode('0-2-0'),
+            gNode('0-2-1'),
+            gNode('0-2-2'),
+            gNode('0-2-3', [
               // break line
-              getNode('0-2-3-0'),
+              gNode('0-2-3-0'),
             ]),
-            getNode('0-2-4'),
+            gNode('0-2-4'),
           ]),
         ]),
-        getNode('1'),
+        gNode('1'),
       ])
 
       expect(flattedData.map(({ id }) => id)).toEqual([
@@ -46,21 +45,21 @@ describe('utils', () => {
 
     it('depth should be correct number', () => {
       const flattedData = flattenTreeData([
-        getNode('0', [
-          getNode('0-0'),
-          getNode('0-1', [
-            getNode('0-1-0'),
-            getNode('0-1-1'),
-            getNode('0-1-2'),
-            getNode('0-1-3', [
+        gNode('0', [
+          gNode('0-0'),
+          gNode('0-1', [
+            gNode('0-1-0'),
+            gNode('0-1-1'),
+            gNode('0-1-2'),
+            gNode('0-1-3', [
               // break line
-              getNode('0-1-3-0'),
+              gNode('0-1-3-0'),
             ]),
-            getNode('0-1-4'),
+            gNode('0-1-4'),
           ]),
-          getNode('0-2'),
+          gNode('0-2'),
         ]),
-        getNode('1'),
+        gNode('1'),
       ])
 
       expect(flattedData.map(({ depth }) => depth)).toEqual(
@@ -72,17 +71,17 @@ describe('utils', () => {
 
     it('ancestors should be from bottom to up', () => {
       const flattedData = flattenTreeData([
-        getNode('0', [
-          getNode('0-0'),
-          getNode('0-1', [
+        gNode('0', [
+          gNode('0-0'),
+          gNode('0-1', [
             // break line
-            getNode('0-1-0'),
+            gNode('0-1-0'),
           ]),
         ]),
-        getNode('1', [
+        gNode('1', [
           // break line
-          getNode('1-0'),
-          getNode('1-1'),
+          gNode('1-0'),
+          gNode('1-1'),
         ]),
       ])
 
@@ -99,17 +98,17 @@ describe('utils', () => {
 
     it('raw should be original node data', () => {
       const rawTreeData = [
-        getNode('0', [
-          getNode('0-0'),
-          getNode('0-1', [
+        gNode('0', [
+          gNode('0-0'),
+          gNode('0-1', [
             // break line
-            getNode('0-1-0'),
+            gNode('0-1-0'),
           ]),
         ]),
-        getNode('1', [
+        gNode('1', [
           // break line
-          getNode('1-0'),
-          getNode('1-1'),
+          gNode('1-0'),
+          gNode('1-1'),
         ]),
       ]
 

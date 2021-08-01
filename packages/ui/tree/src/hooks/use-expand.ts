@@ -1,9 +1,9 @@
-// @ts-nocheck
 import React, { useCallback, useMemo, useState, useRef, useEffect } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import cloneDeep from 'lodash.clonedeep'
 import { TreeNodeData } from '../TreeNode'
 import { fFindNestedChildNodesById, uuid } from '../utils'
+import { FlattedTreeNodeData } from '../types'
 
 export const MOTION_NODE_KEY = `TREE_MOTION_NODE_${uuid()}`
 
@@ -63,7 +63,7 @@ export const useExpand = (
   // console.log('flattedData', flattedData)
 
   const onNodeToggleStart = useCallback(
-    (expandedNode, isExpanded) => {
+    (expandedNode: FlattedTreeNodeData, isExpanded: boolean) => {
       if (isExpandingRef.current) return
       isExpandingRef.current = true
 

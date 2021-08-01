@@ -47,7 +47,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     display: inline-block;
   }
 
-  &-switcher {
+  &__switcher {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,10 +60,9 @@ $prefix: '#{$component-prefix}-tree' !default;
     margin: 0;
     font-size: 16px;
     cursor: pointer;
-
-    // &__icon {
-    //   transition: transform .3s;
-    // }
+    width: 1em;
+    height: 1em;
+    margin-right: 4px;
   }
 
   &__title {
@@ -163,21 +162,8 @@ $prefix: '#{$component-prefix}-tree' !default;
       &--tail {
         &::before {
           content: '';
-          // height: 76%;
         }
       }
-
-      // &--depth-tail {
-      //   &::after {
-      //     content: '';
-      //     position: absolute;
-      //     width: 50%;
-      //     height: 1px;
-      //     background-color: use-color('gray-70');
-      //     left: calc(50% - 4px);
-      //     top: 50%;
-      //   }
-      // }
     }
   }
 

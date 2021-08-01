@@ -1,12 +1,16 @@
 import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { TreeNodeData } from '../TreeNode'
+import { FlattedTreeNodeData } from '../types'
 
 export const useCheck = (
-  flattedData: TreeNodeData[],
+  flattedData: FlattedTreeNodeData[],
   defaultCheckedIds: React.ReactText[],
   checkedIdsProp?: React.ReactText[],
-  onCheck?: (checkedIds: React.ReactText[], checkedNode: TreeNodeData, checked: boolean) => void
+  onCheck?: (
+    checkedIds: React.ReactText[],
+    checkedNode: FlattedTreeNodeData,
+    checked: boolean
+  ) => void
 ) => {
   const proxyOnCheck = useCallback(
     (checkedIds, checkedNode, checked, semiCheckedIds) => {
@@ -45,7 +49,7 @@ export const useCheck = (
   // console.log('semiCheckedIds ---------- semiCheckedIdsSet', checkedIdsSet, semiCheckedIdsSet)
 
   const onNodeCheck = useCallback(
-    (checkedNode: TreeNodeData, checked: boolean) => {
+    (checkedNode: FlattedTreeNodeData, checked: boolean) => {
       const checkedIdsSet = new Set(checkedIds)
       const semiCheckedIdsSet = new Set(semiCheckedIds)
 
@@ -131,7 +135,7 @@ export const useCheck = (
  * @param node
  * @returns
  */
-const getAncestorNodes = (node: TreeNodeData) => {
+const getAncestorNodes = (node: FlattedTreeNodeData) => {
   const ancestors = []
 
   let parentNode = node.parent
@@ -149,7 +153,7 @@ const getAncestorNodes = (node: TreeNodeData) => {
  * @param node
  * @returns
  */
-const getChildrenNodeIds = (node: TreeNodeData, childrenIds: React.ReactText[] = []) => {
+const getChildrenNodeIds = (node: FlattedTreeNodeData, childrenIds: React.ReactText[] = []) => {
   const { children } = node
   if (children) {
     children.forEach((child) => {
@@ -170,12 +174,12 @@ const getChildrenNodeIds = (node: TreeNodeData, childrenIds: React.ReactText[] =
  */
 const getSemiCheckedIdsWithSet = (
   checkedIdsSet: Set<React.ReactText>,
-  flattedData: TreeNodeData[]
+  flattedData: FlattedTreeNodeData[]
 ) => {
-  const semiCheckedNodes = [] as TreeNodeData[]
+  const semiCheckedNodes = [] as FlattedTreeNodeData[]
   const semiCheckedIdsSet = new Set<React.ReactText>()
 
-  let parent: TreeNodeData | undefined
+  let parent: FlattedTreeNodeData | undefined
   let parentId: React.ReactText | undefined
 
   flattedData.forEach((node) => {

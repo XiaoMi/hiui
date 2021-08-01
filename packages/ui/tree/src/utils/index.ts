@@ -1,5 +1,5 @@
 import React from 'react'
-import { TreeNodeData } from '../TreeNode'
+import { TreeNodeData, FlattedTreeNodeData } from '../types'
 
 /**
  * 扁平化树数据结构，基于前序遍历
@@ -13,12 +13,12 @@ export const flattenTreeData = (treeData: TreeNodeData[]) => {
   const dig = (
     node: TreeNodeData,
     depth = 0,
-    parent?: TreeNodeData,
-    ancestors?: TreeNodeData[],
+    parent?: FlattedTreeNodeData,
+    ancestors?: FlattedTreeNodeData[],
     siblings?: TreeNodeData[]
   ) => {
     const { id, title, isLeaf, disabled, children } = node
-    const flattedNode: TreeNodeData = {
+    const flattedNode: FlattedTreeNodeData = {
       id,
       title,
       isLeaf,
