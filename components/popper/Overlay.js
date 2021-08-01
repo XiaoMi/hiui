@@ -5,7 +5,6 @@ import PopperJS from './utils/popper'
 import { getOffset } from './utils/positionUtils'
 import useClickOutside from './utils/useClickOutside'
 import './style/index'
-
 const {
   isFixed,
   setupEventListeners,
@@ -33,6 +32,7 @@ const Overlay = (props) => {
     overlayClickOutSideEventName = 'click'
   } = props
   const [isAddevent, setIsAddevent] = useState(false)
+
   const [state, setState] = useState({
     offset: undefined,
     popperHeight: undefined,
@@ -134,7 +134,7 @@ const Overlay = (props) => {
           offset: offset
         })
       )
-  }, [state.popperRef])
+  }, [state.popperRef, show])
   // DidMount
   useEffect(() => {
     const { container } = props
