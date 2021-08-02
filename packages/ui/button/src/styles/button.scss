@@ -35,7 +35,7 @@
   }
 
   // Make a button look and behave like a link
-  &.#{$prefix}--appearance--link {
+  &.#{$prefix}--appearance-link {
     color: $statusColor;
 
     &:not(.#{$prefix}--disabled):hover {
@@ -86,7 +86,7 @@
   }
 
   // Make a button look and behave like a link
-  &.#{$prefix}--appearance--link {
+  &.#{$prefix}--appearance-link {
     color: $statusColor;
 
     &:not(.#{$prefix}--disabled):hover {
@@ -107,15 +107,15 @@
 @mixin btn-theme-styles($themeColor: 'primary') {
   & {
     // Types
-    &--type--primary {
+    &--type-primary {
       @include render-flat-button($themeColor);
     }
 
-    &--type--line {
+    &--type-line {
       @include render-line-button($themeColor);
     }
 
-    &--type--default {
+    &--type-default {
       &:not(.#{$prefix}--disabled):focus {
         box-shadow: 0 0 0 2px use-color(#{$themeColor}-30);
       }
@@ -143,7 +143,7 @@ $prefix: '#{$component-prefix}-button' !default;
   cursor: pointer;
   transition: background-color $speed-normal $easing, border-color $speed-normal $easing, box-shadow $speed-fast $easing, color $speed-normal $easing;
 
-  &.#{$prefix}--appearance--link {
+  &.#{$prefix}--appearance-link {
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
@@ -156,65 +156,66 @@ $prefix: '#{$component-prefix}-button' !default;
     z-index: 1; // Display box-shadow in front
   }
 
-  &--icon {
-    .hix-icon {
-      margin-right: 0;
+  // only icon button
+  &--icon-only {
+    .hi-v4-icon {
+      margin-right: 0 !important;
     }
   }
 
   /** *************************** Sizes ******************************** */
 
-  &--size--sm {
+  &--size-sm {
     height: $line-height-size-small + 1px * 2 + 1px * 2;
     padding: 1px 11px;
     font-size: $font-size-small;
     line-height: $line-height-size-small;
 
-    &.#{$prefix}--icon {
+    &.#{$prefix}--icon-only {
       padding-left: 5px;
       padding-right: 5px;
     }
 
-    .hix-icon {
+    .hi-v4-icon {
       margin-right: $font-size-small - 10;
     }
   }
 
-  &--size--md {
+  &--size-md {
     height: $line-height-size-normal + 4px * 2 + 1px * 2;
     padding: 4px 15px;
     font-size: $font-size-normal;
     line-height: $line-height-size-normal;
 
-    &.#{$prefix}--icon {
+    &.#{$prefix}--icon-only {
       padding-left: 8px;
       padding-right: 8px;
     }
 
-    .hix-icon {
+    .hi-v4-icon {
       margin-right: $font-size-normal - 10;
     }
   }
 
-  &--size--lg {
+  &--size-lg {
     height: $line-height-size-x-large + 13px * 2 + 1px * 2;
     padding: 13px 60px;
     font-size: $font-size-x-large;
     line-height: $line-height-size-x-large;
 
-    &.#{$prefix}--icon {
+    &.#{$prefix}--icon-only {
       padding-left: 17px;
       padding-right: 17px;
     }
 
-    .hix-icon {
+    .hi-v4-icon {
       margin-right: $font-size-x-large - 14;
     }
   }
 
   /** *************************** Common Styles ******************************** */
 
-  &--type--default {
+  &--type-default {
     background-color: use-color('white');
     border-color: use-color('gray-30');
     color: use-color('black');
@@ -238,7 +239,7 @@ $prefix: '#{$component-prefix}-button' !default;
     }
 
     // Make a button look and behave like a link
-    &.#{$prefix}--appearance--link {
+    &.#{$prefix}--appearance-link {
       &:not(.#{$prefix}--disabled):hover {
         color: use-color('gray-70');
       }
@@ -257,7 +258,7 @@ $prefix: '#{$component-prefix}-button' !default;
   }
 
   @each $key in 'primary', 'success', 'danger' {
-    &--type--#{$key} {
+    &--type-#{$key} {
       @include render-line-button($key);
     }
   }
@@ -284,6 +285,7 @@ $prefix: '#{$component-prefix}-button' !default;
       display: inline-block;
       width: 1em;
       height: 1em;
+      stroke: none;
       cursor: default;
 
       svg {

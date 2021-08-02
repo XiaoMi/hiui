@@ -8,7 +8,7 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is Button
  */
-export const Button = forwardRef<HTMLDivElement | null, ButtonProps>(
+export const Button = forwardRef<any, ButtonProps>(
   (
     {
       prefixCls = _prefix,
@@ -21,39 +21,33 @@ export const Button = forwardRef<HTMLDivElement | null, ButtonProps>(
       disabled = false,
       loading = false,
       fullWidth = false,
-      icon,
-      href,
-      target,
+      icon = null,
+      as: As = 'button',
       ...rest
     },
     ref
   ) => {
+    const isEmptyChildren = !children || (typeof children === 'string' && !children.trim())
+
     const cls = cx(
       prefixCls,
       className,
-      `${prefixCls}--appearance--${appearance}`,
-      `${prefixCls}--size--${size}`,
-      `${prefixCls}--type--${type}`,
+      `${prefixCls}--appearance-${appearance}`,
+      `${prefixCls}--size-${size}`,
+      `${prefixCls}--type-${type}`,
+      isEmptyChildren && `${prefixCls}--icon-only`,
       disabled && `${prefixCls}--disabled`,
-      loading && `${prefixCls}--loading`
+      loading && `${prefixCls}--loading`,
+      fullWidth && `${prefixCls}--full-width`
     )
 
     const isNonInteractive = disabled || loading
 
-    const Wrapper = (props: any) => {
-      return href ? (
-        <a href={href} target={target} {...props} />
-      ) : (
-        <button type="button" {...props} />
-      )
-    }
-
     return (
-      <Wrapper ref={ref} role={role} className={cls} disabled={isNonInteractive} {...rest}>
-        {/* eslint-disable-next-line prettier/prettier */}
-        {loading ? <IconLoading className={`${prefixCls}__icon`} /> : (icon ? <input name={icon} /> : null)}
+      <As ref={ref} role={role} className={cls} disabled={isNonInteractive} {...rest}>
+        {loading ? <IconLoading className={`${prefixCls}__icon`} /> : icon}
         {children}
-      </Wrapper>
+      </As>
     )
   }
 )
@@ -75,6 +69,9 @@ export interface ButtonProps {
    * 组件的注入样式
    */
   style?: React.CSSProperties
+  /**
+   * 组件的孩子节点
+   */
   children?: React.ReactNode
   /**
    * 设置按钮类型
@@ -99,7 +96,7 @@ export interface ButtonProps {
   /**
    * 	点击按钮时的回调
    */
-  onClick?: any
+  onClick?: (evt: React.MouseEvent) => void
   /**
    * 是否显示 loading
    */
@@ -115,7 +112,11 @@ export interface ButtonProps {
   /**
    * 设置按钮图标
    */
-  icon?: any
+  icon?: React.ReactNode
+  /**
+   * 设置容器的 dom 类型
+   */
+  as?: 'button' | 'a'
 }
 
 if (__DEV__) {
@@ -125,7 +126,7 @@ if (__DEV__) {
 // TODO: 提取
 function IconLoading({ className = '', size = '0.8em' }) {
   return (
-    <i className={cx('hix-icon', className)}>
+    <i className={cx('hi-v4-icon', className)}>
       <svg viewBox="0 0 18 18" width={size} height={size} fill="currentColor">
         <g>
           <path
