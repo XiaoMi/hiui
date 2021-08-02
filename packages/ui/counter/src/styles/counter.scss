@@ -14,7 +14,7 @@ $prefix: '#{$component-prefix}-counter' !default;
   $this: &;
 
   &--focused {
-    #{$this}__input {
+    .#{$prefix}__input {
       border: 1px solid use-color('primary');
     }
   }
