@@ -12,7 +12,7 @@ export const defaultLeafIcon = <span style={{ display: 'inline-block', width: 16
 export const defaultLoadingIcon = (
   <svg
     style={{ display: 'inline-block', width: 16 }}
-    className="hi-btn--loading--icon"
+    className="hi-v4-tree--icon-loading"
     viewBox="0 0 18 18"
     width="0.8em"
     height="0.8em"

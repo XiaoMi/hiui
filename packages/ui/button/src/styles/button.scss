@@ -1,0 +1,336 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+// Render flat style button
+@mixin render-flat-button($themeColor) {
+  $statusColor:  use-color($themeColor);
+
+  @if not ($themeColor = 'primary') {
+    $statusColor:  get-color($palette-secondary, $themeColor);
+  }
+
+  background-color: $statusColor;
+  color: use-color('white');
+
+  &:not(.#{$prefix}--disabled):focus {
+    box-shadow: 0 0 0 2px use-color(#{$themeColor}-30);
+  }
+
+  &:not(.#{$prefix}--disabled):hover {
+    background-color: use-color(#{$themeColor}-60);
+    color: use-color('white');
+  }
+
+  &:not(.#{$prefix}--disabled):active {
+    background-color: use-color(#{$themeColor}-70);
+    color: use-color('white');
+  }
+
+  // Status: disabled
+  &.#{$prefix}--disabled,
+  &[disabled] {
+    &:not(.#{$prefix}--loading) {
+      background-color: use-color(#{$themeColor}-30);
+      color: use-color('white');
+    }
+  }
+
+  // Make a button look and behave like a link
+  &.#{$prefix}--appearance-link {
+    color: $statusColor;
+
+    &:not(.#{$prefix}--disabled):hover {
+      color: use-color(#{$themeColor}-70);
+    }
+    // Status: disabled
+    &.#{$prefix}--disabled,
+    &[disabled] {
+      color: $statusColor;
+      opacity: 0.54;
+    }
+  }
+}
+
+// Render line style button
+@mixin render-line-button($themeColor: 'primary') {
+  $statusColor:  use-color($themeColor);
+
+  @if not ($themeColor = 'primary') {
+    $statusColor:  get-color($palette-secondary, $themeColor);
+  }
+
+  background-color: use-color(#{$themeColor}-20);
+  border-color: use-color(#{$themeColor}-40);
+  color: $statusColor;
+
+  &:not(.#{$prefix}--disabled):focus {
+    box-shadow: 0 0 0 2px use-color(#{$themeColor}-30);
+  }
+
+  &:not(.#{$prefix}--disabled):hover {
+    border-color: rgba($statusColor, 0.8);
+    color: $statusColor;
+  }
+
+  &:not(.#{$prefix}--disabled):active {
+    background-color: rgba($statusColor, 0.15);
+    color: $statusColor;
+  }
+
+  // Status: disabled
+  &.#{$prefix}--disabled,
+  &[disabled] {
+    &:not(.#{$prefix}--loading) {
+      border-color: use-color(#{$themeColor}-30);
+      color: use-color(#{$themeColor}-40);
+    }
+  }
+
+  // Make a button look and behave like a link
+  &.#{$prefix}--appearance-link {
+    color: $statusColor;
+
+    &:not(.#{$prefix}--disabled):hover {
+      color: use-color(#{$themeColor}-50);
+    }
+    // Status: disabled
+    &.#{$prefix}--disabled,
+    &[disabled] {
+      background-color: transparent;
+      border-color: transparent;
+      color: $statusColor;
+      opacity: 0.54;
+    }
+  }
+}
+
+// Define component colors
+@mixin btn-theme-styles($themeColor: 'primary') {
+  & {
+    // Types
+    &--type-primary {
+      @include render-flat-button($themeColor);
+    }
+
+    &--type-line {
+      @include render-line-button($themeColor);
+    }
+
+    &--type-default {
+      &:not(.#{$prefix}--disabled):focus {
+        box-shadow: 0 0 0 2px use-color(#{$themeColor}-30);
+      }
+    }
+  }
+}
+
+$prefix: '#{$component-prefix}-button' !default;
+
+.#{$prefix} {
+  position: relative; // Used by button :focus radio-style etc.
+  display: inline-block;
+  box-sizing: border-box;
+  appearance: none;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font-weight: $font-weight-normal;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  // 禁用非标准手势
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: background-color $speed-normal $easing, border-color $speed-normal $easing, box-shadow $speed-fast $easing, color $speed-normal $easing;
+
+  &.#{$prefix}--appearance-link {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  @include btn-theme-styles();
+
+  &:focus {
+    outline: 0;
+    z-index: 1; // Display box-shadow in front
+  }
+
+  // only icon button
+  &--icon-only {
+    .hi-v4-icon {
+      margin-right: 0 !important;
+    }
+  }
+
+  /** *************************** Sizes ******************************** */
+
+  &--size-sm {
+    height: $line-height-size-small + 1px * 2 + 1px * 2;
+    padding: 1px 11px;
+    font-size: $font-size-small;
+    line-height: $line-height-size-small;
+
+    &.#{$prefix}--icon-only {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .hi-v4-icon {
+      margin-right: $font-size-small - 10;
+    }
+  }
+
+  &--size-md {
+    height: $line-height-size-normal + 4px * 2 + 1px * 2;
+    padding: 4px 15px;
+    font-size: $font-size-normal;
+    line-height: $line-height-size-normal;
+
+    &.#{$prefix}--icon-only {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+
+    .hi-v4-icon {
+      margin-right: $font-size-normal - 10;
+    }
+  }
+
+  &--size-lg {
+    height: $line-height-size-x-large + 13px * 2 + 1px * 2;
+    padding: 13px 60px;
+    font-size: $font-size-x-large;
+    line-height: $line-height-size-x-large;
+
+    &.#{$prefix}--icon-only {
+      padding-left: 17px;
+      padding-right: 17px;
+    }
+
+    .hi-v4-icon {
+      margin-right: $font-size-x-large - 14;
+    }
+  }
+
+  /** *************************** Common Styles ******************************** */
+
+  &--type-default {
+    background-color: use-color('white');
+    border-color: use-color('gray-30');
+    color: use-color('black');
+
+    &:not(.#{$prefix}--disabled):hover {
+      border-color: use-color('gray-50');
+      color: use-color('black');
+    }
+
+    &:not(.#{$prefix}--disabled):active {
+      background-color: use-color('gray-20');
+      color: use-color('black');
+    }
+
+    // Status: disabled
+    &.#{$prefix}--disabled,
+    &[disabled] {
+      background-color: use-color('gray-20');
+      border-color: use-color('gray-30');
+      color: use-color('gray-50');
+    }
+
+    // Make a button look and behave like a link
+    &.#{$prefix}--appearance-link {
+      &:not(.#{$prefix}--disabled):hover {
+        color: use-color('gray-70');
+      }
+
+      &:not(.#{$prefix}--disabled):active {
+        color: use-color('black');
+      }
+
+      // Status: disabled
+      &.#{$prefix}--disabled,
+      &[disabled] {
+        color: use-color('black');
+        opacity: 0.54;
+      }
+    }
+  }
+
+  @each $key in 'primary', 'success', 'danger' {
+    &--type-#{$key} {
+      @include render-line-button($key);
+    }
+  }
+
+  /** *************************** Status ******************************** */
+
+  &--loading {
+    position: relative;
+
+    // 覆盖式变灰
+    &::before {
+      position: absolute;
+      top: -1px;
+      bottom: -1px;
+      left: -1px;
+      right: -1px;
+      content: '';
+      background-color: use-color('white');
+      cursor: default;
+      opacity: 0.4;
+    }
+
+    .#{$prefix}__icon {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      stroke: none;
+      cursor: default;
+
+      svg {
+        @keyframes rotate {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        animation: rotate 1s linear infinite;
+      }
+    }
+  }
+
+  &--disabled,
+  &[disabled]:not(&--loading) {
+    cursor: not-allowed;
+  }
+}
+
+// Button Group
+.#{$prefix}-group {
+  display: inline-block;
+
+  > .#{$prefix} {
+    margin-left: 0;
+    margin-right: 0;
+
+    &:hover {
+      z-index: 1;
+    }
+
+    & + & {
+      margin-left: $spacer-2;
+    }
+
+    &:not(:first-child) {
+      margin-left: -1px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &:not(:last-child) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+}

@@ -1,9 +1,10 @@
 {
-  "private": true,
-  "description": "The root-package for @hi-ui/hiui.",
+  "name": "@hi-ui/button",
+  "version": "1.0.0",
+  "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/hiui#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/button#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -42,8 +43,9 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/empty-state": "^4.0.0-alpha.0",
-    "@hi-ui/loading": "^4.0.0-alpha.0"
+    "@hi-ui/classname": "^4.0.0-alpha.0",
+    "@hi-ui/core-css": "^4.0.0-alpha.0",
+    "@hi-ui/env": "^4.0.0-alpha.0"
   },
   "peerDependencies": {
     "react": "^17.0.1",
