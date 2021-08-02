@@ -3,7 +3,7 @@ to: <%= h.hooksDir(`${name}/package.json`) %>
 ---
 {
   "name": "@hi-ui/<%= name %>",
-  "version": "1.0.0",
+  "version": "^4.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -49,6 +49,6 @@ to: <%= h.hooksDir(`${name}/package.json`) %>
     "react": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^1.0.0"
+    "@hi-ui/hi-build": "^4.0.0-alpha.0"
   }
 }

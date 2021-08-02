@@ -3,7 +3,7 @@ to: <%= h.utilsDir(`${name}/package.json`) %>
 ---
 {
   "name": "@hi-ui/<%= name %>",
-  "version": "1.0.0",
+  "version": "^4.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -46,6 +46,6 @@ to: <%= h.utilsDir(`${name}/package.json`) %>
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^1.0.0"
+    "@hi-ui/hi-build": "^4.0.0-alpha.0"
   }
 }
