@@ -198,6 +198,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
 
           onLoadChildren(node)
             .then(() => {
+              // TODO: 塞入数据到树缓存，非受控更新
               setLoading(false)
               // 由于闭包，这里通过 setTimeout 拿取最新的 onExpand
               setTimeout(() => {

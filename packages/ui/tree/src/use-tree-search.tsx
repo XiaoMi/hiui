@@ -134,6 +134,7 @@ const getMatchedNodes = (
   return flattedData.filter((node) => node.title?.includes?.(searchValue))
 }
 
+// 搜索高亮展开
 const getShowData = (
   treeData: TreeNodeData[],
   matchedIds: React.ReactText[],
