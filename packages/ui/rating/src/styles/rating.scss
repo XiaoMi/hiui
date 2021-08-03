@@ -27,7 +27,7 @@ $prefix: '#{$component-prefix}-rating' !default;
     }
   }
 
-  &--readOnly {
+  &--readonly {
     .#{$prefix}__star {
       cursor: auto;
 

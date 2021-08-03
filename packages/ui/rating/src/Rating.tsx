@@ -162,7 +162,7 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
       className,
       focus && `${prefixCls}--focus`,
       disabled && `${prefixCls}--disabled`,
-      readOnly && `${prefixCls}--readOnly`
+      readOnly && `${prefixCls}--readonly`
     )
     const starCls = `${prefixCls}__star`
     const halfStarCls = `${prefixCls}__star__half`
