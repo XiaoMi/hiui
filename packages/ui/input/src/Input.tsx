@@ -17,9 +17,11 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       prefixCls = _prefix,
       role = _role,
       className,
+      style,
       autoFocus = false,
       disabled = false,
       readOnly = false,
+      name,
       maxLength,
       type = 'text',
       size = 'md',
@@ -38,7 +40,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       onKeyDown,
       onEnterPress,
       clearableTrigger = 'hover',
-      clearable = true,
+      clearable = false,
       ...rest
     },
     ref
@@ -102,38 +104,39 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       [tryChangeValue]
     )
 
-    const cls = cx(prefixCls, className, disabled && 'disabled')
-
     const nativeInputProps = useMemo(
       () => ({
+        name,
         disabled,
         readOnly,
         autoFocus,
         placeholder,
         maxLength,
       }),
-      [disabled, readOnly, autoFocus, placeholder, maxLength]
+      [disabled, readOnly, autoFocus, placeholder, maxLength, name]
     )
 
     const [hover, setHover] = useState(false)
-    const hasClearableIcon = clearable && !disabled
+    const hasClearableIcon = clearable && !!value && !disabled
+
+    const cls = cx(
+      className,
+      `${prefixCls}__outer`,
+      prepend && `${prefixCls}__outer--prepend`,
+      append && `${prefixCls}__outer--append`,
+      `${prefixCls}--appearance-${appearance}`,
+      `${prefixCls}--size-${size}`
+    )
 
     return (
-      <div
-        role={role}
-        className={cx(
-          `${prefixCls}__outer`,
-          focused && `${prefixCls}--focused`,
-          prepend && `${prefixCls}__outer--prepend`,
-          append && `${prefixCls}__outer--append`
-        )}
-      >
+      <div role={role} className={cls} style={style}>
         {prepend ? <div className={`${prefixCls}__prepend`}>{prepend}</div> : null}
-
         <div
           className={cx(
             `${prefixCls}__inner`,
-            `${prefixCls}--appearance-${appearance}`,
+            prefix && `${prefixCls}__inner--prefix`,
+            suffix && `${prefixCls}__inner--suffix`,
+            focused && `focused`,
             disabled && 'disabled',
             readOnly && 'readonly'
           )}
@@ -145,9 +148,15 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
           }}
         >
           {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
+
           <input
             ref={useMergeRefs(ref, inputRef)}
-            className={cls}
+            className={cx(
+              prefixCls,
+              focused && `focused`,
+              disabled && 'disabled',
+              readOnly && 'readonly'
+            )}
             type={type}
             value={value}
             onChange={handleChange}
@@ -164,8 +173,10 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
                 <span
                   className={cx(
                     `${prefixCls}__clear`,
-                    !(clearableTrigger === 'always' || hover) && 'hidden'
+                    (clearableTrigger === 'always' || hover) && 'active'
                   )}
+                  role="button"
+                  tabIndex={-1}
                   onClick={handleReset}
                 >
                   <CloseCircleFilled />
@@ -175,7 +186,6 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
             </span>
           ) : null}
         </div>
-
         {append ? <div className={`${prefixCls}__append`}>{append}</div> : null}
       </div>
     )

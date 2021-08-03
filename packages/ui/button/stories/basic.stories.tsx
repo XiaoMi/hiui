@@ -8,6 +8,7 @@ export const Basic = () => {
   }, [])
   return (
     <>
+      {/* TODO: icon */}
       <h1>Button</h1>
       <div className="button-basic__wrap">
         <Button loading />

@@ -3,5 +3,211 @@
 $prefix: '#{$component-prefix}-input' !default;
 
 .#{$prefix} {
+  // reset native input
+  margin: 0;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+  height: inherit;
+  background-color: transparent;
+  cursor: text;
+  // basic
+  flex: 1;
+  display: inline-block;
+  box-sizing: border-box;
+  transition: border-color .3s;
+  width: 100%;
+  font-size: inherit;
+  color: use-color('black');
+  line-height: $line-height-size-normal;
 
+  &::placeholder {
+    color: use-color('gray-50')
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &__inner {
+    position: relative;
+    display: inline-flex;
+    height: auto;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: inherit;
+    border: 1px solid transparent;
+    background-color: use-color('white');
+    transition: all 0.3s;
+  }
+
+  &__outer {
+    display: flex;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    justify-content: space-between;
+    height: auto;
+    width: 100%;
+  }
+
+  // clear icon
+  &__clear {
+    display: inline-flex;
+    align-items: center;
+    height: auto;
+    font-size: 14px;
+    text-align: center;
+    color: use-color('gray-50');
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    visibility: hidden;
+    opacity: 0;
+
+    &:hover {
+      color: use-color('black');
+    }
+
+    &.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    // 和用户传入 suffix 保持间隔
+    .#{$prefix}__inner--suffix & {
+      margin-right: 4px;
+    }
+  }
+
+  &__prefix,
+  &__suffix {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: use-color('black');
+    font-size: inherit;
+    text-align: center;
+  }
+
+  // 减去左或右边框 1px
+  $input-padding-width: 11px;
+
+  &__prefix {
+    padding-left: $input-padding-width;
+  }
+
+  &__suffix {
+    // 减去右边框 1px
+    padding-right: $input-padding-width;
+  }
+
+  &__prepend,
+  &__append {
+    position: relative;
+    color: use-color('black');
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    font-size: inherit;
+    text-align: center;
+    transition: all .3s;
+    padding: 0 $input-padding-width;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    // enable when outline appearance
+    border-color: use-color('gray-30');
+    border-radius: 2px;
+  }
+
+  &__prepend {
+    border-right-width: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &__append {
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &--size {
+    &-sm {
+      font-size: $font-size-normal;
+
+      .#{$prefix} {
+        padding: 0 $input-padding-width;
+      }
+    }
+
+    &-md {
+      font-size: $font-size-normal;
+
+      .#{$prefix} {
+        padding: 4px $input-padding-width;
+      }
+    }
+
+    &-lg {
+      font-size: $font-size-large;
+
+      .#{$prefix} {
+        padding: 8px $input-padding-width;
+      }
+    }
+  }
+
+  &--appearance {
+    &-outline {
+      .#{$prefix}__inner {
+        border-color: use-color('gray-30');
+        border-radius: 2px;
+
+        &:not(.disabled):hover {
+          border-color: use-color('primary');
+          box-shadow: 0 0 0 1.5px #d2e2fc;
+        }
+
+        &:not(.disabled).focused {
+          border-color: use-color('primary');
+          box-shadow: 0 0 0 1.5px #d2e2fc;
+        }
+
+        &.disabled {
+          color: var(--color-gray-50);
+          background-color: var(--color-gray-10);
+        }
+      }
+
+      &.#{$prefix}__outer--prepend {
+        .#{$prefix}__inner {
+          z-index: 1;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+      }
+
+      &.#{$prefix}__outer--append {
+        .#{$prefix}__inner {
+          z-index: 1;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+      }
+    }
+
+    &-unset {
+
+    }
+
+    &-filled {
+
+    }
+
+    &-underline {
+
+    }
+  }
 }

@@ -6,7 +6,9 @@ export const Basic = () => {
     <>
       <h1>Basic for Input</h1>
       <div className="input-basic__wrap">
-        <Input></Input>
+        <Input placeholder="请输入"></Input>
+        <br />
+        <Input disabled placeholder="请输入"></Input>
       </div>
     </>
   )
