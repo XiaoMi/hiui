@@ -1,12 +1,14 @@
 import React, { useContext, useRef, useState, useEffect, useLayoutEffect } from 'react'
+import { Resizable } from 'react-resizable'
+import _ from 'lodash'
+import classnames from 'classnames'
+
 import TableContext from './context'
 import ColumnMenu from './ColumnMenu'
 import SettingMenu from './SettingMenu'
-import _ from 'lodash'
-import classnames from 'classnames'
 import Checkbox from '../checkbox'
+import AdvanceHeader from './AdvanceHeader'
 import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth } from './util'
-import { Resizable } from 'react-resizable'
 
 const HeaderTable = ({ rightFixedIndex }) => {
   const {
@@ -214,7 +216,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
                   left: leftStickyWidth + 'px'
                 }}
               >
-                <span className="hi-table__header__title">
+                <div className="hi-table__header__title">
                   {typeof c.title === 'function' ? c.title() : c.title}
                   {showColMenu && c.isLast && (
                     <ColumnMenu
@@ -223,7 +225,8 @@ const HeaderTable = ({ rightFixedIndex }) => {
                       isSticky={isSticky}
                     />
                   )}
-                </span>
+                  <AdvanceHeader />
+                </div>
               </th>
             )
           }

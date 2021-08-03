@@ -1,0 +1,27 @@
+$table: 'hi-table-advanceheader' !default;
+
+.#{$table} {
+  &-sorter {
+    display: flex;
+    flex-direction: column;
+    height: 20px;
+    margin-top: 2px;
+
+    &_icon {
+      display: inline-block;
+      height: 8px;
+      cursor: pointer;
+      overflow: hidden;
+
+      .hi-icon {
+        font-size: 16px;
+        position: relative;
+        top: -5px;
+
+        & + .hi-icon {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}
