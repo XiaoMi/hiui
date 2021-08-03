@@ -58,7 +58,7 @@ export const Addon = () => {
       <div className="input-addon__wrap">
         <h2>mixin addon</h2>
         <Input
-          size="lg"
+          size="md"
           clearable
           placeholder="请输入"
           prepend={<ExpressionOutlined />}

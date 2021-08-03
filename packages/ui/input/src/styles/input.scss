@@ -16,7 +16,7 @@ $prefix: '#{$component-prefix}-input' !default;
   flex: 1;
   display: inline-block;
   box-sizing: border-box;
-  transition: border-color .3s;
+  transition: all .3s;
   width: 100%;
   font-size: inherit;
   color: use-color('black');
@@ -38,8 +38,18 @@ $prefix: '#{$component-prefix}-input' !default;
     box-sizing: border-box;
     font-size: inherit;
     border: 1px solid transparent;
+    border-radius: $spacer-1;
     background-color: use-color('white');
     transition: all 0.3s;
+    outline: 2px solid transparent;
+
+    &:not(.disabled):hover {
+      z-index: 1;
+    }
+
+    &:not(.disabled).focused {
+      z-index: 1;
+    }
   }
 
   &__outer {
@@ -116,9 +126,12 @@ $prefix: '#{$component-prefix}-input' !default;
     padding: 0 $input-padding-width;
     border: 1px solid transparent;
     white-space: nowrap;
-    // enable when outline appearance
-    border-color: use-color('gray-30');
-    border-radius: 2px;
+    border-radius: $spacer-1;
+  }
+
+  &__prepend,
+  &__append {
+    background-color: rgb(248, 248, 248);
   }
 
   &__prepend {
@@ -138,23 +151,23 @@ $prefix: '#{$component-prefix}-input' !default;
       font-size: $font-size-normal;
 
       .#{$prefix} {
-        padding: 0 $input-padding-width;
+        padding: $spacer-1 $input-padding-width;
       }
     }
 
     &-md {
-      font-size: $font-size-normal;
+      font-size: $font-size-large;
 
       .#{$prefix} {
-        padding: 4px $input-padding-width;
+        padding: $spacer-2 $input-padding-width;
       }
     }
 
     &-lg {
-      font-size: $font-size-large;
+      font-size: $font-size-x-large;
 
       .#{$prefix} {
-        padding: 8px $input-padding-width;
+        padding: $spacer-3 $input-padding-width;
       }
     }
   }
@@ -163,16 +176,14 @@ $prefix: '#{$component-prefix}-input' !default;
     &-outline {
       .#{$prefix}__inner {
         border-color: use-color('gray-30');
-        border-radius: 2px;
 
         &:not(.disabled):hover {
           border-color: use-color('primary');
-          box-shadow: 0 0 0 1.5px #d2e2fc;
         }
 
         &:not(.disabled).focused {
+          box-shadow: 0 0 0 1px use-color('primary');
           border-color: use-color('primary');
-          box-shadow: 0 0 0 1.5px #d2e2fc;
         }
 
         &.disabled {
@@ -181,33 +192,115 @@ $prefix: '#{$component-prefix}-input' !default;
         }
       }
 
-      &.#{$prefix}__outer--prepend {
-        .#{$prefix}__inner {
-          z-index: 1;
-          border-top-left-radius: 0;
-          border-bottom-left-radius: 0;
-        }
-      }
-
-      &.#{$prefix}__outer--append {
-        .#{$prefix}__inner {
-          z-index: 1;
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0;
-        }
+      .#{$prefix}__prepend,
+      .#{$prefix}__append {
+        border-color: use-color('gray-30');
       }
     }
 
     &-unset {
+      .#{$prefix} {
+        padding-left: 0;
+        padding-right: 0;
+      }
 
+      &.#{$prefix}__outer--prepend,
+      .#{$prefix}__inner--prefix {
+        .#{$prefix} {
+          padding-left: $input-padding-width;
+        }
+      }
+
+      &.#{$prefix}__outer--append,
+      .#{$prefix}__inner--suffix {
+        .#{$prefix} {
+          padding-right: $input-padding-width;
+        }
+      }
     }
 
     &-filled {
+      .#{$prefix}__inner {
+        background-color: rgb(248, 248, 248);
+        border-radius: $spacer-1;
 
+        &:not(.disabled):hover {
+          box-shadow: 0 0 0 1px use-color('primary');
+          border-color: use-color('primary');
+        }
+
+        &:not(.disabled).focused {
+          box-shadow: 0 0 0 1px use-color('primary');
+          border-color: use-color('primary');
+          background-color: use-color('white');
+        }
+      }
     }
 
     &-underline {
+      .#{$prefix} {
+        padding-left: 0;
+        padding-right: 0;
+      }
 
+      &.#{$prefix}__outer--prepend,
+      .#{$prefix}__inner--prefix {
+        .#{$prefix} {
+          padding-left: $input-padding-width;
+        }
+      }
+
+      &.#{$prefix}__outer--append,
+      .#{$prefix}__inner--suffix {
+        .#{$prefix} {
+          padding-right: $input-padding-width;
+        }
+      }
+
+      .#{$prefix}__inner {
+        border-radius: 0;
+
+        &::after {
+          content: '';
+          box-sizing: border-box;
+          display: block;
+          position: absolute;
+          bottom: 0;
+          // 两边透明边框各负 1px
+          left: -1px;
+          right: -1px;
+          border-bottom: 1px solid use-color('gray-30');
+          transition: all .3s;
+        }
+
+        &:not(.disabled):hover {
+          &::after {
+            border-bottom-color: use-color('primary');
+          }
+        }
+
+        &:not(.disabled).focused {
+          &::after {
+            border-bottom-color: use-color('primary');
+            box-shadow: 0 1px 0 0 use-color('primary');
+          }
+        }
+      }
+    }
+  }
+
+  // 移除连接处圆角
+  &__outer--prepend {
+    .#{$prefix}__inner {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  &__outer--append {
+    .#{$prefix}__inner {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
     }
   }
 }
