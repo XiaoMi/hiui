@@ -125,15 +125,17 @@ const Overlay = (props) => {
   })
 
   useEffect(() => {
-    const offset = getOffset(props, state)
-    offsetData.current = offset
+    if (show) {
+      const offset = getOffset(props, state)
+      offsetData.current = offset
 
-    state.popperRef &&
-      setState(
-        Object.assign({}, state, {
-          offset: offset
-        })
-      )
+      state.popperRef &&
+        setState(
+          Object.assign({}, state, {
+            offset: offset
+          })
+        )
+    }
   }, [state.popperRef, show])
   // DidMount
   useEffect(() => {
