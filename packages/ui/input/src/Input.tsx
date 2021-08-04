@@ -43,24 +43,27 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
     },
     ref
   ) => {
+    const inputRef = useRef<HTMLInputElement>(null)
+
     const proxyOnChange = useCallback(
       (value: string, evt: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
         if (!onChange) return
-        onChangeMock((e) => onChange(e.target.value, e), evt, inputRef.current, value)
+        onChangeMock(onChange, evt, inputRef.current, value)
       },
       [onChange]
     )
 
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, proxyOnChange)
 
-    const [focused, setFocused] = useState(autoFocus)
-
     const handleChange = useCallback(
       (evt: React.ChangeEvent<HTMLInputElement>) => {
-        tryChangeValue(evt.target.value, evt)
+        const nextValue = evt.target.value
+        tryChangeValue(nextValue, evt)
       },
       [tryChangeValue]
     )
+
+    const [focused, setFocused] = useState(autoFocus)
 
     const handleFocus = useCallback(
       (evt: React.FocusEvent<HTMLInputElement>) => {
@@ -78,18 +81,16 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       [onBlur]
     )
 
-    const inputRef = useRef<HTMLInputElement>(null)
-
-    const focus = () => {
+    const focus = useCallback(() => {
       inputRef.current?.focus()
-    }
+    }, [])
 
     const handleReset = useCallback(
       (evt: React.MouseEvent<HTMLElement, MouseEvent>) => {
         tryChangeValue('', evt)
         focus()
       },
-      [tryChangeValue]
+      [tryChangeValue, focus]
     )
 
     const nativeInputProps = useMemo(
@@ -105,7 +106,8 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
     )
 
     const [hover, setHover] = useState(false)
-    const hasClearableIcon = clearable && !!value && !disabled
+    // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
+    const showClearableIcon = clearable && !!value && !disabled
 
     const cls = cx(
       className,
@@ -154,9 +156,9 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
             {...nativeInputProps}
           />
 
-          {suffix || hasClearableIcon ? (
+          {suffix || showClearableIcon ? (
             <span className={`${prefixCls}__suffix`}>
-              {hasClearableIcon ? (
+              {showClearableIcon ? (
                 <span
                   className={cx(
                     `${prefixCls}__clear`,
@@ -272,7 +274,7 @@ export interface InputProps {
   /**
    * 值改变时的回调
    */
-  onChange?: (value: string, evt: React.ChangeEvent<HTMLInputElement>) => void
+  onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void
   /**
    * 获得焦点时的回调
    */

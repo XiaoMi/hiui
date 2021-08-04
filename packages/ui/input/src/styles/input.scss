@@ -38,7 +38,6 @@ $prefix: '#{$component-prefix}-input' !default;
     box-sizing: border-box;
     font-size: inherit;
     border: 1px solid transparent;
-    border-radius: $spacer-1;
     background-color: use-color('white');
     transition: all 0.3s;
     outline: 2px solid transparent;
@@ -126,7 +125,6 @@ $prefix: '#{$component-prefix}-input' !default;
     padding: 0 $input-padding-width;
     border: 1px solid transparent;
     white-space: nowrap;
-    border-radius: $spacer-1;
   }
 
   &__prepend,
@@ -153,6 +151,20 @@ $prefix: '#{$component-prefix}-input' !default;
       .#{$prefix} {
         padding: $spacer-1 $input-padding-width;
       }
+
+      .#{$prefix}__inner {
+        border-radius: 2px;
+      }
+
+      .#{$prefix}__prepend {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+      }
+
+      .#{$prefix}__append {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
     }
 
     &-md {
@@ -161,6 +173,20 @@ $prefix: '#{$component-prefix}-input' !default;
       .#{$prefix} {
         padding: $spacer-2 $input-padding-width;
       }
+
+      .#{$prefix}__inner {
+        border-radius: 4px;
+      }
+
+      .#{$prefix}__prepend {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+
+      .#{$prefix}__append {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
     }
 
     &-lg {
@@ -168,6 +194,20 @@ $prefix: '#{$component-prefix}-input' !default;
 
       .#{$prefix} {
         padding: $spacer-3 $input-padding-width;
+      }
+
+      .#{$prefix}__inner {
+        border-radius: 6px;
+      }
+
+      .#{$prefix}__prepend {
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+      }
+
+      .#{$prefix}__append {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
       }
     }
   }
@@ -217,12 +257,15 @@ $prefix: '#{$component-prefix}-input' !default;
           padding-right: $input-padding-width;
         }
       }
+
+      .#{$prefix}__inner {
+        border-radius: 0;
+      }
     }
 
     &-filled {
       .#{$prefix}__inner {
         background-color: rgb(248, 248, 248);
-        border-radius: $spacer-1;
 
         &:not(.disabled):hover {
           box-shadow: 0 0 0 1px use-color('primary');
