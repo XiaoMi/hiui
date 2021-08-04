@@ -56,6 +56,7 @@ interface Props {
   onSearch?: (keyword: string) => void
   onOverlayScroll?: (e: Event<HTMLDivElement>) => void
   render?: (item: DataItem, selected: boolean) => JSX.Element
+  renderExtraFooter?: () => JSX.Element
   overlayClassName?: string
   setOverlayContainer?: (triggerNode: any) => any
 }

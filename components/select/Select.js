@@ -41,7 +41,8 @@ const InternalSelect = (props) => {
     overlayClassName,
     setOverlayContainer,
     bordered = true,
-    overlayClickOutSideEventName = 'click'
+    overlayClickOutSideEventName = 'click',
+    renderExtraFooter
   } = props
   const selectInputContainer = useRef()
   const autoloadFlag = useRef(autoload) // 多选情况下，需要记录是否进行了筛选
@@ -646,6 +647,7 @@ const InternalSelect = (props) => {
       >
         <SelectDropdown
           emptyContent={emptyContent}
+          renderExtraFooter={renderExtraFooter}
           fieldNames={fieldNames}
           localeMap={localeDatas.select || {}}
           mode={type}
