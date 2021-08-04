@@ -1,5 +1,6 @@
 # 更新日志
 # 3.7.1
+
 - 新增 `Cascader` onOpen 下拉菜单打开、onClose 下拉菜单关闭回调方法，优化动态加载数据功能 [#1854](https://github.com/XiaoMi/hiui/issues/1854)
 - 新增 `Table` 组件 align 属性接受 center 属性 [#1835](https://github.com/XiaoMi/hiui/issues/1835)
 - 新增 `Table` 组件 拖拽功能 [#1851](https://github.com/XiaoMi/hiui/issues/1851)
