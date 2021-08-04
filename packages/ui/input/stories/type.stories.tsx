@@ -6,7 +6,7 @@ export const Type = () => {
     <>
       <h1>Type for Input</h1>
       <div className="input-type__wrap">
-        <Input type="number"></Input>
+        <Input type="number" placeholder="please input number"></Input>
       </div>
     </>
   )
