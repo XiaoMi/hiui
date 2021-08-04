@@ -10,6 +10,7 @@
 - 优化 `Carousel` 内容宽度根据容器改变自适应 [#1834](https://github.com/XiaoMi/hiui/issues/1834)
 - 修复 `SelectTree` searchMode 为 filter 时，搜索后勾选，SelectTree 已选节点被清空 [#1791](https://github.com/XiaoMi/hiui/issues/#1791)
 - 修复 `Select` data 属性发生改变，选中值未更新问题 [#1823](https://github.com/XiaoMi/hiui/issues/1823)
+- 修复 `Form` 组件中使用 schemaFrom 时，schema 更新未生效问题 [#1862](https://github.com/XiaoMi/hiui/issues/1862)
 
 # 3.7.0
 - 新增 `Collapse` 组件 extra 属性作为标题额外元素扩展[#1831](https://github.com/XiaoMi/hiui/issues/1831)
