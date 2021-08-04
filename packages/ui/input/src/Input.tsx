@@ -37,8 +37,6 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       onChange,
       onFocus,
       onBlur,
-      onKeyDown,
-      onEnterPress,
       clearableTrigger = 'hover',
       clearable = false,
       ...rest
@@ -78,16 +76,6 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
         onBlur?.(event)
       },
       [onBlur]
-    )
-
-    const handleKeyDown = useCallback(
-      (evt: React.KeyboardEvent<HTMLInputElement>) => {
-        if (onEnterPress && evt.keyCode === 13) {
-          onEnterPress(evt)
-        }
-        onKeyDown?.(evt)
-      },
-      [onKeyDown, onEnterPress]
     )
 
     const inputRef = useRef<HTMLInputElement>(null)
@@ -162,7 +150,6 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            onKeyDown={handleKeyDown}
             {...rest}
             {...nativeInputProps}
           />
@@ -235,9 +222,9 @@ export interface InputProps {
    */
   defaultValue?: string
   /**
-   * 设置输入框类型
+   * 设置输入框类型，支持原生 input 的 type 属性所有值
    */
-  type?: 'text' | 'id' | 'tel' | 'card' | 'amount' | 'email'
+  type?: 'text' | 'number'
   /**
    * 输入最大长度
    */
@@ -294,14 +281,6 @@ export interface InputProps {
    * 失去焦点时的回调
    */
   onBlur?: (evt: React.FocusEvent<HTMLInputElement>) => void
-  /**
-   * 聚焦时键盘按下时的回调
-   */
-  onKeyDown?: (evt: React.KeyboardEvent<HTMLInputElement>) => void
-  /**
-   * 聚焦时按键回车时的回调
-   */
-  onEnterPress?: (evt: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
 if (__DEV__) {
