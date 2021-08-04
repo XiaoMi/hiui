@@ -31,7 +31,7 @@ export const useTreeEdit = (props: EditableTreeProps) => {
   const [treeData, setTreeData] = useCache(data)
   const [saveEdit, cancelAddNode, deleteNode, addChildNode, addSiblingNode] = useEdit(
     data,
-    treeData,
+    flattedData,
     setTreeData,
     onBeforeSave,
     onBeforeDelete,

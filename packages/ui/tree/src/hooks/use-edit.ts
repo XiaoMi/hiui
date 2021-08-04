@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react'
-import { TreeNodeData } from '../TreeNode'
+import { useCallback } from 'react'
+import { TreeNodeData, FlattedTreeNodeData } from '../types'
 import cloneDeep from 'lodash.clonedeep'
 import { addChildNodeById, deleteNodeById, insertNodeById, uuid } from '../utils'
 
@@ -79,7 +79,7 @@ export const useEdit = (
   )
 
   const saveEdit = useCallback(
-    (targetNode: TreeNodeData, type: 'add' | 'edit') => {
+    (targetNode: FlattedTreeNodeData, type: 'add' | 'edit') => {
       const nextTreeData = cloneDeep(treeData)
 
       _saveEdit(targetNode, nextTreeData)
@@ -115,6 +115,7 @@ const _saveEdit = (targetNode: TreeNodeData, treeData: TreeNodeData[]) => {
   treeData.forEach((node, index) => {
     if (node.id === id) {
       node.title = title
+      // @ts-ignore
       delete node.type
     } else {
       if (node.children) {
