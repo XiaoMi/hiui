@@ -45,9 +45,9 @@ const FormItem = (props) => {
     sort,
     uuid,
     column,
-    row
+    row,
+    realField
   } = props
-
   const {
     showColon: shouldFormShowColon,
     initialValues = {},
@@ -63,7 +63,7 @@ const FormItem = (props) => {
   const getItemfield = useCallback(() => {
     let _propsField = propsField
     if (_type === 'list' && name) {
-      _propsField = _propsField + '#' + name
+      _propsField = _propsField + '&&' + name
     }
     return Array.isArray(propsField) ? propsField[propsField.length - 1] : _propsField
   }, [propsField, name])
@@ -176,16 +176,16 @@ const FormItem = (props) => {
       }
       // Bug of `async-validator`
       const rules = getRules().map((item) => {
-        if (currentValue !== '') {
+        if (!!currentValue || currentValue === 0) {
           item.type = item.type || 'any'
         }
         return item
       })
-
+      const _field = realField || field
       const validator = new AsyncValidator({
-        [field]: rules
+        [_field]: rules
       })
-      const model = { [field]: currentValue }
+      const model = { [_field]: currentValue }
       validator.validate(
         model,
         {
@@ -204,6 +204,7 @@ const FormItem = (props) => {
   )
 
   const updateFieldInfoToReducer = () => {
+    const _realField = realField || field
     return {
       field,
       rules: getRules(),
@@ -219,7 +220,8 @@ const FormItem = (props) => {
       column,
       row,
       name,
-      updateField
+      updateField,
+      realField: _realField
     }
   }
 
