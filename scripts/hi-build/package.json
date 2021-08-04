@@ -14,7 +14,8 @@
     "test": "__tests__"
   },
   "files": [
-    "bin"
+    "bin",
+    "lib"
   ],
   "publishConfig": {
     "access": "public"
@@ -43,9 +44,11 @@
     "@rollup/plugin-multi-entry": "^4.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@rollup/plugin-typescript": "^8.2.1",
+    "autoprefixer": "^10.3.1",
     "commander": "^7.2.0",
     "cssnano": "^5.0.2",
-    "postcss": "^8.2.15",
+    "postcss": "^8.3.6",
+    "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^14.0.2",
     "postcss-nested": "^5.0.5",
     "postcss-preset-env": "^6.7.0",

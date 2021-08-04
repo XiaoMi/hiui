@@ -76,10 +76,11 @@ export const useTreeSearch = (props: SearchableTreeProps) => {
   const proxyTitleRender = useCallback(
     (node: FlattedTreeNodeData) => {
       if (titleRender) {
-        return titleRender(node)
+        const ret = titleRender(node)
+        if (ret) return ret
       }
 
-      return searchable ? renderTitleWithHighlight(node) : node.title
+      return searchable ? renderTitleWithHighlight(node) : true
     },
     [titleRender, searchable, renderTitleWithHighlight]
   )

@@ -69,10 +69,11 @@ export const useTreeEdit = (props: EditableTreeProps) => {
   const proxyTitleRender = useCallback(
     (node: FlattedTreeNodeData) => {
       if (titleRender) {
-        return titleRender(node)
+        const ret = titleRender(node)
+        if (ret) return ret
       }
 
-      return editable ? renderTitleWithEditable(node) : node.title
+      return editable ? renderTitleWithEditable(node) : true
     },
     [titleRender, editable, renderTitleWithEditable]
   )

@@ -14,6 +14,7 @@ const cssNested = require('postcss-nested')
 const postcssPresetEnv = require('postcss-preset-env')
 const postcssFlexBugfix = require('postcss-flexbugs-fixes')
 const cssnano = require('cssnano')
+const autoprefixer = require('autoprefixer')
 
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
 
@@ -127,11 +128,14 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
         postcss({
           plugins: [
             postcssFlexBugfix(),
+            // using latest autoprefixer https://github.com/postcss/autoprefixer/issues/44
+            autoprefixer({
+              remove: false,
+              flexbox: 'no-2009',
+              grid: true,
+            }),
             postcssPresetEnv({
-              autoprefixer: {
-                remove: false,
-                flexbox: 'no-2009',
-              },
+              autoprefixer: false,
               stage: 3,
             }),
             postcssImport(),
