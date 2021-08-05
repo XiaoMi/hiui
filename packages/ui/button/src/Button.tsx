@@ -16,13 +16,12 @@ export const Button = forwardRef<any, ButtonProps>(
       className,
       children,
       type = 'default',
-      size = 'md',
-      appearance = 'button',
+      size = 'default',
+      appearance = 'flat',
       disabled = false,
       loading = false,
-      fullWidth = false,
       icon = null,
-      as: As = 'button',
+      href,
       ...rest
     },
     ref
@@ -37,17 +36,22 @@ export const Button = forwardRef<any, ButtonProps>(
       `${prefixCls}--type-${type}`,
       isEmptyChildren && `${prefixCls}--icon-only`,
       disabled && `${prefixCls}--disabled`,
-      loading && `${prefixCls}--loading`,
-      fullWidth && `${prefixCls}--full-width`
+      loading && `${prefixCls}--loading`
     )
 
     const isNonInteractive = disabled || loading
+    const prepend = loading ? <IconLoading className={`${prefixCls}__icon`} /> : icon
 
-    return (
-      <As ref={ref} role={role} className={cls} disabled={isNonInteractive} {...rest}>
-        {loading ? <IconLoading className={`${prefixCls}__icon`} /> : icon}
+    return !href ? (
+      <button ref={ref} role={role} className={cls} disabled={isNonInteractive} {...rest}>
+        {prepend}
         {children}
-      </As>
+      </button>
+    ) : (
+      <a ref={ref} role={role} className={cls} {...rest}>
+        {prepend}
+        {children}
+      </a>
     )
   }
 )
@@ -76,11 +80,11 @@ export interface ButtonProps {
   /**
    * 设置按钮类型
    */
-  type?: 'primary' | 'line' | 'success' | 'danger' | 'default'
+  type?: 'primary' | 'success' | 'danger' | 'default'
   /**
    * 设置按钮外观
    */
-  size?: 'lg' | 'sm' | 'md'
+  size?: 'large' | 'small' | 'default'
   /**
    * 设置铺满宽度
    */
@@ -88,7 +92,7 @@ export interface ButtonProps {
   /**
    * 设置按钮外观
    */
-  appearance?: 'button' | 'link'
+  appearance?: 'flat' | 'link' | 'line'
   /**
    * 设置按钮是否禁用
    */
@@ -126,7 +130,7 @@ if (__DEV__) {
 // TODO: 提取
 function IconLoading({ className = '', size = '0.8em' }) {
   return (
-    <i className={cx('hi-v4-icon', className)}>
+    <i className={cx(className)}>
       <svg viewBox="0 0 18 18" width={size} height={size} fill="currentColor">
         <g>
           <path
