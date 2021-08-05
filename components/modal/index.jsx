@@ -32,6 +32,7 @@ const InternalModalComp = ({
   showFooterDivider = true,
   footer,
   confirmText,
+  confirmLoading,
   cancelText,
   style,
   className,
@@ -195,6 +196,7 @@ const InternalModalComp = ({
                     <Button
                       type={'primary'}
                       theme={theme}
+                      loading={confirmLoading}
                       onClick={() => {
                         if (onConfirm) {
                           onConfirm()
