@@ -143,8 +143,8 @@ const InternalForm = (props) => {
         const { realField, listname } = item
         const changeFieldkey = listname || realField
         const isToDefault = toDefault && initialValues && typeof initialValues[changeFieldkey] !== 'undefined'
-        const value = isToDefault ? initialValues[realField] : undefined
-        const changeFieldVal = isToDefault ? initialValues[changeFieldkey] : undefined
+        const value = isToDefault ? initialValues[realField] : ''
+        const changeFieldVal = isToDefault ? initialValues[changeFieldkey] : ''
         changeValues[changeFieldkey] = changeFieldVal
         allValues[changeFieldVal] = value
         item.value = value

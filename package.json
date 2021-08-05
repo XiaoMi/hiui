@@ -43,6 +43,12 @@
     "es",
     "types/*.d.ts"
   ],
+  "sideEffects": [
+    "es/**/style/*",
+    "es/base-css/*",
+    "es/lib/*",
+    "es/_util/*"
+  ],
   "peerDependencies": {
     "react": ">=16.13.0",
     "react-dom": ">=16.13.0"
