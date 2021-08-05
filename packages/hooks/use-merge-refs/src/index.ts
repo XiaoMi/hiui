@@ -17,7 +17,7 @@ export const useMergeRefs = <T>(...refs: (ReactRef<T> | null)[]) => {
         setRef(ref, value)
       })
     }
-    // every one will be dependent
+    // every ref will be dependent
   }, refs)
 }
 

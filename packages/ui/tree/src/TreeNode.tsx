@@ -227,7 +227,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
             onClick={() => onSelect?.(node)}
           >
             {/* TODO: 对 titleRender 注入 context ？ */}
-            {title === true ? <span className="title__text">{node.title}</span> : null}
+            {title === true ? <span className="title__text">{node.title}</span> : title}
           </div>
         )
       },
