@@ -63,7 +63,7 @@ const FormItem = (props) => {
   const getItemfield = useCallback(() => {
     let _propsField = propsField
     if (_type === 'list' && name) {
-      _propsField = _propsField + '&&' + name
+      _propsField = _propsField + '#' + name
     }
     return Array.isArray(propsField) ? propsField[propsField.length - 1] : _propsField
   }, [propsField, name])
@@ -272,8 +272,9 @@ const FormItem = (props) => {
         ? e.target[valuePropName]
         : e
     if (displayName === 'Counter') {
-      value = args[0]
+      value = args[0] || 0
     }
+    console.log('value', displayName, value)
     eventInfo.current = { eventName, e, args, componentProps, value }
     handleField(eventName, value)
     setValue(value)
@@ -296,6 +297,10 @@ const FormItem = (props) => {
     const isExist = _fields.some((item) => {
       return item.field === _field
     })
+    const displayName = !!children && children.type && children.type.displayName
+    if (displayName === 'Counter' && _value === undefined) {
+      _value = 0
+    }
     if (_field && !isExist) {
       _value = initialValues && typeof initialValues[field] !== 'undefined' ? initialValues[_field] : _value
       if (_type === 'list' && listItemValue) {
@@ -340,6 +345,7 @@ const FormItem = (props) => {
       return null
     }
     const propChild = children ? children.props : {}
+
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
