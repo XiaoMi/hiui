@@ -8,4 +8,6 @@ $prefix: "#{$component-prefix}-icon" !default;
   fill: currentColor;
   stroke: currentColor;
   display: inline-block;
+  // 用于和任意文本内容排版时，垂直对齐
+  vertical-align: -0.15em;
 }

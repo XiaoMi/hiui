@@ -68,10 +68,12 @@ $prefix: '#{$component-prefix}-tree' !default;
   &__title {
     flex: 1;
     display: inline-flex;
+    align-items: center;
     border-radius: 1px;
     color: inherit;
     position: relative;
-    padding: 4px;
+    padding: 0 4px;
+    min-height: 32px;
 
     .title__text {
       line-height: $line-height-size-large;

@@ -219,7 +219,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
         titleRender?: (node: FlattedTreeNodeData) => React.ReactNode,
         onSelect?: (node: FlattedTreeNodeData) => void
       ) => {
-        const title = titleRender && titleRender(node)
+        const title = titleRender ? titleRender(node) : true
+
         return (
           <div
             ref={treeNodeTitleRef}

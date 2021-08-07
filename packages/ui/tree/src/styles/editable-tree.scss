@@ -1,0 +1,152 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-tree' !default;
+
+.#{$prefix} {
+  &--editable {
+    .#{$prefix}__title {
+      width: 100%;
+      max-width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &--editing {
+      }
+    }
+
+    .#{$prefix}__action {
+      flex-shrink: 0;
+      margin-left: 4px;
+    }
+
+    .#{$prefix}-action {
+      z-index: 10;
+      list-style: none;
+      background: var(--color-white);
+      width: 140px;
+      box-shadow: 0 2px 8px 0 var(--color-gray-10);
+      border-radius: 2px;
+      padding: 4px 0;
+      border-radius: 4px;
+
+      &__item {
+        list-style: none;
+        padding: 0 8px;
+        height: 32px;
+        line-height: 32px;
+        font-size: 14px;
+        cursor: pointer;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        transition: background-color 0.3s;
+
+        &:not(:last-of-type) {
+          margin-bottom: 8px;
+        }
+
+        &:hover {
+          background-color: #ECF2FE;
+        }
+      }
+    }
+  }
+
+  &-icon-button {
+    font-size: 16px;
+    display: inline-block;
+    box-sizing: border-box;
+    appearance: none;
+    border: none;
+    background: none;
+    color: inherit;
+    margin: 0;
+    padding: 4px;
+    line-height: 0;
+    font-weight: $font-weight-normal;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    touch-action: manipulation;
+    cursor: pointer;
+    transition: all $easing;
+
+    svg {
+      width: 1em;
+      height: 1em;
+      fill: currentColor;
+      stroke: currentColor;
+      display: inline-block;
+      vertical-align: -0.15em;
+    }
+
+    &.active {
+      color: use-color('primary');
+    }
+
+    &:hover {
+      color: use-color('primary');
+    }
+  }
+
+  &-modal {
+    padding: 16px;
+    box-sizing: border-box;
+    width: 240px;
+    background-color: use-color(--color-white);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.12);
+    z-index: 1;
+    border-radius: 4px;
+    position: relative;
+
+    &__body {
+      padding-top: 4px;
+      color: #666;
+      line-height: 24px;
+    }
+
+    &__footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 28px;
+    }
+
+    &__btn--confirm {
+        margin-left: 10px;
+    }
+  }
+}
+
+
+
+.hi-popper_transition {
+  &-enter {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  &-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+
+  &-exit {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 300ms, transform 300ms;
+  }
+
+  &-exit-done {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  &-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms, transform 300ms;
+  }
+}

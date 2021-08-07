@@ -4,6 +4,7 @@ import { TreeNodeData, FlattedTreeNodeData } from './types'
 import { flattenTreeData } from './utils'
 import cloneDeep from 'lodash.clonedeep'
 import { useExpandProps } from './hooks/use-expand'
+import { useDeepEqualDeps as useDeep } from '@hi-ui/use-deep-equal-deps'
 
 /**
  * 将 BaseTree 添加定制搜索功能，返回 SearchableTree
@@ -22,8 +23,7 @@ export const useTreeSearch = (props: SearchableTreeProps) => {
     titleRender,
     ...nativeTreeProps
   } = props
-
-  const flattedData = useMemo(() => flattenTreeData(data), [data])
+  const flattedData = useMemo(() => flattenTreeData(data), [useDeep(data)])
 
   // 拦截 expand：用于搜索时控制将搜到的结果高亮，并且自动展开节点
   // 但是对外仍然暴露 expand 相关 props 原有的功能
@@ -72,6 +72,8 @@ export const useTreeSearch = (props: SearchableTreeProps) => {
     [searchValue]
   )
 
+  const inSearch = searchable && !!searchValue
+
   // 拦截 titleRender，自定义高亮展示
   const proxyTitleRender = useCallback(
     (node: FlattedTreeNodeData) => {
@@ -80,12 +82,12 @@ export const useTreeSearch = (props: SearchableTreeProps) => {
         if (ret) return ret
       }
 
-      return searchable ? renderTitleWithHighlight(node) : true
-    },
-    [titleRender, searchable, renderTitleWithHighlight]
-  )
+      const ret = inSearch ? renderTitleWithHighlight(node) : true
 
-  const inSearch = searchable && !!searchValue
+      return ret
+    },
+    [titleRender, inSearch, renderTitleWithHighlight]
+  )
 
   const treeProps = {
     ...nativeTreeProps,

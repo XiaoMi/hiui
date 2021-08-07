@@ -6,7 +6,6 @@ import { addChildNodeById, deleteNodeById, insertNodeById, uuid } from '../utils
 const genTreeNode = () => ({ id: uuid(), title: '', type: 'add' })
 
 export const useEdit = (
-  data: TreeNodeData[],
   treeData: TreeNodeData[],
   setTreeData: any,
   onBeforeSave: any,
@@ -17,7 +16,6 @@ export const useEdit = (
   const addSiblingNode = useCallback(
     (node) => {
       // console.log('添加兄弟节点')
-
       const nextTreeData = cloneDeep(treeData)
       const nodeToAdd = genTreeNode()
 

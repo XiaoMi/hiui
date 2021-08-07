@@ -15,13 +15,17 @@ export const useDeepEqualDeps = <T>(deps: T): boolean => {
     sameShapeRef.current = !sameShapeRef.current
   }
 
+  console.log('sameShapeRef.current', sameShapeRef.current)
+
   return sameShapeRef.current
 }
 
 const has = Object.prototype.hasOwnProperty
 
 /**
- * Deep Compare for value，only support for basic types, object, array
+ * Deep Compare for value，only support for basic types, object, array.
+ *
+ * WARNING: Use only when you have to.
  *
  * @param a
  * @param b
@@ -34,7 +38,7 @@ const deepEqualLite = (a: any, b: any) => {
   if (a && b && (ctor = a.constructor) === b.constructor) {
     if (ctor === Array) {
       if ((len = a.length) === b.length) {
-        while (--len && deepEqualLite(a[len], b[len]));
+        while (len-- && deepEqualLite(a[len], b[len]));
       }
       return len === -1
     }

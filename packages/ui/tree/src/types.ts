@@ -74,7 +74,7 @@ export const TreeNodeType = {
 } as const
 
 // eslint-disable-next-line no-redeclare
-export type TreeNodeType = ValueOf<typeof TreeNodeType> | null
+export type TreeNodeType = ValueOf<typeof TreeNodeType>
 
 export type TreeDataStatus = {
   before: TreeNodeData[]

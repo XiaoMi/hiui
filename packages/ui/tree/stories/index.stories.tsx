@@ -10,7 +10,6 @@ export * from './search.stories'
 export * from './expand.stories'
 export * from './custom-title.stories'
 export * from './custom-icon.stories'
-export * from './action.stories'
 
 export default {
   title: 'Tree',

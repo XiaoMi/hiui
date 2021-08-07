@@ -8,7 +8,7 @@ import {
   TreeNodeTransitionData,
   MotionTreeNodeData,
 } from '../types'
-import { usePreviousRef } from './use-previous-ref'
+import { useLatestRef } from './use-latest-ref'
 
 export const useExpandProps = (
   flattedData: FlattedTreeNodeData[],
@@ -59,7 +59,7 @@ export const useExpand = (
   // 更新展示数据，只展示被展开的所有节点
   const [transitionData, setTransitionData] = useState(flattedData)
 
-  const prevExpandedIdsRef = usePreviousRef(expandedIds)
+  const prevExpandedIdsRef = useLatestRef(expandedIds)
   const trySetTransitionData = useCallback((data: FlattedTreeNodeData[]) => {
     const nextData = flattenTreeDataWithExpand(data, prevExpandedIdsRef.current)
     setTransitionData(nextData)
