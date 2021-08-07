@@ -1,7 +1,7 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 // Render flat style button
-@mixin render-flat-button($themeColor) {
+@mixin render-flat-button($themeColor: 'primary') {
   $statusColor:  use-color($themeColor);
 
   @if not ($themeColor = 'primary') {
@@ -34,19 +34,19 @@
     }
   }
 
-  // Make a button look and behave like a link
-  &.#{$prefix}--appearance-link {
-    color: $statusColor;
+}
 
-    &:not(.#{$prefix}--disabled):hover {
-      color: use-color(#{$themeColor}-70);
-    }
-    // Status: disabled
-    &.#{$prefix}--disabled,
-    &[disabled] {
-      color: $statusColor;
-      opacity: 0.54;
-    }
+// Render link style button
+@mixin render-link-button() {
+  color: $statusColor;
+  // Status: disabled
+  &:not(.#{$prefix}--disabled):hover {
+    color: use-color(#{$themeColor}-70);
+  }
+  &.#{$prefix}--disabled,
+  &[disabled] {
+    color: $statusColor;
+    opacity: 0.54;
   }
 }
 
@@ -58,7 +58,7 @@
     $statusColor:  get-color($palette-secondary, $themeColor);
   }
 
-  background-color: use-color(#{$themeColor}-20);
+  // background-color: use-color('white');
   border-color: use-color(#{$themeColor}-40);
   color: $statusColor;
 
@@ -107,17 +107,30 @@
 @mixin btn-theme-styles($themeColor: 'primary') {
   & {
     // Types
-    &--type-primary {
-      @include render-flat-button($themeColor);
+    @each $key in 'primary', 'success', 'danger' {
+      &--type-#{$key}#{&}--appearance-flat {
+        @include render-flat-button($key);
+      }
+
+      &--type-#{$key}#{&}--appearance-line {
+        @include render-line-button($key);
+        background-color: use-color('white');
+      }
+
+      &--type-#{$key}#{&}--appearance-link {
+        @include render-line-button($key);
+        padding: 0 4px;
+        height: unset;
+      }
     }
 
-    &--type-line {
-      @include render-line-button($themeColor);
-    }
+    &--type-default#{&}--appearance-line {
+      background-color: use-color('white');
+      border-color: use-color('gray-30');
 
-    &--type-default {
-      &:not(.#{$prefix}--disabled):focus {
-        box-shadow: 0 0 0 2px use-color(#{$themeColor}-30);
+      &:hover {
+        background-color: use-color('white') !important;
+        border-color: use-color('gray-70');
       }
     }
   }
@@ -126,6 +139,9 @@
 $prefix: '#{$component-prefix}-button' !default;
 
 .#{$prefix} {
+  & + & {
+    margin-left:8px;
+  }
   position: relative; // Used by button :focus radio-style etc.
   display: inline-block;
   box-sizing: border-box;
@@ -149,6 +165,7 @@ $prefix: '#{$component-prefix}-button' !default;
     box-shadow: none !important;
   }
 
+
   @include btn-theme-styles();
 
   &:focus {
@@ -165,7 +182,7 @@ $prefix: '#{$component-prefix}-button' !default;
 
   /** *************************** Sizes ******************************** */
 
-  &--size-sm {
+  &--size-small {
     height: $line-height-size-small + 1px * 2 + 1px * 2;
     padding: 1px 11px;
     font-size: $font-size-small;
@@ -181,7 +198,7 @@ $prefix: '#{$component-prefix}-button' !default;
     }
   }
 
-  &--size-md {
+  &--size-default {
     height: $line-height-size-normal + 4px * 2 + 1px * 2;
     padding: 4px 15px;
     font-size: $font-size-normal;
@@ -197,7 +214,7 @@ $prefix: '#{$component-prefix}-button' !default;
     }
   }
 
-  &--size-lg {
+  &--size-large {
     height: $line-height-size-x-large + 13px * 2 + 1px * 2;
     padding: 13px 60px;
     font-size: $font-size-x-large;
@@ -216,12 +233,10 @@ $prefix: '#{$component-prefix}-button' !default;
   /** *************************** Common Styles ******************************** */
 
   &--type-default {
-    background-color: use-color('white');
-    border-color: use-color('gray-30');
     color: use-color('black');
 
     &:not(.#{$prefix}--disabled):hover {
-      border-color: use-color('gray-50');
+      background-color: use-color('gray-20');
       color: use-color('black');
     }
 
@@ -234,7 +249,7 @@ $prefix: '#{$component-prefix}-button' !default;
     &.#{$prefix}--disabled,
     &[disabled] {
       background-color: use-color('gray-20');
-      border-color: use-color('gray-30');
+      // border-color: use-color('gray-30');
       color: use-color('gray-50');
     }
 
@@ -257,11 +272,6 @@ $prefix: '#{$component-prefix}-button' !default;
     }
   }
 
-  @each $key in 'primary', 'success', 'danger' {
-    &--type-#{$key} {
-      @include render-line-button($key);
-    }
-  }
 
   /** *************************** Status ******************************** */
 
@@ -287,6 +297,8 @@ $prefix: '#{$component-prefix}-button' !default;
       height: 1em;
       stroke: none;
       cursor: default;
+      fill: currentColor;
+      margin-right: 4px;
 
       svg {
         @keyframes rotate {
@@ -306,31 +318,3 @@ $prefix: '#{$component-prefix}-button' !default;
   }
 }
 
-// Button Group
-.#{$prefix}-group {
-  display: inline-block;
-
-  > .#{$prefix} {
-    margin-left: 0;
-    margin-right: 0;
-
-    &:hover {
-      z-index: 1;
-    }
-
-    & + & {
-      margin-left: $spacer-2;
-    }
-
-    &:not(:first-child) {
-      margin-left: -1px;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-
-    &:not(:last-child) {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-  }
-}
