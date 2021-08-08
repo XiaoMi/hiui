@@ -109,3 +109,16 @@ export interface TreeNodeEventData extends FlattedTreeNodeData {
   selected: boolean
   loading: boolean
 }
+
+export type TreeMenuActionOption = {
+  type?: 'editNode' | 'addChildNode' | 'addSiblingNode' | 'deleteNode'
+  title: React.ReactNode
+  onClick?: (item: FlattedTreeNodeData, action: TreeEditActions) => void
+}
+
+export type TreeEditActions = {
+  editNode: (node: FlattedTreeNodeData) => void
+  addChildNode: (node: FlattedTreeNodeData) => void
+  addSiblingNode: (node: FlattedTreeNodeData) => void
+  deleteNode: (node: FlattedTreeNodeData) => void
+}

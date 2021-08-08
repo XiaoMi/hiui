@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo, useState, useRef, useEffect } from 'react'
+import { useQueue } from './use-queue'
+import React, { useCallback, useMemo, useState, useEffect } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import cloneDeep from 'lodash.clonedeep'
 import { fFindNestedChildNodesById, uuid } from '../utils'
@@ -74,7 +75,7 @@ export const useExpand = (
   useEffect(() => {
     if (isExpanding) return
     trySetTransitionData(flattedData)
-  }, [flattedData, trySetTransitionData, isExpanding])
+  }, [flattedData, trySetTransitionData, isExpanding, expandedIds])
 
   const expandedIdsRef = useLatestRef(expandedIds)
   const transitionDataRef = useLatestRef(transitionData)
@@ -144,6 +145,26 @@ export const useExpand = (
     ]
   )
 
+  const { enqueue, top, dequeue } = useQueue<any>([])
+  const onNodeToggleStartRef = useLatestRef(onNodeToggleStart)
+
+  const enExpandQueue = useCallback(
+    (expandedNode: FlattedTreeNodeData, isExpanded: boolean) => {
+      const val = [expandedNode, isExpanded] as const
+      enqueue(val)
+    },
+    [enqueue]
+  )
+
+  useEffect(() => {
+    window.requestAnimationFrame(() => {
+      if (isExpanding) return
+      if (top) {
+        onNodeToggleStartRef.current(top[0], top[1])
+      }
+    })
+  }, [isExpanding, top])
+
   const onNodeToggleEnd = useCallback(() => {
     // 动画结束后回恢复成真正的原始数据结构
     setTransitionData(
@@ -159,43 +180,8 @@ export const useExpand = (
 
     // 闭环结束列表展开或收起动画
     setIsExpanding(false)
-
-    setExpandQueue((prev) => {
-      const next = [...prev]
-      next.shift()
-      return next
-    })
-
-    console.log('onNodeToggleEnd')
-  }, [transitionData])
-
-  const [expandQueue, setExpandQueue] = useState([])
-
-  const enExpandQueue = (expandedNode: FlattedTreeNodeData, isExpanded: boolean) => {
-    console.log('enExpandQueue-------', expandedNode)
-
-    setExpandQueue((prev) => {
-      const next = [...prev]
-      next.push([expandedNode, isExpanded])
-      return next
-    })
-  }
-
-  const onNodeToggleStartRef = useLatestRef(onNodeToggleStart)
-
-  useEffect(() => {
-    window.requestAnimationFrame(() => {
-      console.log('isExpanding----------------', isExpanding)
-
-      if (isExpanding) return
-      console.log('expandQueue', expandQueue[0])
-      const top = expandQueue[0]
-
-      if (top) {
-        onNodeToggleStartRef.current(top[0], top[1])
-      }
-    })
-  }, [isExpanding, expandQueue, onNodeToggleStartRef, isExpandingRef])
+    dequeue()
+  }, [transitionData, dequeue])
 
   return [transitionData, enExpandQueue, onNodeToggleEnd, isExpandedId] as const
 }

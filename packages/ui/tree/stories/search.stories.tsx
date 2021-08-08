@@ -29,19 +29,18 @@ const data = [
 ]
 
 export const Search = () => {
-  const [treeProps, searchInputProps] = useTreeSearch({
-    searchable: true,
-    data,
-  })
+  const SearchTree = useTreeSearch(Tree)
 
   return (
     <>
       <h1>Search for Tree</h1>
       <div className="tree-search__wrap">
-        <div>
-          <input type="text" {...searchInputProps} />
-        </div>
-        <Tree {...treeProps} />
+        <SearchTree
+          {...{
+            searchable: true,
+            data,
+          }}
+        />
       </div>
     </>
   )

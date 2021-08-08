@@ -1,0 +1,25 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-tree' !default;
+
+.#{$prefix} {
+  &-searcher {
+    position: relative;
+    color: use-color('gray-80');
+
+    &--empty {
+        display: inline-block;
+        color: use-color('gray-70');
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 400;
+        padding: 10px 10px 0;
+      }
+  }
+
+  .title__text {
+    &--matched {
+      color: use-color('primary');
+    }
+  }
+}

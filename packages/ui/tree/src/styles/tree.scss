@@ -15,8 +15,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 }
 
 .#{$prefix}-node {
-  // display: flex;
-  // align-items: center;
+  position: relative;
   color: use-color('gray-80');
   cursor: pointer;
   // 节点间隔控制
@@ -59,23 +58,13 @@ $prefix: '#{$component-prefix}-tree' !default;
     flex: 1;
     display: inline-flex;
     align-items: center;
-    border-radius: 1px;
-    color: inherit;
     position: relative;
     min-height: 32px;
-
-    .title__text {
-      line-height: $line-height-size-large;
-      font-size: $font-size-normal;
-      cursor: inherit;
-      color: inherit;
-      background-color: transparent;
-
-
-      &--matched {
-        color: use-color('primary');
-      }
-    }
+    line-height: $line-height-size-large;
+    font-size: $font-size-normal;
+    cursor: inherit;
+    color: inherit;
+    background-color: transparent;
 
     // 拖拽指示器-小圆球
     &::before {
@@ -115,9 +104,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     color: use-color('gray-80');
 
     #{$this}__title {
-      .title__text {
-        background: use-color('primary-20');
-      }
+      background: use-color('primary-20');
     }
   }
 
@@ -163,7 +150,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     #{$this}__wrap {
       background: use-color('primary-20');
 
-      .title__text {
+      #{$this}__title {
         color: #4284F5;
       }
     }
@@ -173,7 +160,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     cursor: not-allowed;
     color: use-color('gray-50');
 
-    .title__text {
+    #{$this}__title {
       &:hover {
         background: use-color('white');
       }
@@ -182,7 +169,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     &#{$this}--selected {
       color: use-color('gray-50');
 
-      .title__text {
+      #{$this}__title {
         background: use-color('white');
 
         &:hover {

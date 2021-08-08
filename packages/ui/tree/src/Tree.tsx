@@ -12,7 +12,7 @@ import { useCache } from './hooks/use-cache'
 import { useAsyncSwitch } from './hooks/use-async-switch'
 
 const _role = 'tree'
-const _prefix = getPrefixCls(_role)
+export const _prefix = getPrefixCls(_role)
 
 /**
  * TODO: What is Tree
@@ -191,6 +191,9 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     )
   }
 )
+
+// eslint-disable-next-line no-redeclare
+export type Tree = typeof Tree
 
 export interface TreeProps {
   /**

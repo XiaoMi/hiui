@@ -20,6 +20,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     .#{$prefix}-action {
       z-index: 10;
       list-style: none;
+      color: use-color('gray-80');
       background: var(--color-white);
       width: 140px;
       box-shadow: 0 2px 8px 0 var(--color-gray-10);

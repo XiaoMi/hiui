@@ -1,7 +1,13 @@
 import React, { useState, useCallback, useMemo, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { TreeProps } from './Tree'
-import { FlattedTreeNodeData, TreeNodeType } from './types'
+import {
+  FlattedTreeNodeData,
+  TreeNodeType,
+  TreeNodeData,
+  TreeDataStatus,
+  TreeMenuActionOption,
+} from './types'
 import { useEdit, useCache, useExpandProps } from './hooks'
 import { flattenTreeData } from './utils'
 import Input from '@hi-ui/input'
@@ -14,10 +20,10 @@ import { usePopper } from 'react-popper'
 import { CheckOutlined, CloseOutlined } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
 import { IconButton } from './IconButton'
-import { CSSTransition } from 'react-transition-group'
 import { defaultActionIcon } from './icons'
 
 import './styles/editable-tree.scss'
+import { useLatestRef } from './hooks/use-latest-ref'
 
 const _role = 'tree'
 const _prefix = getPrefixCls(_role)
@@ -33,7 +39,7 @@ export const useTreeEditProps = <T extends EditableTreeProps>(props: T) => {
     prefixCls = _prefix,
     className,
     data,
-    editable = false,
+    editable = true,
     expandedIds: expandedIdsProp,
     defaultExpandedIds = [],
     onExpand,
@@ -43,7 +49,9 @@ export const useTreeEditProps = <T extends EditableTreeProps>(props: T) => {
     onBeforeDelete,
     onSave,
     onDelete,
-    ...originalProps
+    menuOptions,
+    placeholder,
+    ...nativeTreeProps
   } = props
   const [treeData, setTreeData] = useCache(data)
   const flattedData = useMemo(() => flattenTreeData(treeData), [useDeep(treeData)])
@@ -67,37 +75,35 @@ export const useTreeEditProps = <T extends EditableTreeProps>(props: T) => {
     onDelete
   )
 
-  const renderTitleWithEditable = useCallback(
-    (node) => {
-      return (
-        <EditableTreeNodeTitle
-          node={node}
-          onSave={saveEdit}
-          onCancel={cancelAddNode}
-          onDelete={deleteNode}
-          addChildNode={addChildNode}
-          addSiblingNode={addSiblingNode}
-          onExpand={tryToggleExpandedIds}
-        />
-      )
-    },
-    [saveEdit, cancelAddNode, deleteNode, addChildNode, addSiblingNode, tryToggleExpandedIds]
-  )
+  const renderTitleWithEditable = (node: FlattedTreeNodeData) => {
+    return (
+      <EditableTreeNodeTitle
+        prefixCls={prefixCls}
+        node={node}
+        placeholder={placeholder}
+        menuOptions={menuOptions}
+        onSave={saveEdit}
+        onCancel={cancelAddNode}
+        onDelete={deleteNode}
+        addChildNode={addChildNode}
+        addSiblingNode={addSiblingNode}
+        expandedIds={expandedIds}
+        onExpand={tryToggleExpandedIds}
+      />
+    )
+  }
 
-  const proxyTitleRender = useCallback(
-    (node: FlattedTreeNodeData) => {
-      if (titleRender) {
-        const ret = titleRender(node)
-        if (ret) return ret
-      }
+  const proxyTitleRender = (node: FlattedTreeNodeData) => {
+    if (titleRender) {
+      const ret = titleRender(node)
+      if (ret) return ret
+    }
 
-      return editable ? renderTitleWithEditable(node) : true
-    },
-    [titleRender, editable, renderTitleWithEditable]
-  )
+    return editable ? renderTitleWithEditable(node) : true
+  }
 
   const treeProps = {
-    ...originalProps,
+    ...nativeTreeProps,
     titleRender: proxyTitleRender,
     data: editable ? treeData : data,
     expandedIds,
@@ -116,23 +122,39 @@ export interface EditableTreeProps extends TreeProps {
   /**
    * 节点保存新增、编辑状态时触发，返回 false 则节点保持失败，不会触发 onSave
    */
-  onBeforeSave?: (savedNode: FlattedTreeNodeData, data: any, level: number) => boolean
+  onBeforeSave?: (
+    savedNode: FlattedTreeNodeData,
+    data: TreeDataStatus,
+    level: number
+  ) => boolean | Promise<boolean>
   /**
    * 	节点保存新增、编辑状态后触发
    */
-  onSave?: (savedNode: FlattedTreeNodeData, data: FlattedTreeNodeData[]) => void
+  onSave?: (savedNode: FlattedTreeNodeData, data: TreeNodeData[]) => void
   /**
    * 节点删除前触发，返回 false 则节点删除失败，不会触发 onDelete
    */
-  onBeforeDelete?: (deletedNode: FlattedTreeNodeData, data: any, level: number) => boolean
+  onBeforeDelete?: (
+    deletedNode: FlattedTreeNodeData,
+    data: TreeDataStatus,
+    level: number
+  ) => boolean | Promise<boolean>
   /**
    * 节点删除后触发
    */
-  onDelete?: (deletedNode: FlattedTreeNodeData, data: FlattedTreeNodeData[]) => void
+  onDelete?: (deletedNode: FlattedTreeNodeData, data: TreeNodeData[]) => void
+  /**
+   * 自定义树菜单行为项
+   */
+  menuOptions?: TreeMenuActionOption[]
+  /**
+   * 输入框占位符
+   */
+  placeholder?: string
 }
 
 const EditableTreeNodeTitle = (props: EditableTreeNodeTitleProps) => {
-  const { prefixCls = _prefix, node } = props
+  const { prefixCls, node } = props
 
   // 如果是添加节点，则进入节点编辑临时态
   const [editing, editingAction] = useToggle(() => node.raw.type === TreeNodeType.ADD || false)
@@ -152,23 +174,15 @@ const EditableTreeNodeTitle = (props: EditableTreeNodeTitleProps) => {
 interface EditableTreeNodeTitleProps {
   prefixCls: string
   node: FlattedTreeNodeData
-  onCancel?: (node: FlattedTreeNodeData) => void
-  /**
-   * 节点保存新增、编辑状态时触发，返回 false 则节点保持失败，不会触发 onSave
-   */
-  onBeforeSave?: (savedNode: FlattedTreeNodeData, data: any, level: number) => boolean
-  /**
-   * 	节点保存新增、编辑状态后触发
-   */
-  onSave?: (savedNode: FlattedTreeNodeData, data: FlattedTreeNodeData[]) => void
-  /**
-   * 节点删除前触发，返回 false 则节点删除失败，不会触发 onDelete
-   */
-  onBeforeDelete?: (deletedNode: FlattedTreeNodeData, data: any, level: number) => boolean
-  /**
-   * 节点删除后触发
-   */
+  expandedIds: React.ReactText[]
+  onCancel: (node: FlattedTreeNodeData) => void
+  onSave: (savedNode: FlattedTreeNodeData) => void
   onDelete: (deletedNode: FlattedTreeNodeData) => void
+  addChildNode: (node: FlattedTreeNodeData) => void
+  addSiblingNode: (node: FlattedTreeNodeData) => void
+  onExpand: (ids: React.ReactText[]) => void
+  placeholder?: string
+  menuOptions?: TreeMenuActionOption[]
 }
 
 export const EditableNodeMenu = (props: EditableNodeMenuProps) => {
@@ -179,7 +193,9 @@ export const EditableNodeMenu = (props: EditableNodeMenuProps) => {
     onDelete,
     addChildNode,
     addSiblingNode,
+    expandedIds,
     onExpand,
+    menuOptions,
   } = props
 
   const [menuVisible, menuVisibleAction] = useToggle(false)
@@ -189,7 +205,7 @@ export const EditableNodeMenu = (props: EditableNodeMenuProps) => {
   const [arrowElRef, setArrowElmRef] = useState<HTMLDivElement | null>(null)
 
   const { styles, attributes } = usePopper(targetElRef, popperElRef.current, {
-    placement: 'bottom-start',
+    placement: 'bottom-end',
     modifiers: [
       {
         enabled: true,
@@ -219,39 +235,36 @@ export const EditableNodeMenu = (props: EditableNodeMenuProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(containerRef, menuVisibleAction.off)
 
-  const contextMenus = [
-    {
-      title: '添加节点',
-      onClick: () => {
-        addSiblingNode(node)
-        menuVisibleAction.off()
-      },
+  const menuActionsRef = useLatestRef({
+    editNode: () => {
+      editingAction.on()
+      menuVisibleAction.off()
     },
-    {
-      title: '添加子节点',
-      onClick: () => {
-        addChildNode(node)
-        // 展开子节点列表
-        // TODO: 动画丢失，动画触发来源有多个，如何将展开收起和动画触发解耦
-        onExpand((prev: any) => Array.from(new Set(prev.concat(node.id))))
-        menuVisibleAction.off()
-      },
+    deleteNode: () => {
+      open()
+      menuVisibleAction.off()
     },
-    {
-      title: '编辑',
-      onClick: () => {
-        editingAction.on()
-        menuVisibleAction.off()
-      },
+    addChildNode: () => {
+      menuVisibleAction.off()
+      addChildNode(node)
+      // 展开子节点列表
+      onExpand(expandedIds.concat(node.id))
     },
-    {
-      title: '删除',
-      onClick: () => {
-        open()
-        menuVisibleAction.off()
-      },
+    addSiblingNode: () => {
+      menuVisibleAction.off()
+      addSiblingNode(node)
     },
-  ]
+  })
+
+  const handleMenuClick = useCallback(
+    (node: FlattedTreeNodeData, option: TreeMenuActionOption) => {
+      if (option.type) {
+        menuActionsRef.current[option.type]()
+      }
+      option.onClick?.(node, menuActionsRef.current)
+    },
+    [menuActionsRef]
+  )
 
   return (
     <div ref={containerRef}>
@@ -265,13 +278,17 @@ export const EditableNodeMenu = (props: EditableNodeMenuProps) => {
         }}
       />
       {/* <CSSTransition in={visible} timeout={300} classNames={'hi-popper_transition'} unmountOnExit> */}
-      {menuVisible ? (
+      {menuOptions && menuVisible ? (
         <div ref={popperElRef} style={{ ...styles.popper }} {...attributes.popper}>
           <div ref={setArrowElmRef} style={styles.arrow} />
           <ul className={`${prefixCls}-action`}>
-            {contextMenus.map(({ title, onClick }, idx) => (
-              <li key={idx} className={`${prefixCls}-action__item`} onClick={onClick}>
-                {title}
+            {menuOptions.map((option, idx) => (
+              <li
+                key={idx}
+                className={`${prefixCls}-action__item`}
+                onClick={() => handleMenuClick(node, option)}
+              >
+                {option.title}
               </li>
             ))}
           </ul>
@@ -332,19 +349,9 @@ export const EditableNodeInput = (props: EditableNodeInputProps) => {
 
 interface EditableNodeInputProps extends EditableTreeNodeTitleProps {
   prefixCls: string
-  // TODO: 不能限定是“节点”这种东西，需要由用户去配置
   placeholder?: string
   node: FlattedTreeNodeData
   editingAction: UseToggleAction
-  onCancel: (node: FlattedTreeNodeData) => void
-  /**
-   * 	节点保存新增、编辑状态后触发
-   */
-  onSave: (savedNode: FlattedTreeNodeData) => void
-  /**
-   * 节点删除后触发
-   */
-  onDelete: (deletedNode: FlattedTreeNodeData) => void
 }
 
 /**

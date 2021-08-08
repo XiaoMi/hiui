@@ -1,18 +1,24 @@
 import React from 'react'
 import Tree from '../src'
+import Button from '@hi-ui/button'
 
 export const Basic = () => {
-  const [state, setState] = React.useState('')
-  React.useEffect(() => {
-    setState('22')
-  }, [])
-  console.log('render')
+  const [expandedIds, setExpandedIds] = React.useState<React.ReactText[]>([])
 
   return (
     <>
       <h1>Basic for Tree</h1>
       <div className="tree-basic__wrap">
+        <Button
+          onClick={() => {
+            setExpandedIds([1])
+          }}
+        >
+          setExpanded
+        </Button>
         <Tree
+          expandedIds={expandedIds}
+          onExpand={setExpandedIds}
           data={[
             {
               id: 1,

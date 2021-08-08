@@ -186,6 +186,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
       titleRender?: (node: FlattedTreeNodeData) => React.ReactNode,
       onSelect?: (node: FlattedTreeNodeData) => void
     ) => {
+      // 如果 titleRender 返回 `true`，则使用默认 title
       const title = titleRender ? titleRender(node) : true
 
       return (
@@ -194,7 +195,6 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
           className={`${prefixCls}__title`}
           onClick={() => onSelect?.(node)}
         >
-          {/* TODO: 对 titleRender 注入 context ？ */}
           {title === true ? <span className="title__text">{node.title}</span> : title}
         </div>
       )

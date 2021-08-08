@@ -3,7 +3,31 @@ import Tree, { useTreeEditProps } from '../src'
 
 export const Editable = () => {
   const treeProps = useTreeEditProps({
-    editable: true,
+    placeholder: '请填写菜单',
+    menuOptions: [
+      {
+        type: 'addChildNode',
+        title: '新建子节点',
+      },
+      {
+        type: 'addSiblingNode',
+        title: '新建兄弟节点',
+      },
+      {
+        type: 'deleteNode',
+        title: '删除当前菜单',
+      },
+      {
+        type: 'editNode',
+        title: '编辑当前菜单',
+      },
+      {
+        title: 'HelloMenu',
+        onClick(node) {
+          console.log(node)
+        },
+      },
+    ],
     data: [
       {
         id: 1,

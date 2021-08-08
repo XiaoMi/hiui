@@ -15,17 +15,16 @@ export const useAsyncSwitch = (
   // 加载节点
   const loadChildren = useCallback(
     async (node: FlattedTreeNodeData) => {
-      if (onLoadChildren) {
-        const childrenNodes = await onLoadChildren(node)
-        console.log('childrenNodes', childrenNodes)
+      if (!onLoadChildren) return
 
-        if (Array.isArray(childrenNodes)) {
-          setTreeData((prev) => {
-            const nextTreeData = cloneDeep(prev)
-            addChildrenById(nextTreeData, node.id, childrenNodes)
-            return nextTreeData
-          })
-        }
+      const childrenNodes = await onLoadChildren(node)
+
+      if (Array.isArray(childrenNodes)) {
+        setTreeData((prev) => {
+          const nextTreeData = cloneDeep(prev)
+          addChildrenById(nextTreeData, node.id, childrenNodes)
+          return nextTreeData
+        })
       }
     },
     [onLoadChildren, setTreeData]
@@ -44,10 +43,8 @@ export const useAsyncSwitch = (
 
       if (onLoadChildren) {
         setLoadingIds((prev) => (prev.indexOf(id) === -1 ? prev.concat(node.id) : prev))
-
         try {
           await loadChildren(node)
-          // TODO: 此时不一定 treeData 为最新的，可以在 外部更新 treeData，所以展开动画需要触发在节点变化时，而不是对应展开操作时
           // Using latest  onExpand function at nextTick
           window.requestAnimationFrame(() => {
             onExpandRef.current?.(node, !expanded)
