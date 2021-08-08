@@ -29,6 +29,7 @@ if (__DEV__) {
 interface IconButtonProps {
   prefixCls?: string
   className?: string
+  style?: React.CSSProperties
   onClick?: (evt: React.MouseEvent<HTMLButtonElement>) => void
   icon: React.ReactNode
   active?: boolean

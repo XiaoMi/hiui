@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useMemo, useRef } from 'react'
-import { cx, getPrefixCls } from '@hi-ui/classname'
-import { TreeProps } from './Tree'
+import React, { useState, useCallback, useMemo, useRef, forwardRef } from 'react'
+import { __DEV__ } from '@hi-ui/env'
+import { cx } from '@hi-ui/classname'
+import { TreeProps, Tree, _prefix } from './Tree'
 import {
   FlattedTreeNodeData,
   TreeNodeType,
@@ -13,27 +14,42 @@ import { flattenTreeData } from './utils'
 import Input from '@hi-ui/input'
 import { useDeepEqualDeps as useDeep } from '@hi-ui/use-deep-equal-deps'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
-import { useMergeRefs } from '@hi-ui/use-merge-refs'
+// import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useToggle, UseToggleAction } from '@hi-ui/use-toggle'
 
 import { usePopper } from 'react-popper'
 import { CheckOutlined, CloseOutlined } from '@hi-ui/icons'
-import Button from '@hi-ui/button'
+// import Button from '@hi-ui/button'
 import { IconButton } from './IconButton'
 import { defaultActionIcon } from './icons'
-
-import './styles/editable-tree.scss'
 import { useLatestRef } from './hooks/use-latest-ref'
 
-const _role = 'tree'
-const _prefix = getPrefixCls(_role)
+import './styles/editable-tree.scss'
 
 /**
- * 将 BaseTree 添加定制编辑功能，返回 EditableTree
+ * 将 BaseTree 添加定制搜索功能，返回 SearchableTree
  *
  * @param props
  * @returns
  */
+export const useTreeAction = (BaseTree: Tree) => {
+  const AdvancedTreeMemo = useMemo(() => {
+    // 高阶组件
+    const AdvancedTree = forwardRef<HTMLUListElement | null, EditableTreeProps>((props, ref) => {
+      const treeProps = useTreeEditProps(props)
+
+      return <BaseTree ref={ref} {...treeProps} />
+    })
+    if (__DEV__) {
+      AdvancedTree.displayName = 'AdvancedTree'
+    }
+
+    return AdvancedTree
+  }, [BaseTree])
+
+  return AdvancedTreeMemo
+}
+
 export const useTreeEditProps = <T extends EditableTreeProps>(props: T) => {
   const {
     prefixCls = _prefix,
@@ -185,7 +201,7 @@ interface EditableTreeNodeTitleProps {
   menuOptions?: TreeMenuActionOption[]
 }
 
-export const EditableNodeMenu = (props: EditableNodeMenuProps) => {
+const EditableNodeMenu = (props: EditableNodeMenuProps) => {
   const {
     prefixCls = _prefix,
     node,
@@ -224,13 +240,13 @@ export const EditableNodeMenu = (props: EditableNodeMenuProps) => {
     ],
   })
 
-  const [setTargetEl, Modal, open] = useConfirmPopper({
-    prefixCls,
-    onConfirm: () => onDelete(node),
-    content: '确定要删除当前节点 ？',
-    confirmText: '确定',
-    cancelText: '取消',
-  })
+  // const [setTargetEl, Modal, open] = useConfirmPopper({
+  //   prefixCls,
+  //   onConfirm: () => onDelete(node),
+  //   content: '确定要删除当前节点 ？',
+  //   confirmText: '确定',
+  //   cancelText: '取消',
+  // })
 
   const containerRef = useRef<HTMLDivElement | null>(null)
   useOutsideClick(containerRef, menuVisibleAction.off)
@@ -241,7 +257,8 @@ export const EditableNodeMenu = (props: EditableNodeMenuProps) => {
       menuVisibleAction.off()
     },
     deleteNode: () => {
-      open()
+      // open()
+      onDelete(node)
       menuVisibleAction.off()
     },
     addChildNode: () => {
@@ -270,16 +287,16 @@ export const EditableNodeMenu = (props: EditableNodeMenuProps) => {
     <div ref={containerRef}>
       <IconButton
         className={`${prefixCls}-action__btn`}
-        ref={useMergeRefs(setTargetElRef, setTargetEl)}
+        // ref={useMergeRefs(setTargetElRef, setTargetEl)}
+        ref={setTargetElRef}
         icon={defaultActionIcon}
         onClick={(evt) => {
           evt.stopPropagation()
           menuVisibleAction.not()
         }}
       />
-      {/* <CSSTransition in={visible} timeout={300} classNames={'hi-popper_transition'} unmountOnExit> */}
       {menuOptions && menuVisible ? (
-        <div ref={popperElRef} style={{ ...styles.popper }} {...attributes.popper}>
+        <div ref={popperElRef} style={{ ...styles.popper, zIndex: 2 }} {...attributes.popper}>
           <div ref={setArrowElmRef} style={styles.arrow} />
           <ul className={`${prefixCls}-action`}>
             {menuOptions.map((option, idx) => (
@@ -294,8 +311,7 @@ export const EditableNodeMenu = (props: EditableNodeMenuProps) => {
           </ul>
         </div>
       ) : null}
-      {/* </CSSTransition> */}
-      {Modal}
+      {/* {Modal} */}
     </div>
   )
 }
@@ -307,7 +323,7 @@ interface EditableNodeMenuProps extends EditableTreeNodeTitleProps {
 /**
  * 节点编辑框
  */
-export const EditableNodeInput = (props: EditableNodeInputProps) => {
+const EditableNodeInput = (props: EditableNodeInputProps) => {
   const { prefixCls = _prefix, node, onSave, onCancel, editingAction, placeholder } = props
 
   const [inputValue, setInputValue] = useState((node.title as string) || '')
@@ -358,66 +374,66 @@ interface EditableNodeInputProps extends EditableTreeNodeTitleProps {
  * 通用确认弹窗
  * TODO: 抽离到 Modal，拆分出一个子组件，专门用于局部弹窗确认的场景
  */
-const useConfirmPopper = (props: UseConfirmPopperProps) => {
-  const { prefixCls, onConfirm, content, confirmText, cancelText } = props
+// const useConfirmPopper = (props: UseConfirmPopperProps) => {
+//   const { prefixCls, onConfirm, content, confirmText, cancelText } = props
 
-  const [visible, toggleAction] = useToggle()
+//   const [visible, toggleAction] = useToggle()
 
-  const [targetEl, setTargetEl] = useState<any>(null)
-  const popperElRef = useRef<HTMLDivElement | null>(null)
-  const arrowElRef = useRef<HTMLDivElement | null>(null)
+//   const [targetEl, setTargetEl] = useState<any>(null)
+//   const popperElRef = useRef<HTMLDivElement | null>(null)
+//   const arrowElRef = useRef<HTMLDivElement | null>(null)
 
-  const { styles, attributes } = usePopper(targetEl, popperElRef.current, {
-    placement: 'bottom-end',
-    modifiers: [
-      {
-        enabled: true,
-        name: 'arrow',
-        options: {
-          element: arrowElRef.current,
-        },
-      },
-      {
-        enabled: true,
-        name: 'offset',
-        options: {
-          offset: [4, 4],
-        },
-      },
-    ],
-  })
+//   const { styles, attributes } = usePopper(targetEl, popperElRef.current, {
+//     placement: 'bottom-end',
+//     modifiers: [
+//       {
+//         enabled: true,
+//         name: 'arrow',
+//         options: {
+//           element: arrowElRef.current,
+//         },
+//       },
+//       {
+//         enabled: true,
+//         name: 'offset',
+//         options: {
+//           offset: [4, 4],
+//         },
+//       },
+//     ],
+//   })
 
-  useOutsideClick(popperElRef, toggleAction.off)
+//   useOutsideClick(popperElRef, toggleAction.off)
 
-  const Modal = visible ? (
-    <div ref={popperElRef} style={{ ...styles.popper }} {...attributes.popper}>
-      <div ref={arrowElRef} style={styles.arrow} className={`${prefixCls}-modal-arrow`} />
-      <div className={`${prefixCls}-modal`}>
-        <section className={`${prefixCls}-modal__body`}>{content}</section>
-        <footer className={`${prefixCls}-modal__footer`}>
-          <Button
-            className={`${prefixCls}-modal__btn--cancel`}
-            type="primary"
-            appearance="line"
-            onClick={toggleAction.off}
-          >
-            {cancelText}
-          </Button>
-          <Button type="primary" className={`${prefixCls}-modal__btn--confirm`} onClick={onConfirm}>
-            {confirmText}
-          </Button>
-        </footer>
-      </div>
-    </div>
-  ) : null
+//   const Modal = visible ? (
+//     <div ref={popperElRef} style={{ ...styles.popper, zIndex: 1 }} {...attributes.popper}>
+//       <div ref={arrowElRef} style={styles.arrow} className={`${prefixCls}-modal-arrow`} />
+//       <div className={`${prefixCls}-modal`}>
+//         <section className={`${prefixCls}-modal__body`}>{content}</section>
+//         <footer className={`${prefixCls}-modal__footer`}>
+//           <Button
+//             className={`${prefixCls}-modal__btn--cancel`}
+//             type="primary"
+//             appearance="line"
+//             onClick={toggleAction.off}
+//           >
+//             {cancelText}
+//           </Button>
+//           <Button type="primary" className={`${prefixCls}-modal__btn--confirm`} onClick={onConfirm}>
+//             {confirmText}
+//           </Button>
+//         </footer>
+//       </div>
+//     </div>
+//   ) : null
 
-  return [setTargetEl, Modal, toggleAction.on] as const
-}
+//   return [setTargetEl, Modal, toggleAction.on] as const
+// }
 
-interface UseConfirmPopperProps {
-  prefixCls: string
-  onConfirm: (evt: React.MouseEvent<Element, MouseEvent>) => void
-  content: string
-  confirmText: string
-  cancelText: string
-}
+// interface UseConfirmPopperProps {
+//   prefixCls: string
+//   onConfirm: (evt: React.MouseEvent<Element, MouseEvent>) => void
+//   content: string
+//   confirmText: string
+//   cancelText: string
+// }

@@ -21,7 +21,7 @@ $prefix: '#{$component-prefix}-tree' !default;
       z-index: 10;
       list-style: none;
       color: use-color('gray-80');
-      background: var(--color-white);
+      background-color: use-color('white');
       width: 140px;
       box-shadow: 0 2px 8px 0 var(--color-gray-10);
       border-radius: 2px;
@@ -50,6 +50,9 @@ $prefix: '#{$component-prefix}-tree' !default;
       }
 
       &__btn {
+        position: relative;
+        color: use-color('gray-80');
+
         &:hover {
           color: use-color('primary');
         }
@@ -57,87 +60,55 @@ $prefix: '#{$component-prefix}-tree' !default;
     }
   }
 
-  &-modal {
-    padding: 16px;
-    box-sizing: border-box;
-    width: 240px;
-    background-color: use-color(--color-white);
-    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-    position: relative;
+  // &-modal {
+  //   padding: 16px;
+  //   box-sizing: border-box;
+  //   width: 240px;
+  //   background-color: use-color('white');
+  //   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.12);
+  //   border-radius: 4px;
+  //   position: relative;
 
-    &-arrow {
-      z-index: 1;
+  //   &-arrow {
+  //     z-index: 1;
 
-      &::before {
-        content: '';
-        position: absolute;
-        right: 3px;
-        bottom: 0;
-        border-left: 6px solid transparent;
-        border-right: 6px solid transparent;
-        border-bottom: 6px solid #fff;
-      }
+  //     &::before {
+  //       content: '';
+  //       position: absolute;
+  //       right: 3px;
+  //       bottom: 0;
+  //       border-left: 6px solid transparent;
+  //       border-right: 6px solid transparent;
+  //       border-bottom: 6px solid #fff;
+  //     }
 
-      &::after {
-        content: '';
-        position: absolute;
-        right: 3px;
-        bottom: 1px;
-        border-left: 6px solid transparent;
-        border-right: 6px solid transparent;
-        border-bottom: 6px solid rgba(0, 0, 0, 0.1);;
-        filter: blur(1px);
-        z-index: -1;
-      }
-    }
+  //     &::after {
+  //       content: '';
+  //       position: absolute;
+  //       right: 3px;
+  //       bottom: 1px;
+  //       border-left: 6px solid transparent;
+  //       border-right: 6px solid transparent;
+  //       border-bottom: 6px solid rgba(0, 0, 0, 0.1);;
+  //       filter: blur(1px);
+  //       z-index: -1;
+  //     }
+  //   }
 
-    &__body {
-      padding-top: 4px;
-      color: #666;
-      line-height: 24px;
-    }
+  //   &__body {
+  //     padding-top: 4px;
+  //     color: #666;
+  //     line-height: 24px;
+  //   }
 
-    &__footer {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 28px;
-    }
+  //   &__footer {
+  //     display: flex;
+  //     justify-content: flex-end;
+  //     margin-top: 28px;
+  //   }
 
-    &__btn--confirm {
-        margin-left: 10px;
-    }
-  }
-}
-
-
-
-.hi-popper_transition {
-  &-enter {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-
-  &-enter-active {
-    opacity: 1;
-    transform: translateX(0);
-    transition: opacity 300ms, transform 300ms;
-  }
-
-  &-exit {
-    opacity: 0;
-    transform: translateX(100%);
-    transition: opacity 300ms, transform 300ms;
-  }
-
-  &-exit-done {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-
-  &-exit-active {
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 300ms, transform 300ms;
-  }
+  //   &__btn--confirm {
+  //       margin-left: 10px;
+  //   }
+  // }
 }

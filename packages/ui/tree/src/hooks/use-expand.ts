@@ -88,13 +88,11 @@ export const useExpand = (
       const expandedIds = expandedIdsRef.current
       const transitionData = transitionDataRef.current
 
-      console.log('onNodeToggleStart------------- ', expandedIds, transitionData)
-
       const expandedNodeIdSet = new Set<React.ReactText>(expandedIds)
       const expandedNodeId = expandedNode.id
 
       if (isExpanded) {
-        console.log('展开ing---------------', expandedNodeId)
+        // console.log('展开ing---------------', expandedNodeId)
         expandedNodeIdSet.add(expandedNodeId)
 
         // 设置展开的子节点集合用一个容器节点包裹，用来实现动画展开效果
@@ -111,7 +109,7 @@ export const useExpand = (
 
         trySetTransitionData(newTransitionData)
       } else {
-        console.log('收起ing---------------', expandedNodeId)
+        // console.log('收起ing---------------', expandedNodeId)
         expandedNodeIdSet.delete(expandedNodeId)
 
         // 设置隐藏的子节点集合用一个 节点 包裹，用来实现动画隐藏效果

@@ -52,7 +52,7 @@ export const useTreeSearch = (BaseTree: Tree) => {
   return AdvancedTreeMemo
 }
 
-export const useTreeSearchProps = (props: SearchableTreeProps) => {
+export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
   const {
     prefixCls = _prefix,
     data,
