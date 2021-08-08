@@ -46,26 +46,25 @@ export const Dynamic = () => {
   ])
 
   // 加载节点
-  const loadChildren = React.useCallback(
-    (node) => {
-      return fetch(`https://my-json-server.typicode.com/hiui-group/db/conditiondata?id=${node.id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data[0]) {
-            data[0].id = Math.random()
-          }
+  const loadChildren = async (node) => {
+    return fetch(`https://my-json-server.typicode.com/hiui-group/db/conditiondata?id=${node.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data[0]) {
+          data[0].id = Math.random()
+        }
 
-          const dataCache = cloneDeep(treeData)
-          const loadNode = findNode(node.id, dataCache)
-          loadNode.children = data
-          console.log(loadNode)
-          setTreeData(dataCache)
+        // setTreeData((prev) => {
+        //   const nextData = cloneDeep(prev)
+        //   const loadNode = findNode(node.id, nextData)
+        //   loadNode.children = data
+        //   console.log(loadNode, nextData)
+        //   return nextData
+        // })
 
-          return data
-        })
-    },
-    [treeData]
-  )
+        return data
+      })
+  }
 
   return (
     <>

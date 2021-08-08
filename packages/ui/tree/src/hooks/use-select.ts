@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { FlattedTreeNodeData } from '../types'
+import { useLatestRef } from './use-latest-ref'
 
 /**
- * 一个用于 tree 组件选中的 hook
+ * 用于 tree 组件选中的 hook
  *
  * @param defaultSelectedId 非受控默认选中的 id，其值默认为 `null`，表示不选中任何实体
  * @param selectedIdProp
@@ -20,11 +21,12 @@ export const useSelect = (
   ) => void,
   disabled = false
 ) => {
+  const onSelectRef = useLatestRef(onSelectProp)
   const proxyOnSelect = useCallback(
     (id: React.ReactText | null, item: FlattedTreeNodeData | null) => {
-      onSelectProp?.(id, item)
+      onSelectRef.current?.(id, item)
     },
-    [onSelectProp]
+    []
   )
 
   const [selectedId, tryChangeSelectedId] = useUncontrolledState(
@@ -34,14 +36,14 @@ export const useSelect = (
   )
 
   const onSelect = useCallback(
-    (selectedItem: FlattedTreeNodeData) => {
-      if (disabled || selectedItem.disabled) return
+    (selectedNode: FlattedTreeNodeData) => {
+      if (disabled || selectedNode.disabled) return
 
-      if (selectedId === selectedItem.id) {
+      if (selectedId === selectedNode.id) {
         // 允许取消选中
         tryChangeSelectedId(null, null)
       } else {
-        tryChangeSelectedId(selectedItem.id, selectedItem)
+        tryChangeSelectedId(selectedNode.id, selectedNode)
       }
     },
     [disabled, selectedId, tryChangeSelectedId]

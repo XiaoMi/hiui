@@ -21,6 +21,10 @@ export interface TreeNodeData {
    * 是否禁用该节点
    */
   disabled?: boolean
+  /**
+   * 节点类型，控制操作节点的行为
+   */
+  type?: TreeNodeType
 }
 
 export interface FlattedTreeNodeData extends TreeNodeData {
@@ -45,13 +49,17 @@ export interface FlattedTreeNodeData extends TreeNodeData {
    */
   ancestors?: FlattedTreeNodeData[]
   /**
-   * 该节点的兄弟节点列表，注意其中包含节点本身
+   * 该节点的兄弟节点列表（其中包含节点本身）
    */
   siblings?: TreeNodeData[]
   /**
    * 节点类型，控制操作节点的行为
    */
   type?: TreeNodeType
+  /**
+   * 节点所在列表数据中的下标
+   */
+  pos?: number
 }
 
 type ValueOf<T> = T[keyof T]
@@ -93,3 +101,11 @@ export interface MotionTreeNodeData {
 }
 
 export type TreeNodeTransitionData = MotionTreeNodeData | FlattedTreeNodeData
+
+export interface TreeNodeEventData extends FlattedTreeNodeData {
+  expanded: boolean
+  checked: boolean
+  semiChecked: boolean
+  selected: boolean
+  loading: boolean
+}

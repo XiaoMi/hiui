@@ -32,7 +32,7 @@ export const useExpandProps = (
 
 export const MOTION_NODE_KEY = `TREE_MOTION_NODE_${uuid()}`
 
-export const isMotionNodeData = (node: TreeNodeTransitionData): node is MotionTreeNodeData => {
+export const isMotionNode = (node: TreeNodeTransitionData): node is MotionTreeNodeData => {
   return node.id === MOTION_NODE_KEY
 }
 
@@ -57,29 +57,37 @@ export const useExpand = (
   ])
 
   // 更新展示数据，只展示被展开的所有节点
-  const [transitionData, setTransitionData] = useState(flattedData)
+  const [transitionData, setTransitionData] = useState<TreeNodeTransitionData[]>(flattedData)
 
   const prevExpandedIdsRef = useLatestRef(expandedIds)
-  const trySetTransitionData = useCallback((data: FlattedTreeNodeData[]) => {
+  const trySetTransitionData = useCallback((data: TreeNodeTransitionData[]) => {
     const nextData = flattenTreeDataWithExpand(data, prevExpandedIdsRef.current)
     setTransitionData(nextData)
   }, [])
 
-  // 原始数据被改变时，同步更新要展示的所有节点
-  useEffect(() => {
-    trySetTransitionData(flattedData)
-  }, [flattedData, trySetTransitionData])
-
   // 用来确保一次折叠动画是一次加锁的单元任务
   // 防止用户频繁折叠展开导致动画渲染（存在 DOM 操作）异常
-  const isExpandingRef = useRef(false)
+  const [isExpanding, setIsExpanding] = useState(false)
+  const isExpandingRef = useLatestRef(isExpanding)
 
-  // console.log('flattedData', flattedData)
+  // 原始数据被改变时，同步更新要展示的所有节点
+  useEffect(() => {
+    if (isExpanding) return
+    trySetTransitionData(flattedData)
+  }, [flattedData, trySetTransitionData, isExpanding])
+
+  const expandedIdsRef = useLatestRef(expandedIds)
+  const transitionDataRef = useLatestRef(transitionData)
 
   const onNodeToggleStart = useCallback(
     (expandedNode: FlattedTreeNodeData, isExpanded: boolean) => {
       if (isExpandingRef.current) return
-      isExpandingRef.current = true
+      setIsExpanding(true)
+
+      const expandedIds = expandedIdsRef.current
+      const transitionData = transitionDataRef.current
+
+      console.log('onNodeToggleStart------------- ', expandedIds, transitionData)
 
       const expandedNodeIdSet = new Set<React.ReactText>(expandedIds)
       const expandedNodeId = expandedNode.id
@@ -92,12 +100,11 @@ export const useExpand = (
         const [rangeData] = fFindNestedChildNodesById(flattedData, expandedNodeId)
         const expandedNodeIndex = transitionData.findIndex((node) => node.id === expandedNodeId)
         const childrenStartIndex = expandedNodeIndex + 1
-        const newTransitionData = cloneDeep(transitionData)
+        const newTransitionData: TreeNodeTransitionData[] = cloneDeep(transitionData)
 
-        // @ts-ignore
         newTransitionData.splice(childrenStartIndex, 0, {
           id: MOTION_NODE_KEY,
-          children: flattenTreeDataWithExpand(rangeData, expandedIds),
+          children: flattenTreeDataWithExpand(rangeData, expandedIds) as FlattedTreeNodeData[],
           type: TreeNodeType.SHOW,
         })
 
@@ -108,7 +115,7 @@ export const useExpand = (
 
         // 设置隐藏的子节点集合用一个 节点 包裹，用来实现动画隐藏效果
         const [rangeData, expandedNodeIndex] = fFindNestedChildNodesById(
-          transitionData,
+          transitionData as FlattedTreeNodeData[],
           expandedNodeId
         )
         // const expandedNodeIndex = transitionData.findIndex((node) => node.id === expandedNodeId)
@@ -127,52 +134,90 @@ export const useExpand = (
 
       tryToggleExpandedIds(Array.from(expandedNodeIdSet))
     },
-    [expandedIds, tryToggleExpandedIds, flattedData, transitionData, trySetTransitionData]
+    [
+      expandedIdsRef,
+      transitionDataRef,
+      tryToggleExpandedIds,
+      flattedData,
+      trySetTransitionData,
+      isExpandingRef,
+    ]
   )
 
   const onNodeToggleEnd = useCallback(() => {
     // 动画结束后回恢复成真正的原始数据结构
     setTransitionData(
       transitionData.reduce((prev, cur) => {
-        if (cur.id !== MOTION_NODE_KEY) {
+        if (!isMotionNode(cur)) {
           prev.push(cur)
-          return prev
-        }
-
-        if (cur.type === TreeNodeType.SHOW) {
+        } else if (cur.type === TreeNodeType.SHOW) {
           cur.children?.forEach((node) => prev.push(node))
-          return prev
         }
-
         return prev
       }, [] as FlattedTreeNodeData[])
     )
 
     // 闭环结束列表展开或收起动画
-    isExpandingRef.current = false
+    setIsExpanding(false)
+
+    setExpandQueue((prev) => {
+      const next = [...prev]
+      next.shift()
+      return next
+    })
+
+    console.log('onNodeToggleEnd')
   }, [transitionData])
 
-  return [transitionData, onNodeToggleStart, onNodeToggleEnd, isExpandedId] as const
+  const [expandQueue, setExpandQueue] = useState([])
+
+  const enExpandQueue = (expandedNode: FlattedTreeNodeData, isExpanded: boolean) => {
+    console.log('enExpandQueue-------', expandedNode)
+
+    setExpandQueue((prev) => {
+      const next = [...prev]
+      next.push([expandedNode, isExpanded])
+      return next
+    })
+  }
+
+  const onNodeToggleStartRef = useLatestRef(onNodeToggleStart)
+
+  useEffect(() => {
+    window.requestAnimationFrame(() => {
+      console.log('isExpanding----------------', isExpanding)
+
+      if (isExpanding) return
+      console.log('expandQueue', expandQueue[0])
+      const top = expandQueue[0]
+
+      if (top) {
+        onNodeToggleStartRef.current(top[0], top[1])
+      }
+    })
+  }, [isExpanding, expandQueue, onNodeToggleStartRef, isExpandingRef])
+
+  return [transitionData, enExpandQueue, onNodeToggleEnd, isExpandedId] as const
 }
 
 function flattenTreeDataWithExpand(
-  flattedTreeData: FlattedTreeNodeData[],
+  flattedTreeData: TreeNodeTransitionData[],
   expandedIds: React.ReactText[]
 ) {
   const expandedKeySet = new Set(expandedIds)
+  const length = flattedTreeData.length
   const nextData = []
 
-  // 处理只展示 未折叠内容
-  for (let i = 0; i < flattedTreeData.length; ) {
+  // 处理只展示未折叠的节点或动画节点
+  for (let i = 0; i < length; ) {
     const node = flattedTreeData[i]
     nextData.push(node)
 
-    if (expandedKeySet.has(node.id) || node.id === MOTION_NODE_KEY) {
+    if (expandedKeySet.has(node.id) || isMotionNode(node)) {
       i++
     } else {
-      // 过滤掉所有被折叠节点项的 children 展示
       let child = flattedTreeData[++i]
-      while (child && child.depth > node.depth) {
+      while (child && !isMotionNode(child) && child.depth > node.depth) {
         child = flattedTreeData[++i]
       }
     }

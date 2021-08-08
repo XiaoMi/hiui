@@ -1,14 +1,15 @@
-import React, { forwardRef, useMemo, useCallback, useImperativeHandle } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
-import { useExpand, useSelect, useTreeDrop, useCheck, isMotionNodeData } from './hooks'
+import { useExpand, useSelect, useTreeDrop, useCheck, isMotionNode } from './hooks'
 import { TreeNodeData, FlattedTreeNodeData, TreeDataStatus, TreeLevelStatus } from './types'
 import { TreeProvider } from './context'
 import VirtualList from 'rc-virtual-list'
 import { MotionTreeNode } from './MotionTreeNode'
 import { TreeNode } from './TreeNode'
 import { useCache } from './hooks/use-cache'
+import { useAsyncSwitch } from './hooks/use-async-switch'
 
 const _role = 'tree'
 const _prefix = getPrefixCls(_role)
@@ -76,7 +77,13 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       !selectable
     )
 
-    const dropTree = useTreeDrop(treeData, flattedData, setTreeData, onDrop, onDropEnd)
+    const [onNodeCheck, isCheckedId, isSemiCheckedId] = useCheck(
+      flattedData,
+      defaultCheckedIds,
+      checkedIdsProp,
+      onCheck,
+      !checkable
+    )
 
     const [transitionData, onNodeToggleStart, onNodeToggleEnd, isExpandedId] = useExpand(
       flattedData,
@@ -86,31 +93,36 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       defaultExpandAll
     )
 
-    const [onNodeCheck, isCheckedId, isSemiCheckedId] = useCheck(
-      flattedData,
-      defaultCheckedIds,
-      checkedIdsProp,
-      onCheck
+    const dropTree = useTreeDrop(treeData, flattedData, setTreeData, onDrop, onDropEnd)
+
+    const [isLoadingId, onNodeSwitch] = useAsyncSwitch(
+      setTreeData,
+      onNodeToggleStart,
+      onLoadChildren
     )
 
-    const treeRef = React.useRef<HTMLUListElement>(null)
-    useImperativeHandle(
-      ref,
-      () =>
-        ({
-          ...treeRef.current,
-          // TODO: 类型未声明
-          // 约定内部向外暴露的自定义方法形式以 `$` 开头，避免和原生混合
-        } as HTMLUListElement),
-      []
-    )
+    // 呈现在可视范围的列表个数，undefined 表示没有限制
+    const overscanCount = useMemo(() => {
+      if (virtual === false || !height) {
+        return undefined
+      }
+      return Math.ceil(height / itemHeight) + 1
+    }, [virtual, height, itemHeight])
 
-    const cls = cx(prefixCls, className)
+    const getTreeNodeProps = (id: React.ReactText) => {
+      return {
+        expanded: isExpandedId(id),
+        checked: isCheckedId(id),
+        semiChecked: isSemiCheckedId(id),
+        selected: selectedId === id,
+        loading: isLoadingId(id),
+      }
+    }
 
     const providedValue = useMemo(
       () => ({
         onSelect: onNodeSelect,
-        onExpand: onNodeToggleStart,
+        onExpand: onNodeSwitch,
         draggable,
         checkable,
         onNodeCheck,
@@ -128,7 +140,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       }),
       [
         onNodeSelect,
-        onNodeToggleStart,
+        onNodeSwitch,
         draggable,
         checkable,
         onNodeCheck,
@@ -146,42 +158,21 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       ]
     )
 
-    // 呈现在可视范围的列表个数，undefined 表示没有限制
-    const overscanCount = useMemo(() => {
-      if (virtual === false || !height) {
-        return undefined
-      }
-      return Math.ceil(height / itemHeight) + 1
-    }, [virtual, height, itemHeight])
-
-    // console.log(flattedData, transitionData)
-
-    const getTreeNodeProps = useCallback(
-      (id: React.ReactText) => {
-        return {
-          expanded: isExpandedId(id),
-          checked: isCheckedId(id),
-          semiChecked: isSemiCheckedId(id),
-          selected: selectedId === id,
-        }
-      },
-      [isExpandedId, isCheckedId, isSemiCheckedId, selectedId]
-    )
+    const cls = cx(prefixCls, className)
 
     return (
       <TreeProvider value={providedValue}>
-        <ul ref={treeRef} role={role} className={cls} {...rest}>
+        <ul ref={ref} role={role} className={cls} {...rest}>
           <VirtualList
-            data={transitionData}
-            itemKey={(item) => item.id}
-            height={height}
+            itemKey="id"
             fullHeight={false}
-            virtual={virtual}
+            height={height}
             itemHeight={itemHeight}
-            prefixCls={`${prefixCls}-list`}
+            virtual={virtual}
+            data={transitionData}
           >
             {(node) => {
-              return isMotionNodeData(node) ? (
+              return isMotionNode(node) ? (
                 <MotionTreeNode
                   key={node.id}
                   data={node}
@@ -241,7 +232,7 @@ export interface TreeProps {
   /**
    * 点击异步加载子项
    */
-  onLoadChildren?: (node: FlattedTreeNodeData) => Promise<any>
+  onLoadChildren?: (node: FlattedTreeNodeData) => Promise<TreeNodeData[] | undefined>
   /**
    * 选中的节点
    */

@@ -117,10 +117,6 @@ export interface ButtonProps {
    * 设置按钮图标
    */
   icon?: React.ReactNode
-  /**
-   * 设置容器的 dom 类型
-   */
-  as?: 'button' | 'a'
 }
 
 if (__DEV__) {

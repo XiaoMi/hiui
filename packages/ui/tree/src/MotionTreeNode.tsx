@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, forwardRef } from 'react'
+import React, { useRef, useState, useEffect, forwardRef, useCallback } from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import { times } from '@hi-ui/times'
 import { TreeNode } from './TreeNode'
@@ -12,11 +12,10 @@ import { useMergeRefs } from '@hi-ui/use-merge-refs'
 export const MotionTreeNode = forwardRef<HTMLDivElement | null, MotionTreeNodeProps>(
   ({ prefixCls, data, onMotionEnd, overscanCount, getTreeNodeProps }, ref) => {
     const { children: childrenNodes, type } = data
+
     // 根据 type 控制显隐过渡动画
     const [visible, setVisible] = useState(() => type === TreeNodeType.HIDE)
-    const [height, setHeight] = useState<number | undefined>()
-
-    const motionNodeRef = useRef<HTMLDivElement>(null)
+    const [height, setHeight] = useState<number>()
 
     useEffect(() => {
       if (visible) {
@@ -30,39 +29,38 @@ export const MotionTreeNode = forwardRef<HTMLDivElement | null, MotionTreeNodePr
       }
     }, [visible, type])
 
-    const motionCount = Math.min(childrenNodes.length, overscanCount ?? childrenNodes.length)
+    const motionNodeRef = useRef<HTMLDivElement>(null)
+    // 0 => scrollHeight
+    const open = useCallback(() => {
+      const nextHeight = motionNodeRef.current?.scrollHeight || 0
+      setHeight(nextHeight)
+    }, [])
+    // scrollHeight => 0
+    const close = useCallback(() => {
+      setHeight(0)
+    }, [])
+
+    const motionNodeCount = Math.min(childrenNodes.length, overscanCount ?? childrenNodes.length)
 
     return (
       <CSSTransition
         classNames={`${prefixCls}-motion`}
         style={{ height }}
         in={visible}
-        timeout={320}
+        timeout={310}
         unmountOnExit
-        // 0 => scrollHeight
-        onEnter={() => {
-          setHeight(0)
-        }}
-        onEntering={() => {
-          const nextHeight = motionNodeRef.current?.scrollHeight ?? 0
-          setHeight(nextHeight)
-        }}
+        onEnter={close}
+        onEntering={open}
         onEntered={onMotionEnd}
-        // scrollHeight => 0
-        onExit={() => {
-          const nextHeight = motionNodeRef.current?.scrollHeight ?? 0
-          setHeight(nextHeight)
-        }}
-        onExiting={() => {
-          setHeight(0)
-        }}
+        onExit={open}
+        onExiting={close}
         onExited={onMotionEnd}
       >
         {/* 使用一个 dom 包裹，给过渡的列表集合体添加过渡动画 */}
         <div ref={useMergeRefs(ref, motionNodeRef)} className={`${prefixCls}-motion-node`}>
-          {times(motionCount, (index) => {
-            const treeNode = childrenNodes[index]
-            return <TreeNode key={treeNode.id} data={treeNode} {...getTreeNodeProps(treeNode.id)} />
+          {times(motionNodeCount, (index) => {
+            const node = childrenNodes[index]
+            return <TreeNode key={node.id} data={node} {...getTreeNodeProps(node.id)} />
           })}
         </div>
       </CSSTransition>

@@ -1,12 +1,13 @@
 import React, { createContext, useContext } from 'react'
 import { FlattedTreeNodeData } from './types'
+import { TreeNodeProps } from './TreeNode'
 
 interface TreeContext {
   selectedId?: React.ReactText
   onSelect?: (node: FlattedTreeNodeData) => void
   disabled?: boolean
   draggable?: boolean
-  onExpand?: (expandedNode: FlattedTreeNodeData, expanded: boolean) => void
+  onExpand?: (node: TreeNodeProps) => Promise<void>
   onDragStart?: (dragNode: FlattedTreeNodeData) => void
   onDragEnd?: (dragNode: FlattedTreeNodeData) => void
   onDrop?: any

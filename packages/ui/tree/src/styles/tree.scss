@@ -27,9 +27,8 @@ $prefix: '#{$component-prefix}-tree' !default;
     display: flex;
     align-items: center;
     justify-items: stretch;
-    // width: 100%;
     border-radius: 4px;
-    padding-left: 4px;
+    padding: 0 4px;
 
     &:hover {
       background-color: use-color('primary-20');
@@ -42,27 +41,18 @@ $prefix: '#{$component-prefix}-tree' !default;
   }
 
   &__indent {
-    width: 20px;
-    height: 100%;
     display: inline-block;
+    width: 22px;
+    height: 100%;
   }
 
   &__switcher {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    appearance: none;
-    outline: none;
-    border: none;
-    background-color: transparent;
-    color: inherit;
-    padding: 0;
-    margin: 0;
-    font-size: 16px;
-    cursor: pointer;
-    width: 1em;
-    height: 1em;
-    margin-right: 4px;
+    margin-left: -4px;
+    height: 100%;
+
+    &--loading {
+      color: use-color('primary');
+    }
   }
 
   &__title {
@@ -72,7 +62,6 @@ $prefix: '#{$component-prefix}-tree' !default;
     border-radius: 1px;
     color: inherit;
     position: relative;
-    padding: 0 4px;
     min-height: 32px;
 
     .title__text {

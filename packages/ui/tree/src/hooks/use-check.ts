@@ -1,8 +1,19 @@
 import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { useLatestRef } from './use-latest-ref'
 import { FlattedTreeNodeData } from '../types'
-import { getChildrenNodeIds } from '../utils'
+import { findNestedChildIds } from '../utils'
 
+/**
+ * 用于 tree 组件复选的 hook
+ *
+ * @param flattedData
+ * @param defaultCheckedIds
+ * @param checkedIdsProp
+ * @param onCheck
+ * @param disabled
+ * @returns
+ */
 export const useCheck = (
   flattedData: FlattedTreeNodeData[],
   defaultCheckedIds: React.ReactText[],
@@ -14,14 +25,14 @@ export const useCheck = (
     },
     node: FlattedTreeNodeData,
     checked: boolean
-  ) => void
+  ) => void,
+  disabled = false
 ) => {
-  const proxyOnCheck = useCallback(
-    (checkedIds, checkedNode, checked, semiCheckedIds) => {
-      onCheck?.({ checkedIds, semiCheckedIds }, checkedNode, checked)
-    },
-    [onCheck]
-  )
+  const onCheckRef = useLatestRef(onCheck)
+
+  const proxyOnCheck = useCallback((checkedIds, checkedNode, checked, semiCheckedIds) => {
+    onCheckRef.current?.({ checkedIds, semiCheckedIds }, checkedNode, checked)
+  }, [])
 
   const [checkedIds, trySetCheckedIds] = useUncontrolledState(
     defaultCheckedIds,
@@ -42,12 +53,14 @@ export const useCheck = (
 
   const onNodeCheck = useCallback(
     (checkedNode: FlattedTreeNodeData, checked: boolean) => {
+      if (disabled || checkedNode.disabled) return
+
       const checkedIdsSet = new Set(checkedIds)
       const semiCheckedIdsSet = new Set(semiCheckedIds)
 
       const checkedNodeId = checkedNode.id
       const ancestors = checkedNode.ancestors || []
-      const childrenIds = getChildrenNodeIds(checkedNode)
+      const childrenIds = findNestedChildIds(checkedNode)
 
       if (checked) {
         // - 对于选中节点自身的处理
@@ -113,7 +126,7 @@ export const useCheck = (
 
       trySetCheckedIds(nextCheckedIds, checkedNode, checked, nextSemiCheckedIds)
     },
-    [checkedIds, trySetCheckedIds, semiCheckedIds]
+    [disabled, checkedIds, trySetCheckedIds, semiCheckedIds]
   )
 
   return [onNodeCheck, isCheckedId, isSemiCheckedId] as const

@@ -47,7 +47,7 @@ export const VirtualList = () => {
     <>
       <h1>VirtualList for Tree</h1>
       <div className="tree-basic__wrap">
-        <Tree data={treeData}></Tree>
+        <Tree height={300} data={treeData}></Tree>
       </div>
     </>
   )

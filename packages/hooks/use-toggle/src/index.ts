@@ -1,5 +1,11 @@
 import { useState, useMemo } from 'react'
 
+export type UseToggleAction = {
+  on: () => void
+  off: () => void
+  not: () => void
+}
+
 /**
  * Handles Boolean switching by `on`, `off`, `not`
  *

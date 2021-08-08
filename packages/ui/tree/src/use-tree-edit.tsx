@@ -1,23 +1,23 @@
-import React, { useState, useCallback, useMemo, useRef, forwardRef } from 'react'
+import React, { useState, useCallback, useMemo, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { TreeProps } from './Tree'
-import { FlattedTreeNodeData } from './types'
+import { FlattedTreeNodeData, TreeNodeType } from './types'
 import { useEdit, useCache, useExpandProps } from './hooks'
 import { flattenTreeData } from './utils'
 import Input from '@hi-ui/input'
 import { useDeepEqualDeps as useDeep } from '@hi-ui/use-deep-equal-deps'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
-import { useToggle } from '@hi-ui/use-toggle'
+import { useToggle, UseToggleAction } from '@hi-ui/use-toggle'
 
 import { usePopper } from 'react-popper'
 import { CheckOutlined, CloseOutlined } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
+import { IconButton } from './IconButton'
+import { CSSTransition } from 'react-transition-group'
+import { defaultActionIcon } from './icons'
 
 import './styles/editable-tree.scss'
-import { defaultActionIcon } from './icons/index'
-import { __DEV__ } from '@hi-ui/env'
-import { CSSTransition } from 'react-transition-group'
 
 const _role = 'tree'
 const _prefix = getPrefixCls(_role)
@@ -43,13 +43,13 @@ export const useTreeEditProps = <T extends EditableTreeProps>(props: T) => {
     onBeforeDelete,
     onSave,
     onDelete,
-    ...nativeTreeProps
+    ...originalProps
   } = props
   const [treeData, setTreeData] = useCache(data)
   const flattedData = useMemo(() => flattenTreeData(treeData), [useDeep(treeData)])
 
   // 拦截 expand：用于添加子节点时自动展开当前节点
-  // 但是对外仍然暴露 expand 相关 props 原有的功能
+  // 但是对外仍然暴露 expand 及其相关 props 原有的功能
   const [expandedIds, tryToggleExpandedIds] = useExpandProps(
     flattedData,
     defaultExpandedIds,
@@ -97,7 +97,7 @@ export const useTreeEditProps = <T extends EditableTreeProps>(props: T) => {
   )
 
   const treeProps = {
-    ...nativeTreeProps,
+    ...originalProps,
     titleRender: proxyTitleRender,
     data: editable ? treeData : data,
     expandedIds,
@@ -131,36 +131,58 @@ export interface EditableTreeProps extends TreeProps {
   onDelete?: (deletedNode: FlattedTreeNodeData, data: FlattedTreeNodeData[]) => void
 }
 
-const EditableTreeNodeTitle = (props: any) => {
+const EditableTreeNodeTitle = (props: EditableTreeNodeTitleProps) => {
   const { prefixCls = _prefix, node } = props
 
-  // 如果是添加的节点，进入节点编辑临时态
-  const [editing, setEditing] = useState(() => node.raw.type === 'add' || false)
+  // 如果是添加节点，则进入节点编辑临时态
+  const [editing, editingAction] = useToggle(() => node.raw.type === TreeNodeType.ADD || false)
 
   if (editing) {
-    return <EditableNodeInput prefixCls={prefixCls} {...props} setEditing={setEditing} />
+    return <EditableNodeInput {...props} editingAction={editingAction} />
   }
 
   return (
     <div className={`${prefixCls}__title`}>
       <span className="title__text">{node.title}</span>
-      <ActionMenuPopper prefixCls={prefixCls} {...props} setEditing={setEditing} />
+      <EditableNodeMenu {...props} editingAction={editingAction} />
     </div>
   )
 }
 
-export const ActionMenuPopper = (props: any) => {
+interface EditableTreeNodeTitleProps {
+  prefixCls: string
+  node: FlattedTreeNodeData
+  onCancel?: (node: FlattedTreeNodeData) => void
+  /**
+   * 节点保存新增、编辑状态时触发，返回 false 则节点保持失败，不会触发 onSave
+   */
+  onBeforeSave?: (savedNode: FlattedTreeNodeData, data: any, level: number) => boolean
+  /**
+   * 	节点保存新增、编辑状态后触发
+   */
+  onSave?: (savedNode: FlattedTreeNodeData, data: FlattedTreeNodeData[]) => void
+  /**
+   * 节点删除前触发，返回 false 则节点删除失败，不会触发 onDelete
+   */
+  onBeforeDelete?: (deletedNode: FlattedTreeNodeData, data: any, level: number) => boolean
+  /**
+   * 节点删除后触发
+   */
+  onDelete: (deletedNode: FlattedTreeNodeData) => void
+}
+
+export const EditableNodeMenu = (props: EditableNodeMenuProps) => {
   const {
     prefixCls = _prefix,
     node,
-    setEditing,
+    editingAction,
     onDelete,
     addChildNode,
     addSiblingNode,
     onExpand,
   } = props
 
-  const [visible, setVisible] = useState(false)
+  const [menuVisible, menuVisibleAction] = useToggle(false)
 
   const [targetElRef, setTargetElRef] = useState<HTMLButtonElement | null>(null)
   const popperElRef = useRef<HTMLDivElement | null>(null)
@@ -195,14 +217,14 @@ export const ActionMenuPopper = (props: any) => {
   })
 
   const containerRef = useRef<HTMLDivElement | null>(null)
-  useOutsideClick(containerRef, () => setVisible(false))
+  useOutsideClick(containerRef, menuVisibleAction.off)
 
   const contextMenus = [
     {
       title: '添加节点',
       onClick: () => {
         addSiblingNode(node)
-        setVisible(false)
+        menuVisibleAction.off()
       },
     },
     {
@@ -212,38 +234,39 @@ export const ActionMenuPopper = (props: any) => {
         // 展开子节点列表
         // TODO: 动画丢失，动画触发来源有多个，如何将展开收起和动画触发解耦
         onExpand((prev: any) => Array.from(new Set(prev.concat(node.id))))
-        setVisible(false)
+        menuVisibleAction.off()
       },
     },
     {
       title: '编辑',
       onClick: () => {
-        setEditing(true)
-        setVisible(false)
+        editingAction.on()
+        menuVisibleAction.off()
       },
     },
     {
       title: '删除',
       onClick: () => {
         open()
-        setVisible(false)
+        menuVisibleAction.off()
       },
     },
   ]
 
   return (
-    <div ref={containerRef} style={{ position: 'relative' }}>
+    <div ref={containerRef}>
       <IconButton
+        className={`${prefixCls}-action__btn`}
         ref={useMergeRefs(setTargetElRef, setTargetEl)}
         icon={defaultActionIcon}
-        prefixCls={prefixCls}
-        onClick={() => {
-          setVisible((prev) => !prev)
+        onClick={(evt) => {
+          evt.stopPropagation()
+          menuVisibleAction.not()
         }}
       />
       {/* <CSSTransition in={visible} timeout={300} classNames={'hi-popper_transition'} unmountOnExit> */}
-      {visible ? (
-        <div ref={popperElRef} style={{ ...styles.popper, zIndex: 1 }} {...attributes.popper}>
+      {menuVisible ? (
+        <div ref={popperElRef} style={{ ...styles.popper }} {...attributes.popper}>
           <div ref={setArrowElmRef} style={styles.arrow} />
           <ul className={`${prefixCls}-action`}>
             {contextMenus.map(({ title, onClick }, idx) => (
@@ -260,40 +283,45 @@ export const ActionMenuPopper = (props: any) => {
   )
 }
 
-export const EditableNodeInput = (props: any) => {
-  const { prefixCls = _prefix, node, onSave, onCancel, setEditing } = props
-  const [inputValue, setInputValue] = useState(node.title || '')
+interface EditableNodeMenuProps extends EditableTreeNodeTitleProps {
+  editingAction: UseToggleAction
+}
+
+/**
+ * 节点编辑框
+ */
+export const EditableNodeInput = (props: EditableNodeInputProps) => {
+  const { prefixCls = _prefix, node, onSave, onCancel, editingAction, placeholder } = props
+
+  const [inputValue, setInputValue] = useState((node.title as string) || '')
+  const handleChange = useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(evt.target.value)
+  }, [])
 
   return (
     <div className={cx(`${prefixCls}__title`, `${prefixCls}__title--editing`)}>
       <Input
-        // TODO: 不能限定是“节点”这种东西，需要由用户去配置
-        placeholder="节点名称"
         autoFocus
         style={{ flex: 1 }}
+        placeholder={placeholder}
         value={inputValue}
-        onChange={(e) => {
-          setInputValue(e.target.value)
-        }}
+        onChange={handleChange}
       />
       <span className={`${prefixCls}__action`}>
         <IconButton
           active={!!inputValue}
-          prefixCls={prefixCls}
           icon={<CheckOutlined />}
           onClick={() => {
             if (!inputValue) return
-
             onSave?.({ ...node, title: inputValue })
-            setEditing(false)
+            editingAction.off()
           }}
         />
         <IconButton
           active
-          prefixCls={prefixCls}
           icon={<CloseOutlined />}
           onClick={() => {
-            setEditing(false)
+            editingAction.off()
             onCancel?.(node)
           }}
         />
@@ -302,31 +330,21 @@ export const EditableNodeInput = (props: any) => {
   )
 }
 
-// TODO: 抽离到 button，拆分出一个子组件，专门用于把 icon 当按钮的场景
-const IconButton = forwardRef<HTMLButtonElement | null, IconButtonProps>(
-  ({ prefixCls, icon, className, onClick, active = false }, ref) => {
-    return (
-      <button
-        ref={ref}
-        className={cx(`${prefixCls}-icon-button`, active && 'active', className)}
-        onClick={onClick}
-      >
-        {icon}
-      </button>
-    )
-  }
-)
-
-if (__DEV__) {
-  IconButton.displayName = 'IconButton'
-}
-
-interface IconButtonProps {
-  icon: React.ReactNode
-  prefixCls?: string
-  className?: string
-  onClick?: (evt: React.MouseEvent<HTMLButtonElement>) => void
-  active?: boolean
+interface EditableNodeInputProps extends EditableTreeNodeTitleProps {
+  prefixCls: string
+  // TODO: 不能限定是“节点”这种东西，需要由用户去配置
+  placeholder?: string
+  node: FlattedTreeNodeData
+  editingAction: UseToggleAction
+  onCancel: (node: FlattedTreeNodeData) => void
+  /**
+   * 	节点保存新增、编辑状态后触发
+   */
+  onSave: (savedNode: FlattedTreeNodeData) => void
+  /**
+   * 节点删除后触发
+   */
+  onDelete: (deletedNode: FlattedTreeNodeData) => void
 }
 
 /**
@@ -365,16 +383,15 @@ const useConfirmPopper = (props: UseConfirmPopperProps) => {
   useOutsideClick(popperElRef, toggleAction.off)
 
   const Modal = visible ? (
-    <div ref={popperElRef} style={{ ...styles.popper, zIndex: 1 }} {...attributes.popper}>
-      <div ref={arrowElRef} style={styles.arrow}>
-        <div className={`${prefixCls}-modal-arrow`}></div>
-      </div>
+    <div ref={popperElRef} style={{ ...styles.popper }} {...attributes.popper}>
+      <div ref={arrowElRef} style={styles.arrow} className={`${prefixCls}-modal-arrow`} />
       <div className={`${prefixCls}-modal`}>
         <section className={`${prefixCls}-modal__body`}>{content}</section>
         <footer className={`${prefixCls}-modal__footer`}>
           <Button
             className={`${prefixCls}-modal__btn--cancel`}
-            type="line"
+            type="primary"
+            appearance="line"
             onClick={toggleAction.off}
           >
             {cancelText}

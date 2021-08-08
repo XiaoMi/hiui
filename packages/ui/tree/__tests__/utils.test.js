@@ -1,4 +1,4 @@
-import { flattenTreeData } from '../src/utils'
+import { fFindNestedChildNodesById, flattenTreeData } from '../src/utils'
 
 describe('utils', () => {
   describe('flatten treeNode', () => {
@@ -9,7 +9,7 @@ describe('utils', () => {
       }
     }
 
-    it('order should pre-order', () => {
+    it('order should be pre-order', () => {
       const flattedData = flattenTreeData([
         gNode('0', [
           gNode('0-0'),
@@ -123,6 +123,77 @@ describe('utils', () => {
         rawTreeData[1].children[0],
         rawTreeData[1].children[1],
       ])
+    })
+  })
+
+  describe('find all nested child by id in flatten data', () => {
+    function gNode(id, children) {
+      return {
+        id,
+        children,
+      }
+    }
+
+    it('order should be pre-order', () => {
+      const flattedData = flattenTreeData([
+        gNode('0', [
+          gNode('0-0'),
+          gNode('0-1'),
+          gNode('0-2', [
+            gNode('0-2-0'),
+            gNode('0-2-1'),
+            gNode('0-2-2'),
+            gNode('0-2-3', [
+              // break line
+              gNode('0-2-3-0'),
+            ]),
+            gNode('0-2-4'),
+          ]),
+        ]),
+        gNode('1'),
+      ])
+
+      const [childNodes, nodeIndex] = fFindNestedChildNodesById(flattedData, flattedData[3].id)
+
+      expect(childNodes.map(({ id }) => id)).toEqual([
+        '0-2-0',
+        '0-2-1',
+        '0-2-2',
+        '0-2-3',
+        '0-2-3-0',
+        '0-2-4',
+      ])
+
+      expect(nodeIndex).toEqual(3)
+    })
+
+    it('find empty', () => {
+      const flattedData = flattenTreeData([
+        gNode('0', [
+          gNode('0-0'),
+          gNode('0-1'),
+          gNode('0-2', [
+            gNode('0-2-0'),
+            gNode('0-2-1'),
+            gNode('0-2-2'),
+            gNode('0-2-3', [
+              // break line
+              gNode('0-2-3-0'),
+            ]),
+            gNode('0-2-4'),
+          ]),
+        ]),
+        gNode('1'),
+      ])
+
+      const [childNodes, nodeIndex] = fFindNestedChildNodesById(
+        flattedData,
+        flattedData[flattedData.length - 1].id
+      )
+
+      expect(childNodes.map(({ id }) => id)).toEqual([])
+
+      expect(nodeIndex).toEqual(flattedData.length - 1)
     })
   })
 })

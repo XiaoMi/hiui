@@ -10,9 +10,6 @@ $prefix: '#{$component-prefix}-tree' !default;
       display: flex;
       justify-content: space-between;
       align-items: center;
-
-      &--editing {
-      }
     }
 
     .#{$prefix}__action {
@@ -50,44 +47,12 @@ $prefix: '#{$component-prefix}-tree' !default;
           background-color: #ECF2FE;
         }
       }
-    }
-  }
 
-  &-icon-button {
-    font-size: 16px;
-    display: inline-block;
-    box-sizing: border-box;
-    appearance: none;
-    border: none;
-    background: none;
-    color: inherit;
-    margin: 0;
-    padding: 4px;
-    line-height: 0;
-    font-weight: $font-weight-normal;
-    text-align: center;
-    text-decoration: none;
-    vertical-align: middle;
-    white-space: nowrap;
-    touch-action: manipulation;
-    cursor: pointer;
-    transition: all $easing;
-
-    svg {
-      width: 1em;
-      height: 1em;
-      fill: currentColor;
-      stroke: currentColor;
-      display: inline-block;
-      vertical-align: -0.15em;
-    }
-
-    &.active {
-      color: use-color('primary');
-    }
-
-    &:hover {
-      color: use-color('primary');
+      &__btn {
+        &:hover {
+          color: use-color('primary');
+        }
+      }
     }
   }
 
@@ -97,9 +62,34 @@ $prefix: '#{$component-prefix}-tree' !default;
     width: 240px;
     background-color: use-color(--color-white);
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.12);
-    z-index: 1;
     border-radius: 4px;
     position: relative;
+
+    &-arrow {
+      z-index: 1;
+
+      &::before {
+        content: '';
+        position: absolute;
+        right: 3px;
+        bottom: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid #fff;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        right: 3px;
+        bottom: 1px;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid rgba(0, 0, 0, 0.1);;
+        filter: blur(1px);
+        z-index: -1;
+      }
+    }
 
     &__body {
       padding-top: 4px;

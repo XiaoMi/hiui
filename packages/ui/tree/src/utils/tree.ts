@@ -1,10 +1,11 @@
 import React from 'react'
-import { TreeNodeData, FlattedTreeNodeData } from '../types'
+import { TreeNodeData, FlattedTreeNodeData, TreeNodeEventData } from '../types'
+import { TreeNodeProps } from '../TreeNode'
 
 /**
  * 扁平化树数据结构，基于前序遍历
  *
- * @param data
+ * @param treeData
  * @returns
  */
 export const flattenTreeData = (treeData: TreeNodeData[]) => {
@@ -45,12 +46,16 @@ export const flattenTreeData = (treeData: TreeNodeData[]) => {
     return flattedNode
   }
 
-  treeData.forEach((node) => dig(node, treeData, 0))
+  treeData.forEach((node) => {
+    dig(node, treeData, 0)
+  })
   return flattedTreeData
 }
 
 /**
  * 根据指定 id 的节点查找其所有（包含嵌套）孩子节点的 ids
+ *
+ * f 开头表示基于扁平 tree 数据，而不是基于原始 tree 数据操作
  *
  * @param flattedTreeData
  * @param targetId
@@ -101,6 +106,7 @@ export const fFindNodeById = (
 
 /**
  * 从树中删除指定 id 的第一个被找到的节点
+ * 并返回被删除节点
  *
  * @param treeData
  * @param targetId
@@ -159,6 +165,32 @@ export const addChildNodeById = (
 }
 
 /**
+ * 为指定 id 的第一个被找到的节点添加 children 节点
+ *
+ * @param treeData
+ * @param targetId
+ * @param children
+ */
+export const addChildrenById = (
+  treeData: TreeNodeData[],
+  targetId: React.ReactText,
+  children: TreeNodeData[]
+) => {
+  const { length } = treeData
+  for (let i = 0; i < length; ++i) {
+    const node = treeData[i]
+
+    if (targetId === node.id) {
+      node.children = children
+    }
+
+    if (node.children) {
+      addChildrenById(node.children, targetId, children)
+    }
+  }
+}
+
+/**
  * 插入节点到指定 id 的节点之前或之后
  *
  * @param treeData
@@ -194,16 +226,33 @@ export const insertNodeById = (
  * @param node
  * @returns
  */
-export const getChildrenNodeIds = (node: FlattedTreeNodeData) => {
+export const findNestedChildIds = (node: TreeNodeData) => {
   const allChildrenIds: React.ReactText[] = []
 
-  const dig = (node: FlattedTreeNodeData) => {
-    node.children?.forEach((child) => {
-      allChildrenIds.push(child.id)
-      dig(child)
-    })
+  const dig = (node: TreeNodeData) => {
+    if (node.children) {
+      node.children.forEach((child) => {
+        allChildrenIds.push(child.id)
+        dig(child)
+      })
+    }
   }
 
   dig(node)
   return allChildrenIds
+}
+
+export function getTreeNodeEventData(props: TreeNodeProps): TreeNodeEventData {
+  const { data, expanded, checked, semiChecked, selected, loading } = props as Required<
+    TreeNodeProps
+  >
+
+  return {
+    ...data,
+    expanded,
+    checked,
+    semiChecked,
+    selected,
+    loading,
+  }
 }

@@ -1,0 +1,43 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$icon-button-prefix: '#{$component-prefix}-icon-button' !default;
+
+.#{$icon-button-prefix} {
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  // TODO: component button reset
+  width: fit-content;
+  height: fit-content;
+  appearance: none;
+  border: none;
+  background-color: transparent;
+  background-image: none;
+  color: inherit;
+  margin: 0;
+  padding: 6px 4px;
+  line-height: 0;
+  font-weight: $font-weight-normal;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: all $easing;
+
+  svg {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    stroke: currentColor;
+    display: inline-block;
+    vertical-align: -0.15em;
+  }
+
+  &--active {
+    color: use-color('primary');
+  }
+}
