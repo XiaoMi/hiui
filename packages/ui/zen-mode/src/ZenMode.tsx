@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { LeftOutlined } from '@hi-ui/icons'
+import { setTimeout } from 'timers'
 
 const _role = 'zen-mode'
 const _prefix = getPrefixCls(_role)
@@ -40,6 +41,11 @@ export const ZenMode: React.FC<ZenModeProps> = ({
         parent.style.removeProperty('overflow')
       }
     }
+    if (visible) {
+      setTimeout(() => {
+        setToolbarHide(true)
+      }, 3000)
+    }
   }, [visible])
 
   return visible ? (
@@ -54,7 +60,21 @@ export const ZenMode: React.FC<ZenModeProps> = ({
           }
         }}
       >
-        <div className={cx(`${prefixCls}__toolbar`, { [`${prefixCls}__toolbar--hide`]: hide })}>
+        <div
+          className={cx(`${prefixCls}__toolbar`, { [`${prefixCls}__toolbar--hide`]: hide })}
+          onMouseEnter={(e) => {
+            e.preventDefault()
+            if (hide) {
+              setToolbarHide(false)
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.preventDefault()
+            if (!hide) {
+              setToolbarHide(true)
+            }
+          }}
+        >
           <span onClick={onReturn} className={`${prefixCls}__back-btn`}>
             <LeftOutlined />
             返回
