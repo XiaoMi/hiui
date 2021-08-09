@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { FlattedTreeNodeData, TreeNodeData } from '../types'
-import { useLatestRef } from './use-latest-ref'
+import { useLatestRef } from '@hi-ui/use-latest'
 import cloneDeep from 'lodash.clonedeep'
 import { addChildrenById } from '../utils'
 import { TreeNodeProps } from '../TreeNode'

@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { useLatestRef } from './use-latest-ref'
+import { useLatestRef } from '@hi-ui/use-latest'
+
 import { FlattedTreeNodeData } from '../types'
 import { findNestedChildIds } from '../utils'
 

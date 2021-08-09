@@ -9,7 +9,7 @@ import {
   TreeNodeTransitionData,
   MotionTreeNodeData,
 } from '../types'
-import { useLatestRef } from './use-latest-ref'
+import { useLatestRef } from '@hi-ui/use-latest'
 
 export const useExpandProps = (
   flattedData: FlattedTreeNodeData[],

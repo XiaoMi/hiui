@@ -1,10 +1,10 @@
 {
-  "name": "@hi-ui/use-latest-ref",
+  "name": "@hi-ui/use-latest",
   "version": "4.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/use-latest-ref#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/use-latest#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -31,7 +31,7 @@
     "url": "git+https://github.com/XiaoMi/hiui.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1",
+    "test": "jest",
     "clean": "rimraf lib",
     "prebuild": "yarn clean",
     "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",

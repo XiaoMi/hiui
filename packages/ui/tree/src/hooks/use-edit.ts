@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { TreeNodeData, FlattedTreeNodeData, TreeNodeType, TreeDataStatus } from '../types'
 import cloneDeep from 'lodash.clonedeep'
 import { addChildNodeById, deleteNodeById, insertNodeById, uuid } from '../utils'
-import { useLatestRef } from './use-latest-ref'
+import { useLatestRef } from '@hi-ui/use-latest'
 
 const genTreeNode = () => ({ id: uuid(), title: '', type: 'add' } as FlattedTreeNodeData)
 

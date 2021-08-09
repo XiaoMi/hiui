@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { useLatestRef } from '@hi-ui/use-latest'
 import { FlattedTreeNodeData } from '../types'
-import { useLatestRef } from './use-latest-ref'
 
 /**
  * 用于 tree 组件选中的 hook

@@ -16,13 +16,13 @@ import { useDeepEqualDeps as useDeep } from '@hi-ui/use-deep-equal-deps'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 // import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useToggle, UseToggleAction } from '@hi-ui/use-toggle'
+import { useLatestRef } from '@hi-ui/use-latest'
 
 import { usePopper } from 'react-popper'
 import { CheckOutlined, CloseOutlined } from '@hi-ui/icons'
 // import Button from '@hi-ui/button'
 import { IconButton } from './IconButton'
 import { defaultActionIcon } from './icons'
-import { useLatestRef } from './hooks/use-latest-ref'
 
 import './styles/editable-tree.scss'
 
