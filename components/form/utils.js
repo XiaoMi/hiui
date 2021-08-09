@@ -2,7 +2,7 @@ import _ from 'lodash'
 
 // 需要做一个filed的规则解析
 const tranformListValues = (field, listNestValues, value, listname) => {
-  const fieldSplit = field.split('&&')
+  const fieldSplit = field.split('#')
   const key = fieldSplit[1]
   const keyName = fieldSplit[0]
   if (listNestValues[listname][keyName]) {
