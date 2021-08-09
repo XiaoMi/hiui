@@ -9,7 +9,7 @@ import {
   TreeNodeTransitionData,
   MotionTreeNodeData,
 } from '../types'
-import { useLatestRef } from '@hi-ui/use-latest'
+import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
 
 export const useExpandProps = (
   flattedData: FlattedTreeNodeData[],
@@ -53,16 +53,15 @@ export const useExpand = (
   )
 
   const expandedNodeIdSet = useMemo(() => new Set<React.ReactText>(expandedIds), [expandedIds])
-  const isExpandedId = useCallback((id: React.ReactText) => expandedNodeIdSet.has(id), [
-    expandedNodeIdSet,
-  ])
+  const isExpandedId = (id: React.ReactText) => expandedNodeIdSet.has(id)
+  const expandedIdsRef = useLatestRef(expandedIds)
 
   // 更新展示数据，只展示被展开的所有节点
   const [transitionData, setTransitionData] = useState<TreeNodeTransitionData[]>(flattedData)
+  const transitionDataRef = useLatestRef(transitionData)
 
-  const prevExpandedIdsRef = useLatestRef(expandedIds)
   const trySetTransitionData = useCallback((data: TreeNodeTransitionData[]) => {
-    const nextData = flattenTreeDataWithExpand(data, prevExpandedIdsRef.current)
+    const nextData = flattenTreeDataWithExpand(data, expandedIdsRef.current)
     setTransitionData(nextData)
   }, [])
 
@@ -71,23 +70,21 @@ export const useExpand = (
   const [isExpanding, setIsExpanding] = useState(false)
   const isExpandingRef = useRef(false)
 
-  // 原始数据被改变时，同步更新要展示的所有节点
+  const { enqueue, top, dequeue } = useQueue<any>([])
+
+  // 用户传入 data 或 expandedIds 被改变时，同步更新要展示的所有节点
   useEffect(() => {
     if (isExpanding) return
     trySetTransitionData(flattedData)
   }, [flattedData, trySetTransitionData, isExpanding, expandedIds])
 
-  const expandedIdsRef = useLatestRef(expandedIds)
-  const transitionDataRef = useLatestRef(transitionData)
-
   const onNodeToggleStart = useCallback(
     (expandedNode: FlattedTreeNodeData, shouldExpanded: boolean) => {
       if (isExpandingRef.current) return
 
-      // 相同无需任何操作
       const expanded = expandedIdsRef.current.indexOf(expandedNode.id) !== -1
       if (shouldExpanded === expanded) {
-        dequeueRef.current()
+        dequeue()
         return
       }
 
@@ -126,11 +123,9 @@ export const useExpand = (
           transitionData as FlattedTreeNodeData[],
           expandedNodeId
         )
-        // const expandedNodeIndex = transitionData.findIndex((node) => node.id === expandedNodeId)
         const childrenStartIndex = expandedNodeIndex + 1
         const newTransitionData = cloneDeep(transitionData)
 
-        // @ts-ignore
         newTransitionData.splice(childrenStartIndex, rangeData.length, {
           id: MOTION_NODE_KEY,
           children: rangeData,
@@ -142,17 +137,14 @@ export const useExpand = (
 
       tryToggleExpandedIds(Array.from(expandedNodeIdSet))
     },
-    [tryToggleExpandedIds, flattedData, trySetTransitionData]
+    [tryToggleExpandedIds, flattedData, trySetTransitionData, dequeue]
   )
 
-  const { enqueue, top, dequeue } = useQueue<any>([])
-  const dequeueRef = useLatestRef(dequeue)
-  const onNodeToggleStartRef = useLatestRef(onNodeToggleStart)
+  const onNodeToggleStartLatest = useLatestCallback(onNodeToggleStart)
 
   const enExpandQueue = useCallback(
     (expandedNode: FlattedTreeNodeData, shouldExpanded: boolean) => {
-      const val = [expandedNode, shouldExpanded] as const
-      enqueue(val)
+      enqueue([expandedNode, shouldExpanded] as const)
     },
     [enqueue]
   )
@@ -161,10 +153,10 @@ export const useExpand = (
     window.requestAnimationFrame(() => {
       if (isExpanding) return
       if (top) {
-        onNodeToggleStartRef.current(top[0], top[1])
+        onNodeToggleStartLatest(top[0], top[1])
       }
     })
-  }, [isExpanding, top])
+  }, [isExpanding, top, onNodeToggleStartLatest])
 
   const onNodeToggleEnd = useCallback(() => {
     // 动画结束后回恢复成真正的原始数据结构

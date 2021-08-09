@@ -121,7 +121,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
       evt.stopPropagation()
 
       // 这里需要考虑3点：
-      // 1. 拖到自己的老位置，不处理
+      // 1. 拖到自己的老位置，不处理 TODO
       // 2. 父树不能拖到其子树内
       // 3. 同层可以拖拽进行排序
       if (dragId !== node.id) {

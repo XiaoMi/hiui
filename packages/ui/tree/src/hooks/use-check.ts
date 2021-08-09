@@ -30,7 +30,6 @@ export const useCheck = (
   disabled = false
 ) => {
   const onCheckRef = useLatestRef(onCheck)
-
   const proxyOnCheck = useCallback((checkedIds, checkedNode, checked, semiCheckedIds) => {
     onCheckRef.current?.({ checkedIds, semiCheckedIds }, checkedNode, checked)
   }, [])
@@ -47,10 +46,8 @@ export const useCheck = (
     [checkedIdsSet, flattedData]
   )
 
-  const isCheckedId = useCallback((id: React.ReactText) => checkedIdsSet.has(id), [checkedIdsSet])
-  const isSemiCheckedId = useCallback((id: React.ReactText) => semiCheckedIdsSet.has(id), [
-    semiCheckedIdsSet,
-  ])
+  const isCheckedId = (id: React.ReactText) => checkedIdsSet.has(id)
+  const isSemiCheckedId = (id: React.ReactText) => semiCheckedIdsSet.has(id)
 
   const onNodeCheck = useCallback(
     (checkedNode: FlattedTreeNodeData, checked: boolean) => {

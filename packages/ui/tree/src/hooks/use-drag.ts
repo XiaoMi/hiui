@@ -30,7 +30,6 @@ export const useTreeDrop = (
 ) => {
   const moveNode = useCallback(
     ({ targetId, sourceId, direction, depth }) => {
-      // 阻止将节点拖拽到自己
       if (targetId === sourceId) {
         // console.log('阻止将节点拖拽到自己')
         return
@@ -40,7 +39,6 @@ export const useTreeDrop = (
         (node) => node.id
       )
 
-      // 阻止将节点拖拽到自己的子树当中
       if (sourceChildrenIds.includes(targetId) || sourceId === targetId) {
         // console.log('阻止将节点拖拽到自己的子树当中')
         return
@@ -56,8 +54,6 @@ export const useTreeDrop = (
 
       const nextTreeData = cloneDeep(treeData)
       const isInsertToInside = direction === TreeNodeDragDirection.INSIDE
-
-      // console.log('Moving Node---------------', sourceId, targetId)
 
       // 正式开始进行节点位置替换
       deleteNodeById(nextTreeData, sourceId)

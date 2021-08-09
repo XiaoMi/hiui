@@ -49,5 +49,7 @@ export const useSelect = (
     [disabled, selectedId, tryChangeSelectedId]
   )
 
-  return [selectedId, onSelect] as const
+  const isSelected = (id: React.ReactText) => selectedId === id
+
+  return [isSelected, onSelect] as const
 }

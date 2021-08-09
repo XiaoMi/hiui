@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { FlattedTreeNodeData, TreeNodeData } from '../types'
-import { useLatestRef } from '@hi-ui/use-latest'
+import { useLatestCallback } from '@hi-ui/use-latest'
 import cloneDeep from 'lodash.clonedeep'
 import { addChildrenById } from '../utils'
 import { TreeNodeProps } from '../TreeNode'
@@ -30,14 +30,14 @@ export const useAsyncSwitch = (
     [onLoadChildren, setTreeData]
   )
 
-  const onExpandRef = useLatestRef(onExpand)
+  const onExpandLatest = useLatestCallback(onExpand)
 
   const onNodeSwitch = useCallback(
     async ({ data: node, expanded }: TreeNodeProps) => {
       const { id, children } = node
 
       if (children) {
-        onExpandRef.current?.(node, !expanded)
+        onExpandLatest(node, !expanded)
         return
       }
 
@@ -47,7 +47,7 @@ export const useAsyncSwitch = (
           await loadChildren(node)
           // Using latest  onExpand function at nextTick
           window.requestAnimationFrame(() => {
-            onExpandRef.current?.(node, !expanded)
+            onExpandLatest(node, !expanded)
           })
 
           setLoadingIds((prev) => prev.filter((loadingId) => loadingId !== id))
@@ -56,7 +56,7 @@ export const useAsyncSwitch = (
         }
       }
     },
-    [loadChildren, onLoadChildren]
+    [loadChildren, onLoadChildren, onExpandLatest]
   )
 
   const isLoadingId = useCallback((id: React.ReactText) => loadingIds.indexOf(id) !== -1, [

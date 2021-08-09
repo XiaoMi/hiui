@@ -70,7 +70,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
 
     const flattedData = useMemo(() => flattenTreeData(treeData), [treeData])
 
-    const [selectedId, onNodeSelect] = useSelect(
+    const [isSelected, onNodeSelect] = useSelect(
       defaultSelectedId,
       selectedIdProp,
       onSelect,
@@ -114,7 +114,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         expanded: isExpandedId(id),
         checked: isCheckedId(id),
         semiChecked: isSemiCheckedId(id),
-        selected: selectedId === id,
+        selected: isSelected(id),
         loading: isLoadingId(id),
       }
     }
