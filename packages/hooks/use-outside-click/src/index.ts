@@ -22,7 +22,6 @@ export const useOutsideClick = (
 
     document.addEventListener('mousedown', onMouseDown, true)
     return () => {
-      console.log('cleanup')
       document.removeEventListener('mousedown', onMouseDown, true)
     }
   }, [ref])

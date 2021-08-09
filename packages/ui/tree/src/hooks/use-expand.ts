@@ -1,5 +1,5 @@
 import { useQueue } from './use-queue'
-import React, { useCallback, useMemo, useState, useEffect } from 'react'
+import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import cloneDeep from 'lodash.clonedeep'
 import { fFindNestedChildNodesById, uuid } from '../utils'
@@ -69,7 +69,7 @@ export const useExpand = (
   // 用来确保一次折叠动画是一次加锁的单元任务
   // 防止用户频繁折叠展开导致动画渲染（存在 DOM 操作）异常
   const [isExpanding, setIsExpanding] = useState(false)
-  const isExpandingRef = useLatestRef(isExpanding)
+  const isExpandingRef = useRef(false)
 
   // 原始数据被改变时，同步更新要展示的所有节点
   useEffect(() => {
@@ -81,8 +81,17 @@ export const useExpand = (
   const transitionDataRef = useLatestRef(transitionData)
 
   const onNodeToggleStart = useCallback(
-    (expandedNode: FlattedTreeNodeData, isExpanded: boolean) => {
+    (expandedNode: FlattedTreeNodeData, shouldExpanded: boolean) => {
       if (isExpandingRef.current) return
+
+      // 相同无需任何操作
+      const expanded = expandedIdsRef.current.indexOf(expandedNode.id) !== -1
+      if (shouldExpanded === expanded) {
+        dequeueRef.current()
+        return
+      }
+
+      isExpandingRef.current = true
       setIsExpanding(true)
 
       const expandedIds = expandedIdsRef.current
@@ -91,7 +100,7 @@ export const useExpand = (
       const expandedNodeIdSet = new Set<React.ReactText>(expandedIds)
       const expandedNodeId = expandedNode.id
 
-      if (isExpanded) {
+      if (shouldExpanded) {
         // console.log('展开ing---------------', expandedNodeId)
         expandedNodeIdSet.add(expandedNodeId)
 
@@ -133,22 +142,16 @@ export const useExpand = (
 
       tryToggleExpandedIds(Array.from(expandedNodeIdSet))
     },
-    [
-      expandedIdsRef,
-      transitionDataRef,
-      tryToggleExpandedIds,
-      flattedData,
-      trySetTransitionData,
-      isExpandingRef,
-    ]
+    [tryToggleExpandedIds, flattedData, trySetTransitionData]
   )
 
   const { enqueue, top, dequeue } = useQueue<any>([])
+  const dequeueRef = useLatestRef(dequeue)
   const onNodeToggleStartRef = useLatestRef(onNodeToggleStart)
 
   const enExpandQueue = useCallback(
-    (expandedNode: FlattedTreeNodeData, isExpanded: boolean) => {
-      const val = [expandedNode, isExpanded] as const
+    (expandedNode: FlattedTreeNodeData, shouldExpanded: boolean) => {
+      const val = [expandedNode, shouldExpanded] as const
       enqueue(val)
     },
     [enqueue]
@@ -177,6 +180,7 @@ export const useExpand = (
     )
 
     // 闭环结束列表展开或收起动画
+    isExpandingRef.current = false
     setIsExpanding(false)
     dequeue()
   }, [transitionData, dequeue])

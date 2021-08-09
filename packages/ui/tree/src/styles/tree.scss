@@ -12,6 +12,38 @@ $prefix: '#{$component-prefix}-tree' !default;
     transition: all 0.3s ease;
     overflow-y: hidden;
   }
+
+  // &-motion {
+  //   &-enter {
+  //     opacity: 0;
+  //     transform: translate3D(20px, 0, 0);
+  //   }
+
+  //   &-enter-active {
+  //     opacity: 1;
+  //     transform: translate3D(0, 0, 0);
+  //   }
+
+  //   &-enter-done {
+  //     opacity: 1;
+  //     transform: translate3D(0, 0, 0);
+  //   }
+
+  //   &-exit {
+  //     opacity: 1;
+  //     transform: translate3D(0, 0, 0);
+  //   }
+
+  //   &-exit-active {
+  //     opacity: 0;
+  //     transform: translate3D(20px, 0, 0);
+  //   }
+
+  //   &-exit-done {
+  //     opacity: 0;
+  //     transform: translate3D(20px, 0, 0);
+  //   }
+  // }
 }
 
 .#{$prefix}-node {

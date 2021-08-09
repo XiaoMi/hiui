@@ -15,8 +15,6 @@ export const useDeepEqualDeps = <T>(deps: T): boolean => {
     sameShapeRef.current = !sameShapeRef.current
   }
 
-  console.log('sameShapeRef.current', sameShapeRef.current)
-
   return sameShapeRef.current
 }
 
