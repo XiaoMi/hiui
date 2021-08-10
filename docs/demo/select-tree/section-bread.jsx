@@ -17,6 +17,7 @@ const code = [
             {
               title: 'Node 0',
               id: '0',
+              disabled: true,
               children: [
                 {
                   title: 'Child Node 0-0',

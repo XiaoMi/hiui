@@ -47,13 +47,14 @@ const TreeNode = ({ data, flttenData }) => {
 
   const renderCheckbox = useCallback(
     (node, { checked, semiChecked }) => {
-      const { id } = node
+      const { id, disabled } = node
       return (
         <Checkbox
           indeterminate={semiChecked.includes(id)}
           checked={checked.includes(id)}
+          disabled={disabled}
           onChange={(e) => {
-            onCheckboxChange(e.target.checked, node, { checked, semiChecked })
+            !disabled && onCheckboxChange(e.target.checked, node, { checked, semiChecked })
           }}
         >
           <span
@@ -71,7 +72,7 @@ const TreeNode = ({ data, flttenData }) => {
 
   const renderTitle = useCallback(
     (node, _selectedId) => {
-      const { id, title, _title } = node
+      const { id, title, _title, disabled } = node
       return (
         <div
           ref={treeNodeRef}
@@ -85,7 +86,7 @@ const TreeNode = ({ data, flttenData }) => {
             }
           )}
           onClick={() => {
-            onClick(_.omit(node, ['pId']))
+            !disabled && onClick(_.omit(node, ['pId']))
           }}
           dangerouslySetInnerHTML={{ __html: treeNodeRender ? treeNodeRender(_title || title) : _title || title }}
         />
@@ -96,6 +97,7 @@ const TreeNode = ({ data, flttenData }) => {
   return (
     <ul className="hi-select-tree__nodes">
       {data.map((node, index) => {
+        const { disabled, isLeaf } = node
         const childrenNodes = getChildrenNodes(node, flttenData)
         const expand = expandIds.includes(node.id)
         const needFilter = searchMode === 'filter' ? !!matchAllDataFilterKey(node, searchValue) : true
@@ -103,9 +105,12 @@ const TreeNode = ({ data, flttenData }) => {
           <React.Fragment key={index}>
             {needFilter ? (
               <>
-                <li className="hi-select-tree__node" data-selecttree-id={node.id}>
+                <li
+                  className={Classnames('hi-select-tree__node', { 'hi-select-tree__node--disabled': disabled })}
+                  data-selecttree-id={node.id}
+                >
                   <div className="hi-select-tree__node--self">
-                    {(childrenNodes.length || isRemoteLoadData) && !node.isLeaf ? (
+                    {(childrenNodes.length || isRemoteLoadData) && !isLeaf ? (
                       <Switcher expanded={expand} node={node} onExpandEvent={onExpandEvent} />
                     ) : (
                       renderIndent()

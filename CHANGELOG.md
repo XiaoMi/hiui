@@ -7,6 +7,7 @@
 - 新增 `Table` 组件 align 属性接受 center 属性 [#1835](https://github.com/XiaoMi/hiui/issues/1835)
 - 新增 `Table` 组件 拖拽功能 [#1851](https://github.com/XiaoMi/hiui/issues/1851)
 - 新增 `Select` 组件 renderExtraFooter 自定义下拉菜单底部渲染函数[#1864](https://github.com/XiaoMi/hiui/issues/1864)
+- 新增 `SelectTree` 组件节点支持 disabled 禁用状态[#1870](https://github.com/XiaoMi/hiui/issues/1870)
 - 优化 `DatePicker` 组件在 `Table` 组件中受控形态下无法选中问题 [#1844](https://github.com/XiaoMi/hiui/issues/1844)
 - 优化 `Carousel` 内容宽度根据容器改变自适应 [#1834](https://github.com/XiaoMi/hiui/issues/1834)
 - 修复 `Form` 组件对 Counter 组件默认值为 0 校验异常问题 [#1842](https://github.com/XiaoMi/hiui/issues/1842)

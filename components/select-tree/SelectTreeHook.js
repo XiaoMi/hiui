@@ -322,8 +322,10 @@ const SelectTree = ({
    * @param {*} node 当前节点
    */
   const checkedEvents = (checked, node) => {
+    if (node.disabled) {
+      return
+    }
     let result = {}
-
     const semiCheckedIds = new Set(checkedNodes.semiChecked)
     const checkedIds = new Set(checkedNodes.checked)
     if (checked) {
@@ -331,7 +333,6 @@ const SelectTree = ({
     } else {
       result = updateUnCheckData(node, flattenData, checkedIds, semiCheckedIds)
     }
-
     let checkedArr = []
     if (result.checked.length > 0) {
       checkedArr = result.checked.map((id) => {
