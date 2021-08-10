@@ -40,7 +40,7 @@ const getBanner = (pkg) => {
 // https://github.com/rollup/plugins/tree/master/packages/babel#babelhelpers
 const getExternals = (pkg) => {
   /** @type {(string | RegExp)[]} */
-  return [/tslib/]
+  return [/tslib|@babel/]
     .concat(Object.keys(pkg.peerDependencies || {}))
     .concat(Object.keys(pkg.dependencies || {}))
 }
