@@ -59,7 +59,6 @@ export const useFocus = (
     if (transitionData.length < 0) return
 
     const focusedIndex = getFocusedNodeIndex(focusedId)
-    console.log(transitionData, focusedId, focusedIndex)
 
     switch (evt.keyCode) {
       // Up: 选中界面的上一个节点
@@ -154,8 +153,6 @@ export const useFocus = (
   }
 
   const onBlur = useCallback((evt) => {
-    console.log(evt)
-
     setFocusedId(undefined)
   }, [])
 

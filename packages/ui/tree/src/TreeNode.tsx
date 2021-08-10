@@ -104,8 +104,6 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
 
   const onDragEnd = useCallback(
     (evt: React.DragEvent) => {
-      // console.log('onDragEnd')
-
       evt.preventDefault()
       evt.stopPropagation()
       evt.dataTransfer.clearData()
