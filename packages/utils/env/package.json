@@ -34,5 +34,8 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
-  "homepage": "https://github.com/XiaoMi/hiui#readme"
+  "homepage": "https://github.com/XiaoMi/hiui#readme",
+  "dependencies": {
+    "style-inject": "^0.3.0"
+  }
 }
