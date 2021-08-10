@@ -204,8 +204,8 @@ interface EditableTreeNodeTitleProps {
   node: FlattedTreeNodeData
   expandedIds: React.ReactText[]
   onCancel: (node: FlattedTreeNodeData) => void
-  onSave: (savedNode: FlattedTreeNodeData) => void
-  onDelete: (deletedNode: FlattedTreeNodeData) => void
+  onSave: (savedNode: FlattedTreeNodeData) => Promise<void>
+  onDelete: (deletedNode: FlattedTreeNodeData) => Promise<void>
   addChildNode: (node: FlattedTreeNodeData) => void
   addSiblingNode: (node: FlattedTreeNodeData) => void
   onExpand: (ids: React.ReactText[]) => void
@@ -270,9 +270,13 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
       menuVisibleAction.off()
     },
     deleteNode: () => {
-      // open()
-      onDelete(node)
-      menuVisibleAction.off()
+      try {
+        onDelete(node).then(() => {
+          menuVisibleAction.off()
+        })
+      } catch (error) {
+        menuVisibleAction.off()
+      }
     },
     addChildNode: () => {
       menuVisibleAction.off()
@@ -388,11 +392,18 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
             evt.stopPropagation()
 
             if (!inputValue) return
-            onSave?.({ ...node, title: inputValue })
-            editingAction.off()
 
-            // 在编辑或创建节点成功，需要 focus 该节点
-            focusTree()
+            try {
+              onSave?.({ ...node, title: inputValue }).then(() => {
+                editingAction.off()
+                // 在编辑或创建节点成功，需要 focus 该节点
+                focusTree()
+              })
+            } catch (error) {
+              editingAction.off()
+              // 在编辑或创建节点成功，需要 focus 该节点
+              focusTree()
+            }
           }}
         />
         <IconButton

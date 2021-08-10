@@ -93,12 +93,12 @@ export const useEdit = (
   const onSaveRef = useLatestRef(onSave)
 
   const saveEdit = useCallback(
-    (targetNode: FlattedTreeNodeData) => {
+    async (targetNode: FlattedTreeNodeData) => {
       const nextTreeData = cloneDeep(treeData)
       _saveEdit(targetNode, nextTreeData)
 
       if (onBeforeSaveRef.current) {
-        const result = onBeforeSaveRef.current(
+        const result = await onBeforeSaveRef.current(
           targetNode,
           { before: treeData, after: nextTreeData },
           targetNode.depth
