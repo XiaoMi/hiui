@@ -45,6 +45,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     onSelect,
     onExpand,
     onFocus,
+    onContextMenu,
     onDragStart: onDragStartContext,
     onDragEnd: onDragEndContext,
     onDragOver: onDragOverContext,
@@ -235,6 +236,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
         onDragLeave={onDragLeave}
         onDragOver={onDragOver}
         onDrop={onDrop}
+        onContextMenu={(evt) => onContextMenu?.(evt, eventNodeRef.current)}
         tabIndex={0}
         onFocus={() => onFocus?.(eventNodeRef.current)}
         onClick={() => onSelect?.(eventNodeRef.current)}

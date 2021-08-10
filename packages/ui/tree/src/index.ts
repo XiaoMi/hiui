@@ -5,4 +5,4 @@ export * from './TreeNode'
 export { Tree as default } from './Tree'
 
 export * from './use-tree-search'
-export * from './use-tree-edit'
+export * from './use-tree-action'

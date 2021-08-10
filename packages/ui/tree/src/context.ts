@@ -24,6 +24,7 @@ interface TreeContext {
   collapseIcon?: React.ReactNode
   expandIcon?: React.ReactNode
   leafIcon?: React.ReactNode
+  onContextMenu?: (event: React.MouseEvent, node: TreeNodeEventData) => void
 }
 
 const treeContext = createContext<TreeContext>({})

@@ -166,8 +166,10 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         expandIcon,
         leafIcon,
         titleRender,
+        onContextMenu,
       }),
       [
+        onContextMenu,
         setFocusedId,
         onNodeSelect,
         onNodeSwitch,
