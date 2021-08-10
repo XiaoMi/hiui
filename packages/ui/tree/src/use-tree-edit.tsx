@@ -8,13 +8,14 @@ import {
   TreeNodeData,
   TreeDataStatus,
   TreeMenuActionOption,
+  TreeNodeEventData,
 } from './types'
 import { useEdit, useCache, useExpandProps } from './hooks'
 import { flattenTreeData } from './utils'
 import Input from '@hi-ui/input'
 import { useDeepEqualDeps as useDeep } from '@hi-ui/use-deep-equal-deps'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
-// import { useMergeRefs } from '@hi-ui/use-merge-refs'
+import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useToggle, UseToggleAction } from '@hi-ui/use-toggle'
 import { useLatestRef } from '@hi-ui/use-latest'
 
@@ -36,9 +37,11 @@ export const useTreeAction = (BaseTree: Tree) => {
   const AdvancedTreeMemo = useMemo(() => {
     // 高阶组件
     const AdvancedTree = forwardRef<HTMLUListElement | null, EditableTreeProps>((props, ref) => {
-      const treeProps = useTreeEditProps(props)
+      const treeRef = useRef<HTMLUListElement>(null)
 
-      return <BaseTree ref={ref} {...treeProps} />
+      const treeProps = useTreeEditProps(props, treeRef)
+
+      return <BaseTree ref={useMergeRefs(ref, treeRef)} {...treeProps} />
     })
     if (__DEV__) {
       AdvancedTree.displayName = 'AdvancedTree'
@@ -50,7 +53,10 @@ export const useTreeAction = (BaseTree: Tree) => {
   return AdvancedTreeMemo
 }
 
-export const useTreeEditProps = <T extends EditableTreeProps>(props: T) => {
+export const useTreeEditProps = <T extends EditableTreeProps>(
+  props: T,
+  ref: React.RefObject<HTMLElement | null>
+) => {
   const {
     prefixCls = _prefix,
     className,
@@ -82,6 +88,11 @@ export const useTreeEditProps = <T extends EditableTreeProps>(props: T) => {
     defaultExpandAll
   )
 
+  const focusTree = useCallback(() => {
+    ref.current?.focus()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const [saveEdit, cancelAddNode, deleteNode, addChildNode, addSiblingNode] = useEdit(
     treeData,
     setTreeData,
@@ -104,15 +115,16 @@ export const useTreeEditProps = <T extends EditableTreeProps>(props: T) => {
         addChildNode={addChildNode}
         addSiblingNode={addSiblingNode}
         expandedIds={expandedIds}
+        focusTree={focusTree}
         onExpand={tryToggleExpandedIds}
       />
     )
   }
 
-  const proxyTitleRender = (node: FlattedTreeNodeData) => {
+  const proxyTitleRender = (node: TreeNodeEventData) => {
     if (titleRender) {
       const ret = titleRender(node)
-      if (ret) return ret
+      if (ret && ret !== true) return ret
     }
 
     return editable ? renderTitleWithEditable(node) : true
@@ -199,6 +211,7 @@ interface EditableTreeNodeTitleProps {
   onExpand: (ids: React.ReactText[]) => void
   placeholder?: string
   menuOptions?: TreeMenuActionOption[]
+  focusTree: () => void
 }
 
 const EditableNodeMenu = (props: EditableNodeMenuProps) => {
@@ -242,7 +255,7 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
 
   // const [setTargetEl, Modal, open] = useConfirmPopper({
   //   prefixCls,
-  //   onConfirm: () => onDelete(node),
+  //   onConfirm: (evt) => { evt.stopPropagation(); onDelete(node) },
   //   content: '确定要删除当前节点 ？',
   //   confirmText: '确定',
   //   cancelText: '取消',
@@ -271,6 +284,9 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
       menuVisibleAction.off()
       addSiblingNode(node)
     },
+    closeMenu: () => {
+      menuVisibleAction.off()
+    },
   })
 
   const handleMenuClick = useCallback(
@@ -286,11 +302,13 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
   return (
     <div ref={containerRef}>
       <IconButton
+        tabIndex={-1}
         className={`${prefixCls}-action__btn`}
         // ref={useMergeRefs(setTargetElRef, setTargetEl)}
         ref={setTargetElRef}
         icon={defaultActionIcon}
         onClick={(evt) => {
+          // 阻止冒泡，避免触发节点选中
           evt.stopPropagation()
           menuVisibleAction.not()
         }}
@@ -303,7 +321,11 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
               <li
                 key={idx}
                 className={`${prefixCls}-action__item`}
-                onClick={() => handleMenuClick(node, option)}
+                onClick={(evt) => {
+                  // 阻止冒泡，避免触发节点选中
+                  evt.stopPropagation()
+                  handleMenuClick(node, option)
+                }}
               >
                 {option.title}
               </li>
@@ -324,7 +346,15 @@ interface EditableNodeMenuProps extends EditableTreeNodeTitleProps {
  * 节点编辑框
  */
 const EditableNodeInput = (props: EditableNodeInputProps) => {
-  const { prefixCls = _prefix, node, onSave, onCancel, editingAction, placeholder } = props
+  const {
+    prefixCls = _prefix,
+    node,
+    onSave,
+    onCancel,
+    editingAction,
+    placeholder,
+    focusTree,
+  } = props
 
   const [inputValue, setInputValue] = useState((node.title as string) || '')
   const handleChange = useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -336,6 +366,10 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
       <Input
         autoFocus
         style={{ flex: 1 }}
+        // 避免冒泡到 tree 失焦
+        onBlur={(e) => {
+          e.stopPropagation()
+        }}
         placeholder={placeholder}
         value={inputValue}
         onChange={handleChange}
@@ -343,17 +377,36 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
       <span className={`${prefixCls}__action`}>
         <IconButton
           active={!!inputValue}
+          tabIndex={-1}
           icon={<CheckOutlined />}
-          onClick={() => {
+          onBlur={(evt) => {
+            // 避免冒泡到 tree 失焦
+            evt.stopPropagation()
+          }}
+          onClick={(evt) => {
+            // 阻止冒泡，避免触发节点选中
+            evt.stopPropagation()
+
             if (!inputValue) return
             onSave?.({ ...node, title: inputValue })
             editingAction.off()
+
+            // 在编辑或创建节点成功，需要 focus 该节点
+            focusTree()
           }}
         />
         <IconButton
           active
           icon={<CloseOutlined />}
-          onClick={() => {
+          onBlur={(e) => {
+            // 避免冒泡到 tree 失焦
+            e.stopPropagation()
+          }}
+          tabIndex={-1}
+          onClick={(evt) => {
+            // 阻止冒泡，避免触发节点选中
+            evt.stopPropagation()
+
             editingAction.off()
             onCancel?.(node)
           }}
@@ -415,7 +468,11 @@ interface EditableNodeInputProps extends EditableTreeNodeTitleProps {
 //             className={`${prefixCls}-modal__btn--cancel`}
 //             type="primary"
 //             appearance="line"
-//             onClick={toggleAction.off}
+//             onClick={(evt) => {
+//               // 阻止冒泡，避免触发节点选中
+//               evt.stopPropagation()
+//               toggleAction.off()
+//            }}
 //           >
 //             {cancelText}
 //           </Button>

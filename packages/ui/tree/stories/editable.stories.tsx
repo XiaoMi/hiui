@@ -30,8 +30,9 @@ export const Editable = () => {
               },
               {
                 title: 'Hello，自定义的菜单',
-                onClick(node) {
+                onClick(node, action) {
                   console.log(node)
+                  action.closeMenu()
                 },
               },
             ],

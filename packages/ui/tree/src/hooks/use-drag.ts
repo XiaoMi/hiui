@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react'
 import cloneDeep from 'lodash.clonedeep'
-
+import { getTreeNodeEventData } from '../utils/index'
 import {
+  TreeNodeRequiredProps,
+  TreeNodeEventData,
   TreeNodeData,
   TreeNodeDragDirection,
   FlattedTreeNodeData,
@@ -9,27 +11,29 @@ import {
   TreeLevelStatus,
 } from '../types'
 import {
-  fFindNodeById,
+  getBeforeAfter,
   deleteNodeById,
   addChildNodeById,
   insertNodeById,
   fFindNestedChildNodesById,
+  fFindNodeById,
 } from '../utils'
 
 export const useTreeDrop = (
+  getTreeNodeRequiredProps: (id: React.ReactText) => TreeNodeRequiredProps,
   treeData: TreeNodeData[],
   flattedData: FlattedTreeNodeData[],
   setTreeData: React.Dispatch<React.SetStateAction<TreeNodeData[]>>,
   onDrop?: (
-    dragNode: FlattedTreeNodeData,
-    dropNode: FlattedTreeNodeData,
+    dragNode: TreeNodeEventData,
+    dropNode: TreeNodeEventData,
     dataStatus: TreeDataStatus,
     level: TreeLevelStatus
   ) => boolean | Promise<any>,
-  onDropEnd?: (dragNode: FlattedTreeNodeData, dropNode: FlattedTreeNodeData) => void
+  onDropEnd?: (dragNode: TreeNodeEventData, dropNode: TreeNodeEventData) => void
 ) => {
   const moveNode = useCallback(
-    ({ targetId, sourceId, direction, depth }) => {
+    (sourceId: React.ReactText, targetId: React.ReactText, direction: TreeNodeDragDirection) => {
       if (targetId === sourceId) {
         // console.log('阻止将节点拖拽到自己')
         return
@@ -70,28 +74,41 @@ export const useTreeDrop = (
       }
 
       if (onDrop) {
-        const result = onDrop(
+        const eventSourceNode = getTreeNodeEventData(
           sourceNode,
+          getTreeNodeRequiredProps(sourceNode.id)
+        )
+
+        const eventTargetNode = getTreeNodeEventData(
           targetNode,
-          { before: treeData, after: nextTreeData },
-          { before: depth.source, after: isInsertToInside ? depth.target + 1 : depth.target }
+          getTreeNodeRequiredProps(targetNode.id)
+        )
+
+        const result = onDrop(
+          eventSourceNode,
+          eventTargetNode,
+          getBeforeAfter(treeData, nextTreeData),
+          getBeforeAfter(
+            sourceNode.depth,
+            isInsertToInside ? targetNode.depth + 1 : targetNode.depth
+          )
         )
 
         // 根据 onDrop 用户返回结果，判断是否需要非受控，进行内部更新树结构
         if (result === true) {
           setTreeData(nextTreeData)
-          onDropEnd?.(sourceNode, targetNode)
+          onDropEnd?.(eventSourceNode, eventTargetNode)
         } else if (result && typeof result.then === 'function') {
           result.then(() => {
             setTreeData(nextTreeData)
-            onDropEnd?.(sourceNode, targetNode)
+            onDropEnd?.(eventSourceNode, eventTargetNode)
           })
         }
       } else {
         setTreeData(nextTreeData)
       }
     },
-    [setTreeData, treeData, flattedData, onDrop, onDropEnd]
+    [setTreeData, treeData, flattedData, onDrop, onDropEnd, getTreeNodeRequiredProps]
   )
 
   return moveNode

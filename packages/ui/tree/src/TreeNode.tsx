@@ -11,7 +11,9 @@ import {
 } from './icons'
 import { IconButton } from './IconButton'
 import { useTreeContext } from './context'
-import { FlattedTreeNodeData, TreeNodeDragDirection } from './types'
+import { FlattedTreeNodeData, TreeNodeDragDirection, TreeNodeEventData } from './types'
+import { getTreeNodeEventData } from './utils'
+import { useLatestRef } from '@hi-ui/use-latest'
 
 const _role = 'tree-node'
 const _prefix = getPrefixCls(_role)
@@ -30,6 +32,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     semiChecked = false,
     selected = false,
     loading = false,
+    focused = false,
     // custom switcher
     collapseIcon: collapseIconProp = defaultCollapseIcon,
     expandIcon: expandIconProp = defaultExpandIcon,
@@ -41,13 +44,14 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     checkable = false,
     onSelect,
     onExpand,
+    onFocus,
     onDragStart: onDragStartContext,
     onDragEnd: onDragEndContext,
     onDragOver: onDragOverContext,
     onDrop: onDropContext,
     onDragLeave: onDragLeaveContext,
     onLoadChildren,
-    onNodeCheck,
+    onCheck,
     showLine,
     titleRender,
     collapseIcon: collapseIconContext,
@@ -59,8 +63,19 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
   const expandIcon = expandIconContext || expandIconProp
   const leafIcon = leafIconContext || leafIconProp
 
-  const { disabled } = node
+  const { disabled, isLeaf } = node
   const enableDraggable = draggable && !disabled
+
+  const eventNodeRef = useLatestRef(
+    getTreeNodeEventData(node, {
+      expanded,
+      checked,
+      semiChecked,
+      selected,
+      loading,
+      focused,
+    })
+  )
 
   const [isDragging, setIsDragging] = useState(false)
   const [direction, setDirection] = useState<TreeNodeDragDirection>(null)
@@ -73,17 +88,17 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     (evt: React.DragEvent) => {
       if (!enableDraggable) return
 
-      const { id, depth } = node
+      const { id } = eventNodeRef.current
 
       evt.stopPropagation()
 
       setIsDragging(true)
       dragIdRef.current = id
-      evt.dataTransfer.setData('treeNode', JSON.stringify({ id, depth }))
+      evt.dataTransfer.setData('treeNode', JSON.stringify({ sourceId: id }))
 
-      onDragStartContext?.(node)
+      onDragStartContext?.(eventNodeRef.current)
     },
-    [node, onDragStartContext, enableDraggable]
+    [onDragStartContext, enableDraggable]
   )
 
   const onDragEnd = useCallback(
@@ -97,9 +112,9 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
       setDirection(null)
       setIsDragging(false)
 
-      onDragEndContext?.(node)
+      onDragEndContext?.(eventNodeRef.current)
     },
-    [node, onDragEndContext]
+    [onDragEndContext]
   )
 
   const onDragLeave = useCallback(
@@ -107,9 +122,9 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
       evt.preventDefault()
       evt.stopPropagation()
       setDirection(null)
-      onDragLeaveContext?.(node)
+      onDragLeaveContext?.(eventNodeRef.current)
     },
-    [node, onDragLeaveContext]
+    [onDragLeaveContext]
   )
 
   // 拖至到目标元素上时触发事件
@@ -144,9 +159,9 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
         }
       }
 
-      onDragOverContext?.(node)
+      onDragOverContext?.(eventNodeRef.current)
     },
-    [node, onDragOverContext]
+    [onDragOverContext]
   )
 
   // 放置目标元素时触发事件
@@ -158,18 +173,19 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
       evt.stopPropagation()
       setDirection(null)
 
-      if (onDropContext && dragId !== node.id) {
-        const passedData = JSON.parse(evt.dataTransfer.getData('treeNode'))
+      const targetId = eventNodeRef.current.id
 
-        onDropContext({
-          targetId: node.id,
-          sourceId: passedData.id,
-          depth: { source: passedData.depth, target: node.depth },
-          direction,
-        })
+      if (onDropContext && dragId !== targetId) {
+        try {
+          const { sourceId } = JSON.parse(evt.dataTransfer.getData('treeNode'))
+
+          onDropContext(sourceId, targetId, direction)
+        } catch (error) {
+          console.error(error)
+        }
       }
     },
-    [node, onDropContext, direction]
+    [onDropContext, direction]
   )
 
   const onNodeExpand = async (evt: React.MouseEvent) => {
@@ -177,25 +193,17 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     evt.stopPropagation()
     if (loading) return
 
-    onExpand?.(props)
+    onExpand?.(eventNodeRef.current, !expanded)
   }
 
   const renderTitle = useCallback(
-    (
-      node: FlattedTreeNodeData,
-      titleRender?: (node: FlattedTreeNodeData) => React.ReactNode,
-      onSelect?: (node: FlattedTreeNodeData) => void
-    ) => {
+    (node: TreeNodeEventData, titleRender?: (node: TreeNodeEventData) => React.ReactNode) => {
       // 如果 titleRender 返回 `true`，则使用默认 title
       const title = titleRender ? titleRender(node) : true
 
       return (
-        <div
-          ref={treeNodeTitleRef}
-          className={`${prefixCls}__title`}
-          onClick={() => onSelect?.(node)}
-        >
-          {title === true ? <span className="title__text">{node.title}</span> : title}
+        <div ref={treeNodeTitleRef} className={`${prefixCls}__title`}>
+          {title === true ? <span className="title__text">{node.raw.title}</span> : title}
         </div>
       )
     },
@@ -207,9 +215,14 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     className,
     showLine && `${prefixCls}--linear`,
     direction && `${prefixCls}--drag-${direction}`,
+    focused && `${prefixCls}--focused`,
     selected && `${prefixCls}--selected`,
     disabled && `${prefixCls}--disabled`,
-    !node.isLeaf && `${prefixCls}--${expanded ? 'open' : 'closed'}`
+    checked && `${prefixCls}--checkbox-checked`,
+    semiChecked && `${prefixCls}--checkbox-indeterminate`,
+    loading && `${prefixCls}--loading`,
+    isLeaf && `${prefixCls}--leaf`,
+    !isLeaf && `${prefixCls}--${expanded ? 'open' : 'closed'}`
   )
 
   return (
@@ -222,11 +235,14 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
         onDragLeave={onDragLeave}
         onDragOver={onDragOver}
         onDrop={onDrop}
+        tabIndex={0}
+        onFocus={() => onFocus?.(eventNodeRef.current)}
+        onClick={() => onSelect?.(eventNodeRef.current)}
       >
         {renderIndent(prefixCls, node)}
 
         {renderSwitcher(
-          node,
+          eventNodeRef.current,
           prefixCls,
           loading,
           expanded,
@@ -237,9 +253,9 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
           onLoadChildren
         )}
 
-        {renderCheckbox(node, checkable, disabled, checked, semiChecked, onNodeCheck)}
+        {renderCheckbox(eventNodeRef.current, checkable, disabled, checked, semiChecked, onCheck)}
 
-        {renderTitle(node, titleRender, onSelect)}
+        {renderTitle(eventNodeRef.current, titleRender)}
       </div>
     </li>
   )
@@ -302,6 +318,10 @@ export interface TreeNodeProps {
    * 该节点加载中状态
    */
   loading?: boolean
+  /**
+   * 该节点被 focus
+   */
+  focused?: boolean
 }
 
 if (__DEV__) {
@@ -335,12 +355,12 @@ const renderIndent = (prefixCls: string, node: FlattedTreeNodeData) => {
  * 渲染复选框
  */
 const renderCheckbox = (
-  node: FlattedTreeNodeData,
+  node: TreeNodeEventData,
   checkable: boolean,
   disabled?: boolean,
   checked?: boolean,
   semiChecked?: boolean,
-  onNodeCheck?: (checkedNode: FlattedTreeNodeData, checked: boolean) => void
+  onCheck?: (checkedNode: TreeNodeEventData, checked: boolean) => void
 ) => {
   return checkable ? (
     <Checkbox
@@ -349,7 +369,7 @@ const renderCheckbox = (
       disabled={disabled}
       focusable={false}
       onChange={() => {
-        onNodeCheck?.(node, !checked)
+        onCheck?.(node, !checked)
       }}
     />
   ) : null
@@ -359,7 +379,7 @@ const renderCheckbox = (
  * 渲染子树折叠切换器
  */
 const renderSwitcher = (
-  node: FlattedTreeNodeData,
+  node: TreeNodeEventData,
   prefixCls: string,
   loading: boolean,
   expanded: boolean,
@@ -367,11 +387,12 @@ const renderSwitcher = (
   collapseIcon: React.ReactNode,
   leafIcon: React.ReactNode,
   onNodeExpand: (evt: React.MouseEvent) => void,
-  onLoadChildren?: (node: FlattedTreeNodeData) => Promise<any>
+  onLoadChildren?: (node: TreeNodeEventData) => Promise<any>
 ) => {
   if (loading) {
     return (
       <IconButton
+        tabIndex={-1}
         className={cx(`${prefixCls}__switcher`, `${prefixCls}__switcher--loading`)}
         icon={defaultLoadingIcon}
       />
@@ -384,6 +405,7 @@ const renderSwitcher = (
   if (hasChildren || canLoadChildren) {
     return (
       <IconButton
+        tabIndex={-1}
         className={cx(
           `${prefixCls}__switcher`,
           expanded ? `${prefixCls}__switcher--expanded` : `${prefixCls}__switcher--collapse`
@@ -396,6 +418,7 @@ const renderSwitcher = (
 
   return (
     <IconButton
+      tabIndex={-1}
       icon={leafIcon}
       className={cx(`${prefixCls}__switcher`, `${prefixCls}__switcher--noop`)}
     />

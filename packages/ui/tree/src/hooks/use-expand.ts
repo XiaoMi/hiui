@@ -8,6 +8,7 @@ import {
   TreeNodeType,
   TreeNodeTransitionData,
   MotionTreeNodeData,
+  TreeNodeEventData,
 } from '../types'
 import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
 
@@ -15,7 +16,7 @@ export const useExpandProps = (
   flattedData: FlattedTreeNodeData[],
   defaultExpandedIds: React.ReactText[],
   expandedIdsProp?: React.ReactText[],
-  onExpand?: (expandIds: React.ReactText[], node: FlattedTreeNodeData, expanded: boolean) => void,
+  onExpand?: (expandIds: React.ReactText[], node: TreeNodeEventData, expanded: boolean) => void,
   defaultExpandAll?: boolean
 ) => {
   return useUncontrolledState(
@@ -41,7 +42,7 @@ export const useExpand = (
   flattedData: FlattedTreeNodeData[],
   defaultExpandedIds: React.ReactText[],
   expandedIdsProp?: React.ReactText[],
-  onExpand?: (expandIds: React.ReactText[], node: FlattedTreeNodeData, expanded: boolean) => void,
+  onExpand?: (expandIds: React.ReactText[], node: TreeNodeEventData, expanded: boolean) => void,
   defaultExpandAll?: boolean
 ) => {
   const [expandedIds, tryToggleExpandedIds] = useExpandProps(
@@ -79,7 +80,7 @@ export const useExpand = (
   }, [flattedData, trySetTransitionData, isExpanding, expandedIds])
 
   const onNodeToggleStart = useCallback(
-    (expandedNode: FlattedTreeNodeData, shouldExpanded: boolean) => {
+    (expandedNode: TreeNodeEventData, shouldExpanded: boolean) => {
       if (isExpandingRef.current) return
 
       const expanded = expandedIdsRef.current.indexOf(expandedNode.id) !== -1
@@ -142,8 +143,8 @@ export const useExpand = (
 
   const onNodeToggleStartLatest = useLatestCallback(onNodeToggleStart)
 
-  const enExpandQueue = useCallback(
-    (expandedNode: FlattedTreeNodeData, shouldExpanded: boolean) => {
+  const onNodeExpand = useCallback(
+    (expandedNode: TreeNodeEventData, shouldExpanded: boolean) => {
       enqueue([expandedNode, shouldExpanded] as const)
     },
     [enqueue]
@@ -177,7 +178,7 @@ export const useExpand = (
     dequeue()
   }, [transitionData, dequeue])
 
-  return [transitionData, enExpandQueue, onNodeToggleEnd, isExpandedId] as const
+  return [transitionData, onNodeExpand, onNodeToggleEnd, isExpandedId] as const
 }
 
 function flattenTreeDataWithExpand(

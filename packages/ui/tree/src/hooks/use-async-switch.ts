@@ -1,20 +1,19 @@
 import React, { useState, useCallback } from 'react'
-import { FlattedTreeNodeData, TreeNodeData } from '../types'
+import { TreeNodeData, TreeNodeEventData } from '../types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import cloneDeep from 'lodash.clonedeep'
 import { addChildrenById } from '../utils'
-import { TreeNodeProps } from '../TreeNode'
 
 export const useAsyncSwitch = (
   setTreeData: React.Dispatch<React.SetStateAction<TreeNodeData[]>>,
-  onExpand?: (expandedNode: FlattedTreeNodeData, isExpanded: boolean) => void,
-  onLoadChildren?: (node: FlattedTreeNodeData) => Promise<TreeNodeData[] | undefined>
+  onExpand?: (expandedNode: TreeNodeEventData, isExpanded: boolean) => void,
+  onLoadChildren?: (node: TreeNodeEventData) => Promise<TreeNodeData[] | undefined>
 ) => {
-  const [loadingIds, setLoadingIds] = useState<React.ReactText[]>([])
+  const [loadingIds, addLoadingIds, removeLoadingIds] = useList<React.ReactText>()
 
   // 加载节点
   const loadChildren = useCallback(
-    async (node: FlattedTreeNodeData) => {
+    async (node: TreeNodeEventData) => {
       if (!onLoadChildren) return
 
       const childrenNodes = await onLoadChildren(node)
@@ -33,35 +32,49 @@ export const useAsyncSwitch = (
   const onExpandLatest = useLatestCallback(onExpand)
 
   const onNodeSwitch = useCallback(
-    async ({ data: node, expanded }: TreeNodeProps) => {
-      const { id, children } = node
+    async (node: TreeNodeEventData, shouldExpanded: boolean) => {
+      const { id, children, isLeaf } = node
 
       if (children) {
-        onExpandLatest(node, !expanded)
+        onExpandLatest(node, shouldExpanded)
         return
       }
 
+      if (isLeaf) return
+
       if (onLoadChildren) {
-        setLoadingIds((prev) => (prev.indexOf(id) === -1 ? prev.concat(node.id) : prev))
+        addLoadingIds(id)
         try {
           await loadChildren(node)
           // Using latest  onExpand function at nextTick
           window.requestAnimationFrame(() => {
-            onExpandLatest(node, !expanded)
+            onExpandLatest(node, shouldExpanded)
           })
 
-          setLoadingIds((prev) => prev.filter((loadingId) => loadingId !== id))
+          removeLoadingIds(id)
         } catch {
-          setLoadingIds((prev) => prev.filter((loadingId) => loadingId !== id))
+          removeLoadingIds(id)
         }
       }
     },
-    [loadChildren, onLoadChildren, onExpandLatest]
+    [loadChildren, onLoadChildren, onExpandLatest, addLoadingIds, removeLoadingIds]
   )
 
-  const isLoadingId = useCallback((id: React.ReactText) => loadingIds.indexOf(id) !== -1, [
-    loadingIds,
-  ])
+  const isLoadingId = (id: React.ReactText) => loadingIds.indexOf(id) !== -1
 
   return [isLoadingId, onNodeSwitch] as const
+}
+
+const useList = <T>(initialValue: T[] = []) => {
+  const [keyList, setKeyList] = useState<T[]>(initialValue)
+
+  const remove = useCallback((targetKey: T) => {
+    setKeyList((prev) => prev.filter((key) => key !== targetKey))
+  }, [])
+
+  const add = useCallback((targetKey: T) => {
+    setKeyList((prev) => (prev.indexOf(targetKey) === -1 ? prev.concat(targetKey) : prev))
+  }, [])
+
+  return [keyList, add, remove] as const
 }

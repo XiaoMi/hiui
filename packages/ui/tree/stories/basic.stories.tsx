@@ -27,8 +27,9 @@ export const Basic = () => {
                 {
                   id: 2,
                   title: '研发',
+                  disabled: true,
                   children: [
-                    { id: 3, title: '后端' },
+                    { id: 3, title: '后端', disabled: true },
                     { id: 4, title: '运维' },
                     { id: 5, title: '前端' },
                   ],

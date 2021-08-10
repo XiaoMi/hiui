@@ -2,17 +2,33 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
-import { useExpand, useSelect, useTreeDrop, useCheck, isMotionNode } from './hooks'
-import { TreeNodeData, FlattedTreeNodeData, TreeDataStatus, TreeLevelStatus } from './types'
+import {
+  useExpand,
+  useSelect,
+  useTreeDrop,
+  useCheck,
+  isMotionNode,
+  useCache,
+  useAsyncSwitch,
+  useFocus,
+} from './hooks'
+import {
+  TreeNodeData,
+  TreeDataStatus,
+  TreeLevelStatus,
+  TreeNodeRequiredProps,
+  TreeNodeEventData,
+} from './types'
 import { TreeProvider } from './context'
 import VirtualList from 'rc-virtual-list'
 import { MotionTreeNode } from './MotionTreeNode'
 import { TreeNode } from './TreeNode'
-import { useCache } from './hooks/use-cache'
-import { useAsyncSwitch } from './hooks/use-async-switch'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
 const _role = 'tree'
 export const _prefix = getPrefixCls(_role)
+
+const NOOP_ARRAY = [] as []
 
 /**
  * TODO: What is Tree
@@ -28,7 +44,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       // expand or collapse
       defaultExpandAll = false,
       expandedIds,
-      defaultExpandedIds = [],
+      defaultExpandedIds = NOOP_ARRAY,
       onExpand,
       // async load
       onLoadChildren,
@@ -51,7 +67,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onDragLeave,
       // checkable
       checkable = false,
-      defaultCheckedIds = [],
+      defaultCheckedIds = NOOP_ARRAY,
       checkedIds: checkedIdsProp,
       onCheck,
       // custom switcher
@@ -70,19 +86,19 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
 
     const flattedData = useMemo(() => flattenTreeData(treeData), [treeData])
 
-    const [isSelected, onNodeSelect] = useSelect(
+    const [selectedId, onNodeSelect] = useSelect(
+      !selectable,
       defaultSelectedId,
       selectedIdProp,
-      onSelect,
-      !selectable
+      onSelect
     )
 
     const [onNodeCheck, isCheckedId, isSemiCheckedId] = useCheck(
+      !checkable,
       flattedData,
       defaultCheckedIds,
       checkedIdsProp,
-      onCheck,
-      !checkable
+      onCheck
     )
 
     const [transitionData, onNodeToggleStart, onNodeToggleEnd, isExpandedId] = useExpand(
@@ -93,39 +109,52 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       defaultExpandAll
     )
 
-    const dropTree = useTreeDrop(treeData, flattedData, setTreeData, onDrop, onDropEnd)
-
     const [isLoadingId, onNodeSwitch] = useAsyncSwitch(
       setTreeData,
       onNodeToggleStart,
       onLoadChildren
     )
 
-    // 呈现在可视范围的列表个数，undefined 表示没有限制
-    const overscanCount = useMemo(() => {
-      if (virtual === false || !height) {
-        return undefined
+    const getTreeNodeRequiredProps = useLatestCallback(
+      (id: React.ReactText): TreeNodeRequiredProps => {
+        return {
+          expanded: isExpandedId(id),
+          checked: isCheckedId(id),
+          semiChecked: isSemiCheckedId(id),
+          selected: selectedId === id,
+          loading: isLoadingId(id),
+          focused: focusedId === id,
+        }
       }
-      return Math.ceil(height / itemHeight) + 1
-    }, [virtual, height, itemHeight])
+    )
 
-    const getTreeNodeProps = (id: React.ReactText) => {
-      return {
-        expanded: isExpandedId(id),
-        checked: isCheckedId(id),
-        semiChecked: isSemiCheckedId(id),
-        selected: isSelected(id),
-        loading: isLoadingId(id),
-      }
-    }
+    const dropTree = useTreeDrop(
+      getTreeNodeRequiredProps,
+      treeData,
+      flattedData,
+      setTreeData,
+      onDrop,
+      onDropEnd
+    )
+
+    const [focusedId, onKeyDown, onBlur, setFocusedId] = useFocus(
+      getTreeNodeRequiredProps,
+      // @ts-ignore
+      transitionData,
+      selectedId,
+      onNodeSwitch,
+      onNodeSelect,
+      onNodeCheck
+    )
 
     const providedValue = useMemo(
       () => ({
         onSelect: onNodeSelect,
         onExpand: onNodeSwitch,
+        onFocus: setFocusedId,
         draggable,
         checkable,
-        onNodeCheck,
+        onCheck: onNodeCheck,
         onDragStart,
         onDragEnd,
         onDragOver,
@@ -139,6 +168,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         titleRender,
       }),
       [
+        setFocusedId,
         onNodeSelect,
         onNodeSwitch,
         draggable,
@@ -158,11 +188,27 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       ]
     )
 
+    // 呈现在可视范围的列表个数，undefined 表示没有限制
+    const overscanCount = useMemo(() => {
+      if (virtual === false || !height) {
+        return undefined
+      }
+      return Math.ceil(height / itemHeight) + 1
+    }, [virtual, height, itemHeight])
+
     const cls = cx(prefixCls, className)
 
     return (
       <TreeProvider value={providedValue}>
-        <ul ref={ref} role={role} className={cls} {...rest}>
+        <ul
+          ref={ref}
+          role={role}
+          className={cls}
+          tabIndex={0}
+          onBlur={onBlur}
+          onKeyDown={onKeyDown}
+          {...rest}
+        >
           <VirtualList
             itemKey="id"
             fullHeight={false}
@@ -179,10 +225,10 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
                   prefixCls={prefixCls}
                   onMotionEnd={onNodeToggleEnd}
                   overscanCount={overscanCount}
-                  getTreeNodeProps={getTreeNodeProps}
+                  getTreeNodeRequiredProps={getTreeNodeRequiredProps}
                 />
               ) : (
-                <TreeNode key={node.id} data={node} {...getTreeNodeProps(node.id)} />
+                <TreeNode key={node.id} data={node} {...getTreeNodeRequiredProps(node.id)} />
               )
             }}
           </VirtualList>
@@ -231,11 +277,11 @@ export interface TreeProps {
   /**
    * 节点被点击(展开/收起)时触发
    */
-  onExpand?: (expandIds: React.ReactText[], node: FlattedTreeNodeData, expanded: boolean) => void
+  onExpand?: (expandIds: React.ReactText[], node: TreeNodeEventData, expanded: boolean) => void
   /**
    * 点击异步加载子项
    */
-  onLoadChildren?: (node: FlattedTreeNodeData) => Promise<TreeNodeData[] | undefined>
+  onLoadChildren?: (node: TreeNodeEventData) => Promise<TreeNodeData[] | undefined>
   /**
    * 选中的节点
    */
@@ -247,7 +293,7 @@ export interface TreeProps {
   /**
    * 点击节点时触发选中，null 表示未选中
    */
-  onSelect?: (selectedId: React.ReactText | null, selectedNode: FlattedTreeNodeData | null) => void
+  onSelect?: (selectedId: React.ReactText | null, selectedNode: TreeNodeEventData | null) => void
   /**
    * 节点是否可选中
    */
@@ -259,32 +305,32 @@ export interface TreeProps {
   /**
    * 节点开始拖拽时触发
    */
-  onDragStart?: (dragNode: FlattedTreeNodeData) => void
+  onDragStart?: (dragNode: TreeNodeEventData) => void
   /**
    * 节点结束拖拽时触发
    */
-  onDragEnd?: (dragNode: FlattedTreeNodeData) => void
+  onDragEnd?: (dragNode: TreeNodeEventData) => void
   /**
    * 节点放开时触发，返回 true 表示允许更新拖拽后数据
    */
   onDrop?: (
-    dragNode: FlattedTreeNodeData,
-    dropNode: FlattedTreeNodeData,
+    dragNode: TreeNodeEventData,
+    dropNode: TreeNodeEventData,
     dataStatus: TreeDataStatus,
     level: TreeLevelStatus
   ) => boolean | Promise<any>
   /**
    * 节点拖拽成功时触发，`onDrop` 不拦截或者返回 `false` 才会触发
    */
-  onDropEnd?: (dragNode: FlattedTreeNodeData, dropNode: FlattedTreeNodeData) => void
+  onDropEnd?: (dragNode: TreeNodeEventData, dropNode: TreeNodeEventData) => void
   /**
    * 节点 drag leaver 时调用
    */
-  onDragLeave?: (node: FlattedTreeNodeData) => void
+  onDragLeave?: (node: TreeNodeEventData) => void
   /**
    * 节点 drag over 时调用
    */
-  onDragOver?: (node: FlattedTreeNodeData) => void
+  onDragOver?: (node: TreeNodeEventData) => void
   /**
    * 节点前添加 Checkbox 复选框（暂不支持与 draggable 和 editable 同时使用）
    */
@@ -305,7 +351,7 @@ export interface TreeProps {
       checkedIds: React.ReactText[]
       semiCheckedIds: React.ReactText[]
     },
-    node: FlattedTreeNodeData,
+    node: TreeNodeEventData,
     checked: boolean
   ) => void
   /**
@@ -339,11 +385,11 @@ export interface TreeProps {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (node: FlattedTreeNodeData) => React.ReactNode
+  titleRender?: (node: TreeNodeEventData) => React.ReactNode
   /**
    * 自定义节点右键菜单
    */
-  onContextMenu?: (event: React.MouseEvent, node: FlattedTreeNodeData) => void
+  onContextMenu?: (event: React.MouseEvent, node: TreeNodeEventData) => void
 }
 
 if (__DEV__) {

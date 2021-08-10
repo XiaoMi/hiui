@@ -53,10 +53,6 @@ export interface FlattedTreeNodeData extends TreeNodeData {
    */
   siblings?: TreeNodeData[]
   /**
-   * 节点类型，控制操作节点的行为
-   */
-  type?: TreeNodeType
-  /**
    * 节点所在列表数据中的下标
    */
   pos?: number
@@ -102,13 +98,16 @@ export interface MotionTreeNodeData {
 
 export type TreeNodeTransitionData = MotionTreeNodeData | FlattedTreeNodeData
 
-export interface TreeNodeEventData extends FlattedTreeNodeData {
+export interface TreeNodeRequiredProps {
   expanded: boolean
   checked: boolean
   semiChecked: boolean
   selected: boolean
   loading: boolean
+  focused: boolean
 }
+
+export interface TreeNodeEventData extends FlattedTreeNodeData, TreeNodeRequiredProps {}
 
 export type TreeMenuActionOption = {
   type?: 'editNode' | 'addChildNode' | 'addSiblingNode' | 'deleteNode'
@@ -121,4 +120,5 @@ export type TreeEditActions = {
   addChildNode: (node: FlattedTreeNodeData) => void
   addSiblingNode: (node: FlattedTreeNodeData) => void
   deleteNode: (node: FlattedTreeNodeData) => void
+  closeMenu: () => void
 }

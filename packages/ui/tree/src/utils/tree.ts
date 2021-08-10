@@ -1,6 +1,5 @@
 import React from 'react'
-import { TreeNodeData, FlattedTreeNodeData, TreeNodeEventData } from '../types'
-import { TreeNodeProps } from '../TreeNode'
+import { TreeNodeData, FlattedTreeNodeData } from '../types'
 
 /**
  * 扁平化树数据结构，基于前序遍历
@@ -18,7 +17,7 @@ export const flattenTreeData = (treeData: TreeNodeData[]) => {
     parent?: FlattedTreeNodeData,
     ancestors?: FlattedTreeNodeData[]
   ) => {
-    const { id, title, isLeaf, disabled, children } = node
+    const { id, title, isLeaf = false, disabled = false, children } = node
     const flattedNode: FlattedTreeNodeData = {
       id,
       title,
@@ -29,6 +28,7 @@ export const flattenTreeData = (treeData: TreeNodeData[]) => {
       ancestors,
       siblings,
       raw: node,
+      // pos: flattedTreeData.length,
     }
 
     flattedTreeData.push(flattedNode)
@@ -240,19 +240,4 @@ export const findNestedChildIds = (node: TreeNodeData) => {
 
   dig(node)
   return allChildrenIds
-}
-
-export function getTreeNodeEventData(props: TreeNodeProps): TreeNodeEventData {
-  const { data, expanded, checked, semiChecked, selected, loading } = props as Required<
-    TreeNodeProps
-  >
-
-  return {
-    ...data,
-    expanded,
-    checked,
-    semiChecked,
-    selected,
-    loading,
-  }
 }

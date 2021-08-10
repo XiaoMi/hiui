@@ -27,6 +27,7 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
   touch-action: manipulation;
   cursor: pointer;
   transition: all $easing;
+  outline: none;
 
   svg {
     width: 1em;

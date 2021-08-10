@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestRef } from '@hi-ui/use-latest'
-import { FlattedTreeNodeData } from '../types'
+import { TreeNodeEventData } from '../types'
 
 /**
  * 用于 tree 组件选中的 hook
@@ -13,17 +13,17 @@ import { FlattedTreeNodeData } from '../types'
  * @returns
  */
 export const useSelect = (
+  disabled: boolean,
   defaultSelectedId: React.ReactText | null = null,
   selectedIdProp?: React.ReactText | null,
   onSelectProp?: (
     selectedId: React.ReactText | null,
-    selectedNode: FlattedTreeNodeData | null
-  ) => void,
-  disabled = false
+    selectedNode: TreeNodeEventData | null
+  ) => void
 ) => {
   const onSelectRef = useLatestRef(onSelectProp)
   const proxyOnSelect = useCallback(
-    (id: React.ReactText | null, item: FlattedTreeNodeData | null) => {
+    (id: React.ReactText | null, item: TreeNodeEventData | null) => {
       onSelectRef.current?.(id, item)
     },
     []
@@ -36,7 +36,7 @@ export const useSelect = (
   )
 
   const onSelect = useCallback(
-    (selectedNode: FlattedTreeNodeData) => {
+    (selectedNode: TreeNodeEventData) => {
       if (disabled || selectedNode.disabled) return
 
       if (selectedId === selectedNode.id) {
@@ -49,7 +49,5 @@ export const useSelect = (
     [disabled, selectedId, tryChangeSelectedId]
   )
 
-  const isSelected = (id: React.ReactText) => selectedId === id
-
-  return [isSelected, onSelect] as const
+  return [selectedId, onSelect] as const
 }

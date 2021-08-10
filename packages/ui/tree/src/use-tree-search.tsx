@@ -2,7 +2,7 @@ import React, { useState, useMemo, useCallback, forwardRef } from 'react'
 import { __DEV__ } from '@hi-ui/env'
 import Input from '@hi-ui/input'
 import { useDeepEqualDeps as useDeep } from '@hi-ui/use-deep-equal-deps'
-import { TreeNodeData, FlattedTreeNodeData } from './types'
+import { TreeNodeData, FlattedTreeNodeData, TreeNodeEventData } from './types'
 import { useExpandProps } from './hooks/use-expand'
 import cloneDeep from 'lodash.clonedeep'
 import { flattenTreeData } from './utils'
@@ -23,7 +23,7 @@ export const useTreeSearch = (BaseTree: Tree) => {
   const AdvancedTreeMemo = useMemo(() => {
     // 高阶组件
     const AdvancedTree = forwardRef<HTMLUListElement | null, SearchableTreeProps>((props, ref) => {
-      const [treeProps, searchInputProps] = useTreeSearchProps(props)
+      const [treeProps, searchInputProps, isEmpty] = useTreeSearchProps(props)
 
       return (
         <>
@@ -34,7 +34,7 @@ export const useTreeSearch = (BaseTree: Tree) => {
               {...searchInputProps}
               suffix={searchInputProps.value ? null : <SearchOutlined />}
             />
-            {treeProps.data.length < 1 && searchInputProps.value ? (
+            {isEmpty ? (
               <span className={`${treeProps.prefixCls}-searcher--empty`}>未找到相关结果</span>
             ) : null}
           </div>
@@ -85,10 +85,10 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
 
   // 拦截 titleRender，自定义高亮展示
   const proxyTitleRender = useCallback(
-    (node: FlattedTreeNodeData) => {
+    (node: TreeNodeEventData) => {
       if (titleRender) {
         const ret = titleRender(node)
-        if (ret) return ret
+        if (ret && ret !== true) return ret
       }
 
       const ret = inSearch ? renderTitleWithHighlight(node, searchValue) : true
@@ -137,7 +137,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     onChange: handleChange,
   }
 
-  return [treeProps, inputProps] as const
+  return [treeProps, inputProps, isEmpty] as const
 }
 
 export interface SearchableTreeProps extends TreeProps {
@@ -150,7 +150,7 @@ export interface SearchableTreeProps extends TreeProps {
 /**
  * 高亮节点的文本内容
  */
-const renderTitleWithHighlight = (node: FlattedTreeNodeData, searchValue: string) => {
+const renderTitleWithHighlight = (node: TreeNodeEventData, searchValue: string) => {
   if (typeof node.title !== 'string') {
     return
   }

@@ -1,26 +1,29 @@
 import React, { createContext, useContext } from 'react'
-import { FlattedTreeNodeData } from './types'
-import { TreeNodeProps } from './TreeNode'
+import { TreeNodeEventData, TreeNodeDragDirection } from './types'
 
 interface TreeContext {
-  selectedId?: React.ReactText
-  onSelect?: (node: FlattedTreeNodeData) => void
-  disabled?: boolean
+  selectable?: boolean
+  onSelect?: (node: TreeNodeEventData) => void
+  onExpand?: (node: TreeNodeEventData, shouldExpanded: boolean) => Promise<void>
   draggable?: boolean
-  onExpand?: (node: TreeNodeProps) => Promise<void>
-  onDragStart?: (dragNode: FlattedTreeNodeData) => void
-  onDragEnd?: (dragNode: FlattedTreeNodeData) => void
-  onDrop?: any
-  onDragLeave?: (node: FlattedTreeNodeData) => void
-  onDragOver?: (node: FlattedTreeNodeData) => void
-  onLoadChildren?: (node: FlattedTreeNodeData) => Promise<any>
+  onDragStart?: (dragNode: TreeNodeEventData) => void
+  onDragEnd?: (dragNode: TreeNodeEventData) => void
+  onDrop?: (
+    dragId: React.ReactText,
+    dropId: React.ReactText,
+    direction: TreeNodeDragDirection
+  ) => void
+  onDragLeave?: (node: TreeNodeEventData) => void
+  onDragOver?: (node: TreeNodeEventData) => void
+  onLoadChildren?: (node: TreeNodeEventData) => Promise<any>
   checkable?: boolean
-  onNodeCheck?: (checkedNode: FlattedTreeNodeData, checked: boolean) => void
+  onCheck?: (checkedNode: TreeNodeEventData, shouldChecked: boolean) => void
+  titleRender?: (node: TreeNodeEventData) => React.ReactNode
+  onFocus?: (node: TreeNodeEventData) => void
   showLine?: boolean
   collapseIcon?: React.ReactNode
   expandIcon?: React.ReactNode
   leafIcon?: React.ReactNode
-  titleRender?: (node: FlattedTreeNodeData) => React.ReactNode
 }
 
 const treeContext = createContext<TreeContext>({})

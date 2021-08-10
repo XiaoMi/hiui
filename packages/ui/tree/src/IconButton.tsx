@@ -33,4 +33,6 @@ interface IconButtonProps {
   onClick?: (evt: React.MouseEvent<HTMLButtonElement>) => void
   icon: React.ReactNode
   active?: boolean
+  tabIndex?: number
+  onBlur?: (evt: React.FocusEvent) => void
 }

@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, forwardRef, useCallback } from 'rea
 import CSSTransition from 'react-transition-group/CSSTransition'
 import { times } from '@hi-ui/times'
 import { TreeNode } from './TreeNode'
-import { TreeNodeType, MotionTreeNodeData } from './types'
+import { TreeNodeType, MotionTreeNodeData, TreeNodeRequiredProps } from './types'
 import { __DEV__ } from '@hi-ui/env'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 
@@ -10,7 +10,7 @@ import { useMergeRefs } from '@hi-ui/use-merge-refs'
  * TODO: What is MotionTreeNode
  */
 export const MotionTreeNode = forwardRef<HTMLDivElement | null, MotionTreeNodeProps>(
-  ({ prefixCls, data, onMotionEnd, overscanCount, getTreeNodeProps }, ref) => {
+  ({ prefixCls, data, onMotionEnd, overscanCount, getTreeNodeRequiredProps }, ref) => {
     const { children: childrenNodes, type } = data
 
     // 根据 type 控制显隐过渡动画
@@ -60,7 +60,7 @@ export const MotionTreeNode = forwardRef<HTMLDivElement | null, MotionTreeNodePr
         <div ref={useMergeRefs(ref, motionNodeRef)} className={`${prefixCls}-motion-node`}>
           {times(motionNodeCount, (index) => {
             const node = childrenNodes[index]
-            return <TreeNode key={node.id} data={node} {...getTreeNodeProps(node.id)} />
+            return <TreeNode key={node.id} data={node} {...getTreeNodeRequiredProps(node.id)} />
           })}
         </div>
       </CSSTransition>
@@ -88,14 +88,7 @@ export interface MotionTreeNodeProps {
   /**
    * 获取节点的基础状态 props
    */
-  getTreeNodeProps: (
-    id: React.ReactText
-  ) => {
-    expanded: boolean
-    checked: boolean
-    semiChecked: boolean
-    selected: boolean
-  }
+  getTreeNodeRequiredProps: (id: React.ReactText) => TreeNodeRequiredProps
 }
 
 if (__DEV__) {

@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestRef } from '@hi-ui/use-latest'
 
-import { FlattedTreeNodeData } from '../types'
+import { FlattedTreeNodeData, TreeNodeEventData } from '../types'
 import { findNestedChildIds } from '../utils'
 
 /**
@@ -16,6 +16,7 @@ import { findNestedChildIds } from '../utils'
  * @returns
  */
 export const useCheck = (
+  disabled: boolean,
   flattedData: FlattedTreeNodeData[],
   defaultCheckedIds: React.ReactText[],
   checkedIdsProp?: React.ReactText[],
@@ -24,10 +25,9 @@ export const useCheck = (
       checkedIds: React.ReactText[]
       semiCheckedIds: React.ReactText[]
     },
-    node: FlattedTreeNodeData,
+    node: TreeNodeEventData,
     checked: boolean
-  ) => void,
-  disabled = false
+  ) => void
 ) => {
   const onCheckRef = useLatestRef(onCheck)
   const proxyOnCheck = useCallback((checkedIds, checkedNode, checked, semiCheckedIds) => {
@@ -50,7 +50,7 @@ export const useCheck = (
   const isSemiCheckedId = (id: React.ReactText) => semiCheckedIdsSet.has(id)
 
   const onNodeCheck = useCallback(
-    (checkedNode: FlattedTreeNodeData, checked: boolean) => {
+    (checkedNode: TreeNodeEventData, checked: boolean) => {
       if (disabled || checkedNode.disabled) return
 
       const checkedIdsSet = new Set(checkedIds)

@@ -60,6 +60,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     justify-items: stretch;
     border-radius: 4px;
     padding: 0 4px;
+    outline: 0;
 
     &:hover {
       background-color: use-color('primary-20');
@@ -108,7 +109,7 @@ $prefix: '#{$component-prefix}-tree' !default;
       width: 8px;
       height: 8px;
       content: '';
-      background: #fff;
+      background-color: use-color('white');
       border: 1px solid use-color('primary');
       border-radius: 100%;
     }
@@ -130,27 +131,6 @@ $prefix: '#{$component-prefix}-tree' !default;
   }
 
   $this: &;
-
-  &:focus {
-    outline: 0;
-    color: use-color('gray-80');
-
-    #{$this}__title {
-      background: use-color('primary-20');
-    }
-  }
-
-  // &--open {
-  //   #{$this}-switcher__icon {
-  //     transform: rotate(0);
-  //   }
-  // }
-
-  // &--closed {
-  //   #{$this}-switcher__icon {
-  //     transform: rotate(-90deg);
-  //   }
-  // }
 
   // 线性连接展示
   &--linear {
@@ -177,14 +157,24 @@ $prefix: '#{$component-prefix}-tree' !default;
     }
   }
 
+  &--focused {
+    #{$this}__wrap {
+      background-color: use-color('primary-20');
+    }
+
+    #{$this}__title {
+      color: use-color('gray-80');
+    }
+  }
+
   // TODO: 约定好组件的修饰词和元素书写顺序
   &--selected {
     #{$this}__wrap {
-      background: use-color('primary-20');
+      background-color: use-color('primary-20');
+    }
 
-      #{$this}__title {
-        color: #4284F5;
-      }
+    #{$this}__title {
+      color: use-color('primary');
     }
   }
 
@@ -192,9 +182,9 @@ $prefix: '#{$component-prefix}-tree' !default;
     cursor: not-allowed;
     color: use-color('gray-50');
 
-    #{$this}__title {
+    #{$this}__wrap {
       &:hover {
-        background: use-color('white');
+        background-color: use-color('white');
       }
     }
 
@@ -202,12 +192,22 @@ $prefix: '#{$component-prefix}-tree' !default;
       color: use-color('gray-50');
 
       #{$this}__title {
-        background: use-color('white');
+        background-color: use-color('white');
 
         &:hover {
-          background: use-color('white');
+          background-color: use-color('white');
         }
       }
+    }
+
+    &#{$this}--focused {
+      #{$this}__title {
+        color: use-color('gray-50');
+      }
+    }
+
+    #{$this}__switcher:not(#{$this}__switcher--noop) {
+      color: use-color('gray-80');
     }
   }
 
@@ -228,7 +228,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &--drag-inside {
     #{$this}__title {
-      background: use-color('primary');
+      background-color: use-color('primary');
       color: use-color('white');
     }
   }
