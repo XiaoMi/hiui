@@ -16,6 +16,7 @@ const defaultStr = `constructor () {
           {
             title: 'Redmi系列',
             id: '0-0',
+            disabled: true,
             children: [{
               id: '0-0-1',
               title: 'Redmi K30'

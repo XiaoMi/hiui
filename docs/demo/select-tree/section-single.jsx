@@ -13,6 +13,7 @@ const defaultJson = `constructor () {
         {
           title: '手机类',
           id: '0',
+          disabled: true,
           children: [
             {
               title: 'Redmi系列',
