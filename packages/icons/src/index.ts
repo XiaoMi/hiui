@@ -1,4 +1,3 @@
-
 import './styles/index.scss'
 
 export { AdditionalBusinessOutlined } from './components/additional-business-outlined'
