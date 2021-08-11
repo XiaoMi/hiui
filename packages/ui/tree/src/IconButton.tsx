@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
-const _role = 'svg-button'
+const _role = 'icon-button'
 const _prefix = getPrefixCls(_role)
 
 /**

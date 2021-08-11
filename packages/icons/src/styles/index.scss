@@ -2,7 +2,7 @@
 
 $prefix: "#{$component-prefix}-icon" !default;
 
-[class^=#{$prefix}] {
+svg[class^=#{$prefix}] {
   width: 1em;
   height: 1em;
   fill: currentColor;
