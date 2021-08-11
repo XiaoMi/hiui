@@ -1,0 +1,60 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-zen-mode' !default;
+
+.#{$prefix} {
+  font-size: $font-size-normal;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  z-index: 1000;
+  background: white;
+  transition: opacity 0.3s, height 0s 0.3s;
+  overflow: auto;
+
+  &__content {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  &__wrapper {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+  }
+
+  &__back-btn {
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    transition: background 0.3s;
+    &:hover {
+      background-color: rgba(31, 35, 41, 0.1);
+    }
+  }
+
+  &__toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    height: 60px;
+    border-bottom: 1px solid #ccc;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    opacity: 0.8;
+    transition: opacity 0.8s;
+  }
+  &__toolbar-opt {
+    flex: 1;
+  }
+  &__toolbar--hide {
+    opacity: 0;
+  }
+}
