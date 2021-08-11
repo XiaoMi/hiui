@@ -51,6 +51,9 @@ $prefix: '#{$component-prefix}-zen-mode' !default;
     opacity: 0.8;
     transition: opacity 0.8s;
   }
+  &__toolbar-opt {
+    flex: 1;
+  }
   &__toolbar--hide {
     opacity: 0;
   }

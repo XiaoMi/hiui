@@ -20,6 +20,16 @@ export const Basic = () => {
           onReturn={() => {
             setVisible(false)
           }}
+          toolbar={[
+            <Button
+              key="btn"
+              onClick={() => {
+                setVisible(false)
+              }}
+            >
+              退出演示
+            </Button>,
+          ]}
         >
           <div>
             禅模式测试禅模式测试禅模式测试禅模式测试禅模式测试禅模式测试禅模式测试禅模式测试

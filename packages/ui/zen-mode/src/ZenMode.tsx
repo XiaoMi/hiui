@@ -22,6 +22,7 @@ export const ZenMode: React.FC<ZenModeProps> = ({
   className,
   children,
   visible,
+  showBack = true,
   style,
   onReturn = () => {},
   toolbar = [],
@@ -75,10 +76,13 @@ export const ZenMode: React.FC<ZenModeProps> = ({
             }
           }}
         >
-          <span onClick={onReturn} className={`${prefixCls}__back-btn`}>
-            <LeftOutlined />
-            返回
-          </span>
+          {showBack && (
+            <span onClick={onReturn} className={`${prefixCls}__back-btn`}>
+              <LeftOutlined />
+              返回
+            </span>
+          )}
+          <div className={`${prefixCls}__toolbar-opt`}>{toolbar}</div>
         </div>
         <div
           className={cx(`${prefixCls}__content`, { [`${prefixCls}__content--hide`]: hide })}
@@ -104,9 +108,6 @@ export interface ZenModeProps {
    */
   prefixCls?: string
   /**
-   * 组件的语义化 Role 属性
-   */
-  /**
    * 组件的注入选择器类
    */
   className?: string
@@ -119,10 +120,17 @@ export interface ZenModeProps {
    */
   visible?: boolean
   /**
-   * 是否开启禅模式
+   * 点击返回按钮的回调
    */
   onReturn?: () => void
+  /**
+   * 自定义工具栏
+   */
   toolbar?: React.ReactNode[]
+  /**
+   * 是否展示返回按钮
+   */
+  showBack?: boolean
 }
 
 if (__DEV__) {
