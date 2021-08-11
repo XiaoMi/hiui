@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tree",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-alpha.2",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -47,8 +47,8 @@
     "@hi-ui/classname": "^4.0.0-alpha.1",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
     "@hi-ui/env": "^4.0.0-alpha.1",
-    "@hi-ui/icons": "^4.0.0-alpha.1",
-    "@hi-ui/input": "^4.0.0-alpha.1",
+    "@hi-ui/icons": "^4.0.0-alpha.2",
+    "@hi-ui/input": "^4.0.0-alpha.2",
     "@hi-ui/times": "^4.0.0-alpha.1",
     "@hi-ui/use-deep-equal-deps": "^4.0.0-alpha.1",
     "@hi-ui/use-latest": "^4.0.0-alpha.1",
