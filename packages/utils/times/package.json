@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/times",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.1",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,6 +43,6 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.0"
+    "@hi-ui/hi-build": "^4.0.0-alpha.1"
   }
 }

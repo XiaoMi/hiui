@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-uncontrolled-state",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.1",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -46,10 +46,10 @@
     "react": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.0",
+    "@hi-ui/hi-build": "^4.0.0-alpha.1",
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/use-latest": "^4.0.0-alpha.0"
+    "@hi-ui/use-latest": "^4.0.0-alpha.1"
   }
 }

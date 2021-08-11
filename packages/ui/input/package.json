@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/input",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,19 +43,19 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.0-alpha.0",
+    "@hi-ui/classname": "^4.0.0-alpha.1",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
-    "@hi-ui/env": "^4.0.0-alpha.0",
-    "@hi-ui/icons": "^4.0.0-alpha.0",
-    "@hi-ui/use-merge-refs": "^4.0.0-alpha.0",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.0"
+    "@hi-ui/env": "^4.0.0-alpha.1",
+    "@hi-ui/icons": "^4.0.0-alpha.1",
+    "@hi-ui/use-merge-refs": "^4.0.0-alpha.1",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.1"
   },
   "peerDependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.0",
+    "@hi-ui/hi-build": "^4.0.0-alpha.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

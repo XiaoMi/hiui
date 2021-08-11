@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tree",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,19 +43,19 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/checkbox": "^4.0.0-alpha.0",
-    "@hi-ui/classname": "^4.0.0-alpha.0",
+    "@hi-ui/checkbox": "^4.0.0-alpha.1",
+    "@hi-ui/classname": "^4.0.0-alpha.1",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
-    "@hi-ui/env": "^4.0.0-alpha.0",
-    "@hi-ui/icons": "^4.0.0-alpha.0",
-    "@hi-ui/input": "^4.0.0-alpha.0",
-    "@hi-ui/times": "^4.0.0-alpha.0",
-    "@hi-ui/use-deep-equal-deps": "^4.0.0-alpha.0",
-    "@hi-ui/use-latest": "^4.0.0-alpha.0",
-    "@hi-ui/use-merge-refs": "^4.0.0-alpha.0",
-    "@hi-ui/use-outside-click": "^4.0.0-alpha.0",
-    "@hi-ui/use-toggle": "^4.0.0-alpha.0",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.0",
+    "@hi-ui/env": "^4.0.0-alpha.1",
+    "@hi-ui/icons": "^4.0.0-alpha.1",
+    "@hi-ui/input": "^4.0.0-alpha.1",
+    "@hi-ui/times": "^4.0.0-alpha.1",
+    "@hi-ui/use-deep-equal-deps": "^4.0.0-alpha.1",
+    "@hi-ui/use-latest": "^4.0.0-alpha.1",
+    "@hi-ui/use-merge-refs": "^4.0.0-alpha.1",
+    "@hi-ui/use-outside-click": "^4.0.0-alpha.1",
+    "@hi-ui/use-toggle": "^4.0.0-alpha.1",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.1",
     "@popperjs/core": "^2.9.3",
     "lodash.clonedeep": "^4.5.0",
     "rc-virtual-list": "^3.3.0",
@@ -67,7 +67,7 @@
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.0",
+    "@hi-ui/hi-build": "^4.0.0-alpha.1",
     "@types/lodash.clonedeep": "^4.5.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
