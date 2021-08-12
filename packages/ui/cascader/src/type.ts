@@ -5,6 +5,7 @@ export type CascaderItem = {
   title: React.ReactNode
   disabled?: boolean
   children?: CascaderItem[]
+  isLeaf?: boolean
 }
 
 export type FieldNames = {

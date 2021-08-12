@@ -9,11 +9,41 @@ $prefix: '#{$component-prefix}-cascader' !default;
   }
 }
 
-.#{$prefix}-menu {
+.#{$prefix}-menus {
   color: var(--color-gray-80);
   background-color: var(--color-white);
+  border-radius: $spacer-1;
+  display: flex;
+  box-sizing:  border-box;
   box-shadow: 0 2px 6px 0 var(--color-gray-20);
-  padding: 4px 0;
-  border-radius: 4px;
-  width: 160px;
+
+  &-menu {
+    @include component-reset;
+
+    list-style: none;
+    width: auto;
+    padding: $spacer-2 0;
+    box-sizing: border-box;
+
+    &:not(:last-child) {
+      border-right: 1px solid #e8e8e8;
+    }
+
+    &__item {
+      width: auto;
+      padding: $spacer-1 0;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+    }
+
+    &-option {
+      padding: 0 $spacer-2 + 2px;
+      box-sizing: border-box;
+      min-height: 32px;
+      width: auto;
+      display: flex;
+      align-items: center;
+    }
+  }
 }

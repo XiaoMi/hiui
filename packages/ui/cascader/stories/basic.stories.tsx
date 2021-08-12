@@ -7,6 +7,7 @@ export const Basic = () => {
       <h1>Basic for Cascader</h1>
       <div className="cascader-basic__wrap">
         <Cascader
+          defaultValue={['手机', '红米', '红米4']}
           data={[
             {
               id: '手机',

@@ -5,7 +5,7 @@ import { CascaderItem, ExpandTrigger } from './type'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useToggle } from '@hi-ui/use-toggle'
 import Input from '@hi-ui/input'
-import { CascaderMenu } from './CascaderMenu'
+import { CascaderMenus } from './CascaderMenus'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { usePopper } from 'react-popper'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
@@ -54,7 +54,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
       tryChangeValue(value)
     }, [])
 
-    const onSelectClick = useCallback((evt: any) => {
+    const onItemSelect = useCallback((evt: any) => {
       if (menuVisible) return
 
       if (disabled) return
@@ -110,9 +110,8 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
         className={cls}
         tabIndex={tabIndex}
         onClick={(evt) => {
-          // 阻止冒泡，避免触发节点选中
           evt.stopPropagation()
-          menuVisibleAction.not()
+          menuVisibleAction.on()
         }}
         {...rest}
       >
@@ -120,7 +119,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
         {data && menuVisible ? (
           <div ref={popperElRef} style={{ ...styles.popper, zIndex: 2 }} {...attributes.popper}>
             <div ref={setArrowElmRef} style={styles.arrow} />
-            <CascaderMenu data={data} />
+            <CascaderMenus data={data} value={value} onSelect={onItemSelect} />
           </div>
         ) : null}
       </div>
