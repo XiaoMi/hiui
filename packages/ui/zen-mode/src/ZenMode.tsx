@@ -26,6 +26,7 @@ export const ZenMode: React.FC<ZenModeProps> = ({
   style,
   onReturn = () => {},
   toolbar = [],
+  zoom = 1.8,
 }) => {
   const defaultContainer = useRef(getDefaultContainer())
   const [hide, setToolbarHide] = useState(false)
@@ -87,7 +88,7 @@ export const ZenMode: React.FC<ZenModeProps> = ({
         <div
           className={cx(`${prefixCls}__content`, { [`${prefixCls}__content--hide`]: hide })}
           style={{
-            zoom: 1.8,
+            zoom,
           }}
         >
           {children}
@@ -131,6 +132,10 @@ export interface ZenModeProps {
    * 是否展示返回按钮
    */
   showBack?: boolean
+  /**
+   *  放大比例
+   */
+  zoom?: number
 }
 
 if (__DEV__) {
