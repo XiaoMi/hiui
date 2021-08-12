@@ -1,0 +1,19 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-cascader' !default;
+
+.#{$prefix} {
+  .#{$component-prefix}-input__suffix  {
+    font-size: 16px;
+    color: rgba(132, 132, 132, 1);
+  }
+}
+
+.#{$prefix}-menu {
+  color: var(--color-gray-80);
+  background-color: var(--color-white);
+  box-shadow: 0 2px 6px 0 var(--color-gray-20);
+  padding: 4px 0;
+  border-radius: 4px;
+  width: 160px;
+}
