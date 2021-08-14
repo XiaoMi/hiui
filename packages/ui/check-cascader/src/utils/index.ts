@@ -137,3 +137,7 @@ export const getActiveMenus = (
 
   return menu
 }
+
+export const getFlattedMenus = (data: FlattedCheckCascaderItem[]) => {
+  return [data.filter(({ checkable }) => checkable)]
+}

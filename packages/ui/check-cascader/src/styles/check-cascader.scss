@@ -12,11 +12,25 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
       font-size: 16px;
     }
   }
+
+
+  &__modal {
+    box-sizing: border-box;
+    width: auto;
+    background-color: use-color('white');
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    position: relative;
+  }
+
+  .#{$prefix}-panel {
+    padding: $spacer-2;
+    // width: 100%;
+    // box-sizing: border-box;
+  }
 }
 
 .#{$prefix}-panel {
-
-
 }
 
 .#{$prefix}-menus {
@@ -24,6 +38,12 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
   box-sizing:  border-box;
   overflow-x: auto;
   margin-top: 10px;
+
+  &--flatted {
+    .#{$prefix}-menu {
+      flex-basis: 100%;
+    }
+  }
 }
 
 

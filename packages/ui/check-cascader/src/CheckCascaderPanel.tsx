@@ -32,6 +32,7 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
       checkCascaded = false,
       searchable = true,
       clearable = false,
+      flatted = false,
       emptyContent = '无匹配选项',
       displayRender,
       onChange,
@@ -62,7 +63,7 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
         ) : null}
         <CheckCascaderMenus
           data={inSearch ? matchedNodes : flattedData}
-          flatted={inSearch}
+          flatted={flatted || inSearch}
           {...{
             value,
             defaultValue,
@@ -160,6 +161,14 @@ export interface CheckCascaderPanelProps {
    * 支持 checkbox 级联（正反选）功能
    */
   checkCascaded?: boolean
+  /**
+   * 将 check 子项拍平展示
+   */
+  flatted?: boolean
+  /**
+   * 开启全量搜索，默认只对开启 checkable 的选项进行搜索
+   */
+  fullMatch?: boolean
 }
 
 if (__DEV__) {

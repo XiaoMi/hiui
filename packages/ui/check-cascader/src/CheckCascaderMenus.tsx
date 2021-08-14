@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { ExpandTrigger, FlattedCheckCascaderItem } from './types'
 import { CheckCascaderMenu } from './CheckCascaderMenu'
 import { CheckCascaderProvider } from './context'
-import { getActiveMenus } from './utils/index'
+import { getActiveMenus, getFlattedMenus } from './utils/index'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
 const _role = 'check-cascader-menus'
@@ -91,7 +91,7 @@ export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenu
       [changeOnSelect, expandTrigger, onOptionCheck, onOptionSelect, flatted]
     )
 
-    const menus = flatted ? [data] : getActiveMenus(data, selectedIds)
+    const menus = flatted ? getFlattedMenus(data) : getActiveMenus(data, selectedIds)
 
     const cls = cx(
       prefixCls,
