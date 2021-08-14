@@ -142,7 +142,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
 
 export interface SearchableTreeProps extends TreeProps {
   /**
-   * 节点可搜索
+   * 节点可搜索，仅在 node.title 类型为字符串下支持
    */
   searchable?: boolean
 }

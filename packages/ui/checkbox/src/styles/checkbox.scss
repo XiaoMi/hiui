@@ -35,13 +35,19 @@ $prefix: '#{$component-prefix}-checkbox' !default;
 }
 
 .#{$prefix} {
+  @include component-reset();
+
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   height: 16px;
   vertical-align: middle;
 
-  @include component-reset();
+  &:not(&--disabled):hover {
+    .#{$prefix}__icon {
+      border-color: use-color('primary');
+    }
+  }
 
   &--disabled {
     cursor: not-allowed;
@@ -82,10 +88,6 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     transition: 0.3s ease-out;
     line-height: 1;
     flex: none;
-
-    &:hover {
-      border-color: get-color($palette-primary, 'hiui-blue');
-    }
 
     &--indeterminate {
       &::after {

@@ -4,6 +4,6 @@ export * from './basic.stories'
 export * from './embed.stories'
 
 export default {
-  title: 'Cascader',
+  title: 'CheckCascader',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

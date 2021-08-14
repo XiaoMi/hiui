@@ -1,7 +1,7 @@
 import {
-  CascaderItem,
-  FlattedCascaderItem,
-  FlattedCascaderItemWithChildren,
+  CheckCascaderItem,
+  FlattedCheckCascaderItem,
+  FlattedCheckCascaderItemWithChildren,
   NodeRoot,
 } from '../types'
 import React from 'react'
@@ -40,10 +40,14 @@ export const debounce = <T extends (...args: any[]) => void>(func?: T, delay = 1
  * @param treeData
  * @returns
  */
-export const flattenTreeData = (treeData: CascaderItem[]) => {
-  const flattedTreeData: FlattedCascaderItem[] = []
+export const flattenTreeData = (treeData: CheckCascaderItem[]) => {
+  const flattedTreeData: FlattedCheckCascaderItem[] = []
 
-  const dig = (node: CascaderItem, depth: number, parent: FlattedCascaderItemWithChildren) => {
+  const dig = (
+    node: CheckCascaderItem,
+    depth: number,
+    parent: FlattedCheckCascaderItemWithChildren
+  ) => {
     const {
       id,
       title,
@@ -54,7 +58,7 @@ export const flattenTreeData = (treeData: CascaderItem[]) => {
       disabledCheckbox = false,
     } = node
 
-    const flattedNode: FlattedCascaderItem = {
+    const flattedNode: FlattedCheckCascaderItem = {
       id,
       title,
       depth,
@@ -73,7 +77,7 @@ export const flattenTreeData = (treeData: CascaderItem[]) => {
       const childDepth = depth + 1
 
       flattedNode.children = children.map((child) => {
-        return dig(child, childDepth, flattedNode as FlattedCascaderItemWithChildren)
+        return dig(child, childDepth, flattedNode as FlattedCheckCascaderItemWithChildren)
       })
     }
 
@@ -81,7 +85,7 @@ export const flattenTreeData = (treeData: CascaderItem[]) => {
   }
 
   // @ts-ignore
-  const treeRoot: NodeRoot<FlattedCascaderItem> = getTreeRoot()
+  const treeRoot: NodeRoot<FlattedCheckCascaderItem> = getTreeRoot()
   // @ts-ignore
   treeRoot.children = treeData.map((node) => dig(node, 0, treeRoot))
 
@@ -94,8 +98,8 @@ const getTreeRoot = () => {
   }
 }
 
-export const getNodeAncestors = (node: FlattedCascaderItem) => {
-  const ancestors: FlattedCascaderItem[] = []
+export const getNodeAncestors = (node: FlattedCheckCascaderItem) => {
+  const ancestors: FlattedCheckCascaderItem[] = []
 
   while (node.parent) {
     ancestors.push(node)
@@ -104,13 +108,16 @@ export const getNodeAncestors = (node: FlattedCascaderItem) => {
   return ancestors
 }
 
-export const getActiveMenus = (data: FlattedCascaderItem[], selectedIds: React.ReactText[]) => {
-  const menu: FlattedCascaderItem[][] = []
+export const getActiveMenus = (
+  data: FlattedCheckCascaderItem[],
+  selectedIds: React.ReactText[]
+) => {
+  const menu: FlattedCheckCascaderItem[][] = []
 
   if (data.length === 0) return []
 
   // 从 value 中 找到指定的 options（逐层查找）
-  const dig = (data: FlattedCascaderItem[], depth: number) => {
+  const dig = (data: FlattedCheckCascaderItem[], depth: number) => {
     menu.push(data)
 
     for (let i = 0; i < data.length; i++) {

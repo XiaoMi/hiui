@@ -27,5 +27,6 @@
     "source.fixAll.tslint": true,
     "source.fixAll.stylelint": true,
     "source.organizeImports": false
-  }
+  },
+  "cSpell.words": ["selectchange"]
 }

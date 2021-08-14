@@ -11,11 +11,8 @@ $prefix: '#{$component-prefix}-cascader' !default;
 
 .#{$prefix}-menus {
   color: var(--color-gray-80);
-  background-color: var(--color-white);
-  border-radius: $spacer-1;
   display: flex;
   box-sizing:  border-box;
-  box-shadow: 0 2px 6px 0 var(--color-gray-20);
 
   &-menu {
     @include component-reset;
@@ -46,4 +43,61 @@ $prefix: '#{$component-prefix}-cascader' !default;
       align-items: center;
     }
   }
+}
+
+.#{$prefix}-search {
+  @include component-reset;
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+
+  &__row {
+    width: auto;
+    padding: $spacer-1 0;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+
+    &-item {
+      padding: 0 $spacer-2 + 2px;
+      box-sizing: border-box;
+      min-height: 32px;
+      width: auto;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__cols {
+    display: block;
+    width: 100%;
+    @include component-reset;
+    list-style: none;
+  }
+
+  &__col {
+    display: inline-block;
+
+    &::after {
+      content: "\00a0/\00a0";
+    }
+
+    &:last-child {
+      &:after {
+        content: none;
+      }
+    }
+  }
+}
+
+.#{$prefix}-modal {
+  box-sizing: border-box;
+  width: auto;
+  background-color: use-color('white');
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  position: relative;
+  padding: $spacer-2;
 }

@@ -1,0 +1,145 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-check-cascader' !default;
+
+
+.#{$prefix} {
+  color: #333;
+  // color: var(--color-gray-80);
+
+  &__search {
+    .#{$component-prefix}-input__suffix  {
+      font-size: 16px;
+    }
+  }
+}
+
+.#{$prefix}-panel {
+
+
+}
+
+.#{$prefix}-menus {
+  display: flex;
+  box-sizing:  border-box;
+  overflow-x: auto;
+  margin-top: 10px;
+}
+
+
+.#{$prefix}-menu {
+  @include component-reset;
+
+  list-style: none;
+  width: auto;
+  // padding: 0 0 10px 0;
+  box-sizing: border-box;
+  flex-basis: 160px;
+  flex-shrink: 0;
+
+  &:not(:last-child) {
+    border-right: 1px solid #e8e8e8;
+  }
+
+  $this: &;
+
+  &--checkable {
+    #{$this}-title {
+      padding-left: 24px;
+    }
+
+    #{$this}-checkbox + #{$this}-title {
+      padding-left: 0px;
+    }
+  }
+
+  &-item {
+    width: 100%;
+    padding: $spacer-1 0;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+  }
+
+  &-checkbox {
+    position: relative;
+
+    &::after {
+      right: 0;
+      top: -8px;
+      bottom: -8px;
+      left: -8px;
+      content: "";
+      position: absolute;
+      display: block;
+    }
+  }
+
+  &-option {
+    padding: 0 $spacer-2 + 2px;
+    box-sizing: border-box;
+    min-height: 32px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: space-between;
+
+    &:hover {
+      background-color: use-color('primary-20');
+
+      // checkbox 联动颜色
+      .#{$component-prefix}-checkbox__icon {
+        .#{$prefix}-menus--selectchange & {
+          border-color: use-color('primary');
+        }
+      }
+    }
+
+    &--selected {
+      background-color: use-color('primary-20');
+      font-weight: 700;
+    }
+
+    &--focused {
+      background-color: use-color('primary-10');
+    }
+
+    &--checked {
+      font-weight: 700;
+    }
+  }
+
+
+  &-title {
+    flex: 1;
+
+    &__cols {
+      display: block;
+      width: 100%;
+      @include component-reset;
+      list-style: none;
+    }
+
+    &__col {
+      display: inline-block;
+
+      &::after {
+        content: "\00a0/\00a0";
+      }
+
+      &:last-child {
+        &:after {
+          content: none;
+        }
+      }
+    }
+  }
+
+  &-switcher {
+    flex-shrink: 0;
+    font-size: 16px;
+    color: #666;
+  }
+}
+

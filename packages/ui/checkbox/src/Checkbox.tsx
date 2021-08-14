@@ -87,7 +87,7 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
           tabIndex={focusable ? 0 : -1}
         />
         <span className={iconCls} />
-        <span className={`${prefixCls}__text`}>{children}</span>
+        {children ? <span className={`${prefixCls}__text`}>{children}</span> : null}
       </label>
     )
   }

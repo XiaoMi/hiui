@@ -1,19 +1,20 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { CascaderItem, ExpandTrigger, FlattedCascaderItem, NodeRoot } from './types'
+import { CascaderItem, ExpandTrigger, FlattedCascaderItem } from './types'
 import { debounce } from './utils'
 import { CascaderOption } from './CascaderOption'
 import { CascaderProvider } from './context'
-import { getActiveMenus } from './utils/index'
+import { Checkbox } from '@hi-ui/checkbox'
+import { getNodeAncestors } from './utils/index'
 
-const _role = 'cascader-menus'
+const _role = 'cascader-search'
 const _prefix = getPrefixCls(_role)
 
 /**
- * TODO: What is CascaderMenus
+ * TODO: What is CascaderSearch
  */
-export const CascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenusProps>(
+export const CascaderSearch = forwardRef<HTMLDivElement | null, CascaderSearchProps>(
   (
     {
       prefixCls = _prefix,
@@ -23,22 +24,15 @@ export const CascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenusProp
       overlayClassName,
       data,
       value,
+      onCheck,
       onChange,
       expandTrigger = 'click',
+      emptyContent,
       ...rest
     },
     ref
   ) => {
     const [selectedIds, setSelectedIds] = useState<React.ReactText[]>([])
-
-    const onOptionSelect = useCallback((option: FlattedCascaderItem) => {
-      setSelectedIds((prev) => {
-        console.log(option)
-        const nextSelectedIds = prev.slice(0, option.depth)
-        nextSelectedIds.push(option.id)
-        return nextSelectedIds
-      })
-    }, [])
 
     const onOptionCheck = useCallback(
       (option, index, shouldSelected, evt) => {
@@ -57,10 +51,24 @@ export const CascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenusProp
         nextValue[index] = nextMenuValue
 
         onChange(nextValue)
-        onOptionSelect(option)
+        //
+        setSelectedIds((prev) => {
+          const nextSelectedIds = [...prev]
+          nextSelectedIds[index] = option.id
+          return nextSelectedIds
+        })
       },
-      [value, onChange, onOptionSelect]
+      [value, onChange]
     )
+
+    const onOptionSelect = useCallback((option, index, shouldSelected, evt) => {
+      console.log('onOptionSelect', evt, option, index)
+      setSelectedIds((prev) => {
+        const nextSelectedIds = [...prev]
+        nextSelectedIds[index] = option.id
+        return nextSelectedIds
+      })
+    }, [])
 
     const providedValue = useMemo(
       () => ({
@@ -73,33 +81,47 @@ export const CascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenusProp
 
     const cls = cx(prefixCls, overlayClassName, className)
 
-    const menus = getActiveMenus(data, selectedIds)
-
     return (
       <CascaderProvider value={providedValue}>
-        <div ref={ref} role={role} className={cls} {...rest}>
-          {menus.map((menu, menuIdx) => {
-            const menuValue = value[menuIdx]
-            return (
-              <ul className={`${prefixCls}-menu`} key={menuIdx}>
-                {menu.map((option) => {
-                  const selected = menuValue.indexOf(option.id) !== -1
-                  return (
-                    <li className={`${prefixCls}-menu__item`} key={option.id}>
-                      <CascaderOption data={option} menuIndex={menuIdx} selected={selected} />
-                    </li>
-                  )
-                })}
-              </ul>
-            )
-          })}
-        </div>
+        <ul ref={ref} role={role} className={cls} {...rest}>
+          {data.length ? (
+            data.map((item, rowIdx) => {
+              const nodes = getNodeAncestors(item)
+
+              return (
+                <li className={`${prefixCls}__row`} key={rowIdx}>
+                  <Checkbox
+                    className={`${prefixCls}__row-item`}
+                    checked={item.selected}
+                    disabled={item.disabled}
+                    focusable={false}
+                    onChange={(evt) => {
+                      onCheck?.(item)
+                    }}
+                  >
+                    <span className={`${prefixCls}__cols`}>
+                      {nodes.map((item, index) => {
+                        return (
+                          <span className={`${prefixCls}__col`} key={item.id}>
+                            {item.title}
+                          </span>
+                        )
+                      })}
+                    </span>
+                  </Checkbox>
+                </li>
+              )
+            })
+          ) : (
+            <div className={`${prefixCls}__empty`}>{emptyContent}</div>
+          )}
+        </ul>
       </CascaderProvider>
     )
   }
 )
 
-export interface CascaderMenusProps {
+export interface CascaderSearchProps {
   /**
    * 组件默认的选择器类
    */
@@ -133,5 +155,5 @@ export interface CascaderMenusProps {
 }
 
 if (__DEV__) {
-  CascaderMenus.displayName = 'CascaderMenus'
+  CascaderSearch.displayName = 'CascaderSearch'
 }

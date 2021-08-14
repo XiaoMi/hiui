@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from 'react'
-import { FlattedCascaderItem } from '../types'
+import { FlattedCheckCascaderItem } from '../types'
 /**
  * 支持搜索功能的 hook
  */
-export const useSearch = (data: FlattedCascaderItem[]) => {
+export const useSearch = (data: FlattedCheckCascaderItem[]) => {
   const [searchValue, setSearchValue] = useState('')
-  const [matchedNodes, setMatchedNodes] = useState<FlattedCascaderItem[]>([])
+  const [matchedNodes, setMatchedNodes] = useState<FlattedCheckCascaderItem[]>([])
 
   const handleChange = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,13 +36,14 @@ export const useSearch = (data: FlattedCascaderItem[]) => {
  * 从 value 中 找到指定的 options（逐层查找）
  */
 const getMatchedNodes = (
-  flattedData: FlattedCascaderItem[],
+  flattedData: FlattedCheckCascaderItem[],
   searchValue: string
-): FlattedCascaderItem[] => {
+): FlattedCheckCascaderItem[] => {
   if (!searchValue) return []
 
   return flattedData.filter((node) => {
     if (typeof node.title !== 'string') return false
+    if (!node.checkable) return false
     // 匹配策略：`String.include`
     return node.title.includes?.(searchValue)
   })

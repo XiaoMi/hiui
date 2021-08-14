@@ -1,5 +1,5 @@
 import React from 'react'
-import Cascader from '../src'
+import { CascaderEmbed } from '../src'
 
 const data = [
   {
@@ -66,15 +66,15 @@ const getDataOnlyLastCheckable = (data: any) => {
 const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
 console.log(dataOnlyLastCheckable)
 
-export const Basic = () => {
+export const Embed = () => {
   return (
     <>
-      <h1>Basic for Cascader</h1>
+      <h1>Embed</h1>
       <div className="cascader-basic__wrap">
-        <Cascader
-          defaultValue={[['手机'], ['红米'], ['红米4']]}
+        <CascaderEmbed
+          defaultValue={['手机', '红米', '红米4']}
           data={dataOnlyLastCheckable}
-        ></Cascader>
+        ></CascaderEmbed>
       </div>
     </>
   )

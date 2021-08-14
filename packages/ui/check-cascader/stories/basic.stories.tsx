@@ -1,5 +1,5 @@
 import React from 'react'
-import Cascader from '../src'
+import CheckCascader from '../src'
 
 const data = [
   {
@@ -69,12 +69,12 @@ console.log(dataOnlyLastCheckable)
 export const Basic = () => {
   return (
     <>
-      <h1>Basic for Cascader</h1>
+      <h1>Basic</h1>
       <div className="cascader-basic__wrap">
-        <Cascader
-          defaultValue={[['手机'], ['红米'], ['红米4']]}
+        <CheckCascader
+          defaultValue={['手机', '红米', '红米4']}
           data={dataOnlyLastCheckable}
-        ></Cascader>
+        ></CheckCascader>
       </div>
     </>
   )

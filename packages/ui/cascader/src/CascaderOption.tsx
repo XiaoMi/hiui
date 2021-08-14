@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { CascaderItem, ExpandTrigger } from './type'
+import { CascaderItem, ExpandTrigger } from './types'
 import { debounce } from './utils'
 import { defaultLeafIcon, defaultLoadingIcon, defaultSuffixIcon } from './icons'
 import Checkbox from '@hi-ui/checkbox'
@@ -22,19 +22,39 @@ export const CascaderOption = forwardRef<HTMLDivElement | null, CascaderOptionPr
       children,
       data: option,
       loading,
-      checkable,
+      disabled,
+      selected,
+      checkable = true,
+      menuIndex,
       ...rest
     },
     ref
   ) => {
-    const { expandTrigger, onLoadChildren, onSelect, value } = useCascaderContext()
+    const { onLoadChildren, onCheck, value, onSelect } = useCascaderContext()
 
     const cls = cx(prefixCls, className)
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        {renderCheckbox(option, checkable, loading, onLoadChildren)}
-        {option.title}
+      <div
+        ref={ref}
+        role={role}
+        className={cls}
+        onClick={(evt) => {
+          onSelect(option, menuIndex, !selected, evt)
+        }}
+        {...rest}
+      >
+        {option.checkable ? (
+          <Checkbox
+            checked={selected}
+            disabled={disabled}
+            focusable={false}
+            onChange={(evt) => {
+              onCheck?.(option, menuIndex, !selected, evt)
+            }}
+          />
+        ) : null}
+        <span>{option.title}</span>
         {renderSuffix(prefixCls, option, loading, onLoadChildren)}
       </div>
     )
@@ -90,34 +110,11 @@ export interface CascaderOptionProps {
    * 该节点被 focus
    */
   focused?: boolean
+  menuIndex?: number
 }
 
 if (__DEV__) {
   CascaderOption.displayName = 'CascaderOption'
-}
-
-/**
- * 渲染复选框
- */
-const renderCheckbox = (
-  node: CascaderItem,
-  checkable: boolean,
-  disabled?: boolean,
-  checked?: boolean,
-  semiChecked?: boolean,
-  onCheck?: (checkedNode: CascaderItem, checked: boolean) => void
-) => {
-  return checkable ? (
-    <Checkbox
-      indeterminate={semiChecked}
-      checked={checked}
-      disabled={disabled}
-      focusable={false}
-      onChange={(evt) => {
-        onCheck?.(node, evt.target.checked)
-      }}
-    />
-  ) : null
 }
 
 /**

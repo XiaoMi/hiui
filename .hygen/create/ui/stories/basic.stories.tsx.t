@@ -7,7 +7,7 @@ import <%= h.camelCase(name) %> from '../src'
 export const Basic = () => {
   return (
     <>
-      <h1>Basic for <%= h.camelCase(name) %></h1>
+      <h1>Basic</h1>
       <div className="<%= name %>-basic__wrap">
         <<%= h.camelCase(name) %>></<%= h.camelCase(name) %>>
       </div>

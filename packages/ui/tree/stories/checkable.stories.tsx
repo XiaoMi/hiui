@@ -19,7 +19,7 @@ export const Checkable = () => {
         {
           id: 6,
           title: '产品',
-
+          disabled: true,
           children: [
             { id: 61, title: '后端' },
             { id: 62, title: '运维' },
@@ -48,7 +48,7 @@ export const Checkable = () => {
     <>
       <h1>Checkable for Tree</h1>
       <div className="tree-basic__wrap">
-        <Tree checkable data={treeData}></Tree>
+        <Tree checkable data={treeData} onCheck={console.log}></Tree>
       </div>
     </>
   )

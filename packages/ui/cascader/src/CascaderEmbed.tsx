@@ -9,21 +9,20 @@ import { CascaderMenus } from './CascaderMenus'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { usePopper } from 'react-popper'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
-import { defaultSuffixIcon } from './icons'
 import { useSearch } from './hooks'
 import { flattenTreeData } from './utils'
 import { CascaderSearch } from './CascaderSearch'
 import { SearchOutlined } from '@hi-ui/icons'
 
-const _role = 'cascader'
+const _role = 'embed-cascader'
 const _prefix = getPrefixCls(_role)
 
 const NOOP_ARRAY = [] as []
 
 /**
- * TODO: What is Cascader
+ * TODO: What is CascaderEmbed
  */
-export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
+export const CascaderEmbed = forwardRef<HTMLDivElement | null, CascaderEmbedProps>(
   (
     {
       prefixCls = _prefix,
@@ -110,6 +109,9 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
 
     const [isSearch, matchedNodes, inputProps, isEmpty] = useSearch(flattedData)
     console.log(matchedNodes, flattedData)
+
+    if (data.length === 0) return null
+
     return (
       <div
         ref={useMergeRefs(ref, cascaderRef)}
@@ -121,32 +123,24 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
         }}
         {...rest}
       >
-        <Input ref={setTargetElRef} suffix={defaultSuffixIcon} />
-        {data && menuVisible ? (
-          <div ref={popperElRef} style={{ ...styles.popper, zIndex: 2 }} {...attributes.popper}>
-            <div ref={setArrowElmRef} style={styles.arrow} />
-            <div className={`${prefixCls}-modal`}>
-              <Input
-                appearance="underline"
-                prefix={<SearchOutlined />}
-                value={inputProps.value}
-                onChange={inputProps.onChange}
-              />
+        <Input
+          appearance="underline"
+          prefix={<SearchOutlined />}
+          value={inputProps.value}
+          onChange={inputProps.onChange}
+        />
 
-              {isSearch ? (
-                <CascaderSearch data={matchedNodes} onCheck={onItemSelect} />
-              ) : (
-                <CascaderMenus data={flattedData} value={value} onChange={tryChangeValue} />
-              )}
-            </div>
-          </div>
-        ) : null}
+        {isSearch ? (
+          <CascaderSearch data={matchedNodes} onCheck={onItemSelect} />
+        ) : (
+          <CascaderMenus data={flattedData} value={value} onChange={tryChangeValue} />
+        )}
       </div>
     )
   }
 )
 
-export interface CascaderProps {
+export interface CascaderEmbedProps {
   /**
    * 组件默认的选择器类
    */
@@ -243,5 +237,5 @@ export interface CascaderProps {
 }
 
 if (__DEV__) {
-  Cascader.displayName = 'Cascader'
+  CascaderEmbed.displayName = 'CascaderEmbed'
 }
