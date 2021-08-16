@@ -1,10 +1,10 @@
+import React from 'react'
 import {
   CheckCascaderItem,
   FlattedCheckCascaderItem,
   FlattedCheckCascaderItemWithChildren,
   NodeRoot,
 } from '../types'
-import React from 'react'
 
 export const debounce = <T extends (...args: any[]) => void>(func?: T, delay = 150) => {
   let timer = 0
@@ -108,36 +108,45 @@ export const getNodeAncestors = (node: FlattedCheckCascaderItem) => {
   return ancestors
 }
 
-export const getActiveMenus = (
-  data: FlattedCheckCascaderItem[],
-  selectedIds: React.ReactText[]
-) => {
-  const menu: FlattedCheckCascaderItem[][] = []
-
+export const getActiveMenus = (data: FlattedCheckCascaderItem[], selectedIds?: React.ReactText) => {
   if (data.length === 0) return []
 
-  // 从 value 中 找到指定的 options（逐层查找）
-  const dig = (data: FlattedCheckCascaderItem[], depth: number) => {
-    menu.push(data)
+  const root = data[0].parent
+  let menu: FlattedCheckCascaderItem[][] = [root!.children]
 
-    for (let i = 0; i < data.length; i++) {
-      const node = data[i]
-      // 找到下一级
-      if (selectedIds[depth] === node.id) {
-        if (node.children) {
-          dig(node.children, depth + 1)
-        }
-        break
-      }
-    }
+  if (typeof selectedIds === 'undefined') return menu
+
+  let selectedOption = data.find(({ id }) => selectedIds === id)
+  if (!selectedOption) return menu
+
+  if (selectedOption.children) {
+    menu = [selectedOption.children]
+  } else {
+    menu = []
   }
 
-  const root = data[0].parent
-  dig(root!.children, 0)
+  while (selectedOption.parent) {
+    menu.push(selectedOption.parent.children)
+    selectedOption = selectedOption?.parent
+  }
 
-  return menu
+  return menu.reverse()
 }
 
 export const getFlattedMenus = (data: FlattedCheckCascaderItem[]) => {
   return [data.filter(({ checkable }) => checkable)]
+}
+
+export const getActiveMenuIds = (
+  data: FlattedCheckCascaderItem[],
+  selectedIds?: React.ReactText
+) => {
+  if (data.length === 0) return []
+
+  const selectedOption = data.find(({ id }) => selectedIds === id)
+  if (!selectedOption) return []
+
+  return getNodeAncestors(selectedOption)
+    .map(({ id }) => id)
+    .reverse()
 }

@@ -14,6 +14,7 @@ export const CheckCascaderMenu = ({
   role = _role,
   className,
   data: menu,
+  selectedId,
   selectedIds,
   checkedIds,
 }: CheckCascaderMenuProps) => {
@@ -31,29 +32,28 @@ export const CheckCascaderMenu = ({
     (option: FlattedCheckCascaderItem) => {
       // 如果 titleRender 返回 `true`，则使用默认 title
       const title = titleRender ? titleRender(option) : true
+
       if (title !== true) {
         return title
       }
 
-      console.log('getNodeAncestors', getNodeAncestors(option))
-
       return flatted ? (
-        <span className={cx(`${prefixCls}-title`, `${prefixCls}-title__cols`)}>
+        <span className={cx(`title__text`, `title__text--cols`)}>
           {getNodeAncestors(option)
             .reverse()
             .map((item, index) => {
               return (
-                <span className={`${prefixCls}-title__col`} key={item.id}>
+                <span className={`title__text--col`} key={item.id}>
                   {item.title}
                 </span>
               )
             })}
         </span>
       ) : (
-        <span className={`${prefixCls}-title`}>{option.title}</span>
+        <span className={`title__text`}>{option.title}</span>
       )
     },
-    [titleRender, flatted, prefixCls]
+    [titleRender, flatted]
   )
 
   const isCheckableMenu = menu.some(({ checkable }) => checkable)
@@ -62,10 +62,10 @@ export const CheckCascaderMenu = ({
   return (
     <ul className={cls} role={role}>
       {menu.map((option) => {
-        const selected = selectedIds.indexOf(option.id) !== -1
+        const selected = (flatted ? selectedId : selectedIds[option.depth]) === option.id
         const checked = checkedIds.indexOf(option.id) !== -1
         const loading = false
-        console.log(checked)
+        // console.log(checked)
 
         const optionCls = cx(
           `${prefixCls}-option`,
@@ -79,6 +79,8 @@ export const CheckCascaderMenu = ({
             <div
               className={optionCls}
               onClick={(evt) => {
+                // console.log(option, selectedId)
+
                 onSelect(option)
                 if (changeOnSelect) {
                   onCheck?.(option, !checked, evt)
@@ -128,6 +130,7 @@ export interface CheckCascaderMenuProps {
    * 设置选择项数据源
    */
   data: FlattedCheckCascaderItem[]
+  selectedId: React.ReactText
   selectedIds: React.ReactText[]
   checkedIds: React.ReactText[]
 

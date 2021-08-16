@@ -1,0 +1,55 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$tag-input-prefix: '#{$component-prefix}-tag-input' !default;
+
+.#{$tag-input-prefix} {
+  &__value {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    display: inline-flex;
+    width: 100%;
+    padding-left: 11px;
+    padding-right: 27px;
+    box-sizing: border-box;
+    align-items: center;
+
+    .#{$component-prefix}-input__suffix  {
+      font-size: 16px;
+    }
+  }
+
+  &__tags {
+    flex: 0 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  &__tag {
+    display: inline-block;
+    margin-right: 4px;
+    box-sizing: border-box;
+    padding: 0 8px;
+    vertical-align: middle;
+    font-size: 12px;
+    line-height: 22px;
+    user-select: none;
+    background: #F2F2F2;
+    border-radius: 4px;
+
+    &-content {
+      margin-right: $spacer-2;
+    }
+
+    &-close {
+    }
+
+    &--left {
+
+    }
+  }
+}
+

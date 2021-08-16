@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { ExpandTrigger, FlattedCheckCascaderItem } from './types'
 import { CheckCascaderMenu } from './CheckCascaderMenu'
 import { CheckCascaderProvider } from './context'
-import { getActiveMenus, getFlattedMenus } from './utils/index'
+import { getActiveMenus, getFlattedMenus, getActiveMenuIds } from './utils/index'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
 const _role = 'check-cascader-menus'
@@ -45,25 +45,22 @@ export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenu
       valueProp,
       onChange
     )
-    const [selectedIds, setSelectedIds] = useState<React.ReactText[]>([])
+    const [selectedId, setSelectedId] = useState<React.ReactText>()
 
     const onOptionSelect = useCallback((option: FlattedCheckCascaderItem) => {
-      setSelectedIds((prev) => {
-        const nextSelectedIds = prev.slice(0, option.depth)
-        nextSelectedIds.push(option.id)
-        return nextSelectedIds
-      })
+      // setSelectedId((prev) => {
+      //   const nextSelectedId = prev.slice(0, option.depth)
+      //   nextSelectedId.push(option.id)
+      //   return nextSelectedId
+      // })
+      setSelectedId(option.id)
     }, [])
 
     const onOptionCheck = useCallback(
       (option: FlattedCheckCascaderItem, shouldSelected: boolean) => {
         if (!option.checkable) return
 
-        console.log(312)
-
         let nextCheckedIds = checkedIds
-
-        console.log(option, shouldSelected)
 
         if (shouldSelected) {
           if (nextCheckedIds.indexOf(option.id) === -1) {
@@ -87,11 +84,14 @@ export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenu
         onSelect: onOptionSelect,
         flatted,
         changeOnSelect,
+        titleRender,
       }),
-      [changeOnSelect, expandTrigger, onOptionCheck, onOptionSelect, flatted]
+      [changeOnSelect, expandTrigger, onOptionCheck, onOptionSelect, flatted, titleRender]
     )
 
-    const menus = flatted ? getFlattedMenus(data) : getActiveMenus(data, selectedIds)
+    const menus = flatted ? getFlattedMenus(data) : getActiveMenus(data, selectedId)
+    // flatted check
+    const selectedIds = getActiveMenuIds(data, selectedId)
 
     const cls = cx(
       prefixCls,
@@ -108,9 +108,10 @@ export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenu
               <CheckCascaderMenu
                 key={menuIndex}
                 data={menu}
+                flatted={flatted}
+                selectedId={selectedId}
                 selectedIds={selectedIds}
                 checkedIds={checkedIds}
-                titleRender={titleRender}
               />
             )
           })}
@@ -156,7 +157,7 @@ export interface CascaderMenusProps {
   /**
    * 选项被点击时的回调
    */
-  onSelect?: (selectedIds: React.ReactText[], item: FlattedCheckCascaderItem) => void
+  onSelect?: (selectedId: React.ReactText[], item: FlattedCheckCascaderItem) => void
   /**
    * 次级菜单的展开方式
    */

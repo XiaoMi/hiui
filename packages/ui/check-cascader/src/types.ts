@@ -59,6 +59,19 @@ export interface FlattedCheckCascaderItem extends Required<Omit<CheckCascaderIte
   ancestors?: FlattedCheckCascaderItemWithChildren[]
 }
 
+export interface CheckCascaderItemRequiredProps {
+  expanded: boolean
+  checked: boolean
+  semiChecked: boolean
+  selected: boolean
+  loading: boolean
+  focused: boolean
+}
+
+export interface CheckCascaderItemEventData
+  extends FlattedCheckCascaderItem,
+    CheckCascaderItemRequiredProps {}
+
 export type ExpandTrigger = 'click' | 'hover'
 
 export interface NodeRoot<T> {

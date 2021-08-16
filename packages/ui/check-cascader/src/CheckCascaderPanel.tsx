@@ -1,10 +1,10 @@
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef, useMemo, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { CheckCascaderItem, ExpandTrigger, FlattedCheckCascaderItem } from './types'
 import Input from '@hi-ui/input'
 import { useSearch } from './hooks'
-import { flattenTreeData } from './utils'
+import { flattenTreeData, getNodeAncestors } from './utils'
 import { SearchOutlined } from '@hi-ui/icons'
 import { CheckCascaderMenus } from './CheckCascaderMenus'
 
@@ -47,23 +47,82 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
 
     const cls = cx(prefixCls, className)
 
+    const renderTitleWithSearch = useCallback(
+      (option: FlattedCheckCascaderItem) => {
+        // 如果 titleRender 返回 `true`，则使用默认 title
+        const title = titleRender ? titleRender(option) : true
+
+        if (title !== true) {
+          return title
+        }
+        console.log('inSearch', inSearch)
+
+        if (!inSearch) return true
+
+        const searchValue = inputProps.value
+
+        if (typeof option.title !== 'string') {
+          return null
+        }
+
+        let found = false
+
+        return (
+          <span className={cx(`title__text`, `title__text--cols`)}>
+            {getNodeAncestors(option)
+              .map((item) => {
+                if (typeof item.title !== 'string') {
+                  return null
+                }
+
+                if (found) {
+                  return (
+                    <span className={`title__text--col`} key={item.id}>
+                      {item.title}
+                    </span>
+                  )
+                }
+
+                const index = item.title.indexOf(searchValue)
+                if (index === -1) return null
+                found = true
+
+                const beforeStr = item.title.substr(0, index)
+                const afterStr = item.title.substr(index + searchValue.length)
+
+                console.log(index, beforeStr, afterStr)
+
+                return (
+                  <span className={`title__text--col`} key={item.id}>
+                    {beforeStr}
+                    <span className="title__text--matched" style={{ color: 'red' }}>
+                      {searchValue}
+                    </span>
+                    {afterStr}
+                  </span>
+                )
+              })
+              .reverse()}
+          </span>
+        )
+      },
+      [titleRender, inSearch, inputProps.value]
+    )
+
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
         {searchable ? (
-          <>
+          <div className={`${prefixCls}-search`}>
             <Input
-              className={`${prefixCls}__search`}
               appearance="underline"
               prefix={<SearchOutlined />}
               value={inputProps.value}
               onChange={inputProps.onChange}
             />
-            {isEmpty ? <span className={`${prefixCls}__empty`}>{emptyContent}</span> : null}
-          </>
+            {isEmpty ? <span className={`${prefixCls}-search__empty`}>{emptyContent}</span> : null}
+          </div>
         ) : null}
         <CheckCascaderMenus
-          data={inSearch ? matchedNodes : flattedData}
-          flatted={flatted || inSearch}
           {...{
             value,
             defaultValue,
@@ -76,8 +135,10 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
             displayRender,
             onChange,
             onSelect,
-            titleRender,
           }}
+          data={inSearch ? matchedNodes : flattedData}
+          flatted={flatted || inSearch}
+          titleRender={renderTitleWithSearch}
         />
       </div>
     )
@@ -116,7 +177,7 @@ export interface CheckCascaderPanelProps {
   /**
    * 多选值改变时的回调
    */
-  onChange?: (values: React.ReactText[]) => void
+  onChange?: (values: React.ReactText[], checkedOptions: CheckCascaderItem[]) => void
   /**
    * 选项被点击时的回调
    */

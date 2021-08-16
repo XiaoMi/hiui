@@ -72,6 +72,8 @@ export const Basic = () => {
       <h1>Basic</h1>
       <div className="cascader-basic__wrap">
         <CheckCascader
+          searchable={false}
+          placeholder="请选择品类"
           defaultValue={['手机', '红米', '红米4']}
           data={dataOnlyLastCheckable}
         ></CheckCascader>
