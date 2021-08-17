@@ -3,6 +3,26 @@ import CheckCascader from '../src'
 
 const data = [
   {
+    id: 'up-1',
+    title: 'up',
+    children: [
+      {
+        id: 'up-1-0',
+        title: '小米',
+        children: [
+          {
+            id: 'up-1-0-0',
+            title: 'leaf',
+          },
+        ],
+      },
+      {
+        id: 'up-1-1',
+        title: '1-1',
+      },
+    ],
+  },
+  {
     id: '0',
     title: '0',
     children: [
@@ -203,7 +223,16 @@ export const Search = () => {
     <>
       <h1>Search</h1>
       <div className="cascader-search__wrap">
-        <CheckCascader data={dataOnlyLastCheckable} />
+        <CheckCascader
+          placeholder="请选择品类"
+          searchPlaceholder="请输入搜索内容"
+          data={dataOnlyLastCheckable}
+        />
+      </div>
+
+      <h1>Search with UpMatch</h1>
+      <div className="cascader-search__wrap">
+        <CheckCascader upMatch data={dataOnlyLastCheckable} />
       </div>
     </>
   )

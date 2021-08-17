@@ -6,10 +6,10 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { usePopper } from 'react-popper'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
+import { DownOutlined } from '@hi-ui/icons'
 import { CheckCascaderPanel } from './CheckCascaderPanel'
-import { defaultSuffixIcon } from './icons'
-import { CheckCascaderItem, ExpandTrigger, FlattedCheckCascaderItem } from './types'
 import { TagInput } from './TagInput'
+import { CheckCascaderItem, ExpandTrigger, CheckCascaderItemEventData } from './types'
 
 const _role = 'check-cascader'
 const _prefix = getPrefixCls(_role)
@@ -27,17 +27,35 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       defaultValue = NOOP_ARRAY,
       value: valueProp,
       onChange,
+      data,
       placeholder,
+      clearable,
+      onSelect,
+      expandTrigger,
+      searchable,
+      disabled,
+      emptyContent,
+      changeOnSelect,
+      titleRender,
+      displayRender,
+      checkCascaded,
+      flatted,
+      upMatch,
+      searchPlaceholder,
+      onLoadChildren,
       ...rest
     },
     ref
   ) => {
+    const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
+
     const [menuVisible, menuVisibleAction] = useToggle()
 
     const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
     const popperElRef = useRef<HTMLDivElement | null>(null)
     const [arrowElRef, setArrowElmRef] = useState<HTMLElement | null>(null)
     const cascaderRef = useRef<HTMLDivElement | null>(null)
+
     useOutsideClick(cascaderRef, menuVisibleAction.off)
 
     const { styles, attributes } = usePopper(targetElRef, popperElRef.current, {
@@ -60,26 +78,26 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       ],
     })
 
-    const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
-
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
     return (
-      <div
-        ref={useMergeRefs(ref, cascaderRef)}
-        role={role}
-        className={cls}
-        onClick={(evt) => {
-          evt.stopPropagation()
-          menuVisibleAction.on()
-        }}
-      >
+      <div ref={useMergeRefs(ref, cascaderRef)} role={role} className={cls} {...rest}>
+        {/* TODO: 更新 value 为对象 */}
         <TagInput
           ref={setTargetElRef}
-          placeholder={placeholder}
           value={value}
           onChange={tryChangeValue}
-          suffix={defaultSuffixIcon}
+          disabled={disabled}
+          data={data}
+          clearable={clearable}
+          placeholder={placeholder}
+          suffix={<DownOutlined className={`${prefixCls}__suffix`} />}
+          onClick={(evt) => {
+            if (disabled) return
+
+            evt.stopPropagation()
+            menuVisibleAction.on()
+          }}
         />
 
         {menuVisible ? (
@@ -90,7 +108,27 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             {...attributes.popper}
           >
             <div ref={setArrowElmRef} style={styles.arrow} />
-            <CheckCascaderPanel value={value} onChange={tryChangeValue} {...rest} />
+            <CheckCascaderPanel
+              value={value}
+              onChange={tryChangeValue}
+              // 向下传递
+              {...{
+                data,
+                onSelect,
+                expandTrigger,
+                searchable,
+                disabled,
+                emptyContent,
+                changeOnSelect,
+                titleRender,
+                displayRender,
+                checkCascaded,
+                flatted,
+                upMatch,
+                placeholder: searchPlaceholder,
+                onLoadChildren,
+              }}
+            />
           </div>
         ) : null}
       </div>
@@ -130,29 +168,29 @@ export interface CheckCascaderProps {
   /**
    * 多选值改变时的回调
    */
-  onChange?: (values: React.ReactText[]) => void
+  onChange?: (
+    values: React.ReactText[],
+    checkedOption: CheckCascaderItemEventData,
+    checked: boolean
+  ) => void
   /**
    * 选项被点击时的回调
    */
-  onSelect?: (selectedIds: React.ReactText[], item: CheckCascaderItem) => void
+  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderItemEventData) => void
   /**
    * 次级菜单的展开方式
    */
   expandTrigger?: ExpandTrigger
   /**
-   * 是否可搜索
+   * 是否可搜索（仅在 title 为字符串时支持）
    */
   searchable?: boolean
   /**
-   * 是否有边框	boolean	true | false	true
-   */
-  appearance?: 'outlined'
-  /**
-   * 是否可清空	boolean	true | false	true
+   * 是否可清空
    */
   clearable?: boolean
   /**
-   * 是否禁止使用	boolean	true | false	false
+   * 是否禁止使用
    */
   disabled?: boolean
   /**
@@ -166,11 +204,14 @@ export interface CheckCascaderProps {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: FlattedCheckCascaderItem) => React.ReactNode
+  titleRender?: (item: CheckCascaderItemEventData) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容
    */
-  displayRender?: (value: React.ReactText[][]) => React.ReactNode
+  displayRender?: (
+    checkedIds: React.ReactText[],
+    checkedOptions: CheckCascaderItemEventData[]
+  ) => React.ReactNode
   /**
    * 支持 checkbox 级联（正反选）功能
    */
@@ -180,13 +221,21 @@ export interface CheckCascaderProps {
    */
   flatted?: boolean
   /**
-   * 开启全量搜索，默认只对开启 checkable 的选项进行搜索
+   * 开启全量搜索，默认只对开启 checkable 的选项进行搜索，不向上查找路径
    */
-  fullMatch?: boolean
+  upMatch?: boolean
   /**
-   * 输入框占位符
+   * 触发器输入框占位符
    */
   placeholder?: string
+  /**
+   * 搜索输入框占位符
+   */
+  searchPlaceholder?: string
+  /**
+   * 异步请求更新数据
+   */
+  onLoadChildren?: (item: CheckCascaderItemEventData) => Promise<CheckCascaderItem[] | void> | void
 }
 
 if (__DEV__) {

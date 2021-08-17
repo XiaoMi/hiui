@@ -1,11 +1,18 @@
-import React, { forwardRef, useCallback, useMemo, useState } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { ExpandTrigger, FlattedCheckCascaderItem } from './types'
+import {
+  ExpandTrigger,
+  CheckCascaderItemEventData,
+  FlattedCheckCascaderItem,
+  CheckCascaderItem,
+  CheckCascaderItemRequiredProps,
+} from './types'
+import { useLatestCallback } from '@hi-ui/use-latest'
 import { CheckCascaderMenu } from './CheckCascaderMenu'
 import { CheckCascaderProvider } from './context'
-import { getActiveMenus, getFlattedMenus, getActiveMenuIds } from './utils/index'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { getActiveMenus, getFlattedMenus, getActiveMenuIds } from './utils'
+import { useCheck, useSelect, useAsyncSwitch } from './hooks'
 
 const _role = 'check-cascader-menus'
 const _prefix = getPrefixCls(_role)
@@ -23,14 +30,15 @@ export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenu
       className,
       children,
       data,
+      flattedData,
+      onChangeData,
       value: valueProp,
       defaultValue = NOOP_ARRAY,
       disabled = false,
       expandTrigger = 'click',
       changeOnSelect = true,
       checkCascaded = false,
-      clearable = false,
-      emptyContent,
+      onLoadChildren,
       displayRender,
       onChange,
       onSelect,
@@ -40,58 +48,49 @@ export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenu
     },
     ref
   ) => {
-    const [checkedIds, tryChangeCheckedIds] = useUncontrolledState(
-      defaultValue,
-      valueProp,
-      onChange
-    )
-    const [selectedId, setSelectedId] = useState<React.ReactText>()
+    const [selectedId, onOptionSelect] = useSelect(disabled)
+    const selectedIds = getActiveMenuIds(flattedData, selectedId)
 
-    const onOptionSelect = useCallback((option: FlattedCheckCascaderItem) => {
-      // setSelectedId((prev) => {
-      //   const nextSelectedId = prev.slice(0, option.depth)
-      //   nextSelectedId.push(option.id)
-      //   return nextSelectedId
-      // })
-      setSelectedId(option.id)
-    }, [])
+    const [isLoadingId, onItemExpand] = useAsyncSwitch(onChangeData, onOptionSelect, onLoadChildren)
 
-    const onOptionCheck = useCallback(
-      (option: FlattedCheckCascaderItem, shouldSelected: boolean) => {
-        if (!option.checkable) return
+    const [checkedIds, onOptionCheck] = useCheck(defaultValue, valueProp, onChange)
 
-        let nextCheckedIds = checkedIds
-
-        if (shouldSelected) {
-          if (nextCheckedIds.indexOf(option.id) === -1) {
-            nextCheckedIds = nextCheckedIds.concat(option.id)
-          }
-        } else {
-          nextCheckedIds = nextCheckedIds.filter((item) => item !== option.id)
+    const getCascaderItemRequiredProps = useLatestCallback(
+      ({ id, depth }: FlattedCheckCascaderItem): CheckCascaderItemRequiredProps => {
+        return {
+          selected: flatted ? selectedId === id : selectedIds[depth] === id,
+          checked: checkedIds.indexOf(id) !== -1,
+          loading: isLoadingId(id),
+          semiChecked: false,
+          focused: false,
         }
-
-        console.log('nextCheckedIds', nextCheckedIds)
-
-        tryChangeCheckedIds(nextCheckedIds)
-      },
-      [checkedIds, tryChangeCheckedIds]
+      }
     )
 
     const providedValue = useMemo(
       () => ({
         expandTrigger,
         onCheck: onOptionCheck,
-        onSelect: onOptionSelect,
+        onSelect: onItemExpand,
         flatted,
         changeOnSelect,
         titleRender,
+        onLoadChildren,
+        disabled,
       }),
-      [changeOnSelect, expandTrigger, onOptionCheck, onOptionSelect, flatted, titleRender]
+      [
+        changeOnSelect,
+        expandTrigger,
+        onOptionCheck,
+        onItemExpand,
+        flatted,
+        titleRender,
+        onLoadChildren,
+        disabled,
+      ]
     )
 
-    const menus = flatted ? getFlattedMenus(data) : getActiveMenus(data, selectedId)
-    // flatted check
-    const selectedIds = getActiveMenuIds(data, selectedId)
+    const menus = flatted ? getFlattedMenus(flattedData) : getActiveMenus(flattedData, selectedId)
 
     const cls = cx(
       prefixCls,
@@ -104,16 +103,13 @@ export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenu
       <CheckCascaderProvider value={providedValue}>
         <div ref={ref} role={role} className={cls} {...rest}>
           {menus.map((menu, menuIndex) => {
-            return (
+            return menu.length > 0 ? (
               <CheckCascaderMenu
                 key={menuIndex}
                 data={menu}
-                flatted={flatted}
-                selectedId={selectedId}
-                selectedIds={selectedIds}
-                checkedIds={checkedIds}
+                getCascaderItemRequiredProps={getCascaderItemRequiredProps}
               />
-            )
+            ) : null
           })}
         </div>
       </CheckCascaderProvider>
@@ -141,7 +137,15 @@ export interface CascaderMenusProps {
   /**
    * 设置选择项数据源
    */
-  data: FlattedCheckCascaderItem[]
+  data: CheckCascaderItem[]
+  /**
+   * 更新选择项数据源
+   */
+  onChangeData: React.Dispatch<React.SetStateAction<CheckCascaderItem[]>>
+  /**
+   * 设置选择项数据源
+   */
+  flattedData: FlattedCheckCascaderItem[]
   /**
    * 设置当前多选值
    */
@@ -153,27 +157,23 @@ export interface CascaderMenusProps {
   /**
    * 多选值改变时的回调
    */
-  onChange?: (values: React.ReactText[]) => void
+  onChange?: (
+    values: React.ReactText[],
+    checkedOption: CheckCascaderItemEventData,
+    checked: boolean
+  ) => void
   /**
    * 选项被点击时的回调
    */
-  onSelect?: (selectedId: React.ReactText[], item: FlattedCheckCascaderItem) => void
+  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderItemEventData) => void
   /**
    * 次级菜单的展开方式
    */
   expandTrigger?: ExpandTrigger
   /**
-   * 是否可清空	boolean	true | false	true
-   */
-  clearable?: boolean
-  /**
-   * 是否禁止使用	boolean	true | false	false
+   * 是否禁止使用
    */
   disabled?: boolean
-  /**
-   * 设置选项为空时展示的内容
-   */
-  emptyContent?: React.ReactNode
   /**
    * 是否启用选择即改变功能
    */
@@ -181,16 +181,24 @@ export interface CascaderMenusProps {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: FlattedCheckCascaderItem) => React.ReactNode
+  titleRender?: (item: CheckCascaderItemEventData) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容
    */
-  displayRender?: (value: React.ReactText[][]) => React.ReactNode
+  displayRender?: (
+    checkedIds: React.ReactText[],
+    checkedOptions: CheckCascaderItemEventData[]
+  ) => React.ReactNode
   /**
    * 支持 checkbox 级联（正反选）功能
    */
   checkCascaded?: boolean
+  /**
+   * 将 check 子项拍平展示
+   */
   flatted?: boolean
+
+  onLoadChildren?: (item: CheckCascaderItemEventData) => Promise<CheckCascaderItem[] | void> | void
 }
 
 if (__DEV__) {

@@ -42,6 +42,10 @@ export interface FlattedCheckCascaderItem extends Required<Omit<CheckCascaderIte
    */
   children?: FlattedCheckCascaderItem[]
   /**
+   * 该节点的所有祖先节点列表
+   */
+  ancestors?: FlattedCheckCascaderItemWithChildren[]
+  /**
    * 关联用户传入的原始节点
    */
   raw: CheckCascaderItem
@@ -53,17 +57,12 @@ export interface FlattedCheckCascaderItem extends Required<Omit<CheckCascaderIte
    * 该节点的父节点
    */
   parent: FlattedCheckCascaderItemWithChildren
-  /**
-   * 该节点的所有祖先节点列表
-   */
-  ancestors?: FlattedCheckCascaderItemWithChildren[]
 }
 
 export interface CheckCascaderItemRequiredProps {
-  expanded: boolean
+  selected: boolean
   checked: boolean
   semiChecked: boolean
-  selected: boolean
   loading: boolean
   focused: boolean
 }

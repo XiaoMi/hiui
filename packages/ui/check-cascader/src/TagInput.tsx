@@ -1,10 +1,14 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useRef, useCallback, useState, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useTagInput } from './hooks/use-tag-input'
 import { times } from '@hi-ui/times'
 import { CloseCircleFilled } from '@hi-ui/icons'
+import { useMergeRefs } from '@hi-ui/use-merge-refs'
+import { CloseOutlined } from '../../../icons/src/components/close-outlined'
+import { CheckCascaderItem } from './types'
+import { flattenTreeData } from './utils'
 
 const _role = 'tag-input'
 const _prefix = getPrefixCls(_role)
@@ -23,6 +27,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
       value: valueProp,
       onChange,
       placeholder,
+      data,
       wrap = false,
       clearable = false,
       disabled = false,
@@ -31,42 +36,75 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
     },
     ref
   ) => {
+    const flattedData = useMemo(() => flattenTreeData(data), [data])
+
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
-    const tagSelector = `${prefixCls}__tag`
 
-    const [showCount] = useTagInput(tagSelector, value)
+    const tagSelector = `.${prefixCls}__tag`
+    const tagInputRef = useRef<HTMLDivElement>(null)
+    const [tagMaxWidth, showTagCount, leftCount] = useTagInput(tagSelector, value, tagInputRef)
 
-    const showTagCount = showCount === 0 ? value.length : showCount
-    const leftCount = value.length - showTagCount
+    const handleClear = useCallback(() => {
+      tryChangeValue(NOOP_ARRAY)
+    }, [tryChangeValue])
 
-    const handleClear = () => {
-      tryChangeValue([])
+    const [hover, setHover] = useState(false)
+    const trySetHover = (hovered: boolean) => {
+      if (disabled) return
+      setHover(hovered)
     }
-
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
-    const showClearableIcon = clearable && !!value && value.length > 0 && !disabled
+    const showClearableIcon = clearable && value.length > 0 && !disabled
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, disabled && 'disabled')
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        {value.length === 0 ? (
+      <div
+        ref={useMergeRefs(ref, tagInputRef)}
+        role={role}
+        className={cls}
+        onMouseOver={(e) => {
+          trySetHover(true)
+        }}
+        onMouseLeave={(e) => {
+          trySetHover(false)
+        }}
+        {...rest}
+      >
+        {value.length !== 0 ? (
           <span className={`${prefixCls}__value`}>
             <span className={cx(`${prefixCls}__tags`, wrap && `${prefixCls}__tags--all`)}>
               {times(showTagCount, (index) => {
-                const title = value[index]
-                return (
-                  <span className={`${prefixCls}__tag`} key={title}>
-                    <span className={`${prefixCls}__tag-content`}>{title}</span>
-                    <span className={`${prefixCls}__tag-close`}>x</span>
+                const id = value[index]
+                const option = flattedData.find((item) => item.id === id)
+
+                return option ? (
+                  <span
+                    className={`${prefixCls}__tag`}
+                    key={option.id}
+                    style={{ maxWidth: tagMaxWidth }}
+                  >
+                    <span
+                      className={`${prefixCls}__tag-content`}
+                      style={{ maxWidth: `calc(${tagMaxWidth} - 20px)` }}
+                    >
+                      {option.title}
+                    </span>
+                    <span
+                      className={`${prefixCls}__tag-closed`}
+                      onClick={() => {
+                        const nextValue = [...value].filter((id) => id !== option.id)
+                        tryChangeValue(nextValue, option, false)
+                      }}
+                    >
+                      <CloseOutlined />
+                    </span>
                   </span>
-                )
+                ) : null
               })}
             </span>
             {leftCount > 0 ? (
-              <span
-                className={cx(`${prefixCls}__tag`, `${prefixCls}__tag--left`)}
-              >{`+${leftCount}`}</span>
+              <span className={cx(`${prefixCls}__tag--left`)}>{`+${leftCount}`}</span>
             ) : null}
           </span>
         ) : (
@@ -74,7 +112,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
         )}
         {suffix || showClearableIcon ? (
           <span className={`${prefixCls}__suffix`}>
-            {showClearableIcon ? (
+            {showClearableIcon && hover ? (
               <span
                 className={`${prefixCls}__clear`}
                 role="button"
@@ -155,6 +193,7 @@ export interface TagInputProps {
    */
   suffix?: React.ReactNode
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
+  data: CheckCascaderItem[]
 }
 
 if (__DEV__) {

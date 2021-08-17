@@ -1,9 +1,9 @@
 import React, { forwardRef, useMemo, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { CheckCascaderItem, ExpandTrigger, FlattedCheckCascaderItem } from './types'
+import { CheckCascaderItem, ExpandTrigger, CheckCascaderItemEventData } from './types'
 import Input from '@hi-ui/input'
-import { useSearch } from './hooks'
+import { useCache, useSearch } from './hooks'
 import { flattenTreeData, getNodeAncestors } from './utils'
 import { SearchOutlined } from '@hi-ui/icons'
 import { CheckCascaderMenus } from './CheckCascaderMenus'
@@ -31,73 +31,66 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
       changeOnSelect = false,
       checkCascaded = false,
       searchable = true,
-      clearable = false,
       flatted = false,
+      upMatch = false,
       emptyContent = '无匹配选项',
+      placeholder,
       displayRender,
       onChange,
       onSelect,
       titleRender,
+      onLoadChildren,
       ...rest
     },
     ref
   ) => {
-    const flattedData = useMemo(() => flattenTreeData(data), [data])
-    const [inSearch, matchedNodes, inputProps, isEmpty] = useSearch(flattedData)
+    const [cascaderData, setCascaderData] = useCache(data)
 
-    const cls = cx(prefixCls, className)
+    const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
+
+    const [inSearch, matchedNodes, inputProps, isEmpty] = useSearch(flattedData, upMatch)
 
     const renderTitleWithSearch = useCallback(
-      (option: FlattedCheckCascaderItem) => {
+      (option: CheckCascaderItemEventData) => {
         // 如果 titleRender 返回 `true`，则使用默认 title
         const title = titleRender ? titleRender(option) : true
 
         if (title !== true) {
           return title
         }
-        console.log('inSearch', inSearch)
 
         if (!inSearch) return true
+        if (typeof option.title !== 'string') return true
 
         const searchValue = inputProps.value
-
-        if (typeof option.title !== 'string') {
-          return null
-        }
-
         let found = false
 
         return (
           <span className={cx(`title__text`, `title__text--cols`)}>
             {getNodeAncestors(option)
               .map((item) => {
-                if (typeof item.title !== 'string') {
-                  return null
-                }
+                const { title, id } = item
+                const raw = (
+                  <span className="title__text--col" key={id}>
+                    {title}
+                  </span>
+                )
 
-                if (found) {
-                  return (
-                    <span className={`title__text--col`} key={item.id}>
-                      {item.title}
-                    </span>
-                  )
-                }
+                if (typeof title !== 'string') return raw
+                if (found) return raw
 
-                const index = item.title.indexOf(searchValue)
-                if (index === -1) return null
+                const index = title.indexOf(searchValue)
+                if (index === -1) return raw
+
                 found = true
 
-                const beforeStr = item.title.substr(0, index)
-                const afterStr = item.title.substr(index + searchValue.length)
-
-                console.log(index, beforeStr, afterStr)
+                const beforeStr = title.substr(0, index)
+                const afterStr = title.substr(index + searchValue.length)
 
                 return (
-                  <span className={`title__text--col`} key={item.id}>
+                  <span className={`title__text--col`} key={id}>
                     {beforeStr}
-                    <span className="title__text--matched" style={{ color: 'red' }}>
-                      {searchValue}
-                    </span>
+                    <span className="title__text--matched">{searchValue}</span>
                     {afterStr}
                   </span>
                 )
@@ -109,12 +102,15 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
       [titleRender, inSearch, inputProps.value]
     )
 
+    const cls = cx(prefixCls, className)
+
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
         {searchable ? (
           <div className={`${prefixCls}-search`}>
             <Input
               appearance="underline"
+              placeholder={placeholder}
               prefix={<SearchOutlined />}
               value={inputProps.value}
               onChange={inputProps.onChange}
@@ -124,21 +120,22 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
         ) : null}
         <CheckCascaderMenus
           {...{
+            disabled,
             value,
             defaultValue,
-            disabled,
+            onChange,
             expandTrigger,
             changeOnSelect,
             checkCascaded,
-            clearable,
-            emptyContent,
             displayRender,
-            onChange,
             onSelect,
+            onLoadChildren,
           }}
-          data={inSearch ? matchedNodes : flattedData}
-          flatted={flatted || inSearch}
+          data={cascaderData}
+          onChangeData={setCascaderData}
           titleRender={renderTitleWithSearch}
+          flatted={flatted || inSearch}
+          flattedData={inSearch ? matchedNodes : flattedData}
         />
       </div>
     )
@@ -177,11 +174,15 @@ export interface CheckCascaderPanelProps {
   /**
    * 多选值改变时的回调
    */
-  onChange?: (values: React.ReactText[], checkedOptions: CheckCascaderItem[]) => void
+  onChange?: (
+    values: React.ReactText[],
+    checkedOption: CheckCascaderItemEventData,
+    checked: boolean
+  ) => void
   /**
    * 选项被点击时的回调
    */
-  onSelect?: (selectedIds: React.ReactText[], item: CheckCascaderItem) => void
+  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderItemEventData) => void
   /**
    * 次级菜单的展开方式
    */
@@ -191,15 +192,7 @@ export interface CheckCascaderPanelProps {
    */
   searchable?: boolean
   /**
-   * 是否有边框	boolean	true | false	true
-   */
-  appearance?: 'outlined'
-  /**
-   * 是否可清空	boolean	true | false	true
-   */
-  clearable?: boolean
-  /**
-   * 是否禁止使用	boolean	true | false	false
+   * 是否禁止使用
    */
   disabled?: boolean
   /**
@@ -213,11 +206,14 @@ export interface CheckCascaderPanelProps {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: FlattedCheckCascaderItem) => React.ReactNode
+  titleRender?: (item: CheckCascaderItemEventData) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容
    */
-  displayRender?: (value: React.ReactText[][]) => React.ReactNode
+  displayRender?: (
+    checkedIds: React.ReactText[],
+    checkedOptions: CheckCascaderItemEventData[]
+  ) => React.ReactNode
   /**
    * 支持 checkbox 级联（正反选）功能
    */
@@ -227,9 +223,17 @@ export interface CheckCascaderPanelProps {
    */
   flatted?: boolean
   /**
-   * 开启全量搜索，默认只对开启 checkable 的选项进行搜索
+   * 开启全量搜索，默认只对开启 checkable 的选项进行搜索，不向上查找路径
    */
-  fullMatch?: boolean
+  upMatch?: boolean
+  /**
+   * 搜索输入框占位符
+   */
+  placeholder?: string
+  /**
+   * 异步请求更新数据
+   */
+  onLoadChildren?: (item: CheckCascaderItemEventData) => Promise<CheckCascaderItem[] | void> | void
 }
 
 if (__DEV__) {

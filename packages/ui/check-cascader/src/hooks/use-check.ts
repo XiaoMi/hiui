@@ -4,8 +4,12 @@ import { CheckCascaderItemEventData } from '../types'
 
 export const useCheck = (
   defaultValue: React.ReactText[],
-  value: React.ReactText[],
-  onChange: (value: React.ReactText[], checkedOptions: CheckCascaderItemEventData) => void
+  value?: React.ReactText[],
+  onChange?: (
+    values: React.ReactText[],
+    checkedOption: CheckCascaderItemEventData,
+    checked: boolean
+  ) => void
 ) => {
   const [checkedIds, tryChangeCheckedIds] = useUncontrolledState(defaultValue, value, onChange)
 

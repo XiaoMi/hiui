@@ -1,10 +1,15 @@
 import React, { useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { FlattedCheckCascaderItem } from './types'
+import {
+  FlattedCheckCascaderItem,
+  CheckCascaderItemEventData,
+  CheckCascaderItemRequiredProps,
+  CheckCascaderItem,
+} from './types'
 import { defaultLeafIcon, defaultLoadingIcon, defaultSuffixIcon } from './icons'
 import Checkbox from '@hi-ui/checkbox'
 import { useCheckCascaderContext } from './context'
-import { getNodeAncestors } from './utils'
+import { getCascaderItemEventData, getNodeAncestors } from './utils'
 
 const _role = 'check-cascader-menu'
 const _prefix = getPrefixCls(_role)
@@ -14,22 +19,21 @@ export const CheckCascaderMenu = ({
   role = _role,
   className,
   data: menu,
-  selectedId,
-  selectedIds,
-  checkedIds,
+  getCascaderItemRequiredProps,
 }: CheckCascaderMenuProps) => {
   const {
     flatted = false,
     changeOnSelect = false,
     disabled,
     onLoadChildren,
+    expandTrigger,
     onCheck,
     onSelect,
     titleRender,
   } = useCheckCascaderContext()
 
   const renderTitle = useCallback(
-    (option: FlattedCheckCascaderItem) => {
+    (option: CheckCascaderItemEventData) => {
       // 如果 titleRender 返回 `true`，则使用默认 title
       const title = titleRender ? titleRender(option) : true
 
@@ -62,10 +66,8 @@ export const CheckCascaderMenu = ({
   return (
     <ul className={cls} role={role}>
       {menu.map((option) => {
-        const selected = (flatted ? selectedId : selectedIds[option.depth]) === option.id
-        const checked = checkedIds.indexOf(option.id) !== -1
-        const loading = false
-        // console.log(checked)
+        const eventOption = getCascaderItemEventData(option, getCascaderItemRequiredProps(option))
+        const { selected, checked, loading } = eventOption
 
         const optionCls = cx(
           `${prefixCls}-option`,
@@ -79,11 +81,16 @@ export const CheckCascaderMenu = ({
             <div
               className={optionCls}
               onClick={(evt) => {
-                // console.log(option, selectedId)
+                console.log('eventOption', eventOption)
 
-                onSelect(option)
+                onSelect?.(eventOption)
                 if (changeOnSelect) {
-                  onCheck?.(option, !checked, evt)
+                  onCheck?.(eventOption, !checked)
+                }
+              }}
+              onMouseEnter={(evt) => {
+                if (expandTrigger === 'hover') {
+                  onSelect?.(eventOption)
                 }
               }}
             >
@@ -94,13 +101,13 @@ export const CheckCascaderMenu = ({
                   disabled={disabled}
                   onClick={(evt) => evt.stopPropagation()}
                   onChange={(evt) => {
-                    onCheck?.(option, !checked, evt)
-                    onSelect(option)
+                    onCheck?.(eventOption, !checked)
+                    onSelect?.(eventOption)
                   }}
                 />
               ) : null}
-              {renderTitle(option)}
-              {renderSuffix(prefixCls, option, loading, onLoadChildren)}
+              {renderTitle(eventOption)}
+              {flatted ? null : renderSuffix(prefixCls, option, loading, onLoadChildren)}
             </div>
           </li>
         )
@@ -130,14 +137,14 @@ export interface CheckCascaderMenuProps {
    * 设置选择项数据源
    */
   data: FlattedCheckCascaderItem[]
-  selectedId: React.ReactText
-  selectedIds: React.ReactText[]
-  checkedIds: React.ReactText[]
-
   /**
    * 自定义渲染节点的 title 内容
    */
   titleRender?: (item: FlattedCheckCascaderItem) => React.ReactNode
+  /**
+   * 获取级联选项必要状态
+   */
+  getCascaderItemRequiredProps: (option: FlattedCheckCascaderItem) => CheckCascaderItemRequiredProps
 }
 
 /**
@@ -147,7 +154,7 @@ const renderSuffix = (
   prefixCls: string,
   node: FlattedCheckCascaderItem,
   loading: boolean,
-  onLoadChildren?: (node: FlattedCheckCascaderItem) => Promise<any>
+  onLoadChildren?: (item: CheckCascaderItemEventData) => Promise<CheckCascaderItem[] | void> | void
 ) => {
   if (loading) {
     return (

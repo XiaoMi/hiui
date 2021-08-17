@@ -5,68 +5,19 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
 .#{$prefix} {
   color: #333;
-  // color: var(--color-gray-80);
 
-  &-selector {
-    display: inline-flex;
-    position: relative;
-    box-sizing:  border-box;
-    width: 100%;
-
-    .#{$component-prefix}-input__suffix  {
-      font-size: 16px;
-    }
+  &__suffix {
+    font-size: 16px;
+    transform: rotate(0);
   }
 
-  &-selection {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1;
-    display: inline-flex;
-    width: 100%;
-    padding-left: 11px;
-    padding-right: 27px;
-    box-sizing: border-box;
-    align-items: center;
-
-    &-list {
-      flex: 0 1 auto;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      display: inline-block;
+  &--open {
+    .#{$prefix}__suffix {
+      transform: rotate(-180deg);
     }
 
-    &-count,
-    &-item {
-      display: inline-block;
-      margin-right: 4px;
-      box-sizing: border-box;
-      padding: 0 8px;
-      vertical-align: middle;
-      font-size: 12px;
-      line-height: 22px;
-      user-select: none;
-      background: #F2F2F2;
-      border-radius: 4px;
-
-      &__content {
-        margin-right: $spacer-2;
-      }
-
-      &__close {
-      }
-    }
-
-    &-count {
-      // background-color: use-color('primary-60');
-      // border-radius: 100%;
-      // color: #fff;
-      // width: 22px;
-      // height: 22px;
-      // line-height: 22px;
-      margin: 0;
+    .#{$component-prefix}-tag-input {
+      border-color: var(--color-primary);
     }
   }
 
@@ -103,7 +54,11 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     &__empty {
       position: absolute;
       display: inline-block;
-      margin-top: 10px;
+      margin-top: 20px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #999;
+      line-height: 20px;
     }
   }
 }
@@ -233,12 +188,29 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
         }
       }
     }
+
+    &--matched {
+      color: use-color('primary');
+    }
   }
 
   &-switcher {
     flex-shrink: 0;
     font-size: 16px;
     color: #666;
+
+    svg {
+      width: 1em;
+      height: 1em;
+      fill: currentColor;
+      stroke: currentColor;
+      display: inline-block;
+      vertical-align: -0.15em;
+    }
+
+    &--loading {
+      color: var(--color-primary);
+    }
   }
 }
 

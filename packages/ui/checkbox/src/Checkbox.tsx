@@ -121,6 +121,7 @@ export interface CheckboxProps {
   // TODO: 约定所有表单组件兼容 number | string
   value?: React.ReactText
   onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void
+  onClick?: (evt: React.MouseEvent<HTMLLabelElement>) => void
 }
 
 if (__DEV__) {
