@@ -54,15 +54,15 @@ export const Dynamic = () => {
           data[0].id = Math.random()
         }
 
-        // setTreeData((prev) => {
-        //   const nextData = cloneDeep(prev)
-        //   const loadNode = findNode(node.id, nextData)
-        //   loadNode.children = data
-        //   console.log(loadNode, nextData)
-        //   return nextData
-        // })
+        setTreeData((prev) => {
+          const nextData = cloneDeep(prev)
+          const loadNode = findNode(node.id, nextData)
+          loadNode.children = data
+          console.log(loadNode, nextData)
+          return nextData
+        })
 
-        return data
+        // return data
       })
   }
 

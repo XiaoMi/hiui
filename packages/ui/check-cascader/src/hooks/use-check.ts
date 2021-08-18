@@ -15,7 +15,7 @@ export const useCheck = (
 
   const onOptionCheck = useCallback(
     (option: CheckCascaderItemEventData, shouldChecked: boolean) => {
-      if (!option.checkable) return
+      if (!option.checkable || option.disabledCheckbox) return
 
       let nextCheckedIds = checkedIds
 

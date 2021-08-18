@@ -4,33 +4,33 @@ import CheckCascader from '../src'
 const data = [
   {
     id: '手机',
-    title: '手机',
+    title: '手机t',
     children: [
       {
         id: '小米',
-        title: '小米',
+        title: '小米t',
         children: [
           {
             id: '小米3',
-            title: '小米3',
+            title: '小米3t',
           },
           {
             id: '小米4',
-            title: '小米4',
+            title: '小米4t',
           },
         ],
       },
       {
         id: '红米',
-        title: '红米',
+        title: '红米t',
         children: [
           {
             id: '红米3',
-            title: '红米3',
+            title: '红米3t',
           },
           {
             id: '红米4',
-            title: '红米4',
+            title: '红米4t',
           },
         ],
       },
@@ -38,15 +38,16 @@ const data = [
   },
   {
     id: '电视',
-    title: '电视',
+    title: '电视t',
     children: [
       {
         id: '小米电视4A',
-        title: '小米电视4A',
+        title: '小米电视4At',
+        disabledCheckbox: true,
       },
       {
         id: '小米电视4C',
-        title: '小米电视4C',
+        title: '小米电视4Ct',
       },
     ],
   },

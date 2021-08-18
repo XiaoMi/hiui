@@ -98,7 +98,7 @@ export const CheckCascaderMenu = ({
                 <Checkbox
                   className={`${prefixCls}-checkbox`}
                   checked={checked}
-                  disabled={disabled}
+                  disabled={disabled || option.disabledCheckbox}
                   onClick={(evt) => evt.stopPropagation()}
                   onChange={(evt) => {
                     onCheck?.(eventOption, !checked)

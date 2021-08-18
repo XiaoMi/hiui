@@ -7,10 +7,10 @@ export const defaultLeafIcon = <span style={{ display: 'inline-block', width: 16
 
 export const defaultLoadingIcon = (
   <svg
+    className="hi-v4-tree--icon-loading"
     viewBox="0 0 16 16"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
-    className="hi-v4-tree--icon-loading"
   >
     <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g transform="translate(-365.000000, -6110.000000)" fill="currentColor" fillRule="nonzero">

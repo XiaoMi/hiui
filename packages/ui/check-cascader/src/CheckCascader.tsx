@@ -82,13 +82,12 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     return (
       <div ref={useMergeRefs(ref, cascaderRef)} role={role} className={cls} {...rest}>
-        {/* TODO: 更新 value 为对象 */}
         <TagInput
           ref={setTargetElRef}
+          data={data}
           value={value}
           onChange={tryChangeValue}
           disabled={disabled}
-          data={data}
           clearable={clearable}
           placeholder={placeholder}
           suffix={<DownOutlined className={`${prefixCls}__suffix`} />}

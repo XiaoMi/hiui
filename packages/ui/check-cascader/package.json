@@ -43,9 +43,21 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.0-alpha.0",
+    "@hi-ui/checkbox": "^4.0.0-alpha.1",
+    "@hi-ui/classname": "^4.0.0-alpha.1",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
-    "@hi-ui/env": "^4.0.0-alpha.0"
+    "@hi-ui/env": "^4.0.0-alpha.1",
+    "@hi-ui/icons": "^4.0.0-alpha.3",
+    "@hi-ui/input": "^4.0.0-alpha.3",
+    "@hi-ui/times": "^4.0.0-alpha.1",
+    "@hi-ui/use-deep-equal-deps": "^4.0.0-alpha.1",
+    "@hi-ui/use-latest": "^4.0.0-alpha.1",
+    "@hi-ui/use-merge-refs": "^4.0.0-alpha.1",
+    "@hi-ui/use-outside-click": "^4.0.0-alpha.1",
+    "@hi-ui/use-toggle": "^4.0.0-alpha.1",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.1",
+    "@popperjs/core": "^2.9.3",
+    "react-popper": "^2.2.5"
   },
   "peerDependencies": {
     "react": "^17.0.1",

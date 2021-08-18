@@ -2,13 +2,12 @@ import React, { forwardRef, useRef, useCallback, useState, useMemo } from 'react
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { useTagInput } from './hooks/use-tag-input'
 import { times } from '@hi-ui/times'
-import { CloseCircleFilled } from '@hi-ui/icons'
+import { CloseCircleFilled, CloseOutlined } from '@hi-ui/icons'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
-import { CloseOutlined } from '../../../icons/src/components/close-outlined'
-import { CheckCascaderItem } from './types'
+import { useTagInput } from './hooks'
 import { flattenTreeData } from './utils'
+import { CheckCascaderItem } from './types'
 
 const _role = 'tag-input'
 const _prefix = getPrefixCls(_role)
@@ -78,7 +77,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
                 const id = value[index]
                 const option = flattedData.find((item) => item.id === id)
 
-                return option ? (
+                return option && option.checkable ? (
                   <span
                     className={`${prefixCls}__tag`}
                     key={option.id}
