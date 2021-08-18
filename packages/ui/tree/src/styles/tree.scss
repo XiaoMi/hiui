@@ -63,7 +63,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     outline: 0;
 
     &:hover {
-      background-color: use-color('primary-20');
+      background-color: use-color('primary-10');
     }
 
     &.dragging {
@@ -159,7 +159,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &--focused {
     #{$this}__wrap {
-      background-color: use-color('primary-20');
+      background-color: use-color('primary-10');
     }
 
     #{$this}__title {

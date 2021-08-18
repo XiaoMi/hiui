@@ -87,7 +87,7 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
           tabIndex={focusable ? 0 : -1}
         />
         <span className={iconCls} />
-        <span className={`${prefixCls}__text`}>{children}</span>
+        {children ? <span className={`${prefixCls}__text`}>{children}</span> : null}
       </label>
     )
   }
@@ -121,6 +121,7 @@ export interface CheckboxProps {
   // TODO: 约定所有表单组件兼容 number | string
   value?: React.ReactText
   onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void
+  onClick?: (evt: React.MouseEvent<HTMLLabelElement>) => void
 }
 
 if (__DEV__) {

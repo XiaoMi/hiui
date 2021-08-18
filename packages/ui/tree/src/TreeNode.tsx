@@ -368,6 +368,7 @@ const renderCheckbox = (
       checked={checked}
       disabled={disabled}
       focusable={false}
+      onClick={(evt) => evt.stopPropagation()}
       onChange={() => {
         onCheck?.(node, !checked)
       }}
