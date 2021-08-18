@@ -57,6 +57,7 @@ const Cascader = (props) => {
   const [filterOptions, setFilterOptions] = useState(false)
   // 缓存原始value，用户可能点击option但是没选中，用于恢复初始value
   const [cacheValue, setCacheValue] = useState(value || defaultValue || [])
+  // 选中态 value
   const [cascaderValue, setCascaderValue] = useState(value || defaultValue || [])
   const [cascaderLabel, setCascaderLabel] = useState(
     getCascaderLabel(value || defaultValue || [], fieldNames, displayRender, data)
@@ -73,14 +74,14 @@ const Cascader = (props) => {
 
   // 每次值被改变重置缓存值、重置label 展示
   useEffect(() => {
-    if (value !== undefined) {
+    if (value !== undefined && !_.isEqual(value, cacheValue)) {
       setCacheValue(value)
     }
   }, [value])
   useEffect(() => {
     setFocusOptionIndex(-1)
     currentDeep.current = 0
-    if (onOpen) {
+    if (onOpen && popperShow) {
       const dataSource = onOpen()
       if (dataSource && dataSource.toString() === '[object Promise]') {
         dataSource.then((res) => {
