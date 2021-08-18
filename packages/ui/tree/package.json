@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tree",
-  "version": "4.0.0-alpha.3",
+  "version": "4.0.0-alpha.4",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,7 +43,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/checkbox": "^4.0.0-alpha.1",
+    "@hi-ui/checkbox": "^4.0.0-alpha.3",
     "@hi-ui/classname": "^4.0.0-alpha.1",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
     "@hi-ui/env": "^4.0.0-alpha.1",
