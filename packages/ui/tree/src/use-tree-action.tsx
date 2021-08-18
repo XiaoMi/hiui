@@ -305,7 +305,7 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
   )
 
   return (
-    <div ref={containerRef}>
+    <div className={`${prefixCls}-actions`} ref={containerRef}>
       <IconButton
         tabIndex={-1}
         className={`${prefixCls}-action__btn`}

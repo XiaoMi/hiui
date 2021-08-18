@@ -58,6 +58,19 @@ $prefix: '#{$component-prefix}-tree' !default;
         }
       }
     }
+
+    .#{$prefix}-actions {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s;
+    }
+
+    .#{$prefix}-node:hover {
+      .#{$prefix}-actions {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
   }
 
   // &-modal {

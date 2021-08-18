@@ -52,6 +52,7 @@ export const Dynamic = () => {
       .then((data) => {
         if (data[0]) {
           data[0].id = Math.random()
+          data[0].parent = treeData
         }
 
         setTreeData((prev) => {

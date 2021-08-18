@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useDeepEqualDeps as useDeep } from '@hi-ui/use-deep-equal-deps'
 
 /**
  * 一个缓存数据的 hook
@@ -12,7 +11,7 @@ export const useCache = <T>(data: T) => {
 
   useEffect(() => {
     setInternalData(data)
-  }, [useDeep(data)])
+  }, [data])
 
   return [internalData, setInternalData] as const
 }
