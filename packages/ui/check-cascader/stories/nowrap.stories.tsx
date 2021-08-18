@@ -61,7 +61,7 @@ export const Nowrap = () => {
         <CheckCascader
           searchable
           clearable
-          // style={{ width: 400 }}
+          wrap={false}
           placeholder="请选择品类"
           defaultValue={[
             '手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本',

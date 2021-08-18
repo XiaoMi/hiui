@@ -125,5 +125,20 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
       // margin-top: 1.5px;
     }
   }
+
+  &--wrap {
+    .#{$tag-input-prefix}__value {
+      height: auto;
+    }
+
+    .#{$tag-input-prefix}__tags {
+      white-space: normal;
+      margin-top: -4px;
+    }
+
+    .#{$tag-input-prefix}__tag {
+      margin-top: 4px;
+    }
+  }
 }
 

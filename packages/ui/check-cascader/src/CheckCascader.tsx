@@ -43,6 +43,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       upMatch,
       searchPlaceholder,
       onLoadChildren,
+      wrap,
       ...rest
     },
     ref
@@ -90,6 +91,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
           disabled={disabled}
           clearable={clearable}
           placeholder={placeholder}
+          wrap={wrap}
           suffix={<DownOutlined className={`${prefixCls}__suffix`} />}
           onClick={(evt) => {
             if (disabled) return
@@ -235,6 +237,10 @@ export interface CheckCascaderProps {
    * 异步请求更新数据
    */
   onLoadChildren?: (item: CheckCascaderItemEventData) => Promise<CheckCascaderItem[] | void> | void
+  /**
+   * 是否单行展示，超出 +1
+   */
+  wrap?: boolean
 }
 
 if (__DEV__) {

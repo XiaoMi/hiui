@@ -27,7 +27,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
       onChange,
       placeholder,
       data,
-      wrap = false,
+      wrap = true,
       clearable = false,
       disabled = false,
       suffix,
@@ -39,13 +39,24 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
 
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
+    const showData = useMemo(
+      () => flattedData.filter((item) => item && item.checkable && value.indexOf(item.id) !== -1),
+      [flattedData, value]
+    )
+
     const tagSelector = `.${prefixCls}__tag`
     const tagInputRef = useRef<HTMLDivElement>(null)
-    const [tagMaxWidth, showTagCount, leftCount] = useTagInput(tagSelector, value, tagInputRef)
+    const [tagMaxWidth, showTagCount, leftCount] = useTagInput(
+      wrap,
+      tagSelector,
+      showData,
+      tagInputRef
+    )
 
     const handleClear = useCallback(() => {
+      if (disabled) return
       tryChangeValue(NOOP_ARRAY)
-    }, [tryChangeValue])
+    }, [tryChangeValue, disabled])
 
     const [hover, setHover] = useState(false)
     const trySetHover = (hovered: boolean) => {
@@ -55,7 +66,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
     const showClearableIcon = clearable && value.length > 0 && !disabled
 
-    const cls = cx(prefixCls, className, disabled && 'disabled')
+    const cls = cx(prefixCls, className, disabled && 'disabled', wrap && `${prefixCls}--wrap`)
 
     return (
       <div
@@ -74,10 +85,9 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
           <span className={`${prefixCls}__value`}>
             <span className={cx(`${prefixCls}__tags`, wrap && `${prefixCls}__tags--all`)}>
               {times(showTagCount, (index) => {
-                const id = value[index]
-                const option = flattedData.find((item) => item.id === id)
+                const option = showData[index]
 
-                return option && option.checkable ? (
+                return (
                   <span
                     className={`${prefixCls}__tag`}
                     key={option.id}
@@ -92,6 +102,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
                     <span
                       className={`${prefixCls}__tag-closed`}
                       onClick={() => {
+                        if (disabled) return
                         const nextValue = [...value].filter((id) => id !== option.id)
                         tryChangeValue(nextValue, option, false)
                       }}
@@ -99,7 +110,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
                       <CloseOutlined />
                     </span>
                   </span>
-                ) : null
+                )
               })}
             </span>
             {leftCount > 0 ? (
