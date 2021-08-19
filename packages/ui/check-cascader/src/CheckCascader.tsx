@@ -128,7 +128,6 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
                 emptyContent,
                 changeOnSelect,
                 titleRender,
-                displayRender,
                 checkCascaded,
                 flatted,
                 upMatch,

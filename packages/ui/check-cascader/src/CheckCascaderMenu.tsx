@@ -24,7 +24,7 @@ export const CheckCascaderMenu = ({
   const {
     flatted = false,
     changeOnSelect = false,
-    disabled = false,
+    disabled: disabledContext = false,
     onLoadChildren,
     expandTrigger,
     onCheck,
@@ -68,13 +68,14 @@ export const CheckCascaderMenu = ({
       {menu.map((option) => {
         const eventOption = getCascaderItemEventData(option, getCascaderItemRequiredProps(option))
         const { selected, checked, loading } = eventOption
+        const disabled = disabledContext || option.disabled
 
         const optionCls = cx(
           `${prefixCls}-option`,
           option.checkable && checked && `${prefixCls}-option--checked`,
           selected && `${prefixCls}-option--selected`,
           loading && `${prefixCls}-option--loading`,
-          option.disabled && `${prefixCls}-option--disabled`
+          disabled && `${prefixCls}-option--disabled`
         )
 
         return (
@@ -82,7 +83,7 @@ export const CheckCascaderMenu = ({
             <div
               className={optionCls}
               onClick={(evt) => {
-                console.log('eventOption', eventOption)
+                if (disabled) return
 
                 onSelect?.(eventOption)
                 if (changeOnSelect) {
@@ -99,7 +100,7 @@ export const CheckCascaderMenu = ({
                 <Checkbox
                   className={`${prefixCls}-checkbox`}
                   checked={checked}
-                  disabled={disabled || option.disabled || option.disabledCheckbox}
+                  disabled={disabled || option.disabledCheckbox}
                   onClick={(evt) => evt.stopPropagation()}
                   onChange={(evt) => {
                     onCheck?.(eventOption, !checked)
