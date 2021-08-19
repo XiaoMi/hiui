@@ -2,6 +2,8 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table, { LegacyTable } from '../../../components/table'
 import Watermark from '../../../components/watermark'
+import Input from '../../../components/input'
+import Button from '../../../components/button'
 import Icon from '../../../components/icon'
 const prefix = 'table-filter'
 const desc = ['自定义筛选']
@@ -112,6 +114,7 @@ const code = [
     code: `import React from 'react'
     import Table from '@hi-ui/hiui/es/table'\n
     import Icon from '@hi-ui/hiui/es/icon'\n
+    import Button from '@hi-ui/hiui/es/button'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -123,16 +126,40 @@ const code = [
             filterDropdownClassName: 'table-customefilter',
             filterIcon: <Icon name="search" />,
             filterDropdown: ({columnData, setFilterDropdownVisible}) => {
-              console.log(columnData)
+              let keyWork = ''
               return (
-                <span onClick={() => setFilterDropdownVisible(false)}>弹出层</span>
+                <div >
+                <Input placeholder="请输入关键字" onChange={(e)=>{
+                  keyWork = e.target.value
+                }}/>
+                <div style={{marginTop: '8px'}}>
+                  <Button onClick={() => {
+                    this.filterData(keyWork, 'name')
+                    setFilterDropdownVisible(false)
+                  }} type="primary" size="small">确定</Button>
+                  <Button onClick={() => setFilterDropdownVisible(false)} size="small">取消</Button>
+                </div>
+                </div>
               )
             }
           },
           {
             title: '品类',
             dataKey: 'type',
-            width: 150
+            width: 150,
+            filterIcon: <Icon name="search" />,
+            filterDropdown: ({columnData, setFilterDropdownVisible}) => {
+              console.log(columnData)
+              return (
+                <div >
+                <Input placeholder="请输入关键字" />
+                <div style={{marginTop: '8px'}}>
+                  <Button onClick={() => setFilterDropdownVisible(false)} type="primary" size="small">确定</Button>
+                  <Button onClick={() => setFilterDropdownVisible(false)} size="small">取消</Button>
+                </div>
+                </div>
+              )
+            }
           },
           {
             title: '规格',
@@ -169,57 +196,65 @@ const code = [
 
           }
         ]
-
-        this.data = [
-          {
-            name: '小米9',
-            type: '手机',
-            size: '6G+64G 全息幻彩蓝',
-            price: '3299.00',
-            address: '华润五彩城店',
-            stock: '29,000',
-            key: 1
-          },
-          {
-            name: '小米9 SE',
-            type: '手机',
-            size: '6G+64G 全息幻彩蓝',
-            price: '1999.00',
-            address: '清河店',
-            stock: '10,000',
-            key: 2
-          },
-          {
-            name: '小米8',
-            type: '手机',
-            size: '6G+64G 全息幻彩蓝',
-            price: '2599.00',
-            address: '双安店',
-            stock: '12,000',
-            key: 3
-          },
-          {
-            name: 'Redmi Note7',
-            type: '手机',
-            size: '6G+64G 全息幻彩蓝',
-            price: '999.00',
-            address: '华润五彩城店',
-            stock: '140,000',
-            key: 4
-          },
-          {
-            name: '小米8 SE',
-            type: '手机',
-            size: '6G+64G 全息幻彩蓝',
-            price: '699.00',
-            address: '双安店',
-            stock: '12,000',
-            key: 5
-          }
-        ]
+        this.state = {
+          data: [
+            {
+              name: '小米9',
+              type: '手机',
+              size: '6G+64G 全息幻彩蓝',
+              price: '3299.00',
+              address: '华润五彩城店',
+              stock: '29,000',
+              key: 1
+            },
+            {
+              name: '小米9 SE',
+              type: '手机',
+              size: '6G+64G 全息幻彩蓝',
+              price: '1999.00',
+              address: '清河店',
+              stock: '10,000',
+              key: 2
+            },
+            {
+              name: '小米8',
+              type: '手机',
+              size: '6G+64G 全息幻彩蓝',
+              price: '2599.00',
+              address: '双安店',
+              stock: '12,000',
+              key: 3
+            },
+            {
+              name: 'Redmi Note7',
+              type: '手机',
+              size: '6G+64G 全息幻彩蓝',
+              price: '999.00',
+              address: '华润五彩城店',
+              stock: '140,000',
+              key: 4
+            },
+            {
+              name: '小米8 SE',
+              type: '手机',
+              size: '6G+64G 全息幻彩蓝',
+              price: '699.00',
+              address: '双安店',
+              stock: '12,000',
+              key: 5
+            }
+          ]
+        }
+      }
+      filterData(keyWord, label) {
+        this.setState({
+          data: this.state.data.filter(item=>{
+            return item[label].includes(keyWord)
+          })
+        })
       }
       render() {
-        return <Table columns={this.columns}  data={this.data}/>
+        return <Table columns={this.columns}  data={this.state.data}/>
       }
     }`,
     opt: ['自定义筛选']
@@ -229,7 +264,7 @@ const code = [
 const DemoBase = () => (
   <DocViewer
     code={code}
-    scope={{ Table, Watermark, LegacyTable, Icon }}
+    scope={{ Table, Watermark, LegacyTable, Icon, Input, Button }}
     prefix={prefix}
     rightOptions={rightOptions}
     desc={desc}
