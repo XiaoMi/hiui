@@ -30,4 +30,27 @@ $table: 'hi-table-advanceheader' !default;
       }
     }
   }
+
+  &-customfilter {
+    &-icon {
+      cursor: pointer;
+
+      &:hover {
+        color: use-color('primary');
+      }
+    }
+
+    &-content {
+      width: 150px;
+      padding: 12px 8px;
+      color: use-color('black');
+      overflow-x: hidden;
+      overflow-y: auto;
+      background-color: use-color('white');
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+      border-radius: 2px;
+      box-sizing: border-box;
+      text-align: left;
+    }
+  }
 }

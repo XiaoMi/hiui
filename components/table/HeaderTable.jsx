@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState, useEffect, useLayoutEffect } from 'react'
+import React, { useRef, useContext, useState, useEffect, useLayoutEffect } from 'react'
 import { Resizable } from 'react-resizable'
 import _ from 'lodash'
 import classnames from 'classnames'
@@ -45,6 +45,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
   const [groupedColumns, setGroupedColumns] = useState([])
   const [columnsgroup, setColumnsGroup] = useState([])
   const isStickyHeader = useRef(false)
+
   // 隐藏滚动条
   const headerInner = useRef(null)
   const theadRef = useRef()
@@ -193,7 +194,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
               </th>
             )
           } else {
-            const { rightStickyWidth, leftStickyWidth, dataKey, align, colSpan, rowSpan, title, isLast, sorter } = c
+            const { rightStickyWidth, leftStickyWidth, dataKey, align, colSpan, rowSpan, title, isLast } = c
             const isSticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
 
             const isRowActive = highlightedColKeys.includes(dataKey) || highlightColumns.includes(dataKey)
@@ -221,7 +222,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
                   {showColMenu && isLast && (
                     <ColumnMenu columnKey={dataKey} canSort={hasSorterColumn.includes(dataKey)} isSticky={isSticky} />
                   )}
-                  {!showColMenu && sorter && <AdvanceHeader columnKey={dataKey} />}
+                  {<AdvanceHeader showColMenu={showColMenu} columnData={c} />}
                 </div>
               </th>
             )
