@@ -24,7 +24,7 @@ export const CheckCascaderMenu = ({
   const {
     flatted = false,
     changeOnSelect = false,
-    disabled,
+    disabled = false,
     onLoadChildren,
     expandTrigger,
     onCheck,
@@ -73,7 +73,8 @@ export const CheckCascaderMenu = ({
           `${prefixCls}-option`,
           option.checkable && checked && `${prefixCls}-option--checked`,
           selected && `${prefixCls}-option--selected`,
-          loading && `${prefixCls}-option--loading`
+          loading && `${prefixCls}-option--loading`,
+          option.disabled && `${prefixCls}-option--disabled`
         )
 
         return (
@@ -98,7 +99,7 @@ export const CheckCascaderMenu = ({
                 <Checkbox
                   className={`${prefixCls}-checkbox`}
                   checked={checked}
-                  disabled={disabled || option.disabledCheckbox}
+                  disabled={disabled || option.disabled || option.disabledCheckbox}
                   onClick={(evt) => evt.stopPropagation()}
                   onChange={(evt) => {
                     onCheck?.(eventOption, !checked)

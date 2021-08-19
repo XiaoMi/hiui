@@ -1,5 +1,5 @@
 import React from 'react'
-import { CheckCascader } from '../src'
+import CheckCascader from '../src'
 
 const data = [
   {
@@ -43,6 +43,7 @@ const data = [
         id: '0-2',
         title: '0-2',
         checkable: true,
+        disabled: true,
         children: [
           {
             id: '0-2-0',
@@ -51,6 +52,55 @@ const data = [
           {
             id: '0-2-1',
             title: '0-2-1',
+          },
+        ],
+      },
+      {
+        id: '0-3',
+        title: '0-3',
+        children: [
+          {
+            id: '0-3-0',
+            title: '0-3-0',
+          },
+          {
+            id: '0-3-1',
+            title: '0-3-1',
+          },
+          {
+            id: '0-3-2',
+            title: '0-3-2',
+          },
+        ],
+      },
+      {
+        id: '0-4',
+        title: '0-4',
+        checkable: true,
+        disabledCheckbox: true,
+        children: [
+          {
+            id: '0-4-0',
+            title: '0-4-0',
+          },
+          {
+            id: '0-4-1',
+            title: '0-4-1',
+          },
+        ],
+      },
+      {
+        id: '0-5',
+        title: '0-5',
+        checkable: true,
+        children: [
+          {
+            id: '0-5-0',
+            title: '0-5-0',
+          },
+          {
+            id: '0-5-1',
+            title: '0-5-1',
           },
         ],
       },
@@ -63,24 +113,11 @@ const data = [
       {
         id: '1-0',
         title: '1-0',
+        disabledCheckbox: true,
       },
       {
         id: '1-1',
         title: '1-1',
-      },
-    ],
-  },
-  {
-    id: '2',
-    title: '2',
-    children: [
-      {
-        id: '2-0',
-        title: '2-0',
-      },
-      {
-        id: '2-1',
-        title: '2-1',
       },
     ],
   },
@@ -100,14 +137,18 @@ const getDataOnlyLastCheckable = (data: any) => {
 }
 
 const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
-console.log(dataOnlyLastCheckable)
 
-export const Flatted = () => {
+export const SelectChange = () => {
   return (
     <>
-      <h1>Flatted</h1>
-      <div className="cascader-flatted__wrap">
-        <CheckCascader flatted data={dataOnlyLastCheckable} />
+      <h1>SelectChange</h1>
+      <div className="cascader-select-change__wrap">
+        <CheckCascader
+          placeholder="请选择品类"
+          changeOnSelect
+          searchPlaceholder="请输入搜索内容"
+          data={dataOnlyLastCheckable}
+        />
       </div>
     </>
   )

@@ -52,7 +52,6 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     }
 
     &__empty {
-      position: absolute;
       display: inline-block;
       margin-top: 20px;
       font-size: 14px;
@@ -162,8 +161,17 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     &--checked {
       font-weight: 700;
     }
-  }
 
+    &--disabled {
+      cursor: not-allowed;
+      color: var(--color-gray-50);
+      font-weight: 400;
+
+      .#{$prefix}-menu-switcher {
+        color: var(--color-gray-50);
+      }
+    }
+  }
 
   .title__text {
     flex: 1;

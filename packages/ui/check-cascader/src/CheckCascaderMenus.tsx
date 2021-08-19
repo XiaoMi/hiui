@@ -39,7 +39,6 @@ export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenu
       changeOnSelect = true,
       checkCascaded = false,
       onLoadChildren,
-      displayRender,
       onChange,
       onSelect,
       titleRender,
@@ -182,13 +181,6 @@ export interface CascaderMenusProps {
    * 自定义渲染节点的 title 内容
    */
   titleRender?: (item: CheckCascaderItemEventData) => React.ReactNode
-  /**
-   * 自定义选择后触发器所展示的内容
-   */
-  displayRender?: (
-    checkedIds: React.ReactText[],
-    checkedOptions: CheckCascaderItemEventData[]
-  ) => React.ReactNode
   /**
    * 支持 checkbox 级联（正反选）功能
    */

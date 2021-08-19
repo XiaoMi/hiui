@@ -7,7 +7,7 @@ import { CloseCircleFilled, CloseOutlined } from '@hi-ui/icons'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useTagInput } from './hooks'
 import { flattenTreeData } from './utils'
-import { CheckCascaderItem } from './types'
+import { CheckCascaderItem, FlattedCheckCascaderItem } from './types'
 
 const _role = 'tag-input'
 const _prefix = getPrefixCls(_role)
@@ -30,6 +30,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
       wrap = true,
       clearable = false,
       disabled = false,
+      displayRender,
       suffix,
       ...rest
     },
@@ -53,10 +54,15 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
       tagInputRef
     )
 
-    const handleClear = useCallback(() => {
-      if (disabled) return
-      tryChangeValue(NOOP_ARRAY)
-    }, [tryChangeValue, disabled])
+    const handleClear = useCallback(
+      (evt) => {
+        if (disabled) return
+
+        evt.stopPropagation()
+        tryChangeValue(NOOP_ARRAY)
+      },
+      [tryChangeValue, disabled]
+    )
 
     const [hover, setHover] = useState(false)
     const trySetHover = (hovered: boolean) => {
@@ -86,6 +92,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
             <span className={cx(`${prefixCls}__tags`, wrap && `${prefixCls}__tags--all`)}>
               {times(showTagCount, (index) => {
                 const option = showData[index]
+                const title = displayRender ? displayRender(option) : true
 
                 return (
                   <span
@@ -97,12 +104,14 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
                       className={`${prefixCls}__tag-content`}
                       style={{ maxWidth: `calc(${tagMaxWidth} - 20px)` }}
                     >
-                      {option.title}
+                      {title === true ? option.title : title}
                     </span>
                     <span
                       className={`${prefixCls}__tag-closed`}
-                      onClick={() => {
+                      onClick={(evt) => {
                         if (disabled) return
+
+                        evt.stopPropagation()
                         const nextValue = [...value].filter((id) => id !== option.id)
                         tryChangeValue(nextValue, option, false)
                       }}
@@ -189,7 +198,7 @@ export interface TagInputProps {
   /**
    * 自定义选择后触发器所展示的内容
    */
-  displayRender?: (value: React.ReactText[][]) => React.ReactNode
+  displayRender?: (checkedOption: FlattedCheckCascaderItem) => React.ReactNode
   /**
    * 输入框占位符
    */

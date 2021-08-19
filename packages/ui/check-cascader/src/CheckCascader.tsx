@@ -9,7 +9,12 @@ import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { DownOutlined } from '@hi-ui/icons'
 import { CheckCascaderPanel } from './CheckCascaderPanel'
 import { TagInput } from './TagInput'
-import { CheckCascaderItem, ExpandTrigger, CheckCascaderItemEventData } from './types'
+import {
+  CheckCascaderItem,
+  ExpandTrigger,
+  CheckCascaderItemEventData,
+  FlattedCheckCascaderItem,
+} from './types'
 
 const _role = 'check-cascader'
 const _prefix = getPrefixCls(_role)
@@ -91,6 +96,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
           disabled={disabled}
           clearable={clearable}
           placeholder={placeholder}
+          displayRender={displayRender}
           wrap={wrap}
           suffix={<DownOutlined className={`${prefixCls}__suffix`} />}
           onClick={(evt) => {
@@ -209,10 +215,7 @@ export interface CheckCascaderProps {
   /**
    * 自定义选择后触发器所展示的内容
    */
-  displayRender?: (
-    checkedIds: React.ReactText[],
-    checkedOptions: CheckCascaderItemEventData[]
-  ) => React.ReactNode
+  displayRender?: (checkedOption: FlattedCheckCascaderItem) => React.ReactNode
   /**
    * 支持 checkbox 级联（正反选）功能
    */

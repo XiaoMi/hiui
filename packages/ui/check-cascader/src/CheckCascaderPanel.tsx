@@ -35,7 +35,6 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
       upMatch = false,
       emptyContent = '无匹配选项',
       placeholder,
-      displayRender,
       onChange,
       onSelect,
       titleRender,
@@ -127,7 +126,6 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
             expandTrigger,
             changeOnSelect,
             checkCascaded,
-            displayRender,
             onSelect,
             onLoadChildren,
           }}
@@ -207,13 +205,6 @@ export interface CheckCascaderPanelProps {
    * 自定义渲染节点的 title 内容
    */
   titleRender?: (item: CheckCascaderItemEventData) => React.ReactNode
-  /**
-   * 自定义选择后触发器所展示的内容
-   */
-  displayRender?: (
-    checkedIds: React.ReactText[],
-    checkedOptions: CheckCascaderItemEventData[]
-  ) => React.ReactNode
   /**
    * 支持 checkbox 级联（正反选）功能
    */

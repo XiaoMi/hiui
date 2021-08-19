@@ -43,7 +43,6 @@ const data = [
       {
         id: '小米电视4A',
         title: '小米电视4At',
-        disabledCheckbox: true,
       },
       {
         id: '小米电视4C',
@@ -56,7 +55,7 @@ const data = [
 const getDataOnlyLastCheckable = (data: any) => {
   return data.map((item) => {
     if (item.children) {
-      item.checkable = false
+      item.checkable = item.checkable ?? false
       item.children = getDataOnlyLastCheckable(item.children)
     }
 
@@ -74,17 +73,6 @@ export const Basic = () => {
       <div className="cascader-basic__wrap">
         <CheckCascader
           searchable={false}
-          placeholder="请选择品类"
-          defaultValue={['手机', '红米', '红米4']}
-          data={dataOnlyLastCheckable}
-        ></CheckCascader>
-      </div>
-
-      <h1>Basic for disabled</h1>
-      <div className="cascader-basic__wrap">
-        <CheckCascader
-          searchable={false}
-          disabled
           placeholder="请选择品类"
           defaultValue={['手机', '红米', '红米4']}
           data={dataOnlyLastCheckable}
