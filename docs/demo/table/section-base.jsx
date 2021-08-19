@@ -32,8 +32,11 @@ const code = [
           {
             title: '单价',
             dataKey: 'price',
-            width: 150
-
+            width: 150,
+            sorter: (a, b) => {
+              console.log(a, b)
+              return a - b
+            }
           },
          
           {

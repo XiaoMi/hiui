@@ -51,12 +51,12 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
 
   // **************** 根据排序列处理数据
   let _data = data.concat()
-
+  console.log('activeSorterColumn', activeSorterColumn)
   if (activeSorterColumn) {
     const sorter =
       columns.filter((d) => d.dataKey === activeSorterColumn)[0] &&
       columns.filter((d) => d.dataKey === activeSorterColumn)[0].sorter
-
+    console.log('sorter', sorter)
     if (sorter) {
       _data = activeSorterType === 'ascend' ? [...data].sort(sorter) : [...data].sort(sorter).reverse()
     }

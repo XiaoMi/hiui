@@ -193,17 +193,17 @@ const HeaderTable = ({ rightFixedIndex }) => {
               </th>
             )
           } else {
-            const { rightStickyWidth, leftStickyWidth, dataKey } = c
+            const { rightStickyWidth, leftStickyWidth, dataKey, align, colSpan, rowSpan, title, isLast, sorter } = c
             const isSticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
 
             const isRowActive = highlightedColKeys.includes(dataKey) || highlightColumns.includes(dataKey)
             const isColActive = showColHighlight && hoverColIndex === dataKey
-            const defatultTextAlign = c.align ? c.align : 'left'
+            const defatultTextAlign = align || 'left'
             cell = (
               <th
                 key={idx}
-                colSpan={c.colSpan}
-                rowSpan={c.rowSpan}
+                colSpan={colSpan}
+                rowSpan={rowSpan}
                 // 标题事件处理
                 {...onHeaderRow(_colums, index)}
                 className={classnames({ 'hi-table__col--sticky': isSticky })}
@@ -217,15 +217,11 @@ const HeaderTable = ({ rightFixedIndex }) => {
                 }}
               >
                 <div className="hi-table__header__title">
-                  {typeof c.title === 'function' ? c.title() : c.title}
-                  {showColMenu && c.isLast && (
-                    <ColumnMenu
-                      columnKey={c.dataKey}
-                      canSort={hasSorterColumn.includes(c.dataKey)}
-                      isSticky={isSticky}
-                    />
+                  {typeof title === 'function' ? title() : title}
+                  {showColMenu && isLast && (
+                    <ColumnMenu columnKey={dataKey} canSort={hasSorterColumn.includes(dataKey)} isSticky={isSticky} />
                   )}
-                  <AdvanceHeader />
+                  {!showColMenu && sorter && <AdvanceHeader columnKey={dataKey} />}
                 </div>
               </th>
             )

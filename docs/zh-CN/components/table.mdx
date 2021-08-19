@@ -117,13 +117,13 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 ### Type
 
 ### ColumnItem
-
 | 参数     | 说明                   | 类型                                                                             | 可选值            | 默认值 |
 | -------- | ---------------------- | -------------------------------------------------------------------------------- | ----------------- | ------ |
-| title    | 列标题                 | string                                                                           | -                 | -      |
+| title    | 列标题                 | string \| () => ReactNode                                                                          | -                 | -      |
 | dataKey  | 列对应数据项的唯一标识 | string \| number                                                                 | -                 | -      |
 | align    | 列对齐方式             | string                                                                           | 'left' \| 'right' \|'center' | 'left' |
 | sorter   | 列排序函数             | () => boolean                                                                    | -                 | null   |
+| defaultSortOrder   | 默认排序顺序             | ascend \| descend                                                                   | -                 | null   |
 | avg      | 该列是否支持平均值     | boolean                                                                          | -                 | false  |
 | total    | 该列是否支持合计       | boolean                                                                          | -                 | false  |
 | width    | 该列宽度               | number                                                                           | -                 | -      |
@@ -135,8 +135,8 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | 参数              | 说明                                      | 类型                              | 可选值                                             | 默认值        |
 | ----------------- | ----------------------------------------- | --------------------------------- | -------------------------------------------------- | ------------- |
 | url               | 请求的 url                                | string                            | -                                                  | -             |
-| type              | 请求方法                                  | string                            | get \| post                                        | get           |
-| data              | post 请求时请求体参数                     | object                            | -                                                  | -             |
+| type              | 请求方法                                   | string                            | get \| post                                        | get           |
+| data              | post 请求时请求体参数                       | object                            | -                                                  | -             |
 | params            | url 查询参数                              | object                            | -                                                  | -             |
 | headers           | 请求头                                    | object                            | -                                                  | -             |
 | mode              | 请求模式                                  | string                            | 'same-origin' \| 'cors' \| 'no-cors' \| 'navigate' | 'same-origin' |

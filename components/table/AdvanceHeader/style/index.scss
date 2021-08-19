@@ -1,3 +1,5 @@
+@import '../../../core-css/index.scss';
+
 $table: 'hi-table-advanceheader' !default;
 
 .#{$table} {
@@ -21,6 +23,10 @@ $table: 'hi-table-advanceheader' !default;
         & + .hi-icon {
           margin-left: 0;
         }
+      }
+
+      &-active {
+        color: use-color('primary');
       }
     }
   }

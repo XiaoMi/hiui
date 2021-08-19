@@ -4,15 +4,14 @@
  * - [ ] 排序功能
  */
 import React from 'react'
-import Icon from '../../icon'
 
 import Sorter from './Sorter'
 
 import './style'
-const AdvanceHeader = ({ sorter }) => {
+const AdvanceHeader = (props) => {
   return (
     <>
-      <Sorter></Sorter>
+      <Sorter {...props}></Sorter>
     </>
   )
 }
