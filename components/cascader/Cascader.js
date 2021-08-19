@@ -74,7 +74,7 @@ const Cascader = (props) => {
 
   // 每次值被改变重置缓存值、重置label 展示
   useEffect(() => {
-    if (value !== undefined && !_.isEqual(value, cacheValue)) {
+    if (value !== undefined) {
       setCacheValue(value)
     }
   }, [value])
