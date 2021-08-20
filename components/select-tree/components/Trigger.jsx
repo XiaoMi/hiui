@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-
+import { transKeys } from './tree/util'
 const Trigger = ({
   inputRef,
   type,
@@ -16,7 +16,8 @@ const Trigger = ({
   valueRender,
   isFocus,
   disabled,
-  bordered
+  bordered,
+  fieldNames
 }) => {
   return (
     <div
@@ -42,7 +43,7 @@ const Trigger = ({
           <>
             <div className="hi-selecttree__selected--hidden">
               {selectedItems.map((node, index) => (
-                <span key={index}>{(node && node.title) || ''}</span>
+                <span key={index}>{(node && node[transKeys(fieldNames, 'title')]) || ''}</span>
               ))}
             </div>
             {selectedItems.length === 0 && <span>{placeholder}</span>}
@@ -50,7 +51,9 @@ const Trigger = ({
               selectedItems.slice(0, showCount || 1).map((node, index) => {
                 return (
                   <div key={index} className="hi-selecttree__selecteditem">
-                    <div className="hi-selecttree__selecteditem-name">{(node && node.title) || ''}</div>
+                    <div className="hi-selecttree__selecteditem-name">
+                      {(node && node[transKeys(fieldNames, 'title')]) || ''}
+                    </div>
                     {type === 'multiple' && (
                       <span
                         className="hi-selecttree__selecteditem-remove"
