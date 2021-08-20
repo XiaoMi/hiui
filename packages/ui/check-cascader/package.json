@@ -1,13 +1,10 @@
----
-to: <%= h.hooksDir(`${name}/package.json`) %>
----
 {
-  "name": "@hi-ui/<%= name %>",
+  "name": "@hi-ui/check-cascader",
   "version": "4.0.0-alpha.0",
-  "description": "A sub-package for @hi-ui/hooks.",
+  "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/<%= name %>#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/check-cascader#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -45,11 +42,30 @@ to: <%= h.hooksDir(`${name}/package.json`) %>
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
+  "dependencies": {
+    "@hi-ui/checkbox": "^4.0.0-alpha.1",
+    "@hi-ui/classname": "^4.0.0-alpha.1",
+    "@hi-ui/core-css": "^4.0.0-alpha.0",
+    "@hi-ui/env": "^4.0.0-alpha.1",
+    "@hi-ui/icons": "^4.0.0-alpha.3",
+    "@hi-ui/input": "^4.0.0-alpha.3",
+    "@hi-ui/times": "^4.0.0-alpha.1",
+    "@hi-ui/use-deep-equal-deps": "^4.0.0-alpha.1",
+    "@hi-ui/use-latest": "^4.0.0-alpha.1",
+    "@hi-ui/use-merge-refs": "^4.0.0-alpha.1",
+    "@hi-ui/use-outside-click": "^4.0.0-alpha.1",
+    "@hi-ui/use-toggle": "^4.0.0-alpha.1",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.1",
+    "@popperjs/core": "^2.9.3",
+    "react-popper": "^2.2.5"
+  },
   "peerDependencies": {
-    "react": "^17.0.1"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "devDependencies": {
     "@hi-ui/hi-build": "^4.0.0-alpha.0",
-    "react": "^17.0.1"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   }
 }

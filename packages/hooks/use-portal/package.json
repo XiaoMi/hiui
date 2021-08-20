@@ -1,13 +1,10 @@
----
-to: <%= h.hooksDir(`${name}/package.json`) %>
----
 {
-  "name": "@hi-ui/<%= name %>",
+  "name": "@hi-ui/use-portal",
   "version": "4.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/<%= name %>#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/use-portal#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -46,10 +43,12 @@ to: <%= h.hooksDir(`${name}/package.json`) %>
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "peerDependencies": {
-    "react": "^17.0.1"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "devDependencies": {
     "@hi-ui/hi-build": "^4.0.0-alpha.0",
-    "react": "^17.0.1"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   }
 }

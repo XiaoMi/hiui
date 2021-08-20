@@ -153,7 +153,7 @@ $prefix: '#{$component-prefix}-input' !default;
       }
 
       .#{$prefix}__inner {
-        border-radius: 2px;
+        border-radius: 4px;
       }
 
       .#{$prefix}__prepend {
@@ -175,7 +175,7 @@ $prefix: '#{$component-prefix}-input' !default;
       }
 
       .#{$prefix}__inner {
-        border-radius: 4px;
+        border-radius: 6px;
       }
 
       .#{$prefix}__prepend {
@@ -197,7 +197,7 @@ $prefix: '#{$component-prefix}-input' !default;
       }
 
       .#{$prefix}__inner {
-        border-radius: 6px;
+        border-radius: 8px;
       }
 
       .#{$prefix}__prepend {

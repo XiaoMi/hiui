@@ -144,7 +144,6 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
 
 export interface EditableTreeProps extends TreeProps {
   /**
-   * 开启后节点可编辑（内置：添加同级节点、添加子节点、编辑节点、删除节点）
    * 开启后节点可编辑（内置：添加同级节点、添加子节点、编辑节点、删除节点、关闭菜单）
    * 其中添加或编辑节点仅在 node.title 类型为字符串下支持
    */
