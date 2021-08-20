@@ -19,7 +19,7 @@ const CustomFilter = ({ columnData }) => {
     onFilterDropdownVisibleChange && onFilterDropdownVisibleChange(filterDropdownVisible, columnData)
   }, [filterDropdownVisible])
   const renderFilter = () => {
-    return filterDropdown({ columnData, setFilterDropdownVisible })
+    return filterDropdown && filterDropdown({ columnData, setFilterDropdownVisible })
   }
   return (
     <div className={prefix}>

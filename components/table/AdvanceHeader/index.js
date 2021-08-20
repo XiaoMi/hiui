@@ -8,17 +8,19 @@ import React from 'react'
 
 import Sorter from './Sorter'
 import CustomFilter from './CustomFilter'
+import Select from './select'
 
 import './style'
 const AdvanceHeader = (props) => {
   const {
     showColMenu,
-    columnData: { dataKey, sorter, filterIcon }
+    columnData: { dataKey, sorter, filterIcon, selectFilters }
   } = props
 
   return (
     <>
       {sorter && !showColMenu && <Sorter {...props} columnKey={dataKey} />}
+      {selectFilters && <Select {...selectFilters} />}
       {filterIcon && <CustomFilter {...props} />}
     </>
   )
