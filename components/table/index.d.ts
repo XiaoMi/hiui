@@ -1,4 +1,5 @@
 import {PaginationProps} from '../pagination'
+import { Select } from '../select'
 type ColumnItem = {
   title: string | JSX.Element
   dataKey: string
@@ -8,6 +9,13 @@ type ColumnItem = {
   total?: boolean
   width?: number
   children?: ColumnItem[]
+  selectFilters?: Select
+  defaultSortOrder?: 'ascend' | 'descend' 
+  filterIcon?: JSX.Element
+  filterDropdown?: (props: {ColumnItem: ColumnItem, setFilterDropdownVisible: Function}) => ReactNode 
+  filterDropdownWidth?: number
+  filterDropdownClassName?: string
+  onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, ColumnItem: ColumnItem) => void
   render?: (text: string, record: object, index: number, dataKey: string) => any
 }
 
