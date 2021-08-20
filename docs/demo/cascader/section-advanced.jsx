@@ -166,7 +166,8 @@ class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
-      options: []
+      options: [],
+      value: ['手机','手机2']
     }
   }
   render(){
@@ -174,10 +175,13 @@ class Demo extends React.Component {
       <Cascader
         onChange={(value)=>{
           console.log('on change', value)
+          this.setState({
+            value: value
+          })
         }}
         data={this.state.options}
         style={{ width: 240 }}
-        defaultValue={['电视','小米电视4C']}
+        value={this.state.value}
         onOpen={()=>{
           const {options} = this.state
           if(options.length === 0){
