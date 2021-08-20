@@ -217,6 +217,10 @@
     > table {
       position: relative;
     }
+
+    &__title {
+      display: flex;
+    }
   }
 
   &__header--sticky {

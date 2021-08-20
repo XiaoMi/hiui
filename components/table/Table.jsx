@@ -353,6 +353,7 @@ const Table = ({
         ref={hiTable}
       >
         {/* Normal table 普通表格 */}
+        {/* bugfix: 表格头部和内容分离是卡顿的主要原因 */}
         <div className={`${prefix}__container`} ref={baseTable}>
           <HeaderTable />
           <BodyTable fatherRef={hiTable} emptyContent={emptyContent} />

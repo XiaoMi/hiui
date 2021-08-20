@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table, { LegacyTable } from '../../../components/table'
 import Watermark from '../../../components/watermark'
+import Icon from '../../../components/icon'
 const prefix = 'table-base'
 const desc = ['基础：展示二维数据', '斑马行：优化以行为主的阅读体验', '前端分页：数据量大时分页展示']
 const rightOptions = ['基础', '斑马行', '前端分页', '拖拽表格']
@@ -9,6 +10,7 @@ const code = [
   {
     code: `import React from 'react'
     import Table from '@hi-ui/hiui/es/table'\n
+    import Icon from '@hi-ui/hiui/es/icon'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -27,20 +29,16 @@ const code = [
             title: '规格',
             dataKey: 'size',
             width: 150
-
           },
           {
             title: '单价',
             dataKey: 'price',
             width: 150
-
           },
-         
           {
             title: '规格',
             dataKey: 'size',
             width: 150
-
           },
           {
             title: '单价',
@@ -526,7 +524,7 @@ const code = [
 const DemoBase = () => (
   <DocViewer
     code={code}
-    scope={{ Table, Watermark, LegacyTable }}
+    scope={{ Table, Watermark, LegacyTable, Icon }}
     prefix={prefix}
     rightOptions={rightOptions}
     desc={desc}
