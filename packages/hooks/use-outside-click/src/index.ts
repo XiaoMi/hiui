@@ -8,15 +8,17 @@ import React, { useEffect, useRef } from 'react'
  */
 export const useOutsideClick = (
   ref: React.RefObject<HTMLElement>,
-  callback: (e: Event) => void
+  callback?: (e: Event) => void
 ) => {
   const callbackRef = useRef(callback)
   callbackRef.current = callback
 
   useEffect(() => {
     const onMouseDown: any = (evt: MouseEvent) => {
-      if (!ref.current?.contains(evt.target as HTMLElement)) {
-        callbackRef.current(evt)
+      if (!ref.current) return
+
+      if (!ref.current.contains(evt.target as HTMLElement)) {
+        callbackRef.current?.(evt)
       }
     }
 

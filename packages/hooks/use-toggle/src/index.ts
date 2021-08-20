@@ -16,6 +16,7 @@ export function useToggle(initialState: boolean | (() => boolean) = false) {
 
   const toggle = useMemo(
     () => ({
+      set: setBool,
       on: () => {
         setBool(true)
       },

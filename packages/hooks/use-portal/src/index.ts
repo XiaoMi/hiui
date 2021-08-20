@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback, PropsWithChildren } from 'react'
+import React, { useRef, useEffect, useCallback, PropsWithChildren, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 export type UsePortalReturnPortal = ({
@@ -6,14 +6,18 @@ export type UsePortalReturnPortal = ({
 }: PropsWithChildren<any>) => React.ReactPortal | null
 
 /**
- *
+ * Portal
  *
  * @param selector
  * @returns
  */
 
-export const usePortal = (selector: string) => {
+export const usePortal = (className?: string) => {
   const portalElRef = useRef<Element | undefined>()
+
+  const selector = useMemo(() => {
+    return '.' + Math.random().toString(36).substring(5).split('').join('-')
+  }, [])
 
   const destroy = useCallback(() => {
     if (portalElRef.current) {
@@ -26,11 +30,12 @@ export const usePortal = (selector: string) => {
 
   useEffect(() => {
     portalElRef.current = getContainer(selector)
-
-    return () => {
-      destroy()
+    if (className) {
+      portalElRef.current.classList.add(className)
     }
-  }, [selector, destroy])
+
+    return destroy
+  }, [destroy, className, selector])
 
   const Portal: UsePortalReturnPortal = useCallback(({ children }) => {
     return portalElRef.current ? createPortal(children, portalElRef.current) : null
@@ -52,6 +57,7 @@ export const getContainer = (selector: string) => {
 
   rootElm = document.createElement('div')
   rootElm.className = selector.slice(1)
+
   document.body.appendChild(rootElm)
   return rootElm
 }
