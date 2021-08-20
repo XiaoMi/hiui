@@ -2,7 +2,7 @@
  * 表格相关的查询、排序功能；图标占位、以及点击图标的回调函数
  * @returns ReactNode
  * - [x] 排序功能
- * - [ ] 筛选功能
+ * - [x] 筛选功能
  */
 import React from 'react'
 
