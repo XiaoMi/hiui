@@ -117,84 +117,6 @@ const code = [
     class Demo extends React.Component {
       constructor(props){
         super(props)
-        this.columns = [
-          {
-            title: '商品名',
-            dataKey: 'name',
-            width: 150
-          },
-          {
-            title: '品类',
-            dataKey: 'type',
-            width: 150,
-            selectFilters: {
-              filterIcon: <Icon name="filter" />,
-              data: [
-                { title:'电视', id:'3', disabled: true },
-                { title:'手机', id:'2' },
-                { title:'笔记本', id:'4', disabled: true },
-                { title:'生活周边', id:'5' },
-                { title:'办公', id:'6' },
-              ],
-              type: 'multiple',
-              searchable: true,
-              showCheckAll: true,
-              optionWidth: 200,
-              onChange:() => {
-                console.log('多选结果', item)
-                
-              }
-            }
-          },
-
-          {
-            title: '单价',
-            dataKey: 'price',
-            width: 150,
-            filterDropdownClassName: 'table-customefilter',
-            filterIcon: <Icon name="search" />,
-            filterDropdown: ({columnData, setFilterDropdownVisible}) => {
-              let keyWork = ''
-              return (
-                <div >
-                <Input placeholder="请输入关键字" onChange={(e)=>{
-                  keyWork = e.target.value
-                }}/>
-                <div style={{marginTop: '8px'}}>
-                  <Button onClick={() => {
-                    this.filterData(keyWork, 'name')
-                    setFilterDropdownVisible(false)
-                  }} type="primary" size="small">确定</Button>
-                  <Button onClick={() => setFilterDropdownVisible(false)} size="small">取消</Button>
-                </div>
-                </div>
-              )
-            },
-            sorter: (a, b) => {
-              console.log(a, b)
-              return a.price - b.price
-            }
-          },
-          {
-            title: '规格',
-            dataKey: 'size',
-            width: 150
-
-          },
-          {
-            title: '门店',
-            dataKey: 'address',
-            width: 150
-
-          },
-          {
-            title: '库存',
-            dataKey: 'stock',
-            width: 150
-
-          }
-        ]
-
         this.data = [
           {
             name: '小米9',
@@ -242,9 +164,114 @@ const code = [
             key: 5
           }
         ]
+        this.state = {
+          data: this.data
+        }
+        this.columns = [
+          {
+            title: '商品名',
+            dataKey: 'name',
+            width: 150
+          },
+          {
+            title: '品类',
+            dataKey: 'type',
+            width: 150,
+            selectFilters: {
+              filterIcon: <Icon name="filter" />,
+              data: [
+                { title:'电视', id:'3', disabled: true },
+                { title:'手机', id:'2' },
+                { title:'笔记本', id:'4', disabled: true },
+                { title:'生活周边', id:'5' },
+                { title:'办公', id:'6' },
+              ],
+              renderExtraFooter: ()=>{
+                return <div style={{width: '100%'}}>
+                  <Input style={{width: '100px'}}/>
+                  <Button type="line" appearance="link" icon="plus">新增</Button>
+                </div>
+              },
+              type: 'multiple',
+              searchable: true,
+              optionWidth: 200,
+              onChange:(selectedIds, changedItem, changedItems) => {
+                console.log('多选结果', changedItems)
+                this.setState({
+                  filterSelectValue: selectedIds
+                })
+                const filerTitle = changedItems.map(item=>{
+                  return item.title
+                })
+                this.filterData(filerTitle, 'type')
+              }
+            }
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            width: 150,
+            filterDropdownClassName: 'table-customefilter',
+            filterIcon: <Icon name="search" />,
+            filterDropdown: ({columnData, setFilterDropdownVisible}) => {
+              let keyWork = ''
+              return (
+                <div >
+                <Input placeholder="请输入关键字" onChange={(e)=>{
+                  keyWork = e.target.value
+                }}/>
+                <div style={{marginTop: '8px'}}>
+                  <Button onClick={() => {
+                    this.customfilterData(keyWork, 'price')
+                    setFilterDropdownVisible(false)
+                  }} type="primary" size="small">确定</Button>
+                  <Button onClick={() => setFilterDropdownVisible(false)} size="small">取消</Button>
+                </div>
+                </div>
+              )
+            },
+            sorter: (a, b) => {
+              console.log(a, b)
+              return a.price - b.price
+            }
+          },
+          {
+            title: '规格',
+            dataKey: 'size',
+            width: 150
+
+          },
+          {
+            title: '门店',
+            dataKey: 'address',
+            width: 150
+
+          },
+          {
+            title: '库存',
+            dataKey: 'stock',
+            width: 150
+
+          }
+        ]
+      }
+
+      customfilterData(keyWord, label) {
+        this.setState({
+          data: this.data.filter(item=>{
+            return item[label].includes(keyWord)
+          })
+        })
+      }
+      filterData(filterTitle, label) {
+        this.setState({
+          data: this.data.filter(item=>{
+            return filterTitle.includes(item[label])
+          })
+        })
       }
       render() {
-        return <Table columns={this.columns}  data={this.data}/>
+        return <Table columns={this.columns}  data={this.state.data}/>
       }
     }`,
     opt: ['筛选']
@@ -285,20 +312,7 @@ const code = [
           {
             title: '品类',
             dataKey: 'type',
-            width: 150,
-            filterIcon: <Icon name="search" />,
-            filterDropdown: ({columnData, setFilterDropdownVisible}) => {
-              console.log(columnData)
-              return (
-                <div >
-                <Input placeholder="请输入关键字" />
-                <div style={{marginTop: '8px'}}>
-                  <Button onClick={() => setFilterDropdownVisible(false)} type="primary" size="small">确定</Button>
-                  <Button onClick={() => setFilterDropdownVisible(false)} size="small">取消</Button>
-                </div>
-                </div>
-              )
-            }
+            width: 150
           },
           {
             title: '规格',

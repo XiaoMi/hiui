@@ -4,10 +4,10 @@ import _, { isArray } from 'lodash'
 
 import Popper from '../../../popper'
 import Icon from '../../../icon'
-import SelectDropdown from './SelectDropdown'
+import SelectDropdown from '../../../select/SelectDropdown'
 import Provider from '../../../context'
 import HiRequest from '../../../hi-request/index'
-import { resetSelectedItems, transKeys, uniqBy } from './utils'
+import { resetSelectedItems, transKeys, uniqBy } from '../../../select/utils'
 import './style'
 
 const InternalSelect = (props) => {
@@ -40,7 +40,8 @@ const InternalSelect = (props) => {
     overlayClassName,
     setOverlayContainer,
     overlayClickOutSideEventName = 'click',
-    filterIcon
+    filterIcon,
+    renderExtraFooter
   } = props
   const selectInputContainer = useRef()
   const autoloadFlag = useRef(autoload) // 多选情况下，需要记录是否进行了筛选
@@ -123,7 +124,7 @@ const InternalSelect = (props) => {
       historyData.current,
       transKeys(fieldNames, 'id')
     )
-    setSelectedItems(selectedItems)
+    // setSelectedItems(selectedItems)
     if (dataSource && type === 'multiple') {
       setCacheSelectItem(selectedItems)
       !dropdownShow && searchable && setDropdownItems(selectedItems)
@@ -603,6 +604,7 @@ const InternalSelect = (props) => {
         <SelectDropdown
           emptyContent={emptyContent}
           fieldNames={fieldNames}
+          renderExtraFooter={renderExtraFooter}
           localeMap={localeDatas.select || {}}
           mode={type}
           onOverlayScroll={onOverlayScroll}

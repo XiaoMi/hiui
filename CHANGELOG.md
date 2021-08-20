@@ -6,6 +6,7 @@
 - 新增 `Cascader` onOpen 下拉菜单打开、onClose 下拉菜单关闭回调方法，优化动态加载数据功能 [#1854](https://github.com/XiaoMi/hiui/issues/1854)
 - 新增 `Table` 组件 align 属性接受 center 属性 [#1835](https://github.com/XiaoMi/hiui/issues/1835)
 - 新增 `Table` 组件 拖拽功能 [#1851](https://github.com/XiaoMi/hiui/issues/1851)
+- 新增 `Table` 组件 自定义列筛选 [#1850](https://github.com/XiaoMi/hiui/issues/1850)
 - 新增 `Select` 组件 renderExtraFooter 自定义下拉菜单底部渲染函数[#1864](https://github.com/XiaoMi/hiui/issues/1864)
 - 新增 `SelectTree` 组件节点支持 disabled 禁用状态[#1870](https://github.com/XiaoMi/hiui/issues/1870)
 - 优化 `DatePicker` 组件在 `Table` 组件中受控形态下无法选中问题 [#1844](https://github.com/XiaoMi/hiui/issues/1844)

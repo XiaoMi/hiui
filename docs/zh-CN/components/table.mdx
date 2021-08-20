@@ -90,7 +90,6 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | scrollWidth                   | 表格滚动的宽度（当表格总设置宽度（含自适应列）大于表格父级容器宽度时需要设置）**3.7.0 版本以后，该属性不建议使用** | number                                                    | -                                         | -          |
 | showColHighlight              | 表格某一列`hover`时，该列高亮                                                                                      | boolean                                                   | true \| false                             | false      |
 | draggable                     | 表格行可拖拽                                                                                                       | boolean                                                   | true \| false                             | false      |
-| onFilterDropdownVisibleChange | 自定义筛选下拉选项显示状态改变时的回调方法                                                                         | (filterDropdownVisible, ColumnItem) => void               | true \| false                             | false      |
 
 ## Event
 
@@ -131,13 +130,14 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | title                   | 列标题                                                     | string \| () => ReactNode                                                                         | -                            | -      |
 | dataKey                 | 列对应数据项的唯一标识                                     | string \| number                                                                                  | -                            | -      |
 | align                   | 列对齐方式                                                 | string                                                                                            | 'left' \| 'right' \|'center' | 'left' |
-| selectFilters           | 表头的筛选菜单, 更多配置请参考 [Select组件](https://infra.mioffice.cn/hiui/zh-CN/components/select)   | object                                                                                    | -                            | null   |
-| sorter                  | 列排序函数                                                 | () => boolean                                                                                     | -                            | null   |
-| defaultSortOrder        | 默认排序顺序                                               | ascend \| descend                                                                                 | -                            | null   |
-| filterIcon              | 自定义 filter 图标                                         | ReactNode                                                                                         | -                            | null   |
-| filterDropdown          | 自定义筛选菜单，此函数只负责渲染图层，需要自行编写各种交互 | (props: {ColumnItem, setFilterDropdownVisible}) => ReactNode                                      | -                            | null   |
-| filterDropdownWidth     | 自定义筛选菜单宽度                                         | number                                                                                            | -                            | 150    |
-| filterDropdownClassName | 自定义筛选菜单 className                                   | string                                                                                            | -                            | -      |
+| selectFilters           | 表头的筛选菜单, 更多配置请参考 [Select组件](https://infra.mioffice.cn/hiui/zh-CN/components/select) (v3.7.1新增)  | object                                                                                    | -                            | null   |
+| sorter                  | 列排序函数  (v3.7.1新增)                                               | () => boolean                                                                                     | -                            | null   |
+| defaultSortOrder        | 默认排序顺序  (v3.7.1新增)                                             | ascend \| descend                                                                                 | -                            | null   |
+| filterIcon              | 自定义 filter 图标 (v3.7.1新增)                                        | ReactNode                                                                                         | -                            | null   |
+| filterDropdown          | 自定义筛选菜单，此函数只负责渲染图层，需要自行编写各种交互 (v3.7.1新增) | (props: {ColumnItem, setFilterDropdownVisible}) => ReactNode                                      | -                            | null   |
+| filterDropdownWidth     | 自定义筛选菜单宽度  (v3.7.1新增)                                       | number                                                                                            | -                            | 150    |
+| filterDropdownClassName | 自定义筛选菜单 className  (v3.7.1新增)                                | string                                                                                            | -                            | -      |
+| onFilterDropdownVisibleChange | 自定义筛选下拉选项显示状态改变时的回调方法  (v3.7.1新增)                                                                        | (filterDropdownVisible, ColumnItem) => void               | true \| false                             | false      |
 | avg                     | 该列是否支持平均值                                         | boolean                                                                                           | -                            | false  |
 | total                   | 该列是否支持合计                                           | boolean                                                                                           | -                            | -      |
 | width                   | 该列宽度                                                   | number                                                                                            | -                            | -      |
