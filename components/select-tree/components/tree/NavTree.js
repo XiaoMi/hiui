@@ -137,13 +137,18 @@ const NavTree = ({
       ) : (
         <ul className="hi-breadtree__list">
           {renderData.map((node, index) => {
+            const { id, disabled } = node
             const children = getChildrenNodes(node, data)
             const textCls = classNames(
               'hi-breadtree__text',
-              selectedItems.find((n) => n.id === node.id) && 'hi-breadtree__text--selected'
+              selectedItems.find((n) => n.id === id) && 'hi-breadtree__text--selected'
             )
             return (
-              <li key={index} className="hi-breadtree__item" data-selecttree-id={node.id}>
+              <li
+                key={index}
+                className={classNames('hi-breadtree__item', { 'hi-breadtree__item--disabled': disabled })}
+                data-selecttree-id={node.id}
+              >
                 {checkable && node.isLeaf ? (
                   <Checkbox
                     indeterminate={checkedNodes.semiChecked.includes(node.id)}
@@ -158,7 +163,7 @@ const NavTree = ({
                   <span
                     className={classNames(textCls, { 'hi-select-tree__title--focus': node.id === activeId })}
                     onClick={() => {
-                      onNodeClick(node, children)
+                      !disabled && onNodeClick(node, children)
                     }}
                   >
                     {node.title}

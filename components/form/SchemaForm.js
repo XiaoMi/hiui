@@ -59,9 +59,12 @@ const InternalSchemaForm = (props) => {
         } else {
           child = component
         }
+        const uuid = parseInt((Math.random() * 9 + 1) * 100000)
         return React.createElement(FormItem, {
           ..._.omit(schemaItem, 'component', 'componentProps'),
-          key: component + index,
+          field: schemaItem.field + '&&' + uuid,
+          realField: schemaItem.field,
+          key: uuid,
           children: child
         })
       })

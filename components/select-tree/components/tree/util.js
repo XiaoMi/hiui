@@ -80,19 +80,21 @@ export const updateCheckData = (node, data, checkedIds, semiCheckedIds) => {
   const children = getDescendantNodes(node, data)
   const ancestors = node.pId ? getAncestorsNodes(node, data) : []
   children.forEach((child) => {
-    checkedIds.add(child.id)
-    semiCheckedIds.delete(child.id)
+    if (!child.disabled) {
+      checkedIds.add(child.id)
+      semiCheckedIds.delete(child.id)
+    }
   })
   semiCheckedIds.delete(node.id)
   checkedIds.add(node.id)
   ancestors.forEach((ancestor) => {
     const chi = getChildrenNodes(ancestor, data).map((c) => c.id)
     const ins = _.intersection(chi, [...checkedIds])
-    if (ins.length === chi.length) {
+    if (ins.length === chi.length && !ancestor.disabled) {
       checkedIds.add(ancestor.id)
       semiCheckedIds.delete(ancestor.id)
     } else {
-      semiCheckedIds.add(ancestor.id)
+      !ancestor.disabled && semiCheckedIds.add(ancestor.id)
     }
   })
   return {
@@ -114,7 +116,7 @@ export const updateUnCheckData = (node, data, checkedIds, semiCheckedIds) => {
   checkedIds.delete(node.id)
   ancestors.forEach((ancestor) => {
     checkedIds.delete(ancestor.id)
-    semiCheckedIds.add(ancestor.id)
+    !ancestor.disabled && semiCheckedIds.add(ancestor.id)
     const chi = getChildrenNodes(ancestor, data).map((c) => c.id)
     const ins = _.intersection(chi, [...checkedIds, ...semiCheckedIds])
     if (ins.length === 0) {
@@ -124,7 +126,7 @@ export const updateUnCheckData = (node, data, checkedIds, semiCheckedIds) => {
   })
 
   children.forEach((child) => {
-    checkedIds.delete(child.id)
+    !child.disabled && checkedIds.delete(child.id)
   })
   return {
     checked: [...checkedIds],

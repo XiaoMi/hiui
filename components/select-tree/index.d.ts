@@ -3,6 +3,7 @@ import { CSSProperties } from "react"
 type DataItem = {
   id: string | number
   title: string
+  disabled?: boolean
   children?: DataItem[]
 }
 type DataSource = {

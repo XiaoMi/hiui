@@ -45,9 +45,9 @@ const FormItem = (props) => {
     sort,
     uuid,
     column,
-    row
+    row,
+    realField
   } = props
-
   const {
     showColon: shouldFormShowColon,
     initialValues = {},
@@ -176,16 +176,16 @@ const FormItem = (props) => {
       }
       // Bug of `async-validator`
       const rules = getRules().map((item) => {
-        if (currentValue !== '') {
+        if (!!currentValue || currentValue === 0) {
           item.type = item.type || 'any'
         }
         return item
       })
-
+      const _field = realField || field
       const validator = new AsyncValidator({
-        [field]: rules
+        [_field]: rules
       })
-      const model = { [field]: currentValue }
+      const model = { [_field]: currentValue }
       validator.validate(
         model,
         {
@@ -204,6 +204,7 @@ const FormItem = (props) => {
   )
 
   const updateFieldInfoToReducer = () => {
+    const _realField = realField || field
     return {
       field,
       rules: getRules(),
@@ -219,7 +220,8 @@ const FormItem = (props) => {
       column,
       row,
       name,
-      updateField
+      updateField,
+      realField: _realField
     }
   }
 
@@ -270,8 +272,9 @@ const FormItem = (props) => {
         ? e.target[valuePropName]
         : e
     if (displayName === 'Counter') {
-      value = args[0]
+      value = args[0] || 0
     }
+    console.log('value', displayName, value)
     eventInfo.current = { eventName, e, args, componentProps, value }
     handleField(eventName, value)
     setValue(value)
@@ -294,6 +297,10 @@ const FormItem = (props) => {
     const isExist = _fields.some((item) => {
       return item.field === _field
     })
+    const displayName = !!children && children.type && children.type.displayName
+    if (displayName === 'Counter' && _value === undefined) {
+      _value = 0
+    }
     if (_field && !isExist) {
       _value = initialValues && typeof initialValues[field] !== 'undefined' ? initialValues[_field] : _value
       if (_type === 'list' && listItemValue) {
@@ -338,6 +345,7 @@ const FormItem = (props) => {
       return null
     }
     const propChild = children ? children.props : {}
+
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
