@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect, useState, useMemo } from 'react'
+import { useRef, useCallback, useState, useMemo, useLayoutEffect } from 'react'
 import * as PopperJS from '@popperjs/core'
 import { createPopper } from '@popperjs/core'
 import { useUnmountEffect } from '@hi-ui/use-unmount-effect'
@@ -6,21 +6,20 @@ import { useLatestRef } from '@hi-ui/use-latest'
 
 const NOOP_ARRAY = [] as []
 
-export const usePopper = (
-  targetElement: Element | PopperJS.VirtualElement | null,
-  popperElement: HTMLElement | null,
-  props: UsePopperProps = {}
-) => {
+export const usePopper = (props: UsePopperProps) => {
   const {
+    targetElement,
+    popperElement,
+    arrowElement,
     disabled = false,
     modifiers: customModifiers = NOOP_ARRAY,
     strategy = 'absolute',
     placement = 'bottom-start',
-    cross = 0,
-    gutter = 8,
-    arrowPadding = 6,
+    crossGap = 0,
+    gutterGap = 8,
+    arrowPadding = 12,
     flip = true,
-    matchWidth = true,
+    matchWidth = false,
     eventListeners = true,
     preventOverflow = true,
   } = props
@@ -32,10 +31,9 @@ export const usePopper = (
     styles: {
       popper: {
         position: strategy,
-        left: '0',
-        top: '0',
-        minWidth: 'max-content',
         inset: '0 auto auto 0',
+        minWidth: 'max-content',
+        visibility: 'hidden',
       },
       arrow: {
         position: 'absolute',
@@ -50,12 +48,15 @@ export const usePopper = (
       enabled: true,
       phase: 'write',
       fn: ({ state }) => {
-        console.log(state)
-
         setState({
           styles: {
-            popper: state.styles.popper || {},
-            arrow: state.styles.arrow || {},
+            popper: {
+              visibility: 'visible',
+              // 保证内容能正常展示，即使开启了 matchWidth
+              minWidth: 'max-content',
+              ...state.styles.popper,
+            },
+            arrow: state.styles.arrow,
           },
           attributes: state.attributes,
         })
@@ -73,29 +74,34 @@ export const usePopper = (
   }, [])
 
   const setupPopper = useCallback(
-    (targetEl: Element | PopperJS.VirtualElement | null, popperEl: HTMLElement | null) => {
-      if (disabled) return
-
-      if (!targetEl || !popperEl) return
-
+    (
+      targetEl: Element | PopperJS.VirtualElement | null,
+      popperEl: HTMLElement | null,
+      arrowElement?: HTMLElement | null
+    ) => {
       destroyInstance()
+
+      if (disabled) return
+      if (!targetEl || !popperEl) return
 
       instanceRef.current = createPopper(targetEl, popperEl, {
         strategy,
         placement,
         modifiers: [
+          getTransformOriginModifier(),
           getMatchWidthModifier(matchWidth),
           getEventListenersModifier(eventListeners),
           {
             name: 'arrow',
             options: {
+              element: arrowElement,
               padding: arrowPadding,
             },
           },
           {
             name: 'offset',
             options: {
-              offset: [cross, gutter],
+              offset: [crossGap, gutterGap],
             },
           },
           {
@@ -106,6 +112,7 @@ export const usePopper = (
           {
             name: 'preventOverflow',
             enabled: preventOverflow,
+            options: { boundary: 'clippingParents' },
           },
           updateStateModifier,
           { name: 'applyStyles', enabled: false },
@@ -119,8 +126,8 @@ export const usePopper = (
       disabled,
       strategy,
       placement,
-      cross,
-      gutter,
+      crossGap,
+      gutterGap,
       arrowPadding,
       eventListeners,
       matchWidth,
@@ -138,9 +145,9 @@ export const usePopper = (
     }
   })
 
-  useEffect(() => {
-    setupPopper(targetElement, popperElement)
-  }, [targetElement, popperElement, setupPopper])
+  useLayoutEffect(() => {
+    setupPopper(targetElement, popperElement, arrowElement)
+  }, [setupPopper, targetElement, popperElement, arrowElement])
 
   return {
     styles: state.styles,
@@ -167,17 +174,29 @@ type PopperState = {
 
 export interface UsePopperProps {
   /**
+   * reference 目标元素
+   */
+  targetElement: Element | PopperJS.VirtualElement | null
+  /**
+   * popper 所在元素
+   */
+  popperElement: HTMLElement | null
+  /**
+   * arrow 所在元素
+   */
+  arrowElement?: HTMLElement | null
+  /**
    * 是否禁用 popper
    */
   disabled?: boolean
   /**
    * 设置基于 reference 元素的间隙偏移量
    */
-  gutter?: number
+  gutterGap?: number
   /**
    * 设置基于 reference 元素的正交偏移量
    */
-  cross?: number
+  crossGap?: number
   /**
    * 设置边缘区域可见
    */
@@ -248,5 +267,41 @@ export const getEventListenersModifier = (
     name: 'eventListeners',
     enabled: value,
     options: defaultEventListeners,
+  }
+}
+
+const transforms: any = {
+  top: 'center bottom',
+  'top-start': 'left bottom',
+  'top-end': 'right bottom',
+
+  bottom: 'center top',
+  'bottom-start': 'left top',
+  'bottom-end': 'right top',
+
+  left: 'center right',
+  'left-start': 'top right',
+  'left-end': 'bottom right',
+
+  right: 'center left ',
+  'right-start': 'top left ',
+  'right-end': 'bottom left ',
+}
+
+const setTransformOrigin = (state: PopperJS.State) => {
+  state.elements.popper.style.setProperty('--popper-transform-origin', transforms[state.placement])
+}
+
+const getTransformOriginModifier = (): PopperJS.Modifier<'transformOrigin', any> => {
+  return {
+    name: 'transformOrigin',
+    enabled: true,
+    phase: 'write',
+    fn: ({ state }) => {
+      setTransformOrigin(state)
+    },
+    effect: ({ state }) => () => {
+      setTransformOrigin(state)
+    },
   }
 }

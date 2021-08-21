@@ -5,11 +5,13 @@ import * as PopperJS from '@popperjs/core'
 
 export const Placement = () => {
   const [btnEl, setBtnEl] = React.useState(null)
+  const [visible, setVisible] = React.useState(false)
   const [placement, setPlacement] = React.useState<undefined | PopperJS.Placement>()
 
   const handleClick = (newPlacement) => (event) => {
     setBtnEl(event.currentTarget)
     setPlacement(newPlacement)
+    setVisible(true)
   }
 
   return (
@@ -17,13 +19,13 @@ export const Placement = () => {
       <h1>Placement</h1>
       <div className="popper-basic__wrap">
         <Popper
-          visible={!!placement}
+          visible={visible}
           attachEl={btnEl}
           placement={placement}
-          onOutsideClick={() => setPlacement(undefined)}
+          onOutsideClick={() => setVisible(false)}
           arrow
         >
-          <div style={{ width: 200 }}>HiUI</div>
+          {/* <div style={{ width: 200 }}>HiUI</div> */}
           {/* <div style={{ height: 200 }}>HiUI</div> */}
           {/* <div style={{ width: 200, height: 200 }}>HiUI</div> */}
         </Popper>

@@ -55,7 +55,10 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
 
     const [targetEl, setTargetEl] = useState<HTMLElement | null>(attachEl)
 
-    const { styles, attributes, forceUpdate } = usePopper(targetEl, popperElRef.current, {
+    const { styles, attributes } = usePopper({
+      targetElement: attachEl,
+      popperElement: popperElRef.current,
+      arrowElement: arrowElRef,
       placement,
     })
 
@@ -88,23 +91,25 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
         }}
       >
         {/* 当前文档流、传送至 body、传送到指定 container */}
-        <Portal container={container}>
+        {/* <Portal container={container}> */}
+        <div
+          role={role}
+          className={cls}
+          ref={useMergeRefs(popperElRef, ref)}
+          style={Object.assign({}, style, styles.popper)}
+          {...rest}
+          {...attributes.popper}
+        >
           <div
-            role={role}
-            className={cls}
-            ref={useMergeRefs(popperElRef, ref)}
-            style={Object.assign({}, style, styles.popper)}
-            {...rest}
-            {...attributes.popper}
-          >
-            <div
-              ref={setArrowElmRef}
-              className={cx(`${prefixCls}__arrow`, !arrow && `hidden`)}
-              style={styles.arrow}
-            />
-            <div className={`${prefixCls}__overlay`}>{children}</div>
+            ref={setArrowElmRef}
+            className={cx(`${prefixCls}__arrow`, !arrow && `hidden`)}
+            style={styles.arrow}
+          />
+          <div ref={console.log} className={`${prefixCls}__overlay`}>
+            {children}
           </div>
-        </Portal>
+        </div>
+        {/* </Portal> */}
       </CSSTransition>
     )
   }

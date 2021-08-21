@@ -10,10 +10,12 @@ $prefix: '#{$component-prefix}-popper' !default;
   &--motion {
     &-enter {
       opacity: 0;
+      transform: scale(0.9);
     }
 
     &-enter-active {
       opacity: 1;
+      transform: translateX(0);
     }
 
     &-enter-done {
@@ -22,14 +24,17 @@ $prefix: '#{$component-prefix}-popper' !default;
 
     &-exit {
       opacity: 1;
+      transform: translateX(100%);
     }
 
     &-exit-active {
       opacity: 0;
+      transform: scale(0.9);
     }
 
     &-exit-done {
       opacity: 0;
+      transform: translateX(100%);
     }
   }
 
@@ -95,26 +100,6 @@ $prefix: '#{$component-prefix}-popper' !default;
         transform: translateX(-6px);
         bottom: 1px;
         border-bottom-color: rgba(0, 0, 0, 0.1);
-      }
-    }
-  }
-
-  &[data-popper-placement^=top-start],
-  &[data-popper-placement^=bottom-start] {
-    .#{$prefix}__arrow {
-      &::before,
-      &::after {
-        transform: translateX(-18px);
-      }
-    }
-  }
-
-  &[data-popper-placement^=top-end],
-  &[data-popper-placement^=bottom-end] {
-    .#{$prefix}__arrow {
-      &::before,
-      &::after {
-        transform: translateX(6px);
       }
     }
   }
