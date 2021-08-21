@@ -1,13 +1,15 @@
 import React, { forwardRef, useState, useRef, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { useOutsideClick } from '@hi-ui/use-outside-click'
+import { useRefsOutsideClick } from '@hi-ui/use-outside-click'
 import { useToggle } from '@hi-ui/use-toggle'
-import { usePopper, Modifier } from 'react-popper'
+import { Modifier } from 'react-popper'
 import { usePortal } from '@hi-ui/use-portal'
 import * as PopperJS from '@popperjs/core'
 import { CSSTransition } from 'react-transition-group'
+import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useLatestRef } from '@hi-ui/use-latest'
+import { usePopper } from './use-popper'
 
 const _role = 'popper'
 const _prefix = getPrefixCls(_role)
@@ -22,90 +24,85 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       role = _role,
       className,
       children,
+      style,
       visible = false,
-      placement,
+      onClose,
+      unmountOnClose = true,
+      closeOnOutsideClick = true,
+      closeOnEsc = false,
+      placement = 'bottom-start',
       modifiers = [],
       attachEl,
+      container: containerProp,
       width,
       topGap = 8,
-      leftGap = 8,
+      leftGap = 0,
       zIndex = 1008,
+      arrow = false,
       onOutsideClick,
       ...rest
     },
     ref
   ) => {
-    const [internalVisible, menuVisibleAction] = useToggle(visible)
+    const [internalVisible, internalVisibleAction] = useToggle(visible)
     const [transitionVisible, transitionVisibleAction] = useToggle(visible)
-
-    useEffect(() => {
-      transitionVisibleAction.set(visible)
-      if (visible) {
-        menuVisibleAction.on()
-      }
-    }, [visible, transitionVisibleAction, menuVisibleAction])
 
     const popperElRef = useRef<HTMLDivElement | null>(null)
     const [arrowElRef, setArrowElmRef] = useState<HTMLElement | null>(null)
     const targetRef = useLatestRef(attachEl)
 
-    console.log(attachEl, targetRef)
+    useRefsOutsideClick([popperElRef, targetRef], onOutsideClick)
 
-    useOutsideClick(targetRef, onOutsideClick)
+    const [targetEl, setTargetEl] = useState<HTMLElement | null>(attachEl)
 
-    const { styles, attributes } = usePopper(attachEl, popperElRef.current, {
-      placement: 'bottom-start',
-      modifiers: [
-        {
-          enabled: true,
-          name: 'arrow',
-          options: {
-            element: arrowElRef,
-          },
-        },
-        {
-          enabled: true,
-          name: 'offset',
-          options: {
-            offset: [0, 4],
-          },
-        },
-      ],
+    const { styles, attributes, forceUpdate } = usePopper(targetEl, popperElRef.current, {
+      placement,
     })
 
-    const [Portal, destroy] = usePortal(`${prefixCls}__portal`)
+    useEffect(() => {
+      transitionVisibleAction.set(visible)
+
+      if (visible) {
+        internalVisibleAction.on()
+      }
+    }, [visible, internalVisibleAction, transitionVisibleAction])
+
+    // useEffect(() => {
+    //   setTargetEl(attachEl)
+    // }, [forceUpdate, attachEl, internalVisibleAction, transitionVisibleAction])
+
+    const [Portal] = usePortal(`${prefixCls}-portal`)
 
     const cls = cx(prefixCls, className)
 
-    console.log('visible', visible)
+    const unmount = unmountOnClose && !visible && !internalVisible
+    const container = containerProp || targetEl ? document.body : document.body
 
     return (
       <CSSTransition
         classNames={`${prefixCls}--motion`}
-        in={visible}
-        timeout={310}
-        unmountOnExit
+        in={transitionVisible}
+        timeout={210}
         onExited={() => {
-          menuVisibleAction.off()
+          internalVisibleAction.off()
         }}
-        // onEnter={close}
-        // onEntering={open}
-        // onEntered={onMotionEnd}
-        // onExit={open}
-        // onExiting={close}
-        // onExited={onMotionEnd}
       >
-        <Portal>
+        {/* 当前文档流、传送至 body、传送到指定 container */}
+        <Portal container={container}>
           <div
-            className={`${prefixCls}__overlay`}
-            ref={popperElRef}
-            style={{ ...styles.popper, zIndex: 2 }}
+            role={role}
+            className={cls}
+            ref={useMergeRefs(popperElRef, ref)}
+            style={Object.assign({}, style, styles.popper)}
+            {...rest}
             {...attributes.popper}
           >
-            <div ref={setArrowElmRef} style={styles.arrow} />
-            <div ref={ref} role={role} className={cls} {...rest}>
-              {children}
-            </div>
+            <div
+              ref={setArrowElmRef}
+              className={cx(`${prefixCls}__arrow`, !arrow && `hidden`)}
+              style={styles.arrow}
+            />
+            <div className={`${prefixCls}__overlay`}>{children}</div>
           </div>
         </Portal>
       </CSSTransition>
@@ -140,6 +137,11 @@ export interface PopperProps {
   zIndex?: number
   children?: React.ReactNode
   onOutsideClick?: (evt: Event) => void
+  arrow?: boolean
+  onClose?: () => void
+  unmountOnClose?: boolean
+  closeOnOutsideClick?: boolean
+  closeOnEsc?: boolean
 }
 
 if (__DEV__) {

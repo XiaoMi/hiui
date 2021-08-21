@@ -1,10 +1,10 @@
 {
-  "name": "@hi-ui/use-outside-click",
-  "version": "4.0.0-alpha.1",
+  "name": "@hi-ui/use-unmount-effect",
+  "version": "4.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/use-outside-click#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/use-unmount-effect#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -31,7 +31,7 @@
     "url": "git+https://github.com/XiaoMi/hiui.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1",
+    "test": "jest",
     "clean": "rimraf lib",
     "prebuild": "yarn clean",
     "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
@@ -46,9 +46,7 @@
     "react": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.1"
-  },
-  "dependencies": {
-    "@hi-ui/use-latest": "^4.0.0-alpha.1"
+    "@hi-ui/hi-build": "^4.0.0-alpha.0",
+    "react": "^17.0.1"
   }
 }

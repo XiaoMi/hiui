@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useCallback, PropsWithChildren, useMemo } from 'react'
 import { createPortal } from 'react-dom'
+import { getPrefixCls } from '@hi-ui/classname'
 
 export type UsePortalReturnPortal = ({
   children,
@@ -16,7 +17,7 @@ export const usePortal = (className?: string) => {
   const portalElRef = useRef<Element | undefined>()
 
   const selector = useMemo(() => {
-    return '.' + Math.random().toString(36).substring(5).split('').join('-')
+    return '.' + getPrefixCls(Math.random().toString(36).substring(5))
   }, [])
 
   const destroy = useCallback(() => {
@@ -26,7 +27,7 @@ export const usePortal = (className?: string) => {
     } else {
       removeContainer(selector)
     }
-  }, [])
+  }, [selector])
 
   useEffect(() => {
     portalElRef.current = getContainer(selector)

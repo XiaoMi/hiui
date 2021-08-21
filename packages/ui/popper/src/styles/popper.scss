@@ -3,5 +3,168 @@
 $prefix: '#{$component-prefix}-popper' !default;
 
 .#{$prefix} {
+  opacity: 1;
+  transition: opacity 0.2s linear;
+  position: relative;
 
+  &--motion {
+    &-enter {
+      opacity: 0;
+    }
+
+    &-enter-active {
+      opacity: 1;
+    }
+
+    &-enter-done {
+      opacity: 1;
+    }
+
+    &-exit {
+      opacity: 1;
+    }
+
+    &-exit-active {
+      opacity: 0;
+    }
+
+    &-exit-done {
+      opacity: 0;
+    }
+  }
+
+  &__arrow {
+    z-index: 1;
+    position: relative;
+
+    &.hidden {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-color: transparent;
+      border-width: 6px;
+    }
+
+    &::after {
+      filter: blur(1px);
+      z-index: -1;
+    }
+  }
+
+  $arrow-color: use-color('white');
+
+  &[data-popper-placement^=top] {
+    .#{$prefix}__arrow {
+      bottom: 0;
+
+      &::before {
+        left: 0;
+        transform: translateX(-6px);
+        top: 0;
+        border-top-color: $arrow-color;
+      }
+
+      &::after {
+        left: 0;
+        transform: translateX(-6px);
+        top: 1px;
+        border-top-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  &[data-popper-placement^=bottom] {
+    .#{$prefix}__arrow {
+      &::before {
+        left: 0;
+        transform: translateX(-6px);
+        bottom: 0;
+        border-bottom-color: $arrow-color;
+      }
+
+      &::after {
+        left: 0;
+        transform: translateX(-6px);
+        bottom: 1px;
+        border-bottom-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  &[data-popper-placement^=top-start],
+  &[data-popper-placement^=bottom-start] {
+    .#{$prefix}__arrow {
+      &::before,
+      &::after {
+        transform: translateX(-18px);
+      }
+    }
+  }
+
+  &[data-popper-placement^=top-end],
+  &[data-popper-placement^=bottom-end] {
+    .#{$prefix}__arrow {
+      &::before,
+      &::after {
+        transform: translateX(6px);
+      }
+    }
+  }
+
+  &[data-popper-placement^=left] {
+    .#{$prefix}__arrow {
+      right: 0;
+
+      &::before {
+        top: 0;
+        transform: translateY(-50%);
+        left: 0;
+        border-left-color: $arrow-color;
+      }
+
+      &::after {
+        top: 0px;
+        transform: translateY(-50%);
+        left: 1px;
+        border-left-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  &[data-popper-placement^=right] {
+    .#{$prefix}__arrow {
+      &::before {
+        top: 0;
+        transform: translateY(-50%);
+        right: 0;
+        border-right-color: $arrow-color;
+      }
+
+      &::after {
+        top: 0px;
+        transform: translateY(-50%);
+        right: 1px;
+        border-right-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  &__overlay {
+    position: relative;
+    box-sizing: border-box;
+    background-color: use-color('white');
+    box-shadow: 0px 1px 12px 0px rgba(0, 0, 0, 0.12);
+    border-radius: $spacer-1;
+    // 为了保证 arrow 三角形可以正常展示
+    min-width: 36px;
+    min-height: 36px;
+  }
 }

@@ -14,7 +14,7 @@ export const Basic = () => {
           Open
         </Button>
         <Popper visible={visible} attachEl={btnRef} onOutsideClick={() => setVisible(false)}>
-          I am Popper Content
+          The content of the Popper.
         </Popper>
       </div>
     </>

@@ -1,30 +1,79 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
+import { useLatestRef } from '@hi-ui/use-latest'
 
 /**
  * Handles the event of clicking outside of the wrapped component.
- *
- * @param ref
- * @param callback
  */
 export const useOutsideClick = (
   ref: React.RefObject<HTMLElement>,
-  callback?: (e: Event) => void
+  callback?: (e: Event) => void,
+  capture = true
 ) => {
-  const callbackRef = useRef(callback)
-  callbackRef.current = callback
+  const callbackRef = useLatestRef(callback)
 
   useEffect(() => {
-    const onMouseDown: any = (evt: MouseEvent) => {
+    const onMouseDown = (evt: MouseEvent) => {
+      if (!callbackRef.current) return
+
       if (!ref.current) return
 
-      if (!ref.current.contains(evt.target as HTMLElement)) {
-        callbackRef.current?.(evt)
-      }
+      if (ref.current.contains(evt.target as HTMLElement)) return
+
+      callbackRef.current(evt)
     }
 
-    document.addEventListener('mousedown', onMouseDown, true)
+    const doc = getOwnerDocument(ref.current)
+
+    doc.addEventListener('mousedown', onMouseDown, capture)
     return () => {
-      document.removeEventListener('mousedown', onMouseDown, true)
+      doc.removeEventListener('mousedown', onMouseDown, capture)
     }
-  }, [ref])
+  }, [capture])
+}
+
+/**
+ * Handles the event of clicking outside of the wrapped components.
+ */
+export const useRefsOutsideClick = (
+  refs: React.RefObject<HTMLElement>[],
+  callback?: (e: Event) => void,
+  capture = true
+) => {
+  const callbackRef = useLatestRef(callback)
+
+  useEffect(() => {
+    const onMouseDown = (evt: MouseEvent) => {
+      if (!callbackRef.current) return
+
+      let isEmptyRefs = true
+      let containedInRefs = false
+
+      for (const ref of refs) {
+        if (ref.current) {
+          isEmptyRefs = false
+
+          if (ref.current.contains(evt.target as HTMLElement)) {
+            containedInRefs = true
+            break
+          }
+        }
+      }
+
+      if (isEmptyRefs || containedInRefs) return
+
+      callbackRef.current(evt)
+    }
+
+    // 注意，要求 refs 每项都在同一文档流下面
+    const doc = getOwnerDocument(refs.find((ref) => Boolean(ref && ref.current))?.current)
+
+    doc.addEventListener('mousedown', onMouseDown, capture)
+    return () => {
+      doc.removeEventListener('mousedown', onMouseDown, capture)
+    }
+  }, [...refs, capture])
+}
+
+function getOwnerDocument(el?: HTMLElement | null) {
+  return (el instanceof Element && el.ownerDocument) || document
 }
