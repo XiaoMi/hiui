@@ -6,11 +6,11 @@ import { usePortal } from './use-portal'
  * TODO: What is Portal
  */
 export const Portal = (props: PortalProps) => {
-  const { className, disabled, container, children } = props
+  const { className, disabled = false, container, children } = props
 
   const InternalPortal = usePortal({ container, className })
 
-  return disabled ? children : <InternalPortal>{children}</InternalPortal>
+  return disabled ? (children as any) : <InternalPortal>{children}</InternalPortal>
 }
 
 export interface PortalProps {
@@ -25,7 +25,7 @@ export interface PortalProps {
   /**
    * 指定 portal 位置节点
    */
-  container: (() => HTMLElement | null) | HTMLElement | null
+  container?: (() => HTMLElement | null) | HTMLElement | null
   /**
    * 是否关闭传送
    */

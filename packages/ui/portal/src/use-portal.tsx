@@ -2,6 +2,7 @@ import React, { useRef, useCallback, useMemo, useState, useLayoutEffect } from '
 import { createPortal } from 'react-dom'
 import { getPrefixCls } from '@hi-ui/classname'
 import * as Container from '@hi-ui/container'
+import { useForceUpdate } from '@hi-ui/use-force-update'
 
 export const usePortal = ({ className, container }: UsePortalProps) => {
   const [doc, tempNode] = useOwnDocument()
@@ -12,6 +13,8 @@ export const usePortal = ({ className, container }: UsePortalProps) => {
     return '.' + getPrefixCls(Math.random().toString(36).substring(5))
   }, [])
 
+  const [forceUpdate] = useForceUpdate()
+
   useLayoutEffect(() => {
     if (!doc) return
 
@@ -20,18 +23,19 @@ export const usePortal = ({ className, container }: UsePortalProps) => {
     if (className) {
       portalEl.classList.add(className)
     }
-
     portalElRef.current = portalEl
 
+    forceUpdate()
+
     return () => {
-      if (portalEl.parentElement) {
+      if (portalEl.parentElement && portalEl.parentElement.removeChild) {
         portalEl.parentElement.removeChild(portalEl)
       } else {
         Container.removeContainer(selectorId, doc)
       }
       portalElRef.current = undefined
     }
-  }, [container, className, selectorId, doc])
+  }, [container, className, selectorId, doc, forceUpdate])
 
   const Portal = useCallback(
     ({ children }) => {
@@ -51,10 +55,11 @@ export interface UsePortalProps {
   /**
    * 指定 portal 位置节点
    */
-  container: (() => HTMLElement | null) | HTMLElement | null
+  container?: (() => HTMLElement | null) | HTMLElement | null
 }
 
-const resolveContainer = (container: (() => HTMLElement | null) | HTMLElement | null) => {
+const resolveContainer = (container?: (() => HTMLElement | null) | HTMLElement | null) => {
+  if (!container) return null
   if (typeof container === 'function') container = container()
   return container
 }
@@ -79,7 +84,7 @@ const useOwnDocument = () => {
   }, [])
 
   const tempNode = useMemo(
-    () => (ownDocument ? <span ref={elementRef} style={hiddenStyle} /> : null),
+    () => (ownDocument ? null : <span ref={elementRef} style={hiddenStyle} />),
     [ownDocument]
   )
 
