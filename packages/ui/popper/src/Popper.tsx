@@ -52,7 +52,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
     },
     ref
   ) => {
-    const [internalVisible, internalVisibleAction] = useToggle(visible)
+    const [transitionVisible, transitionVisibleAction] = useToggle(visible)
 
     const popperElRef = useRef<HTMLDivElement | null>(null)
     const [arrowElRef, setArrowElmRef] = useState<HTMLElement | null>(null)
@@ -83,7 +83,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       targetElement: attachEl,
       popperElement: popperElRef.current,
       arrowElement: arrowElRef,
-      disabled,
+      disabled: disabled || !visible,
       placement,
       zIndex,
       gutterGap,
@@ -99,16 +99,16 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
 
     useLayoutEffect(() => {
       if (visible) {
-        internalVisibleAction.on()
+        transitionVisibleAction.on()
       }
-    }, [visible, internalVisibleAction])
+    }, [visible, transitionVisibleAction])
 
     const hasOpenedRef = useRef(false)
     if (visible) {
       hasOpenedRef.current = true
     }
     const shouldRenderChildren = useMemo(() => {
-      if (visible || internalVisible) return true
+      if (visible || transitionVisible) return true
 
       // 初次未渲染，且开启预渲染时渲染 children
       if (!hasOpenedRef.current) return preload
@@ -117,11 +117,11 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       if (!unmountOnClose) return true
 
       return false
-    }, [preload, unmountOnClose, visible, internalVisible])
+    }, [preload, unmountOnClose, visible, transitionVisible])
 
     const popperMergedRef = useMergeRefs(popperElRef, ref)
 
-    const cls = cx(prefixCls, className, `${prefixCls}--${visible ? 'open' : 'closed'}`)
+    const cls = cx(prefixCls, className, visible && `${prefixCls}--open`)
 
     return (
       <CSSTransition
@@ -133,7 +133,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
           popperElRef.current?.focus()
         }}
         onExited={() => {
-          internalVisibleAction.off()
+          transitionVisibleAction.off()
         }}
       >
         <Portal container={container} disabled={disabledPortal}>
