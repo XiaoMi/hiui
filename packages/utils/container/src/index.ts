@@ -4,14 +4,14 @@
  * @param selector 以 `.` 开头的选择器类
  * @returns 容器元素
  */
-export const getContainer = (selector: string) => {
-  let rootElm = document.querySelector(selector)
+export const getContainer = (selector: string, doc = document) => {
+  let rootElm = doc.querySelector(selector)
 
   if (rootElm) return rootElm
 
-  rootElm = document.createElement('div')
+  rootElm = doc.createElement('div')
   rootElm.className = selector.slice(1)
-  document.body.appendChild(rootElm)
+  doc.body.appendChild(rootElm)
   return rootElm
 }
 
@@ -20,10 +20,10 @@ export const getContainer = (selector: string) => {
  *
  * @param selector 以 `.` 开头的选择器类
  */
-export const removeContainer = (selector: string) => {
-  const rootElm = document.querySelector(selector)
+export const removeContainer = (selector: string, doc = document) => {
+  const rootElm = doc.querySelector(selector)
 
-  if (rootElm) {
-    rootElm.parentElement?.removeChild(rootElm)
+  if (rootElm && rootElm.parentElement) {
+    rootElm.parentElement.removeChild(rootElm)
   }
 }

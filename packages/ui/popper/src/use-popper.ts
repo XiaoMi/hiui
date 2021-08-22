@@ -1,7 +1,6 @@
-import { useRef, useCallback, useState, useMemo, useLayoutEffect } from 'react'
+import React, { useRef, useState, useMemo, useLayoutEffect } from 'react'
 import * as PopperJS from '@popperjs/core'
 import { createPopper } from '@popperjs/core'
-import { useUnmountEffect } from '@hi-ui/use-unmount-effect'
 import { useLatestRef } from '@hi-ui/use-latest'
 
 const NOOP_ARRAY = [] as []
@@ -23,9 +22,6 @@ export const usePopper = (props: UsePopperProps) => {
     eventListeners = true,
     preventOverflow = true,
   } = props
-
-  const targetElRef = useLatestRef(targetElement)
-  const popperElRef = useLatestRef(popperElement)
 
   const [state, setState] = useState<PopperState>(() => ({
     styles: {
@@ -55,8 +51,8 @@ export const usePopper = (props: UsePopperProps) => {
               // 保证内容能正常展示，即使开启了 matchWidth
               minWidth: 'max-content',
               ...state.styles.popper,
-            },
-            arrow: state.styles.arrow,
+            } as React.CSSProperties,
+            arrow: state.styles.arrow as React.CSSProperties,
           },
           attributes: state.attributes,
         })
@@ -68,86 +64,80 @@ export const usePopper = (props: UsePopperProps) => {
 
   const instanceRef = useRef<PopperJS.Instance | null>(null)
 
-  const destroyInstance = useCallback(() => {
-    instanceRef.current?.destroy()
-    instanceRef.current = null
-  }, [])
-
-  const setupPopper = useCallback(
-    (
-      targetEl: Element | PopperJS.VirtualElement | null,
-      popperEl: HTMLElement | null,
-      arrowElement?: HTMLElement | null
-    ) => {
-      destroyInstance()
-
-      if (disabled) return
-      if (!targetEl || !popperEl) return
-
-      instanceRef.current = createPopper(targetEl, popperEl, {
-        strategy,
-        placement,
-        modifiers: [
-          getTransformOriginModifier(),
-          getMatchWidthModifier(matchWidth),
-          getEventListenersModifier(eventListeners),
-          {
-            name: 'arrow',
-            options: {
-              element: arrowElement,
-              padding: arrowPadding,
-            },
-          },
-          {
-            name: 'offset',
-            options: {
-              offset: [crossGap, gutterGap],
-            },
-          },
-          {
-            name: 'flip',
-            enabled: flip,
-            options: { padding: 8 },
-          },
-          {
-            name: 'preventOverflow',
-            enabled: preventOverflow,
-            options: { boundary: 'clippingParents' },
-          },
-          updateStateModifier,
-          { name: 'applyStyles', enabled: false },
-          ...customModifiers,
-        ],
-      })
-
-      instanceRef.current.forceUpdate()
-    },
-    [
-      disabled,
+  const popperOptions = useMemo(() => {
+    return {
       strategy,
       placement,
-      crossGap,
-      gutterGap,
-      arrowPadding,
-      eventListeners,
-      matchWidth,
-      flip,
-      preventOverflow,
-      updateStateModifier,
-      customModifiers,
-      destroyInstance,
-    ]
-  )
-
-  useUnmountEffect(() => {
-    if (!targetElRef.current || !popperElRef.current) {
-      destroyInstance()
+      modifiers: [
+        getTransformOriginModifier(),
+        getMatchWidthModifier(matchWidth),
+        getEventListenersModifier(eventListeners),
+        {
+          name: 'arrow',
+          options: {
+            element: arrowElement,
+            padding: arrowPadding,
+          },
+        },
+        {
+          name: 'offset',
+          options: {
+            offset: [crossGap, gutterGap],
+          },
+        },
+        {
+          name: 'flip',
+          enabled: flip,
+          options: { padding: 8 },
+        },
+        {
+          name: 'preventOverflow',
+          enabled: preventOverflow,
+          options: { boundary: 'clippingParents' },
+        },
+        // https://popper.js.org/docs/v2/modifiers/apply-styles//#phase
+        { name: 'applyStyles', enabled: false },
+        updateStateModifier,
+        ...customModifiers,
+      ],
     }
-  })
+  }, [
+    strategy,
+    placement,
+    crossGap,
+    gutterGap,
+    arrowPadding,
+    eventListeners,
+    matchWidth,
+    flip,
+    preventOverflow,
+    updateStateModifier,
+    customModifiers,
+    arrowElement,
+  ])
+
+  const popperOptionsRef = useLatestRef(popperOptions)
 
   useLayoutEffect(() => {
-    setupPopper(targetElement, popperElement, arrowElement)
-  }, [setupPopper, targetElement, popperElement, arrowElement])
+    instanceRef.current?.setOptions(popperOptions)
+  }, [popperOptions])
+
+  useLayoutEffect(() => {
+    if (disabled) return
+    if (!targetElement || !popperElement) return
+
+    const instance = createPopper(targetElement, popperElement, popperOptionsRef.current)
+
+    instance.forceUpdate()
+
+    instanceRef.current = instance
+
+    return () => {
+      // 销毁当前的 instance
+      instance.destroy()
+      instanceRef.current = null
+    }
+  }, [disabled, targetElement, popperElement, popperOptionsRef])
 
   return {
     styles: state.styles,
@@ -163,7 +153,7 @@ export const usePopper = (props: UsePopperProps) => {
 
 type PopperState = {
   styles: {
-    [key: string]: Partial<CSSStyleDeclaration>
+    [key: string]: React.CSSProperties
   }
   attributes: {
     [key: string]: {
@@ -218,11 +208,11 @@ export interface UsePopperProps {
    */
   placement?: PopperJS.Placement
   /**
-   * 自定义 popper.js 的装饰器，可以覆盖已有的
+   * 自定义 popper.js 的装饰器
    */
   modifiers?: ReadonlyArray<PopperJS.Modifier<string, any>>
   /**
-   * 设置 arrow 的 padding，用来避免 arrow 处在 popper 的边界
+   * 设置 arrow 的 padding，避免 arrow 处在 popper 边界
    */
   arrowPadding?: number
   /**
