@@ -3,40 +3,7 @@
 $prefix: '#{$component-prefix}-popper' !default;
 
 .#{$prefix} {
-  opacity: 1;
-  transition: opacity 0.2s linear;
   position: relative;
-
-  &--motion {
-    &-enter {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-
-    &-enter-active {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    &-enter-done {
-      opacity: 1;
-    }
-
-    &-exit {
-      opacity: 1;
-      transform: translateX(100%);
-    }
-
-    &-exit-active {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-
-    &-exit-done {
-      opacity: 0;
-      transform: translateX(100%);
-    }
-  }
 
   &__arrow {
     z-index: 1;
@@ -151,5 +118,51 @@ $prefix: '#{$component-prefix}-popper' !default;
     // 为了保证 arrow 三角形可以正常展示
     min-width: 36px;
     min-height: 36px;
+    // animation
+    transition: opacity 0.1s linear,transform 0.1s ease-out;
+    transform-origin: var(--popper-transform-origin);
+  }
+
+  &--motion {
+    &-enter {
+      .#{$prefix}__overlay {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+    }
+
+    &-enter-active {
+      .#{$prefix}__overlay {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    &-enter-done {
+      .#{$prefix}__overlay {
+        opacity: 1;
+      }
+    }
+
+    &-exit {
+      .#{$prefix}__overlay {
+        opacity: 1;
+        transform: translateX(100%);
+      }
+    }
+
+    &-exit-active {
+      .#{$prefix}__overlay {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+    }
+
+    &-exit-done {
+      .#{$prefix}__overlay {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+    }
   }
 }

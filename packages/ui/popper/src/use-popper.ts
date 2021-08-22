@@ -14,6 +14,7 @@ export const usePopper = (props: UsePopperProps) => {
     modifiers: customModifiers = NOOP_ARRAY,
     strategy = 'absolute',
     placement = 'bottom-start',
+    zIndex,
     crossGap = 0,
     gutterGap = 8,
     arrowPadding = 12,
@@ -27,12 +28,14 @@ export const usePopper = (props: UsePopperProps) => {
     styles: {
       popper: {
         position: strategy,
+        zIndex,
         inset: '0 auto auto 0',
         minWidth: 'max-content',
         visibility: 'hidden',
       },
       arrow: {
         position: 'absolute',
+        zIndex: 1,
       },
     },
     attributes: {},
@@ -47,19 +50,23 @@ export const usePopper = (props: UsePopperProps) => {
         setState({
           styles: {
             popper: {
+              zIndex,
               visibility: 'visible',
               // 保证内容能正常展示，即使开启了 matchWidth
               minWidth: 'max-content',
               ...state.styles.popper,
             } as React.CSSProperties,
-            arrow: state.styles.arrow as React.CSSProperties,
+            arrow: {
+              zIndex: 1,
+              ...state.styles.arrow,
+            } as React.CSSProperties,
           },
           attributes: state.attributes,
         })
       },
       requires: ['computeStyles'],
     }),
-    []
+    [zIndex]
   )
 
   const instanceRef = useRef<PopperJS.Instance | null>(null)
@@ -219,6 +226,10 @@ export interface UsePopperProps {
    * 设置 popper 的 css 定位方式
    */
   strategy?: 'absolute' | 'fixed'
+  /**
+   * 手动指定层级
+   */
+  zIndex?: number
 }
 
 export const getMatchWidthModifier = (enabled: boolean): PopperJS.Modifier<'matchWidth', any> => {

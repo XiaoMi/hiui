@@ -13,7 +13,7 @@ export const Basic = () => {
         <Button ref={setBtnRef} onClick={() => setVisible(true)}>
           Open
         </Button>
-        <Popper visible={visible} attachEl={btnRef} onOutsideClick={() => setVisible(false)}>
+        <Popper visible={visible} attachEl={btnRef} onClose={() => setVisible(false)}>
           The content of the Popper.
         </Popper>
       </div>

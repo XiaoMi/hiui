@@ -22,7 +22,7 @@ export const Placement = () => {
           visible={visible}
           attachEl={btnEl}
           placement={placement}
-          onOutsideClick={() => setVisible(false)}
+          onClose={() => setVisible(false)}
           arrow
         >
           {/* <div style={{ width: 200 }}>HiUI</div> */}

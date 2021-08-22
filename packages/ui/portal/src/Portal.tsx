@@ -6,11 +6,11 @@ import { usePortal } from './use-portal'
  * TODO: What is Portal
  */
 export const Portal = (props: PortalProps) => {
-  const { className, disabled = false, container, children } = props
+  const { className, disabled, container, children } = props
 
-  const InternalPortal = usePortal({ container, className })
+  const InternalPortal = usePortal({ container, className, disabled })
 
-  return disabled ? (children as any) : <InternalPortal>{children}</InternalPortal>
+  return <InternalPortal>{children}</InternalPortal>
 }
 
 export interface PortalProps {
