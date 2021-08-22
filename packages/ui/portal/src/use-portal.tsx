@@ -79,20 +79,16 @@ const hiddenStyle: React.CSSProperties = {
 
 const useOwnDocument = () => {
   const [ownDocument, setOwnDocument] = useState<Document | undefined>()
-  const elementRef = useRef<HTMLDivElement | null>(null)
+  const [element, setElement] = useState<HTMLElement | null>(null)
 
   useLayoutEffect(() => {
-    if (!elementRef.current) return
+    if (!element) return
 
-    setOwnDocument(elementRef.current.ownerDocument)
-
-    return () => {
-      elementRef.current = null
-    }
-  }, [])
+    setOwnDocument(element.ownerDocument)
+  }, [element])
 
   const tempNode = useMemo(
-    () => (ownDocument ? null : <span ref={elementRef} style={hiddenStyle} />),
+    () => (ownDocument ? null : <span ref={setElement} style={hiddenStyle} />),
     [ownDocument]
   )
 

@@ -20,25 +20,12 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
       border-color: var(--color-primary);
     }
   }
-
-  &__modal {
-    box-sizing: border-box;
-    width: auto;
-    background-color: use-color('white');
-    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-    position: relative;
-  }
-
-  .#{$prefix}-panel {
-    // padding: 2px 0;
-    padding-top: 10px;
-  }
 }
 
 .#{$prefix}-panel {
   white-space: nowrap;
   box-sizing: border-box;
+  padding-top: 10px;
 
   &-search {
     box-sizing: border-box;

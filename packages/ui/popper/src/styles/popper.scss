@@ -3,6 +3,9 @@
 $prefix: '#{$component-prefix}-popper' !default;
 
 .#{$prefix} {
+  border-radius: 4px;
+  box-sizing: border-box;
+
   &__arrow {
     z-index: 1;
     position: relative;
