@@ -117,7 +117,7 @@ $prefix: '#{$component-prefix}-popper' !default;
     min-width: 36px;
     min-height: 36px;
     // animation
-    transition: opacity 0.1s linear,transform 0.1s ease-out;
+    transition: opacity 0.1s linear, transform 0.1s ease-out;
     transform-origin: var(--popper-transform-origin);
     opacity: 0;
     transform: scale(0) translateX(0);
@@ -127,35 +127,35 @@ $prefix: '#{$component-prefix}-popper' !default;
     &-enter {
       .#{$prefix}__overlay {
         opacity: 0;
-        transform: scale(0.9);
+        transform: scale(0);
       }
     }
 
     &-enter-active {
       .#{$prefix}__overlay {
         opacity: 1;
-        transform: translateX(0);
+        transform: scale(0);
       }
     }
 
     &-enter-done {
       .#{$prefix}__overlay {
         opacity: 1;
-        transform: scale(1) translateX(0);
+        transform: scale(1);
       }
     }
 
     &-exit {
       .#{$prefix}__overlay {
         opacity: 1;
-        transform: scale(1) translateX(0);
+        transform: scale(1) translateX(100%);
       }
     }
 
     &-exit-active {
       .#{$prefix}__overlay {
-        opacity: 0;
-        transform: scale(0.9) translateX(0);
+        opacity: 1;
+        transform: scale(0);
       }
     }
 

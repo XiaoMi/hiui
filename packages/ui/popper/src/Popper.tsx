@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useRef, useCallback, useLayoutEffect, useMemo } from 'react'
+import React, { forwardRef, useState, useRef, useCallback, useLayoutEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useRefsOutsideClick } from '@hi-ui/use-outside-click'
@@ -36,7 +36,6 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       onKeyDown,
       attachEl,
       container,
-      disabled,
       zIndex,
       gutterGap,
       crossGap,
@@ -52,7 +51,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
     },
     ref
   ) => {
-    const [transitionVisible, transitionVisibleAction] = useToggle(visible)
+    const [transitionVisible, transitionVisibleAction] = useToggle(false)
 
     const popperElRef = useRef<HTMLDivElement | null>(null)
     const [arrowElRef, setArrowElmRef] = useState<HTMLElement | null>(null)
@@ -83,7 +82,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       targetElement: attachEl,
       popperElement: popperElRef.current,
       arrowElement: arrowElRef,
-      disabled: disabled || !visible,
+      disabled: !visible,
       placement,
       zIndex,
       gutterGap,
@@ -103,62 +102,50 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       }
     }, [visible, transitionVisibleAction])
 
-    const hasOpenedRef = useRef(false)
-    if (visible) {
-      hasOpenedRef.current = true
-    }
-    const shouldRenderChildren = useMemo(() => {
-      if (visible || transitionVisible) return true
-
-      // 初次未渲染，且开启预渲染时渲染 children
-      if (!hasOpenedRef.current) return preload
-
-      // 未开启关闭时销毁，保留渲染 children
-      if (!unmountOnClose) return true
-
-      return false
-    }, [preload, unmountOnClose, visible, transitionVisible])
-
     const popperMergedRef = useMergeRefs(popperElRef, ref)
 
-    const cls = cx(prefixCls, className, visible && `${prefixCls}--open`)
+    const cls = cx(
+      prefixCls,
+      className,
+      visible && `${prefixCls}--open`,
+      !transitionVisible && `${prefixCls}--closed`
+    )
 
     return (
-      <CSSTransition
-        classNames={`${prefixCls}--motion`}
-        in={visible}
-        unmountOnExit={false}
-        timeout={110}
-        onEntered={() => {
-          popperElRef.current?.focus()
-        }}
-        onExited={() => {
-          transitionVisibleAction.off()
-        }}
-      >
-        <Portal container={container} disabled={disabledPortal}>
-          {shouldRenderChildren ? (
+      <Portal container={container} disabled={disabledPortal}>
+        <CSSTransition
+          classNames={`${prefixCls}--motion`}
+          in={visible}
+          timeout={102}
+          mountOnEnter={!preload}
+          unmountOnExit={unmountOnClose}
+          onEntered={() => {
+            popperElRef.current?.focus()
+          }}
+          onExited={() => {
+            transitionVisibleAction.off()
+          }}
+        >
+          <div
+            role={role}
+            className={cls}
+            ref={popperMergedRef}
+            style={Object.assign({ outline: 'none' }, style, styles.popper)}
+            {...rest}
+            {...attributes.popper}
+            tabIndex={-1}
+            onKeyDown={handleKeyDown}
+          >
             <div
-              role={role}
-              className={cls}
-              ref={popperMergedRef}
-              style={Object.assign({ outline: 'none' }, style, styles.popper)}
-              {...rest}
-              {...attributes.popper}
-              tabIndex={-1}
-              onKeyDown={handleKeyDown}
-            >
-              <div
-                ref={setArrowElmRef}
-                className={cx(`${prefixCls}__arrow`, !arrow && `hidden`)}
-                style={styles.arrow}
-              />
+              ref={setArrowElmRef}
+              className={cx(`${prefixCls}__arrow`, !arrow && `hidden`)}
+              style={styles.arrow}
+            />
 
-              <div className={`${prefixCls}__overlay`}>{children}</div>
-            </div>
-          ) : null}
-        </Portal>
-      </CSSTransition>
+            <div className={`${prefixCls}__overlay`}>{children}</div>
+          </div>
+        </CSSTransition>
+      </Portal>
     )
   }
 )
@@ -181,7 +168,7 @@ export interface PopperProps {
    */
   style?: React.CSSProperties
   visible?: boolean
-  attachEl: HTMLElement
+  attachEl: HTMLElement | null
   children?: React.ReactNode
   arrow?: boolean
   zIndex?: number
@@ -192,10 +179,6 @@ export interface PopperProps {
   unmountOnClose?: boolean
   onOutsideClick?: (evt: Event) => void
   container?: (() => HTMLElement | null) | HTMLElement | null
-  /**
-   * 是否禁用 popper
-   */
-  disabled?: boolean
   /**
    * 设置基于 reference 元素的间隙偏移量
    */

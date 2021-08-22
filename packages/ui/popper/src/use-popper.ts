@@ -14,7 +14,7 @@ export const usePopper = (props: UsePopperProps) => {
     modifiers: customModifiers = NOOP_ARRAY,
     strategy = 'absolute',
     placement = 'bottom-start',
-    zIndex,
+    zIndex = 1,
     crossGap = 0,
     gutterGap = 8,
     arrowPadding = 12,
@@ -35,7 +35,7 @@ export const usePopper = (props: UsePopperProps) => {
       },
       arrow: {
         position: 'absolute',
-        zIndex: 1,
+        zIndex: zIndex + 1,
       },
     },
     attributes: {},

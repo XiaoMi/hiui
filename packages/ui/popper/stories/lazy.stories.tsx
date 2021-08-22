@@ -20,7 +20,7 @@ export const Lazy = () => {
           </Popper>
         </div>
         <div>
-          <h1>preload</h1>
+          <h1>lazyLoad</h1>
           <Popper
             visible={visible}
             preload={false}
@@ -36,7 +36,7 @@ export const Lazy = () => {
           <h1>keep</h1>
           <Popper
             visible={visible}
-            preload
+            preload={true}
             unmountOnClose={false}
             placement="right"
             attachEl={btnRef}

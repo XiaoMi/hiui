@@ -49,6 +49,7 @@
     "@hi-ui/env": "^4.0.0-alpha.1",
     "@hi-ui/icons": "^4.0.0-alpha.3",
     "@hi-ui/input": "^4.0.0-alpha.3",
+    "@hi-ui/popper": "^4.0.0-alpha.0",
     "@hi-ui/times": "^4.0.0-alpha.1",
     "@hi-ui/use-deep-equal-deps": "^4.0.0-alpha.1",
     "@hi-ui/use-latest": "^4.0.0-alpha.1",

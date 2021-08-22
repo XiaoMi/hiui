@@ -3,12 +3,11 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { useOutsideClick } from '@hi-ui/use-outside-click'
-import { usePopper } from 'react-popper'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { DownOutlined } from '@hi-ui/icons'
 import { CheckCascaderPanel } from './CheckCascaderPanel'
 import { TagInput } from './TagInput'
+import { Popper } from '@hi-ui/popper'
 import {
   CheckCascaderItem,
   ExpandTrigger,
@@ -58,31 +57,9 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     const [menuVisible, menuVisibleAction] = useToggle()
 
     const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
-    const popperElRef = useRef<HTMLDivElement | null>(null)
-    const [arrowElRef, setArrowElmRef] = useState<HTMLElement | null>(null)
     const cascaderRef = useRef<HTMLDivElement | null>(null)
 
-    useOutsideClick(cascaderRef, menuVisibleAction.off)
-
-    const { styles, attributes } = usePopper(targetElRef, popperElRef.current, {
-      placement: 'bottom-start',
-      modifiers: [
-        {
-          enabled: true,
-          name: 'arrow',
-          options: {
-            element: arrowElRef,
-          },
-        },
-        {
-          enabled: true,
-          name: 'offset',
-          options: {
-            offset: [0, 4],
-          },
-        },
-      ],
-    })
+    // useOutsideClick(cascaderRef, menuVisibleAction.off)
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
@@ -101,42 +78,32 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
           suffix={<DownOutlined className={`${prefixCls}__suffix`} />}
           onClick={(evt) => {
             if (disabled) return
-
-            evt.stopPropagation()
             menuVisibleAction.on()
           }}
         />
 
-        {menuVisible ? (
-          <div
-            className={`${prefixCls}__modal`}
-            ref={popperElRef}
-            style={{ ...styles.popper, zIndex: 2 }}
-            {...attributes.popper}
-          >
-            <div ref={setArrowElmRef} style={styles.arrow} />
-            <CheckCascaderPanel
-              value={value}
-              onChange={tryChangeValue}
-              // 向下传递
-              {...{
-                data,
-                onSelect,
-                expandTrigger,
-                searchable,
-                disabled,
-                emptyContent,
-                changeOnSelect,
-                titleRender,
-                checkCascaded,
-                flatted,
-                upMatch,
-                placeholder: searchPlaceholder,
-                onLoadChildren,
-              }}
-            />
-          </div>
-        ) : null}
+        <Popper attachEl={targetElRef} visible={menuVisible} onClose={menuVisibleAction.off}>
+          <CheckCascaderPanel
+            value={value}
+            onChange={tryChangeValue}
+            // 向下传递
+            {...{
+              data,
+              onSelect,
+              expandTrigger,
+              searchable,
+              disabled,
+              emptyContent,
+              changeOnSelect,
+              titleRender,
+              checkCascaded,
+              flatted,
+              upMatch,
+              placeholder: searchPlaceholder,
+              onLoadChildren,
+            }}
+          />
+        </Popper>
       </div>
     )
   }
