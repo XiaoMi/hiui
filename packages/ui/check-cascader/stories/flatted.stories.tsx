@@ -100,9 +100,10 @@ const getDataOnlyLastCheckable = (data: any) => {
 }
 
 const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
-console.log(dataOnlyLastCheckable)
 
 export const Flatted = () => {
+  console.log(dataOnlyLastCheckable)
+
   return (
     <>
       <h1>Flatted</h1>

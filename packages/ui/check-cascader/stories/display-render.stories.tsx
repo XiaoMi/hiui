@@ -64,9 +64,10 @@ const getDataOnlyLastCheckable = (data: any) => {
 }
 
 const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
-console.log(dataOnlyLastCheckable)
 
 export const DisplayRender = () => {
+  console.log(dataOnlyLastCheckable)
+
   return (
     <>
       <h1>DisplayRender</h1>

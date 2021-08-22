@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useRefsOutsideClick } from '@hi-ui/use-outside-click'
 import { useToggle } from '@hi-ui/use-toggle'
 import { Modifier } from 'react-popper'
-import { usePortal } from '@hi-ui/use-portal'
+import { Portal } from '@hi-ui/portal'
 import * as PopperJS from '@popperjs/core'
 import { CSSTransition } from 'react-transition-group'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
@@ -74,8 +74,6 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
     //   setTargetEl(attachEl)
     // }, [forceUpdate, attachEl, internalVisibleAction, transitionVisibleAction])
 
-    const [Portal] = usePortal(`${prefixCls}-portal`)
-
     const cls = cx(prefixCls, className)
 
     const unmount = unmountOnClose && !visible && !internalVisible
@@ -91,25 +89,25 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
         }}
       >
         {/* 当前文档流、传送至 body、传送到指定 container */}
-        {/* <Portal container={container}> */}
-        <div
-          role={role}
-          className={cls}
-          ref={useMergeRefs(popperElRef, ref)}
-          style={Object.assign({}, style, styles.popper)}
-          {...rest}
-          {...attributes.popper}
-        >
+        <Portal>
           <div
-            ref={setArrowElmRef}
-            className={cx(`${prefixCls}__arrow`, !arrow && `hidden`)}
-            style={styles.arrow}
-          />
-          <div ref={console.log} className={`${prefixCls}__overlay`}>
-            {children}
+            role={role}
+            className={cls}
+            ref={useMergeRefs(popperElRef, ref)}
+            style={Object.assign({}, style, styles.popper)}
+            {...rest}
+            {...attributes.popper}
+          >
+            <div
+              ref={setArrowElmRef}
+              className={cx(`${prefixCls}__arrow`, !arrow && `hidden`)}
+              style={styles.arrow}
+            />
+            <div ref={console.log} className={`${prefixCls}__overlay`}>
+              {children}
+            </div>
           </div>
-        </div>
-        {/* </Portal> */}
+        </Portal>
       </CSSTransition>
     )
   }
