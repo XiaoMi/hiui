@@ -7,12 +7,7 @@ import { useForceUpdate } from '@hi-ui/use-force-update'
 const _role = 'portal'
 const _prefix = getPrefixCls(_role)
 
-export const usePortal = ({
-  prefixCls = _prefix,
-  className,
-  container,
-  disabled = false,
-}: UsePortalProps) => {
+export const usePortal = ({ prefixCls = _prefix, className, container }: UsePortalProps) => {
   const [doc, tempNode] = useOwnDocument()
 
   const portalElRef = useRef<Element | null>(null)
@@ -24,8 +19,6 @@ export const usePortal = ({
   const [forceUpdate] = useForceUpdate()
 
   useLayoutEffect(() => {
-    if (disabled) return
-
     if (!doc) return
 
     const portalEl = resolveContainer(container) || Container.getContainer(selectorId, doc)
@@ -45,15 +38,13 @@ export const usePortal = ({
       }
       portalElRef.current = null
     }
-  }, [container, className, selectorId, doc, forceUpdate, disabled])
+  }, [container, className, selectorId, doc, forceUpdate])
 
   const Portal = useCallback(
     ({ children }) => {
-      if (disabled) return null
-
       return portalElRef.current ? createPortal(children, portalElRef.current) : tempNode
     },
-    [tempNode, disabled]
+    [tempNode]
   )
 
   return Portal
@@ -72,10 +63,6 @@ export interface UsePortalProps {
    * 指定 portal 位置节点
    */
   container?: (() => HTMLElement | null) | HTMLElement | null
-  /**
-   * 是否关闭传送
-   */
-  disabled?: boolean
 }
 
 const resolveContainer = (container?: (() => HTMLElement | null) | HTMLElement | null) => {
