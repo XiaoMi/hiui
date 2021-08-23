@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/popper",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -45,12 +45,12 @@
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.0",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
-    "@hi-ui/env": "^4.0.0-alpha.0",
-    "@hi-ui/portal": "^4.0.0-alpha.0",
+    "@hi-ui/env": "^4.0.0-alpha.2",
+    "@hi-ui/portal": "^4.0.0-alpha.1",
     "@hi-ui/use-latest": "^4.0.0-alpha.1",
     "@hi-ui/use-merge-refs": "^4.0.0-alpha.1",
-    "@hi-ui/use-outside-click": "^4.0.0-alpha.1",
-    "@hi-ui/use-toggle": "^4.0.0-alpha.1",
+    "@hi-ui/use-outside-click": "^4.0.0-alpha.2",
+    "@hi-ui/use-toggle": "^4.0.0-alpha.2",
     "@popperjs/core": "^2.9.3",
     "react-transition-group": "^4.4.2"
   },
