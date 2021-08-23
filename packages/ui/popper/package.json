@@ -45,7 +45,14 @@
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.0",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
-    "@hi-ui/env": "^4.0.0-alpha.0"
+    "@hi-ui/env": "^4.0.0-alpha.0",
+    "@hi-ui/portal": "^4.0.0-alpha.0",
+    "@hi-ui/use-latest": "^4.0.0-alpha.1",
+    "@hi-ui/use-merge-refs": "^4.0.0-alpha.1",
+    "@hi-ui/use-outside-click": "^4.0.0-alpha.1",
+    "@hi-ui/use-toggle": "^4.0.0-alpha.1",
+    "@popperjs/core": "^2.9.3",
+    "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {
     "react": "^17.0.1",
