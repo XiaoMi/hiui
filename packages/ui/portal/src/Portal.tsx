@@ -1,6 +1,6 @@
 import React from 'react'
 import { __DEV__ } from '@hi-ui/env'
-import { usePortal } from './use-portal'
+import { usePortal, useContainerPortal } from './use-portal'
 
 /**
  * TODO: What is Portal
@@ -8,9 +8,17 @@ import { usePortal } from './use-portal'
 export const Portal = (props: PortalProps) => {
   const { className, disabled, container, children } = props
 
-  const InternalPortal = usePortal({ container, className })
+  if (disabled) return children as React.ReactElement | null
 
-  return disabled ? children : <InternalPortal>{children}</InternalPortal>
+  if (!children) return null
+
+  return container === undefined ? (
+    <DefaultPortal className={className}>{children}</DefaultPortal>
+  ) : (
+    <ContainerPortal className={className} container={container}>
+      {children}
+    </ContainerPortal>
+  )
 }
 
 export interface PortalProps {
@@ -34,4 +42,14 @@ export interface PortalProps {
 
 if (__DEV__) {
   Portal.displayName = 'Portal'
+}
+
+const DefaultPortal = ({ className, children }: PortalProps) => {
+  const InternalPortal = usePortal({ className })
+  return <InternalPortal>{children}</InternalPortal>
+}
+
+const ContainerPortal = ({ className, container, children }: PortalProps) => {
+  const InternalPortal = useContainerPortal({ className, container })
+  return <InternalPortal>{children}</InternalPortal>
 }
