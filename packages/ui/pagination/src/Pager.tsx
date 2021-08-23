@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
@@ -8,35 +8,53 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is Pager
  */
-export const Pager = forwardRef<HTMLDivElement | null, PaginationProps>(
-  ({ prefixCls = _prefix, role = _role, className, children, ...rest }, ref) => {
-    const cls = cx(prefixCls, className)
+export const Pager: React.FC<PagerProps> = ({ prefixCls = _prefix, onClick, page = '' }, ref) => {
+  const cls = cx(prefixCls)
 
-    return (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        {children}
-      </div>
-    )
-  }
-)
+  const handleClick = useCallback(() => {
+    if (onClick) {
+      onClick(page)
+    }
+  }, [page, onClick])
 
-export interface PaginationProps {
+  const handleKeyPress = useCallback(
+    (e) => {
+      if (e.keyCode === 13) {
+        e.preventDefault()
+        handleClick()
+      }
+    },
+    [handleClick]
+  )
+
+  return (
+    <li className={cls} onClick={handleClick} onKeyPress={handleKeyPress} tabIndex={0}>
+      <a rel="nofollow">{page}</a>
+    </li>
+  )
+}
+
+export interface PagerProps {
   /**
    * 组件默认的选择器类
    */
   prefixCls?: string
   /**
-   * 组件的语义化 Role 属性
+   * 页码
    */
-  role?: string
+  page?: number | string
   /**
-   * 组件的注入选择器类
+   * 是否选中
    */
-  className?: string
+  active?: boolean
   /**
-   * 组件的注入样式
+   * 是否禁用
    */
-  style?: React.CSSProperties
+  disabled?: boolean
+  /**
+   * 点击事件
+   */
+  onClick?: (page: number | string) => void
 }
 
 if (__DEV__) {

@@ -6,19 +6,10 @@ const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
 
 /**
-* TODO: What is Pagination
-*/
+ * TODO: What is Pagination
+ */
 export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
-  (
-    {
-      prefixCls = _prefix,
-      role = _role,
-      className,
-      children,
-      ...rest
-    },
-    ref
-  ) => {
+  ({ prefixCls = _prefix, role = _role, className, children, ...rest }, ref) => {
     const cls = cx(prefixCls, className)
 
     return (
@@ -46,6 +37,33 @@ export interface PaginationProps {
    * 组件的注入样式
    */
   style?: React.CSSProperties
+  /**
+   * 当前页码
+   */
+  current: number
+
+  /**
+   * 默认当前页码
+   */
+  defaultCurrent: number
+
+  /**
+   * 最大显示的页数
+   */
+  max: number
+  /**
+   * 	每页条数
+   */
+  pageSize: number
+  /**
+   * 	数组总数
+   */
+  total: number
+
+  /**
+   * 	是否展示数组总数
+   */
+  showTotal: boolean
 }
 
 if (__DEV__) {
