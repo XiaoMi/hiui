@@ -216,9 +216,10 @@ const getDataOnlyLastCheckable = (data: any) => {
 }
 
 const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
-console.log(dataOnlyLastCheckable)
 
 export const Search = () => {
+  console.log(dataOnlyLastCheckable)
+
   return (
     <>
       <h1>Search</h1>

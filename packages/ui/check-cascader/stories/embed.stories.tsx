@@ -100,9 +100,10 @@ const getDataOnlyLastCheckable = (data: any) => {
 }
 
 const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
-console.log(dataOnlyLastCheckable)
 
 export const Embed = () => {
+  console.log(dataOnlyLastCheckable)
+
   return (
     <>
       <h1>Embed</h1>

@@ -137,7 +137,6 @@ const getDataOnlyLastCheckable = (data: any) => {
 }
 
 const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
-console.log(dataOnlyLastCheckable)
 
 export const Disabled = () => {
   return (

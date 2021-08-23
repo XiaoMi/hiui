@@ -47,5 +47,8 @@
   },
   "devDependencies": {
     "@hi-ui/hi-build": "^4.0.0-alpha.1"
+  },
+  "dependencies": {
+    "@hi-ui/use-latest": "^4.0.0-alpha.1"
   }
 }
