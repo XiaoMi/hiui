@@ -4,14 +4,22 @@ import { getPrefixCls } from '@hi-ui/classname'
 import * as Container from '@hi-ui/container'
 import { useForceUpdate } from '@hi-ui/use-force-update'
 
-export const usePortal = ({ className, container, disabled = false }: UsePortalProps) => {
+const _role = 'portal'
+const _prefix = getPrefixCls(_role)
+
+export const usePortal = ({
+  prefixCls = _prefix,
+  className,
+  container,
+  disabled = false,
+}: UsePortalProps) => {
   const [doc, tempNode] = useOwnDocument()
 
-  const portalElRef = useRef<Element | undefined>()
+  const portalElRef = useRef<Element | null>(null)
 
   const selectorId = useMemo(() => {
-    return '.' + getPrefixCls(Math.random().toString(36).substring(5))
-  }, [])
+    return `.${prefixCls}-${Math.random().toString(36).substring(5)}`
+  }, [prefixCls])
 
   const [forceUpdate] = useForceUpdate()
 
@@ -35,7 +43,7 @@ export const usePortal = ({ className, container, disabled = false }: UsePortalP
       } else {
         Container.removeContainer(selectorId, doc)
       }
-      portalElRef.current = undefined
+      portalElRef.current = null
     }
   }, [container, className, selectorId, doc, forceUpdate, disabled])
 
@@ -52,6 +60,10 @@ export const usePortal = ({ className, container, disabled = false }: UsePortalP
 }
 
 export interface UsePortalProps {
+  /**
+   * 组件默认的选择器类
+   */
+  prefixCls?: string
   /**
    * 组件的注入选择器类
    */
