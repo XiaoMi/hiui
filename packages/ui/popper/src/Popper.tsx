@@ -51,8 +51,8 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
     },
     ref
   ) => {
-    const [transitionVisible, setTransitionVisible] = useState(!visible)
-    const [transitionExisted, setTransitionExisted] = useState(!visible)
+    const [transitionVisible, setTransitionVisible] = useState(false)
+    const [transitionExisted, setTransitionExisted] = useState(true)
 
     useEffect(() => {
       setTransitionVisible(visible)
@@ -105,8 +105,6 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       strategy,
     })
 
-    const popperMergedRef = useMergeRefs(popperElRef, ref)
-
     const cls = cx(prefixCls, className)
 
     return (
@@ -130,7 +128,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
         <div
           role={role}
           className={cls}
-          ref={popperMergedRef}
+          ref={useMergeRefs(popperElRef, ref)}
           style={Object.assign({ outline: 'none' }, style, styles.popper)}
           {...rest}
           {...attributes.popper}
@@ -167,16 +165,49 @@ export interface PopperProps {
    * 组件的注入样式
    */
   style?: React.CSSProperties
-  visible?: boolean
-  attachEl: HTMLElement | null
+  /**
+   * popper 渲染的内容
+   */
   children?: React.ReactNode
-  arrow?: boolean
-  zIndex?: number
+  /**
+   * 指定吸附的节点
+   */
+  attachEl: HTMLElement | null
+  /**
+   * 开启 popper 展示（受控）
+   */
+  visible: boolean
+  /**
+   * 关闭 popper 时回调
+   */
   onClose?: () => void
+  /**
+   * 是否展示箭头
+   */
+  arrow?: boolean
+  /**
+   * 指定 css 展示层级
+   */
+  zIndex?: number
+  /**
+   * 开启按键 Esc 时触发 onClose 回调
+   */
   closeOnEsc?: boolean
+  /**
+   * 开启点击外部时触发 onClose 回调
+   */
   closeOnOutsideClick?: boolean
+  /**
+   * 开启 popper 预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
+   */
   preload?: boolean
+  /**
+   * 开启 popper 关不时销毁，用于性能优化，优先级大于 `preload`
+   */
   unmountOnClose?: boolean
+  /**
+   * 外界元素点击数触发
+   */
   onOutsideClick?: (evt: Event) => void
   /**
    * 设置基于 reference 元素的间隙偏移量
@@ -218,6 +249,9 @@ export interface PopperProps {
    * 设置 popper 的 css 定位方式
    */
   strategy?: 'absolute' | 'fixed'
+  /**
+   * popper 聚焦时按键触发回调
+   */
   onKeyDown?: (evt: React.KeyboardEvent) => void
   /**
    * 开始动画弹出时回调
