@@ -4,7 +4,7 @@ import Button from '@hi-ui/button'
 
 export const Basic = () => {
   const [btnRef, setBtnRef] = React.useState(null)
-  const [visible, setVisible] = React.useState(true)
+  const [visible, setVisible] = React.useState(false)
 
   return (
     <>
