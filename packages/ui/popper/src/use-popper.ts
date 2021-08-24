@@ -51,7 +51,6 @@ export const usePopper = (props: UsePopperProps) => {
           styles: {
             popper: {
               zIndex,
-              visibility: 'visible',
               // 保证内容能正常展示，即使开启了 matchWidth
               minWidth: 'max-content',
               ...state.styles.popper,

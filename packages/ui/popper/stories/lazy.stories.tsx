@@ -9,7 +9,7 @@ export const Lazy = () => {
   return (
     <>
       <h1>Lazy</h1>
-      <div className="popper-lazy">
+      <div className="popper-lazy__wrap">
         <Button ref={setBtnRef} onClick={() => setVisible(true)}>
           Open
         </Button>

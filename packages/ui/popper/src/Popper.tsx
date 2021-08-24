@@ -86,6 +86,19 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       [closeOnEsc, onCloseLatest, onKeyDownLatest]
     )
 
+    const onEnteredLatest = useLatestCallback(onEntered)
+    const onExitedLatest = useLatestCallback(onExited)
+
+    const handleEntered = useCallback(() => {
+      popperElRef.current?.focus()
+      onEnteredLatest()
+    }, [onEnteredLatest])
+
+    const handleExited = useCallback(() => {
+      setTransitionExisted(true)
+      onExitedLatest()
+    }, [onExitedLatest])
+
     const { styles, attributes } = usePopper({
       targetElement: attachEl,
       popperElement: popperElRef.current,
@@ -116,14 +129,8 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
         unmountOnExit={unmountOnClose}
         onEnter={onEnter}
         onExit={onExit}
-        onEntered={() => {
-          popperElRef.current?.focus()
-          onEntered?.()
-        }}
-        onExited={() => {
-          setTransitionExisted(true)
-          onExited?.()
-        }}
+        onEntered={handleEntered}
+        onExited={handleExited}
       >
         <div
           role={role}

@@ -4,7 +4,7 @@ import { getPrefixCls } from '@hi-ui/classname'
 import * as Container from '@hi-ui/container'
 import { useForceUpdate } from '@hi-ui/use-force-update'
 import { useOwnDocument } from './hooks'
-import { addDOMClass, resolveContainer } from './utils'
+import { addDOMClass, removeDOMClass, resolveContainer } from './utils'
 
 const _role = 'portal'
 const _prefix = getPrefixCls(_role)
@@ -77,12 +77,14 @@ export const useContainerPortal = ({
     const nextEl = resolveContainer(container)
 
     if (nextEl !== portalElRef.current) {
-      if (nextEl) {
-        addDOMClass(nextEl, className)
-      }
+      addDOMClass(nextEl, className)
 
       portalElRef.current = nextEl
       forceUpdate()
+
+      return () => {
+        removeDOMClass(nextEl, className)
+      }
     }
   })
 

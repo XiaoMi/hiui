@@ -1,11 +1,16 @@
-export const addDOMClass = (el: Element, className?: string) => {
-  if (!className) return
-  const classes = className.trim().split(' ')
+export const addDOMClass = (el?: Element | null, className?: string) => {
+  if (!el || !className) return
 
-  classes.forEach((cls) => {
-    if (!el.classList.contains(cls)) {
-      el.classList.add(className)
-    }
+  className.split(' ').forEach((cls) => {
+    el.classList.add(cls)
+  })
+}
+
+export const removeDOMClass = (el?: Element | null, className?: string) => {
+  if (!el || !className) return
+
+  className.split(' ').forEach((cls) => {
+    el.classList.remove(cls)
   })
 }
 

@@ -124,6 +124,7 @@ $prefix: '#{$component-prefix}-popper' !default;
     transform-origin: var(--popper-transform-origin);
     opacity: 0;
     transform: scale(0) translateX(0);
+    will-change: transform;
   }
 
   &--motion {
@@ -163,6 +164,9 @@ $prefix: '#{$component-prefix}-popper' !default;
     }
 
     &-exit-done {
+      // 即使保留dom，但是需要 hidden 不可点击
+      visibility: hidden;
+
       .#{$prefix}__overlay {
         opacity: 0;
       }

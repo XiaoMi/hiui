@@ -3,7 +3,7 @@ import Popper from '../src'
 import Button from '@hi-ui/button'
 import * as PopperJS from '@popperjs/core'
 
-export const Placement = () => {
+export const Arrow = () => {
   const [btnEl, setBtnEl] = React.useState(null)
   const [visible, setVisible] = React.useState(false)
   const [placement, setPlacement] = React.useState<undefined | PopperJS.Placement>()
@@ -16,17 +16,16 @@ export const Placement = () => {
 
   return (
     <>
-      <h1>Placement</h1>
-      <div className="popper-placement__wrap">
+      <h1>Arrow</h1>
+      <div className="popper-arrow__wrap">
         <Popper
           visible={visible}
           attachEl={btnEl}
           placement={placement}
           onClose={() => setVisible(false)}
+          arrow
         >
-          {/* <div style={{ width: 200 }}>HiUI</div> */}
-          {/* <div style={{ height: 200 }}>HiUI</div> */}
-          {/* <div style={{ width: 200, height: 200 }}>HiUI</div> */}
+          <div style={{ width: 200, height: 80 }}>Here is HiUI Popper.</div>
         </Popper>
 
         <table className="placement-table" cellSpacing="5">
