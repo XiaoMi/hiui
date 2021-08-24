@@ -52,15 +52,24 @@ export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenu
 
     const [isLoadingId, onItemExpand] = useAsyncSwitch(onChangeData, onOptionSelect, onLoadChildren)
 
-    const [checkedIds, onOptionCheck] = useCheck(defaultValue, valueProp, onChange)
+    const [onOptionCheck, isCheckedId, isSemiCheckedId] = useCheck(
+      checkCascaded,
+      disabled,
+      flattedData,
+      defaultValue,
+      valueProp,
+      ({ checkedIds, semiCheckedIds }, node: CheckCascaderItemEventData, checked: boolean) => {
+        onChange?.(checkedIds, node, checked)
+      }
+    )
 
     const getCascaderItemRequiredProps = useLatestCallback(
       ({ id, depth }: FlattedCheckCascaderItem): CheckCascaderItemRequiredProps => {
         return {
           selected: flatted ? selectedId === id : selectedIds[depth] === id,
-          checked: checkedIds.indexOf(id) !== -1,
+          checked: isCheckedId(id),
           loading: isLoadingId(id),
-          semiChecked: false,
+          semiChecked: isSemiCheckedId(id),
           focused: false,
         }
       }

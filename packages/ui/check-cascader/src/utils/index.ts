@@ -192,3 +192,25 @@ export const addChildrenById = (
     }
   }
 }
+
+/**
+ * 寻找某一节点的所有子节点的 ids
+ *
+ * @param node
+ * @returns
+ */
+export const findNestedChildIds = (node: TreeNodeData) => {
+  const allChildrenIds: React.ReactText[] = []
+
+  const dig = (node: TreeNodeData) => {
+    if (node.children) {
+      node.children.forEach((child) => {
+        allChildrenIds.push(child.id)
+        dig(child)
+      })
+    }
+  }
+
+  dig(node)
+  return allChildrenIds
+}

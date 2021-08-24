@@ -67,7 +67,7 @@ export const CheckCascaderMenu = ({
     <ul className={cls} role={role}>
       {menu.map((option) => {
         const eventOption = getCascaderItemEventData(option, getCascaderItemRequiredProps(option))
-        const { selected, checked, loading } = eventOption
+        const { selected, checked, loading, semiChecked } = eventOption
         const disabled = disabledContext || option.disabled
 
         const optionCls = cx(
@@ -99,6 +99,7 @@ export const CheckCascaderMenu = ({
               {option.checkable ? (
                 <Checkbox
                   className={`${prefixCls}-checkbox`}
+                  indeterminate={semiChecked}
                   checked={checked}
                   disabled={disabled || option.disabledCheckbox}
                   onClick={(evt) => evt.stopPropagation()}
