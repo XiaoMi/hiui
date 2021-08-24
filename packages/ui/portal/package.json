@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/portal",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-alpha.2",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,10 +44,10 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.0",
-    "@hi-ui/container": "^4.0.0-alpha.2",
+    "@hi-ui/container": "^4.0.0-alpha.3",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
-    "@hi-ui/env": "^4.0.0-alpha.2",
-    "@hi-ui/use-force-update": "^4.0.0-alpha.1"
+    "@hi-ui/env": "^4.0.0-alpha.3",
+    "@hi-ui/use-force-update": "^4.0.0-alpha.2"
   },
   "peerDependencies": {
     "react": "^17.0.1",
