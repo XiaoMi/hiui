@@ -1,9 +1,7 @@
-import React, { forwardRef, useState, useRef, useCallback, useLayoutEffect } from 'react'
+import React, { forwardRef, useState, useRef, useCallback, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useRefsOutsideClick } from '@hi-ui/use-outside-click'
-import { useToggle } from '@hi-ui/use-toggle'
-import { Portal } from '@hi-ui/portal'
 import * as PopperJS from '@popperjs/core'
 import { CSSTransition } from 'react-transition-group'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
@@ -31,11 +29,9 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       closeOnOutsideClick = true,
       closeOnEsc = true,
       arrow = false,
-      disabledPortal = false,
       onOutsideClick,
       onKeyDown,
       attachEl,
-      container,
       zIndex,
       gutterGap,
       crossGap,
@@ -47,11 +43,23 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       modifiers,
       arrowPadding,
       strategy,
+      onEnter,
+      onExit,
+      onEntered,
+      onExited,
       ...rest
     },
     ref
   ) => {
-    const [transitionVisible, transitionVisibleAction] = useToggle(false)
+    const [transitionVisible, setTransitionVisible] = useState(false)
+    const [transitionExisted, setTransitionExisted] = useState(true)
+
+    useEffect(() => {
+      setTransitionVisible(visible)
+      if (visible) {
+        setTransitionExisted(false)
+      }
+    }, [visible])
 
     const popperElRef = useRef<HTMLDivElement | null>(null)
     const [arrowElRef, setArrowElmRef] = useState<HTMLElement | null>(null)
@@ -82,7 +90,8 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       targetElement: attachEl,
       popperElement: popperElRef.current,
       arrowElement: arrowElRef,
-      disabled: !visible,
+      // 关闭时不启用，内部执行销毁
+      disabled: transitionExisted,
       placement,
       zIndex,
       gutterGap,
@@ -96,56 +105,45 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       strategy,
     })
 
-    useLayoutEffect(() => {
-      if (visible) {
-        transitionVisibleAction.on()
-      }
-    }, [visible, transitionVisibleAction])
-
-    const popperMergedRef = useMergeRefs(popperElRef, ref)
-
-    const cls = cx(
-      prefixCls,
-      className,
-      visible && `${prefixCls}--open`,
-      !transitionVisible && `${prefixCls}--closed`
-    )
+    const cls = cx(prefixCls, className)
 
     return (
-      <Portal container={container} disabled={disabledPortal}>
-        <CSSTransition
-          classNames={`${prefixCls}--motion`}
-          in={visible}
-          timeout={102}
-          mountOnEnter={!preload}
-          unmountOnExit={unmountOnClose}
-          onEntered={() => {
-            popperElRef.current?.focus()
-          }}
-          onExited={() => {
-            transitionVisibleAction.off()
-          }}
+      <CSSTransition
+        classNames={`${prefixCls}--motion`}
+        in={transitionVisible}
+        timeout={101}
+        mountOnEnter={!preload}
+        unmountOnExit={unmountOnClose}
+        onEnter={onEnter}
+        onExit={onExit}
+        onEntered={() => {
+          popperElRef.current?.focus()
+          onEntered?.()
+        }}
+        onExited={() => {
+          setTransitionExisted(true)
+          onExited?.()
+        }}
+      >
+        <div
+          role={role}
+          className={cls}
+          ref={useMergeRefs(popperElRef, ref)}
+          style={Object.assign({ outline: 'none' }, style, styles.popper)}
+          {...rest}
+          {...attributes.popper}
+          tabIndex={-1}
+          onKeyDown={handleKeyDown}
         >
           <div
-            role={role}
-            className={cls}
-            ref={popperMergedRef}
-            style={Object.assign({ outline: 'none' }, style, styles.popper)}
-            {...rest}
-            {...attributes.popper}
-            tabIndex={-1}
-            onKeyDown={handleKeyDown}
-          >
-            <div
-              ref={setArrowElmRef}
-              className={cx(`${prefixCls}__arrow`, !arrow && `hidden`)}
-              style={styles.arrow}
-            />
+            ref={setArrowElmRef}
+            className={cx(`${prefixCls}__arrow`, !arrow && `hidden`)}
+            style={styles.arrow}
+          />
 
-            <div className={`${prefixCls}__overlay`}>{children}</div>
-          </div>
-        </CSSTransition>
-      </Portal>
+          <div className={`${prefixCls}__overlay`}>{children}</div>
+        </div>
+      </CSSTransition>
     )
   }
 )
@@ -167,18 +165,50 @@ export interface PopperProps {
    * 组件的注入样式
    */
   style?: React.CSSProperties
-  visible?: boolean
-  attachEl: HTMLElement | null
+  /**
+   * popper 渲染的内容
+   */
   children?: React.ReactNode
-  arrow?: boolean
-  zIndex?: number
+  /**
+   * 指定吸附的节点
+   */
+  attachEl: HTMLElement | null
+  /**
+   * 开启 popper 展示（受控）
+   */
+  visible: boolean
+  /**
+   * 关闭 popper 时回调
+   */
   onClose?: () => void
+  /**
+   * 是否展示箭头
+   */
+  arrow?: boolean
+  /**
+   * 指定 css 展示层级
+   */
+  zIndex?: number
+  /**
+   * 开启按键 Esc 时触发 onClose 回调
+   */
   closeOnEsc?: boolean
+  /**
+   * 开启点击外部时触发 onClose 回调
+   */
   closeOnOutsideClick?: boolean
+  /**
+   * 开启 popper 预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
+   */
   preload?: boolean
+  /**
+   * 开启 popper 关不时销毁，用于性能优化，优先级大于 `preload`
+   */
   unmountOnClose?: boolean
+  /**
+   * 外界元素点击数触发
+   */
   onOutsideClick?: (evt: Event) => void
-  container?: (() => HTMLElement | null) | HTMLElement | null
   /**
    * 设置基于 reference 元素的间隙偏移量
    */
@@ -220,10 +250,25 @@ export interface PopperProps {
    */
   strategy?: 'absolute' | 'fixed'
   /**
-   * 禁用 portal
+   * popper 聚焦时按键触发回调
    */
-  disabledPortal?: boolean
   onKeyDown?: (evt: React.KeyboardEvent) => void
+  /**
+   * 开始动画弹出时回调
+   */
+  onEnter?: () => void
+  /**
+   * 开始动画隐藏时回调
+   */
+  onExit?: () => void
+  /**
+   * 结束动画弹出时回调
+   */
+  onEntered?: () => void
+  /**
+   * 结束动画隐藏时回调
+   */
+  onExited?: () => void
 }
 
 if (__DEV__) {
