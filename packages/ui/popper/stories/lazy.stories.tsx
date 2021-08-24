@@ -1,5 +1,5 @@
 import React from 'react'
-import Popper from '../src'
+import { PopperPortal as Popper } from '../src'
 import Button from '@hi-ui/button'
 
 export const Lazy = () => {
@@ -16,7 +16,7 @@ export const Lazy = () => {
         <div>
           <h1>unmountOnClose</h1>
           <Popper visible={visible} attachEl={btnRef} onClose={() => setVisible(false)}>
-            The content of the Popper.
+            The content of the Popper1.
           </Popper>
         </div>
         <div>
@@ -29,7 +29,7 @@ export const Lazy = () => {
             attachEl={btnRef}
             onClose={() => setVisible(false)}
           >
-            The content of the Popper.
+            The content of the Popper2.
           </Popper>
         </div>
         <div>
@@ -42,7 +42,7 @@ export const Lazy = () => {
             attachEl={btnRef}
             onClose={() => setVisible(false)}
           >
-            The content of the Popper.
+            The content of the Popper3.
           </Popper>
         </div>
       </div>

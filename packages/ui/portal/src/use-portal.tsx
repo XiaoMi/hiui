@@ -3,8 +3,8 @@ import { createPortal } from 'react-dom'
 import { getPrefixCls } from '@hi-ui/classname'
 import * as Container from '@hi-ui/container'
 import { useForceUpdate } from '@hi-ui/use-force-update'
-import { useOwnDocument, useWaitForDOM } from './hooks'
-import { addDOMClass } from './utils'
+import { useOwnDocument } from './hooks'
+import { addDOMClass, resolveContainer } from './utils'
 
 const _role = 'portal'
 const _prefix = getPrefixCls(_role)
@@ -69,19 +69,22 @@ export const useContainerPortal = ({
 }: {
   children: React.ReactNode
 }) => React.ReactPortal | null) => {
+  const portalElRef = useRef<Element | null>(null)
+
   const [forceUpdate] = useForceUpdate()
 
-  const portalEl = useWaitForDOM(container)
-  const portalElRef = useRef<Element | null>(portalEl)
-
   useLayoutEffect(() => {
-    if (!portalEl) return
+    const nextEl = resolveContainer(container)
 
-    addDOMClass(portalEl, className)
+    if (nextEl !== portalElRef.current) {
+      if (nextEl) {
+        addDOMClass(nextEl, className)
+      }
 
-    portalElRef.current = portalEl
-    forceUpdate()
-  }, [portalEl, className, forceUpdate])
+      portalElRef.current = nextEl
+      forceUpdate()
+    }
+  })
 
   const Portal = useCallback(({ children }) => {
     return portalElRef.current ? createPortal(children, portalElRef.current) : null
