@@ -25,7 +25,8 @@ const Tree = ({
   activeId,
   emptyContent,
   searchMode,
-  searchValue
+  searchValue,
+  fieldNames
 }) => {
   return (
     <TreeContext.Provider
@@ -52,7 +53,7 @@ const Tree = ({
         {nodeDataState === 'empty' && (
           <span className="hi-select-tree--empty">{emptyContent || localeDatas.selectTree.emptyContent}</span>
         )}
-        {nodeDataState === 'normal' && <TreeNode data={getRootNodes(data)} flttenData={data} />}
+        {nodeDataState === 'normal' && <TreeNode fieldNames={fieldNames} data={getRootNodes(data)} flttenData={data} />}
       </div>
     </TreeContext.Provider>
   )
