@@ -21,6 +21,7 @@
 - 修复 `Popper` 基础弹层组件弹出位置未能及时更新问题 [#1857](https://github.com/XiaoMi/hiui/issues/1857)
 - 修复 `Form` 组件中使用 schemaFrom 时，schema 更新未生效问题 [#1862](https://github.com/XiaoMi/hiui/issues/1862)
 - 修复 `Form` 组件中使用 List 组件，输出值格式异常 [#1872](https://github.com/XiaoMi/hiui/issues/1872)
+- 修复 `Table` 组件子节点 isLeaf 属性为 false 时，显示展开 icon [#1887](https://github.com/XiaoMi/hiui/issues/1887)
 
 # 3.7.0
 
