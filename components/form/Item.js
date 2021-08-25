@@ -76,7 +76,6 @@ const FormItem = (props) => {
     const _children = children || {}
     const _props = componentProps || _children.props
     eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
-    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
     eventInfo.current = {}
   }, [value])
 
@@ -277,6 +276,10 @@ const FormItem = (props) => {
     eventInfo.current = { eventName, e, args, componentProps, value }
     handleField(eventName, value)
     setValue(value)
+    // 处理 onBlur 事件
+    const _children = children || {}
+    const _props = componentProps || _children.props
+    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
   }
   useEffect(() => {
     return () => {
