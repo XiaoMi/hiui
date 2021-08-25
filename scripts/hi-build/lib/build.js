@@ -27,7 +27,7 @@ const resolvePackage = (cwd) => {
 
 const getBanner = (pkg) => {
   return `/** @LICENSE
- * ${pkg.name} v${pkg.version}
+ * ${pkg.name}
  * ${pkg.homepage}
  *
  * Copyright (c) ${pkg.author}.

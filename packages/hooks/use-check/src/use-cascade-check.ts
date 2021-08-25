@@ -1,24 +1,19 @@
 import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { CheckCascaderItemEventData, FlattedCheckCascaderItem } from '../types'
-import { useLatestRef } from '@hi-ui/use-latest'
-import { findNestedChildIds, getNodeAncestors } from '@hi-ui/tree-utils'
+import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
+import { getNodeAncestors, findNestedChildIds } from '@hi-ui/tree-utils'
+import { checkDefault } from './use-check'
+import { UseCascadeCheckItem } from './types'
 
-export const useCheck = (
-  cascaded: boolean,
-  disabled: boolean,
-  flattedData: FlattedCheckCascaderItem[],
-  defaultCheckedIds: React.ReactText[],
-  checkedIdsProp?: React.ReactText[],
-  onCheck?: (
-    checkedInfo: {
-      checkedIds: React.ReactText[]
-      semiCheckedIds: React.ReactText[]
-    },
-    node: CheckCascaderItemEventData,
-    checked: boolean
-  ) => void
-) => {
+export const useCascadeCheck = ({
+  cascaded,
+  disabled,
+  flattedData,
+  defaultCheckedIds,
+  checkedIdsProp,
+  onCheck,
+  allowCheck,
+}: UseCascadeCheckProps) => {
   const onCheckRef = useLatestRef(onCheck)
   const proxyOnCheck = useCallback((checkedIds, checkedNode, checked, semiCheckedIds) => {
     onCheckRef.current?.({ checkedIds, semiCheckedIds }, checkedNode, checked)
@@ -31,29 +26,27 @@ export const useCheck = (
   )
 
   const checkedIdsSet = useMemo(() => new Set(checkedIds), [checkedIds])
+  const isCheckedLatest = useLatestCallback((id: React.ReactText) => checkedIdsSet.has(id))
 
   // 注意：在非级联模式下，`semiCheckedIds`, `semiCheckedIdsSet` 状态值均为 `undefined`，避免性能浪费
   const [semiCheckedIds, semiCheckedIdsSet] = useMemo(
-    () => (cascaded ? getSemiCheckedIdsWithSet(checkedIdsSet, flattedData) : []),
-    [cascaded, checkedIdsSet, flattedData]
+    () => (cascaded ? getSemiCheckedIdsWithSet(flattedData, isCheckedLatest) : []),
+    [cascaded, isCheckedLatest, flattedData]
   )
 
-  const isCheckedId = (id: React.ReactText) => checkedIdsSet.has(id)
-  const isSemiCheckedId = (id: React.ReactText) => (cascaded ? semiCheckedIdsSet!.has(id) : false)
+  const isSemiCheckedLatest = useLatestCallback((id: React.ReactText) => {
+    return cascaded ? semiCheckedIdsSet!.has(id) : false
+  })
 
   const checkedIdsRef = useLatestRef(checkedIds)
   const semiCheckedIdsRef = useLatestRef(semiCheckedIds)
 
+  const allowCheckRef = useLatestRef(allowCheck)
+
   const onNodeCheck = useCallback(
-    (targetNode: CheckCascaderItemEventData, shouldChecked: boolean) => {
-      if (
-        disabled ||
-        targetNode.disabled ||
-        targetNode.disabledCheckbox ||
-        targetNode.checkable === false
-      ) {
-        return
-      }
+    (targetItem: UseCascadeCheckItem, shouldChecked: boolean) => {
+      if (disabled) return
+      if (allowCheckRef.current && allowCheckRef.current(targetItem) === false) return
 
       const checkedIds = checkedIdsRef.current
 
@@ -62,52 +55,47 @@ export const useCheck = (
         const [nextCheckedIds, nextSemiCheckedIds] = checkCascade(
           checkedIds,
           semiCheckedIds,
-          targetNode,
+          targetItem,
           shouldChecked
         )
 
-        trySetCheckedIds(nextCheckedIds, targetNode, shouldChecked, nextSemiCheckedIds)
+        trySetCheckedIds(nextCheckedIds, targetItem, shouldChecked, nextSemiCheckedIds)
       } else {
-        const nextCheckedIds = checkDefault(checkedIds, targetNode, shouldChecked)
+        const nextCheckedIds = checkDefault(checkedIds, targetItem, shouldChecked)
 
-        trySetCheckedIds(nextCheckedIds, targetNode, shouldChecked, [])
+        trySetCheckedIds(nextCheckedIds, targetItem, shouldChecked, [])
       }
     },
     [disabled, cascaded, trySetCheckedIds]
   )
 
-  return [onNodeCheck, isCheckedId, isSemiCheckedId] as const
+  return [onNodeCheck, isCheckedLatest, isSemiCheckedLatest] as const
 }
 
-/**
- * 普通多选
- */
-const checkDefault = (
-  checkedIds: React.ReactText[],
-  targetItem: CheckCascaderItemEventData,
-  shouldChecked: boolean
-) => {
-  let nextCheckedIds = checkedIds
-  const targetId = targetItem.id
-
-  if (shouldChecked) {
-    if (nextCheckedIds.indexOf(targetId) === -1) {
-      nextCheckedIds = nextCheckedIds.concat(targetId)
-    }
-  } else {
-    nextCheckedIds = nextCheckedIds.filter((item) => item !== targetId)
-  }
-
-  return nextCheckedIds
+export interface UseCascadeCheckProps {
+  cascaded: boolean
+  disabled: boolean
+  flattedData: UseCascadeCheckItem[]
+  defaultCheckedIds: React.ReactText[]
+  checkedIdsProp?: React.ReactText[]
+  onCheck?: (
+    checkedInfo: {
+      checkedIds: React.ReactText[]
+      semiCheckedIds: React.ReactText[]
+    },
+    node: UseCascadeCheckItem,
+    checked: boolean
+  ) => void
+  allowCheck?: (targetItem: UseCascadeCheckItem) => boolean
 }
 
 /**
  * 级联多选，支持父子正反选操作
  */
-const checkCascade = (
+export const checkCascade = (
   checkedIds: React.ReactText[],
   semiCheckedIds: React.ReactText[],
-  checkedNode: CheckCascaderItemEventData,
+  checkedNode: UseCascadeCheckItem,
   checked: boolean
 ) => {
   const checkedIdsSet = new Set(checkedIds)
@@ -187,15 +175,15 @@ const checkCascade = (
  * @param flattedData
  * @returns
  */
-const getSemiCheckedIdsWithSet = (
-  checkedIdsSet: Set<React.ReactText>,
-  flattedData: FlattedCheckCascaderItem[]
+export const getSemiCheckedIdsWithSet = (
+  flattedData: UseCascadeCheckItem[],
+  isChecked: (id: React.ReactText) => boolean
 ) => {
-  const semiCheckedNodes = [] as FlattedCheckCascaderItem[]
+  const semiCheckedNodes = [] as UseCascadeCheckItem[]
   const semiCheckedIdsSet = new Set<React.ReactText>()
 
-  let parent: FlattedCheckCascaderItem | undefined
   let parentId: React.ReactText | undefined
+  let parent: UseCascadeCheckItem | undefined
 
   flattedData.forEach((node) => {
     parent = node.parent
@@ -204,7 +192,7 @@ const getSemiCheckedIdsWithSet = (
       if (semiCheckedIdsSet.has(parentId)) return
 
       // 父节点没选中，但是当前节点被选中，则视为半选
-      if (!checkedIdsSet.has(parentId) && checkedIdsSet.has(node.id)) {
+      if (!isChecked(parentId) && isChecked(node.id)) {
         semiCheckedIdsSet.add(parentId)
         semiCheckedNodes.push(parent)
       }
