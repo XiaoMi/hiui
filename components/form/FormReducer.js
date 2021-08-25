@@ -27,6 +27,7 @@ export default class Immutable {
 
   setState(action) {
     const SyncState = this.SyncState
+    console.log('SyncState', _.cloneDeep(SyncState), action)
     switch (action.type) {
       case FILEDS_INIT:
         const { fields } = SyncState
