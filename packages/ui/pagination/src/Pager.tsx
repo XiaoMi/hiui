@@ -8,8 +8,16 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is Pager
  */
-export const Pager: React.FC<PagerProps> = ({ prefixCls = _prefix, onClick, page = '' }, ref) => {
-  const cls = cx(prefixCls)
+export const Pager: React.FC<PagerProps> = ({
+  prefixCls = _prefix,
+  onClick,
+  page = '',
+  active,
+}) => {
+  const cls = cx(`${prefixCls}__item`, {
+    [`${prefixCls}__item--active`]: active,
+    [`${prefixCls}__item--break`]: page === '...',
+  })
 
   const handleClick = useCallback(() => {
     if (onClick) {
@@ -19,7 +27,7 @@ export const Pager: React.FC<PagerProps> = ({ prefixCls = _prefix, onClick, page
 
   const handleKeyPress = useCallback(
     (e) => {
-      if (e.keyCode === 13) {
+      if (e.key === 'Enter') {
         e.preventDefault()
         handleClick()
       }
@@ -28,7 +36,12 @@ export const Pager: React.FC<PagerProps> = ({ prefixCls = _prefix, onClick, page
   )
 
   return (
-    <li className={cls} onClick={handleClick} onKeyPress={handleKeyPress} tabIndex={0}>
+    <li
+      className={cls}
+      onClick={handleClick}
+      onKeyPress={handleKeyPress}
+      tabIndex={page !== '...' ? 0 : -1}
+    >
       <a rel="nofollow">{page}</a>
     </li>
   )
