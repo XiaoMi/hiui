@@ -7,6 +7,7 @@ export const Basic = () => {
       <h1>Basic for Table</h1>
       <div className="table-basic__wrap" style={{ width: 800 }}>
         <Table
+          fixedToColumn={'type'}
           columns={[
             {
               title: '商品名',
@@ -38,7 +39,7 @@ export const Basic = () => {
               name: '小米9',
               type: '手机',
               size:
-                '6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝',
+                '6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G 全息幻彩蓝6G+64G  ',
               price: '3299.00',
               address: '华润五彩城店',
               stock: '29,000',
@@ -82,6 +83,31 @@ export const Basic = () => {
             },
           ]}
         />
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+        <div>1231231312</div>
+
+        <div>1231231312</div>
       </div>
     </>
   )

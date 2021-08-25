@@ -10,15 +10,28 @@ const _prefix = getPrefixCls(_role)
  * TODO: What is TBody
  */
 export const TBody = forwardRef<HTMLDivElement | null, TBodyProps>(
-  ({ prefixCls = _prefix, data, columns }, ref) => {
+  ({ prefixCls = _prefix, data, columns, firstRowRef, fixedColWidth }, ref) => {
     const cls = cx(`${prefixCls}__body`)
 
     return (
       <tbody className={cls}>
-        {data.map((d) => (
-          <tr key={Math.random()}>
-            {columns.map((c) => (
-              <td key={c.dataKey}>{d[c.dataKey]}</td>
+        {data.map((d, index) => (
+          <tr
+            key={Math.random()}
+            className={`${prefixCls}__row`}
+            ref={index === 0 ? firstRowRef : null}
+          >
+            {columns.map((c, idx) => (
+              <td
+                key={c.dataKey}
+                style={
+                  fixedColWidth[idx]
+                    ? { position: 'sticky', left: idx === 0 ? 0 : fixedColWidth[idx - 1] }
+                    : {}
+                }
+              >
+                {d[c.dataKey]}
+              </td>
             ))}
           </tr>
         ))}
@@ -40,6 +53,11 @@ export interface TBodyProps {
    * 数据配置项
    */
   data: object[]
+  /**
+   * 第一行ref
+   */
+  firstRowRef: React.RefObject<HTMLTableRowElement>
+  fixedColWidth: number[]
 }
 
 if (__DEV__) {

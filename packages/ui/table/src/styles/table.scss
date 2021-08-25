@@ -12,6 +12,16 @@ $prefix: '#{$component-prefix}-table' !default;
     border-radius: 2px 2px 0 0;
     border-collapse: separate;
     border-spacing: 0;
+    background: #fff;
+  }
+
+  &__wrapper {
+    position: relative;
+  }
+
+  &--sticky {
+    position: sticky;
+    top: 0;
   }
 
   &__header {
@@ -28,9 +38,18 @@ $prefix: '#{$component-prefix}-table' !default;
   &__body {
     & > tr {
       & > td {
+        background: #fff;
+        white-space: nowrap;
         padding: 16px;
         color: #333;
         border-bottom: 1px solid #f0f0f0;
+      }
+    }
+  }
+  &__row {
+    &:hover {
+      & > td {
+        background: #f0f5fe;
       }
     }
   }

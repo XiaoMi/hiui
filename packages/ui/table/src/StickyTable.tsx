@@ -40,17 +40,31 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     }, [columns, data, fixedToColumn])
 
     return (
-      <div ref={ref} role={role} className={cls}>
-        <table>
-          <THeader columns={columns} prefixCls={prefixCls} fixedColWidth={fixedColWidth} />
-          <TBody
-            columns={columns}
-            data={data}
-            prefixCls={prefixCls}
-            firstRowRef={firstRowRef}
-            fixedColWidth={fixedColWidth}
-          />
-        </table>
+      <div className={`${prefixCls}__wrapper`}>
+        <div className={`${prefixCls}--sticky ${prefixCls}`}>
+          <table>
+            <THeader columns={columns} prefixCls={prefixCls} fixedColWidth={fixedColWidth} />
+            <TBody
+              columns={columns}
+              data={data}
+              prefixCls={prefixCls}
+              firstRowRef={firstRowRef}
+              fixedColWidth={fixedColWidth}
+            />
+          </table>
+        </div>
+        <div ref={ref} role={role} className={cls}>
+          <table>
+            <THeader columns={columns} prefixCls={prefixCls} fixedColWidth={fixedColWidth} />
+            <TBody
+              columns={columns}
+              data={data}
+              prefixCls={prefixCls}
+              firstRowRef={firstRowRef}
+              fixedColWidth={fixedColWidth}
+            />
+          </table>
+        </div>
       </div>
     )
   }
