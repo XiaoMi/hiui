@@ -43,7 +43,6 @@ const InternalForm = (props) => {
   const setFieldsValue = useCallback(
     (values = {}, listcoordinate) => {
       const _values = _.cloneDeep(values)
-      console.log('ssdsd', _values)
       const _fields = _Immutable.current.currentStateFields()
       const { listNames } = _Immutable.current.currentState()
       _fields.forEach((item) => {
@@ -99,7 +98,6 @@ const InternalForm = (props) => {
   const internalValuesChange = useCallback(
     (changeValues, allValues) => {
       const fields = _Immutable.current.currentStateFields()
-      console.log('fields', fields)
       const _transformValues = transformValues(allValues, fields)
       const _changeValues = _.cloneDeep(changeValues)
 

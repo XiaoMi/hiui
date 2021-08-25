@@ -204,7 +204,7 @@ const FormItem = (props) => {
   )
 
   const updateFieldInfoToReducer = () => {
-    const _realField = realField || field
+    const _realField = _type === 'list' ? field : realField || field
     return {
       field,
       rules: getRules(),
@@ -274,7 +274,6 @@ const FormItem = (props) => {
     if (displayName === 'Counter') {
       value = args[0] || 0
     }
-    console.log('value', displayName, value)
     eventInfo.current = { eventName, e, args, componentProps, value }
     handleField(eventName, value)
     setValue(value)
@@ -306,12 +305,14 @@ const FormItem = (props) => {
       if (_type === 'list' && listItemValue) {
         _value = Object.keys(listItemValue).includes(name) ? listItemValue[name] : listItemValue
       }
+      const updateFieldInfoToReducerData = updateFieldInfoToReducer()
       _Immutable.current.setState({
         type: FILEDS_INIT,
         payload: {
           value: _value,
-          ...updateFieldInfoToReducer(),
-          field: _field
+          ...updateFieldInfoToReducerData,
+          field: _field,
+          realField: _type === 'list' ? _field : updateFieldInfoToReducerData.realField
         }
       })
       updateField(_value)

@@ -20,11 +20,11 @@ export const transformValues = (allvalue, fields) => {
   // 根据sort进行数据排列
   const sortfields = _.sortBy(fields, ['sort'])
   sortfields.forEach((filedItem) => {
-    const { realField, propsField, _type, listname, field } = filedItem
+    const { realField, propsField, _type, listname } = filedItem
     if (_type === 'list') {
-      if (propsField !== field) {
+      if (propsField !== realField) {
         listNestValues[listname] = listNestValues[listname] || {}
-        tranformListValues(field, listNestValues, allvalue[field], listname)
+        tranformListValues(realField, listNestValues, allvalue[realField], listname)
         Object.keys(listNestValues).forEach((key) => {
           const arr = []
           Object.keys(listNestValues[key]).forEach((item) => {
@@ -35,9 +35,9 @@ export const transformValues = (allvalue, fields) => {
         return
       }
       if (tranformValues[listname]) {
-        tranformValues[listname].push(allvalue[field])
+        tranformValues[listname].push(allvalue[realField])
       } else {
-        tranformValues[listname] = [allvalue[field]]
+        tranformValues[listname] = [allvalue[realField]]
       }
     } else {
       if (Array.isArray(propsField)) {
