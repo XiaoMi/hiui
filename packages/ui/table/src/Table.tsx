@@ -19,7 +19,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       columns = [],
       data = [],
       fixedToColumn,
-      children,
+      rowSelection,
     },
     ref
   ) => {
@@ -42,13 +42,19 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     return (
       <div ref={ref} role={role} className={cls}>
         <table>
-          <THeader columns={columns} prefixCls={prefixCls} fixedColWidth={fixedColWidth} />
+          <THeader
+            columns={columns}
+            prefixCls={prefixCls}
+            fixedColWidth={fixedColWidth}
+            rowSelection={rowSelection}
+          />
           <TBody
             columns={columns}
             data={data}
             prefixCls={prefixCls}
             firstRowRef={firstRowRef}
             fixedColWidth={fixedColWidth}
+            rowSelection={rowSelection}
           />
         </table>
       </div>
@@ -85,6 +91,10 @@ export interface TableProps {
    * 冻结列
    */
   fixedToColumn?: string
+  /**
+   * 行多选
+   */
+  rowSelection?: RowSelection
 }
 
 if (__DEV__) {
@@ -99,4 +109,10 @@ export interface Column {
 export interface FixedOption {
   left?: string
   right?: string
+}
+
+export interface RowSelection {
+  selectedRowKeys: string[]
+  onChange: (selectedRowKeys: string[]) => void
+  getCheckboxConfig: (rowData: object) => any
 }

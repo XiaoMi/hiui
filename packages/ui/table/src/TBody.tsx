@@ -1,7 +1,8 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { Column } from './Table'
+import { Column, RowSelection } from './Table'
+import { Checkbox } from '@hi-ui/checkbox'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -10,7 +11,7 @@ const _prefix = getPrefixCls(_role)
  * TODO: What is TBody
  */
 export const TBody = forwardRef<HTMLDivElement | null, TBodyProps>(
-  ({ prefixCls = _prefix, data, columns, firstRowRef, fixedColWidth }, ref) => {
+  ({ prefixCls = _prefix, data, columns, firstRowRef, fixedColWidth, rowSelection }, ref) => {
     const cls = cx(`${prefixCls}__body`)
 
     return (
@@ -21,12 +22,40 @@ export const TBody = forwardRef<HTMLDivElement | null, TBodyProps>(
             className={`${prefixCls}__row`}
             ref={index === 0 ? firstRowRef : null}
           >
+            {rowSelection && (
+              <td
+                style={
+                  fixedColWidth && fixedColWidth.length > 0 ? { position: 'sticky', left: 0 } : {}
+                }
+              >
+                <Checkbox />
+              </td>
+            )}
             {columns.map((c, idx) => (
               <td
                 key={c.dataKey}
                 style={
                   fixedColWidth[idx]
-                    ? { position: 'sticky', left: idx === 0 ? 0 : fixedColWidth[idx - 1] }
+                    ? {
+                        position: 'sticky',
+                        // 列冻结计算，待优化
+                        left:
+                          idx === 0
+                            ? rowSelection
+                              ? fixedColWidth[0]
+                              : 0
+                            : rowSelection
+                            ? fixedColWidth
+                                .slice(0, idx + 1)
+                                .reduce(function (accumulator, currentValue) {
+                                  return accumulator + currentValue
+                                })
+                            : fixedColWidth
+                                .slice(0, idx)
+                                .reduce(function (accumulator, currentValue) {
+                                  return accumulator + currentValue
+                                }),
+                      }
                     : {}
                 }
               >
@@ -58,6 +87,7 @@ export interface TBodyProps {
    */
   firstRowRef: React.RefObject<HTMLTableRowElement>
   fixedColWidth: number[]
+  rowSelection?: RowSelection
 }
 
 if (__DEV__) {

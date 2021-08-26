@@ -34,6 +34,7 @@ export const Basic = () => {
               dataKey: 'stock',
             },
           ]}
+          rowSelection={{ selectedRowKeys: [] }}
           data={[
             {
               name: '小米9',
