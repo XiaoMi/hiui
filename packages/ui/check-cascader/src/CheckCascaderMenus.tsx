@@ -58,8 +58,8 @@ export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenu
       flattedData,
       defaultValue,
       valueProp,
-      ({ checkedIds, semiCheckedIds }, node: CheckCascaderItemEventData, checked: boolean) => {
-        onChange?.(checkedIds, node, checked)
+      ({ checkedIds, semiCheckedIds }) => {
+        onChange?.(checkedIds)
       }
     )
 
@@ -165,11 +165,7 @@ export interface CascaderMenusProps {
   /**
    * 多选值改变时的回调
    */
-  onChange?: (
-    values: React.ReactText[],
-    checkedOption: CheckCascaderItemEventData,
-    checked: boolean
-  ) => void
+  onChange?: (values: React.ReactText[]) => void
   /**
    * 选项被点击时的回调
    */

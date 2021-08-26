@@ -8,6 +8,8 @@ import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
 import { usePopper } from './use-popper'
 
+export { PopperJS }
+
 const _role = 'popper'
 const _prefix = getPrefixCls(_role)
 

@@ -7,7 +7,7 @@ import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { DownOutlined } from '@hi-ui/icons'
 import { CheckCascaderPanel } from './CheckCascaderPanel'
 import { TagInput } from './TagInput'
-import { Popper } from '@hi-ui/popper'
+import { Popper, PopperJS } from '@hi-ui/popper'
 import {
   CheckCascaderItem,
   ExpandTrigger,
@@ -47,6 +47,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       upMatch,
       searchPlaceholder,
       onLoadChildren,
+      placement,
       wrap,
       ...rest
     },
@@ -58,8 +59,6 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
     const cascaderRef = useRef<HTMLDivElement | null>(null)
-
-    // useOutsideClick(cascaderRef, menuVisibleAction.off)
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
@@ -82,7 +81,13 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
           }}
         />
 
-        <Popper attachEl={targetElRef} visible={menuVisible} onClose={menuVisibleAction.off}>
+        <Popper
+          attachEl={targetElRef}
+          visible={menuVisible}
+          onClose={menuVisibleAction.off}
+          // TODO: 是否从 props omit 所有 popper 相关的 props 应用到 Popper
+          placement={placement}
+        >
           <CheckCascaderPanel
             value={value}
             onChange={tryChangeValue}
@@ -140,12 +145,9 @@ export interface CheckCascaderProps {
   defaultValue?: React.ReactText[]
   /**
    * 多选值改变时的回调
+   * TODO: 是否有这样的需求：暴露操作的原始数据对象？包括 点击 checkbox、点击 tag 删除按钮、点击清空按钮
    */
-  onChange?: (
-    values: React.ReactText[],
-    checkedOption: CheckCascaderItemEventData,
-    checked: boolean
-  ) => void
+  onChange?: (values: React.ReactText[]) => void
   /**
    * 选项被点击时的回调
    */
@@ -210,6 +212,10 @@ export interface CheckCascaderProps {
    * 是否单行展示，超出 +1
    */
   wrap?: boolean
+  /**
+   * 相对 reference 的位置
+   */
+  placement?: PopperJS.Placement
 }
 
 if (__DEV__) {

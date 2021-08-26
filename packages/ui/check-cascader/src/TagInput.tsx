@@ -69,6 +69,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
       if (disabled) return
       setHover(hovered)
     }
+
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
     const showClearableIcon = clearable && value.length > 0 && !disabled
 
@@ -113,7 +114,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
 
                         evt.stopPropagation()
                         const nextValue = [...value].filter((id) => id !== option.id)
-                        tryChangeValue(nextValue, option, false)
+                        tryChangeValue(nextValue)
                       }}
                     >
                       <CloseOutlined />
@@ -188,14 +189,6 @@ export interface TagInputProps {
    */
   disabled?: boolean
   /**
-   * 设置选项为空时展示的内容
-   */
-  emptyContent?: React.ReactNode
-  /**
-   * 是否启用选择即改变功能
-   */
-  changeOnSelect?: boolean
-  /**
    * 自定义选择后触发器所展示的内容
    */
   displayRender?: (checkedOption: FlattedCheckCascaderItem) => React.ReactNode
@@ -211,7 +204,13 @@ export interface TagInputProps {
    * 输入框后置内容
    */
   suffix?: React.ReactNode
+  /**
+   * 点击 Tag Input 时触发回调
+   */
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
+  /**
+   * tag 列表数据源
+   */
   data: CheckCascaderItem[]
 }
 
