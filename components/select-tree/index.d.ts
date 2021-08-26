@@ -29,6 +29,7 @@ interface Props {
   showCheckedMode?: 'ALL' | 'PARENT' | 'CHILD'
   mode?: 'normal' | 'breadcrumb'
   defaultExpandAll?: boolean
+  fieldNames?: FieldNames
   disabled?: boolean
   bordered?: boolean
   defaultExpandIds?: string[] | number[]

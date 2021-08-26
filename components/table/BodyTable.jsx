@@ -99,7 +99,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   let hasTree = false
   if (_data && _data.length) {
     hasTree = _data.some((row) => {
-      return (row.children && row.children.length) || (onLoadChildren && row.isLeaf)
+      return (row.children && row.children.length) || (onLoadChildren && !row.isLeaf)
     })
   }
 
@@ -116,7 +116,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     const { children = [] } = row
     if (children && children.length) {
       childrenHasTree = children.some(
-        (child) => (child.children && child.children.length) || (onLoadChildren && child.isLeaf)
+        (child) => (child.children && child.children.length) || (onLoadChildren && !child.isLeaf)
       )
     }
     return (

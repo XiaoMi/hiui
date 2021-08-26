@@ -416,6 +416,12 @@ const TableWrapper = ({ columns, uniqueId, standard, data, loading, ...settingPr
   const [sortCol, setSortCol] = useState(_sortCol)
   const [visibleCols, setVisibleCols] = useState(_visibleCols)
   const [cacheVisibleCols, setCacheVisibleCols] = useState(_cacheVisibleCols)
+  // 当column发生改变的时候，同步setting
+  useEffect(() => {
+    setSortCol(columns)
+    setVisibleCols(columns)
+    setCacheVisibleCols(columns)
+  }, [columns])
   useEffect(() => {
     if (uniqueId) {
       window.localStorage.setItem(`${uniqueId}_sortCol`, JSON.stringify(sortCol))

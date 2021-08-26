@@ -9,6 +9,7 @@
 - 新增 `Table` 组件 自定义列筛选 [#1850](https://github.com/XiaoMi/hiui/issues/1850)
 - 新增 `Select` 组件 renderExtraFooter 自定义下拉菜单底部渲染函数[#1864](https://github.com/XiaoMi/hiui/issues/1864)
 - 新增 `SelectTree` 组件节点支持 disabled 禁用状态[#1870](https://github.com/XiaoMi/hiui/issues/1870)
+- 新增 `SelectTree` 组件节点支持 fieldNames 属性[#1879](https://github.com/XiaoMi/hiui/issues/1879)
 - 优化 `DatePicker` 组件在 `Table` 组件中受控形态下无法选中问题 [#1844](https://github.com/XiaoMi/hiui/issues/1844)
 - 优化 `Carousel` 内容宽度根据容器改变自适应 [#1834](https://github.com/XiaoMi/hiui/issues/1834)
 - 修复 `Form` 组件对 Counter 组件默认值为 0 校验异常问题 [#1842](https://github.com/XiaoMi/hiui/issues/1842)
@@ -21,6 +22,8 @@
 - 修复 `Form` 组件中使用 schemaFrom 时，schema 更新未生效问题 [#1862](https://github.com/XiaoMi/hiui/issues/1862)
 - 修复 `Form` 组件中使用 List 组件，输出值格式异常 [#1872](https://github.com/XiaoMi/hiui/issues/1872)
 - 修复 `Select` 组件异步搜索模式下，清空搜索内容未触发搜索问题 [#1883](https://github.com/XiaoMi/hiui/issues/1883)
+- 修复 `Table` 组件子节点 isLeaf 属性为 false 时，显示展开 icon [#1887](https://github.com/XiaoMi/hiui/issues/1887)
+- 修复 `Table` 组件组件 列更新时，setting 列未跟随更新问题 [#1885](https://github.com/XiaoMi/hiui/issues/1885)
 
 # 3.7.0
 

@@ -1,16 +1,28 @@
 import _ from 'lodash'
-
+// 最小改动
+let fieldNames = {}
+export const setFieldNames = (_fieldNames) => {
+  fieldNames = _fieldNames
+}
+/**
+ * 转换对象
+ * @param {Object} _fieldNames 转换对象的集合
+ * @param {String} key 需要转换的key
+ */
+export const transKeys = (fieldNames = {}, key) => {
+  return fieldNames[key] || key
+}
 // 根据 ID 获取节点
 export const getNode = (id, data) => {
-  return data.find((n) => n.id === id)
+  return data.find((n) => n[transKeys(fieldNames, 'id')] === id)
 }
 // 根据 title 获取节点
 export const getNodeByTitle = (title, data) => {
-  return data.find((n) => n.title === title)
+  return data.find((n) => n[transKeys(fieldNames, 'title')] === title)
 }
 // 根据 id || title 获取节点
 export const getNodeByIdTitle = (val, data) => {
-  return data.find((n) => n.title === val || n.id === val)
+  return data.find((n) => n[transKeys(fieldNames, 'title')] === val || n[transKeys(fieldNames, 'id')] === val)
 }
 // 获取指定节点的兄弟节点
 export const getSibilingsNodes = (node, data) => {
@@ -19,11 +31,11 @@ export const getSibilingsNodes = (node, data) => {
 
 // 获取指定节点的父节点
 export const getParentNode = (node, data) => {
-  return data.find((n) => n.id === node.pId)
+  return data.find((n) => n[transKeys(fieldNames, 'id')] === node.pId)
 }
 // 获取指定节点的直接子节点
 export const getChildrenNodes = (node, data) => {
-  return data.filter((n) => n.pId === node.id)
+  return data.filter((n) => n.pId === node[transKeys(fieldNames, 'id')])
 }
 // 获取根节点
 export const getRootNodes = (data) => {
@@ -46,7 +58,7 @@ export const getDescendantNodes = (node, data, arr = []) => {
 export const hasChildren = (node, data) => {
   let bol = false
   for (let i = 0; i < data.length; i++) {
-    if (data[i].pId === node.id) {
+    if (data[i].pId === node[transKeys(fieldNames, 'id')]) {
       bol = true
       break
     }
@@ -56,7 +68,7 @@ export const hasChildren = (node, data) => {
 // 移除指定节点的所有后代节点
 export const removeDescendantNodes = (node, data) => {
   const descs = getDescendantNodes(node, data)
-  descs.map((d) => d.id)
+  descs.map((d) => d[transKeys(fieldNames, 'id')])
   data.filter((n) => descs.forEach())
 }
 // 获取指定节点的所有祖先节点
@@ -80,21 +92,21 @@ export const updateCheckData = (node, data, checkedIds, semiCheckedIds) => {
   const children = getDescendantNodes(node, data)
   const ancestors = node.pId ? getAncestorsNodes(node, data) : []
   children.forEach((child) => {
-    if (!child.disabled) {
-      checkedIds.add(child.id)
-      semiCheckedIds.delete(child.id)
+    if (!child[transKeys(fieldNames, 'disabled')]) {
+      checkedIds.add(child[transKeys(fieldNames, 'id')])
+      semiCheckedIds.delete(child[transKeys(fieldNames, 'id')])
     }
   })
-  semiCheckedIds.delete(node.id)
-  checkedIds.add(node.id)
+  semiCheckedIds.delete(node[transKeys(fieldNames, 'id')])
+  checkedIds.add(node[transKeys(fieldNames, 'id')])
   ancestors.forEach((ancestor) => {
-    const chi = getChildrenNodes(ancestor, data).map((c) => c.id)
+    const chi = getChildrenNodes(ancestor, data).map((c) => c[transKeys(fieldNames, 'id')])
     const ins = _.intersection(chi, [...checkedIds])
-    if (ins.length === chi.length && !ancestor.disabled) {
-      checkedIds.add(ancestor.id)
-      semiCheckedIds.delete(ancestor.id)
+    if (ins.length === chi.length && !ancestor[transKeys(fieldNames, 'disabled')]) {
+      checkedIds.add(ancestor[transKeys(fieldNames, 'id')])
+      semiCheckedIds.delete(ancestor[transKeys(fieldNames, 'id')])
     } else {
-      !ancestor.disabled && semiCheckedIds.add(ancestor.id)
+      !ancestor[transKeys(fieldNames, 'disabled')] && semiCheckedIds.add(ancestor[transKeys(fieldNames, 'id')])
     }
   })
   return {
@@ -113,20 +125,20 @@ export const updateCheckData = (node, data, checkedIds, semiCheckedIds) => {
 export const updateUnCheckData = (node, data, checkedIds, semiCheckedIds) => {
   const children = getDescendantNodes(node, data)
   const ancestors = node.pId ? getAncestorsNodes(node, data) : []
-  checkedIds.delete(node.id)
+  checkedIds.delete(node[transKeys(fieldNames, 'id')])
   ancestors.forEach((ancestor) => {
-    checkedIds.delete(ancestor.id)
-    !ancestor.disabled && semiCheckedIds.add(ancestor.id)
-    const chi = getChildrenNodes(ancestor, data).map((c) => c.id)
+    checkedIds.delete(ancestor[transKeys(fieldNames, 'id')])
+    !ancestor[transKeys(fieldNames, 'disabled')] && semiCheckedIds.add(ancestor[transKeys(fieldNames, 'id')])
+    const chi = getChildrenNodes(ancestor, data).map((c) => c[transKeys(fieldNames, 'id')])
     const ins = _.intersection(chi, [...checkedIds, ...semiCheckedIds])
     if (ins.length === 0) {
-      checkedIds.delete(ancestor.id)
-      semiCheckedIds.delete(ancestor.id)
+      checkedIds.delete(ancestor[transKeys(fieldNames, 'id')])
+      semiCheckedIds.delete(ancestor[transKeys(fieldNames, 'id')])
     }
   })
 
   children.forEach((child) => {
-    !child.disabled && checkedIds.delete(child.id)
+    !child[transKeys(fieldNames, 'disabled')] && checkedIds.delete(child[transKeys(fieldNames, 'id')])
   })
   return {
     checked: [...checkedIds],
@@ -147,8 +159,8 @@ export const processSelectedIds = (checkedIds, nodeEntries, type, flattenData) =
       const entity = nodeEntries[id]
       if (entity) {
         let children = []
-        if (entity.children && entity.children.length > 0) {
-          children = entity.children
+        if (entity[transKeys(fieldNames, 'children')] && entity[transKeys(fieldNames, 'children')].length > 0) {
+          children = entity[transKeys(fieldNames, 'children')]
         } else {
           // 当异步加载数据后，集合中不存在 children，根据节点取 children
           children = getChildrenNodes(entity, flattenData)
@@ -156,7 +168,7 @@ export const processSelectedIds = (checkedIds, nodeEntries, type, flattenData) =
         if (children.length === 0) {
           return true
         }
-        if (children.every((node) => keySet.has(node.id))) {
+        if (children.every((node) => keySet.has(node[transKeys(fieldNames, 'id')]))) {
           return false
         }
       }
@@ -167,7 +179,7 @@ export const processSelectedIds = (checkedIds, nodeEntries, type, flattenData) =
     return checkedIds.filter((id) => {
       const entity = nodeEntries[id]
       const parent = entity ? entity.parent : null
-      if (parent && keySet.has(parent.id)) {
+      if (parent && keySet.has(parent[transKeys(fieldNames, 'id')])) {
         return false
       }
       return true
@@ -187,14 +199,14 @@ export const parseExpandIds = (expandIds, defaultExpandIds, flattenData, default
   let arr = []
   if (defaultExpandAll) {
     flattenData.forEach((node) => {
-      arr.push(node.id)
+      arr.push(node[transKeys(fieldNames, 'id')])
     })
     return arr
   }
   ids.forEach((id) => {
     const node = getNode(id, flattenData)
     if (node) {
-      arr.push(node.id)
+      arr.push(node[transKeys(fieldNames, 'id')])
       node.ancestors && node.ancestors.length > 0 && (arr = arr.concat(node.ancestors))
     }
   })
@@ -213,17 +225,17 @@ export const flattenNodesData = (data, isGenEntries = false) => {
   const fun = (datas, newArr, parent = {}) => {
     datas = _.cloneDeep(datas)
     datas.forEach((node) => {
-      const pId = node.pId !== undefined ? node.pId : parent.id
+      const pId = node.pId !== undefined ? node.pId : parent[transKeys(fieldNames, 'id')]
       node.pId = pId
       if (pId) {
         const arr = parent.ancestors ? [...parent.ancestors] : []
         arr.unshift(pId)
         node.ancestors = arr
       }
-      const _children = node.children
+      const _children = node[transKeys(fieldNames, 'children')]
       newArr.push(node)
       isGenEntries &&
-        (nodeEntries[node.id] = {
+        (nodeEntries[node[transKeys(fieldNames, 'id')]] = {
           ...node,
           parent
         })
@@ -245,7 +257,7 @@ export const flattenNodesData = (data, isGenEntries = false) => {
 export const fillNodeEntries = (parentNode, currentNodeEntries, newData) => {
   newData.forEach((nd) => {
     nd.parent = parentNode
-    currentNodeEntries[nd.id] = nd
+    currentNodeEntries[nd[transKeys(fieldNames, 'id')]] = nd
   })
   return currentNodeEntries
 }
@@ -269,11 +281,11 @@ export const parseDefaultSelectedItems = (defaultValue, flattenData) => {
         // [0, 'x']
         node = getNodeByIdTitle(val, flattenData)
       } else {
-        // if (val.id && val.title) {
+        // if (val[transKeys(fieldNames, 'id')] && val[transKeys(fieldNames, 'title')]) {
         //   // [{id: '', title: ''}]
-        //   node = getNode(val.id, flattenData) || val
+        //   node = getNode(val[transKeys(fieldNames, 'id')], flattenData) || val
         // } else {
-        node = getNodeByIdTitle(val.id || val.title, flattenData)
+        node = getNodeByIdTitle(val[transKeys(fieldNames, 'id')] || val[transKeys(fieldNames, 'title')], flattenData)
         // }
       }
       node && defaultNodes.push(node)
@@ -343,13 +355,13 @@ export const treeFilterByOriginalData = (data, filterVal) => {
   }
   const newChildren = []
   for (const node of nodes) {
-    const matchResult = matchFilterKey(filterVal, node.title)
+    const matchResult = matchFilterKey(filterVal, node[transKeys(fieldNames, 'title')])
     if (matchResult) {
       newChildren.push(node)
     } else {
-      const subs = treeFilterByOriginalData(node.children, filterVal)
+      const subs = treeFilterByOriginalData(node[transKeys(fieldNames, 'children')], filterVal)
       if ((subs && subs.length) || matchResult) {
-        node.children = subs
+        node[transKeys(fieldNames, 'children')] = subs
         newChildren.push(node)
       }
     }
@@ -383,12 +395,12 @@ export const clearReturnData = (arg) => {
  */
 export const getFirstSiblingWidthSelectItems = (flattenData, selectedItems) => {
   const ids = selectedItems.map((item) => {
-    return item.id
+    return item[transKeys(fieldNames, 'id')]
   })
   let id
   for (let index = 0; index < flattenData.length; index++) {
-    if (ids.includes(flattenData[index].id)) {
-      id = flattenData[index].id
+    if (ids.includes(flattenData[index][transKeys(fieldNames, 'id')])) {
+      id = flattenData[index][transKeys(fieldNames, 'id')]
       break
     }
   }
@@ -401,7 +413,7 @@ export const getFirstSiblingWidthSelectItems = (flattenData, selectedItems) => {
  * @returns boolean
  */
 export const matchAllDataFilterKey = (node, searchValue) => {
-  let includesItems = !!matchFilterKey(searchValue, node.title)
+  let includesItems = !!matchFilterKey(searchValue, node[transKeys(fieldNames, 'title')])
   const { children } = node
   if (children && !includesItems) {
     includesItems = children.some((item) => {

@@ -65,7 +65,7 @@ const Cell = ({
       {loading && <IconLoading />}
       {columnIndex === 0 &&
         !loading &&
-        ((allRowData.children && allRowData.children.length > 0) || (onLoadChildren && allRowData.isLeaf) ? (
+        ((allRowData.children && allRowData.children.length > 0) || (onLoadChildren && !allRowData.isLeaf) ? (
           <Icon
             style={{ marginRight: 4, cursor: 'pointer' }}
             name={expandedTree ? 'caret-down' : 'caret-right'}
