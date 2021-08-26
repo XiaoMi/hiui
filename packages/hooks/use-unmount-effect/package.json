@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-unmount-effect",
-  "version": "4.0.0-alpha.2",
+  "version": "4.0.0-alpha.3",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -46,7 +46,7 @@
     "react": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.0",
+    "@hi-ui/hi-build": "^4.0.0-alpha.2",
     "react": "^17.0.1"
   }
 }

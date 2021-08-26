@@ -47,7 +47,7 @@
     "react": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.0",
+    "@hi-ui/hi-build": "^4.0.0-alpha.2",
     "react": "^17.0.1"
   },
   "dependencies": {

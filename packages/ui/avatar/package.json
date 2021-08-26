@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/avatar",
-  "version": "4.0.0-alpha.3",
+  "version": "4.0.0-alpha.4",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -52,7 +52,7 @@
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.1",
+    "@hi-ui/hi-build": "^4.0.0-alpha.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

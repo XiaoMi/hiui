@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/utils",
-  "version": "4.0.0-alpha.3",
+  "version": "4.0.0-alpha.4",
   "description": "The root-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,11 +44,11 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.1",
-    "@hi-ui/container": "^4.0.0-alpha.3",
+    "@hi-ui/container": "^4.0.0-alpha.4",
     "@hi-ui/env": "^4.0.0-alpha.3",
-    "@hi-ui/request": "^4.0.0-alpha.1"
+    "@hi-ui/request": "^4.0.0-alpha.2"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.1"
+    "@hi-ui/hi-build": "^4.0.0-alpha.2"
   }
 }
