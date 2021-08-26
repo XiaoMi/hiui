@@ -411,7 +411,7 @@ const InternalSelect = (props) => {
     } = _dataSource
     // 处理Key
 
-    options.params = key ? { [key]: keyword, ...params } : params
+    options.params = key && keyword ? { [key]: keyword, ...params } : params
 
     const _withCredentials = withCredentials || credentials === 'include'
     // 取消上一次的请求
@@ -463,7 +463,7 @@ const InternalSelect = (props) => {
         onSearch(keyword)
         return
       }
-      if (dataSource && (autoload || keyword) && searchable) {
+      if (dataSource && searchable) {
         remoteSearch(keyword)
       }
       if (dataSource && searchable && keyword === '' && selectedItems.length > 0) {
