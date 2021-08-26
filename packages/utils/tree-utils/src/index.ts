@@ -228,25 +228,31 @@ export const insertNodeById = <T extends BaseTreeNodeData>(
 }
 
 /**
- * 寻找某一节点的所有子节点的 ids
+ * 寻找某一节点的所有子节点
  *
  * @param node
  * @returns
  */
-export const findNestedChildIds = <T extends BaseTreeNodeData>(node: T) => {
-  const allChildrenIds: React.ReactText[] = []
+export const findNestedChildren = <T extends BaseTreeNodeData>(
+  node: T,
+  filter?: (item: any) => boolean | void
+) => {
+  const allChildren: T[] = []
 
   const dig = (node: BaseTreeNodeData) => {
     if (node.children) {
       node.children.forEach((child: BaseTreeNodeData) => {
-        allChildrenIds.push(child.id)
+        // 过滤节点及其子树
+        if (filter && filter(child) === false) return
+
+        allChildren.push(child as T)
         dig(child)
       })
     }
   }
 
   dig(node)
-  return allChildrenIds
+  return allChildren
 }
 
 /**
@@ -254,12 +260,18 @@ export const findNestedChildIds = <T extends BaseTreeNodeData>(node: T) => {
  * @param node
  * @returns
  */
-export const getNodeAncestors = <T extends BaseFlattedTreeNodeDataWithParent>(node: T) => {
+export const getNodeAncestors = <T extends BaseFlattedTreeNodeDataWithParent>(
+  node: T,
+  filter?: (item: any) => boolean | void
+) => {
   const ancestors = [] as T[]
 
   let tNode = node.parent
 
   while (tNode && tNode.parent) {
+    // 过滤节点及其子树
+    if (filter && filter(tNode) === false) break
+
     ancestors.push(tNode)
     tNode = tNode.parent
   }

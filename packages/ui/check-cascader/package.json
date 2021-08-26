@@ -52,6 +52,7 @@
     "@hi-ui/popper": "^4.0.0-alpha.2",
     "@hi-ui/times": "^4.0.0-alpha.1",
     "@hi-ui/tree-utils": "^4.0.0-alpha.0",
+    "@hi-ui/use-check": "^4.0.0-alpha.0",
     "@hi-ui/use-deep-equal-deps": "^4.0.0-alpha.1",
     "@hi-ui/use-latest": "^4.0.0-alpha.1",
     "@hi-ui/use-merge-refs": "^4.0.0-alpha.1",

@@ -114,29 +114,48 @@ const data = [
         id: '1-0',
         title: '1-0',
         disabledCheckbox: true,
+        children: [
+          {
+            id: '1-0-0',
+            title: '1-0-0',
+            checkable: false,
+          },
+          {
+            id: '1-0-1',
+            title: '1-0-1',
+            children: [
+              {
+                id: '1-0-1-0',
+                title: '1-0-1-0',
+              },
+              {
+                id: '1-0-1-1',
+                title: '1-0-1-1',
+              },
+            ],
+          },
+          {
+            id: '1-0-2',
+            title: '1-0-2',
+          },
+        ],
       },
       {
         id: '1-1',
         title: '1-1',
+        checkable: false,
+      },
+      {
+        id: '1-2',
+        title: '1-2',
+      },
+      {
+        id: '1-3',
+        title: '1-3',
       },
     ],
   },
 ]
-
-const getDataOnlyLastCheckable = (data: any) => {
-  return data.map((item) => {
-    if (item.children) {
-      item.checkable = item.checkable ?? false
-      item.children = getDataOnlyLastCheckable(item.children)
-    } else {
-      item.checkable = true
-    }
-
-    return item
-  })
-}
-
-const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
 
 export const Disabled = () => {
   return (
@@ -147,17 +166,13 @@ export const Disabled = () => {
           placeholder="请选择品类"
           disabled
           searchPlaceholder="请输入搜索内容"
-          data={dataOnlyLastCheckable}
+          data={data}
         />
       </div>
 
       <h1>Disabled Item</h1>
       <div className="cascader-disabled__wrap">
-        <CheckCascader
-          placeholder="请选择品类"
-          searchPlaceholder="请输入搜索内容"
-          data={dataOnlyLastCheckable}
-        />
+        <CheckCascader placeholder="请选择品类" searchPlaceholder="请输入搜索内容" data={data} />
       </div>
     </>
   )

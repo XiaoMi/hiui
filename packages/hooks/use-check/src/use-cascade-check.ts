@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
-import { getNodeAncestors, findNestedChildIds } from '@hi-ui/tree-utils'
+import { useLatestRef } from '@hi-ui/use-latest'
+import { getNodeAncestors, findNestedChildren } from '@hi-ui/tree-utils'
 import { checkDefault } from './use-check'
 import { UseCascadeCheckItem } from './types'
 
@@ -10,13 +10,15 @@ export const useCascadeCheck = ({
   disabled,
   flattedData,
   defaultCheckedIds,
-  checkedIdsProp,
+  checkedIds: checkedIdsProp,
   onCheck,
   allowCheck,
 }: UseCascadeCheckProps) => {
   const onCheckRef = useLatestRef(onCheck)
-  const proxyOnCheck = useCallback((checkedIds, checkedNode, checked, semiCheckedIds) => {
-    onCheckRef.current?.({ checkedIds, semiCheckedIds }, checkedNode, checked)
+  const allowCheckRef = useLatestRef(allowCheck)
+
+  const proxyOnCheck = useCallback((checkedIds, checkedNode, shouldChecked, semiCheckedIds) => {
+    onCheckRef.current?.({ checkedIds, semiCheckedIds }, checkedNode, shouldChecked)
   }, [])
 
   const [checkedIds, trySetCheckedIds] = useUncontrolledState(
@@ -26,27 +28,29 @@ export const useCascadeCheck = ({
   )
 
   const checkedIdsSet = useMemo(() => new Set(checkedIds), [checkedIds])
-  const isCheckedLatest = useLatestCallback((id: React.ReactText) => checkedIdsSet.has(id))
+  const isCheckedId = useCallback((id: React.ReactText) => checkedIdsSet.has(id), [checkedIdsSet])
 
   // 注意：在非级联模式下，`semiCheckedIds`, `semiCheckedIdsSet` 状态值均为 `undefined`，避免性能浪费
   const [semiCheckedIds, semiCheckedIdsSet] = useMemo(
-    () => (cascaded ? getSemiCheckedIdsWithSet(flattedData, isCheckedLatest) : []),
-    [cascaded, isCheckedLatest, flattedData]
+    () =>
+      cascaded ? getSemiCheckedIdsWithSet(flattedData, isCheckedId, allowCheckRef.current) : [],
+    [cascaded, isCheckedId, flattedData]
   )
 
-  const isSemiCheckedLatest = useLatestCallback((id: React.ReactText) => {
-    return cascaded ? semiCheckedIdsSet!.has(id) : false
-  })
+  const isSemiCheckedId = useCallback(
+    (id: React.ReactText) => {
+      return cascaded ? semiCheckedIdsSet!.has(id) : false
+    },
+    [cascaded, semiCheckedIdsSet]
+  )
 
   const checkedIdsRef = useLatestRef(checkedIds)
   const semiCheckedIdsRef = useLatestRef(semiCheckedIds)
 
-  const allowCheckRef = useLatestRef(allowCheck)
-
   const onNodeCheck = useCallback(
     (targetItem: UseCascadeCheckItem, shouldChecked: boolean) => {
       if (disabled) return
-      if (allowCheckRef.current && allowCheckRef.current(targetItem) === false) return
+      if (allowCheckRef.current && !allowCheckRef.current(targetItem)) return
 
       const checkedIds = checkedIdsRef.current
 
@@ -56,7 +60,8 @@ export const useCascadeCheck = ({
           checkedIds,
           semiCheckedIds,
           targetItem,
-          shouldChecked
+          shouldChecked,
+          allowCheckRef.current
         )
 
         trySetCheckedIds(nextCheckedIds, targetItem, shouldChecked, nextSemiCheckedIds)
@@ -69,25 +74,27 @@ export const useCascadeCheck = ({
     [disabled, cascaded, trySetCheckedIds]
   )
 
-  return [onNodeCheck, isCheckedLatest, isSemiCheckedLatest] as const
+  return [onNodeCheck, isCheckedId, isSemiCheckedId] as const
 }
 
-export interface UseCascadeCheckProps {
+export interface UseCascadeCheckProps<T = any> {
   cascaded: boolean
   disabled: boolean
   flattedData: UseCascadeCheckItem[]
   defaultCheckedIds: React.ReactText[]
-  checkedIdsProp?: React.ReactText[]
+  checkedIds?: React.ReactText[]
   onCheck?: (
     checkedInfo: {
       checkedIds: React.ReactText[]
       semiCheckedIds: React.ReactText[]
     },
-    node: UseCascadeCheckItem,
-    checked: boolean
+    targetItem: T,
+    shouldChecked: boolean
   ) => void
-  allowCheck?: (targetItem: UseCascadeCheckItem) => boolean
+  allowCheck?: (targetItem: T) => boolean
 }
+
+const ALWAYS_ALLOW = () => true
 
 /**
  * 级联多选，支持父子正反选操作
@@ -96,35 +103,40 @@ export const checkCascade = (
   checkedIds: React.ReactText[],
   semiCheckedIds: React.ReactText[],
   checkedNode: UseCascadeCheckItem,
-  checked: boolean
+  shouldChecked: boolean,
+  allowCheck: (targetItem: UseCascadeCheckItem) => boolean = ALWAYS_ALLOW
 ) => {
   const checkedIdsSet = new Set(checkedIds)
   const semiCheckedIdsSet = new Set(semiCheckedIds)
 
   const checkedNodeId = checkedNode.id
-  const ancestors = getNodeAncestors(checkedNode)
-  const childrenIds = findNestedChildIds(checkedNode)
+  const ancestors = getNodeAncestors(checkedNode, allowCheck)
+  const nestedChildren = findNestedChildren(checkedNode, allowCheck)
 
-  if (checked) {
+  if (shouldChecked) {
     // - 对于选中节点自身的处理
     semiCheckedIdsSet.delete(checkedNodeId)
     checkedIdsSet.add(checkedNodeId)
 
     // - 对于选中节点的后代影响处理
-    childrenIds.forEach((child) => {
+    nestedChildren.forEach((child) => {
+      const { id } = child
+
       // 将未选中标记为选中态
-      if (!checkedIdsSet.has(child)) {
-        checkedIdsSet.add(child)
+      if (!checkedIdsSet.has(id)) {
+        checkedIdsSet.add(id)
       }
-      if (semiCheckedIdsSet.has(child)) {
-        semiCheckedIdsSet.delete(child)
+      if (semiCheckedIdsSet.has(id)) {
+        semiCheckedIdsSet.delete(id)
       }
     })
 
     // - 对于选中节点的祖先影响处理
-    ancestors.forEach(({ id, children }) => {
+    ancestors.forEach((ancestor) => {
+      const { id, children } = ancestor
+
       // 当该节点的子节点都被全选中时，则该节点为标记为全选，否则为半选
-      if (!children?.some((child) => !checkedIdsSet.has(child.id))) {
+      if (children!.filter(allowCheck).some((child) => !checkedIdsSet.has(child.id)) === false) {
         semiCheckedIdsSet.delete(id)
         checkedIdsSet.add(id)
       } else {
@@ -136,7 +148,9 @@ export const checkCascade = (
     checkedIdsSet.delete(checkedNodeId)
 
     // - 对于取消选中节点对祖先的影响处理
-    ancestors.forEach(({ id, children }) => {
+    ancestors.forEach((ancestor) => {
+      const { id, children } = ancestor
+
       if (checkedIdsSet.has(id)) {
         checkedIdsSet.delete(id)
         semiCheckedIdsSet.add(id)
@@ -144,20 +158,24 @@ export const checkCascade = (
 
       // 当该节点的子节点都未被选中时，则该节点为标记为未选中
       if (
-        !children?.some((child) => checkedIdsSet.has(child.id) || semiCheckedIdsSet.has(child.id))
+        children!
+          .filter(allowCheck)
+          .some((child) => checkedIdsSet.has(child.id) || semiCheckedIdsSet.has(child.id)) === false
       ) {
         semiCheckedIdsSet.delete(id)
       }
     })
 
     // - 对于取消选中节点对后代的影响处理
-    childrenIds.forEach((child) => {
+    nestedChildren.forEach((child) => {
+      const { id } = child
+
       // 将选中标记为未选中态
-      if (checkedIdsSet.has(child)) {
-        checkedIdsSet.delete(child)
+      if (checkedIdsSet.has(id)) {
+        checkedIdsSet.delete(id)
       }
-      if (semiCheckedIdsSet.has(child)) {
-        semiCheckedIdsSet.delete(child)
+      if (semiCheckedIdsSet.has(id)) {
+        semiCheckedIdsSet.delete(id)
       }
     })
   }
@@ -165,7 +183,7 @@ export const checkCascade = (
   const nextCheckedIds = Array.from(checkedIdsSet)
   const nextSemiCheckedIds = Array.from(semiCheckedIdsSet)
 
-  return [nextCheckedIds, nextSemiCheckedIds]
+  return [nextCheckedIds, nextSemiCheckedIds] as const
 }
 
 /**
@@ -177,7 +195,8 @@ export const checkCascade = (
  */
 export const getSemiCheckedIdsWithSet = (
   flattedData: UseCascadeCheckItem[],
-  isChecked: (id: React.ReactText) => boolean
+  isChecked: (id: React.ReactText) => boolean,
+  allowCheck: (targetItem: UseCascadeCheckItem) => boolean = ALWAYS_ALLOW
 ) => {
   const semiCheckedNodes = [] as UseCascadeCheckItem[]
   const semiCheckedIdsSet = new Set<React.ReactText>()
@@ -187,7 +206,10 @@ export const getSemiCheckedIdsWithSet = (
 
   flattedData.forEach((node) => {
     parent = node.parent
-    if (parent) {
+
+    if (parent && parent.id !== undefined) {
+      if (!allowCheck(parent)) return
+
       parentId = parent.id
       if (semiCheckedIdsSet.has(parentId)) return
 
@@ -202,7 +224,9 @@ export const getSemiCheckedIdsWithSet = (
   // 自下而上设置半选态
   semiCheckedNodes.forEach((node) => {
     parent = node.parent
-    while (parent) {
+    while (parent && parent.id !== undefined) {
+      if (!allowCheck(parent)) return
+
       parentId = parent.id
       // 可能存在兄弟节点，共同祖先需要去重，避免重复计算
       if (semiCheckedIdsSet.has(parentId)) return
