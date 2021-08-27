@@ -1,0 +1,58 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-transfer' !default;
+
+.#{$prefix} {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+
+.#{$prefix}-panel {
+  position: relative;
+  width: 240px;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-20);
+  border-radius: 4px;
+
+  &__list {
+    @include component-reset;
+    list-style: none;
+  }
+}
+
+.#{$prefix}-item {
+  box-sizing: border-box;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  line-height: 22px;
+
+  .#{$component-prefix}-checkbox {
+    width: 100%;
+    padding: 6px 12px;
+  }
+
+  &:hover {
+    background-color: use-color('primary-20');
+  }
+}
+
+.#{$prefix}-operation {
+  width: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .#{$component-prefix}-button {
+    margin-top: -4px;
+  }
+
+  .#{$component-prefix}-button +  .#{$component-prefix}-button {
+    margin-top: 8px;
+    margin-left: 0;
+  }
+}
