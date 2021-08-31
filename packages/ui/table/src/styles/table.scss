@@ -1,0 +1,57 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-table' !default;
+
+.#{$prefix} {
+  box-sizing: border-box;
+  font-size: 14px;
+  overflow: auto;
+  table {
+    width: 100%;
+    text-align: left;
+    border-radius: 2px 2px 0 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+  }
+
+  &__wrapper {
+    position: relative;
+  }
+
+  &--sticky {
+    position: sticky;
+    top: 0;
+  }
+
+  &__header {
+    & > tr {
+      & > th {
+        padding: 16px;
+        color: #999999;
+        background: rgb(251, 251, 251);
+        border-bottom: 1px solid #f0f0f0;
+        font-weight: 500;
+      }
+    }
+  }
+  &__body {
+    & > tr {
+      & > td {
+        background: #fff;
+        white-space: nowrap;
+        padding: 16px;
+        color: #333;
+        border-bottom: 1px solid #f0f0f0;
+      }
+    }
+  }
+  &__row {
+    &:hover {
+      & > td {
+        background: #f0f5fe;
+      }
+    }
+  }
+}
+
