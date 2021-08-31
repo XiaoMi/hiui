@@ -88,6 +88,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     transition: 0.3s ease-out;
     line-height: 1;
     flex: none;
+    background-color: use-color('white');
 
     &--indeterminate {
       &::after {

@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useCallback, useMemo, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { TransferDataItem } from './types'
@@ -6,6 +6,7 @@ import { useTransferContext } from './context'
 import Input from '@hi-ui/input'
 import { TransferItem } from './TransferItem'
 import Checkbox from '@hi-ui/checkbox'
+import { SearchOutlined } from '@hi-ui/icons'
 
 const _role = 'transfer-panel'
 const _prefix = getPrefixCls(_role)
@@ -13,7 +14,7 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is TransferPanel
  */
-export const TransferPanel = forwardRef<HTMLUListElement | null, TransferPanelProps>(
+export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProps>(
   (
     {
       prefixCls = _prefix,
@@ -24,42 +25,131 @@ export const TransferPanel = forwardRef<HTMLUListElement | null, TransferPanelPr
       targetLimit,
       disabled,
       data,
-      checkedIds,
-      searchable,
       title,
+      checkedIds,
+      setCheckedIds,
+      onCheck,
+      isCheckedIds,
+      placeholder,
+      emptyContent,
       ...rest
     },
     ref
   ) => {
+    const { searchable } = useTransferContext()
+
+    const [cacheData, setCacheData] = useState(data)
+    useEffect(() => {
+      setCacheData(data)
+    }, [data])
+
+    const search = (searchValue) => {
+      if (!searchValue) {
+        setCacheData(data)
+        setCheckedIds(checkedIds)
+      } else {
+        const nextData = data.filter((item) => {
+          if (typeof item.title !== 'string') return false
+          return item.title.includes(searchValue)
+        })
+
+        setCacheData(nextData)
+      }
+    }
+
+    const handleSearch = (evt: React.ChangeEvent<HTMLInputElement>) => {
+      const searchValue = evt.target.value
+      search(searchValue)
+    }
+
+    const canCheckedItems = useMemo(() => cacheData.filter((item) => !item.disabled), [cacheData])
+
+    const handleCheckAll = useCallback(
+      (evt: React.ChangeEvent<HTMLInputElement>) => {
+        const shouldCheckedAll = evt.target.checked
+        const nextCheckedIdsSet = new Set<React.ReactText>(checkedIds)
+        if (shouldCheckedAll) {
+          canCheckedItems.forEach(({ id }) => {
+            nextCheckedIdsSet.add(id)
+          })
+        } else {
+          canCheckedItems.forEach(({ id }) => {
+            nextCheckedIdsSet.delete(id)
+          })
+        }
+
+        const nextCheckedIds = Array.from(nextCheckedIdsSet)
+        setCheckedIds(nextCheckedIds)
+      },
+      [canCheckedItems, checkedIds, setCheckedIds]
+    )
+
+    const currentPanelHasChecked = checkedIds.length > 0
+
+    const checkedAll = useMemo(
+      () =>
+        currentPanelHasChecked &&
+        canCheckedItems.length > 0 &&
+        canCheckedItems.every((item) => isCheckedIds(item.id)),
+      [currentPanelHasChecked, isCheckedIds, canCheckedItems]
+    )
+
     const cls = cx(prefixCls, className)
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        {title ? (
-          <div className={`${prefixCls}__header`}>
-            <div className={`${prefixCls}__title`}>{title}</div>
-          </div>
-        ) : null}
-        <div className={`${prefixCls}__body`}>
-          {searchable ? <Input /> : null}
-          <ul className={`${prefixCls}__list`}>
-            {data.map((item) => {
-              return <TransferItem key={item.id} data={item} />
-            })}
-          </ul>
-        </div>
-        <div className={`${prefixCls}__footer`}>
+        <div className={`${prefixCls}__header`}>
           <div className={`${prefixCls}__check-all`}>
             <Checkbox
-              checked={checkedIds?.length === data.filter((item) => !item.disabled).length}
+              indeterminate={!checkedAll && currentPanelHasChecked}
+              checked={checkedAll}
+              onChange={handleCheckAll}
             />
-
             <span>
-              {checkedIds.length + '/'}
-              {data.length} 项
+              {currentPanelHasChecked
+                ? `${checkedIds.length}/${cacheData.length}`
+                : `${cacheData.length}`}
             </span>
+            <span>项</span>
           </div>
-          <div className={`${prefixCls}__check-info`}></div>
+          {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
+        </div>
+        <div className={`${prefixCls}__body`}>
+          {searchable ? (
+            <div className={`${prefixCls}__search`}>
+              <Input
+                size="md"
+                appearance="underline"
+                prefix={<SearchOutlined />}
+                placeholder={placeholder}
+                onChange={handleSearch}
+              />
+            </div>
+          ) : null}
+          <div className={`${prefixCls}__list-scroller`}>
+            {cacheData.length > 0 ? (
+              <ul className={`${prefixCls}__list`}>
+                {cacheData.map((item) => {
+                  return (
+                    <TransferItem
+                      key={item.id}
+                      data={item}
+                      onCheck={onCheck}
+                      checked={isCheckedIds(item.id)}
+                    />
+                  )
+                })}
+              </ul>
+            ) : (
+              <div className={`${prefixCls}__empty`}>{emptyContent}</div>
+            )}
+          </div>
+        </div>
+        <div className={`${prefixCls}__footer`}>
+          <div className={`${prefixCls}__pagination`}>
+            <span>left</span>
+            <span>right</span>
+          </div>
         </div>
       </div>
     )
@@ -100,13 +190,17 @@ export interface TransferPanelProps {
    */
   disabled?: boolean
   /**
-   * 标题(数组长度为 1 或 2 位，1 位时左右标题将相同，2 位时将使用对应索引标题)
+   * 标题
    */
-  title?: React.ReactNode[]
+  title?: React.ReactNode
+  /**
+   * 输入框占位内容
+   */
+  placeholder?: string
   /**
    * 数据为空时的显示内容
    */
-  emptyContent?: React.ReactNode[]
+  emptyContent?: React.ReactNode
   /**
    * 穿梭框数据源
    */
@@ -148,6 +242,9 @@ export interface TransferPanelProps {
    */
   onDrop?: (targetItem: TransferDataItem, sourceItem: TransferDataItem) => boolean
   checkedIds: React.ReactText[]
+  setCheckedIds: (newState: React.ReactText[]) => void
+  onCheck: (targetItem: TransferDataItem, shouldChecked: boolean) => void
+  isCheckedIds: (id: React.ReactText) => boolean
 }
 
 if (__DEV__) {

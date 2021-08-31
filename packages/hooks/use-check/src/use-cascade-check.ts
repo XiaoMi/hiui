@@ -5,11 +5,13 @@ import { getNodeAncestors, findNestedChildren } from '@hi-ui/tree-utils'
 import { checkDefault } from './use-check'
 import { UseCascadeCheckItem } from './types'
 
+const NOOP_ARRAY = [] as []
+
 export const useCascadeCheck = ({
-  cascaded,
-  disabled,
+  cascaded = true,
+  disabled = false,
   flattedData,
-  defaultCheckedIds,
+  defaultCheckedIds = NOOP_ARRAY,
   checkedIds: checkedIdsProp,
   onCheck,
   allowCheck,
@@ -78,10 +80,10 @@ export const useCascadeCheck = ({
 }
 
 export interface UseCascadeCheckProps<T = any> {
-  cascaded: boolean
-  disabled: boolean
+  cascaded?: boolean
+  disabled?: boolean
   flattedData: UseCascadeCheckItem[]
-  defaultCheckedIds: React.ReactText[]
+  defaultCheckedIds?: React.ReactText[]
   checkedIds?: React.ReactText[]
   onCheck?: (
     checkedInfo: {

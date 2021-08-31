@@ -2,6 +2,6 @@ import React from 'react'
 
 export type TransferDataItem = {
   id: React.ReactText
-  content: React.ReactNode
+  title: React.ReactNode
   disabled?: boolean
 }

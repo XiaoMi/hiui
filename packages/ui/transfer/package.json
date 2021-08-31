@@ -46,7 +46,8 @@
     "@hi-ui/checkbox": "^4.0.0-alpha.6",
     "@hi-ui/classname": "^4.0.0-alpha.0",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
-    "@hi-ui/env": "^4.0.0-alpha.0"
+    "@hi-ui/env": "^4.0.0-alpha.0",
+    "@hi-ui/use-check": "^4.0.0-alpha.0"
   },
   "peerDependencies": {
     "react": "^17.0.1",

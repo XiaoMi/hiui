@@ -1,10 +1,10 @@
 import { createContext, useContext } from 'react'
 
 interface TransferContext {
-  selectable?: boolean
+  searchable: boolean
 }
 
-const transferContext = createContext<TransferContext>({})
+const transferContext = createContext<TransferContext | null>(null)
 
 export const TransferProvider = transferContext.Provider
 

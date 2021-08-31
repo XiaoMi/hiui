@@ -51,6 +51,8 @@
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/tree-utils": "^4.0.0-alpha.0"
+    "@hi-ui/tree-utils": "^4.0.0-alpha.0",
+    "@hi-ui/use-latest": "^4.0.0-alpha.2",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.2"
   }
 }

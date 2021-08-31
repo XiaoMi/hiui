@@ -3,9 +3,11 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
 import { UseCheckItem } from './types'
 
+const NOOP_ARRAY = [] as []
+
 export const useCheck = ({
-  disabled,
-  defaultCheckedIds,
+  disabled = false,
+  defaultCheckedIds = NOOP_ARRAY,
   checkedIds: checkedIdsProp,
   onCheck,
   allowCheck,
@@ -35,12 +37,12 @@ export const useCheck = ({
     [disabled, trySetCheckedIds]
   )
 
-  return [checkedIds, onNodeCheck, isCheckedId] as const
+  return [checkedIds, trySetCheckedIds, onNodeCheck, isCheckedId] as const
 }
 
 export interface UseCheckProps {
-  disabled: boolean
-  defaultCheckedIds: React.ReactText[]
+  disabled?: boolean
+  defaultCheckedIds?: React.ReactText[]
   checkedIds?: React.ReactText[]
   onCheck?: (
     checkedIds: React.ReactText[],

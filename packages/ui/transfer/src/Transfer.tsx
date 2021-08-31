@@ -1,10 +1,13 @@
-import React, { forwardRef, useMemo, useState } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Button from '@hi-ui/button'
-import { ArrowRightOutlined } from '@hi-ui/icons'
+import { LeftOutlined, RightOutlined } from '@hi-ui/icons'
 import { TransferPanel } from './TransferPanel'
 import { TransferDataItem } from './types'
+import { TransferProvider } from './context'
+import { useCheck } from '@hi-ui/use-check'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
 const _role = 'transfer'
 const _prefix = getPrefixCls(_role)
@@ -20,12 +23,18 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       className,
       children,
       disabled = false,
+      showCheckAll = true,
+      searchable = true,
+      emptyContent = NOOP_ARRAY,
       type = 'default',
       targetSortType = 'default',
       data = NOOP_ARRAY,
-      targetIds = NOOP_ARRAY,
+      defaultTargetIds = NOOP_ARRAY,
+      targetIds: targetIdsProp,
       targetLimit,
       title,
+      placeholder,
+      titleRender,
       onChange,
       onDrop,
       onDragStart,
@@ -34,8 +43,24 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
     },
     ref
   ) => {
-    const [sourceCheckedIds, setSourceCheckedIds] = useState([])
-    const [targetCheckedIds, setTargetCheckedIds] = useState([])
+    const [targetIds, tryChangeTargetIds] = useUncontrolledState(
+      defaultTargetIds,
+      targetIdsProp,
+      onChange
+    )
+
+    const [
+      sourceCheckedIds,
+      setSourceCheckedIds,
+      onSourceItemCheck,
+      isSourceCheckedIds,
+    ] = useCheck({ disabled })
+    const [
+      targetCheckedIds,
+      setTargetCheckedIds,
+      onTargetItemCheck,
+      isTargetCheckedIds,
+    ] = useCheck({ disabled })
 
     const [sourceList, targetList] = useMemo(() => splitData(data, targetIds), [data, targetIds])
 
@@ -64,37 +89,15 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
         checkedIds = sourceCheckedIds.slice()
         nextTargetIds =
           targetSortType === 'queue' ? targetIds.concat(checkedIds) : checkedIds.concat(targetIds)
+        setSourceCheckedIds([])
       } else {
         checkedIds = targetCheckedIds.slice()
-        nextTargetIds = targetIds.filter((id) => checkedIds.indexOf(id) !== -1)
+        nextTargetIds = targetIds.filter((id) => checkedIds.indexOf(id) === -1)
+        setTargetCheckedIds([])
       }
 
       const moveData = data.filter((item) => checkedIds.indexOf(item.id) !== -1)
-      onChange?.(nextTargetIds, direction, moveData)
-    }
-
-    // const search = (list, selectedKeys, searchValue) => {
-    //   const filterResult = []
-
-    //   list.forEach((item) => {
-    //     item.title.includes(searchValue) && filterResult.push(item.id)
-    //   })
-
-    //   const checkoutStatue =
-    //     searchValue.length > 0
-    //       ? searchValue.every((item) => {
-    //           return selectedKeys.includes(item)
-    //         })
-    //       : shallowEqual(selectedKeys.sort(), filterResult.sort())
-
-    //   return checkoutStatue
-    // }
-
-    const handleSearch = (evt: React.ChangeEvent, direction: 'left' | 'right') => {
-      const searchValue = evt.target.value
-      const selectedKeys = direction === 'left' ? sourceCheckedIds : targetCheckedIds
-      const list = direction === 'left' ? sourceList : targetList
-      search(list, selectedKeys, searchValue)
+      tryChangeTargetIds(nextTargetIds, direction, moveData)
     }
 
     const onItemClick = () => {}
@@ -106,35 +109,97 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       }
     }
 
-    const handleDataMove = (direction: 'left' | 'right') => (evt: React.MouseEvent) => {}
+    const panelTitles = useMemo(() => {
+      if (!title) return []
+      if (title.length === 1) return [title[0], title[0]]
+      return title
+    }, [title])
+
+    const panelPlaceholders = useMemo(() => {
+      if (!placeholder) return []
+      if (placeholder.length === 1) return [placeholder[0], placeholder[0]]
+      return placeholder
+    }, [placeholder])
+
+    const panelEmptyContents = useMemo(() => {
+      if (!emptyContent) return []
+      if (emptyContent.length === 1) return [emptyContent[0], emptyContent[0]]
+      return emptyContent
+    }, [emptyContent])
+
+    const providedValue = useMemo(
+      () => ({
+        disabled,
+        showCheckAll,
+        searchable,
+        emptyContent,
+        type,
+        targetSortType,
+        targetIds,
+        targetLimit,
+        titleRender,
+      }),
+      [
+        disabled,
+        showCheckAll,
+        searchable,
+        emptyContent,
+        type,
+        targetSortType,
+        targetIds,
+        targetLimit,
+        titleRender,
+      ]
+    )
+
+    const enabledSourceToTarget = sourceCheckedIds.length > 0
+    const enabledTargetToSource = targetCheckedIds.length > 0
 
     const cls = cx(prefixCls, className)
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        <TransferPanel
-          data={sourceList}
-          checkedIds={sourceCheckedIds}
-          onCheck={setSourceCheckedIds}
-        />
-        <div className={`${prefixCls}-operation`}>
-          {type === 'multiple' ? (
-            <>
-              <Button onClick={handleDataMove('left')}>
-                <ArrowRightOutlined />
-              </Button>
-              <Button onClick={handleDataMove('left')}>
-                <ArrowRightOutlined />
-              </Button>
-            </>
-          ) : null}
+      <TransferProvider value={providedValue}>
+        <div ref={ref} role={role} className={cls} {...rest}>
+          <TransferPanel
+            title={panelTitles[0]}
+            placeholder={panelPlaceholders[0]}
+            emptyContent={panelEmptyContents[0]}
+            data={sourceList}
+            checkedIds={sourceCheckedIds}
+            setCheckedIds={setSourceCheckedIds}
+            onCheck={onSourceItemCheck}
+            isCheckedIds={isSourceCheckedIds}
+          />
+          <div className={`${prefixCls}-operation`}>
+            {type === 'multiple' ? (
+              <>
+                <Button
+                  type={enabledSourceToTarget ? 'primary' : 'default'}
+                  disabled={!enabledSourceToTarget}
+                  icon={<RightOutlined />}
+                  onClick={() => moveTo('right')}
+                />
+                <Button
+                  type={enabledTargetToSource ? 'primary' : 'default'}
+                  disabled={!enabledTargetToSource}
+                  icon={<LeftOutlined />}
+                  onClick={() => moveTo('left')}
+                />
+              </>
+            ) : null}
+          </div>
+          <TransferPanel
+            title={panelTitles[1]}
+            placeholder={panelPlaceholders[1]}
+            emptyContent={panelEmptyContents[1]}
+            data={targetList}
+            checkedIds={targetCheckedIds}
+            setCheckedIds={setTargetCheckedIds}
+            onCheck={onTargetItemCheck}
+            isCheckedIds={isTargetCheckedIds}
+          />
         </div>
-        <TransferPanel
-          data={targetList}
-          checkedIds={targetCheckedIds}
-          onCheck={setTargetCheckedIds}
-        />
-      </div>
+      </TransferProvider>
     )
   }
 )
@@ -173,9 +238,13 @@ export interface TransferProps {
    */
   disabled?: boolean
   /**
-   * 标题(数组长度为 1 或 2 位，1 位时左右标题将相同，2 位时将使用对应索引标题)
+   * 头部标题（数组长度为 1 或 2 位，1 位时左右标题将相同，2 位时将使用对应索引标题）
    */
   title?: React.ReactNode[]
+  /**
+   * 搜索输入框占位内容（数组长度为 1 或 2 位，1 位时左右标题将相同，2 位时将使用对应索引标题）
+   */
+  placeholder?: string[]
   /**
    * 数据为空时的显示内容
    */
@@ -189,9 +258,13 @@ export interface TransferProps {
    */
   targetLimit?: number
   /**
+   * 默认的目标框内的元素 id 集合
+   */
+  defaultTargetIds?: React.ReactText[]
+  /**
    * 目标框内的元素 id 集合
    */
-  targetIds?: React.ReactText[]
+  targetIds: React.ReactText[]
   /**
    * 目标框内的排序方式
    */

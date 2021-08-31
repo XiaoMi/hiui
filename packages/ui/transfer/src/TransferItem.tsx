@@ -24,6 +24,7 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
       isDragging,
       dividerPosition,
       checked,
+      onCheck,
       ...rest
     },
     ref
@@ -33,7 +34,6 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
       type = 'multiple',
       onItemClick,
       onItemKeydown,
-      onCheck,
       titleRender,
     } = useTransferContext()
     const disabled = disabledContext || item.disabled
@@ -71,7 +71,7 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
             checked={checked}
             disabled={disabled}
             onChange={(e) => {
-              onCheck(item, !e.target.value)
+              onCheck(item, e.target.checked)
             }}
           >
             {renderTitle(item)}
