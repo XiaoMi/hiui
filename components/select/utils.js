@@ -11,9 +11,7 @@ const parseValue = (value) => {
 // 整理Select数据结构 获取选中的Items id
 export const resetSelectedItems = (value, dropdownItems = [], key) => {
   const values = parseValue(value)
-  const selectedItems = dropdownItems.filter((item) => {
-    return values.includes(item[key])
-  })
+  const selectedItems = values.map((v) => dropdownItems.find((item) => v === item[key])).filter((v) => v !== undefined)
   // 处理子节点
   dropdownItems.forEach((item) => {
     if (item.children) {
