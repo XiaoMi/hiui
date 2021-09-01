@@ -34,12 +34,13 @@ import DemoVertical from '../../demo/stepper/section-vertical.jsx'
 
 ## Props
 
-| 参数       | 说明                            | 类型       | 可选值                     | 默认值       |
-| ---------- | ------------------------------- | ---------- | -------------------------- | ------------ |
-| data       | 步骤数据项源                    | DataItem[] | -                          | -            |
-| current    | 当前步骤位置索引，从 0 开始计数 | number     | -                          | -            |
-| placement  | 水平或垂直展示步骤条            | string     | 'vertical' \| 'horizontal' | 'horizontal' |
-| itemLayout | 步骤项的布局方式                | string     | 'vertical' \| 'horizontal' | 'vertical'   |
+| 参数       | 说明                            | 类型                      | 可选值                     | 默认值       |
+| ---------- | ------------------------------- | ------------------------- | -------------------------- | ------------ |
+| data       | 步骤数据项源                    | DataItem[]                | -                          | -            |
+| current    | 当前步骤位置索引，从 0 开始计数 | number                    | -                          | -            |
+| placement  | 水平或垂直展示步骤条            | string                    | 'vertical' \| 'horizontal' | 'horizontal' |
+| itemLayout | 步骤项的布局方式                | string                    | 'vertical' \| 'horizontal' | 'vertical'   |
+| onChange   | 点击切换步骤时触发              | (current: number) => void | -                          | -            |
 
 ## Type
 
