@@ -59,6 +59,7 @@ interface Props {
   renderExtraFooter?: () => JSX.Element
   overlayClassName?: string
   setOverlayContainer?: (triggerNode: any) => any
+  onBlur?: () => void
 }
 declare const Select: React.ComponentType<Props>
 export default Select

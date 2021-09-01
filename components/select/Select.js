@@ -24,6 +24,7 @@ const InternalSelect = (props) => {
     render,
     multipleWrap,
     onFocus,
+    onBlur,
     dataSource,
     filterOption,
     theme,
@@ -202,13 +203,16 @@ const InternalSelect = (props) => {
     if (dropdownShow) {
       setKeyword('')
       setDropdownShow(false)
+      if (onBlur) {
+        onBlur()
+      }
     }
     // 多选具有默认值的话打开的话应该显示选中的值
     if (dataSource && type === 'multiple' && !autoloadFlag.current) {
       setCacheSelectItem(selectedItems)
       setDropdownItems(selectedItems)
     }
-  }, [dropdownShow, selectedItems, dataSource, type])
+  }, [dropdownShow, selectedItems, dataSource, type, onBlur])
   // 获取分组的数据 以及下标
   const getGroupDropdownItems = useCallback(
     (focusedIndex, group, direction) => {
