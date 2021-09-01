@@ -87,10 +87,7 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
     const currentPanelHasChecked = checkedIds.length > 0
 
     const checkedAll = useMemo(
-      () =>
-        currentPanelHasChecked &&
-        canCheckedItems.length > 0 &&
-        canCheckedItems.every((item) => isCheckedIds(item.id)),
+      () => currentPanelHasChecked && canCheckedItems.every((item) => isCheckedIds(item.id)),
       [currentPanelHasChecked, isCheckedIds, canCheckedItems]
     )
 

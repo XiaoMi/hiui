@@ -28,3 +28,8 @@ export const isArray = <T>(arg: unknown): arg is T[] => Array.isArray(arg)
  */
 export const isEmptyArray = <T>(arg: unknown): arg is T[] & { length: 0 } =>
   isArray(arg) && arg.length === 0
+
+/**
+ * Assert is numeric
+ */
+export const isNumeric = (arg: unknown): arg is string | number => !Number.isNaN(Number(arg))

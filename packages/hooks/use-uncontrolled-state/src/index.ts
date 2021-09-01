@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { useLatestCallback } from '@hi-ui/use-latest'
+import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 
 /**
  * if `controlledState` is `undefined` will be uncontrolled using the defaultState
@@ -11,22 +11,29 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 export function useUncontrolledState<T>(
   defaultState: T | (() => T),
   controlledState?: T,
-  onChange?: (next: T, ...args: any[]) => void
+  onChange?: (next: T, ...args: any[]) => void,
+  stateIsEqual = Object.is
 ) {
-  const onChangeLatest = useLatestCallback(onChange)
-
   const [internalState, setInternalState] = useState<T>(defaultState)
+
   const uncontrolled = controlledState === undefined
   const state = uncontrolled ? internalState : (controlledState as T)
 
+  const stateLatest = useLatestRef(state)
+
+  const onChangeLatest = useLatestCallback(onChange)
+  const stateIsEqualLatest = useLatestCallback(stateIsEqual)
+
   const tryChangeState = useCallback(
     (newState: T, ...args: any[]) => {
+      if (stateIsEqualLatest(newState, stateLatest.current)) return
+
       if (uncontrolled) {
         setInternalState(newState)
       }
       onChangeLatest(newState, ...args)
     },
-    [uncontrolled, onChangeLatest]
+    [uncontrolled, stateLatest, onChangeLatest, stateIsEqualLatest]
   )
 
   return [state, tryChangeState] as const

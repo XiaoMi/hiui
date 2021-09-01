@@ -4,12 +4,13 @@ $prefix: '#{$component-prefix}-counter' !default;
 
 .#{$prefix} {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
   height: auto;
   min-height: 32px;
   box-sizing: border-box;
   color: use-color('gray-80');
   font-size: $font-size-normal;
+  outline: none;
 
   $this: &;
 
@@ -23,18 +24,21 @@ $prefix: '#{$component-prefix}-counter' !default;
     color: get-color($palette-secondary, 'danger');
   }
 
-  &__outer {
-    display: flex;
-    height: auto;
-  }
-
   &__minus,
   &__plus {
-    @include flex(space-around, center, column);
+    appearance: none;
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    user-select: none;
+    font: inherit;
+    outline: none;
 
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     flex: 0 0 auto;
+    box-sizing: border-box;
     width: 32px;
     height: 32px;
     line-height: 32px;
@@ -42,9 +46,7 @@ $prefix: '#{$component-prefix}-counter' !default;
     border-radius: 2px;
     font-weight: bold;
     color: use-color('primary');
-    box-sizing: border-box;
     cursor: pointer;
-    user-select: none;
 
     &.disabled {
       color: use-color('gray-50');
@@ -65,8 +67,6 @@ $prefix: '#{$component-prefix}-counter' !default;
   }
 
   &__input {
-    @include flex(space-around, center, column);
-
     flex: 1 1 auto;
     width: 2 * 32px;
     padding: 0 6px;
@@ -74,5 +74,6 @@ $prefix: '#{$component-prefix}-counter' !default;
     color: inherit;
     outline: none;
     box-sizing: border-box;
+    transition: border-color 0.2s ease;
   }
 }

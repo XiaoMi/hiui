@@ -46,6 +46,9 @@
     "@hi-ui/classname": "^4.0.0-alpha.1",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
     "@hi-ui/env": "^4.0.0-alpha.3",
+    "@hi-ui/icons": "^4.0.0-alpha.7",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.2",
+    "@hi-ui/use-toggle": "^4.0.0-alpha.4",
     "number-precision": "^1.5.0"
   },
   "peerDependencies": {
