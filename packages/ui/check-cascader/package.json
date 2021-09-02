@@ -53,13 +53,13 @@
     "@hi-ui/times": "^4.0.0-alpha.2",
     "@hi-ui/tree-utils": "^4.0.0-alpha.0",
     "@hi-ui/use-check": "^4.0.0-alpha.0",
-    "@hi-ui/use-deep-equal-deps": "^4.0.0-alpha.2",
     "@hi-ui/use-latest": "^4.0.0-alpha.2",
     "@hi-ui/use-merge-refs": "^4.0.0-alpha.2",
     "@hi-ui/use-outside-click": "^4.0.0-alpha.4",
     "@hi-ui/use-toggle": "^4.0.0-alpha.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.2",
     "@popperjs/core": "^2.9.3",
+    "lodash.clonedeep": "^4.5.0",
     "react-popper": "^2.2.5"
   },
   "peerDependencies": {
