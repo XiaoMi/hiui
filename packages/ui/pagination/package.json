@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/pagination",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,12 +44,12 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.0",
-    "@hi-ui/core-css": "^4.0.0-alpha.0",
-    "@hi-ui/counter": "^4.0.0-alpha.4",
+    "@hi-ui/core-css": "^4.0.0-alpha.1",
+    "@hi-ui/counter": "^4.0.0-alpha.5",
     "@hi-ui/env": "^4.0.0-alpha.0",
-    "@hi-ui/icons": "^4.0.0-alpha.7",
+    "@hi-ui/icons": "^4.0.0-alpha.8",
     "@hi-ui/use-latest": "^4.0.0-alpha.2",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.2"
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.3"
   },
   "peerDependencies": {
     "react": "^17.0.1",
