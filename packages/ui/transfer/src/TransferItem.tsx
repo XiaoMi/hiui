@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { TransferDataItem } from './types'
@@ -20,11 +20,12 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
       children,
       targetLimit,
       data: item,
-      targetDragId,
-      isDragging,
-      dividerPosition,
+      // targetDragId,
+      // dividerPosition,
       checked,
       onCheck,
+      onClick,
+      draggable,
       ...rest
     },
     ref
@@ -35,14 +36,18 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
       onItemClick,
       onItemKeydown,
       titleRender,
+      onDragStart: onDragStartContext,
+      onDragEnd: onDragEndContext,
+      onDragLeave: onDragLeaveContext,
+      onDragOver: onDragOverContext,
+      onDrop: onDropContext,
     } = useTransferContext()
+
     const disabled = disabledContext || item.disabled
 
     const enabledFocus = !disabled && type === 'basic'
 
-    const cls = cx(prefixCls, className)
-
-    const renderTitle = (data) => {
+    const renderTitle = (data: TransferDataItem) => {
       // 如果 titleRender 返回 `true`，则使用默认 title
       const title = titleRender ? titleRender(data) : true
 
@@ -52,6 +57,20 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
 
       return data.title
     }
+
+    const transferItemNodeRef = useRef<HTMLDivElement | null>(null)
+
+    const [isDragging, setIsDragging] = useState(false)
+    const [direction, setDirection] = useState<string | null>(null)
+    const dragNodeRef = useRef<TransferDataItem | null>(null)
+
+    const cls = cx(
+      prefixCls,
+      className,
+      isDragging && `${prefixCls}--dragging`,
+      direction && `${prefixCls}--drag-${direction}`,
+      disabled && `${prefixCls}--disabled`
+    )
 
     return (
       <li
@@ -63,22 +82,104 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
         onKeyDown={onItemKeydown}
         {...rest}
       >
-        {targetDragId === item.id && isDragging ? (
-          <div className={`${prefixCls}--divider-${dividerPosition}`} />
-        ) : null}
-        {type === 'multiple' ? (
-          <Checkbox
-            checked={checked}
-            disabled={disabled}
-            onChange={(e) => {
-              onCheck(item, e.target.checked)
-            }}
-          >
-            {renderTitle(item)}
-          </Checkbox>
-        ) : (
-          <span className={`${prefixCls}__title`}>{renderTitle(item)}</span>
-        )}
+        <div
+          className={`${prefixCls}__wrap`}
+          ref={transferItemNodeRef}
+          draggable={draggable}
+          onDragStart={(evt) => {
+            const { id } = item
+
+            evt.stopPropagation()
+
+            setIsDragging(true)
+            dragNodeRef.current = item
+            evt.dataTransfer.setData('transferNode', JSON.stringify({ sourceId: id }))
+
+            onDragStartContext?.(item)
+          }}
+          onDragEnd={(evt) => {
+            evt.preventDefault()
+            evt.stopPropagation()
+            evt.dataTransfer.clearData()
+            dragNodeRef.current = null
+            setDirection(null)
+            setIsDragging(false)
+            onDragEndContext?.(item)
+          }}
+          onDragLeave={(evt) => {
+            evt.preventDefault()
+            evt.stopPropagation()
+            setDirection(null)
+            onDragLeaveContext?.(item)
+          }}
+          onDragOver={(evt) => {
+            const dragId = dragNodeRef.current?.id
+
+            evt.preventDefault()
+            evt.stopPropagation()
+
+            // 这里需要考虑 2 点：
+            // 1. 拖到自己的老位置，不处理
+            // 2. 同层可以拖拽进行排序
+            if (dragId !== item.id) {
+              const targetBoundingRect = transferItemNodeRef.current?.getBoundingClientRect()
+              if (!targetBoundingRect) return
+
+              const hoverTargetSortY = (targetBoundingRect.bottom - targetBoundingRect.top) / 2
+
+              // 鼠标垂直移动距离
+              const hoverClientY = evt.clientY - targetBoundingRect.top
+
+              // 将当前元素垂直平分为 2 层，每一层用来对应其放置的位置
+              if (hoverClientY < hoverTargetSortY) {
+                setDirection('before')
+              } else {
+                setDirection('after')
+              }
+            }
+
+            onDragOverContext?.(item)
+          }}
+          onDrop={(evt) => {
+            const dragId = dragNodeRef.current?.id
+
+            evt.preventDefault()
+            evt.stopPropagation()
+            setDirection(null)
+
+            const targetId = item.id
+
+            if (onDropContext && dragId !== targetId) {
+              try {
+                const { sourceId } = JSON.parse(evt.dataTransfer.getData('transferNode'))
+                onDropContext(sourceId, targetId, direction)
+              } catch (error) {
+                console.error(error)
+              }
+            }
+          }}
+        >
+          {type === 'multiple' ? (
+            <Checkbox
+              checked={checked}
+              disabled={disabled}
+              onChange={(e) => {
+                onCheck(item, e.target.checked)
+              }}
+            >
+              {renderTitle(item)}
+            </Checkbox>
+          ) : (
+            <span
+              className={`${prefixCls}__title`}
+              onClick={() => {
+                onClick?.(item)
+              }}
+            >
+              {renderTitle(item)}
+            </span>
+          )}
+        </div>
       </li>
     )
   }
@@ -118,17 +219,9 @@ export interface TransferItemProps {
    */
   disabled?: boolean
   /**
-   * 标题(数组长度为 1 或 2 位，1 位时左右标题将相同，2 位时将使用对应索引标题)
-   */
-  title?: React.ReactNode[]
-  /**
-   * 数据为空时的显示内容
-   */
-  emptyContent?: React.ReactNode[]
-  /**
    * 穿梭框数据源
    */
-  data: TransferDataItem[]
+  data: TransferDataItem
   /**
    * 最大可穿梭上限
    */
@@ -142,29 +235,16 @@ export interface TransferItemProps {
    */
   targetSortType?: 'default' | 'queue'
   /**
-   * 选中元素被移动到目标框内后的回调
-   */
-  onChange?: (
-    targetKey: React.ReactText[],
-    direction: 'left' | 'right',
-    targetItems: TransferDataItem[]
-  ) => void
-  /**
    * 自定义每项标题渲染
    */
   titleRender?: (item: TransferDataItem) => React.ReactNode
+  onCheck?: any
+  checked?: boolean
   /**
-   * 拖拽开始时的回调函数
+   * 是否开启拖拽
    */
-  onDragStart?: (item: TransferDataItem) => Boolean
-  /**
-   * 拖拽结束时的回调函数(完成拖拽)
-   */
-  onDragEnd?: (item: TransferDataItem) => void
-  /**
-   * 放开拖拽元素时的回调函数，返回 false 将阻止拖拽到对应位置
-   */
-  onDrop?: (targetItem: TransferDataItem, sourceItem: TransferDataItem) => boolean
+  draggable?: boolean
+  onClick?: (item: TransferDataItem) => void
 }
 
 if (__DEV__) {

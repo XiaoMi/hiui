@@ -7,8 +7,21 @@ $prefix: '#{$component-prefix}-transfer' !default;
   position: relative;
   display: flex;
   align-items: stretch;
-}
 
+  &--type {
+    &-multiple {
+
+    }
+
+    &-default {
+      .#{$prefix}-operation {
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABKklEQVRYR+3WsU6EMBgH8H6FuPkALEaHiwsvYHSBFlYuOt3F+HDG6KSRFVpYNL4A0y0aFx7AzUA/08TRg3LXyyWmzG3/P/7NFwCy5wf2nE8cwDXw/xrI8/wwy7Iv0+my2kDTNAdt235SSm8YY4UJwipABwohzhDxGQCuOeflGMI6QAcWRXEOAE+e5y3jOJZDiJ0AdGBd1xdd1z1SSheMsWodYhBQluWKEDIbq3HwDQE+OOcnGwG2CTbdu7MrcADXgJUGhBDviHhsetiadaskSU43GkMpZayUevB9/yqKopctIX9uHx3DqqpY3/f3iHiZpumrbcQo4PcDkyDiHQDMOedvNhFGAB0opUyVUrdBEByFYfhtC2EM0IFTfzZMkJMAJgdOXeMArgHXwA+1M1UhKpvwAgAAAABJRU5ErkJggg==);
+        background-repeat: no-repeat;
+        background-position: 50%;
+      }
+    }
+  }
+}
 
 .#{$prefix}-panel {
   position: relative;
@@ -19,21 +32,35 @@ $prefix: '#{$component-prefix}-transfer' !default;
   overflow: hidden;
   font-size: 14px;
 
+  &__mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 2;
+    background: hsla(0,0%,96%,.7);
+    cursor: not-allowed;
+  }
+
   &__list {
     @include component-reset;
     list-style: none;
+    padding: 4px 0;
 
     &-scroller {
-      height: 222px;
+      height: 312px;
       overflow: overlay;
     }
   }
 
   &__search {
-    padding: 0 12px 8px;
+    padding: 0 12px 4px;
 
     .#{$component-prefix}-input__prefix {
       padding-left: 0;
+    }
+
+    .#{$component-prefix}-input {
+      font-size: 14px;
     }
   }
 
@@ -44,6 +71,27 @@ $prefix: '#{$component-prefix}-transfer' !default;
     justify-content: center;
     align-items: center;
     color: var(--color-gray-50);
+  }
+
+  &__limit {
+    word-wrap: break-word;
+    line-height: 2;
+    color: var(--color-gray-70);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 4px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: use-color('white');
+
+    &-icon {
+      margin-right: 8px;
+      color: rgb(212, 161, 69);
+      font-size: 16px;
+    }
   }
 
   &__check-all {
@@ -69,6 +117,10 @@ $prefix: '#{$component-prefix}-transfer' !default;
 
   &__footer {
     border-top: 1px solid var(--color-gray-20);
+    width: 100%;
+    display: inline-flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
   }
 
   &__body {
@@ -76,20 +128,106 @@ $prefix: '#{$component-prefix}-transfer' !default;
 }
 
 .#{$prefix}-item {
+  // margin-bottom: 8px;
+  padding: 4px 0;
   box-sizing: border-box;
-  min-height: 32px;
-  display: flex;
-  align-items: center;
-  line-height: 22px;
-  margin-bottom: 8px;
+  position: relative;
 
+  &__title,
   .#{$component-prefix}-checkbox {
     width: 100%;
-    padding: 6px 12px;
+    min-height: 32px;
+    padding: 0 12px;
+    line-height: 32px;
   }
 
-  &:hover {
-    background-color: use-color('primary-20');
+  &__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__wrap {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    line-height: 22px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: use-color('primary-20');
+    }
+
+    // 拖拽指示器-小圆球
+    &::before {
+      position: absolute;
+      left: 0;
+      z-index: 9999;
+      display: none;
+      box-sizing: border-box;
+      width: 8px;
+      height: 8px;
+      content: '';
+      background-color: use-color('white');
+      border: 1px solid use-color('primary');
+      border-radius: 100%;
+    }
+
+    // 拖拽指示器-线条
+    &::after {
+      position: absolute;
+      content: '';
+      // TODO: zIndex 全局约定设置
+      z-index: 9998;
+      display: block;
+      box-sizing: border-box;
+      border-bottom-width: 0;
+      border-bottom-style: solid;
+      border-bottom-color: use-color('primary');
+      left: 0;
+      width: 100%;
+    }
+  }
+
+  $this: &;
+
+  &--disabled {
+    #{$this}__wrap {
+      color: #ccc;
+     cursor: not-allowed;
+    }
+  }
+
+  &--drag-before {
+    #{$this}__wrap {
+      &::before {
+        display: block;
+        top: 0;
+        transform: translateY(-3px);
+      }
+
+      &::after {
+        top: 0;
+        border-bottom-width: 1px;
+      }
+    }
+  }
+
+  &--drag-after {
+    #{$this}__wrap {
+      &::before {
+        display: block;
+        bottom: 0;
+        transform: translateY(3px);
+      }
+
+      &::after {
+        bottom: 0;
+        border-bottom-width: 1px;
+      }
+    }
   }
 }
 

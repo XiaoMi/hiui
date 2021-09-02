@@ -1,7 +1,7 @@
 import React from 'react'
 import Transfer from '../src'
 
-export const Basic = () => {
+export const Limit = () => {
   const generateData = () => {
     const arr = []
     for (let i = 1; i < 100; i++) {
@@ -19,8 +19,8 @@ export const Basic = () => {
 
   return (
     <>
-      <h1>Basic</h1>
-      <div className="transfer-basic__wrap">
+      <h1>Limit</h1>
+      <div className="transfer-limit__wrap">
         <Transfer
           data={data}
           targetLimit={6}

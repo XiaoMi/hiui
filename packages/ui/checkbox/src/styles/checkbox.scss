@@ -40,8 +40,8 @@ $prefix: '#{$component-prefix}-checkbox' !default;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  height: 16px;
   vertical-align: middle;
+  box-sizing: border-box;
 
   &:not(&--disabled):hover {
     .#{$prefix}__icon {

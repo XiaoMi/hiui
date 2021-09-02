@@ -1,7 +1,7 @@
 import React from 'react'
 import Transfer from '../src'
 
-export const Basic = () => {
+export const Title = () => {
   const generateData = () => {
     const arr = []
     for (let i = 1; i < 100; i++) {
@@ -19,14 +19,15 @@ export const Basic = () => {
 
   return (
     <>
-      <h1>Basic</h1>
-      <div className="transfer-basic__wrap">
+      <h1>Title</h1>
+      <div className="transfer-title__wrap">
         <Transfer
           data={data}
           targetLimit={6}
           targetIds={targetIds}
           onChange={(ids) => setTargetIds(ids)}
           emptyContent={['暂无数据']}
+          title={['源数据', '目标数据']}
         />
       </div>
     </>

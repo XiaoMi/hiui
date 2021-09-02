@@ -1,10 +1,10 @@
 import React from 'react'
 import Transfer from '../src'
 
-export const Basic = () => {
+export const Pagination = () => {
   const generateData = () => {
     const arr = []
-    for (let i = 1; i < 100; i++) {
+    for (let i = 1; i < 1000; i++) {
       arr.push({
         id: i,
         title: '选项' + i,
@@ -19,14 +19,19 @@ export const Basic = () => {
 
   return (
     <>
-      <h1>Basic</h1>
-      <div className="transfer-basic__wrap">
+      <h1>Pagination</h1>
+      <div className="transfer-pagination__wrap">
         <Transfer
+          type="multiple"
           data={data}
-          targetLimit={6}
+          targetLimit={8}
           targetIds={targetIds}
           onChange={(ids) => setTargetIds(ids)}
           emptyContent={['暂无数据']}
+          searchable
+          pagination={{ pageSize: 3 }}
+          draggable
+          showCheckAll
         />
       </div>
     </>

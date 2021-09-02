@@ -1,7 +1,7 @@
 import React from 'react'
 import Transfer from '../src'
 
-export const Basic = () => {
+export const Searchable = () => {
   const generateData = () => {
     const arr = []
     for (let i = 1; i < 100; i++) {
@@ -19,14 +19,15 @@ export const Basic = () => {
 
   return (
     <>
-      <h1>Basic</h1>
-      <div className="transfer-basic__wrap">
+      <h1>Searchable</h1>
+      <div className="transfer-searchable__wrap">
         <Transfer
           data={data}
           targetLimit={6}
           targetIds={targetIds}
           onChange={(ids) => setTargetIds(ids)}
           emptyContent={['暂无数据']}
+          searchable
         />
       </div>
     </>

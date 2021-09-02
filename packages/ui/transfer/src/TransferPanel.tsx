@@ -6,7 +6,8 @@ import { useTransferContext } from './context'
 import Input from '@hi-ui/input'
 import { TransferItem } from './TransferItem'
 import Checkbox from '@hi-ui/checkbox'
-import { SearchOutlined } from '@hi-ui/icons'
+import { SearchOutlined, InfoCircleOutlined } from '@hi-ui/icons'
+import { InputPagination } from '@hi-ui/pagination'
 
 const _role = 'transfer-panel'
 const _prefix = getPrefixCls(_role)
@@ -32,18 +33,23 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
       isCheckedIds,
       placeholder,
       emptyContent,
+      overflowed = false,
+      targetIds,
+      targetSortType,
+      onItemClick,
+      draggable = false,
       ...rest
     },
     ref
   ) => {
-    const { searchable } = useTransferContext()
+    const { searchable, pageSize, showCheckAll } = useTransferContext()
 
     const [cacheData, setCacheData] = useState(data)
     useEffect(() => {
       setCacheData(data)
     }, [data])
 
-    const search = (searchValue) => {
+    const search = (searchValue: string) => {
       if (!searchValue) {
         setCacheData(data)
         setCheckedIds(checkedIds)
@@ -91,26 +97,39 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
       [currentPanelHasChecked, isCheckedIds, canCheckedItems]
     )
 
+    const [current, setCurrent] = useState(1)
+
+    const showData = useMemo(() => {
+      return pageSize ? cacheData.slice((current - 1) * pageSize, current * pageSize) : cacheData
+    }, [current, cacheData, pageSize])
+
+    const showHeader = showCheckAll || title
+
     const cls = cx(prefixCls, className)
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <div className={`${prefixCls}__header`}>
-          <div className={`${prefixCls}__check-all`}>
-            <Checkbox
-              indeterminate={!checkedAll && currentPanelHasChecked}
-              checked={checkedAll}
-              onChange={handleCheckAll}
-            />
-            <span>
-              {currentPanelHasChecked
-                ? `${checkedIds.length}/${cacheData.length}`
-                : `${cacheData.length}`}
-            </span>
-            <span>项</span>
+        {disabled ? <div className={`${prefixCls}__mask`}></div> : null}
+        {showHeader ? (
+          <div className={`${prefixCls}__header`}>
+            {showCheckAll ? (
+              <div className={`${prefixCls}__check-all`}>
+                <Checkbox
+                  indeterminate={!checkedAll && currentPanelHasChecked}
+                  checked={checkedAll}
+                  onChange={handleCheckAll}
+                />
+                <span>
+                  {currentPanelHasChecked
+                    ? `${checkedIds.length}/${cacheData.length}`
+                    : `${cacheData.length}`}
+                </span>
+                <span>项</span>
+              </div>
+            ) : null}
+            {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
           </div>
-          {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
-        </div>
+        ) : null}
         <div className={`${prefixCls}__body`}>
           {searchable ? (
             <div className={`${prefixCls}__search`}>
@@ -124,15 +143,24 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
             </div>
           ) : null}
           <div className={`${prefixCls}__list-scroller`}>
-            {cacheData.length > 0 ? (
+            {/* 滚动时吸附顶部，同时与 target 集合滚动高度保持一致 */}
+            {overflowed ? (
+              <div className={`${prefixCls}__limit`}>
+                <InfoCircleOutlined className={`${prefixCls}__limit-icon`} />
+                <span>数量达上限，无法添加</span>
+              </div>
+            ) : null}
+            {showData.length > 0 ? (
               <ul className={`${prefixCls}__list`}>
-                {cacheData.map((item) => {
+                {showData.map((item) => {
                   return (
                     <TransferItem
                       key={item.id}
                       data={item}
                       onCheck={onCheck}
                       checked={isCheckedIds(item.id)}
+                      draggable={draggable}
+                      onClick={onItemClick}
                     />
                   )
                 })}
@@ -142,12 +170,17 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
             )}
           </div>
         </div>
-        <div className={`${prefixCls}__footer`}>
-          <div className={`${prefixCls}__pagination`}>
-            <span>left</span>
-            <span>right</span>
+        {pageSize ? (
+          <div className={`${prefixCls}__footer`}>
+            <InputPagination
+              className={`${prefixCls}__pagination`}
+              total={cacheData.length}
+              current={current}
+              onChange={setCurrent}
+              pageSize={pageSize}
+            />
           </div>
-        </div>
+        ) : null}
       </div>
     )
   }
@@ -215,33 +248,18 @@ export interface TransferPanelProps {
    */
   targetSortType?: 'default' | 'queue'
   /**
-   * 选中元素被移动到目标框内后的回调
+   * 是否开启拖拽
    */
-  onChange?: (
-    targetKey: React.ReactText[],
-    direction: 'left' | 'right',
-    targetItems: TransferDataItem[]
-  ) => void
+  draggable?: boolean
   /**
-   * 自定义每项标题渲染
+   * 是否超出限制
    */
-  titleRender?: (item: TransferDataItem) => React.ReactNode
-  /**
-   * 拖拽开始时的回调函数
-   */
-  onDragStart?: (item: TransferDataItem) => Boolean
-  /**
-   * 拖拽结束时的回调函数(完成拖拽)
-   */
-  onDragEnd?: (item: TransferDataItem) => void
-  /**
-   * 放开拖拽元素时的回调函数，返回 false 将阻止拖拽到对应位置
-   */
-  onDrop?: (targetItem: TransferDataItem, sourceItem: TransferDataItem) => boolean
+  overflowed?: boolean
   checkedIds: React.ReactText[]
   setCheckedIds: (newState: React.ReactText[]) => void
   onCheck: (targetItem: TransferDataItem, shouldChecked: boolean) => void
   isCheckedIds: (id: React.ReactText) => boolean
+  onItemClick: (item: TransferDataItem) => void
 }
 
 if (__DEV__) {
