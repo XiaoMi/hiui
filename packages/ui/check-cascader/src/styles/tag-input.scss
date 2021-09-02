@@ -46,9 +46,15 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
 
   &__suffix {
     font-size: 16px;
+    display: inline-flex;
+    align-items: center;
   }
 
   &__clear {
+    display: inline-flex;
+    align-items: center;
+    width: 16px;
+    height: 16px;
     font-size: 14px;
     color: use-color('gray-50');
     flex-shrink: 0;
@@ -66,19 +72,20 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     width: 100%;
     display: inline-flex;
     align-items: center;
-    height: 20px;
-    line-height: 20px;
+    height: 22px;
+    line-height: 22px;
   }
 
   &__tags {
     flex: 0 1 auto;
+    // 用于自适应高度计算
     display: inline-block;
     // 右边临近放置 `+ count`
     width: fit-content;
     white-space: nowrap;
     height: 100%;
     box-sizing: border-box;
-    margin-top: -2px;
+    margin-top: -4px;
   }
 
   &__tag,
@@ -86,13 +93,27 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     display: inline-block;
     margin-right: 4px;
     box-sizing: border-box;
-    padding: 0 8px;
+    padding: 0px 8px;
     vertical-align: middle;
     font-size: 12px;
     color: #333;
     user-select: none;
     background: #F2F2F2;
     border-radius: 4px;
+  }
+
+  &__tag--total {
+    display: inline-block;
+    margin-right: 6px;
+    box-sizing: border-box;
+    padding: 0 8px;
+    vertical-align: middle;
+    font-size: 12px;
+    user-select: none;
+    background-color: use-color('primary-20');
+    color: use-color('primary');
+    border-radius: 4px;
+    line-height: 22px;
   }
 
   &__tag {
@@ -127,6 +148,13 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
       white-space: nowrap;
       vertical-align: middle;
       // margin-top: 1.5px;
+    }
+  }
+
+  &--nowrap {
+    .#{$tag-input-prefix}__value {
+      width: calc(100% - 64px);
+      overflow-x: overlay;
     }
   }
 

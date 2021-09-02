@@ -47,12 +47,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
 
     const tagSelector = `.${prefixCls}__tag`
     const tagInputRef = useRef<HTMLDivElement>(null)
-    const [tagMaxWidth, showTagCount, leftCount] = useTagInput(
-      wrap,
-      tagSelector,
-      showData,
-      tagInputRef
-    )
+    const [tagMaxWidth, showTagCount] = useTagInput(true, tagSelector, showData, tagInputRef)
 
     const handleClear = useCallback(
       (evt) => {
@@ -73,7 +68,12 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
     const showClearableIcon = clearable && value.length > 0 && !disabled
 
-    const cls = cx(prefixCls, className, disabled && 'disabled', wrap && `${prefixCls}--wrap`)
+    const cls = cx(
+      prefixCls,
+      className,
+      disabled && 'disabled',
+      wrap ? `${prefixCls}--wrap` : `${prefixCls}--nowrap`
+    )
 
     return (
       <div
@@ -93,6 +93,9 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
             <span className={cx(`${prefixCls}__tags`, wrap && `${prefixCls}__tags--all`)}>
               {times(showTagCount, (index) => {
                 const option = showData[index]
+
+                if (!option) return null
+
                 const title = displayRender ? displayRender(option) : true
 
                 return (
@@ -123,15 +126,21 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
                 )
               })}
             </span>
-            {leftCount > 0 ? (
+            {/* {leftCount > 0 ? (
               <span className={cx(`${prefixCls}__tag--left`)}>{`+${leftCount}`}</span>
-            ) : null}
+            ) : null} */}
           </span>
         ) : (
           <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
         )}
-        {suffix || showClearableIcon ? (
+        {suffix || showClearableIcon || (!wrap && showTagCount > 0) ? (
           <span className={`${prefixCls}__suffix`}>
+            {!wrap && showTagCount > 0 ? (
+              <span className={cx(`${prefixCls}__tag--total`)}>{`${
+                showTagCount > 99 ? '+99' : showTagCount
+              }`}</span>
+            ) : null}
+
             {showClearableIcon && hover ? (
               <span
                 className={`${prefixCls}__clear`}
