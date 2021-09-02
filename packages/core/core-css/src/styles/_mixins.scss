@@ -216,3 +216,31 @@
 @mixin boxShadow($c: rgb(0, 0, 0), $o: 0.4) {
   box-shadow: 0 0 6px rgba($c, $o);
 }
+
+@mixin input-reset {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+  height: inherit;
+  background-color: transparent;
+  cursor: text;
+}
+
+@mixin button-reset {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  // 禁用非标准手势
+  touch-action: manipulation;
+}
