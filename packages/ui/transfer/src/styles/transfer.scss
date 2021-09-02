@@ -26,6 +26,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
 .#{$prefix}-panel {
   position: relative;
   width: 240px;
+  min-width: 180px;
   background-color:  var(--color-white);
   border: 1px solid var(--color-gray-20);
   border-radius: 4px;
@@ -232,11 +233,12 @@ $prefix: '#{$component-prefix}-transfer' !default;
 }
 
 .#{$prefix}-operation {
-  width: 56px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  flex-shrink: 0;
+  flex-basis: 56px;
 
   .#{$component-prefix}-button {
     margin-top: -4px;
