@@ -51,6 +51,7 @@
   &--label--top {
     padding-right: 0;
     text-align: left;
+
     &.hi-form--inline {
       // 上下布局只在水平表单中自动填充高度
       .hi-form-item__span {
@@ -117,6 +118,7 @@
       .hi-select__input,
       .hi-cascader__input-container,
       .hi-datepicker__input,
+      .hi-datepicker__picker,
       .tree-select__tag-wrapper,
       .hi-input {
         border-color: get-color($palette-secondary, 'danger');
