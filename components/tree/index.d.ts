@@ -4,6 +4,7 @@ type TreeNode = {
   disabled?: boolean
   children?: TreeNode[]
   isLeaf?: boolean
+  selectable?: boolean
 }
 type LoadTreeNode = {
   method?: 'get' | 'post'
@@ -43,9 +44,9 @@ interface Props {
   apperance?: 'default' | 'line' | 'folder'
   style?: CSSProperties
   className?: string
-  defaultSelectedId?: string | number 
-  selectedId?: string | number 
-  defaultCheckedIds?: string[] | number[] 
+  defaultSelectedId?: string | number
+  selectedId?: string | number
+  defaultCheckedIds?: string[] | number[]
   contextMenu?: ContextMenuOption[] | ContextMenuOptionFun
   onChange?: (data: TreeNode[]) => void
   onExpand?: (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void
