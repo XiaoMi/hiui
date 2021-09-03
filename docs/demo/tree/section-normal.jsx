@@ -23,7 +23,7 @@ const code = [
                     { id: 5, title: '前端' }
                   ]
                 },
-                { id: 6, title: '产品' }
+                { id: 6, title: '产品', selectable: false }
               ]
             },
             { id: 11, title: '小米',

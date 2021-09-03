@@ -11,13 +11,15 @@ const useSelect = ({ defaultSelectedId, selectedId, onSelect, selectable }) => {
 
   const onSelectNode = useCallback(
     (selectedNode) => {
-      if (selectable) {
-        if (selectedNode !== undefined && !selectedId) {
-          setSelectedId(selectedNode.id)
-        }
-        if (onSelect) {
-          onSelect(selectedNode)
-        }
+      if (!selectable) return
+      // 兼容老版本：全局开启了 selectable，子节点默认都支持 selectable
+      if (selectedNode.selectable === false) return
+
+      if (selectedNode !== undefined && !selectedId) {
+        setSelectedId(selectedNode.id)
+      }
+      if (onSelect) {
+        onSelect(selectedNode)
       }
     },
     [selectedId, selectable]
