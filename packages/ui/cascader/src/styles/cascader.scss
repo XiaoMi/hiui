@@ -83,36 +83,12 @@ $prefix: '#{$component-prefix}-cascader' !default;
 
   $this: &;
 
-  &--checkable {
-    .title__text {
-      padding-left: 24px;
-    }
-
-    #{$this}-checkbox + .title__text {
-      padding-left: 0px;
-    }
-  }
-
   &-item {
     width: 100%;
     padding: $spacer-1 0;
     position: relative;
     cursor: pointer;
     display: flex;
-  }
-
-  &-checkbox {
-    position: relative;
-
-    &::after {
-      right: 0;
-      top: -8px;
-      bottom: -8px;
-      left: -8px;
-      content: "";
-      position: absolute;
-      display: block;
-    }
   }
 
   &-option {

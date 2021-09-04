@@ -7,10 +7,13 @@ import { UseCascadeCheckItem } from './types'
 
 const NOOP_ARRAY = [] as []
 
+/**
+ * 用于级联项选择的 hook
+ */
 export const useCascadeCheck = ({
   cascaded = true,
   disabled = false,
-  flattedData,
+  flattedData = NOOP_ARRAY,
   defaultCheckedIds = NOOP_ARRAY,
   checkedIds: checkedIdsProp,
   onCheck,
@@ -80,11 +83,29 @@ export const useCascadeCheck = ({
 }
 
 export interface UseCascadeCheckProps<T = any> {
-  cascaded?: boolean
+  /**
+   * 开启禁用选择
+   */
   disabled?: boolean
-  flattedData: UseCascadeCheckItem[]
+  /**
+   * 开启级联多选
+   */
+  cascaded?: boolean
+  /**
+   * 级联选中所用数据
+   */
+  flattedData?: UseCascadeCheckItem[]
+  /**
+   * 非受控默认选中 ids
+   */
   defaultCheckedIds?: React.ReactText[]
+  /**
+   * 选中的 ids
+   */
   checkedIds?: React.ReactText[]
+  /**
+   * 选择时回调
+   */
   onCheck?: (
     checkedInfo: {
       checkedIds: React.ReactText[]
@@ -93,6 +114,9 @@ export interface UseCascadeCheckProps<T = any> {
     targetItem: T,
     shouldChecked: boolean
   ) => void
+  /**
+   * 返回 true 允许选中
+   */
   allowCheck?: (targetItem: T) => boolean
 }
 

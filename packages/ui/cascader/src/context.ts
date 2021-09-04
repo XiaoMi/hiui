@@ -9,25 +9,24 @@ import {
 
 interface CascaderContext {
   onLoadChildren?: (item: CascaderItemEventData) => Promise<CascaderItem[] | void> | void
-  disabled?: boolean
-  expandTrigger?: ExpandTrigger
-  onCheck?: (option: CascaderItemEventData, shouldChecked: boolean) => void
-  onSelect?: (selectedOption: CascaderItemEventData) => void
-  flatted?: boolean
-  changeOnSelect?: boolean
-  titleRender?: (item: CascaderItemEventData) => React.ReactNode
-  getCascaderItemRequiredProps?: (item: FlattedCascaderItem) => CascaderItemRequiredProps
+  disabled: boolean
+  expandTrigger: ExpandTrigger
+  onSelect: (selectedOption: CascaderItemEventData) => void
+  flatted: boolean
+  changeOnSelect: boolean
+  titleRender?: (item: CascaderItemEventData, flatted: boolean) => React.ReactNode
+  getCascaderItemRequiredProps: (item: FlattedCascaderItem) => CascaderItemRequiredProps
 }
 
-const checkCascaderContext = createContext<CascaderContext>({})
+const cascaderContext = createContext<CascaderContext | null>(null)
 
-export const CascaderProvider = checkCascaderContext.Provider
+export const CascaderProvider = cascaderContext.Provider
 
 export const useCascaderContext = () => {
-  const context = useContext(checkCascaderContext)
+  const context = useContext(cascaderContext)
 
   if (!context) {
-    throw new Error('The checkCascaderContext context should using in Cascader.')
+    throw new Error('The cascaderContext context should using in Cascader.')
   }
 
   return context

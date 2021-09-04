@@ -5,6 +5,9 @@ import { UseCheckItem } from './types'
 
 const NOOP_ARRAY = [] as []
 
+/**
+ * 用于多项选择的 hook
+ */
 export const useCheck = ({
   disabled = false,
   defaultCheckedIds = NOOP_ARRAY,
@@ -23,32 +26,47 @@ export const useCheck = ({
   const isCheckedId = (id: React.ReactText) => checkedIds.indexOf(id) !== -1
 
   const allowCheckRef = useLatestRef(allowCheck)
-  const checkedIdsRef = useLatestRef(checkedIds)
+  // const checkedIdsRef = useLatestRef(checkedIds)
 
   const onNodeCheck = useCallback(
     (targetItem: UseCheckItem, shouldChecked: boolean) => {
       if (disabled) return
       if (allowCheckRef.current && allowCheckRef.current(targetItem) === false) return
 
-      const nextCheckedIds = checkDefault(checkedIdsRef.current, targetItem, shouldChecked)
+      const nextCheckedIds = checkDefault(checkedIds, targetItem, shouldChecked)
 
       trySetCheckedIds(nextCheckedIds, targetItem, shouldChecked)
     },
-    [disabled, trySetCheckedIds]
+    [disabled, trySetCheckedIds, allowCheckRef, checkedIds]
   )
 
   return [checkedIds, trySetCheckedIds, onNodeCheck, isCheckedId] as const
 }
 
 export interface UseCheckProps {
+  /**
+   * 开启禁用选择
+   */
   disabled?: boolean
+  /**
+   * 非受控默认选中 ids
+   */
   defaultCheckedIds?: React.ReactText[]
+  /**
+   * 选中的 ids
+   */
   checkedIds?: React.ReactText[]
+  /**
+   * 选择时回调
+   */
   onCheck?: (
     checkedIds: React.ReactText[],
     targetItem: UseCheckItem,
     shouldChecked: boolean
   ) => void
+  /**
+   * 返回 true 允许选中
+   */
   allowCheck?: (targetItem: UseCheckItem) => boolean
 }
 

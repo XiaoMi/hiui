@@ -21,13 +21,13 @@ export const isPromise = <T>(arg: unknown): arg is Promise<T> =>
 /**
  * Assert is an array
  */
-export const isArray = <T>(arg: unknown): arg is T[] => Array.isArray(arg)
+export const isArray: <T>(arg: unknown) => arg is T[] = Array.isArray
 
 /**
- * Assert is an array but `length === 0`
+ * Assert is an array and `array.length > 0`
  */
-export const isEmptyArray = <T>(arg: unknown): arg is T[] & { length: 0 } =>
-  isArray(arg) && arg.length === 0
+export const isArrayNonEmpty = <T>(arg: unknown): arg is T[] & { length: 0 } =>
+  isArray(arg) && arg.length > 0
 
 /**
  * Assert is numeric

@@ -61,8 +61,6 @@ export interface FlattedCascaderItem extends Required<Omit<CascaderItem, 'childr
 
 export interface CascaderItemRequiredProps {
   selected: boolean
-  checked: boolean
-  semiChecked: boolean
   loading: boolean
   focused: boolean
 }

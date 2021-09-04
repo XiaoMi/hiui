@@ -1,18 +1,17 @@
-import React, { forwardRef, useState, useRef } from 'react'
+import React, { forwardRef, useState, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { DownOutlined } from '@hi-ui/icons'
 import { CascaderPanel } from './CascaderPanel'
-import { TagInput } from './TagInput'
-import { Popper, PopperJS } from '@hi-ui/popper'
+import { Popper, PopperProps } from '@hi-ui/popper'
 import { CascaderItem, ExpandTrigger, CascaderItemEventData, FlattedCascaderItem } from './types'
+import Input from '@hi-ui/input'
+import { flattenTreeData, getNodeAncestors } from './utils'
 
 const _role = 'cascader'
 const _prefix = getPrefixCls(_role)
-const NOOP_ARRAY = [] as []
 
 /**
  * TODO: What is Cascader
@@ -23,13 +22,12 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
       prefixCls = _prefix,
       role = _role,
       className,
-      defaultValue = NOOP_ARRAY,
+      defaultValue = '',
       value: valueProp,
       onChange,
       data,
       placeholder,
       clearable,
-      onSelect,
       expandTrigger,
       searchable,
       disabled,
@@ -37,51 +35,48 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
       changeOnSelect,
       titleRender,
       displayRender,
-      checkCascaded,
       flatted,
       upMatch,
       searchPlaceholder,
       onLoadChildren,
-      placement,
-      wrap,
+      popper,
       ...rest
     },
     ref
   ) => {
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
-    const [menuVisible, menuVisibleAction] = useToggle()
+    const flattedData = useMemo(() => flattenTreeData(data), [data])
 
+    const [menuVisible, menuVisibleAction] = useToggle()
     const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
-    const cascaderRef = useRef<HTMLDivElement | null>(null)
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
     return (
-      <div ref={useMergeRefs(ref, cascaderRef)} role={role} className={cls} {...rest}>
-        <TagInput
+      <div ref={ref} role={role} className={cls} {...rest}>
+        <Input
           ref={setTargetElRef}
-          data={data}
+          readOnly
+          // 获取 value 对应的路径数据
           value={value}
           onChange={tryChangeValue}
           disabled={disabled}
           clearable={clearable}
           placeholder={placeholder}
           displayRender={displayRender}
-          wrap={wrap}
           suffix={<DownOutlined className={`${prefixCls}__suffix`} />}
-          onClick={(evt) => {
+          onClick={() => {
             if (disabled) return
             menuVisibleAction.on()
           }}
         />
 
         <Popper
+          {...popper}
           attachEl={targetElRef}
           visible={menuVisible}
           onClose={menuVisibleAction.off}
-          // TODO: 是否从 props omit 所有 popper 相关的 props 应用到 Popper
-          placement={placement}
         >
           <CascaderPanel
             value={value}
@@ -89,14 +84,13 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
             // 向下传递
             {...{
               data,
-              onSelect,
+              flattedData,
               expandTrigger,
               searchable,
               disabled,
               emptyContent,
               changeOnSelect,
               titleRender,
-              checkCascaded,
               flatted,
               upMatch,
               placeholder: searchPlaceholder,
@@ -133,20 +127,16 @@ export interface CascaderProps {
   /**
    * 设置当前多选值
    */
-  value?: React.ReactText[]
+  value?: React.ReactText
   /**
    * 设置当前多选值默认值
    */
-  defaultValue?: React.ReactText[]
+  defaultValue?: React.ReactText
   /**
    * 多选值改变时的回调
    * TODO: 是否有这样的需求：暴露操作的原始数据对象？包括 点击 checkbox、点击 tag 删除按钮、点击清空按钮
    */
-  onChange?: (values: React.ReactText[]) => void
-  /**
-   * 选项被点击时的回调
-   */
-  onSelect?: (selectedId: React.ReactText, selectedOption: CascaderItemEventData) => void
+  onChange?: (value: React.ReactText) => void
   /**
    * 次级菜单的展开方式
    */
@@ -174,15 +164,11 @@ export interface CascaderProps {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: CascaderItemEventData) => React.ReactNode
+  titleRender?: (item: CascaderItemEventData, flatted: boolean) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容
    */
   displayRender?: (checkedOption: FlattedCascaderItem) => React.ReactNode
-  /**
-   * 支持 checkbox 级联（正反选）功能
-   */
-  checkCascaded?: boolean
   /**
    * 将 check 子项拍平展示
    */
@@ -204,13 +190,9 @@ export interface CascaderProps {
    */
   onLoadChildren?: (item: CascaderItemEventData) => Promise<CascaderItem[] | void> | void
   /**
-   * 是否单行展示，超出 +1
+   * 自定义控制 popper 行为
    */
-  wrap?: boolean
-  /**
-   * 相对 reference 的位置
-   */
-  placement?: PopperJS.Placement
+  popper?: PopperProps
 }
 
 if (__DEV__) {

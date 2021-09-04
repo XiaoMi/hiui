@@ -43,7 +43,6 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/checkbox": "^4.0.0-alpha.7",
     "@hi-ui/classname": "^4.0.0-alpha.1",
     "@hi-ui/core-css": "^4.0.0-alpha.1",
     "@hi-ui/env": "^4.0.0-alpha.3",
@@ -52,6 +51,7 @@
     "@hi-ui/popper": "^4.0.0-alpha.4",
     "@hi-ui/times": "^4.0.0-alpha.2",
     "@hi-ui/tree-utils": "^4.0.0-alpha.0",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.3",
     "@hi-ui/use-check": "^4.0.0-alpha.1",
     "@hi-ui/use-latest": "^4.0.0-alpha.2",
     "@hi-ui/use-merge-refs": "^4.0.0-alpha.2",

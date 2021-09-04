@@ -1,12 +1,26 @@
 import React, { forwardRef, useMemo, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { CascaderItem, ExpandTrigger, CascaderItemEventData } from './types'
+import {
+  CascaderItem,
+  ExpandTrigger,
+  CascaderItemEventData,
+  FlattedCascaderItem,
+  CascaderItemRequiredProps,
+} from './types'
 import Input from '@hi-ui/input'
-import { useCache, useSearch } from './hooks'
-import { flattenTreeData, getNodeAncestors } from './utils'
 import { SearchOutlined } from '@hi-ui/icons'
-import { CascaderMenus } from './CascaderMenus'
+import { CascaderMenu } from './CascaderMenu'
+import { useCache, useSearch, useSelect, useAsyncSwitch } from './hooks'
+import {
+  flattenTreeData,
+  getNodeAncestors,
+  getActiveMenus,
+  getFlattedMenus,
+  getActiveMenuIds,
+} from './utils'
+import { CascaderProvider } from './context'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 
 const _role = 'cascader-panel'
 const _prefix = getPrefixCls(_role)
@@ -24,15 +38,15 @@ export const CascaderPanel = forwardRef<HTMLDivElement | null, CascaderPanelProp
       className,
       children,
       data,
+      flattedData: flattedDataProp,
       value,
       defaultValue = NOOP_ARRAY,
       disabled = false,
-      expandTrigger = 'click',
       changeOnSelect = false,
-      checkCascaded = true,
       searchable = true,
-      flatted = false,
+      flatted: flattedProp = false,
       upMatch = false,
+      expandTrigger = 'click',
       emptyContent = '无匹配选项',
       placeholder,
       onChange,
@@ -47,16 +61,28 @@ export const CascaderPanel = forwardRef<HTMLDivElement | null, CascaderPanelProp
 
     const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
 
-    const [inSearch, matchedNodes, inputProps, isEmpty] = useSearch(flattedData, upMatch)
+    // 单击选中某项
+    const [selectedId, onOptionSelect] = useSelect(disabled)
+    // 选中 id 路径
+    const selectedIds = useMemo(() => getActiveMenuIds(flattedData, selectedId), [
+      flattedData,
+      selectedId,
+    ])
+
+    // 存在异步加载数据的情况，单击选中时需要控制异步加载状态
+    const [isLoadingId, onItemExpand] = useAsyncSwitch(
+      setCascaderData,
+      onOptionSelect,
+      onLoadChildren
+    )
+
+    const [inSearch, matchedItems, inputProps, isEmpty] = useSearch(flattedData, upMatch)
 
     const renderTitleWithSearch = useCallback(
       (option: CascaderItemEventData) => {
         // 如果 titleRender 返回 `true`，则使用默认 title
-        const title = titleRender ? titleRender(option) : true
-
-        if (title !== true) {
-          return title
-        }
+        const title = titleRender ? titleRender(option, false) : true
+        if (title !== true) return title
 
         if (!inSearch) return true
         if (typeof option.title !== 'string') return true
@@ -67,6 +93,7 @@ export const CascaderPanel = forwardRef<HTMLDivElement | null, CascaderPanelProp
         return (
           <span className={cx(`title__text`, `title__text--cols`)}>
             {getNodeAncestors(option)
+              .reverse()
               .map((item) => {
                 const { title, id } = item
                 const raw = (
@@ -93,15 +120,64 @@ export const CascaderPanel = forwardRef<HTMLDivElement | null, CascaderPanelProp
                     {afterStr}
                   </span>
                 )
-              })
-              .reverse()}
+              })}
           </span>
         )
       },
       [titleRender, inSearch, inputProps.value]
     )
 
-    const cls = cx(prefixCls, className)
+    // 搜索的结果列表也采用 flatted 模式进行展示
+    const flatted = flattedProp || inSearch
+    const flattedCascaderData = inSearch ? matchedItems : flattedData
+
+    const menus = useMemo(() => {
+      return flatted
+        ? getFlattedMenus(flattedCascaderData)
+        : getActiveMenus(flattedData, selectedId)
+    }, [flatted, flattedCascaderData, flattedData, selectedId])
+
+    const getCascaderItemRequiredProps = useCallback(
+      ({ id, depth }: FlattedCascaderItem): CascaderItemRequiredProps => {
+        return {
+          selected: flatted ? selectedId === id : selectedIds[depth] === id,
+          loading: isLoadingId(id),
+          // TODO: 表示聚焦状态，添加快捷键时可以一起处理
+          focused: false,
+        }
+      },
+      [flatted, selectedId, selectedIds, isLoadingId]
+    )
+
+    const providedValue = useMemo(
+      () => ({
+        expandTrigger,
+        onSelect: onItemExpand,
+        flatted: flatted,
+        changeOnSelect,
+        titleRender: renderTitleWithSearch,
+        onLoadChildren,
+        disabled,
+        getCascaderItemRequiredProps,
+      }),
+      [
+        disabled,
+        changeOnSelect,
+        expandTrigger,
+        flatted,
+        onItemExpand,
+        onLoadChildren,
+        renderTitleWithSearch,
+        getCascaderItemRequiredProps,
+      ]
+    )
+
+    const cls = cx(
+      prefixCls,
+      className,
+      flatted && `${prefixCls}--flatted`,
+      changeOnSelect && `${prefixCls}--selectchange`
+    )
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
@@ -117,24 +193,14 @@ export const CascaderPanel = forwardRef<HTMLDivElement | null, CascaderPanelProp
             {isEmpty ? <span className={`${prefixCls}-search__empty`}>{emptyContent}</span> : null}
           </div>
         ) : null}
-        <CascaderMenus
-          {...{
-            disabled,
-            value,
-            defaultValue,
-            onChange,
-            expandTrigger,
-            changeOnSelect,
-            checkCascaded,
-            onSelect,
-            onLoadChildren,
-          }}
-          data={cascaderData}
-          onChangeData={setCascaderData}
-          titleRender={renderTitleWithSearch}
-          flatted={flatted || inSearch}
-          flattedData={inSearch ? matchedNodes : flattedData}
-        />
+
+        <CascaderProvider value={providedValue}>
+          <div className={`${prefixCls}-menu`}>
+            {menus.map((menu, menuIndex) => {
+              return isArrayNonEmpty(menu) ? <CascaderMenu key={menuIndex} data={menu} /> : null
+            })}
+          </div>
+        </CascaderProvider>
       </div>
     )
   }
@@ -164,15 +230,15 @@ export interface CascaderPanelProps {
   /**
    * 设置当前多选值
    */
-  value?: React.ReactText[]
+  value?: React.ReactText
   /**
    * 设置当前多选值默认值
    */
-  defaultValue?: React.ReactText[]
+  defaultValue?: React.ReactText
   /**
    * 多选值改变时的回调
    */
-  onChange?: (values: React.ReactText[]) => void
+  onChange?: (values: React.ReactText) => void
   /**
    * 选项被点击时的回调
    */
@@ -200,7 +266,7 @@ export interface CascaderPanelProps {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: CascaderItemEventData) => React.ReactNode
+  titleRender?: (item: CascaderItemEventData, flatted: boolean) => React.ReactNode
   /**
    * 支持 checkbox 级联（正反选）功能
    */
@@ -221,6 +287,7 @@ export interface CascaderPanelProps {
    * 异步请求更新数据
    */
   onLoadChildren?: (item: CascaderItemEventData) => Promise<CascaderItem[] | void> | void
+  flattedData?: FlattedCascaderItem[]
 }
 
 if (__DEV__) {
