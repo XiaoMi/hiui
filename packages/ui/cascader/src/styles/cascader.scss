@@ -2,7 +2,6 @@
 
 $prefix: '#{$component-prefix}-cascader' !default;
 
-
 .#{$prefix} {
   color: #333;
 
@@ -33,7 +32,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
     padding: 0 10px 10px;
     position: relative;
 
-    .#{$component-prefix}-input__prefix  {
+    .#{$component-prefix}-input__prefix {
       font-size: 16px;
       padding-left: 0;
     }
@@ -51,7 +50,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
 
 .#{$prefix}-menus {
   display: flex;
-  box-sizing:  border-box;
+  box-sizing: border-box;
   overflow-x: auto;
 
   &--flatted {
@@ -142,7 +141,9 @@ $prefix: '#{$component-prefix}-cascader' !default;
     &--cols {
       display: block;
       width: 100%;
+
       @include component-reset;
+
       list-style: none;
     }
 
@@ -150,11 +151,11 @@ $prefix: '#{$component-prefix}-cascader' !default;
       display: inline-block;
 
       &::after {
-        content: "\00a0/\00a0";
+        content: '\00a0/\00a0';
       }
 
       &:last-child {
-        &:after {
+        &::after {
           content: none;
         }
       }
@@ -181,6 +182,10 @@ $prefix: '#{$component-prefix}-cascader' !default;
 
     &--loading {
       color: var(--color-primary);
+    }
+
+    &--arrow {
+      transform: rotate(-90deg);
     }
   }
 }

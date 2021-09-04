@@ -25,8 +25,6 @@ import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 const _role = 'cascader-panel'
 const _prefix = getPrefixCls(_role)
 
-const NOOP_ARRAY = [] as []
-
 /**
  * TODO: What is CascaderPanel
  */
@@ -39,8 +37,8 @@ export const CascaderPanel = forwardRef<HTMLDivElement | null, CascaderPanelProp
       children,
       data,
       flattedData: flattedDataProp,
-      value,
-      defaultValue = NOOP_ARRAY,
+      value: valueProp,
+      defaultValue = '',
       disabled = false,
       changeOnSelect = false,
       searchable = true,
@@ -62,7 +60,8 @@ export const CascaderPanel = forwardRef<HTMLDivElement | null, CascaderPanelProp
     const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
 
     // 单击选中某项
-    const [selectedId, onOptionSelect] = useSelect(disabled)
+    const [selectedId, onOptionSelect] = useSelect(disabled, valueProp, onSelect)
+
     // 选中 id 路径
     const selectedIds = useMemo(() => getActiveMenuIds(flattedData, selectedId), [
       flattedData,

@@ -14,11 +14,12 @@ export const useSelect = ({
   selectedId: selectedIdProp,
   onSelect: onSelectProp,
   allowSelect,
+  preventUpdate,
 }: UseSelectProps) => {
   const onSelectRef = useLatestRef(onSelectProp)
 
   const proxyOnSelect = useCallback(
-    (id: React.ReactText, item: UseCheckItem | null, shouldSelected: boolean) => {
+    (id: React.ReactText, item?: UseCheckItem, shouldSelected?: boolean) => {
       onSelectRef.current?.(id, item, shouldSelected)
     },
     [onSelectRef]
@@ -27,20 +28,21 @@ export const useSelect = ({
   const [selectedId, setSelectedId] = useUncontrolledState(
     defaultSelectedId,
     selectedIdProp,
-    proxyOnSelect
+    proxyOnSelect,
+    () => false
   )
 
   const allowSelectRef = useLatestRef(allowSelect)
 
   const onItemSelect = useCallback(
-    (targetItem: UseCheckItem, shouldSelected = true) => {
+    (targetItem: UseCheckItem, shouldSelected: boolean = true) => {
       if (disabled) return
       if (allowSelectRef.current && allowSelectRef.current(targetItem) === false) return
 
       if (shouldSelected) {
         setSelectedId(targetItem.id, targetItem, true)
       } else {
-        setSelectedId(NOOP_ID, null, false)
+        setSelectedId(NOOP_ID)
       }
     },
     [disabled, allowSelectRef, setSelectedId]
@@ -49,7 +51,7 @@ export const useSelect = ({
   return [selectedId, onItemSelect] as const
 }
 
-export interface UseSelectProps {
+export interface UseSelectProps<T extends UseCheckItem = any> {
   /**
    * 开启禁用选择
    */
@@ -65,13 +67,10 @@ export interface UseSelectProps {
   /**
    * 选择时回调
    */
-  onSelect?: (
-    selectedId: React.ReactText,
-    targetItem: UseCheckItem | null,
-    shouldSelected: boolean
-  ) => void
+  onSelect?: (selectedId: React.ReactText, targetItem: T, shouldSelected?: boolean) => void
   /**
    * 返回 true 允许选中
    */
-  allowSelect?: (targetItem: UseCheckItem) => boolean
+  allowSelect?: (targetItem: T) => boolean
+  preventUpdate: (prev: any, next: any) => boolean
 }

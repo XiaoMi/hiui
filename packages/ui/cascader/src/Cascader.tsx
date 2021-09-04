@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useMemo } from 'react'
+import React, { forwardRef, useState, useMemo, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useToggle } from '@hi-ui/use-toggle'
@@ -9,6 +9,7 @@ import { Popper, PopperProps } from '@hi-ui/popper'
 import { CascaderItem, ExpandTrigger, CascaderItemEventData, FlattedCascaderItem } from './types'
 import Input from '@hi-ui/input'
 import { flattenTreeData, getNodeAncestors } from './utils'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
 const _role = 'cascader'
 const _prefix = getPrefixCls(_role)
@@ -24,7 +25,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
       className,
       defaultValue = '',
       value: valueProp,
-      onChange,
+      onChange: onChangeProp,
       data,
       placeholder,
       clearable,
@@ -44,12 +45,48 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
     },
     ref
   ) => {
-    const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
-
-    const flattedData = useMemo(() => flattenTreeData(data), [data])
-
     const [menuVisible, menuVisibleAction] = useToggle()
     const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
+
+    const onChangeLatest = useLatestCallback(onChangeProp)
+
+    const proxyOnSelect = useCallback(
+      (selectedId: React.ReactText, selectOption: CascaderItemEventData) => {
+        // if (selectOption.loading) return
+        console.log(selectOption)
+
+        const optionPath = getNodeAncestors(selectOption)
+
+        if (changeOnSelect) {
+          // 任意选中
+          onChangeLatest(selectedId, selectOption, optionPath)
+        } else {
+          // 选择末级
+          const hasChildren = selectOption.children && selectOption.children.length > 0
+          const canLoadChildren =
+            hasChildren || (onLoadChildren && !selectOption.children && !selectOption.isLeaf)
+
+          console.log(selectOption, canLoadChildren)
+
+          if (canLoadChildren) {
+            return
+          }
+          onChangeLatest(selectedId, selectOption, optionPath)
+        }
+        // 关闭弹窗
+        menuVisibleAction.off()
+      },
+      [onChangeLatest, changeOnSelect, menuVisibleAction, onLoadChildren]
+    )
+
+    const [value, tryChangeValue] = useUncontrolledState(
+      defaultValue,
+      valueProp,
+      proxyOnSelect,
+      () => false
+    )
+
+    const flattedData = useMemo(() => flattenTreeData(data), [data])
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
@@ -83,6 +120,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
             onChange={tryChangeValue}
             // 向下传递
             {...{
+              onSelect: tryChangeValue,
               data,
               flattedData,
               expandTrigger,
@@ -134,9 +172,13 @@ export interface CascaderProps {
   defaultValue?: React.ReactText
   /**
    * 多选值改变时的回调
-   * TODO: 是否有这样的需求：暴露操作的原始数据对象？包括 点击 checkbox、点击 tag 删除按钮、点击清空按钮
+   * TODO: 是否有这样的需求：暴露操作的原始数据对象？包括 点击选型、点击清空按钮
    */
-  onChange?: (value: React.ReactText) => void
+  onChange?: (
+    value: React.ReactText,
+    targetOption: CascaderItemEventData,
+    optionPaths: CascaderItem[]
+  ) => void
   /**
    * 次级菜单的展开方式
    */

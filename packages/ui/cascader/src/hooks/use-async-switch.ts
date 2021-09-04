@@ -33,20 +33,27 @@ export const useAsyncSwitch = (
 
   const onNodeSwitch = useCallback(
     async (node: CascaderItemEventData) => {
+      console.log(node)
+
       const { id, children, isLeaf } = node
 
-      onExpandLatest(node)
-
       if (children) {
+        onExpandLatest(node)
         return
       }
 
-      if (isLeaf) return
+      if (isLeaf) {
+        return
+      }
 
       if (onLoadChildren) {
         addLoadingIds(id)
         try {
           await loadChildren(node)
+          // Using latest  onExpand function at nextTick
+          window.requestAnimationFrame(() => {
+            onExpandLatest(node)
+          })
           removeLoadingIds(id)
         } catch {
           removeLoadingIds(id)

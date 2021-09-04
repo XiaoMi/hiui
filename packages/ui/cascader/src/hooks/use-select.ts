@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelect as useSelectDefault } from '@hi-ui/use-check'
+import { CascaderItemEventData } from '../types'
 
 /**
  * 用于选中的 hook
@@ -8,16 +9,16 @@ import { useSelect as useSelectDefault } from '@hi-ui/use-check'
  * @returns
  */
 export const useSelect = (
-  disabled: boolean,
-  defaultSelectedId: React.ReactText,
-  selectedId: React.ReactText,
-  onSelect: (value: React.ReactText) => void
+  disabled?: boolean,
+  defaultSelectedId?: React.ReactText,
+  // selectedId?: React.ReactText,
+  onSelect?: (value: React.ReactText, item: CascaderItemEventData) => void
 ) => {
   return useSelectDefault({
     disabled,
     defaultSelectedId,
     onSelect,
-    selectedId,
+    // selectedId,
     allowSelect,
   })
 }

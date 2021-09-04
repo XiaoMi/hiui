@@ -110,12 +110,14 @@ const renderSuffix = (
     )
   }
 
+  console.log('renderSuffix', item)
+
   const hasChildren = item.children && item.children.length > 0
   const canLoadChildren = hasChildren || (onLoadChildren && !item.children && !item.isLeaf)
 
   if (canLoadChildren) {
     return (
-      <span className={cx(`${prefixCls}-switcher`)} style={{ transform: `rotate(-90deg)` }}>
+      <span className={cx(`${prefixCls}-switcher`, `${prefixCls}-switcher--arrow`)}>
         {defaultSuffixIcon}
       </span>
     )
