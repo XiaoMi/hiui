@@ -1,15 +1,21 @@
-import React, { forwardRef, useState, useMemo, useCallback } from 'react'
+import React, { forwardRef, useState, useCallback, useMemo } from 'react'
+import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useToggle } from '@hi-ui/use-toggle'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { DownOutlined } from '@hi-ui/icons'
-import { CascaderPanel } from './CascaderPanel'
-import { Popper, PopperProps } from '@hi-ui/popper'
-import { CascaderItem, ExpandTrigger, CascaderItemEventData, FlattedCascaderItem } from './types'
+import { useLatestRef } from '@hi-ui/use-latest'
+import { useCascader } from './use-cascader'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import Input from '@hi-ui/input'
-import { flattenTreeData, getNodeAncestors } from './utils'
-import { useLatestCallback } from '@hi-ui/use-latest'
+import { Popper, PopperProps } from '@hi-ui/popper'
+import { DownOutlined, SearchOutlined } from '@hi-ui/icons'
+import { defaultLeafIcon, defaultLoadingIcon, defaultSuffixIcon } from './icons'
+import { getCascaderItemEventData, getNodeAncestors } from './utils'
+import { CascaderProvider, useCascaderContext } from './context'
+import { CascaderItem, ExpandTrigger, FlattedCascaderItem, CascaderItemEventData } from './types'
+
+// Cascader:        Trigger | MenuList | Search
+// CascaderPanel:   MenuList | Search
 
 const _role = 'cascader'
 const _prefix = getPrefixCls(_role)
@@ -17,147 +23,66 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is Cascader
  */
-export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>(
-  (
-    {
-      prefixCls = _prefix,
-      role = _role,
-      className,
-      defaultValue = '',
-      value: valueProp,
-      onChange: onChangeProp,
-      data,
-      placeholder,
-      clearable,
-      expandTrigger,
-      searchable,
-      disabled,
-      emptyContent,
-      changeOnSelect,
-      titleRender,
-      displayRender,
-      flatted,
-      upMatch,
-      searchPlaceholder,
-      onLoadChildren,
-      popper,
-      ...rest
+export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props, ref) => {
+  const {
+    prefixCls = _prefix,
+    role = _role,
+    className,
+    popper,
+    onChange,
+    disabled = false,
+    searchable = false,
+    ...rest
+  } = props
+
+  const [menuVisible, menuVisibleAction] = useToggle()
+  const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
+
+  const openMenu = useCallback(() => {
+    if (disabled) return
+    menuVisibleAction.on()
+  }, [disabled, menuVisibleAction])
+
+  const onChangeRef = useLatestRef(onChange)
+  const proxyOnChange = useCallback(
+    (
+      selectedId: React.ReactText,
+      selectOption: CascaderItemEventData,
+      optionPath: FlattedCascaderItem[]
+    ) => {
+      onChangeRef.current?.(selectedId, selectOption, optionPath)
+      menuVisibleAction.off()
     },
-    ref
-  ) => {
-    const [menuVisible, menuVisibleAction] = useToggle()
-    const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
+    [menuVisibleAction, onChangeRef]
+  )
 
-    const onChangeLatest = useLatestCallback(onChangeProp)
+  const { rootProps, ...context } = useCascader({
+    ...rest,
+    disabled,
+    onChange: proxyOnChange,
+  })
 
-    const proxyOnSelect = useCallback(
-      (selectedId: React.ReactText, selectOption: CascaderItemEventData) => {
-        // if (selectOption.loading) return
-        console.log(selectOption)
+  const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
-        const optionPath = getNodeAncestors(selectOption)
-
-        if (changeOnSelect) {
-          // 任意选中
-          onChangeLatest(selectedId, selectOption, optionPath)
-        } else {
-          // 选择末级
-          const hasChildren = selectOption.children && selectOption.children.length > 0
-          const canLoadChildren =
-            hasChildren || (onLoadChildren && !selectOption.children && !selectOption.isLeaf)
-
-          console.log(selectOption, canLoadChildren)
-
-          if (canLoadChildren) {
-            return
-          }
-          onChangeLatest(selectedId, selectOption, optionPath)
-        }
-        // 关闭弹窗
-        menuVisibleAction.off()
-      },
-      [onChangeLatest, changeOnSelect, menuVisibleAction, onLoadChildren]
-    )
-
-    const [value, tryChangeValue] = useUncontrolledState(
-      defaultValue,
-      valueProp,
-      proxyOnSelect,
-      () => false
-    )
-
-    const flattedData = useMemo(() => flattenTreeData(data), [data])
-
-    const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
-
-    return (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        <Input
-          ref={setTargetElRef}
-          readOnly
-          // 获取 value 对应的路径数据
-          value={value}
-          onChange={tryChangeValue}
-          disabled={disabled}
-          clearable={clearable}
-          placeholder={placeholder}
-          displayRender={displayRender}
-          suffix={<DownOutlined className={`${prefixCls}__suffix`} />}
-          onClick={() => {
-            if (disabled) return
-            menuVisibleAction.on()
-          }}
-        />
-
+  return (
+    <CascaderProvider value={context}>
+      <div ref={ref} role={role} className={cls} {...rootProps}>
+        <CascaderTrigger ref={setTargetElRef} onClick={openMenu} />
         <Popper
           {...popper}
           attachEl={targetElRef}
           visible={menuVisible}
           onClose={menuVisibleAction.off}
         >
-          <CascaderPanel
-            value={value}
-            onChange={tryChangeValue}
-            // 向下传递
-            {...{
-              onSelect: tryChangeValue,
-              data,
-              flattedData,
-              expandTrigger,
-              searchable,
-              disabled,
-              emptyContent,
-              changeOnSelect,
-              titleRender,
-              flatted,
-              upMatch,
-              placeholder: searchPlaceholder,
-              onLoadChildren,
-            }}
-          />
+          {searchable ? <CascaderSearch /> : null}
+          <CascaderMenuList />
         </Popper>
       </div>
-    )
-  }
-)
+    </CascaderProvider>
+  )
+})
 
-export interface CascaderProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface CascaderProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange'> {
   /**
    * 设置选择项数据源
    */
@@ -177,7 +102,7 @@ export interface CascaderProps {
   onChange?: (
     value: React.ReactText,
     targetOption: CascaderItemEventData,
-    optionPaths: CascaderItem[]
+    optionPaths: FlattedCascaderItem[]
   ) => void
   /**
    * 次级菜单的展开方式
@@ -208,9 +133,12 @@ export interface CascaderProps {
    */
   titleRender?: (item: CascaderItemEventData, flatted: boolean) => React.ReactNode
   /**
-   * 自定义选择后触发器所展示的内容
+   * 自定义选择后触发器所展示的内容，只在 title 为字符串时有效
    */
-  displayRender?: (checkedOption: FlattedCascaderItem) => React.ReactNode
+  displayRender?: (
+    checkedOption: FlattedCascaderItem,
+    checkedOptions: FlattedCascaderItem[]
+  ) => React.ReactNode
   /**
    * 将 check 子项拍平展示
    */
@@ -239,4 +167,243 @@ export interface CascaderProps {
 
 if (__DEV__) {
   Cascader.displayName = 'Cascader'
+}
+
+const triggerPrefix = getPrefixCls('cascader-trigger')
+
+export const CascaderTrigger = forwardRef<HTMLInputElement | null, CascaderTriggerProps>(
+  ({ prefixCls = triggerPrefix, className, ...rest }, ref) => {
+    const {
+      disabled,
+      placeholder,
+      selectedItems,
+      displayRender,
+      clearable,
+      value,
+    } = useCascaderContext()
+
+    const cls = cx(prefixCls, className)
+
+    const showValue = useMemo(() => {
+      if (displayRender) {
+        return displayRender(selectedItems[selectedItems.length - 1], selectedItems)
+      }
+
+      return selectedItems.map((item) => item.title as string).join(', ')
+    }, [displayRender, selectedItems])
+
+    return (
+      <Input
+        ref={ref}
+        className={cls}
+        readOnly
+        // TODO: 获取 value 对应的路径数据
+        value={showValue}
+        // onChange={tryChangeValue}
+        disabled={disabled}
+        clearable={clearable}
+        placeholder={placeholder}
+        suffix={<DownOutlined className={`${prefixCls}__suffix`} />}
+        {...rest}
+      />
+    )
+  }
+)
+
+export interface CascaderTriggerProps extends HiBaseHTMLProps<'input'> {}
+
+if (__DEV__) {
+  CascaderTrigger.displayName = 'CascaderTrigger'
+}
+
+const searchPrefix = getPrefixCls('cascader-search')
+
+export const CascaderSearch = forwardRef<HTMLInputElement | null, CascaderSearchProps>(
+  ({ prefixCls = searchPrefix, className, ...rest }, ref) => {
+    const { isEmpty, emptyContent, getSearchInputProps } = useCascaderContext()
+
+    return (
+      <div ref={ref} className={cx(prefixCls, className)} {...rest}>
+        <Input appearance="underline" prefix={<SearchOutlined />} {...getSearchInputProps()} />
+        {isEmpty ? <span className={`${prefixCls}-search__empty`}>{emptyContent}</span> : null}
+      </div>
+    )
+  }
+)
+
+export interface CascaderSearchProps extends HiBaseHTMLProps {}
+
+if (__DEV__) {
+  CascaderSearch.displayName = 'CascaderSearch'
+}
+
+const menuListPrefix = getPrefixCls('cascader-menu-list')
+
+export const CascaderMenuList = forwardRef<HTMLDivElement | null, CascaderMenuListProps>(
+  ({ prefixCls = menuListPrefix, className, ...rest }, ref) => {
+    const { flatted, menuList, changeOnSelect } = useCascaderContext()
+
+    const cls = cx(
+      prefixCls,
+      className,
+      flatted && `${prefixCls}--flatted`,
+      changeOnSelect && `${prefixCls}--selectchange`
+    )
+
+    return (
+      <div ref={ref} className={cls} {...rest}>
+        {menuList.map((menu, menuIndex) => {
+          return isArrayNonEmpty(menu) ? <CascaderMenu key={menuIndex} data={menu} /> : null
+        })}
+      </div>
+    )
+  }
+)
+
+export interface CascaderMenuListProps extends HiBaseHTMLProps {}
+
+if (__DEV__) {
+  CascaderMenuList.displayName = 'CascaderMenuList'
+}
+
+const menuPrefix = 'cascader-menu'
+
+export const CascaderMenu = ({
+  prefixCls = menuPrefix,
+  role = 'menu',
+  className,
+  data: menu,
+}: CascaderMenuProps) => {
+  const {
+    flatted,
+    disabled: disabledContext,
+    expandTrigger,
+    onItemClick,
+    onItemHover,
+    titleRender,
+    onLoadChildren,
+    getCascaderItemRequiredProps,
+  } = useCascaderContext()
+
+  const cls = cx(prefixCls, className)
+
+  return (
+    <ul className={cls} role={role}>
+      {menu.map((option) => {
+        const eventOption = getCascaderItemEventData(option, getCascaderItemRequiredProps(option))
+
+        const { selected, loading } = eventOption
+        const disabled = disabledContext || option.disabled
+
+        const optionCls = cx(
+          `${prefixCls}-option`,
+          loading && `${prefixCls}-option--loading`,
+          disabled && `${prefixCls}-option--disabled`,
+          selected && `${prefixCls}-option--selected`
+        )
+
+        return (
+          <li key={option.id} role="menu-item" className={`${prefixCls}-item`}>
+            <div
+              className={optionCls}
+              onClick={() => {
+                if (disabled) return
+                onItemClick(eventOption)
+              }}
+              onMouseEnter={() => {
+                if (disabled) return
+                if (expandTrigger === 'hover') {
+                  // TODO: onChange 不触发
+                  onItemHover(eventOption)
+                }
+              }}
+            >
+              {flatted ? (
+                renderFlattedTitle(eventOption, titleRender)
+              ) : (
+                <>
+                  {renderDefaultTitle(eventOption, titleRender)}
+                  {renderSuffix(prefixCls, option, loading, onLoadChildren)}
+                </>
+              )}
+            </div>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+export interface CascaderMenuProps extends HiBaseHTMLProps {
+  /**
+   * 设置选择项数据源
+   */
+  data: FlattedCascaderItem[]
+}
+
+/**
+ * 渲染菜单子项的展开提示图标
+ */
+const renderSuffix = (
+  prefixCls: string,
+  item: FlattedCascaderItem,
+  loading: boolean,
+  onLoadChildren?: (item: CascaderItemEventData) => Promise<CascaderItem[] | void> | void
+) => {
+  if (loading) {
+    return (
+      <span className={cx(`${prefixCls}-switcher`, `${prefixCls}-switcher--loading`)}>
+        {defaultLoadingIcon}
+      </span>
+    )
+  }
+
+  const hasChildren = item.children && item.children.length > 0
+  const canLoadChildren = hasChildren || (onLoadChildren && !item.children && !item.isLeaf)
+
+  if (canLoadChildren) {
+    return (
+      <span className={cx(`${prefixCls}-switcher`, `${prefixCls}-switcher--arrow`)}>
+        {defaultSuffixIcon}
+      </span>
+    )
+  }
+
+  return (
+    <span className={cx(`${prefixCls}-switcher`, `${prefixCls}-switcher--noop`)}>
+      {defaultLeafIcon}
+    </span>
+  )
+}
+
+const renderFlattedTitle = (
+  option: CascaderItemEventData,
+  titleRender?: (item: CascaderItemEventData, flatted: boolean) => React.ReactNode
+) => {
+  // 如果 titleRender 返回 `true`，则使用默认 title
+  const title = titleRender ? titleRender(option, true) : true
+  if (title !== true) return title
+
+  return (
+    <span className="title__text title__text--cols">
+      {getNodeAncestors(option)
+        .reverse()
+        .map((item) => (
+          <span key={item.id} className="title__text--col">
+            {item.title}
+          </span>
+        ))}
+    </span>
+  )
+}
+
+const renderDefaultTitle = (
+  option: CascaderItemEventData,
+  titleRender?: (item: CascaderItemEventData, flatted: boolean) => React.ReactNode
+) => {
+  // 如果 titleRender 返回 `true`，则使用默认 title
+  const title = titleRender ? titleRender(option, false) : true
+  if (title !== true) return title
+
+  return <span className="title__text">{option.title}</span>
 }

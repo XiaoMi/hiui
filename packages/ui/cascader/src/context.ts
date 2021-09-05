@@ -1,24 +1,8 @@
-import React, { createContext, useContext } from 'react'
-import {
-  ExpandTrigger,
-  CascaderItemEventData,
-  CascaderItem,
-  FlattedCascaderItem,
-  CascaderItemRequiredProps,
-} from './types'
+import { createContext, useContext } from 'react'
 
-interface CascaderContext {
-  onLoadChildren?: (item: CascaderItemEventData) => Promise<CascaderItem[] | void> | void
-  disabled: boolean
-  expandTrigger: ExpandTrigger
-  onSelect: (selectedOption: CascaderItemEventData) => void
-  flatted: boolean
-  changeOnSelect: boolean
-  titleRender?: (item: CascaderItemEventData, flatted: boolean) => React.ReactNode
-  getCascaderItemRequiredProps: (item: FlattedCascaderItem) => CascaderItemRequiredProps
-}
+import { UseCascaderReturn } from './use-cascader'
 
-const cascaderContext = createContext<CascaderContext | null>(null)
+const cascaderContext = createContext<Omit<UseCascaderReturn, 'rootProps'> | null>(null)
 
 export const CascaderProvider = cascaderContext.Provider
 

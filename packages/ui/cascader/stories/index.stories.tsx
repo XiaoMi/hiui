@@ -8,7 +8,7 @@ export * from './nowrap.stories'
 export * from './dynamic.stories'
 export * from './display-render.stories'
 export * from './flatted.stories'
-export * from './embed.stories'
+// export * from './embed.stories'
 
 export default {
   title: 'Cascader',

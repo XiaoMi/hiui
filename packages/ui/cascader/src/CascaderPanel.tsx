@@ -10,15 +10,8 @@ import {
 } from './types'
 import Input from '@hi-ui/input'
 import { SearchOutlined } from '@hi-ui/icons'
-import { CascaderMenu } from './CascaderMenu'
 import { useCache, useSearch, useSelect, useAsyncSwitch } from './hooks'
-import {
-  flattenTreeData,
-  getNodeAncestors,
-  getActiveMenus,
-  getFlattedMenus,
-  getActiveMenuIds,
-} from './utils'
+import { flattenTreeData, getNodeAncestors, getActiveMenus, getFlattedMenus } from './utils'
 import { CascaderProvider } from './context'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 

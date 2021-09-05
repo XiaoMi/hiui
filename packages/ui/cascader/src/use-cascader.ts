@@ -7,7 +7,7 @@ import {
   getNodeAncestors,
   getActiveMenus,
   getFlattedMenus,
-  getActiveMenuIds,
+  getActiveMenuList,
 } from './utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useCache, useSearch, useSelect, useAsyncSwitch } from './hooks'
@@ -33,6 +33,7 @@ export const useCascader = ({
   onChange,
   titleRender,
   onLoadChildren,
+  ...rest
 }: UseCascaderProps) => {
   const [menuVisible, menuVisibleAction] = useToggle()
   const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
@@ -74,10 +75,11 @@ export const useCascader = ({
   const [selectedId, onOptionSelect] = useSelect(disabled, valueProp, tryChangeValue)
 
   // 选中 id 路径
-  const selectedIds = useMemo(() => getActiveMenuIds(flattedData, selectedId), [
+  const selectedItems = useMemo(() => getActiveMenuList(flattedData, selectedId), [
     flattedData,
     selectedId,
   ])
+  const selectedIds = selectedItems.map(({ id }) => id)
 
   // 存在异步加载数据的情况，单击选中时需要控制异步加载状态
   const [isLoadingId, onItemExpand] = useAsyncSwitch(
@@ -86,13 +88,20 @@ export const useCascader = ({
     onLoadChildren
   )
 
+  const onItemHover = useCallback(
+    (option) => {
+      onItemExpand(option)
+    },
+    [onItemExpand]
+  )
+
   const [inSearch, matchedItems, inputProps, isEmpty] = useSearch(flattedData, upMatch)
 
   // 搜索的结果列表也采用 flatted 模式进行展示
   const flatted = flattedProp || inSearch
   const flattedCascaderData = inSearch ? matchedItems : flattedData
 
-  const menus = useMemo(() => {
+  const menuList = useMemo(() => {
     return flatted ? getFlattedMenus(flattedCascaderData) : getActiveMenus(flattedData, selectedId)
   }, [flatted, flattedCascaderData, flattedData, selectedId])
 
@@ -108,12 +117,16 @@ export const useCascader = ({
     [flatted, selectedId, selectedIds, isLoadingId]
   )
 
+  const rootProps = {
+    ...rest,
+  }
+
   const getPopperProps = useCallback(
     () => ({
       visible: menuVisible,
       attachEl: targetElRef,
     }),
-    [menuVisible]
+    [menuVisible, targetElRef]
   )
 
   const getTriggerProps = useCallback(
@@ -135,18 +148,26 @@ export const useCascader = ({
   )
 
   return {
+    rootProps,
+    flattedData,
+    selectedItems,
     value,
     tryChangeValue,
     getCascaderItemRequiredProps,
     expandTrigger,
     flatted,
     onItemClick: onItemExpand,
+    onItemHover,
     changeOnSelect,
     onLoadChildren,
     disabled,
-    menus,
+    menuList,
     searchable,
     isEmpty,
+    placeholder,
+    displayRender,
+    clearable,
+    titleRender,
     emptyContent,
     getTriggerProps,
     getPopperProps,
@@ -155,3 +176,5 @@ export const useCascader = ({
 }
 
 export interface UseCascaderProps extends CascaderProps {}
+
+export type UseCascaderReturn = ReturnType<typeof useCascader>

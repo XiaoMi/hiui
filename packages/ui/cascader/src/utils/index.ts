@@ -111,14 +111,14 @@ export const getFlattedMenus = (data: FlattedCascaderItem[]) => {
   return [data.filter(({ checkable }) => checkable)]
 }
 
-export const getActiveMenuIds = (data: FlattedCascaderItem[], selectedIds?: React.ReactText) => {
+export const getActiveMenuList = (data: FlattedCascaderItem[], selectedIds?: React.ReactText) => {
   if (data.length === 0) return []
 
   const selectedOption = data.find(({ id }) => selectedIds === id)
   if (!selectedOption) return []
 
   return getNodeAncestors(selectedOption)
-    .map(({ id }) => id)
+    .map((item) => item)
     .reverse()
 }
 
