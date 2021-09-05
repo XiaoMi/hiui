@@ -1,5 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react'
-import { useToggle } from '@hi-ui/use-toggle'
+import React, { useMemo, useCallback } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CascaderItemEventData, FlattedCascaderItem, CascaderItemRequiredProps } from './types'
 import {
@@ -35,9 +34,6 @@ export const useCascader = ({
   onLoadChildren,
   ...rest
 }: UseCascaderProps) => {
-  const [menuVisible, menuVisibleAction] = useToggle()
-  const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
-
   const onChangeLatest = useLatestCallback(onChangeProp)
 
   const proxyOnSelect = useCallback(
@@ -61,9 +57,8 @@ export const useCascader = ({
         onChangeLatest(selectedId, selectOption, optionPath)
       }
       // 关闭弹窗
-      menuVisibleAction.off()
     },
-    [onChangeLatest, changeOnSelect, menuVisibleAction, onLoadChildren]
+    [onChangeLatest, changeOnSelect, onLoadChildren]
   )
 
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, proxyOnSelect)
@@ -121,23 +116,6 @@ export const useCascader = ({
     ...rest,
   }
 
-  const getPopperProps = useCallback(
-    () => ({
-      visible: menuVisible,
-      attachEl: targetElRef,
-    }),
-    [menuVisible, targetElRef]
-  )
-
-  const getTriggerProps = useCallback(
-    () => ({
-      ref: setTargetElRef,
-      clearable,
-      displayRender,
-    }),
-    [clearable, displayRender]
-  )
-
   const getSearchInputProps = useCallback(
     () => ({
       placeholder: searchPlaceholder,
@@ -169,8 +147,6 @@ export const useCascader = ({
     clearable,
     titleRender,
     emptyContent,
-    getTriggerProps,
-    getPopperProps,
     getSearchInputProps,
   }
 }

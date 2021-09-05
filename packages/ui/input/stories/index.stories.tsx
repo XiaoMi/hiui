@@ -8,6 +8,7 @@ export * from './focus.stories'
 export * from './size.stories'
 export * from './type.stories'
 export * from './controlled.stories'
+export * from './mock.stories'
 
 export default {
   title: 'Input',

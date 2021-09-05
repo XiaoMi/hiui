@@ -1,0 +1,90 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$mock-input-prefix: '#{$component-prefix}-mock-input' !default;
+
+.#{$mock-input-prefix} {
+  @include input-reset();
+
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-width: 160px;
+  font-size: 14px;
+  line-height: $line-height-size-normal;
+  vertical-align: middle;
+  color: var(--color-black);
+  border: 1px solid transparent;
+  background-color: use-color('white');
+  transition: all 0.3s;
+  padding: 4px 10px;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 32px;
+  overflow: hidden;
+  cursor: pointer;
+
+  // outline
+  border-color: use-color('gray-30');
+  border-radius: 4px;
+
+  &:not(.disabled):hover {
+    border-color: use-color('primary');
+  }
+
+  &:not(.disabled).focused {
+    box-shadow: 0 0 0 1px use-color('primary');
+    border-color: use-color('primary');
+  }
+
+  &__placeholder {
+    color: use-color('gray-50');
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    color: var(--color-gray-50);
+    background-color: var(--color-gray-10);
+  }
+
+  // clear icon
+  &__clear {
+    display: inline-flex;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    font-size: 14px;
+    text-align: center;
+    color: use-color('gray-50');
+    flex-shrink: 0;
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s;
+
+    &:hover {
+      color: use-color('black');
+    }
+
+    &.active {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  &__suffix {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: use-color('black');
+    font-size: 16px;
+    text-align: center;
+  }
+
+  &__value {
+    box-sizing: border-box;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+  }
+}

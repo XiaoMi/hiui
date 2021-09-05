@@ -14,7 +14,6 @@ export const useSelect = ({
   selectedId: selectedIdProp,
   onSelect: onSelectProp,
   allowSelect,
-  preventUpdate,
 }: UseSelectProps) => {
   const onSelectRef = useLatestRef(onSelectProp)
 
@@ -72,5 +71,4 @@ export interface UseSelectProps<T extends UseCheckItem = any> {
    * 返回 true 允许选中
    */
   allowSelect?: (targetItem: T) => boolean
-  preventUpdate: (prev: any, next: any) => boolean
 }

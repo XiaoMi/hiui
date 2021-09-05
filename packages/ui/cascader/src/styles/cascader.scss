@@ -3,19 +3,8 @@
 $prefix: '#{$component-prefix}-cascader' !default;
 
 .#{$prefix} {
-  color: #333;
-
-  &__suffix {
-    font-size: 16px;
-    transform: rotate(0);
-  }
-
   &--open {
-    .#{$prefix}__suffix {
-      transform: rotate(-180deg);
-    }
-
-    .#{$component-prefix}-tag-input {
+    .#{$component-prefix}-mock-input {
       border-color: var(--color-primary);
     }
   }
@@ -48,7 +37,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
   }
 }
 
-.#{$prefix}-menus {
+.#{$prefix}-menu-list {
   display: flex;
   box-sizing: border-box;
   overflow-x: auto;
@@ -63,7 +52,6 @@ $prefix: '#{$component-prefix}-cascader' !default;
 .#{$prefix}-menu {
   @include component-reset;
 
-  // padding: 0 0 10px 0;
   list-style: none;
   width: auto;
   box-sizing: border-box;

@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useCallback, useMemo } from 'react'
+import React, { forwardRef, useState, useCallback } from 'react'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -6,7 +6,7 @@ import { useToggle } from '@hi-ui/use-toggle'
 import { useLatestRef } from '@hi-ui/use-latest'
 import { useCascader } from './use-cascader'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
-import Input from '@hi-ui/input'
+import Input, { MockInput } from '@hi-ui/input'
 import { Popper, PopperProps } from '@hi-ui/popper'
 import { DownOutlined, SearchOutlined } from '@hi-ui/icons'
 import { defaultLeafIcon, defaultLoadingIcon, defaultSuffixIcon } from './icons'
@@ -14,14 +14,12 @@ import { getCascaderItemEventData, getNodeAncestors } from './utils'
 import { CascaderProvider, useCascaderContext } from './context'
 import { CascaderItem, ExpandTrigger, FlattedCascaderItem, CascaderItemEventData } from './types'
 
-// Cascader:        Trigger | MenuList | Search
-// CascaderPanel:   MenuList | Search
-
 const _role = 'cascader'
 const _prefix = getPrefixCls(_role)
 
 /**
  * TODO: What is Cascader
+ * Trigger + MenuList + Search
  */
 export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props, ref) => {
   const {
@@ -30,18 +28,15 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     className,
     popper,
     onChange,
-    disabled = false,
+    placeholder,
     searchable = false,
+    clearable = false,
+    displayRender: displayRenderProp,
     ...rest
   } = props
 
   const [menuVisible, menuVisibleAction] = useToggle()
   const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
-
-  const openMenu = useCallback(() => {
-    if (disabled) return
-    menuVisibleAction.on()
-  }, [disabled, menuVisibleAction])
 
   const onChangeRef = useLatestRef(onChange)
   const proxyOnChange = useCallback(
@@ -58,16 +53,43 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
 
   const { rootProps, ...context } = useCascader({
     ...rest,
-    disabled,
     onChange: proxyOnChange,
   })
+
+  const { disabled, value, flattedData, tryChangeValue } = context
+
+  const openMenu = useCallback(() => {
+    if (disabled) return
+    menuVisibleAction.on()
+  }, [disabled, menuVisibleAction])
+
+  const displayRender = useCallback((item: FlattedCascaderItem) => {
+    const itemPaths = getNodeAncestors(item)
+    if (displayRenderProp) {
+      return displayRenderProp(item, itemPaths)
+    }
+
+    return itemPaths.map((item) => item.title as string).join(', ')
+  }, [])
 
   const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
   return (
     <CascaderProvider value={context}>
       <div ref={ref} role={role} className={cls} {...rootProps}>
-        <CascaderTrigger ref={setTargetElRef} onClick={openMenu} />
+        <MockInput
+          ref={setTargetElRef}
+          onClick={openMenu}
+          disabled={disabled}
+          clearable={clearable}
+          placeholder={placeholder}
+          value={value}
+          data={flattedData}
+          onChange={tryChangeValue}
+          // @ts-ignore
+          displayRender={displayRender}
+          suffix={<DownOutlined />}
+        />
         <Popper
           {...popper}
           attachEl={targetElRef}
@@ -169,53 +191,6 @@ if (__DEV__) {
   Cascader.displayName = 'Cascader'
 }
 
-const triggerPrefix = getPrefixCls('cascader-trigger')
-
-export const CascaderTrigger = forwardRef<HTMLInputElement | null, CascaderTriggerProps>(
-  ({ prefixCls = triggerPrefix, className, ...rest }, ref) => {
-    const {
-      disabled,
-      placeholder,
-      selectedItems,
-      displayRender,
-      clearable,
-      value,
-    } = useCascaderContext()
-
-    const cls = cx(prefixCls, className)
-
-    const showValue = useMemo(() => {
-      if (displayRender) {
-        return displayRender(selectedItems[selectedItems.length - 1], selectedItems)
-      }
-
-      return selectedItems.map((item) => item.title as string).join(', ')
-    }, [displayRender, selectedItems])
-
-    return (
-      <Input
-        ref={ref}
-        className={cls}
-        readOnly
-        // TODO: 获取 value 对应的路径数据
-        value={showValue}
-        // onChange={tryChangeValue}
-        disabled={disabled}
-        clearable={clearable}
-        placeholder={placeholder}
-        suffix={<DownOutlined className={`${prefixCls}__suffix`} />}
-        {...rest}
-      />
-    )
-  }
-)
-
-export interface CascaderTriggerProps extends HiBaseHTMLProps<'input'> {}
-
-if (__DEV__) {
-  CascaderTrigger.displayName = 'CascaderTrigger'
-}
-
 const searchPrefix = getPrefixCls('cascader-search')
 
 export const CascaderSearch = forwardRef<HTMLInputElement | null, CascaderSearchProps>(
@@ -266,7 +241,7 @@ if (__DEV__) {
   CascaderMenuList.displayName = 'CascaderMenuList'
 }
 
-const menuPrefix = 'cascader-menu'
+const menuPrefix = getPrefixCls('cascader-menu')
 
 export const CascaderMenu = ({
   prefixCls = menuPrefix,

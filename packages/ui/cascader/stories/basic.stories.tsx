@@ -76,6 +76,7 @@ export const Basic = () => {
           defaultValue="红米4"
           data={dataOnlyLastCheckable}
           onChange={console.log}
+          // clearable
         ></Cascader>
       </div>
     </>
