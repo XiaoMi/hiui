@@ -18,17 +18,9 @@ export interface CascaderItem {
    */
   isLeaf?: boolean
   /**
-   * 是否开启 checkbox 功能
-   */
-  checkable?: boolean
-  /**
    * 是否禁用该节点（将禁用级联点击，展开，如果开启 checkbox，也将被禁用）
    */
   disabled?: boolean
-  /**
-   * 是否禁用该节点 checkbox 功能
-   */
-  disabledCheckbox?: boolean
 }
 
 // TODO: ts 类型工具函数 将指定属性转为非可选属性

@@ -1,80 +1,57 @@
-import React, { useMemo, useCallback } from 'react'
+import { useMemo, useCallback } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { CascaderItemEventData, FlattedCascaderItem, CascaderItemRequiredProps } from './types'
-import {
-  flattenTreeData,
-  getNodeAncestors,
-  getActiveMenus,
-  getFlattedMenus,
-  getActiveMenuList,
-} from './utils'
-import { useLatestCallback } from '@hi-ui/use-latest'
+import { FlattedCascaderItem, CascaderItemRequiredProps } from './types'
+import { flattenTreeData, getActiveMenus, getFlattedMenus, getActiveMenuList } from './utils'
 import { useCache, useSearch, useSelect, useAsyncSwitch } from './hooks'
 
 import { CascaderProps } from './Cascader'
 
+const NOOP_ARRAY = [] as []
+const NOOP_VALUE = ''
+
 export const useCascader = ({
-  defaultValue = '',
+  defaultValue = NOOP_VALUE,
   value: valueProp,
   onChange: onChangeProp,
-  data,
-  clearable = false,
-  displayRender,
-  searchPlaceholder,
+  data = NOOP_ARRAY,
   disabled = false,
   changeOnSelect = false,
-  searchable = true,
   flatted: flattedProp = false,
   upMatch = false,
   expandTrigger = 'click',
   emptyContent = '无匹配选项',
   placeholder,
-  onChange,
+  searchPlaceholder,
+  onSelect,
   titleRender,
+  displayRender,
   onLoadChildren,
   ...rest
 }: UseCascaderProps) => {
-  const onChangeLatest = useLatestCallback(onChangeProp)
+  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
 
-  const proxyOnSelect = useCallback(
-    (selectedId: React.ReactText, selectOption: CascaderItemEventData) => {
-      const optionPath = getNodeAncestors(selectOption)
-
-      if (changeOnSelect) {
-        // 任意选中
-        onChangeLatest(selectedId, selectOption, optionPath)
-      } else {
-        // 选择末级
-        const hasChildren = selectOption.children && selectOption.children.length > 0
-        const canLoadChildren =
-          hasChildren || (onLoadChildren && !selectOption.children && !selectOption.isLeaf)
-
-        console.log(selectOption, canLoadChildren)
-
-        if (canLoadChildren) {
-          return
-        }
-        onChangeLatest(selectedId, selectOption, optionPath)
-      }
-      // 关闭弹窗
-    },
-    [onChangeLatest, changeOnSelect, onLoadChildren]
-  )
-
-  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, proxyOnSelect)
   const [cascaderData, setCascaderData] = useCache(data)
 
   const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
 
   // 单击选中某项
-  const [selectedId, onOptionSelect] = useSelect(disabled, valueProp, tryChangeValue)
+  const [selectedId, onOptionSelect] = useSelect(
+    disabled,
+    tryChangeValue,
+    changeOnSelect,
+    onLoadChildren,
+    onSelect
+  )
 
   // 选中 id 路径
   const selectedItems = useMemo(() => getActiveMenuList(flattedData, selectedId), [
     flattedData,
     selectedId,
   ])
+
   const selectedIds = selectedItems.map(({ id }) => id)
+
+  console.log('selectedId', selectedId, selectedItems)
 
   // 存在异步加载数据的情况，单击选中时需要控制异步加载状态
   const [isLoadingId, onItemExpand] = useAsyncSwitch(
@@ -112,10 +89,6 @@ export const useCascader = ({
     [flatted, selectedId, selectedIds, isLoadingId]
   )
 
-  const rootProps = {
-    ...rest,
-  }
-
   const getSearchInputProps = useCallback(
     () => ({
       placeholder: searchPlaceholder,
@@ -126,7 +99,7 @@ export const useCascader = ({
   )
 
   return {
-    rootProps,
+    rootProps: rest,
     flattedData,
     selectedItems,
     value,
@@ -140,11 +113,9 @@ export const useCascader = ({
     onLoadChildren,
     disabled,
     menuList,
-    searchable,
     isEmpty,
     placeholder,
     displayRender,
-    clearable,
     titleRender,
     emptyContent,
     getSearchInputProps,

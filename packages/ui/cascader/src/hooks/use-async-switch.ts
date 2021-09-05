@@ -58,6 +58,8 @@ export const useAsyncSwitch = (
         } catch {
           removeLoadingIds(id)
         }
+      } else {
+        onExpandLatest(node)
       }
     },
     [loadChildren, onLoadChildren, onExpandLatest, addLoadingIds, removeLoadingIds]

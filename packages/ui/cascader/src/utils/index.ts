@@ -18,15 +18,7 @@ export const flattenTreeData = (treeData: CascaderItem[]) => {
   const flattedTreeData: FlattedCascaderItem[] = []
 
   const dig = (node: CascaderItem, depth: number, parent: FlattedCascaderItemWithChildren) => {
-    const {
-      id,
-      title,
-      children,
-      checkable = true,
-      isLeaf = false,
-      disabled = false,
-      disabledCheckbox = false,
-    } = node
+    const { id, title, children, isLeaf = false, disabled = false } = node
 
     const flattedNode: FlattedCascaderItem = {
       id,
@@ -36,8 +28,6 @@ export const flattenTreeData = (treeData: CascaderItem[]) => {
       raw: node,
       isLeaf,
       disabled,
-      disabledCheckbox,
-      checkable,
     }
 
     flattedTreeData.push(flattedNode)
@@ -108,7 +98,7 @@ export const getActiveMenus = (data: FlattedCascaderItem[], selectedIds?: React.
 }
 
 export const getFlattedMenus = (data: FlattedCascaderItem[]) => {
-  return [data.filter(({ checkable }) => checkable)]
+  return [data]
 }
 
 export const getActiveMenuList = (data: FlattedCascaderItem[], selectedIds?: React.ReactText) => {

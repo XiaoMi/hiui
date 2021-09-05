@@ -73,7 +73,9 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
     const hasValue = !!displayValue
 
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清除
-    const showClearableIcon = clearable && hasValue && !disabled
+    const showClearableIcon = useMemo(() => {
+      return clearable && hasValue && !disabled && (clearableTrigger === 'always' || hover)
+    }, [clearable, hasValue, disabled, clearableTrigger, hover])
 
     const cls = cx(prefixCls, className, disabled && 'disabled')
 
@@ -103,10 +105,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
               <span
                 role="button"
                 tabIndex={-1}
-                className={cx(
-                  `${prefixCls}__clear`,
-                  (clearableTrigger === 'always' || hover) && 'active'
-                )}
+                className={cx(`${prefixCls}__clear`, 'active')}
                 onClick={handleClear}
               >
                 <CloseCircleFilled />

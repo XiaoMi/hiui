@@ -83,8 +83,10 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
 
   &__value {
     box-sizing: border-box;
+    display: inline-block;
     width: 100%;
-    display: inline-flex;
-    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

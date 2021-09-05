@@ -3,7 +3,6 @@ import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useToggle } from '@hi-ui/use-toggle'
-import { useLatestRef } from '@hi-ui/use-latest'
 import { useCascader } from './use-cascader'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import Input, { MockInput } from '@hi-ui/input'
@@ -27,10 +26,9 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     role = _role,
     className,
     popper,
-    onChange,
     placeholder,
-    searchable = false,
-    clearable = false,
+    searchable = true,
+    clearable = true,
     displayRender: displayRenderProp,
     ...rest
   } = props
@@ -38,22 +36,9 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
   const [menuVisible, menuVisibleAction] = useToggle()
   const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
 
-  const onChangeRef = useLatestRef(onChange)
-  const proxyOnChange = useCallback(
-    (
-      selectedId: React.ReactText,
-      selectOption: CascaderItemEventData,
-      optionPath: FlattedCascaderItem[]
-    ) => {
-      onChangeRef.current?.(selectedId, selectOption, optionPath)
-      menuVisibleAction.off()
-    },
-    [menuVisibleAction, onChangeRef]
-  )
-
   const { rootProps, ...context } = useCascader({
     ...rest,
-    onChange: proxyOnChange,
+    onSelect: menuVisibleAction.off,
   })
 
   const { disabled, value, flattedData, tryChangeValue } = context
@@ -63,14 +48,17 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     menuVisibleAction.on()
   }, [disabled, menuVisibleAction])
 
-  const displayRender = useCallback((item: FlattedCascaderItem) => {
-    const itemPaths = getNodeAncestors(item)
-    if (displayRenderProp) {
-      return displayRenderProp(item, itemPaths)
-    }
+  const displayRender = useCallback(
+    (item: FlattedCascaderItem) => {
+      const itemPaths = getNodeAncestors(item).reverse()
+      if (displayRenderProp) {
+        return displayRenderProp(item, itemPaths)
+      }
 
-    return itemPaths.map((item) => item.title as string).join(', ')
-  }, [])
+      return itemPaths.map((item) => item.title as string).join(' / ')
+    },
+    [displayRenderProp]
+  )
 
   const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
@@ -96,8 +84,10 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
           visible={menuVisible}
           onClose={menuVisibleAction.off}
         >
-          {searchable ? <CascaderSearch /> : null}
-          <CascaderMenuList />
+          <div className={`${prefixCls}-panel`}>
+            {searchable ? <CascaderSearch /> : null}
+            <CascaderMenuList />
+          </div>
         </Popper>
       </div>
     </CascaderProvider>

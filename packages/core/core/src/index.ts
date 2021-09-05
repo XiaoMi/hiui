@@ -1,6 +1,6 @@
 import React, { ReactText } from 'react'
 
-export declare type HiBaseHTMLProps<T extends React.ElementType = any, P = any> = Omit<
+export declare type HiBaseHTMLProps<T extends React.ElementType = any, P = {}> = Omit<
   React.ComponentPropsWithoutRef<T>,
   keyof P
 > & {

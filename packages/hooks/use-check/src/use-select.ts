@@ -27,8 +27,7 @@ export const useSelect = ({
   const [selectedId, setSelectedId] = useUncontrolledState(
     defaultSelectedId,
     selectedIdProp,
-    proxyOnSelect,
-    () => false
+    proxyOnSelect
   )
 
   const allowSelectRef = useLatestRef(allowSelect)
