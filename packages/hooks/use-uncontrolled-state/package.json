@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-uncontrolled-state",
-  "version": "4.0.0-alpha.3",
+  "version": "4.0.0-alpha.5",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",

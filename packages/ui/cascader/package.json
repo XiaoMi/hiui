@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/cascader",
-  "version": "4.0.0-alpha.4",
+  "version": "4.0.0-alpha.6",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,16 +44,16 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.1",
-    "@hi-ui/core": "^4.0.0-alpha.0",
+    "@hi-ui/core": "^4.0.0-alpha.2",
     "@hi-ui/env": "^4.0.0-alpha.3",
     "@hi-ui/icons": "^4.0.0-alpha.8",
-    "@hi-ui/input": "^4.0.0-alpha.8",
+    "@hi-ui/input": "^4.0.0-alpha.10",
     "@hi-ui/popper": "^4.0.0-alpha.4",
-    "@hi-ui/tree-utils": "^4.0.0-alpha.0",
-    "@hi-ui/type-assertion": "^4.0.0-alpha.3",
+    "@hi-ui/tree-utils": "^4.0.0-alpha.2",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.5",
     "@hi-ui/use-latest": "^4.0.0-alpha.2",
     "@hi-ui/use-toggle": "^4.0.0-alpha.4",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.3"
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.5"
   },
   "peerDependencies": {
     "react": "^17.0.1",
