@@ -388,7 +388,7 @@ const renderSwitcher = (
   collapseIcon: React.ReactNode,
   leafIcon: React.ReactNode,
   onNodeExpand: (evt: React.MouseEvent) => void,
-  onLoadChildren?: (node: TreeNodeEventData) => Promise<any>
+  onLoadChildren?: (node: TreeNodeEventData) => void | Promise<any>
 ) => {
   if (loading) {
     return (
