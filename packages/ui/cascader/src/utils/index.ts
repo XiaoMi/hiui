@@ -25,8 +25,6 @@ export const flattenTreeData = (treeData: CascaderItem[]) => {
  * 获取自顶向下的祖先节点，包括自己
  */
 export const getTopDownAncestors = (node: FlattedCascaderItem) => {
-  console.log(getNodeAncestorsWithMe(node).reverse())
-
   return getNodeAncestorsWithMe(node).reverse()
 }
 

@@ -21,7 +21,6 @@ export const useSearch = (flattedData: FlattedCheckCascaderItem[], upMatch: bool
       const matchedNodes = upMatch
         ? getMatchedUpMatchNodes(flattedDataRef.current, nextSearchValue)
         : getMatchedNodes(flattedDataRef.current, nextSearchValue)
-      console.log(matchedNodes)
 
       setMatchedNodes(matchedNodes)
     },

@@ -27,8 +27,6 @@ export const useSearch = (
         ? getMatchedUpMatchNodes(flattedDataRef.current, nextSearchValue, filter)
         : getMatchedNodes(flattedDataRef.current, nextSearchValue, filter)
 
-      console.log('matchedNodes', upMatch, matchedNodes)
-
       setMatchedNodes(matchedNodes)
     },
     [upMatch, flattedDataRef]
