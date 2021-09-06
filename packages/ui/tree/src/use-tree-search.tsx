@@ -4,7 +4,7 @@ import Input from '@hi-ui/input'
 import { useDeepEqualDeps as useDeep } from '@hi-ui/use-deep-equal-deps'
 import { TreeNodeData, FlattedTreeNodeData, TreeNodeEventData } from './types'
 import { useExpandProps } from './hooks'
-import cloneDeep from 'lodash.clonedeep'
+import { cloneTree } from '@hi-ui/tree-utils'
 import { flattenTreeData } from './utils'
 import { TreeProps, Tree, _prefix } from './Tree'
 import { SearchOutlined } from '@hi-ui/icons'
@@ -98,7 +98,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     [titleRender, inSearch, searchValue]
   )
 
-  const showData = useMemo(() => getSearchedData(cloneDeep(data), matchedIds, filteredIds), [
+  const showData = useMemo(() => getSearchedData(cloneTree(data), matchedIds, filteredIds), [
     data,
     matchedIds,
     filteredIds,

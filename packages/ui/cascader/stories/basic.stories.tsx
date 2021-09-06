@@ -72,11 +72,12 @@ export const Basic = () => {
       <div className="cascader-basic__wrap" style={{ width: 80 }}>
         <Cascader
           searchable={false}
+          clearable
           placeholder="请选择品类"
           defaultValue="红米4"
           data={dataOnlyLastCheckable}
           onChange={(...args) => {
-            console.log('onChange', args)
+            console.log('onChange', ...args)
           }}
         ></Cascader>
       </div>

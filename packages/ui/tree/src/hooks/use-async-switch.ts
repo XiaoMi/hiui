@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react'
 import { TreeNodeData, TreeNodeEventData } from '../types'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import cloneDeep from 'lodash.clonedeep'
+import { cloneTree } from '@hi-ui/tree-utils'
 import { addChildrenById } from '../utils'
 
 export const useAsyncSwitch = (
   setTreeData: React.Dispatch<React.SetStateAction<TreeNodeData[]>>,
   onExpand?: (expandedNode: TreeNodeEventData, isExpanded: boolean) => void,
-  onLoadChildren?: (node: TreeNodeEventData) => Promise<TreeNodeData[] | undefined>
+  onLoadChildren?: (node: TreeNodeEventData) => void | Promise<TreeNodeData[] | void>
 ) => {
   const [loadingIds, addLoadingIds, removeLoadingIds] = useList<React.ReactText>()
 
@@ -20,7 +20,7 @@ export const useAsyncSwitch = (
 
       if (Array.isArray(childrenNodes)) {
         setTreeData((prev) => {
-          const nextTreeData = cloneDeep(prev)
+          const nextTreeData = cloneTree(prev)
           addChildrenById(nextTreeData, node.id, childrenNodes)
           return nextTreeData
         })

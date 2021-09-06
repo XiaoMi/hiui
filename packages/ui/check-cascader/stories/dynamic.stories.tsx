@@ -39,7 +39,7 @@ export const Dynamic = () => {
         }
 
         // setTreeData((prev) => {
-        //   const nextData = cloneDeep(prev)
+        //   const nextData = cloneTree(prev)
         //   const loadNode = findNode(node.id, nextData)
         //   loadNode.children = data
         //   console.log(loadNode, nextData)

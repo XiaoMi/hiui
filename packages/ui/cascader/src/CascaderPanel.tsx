@@ -5,7 +5,7 @@ import { CascaderItem, ExpandTrigger, CascaderItemEventData, FlattedCascaderItem
 import { CascaderProvider } from './context'
 import { useCascader } from './use-cascader'
 import { CascaderSearch, CascaderMenuList } from './Cascader'
-import { HiBaseHTMLProps } from 'packages/core/core/lib/types'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'cascader-panel'
 const _prefix = getPrefixCls(_role)
@@ -15,7 +15,7 @@ const _prefix = getPrefixCls(_role)
  * MenuList + Search
  */
 export const CascaderPanel = forwardRef<HTMLDivElement | null, CascaderPanelProps>(
-  ({ prefixCls = _prefix, role = _role, className, searchable = false, ...rest }, ref) => {
+  ({ prefixCls = _prefix, role = _role, className, searchable = true, ...rest }, ref) => {
     const { rootProps, ...context } = useCascader(rest)
 
     const providedValue = useMemo(() => context, [context])
@@ -46,21 +46,20 @@ export type CascaderPanelProps = HiBaseHTMLProps<
      */
     data: CascaderItem[]
     /**
-     * 设置当前多选值
+     * 设置当前选中值
      */
     value?: React.ReactText
     /**
-     * 设置当前多选值默认值
+     * 设置当前选中值默认值
      */
     defaultValue?: React.ReactText
     /**
-     * 多选值改变时的回调
-     * TODO: 是否有这样的需求：暴露操作的原始数据对象？包括 点击选型、点击清空按钮
+     * 选中值改变时的回调
      */
     onChange?: (
       value: React.ReactText,
-      targetOption: CascaderItemEventData,
-      optionPaths: FlattedCascaderItem[]
+      targetOption?: CascaderItemEventData,
+      optionPaths?: FlattedCascaderItem[]
     ) => void
     /**
      * 选中选项时触发，仅供内部使用

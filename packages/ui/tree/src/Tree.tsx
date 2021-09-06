@@ -283,7 +283,7 @@ export interface TreeProps {
   /**
    * 点击异步加载子项
    */
-  onLoadChildren?: (node: TreeNodeEventData) => Promise<TreeNodeData[] | undefined>
+  onLoadChildren?: (node: TreeNodeEventData) => void | Promise<TreeNodeData[] | void>
   /**
    * 选中的节点
    */

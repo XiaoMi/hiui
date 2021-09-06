@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import cloneDeep from 'lodash.clonedeep'
+import { cloneTree } from '@hi-ui/tree-utils'
 import { getTreeNodeEventData } from '../utils/index'
 import {
   TreeNodeRequiredProps,
@@ -56,7 +56,7 @@ export const useTreeDrop = (
         return
       }
 
-      const nextTreeData = cloneDeep(treeData)
+      const nextTreeData = cloneTree(treeData)
       const isInsertToInside = direction === TreeNodeDragDirection.INSIDE
 
       // 正式开始进行节点位置替换

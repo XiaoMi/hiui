@@ -15,7 +15,7 @@ interface TreeContext {
   ) => void
   onDragLeave?: (node: TreeNodeEventData) => void
   onDragOver?: (node: TreeNodeEventData) => void
-  onLoadChildren?: (node: TreeNodeEventData) => Promise<any>
+  onLoadChildren?: (node: TreeNodeEventData) => void | Promise<any>
   checkable?: boolean
   onCheck?: (checkedNode: TreeNodeEventData, shouldChecked: boolean) => void
   titleRender?: (node: TreeNodeEventData) => React.ReactNode

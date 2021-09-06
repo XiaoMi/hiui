@@ -108,7 +108,11 @@ export const Embed = () => {
     <>
       <h1>Embed</h1>
       <div className="cascader-basic__wrap">
-        <CascaderPanel defaultValue={['手机', '红米', '红米4']} data={dataOnlyLastCheckable} />
+        <CascaderPanel
+          expandTrigger="hover"
+          defaultValue={['手机', '红米', '红米4']}
+          data={dataOnlyLastCheckable}
+        />
       </div>
     </>
   )

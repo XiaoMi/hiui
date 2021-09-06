@@ -121,21 +121,20 @@ export interface CascaderProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange' |
    */
   data: CascaderItem[]
   /**
-   * 设置当前多选值
+   * 设置当前选中值
    */
   value?: React.ReactText
   /**
-   * 设置当前多选值默认值
+   * 设置当前选中值默认值
    */
   defaultValue?: React.ReactText
   /**
-   * 多选值改变时的回调
-   * TODO: 是否有这样的需求：暴露操作的原始数据对象？包括 点击选型、点击清空按钮
+   * 选中值改变时的回调
    */
   onChange?: (
     value: React.ReactText,
-    targetOption: CascaderItemEventData,
-    optionPaths: FlattedCascaderItem[]
+    targetOption?: CascaderItemEventData,
+    optionPaths?: FlattedCascaderItem[]
   ) => void
   /**
    * 选中选项时触发，仅供内部使用
@@ -308,7 +307,6 @@ export const CascaderMenu = ({
               onMouseEnter={() => {
                 if (disabled) return
                 if (expandTrigger === 'hover') {
-                  // TODO: onChange 不触发
                   onItemHover(eventOption)
                 }
               }}

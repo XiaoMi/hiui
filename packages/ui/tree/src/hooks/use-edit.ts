@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { TreeNodeData, FlattedTreeNodeData, TreeNodeType, TreeDataStatus } from '../types'
-import cloneDeep from 'lodash.clonedeep'
+import { cloneTree } from '@hi-ui/tree-utils'
 import { addChildNodeById, deleteNodeById, insertNodeById, uuid } from '../utils'
 import { useLatestRef } from '@hi-ui/use-latest'
 
@@ -25,7 +25,7 @@ export const useEdit = (
   const addSiblingNode = useCallback(
     (node: FlattedTreeNodeData) => {
       setTreeData((prev) => {
-        const nextTreeData = cloneDeep(prev)
+        const nextTreeData = cloneTree(prev)
         const nodeToAdd = genTreeNode()
         insertNodeById(nextTreeData, node.id, nodeToAdd, 1)
         return nextTreeData
@@ -37,7 +37,7 @@ export const useEdit = (
   const addChildNode = useCallback(
     (node: FlattedTreeNodeData) => {
       setTreeData((prev) => {
-        const nextTreeData = cloneDeep(prev)
+        const nextTreeData = cloneTree(prev)
         const nodeToAdd = genTreeNode()
         addChildNodeById(nextTreeData, node.id, nodeToAdd, 0)
         return nextTreeData
@@ -51,7 +51,7 @@ export const useEdit = (
       // 取消添加节点（需要移除）
       if (node.raw.type === TreeNodeType.ADD) {
         setTreeData((prev) => {
-          const nextTreeData = cloneDeep(prev)
+          const nextTreeData = cloneTree(prev)
           deleteNodeById(nextTreeData, node.id)
 
           return nextTreeData
@@ -66,7 +66,7 @@ export const useEdit = (
 
   const deleteNode = useCallback(
     async (node: FlattedTreeNodeData) => {
-      const nextTreeData = cloneDeep(treeData)
+      const nextTreeData = cloneTree(treeData)
       deleteNodeById(nextTreeData, node.id)
 
       // 默认不拦截（不传或者返回 true）则非受控删除
@@ -94,7 +94,7 @@ export const useEdit = (
 
   const saveEdit = useCallback(
     async (targetNode: FlattedTreeNodeData) => {
-      const nextTreeData = cloneDeep(treeData)
+      const nextTreeData = cloneTree(treeData)
       _saveEdit(targetNode, nextTreeData)
 
       if (onBeforeSaveRef.current) {

@@ -294,3 +294,24 @@ export const getNodeAncestorsWithMe = <T extends BaseFlattedTreeNodeDataWithPare
 ) => {
   return getNodeAncestors(node, filter, [node])
 }
+
+const copy = <T>(node: T) => ({ ...node })
+
+export const cloneTreeNode = <T extends BaseTreeNodeData>(node: T) => {
+  const nextTreeNode = copy(node)
+  const dig = (node: BaseTreeNodeData) => {
+    if (node.children) {
+      node.children = node.children.map((child) => dig(copy(child)))
+    }
+    return node
+  }
+  dig(nextTreeNode)
+  return nextTreeNode
+}
+
+/**
+ * 递归浅拷贝树数据结构，避免数据循环引用处理
+ */
+export const cloneTree = <T extends BaseTreeNodeData>(tree: T[]) => {
+  return tree.map((node) => cloneTreeNode(node))
+}

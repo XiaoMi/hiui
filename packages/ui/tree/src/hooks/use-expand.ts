@@ -1,7 +1,7 @@
 import { useQueue } from './use-queue'
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import cloneDeep from 'lodash.clonedeep'
+import { cloneTree } from '@hi-ui/tree-utils'
 import { fFindNestedChildNodesById, uuid } from '../utils'
 import {
   FlattedTreeNodeData,
@@ -106,7 +106,7 @@ export const useExpand = (
         const [rangeData] = fFindNestedChildNodesById(flattedData, expandedNodeId)
         const expandedNodeIndex = transitionData.findIndex((node) => node.id === expandedNodeId)
         const childrenStartIndex = expandedNodeIndex + 1
-        const newTransitionData: TreeNodeTransitionData[] = cloneDeep(transitionData)
+        const newTransitionData: TreeNodeTransitionData[] = cloneTree(transitionData)
 
         newTransitionData.splice(childrenStartIndex, 0, {
           id: MOTION_NODE_KEY,
@@ -125,7 +125,7 @@ export const useExpand = (
           expandedNodeId
         )
         const childrenStartIndex = expandedNodeIndex + 1
-        const newTransitionData = cloneDeep(transitionData)
+        const newTransitionData = cloneTree(transitionData)
 
         newTransitionData.splice(childrenStartIndex, rangeData.length, {
           id: MOTION_NODE_KEY,

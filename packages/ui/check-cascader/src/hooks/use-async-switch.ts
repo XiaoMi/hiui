@@ -1,8 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import cloneDeep from 'lodash.clonedeep'
 import { CheckCascaderItem, CheckCascaderItemEventData } from '../types'
-import { addChildrenById } from '@hi-ui/tree-utils'
+import { addChildrenById, cloneTree } from '@hi-ui/tree-utils'
 
 export const useAsyncSwitch = (
   setCascaderData: React.Dispatch<React.SetStateAction<CheckCascaderItem[]>>,
@@ -20,7 +19,7 @@ export const useAsyncSwitch = (
 
       if (Array.isArray(childrenNodes)) {
         setCascaderData((prev) => {
-          const nextTreeData = cloneDeep(prev)
+          const nextTreeData = cloneTree(prev)
           addChildrenById(nextTreeData, node.id, childrenNodes)
           return nextTreeData
         })
