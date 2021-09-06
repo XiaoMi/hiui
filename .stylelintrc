@@ -20,5 +20,6 @@
     "selector-list-comma-newline-after": "always",
     "color-no-invalid-hex": true,
     "no-descending-specificity": null
-  }
+  },
+  "ignoreFiles": ["packages/**/*.tsx", "packages/**/*.jsx"]
 }
