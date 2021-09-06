@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { LeftOutlined } from '@hi-ui/icons'
-import { setTimeout } from 'timers'
 
 const _role = 'zen-mode'
 const _prefix = getPrefixCls(_role)

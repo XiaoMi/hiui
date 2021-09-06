@@ -25,7 +25,7 @@
     "publish:pkg": "lerna publish --dist-tag feature",
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",
-    "build": "lerna run build --no-private --sort ",
+    "build": "lerna run build --no-private --sort --ignore @hi-ui/table",
     "storybook": "start-storybook --no-manager-cache false -p 6006",
     "build-storybook": "build-storybook",
     "fix": "standard --fix && stylelint --config .stylelintrc 'components/**/*.scss' --fix",
