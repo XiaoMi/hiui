@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestRef } from '@hi-ui/use-latest'
 import { getNodeAncestors, findNestedChildren } from '@hi-ui/tree-utils'
 import { checkDefault } from './use-check'
@@ -14,23 +13,11 @@ export const useCascadeCheck = ({
   cascaded = true,
   disabled = false,
   flattedData = NOOP_ARRAY,
-  defaultCheckedIds = NOOP_ARRAY,
-  checkedIds: checkedIdsProp,
+  checkedIds,
   onCheck,
   allowCheck,
 }: UseCascadeCheckProps) => {
-  const onCheckRef = useLatestRef(onCheck)
   const allowCheckRef = useLatestRef(allowCheck)
-
-  const proxyOnCheck = useCallback((checkedIds, checkedNode, shouldChecked, semiCheckedIds) => {
-    onCheckRef.current?.({ checkedIds, semiCheckedIds }, checkedNode, shouldChecked)
-  }, [])
-
-  const [checkedIds, trySetCheckedIds] = useUncontrolledState(
-    defaultCheckedIds,
-    checkedIdsProp,
-    proxyOnCheck
-  )
 
   const checkedIdsSet = useMemo(() => new Set(checkedIds), [checkedIds])
   const isCheckedId = useCallback((id: React.ReactText) => checkedIdsSet.has(id), [checkedIdsSet])
@@ -39,7 +26,7 @@ export const useCascadeCheck = ({
   const [semiCheckedIds, semiCheckedIdsSet] = useMemo(
     () =>
       cascaded ? getSemiCheckedIdsWithSet(flattedData, isCheckedId, allowCheckRef.current) : [],
-    [cascaded, isCheckedId, flattedData]
+    [cascaded, isCheckedId, flattedData, allowCheckRef]
   )
 
   const isSemiCheckedId = useCallback(
@@ -49,34 +36,28 @@ export const useCascadeCheck = ({
     [cascaded, semiCheckedIdsSet]
   )
 
-  const checkedIdsRef = useLatestRef(checkedIds)
-  const semiCheckedIdsRef = useLatestRef(semiCheckedIds)
-
   const onNodeCheck = useCallback(
     (targetItem: UseCascadeCheckItem, shouldChecked: boolean) => {
       if (disabled) return
       if (allowCheckRef.current && !allowCheckRef.current(targetItem)) return
 
-      const checkedIds = checkedIdsRef.current
-
       if (cascaded) {
-        const semiCheckedIds = semiCheckedIdsRef.current!
         const [nextCheckedIds, nextSemiCheckedIds] = checkCascade(
           checkedIds,
-          semiCheckedIds,
+          semiCheckedIds!,
           targetItem,
           shouldChecked,
           allowCheckRef.current
         )
 
-        trySetCheckedIds(nextCheckedIds, targetItem, shouldChecked, nextSemiCheckedIds)
+        onCheck(nextCheckedIds, targetItem, shouldChecked, nextSemiCheckedIds)
       } else {
         const nextCheckedIds = checkDefault(checkedIds, targetItem, shouldChecked)
 
-        trySetCheckedIds(nextCheckedIds, targetItem, shouldChecked, [])
+        onCheck(nextCheckedIds, targetItem, shouldChecked, [])
       }
     },
-    [disabled, cascaded, trySetCheckedIds]
+    [disabled, cascaded, onCheck, checkedIds, semiCheckedIds, allowCheckRef]
   )
 
   return [onNodeCheck, isCheckedId, isSemiCheckedId] as const
@@ -96,23 +77,17 @@ export interface UseCascadeCheckProps<T = any> {
    */
   flattedData?: UseCascadeCheckItem[]
   /**
-   * 非受控默认选中 ids
+   * 选中的 ids（受控）
    */
-  defaultCheckedIds?: React.ReactText[]
-  /**
-   * 选中的 ids
-   */
-  checkedIds?: React.ReactText[]
+  checkedIds: React.ReactText[]
   /**
    * 选择时回调
    */
-  onCheck?: (
-    checkedInfo: {
-      checkedIds: React.ReactText[]
-      semiCheckedIds: React.ReactText[]
-    },
+  onCheck: (
+    checkedIds: React.ReactText[],
     targetItem: T,
-    shouldChecked: boolean
+    shouldChecked: boolean,
+    semiCheckedIds: React.ReactText[]
   ) => void
   /**
    * 返回 true 允许选中

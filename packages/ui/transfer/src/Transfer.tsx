@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo, useCallback } from 'react'
+import React, { forwardRef, useMemo, useCallback, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Button from '@hi-ui/button'
@@ -61,18 +61,20 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       return 0
     }, [pagination])
 
-    const [
-      sourceCheckedIds,
-      setSourceCheckedIds,
-      onSourceItemCheck,
-      isSourceCheckedIds,
-    ] = useCheck({ disabled, allowCheck })
-    const [
-      targetCheckedIds,
-      setTargetCheckedIds,
-      onTargetItemCheck,
-      isTargetCheckedIds,
-    ] = useCheck({ disabled, allowCheck })
+    const [sourceCheckedIds, setSourceCheckedIds] = useState<React.ReactText[]>([])
+    const [onSourceItemCheck, isSourceCheckedIds] = useCheck({
+      disabled,
+      checkedIds: sourceCheckedIds,
+      onCheck: setSourceCheckedIds,
+      allowCheck,
+    })
+    const [targetCheckedIds, setTargetCheckedIds] = useState<React.ReactText[]>([])
+    const [onTargetItemCheck, isTargetCheckedIds] = useCheck({
+      disabled,
+      checkedIds: targetCheckedIds,
+      onCheck: setTargetCheckedIds,
+      allowCheck,
+    })
 
     const [sourceList, targetList] = useMemo(() => splitData(data, targetIds), [data, targetIds])
 

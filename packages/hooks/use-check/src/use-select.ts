@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import { useLatestRef } from '@hi-ui/use-latest'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { UseCheckItem } from './types'
 
 const NOOP_ID = ''
@@ -10,26 +9,10 @@ const NOOP_ID = ''
  */
 export const useSelect = ({
   disabled = false,
-  defaultSelectedId = NOOP_ID,
-  selectedId: selectedIdProp,
-  onSelect: onSelectProp,
+  selectedId,
+  onSelect,
   allowSelect,
 }: UseSelectProps) => {
-  const onSelectRef = useLatestRef(onSelectProp)
-
-  const proxyOnSelect = useCallback(
-    (id: React.ReactText, item?: UseCheckItem, shouldSelected?: boolean) => {
-      onSelectRef.current?.(id, item, shouldSelected)
-    },
-    [onSelectRef]
-  )
-
-  const [selectedId, setSelectedId] = useUncontrolledState(
-    defaultSelectedId,
-    selectedIdProp,
-    proxyOnSelect
-  )
-
   const allowSelectRef = useLatestRef(allowSelect)
 
   const onItemSelect = useCallback(
@@ -38,15 +21,19 @@ export const useSelect = ({
       if (allowSelectRef.current && allowSelectRef.current(targetItem) === false) return
 
       if (shouldSelected) {
-        setSelectedId(targetItem.id, targetItem, true)
+        onSelect(targetItem.id, targetItem, true)
       } else {
-        setSelectedId(NOOP_ID)
+        onSelect(NOOP_ID)
       }
     },
-    [disabled, allowSelectRef, setSelectedId]
+    [disabled, allowSelectRef, onSelect]
   )
 
-  return [selectedId, onItemSelect] as const
+  const isSelectedId = useCallback((id: React.ReactText) => id !== NOOP_ID && selectedId === id, [
+    selectedId,
+  ])
+
+  return [onItemSelect, isSelectedId] as const
 }
 
 export interface UseSelectProps<T extends UseCheckItem = any> {
@@ -55,17 +42,13 @@ export interface UseSelectProps<T extends UseCheckItem = any> {
    */
   disabled?: boolean
   /**
-   * 非受控默认选中 id
+   * 选中的 id（受控）
    */
-  defaultSelectedId?: React.ReactText
-  /**
-   * 选中的 id
-   */
-  selectedId?: React.ReactText
+  selectedId: React.ReactText
   /**
    * 选择时回调
    */
-  onSelect?: (selectedId: React.ReactText, targetItem: T, shouldSelected?: boolean) => void
+  onSelect: (selectedId: React.ReactText, targetItem?: T, shouldSelected?: boolean) => void
   /**
    * 返回 true 允许选中
    */

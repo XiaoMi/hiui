@@ -1,32 +1,12 @@
 import React, { useCallback } from 'react'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
+import { useLatestRef } from '@hi-ui/use-latest'
 import { UseCheckItem } from './types'
-
-const NOOP_ARRAY = [] as []
 
 /**
  * 用于多项选择的 hook
  */
-export const useCheck = ({
-  disabled = false,
-  defaultCheckedIds = NOOP_ARRAY,
-  checkedIds: checkedIdsProp,
-  onCheck,
-  allowCheck,
-}: UseCheckProps) => {
-  const onCheckLatest = useLatestCallback(onCheck)
-
-  const [checkedIds, trySetCheckedIds] = useUncontrolledState(
-    defaultCheckedIds,
-    checkedIdsProp,
-    onCheckLatest
-  )
-
-  const isCheckedId = (id: React.ReactText) => checkedIds.indexOf(id) !== -1
-
+export const useCheck = ({ disabled = false, checkedIds, onCheck, allowCheck }: UseCheckProps) => {
   const allowCheckRef = useLatestRef(allowCheck)
-  // const checkedIdsRef = useLatestRef(checkedIds)
 
   const onNodeCheck = useCallback(
     (targetItem: UseCheckItem, shouldChecked: boolean) => {
@@ -35,12 +15,16 @@ export const useCheck = ({
 
       const nextCheckedIds = checkDefault(checkedIds, targetItem, shouldChecked)
 
-      trySetCheckedIds(nextCheckedIds, targetItem, shouldChecked)
+      onCheck(nextCheckedIds, targetItem, shouldChecked)
     },
-    [disabled, trySetCheckedIds, allowCheckRef, checkedIds]
+    [disabled, onCheck, allowCheckRef, checkedIds]
   )
 
-  return [checkedIds, trySetCheckedIds, onNodeCheck, isCheckedId] as const
+  const isCheckedId = useCallback((id: React.ReactText) => checkedIds.indexOf(id) !== -1, [
+    checkedIds,
+  ])
+
+  return [onNodeCheck, isCheckedId] as const
 }
 
 export interface UseCheckProps {
@@ -49,21 +33,13 @@ export interface UseCheckProps {
    */
   disabled?: boolean
   /**
-   * 非受控默认选中 ids
+   * 选中的 ids（受控）
    */
-  defaultCheckedIds?: React.ReactText[]
-  /**
-   * 选中的 ids
-   */
-  checkedIds?: React.ReactText[]
+  checkedIds: React.ReactText[]
   /**
    * 选择时回调
    */
-  onCheck?: (
-    checkedIds: React.ReactText[],
-    targetItem: UseCheckItem,
-    shouldChecked: boolean
-  ) => void
+  onCheck: (checkedIds: React.ReactText[], targetItem: UseCheckItem, shouldChecked: boolean) => void
   /**
    * 返回 true 允许选中
    */
