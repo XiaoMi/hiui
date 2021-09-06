@@ -13,27 +13,27 @@ $prefix: '#{$component-prefix}-cascader' !default;
 .#{$prefix}-panel {
   white-space: nowrap;
   box-sizing: border-box;
-  padding-top: 10px;
+  padding-top: 8px;
+}
 
-  &-search {
-    box-sizing: border-box;
-    // padding: 10px;
-    padding: 0 10px 10px;
-    position: relative;
+.#{$prefix}-search {
+  box-sizing: border-box;
+  // padding: 10px;
+  padding: 0 10px 10px;
+  position: relative;
 
-    .#{$component-prefix}-input__prefix {
-      font-size: 16px;
-      padding-left: 0;
-    }
+  .#{$component-prefix}-input__prefix {
+    font-size: 16px;
+    padding-left: 0;
+  }
 
-    &__empty {
-      display: inline-block;
-      margin-top: 20px;
-      font-size: 14px;
-      font-weight: 400;
-      color: #999;
-      line-height: 20px;
-    }
+  &__empty {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #999;
+    line-height: 20px;
   }
 }
 
@@ -90,13 +90,6 @@ $prefix: '#{$component-prefix}-cascader' !default;
 
     &:hover {
       background-color: use-color('primary-20');
-
-      // checkbox 联动颜色
-      .#{$component-prefix}-checkbox__icon {
-        .#{$prefix}-menus--selectchange & {
-          border-color: use-color('primary');
-        }
-      }
     }
 
     &--selected {

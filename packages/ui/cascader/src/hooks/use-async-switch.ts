@@ -6,39 +6,39 @@ import { addChildrenById } from '@hi-ui/tree-utils'
 
 export const useAsyncSwitch = (
   setCascaderData: React.Dispatch<React.SetStateAction<CascaderItem[]>>,
-  onExpand?: (selectedOption: CascaderItemEventData) => void,
+  onExpand?: (selectedOption: CascaderItemEventData, onlyExpand: boolean) => void,
   onLoadChildren?: (item: CascaderItemEventData) => Promise<CascaderItem[] | void> | void
 ) => {
-  const [loadingIds, addLoadingIds, removeLoadingIds] = useList<React.ReactText>()
+  const onLoadChildrenLatest = useLatestCallback(onLoadChildren)
 
   // 加载节点
   const loadChildren = useCallback(
     async (node: CascaderItemEventData) => {
-      if (!onLoadChildren) return
-
-      const childrenNodes = await onLoadChildren(node)
+      const childrenNodes = await onLoadChildrenLatest(node)
 
       if (Array.isArray(childrenNodes)) {
         setCascaderData((prev) => {
+          // TODO: cloneDeep 转 按层浅拷贝
           const nextTreeData = cloneDeep(prev)
           addChildrenById(nextTreeData, node.id, childrenNodes)
           return nextTreeData
         })
       }
     },
-    [onLoadChildren, setCascaderData]
+    [onLoadChildrenLatest, setCascaderData]
   )
 
+  const [loadingIds, addLoadingIds, removeLoadingIds] = useList<React.ReactText>()
   const onExpandLatest = useLatestCallback(onExpand)
 
   const onNodeSwitch = useCallback(
-    async (node: CascaderItemEventData) => {
-      console.log(node)
+    async (node: CascaderItemEventData, onlyExpand = false) => {
+      // 直接触发选中该节点
+      onExpandLatest(node, onlyExpand)
 
       const { id, children, isLeaf } = node
 
       if (children) {
-        onExpandLatest(node)
         return
       }
 
@@ -50,16 +50,10 @@ export const useAsyncSwitch = (
         addLoadingIds(id)
         try {
           await loadChildren(node)
-          // Using latest  onExpand function at nextTick
-          window.requestAnimationFrame(() => {
-            onExpandLatest(node)
-          })
           removeLoadingIds(id)
         } catch {
           removeLoadingIds(id)
         }
-      } else {
-        onExpandLatest(node)
       }
     },
     [loadChildren, onLoadChildren, onExpandLatest, addLoadingIds, removeLoadingIds]

@@ -1,86 +1,65 @@
+import { flattenTree, getNodeAncestorsWithMe } from '@hi-ui/tree-utils'
 import React from 'react'
 import {
   CascaderItemRequiredProps,
   CascaderItemEventData,
   CascaderItem,
   FlattedCascaderItem,
-  FlattedCascaderItemWithChildren,
-  NodeRoot,
 } from '../types'
 
 /**
  * 扁平化树数据结构，基于前序遍历
- *
- * @param treeData
- * @returns
  */
 export const flattenTreeData = (treeData: CascaderItem[]) => {
-  const flattedTreeData: FlattedCascaderItem[] = []
-
-  const dig = (node: CascaderItem, depth: number, parent: FlattedCascaderItemWithChildren) => {
-    const { id, title, children, isLeaf = false, disabled = false } = node
-
-    const flattedNode: FlattedCascaderItem = {
-      id,
-      title,
-      depth,
-      parent,
-      raw: node,
-      isLeaf,
-      disabled,
-    }
-
-    flattedTreeData.push(flattedNode)
-
-    if (children) {
-      const childDepth = depth + 1
-
-      flattedNode.children = children.map((child) => {
-        return dig(child, childDepth, flattedNode as FlattedCascaderItemWithChildren)
-      })
-    }
-
+  return flattenTree<CascaderItem>(treeData, (node) => {
+    const flattedNode: FlattedCascaderItem = node as FlattedCascaderItem
+    const { title, isLeaf = false, disabled = false } = node.raw
+    flattedNode.title = title
+    flattedNode.isLeaf = isLeaf
+    flattedNode.disabled = disabled
     return flattedNode
-  }
-
-  // @ts-ignore
-  const treeRoot: NodeRoot<FlattedCascaderItem> = getTreeRoot()
-  // @ts-ignore
-  treeRoot.children = treeData.map((node) => dig(node, 0, treeRoot))
-
-  return flattedTreeData
-}
-
-const getTreeRoot = () => {
-  return {
-    depth: -1,
-  }
+  }) as FlattedCascaderItem[]
 }
 
 /**
- * 获取祖先节点，包括自己
- * @param node
- * @returns
+ * 获取自顶向下的祖先节点，包括自己
  */
-export const getNodeAncestors = (node: FlattedCascaderItem) => {
-  const ancestors: FlattedCascaderItem[] = []
+export const getTopDownAncestors = (node: FlattedCascaderItem) => {
+  console.log(getNodeAncestorsWithMe(node).reverse())
 
-  while (node.parent) {
-    ancestors.push(node)
-    node = node.parent
-  }
-  return ancestors
+  return getNodeAncestorsWithMe(node).reverse()
 }
 
-export const getActiveMenus = (data: FlattedCascaderItem[], selectedIds?: React.ReactText) => {
-  if (data.length === 0) return []
+/**
+ * 获取选中节点的节点路径，包含选中节点
+ */
+export const getActiveNodePaths = (
+  flattedData: FlattedCascaderItem[],
+  selectedId?: React.ReactText
+) => {
+  if (flattedData.length === 0) return []
 
-  const root = data[0].parent
+  const selectedOption = flattedData.find(({ id }) => selectedId === id)
+  if (!selectedOption) return []
+
+  return getTopDownAncestors(selectedOption)
+}
+
+/**
+ * 获取自顶向下的兄弟节点列表菜单
+ */
+export const getActiveMenus = (
+  flattedData: FlattedCascaderItem[],
+  selectedId?: React.ReactText
+) => {
+  if (flattedData.length === 0) return []
+
+  const root = flattedData[0].parent
   let menu: FlattedCascaderItem[][] = [root!.children]
 
-  if (typeof selectedIds === 'undefined') return menu
+  if (typeof selectedId === 'undefined') return menu
 
-  let selectedOption = data.find(({ id }) => selectedIds === id)
+  let selectedOption = flattedData.find(({ id }) => selectedId === id)
   if (!selectedOption) return menu
 
   if (selectedOption.children) {
@@ -91,53 +70,22 @@ export const getActiveMenus = (data: FlattedCascaderItem[], selectedIds?: React.
 
   while (selectedOption.parent) {
     menu.push(selectedOption.parent.children)
-    selectedOption = selectedOption?.parent
+    selectedOption = selectedOption.parent
   }
 
   return menu.reverse()
 }
 
-export const getFlattedMenus = (data: FlattedCascaderItem[]) => {
-  return [data]
+export const getFlattedMenus = (
+  data: FlattedCascaderItem[],
+  filter: (option: FlattedCascaderItem) => boolean
+) => {
+  return [data.filter((item) => !filter(item))]
 }
 
-export const getActiveMenuList = (data: FlattedCascaderItem[], selectedIds?: React.ReactText) => {
-  if (data.length === 0) return []
-
-  const selectedOption = data.find(({ id }) => selectedIds === id)
-  if (!selectedOption) return []
-
-  return getNodeAncestors(selectedOption)
-    .map((item) => item)
-    .reverse()
-}
-
-export const debounce = <T extends (...args: any[]) => void>(func?: T, delay = 150) => {
-  let timer = 0
-
-  const cancel = () => {
-    if (timer) {
-      window.clearTimeout(timer)
-      timer = 0
-    }
-  }
-
-  const debounceFn = (...args: any[]) => {
-    if (timer) {
-      cancel()
-    }
-
-    if (func) {
-      timer = window.setTimeout(() => {
-        func.apply(null, args)
-        timer = 0
-      }, delay)
-    }
-  }
-
-  debounceFn.cancel = cancel
-
-  return debounceFn as T & { cancel: () => void }
+export const checkCanLoadChildren = (node: FlattedCascaderItem, onLoadChildren?: any) => {
+  const hasChildren = node.children && node.children.length > 0
+  return hasChildren || (onLoadChildren && !node.children && !node.isLeaf)
 }
 
 export function getCascaderItemEventData(

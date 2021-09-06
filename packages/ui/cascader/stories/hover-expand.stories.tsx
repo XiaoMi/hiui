@@ -52,27 +52,17 @@ const data = [
   },
 ]
 
-export const Nowrap = () => {
+export const HoverExpand = () => {
   return (
     <>
-      <h1>Nowrap</h1>
-      <p>注意：内部动态计算会消耗性能，对于高性能的表单场景不建议使用</p>
-      <div className="cascader-nowrap__wrap">
+      <h1>HoverExpand</h1>
+      <div className="cascader-hover-expand__wrap">
         <Cascader
           searchable
           clearable
+          expandTrigger="hover"
           placeholder="请选择品类"
-          defaultValue={[
-            '手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本',
-            '红米',
-            '红米4',
-            '小米电视4C',
-            '小米',
-            '小米3',
-            '小米4',
-            '电视',
-            '小米电视4A',
-          ]}
+          defaultValue="红米"
           data={data}
         ></Cascader>
       </div>

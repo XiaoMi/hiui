@@ -1,4 +1,11 @@
 import React from 'react'
+import {
+  NodeRoot,
+  BaseTreeNodeData,
+  BaseFlattedTreeNodeData,
+  BaseFlattedTreeNodeDataWithParent,
+  BaseFlattedTreeNodeDataWithChildren,
+} from './types'
 
 /**
  * 扁平化树数据结构，基于前序遍历
@@ -256,15 +263,14 @@ export const findNestedChildren = <T extends BaseTreeNodeData>(
 }
 
 /**
- * 获取祖先节点
- * @param node
- * @returns
+ * 基于扁平树结构，获取祖先节点，不包含自身节点
  */
 export const getNodeAncestors = <T extends BaseFlattedTreeNodeDataWithParent>(
   node: T,
-  filter?: (item: any) => boolean | void
+  filter?: (item: any) => boolean | void,
+  initialAncestors: T[] = []
 ) => {
-  const ancestors = [] as T[]
+  const ancestors = initialAncestors
 
   let tNode = node.parent
 
@@ -279,30 +285,12 @@ export const getNodeAncestors = <T extends BaseFlattedTreeNodeDataWithParent>(
   return ancestors
 }
 
-export interface BaseTreeNodeData {
-  id: React.ReactText
-  children?: BaseTreeNodeData[]
-}
-
-export interface BaseFlattedTreeNodeDataWithParent<T = any> {
-  parent?: T
-}
-
-// TODO: ts 类型工具函数 将指定属性转为非可选属性
-export interface BaseFlattedTreeNodeDataWithChildren<T extends BaseFlattedTreeNodeData<any>>
-  extends BaseFlattedTreeNodeData<any> {
-  children: T[]
-}
-
-export interface BaseFlattedTreeNodeData<T extends BaseFlattedTreeNodeData<T, any>, R = any> {
-  id: React.ReactText
-  parent?: BaseFlattedTreeNodeDataWithChildren<T>
-  children?: T[]
-  depth: number
-  raw: R
-}
-
-export interface NodeRoot<T> {
-  depth: -1
-  children: T[]
+/**
+ * 基于扁平树结构，获取祖先节点，包含自身节点
+ */
+export const getNodeAncestorsWithMe = <T extends BaseFlattedTreeNodeDataWithParent>(
+  node: T,
+  filter?: (item: any) => boolean | void
+) => {
+  return getNodeAncestors(node, filter, [node])
 }

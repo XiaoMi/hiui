@@ -78,7 +78,6 @@ export const Basic = () => {
           onChange={(...args) => {
             console.log('onChange', args)
           }}
-          // clearable
         ></Cascader>
       </div>
     </>

@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useCallback } from 'react'
+import React, { forwardRef, useState, useCallback, useEffect } from 'react'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -9,9 +9,11 @@ import Input, { MockInput } from '@hi-ui/input'
 import { Popper, PopperProps } from '@hi-ui/popper'
 import { DownOutlined, SearchOutlined } from '@hi-ui/icons'
 import { defaultLeafIcon, defaultLoadingIcon, defaultSuffixIcon } from './icons'
-import { getCascaderItemEventData, getNodeAncestors } from './utils'
+import { checkCanLoadChildren, getCascaderItemEventData, getTopDownAncestors } from './utils'
 import { CascaderProvider, useCascaderContext } from './context'
 import { CascaderItem, ExpandTrigger, FlattedCascaderItem, CascaderItemEventData } from './types'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import { getNodeAncestorsWithMe } from '@hi-ui/tree-utils'
 
 const _role = 'cascader'
 const _prefix = getPrefixCls(_role)
@@ -30,18 +32,37 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     searchable = true,
     clearable = true,
     displayRender: displayRenderProp,
+    onSelect: onSelectProp,
+    titleRender,
     ...rest
   } = props
 
   const [menuVisible, menuVisibleAction] = useToggle()
   const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
 
+  const onSelectLatest = useLatestCallback(onSelectProp)
+  const onSelect = useCallback(
+    (value: React.ReactText, item: CascaderItemEventData, itemPaths: FlattedCascaderItem[]) => {
+      onSelectLatest(value, item, itemPaths)
+      // 关闭弹窗
+      menuVisibleAction.off()
+    },
+    [menuVisibleAction, onSelectLatest]
+  )
+
   const { rootProps, ...context } = useCascader({
     ...rest,
-    onSelect: menuVisibleAction.off,
+    onSelect,
   })
 
-  const { disabled, value, flattedData, tryChangeValue } = context
+  const { disabled, value, flattedData, tryChangeValue, reset } = context
+
+  useEffect(() => {
+    // 关闭展示时，重置搜索值和展开选项
+    if (!menuVisible) {
+      reset()
+    }
+  }, [menuVisible, reset])
 
   const openMenu = useCallback(() => {
     if (disabled) return
@@ -50,7 +71,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
 
   const displayRender = useCallback(
     (item: FlattedCascaderItem) => {
-      const itemPaths = getNodeAncestors(item).reverse()
+      const itemPaths = getTopDownAncestors(item)
       if (displayRenderProp) {
         return displayRenderProp(item, itemPaths)
       }
@@ -94,7 +115,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
   )
 })
 
-export interface CascaderProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange'> {
+export interface CascaderProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange' | 'onSelect'> {
   /**
    * 设置选择项数据源
    */
@@ -112,6 +133,14 @@ export interface CascaderProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange'> 
    * TODO: 是否有这样的需求：暴露操作的原始数据对象？包括 点击选型、点击清空按钮
    */
   onChange?: (
+    value: React.ReactText,
+    targetOption: CascaderItemEventData,
+    optionPaths: FlattedCascaderItem[]
+  ) => void
+  /**
+   * 选中选项时触发，仅供内部使用
+   */
+  onSelect?: (
     value: React.ReactText,
     targetOption: CascaderItemEventData,
     optionPaths: FlattedCascaderItem[]
@@ -152,7 +181,7 @@ export interface CascaderProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange'> 
     checkedOptions: FlattedCascaderItem[]
   ) => React.ReactNode
   /**
-   * 将 check 子项拍平展示
+   * 将选项拍平展示，不支持 `onLoadChildren` 异步加载交互
    */
   flatted?: boolean
   /**
@@ -190,7 +219,7 @@ export const CascaderSearch = forwardRef<HTMLInputElement | null, CascaderSearch
     return (
       <div ref={ref} className={cx(prefixCls, className)} {...rest}>
         <Input appearance="underline" prefix={<SearchOutlined />} {...getSearchInputProps()} />
-        {isEmpty ? <span className={`${prefixCls}-search__empty`}>{emptyContent}</span> : null}
+        {isEmpty ? <span className={`${prefixCls}__empty`}>{emptyContent}</span> : null}
       </div>
     )
   }
@@ -248,6 +277,7 @@ export const CascaderMenu = ({
     titleRender,
     onLoadChildren,
     getCascaderItemRequiredProps,
+    keyword,
   } = useCascaderContext()
 
   const cls = cx(prefixCls, className)
@@ -283,7 +313,9 @@ export const CascaderMenu = ({
                 }
               }}
             >
-              {flatted ? (
+              {keyword ? (
+                renderHighlightTitle(keyword, eventOption, titleRender)
+              ) : flatted ? (
                 renderFlattedTitle(eventOption, titleRender)
               ) : (
                 <>
@@ -323,8 +355,7 @@ const renderSuffix = (
     )
   }
 
-  const hasChildren = item.children && item.children.length > 0
-  const canLoadChildren = hasChildren || (onLoadChildren && !item.children && !item.isLeaf)
+  const canLoadChildren = checkCanLoadChildren(item, onLoadChildren)
 
   if (canLoadChildren) {
     return (
@@ -351,13 +382,11 @@ const renderFlattedTitle = (
 
   return (
     <span className="title__text title__text--cols">
-      {getNodeAncestors(option)
-        .reverse()
-        .map((item) => (
-          <span key={item.id} className="title__text--col">
-            {item.title}
-          </span>
-        ))}
+      {getTopDownAncestors(option).map((item) => (
+        <span key={item.id} className="title__text--col">
+          {item.title}
+        </span>
+      ))}
     </span>
   )
 }
@@ -371,4 +400,56 @@ const renderDefaultTitle = (
   if (title !== true) return title
 
   return <span className="title__text">{option.title}</span>
+}
+
+const renderHighlightTitle = (
+  keyword: string,
+  option: CascaderItemEventData,
+  titleRender?: (item: CascaderItemEventData, flatted: boolean) => React.ReactNode
+) => {
+  // 如果 titleRender 返回 `true`，则使用默认 title
+  const title = titleRender ? titleRender(option, true) : true
+  if (title !== true) return title
+
+  if (typeof option.title !== 'string') {
+    console.info('WARNING: The `option.title` should be `string` when searchable is enabled.')
+    return option.title
+  }
+
+  let found = false
+
+  return (
+    <span className={cx(`title__text`, `title__text--cols`)}>
+      {/* 从下至顶展示高亮 title */}
+      {getNodeAncestorsWithMe(option)
+        .map((item) => {
+          const { title, id } = item
+          const raw = (
+            <span className="title__text--col" key={id}>
+              {title}
+            </span>
+          )
+
+          if (typeof title !== 'string') return raw
+          if (found) return raw
+
+          const index = title.indexOf(keyword)
+          if (index === -1) return raw
+
+          found = true
+
+          const beforeStr = title.substr(0, index)
+          const afterStr = title.substr(index + keyword.length)
+
+          return (
+            <span key={id} className="title__text--col">
+              {beforeStr}
+              <span className="title__text--matched">{keyword}</span>
+              {afterStr}
+            </span>
+          )
+        })
+        .reverse()}
+    </span>
+  )
 }

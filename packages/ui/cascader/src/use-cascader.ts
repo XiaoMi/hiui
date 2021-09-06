@@ -1,7 +1,13 @@
-import { useMemo, useCallback } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { FlattedCascaderItem, CascaderItemRequiredProps } from './types'
-import { flattenTreeData, getActiveMenus, getFlattedMenus, getActiveMenuList } from './utils'
+import { FlattedCascaderItem, CascaderItemRequiredProps, CascaderItemEventData } from './types'
+import {
+  flattenTreeData,
+  getActiveMenus,
+  getFlattedMenus,
+  getActiveNodePaths,
+  checkCanLoadChildren,
+} from './utils'
 import { useCache, useSearch, useSelect, useAsyncSwitch } from './hooks'
 
 import { CascaderProps } from './Cascader'
@@ -28,32 +34,35 @@ export const useCascader = ({
   onLoadChildren,
   ...rest
 }: UseCascaderProps) => {
-  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
-
   const [cascaderData, setCascaderData] = useCache(data)
 
   const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
 
+  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
+
+  const proxyTryChangeValue = useCallback(
+    (value: React.ReactText, item: CascaderItemEventData, itemPaths: FlattedCascaderItem[]) => {
+      tryChangeValue(value, item, itemPaths)
+      onSelect?.(value, item, itemPaths)
+    },
+    [tryChangeValue, onSelect]
+  )
+
   // 单击选中某项
-  const [selectedId, onOptionSelect] = useSelect(
+  const [selectedId, onOptionSelect, setSelectedId] = useSelect(
     disabled,
-    tryChangeValue,
+    proxyTryChangeValue,
     changeOnSelect,
-    onLoadChildren,
-    onSelect
+    onLoadChildren
   )
 
   // 选中 id 路径
-  const selectedItems = useMemo(() => getActiveMenuList(flattedData, selectedId), [
-    flattedData,
-    selectedId,
-  ])
+  const selectedIds = useMemo(
+    () => getActiveNodePaths(flattedData, selectedId).map(({ id }) => id),
+    [flattedData, selectedId]
+  )
 
-  const selectedIds = selectedItems.map(({ id }) => id)
-
-  console.log('selectedId', selectedId, selectedItems)
-
-  // 存在异步加载数据的情况，单击选中时需要控制异步加载状态
+  // 存在异步加载数据的情况时，单击选中时需要控制异步加载状态
   const [isLoadingId, onItemExpand] = useAsyncSwitch(
     setCascaderData,
     onOptionSelect,
@@ -62,20 +71,36 @@ export const useCascader = ({
 
   const onItemHover = useCallback(
     (option) => {
-      onItemExpand(option)
+      // hover模式，仅展开节点，不触发 change
+      onItemExpand(option, true)
     },
     [onItemExpand]
   )
 
-  const [inSearch, matchedItems, inputProps, isEmpty] = useSearch(flattedData, upMatch)
+  const isCanLoadChildren = useCallback(
+    (option) => {
+      return checkCanLoadChildren(option, onLoadChildren)
+    },
+    [onLoadChildren]
+  )
+
+  const [inSearch, matchedItems, inputProps, isEmpty, resetSearch] = useSearch(
+    flattedData,
+    upMatch,
+    isCanLoadChildren
+  )
+
+  const menuList = useMemo(() => {
+    if (inSearch) {
+      return [matchedItems]
+    }
+    return flattedProp
+      ? getFlattedMenus(flattedData, isCanLoadChildren)
+      : getActiveMenus(flattedData, selectedId)
+  }, [inSearch, flattedProp, matchedItems, flattedData, selectedId, isCanLoadChildren])
 
   // 搜索的结果列表也采用 flatted 模式进行展示
   const flatted = flattedProp || inSearch
-  const flattedCascaderData = inSearch ? matchedItems : flattedData
-
-  const menuList = useMemo(() => {
-    return flatted ? getFlattedMenus(flattedCascaderData) : getActiveMenus(flattedData, selectedId)
-  }, [flatted, flattedCascaderData, flattedData, selectedId])
 
   const getCascaderItemRequiredProps = useCallback(
     ({ id, depth }: FlattedCascaderItem): CascaderItemRequiredProps => {
@@ -98,10 +123,15 @@ export const useCascader = ({
     [searchPlaceholder, inputProps]
   )
 
+  const reset = useCallback(() => {
+    resetSearch()
+    setSelectedId(value)
+  }, [resetSearch, setSelectedId, value])
+
   return {
     rootProps: rest,
+    reset,
     flattedData,
-    selectedItems,
     value,
     tryChangeValue,
     getCascaderItemRequiredProps,
@@ -111,6 +141,7 @@ export const useCascader = ({
     onItemHover,
     changeOnSelect,
     onLoadChildren,
+    keyword: inputProps.value,
     disabled,
     menuList,
     isEmpty,
