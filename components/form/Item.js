@@ -75,18 +75,19 @@ const FormItem = (props) => {
   childrenRef.current = children
 
   useEffect(() => {
-    const onChangeInfo = eventInfo.current && eventInfo.current.onChange
-    eventInfo.current = null
+    const onChangeInfo = eventInfo.current
 
-    if (!onChangeInfo) return
+    if (onChangeInfo && onChangeInfo.eventName === 'onChange') {
+      const { e, args, componentProps } = onChangeInfo
+      const _children = childrenRef.current
+      const _props = componentProps || (_children && _children.props)
 
-    const { e, args, componentProps } = onChangeInfo
-    const _children = childrenRef.current
-    const _props = componentProps || (_children && _children.props)
-
-    if (_props && _props.onChange) {
-      _props.onChange(e, ...args)
+      if (_props && _props.onChange) {
+        _props.onChange(e, ...args)
+      }
     }
+
+    eventInfo.current = {}
   }, [value])
 
   useEffect(() => {
@@ -284,29 +285,29 @@ const FormItem = (props) => {
       value = args[0] || 0
     }
 
-    if (!eventInfo.current) {
-      eventInfo.current = {}
-    }
-
-    eventInfo.current[eventName] = {
-      eventName,
-      e,
-      args,
-      componentProps,
-      value
-    }
-
     handleField(eventName, value)
 
     if (eventName === 'onChange') {
-      setValue(value)
-    }
+      eventInfo.current = {
+        eventName,
+        e,
+        args,
+        componentProps,
+        value
+      }
 
-    // 处理 onBlur 事件
-    const _children = children || {}
-    const _props = componentProps || _children.props
-    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
+      setValue(value)
+    } else if (eventName === 'onBlur') {
+      // 处理 onBlur 事件
+      const _children = childrenRef.current
+      const _props = componentProps || (_children && _children.props)
+
+      if (_props && _props.onBlur) {
+        _props.onBlur(e, ...args)
+      }
+    }
   }
+
   useEffect(() => {
     return () => {
       _type !== 'list' &&
