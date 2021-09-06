@@ -59,7 +59,7 @@ const FormItem = (props) => {
   // 初始化FormItem的内容
   const [value, setValue] = useState(_propsValue)
   const [error, setError] = useState('')
-  const eventInfo = useRef()
+  const eventInfo = useRef(null)
   const getItemfield = useCallback(() => {
     let _propsField = propsField
     if (_type === 'list' && name) {
@@ -71,12 +71,22 @@ const FormItem = (props) => {
   const [field, setField] = useState(getItemfield())
   const [validating, setValidating] = useState(false)
 
+  const childrenRef = useRef()
+  childrenRef.current = children
+
   useEffect(() => {
-    const { eventName, e, args, componentProps } = eventInfo.current || {}
-    const _children = children || {}
-    const _props = componentProps || _children.props
-    eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
-    eventInfo.current = {}
+    const onChangeInfo = eventInfo.current && eventInfo.current.onChange
+    eventInfo.current = null
+
+    if (!onChangeInfo) return
+
+    const { e, args, componentProps } = onChangeInfo
+    const _children = childrenRef.current
+    const _props = componentProps || (_children && _children.props)
+
+    if (_props && _props.onChange) {
+      _props.onChange(e, ...args)
+    }
   }, [value])
 
   useEffect(() => {
@@ -273,9 +283,25 @@ const FormItem = (props) => {
     if (displayName === 'Counter') {
       value = args[0] || 0
     }
-    eventInfo.current = { eventName, e, args, componentProps, value }
+
+    if (!eventInfo.current) {
+      eventInfo.current = {}
+    }
+
+    eventInfo.current[eventName] = {
+      eventName,
+      e,
+      args,
+      componentProps,
+      value
+    }
+
     handleField(eventName, value)
-    setValue(value)
+
+    if (eventName === 'onChange') {
+      setValue(value)
+    }
+
     // 处理 onBlur 事件
     const _children = children || {}
     const _props = componentProps || _children.props
@@ -385,7 +411,7 @@ const FormItem = (props) => {
         <span className="hi-form-item__span" style={{ width: _labelWidth }} key={field + 'label'} />
       )}
       <div className={'hi-form-item' + '__content'} key={field + '__content'} style={{ width: contentWidth }}>
-        <div className={'hi-form-item' + '__children'} style={{ alignItems: getItemPosition(contentPosition) }}>
+        <div className={'hi-form-item' + '__children'} style={{ alignItems: getitemposition(contentPosition) }}>
           {renderChildren()}
         </div>
         <div
