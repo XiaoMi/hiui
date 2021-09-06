@@ -59,7 +59,7 @@ const FormItem = (props) => {
   // 初始化FormItem的内容
   const [value, setValue] = useState(_propsValue)
   const [error, setError] = useState('')
-  const eventInfo = useRef(null)
+  const eventInfo = useRef()
   const getItemfield = useCallback(() => {
     let _propsField = propsField
     if (_type === 'list' && name) {
