@@ -59,7 +59,7 @@ const FormItem = (props) => {
   // 初始化FormItem的内容
   const [value, setValue] = useState(_propsValue)
   const [error, setError] = useState('')
-  const eventInfo = useRef()
+  const eventInfo = useRef(null)
   const getItemfield = useCallback(() => {
     let _propsField = propsField
     if (_type === 'list' && name) {
@@ -77,7 +77,7 @@ const FormItem = (props) => {
   useEffect(() => {
     const onChangeInfo = eventInfo.current
 
-    if (onChangeInfo && onChangeInfo.eventName === 'onChange') {
+    if (onChangeInfo) {
       const { e, args, componentProps } = onChangeInfo
       const _children = childrenRef.current
       const _props = componentProps || (_children && _children.props)
@@ -87,7 +87,7 @@ const FormItem = (props) => {
       }
     }
 
-    eventInfo.current = {}
+    eventInfo.current = null
   }, [value])
 
   useEffect(() => {
@@ -277,15 +277,13 @@ const FormItem = (props) => {
     const beObject = Object.prototype.toString.call(e) === '[object Object]'
     beObject && Object.prototype.toString.call(e.persist) === '[object Function]' && e.persist()
     const displayName = component && component.type && component.type.displayName
-    let value =
+    let nextValue =
       beObject && e.target && Object.prototype.hasOwnProperty.call(e.target, valuePropName)
         ? e.target[valuePropName]
         : e
     if (displayName === 'Counter') {
-      value = args[0] || 0
+      nextValue = args[0] || 0
     }
-
-    handleField(eventName, value)
 
     if (eventName === 'onChange') {
       eventInfo.current = {
@@ -293,11 +291,14 @@ const FormItem = (props) => {
         e,
         args,
         componentProps,
-        value
+        value: nextValue
       }
 
-      setValue(value)
+      handleField(eventName, nextValue)
+      setValue(nextValue)
     } else if (eventName === 'onBlur') {
+      handleField(eventName, eventInfo.current ? eventInfo.current.value : value)
+
       // 处理 onBlur 事件
       const _children = childrenRef.current
       const _props = componentProps || (_children && _children.props)
@@ -317,6 +318,7 @@ const FormItem = (props) => {
         })
     }
   }, [])
+
   // jsx渲染方式
   const renderChildren = () => {
     let _value = value
