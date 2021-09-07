@@ -59,7 +59,7 @@ const FormItem = (props) => {
   // 初始化FormItem的内容
   const [value, setValue] = useState(_propsValue)
   const [error, setError] = useState('')
-  const eventInfo = useRef()
+  const eventInfo = useRef(null)
   const getItemfield = useCallback(() => {
     let _propsField = propsField
     if (_type === 'list' && name) {
@@ -71,12 +71,23 @@ const FormItem = (props) => {
   const [field, setField] = useState(getItemfield())
   const [validating, setValidating] = useState(false)
 
+  const childrenRef = useRef()
+  childrenRef.current = children
+
   useEffect(() => {
-    const { eventName, e, args, componentProps } = eventInfo.current || {}
-    const _children = children || {}
-    const _props = componentProps || _children.props
-    eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
-    eventInfo.current = {}
+    const onChangeInfo = eventInfo.current
+
+    if (onChangeInfo) {
+      const { e, args, componentProps } = onChangeInfo
+      const _children = childrenRef.current
+      const _props = componentProps || (_children && _children.props)
+
+      if (_props && _props.onChange) {
+        _props.onChange(e, ...args)
+      }
+    }
+
+    eventInfo.current = null
   }, [value])
 
   useEffect(() => {
@@ -266,21 +277,38 @@ const FormItem = (props) => {
     const beObject = Object.prototype.toString.call(e) === '[object Object]'
     beObject && Object.prototype.toString.call(e.persist) === '[object Function]' && e.persist()
     const displayName = component && component.type && component.type.displayName
-    let value =
+    let nextValue =
       beObject && e.target && Object.prototype.hasOwnProperty.call(e.target, valuePropName)
         ? e.target[valuePropName]
         : e
     if (displayName === 'Counter') {
-      value = args[0] || 0
+      nextValue = args[0] || 0
     }
-    eventInfo.current = { eventName, e, args, componentProps, value }
-    handleField(eventName, value)
-    setValue(value)
-    // 处理 onBlur 事件
-    const _children = children || {}
-    const _props = componentProps || _children.props
-    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
+
+    if (eventName === 'onChange') {
+      eventInfo.current = {
+        eventName,
+        e,
+        args,
+        componentProps,
+        value: nextValue
+      }
+
+      handleField(eventName, nextValue)
+      setValue(nextValue)
+    } else if (eventName === 'onBlur') {
+      handleField(eventName, eventInfo.current ? eventInfo.current.value : value)
+
+      // 处理 onBlur 事件
+      const _children = childrenRef.current
+      const _props = componentProps || (_children && _children.props)
+
+      if (_props && _props.onBlur) {
+        _props.onBlur(e, ...args)
+      }
+    }
   }
+
   useEffect(() => {
     return () => {
       _type !== 'list' &&
@@ -290,6 +318,7 @@ const FormItem = (props) => {
         })
     }
   }, [])
+
   // jsx渲染方式
   const renderChildren = () => {
     let _value = value
