@@ -172,7 +172,12 @@ export const Disabled = () => {
 
       <h1>Disabled Item</h1>
       <div className="cascader-disabled__wrap">
-        <CheckCascader placeholder="请选择品类" searchPlaceholder="请输入搜索内容" data={data} />
+        <CheckCascader
+          placeholder="请选择品类"
+          searchPlaceholder="请输入搜索内容"
+          data={data}
+          defaultValue={['0-2']}
+        />
       </div>
     </>
   )

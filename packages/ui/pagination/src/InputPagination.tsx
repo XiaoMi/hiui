@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo } from 'react'
+import React, { forwardRef, useCallback, useEffect, useMemo } from 'react'
 import { getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -42,7 +42,21 @@ export const InputPagination = forwardRef<HTMLDivElement | null, InputPagination
       [current, total, pageSize, trySetCurrent, currentRef]
     )
 
-    const maxPage = useMemo(() => calculatePage(total, pageSize), [total, pageSize])
+    const maxPage = useMemo(() => {
+      const computedPage = calculatePage(total, pageSize)
+      return computedPage > MIN_PAGE ? computedPage : MIN_PAGE
+    }, [total, pageSize])
+
+    useEffect(() => {
+      // 页码修正：在 minPage ~ maxPage 之间
+      if (maxPage < current) {
+        trySetCurrent(maxPage)
+      } else {
+        if (MIN_PAGE > current) {
+          trySetCurrent(MIN_PAGE)
+        }
+      }
+    }, [current, trySetCurrent, maxPage])
 
     const { rootProps, getInputProps, getPlusButtonProps, getMinusButtonProps } = useCounter({
       ...rest,

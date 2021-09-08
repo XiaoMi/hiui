@@ -74,15 +74,37 @@ export const useCounter = ({
   const disabledMinus = disabled || reachMin
   const disabledPlus = disabled || reachMax
 
+  const inputNumericRef = useRef<number>(value)
+
+  useEffect(() => {
+    setInputValue(value)
+  }, [value])
+
+  useEffect(() => {
+    // 如果是数值类型，则立即进行修改原始值，保证输入错误也能显示最接近的正确值
+    if (isNumeric(inputValue)) {
+      inputNumericRef.current = Number(inputValue)
+    }
+  }, [inputValue])
+
+  const getCurrentValue = useCallback(() => {
+    if (typeof inputNumericRef.current !== 'number') {
+      inputNumericRef.current = valueRef.current
+    }
+    return inputNumericRef.current
+  }, [valueRef])
+
   const onMinus = useCallback(() => {
     if (disabledMinus) return
-    proxyTryChangeValue(NP.minus(valueRef.current, step), true)
-  }, [proxyTryChangeValue, disabledMinus, valueRef, step])
+    const currentValue = getCurrentValue()
+    proxyTryChangeValue(NP.minus(currentValue, step), true)
+  }, [proxyTryChangeValue, disabledMinus, step, getCurrentValue])
 
   const onPlus = useCallback(() => {
     if (disabledPlus) return
-    proxyTryChangeValue(NP.plus(valueRef.current, step), true)
-  }, [proxyTryChangeValue, disabledPlus, valueRef, step])
+    const currentValue = getCurrentValue()
+    proxyTryChangeValue(NP.plus(currentValue, step), true)
+  }, [proxyTryChangeValue, disabledPlus, step, getCurrentValue])
 
   const onInputKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -98,8 +120,14 @@ export const useCounter = ({
         e.preventDefault()
         onPlus()
       }
+
+      if (e.keyCode === 13) {
+        e.preventDefault()
+        const currentValue = getCurrentValue()
+        proxyTryChangeValue(currentValue, true)
+      }
     },
-    [onMinus, onPlus]
+    [onMinus, onPlus, proxyTryChangeValue, getCurrentValue]
   )
 
   const [focus, focusAction] = useToggle()
@@ -147,15 +175,6 @@ export const useCounter = ({
     [onPlus, focusAction, focusOnStep]
   )
 
-  const inputNumericRef = useRef<number>(value)
-
-  useEffect(() => {
-    // 如果是数值类型，则立即进行修改原始值，保证输入错误也能显示最接近的正确值
-    if (isNumeric(inputValue)) {
-      inputNumericRef.current = Number(inputValue)
-    }
-  }, [inputValue])
-
   const onInputChange = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
       if (disabled) return
@@ -177,17 +196,13 @@ export const useCounter = ({
 
   const onInputBlur = useCallback(
     (evt) => {
-      // 如果不合法，则设会之前值
-      if (typeof inputNumericRef.current !== 'number') {
-        inputNumericRef.current = valueRef.current
-      }
-
-      proxyTryChangeValue(inputNumericRef.current, true)
+      const currentValue = getCurrentValue()
+      proxyTryChangeValue(currentValue, true)
 
       focusAction.off()
       onBlurLatest(evt)
     },
-    [valueRef, proxyTryChangeValue, onBlurLatest, focusAction]
+    [getCurrentValue, proxyTryChangeValue, onBlurLatest, focusAction]
   )
 
   const cls = cx(

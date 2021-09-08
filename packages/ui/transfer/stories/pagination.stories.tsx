@@ -8,7 +8,7 @@ export const Pagination = () => {
       arr.push({
         id: i,
         title: '选项' + i,
-        disabled: i % 6 === 0,
+        // disabled: i % 6 === 0,
       })
     }
     return arr
@@ -24,12 +24,12 @@ export const Pagination = () => {
         <Transfer
           type="multiple"
           data={data}
-          targetLimit={8}
+          // targetLimit={8}
           targetIds={targetIds}
           onChange={(ids) => setTargetIds(ids)}
           emptyContent={['暂无数据']}
           searchable
-          pagination={{ pageSize: 3 }}
+          pagination={{ pageSize: 10 }}
           draggable
           showCheckAll
         />

@@ -97,31 +97,30 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
                 if (!option) return null
 
                 const title = displayRender ? displayRender(option) : true
-
+                const closeable = !option.disabled
                 return (
                   <span
                     className={`${prefixCls}__tag`}
                     key={option.id}
                     style={{ maxWidth: tagMaxWidth }}
                   >
-                    <span
-                      className={`${prefixCls}__tag-content`}
-                      style={{ maxWidth: `calc(${tagMaxWidth} - 20px)` }}
-                    >
+                    <span className={`${prefixCls}__tag-content`} style={{ maxWidth: tagMaxWidth }}>
                       {title === true ? option.title : title}
                     </span>
-                    <span
-                      className={`${prefixCls}__tag-closed`}
-                      onClick={(evt) => {
-                        if (disabled) return
+                    {closeable ? (
+                      <span
+                        className={`${prefixCls}__tag-closed`}
+                        onClick={(evt) => {
+                          if (disabled) return
 
-                        evt.stopPropagation()
-                        const nextValue = [...value].filter((id) => id !== option.id)
-                        tryChangeValue(nextValue)
-                      }}
-                    >
-                      <CloseOutlined />
-                    </span>
+                          evt.stopPropagation()
+                          const nextValue = [...value].filter((id) => id !== option.id)
+                          tryChangeValue(nextValue)
+                        }}
+                      >
+                        <CloseOutlined />
+                      </span>
+                    ) : null}
                   </span>
                 )
               })}

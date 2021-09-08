@@ -44,29 +44,34 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
   ) => {
     const { searchable, pageSize, showCheckAll } = useTransferContext()
 
+    const [searchValue, setSearchValue] = useState('')
+
     const [cacheData, setCacheData] = useState(data)
+
     useEffect(() => {
-      setCacheData(data)
-    }, [data])
+      const updateDataWithSearch = () => {
+        if (!searchValue) {
+          setCacheData(data)
+          setCheckedIds(checkedIds)
+        } else {
+          const nextData = data.filter((item) => {
+            if (typeof item.title !== 'string') return false
+            return item.title.includes(searchValue)
+          })
 
-    const search = (searchValue: string) => {
-      if (!searchValue) {
-        setCacheData(data)
-        setCheckedIds(checkedIds)
-      } else {
-        const nextData = data.filter((item) => {
-          if (typeof item.title !== 'string') return false
-          return item.title.includes(searchValue)
-        })
-
-        setCacheData(nextData)
+          setCacheData(nextData)
+        }
       }
-    }
+      updateDataWithSearch()
+    }, [data, searchValue, checkedIds, setCheckedIds])
 
-    const handleSearch = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const [current, setCurrent] = useState(1)
+
+    const handleSearch = useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
       const searchValue = evt.target.value
-      search(searchValue)
-    }
+      setCurrent(1)
+      setSearchValue(searchValue)
+    }, [])
 
     const canCheckedItems = useMemo(() => cacheData.filter((item) => !item.disabled), [cacheData])
 
@@ -96,8 +101,6 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
       () => currentPanelHasChecked && canCheckedItems.every((item) => isCheckedIds(item.id)),
       [currentPanelHasChecked, isCheckedIds, canCheckedItems]
     )
-
-    const [current, setCurrent] = useState(1)
 
     const showData = useMemo(() => {
       return pageSize ? cacheData.slice((current - 1) * pageSize, current * pageSize) : cacheData
@@ -138,6 +141,7 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
                 appearance="underline"
                 prefix={<SearchOutlined />}
                 placeholder={placeholder}
+                value={searchValue}
                 onChange={handleSearch}
               />
             </div>
