@@ -145,13 +145,6 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       [setSourceCheckedIds, setTargetCheckedIds, targetIds, targetSortType, tryChangeTargetIds]
     )
 
-    const handleKeydown = useCallback((evt: React.KeyboardEvent) => {
-      if (evt.keyCode === 13) {
-        evt.preventDefault()
-        onItemClick?.()
-      }
-    }, [])
-
     const panelTitles = useMemo(() => {
       if (!title) return []
       if (title.length === 1) return [title[0], title[0]]
