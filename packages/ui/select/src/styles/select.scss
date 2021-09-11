@@ -1,0 +1,105 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-select' !default;
+
+.#{$prefix} {
+  &--open {
+    .#{$component-prefix}-mock-input {
+      border-color: var(--color-primary);
+    }
+  }
+
+  @include component-reset;
+
+  list-style: none;
+  width: auto;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  display: inline-block;
+  min-width: 160px;
+  min-height: 160px;
+  max-height: 260px;
+  overflow: auto;
+  padding-bottom: 10px;
+
+  // 分界线
+  &:not(:last-child) {
+    // border-right: 1px solid #e8e8e8;
+  }
+
+  $this: &;
+
+  &-item {
+    width: 100%;
+    padding: $spacer-1 0;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+  }
+
+  &-option {
+    padding: 0 $spacer-2 + 2px;
+    box-sizing: border-box;
+    min-height: 32px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: space-between;
+
+    &:hover {
+      background-color: use-color('primary-20');
+    }
+
+    &--selected {
+      background-color: use-color('primary-20');
+      font-weight: 700;
+      color: use-color('primary');
+    }
+
+    &--focused {
+      background-color: use-color('primary-10');
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+      color: var(--color-gray-50);
+      font-weight: 400;
+
+      .#{$prefix}-menu-switcher {
+        color: var(--color-gray-50);
+      }
+    }
+  }
+
+  .title__text {
+    flex: 1;
+  }
+}
+
+.#{$prefix}-panel {
+  white-space: nowrap;
+  box-sizing: border-box;
+  padding-top: 8px;
+}
+
+.#{$prefix}-search {
+  box-sizing: border-box;
+  // padding: 10px;
+  padding: 0 10px 10px;
+  position: relative;
+
+  .#{$component-prefix}-input__prefix {
+    font-size: 16px;
+    padding-left: 0;
+  }
+
+  &__empty {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #999;
+    line-height: 20px;
+  }
+}
