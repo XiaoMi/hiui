@@ -89,6 +89,11 @@ export interface CounterProps {
    * 改变值时的回调
    */
   onChange?: (value: number) => void
+  /**
+   * 开启滑轮改值
+   */
+  changeOnWheel?: boolean
+  onWheel?: (evt: React.WheelEvent) => void
   onFocus?: (evt: React.FocusEvent<HTMLDivElement>) => void
   onBlur?: (evt: React.FocusEvent<HTMLDivElement>) => void
 }

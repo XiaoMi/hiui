@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import NP from 'number-precision'
+import { plus, minus } from 'number-precision'
 import { cx } from '@hi-ui/classname'
 import { isBrowser, __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -28,6 +28,8 @@ export const useCounter = ({
   focusOnStep = true,
   onFocus,
   onBlur,
+  changeOnWheel = false,
+  onWheel,
   ...rest
 }: UseCounterProps) => {
   const min = minProp ?? Number.MIN_SAFE_INTEGER
@@ -97,13 +99,13 @@ export const useCounter = ({
   const onMinus = useCallback(() => {
     if (disabledMinus) return
     const currentValue = getCurrentValue()
-    proxyTryChangeValue(NP.minus(currentValue, step), true)
+    proxyTryChangeValue(minus(currentValue, step), true)
   }, [proxyTryChangeValue, disabledMinus, step, getCurrentValue])
 
   const onPlus = useCallback(() => {
     if (disabledPlus) return
     const currentValue = getCurrentValue()
-    proxyTryChangeValue(NP.plus(currentValue, step), true)
+    proxyTryChangeValue(plus(currentValue, step), true)
   }, [proxyTryChangeValue, disabledPlus, step, getCurrentValue])
 
   const onInputKeyDown = useCallback(
@@ -205,6 +207,24 @@ export const useCounter = ({
     [getCurrentValue, proxyTryChangeValue, onBlurLatest, focusAction]
   )
 
+  const onWheeLatest = useLatestCallback(onWheel)
+  const onInputWheel = useCallback(
+    (evt: React.WheelEvent<HTMLInputElement>) => {
+      if (!disabled && changeOnWheel) {
+        const nativeEvent = evt.nativeEvent as any
+        const delta: number = nativeEvent.wheelDelta || -nativeEvent.deltaY || -nativeEvent.detail
+
+        if (delta > 0) {
+          onMinus()
+        } else if (delta < 0) {
+          onPlus()
+        }
+      }
+      onWheeLatest(evt)
+    },
+    [onWheeLatest, disabled, onMinus, onPlus, changeOnWheel]
+  )
+
   const cls = cx(
     prefixCls,
     className,
@@ -235,6 +255,7 @@ export const useCounter = ({
       onFocus: onInputFocus,
       onBlur: onInputBlur,
       onKeyDown: onInputKeyDown,
+      onWheel: onInputWheel,
     }
   }, [
     prefixCls,
@@ -249,6 +270,7 @@ export const useCounter = ({
     onInputBlur,
     onInputKeyDown,
     onInputFocus,
+    onInputWheel,
   ])
 
   const getMinusButtonProps = useCallback(() => {
