@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useMemo } from 'react'
 
 const parsePlaceholder = ({ type, placeholder: _placeholder, showTime, localeDatas }) => {
   const typePlaceholder = localeDatas.datePicker.placeholders[type]
@@ -12,21 +12,17 @@ const parsePlaceholder = ({ type, placeholder: _placeholder, showTime, localeDat
   if (_placeholder instanceof Array) {
     leftPlaceholder = _placeholder[0]
     rightPlaceholder = _placeholder[1] || _placeholder[0]
-  } else if (typeof placeholder === 'string') {
+  } else if (typeof _placeholder !== 'undefined') {
     leftPlaceholder = _placeholder
     rightPlaceholder = _placeholder
   }
   return [leftPlaceholder, rightPlaceholder]
 }
 const usePlaceholder = (args) => {
-  const { type } = args
-  const [placeholders, setPlaceholders] = useState([])
+  const { type, showTime, placeholder, localeDatas } = args
 
-  useEffect(() => {
-    setPlaceholders(parsePlaceholder(args))
-  }, [type])
-
-  return [placeholders]
+  const placeholders = useMemo(() => parsePlaceholder(args), [type, showTime, placeholder, localeDatas])
+  return placeholders
 }
 
 export default usePlaceholder
