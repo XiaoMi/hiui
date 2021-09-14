@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, forwardRef } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, forwardRef } from 'react'
 import _ from 'lodash'
 import * as HIUI from '../'
 import Provider from '../context'
@@ -48,6 +48,8 @@ const InternalSchemaForm = (props) => {
     setSchema(schemaProps)
   }, [schemaProps])
 
+  const componentUUID = useMemo(() => parseInt((Math.random() * 9 + 1) * 100000), [])
+
   const renderSchemaFormItem = useCallback(() => {
     if (Array.isArray(schema)) {
       return schema.map((schemaItem, index) => {
@@ -59,17 +61,19 @@ const InternalSchemaForm = (props) => {
         } else {
           child = component
         }
-        const uuid = parseInt((Math.random() * 9 + 1) * 100000)
         return React.createElement(FormItem, {
           ..._.omit(schemaItem, 'component', 'componentProps'),
-          field: schemaItem.field + '&&' + uuid,
+          field: schemaItem.field + '&&' + componentUUID,
           realField: schemaItem.field,
-          key: uuid,
+          key: componentUUID + schemaItem.field,
           children: child
         })
       })
     }
-  }, [schema])
+  }, [schema, componentUUID])
+
+  const schemaFormItems = useMemo(() => renderSchemaFormItem(), [renderSchemaFormItem])
+
   return (
     <div className={`${prefixCls}`}>
       <FormComponent
@@ -78,7 +82,7 @@ const InternalSchemaForm = (props) => {
         ref={innerRef}
         _type="SchemaForm"
       >
-        {renderSchemaFormItem()}
+        {schemaFormItems}
         {childrenProps}
         {(submit || reset) && (
           <FormItem>
