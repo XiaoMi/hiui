@@ -8,6 +8,7 @@ import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useTagInput } from './hooks'
 import { flattenTreeData } from './utils'
 import { CheckCascaderItem, FlattedCheckCascaderItem } from './types'
+import { useOutsideClick } from '@hi-ui/use-outside-click'
 
 const _role = 'tag-input'
 const _prefix = getPrefixCls(_role)
@@ -32,6 +33,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
       disabled = false,
       displayRender,
       suffix,
+      onClick,
       ...rest
     },
     ref
@@ -48,7 +50,6 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
     const tagSelector = `.${prefixCls}__tag`
     const tagInputRef = useRef<HTMLDivElement>(null)
     const [tagMaxWidth, showTagCount] = useTagInput(true, tagSelector, showData, tagInputRef)
-
     const handleClear = useCallback(
       (evt) => {
         if (disabled) return
@@ -68,11 +69,19 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
     const showClearableIcon = clearable && value.length > 0 && !disabled
 
+    const [expanded, setExpanded] = useState(false)
+
+    const handleExpand = useCallback((evt: React.MouseEvent) => {
+      evt.stopPropagation()
+      setExpanded(true)
+    }, [])
+
+    useOutsideClick(tagInputRef, () => setExpanded(false))
+
     const cls = cx(
       prefixCls,
       className,
-      disabled && 'disabled',
-      wrap ? `${prefixCls}--wrap` : `${prefixCls}--nowrap`
+      expanded ? `${prefixCls}--expanded` : wrap ? `${prefixCls}--wrap` : `${prefixCls}--nowrap`
     )
 
     return (
@@ -88,71 +97,126 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
         }}
         {...rest}
       >
-        {value.length !== 0 ? (
-          <span className={`${prefixCls}__value`}>
-            <span className={cx(`${prefixCls}__tags`, wrap && `${prefixCls}__tags--all`)}>
-              {times(showTagCount, (index) => {
-                const option = showData[index]
+        <div className={cx(`${prefixCls}__container`, disabled && 'disabled')} onClick={onClick}>
+          {value.length !== 0 ? (
+            <span className={`${prefixCls}__value`}>
+              <span className={cx(`${prefixCls}__tags`, wrap && `${prefixCls}__tags--all`)}>
+                {times(showTagCount, (index) => {
+                  const option = showData[index]
 
-                if (!option) return null
+                  if (!option) return null
 
-                const title = displayRender ? displayRender(option) : true
-                const closeable = !option.disabled
-                return (
-                  <span
-                    className={`${prefixCls}__tag`}
-                    key={option.id}
-                    style={{ maxWidth: tagMaxWidth }}
-                  >
-                    <span className={`${prefixCls}__tag-content`} style={{ maxWidth: tagMaxWidth }}>
-                      {title === true ? option.title : title}
-                    </span>
-                    {closeable ? (
+                  const title = displayRender ? displayRender(option) : true
+                  const closeable = !option.disabled
+                  return (
+                    <span className={`${prefixCls}__tag`} key={option.id}>
                       <span
-                        className={`${prefixCls}__tag-closed`}
-                        onClick={(evt) => {
-                          if (disabled) return
-
-                          evt.stopPropagation()
-                          const nextValue = [...value].filter((id) => id !== option.id)
-                          tryChangeValue(nextValue)
-                        }}
+                        className={`${prefixCls}__tag-content`}
+                        style={{ maxWidth: tagMaxWidth }}
                       >
-                        <CloseOutlined />
+                        {title === true ? option.title : title}
                       </span>
-                    ) : null}
-                  </span>
-                )
-              })}
-            </span>
-            {/* {leftCount > 0 ? (
-              <span className={cx(`${prefixCls}__tag--left`)}>{`+${leftCount}`}</span>
-            ) : null} */}
-          </span>
-        ) : (
-          <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
-        )}
-        {suffix || showClearableIcon || (!wrap && showTagCount > 0) ? (
-          <span className={`${prefixCls}__suffix`}>
-            {!wrap && showTagCount > 0 ? (
-              <span className={cx(`${prefixCls}__tag--total`)}>{`${
-                showTagCount > 99 ? '+99' : showTagCount
-              }`}</span>
-            ) : null}
+                      {closeable ? (
+                        <span
+                          className={`${prefixCls}__tag-closed`}
+                          onClick={(evt) => {
+                            if (disabled) return
 
-            {showClearableIcon && hover ? (
-              <span
-                className={`${prefixCls}__clear`}
-                role="button"
-                tabIndex={-1}
-                onClick={handleClear}
-              >
-                <CloseCircleFilled />
+                            evt.stopPropagation()
+                            const nextValue = [...value].filter((id) => id !== option.id)
+                            tryChangeValue(nextValue)
+                          }}
+                        >
+                          <CloseOutlined />
+                        </span>
+                      ) : null}
+                    </span>
+                  )
+                })}
               </span>
-            ) : (
-              suffix
-            )}
-          </span>
+            </span>
+          ) : (
+            <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
+          )}
+          {suffix || showClearableIcon || (!wrap && showTagCount > 0) ? (
+            <span className={`${prefixCls}__suffix`}>
+              {!wrap && showTagCount > 0 ? (
+                <span className={cx(`${prefixCls}__tag--total`)} onClick={handleExpand}>{`${
+                  showTagCount > 99 ? '+99' : showTagCount
+                }`}</span>
+              ) : null}
+
+              {showClearableIcon && hover ? (
+                <span
+                  className={`${prefixCls}__clear`}
+                  role="button"
+                  tabIndex={-1}
+                  onClick={handleClear}
+                >
+                  <CloseCircleFilled />
+                </span>
+              ) : (
+                suffix
+              )}
+            </span>
+          ) : null}
+        </div>
+
+        {value.length !== 0 && expanded ? (
+          <div className={`${prefixCls}__container__expand`}>
+            <span className={cx(`${prefixCls}__value`)}>
+              <span className={cx(`${prefixCls}__tags`, `${prefixCls}__tags--all`)}>
+                {times(showTagCount, (index) => {
+                  const option = showData[index]
+
+                  if (!option) return null
+
+                  const title = displayRender ? displayRender(option) : true
+                  const closeable = !option.disabled
+                  return (
+                    <span className={`${prefixCls}__tag`} key={option.id}>
+                      <span
+                        className={`${prefixCls}__tag-content`}
+                        style={{ maxWidth: tagMaxWidth }}
+                      >
+                        {title === true ? option.title : title}
+                      </span>
+                      {closeable ? (
+                        <span
+                          className={`${prefixCls}__tag-closed`}
+                          onClick={(evt) => {
+                            if (disabled) return
+
+                            evt.stopPropagation()
+                            const nextValue = [...value].filter((id) => id !== option.id)
+                            tryChangeValue(nextValue)
+                          }}
+                        >
+                          <CloseOutlined />
+                        </span>
+                      ) : null}
+                    </span>
+                  )
+                })}
+              </span>
+              {suffix || showClearableIcon ? (
+                <span className={`${prefixCls}__suffix`}>
+                  {showClearableIcon ? (
+                    <span
+                      className={`${prefixCls}__clear`}
+                      role="button"
+                      tabIndex={-1}
+                      onClick={handleClear}
+                    >
+                      <CloseCircleFilled />
+                    </span>
+                  ) : (
+                    suffix
+                  )}
+                </span>
+              ) : null}
+            </span>
+          </div>
         ) : null}
       </div>
     )

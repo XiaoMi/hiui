@@ -58,12 +58,11 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     const [menuVisible, menuVisibleAction] = useToggle()
 
     const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
-    const cascaderRef = useRef<HTMLDivElement | null>(null)
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
     return (
-      <div ref={useMergeRefs(ref, cascaderRef)} role={role} className={cls} {...rest}>
+      <div ref={ref} role={role} className={cls} {...rest}>
         <TagInput
           ref={setTargetElRef}
           data={data}
@@ -75,12 +74,11 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
           displayRender={displayRender}
           wrap={wrap}
           suffix={<DownOutlined className={`${prefixCls}__suffix`} />}
-          onClick={(evt) => {
+          onClick={() => {
             if (disabled) return
             menuVisibleAction.on()
           }}
         />
-
         <Popper
           attachEl={targetElRef}
           visible={menuVisible}
