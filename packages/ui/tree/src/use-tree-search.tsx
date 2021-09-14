@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useCallback, forwardRef } from 'react'
 import { __DEV__ } from '@hi-ui/env'
 import Input from '@hi-ui/input'
-import { useDeepEqualDeps as useDeep } from '@hi-ui/use-deep-equal-deps'
 import { TreeNodeData, FlattedTreeNodeData, TreeNodeEventData } from './types'
 import { useExpandProps } from './hooks'
 import { cloneTree } from '@hi-ui/tree-utils'
@@ -64,7 +63,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     titleRender,
     ...nativeTreeProps
   } = props
-  const flattedData = useMemo(() => flattenTreeData(data), [useDeep(data)])
+  const flattedData = useMemo(() => flattenTreeData(data), [data])
 
   // 拦截 expand：用于搜索时控制将搜到的结果高亮，并且自动展开节点
   // 但是对外仍然暴露 expand 相关 props 原有的功能

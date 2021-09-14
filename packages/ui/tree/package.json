@@ -51,7 +51,6 @@
     "@hi-ui/input": "^4.0.0-alpha.10",
     "@hi-ui/times": "^4.0.0-alpha.2",
     "@hi-ui/tree-utils": "^4.0.0-alpha.2",
-    "@hi-ui/use-deep-equal-deps": "^4.0.0-alpha.2",
     "@hi-ui/use-latest": "^4.0.0-alpha.2",
     "@hi-ui/use-merge-refs": "^4.0.0-alpha.2",
     "@hi-ui/use-outside-click": "^4.0.0-alpha.4",

@@ -13,7 +13,6 @@ import {
 import { useEdit, useCache, useExpandProps } from './hooks'
 import { flattenTreeData } from './utils'
 import Input from '@hi-ui/input'
-import { useDeepEqualDeps as useDeep } from '@hi-ui/use-deep-equal-deps'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useToggle, UseToggleAction } from '@hi-ui/use-toggle'
@@ -76,7 +75,7 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
     ...nativeTreeProps
   } = props
   const [treeData, setTreeData] = useCache(data)
-  const flattedData = useMemo(() => flattenTreeData(treeData), [useDeep(treeData)])
+  const flattedData = useMemo(() => flattenTreeData(treeData), [treeData])
 
   // 拦截 expand：用于添加子节点时自动展开当前节点
   // 但是对外仍然暴露 expand 及其相关 props 原有的功能
