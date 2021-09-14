@@ -171,7 +171,6 @@ const code = [
                 b: 'b-1-1',
                 c: 'c-1-1',
                 d: 'd-1-1',
-                isLeaf: true,
                 key: row.key + '1-1'
               }
               ])

@@ -45,9 +45,9 @@ const FormItem = (props) => {
     sort,
     uuid,
     column,
-    row
+    row,
+    realField
   } = props
-
   const {
     showColon: shouldFormShowColon,
     initialValues = {},
@@ -59,7 +59,7 @@ const FormItem = (props) => {
   // 初始化FormItem的内容
   const [value, setValue] = useState(_propsValue)
   const [error, setError] = useState('')
-  const eventInfo = useRef()
+  const eventInfo = useRef(null)
   const getItemfield = useCallback(() => {
     let _propsField = propsField
     if (_type === 'list' && name) {
@@ -71,13 +71,23 @@ const FormItem = (props) => {
   const [field, setField] = useState(getItemfield())
   const [validating, setValidating] = useState(false)
 
+  const childrenRef = useRef()
+  childrenRef.current = children
+
   useEffect(() => {
-    const { eventName, e, args, componentProps } = eventInfo.current || {}
-    const _children = children || {}
-    const _props = componentProps || _children.props
-    eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
-    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
-    eventInfo.current = {}
+    const onChangeInfo = eventInfo.current
+
+    if (onChangeInfo) {
+      const { e, args, componentProps } = onChangeInfo
+      const _children = childrenRef.current
+      const _props = componentProps || (_children && _children.props)
+
+      if (_props && _props.onChange) {
+        _props.onChange(e, ...args)
+      }
+    }
+
+    eventInfo.current = null
   }, [value])
 
   useEffect(() => {
@@ -176,16 +186,16 @@ const FormItem = (props) => {
       }
       // Bug of `async-validator`
       const rules = getRules().map((item) => {
-        if (currentValue !== '') {
+        if (!!currentValue || currentValue === 0) {
           item.type = item.type || 'any'
         }
         return item
       })
-
+      const _field = realField || field
       const validator = new AsyncValidator({
-        [field]: rules
+        [_field]: rules
       })
-      const model = { [field]: currentValue }
+      const model = { [_field]: currentValue }
       validator.validate(
         model,
         {
@@ -204,6 +214,7 @@ const FormItem = (props) => {
   )
 
   const updateFieldInfoToReducer = () => {
+    const _realField = _type === 'list' ? field : realField || field
     return {
       field,
       rules: getRules(),
@@ -219,7 +230,8 @@ const FormItem = (props) => {
       column,
       row,
       name,
-      updateField
+      updateField,
+      realField: _realField
     }
   }
 
@@ -265,17 +277,38 @@ const FormItem = (props) => {
     const beObject = Object.prototype.toString.call(e) === '[object Object]'
     beObject && Object.prototype.toString.call(e.persist) === '[object Function]' && e.persist()
     const displayName = component && component.type && component.type.displayName
-    let value =
+    let nextValue =
       beObject && e.target && Object.prototype.hasOwnProperty.call(e.target, valuePropName)
         ? e.target[valuePropName]
         : e
     if (displayName === 'Counter') {
-      value = args[0]
+      nextValue = args[0] || 0
     }
-    eventInfo.current = { eventName, e, args, componentProps, value }
-    setValue(value)
-    handleField(eventName, value)
+
+    if (eventName === 'onChange') {
+      eventInfo.current = {
+        eventName,
+        e,
+        args,
+        componentProps,
+        value: nextValue
+      }
+
+      handleField(eventName, nextValue)
+      setValue(nextValue)
+    } else if (eventName === 'onBlur') {
+      handleField(eventName, eventInfo.current ? eventInfo.current.value : value)
+
+      // 处理 onBlur 事件
+      const _children = childrenRef.current
+      const _props = componentProps || (_children && _children.props)
+
+      if (_props && _props.onBlur) {
+        _props.onBlur(e, ...args)
+      }
+    }
   }
+
   useEffect(() => {
     return () => {
       _type !== 'list' &&
@@ -285,6 +318,7 @@ const FormItem = (props) => {
         })
     }
   }, [])
+
   // jsx渲染方式
   const renderChildren = () => {
     let _value = value
@@ -294,17 +328,23 @@ const FormItem = (props) => {
     const isExist = _fields.some((item) => {
       return item.field === _field
     })
+    const displayName = !!children && children.type && children.type.displayName
+    if (displayName === 'Counter' && _value === undefined) {
+      _value = 0
+    }
     if (_field && !isExist) {
       _value = initialValues && typeof initialValues[field] !== 'undefined' ? initialValues[_field] : _value
       if (_type === 'list' && listItemValue) {
         _value = Object.keys(listItemValue).includes(name) ? listItemValue[name] : listItemValue
       }
+      const updateFieldInfoToReducerData = updateFieldInfoToReducer()
       _Immutable.current.setState({
         type: FILEDS_INIT,
         payload: {
           value: _value,
-          ...updateFieldInfoToReducer(),
-          field: _field
+          ...updateFieldInfoToReducerData,
+          field: _field,
+          realField: _type === 'list' ? _field : updateFieldInfoToReducerData.realField
         }
       })
       updateField(_value)
@@ -338,6 +378,7 @@ const FormItem = (props) => {
       return null
     }
     const propChild = children ? children.props : {}
+
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {

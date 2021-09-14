@@ -25,6 +25,8 @@ interface Props {
   displayRender?: (value: string[] | number[]) => string
   style?: object
   onChange?: (value: string[] | number[]) => void
+  onOpen?: () => void
+  onClose?: () => void
   overlayClassName?: string
   style?: CSSProperties
   className?: string

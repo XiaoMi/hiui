@@ -1,12 +1,14 @@
-import React, { useContext, useRef, useState, useEffect, useLayoutEffect } from 'react'
+import React, { useRef, useContext, useState, useEffect, useLayoutEffect } from 'react'
+import { Resizable } from 'react-resizable'
+import _ from 'lodash'
+import classnames from 'classnames'
+
 import TableContext from './context'
 import ColumnMenu from './ColumnMenu'
 import SettingMenu from './SettingMenu'
-import _ from 'lodash'
-import classnames from 'classnames'
 import Checkbox from '../checkbox'
+import AdvanceHeader from './AdvanceHeader'
 import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth } from './util'
-import { Resizable } from 'react-resizable'
 
 const HeaderTable = ({ rightFixedIndex }) => {
   const {
@@ -43,6 +45,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
   const [groupedColumns, setGroupedColumns] = useState([])
   const [columnsgroup, setColumnsGroup] = useState([])
   const isStickyHeader = useRef(false)
+
   // 隐藏滚动条
   const headerInner = useRef(null)
   const theadRef = useRef()
@@ -50,6 +53,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
   const [minColWidth, setMinColWidth] = useState(Array(columns.length).fill(0))
   useEffect(() => {
     const onwheel = (e) => {
+      e.stopPropagation()
       const { deltaX } = e
       headerTableRef.current.scrollLeft = headerTableRef.current.scrollLeft + deltaX
       syncScrollLeft(headerTableRef.current.scrollLeft, bodyTableRef.current)
@@ -190,38 +194,36 @@ const HeaderTable = ({ rightFixedIndex }) => {
               </th>
             )
           } else {
-            const { rightStickyWidth, leftStickyWidth, dataKey } = c
+            const { rightStickyWidth, leftStickyWidth, dataKey, align, colSpan, rowSpan, title, isLast } = c
             const isSticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
 
             const isRowActive = highlightedColKeys.includes(dataKey) || highlightColumns.includes(dataKey)
             const isColActive = showColHighlight && hoverColIndex === dataKey
+            const defatultTextAlign = align || 'left'
             cell = (
               <th
                 key={idx}
-                colSpan={c.colSpan}
-                rowSpan={c.rowSpan}
+                colSpan={colSpan}
+                rowSpan={rowSpan}
                 // 标题事件处理
                 {...onHeaderRow(_colums, index)}
                 className={classnames({ 'hi-table__col--sticky': isSticky })}
                 style={{
                   height: 'auto',
                   boxSizing: 'border-box',
-                  textAlign: alignRightColumns.includes(dataKey) ? 'right' : 'left',
+                  textAlign: alignRightColumns.includes(dataKey) ? 'right' : defatultTextAlign,
                   background: isRowActive || isColActive ? '#F4F4F4' : '#fbfbfb',
                   right: rightStickyWidth + 'px',
                   left: leftStickyWidth + 'px'
                 }}
               >
-                <span className="hi-table__header__title">
-                  {typeof c.title === 'function' ? c.title() : c.title}
-                  {showColMenu && c.isLast && (
-                    <ColumnMenu
-                      columnKey={c.dataKey}
-                      canSort={hasSorterColumn.includes(c.dataKey)}
-                      isSticky={isSticky}
-                    />
+                <div className="hi-table__header__title">
+                  {typeof title === 'function' ? title() : title}
+                  {showColMenu && isLast && (
+                    <ColumnMenu columnKey={dataKey} canSort={hasSorterColumn.includes(dataKey)} isSticky={isSticky} />
                   )}
-                </span>
+                  {<AdvanceHeader showColMenu={showColMenu} columnData={c} />}
+                </div>
               </th>
             )
           }

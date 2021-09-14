@@ -34,6 +34,7 @@ const SelectDropdown = ({
   onOverlayScroll,
   setFocusedIndex,
   targetByKeyDown,
+  renderExtraFooter,
   autoloadFlag
 }) => {
   const [filterItems, setFilterItems] = useState(dropdownItems)
@@ -334,10 +335,10 @@ const SelectDropdown = ({
 
       {!loading && renderItems()}
 
-      {mode === 'multiple' && (showCheckAll || showJustSelected) && (
+      {(showCheckAll || showJustSelected || renderExtraFooter) && (
         <div className={`hi-select__dropdown-check-all theme__${theme}`}>
           <div>
-            {showCheckAll && (
+            {mode === 'multiple' && showCheckAll && (
               <Checkbox
                 checked={isCheckAll}
                 onChange={(e) => {
@@ -348,8 +349,9 @@ const SelectDropdown = ({
               </Checkbox>
             )}
           </div>
+          {renderExtraFooter && renderExtraFooter()}
           <div>
-            {showJustSelected && (
+            {mode === 'multiple' && showJustSelected && (
               <Checkbox
                 onChange={(e) => {
                   showSelected(e.target.checked)
