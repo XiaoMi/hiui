@@ -27,7 +27,7 @@ export const useCheck = ({ disabled = false, checkedIds, onCheck, allowCheck }: 
   return [onNodeCheck, isCheckedId] as const
 }
 
-export interface UseCheckProps {
+export interface UseCheckProps<T extends UseCheckItem = any> {
   /**
    * 开启禁用选择
    */
@@ -39,11 +39,11 @@ export interface UseCheckProps {
   /**
    * 选择时回调
    */
-  onCheck: (checkedIds: React.ReactText[], targetItem: UseCheckItem, shouldChecked: boolean) => void
+  onCheck: (checkedIds: React.ReactText[], targetItem: T, shouldChecked: boolean) => void
   /**
    * 返回 true 允许选中
    */
-  allowCheck?: (targetItem: UseCheckItem) => boolean
+  allowCheck?: (targetItem: T) => boolean
 }
 
 /**
