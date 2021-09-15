@@ -106,8 +106,6 @@ export const useSelect = ({
 
   const rootProps = rest
 
-  console.log(inSearch, matchedItems)
-
   return {
     rootProps,
     data: inSearch ? matchedItems : data,

@@ -69,7 +69,6 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     const { value, tryChangeValue, data: selectData } = context
 
     const cls = cx(prefixCls, className)
-    console.log(selectData)
 
     return (
       <SelectProvider value={context}>
@@ -95,6 +94,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
             <div className={`${prefixCls}-panel`}>
               {searchable ? <SelectSearch /> : null}
               {/* {children} */}
+              {/* 反向 map，搜索删选数据时会对数据进行处理 */}
               {selectData.map((item) => {
                 return <SelectOption key={item.id} option={item} />
               })}
