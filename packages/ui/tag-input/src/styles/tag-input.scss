@@ -1,0 +1,232 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$tag-input-prefix: '#{$component-prefix}-tag-input' !default;
+
+.#{$tag-input-prefix} {
+  position: relative;
+  flex: 1;
+
+  &__container {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 160px;
+    font-size: 14px;
+    vertical-align: middle;
+    color: var(--color-black);
+    border: 1px solid transparent;
+    background-color: use-color('white');
+    transition: all 0.3s;
+    padding: 4px 10px;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 32px;
+    overflow: hidden;
+
+    // outline
+    border-color: use-color('gray-30');
+    border-radius: 4px;
+
+    &:not(.disabled):hover {
+      border-color: use-color('primary');
+    }
+
+    &:not(.disabled).focused {
+      // box-shadow: 0 0 0 1px use-color('primary');
+      border-color: use-color('primary');
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      color: var(--color-gray-50);
+      background-color: var(--color-gray-10);
+    }
+  }
+
+  &__placeholder {
+    color: use-color('gray-50');
+  }
+
+  &__suffix {
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &__clear {
+    display: inline-flex;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    font-size: 14px;
+    color: use-color('gray-50');
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      color: use-color('black');
+    }
+  }
+
+  &__value {
+    box-sizing: border-box;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    line-height: 22px;
+  }
+
+  &__tags {
+    flex: 0 1 auto;
+    // 用于自适应高度计算
+    display: inline-block;
+    // 右边临近放置 `+ count`
+    width: fit-content;
+    white-space: nowrap;
+    height: 100%;
+    box-sizing: border-box;
+    margin-top: -4px;
+  }
+
+  &__tag,
+  &__tag--left {
+    display: inline-block;
+    margin-right: 4px;
+    box-sizing: border-box;
+    padding: 0 8px;
+    vertical-align: middle;
+    font-size: 12px;
+    color: #333;
+    user-select: none;
+    background: #f2f2f2;
+    border-radius: 4px;
+  }
+
+  &__tag--total {
+    display: inline-block;
+    margin-right: 6px;
+    box-sizing: border-box;
+    padding: 0 8px;
+    vertical-align: middle;
+    font-size: 12px;
+    user-select: none;
+    background-color: use-color('primary-20');
+    color: use-color('primary');
+    border-radius: 4px;
+    line-height: 22px;
+    cursor: pointer;
+  }
+
+  &__tag {
+    display: inline-flex;
+    align-items: center;
+
+    &-content {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+
+    &-closed {
+      margin-left: $spacer-2;
+      font-size: 12px;
+      box-sizing: border-box;
+      color: rgba(142, 142, 142, 1);
+      cursor: pointer;
+
+      .disabled & {
+        cursor: not-allowed;
+      }
+    }
+
+    &--left {
+      margin: 0;
+      max-width: 54px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: middle;
+      // margin-top: 1.5px;
+    }
+  }
+
+  &--nowrap {
+    .#{$tag-input-prefix}__value {
+      width: calc(100% - 64px);
+      overflow-x: hidden;
+    }
+  }
+
+  &--wrap {
+    .#{$tag-input-prefix}__value {
+      height: auto;
+    }
+
+    .#{$tag-input-prefix}__tags {
+      white-space: normal;
+      margin-top: -4px;
+    }
+
+    .#{$tag-input-prefix}__tag {
+      margin-top: 4px;
+    }
+  }
+
+  &--expanded {
+    position: relative;
+
+    .#{$tag-input-prefix}__container__expand {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: auto;
+      z-index: 1;
+      flex: 1;
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 160px;
+      font-size: 14px;
+      vertical-align: middle;
+      color: var(--color-black);
+      border: 1px solid transparent;
+      background-color: var(--color-white);
+      transition: all 0.3s;
+      padding: 3px 0;
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      min-height: 32px;
+      overflow: hidden;
+      border-radius: 4px;
+      border-color: use-color('primary');
+
+      .#{$tag-input-prefix}__value {
+        height: fit-content;
+        max-height: 74px;
+        align-items: stretch;
+        overflow: scroll;
+        padding-left: 10px;
+      }
+
+      .#{$tag-input-prefix}__tags {
+        white-space: normal;
+        margin-top: -4px;
+      }
+
+      .#{$tag-input-prefix}__tag {
+        margin-top: 4px;
+      }
+
+      .#{$tag-input-prefix}__suffix {
+        align-items: flex-start;
+        padding: 4px 10px 4px 0;
+        position: sticky;
+        top: 0;
+      }
+    }
+  }
+}
