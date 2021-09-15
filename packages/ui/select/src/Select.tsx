@@ -37,6 +37,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
   ) => {
     const [menuVisible, menuVisibleAction] = useToggle()
     const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
+
     const openMenu = useCallback(() => {
       if (disabled) return
       menuVisibleAction.on()
@@ -68,6 +69,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     const { value, tryChangeValue, data: selectData } = context
 
     const cls = cx(prefixCls, className)
+    console.log(selectData)
 
     return (
       <SelectProvider value={context}>
@@ -92,7 +94,10 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           >
             <div className={`${prefixCls}-panel`}>
               {searchable ? <SelectSearch /> : null}
-              {children}
+              {/* {children} */}
+              {selectData.map((item) => {
+                return <SelectOption key={item.id} option={item} />
+              })}
             </div>
           </Popper>
         </div>
@@ -158,8 +163,13 @@ export interface SelectProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange' | '
    * 搜索数据
    */
   onSearch?: (item: SelectItem) => Promise<SelectItem[] | void> | void
+  /**
+   * 选项数据
+   */
+  data?: SelectItem[]
 }
 
+// @ts-ignore
 Select.HiName = 'Select'
 if (__DEV__) {
   Select.displayName = 'Select'
@@ -189,19 +199,30 @@ if (__DEV__) {
 const optionPrefix = getPrefixCls('select-option')
 
 export const SelectOption = forwardRef<HTMLDivElement | null, SelectOptionProps>(
-  ({ prefixCls = optionPrefix, children, ...rest }, ref) => {
-    const { onSelect, isSelectedId, getOptionProps } = useSelectContext()
-    const rootProps = getOptionProps({ prefixCls, title: children, ...rest }, ref)
+  ({ prefixCls = optionPrefix, className, children, option = {}, onClick, ...rest }, ref) => {
+    const { isSelectedId, onSelect } = useSelectContext()
+
+    const cls = cx(prefixCls, className, isSelectedId(option.id) && `${prefixCls}--selected`)
+
+    const onClickLatest = useLatestCallback(onClick)
+    const handleClick = useCallback(
+      (evt) => {
+        onSelect(option)
+        onClickLatest(evt)
+      },
+      [onSelect, option, onClickLatest]
+    )
 
     return (
-      <div {...rootProps}>
-        <span className={`${prefixCls}__title`}>{children}</span>
+      <div ref={ref} className={cls} onClick={handleClick} {...rest}>
+        <span className={`${prefixCls}__title`}>{option.title}</span>
       </div>
     )
   }
 )
 
 export interface SelectOptionProps extends HiBaseHTMLProps {}
+// @ts-ignore
 SelectOption.HiName = 'SelectOption'
 
 if (__DEV__) {

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { SelectProps } from './Select'
-import { useCache, useSearch } from './hooks'
+import { useSearch } from './hooks'
 import { useSelect as useSelectDefault } from '@hi-ui/use-check'
 import { cx } from '@hi-ui/classname'
 import { SelectItem } from './types'
@@ -26,17 +26,19 @@ export const useSelect = ({
   const data = useMemo(() => {
     if (children) {
       const list = toArray(children)
-      const arr = []
-      const dfs = (list) => {
+      const arr: any[] = []
+      const dfs = (list: any[]) => {
         list.forEach((item) => {
-          if (!React.isValidElement(item)) {
-            return
-          }
+          if (!React.isValidElement(item)) return
 
+          // @ts-ignore
           if (item.type && item.type.HiName === 'SelectOption') {
             arr.push(item)
+            // @ts-ignore
           } else if (item.type && item.type.HiName === 'SelectOptionGroup') {
+            // @ts-ignore
             if (item.props && item.props.children) {
+              // @ts-ignore
               const list = toArray(item.props.children)
               dfs(list)
             }
@@ -54,8 +56,6 @@ export const useSelect = ({
     }
     return dataProp
   }, [children, dataProp])
-
-  const [cacheData, setCacheData] = useCache(data)
 
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
 
@@ -76,11 +76,7 @@ export const useSelect = ({
     allowSelect,
   })
 
-  const [inSearch, matchedItems, inputProps, isEmpty, resetSearch] = useSearch(
-    cacheData
-    // isCanLoadChildren
-    // onSearch
-  )
+  const [inSearch, matchedItems, inputProps, isEmpty, resetSearch] = useSearch(data)
 
   const getSearchInputProps = useCallback(
     () => ({
@@ -100,7 +96,7 @@ export const useSelect = ({
         ...rest,
         ref,
         className: cls,
-        onClick: (e) => {
+        onClick: () => {
           onOptionClick({ id, disabled, title: children })
         },
       }
@@ -110,9 +106,11 @@ export const useSelect = ({
 
   const rootProps = rest
 
+  console.log(inSearch, matchedItems)
+
   return {
     rootProps,
-    data: inSearch ? matchedItems : cacheData,
+    data: inSearch ? matchedItems : data,
     value,
     onSelect: onOptionClick,
     isSelectedId,
