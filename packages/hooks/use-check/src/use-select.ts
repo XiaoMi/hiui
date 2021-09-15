@@ -16,7 +16,7 @@ export const useSelect = ({
   const allowSelectRef = useLatestRef(allowSelect)
 
   const onItemSelect = useCallback(
-    (targetItem: UseCheckItem, shouldSelected: boolean = true) => {
+    <T extends UseCheckItem>(targetItem: T, shouldSelected: boolean = true) => {
       if (disabled) return
       if (allowSelectRef.current && allowSelectRef.current(targetItem) === false) return
 
@@ -29,9 +29,7 @@ export const useSelect = ({
     [disabled, allowSelectRef, onSelect]
   )
 
-  const isSelectedId = useCallback((id: React.ReactText) => id !== NOOP_ID && selectedId === id, [
-    selectedId,
-  ])
+  const isSelectedId = useCallback((id: React.ReactText) => id && selectedId === id, [selectedId])
 
   return [onItemSelect, isSelectedId] as const
 }
