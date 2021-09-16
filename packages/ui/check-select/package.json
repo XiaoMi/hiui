@@ -50,6 +50,7 @@
     "@hi-ui/icons": "^4.0.0-alpha.8",
     "@hi-ui/input": "^4.0.0-alpha.10",
     "@hi-ui/popper": "^4.0.0-alpha.4",
+    "@hi-ui/tag-input": "^4.0.0-alpha.0",
     "@hi-ui/use-check": "^4.0.0-alpha.4",
     "@hi-ui/use-children": "^4.0.0-alpha.1",
     "@hi-ui/use-latest": "^4.0.0-alpha.2",

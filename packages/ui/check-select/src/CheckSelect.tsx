@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import Input, { MockInput } from '@hi-ui/input'
+import Input from '@hi-ui/input'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useCheckSelect } from './use-check-select'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
@@ -11,7 +11,7 @@ import { SelectProvider, useSelectContext } from './context'
 import { CheckSelectItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
-import { TagInput } from '@hi-ui/check-cascader/lib/esm/TagInput'
+import { TagInput } from '@hi-ui/tag-input'
 
 const _role = 'check-select'
 const _prefix = getPrefixCls(_role)
@@ -207,7 +207,7 @@ const optionPrefix = getPrefixCls('check-select-option')
 
 export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOptionProps>(
   ({ prefixCls = optionPrefix, className, children, option = {}, ...rest }, ref) => {
-    const { isSelectedId, onSelect } = useSelectContext()
+    const { isSelectedId, onSelect, titleRender } = useSelectContext()
 
     const checked = !!isSelectedId(option.id)
     const cls = cx(prefixCls, className, checked && `${prefixCls}--selected`)
@@ -218,6 +218,16 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
       },
       [onSelect, option, checked]
     )
+
+    // 如果 titleRender 返回 `true`，则使用默认 title
+    const title = titleRender ? titleRender({ ...option, checked }) : true
+    if (title !== true) {
+      return (
+        <div ref={ref} className={cls} {...rest}>
+          {title}
+        </div>
+      )
+    }
 
     return (
       <div ref={ref} className={cls} {...rest}>

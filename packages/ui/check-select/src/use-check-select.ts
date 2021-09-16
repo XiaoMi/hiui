@@ -20,6 +20,7 @@ export const useCheckSelect = ({
   onSelect,
   emptyContent = '无匹配选项',
   searchPlaceholder,
+  titleRender,
   ...rest
 }: UseSelectProps) => {
   const data = useMemo(() => {
@@ -97,6 +98,7 @@ export const useCheckSelect = ({
     tryChangeValue,
     isEmpty,
     resetSearch,
+    titleRender,
   }
 }
 
