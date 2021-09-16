@@ -1,0 +1,60 @@
+{
+  "name": "@hi-ui/tag-input",
+  "version": "4.0.0-alpha.0",
+  "description": "A sub-package for @hi-ui/hiui.",
+  "keywords": [],
+  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/tag-input#readme",
+  "license": "MIT",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/types/index.d.ts",
+  "typings": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./lib/cjs/index.js",
+      "default": "./lib/esm/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiaoMi/hiui.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "clean": "rimraf lib",
+    "prebuild": "yarn clean",
+    "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
+    "build:cjs": "hi-build ./src/index.ts --format cjs -d ./lib/cjs",
+    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
+    "build": "concurrently yarn:build:*"
+  },
+  "bugs": {
+    "url": "https://github.com/XiaoMi/hiui/issues"
+  },
+  "dependencies": {
+    "@hi-ui/classname": "^4.0.0-alpha.0",
+    "@hi-ui/core": "^4.0.0-alpha.2",
+    "@hi-ui/core-css": "^4.0.0-alpha.0",
+    "@hi-ui/env": "^4.0.0-alpha.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@hi-ui/hi-build": "^4.0.0-alpha.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}

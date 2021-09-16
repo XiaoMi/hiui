@@ -50,21 +50,35 @@ const data = [
       },
     ],
   },
+  {
+    id: '电视2',
+    title: '电视2',
+    children: [
+      {
+        id: '小米电视4C2',
+        title:
+          '手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本',
+      },
+      {
+        id: '小米电视4A2',
+        title: '小米电视4A2',
+      },
+    ],
+  },
 ]
 
 export const Nowrap = () => {
   return (
     <>
       <h1>Nowrap</h1>
-      <p>注意：内部动态计算会消耗性能，对于高性能的表单场景不建议使用</p>
       <div className="cascader-nowrap__wrap">
         <CheckCascader
+          style={{ width: 300 }}
           searchable
           clearable
           wrap={false}
           placeholder="请选择品类"
           defaultValue={[
-            '手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本手机超长文本',
             '红米',
             '红米4',
             '小米电视4C',
@@ -73,9 +87,15 @@ export const Nowrap = () => {
             '小米4',
             '电视',
             '小米电视4A',
+            '电视2',
+            '小米电视4A2',
+            '小米电视4C2',
           ]}
           data={data}
         ></CheckCascader>
+        <p>UI 测试：我是底部占位符</p>
+        <p>UI 测试：我是底部占位符</p>
+        <p>UI 测试：我是底部占位符</p>
       </div>
     </>
   )

@@ -2,13 +2,12 @@ import React, { forwardRef, useRef, useCallback, useState, useMemo } from 'react
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { times } from '@hi-ui/times'
 import { CloseCircleFilled, CloseOutlined } from '@hi-ui/icons'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
-import { useTagInput } from './hooks'
-import { flattenTreeData } from './utils'
-import { CheckCascaderItem, FlattedCheckCascaderItem } from './types'
+import { useTagInput } from './use-tag-input'
+import { TagInputOption } from './types'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'tag-input'
 const _prefix = getPrefixCls(_role)
@@ -27,56 +26,60 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
       value: valueProp,
       onChange,
       placeholder,
-      data,
+      data = NOOP_ARRAY,
       wrap = true,
       clearable = false,
       disabled = false,
-      displayRender,
       suffix,
+      displayRender,
       onClick,
+      onMouseOver,
+      onMouseLeave,
       ...rest
     },
     ref
   ) => {
-    const flattedData = useMemo(() => flattenTreeData(data), [data])
-
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
-    const showData = useMemo(
-      () => flattedData.filter((item) => item && item.checkable && value.indexOf(item.id) !== -1),
-      [flattedData, value]
-    )
-
-    const tagSelector = `.${prefixCls}__tag`
     const tagInputRef = useRef<HTMLDivElement>(null)
-    const [tagMaxWidth, showTagCount] = useTagInput(true, tagSelector, showData, tagInputRef)
+    const [tagMaxWidth] = useTagInput(data, tagInputRef)
+
     const handleClear = useCallback(
       (evt) => {
         if (disabled) return
-
         evt.stopPropagation()
         tryChangeValue(NOOP_ARRAY)
       },
       [tryChangeValue, disabled]
     )
 
-    const [hover, setHover] = useState(false)
-    const trySetHover = (hovered: boolean) => {
-      if (disabled) return
-      setHover(hovered)
-    }
+    const tagList = useMemo(
+      () => value.map((id) => data.find((item) => item.id === id) || { id, title: id }),
+      [value, data]
+    )
 
+    const [hover, setHover] = useState(false)
+    const trySetHover = useCallback(
+      (hovered: boolean) => {
+        if (disabled) return
+        setHover(hovered)
+      },
+      [disabled]
+    )
+
+    const tagCount = tagList.length
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
-    const showClearableIcon = clearable && value.length > 0 && !disabled
+    const showClearableIcon = clearable && tagCount > 0 && !disabled
+    const showTagCount = !wrap && tagCount > 0
 
     const [expanded, setExpanded] = useState(false)
+
+    useOutsideClick(tagInputRef, () => setExpanded(false))
 
     const handleExpand = useCallback((evt: React.MouseEvent) => {
       evt.stopPropagation()
       setExpanded(true)
     }, [])
-
-    useOutsideClick(tagInputRef, () => setExpanded(false))
 
     const cls = cx(
       prefixCls,
@@ -89,11 +92,13 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
         ref={useMergeRefs(ref, tagInputRef)}
         role={role}
         className={cls}
-        onMouseOver={(e) => {
+        onMouseOver={(evt) => {
           trySetHover(true)
+          onMouseOver?.(evt)
         }}
-        onMouseLeave={(e) => {
+        onMouseLeave={(evt) => {
           trySetHover(false)
+          onMouseLeave?.(evt)
         }}
         {...rest}
       >
@@ -101,11 +106,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
           {value.length !== 0 ? (
             <span className={`${prefixCls}__value`}>
               <span className={cx(`${prefixCls}__tags`, wrap && `${prefixCls}__tags--all`)}>
-                {times(showTagCount, (index) => {
-                  const option = showData[index]
-
-                  if (!option) return null
-
+                {tagList.map((option) => {
                   const title = displayRender ? displayRender(option) : true
                   const closeable = !option.disabled
                   return (
@@ -138,15 +139,13 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
           ) : (
             <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
           )}
-          {suffix || showClearableIcon || (!wrap && showTagCount > 0) ? (
+          {!!suffix || (showClearableIcon && hover) || showTagCount ? (
             <span className={`${prefixCls}__suffix`}>
-              {!wrap && showTagCount > 0 ? (
-                <span className={cx(`${prefixCls}__tag--total`)} onClick={handleExpand}>{`${
-                  showTagCount > 99 ? '+99' : showTagCount
-                }`}</span>
-              ) : null}
-
-              {showClearableIcon && hover ? (
+              {showTagCount ? (
+                <span className={cx(`${prefixCls}__tag--total`)} onClick={handleExpand}>
+                  {`${tagCount > 99 ? '+99' : tagCount}`}
+                </span>
+              ) : showClearableIcon && hover ? (
                 <span
                   className={`${prefixCls}__clear`}
                   role="button"
@@ -155,9 +154,8 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
                 >
                   <CloseCircleFilled />
                 </span>
-              ) : (
-                suffix
-              )}
+              ) : null}
+              {suffix}
             </span>
           ) : null}
         </div>
@@ -166,13 +164,10 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
           <div className={`${prefixCls}__container__expand`}>
             <span className={cx(`${prefixCls}__value`)}>
               <span className={cx(`${prefixCls}__tags`, `${prefixCls}__tags--all`)}>
-                {times(showTagCount, (index) => {
-                  const option = showData[index]
-
-                  if (!option) return null
-
+                {tagList.map((option) => {
                   const title = displayRender ? displayRender(option) : true
                   const closeable = !option.disabled
+
                   return (
                     <span className={`${prefixCls}__tag`} key={option.id}>
                       <span
@@ -199,23 +194,19 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
                   )
                 })}
               </span>
-              {suffix || showClearableIcon ? (
-                <span className={`${prefixCls}__suffix`}>
-                  {showClearableIcon ? (
-                    <span
-                      className={`${prefixCls}__clear`}
-                      role="button"
-                      tabIndex={-1}
-                      onClick={handleClear}
-                    >
-                      <CloseCircleFilled />
-                    </span>
-                  ) : (
-                    suffix
-                  )}
-                </span>
-              ) : null}
             </span>
+            {showClearableIcon ? (
+              <span className={`${prefixCls}__suffix`}>
+                <span
+                  className={`${prefixCls}__clear`}
+                  role="button"
+                  tabIndex={-1}
+                  onClick={handleClear}
+                >
+                  <CloseCircleFilled />
+                </span>
+              </span>
+            ) : null}
           </div>
         ) : null}
       </div>
@@ -223,23 +214,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
   }
 )
 
-export interface TagInputProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface TagInputProps extends HiBaseHTMLProps {
   /**
    * 设置当前多选值
    */
@@ -263,7 +238,7 @@ export interface TagInputProps {
   /**
    * 自定义选择后触发器所展示的内容
    */
-  displayRender?: (checkedOption: FlattedCheckCascaderItem) => React.ReactNode
+  displayRender?: (checkedOption: TagInputOption) => React.ReactNode
   /**
    * 输入框占位符
    */
@@ -277,13 +252,9 @@ export interface TagInputProps {
    */
   suffix?: React.ReactNode
   /**
-   * 点击 Tag Input 时触发回调
-   */
-  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
-  /**
    * tag 列表数据源
    */
-  data: CheckCascaderItem[]
+  data?: TagInputOption[]
 }
 
 if (__DEV__) {
