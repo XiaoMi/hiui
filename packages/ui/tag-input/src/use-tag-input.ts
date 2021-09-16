@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useReducer, useLayoutEffect } from 'react'
+import React, { useCallback, useState, useLayoutEffect } from 'react'
 import { debounce } from './utils'
 
 // 表示 tag 的 marginRight
