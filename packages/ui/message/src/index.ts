@@ -1,4 +1,4 @@
 import './styles/index.scss'
 
-export * from './Message'
-export { Message as default } from './Message'
+export * from './MessageAPI'
+export { Message as default } from './MessageAPI'

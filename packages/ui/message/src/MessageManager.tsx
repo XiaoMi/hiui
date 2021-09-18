@@ -8,6 +8,7 @@ type MessageOptions = {
   duration?: number
   status?: 'entering' | 'active' | 'exiting'
   closeable?: boolean
+  onClose?: () => void
 }
 
 type State = { queue: MessageOptions[] }
@@ -50,6 +51,7 @@ export class MessageManager extends Component<Props, State> {
       ...options,
       id,
       status: 'entering',
+      onClose: () => this.remove(id),
     }
   }
 

@@ -1,10 +1,10 @@
 import React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import { MessageManager } from './MessageManager'
-import Container from '@hi-ui/container'
+import * as Container from '@hi-ui/container'
 import { _prefix } from './Message'
 
-const messageApiSelector = '.' + _prefix
+const messageApiSelector = `.${_prefix}__portal`
 
 export class MessageAPI {
   private messageManager: any
@@ -33,3 +33,5 @@ export class MessageAPI {
 }
 
 export const Message = new MessageAPI()
+
+console.log(Message);

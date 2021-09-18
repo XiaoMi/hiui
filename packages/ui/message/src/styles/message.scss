@@ -2,6 +2,103 @@
 
 $prefix: '#{$component-prefix}-message' !default;
 
-.#{$prefix} {
+$color-map: (
+  'primary': use-color('primary'),
+  'warning': get-color($palette-secondary, 'warning'),
+  'success': get-color($palette-secondary, 'success'),
+  'danger': get-color($palette-secondary, 'danger')
+) !default;
 
+
+.#{$prefix}-manager {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0px auto;
+  pointer-events: none;
+  // TODO: 处理所有弹窗的优先级
+  z-index: 1020;
+}
+
+.#{$prefix} {
+  position: relative;
+  padding: 9px 12px;
+  margin-top: 12px;
+  border-radius: 2px;
+  display: flex;
+  align-items: flex-start;
+  width: 260px;
+  box-sizing: border-box;
+
+  @each $key, $value in $color-map {
+    &--type-#{$key} {
+      background-color: use-color(#{$key}-20);
+      border: 1px solid use-color(#{$key}-40);
+
+      // .#{$prefix}__icon {
+      //   fill: $value;
+      // }
+
+      svg {
+        fill: $value;
+      }
+    }
+  }
+
+  &__container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    transition: all 0.3s;
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+
+  &-enter {
+    transform: translateY(-100%);
+  }
+
+  &-enter-active {
+    // height: 0;
+    transform: translateY(0%);
+  }
+
+  &-enter-done {
+    transform: translateY(0%);
+  }
+
+  &-exit {
+    transform: translateY(0%);
+  }
+
+  &-exit-active {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  &-exit-done {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+
+  &__header {
+    line-height: $line-height-size-normal;
+    display: flex;
+    align-items: center;
+  }
+
+  &__title {
+    color: use-color('black');
+    font-size: $font-size-normal;
+  }
+
+  &__icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
 }
