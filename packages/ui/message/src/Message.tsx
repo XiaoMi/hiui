@@ -3,16 +3,21 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import CSSTransition from 'react-transition-group/CSSTransition'
-import { ExclamationCircleFilled, InfoCircleFilled, CloseCircleFilled, CheckCircleOutlined } from '@hi-ui/icons';
+import {
+  InfoCircleFilled,
+  CloseCircleFilled,
+  CheckCircleFilled,
+  ExclamationCircleFilled,
+} from '@hi-ui/icons'
 
 const _role = 'message'
 export const _prefix = getPrefixCls(_role)
 
 const messageIconMap: any = {
-  success: <CheckCircleOutlined/>,
-  danger: <CloseCircleFilled/>,
-  warning: <ExclamationCircleFilled/>,
-  primary: <InfoCircleFilled/>,
+  success: <CheckCircleFilled />,
+  error: <CloseCircleFilled />,
+  warning: <ExclamationCircleFilled />,
+  info: <InfoCircleFilled />,
 }
 
 /**
@@ -25,24 +30,24 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
       role = _role,
       className,
       children,
-      type: typeProp = 'info',
-      duration = 3000,
+      id,
+      title,
+      visible = true,
+      duration = 5000,
+      type = 'info',
       onClose,
       ...rest
     },
     ref
   ) => {
-    let type = typeProp === 'info' ? 'primary' : typeProp
-    type = type === 'error' ? 'danger' : type
-
     const [transitionVisible, setTransitionVisible] = useState(false)
-    // const [exited, setExited] = useState(true)
 
     const timerRef = useRef(0)
 
     useEffect(() => {
-      setTransitionVisible(true)
+      setTransitionVisible(visible)
 
+      if (!visible) return
       if (typeof duration !== 'number') return
 
       timerRef.current = window.setTimeout(() => {
@@ -52,14 +57,9 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
       return () => {
         clearTimeout(timerRef.current)
       }
-    }, [duration])
-
-    const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`)
-
-    console.log('transitionVisible',transitionVisible);
+    }, [duration, visible])
 
     const [height, setHeight] = useState<number>()
-
     const motionElRef = useRef<HTMLDivElement>(null)
 
     // 0 => scrollHeight
@@ -72,35 +72,60 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
       setHeight(0)
     }, [])
 
+    const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`)
+
     return (
       <CSSTransition
+        classNames={`${prefixCls}--motion`}
         in={transitionVisible}
-        timeout={500}
+        timeout={410}
         style={{ height }}
-        classNames={prefixCls}
-        // unmountOnClose={true}
         onExit={open}
         onExiting={close}
         onExited={() => {
           onClose?.()
         }}
       >
-        <div ref={motionElRef} className={`${prefixCls}__container`}>
+        <div ref={motionElRef} className={`${prefixCls}-container`}>
           <div ref={ref} role={role} className={cls} {...rest}>
             {messageIconMap[type]}
             {children}
           </div>
         </div>
-
       </CSSTransition>
     )
   }
 )
 
-export interface MessageProps extends HiBaseHTMLProps<'div'> {
+export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | 'title'> {
+  /**
+   * 消息唯一标识
+   */
+  id?: React.ReactText
+  /**
+   * 自动关闭时间，单位为 ms
+   */
   duration?: number
+  /**
+   * 关闭时触发的回调函数
+   */
   onClose?: () => void
-  type?: 'primary' | 'success' | 'danger' | 'warning'
+  /**
+   * 通知框类型
+   */
+  type?: 'info' | 'success' | 'error' | 'warning'
+  /**
+   * 通知框标题
+   */
+  title?: React.ReactNode
+  /**
+   * 控制状态
+   */
+  status?: 'entering' | 'active' | 'exiting'
+  /**
+   * 开启可见
+   */
+  visible?: boolean
 }
 
 if (__DEV__) {

@@ -6,7 +6,6 @@ type MessageOptions = {
   type?: 'info' | 'success' | 'error' | 'warning'
   title: string
   duration?: number
-  status?: 'entering' | 'active' | 'exiting'
   closeable?: boolean
   onClose?: () => void
 }
@@ -45,24 +44,29 @@ export class MessageManager extends Component<Props, State> {
 
   create = (options: MessageOptions): MessageOptions => {
     MessageManager.counter++
-    const id = options.id ?? MessageManager.counter
+    const { id: idOption, onClose } = options
+    const id = idOption ?? MessageManager.counter
 
     return {
       ...options,
       id,
-      status: 'entering',
-      onClose: () => this.remove(id),
+      onClose: () => {
+        this.remove(id)
+        onClose?.()
+      },
     }
   }
 
   open = (message: MessageOptions) => {
-    this.add(this.create(message))
+    const option = this.create(message)
+    this.add(option)
+    return option.id
   }
 
   close = (id: React.ReactText) => {
     this.setState((prev) => {
       return {
-        queue: prev.queue.map((item) => (item.id === id ? { ...item, status: 'exiting' } : item)),
+        queue: prev.queue.map((item) => (item.id === id ? { ...item, visible: false } : item)),
       }
     })
   }
@@ -70,7 +74,7 @@ export class MessageManager extends Component<Props, State> {
   closeAll = () => {
     this.setState((prev) => {
       return {
-        queue: prev.queue.map((item) => ({ ...item, status: 'exiting' })),
+        queue: prev.queue.map((item) => ({ ...item, visible: false })),
       }
     })
   }

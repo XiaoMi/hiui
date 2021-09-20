@@ -2,103 +2,115 @@
 
 $prefix: '#{$component-prefix}-message' !default;
 
-$color-map: (
-  'primary': use-color('primary'),
-  'warning': get-color($palette-secondary, 'warning'),
-  'success': get-color($palette-secondary, 'success'),
-  'danger': get-color($palette-secondary, 'danger')
-) !default;
-
-
 .#{$prefix}-manager {
   position: fixed;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0px auto;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   pointer-events: none;
   // TODO: 处理所有弹窗的优先级
   z-index: 1020;
 }
 
 .#{$prefix} {
-  position: relative;
-  padding: 9px 12px;
-  margin-top: 12px;
-  border-radius: 2px;
-  display: flex;
-  align-items: flex-start;
-  width: 260px;
   box-sizing: border-box;
+  width: auto;
+  padding: 8px 20px;
+  margin: 6px;
+  border-radius: 8px;
+  pointer-events: auto;
+  box-shadow: 0 1px 6px -1px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  font-size: $font-size-normal;
+  line-height: $line-height-size-normal;
 
-  @each $key, $value in $color-map {
-    &--type-#{$key} {
-      background-color: use-color(#{$key}-20);
-      border: 1px solid use-color(#{$key}-40);
-
-      // .#{$prefix}__icon {
-      //   fill: $value;
-      // }
+  &--type {
+    &-info {
+      background-color: use-color('primary-20');
+      color: use-color('primary-50');
 
       svg {
-        fill: $value;
+        fill: use-color('primary');
+      }
+    }
+
+    &-success {
+      background-color: use-color('success-20');
+      color: use-color('success-50');
+
+      svg {
+        color: use-color('success');
+      }
+    }
+
+    &-error {
+      background-color: use-color('danger-20');
+      color: use-color('danger-50');
+
+      svg {
+        color: use-color('danger');
+      }
+    }
+
+    &-warning {
+      background-color: use-color('warning-20');
+      color: use-color('warning-50');
+
+      svg {
+        color: use-color('warning');
       }
     }
   }
 
-  &__container {
+  &-container {
     width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
-    transition: all 0.3s;
+    position: relative;
     transform: translateY(-100%);
+    transform-origin: 50% 50% 0;
     opacity: 1;
+    overflow: hidden;
   }
 
-  &-enter {
-    transform: translateY(-100%);
+  &--motion {
+    &-enter {
+      transition: transform 0.3s, opacity 0.3s;
+      transform: translateY(-100%);
+    }
+
+    &-enter-active {
+      transition: transform 0.3s, opacity 0.3s;
+      transform: translateY(0%);
+    }
+
+    &-enter-done {
+      transform: translateY(0%);
+    }
+
+    &-exit {
+      transition: transform 0.3s, opacity 0.3s, height 0.2s ease-out 0.21s;
+      transform: translateY(0%);
+      opacity: 1;
+    }
+
+    &-exit-active {
+      transition: transform 0.3s, opacity 0.3s, height 0.2s ease-out 0.21s;
+      transform: translateY(0%) scale(0.84, 0.84);
+      opacity: 0;
+    }
+
+    &-exit-done {
+      visibility: hidden;
+      opacity: 0;
+    }
   }
 
-  &-enter-active {
-    // height: 0;
-    transform: translateY(0%);
-  }
-
-  &-enter-done {
-    transform: translateY(0%);
-  }
-
-  &-exit {
-    transform: translateY(0%);
-  }
-
-  &-exit-active {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-
-  &-exit-done {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-
-
-  &__header {
-    line-height: $line-height-size-normal;
-    display: flex;
-    align-items: center;
-  }
-
-  &__title {
-    color: use-color('black');
-    font-size: $font-size-normal;
-  }
-
-  &__icon {
-    width: 16px;
-    height: 16px;
+  svg {
     margin-right: 8px;
-    flex-shrink: 0;
+    font-size: 16px;
   }
 }
