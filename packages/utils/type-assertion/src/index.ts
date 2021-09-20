@@ -33,3 +33,9 @@ export const isArrayNonEmpty = <T>(arg: unknown): arg is T[] & { length: 0 } =>
  * Assert is numeric
  */
 export const isNumeric = (arg: unknown): arg is string | number => !Number.isNaN(Number(arg))
+
+/**
+ * Assert is function
+ */
+export const isFunction = <T extends Function = Function>(arg: any): arg is T =>
+  typeof arg === 'function'
