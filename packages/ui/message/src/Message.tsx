@@ -9,6 +9,7 @@ import {
   CheckCircleFilled,
   ExclamationCircleFilled,
 } from '@hi-ui/icons'
+import { MessageTitleOption } from './types'
 
 const _role = 'message'
 export const _prefix = getPrefixCls(_role)
@@ -34,7 +35,9 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
       title,
       visible = true,
       duration = 5000,
+      autoClose = true,
       type = 'info',
+      $destroy,
       onClose,
       ...rest
     },
@@ -44,20 +47,26 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
 
     const timerRef = useRef(0)
 
+    const requestClose = useCallback(() => {
+      timerRef.current = 0
+      setTransitionVisible(false)
+    }, [])
+
     useEffect(() => {
       setTransitionVisible(visible)
 
       if (!visible) return
+      if (autoClose === false) return
       if (typeof duration !== 'number') return
 
       timerRef.current = window.setTimeout(() => {
-        setTransitionVisible(false)
+        requestClose()
       }, duration)
 
       return () => {
         clearTimeout(timerRef.current)
       }
-    }, [duration, visible])
+    }, [duration, visible, autoClose, requestClose])
 
     const [height, setHeight] = useState<number>()
     const motionElRef = useRef<HTMLDivElement>(null)
@@ -83,13 +92,14 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
         onExit={open}
         onExiting={close}
         onExited={() => {
+          $destroy?.()
           onClose?.()
         }}
       >
         <div ref={motionElRef} className={`${prefixCls}-container`}>
           <div ref={ref} role={role} className={cls} {...rest}>
             {messageIconMap[type]}
-            {children}
+            {title}
           </div>
         </div>
       </CSSTransition>
@@ -99,33 +109,42 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
 
 export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | 'title'> {
   /**
-   * 消息唯一标识
+   * 开启可见
    */
-  id?: React.ReactText
-  /**
-   * 自动关闭时间，单位为 ms
-   */
-  duration?: number
+  visible?: boolean
   /**
    * 关闭时触发的回调函数
    */
   onClose?: () => void
   /**
+   * 通知唯一标识
+   */
+  id: React.ReactText
+  /**
+   * 通知框内容
+   */
+  title: React.ReactNode | ((option: MessageTitleOption) => React.ReactNode)
+  /**
    * 通知框类型
    */
   type?: 'info' | 'success' | 'error' | 'warning'
   /**
-   * 通知框标题
+   * 自动关闭时间，单位为 ms
    */
-  title?: React.ReactNode
+  duration?: number
+
   /**
-   * 控制状态
+   * 动画过渡时长
    */
-  status?: 'entering' | 'active' | 'exiting'
+  timeout?: number
   /**
-   * 开启可见
+   * 是否开启自动关闭
    */
-  visible?: boolean
+  autoClose?: boolean
+  /**
+   * 内部使用，勿覆盖
+   */
+  $destroy?: () => void
 }
 
 if (__DEV__) {

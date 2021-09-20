@@ -2,7 +2,7 @@ import React from 'react'
 import ToastAPI from '../src'
 import Button from '@hi-ui/button'
 
-const Toast = ToastAPI.create('.basic')
+const Toast = ToastAPI.create({ prefixCls: 'basic' })
 
 export const Basic = () => {
   return (

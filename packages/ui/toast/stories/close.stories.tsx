@@ -2,7 +2,7 @@ import React from 'react'
 import ToastAPI from '../src'
 import Button from '@hi-ui/button'
 
-const Toast = ToastAPI.create('.close')
+const Toast = ToastAPI.create({ prefixCls: 'close' })
 
 export const Close = () => {
   const toastIdsRef = React.useRef([])

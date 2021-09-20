@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Toast, ToastProps } from './Toast'
 import { cx, getPrefixCls } from '@hi-ui/classname'
+import { ToastPlacement, ToastOptions, ToastEventOptions } from './types'
+import { isFunction } from '@hi-ui/type-assertion'
 
 const _role = 'toast'
 export const _prefix = getPrefixCls(_role)
@@ -16,7 +17,7 @@ export class ToastManager extends Component<ToastManagerProps, ToastManagerState
     queue: [],
   }
 
-  add = (notice: ToastProps) => {
+  add = (notice: ToastOptions) => {
     this.setState((prev) => {
       return {
         queue: prev.queue.concat(notice),
@@ -32,22 +33,18 @@ export class ToastManager extends Component<ToastManagerProps, ToastManagerState
     })
   }
 
-  create = (options: ToastOptions): ToastProps => {
+  create = (options: ToastEventOptions): ToastOptions => {
     ToastManager.counter++
-    const { id: idOption, onClose } = options
-    const id = idOption ?? ToastManager.counter
+    const id = options.id ?? ToastManager.counter
 
     return {
       ...options,
       id,
-      onClose: () => {
-        this.remove(id)
-        onClose?.()
-      },
+      $destroy: () => this.remove(id),
     }
   }
 
-  open = (toast: ToastOptions) => {
+  open = <T extends ToastEventOptions>(toast: T) => {
     const option = this.create(toast)
     this.add(option)
     return option.id
@@ -101,30 +98,43 @@ export class ToastManager extends Component<ToastManagerProps, ToastManagerState
 
   render() {
     const { queue } = this.state
-    const { prefixCls, placement } = this.props
+    const { prefixCls, placement, component: As, render } = this.props
 
     return (
       <div
         className={cx(`${prefixCls}-manager`, `${prefixCls}-manager--placement-${placement}`)}
         style={this.getStyle(placement!)}
       >
-        {queue.map((notice) => (
-          <Toast key={notice.id} {...notice} />
-        ))}
+        {queue.map((notice) => {
+          if (As) return <As key={notice.id} {...notice} />
+
+          if (isFunction(render)) return render(notice)
+
+          return notice.title
+        })}
       </div>
     )
   }
 }
 
-type ToastManagerState = { queue: ToastProps[] }
+type ToastManagerState = { queue: ToastOptions[] }
 
-type ToastPlacement = 'top' | 'bottom' | 'center'
-
-interface ToastManagerProps {
+export interface ToastManagerProps {
+  /**
+   * 样式前缀
+   */
   prefixCls?: string
-  placement?: ToastPlacement
-}
+  /**
+   * 自定义组件渲染 toast 内容
+   */
+  component?: React.ComponentType<any>
 
-export interface ToastOptions extends Omit<ToastProps, 'id'> {
-  id?: React.ReactText
+  /**
+   * 自定义函数渲染 toast 内容
+   */
+  render?: <T extends ToastOptions>(options: T) => React.ReactNode
+  /**
+   * 放置 toast 的位置
+   */
+  placement?: ToastPlacement
 }

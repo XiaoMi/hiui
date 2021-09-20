@@ -2,17 +2,6 @@
 
 $prefix: '#{$component-prefix}-message' !default;
 
-.#{$prefix}-manager {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  pointer-events: none;
-  // TODO: 处理所有弹窗的优先级
-  z-index: 1020;
-}
-
 .#{$prefix} {
   box-sizing: border-box;
   width: auto;
@@ -64,6 +53,10 @@ $prefix: '#{$component-prefix}-message' !default;
     }
   }
 
+  $transition-duration: 0.3s;
+  $transition-height-delay: 0.21s;
+  $transition-height-duration: 0.2s;
+
   &-container {
     width: 100%;
     display: flex;
@@ -72,18 +65,18 @@ $prefix: '#{$component-prefix}-message' !default;
     position: relative;
     transform: translateY(-100%);
     transform-origin: 50% 50% 0;
-    opacity: 1;
     overflow: hidden;
+    opacity: 1;
   }
 
   &--motion {
     &-enter {
-      transition: transform 0.3s, opacity 0.3s;
+      transition: transform $transition-duration, opacity $transition-duration;
       transform: translateY(-100%);
     }
 
     &-enter-active {
-      transition: transform 0.3s, opacity 0.3s;
+      transition: transform $transition-duration, opacity $transition-duration;
       transform: translateY(0%);
     }
 
@@ -92,13 +85,13 @@ $prefix: '#{$component-prefix}-message' !default;
     }
 
     &-exit {
-      transition: transform 0.3s, opacity 0.3s, height 0.2s ease-out 0.21s;
+      transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration ease-out $transition-height-delay;
       transform: translateY(0%);
       opacity: 1;
     }
 
     &-exit-active {
-      transition: transform 0.3s, opacity 0.3s, height 0.2s ease-out 0.21s;
+      transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration ease-out $transition-height-delay;
       transform: translateY(0%) scale(0.84, 0.84);
       opacity: 0;
     }

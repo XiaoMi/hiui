@@ -1,33 +1,40 @@
 import React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
-import { ToastManager, ToastOptions } from './ToastManager'
 import * as Container from '@hi-ui/container'
-import { _prefix } from './Toast'
+import { ToastManager, ToastManagerProps, _prefix } from './ToastManager'
+import { ToastEventOptions } from './types'
 
-const toastApiSelector = `.${_prefix}__portal`
+export class ToastAPI<T = ToastEventOptions> {
+  protected toastManager!: React.RefObject<ToastManager>
+  protected container!: Element | undefined
+  protected options!: ToastAPIOptions
 
-export class ToastAPI {
-  private toastManager!: React.RefObject<ToastManager>
-  private container!: Element | undefined
-  private selector!: string
+  constructor(toastAPIOptions: ToastAPIOptions) {
+    const options = { ...toastAPIOptions }
+    if (options.prefixCls === undefined) {
+      options.prefixCls = _prefix
+    }
 
-  constructor(selector: string = toastApiSelector) {
-    this.selector = selector
+    this.options = options
     this.initManager()
   }
 
-  static create(selector: string) {
-    return new ToastAPI(selector)
+  static create(options: ToastAPIOptions) {
+    return new ToastAPI(options)
+  }
+
+  get selector() {
+    return `.${this.options.prefixCls}__portal`
   }
 
   initManager() {
     this.container = Container.getContainer(this.selector)
     this.toastManager = React.createRef<ToastManager>()
 
-    render(<ToastManager ref={this.toastManager} />, this.container)
+    render(<ToastManager ref={this.toastManager} {...this.options} />, this.container)
   }
 
-  open = (props: ToastOptions) => {
+  open = (props: T) => {
     if (!this.container) {
       this.initManager()
     }
@@ -52,3 +59,5 @@ export class ToastAPI {
     this.container = undefined
   }
 }
+
+export interface ToastAPIOptions extends ToastManagerProps {}
