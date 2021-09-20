@@ -1,5 +1,5 @@
 import React from 'react'
-import Message from '../src'
+import Notification from '../src'
 import Button from '@hi-ui/button'
 
 export const Close = () => {
@@ -7,17 +7,18 @@ export const Close = () => {
 
   function close() {
     const popId = toastIdsRef.current.pop()
-    Message.close(popId)
+    Notification.close(popId)
   }
 
   function closeAll() {
-    Message.closeAll()
+    Notification.closeAll()
   }
 
   function addToast() {
-    const id = Message.open({
+    const id = Notification.open({
       title: 'some text',
       type: ['error', 'warning', 'success', 'info'][Math.floor(Math.random() * 4)] as any,
+      content: 'some content',
     })
     toastIdsRef.current.push(id)
   }
@@ -25,7 +26,7 @@ export const Close = () => {
   return (
     <>
       <h1>Close</h1>
-      <div className="message-close__wrap">
+      <div className="notification-close__wrap">
         <Button onClick={addToast}>Toast</Button>
 
         <Button onClick={close}>Close latest toast</Button>

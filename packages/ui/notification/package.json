@@ -1,10 +1,10 @@
 {
-  "name": "@hi-ui/message",
+  "name": "@hi-ui/notification",
   "version": "4.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/message#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/notification#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",

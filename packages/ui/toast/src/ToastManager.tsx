@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { ToastPlacement, ToastOptions, ToastEventOptions } from './types'
 import { isFunction } from '@hi-ui/type-assertion'
+import { ToastPlacement, ToastOptions, ToastEventOptions } from './types'
 
 const _role = 'toast'
 export const _prefix = getPrefixCls(_role)

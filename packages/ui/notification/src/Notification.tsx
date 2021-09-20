@@ -8,12 +8,13 @@ import {
   CloseCircleFilled,
   CheckCircleFilled,
   ExclamationCircleFilled,
+  CloseOutlined,
 } from '@hi-ui/icons'
 
-const _role = 'message'
+const _role = 'notification'
 export const _prefix = getPrefixCls(_role)
 
-const messageIconMap: any = {
+const notificationIconMap: any = {
   success: <CheckCircleFilled />,
   error: <CloseCircleFilled />,
   warning: <ExclamationCircleFilled />,
@@ -21,9 +22,9 @@ const messageIconMap: any = {
 }
 
 /**
- * TODO: What is Message
+ * TODO: What is Notification
  */
-export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
+export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>(
   (
     {
       prefixCls = _prefix,
@@ -32,9 +33,11 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
       children,
       id,
       title,
+      content,
       visible = true,
-      duration = 5000,
+      duration = 5000000,
       autoClose = true,
+      closable = true,
       type = 'info',
       $destroy,
       onClose,
@@ -97,8 +100,16 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
       >
         <div ref={motionElRef} className={`${prefixCls}-container`}>
           <div ref={ref} role={role} className={cls} {...rest}>
-            {messageIconMap[type]}
-            {title}
+            <div className={`${prefixCls}__header`}>
+              <span className={`${prefixCls}__icon`}> {notificationIconMap[type]}</span>
+              <span className={`${prefixCls}__title`}>{title}</span>
+            </div>
+            {content ? <div className={`${prefixCls}__content`}>{content}</div> : null}
+            {closable ? (
+              <button className={`${prefixCls}__close`} onClick={requestClose}>
+                <CloseOutlined />
+              </button>
+            ) : null}
           </div>
         </div>
       </CSSTransition>
@@ -106,7 +117,7 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
   }
 )
 
-export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | 'title'> {
+export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | 'title'> {
   /**
    * 开启可见
    */
@@ -120,9 +131,13 @@ export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | 'title
    */
   id: React.ReactText
   /**
-   * 通知框内容
+   * 通知框标题
    */
   title: React.ReactNode
+  /**
+   * 通知框内容
+   */
+  content?: React.ReactNode
   /**
    * 通知框类型
    */
@@ -141,11 +156,15 @@ export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | 'title
    */
   autoClose?: boolean
   /**
+   * 开启点击关闭
+   */
+  closable?: boolean
+  /**
    * 内部使用，勿覆盖
    */
   $destroy?: () => void
 }
 
 if (__DEV__) {
-  Message.displayName = 'Message'
+  Notification.displayName = 'Notification'
 }

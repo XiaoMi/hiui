@@ -1,0 +1,173 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-notification' !default;
+
+.#{$prefix}-manager {
+  margin-top: 6px;
+}
+
+.#{$prefix} {
+  $margin: 6px;
+
+  position: relative;
+  box-sizing: border-box;
+  width: 260px;
+  padding: 10px;
+  margin: $margin 18px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  pointer-events: auto;
+  box-shadow: 0 1px 6px -1px rgba(0, 0, 0, 0.12);
+  font-size: $font-size-normal;
+  line-height: $line-height-size-normal;
+  border-left: 6px solid transparent;
+  background-color: use-color('white');
+
+  &__header {
+    display: flex;
+    align-items: center;
+    word-break: break-word;
+  }
+
+  &__content {
+    font-size: 12px;
+    padding: 0 12px 0 28px;
+    word-break: break-word;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+
+    svg {
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+  }
+
+  $transition-duration: 0.3s;
+  $transition-height-delay: 0.21s;
+  $transition-height-duration: 0.2s;
+
+  &-container {
+    // width: 100%;
+    width: auto;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    position: relative;
+    transform: translateX(100%);
+    transform-origin: 50% 50% 0;
+    overflow: hidden;
+    opacity: 1;
+    max-height: 50vh;
+    transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration ease-out $transition-height-delay;
+  }
+
+  &--motion {
+    &-enter {
+      transform: translateX(100%);
+
+      &-active {
+        transform: translateX(0);
+      }
+
+      &-done {
+        transform: none;
+      }
+    }
+
+    &-exit {
+      transform: translateX(0%);
+
+      &-active {
+        transform: translateX(100%);
+      }
+
+      &-done {
+        visibility: hidden;
+        opacity: 0;
+      }
+    }
+  }
+
+  &--type {
+    &-info {
+      border-color: use-color('primary');
+
+      .#{$prefix}__title {
+        color: use-color('primary');
+      }
+
+      .#{$prefix}__icon {
+        color: use-color('primary');
+      }
+    }
+
+    &-success {
+      border-color: use-color('success');
+
+      .#{$prefix}__title {
+        color: use-color('success');
+      }
+
+      .#{$prefix}__icon {
+        color: use-color('success');
+      }
+    }
+
+    &-error {
+      border-color: use-color('danger');
+
+      .#{$prefix}__title {
+        color: use-color('danger');
+      }
+
+      .#{$prefix}__icon {
+        color: use-color('danger');
+      }
+    }
+
+    &-warning {
+      border-color: use-color('warning');
+
+      .#{$prefix}__title {
+        color: use-color('warning');
+      }
+
+      .#{$prefix}__icon {
+        color: use-color('warning');
+      }
+    }
+  }
+
+  &__close {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    top: 12px;
+    right: 12px;
+    color: #000;
+    color: use-color('gray-70');
+    font-size: 14px;
+
+    &::after {
+      position: absolute;
+      content: '';
+      top: -6px;
+      right: -6px;
+      left: -6px;
+      bottom: -6px;
+    }
+
+    svg {
+      font-size: 14px;
+    }
+  }
+}
