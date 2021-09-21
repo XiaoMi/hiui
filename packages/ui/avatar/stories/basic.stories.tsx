@@ -6,7 +6,7 @@ export const Basic = () => {
     <>
       <h1>Avatar</h1>
       <div className="avatar-basic__wrap">
-        <Avatar src="https://bit.ly/dan-abramov" initials="P" />
+        <Avatar src="https://avatars.githubusercontent.com/u/810438?v=4" initials="P" />
       </div>
     </>
   )

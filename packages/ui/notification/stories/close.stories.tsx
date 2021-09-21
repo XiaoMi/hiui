@@ -27,11 +27,11 @@ export const Close = () => {
     <>
       <h1>Close</h1>
       <div className="notification-close__wrap">
-        <Button onClick={addToast}>Toast</Button>
+        <Button onClick={addToast}>Notice</Button>
 
-        <Button onClick={close}>Close latest toast</Button>
+        <Button onClick={close}>Close latest Notice</Button>
 
-        <Button onClick={closeAll}>Close all toasts</Button>
+        <Button onClick={closeAll}>Close all Notices</Button>
       </div>
     </>
   )

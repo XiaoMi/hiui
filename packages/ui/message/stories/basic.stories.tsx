@@ -12,6 +12,7 @@ export const Basic = () => {
           onClick={() => {
             Message.open({
               title: 'xxxx',
+              type: 'success',
             })
           }}
         >

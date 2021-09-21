@@ -17,7 +17,7 @@ export const Basic = () => {
             })
           }}
         >
-          Toast
+          Notice
         </Button>
       </div>
     </>

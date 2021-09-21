@@ -62,7 +62,7 @@ $prefix: '#{$component-prefix}-notification' !default;
     overflow: hidden;
     opacity: 1;
     max-height: 50vh;
-    transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration ease-out $transition-height-delay;
+    transition: transform $transition-duration ease, opacity $transition-duration ease, height $transition-height-duration ease-out $transition-height-delay;
   }
 
   &--motion {
@@ -94,7 +94,7 @@ $prefix: '#{$component-prefix}-notification' !default;
 
   &--type {
     &-info {
-      border-color: use-color('primary');
+      border-color: use-color('primary-50');
 
       .#{$prefix}__title {
         color: use-color('primary');
@@ -106,7 +106,7 @@ $prefix: '#{$component-prefix}-notification' !default;
     }
 
     &-success {
-      border-color: use-color('success');
+      border-color: use-color('success-50');
 
       .#{$prefix}__title {
         color: use-color('success');
@@ -118,7 +118,7 @@ $prefix: '#{$component-prefix}-notification' !default;
     }
 
     &-error {
-      border-color: use-color('danger');
+      border-color: use-color('danger-50');
 
       .#{$prefix}__title {
         color: use-color('danger');
@@ -130,7 +130,7 @@ $prefix: '#{$component-prefix}-notification' !default;
     }
 
     &-warning {
-      border-color: use-color('warning');
+      border-color: use-color('warning-50');
 
       .#{$prefix}__title {
         color: use-color('warning');

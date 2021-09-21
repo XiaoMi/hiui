@@ -35,7 +35,7 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
       title,
       content,
       visible = true,
-      duration = 5000000,
+      duration = 5000,
       autoClose = true,
       closable = true,
       type = 'info',
