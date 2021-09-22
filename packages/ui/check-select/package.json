@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/check-select",
-  "version": "4.0.0-alpha.2",
+  "version": "4.0.0-alpha.3",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -52,7 +52,7 @@
     "@hi-ui/input": "^4.0.0-alpha.10",
     "@hi-ui/popper": "^4.0.0-alpha.4",
     "@hi-ui/tag-input": "^4.0.0-alpha.1",
-    "@hi-ui/use-check": "^4.0.0-alpha.5",
+    "@hi-ui/use-check": "^4.0.0-alpha.6",
     "@hi-ui/use-children": "^4.0.0-alpha.1",
     "@hi-ui/use-latest": "^4.0.0-alpha.2",
     "@hi-ui/use-toggle": "^4.0.0-alpha.4",

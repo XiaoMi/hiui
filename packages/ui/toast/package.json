@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/toast",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -47,7 +47,7 @@
     "@hi-ui/container": "^4.0.0-alpha.4",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
     "@hi-ui/env": "^4.0.0-alpha.0",
-    "@hi-ui/type-assertion": "^4.0.0-alpha.5"
+    "@hi-ui/type-assertion": "^4.0.0-alpha.6"
   },
   "peerDependencies": {
     "react": "^17.0.1",
