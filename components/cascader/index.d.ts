@@ -1,18 +1,22 @@
-type DataItem = {
-  content: string
-  id: string | number
-  disabled?: boolean
-}
+import React from "react"
+
 type FieldNames = {
   label?: string
   value?: string
   children?: string
 }
+
+type DataItem = {
+  id: string | number
+  content: string
+  disabled?: boolean
+  children?: DataItem[]
+}
 interface Props {
   fieldNames?: FieldNames
-  data: DataItem
-  value: string[] | number[]
-  defaultValue: string[] | number[]
+  data: DataItem []
+  value?: string[] | number[]
+  defaultValue?: string[] | number[]
   expandTrigger?: 'click' | 'hover'
   searchable?: boolean
   bordered?: boolean
@@ -21,9 +25,8 @@ interface Props {
   disabled?: boolean
   changeOnSelect?: boolean
   placeholder?: string
-  emptyContent?: string | JSX.Element
+  emptyContent?: string | React.ReactNode
   displayRender?: (value: string[] | number[]) => string
-  style?: object
   onChange?: (value: string[] | number[]) => void
   onOpen?: () => void
   onClose?: () => void
@@ -31,5 +34,5 @@ interface Props {
   style?: CSSProperties
   className?: string
 }
-declare const Card: React.ComponentType<Props>
-export default Card
+declare const Cascader: React.ComponentType<Props>
+export default Cascader
