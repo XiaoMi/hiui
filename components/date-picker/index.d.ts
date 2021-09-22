@@ -16,6 +16,7 @@ export interface CommonProps {
   value?: Date | string | number | DateRange | undefined | null
   defaultValue?: Date | string | number | DateRange | undefined | null
   disabled?: boolean
+  placement?: 'bottom-start' | 'top-start' | 'bottom' | 'top'
   clearable?: boolean
   placeholder?: string | string[]
   format?: string
@@ -39,6 +40,9 @@ interface DateProps extends CommonProps {
   timeperiod?: number
   disabledDate?: (currentDate: Date) => boolean
   showTime?: boolean
+  disabledHours?: () => number[]
+  disabledMinutes?: (selectedHour: number) => number[]
+  disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[]
   shortcuts?: string[] | Shortcuts[]
   weekOffset?: 0 | 1
   altCalendar?: CalendarItem

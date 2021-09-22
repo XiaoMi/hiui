@@ -8,6 +8,7 @@ interface Props {
   current?: number
   placement?: 'vertical' | 'horizontal'
   itemLayout?: 'vertical' | 'horizontal'
+  onChange?: (current: number) => void
 }
 declare const Stepper: React.ComponentType<Props>
 export default Stepper

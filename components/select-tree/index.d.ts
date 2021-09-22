@@ -3,6 +3,7 @@ import { CSSProperties } from "react"
 type DataItem = {
   id: string | number
   title: string
+  disabled?: boolean
   children?: DataItem[]
 }
 type DataSource = {
@@ -28,6 +29,7 @@ interface Props {
   showCheckedMode?: 'ALL' | 'PARENT' | 'CHILD'
   mode?: 'normal' | 'breadcrumb'
   defaultExpandAll?: boolean
+  fieldNames?: FieldNames
   disabled?: boolean
   bordered?: boolean
   defaultExpandIds?: string[] | number[]

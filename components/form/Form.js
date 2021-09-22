@@ -46,10 +46,10 @@ const InternalForm = (props) => {
       const _fields = _Immutable.current.currentStateFields()
       const { listNames } = _Immutable.current.currentState()
       _fields.forEach((item) => {
-        const { field } = item
+        const { realField } = item
         // eslint-disable-next-line no-prototype-builtins
-        if (_values.hasOwnProperty(field)) {
-          const value = values[field]
+        if (_values.hasOwnProperty(realField)) {
+          const value = values[realField]
           item.value = value
           item.setValue(value)
         }
@@ -103,8 +103,8 @@ const InternalForm = (props) => {
 
       Object.keys(changeValues).forEach((changeValuesKey) => {
         fields.forEach((filedItem) => {
-          const { field, _type, listname } = filedItem
-          if (field === changeValuesKey && _type === 'list') {
+          const { realField, _type, listname } = filedItem
+          if (realField === changeValuesKey && _type === 'list') {
             _changeValues[listname] = _transformValues[listname]
             delete _changeValues[changeValuesKey]
           }
@@ -120,7 +120,7 @@ const InternalForm = (props) => {
     (resetNames) => {
       let _fields = _Immutable.current.currentStateFields()
       _fields = _fields.filter((childrenField) => {
-        return Array.isArray(resetNames) ? resetNames.includes(childrenField.field) : true
+        return Array.isArray(resetNames) ? resetNames.includes(childrenField.realField) : true
       })
       _fields.forEach((item) => {
         item.clearValidate()
@@ -136,14 +136,14 @@ const InternalForm = (props) => {
       let _fields = _Immutable.current.currentStateFields()
       const { listNames, listValues } = _Immutable.current.currentState()
       _fields = _fields.filter((childrenField) => {
-        return Array.isArray(resetNames) ? resetNames.includes(childrenField.field) : true
+        return Array.isArray(resetNames) ? resetNames.includes(childrenField.realField) : true
       })
 
       _fields.forEach((item) => {
-        const { field, listname } = item
-        const changeFieldkey = listname || field
+        const { realField, listname } = item
+        const changeFieldkey = listname || realField
         const isToDefault = toDefault && initialValues && typeof initialValues[changeFieldkey] !== 'undefined'
-        const value = isToDefault ? initialValues[field] : ''
+        const value = isToDefault ? initialValues[realField] : ''
         const changeFieldVal = isToDefault ? initialValues[changeFieldkey] : ''
         changeValues[changeFieldkey] = changeFieldVal
         allValues[changeFieldVal] = value
@@ -190,13 +190,13 @@ const InternalForm = (props) => {
         return
       }
       const _fields = fields.filter((fieldChild) => {
-        const { field, value } = fieldChild
-        values[field] = value
-        return Array.isArray(validateNames) ? validateNames.includes(field) : true
+        const { realField, value } = fieldChild
+        values[realField] = value
+        return Array.isArray(validateNames) ? validateNames.includes(realField) : true
       })
 
       _fields.forEach((fieldChild) => {
-        const { field, value } = fieldChild
+        const { value, realField } = fieldChild
         // 对指定的字段进行校验  其他字段过滤不校验
         fieldChild.validate(
           '',
@@ -205,7 +205,7 @@ const InternalForm = (props) => {
               const errorsMsg = error.map((err) => {
                 return err.message
               })
-              errors[field] = { errors: errorsMsg }
+              errors[realField] = { errors: errorsMsg }
             }
           },
           value,
@@ -224,12 +224,12 @@ const InternalForm = (props) => {
       const errors = {}
       const fields = _.cloneDeep(_Immutable.current.currentStateFields())
       const _fields = fields.filter((fieldChild) => {
-        const { field } = fieldChild
-        return Array.isArray(validateNames) ? validateNames.includes(field) : true
+        const { realField } = fieldChild
+        return Array.isArray(validateNames) ? validateNames.includes(realField) : true
       })
 
       _fields.forEach((fieldChild) => {
-        const { field, value } = fieldChild
+        const { realField, value } = fieldChild
         // 对指定的字段进行校验  其他字段过滤不校验
         fieldChild.validate(
           '',
@@ -238,7 +238,7 @@ const InternalForm = (props) => {
               const errorsMsg = error.map((err) => {
                 return err.message
               })
-              errors[field] = { errors: errorsMsg }
+              errors[realField] = { errors: errorsMsg }
             }
           },
           value,
@@ -259,12 +259,12 @@ const InternalForm = (props) => {
       }
       fields
         .filter((fieldChild) => {
-          const { field } = fieldChild
-          return Array.isArray(validateNames) ? validateNames.includes(field) : true
+          const { realField } = fieldChild
+          return Array.isArray(validateNames) ? validateNames.includes(realField) : true
         })
         .forEach((item) => {
-          const { field, value } = item
-          values[field] = value
+          const { realField, value } = item
+          values[realField] = value
         })
       return transformValues(values, fields)
     },
@@ -276,7 +276,7 @@ const InternalForm = (props) => {
       let value
       const fields = _.cloneDeep(_Immutable.current.currentStateFields())
       const field = fields.filter((fieldChild) => {
-        if (fieldChild.field === key) {
+        if (fieldChild.realField === key) {
           value = fieldChild.value
           return true
         }

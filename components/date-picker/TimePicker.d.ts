@@ -3,6 +3,7 @@ interface TimeProps extends CommonProps {
   hourStep?: number
   minuteStep?: number
   secondStep?: number
+  placement?: string
   disabledHours?: () => number[]
   disabledMinutes?: (selectedHour: number) => number[]
   disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[]

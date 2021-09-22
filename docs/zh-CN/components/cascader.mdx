@@ -38,7 +38,7 @@ import DemoAdvanced from '../../demo/cascader/section-advanced.jsx'
 | defaultValue     | 设置当前选中值默认值 (3.0 新增)                                                                          | string[]                                     | -                  | []                                                      |
 | expandTrigger    | 次级菜单的展开方式，可选 'click' 和 'hover'                                                              | string                                       | 'click' \| 'hover' | 'click'                                                 |
 | searchable       | 是否可搜索                                                                                               | boolean                                      | true \| false      | false                                                   |
-| bordered            | 是否有边框                                                                                               | boolean                                                              | true \| false                                                |             true                                                          |
+| bordered         | 是否有边框                                                                                               | boolean                                                              | true \| false                                                |             true                                                          |
 | filterOption     | 第一个参数为输入的关键字，第二个为数据项，返回值为 true 时将出现在结果项。仅在 searchable 为 true 时有效 | (keyword: string, item: DataItem) => boolean | -                  | -                                                       |
 | clearable        | 是否可清空                                                                                               | boolean                                      | true \| false      | true                                                    |
 | disabled         | 是否禁止使用                                                                                             | boolean                                      | true \| false      | false                                                   |
@@ -54,6 +54,9 @@ import DemoAdvanced from '../../demo/cascader/section-advanced.jsx'
 | 名称     | 说明         | 类型                       | 参数               | 返回值 |
 | -------- | ------------ | -------------------------- | ------------------ | ------ |
 | onChange | 选择后的回调 | (values: string[]) => void | values: 选中项集合 | -      |
+| onActiveItemChange | 选中项改变时的回调 | (values: string[]) => void | values: 选中项集合 | -      |
+| onOpen | 下拉菜单打开时回调 | () => void | - | -      |
+| onClose | 下拉菜单关闭时回调 | () => void | - | -      |
 
 ## Type
 

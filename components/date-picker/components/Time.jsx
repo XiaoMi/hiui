@@ -14,7 +14,8 @@ const Time = ({ date, onChange, timeRangePanelType, startDate, currentDate }) =>
     hourStep = 1,
     minuteStep = 1,
     secondStep = 1,
-    type: PropsType
+    type: PropsType,
+    showTime
   } = useContext(DPContext)
   const isShowHMS = () => {
     return {
@@ -28,7 +29,7 @@ const Time = ({ date, onChange, timeRangePanelType, startDate, currentDate }) =>
   // 设置Date的选中状态
   const setDisableTime = (type, i, disabledTime = []) => {
     let isDisabled = disabledTime.includes(i)
-    if (PropsType === 'timerange' || PropsType === 'time' || PropsType === 'default') {
+    if (PropsType === 'timerange' || PropsType === 'time' || PropsType === 'default' || showTime) {
       if (timeRangePanelType === 'right') {
         const { hour, minute, second } = deconstructDate(startDate)
         const { hour: endHour, minute: endMinute } = date ? deconstructDate(date) : deconstructDate(new Date())

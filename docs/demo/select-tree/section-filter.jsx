@@ -7,7 +7,7 @@ const desc = '通过搜索框定位目标数据'
 const defaultStr = `constructor () {
   super()
   this.state = {
-    value: '3',
+    value: [],
     singleList: [
       {
         title: '手机类',
@@ -101,7 +101,14 @@ class Demo extends React.Component {
         return (
           <SelectTree
             searchMode='filter'
+            onChange={(val)=>{
+              console.log(val)
+              this.setState({
+                value:val
+              })
+            }}
             type='multiple'
+            value={this.state.value}
             data={singleList}
           />
         )

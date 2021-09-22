@@ -1,0 +1,57 @@
+@import '../../../core-css/index.scss';
+
+$table: 'hi-table-advanceheader' !default;
+
+.#{$table} {
+  &-sorter {
+    display: flex;
+    flex-direction: column;
+    height: 20px;
+    margin-top: 2px;
+    margin-left: 6px;
+
+    &_icon {
+      display: inline-block;
+      height: 8px;
+      cursor: pointer;
+      overflow: hidden;
+
+      .hi-icon {
+        font-size: 16px;
+        position: relative;
+        top: -5px;
+
+        & + .hi-icon {
+          margin-left: 0;
+        }
+      }
+
+      &-active {
+        color: use-color('primary');
+      }
+    }
+  }
+
+  &-customfilter {
+    &-icon {
+      cursor: pointer;
+
+      &:hover {
+        color: use-color('primary');
+      }
+    }
+
+    &-content {
+      width: 150px;
+      padding: 12px 8px;
+      color: use-color('black');
+      overflow-x: hidden;
+      overflow-y: auto;
+      background-color: use-color('white');
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+      border-radius: 2px;
+      box-sizing: border-box;
+      text-align: left;
+    }
+  }
+}

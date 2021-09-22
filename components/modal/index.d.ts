@@ -13,6 +13,7 @@ interface Props {
   onConfirm?: (e: MouseEvent) => void
   style?: CSSProperties
   className?: string
+  confirmLoading?: boolean
 }
 const confirmFun: (options:Props) => void
 declare class Modal extends React.Component<Props, any> {
