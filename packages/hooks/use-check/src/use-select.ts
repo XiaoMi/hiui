@@ -29,7 +29,9 @@ export const useSelect = ({
     [disabled, allowSelectRef, onSelect]
   )
 
-  const isSelectedId = useCallback((id: React.ReactText) => !!id && selectedId === id, [selectedId])
+  const isSelectedId = useCallback((id: React.ReactText) => id !== '' && selectedId === id, [
+    selectedId,
+  ])
 
   return [onItemSelect, isSelectedId] as const
 }
