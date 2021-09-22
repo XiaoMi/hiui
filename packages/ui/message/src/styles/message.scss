@@ -67,16 +67,15 @@ $prefix: '#{$component-prefix}-message' !default;
     transform-origin: 50% 50% 0;
     overflow: hidden;
     opacity: 1;
+    transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration ease-out $transition-height-delay;
   }
 
   &--motion {
     &-enter {
-      transition: transform $transition-duration, opacity $transition-duration;
       transform: translateY(-100%);
     }
 
     &-enter-active {
-      transition: transform $transition-duration, opacity $transition-duration;
       transform: translateY(0%);
     }
 
@@ -85,13 +84,11 @@ $prefix: '#{$component-prefix}-message' !default;
     }
 
     &-exit {
-      transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration ease-out $transition-height-delay;
       transform: translateY(0%);
       opacity: 1;
     }
 
     &-exit-active {
-      transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration ease-out $transition-height-delay;
       transform: translateY(0%) scale(0.84, 0.84);
       opacity: 0;
     }

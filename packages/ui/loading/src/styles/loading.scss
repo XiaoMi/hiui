@@ -56,16 +56,119 @@ $prefixCls: #{$component-prefix}-loading !default;
   $size: 36;
 
   &__icon {
-    @include transition;
-    @include wh($size, $size);
+    position: relative;
 
-    display: inline-block;
-    color: $brand;
-    border: 2px solid currentColor;
-    border-right-color: $lite;
-    border-bottom-color: $lite;
-    border-radius: 50%;
-    animation: #{$component-prefix}-rotation 0.8s linear infinite;
+    div {
+      border-radius: 50%;
+      display: inline-block;
+      position: absolute;
+
+      @keyframes animDotF {
+        0% {
+          transform: translateX(0);
+          z-index: 1;
+        }
+
+        25% {
+          transform: translateX(100%) scale(1.5);
+          z-index: 1;
+        }
+
+        50% {
+          transform: translateX(200%);
+          z-index: 0;
+        }
+
+        75% {
+          transform: translateX(100%) scale(0.5);
+          z-index: 0;
+        }
+
+        100% {
+          transform: translateX(0);
+          z-index: 1;
+        }
+      }
+
+      @keyframes animDotL {
+        0% {
+          transform: translateX(0);
+          z-index: 0;
+        }
+
+        25% {
+          transform: translateX(-100%) scale(0.5);
+          z-index: 0;
+        }
+
+        50% {
+          transform: translateX(-200%);
+          z-index: 1;
+        }
+
+        75% {
+          transform: translateX(-100%) scale(1.5);
+          z-index: 1;
+        }
+
+        100% {
+          transform: translateX(0%);
+          z-index: 0;
+        }
+      }
+
+      &:first-child {
+        background: #f63;
+        left: 0;
+        transform: translateX(0);
+        animation: animDotF 1.5s linear infinite;
+      }
+
+      &:last-child {
+        background: #4284f5;
+        right: 0;
+        transform: translateX(0);
+        animation: animDotL 1.5s linear infinite;
+      }
+    }
+  }
+
+  &--size {
+    &-sm {
+      .#{$prefixCls}__icon {
+        width: 24px;
+        height: 12px;
+
+        div {
+          height: 8px;
+          width: 8px;
+        }
+      }
+    }
+
+    &-md {
+      .#{$prefixCls}__icon {
+        width: 36px;
+        height: 18px;
+
+        div {
+          height: 12px;
+          width: 12px;
+        }
+      }
+    }
+
+    &-lg {
+      .#{$prefixCls}__icon {
+        width: 48px;
+        height: 24px;
+
+        div {
+          height: 16px;
+          width: 16px;
+        }
+      }
+    }
   }
 
   &__label {

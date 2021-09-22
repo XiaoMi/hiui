@@ -27,6 +27,7 @@ export const Loading = forwardRef<null, LoadingProps>(
       label,
       visible = true,
       full = false,
+      size = 'md',
       delay = -1,
       ...restProps
     },
@@ -82,10 +83,9 @@ export const Loading = forwardRef<null, LoadingProps>(
     const maskCls = cx(
       `${prefixCls}__mask`,
       children && `${prefixCls}__mask--withchildren`,
-      full && `${prefixCls}__mask--full`
+      full && `${prefixCls}__mask--full`,
+      size && `${prefixCls}--size-${size}`
     )
-    const iconCls = cx(`${prefixCls}__icon`)
-    const labelCls = cx(`${prefixCls}__label`)
 
     const loadingComponent = (
       <CSSTransition
@@ -97,9 +97,12 @@ export const Loading = forwardRef<null, LoadingProps>(
         <div className={maskCls} {...restProps}>
           <div ref={ref} role={role} className={cx(prefixCls, className)}>
             <div className={`${prefixCls}__icon-wrapper`}>
-              <div className={iconCls} />
+              <div className={`${prefixCls}__icon`}>
+                <div />
+                <div />
+              </div>
             </div>
-            {label ? <span className={labelCls}>{label}</span> : null}
+            {label ? <span className={`${prefixCls}__label`}>{label}</span> : null}
           </div>
         </div>
       </CSSTransition>
@@ -133,6 +136,7 @@ export interface LoadingProps {
   full?: boolean
   container?: React.ReactNode
   delay?: number
+  size?: 'md' | 'lg' | 'sm'
 }
 
 if (__DEV__) {
