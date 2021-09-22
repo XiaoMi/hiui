@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
+import cx from 'classnames'
 import _ from 'lodash'
 import Popper from '../popper'
 import Loading from '../loading'
@@ -29,6 +30,7 @@ import Trigger from './components/Trigger'
 import Provider from '../context'
 
 const SelectTree = ({
+  className,
   data,
   dataSource,
   type,
@@ -537,7 +539,7 @@ const SelectTree = ({
 
   return (
     <div
-      className={`theme__${theme} hi-selecttree`}
+      className={cx('hi-selecttree', `theme__${theme}`, className)}
       onClick={() => {
         setIsFocus(true)
       }}
@@ -572,7 +574,7 @@ const SelectTree = ({
           onKeyDown={handleKeyDown}
           placement={placement}
           overlayClassName={overlayClassName}
-          className={`hi-selecttree__popper ${data.length === 0 && dataSource ? 'hi-selecttree__popper--loading' : ''}`}
+          className={cx('hi-selecttree__popper', data.length === 0 && dataSource && 'hi-selecttree__popper--loading')}
           onClickOutside={() => {
             setIsFocus(false)
             setShow(false)
