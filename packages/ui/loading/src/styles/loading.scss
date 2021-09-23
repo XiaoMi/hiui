@@ -50,11 +50,6 @@ $prefixCls: #{$component-prefix}-loading !default;
     height: fit-content;
   }
 
-  $base: #263238;
-  $lite: #fff;
-  $brand: palette('primary');
-  $size: 36;
-
   &__icon {
     position: relative;
 
@@ -173,8 +168,8 @@ $prefixCls: #{$component-prefix}-loading !default;
 
   &__label {
     margin-top: 6px;
-    color: $brand;
     animation: #{$component-prefix}-flash 1.6s linear infinite;
+    color: #f63;
   }
 }
 

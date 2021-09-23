@@ -1,11 +1,24 @@
 import React from 'react'
 import { Notification as NotificationComponent, NotificationProps, _prefix } from './Notification'
-import { ToastAPI } from '@hi-ui/toast'
+import { ToastAPI, ToastAPIOptions } from '@hi-ui/toast'
 
-export const Notification = new ToastAPI<NotificationOptions>({
-  prefixCls: _prefix,
-  component: NotificationComponent,
-})
+export class NotificationAPI extends ToastAPI<NotificationOptions> {
+  static defaultOptions = {
+    prefixCls: _prefix,
+  }
+
+  constructor(options: NotificationAPIOptions) {
+    super(options)
+
+    if (options.prefixCls === undefined) {
+      this.options.prefixCls = NotificationAPI.defaultOptions.prefixCls
+    }
+
+    this.initManager()
+  }
+}
+
+export interface NotificationAPIOptions extends ToastAPIOptions {}
 
 export interface NotificationOptions extends Omit<NotificationProps, '$destroy' | 'id'> {
   /**
@@ -13,3 +26,5 @@ export interface NotificationOptions extends Omit<NotificationProps, '$destroy' 
    */
   id?: React.ReactText
 }
+
+export const notification = new NotificationAPI({ component: NotificationComponent })

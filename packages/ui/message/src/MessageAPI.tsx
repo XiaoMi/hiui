@@ -1,11 +1,24 @@
 import React from 'react'
 import { Message as MessageComponent, MessageProps, _prefix } from './Message'
-import { ToastAPI } from '@hi-ui/toast'
+import { ToastAPI, ToastAPIOptions } from '@hi-ui/toast'
 
-export const Message = new ToastAPI<MessageOptions>({
-  prefixCls: _prefix,
-  component: MessageComponent,
-})
+export class MessageAPI extends ToastAPI<MessageOptions> {
+  static defaultOptions = {
+    prefixCls: _prefix,
+  }
+
+  constructor(options: MessageAPIOptions) {
+    super(options)
+
+    if (options.prefixCls === undefined) {
+      this.options.prefixCls = MessageAPI.defaultOptions.prefixCls
+    }
+
+    this.initManager()
+  }
+}
+
+export interface MessageAPIOptions extends ToastAPIOptions {}
 
 export interface MessageOptions extends Omit<MessageProps, '$destroy' | 'id'> {
   /**
@@ -13,3 +26,5 @@ export interface MessageOptions extends Omit<MessageProps, '$destroy' | 'id'> {
    */
   id?: React.ReactText
 }
+
+export const message = new MessageAPI({ component: MessageComponent })

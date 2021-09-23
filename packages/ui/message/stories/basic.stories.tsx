@@ -1,5 +1,5 @@
 import React from 'react'
-import Message from '../src'
+import message from '../src'
 import Button from '@hi-ui/button'
 
 export const Basic = () => {
@@ -10,7 +10,7 @@ export const Basic = () => {
         {/* <Message></Message> */}
         <Button
           onClick={() => {
-            Message.open({
+            message.open({
               title: 'xxxx',
               type: 'success',
             })

@@ -6,7 +6,17 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="check-select-basic__wrap">
-        <CheckSelect placeholder="请选择" titleRender={() => 'xxx'}>
+        <CheckSelect
+          placeholder="请选择"
+          titleRender={(option) => {
+            console.log(option)
+            if (option.id === 'ABC1') {
+              return '不限'
+            }
+
+            return true
+          }}
+        >
           <span>title</span>
           <CheckSelectOption value="ABC1">Option-ABC1</CheckSelectOption>
           <CheckSelectOption value="ABC2">Option-ABC2</CheckSelectOption>

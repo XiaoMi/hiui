@@ -5,6 +5,10 @@ import { ToastManager, ToastManagerProps, _prefix } from './ToastManager'
 import { ToastEventOptions } from './types'
 
 export class ToastAPI<T = ToastEventOptions> {
+  static defaultOptions = {
+    prefixCls: _prefix,
+  }
+
   protected toastManager!: React.RefObject<ToastManager>
   protected container!: Element | undefined
   protected options!: ToastAPIOptions
@@ -12,7 +16,7 @@ export class ToastAPI<T = ToastEventOptions> {
   constructor(toastAPIOptions: ToastAPIOptions) {
     const options = { ...toastAPIOptions }
     if (options.prefixCls === undefined) {
-      options.prefixCls = _prefix
+      options.prefixCls = ToastAPI.defaultOptions.prefixCls
     }
 
     this.options = options
