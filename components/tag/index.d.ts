@@ -1,11 +1,12 @@
 import React from 'react'
-type TagNode = {
-  title?: string
-  tagId?: string | number
-  closable?: boolean
-  editable?: boolean
+export type TagNode = {
+  title?: string;
+  tagId?: string | number;
+  closable?: boolean;
+  editable?: boolean;
 }
-interface Props {
+
+export interface Props {
   type?: 'primary' | 'success' | 'warning' | 'danger'
   appearance?: 'default' | 'line'
   shape?: 'round' | 'square'
@@ -15,12 +16,12 @@ interface Props {
   onClick?: (e: MouseEvent) => void
 }
 
-interface TagGroupProps {
+export interface TagGroupProps {
   data?: TagNode[]
   editable?: boolean
-  onAdd?:(addNode:TagNode, index:number) => void
-  onEdit?:(addNode:TagNode, index:number) => void
-  onDelete?:(addNode:TagNode, index:number) => void
+  onAdd?: (addNode: TagNode, index: number) => void
+  onEdit?: (addNode: TagNode, index: number) => void
+  onDelete?: (addNode: TagNode, index: number) => void
 }
 
 declare class TagGroup extends React.Component<TagGroupProps, any> {

@@ -1,4 +1,4 @@
-interface Options {
+export interface Options {
   key: string
   type?: 'info' | 'success' | 'error' | 'warning'
   title?: string

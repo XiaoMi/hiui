@@ -1,4 +1,4 @@
-interface Props {
+export interface Props {
   type?: 'text' | 'textarea' | 'id' | 'tel' | 'card' | 'amount' | 'email'
   value?: string | number
   defaultValue?: string | number

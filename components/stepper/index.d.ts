@@ -1,9 +1,9 @@
-type DataItem = {
+export type DataItem = {
   title: string | JSX.Element
   content?: string | JSX.Element
   icon?: string | JSX.Element
 }
-interface Props {
+export interface Props {
   data: DataItem[]
   current?: number
   placement?: 'vertical' | 'horizontal'

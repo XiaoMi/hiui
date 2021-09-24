@@ -1,15 +1,15 @@
 import React from "react";
 
-interface GridProps {}
+export interface GridProps {}
 
-type BaseProps = {
+export type BaseProps = {
   children?: React.ReactNode;
   style?: React.CSSProperties;
   id?: React.ReactText;
   className?: string;
 };
 
-interface RowProps extends BaseProps {
+export interface RowProps extends BaseProps {
   justify?:
     | "flex-start"
     | "flex-end"
@@ -19,7 +19,7 @@ interface RowProps extends BaseProps {
   gutter?: boolean;
 }
 
-interface ColProps extends BaseProps {
+export interface ColProps extends BaseProps {
   justify?:
     | "flex-start"
     | "flex-end"

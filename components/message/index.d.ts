@@ -1,7 +1,7 @@
-interface Props {
+export interface Props {
 
 }
-type Options = {
+export type Options = {
   type?: 'info' | 'success' | 'error' | 'warning'
   title: string
   duration?: number

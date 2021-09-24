@@ -1,4 +1,4 @@
-export interface PaginationProps {
+export export interface PaginationProps {
   type?: 'default' | 'simple' | 'shrink'
   defaultCurrent?: number
   current?: number

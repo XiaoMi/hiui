@@ -1,4 +1,4 @@
-export interface ButtonProps {
+export export interface ButtonProps {
   type?: 'primary' | 'line' | 'success' | 'danger' | 'default' | 'warning'
   size?: 'large' | 'small' | 'normal' | 'default'
   appearance?: 'button' | 'link'
@@ -11,7 +11,7 @@ export interface ButtonProps {
   icon?: string
   onClick?: () => void
 }
-interface ButtonGroupProps {
+export interface ButtonGroupProps {
   className?: string
   style?: object
   prefixCls?: string

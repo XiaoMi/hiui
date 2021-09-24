@@ -1,4 +1,4 @@
-interface Props {
+export interface Props {
   title?: string | JSX.Element
   content: string | JSX.Element
   placement?: 'top' | 'right' | 'bottom' | 'left'

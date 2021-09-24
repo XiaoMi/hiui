@@ -1,11 +1,11 @@
-type FileItem = {
+export type FileItem = {
   fileId?: string
   fileType: string
   name: string
   uploadState: 'success' | 'uploading' | 'error'
   url?: string
 }
-interface Props {
+export interface Props {
   type?: 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
   accept?: MimeType
   content?: string | JSX.Element,

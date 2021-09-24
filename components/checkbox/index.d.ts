@@ -1,11 +1,11 @@
 import { CSSProperties } from "react"
 
-type DataItem = {
+export type DataItem = {
   content: string | number
   id: string | number
   disabled?: boolean
 }
-interface Props {
+export interface Props {
   autoFocus?: boolean
   checked?: boolean
   defaultChecked?: boolean
@@ -15,7 +15,7 @@ interface Props {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void,
   focusable?: boolean
 }
-interface GroupProps {
+export interface GroupProps {
   className?: string
   placement?: string
   data: DataItem[] | string[] | number[]

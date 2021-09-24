@@ -1,5 +1,5 @@
 import {PaginationProps} from '../pagination'
-type DataItem = {
+export type DataItem = {
   title: string | JSX.Element
   titleTag?: string | JSX.Element
   titleTagType?: 'primary' | 'success' |'warning' | 'danger'
@@ -9,7 +9,7 @@ type DataItem = {
   style?: CSSProperties
   className?: string
 }
-interface Props {
+export interface Props {
   type?: 'default' | 'card'
   data: DataItem[]
   renderItem?: (item: DataItem) => JSX.Element

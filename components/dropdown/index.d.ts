@@ -1,6 +1,6 @@
 import { CSSProperties } from "react"
 
-type DataItem = {
+export type DataItem = {
   title: string | JSX.Element
   id: string | number
   disabled?: boolean
@@ -8,10 +8,10 @@ type DataItem = {
   target?: '_self' | '_blank' | '_parent' | '_top'
 }
 
-interface TriggersArray {
+export interface TriggersArray {
   [index: number]: 'click' | 'contextmenu' | 'hover'
 }
-interface Props {
+export interface Props {
   trigger?: TriggersArray[number] | TriggersArray
   data: DataItem[]
   title: string | JSX.Element

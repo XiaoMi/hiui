@@ -1,14 +1,14 @@
-type DataItem = {
+export type DataItem = {
   content: string
   id: string | number
   disabled?: boolean
 }
-type FieldNames = {
+export type FieldNames = {
   label?: string
   value?: string
   children?: string
 }
-interface Props {
+export interface Props {
   fieldNames?: FieldNames
   data: DataItem
   value: string[] | number[]

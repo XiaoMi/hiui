@@ -1,5 +1,5 @@
 import {PaginationProps} from '../pagination'
-type ColumnItem = {
+export type ColumnItem = {
   title: string | JSX.Element
   dataKey: string
   align?: 'left' | 'right'
@@ -11,7 +11,7 @@ type ColumnItem = {
   render?: (text: string, record: object, index: number, dataKey: string) => JSX.Element
 }
 
-type Origin = {
+export type Origin = {
   url: string
   currentPageName?: string
   auto?: boolean
@@ -24,16 +24,16 @@ type Origin = {
   withCredentials?: boolean
   transformResponse?: (response: object) => object[]
 }
-type FixedOption = {
+export type FixedOption = {
   left?: string
   right?: string
 }
-type RowSelection = {
+export type RowSelection = {
   selectedRowKeys?: string[] | number[]
   onChange?: (selectedRowKeys: string | number) => void
 }
 
-type HeaderRowReturn = {
+export type HeaderRowReturn = {
   onClick?: (event: MouseEvent) => void
   onDoubleClick?: (event: MouseEvent) => void
   onContextMenu?: (event: MouseEvent) => void
@@ -41,9 +41,9 @@ type HeaderRowReturn = {
   onMouseLeave?: (event: MouseEvent) => void
 }
 
-type HeaderRowFunc = (colums: ColumnItem[], index: number) => HeaderRowReturn
+export type HeaderRowFunc = (colums: ColumnItem[], index: number) => HeaderRowReturn
 
-interface Props {
+export interface Props {
   size?: 'small' | 'large' | 'default' | 'mini'
   bordered?: boolean
   striped?: boolean

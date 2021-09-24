@@ -1,5 +1,5 @@
 import { CSSProperties } from "react"
-interface Props {
+export interface Props {
   title?: string | JSX.Element
   visible?: boolean
   closeable?: boolean

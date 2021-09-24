@@ -1,4 +1,4 @@
-interface Props {
+export interface Props {
   accordion?: boolean
   defaultActiveId?: string | string[]
   activeId?: string | string[] | number | number[]
@@ -9,7 +9,7 @@ interface Props {
   style?: CSSProperties
   className?: string
 }
-interface PanelProps {
+export interface PanelProps {
   id?: string
   title?: string | JSX.Element
   disabled?: boolean

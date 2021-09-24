@@ -1,6 +1,6 @@
 import React, { CSSProperties } from 'react'
 
-interface ChartsProps {
+export interface ChartsProps {
   option: object
   style?: CSSProperties
   className?: string

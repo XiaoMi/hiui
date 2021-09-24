@@ -1,11 +1,11 @@
 import { CSSProperties } from "react"
 
-type DataItem = {
+export type DataItem = {
   content: string
   id: string | number
   disabled?: boolean
 }
-type NodeData = {
+export type NodeData = {
   tabTitle: string | JSX.Element
   tabDesc: string | JSX.Element
   tabId: string | number
@@ -14,7 +14,7 @@ type NodeData = {
   animation: boolean
   newIndex?: number
 }
-interface Props {
+export interface Props {
   type?: 'desc' | 'card' | 'button' | 'editable' | 'line'
   placement?: 'vertical' | 'horizontal'
   defaultActiveId?: string | number
@@ -33,7 +33,7 @@ interface Props {
   onDelete?: (deleteNode: NodeData, index: number) => void
   onBeforeDelete?: (deleteNode: NodeData) => void
 }
-interface PaneProps {
+export interface PaneProps {
   tabTitle: string | JSX.Element
   tabDesc?: string | JSX.Element
   tabId: string | number

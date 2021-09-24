@@ -1,9 +1,9 @@
-type DataItem = {
+export type DataItem = {
   id: string | number
   content: string | JSX.Element
   disabled?: boolean
 }
-interface Props {
+export interface Props {
   type?: 'default' | 'multiple'
   showCheckAll?: boolean
   searchable?: boolean

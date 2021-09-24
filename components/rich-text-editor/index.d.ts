@@ -1,5 +1,5 @@
 import {ReactQuill} from 'react-quill'
-interface Props extends ReactQuill{
+export interface Props extends ReactQuill{
   showTooltip?: boolean
   tooltipTitle?: string,
   toolbarsName?: string

@@ -1,4 +1,4 @@
-interface Props {
+export interface Props {
   type?: 'primary' | 'danger' | 'success' | 'warning'
   defaultValue?: number
   value?: number

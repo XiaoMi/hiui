@@ -1,9 +1,9 @@
-type DataItem = {
+export type DataItem = {
   content: string
   id: string | number
   disabled?: boolean
 }
-interface Props {
+export interface Props {
   value?: string | number
   autoFocus?: boolean
   checked?: boolean
@@ -12,7 +12,7 @@ interface Props {
   className?: string
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
 }
-interface GroupProps {
+export interface GroupProps {
   placement?: 'vertical' | 'horizontal'
   data: DataItem[]
   value?: string | number

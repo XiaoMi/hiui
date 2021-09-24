@@ -1,11 +1,11 @@
-type Item = {
+export type Item = {
   id: string | number
   title: string | JSX.Element
 }
-interface DataItem extends Item{
+export interface DataItem extends Item{
   children?: Item[]
 }
-interface Props {
+export interface Props {
   prepend?: string | JSX.Element
   append?: JSX.Element
   disabled?: boolean

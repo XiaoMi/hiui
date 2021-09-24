@@ -1,17 +1,17 @@
 import { CSSProperties } from "react"
 
-type DataItem = {
+export type DataItem = {
   id: string | number
   title: string
   disabled?: boolean
   children?: DataItem[]
 }
-type GroupData = {
+export type GroupData = {
   groupTitle: string
   groupId: string | number
   children: DataItem
 }
-export type DataSource = {
+export export type DataSource = {
   url: string
   type?: 'get' | 'post'
   data?: object
@@ -22,7 +22,7 @@ export type DataSource = {
   mode?: 'same-origin' | 'cors' | 'no-cors' | 'navigate'
   transformResponse?: (response: object) => DataItem[]
 }
-type FieldNames = {
+export type FieldNames = {
   id?: string
   title?: string
   disabled?: string
@@ -30,7 +30,7 @@ type FieldNames = {
 }
 const DataSourFun: (keyword: string) => DataSource
 const FilterOptionFun: (keyword: string, item: DataItem) => boolean
-interface Props {
+export interface Props {
   type?: 'single' | 'multiple'
   data?: DataItem[] | GroupData[]
   fieldNames?: FieldNames

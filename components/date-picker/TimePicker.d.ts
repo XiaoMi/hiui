@@ -1,4 +1,4 @@
-interface TimeProps extends CommonProps {
+export interface TimeProps extends CommonProps {
   type?: 'default' | 'timerange'
   hourStep?: number
   minuteStep?: number

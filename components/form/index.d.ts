@@ -1,21 +1,21 @@
 import { CSSProperties } from "react"
 import { ButtonProps } from '../button'
 
-type formData = {
+export type formData = {
   [prop: string]: any
 }
 
-export interface FormListFieldData {
+export export interface FormListFieldData {
   field?: string
   listItemValue?: any
   column?: number
   name?: string
 }
-interface FormListOperation {
+export interface FormListOperation {
   add: () => void
   remove: (fieldItem: FormListFieldData) => void
 }
-interface FormProps {
+export interface FormProps {
   initialValues?: formData
   rules?: object
   labelWidth?: string | number
@@ -28,7 +28,7 @@ interface FormProps {
   onValuesChange?: (changedValues: object, allValues: object) => void
 }
 
-interface ItemProps {
+export interface ItemProps {
   field?: string | string[]
   label?: string | JSX.Element
   name?: string
@@ -42,26 +42,26 @@ interface ItemProps {
   style?: CSSProperties
   className?: string
 }
-interface SchemaItem extends ItemProps {
+export interface SchemaItem extends ItemProps {
   component?: string | JSX.Element
   componentProps?: string
 }
-interface SchemaProps {
+export interface SchemaProps {
   schema?: SchemaItem
   submit?: FormSubmit
   reset?: FormReset
 }
 
-interface FormSubmit extends ButtonProps{
+export interface FormSubmit extends ButtonProps{
   onClick?: (value: object, errors: object) => void
   validate?: any[]
 }
-interface FormReset extends ButtonProps{
+export interface FormReset extends ButtonProps{
   onClick?: () => void
   fields?: any[]
   toDefault?: boolean
 }
-interface FormList {
+export interface FormList {
   name?: string
   children?: (fields: FormListFieldData[], operation: FormListOperation) => React.ReactNode
 }

@@ -1,15 +1,15 @@
-type DataItem = {
+export type DataItem = {
   title: string | JSX.Element
   content?: string | JSX.Element
   timestamp?: string
   extraTime?: string
   icon?: string | JSX.Element
 }
-type GroupItem = {
+export type GroupItem = {
   groupTitle: string | JSX.Element
   children: DataItem[]
 }
-interface Props {
+export interface Props {
   type?: 'default' | 'right' | 'cross'
   data: DataItem[] | GroupItem[]
 }

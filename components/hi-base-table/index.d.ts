@@ -1,17 +1,17 @@
 declare module 'react-base-table' {
-  export type SortOrder = 'asc' | 'desc';
+  export export type SortOrder = 'asc' | 'desc';
 
-  export type Alignment = 'left' | 'right' | 'center';
+  export export type Alignment = 'left' | 'right' | 'center';
 
-  export type FrozenDirection = 'left' | 'right' | true | false;
+  export export type FrozenDirection = 'left' | 'right' | true | false;
 
-  export type RowKey = string | number;
+  export export type RowKey = string | number;
 
-  export type Size = { width: number; height: number };
+  export export type Size = { width: number; height: number };
 
-  export type CallOrReturn<T, P = any[]> = T | (P extends any[] ? (...p: P) => T : (p: P) => T);
+  export export type CallOrReturn<T, P = any[]> = T | (P extends any[] ? (...p: P) => T : (p: P) => T);
 
-  export interface ColumnShape<T = unknown> {
+  export export interface ColumnShape<T = unknown> {
     /**
      * Unique key for each column
      */
@@ -155,11 +155,11 @@ declare module 'react-base-table' {
       readonly NONE: false;
     };
   }
-  type FixedOption = {
+  export type FixedOption = {
     left?: string
     right?: string
   }
-  export interface BaseTableProps<T = unknown> {
+  export export interface BaseTableProps<T = unknown> {
     sticky?: boolean
     stickyTop?: number
     bordered?: boolean,
@@ -500,7 +500,7 @@ declare module 'react-base-table' {
     [key: string]: any;
   }
 
-  export interface TableComponents<T = any> {
+  export export interface TableComponents<T = any> {
     TableCell?: React.ElementType<{
       className: string;
       isScrolling?: boolean;
@@ -615,7 +615,7 @@ declare module 'react-base-table' {
     setExpandedRowKeys(expandedRowKeys: RowKey[]): void;
   }
 
-  export interface AutoResizerProps {
+  export export interface AutoResizerProps {
     /**
      * Class name for the component
      */

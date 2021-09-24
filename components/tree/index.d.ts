@@ -1,11 +1,11 @@
-type TreeNode = {
+export type TreeNode = {
   id: string | number
   title: string | JSX.Element
   disabled?: boolean
   children?: TreeNode[]
   isLeaf?: boolean
 }
-type LoadTreeNode = {
+export type LoadTreeNode = {
   method?: 'get' | 'post'
   url: string
   headers?: object
@@ -13,7 +13,7 @@ type LoadTreeNode = {
   params?: object
   transformResponse: (response: object) => TreeNode[]
 }
-type ContextMenuOption = {
+export type ContextMenuOption = {
   type?: 'editNode' | 'addChildNode' | 'addSiblingNode' | 'deleteNode'
   title?: string | JSX.Element
   onClick?: (item: TreeNode, node: TreeNode) => void
@@ -21,11 +21,11 @@ type ContextMenuOption = {
 const LoadTreeNodeFun: (id: stsring) => TreeNode
 const ContextMenuOptionFun: (item: TreeNode) => ContextMenuOption[]
 
-type DataStatus = {
+export type DataStatus = {
   before: TreeNode[]
   after: TreeNode[]
 }
-interface Props {
+export interface Props {
   data: TreeNode[]
   checkable?: boolean
   editable?: boolean
@@ -43,9 +43,9 @@ interface Props {
   apperance?: 'default' | 'line' | 'folder'
   style?: CSSProperties
   className?: string
-  defaultSelectedId?: string | number 
-  selectedId?: string | number 
-  defaultCheckedIds?: string[] | number[] 
+  defaultSelectedId?: string | number
+  selectedId?: string | number
+  defaultCheckedIds?: string[] | number[]
   contextMenu?: ContextMenuOption[] | ContextMenuOptionFun
   onChange?: (data: TreeNode[]) => void
   onExpand?: (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void

@@ -1,4 +1,4 @@
-interface ButtonProps {
+export interface ButtonProps {
   value?: number
   defaultValue?: number
   step?: number

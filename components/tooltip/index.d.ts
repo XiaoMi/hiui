@@ -1,9 +1,9 @@
-interface Props {
+export interface Props {
   title: string | JSX.Element
   placement?: 'top' | 'right' | 'bottom' | 'left'
   visible?: boolean
 }
-type Options = {
+export type Options = {
   title: string | JSX.Element
   placement?: 'top' | 'right' | 'bottom' | 'left'
   key: string

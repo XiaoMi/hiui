@@ -1,11 +1,11 @@
 import { CSSProperties } from "react"
 
-type DataItem = {
+export type DataItem = {
   id: string | number
   title: string
   children?: DataItem[]
 }
-type DataSource = {
+export type DataSource = {
   url: string
   type?: 'get' | 'post'
   data?: object
@@ -14,7 +14,7 @@ type DataSource = {
   mode?: 'same-origin' | 'cors' | 'no-cors' | 'navigate'
   transformResponse?: (response: object) => DataItem[]
 }
-type FieldNames = {
+export type FieldNames = {
   id?: string
   title?: string
   disabled?: string
@@ -22,7 +22,7 @@ type FieldNames = {
 }
 const DataSourFun: (keyword: string) => DataSource
 const FilterOptionFun: (keyword: string, item: DataItem) => boolean
-interface Props {
+export interface Props {
   type?: 'single' | 'multiple'
   data?: DataItem[]
   showCheckedMode?: 'ALL' | 'PARENT' | 'CHILD'

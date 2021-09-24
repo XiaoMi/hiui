@@ -1,18 +1,18 @@
 
-export type DateRange = {
+export export type DateRange = {
   start: Date | string | number | undefined | null
   end: Date | string | number | undefined | null
 }
-type DateRangeString = {
+export type DateRangeString = {
   start: string
   end: string
 }
-type CalendarItem = {
+export type CalendarItem = {
   date?: Date | string
   text?: string
   highlight?: boolean
 }
-export interface CommonProps {
+export export interface CommonProps {
   value?: Date | string | number | DateRange | undefined | null
   defaultValue?: Date | string | number | DateRange | undefined | null
   disabled?: boolean
@@ -24,12 +24,12 @@ export interface CommonProps {
   onChange?: (date: Date | DateRange, dateStr: string | DateRangeString) => void
   onSelect?: (date: Date, isCompleted: boolean) => void
 }
-type Shortcuts = {
+export type Shortcuts = {
   title: string
   range: Date[] | number[]
 }
 
-interface DateProps extends CommonProps {
+export interface DateProps extends CommonProps {
   type?: 'date' | 'daterange' | 'year' | 'month' | 'week' | 'weekrange' | 'timeperiod' | 'yearrange' | 'monthrange'
   min?: Date
   minDate?: Date

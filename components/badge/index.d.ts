@@ -1,6 +1,6 @@
 import React from 'react'
 
-interface BadgeProps {
+export interface BadgeProps {
   content?: string | number
   type?:'bubble' | 'dot'
   max?: number

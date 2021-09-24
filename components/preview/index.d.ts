@@ -1,4 +1,4 @@
-interface Props {
+export interface Props {
   visible?: boolean
   showBar?: boolean
   showArrow?: boolean

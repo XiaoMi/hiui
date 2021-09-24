@@ -1,4 +1,4 @@
-interface Props {
+export interface Props {
   title?: string | JSX.Element
   bordered?: boolean
   size?: 'small' | 'default' | 'large'

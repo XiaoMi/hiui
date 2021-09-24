@@ -1,4 +1,4 @@
-interface Props {
+export interface Props {
   apperance?: 'bar' | 'circle' | 'dashboard'
   size?: 'large' | 'default' | 'small'
   active?: boolean

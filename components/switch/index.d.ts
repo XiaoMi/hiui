@@ -1,4 +1,4 @@
-interface Props {
+export interface Props {
   content?: string[] | JSX.Element[]
   checked?: boolean
   defaultChecked?: boolean

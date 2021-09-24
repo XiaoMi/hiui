@@ -1,4 +1,4 @@
-interface Props {
+export interface Props {
   size?: 'large' | 'default' | 'small'
   content?: string | JSX.Element
   visible?: boolean
@@ -7,7 +7,7 @@ interface Props {
   className?: string
 }
 
-type Options = {
+export type Options = {
   content?: string | JSX.Element
   key: string | number
   duration?: number

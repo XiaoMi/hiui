@@ -1,9 +1,9 @@
-type DataItem = {
+export type DataItem = {
   id?: string | number
   content?: string | JSX.Element
   disabled?: boolean
 }
-export interface Props {
+export export interface Props {
   label?: string[]
   labelWidth?: number
   showUnderline?: boolean
