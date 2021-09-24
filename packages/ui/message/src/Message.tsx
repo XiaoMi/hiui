@@ -77,7 +77,10 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
     }, [])
     // scrollHeight => 0
     const close = useCallback(() => {
-      setHeight(0)
+      // 修改样式渲染 dom 时机无法保证，为此下一帧渲染以产生动画过渡态
+      window.requestAnimationFrame(() => {
+        setHeight(0)
+      })
     }, [])
 
     const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`)

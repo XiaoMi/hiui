@@ -27,7 +27,7 @@ $prefix: '#{$component-prefix}-popper' !default;
     }
 
     &::after {
-      filter: blur(1px);
+      filter: blur(8px);
       z-index: -1;
     }
   }
@@ -41,7 +41,7 @@ $prefix: '#{$component-prefix}-popper' !default;
       &::before {
         left: 0;
         transform: translateX(-6px);
-        top: 0;
+        top: -1px;
         border-top-color: $arrow-color;
       }
 
@@ -59,7 +59,7 @@ $prefix: '#{$component-prefix}-popper' !default;
       &::before {
         left: 0;
         transform: translateX(-6px);
-        bottom: 0;
+        bottom: -1px;
         border-bottom-color: $arrow-color;
       }
 
@@ -79,7 +79,7 @@ $prefix: '#{$component-prefix}-popper' !default;
       &::before {
         top: 0;
         transform: translateY(-50%);
-        left: 0;
+        left: -1px;
         border-left-color: $arrow-color;
       }
 
@@ -97,7 +97,7 @@ $prefix: '#{$component-prefix}-popper' !default;
       &::before {
         top: 0;
         transform: translateY(-50%);
-        right: 0;
+        right: -1px;
         border-right-color: $arrow-color;
       }
 
