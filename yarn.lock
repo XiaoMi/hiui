@@ -4075,10 +4075,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-transition-group@^4.4.1":
-  version "4.4.1"
-  resolved "https://registry.nlark.com/@types/react-transition-group/download/@types/react-transition-group-4.4.1.tgz?cache=0&sync_timestamp=1621242478486&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Freact-transition-group%2Fdownload%2F%40types%2Freact-transition-group-4.4.1.tgz#e1a3cb278df7f47f17b5082b1b3da17170bd44b1"
-  integrity sha1-4aPLJ4339H8XtQgrGz2hcXC9RLE=
+"@types/react-transition-group@^4.4.2":
+  version "4.4.3"
+  resolved "https://registry.nlark.com/@types/react-transition-group/download/@types/react-transition-group-4.4.3.tgz#b0994da0a7023d67dbb4a8910a62112bc00d5688"
+  integrity sha1-sJlNoKcCPWfbtKiRCmIRK8ANVog=
   dependencies:
     "@types/react" "*"
 
@@ -15783,7 +15783,7 @@ react-transition-group@^1.2.0:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
-react-transition-group@^4.2.1, react-transition-group@^4.4.1, react-transition-group@^4.4.2:
+react-transition-group@^4.2.1, react-transition-group@^4.4.2:
   version "4.4.2"
   resolved "https://registry.nlark.com/react-transition-group/download/react-transition-group-4.4.2.tgz#8b59a56f09ced7b55cbd53c36768b922890d5470"
   integrity sha1-i1mlbwnO17VcvVPDZ2i5IokNVHA=
