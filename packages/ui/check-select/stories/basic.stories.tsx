@@ -9,7 +9,6 @@ export const Basic = () => {
         <CheckSelect
           placeholder="请选择"
           titleRender={(option) => {
-            console.log(option)
             if (option.id === 'ABC1') {
               return '不限'
             }

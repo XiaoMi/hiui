@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'rea
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import CSSTransition from 'react-transition-group/CSSTransition'
+import { CSSTransition } from 'react-transition-group'
 import {
   InfoCircleFilled,
   CloseCircleFilled,

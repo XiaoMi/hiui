@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import { createPortal } from 'react-dom'
 import debounce from 'lodash/debounce'
-import CSSTransition from 'react-transition-group/CSSTransition'
+import { CSSTransition } from 'react-transition-group'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import type { DebouncedFunc } from 'lodash'

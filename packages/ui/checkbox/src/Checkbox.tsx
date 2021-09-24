@@ -85,6 +85,7 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
           checked={checked}
           onChange={handleChange}
           tabIndex={focusable ? 0 : -1}
+          onClick={(evt) => evt.stopPropagation()}
         />
         <span className={iconCls} />
         {children ? <span className={`${prefixCls}__text`}>{children}</span> : null}

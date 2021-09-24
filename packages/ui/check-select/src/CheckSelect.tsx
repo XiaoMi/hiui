@@ -206,40 +206,33 @@ if (__DEV__) {
 const optionPrefix = getPrefixCls('check-select-option')
 
 export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOptionProps>(
-  ({ prefixCls = optionPrefix, className, children, option = {}, ...rest }, ref) => {
+  ({ prefixCls = optionPrefix, className, children, option = {}, onClick, ...rest }, ref) => {
     const { isSelectedId, onSelect, titleRender } = useSelectContext()
 
-    const checked = !!isSelectedId(option.id)
+    const checked = isSelectedId(option.id)
     const cls = cx(prefixCls, className, checked && `${prefixCls}--selected`)
 
     const handleOptionCheck = useCallback(
       (evt) => {
         onSelect(option, !checked)
+        onClick?.(evt)
       },
-      [onSelect, option, checked]
+      [onSelect, option, checked, onClick]
     )
 
     // 如果 titleRender 返回 `true`，则使用默认 title
     const title = titleRender ? titleRender({ ...option, checked }) : true
-    if (title !== true) {
-      return (
-        <div ref={ref} className={cls} {...rest}>
-          {title}
-        </div>
-      )
-    }
 
     return (
-      <div ref={ref} className={cls} {...rest}>
-        <Checkbox checked={checked} onChange={handleOptionCheck}>
-          {option.title}
-        </Checkbox>
+      <div ref={ref} className={cls} {...rest} onClick={handleOptionCheck}>
+        {title === true ? <Checkbox checked={checked}>{option.title}</Checkbox> : title}
       </div>
     )
   }
 )
 
 export interface CheckSelectOptionProps extends HiBaseHTMLProps {}
+
 // @ts-ignore
 CheckSelectOption.HiName = 'CheckSelectOption'
 
