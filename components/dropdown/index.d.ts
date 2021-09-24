@@ -1,4 +1,4 @@
-import { CSSProperties } from "react"
+import { React.CSSProperties } from "react"
 
 export type DataItem = {
   title: string | JSX.Element
@@ -20,7 +20,7 @@ export interface Props {
   disabled?: boolean
   width?: number
   className?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   onClick?: (id: string | number) => void
   onButtonClick?: (event: MouseEvent) => void
   overlayClassName?: string

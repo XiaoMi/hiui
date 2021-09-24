@@ -6,7 +6,7 @@ export type DataItem = {
   description?: string | JSX.Element
   extra?: string | string[]
   avatar?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 export interface Props {
@@ -21,7 +21,7 @@ export interface Props {
   hoverable?: boolean
   layout?: 'vertical' | 'horizontal'
   emptyText?: string | JSX.Element
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 declare const List: React.ComponentType<Props>

@@ -1,4 +1,4 @@
-import { CSSProperties } from "react"
+import { React.CSSProperties } from "react"
 import { ButtonProps } from '../button'
 
 export type formData = {
@@ -23,7 +23,7 @@ export interface FormProps {
   placement?: 'horizontal' | 'vertical'
   showColon?: boolean
   children: Form.Item
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   onValuesChange?: (changedValues: object, allValues: object) => void
 }
@@ -39,7 +39,7 @@ export interface ItemProps {
   labelWidth?: string
   required?: boolean
   showColon?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 export interface SchemaItem extends ItemProps {

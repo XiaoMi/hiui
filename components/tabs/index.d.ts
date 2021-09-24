@@ -1,4 +1,4 @@
-import { CSSProperties } from "react"
+import { React.CSSProperties } from "react"
 
 export type DataItem = {
   content: string
@@ -22,7 +22,7 @@ export interface Props {
   max?: number
   canScroll?: boolean
   draggable?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   onTabClick?: (tabKey: string | number, event: MouseEvent) => void
   onEdit?: (action: 'add' | 'delete', index: number, tabKey: string | number) => void
@@ -40,7 +40,7 @@ export interface PaneProps {
   closeable?: boolean
   disabled?: boolean
   animation?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 declare class Pane extends React.Component<PaneProps, any> {

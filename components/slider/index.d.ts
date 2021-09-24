@@ -4,7 +4,7 @@ export interface Props {
   value?: number
   min?: number
   max?: number
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   disabled?: boolean
   showRangeLabel?: boolean

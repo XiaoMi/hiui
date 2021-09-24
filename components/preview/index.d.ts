@@ -6,7 +6,7 @@ export interface Props {
   images?: string[] | object[]
   simpleData?: boolean
   activeIndex?: number
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 declare const Preview: React.ComponentType<Props>

@@ -5,7 +5,7 @@ export type Options = {
   type?: 'info' | 'success' | 'error' | 'warning'
   title: string
   duration?: number
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   onClick?: (event: MouseEvent) => void
   onClose?: () => void

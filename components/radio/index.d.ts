@@ -8,7 +8,7 @@ export interface Props {
   autoFocus?: boolean
   checked?: boolean
   disabled?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
 }

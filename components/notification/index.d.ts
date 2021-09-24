@@ -6,7 +6,7 @@ export interface Options {
   closeable?: boolean
   duration?: number
   confirmText?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   onClose?: (e: MouseEvent) => void
   onConfirm?: () => void

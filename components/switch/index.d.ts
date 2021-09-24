@@ -3,7 +3,7 @@ export interface Props {
   checked?: boolean
   defaultChecked?: boolean
   disabled?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   onChange?: (checked: boolean) => void
 }

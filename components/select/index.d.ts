@@ -1,4 +1,4 @@
-import { CSSProperties } from "react"
+import { React.CSSProperties } from "react"
 
 export type DataItem = {
   id: string | number
@@ -49,7 +49,7 @@ export interface Props {
   emptyContent?: string | JSX.Element
   optionWidth?: number
   bordered?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   onChange?: (selectedIds: string[], changedItem: DataItem, changedItems: DataItem[]) => void
   onSearch?: (keyword: string) => void

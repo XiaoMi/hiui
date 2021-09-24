@@ -26,7 +26,7 @@ export interface Props {
   style?: object
   onChange?: (value: string[] | number[]) => void
   overlayClassName?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 declare const Card: React.ComponentType<Props>

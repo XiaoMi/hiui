@@ -15,7 +15,7 @@ export interface Props {
   onSearch?: (inputVal: string, item?: DataItem) => void
   onChange?: (e: string) => void
   overlayClassName?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 declare const Search: React.ComponentType<Props>

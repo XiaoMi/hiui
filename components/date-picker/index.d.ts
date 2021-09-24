@@ -46,7 +46,7 @@ export interface DateProps extends CommonProps {
   dateMarkRender?: (currentDate: Date, today: Date) => JSX.Element
   dateMarkPreset?: 'zh-CN'
   overlayClassName?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 

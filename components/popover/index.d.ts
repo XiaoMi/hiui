@@ -4,7 +4,7 @@ export interface Props {
   placement?: 'top' | 'right' | 'bottom' | 'left'
   trigger?: 'click' | 'focus' | 'hover'
   visible?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   overlayClassName?: string
 }

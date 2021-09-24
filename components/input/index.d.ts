@@ -7,7 +7,7 @@ export interface Props {
   disabled?: boolean
   clearable?: boolean
   placeholder?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   bordered?: boolean
   maxLength?: number

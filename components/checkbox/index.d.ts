@@ -1,4 +1,4 @@
-import { CSSProperties } from "react"
+import { React.CSSProperties } from "react"
 
 export type DataItem = {
   content: string | number
@@ -23,7 +23,7 @@ export interface GroupProps {
   disabled?: boolean
   name?: string
   onChange?: (checkedList: string[] | number[]) => void
-  style?: CSSProperties
+  style?: React.CSSProperties
   value?: string[] | number[]
 }
 declare class Group extends React.Component<GroupProps, any> {

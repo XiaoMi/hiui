@@ -13,7 +13,7 @@ export interface Props {
   showCollapse?: boolean
   showAllSubMenus?: boolean
   accordion?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   onClick?: (activeId: string | number, prevActiveId: string | number) => void
   onClickSubMenu?: (subMenuIndexs: number) => void

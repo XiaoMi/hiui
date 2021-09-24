@@ -11,7 +11,7 @@ export interface Props {
   appearance?: 'default' | 'line'
   shape?: 'round' | 'square'
   color?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   onClick?: (e: MouseEvent) => void
 }

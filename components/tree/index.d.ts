@@ -41,7 +41,7 @@ export interface Props {
   openIcon?: string
   closeIcon?: string
   apperance?: 'default' | 'line' | 'folder'
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   defaultSelectedId?: string | number
   selectedId?: string | number

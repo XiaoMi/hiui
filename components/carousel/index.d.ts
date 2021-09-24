@@ -1,12 +1,13 @@
-export interface Props {
+import React from 'react'
+export interface CarouselProps {
   duration?: number
   showDots?: boolean
   showArrows?: boolean
   defaultActive?: number
   showPages?: boolean
   children: JSX.Element[]
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
-declare const Carousel: React.ComponentType<Props>
+declare const Carousel: React.ComponentType<CarouselProps>
 export default Carousel

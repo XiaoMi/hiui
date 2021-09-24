@@ -8,7 +8,7 @@ export export interface PaginationProps {
   pageSizeOptions?: number[]
   autoHide?: boolean
   showJumper?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   onJump?: (current: number) => void
   onChange?: (currentPage: number, prevPage: number, pageSize: number) => void

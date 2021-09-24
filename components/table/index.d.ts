@@ -74,7 +74,7 @@ export interface Props {
   onHeaderRow?: HeaderRowFunc
   columns: ColumnItem[]
   data: object[]
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   scrollWidth?: React.ReactText
 }

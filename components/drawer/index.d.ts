@@ -1,4 +1,4 @@
-import { CSSProperties } from "react"
+import { React.CSSProperties } from "react"
 
 export interface Props {
   title?: string | JSX.Element
@@ -10,7 +10,7 @@ export interface Props {
   footer?: JSX.Element
   placement?: 'left' | 'right'
   onClose?: (e: MouseEvent) => void
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 declare const Drawer: React.ComponentType<Props>

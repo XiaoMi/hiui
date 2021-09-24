@@ -6,7 +6,7 @@ export interface TimeProps extends CommonProps {
   disabledHours?: () => number[]
   disabledMinutes?: (selectedHour: number) => number[]
   disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[]
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 declare const TimePicker: React.ComponentType<TimeProps>

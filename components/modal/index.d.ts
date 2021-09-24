@@ -1,4 +1,4 @@
-import { CSSProperties } from "react"
+import { React.CSSProperties } from "react"
 export interface Props {
   title?: string | JSX.Element
   visible?: boolean
@@ -7,11 +7,11 @@ export interface Props {
   cancelText?: string
   confirmText?: string
   size?: 'default' | 'large'
-  style?: CSSProperties
+  style?: React.CSSProperties
   footer?: JSX.Element | null
   onCancel?: (e: MouseEvent) => void
   onConfirm?: (e: MouseEvent) => void
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 const confirmFun: (options:Props) => void

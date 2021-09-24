@@ -9,7 +9,7 @@ export interface Props {
   placement?: 'inside' | 'outside'
   width?: string | number
   height?: string | number
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 declare const Progress: React.ComponentType<Props>

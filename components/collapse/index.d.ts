@@ -6,7 +6,7 @@ export interface Props {
   showArrow?: boolean
   onChange?: () => void
   children: Collapse.Panel
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 export interface PanelProps {

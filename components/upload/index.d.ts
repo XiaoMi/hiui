@@ -28,7 +28,7 @@ export interface Props {
   defaultFileList?: FileItem[]
   fileList?: FileItem[]
   loading?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   beforeUpload?: (files: FileItem[], fileList: FileItem[]) => boolean
   customUpload?: (files: FileItem[]) => void

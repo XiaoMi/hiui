@@ -3,7 +3,7 @@ export interface Props {
   content?: strgin | string[]
   logo?: any
   opacity?: number
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   allowCopy?: boolean
 }

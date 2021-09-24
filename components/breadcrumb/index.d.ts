@@ -1,4 +1,6 @@
-export type DataItem = {
+import React from 'react'
+
+export type BreadcrumbItem = {
   content: string | JSX.Element
   path?: string
   href?: boolean
@@ -6,11 +8,12 @@ export type DataItem = {
   target?: '_self' | '_blank' | '_parent' | '_top'
 }
 
-export interface Props {
-  data: DataItem[]
+export interface BreadcrumbProps {
+  data: BreadcrumbItem[]
   separator?: string
   onClick?: (path: string) => void
-
 }
-declare const Breadcrumb: React.ComponentType<Props>
+
+declare const Breadcrumb: React.ComponentType<BreadcrumbProps>
+
 export default Breadcrumb

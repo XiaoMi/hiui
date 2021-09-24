@@ -3,7 +3,7 @@ export interface Props {
   content?: string | JSX.Element
   visible?: boolean
   full?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 
