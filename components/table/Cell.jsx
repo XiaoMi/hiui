@@ -92,10 +92,10 @@ const Cell = ({
               if (_expandedTreeRows.includes(allRowData.key)) {
                 const idx = _expandedTreeRows.findIndex((row) => row === allRowData.key)
                 _expandedTreeRows.splice(idx, 1)
-                setExpandedTreeRows(_expandedTreeRows)
+                setExpandedTreeRows(_expandedTreeRows, false, allRowData)
               } else {
                 _expandedTreeRows.push(allRowData.key)
-                setExpandedTreeRows(_expandedTreeRows)
+                setExpandedTreeRows(_expandedTreeRows, true, allRowData)
               }
             }}
           />
