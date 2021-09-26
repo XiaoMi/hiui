@@ -1,24 +1,24 @@
-import { React.CSSProperties } from "react"
+import React from "react"
 
-export type DataItem = {
+export type CheckboxItem = {
   content: string | number
   id: string | number
   disabled?: boolean
 }
-export interface Props {
+export interface CheckboxProps {
   autoFocus?: boolean
   checked?: boolean
   defaultChecked?: boolean
   disabled?: boolean
   indeterminate?: boolean
   className?: string
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void,
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
   focusable?: boolean
 }
-export interface GroupProps {
+export interface CheckboxGroupProps {
   className?: string
   placement?: string
-  data: DataItem[] | string[] | number[]
+  data: CheckboxItem[] | string[] | number[]
   defaultValue?: string[] | number[]
   disabled?: boolean
   name?: string
@@ -26,9 +26,9 @@ export interface GroupProps {
   style?: React.CSSProperties
   value?: string[] | number[]
 }
-declare class Group extends React.Component<GroupProps, any> {
+declare class Group extends React.Component<CheckboxGroupProps, any> {
 }
-declare class Checkbox extends React.Component<Props, any> {
+declare class Checkbox extends React.Component<CheckboxProps, any> {
   static Group = Group
 }
 export default Checkbox

@@ -1,5 +1,7 @@
+import React from "react"
 import {PaginationProps} from '../pagination'
-export type ColumnItem = {
+
+export type TableColumnItem = {
   title: string | JSX.Element
   dataKey: string
   align?: 'left' | 'right'
@@ -7,11 +9,11 @@ export type ColumnItem = {
   avg?: boolean
   total?: boolean
   width?: number
-  children?: ColumnItem[]
+  children?: TableColumnItem[]
   render?: (text: string, record: object, index: number, dataKey: string) => JSX.Element
 }
 
-export type Origin = {
+export type TableDataSource = {
   url: string
   currentPageName?: string
   auto?: boolean
@@ -24,26 +26,26 @@ export type Origin = {
   withCredentials?: boolean
   transformResponse?: (response: object) => object[]
 }
-export type FixedOption = {
+export type TableFixedOption = {
   left?: string
   right?: string
 }
-export type RowSelection = {
+export type TableRowSelection = {
   selectedRowKeys?: string[] | number[]
   onChange?: (selectedRowKeys: string | number) => void
 }
 
-export type HeaderRowReturn = {
-  onClick?: (event: MouseEvent) => void
-  onDoubleClick?: (event: MouseEvent) => void
-  onContextMenu?: (event: MouseEvent) => void
-  onMouseEnter?: (event: MouseEvent) => void
-  onMouseLeave?: (event: MouseEvent) => void
+export type TableHeaderRowReturn = {
+  onClick?: (event: React.MouseEvent) => void
+  onDoubleClick?: (event: React.MouseEvent) => void
+  onContextMenu?: (event: React.MouseEvent) => void
+  onMouseEnter?: (event: React.MouseEvent) => void
+  onMouseLeave?: (event: React.MouseEvent) => void
 }
 
-export type HeaderRowFunc = (colums: ColumnItem[], index: number) => HeaderRowReturn
+export type HeaderRowFunc = (colums: TableColumnItem[], index: number) => TableHeaderRowReturn
 
-export interface Props {
+export interface TableProps {
   size?: 'small' | 'large' | 'default' | 'mini'
   bordered?: boolean
   striped?: boolean
@@ -58,12 +60,12 @@ export interface Props {
   rowExpandable?: (record: object ) => JSX.Element | Boolean
   maxHeight?: number
   scrollWidth?: number
-  fixedToColumn?: string | FixedOption
+  fixedToColumn?: string | TableFixedOption
   pagination?: PaginationProps
   errorRowKeys?: string[] | number[]
   highlightedRowKeys?: string[] | number[]
-  rowSelection?: RowSelection
-  dataSource?: (current: number) => Origin
+  rowSelection?: TableRowSelection
+  dataSource?: (current: number) => TableDataSource
   showColMenu?: boolean
   showColHighlight?: boolean
   striped?: boolean
@@ -72,11 +74,11 @@ export interface Props {
   standard?: boolean
   emptyContent?: string | JSX.Element
   onHeaderRow?: HeaderRowFunc
-  columns: ColumnItem[]
+  columns: TableColumnItem[]
   data: object[]
   style?: React.CSSProperties
   className?: string
   scrollWidth?: React.ReactText
 }
-declare const Table: React.ComponentType<Props>
+declare const Table: React.ComponentType<TableProps>
 export default Table

@@ -1,5 +1,5 @@
-import { React.CSSProperties } from "react"
-export interface Props {
+import React from "react"
+export interface ModalProps {
   title?: string | JSX.Element
   visible?: boolean
   closeable?: boolean
@@ -9,13 +9,17 @@ export interface Props {
   size?: 'default' | 'large'
   style?: React.CSSProperties
   footer?: JSX.Element | null
-  onCancel?: (e: MouseEvent) => void
-  onConfirm?: (e: MouseEvent) => void
+  onCancel?: (e: React.MouseEvent) => void
+  onConfirm?: (e: React.MouseEvent) => void
   style?: React.CSSProperties
   className?: string
 }
-const confirmFun: (options:Props) => void
-declare class Modal extends React.Component<Props, any> {
+
+export interface ModalOptions extends ModalProps {}
+
+const confirmFun: (options: ModalOptions) => void
+
+declare class Modal extends React.Component<ModalProps, any> {
   static confirm = confirmFun
 }
 export default Modal

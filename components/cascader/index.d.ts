@@ -1,22 +1,23 @@
-export type DataItem = {
+import React from 'react'
+export type CascaderItem = {
   content: string
   id: string | number
   disabled?: boolean
 }
-export type FieldNames = {
+export type CascaderFieldNames = {
   label?: string
   value?: string
   children?: string
 }
-export interface Props {
-  fieldNames?: FieldNames
-  data: DataItem
+export interface CascaderProps {
+  fieldNames?: CascaderFieldNames
+  data: CascaderItem
   value: string[] | number[]
   defaultValue: string[] | number[]
   expandTrigger?: 'click' | 'hover'
   searchable?: boolean
   bordered?: boolean
-  filterOption?: (keyword: string, item: DataItem) => boolean
+  filterOption?: (keyword: string, item: CascaderItem) => boolean
   clearable?: boolean
   disabled?: boolean
   changeOnSelect?: boolean
@@ -29,5 +30,5 @@ export interface Props {
   style?: React.CSSProperties
   className?: string
 }
-declare const Card: React.ComponentType<Props>
-export default Card
+declare const Cascader: React.ComponentType<CascaderProps>
+export default Cascader

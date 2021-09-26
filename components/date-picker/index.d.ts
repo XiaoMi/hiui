@@ -1,5 +1,6 @@
+import React from 'react'
 
-export export type DateRange = {
+export type DateRange = {
   start: Date | string | number | undefined | null
   end: Date | string | number | undefined | null
 }
@@ -12,7 +13,8 @@ export type CalendarItem = {
   text?: string
   highlight?: boolean
 }
-export export interface CommonProps {
+
+interface CommonProps {
   value?: Date | string | number | DateRange | undefined | null
   defaultValue?: Date | string | number | DateRange | undefined | null
   disabled?: boolean
@@ -24,12 +26,13 @@ export export interface CommonProps {
   onChange?: (date: Date | DateRange, dateStr: string | DateRangeString) => void
   onSelect?: (date: Date, isCompleted: boolean) => void
 }
-export type Shortcuts = {
+
+export type DatePickerShortcuts = {
   title: string
   range: Date[] | number[]
 }
 
-export interface DateProps extends CommonProps {
+export interface DatePickerProps extends CommonProps {
   type?: 'date' | 'daterange' | 'year' | 'month' | 'week' | 'weekrange' | 'timeperiod' | 'yearrange' | 'monthrange'
   min?: Date
   minDate?: Date
@@ -39,7 +42,7 @@ export interface DateProps extends CommonProps {
   timeperiod?: number
   disabledDate?: (currentDate: Date) => boolean
   showTime?: boolean
-  shortcuts?: string[] | Shortcuts[]
+  shortcuts?: string[] | DatePickerShortcuts[]
   weekOffset?: 0 | 1
   altCalendar?: CalendarItem
   altCalendarPreset?: 'zh-CN' | 'id-ID'
@@ -50,5 +53,5 @@ export interface DateProps extends CommonProps {
   className?: string
 }
 
-declare const DatePicker: React.ComponentType<DateProps>
+declare const DatePicker: React.ComponentType<DatePickerProps>
 export default DatePicker

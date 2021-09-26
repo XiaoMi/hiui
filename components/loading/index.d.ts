@@ -1,4 +1,5 @@
-export interface Props {
+import React from 'react'
+export interface LoadingProps {
   size?: 'large' | 'default' | 'small'
   content?: string | JSX.Element
   visible?: boolean
@@ -7,16 +8,16 @@ export interface Props {
   className?: string
 }
 
-export type Options = {
+export type LoadingOptions = {
   content?: string | JSX.Element
   key: string | number
   duration?: number
   size?: 'large' | 'default' | 'small'
 }
-const OpenFun: (target: HTMLElement, options: Options) => void
+const OpenFun: (target: HTMLElement, options: LoadingOptions) => void
 const CloseFun: (key: string | number) => void
 
-declare class Loading extends React.Component<Props, any> {
+declare class Loading extends React.Component<LoadingProps, any> {
   static open = OpenFun
   static close = CloseFun
 }

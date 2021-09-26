@@ -1,16 +1,18 @@
-export type DataItem = {
+import React from "react"
+
+export type FilterItem = {
   id?: string | number
   content?: string | JSX.Element
   disabled?: boolean
 }
-export export interface Props {
+export interface FilterProps {
   label?: string[]
   labelWidth?: number
   showUnderline?: boolean
-  data?: DataItem[]
+  data?: FilterItem[]
   defaultValue?: string[] | number[]
   value?: string[] | number[]
   onChange?: (value: number | string) => void
 }
-declare const Filter: React.ComponentType<Props>
+declare const Filter: React.ComponentType<FilterProps>
 export default Filter

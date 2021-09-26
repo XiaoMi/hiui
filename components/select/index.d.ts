@@ -1,17 +1,17 @@
-import { React.CSSProperties } from "react"
+import React from "react"
 
-export type DataItem = {
+export type SelectItem = {
   id: string | number
   title: string
   disabled?: boolean
-  children?: DataItem[]
+  children?: SelectItem[]
 }
-export type GroupData = {
+export type SelectGroupData = {
   groupTitle: string
   groupId: string | number
-  children: DataItem
+  children: SelectItem
 }
-export export type DataSource = {
+export type SelectDataSource = {
   url: string
   type?: 'get' | 'post'
   data?: object
@@ -20,7 +20,7 @@ export export type DataSource = {
   withCredentials?: boolean
   error?: (error: object) => void
   mode?: 'same-origin' | 'cors' | 'no-cors' | 'navigate'
-  transformResponse?: (response: object) => DataItem[]
+  transformResponse?: (response: object) => SelectItem[]
 }
 export type FieldNames = {
   id?: string
@@ -28,13 +28,13 @@ export type FieldNames = {
   disabled?: string
   children?: string
 }
-const DataSourFun: (keyword: string) => DataSource
-const FilterOptionFun: (keyword: string, item: DataItem) => boolean
-export interface Props {
+const DataSourFun: (keyword: string) => SelectDataSource
+const FilterOptionFun: (keyword: string, item: SelectItem) => boolean
+export interface SelectProps {
   type?: 'single' | 'multiple'
-  data?: DataItem[] | GroupData[]
+  data?: SelectItem[] | SelectGroupData[]
   fieldNames?: FieldNames
-  dataSource?: DataSource | DataSourFun
+  dataSource?: SelectDataSource | DataSourFun
   value?: string | string[]
   defaultValue?: string | string[]
   showCheckAll?: boolean
@@ -51,12 +51,12 @@ export interface Props {
   bordered?: boolean
   style?: React.CSSProperties
   className?: string
-  onChange?: (selectedIds: string[], changedItem: DataItem, changedItems: DataItem[]) => void
+  onChange?: (selectedIds: string[], changedItem: SelectItem, changedItems: SelectItem[]) => void
   onSearch?: (keyword: string) => void
   onOverlayScroll?: (e: Event<HTMLDivElement>) => void
-  render?: (item: DataItem, selected: boolean) => JSX.Element
+  render?: (item: SelectItem, selected: boolean) => JSX.Element
   overlayClassName?: string
   setOverlayContainer?: (triggerNode: any) => any
 }
-declare const Select: React.ComponentType<Props>
+declare const Select: React.ComponentType<SelectProps>
 export default Select

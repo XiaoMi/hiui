@@ -1,30 +1,25 @@
-import { React.CSSProperties } from "react"
+import React from "react"
 
-export type DataItem = {
+export type SelectTreeItem = {
   id: string | number
   title: string
-  children?: DataItem[]
+  children?: SelectTreeItem[]
 }
-export type DataSource = {
+export type SelectTreeDataSource = {
   url: string
   type?: 'get' | 'post'
   data?: object
   params?: object
   headers?: object
   mode?: 'same-origin' | 'cors' | 'no-cors' | 'navigate'
-  transformResponse?: (response: object) => DataItem[]
+  transformResponse?: (response: object) => SelectTreeItem[]
 }
-export type FieldNames = {
-  id?: string
-  title?: string
-  disabled?: string
-  children?: string
-}
-const DataSourFun: (keyword: string) => DataSource
-const FilterOptionFun: (keyword: string, item: DataItem) => boolean
-export interface Props {
+
+const DataSourFun: (keyword: string) => SelectTreeDataSource
+const FilterOptionFun: (keyword: string, item: SelectTreeItem) => boolean
+export interface SelectTreeProps {
   type?: 'single' | 'multiple'
-  data?: DataItem[]
+  data?: SelectTreeItem[]
   showCheckedMode?: 'ALL' | 'PARENT' | 'CHILD'
   mode?: 'normal' | 'breadcrumb'
   defaultExpandAll?: boolean
@@ -32,19 +27,19 @@ export interface Props {
   bordered?: boolean
   defaultExpandIds?: string[] | number[]
   expandIds?: string[] | number[]
-  dataSource?: DataSource | DataSourFun
+  dataSource?: SelectTreeDataSource | DataSourFun
   searchMode?: 'highlight' | 'filter'
   overlayClassName?: string
   optionWidth?: number
   autoload?: boolean
   placeholder?: string
   emptyContent?: string | JSX.Element
-  defaultValue?: DataItem[] | string[] | number[] | string
-  onChange?: (selectedIds: string[] | string, changedItem: DataItem | DataItem[], currentNode: DataItem) => void
-  valueRender?: (item: DataItem) => JSX.Element
+  defaultValue?: SelectTreeItem[] | string[] | number[] | string
+  onChange?: (selectedIds: string[] | string, changedItem: SelectTreeItem | SelectTreeItem[], currentNode: SelectTreeItem) => void
+  valueRender?: (item: SelectTreeItem) => JSX.Element
   style?: React.CSSProperties
-  value?: DataItem[] | string[] | number[] | string
+  value?: SelectTreeItem[] | string[] | number[] | string
   className?: string
 }
-declare const SelectTree: React.ComponentType<Props>
+declare const SelectTree: React.ComponentType<SelectTreeProps>
 export default SelectTree

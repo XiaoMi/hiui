@@ -1,5 +1,7 @@
+import React from 'react'
 import {PaginationProps} from '../pagination'
-export type DataItem = {
+
+export type ListItem = {
   title: string | JSX.Element
   titleTag?: string | JSX.Element
   titleTagType?: 'primary' | 'success' |'warning' | 'danger'
@@ -9,11 +11,11 @@ export type DataItem = {
   style?: React.CSSProperties
   className?: string
 }
-export interface Props {
+export interface ListProps {
   type?: 'default' | 'card'
-  data: DataItem[]
-  renderItem?: (item: DataItem) => JSX.Element
-  action?: (item: DataItem) => JSX.Element
+  data: ListItem[]
+  renderItem?: (item: ListItem) => JSX.Element
+  action?: (item: ListItem) => JSX.Element
   actionPosition?: 'top' | 'center' |'bottom'
   split?: boolean
   pagination?: boolean | PaginationProps
@@ -24,5 +26,5 @@ export interface Props {
   style?: React.CSSProperties
   className?: string
 }
-declare const List: React.ComponentType<Props>
+declare const List: React.ComponentType<ListProps>
 export default List

@@ -1,4 +1,6 @@
-export interface Props {
+import React from "react"
+
+export interface RateProps {
   clearable?: boolean
   allowHalf?: boolean
   useEmoji?: boolean
@@ -16,5 +18,5 @@ export interface Props {
   style?: React.CSSProperties
   className?: string
 }
-declare const Rate: React.ComponentType<Props>
+declare const Rate: React.ComponentType<RateProps>
 export default Rate

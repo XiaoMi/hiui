@@ -1,11 +1,11 @@
-import { React.CSSProperties } from "react"
+import React from "react"
 import { ButtonProps } from '../button'
 
-export type formData = {
+type FormData = {
   [prop: string]: any
 }
 
-export export interface FormListFieldData {
+export interface FormListFieldData {
   field?: string
   listItemValue?: any
   column?: number
@@ -16,7 +16,7 @@ export interface FormListOperation {
   remove: (fieldItem: FormListFieldData) => void
 }
 export interface FormProps {
-  initialValues?: formData
+  initialValues?: FormData
   rules?: object
   labelWidth?: string | number
   labelPlacement?: 	'right' | 'left' | 'top'
@@ -28,7 +28,7 @@ export interface FormProps {
   onValuesChange?: (changedValues: object, allValues: object) => void
 }
 
-export interface ItemProps {
+export interface FormItemProps {
   field?: string | string[]
   label?: string | JSX.Element
   name?: string
@@ -42,21 +42,21 @@ export interface ItemProps {
   style?: React.CSSProperties
   className?: string
 }
-export interface SchemaItem extends ItemProps {
+export interface FormSchemaItem extends FormItemProps {
   component?: string | JSX.Element
   componentProps?: string
 }
-export interface SchemaProps {
-  schema?: SchemaItem
+export interface FormSchemaProps {
+  schema?: FormSchemaItem
   submit?: FormSubmit
   reset?: FormReset
 }
 
-export interface FormSubmit extends ButtonProps{
+export interface FormSubmit extends ButtonProps {
   onClick?: (value: object, errors: object) => void
   validate?: any[]
 }
-export interface FormReset extends ButtonProps{
+export interface FormReset extends ButtonProps {
   onClick?: () => void
   fields?: any[]
   toDefault?: boolean
@@ -65,9 +65,9 @@ export interface FormList {
   name?: string
   children?: (fields: FormListFieldData[], operation: FormListOperation) => React.ReactNode
 }
-declare class Item extends React.Component<ItemProps, any> {
+declare class Item extends React.Component<FormItemProps, any> {
 }
-declare class SchemaForm extends React.Component<SchemaProps, any> {
+declare class SchemaForm extends React.Component<FormSchemaProps, any> {
 }
 declare class Form extends React.Component<FormProps, any> {
   static Item = Item

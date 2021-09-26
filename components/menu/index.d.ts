@@ -1,12 +1,14 @@
-export type DataItem = {
+import React from 'react'
+
+export type MenuItem = {
   content: string | JSX.Element
   icon?: string | JSX.Element
   id: string | number
   disabled?: boolean
-  children?: DataItem[]
+  children?: MenuItem[]
 }
-export interface Props {
-  data: DataItem[]
+export interface MenuProps {
+  data: MenuItem[]
   activeId?: string | number
   placement?: 'horizontal' | 'vertical'
   collapsed?: boolean
@@ -20,5 +22,5 @@ export interface Props {
   onCollapse?: (collapsed: boolean) => void
   overlayClassName?: string
 }
-declare const Menu: React.ComponentType<Props>
+declare const Menu: React.ComponentType<MenuProps>
 export default Menu

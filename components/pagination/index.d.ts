@@ -1,4 +1,6 @@
-export export interface PaginationProps {
+import React from "react"
+
+export interface PaginationProps {
   type?: 'default' | 'simple' | 'shrink'
   defaultCurrent?: number
   current?: number

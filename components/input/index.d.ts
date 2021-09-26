@@ -1,4 +1,6 @@
-export interface Props {
+import React from 'react'
+
+export interface InputProps {
   type?: 'text' | 'textarea' | 'id' | 'tel' | 'card' | 'amount' | 'email'
   value?: string | number
   defaultValue?: string | number
@@ -20,5 +22,5 @@ export interface Props {
   onInput?: (e: React.FormEvent<HTMLInputElement>) => void
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
-declare const Input: React.ComponentType<Props>
+declare const Input: React.ComponentType<InputProps>
 export default Input
