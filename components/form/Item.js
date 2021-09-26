@@ -34,6 +34,7 @@ const FormItem = (props) => {
     children,
     label,
     required,
+    rules: rulesProp,
     className,
     showColon: shouldItemShowColon,
     style,
@@ -91,12 +92,18 @@ const FormItem = (props) => {
     }
   }, [_propsValue, field])
 
+  useEffect(() => {
+    updateField()
+  }, [rulesProp, required])
+
   // 更新
   const updateField = (_value, triggerType) => {
-    const childrenFiled = {
-      value: _value,
-      ...updateFieldInfoToReducer()
+    const childrenFiled = updateFieldInfoToReducer()
+
+    if (typeof _value !== 'undefined') {
+      childrenFiled.value = _value
     }
+
     const { field } = childrenFiled
     if (field) {
       const _fields = _.cloneDeep(_Immutable.current.currentStateFields())
