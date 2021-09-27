@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'
 import _ from 'lodash'
 import EventEmitter from '../../../_util/EventEmitter'
 import Icon from '../../../icon'
-import { getRootNodes, getChildrenNodes, getNodeByIdTitle } from './util'
+import { getRootNodes, getChildrenNodes, getNodeByIdTitle, transKeys } from './util'
 import classNames from 'classnames'
 import Checkbox from '../../../checkbox'
 
@@ -52,7 +52,8 @@ const NavTree = ({
   activeId,
   setActiveId,
   flattenData,
-  emptyContent
+  emptyContent,
+  fieldNames
 }) => {
   const expandData = useRef()
   const [renderData, setRenderData] = useState([])
@@ -75,7 +76,6 @@ const NavTree = ({
       const len = fullBreadDataKeys.length
       if (len > 1) {
         node = _.cloneDeep(fullBreadData[fullBreadDataKeys[len - 2]])
-        console.log(node)
       } else {
         const node = getNodeByIdTitle(activeId, flattenData)
         const childNodes = getChildrenNodes(node, flattenData)
@@ -83,7 +83,7 @@ const NavTree = ({
         return
       }
     }
-    const _title = node.title
+    const _title = node[transKeys(fieldNames, 'title')]
     setRenderData(getChildrenNodes(node, data))
     setFullBreadData((preData) => {
       const keysArr = Object.keys(preData)
@@ -108,13 +108,13 @@ const NavTree = ({
     setFullBreadData((preData) => {
       return {
         ...preData,
-        [node.title]: node
+        [node[transKeys(fieldNames, 'title')]]: node
       }
     })
     setCurrentNode(node)
     if (children.length > 0) {
       setRenderData(children)
-      setActiveId(children[0].id)
+      setActiveId(children[0][transKeys(fieldNames, 'id')])
     } else {
       setRenderData([])
       setLoadingState('loading')
@@ -137,31 +137,42 @@ const NavTree = ({
       ) : (
         <ul className="hi-breadtree__list">
           {renderData.map((node, index) => {
+            const { id, disabled } = node
             const children = getChildrenNodes(node, data)
             const textCls = classNames(
               'hi-breadtree__text',
-              selectedItems.find((n) => n.id === node.id) && 'hi-breadtree__text--selected'
+              selectedItems.find((n) => n[transKeys(fieldNames, 'id')] === id) && 'hi-breadtree__text--selected'
             )
             return (
-              <li key={index} className="hi-breadtree__item" data-selecttree-id={node.id}>
+              <li
+                key={index}
+                className={classNames('hi-breadtree__item', { 'hi-breadtree__item--disabled': disabled })}
+                data-selecttree-id={node[transKeys(fieldNames, 'id')]}
+              >
                 {checkable && node.isLeaf ? (
                   <Checkbox
-                    indeterminate={checkedNodes.semiChecked.includes(node.id)}
-                    checked={checkedNodes.checked.includes(node.id)}
+                    indeterminate={checkedNodes.semiChecked.includes(node[transKeys(fieldNames, 'id')])}
+                    checked={checkedNodes.checked.includes(node[transKeys(fieldNames, 'id')])}
                     onChange={(e) => onCheck(e.target.checked, node)}
                   >
-                    <span className={classNames(textCls, { 'hi-select-tree__title--focus': node.id === activeId })}>
-                      {node.title}
+                    <span
+                      className={classNames(textCls, {
+                        'hi-select-tree__title--focus': node[transKeys(fieldNames, 'id')] === activeId
+                      })}
+                    >
+                      {node[transKeys(fieldNames, 'title')]}
                     </span>
                   </Checkbox>
                 ) : (
                   <span
-                    className={classNames(textCls, { 'hi-select-tree__title--focus': node.id === activeId })}
+                    className={classNames(textCls, {
+                      'hi-select-tree__title--focus': node[transKeys(fieldNames, 'id')] === activeId
+                    })}
                     onClick={() => {
-                      onNodeClick(node, children)
+                      !disabled && onNodeClick(node, children)
                     }}
                   >
-                    {node.title}
+                    {node[transKeys(fieldNames, 'title')]}
                   </span>
                 )}
                 {(children.length > 0 || !node.isLeaf) && (

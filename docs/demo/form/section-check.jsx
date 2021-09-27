@@ -86,13 +86,21 @@ const code = [
           ],
           rules: {
             name: {
+              type: 'string',
               required: true,
               message: <span style={{color: '#ccc'}}>请输入名称</span>,
               trigger: 'onBlur,onChange'
             },
             region: {
+              type: 'string',
               required: true,
               message: '请选择区域',
+              trigger: 'onChange'
+            },
+            store: {
+              type: 'array',
+              required: true,
+              message: '请选择门店',
               trigger: 'onChange'
             },
             count: {
@@ -112,7 +120,7 @@ const code = [
           }
         }
       }
-    
+
       handleSubmit() {
         this.form.current.validate((valid,error) => {
           console.log('valid:',valid,'error:',error)
@@ -125,7 +133,7 @@ const code = [
           }
         })
       }
-    
+
       cancelSubmit() {
         this.setState({
           form: {
@@ -140,21 +148,21 @@ const code = [
       clearValidates() {
         this.form.current.clearValidates()
       }
-    
-    
+
+
       render(){
         const Row = Grid.Row
         const Col = Grid.Col
         const FormItem = Form.Item
         const { form, checkedIndex } = this.state
-    
+
         return (
           <Row>
             <Col span={12}>
-              <Form 
-                ref={this.form} 
-                rules={this.state.rules} 
-                labelWidth='80' 
+              <Form
+                ref={this.form}
+                rules={this.state.rules}
+                labelWidth='80'
                 labelPlacement='right'>
                 <FormItem label='名称' field='name'>
                   <Input placeholder='请输入'/>
@@ -195,7 +203,7 @@ const code = [
                     data={['北京', '上海', '重庆']}
                   />
                 </FormItem>
-                
+
                 <FormItem>
                   <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
                   <Button type='line' onClick={this.cancelSubmit.bind(this)}>重置</Button>
@@ -225,12 +233,12 @@ const code = [
           codeDisabled: false
         }
         this.form = React.createRef()
-    
+
       }
       getCode () {
-        
+
         let countDownTime
-    
+
         countDownTime = setInterval(()=>{
           const {countDown} = this.state
           if(countDown-1 <=0){
@@ -253,7 +261,7 @@ const code = [
         const { initialValues, singleList, codeLoading, formData, codeDisabled, countDown } = this.state
         const Row = Grid.Row
         const Col = Grid.Col
-    
+
         return (
           <Form
             labelWidth='80'
@@ -350,7 +358,7 @@ const code = [
             >
               <Input type='password' placeholder='请输入' style={{ width: 240 }} />
             </FormItem>
-    
+
             <FormItem
                 label='确认密码'
                 field='passWorConfirm'
@@ -369,7 +377,7 @@ const code = [
               >
                 <Input type='password' placeholder='请再次输入密码' style={{ width: 240 }} />
             </FormItem>
-           
+
             <FormItem>
               <FormSubmit
                 type='primary'
@@ -397,7 +405,7 @@ const code = [
     opt: ['填充表单'],
     code: `import React from 'react'
     import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
-    class Demo extends React.Component {  
+    class Demo extends React.Component {
       constructor(props){
         super(props)
         this.state = {
@@ -412,7 +420,7 @@ const code = [
             { title:'生活周边', id:'5' },
             { title:'办公', id:'6' },
           ],
-          
+
         }
         this.form = React.createRef()
       }
@@ -423,11 +431,11 @@ const code = [
         const {formData,singleList} = this.state
         const Row = Grid.Row
         const Col = Grid.Col
-    
+
         return (
-          <Form 
-            labelWidth='80' 
-            labelPlacement='right' 
+          <Form
+            labelWidth='80'
+            labelPlacement='right'
             ref={this.form}
             initialValues={formData}>
             <Row>
@@ -468,12 +476,12 @@ const code = [
             />
             </FormItem>
             <FormItem>
-             <FormSubmit type='primary' 
+             <FormSubmit type='primary'
               onClick={(values,errors)=>{
                 console.log('Get form value:',values,errors)}
               }
               >提交</FormSubmit>
-              <FormReset type='line' 
+              <FormReset type='line'
                 onClick={()=>{console.log('reset form')}}
               >重置</FormReset>
               <Button type="primary" appearance="link" onClick={()=>{
@@ -493,7 +501,7 @@ const code = [
     opt: ['表单验证快捷用法'],
     code: `import React from 'react'
     import { Form, Grid, Button, Input, Select, Counter, Cascader, Radio, Checkbox, Switch, DatePicker, Rate, Upload  } from '@hi-ui/hiui'\n
-    class Demo extends React.Component {  
+    class Demo extends React.Component {
       constructor(props){
         super(props)
         this.form = React.createRef()
@@ -502,13 +510,13 @@ const code = [
         const FormItem = Form.Item
         const FormSubmit = Form.Submit
         const FormReset = Form.Reset
-    
+
         return (
-          <Form 
-            labelWidth='100' 
-            labelPlacement='right' 
+          <Form
+            labelWidth='100'
+            labelPlacement='right'
             ref={this.form}>
-    
+
             <FormItem label='表单名称' >
               表单rules使用样例
              </FormItem>
@@ -565,16 +573,16 @@ const code = [
               }}>
               <Input placeholder="仅有空格的输入是无效的" style={{ width: 300 }} />
             </FormItem>
-          
+
             <FormItem>
-             <FormSubmit type='primary' 
+             <FormSubmit type='primary'
               onClick={(values,errors)=>{
                 console.log('Get form value:',values,errors)}
               }>
                 提交
               </FormSubmit>
-    
-              <FormReset type='line' 
+
+              <FormReset type='line'
                 onClick={()=>{console.log('reset form')}} >
                 重置
               </FormReset>

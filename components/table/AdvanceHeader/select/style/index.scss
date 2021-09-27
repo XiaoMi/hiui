@@ -1,0 +1,20 @@
+@import '../../../../core-css/index.scss';
+
+.hi-table-advanceheader-select {
+  display: inline-block;
+  font-size: 14px;
+  overflow: hidden;
+  vertical-align: middle;
+  outline: none;
+  margin-left: 6px;
+  cursor: pointer;
+
+  &.is-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &__hide {
+    display: none;
+  }
+}

@@ -39,6 +39,7 @@ export interface SelectProps {
   defaultValue?: string | string[]
   showCheckAll?: boolean
   showJustSelected?: boolean
+  placement?: 'bottom-start' | 'top-start' | 'bottom' | 'top'
   multipleWrap?: 'wrap' | 'nowrap'
   searchable?: boolean
   filterOption?: FilterOptionFun
@@ -55,8 +56,10 @@ export interface SelectProps {
   onSearch?: (keyword: string) => void
   onOverlayScroll?: (e: Event<HTMLDivElement>) => void
   render?: (item: SelectItem, selected: boolean) => JSX.Element
+  renderExtraFooter?: () => JSX.Element
   overlayClassName?: string
   setOverlayContainer?: (triggerNode: any) => any
+  onBlur?: () => void
 }
 declare const Select: React.ComponentType<SelectProps>
 export default Select

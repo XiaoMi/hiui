@@ -136,17 +136,15 @@ class Demo extends React.Component {
   class Demo extends React.Component {
     constructor() {
       super()
-      this.state={
-        selectDate: ''
-      }
+      this.selectDate = ''
     }
     render () {
-      const { selectDate } = this.state
       return (
         <div style={{display:'flex', flexWrap: 'wrap'}}>
           <DatePicker
             type='daterange'
             disabledDate={(val)=>{
+              const { selectDate } = this
               if(selectDate){
                 const timestampCurrent = new Date(val).getTime()
                 const timestampSelect = new Date(selectDate).getTime()
@@ -158,9 +156,7 @@ class Demo extends React.Component {
             onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
             onSelect={(val, isCompleted)=>{
               console.log(val, isCompleted)
-              this.setState({
-                selectDate: isCompleted ? '' : val
-              })
+              this.selectDate = isCompleted ? '' : val
             }}
           />
         </div>

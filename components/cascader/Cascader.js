@@ -1,7 +1,16 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react'
-
-import classNames from 'classnames'
 import _ from 'lodash'
+import classNames from 'classnames'
+
+import {
+  getLabelKey,
+  getValueKey,
+  getChildrenKey,
+  parseData,
+  getCascaderLabel,
+  getSearchId,
+  getfilterOptions
+} from './utils'
 import Popper from '../popper'
 
 import Menu from './Menu'
@@ -26,78 +35,33 @@ const Cascader = (props) => {
     localeDatas,
     onChange = noop,
     onActiveItemChange = noop,
-    bordered = true
+    bordered = true,
+    data: propsData,
+    options: propsOptions,
+    onOpen,
+    onClose
   } = props
-  const getLabelKey = useCallback(() => {
-    return fieldNames.label || 'content'
-  }, [])
+  const initData = _.cloneDeep(propsData || propsOptions)
+  const cacheData = useRef([])
+  const [data, setData] = useState(parseData(initData, fieldNames))
+  useEffect(() => {
+    // useEffect 无法监控到数组 栈值的改变
+    if (!_.isEqual(cacheData.current, initData)) {
+      cacheData.current = initData
+      setData(parseData(initData, fieldNames))
+    }
+  }, [initData])
 
-  const getValueKey = useCallback(() => {
-    return fieldNames.value || 'id'
-  }, [])
-
-  const getChildrenKey = useCallback(() => {
-    return fieldNames.children || 'children'
-  }, [])
-  const parseData = useCallback(
-    (data) => {
-      const _data = _.cloneDeep(data)
-      const setDataItemPath = (data = [], parent) => {
-        data.forEach((item, index) => {
-          item._path = parent ? parent._path + '-' + index : index
-          if (item[getChildrenKey()]) {
-            setDataItemPath(item[getChildrenKey()], item)
-          }
-        })
-      }
-      setDataItemPath(_data)
-      return _data
-    },
-    [props.data, props.options]
-  )
-  const data = parseData(props.data || props.options) // 兼容1.x API 2.x 改为data
   const emptyContent = props.emptyContent || props.noFoundTip // 兼容1.x API 2.x改为 emptyContent
   const expandTrigger = props.expandTrigger || props.trigger || 'click' // 兼容2.x API 1.x改为 expandTrigger
-  const getCascaderLabel = useCallback(
-    (values, dataList) => {
-      if (displayRender) {
-        return displayRender(values)
-      }
-
-      if (!values || values.length === 0) {
-        return ''
-      } else {
-        const labels = []
-        let index = 0
-        let _options = dataList || data
-        const labelKey = getLabelKey()
-        const valueKey = getValueKey()
-        const childrenKey = getChildrenKey()
-
-        while (_options && _options.length > 0 && labels.length <= values.length) {
-          const value = values[index]
-          index++
-          _options.every((option) => {
-            if (option[valueKey] === value) {
-              labels.push(option[labelKey])
-              _options = option[childrenKey]
-              return false
-            } else {
-              _options = []
-              return true
-            }
-          })
-        }
-        return labels.join(' / ')
-      }
-    },
-    [data]
-  )
   const [filterOptions, setFilterOptions] = useState(false)
   // 缓存原始value，用户可能点击option但是没选中，用于恢复初始value
   const [cacheValue, setCacheValue] = useState(value || defaultValue || [])
+  // 选中态 value
   const [cascaderValue, setCascaderValue] = useState(value || defaultValue || [])
-  const [cascaderLabel, setCascaderLabel] = useState(getCascaderLabel(value || defaultValue || []))
+  const [cascaderLabel, setCascaderLabel] = useState(
+    getCascaderLabel(value || defaultValue || [], fieldNames, displayRender, data)
+  )
   const [focusOptionIndex, setFocusOptionIndex] = useState(-1)
   const targetByKeyDown = useRef(false)
   const currentDeep = useRef(0)
@@ -117,18 +81,26 @@ const Cascader = (props) => {
   useEffect(() => {
     setFocusOptionIndex(-1)
     currentDeep.current = 0
+    if (onOpen && popperShow) {
+      const dataSource = onOpen()
+      if (dataSource && dataSource.toString() === '[object Promise]') {
+        dataSource.then((res) => {
+          setData(parseData(res, fieldNames))
+        })
+      }
+      if (Array.isArray(onOpen)) {
+        setData(parseData(dataSource, fieldNames))
+      }
+    }
   }, [popperShow])
 
   useEffect(() => {
-    setCascaderLabel(getCascaderLabel(cacheValue))
     setCascaderValue(cacheValue)
   }, [cacheValue])
 
-  const extraClass = {
-    'hi-cascader--disabled': disabled,
-    'hi-cascader--focused': popperShow,
-    'hi-cascader--clearable': clearable
-  }
+  useEffect(() => {
+    setCascaderLabel(getCascaderLabel(cacheValue, fieldNames, displayRender, data))
+  }, [cacheValue, data])
 
   const onChangeValue = useCallback(
     (values, hasChildren) => {
@@ -184,109 +156,13 @@ const Cascader = (props) => {
       setPopperShow(false)
       return
     }
-    let filterOptions = []
     const initMatchOptions = { options: [], matchCount: 0 }
-    const labelKey = getLabelKey()
-    const valueKey = getValueKey()
-    const childrenKey = getChildrenKey()
-    const _checkOptions = (options, match) => {
-      options.map((option) => {
-        const label = option[labelKey]
-        const value = option[valueKey]
-        const children = option[childrenKey]
-        if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
-          match.matchCount++
-        }
-
-        match.options.push({
-          [labelKey]: label,
-          [valueKey]: value,
-          disabled: option.disabled
-        })
-
-        if (children && children.length > 0) {
-          _checkOptions(children, match)
-        } else {
-          if (match.matchCount > 0) {
-            filterOptions.push(match.options.slice())
-          }
-        }
-        if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
-          match.matchCount--
-        }
-
-        match.options.pop()
-      })
-    }
-
-    _checkOptions(data, initMatchOptions)
-
-    const ids = getSearchId(filterOptions, keyword)
-
+    let filterOptions = getfilterOptions(data, initMatchOptions, fieldNames, keyword)
+    const ids = getSearchId(filterOptions, keyword, filterOption, fieldNames)
     setCascaderValue(ids)
     filterOptions = formatFilterOptions(data, keyword)
     setPopperShow(true)
   }, [keyword, data])
-  // 获取默认选中的最近的id
-  const getSearchId = useCallback((filterOptions, keyword) => {
-    const filterFunc = filterOption
-    const levelItems = []
-    const levelItemsObj = {}
-
-    const labelKey = getLabelKey()
-    const valueKey = getValueKey()
-    if (filterOptions.length === 0) {
-      return []
-    } else {
-      filterOptions.map((options) => {
-        const jointOption = {
-          jointOption: true,
-          [labelKey]: [],
-          [valueKey]: []
-        }
-        options.map((option, index) => {
-          const levelItem = {
-            [valueKey]: ''
-          }
-
-          levelItem[valueKey] = jointOption[valueKey].concat(option[valueKey])
-
-          jointOption[valueKey].push(option[valueKey])
-          option.disabled && (jointOption.disabled = option.disabled)
-          option.disabled && (levelItem.disabled = option.disabled)
-
-          if (!levelItemsObj[levelItem[valueKey]]) {
-            levelItemsObj[levelItem[valueKey]] = levelItem[valueKey]
-            if (filterFunc) {
-              if (
-                filterFunc(keyword, option) &&
-                (levelItem[valueKey].toString().includes(keyword) || option[labelKey].toString().includes(keyword))
-              ) {
-                levelItems.push(levelItem)
-              }
-            } else {
-              if (option[labelKey].toString().includes(keyword)) {
-                levelItems.push(levelItem)
-              }
-            }
-          }
-        })
-      })
-    }
-    if (levelItems.length === 0) {
-      return []
-    }
-
-    const ids = levelItems.map((item) => item.id)
-    let targetId = ids[0].join(',')
-    for (let i = 1; i < ids.length; i++) {
-      if (ids[i].join(',').includes(targetId)) {
-        targetId = ids[i].join(',')
-      }
-    }
-
-    return targetId.split(',').map((item) => Number(item))
-  }, [])
 
   // 配置化
   const localeDatasProps = useCallback((key) => {
@@ -294,9 +170,9 @@ const Cascader = (props) => {
   }, [])
 
   const formatFilterOptions = useCallback((data, keyword) => {
-    const labelKey = getLabelKey()
-    const valueKey = getValueKey()
-    const childrenKey = getChildrenKey()
+    const labelKey = getLabelKey(fieldNames)
+    const valueKey = getValueKey(fieldNames)
+    const childrenKey = getChildrenKey(fieldNames)
 
     if (data.length === 0) {
       return []
@@ -397,7 +273,7 @@ const Cascader = (props) => {
       _data = optionIndexs.reduce((deepData, current, index) => {
         if (index === 0) return deepData
         const _index = optionIndexs[index - 1]
-        return deepData[_index][getChildrenKey()]
+        return deepData[_index][getChildrenKey(fieldNames)]
       }, data)
       return _data || []
     },
@@ -448,7 +324,7 @@ const Cascader = (props) => {
       optionValues.push(_data[item].id)
     })
     const currentItem = getDeepData(l - 1)[optionIndexs[l - 1]] || {}
-    const children = currentItem[getChildrenKey()] || []
+    const children = currentItem[getChildrenKey(fieldNames)] || []
     const hasChildren = !!children.length
     onChangeValue(optionValues, hasChildren)
     let index = 0
@@ -514,7 +390,11 @@ const Cascader = (props) => {
     },
     [moveFocusedIndex, rightHandle, leftHandle]
   )
-
+  const extraClass = {
+    'hi-cascader--disabled': disabled,
+    'hi-cascader--focused': popperShow,
+    'hi-cascader--clearable': clearable
+  }
   const expandIcon = popperShow ? 'icon-up' : 'icon-down'
   const placeholder = cascaderLabel || localeDatasProps('placeholder')
   return (
@@ -570,6 +450,7 @@ const Cascader = (props) => {
         placement="top-bottom-start"
         onClickOutside={() => {
           setPopperShow(false)
+          onClose && onClose()
         }}
       >
         <Menu
@@ -578,9 +459,9 @@ const Cascader = (props) => {
           theme={theme}
           isFiltered={filterOptions}
           filterOptionWidth={hiCascader.current && hiCascader.current.clientWidth}
-          valueKey={getValueKey()}
-          labelKey={getLabelKey()}
-          childrenKey={getChildrenKey()}
+          valueKey={getValueKey(fieldNames)}
+          labelKey={getLabelKey(fieldNames)}
+          childrenKey={getChildrenKey(fieldNames)}
           onSelect={onChangeValue}
           onHover={onHover}
           currentDeep={currentDeep}

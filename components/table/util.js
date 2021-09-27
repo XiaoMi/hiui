@@ -199,3 +199,35 @@ export const getMaskNums = (columns) => {
   getAllItemWidth(columns)
   return num
 }
+
+export const setRowByKey = (data, dragInfo, inSameLevel = true) => {
+  const { dropKey, dropClientY, startClientY, rowData } = dragInfo
+  data.some((item, index) => {
+    const { key, children } = item
+    if (dropKey === key) {
+      const direction = startClientY > dropClientY ? 0 : 1
+      data.splice(index + direction, 0, rowData)
+      return true
+    }
+    if (children) {
+      inSameLevel = false
+      setRowByKey(children, dragInfo, inSameLevel)
+    }
+  })
+  return data
+}
+
+export const deleteRowByKey = (data, dragInfo) => {
+  const { dragKey } = dragInfo
+  data.some((item, index) => {
+    const { key, children } = item
+    if (dragKey === key) {
+      data.splice(index, 1)
+      return true
+    }
+    if (children) {
+      deleteRowByKey(children, dragInfo)
+    }
+  })
+  return data
+}

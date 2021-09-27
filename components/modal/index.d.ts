@@ -13,6 +13,7 @@ export interface ModalProps {
   onConfirm?: (e: React.MouseEvent) => void
   style?: React.CSSProperties
   className?: string
+  confirmLoading?: boolean
 }
 
 export interface ModalOptions extends ModalProps {}

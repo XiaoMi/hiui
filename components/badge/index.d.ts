@@ -6,6 +6,7 @@ export interface BadgeProps {
   max?: number
   visible?: boolean
   color?: string
+  style?: CSSProperties
   offset?: [number | string, number | string]
 }
 

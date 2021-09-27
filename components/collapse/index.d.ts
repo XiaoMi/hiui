@@ -14,6 +14,7 @@ export interface CollapsePanelProps {
   id?: string
   title?: string | JSX.Element
   disabled?: boolean
+  extra?: React.ReactNode
 }
 declare class Panel extends React.Component<CollapsePanelProps, any> {
 }

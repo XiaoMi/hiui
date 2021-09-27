@@ -39,11 +39,12 @@ const Cell = ({
   }
   const { rightStickyWidth, leftStickyWidth, dataKey } = column
   const isSticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
+  const defatultTextAlign = column.align ? column.align : 'left'
   return (
     <td
       key={dataKey}
       style={{
-        textAlign: alignRightColumns.includes(dataKey) ? 'right' : 'left',
+        textAlign: alignRightColumns.includes(dataKey) ? 'right' : defatultTextAlign,
         right: rightStickyWidth + 'px',
         left: leftStickyWidth + 'px'
       }}
@@ -64,7 +65,7 @@ const Cell = ({
       {loading && <IconLoading />}
       {columnIndex === 0 &&
         !loading &&
-        ((allRowData.children && allRowData.children.length > 0) || (onLoadChildren && allRowData.isLeaf) ? (
+        ((allRowData.children && allRowData.children.length > 0) || (onLoadChildren && !allRowData.isLeaf) ? (
           <Icon
             style={{ marginRight: 4, cursor: 'pointer' }}
             name={expandedTree ? 'caret-down' : 'caret-right'}

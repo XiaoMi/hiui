@@ -384,11 +384,12 @@ $prefix: 'hi-tabs' !default;
 
   &__scroll--outter {
     display: flex;
+    align-items: center;
 
     .#{$prefix}__scroll__icon {
       cursor: pointer;
       display: flex;
-      font-size: 37px;
+      font-size: 40px;
       justify-content: center;
       align-items: center;
       color: use-color('gray-80');

@@ -18,21 +18,28 @@ class Carousel extends Component {
     this.timer = null
   }
 
-  componentDidMount() {
+  resizeRootWidth = () => {
     this.setState(
       {
         rootWidth: this.rootRef.current.clientWidth
       },
       () => {
         if (this.props.duration) {
+          this.timer && window.clearInterval(this.timer)
           this.autoPage()
         }
       }
     )
   }
 
+  componentDidMount() {
+    this.resizeRootWidth()
+    window.addEventListener('resize', this.resizeRootWidth)
+  }
+
   componentWillUnmount() {
     this.timer && window.clearInterval(this.timer)
+    window.removeEventListener('resize', this.resizeRootWidth)
   }
 
   autoPage() {

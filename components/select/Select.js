@@ -24,6 +24,7 @@ const InternalSelect = (props) => {
     render,
     multipleWrap,
     onFocus,
+    onBlur,
     dataSource,
     filterOption,
     theme,
@@ -41,7 +42,8 @@ const InternalSelect = (props) => {
     overlayClassName,
     setOverlayContainer,
     bordered = true,
-    overlayClickOutSideEventName = 'click'
+    overlayClickOutSideEventName = 'click',
+    renderExtraFooter
   } = props
   const selectInputContainer = useRef()
   const autoloadFlag = useRef(autoload) // 多选情况下，需要记录是否进行了筛选
@@ -82,7 +84,9 @@ const InternalSelect = (props) => {
     }
     resetFocusedIndex()
   }, [])
-
+  useEffect(() => {
+    historyData.current = _.cloneDeep(data)
+  }, [data])
   useEffect(() => {
     if (dropdownItems && dropdownItems.length) {
       setIsGroup(
@@ -199,13 +203,16 @@ const InternalSelect = (props) => {
     if (dropdownShow) {
       setKeyword('')
       setDropdownShow(false)
+      if (onBlur) {
+        onBlur()
+      }
     }
     // 多选具有默认值的话打开的话应该显示选中的值
     if (dataSource && type === 'multiple' && !autoloadFlag.current) {
       setCacheSelectItem(selectedItems)
       setDropdownItems(selectedItems)
     }
-  }, [dropdownShow, selectedItems, dataSource, type])
+  }, [dropdownShow, selectedItems, dataSource, type, onBlur])
   // 获取分组的数据 以及下标
   const getGroupDropdownItems = useCallback(
     (focusedIndex, group, direction) => {
@@ -408,7 +415,7 @@ const InternalSelect = (props) => {
     } = _dataSource
     // 处理Key
 
-    options.params = key ? { [key]: keyword, ...params } : params
+    options.params = key && keyword ? { [key]: keyword, ...params } : params
 
     const _withCredentials = withCredentials || credentials === 'include'
     // 取消上一次的请求
@@ -460,7 +467,7 @@ const InternalSelect = (props) => {
         onSearch(keyword)
         return
       }
-      if (dataSource && (autoload || keyword) && searchable) {
+      if (dataSource && searchable) {
         remoteSearch(keyword)
       }
       if (dataSource && searchable && keyword === '' && selectedItems.length > 0) {
@@ -644,6 +651,7 @@ const InternalSelect = (props) => {
       >
         <SelectDropdown
           emptyContent={emptyContent}
+          renderExtraFooter={renderExtraFooter}
           fieldNames={fieldNames}
           localeMap={localeDatas.select || {}}
           mode={type}

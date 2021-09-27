@@ -2,8 +2,8 @@ import React, { useCallback } from 'react'
 import Icon from '../../icon'
 
 const useTranslate = ({ elementRef, canScroll, prefixCls }) => {
-  // 右移
-  const translateRight = useCallback(() => {
+  // 左移
+  const translateLeft = useCallback(() => {
     const container = elementRef.current
     const width = container.scrollWidth
     let transX = Number(document.defaultView.getComputedStyle(container, null).transform.split(',')[4])
@@ -15,8 +15,8 @@ const useTranslate = ({ elementRef, canScroll, prefixCls }) => {
     container.style.transform = 'translateX(' + transX + 'px)'
   }, [elementRef.current])
 
-  // 左移
-  const translateLeft = useCallback(() => {
+  // 右移
+  const translateRight = useCallback(() => {
     const container = elementRef.current
     const width = container.scrollWidth
     const clientWidth = container.clientWidth

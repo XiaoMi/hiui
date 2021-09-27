@@ -5,6 +5,7 @@ export type TreeNode = {
   disabled?: boolean
   children?: TreeNode[]
   isLeaf?: boolean
+  selectable?: boolean
 }
 export type LoadTreeNode = {
   method?: 'get' | 'post'

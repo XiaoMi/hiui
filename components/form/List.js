@@ -39,8 +39,7 @@ const List = (props) => {
         listItemValue: value,
         sort: index,
         column: index,
-        uuid,
-        name
+        uuid
       })
     })
     setListCount(cachelistCount)

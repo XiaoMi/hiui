@@ -4,6 +4,7 @@ export type SelectTreeItem = {
   id: string | number
   title: string
   children?: SelectTreeItem[]
+  disabled?: boolean
 }
 export type SelectTreeDataSource = {
   url: string
@@ -23,6 +24,7 @@ export interface SelectTreeProps {
   showCheckedMode?: 'ALL' | 'PARENT' | 'CHILD'
   mode?: 'normal' | 'breadcrumb'
   defaultExpandAll?: boolean
+  fieldNames?: FieldNames
   disabled?: boolean
   bordered?: boolean
   defaultExpandIds?: string[] | number[]

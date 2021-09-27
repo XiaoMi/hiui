@@ -1,15 +1,23 @@
 import React from "react"
 import {PaginationProps} from '../pagination'
+import { SelectProps } from '../select'
 
 export type TableColumnItem = {
   title: string | JSX.Element
   dataKey: string
-  align?: 'left' | 'right'
+  align?: 'left' | 'right' | 'center'
   sorter?: () => boolean
   avg?: boolean
   total?: boolean
   width?: number
   children?: TableColumnItem[]
+  selectFilters?: SelectProps
+  defaultSortOrder?: 'ascend' | 'descend'
+  filterIcon?: JSX.Element
+  filterDropdown?: (props: {ColumnItem: ColumnItem, setFilterDropdownVisible: Function}) => ReactNode
+  filterDropdownWidth?: number
+  filterDropdownClassName?: string
+  onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, ColumnItem: ColumnItem) => void
   render?: (text: string, record: object, index: number, dataKey: string) => JSX.Element
 }
 
@@ -47,10 +55,12 @@ export type HeaderRowFunc = (colums: TableColumnItem[], index: number) => TableH
 
 export interface TableProps {
   size?: 'small' | 'large' | 'default' | 'mini'
+  fieldKey?: string
   bordered?: boolean
   striped?: boolean
   loading?: boolean
   sticky?: boolean
+  draggable?: boolean
   stickyTop?: number
   expandRowKeys?: number[]
   highlightedColKeys?: string[] | number[]
@@ -79,6 +89,9 @@ export interface TableProps {
   style?: React.CSSProperties
   className?: string
   scrollWidth?: React.ReactText
+  onDragStart?: (rowData: object) => void
+  onDrop?: (dragRowData: object, dropRowData: object, data: object, level: Level) => boolean | Promise
+  onDropEnd?: (dragRowData: object, dropRowData: object, data: object) => void
 }
 declare const Table: React.ComponentType<TableProps>
 export default Table

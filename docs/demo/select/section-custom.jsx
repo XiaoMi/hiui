@@ -1,6 +1,8 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Select from '../../../components/select'
+import Input from '../../../components/input'
+import Button from '../../../components/button'
 const prefix = 'select-custom'
 const desc = ['选项结构：可自定义选项的信息结构或样式', '搜索条件：可自定义搜索条件的算法']
 const rightOptions = ['选项结构', '搜索条件']
@@ -34,6 +36,12 @@ class Demo extends React.Component {
         searchable
         onChange={(item) => {
           console.log('单选结果', item)
+        }}
+        renderExtraFooter={()=>{
+          return <div style={{width: '100%'}}>
+            <Input style={{width: '100px'}}/>
+            <Button type="line" appearance="link" icon="plus">新增</Button>
+          </div>
         }}
         render={(item, isSelected) => {
           return (
@@ -92,6 +100,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoCustom = () => (
-  <DocViewer code={code} scope={{ Select }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
+  <DocViewer code={code} scope={{ Select, Button, Input }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoCustom

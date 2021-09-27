@@ -10,6 +10,7 @@ export interface StepperProps {
   current?: number
   placement?: 'vertical' | 'horizontal'
   itemLayout?: 'vertical' | 'horizontal'
+  onChange?: (current: number) => void
 }
 declare const Stepper: React.ComponentType<StepperProps>
 export default Stepper

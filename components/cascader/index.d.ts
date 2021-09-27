@@ -1,8 +1,9 @@
 import React from 'react'
 export type CascaderItem = {
-  content: string
   id: string | number
+  content: string
   disabled?: boolean
+  children?: CascaderItem[]
 }
 export type CascaderFieldNames = {
   label?: string
@@ -22,10 +23,11 @@ export interface CascaderProps {
   disabled?: boolean
   changeOnSelect?: boolean
   placeholder?: string
-  emptyContent?: string | JSX.Element
+  emptyContent?: string | React.ReactNode
   displayRender?: (value: string[] | number[]) => string
-  style?: object
   onChange?: (value: string[] | number[]) => void
+  onOpen?: () => void
+  onClose?: () => void
   overlayClassName?: string
   style?: React.CSSProperties
   className?: string

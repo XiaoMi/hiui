@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Cascader from '../../../components/cascader'
 const prefix = 'section-search'
-const desc = '选项数量较大，不熟悉数据的结构关系情况下，用搜索关键词的方式快速定位'
+const desc = '选项数量较大，不熟悉数据的结构关系情况下，用搜索关键词的方式快速定位，需输入关键字并点击回车'
 
 const code = `import React from 'react'
 import Cascader from '@hi-ui/hiui/es/cascader'\n
@@ -190,12 +190,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBasic = () => (
-  <DocViewer
-    code={code}
-    scope={{ Cascader }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoBasic = () => <DocViewer code={code} scope={{ Cascader }} prefix={prefix} desc={desc} />
 export default DemoBasic

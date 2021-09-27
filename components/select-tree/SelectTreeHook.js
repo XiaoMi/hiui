@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
+import cx from 'classnames'
 import _ from 'lodash'
 import Popper from '../popper'
 import Loading from '../loading'
@@ -14,12 +15,13 @@ import {
   parseDefaultSelectedItems,
   parseCheckStatusData,
   parseSelectedItems,
-  treeFilterByOriginalData,
   parseExpandIds,
   fillNodeEntries,
   clearReturnData,
   processSelectedIds,
-  getFirstSiblingWidthSelectItems
+  getFirstSiblingWidthSelectItems,
+  transKeys,
+  setFieldNames
 } from './components/tree/util'
 import HiRequest from '../hi-request'
 import { moveFocusedIndex, rightHandle, leftHandle } from './keyEvents'
@@ -29,6 +31,7 @@ import Trigger from './components/Trigger'
 import Provider from '../context'
 
 const SelectTree = ({
+  className,
   data,
   dataSource,
   type,
@@ -56,8 +59,10 @@ const SelectTree = ({
   placement = 'top-bottom-start',
   emptyContent,
   disabled,
-  bordered = true
+  bordered = true,
+  fieldNames = {}
 }) => {
+  setFieldNames(fieldNames || {})
   const [isFocus, setIsFocus] = useState(false)
   const placeholder = propsPlaceholder || localeDatas.selectTree.placeholder
   const selectedItemsRef = useRef()
@@ -94,7 +99,6 @@ const SelectTree = ({
     setSearchValue('')
     searchTreeNode('')
   }, [flattenData])
-
   // 根据传入的原始数据解析为拉平数据及改装数据
   useEffect(() => {
     setStatus()
@@ -129,7 +133,7 @@ const SelectTree = ({
         const _selectedItems = parseDefaultSelectedItems(value, flattenData)
         setSelectedItems(_selectedItems)
         if (_selectedItems.length > 0) {
-          setActiveId(_selectedItems[0].id)
+          setActiveId(_selectedItems[0][transKeys(fieldNames, 'id')])
         }
       }
     }
@@ -146,7 +150,7 @@ const SelectTree = ({
     if (Array.isArray(selectedItems) && selectedItems.length > 0) {
       setActiveId(getFirstSiblingWidthSelectItems(flattenData, selectedItems))
     } else if (Array.isArray(flattenData) && flattenData.length > 0) {
-      setActiveId(flattenData[0].id)
+      setActiveId(flattenData[0][transKeys(fieldNames, 'id')])
     }
   }, [expandIdsProps, flattenData])
   const getShowCount = useCallback(() => {
@@ -207,9 +211,9 @@ const SelectTree = ({
       }
     }
     if (Array.isArray(selectedItems) && selectedItems.length > 0) {
-      setActiveId(selectedItems[0].id)
+      setActiveId(selectedItems[0][transKeys(fieldNames, 'id')])
     } else if (Array.isArray(data) && data.length > 0) {
-      setActiveId(data[0].id)
+      setActiveId(data[0][transKeys(fieldNames, 'id')])
     }
     return () => {
       window.removeEventListener('resize', resize)
@@ -227,8 +231,8 @@ const SelectTree = ({
         _keyword = val.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
         const reg = new RegExp(_keyword, 'gi')
         const str = `<span style="color: var(--color-primary)">${val}</span>`
-        if (reg.test(node.title)) {
-          node._title = node.title.replace(reg, str)
+        if (reg.test(node[transKeys(fieldNames, 'title')])) {
+          node._title = node[transKeys(fieldNames, 'title')].replace(reg, str)
           matchNodes.push(node)
         }
         return node
@@ -236,22 +240,11 @@ const SelectTree = ({
       setFlattenData(filterArr)
       let matchNodesSet = []
       matchNodes.forEach((mn) => {
-        matchNodesSet.push(mn.id)
+        matchNodesSet.push(mn[transKeys(fieldNames, 'id')])
         matchNodesSet = matchNodesSet.concat(mn.ancestors || [])
       })
       matchNodesSet = _.uniq(matchNodesSet)
       setExpandIds(matchNodesSet)
-    } else if (searchMode === 'filter') {
-      const filterArr = treeFilterByOriginalData(data, val)
-      const filterData = flattenNodesData(filterArr).flattenData
-      let matchNodesSet = []
-      filterData.forEach((mn) => {
-        matchNodesSet.push(mn.id)
-        matchNodesSet = matchNodesSet.concat(mn.ancestors || [])
-      })
-      matchNodesSet = _.uniq(matchNodesSet)
-      setExpandIds(matchNodesSet)
-      setFlattenData(filterData)
     }
   }
 
@@ -334,8 +327,10 @@ const SelectTree = ({
    * @param {*} node 当前节点
    */
   const checkedEvents = (checked, node) => {
+    if (node[transKeys(fieldNames, 'disabled')]) {
+      return
+    }
     let result = {}
-
     const semiCheckedIds = new Set(checkedNodes.semiChecked)
     const checkedIds = new Set(checkedNodes.checked)
     if (checked) {
@@ -343,14 +338,13 @@ const SelectTree = ({
     } else {
       result = updateUnCheckData(node, flattenData, checkedIds, semiCheckedIds)
     }
-
     let checkedArr = []
     if (result.checked.length > 0) {
       checkedArr = result.checked.map((id) => {
         return getNode(id, flattenData)
       })
     }
-    setActiveId(node.id)
+    setActiveId(node[transKeys(fieldNames, 'id')])
     onChange(
       processSelectedIds(result.checked, nodeEntries, showCheckedMode, flattenData),
       clearReturnData(checkedArr),
@@ -370,11 +364,11 @@ const SelectTree = ({
    */
   const expandEvents = (node, state, callback = () => {}) => {
     const _expandIds = [...expandIds]
-    const hasIndex = _expandIds.findIndex((id) => id === node.id)
+    const hasIndex = _expandIds.findIndex((id) => id === node[transKeys(fieldNames, 'id')])
     if (hasIndex !== -1) {
       _expandIds.splice(hasIndex, 1)
     } else {
-      _expandIds.push(node.id)
+      _expandIds.push(node[transKeys(fieldNames, 'id')])
     }
     setExpandIds(_expandIds)
     if (hasChildren(node, flattenData)) {
@@ -384,7 +378,7 @@ const SelectTree = ({
       return
     }
     if (state) {
-      const _loadNodes = loadNodes(node.id)
+      const _loadNodes = loadNodes(node[transKeys(fieldNames, 'id')])
       _loadNodes.then &&
         _loadNodes.then((res) => {
           if (res.length > 0) {
@@ -404,9 +398,9 @@ const SelectTree = ({
     (node) => {
       typeof value === 'undefined' && setSelectedItems([node])
       const n = clearReturnData(node)
-      onChange(node.id, n, n)
+      onChange(node[transKeys(fieldNames, 'id')], n, n)
       setShow(false)
-      setActiveId(node.id)
+      setActiveId(node[transKeys(fieldNames, 'id')])
     },
     [onChange, show, selectedItems, value]
   )
@@ -488,14 +482,14 @@ const SelectTree = ({
           evt.preventDefault()
           evt.stopPropagation()
 
-          rightHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
+          rightHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode, fieldNames })
         }
         // left
         if (evt.keyCode === 37) {
           evt.preventDefault()
           evt.stopPropagation()
 
-          leftHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
+          leftHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode, fieldNames })
         }
         // enter
         if (evt.keyCode === 13) {
@@ -505,7 +499,7 @@ const SelectTree = ({
             type === 'multiple'
               ? checkedEvents(
                   !selectedItems.some((item) => {
-                    return activeId === item.id
+                    return activeId === item[transKeys(fieldNames, 'id')]
                   }),
                   getNodeByIdTitle(activeId, flattenData),
                   checkedNodes
@@ -522,7 +516,7 @@ const SelectTree = ({
             type === 'multiple'
               ? checkedEvents(
                   !selectedItems.some((item) => {
-                    return activeId === item.id
+                    return activeId === item[transKeys(fieldNames, 'id')]
                   }),
                   getNodeByIdTitle(activeId, flattenData),
                   checkedNodes
@@ -537,7 +531,7 @@ const SelectTree = ({
 
   return (
     <div
-      className={`theme__${theme} hi-selecttree`}
+      className={cx('hi-selecttree', `theme__${theme}`, className)}
       onClick={() => {
         setIsFocus(true)
       }}
@@ -559,6 +553,7 @@ const SelectTree = ({
         valueRender={valueRender}
         placeholder={placeholder}
         checkedEvents={checkedEvents}
+        fieldNames={fieldNames}
         onTrigger={onTrigger}
         bordered={bordered}
         onClear={handleClear}
@@ -572,7 +567,7 @@ const SelectTree = ({
           onKeyDown={handleKeyDown}
           placement={placement}
           overlayClassName={overlayClassName}
-          className={`hi-selecttree__popper ${data.length === 0 && dataSource ? 'hi-selecttree__popper--loading' : ''}`}
+          className={cx('hi-selecttree__popper', data.length === 0 && dataSource && 'hi-selecttree__popper--loading')}
           onClickOutside={() => {
             setIsFocus(false)
             setShow(false)
@@ -630,6 +625,9 @@ const SelectTree = ({
                   setActiveId={setActiveId}
                   localeDatas={localeDatas}
                   emptyContent={emptyContent}
+                  fieldNames={fieldNames}
+                  searchMode={searchMode}
+                  searchValue={searchValue}
                 />
               ) : (
                 <Tree
@@ -638,6 +636,7 @@ const SelectTree = ({
                   expandIds={expandIds}
                   activeId={activeId}
                   dataSource={dataSource}
+                  fieldNames={fieldNames}
                   loadDataOnExpand={false}
                   checkable={type === 'multiple'}
                   checkedNodes={checkedNodes}
@@ -645,6 +644,8 @@ const SelectTree = ({
                   nodeDataState={nodeDataState}
                   onSearch={searchTreeNode}
                   localeDatas={localeDatas}
+                  searchMode={searchMode}
+                  searchValue={searchValue}
                   // searchMode='highlight'
                   // defaultExpandIds={[]}
                   // defaultExpandAll

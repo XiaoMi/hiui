@@ -18,6 +18,7 @@ interface CommonProps {
   value?: Date | string | number | DateRange | undefined | null
   defaultValue?: Date | string | number | DateRange | undefined | null
   disabled?: boolean
+  placement?: 'bottom-start' | 'top-start' | 'bottom' | 'top'
   clearable?: boolean
   placeholder?: string | string[]
   format?: string
@@ -43,6 +44,9 @@ export interface DatePickerProps extends CommonProps {
   disabledDate?: (currentDate: Date) => boolean
   showTime?: boolean
   shortcuts?: string[] | DatePickerShortcuts[]
+  disabledHours?: () => number[]
+  disabledMinutes?: (selectedHour: number) => number[]
+  disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[]
   weekOffset?: 0 | 1
   altCalendar?: CalendarItem
   altCalendarPreset?: 'zh-CN' | 'id-ID'

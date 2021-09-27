@@ -70,6 +70,9 @@ import DemoCalendar from '../../demo/date-picker/section-calendar.jsx'
 | dateMarkRender    | 自定义日期的右上角标记                                         | (currentDate: Date, today: Date) => React.ReactNode       | -                                                                                                                                                                                                                | -           |
 | dateMarkPreset    | 预置日期的右上角标记（休 \| 班）                               | string                                                    | 'zh-CN'                                                                                                                                                                                                          | 'zh-CN'     |
 | overlayClassName  | 下拉根元素的类名称 (3.0 新增)                                  | string                                                    | -                                                                                                                                                                                                                | -           |
+| disabledHours   | 禁止选择的小时，仅在 showTime 开启时生效     | () => number[] \| number[]                                             | -                        | -         |
+| disabledMinutes | 禁止选择的分钟，仅在 showTime 开启时生效     | (selectedHour: number) => number[] \| number[]                         | -                        | -         |
+| disabledSeconds | 禁止选择的秒数，仅在 showTime 开启时生效     | (selectedHour: number, selectedMinute: number) => number[] \| number[] | -                        | -         |
 
 ## Events
 
@@ -393,7 +396,7 @@ import DemoCalendar from '../../demo/date-picker/section-calendar.jsx'
   </tbody>
 </table>
 
-### localeData 
+### localeData
 
 `DatePicker.localeData(key?:String)`
 

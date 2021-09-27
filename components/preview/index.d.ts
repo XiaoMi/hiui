@@ -9,6 +9,7 @@ export interface PreviewProps {
   simpleData?: boolean
   activeIndex?: number
   style?: React.CSSProperties
+  onError?: (index: number) => void
   className?: string
 }
 declare const Preview: React.ComponentType<PreviewProps>
