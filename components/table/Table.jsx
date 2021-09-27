@@ -76,22 +76,15 @@ const Table = ({
   const loadChildren = useRef(null)
   const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
 
-  /**
-   * 受控非受控更新树形 table 的展开项
-   */
-  const [_expandedTreeRows, _setExpandedTreeRows] = useState([])
-
-  const controlledExpanded = propsExpandRowKeys !== undefined
-  const expandedTreeRows = controlledExpanded ? propsExpandRowKeys : _expandedTreeRows
+  const [expandedTreeRows, _setExpandedTreeRows] = useState([])
 
   const setExpandedTreeRows = useCallback(
     (expandKeys, expanded, rowItem) => {
-      if (!controlledExpanded) {
-        _setExpandedTreeRows(expandKeys)
-      }
+      _setExpandedTreeRows(expandKeys)
+      // 仅支持树形 table onExpand 回调，由于之前设计局限，无法完成对 `expandedRowKeys` 的受控支持
       onExpand?.(expanded, rowItem)
     },
-    [controlledExpanded, onExpand]
+    [onExpand]
   )
 
   // 固定列的宽度
@@ -159,6 +152,10 @@ const Table = ({
       }
     }
   }, [columns, dataSource, data])
+
+  useEffect(() => {
+    _setExpandedTreeRows(expandedRowKeys || [])
+  }, [expandedRowKeys, data])
 
   // 有表头分组那么也要 bordered
   const _bordered = flattedColumns.length > columns.length || bordered
