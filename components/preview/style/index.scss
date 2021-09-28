@@ -56,10 +56,11 @@
     justify-content: space-between;
     color: #fff;
     width: 100%;
-    z-index: -1;
+    pointer-events: none;
 
     .hi-icon {
       cursor: pointer;
+      pointer-events: auto;
     }
   }
 
