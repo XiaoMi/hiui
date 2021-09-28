@@ -155,7 +155,7 @@ declare module 'react-base-table' {
       readonly NONE: false;
     };
   }
-  type FixedOption = {
+  export type FixedOption = {
     left?: string
     right?: string
   }

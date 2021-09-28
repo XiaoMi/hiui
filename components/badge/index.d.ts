@@ -1,5 +1,6 @@
-import React, {CSSProperties} from 'react'
-interface BadgeProps {
+import React from 'react'
+
+export interface BadgeProps {
   content?: string | number
   type?:'bubble' | 'dot'
   max?: number

@@ -1,4 +1,6 @@
-interface Props {
+import React from "react"
+
+export interface RateProps {
   clearable?: boolean
   allowHalf?: boolean
   useEmoji?: boolean
@@ -13,8 +15,8 @@ interface Props {
   color?: string
   characterRender?: (value: number, index: number) => JSX.Element
   onChange?: (value: number) => void
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
-declare const Rate: React.ComponentType<Props>
+declare const Rate: React.ComponentType<RateProps>
 export default Rate

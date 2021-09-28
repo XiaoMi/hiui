@@ -1,4 +1,4 @@
-interface TimeProps extends CommonProps {
+export interface TimeProps extends CommonProps {
   type?: 'default' | 'timerange'
   hourStep?: number
   minuteStep?: number
@@ -7,7 +7,7 @@ interface TimeProps extends CommonProps {
   disabledHours?: () => number[]
   disabledMinutes?: (selectedHour: number) => number[]
   disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[]
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 declare const TimePicker: React.ComponentType<TimeProps>

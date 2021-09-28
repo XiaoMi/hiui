@@ -1,26 +1,24 @@
-import React from "react"
-
-type FieldNames = {
+import React from 'react'
+export type CascaderItem = {
+  id: string | number
+  content: string
+  disabled?: boolean
+  children?: CascaderItem[]
+}
+export type CascaderFieldNames = {
   label?: string
   value?: string
   children?: string
 }
-
-type DataItem = {
-  id: string | number
-  content: string
-  disabled?: boolean
-  children?: DataItem[]
-}
-interface Props {
-  fieldNames?: FieldNames
-  data: DataItem []
-  value?: string[] | number[]
-  defaultValue?: string[] | number[]
+export interface CascaderProps {
+  fieldNames?: CascaderFieldNames
+  data: CascaderItem
+  value: string[] | number[]
+  defaultValue: string[] | number[]
   expandTrigger?: 'click' | 'hover'
   searchable?: boolean
   bordered?: boolean
-  filterOption?: (keyword: string, item: DataItem) => boolean
+  filterOption?: (keyword: string, item: CascaderItem) => boolean
   clearable?: boolean
   disabled?: boolean
   changeOnSelect?: boolean
@@ -31,8 +29,8 @@ interface Props {
   onOpen?: () => void
   onClose?: () => void
   overlayClassName?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
-declare const Cascader: React.ComponentType<Props>
+declare const Cascader: React.ComponentType<CascaderProps>
 export default Cascader

@@ -1,17 +1,18 @@
-type DataItem = {
+import React from 'react'
+export type TimelineItem = {
   title: string | JSX.Element
   content?: string | JSX.Element
   timestamp?: string
   extraTime?: string
   icon?: string | JSX.Element
 }
-type GroupItem = {
+export type TimelineGroupItem = {
   groupTitle: string | JSX.Element
-  children: DataItem[]
+  children: TimelineItem[]
 }
-interface Props {
+export interface TimelineProps {
   type?: 'default' | 'right' | 'cross'
-  data: DataItem[] | GroupItem[]
+  data: TimelineItem[] | TimelineGroupItem[]
 }
-declare const Timeline: React.ComponentType<Props>
+declare const Timeline: React.ComponentType<TimelineProps>
 export default Timeline

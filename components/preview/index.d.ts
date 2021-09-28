@@ -1,5 +1,6 @@
-import { CSSProperties } from "react"
-interface Props {
+import React from "react"
+
+export interface PreviewProps {
   visible?: boolean
   showBar?: boolean
   showArrow?: boolean
@@ -7,9 +8,9 @@ interface Props {
   images?: string[] | object[]
   simpleData?: boolean
   activeIndex?: number
+  style?: React.CSSProperties
   onError?: (index: number) => void
-  style?: CSSProperties
   className?: string
 }
-declare const Preview: React.ComponentType<Props>
+declare const Preview: React.ComponentType<PreviewProps>
 export default Preview
