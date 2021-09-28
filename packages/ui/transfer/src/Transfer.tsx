@@ -167,7 +167,7 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       (sourceId: React.ReactText, targetId: React.ReactText, direction: string | null) => {
         if (sourceId === targetId) return
 
-        const targetIdx = targetIds.findIndex((item) => item === targetId)
+        let targetIdx = targetIds.findIndex((item) => item === targetId)
         const sourceIdx = targetIds.findIndex((item) => item === sourceId)
 
         if (targetIdx === -1 || sourceIdx === -1) return
@@ -176,6 +176,11 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
         const sourceItem = targetList[sourceIdx]
 
         const nextTargetList = targetList.filter(({ id }) => id !== sourceId)
+        // sourceId 被移除后，需要维护下标偏移纠正
+        if (sourceIdx < targetIdx) {
+          targetIdx = targetIdx - 1
+        }
+
         nextTargetList.splice(direction === 'before' ? targetIdx : targetIdx + 1, 0, sourceItem)
 
         const nextTargetIds = nextTargetList.map(({ id }) => id)
