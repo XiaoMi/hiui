@@ -1,6 +1,6 @@
 # 更新日志
 
-# 3.7.1
+# 3.8.0
 
 - 新增 所有组件 props TS 类型定义的导出  [#1933](https://github.com/XiaoMi/hiui/issues/1933)
 - 新增 `Modal` confirmLoading 控制确定按钮的 loading 状态 [#1866](https://github.com/XiaoMi/hiui/issues/1866)
