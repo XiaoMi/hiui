@@ -2,6 +2,7 @@
 
 # 3.7.1
 
+- 新增 所有组件 props TS 类型定义的导出  [#1933](https://github.com/XiaoMi/hiui/issues/1933)
 - 新增 `Modal` confirmLoading 控制确定按钮的 loading 状态 [#1866](https://github.com/XiaoMi/hiui/issues/1866)
 - 新增 `Cascader` onOpen 下拉菜单打开、onClose 下拉菜单关闭回调方法，优化动态加载数据功能 [#1854](https://github.com/XiaoMi/hiui/issues/1854)
 - 新增 `Table` 组件 align 属性接受 center 属性 [#1835](https://github.com/XiaoMi/hiui/issues/1835)
@@ -41,6 +42,7 @@
 - 修复 `DatePicker` 组件在 Form 校验失败时边框爆红提示未正常显示 [#1897](https://github.com/XiaoMi/hiui/issues/1897)
 - 修复 `Input` 组件中输入手机号在11位时再尝试输入，总会多出一位 [#1919](https://github.com/XiaoMi/hiui/issues/1919)
 - 修复 `Badge` 组件 offset 属性设置状态点的位置偏移异常 [#1931](https://github.com/XiaoMi/hiui/issues/1931)
+- 修复 `Carousel` 组件左侧切换按钮点击失效 [#1942](https://github.com/XiaoMi/hiui/issues/1942)
 
 # 3.7.0
 
