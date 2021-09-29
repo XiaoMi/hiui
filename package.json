@@ -39,10 +39,8 @@
   "main": "index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
-  "file": [
-    "dist",
-    "es",
-    "types/*.d.ts"
+  "files": [
+    "es"
   ],
   "sideEffects": [
     "es/**/style/*",
