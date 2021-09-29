@@ -61,6 +61,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     defaultExpandedIds = NOOP_ARRAY,
     onExpand,
     titleRender,
+    draggable,
     ...nativeTreeProps
   } = props
   const flattedData = useMemo(() => flattenTreeData(data), [data])
@@ -111,7 +112,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     onExpand: tryToggleExpandedIds,
     titleRender: proxyTitleRender,
     // 在搜索中时不允许节点拖拽操作，纯展示
-    draggable: !inSearch,
+    draggable: inSearch ? !inSearch : draggable,
   }
 
   const handleChange = useCallback(
