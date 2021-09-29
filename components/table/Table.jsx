@@ -114,7 +114,18 @@ const Table = ({
   const [hoverColIndex, setHoverColIndex] = useState(null)
   const loadChildren = useRef(null)
   const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
-  const [expandedTreeRows, setExpandedTreeRows] = useState([])
+
+  const [expandedTreeRows, _setExpandedTreeRows] = useState([])
+
+  const setExpandedTreeRows = useCallback(
+    (expandKeys, expanded, rowItem) => {
+      _setExpandedTreeRows(expandKeys)
+      // 仅支持树形 table onExpand 回调，由于之前设计局限，无法完成对 `expandedRowKeys` 的受控支持
+      onExpand?.(expanded, rowItem)
+    },
+    [onExpand]
+  )
+
   // 固定列的宽度
   const [fixedColumnsWidth, setFixedColumnsWidth] = useState({ left: 0, right: 0 })
   // 获取左右侧固定列的信息
@@ -180,9 +191,11 @@ const Table = ({
       }
     }
   }, [columns, dataSource, data])
+
   useEffect(() => {
-    setExpandedTreeRows(propsExpandRowKeys || expandRowKeys || [])
-  }, [propsExpandRowKeys, data, expandRowKeys])
+    _setExpandedTreeRows(expandedRowKeys || [])
+  }, [expandedRowKeys, data])
+
   // 有表头分组那么也要 bordered
   const _bordered = flattedColumns.length > columns.length || bordered
 
