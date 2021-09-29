@@ -38,10 +38,9 @@
   "license": "MIT",
   "main": "index.js",
   "module": "es/index.js",
-  "file": [
-    "dist",
-    "es",
-    "types/*.d.ts"
+  "types": "es/index.d.ts",
+  "files": [
+    "es"
   ],
   "sideEffects": [
     "es/**/style/*",
