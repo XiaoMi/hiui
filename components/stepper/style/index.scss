@@ -79,6 +79,26 @@
     z-index: 1;
     display: flex;
 
+    &--can-click {
+      .hi-stepper__item-content {
+        cursor: pointer;
+
+        &:hover {
+          .hi-icon {
+            color: use-color('primary');
+          }
+
+          .hi-stepper__num {
+            background-color: use-color('primary');
+          }
+
+          .hi-stepper__title {
+            color: use-color('primary');
+          }
+        }
+      }
+    }
+
     &--active {
       .hi-icon {
         color: use-color('primary');

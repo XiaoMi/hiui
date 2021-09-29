@@ -1,4 +1,6 @@
-interface Props {
+import React from "react"
+
+export interface ProgressProps {
   apperance?: 'bar' | 'circle' | 'dashboard'
   size?: 'large' | 'default' | 'small'
   active?: boolean
@@ -9,8 +11,8 @@ interface Props {
   placement?: 'inside' | 'outside'
   width?: string | number
   height?: string | number
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
-declare const Progress: React.ComponentType<Props>
+declare const Progress: React.ComponentType<ProgressProps>
 export default Progress

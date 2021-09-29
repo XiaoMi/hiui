@@ -39,11 +39,12 @@ const Cell = ({
   }
   const { rightStickyWidth, leftStickyWidth, dataKey } = column
   const isSticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
+  const defatultTextAlign = column.align ? column.align : 'left'
   return (
     <td
       key={dataKey}
       style={{
-        textAlign: alignRightColumns.includes(dataKey) ? 'right' : 'left',
+        textAlign: alignRightColumns.includes(dataKey) ? 'right' : defatultTextAlign,
         right: rightStickyWidth + 'px',
         left: leftStickyWidth + 'px'
       }}
@@ -64,7 +65,7 @@ const Cell = ({
       {loading && <IconLoading />}
       {columnIndex === 0 &&
         !loading &&
-        ((allRowData.children && allRowData.children.length > 0) || (onLoadChildren && allRowData.isLeaf) ? (
+        ((allRowData.children && allRowData.children.length > 0) || (onLoadChildren && !allRowData.isLeaf) ? (
           <Icon
             style={{ marginRight: 4, cursor: 'pointer' }}
             name={expandedTree ? 'caret-down' : 'caret-right'}
@@ -92,10 +93,10 @@ const Cell = ({
               if (_expandedTreeRows.includes(allRowData.key)) {
                 const idx = _expandedTreeRows.findIndex((row) => row === allRowData.key)
                 _expandedTreeRows.splice(idx, 1)
-                setExpandedTreeRows(_expandedTreeRows)
+                setExpandedTreeRows(_expandedTreeRows, false, allRowData)
               } else {
                 _expandedTreeRows.push(allRowData.key)
-                setExpandedTreeRows(_expandedTreeRows)
+                setExpandedTreeRows(_expandedTreeRows, true, allRowData)
               }
             }}
           />

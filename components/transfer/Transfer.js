@@ -67,7 +67,8 @@ class Transfer extends Component {
     })
   }
 
-  componentWillReceiveProps(props) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(props) {
     this.parseDatas(props)
   }
 
@@ -309,6 +310,7 @@ class Transfer extends Component {
           <div className="hi-transfer__searchbar">
             <Icon name="search" />
             <Input
+              bordered={false}
               placeholder={localeMap.searchPlaceholder}
               clearable="true"
               clearableTrigger="always"

@@ -46,6 +46,7 @@ $color-map: (
   .hi-message__title {
     color: use-color('black') !important;
     font-size: $font-size-normal;
+    word-break: break-word;
   }
 
   .hi-message__icon {

@@ -1,4 +1,4 @@
-import { getNodeByIdTitle, getChildrenNodes, getParentNode } from './components/tree/util'
+import { getNodeByIdTitle, getChildrenNodes, getParentNode, transKeys } from './components/tree/util'
 import EventEmitter from '../_util/EventEmitter'
 
 /**
@@ -47,9 +47,9 @@ export const moveFocusedIndex = (direction, activeId, selectTreeRoot) => {
  * 右方向键处理函数
  * @param {RightOrLeftHandleParam} RightOrLeftHandleParam RightOrLeftHandleParam
  */
-export const rightHandle = ({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode }) => {
+export const rightHandle = ({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode, fieldNames }) => {
   const node = getNodeByIdTitle(activeId, flattenData)
-  const isExpand = expandIds.includes(node.id)
+  const isExpand = expandIds.includes(node[transKeys(fieldNames, 'id')])
   const childNodes = getChildrenNodes(node, flattenData)
   if (mode === 'breadcrumb') {
     EventEmitter.emit('$onNodeClick', node, childNodes)
@@ -58,7 +58,7 @@ export const rightHandle = ({ activeId, flattenData, expandIds, expandEvents, se
       expandEvents(node, !isExpand)
     } else {
       // 跳到第一个子节点
-      childNodes && childNodes.length > 0 && setActiveId(childNodes[0].id)
+      childNodes && childNodes.length > 0 && setActiveId(childNodes[0][transKeys(fieldNames, 'id')])
     }
   }
 }
@@ -66,9 +66,9 @@ export const rightHandle = ({ activeId, flattenData, expandIds, expandEvents, se
  * 左方向键处理函数
  * @param {RightOrLeftHandleParam} RightOrLeftHandleParam RightOrLeftHandleParam
  */
-export const leftHandle = ({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode }) => {
+export const leftHandle = ({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode, fieldNames }) => {
   const node = getNodeByIdTitle(activeId, flattenData)
-  const isExpand = expandIds.includes(node.id)
+  const isExpand = expandIds.includes(node[transKeys(fieldNames, 'id')])
   const parentNodes = getParentNode(node, flattenData)
   if (mode === 'breadcrumb') {
     EventEmitter.emit('$onBreadClick')
@@ -78,6 +78,6 @@ export const leftHandle = ({ activeId, flattenData, expandIds, expandEvents, set
     expandEvents(node, !isExpand)
   } else {
     // 跳到其父节点
-    parentNodes && parentNodes.id && setActiveId(parentNodes.id)
+    parentNodes && parentNodes[transKeys(fieldNames, 'id')] && setActiveId(parentNodes[transKeys(fieldNames, 'id')])
   }
 }

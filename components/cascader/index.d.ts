@@ -1,33 +1,36 @@
-type DataItem = {
-  content: string
+import React from 'react'
+export type CascaderItem = {
   id: string | number
+  content: string
   disabled?: boolean
+  children?: CascaderItem[]
 }
-type FieldNames = {
+export type CascaderFieldNames = {
   label?: string
   value?: string
   children?: string
 }
-interface Props {
-  fieldNames?: FieldNames
-  data: DataItem
+export interface CascaderProps {
+  fieldNames?: CascaderFieldNames
+  data: CascaderItem
   value: string[] | number[]
   defaultValue: string[] | number[]
   expandTrigger?: 'click' | 'hover'
   searchable?: boolean
   bordered?: boolean
-  filterOption?: (keyword: string, item: DataItem) => boolean
+  filterOption?: (keyword: string, item: CascaderItem) => boolean
   clearable?: boolean
   disabled?: boolean
   changeOnSelect?: boolean
   placeholder?: string
-  emptyContent?: string | JSX.Element
+  emptyContent?: string | React.ReactNode
   displayRender?: (value: string[] | number[]) => string
-  style?: object
   onChange?: (value: string[] | number[]) => void
+  onOpen?: () => void
+  onClose?: () => void
   overlayClassName?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
-declare const Card: React.ComponentType<Props>
-export default Card
+declare const Cascader: React.ComponentType<CascaderProps>
+export default Cascader

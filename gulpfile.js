@@ -46,7 +46,8 @@ const compile = (modules) => {
     .pipe(
       babel({
         presets: ['@babel/preset-env', '@babel/preset-react'],
-        plugins: ['@babel/plugin-transform-runtime', ['transform-remove-console', { exclude: ['error', 'warn'] }]]
+        plugins: ['@babel/plugin-transform-runtime', ['transform-remove-console', { exclude: ['error', 'warn'] }]],
+        ignore: ['components/index.js']
       })
     )
     .pipe(

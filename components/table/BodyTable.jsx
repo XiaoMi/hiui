@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback } from 'react'
+import React, { useContext, useEffect, useCallback, useState } from 'react'
 import classNames from 'classnames'
 
 import Row from './Row'
@@ -36,6 +36,9 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     onLoadChildren,
     loadChildren
   } = useContext(TableContext)
+  const [dragStatus, setDragStatus] = useState(null)
+  const [dragRowKey, setDragRowKey] = useState(null)
+
   // **************** 获取colgroup
   const _columns = _.cloneDeep(columns)
   const depthArray = []
@@ -48,12 +51,10 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
 
   // **************** 根据排序列处理数据
   let _data = data.concat()
-
   if (activeSorterColumn) {
     const sorter =
       columns.filter((d) => d.dataKey === activeSorterColumn)[0] &&
       columns.filter((d) => d.dataKey === activeSorterColumn)[0].sorter
-
     if (sorter) {
       _data = activeSorterType === 'ascend' ? [...data].sort(sorter) : [...data].sort(sorter).reverse()
     }
@@ -98,7 +99,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   let hasTree = false
   if (_data && _data.length) {
     hasTree = _data.some((row) => {
-      return (row.children && row.children.length) || (onLoadChildren && row.isLeaf)
+      return (row.children && row.children.length) || (onLoadChildren && !row.isLeaf)
     })
   }
 
@@ -115,7 +116,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     const { children = [] } = row
     if (children && children.length) {
       childrenHasTree = children.some(
-        (child) => (child.children && child.children.length) || (onLoadChildren && child.isLeaf)
+        (child) => (child.children && child.children.length) || (onLoadChildren && !child.isLeaf)
       )
     }
     return (
@@ -126,6 +127,10 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
           rowData={row}
           allRowData={row}
           level={level}
+          dragStatus={dragStatus}
+          dragRowKey={dragRowKey}
+          setDragRowKey={setDragRowKey}
+          setDragStatus={setDragStatus}
           index={index}
           hoverColIndex={hoverColIndex}
           setHoverColIndex={setHoverColIndex}
@@ -176,7 +181,11 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
             : null // 表格宽度大于div宽度才展示横向滚动条
       }}
       ref={bodyTableRef}
+      className={classNames({
+        [`${prefix}__body--draging`]: dragStatus
+      })}
       onScroll={(e) => {
+        e.stopPropagation()
         syncScrollLeft(bodyTableRef.current.scrollLeft, headerTableRef.current)
       }}
     >

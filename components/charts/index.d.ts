@@ -1,8 +1,8 @@
-import React, { CSSProperties } from 'react'
+import React from 'react'
 
-interface ChartsProps {
+export interface ChartsProps {
   option: object
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   showLoading?: boolean
 }

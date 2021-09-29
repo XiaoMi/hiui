@@ -1,31 +1,32 @@
 import React from 'react'
-type TagNode = {
-  title?: string
-  tagId?: string | number
-  closable?: boolean
-  editable?: boolean
+export type TagItem = {
+  title?: string;
+  tagId?: string | number;
+  closable?: boolean;
+  editable?: boolean;
 }
-interface Props {
+
+export interface TagProps {
   type?: 'primary' | 'success' | 'warning' | 'danger'
   appearance?: 'default' | 'line'
   shape?: 'round' | 'square'
   color?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
-  onClick?: (e: MouseEvent) => void
+  onClick?: (e: React.MouseEvent) => void
 }
 
-interface TagGroupProps {
-  data?: TagNode[]
+export interface TagGroupProps {
+  data?: TagItem[]
   editable?: boolean
-  onAdd?:(addNode:TagNode, index:number) => void
-  onEdit?:(addNode:TagNode, index:number) => void
-  onDelete?:(addNode:TagNode, index:number) => void
+  onAdd?: (addNode: TagItem, index: number) => void
+  onEdit?: (addNode: TagItem, index: number) => void
+  onDelete?: (addNode: TagItem, index: number) => void
 }
 
 declare class TagGroup extends React.Component<TagGroupProps, any> {
 }
-declare class Tag extends React.Component<Props, any> {
+declare class Tag extends React.Component<TagProps, any> {
   static Group = TagGroup
 }
 export default Tag

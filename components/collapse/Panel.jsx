@@ -10,6 +10,7 @@ const Panel = ({
   disabled = false,
   isActive,
   children,
+  extra,
   onClickPanel,
   showArrow,
   panels,
@@ -91,6 +92,7 @@ const Panel = ({
       >
         {showArrow && arrow === 'left' && <Icon name="down" className="collapse-item__icon" />}
         <div className="collapse-item__title">{header}</div>
+        {extra ? <div className="collapse-item__extra">{extra}</div> : null}
         {showArrow && arrow === 'right' && <Icon name="down" className="collapse-item__icon" />}
       </div>
       <div className="collapse-item__content">{children}</div>

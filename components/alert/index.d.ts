@@ -1,6 +1,6 @@
 import React from 'react'
 
-interface AlertProps {
+export interface AlertProps {
   prefixCls?: string
   style?: React.CSSProperties
   className?: string

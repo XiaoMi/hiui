@@ -55,6 +55,17 @@ $tree: 'hi-select-tree' !default;
       height: 0;
       opacity: 0;
     }
+
+    &--disabled {
+      .hi-select-tree__title {
+        cursor: not-allowed;
+        opacity: 0.4;
+      }
+
+      .hi-select-tree__title--multiple {
+        opacity: 0.4;
+      }
+    }
   }
 
   &__title {
@@ -116,6 +127,13 @@ $tree: 'hi-select-tree' !default;
     display: flex;
     align-items: center;
     cursor: pointer;
+
+    &--disabled {
+      .hi-breadtree__text {
+        cursor: not-allowed;
+        opacity: 0.4;
+      }
+    }
   }
 
   &__text {

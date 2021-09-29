@@ -33,7 +33,7 @@ const Root = ({
   } = useContext(DPContext)
   const [inputData, setInputData] = useState(outDate)
   const inputRef = useRef(null)
-  const [placeholders] = usePlaceholder({
+  const placeholders = usePlaceholder({
     type,
     showTime,
     placeholder,
