@@ -58,7 +58,7 @@ const SelectTree = ({
   autoload: propsAutoload,
   placement = 'top-bottom-start',
   emptyContent,
-  disabled,
+  disabled = false,
   bordered = true,
   fieldNames = {}
 }) => {
@@ -327,9 +327,10 @@ const SelectTree = ({
    * @param {*} node 当前节点
    */
   const checkedEvents = (checked, node) => {
-    if (node[transKeys(fieldNames, 'disabled')]) {
+    if (disabled || node[transKeys(fieldNames, 'disabled')]) {
       return
     }
+
     let result = {}
     const semiCheckedIds = new Set(checkedNodes.semiChecked)
     const checkedIds = new Set(checkedNodes.checked)
