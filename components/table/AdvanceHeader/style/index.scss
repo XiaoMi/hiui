@@ -4,7 +4,7 @@ $table: 'hi-table-advanceheader' !default;
 
 .#{$table} {
   &-sorter {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     height: 20px;
     margin-top: 2px;
