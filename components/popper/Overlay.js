@@ -44,7 +44,6 @@ const Overlay = (props) => {
   let popperHeight
   let popperWidth
   const staticPopperRef = useRef()
-  const offsetData = useRef()
   let popperContainerRef
 
   if (onClickOutside) {
@@ -60,12 +59,12 @@ const Overlay = (props) => {
 
   const scrollCallBack = useCallback(() => {
     if (props.attachEle) {
-      const offset = getOffset(props, state)
-      offsetData.current = offset
       if (staticPopperRef) {
         setState(
           Object.assign({}, state, {
-            popperRef: staticPopperRef.current
+            popperRef: staticPopperRef.current,
+            popperHeight: staticPopperRef.current.clientHeight,
+            popperWidth: staticPopperRef.current.clientWidth
           })
         )
       }
@@ -76,8 +75,7 @@ const Overlay = (props) => {
     const { attachEle, container, show } = props
     if (attachEle) return
     const { cacheContainerPosition } = state
-    const offset = getOffset(props, state)
-    offsetData.current = offset
+
     if (staticPopperRef) {
       setState(
         Object.assign({}, state, {
@@ -113,30 +111,32 @@ const Overlay = (props) => {
     if (isFixed(attachEle) && !isBody(container)) {
       cacheContainerPosition === 'static' && setStyle(container, { position: 'relative' })
     }
+
     if (!popperRef) {
-      setState(
-        Object.assign({}, state, {
-          popperRef: staticPopperRef.current,
-          popperHeight: staticPopperRef.current.clientHeight,
-          popperWidth: staticPopperRef.current.clientWidth
-        })
-      )
+      if (staticPopperRef.current) {
+        setState(
+          Object.assign({}, state, {
+            popperRef: staticPopperRef.current,
+            popperHeight: staticPopperRef.current.clientHeight,
+            popperWidth: staticPopperRef.current.clientWidth
+          })
+        )
+      }
     }
   })
 
   useEffect(() => {
-    if (show) {
+    if (state.popperRef) {
       const offset = getOffset(props, state)
-      offsetData.current = offset
 
-      state.popperRef &&
-        setState(
-          Object.assign({}, state, {
-            offset: offset
-          })
-        )
+      setState(
+        Object.assign({}, state, {
+          offset: offset
+        })
+      )
     }
-  }, [state.popperRef, show])
+  }, [state.popperRef])
+
   // DidMount
   useEffect(() => {
     const { container } = props
@@ -148,8 +148,10 @@ const Overlay = (props) => {
   }, [])
 
   if (!(show && children)) return null
+
   let { width, left = 0, top = 0 } = props
   let { offset } = state
+
   if (attachEle) {
     offset = state.offset || getOffset(props, state)
     width = offset.width
