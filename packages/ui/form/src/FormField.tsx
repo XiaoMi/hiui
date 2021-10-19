@@ -31,7 +31,7 @@ export const FormField = forwardRef<HTMLFormElement | null, FormFieldProps>(
       field,
       valuePropName = 'value',
       valueTrigger = 'onChange',
-      validateTrigger = 'onChange'
+      validateTrigger = 'onChange',
       rules: rulesProp,
       ...rest
     },
@@ -46,24 +46,25 @@ export const FormField = forwardRef<HTMLFormElement | null, FormFieldProps>(
     }, [rulesProp, field, getFieldRules])
 
     // 当前 field 的唯一校验器
-    const validate = useCallback((cb?: Function) => {
-      if (!isArrayNonEmpty(fieldRules)) {
-        cb?.()
-        return
-      }
+    const fieldValidate = useCallback(
+      (value: unknown, cb?: Function) => {
+        if (!isArrayNonEmpty(fieldRules)) {
+          cb?.()
+          return
+        }
 
-      const validater = new Validater(fieldRules)
+        const validater = new Validater(fieldRules)
 
-      validater.validateOne(() => {
-
-      })
-    }, [fieldRules])
+        return validater.validateOne(value)
+      },
+      [fieldRules]
+    )
 
     // 注入当前 field 及其验证规则到 Form
     useEffect(() => {
       if (field) {
         registerField(field, {
-          validateSchemes: fieldRules,
+          validate: fieldValidate,
         })
       }
       return () => {
@@ -71,7 +72,7 @@ export const FormField = forwardRef<HTMLFormElement | null, FormFieldProps>(
           unregisterField(field)
         }
       }
-    }, [registerField, unregisterField, field, validate])
+    }, [registerField, unregisterField, field, fieldValidate])
 
     if (!isValidElement(children)) {
       console.warn('FormField must pass a valid element as children.')
@@ -82,7 +83,7 @@ export const FormField = forwardRef<HTMLFormElement | null, FormFieldProps>(
 
     const cls = cx(prefixCls, className)
 
-    return cloneElement(children, { fieldProps, className: cls })
+    return cloneElement(children, { ...fieldProps, className: cls })
   }
 )
 
@@ -116,6 +117,9 @@ export interface FormFieldProps {
    */
   rules?: object
   children?: React.ReactNode
+  valuePropName?: any
+  valueTrigger?: any
+  validateTrigger?: any
 }
 
 if (__DEV__) {

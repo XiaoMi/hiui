@@ -11,6 +11,10 @@ export const Basic = () => {
           <FormField field="testInput">
             <Input />
           </FormField>
+
+          <FormField field="testInput">
+            <Input />
+          </FormField>
         </Form>
       </div>
     </>

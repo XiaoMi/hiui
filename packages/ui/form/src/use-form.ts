@@ -1,61 +1,110 @@
-import { useCallback, useReducer, useRef } from 'react'
+import React, { useCallback, useMemo, useReducer, useRef } from 'react'
 import { FormAction, FormState, FormFieldCollection } from './types'
 import { setProp } from './utils'
 
 const EMPTY_ERRORS = {}
 const EMPTY_TOUCHED = {}
+const EMPTY_RULES = {} as any
 
 const basicRulesTable = []
 
 export const useForm = ({
   initialValues,
-  initialErrors,
-  initialTouched,
+  initialErrors = EMPTY_ERRORS,
+  initialTouched = EMPTY_TOUCHED,
+  rules = EMPTY_RULES,
+  validateOnBlur = false,
+  validateOnChange = false,
+  validateAfterTouched = true,
   onValuesChange,
   onSubmit,
   onReset,
-  rules,
-  validateOnBlur,
-  validateOnChange,
 }) => {
+  const [fieldValidationCollectionRef, registerField, unregisterField] = useCollection<
+    FormFieldCollection
+  >()
+
+  const validateField = useCallback(
+    (field: string, value: unknown) => {
+      const fieldValidation = fieldValidationCollectionRef.current.get(field)
+      if (fieldValidation) {
+        fieldValidation.validate(value)
+      }
+    },
+    [fieldValidationCollectionRef]
+  )
+
   const [formState, formDispatch] = useReducer(formReducer, {
     values: initialValues,
-    errors: initialErrors || EMPTY_ERRORS,
-    touched: initialTouched || EMPTY_TOUCHED,
+    errors: initialErrors,
+    touched: initialTouched,
     isValidating: false,
   })
 
-  const setFieldValue = useCallback(() => {}, [])
-  const setFieldError = useCallback(() => {}, [])
+  const setFieldValue = useCallback(
+    (field, value, shouldValidate?: boolean) => {
+      formDispatch({
+        type: 'SET_FIELD_VALUE',
+        payload: {
+          field,
+          value,
+        },
+      })
+
+      if (shouldValidate) {
+        validateField(field, value)
+      }
+    },
+    [validateField]
+  )
+
+  const setFieldError = useCallback((field: string, value: string | undefined) => {
+    formDispatch({
+      type: 'SET_FIELD_ERROR',
+      payload: { field, value },
+    })
+  }, [])
+
   const setFieldTouched = useCallback(() => {}, [])
 
   // const onValuesChange = useCallback(() => {}, [])
 
-  const handleFieldChange = useCallback(() => {}, [])
-  const handleFieldBlur = useCallback(() => {}, [])
+  const handleFieldChange = useCallback(
+    (fieldName: string, callback: Function) => (evt: React.ChangeEvent<any>) => {
+      const nextValue = evt.target.value
+      // TODO: callAllMethods for callback
+      setFieldValue(fieldName, nextValue)
+      callback?.(evt)
+    },
+    [setFieldValue]
+  )
 
-  const resetForm = useCallback(() => {}, [])
+  const handleFieldBlur = useCallback((fieldName: string, callback: Function) => {}, [])
+
+  const resetForm = useCallback(() => {
+    //
+  }, [])
 
   const resetValidations = useCallback(() => {}, [])
 
-  const validateField = useCallback(() => {}, [])
-
   const validateAll = useCallback(() => {}, [])
 
-  const getFieldProps = useCallback(() => {}, [])
+  const clearErrors = useCallback(() => {}, [])
 
-  // fields 收集器
-  const fieldCollectionRef = useRef<FormFieldCollection>({})
+  const getFieldProps = useCallback(
+    (props: any, ref: any) => {
+      const { field, rules, valuePropName, valueTrigger, onChange, onBlur, ...rest } = props
 
-  const registerField = useCallback((fieldName: string, { validate, rules }: any) => {
-    fieldCollectionRef.current[fieldName] = {
-      validate,
-    }
-  }, [])
-
-  const unregisterField = useCallback((fieldName: string) => {
-    delete fieldCollectionRef.current[fieldName]
-  }, [])
+      return {
+        ...rest,
+        ref,
+        value: formState.values[field],
+        onChange: handleFieldChange(field, onChange),
+        onBlur: handleFieldBlur(field, onBlur),
+      }
+    },
+    [formState, handleFieldChange, handleFieldBlur]
+  )
 
   const getFieldRules = useCallback(
     (fieldName: string) => {
@@ -66,6 +115,9 @@ export const useForm = ({
 
   return {
     ...formState,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
     getFieldRules,
     getFieldProps,
     registerField,
@@ -73,57 +125,58 @@ export const useForm = ({
   }
 }
 
-function formReducer<T>(state: FormState<T>, msg: FormAction<T>) {
-  switch (msg.type) {
+function formReducer<T>(state: FormState<T>, action: FormAction<T>) {
+  switch (action.type) {
     case 'SET_VALUES':
-      return { ...state, values: msg.payload }
-    case 'SET_TOUCHED':
-      return { ...state, touched: msg.payload }
+      return { ...state, values: action.payload }
     case 'SET_ERRORS':
-      return { ...state, errors: msg.payload }
-    case 'SET_STATUS':
-      return { ...state, status: msg.payload }
-    case 'SET_ISSUBMITTING':
-      return { ...state, isSubmitting: msg.payload }
-    case 'SET_ISVALIDATING':
-      return { ...state, isValidating: msg.payload }
+      return { ...state, errors: action.payload }
+    case 'SET_TOUCHED':
+      return { ...state, touched: action.payload }
+    case 'SET_SUBMITTING':
+      return { ...state, submitting: action.payload }
+    case 'SET_VALIDATING':
+      return { ...state, validating: action.payload }
     case 'SET_FIELD_VALUE':
       return {
         ...state,
-        values: setProp(state.values, msg.payload.field, msg.payload.value),
+        values: setProp(state.values, action.payload.field, action.payload.value),
       }
     case 'SET_FIELD_TOUCHED':
       return {
         ...state,
-        touched: setProp(state.touched, msg.payload.field, msg.payload.value),
+        touched: setProp(state.touched, action.payload.field, action.payload.value),
       }
     case 'SET_FIELD_ERROR':
       return {
         ...state,
-        errors: setProp(state.errors, msg.payload.field, msg.payload.value),
+        errors: setProp(state.errors, action.payload.field, action.payload.value),
       }
-    case 'RESET_FORM':
-      return { ...state, ...msg.payload }
-    case 'SET_FORMIK_STATE':
-      return msg.payload(state)
-    // case 'SUBMIT_ATTEMPT':
-    //   return {
-    //     ...state,
-    //     touched: setNestedObjectValues<FormikTouched<Values>>(state.values, true),
-    //     isSubmitting: true,
-    //     submitCount: state.submitCount + 1,
-    //   }
-    case 'SUBMIT_FAILURE':
+    case 'SET_FORM':
+      return { ...state, ...action.payload }
+    case 'SUBMIT_DONE':
       return {
         ...state,
-        isSubmitting: false,
-      }
-    case 'SUBMIT_SUCCESS':
-      return {
-        ...state,
-        isSubmitting: false,
+        submitting: false,
       }
     default:
       return state
   }
+}
+
+/**
+ * 一个注册表的收集器
+ */
+const useCollection = <T>() => {
+  const collectionMp = useMemo(() => new Map(), [])
+  const collectionRef = useRef<Map<string, T>>(collectionMp)
+
+  const register = useCallback((key: string, value: T) => {
+    collectionRef.current.set(key, value)
+  }, [])
+
+  const unregister = useCallback((key: string) => {
+    collectionRef.current.delete(key)
+  }, [])
+  return [collectionRef, register, unregister] as const
 }
