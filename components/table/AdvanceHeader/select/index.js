@@ -432,6 +432,11 @@ const InternalSelect = (props) => {
       ...options
     }).then(
       (response) => {
+        if (!response) {
+          setLoading(false)
+          return
+        }
+
         const { message = 'normal' } = response
         if (message !== CANCEL_STATE) {
           setLoading(false)
