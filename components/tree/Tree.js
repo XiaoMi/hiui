@@ -255,7 +255,7 @@ const Tree = (props) => {
   const addSiblingNode = useCallback(
     (node) => {
       const dataCache = _.cloneDeep(cacheData)
-      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add' }
+      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add', parent: node.parent, parentId: node.parentId }
       _addSibNode(node, dataCache, addNode)
       setEditingNodes(editingNodes.concat(addNode))
       updateCacheData(dataCache)
@@ -281,7 +281,7 @@ const Tree = (props) => {
   const addChildNode = useCallback(
     (node) => {
       const dataCache = _.cloneDeep(cacheData)
-      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add' }
+      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add', parent: node, parentId: node.id }
       _addChildNode(node, dataCache, addNode)
       setEditingNodes(editingNodes.concat(addNode))
       updateCacheData(dataCache)
