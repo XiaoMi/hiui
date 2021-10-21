@@ -3,15 +3,16 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Input from '@hi-ui/input'
 import { useToggle } from '@hi-ui/use-toggle'
-import { useCheckSelect } from './use-check-select'
-import type { HiBaseHTMLProps } from '@hi-ui/core'
+import { useCheckSelect, UseSelectProps } from './use-check-select'
+import type { HiBaseHTMLFieldProps, HiBaseHTMLProps } from '@hi-ui/core'
 import Popper, { PopperProps } from '@hi-ui/popper'
 import { DownOutlined, SearchOutlined } from '@hi-ui/icons'
-import { SelectProvider, useSelectContext } from './context'
+import { CheckSelectProvider, useCheckSelectContext } from './context'
 import { CheckSelectItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
 import { TagInput } from '@hi-ui/tag-input'
+import { isFunction } from '@hi-ui/type-assertion'
 
 const _role = 'check-select'
 const _prefix = getPrefixCls(_role)
@@ -29,6 +30,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       disabled = false,
       clearable = false,
       searchable = false,
+      invalid = false,
       placeholder,
       displayRender: displayRenderProp,
       onSelect: onSelectProp,
@@ -49,7 +51,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 
     const displayRender = useCallback(
       (item: CheckSelectItem) => {
-        if (displayRenderProp) {
+        if (isFunction(displayRenderProp)) {
           return displayRenderProp(item)
         }
 
@@ -58,18 +60,18 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       [displayRenderProp]
     )
 
-    // @ts-ignore
     const { rootProps, ...context } = useCheckSelect({
       ...rest,
-      onSelect: onSelectLatest,
       children,
+      onSelect: onSelectLatest,
     })
+
     const { value, tryChangeValue, data: selectData } = context
 
     const cls = cx(prefixCls, className)
 
     return (
-      <SelectProvider value={context}>
+      <CheckSelectProvider value={context}>
         <div ref={ref} role={role} className={cls} {...rootProps}>
           <TagInput
             ref={setTargetElRef}
@@ -90,90 +92,43 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
             onClose={menuVisibleAction.off}
           >
             <div className={`${prefixCls}-panel`}>
-              {searchable ? <SelectSearch /> : null}
-              {/* {children} */}
+              {searchable ? <CheckSelectSearch /> : null}
+              {/* TODO: 递归嵌套渲染 */}
               {/* 反向 map，搜索删选数据时会对数据进行处理 */}
-              {selectData.map((item) => {
-                return <CheckSelectOption key={item.id} option={item} />
+              {selectData.map((item, index) => {
+                if ('groupTitle' in item) {
+                  return [
+                    <CheckSelectOptionGroup
+                      key={`group-${index}`}
+                      label={item.groupTitle}
+                      {...item.rootProps}
+                    />,
+                  ].concat(
+                    item.children.map((option: any) => {
+                      return (
+                        <CheckSelectOption key={option.id} option={option} {...option.rootProps} />
+                      )
+                    })
+                  )
+                }
+
+                return <CheckSelectOption key={item.id} option={item} {...item.rootProps} />
               })}
             </div>
           </Popper>
         </div>
-      </SelectProvider>
+      </CheckSelectProvider>
     )
   }
 )
 
 export interface CheckSelectProps
-  extends Omit<HiBaseHTMLProps<'div'>, 'onChange' | 'onSelect' | 'defaultValue'> {
-  /**
-   * 设置当前选中值
-   */
-  value?: React.ReactText[]
-  /**
-   * 设置当前选中值默认值
-   */
-  defaultValue?: React.ReactText[]
-  /**
-   * 选中值改变时的回调
-   */
-  onChange?: (
-    value: React.ReactText[],
-    targetOption?: CheckSelectItem,
-    shouldChecked?: boolean
-  ) => void
-  /**
-   * 选中值时回调
-   */
-  onSelect?: (
-    value: React.ReactText[],
-    targetOption?: CheckSelectItem,
-    shouldChecked?: boolean
-  ) => void
-  /**
-   * 是否可搜索（仅在 title 为字符串时支持）
-   */
-  searchable?: boolean
-  /**
-   * 是否可清空
-   */
-  clearable?: boolean
-  /**
-   * 是否禁止使用
-   */
-  disabled?: boolean
-  /**
-   * 设置选项为空时展示的内容
-   */
-  emptyContent?: React.ReactNode
-  /**
-   * 自定义渲染节点的 title 内容
-   */
-  titleRender?: (item: CheckSelectItem) => React.ReactNode
-  /**
-   * 自定义选择后触发器所展示的内容，只在 title 为字符串时有效
-   */
-  displayRender?: (option: CheckSelectItem) => React.ReactNode
-  /**
-   * 触发器输入框占位符
-   */
-  placeholder?: string
-  /**
-   * 搜索输入框占位符
-   */
-  searchPlaceholder?: string
+  extends Omit<HiBaseHTMLFieldProps<'div'>, 'onChange' | 'onSelect' | 'defaultValue'>,
+    UseSelectProps {
   /**
    * 自定义控制 popper 行为
    */
   popper?: PopperProps
-  /**
-   * 搜索数据
-   */
-  onSearch?: (item: CheckSelectItem) => Promise<CheckSelectItem[] | void> | void
-  /**
-   * 选项数据
-   */
-  data?: CheckSelectItem[]
 }
 
 // @ts-ignore
@@ -184,13 +139,16 @@ if (__DEV__) {
 
 const searchPrefix = getPrefixCls('check-select-search')
 
-export const SelectSearch = forwardRef<HTMLInputElement | null, SelectSearchProps>(
+/**
+ * TODO: What is CheckSelectSearch
+ */
+export const CheckSelectSearch = forwardRef<HTMLInputElement | null, SelectSearchProps>(
   ({ prefixCls = searchPrefix, className, ...rest }, ref) => {
-    const { isEmpty, emptyContent, getSearchInputProps } = useSelectContext()
+    const { isEmpty, emptyContent, getSearchInputProps } = useCheckSelectContext()
 
     return (
       <div ref={ref} className={cx(prefixCls, className)} {...rest}>
-        <Input appearance="underline" prefix={<SearchOutlined />} {...getSearchInputProps()} />
+        <Input {...getSearchInputProps()} appearance="underline" prefix={<SearchOutlined />} />
         {isEmpty ? <span className={`${prefixCls}__empty`}>{emptyContent}</span> : null}
       </div>
     )
@@ -200,14 +158,17 @@ export const SelectSearch = forwardRef<HTMLInputElement | null, SelectSearchProp
 export interface SelectSearchProps extends HiBaseHTMLProps {}
 
 if (__DEV__) {
-  SelectSearch.displayName = 'SelectSearch'
+  CheckSelectSearch.displayName = 'CheckSelectSearch'
 }
 
 const optionPrefix = getPrefixCls('check-select-option')
 
+/**
+ * TODO: What is CheckSelectOption
+ */
 export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOptionProps>(
   ({ prefixCls = optionPrefix, className, children, option = {}, onClick, ...rest }, ref) => {
-    const { isSelectedId, onSelect, titleRender } = useSelectContext()
+    const { isSelectedId, onSelect, titleRender } = useCheckSelectContext()
 
     const checked = isSelectedId(option.id)
     const cls = cx(prefixCls, className, checked && `${prefixCls}--selected`)
@@ -235,7 +196,29 @@ export interface CheckSelectOptionProps extends HiBaseHTMLProps {}
 
 // @ts-ignore
 CheckSelectOption.HiName = 'CheckSelectOption'
-
 if (__DEV__) {
   CheckSelectOption.displayName = 'CheckSelectOption'
+}
+
+/**
+ * TODO: What is CheckSelectOptionGroup
+ */
+export const CheckSelectOptionGroup = forwardRef<HTMLDivElement | null, CheckSelectOptionProps>(
+  ({ prefixCls = optionPrefix, className, children, label, onClick, ...rest }, ref) => {
+    const cls = cx(prefixCls, className)
+
+    return (
+      <div ref={ref} className={cls} {...rest}>
+        <span>{label}</span>
+      </div>
+    )
+  }
+)
+
+export interface CheckSelectOptionGroupProps extends HiBaseHTMLProps {}
+
+// @ts-ignore
+CheckSelectOptionGroup.HiName = 'CheckSelectOptionGroup'
+if (__DEV__) {
+  CheckSelectOptionGroup.displayName = 'CheckSelectOptionGroup'
 }

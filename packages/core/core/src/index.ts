@@ -20,3 +20,13 @@ export declare type HiBaseDataItem = {
 }
 
 export declare type HiBaseData = HiBaseDataItem[]
+
+export declare type HiBaseHTMLFieldProps<
+  T extends React.ElementType = any,
+  P = {}
+> = HiBaseHTMLProps<T, P> & {
+  /**
+   * 表单控件组件输入是否无效
+   */
+  invalid: boolean
+}

@@ -1,5 +1,5 @@
 import React from 'react'
-import CheckSelect, { CheckSelectOption } from '../src'
+import CheckSelect, { CheckSelectOption, CheckSelectOptionGroup } from '../src'
 
 export const Basic = () => {
   return (
@@ -8,22 +8,24 @@ export const Basic = () => {
       <div className="check-select-basic__wrap">
         <CheckSelect
           placeholder="请选择"
-          titleRender={(option) => {
-            if (option.id === 'ABC1') {
-              return '不限'
-            }
+          // titleRender={(option) => {
+          //   if (option.id === 'ABC1') {
+          //     return '不限'
+          //   }
 
-            return true
-          }}
+          //   return true
+          // }}
         >
-          <span>title</span>
-          <CheckSelectOption value="ABC1">Option-ABC1</CheckSelectOption>
-          <CheckSelectOption value="ABC2">Option-ABC2</CheckSelectOption>
-          <CheckSelectOption value="ABC3">Option-ABC3</CheckSelectOption>
-          <span>title2</span>
-          <CheckSelectOption value="ABC4">Option-ABC4</CheckSelectOption>
-          <CheckSelectOption value="ABC5">Option-ABC5</CheckSelectOption>
-          <CheckSelectOption value="ABC6">Option-ABC6</CheckSelectOption>
+          <CheckSelectOptionGroup style={{ color: 'red' }} label="title1">
+            <CheckSelectOption value="ABC1">Option-ABC1</CheckSelectOption>
+            <CheckSelectOption value="ABC2">Option-ABC2</CheckSelectOption>
+            <CheckSelectOption value="ABC3">Option-ABC3</CheckSelectOption>
+          </CheckSelectOptionGroup>
+          <CheckSelectOptionGroup label="title2">
+            <CheckSelectOption value="ABC4">Option-ABC4</CheckSelectOption>
+            <CheckSelectOption value="ABC5">Option-ABC5</CheckSelectOption>
+            <CheckSelectOption value="ABC6">Option-ABC6</CheckSelectOption>
+          </CheckSelectOptionGroup>
         </CheckSelect>
       </div>
     </>

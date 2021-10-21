@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { CheckSelectProps } from './CheckSelect'
 import { useSearch } from './hooks'
 import { useCheck as useCheckDefault } from '@hi-ui/use-check'
 import { CheckSelectItem } from './types'
@@ -25,34 +24,49 @@ export const useCheckSelect = ({
 }: UseSelectProps) => {
   const data = useMemo(() => {
     if (children) {
-      const list = toArray(children)
-      const arr: any[] = []
-      const dfs = (list: any[]) => {
+      const dfs = (child: any) => {
+        const list = toArray(child)
+        const arr: any[] = []
+
         list.forEach((item) => {
           if (!React.isValidElement(item)) return
 
           // @ts-ignore
-          if (item.type && item.type.HiName === 'CheckSelectOption') {
-            arr.push(item)
-            // @ts-ignore
-          } else if (item.type && item.type.HiName === 'CheckSelectOptionGroup') {
-            // @ts-ignore
-            if (item.props && item.props.children) {
-              // @ts-ignore
-              const list = toArray(item.props.children)
-              dfs(list)
+          if (item.type.HiName === 'CheckSelectOption') {
+            const { props } = item as any
+            const { value, children, disabled, groupTitle, ...rest } = props
+            const option = {
+              id: value,
+              title: children,
+              disabled: disabled,
+              rootProps: rest,
             }
+            arr.push(option)
+            // @ts-ignore
+          } else if (item.type.HiName === 'CheckSelectOptionGroup') {
+            const { props } = item as any
+            const { label, children, ...rest } = props
+
+            const optGroup = {
+              groupTitle: label,
+              children: [],
+              rootProps: rest,
+            }
+
+            // @ts-ignore
+            if (children) {
+              // @ts-ignore
+              optGroup.children = dfs(children)
+            }
+
+            arr.push(optGroup)
           }
         })
+
+        return arr
       }
 
-      dfs(list)
-
-      return arr.map(({ props }) => ({
-        id: props.value,
-        title: props.children,
-        disabled: props.disabled || false,
-      }))
+      return dfs(children)
     }
     return dataProp
   }, [children, dataProp])
@@ -102,7 +116,76 @@ export const useCheckSelect = ({
   }
 }
 
-export interface UseSelectProps extends CheckSelectProps {}
+export interface UseSelectProps {
+  /**
+   * 设置当前选中值
+   */
+  value?: React.ReactText[]
+  /**
+   * 设置当前选中值默认值
+   */
+  defaultValue?: React.ReactText[]
+  /**
+   * 选中值改变时的回调
+   */
+  onChange?: (
+    value: React.ReactText[],
+    targetOption?: CheckSelectItem,
+    shouldChecked?: boolean
+  ) => void
+  /**
+   * 选中值时回调
+   */
+  onSelect?: (
+    value: React.ReactText[],
+    targetOption?: CheckSelectItem,
+    shouldChecked?: boolean
+  ) => void
+  /**
+   * 是否可搜索（仅在 title 为字符串时支持）
+   */
+  searchable?: boolean
+  /**
+   * 是否可清空
+   */
+  clearable?: boolean
+  /**
+   * 是否禁止使用
+   */
+  disabled?: boolean
+  /**
+   * 设置选项为空时展示的内容
+   */
+  emptyContent?: React.ReactNode
+  /**
+   * 自定义渲染节点的 title 内容
+   */
+  titleRender?: (item: CheckSelectItem) => React.ReactNode
+  /**
+   * 自定义选择后触发器所展示的内容，只在 title 为字符串时有效
+   */
+  displayRender?: (option: CheckSelectItem) => React.ReactNode
+  /**
+   * 触发器输入框占位符
+   */
+  placeholder?: string
+  /**
+   * 搜索输入框占位符
+   */
+  searchPlaceholder?: string
+  /**
+   * 搜索数据
+   */
+  onSearch?: (item: CheckSelectItem) => Promise<CheckSelectItem[] | void> | void
+  /**
+   * 选项数据
+   */
+  data?: CheckSelectItem[]
+  /**
+   * JSX 子节点
+   */
+  children?: React.ReactNode
+}
 
 export type UseSelectReturn = ReturnType<typeof useCheckSelect>
 
