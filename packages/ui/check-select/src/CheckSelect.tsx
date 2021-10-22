@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useState } from 'react'
+import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Input from '@hi-ui/input'
@@ -8,11 +8,12 @@ import type { HiBaseHTMLFieldProps, HiBaseHTMLProps } from '@hi-ui/core'
 import Popper, { PopperProps } from '@hi-ui/popper'
 import { DownOutlined, SearchOutlined } from '@hi-ui/icons'
 import { CheckSelectProvider, useCheckSelectContext } from './context'
-import { CheckSelectItem } from './types'
+import { CheckSelectOptionItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
 import { TagInput } from '@hi-ui/tag-input'
 import { isFunction } from '@hi-ui/type-assertion'
+import VirtualList from 'rc-virtual-list'
 
 const _role = 'check-select'
 const _prefix = getPrefixCls(_role)
@@ -34,6 +35,9 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       placeholder,
       displayRender: displayRenderProp,
       onSelect: onSelectProp,
+      height,
+      itemHeight = 40,
+      virtual = true,
       popper,
       ...rest
     },
@@ -50,7 +54,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     const onSelectLatest = useLatestCallback(onSelectProp)
 
     const displayRender = useCallback(
-      (item: CheckSelectItem) => {
+      (item: CheckSelectOptionItem) => {
         if (isFunction(displayRenderProp)) {
           return displayRenderProp(item)
         }
@@ -67,6 +71,24 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     })
 
     const { value, tryChangeValue, data: selectData } = context
+
+    const virtualData = useMemo(
+      () =>
+        selectData.reduce((acc, cur, index) => {
+          if ('groupTitle' in cur) {
+            acc.push({
+              id: `group-${index}`,
+              groupTitle: cur.groupTitle,
+              rootProps: cur.rootProps,
+            })
+            return acc.concat(cur.children)
+          }
+
+          acc.push(cur)
+          return acc
+        }, []),
+      [selectData]
+    )
 
     const cls = cx(prefixCls, className)
 
@@ -93,27 +115,23 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           >
             <div className={`${prefixCls}-panel`}>
               {searchable ? <CheckSelectSearch /> : null}
-              {/* TODO: 递归嵌套渲染 */}
-              {/* 反向 map，搜索删选数据时会对数据进行处理 */}
-              {selectData.map((item, index) => {
-                if ('groupTitle' in item) {
-                  return [
-                    <CheckSelectOptionGroup
-                      key={`group-${index}`}
-                      label={item.groupTitle}
-                      {...item.rootProps}
-                    />,
-                  ].concat(
-                    item.children.map((option: any) => {
-                      return (
-                        <CheckSelectOption key={option.id} option={option} {...option.rootProps} />
-                      )
-                    })
+              <VirtualList
+                itemKey="id"
+                fullHeight={false}
+                height={height}
+                itemHeight={itemHeight}
+                virtual={virtual}
+                data={virtualData}
+              >
+                {(node, index) => {
+                  /* 反向 map，搜索删选数据时会对数据进行处理 */
+                  return 'groupTitle' in node ? (
+                    <CheckSelectOptionGroup label={node.groupTitle} {...node.rootProps} />
+                  ) : (
+                    <CheckSelectOption option={node} {...node.rootProps} />
                   )
-                }
-
-                return <CheckSelectOption key={item.id} option={item} {...item.rootProps} />
-              })}
+                }}
+              </VirtualList>
             </div>
           </Popper>
         </div>
@@ -129,6 +147,54 @@ export interface CheckSelectProps
    * 自定义控制 popper 行为
    */
   popper?: PopperProps
+  /**
+   * 设置虚拟滚动容器的可视高度
+   */
+  height?: number
+  /**
+   * 设置虚拟列表每项的固定高度
+   */
+  itemHeight?: number
+  /**
+   * 	设置 `true` 开启虚拟滚动
+   */
+  virtual?: boolean
+  /**
+   * 是否可搜索（仅在 title 为字符串时支持）
+   */
+  searchable?: boolean
+  /**
+   * 是否可清空
+   */
+  clearable?: boolean
+  /**
+   * 是否点击清理 tags
+   */
+  onClear?: () => void
+  /**
+   * 自定义尺寸
+   */
+  size?: 'sm' | 'md' | 'lg'
+  /**
+   * 面板打开时回调
+   */
+  onOpen?: () => void
+  /**
+   * 面板关闭时回调
+   */
+  onClose?: () => void
+  /**
+   * 自定义 input 后缀 icon
+   */
+  suffixIcon?: React.ReactNode
+  /**
+   * 自定义清除 tags 的 icon
+   */
+  clearIcon?: React.ReactNode
+  /**
+   * 是否其启用默认搜索，可自定义过滤函数结合 onSearch 实现根据搜索框内容，自定义搜索
+   */
+  filter?: boolean | (() => boolean)
 }
 
 // @ts-ignore
@@ -171,7 +237,13 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
     const { isSelectedId, onSelect, titleRender } = useCheckSelectContext()
 
     const checked = isSelectedId(option.id)
-    const cls = cx(prefixCls, className, checked && `${prefixCls}--selected`)
+    const { disabled = false } = option
+    const cls = cx(
+      prefixCls,
+      className,
+      checked && `${prefixCls}--selected`,
+      disabled && `${prefixCls}--disabled`
+    )
 
     const handleOptionCheck = useCallback(
       (evt) => {
@@ -186,7 +258,13 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
 
     return (
       <div ref={ref} className={cls} {...rest} onClick={handleOptionCheck}>
-        {title === true ? <Checkbox checked={checked}>{option.title}</Checkbox> : title}
+        {title === true ? (
+          <Checkbox checked={checked} disabled={option.disabled}>
+            {option.title}
+          </Checkbox>
+        ) : (
+          title
+        )}
       </div>
     )
   }

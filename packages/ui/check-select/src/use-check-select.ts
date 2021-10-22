@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useSearch } from './hooks'
 import { useCheck as useCheckDefault } from '@hi-ui/use-check'
-import { CheckSelectItem } from './types'
+import { CheckSelectOptionItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { toArray } from '@hi-ui/use-children'
 
@@ -76,7 +76,7 @@ export const useCheckSelect = ({
   const onSelectLatest = useLatestCallback(onSelect)
 
   const proxyTryChangeValue = useCallback(
-    (value: React.ReactText[], item: CheckSelectItem, shouldChecked: boolean) => {
+    (value: React.ReactText[], item: CheckSelectOptionItem, shouldChecked: boolean) => {
       tryChangeValue(value, item, shouldChecked)
       onSelectLatest(value, item, shouldChecked)
     },
@@ -130,7 +130,7 @@ export interface UseSelectProps {
    */
   onChange?: (
     value: React.ReactText[],
-    targetOption?: CheckSelectItem,
+    targetOption?: CheckSelectOptionItem,
     shouldChecked?: boolean
   ) => void
   /**
@@ -138,17 +138,9 @@ export interface UseSelectProps {
    */
   onSelect?: (
     value: React.ReactText[],
-    targetOption?: CheckSelectItem,
+    targetOption?: CheckSelectOptionItem,
     shouldChecked?: boolean
   ) => void
-  /**
-   * 是否可搜索（仅在 title 为字符串时支持）
-   */
-  searchable?: boolean
-  /**
-   * 是否可清空
-   */
-  clearable?: boolean
   /**
    * 是否禁止使用
    */
@@ -160,11 +152,11 @@ export interface UseSelectProps {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: CheckSelectItem) => React.ReactNode
+  titleRender?: (item: CheckSelectOptionItem) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容，只在 title 为字符串时有效
    */
-  displayRender?: (option: CheckSelectItem) => React.ReactNode
+  displayRender?: (option: CheckSelectOptionItem) => React.ReactNode
   /**
    * 触发器输入框占位符
    */
@@ -176,11 +168,11 @@ export interface UseSelectProps {
   /**
    * 搜索数据
    */
-  onSearch?: (item: CheckSelectItem) => Promise<CheckSelectItem[] | void> | void
+  onSearch?: (item: CheckSelectOptionItem) => Promise<CheckSelectOptionItem[] | void> | void
   /**
    * 选项数据
    */
-  data?: CheckSelectItem[]
+  data?: CheckSelectOptionItem[]
   /**
    * JSX 子节点
    */

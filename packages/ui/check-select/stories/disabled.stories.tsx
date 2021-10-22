@@ -1,23 +1,13 @@
 import React from 'react'
 import CheckSelect, { CheckSelectOption, CheckSelectOptionGroup } from '../src'
 
-export const Basic = () => {
+export const Disabled = () => {
   return (
     <>
-      <h1>Basic</h1>
+      <h1>Disabled</h1>
       <div className="check-select-basic__wrap">
-        <CheckSelect
-          placeholder="请选择"
-          searchable
-          // titleRender={(option) => {
-          //   if (option.id === 'ABC1') {
-          //     return '不限'
-          //   }
-
-          //   return true
-          // }}
-        >
-          <CheckSelectOptionGroup style={{ color: 'red' }} label="title1">
+        <CheckSelect placeholder="请选择" searchable disabled>
+          <CheckSelectOptionGroup label="title1">
             <CheckSelectOption value="ABC1">Option-ABC1</CheckSelectOption>
             <CheckSelectOption value="ABC2">Option-ABC2</CheckSelectOption>
             <CheckSelectOption value="ABC3">Option-ABC3</CheckSelectOption>

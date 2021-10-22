@@ -56,7 +56,8 @@
     "@hi-ui/use-children": "^4.0.0-alpha.1",
     "@hi-ui/use-latest": "^4.0.0-alpha.2",
     "@hi-ui/use-toggle": "^4.0.0-alpha.4",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.5"
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.5",
+    "rc-virtual-list": "^3.4.1"
   },
   "peerDependencies": {
     "react": "^17.0.1",

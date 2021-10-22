@@ -1,6 +1,6 @@
 import React from 'react'
 
-export interface CheckSelectItem {
+export interface CheckSelectOptionItem {
   /**
    * 树节点唯一 id
    */
@@ -14,3 +14,16 @@ export interface CheckSelectItem {
    */
   disabled?: boolean
 }
+
+export interface CheckSelectOptionGroupItem {
+  /**
+   * 树节点标题
+   */
+  groupTitle?: React.ReactNode
+  /**
+   * 是否禁用该节点（将禁用级联点击，展开，如果开启 checkbox，也将被禁用）
+   */
+  children?: CheckSelectOptionItem[]
+}
+
+export type CheckSelectOptionOrOptionGroupItem = CheckSelectOptionItem & CheckSelectOptionGroupItem
