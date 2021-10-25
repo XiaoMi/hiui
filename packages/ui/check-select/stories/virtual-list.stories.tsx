@@ -22,6 +22,8 @@ export const VirtualList = () => {
           data={data}
           searchable
           height={300}
+          wrap={false}
+          // defaultValue={data.map((v) => v.id)}
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
         ></CheckSelect>

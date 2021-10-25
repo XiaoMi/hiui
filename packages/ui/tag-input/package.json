@@ -48,10 +48,12 @@
     "@hi-ui/core-css": "^4.0.0-alpha.0",
     "@hi-ui/env": "^4.0.0-alpha.0",
     "@hi-ui/icons": "^4.0.0-alpha.8",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.6",
     "@hi-ui/use-latest": "^4.0.0-alpha.2",
     "@hi-ui/use-merge-refs": "^4.0.0-alpha.2",
     "@hi-ui/use-outside-click": "^4.0.0-alpha.4",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.5"
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.5",
+    "react-resize-detector": "^6.7.6"
   },
   "peerDependencies": {
     "react": "^17.0.1",

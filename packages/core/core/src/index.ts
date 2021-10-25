@@ -28,5 +28,5 @@ export declare type HiBaseHTMLFieldProps<
   /**
    * 表单控件组件输入是否无效
    */
-  invalid: boolean
+  invalid?: boolean
 }
