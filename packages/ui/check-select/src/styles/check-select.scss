@@ -21,11 +21,6 @@ $prefix: '#{$component-prefix}-check-select' !default;
   overflow: auto;
   padding-bottom: 10px;
 
-  // 分界线
-  &:not(:last-child) {
-    // border-right: 1px solid #e8e8e8;
-  }
-
   $this: &;
 
   &-item {
@@ -64,10 +59,6 @@ $prefix: '#{$component-prefix}-check-select' !default;
       cursor: not-allowed;
       color: var(--color-gray-50);
       font-weight: 400;
-
-      .#{$prefix}-menu-switcher {
-        color: var(--color-gray-50);
-      }
     }
   }
 
@@ -83,7 +74,7 @@ $prefix: '#{$component-prefix}-check-select' !default;
 
 .#{$prefix}-search {
   box-sizing: border-box;
-  padding: 0 10px 10px;
+  padding: 10px 10px 6px;
   position: relative;
 
   .#{$component-prefix}-input__prefix {

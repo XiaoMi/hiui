@@ -2,15 +2,15 @@ import { createContext, useContext } from 'react'
 
 import { UseSelectReturn } from './use-check-select'
 
-const selectContext = createContext<Omit<UseSelectReturn, 'rootProps'> | null>(null)
+const checkSelectContext = createContext<Omit<UseSelectReturn, 'rootProps'> | null>(null)
 
-export const SelectProvider = selectContext.Provider
+export const CheckSelectProvider = checkSelectContext.Provider
 
-export const useSelectContext = () => {
-  const context = useContext(selectContext)
+export const useCheckSelectContext = () => {
+  const context = useContext(checkSelectContext)
 
   if (!context) {
-    throw new Error('The selectContext context should using in Cascader.')
+    throw new Error('The checkSelectContext context should using in CheckSelect.')
   }
 
   return context
