@@ -51,6 +51,8 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     font-size: 16px;
     display: inline-flex;
     align-items: center;
+    justify-content: flex-end;
+    min-width: 32px;
   }
 
   &__clear {

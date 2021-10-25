@@ -2,7 +2,6 @@ import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Input from '@hi-ui/input'
-import { useToggle } from '@hi-ui/use-toggle'
 import { useCheckSelect, UseSelectProps } from './use-check-select'
 import type { HiBaseHTMLFieldProps, HiBaseHTMLProps } from '@hi-ui/core'
 import Popper, { PopperProps } from '@hi-ui/popper'
@@ -32,6 +31,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       clearable = false,
       searchable = false,
       invalid = false,
+      wrap = true,
       placeholder,
       displayRender: displayRenderProp,
       onSelect: onSelectProp,
@@ -39,19 +39,29 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       itemHeight = 40,
       virtual = true,
       popper,
+      onOpen,
+      onClose,
       ...rest
     },
     ref
   ) => {
-    const [menuVisible, menuVisibleAction] = useToggle()
     const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
+
+    const [menuVisible, setMenuVisible] = useState(false)
+    const onOpenLatest = useLatestCallback(onOpen)
+    const onCloseLatest = useLatestCallback(onClose)
+
+    const closeMenu = useCallback(() => {
+      if (disabled) return
+      setMenuVisible(false)
+      onOpenLatest()
+    }, [disabled, onOpenLatest])
 
     const openMenu = useCallback(() => {
       if (disabled) return
-      menuVisibleAction.on()
-    }, [disabled, menuVisibleAction])
-
-    const onSelectLatest = useLatestCallback(onSelectProp)
+      setMenuVisible(true)
+      onCloseLatest()
+    }, [disabled, onCloseLatest])
 
     const displayRender = useCallback(
       (item: CheckSelectOptionItem) => {
@@ -63,6 +73,8 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       },
       [displayRenderProp]
     )
+
+    const onSelectLatest = useLatestCallback(onSelectProp)
 
     const { rootProps, ...context } = useCheckSelect({
       ...rest,
@@ -103,16 +115,12 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
             placeholder={placeholder}
             data={selectData}
             value={value}
+            wrap={wrap}
             onChange={tryChangeValue}
             displayRender={displayRender}
             suffix={<DownOutlined />}
           />
-          <Popper
-            {...popper}
-            attachEl={targetElRef}
-            visible={menuVisible}
-            onClose={menuVisibleAction.off}
-          >
+          <Popper {...popper} attachEl={targetElRef} visible={menuVisible} onClose={closeMenu}>
             <div className={`${prefixCls}-panel`}>
               {searchable ? <CheckSelectSearch /> : null}
               <VirtualList
@@ -123,7 +131,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
                 virtual={virtual}
                 data={virtualData}
               >
-                {(node, index) => {
+                {(node) => {
                   /* 反向 map，搜索删选数据时会对数据进行处理 */
                   return 'groupTitle' in node ? (
                     <CheckSelectOptionGroup label={node.groupTitle} {...node.rootProps} />
@@ -168,6 +176,10 @@ export interface CheckSelectProps
    */
   clearable?: boolean
   /**
+   * 是否开启换行全展示
+   */
+  wrap?: boolean
+  /**
    * 是否点击清理 tags
    */
   onClear?: () => void
@@ -191,10 +203,6 @@ export interface CheckSelectProps
    * 自定义清除 tags 的 icon
    */
   clearIcon?: React.ReactNode
-  /**
-   * 是否其启用默认搜索，可自定义过滤函数结合 onSearch 实现根据搜索框内容，自定义搜索
-   */
-  filter?: boolean | (() => boolean)
 }
 
 // @ts-ignore

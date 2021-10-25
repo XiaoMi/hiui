@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useSearch } from './hooks'
 import { useCheck as useCheckDefault } from '@hi-ui/use-check'
-import { CheckSelectOptionItem } from './types'
+import { CheckSelectOptionItem, CheckSelectOptionOrOptionGroupItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { toArray } from '@hi-ui/use-children'
 
@@ -19,6 +19,7 @@ export const useCheckSelect = ({
   onSelect,
   emptyContent = '无匹配选项',
   searchPlaceholder,
+  filter,
   titleRender,
   ...rest
 }: UseSelectProps) => {
@@ -90,7 +91,7 @@ export const useCheckSelect = ({
     allowCheck,
   })
 
-  const [inSearch, matchedItems, inputProps, isEmpty, resetSearch] = useSearch(data)
+  const [inSearch, matchedItems, inputProps, isEmpty, resetSearch] = useSearch(data, filter)
 
   const getSearchInputProps = useCallback(
     () => ({
@@ -166,9 +167,9 @@ export interface UseSelectProps {
    */
   searchPlaceholder?: string
   /**
-   * 搜索数据
+   * 启用自定义过滤函数实现根据搜索框内容，自定义搜索
    */
-  onSearch?: (item: CheckSelectOptionItem) => Promise<CheckSelectOptionItem[] | void> | void
+  filter?: (keyword: string, option: CheckSelectOptionOrOptionGroupItem) => boolean
   /**
    * 选项数据
    */
