@@ -59,7 +59,7 @@ const Overlay = (props) => {
 
   const scrollCallBack = useCallback(() => {
     if (props.attachEle) {
-      if (staticPopperRef) {
+      if (staticPopperRef.current) {
         setState(
           Object.assign({}, state, {
             popperRef: staticPopperRef.current,
@@ -76,7 +76,7 @@ const Overlay = (props) => {
     if (attachEle) return
     const { cacheContainerPosition } = state
 
-    if (staticPopperRef) {
+    if (staticPopperRef.current) {
       setState(
         Object.assign({}, state, {
           popperRef: staticPopperRef.current
