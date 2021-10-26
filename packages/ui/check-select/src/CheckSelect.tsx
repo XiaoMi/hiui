@@ -1,17 +1,18 @@
-import React, { forwardRef, useCallback, useState } from 'react'
+import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Input from '@hi-ui/input'
-import { useToggle } from '@hi-ui/use-toggle'
-import { useCheckSelect } from './use-check-select'
-import type { HiBaseHTMLProps } from '@hi-ui/core'
+import { useCheckSelect, UseSelectProps } from './use-check-select'
+import type { HiBaseHTMLFieldProps, HiBaseHTMLProps } from '@hi-ui/core'
 import Popper, { PopperProps } from '@hi-ui/popper'
 import { DownOutlined, SearchOutlined } from '@hi-ui/icons'
-import { SelectProvider, useSelectContext } from './context'
-import { CheckSelectItem } from './types'
+import { CheckSelectProvider, useCheckSelectContext } from './context'
+import { CheckSelectOptionItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
-import { TagInput } from '@hi-ui/tag-input'
+import { TagInput as TagInputDefault, TagInputMock } from '@hi-ui/tag-input'
+import { isFunction } from '@hi-ui/type-assertion'
+import VirtualList from 'rc-virtual-list'
 
 const _role = 'check-select'
 const _prefix = getPrefixCls(_role)
@@ -29,27 +30,42 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       disabled = false,
       clearable = false,
       searchable = false,
+      invalid = false,
+      wrap = true,
       placeholder,
       displayRender: displayRenderProp,
       onSelect: onSelectProp,
+      height,
+      itemHeight = 40,
+      virtual = true,
       popper,
+      onOpen,
+      onClose,
       ...rest
     },
     ref
   ) => {
-    const [menuVisible, menuVisibleAction] = useToggle()
     const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
+
+    const [menuVisible, setMenuVisible] = useState(false)
+    const onOpenLatest = useLatestCallback(onOpen)
+    const onCloseLatest = useLatestCallback(onClose)
+
+    const closeMenu = useCallback(() => {
+      if (disabled) return
+      setMenuVisible(false)
+      onOpenLatest()
+    }, [disabled, onOpenLatest])
 
     const openMenu = useCallback(() => {
       if (disabled) return
-      menuVisibleAction.on()
-    }, [disabled, menuVisibleAction])
-
-    const onSelectLatest = useLatestCallback(onSelectProp)
+      setMenuVisible(true)
+      onCloseLatest()
+    }, [disabled, onCloseLatest])
 
     const displayRender = useCallback(
-      (item: CheckSelectItem) => {
-        if (displayRenderProp) {
+      (item: CheckSelectOptionItem) => {
+        if (isFunction(displayRenderProp)) {
           return displayRenderProp(item)
         }
 
@@ -58,18 +74,41 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       [displayRenderProp]
     )
 
-    // @ts-ignore
+    const onSelectLatest = useLatestCallback(onSelectProp)
+
     const { rootProps, ...context } = useCheckSelect({
       ...rest,
-      onSelect: onSelectLatest,
       children,
+      onSelect: onSelectLatest,
     })
+
     const { value, tryChangeValue, data: selectData } = context
 
-    const cls = cx(prefixCls, className)
+    const virtualData = useMemo(
+      () =>
+        selectData.reduce((acc, cur, index) => {
+          if ('groupTitle' in cur) {
+            acc.push({
+              id: `group-${index}`,
+              groupTitle: cur.groupTitle,
+              rootProps: cur.rootProps,
+            })
+            return acc.concat(cur.children)
+          }
+
+          acc.push(cur)
+          return acc
+        }, []),
+      [selectData]
+    )
+
+    const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
+
+    // TODO: tagInput 内部支持支持多种模式切换
+    const TagInput = wrap ? TagInputDefault : TagInputMock
 
     return (
-      <SelectProvider value={context}>
+      <CheckSelectProvider value={context}>
         <div ref={ref} role={role} className={cls} {...rootProps}>
           <TagInput
             ref={setTargetElRef}
@@ -79,57 +118,58 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
             placeholder={placeholder}
             data={selectData}
             value={value}
+            wrap={wrap}
             onChange={tryChangeValue}
             displayRender={displayRender}
             suffix={<DownOutlined />}
           />
-          <Popper
-            {...popper}
-            attachEl={targetElRef}
-            visible={menuVisible}
-            onClose={menuVisibleAction.off}
-          >
+          <Popper {...popper} attachEl={targetElRef} visible={menuVisible} onClose={closeMenu}>
             <div className={`${prefixCls}-panel`}>
-              {searchable ? <SelectSearch /> : null}
-              {/* {children} */}
-              {/* 反向 map，搜索删选数据时会对数据进行处理 */}
-              {selectData.map((item) => {
-                return <CheckSelectOption key={item.id} option={item} />
-              })}
+              {searchable ? <CheckSelectSearch /> : null}
+              <VirtualList
+                itemKey="id"
+                fullHeight={false}
+                height={height}
+                itemHeight={itemHeight}
+                virtual={virtual}
+                data={virtualData}
+              >
+                {(node) => {
+                  /* 反向 map，搜索删选数据时会对数据进行处理 */
+                  return 'groupTitle' in node ? (
+                    <CheckSelectOptionGroup label={node.groupTitle} {...node.rootProps} />
+                  ) : (
+                    <CheckSelectOption option={node} {...node.rootProps} />
+                  )
+                }}
+              </VirtualList>
             </div>
           </Popper>
         </div>
-      </SelectProvider>
+      </CheckSelectProvider>
     )
   }
 )
 
 export interface CheckSelectProps
-  extends Omit<HiBaseHTMLProps<'div'>, 'onChange' | 'onSelect' | 'defaultValue'> {
+  extends Omit<HiBaseHTMLFieldProps<'div'>, 'onChange' | 'onSelect' | 'defaultValue'>,
+    UseSelectProps {
   /**
-   * 设置当前选中值
+   * 自定义控制 popper 行为
    */
-  value?: React.ReactText[]
+  popper?: PopperProps
   /**
-   * 设置当前选中值默认值
+   * 设置虚拟滚动容器的可视高度
    */
-  defaultValue?: React.ReactText[]
+  height?: number
   /**
-   * 选中值改变时的回调
+   * 设置虚拟列表每项的固定高度
    */
-  onChange?: (
-    value: React.ReactText[],
-    targetOption?: CheckSelectItem,
-    shouldChecked?: boolean
-  ) => void
+  itemHeight?: number
   /**
-   * 选中值时回调
+   * 	设置 `true` 开启虚拟滚动
    */
-  onSelect?: (
-    value: React.ReactText[],
-    targetOption?: CheckSelectItem,
-    shouldChecked?: boolean
-  ) => void
+  virtual?: boolean
   /**
    * 是否可搜索（仅在 title 为字符串时支持）
    */
@@ -139,41 +179,33 @@ export interface CheckSelectProps
    */
   clearable?: boolean
   /**
-   * 是否禁止使用
+   * 是否开启换行全展示
    */
-  disabled?: boolean
+  wrap?: boolean
   /**
-   * 设置选项为空时展示的内容
+   * 是否点击清理 tags
    */
-  emptyContent?: React.ReactNode
+  onClear?: () => void
   /**
-   * 自定义渲染节点的 title 内容
+   * 自定义尺寸
    */
-  titleRender?: (item: CheckSelectItem) => React.ReactNode
+  size?: 'sm' | 'md' | 'lg'
   /**
-   * 自定义选择后触发器所展示的内容，只在 title 为字符串时有效
+   * 面板打开时回调
    */
-  displayRender?: (option: CheckSelectItem) => React.ReactNode
+  onOpen?: () => void
   /**
-   * 触发器输入框占位符
+   * 面板关闭时回调
    */
-  placeholder?: string
+  onClose?: () => void
   /**
-   * 搜索输入框占位符
+   * 自定义 input 后缀 icon
    */
-  searchPlaceholder?: string
+  suffixIcon?: React.ReactNode
   /**
-   * 自定义控制 popper 行为
+   * 自定义清除 tags 的 icon
    */
-  popper?: PopperProps
-  /**
-   * 搜索数据
-   */
-  onSearch?: (item: CheckSelectItem) => Promise<CheckSelectItem[] | void> | void
-  /**
-   * 选项数据
-   */
-  data?: CheckSelectItem[]
+  clearIcon?: React.ReactNode
 }
 
 // @ts-ignore
@@ -184,13 +216,16 @@ if (__DEV__) {
 
 const searchPrefix = getPrefixCls('check-select-search')
 
-export const SelectSearch = forwardRef<HTMLInputElement | null, SelectSearchProps>(
+/**
+ * TODO: What is CheckSelectSearch
+ */
+export const CheckSelectSearch = forwardRef<HTMLInputElement | null, SelectSearchProps>(
   ({ prefixCls = searchPrefix, className, ...rest }, ref) => {
-    const { isEmpty, emptyContent, getSearchInputProps } = useSelectContext()
+    const { isEmpty, emptyContent, getSearchInputProps } = useCheckSelectContext()
 
     return (
       <div ref={ref} className={cx(prefixCls, className)} {...rest}>
-        <Input appearance="underline" prefix={<SearchOutlined />} {...getSearchInputProps()} />
+        <Input {...getSearchInputProps()} appearance="underline" prefix={<SearchOutlined />} />
         {isEmpty ? <span className={`${prefixCls}__empty`}>{emptyContent}</span> : null}
       </div>
     )
@@ -200,17 +235,26 @@ export const SelectSearch = forwardRef<HTMLInputElement | null, SelectSearchProp
 export interface SelectSearchProps extends HiBaseHTMLProps {}
 
 if (__DEV__) {
-  SelectSearch.displayName = 'SelectSearch'
+  CheckSelectSearch.displayName = 'CheckSelectSearch'
 }
 
 const optionPrefix = getPrefixCls('check-select-option')
 
+/**
+ * TODO: What is CheckSelectOption
+ */
 export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOptionProps>(
   ({ prefixCls = optionPrefix, className, children, option = {}, onClick, ...rest }, ref) => {
-    const { isSelectedId, onSelect, titleRender } = useSelectContext()
+    const { isSelectedId, onSelect, titleRender } = useCheckSelectContext()
 
     const checked = isSelectedId(option.id)
-    const cls = cx(prefixCls, className, checked && `${prefixCls}--selected`)
+    const { disabled = false } = option
+    const cls = cx(
+      prefixCls,
+      className,
+      checked && `${prefixCls}--selected`,
+      disabled && `${prefixCls}--disabled`
+    )
 
     const handleOptionCheck = useCallback(
       (evt) => {
@@ -225,7 +269,13 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
 
     return (
       <div ref={ref} className={cls} {...rest} onClick={handleOptionCheck}>
-        {title === true ? <Checkbox checked={checked}>{option.title}</Checkbox> : title}
+        {title === true ? (
+          <Checkbox checked={checked} disabled={option.disabled}>
+            {option.title}
+          </Checkbox>
+        ) : (
+          title
+        )}
       </div>
     )
   }
@@ -235,7 +285,29 @@ export interface CheckSelectOptionProps extends HiBaseHTMLProps {}
 
 // @ts-ignore
 CheckSelectOption.HiName = 'CheckSelectOption'
-
 if (__DEV__) {
   CheckSelectOption.displayName = 'CheckSelectOption'
+}
+
+/**
+ * TODO: What is CheckSelectOptionGroup
+ */
+export const CheckSelectOptionGroup = forwardRef<HTMLDivElement | null, CheckSelectOptionProps>(
+  ({ prefixCls = optionPrefix, className, children, label, onClick, ...rest }, ref) => {
+    const cls = cx(prefixCls, className)
+
+    return (
+      <div ref={ref} className={cls} {...rest}>
+        <span>{label}</span>
+      </div>
+    )
+  }
+)
+
+export interface CheckSelectOptionGroupProps extends HiBaseHTMLProps {}
+
+// @ts-ignore
+CheckSelectOptionGroup.HiName = 'CheckSelectOptionGroup'
+if (__DEV__) {
+  CheckSelectOptionGroup.displayName = 'CheckSelectOptionGroup'
 }

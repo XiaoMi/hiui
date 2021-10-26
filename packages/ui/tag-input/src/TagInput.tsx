@@ -8,6 +8,7 @@ import { useTagInput } from './use-tag-input'
 import { TagInputOption } from './types'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
 const _role = 'tag-input'
 const _prefix = getPrefixCls(_role)
@@ -35,6 +36,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
       onClick,
       onMouseOver,
       onMouseLeave,
+      onClear,
       ...rest
     },
     ref
@@ -44,13 +46,16 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
     const tagInputRef = useRef<HTMLDivElement>(null)
     const [tagMaxWidth] = useTagInput(data, tagInputRef)
 
+    const onClearLatest = useLatestCallback(onClear)
+
     const handleClear = useCallback(
       (evt) => {
         if (disabled) return
         evt.stopPropagation()
         tryChangeValue(NOOP_ARRAY)
+        onClearLatest()
       },
-      [tryChangeValue, disabled]
+      [tryChangeValue, disabled, onClearLatest]
     )
 
     const tagList = useMemo(
@@ -214,7 +219,8 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
   }
 )
 
-export interface TagInputProps extends HiBaseHTMLProps {
+export interface TagInputProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'defaultValue' | 'onChange' | 'value'> {
   /**
    * 设置当前多选值
    */
@@ -255,6 +261,10 @@ export interface TagInputProps extends HiBaseHTMLProps {
    * tag 列表数据源
    */
   data?: TagInputOption[]
+  /**
+   * 点击清空 tags 回调
+   */
+  onClear?: () => void
 }
 
 if (__DEV__) {

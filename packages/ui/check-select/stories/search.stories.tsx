@@ -24,7 +24,7 @@ export const Search = () => {
   return (
     <>
       <h1>Search</h1>
-      <div className="cascader-search__wrap">
+      <div className="check-select-search__wrap">
         <CheckSelect searchable placeholder="请选择品类" searchPlaceholder="请输入搜索内容">
           {data.map((item) => {
             return (
