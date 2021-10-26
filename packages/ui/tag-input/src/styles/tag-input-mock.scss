@@ -5,45 +5,42 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 .#{$tag-input-mock-prefix} {
   position: relative;
   flex: 1;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 160px;
+  font-size: 14px;
+  vertical-align: middle;
+  color: var(--color-black);
+  border: 1px solid transparent;
+  background-color: use-color('white');
+  transition: all 0.3s;
+  padding: 0 10px;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 32px;
+  overflow: hidden;
 
-  &__container {
-    box-sizing: border-box;
-    width: 100%;
-    min-width: 160px;
-    font-size: 14px;
-    vertical-align: middle;
-    color: var(--color-black);
-    border: 1px solid transparent;
-    background-color: use-color('white');
-    transition: all 0.3s;
-    padding: 0 10px;
-    display: inline-flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 32px;
-    overflow: hidden;
+  // outline
+  border-color: use-color('gray-30');
+  border-radius: 4px;
 
-    // outline
-    border-color: use-color('gray-30');
-    border-radius: 4px;
+  &:not(.disabled):hover {
+    border-color: use-color('primary');
+  }
 
-    &:not(.disabled):hover {
-      border-color: use-color('primary');
-    }
+  &:not(.disabled).focused {
+    // box-shadow: 0 0 0 1px use-color('primary');
+    border-color: use-color('primary');
+  }
 
-    &:not(.disabled).focused {
-      // box-shadow: 0 0 0 1px use-color('primary');
-      border-color: use-color('primary');
-    }
+  &.disabled {
+    cursor: not-allowed;
+    color: var(--color-gray-50);
+    background-color: var(--color-gray-10);
 
-    &.disabled {
-      cursor: not-allowed;
-      color: var(--color-gray-50);
-      background-color: var(--color-gray-10);
-
-      .#{$tag-input-mock-prefix}__tag {
-        background-color: var(--color-gray-20);
-      }
+    .#{$tag-input-mock-prefix}__tag {
+      background-color: var(--color-gray-20);
     }
   }
 

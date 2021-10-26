@@ -45,35 +45,39 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       () => value.map((id) => data.find((item) => item.id === id) || { id, title: id }),
       [value, data]
     )
+    const tagCount = tagList.length
 
     const [containerWidth = 0, setContainerWidth] = useState<number>()
 
     const mergedTagList = useMemo(() => {
       return tagList.slice(0, Math.min(tagList.length, containerWidth / tagWidth))
     }, [tagList, tagWidth, containerWidth])
-
-    const tagCount = tagList.length
-    const hasTags = tagCount > 0
+    const showTags = mergedTagList.length > 0
 
     const [tagsWidth, setTagsWidth] = useState<{ [key: string]: number }>({})
     const getTagWidth = useCallback(
       (index: number) => {
-        return (typeof tagList[index] !== 'undefined' && tagsWidth[tagList[index].id]) || 0
+        return (
+          (typeof mergedTagList[index] !== 'undefined' && tagsWidth[mergedTagList[index].id]) || 0
+        )
       },
-      [tagsWidth, tagList]
+      [tagsWidth, mergedTagList]
     )
 
     const [suffixWidth, setSuffixWidth] = useState(0)
-    console.log('tagsWidth', tagsWidth, suffixWidth)
 
+    // TODO: 设置第一个 tagWidth 超出省略，预防无展示
     // const [tagMaxWidth, setTagMaxWidth] = useState(0)
     const [tagMaxCount, setTagMaxCount] = useState(0)
     console.log(tagMaxCount)
 
     useLayoutEffect(() => {
-      if (isArrayNonEmpty(tagList)) {
-        const len = tagList.length
+      let tagMaxCount = 0
+
+      if (isArrayNonEmpty(mergedTagList)) {
+        const len = mergedTagList.length
         const lastIndex = len - 1
+
         let totalWidth = suffixWidth
 
         for (let i = 0; i < len; ++i) {
@@ -89,17 +93,19 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
             (lastIndex === 0 && totalWidth <= containerWidth) ||
             (i === lastIndex - 1 && totalWidth + getTagWidth(lastIndex) <= containerWidth)
           ) {
-            setTagMaxCount(lastIndex)
+            tagMaxCount = lastIndex
             break
           } else if (totalWidth > containerWidth) {
-            setTagMaxCount(i - 1)
+            tagMaxCount = i - 1
             break
           }
         }
       } else {
-        setTagMaxCount(0)
+        tagMaxCount = 0
       }
-    }, [tagsWidth, suffixWidth, getTagWidth, containerWidth, tagList, suffix])
+
+      setTagMaxCount(tagMaxCount)
+    }, [tagsWidth, suffixWidth, getTagWidth, containerWidth, mergedTagList, suffix])
 
     const onClearLatest = useLatestCallback(onClear)
     const handleClear = useCallback(
@@ -123,91 +129,89 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
     )
 
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
-    const showClearableIcon = clearable && hasTags && !disabled
+    const showClearableIcon = clearable && showTags && !disabled
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, disabled && 'disabled')
 
     return (
-      <div
-        ref={ref}
-        role={role}
-        className={cls}
-        onMouseOver={(evt) => {
-          trySetHover(true)
-          onMouseOver?.(evt)
+      <ResizeDetector
+        skipOnMount={false}
+        onResize={(w) => {
+          if (w) {
+            setContainerWidth(w)
+          }
         }}
-        onMouseLeave={(evt) => {
-          trySetHover(false)
-          onMouseLeave?.(evt)
-        }}
-        {...rest}
       >
-        <ResizeDetector
-          skipOnMount={false}
-          onResize={(w) => {
-            if (w) {
-              setContainerWidth(w)
-            }
+        <div
+          ref={ref}
+          role={role}
+          className={cls}
+          onMouseOver={(evt) => {
+            trySetHover(true)
+            onMouseOver?.(evt)
           }}
+          onMouseLeave={(evt) => {
+            trySetHover(false)
+            onMouseLeave?.(evt)
+          }}
+          {...rest}
         >
-          <div className={cx(`${prefixCls}__container`, disabled && 'disabled')}>
-            {/* tags 列表区域渲染 */}
-            {hasTags ? (
-              <span className={`${prefixCls}__tags`}>
-                {mergedTagList.map((option, index) => {
-                  return (
-                    <MockTag
-                      hidden={index > tagMaxCount}
-                      key={option.id}
-                      prefixCls={prefixCls}
-                      disabled={disabled}
-                      option={option}
-                      value={value}
-                      displayRender={displayRender}
-                      tryChangeValue={tryChangeValue}
-                      onTagResize={(id: string, w: number) =>
-                        setTagsWidth((prev) => ({ ...prev, [id]: w }))
-                      }
-                    />
-                  )
-                })}
-              </span>
-            ) : (
-              <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
-            )}
+          {/* tags 列表区域渲染 */}
+          {showTags ? (
+            <span className={`${prefixCls}__tags`}>
+              {mergedTagList.map((option, index) => {
+                return (
+                  <MockTag
+                    hidden={index > tagMaxCount}
+                    key={option.id}
+                    prefixCls={prefixCls}
+                    disabled={disabled}
+                    option={option}
+                    value={value}
+                    displayRender={displayRender}
+                    tryChangeValue={tryChangeValue}
+                    onTagResize={(id: string, w: number) =>
+                      setTagsWidth((prev) => ({ ...prev, [id]: w }))
+                    }
+                  />
+                )
+              })}
+            </span>
+          ) : (
+            <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
+          )}
 
-            <ResizeDetector
-              skipOnMount={false}
-              onResize={(w) => {
-                if (w) {
-                  setSuffixWidth(w)
-                }
-              }}
-            >
-              {/* suffix 后缀区域渲染 */}
-              {!!suffix || (showClearableIcon && hover) || hasTags ? (
-                <span className={`${prefixCls}__suffix`}>
-                  {hasTags ? (
-                    <span className={cx(`${prefixCls}__tag--total`)}>
-                      {`${tagCount > 99 ? '99+' : tagCount}`}
-                    </span>
-                  ) : showClearableIcon && hover ? (
-                    <span
-                      className={`${prefixCls}__clear`}
-                      role="button"
-                      tabIndex={-1}
-                      onClick={handleClear}
-                    >
-                      <CloseCircleFilled />
-                    </span>
-                  ) : null}
-                  {suffix}
-                </span>
-              ) : null}
-            </ResizeDetector>
-          </div>
-        </ResizeDetector>
-      </div>
+          <ResizeDetector
+            skipOnMount={false}
+            onResize={(w) => {
+              if (w) {
+                setSuffixWidth(w)
+              }
+            }}
+          >
+            {/* suffix 后缀区域渲染 */}
+            {!!suffix || (showClearableIcon && hover) || showTags ? (
+              <span className={`${prefixCls}__suffix`}>
+                {showTags ? (
+                  <span className={cx(`${prefixCls}__tag--total`)}>
+                    {`${tagCount > 99 ? '99+' : tagCount}`}
+                  </span>
+                ) : showClearableIcon && hover ? (
+                  <span
+                    className={`${prefixCls}__clear`}
+                    role="button"
+                    tabIndex={-1}
+                    onClick={handleClear}
+                  >
+                    <CloseCircleFilled />
+                  </span>
+                ) : null}
+                {suffix}
+              </span>
+            ) : null}
+          </ResizeDetector>
+        </div>
+      </ResizeDetector>
     )
   }
 )

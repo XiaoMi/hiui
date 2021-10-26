@@ -2,7 +2,7 @@ import React from 'react'
 import CheckSelect from '../src'
 
 const data = []
-for (let i = 0; i < 100000; i++) {
+for (let i = 0; i < 30000; i++) {
   const value = `${i.toString(36)}-${i}`
   data.push({
     id: value,
@@ -23,7 +23,7 @@ export const VirtualList = () => {
           searchable
           height={300}
           wrap={false}
-          // defaultValue={data.map((v) => v.id)}
+          defaultValue={data.map((v) => v.id)}
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
         ></CheckSelect>

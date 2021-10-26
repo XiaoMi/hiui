@@ -10,7 +10,7 @@ import { CheckSelectProvider, useCheckSelectContext } from './context'
 import { CheckSelectOptionItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
-import { TagInput } from '@hi-ui/tag-input'
+import { TagInput as TagInputDefault, TagInputMock } from '@hi-ui/tag-input'
 import { isFunction } from '@hi-ui/type-assertion'
 import VirtualList from 'rc-virtual-list'
 
@@ -102,7 +102,10 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       [selectData]
     )
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
+
+    // TODO: tagInput 内部支持支持多种模式切换
+    const TagInput = wrap ? TagInputDefault : TagInputMock
 
     return (
       <CheckSelectProvider value={context}>

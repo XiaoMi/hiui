@@ -4,7 +4,8 @@ $prefix: '#{$component-prefix}-check-select' !default;
 
 .#{$prefix} {
   &--open {
-    .#{$component-prefix}-mock-input {
+    .#{$component-prefix}-tag-input,
+    .#{$component-prefix}-tag-input-mock {
       border-color: var(--color-primary);
     }
   }
