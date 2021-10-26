@@ -68,6 +68,7 @@ const getMatchedNodes = (
     if ('groupTitle' in optionOrGroup) {
       // search for OptionGroup
 
+      // @ts-ignore
       const shouldReserved = shouldFilter && filter(searchValue, optionOrGroup) === true
 
       if (shouldReserved) {
@@ -92,6 +93,7 @@ const getMatchedNodes = (
       if (isArrayNonEmpty(optionOrGroup.children)) {
         const matchedChildren = optionOrGroup.children.filter((node) => {
           if (shouldFilter) {
+            // @ts-ignore
             return filter(searchValue, optionOrGroup)
           }
 
@@ -114,6 +116,7 @@ const getMatchedNodes = (
       }
     } else {
       // search for Option
+      // @ts-ignore
       const shouldReserved = shouldFilter && filter(searchValue, optionOrGroup) === true
 
       if (shouldReserved) {
