@@ -1,16 +1,15 @@
-import React, { forwardRef, useRef, useCallback, useState, useMemo, useLayoutEffect } from 'react'
+import React, { forwardRef, useCallback, useState, useMemo, useLayoutEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CloseCircleFilled, CloseOutlined } from '@hi-ui/icons'
-import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { TagInputOption } from './types'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { isFunction } from '@hi-ui/type-assertion'
-import ResizeDetector, { useResizeDetector } from 'react-resize-detector'
+import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
+import ResizeDetector from 'react-resize-detector'
 
-const _role = 'tag-input'
+const _role = 'tag-input-mock'
 const _prefix = getPrefixCls(_role)
 const NOOP_ARRAY = [] as []
 
@@ -32,7 +31,6 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       disabled = false,
       suffix,
       tagWidth = 20,
-      maxCount,
       displayRender,
       onMouseOver,
       onMouseLeave,
@@ -48,27 +46,16 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       [value, data]
     )
 
-    const tagInputRef = useRef<HTMLDivElement>(null)
-    const containerWidth = tagInputRef.current ? tagInputRef.current.clientWidth : 0
+    const [containerWidth = 0, setContainerWidth] = useState<number>()
 
     const mergedTagList = useMemo(() => {
-      let items = tagList
-
-      if (typeof maxCount === 'number') {
-        items = tagList.slice(0, maxCount)
-      } else {
-        items = tagList.slice(0, Math.min(tagList.length, containerWidth / tagWidth))
-      }
-
-      return items
-    }, [tagList, tagWidth, containerWidth, maxCount])
-
-    console.log('mergedTagList', mergedTagList, containerWidth)
+      return tagList.slice(0, Math.min(tagList.length, containerWidth / tagWidth))
+    }, [tagList, tagWidth, containerWidth])
 
     const tagCount = tagList.length
     const hasTags = tagCount > 0
 
-    const [tagsWidth, setTagsWidth] = useState<any>({})
+    const [tagsWidth, setTagsWidth] = useState<{ [key: string]: number }>({})
     const getTagWidth = useCallback(
       (index: number) => {
         return (typeof tagList[index] !== 'undefined' && tagsWidth[tagList[index].id]) || 0
@@ -79,21 +66,20 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
     const [suffixWidth, setSuffixWidth] = useState(0)
     console.log('tagsWidth', tagsWidth, suffixWidth)
 
-    const [tagMaxWidth, setTagMaxWidth] = useState(0)
+    // const [tagMaxWidth, setTagMaxWidth] = useState(0)
     const [tagMaxCount, setTagMaxCount] = useState(0)
     console.log(tagMaxCount)
 
     useLayoutEffect(() => {
-      if (tagList && tagList.length > 0) {
-        let totalWidth = suffixWidth
+      if (isArrayNonEmpty(tagList)) {
         const len = tagList.length
         const lastIndex = len - 1
+        let totalWidth = suffixWidth
 
-        for (let i = 0; i < len; i += 1) {
+        for (let i = 0; i < len; ++i) {
           const currentTagWidth = getTagWidth(i)
 
           if (currentTagWidth === undefined) {
-            setTagMaxCount(i - 1)
             break
           }
 
@@ -101,11 +87,11 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
 
           if (
             (lastIndex === 0 && totalWidth <= containerWidth) ||
-            (i === lastIndex - 1 && totalWidth + getTagWidth(lastIndex)! <= containerWidth)
+            (i === lastIndex - 1 && totalWidth + getTagWidth(lastIndex) <= containerWidth)
           ) {
             setTagMaxCount(lastIndex)
             break
-          } else if (totalWidth + 20 > containerWidth) {
+          } else if (totalWidth > containerWidth) {
             setTagMaxCount(i - 1)
             break
           }
@@ -143,7 +129,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
 
     return (
       <div
-        ref={useMergeRefs(ref, tagInputRef)}
+        ref={ref}
         role={role}
         className={cls}
         onMouseOver={(evt) => {
@@ -156,19 +142,22 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
         }}
         {...rest}
       >
-        <div className={cx(`${prefixCls}__container`, disabled && 'disabled')}>
-          {/* tags 列表区域渲染 */}
-          {hasTags ? (
-            <span className={`${prefixCls}__value`}>
+        <ResizeDetector
+          skipOnMount={false}
+          onResize={(w) => {
+            if (w) {
+              setContainerWidth(w)
+            }
+          }}
+        >
+          <div className={cx(`${prefixCls}__container`, disabled && 'disabled')}>
+            {/* tags 列表区域渲染 */}
+            {hasTags ? (
               <span className={`${prefixCls}__tags`}>
-                {tagList.map((option, index) => {
+                {mergedTagList.map((option, index) => {
                   return (
                     <MockTag
-                      style={
-                        index < tagMaxCount
-                          ? {}
-                          : { opacity: 0, width: 0, height: 0, overflow: 'hidden' }
-                      }
+                      hidden={index > tagMaxCount}
                       key={option.id}
                       prefixCls={prefixCls}
                       disabled={disabled}
@@ -176,39 +165,48 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
                       value={value}
                       displayRender={displayRender}
                       tryChangeValue={tryChangeValue}
-                      onTagResize={(id, w) => setTagsWidth((prev) => ({ ...prev, [id]: w }))}
+                      onTagResize={(id: string, w: number) =>
+                        setTagsWidth((prev) => ({ ...prev, [id]: w }))
+                      }
                     />
                   )
                 })}
               </span>
-            </span>
-          ) : (
-            <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
-          )}
+            ) : (
+              <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
+            )}
 
-          <ResizeDetector onResize={(w = 0) => setSuffixWidth(w)}>
-            {/* suffix 后缀区域渲染 */}
-            {!!suffix || (showClearableIcon && hover) || hasTags ? (
-              <span className={`${prefixCls}__suffix`}>
-                {hasTags ? (
-                  <span className={cx(`${prefixCls}__tag--total`)}>
-                    {`${tagCount > 99 ? '99+' : tagCount}`}
-                  </span>
-                ) : showClearableIcon && hover ? (
-                  <span
-                    className={`${prefixCls}__clear`}
-                    role="button"
-                    tabIndex={-1}
-                    onClick={handleClear}
-                  >
-                    <CloseCircleFilled />
-                  </span>
-                ) : null}
-                {suffix}
-              </span>
-            ) : null}
-          </ResizeDetector>
-        </div>
+            <ResizeDetector
+              skipOnMount={false}
+              onResize={(w) => {
+                if (w) {
+                  setSuffixWidth(w)
+                }
+              }}
+            >
+              {/* suffix 后缀区域渲染 */}
+              {!!suffix || (showClearableIcon && hover) || hasTags ? (
+                <span className={`${prefixCls}__suffix`}>
+                  {hasTags ? (
+                    <span className={cx(`${prefixCls}__tag--total`)}>
+                      {`${tagCount > 99 ? '99+' : tagCount}`}
+                    </span>
+                  ) : showClearableIcon && hover ? (
+                    <span
+                      className={`${prefixCls}__clear`}
+                      role="button"
+                      tabIndex={-1}
+                      onClick={handleClear}
+                    >
+                      <CloseCircleFilled />
+                    </span>
+                  ) : null}
+                  {suffix}
+                </span>
+              ) : null}
+            </ResizeDetector>
+          </div>
+        </ResizeDetector>
       </div>
     )
   }
@@ -256,10 +254,23 @@ export interface TagInputMockProps
    * 点击清空 tags 回调
    */
   onClear?: () => void
+  /**
+   * 设置 tag 的默认宽度
+   */
+  tagWidth?: number
 }
 
 if (__DEV__) {
   TagInputMock.displayName = 'TagInputMock'
+}
+
+const hiddenStyle: React.CSSProperties = {
+  position: 'absolute',
+  opacity: 0,
+  width: 0,
+  height: 0,
+  overflow: 'hidden',
+  display: 'none',
 }
 
 function MockTag({
@@ -270,34 +281,48 @@ function MockTag({
   onTagResize,
   tryChangeValue,
   displayRender,
-  ...rest
+  hidden = false,
 }: any) {
-  const { ref } = useResizeDetector({
-    onResize: (width = 0) => {
-      onTagResize(option.id, width + 16)
-    },
-  })
-
   const title = isFunction(displayRender) ? displayRender(option) : true
   const closeable = !option.disabled
 
   return (
-    <span ref={ref} className={`${prefixCls}__tag`} key={option.id} {...rest}>
-      <span className={`${prefixCls}__tag-content`}>{title === true ? option.title : title}</span>
-      {closeable ? (
-        <span
-          className={`${prefixCls}__tag-closed`}
-          onClick={(evt) => {
-            if (disabled) return
+    <ResizeDetector
+      skipOnMount={false}
+      onResize={(width) => {
+        // 隐藏后就不允许设置 tagSize，避免无限循环触发“宽度计算响应式策略”
+        if (hidden) return
 
-            evt.stopPropagation()
-            const nextValue = value.filter((id: any) => id !== option.id)
-            tryChangeValue(nextValue)
-          }}
+        if (width !== undefined) {
+          onTagResize(option.id, width)
+        }
+      }}
+    >
+      <div style={{ display: 'inline-block' }}>
+        <span
+          className={`${prefixCls}__tag`}
+          style={hidden ? hiddenStyle : undefined}
+          key={option.id}
         >
-          <CloseOutlined />
+          <span className={`${prefixCls}__tag-content`}>
+            {title === true ? option.title : title}
+          </span>
+          {closeable ? (
+            <span
+              className={`${prefixCls}__tag-closed`}
+              onClick={(evt) => {
+                if (disabled) return
+
+                evt.stopPropagation()
+                const nextValue = value.filter((id: any) => id !== option.id)
+                tryChangeValue(nextValue)
+              }}
+            >
+              <CloseOutlined />
+            </span>
+          ) : null}
         </span>
-      ) : null}
-    </span>
+      </div>
+    </ResizeDetector>
   )
 }

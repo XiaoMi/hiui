@@ -94,6 +94,7 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     height: 100%;
     box-sizing: border-box;
     margin-top: -4px;
+    position: relative;
   }
 
   &__tag,
