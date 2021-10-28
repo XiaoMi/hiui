@@ -16,7 +16,7 @@ export const isObject = (arg: unknown): arg is Dict =>
  * Assert is an Promise
  */
 export const isPromise = <T>(arg: unknown): arg is Promise<T> =>
-  (isObjectLike(arg) || typeof arg === 'function') && typeof arg.then === 'function'
+  isObjectLike(arg) && isFunction(arg.then)
 
 /**
  * Assert is an array

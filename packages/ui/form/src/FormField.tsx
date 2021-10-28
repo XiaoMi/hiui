@@ -3,16 +3,19 @@ import React, {
   forwardRef,
   isValidElement,
   useEffect,
-  useImperativeHandle,
   useMemo,
   useCallback,
 } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { FormProvider, useFormContext } from './context'
-import { useForm } from './use-form'
+import { useFormContext } from './context'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import Validater from '@flcwly/validater'
+import { required, max } from '@flcwly/validater/lib/validator'
+
+Validater.extend('required', required)
+// @ts-ignore
+Validater.extend('max', max)
 
 const EMPTY_RULES = [] as []
 const _role = 'form-field'
@@ -52,6 +55,8 @@ export const FormField = forwardRef<HTMLFormElement | null, FormFieldProps>(
           cb?.()
           return
         }
+
+        console.log('fieldRules', fieldRules, 'value:', value)
 
         const validater = new Validater(fieldRules)
 
@@ -111,12 +116,15 @@ export interface FormFieldProps {
   /**
    * 	字段名
    */
-  field?: string | string[]
+  field?: string
   /**
    * 校验规则，设置字段的校验逻辑
    */
   rules?: object
   children?: React.ReactNode
+  /**
+   * 映射的 value 属性，对于像 checkbox 的受控 checked 可能很有用
+   */
   valuePropName?: any
   valueTrigger?: any
   validateTrigger?: any

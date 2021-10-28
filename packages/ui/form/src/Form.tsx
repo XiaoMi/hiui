@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useMemo } from 'react'
+import React, { forwardRef, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { FormProvider } from './context'
@@ -61,11 +61,18 @@ export interface FormProps {
    * TODO: 拆成 2 个，一个表示对齐，另一个表示位置
    */
   labelPlacement: 'right' | 'left' | 'top'
+  /**
+   * label 宽度，可用任意 CSS 长度单位
+   */
   labelWidth: React.ReactText
   placement: 'horizontal' | 'vertical'
   inline: boolean
-  onSubmit: () => void
   showColon: boolean
+  onSubmit: () => void
+  innerRef?: React.RefObject<{ validate: any }>
+  children?: any
+  initialValues?: object
+  validateOnChange?: boolean
 }
 
 if (__DEV__) {

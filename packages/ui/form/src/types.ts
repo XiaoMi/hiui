@@ -1,18 +1,28 @@
-import React from 'react'
-
 export interface FormState<T> {
-  /** Form values */
+  /**
+   * 字段及值的映射存储
+   */
   values: T
-  /** map of field names to specific error for that field */
+  /**
+   * 字段及错误文案的映射存储
+   */
   errors: FormErrors<T>
-  /** map of field names to whether the field has been touched */
+  /**
+   * 字段及是否触摸布尔值的映射存储
+   */
   touched: FormTouched<T>
-  /** whether the form is currently validating (prior to submission) */
-  isValidating: boolean
+  /**
+   * 是否正在校验中
+   */
+  validating: boolean
+  /**
+   * 是否正在提交中
+   */
+  submitting?: boolean
 }
 
-export interface FormTouched<T> {}
-export interface FormErrors<T> {}
+export type FormTouched<T = any> = Record<string, T>
+export type FormErrors<T = any> = Record<string, T>
 
 export type FormAction<T> =
   | { type: 'SUBMIT_ATTEMPT' }
