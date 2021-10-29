@@ -89,7 +89,7 @@ class Demo extends React.Component {
     ]
   }
   render() {
-    return <Table columns={this.columns} data={this.data} highlightedRowKeys={[1]}/>
+    return <Table columns={this.columns} resizable data={this.data} highlightedRowKeys={[1]}/>
   }
 }`,
     opt: ['行高亮']
@@ -345,7 +345,7 @@ class Demo extends React.Component {
         // 鼠标进入
         onMouseEnter: event => {
           console.log('mouse enter callback', item, index)
-        }, 
+        },
         // 鼠标移出
         onMouseLeave: event => {
           console.log('mouse leave callback', item, index)
