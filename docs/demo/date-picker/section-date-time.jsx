@@ -19,8 +19,8 @@ class Demo extends React.Component {
         showTime={true}
         disabledHours={[2, 3, 4, 5, 6]}
         format='YYYY-MM-DD HH:mm:ss'
-        onChange={(date, dateStr) => {
-          console.log('onChange', date, dateStr)
+        onSelect={(date, isCompleted) => {
+          console.log('onChange', date, isCompleted)
           this.setState({value: date})
         }}
       />
