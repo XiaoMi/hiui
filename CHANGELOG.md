@@ -3,6 +3,7 @@
 # 3.8.0-rc
 
 - 修复 `Select` 组件高亮词搜索存在正则注入  [#1972](https://github.com/XiaoMi/hiui/issues/1972)
+- 修复 `Table` 组件 resizable 调节列宽功能失效  [#1970](https://github.com/XiaoMi/hiui/issues/1970)
 
 # 3.8.0
 
