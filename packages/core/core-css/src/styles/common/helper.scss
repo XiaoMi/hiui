@@ -1,0 +1,18 @@
+@use 'sass:map';
+
+// 从map对象中安全的获取对应值
+// 如果没有寻找到对应key，则抛出错误信息
+//
+// @param {Map<String,Any>} $data-map - 数据
+// @param {String} $data-key - 需要使用的key
+// @return {Any} - 对应key的值
+// @ref https://sass-lang.com/documentation/modules/map#get
+@function map-safe-get($data-map, $data-key) {
+  $result: map.get($map: $data-map, $key: $data-key);
+
+  @if ($result == null) {
+    @debug 'Use key is not valid, it should be in range: '+ map.keys($data-map);
+  }
+
+  @return $result;
+}

@@ -1,3 +1,4 @@
 @import 'variables';
 @import 'mixins';
-@import 'extend';
+@import './mixins/index.scss';
+@import './extends/index.scss';

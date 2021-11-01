@@ -1,0 +1,48 @@
+@import '../common/index.scss';
+@import '../tokens/index.scss';
+
+/// 获取颜色对应css变量名
+/// @param {String} $color - 对应颜色
+/// @param  {100|200|300|400|500|600|700|800} $gradation - 色阶值，可为空
+/// @group name
+/// @access private
+@function color-get-css-var-name($color, $gradation: '') {
+  $var-name: 'colors-' + $color;
+  $var-name-suffix: '';
+
+  @if $gradation != '' {
+    $var-name-suffix: '-' + $gradation;
+  }
+
+  @return with-prefix($var-name + $var-name-suffix);
+}
+
+/// 从色板中获取颜色
+@function use-color($scheme, $gradation) {
+  $var-name: color-get-css-var-name($scheme, $gradation);
+  $var-value: get-color($scheme, $gradation);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+@function use-color-system($key, $mode: 'dark') {
+  $color-system-map: (
+    dark: (
+      primary: use-color('brand', 50),
+      error: use-color('error', 50),
+      warning: use-color('warning', 50),
+      success: use-color('success', 50),
+    ),
+    'light': (
+      'primary': use-color('brand', 10),
+      'error': use-color('error', 10),
+      'warning': use-color('warning', 10),
+      'success': use-color('success', 10),
+    ),
+  );
+
+  @return map-safe-get(
+    map-safe-get($color-system-map, $mode),
+    $key
+  );
+}

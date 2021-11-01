@@ -1,0 +1,38 @@
+@import '../common/index.scss';
+@import '../tokens/index.scss';
+
+/// 获取 border 对应 css 变量名
+/// @access private
+@function border-get-css-var-name($key) {
+  $var-name: 'border-' + $key;
+
+  @return with-prefix($var-name:);
+}
+
+/// 获取 border 对应 css 变量值
+/// @access private
+@function use-border-size($key) {
+  $var-name: border-get-css-var-name('size-' + $key);
+  $var-value: get-border-size($key);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+/// 获取 border radius 对应 css 变量值
+/// @access private
+@function use-border-radius($key) {
+  $var-name: border-get-css-var-name('radius-' + $key);
+  $var-value: get-border-radius($key);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+/// 设置 border size 值
+@function use-border-size-system($key) {
+  @return use-border-size($key);
+}
+
+/// 设置 border radius 值
+@function use-border-radius-system($key) {
+  @return use-border-radius($key);
+}

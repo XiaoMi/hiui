@@ -1,0 +1,17 @@
+$spacer: 2px !default;
+
+// 基础间距
+$spacers-base-map: (
+  $spacer * 1,
+  $spacer * 2,
+  $spacer * 3,
+  $spacer * 4,
+  $spacer * 5,
+  $spacer * 6,
+  $spacer * 7,
+  $spacer * 8,
+  $spacer * 9,
+  $spacer * 10,
+  $spacer * 11,
+  $spacer * 12,
+) !default;

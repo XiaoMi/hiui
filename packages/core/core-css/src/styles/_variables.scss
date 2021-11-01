@@ -4,9 +4,9 @@ $component-prefix: 'hi-v4' !default;
 
 // Fonts
 /// Font Stack
-$_font-stack-sans: ('Helvetica Neue', Helvetica, Arial) !default;
-$_font-stack-serif: ('Times New Roman', Times) !default;
-$_font-stack-mono: ('SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier) !default;
+$_font-stack-sans: ('Helvetica Neue', helvetica, arial) !default;
+$_font-stack-serif: ('Times New Roman', times) !default;
+$_font-stack-mono: ('SFMono-Regular', consolas, 'Liberation Mono', menlo, courier) !default;
 $_font-stack-symbol: ('Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol') !default;
 
 /// Font Family

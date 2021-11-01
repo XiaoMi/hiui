@@ -1,0 +1,94 @@
+$font-stack-sans: ('Helvetica Neue', helvetica, arial) !default;
+$font-stack-serif: ('Times New Roman', times) !default;
+$font-stack-mono: ('SFMono-Regular', consolas, 'Liberation Mono', menlo, courier) !default;
+$font-stack-symbol: ('Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol') !default;
+
+// 基础字体家族
+$text-family-base-map: (
+  // 中文
+  yahei: ($_font-stack-sans, lantinghei sc, lantinghei tc, pingfang sc, pingfang tc, hiragino sans gb, heiti sc, heiti tc, microsoft yahei, source han sans sc, source han sans tc, noto sans cjk sc, noto sans cjk tc, sans-serif, $_font-stack-symbol),
+  // sans-serif
+  sans: ($_font-stack-sans, sans-serif, $_font-stack-symbol),
+  // serif
+  serif: ($_font-stack-serif, serif, $_font-stack-symbol),
+  // Monospace
+  mono: ($_font-stack-mono, monospace, $_font-stack-symbol)
+) !default;
+
+// 基础字体字重
+$text-weight-base-map: (
+  thin: 100,
+  extralight: 200,
+  light: 300,
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+  extrabold: 800,
+  black: 900,
+) !default;
+
+// 基础字符间距
+$text-spacing-base-map: (
+  tighter: -0.05em,
+  tight: -0.025em,
+  normal: 0,
+  wide: 0.025em,
+  wider: 0.05em,
+  widest: 0.1em,
+) !default;
+
+// 基础行高
+$text-linehight-base-map: (
+  normal: 'normal',
+  none: 1,
+  tight: 1.25,
+  snug: 1.375,
+  normal: 1.5,
+  relaxed: 1.625,
+  loose: 2,
+) !default;
+
+// 基础文字大小
+$text-size-base-map: (
+  h1: (
+    font-size: 3rem,
+    line-height: 1
+  ),
+  h2: (
+    font-size: 2.25rem,
+    line-height: 1
+  ),
+  h3: (
+    font-size: 1.875rem,
+    line-height: 1
+  ),
+  h4: (
+    font-size: 1.875rem,
+    line-height: 1
+  ),
+  h5: (
+    font-size: 1.5rem,
+    line-height: 1.5
+  ),
+  h6: (
+    font-size: 1.25rem,
+    line-height: 1.5
+  ),
+  title: (
+    font-size: 1.125rem,
+    line-height: 2.25rem
+  ),
+  content: (
+    font-size: 1rem,
+    line-height: 1.5rem
+  ),
+  text: (
+    font-size: 0.875rem,
+    line-height: 1.75rem
+  ),
+  desc: (
+    font-size: 0.75rem,
+    line-height: 1.5rem
+  )
+) !default;

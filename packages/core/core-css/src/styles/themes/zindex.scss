@@ -1,0 +1,33 @@
+@import '../common/index.scss';
+@import '../tokens/index.scss';
+
+/// 获取 zindex 对应 css 变量名
+/// @access private
+@function zindex-get-css-var-name($key) {
+  $var-name: 'zindex-' + $key;
+
+  @return with-prefix($var-name:);
+}
+
+/// 获取 zindex 对应 css 变量值
+/// @access private
+@function use-zindex($key) {
+  $var-name: zindex-get-css-var-name($key);
+  $var-value: get-zindex($key);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+/// 使用预设 z-index 做计算，在其之上做 `+-` 运算
+/// 默认不加减
+/// @param {String} $key 基础值
+/// @param {Number} $offset 偏差值
+@function use-zindex-system($key, $offset: 0) {
+  $zindex: use-zindex($key);
+
+  @if $offset != 0 {
+    $zindex: calc(#{$zindex} + #{$offset});
+  }
+
+  @return $zindex;
+}

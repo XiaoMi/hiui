@@ -8,10 +8,10 @@ $prefixCls: #{$component-prefix}-loading !default;
   color: var('--color-primary');
 
   &__mask {
-    @include transition;
     @include component-reset;
     @include flex;
 
+    transition: 0.3s ease;
     z-index: 19;
 
     &-enter {

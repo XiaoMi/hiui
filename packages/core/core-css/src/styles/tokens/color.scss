@@ -1,0 +1,151 @@
+@import '../common/index.scss';
+
+// 基础调色板
+$color-palette-base-map: (
+  // 静态色
+  static: (
+    white: #fff,
+    black: #000,
+    transparent: transparent,
+    currentColor: currentColor,
+  ),
+
+  // 品牌蓝
+  brandblue: (
+    100: #e0f2ff,
+    200: #bde2ff,
+    300: #80c4ff,
+    400: #42a4ff,
+    500: #237ffa,
+    600: #086cd1,
+    700: #0754a3,
+    800: #054280,
+  ),
+
+  // 蓝
+  blue: (
+    100: #e0f5ff,
+    200: #80d4ff,
+    300: #80d4ff,
+    400: #3dbeff,
+    500: #0af,
+    600: #008bd1,
+    700: #005580,
+    800: #005580,
+  ),
+
+  // 典雅灰
+  gray: (
+    100:#f3f4f6,
+    200:#e5e7eb,
+    300:#d1d5db,
+    400:#9ca3af,
+    500:#6b7280,
+    600:#4b5563,
+    700:#374151,
+    800:#1f2937,
+  ),
+
+  // 洋红
+  magenta: (
+    100: #ffe0e3,
+    200: #ffbfc3,
+    300: #ff808a,
+    400: #f25060,
+    500: #eb2f44,
+    600: #cc293b,
+    700: #a61e2d,
+    800: #a61e2d,
+  ),
+
+  // 粉
+  pink: (
+    100: #fce7f3,
+    200: #fbcfe8,
+    300: #f9a8d4,
+    400: #f472b6,
+    500: #ec4899,
+    600: #db2777,
+    700: #be185d,
+    800: #9d174d,
+  ),
+
+  // 绿
+  green: (
+    100: #dcfae9,
+    200: #b8f5d2,
+    300: #90f0b6,
+    400: #3dd980,
+    500: #08bf5e,
+    600: #05a852,
+    700: #069449,
+    800: #057a3c,
+  ),
+
+  // 青
+  cyan: (
+    100: #dcfaf7,
+    200: #b3f2ed,
+    300: #75ebe1,
+    400: #15d6c6,
+    500: #08c2b2,
+    600: #00a89a,
+    700: #008f83,
+    800: #007369,
+  ),
+
+  // 琥珀
+  amber: (
+    100: #fcf2d7,
+    200: #ffe4a6,
+    300: #ffd473,
+    400: #ffc238,
+    500: #ffb40a,
+    600: #e09b04,
+    700: #b87c04,
+    800: #8c5e03,
+  ),
+
+  // 黄
+  yellow: (
+    100: #fcf8de,
+    200: #fff1a8,
+    300: #ffe975,
+    400: #ffdf38,
+    500: #f5ce02,
+    600: #dbb404,
+    700: #dbb404,
+    800: #8f7303,
+  ),
+
+  // 橙
+  orange: (
+    100: #ffede0,
+    200: #ffd1b3,
+    300: #ffb07a,
+    400: #ff9247,
+    500: #ff6700,
+    600: #d95800,
+    700: #ad4600,
+    800: #8c3900,
+  ),
+
+  // 紫罗兰
+  violet: (
+    100: #ebe6fc,
+    200: #c8b9fa,
+    300: #a58aff,
+    400: #8e6efa,
+    500: #7f5afa,
+    600: #6e4ed9,
+    700: #5b40b3,
+    800: #4b3594,
+  ),
+) !default;
+
+@function get-color($scheme, $gradation) {
+  @return map-safe-get(
+    map-safe-get($color-palette-base-map, $scheme),
+    $gradation,
+  );
+}
