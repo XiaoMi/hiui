@@ -27,7 +27,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
   position: relative;
   width: 240px;
   min-width: 180px;
-  background-color:  var(--color-white);
+  background-color: var(--color-white);
   border: 1px solid var(--color-gray-20);
   border-radius: 4px;
   overflow: hidden;
@@ -38,12 +38,13 @@ $prefix: '#{$component-prefix}-transfer' !default;
     height: 100%;
     position: absolute;
     z-index: 2;
-    background: hsla(0,0%,96%,.7);
+    background: hsla(0, 0%, 96%, 0.7);
     cursor: not-allowed;
   }
 
   &__list {
     @include component-reset;
+
     list-style: none;
     padding: 4px 0;
 
@@ -86,7 +87,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     position: sticky;
     top: 0;
     z-index: 1;
-    background-color: use-color('white');
+    background-color: use-color-static('white');
 
     &-icon {
       margin-right: 8px;
@@ -158,7 +159,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     cursor: pointer;
 
     &:hover {
-      background-color: use-color('primary-20');
+      background-color: use-color-mode('primary-20');
     }
 
     // 拖拽指示器-小圆球
@@ -171,8 +172,8 @@ $prefix: '#{$component-prefix}-transfer' !default;
       width: 8px;
       height: 8px;
       content: '';
-      background-color: use-color('white');
-      border: 1px solid use-color('primary');
+      background-color: use-color-static('white');
+      border: 1px solid use-color-mode('primary');
       border-radius: 100%;
     }
 
@@ -186,7 +187,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
       box-sizing: border-box;
       border-bottom-width: 0;
       border-bottom-style: solid;
-      border-bottom-color: use-color('primary');
+      border-bottom-color: use-color-mode('primary');
       left: 0;
       width: 100%;
     }
@@ -197,7 +198,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
   &--disabled {
     #{$this}__wrap {
       color: #ccc;
-     cursor: not-allowed;
+      cursor: not-allowed;
     }
   }
 

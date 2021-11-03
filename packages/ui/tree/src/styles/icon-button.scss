@@ -39,6 +39,6 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
   }
 
   &--active {
-    color: use-color('primary');
+    color: use-color-mode('primary');
   }
 }

@@ -17,38 +17,38 @@ $prefix: '#{$component-prefix}-message' !default;
 
   &--type {
     &-info {
-      background-color: use-color('primary-20');
-      color: use-color('primary-50');
+      background-color: use-color-mode('primary-20');
+      color: use-color-mode('primary-50');
 
       svg {
-        fill: use-color('primary');
+        fill: use-color-mode('primary');
       }
     }
 
     &-success {
-      background-color: use-color('success-20');
-      color: use-color('success-50');
+      background-color: use-color-mode('success-20');
+      color: use-color-mode('success-50');
 
       svg {
-        color: use-color('success');
+        color: use-color-mode('success');
       }
     }
 
     &-error {
-      background-color: use-color('danger-20');
-      color: use-color('danger-50');
+      background-color: use-color-mode('danger-20');
+      color: use-color-mode('danger-50');
 
       svg {
-        color: use-color('danger');
+        color: use-color-mode('danger');
       }
     }
 
     &-warning {
-      background-color: use-color('warning-20');
-      color: use-color('warning-50');
+      background-color: use-color-mode('warning-20');
+      color: use-color-mode('warning-50');
 
       svg {
-        color: use-color('warning');
+        color: use-color-mode('warning');
       }
     }
   }

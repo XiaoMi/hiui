@@ -20,8 +20,8 @@ $prefix: '#{$component-prefix}-tree' !default;
     .#{$prefix}-action {
       z-index: 10;
       list-style: none;
-      color: use-color('gray-80');
-      background-color: use-color('white');
+      color: _use-color('gray', 800);
+      background-color: use-color-static('white');
       width: 140px;
       box-shadow: 0 2px 8px 0 var(--color-gray-10);
       border-radius: 2px;
@@ -45,16 +45,16 @@ $prefix: '#{$component-prefix}-tree' !default;
         }
 
         &:hover {
-          background-color: #ECF2FE;
+          background-color: #ecf2fe;
         }
       }
 
       &__btn {
         position: relative;
-        color: use-color('gray-80');
+        color: _use-color('gray', 800);
 
         &:hover {
-          color: use-color('primary');
+          color: use-color-mode('primary');
         }
       }
     }
@@ -77,7 +77,7 @@ $prefix: '#{$component-prefix}-tree' !default;
   //   padding: 16px;
   //   box-sizing: border-box;
   //   width: 240px;
-  //   background-color: use-color('white');
+  //   background-color: use-color-static('white');
   //   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.12);
   //   border-radius: 4px;
   //   position: relative;

@@ -32,7 +32,7 @@ $prefix: '#{$component-prefix}-popper' !default;
     }
   }
 
-  $arrow-color: use-color('white');
+  $arrow-color: use-color-static('white');
 
   &[data-popper-placement^=top] {
     .#{$prefix}__arrow {
@@ -113,7 +113,7 @@ $prefix: '#{$component-prefix}-popper' !default;
   &__overlay {
     position: relative;
     box-sizing: border-box;
-    background-color: use-color('white');
+    background-color: use-color-static('white');
     box-shadow: 0 1px 12px 0 rgba(0, 0, 0, 0.12);
     border-radius: use-spacing(2);
     // 为了保证 arrow 三角形可以正常展示

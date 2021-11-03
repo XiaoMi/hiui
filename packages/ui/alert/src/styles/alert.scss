@@ -37,21 +37,21 @@ $prefix: '#{$component-prefix}-alert' !default;
     top: 12px;
     right: 12px;
     cursor: pointer;
-    color: use-color('gray-70');
+    color: _use-color('gray', 700);
   }
 
   $color-map: (
-    'primary': use-color('primary'),
-    'warning': get-color($palette-secondary, 'warning'),
-    'success': get-color($palette-secondary, 'success'),
-    'danger': get-color($palette-secondary, 'danger')
+    'primary': use-color-mode('primary'),
+    'warning': use-color-mode('warning'),
+    'success': use-color-mode('success'),
+    'danger': use-color-mode('danger'),
   ) !default;
 
   @each $key, $value in $color-map {
     &--#{$key} {
-      background-color: use-color(#{$key}-20);
+      background-color: use-color-mode(#{$key}-20);
       color: $value;
-      border: 1px solid use-color(#{$key}-40);
+      border: 1px solid use-color-mode(#{$key}-40);
     }
   }
 }

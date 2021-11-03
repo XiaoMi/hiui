@@ -34,21 +34,67 @@
     // TODO: 无法做到动态，所以这个方案不太行，实现主题支持黑夜白天模式
     // TODO: 需要给每个组件颜色都定义变量（表示具体实质，而不是颜色语义化值）
     // 用于自动切换
-    dark: (
-      white: use-color-var('static', 'white'),
-      primary: use-color-var('primary', 50),
-      error: use-color-var('error', 50),
-      warning: use-color-var('warning', 50),
-      success: use-color-var('success', 50),
+    'dark': (
+      // 值改成 var 引用，再引用真实色 var 引用
+      'primary': use-color-var('brandblue', 500),
+      'primary-80': use-color-var('brandblue', 800),
+      'primary-70': use-color-var('brandblue', 700),
+      'primary-60': use-color-var('brandblue', 600),
+      'primary-50': use-color-var('brandblue', 500),
+      'primary-40': use-color-var('brandblue', 400),
+      'primary-30': use-color-var('brandblue', 300),
+      'primary-20': use-color-var('brandblue', 200),
+      'primary-10': use-color-var('brandblue', 100),
+
+      'danger': use-color-var('magenta', 500),
+      'danger-80': use-color-var('magenta', 800),
+      'danger-70': use-color-var('magenta', 700),
+      'danger-60': use-color-var('magenta', 600),
+      'danger-50': use-color-var('magenta', 500),
+      'danger-40': use-color-var('magenta', 400),
+      'danger-30': use-color-var('magenta', 300),
+      'danger-20': use-color-var('magenta', 200),
+      'danger-10': use-color-var('magenta', 100),
+
+      'error': use-color-var('magenta', 500),
+      'error-80': use-color-var('magenta', 800),
+      'error-70': use-color-var('magenta', 700),
+      'error-60': use-color-var('magenta', 600),
+      'error-50': use-color-var('magenta', 500),
+      'error-40': use-color-var('magenta', 400),
+      'error-30': use-color-var('magenta', 300),
+      'error-20': use-color-var('magenta', 200),
+      'error-10': use-color-var('magenta', 100),
+
+      'warning': use-color-var('amber', 500),
+      'warning-80': use-color-var('amber', 800),
+      'warning-70': use-color-var('amber', 700),
+      'warning-60': use-color-var('amber', 600),
+      'warning-50': use-color-var('amber', 500),
+      'warning-40': use-color-var('amber', 400),
+      'warning-30': use-color-var('amber', 300),
+      'warning-20': use-color-var('amber', 200),
+      'warning-10': use-color-var('amber', 100),
+
+      'success': use-color-var('green', 500),
+      'success-80': use-color-var('green', 800),
+      'success-70': use-color-var('green', 700),
+      'success-60': use-color-var('green', 600),
+      'success-50': use-color-var('green', 500),
+      'success-40': use-color-var('green', 400),
+      'success-30': use-color-var('green', 300),
+      'success-20': use-color-var('green', 200),
+      'success-10': use-color-var('green', 100),
     ),
-    'light': (
-      // TODO: 每个组件反色可能不一样，白色不一定对应纯黑，可能是灰黑更合适
-      white: use-color-var('static', 'black'),
-      'primary': use-color-var('primary', 10),
-      'error': use-color-var('error', 10),
-      'warning': use-color-var('warning', 10),
-      'success': use-color-var('success', 10),
-    ),
+    // 'light': (
+    //   // TODO: 每个组件反色可能不一样，白色不一定对应纯黑，可能是灰黑更合适
+    //   white: use-color-var('static', 'black'),
+    //   black: use-color-var('static', 'white'),
+    //   'primary': use-color-var('primary', 10),
+    //   'error': use-color-var('error', 10),
+    //   'warning': use-color-var('warning', 10),
+    //   'success': use-color-var('success', 10),
+    // ),
   );
 
   @return map-safe-get(
@@ -59,4 +105,8 @@
 
 @function _use-color($scheme, $gradation) {
   @return use-color-var($scheme, $gradation);
+}
+
+@function use-color-static($key) {
+  @return use-color-var('static', $key);
 }

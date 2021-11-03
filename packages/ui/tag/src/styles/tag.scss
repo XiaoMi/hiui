@@ -1,20 +1,20 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $color-map: (
-  'primary': use-color('primary'),
-  'warning': get-color($palette-secondary, 'warning'),
-  'success': get-color($palette-secondary, 'success'),
-  'danger': get-color($palette-secondary, 'danger'),
-  'default': use-color('gray-70')
+  'primary': use-color-mode('primary'),
+  'warning': use-color-mode('warning'),
+  'success': use-color-mode('success'),
+  'danger': use-color-mode('danger'),
+  'default': _use-color('gray', 700)
 ) !default;
 
-$line-height: 20px;
-$border-width: 1px;
+$line-height: 20px !default;
+$border-width: 1px !default;
 
 $prefix: '#{$component-prefix}-tag' !default;
 
 .#{$prefix} {
-  padding: 0px 8px;
+  padding: 0 8px;
   line-height: $line-height;
   box-sizing: border-box;
   margin-right: 8px;
@@ -24,66 +24,66 @@ $prefix: '#{$component-prefix}-tag' !default;
   transition: opacity 0.3s;
   position: relative;
 
-	&:hover {
+  &:hover {
     opacity: 0.85;
   }
 
-	// 实心 为 彩色底+白色字
-	&--appearance-default{
-		color: use-color('white');
-		@each $key, $value in $color-map {
-			&.#{$prefix}--type-#{$key} {
-				background: $value;
-			}
-		}
-	}
+  // 实心 为 彩色底+白色字
+  &--appearance-default {
+    color: use-color-static('white');
 
-	&--appearance-line{
+    @each $key, $value in $color-map {
+      &.#{$prefix}--type-#{$key} {
+        background: $value;
+      }
+    }
+  }
+
+  &--appearance-line {
     @each $key, $value in $color-map {
       &.#{$prefix}--type-#{$key} {
         color: $value;
       }
     }
-	}
-
-	&--shape-round{
-		border-radius: 11px;
-	}
-
-	&--shape-square{
-		border-radius: 2px;
-	}
-
-  @mixin edit-shadow {
-    box-shadow: 0px 0px 4px use-color('primary');
   }
 
-  &--editable{
-    &:hover{
+  &--shape-round {
+    border-radius: 11px;
+  }
+
+  &--shape-square {
+    border-radius: 2px;
+  }
+
+  @mixin edit-shadow {
+    box-shadow: 0 0 4px use-color-mode('primary');
+  }
+
+  &--editable {
+    &:hover {
       opacity: 1;
     }
   }
 
-  &--in-edit{
+  &--in-edit {
     @include edit-shadow();
 
-    .#{$prefix}__content{
+    .#{$prefix}__content {
       opacity: 0;
     }
-
   }
 
-	@each $key, $value in $color-map {
-		&.#{$prefix}--type-#{$key} {
-			border: $border-width solid $value;
-		}
-	}
+  @each $key, $value in $color-map {
+    &.#{$prefix}--type-#{$key} {
+      border: $border-width solid $value;
+    }
+  }
 
-  &__content-wrapper{
+  &__content-wrapper {
     position: relative;
   }
 
-  &__double-click-trigger{
+  &__double-click-trigger {
     position: absolute;
     z-index: 1;
     width: calc(100% + 2 * #{$border-width});
@@ -97,13 +97,14 @@ $prefix: '#{$component-prefix}-tag' !default;
     border-color: transparent;
     transition: box-shadow 150ms ease-out;
 
-    &:hover{
+    &:hover {
       @include edit-shadow();
-      cursor:pointer;
+
+      cursor: pointer;
     }
   }
 
-  &__input{
+  &__input {
     background: transparent;
     border: none;
     outline: none;
@@ -113,7 +114,7 @@ $prefix: '#{$component-prefix}-tag' !default;
     font-size: inherit;
     font-weight: inherit;
     font-family: inherit;
-    line-height:$line-height ;
+    line-height: $line-height;
     position: absolute;
     left: 0;
     top: 0;

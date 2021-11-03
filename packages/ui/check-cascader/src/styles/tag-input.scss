@@ -14,7 +14,7 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     vertical-align: middle;
     color: var(--color-black);
     border: 1px solid transparent;
-    background-color: use-color('white');
+    background-color: use-color-static('white');
     transition: all 0.3s;
     padding: 4px 10px;
     display: inline-flex;
@@ -24,16 +24,16 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     overflow: hidden;
 
     // outline
-    border-color: use-color('gray-30');
+    border-color: _use-color('gray', 300);
     border-radius: 4px;
 
     &:not(.disabled):hover {
-      border-color: use-color('primary');
+      border-color: use-color-mode('primary');
     }
 
     &:not(.disabled).focused {
-      // box-shadow: 0 0 0 1px use-color('primary');
-      border-color: use-color('primary');
+      // box-shadow: 0 0 0 1px use-color-mode('primary');
+      border-color: use-color-mode('primary');
     }
 
     &.disabled {
@@ -44,7 +44,7 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
   }
 
   &__placeholder {
-    color: use-color('gray-50');
+    color: _use-color('gray', 500);
   }
 
   &__suffix {
@@ -59,13 +59,13 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     width: 16px;
     height: 16px;
     font-size: 14px;
-    color: use-color('gray-50');
+    color: _use-color('gray', 500);
     flex-shrink: 0;
     cursor: pointer;
     transition: all 0.3s;
 
     &:hover {
-      color: use-color('black');
+      color: use-color-static('black');
     }
   }
 
@@ -112,8 +112,8 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     vertical-align: middle;
     font-size: 12px;
     user-select: none;
-    background-color: use-color('primary-20');
-    color: use-color('primary');
+    background-color: use-color-mode('primary-20');
+    color: use-color-mode('primary');
     border-radius: 4px;
     line-height: 22px;
     cursor: pointer;
@@ -202,7 +202,7 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
       min-height: 32px;
       overflow: hidden;
       border-radius: 4px;
-      border-color: use-color('primary');
+      border-color: use-color-mode('primary');
 
       .#{$tag-input-prefix}__value {
         height: 74px;

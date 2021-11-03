@@ -20,26 +20,26 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
 
   &__separator {
     margin: 0 8px;
-    color: use-color('gray-30');
+    color: _use-color('gray', 300);
   }
 
   &__item {
     display: inline-block;
 
     a {
-      color: use-color('gray-80');
+      color: _use-color('gray', 800);
       transition: all 0.3s;
     }
 
     .#{$prefix}__content:hover {
-      color: use-color('primary');
+      color: use-color-mode('primary');
     }
   }
 
   &__item:last-child {
     .#{$prefix}__content {
       cursor: text;
-      color: use-color('gray-80');
+      color: _use-color('gray', 800);
     }
 
     .#{$prefix}__separator {
@@ -47,4 +47,3 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
     }
   }
 }
-

@@ -6,7 +6,7 @@ $prefix: '#{$component-prefix}-switch' !default;
   &:focus {
     outline: 0;
     z-index: 1;
-    box-shadow: 0 0 0 2px use-color('primary-30');
+    box-shadow: 0 0 0 2px use-color-mode('primary-30');
   }
 
   display: inline-block;
@@ -16,18 +16,18 @@ $prefix: '#{$component-prefix}-switch' !default;
   cursor: pointer;
   position: relative;
   vertical-align: middle;
-  background: use-color('primary');
+  background: use-color-mode('primary');
 
   &--closed,
   &--disabled {
-    background: use-color('gray-50');
+    background: _use-color('gray', 500);
   }
 
   &::after {
     content: '';
     width: 16px;
     height: 16px;
-    background: use-color('white');
+    background: use-color-static('white');
     position: absolute;
     border-radius: 50%;
     top: 2px;
@@ -38,7 +38,7 @@ $prefix: '#{$component-prefix}-switch' !default;
   }
 
   &__text {
-    color: use-color('white');
+    color: use-color-static('white');
     font-size: use-text-size('sm');
     position: absolute;
     top: 0;

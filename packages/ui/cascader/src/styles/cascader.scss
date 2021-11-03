@@ -89,16 +89,16 @@ $prefix: '#{$component-prefix}-cascader' !default;
     justify-content: space-between;
 
     &:hover {
-      background-color: use-color('primary-20');
+      background-color: use-color-mode('primary-20');
     }
 
     &--selected {
-      background-color: use-color('primary-20');
+      background-color: use-color-mode('primary-20');
       font-weight: 700;
     }
 
     &--focused {
-      background-color: use-color('primary-10');
+      background-color: use-color-mode('primary-10');
     }
 
     &--checked {
@@ -143,7 +143,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
     }
 
     &--matched {
-      color: use-color('primary');
+      color: use-color-mode('primary');
     }
   }
 
