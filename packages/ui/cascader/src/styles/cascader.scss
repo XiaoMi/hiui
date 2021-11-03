@@ -72,14 +72,14 @@ $prefix: '#{$component-prefix}-cascader' !default;
 
   &-item {
     width: 100%;
-    padding: $spacer-1 0;
+    padding: use-spacing(2) 0;
     position: relative;
     cursor: pointer;
     display: flex;
   }
 
   &-option {
-    padding: 0 $spacer-2 + 2px;
+    padding: 0 use-spacing(4) + 2px;
     box-sizing: border-box;
     min-height: 32px;
     width: 100%;

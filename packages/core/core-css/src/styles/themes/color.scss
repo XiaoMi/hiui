@@ -6,38 +6,48 @@
 /// @param  {100|200|300|400|500|600|700|800} $gradation - 色阶值，可为空
 /// @group name
 /// @access private
-@function color-get-css-var-name($color, $gradation: '') {
-  $var-name: 'colors-' + $color;
+@function get-color-css-name-var($color, $gradation: '') {
+  $var-name: 'color-' + $color;
   $var-name-suffix: '';
 
   @if $gradation != '' {
     $var-name-suffix: '-' + $gradation;
   }
 
-  @return with-prefix($var-name + $var-name-suffix);
+  @return with-prefix-var($var-name + $var-name-suffix);
 }
 
-/// 从色板中获取颜色
-@function use-color($scheme, $gradation) {
-  $var-name: color-get-css-var-name($scheme, $gradation);
-  $var-value: get-color($scheme, $gradation);
+/// 生成 css 变量及其默认值
+/// @access private
+@function use-color-var($scheme, $gradation) {
+  @debug $scheme $gradation;
+
+  $var-name: get-color-css-name-var($scheme, $gradation);
+  $var-value: _get-color($scheme, $gradation);
+  // $var-value: #fff;
 
   @return var(#{$var-name}, #{$var-value});
 }
 
-@function use-color-system($key, $mode: 'dark') {
+@function use-color-mode($key, $mode: 'dark') {
   $color-system-map: (
+    // TODO: 无法做到动态，所以这个方案不太行，实现主题支持黑夜白天模式
+    // TODO: 需要给每个组件颜色都定义变量（表示具体实质，而不是颜色语义化值）
+    // 用于自动切换
     dark: (
-      primary: use-color('brand', 50),
-      error: use-color('error', 50),
-      warning: use-color('warning', 50),
-      success: use-color('success', 50),
+      white: use-color-var('static', 'white'),
+      primary: use-color-var('primary', 50),
+      error: use-color-var('error', 50),
+      warning: use-color-var('warning', 50),
+      success: use-color-var('success', 50),
     ),
     'light': (
-      'primary': use-color('brand', 10),
-      'error': use-color('error', 10),
-      'warning': use-color('warning', 10),
-      'success': use-color('success', 10),
+      // TODO: 每个组件反色可能不一样，白色不一定对应纯黑，可能是灰黑更合适
+      white: use-color-var('static', 'black'),
+      'primary': use-color-var('primary', 10),
+      'error': use-color-var('error', 10),
+      'warning': use-color-var('warning', 10),
+      'success': use-color-var('success', 10),
     ),
   );
 
@@ -45,4 +55,8 @@
     map-safe-get($color-system-map, $mode),
     $key
   );
+}
+
+@function _use-color($scheme, $gradation) {
+  @return use-color-var($scheme, $gradation);
 }

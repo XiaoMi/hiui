@@ -3,7 +3,7 @@
 // 基础调色板
 $color-palette-base-map: (
   // 静态色
-  static: (
+  'static': (
     white: #fff,
     black: #000,
     transparent: transparent,
@@ -11,7 +11,7 @@ $color-palette-base-map: (
   ),
 
   // 品牌蓝
-  brandblue: (
+  'brandblue': (
     100: #e0f2ff,
     200: #bde2ff,
     300: #80c4ff,
@@ -23,7 +23,7 @@ $color-palette-base-map: (
   ),
 
   // 蓝
-  blue: (
+  'blue': (
     100: #e0f5ff,
     200: #80d4ff,
     300: #80d4ff,
@@ -35,7 +35,7 @@ $color-palette-base-map: (
   ),
 
   // 典雅灰
-  gray: (
+  'gray': (
     100:#f3f4f6,
     200:#e5e7eb,
     300:#d1d5db,
@@ -47,7 +47,7 @@ $color-palette-base-map: (
   ),
 
   // 洋红
-  magenta: (
+  'magenta': (
     100: #ffe0e3,
     200: #ffbfc3,
     300: #ff808a,
@@ -59,7 +59,7 @@ $color-palette-base-map: (
   ),
 
   // 粉
-  pink: (
+  'pink': (
     100: #fce7f3,
     200: #fbcfe8,
     300: #f9a8d4,
@@ -71,7 +71,7 @@ $color-palette-base-map: (
   ),
 
   // 绿
-  green: (
+  'green': (
     100: #dcfae9,
     200: #b8f5d2,
     300: #90f0b6,
@@ -83,7 +83,7 @@ $color-palette-base-map: (
   ),
 
   // 青
-  cyan: (
+  'cyan': (
     100: #dcfaf7,
     200: #b3f2ed,
     300: #75ebe1,
@@ -95,7 +95,7 @@ $color-palette-base-map: (
   ),
 
   // 琥珀
-  amber: (
+  'amber': (
     100: #fcf2d7,
     200: #ffe4a6,
     300: #ffd473,
@@ -107,7 +107,7 @@ $color-palette-base-map: (
   ),
 
   // 黄
-  yellow: (
+  'yellow': (
     100: #fcf8de,
     200: #fff1a8,
     300: #ffe975,
@@ -119,7 +119,7 @@ $color-palette-base-map: (
   ),
 
   // 橙
-  orange: (
+  'orange': (
     100: #ffede0,
     200: #ffd1b3,
     300: #ffb07a,
@@ -131,7 +131,7 @@ $color-palette-base-map: (
   ),
 
   // 紫罗兰
-  violet: (
+  'violet': (
     100: #ebe6fc,
     200: #c8b9fa,
     300: #a58aff,
@@ -143,7 +143,7 @@ $color-palette-base-map: (
   ),
 ) !default;
 
-@function get-color($scheme, $gradation) {
+@function _get-color($scheme, $gradation) {
   @return map-safe-get(
     map-safe-get($color-palette-base-map, $scheme),
     $gradation,

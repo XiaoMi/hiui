@@ -1,4 +1,5 @@
 @import '~@hi-ui/core-css/lib/index.scss';
+@import './button.var.scss';
 
 // Render flat style button
 @mixin render-flat-button($themeColor: 'primary') {
@@ -33,7 +34,6 @@
       color: use-color('white');
     }
   }
-
 }
 
 // Render link style button
@@ -114,11 +114,13 @@
 
       &--type-#{$key}#{&}--appearance-line {
         @include render-line-button($key);
+
         background-color: use-color('white');
       }
 
       &--type-#{$key}#{&}--appearance-link {
         @include render-line-button($key);
+
         padding: 0 4px;
         height: unset;
       }
@@ -140,8 +142,9 @@ $prefix: '#{$component-prefix}-button' !default;
 
 .#{$prefix} {
   & + & {
-    margin-left:8px;
+    margin-left: 8px;
   }
+
   position: relative; // Used by button :focus radio-style etc.
   display: inline-block;
   box-sizing: border-box;
@@ -149,7 +152,7 @@ $prefix: '#{$component-prefix}-button' !default;
   margin: 0;
   border: 1px solid transparent;
   border-radius: 2px;
-  font-weight: $font-weight-normal;
+  font-weight: $btn-text-weight;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
@@ -157,14 +160,13 @@ $prefix: '#{$component-prefix}-button' !default;
   // 禁用非标准手势
   touch-action: manipulation;
   cursor: pointer;
-  transition: background-color $speed-normal $easing, border-color $speed-normal $easing, box-shadow $speed-fast $easing, color $speed-normal $easing;
+  transition: background-color use-motion-duration('normal') use-motion-bezier('easing'), border-color use-motion-duration('normal') use-motion-bezier('easing'), box-shadow use-motion-duration('faster') use-motion-bezier('easing'), color use-motion-duration('normal') use-motion-bezier('easing');
 
   &.#{$prefix}--appearance-link {
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
   }
-
 
   @include btn-theme-styles();
 
@@ -183,10 +185,10 @@ $prefix: '#{$component-prefix}-button' !default;
   /** *************************** Sizes ******************************** */
 
   &--size-small {
-    height: $line-height-size-small + 1px * 2 + 1px * 2;
+    height: get-text-lineheight('sm') + 1px * 2 + 1px * 2;
     padding: 1px 11px;
-    font-size: $font-size-small;
-    line-height: $line-height-size-small;
+    font-size: use-text-size('sm');
+    line-height: get-text-lineheight('sm');
 
     &.#{$prefix}--icon-only {
       width: 22px;
@@ -194,15 +196,15 @@ $prefix: '#{$component-prefix}-button' !default;
     }
 
     .hi-v4-icon {
-      margin-right: $font-size-small - 10;
+      margin-right: use-text-size('sm') - 10;
     }
   }
 
   &--size-default {
-    height: $line-height-size-normal + 4px * 2 + 1px * 2;
+    height: get-text-lineheight('normal') + 4px * 2 + 1px * 2;
     padding: 4px 15px;
-    font-size: $font-size-normal;
-    line-height: $line-height-size-normal;
+    font-size: use-text-size('normal');
+    line-height: get-text-lineheight('normal');
 
     &.#{$prefix}--icon-only {
       width: 32px;
@@ -210,15 +212,15 @@ $prefix: '#{$component-prefix}-button' !default;
     }
 
     .hi-v4-icon {
-      margin-right: $font-size-normal - 10;
+      margin-right: calc(#{use-text-size('normal')} - 10px);
     }
   }
 
   &--size-large {
-    height: $line-height-size-x-large + 13px * 2 + 1px * 2;
+    height: get-text-lineheight('xl') + 13px * 2 + 1px * 2;
     padding: 13px 60px;
-    font-size: $font-size-x-large;
-    line-height: $line-height-size-x-large;
+    font-size: use-text-size('xl');
+    line-height: get-text-lineheight('xl');
 
     &.#{$prefix}--icon-only {
       width: 54px;
@@ -226,7 +228,7 @@ $prefix: '#{$component-prefix}-button' !default;
     }
 
     .hi-v4-icon {
-      margin-right: $font-size-x-large - 14;
+      margin-right: use-text-size('xl') - 14;
     }
   }
 
@@ -272,7 +274,6 @@ $prefix: '#{$component-prefix}-button' !default;
     }
   }
 
-
   /** *************************** Status ******************************** */
 
   &--loading {
@@ -317,4 +318,3 @@ $prefix: '#{$component-prefix}-button' !default;
     cursor: not-allowed;
   }
 }
-

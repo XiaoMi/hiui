@@ -1,9 +1,10 @@
 @import '~@hi-ui/core-css/lib/index.scss';
+@import './zen-mode.var.scss';
 
 $prefix: '#{$component-prefix}-zen-mode' !default;
 
 .#{$prefix} {
-  font-size: $font-size-normal;
+  font-size: $zen-mode-text-size;
   position: fixed;
   top: 0;
   left: 0;
@@ -11,7 +12,7 @@ $prefix: '#{$component-prefix}-zen-mode' !default;
   bottom: 0;
   height: 100%;
   z-index: 1000;
-  background: white;
+  background: #fff;
   transition: opacity 0.3s, height 0s 0.3s;
   overflow: auto;
 
@@ -32,6 +33,7 @@ $prefix: '#{$component-prefix}-zen-mode' !default;
     border-radius: 4px;
     display: inline-block;
     transition: background 0.3s;
+
     &:hover {
       background-color: rgba(31, 35, 41, 0.1);
     }
@@ -51,9 +53,11 @@ $prefix: '#{$component-prefix}-zen-mode' !default;
     opacity: 0.8;
     transition: opacity 0.8s;
   }
+
   &__toolbar-opt {
     flex: 1;
   }
+
   &__toolbar--hide {
     opacity: 0;
   }

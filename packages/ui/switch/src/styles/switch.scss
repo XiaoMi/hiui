@@ -39,7 +39,7 @@ $prefix: '#{$component-prefix}-switch' !default;
 
   &__text {
     color: use-color('white');
-    font-size: $font-size-small;
+    font-size: use-text-size('sm');
     position: absolute;
     top: 0;
     line-height: 20px;

@@ -10,7 +10,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   width: 100%;
   min-width: 160px;
   font-size: 14px;
-  line-height: $line-height-size-normal;
+  line-height: get-text-lineheight('normal');
   vertical-align: middle;
   color: var(--color-black);
   border: 1px solid transparent;

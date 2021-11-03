@@ -132,7 +132,7 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     }
 
     &-closed {
-      margin-left: $spacer-2;
+      margin-left: use-spacing(4);
       font-size: 12px;
       box-sizing: border-box;
       color: rgba(142, 142, 142, 1);

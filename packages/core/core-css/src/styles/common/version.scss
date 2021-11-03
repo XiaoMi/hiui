@@ -2,7 +2,13 @@
 $component-prefix: 'hi-v4' !default;
 
 // 给文本附加上版本号后缀
-// eg: with-version('hi-button'); // 'hi-v4-button'
+// eg: with-version('button'); // 'hi-v4-button'
 @function with-prefix($name) {
   @return #{$component-prefix}-#{$name};
+}
+
+// 给文本附加上版本号后缀
+// eg: with-version('color-white'); // '--hi-v4-color-white'
+@function with-prefix-var($name) {
+  @return --#{$component-prefix}-#{$name};
 }

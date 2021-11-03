@@ -4,11 +4,11 @@ $panel-prefix: '#{$component-prefix}-collapse-panel' !default;
 $icon-class: #{$panel-prefix}__icon;
 
 .#{$panel-prefix} {
-  font-size: $font-size-normal;
+  font-size: use-text-size('normal');
   position: relative;
   z-index: 0;
 
-  &::after{
+  &::after {
     transition: all 0.2s ease-out;
     position: absolute;
     z-index: 1;
@@ -44,8 +44,6 @@ $icon-class: #{$panel-prefix}__icon;
     margin-right: 10px;
   }
 
-
-
   &__content-wrapper {
     transition: all 0.2s ease-out;
     transform-origin: top;
@@ -59,8 +57,7 @@ $icon-class: #{$panel-prefix}__icon;
   }
 
   &--show {
-
-    &::after{
+    &::after {
       background-color: transparent;
     }
     .#{$icon-class} {
@@ -74,5 +71,4 @@ $icon-class: #{$panel-prefix}__icon;
       color: use-color('gray-50');
     }
   }
-
 }

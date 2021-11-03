@@ -20,7 +20,7 @@ $prefix: '#{$component-prefix}-input' !default;
   width: 100%;
   font-size: inherit;
   color: use-color('black');
-  line-height: $line-height-size-normal;
+  line-height: get-text-lineheight('normal');
 
   &::placeholder {
     color: use-color('gray-50');
@@ -142,10 +142,10 @@ $prefix: '#{$component-prefix}-input' !default;
 
   &--size {
     &-sm {
-      font-size: $font-size-normal;
+      font-size: use-text-size('normal');
 
       .#{$prefix} {
-        padding: $spacer-1 $input-padding-width;
+        padding: use-spacing(2) $input-padding-width;
       }
 
       .#{$prefix}__inner {
@@ -164,10 +164,10 @@ $prefix: '#{$component-prefix}-input' !default;
     }
 
     &-md {
-      font-size: $font-size-large;
+      font-size: use-text-size('lg');
 
       .#{$prefix} {
-        padding: $spacer-2 $input-padding-width;
+        padding: use-spacing(4) $input-padding-width;
       }
 
       .#{$prefix}__inner {
@@ -186,10 +186,10 @@ $prefix: '#{$component-prefix}-input' !default;
     }
 
     &-lg {
-      font-size: $font-size-x-large;
+      font-size: use-text-size('xl');
 
       .#{$prefix} {
-        padding: $spacer-3 $input-padding-width;
+        padding: use-spacing(6) $input-padding-width;
       }
 
       .#{$prefix}__inner {

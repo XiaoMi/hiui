@@ -18,8 +18,8 @@ $prefix: '#{$component-prefix}-notification' !default;
   border-bottom-left-radius: 2px;
   pointer-events: auto;
   box-shadow: 0 1px 6px -1px rgba(0, 0, 0, 0.12);
-  font-size: $font-size-normal;
-  line-height: $line-height-size-normal;
+  font-size: use-text-size('normal');
+  line-height: get-text-lineheight('normal');
   border-left: 6px solid transparent;
   background-color: use-color('white');
 

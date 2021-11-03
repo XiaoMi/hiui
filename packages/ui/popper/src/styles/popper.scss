@@ -84,7 +84,7 @@ $prefix: '#{$component-prefix}-popper' !default;
       }
 
       &::after {
-        top: 0px;
+        top: 0;
         transform: translateY(-50%);
         left: 1px;
         border-left-color: rgba(0, 0, 0, 0.1);
@@ -102,7 +102,7 @@ $prefix: '#{$component-prefix}-popper' !default;
       }
 
       &::after {
-        top: 0px;
+        top: 0;
         transform: translateY(-50%);
         right: 1px;
         border-right-color: rgba(0, 0, 0, 0.1);
@@ -114,8 +114,8 @@ $prefix: '#{$component-prefix}-popper' !default;
     position: relative;
     box-sizing: border-box;
     background-color: use-color('white');
-    box-shadow: 0px 1px 12px 0px rgba(0, 0, 0, 0.12);
-    border-radius: $spacer-1;
+    box-shadow: 0 1px 12px 0 rgba(0, 0, 0, 0.12);
+    border-radius: use-spacing(2);
     // 为了保证 arrow 三角形可以正常展示
     min-width: 36px;
     min-height: 36px;

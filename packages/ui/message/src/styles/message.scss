@@ -12,8 +12,8 @@ $prefix: '#{$component-prefix}-message' !default;
   box-shadow: 0 1px 6px -1px rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;
-  font-size: $font-size-normal;
-  line-height: $line-height-size-normal;
+  font-size: use-text-size('normal');
+  line-height: get-text-lineheight('normal');
 
   &--type {
     &-info {

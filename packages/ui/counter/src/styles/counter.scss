@@ -9,7 +9,7 @@ $prefix: '#{$component-prefix}-counter' !default;
   min-height: 32px;
   box-sizing: border-box;
   color: use-color('gray-80');
-  font-size: $font-size-normal;
+  font-size: use-text-size('normal');
   outline: none;
 
   $this: &;
@@ -33,7 +33,6 @@ $prefix: '#{$component-prefix}-counter' !default;
     user-select: none;
     font: inherit;
     outline: none;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;

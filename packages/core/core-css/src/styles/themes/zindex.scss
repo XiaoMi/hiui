@@ -3,16 +3,16 @@
 
 /// 获取 zindex 对应 css 变量名
 /// @access private
-@function zindex-get-css-var-name($key) {
+@function get-zindex-css-name-var($key) {
   $var-name: 'zindex-' + $key;
 
-  @return with-prefix($var-name:);
+  @return with-prefix-var($var-name);
 }
 
 /// 获取 zindex 对应 css 变量值
 /// @access private
-@function use-zindex($key) {
-  $var-name: zindex-get-css-var-name($key);
+@function use-zindex-var($key) {
+  $var-name: get-zindex-css-name-var($key);
   $var-value: get-zindex($key);
 
   @return var(#{$var-name}, #{$var-value});
@@ -22,8 +22,8 @@
 /// 默认不加减
 /// @param {String} $key 基础值
 /// @param {Number} $offset 偏差值
-@function use-zindex-system($key, $offset: 0) {
-  $zindex: use-zindex($key);
+@function use-zindex($key, $offset: 0) {
+  $zindex: use-zindex-var($key);
 
   @if $offset != 0 {
     $zindex: calc(#{$zindex} + #{$offset});

@@ -19,14 +19,14 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
   margin: 0;
   padding: 6px 4px;
   line-height: 0;
-  font-weight: $font-weight-normal;
+  font-weight: 400;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
   white-space: nowrap;
   touch-action: manipulation;
   cursor: pointer;
-  transition: all $easing;
+  transition: all use-motion-bezier('easing');
   outline: none;
 
   svg {
