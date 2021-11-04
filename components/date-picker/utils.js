@@ -225,7 +225,7 @@ export const getInRangeDate = (momentstartDate, momentendDate, max, min) => {
  * @param {String} type 类型
  * @param {String} format 日期格式
  */
-export const parseValue = (value, type, format, offset, weekOffset, locale = 'zh-CN') => {
+export const parseValue = (value, type, format, weekOffset, locale = 'zh-CN') => {
   if (!value) return [null]
   const _format = FORMATS(locale)[type]
   const _value = moment(value, _format)
