@@ -5,11 +5,11 @@ $prefix: '#{$component-prefix}-tree' !default;
 .#{$prefix} {
   &-searcher {
     position: relative;
-    color: _use-color('gray', 800);
+    color: use-color('gray', 800);
 
     &--empty {
       display: inline-block;
-      color: _use-color('gray', 700);
+      color: use-color('gray', 700);
       font-size: 14px;
       line-height: 20px;
       font-weight: 400;

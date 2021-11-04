@@ -6,7 +6,7 @@ $prefix: '#{$component-prefix}-check-select' !default;
   &--open {
     .#{$component-prefix}-tag-input,
     .#{$component-prefix}-tag-input-mock {
-      border-color: var(--color-primary);
+      border-color: use-color-mode('primary');
     }
   }
 
@@ -43,22 +43,22 @@ $prefix: '#{$component-prefix}-check-select' !default;
     justify-content: space-between;
 
     &:hover {
-      background-color: use-color-mode('primary-20');
+      background-color: use-color-mode('primary-10');
     }
 
     &--selected {
-      background-color: use-color-mode('primary-20');
+      background-color: use-color-mode('primary-10');
       font-weight: 700;
       color: use-color-mode('primary');
     }
 
     &--focused {
-      background-color: use-color-mode('primary-10');
+      background-color: use-color-mode('primary-05');
     }
 
     &--disabled {
       cursor: not-allowed;
-      color: var(--color-gray-50);
+      color: use-color('gray', 500);
       font-weight: 400;
     }
   }

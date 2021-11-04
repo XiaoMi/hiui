@@ -27,8 +27,8 @@ $prefix: '#{$component-prefix}-transfer' !default;
   position: relative;
   width: 240px;
   min-width: 180px;
-  background-color: var(--color-white);
-  border: 1px solid var(--color-gray-20);
+  background-color: use-color-mode('white');
+  border: 1px solid use-color('gray', 200);
   border-radius: 4px;
   overflow: hidden;
   font-size: 14px;
@@ -72,13 +72,13 @@ $prefix: '#{$component-prefix}-transfer' !default;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--color-gray-50);
+    color: use-color('gray', 500);
   }
 
   &__limit {
     word-wrap: break-word;
     line-height: 2;
-    color: var(--color-gray-70);
+    color: use-color('gray', 700);
     font-size: 14px;
     display: flex;
     align-items: center;
@@ -113,12 +113,12 @@ $prefix: '#{$component-prefix}-transfer' !default;
   }
 
   &__header {
-    border-bottom: 1px solid var(--color-gray-20);
-    background: var(--color-gray-10);
+    border-bottom: 1px solid use-color('gray', 200);
+    background: use-color('gray', 100);
   }
 
   &__footer {
-    border-top: 1px solid var(--color-gray-20);
+    border-top: 1px solid use-color('gray', 200);
     width: 100%;
     display: inline-flex;
     flex-direction: row-reverse;
@@ -159,7 +159,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     cursor: pointer;
 
     &:hover {
-      background-color: use-color-mode('primary-20');
+      background-color: use-color-mode('primary-10');
     }
 
     // 拖拽指示器-小圆球

@@ -94,7 +94,7 @@ $prefix: '#{$component-prefix}-notification' !default;
 
   &--type {
     &-info {
-      border-color: use-color-mode('primary-50');
+      border-color: use-color-mode('primary-40');
 
       .#{$prefix}__title {
         color: use-color-mode('primary');
@@ -106,7 +106,7 @@ $prefix: '#{$component-prefix}-notification' !default;
     }
 
     &-success {
-      border-color: use-color-mode('success-50');
+      border-color: use-color-mode('success-40');
 
       .#{$prefix}__title {
         color: use-color-mode('success');
@@ -118,7 +118,7 @@ $prefix: '#{$component-prefix}-notification' !default;
     }
 
     &-error {
-      border-color: use-color-mode('danger-50');
+      border-color: use-color-mode('danger-40');
 
       .#{$prefix}__title {
         color: use-color-mode('danger');
@@ -130,7 +130,7 @@ $prefix: '#{$component-prefix}-notification' !default;
     }
 
     &-warning {
-      border-color: use-color-mode('warning-50');
+      border-color: use-color-mode('warning-40');
 
       .#{$prefix}__title {
         color: use-color-mode('warning');
@@ -154,7 +154,7 @@ $prefix: '#{$component-prefix}-notification' !default;
     top: 12px;
     right: 12px;
     color: #000;
-    color: _use-color('gray', 700);
+    color: use-color('gray', 700);
     font-size: 14px;
 
     &::after {

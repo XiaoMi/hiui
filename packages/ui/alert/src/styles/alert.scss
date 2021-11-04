@@ -29,7 +29,7 @@ $prefix: '#{$component-prefix}-alert' !default;
     font-weight: 400;
     font-size: use-text-size('sm');
     line-height: use-text-lineheight('normal');
-    color: _use-color('gray', 800);
+    color: use-color('gray', 800);
   }
 
   &__action {
@@ -37,7 +37,7 @@ $prefix: '#{$component-prefix}-alert' !default;
     top: 12px;
     right: 12px;
     cursor: pointer;
-    color: _use-color('gray', 700);
+    color: use-color('gray', 700);
   }
 
   $color-map: (
@@ -49,9 +49,9 @@ $prefix: '#{$component-prefix}-alert' !default;
 
   @each $key, $value in $color-map {
     &--#{$key} {
-      background-color: use-color-mode(#{$key}-20);
+      background-color: use-color-mode(#{$key}-10);
       color: $value;
-      border: 1px solid use-color-mode(#{$key}-40);
+      border: 1px solid use-color-mode(#{$key}-30);
     }
   }
 }

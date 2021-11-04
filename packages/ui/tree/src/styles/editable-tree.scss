@@ -20,11 +20,10 @@ $prefix: '#{$component-prefix}-tree' !default;
     .#{$prefix}-action {
       z-index: 10;
       list-style: none;
-      color: _use-color('gray', 800);
+      color: use-color('gray', 800);
       background-color: use-color-static('white');
       width: 140px;
-      box-shadow: 0 2px 8px 0 var(--color-gray-10);
-      border-radius: 2px;
+      box-shadow: 0 2px 8px 0 use-color('gray', 100);
       padding: 4px 0;
       border-radius: 4px;
 
@@ -51,7 +50,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 
       &__btn {
         position: relative;
-        color: _use-color('gray', 800);
+        color: use-color('gray', 800);
 
         &:hover {
           color: use-color-mode('primary');

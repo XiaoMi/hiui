@@ -93,7 +93,7 @@ $input-pagination-prefix: '#{$component-prefix}-input-pagination' !default;
   height: auto;
   min-height: 24px;
   box-sizing: border-box;
-  color: _use-color('gray', 800);
+  color: use-color('gray', 800);
   font-size: use-text-size('normal');
   outline: none;
 
@@ -127,7 +127,7 @@ $input-pagination-prefix: '#{$component-prefix}-input-pagination' !default;
     }
 
     &.disabled {
-      color: _use-color('gray', 500);
+      color: use-color('gray', 500);
       cursor: not-allowed;
     }
   }
@@ -138,7 +138,7 @@ $input-pagination-prefix: '#{$component-prefix}-input-pagination' !default;
     flex: 1 1 auto;
     width: 48px;
     padding: 0 6px;
-    border: 1px solid _use-color('gray', 300);
+    border: 1px solid use-color('gray', 300);
     border-radius: 4px;
     color: inherit;
     outline: none;

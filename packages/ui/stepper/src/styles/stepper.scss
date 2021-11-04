@@ -25,7 +25,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
       left: 11px;
       width: 2px;
       height: calc(100% - 32px);
-      background-color: _use-color('gray', 800);
+      background-color: use-color('gray', 800);
     }
 
     &:last-of-type {
@@ -43,14 +43,14 @@ $prefix: '#{$component-prefix}-stepper' !default;
       line-height: 24px;
       border-radius: 50%;
       color: use-color-static('white');
-      background-color: _use-color('gray', 800);
+      background-color: use-color('gray', 800);
 
       &__icon {
-        color: _use-color('gray', 800);
+        color: use-color('gray', 800);
       }
 
       &__title {
-        color: _use-color('gray', 800);
+        color: use-color('gray', 800);
       }
 
       &__content {
@@ -60,7 +60,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
         box-orient: vertical;
         overflow: hidden;
         font-size: 12px;
-        color: _use-color('gray', 800);
+        color: use-color('gray', 800);
         padding: 0;
       }
     }
@@ -147,7 +147,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
               left: 100%;
               width: 9999px !important;
               height: 2px;
-              background-color: _use-color('gray', 800);
+              background-color: use-color('gray', 800);
             }
           }
         }
@@ -193,7 +193,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
         width: calc(50% - 20px);
         left: 0;
         height: 2px;
-        background-color: _use-color('gray', 800);
+        background-color: use-color('gray', 800);
       }
 
       &:not(.#{$prefix}__item--last)::after {
@@ -203,7 +203,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
         right: 0;
         width: calc(50% - 20px);
         height: 2px;
-        background-color: _use-color('gray', 800);
+        background-color: use-color('gray', 800);
       }
     }
 
@@ -228,14 +228,14 @@ $prefix: '#{$component-prefix}-stepper' !default;
       line-height: 24px;
       border-radius: 50%;
       color: use-color-static('white');
-      background-color: _use-color('gray', 800);
+      background-color: use-color('gray', 800);
 
       &__icon {
-        color: _use-color('gray', 800);
+        color: use-color('gray', 800);
       }
 
       &__title {
-        color: _use-color('gray', 800);
+        color: use-color('gray', 800);
       }
 
       &__content {
@@ -245,13 +245,13 @@ $prefix: '#{$component-prefix}-stepper' !default;
         box-orient: vertical;
         overflow: hidden;
         font-size: 12px;
-        color: _use-color('gray', 800);
+        color: use-color('gray', 800);
         padding: 0 12px;
       }
     }
 
     &--last {
-      color: _use-color('gray', 800);
+      color: use-color('gray', 800);
     }
   }
 }

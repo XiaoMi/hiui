@@ -5,7 +5,7 @@ $color-map: (
   'warning': use-color-mode('warning'),
   'success': use-color-mode('success'),
   'danger': use-color-mode('danger'),
-  'default': _use-color('gray', 700)
+  'default': use-color('gray', 700)
 ) !default;
 
 $line-height: 20px !default;

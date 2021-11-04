@@ -20,14 +20,14 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
 
   &__separator {
     margin: 0 8px;
-    color: _use-color('gray', 300);
+    color: use-color('gray', 300);
   }
 
   &__item {
     display: inline-block;
 
     a {
-      color: _use-color('gray', 800);
+      color: use-color('gray', 800);
       transition: all 0.3s;
     }
 
@@ -39,7 +39,7 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
   &__item:last-child {
     .#{$prefix}__content {
       cursor: text;
-      color: _use-color('gray', 800);
+      color: use-color('gray', 800);
     }
 
     .#{$prefix}__separator {

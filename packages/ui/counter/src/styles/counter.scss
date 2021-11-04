@@ -8,7 +8,7 @@ $prefix: '#{$component-prefix}-counter' !default;
   height: auto;
   min-height: 32px;
   box-sizing: border-box;
-  color: _use-color('gray', 800);
+  color: use-color('gray', 800);
   font-size: use-text-size('normal');
   outline: none;
 
@@ -41,14 +41,14 @@ $prefix: '#{$component-prefix}-counter' !default;
     width: 32px;
     height: 32px;
     line-height: 32px;
-    border: 1px solid _use-color('gray', 300);
+    border: 1px solid use-color('gray', 300);
     border-radius: 2px;
     font-weight: bold;
     color: use-color-mode('primary');
     cursor: pointer;
 
     &.disabled {
-      color: _use-color('gray', 500);
+      color: use-color('gray', 500);
       cursor: not-allowed;
     }
   }
@@ -69,7 +69,7 @@ $prefix: '#{$component-prefix}-counter' !default;
     flex: 1 1 auto;
     width: 2 * 32px;
     padding: 0 6px;
-    border: 1px solid _use-color('gray', 300);
+    border: 1px solid use-color('gray', 300);
     color: inherit;
     outline: none;
     box-sizing: border-box;

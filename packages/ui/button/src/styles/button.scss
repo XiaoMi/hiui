@@ -9,7 +9,7 @@
   color: use-color-static('white');
 
   &:not(.#{$prefix}--disabled):focus {
-    box-shadow: 0 0 0 2px use-color-mode(#{$themeColor}-30);
+    box-shadow: 0 0 0 2px use-color-mode(#{$themeColor}-20);
   }
 
   &:not(.#{$prefix}--disabled):hover {
@@ -26,7 +26,7 @@
   &.#{$prefix}--disabled,
   &[disabled] {
     &:not(.#{$prefix}--loading) {
-      background-color: use-color-mode(#{$themeColor}-30);
+      background-color: use-color-mode(#{$themeColor}-20);
       color: use-color-static('white');
     }
   }
@@ -51,11 +51,11 @@
   $statusColor:  use-color-mode($themeColor);
 
   // background-color: use-color-static('white');
-  border-color: use-color-mode(#{$themeColor}-40);
+  border-color: use-color-mode(#{$themeColor}-30);
   color: $statusColor;
 
   &:not(.#{$prefix}--disabled):focus {
-    box-shadow: 0 0 0 2px use-color-mode(#{$themeColor}-30);
+    box-shadow: 0 0 0 2px use-color-mode(#{$themeColor}-20);
   }
 
   &:not(.#{$prefix}--disabled):hover {
@@ -72,8 +72,8 @@
   &.#{$prefix}--disabled,
   &[disabled] {
     &:not(.#{$prefix}--loading) {
-      border-color: use-color-mode(#{$themeColor}-30);
-      color: use-color-mode(#{$themeColor}-40);
+      border-color: use-color-mode(#{$themeColor}-20);
+      color: use-color-mode(#{$themeColor}-30);
     }
   }
 
@@ -82,7 +82,7 @@
     color: $statusColor;
 
     &:not(.#{$prefix}--disabled):hover {
-      color: use-color-mode(#{$themeColor}-50);
+      color: use-color-mode(#{$themeColor}-40);
     }
     // Status: disabled
     &.#{$prefix}--disabled,
@@ -120,11 +120,11 @@
 
     &--type-default#{&}--appearance-line {
       background-color: use-color-static('white');
-      border-color: _use-color('gray', 300);
+      border-color: use-color('gray', 300);
 
       &:hover {
         background-color: use-color-static('white') !important;
-        border-color: _use-color('gray', 700);
+        border-color: use-color('gray', 700);
       }
     }
   }
@@ -230,27 +230,27 @@ $prefix: '#{$component-prefix}-button' !default;
     color: use-color-static('black');
 
     &:not(.#{$prefix}--disabled):hover {
-      background-color: _use-color('gray', 200);
+      background-color: use-color('gray', 200);
       color: use-color-static('black');
     }
 
     &:not(.#{$prefix}--disabled):active {
-      background-color: _use-color('gray', 200);
+      background-color: use-color('gray', 200);
       color: use-color-static('black');
     }
 
     // Status: disabled
     &.#{$prefix}--disabled,
     &[disabled] {
-      background-color: _use-color('gray', 200);
-      // border-color: _use-color('gray', 300);
-      color: _use-color('gray', 500);
+      background-color: use-color('gray', 200);
+      // border-color: use-color('gray', 300);
+      color: use-color('gray', 500);
     }
 
     // Make a button look and behave like a link
     &.#{$prefix}--appearance-link {
       &:not(.#{$prefix}--disabled):hover {
-        color: _use-color('gray', 700);
+        color: use-color('gray', 700);
       }
 
       &:not(.#{$prefix}--disabled):active {

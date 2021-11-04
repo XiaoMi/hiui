@@ -4,38 +4,43 @@
 $color-palette-base-map: (
   // 静态色
   'static': (
-    white: #fff,
-    black: #000,
-    transparent: transparent,
-    currentColor: currentColor,
+    'white': #fff,
+    'black': #000,
+    'transparent': transparent,
+    'currentColor': currentColor,
   ),
 
   // 品牌蓝
   'brandblue': (
-    100: #e0f2ff,
-    200: #bde2ff,
-    300: #80c4ff,
-    400: #42a4ff,
-    500: #237ffa,
-    600: #086cd1,
-    700: #0754a3,
-    800: #054280,
+    50: #f7faff,
+    100: #f0f5fe,
+    200: #d2e2fc,
+    300: #b4cffb,
+    400: #7babf7,
+    500: #4387f4,
+    600: #3c79dc,
+    700: #2f5eab,
+    800: #285192,
+    900: #22437a,
   ),
 
   // 蓝
   'blue': (
+    50: #eff6ff,
     100: #e0f5ff,
     200: #80d4ff,
     300: #80d4ff,
     400: #3dbeff,
     500: #0af,
     600: #008bd1,
-    700: #005580,
+    700: #0375ae,
     800: #005580,
+    900: #005580,
   ),
 
   // 典雅灰
   'gray': (
+    50: #f9fafb,
     100:#f3f4f6,
     200:#e5e7eb,
     300:#d1d5db,
@@ -44,10 +49,12 @@ $color-palette-base-map: (
     600:#4b5563,
     700:#374151,
     800:#1f2937,
+    900: #111827,
   ),
 
   // 洋红
   'magenta': (
+    50: #fef2f2,
     100: #ffe0e3,
     200: #ffbfc3,
     300: #ff808a,
@@ -56,10 +63,12 @@ $color-palette-base-map: (
     600: #cc293b,
     700: #a61e2d,
     800: #a61e2d,
+    900: #7f1d1d,
   ),
 
   // 粉
   'pink': (
+    50: #fdf2f8,
     100: #fce7f3,
     200: #fbcfe8,
     300: #f9a8d4,
@@ -68,10 +77,12 @@ $color-palette-base-map: (
     600: #db2777,
     700: #be185d,
     800: #9d174d,
+    900: #831843,
   ),
 
   // 绿
   'green': (
+    50: #ecfdf5,
     100: #dcfae9,
     200: #b8f5d2,
     300: #90f0b6,
@@ -80,10 +91,12 @@ $color-palette-base-map: (
     600: #05a852,
     700: #069449,
     800: #057a3c,
+    900: #064e3b,
   ),
 
   // 青
   'cyan': (
+    50: #dcfaf7,
     100: #dcfaf7,
     200: #b3f2ed,
     300: #75ebe1,
@@ -92,10 +105,12 @@ $color-palette-base-map: (
     600: #00a89a,
     700: #008f83,
     800: #007369,
+    900: #007369,
   ),
 
   // 琥珀
   'amber': (
+    50: #fffbeb,
     100: #fcf2d7,
     200: #ffe4a6,
     300: #ffd473,
@@ -104,10 +119,12 @@ $color-palette-base-map: (
     600: #e09b04,
     700: #b87c04,
     800: #8c5e03,
+    900: #78350f,
   ),
 
   // 黄
   'yellow': (
+    50: #fcf8de,
     100: #fcf8de,
     200: #fff1a8,
     300: #ffe975,
@@ -116,10 +133,12 @@ $color-palette-base-map: (
     600: #dbb404,
     700: #dbb404,
     800: #8f7303,
+    900: #8f7303,
   ),
 
   // 橙
   'orange': (
+    50: #ffede0,
     100: #ffede0,
     200: #ffd1b3,
     300: #ffb07a,
@@ -128,10 +147,12 @@ $color-palette-base-map: (
     600: #d95800,
     700: #ad4600,
     800: #8c3900,
+    900: #8c3900,
   ),
 
   // 紫罗兰
   'violet': (
+    50: #f5f3ff,
     100: #ebe6fc,
     200: #c8b9fa,
     300: #a58aff,
@@ -140,10 +161,11 @@ $color-palette-base-map: (
     600: #6e4ed9,
     700: #5b40b3,
     800: #4b3594,
+    900: #4c1d95,
   ),
 ) !default;
 
-@function _get-color($scheme, $gradation) {
+@function get-color($scheme, $gradation) {
   @return map-safe-get(
     map-safe-get($color-palette-base-map, $scheme),
     $gradation,

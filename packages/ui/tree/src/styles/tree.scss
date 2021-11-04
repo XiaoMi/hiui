@@ -48,7 +48,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 
 .#{$prefix}-node {
   position: relative;
-  color: _use-color('gray', 800);
+  color: use-color('gray', 800);
   cursor: pointer;
   // 节点间隔控制
   padding: 4px 0;
@@ -63,7 +63,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     outline: 0;
 
     &:hover {
-      background-color: use-color-mode('primary-10');
+      background-color: use-color-mode('primary-05');
     }
 
     &.dragging {
@@ -159,18 +159,18 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &--focused {
     #{$this}__wrap {
-      background-color: use-color-mode('primary-10');
+      background-color: use-color-mode('primary-05');
     }
 
     #{$this}__title {
-      color: _use-color('gray', 800);
+      color: use-color('gray', 800);
     }
   }
 
   // TODO: 约定好组件的修饰词和元素书写顺序
   &--selected {
     #{$this}__wrap {
-      background-color: use-color-mode('primary-20');
+      background-color: use-color-mode('primary-10');
     }
 
     #{$this}__title {
@@ -180,7 +180,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &--disabled {
     cursor: not-allowed;
-    color: _use-color('gray', 500);
+    color: use-color('gray', 500);
 
     #{$this}__wrap {
       &:hover {
@@ -189,7 +189,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     }
 
     &#{$this}--selected {
-      color: _use-color('gray', 500);
+      color: use-color('gray', 500);
 
       #{$this}__title {
         background-color: use-color-static('white');
@@ -202,12 +202,12 @@ $prefix: '#{$component-prefix}-tree' !default;
 
     &#{$this}--focused {
       #{$this}__title {
-        color: _use-color('gray', 500);
+        color: use-color('gray', 500);
       }
     }
 
     #{$this}__switcher:not(#{$this}__switcher--noop) {
-      color: _use-color('gray', 800);
+      color: use-color('gray', 800);
     }
   }
 

@@ -16,7 +16,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     }
 
     .#{$component-prefix}-tag-input {
-      border-color: var(--color-primary);
+      border-color: use-color-mode('primary');
     }
   }
 }
@@ -125,7 +125,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     justify-content: space-between;
 
     &:hover {
-      background-color: use-color-mode('primary-20');
+      background-color: use-color-mode('primary-10');
 
       // checkbox 联动颜色
       .#{$component-prefix}-checkbox__icon {
@@ -136,12 +136,12 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     }
 
     &--selected {
-      background-color: use-color-mode('primary-20');
+      background-color: use-color-mode('primary-10');
       font-weight: 700;
     }
 
     &--focused {
-      background-color: use-color-mode('primary-10');
+      background-color: use-color-mode('primary-05');
     }
 
     &--checked {
@@ -150,11 +150,11 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
     &--disabled {
       cursor: not-allowed;
-      color: var(--color-gray-50);
+      color: use-color('gray', 500);
       font-weight: 400;
 
       .#{$prefix}-menu-switcher {
-        color: var(--color-gray-50);
+        color: use-color('gray', 500);
       }
     }
   }
@@ -205,7 +205,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     }
 
     &--loading {
-      color: var(--color-primary);
+      color: use-color-mode('primary');
     }
   }
 }

@@ -5,7 +5,7 @@ $prefixCls: #{$component-prefix}-loading !default;
 .#{$prefixCls} {
   @include flex(center, center, column);
 
-  color: var('--color-primary');
+  color: use-color-static('primary');
 
   &__mask {
     @include component-reset;

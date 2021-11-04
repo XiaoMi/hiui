@@ -10,7 +10,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   min-width: 160px;
   font-size: 14px;
   vertical-align: middle;
-  color: var(--color-black);
+  color: use-color-static('black');
   border: 1px solid transparent;
   background-color: use-color-static('white');
   transition: all 0.3s;
@@ -22,7 +22,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   overflow: hidden;
 
   // outline
-  border-color: _use-color('gray', 300);
+  border-color: use-color('gray', 300);
   border-radius: 4px;
 
   &:not(.disabled):hover {
@@ -36,16 +36,16 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
   &.disabled {
     cursor: not-allowed;
-    color: var(--color-gray-50);
-    background-color: var(--color-gray-10);
+    color: use-color('gray', 500);
+    background-color: use-color('gray', 100);
 
     .#{$tag-input-mock-prefix}__tag {
-      background-color: var(--color-gray-20);
+      background-color: use-color('gray', 200);
     }
   }
 
   &__placeholder {
-    color: _use-color('gray', 500);
+    color: use-color('gray', 500);
   }
 
   &__suffix {
@@ -63,7 +63,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     width: 16px;
     height: 16px;
     font-size: 14px;
-    color: _use-color('gray', 500);
+    color: use-color('gray', 500);
     flex-shrink: 0;
     cursor: pointer;
     transition: all 0.3s;
@@ -105,7 +105,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     vertical-align: middle;
     font-size: 12px;
     user-select: none;
-    background-color: use-color-mode('primary-20');
+    background-color: use-color-mode('primary-10');
     color: use-color-mode('primary');
     border-radius: 4px;
     line-height: 22px;
@@ -120,7 +120,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     font-size: 12px;
     color: #333;
     user-select: none;
-    background-color: var(--color-gray-10);
+    background-color: use-color('gray', 100);
     border-radius: 4px;
     position: relative;
     display: flex;
