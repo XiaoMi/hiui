@@ -77,6 +77,7 @@ const BasePicker = ({
     defaultValue,
     cacheDate,
     format,
+    weekOffset,
     locale
   })
   const [iFormat] = useFormat({
