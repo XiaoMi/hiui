@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { addDecorator } from "@storybook/react";
 // import DocViewer from '../externals/doc-viewer'
 import theme from "./themes/code-theme";
-import "@hi-ui/hiui/es/base-css";
+// import "@hi-ui/hiui/es/base-css";
 // import { Badge } from '../externals/doc-components'
 import { withPerformance } from "storybook-addon-performance";
 // import { Meta, ArgsTable, Source, Story, Canvas } from '@storybook/addon-docs/blocks'

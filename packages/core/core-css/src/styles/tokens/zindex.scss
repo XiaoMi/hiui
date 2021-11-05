@@ -1,0 +1,20 @@
+@import '../common/index.scss';
+
+// 基础层级关系
+$zindex-base-map: (
+  back: -1,
+  auto: 'auto',
+  normal: 0,
+  overlay: 800,
+  sticky: 1000,
+  drawer: 1020,
+  modal: 1040,
+  popper: 1060,
+  toast: 1080,
+  tooltip: 1100
+) !default;
+
+/// 获取层及对应 z-index
+@function get-zindex($c) {
+  @return map-safe-get($zindex-base-map, $c);
+}

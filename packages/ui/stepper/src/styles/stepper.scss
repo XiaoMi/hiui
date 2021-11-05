@@ -25,11 +25,12 @@ $prefix: '#{$component-prefix}-stepper' !default;
       left: 11px;
       width: 2px;
       height: calc(100% - 32px);
-      background-color: use-color('gray-80');
+      background-color: use-color('gray', 800);
     }
 
     &:last-of-type {
       flex: none;
+
       &::after {
         content: none;
       }
@@ -41,16 +42,15 @@ $prefix: '#{$component-prefix}-stepper' !default;
       text-align: center;
       line-height: 24px;
       border-radius: 50%;
-      color: use-color('white');
-      background-color: use-color('gray-80');
-
+      color: use-color-static('white');
+      background-color: use-color('gray', 800);
 
       &__icon {
-        color: use-color('gray-80');
+        color: use-color('gray', 800);
       }
 
       &__title {
-        color: use-color('gray-80');
+        color: use-color('gray', 800);
       }
 
       &__content {
@@ -60,23 +60,25 @@ $prefix: '#{$component-prefix}-stepper' !default;
         box-orient: vertical;
         overflow: hidden;
         font-size: 12px;
-        color: use-color('gray-80');
+        color: use-color('gray', 800);
         padding: 0;
       }
     }
+
     &--active {
       &::after {
-        background-color: use-color('primary');
+        background-color: use-color-mode('primary');
       }
+
       .item-step {
-        background-color: use-color('primary');
+        background-color: use-color-mode('primary');
 
         &__icon {
           opacity: 1;
         }
 
         &__title {
-          color: use-color('primary');
+          color: use-color-mode('primary');
         }
       }
     }
@@ -108,7 +110,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
         .item-step {
           &__title {
             &::after {
-              background-color: use-color('primary') !important;
+              background-color: use-color-mode('primary') !important;
             }
           }
         }
@@ -145,7 +147,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
               left: 100%;
               width: 9999px !important;
               height: 2px;
-              background-color: use-color('gray-80');
+              background-color: use-color('gray', 800);
             }
           }
         }
@@ -174,13 +176,13 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
       &.#{$prefix}__item--left-active {
         &::before {
-          background-color: use-color('primary') !important;
+          background-color: use-color-mode('primary') !important;
         }
       }
 
       &.#{$prefix}__item--right-active {
         &::after {
-          background-color: use-color('primary') !important;
+          background-color: use-color-mode('primary') !important;
         }
       }
 
@@ -191,7 +193,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
         width: calc(50% - 20px);
         left: 0;
         height: 2px;
-        background-color: use-color('gray-80');
+        background-color: use-color('gray', 800);
       }
 
       &:not(.#{$prefix}__item--last)::after {
@@ -201,20 +203,20 @@ $prefix: '#{$component-prefix}-stepper' !default;
         right: 0;
         width: calc(50% - 20px);
         height: 2px;
-        background-color: use-color('gray-80');
+        background-color: use-color('gray', 800);
       }
     }
 
     &.#{$prefix}__item--active {
       .item-step {
-        background-color: use-color('primary');
+        background-color: use-color-mode('primary');
 
         &__icon {
           opacity: 1;
         }
 
         &__title {
-          color: use-color('primary');
+          color: use-color-mode('primary');
         }
       }
     }
@@ -225,15 +227,15 @@ $prefix: '#{$component-prefix}-stepper' !default;
       text-align: center;
       line-height: 24px;
       border-radius: 50%;
-      color: use-color('white');
-      background-color: use-color('gray-80');
+      color: use-color-static('white');
+      background-color: use-color('gray', 800);
 
       &__icon {
-        color: use-color('gray-80');
+        color: use-color('gray', 800);
       }
 
       &__title {
-        color: use-color('gray-80');
+        color: use-color('gray', 800);
       }
 
       &__content {
@@ -243,13 +245,13 @@ $prefix: '#{$component-prefix}-stepper' !default;
         box-orient: vertical;
         overflow: hidden;
         font-size: 12px;
-        color: use-color('gray-80');
+        color: use-color('gray', 800);
         padding: 0 12px;
       }
     }
 
     &--last {
-      color: use-color('gray-80');
+      color: use-color('gray', 800);
     }
   }
 }

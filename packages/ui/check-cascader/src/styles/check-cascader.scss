@@ -16,7 +16,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     }
 
     .#{$component-prefix}-tag-input {
-      border-color: var(--color-primary);
+      border-color: use-color-mode('primary');
     }
   }
 }
@@ -94,7 +94,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
   &-item {
     width: 100%;
-    padding: $spacer-1 0;
+    padding: use-spacing(2) 0;
     position: relative;
     cursor: pointer;
     display: flex;
@@ -115,7 +115,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
   }
 
   &-option {
-    padding: 0 $spacer-2 + 2px;
+    padding: 0 use-spacing(4) + 2px;
     box-sizing: border-box;
     min-height: 32px;
     width: 100%;
@@ -125,23 +125,23 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     justify-content: space-between;
 
     &:hover {
-      background-color: use-color('primary-20');
+      background-color: use-color-mode('primary-10');
 
       // checkbox 联动颜色
       .#{$component-prefix}-checkbox__icon {
         .#{$prefix}-menus--selectchange & {
-          border-color: use-color('primary');
+          border-color: use-color-mode('primary');
         }
       }
     }
 
     &--selected {
-      background-color: use-color('primary-20');
+      background-color: use-color-mode('primary-10');
       font-weight: 700;
     }
 
     &--focused {
-      background-color: use-color('primary-10');
+      background-color: use-color-mode('primary-05');
     }
 
     &--checked {
@@ -150,11 +150,11 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
     &--disabled {
       cursor: not-allowed;
-      color: var(--color-gray-50);
+      color: use-color('gray', 500);
       font-weight: 400;
 
       .#{$prefix}-menu-switcher {
-        color: var(--color-gray-50);
+        color: use-color('gray', 500);
       }
     }
   }
@@ -186,7 +186,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     }
 
     &--matched {
-      color: use-color('primary');
+      color: use-color-mode('primary');
     }
   }
 
@@ -205,7 +205,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     }
 
     &--loading {
-      color: var(--color-primary);
+      color: use-color-mode('primary');
     }
   }
 }

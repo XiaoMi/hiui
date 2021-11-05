@@ -1,0 +1,25 @@
+// 基础动画时长
+$motion-duration-base-map: (
+  none: 0,
+  faster: 0.15s,
+  normal: 0.25s,
+  slow: 0.35s,
+  slower: 0.5s,
+) !default;
+
+// 基础动画曲线
+$motion-bezier-base-map: (
+  none: none,
+  easing: ease-in,
+  ease-in: cubic-bezier(0.4, 0, 1, 1),
+  ease-out: cubic-bezier(0, 0, 0.2, 1),
+  ease-in-out: cubic-bezier(0.4, 0, 0.2, 1),
+) !default;
+
+@function get-motion-duration($name) {
+  @return map-safe-get($motion-duration-base-map, $name);
+}
+
+@function get-motion-bezier($name) {
+  @return map-safe-get($motion-bezier-base-map, $name);
+}

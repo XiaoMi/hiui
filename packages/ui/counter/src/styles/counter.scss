@@ -8,20 +8,20 @@ $prefix: '#{$component-prefix}-counter' !default;
   height: auto;
   min-height: 32px;
   box-sizing: border-box;
-  color: use-color('gray-80');
-  font-size: $font-size-normal;
+  color: use-color('gray', 800);
+  font-size: use-text-size('normal');
   outline: none;
 
   $this: &;
 
   &--focused {
     .#{$prefix}__input {
-      border: 1px solid use-color('primary');
+      border: 1px solid use-color-mode('primary');
     }
   }
 
   &--out-of-bounds {
-    color: get-color($palette-secondary, 'danger');
+    color: use-color-mode('danger');
   }
 
   &__minus,
@@ -33,7 +33,6 @@ $prefix: '#{$component-prefix}-counter' !default;
     user-select: none;
     font: inherit;
     outline: none;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -42,14 +41,14 @@ $prefix: '#{$component-prefix}-counter' !default;
     width: 32px;
     height: 32px;
     line-height: 32px;
-    border: 1px solid use-color('gray-30');
+    border: 1px solid use-color('gray', 300);
     border-radius: 2px;
     font-weight: bold;
-    color: use-color('primary');
+    color: use-color-mode('primary');
     cursor: pointer;
 
     &.disabled {
-      color: use-color('gray-50');
+      color: use-color('gray', 500);
       cursor: not-allowed;
     }
   }
@@ -70,7 +69,7 @@ $prefix: '#{$component-prefix}-counter' !default;
     flex: 1 1 auto;
     width: 2 * 32px;
     padding: 0 6px;
-    border: 1px solid use-color('gray-30');
+    border: 1px solid use-color('gray', 300);
     color: inherit;
     outline: none;
     box-sizing: border-box;
