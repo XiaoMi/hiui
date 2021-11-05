@@ -1,0 +1,135 @@
+$_font-stack-sans: ('Helvetica Neue', helvetica, arial) !default;
+$_font-stack-serif: ('Times New Roman', times) !default;
+$_font-stack-mono: ('SFMono-Regular', consolas, 'Liberation Mono', menlo, courier) !default;
+$_font-stack-symbol: ('Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol') !default;
+
+// 基础字体家族
+$text-family-base-map: (
+  // 中文
+  yahei: ($_font-stack-sans, lantinghei sc, lantinghei tc, pingfang sc, pingfang tc, hiragino sans gb, heiti sc, heiti tc, microsoft yahei, source han sans sc, source han sans tc, noto sans cjk sc, noto sans cjk tc, sans-serif, $_font-stack-symbol),
+  // sans-serif
+  sans: ($_font-stack-sans, sans-serif, $_font-stack-symbol),
+  // serif
+  serif: ($_font-stack-serif, serif, $_font-stack-symbol),
+  // Monospace
+  mono: ($_font-stack-mono, monospace, $_font-stack-symbol)
+) !default;
+
+// 基础字体字重
+$text-weight-base-map: (
+  thin: 100,
+  extralight: 200,
+  light: 300,
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+  extrabold: 800,
+  black: 900,
+) !default;
+
+// 基础字符间距
+$text-spacing-base-map: (
+  tighter: -0.05em,
+  tight: -0.025em,
+  normal: 0,
+  wide: 0.025em,
+  wider: 0.05em,
+  widest: 0.1em,
+) !default;
+
+// 基础行高
+$text-lineheight-base-map: (
+  none: 1,
+  tight: 1.25,
+  snug: 1.375,
+  normal: 1.5,
+  relaxed: 1.625,
+  loose: 2,
+) !default;
+
+// 换算标准，相对于默认根元素 fontSize，即 16px 计算
+// 采用 rem/em，为了实现较为灵活自动的响应式
+
+// 基础文字大小
+$text-size-base-map: (
+  h1: (
+    font-size: 32px,
+    line-height: 40px
+  ),
+  h2: (
+    font-size: 24px,
+    line-height: 32px
+  ),
+  h3: (
+    font-size: 20px,
+    line-height: 28px
+  ),
+  h4: (
+    font-size: 16px,
+    line-height: 24px
+  ),
+  h5: (
+    font-size: 14px,
+    line-height: 22px
+  ),
+  h6: (
+    font-size: 12px,
+    line-height: 20px
+  ),
+  xl: (
+    font-size: 1.125rem, // 18px
+    line-height: 26px
+  ),
+  lg: (
+    font-size: 1rem, // 16px
+    line-height: 24px
+  ),
+  normal: (
+    font-size: 0.875rem, // 14px
+    line-height: 22px
+  ),
+  sm: (
+    font-size: 0.75rem, // 12px
+    line-height: 18px
+  ),
+  xs: (
+    font-size: 11px, // 11px
+    line-height: 18px
+  )
+) !default;
+
+@function get-text-family($type) {
+  @return map-safe-get($text-family-base-map, $type);
+}
+
+@function get-text-size($size) {
+  @return map-safe-get(
+    map-safe-get($text-size-base-map, $size),
+    'font-size'
+  );
+}
+
+@function get-text-lineheight($size) {
+  // if not match with size, can use number for layout
+  @return map-safe-get(
+    map-safe-get($text-size-base-map, $size),
+    'line-height'
+  );
+}
+
+@function get-text-lineheight-number($size) {
+  @return map-safe-get($text-size-lineheight-map, $size);
+}
+
+// @mixin get-text-size($size) {
+//   @return map-safe-get($text-size-base-map, $size);
+// }
+
+@function get-text-weight($weight) {
+  @return map-safe-get($text-weight-base-map, $weight);
+}
+
+@function get-text-spacing($size) {
+  @return map-safe-get($text-spacing-base-map, $size);
+}

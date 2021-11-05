@@ -19,11 +19,11 @@ $prefix: '#{$component-prefix}-input' !default;
   transition: all 0.3s;
   width: 100%;
   font-size: inherit;
-  color: use-color('black');
-  line-height: $line-height-size-normal;
+  color: use-color-static('black');
+  line-height: get-text-lineheight('normal');
 
   &::placeholder {
-    color: use-color('gray-50');
+    color: use-color('gray', 500);
   }
 
   &:disabled {
@@ -38,7 +38,7 @@ $prefix: '#{$component-prefix}-input' !default;
     box-sizing: border-box;
     font-size: inherit;
     border: 1px solid transparent;
-    background-color: use-color('white');
+    background-color: use-color-static('white');
     transition: all 0.3s;
     outline: 2px solid transparent;
 
@@ -68,7 +68,7 @@ $prefix: '#{$component-prefix}-input' !default;
     height: auto;
     font-size: 14px;
     text-align: center;
-    color: use-color('gray-50');
+    color: use-color('gray', 500);
     flex-shrink: 0;
     cursor: pointer;
     transition: all 0.3s;
@@ -76,7 +76,7 @@ $prefix: '#{$component-prefix}-input' !default;
     opacity: 0;
 
     &:hover {
-      color: use-color('black');
+      color: use-color-static('black');
     }
 
     &.active {
@@ -95,7 +95,7 @@ $prefix: '#{$component-prefix}-input' !default;
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
-    color: use-color('black');
+    color: use-color-static('black');
     font-size: inherit;
     text-align: center;
   }
@@ -115,7 +115,7 @@ $prefix: '#{$component-prefix}-input' !default;
   &__prepend,
   &__append {
     position: relative;
-    color: use-color('black');
+    color: use-color-static('black');
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
@@ -142,10 +142,10 @@ $prefix: '#{$component-prefix}-input' !default;
 
   &--size {
     &-sm {
-      font-size: $font-size-normal;
+      font-size: use-text-size('normal');
 
       .#{$prefix} {
-        padding: $spacer-1 $input-padding-width;
+        padding: use-spacing(2) $input-padding-width;
       }
 
       .#{$prefix}__inner {
@@ -164,10 +164,10 @@ $prefix: '#{$component-prefix}-input' !default;
     }
 
     &-md {
-      font-size: $font-size-large;
+      font-size: use-text-size('lg');
 
       .#{$prefix} {
-        padding: $spacer-2 $input-padding-width;
+        padding: use-spacing(4) $input-padding-width;
       }
 
       .#{$prefix}__inner {
@@ -186,10 +186,10 @@ $prefix: '#{$component-prefix}-input' !default;
     }
 
     &-lg {
-      font-size: $font-size-x-large;
+      font-size: use-text-size('xl');
 
       .#{$prefix} {
-        padding: $spacer-3 $input-padding-width;
+        padding: use-spacing(6) $input-padding-width;
       }
 
       .#{$prefix}__inner {
@@ -211,26 +211,26 @@ $prefix: '#{$component-prefix}-input' !default;
   &--appearance {
     &-outline {
       .#{$prefix}__inner {
-        border-color: use-color('gray-30');
+        border-color: use-color('gray', 300);
 
         &:not(.disabled):hover {
-          border-color: use-color('primary');
+          border-color: use-color-mode('primary');
         }
 
         &:not(.disabled).focused {
-          box-shadow: 0 0 0 1px use-color('primary');
-          border-color: use-color('primary');
+          box-shadow: 0 0 0 1px use-color-mode('primary');
+          border-color: use-color-mode('primary');
         }
 
         &.disabled {
-          color: var(--color-gray-50);
-          background-color: var(--color-gray-10);
+          color: use-color('gray', 500);
+          background-color: use-color('gray', 100);
         }
       }
 
       .#{$prefix}__prepend,
       .#{$prefix}__append {
-        border-color: use-color('gray-30');
+        border-color: use-color('gray', 300);
       }
     }
 
@@ -264,14 +264,14 @@ $prefix: '#{$component-prefix}-input' !default;
         background-color: rgb(248, 248, 248);
 
         &:not(.disabled):hover {
-          box-shadow: 0 0 0 1px use-color('primary');
-          border-color: use-color('primary');
+          box-shadow: 0 0 0 1px use-color-mode('primary');
+          border-color: use-color-mode('primary');
         }
 
         &:not(.disabled).focused {
-          box-shadow: 0 0 0 1px use-color('primary');
-          border-color: use-color('primary');
-          background-color: use-color('white');
+          box-shadow: 0 0 0 1px use-color-mode('primary');
+          border-color: use-color-mode('primary');
+          background-color: use-color-static('white');
         }
       }
     }
@@ -308,20 +308,20 @@ $prefix: '#{$component-prefix}-input' !default;
           // 两边透明边框各负 1px
           left: -1px;
           right: -1px;
-          border-bottom: 1px solid use-color('gray-30');
+          border-bottom: 1px solid use-color('gray', 300);
           transition: all 0.3s;
         }
 
         &:not(.disabled):hover {
           &::after {
-            border-bottom-color: use-color('primary');
+            border-bottom-color: use-color-mode('primary');
           }
         }
 
         &:not(.disabled).focused {
           &::after {
-            border-bottom-color: use-color('primary');
-            box-shadow: 0 1px 0 0 use-color('primary');
+            border-bottom-color: use-color-mode('primary');
+            box-shadow: 0 1px 0 0 use-color-mode('primary');
           }
         }
       }

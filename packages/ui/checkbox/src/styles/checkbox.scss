@@ -2,7 +2,7 @@
 
 $prefix: '#{$component-prefix}-checkbox' !default;
 
-@mixin hi-checkbox-style($color: get-color($palette-primary, 'hiui-blue')) {
+@mixin hi-checkbox-style($color: use-color-mode('primary')) {
   & {
     &__input {
       &:focus + .#{$prefix}__icon {
@@ -45,7 +45,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
 
   &:not(&--disabled):hover {
     .#{$prefix}__icon {
-      border-color: use-color('primary');
+      border-color: use-color-mode('primary');
     }
   }
 
@@ -88,7 +88,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     transition: 0.3s ease-out;
     line-height: 1;
     flex: none;
-    background-color: use-color('white');
+    background-color: use-color-static('white');
 
     &--indeterminate {
       &::after {

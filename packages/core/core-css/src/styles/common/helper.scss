@@ -1,0 +1,74 @@
+@use 'sass:map';
+
+// 从map对象中安全的获取对应值
+// 如果没有寻找到对应key，则抛出错误信息
+//
+// @param {Map<String,Any>} $data-map - 数据
+// @param {String} $data-key - 需要使用的key
+// @return {Any} - 对应key的值
+// @ref https://sass-lang.com/documentation/modules/map#get
+@function map-safe-get($data-map, $data-key) {
+  $result: map-get($map: $data-map, $key: $data-key);
+
+  @if ($result == null) {
+    $valid-keys-string: '[';
+
+    @each $key, $value in $data-map {
+      $valid-keys-string: $valid-keys-string + $key + ' ';
+    }
+
+    $valid-keys-string: $valid-keys-string + ']';
+
+    @debug 'Use key is not valid, it should be in range: '+ $valid-keys-string;
+  }
+
+  @return $result;
+}
+
+/// Use CSS variable
+/// @access public
+/// @Todo: switch to postcss
+/// @example:
+/// :root {
+///   --color-brand: #ff6700;
+/// }
+/// .modern {
+///   @include use-var(background-color, color-brand);
+/// }
+/// .modern-with-fallback {
+///   @include use-var(background-color, color-brand, #000);
+/// }
+/// .legacy {
+///   @include use-var(background-color, color-brand, #000, true);
+/// }
+/// .legacy-with-test {
+///   @include use-var(background-color, color-brand, #000, '.no-custom-properties');
+/// }
+@mixin use-var($property, $value, $fallback: false, $compatible-mode: false) {
+  // if fallback value given
+  @if $fallback {
+    // if need compatible selector
+    @if $compatible-mode {
+      @if type-of($compatible-mode) == string {
+        #{$property}: var(--#{$value}, #{$fallback});
+
+        #{$compatible-mode} & {
+          #{$property}: $fallback;
+        }
+      }
+
+      @else {
+        #{$property}: $fallback;
+        #{$property}: var(--#{$value}, #{$fallback});
+      }
+    }
+
+    @else {
+      #{$property}: var(--#{$value}, #{$fallback});
+    }
+  }
+
+  @else {
+    #{$property}: var(--#{$value});
+  }
+}

@@ -6,16 +6,16 @@ $prefix: '#{$component-prefix}-alert' !default;
   position: relative;
   padding: 9px 11px;
   border-radius: 2px;
-  font-size: $font-size-normal;
+  font-size: use-text-size('normal');
   min-width: 280px;
   display: block;
   align-items: flex-start;
 
   &__title {
     display: flex;
-    font-size: $font-size-normal;
+    font-size: use-text-size('normal');
     align-items: center;
-    line-height: $line-height-size-normal;
+    line-height: use-text-lineheight('normal');
 
     .hi-icon {
       height: 16px;
@@ -27,9 +27,9 @@ $prefix: '#{$component-prefix}-alert' !default;
   &__content {
     margin: 2px 24px 0 24px;
     font-weight: 400;
-    font-size: $font-size-small;
-    line-height: $line-height-size-small;
-    color: use-color('gray-80');
+    font-size: use-text-size('sm');
+    line-height: use-text-lineheight('normal');
+    color: use-color('gray', 800);
   }
 
   &__action {
@@ -37,21 +37,21 @@ $prefix: '#{$component-prefix}-alert' !default;
     top: 12px;
     right: 12px;
     cursor: pointer;
-    color: use-color('gray-70');
+    color: use-color('gray', 700);
   }
 
   $color-map: (
-    'primary': use-color('primary'),
-    'warning': get-color($palette-secondary, 'warning'),
-    'success': get-color($palette-secondary, 'success'),
-    'danger': get-color($palette-secondary, 'danger')
+    'primary': use-color-mode('primary'),
+    'warning': use-color-mode('warning'),
+    'success': use-color-mode('success'),
+    'danger': use-color-mode('danger'),
   ) !default;
 
   @each $key, $value in $color-map {
     &--#{$key} {
-      background-color: use-color(#{$key}-20);
+      background-color: use-color-mode(#{$key}-10);
       color: $value;
-      border: 1px solid use-color(#{$key}-40);
+      border: 1px solid use-color-mode(#{$key}-30);
     }
   }
 }

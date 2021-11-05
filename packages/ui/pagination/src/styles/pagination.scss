@@ -6,7 +6,7 @@ $border-radius: 2px !default;
 $primary-color: #4387f4 !default;
 
 .#{$prefix} {
-  list-style:none;
+  list-style: none;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -16,7 +16,7 @@ $primary-color: #4387f4 !default;
     display: inline-block;
     margin-left: 8px;
     min-width: 32px;
-    border:1px solid $border-color;
+    border: 1px solid $border-color;
     box-sizing: border-box;
     height: 32px;
     line-height: 30px;
@@ -49,6 +49,7 @@ $primary-color: #4387f4 !default;
       cursor: default;
     }
   }
+
   &__btn {
     display: inline-block;
     min-width: 32px;
@@ -57,7 +58,9 @@ $primary-color: #4387f4 !default;
     &:last-of-type {
       margin-left: 8px;
     }
+
     vertical-align: middle;
+
     & > button {
       width: 100%;
       height: 100%;
@@ -82,7 +85,6 @@ $primary-color: #4387f4 !default;
   }
 }
 
-
 $input-pagination-prefix: '#{$component-prefix}-input-pagination' !default;
 
 .#{$input-pagination-prefix} {
@@ -91,15 +93,15 @@ $input-pagination-prefix: '#{$component-prefix}-input-pagination' !default;
   height: auto;
   min-height: 24px;
   box-sizing: border-box;
-  color: use-color('gray-80');
-  font-size: $font-size-normal;
+  color: use-color('gray', 800);
+  font-size: use-text-size('normal');
   outline: none;
 
   $this: &;
 
   &--focused {
     #{$this}__input {
-      border: 1px solid use-color('primary');
+      border: 1px solid use-color-mode('primary');
     }
   }
 
@@ -121,11 +123,11 @@ $input-pagination-prefix: '#{$component-prefix}-input-pagination' !default;
     transition: color 0.25s;
 
     &:hover {
-      color: use-color('primary');
+      color: use-color-mode('primary');
     }
 
     &.disabled {
-      color: use-color('gray-50');
+      color: use-color('gray', 500);
       cursor: not-allowed;
     }
   }
@@ -136,7 +138,7 @@ $input-pagination-prefix: '#{$component-prefix}-input-pagination' !default;
     flex: 1 1 auto;
     width: 48px;
     padding: 0 6px;
-    border: 1px solid use-color('gray-30');
+    border: 1px solid use-color('gray', 300);
     border-radius: 4px;
     color: inherit;
     outline: none;

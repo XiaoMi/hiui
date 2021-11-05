@@ -28,5 +28,12 @@
     "source.fixAll.stylelint": true,
     "source.organizeImports": false
   },
-  "cSpell.words": ["brandblue", "linehight", "selectchange"]
+  "cSpell.words": [
+    "brandblue",
+    "lineheight",
+    "linehight",
+    "selectchange",
+    "yahei",
+    "zindex"
+  ]
 }

@@ -5,13 +5,13 @@ $prefixCls: #{$component-prefix}-loading !default;
 .#{$prefixCls} {
   @include flex(center, center, column);
 
-  color: var('--color-primary');
+  color: use-color-static('primary');
 
   &__mask {
-    @include transition;
     @include component-reset;
     @include flex;
 
+    transition: 0.3s ease;
     z-index: 19;
 
     &-enter {
