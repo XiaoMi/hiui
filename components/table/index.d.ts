@@ -6,7 +6,7 @@ export type TableColumnItem = {
   title: string | JSX.Element
   dataKey: string
   align?: 'left' | 'right' | 'center'
-  sorter?: () => boolean
+  sorter?: (a: any, b: any) => number
   avg?: boolean
   total?: boolean
   width?: number
