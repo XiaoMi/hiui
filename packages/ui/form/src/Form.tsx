@@ -73,6 +73,7 @@ export interface FormProps {
   children?: any
   initialValues?: object
   validateOnChange?: boolean
+  useLatestInitialValuesOnReset?: boolean
 }
 
 if (__DEV__) {

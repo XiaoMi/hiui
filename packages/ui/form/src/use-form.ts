@@ -20,10 +20,11 @@ export const useForm = ({
   onSubmit,
   onReset,
 }: UseFormProps) => {
-  const [fieldValidationCollectionRef, registerField, unregisterField] = useCollection<
-    FormFieldCollection
-  >()
+  const [getValidation, registerField, unregisterField] = useCollection<FormFieldCollection>()
 
+  /**
+   * form 数据管理中心
+   */
   const [formState, formDispatch] = useReducer(formReducer, {
     values: initialValues,
     errors: initialErrors,
@@ -46,6 +47,7 @@ export const useForm = ({
     })
   }, [])
 
+  // 每次主动拿取 formState 都是最新的
   const formStateRef = useLatestRef(formState)
 
   const getFieldNames = useCallback(() => {
@@ -68,17 +70,17 @@ export const useForm = ({
 
   const validateField = useCallback(
     async (field: string, value: unknown) => {
-      const fieldValidation = fieldValidationCollectionRef.current.get(field)
-      if (fieldValidation) {
-        const error = fieldValidation.validate(value)
-        console.log('validateField', error, value)
+      const fieldValidation = getValidation(field)
 
-        const errorMsg = await Promise.resolve(error)
+      if (fieldValidation) {
+        const errorResultMaybePromise = fieldValidation.validate(value)
+        const errorMsg = await errorResultMaybePromise
+
         setFieldError(field, errorMsg)
         return errorMsg
       }
     },
-    [fieldValidationCollectionRef, setFieldError]
+    [getValidation, setFieldError]
   )
 
   const validateFieldState = useCallback(
@@ -359,5 +361,9 @@ const useCollection = <T>() => {
     collectionRef.current.delete(key)
   }, [])
 
-  return [collectionRef, register, unregister] as const
+  const getCollection = useCallback((key: string) => {
+    return collectionRef.current.get(key)
+  }, [])
+
+  return [getCollection, register, unregister] as const
 }

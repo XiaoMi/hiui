@@ -10,7 +10,7 @@ export const useFormContext = () => {
   const context = useContext(formContext)
 
   if (!context) {
-    throw new Error('The FormContext context should using in Form.')
+    throw new Error('The FormContext should using in Form.')
   }
 
   return context
