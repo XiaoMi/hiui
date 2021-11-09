@@ -4,6 +4,7 @@
 
 - 修复 `Select` 组件高亮词搜索存在正则注入  [#1972](https://github.com/XiaoMi/hiui/issues/1972)
 - 修复 `Table` 组件 resizable 调节列宽功能失效  [#1970](https://github.com/XiaoMi/hiui/issues/1970)
+- 修复 `Input` 组件的 placeholder 没法动态更新  [#1970](https://github.com/XiaoMi/hiui/issues/1982)
 
 # 3.8.0
 

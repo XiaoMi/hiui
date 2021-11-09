@@ -11,20 +11,8 @@ class Input extends Component {
     super(props)
 
     this._Input = React.createRef()
-    // 传入属性
-    const commonAttrs = {
-      type: 'text',
-      size: 'm',
-      prefixicon: '',
-      suffixicon: '',
-      prefix: '',
-      suffix: ''
-    }
-    const oldProps = Object.assign({}, commonAttrs, this.props)
-    const newProps = getAttrs(oldProps)
+
     const { prepend, append, value, defaultValue } = props
-    // 分离有效属性和事件
-    this.attrs = newProps.attrs
     const valueSource = value === undefined ? defaultValue : value
     const type = typeof valueSource
     const prefix = typeof prepend === 'string' ? prepend : ''
@@ -42,6 +30,21 @@ class Input extends Component {
       prepend: prependNode,
       append: appendNode
     }
+  }
+
+  get attrs() {
+    // 传入属性
+    const commonAttrs = {
+      type: 'text',
+      size: 'm',
+      prefixicon: '',
+      suffixicon: '',
+      prefix: '',
+      suffix: ''
+    }
+    const compactProps = Object.assign({}, commonAttrs, this.props)
+
+    return getAttrs(compactProps).attrs
   }
 
   formatValueInit(type, valueSource) {
