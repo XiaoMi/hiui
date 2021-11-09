@@ -20,6 +20,7 @@ const RangePanel = () => {
     format,
     timeInterval,
     shortcuts,
+    weekOffset,
     theme,
     locale,
     onSelect
@@ -75,7 +76,9 @@ const RangePanel = () => {
       }
       onSelect(date, calenderClickIsEnd)
       if (type === 'weekrange') {
-        onPick([newRange.start.startOf('week'), newRange.end.endOf('week')], showTime)
+        const weekMethod = weekOffset ? 'isoWeek' : 'week'
+
+        onPick([newRange.start.startOf(weekMethod), newRange.end.endOf(weekMethod)], showTime)
       } else {
         onPick([newRange.start, newRange.end], showTime)
       }
