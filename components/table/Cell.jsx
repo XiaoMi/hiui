@@ -79,7 +79,9 @@ const Cell = ({
                   setLoading(true)
                   await data
                     .then((res) => {
-                      loadChildren.current = { parentKey: allRowData.key, data: res }
+                      if (Array.isArray(res)) {
+                        loadChildren.current = { parentKey: allRowData.key, data: res }
+                      }
                       setLoading(false)
                     })
                     .catch(() => {
