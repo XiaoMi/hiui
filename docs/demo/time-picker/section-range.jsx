@@ -11,10 +11,13 @@ class Demo extends React.Component {
       <TimePicker
         defaultValue={{start: new Date(), end: new Date()}}
         type="timerange"
-        onChange={(date, dateString) => console.log(date, dateString)}
+        onChange={(date, dateString) => {
+          console.log('onChange: ', date, dateString)
+        }}
       />
     )
   }
 }`
+
 const DemoBase = () => <DocViewer code={code} scope={{ TimePicker }} prefix={prefix} desc={desc} />
 export default DemoBase
