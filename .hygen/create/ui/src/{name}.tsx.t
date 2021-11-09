@@ -4,6 +4,7 @@ to: <%= h.uiDir(`${name}/src/${h.camelCase(name)}.tsx`) %>
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = '<%= name %>'
 const _prefix = getPrefixCls(_role)
@@ -32,7 +33,7 @@ export const <%= h.camelCase(name) %> = forwardRef<HTMLDivElement | null, <%= h.
   }
 )
 
-export interface <%= h.camelCase(name) %>Props {
+export interface <%= h.camelCase(name) %>Props extends HiBaseHTMLProps<'div'> {
   /**
    * 组件默认的选择器类
    */
