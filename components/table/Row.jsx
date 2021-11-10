@@ -153,11 +153,16 @@ const Row = ({
             onChange={(e) => {
               const { selectedRowKeys = [], onChange } = rowSelection
               const _selectedRowKeys = [...selectedRowKeys]
+
               if (_selectedRowKeys.includes(rowData.key)) {
-                onChange(_selectedRowKeys.filter((key) => key !== rowData.key))
+                onChange(
+                  _selectedRowKeys.filter((key) => key !== rowData.key),
+                  rowData,
+                  false
+                )
               } else {
                 _selectedRowKeys.push(rowData.key)
-                onChange(_selectedRowKeys)
+                onChange(_selectedRowKeys, rowData, true)
               }
             }}
           />

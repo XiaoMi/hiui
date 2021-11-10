@@ -165,12 +165,14 @@ const HeaderTable = ({ rightFixedIndex }) => {
                   indeterminate={!isAllChecked && rowSelection.selectedRowKeys.length > 0}
                   onChange={(e) => {
                     if (rowSelection.onChange) {
+                      const selectedItems = isAllChecked
+                        ? []
+                        : flatTreeData(_.cloneDeep(data)).filter((data) => !disabledData.current.includes(data.key))
+
                       rowSelection.onChange(
-                        isAllChecked
-                          ? []
-                          : flatTreeData(_.cloneDeep(data))
-                              .filter((data) => !disabledData.current.includes(data.key))
-                              .map((d) => d.key)
+                        selectedItems.map((item) => item.key),
+                        selectedItems,
+                        !isAllChecked
                       )
                     }
                   }}
