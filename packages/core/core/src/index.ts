@@ -30,3 +30,5 @@ export declare type HiBaseHTMLFieldProps<
    */
   invalid?: boolean
 }
+
+export declare type ValueOf<T> = T[keyof T]
