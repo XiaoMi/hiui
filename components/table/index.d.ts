@@ -41,7 +41,7 @@ export type TableFixedOption = {
 export type TableRowSelection = {
   selectedRowKeys?: string[] | number[]
   getCheckboxConfig?: (rowData: object) => object
-  onChange?: (selectedRowKeys: string | number, targetRow?: object, shouldChecked?: boolean) => void
+  onChange?: (selectedRowKeys: string | number, targetRow?: object | object[], shouldChecked?: boolean) => void
 }
 
 export type TableHeaderRowReturn = {

@@ -186,4 +186,4 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | ----------------- | ---------------------- | ----------------------------------- | ---------------- | ------ |
 | selectedRowKeys   | 选中的行（受控）       | string[]                            | row 中对应的 key | -      |
 | getCheckboxConfig | 行选择的配置项         | rowData => object                   | -                | -      |
-| onChange          | 选中项发生变化时的回调，如果是全选操作，targetRow 和 shouldChecked 为 undefined | (selectedRowKeys: string[], targetRow?: object, shouldChecked?: boolean ) => void | -                | -      |
+| onChange          | 选中项发生变化时的回调，如果是全选操作，`targetRow` 将是数组结构 | (selectedRowKeys: string[], targetRow?: object \| object[], shouldChecked?: boolean) => void | -                | -      |
