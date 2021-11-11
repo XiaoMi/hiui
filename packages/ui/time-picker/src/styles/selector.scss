@@ -18,6 +18,7 @@ $selector-shortcut-class: '#{$selector-prefix}__shortcut' !default;
     width: 100%;
     border-top: 1px solid get-color('gray', 200);
     border-bottom: 1px solid get-color('gray', 200);
+    pointer-events: none;
   }
 
   &:hover{
@@ -43,14 +44,21 @@ $selector-shortcut-class: '#{$selector-prefix}__shortcut' !default;
     justify-content: center;
     user-select: none;
     font-size: 14px;
+    border-radius: 8px;
 
-    &--active{
-      font-weight: bold;
+    &:hover{
+      background: get-color('blue', 50);
     }
 
-    &--disabled{
+    &#{&}--active{
+      font-weight: bold;
+      background: transparent;
+    }
+
+    &#{&}--disabled{
       opacity: 0.2;
       cursor: not-allowed;
+      background: transparent;
     }
   }
 
