@@ -75,7 +75,7 @@ export const Selector: FC<SelectorProps> = (props) => {
 
   const onItemClick = useCallback(
     (item: SelectorItem, index: number) => {
-      if (item.id !== value) {
+      if (item.id !== value && !item.disabled) {
         onChange(item)
       }
     },
