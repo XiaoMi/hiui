@@ -1,0 +1,77 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-card' !default;
+
+.#{$prefix} {
+  border-radius: 2px;
+  box-sizing: border-box;
+  background: use-color('white');
+
+  &--small {
+    width: 276px;
+  }
+
+  &--default {
+    width: 376px;
+  }
+
+  &--large {
+    width: 576px;
+  }
+
+  // 解决 img 底部空白问题
+  > img {
+    display: block;
+    width: 100%;
+    border-radius: 2px 2px 0 0;
+  }
+
+  &__header {
+    padding: 0 16px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    &--divider {
+      border-bottom: 1px solid use-color('gray-20');
+    }
+  }
+
+  &__cover {
+    overflow: hidden;
+  }
+
+  &__body {
+    padding: 16px;
+    font-size: $font-size-normal;
+  }
+
+  &__title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex: 1;
+    font-size: $font-size-large;
+    font-weight: $font-weight-bold;
+  }
+
+  &__extra {
+    font-size: $font-size-normal;
+  }
+
+  &--bordered {
+    border: 1px solid use-color('gray-20');
+  }
+
+  &--hoverable {
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: 0 2px 8px 0 use-color('gray-10');
+    }
+  }
+}
