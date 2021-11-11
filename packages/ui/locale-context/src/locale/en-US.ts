@@ -44,6 +44,9 @@ export default {
     hours: 'H',
     minutes: 'M',
     seconds: 'S',
+    weekrange: function (year: number, week: number) {
+      return year + '-W' + week
+    },
   },
   pagination: {
     total: ['Total', 'items'],
