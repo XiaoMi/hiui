@@ -8,6 +8,7 @@
 - 修复 `Input` 组件的 placeholder 没法动态更新  [#1970](https://github.com/XiaoMi/hiui/issues/1982)
 - 优化 `Dropdown` 组件 props 中的 data 消除副作用 [#1991](https://github.com/XiaoMi/hiui/issues/1991)
 - 修复 `TimePicker` 组件使用 minusStep 当点击 clear 后会再次自动回显值  [#1986](https://github.com/XiaoMi/hiui/issues/1986)
+- 修复 `Table` 组件 window 系统 `draggable=false` 禁用失效  [#1993](https://github.com/XiaoMi/hiui/issues/1993)
 
 # 3.8.0
 

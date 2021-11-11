@@ -68,6 +68,8 @@ const Row = ({
 
   const onDragStartCallback = useCallback(
     (e) => {
+      if (!draggable) return
+
       const clientY = e.clientY
       dargInfo.current = {
         startClientY: clientY,
@@ -79,11 +81,13 @@ const Row = ({
       setDragStatus(true)
       setDragRowKey(rowKey)
     },
-    [allRowData, dragStatus, dragRowKey, onDragStart]
+    [allRowData, dragStatus, dragRowKey, onDragStart, draggable]
   )
 
   const onDragEnter = useCallback(
     (e) => {
+      if (!draggable) return
+
       const { startClientY, dragKey } = dargInfo.current
       const clienY = e.clientY
       dargInfo.current = {
@@ -94,7 +98,7 @@ const Row = ({
       }
       dragKey !== rowKey && setDropHightLineStatus(clienY < startClientY ? 'top' : 'bottom')
     },
-    [rowKey, dropHightLineStatus]
+    [rowKey, dropHightLineStatus, draggable]
   )
 
   return [
@@ -109,14 +113,17 @@ const Row = ({
       }}
       onDragStart={onDragStartCallback}
       onDragEnd={() => {
+        if (!draggable) return
         dargInfo.current = {}
         setDropHightLineStatus(null)
       }}
       onDragEnter={onDragEnter}
       onDragOver={(e) => {
+        if (!draggable) return
         e.preventDefault()
       }}
       onDragLeave={() => {
+        if (!draggable) return
         setDropHightLineStatus(null)
       }}
       className={classNames(`${prefix}__row`, {
@@ -124,11 +131,11 @@ const Row = ({
         [`${prefix}__row--highlight`]: hoverRow === rowData.key || highlightedRowKeys.includes(rowData.key),
         [`${prefix}__row--total`]: isSumRow,
         [`${prefix}__row--draggable`]: draggable,
-        [`${prefix}__row--draging`]: dragRowKey === rowKey,
+        [`${prefix}__row--draging`]: draggable && dragRowKey === rowKey,
         [`${prefix}__row--draggable__border--top`]:
-          typeof dargInfo.current.dropKey !== 'undefined' && dropHightLineStatus === 'top',
+          draggable && typeof dargInfo.current.dropKey !== 'undefined' && dropHightLineStatus === 'top',
         [`${prefix}__row--draggable__border--bottom`]:
-          typeof dargInfo.current.dropKey !== 'undefined' && dropHightLineStatus === 'bottom',
+          draggable && typeof dargInfo.current.dropKey !== 'undefined' && dropHightLineStatus === 'bottom',
         [`${prefix}__row--avg`]: isAvgRow
       })}
       key="row"
