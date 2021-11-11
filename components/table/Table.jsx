@@ -265,6 +265,7 @@ const Table = ({
   }, [dataSource, currentPage])
 
   const onDropCallback = useCallback(() => {
+    if (!draggable) return
     const { rowData, dropRowData, level } = dargInfo.current
     const onDropCallback = onDrop ? onDrop(rowData, dropRowData, data, level) : true
     if (onDropCallback.toString() === '[object Promise]') {
@@ -274,7 +275,8 @@ const Table = ({
     } else {
       onDropCallback && updateData()
     }
-  }, [data])
+  }, [data, draggable])
+
   return (
     <TableContext.Provider
       value={{
