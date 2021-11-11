@@ -44,7 +44,7 @@ export default {
     hours: 'H',
     minutes: 'M',
     seconds: 'S',
-    weekrange: function (year, week) {
+    weekrange: function (year: number, week: number) {
       return year + '-W' + week
     },
   },
