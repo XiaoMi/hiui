@@ -46,7 +46,9 @@
     "@hi-ui/classname": "^4.0.0-alpha.0",
     "@hi-ui/core": "^4.0.0-alpha.0",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
-    "@hi-ui/env": "^4.0.0-alpha.0"
+    "@hi-ui/env": "^4.0.0-alpha.0",
+    "@hi-ui/icons": "^4.0.0-alpha.8",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.5"
   },
   "peerDependencies": {
     "react": "^17.0.1",

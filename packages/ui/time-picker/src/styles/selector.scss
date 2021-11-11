@@ -1,0 +1,64 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$selector-prefix: '#{$component-prefix}-time-picker__selector' !default;
+$selector-shortcut-class: '#{$selector-prefix}__shortcut' !default;
+
+.#{$selector-prefix} {
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  width: 60px;
+  color:get-color('gray', 600);
+
+  &__indicator{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 100%;
+    border-top: 1px solid get-color('gray', 200);
+    border-bottom: 1px solid get-color('gray', 200);
+  }
+
+  &:hover{
+    .#{$selector-shortcut-class}{
+      opacity: 1;
+    }
+  }
+
+  &__scroll-part{
+    overflow-y: auto;
+    box-sizing: border-box;
+    scrollbar-width: none; /* firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+
+    &::-webkit-scrollbar {
+      display: none; /* Chrome Safari */
+    }
+  }
+
+  &__item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    font-size: 14px;
+
+    &--active{
+      font-weight: bold;
+    }
+
+    &--disabled{
+      opacity: 0.2;
+      cursor: not-allowed;
+    }
+  }
+
+  &__shortcut{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 12px;
+    opacity: 0;
+  }
+}
