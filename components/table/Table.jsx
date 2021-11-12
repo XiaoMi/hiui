@@ -16,6 +16,7 @@ import axios from 'axios'
 import _ from 'lodash'
 import Provider from '../context'
 import Loading from '../loading'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import './style'
 const defaultHeaderRow = () => {
   return {
@@ -56,11 +57,15 @@ const Table = ({
   onLoadChildren,
   rowExpandable = () => true,
   // *********
-  sortCol,
-  setSortCol,
-  visibleCols,
-  setVisibleCols,
-  setCacheVisibleCols,
+  getSettingKeyValue,
+  sortCols,
+  setSortCols,
+  cacheSortCols,
+  setCacheSortCols,
+  cacheHiddenColKeys,
+  setCacheHiddenColKeys,
+  hiddenColKeys,
+  setHiddenColKeys,
   scrollWidth,
   theme,
   draggable,
@@ -335,11 +340,15 @@ const Table = ({
         syncScrollTop,
         alignRightColumns,
         // setting 列操作相关
-        sortCol,
-        setSortCol,
-        visibleCols,
-        setVisibleCols,
-        setCacheVisibleCols,
+        getSettingKeyValue,
+        sortCols,
+        setSortCols,
+        cacheSortCols,
+        setCacheSortCols,
+        cacheHiddenColKeys,
+        setCacheHiddenColKeys,
+        hiddenColKeys,
+        setHiddenColKeys,
         // 出现横向滚动条时的宽度
         scrollWidth,
         // 同步行高度
@@ -412,42 +421,85 @@ const Table = ({
   )
 }
 
-const TableWrapper = ({ columns, uniqueId, standard, data, loading, ...settingProps }) => {
-  const _sortCol =
-    uniqueId && window.localStorage.getItem(`${uniqueId}_sortCol`)
-      ? JSON.parse(window.localStorage.getItem(`${uniqueId}_sortCol`))
-      : columns
+const TableWrapper = ({
+  columns,
+  uniqueId,
+  standard,
+  data,
+  loading,
+  // 默认值是 dataKey，主要原因是为了兼容老版本，后面建议使用 `key`
+  // `dataKey` 最终是绑定数据的，可能会有重复列的使用场景
+  settingKeyPropName = 'dataKey',
+  hiddenColKeys: hiddenColKeysProp,
+  onHiddenColKeysChange,
+  ...settingProps
+}) => {
+  const getSettingKeyValue = useCallback(
+    (obj) => {
+      const val = obj[settingKeyPropName]
+      if (val == null) {
+        console.error(`Error: Not found for the settingKeyPropName: ${settingKeyPropName} attribute in columns prop.`)
+      }
+      return val
+    },
+    [settingKeyPropName]
+  )
 
-  const _visibleCols =
-    uniqueId && window.localStorage.getItem(`${uniqueId}_visibleCols`)
-      ? JSON.parse(window.localStorage.getItem(`${uniqueId}_visibleCols`))
-      : columns
-
-  const _cacheVisibleCols =
-    uniqueId && window.localStorage.getItem(`${uniqueId}_cacheVisibleCols`)
-      ? JSON.parse(window.localStorage.getItem(`${uniqueId}_cacheVisibleCols`))
-      : columns
   // 列操作逻辑
-  const [sortCol, setSortCol] = useState(_sortCol)
-  const [visibleCols, setVisibleCols] = useState(_visibleCols)
-  const [cacheVisibleCols, setCacheVisibleCols] = useState(_cacheVisibleCols)
-  // 当column发生改变的时候，同步setting
+
+  const [sortCols, setSortCols] = useState(() => {
+    if (uniqueId) {
+      try {
+        const localsSortCols = JSON.parse(window.localStorage.getItem(`${uniqueId}_sortCols`))
+
+        if (Array.isArray(localsSortCols)) {
+          return localsSortCols
+        }
+      } catch (error) {}
+    }
+
+    return columns
+  })
+
+  // 用于维护列操作时排序临时状态
+  const [cacheSortCols, setCacheSortCols] = useState(sortCols)
+
+  const [_hiddenColKeys, setHiddenColKeys] = useUncontrolledState(
+    () => {
+      if (uniqueId) {
+        try {
+          const localHiddenColKeys = JSON.parse(window.localStorage.getItem(`${uniqueId}_hiddenColKeys`))
+
+          if (Array.isArray(localHiddenColKeys)) {
+            return localHiddenColKeys
+          }
+        } catch (error) {}
+      }
+
+      return []
+    },
+    hiddenColKeysProp,
+    onHiddenColKeysChange
+  )
+
+  // 用于维护列操作时显隐临时状态
+  const [cacheHiddenColKeys, setCacheHiddenColKeys] = useState(_hiddenColKeys)
+
+  // 过滤掉 undefined 和 null，保证 includes 匹配 column（对象可能未声明 `key` 属性 ） 是有效的可展示的列
+  const hiddenColKeys = _hiddenColKeys.filter((key) => key != null)
+  const mergedColumns = sortCols.filter((col) => !hiddenColKeys.includes(getSettingKeyValue(col)))
+
+  // 当column发生改变的时候，同步 setting 的 sortCols 设置
   useEffect(() => {
-    setSortCol(columns)
-    setVisibleCols(columns)
-    setCacheVisibleCols(columns)
+    setSortCols(columns)
   }, [columns])
+
   useEffect(() => {
     if (uniqueId) {
-      window.localStorage.setItem(`${uniqueId}_sortCol`, JSON.stringify(sortCol))
-      window.localStorage.setItem(`${uniqueId}_visibleCols`, JSON.stringify(visibleCols))
-      window.localStorage.setItem(`${uniqueId}_cacheVisibleCols`, JSON.stringify(cacheVisibleCols))
+      window.localStorage.setItem(`${uniqueId}_sortCols`, JSON.stringify(cacheSortCols))
+      window.localStorage.setItem(`${uniqueId}_hiddenColKeys`, JSON.stringify(hiddenColKeys))
     }
-  }, [sortCol, visibleCols, cacheVisibleCols, uniqueId])
-
-  useEffect(() => {
-    setCacheVisibleCols(_cacheVisibleCols)
-  }, [_cacheVisibleCols])
+  }, [cacheSortCols, hiddenColKeys, uniqueId])
 
   const standardPreset = standard
     ? {
@@ -463,28 +515,36 @@ const TableWrapper = ({ columns, uniqueId, standard, data, loading, ...settingPr
   return loading !== undefined ? (
     <Loading visible={loading}>
       <Table
-        columns={cacheVisibleCols}
+        columns={mergedColumns}
         data={data || []}
         {...settingProps}
         {...standardPreset}
-        sortCol={sortCol}
-        setSortCol={setSortCol}
-        visibleCols={visibleCols}
-        setVisibleCols={setVisibleCols}
-        setCacheVisibleCols={setCacheVisibleCols}
+        getSettingKeyValue={getSettingKeyValue}
+        sortCols={sortCols}
+        setSortCols={setSortCols}
+        cacheSortCols={cacheSortCols}
+        setCacheSortCols={setCacheSortCols}
+        cacheHiddenColKeys={cacheHiddenColKeys}
+        setCacheHiddenColKeys={setCacheHiddenColKeys}
+        hiddenColKeys={hiddenColKeys}
+        setHiddenColKeys={setHiddenColKeys}
       />
     </Loading>
   ) : (
     <Table
-      columns={cacheVisibleCols}
+      columns={mergedColumns}
       data={data || []}
       {...settingProps}
       {...standardPreset}
-      sortCol={sortCol}
-      setSortCol={setSortCol}
-      visibleCols={visibleCols}
-      setVisibleCols={setVisibleCols}
-      setCacheVisibleCols={setCacheVisibleCols}
+      getSettingKeyValue={getSettingKeyValue}
+      sortCols={sortCols}
+      setSortCols={setSortCols}
+      cacheSortCols={cacheSortCols}
+      setCacheSortCols={setCacheSortCols}
+      cacheHiddenColKeys={cacheHiddenColKeys}
+      setCacheHiddenColKeys={setCacheHiddenColKeys}
+      hiddenColKeys={hiddenColKeys}
+      setHiddenColKeys={setHiddenColKeys}
     />
   )
 }

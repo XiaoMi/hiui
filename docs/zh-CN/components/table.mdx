@@ -90,6 +90,9 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | scrollWidth                   | 表格滚动的宽度（当表格总设置宽度（含自适应列）大于表格父级容器宽度时需要设置）**3.7.0 版本以后，该属性不建议使用** | number                                                    | -                                         | -          |
 | showColHighlight              | 表格某一列`hover`时，该列高亮                                                                                      | boolean                                                   | true \| false                             | false      |
 | draggable                     | 表格行可拖拽                                                                                                       | boolean                                                   | true \| false                             | false      |
+| settingKeyPropName            | 自定义列设置时操作的 `key` 属性 (v3.9.0新增)                                                                          | string                                                    | -                                        | 'dataKey'   |
+| hiddenColKeys                 | 隐藏列（受控） (v3.9.0新增)                                                                                          | string[]                                                  | -                                        | -          |
+| onHiddenColKeysChange         | 列隐藏设置时回调 (v3.9.0新增)                                                                                        | (hiddenColKeys: string[]) => void                         | -                                         | -          |
 
 ## Event
 
