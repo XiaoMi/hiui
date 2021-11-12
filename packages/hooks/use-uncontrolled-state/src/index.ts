@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
-const isEqual = Object.is
+// const isEqual = Object.is
+const isEqual: any = () => false
 
 /**
  * if `controlledState` is `undefined` will be uncontrolled using the defaultState
