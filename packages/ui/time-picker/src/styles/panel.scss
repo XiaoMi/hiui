@@ -1,0 +1,44 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$panel-prefix: '#{$component-prefix}-time-picker__panel' !default;
+$separate-line-color: get-color('gray', 200);
+
+.#{$panel-prefix}{
+  width: 180px;
+
+  &__header{
+    display: flex;
+    height: 48px;
+    align-items: center;
+    border-bottom: 1px solid $separate-line-color;
+    user-select: none;
+    cursor: default;
+  }
+
+  &__header-title{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: get-color('gray', 700);
+  }
+
+  &__selector-container{
+    display: flex;
+    position: relative;
+    z-index: 0;
+  }
+
+  &__indicator{
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    right: 12px;
+    transform: translateY(-50%);
+    border-bottom: 1px solid $separate-line-color;
+    border-top: 1px solid $separate-line-color;
+    pointer-events: none;
+  }
+}
