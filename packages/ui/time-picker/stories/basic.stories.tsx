@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import TimePicker from '../src'
 import { Selector, SelectorItem } from '../src/Selector'
+import { Panel } from '../src/Panel'
 // import '../src/styles/index.scss'
 
 const Data = (() => {
@@ -18,6 +19,8 @@ const Data = (() => {
 
 export const Basic = () => {
   const [value, setValue] = useState('12')
+
+  const [panelValue, setPanelValue] = useState('11:11:11')
   return (
     <>
       <h1>Basic</h1>
@@ -30,6 +33,24 @@ export const Basic = () => {
           value={value}
           onChange={(e) => setValue(e.id)}
           fullDisplayItemNumber={7}
+        />
+        <Panel
+          itemHeight={32}
+          fullDisplayItemNumber={7}
+          hourStep={1}
+          secondStep={1}
+          minuteStep={1}
+          disabledHours={() => []}
+          disabledMinutes={() => []}
+          disabledSeconds={() => []}
+          prefix={getPrefixCls('time-picker')}
+          format="HH:mm:ss"
+          value={panelValue}
+          panel="single"
+          onChange={(e) => {
+            console.log('panel', e)
+            setPanelValue(e)
+          }}
         />
       </div>
     </>

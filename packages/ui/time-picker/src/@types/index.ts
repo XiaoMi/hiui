@@ -2,4 +2,46 @@ export type TimePickerType = 'single' | 'range'
 
 export type TimePickerFormat = 'HH:mm:ss' | 'HH' | 'mm' | 'ss' | 'HH:mm' | 'mm:ss'
 
-export type TimePickerPanel = 'single' | 'range-start' | 'range-end'
+export type TimePickerPanelType = 'single' | 'range-start' | 'range-end'
+
+export enum TimePickerSelectorType {
+  hour = 1,
+  minute,
+  second,
+}
+
+export interface TimePickerStep {
+  /**
+   * 小时选项间隔
+   * @default 1
+   */
+  hourStep?: number
+  /**
+   * 分钟选项间隔
+   * @default 1
+   */
+  minuteStep?: number
+  /**
+   * 秒选项间隔
+   * @default 1
+   */
+  secondStep?: number
+}
+
+export interface TimePickerFilter {
+  /**
+   * 禁止选择的小时
+   * @default () => []
+   */
+  disabledHours?: (panel: TimePickerPanelType) => number[]
+  /**
+   * 禁止选择的分钟
+   * @default () => []
+   */
+  disabledMinutes?: (hour: number, panel: TimePickerPanelType) => number[]
+  /**
+   * 禁止选择的秒数
+   * @default () => []
+   */
+  disabledSeconds?: (hour: number, minute: number, panel: TimePickerPanelType) => number[]
+}

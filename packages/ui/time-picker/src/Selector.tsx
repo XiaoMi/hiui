@@ -111,7 +111,10 @@ export const Selector: FC<SelectorProps> = (props) => {
 
   useEffect(() => {
     const currentIndex = data.findIndex((item) => item.id === value)
-    scrollToMatchIndex(currentIndex)
+    // 避免非法值跳转
+    if (currentIndex >= 0) {
+      scrollToMatchIndex(currentIndex)
+    }
   }, [data, value, scrollToMatchIndex])
 
   return (
@@ -139,7 +142,6 @@ export const Selector: FC<SelectorProps> = (props) => {
           </div>
         ))}
       </div>
-      <div className={`${componentPrefix}__indicator`} style={{ height: `${itemHeight}px` }} />
       <div className={`${componentPrefix}__shortcut`} onClick={() => onShortcutClick(false)}>
         <DownOutlined />
       </div>

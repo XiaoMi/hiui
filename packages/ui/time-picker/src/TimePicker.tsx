@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { TimePickerFormat, TimePickerPanel, TimePickerType } from './@types'
+import { TimePickerFilter, TimePickerStep, TimePickerType, TimePickerFormat } from './@types'
 
 const _role = 'time-picker'
 const _prefix = getPrefixCls(_role)
@@ -22,7 +22,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
   }
 )
 
-export interface TimePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placeholder'> {
+type ExtendType = Omit<HiBaseHTMLProps<'div'>, 'placeholder'> & TimePickerFilter & TimePickerStep
+export interface TimePickerProps extends ExtendType {
   /**
    * 选择器类型
    * @default 'single'
@@ -51,21 +52,7 @@ export interface TimePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * @default true
    */
   bordered?: boolean
-  /**
-   * 小时选项间隔
-   * @default 1
-   */
-  hourStep?: number
-  /**
-   * 分钟选项间隔
-   * @default 1
-   */
-  minuteStep?: number
-  /**
-   * 秒选项间隔
-   * @default 1
-   */
-  secondStep?: number
+
   /**
    * 是否禁用
    * @default false
@@ -75,21 +62,6 @@ export interface TimePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 输入框占位符
    */
   placeholder?: string[]
-  /**
-   * 禁止选择的小时
-   * @default () => []
-   */
-  disabledHours?: (panel: TimePickerPanel) => number[]
-  /**
-   * 禁止选择的分钟
-   * @default () => []
-   */
-  disabledMinutes?: (hour: number, panel: TimePickerPanel) => number[]
-  /**
-   * 禁止选择的秒数
-   * @default () => []
-   */
-  disabledSeconds?: (hour: number, minute: number, panel: TimePickerPanel) => number[]
 }
 
 if (__DEV__) {
