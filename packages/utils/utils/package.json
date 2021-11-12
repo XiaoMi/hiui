@@ -46,7 +46,8 @@
     "@hi-ui/classname": "^4.0.0-alpha.1",
     "@hi-ui/container": "^4.0.0-alpha.4",
     "@hi-ui/env": "^4.0.0-alpha.3",
-    "@hi-ui/request": "^4.0.0-alpha.2"
+    "@hi-ui/request": "^4.0.0-alpha.2",
+    "@hi-ui/tree-utils": "^4.0.0-alpha.2"
   },
   "devDependencies": {
     "@hi-ui/hi-build": "^4.0.0-alpha.2"
