@@ -8,7 +8,7 @@ export interface FilterDataItem {
   /**
    * 节点标题
    */
-  content: React.ReactNode
+  content?: React.ReactNode
   /**
    * 是否禁用
    */
