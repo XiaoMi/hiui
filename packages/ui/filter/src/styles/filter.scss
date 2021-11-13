@@ -1,0 +1,76 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-filter' !default;
+
+.#{$prefix} {
+  display: flex;
+
+  &__label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+
+    &::after {
+      display: inline-block;
+      content: '';
+      width: 1px;
+      height: 14px;
+      background-color: #d8d8d8;
+    }
+
+    &-title {
+      display: inline-block;
+      width: 76px;
+      font-size: use-text-size('normal');
+      color: use-color('gray', 600);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    padding-left: 16px;
+  }
+}
+
+.#{$prefix}-item {
+  position: relative;
+  height: 40px;
+  font-size: use-text-size('normal');
+  color: use-color-static('black');
+  line-height: 40px;
+  margin-right: 40px;
+  cursor: pointer;
+  transition: all 0.3s;
+  list-style: none;
+
+  &--active {
+    color: use-color-mode('primary');
+
+    &-underline {
+      position: relative;
+
+      &::after {
+        position: absolute;
+        width: 24px;
+        height: 2px;
+        display: inline-block;
+        background-color: use-color-mode('primary');
+        bottom: 0;
+        left: 50%;
+        right: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+
+  &--disabled {
+    color: use-color-mode('primary');
+  }
+}
