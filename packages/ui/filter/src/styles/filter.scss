@@ -71,6 +71,7 @@ $prefix: '#{$component-prefix}-filter' !default;
   }
 
   &--disabled {
-    color: use-color-mode('primary');
+    cursor: not-allowed;
+    opacity: 0.4;
   }
 }
