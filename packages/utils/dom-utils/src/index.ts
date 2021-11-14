@@ -7,7 +7,7 @@ import React from 'react'
  * @returns
  * @ref https://developer.mozilla.org/zh-CN/docs/Web/API/Event/preventDefault
  */
-export function mockDefaultEventHandlers<T extends React.ReactEventHandler<any>>(
+export function mockDefaultHandlers<T extends React.ReactEventHandler<any>>(
   ...handlers: (T | undefined)[]
 ) {
   return function bubbledFunc(event: React.SyntheticEvent) {
@@ -19,4 +19,22 @@ export function mockDefaultEventHandlers<T extends React.ReactEventHandler<any>>
       return event.defaultPrevented
     })
   }
+}
+
+/**
+ * 设置 html  data 属性，表示状态
+ */
+export const setAttrStatus = (bool?: boolean) => (bool ? '' : undefined)
+
+/**
+ * 设置 html  aria 属性
+ */
+export const setAttrAria = (bool?: boolean) => (bool ? true : undefined)
+
+/**
+ * 阻止事件的行为，包括默认事件和冒泡
+ */
+export const stopEvent = (evt: React.SyntheticEvent) => {
+  evt.preventDefault()
+  evt.stopPropagation()
 }

@@ -1,17 +1,18 @@
 import { createContext, useContext } from 'react'
 
-import { UseRadioReturn } from './use-radio'
+import { UseRadioGroupReturn } from './use-radio-group'
 
-const RadioContext = createContext<Omit<UseRadioReturn, 'rootProps'> | null>(null)
+const RadioGroupContext = createContext<Omit<UseRadioGroupReturn, 'rootProps'> | null>(null)
 
-export const RadioProvider = RadioContext.Provider
+export const RadioGroupProvider = RadioGroupContext.Provider
 
-export const useRadioContext = () => {
-  const context = useContext(RadioContext)
+export const useRadioGroupContext = () => {
+  const context = useContext(RadioGroupContext)
 
-  if (!context) {
-    throw new Error('The RadioContext context should using in Radio.')
-  }
+  // 允许 Radio 单独存在，不做检查
+  // if (!context) {
+  // throw new Error('The RadioGroupContext context should using in Radio.')
+  // }
 
   return context
 }
