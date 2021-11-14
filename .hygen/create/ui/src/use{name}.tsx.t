@@ -15,7 +15,7 @@ data: dataProp = NOOP_ARRAY,
 }
 
 export interface Use<%= h.camelCase(name) %>Props {
-  data: <%= h.camelCase(name) %>DataItem[]
+  data?: <%= h.camelCase(name) %>DataItem[]
 }
 
 export type Use<%= h.camelCase(name) %>Return = ReturnType<typeof use<%= h.camelCase(name) %>>
