@@ -1,14 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { setAttrStatus } from '@hi-ui/dom-utils'
-
-const hiddenStyle: React.CSSProperties = {
-  position: 'absolute',
-  border: 0,
-  margin: 0,
-  opacity: 0,
-  overflow: 'hidden',
-}
+import { setAttrStatus, hiddenStyle } from '@hi-ui/dom-utils'
 
 export const useRadio = ({
   name: nameProp,

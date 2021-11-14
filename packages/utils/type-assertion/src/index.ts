@@ -1,5 +1,12 @@
 export type Dict<T = any> = Record<string, T>
 
+export type Nullish = null | undefined | void
+
+/**
+ * Assert is Nullish
+ */
+export const isNullish = (arg: unknown): arg is Nullish => arg === null || arg === undefined
+
 /**
  * Assert is an objectLike
  * TODO: Assert the return type
@@ -38,8 +45,3 @@ export const isNumeric = (arg: unknown): arg is string | number => !Number.isNaN
  */
 export const isFunction = <T extends Function = Function>(arg: any): arg is T =>
   typeof arg === 'function'
-
-/**
- * Assert is Nullish
- */
-export const isNullish = (arg: unknown) => arg === null || arg === undefined

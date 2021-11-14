@@ -11,6 +11,7 @@ $prefix: '#{$component-prefix}-radio' !default;
   display: inline-flex;
   align-items: center;
   vertical-align: middle;
+  margin-inline-end: use-spacing(16);
 
   &__controller {
     @include flex;
@@ -51,10 +52,27 @@ $prefix: '#{$component-prefix}-radio' !default;
         transform: scale(0.68);
       }
     }
+
+    .#{$prefix}[data-disabled] & {
+      border-color: use-color('gray', 300);
+      background: use-color('gray', 100);
+
+      &::after {
+        background: use-color('gray', 300);
+      }
+    }
   }
 
   &__label {
     box-sizing: border-box;
     margin-inline-start: use-spacing(4);
+
+    .#{$prefix}[data-disabled] & {
+      color: use-color('gray', 600);
+    }
   }
+}
+
+.#{$prefix}-group {
+  display: inline-block;
 }

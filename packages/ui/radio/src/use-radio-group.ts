@@ -1,34 +1,51 @@
-import React from 'react'
-
-const NOOP_ARRAY = [] as []
+import React, { useCallback } from 'react'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
 export const useRadioGroup = ({
-  name: nameProp,
+  name,
   value: valueProp,
-  onChange: onChangeProp,
-  checked: checkedProp,
-  readOnly = false,
+  onChange,
+  defaultValue = '',
   disabled = false,
-  gap = 6,
   ...rest
 }: UseRadioGroupProps) => {
-  return { rootProps: rest }
+  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
+
+  const handleChange = useCallback(
+    (value: React.ReactText) => {
+      if (disabled) {
+        return
+      }
+
+      tryChangeValue(value)
+    },
+    [disabled, tryChangeValue]
+  )
+
+  const isChecked = useCallback((valueArg: React.ReactText) => valueArg === value, [value])
+
+  const rootProps = {
+    ...rest,
+    role: 'radiogroup',
+  }
+
+  return { rootProps, value, onChange: handleChange, name, isChecked, disabled }
 }
 
 export interface UseRadioGroupProps {
   /**
-   * 单选对应的值
+   * 字段名称，转发给所有 Radio
+   */
+  name?: string
+  /**
+   * 选中项的值（受控）
    */
   value?: React.ReactText
 
   /**
-   * 是否选中（受控）
+   * 默认选中项的值
    */
-  checked?: boolean
-  /**
-   * 默认是否选中
-   */
-  defaultChecked?: boolean
+  defaultValue?: React.ReactText
   /**
    * 选中态改变时的回调
    */
@@ -37,18 +54,6 @@ export interface UseRadioGroupProps {
    * 是否禁用
    */
   disabled?: boolean
-  /**
-   * 页面载入时，是否自动获取焦点
-   */
-  autoFocus?: boolean
-  /**
-   * 是否只读
-   */
-  readOnly?: boolean
-  /**
-   * 和文本的间距
-   */
-  gap?: number
 }
 
 export type UseRadioGroupReturn = ReturnType<typeof useRadioGroup>

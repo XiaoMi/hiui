@@ -1,6 +1,17 @@
 import React from 'react'
 
 /**
+ * 隐藏 dom 样式
+ */
+export const hiddenStyle: React.CSSProperties = {
+  position: 'absolute',
+  border: 0,
+  margin: 0,
+  opacity: 0,
+  overflow: 'hidden',
+}
+
+/**
  * 模拟事件默认事件处理机制，以此执行传入的事件处理器
  *
  * @param handlers
