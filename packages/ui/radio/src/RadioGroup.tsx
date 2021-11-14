@@ -5,7 +5,7 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useRadioGroup, UseRadioGroupProps } from './use-radio-group'
 import { RadioGroupProvider } from './context'
 
-const RADIO_GROUP_PREFIX = getPrefixCls('RadioGroup')
+const RADIO_GROUP_PREFIX = getPrefixCls('radio-group')
 
 /**
  * TODO: What is RadioGroup
