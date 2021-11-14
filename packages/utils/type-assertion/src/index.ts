@@ -26,8 +26,7 @@ export const isArray: <T>(arg: unknown) => arg is T[] = Array.isArray
 /**
  * Assert is an array and `array.length > 0`
  */
-export const isArrayNonEmpty = <T>(arg: unknown): arg is T[] & { length: 0 } =>
-  isArray(arg) && arg.length > 0
+export const isArrayNonEmpty = <T>(arg: unknown): arg is T[] => isArray(arg) && arg.length > 0
 
 /**
  * Assert is numeric
@@ -39,3 +38,8 @@ export const isNumeric = (arg: unknown): arg is string | number => !Number.isNaN
  */
 export const isFunction = <T extends Function = Function>(arg: any): arg is T =>
   typeof arg === 'function'
+
+/**
+ * Assert is Nullish
+ */
+export const isNullish = (arg: unknown) => arg === null || arg === undefined
