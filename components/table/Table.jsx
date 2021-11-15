@@ -57,7 +57,7 @@ const Table = ({
   onLoadChildren,
   rowExpandable = () => true,
   // *********
-  getSettingKeyValue,
+  getColKeyValue,
   sortCols,
   setSortCols,
   cacheSortCols,
@@ -340,7 +340,7 @@ const Table = ({
         syncScrollTop,
         alignRightColumns,
         // setting 列操作相关
-        getSettingKeyValue,
+        getColKeyValue,
         sortCols,
         setSortCols,
         cacheSortCols,
@@ -427,23 +427,17 @@ const TableWrapper = ({
   standard,
   data,
   loading,
-  // 默认值是 dataKey，主要原因是为了兼容老版本，后面建议使用 `key`
-  // `dataKey` 最终是绑定数据的，可能会有重复列的使用场景
-  settingKeyPropName = 'dataKey',
   hiddenColKeys: hiddenColKeysProp,
   onHiddenColKeysChange,
   ...settingProps
 }) => {
-  const getSettingKeyValue = useCallback(
-    (obj) => {
-      const val = obj[settingKeyPropName]
-      if (val == null) {
-        console.error(`Error: Not found for the settingKeyPropName: ${settingKeyPropName} attribute in columns prop.`)
-      }
-      return val
-    },
-    [settingKeyPropName]
-  )
+  const getColKeyValue = useCallback((obj) => {
+    const val = obj.dataKey
+    if (val == null) {
+      console.error(`Error: Not found for the unique dataKey attribute in columns prop.`)
+    }
+    return val
+  }, [])
 
   // 列操作逻辑
 
@@ -487,7 +481,7 @@ const TableWrapper = ({
 
   // 过滤掉 undefined 和 null，保证 includes 匹配 column（对象可能未声明 `key` 属性 ） 是有效的可展示的列
   const hiddenColKeys = _hiddenColKeys.filter((key) => key != null)
-  const mergedColumns = sortCols.filter((col) => !hiddenColKeys.includes(getSettingKeyValue(col)))
+  const mergedColumns = sortCols.filter((col) => !hiddenColKeys.includes(getColKeyValue(col)))
 
   // 当column发生改变的时候，同步 setting 的 sortCols 设置
   useEffect(() => {
@@ -519,7 +513,7 @@ const TableWrapper = ({
         data={data || []}
         {...settingProps}
         {...standardPreset}
-        getSettingKeyValue={getSettingKeyValue}
+        getColKeyValue={getColKeyValue}
         sortCols={sortCols}
         setSortCols={setSortCols}
         cacheSortCols={cacheSortCols}
@@ -536,7 +530,7 @@ const TableWrapper = ({
       data={data || []}
       {...settingProps}
       {...standardPreset}
-      getSettingKeyValue={getSettingKeyValue}
+      getColKeyValue={getColKeyValue}
       sortCols={sortCols}
       setSortCols={setSortCols}
       cacheSortCols={cacheSortCols}

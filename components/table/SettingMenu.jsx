@@ -14,7 +14,7 @@ const SettingMenu = () => {
   useClickOutside(popperMenu, () => setShowPopper(false), colMenuRef)
 
   const {
-    getSettingKeyValue,
+    getColKeyValue,
     sortCols,
     setSortCols,
     cacheSortCols,
@@ -105,7 +105,7 @@ const SettingMenu = () => {
                 >
                   <div style={{ padding: '16px 20px' }}>
                     {cacheSortCols.map((c, index) => (
-                      <Draggable key={getSettingKeyValue(c)} draggableId={getSettingKeyValue(c)} index={index}>
+                      <Draggable key={getColKeyValue(c)} draggableId={getColKeyValue(c)} index={index}>
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
@@ -128,11 +128,11 @@ const SettingMenu = () => {
                               }}
                             >
                               <Switch
-                                checked={!cacheHiddenColKeys.includes(getSettingKeyValue(c))}
+                                checked={!cacheHiddenColKeys.includes(getColKeyValue(c))}
                                 onChange={(shouldChecked) => {
                                   const nextCacheHiddenColKeys = shouldChecked
-                                    ? cacheHiddenColKeys.filter((col) => col !== getSettingKeyValue(c))
-                                    : cacheHiddenColKeys.concat(getSettingKeyValue(c))
+                                    ? cacheHiddenColKeys.filter((col) => col !== getColKeyValue(c))
+                                    : cacheHiddenColKeys.concat(getColKeyValue(c))
 
                                   setCacheHiddenColKeys(nextCacheHiddenColKeys)
                                 }}
