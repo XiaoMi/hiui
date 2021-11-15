@@ -1,0 +1,14 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$input-prefix: '#{$component-prefix}-time-picker__input' !default;
+$interact-area: '#{$input-prefix}__interact-area' !default;
+
+.#{$input-prefix}{
+  &--not-valid{
+    color: get-color('magenta', 200);
+  }
+
+  &__interact-area{
+    color: inherit;
+  }
+}
