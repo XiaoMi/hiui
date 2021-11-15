@@ -1,14 +1,20 @@
-import { fFindNestedChildNodesById, flattenTree, getNodeAncestors } from '../src'
+import {
+  fFindNestedChildNodesById,
+  findNodeById,
+  findNodesByIds,
+  flattenTree,
+  getNodeAncestors,
+} from '../src'
 
-describe('utils', () => {
+function gNode(id, children) {
+  return {
+    id,
+    children,
+  }
+}
+
+describe('flatten', () => {
   describe('flatten treeNode', () => {
-    function gNode(id, children) {
-      return {
-        id,
-        children,
-      }
-    }
-
     it('order should be pre-order', () => {
       const flattedData = flattenTree([
         gNode('0', [
@@ -194,6 +200,80 @@ describe('utils', () => {
       expect(childNodes.map(({ id }) => id)).toEqual([])
 
       expect(nodeIndex).toEqual(flattedData.length - 1)
+    })
+  })
+})
+
+describe('normal', () => {
+  describe('findNodeById', () => {
+    it('found by recursion looking', () => {
+      const treeData = [
+        gNode('0', [
+          gNode('0-0'),
+          gNode('0-1'),
+          gNode('0-2', [
+            gNode('0-2-0'),
+            gNode('0-2-1'),
+            gNode('0-2-2'),
+            gNode('0-2-3', [
+              // break line
+              gNode('0-2-3-0'),
+            ]),
+            gNode('0-2-4'),
+          ]),
+        ]),
+        gNode('1'),
+      ]
+
+      expect(findNodeById(treeData, '0-2-3')).toEqual(
+        gNode('0-2-3', [
+          // break line
+          gNode('0-2-3-0'),
+        ])
+      )
+    })
+
+    it('should be `null` when not found', () => {
+      const treeData = [
+        gNode('0', [
+          gNode('0-0'),
+          gNode('0-1', [
+            gNode('0-1-0', [
+              // break line
+              gNode('0-1-0-0'),
+            ]),
+            gNode('0-1-1'),
+          ]),
+        ]),
+        gNode('1'),
+      ]
+
+      expect(findNodeById(treeData, 'aaa')).toEqual(null)
+    })
+  })
+
+  describe('findNodesByIds', () => {
+    it('found by recursion looking', () => {
+      const treeData = [
+        gNode('0', [
+          gNode('0-0'),
+          gNode('0-1'),
+          gNode('0-2', [
+            gNode('0-2-0'),
+            gNode('0-2-1'),
+            gNode('0-2-2'),
+            gNode('0-2-3', [
+              // break line
+              gNode('0-2-3-0'),
+            ]),
+            gNode('0-2-4'),
+          ]),
+        ]),
+        gNode('1'),
+      ]
+
+      const ids = ['0', '0-2-3', '0-2-4']
+      expect(findNodesByIds(treeData, ids)).toEqual(ids.map((id) => findNodeById(treeData, id)))
     })
   })
 })
