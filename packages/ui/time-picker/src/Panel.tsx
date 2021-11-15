@@ -17,7 +17,7 @@ interface PanelProps extends ExtendType {
   prefix: string
   panel: TimePickerPanelType
   /**
-   * 此值必须是通过校验的正确值
+   * 此值必须是通过校验的正确值 或者 是空值 ''
    */
   value: string
   onChange: (value: string) => void
@@ -46,7 +46,14 @@ export const Panel: FC<PanelProps> = (props) => {
   const componentPrefix = useMemo(() => `${prefix}__panel`, [prefix])
 
   const selectorTypes = useMemo(() => analysisFormat(format), [format])
-  const separateValue = useMemo(() => value.split(':').map((item) => Number(item)), [value])
+  const separateValue = useMemo(
+    () =>
+      value
+        .split(':')
+        .filter((item) => item)
+        .map((item) => Number(item)),
+    [value]
+  )
 
   const getSelectorData = useCallback(
     (type: TimePickerSelectorType) =>
@@ -103,7 +110,13 @@ export const Panel: FC<PanelProps> = (props) => {
               itemHeight={itemHeight}
               fullDisplayItemNumber={fullDisplayItemNumber}
               onChange={(e) => {
-                const result = [...separateValue]
+                let result = [...separateValue]
+                // 如果 value = ''，则代表为空值
+                // 此时选择任意项，其他项直接视作 0
+                if (value === '') {
+                  result = [0, 0, 0].slice(0, selectorTypes.length)
+                }
+
                 result[index] = Number(e.id)
                 onChange(result.map((item) => String(item).padStart(2, '0')).join(':'))
               }}
@@ -123,6 +136,7 @@ export const Panel: FC<PanelProps> = (props) => {
     separateValue,
     itemHeight,
     fullDisplayItemNumber,
+    value,
   ])
 
   return (

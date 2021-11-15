@@ -7,18 +7,37 @@ import { TimePickerFilter, TimePickerStep, TimePickerType, TimePickerFormat } fr
 const _role = 'time-picker'
 const _prefix = getPrefixCls(_role)
 
+const DefaultValue = ['', '']
+const DefaultDisabledFunc = () => {
+  // default
+}
 /**
  * TODO: What is TimePicker
  */
 export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
-  ({ prefixCls = _prefix, role = _role, className, children, ...rest }, ref) => {
+  (
+    {
+      prefixCls = _prefix,
+      role = _role,
+      className,
+      itemHeight = 32,
+      fullDisplayItemNumber = 32,
+      hourStep = 1,
+      minuteStep = 1,
+      secondStep = 1,
+      format = 'HH:mm:ss',
+      type = 'single',
+      defaultValue = DefaultValue,
+      disabled = false,
+      disabledHours = DefaultDisabledFunc,
+      disabledSeconds = DefaultDisabledFunc,
+      disabledMinutes = DefaultDisabledFunc,
+    },
+    ref
+  ) => {
     const cls = cx(prefixCls, className)
 
-    return (
-      <div ref={ref} role={role} className={cls}>
-        {children}
-      </div>
-    )
+    return <div ref={ref} role={role} className={cls}></div>
   }
 )
 
@@ -52,7 +71,6 @@ export interface TimePickerProps extends ExtendType {
    * @default true
    */
   bordered?: boolean
-
   /**
    * 是否禁用
    * @default false
@@ -62,6 +80,16 @@ export interface TimePickerProps extends ExtendType {
    * 输入框占位符
    */
   placeholder?: string[]
+  /**
+   * 选择器高
+   * @default 32
+   */
+  itemHeight: number
+  /**
+   * 完全展示item的数目，必须为奇数
+   * @default 7
+   */
+  fullDisplayItemNumber: number
 }
 
 if (__DEV__) {

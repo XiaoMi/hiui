@@ -3,6 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import TimePicker from '../src'
 import { Selector, SelectorItem } from '../src/Selector'
 import { Panel } from '../src/Panel'
+import { Input } from '../src/Input'
 // import '../src/styles/index.scss'
 
 const Data = (() => {
@@ -19,13 +20,13 @@ const Data = (() => {
 
 export const Basic = () => {
   const [value, setValue] = useState('12')
-
-  const [panelValue, setPanelValue] = useState('11:11:11')
+  const [inputValue, setInputValue] = useState(['', ''])
+  const [panelValue, setPanelValue] = useState('')
   return (
     <>
       <h1>Basic</h1>
       <div className="time-picker-basic__wrap">
-        <TimePicker></TimePicker>
+        <TimePicker />
         <Selector
           prefix={getPrefixCls('time-picker')}
           data={Data}
@@ -37,7 +38,7 @@ export const Basic = () => {
         <Panel
           itemHeight={32}
           fullDisplayItemNumber={7}
-          hourStep={1}
+          hourStep={3}
           secondStep={1}
           minuteStep={1}
           disabledHours={() => []}
@@ -50,6 +51,24 @@ export const Basic = () => {
           onChange={(e) => {
             console.log('panel', e)
             setPanelValue(e)
+          }}
+        />
+        <Input
+          type="range"
+          placeholders={[]}
+          prefix={getPrefixCls('time-picker')}
+          format="HH:mm:ss"
+          hourStep={1}
+          secondStep={1}
+          minuteStep={1}
+          border
+          disabledHours={() => []}
+          disabledMinutes={() => []}
+          disabledSeconds={() => []}
+          value={inputValue}
+          onChange={(e) => {
+            console.log('input', e)
+            setInputValue(e)
           }}
         />
       </div>
