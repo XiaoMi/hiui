@@ -52,3 +52,118 @@ $prefix: '#{$component-prefix}-progress' !default;
     }
   }
 }
+
+$circle-progress-prefix: '#{$component-prefix}-circle-progress' !default;
+
+.#{$circle-progress-prefix} {
+  position: relative;
+
+  &__text {
+    display: block;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    line-height: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__svgbackground {
+    fill: none;
+    stroke: #e9e9e7;
+    stroke-width: 6;
+  }
+
+  &__circle {
+    fill: none;
+    stroke: use-color-mode('primary');
+    stroke-width: 6;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.4s cubic-bezier(0.3, 0, 0.7, 1);
+
+    $color-map: (
+      'warn': use-color-mode('warning'),
+      'success': use-color-mode('success'),
+      'error': use-color-mode('danger')
+    ) !default;
+
+    @each $key, $value in $color-map {
+      &--#{$key} {
+        stroke: $value;
+      }
+    }
+  }
+}
+
+$dashboard-progress-prefix: '#{$component-prefix}-dashboard-progress' !default;
+
+.#{$dashboard-progress-prefix} {
+  position: relative;
+
+  &__text {
+    display: block;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    line-height: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__svgbackground {
+    fill: none;
+    stroke: #e9e9e7;
+    stroke-width: 6;
+  }
+
+  &__circle {
+    fill: none;
+    stroke: use-color-mode('primary');
+    stroke-width: 6;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.4s cubic-bezier(0.3, 0, 0.7, 1);
+
+    $color-map: (
+      'warn': use-color-mode('warning'),
+      'success': use-color-mode('success'),
+      'error': use-color-mode('danger')
+    ) !default;
+
+    @each $key, $value in $color-map {
+      &--#{$key} {
+        stroke: $value;
+      }
+    }
+  }
+
+  &__dashboard {
+    fill: none;
+    stroke: use-color-mode('primary');
+    stroke-width: 6;
+    transition: stroke-dasharray 0.4s cubic-bezier(0.3, 0, 0.7, 1);
+
+    $color-map: (
+      'warn': use-color-mode('warning'),
+      'success': use-color-mode('success'),
+      'error': use-color-mode('danger')
+    ) !default;
+
+    @each $key, $value in $color-map {
+      &--#{$key} {
+        stroke: $value;
+      }
+    }
+  }
+}
