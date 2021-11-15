@@ -1,26 +1,27 @@
-import React, { useEffect, forwardRef, useRef, useCallback } from 'react'
+import React, { forwardRef, useCallback, useEffect, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { HiBaseHTMLProps } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { UseDrawerProps } from './use-drawer'
+// import { DrawerProvider } from './context'
 import { CSSTransition } from 'react-transition-group'
 import { useScrollLock } from '@hi-ui/use-scroll-lock'
 import { Portal } from '@hi-ui/portal'
-import { stackManager, useStackManager } from './hooks'
+import { stackManager, useStackManager } from '@hi-ui/modal'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useToggle } from '@hi-ui/use-toggle'
 
-const _role = 'modal'
-const _prefix = getPrefixCls(_role)
+const DRAWER_PREFIX = getPrefixCls('drawer')
 
 /**
- * TODO: What is Modal
+ * TODO: What is Drawer
  */
-export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
+export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
   (
     {
-      prefixCls = _prefix,
-      role = _role,
+      prefixCls = DRAWER_PREFIX,
+      role = 'dialog',
       className,
       children,
       portalClassName,
@@ -37,6 +38,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       onOverlayClick,
       closeIcon = 'close',
       timeout = 300,
+      placement = 'right',
       onClose,
       onAfterOpen,
       onAfterClose,
@@ -51,7 +53,6 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   ) => {
     const [transitionVisible, transitionVisibleAction] = useToggle(false)
     const [transitionExited, transitionExitedAction] = useToggle(true)
-
     const modalRef = useRef<HTMLDivElement>(null)
     // const [_container, tryAppend, tryRemove] = useContainer(container)
 
@@ -119,7 +120,12 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       }
     }, [visible, closeOnEsc, transitionVisibleAction, transitionExitedAction, handleKeydown])
 
-    const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
+    const cls = cx(
+      prefixCls,
+      className,
+      `${prefixCls}--size-${size}`,
+      `${prefixCls}--placement-${placement}`
+    )
 
     console.log(transitionVisible)
 
@@ -156,58 +162,8 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   }
 )
 
-export interface ModalProps extends HiBaseHTMLProps<'div'> {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-  /**
-   * 外层挂载节点的样式类
-   */
-  portalClassName?: string
-  /**
-   * 弹出层样式类
-   */
-  overlayClassName?: string
-  /**
-   * 弹窗大小
-   */
-  size?: 'sm' | 'md' | 'lg'
-  visible?: boolean
-  onClose?: () => void
-  closeOnEsc?: boolean
-  onEscKeyDown?: (event: KeyboardEvent) => void
-  closeOnOverlayClick?: boolean
-  onOverlayClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-  closable?: boolean
-  closeIcon?: string
-  lockScroll?: boolean
-  onAfterOpen?: () => void
-  timeout?: number
-  onAfterClose?: () => void
-  /**
-   * 禁用 portal
-   */
-  disabledPortal?: boolean
-  /**
-   * 指定 portal 的容器
-   */
-  container?: (() => HTMLElement | null) | HTMLElement | null
-  onExited?: () => void
-}
+export interface DrawerProps extends HiBaseHTMLProps<'div'>, UseDrawerProps {}
 
 if (__DEV__) {
-  Modal.displayName = 'Modal'
+  Drawer.displayName = 'Drawer'
 }
