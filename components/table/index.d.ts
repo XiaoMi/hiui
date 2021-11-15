@@ -93,6 +93,8 @@ export interface TableProps {
   onDragStart?: (rowData: object) => void
   onDrop?: (dragRowData: object, dropRowData: object, data: object, level: Level) => boolean | Promise
   onDropEnd?: (dragRowData: object, dropRowData: object, data: object) => void
+  hiddenColKeys?: string[]
+  onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
 }
 declare const Table: React.ComponentType<TableProps>
 export default Table

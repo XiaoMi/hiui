@@ -2,6 +2,7 @@
 
 # 3.8.0-rc
 
+- 新增 `Table` 组件 `hiddenColKeys` 和 `onHiddenColKeysChange` 受控控制列显隐  [#1994](https://github.com/XiaoMi/hiui/issues/1994)
 - 新增 `Input` 组件的支持 placeholder 受控动态更新  [#1982](https://github.com/XiaoMi/hiui/issues/1982)
 - 修复 `Select` 组件高亮词搜索存在正则注入  [#1972](https://github.com/XiaoMi/hiui/issues/1972)
 - 修复 `Table` 组件 resizable 调节列宽功能失效  [#1970](https://github.com/XiaoMi/hiui/issues/1970)
