@@ -41,7 +41,7 @@ $selector-shortcut-class: '#{$selector-prefix}__shortcut' !default;
     }
 
     &#{&}--active{
-      font-weight: bold;
+      font-weight: 700;
       background: transparent;
     }
 

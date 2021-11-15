@@ -29,6 +29,7 @@ $separate-line-color: get-color('gray', 200);
     display: flex;
     position: relative;
     z-index: 0;
+    justify-content: center;
   }
 
   &__indicator{

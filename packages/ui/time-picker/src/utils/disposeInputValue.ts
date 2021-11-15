@@ -9,6 +9,11 @@ export const disposeInputValue = (format: TimePickerFormat, original: string) =>
     .replace(/[^0-9:]/g, '')
     .slice(0, inputMaxLength)
 
+  // 兼容直接在为空情况下输入 : 的情况
+  if (rough === ':') {
+    return ''
+  }
+
   if (/:{2}$/.test(rough)) {
     return rough.slice(0, rough.length - 1)
   }

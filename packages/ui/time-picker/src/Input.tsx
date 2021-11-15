@@ -79,21 +79,26 @@ export const Input: FC<InputProps> = (props) => {
     setCacheValue(value.slice(0, type === 'single' ? 1 : 2))
   }, [value, type])
 
-  const isValid = useMemo(() => {
-    const valueValid = cacheValue.every((item, index) => validChecker(item, getPanelType(index)))
+  const judgeIsValid = useCallback(
+    (disposeValue: string[]) => {
+      const valueValid = disposeValue.every((item, index) =>
+        validChecker(item, getPanelType(index))
+      )
 
-    if (type === 'range' && valueValid) {
-      // 数据格式正确，检查范围数据
-      // 全为空字符串，则认为是合法的（还未选择）
-      if (cacheValue.every((item) => item === '')) {
-        return true
+      if (type === 'range' && valueValid) {
+        // 数据格式正确，检查范围数据
+        // 全为空字符串，则认为是合法的（还未选择）
+        if (disposeValue.every((item) => item === '')) {
+          return true
+        }
+        // 结束时间要>开始时间
+        return disposeValue[1] > disposeValue[0]
+      } else {
+        return valueValid
       }
-      // 结束时间要>开始时间
-      return cacheValue[1] > cacheValue[0]
-    } else {
-      return valueValid
-    }
-  }, [cacheValue, validChecker, getPanelType, type])
+    },
+    [validChecker, getPanelType, type]
+  )
 
   const renderInput = useCallback(
     (matchValue: string, index: number) => {
@@ -102,44 +107,57 @@ export const Input: FC<InputProps> = (props) => {
         const result = [...cacheValue]
         // 值未改变，则不继续处理
         if (result[index] === newValue) {
-          return
+          return undefined
         }
 
         result[index] = newValue
         setCacheValue(result)
         // 合法，则通知外部
         if (validChecker(newValue, getPanelType(index))) {
-          onChange([...result])
+          return [...result]
         }
+
+        return undefined
       }
       return (
-        <input
-          className={`${componentClass}__interact-area`}
-          onChange={(e) => dispose(e.target.value)}
-          // 失去焦点，添加 : 引起输入自动格式化处理功能
-          onBlur={() => {
-            dispose(cacheValue[index] + ':')
-          }}
-          value={matchValue}
-          placeholder={placeholders[index]}
-        />
+        <div className={`${componentClass}__wrapper`}>
+          <input
+            className={`${componentClass}__interact-area`}
+            onChange={(e) => {
+              const result = dispose(e.target.value)
+              if (result) {
+                onChange(result)
+              }
+            }}
+            // 失去焦点，添加 : 开始自动值处理
+            // 如果此时还是不正确，则，直接重置值
+            onBlur={() => {
+              const result = dispose(cacheValue[index] + ':')
+              if (!result) {
+                setCacheValue(value)
+              } else {
+                onChange(result)
+              }
+            }}
+            value={matchValue}
+            placeholder={placeholders[index]}
+          />
+        </div>
       )
     },
-    [placeholders, format, onChange, cacheValue, getPanelType, validChecker, componentClass]
+    [placeholders, format, value, onChange, cacheValue, getPanelType, validChecker, componentClass]
   )
 
   return (
     <div
       className={cx(componentClass, {
-        [`${componentClass}--not-valid`]: !isValid,
+        [`${componentClass}--not-valid`]: !judgeIsValid(cacheValue),
         [`${componentClass}--border`]: border,
       })}
     >
-      <div className={`${componentClass}__wrapper`}>
-        {renderInput(cacheValue[0], 0)}
-        {type === 'range' && <div className={`${componentClass}__range-separator`}>至</div>}
-        {type === 'range' && renderInput(cacheValue[1], 1)}
-      </div>
+      {renderInput(cacheValue[0], 0)}
+      {type === 'range' && <div className={`${componentClass}__range-separator`}>至</div>}
+      {type === 'range' && renderInput(cacheValue[1], 1)}
     </div>
   )
 }
