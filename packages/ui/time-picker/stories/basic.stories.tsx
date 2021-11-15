@@ -4,6 +4,7 @@ import TimePicker from '../src'
 import { Selector, SelectorItem } from '../src/Selector'
 import { Panel } from '../src/Panel'
 import { Input } from '../src/Input'
+import { PopContent } from '../src/PopContent'
 // import '../src/styles/index.scss'
 
 const Data = (() => {
@@ -22,6 +23,8 @@ export const Basic = () => {
   const [value, setValue] = useState('12')
   const [inputValue, setInputValue] = useState(['', ''])
   const [panelValue, setPanelValue] = useState('')
+  const [popContentValue, setPopContentValue] = useState(['', ''])
+
   return (
     <>
       <h1>Basic</h1>
@@ -53,11 +56,29 @@ export const Basic = () => {
             setPanelValue(e)
           }}
         />
+        <PopContent
+          itemHeight={32}
+          fullDisplayItemNumber={7}
+          hourStep={3}
+          secondStep={1}
+          minuteStep={1}
+          disabledHours={() => []}
+          disabledMinutes={() => []}
+          disabledSeconds={() => []}
+          prefix={getPrefixCls('time-picker')}
+          format="HH:mm"
+          value={popContentValue}
+          type="range"
+          onChange={(e) => {
+            console.log('pop-content', e)
+            setPopContentValue(e)
+          }}
+        />
         <Input
           type="range"
           placeholders={[]}
           prefix={getPrefixCls('time-picker')}
-          format="HH:mm:ss"
+          format="HH"
           hourStep={1}
           secondStep={1}
           minuteStep={1}

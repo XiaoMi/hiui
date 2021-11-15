@@ -1,0 +1,19 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$pop-content-prefix: '#{$component-prefix}-time-picker__pop-content' !default;
+$separate-line-color: get-color('gray', 200);
+
+.#{$pop-content-prefix}{
+  display: flex;
+  width: fit-content;
+  position: relative;
+  align-items: stretch;
+
+  &__separator{
+    width: 40px;
+    margin-top: 48px;
+    border-left: 1px solid $separate-line-color;
+    border-right: 1px solid $separate-line-color;
+    border-top: 1px solid $separate-line-color;
+  }
+}

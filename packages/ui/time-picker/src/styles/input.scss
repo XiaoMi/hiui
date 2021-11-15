@@ -4,11 +4,20 @@ $input-prefix: '#{$component-prefix}-time-picker__input' !default;
 $interact-area: '#{$input-prefix}__interact-area' !default;
 
 .#{$input-prefix}{
+  display: flex;
+  align-items: center;
+  width: fit-content;
+
+  &--border{
+    border: 1px solid get-color('gray', 300);
+  }
   &--not-valid{
-    color: get-color('magenta', 200);
+    color: get-color('magenta', 600);
   }
 
   &__interact-area{
     color: inherit;
+    border: none;
+    outline: none;
   }
 }
