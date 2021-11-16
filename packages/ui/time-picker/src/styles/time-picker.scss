@@ -20,6 +20,10 @@ $prefix: '#{$component-prefix}-time-picker' !default;
     color: get-color('gray', 400);
   }
 
+  &--disabled{
+    pointer-events: none;
+  }
+
   &__close-button{
     &:hover{
       color: get-color('gray', 600);

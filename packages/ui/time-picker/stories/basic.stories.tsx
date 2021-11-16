@@ -32,6 +32,7 @@ export const Basic = () => {
         <TimePicker
           placeholder={['请输入', '请输入']}
           type="range"
+          inputReadonly
           onChange={(e) => console.error('range time picker', e)}
         />
         <TimePicker
