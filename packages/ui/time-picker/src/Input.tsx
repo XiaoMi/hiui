@@ -134,7 +134,7 @@ export const Input: FC<InputProps> = (props) => {
               }
             }}
             // 失去焦点，添加 : 开始自动值处理
-            // 此时我们不检查是否正确
+            // 此时我们不检查是否正确，处理值之后交由外部处理（为了唤起外部错误值处理操作）
             onBlur={() => {
               const result = dispose(cacheValue[index] + ':', false)
               onChange(result || (type === 'single' ? [''] : ['', '']))
