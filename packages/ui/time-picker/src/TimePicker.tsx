@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
@@ -11,7 +11,7 @@ import {
 } from './@types'
 import { Input } from './Input'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { Popper } from '@hi-ui/popper'
+import { PopperPortal } from '@hi-ui/popper'
 import { CloseCircleFilled, TimeOutlined } from '@hi-ui/icons'
 import { PopContent } from './PopContent'
 import { valueChecker } from './utils/valueChecker'
@@ -57,10 +57,15 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       controlledValue,
       notifyOutside
     )
-    const [cacheValue, setCacheValue] = useState<string[]>(['', ''])
+    const [cacheValue, setCacheValue] = useState<string[]>(value)
 
     useEffect(() => {
-      setCacheValue(value)
+      setCacheValue((pre) => {
+        if (pre.join('') !== value.join('')) {
+          return [...value]
+        }
+        return pre
+      })
     }, [value])
 
     const getPanelType = useCallback(
@@ -115,11 +120,18 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     const onChangeWrapper = useCallback(
       (newValue: string[]) => {
         const result = newValue.slice(0, type === 'single' ? 1 : 2)
-        setCacheValue([...result])
+        // 避免重复渲染
+        setCacheValue((pre) => {
+          if (pre.join('') !== result.join('')) {
+            return [...result]
+          }
+          return pre
+        })
 
         if (validChecker(result)) {
-          const newFlag = result.join('-')
-          const lastFlag = value.join('-')
+          // 避免重复通知
+          const newFlag = result.join('')
+          const lastFlag = value.join('')
           if (newFlag !== lastFlag) {
             onChange([...result])
           }
@@ -129,18 +141,23 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     )
 
     const [showPopper, setShowPopper] = useState(false)
+    const showPopperRef = useRef(false)
+
     const cls = cx(prefixCls, className, {
       [`${prefixCls}--border`]: bordered,
-      [`${prefixCls}--active`]: showPopper,
+      [`${prefixCls}--active`]: showPopper && !disabled,
       [`${prefixCls}--disabled`]: disabled,
     })
 
     useEffect(() => {
-      // 如果弹窗关闭（代表行为结束）的时候，值依旧是错的，则使用上一次正确的值
+      // 如果弹窗关闭（代表行为结束）的时候，值依旧是错的，则清空值
       if (!showPopper && !validChecker(cacheValue)) {
-        setCacheValue(value)
+        // 避免重复渲染
+        if (value.join('') !== '') {
+          onChange(['', ''])
+        }
       }
-    }, [showPopper, validChecker, cacheValue, value])
+    }, [showPopper, validChecker, cacheValue, onChange, value])
 
     return (
       <div ref={ref} role={role} className={cls}>
@@ -159,11 +176,15 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             disabledSeconds={disabledSeconds}
             value={cacheValue}
             onChange={onChangeWrapper}
-            onFocus={() => setShowPopper(true)}
+            onFocus={() => {
+              showPopperRef.current = true
+              setShowPopper(true)
+            }}
           />
           <div
             className={`${prefixCls}__function-button`}
             onClick={() => {
+              showPopperRef.current = !showPopper
               setShowPopper((pre) => !pre)
             }}
           >
@@ -174,11 +195,15 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             )}
           </div>
         </div>
-        <Popper
+        <PopperPortal
           unmountOnClose={false}
           visible={showPopper && !disabled}
           attachEl={attachEl}
-          onClose={() => setShowPopper(false)}
+          onClose={() => {
+            showPopperRef.current = false
+            setShowPopper(false)
+          }}
+          preload
         >
           <PopContent
             itemHeight={itemHeight}
@@ -193,9 +218,14 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             disabledMinutes={disabledMinutes}
             disabledSeconds={disabledSeconds}
             value={cacheValue}
-            onChange={onChangeWrapper}
+            onChange={(e) => {
+              // 只有弹窗展开的时候才接手 pop content 的值改变
+              if (showPopperRef.current) {
+                onChangeWrapper(e)
+              }
+            }}
           />
-        </Popper>
+        </PopperPortal>
       </div>
     )
   }
