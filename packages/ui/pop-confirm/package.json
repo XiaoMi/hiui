@@ -1,10 +1,10 @@
 {
-  "name": "@hi-ui/use-uncontrolled-state",
-  "version": "4.0.0-alpha.5",
-  "description": "A sub-package for @hi-ui/hooks.",
+  "name": "@hi-ui/pop-confirm",
+  "version": "4.0.0-alpha.0",
+  "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/use-uncontrolled-state#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/pop-confirm#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -31,7 +31,7 @@
     "url": "git+https://github.com/XiaoMi/hiui.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1",
+    "test": "jest",
     "clean": "rimraf lib",
     "prebuild": "yarn clean",
     "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
@@ -42,15 +42,26 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
+  "dependencies": {
+    "@hi-ui/button": "^4.0.0-alpha.6",
+    "@hi-ui/classname": "^4.0.0-alpha.0",
+    "@hi-ui/core": "^4.0.0-alpha.0",
+    "@hi-ui/core-css": "^4.0.0-alpha.0",
+    "@hi-ui/dom-utils": "^4.0.0-alpha.0",
+    "@hi-ui/env": "^4.0.0-alpha.0",
+    "@hi-ui/icons": "^4.0.0-alpha.9",
+    "@hi-ui/popper": "^4.0.0-alpha.6",
+    "@hi-ui/react-utils": "^4.0.0-alpha.0",
+    "@hi-ui/use-latest": "^4.0.0-alpha.2",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.5"
+  },
   "peerDependencies": {
-    "react": "^17.0.1"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.2",
-    "react": "^17.0.1"
-  },
-  "dependencies": {
-    "@hi-ui/type-assertion": "^4.0.0-alpha.6",
-    "@hi-ui/use-latest": "^4.0.0-alpha.2"
+    "@hi-ui/hi-build": "^4.0.0-alpha.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   }
 }

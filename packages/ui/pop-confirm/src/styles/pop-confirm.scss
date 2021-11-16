@@ -1,0 +1,32 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-pop-confirm' !default;
+
+.#{$prefix} {
+  @include text-reset;
+
+  position: relative;
+  background: var(--color-white);
+  white-space: nowrap;
+  transition: all 0.5s;
+  border-radius: use-border-radius('normal');
+  padding: use-spacing(6) use-spacing(8);
+  display: flex;
+  flex-direction: column;
+
+  &__content {
+    display: flex;
+    align-items: center;
+
+    &-icon {
+      margin-right: use-spacing(4);
+      color: use-color-mode('warning');
+      font-size: use-text-size('xxl');
+    }
+  }
+
+  &__footer {
+    margin-top: use-spacing(6);
+    text-align: right;
+  }
+}
