@@ -2,6 +2,9 @@ import React from 'react'
 
 export type ReactRef<T> = React.RefCallback<T> | React.MutableRefObject<T>
 
+/**
+ * Merge defaultProps into props
+ */
 export const withDefaultProps = <DP extends Record<string, any>, ECP extends Partial<DP>>(
   props: ECP | undefined,
   defaultProps?: DP
@@ -20,28 +23,6 @@ export const withDefaultProps = <DP extends Record<string, any>, ECP extends Par
 
   return mergedProps as any
 }
-
-/**
- * Merge defaultProps into props
- */
-// export const withDefaultProps = <U extends Record<string, any>, T extends Record<string, any>>(
-//   props: U | undefined,
-//   defaultProps?: T
-// ) => {
-//   if (!defaultProps) return props || {}
-
-//   const mergedProps = { ...props }
-//   let propName
-
-//   for (propName in defaultProps) {
-//     if (mergedProps[propName] === undefined) {
-//       // @ts-ignore
-//       mergedProps[propName] = defaultProps[propName]
-//     }
-//   }
-
-//   return mergedProps
-// }
 
 /**
  * Set ref into a React element.
