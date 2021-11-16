@@ -6,7 +6,7 @@ $prefix: '#{$component-prefix}-pop-confirm' !default;
   @include text-reset;
 
   position: relative;
-  background: var(--color-white);
+  background: use-color-static('white');
   white-space: nowrap;
   transition: all 0.5s;
   border-radius: use-border-radius('normal');
