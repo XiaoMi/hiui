@@ -3,7 +3,8 @@ import { defaultTipIcon } from './icons'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
-import { PopperProps } from '../../popper/lib/types/Popper'
+import { withDefaultProps } from '@hi-ui/react-utils'
+import { PopperProps } from '@hi-ui/popper'
 
 export const usePopConfirm = ({
   role = 'alert-dialog',
@@ -72,12 +73,13 @@ export const usePopConfirm = ({
   }, [onToggle, setTargetEl])
 
   const getPopperProps = useCallback(() => {
+    const popperProps = withDefaultProps(popper, { arrow: true, placement: 'top' })
+
     return {
-      ...popper,
+      ...popperProps,
       visible,
       attachEl: targetEl,
       onClose,
-      arrow: popper?.arrow ?? true,
     }
   }, [visible, targetEl, popper, onClose])
 
