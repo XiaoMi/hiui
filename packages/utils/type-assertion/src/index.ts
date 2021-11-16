@@ -20,6 +20,12 @@ export const isObject = (arg: unknown): arg is Dict =>
   isObjectLike(arg) && arg.constructor === Object
 
 /**
+ * Assert is a dom element
+ */
+export const isElement = (arg: unknown): arg is Element =>
+  isObjectLike(arg) && arg.constructor !== Object && arg.nodeType === 1
+
+/**
  * Assert is an Promise
  */
 export const isPromise = <T>(arg: unknown): arg is Promise<T> =>
