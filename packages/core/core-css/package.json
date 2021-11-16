@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/core-css",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-alpha.3",
   "description": "A sub-package for @hi-ui/core.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -34,7 +34,7 @@
     "test": "echo \"Error: run tests from root\" && exit 1",
     "clean": "rimraf lib",
     "prebuild": "yarn clean",
-    "build:copy": "copyfiles -u 2 src/styles/*.scss lib",
+    "build:copy": "copyfiles -u 2 src/styles/**/*.scss src/styles/*.scss lib",
     "build": "concurrently yarn:build:*"
   },
   "bugs": {

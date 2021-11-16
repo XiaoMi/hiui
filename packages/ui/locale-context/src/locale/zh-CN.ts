@@ -59,9 +59,6 @@ export default {
     hours: '时',
     minutes: '分',
     seconds: '秒',
-    // weekrange: function (year, week) {
-    //   return year + '-W' + week
-    // },
   },
   pagination: {
     total: ['共', '条'],

@@ -32,7 +32,7 @@ $prefix: '#{$component-prefix}-popper' !default;
     }
   }
 
-  $arrow-color: use-color('white');
+  $arrow-color: use-color-static('white');
 
   &[data-popper-placement^=top] {
     .#{$prefix}__arrow {
@@ -84,7 +84,7 @@ $prefix: '#{$component-prefix}-popper' !default;
       }
 
       &::after {
-        top: 0px;
+        top: 0;
         transform: translateY(-50%);
         left: 1px;
         border-left-color: rgba(0, 0, 0, 0.1);
@@ -102,7 +102,7 @@ $prefix: '#{$component-prefix}-popper' !default;
       }
 
       &::after {
-        top: 0px;
+        top: 0;
         transform: translateY(-50%);
         right: 1px;
         border-right-color: rgba(0, 0, 0, 0.1);
@@ -113,14 +113,15 @@ $prefix: '#{$component-prefix}-popper' !default;
   &__overlay {
     position: relative;
     box-sizing: border-box;
-    background-color: use-color('white');
-    box-shadow: 0px 1px 12px 0px rgba(0, 0, 0, 0.12);
-    border-radius: $spacer-1;
+    background-color: use-color-static('white');
+    box-shadow: 0 1px 12px 0 rgba(0, 0, 0, 0.12);
+    border-radius: use-spacing(2);
     // 为了保证 arrow 三角形可以正常展示
     min-width: 36px;
     min-height: 36px;
     // animation
     transition: opacity 0.1s linear, transform 0.1s ease-out;
+    // 该变量通过 JS 注入👇🏻
     transform-origin: var(--popper-transform-origin);
     opacity: 0;
     transform: scale(0) translateX(0);

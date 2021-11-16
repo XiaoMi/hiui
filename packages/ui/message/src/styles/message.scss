@@ -12,43 +12,43 @@ $prefix: '#{$component-prefix}-message' !default;
   box-shadow: 0 1px 6px -1px rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;
-  font-size: $font-size-normal;
-  line-height: $line-height-size-normal;
+  font-size: use-text-size('normal');
+  line-height: get-text-lineheight('normal');
 
   &--type {
     &-info {
-      background-color: use-color('primary-20');
-      color: use-color('primary-50');
+      background-color: use-color-mode('primary-10');
+      color: use-color-mode('primary-40');
 
       svg {
-        fill: use-color('primary');
+        fill: use-color-mode('primary');
       }
     }
 
     &-success {
-      background-color: use-color('success-20');
-      color: use-color('success-50');
+      background-color: use-color-mode('success-10');
+      color: use-color-mode('success-40');
 
       svg {
-        color: use-color('success');
+        color: use-color-mode('success');
       }
     }
 
     &-error {
-      background-color: use-color('danger-20');
-      color: use-color('danger-50');
+      background-color: use-color-mode('danger-10');
+      color: use-color-mode('danger-40');
 
       svg {
-        color: use-color('danger');
+        color: use-color-mode('danger');
       }
     }
 
     &-warning {
-      background-color: use-color('warning-20');
-      color: use-color('warning-50');
+      background-color: use-color-mode('warning-10');
+      color: use-color-mode('warning-40');
 
       svg {
-        color: use-color('warning');
+        color: use-color-mode('warning');
       }
     }
   }

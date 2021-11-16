@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const Button = require('@md-ui/button');
+const Button = require('@hi-ui/button');
 
 // TODO: DEMONSTRATE API
 ```

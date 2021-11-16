@@ -48,7 +48,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 
 .#{$prefix}-node {
   position: relative;
-  color: use-color('gray-80');
+  color: use-color('gray', 800);
   cursor: pointer;
   // 节点间隔控制
   padding: 4px 0;
@@ -63,7 +63,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     outline: 0;
 
     &:hover {
-      background-color: use-color('primary-10');
+      background-color: use-color-mode('primary-05');
     }
 
     &.dragging {
@@ -83,7 +83,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     height: 100%;
 
     &--loading {
-      color: use-color('primary');
+      color: use-color-mode('primary');
     }
   }
 
@@ -93,8 +93,8 @@ $prefix: '#{$component-prefix}-tree' !default;
     align-items: center;
     position: relative;
     min-height: 32px;
-    line-height: $line-height-size-large;
-    font-size: $font-size-normal;
+    line-height: get-text-lineheight('lg');
+    font-size: use-text-size('normal');
     cursor: inherit;
     color: inherit;
     background-color: transparent;
@@ -109,8 +109,8 @@ $prefix: '#{$component-prefix}-tree' !default;
       width: 8px;
       height: 8px;
       content: '';
-      background-color: use-color('white');
-      border: 1px solid use-color('primary');
+      background-color: use-color-static('white');
+      border: 1px solid use-color-mode('primary');
       border-radius: 100%;
     }
 
@@ -124,7 +124,7 @@ $prefix: '#{$component-prefix}-tree' !default;
       box-sizing: border-box;
       border-bottom-width: 0;
       border-bottom-style: solid;
-      border-bottom-color: use-color('primary');
+      border-bottom-color: use-color-mode('primary');
       left: 0;
       width: 100%;
     }
@@ -159,55 +159,55 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &--focused {
     #{$this}__wrap {
-      background-color: use-color('primary-10');
+      background-color: use-color-mode('primary-05');
     }
 
     #{$this}__title {
-      color: use-color('gray-80');
+      color: use-color('gray', 800);
     }
   }
 
   // TODO: 约定好组件的修饰词和元素书写顺序
   &--selected {
     #{$this}__wrap {
-      background-color: use-color('primary-20');
+      background-color: use-color-mode('primary-10');
     }
 
     #{$this}__title {
-      color: use-color('primary');
+      color: use-color-mode('primary');
     }
   }
 
   &--disabled {
     cursor: not-allowed;
-    color: use-color('gray-50');
+    color: use-color('gray', 500);
 
     #{$this}__wrap {
       &:hover {
-        background-color: use-color('white');
+        background-color: use-color-static('white');
       }
     }
 
     &#{$this}--selected {
-      color: use-color('gray-50');
+      color: use-color('gray', 500);
 
       #{$this}__title {
-        background-color: use-color('white');
+        background-color: use-color-static('white');
 
         &:hover {
-          background-color: use-color('white');
+          background-color: use-color-static('white');
         }
       }
     }
 
     &#{$this}--focused {
       #{$this}__title {
-        color: use-color('gray-50');
+        color: use-color('gray', 500);
       }
     }
 
     #{$this}__switcher:not(#{$this}__switcher--noop) {
-      color: use-color('gray-80');
+      color: use-color('gray', 800);
     }
   }
 
@@ -228,8 +228,8 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &--drag-inside {
     #{$this}__title {
-      background-color: use-color('primary');
-      color: use-color('white');
+      background-color: use-color-mode('primary');
+      color: use-color-static('white');
     }
   }
 

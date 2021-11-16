@@ -1,0 +1,78 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-radio' !default;
+
+.#{$prefix} {
+  @include text-reset;
+
+  position: relative;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-inline-end: use-spacing(16);
+
+  &__controller {
+    @include flex;
+
+    position: relative;
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    border: 1px solid use-color('gray', 300);
+    border-radius: use-border-radius('full');
+    transition: border-color use-motion-duration('normal');
+
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-sizing: border-box;
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      content: '';
+      background: use-color-mode('primary');
+      border-radius: use-border-radius('full');
+      opacity: 0;
+      transition: all use-motion-duration('normal');
+      transform: scale(0);
+    }
+
+    .#{$prefix}:hover & {
+      border-color: use-color-mode('primary');
+    }
+
+    .#{$prefix}[data-checked] & {
+      border-color: use-color-mode('primary');
+
+      &::after {
+        opacity: 1;
+        transform: scale(0.68);
+      }
+    }
+
+    .#{$prefix}[data-disabled] & {
+      border-color: use-color('gray', 300);
+      background: use-color('gray', 100);
+
+      &::after {
+        background: use-color('gray', 300);
+      }
+    }
+  }
+
+  &__label {
+    box-sizing: border-box;
+    margin-inline-start: use-spacing(4);
+
+    .#{$prefix}[data-disabled] & {
+      color: use-color('gray', 600);
+    }
+  }
+}
+
+.#{$prefix}-group {
+  display: inline-block;
+}

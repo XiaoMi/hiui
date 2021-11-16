@@ -16,22 +16,23 @@ export const useSelect = ({
   const allowSelectRef = useLatestRef(allowSelect)
 
   const onItemSelect = useCallback(
-    <T extends UseCheckItem>(targetItem: T, shouldSelected: boolean = true) => {
+    <T extends UseCheckItem>(targetItem: T, shouldSelected = true) => {
       if (disabled) return
       if (allowSelectRef.current && allowSelectRef.current(targetItem) === false) return
 
       if (shouldSelected) {
         onSelect(targetItem.id, targetItem, true)
       } else {
-        onSelect(NOOP_ID)
+        onSelect(NOOP_ID, targetItem, false)
       }
     },
     [disabled, allowSelectRef, onSelect]
   )
 
-  const isSelectedId = useCallback((id: React.ReactText) => id !== '' && selectedId === id, [
-    selectedId,
-  ])
+  const isSelectedId = useCallback(
+    (id: React.ReactText) => selectedId !== NOOP_ID && selectedId === id,
+    [selectedId]
+  )
 
   return [onItemSelect, isSelectedId] as const
 }
@@ -48,7 +49,7 @@ export interface UseSelectProps<T extends UseCheckItem = any> {
   /**
    * 选择时回调
    */
-  onSelect: (selectedId: React.ReactText, targetItem?: T, shouldSelected?: boolean) => void
+  onSelect: (selectedId: React.ReactText, targetItem: T, shouldSelected: boolean) => void
   /**
    * 返回 true 允许选中
    */

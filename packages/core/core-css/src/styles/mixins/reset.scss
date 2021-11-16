@@ -1,0 +1,49 @@
+@import '../themes/index.scss';
+
+@mixin text-reset {
+  overflow-wrap: break-word;
+  font-size: use-text-size('normal');
+  line-height: use-text-lineheight('normal');
+}
+
+@mixin component-reset {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  font-size: use-text-size('normal');
+  vertical-align: middle;
+}
+
+@mixin input-reset {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+  height: inherit;
+  background-color: transparent;
+  cursor: text;
+}
+
+@mixin button-reset {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  // 禁用非标准手势
+  touch-action: manipulation;
+}
+
+@mixin img-reset {
+  object-fit: cover;
+}

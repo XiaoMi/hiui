@@ -18,10 +18,10 @@ $prefix: '#{$component-prefix}-notification' !default;
   border-bottom-left-radius: 2px;
   pointer-events: auto;
   box-shadow: 0 1px 6px -1px rgba(0, 0, 0, 0.12);
-  font-size: $font-size-normal;
-  line-height: $line-height-size-normal;
+  font-size: use-text-size('normal');
+  line-height: get-text-lineheight('normal');
   border-left: 6px solid transparent;
-  background-color: use-color('white');
+  background-color: use-color-static('white');
 
   &__header {
     display: flex;
@@ -94,50 +94,50 @@ $prefix: '#{$component-prefix}-notification' !default;
 
   &--type {
     &-info {
-      border-color: use-color('primary-50');
+      border-color: use-color-mode('primary-40');
 
       .#{$prefix}__title {
-        color: use-color('primary');
+        color: use-color-mode('primary');
       }
 
       .#{$prefix}__icon {
-        color: use-color('primary');
+        color: use-color-mode('primary');
       }
     }
 
     &-success {
-      border-color: use-color('success-50');
+      border-color: use-color-mode('success-40');
 
       .#{$prefix}__title {
-        color: use-color('success');
+        color: use-color-mode('success');
       }
 
       .#{$prefix}__icon {
-        color: use-color('success');
+        color: use-color-mode('success');
       }
     }
 
     &-error {
-      border-color: use-color('danger-50');
+      border-color: use-color-mode('danger-40');
 
       .#{$prefix}__title {
-        color: use-color('danger');
+        color: use-color-mode('danger');
       }
 
       .#{$prefix}__icon {
-        color: use-color('danger');
+        color: use-color-mode('danger');
       }
     }
 
     &-warning {
-      border-color: use-color('warning-50');
+      border-color: use-color-mode('warning-40');
 
       .#{$prefix}__title {
-        color: use-color('warning');
+        color: use-color-mode('warning');
       }
 
       .#{$prefix}__icon {
-        color: use-color('warning');
+        color: use-color-mode('warning');
       }
     }
   }
@@ -154,7 +154,7 @@ $prefix: '#{$component-prefix}-notification' !default;
     top: 12px;
     right: 12px;
     color: #000;
-    color: use-color('gray-70');
+    color: use-color('gray', 700);
     font-size: 14px;
 
     &::after {
