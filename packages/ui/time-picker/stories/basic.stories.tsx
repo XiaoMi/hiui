@@ -9,12 +9,21 @@ export const Basic = () => {
       <h1>Basic use</h1>
       <div className="time-picker-basic__wrap">
         <h2>default</h2>
-        <TimePicker onChange={setBasicValue} />
+        <TimePicker
+          value={basicValue}
+          onChange={(e) => {
+            console.log('basic-default', e)
+            setBasicValue(e)
+          }}
+        />
         <h2>range</h2>
         <TimePicker
           value={rangeValue}
           placeholder={['请选择开始时间', '请选择结束时间']}
-          onChange={setRangeValue}
+          onChange={(e) => {
+            console.log('range-value', e)
+            setRangeValue(e)
+          }}
           type="range"
         />
         <h2>disabled</h2>

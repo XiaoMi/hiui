@@ -152,12 +152,16 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     useEffect(() => {
       // 如果弹窗关闭（代表行为结束）的时候，值依旧是错的，则清空值
       if (!showPopper && !validChecker(cacheValue)) {
+        const result = type === 'single' ? [''] : ['', '']
         // 避免重复渲染
+        if (cacheValue.join('') !== '') {
+          setCacheValue(result)
+        }
         if (value.join('') !== '') {
-          onChange(['', ''])
+          onChange(result)
         }
       }
-    }, [showPopper, validChecker, cacheValue, onChange, value])
+    }, [showPopper, validChecker, cacheValue, onChange, value, type])
 
     return (
       <div ref={ref} role={role} className={cls}>
