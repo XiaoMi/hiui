@@ -19,7 +19,7 @@ interface InputProps extends ExtendType {
   type: TimePickerType
   prefix: string
   format: TimePickerFormat
-  border: boolean
+  onFocus: () => void
 }
 
 export const Input: FC<InputProps> = (props) => {
@@ -33,10 +33,10 @@ export const Input: FC<InputProps> = (props) => {
     disabledHours,
     disabledMinutes,
     disabledSeconds,
-    border,
     type,
     placeholders,
     onChange,
+    onFocus,
   } = props
   const componentClass = useMemo(() => `${prefix}__input`, [prefix])
 
@@ -44,13 +44,13 @@ export const Input: FC<InputProps> = (props) => {
 
   const getPanelType = useCallback(
     (index: number): TimePickerPanelType => {
-      if (cacheValue.length === 1) {
+      if (type === 'single') {
         return 'single'
       } else {
         return index === 0 ? 'range-start' : 'range-end'
       }
     },
-    [cacheValue]
+    [type]
   )
   // 检查值是否合规
   const validChecker = useCallback(
@@ -139,20 +139,33 @@ export const Input: FC<InputProps> = (props) => {
                 onChange(result)
               }
             }}
+            onFocus={() => {
+              onFocus()
+            }}
             value={matchValue}
             placeholder={placeholders[index]}
           />
         </div>
       )
     },
-    [placeholders, format, value, onChange, cacheValue, getPanelType, validChecker, componentClass]
+    [
+      placeholders,
+      format,
+      value,
+      onFocus,
+      onChange,
+      cacheValue,
+      getPanelType,
+      validChecker,
+      componentClass,
+    ]
   )
 
   return (
     <div
       className={cx(componentClass, {
         [`${componentClass}--not-valid`]: !judgeIsValid(cacheValue),
-        [`${componentClass}--border`]: border,
+        [`${componentClass}--range`]: type === 'range',
       })}
     >
       {renderInput(cacheValue[0], 0)}

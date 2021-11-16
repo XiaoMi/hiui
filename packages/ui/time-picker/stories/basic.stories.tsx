@@ -29,7 +29,16 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="time-picker-basic__wrap">
-        <TimePicker />
+        <TimePicker
+          placeholder={['请输入', '请输入']}
+          type="range"
+          onChange={(e) => console.error('range time picker', e)}
+        />
+        <TimePicker
+          placeholder={['请输入', '请输入']}
+          type="single"
+          onChange={(e) => console.error('single time picker', e)}
+        />
         <Selector
           prefix={getPrefixCls('time-picker')}
           data={Data}

@@ -7,17 +7,27 @@ $interact-area: '#{$input-prefix}__interact-area' !default;
   display: flex;
   align-items: center;
   width: fit-content;
+  font-size: 14px;
 
-  &--border{
-    border: 1px solid get-color('gray', 300);
-  }
   &--not-valid{
     color: get-color('magenta', 600);
+  }
+
+  &--range{
+    .#{$interact-area}{
+      text-align: center;
+    }
   }
 
   &__interact-area{
     color: inherit;
     border: none;
     outline: none;
+    height: 28px;
+    width: 144px;
+    line-height: 28px;
+    padding: 0;
+    padding-left: 10px;
+    font-size: inherit;
   }
 }

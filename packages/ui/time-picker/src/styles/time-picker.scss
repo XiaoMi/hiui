@@ -3,5 +3,34 @@
 $prefix: '#{$component-prefix}-time-picker' !default;
 
 .#{$prefix} {
+  width: fit-content;
 
+  &__input-wrapper{
+    width: fit-content;
+    display: flex;
+    align-items: center;
+  }
+
+  &__function-button{
+    margin-right: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: get-color('gray', 400);
+  }
+
+  &__close-button{
+    &:hover{
+      color: get-color('gray', 600);
+    }
+  }
+
+  &--border{
+    border: 1px solid get-color('gray', 300);
+  }
+
+  &--active,&:hover{
+    border-color: get-color('blue', 600);
+  }
 }
