@@ -110,18 +110,14 @@ export const Input: FC<InputProps> = (props) => {
 
   const renderInput = useCallback(
     (matchValue: string, index: number) => {
-      const dispose = (disposeValue: string) => {
+      const dispose = (disposeValue: string, needValid = true) => {
         const newValue = disposeInputValue(format, disposeValue)
         const result = [...cacheValue]
-        // 值未改变，则不继续处理
-        if (result[index] === newValue) {
-          return undefined
-        }
 
         result[index] = newValue
         setCacheValue(result)
         // 合法，则通知外部
-        if (validChecker(newValue, getPanelType(index))) {
+        if (!needValid || validChecker(newValue, getPanelType(index))) {
           return [...result]
         }
 
@@ -138,14 +134,10 @@ export const Input: FC<InputProps> = (props) => {
               }
             }}
             // 失去焦点，添加 : 开始自动值处理
-            // 如果此时还是不正确，则，直接重置值
+            // 此时我们不检查是否正确
             onBlur={() => {
-              const result = dispose(cacheValue[index] + ':')
-              if (!result) {
-                setCacheValue(value)
-              } else {
-                onChange(result)
-              }
+              const result = dispose(cacheValue[index] + ':', false)
+              onChange(result || (type === 'single' ? [''] : ['', '']))
             }}
             disabled={disabled}
             onFocus={() => {
@@ -160,7 +152,6 @@ export const Input: FC<InputProps> = (props) => {
     [
       placeholders,
       format,
-      value,
       onFocus,
       onChange,
       cacheValue,
@@ -168,6 +159,7 @@ export const Input: FC<InputProps> = (props) => {
       validChecker,
       componentClass,
       disabled,
+      type,
     ]
   )
 
