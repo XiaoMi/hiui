@@ -16,9 +16,6 @@ type ExtendType = Required<TimePickerFilter> & Required<TimePickerStep>
 interface PanelProps extends ExtendType {
   prefix: string
   panel: TimePickerPanelType
-  /**
-   * 此值必须是通过校验的正确值 或者 是空值 ''
-   */
   value: string
   onChange: (value: string) => void
   format: TimePickerFormat
@@ -110,7 +107,7 @@ export const Panel: FC<PanelProps> = (props) => {
               itemHeight={itemHeight}
               fullDisplayItemNumber={fullDisplayItemNumber}
               onChange={(e) => {
-                let result = [...separateValue]
+                let result = [...separateValue].slice(0, selectorTypes.length)
                 // 如果 value = ''，则代表为空值
                 // 此时选择任意项，其他项直接视作 0
                 if (value === '') {

@@ -10,6 +10,7 @@ export const Basic = () => {
       <div className="time-picker-basic__wrap">
         <h2>default</h2>
         <TimePicker
+          placeholder={['请选择时间']}
           value={basicValue}
           onChange={(e) => {
             console.log('basic-default', e)

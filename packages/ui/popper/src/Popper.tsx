@@ -72,7 +72,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
     const onOutsideClickLatest = useLatestCallback(onOutsideClick)
 
     useRefsOutsideClick([popperElRef, targetRef], (evt) => {
-      if (closeOnOutsideClick) {
+      if (closeOnOutsideClick && visible) {
         onCloseLatest()
       }
       onOutsideClickLatest(evt)

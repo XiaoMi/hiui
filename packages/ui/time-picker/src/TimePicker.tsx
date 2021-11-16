@@ -82,6 +82,9 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     // 检查值是否合规
     const validChecker = useCallback(
       (checkValue: string[]) => {
+        // 检查 range 情况下值是否正确
+        // 视开始结束都为空值为正确值
+        const rangeValid = checkValue.join('') === '' || checkValue[1] > checkValue[0]
         return (
           checkValue.every((item, index) =>
             valueChecker({
@@ -101,7 +104,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             })
           ) &&
           // 单选不检查前后关系
-          (type === 'single' || checkValue[1] > checkValue[0])
+          (type === 'single' || rangeValid)
         )
       },
       [
@@ -128,11 +131,9 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           return pre
         })
 
+        // 避免重复通知，我们只通知正确的值到外部
         if (validChecker(result)) {
-          // 避免重复通知
-          const newFlag = result.join('')
-          const lastFlag = value.join('')
-          if (newFlag !== lastFlag) {
+          if (result.join('') !== value.join('')) {
             onChange([...result])
           }
         }
@@ -149,19 +150,12 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       [`${prefixCls}--disabled`]: disabled,
     })
 
-    useEffect(() => {
-      // 如果弹窗关闭（代表行为结束）的时候，值依旧是错的，则清空值
-      if (!showPopper && !validChecker(cacheValue)) {
-        const result = type === 'single' ? [''] : ['', '']
-        // 避免重复渲染
-        if (cacheValue.join('') !== '') {
-          setCacheValue(result)
-        }
-        if (value.join('') !== '') {
-          onChange(result)
-        }
+    // 行为结束，如果此时值还是错误的，则直接重置
+    const finishAction = useCallback(() => {
+      if (!validChecker(cacheValue)) {
+        onChangeWrapper(type === 'single' ? [''] : ['', ''])
       }
-    }, [showPopper, validChecker, cacheValue, onChange, value, type])
+    }, [validChecker, cacheValue, onChangeWrapper, type])
 
     return (
       <div ref={ref} role={role} className={cls}>
@@ -189,6 +183,9 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             className={`${prefixCls}__function-button`}
             onClick={() => {
               showPopperRef.current = !showPopper
+              if (showPopper) {
+                finishAction()
+              }
               setShowPopper((pre) => !pre)
             }}
           >
@@ -205,6 +202,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           attachEl={attachEl}
           onClose={() => {
             showPopperRef.current = false
+            finishAction()
             setShowPopper(false)
           }}
           preload
@@ -224,6 +222,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             value={cacheValue}
             onChange={(e) => {
               // 只有弹窗展开的时候才接手 pop content 的值改变
+              // WARNING: 当值错误，弹窗收起，默认会滚动到 00:00:00，并且通知外部（非期望），所以我们需要这个FLAG来避免错误值获取
               if (showPopperRef.current) {
                 onChangeWrapper(e)
               }
