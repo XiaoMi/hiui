@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { usePopConfirm, UsePopConfirmProps } from './use-pop-confirm'
 import Button from '@hi-ui/button'
-import Popper from '@hi-ui/popper'
+import { PopperPortal } from '@hi-ui/popper'
 import { defaultTipIcon } from './icons'
 
 const POP_CONFIRM_PREFIX = getPrefixCls('pop-confirm')
@@ -35,12 +35,12 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
     return (
       <>
         {React.isValidElement(children) ? React.cloneElement(children, getTriggerProps()) : null}
-        <Popper {...getPopperProps()}>
+        <PopperPortal {...getPopperProps()}>
           <div ref={ref} className={cls} {...rootProps}>
-            <div className={`${prefixCls}__content`}>
-              {icon}
+            <section className={`${prefixCls}__content`}>
+              {icon ? <span className={`${prefixCls}__content-icon`}>{icon}</span> : null}
               <div className={`${prefixCls}__content-title`}>{title}</div>
-            </div>
+            </section>
             <div className={`${prefixCls}__footer`}>
               <Button
                 className={`${prefixCls}__btn-cancel`}
@@ -61,7 +61,7 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
               </Button>
             </div>
           </div>
-        </Popper>
+        </PopperPortal>
       </>
     )
   }

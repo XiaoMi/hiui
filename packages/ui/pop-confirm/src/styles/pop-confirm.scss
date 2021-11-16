@@ -5,29 +5,28 @@ $prefix: '#{$component-prefix}-pop-confirm' !default;
 .#{$prefix} {
   @include text-reset;
 
-  // position: relative;
-  // display: flex;
-  // align-items: center;
-  // font-size: 0.875rem;
-  // vertical-align: middle;
-  // outline: none;
+  position: relative;
   background: var(--color-white);
-  // padding: 0 5px;
   white-space: nowrap;
   transition: all 0.5s;
-  border-radius: 4px;
-  padding: 12px 15px;
+  border-radius: use-border-radius('normal');
+  padding: use-spacing(6) use-spacing(8);
   display: flex;
   flex-direction: column;
-  // box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
 
   &__content {
     display: flex;
     align-items: center;
+
+    &-icon {
+      margin-right: use-spacing(4);
+      color: use-color-mode('warning');
+      font-size: use-text-size('xxl');
+    }
   }
 
   &__footer {
-    margin-top: 12px;
+    margin-top: use-spacing(6);
     text-align: right;
   }
 }

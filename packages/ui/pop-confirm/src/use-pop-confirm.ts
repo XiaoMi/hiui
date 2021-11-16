@@ -4,7 +4,7 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { withDefaultProps } from '@hi-ui/react-utils'
-import { PopperProps } from '@hi-ui/popper'
+import { PopperPortalProps } from '@hi-ui/popper'
 
 export const usePopConfirm = ({
   role = 'alert-dialog',
@@ -145,79 +145,7 @@ export interface UsePopConfirmProps {
   /**
    * 自定义控制 popper 行为，参见 `PopperProps`
    */
-  popper?: Omit<PopperProps, 'visible' | 'attachEl' | 'onClose'>
+  popper?: Omit<PopperPortalProps, 'visible' | 'attachEl' | 'onClose'>
 }
 
 export type UsePopConfirmReturn = ReturnType<typeof usePopConfirm>
-
-/**
- * 通用确认弹窗
- * TODO: 抽离到 Modal，拆分出一个子组件，专门用于局部弹窗确认的场景
- */
-// const useConfirmPopper = (props: UseConfirmPopperProps) => {
-//   const { prefixCls, onConfirm, content, confirmText, cancelText } = props
-
-//   const [visible, toggleAction] = useToggle()
-
-//   const [targetEl, setTargetEl] = useState<any>(null)
-//   const popperElRef = useRef<HTMLDivElement | null>(null)
-//   const arrowElRef = useRef<HTMLDivElement | null>(null)
-
-//   const { styles, attributes } = usePopper(targetEl, popperElRef.current, {
-//     placement: 'bottom-end',
-//     modifiers: [
-//       {
-//         enabled: true,
-//         name: 'arrow',
-//         options: {
-//           element: arrowElRef.current,
-//         },
-//       },
-//       {
-//         enabled: true,
-//         name: 'offset',
-//         options: {
-//           offset: [4, 4],
-//         },
-//       },
-//     ],
-//   })
-
-//   useOutsideClick(popperElRef, toggleAction.off)
-
-//   const Modal = visible ? (
-//     <div ref={popperElRef} style={{ ...styles.popper, zIndex: 1 }} {...attributes.popper}>
-//       <div ref={arrowElRef} style={styles.arrow} className={`${prefixCls}-modal-arrow`} />
-//       <div className={`${prefixCls}-modal`}>
-//         <section className={`${prefixCls}-modal__body`}>{content}</section>
-//         <footer className={`${prefixCls}-modal__footer`}>
-//           <Button
-//             className={`${prefixCls}-modal__btn--cancel`}
-//             type="primary"
-//             appearance="line"
-//             onClick={(evt) => {
-//               // 阻止冒泡，避免触发节点选中
-//               evt.stopPropagation()
-//               toggleAction.off()
-//            }}
-//           >
-//             {cancelText}
-//           </Button>
-//           <Button type="primary" className={`${prefixCls}-modal__btn--confirm`} onClick={onConfirm}>
-//             {confirmText}
-//           </Button>
-//         </footer>
-//       </div>
-//     </div>
-//   ) : null
-
-//   return [setTargetEl, Modal, toggleAction.on] as const
-// }
-
-// interface UseConfirmPopperProps {
-//   prefixCls: string
-//   onConfirm: (evt: React.MouseEvent<Element, MouseEvent>) => void
-//   content: string
-//   confirmText: string
-//   cancelText: string
-// }
