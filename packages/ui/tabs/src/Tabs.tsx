@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef, useMemo, useState, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { TabPaneProps } from './TabPane'
@@ -40,22 +40,38 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       return list
     }, [children])
 
-    // const [activeTab, setActiveTab] = useUncontrolledState(
-    //   defaultActiveId || tabList[0]?.tabId,
-    //   activeId,
-    //   onChange
-    // )
+    const [activePane, setActivePane] = useState(activeId || defaultActiveId || tabList[0]?.tabId)
+
+    const _onChange = useCallback<(tabId: string) => void>(
+      (tabId) => {
+        if (onChange) {
+          onChange(tabId)
+        }
+        setActivePane(tabId)
+      },
+      [onChange]
+    )
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
         <TabList
-          className={`${_prefix}__header`}
+          prefixCls={prefixCls}
           data={tabList}
           activeId={activeId}
-          onChange={onChange}
+          onChange={_onChange}
           onTabClick={onTabClick}
         />
-        <div className={`${_prefix}__content`}>{children}</div>
+        <div className={`${_prefix}__content`}>
+          {React.Children.map(children, (child) => {
+            console.log(child, child?.props.tabId, activeId)
+            return (
+              child &&
+              React.cloneElement(child, {
+                active: activePane === child.props.tabId,
+              })
+            )
+          })}
+        </div>
       </div>
     )
   }

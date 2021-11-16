@@ -69,7 +69,6 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
     // TODO: 设置第一个 tagWidth 超出省略，预防无展示
     // const [tagMaxWidth, setTagMaxWidth] = useState(0)
     const [tagMaxCount, setTagMaxCount] = useState(0)
-    console.log(tagMaxCount)
 
     useLayoutEffect(() => {
       let tagMaxCount = 0

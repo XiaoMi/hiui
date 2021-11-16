@@ -1,14 +1,12 @@
 import React from 'react'
 
-const TabPane: React.FC<TabPaneProps> = ({ children, className, style }) => {
+export const TabPane: React.FC<TabPaneProps> = ({ children, className, style, active }) => {
   return (
     <div style={style} className={className}>
-      {children}
+      {active ? children : null}
     </div>
   )
 }
-
-export default TabPane
 
 export interface TabPaneProps {
   style?: React.CSSProperties
@@ -17,4 +15,5 @@ export interface TabPaneProps {
   tabId: string
   tabTitle: React.ReactNode
   closeable?: boolean
+  active?: boolean
 }
