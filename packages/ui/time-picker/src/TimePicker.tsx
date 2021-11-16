@@ -47,6 +47,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       bordered = true,
       onChange: notifyOutside,
       placeholder = DefaultPlaceholder,
+      inputReadonly = false,
     },
     ref
   ) => {
@@ -131,6 +132,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     const cls = cx(prefixCls, className, {
       [`${prefixCls}--border`]: bordered,
       [`${prefixCls}--active`]: showPopper,
+      [`${prefixCls}--disabled`]: disabled,
     })
 
     useEffect(() => {
@@ -144,6 +146,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       <div ref={ref} role={role} className={cls}>
         <div ref={setAttachEl} className={`${prefixCls}__input-wrapper`}>
           <Input
+            disabled={inputReadonly || disabled}
             type={type}
             placeholders={placeholder}
             prefix={prefixCls}
@@ -173,7 +176,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
         </div>
         <Popper
           unmountOnClose={false}
-          visible={showPopper}
+          visible={showPopper && !disabled}
           attachEl={attachEl}
           onClose={() => setShowPopper(false)}
         >

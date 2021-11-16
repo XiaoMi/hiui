@@ -20,6 +20,7 @@ interface InputProps extends ExtendType {
   prefix: string
   format: TimePickerFormat
   onFocus: () => void
+  disabled: boolean
 }
 
 export const Input: FC<InputProps> = (props) => {
@@ -37,6 +38,7 @@ export const Input: FC<InputProps> = (props) => {
     placeholders,
     onChange,
     onFocus,
+    disabled,
   } = props
   const componentClass = useMemo(() => `${prefix}__input`, [prefix])
 
@@ -139,6 +141,7 @@ export const Input: FC<InputProps> = (props) => {
                 onChange(result)
               }
             }}
+            disabled={disabled}
             onFocus={() => {
               onFocus()
             }}
@@ -158,6 +161,7 @@ export const Input: FC<InputProps> = (props) => {
       getPanelType,
       validChecker,
       componentClass,
+      disabled,
     ]
   )
 
@@ -166,6 +170,7 @@ export const Input: FC<InputProps> = (props) => {
       className={cx(componentClass, {
         [`${componentClass}--not-valid`]: !judgeIsValid(cacheValue),
         [`${componentClass}--range`]: type === 'range',
+        [`${componentClass}--disabled`]: disabled,
       })}
     >
       {renderInput(cacheValue[0], 0)}

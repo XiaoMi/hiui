@@ -9,6 +9,10 @@ $interact-area: '#{$input-prefix}__interact-area' !default;
   width: fit-content;
   font-size: 14px;
 
+  &--disabled{
+    color: get-color('gray', 500);
+  }
+
   &--not-valid{
     color: get-color('magenta', 600);
   }
@@ -29,5 +33,9 @@ $interact-area: '#{$input-prefix}__interact-area' !default;
     padding: 0;
     padding-left: 10px;
     font-size: inherit;
+
+    &:disabled{
+      background: transparent;
+    }
   }
 }
