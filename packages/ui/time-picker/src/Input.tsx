@@ -78,7 +78,13 @@ export const Input: FC<InputProps> = (props) => {
 
   // 缓存同步外部
   useEffect(() => {
-    setCacheValue(value.slice(0, type === 'single' ? 1 : 2))
+    setCacheValue((pre) => {
+      const result = value.slice(0, type === 'single' ? 1 : 2)
+      if (result.join('') !== pre.join('')) {
+        return result
+      }
+      return pre
+    })
   }, [value, type])
 
   const judgeIsValid = useCallback(

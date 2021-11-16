@@ -1,14 +1,31 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-time-picker' !default;
+$input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
 .#{$prefix} {
   width: fit-content;
+
+  &--border{
+    .#{$input-wrapper-class}{
+      border: 1px solid get-color('gray', 300);
+    }
+  }
+
+  &--active{
+    .#{$input-wrapper-class}{
+      border-color: get-color('blue', 600);
+    }
+  }
 
   &__input-wrapper{
     width: fit-content;
     display: flex;
     align-items: center;
+
+    &:hover{
+      border-color: get-color('blue', 600);
+    }
   }
 
   &__function-button{
@@ -21,20 +38,18 @@ $prefix: '#{$component-prefix}-time-picker' !default;
   }
 
   &--disabled{
-    pointer-events: none;
+    cursor: not-allowed;
+    background: get-color('gray', 100);
+
+    .#{$input-wrapper-class}{
+      pointer-events: none;
+      opacity: 0.4;
+    }
   }
 
   &__close-button{
     &:hover{
       color: get-color('gray', 600);
     }
-  }
-
-  &--border{
-    border: 1px solid get-color('gray', 300);
-  }
-
-  &--active,&:hover{
-    border-color: get-color('blue', 600);
   }
 }

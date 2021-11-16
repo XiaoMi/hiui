@@ -124,10 +124,16 @@ export const PopContent: FC<PopContentProps> = (props) => {
         const startMinute = getMatchTypeValue(0, TimePickerSelectorType.minute)
         const startSecond = getMatchTypeValue(0, TimePickerSelectorType.second)
 
-        // 如果小时存在，并且开始小时大于结束
-        // 如果分钟存在，并且开始分钟大于结束分钟
-        // 则，直接禁用所有秒
-        const allDisabled = (hour >= 0 && startHour > hour) || (minute >= 0 && startMinute > minute)
+        let allDisabled = false
+
+        // 如果小时存在，并且开始小时大于结束，禁用所有秒
+        if (hour >= 0 && startHour > hour) {
+          allDisabled = true
+        }
+        // 如果小时存在，并且开始结束小时一样，并且开始分钟大于结束分钟，禁用所有秒
+        if (hour >= 0 && startHour === hour && minute >= 0 && startMinute > minute) {
+          allDisabled = true
+        }
 
         if (allDisabled) {
           result = [...result, ...getRange(0, 59)]
