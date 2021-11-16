@@ -34,7 +34,13 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
 
     return (
       <>
-        {React.isValidElement(children) ? React.cloneElement(children, getTriggerProps()) : null}
+        {React.isValidElement(children)
+          ? React.cloneElement(
+              children,
+              // @ts-ignore
+              getTriggerProps(children.props, children.ref)
+            )
+          : null}
         <PopperPortal {...getPopperProps()}>
           <div ref={ref} className={cls} {...rootProps}>
             <section className={`${prefixCls}__content`}>

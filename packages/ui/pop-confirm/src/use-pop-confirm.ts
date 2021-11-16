@@ -3,7 +3,7 @@ import { defaultTipIcon } from './icons'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
-import { withDefaultProps } from '@hi-ui/react-utils'
+import { withDefaultProps, mergeRefs } from '@hi-ui/react-utils'
 import { PopperPortalProps } from '@hi-ui/popper'
 
 export const usePopConfirm = ({
@@ -64,13 +64,15 @@ export const usePopConfirm = ({
 
   const [targetEl, setTargetEl] = useState<HTMLElement | null>(null)
 
-  const getTriggerProps = useCallback(() => {
-    return {
-      // TODO: merge Refs
-      ref: setTargetEl,
-      onClick: onToggle,
-    }
-  }, [onToggle, setTargetEl])
+  const getTriggerProps = useCallback(
+    (props, ref) => {
+      return {
+        ref: mergeRefs(setTargetEl, ref),
+        onClick: mockDefaultHandlers(props.onClick, onToggle),
+      }
+    },
+    [onToggle, setTargetEl]
+  )
 
   const getPopperProps = useCallback(() => {
     const popperProps = withDefaultProps(popper, { arrow: true, placement: 'top' })
@@ -129,11 +131,11 @@ export interface UsePopConfirmProps {
   /**
    * 点击取消按钮时回调
    */
-  onCancel?: () => void
+  onCancel?: (event: React.MouseEvent) => void
   /**
    * 点击确认按钮时回调
    */
-  onConfirm?: () => void
+  onConfirm?: (event: React.MouseEvent) => void
   /**
    * 是否开启禁用
    */
