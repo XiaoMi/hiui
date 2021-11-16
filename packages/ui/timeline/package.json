@@ -1,10 +1,10 @@
 {
-  "name": "@hi-ui/pagination",
-  "version": "4.0.0-alpha.8",
+  "name": "@hi-ui/timeline",
+  "version": "4.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/pagination#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/timeline#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -43,15 +43,9 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.0-alpha.2",
-    "@hi-ui/core-css": "^4.0.0-alpha.3",
-    "@hi-ui/counter": "^4.0.0-alpha.12",
-    "@hi-ui/env": "^4.0.0-alpha.0",
-    "@hi-ui/locale-context": "^4.0.0-alpha.0",
-    "@hi-ui/select": "^4.0.0-alpha.5",
-    "@hi-ui/icons": "^4.0.0-alpha.10",
-    "@hi-ui/use-latest": "^4.0.0-alpha.2",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.6"
+    "@hi-ui/classname": "^4.0.0-alpha.0",
+    "@hi-ui/core-css": "^4.0.0-alpha.0",
+    "@hi-ui/env": "^4.0.0-alpha.0"
   },
   "peerDependencies": {
     "react": "^17.0.1",

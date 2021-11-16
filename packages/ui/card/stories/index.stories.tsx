@@ -1,10 +1,11 @@
 import React from 'react'
 
 export * from './basic.stories'
-export * from './mini-input.stories'
-export * from './page-size-options.stories'
+export * from './no-header.stories'
+export * from './hoverable.stories'
+export * from './img.stories'
 
 export default {
-  title: 'Pagination',
+  title: 'Card',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

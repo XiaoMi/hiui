@@ -1,10 +1,11 @@
 import React from 'react'
 
 export * from './basic.stories'
-export * from './mini-input.stories'
-export * from './page-size-options.stories'
+export * from './right.stories'
+export * from './cross.stories'
+export * from './group.stories'
 
 export default {
-  title: 'Pagination',
+  title: 'Timeline',
   decorators: [(story: Function) => <div>{story()}</div>],
 }
