@@ -65,21 +65,21 @@ export const Selector: FC<SelectorProps> = (props) => {
         scrollToMatchIndex(currentIndex)
         // 通知外部改变
         // 如果当前 item 被禁用了，则无通知
-        if (data[currentIndex].id !== value && !data[currentIndex].disabled) {
+        if (!data[currentIndex].disabled) {
           onChange(data[currentIndex])
         }
       }, 200) as unknown) as number
     },
-    [calcCurrentIndex, data, onChange, value, scrollToMatchIndex]
+    [calcCurrentIndex, data, onChange, scrollToMatchIndex]
   )
 
   const onItemClick = useCallback(
     (item: SelectorItem, index: number) => {
-      if (item.id !== value && !item.disabled) {
+      if (!item.disabled) {
         onChange(item)
       }
     },
-    [onChange, value]
+    [onChange]
   )
 
   const onShortcutClick = useCallback(
