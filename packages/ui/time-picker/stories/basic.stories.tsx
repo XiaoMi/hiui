@@ -4,6 +4,8 @@ import TimePicker from '../src'
 export const Basic = () => {
   const [basicValue, setBasicValue] = useState(['12:00:00'])
   const [rangeValue, setRangeValue] = useState(['11:11:11', '12:00:00'])
+  const [inputReadonlyValue, setInputReadonlyValue] = useState(['11:11:11'])
+
   return (
     <>
       <h1>Basic use</h1>
@@ -26,6 +28,16 @@ export const Basic = () => {
             setRangeValue(e)
           }}
           type="range"
+        />
+        <h2>input readonly</h2>
+        <TimePicker
+          placeholder={['请选择时间']}
+          value={inputReadonlyValue}
+          onChange={(e) => {
+            console.log('input-readonly', e)
+            setInputReadonlyValue(e)
+          }}
+          inputReadonly
         />
         <h2>disabled</h2>
         <TimePicker disabled placeholder={['请选择时间']} />

@@ -9,7 +9,7 @@ export const CustomDisabled = () => {
   return (
     <>
       <h1>Custom disabled</h1>
-      <div className="time-picker-basic__wrap" style={{ height: 400 }}>
+      <div className="time-picker-custom-disabled__wrap" style={{ height: 400 }}>
         <h2>hour</h2>
         <TimePicker
           value={hourValue}
@@ -41,7 +41,6 @@ export const CustomDisabled = () => {
         <TimePicker
           value={secondValue}
           placeholder={['请选择开始时间', '请选择结束时间']}
-          format="HH"
           onChange={(e) => {
             console.log('custom-second-value', e)
             setSecondValue(e)
