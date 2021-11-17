@@ -58,8 +58,10 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       notifyOutside
     )
     const [cacheValue, setCacheValue] = useState<string[]>(value)
+    const cacheValueRef = useRef(cacheValue)
 
     useEffect(() => {
+      cacheValueRef.current = [...value]
       setCacheValue((pre) => {
         if (pre.join('') !== value.join('')) {
           return [...value]
@@ -123,6 +125,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     const onChangeWrapper = useCallback(
       (newValue: string[]) => {
         const result = newValue.slice(0, type === 'single' ? 1 : 2)
+        cacheValueRef.current = [...result]
         // 避免重复渲染
         setCacheValue((pre) => {
           if (pre.join('') !== result.join('')) {
@@ -152,10 +155,10 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
 
     // 行为结束，如果此时值还是错误的，则直接重置
     const finishAction = useCallback(() => {
-      if (!validChecker(cacheValue)) {
+      if (!validChecker(cacheValueRef.current)) {
         onChangeWrapper(type === 'single' ? [''] : ['', ''])
       }
-    }, [validChecker, cacheValue, onChangeWrapper, type])
+    }, [validChecker, onChangeWrapper, type])
 
     return (
       <div ref={ref} role={role} className={cls}>
@@ -178,14 +181,17 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
               showPopperRef.current = true
               setShowPopper(true)
             }}
+            onBlur={() => {
+              // 失焦之后，弹窗已经收起，视作行为结束
+              if (!showPopperRef.current) {
+                finishAction()
+              }
+            }}
           />
           <div
             className={`${prefixCls}__function-button`}
             onClick={() => {
               showPopperRef.current = !showPopper
-              if (showPopper) {
-                finishAction()
-              }
               setShowPopper((pre) => !pre)
             }}
           >

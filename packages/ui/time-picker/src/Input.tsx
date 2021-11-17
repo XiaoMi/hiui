@@ -21,6 +21,7 @@ interface InputProps extends ExtendType {
   format: TimePickerFormat
   onFocus: () => void
   disabled: boolean
+  onBlur: () => void
 }
 
 export const Input: FC<InputProps> = (props) => {
@@ -39,6 +40,7 @@ export const Input: FC<InputProps> = (props) => {
     onChange,
     onFocus,
     disabled,
+    onBlur,
   } = props
   const componentClass = useMemo(() => `${prefix}__input`, [prefix])
 
@@ -138,6 +140,7 @@ export const Input: FC<InputProps> = (props) => {
             onBlur={() => {
               const result = dispose(cacheValue[index] + ':', false)
               onChange(result || (type === 'single' ? [''] : ['', '']))
+              onBlur()
             }}
             disabled={disabled}
             onFocus={() => {
@@ -156,6 +159,7 @@ export const Input: FC<InputProps> = (props) => {
       onChange,
       cacheValue,
       getPanelType,
+      onBlur,
       validChecker,
       componentClass,
       disabled,
