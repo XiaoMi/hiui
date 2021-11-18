@@ -67,15 +67,22 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
     const [arrowElRef, setArrowElmRef] = useState<HTMLElement | null>(null)
     const targetRef = useLatestRef(attachEl)
 
-    const onCloseLatest = useLatestCallback(onClose)
+    const onCloseLatest = useLatestCallback(() => {
+      if (visible) {
+        onClose?.()
+      }
+    })
     const onKeyDownLatest = useLatestCallback(onKeyDown)
     const onOutsideClickLatest = useLatestCallback(onOutsideClick)
 
     useRefsOutsideClick([popperElRef, targetRef], (evt) => {
-      if (closeOnOutsideClick) {
-        onCloseLatest()
+      if (visible) {
+        if (closeOnOutsideClick) {
+          onCloseLatest()
+        }
+
+        onOutsideClickLatest(evt)
       }
-      onOutsideClickLatest(evt)
     })
 
     const handleKeyDown = useCallback(
