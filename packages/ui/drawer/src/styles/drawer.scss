@@ -1,0 +1,147 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-drawer' !default;
+
+.#{$prefix} {
+  color: use-color('gray', 800);
+  font-size: use-text-size('normal');
+  transition: transform 0.3s, opacity 0.3s;
+
+  &:focus {
+    outline: 0;
+  }
+
+  width: 360px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: use-color-static('white');
+  z-index: 1000;
+  top: 0;
+  position: fixed;
+  border-radius: 2px;
+  transform: translateX(100%);
+
+  &--placement-left,
+  &--placement-right {
+    max-width: 50vw;
+    height: 100vh;
+    max-height: 100vh;
+  }
+
+  &--motion-enter-done & {
+    opacity: 1;
+    transform: translateX(0);
+    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  &--placement-left {
+    left: 0;
+    transform: translateX(-100%);
+
+    .#{$prefix}--motion-enter & {
+      transform: translateX(-100%);
+    }
+
+    .#{$prefix}--motion-enter-active & {
+      transform: translateX(0);
+    }
+
+    .#{$prefix}--motion-exit & {
+      transform: translateX(0);
+    }
+
+    .#{$prefix}--motion-exit-active & {
+      transform: translateX(-100%);
+    }
+  }
+
+  &--placement-right {
+    right: 0;
+    transform: translateX(100%);
+
+    .#{$prefix}--motion-enter & {
+      transform: translateX(100%);
+    }
+
+    .#{$prefix}--motion-enter-active & {
+      transform: translateX(0);
+    }
+
+    .#{$prefix}--motion-exit & {
+      transform: translateX(0);
+    }
+
+    .#{$prefix}--motion-exit-active & {
+      transform: translateX(100%);
+    }
+  }
+
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transition: opacity 0.3s;
+
+    .#{$prefix}--motion-enter & {
+      opacity: 0;
+    }
+
+    .#{$prefix}--motion-enter-active & {
+      opacity: 1;
+      height: 100%;
+    }
+
+    .#{$prefix}--motion-enter-done & {
+      opacity: 1;
+      pointer-events: all;
+      height: 100%;
+    }
+
+    .#{$prefix}--motion-exit & {
+      opacity: 1;
+      height: 100%;
+    }
+
+    .#{$prefix}--motion-exit-active & {
+      opacity: 0;
+    }
+
+    .#{$prefix}--motion-exit-done & {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  &__header {
+    font-size: 16px;
+    color: use-color('gray', 800);
+    font-weight: 500;
+    height: 54px;
+    border-bottom: 1px solid use-color('gray', 300);
+    box-sizing: border-box;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__content {
+    box-sizing: border-box;
+    overflow: auto;
+    flex: 1;
+    padding: 24px;
+  }
+
+  &__footer {
+    border-top: 1px solid use-color('gray', 300);
+    padding: 12px;
+    flex-shrink: 0;
+  }
+}

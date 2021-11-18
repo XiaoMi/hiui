@@ -177,7 +177,7 @@ $prefix: '#{$component-prefix}-button' !default;
   /** *************************** Sizes ******************************** */
 
   &--size-small {
-    height: get-text-lineheight('sm') + 1px * 2 + 1px * 2;
+    height: calc(#{get-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
     padding: 1px 11px;
     font-size: use-text-size('sm');
     line-height: get-text-lineheight('sm');
@@ -193,7 +193,7 @@ $prefix: '#{$component-prefix}-button' !default;
   }
 
   &--size-default {
-    height: get-text-lineheight('normal') + 4px * 2 + 1px * 2;
+    height: calc(#{get-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
     padding: 4px 15px;
     font-size: use-text-size('normal');
     line-height: get-text-lineheight('normal');
@@ -209,7 +209,7 @@ $prefix: '#{$component-prefix}-button' !default;
   }
 
   &--size-large {
-    height: get-text-lineheight('xl') + 13px * 2 + 1px * 2;
+    height: calc(#{get-text-lineheight('normal')} + #{13px * 2 + 1px * 2});
     padding: 13px 60px;
     font-size: use-text-size('xl');
     line-height: get-text-lineheight('xl');

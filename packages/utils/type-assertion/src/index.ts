@@ -1,5 +1,12 @@
 export type Dict<T = any> = Record<string, T>
 
+export type Nullish = null | undefined | void
+
+/**
+ * Assert is Nullish
+ */
+export const isNullish = (arg: unknown): arg is Nullish => arg === null || arg === undefined
+
 /**
  * Assert is an objectLike
  * TODO: Assert the return type
@@ -11,6 +18,12 @@ const isObjectLike = (arg: unknown): arg is any => !!arg && typeof arg === 'obje
  */
 export const isObject = (arg: unknown): arg is Dict =>
   isObjectLike(arg) && arg.constructor === Object
+
+/**
+ * Assert is a dom element
+ */
+export const isElement = (arg: unknown): arg is Element =>
+  isObjectLike(arg) && arg.constructor !== Object && arg.nodeType === 1
 
 /**
  * Assert is an Promise
@@ -26,8 +39,7 @@ export const isArray: <T>(arg: unknown) => arg is T[] = Array.isArray
 /**
  * Assert is an array and `array.length > 0`
  */
-export const isArrayNonEmpty = <T>(arg: unknown): arg is T[] & { length: 0 } =>
-  isArray(arg) && arg.length > 0
+export const isArrayNonEmpty = <T>(arg: unknown): arg is T[] => isArray(arg) && arg.length > 0
 
 /**
  * Assert is numeric

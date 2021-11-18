@@ -47,6 +47,7 @@ to: <%= h.uiDir(`${name}/package.json`) %>
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.0",
+    "@hi-ui/core": "^4.0.0-alpha.0",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
     "@hi-ui/env": "^4.0.0-alpha.0"
   },
