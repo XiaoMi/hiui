@@ -5,7 +5,7 @@ $prefix: '#{$component-prefix}-card' !default;
 .#{$prefix} {
   border-radius: 2px;
   box-sizing: border-box;
-  background: use-color('white');
+  background: use-color-static('white');
 
   &--small {
     width: 276px;
@@ -37,7 +37,7 @@ $prefix: '#{$component-prefix}-card' !default;
     overflow: hidden;
 
     &--divider {
-      border-bottom: 1px solid use-color('gray-20');
+      border-bottom: 1px solid use-color('gray', 200);
     }
   }
 
@@ -47,7 +47,7 @@ $prefix: '#{$component-prefix}-card' !default;
 
   &__body {
     padding: 16px;
-    font-size: $font-size-normal;
+    font-size: use-text-size('normal');
   }
 
   &__title {
@@ -55,23 +55,23 @@ $prefix: '#{$component-prefix}-card' !default;
     white-space: nowrap;
     text-overflow: ellipsis;
     flex: 1;
-    font-size: $font-size-large;
-    font-weight: $font-weight-bold;
+    font-size: use-text-size('lg');
+    font-weight: use-text-weight('bold');
   }
 
   &__extra {
-    font-size: $font-size-normal;
+    font-size: use-text-size('normal');
   }
 
   &--bordered {
-    border: 1px solid use-color('gray-20');
+    border: 1px solid use-color('gray', 200);
   }
 
   &--hoverable {
     transition: box-shadow 0.3s;
 
     &:hover {
-      box-shadow: 0 2px 8px 0 use-color('gray-10');
+      box-shadow: 0 2px 8px 0 use-color('gray', 100);
     }
   }
 }

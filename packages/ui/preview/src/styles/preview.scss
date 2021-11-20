@@ -1,0 +1,131 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-preview' !default;
+
+.#{$prefix} {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+
+  &__mask--transition {
+    &-enter {
+      opacity: 0;
+    }
+
+    &-enter-active {
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+
+    &-exit {
+      opacity: 1;
+    }
+
+    &-exit-active {
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+  }
+
+  &__mask {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: use-color('gray', 600);
+  }
+
+  &__container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    text-align: center;
+
+    // 该伪类用于让图片在容器中垂直居中
+    &::before {
+      content: '';
+      width: 0;
+      height: 100%;
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+
+  &__toolbar {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 0 32px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    border-radius: 28px;
+
+    svg {
+      margin: 0 12px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+
+  &__close-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 36px;
+    height: 36px;
+    line-height: 1;
+    font-size: 36px;
+    cursor: pointer;
+  }
+
+  &__left-btn {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    width: 36px;
+    height: 36px;
+    line-height: 1;
+    font-size: 36px;
+    cursor: pointer;
+    margin-top: -18px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: use-color-static('white');
+  }
+
+  &__right-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 36px;
+    height: 36px;
+    line-height: 1;
+    font-size: 36px;
+    cursor: pointer;
+    margin-top: -18px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: use-color-static('white');
+  }
+
+  &__image {
+    max-width: 100%;
+    max-height: 100%;
+    vertical-align: middle;
+    transform: scale(1);
+    cursor: grab;
+    transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+    user-select: none;
+    pointer-events: auto;
+    display: inline-block;
+  }
+}
