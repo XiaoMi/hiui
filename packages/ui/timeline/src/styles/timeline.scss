@@ -40,8 +40,8 @@ $prefix: '#{$component-prefix}-timeline' !default;
         .item__dot {
           width: 8px;
           height: 8px;
-          border: 2px solid use-color('primary');
-          background: use-color('white');
+          border: 2px solid use-color-mode('primary');
+          background: use-color-static('white');
           border-radius: 50%;
           box-sizing: border-box;
           position: absolute;
@@ -53,7 +53,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
 
         .item__icon {
           position: absolute;
-          background: use-color('white');
+          background: use-color-static('white');
           top: 7px;
           right: -20px;
           transform: translateX(50%);
@@ -64,7 +64,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
           position: absolute;
           right: -20px;
           width: 2px;
-          background: use-color('gray-20');
+          background: use-color('gray', 200);
           height: calc(100% + 20px);
           transform: translateX(50%);
         }
@@ -75,15 +75,15 @@ $prefix: '#{$component-prefix}-timeline' !default;
           margin-left: 20px;
 
           .item__time {
-            color: use-color('black');
-            font-size: $font-size-normal;
-            line-height: $line-height-size-normal;
+            color: use-color-static('black');
+            font-size: use-text-size('normal');
+            line-height: use-text-lineheight('normal');
             margin-bottom: 2px;
           }
 
           .item__extra {
-            color: use-color('gray-80');
-            font-size: $font-size-small;
+            color: use-color('gray', 800);
+            font-size: use-text-size('sm');
             line-height: 20px;
           }
         }
@@ -93,15 +93,15 @@ $prefix: '#{$component-prefix}-timeline' !default;
           width: 70%;
 
           .item__title {
-            color: use-color('black');
-            font-size: $font-size-normal;
-            line-height: $line-height-size-normal;
+            color: use-color-static('black');
+            font-size: use-text-size('normal');
+            line-height: use-text-lineheight('normal');
             margin-bottom: 2px;
           }
 
           .item__content {
-            color: use-color('gray-80');
-            font-size: $font-size-small;
+            color: use-color('gray', 800);
+            font-size: use-text-size('sm');
             line-height: 20px;
           }
         }
@@ -114,8 +114,8 @@ $prefix: '#{$component-prefix}-timeline' !default;
         .item__dot {
           width: 8px;
           height: 8px;
-          border: 2px solid use-color('primary');
-          background: use-color('white');
+          border: 2px solid use-color-mode('primary');
+          background: use-color-static('white');
           border-radius: 50%;
           box-sizing: border-box;
           position: absolute;
@@ -129,7 +129,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
           position: absolute;
           left: -20px;
           width: 2px;
-          background: use-color('gray-20');
+          background: use-color('gray', 200);
           height: calc(100% + 20px);
           transform: translateX(-50%);
         }
@@ -139,15 +139,15 @@ $prefix: '#{$component-prefix}-timeline' !default;
           margin-right: 20px;
 
           .item__time {
-            color: use-color('black');
-            font-size: $font-size-normal;
-            line-height: $line-height-size-normal;
+            color: use-color-static('black');
+            font-size: use-text-size('normal');
+            line-height: use-text-lineheight('normal');
             margin-bottom: 2px;
           }
 
           .item__extra {
-            color: use-color('gray-80');
-            font-size: $font-size-small;
+            color: use-color('gray', 800);
+            font-size: use-text-size('sm');
             line-height: 20px;
           }
         }
@@ -156,15 +156,15 @@ $prefix: '#{$component-prefix}-timeline' !default;
           width: 70%;
 
           .item__title {
-            color: use-color('black');
-            font-size: $font-size-normal;
-            line-height: $line-height-size-normal;
+            color: use-color-static('black');
+            font-size: use-text-size('normal');
+            line-height: use-text-lineheight('normal');
             margin-bottom: 2px;
           }
 
           .item__content {
-            color: use-color('gray-80');
-            font-size: $font-size-small;
+            color: use-color('gray', 800);
+            font-size: use-text-size('sm');
             line-height: 20px;
           }
         }
@@ -179,22 +179,22 @@ $prefix: '#{$component-prefix}-timeline' !default;
       margin-left: 24px;
 
       .item__title {
-        color: use-color('black');
-        font-size: $font-size-normal;
-        line-height: $line-height-size-normal;
+        color: use-color-static('black');
+        font-size: use-text-size('normal');
+        line-height: use-text-lineheight('normal');
         margin-bottom: 2px;
       }
 
       .item__content {
-        color: use-color('gray-80');
-        font-size: $font-size-small;
+        color: use-color('gray', 800);
+        font-size: use-text-size('sm');
         line-height: 20px;
         margin-bottom: 6px;
       }
 
       .item__time {
-        color: use-color('gray-70');
-        font-size: $font-size-small;
+        color: use-color('gray', 700);
+        font-size: use-text-size('sm');
         line-height: 20px;
       }
 
@@ -216,8 +216,8 @@ $prefix: '#{$component-prefix}-timeline' !default;
       .item__dot {
         width: 8px;
         height: 8px;
-        border: 2px solid use-color('primary');
-        background: use-color('white');
+        border: 2px solid use-color-mode('primary');
+        background: use-color-static('white');
         border-radius: 50%;
         box-sizing: border-box;
         position: absolute;
@@ -229,7 +229,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
 
       .item__icon {
         position: absolute;
-        background: use-color('white');
+        background: use-color-static('white');
         top: 7px;
         left: -20px;
         transform: translateX(-50%);
@@ -241,7 +241,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
         left: -22px;
         top: 0;
         width: 2px;
-        background: use-color('gray-20');
+        background: use-color('gray', 200);
         height: calc(100% + 20px);
         transform: translateX(50%);
       }
@@ -255,7 +255,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
           position: absolute;
           left: 30%;
           width: 2px;
-          background: use-color('gray-20');
+          background: use-color('gray', 200);
           height: 100% !important;
           top: 0 !important;
           transform: translateX(-50%);
@@ -293,8 +293,8 @@ $prefix: '#{$component-prefix}-timeline' !default;
       width: calc(30% - 20px);
       margin-right: 20px;
       margin-bottom: 10px;
-      color: use-color('black');
-      font-weight: $font-weight-bold;
+      color: use-color-static('black');
+      font-weight: use-text-weight('bold');
       position: relative;
 
       .item__line {
@@ -303,7 +303,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
         left: calc(100% + 20px);
         right: 0;
         width: 2px;
-        background: use-color('gray-20');
+        background: use-color('gray', 200);
         height: calc(100% + 10px);
         transform: translateX(-50%);
       }
@@ -319,15 +319,15 @@ $prefix: '#{$component-prefix}-timeline' !default;
         margin-right: 20px;
 
         .item__time {
-          color: use-color('black');
-          font-size: $font-size-normal;
-          line-height: $line-height-size-normal;
+          color: use-color-static('black');
+          font-size: use-text-size('normal');
+          line-height: use-text-lineheight('normal');
           margin-bottom: 2px;
         }
 
         .item__extra {
-          color: use-color('gray-80');
-          font-size: $font-size-small;
+          color: use-color('gray', 800);
+          font-size: use-text-size('sm');
           line-height: 20px;
         }
       }
@@ -335,8 +335,8 @@ $prefix: '#{$component-prefix}-timeline' !default;
       .item__dot {
         width: 8px;
         height: 8px;
-        border: 2px solid use-color('primary');
-        background: use-color('white');
+        border: 2px solid use-color-mode('primary');
+        background: use-color-static('white');
         border-radius: 50%;
         box-sizing: border-box;
         position: absolute;
@@ -348,7 +348,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
 
       .item__icon {
         position: absolute;
-        background: use-color('white');
+        background: use-color-static('white');
         top: 7px;
         left: 30%;
         transform: translateX(-50%);
@@ -359,7 +359,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
         position: absolute;
         left: 30%;
         width: 2px;
-        background: use-color('gray-20');
+        background: use-color('gray', 200);
         height: 100%;
         transform: translateX(-50%);
       }
@@ -370,15 +370,15 @@ $prefix: '#{$component-prefix}-timeline' !default;
         margin-bottom: 20px;
 
         .item__title {
-          color: use-color('black');
-          font-size: $font-size-normal;
-          line-height: $line-height-size-normal;
+          color: use-color-static('black');
+          font-size: use-text-size('normal');
+          line-height: use-text-lineheight('normal');
           margin-bottom: 2px;
         }
 
         .item__content {
-          color: use-color('gray-80');
-          font-size: $font-size-small;
+          color: use-color('gray', 800);
+          font-size: use-text-size('sm');
           line-height: 20px;
         }
       }

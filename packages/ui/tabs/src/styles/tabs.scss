@@ -5,8 +5,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
 .#{$prefix} {
   .#{$prefix}__list {
     position: relative;
-    font-size: $font-size-normal;
-    color: use-color('black');
+    font-size: use-text-size('normal');
+    color: use-color-static('black');
     display: flex;
     overflow: hidden;
 
@@ -18,7 +18,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
       left: 0;
       right: 0;
       height: 1px;
-      background-color: use-color('gray-20');
+      background-color: use-color('gray', 200);
       display: block;
     }
 
@@ -33,7 +33,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
     right: auto;
     top: auto;
     height: 2px;
-    background-color: use-color('primary');
+    background-color: use-color-mode('primary');
     transition: left 0.2s cubic-bezier(0.34, 0.69, 0.1, 1), width 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
   }
 
@@ -44,15 +44,15 @@ $prefix: '#{$component-prefix}-tabs' !default;
     cursor: pointer;
 
     &:not(&--disabled):hover {
-      color: use-color('primary');
+      color: use-color-mode('primary');
     }
 
     &--active {
-      color: use-color('primary');
+      color: use-color-mode('primary');
     }
 
     &--disabled {
-      color: use-color('gray-50') !important;
+      color: use-color('gray', 500) !important;
       cursor: not-allowed;
     }
 
@@ -77,16 +77,16 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //     justify-content: center;
   //     width: 24px;
   //     height: 24px;
-  //     color: use-color('gray-70');
+  //     color: use-color('gray', 700);
   //     border-radius: 2px;
   //     cursor: pointer;
   //     box-sizing: border-box;
-  //     font-size: $font-size-large;
+  //     font-size: use-text-size('lg');
   //   }
 
   //   .#{$prefix}__item-close {
   //     margin-left: 8px;
-  //     font-size: $font-size-large;
+  //     font-size: use-text-size('lg');
   //   }
 
   //   &__content {
@@ -110,13 +110,13 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //         box-sizing: border-box;
 
   //         &:hover {
-  //           color: use-color('primary');
+  //           color: use-color-mode('primary');
   //         }
 
   //         &--active {
-  //           border: 1px solid use-color('gray-20');
+  //           border: 1px solid use-color('gray', 200);
   //           border-radius: 2px;
-  //           color: use-color('primary');
+  //           color: use-color-mode('primary');
   //         }
   //       }
   //     }
@@ -128,12 +128,12 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //     }
 
   //     .#{$prefix}__header {
-  //       border-bottom: 1px solid use-color('gray-20');
+  //       border-bottom: 1px solid use-color('gray', 200);
   //     }
 
   //     .#{$prefix}__item {
   //       &--active {
-  //         border-bottom-color: use-color('white');
+  //         border-bottom-color: use-color-static('white');
   //       }
   //     }
   //   }
@@ -151,7 +151,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //     .#{$prefix}__header {
   //       flex: none;
   //       display: inline-block;
-  //       border-right: 1px solid use-color('gray-20');
+  //       border-right: 1px solid use-color('gray', 200);
   //     }
 
   //     .#{$prefix}__nav {
@@ -164,14 +164,14 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //       border-bottom-left-radius: 4px;
 
   //       &--active {
-  //         border-right-color: use-color('white');
+  //         border-right-color: use-color-static('white');
   //       }
   //     }
   //   }
 
   //   &--editable {
   //     .#{$prefix}__header {
-  //       border-bottom: 1px solid use-color('gray-20');
+  //       border-bottom: 1px solid use-color('gray', 200);
 
   //       .#{$prefix}__nav {
   //         display: flex;
@@ -187,9 +187,9 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //         line-height: 40px;
   //         margin-right: 4px;
   //         padding: 0 8px;
-  //         background: use-color('gray-10');
+  //         background: use-color('gray', 100);
   //         border-radius: 2px 2px 0 0;
-  //         border: 1px solid use-color('gray-20');
+  //         border: 1px solid use-color('gray', 200);
   //         text-align: center;
   //         box-sizing: border-box;
   //         display: flex;
@@ -207,13 +207,13 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //         }
 
   //         &:hover:not(.#{$prefix}__item--active) {
-  //           background-color: use-color('gray-20');
+  //           background-color: use-color('gray', 200);
   //         }
 
   //         &--active {
-  //           background-color: use-color('white');
-  //           border-bottom-color: use-color('white');
-  //           color: use-color('primary');
+  //           background-color: use-color-static('white');
+  //           border-bottom-color: use-color-static('white');
+  //           color: use-color-mode('primary');
   //           flex: none;
   //         }
   //       }
@@ -238,29 +238,29 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //         flex-direction: column;
   //         padding: 16px 20px;
   //         text-align: center;
-  //         border: 1px solid use-color('gray-20');
+  //         border: 1px solid use-color('gray', 200);
   //         box-sizing: border-box;
-  //         background-color: use-color('white');
+  //         background-color: use-color-static('white');
 
   //         &:not(:first-child) {
   //           margin-left: -1px;
   //         }
 
   //         &:hover {
-  //           color: use-color('primary');
+  //           color: use-color-mode('primary');
 
   //           .#{$prefix}__item-desc {
-  //             color: use-color('primary');
+  //             color: use-color-mode('primary');
   //           }
   //         }
 
   //         &--active {
-  //           color: use-color('primary');
-  //           border-color: use-color('primary');
+  //           color: use-color-mode('primary');
+  //           border-color: use-color-mode('primary');
   //           z-index: 1;
 
   //           .#{$prefix}__item-desc {
-  //             color: use-color('primary');
+  //             color: use-color-mode('primary');
   //           }
   //         }
 
@@ -270,7 +270,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
   //         &-desc {
   //           font-size: 12px;
-  //           color: use-color('gray-70');
+  //           color: use-color('gray', 700);
   //         }
   //       }
   //     }
@@ -290,18 +290,18 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //         padding: 0 23px;
   //         box-sizing: border-box;
   //         margin-right: 24px;
-  //         border: 1px solid use-color('gray-30');
+  //         border: 1px solid use-color('gray', 300);
   //         border-radius: 18px;
 
   //         &:hover:not(.hi-tabs__item--active) {
-  //           color: use-color('primary');
-  //           border: 1px solid use-color('primary');
+  //           color: use-color-mode('primary');
+  //           border: 1px solid use-color-mode('primary');
   //         }
 
   //         &--active {
-  //           color: use-color('white');
-  //           background-color: use-color('primary');
-  //           border: 1px solid use-color('primary');
+  //           color: use-color-static('white');
+  //           background-color: use-color-mode('primary');
+  //           border: 1px solid use-color-mode('primary');
   //         }
   //       }
   //     }
@@ -309,7 +309,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
   //   &--line {
   //     .#{$prefix}__header {
-  //       border-bottom: 1px solid use-color('gray-20');
+  //       border-bottom: 1px solid use-color('gray', 200);
 
   //       .#{$prefix}__nav {
   //         display: flex;
@@ -323,12 +323,12 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //         box-sizing: border-box;
 
   //         &:hover {
-  //           color: use-color('primary');
+  //           color: use-color-mode('primary');
   //         }
 
   //         &--active {
   //           border-radius: 2px;
-  //           color: use-color('primary');
+  //           color: use-color-mode('primary');
   //         }
   //       }
   //     }
@@ -338,13 +338,13 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //       width: 0;
   //       display: block;
   //       height: 2px;
-  //       background-color: use-color('primary');
+  //       background-color: use-color-mode('primary');
   //       bottom: -1px;
   //       transition: transform 300ms;
   //       position: absolute;
 
   //       &-disabled {
-  //         background-color: use-color('gray-50');
+  //         background-color: use-color('gray', 500);
   //       }
   //     }
   //   }
@@ -356,7 +356,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //     .#{$prefix}__header {
   //       flex: none;
   //       display: inline-block;
-  //       border-right: 1px solid use-color('gray-20');
+  //       border-right: 1px solid use-color('gray', 200);
   //       border-bottom: 1px solid transparent;
   //     }
 
@@ -365,7 +365,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //       display: block;
   //       top: 0;
   //       width: 2px !important;
-  //       background-color: use-color('primary');
+  //       background-color: use-color-mode('primary');
   //       right: -1px;
   //       height: 40px;
   //       transition: transform 300ms;
@@ -381,7 +381,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //       transition: background 300ms;
 
   //       &--active {
-  //         background: use-color('primary-20');
+  //         background: use-color-mode('primary-20');
   //       }
   //     }
   //   }
@@ -417,7 +417,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //       font-size: 40px;
   //       justify-content: center;
   //       align-items: center;
-  //       color: use-color('gray-80');
+  //       color: use-color('gray', 800);
   //     }
   //   }
   // }
@@ -427,9 +427,9 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //     max-height: 178px;
   //     padding: 8px 0;
   //     overflow: auto;
-  //     background-color: use-color('white');
+  //     background-color: use-color-static('white');
   //     border-radius: 2px;
-  //     border: 1px solid use-color('gray-20');
+  //     border: 1px solid use-color('gray', 200);
   //     box-shadow: 0 2px 8px 0 rgba(56, 62, 71, 0.1);
   //   }
 
@@ -450,22 +450,22 @@ $prefix: '#{$component-prefix}-tabs' !default;
   //     min-width: 140px;
   //     line-height: 36px;
   //     padding: 0 16px;
-  //     font-size: $font-size-normal;
-  //     color: use-color('black');
+  //     font-size: use-text-size('normal');
+  //     color: use-color-static('black');
   //     white-space: nowrap;
   //     cursor: pointer;
   //     box-sizing: border-box;
 
   //     &:hover {
-  //       background-color: use-color('primary-20');
+  //       background-color: use-color-mode('primary-20');
   //     }
 
   //     &--focus {
-  //       background-color: use-color('primary-20');
+  //       background-color: use-color-mode('primary-20');
   //     }
 
   //     &--active {
-  //       color: use-color('primary');
+  //       color: use-color-mode('primary');
   //     }
   //   }
 }
