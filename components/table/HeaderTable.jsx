@@ -137,7 +137,8 @@ const HeaderTable = ({ rightFixedIndex }) => {
   const hasSorterColumn = columnsgroup.filter((col) => col.sorter).map((sorterCol) => sorterCol.dataKey)
 
   // 自定义 checkboxAll 侧边 icon
-  const checkboxFilterIcon = rowSelection && rowSelection.checkAllOptions && rowSelection.checkAllOptions.filterIcon
+  const checkboxFilterIcon =
+    (rowSelection && rowSelection.checkAllOptions && rowSelection.checkAllOptions.filterIcon) || null
 
   // ******************** 行渲染 ***********************
   const renderBaseRow = (cols, index, isSticky) => {
