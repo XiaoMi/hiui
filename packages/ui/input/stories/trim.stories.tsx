@@ -1,18 +1,18 @@
 import React from 'react'
 import Input from '../src'
 
-export const Clearable = () => {
+export const Trim = () => {
   return (
     <>
-      <h1>Clearable for Input</h1>
-      <div className="input-clearable__wrap">
+      <h1>Trim</h1>
+      <div className="input-trim__wrap">
         <Input
-          clearable
           placeholder="请输入"
           onChange={(e) => console.log('change', e.target.value)}
+          trimValueOnBlur
         ></Input>
         <br />
-        <Input clearable clearableTrigger="always" placeholder="请输入"></Input>
+        <Input disabled placeholder="请输入"></Input>
       </div>
     </>
   )
