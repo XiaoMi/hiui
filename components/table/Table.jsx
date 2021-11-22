@@ -282,9 +282,14 @@ const Table = ({
     }
   }, [data, draggable])
 
+  // 自定义设置 checkbox 列宽度
+  const checkboxColWidth =
+    rowSelection && typeof rowSelection.checkboxColWidth === 'number' ? rowSelection.checkboxColWidth : 50
+
   return (
     <TableContext.Provider
       value={{
+        checkboxColWidth,
         disabledData,
         rowExpandable,
         setting,

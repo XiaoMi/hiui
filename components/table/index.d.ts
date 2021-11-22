@@ -38,10 +38,17 @@ export type TableFixedOption = {
   left?: string
   right?: string
 }
+
+export type TableCheckAllOptions = {
+  filterIcon?: React.ReactNode
+}
+
 export type TableRowSelection = {
   selectedRowKeys?: string[] | number[]
   getCheckboxConfig?: (rowData: object) => object
   onChange?: (selectedRowKeys: string | number, targetRow?: object | object[], shouldChecked?: boolean) => void
+  checkboxColWidth?: number
+  checkAllOptions?: TableCheckAllOptions
 }
 
 export type TableHeaderRowReturn = {

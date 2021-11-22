@@ -8,6 +8,7 @@ import { flatTreeData, setDepth, checkNeedTotalOrEvg, getTotalOrEvgRowData } fro
 
 const BodyTable = ({ fatherRef, emptyContent }) => {
   const {
+    checkboxColWidth,
     bordered,
     data = [],
     columns,
@@ -192,7 +193,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       <table ref={tableRef}>
         <colgroup>
           {columnsgroup.map((c, index) => {
-            const width = c === 'checkbox' ? 50 : c.width
+            const width = c === 'checkbox' ? checkboxColWidth : c.width
             return (
               <col
                 key={index}
