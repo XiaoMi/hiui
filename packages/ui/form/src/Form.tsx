@@ -1,33 +1,56 @@
-import React, { forwardRef, useImperativeHandle } from 'react'
+import React, { forwardRef, useCallback, useImperativeHandle, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { FormProvider } from './context'
-import { useForm } from './use-form'
+import { useForm, UseFormProps } from './use-form'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { FormRuleModel, FormHelpers } from './types'
 
 const _role = 'form'
 const _prefix = getPrefixCls(_role)
+
+// form 注册表
+const FORM_REGISTER_TABLE: Record<string, FormRuleModel> = {}
 
 /**
  * TODO: What is Form
  */
 export const Form = forwardRef<HTMLFormElement | null, FormProps>(
-  ({ prefixCls = _prefix, role = _role, className, children, innerRef, ...rest }, ref) => {
+  (
+    {
+      prefixCls = _prefix,
+      role = _role,
+      className,
+      children,
+      innerRef,
+      labelWidth,
+      labelPlacement = 'right',
+      placement,
+      verticalAlign,
+      colon,
+      ...rest
+    },
+    ref
+  ) => {
     const formContext = useForm(rest)
 
-    useImperativeHandle(innerRef, () => formContext)
+    const { getRootProps } = formContext
+    // useImperativeHandle(innerRef, () => formContext)
+
+    const providedValue = useMemo(() => {
+      return {
+        labelWidth,
+        labelPlacement,
+        colon,
+        ...formContext,
+      }
+    }, [labelWidth, formContext, labelPlacement, colon])
 
     const cls = cx(prefixCls, className)
 
     return (
-      <FormProvider value={formContext}>
-        <form
-          ref={ref}
-          role={role}
-          className={cls}
-          {...rest}
-          onSubmit={(evt: React.FormEvent<HTMLFormElement>) => {}}
-          onReset={(evt) => {}}
-        >
+      <FormProvider value={providedValue}>
+        <form ref={ref} role={role} className={cls} {...rest} {...getRootProps()}>
           {children}
         </form>
       </FormProvider>
@@ -35,47 +58,46 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
   }
 )
 
-export interface FormProps {
+export interface FormProps<Values = Record<string, any>>
+  extends Omit<HiBaseHTMLProps<'form'>, 'onSubmit' | 'onReset'>,
+    UseFormProps<Values> {
   /**
-   * 组件默认的选择器类
+   * 提供辅助方法的内部引用
    */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-  /**
-   * 校验规则，设置字段的校验逻辑
-   */
-  rules: object
-  /**
-   * label 放置的位置
-   * TODO: 拆成 2 个，一个表示对齐，另一个表示位置
-   */
-  labelPlacement: 'right' | 'left' | 'top'
+  innerRef?: React.RefObject<FormHelpers<Values>>
   /**
    * label 宽度，可用任意 CSS 长度单位
    */
-  labelWidth: React.ReactText
-  placement: 'horizontal' | 'vertical'
-  inline: boolean
-  showColon: boolean
-  onSubmit: () => void
-  innerRef?: React.RefObject<{ validate: any }>
-  children?: any
-  initialValues?: object
-  validateOnChange?: boolean
-  useLatestInitialValuesOnReset?: boolean
+  labelWidth?: React.ReactText
+  /**
+   * label 对齐的方式
+   */
+  labelPlacement?: 'left' | 'right' | 'top'
+  /**
+   * label 和表单控件的放置方式
+   */
+  placement?: 'vertical' | 'horizontal'
+  /**
+   * 在 vertical 放置时，label 相对表单控件垂直对齐的方式
+   */
+  verticalAlign?: 'top' | 'center' | 'bottom'
+  /**
+   * 配置是否展示冒号
+   */
+  colon?: boolean
 }
 
 if (__DEV__) {
   Form.displayName = 'Form'
+}
+
+// @ts-ignore
+Form.extends = (model: FormRuleModel) => {
+  if (typeof model.name === 'string') {
+    FORM_REGISTER_TABLE[model.name] = model
+  } else {
+    if (__DEV__) {
+      console.log('WARNING: the name should be unique string and not empty.')
+    }
+  }
 }

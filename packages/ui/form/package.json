@@ -46,7 +46,9 @@
     "@flcwly/validater": "^0.1.4",
     "@hi-ui/classname": "^4.0.0-alpha.0",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
-    "@hi-ui/env": "^4.0.0-alpha.0"
+    "@hi-ui/env": "^4.0.0-alpha.0",
+    "async-validator": "^4.0.7",
+    "yup": "^0.32.11"
   },
   "peerDependencies": {
     "react": "^17.0.1",

@@ -226,6 +226,11 @@ $prefix: '#{$component-prefix}-input' !default;
           color: use-color('gray', 500);
           background-color: use-color('gray', 100);
         }
+
+        &:not(.disabled).invalid {
+          border-color: use-color-mode('error');
+          box-shadow: 0 0 0 1px use-color-mode('error');
+        }
       }
 
       .#{$prefix}__prepend,
@@ -272,6 +277,11 @@ $prefix: '#{$component-prefix}-input' !default;
           box-shadow: 0 0 0 1px use-color-mode('primary');
           border-color: use-color-mode('primary');
           background-color: use-color-static('white');
+        }
+
+        &:not(.disabled).invalid {
+          border-color: use-color-mode('error');
+          box-shadow: 0 0 0 1px use-color-mode('error');
         }
       }
     }
@@ -323,6 +333,11 @@ $prefix: '#{$component-prefix}-input' !default;
             border-bottom-color: use-color-mode('primary');
             box-shadow: 0 1px 0 0 use-color-mode('primary');
           }
+        }
+
+        &:not(.disabled).invalid {
+          border-color: use-color-mode('error');
+          box-shadow: 0 0 0 1px use-color-mode('error');
         }
       }
     }

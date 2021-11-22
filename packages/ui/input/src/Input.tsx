@@ -39,6 +39,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       onBlur,
       clearableTrigger = 'hover',
       clearable = false,
+      invalid = false,
       ...rest
     },
     ref
@@ -128,7 +129,8 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
             suffix && `${prefixCls}__inner--suffix`,
             focused && `focused`,
             disabled && 'disabled',
-            readOnly && 'readonly'
+            readOnly && 'readonly',
+            invalid && 'invalid'
           )}
           onMouseOver={(e) => {
             setHover(true)
@@ -182,6 +184,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
 )
 
 export interface InputProps {
+  invalid?: boolean
   /**
    * 组件默认的选择器类
    */

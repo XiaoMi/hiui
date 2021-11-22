@@ -1,5 +1,5 @@
 import React from 'react'
-import Form, { FormField } from '../src'
+import Form, { FormItem } from '../src'
 import Input from '@hi-ui/input'
 
 export const Basic = () => {
@@ -9,30 +9,34 @@ export const Basic = () => {
       <div className="form-basic__wrap">
         <Form
           initialValues={{ testInput: 'testInput', testInput2: 'testInput2' }}
-          validateOnChange
+          labelWidth={80}
           rules={{
             testInput: [
               {
-                name: 'max',
-                strategy: 10,
+                // name: 'max',
+                // strategy: 10,
+                max: 10,
+                type: 'string',
                 message: 'max is 10',
               },
             ],
             testInput2: [
               {
-                name: 'required',
-                strategy: true,
+                // name: 'required',
+                // strategy: true,
+                required: true,
+                type: 'string',
                 message: 'testInput2 is required',
               },
             ],
           }}
         >
-          <FormField field="testInput">
+          <FormItem field="testInput" valueType="string" label="用户名">
             <Input />
-          </FormField>
-          <FormField field="testInput2">
+          </FormItem>
+          <FormItem field="testInput2" valueType="string" label="密码">
             <Input />
-          </FormField>
+          </FormItem>
         </Form>
       </div>
     </>

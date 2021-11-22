@@ -1,26 +1,50 @@
 import React, { useCallback, useMemo, useReducer, useRef } from 'react'
-import { FormAction, FormState, FormFieldCollection, FormErrors } from './types'
+import {
+  FormAction,
+  FormState,
+  FormFieldCollection,
+  FormErrors,
+  FormRuleModel,
+  FormFieldPath,
+  FormErrorMessage,
+} from './types'
 import { setProp } from './utils'
 import { useLatestRef } from '@hi-ui/use-latest'
-import { isFunction } from '@hi-ui/type-assertion'
+import { isArray, isFunction } from '@hi-ui/type-assertion'
+import { callAllFuncs } from '@hi-ui/func-utils'
+import { stopEvent } from '@hi-ui/dom-utils'
 
+const EMPTY_RULES = {}
 const EMPTY_ERRORS = {}
 const EMPTY_TOUCHED = {}
-const EMPTY_RULES = {} as any
+const DEFAULT_VALIDATE_TRIGGER = ['onChange', 'onBlur']
 
-export const useForm = ({
+export const useForm = <Values = Record<string, any>>({
   initialValues,
   initialErrors = EMPTY_ERRORS,
   initialTouched = EMPTY_TOUCHED,
-  rules = EMPTY_RULES,
-  validateOnBlur = true,
-  validateOnChange = true,
-  validateAfterTouched = true,
+  lazyValidate = false,
   onValuesChange,
-  onSubmit,
   onReset,
-}: UseFormProps) => {
-  const [getValidation, registerField, unregisterField] = useCollection<FormFieldCollection>()
+  onSubmit,
+  // 以下为 Field 同名属性，用于统一配置，优先级低于个体 Item 的设置
+  rules = EMPTY_RULES,
+  validateAfterTouched = true,
+  validateTrigger: validateTriggerProp = DEFAULT_VALIDATE_TRIGGER,
+}: UseFormProps<Values>) => {
+  /**
+   * 处理校验触发器，保证 memo 依赖的是数组每个项，避免无效重渲染
+   */
+  const validateTrigger = isArray(validateTriggerProp) ? validateTriggerProp : [validateTriggerProp]
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const validateTriggersMemo = useMemo(() => validateTrigger, validateTrigger)
+
+  /**
+   * 收集 Field 的校验器注册表
+   */
+  const [getValidation, registerField, unregisterField] = useCollection<
+    FormFieldCollection<Values>
+  >()
 
   /**
    * form 数据管理中心
@@ -33,56 +57,70 @@ export const useForm = ({
     submitting: false,
   })
 
-  const setFieldError = useCallback((field: string, errorMessage: string | undefined) => {
-    formDispatch({
-      type: 'SET_FIELD_ERROR',
-      payload: { field, value: errorMessage },
-    })
-  }, [])
+  // 使用 latest ref 维护，保证每次主动拿取的 formState 都是最新的
+  const formStateRef = useLatestRef(formState)
 
-  const setFieldTouched = useCallback((field: string, touched = false) => {
+  const getFieldNames = useCallback(() => Object.keys(formStateRef.current.values), [formStateRef])
+
+  const getFieldValue = useCallback((fieldName: string) => formStateRef.current.values[fieldName], [
+    formStateRef,
+  ])
+
+  const getFieldError = useCallback((fieldName: string) => formStateRef.current.errors[fieldName], [
+    formStateRef,
+  ])
+
+  const setFieldError = useCallback(
+    (field: FormFieldPath, errorMessage: FormErrorMessage | undefined) => {
+      formDispatch({
+        type: 'SET_FIELD_ERROR',
+        payload: { field, value: errorMessage },
+      })
+    },
+    []
+  )
+
+  const setFieldTouched = useCallback((field: FormFieldPath, touched = false) => {
     formDispatch({
       type: 'SET_FIELD_TOUCHED',
       payload: { field, value: touched },
     })
   }, [])
 
-  // 每次主动拿取 formState 都是最新的
-  const formStateRef = useLatestRef(formState)
-
-  const getFieldNames = useCallback(() => {
-    return Object.keys(formStateRef.current.values)
-  }, [formStateRef])
-
-  const getFieldValue = useCallback(
-    (fieldName: string) => {
-      return formStateRef.current.values[fieldName]
-    },
-    [formStateRef]
-  )
-
-  const getFieldError = useCallback(
-    (fieldName: string) => {
-      return formStateRef.current.errors[fieldName]
-    },
-    [formStateRef]
-  )
-
+  /**
+   * 使用单个 Field 规则对给定值进行校验
+   */
   const validateField = useCallback(
     async (field: string, value: unknown) => {
       const fieldValidation = getValidation(field)
+      if (!fieldValidation) return
 
-      if (fieldValidation) {
-        const errorResultMaybePromise = fieldValidation.validate(value)
-        const errorMsg = await errorResultMaybePromise
+      formDispatch({ type: 'SET_VALIDATING', payload: true })
 
-        setFieldError(field, errorMsg)
-        return errorMsg
-      }
+      const errorResultAsPromise = fieldValidation.validate(value)
+
+      console.log('validate', errorResultAsPromise)
+
+      errorResultAsPromise
+        .then((result) => {
+          console.log('result', result)
+          formDispatch({ type: 'SET_VALIDATING', payload: false })
+          setFieldError(field, '')
+        })
+        .catch((errorMsg: Error) => {
+          // @ts-ignore
+          setFieldError(field, errorMsg.fields[field][0].message)
+        })
+        .finally(() => {
+          formDispatch({ type: 'SET_VALIDATING', payload: false })
+        })
     },
     [getValidation, setFieldError]
   )
 
+  /**
+   * 校验单个 Field 及其当前值
+   */
   const validateFieldState = useCallback(
     (field: string) => {
       const value = getFieldValue(field)
@@ -91,69 +129,79 @@ export const useForm = ({
     [validateField, getFieldValue]
   )
 
-  const setFieldValue = useCallback(
-    (field: string, value: unknown, shouldValidate?: boolean) => {
-      formDispatch({
-        type: 'SET_FIELD_VALUE',
-        payload: { field, value },
-      })
-
-      const shouldValidateField =
-        shouldValidate ??
-        ((validateAfterTouched ? formState.touched[field] : true) && validateOnChange)
-
-      if (shouldValidateField) {
-        validateField(field, value)
-      }
-    },
-    [validateField, validateAfterTouched, validateOnChange, formState]
-  )
-
-  const handleFieldChange = useCallback(
-    (fieldName: string, callback: Function) => (evt: React.ChangeEvent<any>) => {
-      // TODO: handle correct value
-      const nextValue = evt.target.value
-
-      // TODO: callAllMethods for callback
-      setFieldValue(fieldName, nextValue, validateOnChange)
-      callback?.(evt)
-      onValuesChange?.({ ...formState.values, [fieldName]: nextValue }, formState.values)
-    },
-    [setFieldValue, validateOnChange, onValuesChange, formState.values]
-  )
-
-  const handleBlur = useCallback(
-    (fieldName: string) => {
-      if (validateOnBlur) {
-        validateFieldState(fieldName)
-      }
-      setFieldTouched(fieldName, true)
-    },
-    [validateOnBlur, validateFieldState, setFieldTouched]
-  )
-
-  const handleFieldBlur = useCallback(
-    (fieldName: string, callback: Function) => (evt?: any) => {
-      if (evt.persist) {
-        evt.persist()
-      }
-
-      handleBlur(fieldName)
-      callback?.(evt)
-    },
-    [handleBlur]
-  )
-
+  /**
+   * 检验所有字段
+   */
   const validateAll = useCallback(() => {
     const fieldNames = getFieldNames()
     return Promise.all(fieldNames.map((fieldName) => validateFieldState(fieldName)))
   }, [getFieldNames, validateFieldState])
 
-  const onResetLatestRef = useLatestRef(onReset)
+  /**
+   * 控件值更新策略
+   */
+  const setFieldValue = useCallback(
+    (field: string, value: unknown, shouldValidate?: boolean) => {
+      formDispatch({ type: 'SET_FIELD_VALUE', payload: { field, value } })
 
+      const shouldValidateField =
+        shouldValidate ?? (validateAfterTouched ? formState.touched[field] : true)
+
+      if (shouldValidateField) {
+        validateField(field, value)
+      }
+    },
+    [validateField, validateAfterTouched, formState]
+  )
+
+  const normalizeValueFromChange = useCallback((eventOrValue: React.ChangeEvent<any>) => {
+    // TODO: handle correct value
+    return eventOrValue.target.value
+  }, [])
+
+  const handleFieldChange = useCallback(
+    (fieldName: string, valueCollectPipe: any, shouldValidate?: boolean) => (
+      evt: React.ChangeEvent<any>
+    ) => {
+      // TODO: 传递 onChange 其它参数
+      const nextValue = isFunction(valueCollectPipe)
+        ? valueCollectPipe(evt)
+        : normalizeValueFromChange(evt)
+
+      setFieldValue(fieldName, nextValue, shouldValidate)
+      onValuesChange?.({ ...formState.values, [fieldName]: nextValue }, formState.values)
+    },
+    [setFieldValue, onValuesChange, formState.values, normalizeValueFromChange]
+  )
+
+  /**
+   * 控件失焦策略
+   */
+  const handleFieldBlur = useCallback(
+    (fieldName: string, shouldValidate?: boolean) => (evt?: any) => {
+      if (shouldValidate) {
+        validateFieldState(fieldName)
+      }
+      setFieldTouched(fieldName, true)
+    },
+    [setFieldTouched, validateFieldState]
+  )
+
+  const handleFieldTrigger = useCallback(
+    (fieldName: string) => (evt?: any) => {
+      validateFieldState(fieldName)
+    },
+    [validateFieldState]
+  )
+
+  /**
+   * 表单重置，永远使用第一次的初始值
+   */
   const initialValuesRef = useRef(initialValues)
   const initialErrorsRef = useRef(initialErrors)
   const initialTouchedRef = useRef(initialTouched)
+
+  const onResetLatestRef = useLatestRef(onReset)
 
   const resetForm = useCallback(
     async (nextState?: Partial<FormState<any>>) => {
@@ -190,6 +238,9 @@ export const useForm = ({
     [onResetLatestRef, formState.values]
   )
 
+  /**
+   * 表单提交
+   */
   const submitForm = useCallback(async () => {
     formDispatch({ type: 'SUBMIT_ATTEMPT' })
     return validateAll().then((combinedErrors: FormErrors<any>) => {
@@ -227,17 +278,18 @@ export const useForm = ({
 
   const handleSubmit = useCallback(
     (evt?: React.FormEvent<HTMLFormElement>) => {
-      if (evt && evt.preventDefault && isFunction(evt.preventDefault)) {
-        evt.preventDefault()
-      }
-
-      if (evt && evt.stopPropagation && isFunction(evt.stopPropagation)) {
-        evt.stopPropagation()
-      }
-
+      stopEvent(evt)
       submitForm().catch(console.error)
     },
     [submitForm]
+  )
+
+  const handleReset = useCallback(
+    (evt?: React.FormEvent<HTMLFormElement>) => {
+      stopEvent(evt)
+      resetForm()
+    },
+    [resetForm]
   )
 
   const resetValidations = useCallback(() => {}, [])
@@ -250,19 +302,53 @@ export const useForm = ({
     })
   }, [])
 
-  const getFieldProps = useCallback(
-    (props: any, ref: any) => {
-      const { field, rules, valuePropName, valueTrigger, onChange, onBlur, ...rest } = props
+  const getRootProps = useCallback(() => {
+    return {
+      onSubmit: handleSubmit,
+      onReset: handleReset,
+    }
+  }, [handleReset, handleSubmit])
 
-      return {
-        ...rest,
+  const getFieldProps = useCallback(
+    (props = {}, ref = null) => {
+      const {
+        field,
+        rules,
+        valuePropName = 'value',
+        valueCollectPropName = 'onChange',
+        valueCollectPipe,
+        validateTrigger: validateTriggerProp = validateTriggersMemo,
+        onBlur,
+      } = props
+
+      const validateTrigger = isArray(validateTriggerProp)
+        ? validateTriggerProp
+        : [validateTriggerProp]
+
+      const validateOnCollect = validateTrigger.includes(valueCollectPropName)
+      const validateOnBlur = validateTrigger.includes('onChange')
+
+      const returnProps = {
         ref,
-        value: formState.values[field],
-        onChange: handleFieldChange(field, onChange),
-        onBlur: handleFieldBlur(field, onBlur),
+        [valuePropName]: formState.values[field],
+        // 字段 change 时校验
+        [valueCollectPropName]: callAllFuncs(
+          props[valueCollectPropName],
+          handleFieldChange(field, valueCollectPipe, validateOnCollect)
+        ),
+        onBlur: callAllFuncs(onBlur, handleFieldBlur(field, validateOnBlur)),
+        invalid: getFieldError(field),
       }
+
+      validateTrigger
+        .filter((triggerName) => [valueCollectPropName, 'onBlur'].indexOf(triggerName) === -1)
+        .forEach((triggerName: string) => {
+          returnProps[triggerName] = callAllFuncs(props[triggerName], handleFieldTrigger(field))
+        })
+
+      return returnProps
     },
-    [formState, handleFieldChange, handleFieldBlur]
+    [formState, handleFieldChange, handleFieldBlur, validateTriggersMemo, handleFieldTrigger]
   )
 
   const getFieldRules = useCallback(
@@ -272,6 +358,8 @@ export const useForm = ({
     [rules]
   )
 
+  console.log('formState', formState)
+
   return {
     ...formState,
     setFieldValue,
@@ -279,34 +367,73 @@ export const useForm = ({
     setFieldTouched,
     getFieldError,
     getFieldRules,
+    getRootProps,
     getFieldProps,
     registerField,
     unregisterField,
+    submitForm,
+    resetForm,
   }
 }
 
-export interface FormRule {
-  name?: string
-  strategy?: any
-  message?: string
-  validate?: (v: any) => boolean
-}
-
-export interface UseFormProps<T = { [Key: string]: any }> {
+export interface UseFormProps<T = Record<string, any>> {
+  /**
+   * 初始化表单值
+   */
   initialValues: T
-  initialErrors?: { [Key: string]: string }
-  initialTouched?: { [Key: string]: boolean }
-  rules?: { [Key: string]: FormRule[] }
-  validateOnBlur?: boolean
-  validateOnChange?: boolean
+  /**
+   * 初始化表单错误
+   */
+  initialErrors?: Record<string, string>
+  /**
+   * 初始化是否已被触碰
+   */
+  initialTouched?: Record<string, boolean>
+  /**
+   * 校验规则，设置字段的校验逻辑
+   */
+  rules?: Record<string, FormRuleModel[]>
+  /**
+   * 开启在 onBlur 时触发校验
+   */
+  // validateOnBlur?: boolean
+  /**
+   * 开启在 onChange 时触发校验
+   */
+  // validateOnChange?: boolean
+  /**
+   * 设置统一的表单校验时机
+   */
+  validateTrigger?: string | string[]
+  /**
+   * 在触摸控件之后才开启校验
+   */
   validateAfterTouched?: boolean
+  /**
+   * 开启惰性校验，发现第一个检验失败的表单控件，就停止向下继续校验
+   */
+  lazyValidate?: boolean
+  // /**
+  //  * 重置时使用最新传入的 initialValues
+  //  */
+  // useLatestInitialValuesOnReset?: boolean
+  /**
+   * 字段值更新时触发回调事件：changedValues: 改变的表单对象，allValues: 所有表单项对象
+   */
   onValuesChange?: (changedValue: T, allValues: T) => void
+  /**
+   * 提交时回调
+   */
   onSubmit?: (values: T) => void
+  /**
+   * 重置时回调
+   */
   onReset?: (values: T) => void | Promise<any>
 }
 
 export type UseFormReturn = ReturnType<typeof useForm>
 
+// TODO: field 支持数组
 function formReducer<T>(state: FormState<T>, action: FormAction<T>) {
   switch (action.type) {
     case 'SET_VALUES':
@@ -362,7 +489,10 @@ const useCollection = <T>() => {
   }, [])
 
   const getCollection = useCallback((key: string) => {
-    return collectionRef.current.get(key)
+    if (collectionRef.current.has(key)) {
+      return collectionRef.current.get(key)
+    }
+    return null
   }, [])
 
   return [getCollection, register, unregister] as const

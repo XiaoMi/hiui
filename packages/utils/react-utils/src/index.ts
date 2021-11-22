@@ -1,6 +1,14 @@
 import React from 'react'
+import { isUndef } from '@hi-ui/type-assertion'
 
 export type ReactRef<T> = React.RefCallback<T> | React.MutableRefObject<T>
+
+/**
+ * Merge default Prop
+ */
+export const withDefaultProp = <T, P>(prop?: T, defaultProp?: P) => {
+  return isUndef(prop) ? defaultProp : prop
+}
 
 /**
  * Merge defaultProps into props

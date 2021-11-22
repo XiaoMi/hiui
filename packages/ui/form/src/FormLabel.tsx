@@ -1,8 +1,9 @@
-import React, { forwardRef, useImperativeHandle, useMemo } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { FormProvider, useFormContext } from './context'
-import { useForm } from './use-form'
+import { useFormContext } from './context'
+import { isUndef, isNumeric } from '@hi-ui/type-assertion'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'form-label'
 const _prefix = getPrefixCls(_role)
@@ -10,61 +11,104 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is FormLabel
  */
-export const FormLabel = forwardRef<HTMLFormElement | null, FormLabelProps>(
-  ({ prefixCls = _prefix, role = _role, className, children, label, align, ...rest }, ref) => {
-    const formContext = useFormContext()
+export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((props, ref) => {
+  const {
+    labelWidth: labelWidthContext,
+    labelPlacement,
+    colon: colonContext,
+    contentPosition: contentPositionContext,
+  } = useFormContext()
 
-    const cls = cx(prefixCls, className)
+  const {
+    prefixCls = _prefix,
+    role = _role,
+    className,
+    style: styleProp,
+    children,
+    label,
+    field,
+    required = false,
+    // Item’s priority is higher than Form
+    labelWidth: labelWidthProp = labelWidthContext,
+    colon = colonContext,
+    contentPosition = contentPositionContext,
+    ...rest
+  } = props
 
-    return (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        <span>{label}</span>
+  const { labelWidth, controlWidth } = useMemo(() => {
+    if (labelPlacement === 'top')
+      return {
+        labelWidth: '100%',
+        controlWidth: '100%',
+      }
+
+    const labelWidth = isNumeric(labelWidthProp) ? Number(labelWidthProp) : labelWidthProp
+
+    return {
+      labelWidth,
+      controlWidth: `calc(100% - ${labelWidth}px)`,
+    }
+  }, [labelPlacement, labelWidthProp])
+
+  // 指定子元素位置
+  const contentPositionMemo = useMemo(() => {
+    switch (contentPosition) {
+      case 'top':
+        return 'flex-start'
+      case 'bottom':
+        return 'flex-end'
+      default:
+        return 'center'
+    }
+  }, [contentPosition])
+
+  const colonMemo = useMemo(() => (colon ? ':' : null), [colon])
+
+  const cls = cx(
+    prefixCls,
+    className,
+    required && `${prefixCls}--required`,
+    labelPlacement && `${prefixCls}--placement-${labelPlacement}`
+    // error && `${prefixCls}--error`,
+    // validating && `${prefixCls}--validating`
+  )
+
+  const style = { ...styleProp, alignItems: contentPositionMemo }
+
+  return (
+    <div ref={ref} role={role} className={cls} style={style} {...rest}>
+      {label ? (
+        <label className={`${prefixCls}__text`} style={{ width: labelWidth }}>
+          {label}
+          {colonMemo}
+        </label>
+      ) : (
+        <span className={`${prefixCls}__indent`} style={{ width: labelWidth }} />
+      )}
+      <div className={`${prefixCls}__control`} style={{ width: controlWidth }}>
         {children}
       </div>
-    )
-  }
-)
+    </div>
+  )
+})
 
-export interface FormLabelProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface FormLabelProps extends HiBaseHTMLProps<'div'> {
   /**
    * label 放置的位置
-   * TODO: 拆成 2 个，一个表示对齐，另一个表示位置
    */
-  labelPlacement: 'right' | 'left' | 'top'
+  labelPlacement?: 'right' | 'left' | 'top'
   /**
    * 标记是否必填
    */
-  required: boolean
+  required?: boolean
   /**
    * 是否显示冒号
    */
-  showColon: boolean
+  colon?: boolean
   /**
    * label 宽度，可使用任意 CSS 长度单位。优先级高于 Form 设置的 labelWidth
    */
-  labelWidth: React.ReactText
-  placement: 'horizontal' | 'vertical'
-  /**
-   * 校验规则，设置字段的校验逻辑
-   */
-  rules: object
-  inline: boolean
+  labelWidth?: React.ReactText
 }
 
 if (__DEV__) {

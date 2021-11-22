@@ -3,5 +3,104 @@
 $prefix: '#{$component-prefix}-form' !default;
 
 .#{$prefix} {
+  max-width: 100%;
+  position: relative;
 
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    & + fieldset {
+      margin-top: 16px;
+    }
+  }
+
+  legend {
+    margin: 0 0 16px;
+    color: use-color('gray', 800);
+  }
+
+  &--inline {
+    display: flex;
+    flex-wrap: wrap;
+
+    // 上下布局只在水平表单中自动填充高度
+    .#{$prefix}-label__indent {
+      min-height: 32px;
+    }
+  }
+}
+
+.#{$prefix}-label {
+  display: flex;
+  font-size: use-text-size('normal');
+  margin-right: use-spacing(4);
+  margin-bottom: 24px;
+
+  &__text,
+  &__indent {
+    flex-shrink: 0;
+    box-sizing: border-box;
+    vertical-align: top;
+    color: use-color('gray', 800);
+    overflow-wrap: break-word;
+  }
+
+  &__text {
+    margin-top: 5px;
+    min-height: 22px;
+    padding-right: use-spacing(4);
+    line-height: 22px;
+
+    .#{$prefix}-label--placement-left & {
+      text-align: left;
+    }
+
+    .#{$prefix}-label--placement-right & {
+      text-align: right;
+    }
+
+    .#{$prefix}-label--placement-top & {
+      height: 22px;
+      padding-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .#{$prefix}-label--required & {
+      &::after {
+        margin-right: use-spacing(2);
+        content: '*';
+        color: use-color-mode('primary');
+      }
+    }
+  }
+
+  .#{$prefix}-label--placement-top {
+    padding-right: 0;
+    text-align: left;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+
+  &__content {
+    flex: 1;
+    position: relative;
+    vertical-align: top;
+    min-height: 32px;
+    flex-shrink: 0;
+  }
+}
+
+.#{$prefix}-message {
+  font-size: use-text-size('normal');
+  min-height: 24px;
+  padding: 2px 0;
+  box-sizing: border-box;
+  line-height: 20px;
+  transition: all 0.3s;
+  transform: translateY(-10%);
+  // opacity: 0;
+  color: use-color-mode('error');
+  // TODO: 动效
 }
