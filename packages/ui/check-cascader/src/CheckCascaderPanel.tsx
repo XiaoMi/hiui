@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { CheckCascaderItem, ExpandTrigger, CheckCascaderItemEventData } from './types'
 import Input from '@hi-ui/input'
-import { useCache, useSearch } from './hooks'
+import { matchStrategy, useCache, useSearch } from './hooks'
 import { flattenTreeData, getNodeAncestors } from './utils'
 import { SearchOutlined } from '@hi-ui/icons'
 import { CheckCascaderMenus } from './CheckCascaderMenus'
@@ -78,18 +78,21 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
                 if (typeof title !== 'string') return raw
                 if (found) return raw
 
-                const index = title.indexOf(searchValue)
+                const index = matchStrategy(title, searchValue)
                 if (index === -1) return raw
 
                 found = true
 
+                const resultLength = searchValue.length
+
                 const beforeStr = title.substr(0, index)
-                const afterStr = title.substr(index + searchValue.length)
+                const resultStr = title.substr(index, searchValue.length)
+                const afterStr = title.substr(index + resultLength)
 
                 return (
                   <span className={`title__text--col`} key={id}>
                     {beforeStr}
-                    <span className="title__text--matched">{searchValue}</span>
+                    <span className="title__text--matched">{resultStr}</span>
                     {afterStr}
                   </span>
                 )

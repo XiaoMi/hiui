@@ -204,7 +204,6 @@ export interface InputProps {
    * 组件的注入样式
    */
   style?: React.CSSProperties
-
   /**
    * 开启输入框只读
    */
