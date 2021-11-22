@@ -37,6 +37,7 @@ const Row = ({
     setExpanded(propsExpanded)
   }, [propsExpanded])
   const {
+    checkboxColWidth,
     errorRowKeys,
     rowSelection,
     highlightedRowKeys,
@@ -149,7 +150,7 @@ const Row = ({
     >
       {rowSelection && isFixed !== 'right' && !isSumRow && !isAvgRow && (
         <td
-          style={{ width: 50 }}
+          style={{ width: checkboxColWidth }}
           className={classNames({
             [`${prefix}__col--sticky`]: isSticky
           })}

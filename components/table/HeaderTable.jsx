@@ -12,6 +12,7 @@ import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth } from './uti
 
 const HeaderTable = ({ rightFixedIndex }) => {
   const {
+    checkboxColWidth,
     rowSelection,
     data: propsData,
     columns,
@@ -135,6 +136,9 @@ const HeaderTable = ({ rightFixedIndex }) => {
 
   const hasSorterColumn = columnsgroup.filter((col) => col.sorter).map((sorterCol) => sorterCol.dataKey)
 
+  // 自定义 checkboxAll 侧边 icon
+  const checkboxFilterIcon = rowSelection && rowSelection.checkAllOptions && rowSelection.checkAllOptions.filterIcon
+
   // ******************** 行渲染 ***********************
   const renderBaseRow = (cols, index, isSticky) => {
     const _colums = [rowSelection && index === 0 && 'checkbox', expandedRender && index === 0 && 'expandedButton']
@@ -155,7 +159,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
                 className={classnames({ 'hi-table__col--sticky': isStickyCol })}
                 style={{
                   boxSizing: 'border-box',
-                  width: 50,
+                  width: checkboxColWidth,
                   height: 'auto',
                   backgroundColor: '#fbfbfb'
                 }}
@@ -177,6 +181,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
                     }
                   }}
                 />
+                {checkboxFilterIcon}
               </th>
             )
           } else if (c === 'expandedButton') {
@@ -281,7 +286,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
                 <col
                   key={index}
                   style={{
-                    width: c === 'checkbox' ? 50 : width,
+                    width: c === 'checkbox' ? checkboxColWidth : width,
                     minWidth: width
                   }}
                 />

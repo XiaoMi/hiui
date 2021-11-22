@@ -1,6 +1,8 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
+import Dropdown from '../../../components/dropdown'
+
 const prefix = 'table-row'
 const desc = ['行高亮：突出某行数据且方便阅读']
 const rightOptions = ['行高亮', '批量选择', '标题事件处理']
@@ -97,6 +99,8 @@ class Demo extends React.Component {
   {
     code: `import React from 'react'
     import Table from '@hi-ui/hiui/es/table'\n
+    import Dropdown from '@hi-ui/hiui/es/dropdown'\n
+
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -229,6 +233,22 @@ class Demo extends React.Component {
           data={this.data}
           fixedToColumn={'name'}
           rowSelection={{
+            checkboxColWidth: 74,
+            checkAllOptions: {
+              filterIcon: (
+                <Dropdown
+                  data={[{
+                    id: 0,
+                    title: '小米商城',
+                    href: 'https://www.mi.com',
+                  }, {
+                    id: 1,
+                    title: '菜单二'
+                  }]}
+                  title=''
+                />
+              )
+            },
             selectedRowKeys: this.state.selectedRowKeys,
             getCheckboxConfig: record => {
               return {disabled: record.name === '小米9'}
@@ -363,6 +383,6 @@ class Demo extends React.Component {
 ]
 
 const DemoBase = () => (
-  <DocViewer code={code} scope={{ Table }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
+  <DocViewer code={code} scope={{ Table, Dropdown }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )
 export default DemoBase
