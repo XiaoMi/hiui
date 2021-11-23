@@ -72,7 +72,7 @@ export interface FileSelectProps {
   /**
    * 接受的上传文件类型
    */
-  accept?: string
+  accept?: MimeType
   /**
    * 是否禁用
    */

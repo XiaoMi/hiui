@@ -3863,6 +3863,10 @@
   version "2.0.5"
   resolved "https://registry.nlark.com/@types/unist/download/@types/unist-2.0.5.tgz#fdd299f23205c3455af88ce618dd65c14cb73e22"
 
+"@types/uuid@^8.3.3":
+  version "8.3.3"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.3.tgz#c6a60686d953dbd1b1d45e66f4ecdbd5d471b4d0"
+
 "@types/webpack-env@^1.16.0", "@types/webpack-env@~1.16.0":
   version "1.16.2"
   resolved "https://registry.nlark.com/@types/webpack-env/download/@types/webpack-env-1.16.2.tgz#8db514b059c1b2ae14ce9d7bb325296de6a9a0fa"
@@ -16595,7 +16599,7 @@ uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.nlark.com/uuid/download/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
 
-uuid@^8.2.0:
+uuid@^8.2.0, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.nlark.com/uuid/download/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
 
