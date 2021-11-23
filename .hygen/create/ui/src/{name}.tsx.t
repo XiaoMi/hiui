@@ -6,8 +6,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 
-const _role = '<%= name %>'
-const _prefix = getPrefixCls(_role)
+const <%= h.capt(name) %>_PREFIX = getPrefixCls('<%= name %>')
 
 /**
 * TODO: What is <%= h.camelCase(name) %>
@@ -15,8 +14,8 @@ const _prefix = getPrefixCls(_role)
 export const <%= h.camelCase(name) %> = forwardRef<HTMLDivElement | null, <%= h.camelCase(name) %>Props>(
   (
     {
-      prefixCls = _prefix,
-      role = _role,
+      prefixCls = <%= h.capt(name) %>_PREFIX,
+      role = '<%= name %>',
       className,
       children,
       ...rest

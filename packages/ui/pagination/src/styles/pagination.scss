@@ -6,11 +6,31 @@ $border-radius: 2px !default;
 $primary-color: #4387f4 !default;
 
 .#{$prefix} {
-  list-style: none;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  display: flex;
   font-size: 14px;
+  align-items: center;
+
+  &__total {
+    margin-right: 8px;
+  }
+
+  &__option {
+    width: 114px;
+    margin-right: 16px;
+  }
+
+  &__jumper {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
   &__item {
     display: inline-block;

@@ -1,7 +1,9 @@
-import { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
+import { isFunction } from '@hi-ui/type-assertion'
 
-const isEqual = Object.is
+// const isEqual = Object.is
+const isEqual: any = () => false
 
 /**
  * if `controlledState` is `undefined` will be uncontrolled using the defaultState
@@ -25,13 +27,15 @@ export function useUncontrolledState<T>(
   const stateIsEqualLatest = useLatestCallback(stateIsEqual)
 
   const tryChangeState = useCallback(
-    (newState: T, ...args: any[]) => {
-      if (stateIsEqualLatest(newState, state)) return
+    (stateOrFunction: React.SetStateAction<T>, ...args: any[]) => {
+      const nextState = isFunction(stateOrFunction) ? stateOrFunction(state) : stateOrFunction
+
+      if (stateIsEqualLatest(nextState, state)) return
 
       if (uncontrolled) {
-        setInternalState(newState)
+        setInternalState(nextState)
       }
-      onChangeLatest(newState, ...args)
+      onChangeLatest(nextState, ...args)
     },
     [uncontrolled, state, onChangeLatest, stateIsEqualLatest]
   )

@@ -43,7 +43,14 @@ export const Button = forwardRef<any, ButtonProps>(
     const prepend = loading ? <IconLoading className={`${prefixCls}__icon`} /> : icon
 
     return !href ? (
-      <button ref={ref} role={role} className={cls} disabled={isNonInteractive} {...rest}>
+      <button
+        ref={ref}
+        role={role}
+        className={cls}
+        disabled={isNonInteractive}
+        type="button"
+        {...rest}
+      >
         {prepend}
         {children}
       </button>

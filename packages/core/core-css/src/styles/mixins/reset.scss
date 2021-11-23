@@ -1,40 +1,70 @@
-@mixin component-reset {
+@import '../themes/index.scss';
+
+@mixin box-reset {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+@mixin border-reset {
   border: none;
   outline: none;
-  font-size: 14px;
+}
+
+@mixin text-reset {
+  overflow-wrap: break-word;
+  font-size: use-text-size('normal');
+  line-height: use-text-lineheight('normal');
+}
+
+@mixin component-reset {
+  @include box-reset;
+  @include border-reset;
+
+  font-size: use-text-size('normal');
   vertical-align: middle;
 }
 
 @mixin input-reset {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  border: none;
-  outline: none;
+  @include box-reset;
+  @include border-reset;
+
   box-shadow: none;
   appearance: none;
   height: inherit;
-  background-color: transparent;
   cursor: text;
+  background-color: transparent;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @mixin button-reset {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  border: none;
-  outline: none;
+  @include box-reset;
+  @include border-reset;
+
   box-shadow: none;
   appearance: none;
   background-color: transparent;
+  -webkit-tap-highlight-color: transparent;
   cursor: pointer;
   text-decoration: none;
   // 禁用非标准手势
   touch-action: manipulation;
 }
 
+@mixin link-reset {
+  text-decoration: none;
+}
+
 @mixin img-reset {
   object-fit: cover;
+}
+
+@mixin list-reset {
+  @include box-reset;
+}
+
+@mixin list-item-reset {
+  @include box-reset;
+
+  list-style: none;
 }
