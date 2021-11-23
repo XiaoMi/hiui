@@ -2,9 +2,8 @@ import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { useCascadeFilter, UseCascadeFilterProps } from './use-cascade-filter'
-import { CascadeFilterProvider } from './context'
 import { Filter, FilterItem } from '@hi-ui/filter'
+import { useCascadeFilter, UseCascadeFilterProps } from './use-cascade-filter'
 
 const CASCADE_FILTER_PREFIX = getPrefixCls('cascade-filter')
 
@@ -13,35 +12,52 @@ const CASCADE_FILTER_PREFIX = getPrefixCls('cascade-filter')
  */
 export const CascadeFilter = forwardRef<HTMLDivElement | null, CascadeFilterProps>(
   (
-    { prefixCls = CASCADE_FILTER_PREFIX, role = 'cascade-filter', className, children, ...rest },
+    {
+      prefixCls = CASCADE_FILTER_PREFIX,
+      role = 'menu',
+      className,
+      children,
+      showUnderline = false,
+      ...rest
+    },
     ref
   ) => {
-    // TODO: 使用 自定义hook 抽离逻辑，若不需要可以移除
-    const { rootProps, data } = useCascadeFilter(rest)
+    const { rootProps, menus, onItemSelect } = useCascadeFilter(rest)
 
     const cls = cx(prefixCls, className)
 
     return (
       <div ref={ref} role={role} className={cls} {...rootProps}>
-        {/* {data.map((dataItem, idx) => {
+        {menus.map((menu) => {
           return (
-            <Filter key={idx}>
-              {dataItem.map((item) => {
+            <Filter
+              key={menu.depth}
+              label={menu.label}
+              value={menu.value}
+              onChange={(_, targetItem) => onItemSelect(targetItem, menu.depth)}
+              showUnderline={showUnderline}
+            >
+              {menu.data.map((item) => {
                 return (
-                  <FilterItem value={item.id} key={item.id}>
-                    {item.content}
+                  <FilterItem key={item.id} value={item.id} disabled={item.disabled}>
+                    {item.title}
                   </FilterItem>
                 )
               })}
             </Filter>
           )
-        })} */}
+        })}
       </div>
     )
   }
 )
 
-export interface CascadeFilterProps extends HiBaseHTMLProps<'div'>, UseCascadeFilterProps {}
+export interface CascadeFilterProps extends HiBaseHTMLProps<'div'>, UseCascadeFilterProps {
+  /**
+   * 是否显示下划线
+   */
+  showUnderline?: boolean
+}
 
 if (__DEV__) {
   CascadeFilter.displayName = 'CascadeFilter'

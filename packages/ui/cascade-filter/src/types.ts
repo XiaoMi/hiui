@@ -8,7 +8,7 @@ export interface CascadeFilterDataItem {
   /**
    * 节点标题
    */
-  content?: React.ReactNode
+  title?: React.ReactNode
   /**
    * 是否禁用
    */
@@ -18,7 +18,3 @@ export interface CascadeFilterDataItem {
    */
   children?: CascadeFilterDataItem[]
 }
-
-export interface FlattedCascadeFilterDataItem {}
-
-export interface CascadeFilterEventDataItem {}

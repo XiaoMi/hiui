@@ -1,12 +1,13 @@
 import React from 'react'
 import CascadeFilter from '../src'
 
-export const Basic = () => {
+export const Underlined = () => {
   return (
     <>
-      <h1>Basic</h1>
-      <div className="cascade-filter-basic__wrap">
+      <h1>Underlined</h1>
+      <div className="cascade-filter-underline__wrap">
         <CascadeFilter
+          showUnderline
           label={['渠道', '分店', '机型']}
           defaultValue={[2, 21]}
           data={[

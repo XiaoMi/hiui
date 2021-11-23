@@ -1,59 +1,71 @@
-import React, { useCallback } from 'react'
-import {
-  CascadeFilterDataItem,
-  CascadeFilterEventDataItem,
-  FlattedCascadeFilterDataItem,
-} from './types'
+import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { flattenTreeData, getActiveNodePaths } from './utils'
-import { useSelect } from './hooks'
+import { isArray } from '@hi-ui/type-assertion'
+import { CascadeFilterDataItem } from './types'
 
-const NOOP_ARRAY = [] as []
+const DEFAULT_DATA = [] as []
 const DEFAULT_VALUE = [] as []
+const DEFAULT_LABEL = [] as []
 
 export const useCascadeFilter = ({
-  data: dataProp = NOOP_ARRAY,
+  label: labels = DEFAULT_LABEL,
+  data: dataProp = DEFAULT_DATA,
   defaultValue = DEFAULT_VALUE,
   value: valueProp,
   onChange,
   ...rest
 }: UseCascadeFilterProps) => {
-  // const flattedData = React.useMemo(() => flattenTreeData(dataProp), [dataProp])
-
+  // 选中的级联路径 id 列表
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
-  // const proxyTryChangeValue = useCallback(
-  //   (
-  //     value: React.ReactText,
-  //     item: CascadeFilterEventDataItem,
-  //     itemPaths: FlattedCascadeFilterDataItem[]
-  //   ) => {
-  //     tryChangeValue(value, item, itemPaths)
-  //   },
-  //   [tryChangeValue, onSelect]
-  // )
+  /**
+   * 根据级联路径生成面板数据
+   */
+  const menusData = useMemo(() => {
+    let lastMenu = dataProp
+    const menus = [lastMenu]
 
-  // // 单击选中某项
-  // const [selectedId, onOptionSelect, setSelectedId] = useSelect(proxyTryChangeValue)
+    const menuPathLength = value.length
 
-  // // 选中 id 路径
-  // const selectedIds = React.useMemo(
-  //   () => getActiveNodePaths(flattedData, selectedId).map(({ id }) => id),
-  //   [flattedData, selectedId]
-  // )
+    // 遍历 value 依次匹配 当前层的 item，并将 children 加入到面板数据中
+    for (let depth = 0; depth < menuPathLength; ++depth) {
+      const id = value[depth]
+      const foundItem = lastMenu.find((item) => item.id === id)
+
+      if (foundItem && isArray(foundItem.children)) {
+        lastMenu = foundItem.children
+        menus.push(lastMenu)
+      } else {
+        break
+      }
+    }
+
+    return menus
+  }, [dataProp, value])
+
+  const menusWithLabel = useMemo(() => {
+    return labels.map((label, depth) => {
+      return {
+        label,
+        value: value[depth] ?? '',
+        data: menusData[depth] ?? [],
+        depth,
+      }
+    })
+  }, [labels, value, menusData])
 
   const onItemSelect = useCallback(
     (item: CascadeFilterDataItem, level: number) => {
-      const nextValue = [...value]
+      const nextValue = value.slice(0, level)
       nextValue[level] = item.id
 
-      tryChangeValue(nextValue)
+      tryChangeValue(nextValue, item)
     },
     [value, tryChangeValue]
   )
 
   const isSelectId = useCallback(
-    (id, level) => {
+    (id: React.ReactText, level: number) => {
       const curId = value[level]
 
       if (curId == null || curId === '') return false
@@ -63,10 +75,20 @@ export const useCascadeFilter = ({
     [value]
   )
 
-  return { rootProps: rest, onItemSelect, isSelectId, data: dataProp, selectedIds: value }
+  return {
+    rootProps: rest,
+    selectedIds: value,
+    onItemSelect,
+    isSelectId,
+    menus: menusWithLabel,
+  }
 }
 
 export interface UseCascadeFilterProps {
+  /**
+   * 	筛选标题列表
+   */
+  label?: React.ReactText[]
   /**
    * 筛选选项数据
    */
@@ -82,7 +104,7 @@ export interface UseCascadeFilterProps {
   /**
    * 选择时的回调函数，	value 表示选中项的 ID 集合
    */
-  onChange?: (value: React.ReactText[]) => void
+  onChange?: (value: React.ReactText[], targetItem: CascadeFilterDataItem) => void
 }
 
 export type UseCascadeFilterReturn = ReturnType<typeof useCascadeFilter>
