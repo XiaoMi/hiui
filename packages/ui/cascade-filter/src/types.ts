@@ -1,6 +1,6 @@
 import React from 'react'
 
-export interface FilterDataItem {
+export interface CascadeFilterDataItem {
   /**
    * 节点唯一 id
    */
@@ -13,4 +13,8 @@ export interface FilterDataItem {
    * 是否禁用
    */
   disabled?: boolean
+  /**
+   * 级联筛选项列表
+   */
+  children?: CascadeFilterDataItem[]
 }

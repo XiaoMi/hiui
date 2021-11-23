@@ -243,6 +243,8 @@ export const CascaderMenuList = forwardRef<HTMLDivElement | null, CascaderMenuLi
       changeOnSelect && `${prefixCls}--selectchange`
     )
 
+    console.log(menuList)
+
     return (
       <div ref={ref} className={cls} {...rest}>
         {menuList.map((menu, menuIndex) => {

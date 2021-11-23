@@ -1,10 +1,10 @@
 {
-  "name": "@hi-ui/filter",
-  "version": "4.0.0-alpha.1",
+  "name": "@hi-ui/cascade-filter",
+  "version": "4.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/filter#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/cascade-filter#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -44,11 +44,11 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.0",
-    "@hi-ui/core": "^4.0.0-alpha.5",
-    "@hi-ui/core-css": "^4.0.0-alpha.3",
+    "@hi-ui/core": "^4.0.0-alpha.0",
+    "@hi-ui/core-css": "^4.0.0-alpha.0",
     "@hi-ui/env": "^4.0.0-alpha.0",
-    "@hi-ui/func-utils": "^4.0.0-alpha.1",
-    "@hi-ui/use-check": "^4.0.0-alpha.8",
+    "@hi-ui/filter": "^4.0.0-alpha.1",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.7",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.6"
   },
   "peerDependencies": {
