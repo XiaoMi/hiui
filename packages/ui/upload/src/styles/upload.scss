@@ -421,12 +421,12 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &--picture-card {
-    .hi-upload__upstatus {
+    .#{$prefix}__upstatus {
       width: 100%;
       margin-left: 0;
     }
 
-    .hi-upload__right-content {
+    .#{$prefix}__right-content {
       padding-left: 0;
     }
 
@@ -434,11 +434,11 @@ $prefix: '#{$component-prefix}-upload' !default;
       cursor: not-allowed;
     }
 
-    .hi-upload__list {
+    .#{$prefix}__list {
       margin-top: 15px;
       overflow: auto;
 
-      .hi-upload__item {
+      .#{$prefix}__item {
         height: 64px;
         box-sizing: border-box;
         border: 1px solid use-color('gray', 300);

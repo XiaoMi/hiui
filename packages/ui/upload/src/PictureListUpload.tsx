@@ -5,15 +5,15 @@ import { UploadProps } from './interface'
 import { FileSelect } from '@hi-ui/file-select'
 import { Button } from '@hi-ui/button'
 import useUpload from './hooks/use-upload'
-import { LocaleContext } from '@hi-ui/locale-context'
 import { FileList } from './FileList'
+import { LocaleContext } from '@hi-ui/locale-context'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 
 /**
  * TODO: What is Upload
  */
-export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
+export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
   (
     {
       prefixCls = UPLOAD_PREFIX,
@@ -43,7 +43,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, `${prefixCls}--picture-card`, className)
     const { upload } = useContext(LocaleContext)
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
@@ -83,6 +83,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             fileList={_fileList}
             onDelete={deleteFile}
             onDownload={onDownload}
+            showPic
             prefixCls={prefixCls}
           />
         )}
@@ -92,5 +93,5 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
 )
 
 if (__DEV__) {
-  NormalUpload.displayName = 'NormalUpload'
+  PictureListUpload.displayName = 'PictureListUpload'
 }

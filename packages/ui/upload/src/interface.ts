@@ -9,6 +9,14 @@ export interface UploadFileItem extends File {
   progressNumber?: number
 }
 
+export interface UploadFileList {
+  prefixCls?: string
+  fileList: UploadFileItem[]
+  onDelete: (file: UploadFileItem, index: any) => void
+  onDownload: UploadProps['onDownload']
+  showPic?: boolean
+}
+
 export interface UploadRequestOption {
   onProgress: (file: UploadFileItem, event: ProgressEvent<EventTarget>, percent: number) => void
   onError: (file: UploadFileItem, event: ProgressEvent<EventTarget>, body?: Object) => void

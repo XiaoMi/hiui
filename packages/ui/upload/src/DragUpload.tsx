@@ -6,6 +6,7 @@ import { FileSelect } from '@hi-ui/file-select'
 import useUpload from './hooks/use-upload'
 import { LocaleContext } from '@hi-ui/locale-context'
 import { CloseOutlined, DeleteOutlined, FileFilled, CloudUploadOutlined } from '@hi-ui/icons'
+import { FileList } from './FileList'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 
@@ -143,59 +144,12 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
           </div>
         </FileSelect>
         {showUploadList && _fileList.length > 0 && (
-          <ul className={`${prefixCls}__list`}>
-            {_fileList.map((file, index) => {
-              return (
-                <li
-                  key={index}
-                  className={`${prefixCls}__item`}
-                  title={file.name}
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    handleItemKeydown(e, file, index)
-                  }}
-                >
-                  <FileFilled />
-                  <div className={`${prefixCls}__right-content`}>
-                    <a
-                      tabIndex={-1}
-                      target="_blank"
-                      rel="noreferrer"
-                      href={file.url}
-                      className={cx(
-                        `${prefixCls}__filename`,
-                        file.uploadState === 'error' && `${prefixCls}__filename--error`
-                      )}
-                      title={file.name}
-                      onClick={(e) => {
-                        if (onDownload) {
-                          e.preventDefault()
-                          onDownload(file)
-                        }
-                      }}
-                    >
-                      {file.name}
-                    </a>
-                    <span>
-                      {file.uploadState === 'loading' ? (
-                        <CloseOutlined onClick={() => deleteFile(file, index)} />
-                      ) : (
-                        <DeleteOutlined onClick={() => deleteFile(file, index)} />
-                      )}
-                    </span>
-                  </div>
-                  {file.uploadState === 'loading' && (
-                    <div className={`${prefixCls}__upstatus`}>
-                      <i
-                        className={`${prefixCls}__upstatus-line`}
-                        style={{ width: file.progressNumber + '%' }}
-                      />
-                    </div>
-                  )}
-                </li>
-              )
-            })}
-          </ul>
+          <FileList
+            fileList={_fileList}
+            onDelete={deleteFile}
+            onDownload={onDownload}
+            prefixCls={prefixCls}
+          />
         )}
       </div>
     )

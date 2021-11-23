@@ -4,6 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { UploadProps } from './interface'
 import { NormalUpload } from './NormalUpload'
 import { DragUpload } from './DragUpload'
+import { PictureListUpload } from './PictureListUpload'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 
@@ -15,6 +16,10 @@ export const Upload = forwardRef<HTMLDivElement | null, UploadProps>(
     const cls = cx(prefixCls, className)
     if (type === 'drag') {
       return <DragUpload ref={ref} className={cls} {...rest} />
+    }
+
+    if (type === 'pictureCard') {
+      return <PictureListUpload ref={ref} className={cls} {...rest} />
     }
 
     return <NormalUpload ref={ref} className={cls} {...rest} />

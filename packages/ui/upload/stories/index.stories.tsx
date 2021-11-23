@@ -2,6 +2,7 @@ import React from 'react'
 
 export * from './basic.stories'
 export * from './draggable.stories'
+export * from './picture-list.stories'
 
 export default {
   title: 'Upload',
