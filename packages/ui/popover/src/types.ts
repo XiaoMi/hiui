@@ -4,6 +4,7 @@ export const TriggerActionEnum = {
   CLICK: 'click',
   CONTEXTMENU: 'contextmenu',
   HOVER: 'hover',
+  FOCUS: 'focus',
 } as const
 
 export const triggerActions = Object.values(TriggerActionEnum)
