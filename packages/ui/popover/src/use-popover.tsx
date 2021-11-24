@@ -16,16 +16,25 @@ export const usePopover = ({
   popper,
   ...rest
 }: UsePopoverProps) => {
+  const openTimerRef = React.useRef<number>()
+  const closeTimerRef = React.useRef<number>()
+
+  const clearToggleTimer = React.useCallback(() => {
+    window.clearTimeout(openTimerRef.current)
+    window.clearTimeout(closeTimerRef.current)
+  }, [])
+
   const [visible, visibleAction] = useUncontrolledToggle({
     defaultVisible: false,
     visible: visibleProp,
     onOpen,
     onClose: () => {
-      clearTimeout(openTimerRef.current)
-      clearTimeout(closeTimerRef.current)
+      clearToggleTimer()
       onClose?.()
     },
   })
+
+  useUnmountEffect(clearToggleTimer)
 
   const [triggerEl, setTriggerEl] = React.useState<HTMLElement | null>(null)
 
@@ -77,14 +86,6 @@ export const usePopover = ({
 
     [triggersMemo, popoverId, handlePopoverLeave]
   )
-
-  const openTimerRef = React.useRef<number>()
-  const closeTimerRef = React.useRef<number>()
-
-  useUnmountEffect(() => {
-    clearTimeout(openTimerRef.current)
-    clearTimeout(closeTimerRef.current)
-  })
 
   const getTriggerProps = React.useCallback(
     (props = {}, ref = null) => {
