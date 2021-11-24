@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/react-utils",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.2",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -42,10 +42,14 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
-  "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.0"
+  "peerDependencies": {
+    "react": "^17.0.1"
   },
   "dependencies": {
     "@hi-ui/type-assertion": "^4.0.0-alpha.6"
+  },
+  "devDependencies": {
+    "@hi-ui/hi-build": "^4.0.0-alpha.2",
+    "react": "^17.0.1"
   }
 }
