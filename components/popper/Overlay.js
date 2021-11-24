@@ -153,7 +153,7 @@ const Overlay = (props) => {
   let { offset } = state
 
   if (attachEle) {
-    offset = state.offset || getOffset(props, state)
+    offset = getOffset(props, state) || state.offset
     width = offset.width
     left = offset.left + 'px'
     top = offset.top + 'px'
