@@ -1,9 +1,8 @@
 import React from 'react'
 
 export * from './basic.stories'
-export * from './container.stories'
 
 export default {
-  title: 'Drawer',
+  title: 'IconButton',
   decorators: [(story: Function) => <div>{story()}</div>],
 }
