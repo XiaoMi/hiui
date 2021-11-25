@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { renderWatermark } from './utils'
+import { WatermarkGenerator } from './utils'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 const _role = 'watermark'
@@ -18,11 +18,11 @@ export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((prop
     className,
     allowCopy,
     container,
-    logo,
-    density,
-    opacity,
-    content,
-    zIndex,
+    logo = '',
+    density = 'default',
+    opacity = 1,
+    content = '请勿外传',
+    zIndex = 1000,
     ...rest
   } = props
   const cls = cx(prefixCls, className)
@@ -31,9 +31,10 @@ export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((prop
   useEffect(() => {
     const watermarkContainer = container || waterMarkerRef.current || document.body
     const options = { logo, density, opacity, content, zIndex }
-    const destroyWatermark = renderWatermark(watermarkContainer, options)
+    const genWatermark = new WatermarkGenerator()
+    genWatermark.render(watermarkContainer, options)
     return () => {
-      destroyWatermark?.()
+      genWatermark.destroy()
     }
   }, [logo, density, opacity, content, zIndex, container])
 

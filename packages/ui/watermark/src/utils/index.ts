@@ -1,4 +1,6 @@
 import { WatermarkProps, _prefix } from '..'
+import { __DEV__ } from '@hi-ui/env'
+
 type CanvasTextBaseline = 'alphabetic' | 'bottom' | 'hanging' | 'ideographic' | 'middle' | 'top'
 type CanvasTextAlign = 'center' | 'end' | 'left' | 'right' | 'start'
 interface OptionsInterface {
@@ -32,7 +34,7 @@ const parseTextData = (
   } else if (typeof texts === 'string') {
     content.push(texts)
   } else {
-    console.warn('Only support String Or Array')
+    __DEV__ && console.warn('Only support String Or Array')
   }
   if (isWrap) {
     content.forEach((text) => {
@@ -97,146 +99,183 @@ const drawText = (ctx: CanvasRenderingContext2D, options: OptionsInterface) => {
   return initLineY - lineHeight / 2
 }
 
-const drawLogo = (ctx: CanvasRenderingContext2D, logo: string, cb: Function) => {
-  const img = new Image()
-  img.crossOrigin = 'anonymous'
-  img.referrerPolicy = 'no-referrer'
-  img.src = logo
-  img.onload = () => {
-    ctx.globalAlpha = 0.2
-    ctx.drawImage(img, 32, ctx.canvas.height / 2 - 16, 64, 64)
-    cb()
-  }
-}
+const isChild = (parent: HTMLElement, child: HTMLElement | null) => parent === child?.parentNode
 
-const toImage = (
-  canvas: HTMLCanvasElement,
-  key: string,
-  container: HTMLElement,
-  options: OptionsInterface
-) => {
-  const base64Url = canvas.toDataURL()
-  const { opacity = 1 } = options
-  const _top = '0px'
-  const __wm = document.querySelector(`.${key}`)
-  const watermarkDiv = __wm || document.createElement('div')
-  const styleStr = `
-    position:absolute;
-    top:${_top};
-    left:-50%;
-    top:-50%;
-    width:200%;
-    height:200%;
-    transform:scale(0.5);
-    z-index:${options.zIndex};
-    pointer-events:none;
-    background-repeat:repeat;
-    visibility:visible !important;
-    display: block !important;
-    opacity: ${opacity} !important;
-    user-select:none !important;
-    background-image:url('${base64Url}');
-    ${
-      options.grayLogo
-        ? '-webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);-ms-filter: grayscale(100%);-o-filter: grayscale(100%);filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);_filter:none;'
-        : ''
+export class WatermarkGenerator {
+  mutationObserverInstance: MutationObserver | null = null
+  image: HTMLImageElement | null = null
+  containerChild: HTMLElement | null = null
+
+  drawLogo = (ctx: CanvasRenderingContext2D, logo: string, cb: Function) => {
+    this.destroyImageEvent()
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.referrerPolicy = 'no-referrer'
+    img.src = logo
+    img.onload = () => {
+      ctx.globalAlpha = 0.2
+      ctx.drawImage(img, 32, ctx.canvas.height / 2 - 16, 64, 64)
+      cb()
     }
-    `
-  watermarkDiv.setAttribute('style', styleStr)
-  if (window.getComputedStyle(container).getPropertyValue('position') === 'static') {
-    container.style.position = 'relative'
+
+    this.image = img
   }
-  watermarkDiv.classList.add(key)
-  container.insertBefore(watermarkDiv, container.firstChild)
-  const MutationObserver = window.MutationObserver
-  if (MutationObserver) {
-    let mo: MutationObserver | null = new MutationObserver(function () {
-      const __wm = document.querySelector(`.${key}`)
-      const cs: any = __wm ? window.getComputedStyle(__wm) : {}
-      if (
-        (container &&
-          (container.getAttribute('style') !== styleStr ||
-            cs.visibility === 'hidden' ||
-            cs.display === 'none' ||
-            cs.opacity === 0)) ||
-        !container
-      ) {
-        mo?.disconnect()
-        mo = null
-        mo && renderWatermark(container, { ...options })
+
+  render = (container: HTMLElement, options: WatermarkProps) => {
+    const defaultProps: OptionsInterface = {
+      textAlign: 'left',
+      font: 28,
+      color: 'rgba(148, 148, 148, 0.2)',
+      rotate: -30,
+      grayLogo: true,
+      isAutoWrap: false,
+      textOverflowEffect: 'zoom',
+      textBaseline: 'hanging',
+      width: 420,
+      height: 270,
+    }
+
+    const { density = 'default' } = options
+
+    let _markSize = {
+      width: 420,
+      height: 270,
+    }
+
+    if (['low', 'high'].includes(density)) {
+      _markSize = {
+        width: density === 'low' ? 540 : 360,
+        height: density === 'low' ? 410 : 210,
       }
-    })
-
-    mo.observe(container, {
-      attributes: true,
-      subtree: true,
-      childList: true,
-    })
-
-    return () => {
-      mo?.disconnect()
-      mo = null
-      container.removeChild(watermarkDiv)
     }
-  }
-}
 
-export const renderWatermark = (container: HTMLElement, options: WatermarkProps) => {
-  const defaultProps: OptionsInterface = {
-    textAlign: 'left',
-    font: 28,
-    color: 'rgba(148, 148, 148, 0.2)',
-    content: '请勿外传',
-    rotate: -30,
-    zIndex: 1000,
-    logo: null,
-    grayLogo: true,
-    isAutoWrap: false,
-    textOverflowEffect: 'zoom',
-    textBaseline: 'hanging',
-    width: 420,
-    height: 270,
-    opacity: 1,
-  }
+    const cOptions = Object.assign({}, defaultProps, _markSize, options)
 
-  const { density = 'default' } = options
-
-  let _markSize = {
-    width: 420,
-    height: 270,
-  }
-
-  if (['low', 'high'].includes(density)) {
-    _markSize = {
-      width: density === 'low' ? 540 : 360,
-      height: density === 'low' ? 410 : 210,
+    const { width, height, textAlign, textBaseline, font, color, logo, rotate } = cOptions
+    const key = _prefix + '-' + Math.floor(Math.random() * (9999 - 1000)) + 1000 + '__wm'
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    canvas.setAttribute('width', width + 'px')
+    canvas.setAttribute('height', height + 'px')
+    if (ctx) {
+      ctx.textAlign = textAlign
+      ctx.textBaseline = textBaseline
+      ctx.font = `normal normal lighter ${Number(
+        font * 2
+      )}px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`
+      ctx.fillStyle = color
+      ctx.translate(width / 2, height / 2)
+      ctx.rotate((Math.PI / 180) * rotate)
+      ctx.translate(-width / 2, -height / 2)
+      drawText(ctx, cOptions)
+      if (logo) {
+        this.drawLogo(ctx, logo, () => {
+          this.toImage(canvas, key, container, cOptions)
+        })
+      } else {
+        this.toImage(canvas, key, container, cOptions)
+      }
     }
   }
 
-  const cOptions = Object.assign({}, defaultProps, _markSize, options)
-  const { width, height, textAlign, textBaseline, font, color, logo, rotate } = cOptions
-  const key = _prefix + '-' + Math.floor(Math.random() * (9999 - 1000)) + 1000 + '__wm'
-  const canvas = document.createElement('canvas')
-  const ctx = canvas.getContext('2d')
-  canvas.setAttribute('width', width + 'px')
-  canvas.setAttribute('height', height + 'px')
-  if (ctx) {
-    ctx.textAlign = textAlign
-    ctx.textBaseline = textBaseline
-    ctx.font = `normal normal lighter ${Number(
-      font * 2
-    )}px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`
-    ctx.fillStyle = color
-    ctx.translate(width / 2, height / 2)
-    ctx.rotate((Math.PI / 180) * rotate)
-    ctx.translate(-width / 2, -height / 2)
-    drawText(ctx, cOptions)
-    if (logo) {
-      drawLogo(ctx, logo, () => {
-        return toImage(canvas, key, container, cOptions)
+  destroy = () => {
+    this.destroyImageEvent()
+    this.destroyMutationObserverEvent()
+    this.destroyContainerChild()
+  }
+
+  destroyMutationObserverEvent = () => {
+    if (this.mutationObserverInstance) {
+      this.mutationObserverInstance.disconnect()
+      this.mutationObserverInstance = null
+    }
+  }
+
+  destroyContainerChild = () => {
+    if (this.containerChild) {
+      this.containerChild?.remove()
+      this.containerChild = null
+    }
+  }
+
+  destroyImageEvent = () => {
+    if (this.image) {
+      this.image.onload = null
+      this.image = null
+    }
+  }
+
+  toImage = (
+    canvas: HTMLCanvasElement,
+    key: string,
+    container: HTMLElement,
+    options: OptionsInterface
+  ) => {
+    const base64Url = canvas.toDataURL()
+    const { opacity = 1 } = options
+    const _top = '0px'
+    const __wm = document.querySelector(`.${key}`)
+    const watermarkDiv = __wm || document.createElement('div')
+    const styleStr = `
+      position:absolute;
+      top:${_top};
+      left:-50%;
+      top:-50%;
+      width:200%;
+      height:200%;
+      transform:scale(0.5);
+      z-index:${options.zIndex};
+      pointer-events:none;
+      background-repeat:repeat;
+      visibility:visible !important;
+      display: block !important;
+      opacity: ${opacity} !important;
+      user-select:none !important;
+      background-image:url('${base64Url}');
+      ${
+        options.grayLogo
+          ? '-webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);-ms-filter: grayscale(100%);-o-filter: grayscale(100%);filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);_filter:none;'
+          : ''
+      }
+      `
+    watermarkDiv.setAttribute('style', styleStr)
+    if (window.getComputedStyle(container).getPropertyValue('position') === 'static') {
+      container.style.position = 'relative'
+    }
+    watermarkDiv.classList.add(key)
+    container.insertBefore(watermarkDiv, container.firstChild)
+    // @ts-ignore
+    this.containerChild = container.firstChild
+    const MutationObserver = window.MutationObserver
+    if (MutationObserver) {
+      const mo: MutationObserver | null = new MutationObserver(() => {
+        const __wm = document.querySelector(`.${key}`)
+        const cs: CSSStyleDeclaration = __wm
+          ? window.getComputedStyle(__wm)
+          : ({} as CSSStyleDeclaration)
+        if (
+          (container &&
+            (container.getAttribute('style') !== styleStr ||
+              cs.visibility === 'hidden' ||
+              cs.display === 'none' ||
+              cs.opacity !== String(opacity) ||
+              // @ts-ignore
+              !isChild(container, container.firstChild))) ||
+          !container
+        ) {
+          this.destroyMutationObserverEvent()
+          this.destroyContainerChild() // 监听到dom变化时 删除之前的水印元素
+          this.render(container, { ...options })
+        }
       })
-    } else {
-      return toImage(canvas, key, container, cOptions)
+
+      mo.observe(container, {
+        attributes: true,
+        subtree: true,
+        childList: true,
+      })
+
+      this.mutationObserverInstance = mo
     }
   }
 }
