@@ -126,6 +126,8 @@ const Overlay = (props) => {
   })
 
   useEffect(() => {
+    if (!show) return
+
     if (state.popperRef) {
       const offset = getOffset(props, state)
 
@@ -135,7 +137,7 @@ const Overlay = (props) => {
         })
       )
     }
-  }, [state.popperRef])
+  }, [show, state.popperRef])
 
   // DidMount
   useEffect(() => {
