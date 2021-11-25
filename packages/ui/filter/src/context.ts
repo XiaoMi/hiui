@@ -2,7 +2,12 @@ import { createContext, useContext } from 'react'
 
 import { UseFilterReturn } from './use-filter'
 
-const FilterContext = createContext<Omit<UseFilterReturn, 'rootProps'> | null>(null)
+const FilterContext = createContext<
+  | (Omit<UseFilterReturn, 'rootProps'> & {
+      showUnderline: boolean
+    })
+  | null
+>(null)
 
 export const FilterProvider = FilterContext.Provider
 

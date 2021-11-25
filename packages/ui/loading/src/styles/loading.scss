@@ -27,7 +27,7 @@ $prefixCls: #{$component-prefix}-loading !default;
     }
 
     &--withchildren {
-      @extend %full-fill;
+      @include full-fill;
 
       position: absolute;
       background: rgba(#fff, 0.64);

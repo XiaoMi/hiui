@@ -1,0 +1,110 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-modal' !default;
+
+$transitionPrimary: 0.3s ease !default;
+$borderRadiusPrimary: 3px !default;
+$boxShadowPrimary: 0 1px 6px rgba(0, 0, 0, 0.2) !default;
+$modal-background-color: rgba(0, 0, 0, 0.45) !default;
+
+.#{$prefix} {
+  position: relative;
+  min-width: 20%;
+  min-height: 18px;
+  background: use-color-static('white');
+  border-radius: $borderRadiusPrimary;
+  box-shadow: $boxShadowPrimary;
+  transition: $transitionPrimary;
+  opacity: 0;
+  transform: scale(0);
+
+  &--motion-enter & {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  &--motion-enter-active & {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &--motion-enter-done & {
+    opacity: 1;
+    transform: none;
+  }
+
+  &--motion-exit & {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &--motion-exit-active & {
+    opacity: 1;
+    transform: scale(0);
+  }
+
+  &--motion-exit-done & {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  &__root {
+    @include flex;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: use-zindex('modal');
+    width: 100vw;
+    height: 100vh;
+  }
+
+  &__overlay {
+    @include flex;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: use-zindex('back');
+    width: 100%;
+    height: 100%;
+    background-color: $modal-background-color;
+    transition: opacity 0.3s  cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    pointer-events: none;
+
+    .#{$prefix}--motion-enter & {
+      opacity: 0;
+    }
+
+    .#{$prefix}--motion-enter-active & {
+      opacity: 1;
+    }
+
+    .#{$prefix}--motion-enter-done & {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .#{$prefix}--motion-exit & {
+      opacity: 1;
+    }
+
+    .#{$prefix}--motion-exit-active & {
+      opacity: 0;
+    }
+
+    .#{$prefix}--motion-exit-done & {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    right: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: transparent;
+  }
+}

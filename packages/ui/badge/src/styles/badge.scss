@@ -1,0 +1,47 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-badge' !default;
+
+.#{$prefix} {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+
+  &-value {
+    position: absolute;
+    top: -10px;
+    right: 0;
+    transform: translateX(50%);
+    height: 16px;
+    padding: 0 4px;
+    min-width: 8px;
+    border: 2px solid use-color-static('white');
+    border-radius: 10px;
+    line-height: 16px;
+    background: use-color-mode('error');
+    font-size: use-text-size('normal');
+    color: use-color-static('white');
+    letter-spacing: 0;
+    text-align: center;
+
+    &.hi-hide {
+      display: none;
+    }
+  }
+
+  &-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: -5px;
+    right: -5px;
+    background: use-color-mode('error');
+    border: 1px solid use-color-static('white');
+    border-radius: 50%;
+    z-index: 1;
+
+    &.hi-hide {
+      display: none;
+    }
+  }
+}

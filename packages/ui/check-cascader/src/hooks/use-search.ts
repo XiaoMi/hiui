@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { FlattedCheckCascaderItem } from '../types'
 import { useLatestRef } from '@hi-ui/use-latest'
+import { __DEV__ } from '@hi-ui/env'
 
 /**
  * 支持搜索功能的 hook
@@ -48,11 +49,9 @@ const getMatchedNodes = (
   if (!searchValue) return []
 
   return flattedData.filter((node) => {
-    if (typeof node.title !== 'string') return false
     if (!node.checkable) return false
 
-    // 匹配策略：`String.include`
-    return node.title.includes?.(searchValue)
+    return matchStrategy(node.title, searchValue) !== -1
   })
 }
 
@@ -75,15 +74,28 @@ const getMatchedUpMatchNodes = (
         return true
       }
 
-      if (typeof node.title === 'string') {
-        if (node.title.includes?.(searchValue)) {
-          visitedResultSet.add(node.id)
-          return true
-        }
+      // TODO: 自定义用户搜索，比如查询 id，或者异步搜索
+      if (matchStrategy(node.title, searchValue) !== -1) {
+        visitedResultSet.add(node.id)
+        return true
       }
 
       node = node.parent
     }
     return false
   })
+}
+
+/**
+ * 返回 -1 表示匹配失败
+ */
+export const matchStrategy = (content: unknown, keyword: string) => {
+  if (typeof content !== 'string') {
+    if (__DEV__) {
+      console.warn('Warning: must be string type when enable searchable.')
+    }
+    return -1
+  }
+  // 忽略大小写匹配
+  return content.toLowerCase().indexOf(keyword.toLowerCase())
 }

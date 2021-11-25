@@ -21,7 +21,7 @@ export const hiddenStyle: React.CSSProperties = {
 export function mockDefaultHandlers<T extends React.ReactEventHandler<any>>(
   ...handlers: (T | undefined)[]
 ) {
-  return function bubbledFunc(event: React.SyntheticEvent) {
+  return function mockedDefaultHandler(event: React.SyntheticEvent) {
     handlers.some((handler) => {
       if (handler) {
         // handler 执行中，可以阻止默认行为，即将 `defaultPrevented` 置为 `true`
