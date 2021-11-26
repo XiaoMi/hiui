@@ -184,7 +184,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
   }
 )
 
-export interface DrawerProps extends HiBaseHTMLProps<'div'>, UseDrawerProps {
+export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseDrawerProps {
   /**
    * 模态框标题
    */
