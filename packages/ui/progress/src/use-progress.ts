@@ -1,5 +1,3 @@
-import { ProgressDataItem } from './types'
-
 export const useProgress = ({ ...rest }: UseProgressProps) => {
   return { rootProps: rest }
 }
@@ -11,6 +9,11 @@ export interface UseProgressProps {
   formatText?: (value: number, bufferValue: number) => string
   textPlacement?: 'inside-left' | 'inside-right' | 'outline'
   mode?: 'indeterminate' | 'determinate'
+  percent?: number
+  content?: any
+  type?: any
+  radius?: any
+  showInfo?: any
 }
 
 export type UseProgressReturn = ReturnType<typeof useProgress>

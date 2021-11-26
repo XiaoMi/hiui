@@ -17,7 +17,7 @@ export const CircleProgress = forwardRef<HTMLDivElement | null, CircleProgressPr
       role = 'progress',
       className,
       children,
-      percent: percentNum,
+      percent: percentNum = 0,
       content,
       type,
       radius: radiusThis,

@@ -17,7 +17,7 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
       role = 'DashboardProgress',
       className,
       children,
-      percent: percentNum,
+      percent: percentNum = 0,
       content,
       status,
       radius: radiusThis,
@@ -88,7 +88,9 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
   }
 )
 
-export interface DashboardProgressProps extends HiBaseHTMLProps<'div'>, UseProgressProps {}
+export interface DashboardProgressProps extends HiBaseHTMLProps<'div'>, UseProgressProps {
+  status?: any
+}
 
 if (__DEV__) {
   DashboardProgress.displayName = 'DashboardProgress'
