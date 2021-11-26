@@ -43,7 +43,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.0-alpha.0",
+    "@hi-ui/classname": "^4.0.0-alpha.2",
     "@hi-ui/core-css": "^4.0.0-alpha.4",
     "@hi-ui/env": "^4.0.0-alpha.0",
     "@hi-ui/icon-button": "^4.0.0-alpha.1",
