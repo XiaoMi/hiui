@@ -26,6 +26,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       prefixCls = DRAWER_PREFIX,
       role = 'dialog',
       className,
+      style,
       children,
       portalClassName,
       overlayClassName,
@@ -156,6 +157,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
             role={role}
             ref={useMergeRefs(modalRef, ref)}
             style={{
+              style,
               display: transitionExited ? 'none' : undefined,
               [`${getPrefixStyleVar('drawer-body-width')}`]: isNumeric(width)
                 ? width + 'px'
