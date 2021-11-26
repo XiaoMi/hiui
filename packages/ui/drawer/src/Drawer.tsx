@@ -157,7 +157,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
             role={role}
             ref={useMergeRefs(modalRef, ref)}
             style={{
-              style,
+              ...style,
               display: transitionExited ? 'none' : undefined,
               [`${getPrefixStyleVar('drawer-body-width')}`]: isNumeric(width)
                 ? width + 'px'
