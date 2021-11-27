@@ -85,6 +85,8 @@ export interface FileSelectProps {
    * 选择上传的事件
    */
   onSelect: (files: HTMLInputElement['files']) => void
+
+  children: React.ReactNode
 }
 
 if (__DEV__) {
