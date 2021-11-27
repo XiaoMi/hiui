@@ -16,7 +16,7 @@ export const isNullish = (arg: unknown): arg is Nullish => arg === null || arg =
  * Assert is an objectLike
  * TODO: Assert the return type
  */
-const isObjectLike = (arg: unknown): arg is any => !!arg && typeof arg === 'object'
+export const isObjectLike = (arg: unknown): arg is any => !!arg && typeof arg === 'object'
 
 /**
  * Assert is an object

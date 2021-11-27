@@ -25,6 +25,10 @@ export interface FormState<T> {
 export type FormTouched<T = any> = Record<string, T>
 export type FormErrors<T = any> = Record<string, T>
 
+export type FormSetState<T> =
+  | Partial<FormState<T>>
+  | ((state: FormState<T>) => Partial<FormState<T>>)
+
 export type FormAction<T> =
   | { type: 'SUBMIT_ATTEMPT' }
   | { type: 'SUBMIT_DONE' }
@@ -38,6 +42,7 @@ export type FormAction<T> =
   | { type: 'SET_ERRORS'; payload: FormErrors<T> }
   | { type: 'SET_STATUS'; payload: any }
   | { type: 'SET_FORM'; payload: FormState<T> }
+  | { type: 'SET_STATE'; payload: FormSetState<T> }
 
 export type FormValidateFunction<T = any> = (value: T) => string | Promise<string> | undefined
 
@@ -107,7 +112,7 @@ export interface FormHelpers<T = any> {
   clearValidates?: (fields: string[]) => void
 }
 
-export type FormFieldPath = string
+export type FormFieldPath = string | string[]
 // TODO: 支持数组获取对象嵌套属性
 //  | string[]
 

@@ -13,6 +13,7 @@ import { useLatestRef } from '@hi-ui/use-latest'
 import { isArray, isFunction } from '@hi-ui/type-assertion'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { stopEvent } from '@hi-ui/dom-utils'
+import { FormSetState } from '.'
 
 const EMPTY_RULES = {}
 const EMPTY_ERRORS = {}
@@ -302,6 +303,11 @@ export const useForm = <Values = Record<string, any>>({
     })
   }, [])
 
+  const setFormState = React.useCallback((stateOrFunc: FormSetState<Values>): void => {
+    // @ts-ignore
+    formDispatch({ type: 'SET_STATE', payload: stateOrFunc })
+  }, [])
+
   const getRootProps = useCallback(() => {
     return {
       onSubmit: handleSubmit,
@@ -362,6 +368,7 @@ export const useForm = <Values = Record<string, any>>({
 
   return {
     ...formState,
+    setFormState,
     setFieldValue,
     setFieldError,
     setFieldTouched,
@@ -384,7 +391,7 @@ export interface UseFormProps<T = Record<string, any>> {
   /**
    * 初始化表单错误
    */
-  initialErrors?: Record<string, string>
+  initialErrors?: Record<keyof T, string>
   /**
    * 初始化是否已被触碰
    */
@@ -436,6 +443,9 @@ export type UseFormReturn = ReturnType<typeof useForm>
 // TODO: field 支持数组
 function formReducer<T>(state: FormState<T>, action: FormAction<T>) {
   switch (action.type) {
+    case 'SET_STATE':
+      const nextState = isFunction(action.payload) ? action.payload(state) : action.payload
+      return { ...state, ...nextState }
     case 'SET_VALUES':
       return { ...state, values: action.payload }
     case 'SET_ERRORS':

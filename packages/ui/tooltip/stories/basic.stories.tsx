@@ -7,8 +7,8 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="tooltip-basic__wrap">
-        <Tooltip title={'triggerPropsEvent'}>
-          <Button disabled>按钮</Button>
+        <Tooltip visible title={'triggerPropsEvent'}>
+          <Button>按钮</Button>
         </Tooltip>
       </div>
     </>

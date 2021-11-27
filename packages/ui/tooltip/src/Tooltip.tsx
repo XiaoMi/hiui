@@ -89,7 +89,14 @@ const TooltipComp: React.FC<TooltipProps> = ({
   return (
     <>
       {child}
-      <Popper attachEl={triggerRef} visible={tipVisible} arrow placement="top" className={cls}>
+      <Popper
+        attachEl={triggerRef}
+        visible={tipVisible}
+        arrow
+        placement="top"
+        className={cls}
+        gutterGap={19}
+      >
         <div className={`${prefixCls}__content`}>{title}</div>
       </Popper>
     </>
