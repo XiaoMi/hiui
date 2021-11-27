@@ -3,10 +3,5 @@
 $prefix: '#{$component-prefix}-tooltip' !default;
 
 .#{$prefix} {
-  &__content {
-    padding: 8px 10px;
-    white-space: nowrap;
-    line-height: 20px;
-    font-size: 14px;
-  }
+
 }
