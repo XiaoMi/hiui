@@ -43,7 +43,7 @@ export interface UploadProps {
    * 组件的注入选择器类
    */
   type?: 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
-  accept?: MimeType
+  accept?: string
   content?: React.ReactNode
   tips?: React.ReactNode
   maxSize?: number
@@ -61,6 +61,7 @@ export interface UploadProps {
   loading?: boolean
   style?: React.CSSProperties
   className?: string
+
   beforeUpload?: (file: UploadFileItem, fileList: UploadFileItem[]) => boolean
   customUpload?: (files: HTMLInputElement['files']) => void
   onChange?: (

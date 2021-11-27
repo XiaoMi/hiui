@@ -1,11 +1,11 @@
 import React, { forwardRef, useContext, useCallback, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { UploadFileItem, UploadProps } from './interface'
+import { UploadProps } from './interface'
 import { FileSelect } from '@hi-ui/file-select'
 import useUpload from './hooks/use-upload'
 import { LocaleContext } from '@hi-ui/locale-context'
-import { CloseOutlined, DeleteOutlined, FileFilled, CloudUploadOutlined } from '@hi-ui/icons'
+import { CloudUploadOutlined } from '@hi-ui/icons'
 import { FileList } from './FileList'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
@@ -90,23 +90,6 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       dragging && !disabled && 'drop-over',
       disabled && `${prefixCls}--disabled`,
       _fileList.length > 0 && `${prefixCls}--nohover`
-    )
-
-    const handleItemKeydown = useCallback(
-      (e: React.KeyboardEvent<HTMLLIElement>, file: UploadFileItem, index: number) => {
-        // ENTER
-        if (e.keyCode === 13) {
-          e.preventDefault()
-          const ele = e.target as HTMLLIElement
-          ele.querySelector('a')?.click()
-        }
-        // DEL
-        if (e.keyCode === 46) {
-          e.preventDefault()
-          deleteFile(file, index)
-        }
-      },
-      [deleteFile]
     )
 
     const handleContainerKeyDown = useCallback((e) => {

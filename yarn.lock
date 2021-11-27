@@ -6250,6 +6250,10 @@ create-react-context@0.3.0:
     gud "^1.0.0"
     warning "^4.0.3"
 
+cropperjs@^1.5.12:
+  version "1.5.12"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.12.tgz#d9c0db2bfb8c0d769d51739e8f916bbc44e10f50"
+
 cropperjs@v1.0.0-rc.3:
   version "1.0.0-rc.3"
   resolved "https://registry.nlark.com/cropperjs/download/cropperjs-1.0.0-rc.3.tgz?cache=0&sync_timestamp=1623485905627&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcropperjs%2Fdownload%2Fcropperjs-1.0.0-rc.3.tgz#50a7c7611befc442702f845ede77d7df4572e82b"
@@ -13724,6 +13728,12 @@ react-cropper@1.2.0:
     babel-core "7.0.0-bridge.0"
     cropperjs v1.0.0-rc.3
     prop-types "^15.5.8"
+
+react-cropper@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/react-cropper/-/react-cropper-2.1.8.tgz#bf35a7de65769f8ad357e8ae884e791fe3fe9212"
+  dependencies:
+    cropperjs "^1.5.12"
 
 react-dev-utils@^11.0.3:
   version "11.0.4"

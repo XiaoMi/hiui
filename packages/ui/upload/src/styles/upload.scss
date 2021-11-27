@@ -210,7 +210,7 @@ $prefix: '#{$component-prefix}-upload' !default;
 
   &--avatar,
   &--photo {
-    &.hi-upload--disabled {
+    &.#{$prefix}--disabled {
       .photo-upload {
         cursor: not-allowed;
 
@@ -221,11 +221,11 @@ $prefix: '#{$component-prefix}-upload' !default;
       }
     }
 
-    .hi-upload__list {
+    .#{$prefix}__list {
       overflow: visible;
     }
 
-    .hi-upload__item {
+    .#{$prefix}__item {
       width: 140px;
       height: 140px;
       display: inline-block;
@@ -238,7 +238,7 @@ $prefix: '#{$component-prefix}-upload' !default;
       background: use-color-static('white');
       border-radius: 2px;
 
-      &:focus:not(.hi-upload__item--upload) {
+      &:focus:not(.#{$prefix}__item--upload) {
         box-shadow: 0 0 0 1px use-color-mode('primary');
       }
 
@@ -309,13 +309,13 @@ $prefix: '#{$component-prefix}-upload' !default;
       }
 
       &:hover {
-        .hi-upload__photo-del {
+        .#{$prefix}__photo-del {
           display: block;
           color: use-color-static('black');
           z-index: 4;
         }
 
-        .hi-upload__item-mask {
+        .#{$prefix}__item-mask {
           opacity: 1;
         }
       }
@@ -323,23 +323,23 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &--photo {
-    .hi-upload__item--small {
+    .#{$prefix}__item--small {
       width: 80px;
       height: 80px;
       line-height: 80px;
 
-      .hi-upload__thumb {
+      .#{$prefix}__thumb {
         max-width: 80px;
         max-height: 80px;
       }
     }
 
-    .hi-upload__item--large {
+    .#{$prefix}__item--large {
       width: 200px;
       height: 200px;
       line-height: 200px;
 
-      .hi-upload__thumb {
+      .#{$prefix}__thumb {
         max-width: 200px;
         max-height: 200px;
       }
@@ -352,7 +352,7 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &--avatar {
-    .hi-upload__item--upload {
+    .#{$prefix}__item--upload {
       width: 80px;
       height: 80px;
       line-height: 80px;

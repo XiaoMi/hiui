@@ -5,6 +5,7 @@ import { UploadProps } from './interface'
 import { NormalUpload } from './NormalUpload'
 import { DragUpload } from './DragUpload'
 import { PictureListUpload } from './PictureListUpload'
+import { PictureUpload } from './PictureUpload'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 
@@ -20,6 +21,10 @@ export const Upload = forwardRef<HTMLDivElement | null, UploadProps>(
 
     if (type === 'pictureCard') {
       return <PictureListUpload ref={ref} className={cls} {...rest} />
+    }
+
+    if (type === 'photo') {
+      return <PictureUpload ref={ref} className={cls} {...rest} />
     }
 
     return <NormalUpload ref={ref} className={cls} {...rest} />

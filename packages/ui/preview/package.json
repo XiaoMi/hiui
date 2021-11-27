@@ -49,6 +49,7 @@
     "@hi-ui/env": "^4.0.0-alpha.0",
     "@hi-ui/icons": "^4.0.0-alpha.10",
     "@hi-ui/portal": "^4.0.0-alpha.6",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.6",
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {

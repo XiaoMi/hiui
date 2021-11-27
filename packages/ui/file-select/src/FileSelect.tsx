@@ -72,7 +72,7 @@ export interface FileSelectProps {
   /**
    * 接受的上传文件类型
    */
-  accept?: MimeType
+  accept?: string
   /**
    * 是否禁用
    */
@@ -85,6 +85,8 @@ export interface FileSelectProps {
    * 选择上传的事件
    */
   onSelect: (files: HTMLInputElement['files']) => void
+
+  children: React.ReactNode
 }
 
 if (__DEV__) {
