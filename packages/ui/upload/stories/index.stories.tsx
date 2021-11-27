@@ -4,6 +4,7 @@ export * from './basic.stories'
 export * from './draggable.stories'
 export * from './picture-list.stories'
 export * from './picture.stories'
+export * from './avatar.stories'
 
 export default {
   title: 'Upload',

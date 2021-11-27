@@ -1,11 +1,13 @@
 import React, { forwardRef, useContext, useCallback, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { UploadProps } from './interface'
+import { UploadProps, UploadFileItem } from './interface'
 import { FileSelect } from '@hi-ui/file-select'
 import { PlusOutlined, CloseCircleFilled } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
 import { LocaleContext } from '@hi-ui/locale-context'
+import { Preview } from '@hi-ui/preview'
+import { Modal } from '@hi-ui/modal'
 import Cropper from 'react-cropper'
 import 'cropperjs/dist/cropper.css'
 
@@ -36,11 +38,12 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onChange,
       beforeUpload,
       customUpload,
-      photoSize = 'default',
+      photoSize = 'small',
+      avatarOptions = {},
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, `${prefixCls}--avatar`, className)
     const { upload } = useContext(LocaleContext)
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
@@ -57,43 +60,47 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       customUpload,
     })
 
-    const { aspectRatio = 0, dragMode = 'move', dropBoxSize = [] } = avatarOptions
-    const cropperRef = useRef(null)
+    const { aspectRatio = 0, dragMode = 'move' } = avatarOptions
+    const cropperRef = useRef<HTMLImageElement>(null)
 
     const uploadRef = useRef<HTMLLIElement>(null)
 
     // TODO: 提取 usePreview hook
     const [visible, setVisible] = useState(false)
-    const [previewFile, setPreviewFile] = useState({})
-    const [activeIndex, setActiveIndex] = useState(0)
-    const [cropperFile, setCropperFile] = useState({})
+    const [previewFile, setPreviewFile] = useState<string>('')
+    const [cropperFile, setCropperFile] = useState<UploadFileItem | null>(null)
 
     const closeModal = useCallback(() => {
-      setPreviewFile({})
+      setPreviewFile('')
       setVisible(false)
     }, [])
 
-    const previewImage = useCallback((file, index) => {
-      setPreviewFile(file)
+    const previewImage = useCallback((url: string) => {
+      setPreviewFile(url)
       setVisible(true)
-      setActiveIndex(index)
     }, [])
+
     const [cropperVisible, setCropperVisible] = useState(false)
 
-    const selectFile = useCallback((files) => {
-      takeCropper(files[0])
-    }, [])
-
-    const takeCropper = useCallback((file) => {
+    const takeCropper = useCallback((file: UploadFileItem) => {
       const fr = new window.FileReader()
 
       fr.onload = (e) => {
-        file.url = e.target.result
+        file.url = (e.target?.result || '') as string
         setCropperVisible(true)
         setCropperFile(file)
       }
       fr.readAsDataURL(file)
     }, [])
+
+    const selectFile = useCallback(
+      (files: FileList | null) => {
+        if (files) {
+          takeCropper(files[0])
+        }
+      },
+      [takeCropper]
+    )
 
     const base2blob = useCallback((dataurl, filename) => {
       const arr = dataurl.split(',')
@@ -110,29 +117,23 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     }, [])
 
     const confirmCropper = useCallback(
-      (filename) => {
+      (filename: string) => {
         // 裁切图片
         if (cropperRef.current) {
-          const canvas = cropperRef.current.getCroppedCanvas()
+          const canvas = (cropperRef.current as any)?.cropper?.getCroppedCanvas()
           if (typeof canvas === 'undefined') {
             return
           }
           const dataUrl = canvas.toDataURL()
-          const file = base2blob(dataUrl, filename)
+          const file: UploadFileItem = base2blob(dataUrl, filename)
           file.url = dataUrl
           file.fileType = 'img'
           uploadFiles([file])
           setCropperVisible(false)
         }
       },
-      [cropperRef.current]
+      [uploadFiles, base2blob]
     )
-
-    const images = _fileList.map((file) => {
-      return {
-        url: file && file.url,
-      }
-    })
 
     const handleItemKeydown = useCallback(
       (e, file, index) => {
@@ -140,7 +141,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
         if (e.keyCode === 13) {
           e.preventDefault()
           e.stopPropagation()
-          previewImage(file, index)
+          previewImage(file.url)
         }
         // DEL
         if (e.keyCode === 46) {
@@ -165,13 +166,13 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     const file = _fileList[0]
     return (
       <div ref={ref} role={role} className={cls}>
-        <ul className="hi-upload__list">
+        <ul className={`${prefixCls}__list`}>
           {!!file &&
             (file.uploadState === 'loading' ? (
-              <li className="hi-upload__item">
-                <img src={file.url} className="hi-upload__thumb" />
-                <div className="hi-upload__precent">
-                  <p className="hi-upload__loading-text">
+              <li className={`${prefixCls}__item`}>
+                <img src={file.url} className={`${prefixCls}__thumb`} />
+                <div className={`${prefixCls}__precent`}>
+                  <p className={`${prefixCls}__loading-text`}>
                     {file.progressNumber
                       ? file.progressNumber < 100
                         ? file.progressNumber && file.progressNumber.toFixed(2) + '%'
@@ -179,16 +180,16 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                       : 0 + '%'}
                   </p>
                   <div
-                    className="hi-upload__loading-bar"
-                    style={{ width: file.progressNumber * 1.4 + 'px' }}
+                    className={`${prefixCls}__loading-bar`}
+                    style={{ width: file.progressNumber ? file.progressNumber * 1.4 + 'px' : '' }}
                   />
                 </div>
               </li>
             ) : (
               <li
-                className="hi-upload__item"
+                className={`${prefixCls}__item`}
                 tabIndex={0}
-                onClick={() => previewImage(file, 0)}
+                onClick={() => previewImage(file.url || '')}
                 onKeyDown={(e) => {
                   handleItemKeydown(e, file, 0)
                 }}
@@ -196,10 +197,10 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
               >
                 <img
                   src={file.url}
-                  className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`}
+                  className={`${prefixCls}__thumb ${file.uploadState === 'error' && 'error'}`}
                 />
                 <CloseCircleFilled
-                  className="hi-upload__photo-del"
+                  className={`${prefixCls}__photo-del`}
                   onClick={(e) => {
                     e.stopPropagation()
                     deleteFile(file, 0)
@@ -207,7 +208,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                 />
 
                 {file.uploadState === 'error' && (
-                  <div className="hi-upload__item--photo-error">{upload.uploadFailed}</div>
+                  <div className={`${prefixCls}__item--photo-error`}>{upload.uploadFailed}</div>
                 )}
               </li>
             ))}
@@ -220,7 +221,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
               style={{ display: 'inline-block' }}
             >
               <li
-                className="hi-upload__item hi-upload__item--upload"
+                className={`${prefixCls}__item ${prefixCls}__item--upload`}
                 ref={uploadRef}
                 tabIndex={0}
                 onKeyDown={handleUploadKeydown}
@@ -230,6 +231,28 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             </FileSelect>
           )}
         </ul>
+        <Preview visible={visible} onClose={closeModal} src={previewFile} />
+        <Modal
+          visible={cropperVisible}
+          onConfirm={() => {
+            if (cropperFile) {
+              confirmCropper(cropperFile.name)
+            }
+          }}
+          onClose={() => {
+            setCropperVisible(false)
+          }}
+          backDrop={false}
+        >
+          <Cropper
+            src={cropperFile?.url || ''}
+            aspectRatio={aspectRatio}
+            guides={false}
+            dragMode={dragMode}
+            ref={cropperRef}
+            style={{ height: 400, width: '100%' }}
+          />
+        </Modal>
       </div>
     )
   }

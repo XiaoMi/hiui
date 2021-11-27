@@ -61,6 +61,7 @@ export interface UploadProps {
   loading?: boolean
   style?: React.CSSProperties
   className?: string
+  avatarOptions?: Record<string, any>
 
   beforeUpload?: (file: UploadFileItem, fileList: UploadFileItem[]) => boolean
   customUpload?: (files: HTMLInputElement['files']) => void

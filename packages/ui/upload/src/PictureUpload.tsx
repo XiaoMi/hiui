@@ -66,7 +66,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       setVisible(false)
     }, [])
 
-    const previewImage = useCallback((file, index) => {
+    const previewImage = useCallback((index) => {
       setVisible(true)
       setActiveIndex(index)
     }, [])
@@ -77,7 +77,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       })
     }, [_fileList])
 
-    const precentNum = useCallback(() => {
+    const precentNum = useMemo(() => {
       let num = 1.4
       switch (photoSize) {
         case 'small':
@@ -99,7 +99,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
         if (e.keyCode === 13) {
           e.preventDefault()
           e.stopPropagation()
-          previewImage(file, index)
+          previewImage(index)
         }
         // DEL
         if (e.keyCode === 46) {
@@ -121,7 +121,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
 
       []
     )
-    console.log('>>>>', activeIndex)
+
     return (
       <div ref={ref} role={role} className={cls}>
         <ul className={`${prefixCls}__list`}>
@@ -145,7 +145,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                     <div
                       className={`${prefixCls}__loading-bar`}
                       style={{
-                        width: file.progressNumber ? file.progressNumber * precentNum() + 'px' : '',
+                        width: file.progressNumber ? file.progressNumber * precentNum + 'px' : '',
                       }}
                     />
                     {/* 进度条底部阴影 */}
@@ -161,7 +161,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                   className={cx(`${prefixCls}__item`, `${prefixCls}__item--${photoSize}`)}
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
-                    previewImage(file, index)
+                    previewImage(index)
                   }}
                   onKeyDown={(e) => handleItemKeydown(e, file, index)}
                 >

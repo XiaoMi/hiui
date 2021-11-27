@@ -50,6 +50,7 @@
     "@hi-ui/env": "^4.0.0-alpha.0",
     "@hi-ui/file-select": "^4.0.0-alpha.0",
     "@hi-ui/locale-context": "^4.0.0-alpha.2",
+    "@hi-ui/modal": "^4.0.0-alpha.1",
     "@hi-ui/preview": "^4.0.0-alpha.0",
     "react-cropper": "^2.1.8",
     "uuid": "^8.3.2"
