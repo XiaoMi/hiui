@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useRef } from 'react'
-import { cx, getPrefixCls } from '@hi-ui/classname'
+import { cx, getPrefixCls, getPrefixStyleVar } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { UseDrawerProps } from './use-drawer'
@@ -11,6 +11,9 @@ import { stackManager, useStackManager } from '@hi-ui/modal'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useToggle } from '@hi-ui/use-toggle'
+import { isNumeric } from '@hi-ui/type-assertion'
+import { CloseOutlined } from '@hi-ui/icons'
+import { IconButton } from '@hi-ui/icon-button'
 
 const DRAWER_PREFIX = getPrefixCls('drawer')
 
@@ -23,6 +26,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       prefixCls = DRAWER_PREFIX,
       role = 'dialog',
       className,
+      style,
       children,
       portalClassName,
       overlayClassName,
@@ -43,6 +47,10 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       onAfterOpen,
       onAfterClose,
       onExited: onExitedProp,
+      title,
+      showMask = true,
+      footer,
+      width,
       // transitionProps,
       // returnFoucsOnClose = false,
       // trapFocus = true,
@@ -145,15 +153,31 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
           onExited={onExited}
         >
           <div
-            className={`${prefixCls}__root`}
-            style={{ display: transitionExited ? 'none' : undefined }}
+            className={cls}
+            role={role}
+            ref={useMergeRefs(modalRef, ref)}
+            style={{
+              ...style,
+              display: transitionExited ? 'none' : undefined,
+              [`${getPrefixStyleVar('drawer-body-width')}`]: isNumeric(width)
+                ? width + 'px'
+                : width,
+            }}
+            {...rest}
           >
-            <div
-              className={cx(`${prefixCls}__overlay`, overlayClassName)}
-              onClick={closeOnOverlayClick || onOverlayClick ? handleClickOverlay : undefined}
-            />
-            <div role={role} ref={useMergeRefs(modalRef, ref)} className={cls} {...rest}>
-              <div className={`${prefixCls}__body`}>{children}</div>
+            {showMask ? (
+              <div
+                className={cx(`${prefixCls}__overlay`, overlayClassName)}
+                onClick={closeOnOverlayClick || onOverlayClick ? handleClickOverlay : undefined}
+              />
+            ) : null}
+            <div className={`${prefixCls}__body`}>
+              <header className={`${prefixCls}__header`}>
+                {title}
+                {closable ? <IconButton onClick={onClose} icon={<CloseOutlined />} /> : null}
+              </header>
+              <main className={`${prefixCls}__content`}>{children}</main>
+              {footer ? <footer className={`${prefixCls}__footer`}>{footer}</footer> : null}
             </div>
           </div>
         </CSSTransition>
@@ -162,7 +186,24 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
   }
 )
 
-export interface DrawerProps extends HiBaseHTMLProps<'div'>, UseDrawerProps {}
+export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseDrawerProps {
+  /**
+   * 模态框标题
+   */
+  title: React.ReactNode
+  /**
+   * 自定义抽屉底部
+   */
+  footer?: React.ReactNode
+  /**
+   * 是否显示蒙层
+   */
+  showMask?: boolean
+  /**
+   * 自定义抽屉宽度
+   */
+  width?: number
+}
 
 if (__DEV__) {
   Drawer.displayName = 'Drawer'

@@ -4,6 +4,7 @@ import { setAttrStatus, hiddenStyle } from '@hi-ui/dom-utils'
 
 export const useRadio = ({
   name: nameProp,
+  // 是否作为必传参数使用
   value: valueProp,
   invalid,
   autoFocus = false,

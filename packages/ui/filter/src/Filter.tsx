@@ -1,10 +1,10 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { useLatestCallback } from '@hi-ui/use-latest'
 import { useFilter, UseFilterProps } from './use-filter'
 import { FilterProvider, useFilterContext } from './context'
+import { callAllFuncs } from '@hi-ui/func-utils'
 
 const FILTER_PREFIX = getPrefixCls('filter')
 
@@ -15,27 +15,37 @@ export const Filter = forwardRef<HTMLDivElement | null, FilterProps>(
   (
     {
       prefixCls = FILTER_PREFIX,
-      role = 'filter',
       className,
       children,
       label,
       labelWidth = 80,
+      showUnderline = false,
       ...rest
     },
     ref
   ) => {
+    const { rootProps, isSelectedId, onItemSelect } = useFilter(rest)
+
+    const providedValue = useMemo(() => ({ showUnderline, isSelectedId, onItemSelect }), [
+      isSelectedId,
+      onItemSelect,
+      showUnderline,
+    ])
+
     const cls = cx(prefixCls, className)
 
-    const { rootProps, ...context } = useFilter(rest)
-
     return (
-      <FilterProvider value={context}>
-        <div ref={ref} role={role} className={cls} {...rootProps}>
-          <div className={`${prefixCls}__label`} style={{ width: labelWidth }}>
-            <span className={`${prefixCls}__label-title`}>{label}</span>
-          </div>
+      <FilterProvider value={providedValue}>
+        <div ref={ref} className={cls} {...rootProps}>
+          {label ? (
+            <div
+              className={`${prefixCls}__label`}
+              style={{ width: labelWidth, overflow: 'hidden' }}
+            >
+              <span className={`${prefixCls}__label-title`}>{label}</span>
+            </div>
+          ) : null}
           <ul className={`${prefixCls}__items`}>{children}</ul>
-          <div></div>
         </div>
       </FilterProvider>
     )
@@ -46,11 +56,12 @@ export interface FilterProps extends HiBaseHTMLProps<'div'>, UseFilterProps {
   /**
    * 筛选标题
    */
-  label?: string
+  label?: React.ReactText
   /**
    * 筛选标题宽度
    */
   labelWidth?: number
+  showUnderline?: boolean
 }
 
 if (__DEV__) {
@@ -66,7 +77,7 @@ export const FilterItem = forwardRef<HTMLLIElement | null, FilterItemProps>(
   (
     {
       prefixCls = FILTER_ITEM_PREFIX,
-      role = 'filter-item',
+      role = 'radio',
       className,
       children,
       value,
@@ -78,19 +89,11 @@ export const FilterItem = forwardRef<HTMLLIElement | null, FilterItemProps>(
   ) => {
     const { showUnderline, isSelectedId, onItemSelect } = useFilterContext()
 
-    const option = React.useMemo(() => {
-      return { id: value, disabled: disabledProp, content: children }
-    }, [value, disabledProp, children])
-
-    const onClickLatest = useLatestCallback(onClick)
-
-    const handleClick = React.useCallback(
-      (evt: React.MouseEvent<HTMLLIElement>) => {
-        onClickLatest(evt)
-        onItemSelect(option)
-      },
-      [onItemSelect, option, onClickLatest]
-    )
+    const option = useMemo(() => ({ id: value, disabled: disabledProp, title: children }), [
+      value,
+      disabledProp,
+      children,
+    ])
 
     const checked = isSelectedId(option.id)
 
@@ -103,7 +106,13 @@ export const FilterItem = forwardRef<HTMLLIElement | null, FilterItemProps>(
     )
 
     return (
-      <li ref={ref} role={role} className={cls} {...rest} onClick={handleClick}>
+      <li
+        ref={ref}
+        role={role}
+        className={cls}
+        {...rest}
+        onClick={callAllFuncs(onClick, () => onItemSelect(option))}
+      >
         {children}
       </li>
     )

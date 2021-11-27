@@ -4,24 +4,24 @@ $prefix: '#{$component-prefix}-filter' !default;
 
 .#{$prefix} {
   display: flex;
+  height: 40px;
+  line-height: 40px;
 
   &__label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 40px;
 
     &::after {
       display: inline-block;
       content: '';
       width: 1px;
       height: 14px;
-      background-color: #d8d8d8;
+      background-color: use-color('gray', 300);
     }
 
     &-title {
       display: inline-block;
-      width: 76px;
       font-size: use-text-size('normal');
       color: use-color('gray', 600);
       overflow: hidden;
@@ -31,24 +31,35 @@ $prefix: '#{$component-prefix}-filter' !default;
   }
 
   &__items {
+    @include list-reset;
+
     display: flex;
     flex-wrap: wrap;
-    margin: 0;
-    padding: 0;
-    padding-left: 16px;
+    margin-inline-start: use-spacing(8);
   }
 }
 
 .#{$prefix}-item {
-  position: relative;
-  height: 40px;
+  @include list-item-reset;
+
   font-size: use-text-size('normal');
   color: use-color-static('black');
-  line-height: 40px;
-  margin-right: 40px;
+  margin-inline-end: 40px;
   cursor: pointer;
-  transition: all 0.3s;
-  list-style: none;
+  transition: color 0.3s;
+
+  &:last-child {
+    margin-inline-end: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: background-color 0.3s;
+  }
 
   &--active {
     color: use-color-mode('primary');
@@ -57,21 +68,15 @@ $prefix: '#{$component-prefix}-filter' !default;
       position: relative;
 
       &::after {
-        position: absolute;
+        display: inline-block;
         width: 24px;
         height: 2px;
-        display: inline-block;
         background-color: use-color-mode('primary');
-        bottom: 0;
-        left: 50%;
-        right: 50%;
-        transform: translate(-50%, -50%);
       }
     }
   }
 
   &--disabled {
-    cursor: not-allowed;
-    opacity: 0.4;
+    @include disabled;
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/dom-utils",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-alpha.3",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -42,7 +42,11 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
+  "peerDependencies": {
+    "react": "^17.0.1"
+  },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.0"
+    "@hi-ui/hi-build": "^4.0.0-alpha.2",
+    "react": "^17.0.1"
   }
 }

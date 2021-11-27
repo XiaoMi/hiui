@@ -23,6 +23,9 @@ export interface UseDrawerProps {
   onClose?: () => void
   closeOnEsc?: boolean
   onEscKeyDown?: (event: KeyboardEvent) => void
+  /**
+   * 是否允许点击蒙层关闭抽屉
+   */
   closeOnOverlayClick?: boolean
   onOverlayClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   closable?: boolean

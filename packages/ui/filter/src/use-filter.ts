@@ -1,20 +1,17 @@
 import React from 'react'
-import { FilterDataItem } from './types'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useSelect } from '@hi-ui/use-check'
+import { FilterDataItem } from './types'
 
-const DEFAULT_DATA = [] as []
-const allowSelect = (item: any) => !item.disabled
+const allowSelect = (item: FilterDataItem) => !item.disabled
 
 export const useFilter = ({
-  data: dataProp = DEFAULT_DATA,
   defaultValue = '',
   value: valueProp,
   onChange,
-  showUnderline = false,
   ...rest
 }: UseFilterProps) => {
-  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
+  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange, Object.is)
 
   const [onItemSelect, isSelectedId] = useSelect({
     selectedId: value,
@@ -22,7 +19,12 @@ export const useFilter = ({
     allowSelect,
   })
 
-  return { rootProps: rest, isSelectedId, onItemSelect, showUnderline }
+  const rootProps = {
+    role: 'radiogroup',
+    ...rest,
+  }
+
+  return { rootProps, isSelectedId, onItemSelect }
 }
 
 export interface UseFilterProps {
@@ -30,10 +32,6 @@ export interface UseFilterProps {
    * 是否显示下划线
    */
   showUnderline?: boolean
-  /**
-   * 筛选选项数据
-   */
-  data?: FilterDataItem[]
   /**
    * 默认选中项的值
    */
@@ -45,7 +43,7 @@ export interface UseFilterProps {
   /**
    * 选择时的回调函数，	value 表示选中项的 ID 集合
    */
-  onChange?: (value: React.ReactText) => void
+  onChange?: (value: React.ReactText, targetItem: FilterDataItem) => void
 }
 
 export type UseFilterReturn = ReturnType<typeof useFilter>
