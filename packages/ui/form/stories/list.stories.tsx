@@ -36,49 +36,55 @@ export const List = () => {
           <FormItem field="testInput" valueType="string" label="用户名">
             <Input />
           </FormItem>
+
           <FormItem field="testInput2" valueType="string" label="密码">
             <Input />
           </FormItem>
 
           <FormList name="testList">
-            {(fields, { add, remove, insertBefore }) => {
+            {(fields, { add, remove, insertBefore, swap, move }) => {
               return (
                 <div>
                   {fields.map((field, index) => {
                     return (
                       <div key={index}>
+                        <FormItem
+                          field={['testList', index, 'username']}
+                          valueType="string"
+                          label={`材料名称${index}`}
+                        >
+                          <Input />
+                        </FormItem>
+
+                        <FormItem
+                          field={['testList', index, 'password']}
+                          valueType="string"
+                          label={`材料颜色${index}`}
+                        >
+                          <Input />
+                        </FormItem>
+
                         <div>
-                          <FormItem field={['testList', field.name, 'username']} valueType="string">
-                            <Input />
-                          </FormItem>
-                          <span style={{ paddingTop: '6px' }} onClick={() => remove(field)}>
+                          <span style={{ paddingTop: '6px' }} onClick={() => remove(index)}>
                             <CloseOutlined
                               style={{ color: '#999', fontSize: 16, cursor: 'pointer' }}
                             />
                           </span>
-                          <span style={{ paddingTop: '6px' }} onClick={() => insertBefore(field)}>
+
+                          <span
+                            style={{ paddingTop: '6px' }}
+                            onClick={() => insertBefore(index, { username: '', password: '' })}
+                          >
                             insertBefore
                           </span>
-                        </div>
-
-                        <div>
-                          <FormItem field={['testList', field.name, 'password']} valueType="string">
-                            <Input />
-                          </FormItem>
-                          <span style={{ paddingTop: '6px' }} onClick={() => remove(field)}>
-                            <CloseOutlined
-                              style={{ color: '#999', fontSize: 16, cursor: 'pointer' }}
-                            />
-                          </span>
-
-                          <span style={{ paddingTop: '6px' }} onClick={() => insertBefore(field)}>
-                            insertBefore
+                          <span style={{ paddingTop: '6px' }} onClick={() => move(index, 0)}>
+                            swap with list[0]
                           </span>
                         </div>
                       </div>
                     )
                   })}
-                  <Button onClick={() => add()}>Add Field</Button>
+                  <Button onClick={() => add({ username: '', password: '' })}>Add Field</Button>
                 </div>
               )
             }}

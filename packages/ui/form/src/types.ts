@@ -1,4 +1,5 @@
 import { RuleItem } from 'async-validator'
+import React from 'react'
 export interface FormState<T> {
   /**
    * 字段及值的映射存储
@@ -35,9 +36,9 @@ export type FormAction<T> =
   | { type: 'SET_VALIDATING'; payload: boolean }
   | { type: 'SET_SUBMITTING'; payload: boolean }
   | { type: 'SET_VALUES'; payload: T }
-  | { type: 'SET_FIELD_VALUE'; payload: { field: string; value?: any } }
-  | { type: 'SET_FIELD_TOUCHED'; payload: { field: string; value?: boolean } }
-  | { type: 'SET_FIELD_ERROR'; payload: { field: string; value?: string } }
+  | { type: 'SET_FIELD_VALUE'; payload: { field: React.ReactText[]; value?: any } }
+  | { type: 'SET_FIELD_TOUCHED'; payload: { field: React.ReactText[]; value?: boolean } }
+  | { type: 'SET_FIELD_ERROR'; payload: { field: React.ReactText[]; value?: string } }
   | { type: 'SET_TOUCHED'; payload: FormTouched<T> }
   | { type: 'SET_ERRORS'; payload: FormErrors<T> }
   | { type: 'SET_STATUS'; payload: any }
@@ -112,7 +113,8 @@ export interface FormHelpers<T = any> {
   clearValidates?: (fields: string[]) => void
 }
 
-export type FormFieldPath = string | string[]
+export type FormFieldPath = React.ReactText[] | React.ReactText
+
 // TODO: 支持数组获取对象嵌套属性
 //  | string[]
 

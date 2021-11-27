@@ -35,6 +35,7 @@ export const FormList: React.FC<FormListProps> = ({ children, name: nameProp }) 
     (stateFunc: Function, alterTouched: boolean | Function, alterErrors: boolean | Function) => {
       setFormState((prev: FormState<any>) => {
         const values = setNested(prev.values, name, stateFunc(getNested(prev.values, name)))
+        console.log(values, stateFunc(getNested(prev.values, name)))
 
         const updateErrors = typeof alterErrors === 'function' ? alterErrors : stateFunc
         const updateTouched = typeof alterTouched === 'function' ? alterTouched : stateFunc
@@ -63,24 +64,59 @@ export const FormList: React.FC<FormListProps> = ({ children, name: nameProp }) 
   const add = React.useCallback(
     (value: any) => {
       // 维护的 动态 field list
-      updateFormList((prev: any) => prev.concat(value), false, false)
+      updateFormList((prev: any) => [...asArray(prev), value], false, false)
     },
     [updateFormList]
   )
 
   const remove = React.useCallback(
     (index: number) => {
-      updateFormList((prev: any) => prev.filter((_, idx) => idx !== index), false, false)
+      updateFormList((prev: any) => asArray(prev).filter((_, idx) => idx !== index), true, true)
     },
     [updateFormList]
   )
 
   const insertBefore = React.useCallback(
-    (value: any, index: number) => {
+    (index: number, value: any) => {
       updateFormList(
-        (prev: any[]) => insert(prev, index, value),
-        (prev: any[]) => insert(prev, index, null),
-        (prev: any[]) => insert(prev, index, null)
+        (prev: any[]) => insert(asArray(prev), index, value),
+        (prev: any[]) => insert(asArray(prev), index, null),
+        (prev: any[]) => insert(asArray(prev), index, null)
+      )
+    },
+    [updateFormList]
+  )
+
+  const swap = React.useCallback(
+    (aIndex: number, bIndex: number) => {
+      updateFormList(
+        (prev: any[]) => {
+          const copy = [...asArray(prev)]
+          const temp = copy[aIndex]
+          copy[aIndex] = copy[bIndex]
+          copy[bIndex] = temp
+          return copy
+        },
+        true,
+        true
+      )
+    },
+    [updateFormList]
+  )
+
+  const move = React.useCallback(
+    (fromIndex: number, toIndex: number) => {
+      updateFormList(
+        (prev: any[]) => {
+          const copy = [...asArray(prev)]
+          const temp = copy[fromIndex]
+
+          copy.splice(fromIndex, 1)
+          copy.splice(toIndex, 0, temp)
+          return copy
+        },
+        true,
+        true
       )
     },
     [updateFormList]
@@ -107,7 +143,7 @@ export const FormList: React.FC<FormListProps> = ({ children, name: nameProp }) 
     return null
   }
 
-  return children(listFields, { add, remove, insertBefore })
+  return children(listFields, { add, remove, swap, insertBefore, move })
 }
 
 export interface FormListProps extends UseFormFieldProps, FormLabelProps {
@@ -126,5 +162,11 @@ if (__DEV__) {
 }
 
 const insert = (arr: any[], index: number, value: any) => {
-  return [...arr].splice(index, 0, value)
+  arr = [...arr]
+  arr.splice(index, 0, value)
+  return arr
+}
+
+const asArray = (arr: any) => {
+  return isArray(arr) ? arr : []
 }

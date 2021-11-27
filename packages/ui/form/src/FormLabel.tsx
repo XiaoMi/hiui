@@ -109,6 +109,10 @@ export interface FormLabelProps extends HiBaseHTMLProps<'div'> {
    * label 宽度，可使用任意 CSS 长度单位。优先级高于 Form 设置的 labelWidth
    */
   labelWidth?: React.ReactText
+  /**
+   * label 文案
+   */
+  label?: React.ReactNode
 }
 
 if (__DEV__) {

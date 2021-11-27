@@ -8,10 +8,9 @@ import {
   FormFieldPath,
   FormErrorMessage,
 } from './types'
-import { setProp } from './utils'
 import { useLatestRef } from '@hi-ui/use-latest'
 import { isArray, isFunction } from '@hi-ui/type-assertion'
-import { callAllFuncs } from '@hi-ui/func-utils'
+import { callAllFuncs, setNested, getNested } from '@hi-ui/func-utils'
 import { stopEvent } from '@hi-ui/dom-utils'
 import { FormSetState } from '.'
 
@@ -336,7 +335,7 @@ export const useForm = <Values = Record<string, any>>({
 
       const returnProps = {
         ref,
-        [valuePropName]: formState.values[field],
+        [valuePropName]: getNested(formState.values, field),
         // 字段 change 时校验
         [valueCollectPropName]: callAllFuncs(
           props[valueCollectPropName],
@@ -354,7 +353,14 @@ export const useForm = <Values = Record<string, any>>({
 
       return returnProps
     },
-    [formState, handleFieldChange, handleFieldBlur, validateTriggersMemo, handleFieldTrigger]
+    [
+      formState,
+      handleFieldChange,
+      handleFieldBlur,
+      validateTriggersMemo,
+      handleFieldTrigger,
+      getFieldError,
+    ]
   )
 
   const getFieldRules = useCallback(
@@ -459,17 +465,17 @@ function formReducer<T>(state: FormState<T>, action: FormAction<T>) {
     case 'SET_FIELD_VALUE':
       return {
         ...state,
-        values: setProp(state.values, action.payload.field, action.payload.value),
+        values: setNested(state.values, action.payload.field, action.payload.value),
       }
     case 'SET_FIELD_TOUCHED':
       return {
         ...state,
-        touched: setProp(state.touched, action.payload.field, action.payload.value),
+        touched: setNested(state.touched, action.payload.field, action.payload.value),
       }
     case 'SET_FIELD_ERROR':
       return {
         ...state,
-        errors: setProp(state.errors, action.payload.field, action.payload.value),
+        errors: setNested(state.errors, action.payload.field, action.payload.value),
       }
     case 'SET_FORM':
       return { ...state, ...action.payload }

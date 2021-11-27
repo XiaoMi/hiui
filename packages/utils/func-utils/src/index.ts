@@ -1,3 +1,4 @@
+import clone from 'lodash/clone'
 import { isArray, isNullish, isObjectLike } from '@hi-ui/type-assertion'
 
 export type AnyFunction<T = any> = (...args: T[]) => any
@@ -28,10 +29,8 @@ export const toArray = <T>(arg: T | T[] | undefined): T[] => {
  *
  * get({ a: { b: 3 } }, ['a', 'b']) // 3
  */
-export const getNested = <T>(
-  obj: Record<string, unknown>,
-  paths: (string | number)[]
-): T | undefined => {
+export const getNested = <T, E>(obj: E, paths: (string | number)[]): T | undefined => {
+  paths = toArray(paths)
   const props = paths.map((p) => p + '').filter((p) => p !== '')
 
   let target: any = obj
@@ -56,7 +55,10 @@ export const getNested = <T>(
  *
  * setNested({ a: { b: 2 } }, ['a', 'b'], 4) // { a: { b: 4 } }
  */
-export const setNested = (obj: Record<string, unknown>, paths: (string | number)[], value: any) => {
+export const setNested = <T>(obj: T, paths: (string | number)[], value: any) => {
+  paths = toArray(paths)
+
+  // just support array
   const props: (string | number)[] = []
   paths.forEach((p) => {
     if (Number.isSafeInteger(p)) {
@@ -74,18 +76,22 @@ export const setNested = (obj: Record<string, unknown>, paths: (string | number)
   let i = 0
   let key
   let objValue
+  // using clone keep pure
+  obj = clone(obj)
   let target: any = obj
 
   while (i < lastIndex) {
     key = props[i++]
     objValue = target[key]
 
-    if (!isObjectLike(objValue)) {
-      objValue = typeof props[i] === 'number' ? [] : {}
+    if (isObjectLike(objValue)) {
+      target[key] = clone(objValue)
+    } else {
+      // using array when path's type is number
+      target[key] = typeof props[i] === 'number' ? [] : {}
     }
 
-    target[key] = objValue
-    target = objValue
+    target = target[key]
   }
 
   target[props[i]] = value
