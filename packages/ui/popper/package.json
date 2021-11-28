@@ -44,9 +44,12 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.2",
+    "@hi-ui/core": "^4.0.0-alpha.5",
     "@hi-ui/core-css": "^4.0.0-alpha.3",
+    "@hi-ui/dom-utils": "^4.0.0-alpha.2",
     "@hi-ui/env": "^4.0.0-alpha.3",
     "@hi-ui/portal": "^4.0.0-alpha.6",
+    "@hi-ui/react-utils": "^4.0.0-alpha.2",
     "@hi-ui/use-latest": "^4.0.0-alpha.2",
     "@hi-ui/use-merge-refs": "^4.0.0-alpha.2",
     "@hi-ui/use-outside-click": "^4.0.0-alpha.4",
