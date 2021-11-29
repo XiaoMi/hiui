@@ -121,7 +121,9 @@ export class WatermarkGenerator {
     this.image = img
   }
 
-  render = (container: HTMLElement, options: WatermarkProps) => {
+  render = (container: HTMLElement | null, options: WatermarkProps) => {
+    if (!container) return
+
     const defaultProps: OptionsInterface = {
       textAlign: 'left',
       font: 28,
@@ -253,15 +255,15 @@ export class WatermarkGenerator {
         const cs: CSSStyleDeclaration = __wm
           ? window.getComputedStyle(__wm)
           : ({} as CSSStyleDeclaration)
+
         if (
-          (container &&
-            (container.getAttribute('style') !== styleStr ||
-              cs.visibility === 'hidden' ||
-              cs.display === 'none' ||
-              cs.opacity !== String(opacity) ||
-              // @ts-ignore
-              !isChild(container, container.firstChild))) ||
-          !container
+          !__wm ||
+          __wm.getAttribute('style') !== styleStr ||
+          cs.visibility === 'hidden' ||
+          cs.display === 'none' ||
+          cs.opacity !== String(opacity) ||
+          // @ts-ignore
+          !isChild(container, container.firstChild)
         ) {
           this.destroyMutationObserverEvent()
           this.destroyContainerChild() // 监听到dom变化时 删除之前的水印元素
