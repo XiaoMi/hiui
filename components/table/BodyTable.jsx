@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import Row from './Row'
 import TableContext from './context'
 import _ from 'lodash'
-import { flatTreeData, setDepth, checkNeedTotalOrEvg, getTotalOrEvgRowData } from './util'
+import { flatTreeData, setDepth, checkNeedTotalOrEvg, getTotalOrEvgRowData, cloneArray } from './util'
 
 const BodyTable = ({ fatherRef, emptyContent }) => {
   const {
@@ -41,7 +41,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   const [dragRowKey, setDragRowKey] = useState(null)
 
   // **************** 获取colgroup
-  const _columns = _.cloneDeep(columns)
+  const _columns = cloneArray(columns)
   const depthArray = []
   setDepth(_columns, 0, depthArray)
   const columnsgroup = [rowSelection && 'checkbox', expandedRender && 'expandedButton']

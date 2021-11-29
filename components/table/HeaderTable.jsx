@@ -1,6 +1,5 @@
 import React, { useRef, useContext, useState, useEffect, useLayoutEffect } from 'react'
 import { Resizable } from 'react-resizable'
-import _ from 'lodash'
 import classnames from 'classnames'
 
 import TableContext from './context'
@@ -8,7 +7,7 @@ import ColumnMenu from './ColumnMenu'
 import SettingMenu from './SettingMenu'
 import Checkbox from '../checkbox'
 import AdvanceHeader from './AdvanceHeader'
-import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth } from './util'
+import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth, cloneArray } from './util'
 
 const HeaderTable = ({ rightFixedIndex }) => {
   const {
@@ -38,9 +37,9 @@ const HeaderTable = ({ rightFixedIndex }) => {
     sticky,
     disabledData
   } = useContext(TableContext)
-  const [data, setDate] = useState(_.cloneDeep(propsData))
+  const [data, setDate] = useState(cloneArray(propsData))
   useEffect(() => {
-    setDate(_.cloneDeep(propsData))
+    setDate(cloneArray(propsData))
   }, [propsData])
   const [isAllChecked, setIsAllChecked] = useState(false)
   const [groupedColumns, setGroupedColumns] = useState([])
@@ -68,7 +67,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
     // 判断是否全选
     if (rowSelection) {
       const { selectedRowKeys = [] } = rowSelection
-      const flattedData = flatTreeData(_.cloneDeep(data))
+      const flattedData = flatTreeData(cloneArray(data))
       const _isAllChecked =
         flattedData
           .filter((data) => !disabledData.current.includes(data.key))
@@ -79,7 +78,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
 
   // 处理列的深度
   useEffect(() => {
-    const _columns = _.cloneDeep(columns)
+    const _columns = cloneArray(columns)
     const depthArray = []
     setDepth(_columns, 0, depthArray)
     const maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
@@ -170,7 +169,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
                   indeterminate={!isAllChecked && rowSelection.selectedRowKeys.length > 0}
                   onChange={(e) => {
                     if (rowSelection.onChange) {
-                      const targetItems = flatTreeData(_.cloneDeep(data)).filter(
+                      const targetItems = flatTreeData(cloneArray(data)).filter(
                         (data) => !disabledData.current.includes(data.key)
                       )
                       const selectedIds = isAllChecked ? [] : targetItems.map((item) => item.key)

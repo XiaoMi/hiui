@@ -9,11 +9,11 @@ import {
   setColumnsDefaultWidth,
   getMaskNums,
   setRowByKey,
-  deleteRowByKey
+  deleteRowByKey,
+  cloneArray
 } from './util'
 import Pagination from '../pagination'
 import axios from 'axios'
-import _ from 'lodash'
 import Provider from '../context'
 import Loading from '../loading'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -95,8 +95,8 @@ const Table = ({
   const updateData = useCallback(() => {
     if (typeof dargInfo.current.dropKey !== 'undefined') {
       const { rowData, dropRowData } = dargInfo.current
-      const restData = deleteRowByKey(_.cloneDeep(data), dargInfo.current)
-      const _data = setRowByKey(_.cloneDeep(restData), dargInfo.current)
+      const restData = deleteRowByKey(cloneArray(data), dargInfo.current)
+      const _data = setRowByKey(cloneArray(restData), dargInfo.current)
       dargInfo.current = {}
       onDropEnd && onDropEnd(rowData, dropRowData, _data)
       setData(_data)
@@ -143,7 +143,7 @@ const Table = ({
   const firstRowRef = useRef(null)
   // 处理拉平数据
   useEffect(() => {
-    let _columns = _.cloneDeep(dataSource ? serverTableConfig.columns || [] : propsColumns)
+    let _columns = cloneArray(dataSource ? serverTableConfig.columns || [] : propsColumns)
     const _flattedColumns = flatTreeData(_columns)
     const leftFixedColumn =
       freezeColumn || (typeof fixedToColumn === 'string' ? fixedToColumn : fixedToColumn && fixedToColumn.left)
@@ -167,7 +167,7 @@ const Table = ({
       _columns[index] = currentItem
     })
     // 右侧
-    const rightCloumns = _.cloneDeep(_columns.slice(rightFixedIndex || _flattedColumns.length).reverse())
+    const rightCloumns = cloneArray(_columns.slice(rightFixedIndex || _flattedColumns.length).reverse())
     if (rightFixedIndex) {
       rightCloumns.forEach((currentItem, index) => {
         const _item = parseFixedcolumns(
