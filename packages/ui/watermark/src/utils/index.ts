@@ -15,7 +15,7 @@ interface OptionsInterface {
   isAutoWrap: boolean // 文字是否自动换行
   textOverflowEffect?: string // 当isAutoWrap 为 false 时，文本长度超出画布长度时的处理方式：  zoom - 缩小文字   cut - 截断文字
   textBaseline: CanvasTextBaseline
-  density?: string
+  density?: 'default' | 'low' | 'high'
   opacity?: number
   width: number
   height: number
@@ -29,7 +29,7 @@ const parseTextData = (
 ): string[] => {
   let content = []
   const lines: string[] = []
-  if (texts instanceof Array) {
+  if (Array.isArray(texts)) {
     content = texts
   } else if (typeof texts === 'string') {
     content.push(texts)
@@ -62,6 +62,7 @@ const drawText = (ctx: CanvasRenderingContext2D, options: OptionsInterface) => {
   let x = 0
   const y = 16
   let _w = width
+  // canvas 文本基线是悬挂基线
   ctx.textBaseline = 'hanging'
   /**
    * LOGO 固定宽高： 32 * 32

@@ -1,9 +1,11 @@
 import React, { useEffect, forwardRef, useState } from 'react'
-import Portal from '../../portal'
+import Portal from '@hi-ui/portal'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { WatermarkGenerator } from './utils'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useMergeRefs } from '@hi-ui/use-merge-refs'
+
 const _role = 'watermark'
 export const _prefix = getPrefixCls(_role)
 
@@ -39,10 +41,12 @@ export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((prop
     }
   }, [logo, density, opacity, content, zIndex, waterMarkElement])
 
-  const renderWatermark = () => {
-    return (
+  const Wrapper = container ? Portal : React.Fragment
+
+  return (
+    <Wrapper container={container}>
       <div
-        ref={setWaterMarkElement}
+        ref={useMergeRefs(setWaterMarkElement, ref)}
         role={role}
         className={cls}
         style={{
@@ -53,33 +57,11 @@ export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((prop
       >
         {children}
       </div>
-    )
-  }
-
-  return (
-    <>
-      {container ? <Portal container={container}>{renderWatermark()}</Portal> : renderWatermark()}
-    </>
+    </Wrapper>
   )
 })
 
 export interface WatermarkProps extends HiBaseHTMLProps<'div'> {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
   /**
    * 水印挂载的容器
    */
@@ -91,7 +73,7 @@ export interface WatermarkProps extends HiBaseHTMLProps<'div'> {
   /**
    * 水印间距，调节疏密程度
    */
-  density?: string
+  density?: 'default' | 'low' | 'high'
   /**
    * 水印透明度
    */
@@ -104,10 +86,6 @@ export interface WatermarkProps extends HiBaseHTMLProps<'div'> {
    * 是否允许拷贝
    */
   allowCopy?: boolean
-  /**
-   * React.Children
-   */
-  children?: React.ReactNode
   /**
    * 水印层级
    */
