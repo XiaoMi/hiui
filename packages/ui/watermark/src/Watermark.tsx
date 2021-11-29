@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, forwardRef } from 'react'
+import Portal from '../../portal'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { WatermarkGenerator } from './utils'
 import { __DEV__ } from '@hi-ui/env'
@@ -38,19 +39,27 @@ export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((prop
     }
   }, [logo, density, opacity, content, zIndex, container])
 
+  const renderWatermark = () => {
+    return (
+      <div
+        ref={waterMarkerRef}
+        role={role}
+        className={cls}
+        style={{
+          ...style,
+          userSelect: allowCopy ? 'text' : 'none',
+        }}
+        {...rest}
+      >
+        {children}
+      </div>
+    )
+  }
+
   return (
-    <div
-      ref={waterMarkerRef}
-      role={role}
-      className={cls}
-      style={{
-        ...style,
-        userSelect: allowCopy ? 'text' : 'none',
-      }}
-      {...rest}
-    >
-      {children}
-    </div>
+    <>
+      {container ? <Portal container={container}>{renderWatermark()}</Portal> : renderWatermark()}
+    </>
   )
 })
 
