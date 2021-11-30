@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "@hi-ui/core-css": "^2.0.1",
+    "@hi-ui/tree-utils": "^4.0.0-alpha.3",
     "@hi-ui/use-latest": "~4.0.0-alpha.2",
     "@hi-ui/use-uncontrolled-state": "~4.0.0-alpha.5",
     "async-validator": "^3.3.0",

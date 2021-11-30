@@ -23,7 +23,11 @@ const CustomFilter = ({ columnData }) => {
   }
   return (
     <div className={prefix}>
-      <div className={`${prefix}-icon`} ref={popperAttachEle} onClick={() => setFilterDropdownVisible(true)}>
+      <div
+        className={`${prefix}-icon`}
+        ref={popperAttachEle}
+        onClick={filterDropdown ? () => setFilterDropdownVisible(true) : undefined}
+      >
         {filterIcon}
       </div>
       <Popper

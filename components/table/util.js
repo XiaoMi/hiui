@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { cloneTree } from '@hi-ui/tree-utils'
 
 // 将树状数据拍平
 export const flatTreeData = (data = [], flattedData = [], rootIndex) => {
@@ -231,3 +232,5 @@ export const deleteRowByKey = (data, dragInfo) => {
   })
   return data
 }
+
+export const cloneArray = (arr) => (Array.isArray(arr) ? cloneTree(arr) : [])

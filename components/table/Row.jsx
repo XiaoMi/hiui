@@ -2,13 +2,13 @@ import React, { useState, useContext, useEffect, useCallback } from 'react'
 import Cell from './Cell'
 import TableContext from './context'
 import classNames from 'classnames'
-import _ from 'lodash'
 import Checkbox from '../checkbox'
 import Loading from '../loading'
 import Icon from '../icon'
-import { flatTreeData, setDepth } from './util'
+import { cloneArray, flatTreeData, setDepth } from './util'
 import IconLoading from './LoadingIcon'
 import Expandcol from './Expandcol'
+
 const Row = ({
   rowData,
   allRowData,
@@ -53,7 +53,7 @@ const Row = ({
     onDragStart,
     dargInfo
   } = useContext(TableContext)
-  const _columns = _.cloneDeep(columns)
+  const _columns = cloneArray(columns)
   const depthArray = []
   setDepth(_columns, 0, depthArray)
   const rowColumns = flatTreeData(_columns).filter((col) => col.isLast)
