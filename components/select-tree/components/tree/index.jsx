@@ -26,6 +26,7 @@ const Tree = ({
   emptyContent,
   searchMode,
   searchValue,
+  filterOption,
   fieldNames
 }) => {
   return (
@@ -46,7 +47,8 @@ const Tree = ({
         isRemoteLoadData,
         activeId,
         searchMode,
-        searchValue
+        searchValue,
+        filterOption
       }}
     >
       <div className={`${PREFIX}`}>

@@ -60,8 +60,14 @@ const SelectTree = ({
   emptyContent,
   disabled = false,
   bordered = true,
-  fieldNames = {}
+  fieldNames = {},
+  filterOption
 }) => {
+  const isCustomFilter = typeof filterOption === 'function'
+  if (isCustomFilter) {
+    searchMode = ''
+  }
+
   setFieldNames(fieldNames || {})
   const [isFocus, setIsFocus] = useState(false)
   const placeholder = propsPlaceholder || localeDatas.selectTree.placeholder
@@ -221,11 +227,11 @@ const SelectTree = ({
   }, [])
   // 过滤方法
   const searchTreeNode = (val) => {
+    let _keyword = val
     const matchNodes = []
     const _data = _.cloneDeep(flattenData)
     if (searchMode === 'highlight') {
       const filterArr = _data.map((node) => {
-        let _keyword = val
         _keyword = val.includes('[') ? _keyword.replace(/\[/gi, '\\[') : _keyword
         _keyword = val.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
         _keyword = val.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
@@ -240,6 +246,15 @@ const SelectTree = ({
       setFlattenData(filterArr)
       let matchNodesSet = []
       matchNodes.forEach((mn) => {
+        matchNodesSet.push(mn[transKeys(fieldNames, 'id')])
+        matchNodesSet = matchNodesSet.concat(mn.ancestors || [])
+      })
+      matchNodesSet = _.uniq(matchNodesSet)
+      setExpandIds(matchNodesSet)
+    } else if (searchMode === '' && isCustomFilter) {
+      // filterOption 模式展开全部
+      let matchNodesSet = []
+      _data.forEach((mn) => {
         matchNodesSet.push(mn[transKeys(fieldNames, 'id')])
         matchNodesSet = matchNodesSet.concat(mn.ancestors || [])
       })
@@ -444,7 +459,7 @@ const SelectTree = ({
   }
   const debouncedFilterItems = _.debounce(changeEvents, 300)
 
-  const searchable = searchMode === 'filter' || searchMode === 'highlight'
+  const searchable = searchMode === 'filter' || searchMode === 'highlight' || isCustomFilter
   // 按键操作
   const handleKeyDown = useCallback(
     (evt) => {
@@ -655,6 +670,7 @@ const SelectTree = ({
                   emptyContent={emptyContent}
                   isRemoteLoadData={!!dataSource}
                   onCheck={checkedEvents}
+                  filterOption={filterOption}
                 />
               )}
             </div>

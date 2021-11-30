@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import SelectTree from '../../../components/select-tree'
 const prefix = 'tree-select-filter'
-const rightOptions = ['高亮显示', '实时过滤']
+const rightOptions = ['高亮显示', '实时过滤', '自定义过滤']
 const desc = '通过搜索框定位目标数据'
 const defaultStr = `constructor () {
   super()
@@ -115,6 +115,49 @@ class Demo extends React.Component {
       }
     }`,
     opt: ['实时过滤']
+  },
+  {
+    code: `import React from 'react'
+    import SelectTree from '@hi-ui/hiui/es/select-tree'\n
+    class Demo extends React.Component {
+      ${defaultStr}
+
+      render () {
+        const { singleList } = this.state
+        return (
+          <SelectTree
+            filterOption={(keyword, item) => {
+              console.log(keyword, item)
+
+              const match = (node) => typeof node.title === 'string' && node.title.indexOf(keyword) !== -1
+
+              const matchUp = (node) => {
+                let found = match(node)
+                const { children } = node
+
+                if (children && !found) {
+                  found = children.some((item) => matchUp(item))
+                }
+
+                return found
+              }
+
+              return matchUp(item)
+            }}
+            onChange={(val)=>{
+              console.log(val)
+              this.setState({
+                value:val
+              })
+            }}
+            type='multiple'
+            value={this.state.value}
+            data={singleList}
+          />
+        )
+      }
+    }`,
+    opt: ['自定义过滤']
   }
 ]
 const DemoType = () => (
