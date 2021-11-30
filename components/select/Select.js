@@ -374,28 +374,40 @@ const InternalSelect = (props) => {
 
   const remoteSearch = useCallback(
     (keyword) => {
-      const _dataSource = typeof dataSource === 'function' ? dataSource(keyword) : dataSource
-      if (Array.isArray(_dataSource)) {
-        setDropdownItems(_dataSource)
+      if (typeof dataSource === 'function') {
+        const resultMayBePromise = dataSource(keyword)
+
+        // eslint-disable-next-line eqeqeq
+        if (resultMayBePromise == undefined) {
+          // nothing todo
+        } else if (resultMayBePromise.toString() === '[object Promise]') {
+          // 处理promise函数
+          setLoading(true)
+          resultMayBePromise
+            .then((res) => {
+              setLoading(false)
+              // eslint-disable-next-line eqeqeq
+              if (res == undefined) {
+                // nothing todo
+              } else {
+                setDropdownItems(Array.isArray(res) ? res : [])
+              }
+            })
+            .catch(() => {
+              setLoading(false)
+              setDropdownItems([])
+            })
+        } else {
+          setDropdownItems(Array.isArray(resultMayBePromise) ? resultMayBePromise : [])
+        }
         return
       }
-      // 处理promise函数
-      if (_dataSource.toString() === '[object Promise]') {
-        setLoading(true)
-        _dataSource.then(
-          (res) => {
-            setLoading(false)
-            setDropdownItems(Array.isArray(res) ? res : [])
-          },
-          () => {
-            setLoading(false)
-            setDropdownItems([])
-          }
-        )
-        return
+
+      // 支持传入对象
+      if (dataSource) {
+        // 调用接口
+        HiRequestSearch(dataSource, keyword)
       }
-      // 调用接口
-      HiRequestSearch(_dataSource, keyword)
     },
     [dataSource, keyword]
   )
