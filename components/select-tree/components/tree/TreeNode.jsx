@@ -37,7 +37,8 @@ const TreeNode = ({ data, flttenData, fieldNames }) => {
     isRemoteLoadData,
     activeId,
     searchMode,
-    searchValue
+    searchValue,
+    filterOption
   } = useContext(TreeContext)
   const treeNodeRef = useRef(null)
 
@@ -103,7 +104,14 @@ const TreeNode = ({ data, flttenData, fieldNames }) => {
         const { disabled, isLeaf } = node
         const childrenNodes = getChildrenNodes(node, flttenData)
         const expand = expandIds.includes(node[transKeys(fieldNames, 'id')])
-        const needFilter = searchMode === 'filter' ? !!matchAllDataFilterKey(node, searchValue) : true
+        let needFilter = true
+
+        if (searchMode === 'filter') {
+          needFilter = !!matchAllDataFilterKey(node, searchValue)
+        } else if (typeof filterOption === 'function') {
+          needFilter = filterOption(searchValue, node)
+        }
+
         return (
           <React.Fragment key={index}>
             {needFilter ? (
