@@ -5,6 +5,7 @@ import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { mergeRefs } from '@hi-ui/react-utils'
 import { useRefsOutsideClick } from '@hi-ui/use-outside-click'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
+import { useLazyRender } from '@hi-ui/use-lazy-render'
 
 const DEFAULT_MODIFIERS = [] as []
 
@@ -12,7 +13,7 @@ export const usePopper = ({
   modifiers: customModifiers = DEFAULT_MODIFIERS,
   strategy = 'absolute',
   placement = 'bottom-start',
-  zIndex = 1,
+  zIndex = 1060,
   crossGap = 0,
   gutterGap = 8,
   arrowPadding = 12,
@@ -26,6 +27,8 @@ export const usePopper = ({
   attachEl: attachElement,
   onClose,
   onOutsideClick,
+  preload = false,
+  unmountOnClose = true,
 }: UsePopperProps) => {
   const nonInteractive = !visible
 
@@ -180,6 +183,8 @@ export const usePopper = ({
     [closeOnEsc, onCloseLatest]
   )
 
+  const shouldRenderPopper = useLazyRender({ visible, preload, unmountOnExit: unmountOnClose })
+
   const getPopperProps = useCallback(
     (popperProps = {}, ref = null) => {
       const { tabIndex = -1, onKeyDown, style } = popperProps
@@ -191,6 +196,8 @@ export const usePopper = ({
         ref: mergeRefs(setPopperElement, ref),
         style: {
           outline: 'none',
+          visibility: visible ? 'visible' : 'hidden',
+          'pointer-events': visible ? 'all' : 'none',
           ...style,
           ...styles.popper,
         },
@@ -198,7 +205,7 @@ export const usePopper = ({
         onKeyDown: mockDefaultHandlers(onKeyDown, handleKeyDown),
       }
     },
-    [state, handleKeyDown]
+    [state, handleKeyDown, visible]
   )
 
   const getArrowProps = useCallback(
@@ -219,6 +226,7 @@ export const usePopper = ({
   )
 
   return {
+    shouldRenderPopper,
     styles: state.styles,
     attributes: state.attributes,
     update() {
@@ -315,6 +323,14 @@ export interface UsePopperProps {
    * 外界元素点击数触发
    */
   onOutsideClick?: (evt: React.SyntheticEvent) => void
+  /**
+   * 开启 popper 预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
+   */
+  preload?: boolean
+  /**
+   * 开启 popper 关闭时销毁，用于性能优化，优先级大于 `preload`
+   */
+  unmountOnClose?: boolean
 }
 
 export type UsePopperReturn = ReturnType<typeof usePopper>

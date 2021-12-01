@@ -9,7 +9,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="Tooltip-basic__wrap">
-        <Tooltip content={content} trigger="click">
+        <Tooltip content={content} trigger="hover">
           <Button>trigger</Button>
         </Tooltip>
       </div>

@@ -38,6 +38,7 @@ export function useToggle(initialState: boolean | (() => boolean) = false) {
 
 interface UseUncontrolledToggleProps {
   defaultVisible?: boolean | (() => boolean)
+  disabled?: boolean
   visible?: boolean
   onClose?: () => void
   onOpen?: () => void
@@ -53,17 +54,12 @@ export function useUncontrolledToggle({
   onClose,
   onOpen,
   isEqual,
+  disabled = false,
 }: UseUncontrolledToggleProps) {
-  const onCloseLatest = useLatestCallback(onClose)
-  const onOpenLatest = useLatestCallback(onOpen)
-
-  const onVisibleChange = useCallback(
-    (nextVisible: boolean) => {
-      const callback = nextVisible ? onOpenLatest : onCloseLatest
-      callback()
-    },
-    [onCloseLatest, onOpenLatest]
-  )
+  const onVisibleChange = useLatestCallback((nextVisible: boolean) => {
+    const callback = nextVisible ? onOpen : onClose
+    callback?.()
+  })
 
   const [bool, setBool] = useUncontrolledState(
     defaultVisible,
@@ -72,20 +68,28 @@ export function useUncontrolledToggle({
     isEqual
   )
 
+  const proxySetBool: typeof setBool = useCallback(
+    (stateOrFunction) => {
+      if (disabled) return
+      setBool(stateOrFunction)
+    },
+    [setBool, disabled]
+  )
+
   const toggle = useMemo(
     () => ({
-      set: setBool,
+      set: proxySetBool,
       on: () => {
-        setBool(true)
+        proxySetBool(true)
       },
       off: () => {
-        setBool(false)
+        proxySetBool(false)
       },
       not: () => {
-        setBool((prev) => !prev)
+        proxySetBool((prev) => !prev)
       },
     }),
-    [setBool]
+    [proxySetBool]
   )
 
   return [bool, toggle] as const

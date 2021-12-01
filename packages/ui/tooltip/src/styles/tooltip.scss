@@ -3,5 +3,180 @@
 $prefix: '#{$component-prefix}-tooltip' !default;
 
 .#{$prefix} {
+  $content-color: use-color('gray', 700);
+  $arrow-color: use-color('gray', 700);
+  $font-color: use-color-static('white');
 
+  box-sizing: border-box;
+  color: $font-color;
+  border-radius: use-border-radius('normal');
+  box-shadow: 0 1px 12px 0 rgba(0, 0, 0, 0.12);
+
+  // animation
+  transition-timing-function: use-motion-bezier('normal');
+  transition-duration: use-motion-duration('normal');
+  transition-property: opacity, transform;
+  // 该变量通过 JS 注入👇🏻
+  transform-origin: var(--popper-transform-origin);
+  opacity: 0;
+  transform: scale(0);
+  will-change: transform;
+  background-color: $content-color;
+  border-color: $content-color;
+
+  &--motion {
+    &-enter {
+      // .#{$prefix}__content {
+      opacity: 0;
+      transform: scale(0);
+      // }
+    }
+
+    &-enter-active {
+      // .#{$prefix}__content {
+      opacity: 1;
+      transform: scale(1);
+      // }
+    }
+
+    &-enter-done {
+      // .#{$prefix}__content {
+      opacity: 1;
+      transform: scale(1);
+      // }
+    }
+
+    &-exit {
+      // .#{$prefix}__content {
+      opacity: 1;
+      transform: scale(1);
+      // }
+    }
+
+    &-exit-active {
+      // .#{$prefix}__content {
+      opacity: 1;
+      transform: scale(0);
+      // }
+    }
+
+    &-exit-done {
+      // 即使保留dom，但是需要 hidden 不可点击
+      visibility: hidden;
+
+      // .#{$prefix}__content {
+      opacity: 0;
+      // }
+    }
+  }
+
+  &__arrow {
+    z-index: 1;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-color: transparent;
+      border-width: 6px;
+    }
+
+    &::after {
+      filter: blur(8px);
+      z-index: -1;
+    }
+  }
+
+  &__popper {
+    &[data-popper-placement^=top] {
+      .#{$prefix}__arrow {
+        bottom: 0;
+
+        &::before {
+          left: 0;
+          transform: translateX(-6px);
+          top: -1px;
+          border-top-color: $arrow-color;
+        }
+
+        &::after {
+          left: 0;
+          transform: translateX(-6px);
+          top: 1px;
+          border-top-color: rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+
+    &[data-popper-placement^=bottom] {
+      .#{$prefix}__arrow {
+        &::before {
+          left: 0;
+          transform: translateX(-6px);
+          bottom: -1px;
+          border-bottom-color: $arrow-color;
+        }
+
+        &::after {
+          left: 0;
+          transform: translateX(-6px);
+          bottom: 1px;
+          border-bottom-color: rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+
+    &[data-popper-placement^=left] {
+      .#{$prefix}__arrow {
+        right: 0;
+
+        &::before {
+          top: 0;
+          transform: translateY(-50%);
+          left: -1px;
+          border-left-color: $arrow-color;
+        }
+
+        &::after {
+          top: 0;
+          transform: translateY(-50%);
+          left: 1px;
+          border-left-color: rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+
+    &[data-popper-placement^=right] {
+      .#{$prefix}__arrow {
+        &::before {
+          top: 0;
+          transform: translateY(-50%);
+          right: -1px;
+          border-right-color: $arrow-color;
+        }
+
+        &::after {
+          top: 0;
+          transform: translateY(-50%);
+          right: 1px;
+          border-right-color: rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+  }
+
+  &__content {
+    position: relative;
+    box-sizing: border-box;
+    // background-color: $content-color;
+    // background-color: inherit;
+    color: inherit;
+    // 为了保证 arrow 三角形可以正常展示
+    min-width: 36px;
+    min-height: 36px;
+  }
 }

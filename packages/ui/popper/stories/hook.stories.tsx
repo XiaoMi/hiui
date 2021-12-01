@@ -5,11 +5,13 @@ import Button from '@hi-ui/button'
 export const Hook = () => {
   const [btnEl, setBtnEl] = React.useState(null)
   const [visible, setVisible] = React.useState(false)
-  const { getPopperProps } = usePopper({
+  const { shouldRenderPopper, getPopperProps } = usePopper({
     attachEl: btnEl,
     visible,
     placement: 'bottom-end',
     onClose: () => setVisible(false),
+    unmountOnClose: false,
+    // preload: true,
   })
 
   return (
@@ -19,7 +21,7 @@ export const Hook = () => {
         <Button ref={setBtnEl} onClick={() => setVisible((prev) => !prev)}>
           Open
         </Button>
-        {visible ? (
+        {shouldRenderPopper ? (
           <div {...getPopperProps()}>The content of the Popper.The content of the Popper.</div>
         ) : null}
       </div>

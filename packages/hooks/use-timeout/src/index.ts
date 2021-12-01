@@ -10,6 +10,7 @@ export const useTimeout = (callback: (...args: any[]) => any, timeoutDelayMs: nu
 
   const clear = useCallback(() => {
     window.clearTimeout(timerRef.current)
+    timerRef.current = undefined
   }, [])
 
   const start = useCallback(() => {
