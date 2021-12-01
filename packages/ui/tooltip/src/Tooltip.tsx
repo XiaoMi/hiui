@@ -32,6 +32,8 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       portal,
       onOpen,
       onClose,
+      preload = false,
+      unmountOnClose = true,
       ...rest
     },
     ref
@@ -54,13 +56,7 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       }
     }, [transitionVisible, transitionVisibleAction])
 
-    const {
-      // shouldRenderPopper,
-      getTriggerProps,
-      getPopperProps,
-      getTooltipProps,
-      getArrowProps,
-    } = useTooltip({
+    const { getTriggerProps, getPopperProps, getTooltipProps, getArrowProps } = useTooltip({
       ...rest,
       visible: !transitionExisted,
       onOpen: transitionVisibleAction.on,
@@ -70,6 +66,7 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
     const cls = cx(prefixCls, className)
 
     if (!isValidElement(children)) {
+      // TODO: 如果是字符串是否需要包裹一个 span，提升用户开发体验
       if (__DEV__) {
         console.warn('WARNING (Tooltip): The children should be an React.Element.')
       }
@@ -83,21 +80,24 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
           // @ts-ignore
           getTriggerProps(children.props, children.ref)
         )}
+
         <Portal {...portal}>
-          {/* 如何在 close 时销毁 DOM，避免无用 dom 堆积 */}
-          <div className={`${prefixCls}__popper`} {...getPopperProps()}>
-            <CSSTransition
-              classNames={`${prefixCls}--motion`}
-              timeout={201}
-              in={transitionVisible}
-              onExited={onExited}
-            >
+          <CSSTransition
+            classNames={`${prefixCls}--motion`}
+            appear
+            timeout={201}
+            in={transitionVisible}
+            mountOnEnter={!preload}
+            unmountOnExit={unmountOnClose}
+            onExited={onExited}
+          >
+            <div className={`${prefixCls}__popper`} {...getPopperProps()}>
               <div ref={ref} className={cls} {...getTooltipProps()}>
                 {arrow ? <div className={`${prefixCls}__arrow`} {...getArrowProps()} /> : null}
                 <div className={`${prefixCls}__content`}>{content}</div>
               </div>
-            </CSSTransition>
-          </div>
+            </div>
+          </CSSTransition>
         </Portal>
       </>
     )
@@ -117,6 +117,14 @@ export interface TooltipProps extends HiBaseHTMLProps<'div'>, UseTooltipProps {
    * 传送门 props
    */
   portal?: PortalProps
+  /**
+   * 开启预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
+   */
+  preload?: boolean
+  /**
+   * 开启关闭时销毁，用于性能优化，优先级大于 `preload`
+   */
+  unmountOnClose?: boolean
 }
 
 if (__DEV__) {
