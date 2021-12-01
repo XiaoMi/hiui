@@ -11,7 +11,6 @@ export const useTagInputMock = <T>(
   ref: React.MutableRefObject<HTMLDivElement | null>
 ) => {
   const inputWidth = useResizeWidth(ref)
-  console.log(inputWidth)
 
   const tagMaxWidth = inputWidth ? inputWidth - (LEFT_SPACE_WIDTH + 1) : undefined
 

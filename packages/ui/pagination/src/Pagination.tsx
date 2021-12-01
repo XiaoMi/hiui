@@ -1,45 +1,76 @@
-import React, { forwardRef, useCallback, useEffect, useState } from 'react'
+import React, { forwardRef, useCallback, useContext, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { PagerButton } from './PagerButton'
 import { Pager } from './Pager'
 import { calculatePage } from './util'
+import { PageOption } from './PageOption'
+import { LocaleContext } from '@hi-ui/locale-context'
+import { PageJumper } from './PageJumper'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
 
 /**
  * TODO: What is Pagination
  */
-export const Pagination = forwardRef<HTMLUListElement | null, PaginationProps>(
+export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
   (
     {
       prefixCls = _prefix,
       role = _role,
       onChange,
       className,
-      current,
-      defaultCurrent,
+      current: currentProp,
+      defaultCurrent = 1,
+      pageSizeOptions,
       pageSize = 10,
       max = 2,
       total,
+      onPageSizeChange,
+      showTotal,
+      showJumper,
       type = 'default',
     },
     ref
   ) => {
-    const [currentPage, updateCurrentPage] = useState(current || defaultCurrent || 1)
-    useEffect(() => {
-      if (current && current !== currentPage) {
-        updateCurrentPage(current)
+    const { pagination } = useContext(LocaleContext)
+
+    const _pageSizeOptions = useMemo(() => {
+      if (pageSizeOptions) {
+        return pageSizeOptions.map((opt) => ({
+          id: opt,
+          title: `${opt} ${pagination.item} / ${pagination.itemPerPage}`,
+        }))
       }
-    }, [current, currentPage])
+    }, [pageSizeOptions, pagination])
+
+    const [current, trySetCurrent] = useUncontrolledState(defaultCurrent, currentProp, onChange)
+
+    const calculatePageCount = useCallback((total: number, pageSize: number) => {
+      return Math.ceil(total / pageSize)
+    }, [])
+
+    const _onPageSizeChange = useCallback(
+      (pageSize: number) => {
+        const pages = calculatePageCount(total, pageSize)
+        const newCurrent = current > pages ? pages : current
+        if (onPageSizeChange) {
+          onPageSizeChange(pageSize, newCurrent)
+          trySetCurrent(newCurrent)
+        }
+      },
+      [total, calculatePageCount, onPageSizeChange, current, trySetCurrent]
+    )
 
     const onClick = useCallback(
       (page) => {
         if (onChange) {
-          onChange(page, currentPage, pageSize)
+          onChange(page, current, pageSize)
         }
       },
-      [onChange, currentPage, pageSize]
+      [onChange, current, pageSize]
     )
 
     const cls = cx(prefixCls, className)
@@ -51,27 +82,21 @@ export const Pagination = forwardRef<HTMLUListElement | null, PaginationProps>(
       if (max * 2 + 1 + 2 >= maxPage) {
         leftBuffer = 1
         rightBuffer = maxPage
-      } else if (maxPage - currentPage <= max) {
+      } else if (maxPage - current <= max) {
         rightBuffer = maxPage
         leftBuffer = maxPage - 2 * max - 1
         leftBuffer = leftBuffer <= 1 ? 1 : leftBuffer
-      } else if (currentPage - max <= 1) {
+      } else if (current - max <= 1) {
         leftBuffer = 1
         rightBuffer = 2 * max + leftBuffer + 1
         rightBuffer = rightBuffer >= maxPage ? maxPage : rightBuffer
       } else {
-        leftBuffer = currentPage - max
-        rightBuffer = currentPage + max
+        leftBuffer = current - max
+        rightBuffer = current + max
       }
       if (leftBuffer !== 1) {
         pagers.push(
-          <Pager
-            page={1}
-            active={currentPage === 1}
-            key={1}
-            onClick={onClick}
-            prefixCls={prefixCls}
-          />
+          <Pager page={1} active={current === 1} key={1} onClick={onClick} prefixCls={prefixCls} />
         )
       }
       if (leftBuffer > 2) {
@@ -81,7 +106,7 @@ export const Pagination = forwardRef<HTMLUListElement | null, PaginationProps>(
         pagers.push(
           <Pager
             page={index}
-            active={currentPage === index}
+            active={current === index}
             key={index}
             onClick={onClick}
             prefixCls={prefixCls}
@@ -95,7 +120,7 @@ export const Pagination = forwardRef<HTMLUListElement | null, PaginationProps>(
         pagers.push(
           <Pager
             page={maxPage}
-            active={currentPage === maxPage}
+            active={current === maxPage}
             key={maxPage}
             onClick={onClick}
             prefixCls={prefixCls}
@@ -103,14 +128,35 @@ export const Pagination = forwardRef<HTMLUListElement | null, PaginationProps>(
         )
       }
       return pagers
-    }, [currentPage, maxPage, max, onClick, prefixCls])
-
+    }, [current, maxPage, max, onClick, prefixCls])
     return (
-      <ul ref={ref} role={role} className={cls}>
-        <PagerButton type="prev" prefixCls={prefixCls} onClick={onClick} current={currentPage} />
-        {renderPagers()}
-        <PagerButton type="next" prefixCls={prefixCls} onClick={onClick} current={currentPage} />
-      </ul>
+      <div ref={ref} role={role} className={cls}>
+        {showTotal ? (
+          <div
+            className={`${prefixCls}__total`}
+          >{`${pagination.total[0]} ${total} ${pagination.total[1]}`}</div>
+        ) : null}
+        {pageSizeOptions ? (
+          <PageOption
+            pageSize={pageSize}
+            pageSizeOptions={_pageSizeOptions as { id: number; title: string }[]}
+            onPageSizeChange={_onPageSizeChange}
+          />
+        ) : null}
+        <ul className={`${prefixCls}__list`}>
+          <PagerButton type="prev" prefixCls={prefixCls} onClick={onClick} current={current} />
+          {renderPagers()}
+          <PagerButton type="next" prefixCls={prefixCls} onClick={onClick} current={current} />
+        </ul>
+        {showJumper ? (
+          <PageJumper
+            prefixCls={prefixCls}
+            pageText={[pagination.goto, pagination.page]}
+            onJump={trySetCurrent}
+            maxJump={calculatePageCount(total, pageSize)}
+          />
+        ) : null}
+      </div>
     )
   }
 )
@@ -175,6 +221,7 @@ export interface PaginationProps {
    * 	指定每页可以显示多少条
    */
   pageSizeOptions?: number[]
+
   /**
    * 	快速跳转时触发
    */

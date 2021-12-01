@@ -14,7 +14,6 @@ export const THeader = forwardRef<HTMLDivElement | null, THeaderProps>(
   ({ prefixCls = _prefix, columns, fixedColWidth, rowSelection }, ref) => {
     // TODO: 需要增加一下错误提示，比如rowSelection类型不合法等等
     const cls = cx(`${prefixCls}__header`)
-    console.log('>>>>>>', fixedColWidth, fixedColWidth[1])
 
     return (
       <thead className={cls}>

@@ -77,25 +77,35 @@ $text-size-base-map: (
     font-size: 12px,
     line-height: 20px
   ),
+  xxl: (
+    // 20 / 28
+    font-size: 1.25rem,
+    line-height: 1.75rem
+  ),
   xl: (
-    font-size: 1.125rem, // 18px
-    line-height: 26px
+    // 18 / 26
+    font-size: 1.125rem,
+    line-height: 1.625rem
   ),
   lg: (
-    font-size: 1rem, // 16px
-    line-height: 24px
+    // 16 / 24
+    font-size: 1rem,
+    line-height: 1.5rem
   ),
   normal: (
-    font-size: 0.875rem, // 14px
-    line-height: 22px
+    // 14 / 22
+    font-size: 0.875rem,
+    line-height: 1.375rem
   ),
   sm: (
-    font-size: 0.75rem, // 12px
-    line-height: 18px
+    // 12 / 18
+    font-size: 0.75rem,
+    line-height: 1.125rem
   ),
   xs: (
-    font-size: 11px, // 11px
-    line-height: 18px
+    // 11 / 18
+    font-size: 11px,
+    line-height: 1.125rem
   )
 ) !default;
 

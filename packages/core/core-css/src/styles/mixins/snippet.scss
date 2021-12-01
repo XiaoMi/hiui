@@ -1,0 +1,100 @@
+/// 全屏
+@mixin full-fill () {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/// 清除浮动
+@mixin clearfix () {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+    visibility: hidden;
+    font-size: 0;
+  }
+}
+
+/// 文本行溢出省略号策略
+/// @param {Number} $lines  - 显示的行数
+@mixin ellipsis($lines: false) {
+  @if $lines {
+    /* autoprefixer: ignore next */
+    display: -webkit-box !important; /* stylelint-disable-line */
+    -webkit-box-orient: vertical; /* stylelint-disable-line */
+    -moz-box-orient: vertical; /* stylelint-disable-line */
+    -webkit-line-clamp: $lines;
+    -moz-line-clamp: $lines;
+    word-break: break-word;
+    white-space: nowrap;
+  }
+
+  @else {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/// 绝对定位式居中策略
+@mixin absolute-center($vertical: true, $horizontal: true) {
+  @if $vertical {
+    top: 50%;
+
+    @if $horizontal {
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @else {
+      transform: translateY(-50%);
+    }
+  }
+
+  @else {
+    @if $horizontal {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/// 交互禁用
+@mixin disabled() {
+  cursor: not-allowed;
+  box-shadow: none;
+  pointer-events: none;
+  opacity: 0.4;
+
+  &:hover,
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+/// 隐藏文本内容
+@mixin hide-text() {
+  overflow: hidden;
+  text-indent: 100%;
+  white-space: nowrap;
+}
+
+/// 常用 flex
+@mixin flex($j: center, $a: center, $d: row, $f: flex) {
+  display: $f;
+  justify-content: $j;
+  align-items: $a;
+  flex-direction: $d;
+}
+
+/// 反转方向时适配
+@mixin rtl {
+  [data-direction='rtl'] & {
+    @content;
+  }
+}
