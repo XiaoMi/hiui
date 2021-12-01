@@ -377,28 +377,25 @@ const InternalSelect = (props) => {
       if (typeof dataSource === 'function') {
         const resultMayBePromise = dataSource(keyword)
 
-        // eslint-disable-next-line eqeqeq
-        if (resultMayBePromise == undefined) {
-          // nothing todo
-        } else if (resultMayBePromise.toString() === '[object Promise]') {
-          // 处理promise函数
-          setLoading(true)
-          resultMayBePromise
-            .then((res) => {
-              setLoading(false)
-              // eslint-disable-next-line eqeqeq
-              if (res == undefined) {
-                // nothing todo
-              } else {
-                setDropdownItems(Array.isArray(res) ? res : [])
-              }
-            })
-            .catch(() => {
-              setLoading(false)
-              setDropdownItems([])
-            })
-        } else {
-          setDropdownItems(Array.isArray(resultMayBePromise) ? resultMayBePromise : [])
+        if (resultMayBePromise !== undefined && resultMayBePromise !== null) {
+          if (resultMayBePromise.toString() === '[object Promise]') {
+            // 处理promise函数
+            setLoading(true)
+            resultMayBePromise
+              .then((res) => {
+                setLoading(false)
+
+                if (res !== undefined && res !== null) {
+                  setDropdownItems(Array.isArray(res) ? res : [])
+                }
+              })
+              .catch(() => {
+                setLoading(false)
+                setDropdownItems([])
+              })
+          } else {
+            setDropdownItems(Array.isArray(resultMayBePromise) ? resultMayBePromise : [])
+          }
         }
         return
       }
