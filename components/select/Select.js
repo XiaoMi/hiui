@@ -374,28 +374,37 @@ const InternalSelect = (props) => {
 
   const remoteSearch = useCallback(
     (keyword) => {
-      const _dataSource = typeof dataSource === 'function' ? dataSource(keyword) : dataSource
-      if (Array.isArray(_dataSource)) {
-        setDropdownItems(_dataSource)
-        return
-      }
-      // 处理promise函数
-      if (_dataSource.toString() === '[object Promise]') {
-        setLoading(true)
-        _dataSource.then(
-          (res) => {
-            setLoading(false)
-            setDropdownItems(Array.isArray(res) ? res : [])
-          },
-          () => {
-            setLoading(false)
-            setDropdownItems([])
+      if (typeof dataSource === 'function') {
+        const resultMayBePromise = dataSource(keyword)
+
+        if (resultMayBePromise !== undefined && resultMayBePromise !== null) {
+          if (resultMayBePromise.toString() === '[object Promise]') {
+            // 处理promise函数
+            setLoading(true)
+            resultMayBePromise
+              .then((res) => {
+                setLoading(false)
+
+                if (res !== undefined && res !== null) {
+                  setDropdownItems(Array.isArray(res) ? res : [])
+                }
+              })
+              .catch(() => {
+                setLoading(false)
+                setDropdownItems([])
+              })
+          } else {
+            setDropdownItems(Array.isArray(resultMayBePromise) ? resultMayBePromise : [])
           }
-        )
+        }
         return
       }
-      // 调用接口
-      HiRequestSearch(_dataSource, keyword)
+
+      // 支持传入对象
+      if (dataSource) {
+        // 调用接口
+        HiRequestSearch(dataSource, keyword)
+      }
     },
     [dataSource, keyword]
   )
