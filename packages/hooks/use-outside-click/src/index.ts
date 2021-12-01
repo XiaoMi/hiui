@@ -5,7 +5,7 @@ import { useLatestRef } from '@hi-ui/use-latest'
  * Handles the event of clicking outside of the wrapped component.
  */
 export const useOutsideClick = (
-  ref: React.RefObject<HTMLElement>,
+  ref: React.RefObject<Element>,
   callback?: (e: Event) => void,
   capture = true
 ) => {
@@ -17,7 +17,7 @@ export const useOutsideClick = (
 
       if (!ref.current) return
 
-      if (ref.current.contains(evt.target as HTMLElement)) return
+      if (ref.current.contains(evt.target as Element)) return
 
       callbackRef.current(evt)
     }
@@ -35,7 +35,7 @@ export const useOutsideClick = (
  * Handles the event of clicking outside of the wrapped components.
  */
 export const useRefsOutsideClick = (
-  refs: React.RefObject<HTMLElement>[],
+  refs: React.RefObject<Element>[],
   callback?: (e: Event) => void,
   capture = true
 ) => {
@@ -52,7 +52,7 @@ export const useRefsOutsideClick = (
         if (ref.current) {
           isEmptyRefs = false
 
-          if (ref.current.contains(evt.target as HTMLElement)) {
+          if (ref.current.contains(evt.target as Element)) {
             containedInRefs = true
             break
           }
@@ -74,6 +74,6 @@ export const useRefsOutsideClick = (
   }, [...refs, capture])
 }
 
-function getOwnerDocument(el?: HTMLElement | null) {
+function getOwnerDocument(el?: Element | null) {
   return (el instanceof Element && el.ownerDocument) || document
 }

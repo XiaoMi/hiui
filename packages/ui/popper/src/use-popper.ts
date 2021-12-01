@@ -1,28 +1,39 @@
-import React, { useRef, useState, useMemo, useLayoutEffect } from 'react'
+import React, { useRef, useState, useMemo, useLayoutEffect, useCallback } from 'react'
 import * as PopperJS from '@popperjs/core'
 import { createPopper } from '@popperjs/core'
-import { useLatestRef } from '@hi-ui/use-latest'
+import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
+import { mergeRefs } from '@hi-ui/react-utils'
+import { useRefsOutsideClick } from '@hi-ui/use-outside-click'
+import { mockDefaultHandlers } from '@hi-ui/dom-utils'
+import { useLazyRender } from '@hi-ui/use-lazy-render'
 
-const NOOP_ARRAY = [] as []
+const DEFAULT_MODIFIERS = [] as []
 
-export const usePopper = (props: UsePopperProps) => {
-  const {
-    targetElement,
-    popperElement,
-    arrowElement,
-    disabled = false,
-    modifiers: customModifiers = NOOP_ARRAY,
-    strategy = 'absolute',
-    placement = 'bottom-start',
-    zIndex = 1,
-    crossGap = 0,
-    gutterGap = 8,
-    arrowPadding = 12,
-    flip = true,
-    matchWidth = false,
-    eventListeners = true,
-    preventOverflow = true,
-  } = props
+export const usePopper = ({
+  modifiers: customModifiers = DEFAULT_MODIFIERS,
+  strategy = 'absolute',
+  placement = 'bottom-start',
+  zIndex = 1060,
+  crossGap = 0,
+  gutterGap = 8,
+  arrowPadding = 12,
+  flip = true,
+  matchWidth = false,
+  eventListeners = true,
+  preventOverflow = true,
+  closeOnEsc = true,
+  closeOnOutsideClick = true,
+  visible = false,
+  attachEl: attachElement,
+  onClose,
+  onOutsideClick,
+  preload = false,
+  unmountOnClose = true,
+}: UsePopperProps) => {
+  const nonInteractive = !visible
+
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null)
+  const [arrowElement, setArrowElement] = useState<HTMLElement | null>(null)
 
   const [state, setState] = useState<PopperState>(() => ({
     styles: {
@@ -129,10 +140,10 @@ export const usePopper = (props: UsePopperProps) => {
   }, [popperOptions])
 
   useLayoutEffect(() => {
-    if (disabled) return
-    if (!targetElement || !popperElement) return
+    if (nonInteractive) return
+    if (!attachElement || !popperElement) return
 
-    const instance = createPopper(targetElement, popperElement, popperOptionsRef.current)
+    const instance = createPopper(attachElement, popperElement, popperOptionsRef.current)
 
     instance.forceUpdate()
 
@@ -143,9 +154,79 @@ export const usePopper = (props: UsePopperProps) => {
       instance.destroy()
       instanceRef.current = null
     }
-  }, [disabled, targetElement, popperElement, popperOptionsRef])
+  }, [nonInteractive, attachElement, popperElement, popperOptionsRef])
+
+  const onCloseLatest = useLatestCallback(() => {
+    if (nonInteractive) return
+    onClose?.()
+  })
+
+  const popperElRef = useLatestRef(popperElement)
+  const targetElRef = useLatestRef(attachElement)
+
+  useRefsOutsideClick(
+    // @ts-ignore
+    [popperElRef, targetElRef],
+    mockDefaultHandlers(onOutsideClick, () => {
+      if (closeOnOutsideClick) {
+        onCloseLatest()
+      }
+    })
+  )
+
+  const handleKeyDown = useCallback(
+    (evt: React.KeyboardEvent) => {
+      if (closeOnEsc && evt.keyCode === 27) {
+        onCloseLatest()
+      }
+    },
+    [closeOnEsc, onCloseLatest]
+  )
+
+  const shouldRenderPopper = useLazyRender({ visible, preload, unmountOnExit: unmountOnClose })
+
+  const getPopperProps = useCallback(
+    (popperProps = {}, ref = null) => {
+      const { tabIndex = -1, onKeyDown, style } = popperProps
+      const { attributes, styles } = state
+
+      return {
+        ...popperProps,
+        ...attributes.popper,
+        ref: mergeRefs(setPopperElement, ref),
+        style: {
+          outline: 'none',
+          visibility: visible ? 'visible' : 'hidden',
+          'pointer-events': visible ? 'all' : 'none',
+          ...style,
+          ...styles.popper,
+        },
+        tabIndex,
+        onKeyDown: mockDefaultHandlers(onKeyDown, handleKeyDown),
+      }
+    },
+    [state, handleKeyDown, visible]
+  )
+
+  const getArrowProps = useCallback(
+    (arrowProps = {}, ref = null) => {
+      const { style } = arrowProps
+      const { styles } = state
+
+      return {
+        ...arrowProps,
+        style: {
+          ...style,
+          ...styles.arrow,
+        },
+        ref: mergeRefs(setArrowElement, ref),
+      }
+    },
+    [state]
+  )
 
   return {
+    shouldRenderPopper,
     styles: state.styles,
     attributes: state.attributes,
     update() {
@@ -154,6 +235,10 @@ export const usePopper = (props: UsePopperProps) => {
     forceUpdate() {
       instanceRef.current?.forceUpdate()
     },
+    popperElement,
+    arrowElement,
+    getPopperProps,
+    getArrowProps,
   }
 }
 
@@ -170,21 +255,13 @@ type PopperState = {
 
 export interface UsePopperProps {
   /**
-   * reference 目标元素
+   * 开启 popper 展示（受控）
    */
-  targetElement: Element | PopperJS.VirtualElement | null
+  visible: boolean
   /**
-   * popper 所在元素
+   * reference 目标元素，吸附跟随的节点
    */
-  popperElement: HTMLElement | null
-  /**
-   * arrow 所在元素
-   */
-  arrowElement?: HTMLElement | null
-  /**
-   * 是否禁用 popper
-   */
-  disabled?: boolean
+  attachEl: Element | PopperJS.VirtualElement | null
   /**
    * 设置基于 reference 元素的间隙偏移量
    */
@@ -226,10 +303,37 @@ export interface UsePopperProps {
    */
   strategy?: 'absolute' | 'fixed'
   /**
-   * 手动指定层级
+   * 手动指定 css 展示层级
    */
   zIndex?: number
+  /**
+   * 开启按键 Esc 时触发 onClose 回调
+   */
+  closeOnEsc?: boolean
+  /**
+   * 关闭 popper 时回调
+   */
+  onClose?: () => void
+  /**
+   * 开启点击外部时触发 onClose 回调
+   * TODO: 移除，使用失焦控制
+   */
+  closeOnOutsideClick?: boolean
+  /**
+   * 外界元素点击数触发
+   */
+  onOutsideClick?: (evt: React.SyntheticEvent) => void
+  /**
+   * 开启 popper 预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
+   */
+  preload?: boolean
+  /**
+   * 开启 popper 关闭时销毁，用于性能优化，优先级大于 `preload`
+   */
+  unmountOnClose?: boolean
 }
+
+export type UsePopperReturn = ReturnType<typeof usePopper>
 
 export const getMatchWidthModifier = (enabled: boolean): PopperJS.Modifier<'matchWidth', any> => {
   return {

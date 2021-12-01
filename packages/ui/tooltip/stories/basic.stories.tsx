@@ -6,9 +6,9 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="tooltip-basic__wrap">
-        <Tooltip title={'triggerPropsEvent'}>
-          <Button disabled>按钮</Button>
+      <div className="Tooltip-basic__wrap">
+        <Tooltip content="Tooltip Title" trigger="hover">
+          <Button>trigger</Button>
         </Tooltip>
       </div>
     </>

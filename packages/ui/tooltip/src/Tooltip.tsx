@@ -1,133 +1,130 @@
-import React, { useState, useCallback, useMemo } from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import React, {
+  cloneElement,
+  isValidElement,
+  forwardRef,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import Popper, { PopperProps } from '@hi-ui/popper'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useTooltip, UseTooltipProps } from './use-tooltip'
+import { CSSTransition } from 'react-transition-group'
+import { useUncontrolledToggle } from '@hi-ui/use-toggle'
+import Portal, { PortalProps } from '@hi-ui/portal'
 
 const _role = 'tooltip'
 const _prefix = getPrefixCls(_role)
 
-const tooltipInstance: Record<string, HTMLDivElement> = {}
-
-const open = (target: HTMLElement | null, tooltipProps: TooltipProps, key: string): void => {
-  const mountNode = document.createElement('div')
-  const { title, placement = 'top', prefixCls = _prefix, overlayClassName } = tooltipProps
-  const cls = cx(prefixCls, overlayClassName)
-  render(
-    <Popper className={cls} visible attachEl={target} placement={placement} arrow>
-      <div className={`${prefixCls}__content`}>{title}</div>
-    </Popper>,
-    mountNode
-  )
-  tooltipInstance[key] = mountNode
-}
-const close = (key: string): void => {
-  const instance = tooltipInstance[key]
-  if (instance) {
-    unmountComponentAtNode(instance)
-    instance.parentNode?.removeChild(instance)
-  }
-}
-
 /**
  * TODO: What is Tooltip
  */
-
-// TODO:需要考虑 children 禁用的情况
-// TODO:需要考虑 children 为数组的情况
-// TODO:考虑 delay 消失的情况
-// TODO: 目前 popper 有遮照组件的问题
-const TooltipComp: React.FC<TooltipProps> = ({
-  prefixCls = _prefix,
-  role = _role,
-  overlayClassName,
-  overlayStyle,
-  children,
-  title,
-  visible,
-  placement = 'top',
-}) => {
-  const cls = cx(prefixCls, overlayClassName)
-  const [tipVisible, setTipVisible] = useUncontrolledState(false, visible)
-  const [triggerRef, setTriggerRef] = useState<HTMLElement | null>(null)
-
-  const onMouseEnter = useCallback<(event: React.MouseEvent) => void>(
-    (e) => {
-      if (React.isValidElement(children)) {
-        if (children.props.onMouseEnter) {
-          children.props.onMouseEnter(e)
-        }
-
-        setTipVisible(true)
-      }
+export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
+  (
+    {
+      prefixCls = _prefix,
+      className,
+      children,
+      content,
+      arrow = true,
+      visible: visibleProp,
+      portal,
+      onOpen,
+      onClose,
+      preload = false,
+      unmountOnClose = true,
+      ...rest
     },
-    [children, setTipVisible]
-  )
+    ref
+  ) => {
+    const [transitionVisible, transitionVisibleAction] = useUncontrolledToggle({
+      defaultVisible: false,
+      visible: visibleProp,
+      onOpen,
+      onClose,
+    })
 
-  const onMouseLeave = useCallback<(event: React.MouseEvent) => void>(
-    (e) => {
-      if (React.isValidElement(children)) {
-        if (children.props.onMouseLeave) {
-          children.props?.onMouseLeave(e)
-        }
+    const [transitionExisted, setTransitionExisted] = useState(!transitionVisible)
+    // 由 CSSTransition 设置动效结束
+    const onExited = useCallback(() => setTransitionExisted(true), [])
 
-        setTipVisible(false)
+    useEffect(() => {
+      transitionVisibleAction.set(transitionVisible)
+      if (transitionVisible) {
+        setTransitionExisted(false)
       }
-    },
-    [children, setTipVisible]
-  )
+    }, [transitionVisible, transitionVisibleAction])
 
-  const child = useMemo(() => {
-    if (React.isValidElement(children)) {
-      return React.cloneElement(children, { ref: setTriggerRef, onMouseEnter, onMouseLeave })
-    } else {
-      console.error('The children of Tooltip must be a valid element')
+    const { getTriggerProps, getPopperProps, getTooltipProps, getArrowProps } = useTooltip({
+      ...rest,
+      visible: !transitionExisted,
+      onOpen: transitionVisibleAction.on,
+      onClose: transitionVisibleAction.off,
+    })
+
+    const cls = cx(prefixCls, className)
+
+    if (!isValidElement(children)) {
+      // TODO: 如果是字符串是否需要包裹一个 span，提升用户开发体验
+      if (__DEV__) {
+        console.warn('WARNING (Tooltip): The children should be an React.Element.')
+      }
+      return null
     }
-  }, [children, onMouseEnter, onMouseLeave])
 
-  return (
-    <>
-      {child}
-      <Popper attachEl={triggerRef} visible={tipVisible} arrow placement="top" className={cls}>
-        <div className={`${prefixCls}__content`}>{title}</div>
-      </Popper>
-    </>
-  )
-}
-export const Tooltip = Object.assign(TooltipComp, { open, close })
+    return (
+      <>
+        {cloneElement(
+          children,
+          // @ts-ignore
+          getTriggerProps(children.props, children.ref)
+        )}
 
-export interface TooltipProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  overlayClassName?: string
+        <Portal {...portal}>
+          <CSSTransition
+            classNames={`${prefixCls}--motion`}
+            appear
+            timeout={201}
+            in={transitionVisible}
+            mountOnEnter={!preload}
+            unmountOnExit={unmountOnClose}
+            onExited={onExited}
+          >
+            <div className={`${prefixCls}__popper`} {...getPopperProps()}>
+              <div ref={ref} className={cls} {...getTooltipProps()}>
+                {arrow ? <div className={`${prefixCls}__arrow`} {...getArrowProps()} /> : null}
+                <div className={`${prefixCls}__content`}>{content}</div>
+              </div>
+            </div>
+          </CSSTransition>
+        </Portal>
+      </>
+    )
+  }
+)
 
+export interface TooltipProps extends HiBaseHTMLProps<'div'>, UseTooltipProps {
   /**
-   * 组件的注入选择器类
+   * 	提醒内容
    */
-  overlayStyle?: React.CSSProperties
-
+  content: React.ReactNode
   /**
-   * 是否显示（受控）
+   * 是否显示箭头
    */
-  visible?: boolean
+  arrow?: boolean
   /**
-   * 内容
+   * 传送门 props
    */
-  title: React.ReactNode
+  portal?: PortalProps
   /**
-   * 展示位置
+   * 开启预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
    */
-  placement?: PopperProps['placement']
+  preload?: boolean
+  /**
+   * 开启关闭时销毁，用于性能优化，优先级大于 `preload`
+   */
+  unmountOnClose?: boolean
 }
 
 if (__DEV__) {

@@ -43,11 +43,22 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/array-utils": "^4.0.0-alpha.0",
     "@hi-ui/classname": "^4.0.0-alpha.0",
     "@hi-ui/core-css": "^4.0.0-alpha.4",
     "@hi-ui/env": "^4.0.0-alpha.0",
     "@hi-ui/popper": "^4.0.0-alpha.9",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.7"
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.7",
+    "@hi-ui/core": "^4.0.0-alpha.0",
+    "@hi-ui/dom-utils": "^4.0.0-alpha.2",
+    "@hi-ui/portal": "^4.0.0-alpha.6",
+    "@hi-ui/react-utils": "^4.0.0-alpha.2",
+    "@hi-ui/use-id": "^4.0.0-alpha.0",
+    "@hi-ui/use-lazy-render": "^4.0.0-alpha.0",
+    "@hi-ui/use-timeout": "^4.0.0-alpha.0",
+    "@hi-ui/use-toggle": "^4.0.0-alpha.4",
+    "@hi-ui/use-unmount-effect": "^4.0.0-alpha.3",
+    "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {
     "react": "^17.0.1",

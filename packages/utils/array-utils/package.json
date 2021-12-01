@@ -1,10 +1,10 @@
 {
-  "name": "@hi-ui/popper",
-  "version": "4.0.0-alpha.9",
-  "description": "A sub-package for @hi-ui/hiui.",
+  "name": "@hi-ui/array-utils",
+  "version": "4.0.0-alpha.0",
+  "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/popper#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/utils/array-utils#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -42,29 +42,7 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
-  "dependencies": {
-    "@hi-ui/classname": "^4.0.0-alpha.2",
-    "@hi-ui/core-css": "^4.0.0-alpha.4",
-    "@hi-ui/env": "^4.0.0-alpha.3",
-    "@hi-ui/portal": "^4.0.0-alpha.7",
-    "@hi-ui/core": "^4.0.0-alpha.5",
-    "@hi-ui/dom-utils": "^4.0.0-alpha.2",
-    "@hi-ui/react-utils": "^4.0.0-alpha.2",
-    "@hi-ui/use-latest": "^4.0.0-alpha.2",
-    "@hi-ui/use-lazy-render": "^4.0.0-alpha.0",
-    "@hi-ui/use-merge-refs": "^4.0.0-alpha.2",
-    "@hi-ui/use-outside-click": "^4.0.0-alpha.4",
-    "@hi-ui/use-toggle": "^4.0.0-alpha.4",
-    "@popperjs/core": "^2.9.3",
-    "react-transition-group": "^4.4.2"
-  },
-  "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
-  },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "@hi-ui/hi-build": "^4.0.0-alpha.0"
   }
 }
