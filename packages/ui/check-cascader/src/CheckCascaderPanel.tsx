@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo, useCallback } from 'react'
+import React, { forwardRef, useMemo, useCallback, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { CheckCascaderItem, ExpandTrigger, CheckCascaderItemEventData } from './types'
@@ -104,6 +104,20 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
       [titleRender, inSearch, inputProps.value]
     )
 
+    const [inputElement, setInputElement] = useState<HTMLInputElement | null>(null)
+    useEffect(() => {
+      if (!inputElement) return
+
+      // 临时方案，解决 input 无法正常 autoFocus
+      const timer = window.setTimeout(() => {
+        inputElement.focus()
+      }, 200)
+
+      return () => {
+        window.clearTimeout(timer)
+      }
+    }, [inputElement])
+
     const cls = cx(prefixCls, className)
 
     return (
@@ -111,6 +125,8 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
         {searchable ? (
           <div className={`${prefixCls}-search`}>
             <Input
+              // @ts-ignore
+              ref={setInputElement}
               appearance="underline"
               placeholder={placeholder}
               prefix={<SearchOutlined />}

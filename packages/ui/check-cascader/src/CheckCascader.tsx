@@ -81,6 +81,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         />
         <Popper
           attachEl={targetElRef}
+          autoFocus={false}
           visible={menuVisible}
           onClose={menuVisibleAction.off}
           // TODO: 是否从 props omit 所有 popper 相关的 props 应用到 Popper
