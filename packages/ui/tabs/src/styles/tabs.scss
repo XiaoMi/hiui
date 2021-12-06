@@ -3,7 +3,7 @@
 $prefix: '#{$component-prefix}-tabs' !default;
 
 .#{$prefix} {
-  .#{$prefix}__list {
+  &__list {
     position: relative;
     font-size: use-text-size('normal');
     color: use-color-static('black');
@@ -27,6 +27,48 @@ $prefix: '#{$component-prefix}-tabs' !default;
     }
   }
 
+  &--vertical {
+    display: flex;
+    .#{$prefix}__list {
+      &::before {
+        content: '';
+        clear: both;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: auto;
+        height: 100%;
+        width: 1px;
+        background-color: use-color('gray', 200);
+        display: block;
+      }
+
+      &--inner {
+        flex-direction: column;
+      }
+    }
+
+    .#{$prefix}__item {
+      line-height: 22px;
+      padding: 0 8px;
+      margin: 8px 0;
+      transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
+    }
+
+    .#{$prefix}__content {
+      padding-left: 16px;
+      padding-top: 0;
+    }
+
+    .#{$prefix}__ink {
+      position: absolute;
+      right: 0;
+      width: 2px;
+      background-color: use-color-mode('primary');
+      transition: top 0.2s cubic-bezier(0.34, 0.69, 0.1, 1), height 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
+    }
+  }
+
   &__ink {
     position: absolute;
     bottom: 0;
@@ -42,6 +84,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
     padding: 8px 0;
     margin: 0 16px;
     cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
 
     &:not(&--disabled):hover {
       color: use-color-mode('primary');
@@ -49,6 +92,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &--active {
       color: use-color-mode('primary');
+      // font-weight: bold;
     }
 
     &--disabled {

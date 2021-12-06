@@ -21,11 +21,12 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       activeId,
       onChange,
       onTabClick,
+      direction = 'horizontal',
       ...rest
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, { [`${prefixCls}--vertical`]: direction === 'vertical' })
 
     const tabList = useMemo(() => {
       const list: TabPaneProps[] = []
@@ -60,10 +61,10 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           activeId={activeId}
           onChange={_onChange}
           onTabClick={onTabClick}
+          direction={direction}
         />
         <div className={`${_prefix}__content`}>
           {React.Children.map(children, (child) => {
-            console.log(child, child?.props.tabId, activeId)
             return (
               child &&
               React.cloneElement(child, {
@@ -114,6 +115,10 @@ export interface TabsProps {
    * 高亮id
    */
   activeId?: string
+  /**
+   * 布局方向
+   */
+  direction?: 'horizontal' | 'vertical'
   /**
    * `activeId` 改变的回调
    */

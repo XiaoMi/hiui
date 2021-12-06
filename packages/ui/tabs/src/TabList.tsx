@@ -7,7 +7,20 @@ import { cx } from '@hi-ui/classname'
 import { TabInk } from './TabInk'
 
 export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
-  ({ data, className, style, activeId, defaultActiveId, onChange, onTabClick, prefixCls }, ref) => {
+  (
+    {
+      data,
+      className,
+      style,
+      activeId,
+      defaultActiveId,
+      onChange,
+      onTabClick,
+      prefixCls,
+      direction = 'horizontal',
+    },
+    ref
+  ) => {
     const [activeTab, setActiveTab] = useUncontrolledState(
       defaultActiveId || data[0]?.tabId,
       activeId,
@@ -45,7 +58,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
           ))}
           <TabInk
             prefixCls={prefixCls}
-            direction="horizontal"
+            direction={direction}
             tabListRef={innerRef as HTMLDivElement}
             itemRef={itemsRef.current?.[activeTab] as HTMLElement}
           />
@@ -60,6 +73,7 @@ export interface TabListProps {
   className?: string
   prefixCls?: string
   data: TabPaneProps[]
+  direction: 'horizontal' | 'vertical'
   onChange?: (tabId: string) => void
   onTabClick?: (tabId: string) => void
   /**
