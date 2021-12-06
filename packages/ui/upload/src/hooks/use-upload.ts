@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect, useCallback, useRef } from 'react'
 import request from '../request'
 import { getFileType } from '../utils'
