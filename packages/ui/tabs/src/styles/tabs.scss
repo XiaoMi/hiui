@@ -35,7 +35,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &--inner {
       display: flex;
-      align-items: center;
+      // align-items: center;
       flex: 1;
       position: relative;
       overflow: hidden;
@@ -52,6 +52,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
     display: flex;
     .#{$prefix}__list {
       flex-shrink: 0;
+      flex-direction: column;
+      // height: 100%;
 
       &::before {
         content: '';
@@ -68,6 +70,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
       &--inner {
         width: auto;
+        display: block;
         position: relative;
       }
 
@@ -82,6 +85,16 @@ $prefix: '#{$component-prefix}-tabs' !default;
       padding: 0 8px;
       margin: 8px 0;
       transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
+
+      &--prev {
+        border-top: 1px solid use-color-mode('primary');
+        border-left: none;
+      }
+
+      &--next {
+        border-bottom: 1px solid use-color-mode('primary');
+        border-right: none;
+      }
     }
 
     .#{$prefix}__content {

@@ -30,10 +30,12 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onDragOver,
       onDragEnd,
       onDrop,
+      style,
       ...rest
     },
     ref
   ) => {
+    console.log(999, style)
     const cls = cx(prefixCls, className, { [`${prefixCls}--vertical`]: direction === 'vertical' })
 
     const tabList = useMemo(() => {
@@ -62,7 +64,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
     )
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
+      <div ref={ref} role={role} className={cls} style={style} {...rest}>
         <TabList
           prefixCls={prefixCls}
           data={tabList}

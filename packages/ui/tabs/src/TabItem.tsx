@@ -25,6 +25,7 @@ interface TabItemProps extends TabPaneProps {
   ) => void
   onDragEnd?: (e: React.DragEvent<HTMLDivElement>, dragNode: TabPaneProps) => void
   itemRef: HTMLDivElement | null
+  direction: 'horizontal' | 'vertical'
 }
 
 export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
@@ -47,6 +48,7 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
       onDragEnd,
       itemRef,
       draggable,
+      direction: layout = 'horizontal',
     },
     ref
   ) => {
@@ -99,13 +101,22 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
           if (dragId !== tabId && itemRef) {
             const targetBoundingRect = itemRef.getBoundingClientRect()
             const hoverTargetSortY = (targetBoundingRect.bottom - targetBoundingRect.top) / 2
+            const hoverTargetSortX = (targetBoundingRect.right - targetBoundingRect.left) / 2
             // 鼠标垂直移动距离
             const hoverClientY = e.clientY - targetBoundingRect.top
-
-            if (hoverClientY < hoverTargetSortY) {
-              setDirection('prev')
+            const hoverClientX = e.clientX - targetBoundingRect.left
+            if (layout === 'vertical') {
+              if (hoverClientY < hoverTargetSortY) {
+                setDirection('prev')
+              } else {
+                setDirection('next')
+              }
             } else {
-              setDirection('next')
+              if (hoverClientX < hoverTargetSortX) {
+                setDirection('prev')
+              } else {
+                setDirection('next')
+              }
             }
           }
           if (onDragOver) {

@@ -5,7 +5,7 @@ import { TabItem } from './TabItem'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { cx } from '@hi-ui/classname'
 import { TabInk } from './TabInk'
-import { PlusOutlined, LeftOutlined, RightOutlined } from '@hi-ui/icons'
+import { PlusOutlined, LeftOutlined, RightOutlined, UpOutlined, DownOutlined } from '@hi-ui/icons'
 export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
   (
     {
@@ -38,12 +38,15 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     const [innerRef, setInnerRef] = useState<HTMLDivElement | null>(null)
     const [scrollRef, setScrollRef] = useState<HTMLDivElement | null>(null)
     const [translateX, setTranslateX] = useState<number>(0)
+    const [translateY, setTranslateY] = useState<number>(0)
     const itemsRef = useRef<Record<string, HTMLDivElement | null>>({})
     const showScrollBtn = useMemo(() => {
       if (scrollRef && innerRef) {
-        return scrollRef?.clientWidth > innerRef?.clientWidth
+        return direction === 'horizontal'
+          ? scrollRef?.clientWidth > innerRef?.clientWidth
+          : scrollRef?.clientHeight > innerRef?.clientHeight
       }
-    }, [scrollRef, innerRef])
+    }, [scrollRef, innerRef, direction])
 
     const onClickTab = useCallback(
       (key: string) => {
@@ -78,11 +81,40 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
             <LeftOutlined />
           </div>
         )}
+        {showScrollBtn && direction === 'vertical' && (
+          <div
+            className={`${prefixCls}__add-btn`}
+            onClick={() => {
+              if (scrollRef && innerRef) {
+                const canScroll = -translateY - innerRef.clientHeight
+                let moveWidth = 0
+                if (canScroll >= 0) {
+                  moveWidth = innerRef.clientHeight
+                } else {
+                  moveWidth = -translateY
+                }
+
+                setTranslateY(translateY + moveWidth)
+              }
+            }}
+          >
+            <UpOutlined />
+          </div>
+        )}
         <div className={cx(`${prefixCls}__list--inner`)} ref={setInnerRef}>
           <div
             className={cx(`${prefixCls}__list--scroll`)}
             ref={setScrollRef}
-            style={showScrollBtn ? { transform: `translateX(${translateX}px)` } : {}}
+            style={
+              showScrollBtn
+                ? {
+                    transform:
+                      direction === 'horizontal'
+                        ? `translateX(${translateX}px)`
+                        : `translateY(${translateY}px)`,
+                  }
+                : {}
+            }
           >
             {data.map((d, index) => (
               <TabItem
@@ -103,6 +135,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 onDragOver={onDragOver}
                 onDrop={onDrop}
                 onDragEnd={onDragEnd}
+                direction={direction}
               />
             ))}
             <TabInk
@@ -131,6 +164,26 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
             }}
           >
             <RightOutlined />
+          </div>
+        )}
+        {showScrollBtn && direction === 'vertical' && (
+          <div
+            className={`${prefixCls}__add-btn`}
+            onClick={() => {
+              if (scrollRef && innerRef) {
+                const canScroll = scrollRef.clientHeight - innerRef.clientHeight + translateY
+                let moveWidth = 0
+                if (canScroll >= innerRef.clientHeight) {
+                  moveWidth = innerRef.clientHeight
+                } else {
+                  moveWidth = canScroll
+                }
+
+                setTranslateY(translateY - moveWidth)
+              }
+            }}
+          >
+            <DownOutlined />
           </div>
         )}
         {editable && (
