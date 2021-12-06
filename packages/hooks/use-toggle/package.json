@@ -47,5 +47,8 @@
   },
   "devDependencies": {
     "@hi-ui/hi-build": "^4.0.0-alpha.2"
+  },
+  "dependencies": {
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.7"
   }
 }

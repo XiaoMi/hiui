@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { forwardRef, useContext, useCallback, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -128,7 +129,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
           const file: UploadFileItem = base2blob(dataUrl, filename)
           file.url = dataUrl
           file.fileType = 'img'
-          uploadFiles([file])
+          // uploadFiles([file])
           setCropperVisible(false)
         }
       },
