@@ -35,6 +35,12 @@ $prefix: '#{$component-prefix}-tabs' !default;
     &--inner {
       display: flex;
       align-items: center;
+      width: 100%;
+    }
+
+    &--scroll {
+      overflow: hidden;
+      display: flex;
     }
   }
 
@@ -55,6 +61,10 @@ $prefix: '#{$component-prefix}-tabs' !default;
       }
 
       &--inner {
+        width: auto;
+      }
+
+      &--scroll {
         flex-direction: column;
       }
     }
@@ -74,6 +84,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
     .#{$prefix}__ink {
       position: absolute;
       right: 0;
+      bottom: auto;
       width: 2px;
       background-color: use-color-mode('primary');
       transition: top 0.2s cubic-bezier(0.34, 0.69, 0.1, 1), height 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
@@ -95,6 +106,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
     padding: 8px 0;
     margin: 0 16px;
     cursor: pointer;
+    flex-shrink: 0;
     transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
 
     &:not(&--disabled):hover {
@@ -103,7 +115,16 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &--active {
       color: use-color-mode('primary');
+
       // font-weight: bold;
+    }
+
+    &--prev {
+      border-left: 1px solid use-color-mode('primary');
+    }
+
+    &--next {
+      border-right: 1px solid use-color-mode('primary');
     }
 
     &--disabled {

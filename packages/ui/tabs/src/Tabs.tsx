@@ -25,6 +25,11 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       direction = 'horizontal',
       onAdd,
       onDelete,
+      draggable = false,
+      onDragStart,
+      onDragOver,
+      onDragEnd,
+      onDrop,
       ...rest
     },
     ref
@@ -68,6 +73,11 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           editable={editable}
           onAdd={onAdd}
           onDelete={onDelete}
+          draggable={draggable}
+          onDragEnd={onDragEnd}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
+          onDragStart={onDragStart}
         />
         <div className={`${_prefix}__content`}>
           {React.Children.map(children, (child) => {
@@ -143,6 +153,17 @@ export interface TabsProps {
    * 节点删除时时触发
    */
   onDelete?: (deletedNode: TabPaneProps, index: number) => void
+  onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void
+  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void
+  onDrop?: (
+    e: React.DragEvent<HTMLDivElement>,
+    {
+      dragNode,
+      dropNode,
+      direction,
+    }: { dragNode: TabPaneProps; dropNode: TabPaneProps; direction: string | null }
+  ) => void
+  onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void
 }
 
 if (__DEV__) {
