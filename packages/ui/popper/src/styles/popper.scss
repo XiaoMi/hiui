@@ -120,7 +120,7 @@ $prefix: '#{$component-prefix}-popper' !default;
     min-width: 36px;
     min-height: 36px;
     // animation
-    transition: opacity 0.1s linear, transform 0.1s ease-out;
+    transition: opacity 0.2s linear, transform 0.2s ease-out;
     // 该变量通过 JS 注入👇🏻
     transform-origin: var(--popper-transform-origin);
     opacity: 0;

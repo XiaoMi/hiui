@@ -39,6 +39,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       onBlur,
       clearableTrigger = 'hover',
       clearable = false,
+      trimValueOnBlur = false,
       ...rest
     },
     ref
@@ -76,9 +77,14 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
     const handleBlur = useCallback(
       (event: React.FocusEvent<HTMLInputElement>) => {
         setFocused(false)
+
+        if (trimValueOnBlur) {
+          const nextValue = event.target.value
+          tryChangeValue(nextValue.trim(), event)
+        }
         onBlur?.(event)
       },
-      [onBlur]
+      [onBlur, tryChangeValue, trimValueOnBlur]
     )
 
     const focus = useCallback(() => {
@@ -198,7 +204,6 @@ export interface InputProps {
    * 组件的注入样式
    */
   style?: React.CSSProperties
-
   /**
    * 开启输入框只读
    */
@@ -251,6 +256,10 @@ export interface InputProps {
    * 是否可清空，通过点击右侧清除按钮
    */
   clearable?: boolean
+  /**
+   * 再失焦时触发对值的 trim onChange 给用户
+   */
+  trimValueOnBlur?: boolean
   /**
    * 清除按钮展示的触发形态
    */
@@ -306,8 +315,8 @@ export function onChangeMock(
 ) {
   let event = evt
 
-  // 点击 clearIcon 时，代理 onChange 的事件对象 target 指向 input.target
-  if (evt.type === 'click') {
+  // 点击 clearIcon 或者 失焦 trim 时，都会代理 onChange 的事件对象 target 指向 input.target
+  if (evt.type !== 'change') {
     if (!target) return
 
     const originalTargetValue = target.value

@@ -1,0 +1,34 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$icon-button-prefix: '#{$component-prefix}-icon-button' !default;
+
+.#{$icon-button-prefix} {
+  @include button-reset;
+
+  font-size: use-text-size('lg');
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
+  transition: all use-motion-bezier('easing');
+
+  &__area-expand {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      right: calc(-1 * #{use-spacing(2)});
+      top: calc(-1 * #{use-spacing(2)});
+      bottom: calc(-1 * #{use-spacing(2)});
+      left: calc(-1 * #{use-spacing(2)});
+    }
+  }
+
+  &--active {
+    color: use-color-mode('primary');
+  }
+}

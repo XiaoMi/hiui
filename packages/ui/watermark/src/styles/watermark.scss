@@ -1,0 +1,8 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-watermark' !default;
+
+.#{$prefix} {
+  width: 100%;
+  height: 100%;
+}
