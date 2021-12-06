@@ -5,7 +5,7 @@ import { TabItem } from './TabItem'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { cx } from '@hi-ui/classname'
 import { TabInk } from './TabInk'
-
+import { PlusOutlined } from '@hi-ui/icons'
 export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
   (
     {
@@ -18,6 +18,9 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       onTabClick,
       prefixCls,
       direction = 'horizontal',
+      editable,
+      onAdd,
+      onDelete,
     },
     ref
   ) => {
@@ -51,9 +54,12 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
               ref={(node) => {
                 itemsRef.current[`${d.tabId}`] = node
               }}
+              index={index}
               active={activeTab === d.tabId}
               prefixCls={prefixCls}
               onTabClick={onClickTab}
+              editable={editable}
+              onDelete={onDelete}
             />
           ))}
           <TabInk
@@ -62,6 +68,11 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
             tabListRef={innerRef as HTMLDivElement}
             itemRef={itemsRef.current?.[activeTab] as HTMLElement}
           />
+          {editable && (
+            <div className={`${prefixCls}__add-btn`} onClick={onAdd}>
+              <PlusOutlined />
+            </div>
+          )}
         </div>
       </div>
     )
@@ -84,6 +95,15 @@ export interface TabListProps {
    * 高亮id
    */
   activeId?: string
+  editable?: boolean
+  /**
+   * 节点增加时触发
+   */
+  onAdd?: () => void
+  /**
+   * 节点删除时时触发
+   */
+  onDelete?: (deletedNode: TabPaneProps, index: number) => void
 }
 
 if (__DEV__) {

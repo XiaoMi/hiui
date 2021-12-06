@@ -21,7 +21,10 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       activeId,
       onChange,
       onTabClick,
+      editable,
       direction = 'horizontal',
+      onAdd,
+      onDelete,
       ...rest
     },
     ref
@@ -62,6 +65,9 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           onChange={_onChange}
           onTabClick={onTabClick}
           direction={direction}
+          editable={editable}
+          onAdd={onAdd}
+          onDelete={onDelete}
         />
         <div className={`${_prefix}__content`}>
           {React.Children.map(children, (child) => {
@@ -115,6 +121,7 @@ export interface TabsProps {
    * 高亮id
    */
   activeId?: string
+
   /**
    * 布局方向
    */
@@ -127,6 +134,15 @@ export interface TabsProps {
    * 标签点击触发回调
    */
   onTabClick?: (tabId: string) => void
+
+  /**
+   * 节点增加时触发
+   */
+  onAdd?: () => void
+  /**
+   * 节点删除时时触发
+   */
+  onDelete?: (deletedNode: TabPaneProps, index: number) => void
 }
 
 if (__DEV__) {

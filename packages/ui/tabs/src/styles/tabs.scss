@@ -3,6 +3,16 @@
 $prefix: '#{$component-prefix}-tabs' !default;
 
 .#{$prefix} {
+  &__add-btn {
+    cursor: pointer;
+  }
+
+  &__close-btn {
+    cursor: pointer;
+    color: use-color-static('black');
+    margin-left: 4px;
+  }
+
   &__list {
     position: relative;
     font-size: use-text-size('normal');
@@ -24,6 +34,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &--inner {
       display: flex;
+      align-items: center;
     }
   }
 
