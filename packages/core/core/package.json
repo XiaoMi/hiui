@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/core",
-  "version": "4.0.0-alpha.6",
+  "version": "4.0.0-alpha.7",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -46,6 +46,6 @@
     "@hi-ui/hi-build": "^4.0.0-alpha.0"
   },
   "dependencies": {
-    "@hi-ui/core-css": "^4.0.0-alpha.4"
+    "@hi-ui/core-css": "^4.0.0-alpha.5"
   }
 }
