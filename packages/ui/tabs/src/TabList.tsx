@@ -37,10 +37,11 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
 
     const [innerRef, setInnerRef] = useState<HTMLDivElement | null>(null)
     const [scrollRef, setScrollRef] = useState<HTMLDivElement | null>(null)
+    const [translateX, setTranslateX] = useState<number>(0)
     const itemsRef = useRef<Record<string, HTMLDivElement | null>>({})
     const showScrollBtn = useMemo(() => {
       if (scrollRef && innerRef) {
-        return scrollRef?.clientWidth >= innerRef?.clientWidth
+        return scrollRef?.clientWidth > innerRef?.clientWidth
       }
     }, [scrollRef, innerRef])
 
@@ -57,16 +58,31 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     )
     return (
       <div style={style} className={cx(`${prefixCls}__list`, className)} ref={ref}>
+        {showScrollBtn && direction === 'horizontal' && (
+          <div
+            className={`${prefixCls}__add-btn`}
+            onClick={() => {
+              if (scrollRef && innerRef) {
+                const canScroll = -translateX - innerRef.clientWidth
+                let moveWidth = 0
+                if (canScroll >= 0) {
+                  moveWidth = innerRef.clientWidth
+                } else {
+                  moveWidth = -translateX
+                }
+
+                setTranslateX(translateX + moveWidth)
+              }
+            }}
+          >
+            <LeftOutlined />
+          </div>
+        )}
         <div className={cx(`${prefixCls}__list--inner`)} ref={setInnerRef}>
-          {showScrollBtn && direction === 'horizontal' && (
-            <div className={`${prefixCls}__add-btn`} onClick={onAdd}>
-              <LeftOutlined />
-            </div>
-          )}
           <div
             className={cx(`${prefixCls}__list--scroll`)}
             ref={setScrollRef}
-            style={showScrollBtn ? { transform: 'translateX(0)' } : {}}
+            style={showScrollBtn ? { transform: `translateX(${translateX}px)` } : {}}
           >
             {data.map((d, index) => (
               <TabItem
@@ -89,24 +105,39 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 onDragEnd={onDragEnd}
               />
             ))}
+            <TabInk
+              prefixCls={prefixCls}
+              direction={direction}
+              tabListRef={innerRef as HTMLDivElement}
+              itemRef={itemsRef.current?.[activeTab] as HTMLDivElement}
+            />
           </div>
-          {showScrollBtn && direction === 'horizontal' && (
-            <div className={`${prefixCls}__add-btn`} onClick={onAdd}>
-              <RightOutlined />
-            </div>
-          )}
-          <TabInk
-            prefixCls={prefixCls}
-            direction={direction}
-            tabListRef={innerRef as HTMLDivElement}
-            itemRef={itemsRef.current?.[activeTab] as HTMLDivElement}
-          />
-          {editable && (
-            <div className={`${prefixCls}__add-btn`} onClick={onAdd}>
-              <PlusOutlined />
-            </div>
-          )}
         </div>
+        {showScrollBtn && direction === 'horizontal' && (
+          <div
+            className={`${prefixCls}__add-btn`}
+            onClick={() => {
+              if (scrollRef && innerRef) {
+                const canScroll = scrollRef.clientWidth - innerRef.clientWidth + translateX
+                let moveWidth = 0
+                if (canScroll >= innerRef.clientWidth) {
+                  moveWidth = innerRef.clientWidth
+                } else {
+                  moveWidth = canScroll
+                }
+
+                setTranslateX(translateX - moveWidth)
+              }
+            }}
+          >
+            <RightOutlined />
+          </div>
+        )}
+        {editable && (
+          <div className={`${prefixCls}__add-btn`} onClick={onAdd}>
+            <PlusOutlined />
+          </div>
+        )}
       </div>
     )
   }

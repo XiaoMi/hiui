@@ -19,6 +19,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
     color: use-color-static('black');
     display: flex;
     overflow: hidden;
+    align-items: center;
 
     &::before {
       content: '';
@@ -35,18 +36,23 @@ $prefix: '#{$component-prefix}-tabs' !default;
     &--inner {
       display: flex;
       align-items: center;
-      width: 100%;
+      flex: 1;
+      position: relative;
+      overflow: hidden;
     }
 
     &--scroll {
-      overflow: hidden;
       display: flex;
+      position: relative;
+      transition: all 0.3s;
     }
   }
 
   &--vertical {
     display: flex;
     .#{$prefix}__list {
+      flex-shrink: 0;
+
       &::before {
         content: '';
         clear: both;
@@ -62,10 +68,12 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
       &--inner {
         width: auto;
+        position: relative;
       }
 
       &--scroll {
         flex-direction: column;
+        position: relative;
       }
     }
 
