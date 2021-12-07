@@ -1,7 +1,7 @@
 import React, { forwardRef, useRef, useEffect, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { TBody } from './TBody'
+import { TBody } from './TableBody'
 import { THeader } from './THeader'
 
 const _role = 'table'

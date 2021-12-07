@@ -5,6 +5,7 @@ import {
   BaseFlattedTreeNodeData,
   BaseFlattedTreeNodeDataWithParent,
   BaseFlattedTreeNodeDataWithChildren,
+  BaseTreeNode,
 } from './types'
 
 /**
@@ -402,9 +403,9 @@ export const getNodeAncestorsWithMe = <T extends BaseFlattedTreeNodeDataWithPare
 
 const copy = <T>(node: T) => ({ ...node })
 
-export const cloneTreeNode = <T extends BaseTreeNodeData>(node: T) => {
+export const cloneTreeNode = <T extends BaseTreeNode>(node: T) => {
   const nextTreeNode = copy(node)
-  const dig = (node: BaseTreeNodeData) => {
+  const dig = (node: BaseTreeNode) => {
     if (node.children) {
       node.children = node.children.map((child) => dig(copy(child)))
     }
@@ -417,6 +418,6 @@ export const cloneTreeNode = <T extends BaseTreeNodeData>(node: T) => {
 /**
  * 递归浅拷贝树数据结构，避免数据循环引用处理
  */
-export const cloneTree = <T extends BaseTreeNodeData>(tree: T[]) => {
+export const cloneTree = <T extends BaseTreeNode>(tree: T[]) => {
   return tree.map((node) => cloneTreeNode(node))
 }

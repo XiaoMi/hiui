@@ -6,6 +6,7 @@ $prefix: '#{$component-prefix}-table' !default;
   box-sizing: border-box;
   font-size: 14px;
   overflow: auto;
+
   table {
     width: 100%;
     text-align: left;
@@ -28,13 +29,14 @@ $prefix: '#{$component-prefix}-table' !default;
     & > tr {
       & > th {
         padding: 16px;
-        color: #999999;
+        color: #999;
         background: rgb(251, 251, 251);
         border-bottom: 1px solid #f0f0f0;
         font-weight: 500;
       }
     }
   }
+
   &__body {
     & > tr {
       & > td {
@@ -46,6 +48,7 @@ $prefix: '#{$component-prefix}-table' !default;
       }
     }
   }
+
   &__row {
     &:hover {
       & > td {
@@ -54,4 +57,3 @@ $prefix: '#{$component-prefix}-table' !default;
     }
   }
 }
-
