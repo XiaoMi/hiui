@@ -50,6 +50,7 @@
     "@hi-ui/icons": "^4.0.0-alpha.11",
     "@hi-ui/locale-context": "^4.0.0-alpha.3",
     "@hi-ui/popper": "^4.0.0-alpha.9",
+    "@hi-ui/time-picker": "^4.0.0-alpha.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1"
   },
