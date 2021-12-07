@@ -26,6 +26,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       onDragOver,
       onDrop,
       onDragEnd,
+      type = 'default',
     },
     ref
   ) => {
@@ -60,7 +61,11 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       [activeTab, onTabClick, setActiveTab]
     )
     return (
-      <div style={style} className={cx(`${prefixCls}__list`, className)} ref={ref}>
+      <div
+        style={style}
+        className={cx(`${prefixCls}__list`, { [`${prefixCls}__list--${type}`]: type }, className)}
+        ref={ref}
+      >
         {showScrollBtn && direction === 'horizontal' && (
           <div
             className={`${prefixCls}__add-btn`}
@@ -138,12 +143,14 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 direction={direction}
               />
             ))}
-            <TabInk
-              prefixCls={prefixCls}
-              direction={direction}
-              tabListRef={innerRef as HTMLDivElement}
-              itemRef={itemsRef.current?.[activeTab] as HTMLDivElement}
-            />
+            {type === 'default' && (
+              <TabInk
+                prefixCls={prefixCls}
+                direction={direction}
+                tabListRef={innerRef as HTMLDivElement}
+                itemRef={itemsRef.current?.[activeTab] as HTMLDivElement}
+              />
+            )}
           </div>
         </div>
         {showScrollBtn && direction === 'horizontal' && (
@@ -214,6 +221,7 @@ export interface TabListProps {
   activeId?: string
   editable?: boolean
   draggable?: boolean
+  type?: 'desc' | 'card' | 'button' | 'default'
   /**
    * 节点增加时触发
    */

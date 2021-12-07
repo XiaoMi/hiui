@@ -21,6 +21,22 @@ $prefix: '#{$component-prefix}-tabs' !default;
     overflow: hidden;
     align-items: center;
 
+    &--card {
+      .#{$prefix}__item {
+        margin: 0 4px 0 0;
+        padding: 4px 8px;
+        background-color: use-color('gray', 200);
+        border-radius: 4px 4px 0 0;
+        border: 1px solid use-color('gray', 300);
+
+        &--active {
+          color: use-color-mode('primary');
+          background-color: use-color-static('white');
+          border-bottom: 2px solid use-color-static('white');
+        }
+      }
+    }
+
     &::before {
       content: '';
       clear: both;
@@ -54,6 +70,22 @@ $prefix: '#{$component-prefix}-tabs' !default;
       flex-shrink: 0;
       flex-direction: column;
       // height: 100%;
+
+      &--card {
+        .#{$prefix}__item {
+          margin: 0 0 4px 0;
+          padding: 4px 8px;
+          background-color: use-color('gray', 200);
+          border-radius: 4px 0 0  4px;
+          border: 1px solid use-color('gray', 300);
+
+          &--active {
+            color: use-color-mode('primary');
+            background-color: use-color-static('white');
+            border-right: 1px solid use-color-static('white');
+          }
+        }
+      }
 
       &::before {
         content: '';

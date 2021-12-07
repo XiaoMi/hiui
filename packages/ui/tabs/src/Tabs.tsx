@@ -31,12 +31,15 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onDragEnd,
       onDrop,
       style,
+      type = 'default',
       ...rest
     },
     ref
   ) => {
-    console.log(999, style)
-    const cls = cx(prefixCls, className, { [`${prefixCls}--vertical`]: direction === 'vertical' })
+    const cls = cx(prefixCls, className, {
+      [`${prefixCls}--vertical`]: direction === 'vertical',
+      [`${prefixCls}--${type}`]: type,
+    })
 
     const tabList = useMemo(() => {
       const list: TabPaneProps[] = []
@@ -79,6 +82,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           onDragEnd={onDragEnd}
           onDragOver={onDragOver}
           onDrop={onDrop}
+          type={type}
           onDragStart={onDragStart}
         />
         <div className={`${_prefix}__content`}>
@@ -138,6 +142,10 @@ export interface TabsProps {
    * 布局方向
    */
   direction?: 'horizontal' | 'vertical'
+  /**
+   * 布局类型
+   */
+  type?: 'desc' | 'card' | 'button' | 'default'
   /**
    * `activeId` 改变的回调
    */
