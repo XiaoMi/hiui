@@ -145,6 +145,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
             ))}
             {type === 'default' && (
               <TabInk
+                translate={direction === 'horizontal' ? translateX : translateY}
                 prefixCls={prefixCls}
                 direction={direction}
                 tabListRef={innerRef as HTMLDivElement}
