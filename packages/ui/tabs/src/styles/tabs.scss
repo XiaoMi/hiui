@@ -3,12 +3,39 @@
 $prefix: '#{$component-prefix}-tabs' !default;
 
 .#{$prefix} {
-  .#{$prefix}__list {
+  &__add-btn {
+    cursor: pointer;
+  }
+
+  &__close-btn {
+    cursor: pointer;
+    color: use-color-static('black');
+    margin-left: 4px;
+  }
+
+  &__list {
     position: relative;
     font-size: use-text-size('normal');
     color: use-color-static('black');
     display: flex;
     overflow: hidden;
+    align-items: center;
+
+    &--card {
+      .#{$prefix}__item {
+        margin: 0 4px 0 0;
+        padding: 4px 8px;
+        background-color: use-color('gray', 200);
+        border-radius: 4px 4px 0 0;
+        border: 1px solid use-color('gray', 300);
+
+        &--active {
+          color: use-color-mode('primary');
+          background-color: use-color-static('white');
+          border-bottom: 2px solid use-color-static('white');
+        }
+      }
+    }
 
     &::before {
       content: '';
@@ -24,6 +51,96 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &--inner {
       display: flex;
+      // align-items: center;
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    &--scroll {
+      display: flex;
+      position: relative;
+      transition: all 0.3s;
+    }
+  }
+
+  &--vertical {
+    display: flex;
+    .#{$prefix}__list {
+      flex-shrink: 0;
+      flex-direction: column;
+      // height: 100%;
+
+      &--card {
+        .#{$prefix}__item {
+          margin: 0 0 4px 0;
+          padding: 4px 8px;
+          background-color: use-color('gray', 200);
+          border-radius: 4px 0 0  4px;
+          border: 1px solid use-color('gray', 300);
+
+          &--active {
+            color: use-color-mode('primary');
+            background-color: use-color-static('white');
+            border-right: 1px solid use-color-static('white');
+          }
+        }
+      }
+
+      &::before {
+        content: '';
+        clear: both;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: auto;
+        height: 100%;
+        width: 1px;
+        background-color: use-color('gray', 200);
+        display: block;
+      }
+
+      &--inner {
+        width: auto;
+        display: block;
+        position: relative;
+      }
+
+      &--scroll {
+        flex-direction: column;
+        position: relative;
+      }
+    }
+
+    .#{$prefix}__item {
+      line-height: 22px;
+      padding: 0 8px;
+      margin: 8px 0;
+      transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
+
+      &--prev {
+        border-top: 1px solid use-color-mode('primary');
+        border-left: none;
+      }
+
+      &--next {
+        border-bottom: 1px solid use-color-mode('primary');
+        border-right: none;
+      }
+    }
+
+    .#{$prefix}__content {
+      padding-left: 16px;
+      padding-top: 0;
+    }
+
+    .#{$prefix}__ink {
+      position: absolute;
+      right: 0;
+      bottom: auto;
+      width: 2px;
+      background-color: use-color-mode('primary');
+      transition: top 0.2s cubic-bezier(0.34, 0.69, 0.1, 1), height 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
     }
   }
 
@@ -42,6 +159,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
     padding: 8px 0;
     margin: 0 16px;
     cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
 
     &:not(&--disabled):hover {
       color: use-color-mode('primary');
@@ -49,6 +168,16 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &--active {
       color: use-color-mode('primary');
+
+      // font-weight: bold;
+    }
+
+    &--prev {
+      border-left: 1px solid use-color-mode('primary');
+    }
+
+    &--next {
+      border-right: 1px solid use-color-mode('primary');
     }
 
     &--disabled {

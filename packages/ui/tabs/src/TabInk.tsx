@@ -7,6 +7,7 @@ interface TabInkProps {
   itemRef: HTMLElement
   tabListRef: HTMLElement
   direction: 'vertical' | 'horizontal'
+  translate: number
 }
 
 export const TabInk: React.FC<TabInkProps> = ({
@@ -15,6 +16,7 @@ export const TabInk: React.FC<TabInkProps> = ({
   itemRef,
   tabListRef,
   direction,
+  translate,
 }) => {
   const inkRef = useRef<HTMLDivElement>(null)
 
@@ -25,14 +27,14 @@ export const TabInk: React.FC<TabInkProps> = ({
       let _style: React.CSSProperties = {}
       if (direction === 'vertical') {
         _style = {
-          top: `${itemRect.top - listRect.top}px`,
+          top: `${itemRect.top - listRect.top - translate}px`,
           height: `${itemRect.height}px`,
           left: '',
           width: '',
         }
       } else {
         _style = {
-          left: `${itemRect.left - listRect.left}px`,
+          left: `${itemRect.left - listRect.left - translate}px`,
           width: `${itemRect.width}px`,
           top: '',
           height: '',
