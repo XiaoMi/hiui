@@ -219,6 +219,10 @@ export const useTable = ({
   const [activeSorterColumn, setActiveSorterColumn] = useState(null)
   const [activeSorterType, setActiveSorterType] = useState(null)
 
+  // ************************ 列冻结 ************************ //
+
+  const [freezeColKeys, setFreezeColKeys] = useState([])
+
   // ************************ 列高亮 ************************ //
 
   /**
@@ -263,7 +267,6 @@ export const useTable = ({
 
   console.log('hoveredColKey', hoveredColKey)
 
-  const [freezeColumn, setFreezeColumn] = useState(null)
   const [hoverRow, setHoverRow] = useState(null)
 
   // 分页
@@ -446,6 +449,9 @@ export const useTable = ({
     currentPage,
     trySetCurrentPage,
     errorRowKeys: [],
+    // 冻结列
+    freezeColKeys,
+    setFreezeColKeys,
     // 行高亮
     onHighlightedRowChange,
     isHighlightedRow,
@@ -457,13 +463,14 @@ export const useTable = ({
     highlightedColKeys,
     trySetHighlightedColKeys,
     // 列 hover
+    showColHighlight,
     isHoveredCol,
     onHoveredColChange,
     // 行拖拽
     draggable,
     highlightColumns: [],
     alignRightColumns,
-    showColHighlight,
+
     dragRowRef,
     onDrop,
 
