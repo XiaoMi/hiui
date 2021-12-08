@@ -51,8 +51,6 @@
   $var-name: get-text-css-name-var('size-' + $key);
   $var-value: get-text-size($key);
 
-  @debug $var-name;
-
   @return var(#{$var-name}, #{$var-value});
 }
 

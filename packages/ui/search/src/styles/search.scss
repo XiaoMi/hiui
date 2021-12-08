@@ -1,0 +1,20 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-search' !default;
+
+.#{$prefix} {
+  &__dropdown {
+    min-width: 200px;
+
+    &-item {
+      padding: 4px 12px;
+      line-height: 22px;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        background-color: use-color('gray', 200);
+      }
+    }
+  }
+}
