@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, forwardRef, useCallback } from 'react'
 import classNames from 'classnames'
-import _, { isArray } from 'lodash'
+import _, { isArray, isNil } from 'lodash'
 
 import Popper from '../popper'
 import SelectInput from './SelectInput'
@@ -374,40 +374,39 @@ const InternalSelect = (props) => {
 
   const remoteSearch = useCallback(
     (keyword) => {
-      if (typeof dataSource === 'function') {
-        const resultMayBePromise = dataSource(keyword)
+      const resultMayBePromise = typeof dataSource === 'function' ? dataSource(keyword) : dataSource
 
-        if (resultMayBePromise !== undefined && resultMayBePromise !== null) {
-          if (resultMayBePromise.toString() === '[object Promise]') {
-            // 处理promise函数
-            setLoading(true)
-            resultMayBePromise
-              .then((res) => {
-                setLoading(false)
+      if (isNil(resultMayBePromise)) return
 
-                if (res !== undefined && res !== null) {
-                  setDropdownItems(Array.isArray(res) ? res : [])
-                }
-              })
-              .catch(() => {
-                setLoading(false)
-                setDropdownItems([])
-              })
-          } else {
-            setDropdownItems(Array.isArray(resultMayBePromise) ? resultMayBePromise : [])
-          }
-        }
+      if (Array.isArray(resultMayBePromise)) {
+        setDropdownItems(resultMayBePromise)
         return
       }
 
-      // 支持传入对象
-      if (dataSource) {
-        // 调用接口
-        HiRequestSearch(dataSource, keyword)
+      if (resultMayBePromise.toString() === '[object Promise]') {
+        setLoading(true)
+        resultMayBePromise.then(
+          (res) => {
+            setLoading(false)
+
+            if (isNil(res)) return
+
+            setDropdownItems(Array.isArray(res) ? res : [])
+          },
+          () => {
+            setLoading(false)
+            setDropdownItems([])
+          }
+        )
+        return
       }
+
+      // 传入对象, 调用接口
+      HiRequestSearch(resultMayBePromise, keyword)
     },
     [dataSource, keyword]
   )
+
   const HiRequestSearch = useCallback((_dataSource, keyword) => {
     const {
       url,
