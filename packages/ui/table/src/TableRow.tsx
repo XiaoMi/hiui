@@ -9,6 +9,7 @@ import { defaultLoadingIcon } from './icons'
 import { IconButton } from '@hi-ui/icon-button'
 import { TableCell } from './TableCell'
 import { TableExpandedRow } from './TableExpandedRow'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -64,8 +65,13 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
       disabledData,
       draggable,
       onDragStart: onDragStartContext,
-      dargInfo,
+      onDragLeave: onDragLeaveContext,
+      onDragEnd: onDragEndContext,
+      onDrop: onDropContext,
+      dragRowRef,
     } = useTableContext()
+
+    // ** ************** checkbox 处理 *************** *//
 
     // TODO: 提取到外部
     const checkboxConfig =
@@ -77,7 +83,6 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
     }
 
     const rowExpand = rowExpandable && rowExpandable(rowData)
-    const [dropHightLineStatus, setDropHightLineStatus] = React.useState(null)
 
     const rowKey = rowData.key
 
@@ -87,102 +92,150 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
       )
     })
 
+    // ** ************** 拖拽管理 *************** *//
+
+    const [dragging, setDragging] = React.useState(false)
+    const [dragDirection, setDragDirection] = React.useState<string>()
+
+    const onDragStartContextLatest = useLatestCallback(onDragStartContext)
+
     const onDragStart = React.useCallback(
       (evt) => {
         if (!draggable) return
 
+        evt.stopPropagation()
+
         const clientY = evt.clientY
-        dargInfo.current = {
+
+        dragRowRef.current = {
           startClientY: clientY,
-          dragKey: rowKey,
+          dragId: rowKey,
           level: level,
           rowData: rowData,
         }
-        onDragStartContext && onDragStartContext(rowData)
-        setDragStatus(true)
-        setDragRowKey(rowKey)
+
+        setDragging(true)
+
+        evt.dataTransfer.setData('tableRow', JSON.stringify({ sourceId: rowKey }))
+
+        onDragStartContextLatest(rowData)
       },
-      [
-        rowData,
-        // dragStatus,
-        // dragRowKey,
-        onDragStartContext,
-        draggable,
-        dargInfo,
-        level,
-        rowKey,
-        setDragRowKey,
-        setDragStatus,
-      ]
+      [draggable, dragRowRef, onDragStartContextLatest, rowData, level, rowKey]
     )
 
-    const onDragEnter = React.useCallback(
+    const onDragOver = React.useCallback(
       (evt) => {
         if (!draggable) return
 
-        const { startClientY, dragKey } = dargInfo.current
-        const clienY = evt.clientY
-        dargInfo.current = {
-          ...dargInfo.current,
-          dropKey: rowKey,
-          dropClientY: clienY,
-          dropRowData: rowData,
+        evt.preventDefault()
+        evt.stopPropagation()
+
+        if (!dragRowRef.current) return
+
+        const { startClientY, dragId } = dragRowRef.current
+
+        if (dragId === rowKey) return
+
+        const hoverClientY = evt.clientY
+
+        if (hoverClientY < startClientY) {
+          setDragDirection('top')
+        } else {
+          setDragDirection('bottom')
         }
-        dragKey !== rowKey && setDropHightLineStatus(clienY < startClientY ? 'top' : 'bottom')
       },
-      [rowKey, draggable, rowData, dargInfo]
+      [draggable, dragRowRef, rowKey]
     )
 
-    // draggable={draggable}
-    const onMouseMove = () => {
-      setDragRowKey(null)
-      setDragStatus(false)
-    }
+    const onDragLeaveContextLatest = useLatestCallback(onDragLeaveContext)
 
-    const onDragEnd = () => {
-      if (!draggable) return
-      dargInfo.current = {}
-      setDropHightLineStatus(null)
-    }
+    const onDragLeave = React.useCallback(
+      (evt: React.DragEvent) => {
+        if (!draggable) return
 
-    const onDragOver = (e) => {
-      if (!draggable) return
-      e.preventDefault()
-    }
+        evt.preventDefault()
+        evt.stopPropagation()
 
-    const onDragLeave = () => {
-      if (!draggable) return
-      setDropHightLineStatus(null)
-    }
+        setDragDirection(undefined)
+        onDragLeaveContextLatest(evt)
+      },
+      [draggable, onDragLeaveContextLatest]
+    )
 
-    const highlighted = isHighlightedRow(rowData.key)
+    const onDragEndContextLatest = useLatestCallback(onDragEndContext)
+
+    const onDragEnd = React.useCallback(
+      (evt: React.DragEvent) => {
+        if (!draggable) return
+
+        evt.preventDefault()
+        evt.stopPropagation()
+
+        evt.dataTransfer.clearData()
+        dragRowRef.current = null
+        setDragDirection(undefined)
+        setDragging(false)
+
+        onDragEndContextLatest(evt)
+      },
+      [draggable, dragRowRef, onDragEndContextLatest]
+    )
+
+    const onDropContextLatest = useLatestCallback(onDropContext)
+
+    // 放置目标元素时触发事件
+    const onDrop = React.useCallback(
+      (evt: React.DragEvent) => {
+        console.log(dragRowRef.current)
+
+        if (!draggable) return
+        if (!dragRowRef.current) return
+
+        const { dragId } = dragRowRef.current
+
+        evt.preventDefault()
+        evt.stopPropagation()
+
+        setDragDirection(undefined)
+        dragRowRef.current = null
+
+        const targetId = rowKey
+
+        if (dragId === targetId) return
+
+        try {
+          const { sourceId } = JSON.parse(evt.dataTransfer.getData('tableRow'))
+
+          onDropContextLatest(sourceId, targetId, dragDirection)
+        } catch (error) {
+          console.error(error)
+        }
+      },
+      [draggable, dragRowRef, onDropContextLatest, dragDirection, rowKey]
+    )
+
+    // ** ************** 行状态管理 *************** *//
+
+    const highlighted = isHighlightedRow(rowKey)
+    const hovered = hoverRow === rowKey
+    const hasError = errorRowKeys.includes(rowKey)
 
     const handleRowDoubleClick = () => {
       onHighlightedRowChange(rowData, !highlighted)
     }
 
-    const hovered = hoverRow === rowData.key
+    console.log('dragDirection', dragDirection)
 
     const cls = cx(
-      `${prefixCls}__row`,
-      highlighted && `${prefixCls}__row--highlight`,
-      hovered && `${prefixCls}__row--hovered`,
-
-      {
-        [`${prefixCls}__row--error`]: errorRowKeys.includes(rowData.key),
-        [`${prefixCls}__row--total`]: isSumRow,
-        [`${prefixCls}__row--draggable`]: draggable,
-        [`${prefixCls}__row--draging`]: draggable && dragRowKey === rowKey,
-        [`${prefixCls}__row--draggable__border--top`]:
-          draggable &&
-          typeof dargInfo.current.dropKey !== 'undefined' &&
-          dropHightLineStatus === 'top',
-        [`${prefixCls}__row--draggable__border--bottom`]:
-          draggable &&
-          typeof dargInfo.current.dropKey !== 'undefined' &&
-          dropHightLineStatus === 'bottom',
-        [`${prefixCls}__row--avg`]: isAvgRow,
-      }
+      `${prefixCls}-row`,
+      hasError && `${prefixCls}-row--error`,
+      hovered && `${prefixCls}-row--hovered`,
+      highlighted && `${prefixCls}-row--highlight`,
+      draggable && `${prefixCls}-row--draggable`,
+      draggable && dragging && `${prefixCls}-row--dragging`,
+      draggable && dragDirection && `${prefixCls}-row--drag-${dragDirection}`,
+      isSumRow && `${prefixCls}-row--total`,
+      isAvgRow && `${prefixCls}-row--avg`
     )
 
     return [
@@ -190,12 +243,12 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
         className={cls}
         key="row"
         onDoubleClick={handleRowDoubleClick}
+        draggable={draggable}
         onDragStart={onDragStart}
-        onDragEnter={onDragEnter}
-        onMouseMove={onMouseMove}
+        onDragOver={onDragOver}
         onDragEnd={onDragEnd}
         onDragLeave={onDragLeave}
-        onDragOver={onDragOver}
+        onDrop={onDrop}
       >
         {rowSelection && isFixed !== 'right' && !isSumRow && !isAvgRow ? (
           <td

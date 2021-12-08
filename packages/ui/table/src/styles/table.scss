@@ -59,7 +59,7 @@ $prefix: '#{$component-prefix}-table' !default;
     // }
   }
 
-  &__row {
+  &-row {
     &:hover {
       & > td {
         background-color: use-color-mode('primary-10');
@@ -93,6 +93,28 @@ $prefix: '#{$component-prefix}-table' !default;
     &--highlight {
       & > td {
         background-color: use-color-mode('primary-10');
+      }
+    }
+
+    &--dragging {
+      // background: use-color('primary-20');
+      background-color: use-color-mode('primary-10');
+
+      // .hi-table__col--sticky {
+      //   background: use-color('primary-20');
+      // }
+    }
+
+    &--drag-top {
+      // TODO: 使用伪类，避免位置抖动
+      td {
+        border-top: 2px dashed use-color-mode('primary');
+      }
+    }
+
+    &--drag-bottom {
+      td {
+        border-bottom: 2px dashed use-color-mode('primary');
       }
     }
   }

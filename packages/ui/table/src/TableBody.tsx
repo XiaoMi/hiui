@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { TableRow } from './TableRow'
+import { useTableContext } from './context'
 // import { Column, RowSelection } from './Table'
 // import { Checkbox } from '@hi-ui/checkbox'
 
@@ -12,7 +13,9 @@ const _prefix = getPrefixCls(_role)
  * TODO: What is TableBody
  */
 export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
-  ({ prefixCls = _prefix, data, columns, firstRowRef, fixedColWidth, rowSelection }, ref) => {
+  ({ prefixCls = _prefix, columns, firstRowRef, fixedColWidth, rowSelection }, ref) => {
+    const { data } = useTableContext()
+
     const cls = cx(`${prefixCls}__body`)
 
     const calcColPosition = (col, idx) => {

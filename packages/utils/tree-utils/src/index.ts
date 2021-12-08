@@ -153,20 +153,23 @@ export const fFindNodeById = <T extends BaseTreeNodeData>(
  * @param targetId
  * @returns 返回第一个被查找到的节点
  */
-export const findNodeById = <T extends BaseTreeNodeData>(
+export const findNodeById = <T extends BaseTreeNode>(
   treeData: T[],
-  targetId: React.ReactText
+  targetId: React.ReactText,
+  options?: { idFieldName?: string; childrenFieldName?: string }
 ): null | T => {
+  const { idFieldName = 'id', childrenFieldName = 'children' } = options || {}
+
   const { length } = treeData
   for (let i = 0; i < length; ++i) {
     const node = treeData[i]
 
-    if (targetId === node.id) {
+    if (targetId === node[idFieldName]) {
       return node
     }
 
-    if (node.children) {
-      const foundNode = findNodeById(node.children, targetId)
+    if (node[childrenFieldName]) {
+      const foundNode = findNodeById(node[childrenFieldName], targetId)
 
       if (foundNode) {
         return foundNode as T
@@ -229,19 +232,24 @@ export const findNodesByIds = <T extends BaseTreeNodeData>(
  * @param targetId
  * @returns
  */
-export const deleteNodeById = <T extends BaseTreeNodeData>(
+export const deleteNodeById = <T extends BaseTreeNode>(
   treeData: T[],
-  targetId: React.ReactText
+  targetId: React.ReactText,
+  options?: { idFieldName?: string; childrenFieldName?: string }
 ) => {
+  const { idFieldName = 'id', childrenFieldName = 'children' } = options || {}
+
   const { length } = treeData
+
   for (let i = 0; i < length; ++i) {
     const node = treeData[i]
 
-    if (targetId === node.id) {
+    if (targetId === node[idFieldName]) {
       return treeData.splice(i, 1)
     }
-    if (node.children) {
-      deleteNodeById(node.children, targetId)
+
+    if (node[childrenFieldName]) {
+      deleteNodeById(node[childrenFieldName], targetId, options)
     }
   }
 }
@@ -291,7 +299,7 @@ export const addChildNodeById = <T extends BaseTreeNodeData>(
  * @param targetId
  * @param children
  */
-export const addChildrenById = <T extends BaseTreeNodeData>(
+export const addChildrenById = <T extends BaseTreeNode>(
   treeData: T[],
   targetId: React.ReactText,
   children: T[]
@@ -319,23 +327,26 @@ export const addChildrenById = <T extends BaseTreeNodeData>(
  * @param position 0 表示插入到指定节点之前，1 表示之后
  * @returns
  */
-export const insertNodeById = <T extends BaseTreeNodeData>(
+export const insertNodeById = <T extends BaseTreeNode>(
   treeData: T[],
   targetId: React.ReactText,
   sourceNode: T,
-  position: 0 | 1
+  position: 0 | 1,
+  options?: { idFieldName?: string; childrenFieldName?: string }
 ) => {
+  const { idFieldName = 'id', childrenFieldName = 'children' } = options || {}
+
   const { length } = treeData
   for (let i = 0; i < length; ++i) {
     const node = treeData[i]
 
-    if (targetId === node.id) {
+    if (targetId === node[idFieldName]) {
       treeData.splice(i + position, 0, sourceNode)
       return
     }
 
-    if (node.children) {
-      insertNodeById(node.children, targetId, sourceNode, position)
+    if (node[childrenFieldName]) {
+      insertNodeById(node[childrenFieldName], targetId, sourceNode, position)
     }
   }
 }

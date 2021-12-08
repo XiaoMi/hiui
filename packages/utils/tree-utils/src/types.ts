@@ -1,6 +1,6 @@
 import React from 'react'
 
-export interface BaseTreeNode {
+export interface BaseTreeNode extends Record<string, any> {
   children?: BaseTreeNode[]
 }
 

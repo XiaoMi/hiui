@@ -8,10 +8,17 @@ import {
   TableFixedOptions,
 } from './types'
 import { PaginationProps } from '@hi-ui/pagination'
-import { cloneTree, flattenTree } from '@hi-ui/tree-utils'
+import {
+  cloneTree,
+  deleteNodeById,
+  fFindNodeById,
+  findNodeById,
+  flattenTree,
+  insertNodeById,
+} from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { deleteRowByKey, getMaskItemsWIdth, setRowByKey } from './utils'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isFunction, isPromise } from '@hi-ui/type-assertion'
 import { useCheck, useSelect } from '@hi-ui/use-check'
 
 const DEFAULT_COLUMNS = [] as []
@@ -69,7 +76,7 @@ export const useTable = ({
   draggable = false,
   fieldKey = 'key',
   onDragStart,
-  onDrop,
+  onDrop: onDropProp,
   onDropEnd,
   // getColKeyValue,
   // sortCols,
@@ -134,28 +141,61 @@ export const useTable = ({
     }
   }, [columnsProp, data, fixedToColumn])
 
-  const draggingInfoRef = useRef(DEFAULT_DRAG_INFO)
-
   const [cacheData, setCacheData] = useState(data)
 
   const getItemKeyValue = (item: any) => item[fieldKey]
 
+  // ************************ 拖拽 ************************ //
+  const dragRowRef = React.useRef<any | null>(null)
+
   const onDropEndLatest = useLatestCallback(onDropEnd)
 
-  const updateData = useCallback(() => {
-    if (typeof draggingInfoRef.current.dropKey !== 'undefined') {
-      const { rowData, dropRowData } = draggingInfoRef.current
+  const onDrop = useCallback(
+    (sourceId, targetId, dragDirection) => {
+      console.log(sourceId, targetId, dragDirection)
 
-      const restData = deleteRowByKey(cloneTree(cacheData), draggingInfoRef.current)
+      if (!draggable) return
+      if (targetId === sourceId) return
 
-      const _data = setRowByKey(cloneTree(restData), draggingInfoRef.current)
+      // const { rowData, dropRowData, level } = dragRowRef.current
+      // TODO： 根据 id 查询数据原始数据
 
-      draggingInfoRef.current = DEFAULT_DRAG_INFO
+      const sourceNode = findNodeById(cacheData, sourceId, { idFieldName: 'key' })
+      const targetNode = findNodeById(cacheData, targetId, { idFieldName: 'key' })
 
-      onDropEndLatest(rowData, dropRowData, _data)
-      setCacheData(_data)
-    }
-  }, [cacheData, onDropEndLatest])
+      if (!sourceNode || !targetNode) {
+        // console.log('未找到任何节点(sourceNode, targetNode)', sourceNode, targetNode)
+        return
+      }
+
+      const nextTreeData = cloneTree(cacheData)
+
+      deleteNodeById(nextTreeData, sourceId, { idFieldName: 'key' })
+      insertNodeById(nextTreeData, targetId, sourceNode, dragDirection === 'top' ? 0 : 1, {
+        idFieldName: 'key',
+      })
+
+      const resultMaybePromise = isFunction(onDropProp)
+        ? // TODO: 支持 tree 拖拽层级，第四个参数
+          onDropProp(sourceNode, targetNode, { before: cacheData, after: nextTreeData }, 1)
+        : true
+
+      console.log(nextTreeData, sourceNode)
+
+      if (resultMaybePromise === true) {
+        setCacheData(nextTreeData)
+        onDropEndLatest(sourceNode, targetNode, cacheData)
+      } else if (isPromise(resultMaybePromise)) {
+        resultMaybePromise.then((res) => {
+          if (res === true) {
+            setCacheData(nextTreeData)
+            onDropEndLatest(sourceNode, targetNode, cacheData)
+          }
+        })
+      }
+    },
+    [draggable, onDropProp, cacheData, onDropEndLatest]
+  )
 
   const [columns, setColumns] = useState(columnsProp)
 
@@ -179,18 +219,7 @@ export const useTable = ({
   const [activeSorterColumn, setActiveSorterColumn] = useState(null)
   const [activeSorterType, setActiveSorterType] = useState(null)
 
-  /**
-   * 控制行高亮，依据 data 中的 key 控制
-   */
-  const [highlightedRowKeys, trySetHighlightedRowKeys] = useUncontrolledState(
-    DEFAULT_HIGHLIGHTED_ROW_KEYS,
-    highlightedRowKeysProp
-  )
-  const [onHighlightedRowChange, isHighlightedRow] = useCheck({
-    checkedIds: highlightedRowKeys,
-    onCheck: trySetHighlightedRowKeys as any,
-    idFieldName: 'key',
-  })
+  // ************************ 列高亮 ************************ //
 
   /**
    * 控制列高亮，依据 column 中的 dataKey 控制
@@ -207,7 +236,7 @@ export const useTable = ({
   })
 
   /**
-   * 设置列 hover 态，依据 column 中的 dataKey 控制
+   * 设置列 hover 高亮，依据 column 中的 dataKey 控制
    */
   const [hoveredColKey, setHoveredColKey] = useState<React.ReactText>('')
 
@@ -215,6 +244,21 @@ export const useTable = ({
     selectedId: hoveredColKey,
     onSelect: setHoveredColKey,
     idFieldName: 'dataKey',
+  })
+
+  // ************************ 行高亮 ************************ //
+
+  /**
+   * 控制行高亮，依据 data 中的 key 控制
+   */
+  const [highlightedRowKeys, trySetHighlightedRowKeys] = useUncontrolledState(
+    DEFAULT_HIGHLIGHTED_ROW_KEYS,
+    highlightedRowKeysProp
+  )
+  const [onHighlightedRowChange, isHighlightedRow] = useCheck({
+    checkedIds: highlightedRowKeys,
+    onCheck: trySetHighlightedRowKeys as any,
+    idFieldName: 'key',
   })
 
   console.log('hoveredColKey', hoveredColKey)
@@ -313,19 +357,6 @@ export const useTable = ({
     }
   }
 
-  const onDropCallback = useCallback(() => {
-    if (!draggable) return
-    const { rowData, dropRowData, level } = draggingInfoRef.current
-    const onDropCallback = onDrop ? onDrop(rowData, dropRowData, data, level) : true
-    if (onDropCallback.toString() === '[object Promise]') {
-      onDropCallback.then((res: any) => {
-        res && updateData()
-      })
-    } else {
-      onDropCallback && updateData()
-    }
-  }, [data, draggable, onDrop, updateData])
-
   // 处理拉平数据
   // useEffect(() => {
   //   let _columns = cloneTree(dataSource ? serverTableConfig.columns || [] : columnsProp)
@@ -405,6 +436,7 @@ export const useTable = ({
 
   return {
     columns,
+    data: cacheData,
     flattedColumns,
     flattedColumnsWithoutChildren,
     fixedColWidth,
@@ -425,11 +457,15 @@ export const useTable = ({
     highlightedColKeys,
     trySetHighlightedColKeys,
     // 列 hover
-    onHoveredColChange,
     isHoveredCol,
+    onHoveredColChange,
+    // 行拖拽
+    draggable,
     highlightColumns: [],
     alignRightColumns,
     showColHighlight,
+    dragRowRef,
+    onDrop,
 
     // alignLeftColumns,
   }
