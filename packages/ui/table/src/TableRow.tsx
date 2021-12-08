@@ -46,6 +46,8 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
     ref
   ) => {
     const {
+      onHighlightedRowChange,
+      isHighlightedRow,
       checkboxColWidth,
       flattedColumns,
       flattedColumnsWithoutChildren,
@@ -84,14 +86,6 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
         typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
       )
     })
-
-    const handleRowDoubleClick = () => {
-      if (highlightedRowKeys.includes(rowData.key)) {
-        setHighlightRows(highlightedRowKeys.filter((rowKey) => rowKey !== rowData.key))
-      } else {
-        setHighlightRows(highlightedRowKeys.concat(rowData.key))
-      }
-    }
 
     const onDragStart = React.useCallback(
       (evt) => {
@@ -161,25 +155,35 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
       setDropHightLineStatus(null)
     }
 
-    console.log('errorRowKeys', errorRowKeys)
+    const highlighted = isHighlightedRow(rowData.key)
 
-    const cls = cx(`${prefixCls}__row`, {
-      [`${prefixCls}__row--error`]: errorRowKeys.includes(rowData.key),
-      [`${prefixCls}__row--highlight`]:
-        hoverRow === rowData.key || highlightedRowKeys.includes(rowData.key),
-      [`${prefixCls}__row--total`]: isSumRow,
-      [`${prefixCls}__row--draggable`]: draggable,
-      [`${prefixCls}__row--draging`]: draggable && dragRowKey === rowKey,
-      [`${prefixCls}__row--draggable__border--top`]:
-        draggable &&
-        typeof dargInfo.current.dropKey !== 'undefined' &&
-        dropHightLineStatus === 'top',
-      [`${prefixCls}__row--draggable__border--bottom`]:
-        draggable &&
-        typeof dargInfo.current.dropKey !== 'undefined' &&
-        dropHightLineStatus === 'bottom',
-      [`${prefixCls}__row--avg`]: isAvgRow,
-    })
+    const handleRowDoubleClick = () => {
+      onHighlightedRowChange(rowData, !highlighted)
+    }
+
+    const hovered = hoverRow === rowData.key
+
+    const cls = cx(
+      `${prefixCls}__row`,
+      highlighted && `${prefixCls}__row--highlight`,
+      hovered && `${prefixCls}__row--hovered`,
+
+      {
+        [`${prefixCls}__row--error`]: errorRowKeys.includes(rowData.key),
+        [`${prefixCls}__row--total`]: isSumRow,
+        [`${prefixCls}__row--draggable`]: draggable,
+        [`${prefixCls}__row--draging`]: draggable && dragRowKey === rowKey,
+        [`${prefixCls}__row--draggable__border--top`]:
+          draggable &&
+          typeof dargInfo.current.dropKey !== 'undefined' &&
+          dropHightLineStatus === 'top',
+        [`${prefixCls}__row--draggable__border--bottom`]:
+          draggable &&
+          typeof dargInfo.current.dropKey !== 'undefined' &&
+          dropHightLineStatus === 'bottom',
+        [`${prefixCls}__row--avg`]: isAvgRow,
+      }
+    )
 
     return [
       <tr
@@ -235,7 +239,7 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
         ) : null}
 
         {flattedColumnsWithoutChildren.map((column, idx) => {
-          console.log(column)
+          // console.log(column)
 
           return (
             <TableCell

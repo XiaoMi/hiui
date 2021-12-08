@@ -42,15 +42,17 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
     ref
   ) => {
     const {
-      highlightedColKeys,
-      highlightColumns,
+      // onHighlightedColChange,
+      isHighlightedCol,
       alignRightColumns,
       // prefixCls,
       onLoadChildren,
       loadChildren,
-      hoverColIndex,
-      setHoverColIndex,
+      // isHoveredCol,
+      // onHoveredColChange,
       showColHighlight,
+      isHoveredCol,
+      onHoveredColChange,
     } = useTableContext()
 
     const [loading, setLoading] = React.useState(false)
@@ -96,12 +98,6 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
 
     const cellTextAlign = alignRightColumns.includes(dataKey) ? 'right' : align
 
-    const stickyCell =
-      typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
-
-    const highlightedCell =
-      highlightedColKeys.includes(dataKey) || highlightColumns.includes(dataKey)
-
     /**
      * 点击展开节点时触发
      */
@@ -138,12 +134,14 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
       }
     }
 
+    const sticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
+
     const cls = cx(
       prefixCls,
       className,
-      highlightedCell && `${prefixCls}__col--highlight`,
-      showColHighlight && hoverColIndex === dataKey && `${prefixCls}__col__hover--highlight`,
-      stickyCell && `${prefixCls}__col--sticky`
+      isHighlightedCol(dataKey) && `${prefixCls}__col--highlight`,
+      isHoveredCol(dataKey) && `${prefixCls}__col--hovered-highlight`,
+      sticky && `${prefixCls}__col--sticky`
     )
 
     // 交互：第一列为操作节点列
@@ -154,7 +152,7 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
         key={dataKey}
         className={cls}
         style={{
-          position: stickyCell ? 'sticky' : undefined,
+          position: sticky ? 'sticky' : undefined,
           textAlign: cellTextAlign,
           right: rightStickyWidth + 'px',
           left: leftStickyWidth + 'px',
@@ -162,8 +160,8 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
         colSpan={cellContent.props.colSpan}
         rowSpan={cellContent.props.rowSpan}
         // 按需绑定函数，避免频繁的 setState 特别消耗性能
-        onMouseEnter={showColHighlight ? () => setHoverColIndex(dataKey) : undefined}
-        onMouseLeave={showColHighlight ? () => setHoverColIndex(null) : undefined}
+        onMouseEnter={showColHighlight ? () => onHoveredColChange(rawColumn, true) : undefined}
+        onMouseLeave={showColHighlight ? () => onHoveredColChange(rawColumn, false) : undefined}
       >
         {/* 渲染缩进 */}
         {isSwitcherCol && depth > 0 ? renderIndent({ depth, prefixCls }) : null}

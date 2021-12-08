@@ -12,7 +12,7 @@ import {
   TableRowSelection,
 } from './types'
 import Pagination, { PaginationProps } from '@hi-ui/pagination'
-import { useTable } from './use-table'
+import { useTable, UseTableProps } from './use-table'
 import { TableProvider, useTableContext } from './context'
 
 const _role = 'table'
@@ -30,6 +30,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       prefixCls = _prefix,
       role = _role,
       className,
+      striped = false,
       // data = DEFAULT_DATA,
       // columns = DEFAULT_COLUMNS,
       // fixedToColumn,
@@ -79,7 +80,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     const providedValue = useTable(rest)
 
     const {
-      striped,
+      // striped,
       bordered,
       size,
       columns,
@@ -139,7 +140,9 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
   }
 )
 
-export interface TableProps extends Omit<HiBaseHTMLProps<'div'>, 'onDrop'> {}
+export interface TableProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'onDrop' | 'draggable' | 'onDragStart'>,
+    UseTableProps {}
 
 if (__DEV__) {
   Table.displayName = 'Table'

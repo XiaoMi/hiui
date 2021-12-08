@@ -20,6 +20,16 @@ $prefix: '#{$component-prefix}-table' !default;
     position: relative;
   }
 
+  &--striped {
+    .#{$prefix}__row:nth-child(2n) {
+      // background-color: use-color('gray', 50);
+
+      .#{$prefix}-cell {
+        background-color: use-color('gray', 50);
+      }
+    }
+  }
+
   &--sticky {
     position: sticky;
     top: 0;
@@ -38,22 +48,64 @@ $prefix: '#{$component-prefix}-table' !default;
   }
 
   &__body {
-    & > tr {
-      & > td {
-        background: #fff;
-        white-space: nowrap;
-        padding: 16px;
-        color: #333;
-        border-bottom: 1px solid #f0f0f0;
-      }
-    }
+    // & > tr {
+    //   & > td {
+    //     background: #fff;
+    //     white-space: nowrap;
+    //     padding: 16px;
+    //     color: #333;
+    //     border-bottom: 1px solid #f0f0f0;
+    //   }
+    // }
   }
 
   &__row {
     &:hover {
       & > td {
-        background: #f0f5fe;
+        background-color: use-color-mode('primary-10');
       }
     }
+
+    &__indent {
+      display: inline-block;
+      width: 14px;
+      height: 100%;
+    }
+
+    &--hovered {
+      background: #f0f5fe;
+    }
+
+    &--expanded {
+      background: #fbfbfb;
+
+      & > td {
+        color: use-color('gray', 800);
+      }
+    }
+
+    &--error {
+      & > td {
+        color: use-color-mode('danger');
+      }
+    }
+
+    &--highlight {
+      & > td {
+        background-color: use-color-mode('primary-10');
+      }
+    }
+  }
+}
+
+.#{$prefix}-cell {
+  // background: #fff;
+  white-space: nowrap;
+  padding: 16px;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+
+  &__col--hovered-highlight {
+    background-color: use-color-mode('primary-10');
   }
 }

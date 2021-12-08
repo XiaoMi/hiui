@@ -12,6 +12,7 @@ import { cloneTree, flattenTree } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { deleteRowByKey, getMaskItemsWIdth, setRowByKey } from './utils'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { useCheck, useSelect } from '@hi-ui/use-check'
 
 const DEFAULT_COLUMNS = [] as []
 const DEFAULT_DATA = [] as []
@@ -44,8 +45,8 @@ export const useTable = ({
   resizable = false,
   size,
   errorRowKeys = DEFAULT_ERROR_ROW_KEYS,
-  highlightedRowKeys = DEFAULT_HIGHLIGHTED_ROW_KEYS,
-  highlightedColKeys = DEFAULT_HIGHLIGHTED_COL_KEYS,
+  highlightedRowKeys: highlightedRowKeysProp,
+  highlightedColKeys: highlightedColKeysProp,
   expandRowKeys: expandRowKeysProp,
   onExpand,
   // expandERowKeys: expandRowKeysProp,
@@ -177,8 +178,47 @@ export const useTable = ({
   const hiTable = useRef(null)
   const [activeSorterColumn, setActiveSorterColumn] = useState(null)
   const [activeSorterType, setActiveSorterType] = useState(null)
-  const [highlightColumns, setHighlightColumns] = useState([])
-  const [highlightRows, setHighlightRows] = useState([])
+
+  /**
+   * 控制行高亮，依据 data 中的 key 控制
+   */
+  const [highlightedRowKeys, trySetHighlightedRowKeys] = useUncontrolledState(
+    DEFAULT_HIGHLIGHTED_ROW_KEYS,
+    highlightedRowKeysProp
+  )
+  const [onHighlightedRowChange, isHighlightedRow] = useCheck({
+    checkedIds: highlightedRowKeys,
+    onCheck: trySetHighlightedRowKeys as any,
+    idFieldName: 'key',
+  })
+
+  /**
+   * 控制列高亮，依据 column 中的 dataKey 控制
+   */
+  const [highlightedColKeys, trySetHighlightedColKeys] = useUncontrolledState(
+    DEFAULT_HIGHLIGHTED_COL_KEYS,
+    highlightedColKeysProp
+  )
+
+  const [onHighlightedColChange, isHighlightedCol] = useCheck({
+    checkedIds: highlightedColKeys,
+    onCheck: trySetHighlightedColKeys as any,
+    idFieldName: 'dataKey',
+  })
+
+  /**
+   * 设置列 hover 态，依据 column 中的 dataKey 控制
+   */
+  const [hoveredColKey, setHoveredColKey] = useState<React.ReactText>('')
+
+  const [onHoveredColChange, isHoveredCol] = useSelect({
+    selectedId: hoveredColKey,
+    onSelect: setHoveredColKey,
+    idFieldName: 'dataKey',
+  })
+
+  console.log('hoveredColKey', hoveredColKey)
+
   const [freezeColumn, setFreezeColumn] = useState(null)
   const [hoverRow, setHoverRow] = useState(null)
 
@@ -202,7 +242,6 @@ export const useTable = ({
   // }, [dataSource, currentPage])
 
   const [eachRowHeight, setEachRowHeight] = useState({})
-  const [hoverColIndex, setHoverColIndex] = useState(null)
   const loadChildren = useRef(null)
 
   // 固定列的宽度
@@ -216,10 +255,6 @@ export const useTable = ({
 
   const [scrollSize, setScrollSize] = useState({ scrollLeft: 0, scrollRight: 1 })
 
-  // 高亮行
-  const _highlightRows = highlightedRowKeys.concat(
-    highlightRows.filter((row) => !highlightedRowKeys.includes(row.key))
-  )
   // 需要右对齐的列
   const alignRightColumns = columns.filter((c) => c.align === 'right').map((col) => col.dataKey)
 
@@ -379,10 +414,23 @@ export const useTable = ({
     currentPage,
     trySetCurrentPage,
     errorRowKeys: [],
-    highlightedRowKeys: [],
-    highlightedColKeys: [],
+    // 行高亮
+    onHighlightedRowChange,
+    isHighlightedRow,
+    highlightedRowKeys,
+    trySetHighlightedRowKeys,
+    // 列高亮
+    onHighlightedColChange,
+    isHighlightedCol,
+    highlightedColKeys,
+    trySetHighlightedColKeys,
+    // 列 hover
+    onHoveredColChange,
+    isHoveredCol,
     highlightColumns: [],
     alignRightColumns,
+    showColHighlight,
+
     // alignLeftColumns,
   }
 }
@@ -548,7 +596,7 @@ export interface UseTableProps {
   /**
    *  高亮行（受控）
    */
-  highlightedRowKeys?: string[]
+  highlightedRowKeys?: React.ReactText[]
   /**
    *  行可选（受控）
    */

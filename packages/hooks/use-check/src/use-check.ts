@@ -5,7 +5,13 @@ import { UseCheckItem } from './types'
 /**
  * 用于多项选择的 hook
  */
-export const useCheck = ({ disabled = false, checkedIds, onCheck, allowCheck }: UseCheckProps) => {
+export const useCheck = ({
+  disabled = false,
+  checkedIds,
+  onCheck,
+  allowCheck,
+  idFieldName = 'id',
+}: UseCheckProps) => {
   const allowCheckRef = useLatestRef(allowCheck)
 
   const onNodeCheck = useCallback(
@@ -13,11 +19,11 @@ export const useCheck = ({ disabled = false, checkedIds, onCheck, allowCheck }: 
       if (disabled) return
       if (allowCheckRef.current && allowCheckRef.current(targetItem) === false) return
 
-      const nextCheckedIds = checkDefault(checkedIds, targetItem, shouldChecked)
+      const nextCheckedIds = checkDefault(checkedIds, targetItem, shouldChecked, idFieldName)
 
       onCheck(nextCheckedIds, targetItem, shouldChecked)
     },
-    [disabled, onCheck, allowCheckRef, checkedIds]
+    [disabled, onCheck, allowCheckRef, checkedIds, idFieldName]
   )
 
   const isCheckedId = useCallback((id: React.ReactText) => checkedIds.indexOf(id) !== -1, [
@@ -44,6 +50,10 @@ export interface UseCheckProps<T extends UseCheckItem = any> {
    * 返回 true 允许选中
    */
   allowCheck?: (targetItem: T) => boolean
+  /**
+   * id 映射的字段
+   */
+  idFieldName?: string
 }
 
 /**
@@ -52,10 +62,11 @@ export interface UseCheckProps<T extends UseCheckItem = any> {
 export const checkDefault = <T extends UseCheckItem>(
   checkedIds: React.ReactText[],
   targetItem: T,
-  shouldChecked: boolean
+  shouldChecked: boolean,
+  idFieldName: string
 ) => {
   let nextCheckedIds = checkedIds
-  const targetId = targetItem.id
+  const targetId = targetItem[idFieldName]
 
   if (shouldChecked) {
     if (nextCheckedIds.indexOf(targetId) === -1) {
