@@ -69,3 +69,32 @@ export const getMaskItemsWIdth = (columns: any) => {
   getAllItemWidth(columns)
   return num
 }
+
+export const parseFixedColumns = (
+  item: any,
+  index: number,
+  arr: any[],
+  key: string,
+  rowSelection: any,
+  parentStickyWidth = 0
+) => {
+  const rowSelectionWith = rowSelection && index === 0 && key === 'leftStickyWidth' ? 50 : 0
+  const width = (arr[index - 1] || { width: 0 }).width || 0
+  const stickyWidth = (arr[index - 1] || { width: 0 })[key] || 0
+  item[key] = width + stickyWidth + rowSelectionWith + parentStickyWidth
+  if (item.children) {
+    const _parentStickyWidth = item[key]
+    const { children } = item
+    children.forEach((childrenItem: any, index: number) => {
+      parseFixedColumns(
+        childrenItem,
+        index,
+        children,
+        key,
+        false,
+        index === 0 ? _parentStickyWidth : 0
+      )
+    })
+  }
+  return item
+}
