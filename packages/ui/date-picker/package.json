@@ -52,7 +52,8 @@
     "@hi-ui/popper": "^4.0.0-alpha.9",
     "@hi-ui/time-picker": "^4.0.0-alpha.0",
     "lodash": "^4.17.21",
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {
     "react": "^17.0.1",

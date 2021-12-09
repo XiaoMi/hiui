@@ -28,20 +28,49 @@ export interface TimePickerStep {
   secondStep?: number
 }
 
+export type TimePickerDisabledHoursFunction = (panel: TimePickerPanelType) => number[]
+export type TimePickerDisabledMinutesFunction = (
+  hour: number,
+  panel: TimePickerPanelType
+) => number[]
+export type TimePickerDisabledSecondsFunction = (
+  hour: number,
+  minute: number,
+  panel: TimePickerPanelType
+) => number[]
+
+export interface TimePickerFilterProps {
+  /**
+   * 禁止选择的小时
+   * @default () => []
+   */
+  disabledHours?: TimePickerDisabledHoursFunction | number[]
+  /**
+   * 禁止选择的分钟
+   * @default () => []
+   */
+  disabledMinutes?: TimePickerDisabledMinutesFunction | number[]
+  /**
+   * 禁止选择的秒数
+   * @default () => []
+   */
+  disabledSeconds?: TimePickerDisabledSecondsFunction | number[]
+}
+
 export interface TimePickerFilter {
   /**
    * 禁止选择的小时
    * @default () => []
    */
-  disabledHours?: (panel: TimePickerPanelType) => number[]
+  disabledHours?: TimePickerDisabledHoursFunction
   /**
    * 禁止选择的分钟
    * @default () => []
    */
-  disabledMinutes?: (hour: number, panel: TimePickerPanelType) => number[]
+  disabledMinutes?: TimePickerDisabledMinutesFunction
   /**
    * 禁止选择的秒数
    * @default () => []
    */
-  disabledSeconds?: (hour: number, minute: number, panel: TimePickerPanelType) => number[]
+  disabledSeconds?: TimePickerDisabledSecondsFunction
 }

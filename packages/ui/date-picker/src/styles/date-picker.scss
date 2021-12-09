@@ -5,9 +5,7 @@ $error-color: use-color('magenta', 600) !default;
 
 .#{$prefix} {
   position: relative;
-  background: use-color-static('white');
   z-index: 1060;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
 
   &__popper {
     width: 288px;
@@ -18,7 +16,7 @@ $error-color: use-color('magenta', 600) !default;
     &--range {
       width: 576px;
 
-      &.hi-datepicker__popper--large {
+      &.#{$prefix}__popper--large {
         width: 866px;
       }
     }
@@ -56,7 +54,7 @@ $error-color: use-color('magenta', 600) !default;
       border: 1px solid use-color('gray', 500);
     }
 
-    &:hover:not(.hi-datepicker__picker--disabled):not(.hi-datepicker__picker--error).bordered {
+    &:hover:not(.#{$prefix}__picker--disabled):not(.#{$prefix}__picker--error).bordered {
       border: 1px solid use-color('blue', 500);
     }
 
@@ -83,7 +81,7 @@ $error-color: use-color('magenta', 600) !default;
         text-align: center;
       }
 
-      &.hi-datepicker__picker--hastime {
+      &.#{$prefix}__picker--hastime {
         width: 400px;
       }
     }
@@ -105,6 +103,8 @@ $error-color: use-color('magenta', 600) !default;
       margin-right: 8px;
       font-size: 14px;
       cursor: pointer;
+      display: block;
+      flex-shrink: 0;
 
       &--disabled {
         cursor: not-allowed;
@@ -143,6 +143,7 @@ $error-color: use-color('magenta', 600) !default;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    font-size: 14px;
   }
 
   &__panel {
@@ -153,12 +154,12 @@ $error-color: use-color('magenta', 600) !default;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
     display: flex;
 
-    .hi-datepicker__panel--left {
+    .#{$prefix}__panel--left {
       min-width: 288px;
       flex: 1;
     }
 
-    .hi-datepicker__panel--right {
+    .#{$prefix}__panel--right {
       flex: 1;
     }
 
@@ -219,11 +220,11 @@ $error-color: use-color('magenta', 600) !default;
 
     &--year,
     &--month {
-      .hi-datepicker__row {
+      .#{$prefix}__row {
         height: 52px;
       }
 
-      .hi-datepicker__cell {
+      .#{$prefix}__cell {
         &-text {
           width: 48px;
         }
@@ -233,7 +234,7 @@ $error-color: use-color('magenta', 600) !default;
 
   &__row {
     &--currentweek {
-      .hi-datepicker__cell {
+      .#{$prefix}__cell {
         &::before {
           content: '';
           background: use-color('blue', 500);
@@ -267,7 +268,7 @@ $error-color: use-color('magenta', 600) !default;
       transform: translateX(-50%);
     }
 
-    &__cell:not(.hi-datepicker__cell--range) {
+    &__cell:not(.#{$prefix}__cell--range) {
       &-text {
         &:hover {
           background-color: use-color('blue', 500);
@@ -280,12 +281,12 @@ $error-color: use-color('magenta', 600) !default;
     }
 
     &--today {
-      .hi-datepicker__cell-text {
+      .#{$prefix}__cell-text {
         border: 1px solid use-color('blue', 500);
       }
     }
 
-    &--range:not(.hi-datepicker__cell--out) {
+    &--range:not(.#{$prefix}__cell--out) {
       &::before {
         content: '';
         background: use-color('blue', 500);
@@ -317,7 +318,7 @@ $error-color: use-color('magenta', 600) !default;
     }
 
     &--large {
-      .hi-datepicker__cell-text {
+      .#{$prefix}__cell-text {
         width: 48px;
         height: 48px;
         line-height: normal;
@@ -327,7 +328,7 @@ $error-color: use-color('magenta', 600) !default;
         font-size: 16px;
       }
 
-      &.hi-datepicker__cell--range:not(.hi-datepicker__cell--out) {
+      &.#{$prefix}__cell--range:not(.#{$prefix}__cell--out) {
         &::before {
           height: 48px;
         }
@@ -335,20 +336,20 @@ $error-color: use-color('magenta', 600) !default;
     }
 
     &--selected {
-      .hi-datepicker__cell-text {
+      .#{$prefix}__cell-text {
         background: use-color('blue', 500);
         color: use-color-static('white');
       }
 
-      .hi-datepicker__cell--lunar {
+      .#{$prefix}__cell--lunar {
         color: use-color-static('white');
       }
 
-      .hi-datepicker__lunar {
+      .#{$prefix}__lunar {
         color: use-color-static('white');
       }
 
-      .hi-datepicker__mark--rest {
+      .#{$prefix}__mark--rest {
         color: use-color-static('white');
       }
     }
@@ -383,7 +384,7 @@ $error-color: use-color('magenta', 600) !default;
     font-size: 14px;
     flex: 1 1 100%;
 
-    &:not(.hi-datepicker__footer--disable):hover {
+    &:not(.#{$prefix}__footer--disable):hover {
       color: use-color('blue', 500);
     }
 

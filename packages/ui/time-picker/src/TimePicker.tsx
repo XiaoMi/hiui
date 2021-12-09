@@ -3,11 +3,11 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import {
-  TimePickerFilter,
   TimePickerStep,
   TimePickerType,
   TimePickerFormat,
   TimePickerPanelType,
+  TimePickerFilterProps,
 } from './@types'
 import { Input } from './Input'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -15,9 +15,10 @@ import { PopperPortal } from '@hi-ui/popper'
 import { CloseCircleFilled, TimeOutlined } from '@hi-ui/icons'
 import { PopContent } from './PopContent'
 import { valueChecker } from './utils/valueChecker'
+import { useFilter } from './hooks/useFilter'
 
 const _role = 'time-picker'
-const _prefix = getPrefixCls(_role)
+export const _prefix = getPrefixCls(_role)
 
 const DefaultValue = ['', '']
 const DefaultDisabledFunc = () => []
@@ -41,9 +42,9 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       type = 'single',
       defaultValue: uncontrolledValue = DefaultValue,
       disabled = false,
-      disabledHours = DefaultDisabledFunc,
-      disabledSeconds = DefaultDisabledFunc,
-      disabledMinutes = DefaultDisabledFunc,
+      disabledHours: originalDisabledHours = DefaultDisabledFunc,
+      disabledSeconds: originalDisabledSeconds = DefaultDisabledFunc,
+      disabledMinutes: originalDisabledMinutes = DefaultDisabledFunc,
       bordered = true,
       onChange: notifyOutside,
       placeholder = DefaultPlaceholder,
@@ -59,6 +60,13 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     )
     const [cacheValue, setCacheValue] = useState<string[]>(value)
     const cacheValueRef = useRef(cacheValue)
+
+    // 将值统一转化为函数
+    const { disabledHours, disabledMinutes, disabledSeconds } = useFilter({
+      disabledHours: originalDisabledHours,
+      disabledMinutes: originalDisabledMinutes,
+      disabledSeconds: originalDisabledSeconds,
+    })
 
     useEffect(() => {
       cacheValueRef.current = [...value]
@@ -241,7 +249,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
 )
 
 type ExtendType = Omit<HiBaseHTMLProps<'div'>, 'placeholder' | 'value' | 'onChange'> &
-  TimePickerFilter &
+  TimePickerFilterProps &
   TimePickerStep
 export interface TimePickerProps extends ExtendType {
   /**

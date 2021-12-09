@@ -99,6 +99,7 @@ const Root = ({
         <PickerIcon
           focus={inputFocus}
           type={type}
+          r
           showTime={showTime}
           disabled={disabled}
           clearable={clearable}

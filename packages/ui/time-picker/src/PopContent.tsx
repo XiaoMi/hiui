@@ -11,22 +11,27 @@ import { getRange } from './utils/getRange'
 import { Panel } from './Panel'
 import { analysisFormat } from './utils/analysisFormat'
 import { getFormatDefault } from './utils/getFormatDefault'
+import { _prefix } from './TimePicker'
+import { useFilter } from './hooks/useFilter'
 
 type ExtendType = Required<TimePickerFilter> & Required<TimePickerStep>
 
 interface PopContentProps extends ExtendType {
-  prefix: string
+  prefix?: string
   value: string[]
   onChange: (value: string[]) => void
   format: TimePickerFormat
   type: TimePickerType
   itemHeight: number
   fullDisplayItemNumber: number
+  style?: React.CSSProperties
 }
+
+const DefaultDisabledFunc = () => []
 
 export const PopContent: FC<PopContentProps> = (props) => {
   const {
-    prefix,
+    prefix = _prefix,
     value: dangerousValue,
     onChange,
     format,
@@ -36,10 +41,19 @@ export const PopContent: FC<PopContentProps> = (props) => {
     hourStep,
     minuteStep,
     secondStep,
-    disabledHours,
-    disabledMinutes,
-    disabledSeconds,
+    disabledHours: originalDisabledHours = DefaultDisabledFunc,
+    disabledSeconds: originalDisabledSeconds = DefaultDisabledFunc,
+    disabledMinutes: originalDisabledMinutes = DefaultDisabledFunc,
+    style,
   } = props
+
+  // 将值统一转化为函数
+  // 由于 pop content 会被 date-picker 直接调用，故而在此多做一次兼容处理
+  const { disabledHours, disabledMinutes, disabledSeconds } = useFilter({
+    disabledHours: originalDisabledHours,
+    disabledMinutes: originalDisabledMinutes,
+    disabledSeconds: originalDisabledSeconds,
+  })
 
   const value = useMemo(() => dangerousValue.map((item) => item || getFormatDefault(format)), [
     dangerousValue,
@@ -91,6 +105,7 @@ export const PopContent: FC<PopContentProps> = (props) => {
   const customDisabledMinute = useCallback(
     (hour: number, panel: TimePickerPanelType) => {
       let result = disabledMinutes(hour, panel)
+
       if (panel === 'range-end') {
         const startHour = getMatchTypeValue(0, TimePickerSelectorType.hour)
         const startMinute = getMatchTypeValue(0, TimePickerSelectorType.minute)
@@ -157,7 +172,6 @@ export const PopContent: FC<PopContentProps> = (props) => {
   )
 
   const componentClass = useMemo(() => `${prefix}__pop-content`, [prefix])
-
   const renderPanel = useCallback(
     (index: number) => {
       return (
@@ -203,7 +217,7 @@ export const PopContent: FC<PopContentProps> = (props) => {
   )
 
   return (
-    <div className={componentClass}>
+    <div className={componentClass} style={style}>
       {renderPanel(0)}
       {type === 'range' && <div className={`${componentClass}__separator`} />}
       {type === 'range' && renderPanel(1)}

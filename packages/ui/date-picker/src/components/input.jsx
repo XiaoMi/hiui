@@ -53,7 +53,11 @@ const Input = ({ date, onChange, onFocus, dir, placeholder }) => {
     <input
       type="text"
       placeholder={placeholder}
-      readOnly={hourStep || minuteStep || secondStep || inputReadOnly ? 'readOnly' : false}
+      // WARNING: 注释老逻辑，暂时无法理解为何存在 step 则不允许输入，按照便捷容错方法，应该是step不为1才会
+      // readOnly={hourStep || minuteStep || secondStep || inputReadOnly ? 'readOnly' : false}
+      readOnly={
+        hourStep !== 1 || minuteStep !== 1 || secondStep !== 1 || inputReadOnly ? 'readOnly' : false
+      }
       className={disabled ? 'disabled' : ''}
       disabled={disabled}
       onChange={inputChangeEvent}

@@ -19,8 +19,10 @@ import useFormat from './hooks/useFormat'
 import useAltData from './hooks/useAltData'
 import { getInRangeDate } from './utils'
 import DPContext from './context'
-import { Popper, PopperJS } from '@hi-ui/popper'
+import { PopperPortal, PopperJS } from '@hi-ui/popper'
 import Root from './components/root'
+import Panel from './components/panel'
+import RangePanel from './components/range-panel'
 
 const DATE_PICKER_PREFIX = getPrefixCls('date-picker')
 
@@ -36,14 +38,14 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       defaultValue,
       placeholder,
       showTime = false,
-      format,
+      format = 'YYYY-MM-DD',
       disabled,
       clearable = true,
       width = 'auto',
       weekOffset,
-      hourStep,
-      minuteStep,
-      secondStep,
+      hourStep = 1,
+      minuteStep = 1,
+      secondStep = 1,
       onChange = () => {},
       timeInterval = 240,
       shortcuts,
@@ -207,6 +209,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const _weekOffset = weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1
 
+    console.error(showPanel)
     return (
       <DPContext.Provider
         value={{
@@ -243,6 +246,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           disabledDate,
           onSelect,
           prefixCls,
+          showPanel,
         }}
       >
         <div className={cls} {...otherProps}>
@@ -259,9 +263,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             }}
             setAttachEl={setAttachEl}
           />
-          <Popper
+          <PopperPortal
             visible={showPanel}
-            zIndex={1050}
             // overlayClassName={overlayClassName}
             placement={placement}
             onClose={onPopperClose}
@@ -270,9 +273,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             // overlayClickOutSideEventName={overlayClickOutSideEventName}
             // onClickOutside={clickOutsideEvent}
           >
-            <div className={popperCls}></div>
-            {/* {type.includes('range') || type === 'timeperiod' ? <RangePanel /> : <Panel />} */}
-          </Popper>
+            <div className={popperCls}>
+              {type.includes('range') || type === 'timeperiod' ? <RangePanel /> : <Panel />}
+            </div>
+          </PopperPortal>
         </div>
       </DPContext.Provider>
     )
@@ -323,7 +327,7 @@ export interface DatePickerProps extends ExtendsType {
    */
   timeInterval?: number
 
-  format: string
+  format?: string
 
   shortcuts?: string[]
 
@@ -351,11 +355,11 @@ export interface DatePickerProps extends ExtendsType {
 
   overlayClassName?: string
 
-  disabledHours?: () => number[]
+  disabledHours?: (() => number[]) | number[]
 
-  disabledMinutes?: (selectedHour: number) => number[]
+  disabledMinutes?: ((selectedHour: number) => number[]) | number[]
 
-  disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[]
+  disabledSeconds?: ((selectedHour: number, selectedMinute: number) => number[]) | number[]
 
   onSelect?: (data: moment.Moment, isCompleted: boolean) => void
 
