@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { useLatestCallback } from '@hi-ui/use-latest'
+import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { isFunction } from '@hi-ui/type-assertion'
 
 // const isEqual = Object.is
@@ -25,9 +25,11 @@ export function useUncontrolledState<T>(
 
   const onChangeLatest = useLatestCallback(onChange)
   const stateIsEqualLatest = useLatestCallback(stateIsEqual)
+  const stateLatestRef = useLatestRef(state)
 
   const tryChangeState = useCallback(
     (stateOrFunction: React.SetStateAction<T>, ...args: any[]) => {
+      const state = stateLatestRef.current
       const nextState = isFunction(stateOrFunction) ? stateOrFunction(state) : stateOrFunction
 
       if (stateIsEqualLatest(nextState, state)) return
@@ -37,7 +39,7 @@ export function useUncontrolledState<T>(
       }
       onChangeLatest(nextState, ...args)
     },
-    [uncontrolled, state, onChangeLatest, stateIsEqualLatest]
+    [uncontrolled, stateLatestRef, onChangeLatest, stateIsEqualLatest]
   )
 
   return [state, tryChangeState] as const
