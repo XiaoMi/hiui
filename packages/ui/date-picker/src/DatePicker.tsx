@@ -26,6 +26,9 @@ import RangePanel from './components/range-panel'
 
 const DATE_PICKER_PREFIX = getPrefixCls('date-picker')
 
+const DEFAULT_DISABLED_DATE = () => false
+const DEFAULT_ON_CHANGE = () => {}
+
 export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
   (
     {
@@ -38,7 +41,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       defaultValue,
       placeholder,
       showTime = false,
-      format = 'YYYY-MM-DD',
+      format,
       disabled,
       clearable = true,
       width = 'auto',
@@ -46,7 +49,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       hourStep = 1,
       minuteStep = 1,
       secondStep = 1,
-      onChange = () => {},
+      onChange = DEFAULT_ON_CHANGE,
       timeInterval = 240,
       shortcuts,
       altCalendar,
@@ -55,9 +58,9 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       dateMarkPreset,
       overlayClassName,
       inputReadOnly,
-      locale,
+      locale = 'zh-CN',
       bordered = true,
-      disabledDate,
+      disabledDate = DEFAULT_DISABLED_DATE,
       max: configMax,
       min: configMin,
       maxDate,
@@ -209,7 +212,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const _weekOffset = weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1
 
-    console.error(showPanel)
     return (
       <DPContext.Provider
         value={{
@@ -226,6 +228,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           placeholder,
           showTime,
           format,
+          iFormat,
           timeInterval,
           shortcuts,
           altCalendar,
@@ -286,10 +289,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 type ExtendsType = Omit<HiBaseHTMLProps<'div'>, 'placeholder'>
 
 export interface DatePickerProps extends ExtendsType {
-  type: DatePickerType
+  type?: DatePickerType
 
-  defaultValue: DatePickerValue
-  value: DatePickerValue
+  defaultValue?: DatePickerValue
+  value?: DatePickerValue
   width?: number | string
 
   min?: Date
@@ -311,9 +314,9 @@ export interface DatePickerProps extends ExtendsType {
 
   placement?: PopperJS.Placement
   /**
-   * @default false
+   * @default () => false
    */
-  disabledDate?: boolean
+  disabledDate?: (currentDate: Date) => boolean
   /**
    * @default true
    */
@@ -329,9 +332,14 @@ export interface DatePickerProps extends ExtendsType {
 
   format?: string
 
-  shortcuts?: string[]
+  shortcuts?:
+    | string[]
+    | {
+        title: string
+        range: (Date | number)[]
+      }[]
 
-  theme: any
+  theme?: any
 
   locale?: string
   /**
@@ -343,13 +351,13 @@ export interface DatePickerProps extends ExtendsType {
   minuteStep?: number
   secondStep?: number
 
-  placeholder: string | string[]
+  placeholder?: string | string[]
 
-  altCalendar?: CalendarItem
+  altCalendar?: CalendarItem[]
 
   altCalendarPreset?: string
 
-  dateMarkRender?: (currentDate: Date, today: Date) => React.ReactNode
+  dateMarkRender?: (currentDate: number, today: number) => React.ReactNode
 
   dateMarkPreset?: string
 

@@ -14,13 +14,8 @@ const Input = ({ date, onChange, onFocus, dir, placeholder }) => {
     secondStep,
     inputReadOnly,
     locale,
+    iFormat,
   } = useContext(DPContext)
-  const [iFormat] = useFormat({
-    type,
-    showTime,
-    format,
-    locale,
-  })
 
   const cacheValues = useRef(null)
   const [value, setValue] = useState('')

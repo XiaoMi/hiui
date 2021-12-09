@@ -51,15 +51,15 @@ $error-color: use-color('magenta', 600) !default;
     box-sizing: border-box;
 
     &.bordered {
-      border: 1px solid use-color('gray', 500);
+      border: 1px solid use-color('gray', 300);
     }
 
     &:hover:not(.#{$prefix}__picker--disabled):not(.#{$prefix}__picker--error).bordered {
-      border: 1px solid use-color('blue', 500);
+      border: 1px solid use-color('brandblue', 500);
     }
 
     &--focus.bordered {
-      border: 1px solid use-color('blue', 500);
+      border: 1px solid use-color('brandblue', 500);
     }
 
     &--error.bordered {
@@ -113,7 +113,7 @@ $error-color: use-color('magenta', 600) !default;
     }
 
     .icon-close-circle {
-      color: use-color('gray', 500);
+      color: use-color('gray', 300);
     }
 
     .icon-close-circle:hover {
@@ -128,7 +128,7 @@ $error-color: use-color('magenta', 600) !default;
       width: 100%;
 
       &::-webkit-input-placeholder {
-        color: use-color('gray', 500);
+        color: use-color('gray', 300);
       }
 
       &.disabled {
@@ -169,7 +169,7 @@ $error-color: use-color('magenta', 600) !default;
   }
 
   &__header {
-    border-bottom: 1px solid use-color('gray', 500);
+    border-bottom: 1px solid use-color('gray', 300);
     display: flex;
     justify-content: space-between;
     height: 48px;
@@ -237,7 +237,7 @@ $error-color: use-color('magenta', 600) !default;
       .#{$prefix}__cell {
         &::before {
           content: '';
-          background: use-color('blue', 500);
+          background: use-color('brandblue', 100);
           display: block;
           height: 24px;
           position: absolute;
@@ -289,7 +289,7 @@ $error-color: use-color('magenta', 600) !default;
     &--range:not(.#{$prefix}__cell--out) {
       &::before {
         content: '';
-        background: use-color('blue', 500);
+        background: use-color('brandblue', 100);
         display: block;
         height: 24px;
         position: absolute;
@@ -337,7 +337,7 @@ $error-color: use-color('magenta', 600) !default;
 
     &--selected {
       .#{$prefix}__cell-text {
-        background: use-color('blue', 500);
+        background: use-color('brandblue', 500);
         color: use-color-static('white');
       }
 
@@ -369,7 +369,7 @@ $error-color: use-color('magenta', 600) !default;
     color: rgba(204, 204, 204, 1);
 
     &--highlight {
-      color: use-color('blue', 500);
+      color: use-color('brandblue', 500);
     }
   }
 
@@ -385,7 +385,7 @@ $error-color: use-color('magenta', 600) !default;
     flex: 1 1 100%;
 
     &:not(.#{$prefix}__footer--disable):hover {
-      color: use-color('blue', 500);
+      color: use-color('brandblue', 500);
     }
 
     &--disable {
@@ -450,7 +450,7 @@ $error-color: use-color('magenta', 600) !default;
     }
 
     &--active {
-      color: use-color('blue', 500);
+      color: use-color('brandblue', 500);
     }
   }
 
@@ -476,7 +476,7 @@ $error-color: use-color('magenta', 600) !default;
       list-style: none;
 
       &:hover {
-        color: use-color('blue', 500);
+        color: use-color('brandblue', 500);
       }
     }
   }
@@ -508,7 +508,7 @@ $error-color: use-color('magenta', 600) !default;
       display: inline-block;
       max-width: 410px;
       word-break: break-all;
-      background: use-color('blue', 500);
+      background: use-color('brandblue', 500);
       border: 1px solid #d8e5ff;
       padding: 7px 12px;
       border-radius: 2px;

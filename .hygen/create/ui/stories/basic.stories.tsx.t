@@ -1,5 +1,5 @@
 ---
-to: <%= h.uiDir(`${name}/stories/basic.stories.tsx`) %>
+to: <%= h.uiDir(`${name}/stories/date.stories.tsx`) %>
 ---
 import React from 'react'
 import <%= h.camelCase(name) %> from '../src'

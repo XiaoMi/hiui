@@ -20,7 +20,7 @@ const RangePanel = () => {
     onPick,
     localeDatas,
     showTime,
-    format,
+    iFormat,
     timeInterval,
     shortcuts,
     theme,
@@ -38,12 +38,6 @@ const RangePanel = () => {
   const calenderClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
   const [views, setViews] = useState([getView(type), getView(type)])
-  const [iFormat] = useFormat({
-    format,
-    type,
-    showTime,
-    locale,
-  })
   const [calRenderDates, setCalRenderDates] = useState([])
   const [range, setRange] = useState({
     start: null,
@@ -235,7 +229,7 @@ const RangePanel = () => {
     (showTime || type === 'timeperiod') && `${prefixCls}__panel--noshadow`
   )
 
-  const timePickerFormat = useTimePickerFormat(format)
+  const timePickerFormat = useTimePickerFormat(iFormat)
   const timePickerData = useTimePickerData(calRenderDates, timePickerFormat)
 
   return (
