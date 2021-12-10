@@ -1,6 +1,6 @@
 import moment from 'moment'
-import { DatePickerProps } from './DatePicker'
 import { FC } from 'react'
+import { DatePickerProps } from './types'
 
 export interface DatePickerStatic {
   format: (date: any, format: string) => string
@@ -13,8 +13,8 @@ export const withStaticWrapper = (
   result.format = (date, format) => {
     return moment(date).format(format)
   }
-  result.localeData = (String) => {
-    return moment.localeData(String)
+  result.localeData = (data: string | string[] | undefined) => {
+    return moment.localeData(data)
   }
   return result
 }

@@ -1,6 +1,11 @@
 export const DAY_MILLISECONDS = 86400000
 export const RANGE_SPLIT = '~'
-export const getLocaleTypeFormatMap = (locale) => {
+
+/**
+ * 获取对应地域，type 对应的 format map
+ * @param locale
+ */
+export const getLocaleTypeFormatMap = (locale: string) => {
   return locale === 'zh-CN'
     ? {
         date: 'YYYY-MM-DD',

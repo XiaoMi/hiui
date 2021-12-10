@@ -9,20 +9,19 @@ import React, {
 } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
 import _ from 'lodash'
 import { LocaleContext } from '@hi-ui/locale-context'
-import { CalendarItem, DatePickerType, DatePickerValue, DateRange } from './types'
 import moment from 'moment'
 import { useDate } from './hooks/useData'
 import useFormat from './hooks/useFormat'
 import useAltData from './hooks/useAltData'
 import { getInRangeDate } from './utils'
 import DPContext from './context'
-import { PopperPortal, PopperJS } from '@hi-ui/popper'
+import { PopperPortal } from '@hi-ui/popper'
 import Root from './components/root'
 import Panel from './components/panel'
 import RangePanel from './components/range-panel'
+import { DatePickerProps } from './types'
 
 const DATE_PICKER_PREFIX = getPrefixCls('date-picker')
 
@@ -285,94 +284,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     )
   }
 )
-
-type ExtendsType = Omit<HiBaseHTMLProps<'div'>, 'placeholder'>
-
-export interface DatePickerProps extends ExtendsType {
-  type?: DatePickerType
-
-  defaultValue?: DatePickerValue
-  value?: DatePickerValue
-  width?: number | string
-
-  min?: Date
-  max?: Date
-  minDate?: Date
-  maxDate?: Date
-  /**
-   * @default false
-   */
-  disabled?: boolean
-  /**
-   * @default true
-   */
-  bordered?: boolean
-  /**
-   * @default false
-   */
-  inputReadOnly?: boolean
-
-  placement?: PopperJS.Placement
-  /**
-   * @default () => false
-   */
-  disabledDate?: (currentDate: Date) => boolean
-  /**
-   * @default true
-   */
-  clearable?: boolean
-  /**
-   * @default false
-   */
-  showTime?: boolean
-  /**
-   * @default 240
-   */
-  timeInterval?: number
-
-  format?: string
-
-  shortcuts?:
-    | string[]
-    | {
-        title: string
-        range: (Date | number)[]
-      }[]
-
-  theme?: any
-
-  locale?: string
-  /**
-   * @default 0
-   */
-  weekOffset?: number
-
-  hourStep?: number
-  minuteStep?: number
-  secondStep?: number
-
-  placeholder?: string | string[]
-
-  altCalendar?: CalendarItem[]
-
-  altCalendarPreset?: string
-
-  dateMarkRender?: (currentDate: number, today: number) => React.ReactNode
-
-  dateMarkPreset?: string
-
-  overlayClassName?: string
-
-  disabledHours?: (() => number[]) | number[]
-
-  disabledMinutes?: ((selectedHour: number) => number[]) | number[]
-
-  disabledSeconds?: ((selectedHour: number, selectedMinute: number) => number[]) | number[]
-
-  onSelect?: (data: moment.Moment, isCompleted: boolean) => void
-
-  onChange?: (date: Date | DateRange, dateStr: string | DateRange) => void
-}
 
 if (__DEV__) {
   DatePicker.displayName = 'DatePicker'

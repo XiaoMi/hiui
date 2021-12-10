@@ -40,19 +40,19 @@ const Lunar = {
     [0, 2, 5, 19168], [4, 1, 25, 42216], [0, 2, 12, 42192], [0, 2, 1, 53584], [2, 1, 21, 55592], [0, 2, 9, 54560]
   ],
   // 天干地支年
-  lunarYear: function (year) {
+  lunarYear: function (year: number) {
     let gan = ['庚', '辛', '壬', '癸', '甲', '乙', '丙', '丁', '戊', '己'],
       zhi = ['申', '酉', '戌', '亥', '子', '丑', '寅', '卯', '辰', '巳', '午', '未'],
       str = year.toString().split('')
-    return gan[str[3]] + zhi[year % 12]
+    return gan[Number(str[3])] + zhi[year % 12]
   },
   // 生肖年
-  zodiacYear: function (year) {
+  zodiacYear: function (year: number) {
     let zodiac = ['猴', '鸡', '狗', '猪', '鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊']
     return zodiac[year % 12]
   },
   // 农历月份天数数组
-  lunarMonths: function (year) {
+  lunarMonths: function (year: number) {
     let yearData = this.lunarInfo[year - this.MIN_YEAR]
     let leapMonth = yearData[0]
     let bit = (+yearData[3]).toString(2)
@@ -65,7 +65,7 @@ const Lunar = {
       months.unshift('0')
     }
 
-    months = months.slice(0, (leapMonth === 0 ? 12 : 13))
+    months = months.slice(0, (leapMonth === 0 ? 12 : 13)) as any as number[]
     for (let i = 0; i < months.length; i++) {
       months[i] = +months[i] + 29
     }
@@ -73,13 +73,13 @@ const Lunar = {
   },
   // 农历每年的天数
   // @param year 农历年份
-  lunarYearDays: function (year) {
+  lunarYearDays: function (year: number) {
     let monthArray = this.lunarYearMonths(year)
     let len = monthArray.length
     return (monthArray[len - 1] === 0 ? monthArray[len - 2] : monthArray[len - 1])
   },
   //
-  lunarYearMonths: function (year) {
+  lunarYearMonths: function (year: number) {
     let monthData = this.lunarMonths(year)
     let res = []
     let temp = 0
@@ -96,7 +96,7 @@ const Lunar = {
   },
   // 获取闰月
   // @param year 农历年份
-  leapMonth: function (year) {
+  leapMonth: function (year: number) {
     let yearData = this.lunarInfo[year - this.MIN_YEAR]
     return yearData[0]
   },
@@ -107,7 +107,7 @@ const Lunar = {
   // @param day
   // @param l_month 阴历正月对应的阳历月份
   // @param l_day   阴历初一对应的阳历天
-  betweenSolarDays: function (year, month, day, l_month, l_day) {
+  betweenSolarDays: function (year: number, month: number, day: number, l_month: number, l_day: number) {
     let time1 = new Date(year + '/' + month + '/' + day).getTime(),
       time2 = new Date(year + '/' + l_month + '/' + l_day).getTime()
     return Math.ceil((time1 - time2) / 24 / 3600 / 1000)
@@ -115,7 +115,7 @@ const Lunar = {
   // 根据距离正月初一的天数计算阴历日期
   // @param year 阳历年
   // @param between 天数
-  lunarByBetween: function (year, between) {
+  lunarByBetween: function (year: number, between: number) {
     let lunarArray = [], yearMonth = [], t = 0, e = 0, leapMonth = 0, m = ''
     if (between === 0) {
       t = 1
@@ -151,12 +151,12 @@ const Lunar = {
     return lunarArray
   },
   // 中文月份
-  chineseMonth: function (month) {
+  chineseMonth: function (month: number) {
     let monthHash = ['', '正月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '冬月', '腊月']
     return monthHash[month]
   },
   // 中文日期
-  chineseNumber: function (num) {
+  chineseNumber: function (num: number) {
     let dateHash = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
     let res
     if (num <= 10) {
@@ -173,7 +173,7 @@ const Lunar = {
     return res
   },
   // 转换农历
-  toLunar: function (year, month, day) {
+  toLunar: function (year: number, month: number, day: number) {
     let yearData = this.lunarInfo[year - this.MIN_YEAR]
     if (year === this.MIN_YEAR && month <= 2 && day <= 9) {
       return [1891, 1, 1, '辛卯', '兔', '正月', '初一']
