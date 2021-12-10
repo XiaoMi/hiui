@@ -340,7 +340,18 @@ const FormItem = (props) => {
       _value = 0
     }
     if (_field && !isExist) {
-      _value = initialValues && typeof initialValues[field] !== 'undefined' ? initialValues[_field] : _value
+      // 初始化值
+      if (initialValues) {
+        // TODO： 如果 field 是数组，无法完成嵌套对象初始化值，感觉这块实现没想清楚，暂时维护现状，对用户不建议使用数组模式
+
+        // 这里逻辑判断 field，但是最终操作的是 _field，暂时不调整，暂不清楚是否存在破坏性更新
+        if (typeof initialValues[field] !== 'undefined') {
+          _value = initialValues[_field]
+        } else if (_type === 'SchemaForm' && typeof initialValues[realField] !== 'undefined') {
+          _value = initialValues[realField]
+        }
+      }
+
       if (_type === 'list' && listItemValue) {
         _value = Object.keys(listItemValue).includes(name) ? listItemValue[name] : listItemValue
       }
@@ -410,6 +421,7 @@ const FormItem = (props) => {
   obj['hi-form-item--required'] = isRequired() || required
   const _labelWidth = labelWidth()
   const contentWidth = formProps.labelPlacement === 'top' ? '100%' : `calc(100% - ${_labelWidth}px)`
+  const alignItems = getItemPosition(contentPosition)
   return (
     <div className={classNames('hi-form-item', className, obj)} style={style} key={field}>
       {label || label === '' ? (
@@ -421,7 +433,7 @@ const FormItem = (props) => {
         <span className="hi-form-item__span" style={{ width: _labelWidth }} key={field + 'label'} />
       )}
       <div className={'hi-form-item' + '__content'} key={field + '__content'} style={{ width: contentWidth }}>
-        <div className={'hi-form-item' + '__children'} style={{ alignItems: getItemPosition(contentPosition) }}>
+        <div className={'hi-form-item' + '__children'} style={{ alignItems }}>
           {renderChildren()}
         </div>
         <div
