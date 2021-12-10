@@ -144,9 +144,21 @@ export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
           />
         ) : null}
         <ul className={`${prefixCls}__list`}>
-          <PagerButton type="prev" prefixCls={prefixCls} onClick={onClick} current={current} />
+          <PagerButton
+            type="prev"
+            prefixCls={prefixCls}
+            disabled={current === 1}
+            onClick={onClick}
+            current={current}
+          />
           {renderPagers()}
-          <PagerButton type="next" prefixCls={prefixCls} onClick={onClick} current={current} />
+          <PagerButton
+            type="next"
+            prefixCls={prefixCls}
+            onClick={onClick}
+            current={current}
+            disabled={current === maxPage}
+          />
         </ul>
         {showJumper ? (
           <PageJumper

@@ -85,7 +85,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
             displayRender={displayRender}
             suffix={<DownOutlined />}
           />
-          {data && (
+          {
             <Popper
               {...popper}
               attachEl={targetElRef}
@@ -101,7 +101,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                 })}
               </div>
             </Popper>
-          )}
+          }
         </div>
       </SelectProvider>
     )

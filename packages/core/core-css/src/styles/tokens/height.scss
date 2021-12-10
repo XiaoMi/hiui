@@ -1,0 +1,14 @@
+@import '../common/index.scss';
+
+// 组件高度
+$height-size-base-map: (
+  xs: 24px,
+  normal: 32px,
+  sm: 28px,
+  md: 32px,
+  lg: 36px
+) !default;
+
+@function get-height($size) {
+  @return map-safe-get($height-size-base-map, $size);
+}

@@ -143,7 +143,7 @@ $prefix: '#{$component-prefix}-button' !default;
   appearance: none;
   margin: 0;
   border: 1px solid transparent;
-  border-radius: 2px;
+  border-radius: use-border-radius('normal');
   font-weight: $btn-text-weight;
   text-align: center;
   text-decoration: none;
