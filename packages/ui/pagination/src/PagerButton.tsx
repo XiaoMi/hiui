@@ -16,26 +16,33 @@ export const PagerButton: React.FC<PagerButtonProps> = ({
   current = 1,
   disabled = false,
 }) => {
-  const cls = cx(`${prefixCls}__btn`)
+  const cls = cx(`${prefixCls}__btn`, {
+    [`${prefixCls}__btn--disabled`]: disabled,
+  })
 
   const handleClick = useCallback(() => {
-    if (onClick) {
+    if (onClick && !disabled) {
       onClick(type === 'prev' ? current - 1 : current + 1)
     }
-  }, [current, onClick, type])
+  }, [current, onClick, type, disabled])
 
   const handleKeyPress = useCallback(
     (e) => {
-      if (e.key === 'Enter') {
+      if (e.key === 'Enter' && !disabled) {
         e.preventDefault()
         handleClick()
       }
     },
-    [handleClick]
+    [handleClick, disabled]
   )
 
   return (
-    <li className={cls} onClick={handleClick} onKeyPress={handleKeyPress}>
+    <li
+      className={cls}
+      tabIndex={disabled ? -1 : 0}
+      onClick={handleClick}
+      onKeyPress={handleKeyPress}
+    >
       <button disabled={disabled}>{type === 'prev' ? <LeftOutlined /> : <RightOutlined />}</button>
     </li>
   )

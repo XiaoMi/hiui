@@ -7,6 +7,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     &__input {
       &:focus + .#{$prefix}__icon {
         border-color: $color;
+        box-shadow: 0 0 0 2px use-color-mode('primary-10');
       }
     }
 
@@ -16,7 +17,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
         border-color: $color;
 
         &::after {
-          background: #fff;
+          background: use-color-staic('white');
         }
       }
 
@@ -53,16 +54,26 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     cursor: not-allowed;
 
     .#{$prefix}__icon {
-      border-color: #d8d8d8;
-      background: #f2f2f2;
+      border-color: use-color('gray', 300);
+      background: use-color('gray', 100);
 
       &::after {
-        border-color: #d8d8d8;
+        border-color: use-color('gray', 300);
+      }
+    }
+
+    .#{$prefix}__icon--checked {
+      border-color: use-color-mode('primary');
+      background: use-color-mode('primary');
+      opacity: 0.4;
+
+      &::after {
+        border-color: use-color-static('white');
       }
     }
 
     .#{$prefix}__text {
-      color: rgba(#000, 0.65);
+      color: use-color('gray', 500);
     }
   }
 
@@ -82,9 +93,9 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     vertical-align: middle;
     width: 16px;
     height: 16px;
-    border: 1px solid #d8d8d8;
-    margin-right: 8px;
-    border-radius: 2px;
+    border: 1px solid use-color('gray', 300);
+    margin-right: use-spacing(2);
+    border-radius: use-border-radius('sm');
     transition: 0.3s ease-out;
     line-height: 1;
     flex: none;
@@ -97,7 +108,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
         box-sizing: content-box;
         content: '';
         border: none;
-        border-bottom: 2px solid #fff;
+        border-bottom: 2px solid use-color-static('white');
         height: 8px;
         left: 6px;
         position: absolute;
@@ -113,7 +124,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
         pointer-events: none;
         box-sizing: content-box;
         content: '';
-        border: 2px solid #fff;
+        border: 2px solid use-color-static('white');
         border-left: 0;
         border-top: 0;
         height: 7px;
@@ -129,6 +140,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
   &__text {
     padding: 0;
     line-height: unset;
+    color: use-color('gray', 700);
   }
 
   // Using for theme mixin
