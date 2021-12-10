@@ -8,6 +8,16 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
   margin-bottom: 0;
   padding: 0;
 
+  &--md {
+    line-height: use-height-size('normal');
+    font-size: use-text-size('normal');
+  }
+
+  &--sm {
+    line-height: use-height-size('xs');
+    font-size: use-text-size('sm');
+  }
+
   li {
     margin: 0;
     list-style: none;
