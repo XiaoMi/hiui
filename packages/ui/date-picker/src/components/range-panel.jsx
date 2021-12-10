@@ -18,7 +18,7 @@ const RangePanel = () => {
     outDate,
     type,
     onPick,
-    localeDatas,
+    localeData,
     showTime,
     realFormat,
     timeInterval,
@@ -184,13 +184,13 @@ const RangePanel = () => {
       let days
       const currentDate = moment()
       switch (item) {
-        case localeDatas.datePicker.lastWeek:
+        case localeData.datePicker.lastWeek:
           days = 7
           break
-        case localeDatas.datePicker.lastMonth:
+        case localeData.datePicker.lastMonth:
           days = 30
           break
-        case localeDatas.datePicker.lastThreeMonth:
+        case localeData.datePicker.lastThreeMonth:
           days = 90
           break
         default:
@@ -244,7 +244,7 @@ const RangePanel = () => {
                 renderDates={calRenderDates}
                 changeView={() => changeViewEvent(0)}
                 onArrowEvent={onArrowEvent}
-                localeDatas={localeDatas}
+                localeData={localeData}
                 view={views[0]}
                 panelPosition={0}
                 type={type}
@@ -273,7 +273,7 @@ const RangePanel = () => {
                   renderDate={calRenderDates[1]}
                   changeView={() => changeViewEvent(1)}
                   onArrowEvent={onArrowEvent}
-                  localeDatas={localeDatas}
+                  localeData={localeData}
                   view={views[1]}
                   leftDate={calRenderDates[0]}
                   panelPosition={1}

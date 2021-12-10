@@ -13,7 +13,7 @@ interface IUseDateConfig {
 }
 export const useDate = (config: IUseDateConfig) => {
   const { value, defaultValue, cacheDate, type, format, locale } = config
-  const [outDate, setOutDate] = useState<any[]>([])
+  const [outDate, setOutDate] = useState<(moment.Moment | null)[]>([])
   const changeOutDate = (dates: any) => {
     const _datas = [
       dates[0] && moment(dates[0]).isValid() ? dates[0] : null,

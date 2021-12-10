@@ -34,7 +34,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       prefixCls = DATE_PICKER_PREFIX,
       role = 'date-picker',
       className,
-      children,
       type: propType = 'date',
       value,
       defaultValue,
@@ -73,7 +72,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
   ) => {
     const { datePicker } = useContext(LocaleContext)
     // 适配器，暂时兼容老代码
-    const localeDatas = useMemo(() => ({ datePicker }), [datePicker])
+    const localeData = useMemo(() => ({ datePicker }), [datePicker])
     const [max, setMax] = useState(configMax || maxDate || null)
     const [min, setMin] = useState(configMin || minDate || null)
 
@@ -119,6 +118,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       // dateMarkRender,
       dateMarkPreset,
       showPanel,
+      prefixCls,
     })
     const inputChangeEvent = (val: any, dir: any) => {
       if (val.isValid()) {
@@ -148,7 +148,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       cacheDate.current = _dates
       emitOnChange && onChange(returnDate as any, returnDateStr)
     }
-    const onPick = (dates: any, isShowPanel: any) => {
+    const onPick = (dates: (moment.Moment | null)[], isShowPanel: boolean) => {
       setTimeout(() => {
         setShowPanel(isShowPanel)
       }, 0)
@@ -156,7 +156,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         setInputFocus(false)
         callback(dates)
       }
-      changeOutDate([].concat(dates))
+      changeOutDate([...dates])
     }
 
     const onPopperClose = useCallback(() => {
@@ -198,8 +198,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       [propsOnSelect]
     )
 
-    const cls = cx(prefixCls, className)
     const popperCls = cx(
+      overlayClassName,
       `${prefixCls}__popper`,
       type === 'date' && showTime && `${prefixCls}__popper--time`,
       type.includes('range') && `${prefixCls}__popper--range`,
@@ -209,17 +209,20 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     )
     const [attachEl, setAttachEl] = useState<HTMLElement | null>(null)
 
-    const _weekOffset = weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1
+    const safeWeekOffset = useMemo(
+      () => (weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1),
+      [weekOffset, locale]
+    )
 
     return (
       <DPContext.Provider
         value={{
           ...otherProps,
           locale,
-          localeDatas,
+          localeData,
           type,
           outDate,
-          weekOffset: _weekOffset,
+          weekOffset: safeWeekOffset,
           onPick,
           min,
           max,
@@ -251,13 +254,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           showPanel,
         }}
       >
-        <div className={cls} {...otherProps}>
+        <div className={cx(prefixCls, className)} {...otherProps}>
           <Root
             inputChangeEvent={inputChangeEvent}
             onClear={onClear}
-            // @ts-ignore
-            showPanel={showPanel}
-            bordered={bordered}
             inputFocus={inputFocus}
             onTrigger={() => {
               setShowPanel(true)
@@ -267,13 +267,11 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           />
           <PopperPortal
             visible={showPanel}
-            // overlayClassName={overlayClassName}
             placement={placement}
             onClose={onPopperClose}
             attachEl={attachEl}
-            // setOverlayContainer={setOverlayContainer}
-            // overlayClickOutSideEventName={overlayClickOutSideEventName}
-            // onClickOutside={clickOutsideEvent}
+            unmountOnClose={false}
+            preload
           >
             <div className={popperCls}>
               {type.includes('range') || type === 'timeperiod' ? <RangePanel /> : <Panel />}

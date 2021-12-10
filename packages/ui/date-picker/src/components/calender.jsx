@@ -18,7 +18,7 @@ const Calender = ({
 }) => {
   const {
     weekOffset,
-    localeDatas,
+    localeData,
     type,
     min,
     max,
@@ -42,7 +42,7 @@ const Calender = ({
     view,
     renderDate,
     originDate,
-    localeDatas,
+    localeData,
     weekOffset,
     range,
     min,
@@ -81,7 +81,7 @@ const Calender = ({
     setCalenderCls(classNames(`${prefixCls}__calender`, `${prefixCls}__calender--${view}`))
   }, [rows, view])
   const getWeeks = () => {
-    const week = localeDatas.datePicker.week
+    const week = localeData.datePicker.week
     return week.slice(weekOffset).concat(week.slice(0, weekOffset))
   }
 

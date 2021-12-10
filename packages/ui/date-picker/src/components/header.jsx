@@ -2,7 +2,7 @@ import React from 'react'
 import { LeftOutlined, RightOutlined, DoubleRightOutlined, DoubleLeftOutlined } from '@hi-ui/icons'
 import moment from 'moment'
 
-const getHeaderCenterContent = (localeDatas, view, renderDate, locale = 'zh-CN') => {
+const getHeaderCenterContent = (localeData, view, renderDate, locale = 'zh-CN') => {
   const _date = renderDate
   const year = _date.year()
   const month = _date.month()
@@ -12,7 +12,7 @@ const getHeaderCenterContent = (localeDatas, view, renderDate, locale = 'zh-CN')
   if (view === 'month') {
     return year
   }
-  const arr = [localeDatas.datePicker.monthShort[month]]
+  const arr = [localeData.datePicker.monthShort[month]]
   if (locale === 'zh-CN') {
     arr.unshift(year + '年    ')
   } else {
@@ -25,7 +25,7 @@ const Header = ({
   type,
   changeView,
   onArrowEvent,
-  localeDatas,
+  localeData,
   panelPosition,
   renderDate,
   locale,
@@ -56,7 +56,7 @@ const Header = ({
           changeView()
         }}
       >
-        {getHeaderCenterContent(localeDatas, view, renderDate, locale)}
+        {getHeaderCenterContent(localeData, view, renderDate, locale)}
       </span>
       {
         <div className={`${prefixCls}__header-btns`}>

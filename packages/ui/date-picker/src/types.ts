@@ -28,6 +28,8 @@ export type DatePickerType =
   | 'yearrange'
   | 'monthrange'
 
+export type DataPickerAltCalendarPreset = 'zh-CN' | 'id-ID'
+
 type ExtendsType = Omit<HiBaseHTMLProps<'div'>, 'placeholder'>
 
 export interface DatePickerProps extends ExtendsType {
@@ -97,7 +99,7 @@ export interface DatePickerProps extends ExtendsType {
 
   altCalendar?: CalendarItem[]
 
-  altCalendarPreset?: string
+  altCalendarPreset?: DataPickerAltCalendarPreset
 
   dateMarkRender?: (currentDate: number, today: number) => React.ReactNode
 

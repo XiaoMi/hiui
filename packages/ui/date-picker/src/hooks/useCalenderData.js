@@ -9,7 +9,7 @@ const getYearOrMonthRows = ({
   type,
   view,
   range,
-  localeDatas,
+  localeData,
   min,
   max,
   disabledDate,
@@ -24,7 +24,7 @@ const getYearOrMonthRows = ({
     for (let j = 0; j < 3; j++) {
       const col = row[j] || (row[j] = { type: 'normal' })
       const y = start + num
-      view === 'year' ? (col.text = y) : (col.text = localeDatas.datePicker.month[y])
+      view === 'year' ? (col.text = y) : (col.text = localeData.datePicker.month[y])
       col.value = y
       num++
       const currentYM = _date[view](y)
@@ -260,7 +260,7 @@ const useDate = ({
   date,
   originDate,
   weekOffset,
-  localeDatas,
+  localeData,
   range,
   type,
   min,
@@ -277,7 +277,7 @@ const useDate = ({
             renderDate,
             type,
             view,
-            localeDatas,
+            localeData,
             range,
             min,
             max,

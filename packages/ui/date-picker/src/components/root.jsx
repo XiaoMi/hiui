@@ -6,19 +6,9 @@ import DPContext from '../context'
 import usePlaceholder from '../hooks/usePlaceholders'
 import { parseValue } from '../utils'
 
-const Root = ({
-  onTrigger,
-  onMouseEnter,
-  onMouseLeave,
-  children,
-  inputChangeEvent,
-  onClear,
-  inputFocus,
-  rangeInputIsError,
-  setAttachEl,
-}) => {
+const Root = ({ onTrigger, inputChangeEvent, onClear, inputFocus, setAttachEl }) => {
   const {
-    localeDatas,
+    localeData,
     type,
     outDate,
     placeholder,
@@ -39,7 +29,7 @@ const Root = ({
     type,
     showTime,
     placeholder,
-    localeDatas,
+    localeData,
   })
   useEffect(() => {
     setInputData(value ? parseValue(value, type, format, locale) : outDate)
@@ -62,20 +52,13 @@ const Root = ({
     inputFocus && `${prefixCls}__picker--focus`,
     disabled && `${prefixCls}__picker--disabled`,
     showTime && `${prefixCls}__picker--hastime`,
-    rangeInputIsError && `${prefixCls}__picker--error`,
     { bordered }
   )
 
   const renderRange = type.includes('range') || type === 'timeperiod'
 
   return (
-    <div
-      className={_cls}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      ref={setAttachEl}
-      style={{ width: width }}
-    >
+    <div className={_cls} ref={setAttachEl} style={{ width: width }}>
       <div className={`${prefixCls}__input`} style={{ width: width }}>
         <Input
           date={inputData[0]}
@@ -86,7 +69,7 @@ const Root = ({
         />
         {renderRange && (
           <React.Fragment>
-            <span className={`${prefixCls}__input--connection`}>{localeDatas.datePicker.to}</span>
+            <span className={`${prefixCls}__input--connection`}>{localeData.datePicker.to}</span>
             <Input
               date={inputData[1]}
               placeholder={placeholders[1]}

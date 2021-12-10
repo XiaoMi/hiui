@@ -4,7 +4,7 @@ import { getTimePeriodData } from '../utils'
 import DPContext from '../context'
 
 const TimePeriodPanel = ({ date, onTimePeriodPick }) => {
-  const { timeInterval = 240, localeDatas, prefixCls } = useContext(DPContext)
+  const { timeInterval = 240, localeData, prefixCls } = useContext(DPContext)
   const listEl = useRef(null)
   const [periodData, setPeriodData] = useState([])
   useEffect(() => {
@@ -22,7 +22,7 @@ const TimePeriodPanel = ({ date, onTimePeriodPick }) => {
   }, [])
   return (
     <div className={`${prefixCls}__time-period`}>
-      <div className={`${prefixCls}__period-header`}>{localeDatas.datePicker.timePeriod}</div>
+      <div className={`${prefixCls}__period-header`}>{localeData.datePicker.timePeriod}</div>
       <div className={`${prefixCls}__period-body`}>
         <ul className={`${prefixCls}__period-list`} ref={listEl}>
           {periodData.map((item, index) => {

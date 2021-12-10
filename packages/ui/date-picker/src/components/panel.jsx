@@ -15,7 +15,7 @@ const Panel = () => {
     outDate,
     type,
     onPick,
-    localeDatas,
+    localeData,
     showTime,
     theme,
     weekOffset,
@@ -121,7 +121,7 @@ const Panel = () => {
               renderDates={calRenderDates}
               changeView={() => setView('year')}
               onArrowEvent={onArrowEvent}
-              localeDatas={localeDatas}
+              localeData={localeData}
               view={view}
               panelPosition={0}
               type={type}
