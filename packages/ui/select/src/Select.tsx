@@ -85,23 +85,21 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
             displayRender={displayRender}
             suffix={<DownOutlined />}
           />
-          {
-            <Popper
-              {...popper}
-              attachEl={targetElRef}
-              visible={menuVisible}
-              onClose={menuVisibleAction.off}
-            >
-              <div className={`${prefixCls}-panel`}>
-                {searchable ? <SelectSearch /> : null}
-                {/* {children} */}
-                {/* 反向 map，搜索删选数据时会对数据进行处理 */}
-                {selectData.map((item) => {
-                  return <SelectOption key={item.id} option={item} />
-                })}
-              </div>
-            </Popper>
-          }
+          <Popper
+            {...popper}
+            attachEl={targetElRef}
+            visible={menuVisible}
+            onClose={menuVisibleAction.off}
+          >
+            <div className={`${prefixCls}-panel`}>
+              {searchable ? <SelectSearch /> : null}
+              {/* {children} */}
+              {/* 反向 map，搜索删选数据时会对数据进行处理 */}
+              {selectData.map((item) => {
+                return <SelectOption key={item.id} option={item} />
+              })}
+            </div>
+          </Popper>
         </div>
       </SelectProvider>
     )

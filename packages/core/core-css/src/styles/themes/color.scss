@@ -20,8 +20,6 @@
 /// 生成 css 变量及其默认值
 /// @access private
 @function use-color-var($scheme, $gradation) {
-  @debug $scheme $gradation;
-
   $var-name: get-color-css-name-var($scheme, $gradation);
   $var-value: get-color($scheme, $gradation);
   // $var-value: #fff;
