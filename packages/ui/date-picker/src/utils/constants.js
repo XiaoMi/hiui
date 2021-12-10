@@ -1,6 +1,6 @@
 export const DAY_MILLISECONDS = 86400000
 export const RANGE_SPLIT = '~'
-export const FORMATS = (locale) => {
+export const getLocaleTypeFormatMap = (locale) => {
   return locale === 'zh-CN'
     ? {
         date: 'YYYY-MM-DD',

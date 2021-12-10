@@ -20,7 +20,7 @@ const RangePanel = () => {
     onPick,
     localeDatas,
     showTime,
-    iFormat,
+    realFormat,
     timeInterval,
     shortcuts,
     theme,
@@ -143,7 +143,7 @@ const RangePanel = () => {
     }
   }
   const getRangeDateStr = () => {
-    const _format = iFormat.substr(iFormat.match(/[H|h]\s*/).index)
+    const _format = realFormat.substr(realFormat.match(/[H|h]\s*/).index)
     const cls = classNames(showRangeMask && `${prefixCls}__timetext`)
     const startOfDay = moment().startOf('day').format(_format)
     const endOfDay = moment().endOf('day').format(_format)
@@ -229,7 +229,7 @@ const RangePanel = () => {
     (showTime || type === 'timeperiod') && `${prefixCls}__panel--noshadow`
   )
 
-  const timePickerFormat = useTimePickerFormat(iFormat)
+  const timePickerFormat = useTimePickerFormat(realFormat)
   const timePickerData = useTimePickerData(calRenderDates, timePickerFormat)
 
   return (

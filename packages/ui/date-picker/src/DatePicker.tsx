@@ -106,7 +106,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       format,
       locale,
     })
-    const [iFormat] = useFormat({
+    const realFormat = useFormat({
       type,
       showTime,
       format,
@@ -140,11 +140,11 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         }
         returnDateStr =
           type === 'week'
-            ? _dates[0].format(iFormat)
-            : { start: _dates[0].format(iFormat), end: _dates[1].format(iFormat) }
+            ? _dates[0].format(realFormat)
+            : { start: _dates[0].format(realFormat), end: _dates[1].format(realFormat) }
       } else {
         returnDate = _dates[0].toDate()
-        returnDateStr = _dates[0].format(iFormat)
+        returnDateStr = _dates[0].format(realFormat)
       }
       cacheDate.current = _dates
       emitOnChange && onChange(returnDate as any, returnDateStr)
@@ -228,7 +228,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           placeholder,
           showTime,
           format,
-          iFormat,
+          realFormat,
           timeInterval,
           shortcuts,
           altCalendar,

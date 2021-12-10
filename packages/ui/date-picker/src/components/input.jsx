@@ -14,17 +14,17 @@ const Input = ({ date, onChange, onFocus, dir, placeholder }) => {
     secondStep,
     inputReadOnly,
     locale,
-    iFormat,
+    realFormat,
   } = useContext(DPContext)
 
   const cacheValues = useRef(null)
   const [value, setValue] = useState('')
   useEffect(() => {
-    let vals = date && moment(date).format(iFormat)
+    let vals = date && moment(date).format(realFormat)
     if (type.includes('week') && date) {
       const y = moment(date).weekYear()
       const _date = moment(date).year(y)
-      vals = moment(_date).format(iFormat)
+      vals = moment(_date).format(realFormat)
       if (locale === 'zh-CN' && typeof format === 'undefined') {
         vals = y + '-W' + moment(_date).week()
       }
@@ -35,7 +35,7 @@ const Input = ({ date, onChange, onFocus, dir, placeholder }) => {
   const inputChangeEvent = (e) => {
     const val = e.target.value
     setValue(val)
-    if (val && val.trim().length === iFormat.length) {
+    if (val && val.trim().length === realFormat.length) {
       const nVal = moment(val)
       if (nVal.isValid()) {
         onChange(nVal, dir)

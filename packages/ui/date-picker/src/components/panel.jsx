@@ -25,7 +25,7 @@ const Panel = () => {
     minuteStep,
     secondStep,
     disabledHours,
-    iFormat,
+    realFormat,
     disabledMinutes,
     disabledSeconds,
     prefixCls,
@@ -86,7 +86,7 @@ const Panel = () => {
     showTime && `${prefixCls}__panel--time ${prefixCls}__panel--noshadow`
   )
 
-  const timePickerFormat = useTimePickerFormat(iFormat)
+  const timePickerFormat = useTimePickerFormat(realFormat)
   const timePickerData = useTimePickerData(calRenderDates, timePickerFormat)
 
   const onTimeChange = (date) => {

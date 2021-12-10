@@ -3,7 +3,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import request from 'axios'
 import Lunar from './toLunar'
-import { FORMATS } from './constants'
+import { getLocaleTypeFormatMap } from './constants'
 const holiday = {
   PRCHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?',
   PRCLunar: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCLunar.json?',
@@ -237,7 +237,7 @@ export const getInRangeDate = (momentstartDate, momentendDate, max, min) => {
  */
 export const parseValue = (value, type, format, locale = 'zh-CN') => {
   if (!value) return [null]
-  const _format = FORMATS(locale)[type]
+  const _format = getLocaleTypeFormatMap(locale)[type]
   const _value = moment(value, _format)
   const isValid = moment(_value).isValid()
   if (value && typeof value === 'object' && (type.includes('range') || type === 'timeperiod')) {
