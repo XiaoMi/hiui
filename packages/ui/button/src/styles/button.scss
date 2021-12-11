@@ -134,7 +134,7 @@ $prefix: '#{$component-prefix}-button' !default;
 
 .#{$prefix} {
   & + & {
-    margin-left: 8px;
+    margin-left: use-spacing(4);
   }
 
   position: relative; // Used by button :focus radio-style etc.
@@ -169,7 +169,7 @@ $prefix: '#{$component-prefix}-button' !default;
 
   // only icon button
   &--icon-only {
-    .hi-v4-icon {
+    [class^=hi-v4-icon] {
       margin-right: 0 !important;
     }
   }
@@ -187,7 +187,7 @@ $prefix: '#{$component-prefix}-button' !default;
       padding: 0;
     }
 
-    .hi-v4-icon {
+    [class^=hi-v4-icon] {
       margin-right: use-text-size('sm') - 10;
     }
   }
@@ -203,7 +203,7 @@ $prefix: '#{$component-prefix}-button' !default;
       padding: 0;
     }
 
-    .hi-v4-icon {
+    [class^=hi-v4-icon] {
       margin-right: calc(#{use-text-size('normal')} - 10px);
     }
   }
@@ -219,7 +219,7 @@ $prefix: '#{$component-prefix}-button' !default;
       padding: 0;
     }
 
-    .hi-v4-icon {
+    [class^=hi-v4-icon] {
       margin-right: use-text-size('xl') - 14;
     }
   }

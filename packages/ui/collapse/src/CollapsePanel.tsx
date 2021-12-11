@@ -2,6 +2,7 @@ import React, { forwardRef, useCallback, useMemo, useRef, useState, useEffect } 
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCollapseContext } from './context'
+import { CaretRightOutlined } from '@hi-ui/icons'
 
 const _role = 'collapse-panel'
 const _prefix = getPrefixCls(_role)
@@ -84,9 +85,17 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
         })}
       >
         <div className={`${prefixCls}__head`} onClick={() => !disabled && onClickPanel(id)}>
-          {showArrow && arrowPlacement === 'left' && <div className={`${prefixCls}__icon`}>^</div>}
+          {showArrow && arrowPlacement === 'left' && (
+            <div className={`${prefixCls}__icon`}>
+              <CaretRightOutlined />
+            </div>
+          )}
           <div className={`${prefixCls}__title`}>{title}</div>
-          {showArrow && arrowPlacement === 'right' && <div className={`${prefixCls}__icon`}>^</div>}
+          {showArrow && arrowPlacement === 'right' && (
+            <div className={`${prefixCls}__icon`}>
+              <CaretRightOutlined />
+            </div>
+          )}
         </div>
         <div
           className={`${prefixCls}__content-wrapper`}

@@ -30,12 +30,16 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &__item {
-    height: 36px;
+    height: 48px;
     cursor: default;
     color: use-color('gray', 800);
+    background: use-color('gray', 50);
     display: flex;
+    border-radius: use-border-radius('normal');
+    padding: use-spacing(6);
+    margin-bottom: use-spacing(5);
+    box-sizing: border-box;
     align-items: center;
-    padding: 6px;
     overflow: hidden;
     position: relative;
 
@@ -73,8 +77,8 @@ $prefix: '#{$component-prefix}-upload' !default;
 
     &-tips {
       color: use-color-mode('primary');
-      border-radius: 2px;
-      font-size: 14px;
+      border-radius: use-border-radius('normal');
+      font-size: use-text-size('normal');
       padding: 8px 12px;
       height: auto !important;
       background-color: use-color-mode('primary-20');
@@ -128,7 +132,7 @@ $prefix: '#{$component-prefix}-upload' !default;
       right: 60px;
       top: -32px;
       font-style: normal;
-      font-size: 12px;
+      font-size: use-text-size('normal');
       color: use-color-mode('primary');
     }
   }
@@ -137,13 +141,15 @@ $prefix: '#{$component-prefix}-upload' !default;
   &--drag {
     position: relative;
     width: 100%;
+    background: use-color('gray', 50);
     min-height: 172px;
     box-sizing: border-box;
-    border: 1px dashed use-color('gray', 300);
+    border: 2px dashed use-color('gray', 300);
     transition: border-color 0.3s;
-    border-radius: 2px;
+    border-radius: use-border-radius('normal');
     cursor: pointer;
-    padding: 12px;
+    padding: use-spacing(6);
+    margin-bottom: use-spacing(10);
 
     &:hover:not(.#{$prefix}--nohover) {
       border-color: use-color-mode('primary');
@@ -187,12 +193,23 @@ $prefix: '#{$component-prefix}-upload' !default;
       height: 172px;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: use-text-size('normal');
       color: use-color-static('black');
+
+      .drag-upload__title {
+        font-size: use-text-size('xl');
+
+        [class^=hi-v4-icon] {
+          font-size: use-text-size('xxl');
+          margin-right: use-spacing(4);
+        }
+      }
 
       .#{$prefix}__tips--single-line {
         padding: 0;
-        margin-top: 4px;
+        margin-top: use-spacing(5);
+        color: use-color('gray', 500);
+        font-size: use-text-size('normal');
       }
 
       .icon {
@@ -235,8 +252,8 @@ $prefix: '#{$component-prefix}-upload' !default;
       margin: 8px;
       overflow: visible;
       vertical-align: middle;
-      background: use-color-static('white');
-      border-radius: 2px;
+      background: use-color('gray', 50);
+      border-radius: use-border-radius('normal');
 
       &:focus:not(.#{$prefix}__item--upload) {
         box-shadow: 0 0 0 1px use-color-mode('primary');
@@ -382,11 +399,11 @@ $prefix: '#{$component-prefix}-upload' !default;
     top: 0;
     background: rgba(0, 0, 0, 0.5);
     color: use-color-static('white');
-    font-size: 14px;
+    font-size: use-text-size('normal');
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 2px;
+    border-radius: use-border-radius('normal');
   }
 
   &__precent--small {
@@ -439,13 +456,12 @@ $prefix: '#{$component-prefix}-upload' !default;
       overflow: auto;
 
       .#{$prefix}__item {
-        height: 64px;
+        height: 72px;
         box-sizing: border-box;
-        border: 1px solid use-color('gray', 300);
-        border-radius: 2px;
-        padding: 8px 18px 8px 6px;
+        border-radius: use-border-radius('normal');
+        padding: use-spacing(6);
         margin-bottom: 12px;
-        font-size: 12px;
+        font-size: use-text-size('normal');
         color: use-color-static('black');
 
         &--error {
@@ -518,7 +534,7 @@ $prefix: '#{$component-prefix}-upload' !default;
     }
 
     &-info {
-      font-size: 14px;
+      font-size: use-text-size('normal');
       color: use-color('gray', 800);
     }
   }
