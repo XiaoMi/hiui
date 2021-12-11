@@ -3,7 +3,7 @@
 $prefix: '#{$component-prefix}-card' !default;
 
 .#{$prefix} {
-  border-radius: 2px;
+  border-radius: use-border-radius('lg');
   box-sizing: border-box;
   background: use-color-static('white');
 
@@ -23,11 +23,11 @@ $prefix: '#{$component-prefix}-card' !default;
   > img {
     display: block;
     width: 100%;
-    border-radius: 2px 2px 0 0;
+    border-radius: use-border-radius('lg') use-border-radius('lg') 0 0;
   }
 
   &__header {
-    padding: 0 16px;
+    padding: 0 use-spacing(8);
     height: 46px;
     display: flex;
     align-items: center;
@@ -46,7 +46,7 @@ $prefix: '#{$component-prefix}-card' !default;
   }
 
   &__body {
-    padding: 16px;
+    padding: use-spacing(8);
     font-size: use-text-size('normal');
   }
 
