@@ -7,26 +7,33 @@ $icon-class: #{$panel-prefix}__icon !default;
   font-size: use-text-size('normal');
   position: relative;
   z-index: 0;
+  border-right: 1px solid use-color('gray', 300);
+  border-bottom: 1px solid use-color('gray', 300);
+  border-left: 1px solid use-color('gray', 300);
 
-  &::after {
-    transition: all 0.2s ease-out;
-    position: absolute;
-    z-index: 1;
-    content: '';
-    width: 100%;
-    height: 1px;
-    background-color: use-color('gray', 300);
-    bottom: 0;
-    left: 0;
+  &:last-of-type {
+    border-radius: 0 0 use-border-radius('normal') use-border-radius('normal');
+    overflow: hidden;
+  }
+
+  &:first-of-type {
+    border-radius: use-border-radius('normal') use-border-radius('normal') 0 0;
+    border-top: 1px solid use-color('gray', 300);
+    overflow: hidden;
   }
 
   &__head {
     display: flex;
     align-items: center;
     background-color: use-color-static('white');
-    padding: 12px 0 12px 16px;
-    color: rgba(0, 0, 0, 0.85);
+    padding: use-spacing(8);
+    color: use-color('gray', 700);
+    font-weight: use-text-weight('medium');
     cursor: pointer;
+
+    [class^=hi-v4-icon] {
+      font-size: use-text-size('lg');
+    }
 
     &:focus {
       outline: none;
@@ -51,9 +58,9 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__content {
-    padding: 16px;
-    color: rgba(0, 0, 0, 0.65);
-    background-color: use-color('gray', 100);
+    padding: use-spacing(8);
+    color: use-color('gray', 700);
+    background-color: use-color('gray', 50);
   }
 
   &--show {
@@ -61,7 +68,7 @@ $icon-class: #{$panel-prefix}__icon !default;
       background-color: transparent;
     }
     .#{$icon-class} {
-      transform: rotate(-180deg);
+      transform: rotate(90deg);
     }
   }
 
