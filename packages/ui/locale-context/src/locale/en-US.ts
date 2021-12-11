@@ -88,7 +88,7 @@ export default {
     uploadFailed: 'Failed',
     cancel: 'Cancel',
     delete: 'Delete',
-    drag: 'Drag and drop files for uploading',
+    drag: 'Click or drag and drop file to upload',
     dragTips: 'Please click or drag and drop file upload',
     dragTipsLimited: 'The number has reached the upper limit',
     preview: 'Preview',
