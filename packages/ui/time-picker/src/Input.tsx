@@ -22,6 +22,7 @@ interface InputProps extends ExtendType {
   onFocus: () => void
   disabled: boolean
   onBlur: () => void
+  onValidChange: (isValid: boolean) => void
 }
 
 export const Input: FC<InputProps> = (props) => {
@@ -41,6 +42,7 @@ export const Input: FC<InputProps> = (props) => {
     onFocus,
     disabled,
     onBlur,
+    onValidChange,
   } = props
   const componentClass = useMemo(() => `${prefix}__input`, [prefix])
 
@@ -125,6 +127,7 @@ export const Input: FC<InputProps> = (props) => {
 
         return undefined
       }
+
       return (
         <div className={`${componentClass}__wrapper`}>
           <input
@@ -166,6 +169,11 @@ export const Input: FC<InputProps> = (props) => {
       type,
     ]
   )
+
+  // 通知外部，输入框内容合法性变更
+  useEffect(() => {
+    onValidChange(judgeIsValid(cacheValue))
+  }, [judgeIsValid, cacheValue, onValidChange])
 
   return (
     <div

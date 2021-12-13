@@ -8,8 +8,9 @@ import {
 } from './@types'
 import { analysisFormat } from './utils/analysisFormat'
 import { generateSelectorData } from './utils/generateSelectorData'
-import { getSelectorTitle } from './utils/getSelectorTitle'
-import { Selector } from './Selector'
+// import { getSelectorTitle } from './utils/getSelectorTitle'
+import { cx } from '@hi-ui/classname'
+import { Selector, SelectorPosition } from './Selector'
 
 type ExtendType = Required<TimePickerFilter> & Required<TimePickerStep>
 
@@ -83,45 +84,61 @@ export const Panel: FC<PanelProps> = (props) => {
     ]
   )
 
-  const renderHeader = useCallback(() => {
-    return (
-      <div className={`${componentPrefix}__header`}>
-        {selectorTypes.map((item) => (
-          <div className={`${componentPrefix}__header-title`} key={item}>
-            {getSelectorTitle(item)}
-          </div>
-        ))}
-      </div>
-    )
-  }, [selectorTypes, componentPrefix])
+  // const renderHeader = useCallback(() => {
+  //   return (
+  //     <div className={`${componentPrefix}__header`}>
+  //       {selectorTypes.map((item) => (
+  //         <div className={`${componentPrefix}__header-title`} key={item}>
+  //           {getSelectorTitle(item)}
+  //         </div>
+  //       ))}
+  //     </div>
+  //   )
+  // }, [selectorTypes, componentPrefix])
 
   const renderSelectors = useCallback(() => {
     return (
       <div className={`${componentPrefix}__selector-container`}>
         {selectorTypes.map((type, index) => {
-          return (
-            <Selector
-              value={String(separateValue[index])}
-              prefix={prefix}
-              key={type}
-              itemHeight={itemHeight}
-              fullDisplayItemNumber={fullDisplayItemNumber}
-              onChange={(e) => {
-                let result = [...separateValue].slice(0, selectorTypes.length)
-                // 如果 value = ''，则代表为空值
-                // 此时选择任意项，其他项直接视作 0
-                if (value === '') {
-                  result = [0, 0, 0].slice(0, selectorTypes.length)
-                }
+          let position =
+            selectorTypes.length === 1 ? SelectorPosition.single : SelectorPosition.middle
+          if (selectorTypes.length > 1 && index === 0) {
+            position = SelectorPosition.left
+          } else if (selectorTypes.length > 1 && index === selectorTypes.length - 1) {
+            position = SelectorPosition.right
+          }
 
-                result[index] = Number(e.id)
-                onChange(result.map((item) => String(item).padStart(2, '0')).join(':'))
-              }}
-              data={getSelectorData(type)}
-            />
+          return (
+            <div className={`${componentPrefix}__selector-content`} key={type}>
+              <Selector
+                value={String(separateValue[index])}
+                prefix={prefix}
+                position={position}
+                itemHeight={itemHeight}
+                fullDisplayItemNumber={fullDisplayItemNumber}
+                onChange={(e) => {
+                  let result = [...separateValue].slice(0, selectorTypes.length)
+                  // 如果 value = ''，则代表为空值
+                  // 此时选择任意项，其他项直接视作 0
+                  if (value === '') {
+                    result = [0, 0, 0].slice(0, selectorTypes.length)
+                  }
+
+                  result[index] = Number(e.id)
+                  onChange(result.map((item) => String(item).padStart(2, '0')).join(':'))
+                }}
+                data={getSelectorData(type)}
+              />
+              <div
+                className={cx(`${componentPrefix}__indicator`, {
+                  [`${componentPrefix}__indicator--left`]: index === 0,
+                  [`${componentPrefix}__indicator--right`]: index === selectorTypes.length - 1,
+                })}
+                style={{ height: `${itemHeight}px` }}
+              />
+            </div>
           )
         })}
-        <div className={`${componentPrefix}__indicator`} style={{ height: `${itemHeight}px` }} />
       </div>
     )
   }, [
@@ -138,7 +155,7 @@ export const Panel: FC<PanelProps> = (props) => {
 
   return (
     <div className={componentPrefix}>
-      {renderHeader()}
+      {/* {renderHeader()} */}
       {renderSelectors()}
     </div>
   )

@@ -5,12 +5,12 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
 .#{$prefix} {
   width: fit-content;
+  border-radius: 4px;
 
   &--border {
     position: relative;
 
     .#{$input-wrapper-class} {
-      border-radius: 4px;
       background: use-color-static('white');
       border: use-border-size('normal') use-color('gray', 300);
     }
@@ -23,11 +23,21 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
       left: 50%;
       top: 50%;
       transform: translateX(-50%) translateY(-50%);
-      background: use-color-static('transparent');
-      opacity: 0.2;
+      background: use-color('brandblue', 500);
+      opacity: 0;
       pointer-events: none;
       z-index: -1;
-      border-radius: 4px;
+      border-radius: 5px;
+    }
+  }
+
+  &--border#{&}--input-not-valid{
+    .#{$input-wrapper-class} {
+      border-color: use-color('red', 500);
+    }
+
+    &::before {
+      background: use-color('red', 500);
     }
   }
 
@@ -38,7 +48,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     }
 
     &::before {
-      background: use-color('brandblue', 500);
+      opacity: 0.2;
     }
   }
 
@@ -63,11 +73,11 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
   &--disabled {
     cursor: not-allowed;
-    background: get-color('gray', 100);
+    background: get-color('gray', 300);
 
     .#{$input-wrapper-class} {
       pointer-events: none;
-      opacity: 0.4;
+      opacity: 0.3;
     }
   }
 

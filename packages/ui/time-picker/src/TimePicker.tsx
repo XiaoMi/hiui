@@ -33,7 +33,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       role = _role,
       className,
       value: controlledValue,
-      itemHeight = 32,
+      itemHeight = 24,
       fullDisplayItemNumber = 7,
       hourStep = 1,
       minuteStep = 1,
@@ -58,6 +58,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       controlledValue,
       notifyOutside
     )
+    const [isInputValid, setIsInputValid] = useState(true)
     const [cacheValue, setCacheValue] = useState<string[]>(value)
     const cacheValueRef = useRef(cacheValue)
 
@@ -159,6 +160,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       [`${prefixCls}--border`]: bordered,
       [`${prefixCls}--active`]: showPopper && !disabled,
       [`${prefixCls}--disabled`]: disabled,
+      [`${prefixCls}--input-not-valid`]: !isInputValid,
     })
 
     // 行为结束，如果此时值还是错误的，则直接重置
@@ -172,6 +174,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       <div ref={ref} role={role} className={cls}>
         <div ref={setAttachEl} className={`${prefixCls}__input-wrapper`}>
           <Input
+            onValidChange={setIsInputValid}
             disabled={inputReadonly || disabled}
             type={type}
             placeholders={placeholder}
@@ -199,6 +202,10 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           <div
             className={`${prefixCls}__function-button`}
             onClick={() => {
+              // pop正打开，此时点击按钮为清除功能
+              if (showPopperRef.current) {
+                onChangeWrapper(type === 'single' ? [''] : ['', ''])
+              }
               showPopperRef.current = !showPopper
               setShowPopper((pre) => !pre)
             }}

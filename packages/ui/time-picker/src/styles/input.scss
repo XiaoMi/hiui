@@ -8,13 +8,14 @@ $interact-area: '#{$input-prefix}__interact-area' !default;
   align-items: center;
   width: fit-content;
   font-size: use-text-size('normal');
+  color: use-color('gray', 700);
 
   &--disabled {
-    color: use-color('gray', 500);
+    color: use-color('gray', 400);
   }
 
   &--not-valid {
-    color: use-color('red', 600);
+    color: use-color('red', 500);
   }
 
   &--range {
@@ -40,7 +41,7 @@ $interact-area: '#{$input-prefix}__interact-area' !default;
     }
 
     &::placeholder {
-      color: use-color-static('transparent');
+      color: use-color('gray',500);
     }
   }
 }

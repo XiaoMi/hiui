@@ -2,12 +2,13 @@
 
 $selector-prefix: '#{$component-prefix}-time-picker__selector' !default;
 $selector-shortcut-class: '#{$selector-prefix}__shortcut' !default;
+$item-class: '#{$selector-prefix}__item' !default;
 
 .#{$selector-prefix} {
   cursor: pointer;
   position: relative;
   z-index: 0;
-  width: 60px;
+  width: 54px;
   color:get-color('gray', 600);
 
   &:hover{
@@ -28,22 +29,49 @@ $selector-shortcut-class: '#{$selector-prefix}__shortcut' !default;
     }
   }
 
+  &--position-left{
+    .#{$item-class}{
+      border-radius: 4px 0 0 4px;
+    }
+    margin-right: 1px;
+  }
+
+  &--position-right{
+    .#{$item-class}{
+      border-radius: 0 4px 4px 0;
+    }
+    margin-left: 1px;
+  }
+
+  &--position-single{
+    .#{$item-class}{
+      border-radius: 4px;
+    }
+  }
+
   &__item{
     display: flex;
     align-items: center;
     justify-content: center;
     user-select: none;
     font-size: 14px;
-    border-radius: 8px;
+    margin: 8px 0;
+
+    &:first-of-type{
+      margin-top: 4px;
+    }
+    &:last-of-type{
+      margin-bottom: 4px;
+    }
 
     &:hover{
-      background: use-color('brandblue', 50);
+      background: use-color('gray', 100);
     }
 
-    &#{&}--active{
-      font-weight: 700;
-      background: transparent;
-    }
+    //&#{&}--active{
+    //  font-weight: 700;
+    //  background: transparent;
+    //}
 
     &#{&}--disabled{
       opacity: 0.2;
