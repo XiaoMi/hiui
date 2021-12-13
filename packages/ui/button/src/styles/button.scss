@@ -152,7 +152,7 @@ $prefix: '#{$component-prefix}-button' !default;
   // 禁用非标准手势
   touch-action: manipulation;
   cursor: pointer;
-  transition: background-color use-motion-duration('normal') use-motion-bezier('easing'), border-color use-motion-duration('normal') use-motion-bezier('easing'), box-shadow use-motion-duration('faster') use-motion-bezier('easing'), color use-motion-duration('normal') use-motion-bezier('easing');
+  transition: background-color use-motion-duration('normal') use-motion-bezier('normal'), border-color use-motion-duration('normal') use-motion-bezier('normal'), box-shadow use-motion-duration('faster') use-motion-bezier('normal'), color use-motion-duration('normal') use-motion-bezier('normal');
 
   &.#{$prefix}--appearance-link {
     background-color: transparent !important;
