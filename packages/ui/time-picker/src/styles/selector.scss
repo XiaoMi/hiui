@@ -37,7 +37,7 @@ $selector-shortcut-class: '#{$selector-prefix}__shortcut' !default;
     border-radius: 8px;
 
     &:hover{
-      background: get-color('blue', 50);
+      background: use-color('brandblue', 50);
     }
 
     &#{&}--active{

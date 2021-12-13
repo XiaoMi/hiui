@@ -3,39 +3,44 @@
 $input-prefix: '#{$component-prefix}-time-picker__input' !default;
 $interact-area: '#{$input-prefix}__interact-area' !default;
 
-.#{$input-prefix}{
+.#{$input-prefix} {
   display: flex;
   align-items: center;
   width: fit-content;
-  font-size: 14px;
+  font-size: use-text-size('normal');
 
-  &--disabled{
-    color: get-color('gray', 500);
+  &--disabled {
+    color: use-color('gray', 500);
   }
 
-  &--not-valid{
-    color: get-color('magenta', 600);
+  &--not-valid {
+    color: use-color('red', 600);
   }
 
-  &--range{
-    .#{$interact-area}{
+  &--range {
+    .#{$interact-area} {
       text-align: center;
     }
   }
 
-  &__interact-area{
+  &__interact-area {
     color: inherit;
     border: none;
     outline: none;
-    height: 28px;
-    width: 144px;
-    line-height: 28px;
-    padding: 0;
-    padding-left: 10px;
+    height: 30px;
+    width: 208px;
+    line-height: 30px;
+    padding: 0 12px;
+    box-sizing: border-box;
     font-size: inherit;
+    background: transparent;
 
-    &:disabled{
+    &:disabled {
       background: transparent;
+    }
+
+    &::placeholder {
+      color: use-color-static('transparent');
     }
   }
 }

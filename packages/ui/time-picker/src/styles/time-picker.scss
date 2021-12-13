@@ -6,49 +6,73 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 .#{$prefix} {
   width: fit-content;
 
-  &--border{
-    .#{$input-wrapper-class}{
-      border: 1px solid get-color('gray', 300);
+  &--border {
+    position: relative;
+
+    .#{$input-wrapper-class} {
+      border-radius: 4px;
+      background: use-color-static('white');
+      border: use-border-size('normal') use-color('gray', 300);
+    }
+
+    &::before {
+      content: '';
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      background: use-color-static('transparent');
+      opacity: 0.2;
+      pointer-events: none;
+      z-index: -1;
+      border-radius: 4px;
     }
   }
 
-  &--active{
-    .#{$input-wrapper-class}{
-      border-color: get-color('blue', 600);
+  &--active {
+    .#{$input-wrapper-class} {
+      box-shadow: 0 0 2px  #237ffa33;
+      border-color: use-color('brandblue', 500);
+    }
+
+    &::before {
+      background: use-color('brandblue', 500);
     }
   }
 
-  &__input-wrapper{
+  &__input-wrapper {
     width: fit-content;
     display: flex;
     align-items: center;
 
-    &:hover{
-      border-color: get-color('blue', 600);
+    &:hover {
+      border-color: use-color('brandblue', 500);
     }
   }
 
-  &__function-button{
+  &__function-button {
     margin-right: 8px;
     font-size: 14px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    color: get-color('gray', 400);
+    color: use-color('gray', 500);
   }
 
-  &--disabled{
+  &--disabled {
     cursor: not-allowed;
     background: get-color('gray', 100);
 
-    .#{$input-wrapper-class}{
+    .#{$input-wrapper-class} {
       pointer-events: none;
       opacity: 0.4;
     }
   }
 
-  &__close-button{
-    &:hover{
+  &__close-button {
+    &:hover {
       color: get-color('gray', 600);
     }
   }
