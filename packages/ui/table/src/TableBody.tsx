@@ -5,6 +5,8 @@ import { TableRow } from './TableRow'
 import { useTableContext } from './context'
 // import { Column, RowSelection } from './Table'
 // import { Checkbox } from '@hi-ui/checkbox'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import { TableRowRequiredProps } from './types'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -14,7 +16,16 @@ const _prefix = getPrefixCls(_role)
  */
 export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
   ({ prefixCls = _prefix, columns, firstRowRef, fixedColWidth, rowSelection }, ref) => {
-    const { data } = useTableContext()
+    const {
+      data,
+      firstRowElementRef,
+      isExpandTreeRows,
+      height,
+      itemHeight = 40,
+      virtual = false,
+      transitionData,
+      onNodeToggleEnd,
+    } = useTableContext()
 
     const cls = cx(`${prefixCls}__body`)
 
@@ -25,26 +36,39 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
     }
 
-    const renderRow = ({ col, index, depth, row }) => {
-      return (
-        <>
-          <TableRow
-            key={depth + index}
-            rowIndex={index}
-            rowData={row}
-            setDragRowKey={() => {}}
-            setDragStatus={() => {}}
-          />
-        </>
-      )
-    }
+    const getTreeNodeRequiredProps = useLatestCallback(
+      (id: React.ReactText): TableRowRequiredProps => {
+        return {
+          expandedTree: isExpandTreeRows(id),
+          // checked: isCheckedId(id),
+          // semiChecked: isSemiCheckedId(id),
+          // selected: selectedId === id,
+          // loading: isLoadingId(id),
+          // focused: focusedId === id,
+        }
+      }
+    )
 
     // TODO: 空状态
 
+    // console.log('transitionData', transitionData)
+
     return (
       <tbody className={cls}>
-        {data.map((row, index) => {
-          return renderRow({ row, depth: 0, index })
+        {transitionData.map((row, index) => {
+          return (
+            <TableRow
+              ref={index === 0 ? firstRowElementRef : null}
+              // key={depth + index}
+              key={row.id}
+              rowIndex={index}
+              rowData={row}
+              setDragRowKey={() => {}}
+              setDragStatus={() => {}}
+              // expandedTree={isExpandTreeRows(row.id)}
+              {...getTreeNodeRequiredProps(row.id)}
+            />
+          )
         })}
       </tbody>
     )

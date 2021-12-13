@@ -13,17 +13,19 @@ export const useCheck = ({
   idFieldName = 'id',
 }: UseCheckProps) => {
   const allowCheckRef = useLatestRef(allowCheck)
+  const checkedIdsLatestRef = useLatestRef(checkedIds)
 
   const onNodeCheck = useCallback(
     (targetItem: UseCheckItem, shouldChecked: boolean) => {
       if (disabled) return
       if (allowCheckRef.current && allowCheckRef.current(targetItem) === false) return
 
+      const checkedIds = checkedIdsLatestRef.current
       const nextCheckedIds = checkDefault(checkedIds, targetItem, shouldChecked, idFieldName)
 
       onCheck(nextCheckedIds, targetItem, shouldChecked)
     },
-    [disabled, onCheck, allowCheckRef, checkedIds, idFieldName]
+    [disabled, onCheck, allowCheckRef, checkedIdsLatestRef, idFieldName]
   )
 
   const isCheckedId = useCallback((id: React.ReactText) => checkedIds.indexOf(id) !== -1, [

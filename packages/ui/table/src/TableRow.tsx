@@ -5,11 +5,16 @@ import { __DEV__ } from '@hi-ui/env'
 import { Checkbox } from '@hi-ui/checkbox'
 import { useTableContext } from './context'
 // import { cloneTree } from '@hi-ui/tree-utils'
-import { defaultLoadingIcon } from './icons'
 import { IconButton } from '@hi-ui/icon-button'
 import { TableCell } from './TableCell'
 import { TableExpandedRow } from './TableExpandedRow'
 import { useLatestCallback } from '@hi-ui/use-latest'
+import {
+  defaultCollapseIcon,
+  defaultExpandIcon,
+  defaultLeafIcon,
+  defaultLoadingIcon,
+} from './icons'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -21,7 +26,7 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
   (
     {
       prefixCls = _prefix,
-      rowData,
+      rowData: rowDataProp,
       // allRowData,
       level,
       showColHighlight,
@@ -41,8 +46,6 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
       setDragStatus,
       dragRowKey,
       setDragRowKey,
-      expanded,
-      setExpanded,
     },
     ref
   ) => {
@@ -69,7 +72,16 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
       onDragEnd: onDragEndContext,
       onDrop: onDropContext,
       dragRowRef,
+      checkedRowKeys,
+      trySetCheckedRowKeys,
+      onCheckedRowKeysChange,
+      isCheckedRowKey,
+      onExpandEmbedRowsChange,
+      isExpandEmbedRows,
     } = useTableContext()
+    const rowData = rowDataProp.raw
+    const rowKey = rowData.key
+    // const rowKey = rowData.key
 
     // ** ************** checkbox 处理 *************** *//
 
@@ -79,12 +91,10 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
     const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false
 
     if (checkboxDisabled) {
-      disabledData.current.push(rowData.key)
+      disabledData.current.push(rowKey)
     }
 
     const rowExpand = rowExpandable && rowExpandable(rowData)
-
-    const rowKey = rowData.key
 
     const sticky = flattedColumnsWithoutChildren.some((item) => {
       return (
@@ -240,6 +250,7 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
 
     return [
       <tr
+        ref={ref}
         className={cls}
         key="row"
         onDoubleClick={handleRowDoubleClick}
@@ -250,56 +261,47 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
         onDragLeave={onDragLeave}
         onDrop={onDrop}
       >
+        {/* 表格列多选操作区 */}
         {rowSelection && isFixed !== 'right' && !isSumRow && !isAvgRow ? (
           <td
             style={{ width: checkboxColWidth }}
             className={cx(sticky && `${prefixCls}__col--sticky`)}
           >
             <Checkbox
-              checked={rowSelection.selectedRowKeys.includes(rowData.key)}
+              checked={isCheckedRowKey(rowData.key)}
               disabled={checkboxDisabled}
-              onChange={(e) => {
-                const { selectedRowKeys = [], onChange } = rowSelection
-                const _selectedRowKeys = [...selectedRowKeys]
-
-                if (_selectedRowKeys.includes(rowData.key)) {
-                  onChange(
-                    _selectedRowKeys.filter((key) => key !== rowData.key),
-                    rowData,
-                    false
-                  )
-                } else {
-                  _selectedRowKeys.push(rowData.key)
-                  onChange(_selectedRowKeys, rowData, true)
-                }
+              onChange={(evt) => {
+                onCheckedRowKeysChange(rowData, evt.target.checked)
               }}
             />
           </td>
         ) : null}
 
+        {/* 表格列展开折叠操作区 */}
         {expandedRender ? (
           <td style={{ width: 50 }} className={cx(sticky && `${prefixCls}__col--sticky`)}>
             {renderSwitcher({
               prefixCls,
               rowExpand,
               sticky,
-              expanded,
-              onNodeExpand: () => {
-                onExpand?.(!expanded, rowData)
+              expanded: isExpandEmbedRows(rowData.key),
+              onNodeExpand: (shouldExpanded: boolean) => {
+                onExpandEmbedRowsChange(rowData, shouldExpanded)
               },
+              expandIcon: defaultExpandIcon,
+              collapseIcon: defaultCollapseIcon,
             })}
           </td>
         ) : null}
 
+        {/* 表格列数据 */}
         {flattedColumnsWithoutChildren.map((column, idx) => {
-          // console.log(column)
-
           return (
             <TableCell
               key={idx}
               column={column}
               columnIndex={idx}
-              rowData={rowData}
+              rowData={rowDataProp}
               rowIndex={rowIndex}
               showColHighlight={showColHighlight}
               hoverColIndex={hoverColIndex}
@@ -313,16 +315,14 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
           )
         })}
       </tr>,
+
       // 可展开的内嵌面板
       expandedRender ? (
         <TableExpandedRow
           expandedRender={expandedRender}
-          expanded={expanded}
-          setExpanded={setExpanded}
-          onExpand={onExpand}
           rowSelection={rowSelection}
           columns={columns}
-          rowData={rowData}
+          rowData={rowDataProp}
           rowIndex={rowIndex}
         />
       ) : null,
@@ -369,7 +369,11 @@ const renderSwitcher = ({
   sticky: boolean
   expanded: string
   onNodeExpand: any
+  expandIcon: any
+  collapseIcon: any
 }) => {
+  console.log(rowExpand)
+
   if (React.isValidElement(rowExpand)) {
     return rowExpand
   }
@@ -391,7 +395,7 @@ const renderSwitcher = ({
             expanded ? `${prefixCls}__switcher--expanded` : `${prefixCls}__switcher--collapse`
           )}
           icon={expanded ? expandIcon : collapseIcon}
-          onClick={onNodeExpand}
+          onClick={() => onNodeExpand(!expanded)}
         />
       )
     }

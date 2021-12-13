@@ -1,5 +1,6 @@
 import React from 'react'
 import { SelectProps } from '@hi-ui/select'
+import { ValueOf } from '@hi-ui/core'
 
 export type TableAlign = 'left' | 'right' | 'center'
 
@@ -8,22 +9,16 @@ export interface FixedOption {
   right?: string
 }
 
-export interface RowSelection {
-  selectedRowKeys: string[]
-  onChange: (selectedRowKeys: string[]) => void
-  getCheckboxConfig: (rowData: object) => any
-}
-
 export type TableFixedOptions = {
   left?: string
   right?: string
 }
 
 export type TableRowSelection = {
-  selectedRowKeys?: string[] | number[]
-  getCheckboxConfig?: (rowData: object) => object
+  selectedRowKeys?: React.ReactText[]
+  getCheckboxConfig?: (rowData: object) => { disabled?: boolean }
   onChange?: (
-    selectedRowKeys: string | number,
+    selectedRowKeys: React.ReactText[],
     targetRow?: object | object[],
     shouldChecked?: boolean
   ) => void
@@ -50,15 +45,16 @@ export type TableColumnItem = {
   children?: TableColumnItem[]
   selectFilters?: SelectProps
   defaultSortOrder?: 'ascend' | 'descend'
+  render?: (text: string, record: object, index: number, dataKey: string) => React.ReactNode
+  // @DEPRECATED
   filterIcon?: React.ReactNode
+  filterDropdownWidth?: number
+  filterDropdownClassName?: string
   filterDropdown?: (props: {
     ColumnItem: TableColumnItem
     setFilterDropdownVisible: Function
   }) => React.ReactNode
-  filterDropdownWidth?: number
-  filterDropdownClassName?: string
   onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, item: TableColumnItem) => void
-  render?: (text: string, record: object, index: number, dataKey: string) => React.ReactNode
 }
 
 export type TableDataSource = {
@@ -131,3 +127,22 @@ export interface TableNodeRequiredProps {
 }
 
 export interface TableNodeEventData extends FlattedTableNodeData, TableNodeRequiredProps {}
+
+// 表示节点类型
+export const TreeNodeType = {
+  SHOW: 'show',
+  HIDE: 'hide',
+  ADD: 'add',
+} as const
+
+// eslint-disable-next-line no-redeclare
+export type TreeNodeType = ValueOf<typeof TreeNodeType>
+
+export interface TableRowRequiredProps {
+  expanded: boolean
+  checked: boolean
+  semiChecked: boolean
+  selected: boolean
+  loading: boolean
+  focused: boolean
+}

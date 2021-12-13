@@ -15,7 +15,7 @@ import {
  *  depth 以 0 打头表示最外层，可以结合数组下标 0 开头方便记忆
  *  parent 将为 null ，如果当前 node 是最外层节点
  */
-export const visitTree = <T extends BaseTreeNodeData>(
+export const visitTree = <T extends BaseTreeNode>(
   tree: T[],
   visit?: (node: T, depth: number, parent: T | null) => void
 ) => {
@@ -57,14 +57,16 @@ export const flattenTree = <T extends BaseTreeNodeData>(
   ) => {
     const { id, children } = node
 
-    const flattedNode: BaseFlattedTreeNodeData<any> = {
+    let flattedNode: BaseFlattedTreeNodeData<any> = {
       id,
       depth,
       parent,
       raw: node,
     }
 
-    flattedTree.push(transform ? transform(flattedNode) : flattedNode)
+    flattedNode = transform ? transform(flattedNode) : flattedNode
+
+    flattedTree.push(flattedNode)
 
     if (children) {
       const childDepth = depth + 1
@@ -431,4 +433,47 @@ export const cloneTreeNode = <T extends BaseTreeNode>(node: T) => {
  */
 export const cloneTree = <T extends BaseTreeNode>(tree: T[]) => {
   return tree.map((node) => cloneTreeNode(node))
+}
+
+export const isLeaf = <T extends BaseTreeNode>(treeNode: T) => {
+  return !Array.isArray(treeNode.children) || treeNode.isLeaf
+}
+
+/**
+ * 获取指定节点的所有后代叶子节点
+ */
+export const getLeafChildren = <T extends BaseTreeNode>(treeNode: T) => {
+  const leafNodes: T[] = []
+
+  const dig = (node: BaseTreeNode) => {
+    if (node.children) {
+      node.children.forEach((subNode) => {
+        if (subNode.children) {
+          dig(subNode)
+        } else {
+          leafNodes.push(subNode as T)
+        }
+      })
+    }
+    return node
+  }
+
+  dig(treeNode)
+
+  return leafNodes
+}
+
+/**
+ *  将树形数据按照层级分组
+ */
+export const groupByTreeDepth = <T extends BaseTreeNode>(tree: T[]) => {
+  const groupedTree: T[][] = []
+
+  visitTree(tree, (node, depth) => {
+    if (!groupedTree[depth]) {
+      groupedTree[depth] = []
+    }
+    groupedTree[depth].push(node)
+  })
+  return groupedTree
 }

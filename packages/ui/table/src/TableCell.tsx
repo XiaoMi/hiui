@@ -5,10 +5,15 @@ import { __DEV__ } from '@hi-ui/env'
 // import { Checkbox } from '@hi-ui/checkbox'
 import { useTableContext } from './context'
 import { times } from '@hi-ui/times'
-import { RowSelection, TableColumnItem, TableNodeEventData } from './types'
+import { TableColumnItem, TableNodeEventData } from './types'
 import { IconButton } from '@hi-ui/icon-button'
-import { defaultLoadingIcon } from './icons'
-import { isObject, isFunction, isNullish } from '@hi-ui/type-assertion'
+import {
+  defaultCollapseIcon,
+  defaultExpandIcon,
+  defaultLeafIcon,
+  defaultLoadingIcon,
+} from './icons'
+import { isObject, isFunction } from '@hi-ui/type-assertion'
 
 const _prefix = getPrefixCls('table-cell')
 
@@ -34,9 +39,9 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
       setExpandedTreeRows,
       isTree,
       // icons
-      expandIcon,
-      collapseIcon,
-      leafIcon,
+      expandIcon = defaultExpandIcon,
+      collapseIcon = defaultCollapseIcon,
+      leafIcon = defaultLeafIcon,
       rowData,
     },
     ref
@@ -53,6 +58,9 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
       showColHighlight,
       isHoveredCol,
       onHoveredColChange,
+      onExpandTreeRowsChange,
+      isExpandTreeRows,
+      onTreeNodeSwitch,
     } = useTableContext()
 
     const [loading, setLoading] = React.useState(false)
@@ -70,7 +78,7 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
      * normalize 单元格渲染内容，支持自定义 render
      */
     const cellContent = React.useMemo(() => {
-      let content = rowData[dataKey]
+      let content = rowData.raw[dataKey]
 
       if (isFunction(rawRender)) {
         content = rawRender(content, rowData, rowIndex, dataKey)
@@ -96,42 +104,15 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
       return null
     }
 
-    const cellTextAlign = alignRightColumns.includes(dataKey) ? 'right' : align
+    // const cellTextAlign = alignRightColumns.includes(dataKey) ? 'right' : align
 
     /**
      * 点击展开节点时触发
      */
-    const onNodeExpand = async () => {
-      // 存在即收起，并删除该key
-      loadChildren.current = null
-      const _expandedTreeRows = [...expandedTreeRows]
-      if (onLoadChildren && !expandedTree) {
-        const data = onLoadChildren(rowData)
-        if (data.toString() === '[object Promise]') {
-          setLoading(true)
-          await data
-            .then((res) => {
-              if (Array.isArray(res)) {
-                loadChildren.current = { parentKey: rowData.key, data: res }
-              }
-              setLoading(false)
-            })
-            .catch(() => {
-              loadChildren.current = null
-              setLoading(false)
-            })
-        } else {
-          loadChildren.current = { parentKey: rowData.key, data }
-        }
-      }
-      if (_expandedTreeRows.includes(rowData.key)) {
-        const idx = _expandedTreeRows.findIndex((row) => row === rowData.key)
-        _expandedTreeRows.splice(idx, 1)
-        setExpandedTreeRows(_expandedTreeRows, false, rowData)
-      } else {
-        _expandedTreeRows.push(rowData.key)
-        setExpandedTreeRows(_expandedTreeRows, true, rowData)
-      }
+    const onNodeExpand = (shouldExpanded: boolean) => {
+      console.log(shouldExpanded)
+
+      onTreeNodeSwitch(rowData, shouldExpanded)
     }
 
     const sticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
@@ -153,7 +134,8 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
         className={cls}
         style={{
           position: sticky ? 'sticky' : undefined,
-          textAlign: cellTextAlign,
+          // 从 column 中读取
+          textAlign: 'left',
           right: rightStickyWidth + 'px',
           left: leftStickyWidth + 'px',
         }}
@@ -234,7 +216,7 @@ const renderSwitcher = ({
   expandIcon: React.ReactNode
   collapseIcon: React.ReactNode
   leafIcon: React.ReactNode
-  onNodeExpand: (evt: React.MouseEvent) => void
+  onNodeExpand: (shouldExpanded: boolean) => void
   onLoadChildren?: (node: TableNodeEventData) => void | Promise<any>
   isTree?: boolean
 }) => {
@@ -259,7 +241,7 @@ const renderSwitcher = ({
           expanded ? `${prefixCls}__switcher--expanded` : `${prefixCls}__switcher--collapse`
         )}
         icon={expanded ? expandIcon : collapseIcon}
-        onClick={onNodeExpand}
+        onClick={() => onNodeExpand(!expanded)}
       />
     )
   }

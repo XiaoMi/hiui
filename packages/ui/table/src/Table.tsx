@@ -1,25 +1,23 @@
-import React, { forwardRef, useRef, useEffect, useState } from 'react'
+import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { TableBody } from './TableBody'
 import { TableHeader } from './TableHeader'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import {
-  HeaderRowFunc,
-  TableColumnItem,
-  TableDataSource,
-  TableFixedOptions,
-  TableRowSelection,
-} from './types'
-import Pagination, { PaginationProps } from '@hi-ui/pagination'
+import Pagination from '@hi-ui/pagination'
 import { useTable, UseTableProps } from './use-table'
-import { TableProvider, useTableContext } from './context'
+import { TableProvider } from './context'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
 
-const DEFAULT_COLUMNS = [] as []
-const DEFAULT_DATA = [] as []
+const STANDARD_PRESET = {
+  showColMenu: true,
+  sticky: true,
+  bordered: true,
+  setting: true,
+  striped: true,
+}
 
 /**
  * TODO: What is Table
@@ -31,53 +29,17 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       role = _role,
       className,
       striped = false,
-      // data = DEFAULT_DATA,
-      // columns = DEFAULT_COLUMNS,
-      // fixedToColumn,
-      // rowSelection,
-      // striped,
-      // bordered,
-      // resizable,
-      // size,
-      // errorRowKeys = [],
-      // highlightedRowKeys = [],
-      // highlightedColKeys = [],
-      // expandedRowKeys: propsExpandRowKeys,
-      // expandRowKeys,
-      // onExpand,
-      // onHeaderRow,
-      // expandedRender,
-      // maxHeight,
-      // pagination,
-      // dataSource,
-      // showColMenu,
-      // showColHighlight,
-      // sticky,
-      // stickyTop = 0,
-      // setting,
-      // onLoadChildren,
-      // rowExpandable,
-      // hiddenColKeys,
-      // scrollWidth,
-      // draggable,
-      // fieldKey,
-      // onDragStart,
-      // onDrop,
-      // onDropEnd,
-      // emptyContent,
-      // getColKeyValue,
-      // sortCols,
-      // setSortCols,
-      // cacheSortCols,
-      // setCacheSortCols,
-      // cacheHiddenColKeys,
-      // setCacheHiddenColKeys,
-      // setHiddenColKeys,
+      loading = false,
+      standard = false,
       ...rest
     },
     ref
   ) => {
-    const providedValue = useTable(rest)
+    const standardPreset = standard ? STANDARD_PRESET : {}
+
+    // 预处理 column 支持 多选渲染
+
+    const providedValue = useTable({ ...standardPreset, ...rest })
 
     const {
       // striped,
@@ -91,14 +53,18 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       pagination,
       currentPage,
       trySetCurrentPage,
+      scrollSize,
+      leftFrozenColKeys,
+      rightFrozenColKeys,
+      fixedColumnsWidth,
     } = providedValue
 
     const cls = cx(
       prefixCls,
       className,
-      striped && `${prefixCls}--striped`,
       bordered && `${prefixCls}--bordered`,
-      size && `${prefixCls}--${size}`
+      striped && `${prefixCls}--striped`,
+      size && `${prefixCls}--size-${size}`
     )
 
     // TODO：处理 column 模型支持 cellRender，一直出 checkbox、expandIcon 高级选项
@@ -108,7 +74,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         <TableProvider value={providedValue}>
           <table>
             <TableHeader
-              columns={columns}
+              // columns={columns}
               prefixCls={prefixCls}
               fixedColWidth={fixedColWidth}
               rowSelection={rowSelection}
@@ -122,10 +88,23 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
               rowSelection={rowSelection}
             />
           </table>
+          {/* 左右冻结列内侧阴影效果 */}
+          {/* {scrollSize.scrollLeft > 0 && leftFrozenColKeys.length > 0 ? (
+            <div
+              className={`${prefixCls}-freeze-shadow  ${prefixCls}-freeze-shadow--left`}
+              style={{ width: fixedColumnsWidth.left + 'px' }}
+            />
+          ) : null}
+          {scrollSize.scrollRight > 0 && rightFrozenColKeys.length > 0 ? (
+            <div
+              className={`${prefixCls}-freeze-shadow ${prefixCls}-freeze-shadow--right`}
+              style={{ width: fixedColumnsWidth.right + 'px' }}
+            />
+          ) : null} */}
         </TableProvider>
 
-        {/* TODO: 外置 Pagination 分页组件 */}
-        {/* {pagination ? (
+        {/* 外置 Pagination 分页组件 */}
+        {pagination ? (
           <div
             className={cx(
               `${prefixCls}__pagination`,
@@ -134,7 +113,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           >
             <Pagination {...pagination} current={currentPage} onChange={trySetCurrentPage} />
           </div>
-        ) : null} */}
+        ) : null}
       </div>
     )
   }

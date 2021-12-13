@@ -120,14 +120,40 @@ $prefix: '#{$component-prefix}-table' !default;
   }
 }
 
+// 单元格
 .#{$prefix}-cell {
   // background: #fff;
-  white-space: nowrap;
+  // white-space: nowrap;
   padding: 16px;
   color: #333;
   border-bottom: 1px solid #f0f0f0;
+  word-break: break-word;
 
   &__col--hovered-highlight {
     background-color: use-color-mode('primary-10');
+  }
+}
+
+// 冻结列 阴影
+.#{$prefix}-freeze-shadow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 20;
+  pointer-events: none;
+  overflow: hidden;
+  height: 100%;
+  width: 200px;
+
+  &--left {
+    margin-right: 10px;
+    left: 0;
+    box-shadow: 6px 0 6px -4px rgba(0, 0, 0, 0.15);
+  }
+
+  &--right {
+    margin-left: 10px;
+    right: 0;
+    box-shadow: -6px 0 6px -4px rgba(0, 0, 0, 0.15);
   }
 }

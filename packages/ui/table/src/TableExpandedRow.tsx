@@ -1,14 +1,10 @@
 import React, { forwardRef, useEffect } from 'react'
-import { cx, getPrefixCls } from '@hi-ui/classname'
+import { getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { Column, RowSelection } from './Table'
-import { Checkbox } from '@hi-ui/checkbox'
 import { useTableContext } from './context'
-import { cloneTree } from '@hi-ui/tree-utils'
-import { defaultLoadingIcon } from './icons/index'
-import { IconButton } from '@hi-ui/icon-button'
-import { TableCell } from './TableCell'
 import Loading from '@hi-ui/loading'
+import { TableColumnItem, TableRowSelection } from './types'
+import { useLatestRef } from '@hi-ui/use-latest'
 
 const _prefix = getPrefixCls('table-expanded-row')
 
@@ -16,60 +12,61 @@ const _prefix = getPrefixCls('table-expanded-row')
  * TODO: What is TableExpandedRow
  */
 export const TableExpandedRow = forwardRef<HTMLDivElement | null, TableExpandedRowProps>(
-  (
-    {
-      prefixCls = _prefix,
-      expandedRender,
-      expanded,
-      setExpanded,
-      onExpand,
-      rowSelection,
-      columns,
-      rowData,
-      index,
-    },
-    ref
-  ) => {
+  ({ prefixCls = _prefix, rowSelection, columns, rowData, rowIndex, expandedRender }, ref) => {
+    const { onExpandEmbedRowsChange, isExpandEmbedRows } = useTableContext()
+
     const [expandedRow, setExpandedRow] = React.useState(null)
+    const [loading, setLoading] = React.useState(false)
+
+    const rowDataLatestRef = useLatestRef(rowData)
 
     useEffect(() => {
-      const node = expandedRender(rowData, index)
-      if (node.toString() === '[object Promise]') {
-        setExpanded('loading')
+      const rowData = rowDataLatestRef.current
+      const embedContentMaybePromise = expandedRender(rowData, rowIndex)
 
-        node
-          .then((jsxElement) => {
+      if (embedContentMaybePromise.toString() === '[object Promise]') {
+        // setExpanded('loading')
+        setLoading(true)
+        embedContentMaybePromise
+          .then((jsxElement: any) => {
+            setLoading(false)
             setExpandedRow(jsxElement)
-            setExpanded(true)
+            onExpandEmbedRowsChange(rowData, true)
           })
-          .catch((err) => {
+          .catch((err: any) => {
+            setLoading(false)
+
             setExpandedRow(err)
-            setExpanded(true)
+            onExpandEmbedRowsChange(rowData, true)
           })
       } else {
-        setExpandedRow(node)
-        setExpanded(true)
+        // 同步 onChange 存在闭包问题，当前是有请求然后展开，无法受控
+        // 对于这个功能，需要使用 defaultExpandAllEmbed
+        requestAnimationFrame(() => {
+          setExpandedRow(embedContentMaybePromise)
+          onExpandEmbedRowsChange(rowData, true)
+        })
       }
-    }, [rowData, index, expandedRender, setExpanded])
+      // for onExpandEmbedRowsChange
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [rowIndex, expandedRender, rowDataLatestRef])
 
-    if (!expanded) return null
+    const expanded = isExpandEmbedRows(rowData.key)
+
+    // console.log('TableExpandedRow', expanded, rowData)
 
     // 可展开的内嵌面板
-    return (
-      <tr
-        key="expanded-row"
-        className={`${prefixCls}--expanded`}
-        style={{ background: 'rgba(251, 251, 251, 1)' }}
-      >
+    return expanded ? (
+      <tr key="expanded-row" className={`${prefixCls}--expanded`}>
         {/* 多选占位 */}
         {rowSelection ? <td /> : null}
         {/* 可展开内嵌显示 */}
         <td colSpan={columns.length + 1}>
           {expandedRow}
-          {expanded === 'loading' && <Loading size="sm" />}
+          {loading ? <Loading size="sm" /> : null}
         </td>
       </tr>
-    )
+    ) : null
   }
 )
 
@@ -81,7 +78,7 @@ export interface TableExpandedRowProps {
   /**
    * 列配置项
    */
-  columns: Column[]
+  columns: TableColumnItem[]
   /**
    * 数据配置项
    */
@@ -91,7 +88,10 @@ export interface TableExpandedRowProps {
    */
   // firstRowRef: React.RefObject<HTMLTableExpandedRowElement>
   fixedColWidth: number[]
-  rowSelection?: RowSelection
+  rowSelection?: TableRowSelection
+  rowData?: object
+  rowIndex?: number
+  expandedRender: any
 }
 
 if (__DEV__) {

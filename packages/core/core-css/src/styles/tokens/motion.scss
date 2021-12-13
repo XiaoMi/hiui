@@ -10,7 +10,7 @@ $motion-duration-base-map: (
 // 基础动画曲线
 $motion-bezier-base-map: (
   none: none,
-  // easing: cubic-bezier(0.37, 0.02, 0.34, 1),
+  easing: cubic-bezier(0.37, 0.02, 0.34, 1),
   normal: cubic-bezier(0.37, 0.02, 0.34, 1), // easing
   ease-in: cubic-bezier(0.4, 0, 1, 1),
   ease-out: cubic-bezier(0, 0, 0.2, 1),
