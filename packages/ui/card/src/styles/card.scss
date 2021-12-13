@@ -27,7 +27,7 @@ $prefix: '#{$component-prefix}-card' !default;
   }
 
   &__header {
-    padding: 0 use-spacing(8);
+    padding: 0 use-spacing(10);
     height: 46px;
     display: flex;
     align-items: center;
@@ -46,7 +46,7 @@ $prefix: '#{$component-prefix}-card' !default;
   }
 
   &__body {
-    padding: use-spacing(8);
+    padding: use-spacing(10);
     font-size: use-text-size('normal');
   }
 
