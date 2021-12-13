@@ -12,7 +12,7 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
   justify-content: center;
   width: fit-content;
   height: fit-content;
-  transition: all use-motion-bezier('easing');
+  transition: all use-motion-bezier('normal');
 
   &__area-expand {
     position: relative;
