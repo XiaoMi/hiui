@@ -187,7 +187,7 @@ $error-color: use-color('red', 600) !default;
         flex: 1;
 
         &:hover {
-          color: use-color('blue', 500);
+          color: use-color('brandblue', 500);
         }
       }
     }
@@ -271,7 +271,7 @@ $error-color: use-color('red', 600) !default;
     &__cell:not(.#{$prefix}__cell--range) {
       &-text {
         &:hover {
-          background-color: use-color('blue', 500);
+          background-color: use-color('brandblue', 500);
         }
       }
     }
@@ -282,7 +282,7 @@ $error-color: use-color('red', 600) !default;
 
     &--today {
       .#{$prefix}__cell-text {
-        border: 1px solid use-color('blue', 500);
+        border: 1px solid use-color('brandblue', 500);
       }
     }
 
