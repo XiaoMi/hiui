@@ -6,6 +6,11 @@ $prefix: '#{$component-prefix}-card' !default;
   border-radius: use-border-radius('lg');
   box-sizing: border-box;
   background: use-color-static('white');
+  &#{&}--no-header {
+    .#{$prefix}__body {
+      padding-top: use-spacing(10);
+    }
+  }
 
   &--small {
     width: 276px;
@@ -27,8 +32,8 @@ $prefix: '#{$component-prefix}-card' !default;
   }
 
   &__header {
-    padding: 0 use-spacing(10);
-    height: 46px;
+    padding: use-spacing(8) use-spacing(10);
+    line-height: use-text-lineheight('lg');
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -38,6 +43,7 @@ $prefix: '#{$component-prefix}-card' !default;
 
     &--divider {
       border-bottom: 1px solid use-color('gray', 200);
+      margin-bottom: use-spacing(8);
     }
   }
 
@@ -46,8 +52,9 @@ $prefix: '#{$component-prefix}-card' !default;
   }
 
   &__body {
-    padding: use-spacing(10);
+    padding: 0 use-spacing(10) use-spacing(10) use-spacing(10);
     font-size: use-text-size('normal');
+    color: use-color('gray', 600);
   }
 
   &__title {
@@ -55,6 +62,7 @@ $prefix: '#{$component-prefix}-card' !default;
     white-space: nowrap;
     text-overflow: ellipsis;
     flex: 1;
+    color: use-color('gray', 700);
     font-size: use-text-size('lg');
     font-weight: use-text-weight('bold');
   }
@@ -71,7 +79,7 @@ $prefix: '#{$component-prefix}-card' !default;
     transition: box-shadow 0.3s;
 
     &:hover {
-      box-shadow: 0 2px 8px 0 use-color('gray', 100);
+      box-shadow: 0 4px 8px 0 rgba(31, 39, 51, 0.1);
     }
   }
 }
