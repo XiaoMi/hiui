@@ -64,11 +64,19 @@ const getYearOrMonthRows = ({
         const _y = currentYM.year()
         const _m = currentYM.month()
         if (disabledDate && view.includes('year')) {
-          col.type = disabledDate(_y) ? 'disabled' : col.type
+          // col.type = disabledDate(_y) ? 'disabled' : col.type
+          col.type = disabledDate(moment().set('year', _y).set('month', 1).set('date', 1).toDate())
+            ? 'disabled'
+            : col.type
         }
         if (disabledDate && view.includes('month')) {
-          col.type = disabledDate(_y + '-' + _m) ? 'disabled' : col.type
+          // col.type = disabledDate(_y + '-' + _m) ? 'disabled' : col.type
+          // 此处 _m - 1 是由于 Date 中的 month 是 0 - 11
+          col.type = disabledDate(moment().set('year', _y).set('month', _m).set('date', 1).toDate())
+            ? 'disabled'
+            : col.type
         }
+
         // 年的状态
         if (view.includes('year') && (min || max)) {
           if (min) {
@@ -107,10 +115,14 @@ const getYearOrMonthRows = ({
       const _y = currentYM.year()
       const _m = currentYM.month()
       if (disabledDate && view.includes('year')) {
-        col.type = disabledDate(_y) ? 'disabled' : col.type
+        col.type = disabledDate(moment().set('year', _y).set('month', 1).set('date', 1).toDate())
+          ? 'disabled'
+          : col.type
       }
       if (disabledDate && view.includes('month')) {
-        col.type = disabledDate(_y + '-' + _m) ? 'disabled' : col.type
+        col.type = disabledDate(moment().set('year', _y).set('month', _m).set('date', 1).toDate())
+          ? 'disabled'
+          : col.type
       }
       // 年的状态
       if (view.includes('year') && (min || max)) {
