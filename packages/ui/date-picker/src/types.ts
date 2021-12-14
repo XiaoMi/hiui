@@ -65,6 +65,8 @@ export type DatePickerAltCalendarPreset = 'zh-CN' | 'id-ID'
 
 export type DateMarkRender = (currentDate: number, today: number) => React.ReactNode
 
+export type DisabledDate = (currentDate: Date | number | string) => boolean
+
 type ExtendsType = Omit<HiBaseHTMLProps<'div'>, 'placeholder'>
 
 export interface DatePickerProps extends ExtendsType {
@@ -95,7 +97,7 @@ export interface DatePickerProps extends ExtendsType {
   /**
    * @default () => false
    */
-  disabledDate?: (currentDate: Date) => boolean
+  disabledDate?: DisabledDate
   /**
    * @default true
    */

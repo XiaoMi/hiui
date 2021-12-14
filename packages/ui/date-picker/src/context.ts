@@ -4,14 +4,15 @@ import moment from 'moment'
 
 const DPContext = React.createContext<DPContextData>({} as DPContextData)
 
-type ExtendsType = Omit<DatePickerProps, 'max' | 'min' | 'type' | 'showTime'> &
-  Required<Pick<DatePickerProps, 'type' | 'showTime'>>
+export type LocaleData = {
+  datePicker: any
+}
+type ExtendsType = Omit<DatePickerProps, 'max' | 'min' | 'type' | 'showTime' | 'disabledDate'> &
+  Required<Pick<DatePickerProps, 'type' | 'showTime' | 'disabledDate'>>
 
 interface DPContextData extends ExtendsType {
   prefixCls: string
-  localeData: {
-    datePicker: any
-  }
+  localeData: LocaleData
   outDate: (moment.Moment | null)[]
   onPick: (dates: (moment.Moment | null)[], isShowPanel: boolean) => void
   realFormat: string

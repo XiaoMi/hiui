@@ -73,6 +73,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     const { datePicker } = useContext(LocaleContext)
     // 适配器，暂时兼容老代码
     const localeData = useMemo(() => ({ datePicker }), [datePicker])
+    // 此处应为历史兼容，需要兼容 max maxDate
     const [max, setMax] = useState(configMax || maxDate || null)
     const [min, setMin] = useState(configMin || minDate || null)
 

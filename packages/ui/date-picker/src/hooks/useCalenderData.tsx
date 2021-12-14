@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import moment from 'moment'
 import { DAY_MILLISECONDS } from '../utils/constants'
 import _ from 'lodash'
+import { DatePickerType, DisabledDate } from '../types'
+import { LocaleData } from '../context'
 
 const getYearOrMonthRows = ({
   originDate,
@@ -13,21 +15,31 @@ const getYearOrMonthRows = ({
   min,
   max,
   disabledDate,
+}: {
+  originDate: moment.Moment | null
+  renderDate: moment.Moment | null
+  type: DatePickerType
+  view: string
+  range: CalenderSelectedRange
+  localeData: LocaleData
+  min: Date
+  max: Date
+  disabledDate: DisabledDate
 }) => {
   const _date = renderDate ? moment(renderDate) : moment()
   const start = view === 'year' ? _date.year() - 4 : 0
-  const trs = [[], [], [], []]
+  const trs: CalendarRowInfo[] = [[], [], [], []] as any
   let num = 0
   const current = moment()
   for (let i = 0; i < 4; i++) {
     const row = trs[i]
     for (let j = 0; j < 3; j++) {
-      const col = row[j] || (row[j] = { type: 'normal' })
+      const col = row[j] || (row[j] = { type: 'normal' } as CalendarColInfo)
       const y = start + num
       view === 'year' ? (col.text = y) : (col.text = localeData.datePicker.month[y])
       col.value = y
       num++
-      const currentYM = _date[view](y)
+      const currentYM = (_date as any)[view](y)
       if (currentYM.isSame(current, view)) {
         col.type = 'today'
       }
@@ -132,7 +144,7 @@ const getYearOrMonthRows = ({
   }
   return trs
 }
-const getTime = (week, y, m) => {
+const getTime = (week: number, y: number, m: number) => {
   const r = new Date(y, m - 1, 1)
   const t = r.getTime() - week * DAY_MILLISECONDS
   return t
@@ -145,10 +157,18 @@ const getDateRows = ({
   min,
   max,
   renderDate,
-  view,
   disabledDate,
+}: {
+  originDate: moment.Moment | null
+  range: CalenderSelectedRange
+  type: DatePickerType
+  weekOffset: number
+  min: Date
+  max: Date
+  renderDate: moment.Moment | null
+  disabledDate: DisabledDate
 }) => {
-  const rows = [[], [], [], [], [], []]
+  const rows: CalendarRowInfo[] = [[], [], [], [], [], []] as any
   const today = moment()
   const _date = moment(renderDate)
   // *  dayCount: 当月天数
@@ -175,13 +195,13 @@ const getDateRows = ({
           range: false,
           rangeStart: false,
           rangeEnd: false,
-        })
+        } as CalendarColInfo)
       const currentTime = moment(startTimeByCurrentPanel + DAY_MILLISECONDS * (i * 7 + j))
       let isPN = false // is Prev Or Next Month
       const isDisabled =
         currentTime.isBefore(moment(min)) ||
         currentTime.isAfter(moment(max)) ||
-        (disabledDate && disabledDate(currentTime)) // isDisabled cell
+        (disabledDate && disabledDate(currentTime.toDate())) // isDisabled cell
       if (i === 0) {
         // 处理第一行的日期数据
         if (j >= firstDayWeek) {
@@ -255,9 +275,29 @@ const getDateRows = ({
   }
   return rows
 }
+
+export interface CalenderSelectedRange {
+  start: moment.Moment | null
+  end: moment.Moment | null
+  selecting: boolean
+}
+
+export type CalendarRowType = 'normal' | 'selected' | 'today' | 'disabled' | 'next' | 'prev'
+export interface CalendarColInfo {
+  type: CalendarRowType
+  range: boolean
+  rangeStart: boolean
+  rangeEnd: boolean
+  value: number
+  weekType: CalendarRowType
+  text: string | number
+}
+export type CalendarRowInfo = CalendarColInfo[] & {
+  weekNum: number
+}
+
 const useDate = ({
   view,
-  date,
   originDate,
   weekOffset,
   localeData,
@@ -267,8 +307,19 @@ const useDate = ({
   max,
   renderDate,
   disabledDate,
+}: {
+  originDate: moment.Moment | null
+  renderDate: moment.Moment | null
+  disabledDate: DisabledDate
+  min: Date
+  max: Date
+  type: DatePickerType
+  weekOffset: number
+  view: string
+  localeData: LocaleData
+  range: CalenderSelectedRange
 }) => {
-  const [rows, setRows] = useState([])
+  const [rows, setRows] = useState<CalendarRowInfo[]>([])
   useEffect(() => {
     const _rows =
       view.includes('month') || view.includes('year')
@@ -291,7 +342,6 @@ const useDate = ({
             min,
             max,
             renderDate,
-            view,
             disabledDate,
           })
     setRows(_rows)
