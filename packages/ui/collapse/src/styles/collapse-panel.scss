@@ -26,7 +26,7 @@ $icon-class: #{$panel-prefix}__icon !default;
     display: flex;
     align-items: center;
     background-color: use-color-static('white');
-    padding: use-spacing(8);
+    padding: use-spacing(10);
     color: use-color('gray', 700);
     font-weight: use-text-weight('medium');
     cursor: pointer;
@@ -58,7 +58,7 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__content {
-    padding: use-spacing(8);
+    padding: use-spacing(10);
     color: use-color('gray', 700);
     background-color: use-color('gray', 50);
   }

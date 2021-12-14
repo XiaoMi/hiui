@@ -161,7 +161,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
     color: use-color('gray', 700);
     border-bottom: 1px solid use-color('gray', 200);
     box-sizing: border-box;
-    padding: use-spacing(8);
+    padding: 0 use-spacing(10);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -171,12 +171,12 @@ $prefix: '#{$component-prefix}-drawer' !default;
     box-sizing: border-box;
     overflow: auto;
     flex: 1;
-    padding: use-spacing(8);
+    padding: use-spacing(10);
   }
 
   &__footer {
     border-top: 1px solid use-color('gray', 200);
-    padding: use-spacing(8);
+    padding: use-spacing(10);
     flex-shrink: 0;
   }
 }

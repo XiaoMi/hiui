@@ -10,7 +10,7 @@ $prefix: '#{$component-prefix}-pop-confirm' !default;
   white-space: nowrap;
   transition: all 0.5s;
   border-radius: use-border-radius('normal');
-  padding: use-spacing(6) use-spacing(8);
+  padding: use-spacing(6) use-spacing(10);
   display: flex;
   flex-direction: column;
 

@@ -81,8 +81,6 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
 
     const handleKeydown = useCallback(
       (evt: KeyboardEvent) => {
-        console.log(evt)
-
         // only close the top modal when pressing `Esc`
         if (evt.keyCode !== 27) return
 
@@ -120,8 +118,6 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     }, [visible, closeOnEsc, transitionVisibleAction, transitionExitedAction, handleKeydown])
 
     const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
-
-    console.log(transitionVisible)
 
     const onExitedLatest = useLatestCallback(onExitedProp)
 
