@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { cx } from '@hi-ui/classname'
-import Input from './input'
+import Input, { InputChangeEvent } from './input'
 import PickerIcon from './picker-icon'
 import DPContext from '../context'
 import usePlaceholder from '../hooks/usePlaceholders'
 import { parseValue } from '../utils'
-
-export type InputChangeEvent = (val: any, dir: any) => void
 
 const Root = ({
   onTrigger,
