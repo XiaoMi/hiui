@@ -95,6 +95,8 @@ const Table = ({
   const updateData = useCallback(() => {
     if (typeof dargInfo.current.dropKey !== 'undefined') {
       const { rowData, dropRowData } = dargInfo.current
+      if (dropRowData.key === rowData.key) return
+
       const restData = deleteRowByKey(cloneArray(data), dargInfo.current)
       const _data = setRowByKey(cloneArray(restData), dargInfo.current)
       dargInfo.current = {}
