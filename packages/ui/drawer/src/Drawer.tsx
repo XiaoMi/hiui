@@ -12,7 +12,7 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useToggle } from '@hi-ui/use-toggle'
 import { isNumeric } from '@hi-ui/type-assertion'
-import { CloseOutlined, EditOutlined } from '@hi-ui/icons'
+import { CloseOutlined } from '@hi-ui/icons'
 import { IconButton } from '@hi-ui/icon-button'
 
 const DRAWER_PREFIX = getPrefixCls('drawer')
@@ -91,8 +91,6 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
 
     const handleKeydown = useCallback(
       (evt: KeyboardEvent) => {
-        console.log(evt)
-
         // only close the top modal when pressing `Esc`
         if (evt.keyCode !== 27) return
 
@@ -135,8 +133,6 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       `${prefixCls}--size-${size}`,
       `${prefixCls}--placement-${placement}`
     )
-
-    console.log(transitionVisible)
 
     const onExitedLatest = useLatestCallback(onExitedProp)
 
