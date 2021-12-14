@@ -74,6 +74,7 @@ const Table = ({
   onDragStart,
   onDrop,
   onDropEnd,
+  cellRender,
   emptyContent = localeDatas.table.emptyContent
 }) => {
   const dargInfo = useRef({ dragKey: null })
@@ -291,6 +292,7 @@ const Table = ({
   return (
     <TableContext.Provider
       value={{
+        cellRender,
         checkboxColWidth,
         disabledData,
         rowExpandable,

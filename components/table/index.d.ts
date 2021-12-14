@@ -18,7 +18,7 @@ export type TableColumnItem = {
   filterDropdownWidth?: number
   filterDropdownClassName?: string
   onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, ColumnItem: ColumnItem) => void
-  render?: (text: string, record: object, index: number, dataKey: string) => JSX.Element
+  render?: (text: any, record: object, index: number, dataKey: string) => JSX.Element
 }
 
 export type TableDataSource = {
@@ -44,9 +44,9 @@ export type TableCheckAllOptions = {
 }
 
 export type TableRowSelection = {
-  selectedRowKeys?: string[] | number[]
+  selectedRowKeys?: React.ReactText[]
   getCheckboxConfig?: (rowData: object) => object
-  onChange?: (selectedRowKeys: string | number, targetRow?: object | object[], shouldChecked?: boolean) => void
+  onChange?: (selectedRowKeys: React.ReactText[], targetRow?: object | object[], shouldChecked?: boolean) => void
   checkboxColWidth?: number
   checkAllOptions?: TableCheckAllOptions
 }
@@ -70,8 +70,8 @@ export interface TableProps {
   sticky?: boolean
   draggable?: boolean
   stickyTop?: number
-  expandRowKeys?: number[]
-  highlightedColKeys?: string[] | number[]
+  expandRowKeys?: React.ReactText[]
+  highlightedColKeys?: string[]
   expandedRender?: (record: object, index: number) => JSX.Element | Promise
   onLoadChildren?: (record: object) => object[] | Promise
   onExpand?: (expanded: boolean, rowData: object) => void
@@ -80,8 +80,8 @@ export interface TableProps {
   scrollWidth?: number
   fixedToColumn?: string | TableFixedOption
   pagination?: PaginationProps
-  errorRowKeys?: string[] | number[]
-  highlightedRowKeys?: string[] | number[]
+  errorRowKeys?: React.ReactText[]
+  highlightedRowKeys?: React.ReactText[]
   rowSelection?: TableRowSelection
   dataSource?: (current: number) => TableDataSource
   showColMenu?: boolean
@@ -102,6 +102,7 @@ export interface TableProps {
   onDropEnd?: (dragRowData: object, dropRowData: object, data: object) => void
   hiddenColKeys?: string[]
   onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
+  cellRender?: (text: any) => React.ReactNode
 }
 declare const Table: React.ComponentType<TableProps>
 export default Table

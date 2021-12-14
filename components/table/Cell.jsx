@@ -25,26 +25,35 @@ const Cell = ({
     loadChildren,
     hoverColIndex,
     setHoverColIndex,
-    showColHighlight
+    showColHighlight,
+    cellRender
   } = useContext(TableContext)
 
   const [loading, setLoading] = useState(false)
+
   // 处理自定义 render 或者合并单元格情况
-  const cellContent = column.render
-    ? column.render(allRowData[column.dataKey], allRowData, rowIndex, column.dataKey)
-    : allRowData[column.dataKey]
+  let cellContent = allRowData[column.dataKey]
+
+  if (column.render) {
+    cellContent = column.render(cellContent, allRowData, rowIndex, column.dataKey)
+  } else if (cellRender) {
+    cellContent = cellRender(cellContent)
+  }
+
   const isMergeCell = cellContent && typeof cellContent === 'object' && !cellContent.$$typeof
   if (isMergeCell && (cellContent.props.colSpan === 0 || cellContent.props.rowSpan === 0)) {
     return null
   }
   const { rightStickyWidth, leftStickyWidth, dataKey } = column
   const isSticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
-  const defatultTextAlign = column.align ? column.align : 'left'
+  const defaultTextAlign = column.align ? column.align : 'left'
+  const textAlign = alignRightColumns.includes(dataKey) ? 'right' : defaultTextAlign
+
   return (
     <td
       key={dataKey}
       style={{
-        textAlign: alignRightColumns.includes(dataKey) ? 'right' : defatultTextAlign,
+        textAlign,
         right: rightStickyWidth + 'px',
         left: leftStickyWidth + 'px'
       }}
