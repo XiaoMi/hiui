@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useMemo, useRef, useState, useEffect } 
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCollapseContext } from './context'
-import { CaretRightOutlined } from '@hi-ui/icons'
+import { RightOutlined, DownOutlined } from '@hi-ui/icons'
 
 const _role = 'collapse-panel'
 const _prefix = getPrefixCls(_role)
@@ -26,12 +26,12 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
     const contentRef = useRef<HTMLDivElement | null>(null)
 
     const [wrapperStyle, setWrapperStyle] = useState<React.CSSProperties>(
-      active ? { height: 'auto', opacity: 1 } : { height: '0px', opacity: '0' }
+      active ? { height: 'auto' } : { height: '0px' }
     )
 
     // 动画结束时，当活跃状态，去除具体值（此时用户添加更多内容一样可以跟随）
     const onTransitionEnd = useCallback(() => {
-      setWrapperStyle(active ? { height: 'auto', opacity: 1 } : { height: '0px', opacity: '0' })
+      setWrapperStyle(active ? { height: 'auto' } : { height: '0px' })
     }, [active])
 
     useEffect(() => {
@@ -86,15 +86,11 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
       >
         <div className={`${prefixCls}__head`} onClick={() => !disabled && onClickPanel(id)}>
           {showArrow && arrowPlacement === 'left' && (
-            <div className={`${prefixCls}__icon`}>
-              <CaretRightOutlined />
-            </div>
+            <RightOutlined className={`${prefixCls}__icon`} />
           )}
           <div className={`${prefixCls}__title`}>{title}</div>
           {showArrow && arrowPlacement === 'right' && (
-            <div className={`${prefixCls}__icon`}>
-              <CaretRightOutlined />
-            </div>
+            <DownOutlined className={`${prefixCls}__icon--right`} />
           )}
         </div>
         <div

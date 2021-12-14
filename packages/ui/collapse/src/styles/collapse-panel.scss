@@ -7,18 +7,16 @@ $icon-class: #{$panel-prefix}__icon !default;
   font-size: use-text-size('normal');
   position: relative;
   z-index: 0;
-  border-right: 1px solid use-color('gray', 300);
-  border-bottom: 1px solid use-color('gray', 300);
-  border-left: 1px solid use-color('gray', 300);
+  border-bottom: 1px solid use-color('gray', 200);
 
   &:last-of-type {
     border-radius: 0 0 use-border-radius('normal') use-border-radius('normal');
     overflow: hidden;
+    border-bottom: none;
   }
 
   &:first-of-type {
     border-radius: use-border-radius('normal') use-border-radius('normal') 0 0;
-    border-top: 1px solid use-color('gray', 300);
     overflow: hidden;
   }
 
@@ -26,10 +24,11 @@ $icon-class: #{$panel-prefix}__icon !default;
     display: flex;
     align-items: center;
     background-color: use-color-static('white');
-    padding: use-spacing(10);
+    padding: use-spacing(7) 0;
     color: use-color('gray', 700);
     font-weight: use-text-weight('medium');
     cursor: pointer;
+    border-bottom: 1px solid transparent;
 
     [class^=hi-v4-icon] {
       font-size: use-text-size('lg');
@@ -42,13 +41,18 @@ $icon-class: #{$panel-prefix}__icon !default;
 
   &__title {
     flex: 1;
-    line-height: 1;
     margin-right: 10px;
+    font-size: use-text-size('normal');
   }
 
   .#{$icon-class} {
     transition: all 0.2s ease-out;
-    margin-right: 10px;
+
+    &--right {
+      transition: all 0.2s ease-out;
+    }
+
+    margin-right: use-spacing(5);
   }
 
   &__content-wrapper {
@@ -58,9 +62,8 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__content {
-    padding: use-spacing(10);
+    padding: use-spacing(3) use-spacing(10) use-spacing(10) use-spacing(10);
     color: use-color('gray', 700);
-    background-color: use-color('gray', 50);
   }
 
   &--show {
@@ -69,13 +72,17 @@ $icon-class: #{$panel-prefix}__icon !default;
     }
     .#{$icon-class} {
       transform: rotate(90deg);
+
+      &--right {
+        transform: rotate(180deg);
+      }
     }
   }
 
   &--disabled {
     .#{$panel-prefix}__head {
       cursor: not-allowed;
-      color: use-color('gray', 500);
+      color: use-color('gray', 300);
     }
   }
 }
