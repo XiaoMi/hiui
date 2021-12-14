@@ -45,14 +45,6 @@ $prefix: '#{$component-prefix}-alert' !default;
     color: use-color('gray', 600);
   }
 
-  &__action {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    cursor: pointer;
-    color: use-color('gray', 700);
-  }
-
   &__close {
     position: absolute;
     color: use-color('gray', 600);
