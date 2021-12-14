@@ -90,6 +90,7 @@ import DemoAsync from "../../demo/table/section-async.jsx";
 | draggable             | 表格行可拖拽                                                                                                       | boolean                                                   | true \| false                             | false      |
 | hiddenColKeys         | 隐藏列（受控） (v3.9.0 新增)                                                                                       | string[]                                                  | -                                         | -          |
 | onHiddenColKeysChange | 列隐藏设置时回调 (v3.9.0 新增)                                                                                     | (hiddenColKeys: string[]) => void                         | -                                         | -          |
+| cellRender            | 全局控制单元格自定义渲染，优先级低于 column 的 render 方法                                                         | (text: DataItem[ColumnItem[dataKey]]) => ReactNode        | -                                         | -          |
 
 ## Event
 
@@ -187,5 +188,5 @@ import DemoAsync from "../../demo/table/section-async.jsx";
 | selectedRowKeys   | 选中的行（受控）                                                 | string[]                                                                                     | row 中对应的 key | -      |
 | getCheckboxConfig | 行选择的配置项                                                   | rowData => object                                                                            | -                | -      |
 | onChange          | 选中项发生变化时的回调，如果是全选操作，`targetRow` 将是数组结构 | (selectedRowKeys: string[], targetRow?: object \| object[], shouldChecked?: boolean) => void | -                | -      |
-| checkboxColWidth  | 列选择 checkbox 所在列宽度                                       | number                                                                                        | -                | -      |
-| checkAllOptions   | 全选操作的配置项                                                 | { filterIcon?: React.ReactNode }                                                              | -                | -      |
+| checkboxColWidth  | 列选择 checkbox 所在列宽度                                       | number                                                                                       | -                | -      |
+| checkAllOptions   | 全选操作的配置项                                                 | { filterIcon?: React.ReactNode }                                                             | -                | -      |
