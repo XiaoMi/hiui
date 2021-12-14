@@ -11,6 +11,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     position: relative;
 
     .#{$input-wrapper-class} {
+      border-radius: 4px;
       background: use-color-static('white');
       border: use-border-size('normal') use-color('gray', 300);
     }
@@ -60,6 +61,29 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     &:hover {
       border-color: use-color('brandblue', 500);
     }
+  }
+
+  &__pop-function-buttons{
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 8px;
+    border-top: 1px solid use-color('gray', 100);
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+  }
+
+  &__pop-now-button{
+    height: 22px;
+    width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: use-text-size('sm');
+    color: use-color('brandblue', 500);
+    cursor: pointer;
+    margin-right: 12px;
+    user-select: none;
   }
 
   &__function-button {

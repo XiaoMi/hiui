@@ -93,33 +93,6 @@ export const Selector: FC<SelectorProps> = (props) => {
     [onChange]
   )
 
-  // const onShortcutClick = useCallback(
-  //   (isLast: boolean) => {
-  //     const currentIndex = data.findIndex((item) => item.id === value)
-  //     let target = currentIndex
-  //     if (isLast && currentIndex !== 0) {
-  //       for (let counter = currentIndex - 1; counter >= 0; counter--) {
-  //         if (!data[counter].disabled) {
-  //           target = counter
-  //           break
-  //         }
-  //       }
-  //     } else if (!isLast && currentIndex !== data.length - 1) {
-  //       for (let counter = currentIndex + 1; counter <= data.length - 1; counter++) {
-  //         if (!data[counter].disabled) {
-  //           target = counter
-  //           break
-  //         }
-  //       }
-  //     }
-  //
-  //     if (target !== currentIndex) {
-  //       onChange(data[target])
-  //     }
-  //   },
-  //   [data, value, onChange]
-  // )
-
   useEffect(() => {
     const currentIndex = data.findIndex((item) => item.id === value)
     // 避免非法值跳转
@@ -130,9 +103,6 @@ export const Selector: FC<SelectorProps> = (props) => {
 
   return (
     <div className={cx(componentPrefix, `${componentPrefix}--position-${position}`)}>
-      {/* <div className={`${componentPrefix}__shortcut`} onClick={() => onShortcutClick(true)}> */}
-      {/*  <UpOutlined /> */}
-      {/* </div> */}
       <div
         onScroll={onScroll}
         ref={scrollContainerRef}
@@ -156,9 +126,6 @@ export const Selector: FC<SelectorProps> = (props) => {
           </div>
         ))}
       </div>
-      {/* <div className={`${componentPrefix}__shortcut`} onClick={() => onShortcutClick(false)}> */}
-      {/*  <DownOutlined /> */}
-      {/* </div> */}
     </div>
   )
 }

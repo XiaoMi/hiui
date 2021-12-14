@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
@@ -9,13 +9,15 @@ import {
   TimePickerPanelType,
   TimePickerFilterProps,
 } from './@types'
-import { Input } from './Input'
+import { Input, InputRef } from './Input'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { PopperPortal } from '@hi-ui/popper'
 import { CloseCircleFilled, TimeOutlined } from '@hi-ui/icons'
 import { PopContent } from './PopContent'
 import { valueChecker } from './utils/valueChecker'
 import { useFilter } from './hooks/useFilter'
+import { Button } from '@hi-ui/button'
+import { getNowString } from './utils/getNowString'
 
 const _role = 'time-picker'
 export const _prefix = getPrefixCls(_role)
@@ -23,9 +25,7 @@ export const _prefix = getPrefixCls(_role)
 const DefaultValue = ['', '']
 const DefaultDisabledFunc = () => []
 const DefaultPlaceholder = ['', '']
-/**
- * TODO: What is TimePicker
- */
+
 export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
   (
     {
@@ -58,6 +58,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       controlledValue,
       notifyOutside
     )
+    const inputRef = useRef<InputRef | null>(null)
     const [isInputValid, setIsInputValid] = useState(true)
     const [cacheValue, setCacheValue] = useState<string[]>(value)
     const cacheValueRef = useRef(cacheValue)
@@ -131,7 +132,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       ]
     )
 
-    const onChangeWrapper = useCallback(
+    const onCacheChange = useCallback(
       (newValue: string[]) => {
         const result = newValue.slice(0, type === 'single' ? 1 : 2)
         cacheValueRef.current = [...result]
@@ -142,15 +143,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           }
           return pre
         })
-
-        // 避免重复通知，我们只通知正确的值到外部
-        if (validChecker(result)) {
-          if (result.join('') !== value.join('')) {
-            onChange([...result])
-          }
-        }
       },
-      [value, onChange, type, validChecker]
+      [type]
     )
 
     const [showPopper, setShowPopper] = useState(false)
@@ -163,17 +157,56 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       [`${prefixCls}--input-not-valid`]: !isInputValid,
     })
 
-    // 行为结束，如果此时值还是错误的，则直接重置
-    const finishAction = useCallback(() => {
-      if (!validChecker(cacheValueRef.current)) {
-        onChangeWrapper(type === 'single' ? [''] : ['', ''])
-      }
-    }, [validChecker, onChangeWrapper, type])
+    const functionButtons = useMemo(() => {
+      return (
+        <div className={`${prefixCls}__pop-function-buttons`}>
+          <Button
+            className={`${prefixCls}__pop-confirm-button`}
+            type={'primary'}
+            size="small"
+            disabled={!isInputValid}
+            onClick={() => {
+              // 合法，才去通知外部
+              if (validChecker(cacheValue)) {
+                if (cacheValue.join('') !== value.join('')) {
+                  onChange([...cacheValue])
+                }
+              }
+              setShowPopper(false)
+            }}
+          >
+            确认
+          </Button>
+          {type === 'single' && (
+            <div
+              className={`${prefixCls}__pop-now-button`}
+              onClick={() => {
+                onCacheChange([getNowString(format)])
+                setShowPopper(false)
+              }}
+            >
+              此刻
+            </div>
+          )}
+        </div>
+      )
+    }, [
+      prefixCls,
+      isInputValid,
+      type,
+      format,
+      onCacheChange,
+      cacheValue,
+      value,
+      onChange,
+      validChecker,
+    ])
 
     return (
       <div ref={ref} role={role} className={cls}>
         <div ref={setAttachEl} className={`${prefixCls}__input-wrapper`}>
           <Input
+            ref={inputRef}
             onValidChange={setIsInputValid}
             disabled={inputReadonly || disabled}
             type={type}
@@ -187,16 +220,10 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             disabledMinutes={disabledMinutes}
             disabledSeconds={disabledSeconds}
             value={cacheValue}
-            onChange={onChangeWrapper}
+            onChange={onCacheChange}
             onFocus={() => {
               showPopperRef.current = true
               setShowPopper(true)
-            }}
-            onBlur={() => {
-              // 失焦之后，弹窗已经收起，视作行为结束
-              if (!showPopperRef.current) {
-                finishAction()
-              }
             }}
           />
           <div
@@ -204,7 +231,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             onClick={() => {
               // pop正打开，此时点击按钮为清除功能
               if (showPopperRef.current) {
-                onChangeWrapper(type === 'single' ? [''] : ['', ''])
+                onCacheChange(type === 'single' ? [''] : ['', ''])
               }
               showPopperRef.current = !showPopper
               setShowPopper((pre) => !pre)
@@ -222,9 +249,12 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           visible={showPopper && !disabled}
           attachEl={attachEl}
           onClose={() => {
+            // 关闭弹窗，视作，抛弃之前的选择行为，复位
             showPopperRef.current = false
-            finishAction()
             setShowPopper(false)
+            onCacheChange([...value])
+            // 强制刷新 input 内容，复位
+            inputRef.current?.refresh()
           }}
           preload
         >
@@ -242,13 +272,19 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             disabledSeconds={disabledSeconds}
             value={cacheValue}
             onChange={(e) => {
-              // 只有弹窗展开的时候才接手 pop content 的值改变
+              // 只有弹窗展开的时候才接受 pop content 的值改变
               // WARNING: 当值错误，弹窗收起，默认会滚动到 00:00:00，并且通知外部（非期望），所以我们需要这个FLAG来避免错误值获取
               if (showPopperRef.current) {
-                onChangeWrapper(e)
+                // 强制刷新 input 内容，复位
+                // 解决此情况：
+                //  输入框输入错误数据，故而input不通知外部，time-picker cache-value 不变化，input接受value不变
+                //  此时我们再次在pop-content点击当前选中值，time-picker cache-value 依旧不变化，input接受value不变，展示的依旧是错误的cache-value
+                inputRef.current?.refresh()
+                onCacheChange(e)
               }
             }}
           />
+          {functionButtons}
         </PopperPortal>
       </div>
     )
@@ -306,7 +342,10 @@ export interface TimePickerProps extends ExtendType {
    * @default 7
    */
   fullDisplayItemNumber?: number
-
+  /**
+   * 值改变事件
+   * @param value
+   */
   onChange?: (value: string[]) => void
 }
 

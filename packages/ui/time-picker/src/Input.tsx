@@ -1,4 +1,12 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import React, {
+  FC,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from 'react'
 import {
   TimePickerFilter,
   TimePickerFormat,
@@ -21,11 +29,19 @@ interface InputProps extends ExtendType {
   format: TimePickerFormat
   onFocus: () => void
   disabled: boolean
-  onBlur: () => void
+  // onBlur: () => void
   onValidChange: (isValid: boolean) => void
 }
 
-export const Input: FC<InputProps> = (props) => {
+export interface InputRef {
+  /**
+   * 强制将当前缓存与value同步
+   * 为解决外部 value 没有变化，但是需要将错误的 cache 刷新为正确的 value 值情况（input只有输入正确值，才会通知外部改变）
+   */
+  refresh: () => void
+}
+
+export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) => {
   const {
     prefix,
     value,
@@ -41,7 +57,6 @@ export const Input: FC<InputProps> = (props) => {
     onChange,
     onFocus,
     disabled,
-    onBlur,
     onValidChange,
   } = props
   const componentClass = useMemo(() => `${prefix}__input`, [prefix])
@@ -138,13 +153,6 @@ export const Input: FC<InputProps> = (props) => {
                 onChange(result)
               }
             }}
-            // 失去焦点，添加 : 开始自动值处理
-            // 此时我们不检查是否正确，处理值之后交由外部处理（为了唤起外部错误值处理操作）
-            onBlur={() => {
-              const result = dispose(cacheValue[index] + ':', false)
-              onChange(result || (type === 'single' ? [''] : ['', '']))
-              onBlur()
-            }}
             disabled={disabled}
             onFocus={() => {
               onFocus()
@@ -162,7 +170,7 @@ export const Input: FC<InputProps> = (props) => {
       onChange,
       cacheValue,
       getPanelType,
-      onBlur,
+      // onBlur,
       validChecker,
       componentClass,
       disabled,
@@ -175,6 +183,13 @@ export const Input: FC<InputProps> = (props) => {
     onValidChange(judgeIsValid(cacheValue))
   }, [judgeIsValid, cacheValue, onValidChange])
 
+  useImperativeHandle(
+    ref,
+    () => ({
+      refresh: () => setCacheValue([...value]),
+    }),
+    [value]
+  )
   return (
     <div
       className={cx(componentClass, {
@@ -188,4 +203,6 @@ export const Input: FC<InputProps> = (props) => {
       {type === 'range' && renderInput(cacheValue[1], 1)}
     </div>
   )
-}
+})
+
+Input.displayName = 'Input'
