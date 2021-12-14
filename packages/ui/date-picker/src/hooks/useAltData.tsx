@@ -1,21 +1,52 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { getPRCDate, deconstructDate } from '../utils'
-import { CalendarItem, DataPickerAltCalendarPreset } from '../types'
+import {
+  CalendarItem,
+  DatePickerAltCalendarPreset,
+  CalendarAltCalendarPreset,
+  CalendarMarkPreset,
+} from '../types'
 
 const useAltData = (config: {
-  altCalendarPreset?: DataPickerAltCalendarPreset
+  altCalendarPreset?: DatePickerAltCalendarPreset
   altCalendar?: CalendarItem[]
   dateMarkPreset?: string
   showPanel: boolean
   prefixCls: string
 }) => {
   const { altCalendarPreset = '', altCalendar = [], dateMarkPreset, showPanel, prefixCls } = config
-  const [altCalendarPresetData, setAltCalendarPresetData] = useState({})
-  const [dateMarkPresetData, setDateMarkPresetData] = useState({})
+  // 历法信息数据
+  const [altCalendarPresetData, setAltCalendarPresetData] = useState(
+    {} as CalendarAltCalendarPreset
+  )
+  // 日历标记信息，比如中国的 休/班
+  const [dateMarkPresetData, setDateMarkPresetData] = useState({} as CalendarMarkPreset)
+
+  // 合并用户自定义的日期信息作为presetData
+  const getAltCalendarData = useCallback(
+    (allPRCDate: CalendarAltCalendarPreset, altCalendar: CalendarItem[]) => {
+      const result = {} as CalendarAltCalendarPreset
+      altCalendar.length > 0 &&
+        altCalendar.forEach((item) => {
+          // 结构用户传入的 Date|string 类型
+          const dateInfo = deconstructDate(item.date)
+          if (!Number.isNaN(dateInfo.year)) {
+            // 格式化转换拼接作为 key
+            Object.assign(result, {
+              [dateInfo.year + '/' + dateInfo.month + '/' + dateInfo.date]: item,
+            })
+          }
+        })
+      // 用户自定义优先级较高
+      return Object.assign(allPRCDate, result)
+    },
+    []
+  )
 
   // 获取预置数据
-  const getLunarPresetData = () => {
-    const allPRCDate = {}
+  const getLunarPresetData = useCallback(() => {
+    // 所有历法节日信息
+    const result = {} as CalendarAltCalendarPreset
     if (['zh-CN', 'id-ID'].includes(altCalendarPreset)) {
       const _urlKey = altCalendarPreset === 'zh-CN' ? 'PRCLunar' : 'IndiaHoliday'
       getPRCDate(_urlKey)?.then((res) => {
@@ -29,25 +60,32 @@ const useAltData = (config: {
               },
             })
           })
-          Object.assign(allPRCDate, oneYear)
+          Object.assign(result, oneYear)
         })
-        setAltCalendarPresetData(altCalendar ? getAltCalendarData(allPRCDate) : allPRCDate)
+        setAltCalendarPresetData(
+          // 如果存在用户自定义，则合并
+          altCalendar ? getAltCalendarData(result, altCalendar) : result
+        )
       })
     } else {
-      setAltCalendarPresetData(altCalendar ? getAltCalendarData(allPRCDate) : {})
+      setAltCalendarPresetData(altCalendar ? getAltCalendarData(result, altCalendar) : {})
     }
-  }
-  // 获取预置数据
-  const getMarkPresetData = () => {
+  }, [altCalendar, altCalendarPreset, getAltCalendarData])
+
+  // 获取预置标签数据（顶部 休/班）
+  const getMarkPresetData = useCallback(() => {
+    // 只有中国才有预置标签数据
     if (altCalendarPreset && altCalendarPreset !== 'zh-CN') {
       return
     }
     if (dateMarkPreset === 'zh-CN') {
+      // 获取中国节假日排班信息
       getPRCDate('PRCHoliday')?.then((res) => {
-        const allPRCDate = {} as any
+        const result = {} as CalendarMarkPreset
         Object.keys(res.data).forEach((key) => {
           Object.keys(res.data[key].PRCHoliday).forEach((elkey) => {
-            allPRCDate[elkey.replace(/-/g, '/')] =
+            // 格式化日期 YYYY-MM-DD -> YYYY/MM/DD
+            result[elkey.replace(/-/g, '/')] =
               res.data[key].PRCHoliday[elkey] === '1' ? (
                 <span className={`${prefixCls}__mark ${prefixCls}__mark--rest`}>休</span>
               ) : (
@@ -55,31 +93,25 @@ const useAltData = (config: {
               )
           })
         })
-        setDateMarkPresetData(allPRCDate)
-      })
-    }
-  }
-  // 合并用户自定义的日期信息作为presetData
-  const getAltCalendarData = (allPRCDate: any) => {
-    const allData = {}
-    altCalendar.length > 0 &&
-      altCalendar.forEach((item) => {
-        const dateInfo = deconstructDate(item.date)
-        if (!Number.isNaN(dateInfo.year)) {
-          Object.assign(allData, {
-            [dateInfo.year + '/' + dateInfo.month + '/' + dateInfo.date]: item,
-          })
-        }
-      })
-    return Object.assign(allPRCDate, allData)
-  }
 
-  useEffect(() => {
-    if (showPanel) {
-      altCalendarPreset && getLunarPresetData()
-      dateMarkPreset && getMarkPresetData()
+        setDateMarkPresetData(result)
+      })
     }
-  }, [showPanel])
+  }, [altCalendarPreset, dateMarkPreset, prefixCls])
+
+  useEffect(
+    () => {
+      if (showPanel) {
+        altCalendarPreset && getLunarPresetData()
+        dateMarkPreset && getMarkPresetData()
+      }
+    },
+    // 此处不要把其他 altCalendarPreset dateMarkPreset 等作为依赖添加，会引起重复渲染
+    // 只需要在打开panel的时候执行一次即可
+    // 疑问：此处 getLunarPresetData getMarkPresetData等函数是否是最新的？
+    [showPanel]
+  )
+
   return [altCalendarPresetData, dateMarkPresetData]
 }
 

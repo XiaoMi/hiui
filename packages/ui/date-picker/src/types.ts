@@ -16,6 +16,39 @@ export interface CalendarItem {
    */
   highlight?: boolean
 }
+
+/**
+ * 组件内部使用，格式化之后的历法item
+ */
+export interface FormatCalendarItem {
+  date: string
+  text?: string | null | number
+  /**
+   * @default false
+   */
+  highlight?: boolean
+  /**
+   * 节点标记
+   */
+  nodeMark?: React.ReactNode
+}
+
+/**
+ * 组件内部使用，历法信息
+ * key -> YYYY/MM/DD
+ */
+export interface CalendarAltCalendarPreset {
+  [key: string]: FormatCalendarItem
+}
+
+/**
+ * 组件内部使用，日历标签信息（休/班）
+ * key -> YYYY/MM/DD
+ */
+export interface CalendarMarkPreset {
+  [key: string]: React.ReactNode
+}
+
 export type DatePickerValue = Date | string | number | DateRange | undefined | null
 export type DatePickerType =
   | 'date'
@@ -28,7 +61,9 @@ export type DatePickerType =
   | 'yearrange'
   | 'monthrange'
 
-export type DataPickerAltCalendarPreset = 'zh-CN' | 'id-ID'
+export type DatePickerAltCalendarPreset = 'zh-CN' | 'id-ID'
+
+export type DateMarkRender = (currentDate: number, today: number) => React.ReactNode
 
 type ExtendsType = Omit<HiBaseHTMLProps<'div'>, 'placeholder'>
 
@@ -99,9 +134,9 @@ export interface DatePickerProps extends ExtendsType {
 
   altCalendar?: CalendarItem[]
 
-  altCalendarPreset?: DataPickerAltCalendarPreset
+  altCalendarPreset?: DatePickerAltCalendarPreset
 
-  dateMarkRender?: (currentDate: number, today: number) => React.ReactNode
+  dateMarkRender?: DateMarkRender
 
   dateMarkPreset?: string
 
