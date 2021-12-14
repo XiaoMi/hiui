@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { cx } from '@hi-ui/classname'
 import Input from './input'
 import PickerIcon from './picker-icon'
@@ -6,7 +6,21 @@ import DPContext from '../context'
 import usePlaceholder from '../hooks/usePlaceholders'
 import { parseValue } from '../utils'
 
-const Root = ({ onTrigger, inputChangeEvent, onClear, inputFocus, setAttachEl }) => {
+export type InputChangeEvent = (val: any, dir: any) => void
+
+const Root = ({
+  onTrigger,
+  inputChangeEvent,
+  onClear,
+  inputFocus,
+  setAttachEl,
+}: {
+  onTrigger: () => void
+  onClear: () => void
+  setAttachEl: React.Dispatch<React.SetStateAction<HTMLElement | null>>
+  inputFocus: boolean
+  inputChangeEvent: InputChangeEvent
+}) => {
   const {
     localeData,
     type,
@@ -38,7 +52,7 @@ const Root = ({ onTrigger, inputChangeEvent, onClear, inputFocus, setAttachEl })
     onTrigger()
   }
 
-  const pickerIconClick = (isClear) => {
+  const pickerIconClick = (isClear: boolean) => {
     if (isClear) {
       onClear()
       return
@@ -82,7 +96,6 @@ const Root = ({ onTrigger, inputChangeEvent, onClear, inputFocus, setAttachEl })
         <PickerIcon
           focus={inputFocus}
           type={type}
-          r
           showTime={showTime}
           disabled={disabled}
           clearable={clearable}

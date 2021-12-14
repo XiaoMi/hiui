@@ -4,7 +4,8 @@ import moment from 'moment'
 
 const DPContext = React.createContext<DPContextData>({} as DPContextData)
 
-type ExtendsType = Omit<DatePickerProps, 'max' | 'min'>
+type ExtendsType = Omit<DatePickerProps, 'max' | 'min' | 'type' | 'showTime'> &
+  Required<Pick<DatePickerProps, 'type' | 'showTime'>>
 
 interface DPContextData extends ExtendsType {
   prefixCls: string

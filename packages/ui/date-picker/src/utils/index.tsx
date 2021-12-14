@@ -278,7 +278,7 @@ export const getInRangeDate = (
 export const parseValue = (
   value: DatePickerValue,
   type: DatePickerType,
-  format: string,
+  format?: string,
   locale = 'zh-CN'
 ) => {
   if (!value) return [null]

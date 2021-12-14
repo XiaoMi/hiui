@@ -3,7 +3,7 @@ import { DatePickerType } from '../types'
 
 interface ParsePlaceholderConfig {
   type: DatePickerType
-  placeholder: string | string[]
+  placeholder?: string | string[]
   showTime: boolean
   localeData: any
 }
@@ -30,7 +30,12 @@ const parsePlaceholder = (config: ParsePlaceholderConfig) => {
 const usePlaceholder = (args: ParsePlaceholderConfig) => {
   const { type, showTime, placeholder, localeData } = args
 
-  return useMemo(() => parsePlaceholder(args), [type, showTime, placeholder, localeData])
+  return useMemo(() => parsePlaceholder({ type, showTime, placeholder, localeData }), [
+    type,
+    showTime,
+    placeholder,
+    localeData,
+  ])
 }
 
 export default usePlaceholder
