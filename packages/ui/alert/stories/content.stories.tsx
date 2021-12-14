@@ -1,14 +1,15 @@
 import React from 'react'
 import Alert from '../src'
 
-export const Basic = () => {
+export const Content = () => {
   return (
     <>
-      <h1>Alert</h1>
+      <h1>带内容</h1>
       <div className="alert-basic__wrap">
         <Alert
           type="primary"
           title="信息提示的文案"
+          content="文字说明文字说明文字说明文字说明文字说明文字说明"
           onClose={() => {
             console.log('alert关闭回调')
           }}
@@ -17,6 +18,7 @@ export const Basic = () => {
         <Alert
           type="success"
           title="成功提示的文案"
+          content="文字说明文字说明文字说明文字说明文字说明文字说明"
           onClose={() => {
             console.log('alert关闭回调')
           }}
@@ -25,6 +27,7 @@ export const Basic = () => {
         <Alert
           type="danger"
           title="错误提示的文案"
+          content="文字说明文字说明文字说明文字说明文字说明文字说明"
           onClose={() => {
             console.log('alert关闭回调')
           }}
@@ -33,6 +36,7 @@ export const Basic = () => {
         <Alert
           type="warning"
           title="警示提示的文案"
+          content="文字说明文字说明文字说明文字说明文字说明文字说明"
           onClose={() => {
             console.log('alert关闭回调')
           }}

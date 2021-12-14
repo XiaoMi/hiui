@@ -4,32 +4,45 @@ $prefix: '#{$component-prefix}-alert' !default;
 
 .#{$prefix} {
   position: relative;
-  padding: 9px 11px;
-  border-radius: 2px;
+  padding: use-spacing(6) use-spacing(10);
+  border-radius: use-border-radius('lg');
   font-size: use-text-size('normal');
   min-width: 280px;
   display: block;
   align-items: flex-start;
+  color: use-color('gray', 600);
+
+  &.#{$prefix}--with-content {
+    padding: use-spacing(10);
+
+    .#{$prefix}__title {
+      font-size: use-text-size('lg');
+      font-weight: use-text-weight('medium');
+      margin-bottom: use-spacing(4);
+    }
+
+    .#{$prefix}__icon {
+      font-size: use-text-size('xxl');
+      margin-right: use-spacing(6);
+    }
+  }
 
   &__title {
     display: flex;
     font-size: use-text-size('normal');
     align-items: center;
-    line-height: use-text-lineheight('normal');
+    color: use-color('gray', 700);
 
-    .hi-icon {
-      height: 16px;
-      width: 16px;
-      margin-right: 8px;
+    .#{$prefix}__icon {
+      font-size: use-text-size('lg');
+      margin-right: use-spacing(4);
     }
   }
 
   &__content {
-    margin: 2px 24px 0 24px;
-    font-weight: 400;
-    font-size: use-text-size('sm');
+    margin-left: use-spacing(16);
     line-height: use-text-lineheight('normal');
-    color: use-color('gray', 800);
+    color: use-color('gray', 600);
   }
 
   &__action {
@@ -38,6 +51,15 @@ $prefix: '#{$component-prefix}-alert' !default;
     right: 12px;
     cursor: pointer;
     color: use-color('gray', 700);
+  }
+
+  &__close {
+    position: absolute;
+    color: use-color('gray', 600);
+    cursor: pointer;
+    font-size: use-text-size('normal');
+    right: use-spacing(10);
+    top: use-spacing(8);
   }
 
   $color-map: (
@@ -49,9 +71,11 @@ $prefix: '#{$component-prefix}-alert' !default;
 
   @each $key, $value in $color-map {
     &--#{$key} {
-      background-color: use-color-mode(#{$key}-10);
-      color: $value;
-      border: 1px solid use-color-mode(#{$key}-30);
+      background-color: use-color-mode('#{$key}-05');
+
+      .#{$prefix}__icon {
+        color: use-color-mode(#{$key});
+      }
     }
   }
 }
