@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useContext, useRef } from 'react'
 import classNames from 'classnames'
 import Header from './header'
-import Calender from './calender'
+import Calendar from './calendar'
 import moment from 'moment'
 import DPContext from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
@@ -35,7 +35,7 @@ const RangePanel = () => {
     showPanel,
     prefixCls,
   } = useContext(DPContext)
-  const calenderClickIsEnd = useRef(false)
+  const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
   const [views, setViews] = useState([getView(type), getView(type)])
   const [calRenderDates, setCalRenderDates] = useState([])
@@ -72,13 +72,13 @@ const RangePanel = () => {
 
   const setRanges = (date) => {
     const newRange = { ...range }
-    if (range.selecting || !calenderClickIsEnd.current) {
+    if (range.selecting || !calendarClickIsEnd.current) {
       if (newRange.start >= date) {
         newRange.selecting = false
         newRange.end = newRange.start
         newRange.start = date
       }
-      onSelect(date, calenderClickIsEnd)
+      onSelect(date, calendarClickIsEnd)
       if (type === 'weekrange') {
         onPick([newRange.start.startOf('week'), newRange.end.endOf('week')], showTime)
       } else {
@@ -98,7 +98,7 @@ const RangePanel = () => {
    * @param {*} dir
    */
   const onCalenderPick = (date, uIndex) => {
-    calenderClickIsEnd.current = !calenderClickIsEnd.current
+    calendarClickIsEnd.current = !calendarClickIsEnd.current
     if (type === 'timeperiod' && views[uIndex] === 'date') {
       onPick([date, moment(date).hour(date.hour() + timeInterval / 60)], true)
       onSelect(date, true)
@@ -251,7 +251,7 @@ const RangePanel = () => {
                 locale={locale}
                 prefixCls={prefixCls}
               />
-              <Calender
+              <Calendar
                 renderDate={calRenderDates[0]}
                 originDate={outDate[0]}
                 onPick={(date) => onCalenderPick(date, 0)}
@@ -281,7 +281,7 @@ const RangePanel = () => {
                   locale={locale}
                   prefixCls={prefixCls}
                 />
-                <Calender
+                <Calendar
                   originDate={outDate[1]}
                   renderDate={calRenderDates[1]}
                   range={range}

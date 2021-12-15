@@ -7,8 +7,38 @@ const DPContext = React.createContext<DPContextData>({} as DPContextData)
 export type LocaleData = {
   datePicker: any
 }
-type ExtendsType = Omit<DatePickerProps, 'max' | 'min' | 'type' | 'showTime' | 'disabledDate'> &
-  Required<Pick<DatePickerProps, 'type' | 'showTime' | 'disabledDate'>>
+type ExtendsType = Omit<
+  DatePickerProps,
+  | 'max'
+  | 'min'
+  | 'type'
+  | 'showTime'
+  | 'disabledDate'
+  | 'onSelect'
+  | 'hourStep'
+  | 'minuteStep'
+  | 'secondStep'
+  | 'disabledHours'
+  | 'disabledMinutes'
+  | 'disabledSeconds'
+  | 'weekOffset'
+> &
+  Required<
+    Pick<
+      DatePickerProps,
+      | 'type'
+      | 'showTime'
+      | 'disabledDate'
+      | 'onSelect'
+      | 'hourStep'
+      | 'minuteStep'
+      | 'secondStep'
+      | 'disabledHours'
+      | 'disabledMinutes'
+      | 'disabledSeconds'
+      | 'weekOffset'
+    >
+  >
 
 interface DPContextData extends ExtendsType {
   prefixCls: string

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useMemo } from 'react'
 import classNames from 'classnames'
 import Header from './header'
-import Calender from './calender'
+import Calendar from './calendar'
 import moment from 'moment'
 import DPContext from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
@@ -33,8 +33,13 @@ const Panel = () => {
   } = useContext(DPContext)
   const [view, setView] = useState(getView(type))
 
-  const [calRenderDates, setCalRenderDates] = useState([])
-  useState(() => {
+  const [calRenderDates, setCalRenderDates] = useState<moment.Moment[]>([])
+  // 疑问：实在不知道这到底是啥意思
+  // useState(() => {
+  //   setView(getView(type))
+  // }, [type])
+
+  useEffect(() => {
     setView(getView(type))
   }, [type])
 
@@ -43,7 +48,7 @@ const Panel = () => {
     setCalRenderDates([rDate])
   }, [outDate])
 
-  const onCalenderPick = (date) => {
+  const onCalenderPick = (date: moment.Moment) => {
     onSelect(date, true)
     if (type === 'year' || (type === 'month' && view === 'month')) {
       // year || month picker
@@ -60,8 +65,7 @@ const Panel = () => {
     if (type === 'week' && view === 'date') {
       // week picker
       const weekMethod = weekOffset ? 'isoWeek' : 'week'
-      const weekNum = date[weekMethod]()
-      onPick([moment(date).startOf(weekMethod), moment(date).endOf(weekMethod)], false, weekNum)
+      onPick([moment(date).startOf(weekMethod), moment(date).endOf(weekMethod)], false)
       return
     }
     let _view = view
@@ -89,7 +93,7 @@ const Panel = () => {
   const timePickerFormat = useTimePickerFormat(realFormat)
   const timePickerData = useTimePickerData(calRenderDates, timePickerFormat)
 
-  const onTimeChange = (date) => {
+  const onTimeChange = (date: string[]) => {
     // 关闭之后，不再响应事件
     if (showPanel) {
       const d = timePickerValueAdaptor({
@@ -105,7 +109,7 @@ const Panel = () => {
     }
   }
 
-  const onArrowEvent = (date) => {
+  const onArrowEvent = (date: moment.Moment) => {
     const _innerDates = genNewDates(calRenderDates, date)
     if (type.includes('range') && _innerDates[0] >= _innerDates[1]) return
     setCalRenderDates(_innerDates)
@@ -118,7 +122,8 @@ const Panel = () => {
           <React.Fragment>
             <Header
               renderDate={calRenderDates[0]}
-              renderDates={calRenderDates}
+              // 疑问：尚未找到这个 props
+              // renderDates={calRenderDates}
               changeView={() => setView('year')}
               onArrowEvent={onArrowEvent}
               localeData={localeData}
@@ -128,12 +133,12 @@ const Panel = () => {
               locale={locale}
               prefixCls={prefixCls}
             />
-            <Calender
+            <Calendar
               renderDate={calRenderDates[0]}
               originDate={outDate[0]}
               onPick={onCalenderPick}
               view={view}
-              panelPosition="left"
+              // panelPosition="left"
             />
           </React.Fragment>
         )}
@@ -150,9 +155,9 @@ const Panel = () => {
             fullDisplayItemNumber={7}
             type="single"
             format={timePickerFormat}
-            disabledHours={disabledHours}
-            disabledMinutes={disabledMinutes}
-            disabledSeconds={disabledSeconds}
+            disabledHours={disabledHours as any}
+            disabledMinutes={disabledMinutes as any}
+            disabledSeconds={disabledSeconds as any}
           />
         </div>
       )}

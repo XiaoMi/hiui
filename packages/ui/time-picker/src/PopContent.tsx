@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from 'react'
 import {
-  TimePickerFilter,
+  TimePickerFilterProps,
   TimePickerFormat,
   TimePickerPanelType,
   TimePickerSelectorType,
@@ -14,7 +14,7 @@ import { getFormatDefault } from './utils/getFormatDefault'
 import { _prefix } from './TimePicker'
 import { useFilter } from './hooks/useFilter'
 
-type ExtendType = Required<TimePickerFilter> & Required<TimePickerStep>
+type ExtendType = Partial<TimePickerFilterProps> & Required<TimePickerStep>
 
 interface PopContentProps extends ExtendType {
   prefix?: string

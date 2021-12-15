@@ -27,6 +27,7 @@ const DATE_PICKER_PREFIX = getPrefixCls('date-picker')
 
 const DEFAULT_DISABLED_DATE = () => false
 const DEFAULT_ON_CHANGE = () => {}
+const DEFAULT_DISABLED_FUNCTION = () => []
 
 export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
   (
@@ -66,6 +67,9 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       onSelect: propsOnSelect,
       theme,
       placement,
+      disabledHours = DEFAULT_DISABLED_FUNCTION,
+      disabledMinutes = DEFAULT_DISABLED_FUNCTION,
+      disabledSeconds = DEFAULT_DISABLED_FUNCTION,
       ...otherProps
     },
     ref
@@ -240,6 +244,9 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           dateMarkPreset,
           altCalendarPresetData,
           dateMarkPresetData,
+          disabledHours,
+          disabledMinutes,
+          disabledSeconds,
           clearable,
           theme,
           width,

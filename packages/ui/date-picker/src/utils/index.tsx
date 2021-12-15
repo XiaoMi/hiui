@@ -16,6 +16,7 @@ import {
   DateRange,
   FormatCalendarItem,
 } from '../types'
+import { CalendarColInfo } from '../hooks/useCalenderData'
 
 const holiday = {
   PRCHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?',
@@ -143,7 +144,7 @@ const getMarkNode = (node: React.ReactNode) => {
 }
 const markRender = (
   datainfo: string,
-  dateMarkRender: DateMarkRender,
+  dateMarkRender: DateMarkRender | undefined,
   dateMarkPresetData: CalendarMarkPreset
 ) => {
   // 存在传入自定就优先使用自定义
@@ -172,13 +173,13 @@ export const getFullTime = ({
   altCalendarPresetData,
   dateMarkPresetData,
 }: {
-  cell: any
-  renderDate: moment.Moment
+  cell: CalendarColInfo
+  renderDate: moment.Moment | null
   altCalendarPresetData: CalendarAltCalendarPreset
   dateMarkPresetData: CalendarMarkPreset
-  dateMarkRender: DateMarkRender
-  altCalendar: CalendarItem[]
-  altCalendarPreset: DatePickerAltCalendarPreset
+  dateMarkRender?: DateMarkRender
+  altCalendar?: CalendarItem[]
+  altCalendarPreset?: DatePickerAltCalendarPreset
 }) => {
   if (cell.type === 'disabled') return false
   const newDate = moment(renderDate)

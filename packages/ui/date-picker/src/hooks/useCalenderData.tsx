@@ -20,10 +20,10 @@ const getYearOrMonthRows = ({
   renderDate: moment.Moment | null
   type: DatePickerType
   view: string
-  range: CalenderSelectedRange
+  range?: CalenderSelectedRange
   localeData: LocaleData
-  min: Date
-  max: Date
+  min: Date | null
+  max: Date | null
   disabledDate: DisabledDate
 }) => {
   const _date = renderDate ? moment(renderDate) : moment()
@@ -45,18 +45,18 @@ const getYearOrMonthRows = ({
       }
       if (type.includes('range') && type.includes(view)) {
         if (
-          range.start &&
-          range.end &&
+          range?.start &&
+          range?.end &&
           (currentYM.isBetween(range.start, range.end) ||
             currentYM.isBetween(range.end, range.start))
         ) {
           col.range = true
         }
-        if (range.start && currentYM.isSame(range.start, view)) {
+        if (range?.start && currentYM.isSame(range.start, view)) {
           col.type = 'selected'
           col.range = false
         }
-        if (range.end && currentYM.isSame(range.end, view)) {
+        if (range?.end && currentYM.isSame(range.end, view)) {
           col.type = 'selected'
           col.range = false
         }
@@ -172,11 +172,11 @@ const getDateRows = ({
   disabledDate,
 }: {
   originDate: moment.Moment | null
-  range: CalenderSelectedRange
+  range?: CalenderSelectedRange
   type: DatePickerType
   weekOffset: number
-  min: Date
-  max: Date
+  min: Date | null
+  max: Date | null
   renderDate: moment.Moment | null
   disabledDate: DisabledDate
 }) => {
@@ -245,17 +245,17 @@ const getDateRows = ({
       }
       if (type.includes('range') && !isPN) {
         if (
-          currentTime.isBetween(range.start, range.end) ||
-          currentTime.isBetween(range.end, range.start)
+          currentTime.isBetween(range?.start, range?.end) ||
+          currentTime.isBetween(range?.end, range?.start)
         ) {
           col.range = true
         }
 
-        if (range.start && currentTime.isSame(range.start, 'day')) {
+        if (range?.start && currentTime.isSame(range.start, 'day')) {
           col.type = 'selected'
           col.range = false
         }
-        if (range.end && currentTime.isSame(range.end, 'day')) {
+        if (range?.end && currentTime.isSame(range.end, 'day')) {
           col.type = 'selected'
           col.range = false
         }
@@ -323,13 +323,13 @@ const useDate = ({
   originDate: moment.Moment | null
   renderDate: moment.Moment | null
   disabledDate: DisabledDate
-  min: Date
-  max: Date
+  min: Date | null
+  max: Date | null
   type: DatePickerType
   weekOffset: number
   view: string
   localeData: LocaleData
-  range: CalenderSelectedRange
+  range?: CalenderSelectedRange
 }) => {
   const [rows, setRows] = useState<CalendarRowInfo[]>([])
   useEffect(() => {

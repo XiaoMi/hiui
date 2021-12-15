@@ -2,19 +2,27 @@ import React, { useContext, useCallback, useState, useEffect, useRef } from 'rea
 import classNames from 'classnames'
 import DPContext from '../context'
 import moment from 'moment'
-import useCalenderData from '../hooks/useCalenderData'
+import useCalenderData, { CalendarColInfo, CalenderSelectedRange } from '../hooks/useCalenderData'
 import _ from 'lodash'
 import { getFullTime } from '../utils'
 import { CSSTransition } from 'react-transition-group'
+import { FormatCalendarItem } from '../types'
 
-const Calender = ({
+const Calendar = ({
   view = 'date',
   originDate,
   onPick,
   range,
   mouseMove,
-  panelPosition,
+  // panelPosition,
   renderDate,
+}: {
+  view: string
+  originDate: moment.Moment | null
+  onPick: (date: moment.Moment) => void
+  range?: CalenderSelectedRange
+  mouseMove?: (date: moment.Moment) => void
+  renderDate: moment.Moment | null
 }) => {
   const {
     weekOffset,
@@ -32,11 +40,11 @@ const Calender = ({
     prefixCls,
   } = useContext(DPContext)
 
-  const largeCell = altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset
+  const largeCell = !!(altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset)
 
   const [holidayFullName, setHolidayFullName] = useState('')
   const [holidayFullNameShow, setHolidayFullNameShow] = useState(false)
-  const holidayTime = useRef(null)
+  const holidayTime = useRef<number>()
   const [rows] = useCalenderData({
     type,
     view,
@@ -47,12 +55,12 @@ const Calender = ({
     range,
     min,
     max,
-    panelPosition,
+    // panelPosition,
     disabledDate,
   })
-  const [calenderCls, setCalenderCls] = useState(`${prefixCls}__calender`)
+  const [calendarCls, setCalenderCls] = useState(`${prefixCls}__calendar`)
 
-  const getTDClass = (td, largeCell) => {
+  const getTDClass = (td: CalendarColInfo, largeCell: boolean) => {
     const _class = [`${prefixCls}__cell`]
     if (largeCell) {
       _class.push(`${prefixCls}__cell--large`)
@@ -77,22 +85,24 @@ const Calender = ({
   }
 
   const [weekNum, setWeekNum] = useState(0)
+
   useEffect(() => {
-    setCalenderCls(classNames(`${prefixCls}__calender`, `${prefixCls}__calender--${view}`))
+    setCalenderCls(classNames(`${prefixCls}__calendar`, `${prefixCls}__calendar--${view}`))
   }, [rows, view])
+
   const getWeeks = () => {
     const week = localeData.datePicker.week
     return week.slice(weekOffset).concat(week.slice(0, weekOffset))
   }
 
-  const onTableClick = (e) => {
-    const td = e.target
-    const value = td.getAttribute('value')
+  const onTableClick = (e: React.MouseEvent<HTMLTableElement, MouseEvent>) => {
+    const td = e.target as HTMLTableElement
+    const value = td.getAttribute('value') as string
     if (!['SPAN', 'DIV'].includes(td.nodeName) || td.getAttribute('type') === 'disabled') {
       return false
     }
     const clickVal = parseInt(value)
-    const _date = moment(renderDate)
+    const _date = moment(renderDate) as any
     const cellType = td.getAttribute('type')
     const cellWeekType = td.getAttribute('weektype')
     if (cellType === 'prev' || cellWeekType === 'prev') {
@@ -106,22 +116,25 @@ const Calender = ({
     onPick(_date)
   }
 
-  const onTableMouseMove = (e) => {
-    const ele = e.target
-    const panelDate = _.cloneDeep(renderDate)
+  const onTableMouseMove = (e: React.MouseEvent<HTMLTableElement, MouseEvent>) => {
+    const ele = e.target as HTMLTableElement
+    const panelDate = _.cloneDeep(renderDate)!
     if (type.includes('range')) {
-      const val = ele.getAttribute('value')
+      const val = Number(ele.getAttribute('value'))
       const cellType = ele.getAttribute('type')
-      if (!val || ele.disabled || !range.selecting || cellType === 'disabled') return false
-      if (range.end && val * 1 === range.end[view]() * 1) return false
-      panelDate[view](val)
+      if (!val || (ele as any).disabled || !range?.selecting || cellType === 'disabled')
+        return false
+      if (range?.end && val === (range.end as any)[view]() * 1) {
+        return false
+      }
+      ;(panelDate as any)[view](val)
       if (cellType === 'prev') {
         panelDate.subtract(1, 'month')
       }
       if (cellType === 'next') {
         panelDate.add(1, 'months')
       }
-      mouseMove(panelDate)
+      mouseMove && mouseMove(panelDate)
     }
   }
 
@@ -133,15 +146,15 @@ const Calender = ({
     },
     [type]
   )
-  const showHolidayDetail = (fullTimeInfo) => {
+  const showHolidayDetail = (fullTimeInfo: FormatCalendarItem) => {
     clearTimeout(holidayTime.current)
-    setHolidayFullName(fullTimeInfo.FullText || fullTimeInfo.text)
+    setHolidayFullName(fullTimeInfo.FullText || String(fullTimeInfo.text))
     setHolidayFullNameShow(true)
     holidayTime.current = setTimeout(() => {
       setHolidayFullNameShow(false)
-    }, 2000)
+    }, 2000) as any
   }
-  const renderAltCalendar = (cell) => {
+  const renderAltCalendar = (cell: CalendarColInfo) => {
     if (view.includes('year') || view.includes('month')) return
     if (
       Object.keys(altCalendarPresetData).length > 0 ||
@@ -155,10 +168,10 @@ const Calender = ({
         altCalendar,
         altCalendarPreset,
         dateMarkRender,
-        dateMarkPreset,
+        // dateMarkPreset,
         altCalendarPresetData,
         dateMarkPresetData,
-      })
+      }) as FormatCalendarItem
       return (
         <React.Fragment>
           {fullTimeInfo.nodeMark}
@@ -167,6 +180,7 @@ const Calender = ({
               onMouseEnter={() => {
                 altCalendarPreset === 'id-ID' && showHolidayDetail(fullTimeInfo)
               }}
+              // @ts-ignore
               value={cell.value}
               className={`${prefixCls}__lunar ${
                 fullTimeInfo.highlight ? `${prefixCls}__lunar--highlight` : ''
@@ -184,8 +198,8 @@ const Calender = ({
 
   return (
     <div
-      className={`${prefixCls}__calender-wrap ${
-        largeCell ? `${prefixCls}__calender-wrap--large` : ''
+      className={`${prefixCls}__calendar-wrap ${
+        largeCell ? `${prefixCls}__calendar-wrap--large` : ''
       }`}
     >
       <CSSTransition in={holidayFullNameShow} timeout={300} classNames={`${prefixCls}__indiaHoli`}>
@@ -193,11 +207,11 @@ const Calender = ({
           <div className={`${prefixCls}__indiaHoli-text`}>{holidayFullName}</div>
         </div>
       </CSSTransition>
-      <table className={calenderCls} onClick={onTableClick} onMouseMove={onTableMouseMove}>
+      <table className={calendarCls} onClick={onTableClick} onMouseMove={onTableMouseMove}>
         {(view.includes('date') || view.includes('week')) && (
           <thead>
             <tr>
-              {getWeeks().map((item, index) => {
+              {getWeeks().map((item: React.ReactNode, index: number) => {
                 return <th key={index}>{item}</th>
               })}
             </tr>
@@ -217,6 +231,7 @@ const Calender = ({
                   return (
                     <td
                       key={_index}
+                      // @ts-ignore
                       value={cell.value}
                       type={cell.type}
                       // className='hi-datepicker__cell'
@@ -224,16 +239,18 @@ const Calender = ({
                     >
                       <div
                         className={`${prefixCls}__cell-text`}
+                        // @ts-ignore
                         value={cell.value}
                         type={cell.type}
                       >
                         <span
+                          // @ts-ignore
                           value={cell.value}
                           type={cell.type}
                           weektype={cell.weekType}
                           className={`${prefixCls}__cellnum`}
                         >
-                          {parseInt(cell.text || cell.value) < 10
+                          {parseInt(String(cell.text || cell.value)) < 10
                             ? '0' + (cell.text || cell.value)
                             : cell.text || cell.value}
                         </span>
@@ -251,4 +268,4 @@ const Calender = ({
   )
 }
 
-export default Calender
+export default Calendar
