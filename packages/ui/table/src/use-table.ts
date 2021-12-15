@@ -1,12 +1,12 @@
 import {
-  isLeaf,
-  getLeafChildren,
-  groupByTreeDepth,
   cloneTree,
+  groupByTreeDepth,
   deleteNodeById,
   findNodeById,
   flattenTree,
   insertNodeById,
+  isLeaf,
+  getLeafChildren,
 } from '@hi-ui/tree-utils'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -831,17 +831,25 @@ export interface UseTableProps {
    */
   rowExpandable?: (record: TableColumnItem) => React.ReactNode
   /**
-   *  树形表格展开的行
+   *  树形表格展开的行（受控）
    */
-  expandRowKeys?: number[]
+  expandRowKeys?: React.ReactText[]
+  /**
+   *  树形表格默认展开的行
+   */
+  defaultExpandRowKeys?: React.ReactText[]
   /**
    *  树形表格展开时的回调函数
    */
   onExpand?: (expandIds: React.ReactText[], targetRow: TableRowEventData, expanded: boolean) => void
   /**
-   *  内嵌式表格展开的行
+   *  内嵌式表格展开的行（受控）
    */
-  expandEmbedRowKeys?: number[]
+  expandEmbedRowKeys?: React.ReactText[]
+  /**
+   *  内嵌式表格默认展开的行
+   */
+  defaultExpandEmbedRowKeys?: React.ReactText[]
   /**
    *  内嵌式表格展开时的回调函数
    */
@@ -925,16 +933,15 @@ export interface UseTableProps {
   /**
    *  隐藏列（受控） (v3.9.0 新增)
    */
-  hiddenColKeys?: string[]
+  hiddenColKeys?: React.ReactText[]
   /**
    *  列隐藏设置时回调 (v3.9.0 新增)
    */
-  onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
+  onHiddenColKeysChange?: (hiddenColKeys: React.ReactText[]) => void
   /**
-   * 唯一 id 前缀
+   * 唯一 id 前缀，废弃
    */
   uniqueId?: string
-
   onHeaderRow?: HeaderRowFunc
   onDragStart?: (rowData: object) => void
   onDrop?: (
@@ -946,6 +953,7 @@ export interface UseTableProps {
   onDropEnd?: (dragRowData: object, dropRowData: object, data: object) => void
   expandedRowKeys?: string[]
   defaultExpandAll?: boolean
+  extra?: React.ReactNode
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>

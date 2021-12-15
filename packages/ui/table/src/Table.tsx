@@ -31,6 +31,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       striped = false,
       loading = false,
       standard = false,
+      extra,
       ...rest
     },
     ref
@@ -77,11 +78,21 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       <div ref={ref} role={role} className={cls}>
         <div className={`${prefixCls}__wrapper`}>
           <TableProvider value={providedValue}>
-            <TableHeader
-              prefixCls={prefixCls}
-              fixedColWidth={fixedColWidth}
-              rowSelection={rowSelection}
-            />
+            <div style={{ position: 'relative' }}>
+              <TableHeader
+                prefixCls={prefixCls}
+                fixedColWidth={fixedColWidth}
+                rowSelection={rowSelection}
+              />
+
+              {/* 不跟随内部 header 横向滚动，固定到右侧 */}
+              {extra ? (
+                <div style={{ position: 'absolute', right: 0, zIndex: 11, bottom: 0, top: 0 }}>
+                  {extra}
+                </div>
+              ) : null}
+            </div>
+
             <TableBody
               data={cacheData}
               prefixCls={prefixCls}

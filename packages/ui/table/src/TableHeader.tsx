@@ -14,7 +14,7 @@ const _prefix = getPrefixCls(_role)
  * TODO: What is TableHeader
  */
 export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
-  ({ prefixCls = _prefix, fixedColWidth }, ref) => {
+  ({ prefixCls = _prefix, fixedColWidth, extra }, ref) => {
     const {
       rowSelection,
       groupedColumns,
@@ -61,6 +61,7 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
           boxShadow: maxHeight && '0px 2px 6px 0px rgba(0,0,0,0.12)',
           position: sticky ? 'sticky' : 'relative',
           top: sticky && stickyTop,
+          overflow: 'hidden',
           zIndex: 10,
         }}
       >
