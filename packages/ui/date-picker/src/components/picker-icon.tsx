@@ -1,8 +1,23 @@
 import React, { useMemo } from 'react'
 import { cx } from '@hi-ui/classname'
 import { CloseCircleFilled, TimeOutlined, DateOutlined } from '@hi-ui/icons'
+import { DatePickerType } from '../types'
 
-const PickerIcon = ({ focus, type, clearable, showTime, disabled, onClick }) => {
+const PickerIcon = ({
+  focus,
+  type,
+  clearable,
+  showTime,
+  disabled,
+  onClick,
+}: {
+  focus: boolean
+  clearable: boolean
+  showTime: boolean
+  disabled: boolean
+  type: DatePickerType
+  onClick: (status: boolean) => void
+}) => {
   const cls = cx(
     'hi-icon',
     disabled && 'hi-icon--disabled',
