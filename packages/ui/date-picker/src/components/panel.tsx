@@ -152,7 +152,7 @@ const Panel = () => {
             hourStep={hourStep}
             minuteStep={minuteStep}
             secondStep={secondStep}
-            itemHeight={32}
+            itemHeight={24}
             fullDisplayItemNumber={7}
             type="single"
             format={timePickerFormat}

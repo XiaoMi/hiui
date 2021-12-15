@@ -12,9 +12,9 @@ const PickerIcon = ({
   onClick,
 }: {
   focus: boolean
-  clearable: boolean
+  clearable?: boolean
   showTime: boolean
-  disabled: boolean
+  disabled?: boolean
   type: DatePickerType
   onClick: (status: boolean) => void
 }) => {
@@ -42,7 +42,7 @@ const PickerIcon = ({
       className={cls}
       onClick={(e) => {
         if (disabled) return
-        onClick(focus && clearable)
+        onClick(!!(focus && clearable))
       }}
     />
   )

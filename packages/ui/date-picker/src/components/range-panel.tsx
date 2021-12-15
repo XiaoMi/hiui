@@ -336,7 +336,7 @@ const RangePanel = () => {
             hourStep={hourStep}
             minuteStep={minuteStep}
             secondStep={secondStep}
-            itemHeight={32}
+            itemHeight={24}
             fullDisplayItemNumber={7}
             format={timePickerFormat}
             disabledHours={disabledHours as any}

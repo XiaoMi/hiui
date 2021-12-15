@@ -2,6 +2,7 @@
 
 $prefix: '#{$component-prefix}-date-picker' !default;
 $error-color: use-color('red', 600) !default;
+$input-container-class: '#{$prefix}__input' !default;
 
 .#{$prefix} {
   position: relative;
@@ -43,33 +44,70 @@ $error-color: use-color('red', 600) !default;
 
   &__picker {
     background: use-color-static('white');
-    border-radius: 2px;
+    border-radius: use-border-radius('md');
     height: 32px;
-    width: 180px;
+    width: 240px;
     line-height: 28px;
     display: inline-flex;
     align-items: center;
     justify-content: space-around;
     box-sizing: border-box;
+    position: relative;
+    z-index: 0;
 
     &.bordered {
-      border: 1px solid use-color('gray', 300);
+      .#{$input-container-class}{
+        border: use-border-size('normal') use-color('gray', 300);
+      }
+
+      &::before {
+        content: '';
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        background: use-color('brandblue', 500);
+        opacity: 0;
+        pointer-events: none;
+        z-index: -1;
+        border-radius: 6px;
+      }
     }
 
     &:hover:not(.#{$prefix}__picker--disabled):not(.#{$prefix}__picker--error).bordered {
-      border: 1px solid use-color('brandblue', 500);
+      .#{$input-container-class}{
+        border-color: use-color('brandblue', 500);
+      }
     }
 
     &--focus.bordered {
-      border: 1px solid use-color('brandblue', 500);
+      .#{$input-container-class}{
+        border-color: use-color('brandblue', 500);
+      }
+
+      &::before {
+        opacity: 0.2;
+      }
     }
 
     &--error.bordered {
-      border: 1px solid $error-color;
+      .#{$input-container-class}{
+        border-color: $error-color;
+      }
+
+      &::before {
+        background: $error-color;
+      }
     }
 
     &--disabled {
-      background: rgba(242, 242, 242, 1);
+      cursor: not-allowed;
+
+     .#{$input-container-class}{
+        background: use-color('gray',100);
+     }
     }
 
     &--daterange,
@@ -101,41 +139,41 @@ $error-color: use-color('red', 600) !default;
     }
 
     .hi-icon {
-      margin-top: 2px;
       margin-right: 8px;
-      font-size: 14px;
+      font-size: 16px;
       cursor: pointer;
       display: block;
       flex-shrink: 0;
+      color: use-color('gray', 500);
 
       &--disabled {
         cursor: not-allowed;
-        color: rgba(204, 204, 204, 1);
+        color: use-color('gray', 400);
       }
     }
 
-    .icon-close-circle {
-      color: use-color('gray', 300);
-    }
-
-    .icon-close-circle:hover {
-      color: use-color-static('black');
-    }
+    //.icon-close-circle {
+    //  color: use-color('gray', 300);
+    //}
+    //
+    //.icon-close-circle:hover {
+    //  color: use-color-static('black');
+    //}
 
     input {
       outline: none;
       border: 0;
-      height: 28px;
-      padding-left: 10px;
-      width: 100%;
+      height: 22px;
+      line-height: 22px;
+      padding-left: 12px;
+      width: 190px;
 
       &::-webkit-input-placeholder {
-        color: use-color('gray', 300);
+        color: use-color('gray', 400);
       }
 
       &.disabled {
         cursor: not-allowed;
-        background: rgba(242, 242, 242, 1);
       }
     }
   }
@@ -144,8 +182,13 @@ $error-color: use-color('red', 600) !default;
     display: inline-flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    font-size: 14px;
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    background: use-color-static('white');
+    border-radius: use-border-radius('md');
+    font-size: use-text-size('normal');
+    color: use-color('gray', 700);
+    overflow: hidden;
   }
 
   &__panel {
@@ -187,7 +230,6 @@ $error-color: use-color('red', 600) !default;
       .hi-icon {
         cursor: pointer;
         flex: 1;
-
         &:hover {
           color: use-color('brandblue', 500);
         }
