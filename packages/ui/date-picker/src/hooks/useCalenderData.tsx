@@ -357,7 +357,7 @@ const useDate = ({
             disabledDate,
           })
     setRows(_rows)
-  }, [renderDate, view, range, type, disabledDate])
+  }, [renderDate, view, range, type, disabledDate, localeData, max, min, weekOffset, originDate])
 
   return [rows]
 }

@@ -1,25 +1,36 @@
-import React, { useRef, useContext, useState, useEffect } from 'react'
+import React, { useRef, useContext, useState, useEffect, useCallback } from 'react'
 import classNames from 'classnames'
 import { getTimePeriodData } from '../utils'
 import DPContext from '../context'
+import moment from 'moment'
 
-const TimePeriodPanel = ({ date, onTimePeriodPick }) => {
+const TimePeriodPanel = ({
+  date,
+  onTimePeriodPick,
+}: {
+  date: moment.Moment
+  onTimePeriodPick: (ts1: string, ts2: string) => void
+}) => {
   const { timeInterval = 240, localeData, prefixCls } = useContext(DPContext)
-  const listEl = useRef(null)
-  const [periodData, setPeriodData] = useState([])
+  const listEl = useRef<HTMLUListElement | null>(null)
+  const [periodData, setPeriodData] = useState<ReturnType<typeof getTimePeriodData>>([])
+
   useEffect(() => {
     setPeriodData(getTimePeriodData(timeInterval))
-  }, [])
-  const getActiveIndex = () => {
+  }, [timeInterval])
+
+  const getActiveIndex = useCallback(() => {
     return timeInterval >= 60
       ? (date.hour() * 60) / timeInterval
       : (date.minute() + date.hour() * 60) / timeInterval
-  }
+  }, [timeInterval, date])
+
   useEffect(() => {
     setTimeout(() => {
       listEl.current && (listEl.current.scrollTop = getActiveIndex() * 37)
     }, 0)
-  }, [])
+  }, [getActiveIndex])
+
   return (
     <div className={`${prefixCls}__time-period`}>
       <div className={`${prefixCls}__period-header`}>{localeData.datePicker.timePeriod}</div>
