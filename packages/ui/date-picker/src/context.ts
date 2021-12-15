@@ -22,6 +22,7 @@ type ExtendsType = Omit<
   | 'disabledMinutes'
   | 'disabledSeconds'
   | 'weekOffset'
+  | 'timeInterval'
 > &
   Required<
     Pick<
@@ -37,6 +38,7 @@ type ExtendsType = Omit<
       | 'disabledMinutes'
       | 'disabledSeconds'
       | 'weekOffset'
+      | 'timeInterval'
     >
   >
 
@@ -44,7 +46,7 @@ interface DPContextData extends ExtendsType {
   prefixCls: string
   localeData: LocaleData
   outDate: (moment.Moment | null)[]
-  onPick: (dates: (moment.Moment | null)[], isShowPanel: boolean) => void
+  onPick: (dates: (moment.Moment | null)[], isShowPanel?: boolean) => void
   realFormat: string
   altCalendarPresetData: any
   dateMarkPresetData: any

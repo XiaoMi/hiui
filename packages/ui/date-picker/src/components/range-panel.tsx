@@ -5,13 +5,14 @@ import Calendar from './calendar'
 import moment from 'moment'
 import DPContext from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
-import useFormat from '../hooks/useFormat'
+// import useFormat from '../hooks/useFormat'
 import _ from 'lodash'
 import { getView, parseRenderDates, genNewDates } from '../utils'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
 import { useTimePickerData } from '../hooks/useTimePickerData'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import TimePeriodPanel from './time-period-panel'
+import { CalenderSelectedRange } from '../hooks/useCalenderData'
 
 const RangePanel = () => {
   const {
@@ -38,8 +39,8 @@ const RangePanel = () => {
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
   const [views, setViews] = useState([getView(type), getView(type)])
-  const [calRenderDates, setCalRenderDates] = useState([])
-  const [range, setRange] = useState({
+  const [calRenderDates, setCalRenderDates] = useState<moment.Moment[]>([])
+  const [range, setRange] = useState<CalenderSelectedRange>({
     start: null,
     end: null,
     selecting: false,
@@ -49,7 +50,7 @@ const RangePanel = () => {
     setRange({
       start: _outDate[0],
       end: _outDate[1],
-      selecting: _outDate[0] && !_outDate[1],
+      selecting: !!(_outDate[0] && !_outDate[1]),
     })
   }, [outDate])
 
@@ -70,17 +71,19 @@ const RangePanel = () => {
     [type]
   )
 
-  const setRanges = (date) => {
+  const setRanges = (date: moment.Moment) => {
     const newRange = { ...range }
     if (range.selecting || !calendarClickIsEnd.current) {
-      if (newRange.start >= date) {
+      if (newRange.start! >= date) {
         newRange.selecting = false
         newRange.end = newRange.start
         newRange.start = date
       }
-      onSelect(date, calendarClickIsEnd)
+      // 此处是明显的语法错误，故而注释修改
+      // onSelect(date, calendarClickIsEnd)
+      onSelect(date, calendarClickIsEnd.current)
       if (type === 'weekrange') {
-        onPick([newRange.start.startOf('week'), newRange.end.endOf('week')], showTime)
+        onPick([newRange.start!.startOf('week'), newRange.end!.endOf('week')], showTime)
       } else {
         onPick([newRange.start, newRange.end], showTime)
       }
@@ -95,9 +98,9 @@ const RangePanel = () => {
   /**
    * 日历面板点击事件
    * @param {*} date
-   * @param {*} dir
+   * @param {*} uIndex
    */
-  const onCalenderPick = (date, uIndex) => {
+  const onCalenderPick = (date: moment.Moment, uIndex: number) => {
     calendarClickIsEnd.current = !calendarClickIsEnd.current
     if (type === 'timeperiod' && views[uIndex] === 'date') {
       onPick([date, moment(date).hour(date.hour() + timeInterval / 60)], true)
@@ -120,14 +123,14 @@ const RangePanel = () => {
     setViews(_views)
   }
 
-  const onMouseMove = (date) => {
+  const onMouseMove = (date: moment.Moment) => {
     setRange({
       ...range,
       end: date,
     })
   }
 
-  const onTimeChange = (date) => {
+  const onTimeChange = (date: string[]) => {
     // 关闭之后，不再响应事件
     if (showPanel) {
       const d = timePickerValueAdaptor({
@@ -143,7 +146,7 @@ const RangePanel = () => {
     }
   }
   const getRangeDateStr = () => {
-    const _format = realFormat.substr(realFormat.match(/[H|h]\s*/).index)
+    const _format = realFormat.substr(realFormat.match(/[H|h]\s*/)!.index!)
     const cls = classNames(showRangeMask && `${prefixCls}__timetext`)
     const startOfDay = moment().startOf('day').format(_format)
     const endOfDay = moment().endOf('day').format(_format)
@@ -155,7 +158,7 @@ const RangePanel = () => {
       </span>
     )
   }
-  const onArrowEvent = (date, index) => {
+  const onArrowEvent = (date: moment.Moment, index: number) => {
     const _innerDates = genNewDates(calRenderDates, date, index)
     if (type.includes('range') && _innerDates[0].isSameOrAfter(_innerDates[1], 'month')) {
       return
@@ -167,15 +170,21 @@ const RangePanel = () => {
       const [leftDate] = _.cloneDeep(calRenderDates)
       if (outDate[0]) {
         onPick([
-          moment(leftDate).hour(parseInt(ts1)).minute(moment(ts1, 'HH:mm').format('mm')).second(0),
-          moment(leftDate).hour(parseInt(ts2)).minute(moment(ts2, 'HH:mm').format('mm')).second(0),
+          moment(leftDate)
+            .hour(parseInt(ts1))
+            .minute(Number(moment(ts1, 'HH:mm').format('mm')))
+            .second(0),
+          moment(leftDate)
+            .hour(parseInt(ts2))
+            .minute(Number(moment(ts2, 'HH:mm').format('mm')))
+            .second(0),
         ])
       }
     },
     [calRenderDates]
   )
 
-  const shortcutsClickEvent = (item) => {
+  const shortcutsClickEvent = (item: any) => {
     if (item.range) {
       // 新版 shortcuts
       onPick([moment(item.range[0]), moment(item.range[1])])
@@ -202,23 +211,27 @@ const RangePanel = () => {
     }
   }
   const renderShortcut = () => {
-    return (
-      <div className={`${prefixCls}__shortcuts`}>
-        <ul className={`${prefixCls}__shortcuts-list`}>
-          {shortcuts.map((m, n) => {
-            return (
-              <li
-                className={`${prefixCls}__shortcuts-item`}
-                key={n}
-                onClick={() => shortcutsClickEvent(m)}
-              >
-                {m.title || m}
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-    )
+    if (shortcuts) {
+      return (
+        <div className={`${prefixCls}__shortcuts`}>
+          <ul className={`${prefixCls}__shortcuts-list`}>
+            {shortcuts.map((m, n) => {
+              return (
+                <li
+                  className={`${prefixCls}__shortcuts-item`}
+                  key={n}
+                  onClick={() => shortcutsClickEvent(m)}
+                >
+                  {(m as any).title || m}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )
+    } else {
+      return undefined
+    }
   }
   const isDisableFooter = range.start && range.end && !range.selecting
   const panelCls = classNames(
@@ -235,19 +248,21 @@ const RangePanel = () => {
   return (
     <React.Fragment>
       <div className={panelCls}>
-        {shortcuts && renderShortcut()}
+        {renderShortcut()}
         <div className={`${prefixCls}__panel--left`}>
           {calRenderDates[0] && (
             <React.Fragment>
               <Header
                 renderDate={calRenderDates[0]}
-                renderDates={calRenderDates}
+                // 暂未找到此 props
+                // renderDates={calRenderDates}
                 changeView={() => changeViewEvent(0)}
                 onArrowEvent={onArrowEvent}
                 localeData={localeData}
                 view={views[0]}
                 panelPosition={0}
-                type={type}
+                // 暂未找到此 props
+                // type={type}
                 locale={locale}
                 prefixCls={prefixCls}
               />
@@ -258,7 +273,8 @@ const RangePanel = () => {
                 view={views[0]}
                 range={range}
                 mouseMove={onMouseMove}
-                panelPosition="left"
+                // 暂未找到此 props
+                // panelPosition="left"
               />
             </React.Fragment>
           )}
@@ -275,9 +291,11 @@ const RangePanel = () => {
                   onArrowEvent={onArrowEvent}
                   localeData={localeData}
                   view={views[1]}
-                  leftDate={calRenderDates[0]}
+                  // 暂未找到此 props
+                  // leftDate={calRenderDates[0]}
                   panelPosition={1}
-                  type={type}
+                  // 暂未找到此 props
+                  // type={type}
                   locale={locale}
                   prefixCls={prefixCls}
                 />
@@ -288,8 +306,10 @@ const RangePanel = () => {
                   view={views[1]}
                   onPick={(date) => onCalenderPick(date, 1)}
                   mouseMove={onMouseMove}
-                  leftDate={calRenderDates[0]}
-                  panelPosition="right"
+                  // 暂未找到此 props
+                  // leftDate={calRenderDates[0]}
+                  // 暂未找到此 props
+                  // panelPosition="right"
                 />
               </React.Fragment>
             ))}
@@ -319,9 +339,9 @@ const RangePanel = () => {
             itemHeight={32}
             fullDisplayItemNumber={7}
             format={timePickerFormat}
-            disabledHours={disabledHours}
-            disabledMinutes={disabledMinutes}
-            disabledSeconds={disabledSeconds}
+            disabledHours={disabledHours as any}
+            disabledMinutes={disabledMinutes as any}
+            disabledSeconds={disabledSeconds as any}
             style={{
               position: 'absolute',
               top: 5,

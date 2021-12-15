@@ -153,7 +153,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       cacheDate.current = _dates
       emitOnChange && onChange(returnDate as any, returnDateStr)
     }
-    const onPick = (dates: (moment.Moment | null)[], isShowPanel: boolean) => {
+    const onPick = (dates: (moment.Moment | null)[], isShowPanel = false) => {
       setTimeout(() => {
         setShowPanel(isShowPanel)
       }, 0)

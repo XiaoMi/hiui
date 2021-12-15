@@ -60,14 +60,14 @@ export const genNewDates = (currentDates: moment.Moment[], newDate: moment.Momen
  * @param {Array} dates 原始数据
  * @param {String} type 选择器类型
  */
-export const parseRenderDates = (dates: moment.Moment[], type: DatePickerType) => {
+export const parseRenderDates = (dates: (moment.Moment | null)[], type: DatePickerType) => {
   let [leftDate, rightDate] = _.cloneDeep(dates)
   const getRightDate = () => {
     if (type === 'yearrange') {
       if (!rightDate) {
         return moment(leftDate).add(12, 'year')
       }
-      const diff = rightDate.year() - leftDate.year()
+      const diff = rightDate.year() - leftDate!.year()
       if (diff <= 12) {
         return moment(leftDate).add(12, 'year')
       }
@@ -78,7 +78,7 @@ export const parseRenderDates = (dates: moment.Moment[], type: DatePickerType) =
     if (type === 'monthrange') {
       return moment(leftDate).add(1, 'year')
     }
-    if (!rightDate || leftDate.isSame(rightDate, 'month')) {
+    if (!rightDate || leftDate?.isSame(rightDate, 'month')) {
       return moment(leftDate).add(1, 'months')
     }
     return rightDate
