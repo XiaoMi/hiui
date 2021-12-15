@@ -214,31 +214,41 @@ $input-container-class: '#{$prefix}__input' !default;
   }
 
   &__header {
-    border-bottom: 1px solid use-color('gray', 300);
+    border-bottom: 1px solid use-color('gray', 200);
     display: flex;
     justify-content: space-between;
-    height: 48px;
+    height: 40px;
     box-sizing: border-box;
     align-items: center;
-    padding: 0 12px;
+    padding: 0 8px;
 
     &-btns {
       width: 50px;
       display: flex;
       justify-content: space-around;
+      color: use-color('gray',500);
+    }
 
-      .hi-icon {
-        cursor: pointer;
-        flex: 1;
-        &:hover {
-          color: use-color('brandblue', 500);
-        }
+    &-icon {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 14px;
+
+      &:hover {
+        color: use-color('brandblue', 500);
+        background:use-color('gray',100) ;
       }
     }
 
     &-text {
-      font-weight: bold;
       cursor: pointer;
+      color: use-color('gray',700);
+      font-size: use-text-size('normal');
     }
   }
 

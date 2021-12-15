@@ -57,11 +57,17 @@ const Header = ({
     <div className={`${prefixCls}__header`}>
       {
         <div className={`${prefixCls}__header-btns`}>
-          <span onClick={() => headerChangeDateEvent('year', view === 'year' ? -12 : -1)}>
+          <span
+            className={`${prefixCls}__header-icon`}
+            onClick={() => headerChangeDateEvent('year', view === 'year' ? -12 : -1)}
+          >
             <DoubleLeftOutlined />
           </span>
           {view !== 'year' && view !== 'month' && (
-            <span onClick={() => headerChangeDateEvent('months', -1)}>
+            <span
+              className={`${prefixCls}__header-icon`}
+              onClick={() => headerChangeDateEvent('months', -1)}
+            >
               <LeftOutlined />
             </span>
           )}
@@ -78,11 +84,17 @@ const Header = ({
       {
         <div className={`${prefixCls}__header-btns`}>
           {view !== 'year' && view !== 'month' && (
-            <span onClick={() => headerChangeDateEvent('months', 1)}>
+            <span
+              onClick={() => headerChangeDateEvent('months', 1)}
+              className={`${prefixCls}__header-icon`}
+            >
               <RightOutlined />
             </span>
           )}
-          <span onClick={() => headerChangeDateEvent('year', view === 'year' ? 12 : 1)}>
+          <span
+            onClick={() => headerChangeDateEvent('year', view === 'year' ? 12 : 1)}
+            className={`${prefixCls}__header-icon`}
+          >
             <DoubleRightOutlined />
           </span>
         </div>
