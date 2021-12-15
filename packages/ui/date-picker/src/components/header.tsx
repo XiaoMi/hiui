@@ -1,8 +1,14 @@
 import React from 'react'
 import { LeftOutlined, RightOutlined, DoubleRightOutlined, DoubleLeftOutlined } from '@hi-ui/icons'
-import moment from 'moment'
+import moment, { DurationInputArg1 } from 'moment'
+import { LocaleData } from '../context'
 
-const getHeaderCenterContent = (localeData, view, renderDate, locale = 'zh-CN') => {
+const getHeaderCenterContent = (
+  localeData: LocaleData,
+  view: string,
+  renderDate: moment.Moment,
+  locale = 'zh-CN'
+) => {
   const _date = renderDate
   const year = _date.year()
   const month = _date.month()
@@ -22,7 +28,6 @@ const getHeaderCenterContent = (localeData, view, renderDate, locale = 'zh-CN') 
 }
 const Header = ({
   view,
-  type,
   changeView,
   onArrowEvent,
   localeData,
@@ -30,8 +35,20 @@ const Header = ({
   renderDate,
   locale,
   prefixCls,
+}: {
+  view: string
+  changeView: () => void
+  locale?: string
+  panelPosition: number
+  onArrowEvent: (date: moment.Moment, position: number) => void
+  localeData: LocaleData
+  renderDate: moment.Moment
+  prefixCls: string
 }) => {
-  const headerChangeDateEvent = (flag, val) => {
+  const headerChangeDateEvent = (
+    flag: moment.unitOfTime.DurationConstructor,
+    val: DurationInputArg1
+  ) => {
     const panelDate = moment(renderDate)
     panelDate.add(val, flag)
     onArrowEvent(panelDate, panelPosition)

@@ -12,6 +12,8 @@ $error-color: use-color('red', 600) !default;
     font-size: 14px;
     display: flex;
     flex-wrap: wrap;
+    border-radius: use-border-radius('md');
+    overflow: hidden;
 
     &--range {
       width: 576px;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useMemo } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import classNames from 'classnames'
 import Header from './header'
 import Calendar from './calendar'
@@ -129,7 +129,8 @@ const Panel = () => {
               localeData={localeData}
               view={view}
               panelPosition={0}
-              type={type}
+              // 疑问：尚未找到这个 props
+              // type={type}
               locale={locale}
               prefixCls={prefixCls}
             />
