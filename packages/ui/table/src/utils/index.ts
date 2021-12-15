@@ -66,6 +66,7 @@ export const getMaskItemsWIdth = (columns: any) => {
       }
     })
   }
+
   getAllItemWidth(columns)
   return num
 }

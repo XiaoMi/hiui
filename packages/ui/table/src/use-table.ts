@@ -11,14 +11,16 @@ import {
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import {
+  FlattedTableColumnItemData,
   HeaderRowFunc,
-  RowSelection,
   TableColumnItem,
   TableDataSource,
-  TableFixedOptions,
+  TableFrozenColumnOptions,
+  TableRowEventData,
   TableRowSelection,
 } from './types'
 import { PaginationProps } from '@hi-ui/pagination'
+import { useColWidth } from './hooks/use-col-width'
 
 import { useLatestCallback } from '@hi-ui/use-latest'
 import {
@@ -33,6 +35,10 @@ import { useCheck, useSelect } from '@hi-ui/use-check'
 import { __DEV__ } from '@hi-ui/env'
 import Checkbox from '@hi-ui/checkbox'
 import { useAsyncSwitch, useExpand } from './hooks'
+import { useTableCheck } from './hooks/use-check'
+import { useTablePagination } from './hooks/use-pagination'
+import { useColumns } from './hooks/use-colgroup'
+import { setAttrStatus } from '@hi-ui/dom-utils'
 
 const DEFAULT_COLUMNS = [] as []
 const DEFAULT_DATA = [] as []
@@ -40,7 +46,7 @@ const DEFAULT_ERROR_ROW_KEYS = [] as []
 const DEFAULT_HIGHLIGHTED_ROW_KEYS = [] as []
 const DEFAULT_HIGHLIGHTED_COL_KEYS = [] as []
 const DEFAULT_CHECKED_ROW_KEYS = [] as any[]
-
+const DEFAULT_EXPAND_ROW_KEYS = [] as []
 const DEFAULT_ROW_SELECTION = {} as TableRowSelection
 const DEFAULT_ALLOW = () => true
 
@@ -56,8 +62,10 @@ export const useTable = ({
   errorRowKeys = DEFAULT_ERROR_ROW_KEYS,
   highlightedRowKeys: highlightedRowKeysProp,
   highlightedColKeys: highlightedColKeysProp,
+  defaultExpandRowKeys = DEFAULT_EXPAND_ROW_KEYS,
   expandRowKeys: expandRowKeysProp,
   onExpand,
+  defaultExpandAll = false,
   // expandERowKeys: expandRowKeysProp,
   expandEmbedRowKeys: expandEmbedRowKeysProp,
   onEmbedExpand,
@@ -100,7 +108,9 @@ export const useTable = ({
       const val = item[fieldKey]
       if (__DEV__) {
         if (isNullish(val)) {
-          console.error(`Error: Not found for the unique key attribute in data prop.`)
+          console.error(
+            `Error(Table): Not found for the unique ${fieldKey} attribute in each row of data prop.`
+          )
         }
       }
       return val
@@ -113,62 +123,34 @@ export const useTable = ({
   const [cacheData, setCacheData] = useState(data)
   const [columns, setColumns] = useState(columnsProp)
 
-  // ************************ flat ************************ //
-
   const flattedData = useMemo(() => {
     const clonedData = cloneTree(cacheData)
 
+    // TODO: flattenTree 内置了 id 结构，需要处理一下
     // @ts-ignore
-    return flattenTree(clonedData, (node) => {
-      // @ts-ignore
-
+    return flattenTree(clonedData, (node: any) => {
       return { ...node, id: getRowKeyField(node.raw) }
     })
   }, [cacheData, getRowKeyField])
 
-  const disabledDataRef = useRef([])
+  // ********************** 树形表格 *********************** //
 
-  const [fixedColWidth, setFixedColWidth] = useState<number[]>([])
-
-  const [colWidths, setColWidths] = useState(() => {
-    return columnsProp.map((c) => c.width || 'auto')
-  })
-
-  // ********************** 行展开 *********************** //
-
-  /**
-   * 树形节点展开
-   */
-  // const [expandTreeRows, trySetExpandTreeRows] = useUncontrolledState(
-  //   [],
-  //   expandRowKeysProp,
-  //   onExpand
-  // )
-
-  // const [onExpandTreeRowsChange, isExpandTreeRows] = useCheck({
-  //   checkedIds: expandTreeRows,
-  //   onCheck: trySetExpandTreeRows as any,
-  //   idFieldName: 'key',
-  // })
-
-  // console.log('expandTreeRows', expandTreeRows)
-  const [transitionData, onExpandTreeRowsChange, onNodeToggleEnd, isExpandTreeRows] = useExpand(
+  const [transitionData, onExpandTreeRowsChange, isExpandTreeRows] = useExpand(
     flattedData,
-    [],
+    defaultExpandRowKeys,
     expandRowKeysProp,
     onExpand,
-    false
+    defaultExpandAll
   )
 
-  // console.log('transitionData', transitionData)
-
-  // const = useExpand()
   // 异步展开子树
   const [isLoadingTreeNodeId, onTreeNodeSwitch] = useAsyncSwitch(
     setCacheData,
     onExpandTreeRowsChange,
     onLoadChildren
   )
+
+  // ********************** 内嵌式面板 *********************** //
 
   /**
    * 行内嵌面板展开
@@ -186,123 +168,21 @@ export const useTable = ({
     idFieldName: 'key',
   })
 
-  // 异步
-
   // 异步展开内嵌面板
-
-  const firstRowElementRef = useRef<HTMLTableRowElement>(null)
-
-  /**
-   * 获取每列宽度，数组维护
-   */
-  useEffect(() => {
-    disabledDataRef.current = []
-
-    // TODO: why don't dataSource
-    if (!dataSource) {
-      // 收集所有列宽，通过 table 的第一行
-      if (firstRowElementRef.current) {
-        console.log('firstRowElementRef.current', firstRowElementRef.current)
-
-        const _realColumnsWidth = Array.from(firstRowElementRef.current.childNodes).map((node) => {
-          return (node as HTMLElement).getBoundingClientRect().width || 0
-        })
-
-        setColWidths(_realColumnsWidth)
-      }
-    }
-  }, [columnsProp, dataSource, data])
-
-  useEffect(() => {
-    if (firstRowElementRef.current && fixedToColumn) {
-      const fixedToIndex = columnsProp.findIndex((c) => c.dataKey === fixedToColumn)
-
-      const _fixedColsWidth = Array.from(firstRowElementRef.current.childNodes)
-        .map((node) => {
-          const _node = node as HTMLElement
-          return _node.getBoundingClientRect().width
-        })
-        .slice(0, fixedToIndex + 1)
-
-      setFixedColWidth(_fixedColsWidth)
-    }
-  }, [columnsProp, data, fixedToColumn])
 
   // ************************ 多选 ************************ //
 
-  const [checkedRowKeys, trySetCheckedRowKeys] = useUncontrolledState(
-    DEFAULT_CHECKED_ROW_KEYS,
-    rowSelection?.selectedRowKeys,
-    rowSelection?.onChange
-  )
-
-  const [onCheckedRowKeysChange, isCheckedRowKey] = useCheck({
-    checkedIds: checkedRowKeys,
-    onCheck: trySetCheckedRowKeys as any,
-    idFieldName: 'key',
-  })
-
-  // TODO: 生成单独的 checkbox column
-  // 自定义设置 checkbox 列宽度
-  const checkboxColWidth =
-    rowSelection && typeof rowSelection.checkboxColWidth === 'number'
-      ? rowSelection.checkboxColWidth
-      : 50
-
-  const getRowSelection = React.useCallback(
-    (rowData) => {
-      const checkboxConfig = rowSelection?.getCheckboxConfig?.(rowData)
-      const disabled = checkboxConfig?.disabled ?? false
-
-      return { disabled, colWidth: checkboxColWidth }
-    },
-    [rowSelection, checkboxColWidth]
-  )
-
-  const checkRowIsDisabledCheckbox = React.useCallback(
-    (item: any) => {
-      return getRowSelection(item).disabled
-    },
-    [getRowSelection]
-  )
-
-  // 判断是否全选
-  const [checkedAll, halfChecked] = React.useMemo(() => {
-    if (rowSelection) {
-      if (flattedData.length === 0 || checkedRowKeys.length === 0) {
-        return [false, false]
-      }
-
-      // TODO: 对于分页来讲，此处的 flattedData 应该是当前页的数据
-      // TODO: flattedTree 处理出来的对象对用户来说应该是无感知的。
-      const checkedAll = flattedData
-        .filter((item: any) => !checkRowIsDisabledCheckbox(item.raw))
-        // TODO: 数组项内容完全匹配工具函数
-        .every((item: any) => isCheckedRowKey(getRowKeyField(item.raw)))
-
-      return [checkedAll, checkedAll ? false : checkedRowKeys.length > 0]
-    }
-
-    return [false, false]
-  }, [
-    flattedData,
-    rowSelection,
-    getRowKeyField,
-    checkRowIsDisabledCheckbox,
+  const {
+    checkedRowKeys,
+    trySetCheckedRowKeys,
+    tryCheckAllRow,
+    checkedAll,
+    halfChecked,
+    getRowSelection,
+    onCheckedRowKeysChange,
     isCheckedRowKey,
-    checkedRowKeys.length,
-  ])
-  const tryCheckAllRow = React.useCallback(() => {
-    if (checkedAll) {
-      trySetCheckedRowKeys([] as any, [], !checkedAll)
-      return
-    }
-
-    const targetItems = flattedData.filter((item: any) => !checkRowIsDisabledCheckbox(item))
-    const checkedRowKeys = targetItems.map((item: any) => getRowKeyField(item.raw))
-
-    trySetCheckedRowKeys(checkedRowKeys, targetItems, !checkedAll)
-  }, [trySetCheckedRowKeys, flattedData, checkRowIsDisabledCheckbox, getRowKeyField, checkedAll])
+    checkboxColWidth,
+  } = useTableCheck({ rowSelection, flattedData, getRowKeyField })
 
   // ************************ 拖拽 ************************ //
 
@@ -312,7 +192,7 @@ export const useTable = ({
 
   const onDrop = useCallback(
     (sourceId, targetId, dragDirection) => {
-      console.log(sourceId, targetId, dragDirection)
+      // console.log(sourceId, targetId, dragDirection)
 
       if (!draggable) return
       if (targetId === sourceId) return
@@ -355,80 +235,102 @@ export const useTable = ({
     [draggable, onDropProp, cacheData, onDropEndLatest]
   )
 
-  // 拉平后的数据
-  const [flattedColumns, maxColumnDepth] = useMemo(() => {
-    const clonedColumns = cloneTree(columns)
-    let maxDepth = 0
+  // ************************ colgroup ************************ //
 
-    // TODO: flattenTree 支持不带 id 的
-    // TODO: 支持多级表头
-    // @ts-ignore
-    const flattedColumns = flattenTree(clonedColumns, (node) => {
-      if (node.depth > maxDepth) {
-        maxDepth = node.depth
-      }
-      return { ...node }
-    })
-
-    return [flattedColumns, maxDepth] as const
-  }, [columns])
-
-  // 末级 column
-  const flattedColumnsWithoutChildren = useMemo(() => {
-    return flattedColumns.filter((col) => !isArrayNonEmpty(col.children))
-  }, [flattedColumns])
+  const {
+    flattedColumns,
+    mergedColumns: mergedColumns2,
+    // groupedColumns,
+    // flattedColumnsWithoutChildren,
+  } = useColumns({ columns })
 
   // ************************ 列冻结 ************************ //
 
-  // 固定列的宽度
-  const [fixedColumnsWidth, setFixedColumnsWidth] = useState({ left: 0, right: 0 })
+  // 冻结列
+  // const [leftFrozenColKeys, setLeftFrozenColKeys] = useState<React.ReactText[]>([])
+  // const [rightFrozenColKeys, setRightFrozenColKeys] = useState<React.ReactText[]>([])
 
-  const [freezeColKeys, setFreezeColKeys] = useState([])
+  // 冻结列总宽度
+  const [leftFrozenColWidth, setLeftFrozenColWidth] = useState(0)
+  const [rightFrozenColWidth, setRightFrozenColWidth] = useState(0)
 
-  // 2 种模式：从左往右冻结到指定列、只抽离并冻结指定列
+  const [fixedColWidth, setFixedColWidth] = useState<number[]>([])
+  const firstRowElementRef = useRef<HTMLTableRowElement>(null)
+
+  const bodyTableRef = useRef<HTMLTableElement>(null)
+  const scrollBodyElementRef = useRef<HTMLTableElement>(null)
+
+  // useEffect(() => {
+  //   if (firstRowElementRef.current && fixedToColumn) {
+  //     const fixedToIndex = columnsProp.findIndex((c) => c.dataKey === fixedToColumn)
+
+  //     const _fixedColsWidth = Array.from(firstRowElementRef.current.childNodes)
+  //       .map((node) => {
+  //         const _node = node as HTMLElement
+  //         return _node.getBoundingClientRect().width
+  //       })
+  //       .slice(0, fixedToIndex + 1)
+
+  //     setFixedColWidth(_fixedColsWidth)
+  //   }
+  // }, [columnsProp, data, fixedToColumn])
 
   // 获取左右侧固定列的信息
   // const [leftFrozenColKeys, setLeftFrozenColKeys] = useState([])
   // const [rightFrozenColKeys, setRightFrozenColKeys] = useState([])
 
-  // 左右 fixed 所在的列，抹平结构
+  /**
+   * 左右 fixed 所在的列，抹平数据结构
+   *
+   * TODO: 支持 2 种模式：从左往右冻结到指定列、只抽离并冻结指定列
+   */
   const fixedToColumnMemo = React.useMemo(() => {
-    if (typeof fixedToColumn === 'string') {
-      return { left: fixedToColumn }
-    }
-
     if (!fixedToColumn) return {}
-
+    if (typeof fixedToColumn === 'string') return { left: fixedToColumn }
     return fixedToColumn
   }, [fixedToColumn])
 
-  const { leftFrozenColKeys, rightFrozenColKeys } = React.useMemo(() => {
-    const { left: leftFixedColumn, right: rightFixedColumn } = fixedToColumnMemo
+  const {
+    leftFrozenColKeys,
+    rightFrozenColKeys,
+    columns: mergedColumns1,
+    leftFixedColumnsWidth,
+    rightFixedColumnsWidth,
+    // scrollRight,
+    // scrollLeft,
+  } = React.useMemo(() => {
+    const { left: leftFrozenColKey, right: rightFrozenKey } = fixedToColumnMemo
 
-    // 获取冻结类列的下标
-    let leftFixedIndex: number | undefined
-    let rightFixedIndex: number | undefined
+    // 获取左右冻结列的下标
+    let leftFrozenColIndex: number | undefined
+    let rightFrozenColIndex: number | undefined
 
-    flattedColumns.some((column, index) => {
-      if (typeof leftFixedColumn === 'string' && leftFixedColumn === column.raw.dataKey) {
+    mergedColumns2.some((column, index) => {
+      if (typeof leftFrozenColKey === 'string' && leftFrozenColKey === column.dataKey) {
         // 指向原始 column 根节点序列
-        leftFixedIndex = index
+        leftFrozenColIndex = column.rootIndex
       }
 
-      if (typeof rightFixedColumn === 'string' && rightFixedColumn === column.raw.dataKey) {
-        rightFixedIndex = index
+      if (typeof rightFrozenKey === 'string' && rightFrozenKey === column.dataKey) {
+        rightFrozenColIndex = column.rootIndex
       }
 
-      return leftFixedIndex !== undefined && rightFixedIndex !== undefined
+      return leftFrozenColIndex !== undefined && rightFrozenColIndex !== undefined
     })
 
-    let nextColumns = cloneTree(columnsProp)
+    let nextColumns = cloneTree(mergedColumns2)
 
     // TODO: 为什么冻结列，需要设置默认宽度
-    if (typeof leftFixedIndex === 'number' || typeof rightFixedIndex === 'number' || scrollWidth) {
-      const lastColumns = flattedColumns.filter((item) => {
-        return typeof item.isLast !== 'undefined' ? item.isLast : true
-      })
+    if (
+      typeof leftFrozenColIndex === 'number' ||
+      typeof rightFrozenColIndex === 'number' ||
+      scrollWidth
+    ) {
+      // const lastColumns = flattedColumns.filter((item) => {
+      //   return Array.isArray(item.children)  true
+      // })
+
+      const lastColumns = mergedColumns2
 
       nextColumns = setColumnsDefaultWidth(
         nextColumns,
@@ -438,8 +340,8 @@ export const useTable = ({
 
     let leftColumns = [] as any[]
     // 左侧
-    if (typeof leftFixedIndex === 'number') {
-      leftColumns = nextColumns.slice(0, leftFixedIndex + 1)
+    if (typeof leftFrozenColIndex === 'number') {
+      leftColumns = nextColumns.slice(0, leftFrozenColIndex + 1)
       leftColumns.forEach((currentItem, index) => {
         parseFixedColumns(
           currentItem,
@@ -453,10 +355,12 @@ export const useTable = ({
       })
     }
 
+    const leftFixedColumnsWidth = getMaskItemsWIdth(leftColumns)
+
     // 右侧
     let rightColumns = [] as any[]
-    if (typeof rightFixedIndex === 'number') {
-      rightColumns = nextColumns.slice(rightFixedIndex).reverse()
+    if (typeof rightFrozenColIndex === 'number') {
+      rightColumns = nextColumns.slice(rightFrozenColIndex).reverse()
 
       rightColumns.forEach((currentItem, index) => {
         const _item = parseFixedColumns(
@@ -471,49 +375,133 @@ export const useTable = ({
       })
     }
 
+    const rightFixedColumnsWidth = getMaskItemsWIdth(rightColumns)
+
+    // console.log('tableWidth, tableBodyWidth', tableWidth, tableBodyWidth)
+    console.log({
+      leftFrozenColKeys: leftColumns,
+      rightFrozenColKeys: rightColumns,
+      columns: nextColumns,
+      leftFixedColumnsWidth,
+      rightFixedColumnsWidth,
+    })
+
     return {
       leftFrozenColKeys: leftColumns,
       rightFrozenColKeys: rightColumns,
       columns: nextColumns,
-    }
-  }, [flattedColumns, fixedToColumnMemo, columnsProp, rowSelection, expandedRender, scrollWidth])
-
-  const tableRef = useRef<HTMLTableElement>(null)
-  const bodyTableRef = useRef<HTMLTableElement>(null)
-
-  // 计算冻结列的宽度
-  const {
-    leftFixedColumnsWidth,
-    rightFixedColumnsWidth,
-    scrollLeft,
-    scrollHeight,
-  } = React.useMemo(() => {
-    let leftFixedColumnsWidth = 0
-    let rightFixedColumnsWidth = 0
-    leftFixedColumnsWidth = getMaskItemsWIdth(leftFrozenColKeys)
-    rightFixedColumnsWidth = getMaskItemsWIdth(rightFrozenColKeys)
-
-    // mutationObserver
-    const tableWidth = tableRef.current?.getBoundingClientRect?.().width ?? 0
-    const tableBodyWidth = bodyTableRef.current?.getBoundingClientRect?.().width ?? 0
-
-    return {
       leftFixedColumnsWidth,
       rightFixedColumnsWidth,
-      scrollRight: tableWidth - tableBodyWidth,
-      scrollLeft: 0,
+      // scrollRight: tableWidth - tableBodyWidth,
+      // scrollLeft: 0,
     }
+  }, [mergedColumns2, fixedToColumnMemo, rowSelection, expandedRender, scrollWidth])
+
+  const [scrollSize, setScrollSize] = useState({ scrollLeft: 0, scrollRight: 1 })
+
+  useEffect(() => {
+    // 计算冻结列的宽度
+    // mutationObserver
+    const tableWidth = bodyTableRef.current?.getBoundingClientRect?.().width ?? 0
+    const tableBodyWidth = scrollBodyElementRef.current?.getBoundingClientRect?.().width ?? 0
+    const scrollRight = tableWidth - tableBodyWidth
+    // const scrollLeft = 0
+
+    setScrollSize((prev) => ({
+      scrollLeft: prev.scrollLeft,
+      scrollRight,
+    }))
   }, [leftFrozenColKeys, rightFrozenColKeys])
+
+  /**
+   * 同步 双 table 左右滚动偏移
+   */
+  const syncScrollLeft = React.useCallback(
+    (scrollLeft, syncTarget) => {
+      let scrollRight = scrollSize.scrollRight
+      if (syncTarget && syncTarget.scrollLeft !== scrollLeft) {
+        syncTarget.scrollLeft = scrollLeft
+      }
+      if (
+        bodyTableRef &&
+        bodyTableRef.current &&
+        scrollBodyElementRef &&
+        scrollBodyElementRef.current &&
+        isArrayNonEmpty(rightFrozenColKeys)
+      ) {
+        const { right: tableTefRight } = bodyTableRef.current.getBoundingClientRect()
+        const { right } = scrollBodyElementRef.current.getBoundingClientRect()
+
+        scrollRight = tableTefRight - right
+      }
+
+      setScrollSize({ scrollLeft, scrollRight })
+    },
+    [rightFrozenColKeys, scrollSize]
+  )
+
+  const scrollHeaderElementRef = useRef<HTMLTableElement>(null)
+
+  const onTableBodyScroll = React.useCallback(
+    (evt) => {
+      evt.stopPropagation()
+      if (scrollBodyElementRef.current) {
+        syncScrollLeft(scrollBodyElementRef.current.scrollLeft, scrollHeaderElementRef.current)
+      }
+    },
+    [syncScrollLeft]
+  )
+
+  // 1. 对于 sticky 的元素，触发滚轮滚动，需要模拟 onScroll 触发，比如 tableHeader 固定吸顶时
+  // 2. 同时不允许其出现滚动条
+  const onTableBodyScrollMock = React.useCallback(
+    (evt) => {
+      if (!scrollHeaderElementRef.current) return
+
+      evt.stopPropagation()
+
+      const { deltaX } = evt
+
+      scrollHeaderElementRef.current.scrollLeft = scrollHeaderElementRef.current.scrollLeft + deltaX
+      syncScrollLeft(scrollHeaderElementRef.current.scrollLeft, scrollBodyElementRef.current)
+    },
+    [syncScrollLeft]
+  )
+
+  // console.log('leftFrozenColKeys', leftFrozenColKeys, rightFrozenColKeys)
+
+  // 计算冻结列的宽度
+  // const {
+  //   leftFixedColumnsWidth,
+  //   rightFixedColumnsWidth,
+  //   scrollLeft,
+  //   scrollHeight,
+  // } = React.useMemo(() => {
+  //   let leftFixedColumnsWidth = 0
+  //   let rightFixedColumnsWidth = 0
+  //   leftFixedColumnsWidth = getMaskItemsWIdth(leftFrozenColKeys)
+  //   rightFixedColumnsWidth = getMaskItemsWIdth(rightFrozenColKeys)
+
+  //   // mutationObserver
+  //   const tableWidth = bodyTableRef.current?.getBoundingClientRect?.().width ?? 0
+  //   const tableBodyWidth = scrollBodyElementRef.current?.getBoundingClientRect?.().width ?? 0
+
+  //   return {
+  //     leftFixedColumnsWidth,
+  //     rightFixedColumnsWidth,
+  //     scrollRight: tableWidth - tableBodyWidth,
+  //     scrollLeft: 0,
+  //   }
+  // }, [leftFrozenColKeys, rightFrozenColKeys])
 
   // console.log(leftFrozenColKeys, rightFrozenColKeys)
 
   // row Selection 做为 column 插入，而不是在代码里魔改 冻结列
 
   // 同步滚动条
-  const headerTableRef = useRef(null)
   const stickyHeaderRef = useRef(null)
-  const leftFixedBodyTableRef = useRef(null)
-  const rightFixedBodyTableRef = useRef(null)
+  const leftFixedscrollBodyElementRef = useRef(null)
+  const rightFixedscrollBodyElementRef = useRef(null)
 
   const hiTable = useRef(null)
   const [activeSorterColumn, setActiveSorterColumn] = useState(null)
@@ -536,7 +524,8 @@ export const useTable = ({
   })
 
   /**
-   * 设置列 hover 高亮，依据 column 中的 dataKey 控制
+   * 设置列 hover 时高亮，依据 column 中的 dataKey 控制
+   * 与 highlightedColKeys 互不影响
    */
   const [hoveredColKey, setHoveredColKey] = useState<React.ReactText>('')
 
@@ -544,6 +533,17 @@ export const useTable = ({
     selectedId: hoveredColKey,
     onSelect: setHoveredColKey,
     idFieldName: 'dataKey',
+  })
+
+  // ************************ 列宽 resizable ************************ //
+
+  const { getColgroupProps, onColumnResizable, setHeaderTableElement, colWidths } = useColWidth({
+    data,
+    columns,
+    resizable,
+    dataSource,
+    firstRowElementRef,
+    isHoveredCol,
   })
 
   // ************************ 行高亮 ************************ //
@@ -583,106 +583,50 @@ export const useTable = ({
 
   // ************************ 分页 ************************ //
 
-  const [serverTableConfig, setServerTableConfig] = useState({
-    data: [],
-    columns: [...columnsProp],
+  const { paginationMemo, currentPage, trySetCurrentPage } = useTablePagination({
+    columns: columnsProp,
+    pagination,
+    dataSource,
   })
-
-  const paginationMemo = React.useMemo(() => {
-    return serverTableConfig.pagination || pagination || {}
-  }, [serverTableConfig, pagination])
-
-  const [currentPage, trySetCurrentPage] = useUncontrolledState(
-    1,
-    paginationMemo.current,
-    paginationMemo.onPageChange
-  )
-
-  useEffect(() => {
-    if (dataSource) {
-      const fetchConfig = dataSource(currentPage)
-      fetch(fetchConfig).then((res) => {
-        setServerTableConfig(Object.assign({}, serverTableConfig, { data: res.data }))
-      })
-    }
-  }, [dataSource, currentPage, serverTableConfig])
 
   const [eachRowHeight, setEachRowHeight] = useState({})
   const loadChildren = useRef(null)
 
   // 有表头分组那么也要 bordered
   const bordered = borderedProp || flattedColumns.length > columns.length
-  const [scrollSize, setScrollSize] = useState({ scrollLeft: 0, scrollRight: 1 })
-
-  // 新增滚动优化
-  // const syncScrollLeft = (scrollLeft: number, syncTarget: any) => {
-  //   let scrollRight = scrollSize.scrollRight
-  //   if (syncTarget && syncTarget.scrollLeft !== scrollLeft) {
-  //     syncTarget.scrollLeft = scrollLeft
-  //   }
-
-  //   if (
-  //     tableRef &&
-  //     tableRef.current &&
-  //     bodyTableRef &&
-  //     bodyTableRef.current &&
-  //     rightFrozenColKeys
-  //   ) {
-  //     const { right: tableTefRight } = tableRef.current.getBoundingClientRect()
-  //     const { right } = bodyTableRef.current.getBoundingClientRect()
-  //     scrollRight = tableTefRight - right
-  //   }
-  //   setScrollSize({ scrollLeft, scrollRight })
-  // }
-
-  // const syncScrollTop = (scrollTop: number, syncTarget: any) => {
-  //   if (syncTarget && syncTarget.scrollTop !== scrollTop) {
-  //     syncTarget.scrollTop = scrollTop
-  //   }
-  // }
-
-  // ************************ colgroup ************************ //
 
   // const isStickyHeaderRef = useRef(false)
   // isStickyHeaderRef.current = flattedColumns.some((col) => {
   //   return typeof col.leftStickyWidth !== 'undefined' || typeof col.rightStickyWidth !== 'undefined'
   // })
 
-  const [mergedColumns2, groupedColumns] = React.useMemo(() => {
-    const preset: TableColumnItem[] = [
-      rowSelection && {
-        type: 'checkbox',
-        width: 50,
+  // 末级 column
+  const flattedColumnsWithoutChildren = React.useMemo(() => {
+    return mergedColumns1.filter((col) => !isArrayNonEmpty(col.children))
+  }, [mergedColumns1])
+
+  const groupedColumns = groupByTreeDepth(mergedColumns1)
+
+  const getStickyColProps = React.useCallback((column) => {
+    const { rightStickyWidth, leftStickyWidth, dataKey, align } = column
+    const sticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
+
+    return {
+      style: {
+        position: sticky ? 'sticky' : undefined,
+        textAlign: align,
+        right: rightStickyWidth + 'px',
+        left: leftStickyWidth + 'px',
+        // backgroundColor: '#fff',
       },
-      expandedRender && {
-        type: 'embedPanel',
-      },
-    ].filter(Boolean)
-
-    const nextColumns = preset.concat(
-      flattedColumns.filter((col: any) => !isArrayNonEmpty(col.children))
-    )
-
-    // 在最后一层，colSpan = 1, rowSpan = maxDepth - depth + 1
-    // 不在最后一层，rowSpan = 1, colSpan = 叶子节点后代数量
-    flattedColumns.forEach((column: any) => {
-      if (isLeaf(column)) {
-        column.rowSpan = maxColumnDepth - column.depth + 1
-        column.colSpan = 1
-      } else {
-        column.rowSpan = 1
-        column.colSpan = getLeafChildren(column)
-      }
-    })
-
-    const groupedColumns = groupByTreeDepth(columns)
-    return [nextColumns, groupedColumns] as const
-  }, [maxColumnDepth, expandedRender, columns, flattedColumns, rowSelection])
-
-  // console.log(mergedColumns2)
+      'data-sticky': setAttrStatus(sticky),
+    }
+  }, [])
 
   return {
-    columns: mergedColumns2,
+    bodyTableRef,
+    scrollBodyElementRef,
+    columns: mergedColumns1,
     data: cacheData,
     transitionData,
     flattedColumns,
@@ -707,14 +651,23 @@ export const useTable = ({
     pagination: paginationMemo,
     currentPage,
     trySetCurrentPage,
+
+    scrollHeaderElementRef,
     errorRowKeys: [],
     // 冻结列
-    freezeColKeys,
-    setFreezeColKeys,
+    onTableBodyScroll,
+    onTableBodyScrollMock,
+    // freezeColKeys,
+    // setFreezeColKeys,
     scrollSize,
     leftFrozenColKeys,
     rightFrozenColKeys,
-    fixedColumnsWidth,
+    // fixedColumnsWidth,
+    leftFixedColumnsWidth,
+    rightFixedColumnsWidth,
+    ...scrollSize,
+    getColgroupProps,
+    getStickyColProps,
     // 行高亮
     onHighlightedRowChange,
     isHighlightedRow,
@@ -746,7 +699,6 @@ export const useTable = ({
     setHiddenColKeys,
     // alignLeftColumns,
     groupedColumns,
-    colWidths,
     // 子树展开
     onExpandTreeRowsChange,
     isExpandTreeRows,
@@ -756,6 +708,9 @@ export const useTable = ({
     onExpandEmbedRowsChange,
     isExpandEmbedRows,
     rowExpandable,
+    resizable,
+    colWidths,
+    onColumnResizable,
   }
 }
 
@@ -882,8 +837,7 @@ export interface UseTableProps {
   /**
    *  树形表格展开时的回调函数
    */
-  onExpand?: (expandIds: React.ReactText[], targetRow: TableColumnItem, expanded: boolean) => void
-
+  onExpand?: (expandIds: React.ReactText[], targetRow: TableRowEventData, expanded: boolean) => void
   /**
    *  内嵌式表格展开的行
    */
@@ -903,7 +857,7 @@ export interface UseTableProps {
   /**
    *  表格列冻结设置，为 string 时仅支持从左侧冻结至某一列
    */
-  fixedToColumn?: string | TableFixedOptions
+  fixedToColumn?: string | TableFrozenColumnOptions
   /**
    *  配置表格尺寸
    */
@@ -991,6 +945,7 @@ export interface UseTableProps {
   ) => boolean | Promise<any>
   onDropEnd?: (dragRowData: object, dropRowData: object, data: object) => void
   expandedRowKeys?: string[]
+  defaultExpandAll?: boolean
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>

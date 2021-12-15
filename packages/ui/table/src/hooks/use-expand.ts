@@ -3,20 +3,14 @@ import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { cloneTree, fFindNestedChildNodesById } from '@hi-ui/tree-utils'
 import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
-import { uuid } from '../utils'
-import {
-  FlattedTreeNodeData,
-  TreeNodeType,
-  TreeNodeTransitionData,
-  MotionTreeNodeData,
-  TreeNodeEventData,
-} from '../types'
+import { FlattedTableRowData, TableRowEventData } from '../types'
 
+// TODO: 抽离成 useDefaultExpandAll
 export const useExpandProps = (
-  flattedData: FlattedTreeNodeData[],
+  flattedData: FlattedTableRowData[],
   defaultExpandedIds: React.ReactText[],
   expandedIdsProp?: React.ReactText[],
-  onExpand?: (expandIds: React.ReactText[], node: TreeNodeEventData, expanded: boolean) => void,
+  onExpand?: (expandIds: React.ReactText[], node: TableRowEventData, expanded: boolean) => void,
   defaultExpandAll?: boolean
 ) => {
   return useUncontrolledState(
@@ -32,17 +26,14 @@ export const useExpandProps = (
   )
 }
 
-export const MOTION_NODE_KEY = `TREE_MOTION_NODE_${uuid()}`
-
-export const isMotionNode = (node: TreeNodeTransitionData): node is MotionTreeNodeData => {
-  return node.id === MOTION_NODE_KEY
-}
-
+/**
+ * 树形节点展开
+ */
 export const useExpand = (
-  flattedData: FlattedTreeNodeData[],
+  flattedData: FlattedTableRowData[],
   defaultExpandedIds: React.ReactText[],
   expandedIdsProp?: React.ReactText[],
-  onExpand?: (expandIds: React.ReactText[], node: TreeNodeEventData, expanded: boolean) => void,
+  onExpand?: (expandIds: React.ReactText[], node: TableRowEventData, expanded: boolean) => void,
   defaultExpandAll?: boolean
 ) => {
   const [expandedIds, tryToggleExpandedIds] = useExpandProps(
@@ -53,16 +44,22 @@ export const useExpand = (
     defaultExpandAll
   )
 
+  // const [onExpandTreeRowsChange, isExpandTreeRows] = useCheck({
+  //   checkedIds: expandTreeRows,
+  //   onCheck: trySetExpandTreeRows as any,
+  //   idFieldName: 'key',
+  // })
+
   const expandedNodeIdSet = useMemo(() => new Set<React.ReactText>(expandedIds), [expandedIds])
   const isExpandedId = (id: React.ReactText) => expandedNodeIdSet.has(id)
   const expandedIdsRef = useLatestRef(expandedIds)
 
   // 更新展示数据，只展示被展开的所有节点
-  const [transitionData, setTransitionData] = useState<TreeNodeTransitionData[]>(flattedData)
+  const [transitionData, setTransitionData] = useState<FlattedTableRowData[]>(flattedData)
   const transitionDataRef = useLatestRef(transitionData)
 
   const trySetTransitionData = useCallback(
-    (data: TreeNodeTransitionData[], expandedIds: React.ReactText[]) => {
+    (data: FlattedTableRowData[], expandedIds: React.ReactText[]) => {
       const nextData = flattenTreeDataWithExpand(data, expandedIds)
       setTransitionData(nextData)
     },
@@ -78,12 +75,11 @@ export const useExpand = (
 
   // 用户传入 data 或 expandedIds 被改变时，同步更新要展示的所有节点
   useEffect(() => {
-    // if (isExpanding) return
     trySetTransitionData(flattedData, expandedIds)
-  }, [flattedData, trySetTransitionData, isExpanding, expandedIds])
+  }, [flattedData, trySetTransitionData, expandedIds])
 
   const onNodeToggleStart = useCallback(
-    (expandedNode: TreeNodeEventData, shouldExpanded: boolean) => {
+    (expandedNode: TableRowEventData, shouldExpanded: boolean) => {
       console.error('onNodeToggleStart---------------', expandedNode, shouldExpanded)
 
       if (isExpandingRef.current) return
@@ -107,15 +103,16 @@ export const useExpand = (
         expandedNodeIdSet.add(expandedNodeId)
 
         // 设置展开的子节点集合用一个容器节点包裹，用来实现动画展开效果
+        // @ts-ignore
         const [rangeData] = fFindNestedChildNodesById(flattedData, expandedNodeId)
         const expandedNodeIndex = transitionData.findIndex((node) => node.id === expandedNodeId)
         const childrenStartIndex = expandedNodeIndex + 1
-        const newTransitionData: TreeNodeTransitionData[] = cloneTree(transitionData)
+        const newTransitionData: FlattedTableRowData[] = cloneTree(transitionData)
 
         newTransitionData.splice(
           childrenStartIndex,
           0,
-          ...(flattenTreeDataWithExpand(rangeData, expandedIds) as FlattedTreeNodeData[])
+          ...(flattenTreeDataWithExpand(rangeData, expandedIds) as FlattedTableRowData[])
         )
 
         trySetTransitionData(newTransitionData, Array.from(expandedNodeIdSet))
@@ -124,19 +121,20 @@ export const useExpand = (
 
         // 设置隐藏的子节点集合用一个 节点 包裹，用来实现动画隐藏效果
         const [rangeData, expandedNodeIndex] = fFindNestedChildNodesById(
-          transitionData as FlattedTreeNodeData[],
+          // @ts-ignore
+          transitionData,
           expandedNodeId
         )
+
         const childrenStartIndex = expandedNodeIndex + 1
         const newTransitionData = cloneTree(transitionData)
 
         newTransitionData.splice(childrenStartIndex, rangeData.length, ...rangeData)
 
         trySetTransitionData(newTransitionData, Array.from(expandedNodeIdSet))
-        // trySetTransitionData(newTransitionData)
       }
 
-      tryToggleExpandedIds(Array.from(expandedNodeIdSet))
+      tryToggleExpandedIds(Array.from(expandedNodeIdSet), expandedNode, shouldExpanded)
     },
     [
       tryToggleExpandedIds,
@@ -153,7 +151,7 @@ export const useExpand = (
   const onNodeToggleStartLatest = useLatestCallback(onNodeToggleStart)
 
   const onNodeExpand = useCallback(
-    (expandedNode: TreeNodeEventData, shouldExpanded: boolean) => {
+    (expandedNode: TableRowEventData, shouldExpanded: boolean) => {
       enqueue([expandedNode, shouldExpanded] as const)
     },
     [enqueue]
@@ -170,30 +168,11 @@ export const useExpand = (
     })
   }, [isExpanding, top, onNodeToggleStartLatest, dequeue])
 
-  const onNodeToggleEnd = useCallback(() => {
-    // 动画结束后回恢复成真正的原始数据结构
-    setTransitionData(
-      transitionData.reduce((prev, cur) => {
-        if (!isMotionNode(cur)) {
-          prev.push(cur)
-        } else if (cur.type === TreeNodeType.SHOW) {
-          cur.children?.forEach((node) => prev.push(node))
-        }
-        return prev
-      }, [] as FlattedTreeNodeData[])
-    )
-
-    // 闭环结束列表展开或收起动画
-    isExpandingRef.current = false
-    setIsExpanding(false)
-    dequeue()
-  }, [transitionData, dequeue])
-
-  return [transitionData, onNodeExpand, onNodeToggleEnd, isExpandedId] as const
+  return [transitionData, onNodeExpand, isExpandedId] as const
 }
 
 function flattenTreeDataWithExpand(
-  flattedTreeData: TreeNodeTransitionData[],
+  flattedTreeData: FlattedTableRowData[],
   expandedIds: React.ReactText[]
 ) {
   const expandedKeySet = new Set(expandedIds)
@@ -205,11 +184,11 @@ function flattenTreeDataWithExpand(
     const node = flattedTreeData[i]
     nextData.push(node)
 
-    if (expandedKeySet.has(node.id) || isMotionNode(node)) {
+    if (expandedKeySet.has(node.id)) {
       i++
     } else {
       let child = flattedTreeData[++i]
-      while (child && !isMotionNode(child) && child.depth > node.depth) {
+      while (child && child.depth > node.depth) {
         child = flattedTreeData[++i]
       }
     }

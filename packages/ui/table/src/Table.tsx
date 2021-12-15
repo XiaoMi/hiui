@@ -56,7 +56,11 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       scrollSize,
       leftFrozenColKeys,
       rightFrozenColKeys,
-      fixedColumnsWidth,
+      // fixedColumnsWidth,
+      leftFixedColumnsWidth,
+      rightFixedColumnsWidth,
+      scrollLeft,
+      scrollRight,
     } = providedValue
 
     const cls = cx(
@@ -71,37 +75,36 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
 
     return (
       <div ref={ref} role={role} className={cls}>
-        <TableProvider value={providedValue}>
-          <table>
+        <div className={`${prefixCls}__wrapper`}>
+          <TableProvider value={providedValue}>
             <TableHeader
-              // columns={columns}
               prefixCls={prefixCls}
               fixedColWidth={fixedColWidth}
               rowSelection={rowSelection}
             />
             <TableBody
-              columns={columns}
               data={cacheData}
               prefixCls={prefixCls}
               firstRowRef={firstRowRef}
               fixedColWidth={fixedColWidth}
               rowSelection={rowSelection}
             />
-          </table>
+          </TableProvider>
+
           {/* 左右冻结列内侧阴影效果 */}
-          {/* {scrollSize.scrollLeft > 0 && leftFrozenColKeys.length > 0 ? (
+          {scrollLeft > 0 && leftFrozenColKeys.length > 0 ? (
             <div
               className={`${prefixCls}-freeze-shadow  ${prefixCls}-freeze-shadow--left`}
-              style={{ width: fixedColumnsWidth.left + 'px' }}
+              style={{ width: leftFixedColumnsWidth + 'px' }}
             />
           ) : null}
-          {scrollSize.scrollRight > 0 && rightFrozenColKeys.length > 0 ? (
+          {scrollRight > 0 && rightFrozenColKeys.length > 0 ? (
             <div
               className={`${prefixCls}-freeze-shadow ${prefixCls}-freeze-shadow--right`}
-              style={{ width: fixedColumnsWidth.right + 'px' }}
+              style={{ width: rightFixedColumnsWidth + 'px' }}
             />
-          ) : null} */}
-        </TableProvider>
+          ) : null}
+        </div>
 
         {/* 外置 Pagination 分页组件 */}
         {pagination ? (

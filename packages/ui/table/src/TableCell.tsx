@@ -5,7 +5,7 @@ import { __DEV__ } from '@hi-ui/env'
 // import { Checkbox } from '@hi-ui/checkbox'
 import { useTableContext } from './context'
 import { times } from '@hi-ui/times'
-import { TableColumnItem, TableNodeEventData } from './types'
+import { TableColumnItem, TableRowEventData } from './types'
 import { IconButton } from '@hi-ui/icon-button'
 import {
   defaultCollapseIcon,
@@ -61,16 +61,16 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
       onExpandTreeRowsChange,
       isExpandTreeRows,
       onTreeNodeSwitch,
+      getStickyColProps,
     } = useTableContext()
 
     const [loading, setLoading] = React.useState(false)
 
-    const { raw: rawColumn } = column
+    const { raw: rawColumn, leftStickyWidth, rightStickyWidth } = column
     const {
       render: rawRender,
       dataKey,
-      rightStickyWidth,
-      leftStickyWidth,
+
       align = 'left',
     } = rawColumn
 
@@ -110,7 +110,7 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
      * 点击展开节点时触发
      */
     const onNodeExpand = (shouldExpanded: boolean) => {
-      console.log(shouldExpanded)
+      // console.log(shouldExpanded)
 
       onTreeNodeSwitch(rowData, shouldExpanded)
     }
@@ -121,7 +121,7 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
       prefixCls,
       className,
       isHighlightedCol(dataKey) && `${prefixCls}__col--highlight`,
-      isHoveredCol(dataKey) && `${prefixCls}__col--hovered-highlight`,
+      // isHoveredCol(dataKey) && `${prefixCls}__col--hovered-highlight`,
       sticky && `${prefixCls}__col--sticky`
     )
 
@@ -132,13 +132,15 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
       <td
         key={dataKey}
         className={cls}
-        style={{
-          position: sticky ? 'sticky' : undefined,
-          // 从 column 中读取
-          textAlign: 'left',
-          right: rightStickyWidth + 'px',
-          left: leftStickyWidth + 'px',
-        }}
+        // style={{
+        //   position: sticky ? 'sticky' : undefined,
+        //   // 从 column 中读取
+        //   textAlign: 'left',
+        //   right: rightStickyWidth + 'px',
+        //   left: leftStickyWidth + 'px',
+        //   backgroundColor: '#fff',
+        // }}
+        {...getStickyColProps(column)}
         colSpan={cellContent.props.colSpan}
         rowSpan={cellContent.props.rowSpan}
         // 按需绑定函数，避免频繁的 setState 特别消耗性能
@@ -209,7 +211,7 @@ const renderSwitcher = ({
   onLoadChildren,
   isTree,
 }: {
-  node: TableNodeEventData
+  node: TableRowEventData
   prefixCls: string
   loading: boolean
   expanded: boolean
@@ -217,7 +219,7 @@ const renderSwitcher = ({
   collapseIcon: React.ReactNode
   leafIcon: React.ReactNode
   onNodeExpand: (shouldExpanded: boolean) => void
-  onLoadChildren?: (node: TableNodeEventData) => void | Promise<any>
+  onLoadChildren?: (node: TableRowEventData) => void | Promise<any>
   isTree?: boolean
 }) => {
   if (loading) {

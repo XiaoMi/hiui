@@ -46,14 +46,15 @@ export const visitTree = <T extends BaseTreeNode>(
  */
 export const flattenTree = <T extends BaseTreeNodeData>(
   tree: T[],
-  transform?: (node: BaseFlattedTreeNodeData<any, T>) => any
+  transform?: (node: BaseFlattedTreeNodeData<any, T>, rootIndex: number) => any
 ) => {
   const flattedTree: BaseFlattedTreeNodeData<any>[] = []
 
   const dig = (
     depth: number,
     node: BaseTreeNodeData,
-    parent: BaseFlattedTreeNodeDataWithChildren<any>
+    parent: BaseFlattedTreeNodeDataWithChildren<any>,
+    rootIndex: number
   ) => {
     const { id, children } = node
 
@@ -64,7 +65,7 @@ export const flattenTree = <T extends BaseTreeNodeData>(
       raw: node,
     }
 
-    flattedNode = transform ? transform(flattedNode) : flattedNode
+    flattedNode = transform ? transform(flattedNode, rootIndex) : flattedNode
 
     flattedTree.push(flattedNode)
 
@@ -72,7 +73,13 @@ export const flattenTree = <T extends BaseTreeNodeData>(
       const childDepth = depth + 1
 
       flattedNode.children = children.map((child) => {
-        return dig(childDepth, child, flattedNode as BaseFlattedTreeNodeDataWithChildren<any>)
+        return dig(
+          childDepth,
+          child,
+          flattedNode as BaseFlattedTreeNodeDataWithChildren<any>,
+          // 存储自身所在树的 root 节点索引
+          rootIndex
+        )
       })
     }
 
@@ -82,7 +89,7 @@ export const flattenTree = <T extends BaseTreeNodeData>(
   // @ts-ignore
   const treeRoot: NodeRoot<BaseFlattedTreeNodeData<any>> = getTreeRoot()
   // @ts-ignore
-  treeRoot.children = tree.map((node) => dig(0, node, treeRoot))
+  treeRoot.children = tree.map((node, index) => dig(0, node, treeRoot, index))
 
   return flattedTree
 }

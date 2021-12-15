@@ -4,17 +4,13 @@ import { ValueOf } from '@hi-ui/core'
 
 export type TableAlign = 'left' | 'right' | 'center'
 
-export interface FixedOption {
-  left?: string
-  right?: string
-}
-
-export type TableFixedOptions = {
+export type TableFrozenColumnOptions = {
   left?: string
   right?: string
 }
 
 export type TableRowSelection = {
+  checkboxColWidth?: number
   selectedRowKeys?: React.ReactText[]
   getCheckboxConfig?: (rowData: object) => { disabled?: boolean }
   onChange?: (
@@ -71,38 +67,38 @@ export type TableDataSource = {
   transformResponse?: (response: object) => object[]
 }
 
-export interface TableNodeData {
+export interface TableRowData {
   /**
    * 树节点唯一 id
    */
   id: React.ReactText
   /**
-   * 树节点标题
+   * 树节点唯一 id
    */
-  title: React.ReactNode
+  // key: React.ReactText
   /**
    * 该节点的子节点列表
    */
-  children?: TableNodeData[]
+  children?: TableRowData[]
   /**
    * 是否为叶子节点
    */
   isLeaf?: boolean
-  /**
-   * 是否禁用该节点
-   */
-  disabled?: boolean
 }
 
-export interface FlattedTableNodeData extends TableNodeData {
+export interface FlattedTableRowData extends TableRowData {
+  /**
+   * 树节点唯一 id
+   */
+  // id: React.ReactText
   /**
    * 该节点的子节点列表
    */
-  children?: FlattedTableNodeData[]
+  children?: FlattedTableRowData[]
   /**
    * 关联用户传入的原始节点
    */
-  raw: TableNodeData
+  raw: TableRowData
   /**
    * 该节点的层级，从 0（顶层）开始
    */
@@ -110,7 +106,34 @@ export interface FlattedTableNodeData extends TableNodeData {
   /**
    * 该节点的父节点
    */
-  parent?: FlattedTableNodeData
+  parent?: FlattedTableRowData
+  /**
+   * 节点所在列表数据中的下标
+   */
+  pos?: number
+}
+
+export interface FlattedTableColumnItemData extends TableColumnItem {
+  /**
+   * 树节点唯一 id
+   */
+  // id: React.ReactText
+  /**
+   * 该节点的子节点列表
+   */
+  children?: FlattedTableColumnItemData[]
+  /**
+   * 关联用户传入的原始节点
+   */
+  raw: TableColumnItem
+  /**
+   * 该节点的层级，从 0（顶层）开始
+   */
+  depth: number
+  /**
+   * 该节点的父节点
+   */
+  parent?: FlattedTableColumnItemData
   /**
    * 节点所在列表数据中的下标
    */
@@ -126,7 +149,7 @@ export interface TableNodeRequiredProps {
   focused: boolean
 }
 
-export interface TableNodeEventData extends FlattedTableNodeData, TableNodeRequiredProps {}
+export interface TableRowEventData extends FlattedTableRowData, TableNodeRequiredProps {}
 
 // 表示节点类型
 export const TreeNodeType = {

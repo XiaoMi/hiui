@@ -196,7 +196,7 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
     // 放置目标元素时触发事件
     const onDrop = React.useCallback(
       (evt: React.DragEvent) => {
-        console.log(dragRowRef.current)
+        // console.log(dragRowRef.current)
 
         if (!draggable) return
         if (!dragRowRef.current) return
@@ -234,7 +234,7 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
       onHighlightedRowChange(rowData, !highlighted)
     }
 
-    console.log('dragDirection', dragDirection)
+    // console.log('dragDirection', dragDirection)
 
     const cls = cx(
       `${prefixCls}-row`,
@@ -372,7 +372,7 @@ const renderSwitcher = ({
   expandIcon: any
   collapseIcon: any
 }) => {
-  console.log(rowExpand)
+  // console.log(rowExpand)
 
   if (React.isValidElement(rowExpand)) {
     return rowExpand

@@ -5,7 +5,8 @@ $prefix: '#{$component-prefix}-table' !default;
 .#{$prefix} {
   box-sizing: border-box;
   font-size: 14px;
-  overflow: auto;
+  // overflow: auto;
+  position: relative;
 
   table {
     width: 100%;
@@ -18,6 +19,7 @@ $prefix: '#{$component-prefix}-table' !default;
 
   &__wrapper {
     position: relative;
+    // z-index: 1;
   }
 
   &--striped {
@@ -36,11 +38,17 @@ $prefix: '#{$component-prefix}-table' !default;
   }
 
   &__header {
-    & > tr {
+    overflow: hidden;
+    position: relative;
+
+    th {
+    }
+
+    tr {
       & > th {
         padding: 16px;
         color: #999;
-        background: rgb(251, 251, 251);
+        // background: rgb(251, 251, 251);
         border-bottom: 1px solid #f0f0f0;
         font-weight: 500;
       }
@@ -118,6 +126,39 @@ $prefix: '#{$component-prefix}-table' !default;
       }
     }
   }
+
+  // 利用 table colgroup 控制列
+  &-col {
+    .#{$prefix}__header  & {
+      background-color: use-color('gray', 50);
+    }
+
+    &[data-hover-highlight] {
+      .#{$prefix}__body  & {
+        background-color: use-color-mode('primary-10');
+      }
+
+      .#{$prefix}__header  & {
+        background-color: use-color('gray', 100);
+      }
+    }
+  }
+
+  &__resizable {
+    position: relative;
+    background-clip: padding-box;
+
+    &-handle {
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      bottom: 0;
+      right: -5px;
+      cursor: col-resize;
+      z-index: 1;
+      background-color: use-color-mode('primary');
+    }
+  }
 }
 
 // 单元格
@@ -129,9 +170,16 @@ $prefix: '#{$component-prefix}-table' !default;
   border-bottom: 1px solid #f0f0f0;
   word-break: break-word;
 
-  &__col--hovered-highlight {
-    background-color: use-color-mode('primary-10');
+  // &__col--hovered-highlight {
+  //   background-color: use-color-mode('primary-10');
+  // }
+  &[data-sticky] {
+    background-color: use-color-static('white');
   }
+}
+
+th[data-sticky] {
+  background-color: use-color('gray', 50);
 }
 
 // 冻结列 阴影
