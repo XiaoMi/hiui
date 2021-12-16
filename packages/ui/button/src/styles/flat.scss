@@ -74,14 +74,8 @@ $flat-focus-shadow-map: (
       padding: 2px 7px;
 
       &.#{$prefix}--icon-only {
-        width: 24px;
+        width: calc(#{get-text-lineheight('sm')} + #{2px * 2 + 1px * 2});
         padding: 0;
-      }
-
-      &:not(.#{$prefix}--icon-only) {
-        [class^=hi-v4-icon] {
-          margin-right: use-spacing(2);
-        }
       }
     }
     &--appearance-flat#{&}--size-default {
@@ -89,46 +83,28 @@ $flat-focus-shadow-map: (
       padding: 4px 11px;
 
       &.#{$prefix}--icon-only {
-        width: 32px;
+        width: calc(#{get-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
         padding: 0;
-      }
-
-      &:not(.#{$prefix}--icon-only) {
-        [class^=hi-v4-icon] {
-          margin-right: use-spacing(3);
-        }
       }
     }
 
     &--appearance-flat#{&}--size-large {
-      height: calc(#{get-text-lineheight('lg')} + #{5px * 2 + 1px * 2});
-      padding: 5px 15px;
+      height: calc(#{get-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
+      padding: 7px 15px;
 
       &.#{$prefix}--icon-only {
-        width: 48px;
+        width: calc(#{get-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
         padding: 0;
-      }
-
-      &:not(.#{$prefix}--icon-only) {
-        [class^=hi-v4-icon] {
-          margin-right: use-spacing(4);
-        }
       }
     }
 
     &--appearance-flat#{&}--size-x-large {
-      height: calc(#{get-text-lineheight('normal')} + #{13px * 2 + 1px * 2});
+      height: calc(#{get-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
       padding: 13px 60px;
 
       &.#{$prefix}--icon-only {
-        width: 54px;
+        width: calc(#{get-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
         padding: 0;
-      }
-
-      &:not(.#{$prefix}--icon-only) {
-        [class^=hi-v4-icon] {
-          margin-right: use-spacing(6);
-        }
       }
     }
 

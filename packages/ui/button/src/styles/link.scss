@@ -53,42 +53,6 @@ $link-focus-shadow-map: (
   & {
     $prefix: & !default;
 
-    // 尺寸
-    &--appearance-link#{&}--size-small {
-
-      &:not(.#{$prefix}--icon-only) {
-        [class^=hi-v4-icon] {
-          margin-right: use-spacing(2);
-        }
-      }
-    }
-    &--appearance-link#{&}--size-default {
-
-      &:not(.#{$prefix}--icon-only) {
-        [class^=hi-v4-icon] {
-          margin-right: use-spacing(3);
-        }
-      }
-    }
-
-    &--appearance-link#{&}--size-large {
-
-      &:not(.#{$prefix}--icon-only) {
-        [class^=hi-v4-icon] {
-          margin-right: use-spacing(4);
-        }
-      }
-    }
-
-    &--appearance-link#{&}--size-x-large {
-
-      &:not(.#{$prefix}--icon-only) {
-        [class^=hi-v4-icon] {
-          margin-right: use-spacing(6);
-        }
-      }
-    }
-
     @each $key, $value in 'primary', 'secondary', 'default', 'success', 'danger' {
       $prefix: & !default;
       &--appearance-link#{&}--type-#{$key} {

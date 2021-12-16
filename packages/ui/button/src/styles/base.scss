@@ -1,5 +1,4 @@
 @import '~@hi-ui/core-css/lib/index.scss';
-@import './button.var.scss';
 @import './flat.scss';
 @import './link.scss';
 @import './line.scss';
@@ -47,21 +46,62 @@ $prefix: '#{$component-prefix}-button' !default;
   &--size-small {
     font-size: use-text-size('sm');
     line-height: get-text-lineheight('sm');
+    &:not(.#{$prefix}--icon-only) {
+      [class^=hi-v4-icon] {
+        margin-right: use-spacing(2);
+      }
+    }
+    &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
+      .#{$prefix}__icon {
+        margin-right: use-spacing(2);
+      }
+    }
   }
 
   &--size-default {
     font-size: use-text-size('normal');
     line-height: get-text-lineheight('normal');
+    &:not(.#{$prefix}--icon-only) {
+      [class^=hi-v4-icon] {
+        margin-right: use-spacing(3);
+      }
+    }
+    &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
+      .#{$prefix}__icon {
+        margin-right: use-spacing(3);
+      }
+    }
   }
 
   &--size-large {
     font-size: use-text-size('lg');
     line-height: get-text-lineheight('lg');
+    &:not(.#{$prefix}--icon-only) {
+      [class^=hi-v4-icon] {
+        margin-right: use-spacing(4);
+      }
+    }
+    &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
+      .#{$prefix}__icon {
+        margin-right: use-spacing(4);
+      }
+    }
   }
 
   &--size-x-large {
     font-size: use-text-size('xl');
     line-height: get-text-lineheight('xl');
+
+    &:not(.#{$prefix}--icon-only) {
+      [class^=hi-v4-icon]:not(.#{$prefix}--icon-only) {
+        margin-right: use-spacing(6);
+      }
+    }
+    &.#{$prefix}--loading {
+      .#{$prefix}__icon:not(.#{$prefix}--icon-only) {
+        margin-right: use-spacing(6);
+      }
+    }
   }
 
   //loading
@@ -75,7 +115,6 @@ $prefix: '#{$component-prefix}-button' !default;
       stroke: none;
       cursor: default;
       fill: currentColor;
-      margin-right: 4px;
 
       svg {
         @keyframes rotate {
