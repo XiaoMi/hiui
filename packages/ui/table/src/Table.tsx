@@ -7,6 +7,9 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 import Pagination from '@hi-ui/pagination'
 import { useTable, UseTableProps } from './use-table'
 import { TableProvider } from './context'
+// import { useColHidden } from './hooks/use-col-hidden'
+// import { useColSorter } from './hooks/use-col-sorter'
+// import { useTablePagination } from './hooks/use-pagination'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
@@ -31,12 +34,38 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       striped = false,
       loading = false,
       standard = false,
+      // uniqueId,
+      // columns: columnsProp,
+      // hiddenColKeys: hiddenColKeysProp,
+      // onHiddenColKeysChange,
       extra,
       ...rest
     },
     ref
   ) => {
     const standardPreset = standard ? STANDARD_PRESET : {}
+
+    // ************************ 列操作 ************************ //
+
+    // 列排序
+    // const { mergedColumns, sortCols, cacheSortCols, setCacheSortCols } = useColSorter({
+    //   uniqueId,
+    //   columns: columnsProp,
+    // })
+
+    // // 列隐藏
+    // const {
+    //   mergedColumns,
+    //   hiddenColKeys,
+    //   cacheHiddenColKeys,
+    //   setCacheHiddenColKeys,
+    //   setHiddenColKeys,
+    // } = useColHidden({
+    //   uniqueId,
+    //   columns: columnsProp,
+    //   hiddenColKeys: hiddenColKeysProp,
+    //   onHiddenColKeysChange,
+    // })
 
     // 预处理 column 支持 多选渲染
 

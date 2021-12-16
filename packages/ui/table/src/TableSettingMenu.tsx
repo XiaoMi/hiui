@@ -12,7 +12,7 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { Switch } from '@hi-ui/switch'
 import { runIfFunc } from '@hi-ui/func-utils'
-import { useDragSorter } from '@hi-ui/use-drag-sorter'
+import { useDrag, useDrop } from '@hi-ui/use-drag-sorter'
 
 const _prefix = getPrefixCls('table-setting')
 
@@ -33,16 +33,24 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
       setCacheHiddenColKeys,
       hiddenColKeys,
       setHiddenColKeys,
-      theme,
-      localeDatas,
     } = useTableContext()
 
     const i18n = useLocaleContext()
 
-    const { dragging, dragId, getDragTriggerProps, getDropTriggerProps } = useDragSorter({
+    const dropProps = useDrop({
       draggable: true,
       idFieldName: 'dataKey',
-      dataTransferKey: 'table-setting-data',
+      onSwap: async (dragItem, dropItem, direction, info) => {
+        setCacheSortCols((prev: any[]) => {
+          const nextCacheSortColKeys = [...prev]
+          const [removed] = nextCacheSortColKeys.splice(info.dragIndex, 1)
+          nextCacheSortColKeys.splice(info.dropIndex, 0, removed)
+          console.log(nextCacheSortColKeys, info)
+
+          return nextCacheSortColKeys
+        })
+        return true
+      },
     })
 
     const [menuVisible, menuVisibleAction] = useToggle()
@@ -81,45 +89,17 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
         >
           <div className={`${prefixCls}__content`}>
             <div style={{ padding: '16px 20px' }}>
-              {cacheSortCols.map((col, index) => {
-                const { dataKey, title } = col
+              {cacheSortCols.map((col: any, index: number) => {
                 return (
-                  <div
-                    key={dataKey}
-                    {...getDragTriggerProps({ item: col })}
-                    {...getDropTriggerProps({ item: col })}
-                    style={Object.assign(
-                      {
-                        height: 28,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                      },
-                      getItemStyle(dragging, {})
-                    )}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Switch
-                        checked={!cacheHiddenColKeys.includes(dataKey)}
-                        onChange={(shouldChecked) => {
-                          const nextCacheHiddenColKeys = shouldChecked
-                            ? cacheHiddenColKeys.filter((col) => col !== dataKey)
-                            : cacheHiddenColKeys.concat(dataKey)
-
-                          setCacheHiddenColKeys(nextCacheHiddenColKeys)
-                        }}
-                      />
-                      <span style={{ display: 'inline-block', marginLeft: 9 }}>
-                        {runIfFunc(title)}
-                      </span>
-                    </div>
-                    <ColumnsOutlined />
-                  </div>
+                  <TableSettingMenuItem
+                    key={col.dataKey}
+                    prefixCls={prefixCls}
+                    column={col}
+                    index={index}
+                    dropProps={dropProps}
+                    cacheHiddenColKeys={cacheHiddenColKeys}
+                    setCacheHiddenColKeys={setCacheHiddenColKeys}
+                  />
                 )
               })}
             </div>
@@ -148,14 +128,61 @@ if (__DEV__) {
 
 const grid = 8
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getItemStyle = (dragging: boolean): React.CSSProperties => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
   background: '#fff',
-  border: isDragging ? '1px dashed var(--color-primary)' : 'none',
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
+  border: dragging ? '1px dashed var(--hi-v4-primary, )' : 'none',
 })
+
+function TableSettingMenuItem({
+  prefixCls,
+  column,
+  cacheHiddenColKeys,
+  setCacheHiddenColKeys,
+  dropProps,
+  index,
+}: any) {
+  const { dataKey, title } = column
+  const { dragging, direction, getDragTriggerProps, getDropTriggerProps } = useDrag({
+    ...dropProps,
+    item: column,
+    index,
+    idFieldName: 'dataKey',
+    dataTransferKey: 'table-setting-data',
+  })
+
+  return (
+    <div
+      className={cx(
+        `${prefixCls}-item`,
+        dragging && `${prefixCls}-item--dragging`,
+        direction && `${prefixCls}-item--direction-${direction}`
+      )}
+      {...getDragTriggerProps()}
+      {...getDropTriggerProps()}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <Switch
+          checked={!cacheHiddenColKeys.includes(dataKey)}
+          onChange={(shouldChecked) => {
+            const nextCacheHiddenColKeys = shouldChecked
+              ? cacheHiddenColKeys.filter((col) => col !== dataKey)
+              : cacheHiddenColKeys.concat(dataKey)
+
+            setCacheHiddenColKeys(nextCacheHiddenColKeys)
+          }}
+        />
+        <span style={{ display: 'inline-block', marginLeft: 9 }}>{runIfFunc(title)}</span>
+      </div>
+      <ColumnsOutlined />
+    </div>
+  )
+}

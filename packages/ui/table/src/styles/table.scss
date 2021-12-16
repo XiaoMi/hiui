@@ -240,3 +240,26 @@ th[data-sticky] {
     }
   }
 }
+
+.#{$prefix}-setting-item {
+  @include flex(space-between);
+
+  user-select: none;
+  padding: use-spacing(4);
+  margin-bottom: use-spacing(4);
+  border: use-border-size('normal') use-color-static('transparent');
+
+  &--dragging {
+    border: use-border-size('normal') use-color-mode('primary');
+  }
+
+  &--direction {
+    &-before {
+      border-top-color: use-color-mode('primary');
+    }
+
+    &-after {
+      border-bottom-color: use-color-mode('primary');
+    }
+  }
+}
