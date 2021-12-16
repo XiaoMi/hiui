@@ -1,0 +1,166 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+// 默认态
+$flat-background-map: (
+  'primary': use-color-mode('primary'),
+  'secondary': use-color-mode('primary-05'),
+  'default': use-color('gray', 100),
+  'success': use-color-mode('success-05'),
+  'danger': use-color-mode('danger-05'),
+) !default;
+
+$flat-color-map: (
+  'primary': use-color-static('white'),
+  'secondary': use-color-mode('primary'),
+  'default': use-color('gray', 700),
+  'success': use-color-mode('success'),
+  'danger': use-color-mode('danger'),
+) !default;
+
+// hover 态
+$flat-hover-background-map: (
+  'primary': use-color-mode('primary-40'),
+  'secondary': use-color-mode('primary-10'),
+  'default': use-color('gray', 200),
+  'success': use-color-mode('success-10'),
+  'danger': use-color-mode('danger-10'),
+) !default;
+
+$flat-hover-color-map: $flat-color-map !default;
+
+// active 态
+$flat-active-background-map: (
+  'primary': use-color-mode('primary-60'),
+  'secondary': use-color-mode('primary-20'),
+  'default': use-color('gray', 300),
+  'success': use-color-mode('success-20'),
+  'danger': use-color-mode('danger-20'),
+) !default;
+
+$flat-active-color-map: $flat-color-map !default;
+
+// 禁用态
+$flat-disabled-background-map: (
+  'primary': use-color-mode('primary-20'),
+  'secondary': use-color-mode('primary-05'),
+  'default': use-color('gray', 100),
+  'success': use-color-mode('success-05'),
+  'danger': use-color-mode('danger-05'),
+) !default;
+
+$flat-disabled-color-map: (
+  'primary': use-color-static('white'),
+  'secondary': use-color-mode('primary-30'),
+  'default': use-color('gray', 400),
+  'success': use-color-mode('success-30'),
+  'danger': use-color-mode('danger-30'),
+) !default;
+
+// focus 态
+$flat-focus-shadow-map: (
+  'primary': use-color-mode('primary-20'),
+  'secondary': use-color-mode('primary-20'),
+  'default': use-color-mode('primary-20'),
+  'success': use-color-mode('success-20'),
+  'danger': use-color-mode('danger-20'),
+) !default;
+
+@mixin render-flat-button() {
+  & {
+
+    // 尺寸
+    &--appearance-flat#{&}--size-small {
+      height: calc(#{get-text-lineheight('sm')} + #{2px * 2 + 1px * 2});
+      padding: 2px 7px;
+
+      &.#{$prefix}--icon-only {
+        width: 24px;
+        padding: 0;
+      }
+
+      &:not(.#{$prefix}--icon-only) {
+        [class^=hi-v4-icon] {
+          margin-right: use-spacing(2);
+        }
+      }
+    }
+    &--appearance-flat#{&}--size-default {
+      height: calc(#{get-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
+      padding: 4px 11px;
+
+      &.#{$prefix}--icon-only {
+        width: 32px;
+        padding: 0;
+      }
+
+      &:not(.#{$prefix}--icon-only) {
+        [class^=hi-v4-icon] {
+          margin-right: use-spacing(3);
+        }
+      }
+    }
+
+    &--appearance-flat#{&}--size-large {
+      height: calc(#{get-text-lineheight('lg')} + #{5px * 2 + 1px * 2});
+      padding: 5px 15px;
+
+      &.#{$prefix}--icon-only {
+        width: 48px;
+        padding: 0;
+      }
+
+      &:not(.#{$prefix}--icon-only) {
+        [class^=hi-v4-icon] {
+          margin-right: use-spacing(4);
+        }
+      }
+    }
+
+    &--appearance-flat#{&}--size-x-large {
+      height: calc(#{get-text-lineheight('normal')} + #{13px * 2 + 1px * 2});
+      padding: 13px 60px;
+
+      &.#{$prefix}--icon-only {
+        width: 54px;
+        padding: 0;
+      }
+
+      &:not(.#{$prefix}--icon-only) {
+        [class^=hi-v4-icon] {
+          margin-right: use-spacing(6);
+        }
+      }
+    }
+
+    @each $key, $value in 'primary', 'secondary', 'default', 'success', 'danger' {
+      $prefix: & !default;
+      &--appearance-flat#{&}--type-#{$key} {
+        background-color: map-get($flat-background-map, $key);
+        border: 1px solid map-get($flat-background-map, $key);
+        color: map-get($flat-color-map, $key);
+
+        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):hover {
+          background-color: map-get($flat-hover-background-map, $key);
+          border: 1px solid map-get($flat-hover-background-map, $key);
+          color: map-get($flat-hover-color-map, $key);
+        }
+
+        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):active {
+          background-color: map-get($flat-active-background-map, $key);
+          border: 1px solid map-get($flat-active-background-map, $key);
+          color: map-get($flat-active-color-map, $key);
+        }
+
+        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
+          box-shadow: 0 0 0 2px map-get($flat-focus-shadow-map, $key);
+        }
+
+        &.#{$prefix}--disabled {
+          background-color: map-get($flat-disabled-background-map, $key);
+          border: 1px solid map-get($flat-disabled-background-map, $key);
+          color: map-get($flat-disabled-color-map, $key);
+        }
+      }
+    }
+  }
+}

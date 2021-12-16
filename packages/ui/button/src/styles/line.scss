@@ -1,0 +1,145 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+// 默认态
+
+$line-color-map: (
+  'primary': use-color-mode('primary'),
+  'secondary': use-color-mode('primary-40'),
+  'default': use-color('gray', 700),
+  'success': use-color-mode('success'),
+  'danger': use-color-mode('danger'),
+) !default;
+
+// hover 态
+
+$line-hover-color-map:(
+  'primary': use-color-mode('primary-40'),
+  'secondary': use-color-mode('primary-30'),
+  'default': use-color('gray', 600),
+  'success': use-color-mode('success-40'),
+  'danger': use-color-mode('danger-40'),
+) !default;
+
+// active 态
+
+$line-active-color-map: (
+  'primary': use-color-mode('primary-60'),
+  'secondary': use-color-mode('primary'),
+  'default': use-color-static('black'),
+  'success': use-color-mode('success-60'),
+  'danger': use-color-mode('danger-60'),
+) !default;
+
+// 禁用态
+
+$line-disabled-color-map: (
+  'primary': use-color-mode('primary-30'),
+  'secondary': use-color-mode('primary-20'),
+  'default': use-color('gray', 500),
+  'success': use-color-mode('success-30'),
+  'danger': use-color-mode('danger-30'),
+) !default;
+
+// focus 态
+$line-focus-shadow-map: (
+  'primary': use-color-mode('primary-20'),
+  'secondary': use-color-mode('primary-20'),
+  'default': use-color-mode('primary-20'),
+  'success': use-color-mode('success-20'),
+  'danger': use-color-mode('danger-20'),
+) !default;
+
+@mixin render-line-button() {
+  & {
+    // 尺寸
+    &--appearance-line#{&}--size-small {
+      height: calc(#{get-text-lineheight('sm')} + #{2px * 2 + 1px * 2});
+      padding: 2px 7px;
+
+      &.#{$prefix}--icon-only {
+        width: 24px;
+        padding: 0;
+      }
+
+      &:not(.#{$prefix}--icon-only) {
+        [class^=hi-v4-icon] {
+          margin-right: use-spacing(2);
+        }
+      }
+    }
+    &--appearance-line#{&}--size-default {
+      height: calc(#{get-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
+      padding: 4px 11px;
+
+      &.#{$prefix}--icon-only {
+        width: 32px;
+        padding: 0;
+      }
+
+      &:not(.#{$prefix}--icon-only) {
+        [class^=hi-v4-icon] {
+          margin-right: use-spacing(3);
+        }
+      }
+    }
+
+    &--appearance-line#{&}--size-large {
+      height: calc(#{get-text-lineheight('lg')} + #{5px * 2 + 1px * 2});
+      padding: 5px 15px;
+
+      &.#{$prefix}--icon-only {
+        width: 48px;
+        padding: 0;
+      }
+
+      &:not(.#{$prefix}--icon-only) {
+        [class^=hi-v4-icon] {
+          margin-right: use-spacing(4);
+        }
+      }
+    }
+
+    &--size-x-large {
+      height: calc(#{get-text-lineheight('normal')} + #{13px * 2 + 1px * 2});
+      padding: 13px 60px;
+
+      &.#{$prefix}--icon-only {
+        width: 54px;
+        padding: 0;
+      }
+      &:not(.#{$prefix}--icon-only) {
+        [class^=hi-v4-icon] {
+          margin-right: use-spacing(6);
+        }
+      }
+    }
+
+    @each $key, $value in 'primary', 'secondary', 'default', 'success', 'danger' {
+      $prefix: & !default;
+      &--appearance-line#{&}--type-#{$key} {
+        background-color: use-color-static('white');
+        border: 1px solid map-get($line-color-map, $key);
+        color: map-get($line-color-map, $key);
+
+        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):hover {
+          color: map-get($line-hover-color-map, $key);
+          border: 1px solid map-get($line-hover-color-map, $key);
+        }
+
+        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):active {
+          color: map-get($line-active-color-map, $key);
+          border: 1px solid map-get($line-active-color-map, $key);
+        }
+
+        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
+          box-shadow: 0 0 0 2px map-get($line-focus-shadow-map, $key);
+        }
+
+        &.#{$prefix}--disabled {
+          color: map-get($line-disabled-color-map, $key);
+          border: 1px solid map-get($line-disabled-color-map, $key);
+        }
+      }
+    }
+  }
+}

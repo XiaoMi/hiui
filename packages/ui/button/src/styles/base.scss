@@ -1,0 +1,95 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+@import './button.var.scss';
+@import './flat.scss';
+@import './link.scss';
+@import './line.scss';
+
+$prefix: '#{$component-prefix}-button' !default;
+
+// 通用能力，配置项无关
+
+.#{$prefix} {
+  & + & {
+    margin-left: use-spacing(4);
+  }
+
+  background-color: transparent;
+  position: relative; // Used by button :focus radio-style etc.
+  display: inline-block;
+  box-sizing: border-box;
+  appearance: none;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: use-border-radius('normal');
+  font-weight: use-text-weight('normal');
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  touch-action: manipulation; // 禁用非标准手势
+  &:not(#{&}--loading) {
+    cursor: pointer;
+  }
+
+  transition: background-color use-motion-duration('normal') use-motion-bezier('easing'), border-color use-motion-duration('normal') use-motion-bezier('easing'), box-shadow use-motion-duration('faster') use-motion-bezier('easing'), color use-motion-duration('normal') use-motion-bezier('easing');
+
+  //聚焦通用
+  &:focus {
+    outline: 0;
+    z-index: 1; // Display box-shadow in front
+  }
+  // 禁用通用
+  &--disabled,
+  &[disabled]:not(&--loading) {
+    cursor: not-allowed;
+  }
+  // 尺寸通用
+  &--size-small {
+    font-size: use-text-size('sm');
+    line-height: get-text-lineheight('sm');
+  }
+
+  &--size-default {
+    font-size: use-text-size('normal');
+    line-height: get-text-lineheight('normal');
+  }
+
+  &--size-large {
+    font-size: use-text-size('lg');
+    line-height: get-text-lineheight('lg');
+  }
+
+  &--size-x-large {
+    font-size: use-text-size('xl');
+    line-height: get-text-lineheight('xl');
+  }
+
+  //loading
+  &--loading {
+    position: relative;
+
+    .#{$prefix}__icon {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      stroke: none;
+      cursor: default;
+      fill: currentColor;
+      margin-right: 4px;
+
+      svg {
+        @keyframes rotate {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        animation: rotate 1s linear infinite;
+      }
+    }
+  }
+
+  @include render-flat-button();
+  @include render-line-button();
+  @include render-link-button();
+}
