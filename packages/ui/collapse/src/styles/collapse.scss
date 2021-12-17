@@ -3,5 +3,7 @@
 $prefix: '#{$component-prefix}-collapse' !default;
 
 .#{$prefix} {
-  // default
+  padding: 0 use-spacing(10);
+  border: 1px solid use-color('gray', 200);
+  border-radius: use-border-radius('normal');
 }
