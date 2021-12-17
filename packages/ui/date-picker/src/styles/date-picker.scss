@@ -3,13 +3,15 @@
 $prefix: '#{$component-prefix}-date-picker' !default;
 $error-color: use-color('red', 600) !default;
 $input-container-class: '#{$prefix}__input' !default;
+$row-class: '#{$prefix}__row' !default;
+$cell-class: '#{$prefix}__cell' !default;
 
 .#{$prefix} {
   position: relative;
   z-index: 1060;
 
   &__popper {
-    width: 288px;
+    //width: 288px;
     font-size: 14px;
     display: flex;
     flex-wrap: wrap;
@@ -17,7 +19,7 @@ $input-container-class: '#{$prefix}__input' !default;
     overflow: hidden;
 
     &--range {
-      width: 576px;
+      //width: 576px;
 
       &.#{$prefix}__popper--large {
         width: 866px;
@@ -200,7 +202,7 @@ $input-container-class: '#{$prefix}__input' !default;
     display: flex;
 
     .#{$prefix}__panel--left {
-      min-width: 288px;
+      //min-width: 288px;
       flex: 1;
     }
 
@@ -253,52 +255,33 @@ $input-container-class: '#{$prefix}__input' !default;
   }
 
   &__calendar-wrap {
-    padding: 16px;
-    height: 248px;
-
-    &--large {
-      height: 382px;
-    }
+    padding: 8px;
   }
 
   &__calendar {
     width: 100%;
     height: 100%;
     font-size: 14px;
-    border-collapse: collapse;
-    border-spacing: 0;
+    border-spacing: 0 4px;
 
     thead th {
-      padding: 2px;
+      height: 32px;
+      width: 32px;
+      font-weight: normal;
+      padding: 0;
     }
 
     &--year,
     &--month {
-      .#{$prefix}__row {
-        height: 52px;
-      }
-
+      //.#{$prefix}__row {
+      //  height: 52px;
+      //}
+      //
       .#{$prefix}__cell {
+        width: 74px;
+
         &-text {
-          width: 48px;
-        }
-      }
-    }
-  }
-
-  &__row {
-    &--currentweek {
-      .#{$prefix}__cell {
-        &::before {
-          content: '';
-          background: use-color('brandblue', 100);
-          display: block;
-          height: 24px;
-          position: absolute;
-          left: 0;
-          right: 0;
-          top: 50%;
-          transform: translateY(-50%);
+          width: 70px;
         }
       }
     }
@@ -306,52 +289,83 @@ $input-container-class: '#{$prefix}__input' !default;
 
   &__cell {
     text-align: center;
-    padding: 4px 0;
+    width: 32px;
+    height: 32px;
     cursor: pointer;
     color: rgb(51, 51, 51);
     position: relative;
+    z-index: 0;
+    padding: 0;
 
-    &-text {
-      width: 24px;
+
+    &-text,&-week-indicator {
+      width: 28px;
+      border-radius: 14px;
       display: inline-block;
-      height: 24px;
-      line-height: 24px;
-      border-radius: 2px;
+      height: 28px;
+      line-height: 28px;
       box-sizing: border-box;
-      margin-left: 50%;
-      transform: translateX(-50%);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
     }
 
-    &__cell:not(.#{$prefix}__cell--range) {
-      &-text {
-        &:hover {
-          background-color: use-color('brandblue', 500);
-        }
+    &:first-child{
+      .#{$prefix}__cell-week-indicator{
+        margin-left: 2px;
+        border-radius: 14px 0 0 14px;
       }
     }
+
+    &:last-child{
+      .#{$prefix}__cell-week-indicator{
+        margin-left: -2px;
+        border-radius: 0 14px 14px 0 ;
+      }
+    }
+
+    &-week-indicator{
+      width: 100%;
+      border-radius: 0;
+    }
+
+    // 周模式有特殊处理
+    &:hover:not(#{&}--selected):not(#{&}--week-mode-select){
+      .#{$prefix}__cell-text{
+        background: use-color('gray',100);
+      }
+    }
+
+    //&:not(.#{$prefix}__cell--range) {
+    //  &:hover{
+    //    .#{$prefix}__cell-text{
+    //      background: use-color('brandblue',50);
+    //      color: use-color('brandblue',500);
+    //    }
+    //  }
+    //}
 
     &--out {
       color: rgba(44, 48, 78, 0.2);
     }
 
     &--today {
-      .#{$prefix}__cell-text {
-        border: 1px solid use-color('brandblue', 500);
+      &::after{
+        content: '';
+        background: use-color('brandblue',500);
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
       }
     }
 
     &--range:not(.#{$prefix}__cell--out) {
-      &::before {
-        content: '';
-        background: use-color('brandblue', 100);
-        display: block;
-        height: 24px;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-      }
+      background: use-color('brandblue',50);
     }
 
     &--disabled {
@@ -390,21 +404,109 @@ $input-container-class: '#{$prefix}__input' !default;
     }
 
     &--selected {
-      .#{$prefix}__cell-text {
-        background: use-color('brandblue', 500);
-        color: use-color-static('white');
+      // 周选择器需要特殊处理
+      &:not(.#{$cell-class}--week-mode-select){
+        .#{$prefix}{
+          &__cell-text{
+            background: use-color('brandblue',50);
+            color: use-color('brandblue',500);
+          }
+
+          &__cell--lunar{
+            color: use-color-static('white');
+          }
+
+          &__lunar{
+            color: use-color-static('white');
+          }
+
+          &__mark--rest{
+            color: use-color-static('white');
+          }
+        }
       }
 
-      .#{$prefix}__cell--lunar {
-        color: use-color-static('white');
+      &.#{$cell-class}--range-start,&.#{$cell-class}--range-end{
+        background: use-color('brandblue',50);
+        .#{$cell-class}-text{
+          background: use-color('brandblue',500);
+          color: use-color-static('white');
+        }
+      }
+    }
+
+
+    &--range-start{
+      border-bottom-left-radius: 16px;
+      border-top-left-radius: 16px;
+    }
+
+    &--range-end{
+      border-bottom-right-radius: 16px;
+      border-top-right-radius: 16px;
+    }
+  }
+
+  &__row {
+    margin-top: 4px;
+    padding: 0;
+
+    &#{&}--week-mode-select{
+      &:hover{
+        .#{$cell-class}-week-indicator{
+          background: use-color('gray',100);
+        }
+      }
+    }
+
+    // 当前行有选中的日期，并且现在是周选择器模式
+    // 则，使用 周指示器 元素来标识选择
+    &--has-selected#{&}--week-mode-select{
+      .#{$cell-class}{
+        &-week-indicator{
+          background: use-color('brandblue',50);
+        }
+        color: use-color('brandblue',500);
       }
 
-      .#{$prefix}__lunar {
-        color: use-color-static('white');
+      &.#{$row-class}--range-mode{
+        .#{$cell-class}{
+          &-week-indicator{
+            background: use-color('brandblue',500);
+          }
+          color: use-color-static('white');
+        }
       }
+    }
 
-      .#{$prefix}__mark--rest {
-        color: use-color-static('white');
+    &--has-start#{&}--week-mode-select{
+      .#{$cell-class}{
+        background: use-color('brandblue',50);;
+
+        &--range-start{
+          border-radius: 0;
+        }
+
+        &:first-child{
+          border-bottom-left-radius: 16px;
+          border-top-left-radius: 16px;
+        }
+
+      }
+    }
+
+    &--has-end#{&}--week-mode-select{
+      .#{$cell-class}{
+        background: use-color('brandblue',50);
+
+        &--range-end{
+          border-radius: 0;
+        }
+
+        &:last-child{
+          border-bottom-right-radius: 16px;
+          border-top-right-radius: 16px;
+        }
       }
     }
   }
@@ -412,10 +514,6 @@ $input-container-class: '#{$prefix}__input' !default;
   &__cellnum {
     display: inline-block;
     transition: all 100ms;
-
-    &:hover {
-      transform: scale(1.1);
-    }
   }
 
   &__lunar {

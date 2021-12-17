@@ -45,6 +45,7 @@ const RangePanel = () => {
     end: null,
     selecting: false,
   })
+
   useEffect(() => {
     const _outDate = _.cloneDeep(outDate)
     setRange({
@@ -73,6 +74,7 @@ const RangePanel = () => {
 
   const setRanges = (date: moment.Moment) => {
     const newRange = { ...range }
+
     if (range.selecting || !calendarClickIsEnd.current) {
       if (newRange.start! >= date) {
         newRange.selecting = false

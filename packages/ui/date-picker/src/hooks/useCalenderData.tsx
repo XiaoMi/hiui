@@ -31,6 +31,15 @@ const getYearOrMonthRows = ({
   const trs: CalendarRowInfo[] = [[], [], [], []] as any
   let num = 0
   const current = moment()
+
+  // 格式化范围数据，保证开始永远在结束之前
+  const formatRange = range ? { ...range } : ({} as CalenderSelectedRange)
+  if (formatRange.start && formatRange.end && formatRange.start.isAfter(formatRange.end)) {
+    const temp = formatRange.start
+    formatRange.start = formatRange.end
+    formatRange.end = temp
+  }
+
   for (let i = 0; i < 4; i++) {
     const row = trs[i]
     for (let j = 0; j < 3; j++) {
@@ -47,19 +56,30 @@ const getYearOrMonthRows = ({
         if (
           range?.start &&
           range?.end &&
-          (currentYM.isBetween(range.start, range.end) ||
-            currentYM.isBetween(range.end, range.start))
+          (currentYM.isBetween(formatRange.start, formatRange.end) ||
+            currentYM.isBetween(formatRange.end, formatRange.start))
         ) {
           col.range = true
         }
-        if (range?.start && currentYM.isSame(range.start, view)) {
+        if (formatRange?.start && currentYM.isSame(formatRange.start, view)) {
           col.type = 'selected'
           col.range = false
+          col.rangeStart = true
+          // 当前，存在开始，结束不存在，范围选择现在只选择了一个值，视作，开始结束为同一个
+          if (!formatRange.end) {
+            col.rangeEnd = true
+          }
         }
-        if (range?.end && currentYM.isSame(range.end, view)) {
+        if (formatRange?.end && currentYM.isSame(formatRange.end, view)) {
           col.type = 'selected'
           col.range = false
+          col.rangeEnd = true
+          // 当前，存在结束，开始不存在，范围选择现在只选择了一个值，视作，开始结束为同一个
+          if (!formatRange.start) {
+            col.rangeEnd = true
+          }
         }
+
         // 判断年月可选状态
         const _y = currentYM.year()
         const _m = currentYM.month()
@@ -183,6 +203,14 @@ const getDateRows = ({
   const rows: CalendarRowInfo[] = [[], [], [], [], [], []] as any
   const today = moment()
   const _date = moment(renderDate)
+  // 格式化范围数据，保证开始永远在结束之前
+  const formatRange = range ? { ...range } : ({} as CalenderSelectedRange)
+  if (formatRange.start && formatRange.end && formatRange.start.isAfter(formatRange.end)) {
+    const temp = formatRange.start
+    formatRange.start = formatRange.end
+    formatRange.end = temp
+  }
+
   // *  dayCount: 当月天数
   // *  lastMonthDayCount: 上月总天数
   // *  firstDayWeek: 当月第一天是周几
@@ -197,6 +225,7 @@ const getDateRows = ({
   const dayCount = _date.daysInMonth()
   const lastMonthDayCount = moment(_date).subtract(1, 'months').daysInMonth()
   let count = 0
+
   for (let i = 0; i < 6; i++) {
     const row = rows[i]
     for (let j = 0; j < 7; j++) {
@@ -245,19 +274,29 @@ const getDateRows = ({
       }
       if (type.includes('range') && !isPN) {
         if (
-          currentTime.isBetween(range?.start, range?.end) ||
-          currentTime.isBetween(range?.end, range?.start)
+          currentTime.isBetween(formatRange?.start, formatRange?.end) ||
+          currentTime.isBetween(formatRange?.end, formatRange?.start)
         ) {
           col.range = true
         }
 
-        if (range?.start && currentTime.isSame(range.start, 'day')) {
+        if (formatRange?.start && currentTime.isSame(formatRange.start, 'day')) {
           col.type = 'selected'
           col.range = false
+          col.rangeStart = true
+          // 当前，存在开始，结束不存在，范围选择现在只选择了一个值，视作，开始结束为同一个
+          if (!formatRange.end) {
+            col.rangeEnd = true
+          }
         }
-        if (range?.end && currentTime.isSame(range.end, 'day')) {
+        if (formatRange?.end && currentTime.isSame(formatRange.end, 'day')) {
           col.type = 'selected'
           col.range = false
+          col.rangeEnd = true
+          // 当前，存在结束，开始不存在，范围选择现在只选择了一个值，视作，开始结束为同一个
+          if (!formatRange.start) {
+            col.rangeStart = true
+          }
         }
         continue
       }
@@ -277,9 +316,11 @@ const getDateRows = ({
             col.type = 'selected'
             continue
           }
+          // 处于周开始与结束之间，也看做，被选中了
           if (currentTime.isBetween(wFirst, wLast)) {
-            col.type = 'normal'
-            col.range = true
+            // col.type = 'normal'
+            // col.range = true
+            col.type = 'selected'
           }
         }
       }

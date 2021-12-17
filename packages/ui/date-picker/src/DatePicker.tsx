@@ -21,7 +21,7 @@ import { PopperPortal } from '@hi-ui/popper'
 import Root from './components/root'
 import Panel from './components/panel'
 import RangePanel from './components/range-panel'
-import { DatePickerProps } from './types'
+import { DatePickerProps, DatePickerType } from './types'
 
 const DATE_PICKER_PREFIX = getPrefixCls('date-picker')
 
@@ -91,7 +91,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const cacheDate = useRef(null)
     const [inputFocus, setInputFocus] = useState(false)
-    const [type, setType] = useState(propType)
+    const [type, setType] = useState<DatePickerType>(propType)
     useEffect(() => {
       moment.locale(locale === 'en-US' ? 'en' : 'zh-CN')
       if (weekOffset !== undefined) {
@@ -125,10 +125,16 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       showPanel,
       prefixCls,
     })
-    const inputChangeEvent = (val: any, dir: any) => {
+    const inputChangeEvent = (val: moment.Moment, dir: number) => {
       if (val.isValid()) {
-        const oData = _.cloneDeep(outDate) as any
+        const oData = _.cloneDeep(outDate)
         oData[dir] = val
+        // 位置开始一定小于结束
+        if (oData[0] && oData[1] && oData[0]?.isAfter(oData[1])) {
+          const temp = oData[0]
+          oData[0] = oData[1]
+          oData[1] = temp
+        }
         changeOutDate(oData)
       }
     }
@@ -172,8 +178,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       const _outDate = isValid ? [moment(startDate), moment(endDate)] : [null]
       resetStatus()
       const isChange = _outDate.some((od, index) => {
-        // @ts-ignore
-        return od && !od.isSame(cacheDate.current[index])
+        return od && !od.isSame(cacheDate.current![index])
       })
       isChange && callback(_outDate, showTime || type === 'daterange')
 
