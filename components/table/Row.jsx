@@ -58,7 +58,7 @@ const Row = ({
   setDepth(_columns, 0, depthArray)
   const rowColumns = flatTreeData(_columns).filter((col) => col.isLast)
   const isSticky = rowColumns.some((item) => {
-    return typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
+    return typeof item.leftStickyWidth !== 'undefined'
   })
   const checkboxConfig = rowSelection && rowSelection.getCheckboxConfig && rowSelection.getCheckboxConfig(allRowData)
   const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false
@@ -231,11 +231,11 @@ const Row = ({
     </tr>,
     // 可展开的内嵌部分
     expandedRender && expanded && (
-      <tr key="expanded-row" className={`${prefix}--expanded`} style={{ background: 'rgba(251,251,251,1)' }}>
+      <tr key="expanded-row" className={`${prefix}--expanded`} style={{ background: 'rgba(251, 251, 251, 1)' }}>
         {/* 多选占位 */}
         {rowSelection && <td />}
         {/* 可展开内嵌显示 */}
-        <td colSpan={columns.length + 1} style={{ color: '#666666' }}>
+        <td colSpan={columns.length + 1} style={{ color: '#666' }}>
           <Expandcol rowData={rowData} index={index} expandedRender={expandedRender} setExpanded={setExpanded} />
           {expanded === 'loading' && <Loading size="small" />}
         </td>
