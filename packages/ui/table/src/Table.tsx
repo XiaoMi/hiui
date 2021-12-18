@@ -227,7 +227,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           <Pagination
             className={cx(
               `${prefixCls}-pagination`,
-              pagination.placement && `${prefixCls}-pagination--${pagination.placement}`
+              pagination.placement && `${prefixCls}-pagination--placement-${pagination.placement}`
             )}
             {...pagination}
             current={currentPage}
