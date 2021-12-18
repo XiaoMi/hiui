@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useUpdateEffect } from '@hi-ui/use-update-effect'
 import { UseTableProps } from '../use-table'
+import { TableColumnItem } from '../types'
 
 const DEFAULT_COLUMNS = [] as []
 
@@ -7,7 +9,7 @@ const DEFAULT_COLUMNS = [] as []
  * 列排序
  */
 export const useColSorter = ({ uniqueId, columns = DEFAULT_COLUMNS }: UseTableProps) => {
-  const [sortCols, setSortCols] = useState(() => {
+  const [sortedCols, setSortCols] = useState<TableColumnItem[]>(() => {
     return parseLocalArray({
       key: `${uniqueId}_sortCols`,
       disabled: !uniqueId,
@@ -17,24 +19,26 @@ export const useColSorter = ({ uniqueId, columns = DEFAULT_COLUMNS }: UseTablePr
 
   useEffect(() => {
     if (!uniqueId) return
-    window.localStorage.setItem(`${uniqueId}_sortCols`, JSON.stringify(sortCols))
-  }, [uniqueId, sortCols])
+    window.localStorage.setItem(`${uniqueId}_sortCols`, JSON.stringify(sortedCols))
+  }, [uniqueId, sortedCols])
 
-  // 用于维护列操作时排序临时状态
-  const [cacheSortCols, setCacheSortCols] = useState(sortCols)
+  // 用于维护列操作时排序临时状态（（未确认保存时））
+  const [cacheSortedCols, setCacheSortedCols] = useState(sortedCols)
 
-  // 当column发生改变的时候，同步 setting 的 sortCols 设置
-  useEffect(() => {
+  useUpdateEffect(() => {
+    // 当column发生改变的时候，同步 setting 的 sortedCols 设置
     setSortCols(columns)
   }, [columns])
 
   return {
-    // mergedColumns,
-    sortCols,
-    cacheSortCols,
-    setCacheSortCols,
+    sortedCols,
+    setSortCols,
+    cacheSortedCols,
+    setCacheSortedCols,
   }
 }
+
+export type UseColSorterReturn = ReturnType<typeof useColSorter>
 
 const parseLocalArray = ({ key, defaultValue, disabled }: any) => {
   if (!disabled) {

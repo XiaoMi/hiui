@@ -9,6 +9,11 @@ export type TableFrozenColumnOptions = {
   right?: string
 }
 
+export type TableExtra = {
+  footer?: React.ReactNode
+  header?: React.ReactNode
+}
+
 export type TableRowSelection = {
   checkboxColWidth?: number
   selectedRowKeys?: React.ReactText[]

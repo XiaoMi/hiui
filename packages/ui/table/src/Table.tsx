@@ -7,25 +7,20 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 import Pagination from '@hi-ui/pagination'
 import { useTable, UseTableProps } from './use-table'
 import { TableProvider } from './context'
-// import { useColHidden } from './hooks/use-col-hidden'
-// import { useColSorter } from './hooks/use-col-sorter'
-// import { useTablePagination } from './hooks/use-pagination'
+import { TableExtra } from './types'
+import { useColHidden } from './hooks/use-col-hidden'
+import { useColSorter } from './hooks/use-col-sorter'
+import { useTablePagination } from './hooks/use-pagination'
+import { withDefaultProps } from '@hi-ui/react-utils'
+import { TableSettingMenu } from './TableSettingMenu'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
 
-const STANDARD_PRESET = {
-  showColMenu: true,
-  sticky: true,
-  bordered: true,
-  setting: true,
-  striped: true,
-}
-
 /**
- * TODO: What is Table
+ * TODO: What is BaseTable
  */
-export const Table = forwardRef<HTMLDivElement | null, TableProps>(
+export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
   (
     {
       prefixCls = _prefix,
@@ -33,49 +28,19 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       className,
       striped = false,
       loading = false,
-      standard = false,
-      // uniqueId,
-      // columns: columnsProp,
-      // hiddenColKeys: hiddenColKeysProp,
-      // onHiddenColKeysChange,
       extra,
       ...rest
     },
     ref
   ) => {
-    const standardPreset = standard ? STANDARD_PRESET : {}
+    const extraHeader = extra && extra.header
+    const extraFooter = extra && extra.footer
 
-    // ************************ 列操作 ************************ //
-
-    // 列排序
-    // const { mergedColumns, sortCols, cacheSortCols, setCacheSortCols } = useColSorter({
-    //   uniqueId,
-    //   columns: columnsProp,
-    // })
-
-    // // 列隐藏
-    // const {
-    //   mergedColumns,
-    //   hiddenColKeys,
-    //   cacheHiddenColKeys,
-    //   setCacheHiddenColKeys,
-    //   setHiddenColKeys,
-    // } = useColHidden({
-    //   uniqueId,
-    //   columns: columnsProp,
-    //   hiddenColKeys: hiddenColKeysProp,
-    //   onHiddenColKeysChange,
-    // })
-
-    // 预处理 column 支持 多选渲染
-
-    const providedValue = useTable({ ...standardPreset, ...rest })
+    const providedValue = useTable(rest)
 
     const {
-      // striped,
       bordered,
       size,
-      columns,
       fixedColWidth,
       rowSelection,
       cacheData,
@@ -83,7 +48,6 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       pagination,
       currentPage,
       trySetCurrentPage,
-      scrollSize,
       leftFrozenColKeys,
       rightFrozenColKeys,
       // fixedColumnsWidth,
@@ -115,9 +79,9 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
               />
 
               {/* 不跟随内部 header 横向滚动，固定到右侧 */}
-              {extra ? (
+              {extraHeader ? (
                 <div style={{ position: 'absolute', right: 0, zIndex: 11, bottom: 0, top: 0 }}>
-                  {extra}
+                  {extraHeader}
                 </div>
               ) : null}
             </div>
@@ -131,13 +95,14 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
             />
           </TableProvider>
 
-          {/* 左右冻结列内侧阴影效果 */}
+          {/* 左冻结列内侧阴影效果 */}
           {scrollLeft > 0 && leftFrozenColKeys.length > 0 ? (
             <div
               className={`${prefixCls}-freeze-shadow  ${prefixCls}-freeze-shadow--left`}
               style={{ width: leftFixedColumnsWidth + 'px' }}
             />
           ) : null}
+          {/* 右冻结列内侧阴影效果 */}
           {scrollRight > 0 && rightFrozenColKeys.length > 0 ? (
             <div
               className={`${prefixCls}-freeze-shadow ${prefixCls}-freeze-shadow--right`}
@@ -146,25 +111,141 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           ) : null}
         </div>
 
-        {/* 外置 Pagination 分页组件 */}
-        {pagination ? (
-          <div
-            className={cx(
-              `${prefixCls}__pagination`,
-              pagination.placement && `${prefixCls}__pagination--${pagination.placement}`
-            )}
-          >
-            <Pagination {...pagination} current={currentPage} onChange={trySetCurrentPage} />
-          </div>
-        ) : null}
+        {extraFooter}
       </div>
     )
   }
 )
 
-export interface TableProps
+export interface BaseTableProps
   extends Omit<HiBaseHTMLProps<'div'>, 'onDrop' | 'draggable' | 'onDragStart'>,
-    UseTableProps {}
+    UseTableProps {
+  extra?: TableExtra
+}
+
+if (__DEV__) {
+  BaseTable.displayName = 'BaseTable'
+}
+
+const STANDARD_PRESET = {
+  showColMenu: true,
+  sticky: true,
+  bordered: true,
+  setting: true,
+  striped: true,
+}
+
+/**
+ * TODO: What is Table
+ */
+export const Table = forwardRef<HTMLDivElement | null, TableProps>(
+  (
+    {
+      prefixCls = _prefix,
+      standard = false,
+      uniqueId,
+      columns: columnsProp,
+      hiddenColKeys: hiddenColKeysProp,
+      onHiddenColKeysChange,
+      pagination,
+      ...rest
+    },
+    ref
+  ) => {
+    // ************************ 预置标准模式 ************************ //
+
+    const baseTableProps = withDefaultProps(rest, standard ? STANDARD_PRESET : undefined)
+
+    // ************************ 高级功能 ************************ //
+
+    /**
+     * 列排序
+     */
+    const { sortedCols, setSortCols, cacheSortedCols, setCacheSortedCols } = useColSorter({
+      uniqueId,
+      columns: columnsProp,
+    })
+
+    /**
+     * 列隐藏
+     */
+    const {
+      visibleCols,
+      hiddenColKeys,
+      setHiddenColKeys,
+      cacheHiddenColKeys,
+      setCacheHiddenColKeys,
+    } = useColHidden({
+      uniqueId,
+      columns: sortedCols,
+      hiddenColKeys: hiddenColKeysProp,
+      onHiddenColKeysChange,
+    })
+
+    console.log(visibleCols, hiddenColKeys)
+
+    /**
+     * 表格分页
+     */
+    // const { currentPage, trySetCurrentPage } = useTablePagination(pagination || {})
+
+    // 预处理 column 支持 多选渲染
+
+    return (
+      <BaseTable
+        ref={ref}
+        {...baseTableProps}
+        prefixCls={prefixCls}
+        columns={visibleCols}
+        extra={{
+          header: (
+            <TableSettingMenu
+              prefixCls={prefixCls}
+              sortedCols={sortedCols}
+              setSortCols={setSortCols}
+              cacheSortedCols={cacheSortedCols}
+              setCacheSortedCols={setCacheSortedCols}
+              // visibleCols={visibleCols}
+              hiddenColKeys={hiddenColKeys}
+              setHiddenColKeys={setHiddenColKeys}
+              cacheHiddenColKeys={cacheHiddenColKeys}
+              setCacheHiddenColKeys={setCacheHiddenColKeys}
+            />
+          ),
+          // footer: pagination ? (
+          //   <div
+          //   // className={cx(
+          //   //   `${prefixCls}__pagination`,
+          //   //   pagination.placement && `${prefixCls}__pagination--${pagination.placement}`
+          //   // )}
+          //   >
+          //     <Pagination {...pagination} current={currentPage} onChange={trySetCurrentPage} />
+          //   </div>
+          // ) : null,
+        }}
+      />
+    )
+  }
+)
+
+export interface TableProps extends Omit<BaseTableProps, 'extra'> {
+  /**
+   *  标准模式，默认集成 `showColMenu = true, sticky = true, bordered = true, setting = true, striped = true`
+   */
+  standard?: boolean
+  /**
+   * 唯一 id 前缀，废弃
+   */
+  uniqueId?: string
+  /**
+   *  隐藏列（受控） (v3.9.0 新增)，需要 column 中必须传入唯一的 dataKey 用于列隐藏
+   */
+  hiddenColKeys?: string[]
+  /**
+   *  列隐藏设置时回调 (v3.9.0 新增)
+   */
+  onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
+}
 
 if (__DEV__) {
   Table.displayName = 'Table'

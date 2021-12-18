@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { UseTableProps } from '../use-table'
+import { TableProps } from '../Table'
 
 const DEFAULT_COLUMNS = [] as []
 /**
@@ -11,39 +11,46 @@ export const useColHidden = ({
   columns = DEFAULT_COLUMNS,
   hiddenColKeys: hiddenColKeysProp,
   onHiddenColKeysChange,
-}: UseTableProps) => {
-  const [_hiddenColKeys, setHiddenColKeys] = useUncontrolledState(
-    () =>
-      parseLocalArray({
+}: TableProps) => {
+  const [_hiddenColKeys, setHiddenColKeys] = useUncontrolledState<string[]>(
+    () => {
+      return parseLocalArray({
         key: `${uniqueId}_hiddenColKeys`,
         disabled: !uniqueId,
         defaultValue: [],
-      }),
+      })
+    },
     hiddenColKeysProp,
     onHiddenColKeysChange
   )
 
-  // 用于维护列操作时显隐临时状态
-  const [cacheHiddenColKeys, setCacheHiddenColKeys] = useState(_hiddenColKeys)
-
-  // 过滤掉 undefined 和 null，保证 includes 匹配 column（对象可能未声明 `key` 属性 ） 是有效的可展示的列
-  const hiddenColKeys = _hiddenColKeys.filter((key: any) => key != null)
-  // const mergedColumns = sortCols.filter((col: any) => !hiddenColKeys.includes(getColKeyValue(col)))
+  // 保证 includes 匹配 column，是有效的可展示的列
+  const hiddenColKeys = useMemo(() => {
+    return _hiddenColKeys.filter((dataKey: any) => typeof dataKey === 'string' && dataKey !== '')
+  }, [_hiddenColKeys])
 
   useEffect(() => {
-    if (uniqueId) {
-      window.localStorage.setItem(`${uniqueId}_hiddenColKeys`, JSON.stringify(hiddenColKeys))
-    }
+    if (!uniqueId) return
+    window.localStorage.setItem(`${uniqueId}_hiddenColKeys`, JSON.stringify(hiddenColKeys))
   }, [uniqueId, hiddenColKeys])
 
+  // 用于维护列操作时显隐临时状态
+  const [cacheHiddenColKeys, setCacheHiddenColKeys] = useState(hiddenColKeys)
+
+  const visibleCols = useMemo(() => {
+    return columns.filter((col) => !hiddenColKeys.includes(col.dataKey))
+  }, [columns, hiddenColKeys])
+
   return {
-    // mergedColumns,
+    visibleCols,
     hiddenColKeys,
+    setHiddenColKeys,
     cacheHiddenColKeys,
     setCacheHiddenColKeys,
-    setHiddenColKeys,
   }
 }
+
+export type UseColHiddenReturn = ReturnType<typeof useColHidden>
 
 const parseLocalArray = ({ key, defaultValue, disabled }: any) => {
   if (!disabled) {

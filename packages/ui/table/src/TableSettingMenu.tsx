@@ -1,7 +1,6 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useEffect, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
 import { UseTableProps } from './use-table'
 import { SettingOutlined, ColumnsOutlined } from '@hi-ui/icons'
 import { IconButton } from '@hi-ui/icon-button'
@@ -13,6 +12,8 @@ import { useLocaleContext } from '@hi-ui/locale-context'
 import { Switch } from '@hi-ui/switch'
 import { runIfFunc } from '@hi-ui/func-utils'
 import { useDrag, useDrop } from '@hi-ui/use-drag-sorter'
+import { UseColSorterReturn } from './hooks/use-col-sorter'
+import { UseColHiddenReturn } from './hooks/use-col-hidden'
 
 const _prefix = getPrefixCls('table-setting')
 
@@ -21,27 +22,27 @@ const _prefix = getPrefixCls('table-setting')
  * 高级定制功能
  */
 export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMenuProps>(
-  ({ prefixCls = _prefix, className, ...rest }, ref) => {
-    const {
-      columns,
-      getColKeyValue,
-      sortCols,
+  (
+    {
+      prefixCls = _prefix,
+      sortedCols,
       setSortCols,
-      cacheSortCols,
-      setCacheSortCols,
-      cacheHiddenColKeys,
-      setCacheHiddenColKeys,
+      cacheSortedCols,
+      setCacheSortedCols,
       hiddenColKeys,
       setHiddenColKeys,
-    } = useTableContext()
-
+      cacheHiddenColKeys,
+      setCacheHiddenColKeys,
+    },
+    ref
+  ) => {
     const i18n = useLocaleContext()
 
     const dropProps = useDrop({
       draggable: true,
       idFieldName: 'dataKey',
       onSwap: async (dragItem, dropItem, direction, info) => {
-        setCacheSortCols((prev: any[]) => {
+        setCacheSortedCols((prev: any[]) => {
           const nextCacheSortColKeys = [...prev]
           const [removed] = nextCacheSortColKeys.splice(info.dragIndex, 1)
           nextCacheSortColKeys.splice(info.dropIndex, 0, removed)
@@ -58,17 +59,26 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
 
     const resetLatest = useLatestCallback(() => {
       setCacheHiddenColKeys(hiddenColKeys)
-      setCacheSortCols(sortCols)
+      setCacheSortedCols(sortedCols)
     })
+
+    // 当 visible 由 false 变为 true 时触发
+    const prevShowPopperRef = useRef(!menuVisible)
+    useEffect(() => {
+      if (!prevShowPopperRef.current && menuVisible) {
+        resetLatest()
+      }
+      prevShowPopperRef.current = menuVisible
+    }, [menuVisible, resetLatest])
 
     const onConfirm = () => {
       menuVisibleAction.off()
       // 触发 table 更新列显隐及排序
       setHiddenColKeys(cacheHiddenColKeys)
-      setSortCols(cacheSortCols)
+      setSortCols(cacheSortedCols)
     }
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls)
 
     // TODO：处理 column 模型支持 cellRender，一直出 checkbox、expandIcon 高级选项
     return (
@@ -89,7 +99,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
         >
           <div className={`${prefixCls}__content`}>
             <div style={{ padding: '16px 20px' }}>
-              {cacheSortCols.map((col: any, index: number) => {
+              {cacheSortedCols.map((col: any, index: number) => {
                 return (
                   <TableSettingMenuItem
                     key={col.dataKey}
@@ -105,10 +115,10 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
             </div>
             <div className={`${prefixCls}__btn-group`}>
               <div className={`${prefixCls}__btn`} onClick={onConfirm}>
-                {i18n.get('table.confirm')}
+                {i18n.get('table.confirm') || 'confirm'}
               </div>
               <div className={`${prefixCls}__btn`} onClick={resetLatest}>
-                {i18n.get('table.reset')}
+                {i18n.get('table.reset' || 'reset')}
               </div>
             </div>
           </div>
@@ -119,23 +129,15 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
 )
 
 export interface TableColumnMenuProps
-  extends Omit<HiBaseHTMLProps<'div'>, 'onDrop' | 'draggable' | 'onDragStart'>,
-    UseTableProps {}
+  extends UseTableProps,
+    UseColSorterReturn,
+    Omit<UseColHiddenReturn, 'visibleCols'> {
+  prefixCls?: string
+}
 
 if (__DEV__) {
   TableSettingMenu.displayName = 'TableSettingMenu'
 }
-
-const grid = 8
-
-const getItemStyle = (dragging: boolean): React.CSSProperties => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-  background: '#fff',
-  border: dragging ? '1px dashed var(--hi-v4-primary, )' : 'none',
-})
 
 function TableSettingMenuItem({
   prefixCls,

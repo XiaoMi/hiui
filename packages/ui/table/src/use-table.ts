@@ -91,10 +91,10 @@ export const useTable = ({
   onDrop: onDropProp,
   onDropEnd,
   // getColKeyValue,
-  // sortCols,
+  // sortedCols,
   // setSortCols,
-  // cacheSortCols,
-  // setCacheSortCols,
+  // cacheSortedCols,
+  // setCacheSortedCols,
   // cacheHiddenColKeys,
   // setCacheHiddenColKeys,
   // setHiddenColKeys,
@@ -567,9 +567,9 @@ export const useTable = ({
 
   const {
     mergedColumns,
-    sortCols,
-    cacheSortCols,
-    setCacheSortCols,
+    sortedCols,
+    cacheSortedCols,
+    setCacheSortedCols,
     hiddenColKeys,
     cacheHiddenColKeys,
     setCacheHiddenColKeys,
@@ -689,9 +689,9 @@ export const useTable = ({
     onDrop,
     mergedColumns,
     // 列排序
-    sortCols,
-    cacheSortCols,
-    setCacheSortCols,
+    sortedCols,
+    cacheSortedCols,
+    setCacheSortedCols,
     // 列隐藏
     hiddenColKeys,
     cacheHiddenColKeys,
@@ -741,12 +741,12 @@ const useColsAction = ({
   hiddenColKeys: hiddenColKeysProp,
   onHiddenColKeysChange,
 }: UseTableProps) => {
-  const [sortCols, setSortCols] = useState(() =>
+  const [sortedCols, setSortCols] = useState(() =>
     parseLocalArray({ key: `${uniqueId}_sortCols`, disabled: !uniqueId, defaultValue: columns })
   )
 
   // 用于维护列操作时排序临时状态
-  const [cacheSortCols, setCacheSortCols] = useState(sortCols)
+  const [cacheSortedCols, setCacheSortedCols] = useState(sortedCols)
 
   const [_hiddenColKeys, setHiddenColKeys] = useUncontrolledState(
     () =>
@@ -764,16 +764,18 @@ const useColsAction = ({
 
   // 过滤掉 undefined 和 null，保证 includes 匹配 column（对象可能未声明 `key` 属性 ） 是有效的可展示的列
   const hiddenColKeys = _hiddenColKeys.filter((key: any) => key != null)
-  const mergedColumns = sortCols.filter((col: any) => !hiddenColKeys.includes(getColKeyValue(col)))
+  const mergedColumns = sortedCols.filter(
+    (col: any) => !hiddenColKeys.includes(getColKeyValue(col))
+  )
 
   useEffect(() => {
     if (uniqueId) {
-      window.localStorage.setItem(`${uniqueId}_sortCols`, JSON.stringify(sortCols))
+      window.localStorage.setItem(`${uniqueId}_sortCols`, JSON.stringify(sortedCols))
       window.localStorage.setItem(`${uniqueId}_hiddenColKeys`, JSON.stringify(hiddenColKeys))
     }
-  }, [sortCols, hiddenColKeys, uniqueId])
+  }, [sortedCols, hiddenColKeys, uniqueId])
 
-  // 当column发生改变的时候，同步 setting 的 sortCols 设置
+  // 当column发生改变的时候，同步 setting 的 sortedCols 设置
   useEffect(() => {
     setSortCols(columns)
   }, [columns])
@@ -781,11 +783,11 @@ const useColsAction = ({
   return {
     hiddenColKeys,
     mergedColumns,
-    sortCols,
-    cacheSortCols,
+    sortedCols,
+    cacheSortedCols,
     cacheHiddenColKeys,
     setCacheHiddenColKeys,
-    setCacheSortCols,
+    setCacheSortedCols,
     setHiddenColKeys,
   }
 }
@@ -911,10 +913,6 @@ export interface UseTableProps {
    */
   resizable?: boolean
   /**
-   *  标准模式，默认集成 `showColMenu = true, sticky = true, bordered = true, setting = true, striped = true`
-   */
-  standard?: boolean
-  /**
    *  加载中状态
    */
   loading?: boolean
@@ -930,14 +928,6 @@ export interface UseTableProps {
    *  表格行可拖拽
    */
   draggable?: boolean
-  /**
-   *  隐藏列（受控） (v3.9.0 新增)
-   */
-  hiddenColKeys?: React.ReactText[]
-  /**
-   *  列隐藏设置时回调 (v3.9.0 新增)
-   */
-  onHiddenColKeysChange?: (hiddenColKeys: React.ReactText[]) => void
   /**
    * 唯一 id 前缀，废弃
    */
