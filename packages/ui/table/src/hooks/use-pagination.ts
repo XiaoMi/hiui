@@ -1,41 +1,36 @@
 import React from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { TableColumnItem, TableDataSource } from '../types'
 import { PaginationProps } from '@hi-ui/pagination'
+import axios, { AxiosRequestConfig } from 'axios'
 
 export const useTablePagination = ({
-  columns: columnsProp,
   pagination,
+  data: dataProp,
   dataSource,
 }: {
-  columns: TableColumnItem[]
+  data?: object[]
   pagination?: PaginationProps
-  dataSource?: (current: number) => TableDataSource
+  dataSource?: (current: number) => AxiosRequestConfig<any>
 }) => {
-  const [serverTableConfig, setServerTableConfig] = React.useState({
-    data: [],
-    columns: [...columnsProp],
-  })
-
-  const paginationMemo = React.useMemo(() => {
-    return serverTableConfig.pagination || pagination || {}
-  }, [serverTableConfig, pagination])
-
   const [currentPage, trySetCurrentPage] = useUncontrolledState(
     1,
-    paginationMemo.current,
-    paginationMemo.onPageChange
+    pagination?.current,
+    pagination?.onChange
   )
 
+  const [remoteTableData, setRemoteTableData] = React.useState([])
+  const mergedData = dataSource ? remoteTableData : dataProp
+
+  // 内置远程数据配置 table，包括 data，pagination
   React.useEffect(() => {
     if (dataSource) {
-      const fetchConfig = dataSource(currentPage)
+      const requestConfig = dataSource(currentPage)
 
-      fetch(fetchConfig).then((res) => {
-        setServerTableConfig(Object.assign({}, serverTableConfig, { data: res.data }))
+      axios(requestConfig).then((res) => {
+        setRemoteTableData(res.data)
       })
     }
-  }, [dataSource, currentPage, serverTableConfig])
+  }, [dataSource, currentPage])
 
-  return { currentPage, trySetCurrentPage, paginationMemo }
+  return { mergedData, pagination, currentPage, trySetCurrentPage }
 }

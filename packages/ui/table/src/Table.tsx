@@ -7,12 +7,13 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 import Pagination from '@hi-ui/pagination'
 import { useTable, UseTableProps } from './use-table'
 import { TableProvider } from './context'
-import { TableExtra } from './types'
+import { TableExtra, TablePaginationProps } from './types'
 import { useColHidden } from './hooks/use-col-hidden'
 import { useColSorter } from './hooks/use-col-sorter'
 import { useTablePagination } from './hooks/use-pagination'
 import { withDefaultProps } from '@hi-ui/react-utils'
 import { TableSettingMenu } from './TableSettingMenu'
+import { AxiosRequestConfig } from 'axios'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
@@ -147,6 +148,8 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       columns: columnsProp,
       hiddenColKeys: hiddenColKeysProp,
       onHiddenColKeysChange,
+      data,
+      dataSource,
       pagination,
       ...rest
     },
@@ -187,48 +190,56 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     /**
      * 表格分页
      */
-    // const { currentPage, trySetCurrentPage } = useTablePagination(pagination || {})
+    const { mergedData, currentPage, trySetCurrentPage } = useTablePagination({
+      pagination,
+      data,
+      dataSource,
+    })
 
     // 预处理 column 支持 多选渲染
 
     return (
-      <BaseTable
-        ref={ref}
-        {...baseTableProps}
-        prefixCls={prefixCls}
-        columns={visibleCols}
-        extra={{
-          header: (
-            <TableSettingMenu
-              prefixCls={prefixCls}
-              sortedCols={sortedCols}
-              setSortCols={setSortCols}
-              cacheSortedCols={cacheSortedCols}
-              setCacheSortedCols={setCacheSortedCols}
-              // visibleCols={visibleCols}
-              hiddenColKeys={hiddenColKeys}
-              setHiddenColKeys={setHiddenColKeys}
-              cacheHiddenColKeys={cacheHiddenColKeys}
-              setCacheHiddenColKeys={setCacheHiddenColKeys}
-            />
-          ),
-          // footer: pagination ? (
-          //   <div
-          //   // className={cx(
-          //   //   `${prefixCls}__pagination`,
-          //   //   pagination.placement && `${prefixCls}__pagination--${pagination.placement}`
-          //   // )}
-          //   >
-          //     <Pagination {...pagination} current={currentPage} onChange={trySetCurrentPage} />
-          //   </div>
-          // ) : null,
-        }}
-      />
+      <>
+        <BaseTable
+          ref={ref}
+          {...baseTableProps}
+          prefixCls={prefixCls}
+          columns={visibleCols}
+          data={mergedData}
+          extra={{
+            header: (
+              <TableSettingMenu
+                prefixCls={prefixCls}
+                sortedCols={sortedCols}
+                setSortCols={setSortCols}
+                cacheSortedCols={cacheSortedCols}
+                setCacheSortedCols={setCacheSortedCols}
+                // visibleCols={visibleCols}
+                hiddenColKeys={hiddenColKeys}
+                setHiddenColKeys={setHiddenColKeys}
+                cacheHiddenColKeys={cacheHiddenColKeys}
+                setCacheHiddenColKeys={setCacheHiddenColKeys}
+              />
+            ),
+          }}
+        />
+        {pagination ? (
+          <Pagination
+            className={cx(
+              `${prefixCls}-pagination`,
+              pagination.placement && `${prefixCls}-pagination--${pagination.placement}`
+            )}
+            {...pagination}
+            current={currentPage}
+            onChange={trySetCurrentPage}
+          />
+        ) : null}
+      </>
     )
   }
 )
 
-export interface TableProps extends Omit<BaseTableProps, 'extra'> {
+export interface TableProps extends Omit<BaseTableProps, 'extra' | 'role'> {
   /**
    *  标准模式，默认集成 `showColMenu = true, sticky = true, bordered = true, setting = true, striped = true`
    */
@@ -245,6 +256,14 @@ export interface TableProps extends Omit<BaseTableProps, 'extra'> {
    *  列隐藏设置时回调 (v3.9.0 新增)
    */
   onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
+  /**
+   *  异步数据源
+   */
+  dataSource?: (current: number) => AxiosRequestConfig<any>
+  /**
+   *  表格分页配置项
+   */
+  pagination?: TablePaginationProps
 }
 
 if (__DEV__) {

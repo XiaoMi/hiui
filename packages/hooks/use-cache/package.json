@@ -1,10 +1,10 @@
 {
-  "name": "@hi-ui/table",
-  "version": "4.0.0-alpha.6",
-  "description": "A sub-package for @hi-ui/hiui.",
+  "name": "@hi-ui/use-cache",
+  "version": "4.0.0-alpha.0",
+  "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/table#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/use-cache#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -42,21 +42,11 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
-  "dependencies": {
-    "@hi-ui/classname": "^4.0.0-alpha.2",
-    "@hi-ui/core-css": "^4.0.0-alpha.5",
-    "@hi-ui/env": "^4.0.0-alpha.0",
-    "axios": "^0.24.0",
-    "react-resizable": "^3.0.4"
-  },
   "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "^17.0.1"
   },
   "devDependencies": {
     "@hi-ui/hi-build": "^4.0.0-alpha.0",
-    "@types/react-resizable": "^1.7.4",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "^17.0.1"
   }
 }

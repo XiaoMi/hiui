@@ -1,6 +1,7 @@
 import React from 'react'
 import { SelectProps } from '@hi-ui/select'
 import { ValueOf } from '@hi-ui/core'
+import { PaginationProps } from '@hi-ui/pagination'
 
 export type TableAlign = 'left' | 'right' | 'center'
 
@@ -70,6 +71,15 @@ export type TableDataSource = {
   type?: 'GET' | 'POST'
   withCredentials?: boolean
   transformResponse?: (response: object) => object[]
+}
+
+// export  interface TableDataSource extends AxiosRequestConfig<any> {
+
+// }
+
+export interface TablePaginationProps extends PaginationProps {
+  // TODO： 建议统一关键词 center
+  placement?: 'left' | 'middle'
 }
 
 export interface TableRowData {

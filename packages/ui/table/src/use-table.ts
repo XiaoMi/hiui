@@ -39,7 +39,7 @@ import { useTableCheck } from './hooks/use-check'
 import { useTablePagination } from './hooks/use-pagination'
 import { useColumns } from './hooks/use-colgroup'
 import { setAttrStatus } from '@hi-ui/dom-utils'
-
+import { useCache } from '@hi-ui/use-cache'
 const DEFAULT_COLUMNS = [] as []
 const DEFAULT_DATA = [] as []
 const DEFAULT_ERROR_ROW_KEYS = [] as []
@@ -120,7 +120,7 @@ export const useTable = ({
 
   // ********************** cache *********************** //
 
-  const [cacheData, setCacheData] = useState(data)
+  const [cacheData, setCacheData] = useCache(data)
   const [columns, setColumns] = useState(columnsProp)
 
   const flattedData = useMemo(() => {
@@ -891,7 +891,7 @@ export interface UseTableProps {
   /**
    *  异步数据源
    */
-  dataSource?: (current: number) => TableDataSource
+  // dataSource?: (current: number) => TableDataSource
   /**
    *  是否支持列操作
    */
