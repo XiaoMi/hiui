@@ -1,14 +1,12 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-pagination' !default;
-$border-color: #e6e6e6 !default;
-$border-radius: 2px !default;
-$primary-color: #4387f4 !default;
 
 .#{$prefix} {
   display: flex;
-  font-size: 14px;
+  font-size: use-text-size('normal');
   align-items: center;
+  color: use-color('gray', 600);
 
   &__total {
     margin-right: 8px;
@@ -34,49 +32,64 @@ $primary-color: #4387f4 !default;
 
   &__item {
     display: inline-block;
-    margin-left: 8px;
-    min-width: 32px;
-    border: 1px solid $border-color;
+    margin-left: use-spacing(4);
+    min-width: use-height-size('normal');
+    border: none;
     box-sizing: border-box;
-    height: 32px;
-    line-height: 30px;
+    height: use-height-size('normal');
+    line-height: use-height-size('normal');
     text-align: center;
     cursor: pointer;
     outline: 0;
-    border-radius: $border-radius;
+    border-radius: use-border-radius('normal');
     vertical-align: middle;
+    background: use-color('gray', 100);
+    transition: all 0.3s;
+    color: use-color('gray', 600);
 
     &:hover:not(#{&}--break) {
-      color: $primary-color;
-      border-color: $primary-color;
-      transition: all 0.3s;
+      color: use-color-mode('primary');
+      background-color: use-color-mode('primary-05');
     }
 
     &:focus:not(#{&}--break) {
-      color: $primary-color;
-      border-color: $primary-color;
-      transition: all 0.3s;
+      color: use-color-mode('primary');
+      box-shadow: 0 0 0 2px use-color-mode('primary-10');
     }
 
     &--active {
-      color: #fff !important;
-      background-color: $primary-color;
-      border-color: $primary-color;
+      color: use-color-static('white') !important;
+      background-color: use-color-mode('primary');
+      border-color: use-color-mode('primary');
+
+      &:hover {
+        color: use-color-static('white') !important;
+        background-color: use-color-mode('primary-60') !important;
+        border-color: use-color-mode('primary-60') !important;
+      }
     }
 
     &--break {
       border: none;
       cursor: default;
+      background-color: unset !important;
     }
   }
 
   &__btn {
     display: inline-block;
-    min-width: 32px;
-    height: 32px;
+    min-width: use-height-size('normal');
+    height: use-height-size('normal');
+
+    &--disabled {
+      & > button {
+        cursor: not-allowed !important;
+        color: use-color('gray', 400) !important;
+      }
+    }
 
     &:last-of-type {
-      margin-left: 8px;
+      margin-left: use-spacing(4);
     }
 
     vertical-align: middle;
@@ -84,22 +97,24 @@ $primary-color: #4387f4 !default;
     & > button {
       width: 100%;
       height: 100%;
-      background: #fff;
-      border: 1px solid $border-color;
-      border-radius: $border-radius;
+      color: use-color('gray', 600);
+      background: use-color('gray', 100);
+      border: none;
+      border-radius: use-border-radius('normal');
       outline: 0;
       cursor: pointer;
+      transition: all 0.3s;
+    }
 
+    &:not(#{&}--disabled) > button {
       &:hover {
-        color: $primary-color;
-        border-color: $primary-color;
-        transition: all 0.3s;
+        color: use-color-mode('primary');
+        background-color: use-color-mode('primary-05');
       }
 
       &:focus {
-        color: $primary-color;
-        border-color: $primary-color;
-        transition: all 0.3s;
+        color: use-color-mode('primary');
+        box-shadow: 0 0 0 2px use-color-mode('primary-10');
       }
     }
   }
@@ -108,12 +123,12 @@ $primary-color: #4387f4 !default;
 $input-pagination-prefix: '#{$component-prefix}-input-pagination' !default;
 
 .#{$input-pagination-prefix} {
+  color: use-color('gray', 600);
   position: relative;
   display: inline-flex;
   height: auto;
   min-height: 24px;
   box-sizing: border-box;
-  color: use-color('gray', 800);
   font-size: use-text-size('normal');
   outline: none;
 
@@ -168,6 +183,6 @@ $input-pagination-prefix: '#{$component-prefix}-input-pagination' !default;
 
   &__total {
     line-height: 24px;
-    margin-left: 8px;
+    margin-left: use-spacing(4);
   }
 }

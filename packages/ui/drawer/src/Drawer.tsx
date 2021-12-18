@@ -51,6 +51,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       showMask = true,
       footer,
       width,
+      extra,
       // transitionProps,
       // returnFoucsOnClose = false,
       // trapFocus = true,
@@ -90,8 +91,6 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
 
     const handleKeydown = useCallback(
       (evt: KeyboardEvent) => {
-        console.log(evt)
-
         // only close the top modal when pressing `Esc`
         if (evt.keyCode !== 27) return
 
@@ -135,8 +134,6 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       `${prefixCls}--placement-${placement}`
     )
 
-    console.log(transitionVisible)
-
     const onExitedLatest = useLatestCallback(onExitedProp)
 
     const onExited = useCallback(() => {
@@ -174,6 +171,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
             <div className={`${prefixCls}__body`}>
               <header className={`${prefixCls}__header`}>
                 {title}
+                <div className={`${prefixCls}__extra`}>{extra}</div>
                 {closable ? <IconButton onClick={onClose} icon={<CloseOutlined />} /> : null}
               </header>
               <main className={`${prefixCls}__content`}>{children}</main>

@@ -60,7 +60,7 @@ export const Radio = forwardRef<HTMLLabelElement | null, RadioProps>(
 
     return (
       <label ref={ref} role={role} className={cls} {...rootProps}>
-        <input {...inputProps} />
+        <input {...inputProps} tabIndex={0} className={`${prefixCls}__input`} />
         <span className={`${prefixCls}__controller`} />
         {children ? (
           <span className={`${prefixCls}__label`} {...labelProps}>

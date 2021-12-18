@@ -13,7 +13,6 @@ export const Basic = () => {
           tips="仅支持 jpg/png 文件，且不超过 500kb"
           accept="image/png,image/jpg"
           headers={{ name: 'mi' }}
-          content="上传文件"
           data={[]}
           name={'files[]'}
           onChange={(file, fileList, response) => {

@@ -7,42 +7,40 @@ $prefix: '#{$component-prefix}-notification' !default;
 }
 
 .#{$prefix} {
-  $margin: 6px;
-
   position: relative;
   box-sizing: border-box;
-  width: 260px;
-  padding: 10px;
-  margin: $margin 18px;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  width: 360px;
+  padding: use-spacing(10);
+  margin: use-spacing(9) use-spacing(8);
+  border-radius: use-border-radius('lg');
   pointer-events: auto;
-  box-shadow: 0 1px 6px -1px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 16px 0 rgba(0, 29, 97, 0.12);
   font-size: use-text-size('normal');
   line-height: get-text-lineheight('normal');
-  border-left: 6px solid transparent;
   background-color: use-color-static('white');
 
   &__header {
     display: flex;
     align-items: center;
     word-break: break-word;
+    font-size: use-text-size('lg');
+    margin-bottom: use-spacing(4);
   }
 
   &__content {
-    font-size: 12px;
-    padding: 0 12px 0 28px;
+    padding: 0 use-spacing(7) 0 use-spacing(16);
     word-break: break-word;
+    color: use-color('gray', 600);
   }
 
   &__icon {
     display: flex;
     align-items: center;
-    margin-right: 12px;
+    margin-right: use-spacing(6);
 
     svg {
       flex-shrink: 0;
-      font-size: 16px;
+      font-size: use-text-size('xxl');
     }
   }
 
@@ -51,7 +49,6 @@ $prefix: '#{$component-prefix}-notification' !default;
   $transition-height-duration: 0.2s;
 
   &-container {
-    // width: 100%;
     width: auto;
     display: flex;
     align-items: flex-end;
@@ -94,11 +91,6 @@ $prefix: '#{$component-prefix}-notification' !default;
 
   &--type {
     &-info {
-      border-color: use-color-mode('primary-40');
-
-      .#{$prefix}__title {
-        color: use-color-mode('primary');
-      }
 
       .#{$prefix}__icon {
         color: use-color-mode('primary');
@@ -106,11 +98,6 @@ $prefix: '#{$component-prefix}-notification' !default;
     }
 
     &-success {
-      border-color: use-color-mode('success-40');
-
-      .#{$prefix}__title {
-        color: use-color-mode('success');
-      }
 
       .#{$prefix}__icon {
         color: use-color-mode('success');
@@ -118,11 +105,6 @@ $prefix: '#{$component-prefix}-notification' !default;
     }
 
     &-error {
-      border-color: use-color-mode('danger-40');
-
-      .#{$prefix}__title {
-        color: use-color-mode('danger');
-      }
 
       .#{$prefix}__icon {
         color: use-color-mode('danger');
@@ -130,11 +112,6 @@ $prefix: '#{$component-prefix}-notification' !default;
     }
 
     &-warning {
-      border-color: use-color-mode('warning-40');
-
-      .#{$prefix}__title {
-        color: use-color-mode('warning');
-      }
 
       .#{$prefix}__icon {
         color: use-color-mode('warning');
@@ -151,23 +128,9 @@ $prefix: '#{$component-prefix}-notification' !default;
     position: absolute;
     padding: 0;
     margin: 0;
-    top: 12px;
-    right: 12px;
-    color: #000;
-    color: use-color('gray', 700);
-    font-size: 14px;
-
-    &::after {
-      position: absolute;
-      content: '';
-      top: -6px;
-      right: -6px;
-      left: -6px;
-      bottom: -6px;
-    }
-
-    svg {
-      font-size: 14px;
-    }
+    top: use-spacing(10);
+    right: use-spacing(10);
+    color: use-color('gray', 600);
+    font-size: use-text-size('normal');
   }
 }

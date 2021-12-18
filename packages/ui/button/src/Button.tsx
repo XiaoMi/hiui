@@ -87,11 +87,11 @@ export interface ButtonProps {
   /**
    * 设置按钮类型
    */
-  type?: 'primary' | 'success' | 'danger' | 'default'
+  type?: 'primary' | 'success' | 'danger' | 'default' | 'secondary'
   /**
    * 设置按钮外观
    */
-  size?: 'large' | 'small' | 'default'
+  size?: 'large' | 'small' | 'default' | 'x-large'
   /**
    * 设置铺满宽度
    */

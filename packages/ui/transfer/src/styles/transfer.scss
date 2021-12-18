@@ -27,7 +27,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
   position: relative;
   width: 240px;
   min-width: 180px;
-  background-color: use-color-mode('white');
+  background-color: use-color-statc('white');
   border: 1px solid use-color('gray', 200);
   border-radius: 4px;
   overflow: hidden;

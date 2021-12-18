@@ -9,11 +9,11 @@ $prefix: '#{$component-prefix}-popover' !default;
   background: use-color-static('white');
 
   &__title {
-    padding: use-spacing(4) use-spacing(8);
+    padding: use-spacing(4) use-spacing(10);
     border-bottom: use-border-size('normal') use-color('gray', 200);
   }
 
   &__content {
-    padding: use-spacing(4)  use-spacing(8);
+    padding: use-spacing(4)  use-spacing(10);
   }
 }

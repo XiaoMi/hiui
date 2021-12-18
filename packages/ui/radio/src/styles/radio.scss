@@ -13,6 +13,13 @@ $prefix: '#{$component-prefix}-radio' !default;
   vertical-align: middle;
   margin-inline-end: use-spacing(16);
 
+  &__input {
+    &:focus + .#{$prefix}__controller {
+      border-color: use-color-mode('primary');
+      box-shadow: 0 0 0 2px use-color-mode('primary-10');
+    }
+  }
+
   &__controller {
     @include flex;
 
@@ -22,7 +29,7 @@ $prefix: '#{$component-prefix}-radio' !default;
     height: 16px;
     border: 1px solid use-color('gray', 300);
     border-radius: use-border-radius('full');
-    transition: border-color use-motion-duration('normal');
+    transition: all use-motion-duration('normal');
 
     &::after {
       position: absolute;
@@ -46,14 +53,29 @@ $prefix: '#{$component-prefix}-radio' !default;
 
     .#{$prefix}[data-checked] & {
       border-color: use-color-mode('primary');
+      background: use-color-mode('primary');
 
       &::after {
         opacity: 1;
-        transform: scale(0.68);
+        transform: scale(0.3);
+        background-color: use-color-static('white');
+      }
+    }
+
+    .#{$prefix}[data-checked].#{$prefix}[data-disabled] & {
+      border-color: use-color-mode('primary');
+      background: use-color-mode('primary');
+      opacity: 0.4;
+
+      &::after {
+        opacity: 1;
+        transform: scale(0.3);
+        background-color: use-color-static('white');
       }
     }
 
     .#{$prefix}[data-disabled] & {
+      cursor: not-allowed;
       border-color: use-color('gray', 300);
       background: use-color('gray', 100);
 
@@ -65,10 +87,11 @@ $prefix: '#{$component-prefix}-radio' !default;
 
   &__label {
     box-sizing: border-box;
-    margin-inline-start: use-spacing(4);
+    margin-inline-start: use-spacing(2);
+    color: use-color('gray', 700);
 
     .#{$prefix}[data-disabled] & {
-      color: use-color('gray', 600);
+      color: use-color('gray', 500);
     }
   }
 }

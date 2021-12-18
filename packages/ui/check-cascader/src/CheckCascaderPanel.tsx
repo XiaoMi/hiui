@@ -23,7 +23,13 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
       role = _role,
       className,
       children,
-      data,
+      data = NOOP_ARRAY,
+      // 内部属性
+      // @ts-ignore
+      cascaderData: cascaderDataProp,
+      // 内部属性
+      // @ts-ignore
+      setCascaderData: setCascaderDataProp,
       value,
       defaultValue = NOOP_ARRAY,
       disabled = false,
@@ -43,7 +49,10 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
     },
     ref
   ) => {
-    const [cascaderData, setCascaderData] = useCache(data)
+    const [cascaderCacheData, setCascaderCacheData] = useCache(data)
+
+    const cascaderData = cascaderDataProp ?? cascaderCacheData
+    const setCascaderData = setCascaderDataProp ?? setCascaderCacheData
 
     const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
 

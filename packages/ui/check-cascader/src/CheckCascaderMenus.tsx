@@ -13,6 +13,7 @@ import { CheckCascaderMenu } from './CheckCascaderMenu'
 import { CheckCascaderProvider } from './context'
 import { getActiveMenus, getFlattedMenus, getActiveMenuIds } from './utils'
 import { useCheck, useSelect, useAsyncSwitch } from './hooks'
+// import { fFindNodesByIds } from '@hi-ui/tree-utils'
 
 const _role = 'check-cascader-menus'
 const _prefix = getPrefixCls(_role)
@@ -58,8 +59,15 @@ export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenu
       flattedData,
       defaultValue,
       valueProp,
-      ({ checkedIds, semiCheckedIds }) => {
-        onChange?.(checkedIds)
+      ({ checkedIds, semiCheckedIds }, target, shouldChecked) => {
+        // @ts-ignore
+        onChange?.(checkedIds, {
+          trigger: 'checkbox',
+          target,
+          shouldChecked,
+          semiCheckedIds,
+          // checkedItems: fFindNodesByIds(flattedData, checkedIds),
+        })
       }
     )
 

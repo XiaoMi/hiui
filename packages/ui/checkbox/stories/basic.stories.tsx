@@ -2,7 +2,10 @@ import React from 'react'
 import Checkbox, { CheckboxGroup } from '../src'
 
 export const Basic = () => {
-  const [selectedList, setSelectedList] = React.useState<React.ReactText[]>(['Phone'])
+  const [selectedList, setSelectedList] = React.useState<React.ReactText[]>([
+    'Phone',
+    'Intelligent',
+  ])
 
   return (
     <>
@@ -25,7 +28,7 @@ export const Basic = () => {
           <Checkbox value="Intelligent" disabled>
             智能
           </Checkbox>
-          <Checkbox onChange={console.log} value="Transfer">
+          <Checkbox onChange={console.log} value="Transfer" disabled>
             出行
           </Checkbox>
         </CheckboxGroup>

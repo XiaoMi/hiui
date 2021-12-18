@@ -156,6 +156,42 @@ export const fFindNodeById = <T extends BaseTreeNodeData>(
 }
 
 /**
+ * 根据指定 ids 列表在树形数据中查找节点，并返回查找到节点列表
+ *
+ *  f 开头表示基于扁平 tree 数据，而不是基于原始 tree 数据操作
+ *
+ * @param TreeData
+ * @param targetId
+ * @returns 返回所有存在且被查找到的节点列表
+ */
+export const fFindNodesByIds = <T extends BaseTreeNodeData>(
+  treeData: T[],
+  targetIds: React.ReactText[]
+) => {
+  if (targetIds.length === 0) return []
+
+  const foundResult = [] as T[]
+  const targetIdsSet = new Set(targetIds)
+
+  const { length } = treeData
+
+  for (let i = 0; i < length; ++i) {
+    const node = treeData[i]
+
+    if (targetIdsSet.has(node.id)) {
+      foundResult.push(node)
+      targetIdsSet.delete(node.id)
+
+      if (targetIdsSet.size === 0) return
+    }
+  }
+  // 怎么处理 notfoundIds，给用户自己处理
+  // targetIds.filter((id) => foundResult.find((item) => item.id !== id))
+
+  return foundResult
+}
+
+/**
  * 根据指定 id 在树形数据中查找对应节点
  *
  * @param TreeData

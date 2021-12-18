@@ -29,6 +29,7 @@ export interface UseDrawerProps {
   closeOnOverlayClick?: boolean
   onOverlayClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   closable?: boolean
+  extra?: React.ReactNode
   closeIcon?: string
   lockScroll?: boolean
   onAfterOpen?: () => void
