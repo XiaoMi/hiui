@@ -51,6 +51,8 @@ $prefix: '#{$component-prefix}-list' !default;
       width: 56px;
       height: 56px;
       margin-right: use-spacing(8);
+      border-radius: use-border-radius('normal');
+      overflow: hidden;
 
       & > img {
         height: 100%;
