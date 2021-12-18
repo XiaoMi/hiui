@@ -1,0 +1,91 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-menu' !default;
+
+.#{$prefix} {
+  color: use-color('gray', 700);
+  font-size: use-text-size('normal');
+  line-height: use-text-lineheight('normal');
+  box-sizing: border-box;
+
+  &-item {
+    list-style: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: use-text-size('lg');
+  }
+
+  &__wrapper {
+    padding: 0;
+    margin: 0;
+  }
+
+  &--horizontal {
+    width: 100%;
+    overflow: auto;
+
+    .#{$prefix}__wrapper {
+      display: flex;
+    }
+
+    .#{$prefix}-item {
+      margin: 0 use-spacing(10);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 56px;
+      border: 2px solid transparent;
+
+      &:hover {
+        color: use-color-mode('primary');
+        border-bottom: 2px solid use-color-mode('primary');
+      }
+
+      &--active {
+        color: use-color-mode('primary');
+        border-bottom: 2px solid use-color-mode('primary');
+      }
+
+      &__content {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100px;
+      }
+    }
+  }
+
+  &--vertical {
+    padding: use-spacing(4);
+    width: 232px;
+    height: 100%;
+    overflow: auto;
+
+    .#{$prefix}-item {
+      &:hover {
+        background-color: use-color('gray', 100);
+      }
+
+      &--active {
+        color: use-color-mode('primary');
+        background-color: use-color-mode('primary-05');
+      }
+
+      &__content {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      margin-bottom: use-spacing(4);
+      padding: use-spacing(6);
+      height: 40px;
+      display: flex;
+      align-items: center;
+      border-radius: use-border-radius('normal');
+    }
+  }
+}
