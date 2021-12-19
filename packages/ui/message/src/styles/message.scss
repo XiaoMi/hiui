@@ -5,20 +5,22 @@ $prefix: '#{$component-prefix}-message' !default;
 .#{$prefix} {
   box-sizing: border-box;
   width: auto;
-  padding: 8px 20px;
-  margin: 6px;
-  border-radius: 8px;
+  padding: use-spacing(5) use-spacing(10);
+  margin: use-spacing(4);
+  border-radius: use-border-radius('lg');
   pointer-events: auto;
   box-shadow: 0 1px 6px -1px rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;
   font-size: use-text-size('normal');
   line-height: get-text-lineheight('normal');
+  background-color: use-color-static('white');
+  color: use-color('gray', 700);
 
   &--type {
     &-info {
-      background-color: use-color-mode('primary-10');
-      color: use-color-mode('primary-40');
+      // background-color: use-color-mode('primary-10');
+      // color: use-color-mode('primary-40');
 
       svg {
         fill: use-color-mode('primary');
@@ -26,8 +28,8 @@ $prefix: '#{$component-prefix}-message' !default;
     }
 
     &-success {
-      background-color: use-color-mode('success-10');
-      color: use-color-mode('success-40');
+      // background-color: use-color-mode('success-10');
+      // color: use-color-mode('success-40');
 
       svg {
         color: use-color-mode('success');
@@ -35,8 +37,8 @@ $prefix: '#{$component-prefix}-message' !default;
     }
 
     &-error {
-      background-color: use-color-mode('danger-10');
-      color: use-color-mode('danger-40');
+      // background-color: use-color-mode('danger-10');
+      // color: use-color-mode('danger-40');
 
       svg {
         color: use-color-mode('danger');
@@ -44,8 +46,8 @@ $prefix: '#{$component-prefix}-message' !default;
     }
 
     &-warning {
-      background-color: use-color-mode('warning-10');
-      color: use-color-mode('warning-40');
+      // background-color: use-color-mode('warning-10');
+      // color: use-color-mode('warning-40');
 
       svg {
         color: use-color-mode('warning');
@@ -100,7 +102,13 @@ $prefix: '#{$component-prefix}-message' !default;
   }
 
   svg {
-    margin-right: 8px;
-    font-size: 16px;
+    margin-inline-end: use-spacing(4);
+    font-size: use-text-size('lg');
+  }
+}
+
+.#{$prefix}-manager {
+  &--placement-top {
+    padding-top: use-spacing(16);
   }
 }

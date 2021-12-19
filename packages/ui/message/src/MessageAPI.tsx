@@ -1,6 +1,7 @@
 import React from 'react'
 import { Message as MessageComponent, MessageProps, _prefix } from './Message'
 import { ToastAPI, ToastAPIOptions } from '@hi-ui/toast'
+import { withDefaultProps } from '@hi-ui/react-utils'
 
 export class MessageAPI extends ToastAPI<MessageOptions> {
   static defaultOptions = {
@@ -8,13 +9,8 @@ export class MessageAPI extends ToastAPI<MessageOptions> {
   }
 
   constructor(options: MessageAPIOptions) {
+    options = withDefaultProps(options, MessageAPI.defaultOptions)
     super(options)
-
-    if (options.prefixCls === undefined) {
-      this.options.prefixCls = MessageAPI.defaultOptions.prefixCls
-    }
-
-    this.initManager()
   }
 }
 

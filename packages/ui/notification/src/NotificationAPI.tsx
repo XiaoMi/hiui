@@ -1,6 +1,7 @@
 import React from 'react'
 import { Notification as NotificationComponent, NotificationProps, _prefix } from './Notification'
 import { ToastAPI, ToastAPIOptions } from '@hi-ui/toast'
+import { withDefaultProps } from '@hi-ui/react-utils'
 
 export class NotificationAPI extends ToastAPI<NotificationOptions> {
   static defaultOptions = {
@@ -8,13 +9,8 @@ export class NotificationAPI extends ToastAPI<NotificationOptions> {
   }
 
   constructor(options: NotificationAPIOptions) {
+    options = withDefaultProps(options, NotificationAPI.defaultOptions)
     super(options)
-
-    if (options.prefixCls === undefined) {
-      this.options.prefixCls = NotificationAPI.defaultOptions.prefixCls
-    }
-
-    this.initManager()
   }
 }
 
