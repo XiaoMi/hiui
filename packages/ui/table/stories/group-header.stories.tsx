@@ -1,7 +1,7 @@
 import React from 'react'
 import Table, { TableColumnItem } from '../src'
 
-export const HeaderGroup = () => {
+export const GroupHeader = () => {
   const [columns] = React.useState<TableColumnItem[]>([
     {
       title: 'Name',
@@ -161,8 +161,8 @@ export const HeaderGroup = () => {
 
   return (
     <>
-      <h1>HeaderGroup for Table</h1>
-      <div className="table-header-group__wrap" style={{ width: 800 }}>
+      <h1>GroupHeader for Table</h1>
+      <div className="table-group-header__wrap" style={{ width: 800 }}>
         <Table
           rowSelection={{}}
           fixedToColumn={{

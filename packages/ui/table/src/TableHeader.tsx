@@ -14,18 +14,10 @@ const _prefix = getPrefixCls('table-header')
 export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
   ({ prefixCls = _prefix }, ref) => {
     const {
-      rowSelection,
-      groupedColumns,
       columns,
+      groupedColumns,
       resizable,
       colWidths,
-      bordered,
-      maxHeight,
-      sticky,
-      stickyTop,
-      tryCheckAllRow,
-      checkedAll,
-      semiChecked,
       getColgroupProps,
       onColumnResizable,
       getStickyColProps,
@@ -34,30 +26,14 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
       scrollHeaderElementRef,
       fixedColWidth,
       leafColumns,
+      getTableHeaderProps,
     } = useTableContext()
 
     // TODO: 需要增加一下错误提示，比如rowSelection类型不合法等等
     const cls = cx(`${prefixCls}__header`)
 
-    const checkboxStyle: React.CSSProperties =
-      fixedColWidth && fixedColWidth.length > 0 ? { position: 'sticky', left: 0 } : {}
-
-    // console.log('groupedColumns', groupedColumns, columns)
-
     return (
-      <div
-        className={cls}
-        ref={scrollHeaderElementRef}
-        style={{
-          // borderLeft: bordered ? '1px solid #e7e7e7' : undefined,
-          // borderTop: bordered ? '1px solid #e7e7e7' : undefined,
-          boxShadow: maxHeight && '0px 2px 6px 0px rgba(0,0,0,0.12)',
-          position: sticky ? 'sticky' : 'relative',
-          top: sticky && stickyTop,
-          overflow: 'hidden',
-          zIndex: 10,
-        }}
-      >
+      <div className={cls} ref={scrollHeaderElementRef} {...getTableHeaderProps()}>
         {/* header 内置 table，利用 table colgroup 特性，实现单独表头的分组 */}
         <table style={{ width: '100%', position: 'relative' }}>
           <colgroup>

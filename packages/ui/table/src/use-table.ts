@@ -498,7 +498,24 @@ export const useTable = ({
     }
   }, [])
 
+  const getTableHeaderProps = React.useCallback(() => {
+    const style: React.CSSProperties = {
+      boxShadow: maxHeight ? '0px 2px 6px 0px rgba(0,0,0,0.12)' : undefined,
+      position: sticky ? 'sticky' : 'relative',
+      top: sticky ? stickyTop : undefined,
+      overflow: 'hidden',
+      zIndex: 10,
+    }
+
+    return {
+      style,
+      'data-sticky': setAttrStatus(sticky),
+    }
+  }, [sticky, stickyTop, maxHeight])
+
   return {
+    maxHeight,
+    getTableHeaderProps,
     isErrorRow,
     bodyTableRef,
     scrollBodyElementRef,

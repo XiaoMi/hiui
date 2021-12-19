@@ -13,7 +13,7 @@ const _prefix = getPrefixCls(_role)
  * TODO: What is TableBody
  */
 export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
-  ({ prefixCls = _prefix, maxHeight }, ref) => {
+  ({ prefixCls = _prefix }, ref) => {
     const {
       columns,
       leafColumns,
@@ -24,6 +24,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       bodyTableRef,
       scrollBodyElementRef,
       onTableBodyScroll,
+      maxHeight,
       // fixedColWidth,
     } = useTableContext()
 
