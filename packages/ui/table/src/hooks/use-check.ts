@@ -14,29 +14,13 @@ export const useTableCheck = ({
   flattedData: FlattedTableRowData[]
   getRowKeyField: (item: any) => string
 }) => {
-  // TODO: 生成单独的 checkbox column
-  // 自定义设置 checkbox 列宽度
-  const checkboxColWidth = React.useMemo(() => {
-    return rowSelection && typeof rowSelection.checkboxColWidth === 'number'
-      ? rowSelection.checkboxColWidth
-      : 50
-  }, [rowSelection])
-
-  const getRowSelection = React.useCallback(
-    (rowData) => {
-      const checkboxConfig = rowSelection?.getCheckboxConfig?.(rowData)
-      const disabled = checkboxConfig?.disabled ?? false
-
-      return { disabled, colWidth: checkboxColWidth }
-    },
-    [rowSelection, checkboxColWidth]
-  )
-
   const checkRowIsDisabledCheckbox = React.useCallback(
-    (item: any) => {
-      return getRowSelection(item).disabled
+    (rowItem: any) => {
+      const checkboxConfig = rowSelection?.getCheckboxConfig?.(rowItem)
+      const disabled = checkboxConfig?.disabled ?? false
+      return disabled
     },
-    [getRowSelection]
+    [rowSelection]
   )
 
   const [checkedRowKeys, trySetCheckedRowKeys] = useUncontrolledState(
@@ -49,11 +33,11 @@ export const useTableCheck = ({
   const [onCheckedRowKeysChange, isCheckedRowKey] = useCheck({
     checkedIds: checkedRowKeys,
     onCheck: trySetCheckedRowKeys as any,
-    idFieldName: 'key',
+    idFieldName: 'id',
   })
 
   // 判断是否全选
-  const [checkedAll, halfChecked] = React.useMemo(() => {
+  const [checkedAll, semiChecked] = React.useMemo(() => {
     if (rowSelection) {
       if (flattedData.length === 0 || checkedRowKeys.length === 0) {
         return [false, false]
@@ -94,11 +78,9 @@ export const useTableCheck = ({
   return {
     tryCheckAllRow,
     checkedAll,
-    halfChecked,
-    getRowSelection,
+    semiChecked,
     onCheckedRowKeysChange,
     isCheckedRowKey,
-    checkboxColWidth,
     checkedRowKeys,
     trySetCheckedRowKeys,
   }

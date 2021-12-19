@@ -1,13 +1,13 @@
 import React from 'react'
 import Table from '../src'
 
-export const Basic = () => {
+export const Loading = () => {
   return (
     <>
-      <h1>Basic for Table</h1>
-      <div className="table-basic__wrap" style={{ width: 800 }}>
+      <h1>Loading for Table</h1>
+      <div className="table-loading__wrap" style={{ width: 800 }}>
         <Table
-          fixedToColumn={'type'}
+          loading
           columns={[
             {
               title: '商品名',
@@ -34,7 +34,7 @@ export const Basic = () => {
               dataKey: 'stock',
             },
           ]}
-          // rowSelection={{ selectedRowKeys: [] }}
+          pagination={{ pageSize: 5, total: 5 }}
           data={[
             {
               name: '小米9',
@@ -84,7 +84,13 @@ export const Basic = () => {
             },
           ]}
         />
-        <div style={{ height: 800 }}>模拟外层滚动</div>
+        <div style={{ height: 800 }}>
+          模拟 Table 底部内容
+          <br />
+          模拟 Table 底部内容
+          <br />
+          模拟 Table 底部内容
+        </div>
       </div>
     </>
   )

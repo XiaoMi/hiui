@@ -13,33 +13,27 @@ const _prefix = getPrefixCls(_role)
  * TODO: What is TableBody
  */
 export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
-  ({ prefixCls = _prefix, firstRowRef, fixedColWidth, rowSelection }, ref) => {
+  ({ prefixCls = _prefix, maxHeight }, ref) => {
     const {
-      data,
       columns,
       firstRowElementRef,
       isExpandTreeRows,
-      height,
-      itemHeight = 40,
-      virtual = false,
       transitionData,
-      onNodeToggleEnd,
       getColgroupProps,
-      isHoveredCol,
       bodyTableRef,
       scrollBodyElementRef,
       onTableBodyScroll,
-      maxHeight,
+      // fixedColWidth,
     } = useTableContext()
 
     const cls = cx(`${prefixCls}__body`)
 
-    const calcColPosition = (col, idx) => {
-      // TODO: 前缀和优化
-      return fixedColWidth
-        .slice(0, idx)
-        .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    }
+    // const calcColPosition = (col, idx) => {
+    //   // TODO: 前缀和优化
+    //   return fixedColWidth
+    //     .slice(0, idx)
+    //     .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+    // }
 
     const getTreeNodeRequiredProps = useLatestCallback(
       (id: React.ReactText): TableRowRequiredProps => {
@@ -117,20 +111,6 @@ export interface TableBodyProps {
    * 组件默认的选择器类
    */
   prefixCls?: string
-  /**
-   * 列配置项
-   */
-  columns: Column[]
-  /**
-   * 数据配置项
-   */
-  data: object[]
-  /**
-   * 第一行ref
-   */
-  firstRowRef: React.RefObject<HTMLTableRowElement>
-  fixedColWidth: number[]
-  rowSelection?: RowSelection
 }
 
 if (__DEV__) {

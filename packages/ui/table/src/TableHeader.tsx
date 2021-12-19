@@ -1,20 +1,18 @@
 import React, { forwardRef } from 'react'
-import { cx, getPrefixCls } from '@hi-ui/classname'
-import { Checkbox } from '@hi-ui/checkbox'
-import { __DEV__ } from '@hi-ui/env'
-import { TableColumnItem, TableRowSelection } from './types'
-import { useTableContext } from './context'
-import { isFunction } from '@hi-ui/type-assertion'
 import { Resizable } from 'react-resizable'
+import { cx, getPrefixCls } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
+import { isFunction } from '@hi-ui/type-assertion'
+import { Checkbox } from '@hi-ui/checkbox'
+import { useTableContext } from './context'
 
-const _role = 'table'
-const _prefix = getPrefixCls(_role)
+const _prefix = getPrefixCls('table-header')
 
 /**
  * TODO: What is TableHeader
  */
 export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
-  ({ prefixCls = _prefix, fixedColWidth, extra }, ref) => {
+  ({ prefixCls = _prefix }, ref) => {
     const {
       rowSelection,
       groupedColumns,
@@ -27,21 +25,22 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
       stickyTop,
       tryCheckAllRow,
       checkedAll,
-      halfChecked,
+      semiChecked,
       getColgroupProps,
       onColumnResizable,
       getStickyColProps,
       onTableBodyScrollMock,
       onTableBodyScroll,
       scrollHeaderElementRef,
+      fixedColWidth,
     } = useTableContext()
 
-    const calcColPosition = (col, idx) => {
-      // TODO: 前缀和优化
-      return fixedColWidth
-        .slice(0, idx)
-        .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    }
+    // const calcColPosition = (col, idx) => {
+    //   // TODO: 前缀和优化
+    //   return fixedColWidth
+    //     .slice(0, idx)
+    //     .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+    // }
 
     // TODO: 需要增加一下错误提示，比如rowSelection类型不合法等等
     const cls = cx(`${prefixCls}__header`)
@@ -80,20 +79,7 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
               return (
                 <tr key={colsIndex}>
                   {cols.map((col, colIndex) => {
-                    const {
-                      dataKey,
-                      colSpan,
-                      rowSpan,
-                      title,
-                      align,
-                      leftStickyWidth,
-                      rightStickyWidth,
-                    } = col || {}
-
-                    const isSticky =
-                      typeof rightStickyWidth !== 'undefined' ||
-                      typeof leftStickyWidth !== 'undefined'
-
+                    const { dataKey, title } = col || {}
                     // const isRowActive =
                     //   highlightedColKeys.includes(dataKey) || highlightColumns.includes(dataKey)
                     // const isColActive = showColHighlight && hoverColIndex === dataKey
@@ -116,37 +102,22 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
                       </th>
                     )
 
-                    return (
-                      <>
-                        {/* 渲染 checkbox */}
-                        {rowSelection ? (
-                          <th style={checkboxStyle}>
-                            <Checkbox
-                              checked={checkedAll}
-                              indeterminate={halfChecked}
-                              onChange={tryCheckAllRow}
-                            />
-                          </th>
-                        ) : null}
-
-                        {resizable && colIndex !== colWidths.length - 1 ? (
-                          <Resizable
-                            key={colIndex}
-                            className={`${prefixCls}__resizable`}
-                            draggableOpts={{ enableUserSelectHack: false }}
-                            handle={<span className={`${prefixCls}__resizable-handle`} />}
-                            height={0}
-                            width={colWidths[colIndex] as number}
-                            onResize={(evt, options) => {
-                              onColumnResizable(evt, options, colIndex)
-                            }}
-                          >
-                            {cell}
-                          </Resizable>
-                        ) : (
-                          cell
-                        )}
-                      </>
+                    return resizable && colIndex !== colWidths.length - 1 ? (
+                      <Resizable
+                        key={colIndex}
+                        className={`${prefixCls}__resizable`}
+                        draggableOpts={{ enableUserSelectHack: false }}
+                        handle={<span className={`${prefixCls}__resizable-handle`} />}
+                        height={0}
+                        width={colWidths[colIndex] as number}
+                        onResize={(evt, options) => {
+                          onColumnResizable(evt, options, colIndex)
+                        }}
+                      >
+                        {cell}
+                      </Resizable>
+                    ) : (
+                      cell
                     )
                   })}
                 </tr>
@@ -164,12 +135,6 @@ export interface TableHeaderProps {
    * 组件默认的选择器类
    */
   prefixCls?: string
-  /**
-   * 列配置项
-   */
-  columns: TableColumnItem[]
-  fixedColWidth: number[]
-  rowSelection?: TableRowSelection
 }
 
 if (__DEV__) {

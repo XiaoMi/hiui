@@ -17,7 +17,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
         border-color: $color;
 
         &::after {
-          background: use-color-staic('white');
+          background: use-color-static('white');
         }
       }
 
@@ -94,7 +94,8 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     width: 16px;
     height: 16px;
     border: 1px solid use-color('gray', 300);
-    margin-right: use-spacing(2);
+    margin-inline-end: use-spacing(2);
+    margin-inline-start: 0;
     border-radius: use-border-radius('sm');
     transition: 0.3s ease-out;
     line-height: 1;

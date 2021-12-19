@@ -5,7 +5,6 @@ $prefix: '#{$component-prefix}-table' !default;
 .#{$prefix} {
   box-sizing: border-box;
   font-size: 14px;
-  // overflow: auto;
   position: relative;
 
   table {
@@ -261,5 +260,24 @@ th[data-sticky] {
     &-after {
       border-bottom-color: use-color-mode('primary');
     }
+  }
+}
+
+.#{$prefix}-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 8px;
+  margin: use-spacing(8) 0;
+
+  &--placement-left {
+    justify-content: flex-start;
+  }
+
+  &--placement-right {
+    justify-content: flex-end;
+  }
+
+  &--placement-middle {
+    justify-content: center;
   }
 }

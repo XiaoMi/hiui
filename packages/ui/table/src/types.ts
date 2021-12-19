@@ -15,6 +15,15 @@ export type TableExtra = {
   header?: React.ReactNode
 }
 
+export type TableCheckAllOptions = {
+  title?: React.ReactNode
+  filterIcon?: React.ReactNode
+  render?: (
+    checkboxNode: React.ReactNode
+    // , rowItem: object, rowIndex: number
+  ) => React.ReactNode
+}
+
 export type TableRowSelection = {
   checkboxColWidth?: number
   selectedRowKeys?: React.ReactText[]
@@ -24,6 +33,11 @@ export type TableRowSelection = {
     targetRow?: object | object[],
     shouldChecked?: boolean
   ) => void
+  render?: (checkboxNode: React.ReactNode, rowItem: object, rowIndex: number) => React.ReactNode
+  /**
+   * 全选配置集合
+   */
+  checkAllOptions?: TableCheckAllOptions
 }
 
 export type TableHeaderRowReturn = {
@@ -47,7 +61,12 @@ export type TableColumnItem = {
   children?: TableColumnItem[]
   selectFilters?: SelectProps
   defaultSortOrder?: 'ascend' | 'descend'
-  render?: (text: string, record: object, index: number, dataKey: string) => React.ReactNode
+  render?: (
+    text: any,
+    rowItem: Record<string, any>,
+    rowIndex: number,
+    dataKey: string
+  ) => React.ReactNode
   // @DEPRECATED
   filterIcon?: React.ReactNode
   filterDropdownWidth?: number

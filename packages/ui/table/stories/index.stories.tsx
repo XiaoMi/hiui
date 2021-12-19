@@ -12,6 +12,7 @@ export * from './table-tree.stories'
 export * from './expanded-render.stories'
 export * from './merged-cell.stories'
 export * from './hidden-cols.stories'
+export * from './loading.stories'
 
 export default {
   title: 'Table',

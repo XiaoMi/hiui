@@ -55,7 +55,7 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
       checkboxColWidth,
       flattedColumns,
       flattedColumnsWithoutChildren,
-      errorRowKeys,
+      isErrorRow,
       rowSelection,
       highlightedRowKeys,
       setHighlightRows,
@@ -72,8 +72,6 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
       onDragEnd: onDragEndContext,
       onDrop: onDropContext,
       dragRowRef,
-      checkedRowKeys,
-      trySetCheckedRowKeys,
       onCheckedRowKeysChange,
       isCheckedRowKey,
       onExpandEmbedRowsChange,
@@ -224,17 +222,15 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
       [draggable, dragRowRef, onDropContextLatest, dragDirection, rowKey]
     )
 
-    // ** ************** 行状态管理 *************** *//
-
-    const highlighted = isHighlightedRow(rowKey)
-    const hovered = hoverRow === rowKey
-    const hasError = errorRowKeys.includes(rowKey)
-
     const handleRowDoubleClick = () => {
       onHighlightedRowChange(rowData, !highlighted)
     }
 
-    // console.log('dragDirection', dragDirection)
+    // ** ************** 行状态管理 *************** *//
+
+    const highlighted = isHighlightedRow(rowKey)
+    const hovered = hoverRow === rowKey
+    const hasError = isErrorRow(rowKey)
 
     const cls = cx(
       `${prefixCls}-row`,
@@ -261,39 +257,6 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
         onDragLeave={onDragLeave}
         onDrop={onDrop}
       >
-        {/* 表格列多选操作区 */}
-        {rowSelection && isFixed !== 'right' && !isSumRow && !isAvgRow ? (
-          <td
-            style={{ width: checkboxColWidth }}
-            className={cx(sticky && `${prefixCls}__col--sticky`)}
-          >
-            <Checkbox
-              checked={isCheckedRowKey(rowData.key)}
-              disabled={checkboxDisabled}
-              onChange={(evt) => {
-                onCheckedRowKeysChange(rowData, evt.target.checked)
-              }}
-            />
-          </td>
-        ) : null}
-
-        {/* 表格列展开折叠操作区 */}
-        {expandedRender ? (
-          <td style={{ width: 50 }} className={cx(sticky && `${prefixCls}__col--sticky`)}>
-            {renderSwitcher({
-              prefixCls,
-              rowExpand,
-              sticky,
-              expanded: isExpandEmbedRows(rowData.key),
-              onNodeExpand: (shouldExpanded: boolean) => {
-                onExpandEmbedRowsChange(rowData, shouldExpanded)
-              },
-              expandIcon: defaultExpandIcon,
-              collapseIcon: defaultCollapseIcon,
-            })}
-          </td>
-        ) : null}
-
         {/* 表格列数据 */}
         {flattedColumnsWithoutChildren.map((column, idx) => {
           return (
