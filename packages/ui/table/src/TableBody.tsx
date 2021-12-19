@@ -16,6 +16,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
   ({ prefixCls = _prefix, maxHeight }, ref) => {
     const {
       columns,
+      leafColumns,
       firstRowElementRef,
       isExpandTreeRows,
       transitionData,
@@ -77,7 +78,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       >
         <table ref={bodyTableRef} style={{ width: '100%' }}>
           <colgroup>
-            {columns.map((col, idx) => {
+            {leafColumns.map((col, idx) => {
               return (
                 <col key={idx} className={`${prefixCls}-col`} {...getColgroupProps(col, idx)} />
               )

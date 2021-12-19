@@ -87,6 +87,8 @@ export const parseFixedColumns = (
     const _parentStickyWidth = item[key]
     const { children } = item
     children.forEach((childrenItem: any, index: number) => {
+      console.log(childrenItem)
+
       parseFixedColumns(
         childrenItem,
         index,

@@ -33,14 +33,8 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
       onTableBodyScroll,
       scrollHeaderElementRef,
       fixedColWidth,
+      leafColumns,
     } = useTableContext()
-
-    // const calcColPosition = (col, idx) => {
-    //   // TODO: 前缀和优化
-    //   return fixedColWidth
-    //     .slice(0, idx)
-    //     .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    // }
 
     // TODO: 需要增加一下错误提示，比如rowSelection类型不合法等等
     const cls = cx(`${prefixCls}__header`)
@@ -48,15 +42,15 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
     const checkboxStyle: React.CSSProperties =
       fixedColWidth && fixedColWidth.length > 0 ? { position: 'sticky', left: 0 } : {}
 
-    // console.log('groupedColumns', groupedColumns, colWidths)
+    // console.log('groupedColumns', groupedColumns, columns)
 
     return (
       <div
         className={cls}
         ref={scrollHeaderElementRef}
         style={{
-          borderLeft: bordered ? '1px solid #e7e7e7' : undefined,
-          borderTop: bordered ? '1px solid #e7e7e7' : undefined,
+          // borderLeft: bordered ? '1px solid #e7e7e7' : undefined,
+          // borderTop: bordered ? '1px solid #e7e7e7' : undefined,
           boxShadow: maxHeight && '0px 2px 6px 0px rgba(0,0,0,0.12)',
           position: sticky ? 'sticky' : 'relative',
           top: sticky && stickyTop,
@@ -67,7 +61,7 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
         {/* header 内置 table，利用 table colgroup 特性，实现单独表头的分组 */}
         <table style={{ width: '100%', position: 'relative' }}>
           <colgroup>
-            {columns.map((col, idx) => {
+            {leafColumns.map((col, idx) => {
               return (
                 <col key={idx} className={`${prefixCls}-col`} {...getColgroupProps(col, idx)} />
               )
@@ -80,24 +74,15 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
                 <tr key={colsIndex}>
                   {cols.map((col, colIndex) => {
                     const { dataKey, title } = col || {}
-                    // const isRowActive =
-                    //   highlightedColKeys.includes(dataKey) || highlightColumns.includes(dataKey)
-                    // const isColActive = showColHighlight && hoverColIndex === dataKey
-                    // const defatultTextAlign = align || 'left'
-
-                    // const style: React.CSSProperties = fixedColWidth[colIndex]
-                    //   ? {
-                    //       position: 'sticky',
-                    //       left: calcColPosition(col, colIndex),
-                    //       // 获得对齐的列
-                    //       textAlign: 'center',
-                    //     }
-                    //   : {}
-
                     const titleContent = isFunction(title) ? title(col) : title
 
                     const cell = (
-                      <th key={dataKey} {...getStickyColProps(col)}>
+                      <th
+                        key={dataKey}
+                        {...getStickyColProps(col)}
+                        colSpan={col.colSpan}
+                        rowSpan={col.rowSpan}
+                      >
                         {titleContent}
                       </th>
                     )

@@ -21,10 +21,31 @@ $prefix: '#{$component-prefix}-table' !default;
     // z-index: 1;
   }
 
-  &--striped {
-    .#{$prefix}__row:nth-child(2n) {
-      // background-color: use-color('gray', 50);
+  &--bordered {
+    table {
+      thead {
+        & > tr > th {
+          border-right: use-border-size('normal') use-color('gray', 200);
+        }
+      }
 
+      td {
+        border-right: use-border-size('normal') use-color('gray', 200);
+      }
+    }
+
+    .#{$prefix}__header {
+      border-top: use-border-size('normal') use-color('gray', 200);
+      border-left: use-border-size('normal') use-color('gray', 200);
+    }
+
+    .#{$prefix}__body {
+      border-left: use-border-size('normal') use-color('gray', 200);
+    }
+  }
+
+  &--striped {
+    .#{$prefix}-row:nth-child(2n) {
       .#{$prefix}-cell {
         background-color: use-color('gray', 50);
       }
@@ -222,6 +243,11 @@ th[data-sticky] {
   width: 16px;
   background: rgb(251, 251, 251);
 
+  &__content {
+    height: 400px;
+    overflow-y: scroll;
+  }
+
   &__btn-group {
     display: flex;
     border-top: 1px solid rgba(231, 231, 231, 1);
@@ -244,8 +270,8 @@ th[data-sticky] {
   @include flex(space-between);
 
   user-select: none;
-  padding: use-spacing(4);
-  margin-bottom: use-spacing(4);
+  padding: use-spacing(2);
+  margin-bottom: use-spacing(2);
   border: use-border-size('normal') use-color-static('transparent');
 
   &--dragging {

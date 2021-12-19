@@ -116,19 +116,32 @@ export const fFindNestedChildNodesById = <T extends BaseFlattedTreeNodeData<T>>(
   flattedTreeData: T[],
   targetId: React.ReactText
 ) => {
-  const childrenNodes = [] as T[]
-
-  const { length } = flattedTreeData
   const targetNodeIndex = flattedTreeData.findIndex((node) => node.id === targetId)
+  const nestedChildren = fFindNestedChildNodesByIndex(flattedTreeData, targetNodeIndex)
+  return [nestedChildren, targetNodeIndex] as const
+}
 
-  if (targetNodeIndex < 0 || targetNodeIndex === length - 1) {
-    return [childrenNodes, targetNodeIndex] as const
+/**
+ * 根据指定节点索引查找其所有（包含嵌套）孩子节点的 ids
+ *
+ * f 开头表示基于扁平 tree 数据，而不是基于原始 tree 数据操作
+ *
+ */
+export const fFindNestedChildNodesByIndex = <T extends BaseFlattedTreeNodeData<T>>(
+  flattedTreeData: T[],
+  targetIndex: number
+) => {
+  const childrenNodes = [] as T[]
+  const { length } = flattedTreeData
+
+  if (targetIndex < 0 || targetIndex === length - 1) {
+    return childrenNodes
   }
 
-  const boundNodeDepth = flattedTreeData[targetNodeIndex].depth
+  const boundNodeDepth = flattedTreeData[targetIndex].depth
 
   // 判定子节点：后面连续部分层级大于目标元素的层级
-  for (let i = targetNodeIndex + 1; i < length; ++i) {
+  for (let i = targetIndex + 1; i < length; ++i) {
     const node = flattedTreeData[i]
 
     if (node.depth > boundNodeDepth) {
@@ -138,7 +151,7 @@ export const fFindNestedChildNodesById = <T extends BaseFlattedTreeNodeData<T>>(
     }
   }
 
-  return [childrenNodes, targetNodeIndex] as const
+  return childrenNodes
 }
 
 /**
@@ -425,6 +438,20 @@ export const findNestedChildren = <T extends BaseTreeNodeData>(
 }
 
 /**
+ * 基于扁平树结构，获取根祖先节点
+ */
+export const getNodeRootParent = <T extends BaseFlattedTreeNodeDataWithParent>(node: T) => {
+  let tNode = node
+
+  // @ts-ignore
+  while (tNode && tNode.depth > 0) {
+    tNode = tNode.parent
+  }
+
+  return tNode
+}
+
+/**
  * 基于扁平树结构，获取祖先节点，不包含自身节点
  */
 export const getNodeAncestors = <T extends BaseFlattedTreeNodeDataWithParent>(
@@ -512,7 +539,9 @@ export const getLeafChildren = <T extends BaseTreeNode>(treeNode: T) => {
 export const groupByTreeDepth = <T extends BaseTreeNode>(tree: T[]) => {
   const groupedTree: T[][] = []
 
-  visitTree(tree, (node, depth) => {
+  visitTree(tree, (node) => {
+    // TODO: remove using groupBy
+    const depth = node.depth
     if (!groupedTree[depth]) {
       groupedTree[depth] = []
     }

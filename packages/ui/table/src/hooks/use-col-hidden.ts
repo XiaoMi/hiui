@@ -38,6 +38,7 @@ export const useColHidden = ({
   const [cacheHiddenColKeys, setCacheHiddenColKeys] = useState(hiddenColKeys)
 
   const visibleCols = useMemo(() => {
+    // TODO: 支持隐藏叶子结点，而不是根节点
     return columns.filter((col) => !hiddenColKeys.includes(col.dataKey))
   }, [columns, hiddenColKeys])
 

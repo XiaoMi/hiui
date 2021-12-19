@@ -52,7 +52,7 @@ export type HeaderRowFunc = (columns: TableColumnItem[], index: number) => Table
 
 export type TableColumnItem = {
   title: React.ReactNode
-  dataKey: string
+  dataKey?: string
   align?: TableAlign
   sorter?: (a: any, b: any) => number
   avg?: boolean

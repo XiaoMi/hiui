@@ -15,6 +15,7 @@ import {
   defaultLeafIcon,
   defaultLoadingIcon,
 } from './icons'
+import { setAttrAria } from '@hi-ui/dom-utils'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -250,7 +251,7 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
         className={cls}
         key="row"
         onDoubleClick={handleRowDoubleClick}
-        draggable={draggable}
+        draggable={setAttrAria(draggable)}
         onDragStart={onDragStart}
         onDragOver={onDragOver}
         onDragEnd={onDragEnd}

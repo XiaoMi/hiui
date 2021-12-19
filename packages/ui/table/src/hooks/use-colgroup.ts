@@ -41,7 +41,7 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
     return flattedColumns.filter((col) => !isArrayNonEmpty(col.children))
   }, [flattedColumns])
 
-  const [mergedColumns, groupedColumns] = React.useMemo(() => {
+  const [mergedColumns, groupedColumns, leafColumns] = React.useMemo(() => {
     // const preset: FlattedTableColumnItemData[] = [
     //   rowSelection && {
     //     type: 'checkbox',
@@ -56,7 +56,8 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
 
     const nextColumns = preset.concat(
       // @ts-ignore
-      flattedColumns.filter((col) => isLeaf(col)) as FlattedTableColumnItemData[]
+      // flattedColumns.filter((col) => isLeaf(col)) as FlattedTableColumnItemData[]
+      flattedColumns
     )
 
     // 表头分组
@@ -68,14 +69,16 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
         column.colSpan = 1
       } else {
         column.rowSpan = 1
-        column.colSpan = getLeafChildren(column)
+        column.colSpan = getLeafChildren(column).length
       }
     })
 
-    const groupedColumns = groupByTreeDepth(columns)
-    return [nextColumns, groupedColumns] as const
+    const leafColumns = flattedColumns.filter((col) => isLeaf(col))
+    const groupedColumns = groupByTreeDepth(nextColumns)
+
+    return [nextColumns, groupedColumns, leafColumns] as const
   }, [
-    columns,
+    // columns,
     flattedColumns,
     maxColumnDepth,
     // rowSelection,
@@ -87,6 +90,7 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
     flattedColumns,
     mergedColumns,
     groupedColumns,
+    leafColumns,
     flattedColumnsWithoutChildren,
   }
 }

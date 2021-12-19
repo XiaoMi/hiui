@@ -6,7 +6,6 @@ import { SettingOutlined, ColumnsOutlined } from '@hi-ui/icons'
 import { IconButton } from '@hi-ui/icon-button'
 import Popper from '@hi-ui/popper'
 import { useToggle } from '@hi-ui/use-toggle'
-import { useTableContext } from './context'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { Switch } from '@hi-ui/switch'
@@ -72,10 +71,12 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
     }, [menuVisible, resetLatest])
 
     const onConfirm = () => {
-      menuVisibleAction.off()
+      console.log('cacheHiddenColKeys', cacheHiddenColKeys, cacheSortedCols)
+
       // 触发 table 更新列显隐及排序
       setHiddenColKeys(cacheHiddenColKeys)
       setSortCols(cacheSortedCols)
+      menuVisibleAction.off()
     }
 
     const cls = cx(prefixCls)
@@ -96,6 +97,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
           attachEl={menuTrigger}
           // zIndex={1040}
           onClose={menuVisibleAction.off}
+          placement="bottom-end"
         >
           <div className={`${prefixCls}__content`}>
             <div style={{ padding: '16px 20px' }}>
@@ -118,7 +120,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
                 {i18n.get('table.confirm') || 'confirm'}
               </div>
               <div className={`${prefixCls}__btn`} onClick={resetLatest}>
-                {i18n.get('table.reset' || 'reset')}
+                {i18n.get('table.reset') || 'reset'}
               </div>
             </div>
           </div>
@@ -176,7 +178,7 @@ function TableSettingMenuItem({
           checked={!cacheHiddenColKeys.includes(dataKey)}
           onChange={(shouldChecked) => {
             const nextCacheHiddenColKeys = shouldChecked
-              ? cacheHiddenColKeys.filter((col) => col !== dataKey)
+              ? cacheHiddenColKeys.filter((col: any) => col !== dataKey)
               : cacheHiddenColKeys.concat(dataKey)
 
             setCacheHiddenColKeys(nextCacheHiddenColKeys)

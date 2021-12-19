@@ -1,4 +1,11 @@
-import { cloneTree, groupByTreeDepth, flattenTree } from '@hi-ui/tree-utils'
+import {
+  cloneTree,
+  groupByTreeDepth,
+  flattenTree,
+  fFindNestedChildNodesByIndex,
+  getNodeAncestors,
+  getNodeRootParent,
+} from '@hi-ui/tree-utils'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import {
@@ -7,6 +14,7 @@ import {
   TableFrozenColumnOptions,
   TableRowEventData,
   TableRowSelection,
+  FlattedTableColumnItemData,
 } from './types'
 import { PaginationProps } from '@hi-ui/pagination'
 import { useColWidth } from './hooks/use-col-width'
@@ -101,6 +109,8 @@ export const useTable = ({
     })
   }, [cacheData, getRowKeyField])
 
+  // console.log('flattedData', flattedData)
+
   // ********************** 树形表格 *********************** //
 
   const [transitionData, onExpandTreeRowsChange, isExpandTreeRows] = useExpand(
@@ -154,6 +164,7 @@ export const useTable = ({
   const {
     flattedColumns,
     mergedColumns: mergedColumns2,
+    leafColumns,
     // groupedColumns,
     // flattedColumnsWithoutChildren,
   } = useColumns({ columns })
@@ -203,17 +214,18 @@ export const useTable = ({
     mergedColumns2.some((column, index) => {
       if (typeof leftFrozenColKey === 'string' && leftFrozenColKey === column.dataKey) {
         // 指向原始 column 根节点序列
-        leftFrozenColIndex = column.rootIndex
+        leftFrozenColIndex = index
       }
 
       if (typeof rightFrozenKey === 'string' && rightFrozenKey === column.dataKey) {
-        rightFrozenColIndex = column.rootIndex
+        rightFrozenColIndex = index
       }
 
       return leftFrozenColIndex !== undefined && rightFrozenColIndex !== undefined
     })
 
-    let nextColumns = cloneTree(mergedColumns2)
+    // 保持内部循环引用关系，如果 cloneTree，将破坏关系
+    let nextColumns = mergedColumns2
 
     // TODO: 为什么冻结列，需要设置默认宽度
     if (
@@ -223,8 +235,8 @@ export const useTable = ({
     ) {
       // const lastColumns = flattedColumns.filter((item) => {
       //   return Array.isArray(item.children)  true
-      // })
 
+      // })
       const lastColumns = mergedColumns2
 
       nextColumns = setColumnsDefaultWidth(
@@ -236,9 +248,19 @@ export const useTable = ({
     let leftColumns = [] as any[]
     // 左侧
     if (typeof leftFrozenColIndex === 'number') {
-      leftColumns = nextColumns.slice(0, leftFrozenColIndex + 1)
+      // TODO: 支持嵌套冻结列
+      // const targetColumn = nextColumns[leftFrozenColIndex]
+      // const beforeColumns = nextColumns.filter((_, idx) => idx < leftFrozenColIndex!)
+      // // @ts-ignore
+      // const afterColumns = fFindNestedChildNodesByIndex(nextColumns, leftFrozenColIndex)
+      // // @ts-ignore
+      // leftColumns = beforeColumns.concat(targetColumn).concat(afterColumns)
+      leftColumns = nextColumns.filter(
+        (item, index) => index <= leftFrozenColIndex! && item.depth === 0
+      )
+
       leftColumns.forEach((currentItem, index) => {
-        parseFixedColumns(
+        const item = parseFixedColumns(
           currentItem,
           index,
           leftColumns,
@@ -246,7 +268,7 @@ export const useTable = ({
           expandedRender || rowSelection
         )
 
-        nextColumns[index] = currentItem
+        nextColumns[index] = item
       })
     }
 
@@ -255,9 +277,17 @@ export const useTable = ({
     // 右侧
     let rightColumns = [] as any[]
     if (typeof rightFrozenColIndex === 'number') {
-      rightColumns = nextColumns.slice(rightFrozenColIndex).reverse()
+      const targetColumn = nextColumns[rightFrozenColIndex]
+      // const beforeColumns = getNodeAncestors(targetColumn)
+      // const afterColumns = nextColumns.filter((_, idx) => idx > rightFrozenColIndex!)
+      // // @ts-ignore
+      // rightColumns = beforeColumns.concat(targetColumn).concat(afterColumns)
+      const root = getNodeRootParent(targetColumn)
+      rightColumns = [root].concat(
+        nextColumns.filter((item, index) => index > rightFrozenColIndex! && item.depth === 0)
+      )
 
-      rightColumns.forEach((currentItem, index) => {
+      rightColumns.reverse().forEach((currentItem, index) => {
         const _item = parseFixedColumns(
           currentItem,
           index,
@@ -272,14 +302,14 @@ export const useTable = ({
 
     const rightFixedColumnsWidth = getMaskItemsWIdth(rightColumns)
 
-    // console.log('tableWidth, tableBodyWidth', tableWidth, tableBodyWidth)
-    console.log({
-      leftFrozenColKeys: leftColumns,
-      rightFrozenColKeys: rightColumns,
-      columns: nextColumns,
-      leftFixedColumnsWidth,
-      rightFixedColumnsWidth,
-    })
+    // console.log({
+    //   mergedColumns2,
+    //   leftFrozenColKeys: leftColumns,
+    //   rightFrozenColKeys: rightColumns,
+    //   columns: nextColumns,
+    //   leftFixedColumnsWidth,
+    //   rightFixedColumnsWidth,
+    // })
 
     return {
       leftFrozenColKeys: leftColumns,
@@ -441,7 +471,16 @@ export const useTable = ({
     return mergedColumns1.filter((col) => !isArrayNonEmpty(col.children))
   }, [mergedColumns1])
 
-  const groupedColumns = groupByTreeDepth(mergedColumns1)
+  const groupedColumns = mergedColumns1.reduce((acc, cur) => {
+    const depth = cur.depth
+    if (!acc[depth]) {
+      acc[depth] = []
+    }
+    acc[depth].push(cur)
+    return acc
+  }, [] as FlattedTableColumnItemData[][])
+
+  // console.log('mergedColumns1', mergedColumns1, groupedColumns, mergedColumns1)
 
   const getStickyColProps = React.useCallback((column) => {
     const { rightStickyWidth, leftStickyWidth, align } = column
@@ -474,6 +513,7 @@ export const useTable = ({
     rowSelection,
     cacheData,
     firstRowElementRef,
+    leafColumns,
     // ui
     // 有表头分组那么也要 bordered
     bordered: flattedColumns.length > columns.length,

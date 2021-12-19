@@ -28,12 +28,7 @@ import { cloneTree, flattenTree } from '@hi-ui/tree-utils'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useCheck } from '@hi-ui/use-check'
 import { IconButton } from '@hi-ui/icon-button'
-import {
-  defaultCollapseIcon,
-  defaultExpandIcon,
-  defaultLeafIcon,
-  defaultLoadingIcon,
-} from './icons'
+import { defaultCollapseIcon, defaultExpandIcon, defaultLoadingIcon } from './icons'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
@@ -61,8 +56,6 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     },
     ref
   ) => {
-    const fixedColumn = false
-
     // ********************** 内嵌式面板 *********************** //
 
     /**
@@ -312,6 +305,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     // ************************ 预置标准模式 ************************ //
 
     const baseTableProps = withDefaultProps(rest, standard ? STANDARD_PRESET : undefined)
+    const setting = baseTableProps.setting ?? false
 
     // ************************ 高级功能 ************************ //
 
@@ -505,9 +499,9 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           columns={mergedColumns}
           data={mergedData}
           extra={{
-            header: (
+            header: setting ? (
               <TableSettingMenu
-                prefixCls={prefixCls}
+                prefixCls={`${prefixCls}-setting`}
                 sortedCols={sortedCols}
                 setSortCols={setSortCols}
                 cacheSortedCols={cacheSortedCols}
@@ -518,7 +512,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 cacheHiddenColKeys={cacheHiddenColKeys}
                 setCacheHiddenColKeys={setCacheHiddenColKeys}
               />
-            ),
+            ) : null,
           }}
         />
         {pagination ? (
