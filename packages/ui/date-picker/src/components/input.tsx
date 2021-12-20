@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from 'react'
 import moment from 'moment'
 import DPContext from '../context'
+import { getBelongWeek, getBelongWeekYear } from '../utils/week'
 
 export type InputChangeEvent = (val: moment.Moment, index: number) => void
 
@@ -25,8 +26,10 @@ const Input = ({
     minuteStep,
     secondStep,
     inputReadOnly,
-    locale,
+    localeData,
     realFormat,
+    weekOffset,
+    locale,
   } = useContext(DPContext)
 
   const cacheValues = useRef<string | null>(null)
@@ -34,16 +37,26 @@ const Input = ({
   useEffect(() => {
     let vals = date && moment(date).format(realFormat)
     if (type.includes('week') && date) {
-      const y = moment(date).weekYear()
-      const _date = moment(date).year(y)
-      vals = moment(_date).format(realFormat)
-      if (locale === 'zh-CN' && typeof format === 'undefined') {
-        vals = y + '-W' + moment(_date).week()
+      // const _date = moment(date).year(y)
+      // vals = moment(_date).format(realFormat)
+      // if (locale === 'zh-CN' && typeof format === 'undefined') {
+      //   vals = y + '-W' + moment(_date).week()
+      // }
+
+      if (typeof format === 'undefined') {
+        vals = localeData.datePicker.weekrange(
+          getBelongWeekYear(date, weekOffset),
+          getBelongWeek(date, weekOffset)
+        )
+      } else {
+        const y = moment(date).weekYear()
+        const _date = moment(date).year(y)
+        vals = moment(_date).format(realFormat)
       }
     }
     setValue(vals)
     cacheValues.current = vals
-  }, [date])
+  }, [date, weekOffset, localeData, type, format, realFormat, locale])
   const inputChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
     setValue(val)

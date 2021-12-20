@@ -4,6 +4,7 @@ import { DAY_MILLISECONDS } from '../utils/constants'
 import _ from 'lodash'
 import { DatePickerType, DisabledDate } from '../types'
 import { LocaleData } from '../context'
+import { getBelongWeekBoundary } from '../utils/week'
 
 const getYearOrMonthRows = ({
   originDate,
@@ -305,13 +306,10 @@ const getDateRows = ({
       }
 
       if (type === 'week') {
-        const weekNum = currentTime.week()
-        row.weekNum = weekNum
         col.weekType = col.type
         if (originDate) {
-          const _d = _.cloneDeep(originDate)
-          const wFirst = moment(_d).startOf('week')
-          const wLast = moment(_d).endOf('week')
+          const wFirst = getBelongWeekBoundary(originDate, weekOffset)
+          const wLast = getBelongWeekBoundary(originDate, weekOffset, false)
           if (currentTime.isSame(wFirst, 'day') || currentTime.isSame(wLast, 'day')) {
             col.type = 'selected'
             continue

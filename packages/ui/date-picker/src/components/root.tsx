@@ -32,8 +32,8 @@ const Root = ({
     value,
     format,
     bordered,
-    locale,
     prefixCls,
+    weekOffset,
   } = useContext(DPContext)
   const [inputData, setInputData] = useState(outDate)
 
@@ -44,7 +44,7 @@ const Root = ({
     localeData,
   })
   useEffect(() => {
-    setInputData(value ? parseValue(value, type, format, locale) : outDate)
+    setInputData(value ? parseValue(value, type, weekOffset, format) : outDate)
   }, [outDate, value])
   const onPickerClickEvent = () => {
     onTrigger()

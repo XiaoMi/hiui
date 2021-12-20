@@ -22,6 +22,7 @@ import Root from './components/root'
 import Panel from './components/panel'
 import RangePanel from './components/range-panel'
 import { DatePickerProps, DatePickerType } from './types'
+import { getBelongWeek, getBelongWeekYear } from './utils/week'
 
 const DATE_PICKER_PREFIX = getPrefixCls('date-picker')
 
@@ -57,7 +58,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       dateMarkPreset,
       overlayClassName,
       inputReadOnly,
-      locale = 'zh-CN',
+      // locale = 'zh-CN',
       bordered = true,
       disabledDate = DEFAULT_DISABLED_DATE,
       max: configMax,
@@ -74,7 +75,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     },
     ref
   ) => {
-    const { datePicker } = useContext(LocaleContext)
+    const { datePicker, locale = 'zh-CN' } = useContext(LocaleContext)
     // 适配器，暂时兼容老代码
     const localeData = useMemo(() => ({ datePicker }), [datePicker])
     // 此处应为历史兼容，需要兼容 max maxDate
@@ -94,19 +95,27 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     const [type, setType] = useState<DatePickerType>(propType)
     useEffect(() => {
       moment.locale(locale === 'en-US' ? 'en' : 'zh-CN')
-      if (weekOffset !== undefined) {
-        moment.locale(weekOffset === 0 ? 'en' : 'zh-CN')
-      }
+      // V4: 不使用 weekOffset 判断国际化语言
+      // if (weekOffset !== undefined) {
+      //   moment.locale(weekOffset === 0 ? 'en' : 'zh-CN')
+      // }
     }, [locale, weekOffset])
     useEffect(() => {
       setType(propType)
     }, [propType])
+
+    const safeWeekOffset = useMemo(
+      () => (weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1),
+      [weekOffset, locale]
+    )
+
     const [outDate, changeOutDate] = useDate({
       value,
       type,
       defaultValue,
       cacheDate,
       format,
+      weekOffset: safeWeekOffset,
       locale,
     })
     const realFormat = useFormat({
@@ -142,16 +151,31 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     const callback = (dates: any, emitOnChange = true) => {
       const _dates = _.cloneDeep(dates)
       let returnDate = {}
-      let returnDateStr = ''
-      if (type.includes('range') || type === 'timeperiod' || type === 'week') {
+      let returnDateStr = '' as any
+      if (type.includes('week')) {
         returnDate = {
           start: _dates[0].toDate(),
           end: _dates[1].toDate(),
         }
-        returnDateStr =
-          type === 'week'
-            ? _dates[0].format(realFormat)
-            : { start: _dates[0].format(realFormat), end: _dates[1].format(realFormat) }
+        const getWeekString = (disposeDate: moment.Moment) =>
+          format
+            ? disposeDate.format(realFormat)
+            : localeData.datePicker.weekrange(
+                getBelongWeekYear(disposeDate, safeWeekOffset),
+                getBelongWeek(disposeDate, safeWeekOffset)
+              )
+        returnDateStr = type.includes('range')
+          ? {
+              start: getWeekString(_dates[0]),
+              end: getWeekString(_dates[1]),
+            }
+          : getWeekString(_dates[0])
+      } else if (type.includes('range') || type === 'timeperiod') {
+        returnDate = {
+          start: _dates[0].toDate(),
+          end: _dates[1].toDate(),
+        }
+        returnDateStr = { start: _dates[0].format(realFormat), end: _dates[1].format(realFormat) }
       } else {
         returnDate = _dates[0].toDate()
         returnDateStr = _dates[0].format(realFormat)
@@ -217,11 +241,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       shortcuts && `${prefixCls}__popper--shortcuts`
     )
     const [attachEl, setAttachEl] = useState<HTMLElement | null>(null)
-
-    const safeWeekOffset = useMemo(
-      () => (weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1),
-      [weekOffset, locale]
-    )
 
     return (
       <DPContext.Provider

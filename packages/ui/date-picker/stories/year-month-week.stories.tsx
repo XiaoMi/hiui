@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import DatePicker from '../src'
+import LocaleProvider from '@hi-ui/locale-context'
 
 export const YearMonthWeek = () => {
   const [controlledValue, setControlledValue] = useState(new Date())
@@ -40,6 +41,26 @@ export const YearMonthWeek = () => {
             console.log('onChange', date, dateStr)
           }}
         />
+        <LocaleProvider locale="en-US">
+          <DatePicker
+            type="week"
+            locale="en-US"
+            weekOffset={1}
+            defaultValue={new Date()}
+            onChange={(date, dateStr) => {
+              console.log('onChange', date, dateStr)
+            }}
+          />
+        </LocaleProvider>
+        <DatePicker
+          type="week"
+          locale="en-US"
+          weekOffset={1}
+          defaultValue={new Date()}
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
         <h2>周(周日起始)</h2>
         <DatePicker
           type="week"
@@ -49,6 +70,17 @@ export const YearMonthWeek = () => {
             console.log('onChange', date, dateStr)
           }}
         />
+        <LocaleProvider locale="en-US">
+          <DatePicker
+            type="week"
+            locale="en-US"
+            weekOffset={0}
+            defaultValue={new Date()}
+            onChange={(date, dateStr) => {
+              console.log('onChange', date, dateStr)
+            }}
+          />
+        </LocaleProvider>
       </div>
     </>
   )

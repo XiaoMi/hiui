@@ -3,7 +3,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import request from 'axios'
 import Lunar from './toLunar'
-import { getLocaleTypeFormatMap } from './constants'
+// import { getLocaleTypeFormatMap } from './constants'
 import {
   CalendarAltCalendarPreset,
   CalendarItem,
@@ -18,6 +18,7 @@ import {
 } from '../types'
 import { CalendarColInfo } from '../hooks/useCalenderData'
 import { CalendarView } from '../components/calendar'
+import { getBelongWeekBoundary } from './week'
 
 const holiday = {
   PRCHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?',
@@ -276,25 +277,27 @@ export const getInRangeDate = (
  * 格式化value
  * @param value 格式化的值
  * @param type 类型
+ * @param weekOffset 周偏移
  * @param format 日期格式
- * @param locale 当前地域值
  */
 export const parseValue = (
   value: DatePickerValue,
   type: DatePickerType,
-  format?: string,
-  locale = 'zh-CN'
+  weekOffset: number,
+  format?: string
 ) => {
   if (!value) return [null]
-  const _format = getLocaleTypeFormatMap(locale)[type]
-  const _value = moment(value as any, _format)
+  // 暂时无法理解为何此处自行获取了 type
+  // const _format = getLocaleTypeFormatMap(locale)[type]
+  // const _value = moment(value as any, _format)
+  const _value = moment(value as any, format)
   const isValid = moment(_value).isValid()
   if (value && typeof value === 'object' && (type.includes('range') || type === 'timeperiod')) {
     const rangeValue = value as DateRange
     if (type === 'weekrange') {
       return [
-        rangeValue.start ? moment(rangeValue.start, _format).startOf('week') : null,
-        rangeValue.end ? moment(rangeValue.end, _format).endOf('week') : null,
+        rangeValue.start ? getBelongWeekBoundary(moment(rangeValue.start), weekOffset) : null,
+        rangeValue.end ? getBelongWeekBoundary(moment(rangeValue.end), weekOffset, false) : null,
       ]
     }
     return [

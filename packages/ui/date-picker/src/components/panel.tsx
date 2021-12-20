@@ -9,6 +9,7 @@ import { getView, genNewDates } from '../utils'
 import { useTimePickerData } from '../hooks/useTimePickerData'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
+import { getBelongWeekRange } from '../utils/week'
 
 const Panel = () => {
   const {
@@ -65,8 +66,10 @@ const Panel = () => {
     if (type === 'week' && view === 'date') {
       // week picker
       // 根据偏移判断当前使用的周格式
-      const weekMethod = weekOffset ? 'isoWeek' : 'week'
-      onPick([moment(date).startOf(weekMethod), moment(date).endOf(weekMethod)], false)
+      // 抛弃使用 isoWeek week 函数区分周计算方式，统一使用 week + instance locale 方法
+      // const weekMethod = weekOffset ? 'isoWeek' : 'week'
+      // onPick([moment(date).startOf(weekMethod), moment(date).endOf(weekMethod)], false)
+      onPick(getBelongWeekRange(date, weekOffset), false)
       return
     }
     let _view = view
@@ -146,21 +149,24 @@ const Panel = () => {
         )}
       </div>
       {type === 'date' && showTime && (
-        <div className={`${prefixCls}__panel--right`}>
-          <TimePickerPopContent
-            onChange={onTimeChange}
-            value={timePickerData}
-            hourStep={hourStep}
-            minuteStep={minuteStep}
-            secondStep={secondStep}
-            itemHeight={24}
-            fullDisplayItemNumber={7}
-            type="single"
-            format={timePickerFormat}
-            disabledHours={disabledHours as any}
-            disabledMinutes={disabledMinutes as any}
-            disabledSeconds={disabledSeconds as any}
-          />
+        <div className={`${prefixCls}__panel__time-container`}>
+          <div className={`${prefixCls}__panel__time-header`}>{timePickerData[0]}</div>
+          <div className={`${prefixCls}__panel__time-content`}>
+            <TimePickerPopContent
+              onChange={onTimeChange}
+              value={timePickerData}
+              hourStep={hourStep}
+              minuteStep={minuteStep}
+              secondStep={secondStep}
+              itemHeight={24}
+              fullDisplayItemNumber={7}
+              type="single"
+              format={timePickerFormat}
+              disabledHours={disabledHours as any}
+              disabledMinutes={disabledMinutes as any}
+              disabledSeconds={disabledSeconds as any}
+            />
+          </div>
         </div>
       )}
     </div>

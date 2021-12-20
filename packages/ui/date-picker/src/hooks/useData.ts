@@ -10,9 +10,10 @@ interface IUseDateConfig {
   locale?: string
   cacheDate: React.MutableRefObject<null>
   type: DatePickerType
+  weekOffset: number
 }
 export const useDate = (config: IUseDateConfig) => {
-  const { value, defaultValue, cacheDate, type, format, locale } = config
+  const { value, defaultValue, cacheDate, type, format, locale, weekOffset } = config
   const [outDate, setOutDate] = useState<(moment.Moment | null)[]>([])
   const changeOutDate = (dates: any) => {
     const _datas = [
@@ -22,10 +23,10 @@ export const useDate = (config: IUseDateConfig) => {
     setOutDate(_datas as any)
   }
   useEffect(() => {
-    const d = parseValue(value || defaultValue, type, format as any, locale) as any
+    const d = parseValue(value || defaultValue, type, weekOffset, format as any) as any
     setOutDate(d)
     cacheDate.current = d
-  }, [value, type])
+  }, [value, type, type, weekOffset, format, locale, setOutDate, defaultValue])
 
   return [outDate, changeOutDate] as const
 }
