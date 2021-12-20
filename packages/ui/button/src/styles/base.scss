@@ -9,7 +9,7 @@ $prefix: '#{$component-prefix}-button' !default;
 
 .#{$prefix} {
   & + & {
-    margin-left: use-spacing(4);
+    margin-inline-start: use-spacing(5);
   }
 
   background-color: transparent;

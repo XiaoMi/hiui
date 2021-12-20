@@ -106,7 +106,7 @@
     "stylelint-scss": "~3.18.0"
   },
   "engines": {
-    "node": ">=12.22.1"
+    "node": ">=12.22.1 <=14.18.1"
   },
   "lint-staged": {
     "*.{js,jsx}": [
