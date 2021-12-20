@@ -13,6 +13,7 @@ import { useTooltip, UseTooltipProps } from './use-tooltip'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import Portal, { PortalProps } from '@hi-ui/portal'
+import { isString } from '@hi-ui/type-assertion'
 
 const _role = 'tooltip'
 const _prefix = getPrefixCls(_role)
@@ -65,20 +66,28 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
 
     const cls = cx(prefixCls, className)
 
-    if (!isValidElement(children)) {
-      // TODO: 如果是字符串是否需要包裹一个 span，提升用户开发体验
-      if (__DEV__) {
-        console.warn('WARNING (Tooltip): The children should be an React.Element.')
+    let trigger: React.ReactElement
+
+    if (isValidElement(children)) {
+      trigger = children
+    } else {
+      if (isString(children)) {
+        trigger = <span tabIndex={0}>{children}</span>
+      } else {
+        // TODO: invariant(true, 'The children should be an React.Element.')
+        if (__DEV__) {
+          console.warn('WARNING (Tooltip): The children should be an React.Element.')
+        }
+        return null
       }
-      return null
     }
 
     return (
       <>
         {cloneElement(
-          children,
+          trigger,
           // @ts-ignore
-          getTriggerProps(children.props, children.ref)
+          getTriggerProps(trigger.props, trigger.ref)
         )}
 
         <Portal {...portal}>

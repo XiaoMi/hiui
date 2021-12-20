@@ -72,3 +72,9 @@
     #{$property}: var(--#{$value});
   }
 }
+
+// 换算标准，相对于默认根元素 fontSize，即 16px 计算
+// 采用 rem/em，为了实现较为灵活自动的响应式
+@function p($size) {
+  @return ($size / 16) + rem;
+}

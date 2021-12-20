@@ -52,6 +52,7 @@
     "@hi-ui/popper": "^4.0.0-alpha.10",
     "@hi-ui/portal": "^4.0.0-alpha.8",
     "@hi-ui/react-utils": "^4.0.0-alpha.2",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.8",
     "@hi-ui/use-id": "^4.0.0-alpha.1",
     "@hi-ui/use-lazy-render": "^4.0.0-alpha.1",
     "@hi-ui/use-timeout": "^4.0.0-alpha.1",

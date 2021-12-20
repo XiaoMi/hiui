@@ -9,8 +9,10 @@ $prefix: '#{$component-prefix}-tooltip' !default;
 
   box-sizing: border-box;
   color: $font-color;
+  border-color: $content-color;
+  background-color: $content-color;
   border-radius: use-border-radius('normal');
-  box-shadow: 0 1px 12px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: use-shadow('sm');
 
   // animation
   transition-timing-function: use-motion-bezier('normal');
@@ -21,12 +23,9 @@ $prefix: '#{$component-prefix}-tooltip' !default;
   opacity: 0;
   transform: scale(0);
   will-change: transform;
-  background-color: $content-color;
-  border-color: $content-color;
-  position: relative;
-  // background-color: $content-color;
-  // background-color: inherit;
+
   // 为了保证 arrow 三角形可以正常展示
+  position: relative;
   min-width: 36px;
   min-height: 36px;
 
@@ -182,7 +181,8 @@ $prefix: '#{$component-prefix}-tooltip' !default;
     width: 100%;
     height: 100%;
     color: inherit;
-    padding: use-spacing(3) use-spacing(2);
-    line-height: use-text-lineheight('lg');
+    padding: use-spacing(5) use-spacing(5) use-spacing(4);
+    font-size: use-text-size('normal');
+    line-height: use-text-lineheight('sm');
   }
 }
