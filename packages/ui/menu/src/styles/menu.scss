@@ -2,18 +2,59 @@
 
 $prefix: '#{$component-prefix}-menu' !default;
 
+.#{$prefix}-popmenu {
+  margin: 0;
+  padding: use-spacing(4);
+  .#{$prefix}-item {
+    height: 40px;
+    margin: 0;
+    border-radius: use-border-radius('normal');
+
+    &:hover {
+      background-color: use-color('gray', 100);
+    }
+
+    &--active {
+      color: use-color-mode('primary');
+      border-bottom: 2px solid use-color-mode('primary');
+    }
+
+    &__inner {
+      box-sizing: border-box;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      margin-bottom: use-spacing(4);
+      padding: 0 use-spacing(6);
+    }
+
+    &__content {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100px;
+      padding-right: use-spacing(4);
+    }
+  }
+}
+
 .#{$prefix} {
   color: use-color('gray', 700);
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
   box-sizing: border-box;
 
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
   &-item {
     list-style: none;
     box-sizing: border-box;
     cursor: pointer;
     transition: all 0.3s;
-    font-size: use-text-size('lg');
   }
 
   &__wrapper {
@@ -35,7 +76,8 @@ $prefix: '#{$component-prefix}-menu' !default;
       justify-content: center;
       align-items: center;
       height: 56px;
-      border: 2px solid transparent;
+      border-bottom: 2px solid transparent;
+      font-size: use-text-size('lg');
 
       &:hover {
         color: use-color-mode('primary');
@@ -53,6 +95,7 @@ $prefix: '#{$component-prefix}-menu' !default;
         text-overflow: ellipsis;
         white-space: nowrap;
         max-width: 100px;
+        margin-right: use-spacing(4);
       }
     }
   }
@@ -64,8 +107,18 @@ $prefix: '#{$component-prefix}-menu' !default;
     overflow: auto;
 
     .#{$prefix}-item {
-      &:hover {
-        background-color: use-color('gray', 100);
+      &__inner {
+        box-sizing: border-box;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        margin-bottom: use-spacing(4);
+        padding: 0 use-spacing(6);
+        border-radius: use-border-radius('normal');
+
+        &:hover {
+          background-color: use-color('gray', 100);
+        }
       }
 
       &--active {
@@ -79,13 +132,6 @@ $prefix: '#{$component-prefix}-menu' !default;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-
-      margin-bottom: use-spacing(4);
-      padding: use-spacing(6);
-      height: 40px;
-      display: flex;
-      align-items: center;
-      border-radius: use-border-radius('normal');
     }
   }
 }

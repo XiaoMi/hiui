@@ -2,7 +2,8 @@ import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { LeftOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
-import { MenuItem } from './Menutem'
+import { MenuItem } from './MenuItem'
+import MenuContext from './context'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -19,6 +20,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       onClick,
       placement = 'vertical',
       showCollapse,
+      expandedType = 'default',
       ...rest
     },
     ref
@@ -29,16 +31,18 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <ul className={cx(`${prefixCls}__wrapper`)}>
-          {data.map((d) => (
-            <MenuItem {...d} key={d.id} />
-          ))}
-        </ul>
-        {placement === 'vertical' && showCollapse && (
-          <div className={cx(`${prefixCls}__toggle`)} onClick={onToggle}>
-            <LeftOutlined />
-          </div>
-        )}
+        <MenuContext.Provider value={{ placement, expandedType }}>
+          <ul className={cx(`${prefixCls}__wrapper`)}>
+            {data.map((d) => (
+              <MenuItem {...d} key={d.id} level={1} />
+            ))}
+          </ul>
+          {placement === 'vertical' && showCollapse && (
+            <div className={cx(`${prefixCls}__toggle`)} onClick={onToggle}>
+              <LeftOutlined />
+            </div>
+          )}
+        </MenuContext.Provider>
       </div>
     )
   }
@@ -53,6 +57,7 @@ export type MenuItemProps = {
   id: string | number
   disabled?: boolean
   children?: MenuItemProps[]
+  level: number
 }
 export interface MenuProps {
   /**
@@ -82,6 +87,7 @@ export interface MenuProps {
   onClickSubMenu?: (subMenuIndexs: number) => void
   onCollapse?: (collapsed: boolean) => void
   overlayClassName?: string
+  expandedType: 'default' | 'pop'
 }
 
 if (__DEV__) {
