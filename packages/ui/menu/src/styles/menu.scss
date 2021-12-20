@@ -2,9 +2,54 @@
 
 $prefix: '#{$component-prefix}-menu' !default;
 
+.#{$prefix}-fat-menu {
+  margin: 0;
+  font-size: use-text-size('normal');
+  padding: use-spacing(4);
+  display: flex;
+  color: use-color('gray', 700);
+  flex-wrap: wrap;
+
+  &__group:not(:last-of-type) {
+    margin-right: use-spacing(18);
+  }
+
+  .#{$prefix}-group-item {
+    height: 40px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 use-spacing(6);
+    color: use-color('gray', 500);
+  }
+
+  .#{$prefix}-item {
+    height: 40px;
+    margin: 0;
+    border-radius: use-border-radius('normal');
+    display: flex;
+    align-items: center;
+    padding: 0 use-spacing(6);
+
+    &:hover {
+      background-color: use-color('gray', 100);
+    }
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+
+    li {
+      list-style-type: none;
+    }
+  }
+}
 .#{$prefix}-popmenu {
   margin: 0;
+  font-size: use-text-size('normal');
   padding: use-spacing(4);
+  color: use-color('gray', 700);
   .#{$prefix}-item {
     height: 40px;
     margin: 0;

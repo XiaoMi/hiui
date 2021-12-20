@@ -18,7 +18,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   children,
 }) => {
   const itemRef = useRef<HTMLLIElement | null>(null)
-  const { placement, expandedType } = useContext(MenuContext)
+  const { placement, expandedType, showAllSubMenus } = useContext(MenuContext)
   const [expanded, setExpanded] = useState(false)
   return (
     <li
@@ -88,7 +88,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         </PopperPortal>
       )}
       {/* 水平菜单 */}
-      {children?.length && placement === 'horizontal' && (
+      {children?.length && placement === 'horizontal' && !showAllSubMenus && (
         <PopperPortal
           visible={expanded}
           attachEl={itemRef.current}
@@ -103,6 +103,37 @@ export const MenuItem: React.FC<MenuItemProps> = ({
               <MenuItem {...child} key={child.id} level={level + 1} />
             ))}
           </ul>
+        </PopperPortal>
+      )}
+      {/* 水平胖菜单 */}
+      {children?.length && placement === 'horizontal' && showAllSubMenus && (
+        <PopperPortal
+          visible={expanded}
+          attachEl={itemRef.current}
+          placement={'bottom-start'}
+          gutterGap={8}
+          onClose={() => {
+            setExpanded(false)
+          }}
+        >
+          <div className={`${prefixCls}-fat-menu`}>
+            {children.map((child) => {
+              return (
+                <div key={child.id} className={`${prefixCls}-fat-menu__group`}>
+                  <div className={`${prefixCls}-group-item`}>{child.content}</div>
+                  {child?.children?.length && (
+                    <ul>
+                      {child.children.map((item) => (
+                        <div className={`${prefixCls}-item`} key={item.id}>
+                          {item.content}
+                        </div>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )
+            })}
+          </div>
         </PopperPortal>
       )}
     </li>

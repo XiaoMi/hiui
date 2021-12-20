@@ -21,6 +21,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       placement = 'vertical',
       showCollapse,
       expandedType = 'default',
+      showAllSubMenus = false,
       ...rest
     },
     ref
@@ -31,7 +32,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <MenuContext.Provider value={{ placement, expandedType }}>
+        <MenuContext.Provider value={{ placement, expandedType, showAllSubMenus }}>
           <ul className={cx(`${prefixCls}__wrapper`)}>
             {data.map((d) => (
               <MenuItem {...d} key={d.id} level={1} />
