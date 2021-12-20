@@ -1,16 +1,20 @@
 import React from 'react'
-import Drawer from '../src'
 import Button from '@hi-ui/button'
+import Modal from '../src'
 
 export const Container = () => {
   const [visible, setVisible] = React.useState(false)
-  const [container, setContainer] = React.useState(null)
+  const [container, setContainer] = React.useState(undefined)
+
+  console.log('visible', visible)
+
   return (
     <>
       <h1>Container</h1>
+
       <div
         ref={setContainer}
-        className="drawer-container__wrap"
+        className="modal-container__wrap"
         style={{
           width: 640,
           height: 420,
@@ -23,15 +27,14 @@ export const Container = () => {
         }}
       >
         <Button onClick={() => setVisible(!visible)}>open</Button>
-        <Drawer
+        <Modal
           style={{ position: 'absolute' }}
-          container={container}
           visible={visible}
-          closeOnOverlayClick={true}
           onClose={() => setVisible(false)}
+          container={container}
         >
-          Drawer content
-        </Drawer>
+          我是挂载指定容器的模态框内容
+        </Modal>
       </div>
     </>
   )

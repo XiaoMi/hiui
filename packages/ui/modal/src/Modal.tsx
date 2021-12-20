@@ -1,4 +1,11 @@
-import React, { useEffect, forwardRef, useRef, useCallback, useState } from 'react'
+import React, {
+  useEffect,
+  forwardRef,
+  useRef,
+  useCallback,
+  useState,
+  useImperativeHandle,
+} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
@@ -15,7 +22,7 @@ import { CloseOutlined } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
 
 const _role = 'modal'
-const _prefix = getPrefixCls(_role)
+export const _prefix = getPrefixCls(_role)
 
 // TODO: 聚焦收敛器
 const focusableElementsString =
@@ -64,12 +71,14 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       showHeaderDivider = true,
       showFooterDivider = true,
       focusElementOnClose = null,
-      destroyOnClose = false,
       trapFocus = true,
       returnFocusOnClose = true,
       contentOutside = false,
       width,
       height,
+      preload = false,
+      unmountOnClose = true,
+      innerRef,
       // transitionProps,
       ...rest
     },
@@ -90,7 +99,11 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     // 控制锁滚
     const visibleMounted = !transitionExited && !!modalElement
     const enabledScrollLock = lockScroll && visibleMounted
-    useScrollLock(modalElementRef, { enabled: enabledScrollLock })
+    useScrollLock(modalElementRef, {
+      enabled: enabledScrollLock,
+      // @ts-ignore
+      target: container?.parentNode,
+    })
 
     const onRequestCloseLatest = useLatestCallback(() => callAllFuncs(onCloseProp, onCancel)())
 
@@ -194,6 +207,8 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       }
     }, [onExitedLatest, transitionExitedAction, focusElementOnClose, returnFocusOnClose])
 
+    useImperativeHandle(innerRef, () => ({ close: transitionVisibleAction.off }))
+
     const hasHeader = title && closeable
     const hasFooter = footer !== null
 
@@ -211,9 +226,9 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
               modalElementRef.current?.focus()
             }
           }}
-          mountOnEnter
           onExited={onExited}
-          unmountOnExit={destroyOnClose}
+          mountOnEnter={!preload}
+          unmountOnExit={unmountOnClose}
         >
           <div
             role={role}
@@ -228,7 +243,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
               className={cx(`${prefixCls}__overlay`, overlayClassName)}
               onClick={maskClosable || onOverlayClick ? handleClickOverlay : undefined}
             />
-            <div className={`${prefixCls}__wrapper`}>
+            <div className={`${prefixCls}__wrapper`} style={{ width, height }}>
               {hasHeader ? (
                 <div
                   className={cx(
@@ -317,7 +332,7 @@ export interface ModalProps extends HiBaseHTMLProps<'div'> {
   /**
    * 指定 portal 的容器
    */
-  container?: (() => HTMLElement | null) | HTMLElement | null
+  container?: HTMLElement | null
   onExited?: () => void
   /**
    * 模态框标题
@@ -358,13 +373,15 @@ export interface ModalProps extends HiBaseHTMLProps<'div'> {
    */
   showFooterDivider?: boolean
   focusElementOnClose?: HTMLElement
-  destroyOnClose?: boolean
+  preload?: boolean
+  unmountOnClose?: boolean
   trapFocus?: boolean
   returnFocusOnClose?: boolean
   contentOutside?: boolean
   autoFocus?: boolean
   width?: React.ReactText
   height?: React.ReactText
+  innerRef?: React.RefObject<{ close: () => void }>
 }
 
 if (__DEV__) {

@@ -188,7 +188,7 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseD
   /**
    * 模态框标题
    */
-  title: React.ReactNode
+  title?: React.ReactNode
   /**
    * 自定义抽屉底部
    */
