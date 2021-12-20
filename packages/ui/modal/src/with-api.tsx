@@ -13,6 +13,7 @@ import { _prefix, Modal, ModalProps } from './Modal'
 const prefixCls = _prefix
 const selector = `.${prefixCls}-wrapper`
 
+// TODO: 抽离公告定义
 export const ModalType = {
   SUCCESS: 'success',
   ERROR: 'error',
@@ -25,12 +26,14 @@ export const ModalType = {
 export type ModalType = ValueOf<typeof ModalType>
 
 const confirmIconMap = {
+  // TODO: designToken 颜色抽离 css 为代码
   [ModalType.SUCCESS]: { icon: <CheckCircleOutlined />, color: '#1DA653' },
   [ModalType.ERROR]: { icon: <CloseCircleOutlined />, color: '#EB5252' },
   [ModalType.WARNING]: { icon: <ExclamationCircleOutlined />, color: '#e19d0b' },
   [ModalType.INFO]: { icon: <InfoCircleOutlined />, color: '#4284F5' },
 }
 
+// TODO： 抽离合并到 Toast API
 const open = ({
   className,
   title,
@@ -41,6 +44,7 @@ const open = ({
   type,
   content,
 }: ModalApiProps = {}) => {
+  // TODO: 考虑是否支持多个 Modal 共存
   let container: any = Container.getContainer(selector)
 
   const toastManagerRef = createRef<any>()
@@ -56,6 +60,7 @@ const open = ({
     width: 480,
     height: 240,
     onExited: () => {
+      // 卸载
       if (container) {
         unmountComponentAtNode(container)
         Container.removeContainer(selector)
@@ -80,7 +85,7 @@ const open = ({
               style: {
                 color: confirmIconMap[type].color,
                 fontSize: '48px',
-                marginRight: 12,
+                marginInlineEnd: 12,
               },
             })
           : null}
@@ -89,6 +94,7 @@ const open = ({
     ),
   })
 
+  // TODO：存在弹出时延迟感
   render(ClonedModal, container)
 }
 

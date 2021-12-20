@@ -51,31 +51,33 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       closeOnEsc = true,
       autoFocus = true,
       onEscKeyDown,
+      // TODO: 统一命名
       // closeOnOverlayClick = true,
       maskClosable = true,
       onOverlayClick,
       timeout = 300,
       onClose: onCloseProp,
-      onAfterOpen,
-      onAfterClose,
       onExited: onExitedProp,
       title,
       cancelText,
       confirmText,
       confirmLoading,
       footer,
+      // TODO: 分离 onCancel 和 onClose
       onCancel,
       onConfirm,
       container,
       closeIcon = defaultCloseIcon,
       showHeaderDivider = true,
+      // TODO: 废弃警告
       showFooterDivider = true,
       focusElementOnClose = null,
       trapFocus = true,
       returnFocusOnClose = true,
-      contentOutside = false,
+      // contentOutside = false,
       width,
       height,
+      // TODO: 统一性能优化参数
       preload = false,
       unmountOnClose = true,
       innerRef,
@@ -95,6 +97,8 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
 
     // 多任务以栈维护，可以控制显隐时序（后显先隐）
     useStackManager(modalElementRef, transitionVisible)
+
+    // TODO: 抽离 Hooks，和 drawer 复用
 
     // 控制锁滚
     const visibleMounted = !transitionExited && !!modalElement
@@ -145,6 +149,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
         // ESCAPE
         onEscClose(evt)
 
+        // TODO: 抽离 useTrapFocus hook
         if (!trapFocus) return
 
         // Find all focusable children
@@ -322,9 +327,7 @@ export interface ModalProps extends HiBaseHTMLProps<'div'> {
   closeable?: boolean
   closeIcon?: string
   lockScroll?: boolean
-  onAfterOpen?: () => void
   timeout?: number
-  onAfterClose?: () => void
   /**
    * 禁用 portal
    */
