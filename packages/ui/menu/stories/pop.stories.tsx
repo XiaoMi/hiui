@@ -12,7 +12,6 @@ export const Pop = () => {
             {
               content: '电视',
               id: 1,
-              icon: 'global',
             },
             {
               content: '小米MIX',
@@ -23,7 +22,6 @@ export const Pop = () => {
               children: [
                 {
                   content: '小米',
-                  icon: 'phone',
                   children: [
                     {
                       content: '小米9',

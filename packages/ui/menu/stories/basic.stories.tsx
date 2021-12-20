@@ -7,11 +7,11 @@ export const Basic = () => {
       <h1>Basic</h1>
       <div className="menu-basic__wrap">
         <Menu
+          showCollapse
           data={[
             {
               content: '电视',
               id: 1,
-              icon: 'global',
             },
             {
               content: '小米MIX',
@@ -22,7 +22,7 @@ export const Basic = () => {
               children: [
                 {
                   content: '小米',
-                  icon: 'phone',
+
                   children: [
                     {
                       content: '小米9',

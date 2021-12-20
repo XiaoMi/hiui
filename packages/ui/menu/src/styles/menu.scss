@@ -151,6 +151,25 @@ $prefix: '#{$component-prefix}-menu' !default;
     height: 100%;
     overflow: auto;
 
+    &.#{$prefix}--mini {
+      width: 56px;
+      overflow-x: hidden;
+    }
+
+    .#{$prefix}__toggle {
+      width: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: use-border-radius('normal');
+      height: 40px;
+
+      &:hover {
+        background-color: use-color('gray', 100);
+      }
+    }
+
     .#{$prefix}-item {
       &__inner {
         box-sizing: border-box;
@@ -160,6 +179,10 @@ $prefix: '#{$component-prefix}-menu' !default;
         margin-bottom: use-spacing(4);
         padding: 0 use-spacing(6);
         border-radius: use-border-radius('normal');
+
+        &--mini {
+          justify-content: center;
+        }
 
         &:hover {
           background-color: use-color('gray', 100);

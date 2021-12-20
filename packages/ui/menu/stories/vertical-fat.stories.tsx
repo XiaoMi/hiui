@@ -1,13 +1,13 @@
 import React from 'react'
 import Menu from '../src'
 
-export const HorizontalFat = () => {
+export const VerticalFat = () => {
   return (
     <>
-      <h1>水平胖菜单</h1>
+      <h1>垂直胖菜单</h1>
       <div className="menu-basic__wrap">
         <Menu
-          placement="horizontal"
+          placement="vertical"
           showAllSubMenus
           data={[
             {
@@ -23,7 +23,6 @@ export const HorizontalFat = () => {
               children: [
                 {
                   content: '小米',
-
                   children: [
                     {
                       content: '小米9',

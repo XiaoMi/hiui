@@ -22,7 +22,6 @@ export const Horizontal = () => {
               children: [
                 {
                   content: '小米',
-                  icon: 'phone',
                   children: [
                     {
                       content: '小米9',

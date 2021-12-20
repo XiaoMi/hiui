@@ -1,6 +1,6 @@
-import React, { forwardRef, useCallback } from 'react'
+import React, { forwardRef, useCallback, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { LeftOutlined } from '@hi-ui/icons'
+import { LeftOutlined, RightOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
 import { MenuItem } from './MenuItem'
 import MenuContext from './context'
@@ -26,13 +26,18 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className, `${prefixCls}--${placement}`)
+    const [mini, setMini] = useState(false)
+    const cls = cx(prefixCls, className, `${prefixCls}--${placement}`, {
+      [`${prefixCls}--mini`]: mini,
+    })
 
-    const onToggle = useCallback(() => {}, [])
+    const onToggle = useCallback(() => {
+      setMini(!mini)
+    }, [mini])
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <MenuContext.Provider value={{ placement, expandedType, showAllSubMenus }}>
+        <MenuContext.Provider value={{ placement, expandedType, showAllSubMenus, mini }}>
           <ul className={cx(`${prefixCls}__wrapper`)}>
             {data.map((d) => (
               <MenuItem {...d} key={d.id} level={1} />
@@ -40,7 +45,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
           </ul>
           {placement === 'vertical' && showCollapse && (
             <div className={cx(`${prefixCls}__toggle`)} onClick={onToggle}>
-              <LeftOutlined />
+              {mini ? <RightOutlined /> : <LeftOutlined />}
             </div>
           )}
         </MenuContext.Provider>
