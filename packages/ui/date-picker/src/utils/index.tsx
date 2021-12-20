@@ -17,6 +17,7 @@ import {
   FormatCalendarItem,
 } from '../types'
 import { CalendarColInfo } from '../hooks/useCalenderData'
+import { CalendarView } from '../components/calendar'
 
 const holiday = {
   PRCHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?',
@@ -40,7 +41,9 @@ export const deconstructDate = (original: Date | string) => {
  * @param {String} type
  */
 export const getView = (type: DatePickerType) => {
-  return type.includes('year') || type.includes('month') ? type.split('range')[0] : 'date'
+  return (type.includes('year') || type.includes('month')
+    ? type.split('range')[0]
+    : 'date') as CalendarView
 }
 
 /**

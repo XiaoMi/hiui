@@ -13,6 +13,13 @@ export const Basic = () => {
             console.log('onChange', date, dateStr)
           }}
         />
+        <DatePicker
+          altCalendarPreset="zh-CN"
+          dateMarkPreset="zh-CN"
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
         <h2>带默认值</h2>
         <DatePicker
           defaultValue={new Date()}

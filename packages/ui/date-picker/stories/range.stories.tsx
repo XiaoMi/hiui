@@ -15,9 +15,27 @@ export const Range = () => {
             console.log('onChange', date, dateStr)
           }}
         />
+        <DatePicker
+          type="daterange"
+          altCalendarPreset="zh-CN"
+          dateMarkPreset="zh-CN"
+          format="YYYY-MM-DD"
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
         <h2>年份</h2>
         <DatePicker
           type="yearrange"
+          defaultValue={{ start: new Date(), end: new Date() }}
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
+        <DatePicker
+          type="yearrange"
+          altCalendarPreset="zh-CN"
+          dateMarkPreset="zh-CN"
           defaultValue={{ start: new Date(), end: new Date() }}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
@@ -31,9 +49,27 @@ export const Range = () => {
             console.log('onChange', date, dateStr)
           }}
         />
+        <DatePicker
+          type="monthrange"
+          altCalendarPreset="zh-CN"
+          dateMarkPreset="zh-CN"
+          defaultValue={{ start: new Date(), end: new Date() }}
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
         <h2>周</h2>
         <DatePicker
           type="weekrange"
+          defaultValue={{ start: new Date(), end: new Date() }}
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
+        <DatePicker
+          type="weekrange"
+          altCalendarPreset="zh-CN"
+          dateMarkPreset="zh-CN"
           defaultValue={{ start: new Date(), end: new Date() }}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)

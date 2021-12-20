@@ -6,6 +6,12 @@ $input-container-class: '#{$prefix}__input' !default;
 $row-class: '#{$prefix}__row' !default;
 $cell-class: '#{$prefix}__cell' !default;
 
+
+$calendar-large-indicator-size: 40px;
+$calendar-large-indicator-border-radius: 8px;
+$calendar-large-diff: 6px;
+$calendar-large-background-border-radius: $calendar-large-indicator-border-radius + $calendar-large-diff/2;
+
 .#{$prefix} {
   position: relative;
   z-index: 1060;
@@ -14,20 +20,24 @@ $cell-class: '#{$prefix}__cell' !default;
     //width: 288px;
     font-size: 14px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     border-radius: use-border-radius('md');
     overflow: hidden;
 
-    &--range {
-      //width: 576px;
+    //&--range {
+    //  //width: 576px;
+    //
+    //  &.#{$prefix}__popper--large {
+    //    width: 866px;
+    //  }
+    //}
 
-      &.#{$prefix}__popper--large {
-        width: 866px;
-      }
-    }
+    //&--timeperiod,
+    //&--large {
+    //  width: 432px;
+    //}
 
-    &--timeperiod,
-    &--large {
+    &--timeperiod{
       width: 432px;
     }
 
@@ -35,9 +45,9 @@ $cell-class: '#{$prefix}__cell' !default;
       width: 468px;
     }
 
-    &--shortcuts {
-      width: 681px;
-    }
+    //&--shortcuts {
+    //  width: 681px;
+    //}
   }
 
   &__root {
@@ -337,15 +347,6 @@ $cell-class: '#{$prefix}__cell' !default;
       }
     }
 
-    //&:not(.#{$prefix}__cell--range) {
-    //  &:hover{
-    //    .#{$prefix}__cell-text{
-    //      background: use-color('brandblue',50);
-    //      color: use-color('brandblue',500);
-    //    }
-    //  }
-    //}
-
     &--out {
       color: rgba(44, 48, 78, 0.2);
     }
@@ -385,24 +386,6 @@ $cell-class: '#{$prefix}__cell' !default;
       }
     }
 
-    &--large {
-      .#{$prefix}__cell-text {
-        width: 48px;
-        height: 48px;
-        line-height: normal;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        font-size: 16px;
-      }
-
-      &.#{$prefix}__cell--range:not(.#{$prefix}__cell--out) {
-        &::before {
-          height: 48px;
-        }
-      }
-    }
-
     &--selected {
       // 周选择器需要特殊处理
       &:not(.#{$cell-class}--week-mode-select){
@@ -417,11 +400,7 @@ $cell-class: '#{$prefix}__cell' !default;
           }
 
           &__lunar{
-            color: use-color-static('white');
-          }
-
-          &__mark--rest{
-            color: use-color-static('white');
+            color: use-color('brandblue',200);
           }
         }
       }
@@ -432,9 +411,18 @@ $cell-class: '#{$prefix}__cell' !default;
           background: use-color('brandblue',500);
           color: use-color-static('white');
         }
+
+        .#{$prefix}{
+          &__lunar{
+            color: use-color-static('white');
+          }
+
+          &__mark{
+            color: use-color-static('white');
+          }
+        }
       }
     }
-
 
     &--range-start{
       border-bottom-left-radius: 16px;
@@ -444,6 +432,53 @@ $cell-class: '#{$prefix}__cell' !default;
     &--range-end{
       border-bottom-right-radius: 16px;
       border-top-right-radius: 16px;
+    }
+
+    &--large {
+      width: $calendar-large-indicator-size + $calendar-large-diff;
+      height: $calendar-large-indicator-size + $calendar-large-diff;
+
+      &.#{$cell-class}--range-start{
+        border-bottom-left-radius: $calendar-large-background-border-radius;
+        border-top-left-radius: $calendar-large-background-border-radius;
+      }
+
+      &.#{$cell-class}--range-end{
+        border-bottom-right-radius: $calendar-large-background-border-radius;
+        border-top-right-radius: $calendar-large-background-border-radius;
+      }
+
+      .#{$cell-class} {
+        &-text{
+          width: $calendar-large-indicator-size;
+          height: $calendar-large-indicator-size;
+          border-radius: $calendar-large-indicator-border-radius;
+          font-size: use-text-size('lg');
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-end;
+          line-height: 16px;
+        }
+
+        &-week-indicator{
+          height: $calendar-large-indicator-size;
+        }
+      }
+
+      &:first-child{
+        .#{$cell-class}-week-indicator{
+          margin-left: $calendar-large-diff/2;
+          border-radius: $calendar-large-indicator-border-radius 0 0 $calendar-large-indicator-border-radius;
+        }
+      }
+
+      &:last-child{
+        .#{$cell-class}-week-indicator{
+          margin-left: -$calendar-large-diff/2;
+          border-radius: 0 $calendar-large-indicator-border-radius $calendar-large-indicator-border-radius 0 ;
+        }
+      }
     }
   }
 
@@ -476,6 +511,14 @@ $cell-class: '#{$prefix}__cell' !default;
           }
           color: use-color-static('white');
         }
+
+        .#{$prefix}__mark,.#{$prefix}__lunar{
+          color: use-color-static('white');
+        }
+      }
+
+      .#{$prefix}__lunar{
+        color: use-color('brandblue',200);
       }
     }
 
@@ -492,6 +535,10 @@ $cell-class: '#{$prefix}__cell' !default;
           border-top-left-radius: 16px;
         }
 
+        &--large:first-child{
+          border-bottom-left-radius: $calendar-large-background-border-radius;
+          border-top-left-radius: $calendar-large-background-border-radius;
+        }
       }
     }
 
@@ -507,6 +554,11 @@ $cell-class: '#{$prefix}__cell' !default;
           border-bottom-right-radius: 16px;
           border-top-right-radius: 16px;
         }
+
+        &:last-child{
+          border-bottom-right-radius: $calendar-large-background-border-radius;
+          border-top-right-radius: $calendar-large-background-border-radius;
+        }
       }
     }
   }
@@ -517,11 +569,36 @@ $cell-class: '#{$prefix}__cell' !default;
   }
 
   &__lunar {
-    font-size: 12px;
-    color: rgba(204, 204, 204, 1);
+    font-size: use-text-size('sm');
+    color: use-color('gray',500);
+    transform: scale(0.8);
+    line-height: 16px;
+    margin-bottom: -1px;
 
     &--highlight {
       color: use-color('brandblue', 500);
+    }
+  }
+
+  &__mark {
+    position: absolute;
+    font-size: use-text-size('sm');
+    transform: scale(0.6);
+    right: -4px;
+    top: -2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &--rest {
+      color: use-color('green', 600);
+    }
+
+    &--work {
+      color: use-color('red', 600);
     }
   }
 
@@ -534,7 +611,7 @@ $cell-class: '#{$prefix}__cell' !default;
     cursor: pointer;
     position: relative;
     font-size: 14px;
-    flex: 1 1 100%;
+    width: 100%;
 
     &:not(.#{$prefix}__footer--disable):hover {
       color: use-color('brandblue', 500);
@@ -630,21 +707,6 @@ $cell-class: '#{$prefix}__cell' !default;
       &:hover {
         color: use-color('brandblue', 500);
       }
-    }
-  }
-
-  &__mark {
-    position: absolute;
-    font-size: 12px;
-    right: 0;
-    top: -2px;
-
-    &--rest {
-      color: rgba(29, 166, 83, 1);
-    }
-
-    &--work {
-      color: rgba(244, 65, 65, 1);
     }
   }
 

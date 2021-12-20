@@ -64,6 +64,7 @@ const Panel = () => {
     }
     if (type === 'week' && view === 'date') {
       // week picker
+      // 根据偏移判断当前使用的周格式
       const weekMethod = weekOffset ? 'isoWeek' : 'week'
       onPick([moment(date).startOf(weekMethod), moment(date).endOf(weekMethod)], false)
       return

@@ -213,7 +213,7 @@ const getDateRows = ({
 
   // *  dayCount: 当月天数
   // *  lastMonthDayCount: 上月总天数
-  // *  firstDayWeek: 当月第一天是周几
+  // *  firstDayWeek: 当月第一天是周几（不是现实的周几，而是在表中的偏移位置，展示位置）
   let firstDayWeek = _date.startOf('month').day() - weekOffset
   if (firstDayWeek === 0) {
     // 如果为0 代表该月第一天是周日，在日历上需要第二行开始显示

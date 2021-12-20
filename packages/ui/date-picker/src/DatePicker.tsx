@@ -115,7 +115,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       format,
       locale,
     })
-    const isLarge = altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset
+
     const [showPanel, setShowPanel] = useState(false)
     const [altCalendarPresetData, dateMarkPresetData] = useAltData({
       altCalendar,
@@ -214,8 +214,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       type === 'date' && showTime && `${prefixCls}__popper--time`,
       type.includes('range') && `${prefixCls}__popper--range`,
       type === 'timeperiod' && `${prefixCls}__popper--timeperiod`,
-      shortcuts && `${prefixCls}__popper--shortcuts`,
-      isLarge && `${prefixCls}__popper--large`
+      shortcuts && `${prefixCls}__popper--shortcuts`
     )
     const [attachEl, setAttachEl] = useState<HTMLElement | null>(null)
 

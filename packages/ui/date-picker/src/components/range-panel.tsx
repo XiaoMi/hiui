@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useCallback, useContext, useRef } from 'react'
 import classNames from 'classnames'
 import Header from './header'
-import Calendar from './calendar'
+import Calendar, { CalendarView } from './calendar'
 import moment from 'moment'
 import DPContext from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
-// import useFormat from '../hooks/useFormat'
 import _ from 'lodash'
 import { getView, parseRenderDates, genNewDates } from '../utils'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
@@ -38,7 +37,7 @@ const RangePanel = () => {
   } = useContext(DPContext)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
-  const [views, setViews] = useState([getView(type), getView(type)])
+  const [views, setViews] = useState<CalendarView[]>([getView(type), getView(type)])
   const [calRenderDates, setCalRenderDates] = useState<moment.Moment[]>([])
   const [range, setRange] = useState<CalenderSelectedRange>({
     start: null,
@@ -104,12 +103,14 @@ const RangePanel = () => {
    */
   const onCalenderPick = (date: moment.Moment, uIndex: number) => {
     calendarClickIsEnd.current = !calendarClickIsEnd.current
+
     if (type === 'timeperiod' && views[uIndex] === 'date') {
       onPick([date, moment(date).hour(date.hour() + timeInterval / 60)], true)
       onSelect(date, true)
       return
     }
-    if (type.includes(views[uIndex]) || type === 'weekrange') {
+    // V4修改：type === 'weekrange' -> views[uIndex] === 'date' （修正，周模式下，无法使用年份月份快捷切换面板BUG）
+    if (type.includes(views[uIndex]) || (type === 'weekrange' && views[uIndex] === 'date')) {
       setRanges(date)
     } else {
       const _innerDates = genNewDates(calRenderDates, date, uIndex)

@@ -9,6 +9,8 @@ import { CSSTransition } from 'react-transition-group'
 import { FormatCalendarItem } from '../types'
 import { cx } from '@hi-ui/classname'
 
+export type CalendarView = 'date' | 'year' | 'month'
+
 const Calendar = ({
   view = 'date',
   originDate,
@@ -18,7 +20,7 @@ const Calendar = ({
   // panelPosition,
   renderDate,
 }: {
-  view: string
+  view: CalendarView
   originDate: moment.Moment | null
   onPick: (date: moment.Moment) => void
   range?: CalenderSelectedRange
@@ -41,10 +43,13 @@ const Calendar = ({
     prefixCls,
   } = useContext(DPContext)
 
-  const largeCell = !!(altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset)
+  // const largeCell = !!(altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset)
 
-  // 是否处于周模式，选择器需要特殊处理
-  const isInWeekMode = useMemo(() => type.toLowerCase().includes('week'), [type])
+  // 是否处于周模式，选择器需要特殊处理(只有日期选择面板才有周模式)
+  const isInWeekMode = useMemo(() => type.toLowerCase().includes('week') && view === 'date', [
+    type,
+    view,
+  ])
 
   const [holidayFullName, setHolidayFullName] = useState('')
   const [holidayFullNameShow, setHolidayFullNameShow] = useState(false)
@@ -62,11 +67,12 @@ const Calendar = ({
     // panelPosition,
     disabledDate,
   })
+
   const [calendarCls, setCalenderCls] = useState(`${prefixCls}__calendar`)
 
-  const getTDClass = (td: CalendarColInfo, largeCell: boolean) => {
+  const getTDClass = (td: CalendarColInfo, isLarge: boolean) => {
     const _class = [`${prefixCls}__cell`]
-    if (largeCell) {
+    if (isLarge) {
       _class.push(`${prefixCls}__cell--large`)
       // _index === 6 && _class.push('hi-datepicker__cell--large--laster')
     }
@@ -97,6 +103,7 @@ const Calendar = ({
 
   const getWeeks = () => {
     const week = localeData.datePicker.week
+    // 根据偏移做数组移位，展示顶部星期文案
     return week.slice(weekOffset).concat(week.slice(0, weekOffset))
   }
 
@@ -180,6 +187,15 @@ const Calendar = ({
     }
   }
 
+  const isLarge = useMemo(() => {
+    const isNeedMorePlace = altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset
+    // V4新增逻辑：月选择、年选择，保持原样，无需增大
+    const isSelectDate =
+      !type.toLowerCase().includes('year') && !type.toLowerCase().includes('month')
+    // 只有 date 才需要大格子展示
+    return !!(isNeedMorePlace && isSelectDate && view === 'date')
+  }, [altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, type, view])
+
   const showHolidayDetail = (fullTimeInfo: FormatCalendarItem) => {
     clearTimeout(holidayTime.current)
     setHolidayFullName(fullTimeInfo.FullText || String(fullTimeInfo.text))
@@ -188,7 +204,7 @@ const Calendar = ({
       setHolidayFullNameShow(false)
     }, 2000) as any
   }
-  const renderAltCalendar = (cell: CalendarColInfo) => {
+  const renderAltCalendar = (cell: CalendarColInfo, isBelongFullOutOfRange: string) => {
     if (view.includes('year') || view.includes('month')) return
     if (
       Object.keys(altCalendarPresetData).length > 0 ||
@@ -216,6 +232,10 @@ const Calendar = ({
               }}
               // @ts-ignore
               value={cell.value}
+              type={cell.type}
+              weektype={cell.weekType}
+              // @ts-ignore
+              belong-full-out-of-range={isBelongFullOutOfRange}
               className={`${prefixCls}__lunar ${
                 fullTimeInfo.highlight ? `${prefixCls}__lunar--highlight` : ''
               }`}
@@ -231,11 +251,7 @@ const Calendar = ({
   }
 
   return (
-    <div
-      className={`${prefixCls}__calendar-wrap ${
-        largeCell ? `${prefixCls}__calendar-wrap--large` : ''
-      }`}
-    >
+    <div className={`${prefixCls}__calendar-wrap`}>
       <CSSTransition in={holidayFullNameShow} timeout={300} classNames={`${prefixCls}__indiaHoli`}>
         <div className={`${prefixCls}__indiaHoli`}>
           <div className={`${prefixCls}__indiaHoli-text`}>{holidayFullName}</div>
@@ -260,12 +276,12 @@ const Calendar = ({
               <tr
                 key={index}
                 className={cx(`${prefixCls}__row`, {
-                  // [`${prefixCls}__row--currentweek`]: row.weekNum === weekNum,
                   [`${prefixCls}__row--has-selected`]: row.some((item) => item.type === 'selected'),
                   [`${prefixCls}__row--has-start`]: row.some((item) => item.rangeStart),
                   [`${prefixCls}__row--has-end`]: row.some((item) => item.rangeEnd),
                   [`${prefixCls}__row--week-mode-select`]: isInWeekMode,
                   [`${prefixCls}__row--range-mode`]: range,
+                  [`${prefixCls}__row--large`]: isLarge,
                 })}
               >
                 {row.map((cell, _index) => {
@@ -275,11 +291,12 @@ const Calendar = ({
                       // @ts-ignore
                       value={cell.value}
                       type={cell.type}
+                      weektype={cell.weekType}
                       // 完全超出范围之外，所在的那一行，全部都在当前月之外
                       // @ts-ignore
                       belong-full-out-of-range={isBelongFullOutOfRange}
                       // className='hi-datepicker__cell'
-                      className={getTDClass(cell, largeCell)}
+                      className={getTDClass(cell, isLarge)}
                     >
                       {isInWeekMode && <div className={`${prefixCls}__cell-week-indicator`} />}
                       <div
@@ -287,6 +304,7 @@ const Calendar = ({
                         // @ts-ignore
                         value={cell.value}
                         type={cell.type}
+                        weektype={cell.weekType}
                         // 完全超出范围之外，所在的那一行，全部都在当前月之外
                         // @ts-ignore
                         belong-full-out-of-range={isBelongFullOutOfRange}
@@ -305,7 +323,7 @@ const Calendar = ({
                             ? '0' + (cell.text || cell.value)
                             : cell.text || cell.value}
                         </span>
-                        {renderAltCalendar(cell)}
+                        {renderAltCalendar(cell, isBelongFullOutOfRange)}
                       </div>
                     </td>
                   )

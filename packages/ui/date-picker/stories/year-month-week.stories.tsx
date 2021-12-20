@@ -30,10 +30,21 @@ export const YearMonthWeek = () => {
             console.log('onChange', date, dateStr)
           }}
         />
+        <DatePicker
+          type="week"
+          altCalendarPreset="zh-CN"
+          dateMarkPreset="zh-CN"
+          weekOffset={1}
+          defaultValue={new Date()}
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
         <h2>周(周日起始)</h2>
         <DatePicker
           type="week"
           defaultValue={new Date()}
+          weekOffset={0}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
