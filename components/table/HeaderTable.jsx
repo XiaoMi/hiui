@@ -145,7 +145,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
       .concat(cols)
       .filter((column) => !!column)
     const isStickyCol = _colums.some((item) => {
-      return typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
+      return typeof item.leftStickyWidth !== 'undefined'
     })
     return (
       <tr key={index}>
