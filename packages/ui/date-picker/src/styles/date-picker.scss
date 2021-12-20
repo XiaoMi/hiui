@@ -367,7 +367,10 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--out {
-      color: rgba(44, 48, 78, 0.2);
+      color: use-color('gray', 400);
+      .#{$prefix}__lunar{
+        color: use-color('gray', 400);
+      }
     }
 
     &--today {
@@ -389,20 +392,24 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--disabled {
-      color: rgba(44, 48, 78, 0.2);
+      color: use-color('gray', 400);
       cursor: not-allowed;
+      background: use-color('gray', 100);
 
-      &::before {
-        content: '';
-        display: block;
-        height: 24px;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(140, 140, 140, 0.1);
+      .#{$prefix}__lunar{
+        color: use-color('gray', 400);
       }
+      //&::before {
+      //  content: '';
+      //  display: block;
+      //  height: 24px;
+      //  position: absolute;
+      //  left: 0;
+      //  right: 0;
+      //  top: 50%;
+      //  transform: translateY(-50%);
+      //  background: rgba(140, 140, 140, 0.1);
+      //}
     }
 
     &--selected {
