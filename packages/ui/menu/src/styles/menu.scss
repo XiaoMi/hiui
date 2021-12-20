@@ -3,11 +3,13 @@
 $prefix: '#{$component-prefix}-menu' !default;
 
 .#{$prefix}-fat-menu {
+  background-color: use-color-static('white');
   margin: 0;
   font-size: use-text-size('normal');
   padding: use-spacing(4);
   display: flex;
   color: use-color('gray', 700);
+  border-radius: use-border-radius('normal');
   flex-wrap: wrap;
 
   &__group:not(:last-of-type) {
@@ -46,6 +48,8 @@ $prefix: '#{$component-prefix}-menu' !default;
   }
 }
 .#{$prefix}-popmenu {
+  background-color: use-color-static('white');
+  border-radius: use-border-radius('normal');
   margin: 0;
   font-size: use-text-size('normal');
   padding: use-spacing(4);
@@ -85,6 +89,7 @@ $prefix: '#{$component-prefix}-menu' !default;
 }
 
 .#{$prefix} {
+  background-color: use-color-static('white');
   color: use-color('gray', 700);
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
@@ -150,6 +155,7 @@ $prefix: '#{$component-prefix}-menu' !default;
     width: 232px;
     height: 100%;
     overflow: auto;
+    transition: width 0.3s;
 
     &.#{$prefix}--mini {
       width: 56px;
@@ -199,6 +205,7 @@ $prefix: '#{$component-prefix}-menu' !default;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        text-indent: 0.5px;
       }
     }
   }

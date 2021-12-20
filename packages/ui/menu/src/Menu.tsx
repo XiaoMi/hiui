@@ -17,15 +17,34 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       role = 'menu',
       className,
       data,
-      onClick,
       placement = 'vertical',
       showCollapse,
       expandedType = 'default',
       showAllSubMenus = false,
+      defaultExpandedIds,
+      defaultSelectedIds,
+      onClickSubMenu,
+      onClick,
       ...rest
     },
     ref
   ) => {
+    const [_selectedIds, updateSelectedIds] = useState(defaultSelectedIds || [])
+    const [_expandedIds, updateExpanedIds] = useState(defaultExpandedIds || [])
+    const clickMenu = useCallback((id: React.ReactText)=>{
+      updateSelectedIds(_selectedIds.concat(id))
+      if(onClick) {
+        onClick(id)
+      }
+      
+    },[onClick])
+    const clickSubMenu = useCallback((id: React.ReactText)=>{
+      updateExpanedIds(_selectedIds.concat(id))
+      if(onClickSubMenu) {
+        onClickSubMenu(id)
+      }
+
+    },[onClickSubMenu])
     const [mini, setMini] = useState(false)
     const cls = cx(prefixCls, className, `${prefixCls}--${placement}`, {
       [`${prefixCls}--mini`]: mini,
@@ -34,10 +53,10 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const onToggle = useCallback(() => {
       setMini(!mini)
     }, [mini])
-
+    
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <MenuContext.Provider value={{ placement, expandedType, showAllSubMenus, mini }}>
+        <MenuContext.Provider value={{ placement, expandedType, showAllSubMenus, mini, clickMenu, clickSubMenu, selectedIds: _selectedIds, expandedIds: _expandedIds }}>
           <ul className={cx(`${prefixCls}__wrapper`)}>
             {data.map((d) => (
               <MenuItem {...d} key={d.id} level={1} />
@@ -89,11 +108,13 @@ export interface MenuProps {
   showAllSubMenus?: boolean
   accordion?: boolean
   style?: React.CSSProperties
-  onClick?: (activeId: string | number, prevActiveId: string | number) => void
-  onClickSubMenu?: (subMenuIndexs: number) => void
+  onClick?: (menuId: React.ReactText) => void
+  onClickSubMenu?: (subMenuId: React.ReactText) => void
   onCollapse?: (collapsed: boolean) => void
   overlayClassName?: string
   expandedType: 'default' | 'pop'
+  defaultExpandedIds: React.ReactText[]
+  defaultSelectedIds: React.ReactText[]
 }
 
 if (__DEV__) {

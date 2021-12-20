@@ -5,7 +5,7 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="menu-basic__wrap">
+      <div className="menu-basic__wrap" style={{background:'#ccc',padding:20}}>
         <Menu
           showCollapse
           data={[

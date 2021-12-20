@@ -18,7 +18,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   children,
 }) => {
   const itemRef = useRef<HTMLLIElement | null>(null)
-  const { placement, expandedType, showAllSubMenus, mini } = useContext(MenuContext)
+  const { placement, expandedType, showAllSubMenus, mini, selectedIds, expandedIds, clickMenu, clickSubMenu } = useContext(MenuContext)
   const [expanded, setExpanded] = useState(false)
   return (
     <li
@@ -31,6 +31,10 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         className={cx(`${prefixCls}-item__inner`, { [`${prefixCls}-item__inner--mini`]: mini })}
         onClick={() => {
           if (children?.length) {
+            if(clickSubMenu) {
+              clickSubMenu(id)
+            }
+
             setExpanded(!expanded)
           }
         }}
@@ -43,17 +47,18 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             : {}
         }
       >
-        {mini &&
-          (icon || typeof content === 'string' ? (content as String).substring(0, 1) : content)}
-        {!mini && <span className={`${prefixCls}-item__content`}>{content}</span>}
+        {icon}
+        <span className={`${prefixCls}-item__content`}>{content}</span>
         {/* 垂直菜单-纵向展开 */}
         {children?.length &&
+          !mini &&
           placement === 'vertical' &&
           expandedType === 'default' &&
           !showAllSubMenus &&
           (expanded ? <UpOutlined /> : <DownOutlined />)}
         {/* 垂直菜单-弹出展开 */}
         {children?.length &&
+          !mini &&
           placement === 'vertical' &&
           (expandedType === 'pop' || showAllSubMenus) && <RightOutlined />}
         {/* 水平菜单 */}
@@ -66,6 +71,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
       {/* 垂直菜单-纵向展开 */}
       {children?.length &&
         placement === 'vertical' &&
+        !mini &&
         !showAllSubMenus &&
         expanded &&
         expandedType === 'default' && (
@@ -85,7 +91,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             visible={expanded}
             attachEl={itemRef.current}
             placement={'right-start'}
-            gutterGap={level === 1 ? 8 : 16}
+            gutterGap={16}
             onClose={() => {
               setExpanded(false)
             }}
@@ -103,7 +109,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
           visible={expanded}
           attachEl={itemRef.current}
           placement={'right-start'}
-          gutterGap={8}
+          gutterGap={16}
           onClose={() => {
             setExpanded(false)
           }}

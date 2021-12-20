@@ -5,7 +5,7 @@ export const VerticalFat = () => {
   return (
     <>
       <h1>垂直胖菜单</h1>
-      <div className="menu-basic__wrap">
+      <div className="menu-basic__wrap" style={{background:'#ccc',padding:20}}>
         <Menu
           placement="vertical"
           showAllSubMenus
