@@ -3,19 +3,27 @@ import classNames from 'classnames'
 import Header from './header'
 import Calendar from './calendar'
 import moment from 'moment'
-import DPContext from '../context'
+import DPContext, { DPContextData } from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
 import { getView, genNewDates } from '../utils'
 import { useTimePickerData } from '../hooks/useTimePickerData'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
 import { getBelongWeekRange } from '../utils/week'
+import { CalenderSelectedRange } from '../hooks/useCalenderData'
 
-const Panel = () => {
+interface PanelProps {
+  onPick: DPContextData['onPick']
+  outDate: (moment.Moment | null)[]
+  disabledDate: DPContextData['disabledDate']
+  range?: CalenderSelectedRange
+}
+const Panel = (props: PanelProps) => {
+  const { onPick, outDate, range, disabledDate } = props
   const {
-    outDate,
+    // outDate,
     type,
-    onPick,
+    // onPick,
     localeData,
     showTime,
     theme,
@@ -143,12 +151,14 @@ const Panel = () => {
               originDate={outDate[0]}
               onPick={onCalenderPick}
               view={view}
+              disabledDate={disabledDate}
+              range={range}
               // panelPosition="left"
             />
           </React.Fragment>
         )}
       </div>
-      {type === 'date' && showTime && (
+      {showTime && (
         <div className={`${prefixCls}__panel__time-container`}>
           <div className={`${prefixCls}__panel__time-header`}>{timePickerData[0]}</div>
           <div className={`${prefixCls}__panel__time-content`}>

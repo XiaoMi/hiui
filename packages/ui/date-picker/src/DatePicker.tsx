@@ -23,6 +23,7 @@ import Panel from './components/panel'
 import RangePanel from './components/range-panel'
 import { DatePickerProps, DatePickerType } from './types'
 import { getBelongWeek, getBelongWeekYear } from './utils/week'
+import { DateRangeTimePanel } from './components/date-range-time-panel'
 
 const DATE_PICKER_PREFIX = getPrefixCls('date-picker')
 
@@ -81,6 +82,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     // 此处应为历史兼容，需要兼容 max maxDate
     const [max, setMax] = useState(configMax || maxDate || null)
     const [min, setMin] = useState(configMin || minDate || null)
+    const [dateRangeTimePanelNow, setDateRangeTimePanelNow] = useState(0)
 
     useEffect(() => {
       setMax(configMax || maxDate || null)
@@ -242,6 +244,24 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     )
     const [attachEl, setAttachEl] = useState<HTMLElement | null>(null)
 
+    const isInDateRangeTimeMode = useMemo(() => type === 'daterange' && showTime, [type, showTime])
+
+    const popContent = useMemo(() => {
+      // 日期时间范围选择器特殊处理
+      if (isInDateRangeTimeMode) {
+        return <DateRangeTimePanel nowIndex={dateRangeTimePanelNow} />
+      }
+      return (
+        <div className={popperCls}>
+          {type.includes('range') || type === 'timeperiod' ? (
+            <RangePanel />
+          ) : (
+            <Panel onPick={onPick} outDate={outDate} disabledDate={disabledDate} />
+          )}
+        </div>
+      )
+    }, [type, onPick, onSelect, outDate, disabledDate, popperCls, isInDateRangeTimeMode])
+
     return (
       <DPContext.Provider
         value={{
@@ -283,6 +303,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           onSelect,
           prefixCls,
           showPanel,
+          isInDateRangeTimeMode,
         }}
       >
         <div className={cx(prefixCls, className)} {...otherProps}>
@@ -290,11 +311,13 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             inputChangeEvent={inputChangeEvent}
             onClear={onClear}
             inputFocus={inputFocus}
-            onTrigger={() => {
+            onTrigger={(index) => {
+              setDateRangeTimePanelNow(index)
               setShowPanel(true)
               setInputFocus(true)
             }}
             setAttachEl={setAttachEl}
+            dateRangeTimePanelNow={dateRangeTimePanelNow}
           />
           <PopperPortal
             visible={showPanel}
@@ -304,9 +327,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             unmountOnClose={false}
             preload
           >
-            <div className={popperCls}>
-              {type.includes('range') || type === 'timeperiod' ? <RangePanel /> : <Panel />}
-            </div>
+            {popContent}
           </PopperPortal>
         </div>
       </DPContext.Provider>

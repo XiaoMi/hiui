@@ -175,10 +175,12 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     input {
       outline: none;
       border: 0;
-      height: 22px;
-      line-height: 22px;
-      padding-left: 12px;
+      height: 24px;
+      line-height: 24px;
       width: 190px;
+      background: transparent;
+      padding: 0;
+      margin: 0;
 
       &::-webkit-input-placeholder {
         color: use-color('gray', 400);
@@ -196,11 +198,27 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     align-items: center;
     width: calc(100% - 2px);
     height: calc(100% - 2px);
-    background: use-color-static('white');
     border-radius: use-border-radius('md');
     font-size: use-text-size('normal');
+    background: use-color-static('white');
     color: use-color('gray', 700);
     overflow: hidden;
+  }
+
+  &__input-selector{
+    display: flex;
+    margin: 0 12px;
+    border-radius: use-border-radius('normal');
+
+    &--date-time-range{
+      &:hover{
+        background: use-color('brandblue',50);
+      }
+    }
+
+    &--active{
+      background: use-color('brandblue',50);
+    }
   }
 
   &__panel {
@@ -230,6 +248,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       border-bottom:1px solid use-color('gray',200);
       line-height: 40px;
       text-align: center;
+      font-size: use-text-size('normal');
     }
 
     &__time-content{
@@ -581,7 +600,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
           border-top-right-radius: 16px;
         }
 
-        &:last-child{
+        &--large:last-child{
           border-bottom-right-radius: $calendar-large-background-border-radius;
           border-top-right-radius: $calendar-large-background-border-radius;
         }

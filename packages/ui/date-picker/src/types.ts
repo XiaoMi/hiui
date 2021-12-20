@@ -3,6 +3,8 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 import { PopperJS } from '@hi-ui/popper'
 import moment from 'moment'
 
+export type CalendarView = 'date' | 'year' | 'month'
+
 export interface DateRange {
   start: Date | string | number | undefined | null
   end: Date | string | number | undefined | null
@@ -67,7 +69,7 @@ export type DatePickerAltCalendarPreset = 'zh-CN' | 'id-ID'
 
 export type DateMarkRender = (currentDate: number, today: number) => React.ReactNode
 
-export type DisabledDate = (currentDate: Date) => boolean
+export type DisabledDate = (currentDate: Date, view: CalendarView) => boolean
 
 type ExtendsType = Omit<HiBaseHTMLProps<'div'>, 'placeholder'>
 

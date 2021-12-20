@@ -1,15 +1,13 @@
 import React, { useContext, useState, useEffect, useRef, useMemo } from 'react'
 import classNames from 'classnames'
-import DPContext from '../context'
+import DPContext, { DPContextData } from '../context'
 import moment from 'moment'
 import useCalenderData, { CalendarColInfo, CalenderSelectedRange } from '../hooks/useCalenderData'
 import _ from 'lodash'
 import { getFullTime } from '../utils'
 import { CSSTransition } from 'react-transition-group'
-import { FormatCalendarItem } from '../types'
+import { CalendarView, FormatCalendarItem } from '../types'
 import { cx } from '@hi-ui/classname'
-
-export type CalendarView = 'date' | 'year' | 'month'
 
 const Calendar = ({
   view = 'date',
@@ -19,6 +17,7 @@ const Calendar = ({
   mouseMove,
   // panelPosition,
   renderDate,
+  disabledDate,
 }: {
   view: CalendarView
   originDate: moment.Moment | null
@@ -26,6 +25,7 @@ const Calendar = ({
   range?: CalenderSelectedRange
   mouseMove?: (date: moment.Moment) => void
   renderDate: moment.Moment | null
+  disabledDate: DPContextData['disabledDate']
 }) => {
   const {
     weekOffset,
@@ -39,7 +39,6 @@ const Calendar = ({
     dateMarkPreset,
     altCalendarPresetData,
     dateMarkPresetData,
-    disabledDate,
     prefixCls,
   } = useContext(DPContext)
 

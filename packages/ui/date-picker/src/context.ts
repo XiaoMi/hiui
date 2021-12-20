@@ -42,7 +42,7 @@ type ExtendsType = Omit<
     >
   >
 
-interface DPContextData extends ExtendsType {
+export interface DPContextData extends ExtendsType {
   prefixCls: string
   localeData: LocaleData
   outDate: (moment.Moment | null)[]
@@ -53,5 +53,6 @@ interface DPContextData extends ExtendsType {
   showPanel: boolean
   min: Date | null
   max: Date | null
+  isInDateRangeTimeMode: boolean
 }
 export default DPContext

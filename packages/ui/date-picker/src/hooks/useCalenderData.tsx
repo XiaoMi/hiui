@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import moment from 'moment'
 import { DAY_MILLISECONDS } from '../utils/constants'
-import _ from 'lodash'
 import { DatePickerType, DisabledDate } from '../types'
 import { LocaleData } from '../context'
 import { getBelongWeekBoundary } from '../utils/week'
@@ -86,14 +85,20 @@ const getYearOrMonthRows = ({
         const _m = currentYM.month()
         if (disabledDate && view.includes('year')) {
           // col.type = disabledDate(_y) ? 'disabled' : col.type
-          col.type = disabledDate(moment().set('year', _y).set('month', 1).set('date', 1).toDate())
+          col.type = disabledDate(
+            moment().set('year', _y).set('month', 1).set('date', 1).toDate(),
+            'year'
+          )
             ? 'disabled'
             : col.type
         }
         if (disabledDate && view.includes('month')) {
           // col.type = disabledDate(_y + '-' + _m) ? 'disabled' : col.type
           // 此处 _m - 1 是由于 Date 中的 month 是 0 - 11
-          col.type = disabledDate(moment().set('year', _y).set('month', _m).set('date', 1).toDate())
+          col.type = disabledDate(
+            moment().set('year', _y).set('month', _m).set('date', 1).toDate(),
+            'month'
+          )
             ? 'disabled'
             : col.type
         }
@@ -136,12 +141,18 @@ const getYearOrMonthRows = ({
       const _y = currentYM.year()
       const _m = currentYM.month()
       if (disabledDate && view.includes('year')) {
-        col.type = disabledDate(moment().set('year', _y).set('month', 1).set('date', 1).toDate())
+        col.type = disabledDate(
+          moment().set('year', _y).set('month', 1).set('date', 1).toDate(),
+          'year'
+        )
           ? 'disabled'
           : col.type
       }
       if (disabledDate && view.includes('month')) {
-        col.type = disabledDate(moment().set('year', _y).set('month', _m).set('date', 1).toDate())
+        col.type = disabledDate(
+          moment().set('year', _y).set('month', _m).set('date', 1).toDate(),
+          'month'
+        )
           ? 'disabled'
           : col.type
       }
@@ -243,7 +254,7 @@ const getDateRows = ({
       const isDisabled =
         currentTime.isBefore(moment(min)) ||
         currentTime.isAfter(moment(max)) ||
-        (disabledDate && disabledDate(currentTime.toDate())) // isDisabled cell
+        (disabledDate && disabledDate(currentTime.toDate(), 'date')) // isDisabled cell
       if (i === 0) {
         // 处理第一行的日期数据
         if (j >= firstDayWeek) {
@@ -330,7 +341,7 @@ const getDateRows = ({
 export interface CalenderSelectedRange {
   start: moment.Moment | null
   end: moment.Moment | null
-  selecting: boolean
+  selecting?: boolean
 }
 
 export type CalendarRowType = 'normal' | 'selected' | 'today' | 'disabled' | 'next' | 'prev'

@@ -34,6 +34,7 @@ const RangePanel = () => {
     disabledSeconds,
     showPanel,
     prefixCls,
+    disabledDate,
   } = useContext(DPContext)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
@@ -276,6 +277,7 @@ const RangePanel = () => {
                 view={views[0]}
                 range={range}
                 mouseMove={onMouseMove}
+                disabledDate={disabledDate}
                 // 暂未找到此 props
                 // panelPosition="left"
               />
@@ -309,6 +311,7 @@ const RangePanel = () => {
                   view={views[1]}
                   onPick={(date) => onCalenderPick(date, 1)}
                   mouseMove={onMouseMove}
+                  disabledDate={disabledDate}
                   // 暂未找到此 props
                   // leftDate={calRenderDates[0]}
                   // 暂未找到此 props
