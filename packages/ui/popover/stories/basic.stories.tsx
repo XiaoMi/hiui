@@ -6,8 +6,8 @@ export const Basic = () => {
   const title = <span>Popover Title</span>
   const content = (
     <div>
-      <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
-      <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
+      <div>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</div>
+      <div>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</div>
     </div>
   )
 
@@ -15,7 +15,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="popover-basic__wrap">
-        <Popover title={title} content={content} trigger="hover">
+        <Popover title={title} content={content} trigger="click">
           <Button>trigger</Button>
         </Popover>
       </div>

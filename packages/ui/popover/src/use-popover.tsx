@@ -133,6 +133,8 @@ export const usePopover = ({
       arrow: true,
       placement: 'top',
       zIndex: 1060,
+      // @DesignToken 10
+      gutterGap: 14,
     })
 
     return {
