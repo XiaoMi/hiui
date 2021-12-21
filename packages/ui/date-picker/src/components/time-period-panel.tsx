@@ -27,7 +27,8 @@ const TimePeriodPanel = ({
 
   useEffect(() => {
     setTimeout(() => {
-      listEl.current && (listEl.current.scrollTop = getActiveIndex() * 37)
+      console.error(getActiveIndex())
+      listEl.current && (listEl.current.scrollTop = getActiveIndex() * 36)
     }, 0)
   }, [getActiveIndex])
 

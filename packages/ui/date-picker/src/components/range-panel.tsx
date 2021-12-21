@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useContext, useRef } from 'react'
 import classNames from 'classnames'
 import Header from './header'
-import Calendar, { CalendarView } from './calendar'
+import Calendar from './calendar'
 import moment from 'moment'
 import DPContext from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
@@ -12,6 +12,7 @@ import { useTimePickerData } from '../hooks/useTimePickerData'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import TimePeriodPanel from './time-period-panel'
 import { CalenderSelectedRange } from '../hooks/useCalenderData'
+import { CalendarView } from '../types'
 
 const RangePanel = () => {
   const {
@@ -172,20 +173,23 @@ const RangePanel = () => {
   const onTimePeriodPick = useCallback(
     (ts1, ts2) => {
       const [leftDate] = _.cloneDeep(calRenderDates)
-      if (outDate[0]) {
-        onPick([
-          moment(leftDate)
-            .hour(parseInt(ts1))
-            .minute(Number(moment(ts1, 'HH:mm').format('mm')))
-            .second(0),
-          moment(leftDate)
-            .hour(parseInt(ts2))
-            .minute(Number(moment(ts2, 'HH:mm').format('mm')))
-            .second(0),
-        ])
+      if (leftDate) {
+        onPick(
+          [
+            moment(leftDate)
+              .hour(parseInt(ts1))
+              .minute(Number(moment(ts1, 'HH:mm').format('mm')))
+              .second(0),
+            moment(leftDate)
+              .hour(parseInt(ts2))
+              .minute(Number(moment(ts2, 'HH:mm').format('mm')))
+              .second(0),
+          ],
+          true
+        )
       }
     },
-    [calRenderDates]
+    [calRenderDates, onPick]
   )
 
   const shortcutsClickEvent = (item: any) => {

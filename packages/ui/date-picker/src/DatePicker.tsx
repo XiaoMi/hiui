@@ -214,7 +214,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         const isChange = _outDate.some((od, index) => {
           return od && !od.isSame(cacheDate.current![index])
         })
-        isChange && callback(_outDate, showTime || type === 'daterange')
+        // 只有在展示时间、类型等于日期范围或者时间段选择的时候，提交改变通知外部
+        isChange && callback(_outDate, showTime || type === 'daterange' || type === 'timeperiod')
 
         changeOutDate(_outDate)
       }
