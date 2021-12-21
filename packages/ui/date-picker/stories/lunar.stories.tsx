@@ -32,11 +32,19 @@ export const Lunar = () => {
             const currentday = DatePicker.format(customValue, 'yyyy/M/D')
 
             if (date === '2020/4/8') {
-              return <span style={{ color: currentday === '2020/4/8' ? '#fff' : '#f63' }}>米</span>
+              return (
+                <span style={{ color: '#ff6900', transform: 'scale(0.6)', fontWeight: 'bold' }}>
+                  米
+                </span>
+              )
             } else if (date === yesterday) {
-              return <span>昨</span>
+              return (
+                <span style={{ color: '#63bbd0', transform: 'scale(0.6)', fontWeight: 'bold' }}>
+                  昨
+                </span>
+              )
             } else {
-              return null
+              return ''
             }
           }}
           onChange={(date, dateStr) => {

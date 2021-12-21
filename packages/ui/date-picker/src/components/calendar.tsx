@@ -223,7 +223,19 @@ const Calendar = ({
       }) as FormatCalendarItem
       return (
         <React.Fragment>
-          {fullTimeInfo.nodeMark}
+          {fullTimeInfo.nodeMark && (
+            <div
+              className={`${prefixCls}__node-mark`}
+              // @ts-ignore
+              value={cell.value}
+              type={cell.type}
+              weektype={cell.weekType}
+              // @ts-ignore
+              belong-full-out-of-range={isBelongFullOutOfRange}
+            >
+              {fullTimeInfo.nodeMark}
+            </div>
+          )}
           {fullTimeInfo.text ? (
             <span
               onMouseEnter={() => {

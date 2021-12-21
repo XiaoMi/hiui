@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 import request from 'axios'
@@ -8,6 +8,7 @@ import {
   CalendarAltCalendarPreset,
   CalendarItem,
   CalendarMarkPreset,
+  CalendarView,
   DateMarkRender,
   DatePickerAltCalendarPreset,
   DatePickerProps,
@@ -17,7 +18,7 @@ import {
   FormatCalendarItem,
 } from '../types'
 import { CalendarColInfo } from '../hooks/useCalenderData'
-import { CalendarView } from '../components/calendar'
+// import { CalendarView } from '../components/calendar'
 import { getBelongWeekBoundary } from './week'
 
 const holiday = {
@@ -143,9 +144,9 @@ const altCalendarText = (
   }
   return lunarcellinfo.text
 }
-const getMarkNode = (node: React.ReactNode) => {
-  return <span className="hi-datepicker__lunar hi-datepicker__holiday">{node}</span>
-}
+// const getMarkNode = (node: React.ReactNode) => {
+//   return <span className="hi-datepicker__lunar hi-datepicker__holiday">{node}</span>
+// }
 const markRender = (
   datainfo: string,
   dateMarkRender: DateMarkRender | undefined,
@@ -156,7 +157,7 @@ const markRender = (
     ? dateMarkRender(new Date(datainfo).getTime(), new Date().getTime())
     : false
   if (markRenderNode) {
-    return getMarkNode(markRenderNode)
+    return markRenderNode
   }
   if (dateMarkPresetData) {
     return dateMarkPresetData[datainfo]

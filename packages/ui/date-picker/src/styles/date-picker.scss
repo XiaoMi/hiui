@@ -502,8 +502,9 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: flex-end;
+          justify-content: center;
           line-height: 16px;
+          box-sizing: border-box;
         }
 
         &-week-indicator{
@@ -618,7 +619,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     color: use-color('gray',500);
     transform: scale(0.8);
     line-height: 16px;
-    margin-bottom: -1px;
+    margin-bottom: -8px;
 
     &--highlight {
       color: use-color('brandblue', 500);
@@ -626,17 +627,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   }
 
   &__mark {
-    position: absolute;
-    font-size: use-text-size('sm');
     transform: scale(0.6);
-    right: -4px;
-    top: -2px;
-    width: 20px;
-    height: 20px;
-    border-radius: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
     &--rest {
       color: use-color('green', 600);
@@ -813,5 +804,17 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     align-items: center;
     flex-wrap: wrap;
     flex-direction: row-reverse;
+  }
+
+  &__node-mark{
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    width: 0;
+    height: 0;
+    font-size: use-text-size('sm');
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
