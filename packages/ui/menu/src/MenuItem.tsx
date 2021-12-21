@@ -121,7 +121,6 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         placement === 'vertical' &&
         mini &&
         !showAllSubMenus &&
-        expandedIds?.includes(id) &&
         expandedType === 'default' &&
         (level === 1 ? (
           <PopperPortal
