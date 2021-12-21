@@ -46,6 +46,8 @@ const RangePanel = () => {
     end: null,
     selecting: false,
   })
+  // 时间段选择值
+  const [timePeriod, setTimePeriod] = useState(['', ''])
 
   useEffect(() => {
     const _outDate = _.cloneDeep(outDate)
@@ -54,6 +56,11 @@ const RangePanel = () => {
       end: _outDate[1],
       selecting: !!(_outDate[0] && !_outDate[1]),
     })
+    // 更新时间端值
+    setTimePeriod([
+      _outDate[0] ? _outDate[0].format('HH:mm') : '',
+      _outDate[1] ? _outDate[1].format('HH:mm') : '',
+    ])
   }, [outDate])
 
   useEffect(() => {
@@ -171,7 +178,8 @@ const RangePanel = () => {
     setCalRenderDates(_innerDates)
   }
   const onTimePeriodPick = useCallback(
-    (ts1, ts2) => {
+    (ts1: string, ts2: string) => {
+      setTimePeriod([ts1.trim(), ts2.trim()])
       const [leftDate] = _.cloneDeep(calRenderDates)
       if (leftDate) {
         onPick(
@@ -291,7 +299,12 @@ const RangePanel = () => {
         <div className={`${prefixCls}__panel--right`}>
           {calRenderDates[1] &&
             (type === 'timeperiod' ? (
-              <TimePeriodPanel date={calRenderDates[0]} onTimePeriodPick={onTimePeriodPick} />
+              <TimePeriodPanel
+                date={calRenderDates[0]}
+                onTimePeriodPick={onTimePeriodPick}
+                value={timePeriod}
+                showPanel={showPanel}
+              />
             ) : (
               <React.Fragment>
                 <Header
