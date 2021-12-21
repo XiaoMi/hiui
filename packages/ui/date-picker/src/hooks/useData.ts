@@ -8,7 +8,7 @@ interface IUseDateConfig {
   defaultValue: DatePickerValue
   format?: string
   locale?: string
-  cacheDate: React.MutableRefObject<null>
+  cacheDate: React.MutableRefObject<(moment.Moment | null)[]>
   type: DatePickerType
   weekOffset: number
 }

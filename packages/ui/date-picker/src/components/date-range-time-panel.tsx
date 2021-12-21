@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import HiButton from '@hi-ui/button'
 import DPContext, { DPContextData } from '../context'
 import Panel from './panel'
 import { CalenderSelectedRange } from '../hooks/useCalenderData'
@@ -7,12 +8,13 @@ import { CalendarView } from '../types'
 
 interface DateRangeTimePanelProps {
   nowIndex: number
+  onChangeNowIndex: (targetIndex: number) => void
 }
 
 // 选择日期范围，并且希望选择时间
 export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
-  const { outDate, onPick, disabledDate } = useContext(DPContext)
-  const { nowIndex } = props
+  const { outDate, onPick, disabledDate, prefixCls } = useContext(DPContext)
+  const { nowIndex, onChangeNowIndex } = props
 
   const [range, setRange] = useState<CalenderSelectedRange>({
     start: null,
@@ -65,6 +67,31 @@ export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
     [range, disabledDate, nowIndex]
   )
 
+  const onConfirmButtonClick = useCallback(() => {
+    if (range.start && !range.end) {
+      onChangeNowIndex(1)
+    } else if (!range.start && range.end) {
+      onChangeNowIndex(0)
+    } else if (range.start && range.end) {
+      const newRange = { ...range }
+      // 保持前后关系一致
+      if (range.start.isAfter(range.end)) {
+        const temp = newRange.start
+        newRange.start = newRange.end
+        newRange.end = temp
+        setRange(newRange)
+      }
+      onPick(
+        [newRange.start && newRange.start.clone(), newRange.end && newRange.end.clone()],
+        false
+      )
+    }
+  }, [range, onPick, onChangeNowIndex])
+
+  const isConfirmButtonDisabled = useMemo(() => {
+    return nowIndex === 0 ? !range.start : !range.end
+  }, [nowIndex, range])
+
   return (
     <React.Fragment>
       <Panel
@@ -73,7 +100,16 @@ export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
         outDate={panelData}
         range={range}
       />
-      <div></div>
+      <div className={`${prefixCls}__date-range-time-bottom`}>
+        <HiButton
+          type={'primary'}
+          size="small"
+          disabled={isConfirmButtonDisabled}
+          onClick={onConfirmButtonClick}
+        >
+          确认
+        </HiButton>
+      </div>
     </React.Fragment>
   )
 }

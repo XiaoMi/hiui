@@ -804,4 +804,14 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       transition: all 0.3s ease-in;
     }
   }
+
+  &__date-range-time-bottom{
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 8px;
+    border-top: 1px solid use-color('gray', 100);
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+  }
 }

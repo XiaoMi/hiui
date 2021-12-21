@@ -92,7 +92,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       setMin(configMin || minDate || null)
     }, [configMin, minDate])
 
-    const cacheDate = useRef(null)
+    const cacheDate = useRef<(moment.Moment | null)[]>([])
     const [inputFocus, setInputFocus] = useState(false)
     const [type, setType] = useState<DatePickerType>(propType)
     useEffect(() => {
@@ -196,20 +196,43 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       changeOutDate([...dates])
     }
 
-    const onPopperClose = useCallback(() => {
-      const outDateValue = outDate[0]
-      const isValid = moment(outDateValue).isValid()
-      // @ts-ignore
-      const { startDate, endDate } = isValid && getInRangeDate(outDate[0], outDate[1], max, min)
-      const _outDate = isValid ? [moment(startDate), moment(endDate)] : [null]
-      resetStatus()
-      const isChange = _outDate.some((od, index) => {
-        return od && !od.isSame(cacheDate.current![index])
-      })
-      isChange && callback(_outDate, showTime || type === 'daterange')
+    const resetStatus = useCallback(() => {
+      setShowPanel(false)
+      setInputFocus(false)
+    }, [])
 
-      changeOutDate(_outDate)
-    }, [outDate])
+    const isInDateRangeTimeMode = useMemo(() => type === 'daterange' && showTime, [type, showTime])
+
+    const onPopperClose = useCallback(() => {
+      resetStatus()
+      if (!isInDateRangeTimeMode) {
+        const outDateValue = outDate[0]
+        const isValid = moment(outDateValue).isValid()
+        // @ts-ignore
+        const { startDate, endDate } = isValid && getInRangeDate(outDate[0], outDate[1], max, min)
+        const _outDate = isValid ? [moment(startDate), moment(endDate)] : [null]
+        const isChange = _outDate.some((od, index) => {
+          return od && !od.isSame(cacheDate.current![index])
+        })
+        isChange && callback(_outDate, showTime || type === 'daterange')
+
+        changeOutDate(_outDate)
+      }
+      // 日期时间范围选择模式，弹窗关闭，重新刷入缓存，视作取消
+      else {
+        changeOutDate(cacheDate.current!.map((item) => item && item.clone()))
+      }
+    }, [
+      outDate,
+      callback,
+      min,
+      max,
+      showTime,
+      type,
+      resetStatus,
+      changeOutDate,
+      isInDateRangeTimeMode,
+    ])
 
     const onClear = () => {
       resetStatus()
@@ -217,11 +240,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       // @ts-ignore
       onChange(null, '')
     }
-
-    const resetStatus = useCallback(() => {
-      setShowPanel(false)
-      setInputFocus(false)
-    }, [])
 
     const onSelect = useCallback(
       (date, ...arg) => {
@@ -244,12 +262,15 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     )
     const [attachEl, setAttachEl] = useState<HTMLElement | null>(null)
 
-    const isInDateRangeTimeMode = useMemo(() => type === 'daterange' && showTime, [type, showTime])
-
     const popContent = useMemo(() => {
       // 日期时间范围选择器特殊处理
       if (isInDateRangeTimeMode) {
-        return <DateRangeTimePanel nowIndex={dateRangeTimePanelNow} />
+        return (
+          <DateRangeTimePanel
+            nowIndex={dateRangeTimePanelNow}
+            onChangeNowIndex={setDateRangeTimePanelNow}
+          />
+        )
       }
       return (
         <div className={popperCls}>
