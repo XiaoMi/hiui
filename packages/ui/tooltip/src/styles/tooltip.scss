@@ -12,7 +12,7 @@ $prefix: '#{$component-prefix}-tooltip' !default;
   border-color: $content-color;
   background-color: $content-color;
   border-radius: use-border-radius('normal');
-  box-shadow: use-shadow('sm');
+  box-shadow: use-shadow('xs');
 
   // animation
   transition-timing-function: use-motion-bezier('normal');

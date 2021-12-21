@@ -95,7 +95,9 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     useImperativeHandle(innerRef, () => ({ close: transitionVisibleAction.off }))
 
     const hasHeader = !!title || closeable
-    const hasFooter = footer !== null
+    const hasConfirm = confirmText !== null
+    const hasCancel = cancelText !== null
+    const hasFooter = hasConfirm || hasCancel || footer !== null
 
     const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
 
@@ -139,12 +141,12 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                 >
                   {footer === undefined
                     ? [
-                        cancelText !== null ? (
+                        hasCancel ? (
                           <Button key="1" type="default" onClick={onRequestCloseLatest}>
                             {cancelText || '取消'}
                           </Button>
                         ) : null,
-                        confirmText !== null ? (
+                        hasConfirm ? (
                           <Button
                             key="2"
                             type="primary"
