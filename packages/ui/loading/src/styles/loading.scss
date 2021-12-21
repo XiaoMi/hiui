@@ -120,7 +120,7 @@ $prefixCls: #{$component-prefix}-loading !default;
       }
 
       &:last-child {
-        background: #4284f5;
+        background: use-color-mode('primary');
         right: 0;
         transform: translateX(0);
         animation: animDotL 1.5s linear infinite;

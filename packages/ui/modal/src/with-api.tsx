@@ -27,10 +27,10 @@ export type ModalType = ValueOf<typeof ModalType>
 
 const confirmIconMap = {
   // TODO: designToken 颜色抽离 css 为代码
-  [ModalType.SUCCESS]: { icon: <CheckCircleOutlined />, color: '#1DA653' },
-  [ModalType.ERROR]: { icon: <CloseCircleOutlined />, color: '#EB5252' },
-  [ModalType.WARNING]: { icon: <ExclamationCircleOutlined />, color: '#e19d0b' },
-  [ModalType.INFO]: { icon: <InfoCircleOutlined />, color: '#4284F5' },
+  [ModalType.SUCCESS]: { icon: <CheckCircleOutlined />, color: '#14ca64' },
+  [ModalType.ERROR]: { icon: <CloseCircleOutlined />, color: '#ff5959' },
+  [ModalType.WARNING]: { icon: <ExclamationCircleOutlined />, color: '#fab007' },
+  [ModalType.INFO]: { icon: <InfoCircleOutlined />, color: '#237ffa' },
 }
 
 // TODO： 抽离合并到 Toast API
