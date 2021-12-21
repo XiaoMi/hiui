@@ -5,6 +5,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { DownOutlined, UpOutlined, RightOutlined } from '@hi-ui/icons'
 import MenuContext from './context'
 import { PopperPortal, Popper } from '@hi-ui/popper'
+import { Expander } from './Expander'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -106,13 +107,14 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         placement === 'vertical' &&
         !mini &&
         !showAllSubMenus &&
-        expandedIds?.includes(id) &&
         expandedType === 'default' && (
-          <ul className={`${prefixCls}-submenu`}>
-            {children.map((child) => (
-              <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
-            ))}
-          </ul>
+          <Expander visible={!!expandedIds?.includes(id)}>
+            <ul className={`${prefixCls}-submenu`}>
+              {children.map((child) => (
+                <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+              ))}
+            </ul>
+          </Expander>
         )}
       {/* 垂直菜单-纵向展开-mini */}
       {children?.length &&

@@ -8,6 +8,7 @@ export const Basic = () => {
       <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20 }}>
         <Menu
           showCollapse
+          defaultExpandedIds={[3]}
           data={[
             {
               content: '电视',
