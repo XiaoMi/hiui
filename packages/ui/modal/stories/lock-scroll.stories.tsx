@@ -28,7 +28,7 @@ export const LockScroll = () => {
           模拟滚动区域
         </div>
 
-        <Modal visible={visible} onClose={() => setVisible(false)}>
+        <Modal visible={visible} closeable={false} onClose={() => setVisible(false)}>
           代码如写诗
           <br />
           <br />

@@ -16,6 +16,7 @@ export const Size = () => {
         <Button onClick={() => setVisibleModalSize('lg')}>lg</Button>
         <Modal
           visible={!!visibleModalSize}
+          closeable={false}
           size={visibleModalSize as ModalSizeType}
           onClose={() => setVisibleModalSize('')}
         >

@@ -6,7 +6,8 @@ import { withModal } from './with-api'
 export * from './Modal'
 // export { Modal as default } from './Modal'
 
-export * from './hooks'
+// export * from './hooks'
+export * from './use-modal'
 
 export const Modal = withModal(PureModal)
 export default Modal

@@ -27,6 +27,7 @@ export const Container = () => {
           style={{ position: 'absolute' }}
           container={container}
           visible={visible}
+          closeable={false}
           closeOnOverlayClick={true}
           onClose={() => setVisible(false)}
         >

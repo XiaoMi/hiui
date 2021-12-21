@@ -42,8 +42,6 @@ const open = (
   render(ClonedTooltip, container)
 
   const close = () => {
-    console.log(toastManagerRef.current)
-
     toastManagerRef.current?.close()
   }
 
@@ -55,8 +53,6 @@ const open = (
 }
 
 const close = (key: string) => {
-  console.log(tooltipInstanceCache, key)
-
   if (typeof tooltipInstanceCache[key] === 'function') {
     tooltipInstanceCache[key]()
   }

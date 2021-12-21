@@ -14,6 +14,7 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
   height: fit-content;
   transition: all use-motion-bezier('normal');
   position: relative;
+  flex-shrink: 0;
 
   &--area-expand {
     &::after {

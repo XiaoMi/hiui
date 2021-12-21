@@ -30,6 +30,7 @@ export const Container = () => {
         <Modal
           style={{ position: 'absolute' }}
           visible={visible}
+          closeable={false}
           onClose={() => setVisible(false)}
           container={container}
         >

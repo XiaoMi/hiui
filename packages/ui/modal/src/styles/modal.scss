@@ -141,6 +141,10 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
     }
   }
 
+  &__title {
+    flex: 1;
+  }
+
   &__body {
     box-sizing: border-box;
     overflow: auto;

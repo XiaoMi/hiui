@@ -1,17 +1,23 @@
 import React from 'react'
 import Drawer from '../src'
 import Button from '@hi-ui/button'
+import { EditOutlined } from '@hi-ui/icons'
 
-export const Basic = () => {
+export const Extra = () => {
   const [visible, setVisible] = React.useState(false)
 
   return (
     <>
-      <h1>Basic</h1>
-      <div className="drawer-basic__wrap">
+      <h1>Extra</h1>
+      <div className="drawer-extra">
         <Button onClick={() => setVisible(!visible)}>open</Button>
         <Drawer
-          title="Drawer Header Title"
+          title={
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>我是大标题</div>
+              <EditOutlined style={{ paddingRight: 12 }} />
+            </div>
+          }
           visible={visible}
           closeOnOverlayClick={true}
           onClose={() => setVisible(false)}
