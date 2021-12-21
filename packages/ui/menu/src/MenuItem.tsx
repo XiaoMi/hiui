@@ -4,7 +4,7 @@ import { MenuItemProps } from './Menu'
 import { __DEV__ } from '@hi-ui/env'
 import { DownOutlined, UpOutlined, RightOutlined } from '@hi-ui/icons'
 import MenuContext from './context'
-import { PopperPortal } from '@hi-ui/popper'
+import { PopperPortal, Popper } from '@hi-ui/popper'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -29,6 +29,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
     expandedIds,
     clickMenu,
     clickSubMenu,
+    closeAllPopper,
   } = useContext(MenuContext)
 
   const _parentIds = (parentIds || []).concat(id)
@@ -54,6 +55,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             if (clickMenu) {
               clickMenu(id)
             }
+            closeAllPopper && closeAllPopper()
           }
         }}
         style={
@@ -100,25 +102,47 @@ export const MenuItem: React.FC<MenuItemProps> = ({
           </ul>
         )}
       {/* 垂直菜单-弹出展开 */}
-      {children?.length && placement === 'vertical' && !showAllSubMenus && expandedType === 'pop' && (
-        <PopperPortal
-          visible={!!expandedIds?.includes(id)}
-          attachEl={itemRef.current}
-          placement={'right-start'}
-          gutterGap={16}
-          onClose={() => {
-            if (closePopper) {
-              closePopper(id)
-            }
-          }}
-        >
-          <ul className={`${prefixCls}-popmenu`}>
-            {children.map((child) => (
-              <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
-            ))}
-          </ul>
-        </PopperPortal>
-      )}
+      {children?.length &&
+        placement === 'vertical' &&
+        !showAllSubMenus &&
+        expandedType === 'pop' &&
+        (level === 1 ? (
+          <PopperPortal
+            visible={!!expandedIds?.includes(id)}
+            attachEl={itemRef.current}
+            placement={'right-start'}
+            gutterGap={16}
+            onClose={() => {
+              if (closePopper) {
+                closePopper(id)
+              }
+            }}
+          >
+            <ul className={`${prefixCls}-popmenu`}>
+              {children.map((child) => (
+                <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+              ))}
+            </ul>
+          </PopperPortal>
+        ) : (
+          <Popper
+            visible={!!expandedIds?.includes(id)}
+            attachEl={itemRef.current}
+            placement={'right-start'}
+            gutterGap={16}
+            onClose={() => {
+              if (closePopper) {
+                closePopper(id)
+              }
+            }}
+          >
+            <ul className={`${prefixCls}-popmenu`}>
+              {children.map((child) => (
+                <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+              ))}
+            </ul>
+          </Popper>
+        ))}
       {/* 垂直胖菜单 */}
       {children?.length && placement === 'vertical' && showAllSubMenus && (
         <PopperPortal
@@ -166,25 +190,46 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         </PopperPortal>
       )}
       {/* 水平菜单 */}
-      {children?.length && placement === 'horizontal' && !showAllSubMenus && (
-        <PopperPortal
-          visible={!!expandedIds?.includes(id)}
-          attachEl={itemRef.current}
-          placement={level === 1 ? 'bottom-start' : 'right-start'}
-          gutterGap={level === 1 ? 8 : 16}
-          onClose={() => {
-            if (closePopper) {
-              closePopper(id)
-            }
-          }}
-        >
-          <ul className={`${prefixCls}-popmenu`}>
-            {children.map((child) => (
-              <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
-            ))}
-          </ul>
-        </PopperPortal>
-      )}
+      {children?.length &&
+        placement === 'horizontal' &&
+        !showAllSubMenus &&
+        (level === 1 ? (
+          <PopperPortal
+            visible={!!expandedIds?.includes(id)}
+            attachEl={itemRef.current}
+            placement={level === 1 ? 'bottom-start' : 'right-start'}
+            gutterGap={level === 1 ? 8 : 16}
+            onClose={() => {
+              if (closePopper) {
+                closePopper(id)
+              }
+            }}
+          >
+            <ul className={`${prefixCls}-popmenu`}>
+              {children.map((child) => (
+                <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+              ))}
+            </ul>
+          </PopperPortal>
+        ) : (
+          <Popper
+            visible={!!expandedIds?.includes(id)}
+            attachEl={itemRef.current}
+            placement={level === 1 ? 'bottom-start' : 'right-start'}
+            gutterGap={level === 1 ? 8 : 16}
+            onClose={() => {
+              if (closePopper) {
+                closePopper(id)
+              }
+            }}
+          >
+            <ul className={`${prefixCls}-popmenu`}>
+              {children.map((child) => (
+                <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+              ))}
+            </ul>
+          </Popper>
+        ))}
       {/* 水平胖菜单 */}
       {children?.length && placement === 'horizontal' && showAllSubMenus && (
         <PopperPortal

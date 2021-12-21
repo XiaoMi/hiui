@@ -62,6 +62,10 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       [_expandedIds]
     )
 
+    const closeAllPopper = useCallback(() => {
+      updateExpanedIds([])
+    }, [])
+
     const [mini, setMini] = useState(false)
     const cls = cx(prefixCls, className, `${prefixCls}--${placement}`, {
       [`${prefixCls}--mini`]: mini,
@@ -82,6 +86,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
             clickMenu,
             clickSubMenu,
             closePopper,
+            closeAllPopper,
             activeId: _activeId,
             expandedIds: _expandedIds,
           }}
