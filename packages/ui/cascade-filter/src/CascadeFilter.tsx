@@ -18,6 +18,7 @@ export const CascadeFilter = forwardRef<HTMLDivElement | null, CascadeFilterProp
       className,
       children,
       showUnderline = false,
+      labelWidth,
       ...rest
     },
     ref
@@ -34,6 +35,7 @@ export const CascadeFilter = forwardRef<HTMLDivElement | null, CascadeFilterProp
               key={menu.depth}
               label={menu.label}
               value={menu.value}
+              labelWidth={labelWidth}
               onChange={(_, targetItem) => onItemSelect(targetItem, menu.depth)}
               showUnderline={showUnderline}
             >
@@ -57,6 +59,10 @@ export interface CascadeFilterProps extends HiBaseHTMLProps<'div'>, UseCascadeFi
    * 是否显示下划线
    */
   showUnderline?: boolean
+  /**
+   * 筛选标题宽度
+   */
+  labelWidth?: number
 }
 
 if (__DEV__) {

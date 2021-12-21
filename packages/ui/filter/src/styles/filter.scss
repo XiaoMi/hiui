@@ -4,8 +4,9 @@ $prefix: '#{$component-prefix}-filter' !default;
 
 .#{$prefix} {
   display: flex;
-  height: 40px;
-  line-height: 40px;
+  height: 44px;
+  line-height: 44px;
+  font-size: use-text-size('normal');
 
   &__label {
     display: flex;
@@ -43,8 +44,8 @@ $prefix: '#{$component-prefix}-filter' !default;
   @include list-item-reset;
 
   font-size: use-text-size('normal');
-  color: use-color-static('black');
-  margin-inline-end: 40px;
+  color: use-color('gray', 700);
+  margin-inline-end: use-spacing(20);
   cursor: pointer;
   transition: color 0.3s;
 
@@ -78,5 +79,7 @@ $prefix: '#{$component-prefix}-filter' !default;
 
   &--disabled {
     @include disabled;
+
+    color: use-color('gray', 400);
   }
 }
