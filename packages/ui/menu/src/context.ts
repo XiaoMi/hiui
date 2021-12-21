@@ -7,6 +7,7 @@ const MenuContext = createContext<{
   mini?: boolean
   expandedIds?: React.ReactText[]
   activeId?: React.ReactText
+  activeParents?: React.ReactText[]
   clickMenu?: (id: React.ReactText) => void
   clickSubMenu?: (id: React.ReactText) => void
   closePopper?: (id: React.ReactText) => void

@@ -30,6 +30,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
     clickMenu,
     clickSubMenu,
     closeAllPopper,
+    activeParents,
   } = useContext(MenuContext)
 
   const _parentIds = (parentIds || []).concat(id)
@@ -39,12 +40,17 @@ export const MenuItem: React.FC<MenuItemProps> = ({
       ref={itemRef}
       className={cx(`${prefixCls}-item`, {
         [`${prefixCls}-item--disabled`]: disabled,
+        [`${prefixCls}-item--active`]:
+          placement === 'horizontal' &&
+          (activeId === id || activeParents?.includes(id)) &&
+          level === 1,
       })}
     >
       <div
         className={cx(`${prefixCls}-item__inner`, {
           [`${prefixCls}-item__inner--mini`]: mini,
           [`${prefixCls}-item__inner--active`]: activeId === id,
+          [`${prefixCls}-item__inner--active-p`]: activeParents?.includes(id),
         })}
         onClick={() => {
           if (children?.length) {
@@ -55,11 +61,16 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             if (clickMenu) {
               clickMenu(id)
             }
-            closeAllPopper && closeAllPopper()
+            if (
+              closeAllPopper &&
+              !(placement === 'vertical' && expandedType === 'default' && mini === false)
+            ) {
+              closeAllPopper()
+            }
           }
         }}
         style={
-          placement === 'vertical' && expandedType === 'default'
+          placement === 'vertical' && expandedType === 'default' && !mini
             ? {
                 paddingLeft:
                   level > 1 ? 12 + (level - 1 > 0 ? 1 : 0) * 20 + (level - 2 || 0) * 16 : 12,
@@ -76,6 +87,8 @@ export const MenuItem: React.FC<MenuItemProps> = ({
           expandedType === 'default' &&
           !showAllSubMenus &&
           (expandedIds?.includes(id) ? <UpOutlined /> : <DownOutlined />)}
+        {/* 垂直菜单-mini */}
+        {children?.length && mini && level > 1 && placement === 'vertical' && <RightOutlined />}
         {/* 垂直菜单-弹出展开 */}
         {children?.length &&
           !mini &&
@@ -101,6 +114,50 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             ))}
           </ul>
         )}
+      {/* 垂直菜单-纵向展开-mini */}
+      {children?.length &&
+        placement === 'vertical' &&
+        mini &&
+        !showAllSubMenus &&
+        expandedIds?.includes(id) &&
+        expandedType === 'default' &&
+        (level === 1 ? (
+          <PopperPortal
+            visible={!!expandedIds?.includes(id)}
+            attachEl={itemRef.current}
+            placement={'right-start'}
+            gutterGap={16}
+            onClose={() => {
+              if (closePopper) {
+                closePopper(id)
+              }
+            }}
+          >
+            <ul className={`${prefixCls}-popmenu`}>
+              {children.map((child) => (
+                <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+              ))}
+            </ul>
+          </PopperPortal>
+        ) : (
+          <Popper
+            visible={!!expandedIds?.includes(id)}
+            attachEl={itemRef.current}
+            placement={'right-start'}
+            gutterGap={16}
+            onClose={() => {
+              if (closePopper) {
+                closePopper(id)
+              }
+            }}
+          >
+            <ul className={`${prefixCls}-popmenu`}>
+              {children.map((child) => (
+                <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+              ))}
+            </ul>
+          </Popper>
+        ))}
       {/* 垂直菜单-弹出展开 */}
       {children?.length &&
         placement === 'vertical' &&

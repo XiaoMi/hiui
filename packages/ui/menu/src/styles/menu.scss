@@ -76,6 +76,10 @@ $prefix: '#{$component-prefix}-menu' !default;
         color: use-color-mode('primary');
         background-color: use-color-mode('primary-05');
       }
+
+      &--active-p {
+        color: use-color-mode('primary');
+      }
       &:not(.#{$prefix}-item__inner--active):hover {
         background-color: use-color('gray', 100);
       }
@@ -143,6 +147,16 @@ $prefix: '#{$component-prefix}-menu' !default;
         border-bottom: 2px solid use-color-mode('primary');
       }
 
+      &--active-p {
+        color: use-color-mode('primary');
+      }
+
+      &__inner {
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
       &__content {
         flex: 1;
         overflow: hidden;
@@ -198,6 +212,10 @@ $prefix: '#{$component-prefix}-menu' !default;
         &--active {
           color: use-color-mode('primary');
           background-color: use-color-mode('primary-05');
+        }
+
+        &--active-p {
+          color: use-color-mode('primary');
         }
 
         &:not(.#{$prefix}-item__inner--active):hover {

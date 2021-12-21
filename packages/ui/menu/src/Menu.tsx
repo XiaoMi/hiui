@@ -1,9 +1,10 @@
-import React, { forwardRef, useCallback, useState } from 'react'
+import React, { forwardRef, useCallback, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { LeftOutlined, RightOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
 import { MenuItem } from './MenuItem'
 import MenuContext from './context'
+import { getAncestorIds } from './util'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -30,6 +31,10 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     ref
   ) => {
     const [_activeId, updateActiveId] = useState(defaultActiveId || '')
+    const [activeParents, updateActiveParents] = useState(getAncestorIds(_activeId, data))
+    useEffect(() => {
+      updateActiveParents(getAncestorIds(_activeId, data))
+    }, [_activeId, data])
     const [_expandedIds, updateExpanedIds] = useState(defaultExpandedIds || [])
 
     const clickMenu = useCallback(
@@ -73,7 +78,8 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     const onToggle = useCallback(() => {
       setMini(!mini)
-    }, [mini])
+      closeAllPopper()
+    }, [mini, closeAllPopper])
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
@@ -87,6 +93,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
             clickSubMenu,
             closePopper,
             closeAllPopper,
+            activeParents,
             activeId: _activeId,
             expandedIds: _expandedIds,
           }}
