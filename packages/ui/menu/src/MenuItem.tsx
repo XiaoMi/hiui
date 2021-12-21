@@ -100,29 +100,25 @@ export const MenuItem: React.FC<MenuItemProps> = ({
           </ul>
         )}
       {/* 垂直菜单-弹出展开 */}
-      {children?.length &&
-        placement === 'vertical' &&
-        !showAllSubMenus &&
-        expandedIds?.includes(id) &&
-        expandedType === 'pop' && (
-          <PopperPortal
-            visible={!!expandedIds?.includes(id)}
-            attachEl={itemRef.current}
-            placement={'right-start'}
-            gutterGap={16}
-            onClose={() => {
-              if (closePopper) {
-                closePopper(id)
-              }
-            }}
-          >
-            <ul className={`${prefixCls}-popmenu`}>
-              {children.map((child) => (
-                <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
-              ))}
-            </ul>
-          </PopperPortal>
-        )}
+      {children?.length && placement === 'vertical' && !showAllSubMenus && expandedType === 'pop' && (
+        <PopperPortal
+          visible={!!expandedIds?.includes(id)}
+          attachEl={itemRef.current}
+          placement={'right-start'}
+          gutterGap={16}
+          onClose={() => {
+            if (closePopper) {
+              closePopper(id)
+            }
+          }}
+        >
+          <ul className={`${prefixCls}-popmenu`}>
+            {children.map((child) => (
+              <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+            ))}
+          </ul>
+        </PopperPortal>
+      )}
       {/* 垂直胖菜单 */}
       {children?.length && placement === 'vertical' && showAllSubMenus && (
         <PopperPortal
