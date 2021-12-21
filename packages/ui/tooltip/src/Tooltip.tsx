@@ -4,7 +4,8 @@ import React, {
   forwardRef,
   useState,
   useEffect,
-  useCallback,
+  useImperativeHandle,
+  useMemo,
 } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -12,11 +13,11 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useTooltip, UseTooltipProps } from './use-tooltip'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
-import Portal, { PortalProps } from '@hi-ui/portal'
-import { isString } from '@hi-ui/type-assertion'
+import { Portal, PortalProps } from '@hi-ui/portal'
+import { isElement, isString } from '@hi-ui/type-assertion'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
-const _role = 'tooltip'
-const _prefix = getPrefixCls(_role)
+export const _prefix = getPrefixCls('tooltip')
 
 /**
  * TODO: What is Tooltip
@@ -27,7 +28,7 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       prefixCls = _prefix,
       className,
       children,
-      content,
+      title,
       arrow = true,
       visible: visibleProp,
       portal,
@@ -35,6 +36,8 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       onClose,
       preload = false,
       unmountOnClose = true,
+      onExited,
+      innerRef,
       ...rest
     },
     ref
@@ -46,9 +49,19 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       onClose,
     })
 
+    // TODO: 1. 优化封装完全非受控 2. useTooltip 支持 attachEl 设置
+    // 用于 api 式完全非受控隐藏
+    const [internalVisible, setInternalVisible] = useState<boolean | undefined>(undefined)
+
+    useImperativeHandle(innerRef, () => ({ close: () => setInternalVisible(false) }))
+
     const [transitionExisted, setTransitionExisted] = useState(!transitionVisible)
+
     // 由 CSSTransition 设置动效结束
-    const onExited = useCallback(() => setTransitionExisted(true), [])
+    const onExitedLatest = useLatestCallback(() => {
+      setTransitionExisted(true)
+      onExited?.()
+    })
 
     useEffect(() => {
       transitionVisibleAction.set(transitionVisible)
@@ -57,53 +70,70 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       }
     }, [transitionVisible, transitionVisibleAction])
 
-    const { getTriggerProps, getPopperProps, getTooltipProps, getArrowProps } = useTooltip({
+    const {
+      setTriggerElement,
+      getTriggerProps,
+      getPopperProps,
+      getTooltipProps,
+      getArrowProps,
+    } = useTooltip({
       ...rest,
       visible: !transitionExisted,
       onOpen: transitionVisibleAction.on,
       onClose: transitionVisibleAction.off,
     })
 
-    const cls = cx(prefixCls, className)
+    const triggerMemo = useMemo(() => {
+      let trigger: React.ReactElement | null | undefined
 
-    let trigger: React.ReactElement
-
-    if (isValidElement(children)) {
-      trigger = children
-    } else {
-      if (isString(children)) {
-        trigger = <span tabIndex={0}>{children}</span>
+      if (isElement(children)) {
+        trigger = null
+        setTriggerElement(children as HTMLElement)
+      } else if (isValidElement(children)) {
+        trigger = cloneElement(
+          children,
+          // @ts-ignore
+          getTriggerProps(children.props, children.ref)
+        )
       } else {
-        // TODO: invariant(true, 'The children should be an React.Element.')
-        if (__DEV__) {
-          console.warn('WARNING (Tooltip): The children should be an React.Element.')
+        if (isString(children)) {
+          trigger = (
+            <span tabIndex={0} {...getTriggerProps()}>
+              {children}
+            </span>
+          )
+        } else {
+          // TODO: invariant(true, 'The children should be an React.Element.')
+          if (__DEV__) {
+            console.warn('WARNING (Tooltip): The children should be an React.Element.')
+          }
         }
-        return null
       }
-    }
+      return trigger
+    }, [children, getTriggerProps, setTriggerElement])
+
+    if (triggerMemo === undefined) return null
+
+    const cls = cx(prefixCls, className)
 
     return (
       <>
-        {cloneElement(
-          trigger,
-          // @ts-ignore
-          getTriggerProps(trigger.props, trigger.ref)
-        )}
+        {triggerMemo}
 
         <Portal {...portal}>
           <CSSTransition
             classNames={`${prefixCls}--motion`}
             appear
             timeout={201}
-            in={transitionVisible}
+            in={internalVisible ?? transitionVisible}
             mountOnEnter={!preload}
             unmountOnExit={unmountOnClose}
-            onExited={onExited}
+            onExited={onExitedLatest}
           >
             <div className={`${prefixCls}__popper`} {...getPopperProps()}>
               <div ref={ref} className={cls} {...getTooltipProps()}>
                 {arrow ? <div className={`${prefixCls}__arrow`} {...getArrowProps()} /> : null}
-                <div className={`${prefixCls}__content`}>{content}</div>
+                <div className={`${prefixCls}__content`}>{title}</div>
               </div>
             </div>
           </CSSTransition>
@@ -116,8 +146,9 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
 export interface TooltipProps extends HiBaseHTMLProps<'div'>, UseTooltipProps {
   /**
    * 	提醒内容
+   * TODO: 使用 content 统一字段
    */
-  content: React.ReactNode
+  title: React.ReactNode
   /**
    * 是否显示箭头
    */
@@ -134,6 +165,8 @@ export interface TooltipProps extends HiBaseHTMLProps<'div'>, UseTooltipProps {
    * 开启关闭时销毁，用于性能优化，优先级大于 `preload`
    */
   unmountOnClose?: boolean
+  onExited?: () => void
+  innerRef?: React.RefObject<{ close: () => void }>
 }
 
 if (__DEV__) {

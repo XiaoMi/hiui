@@ -8,9 +8,7 @@ export const BreakWord = () => {
       <h1>BreakWord</h1>
       <div className="Tooltip-break-word__wrap">
         <Tooltip
-          content={
-            <div style={{ width: 200 }}>这是两行提示文字这是两行提示文字这是两行提示文字</div>
-          }
+          title={<div style={{ width: 200 }}>这是两行提示文字这是两行提示文字这是两行提示文字</div>}
           trigger="click"
         >
           <Button>trigger</Button>

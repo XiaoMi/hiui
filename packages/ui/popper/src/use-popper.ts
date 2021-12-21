@@ -197,7 +197,7 @@ export const usePopper = ({
         style: {
           outline: 'none',
           visibility: visible ? 'visible' : 'hidden',
-          'pointer-events': visible ? 'all' : 'none',
+          pointerEvents: visible ? 'all' : 'none',
           ...style,
           ...styles.popper,
         },

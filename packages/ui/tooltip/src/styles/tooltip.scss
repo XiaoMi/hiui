@@ -181,7 +181,7 @@ $prefix: '#{$component-prefix}-tooltip' !default;
     width: 100%;
     height: 100%;
     color: inherit;
-    padding: use-spacing(5) use-spacing(5) use-spacing(4);
+    padding: use-spacing(4) use-spacing(5);
     font-size: use-text-size('normal');
     line-height: use-text-lineheight('sm');
   }
