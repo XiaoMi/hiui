@@ -5,7 +5,7 @@ export const Horizontal = () => {
   return (
     <>
       <h1>水平菜单</h1>
-      <div className="menu-basic__wrap" style={{background:'#ccc',padding:20}}>
+      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20 }}>
         <Menu
           placement="horizontal"
           data={[
@@ -19,9 +19,12 @@ export const Horizontal = () => {
             },
             {
               content: '手机',
+              id: 3,
               children: [
                 {
                   content: '小米',
+                  id: 666,
+
                   children: [
                     {
                       content: '小米9',
@@ -61,6 +64,7 @@ export const Horizontal = () => {
                 {
                   content: '小米note',
                   disabled: true,
+                  id: 'xiaominote',
                   children: [
                     {
                       content: '小米 note7',

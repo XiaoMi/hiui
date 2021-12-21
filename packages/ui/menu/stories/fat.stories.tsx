@@ -5,7 +5,7 @@ export const HorizontalFat = () => {
   return (
     <>
       <h1>水平胖菜单</h1>
-      <div className="menu-basic__wrap" style={{background:'#ccc',padding:20}}>
+      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20 }}>
         <Menu
           placement="horizontal"
           showAllSubMenus
@@ -20,9 +20,11 @@ export const HorizontalFat = () => {
             },
             {
               content: '手机',
+              id: 3,
               children: [
                 {
                   content: '小米',
+                  id: 666,
 
                   children: [
                     {
@@ -63,6 +65,7 @@ export const HorizontalFat = () => {
                 {
                   content: '小米note',
                   disabled: true,
+                  id: 'xiaominote',
                   children: [
                     {
                       content: '小米 note7',

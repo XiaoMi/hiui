@@ -5,7 +5,7 @@ export const VerticalFat = () => {
   return (
     <>
       <h1>垂直胖菜单</h1>
-      <div className="menu-basic__wrap" style={{background:'#ccc',padding:20}}>
+      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20 }}>
         <Menu
           placement="vertical"
           showAllSubMenus
@@ -20,9 +20,12 @@ export const VerticalFat = () => {
             },
             {
               content: '手机',
+              id: 3,
               children: [
                 {
                   content: '小米',
+                  id: 666,
+
                   children: [
                     {
                       content: '小米9',
@@ -62,6 +65,7 @@ export const VerticalFat = () => {
                 {
                   content: '小米note',
                   disabled: true,
+                  id: 'xiaominote',
                   children: [
                     {
                       content: '小米 note7',

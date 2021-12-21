@@ -31,20 +31,36 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
   ) => {
     const [_selectedIds, updateSelectedIds] = useState(defaultSelectedIds || [])
     const [_expandedIds, updateExpanedIds] = useState(defaultExpandedIds || [])
-    const clickMenu = useCallback((id: React.ReactText)=>{
-      updateSelectedIds(_selectedIds.concat(id))
-      if(onClick) {
-        onClick(id)
-      }
-      
-    },[onClick])
-    const clickSubMenu = useCallback((id: React.ReactText)=>{
-      updateExpanedIds(_selectedIds.concat(id))
-      if(onClickSubMenu) {
-        onClickSubMenu(id)
-      }
+    const clickMenu = useCallback(
+      (id: React.ReactText) => {
+        updateSelectedIds(_selectedIds.concat(id))
+        if (onClick) {
+          onClick(id)
+        }
+      },
+      [onClick, _selectedIds]
+    )
+    const clickSubMenu = useCallback(
+      (id: React.ReactText) => {
+        updateExpanedIds(
+          _expandedIds.includes(id)
+            ? _expandedIds.filter((expandedid) => expandedid !== id)
+            : _expandedIds.concat(id)
+        )
+        if (onClickSubMenu) {
+          onClickSubMenu(id)
+        }
+      },
+      [onClickSubMenu, _expandedIds]
+    )
 
-    },[onClickSubMenu])
+    const closePopper = useCallback(
+      (id: React.ReactText) => {
+        updateExpanedIds(_expandedIds.filter((expandedid) => expandedid !== id))
+      },
+      [_expandedIds]
+    )
+
     const [mini, setMini] = useState(false)
     const cls = cx(prefixCls, className, `${prefixCls}--${placement}`, {
       [`${prefixCls}--mini`]: mini,
@@ -53,10 +69,22 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const onToggle = useCallback(() => {
       setMini(!mini)
     }, [mini])
-    
+
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <MenuContext.Provider value={{ placement, expandedType, showAllSubMenus, mini, clickMenu, clickSubMenu, selectedIds: _selectedIds, expandedIds: _expandedIds }}>
+        <MenuContext.Provider
+          value={{
+            placement,
+            expandedType,
+            showAllSubMenus,
+            mini,
+            clickMenu,
+            clickSubMenu,
+            closePopper,
+            selectedIds: _selectedIds,
+            expandedIds: _expandedIds,
+          }}
+        >
           <ul className={cx(`${prefixCls}__wrapper`)}>
             {data.map((d) => (
               <MenuItem {...d} key={d.id} level={1} />

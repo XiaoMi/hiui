@@ -9,6 +9,7 @@ const MenuContext = createContext<{
   selectedIds?: React.ReactText[]
   clickMenu?: (id: React.ReactText) => void
   clickSubMenu?: (id: React.ReactText) => void
+  closePopper?: (id: React.ReactText) => void
 }>({})
 
 export default MenuContext

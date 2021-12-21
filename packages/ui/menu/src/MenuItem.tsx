@@ -18,8 +18,18 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   children,
 }) => {
   const itemRef = useRef<HTMLLIElement | null>(null)
-  const { placement, expandedType, showAllSubMenus, mini, selectedIds, expandedIds, clickMenu, clickSubMenu } = useContext(MenuContext)
-  const [expanded, setExpanded] = useState(false)
+  const {
+    placement,
+    expandedType,
+    showAllSubMenus,
+    mini,
+    selectedIds,
+    closePopper,
+    expandedIds,
+    clickMenu,
+    clickSubMenu,
+  } = useContext(MenuContext)
+
   return (
     <li
       ref={itemRef}
@@ -31,11 +41,13 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         className={cx(`${prefixCls}-item__inner`, { [`${prefixCls}-item__inner--mini`]: mini })}
         onClick={() => {
           if (children?.length) {
-            if(clickSubMenu) {
+            if (clickSubMenu) {
               clickSubMenu(id)
             }
-
-            setExpanded(!expanded)
+          } else {
+            if (clickMenu) {
+              clickMenu(id)
+            }
           }
         }}
         style={
@@ -55,7 +67,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
           placement === 'vertical' &&
           expandedType === 'default' &&
           !showAllSubMenus &&
-          (expanded ? <UpOutlined /> : <DownOutlined />)}
+          (expandedIds?.includes(id) ? <UpOutlined /> : <DownOutlined />)}
         {/* 垂直菜单-弹出展开 */}
         {children?.length &&
           !mini &&
@@ -66,14 +78,14 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         {children?.length &&
           placement === 'horizontal' &&
           level === 1 &&
-          (expanded ? <UpOutlined /> : <DownOutlined />)}
+          (expandedIds?.includes(id) ? <UpOutlined /> : <DownOutlined />)}
       </div>
       {/* 垂直菜单-纵向展开 */}
       {children?.length &&
         placement === 'vertical' &&
         !mini &&
         !showAllSubMenus &&
-        expanded &&
+        expandedIds?.includes(id) &&
         expandedType === 'default' && (
           <ul className={`${prefixCls}-submenu`}>
             {children.map((child) => (
@@ -85,15 +97,17 @@ export const MenuItem: React.FC<MenuItemProps> = ({
       {children?.length &&
         placement === 'vertical' &&
         !showAllSubMenus &&
-        expanded &&
+        expandedIds?.includes(id) &&
         expandedType === 'pop' && (
           <PopperPortal
-            visible={expanded}
+            visible={!!expandedIds?.includes(id)}
             attachEl={itemRef.current}
             placement={'right-start'}
             gutterGap={16}
             onClose={() => {
-              setExpanded(false)
+              if (closePopper) {
+                closePopper(id)
+              }
             }}
           >
             <ul className={`${prefixCls}-popmenu`}>
@@ -106,12 +120,14 @@ export const MenuItem: React.FC<MenuItemProps> = ({
       {/* 垂直胖菜单 */}
       {children?.length && placement === 'vertical' && showAllSubMenus && (
         <PopperPortal
-          visible={expanded}
+          visible={!!expandedIds?.includes(id)}
           attachEl={itemRef.current}
           placement={'right-start'}
           gutterGap={16}
           onClose={() => {
-            setExpanded(false)
+            if (closePopper) {
+              closePopper(id)
+            }
           }}
         >
           <div className={`${prefixCls}-fat-menu`}>
@@ -137,12 +153,14 @@ export const MenuItem: React.FC<MenuItemProps> = ({
       {/* 水平菜单 */}
       {children?.length && placement === 'horizontal' && !showAllSubMenus && (
         <PopperPortal
-          visible={expanded}
+          visible={!!expandedIds?.includes(id)}
           attachEl={itemRef.current}
           placement={level === 1 ? 'bottom-start' : 'right-start'}
           gutterGap={level === 1 ? 8 : 16}
           onClose={() => {
-            setExpanded(false)
+            if (closePopper) {
+              closePopper(id)
+            }
           }}
         >
           <ul className={`${prefixCls}-popmenu`}>
@@ -155,12 +173,14 @@ export const MenuItem: React.FC<MenuItemProps> = ({
       {/* 水平胖菜单 */}
       {children?.length && placement === 'horizontal' && showAllSubMenus && (
         <PopperPortal
-          visible={expanded}
+          visible={!!expandedIds?.includes(id)}
           attachEl={itemRef.current}
           placement={'bottom-start'}
           gutterGap={8}
           onClose={() => {
-            setExpanded(false)
+            if (closePopper) {
+              closePopper(id)
+            }
           }}
         >
           <div className={`${prefixCls}-fat-menu`}>
