@@ -22,23 +22,24 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       expandedType = 'default',
       showAllSubMenus = false,
       defaultExpandedIds,
-      defaultSelectedIds,
+      defaultActiveId,
       onClickSubMenu,
       onClick,
       ...rest
     },
     ref
   ) => {
-    const [_selectedIds, updateSelectedIds] = useState(defaultSelectedIds || [])
+    const [_activeId, updateActiveId] = useState(defaultActiveId || '')
     const [_expandedIds, updateExpanedIds] = useState(defaultExpandedIds || [])
+
     const clickMenu = useCallback(
       (id: React.ReactText) => {
-        updateSelectedIds(_selectedIds.concat(id))
+        updateActiveId(id)
         if (onClick) {
           onClick(id)
         }
       },
-      [onClick, _selectedIds]
+      [onClick]
     )
     const clickSubMenu = useCallback(
       (id: React.ReactText) => {
@@ -81,7 +82,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
             clickMenu,
             clickSubMenu,
             closePopper,
-            selectedIds: _selectedIds,
+            activeId: _activeId,
             expandedIds: _expandedIds,
           }}
         >
@@ -111,6 +112,7 @@ export type MenuItemProps = {
   disabled?: boolean
   children?: MenuItemProps[]
   level: number
+  parentIds: React.ReactText[]
 }
 export interface MenuProps {
   /**
@@ -142,7 +144,7 @@ export interface MenuProps {
   overlayClassName?: string
   expandedType: 'default' | 'pop'
   defaultExpandedIds: React.ReactText[]
-  defaultSelectedIds: React.ReactText[]
+  defaultActiveId: React.ReactText
 }
 
 if (__DEV__) {

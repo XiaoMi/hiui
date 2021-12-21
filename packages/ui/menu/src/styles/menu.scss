@@ -33,7 +33,12 @@ $prefix: '#{$component-prefix}-menu' !default;
     align-items: center;
     padding: 0 use-spacing(6);
 
-    &:hover {
+    &--active {
+      color: use-color-mode('primary');
+      background-color: use-color-mode('primary-05');
+    }
+
+    &:not(.#{$prefix}-item--active):hover {
       background-color: use-color('gray', 100);
     }
   }
@@ -57,16 +62,6 @@ $prefix: '#{$component-prefix}-menu' !default;
   .#{$prefix}-item {
     height: 40px;
     margin: 0;
-    border-radius: use-border-radius('normal');
-
-    &:hover {
-      background-color: use-color('gray', 100);
-    }
-
-    &--active {
-      color: use-color-mode('primary');
-      border-bottom: 2px solid use-color-mode('primary');
-    }
 
     &__inner {
       box-sizing: border-box;
@@ -75,6 +70,15 @@ $prefix: '#{$component-prefix}-menu' !default;
       align-items: center;
       margin-bottom: use-spacing(4);
       padding: 0 use-spacing(6);
+      border-radius: use-border-radius('normal');
+
+      &--active {
+        color: use-color-mode('primary');
+        background-color: use-color-mode('primary-05');
+      }
+      &:not(.#{$prefix}-item__inner--active):hover {
+        background-color: use-color('gray', 100);
+      }
     }
 
     &__content {
@@ -185,19 +189,20 @@ $prefix: '#{$component-prefix}-menu' !default;
         margin-bottom: use-spacing(4);
         padding: 0 use-spacing(6);
         border-radius: use-border-radius('normal');
+        transition: all 0.3s;
 
         &--mini {
           justify-content: center;
         }
 
-        &:hover {
+        &--active {
+          color: use-color-mode('primary');
+          background-color: use-color-mode('primary-05');
+        }
+
+        &:not(.#{$prefix}-item__inner--active):hover {
           background-color: use-color('gray', 100);
         }
-      }
-
-      &--active {
-        color: use-color-mode('primary');
-        background-color: use-color-mode('primary-05');
       }
 
       &__content {

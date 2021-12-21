@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useState } from 'react'
+import React, { useRef, useContext } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { MenuItemProps } from './Menu'
 import { __DEV__ } from '@hi-ui/env'
@@ -16,6 +16,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   id,
   level,
   children,
+  parentIds,
 }) => {
   const itemRef = useRef<HTMLLIElement | null>(null)
   const {
@@ -23,12 +24,14 @@ export const MenuItem: React.FC<MenuItemProps> = ({
     expandedType,
     showAllSubMenus,
     mini,
-    selectedIds,
+    activeId,
     closePopper,
     expandedIds,
     clickMenu,
     clickSubMenu,
   } = useContext(MenuContext)
+
+  const _parentIds = (parentIds || []).concat(id)
 
   return (
     <li
@@ -38,7 +41,10 @@ export const MenuItem: React.FC<MenuItemProps> = ({
       })}
     >
       <div
-        className={cx(`${prefixCls}-item__inner`, { [`${prefixCls}-item__inner--mini`]: mini })}
+        className={cx(`${prefixCls}-item__inner`, {
+          [`${prefixCls}-item__inner--mini`]: mini,
+          [`${prefixCls}-item__inner--active`]: activeId === id,
+        })}
         onClick={() => {
           if (children?.length) {
             if (clickSubMenu) {
@@ -89,7 +95,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         expandedType === 'default' && (
           <ul className={`${prefixCls}-submenu`}>
             {children.map((child) => (
-              <MenuItem {...child} key={child.id} level={level + 1} />
+              <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
             ))}
           </ul>
         )}
@@ -112,7 +118,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
           >
             <ul className={`${prefixCls}-popmenu`}>
               {children.map((child) => (
-                <MenuItem {...child} key={child.id} level={level + 1} />
+                <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
               ))}
             </ul>
           </PopperPortal>
@@ -138,7 +144,20 @@ export const MenuItem: React.FC<MenuItemProps> = ({
                   {child?.children?.length && (
                     <ul>
                       {child.children.map((item) => (
-                        <div className={`${prefixCls}-item`} key={item.id}>
+                        <div
+                          onClick={() => {
+                            if (clickMenu) {
+                              clickMenu(item.id)
+                            }
+                            if (closePopper) {
+                              closePopper(id)
+                            }
+                          }}
+                          className={cx(`${prefixCls}-item`, {
+                            [`${prefixCls}-item--active`]: activeId === item.id,
+                          })}
+                          key={item.id}
+                        >
                           {item.content}
                         </div>
                       ))}
@@ -165,7 +184,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         >
           <ul className={`${prefixCls}-popmenu`}>
             {children.map((child) => (
-              <MenuItem {...child} key={child.id} level={level + 1} />
+              <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
             ))}
           </ul>
         </PopperPortal>
@@ -191,7 +210,20 @@ export const MenuItem: React.FC<MenuItemProps> = ({
                   {child?.children?.length && (
                     <ul>
                       {child.children.map((item) => (
-                        <div className={`${prefixCls}-item`} key={item.id}>
+                        <div
+                          className={cx(`${prefixCls}-item`, {
+                            [`${prefixCls}-item--active`]: activeId === item.id,
+                          })}
+                          onClick={() => {
+                            if (clickMenu) {
+                              clickMenu(item.id)
+                            }
+                            if (closePopper) {
+                              closePopper(id)
+                            }
+                          }}
+                          key={item.id}
+                        >
                           {item.content}
                         </div>
                       ))}
