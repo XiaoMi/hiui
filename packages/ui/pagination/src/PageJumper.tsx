@@ -12,18 +12,20 @@ export const PageJumper: React.FC<PageJumperProps> = ({ pageText, prefixCls, onJ
   }, [])
   const _onJump = useCallback<(evt: React.FocusEvent<HTMLInputElement>) => void>(
     (e) => {
-      let value = Number(e.target.value)
-      if (!isNaN(value)) {
-        if (value > maxJump) {
-          value = maxJump
-        }
-        if (value <= 0) {
-          value = 1
-        }
+      if (e.target.value) {
+        let value = Number(e.target.value)
+        if (!isNaN(value)) {
+          if (value > maxJump) {
+            value = maxJump
+          }
+          if (value <= 0) {
+            value = 1
+          }
 
-        onJump(value)
+          onJump(value)
+        }
+        setJumpPage('')
       }
-      setJumpPage('')
     },
     [onJump, maxJump]
   )
@@ -36,6 +38,12 @@ export const PageJumper: React.FC<PageJumperProps> = ({ pageText, prefixCls, onJ
         value={jumpPage}
         style={{ width: 50, margin: '0 8px' }}
         onBlur={_onJump}
+        // @ts-ignore
+        onKeyDown={(e) => {
+          if (e.keyCode === 13) {
+            _onJump(e)
+          }
+        }}
         onChange={onJumperChange}
       />
       {pageText[1]}
