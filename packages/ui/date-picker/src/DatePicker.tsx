@@ -24,6 +24,7 @@ import RangePanel from './components/range-panel'
 import { DatePickerProps, DatePickerType } from './types'
 import { getBelongWeek, getBelongWeekYear } from './utils/week'
 import { DateRangeTimePanel } from './components/date-range-time-panel'
+import { GranularityMap } from './utils/constants'
 
 const DATE_PICKER_PREFIX = getPrefixCls('date-picker')
 
@@ -150,41 +151,71 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       }
     }
 
-    const callback = (dates: any, emitOnChange = true) => {
-      const _dates = _.cloneDeep(dates)
-      let returnDate = {}
-      let returnDateStr = '' as any
-      if (type.includes('week')) {
-        returnDate = {
-          start: _dates[0].toDate(),
-          end: _dates[1].toDate(),
+    const callback = useCallback(
+      (dates: any, emitOnChange = true) => {
+        // 在判断数值是否改变时，需要比较的数目（比如日期选择就只需要比较第一个数据即可）
+        // 此处是为了过滤掉单选情况下，数组第二个数据所带来的影响
+        let compareNumber = 1
+        const _dates = _.cloneDeep(dates)
+        let returnDate = {}
+        let returnDateStr = '' as any
+        if (type.includes('week')) {
+          returnDate = {
+            start: _dates[0].toDate(),
+            end: _dates[1].toDate(),
+          }
+          const getWeekString = (disposeDate: moment.Moment) =>
+            format
+              ? disposeDate.format(realFormat)
+              : localeData.datePicker.weekrange(
+                  getBelongWeekYear(disposeDate, safeWeekOffset),
+                  getBelongWeek(disposeDate, safeWeekOffset)
+                )
+          returnDateStr = type.includes('range')
+            ? {
+                start: getWeekString(_dates[0]),
+                end: getWeekString(_dates[1]),
+              }
+            : getWeekString(_dates[0])
+        } else if (type.includes('range') || type === 'timeperiod') {
+          returnDate = {
+            start: _dates[0].toDate(),
+            end: _dates[1].toDate(),
+          }
+          returnDateStr = { start: _dates[0].format(realFormat), end: _dates[1].format(realFormat) }
+          compareNumber = 2
+        } else {
+          returnDate = _dates[0].toDate()
+          returnDateStr = _dates[0].format(realFormat)
         }
-        const getWeekString = (disposeDate: moment.Moment) =>
-          format
-            ? disposeDate.format(realFormat)
-            : localeData.datePicker.weekrange(
-                getBelongWeekYear(disposeDate, safeWeekOffset),
-                getBelongWeek(disposeDate, safeWeekOffset)
-              )
-        returnDateStr = type.includes('range')
-          ? {
-              start: getWeekString(_dates[0]),
-              end: getWeekString(_dates[1]),
-            }
-          : getWeekString(_dates[0])
-      } else if (type.includes('range') || type === 'timeperiod') {
-        returnDate = {
-          start: _dates[0].toDate(),
-          end: _dates[1].toDate(),
+
+        // 只有发生了改变，才会去通知外部
+        if (
+          _dates.slice(0, compareNumber).some((od: moment.Moment | null, index: number) => {
+            console.error(
+              od,
+              cacheDate.current![index],
+              showTime ? 'second' : GranularityMap[type],
+              od
+                ? !od.isSame(cacheDate.current![index], showTime ? 'second' : GranularityMap[type])
+                : // 如果 新数据为空，则，进入以下比较
+                  // 如果 旧数据也为空，则，视作，相等，旧数据存在，视作改变（此处是考虑到 null undefined 共存的情况）
+                  od || cacheDate.current![index]
+            )
+            return od
+              ? !od.isSame(cacheDate.current![index], showTime ? 'second' : GranularityMap[type])
+              : // 如果 新数据为空，则，进入以下比较
+                // 如果 旧数据也为空，则，视作，相等，旧数据存在，视作改变（此处是考虑到 null undefined 共存的情况）
+                od || cacheDate.current![index]
+          })
+        ) {
+          cacheDate.current = _dates
+          emitOnChange && onChange(returnDate as any, returnDateStr)
         }
-        returnDateStr = { start: _dates[0].format(realFormat), end: _dates[1].format(realFormat) }
-      } else {
-        returnDate = _dates[0].toDate()
-        returnDateStr = _dates[0].format(realFormat)
-      }
-      cacheDate.current = _dates
-      emitOnChange && onChange(returnDate as any, returnDateStr)
-    }
+      },
+      [format, localeData.datePicker, onChange, realFormat, safeWeekOffset, type, showTime]
+    )
+
     const onPick = (dates: (moment.Moment | null)[], isShowPanel = false) => {
       setTimeout(() => {
         setShowPanel(isShowPanel)

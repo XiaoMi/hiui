@@ -120,13 +120,13 @@ const Calendar = ({
     const cellWeekType = td.getAttribute('weektype')
 
     if (type !== 'weekrange' || isBelongFullOurOfRange) {
-      _date[view](clickVal)
       if (cellType === 'prev' || cellWeekType === 'prev') {
         _date.subtract(1, 'months')
       }
       if (cellType === 'next' || cellWeekType === 'next') {
         _date.add(1, 'months')
       }
+      _date[view](clickVal)
     } else {
       // 点击的上个月的部分，鼠标还在本月的panel上，则视作，鼠标正在本月第一天
       if (cellType === 'prev') {

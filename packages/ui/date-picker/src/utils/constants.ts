@@ -1,6 +1,22 @@
+import moment from 'moment'
+import { DatePickerType } from '../types'
+
 export const DAY_MILLISECONDS = 86400000
 export const RANGE_SPLIT = '~'
 
+export const GranularityMap: {
+  [key in DatePickerType]: moment.unitOfTime.StartOf
+} = {
+  year: 'year',
+  yearrange: 'year',
+  daterange: 'date',
+  date: 'date',
+  week: 'date',
+  weekrange: 'date',
+  month: 'month',
+  monthrange: 'month',
+  timeperiod: 'second',
+}
 /**
  * 获取对应地域，type 对应的 format map
  * @param locale
