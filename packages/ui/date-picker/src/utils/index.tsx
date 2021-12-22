@@ -76,9 +76,16 @@ export const parseRenderDates = (dates: (moment.Moment | null)[], type: DatePick
       if (diff <= 12) {
         return moment(leftDate).add(12, 'year')
       }
-      const rYear = rightDate.year()
-      const nRightDate = moment(rightDate).year(rYear + (12 - (diff % 12)))
-      return nRightDate
+      // 跨越面板数量
+      let crossingPanelNumber = Math.trunc(diff / 12)
+      // 12 整面板数量之后，剩余的数量
+      const moreNumber = diff % 12
+      // 如果剩余部分超出了当前面版，则，应当在下一个面板展示
+      if (moreNumber > 7) {
+        crossingPanelNumber += 1
+      }
+
+      return moment(leftDate).add(12 * crossingPanelNumber, 'year')
     }
     if (type === 'monthrange') {
       return moment(leftDate).add(1, 'year')
