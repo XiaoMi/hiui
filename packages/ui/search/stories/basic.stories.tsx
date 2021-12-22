@@ -8,7 +8,6 @@ export const Basic = () => {
       <div className="search-basic__wrap">
         <Search
           style={{ width: 260 }}
-          disabled
           placeholder="搜索关键字"
 
           // onSearch={(keyword) => {

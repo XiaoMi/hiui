@@ -27,7 +27,6 @@ export const Data = () => {
         </div>
         <div>
           <Search
-            disabled
             style={{ width: 260 }}
             placeholder="搜索关键字"
             data={[
