@@ -37,12 +37,7 @@ export const PagerButton: React.FC<PagerButtonProps> = ({
   )
 
   return (
-    <li
-      className={cls}
-      tabIndex={disabled ? -1 : 0}
-      onClick={handleClick}
-      onKeyPress={handleKeyPress}
-    >
+    <li className={cls} onClick={handleClick} onKeyPress={handleKeyPress}>
       <button disabled={disabled}>{type === 'prev' ? <LeftOutlined /> : <RightOutlined />}</button>
     </li>
   )

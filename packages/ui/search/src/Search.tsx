@@ -173,6 +173,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
               setVisible(true)
             }
           }}
+          // @ts-ignore
           onKeyDown={onKeyDown}
           value={String(value)}
           onBlur={(e) => {

@@ -8,7 +8,6 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   position: relative;
   flex: 1;
   width: 100%;
-  min-width: 160px;
   font-size: 14px;
   line-height: get-text-lineheight('normal');
   vertical-align: middle;

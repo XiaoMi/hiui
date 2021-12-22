@@ -9,18 +9,18 @@ $prefix: '#{$component-prefix}-pagination' !default;
   color: use-color('gray', 600);
 
   &__total {
-    margin-right: 8px;
+    margin-right: use-spacing(4);
   }
 
   &__option {
-    width: 114px;
-    margin-right: 16px;
+    width: 114px !important;
+    margin: 0 0 0 use-spacing(4) !important;
   }
 
   &__jumper {
     display: flex;
     align-items: center;
-    margin-left: 16px;
+    margin-left: use-spacing(4);
   }
 
   &__list {
@@ -80,6 +80,7 @@ $prefix: '#{$component-prefix}-pagination' !default;
     display: inline-block;
     min-width: use-height-size('normal');
     height: use-height-size('normal');
+    outline: 0;
 
     &--disabled {
       & > button {
@@ -174,7 +175,7 @@ $input-pagination-prefix: '#{$component-prefix}-input-pagination' !default;
     width: 48px;
     padding: 0 6px;
     border: 1px solid use-color('gray', 300);
-    border-radius: 4px;
+    border-radius: use-border-radius('normal');
     color: inherit;
     outline: none;
     box-sizing: border-box;
@@ -182,7 +183,6 @@ $input-pagination-prefix: '#{$component-prefix}-input-pagination' !default;
   }
 
   &__total {
-    line-height: 24px;
     margin-left: use-spacing(4);
   }
 }
