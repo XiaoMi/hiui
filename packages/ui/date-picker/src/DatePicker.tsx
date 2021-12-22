@@ -192,16 +192,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         // 只有发生了改变，才会去通知外部
         if (
           _dates.slice(0, compareNumber).some((od: moment.Moment | null, index: number) => {
-            console.error(
-              od,
-              cacheDate.current![index],
-              showTime ? 'second' : GranularityMap[type],
-              od
-                ? !od.isSame(cacheDate.current![index], showTime ? 'second' : GranularityMap[type])
-                : // 如果 新数据为空，则，进入以下比较
-                  // 如果 旧数据也为空，则，视作，相等，旧数据存在，视作改变（此处是考虑到 null undefined 共存的情况）
-                  od || cacheDate.current![index]
-            )
             return od
               ? !od.isSame(cacheDate.current![index], showTime ? 'second' : GranularityMap[type])
               : // 如果 新数据为空，则，进入以下比较
@@ -216,16 +206,19 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       [format, localeData.datePicker, onChange, realFormat, safeWeekOffset, type, showTime]
     )
 
-    const onPick = (dates: (moment.Moment | null)[], isShowPanel = false) => {
-      setTimeout(() => {
-        setShowPanel(isShowPanel)
-      }, 0)
-      if (!isShowPanel) {
-        setInputFocus(false)
-        callback(dates)
-      }
-      changeOutDate([...dates])
-    }
+    const onPick = useCallback(
+      (dates: (moment.Moment | null)[], isShowPanel = false) => {
+        setTimeout(() => {
+          setShowPanel(isShowPanel)
+        }, 0)
+        if (!isShowPanel) {
+          setInputFocus(false)
+          callback(dates)
+        }
+        changeOutDate([...dates])
+      },
+      [callback, changeOutDate]
+    )
 
     const resetStatus = useCallback(() => {
       setShowPanel(false)
@@ -242,11 +235,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         // @ts-ignore
         const { startDate, endDate } = isValid && getInRangeDate(outDate[0], outDate[1], max, min)
         const _outDate = isValid ? [moment(startDate), moment(endDate)] : [null]
-        const isChange = _outDate.some((od, index) => {
-          return od && !od.isSame(cacheDate.current![index])
-        })
-        // 只有在展示时间、类型等于日期范围或者时间段选择的时候，提交改变通知外部
-        isChange && callback(_outDate, showTime || type === 'daterange' || type === 'timeperiod')
+        callback(_outDate, true)
 
         changeOutDate(_outDate)
       }
@@ -254,17 +243,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       else {
         changeOutDate(cacheDate.current!.map((item) => item && item.clone()))
       }
-    }, [
-      outDate,
-      callback,
-      min,
-      max,
-      showTime,
-      type,
-      resetStatus,
-      changeOutDate,
-      isInDateRangeTimeMode,
-    ])
+    }, [outDate, callback, min, max, resetStatus, changeOutDate, isInDateRangeTimeMode])
 
     const onClear = () => {
       resetStatus()
@@ -313,7 +292,15 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           )}
         </div>
       )
-    }, [type, onPick, onSelect, outDate, disabledDate, popperCls, isInDateRangeTimeMode])
+    }, [
+      isInDateRangeTimeMode,
+      popperCls,
+      type,
+      onPick,
+      outDate,
+      disabledDate,
+      dateRangeTimePanelNow,
+    ])
 
     return (
       <DPContext.Provider
