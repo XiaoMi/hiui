@@ -136,13 +136,7 @@ export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
             className={`${prefixCls}__total`}
           >{`${pagination.total[0]} ${total} ${pagination.total[1]}`}</div>
         ) : null}
-        {pageSizeOptions ? (
-          <PageOption
-            pageSize={pageSize}
-            pageSizeOptions={_pageSizeOptions as { id: number; title: string }[]}
-            onPageSizeChange={_onPageSizeChange}
-          />
-        ) : null}
+
         <ul className={`${prefixCls}__list`}>
           <PagerButton
             type="prev"
@@ -160,6 +154,13 @@ export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
             disabled={current === maxPage}
           />
         </ul>
+        {pageSizeOptions ? (
+          <PageOption
+            pageSize={pageSize}
+            pageSizeOptions={_pageSizeOptions as { id: number; title: string }[]}
+            onPageSizeChange={_onPageSizeChange}
+          />
+        ) : null}
         {showJumper ? (
           <PageJumper
             prefixCls={prefixCls}
