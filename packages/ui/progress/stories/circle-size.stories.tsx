@@ -4,7 +4,7 @@ import { CircleProgress } from '../src'
 export const CircleSize = () => {
   return (
     <>
-      <h1>条形进度条尺寸</h1>
+      <h1>环形进度条尺寸</h1>
       <div className="progress-basic__wrap">
         <CircleProgress percent={75} size="sm" />
         <br />

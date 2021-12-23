@@ -203,6 +203,7 @@ $dashboard-progress-prefix: '#{$component-prefix}-dashboard-progress' !default;
 
 .#{$dashboard-progress-prefix} {
   position: relative;
+  display: inline-block;
 
   &__text {
     display: block;
@@ -217,29 +218,29 @@ $dashboard-progress-prefix: '#{$component-prefix}-dashboard-progress' !default;
     padding: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    @each $key, $value in $progress-color-map {
+      &--#{$key} {
+        svg[class^=hi-v4-icon] {
+          color: $value;
+        }
+      }
+    }
   }
 
   &__svgbackground {
     fill: none;
-    stroke: #e9e9e7;
-    stroke-width: 6;
+    stroke: use-color('gray', 200);
   }
 
   &__circle {
     fill: none;
     stroke: use-color-mode('primary');
-    stroke-width: 6;
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
     transition: stroke-dashoffset 0.4s cubic-bezier(0.3, 0, 0.7, 1);
 
-    $color-map: (
-      'warn': use-color-mode('warning'),
-      'success': use-color-mode('success'),
-      'error': use-color-mode('danger')
-    ) !default;
-
-    @each $key, $value in $color-map {
+    @each $key, $value in $progress-color-map {
       &--#{$key} {
         stroke: $value;
       }
@@ -249,16 +250,9 @@ $dashboard-progress-prefix: '#{$component-prefix}-dashboard-progress' !default;
   &__dashboard {
     fill: none;
     stroke: use-color-mode('primary');
-    stroke-width: 6;
     transition: stroke-dasharray 0.4s cubic-bezier(0.3, 0, 0.7, 1);
 
-    $color-map: (
-      'warn': use-color-mode('warning'),
-      'success': use-color-mode('success'),
-      'error': use-color-mode('danger')
-    ) !default;
-
-    @each $key, $value in $color-map {
+    @each $key, $value in $progress-color-map {
       &--#{$key} {
         stroke: $value;
       }

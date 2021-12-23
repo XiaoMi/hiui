@@ -7,6 +7,7 @@ export * from './indeterminate.stories'
 export * from './circle.stories'
 export * from './circle-size.stories'
 export * from './dashboard.stories'
+export * from './dashboard-size.stories'
 
 export default {
   title: 'Progress',
