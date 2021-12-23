@@ -6,6 +6,17 @@ import { useProgress, UseProgressProps } from './use-progress'
 import { ProgressProvider } from './context'
 
 const CIRCLE_PROGRESS_PREFIX = getPrefixCls('circle-progress')
+const sizeMap = {
+  sm: 48,
+  md: 64,
+  lg: 80,
+}
+
+const strokeWidthMap = {
+  sm: 2,
+  md: 4,
+  lg: 8,
+}
 
 /**
  * TODO: What is CircleProgress
@@ -19,23 +30,25 @@ export const CircleProgress = forwardRef<HTMLDivElement | null, CircleProgressPr
       children,
       percent: percentNum = 0,
       content,
-      type,
-      radius: radiusThis,
-      showInfo,
+      type = 'primary',
+      showInfo = true,
       style,
+      size = 'md',
+      width,
       ...rest
     },
     ref
   ) => {
     // TODO: 使用 自定义hook 抽离逻辑，若不需要可以移除
     const { rootProps, ...context } = useProgress(rest)
+    const _width = width || sizeMap[size]
 
     const percent = percentNum > 0 ? percentNum : 0
-    const radius = radiusThis > 0 ? radiusThis : 40
-    const totalRadiusWidth = radius + 10
+    const radius = _width / 2
+    const totalRadiusWidth = radius + strokeWidthMap[size]
     const strokeDash = radius * 2 * Math.PI
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, `${prefixCls}--${size}`)
 
     return (
       <ProgressProvider value={context}>
@@ -43,7 +56,7 @@ export const CircleProgress = forwardRef<HTMLDivElement | null, CircleProgressPr
           ref={ref}
           className={cls}
           role={role}
-          style={{ width: radius * 2, height: radius * 2 }}
+          style={{ width: _width, height: _width }}
           {...rootProps}
         >
           <svg viewBox={`0 0 ${totalRadiusWidth * 2} ${totalRadiusWidth * 2}`}>
@@ -51,12 +64,14 @@ export const CircleProgress = forwardRef<HTMLDivElement | null, CircleProgressPr
               cx={totalRadiusWidth}
               cy={totalRadiusWidth}
               r={radius}
-              className={`${prefixCls}__svgbackground`}
+              style={{ strokeWidth: strokeWidthMap[size] }}
+              className={cx(`${prefixCls}__svgbackground`)}
             />
             <circle
               cx={totalRadiusWidth}
               cy={totalRadiusWidth}
               r={radius}
+              style={{ strokeWidth: strokeWidthMap[size] }}
               className={`${prefixCls}__circle ${prefixCls}__circle--${type}`}
               strokeDasharray={`${strokeDash} ${strokeDash}`}
               strokeDashoffset={`${strokeDash * ((100 - percent) / 100)}`}
@@ -65,7 +80,7 @@ export const CircleProgress = forwardRef<HTMLDivElement | null, CircleProgressPr
           </svg>
           {showInfo && (
             <div className={`${prefixCls}__text ${prefixCls}__text--${type}`}>
-              {content || `${percent}%`}
+              {content !== undefined ? content : `${percent}%`}
             </div>
           )}
         </div>

@@ -1,19 +1,23 @@
+import React from 'react'
 export const useProgress = ({ ...rest }: UseProgressProps) => {
   return { rootProps: rest }
 }
 
 export interface UseProgressProps {
-  value?: number
-  bufferValue?: number
-  color?: string
-  formatText?: (value: number, bufferValue: number) => string
-  textPlacement?: 'inside-left' | 'inside-right' | 'outline'
-  mode?: 'indeterminate' | 'determinate'
   percent?: number
-  content?: any
-  type?: any
+  bufferPercent?: number
+  color?: string
+  formatText?: (percent: number, bufferPercent: number) => string
+  placement?: 'inside' | 'outside'
+  mode?: 'indeterminate' | 'determinate'
+  type?: 'success' | 'danger' | 'warning' | 'primary'
   radius?: any
-  showInfo?: any
+  showInfo?: boolean
+  content?: React.ReactNode
+  size?: 'md' | 'sm' | 'lg'
+  strokeWidth?: number
+  width?: number
+  active?: boolean
 }
 
 export type UseProgressReturn = ReturnType<typeof useProgress>
