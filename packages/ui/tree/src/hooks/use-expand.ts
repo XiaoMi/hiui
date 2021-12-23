@@ -16,7 +16,7 @@ export const useExpandProps = (
   flattedData: FlattedTreeNodeData[],
   defaultExpandedIds: React.ReactText[],
   expandedIdsProp?: React.ReactText[],
-  onExpand?: (expandIds: React.ReactText[], node: TreeNodeEventData, expanded: boolean) => void,
+  onExpand?: (expandedIds: React.ReactText[], node: TreeNodeEventData, expanded: boolean) => void,
   defaultExpandAll?: boolean
 ) => {
   return useUncontrolledState(
@@ -42,7 +42,7 @@ export const useExpand = (
   flattedData: FlattedTreeNodeData[],
   defaultExpandedIds: React.ReactText[],
   expandedIdsProp?: React.ReactText[],
-  onExpand?: (expandIds: React.ReactText[], node: TreeNodeEventData, expanded: boolean) => void,
+  onExpand?: (expandedIds: React.ReactText[], node: TreeNodeEventData, expanded: boolean) => void,
   defaultExpandAll?: boolean
 ) => {
   const [expandedIds, tryToggleExpandedIds] = useExpandProps(

@@ -1,0 +1,28 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-picker' !default;
+
+.#{$prefix} {
+  @include component-reset;
+
+  display: inline-block;
+  flex-shrink: 0;
+  overflow: hidden;
+  width: auto;
+  cursor: pointer;
+  // animation
+  transition-timing-function: use-motion-bezier('normal');
+  transition-duration: use-motion-duration('normal');
+  transition-property: border-color;
+
+  &--open {
+    .#{$component-prefix}-mock-input {
+      border-color: use-color-mode('primary');
+    }
+  }
+
+  &__body {
+    max-height: 260px;
+    overflow-y: auto;
+  }
+}

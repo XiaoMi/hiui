@@ -279,7 +279,7 @@ export interface TreeProps {
   /**
    * 节点被点击(展开/收起)时触发
    */
-  onExpand?: (expandIds: React.ReactText[], node: TreeNodeEventData, expanded: boolean) => void
+  onExpand?: (expandedIds: React.ReactText[], node: TreeNodeEventData, expanded: boolean) => void
   /**
    * 点击异步加载子项
    */

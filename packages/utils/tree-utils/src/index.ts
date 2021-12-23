@@ -456,3 +456,34 @@ export const cloneTreeNode = <T extends BaseTreeNodeData>(node: T) => {
 export const cloneTree = <T extends BaseTreeNodeData>(tree: T[]) => {
   return tree.map((node) => cloneTreeNode(node))
 }
+
+export const filterTreeNode = <T extends BaseTreeNodeData>(
+  node: T,
+  filterFunc: (...arg: any[]) => boolean
+) => {
+  if (!filterFunc(node)) return false
+
+  const dig = (node: BaseTreeNodeData) => {
+    if (node.children) {
+      node.children = node.children.filter((child) => {
+        if (!filterFunc(child)) return false
+
+        dig(child)
+        return true
+      })
+    }
+  }
+
+  dig(node)
+  return true
+}
+
+/**
+ * 过滤树
+ */
+export const filterTree = <T extends BaseTreeNodeData>(
+  tree: T[],
+  filterFunc: (...arg: any[]) => boolean
+) => {
+  return cloneTree(tree).filter((node) => filterTreeNode(node, filterFunc))
+}

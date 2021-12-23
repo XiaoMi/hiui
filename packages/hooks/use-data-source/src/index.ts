@@ -1,0 +1,219 @@
+import React, { useCallback, useRef, useState } from 'react'
+import { isFunction, isArray, isPromise, isUndefined } from '@hi-ui/type-assertion'
+import { useLatestRef } from '@hi-ui/use-latest'
+import { __DEV__ } from '@hi-ui/env'
+
+/**
+ * TODO: What is useDataSource
+ * TODO: Using axios instead of fetch：https://www.geeksforgeeks.org/difference-between-fetch-and-axios-js-for-making-http-requests/
+ */
+export const useDataSource = <T = Record<string, any>[]>({
+  dataSource: dataSourceProp,
+  validate = isArray as any,
+}: UseDataSourceProps<T>) => {
+  const [loading, setLoading] = useState(false)
+
+  const cancelControllerRef = useRef<AbortController | null>(null)
+
+  const dataSourceLatestRef = useLatestRef(dataSourceProp)
+  const validateLatestRef = useLatestRef(validate)
+
+  const request = useCallback((options: UseDataSource, keyword: React.ReactText) => {
+    const {
+      url: urlProp,
+      method = 'GET',
+      headers,
+      data,
+      params: paramsProp,
+      credentials: credentialsProp,
+      withCredentials = false,
+      transformResponse,
+      key,
+      onError,
+      ...rest
+    } = options
+
+    // Inject the keyword
+    const params = key ? { [key]: keyword, ...paramsProp } : paramsProp
+    const credentials = withCredentials ? 'include' : credentialsProp
+
+    // @Optimize: Cancel the last request
+    cancelControllerRef.current?.abort?.()
+    cancelControllerRef.current = new AbortController()
+
+    let url: URL | string = urlProp
+
+    if (params) {
+      url = new URL(urlProp)
+      url.search = new URLSearchParams(params).toString()
+    }
+
+    return fetch(url.toString(), {
+      signal: cancelControllerRef.current ? cancelControllerRef.current.signal : undefined,
+      ...rest,
+      method,
+      body: data as any,
+      credentials,
+      headers,
+    })
+      .then(
+        (response) => {
+          cancelControllerRef.current = null
+          return response.json()
+        },
+        (error) => {
+          cancelControllerRef.current = null
+          onError?.(error)
+        }
+      )
+      .then((response) => {
+        return transformResponse?.(response)
+      })
+  }, [])
+
+  const loadRemoteData = useCallback(
+    (keyword: React.ReactText) => {
+      return new Promise<T>((resolve, reject) => {
+        const dataSourceLatest = dataSourceLatestRef.current
+        const validate = validateLatestRef.current
+
+        const resultMayBePromise = isFunction(dataSourceLatest)
+          ? dataSourceLatest(keyword)
+          : dataSourceLatest
+
+        if (isUndefined(resultMayBePromise)) {
+          reject(resultMayBePromise)
+          return
+        }
+
+        if (validate(resultMayBePromise)) {
+          resolve(resultMayBePromise)
+          return
+        }
+
+        if (isPromise(resultMayBePromise)) {
+          setLoading(true)
+
+          resultMayBePromise
+            .then((res) => {
+              setLoading(false)
+
+              if (isUndefined(res)) {
+                reject(res)
+                return
+              }
+
+              if (validate(res)) {
+                resolve(res)
+                return
+              }
+
+              reject(res)
+            })
+            .catch((err) => {
+              setLoading(false)
+
+              reject(err)
+            })
+
+          return
+        }
+
+        if (typeof resultMayBePromise.url !== 'string') {
+          if (__DEV__) {
+            console.log('Warning: Please Return Correct data when using DataSource.')
+          }
+
+          reject(resultMayBePromise)
+          return
+        }
+
+        setLoading(true)
+
+        request(resultMayBePromise, keyword)
+          .then((data) => {
+            setLoading(false)
+
+            if (isUndefined(data)) {
+              reject(data)
+              return
+            }
+
+            if (validate(data)) {
+              resolve(data)
+              return
+            }
+
+            reject(data)
+          })
+          .catch((error) => {
+            setLoading(false)
+
+            reject(error)
+          })
+      })
+    },
+    [dataSourceLatestRef, request, validateLatestRef]
+  )
+
+  return { loading, loadRemoteData }
+}
+
+export interface UseDataSource<T = any> {
+  /**
+   * 请求的 url
+   */
+  url: string
+  /**
+   * 请求方法
+   */
+  method?: 'GET' | 'POST'
+  /**
+   * post 请求时请求体参数
+   */
+  data?: Record<string, any>
+  /**
+   * url 查询参数
+   */
+  params?: Record<string, any>
+  /**
+   * 请求头
+   */
+  headers?: Record<string, any>
+  /**
+   * 请求模式
+   */
+  mode?: 'same-origin' | 'cors' | 'navigate' | 'no-cors'
+  /**
+   * 成功时的回调，用于对数据进行预处理
+   */
+  transformResponse?: (response: object) => T
+  /**
+   * 携带身份凭证
+   */
+  withCredentials?: boolean
+  /**
+   * 身份凭证策略
+   */
+  credentials?: 'include' | 'omit' | 'same-origin'
+  /**
+   * 注入的名称
+   */
+  key?: string
+  /**
+   * 请求 error 时回调
+   */
+  onError?: (error: any) => void
+}
+
+export interface UseDataSourceProps<T = any> {
+  dataSource?:
+    | T
+    | ((keyword: React.ReactText) => T | undefined)
+    | ((keyword: React.ReactText) => Promise<T | undefined>)
+    | UseDataSource<T>
+    | ((keyword: React.ReactText) => UseDataSource<T>)
+  validate?: (arg: unknown) => arg is T
+}
+
+export type UseDataSourceReturn = ReturnType<typeof useDataSource>
