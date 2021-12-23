@@ -55,7 +55,7 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
         )
       }
       return (
-        <span aria-label={name} className={`${prefixCls}__content`}>
+        <span aria-label={name} className={`${prefixCls}__content ${prefixCls}--empty`}>
           <UserFilled />
         </span>
       )

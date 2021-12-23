@@ -7,6 +7,12 @@ $prefix: '#{$component-prefix}-avatar' !default;
   align-items: center;
   vertical-align: middle;
 
+  &--empty {
+    &.#{$prefix}__content {
+      background-color: use-color-mode('primary-10');
+    }
+  }
+
   &__content {
     text-align: center;
     background-color: use-color-mode('primary');
