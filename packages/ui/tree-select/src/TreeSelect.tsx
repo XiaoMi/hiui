@@ -11,6 +11,7 @@ import { cloneTree, flattenTree, getNodeAncestors, filterTree } from '@hi-ui/tre
 import { isArray, isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
 import { useDataSource } from '@hi-ui/use-data-source'
 import { uniqBy } from 'lodash'
+import { Highlighter } from '@hi-ui/highlighter'
 
 const TREE_SELECT_PREFIX = getPrefixCls('tree-select')
 const DEFAULT_DATA = [] as []
@@ -241,7 +242,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         // 本地搜索执行默认高亮规则
         const highlight = !!searchValue && (searchMode === 'highlight' || searchMode === 'filter')
 
-        const ret = highlight ? renderTitleWithHighlight(node, searchValue) : true
+        const ret = highlight ? <Highlighter keyword={searchValue}>{node.title}</Highlighter> : true
 
         return ret
       },
@@ -422,31 +423,6 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange'> 
 
 if (__DEV__) {
   TreeSelect.displayName = 'TreeSelect'
-}
-
-/**
- * 高亮节点的文本内容
- * TODO: 抽离 highlight 组件
- */
-const renderTitleWithHighlight = (node: TreeNodeEventData, searchValue: string) => {
-  if (typeof node.title !== 'string') {
-    return
-  }
-
-  // 支持多个匹配高亮
-  const index = node.title.indexOf(searchValue)
-  if (index === -1) return node.title
-
-  const beforeStr = node.title.substr(0, index)
-  const afterStr = node.title.substr(index + searchValue?.length)
-
-  return (
-    <span>
-      {beforeStr}
-      <span className="title__text--matched">{searchValue}</span>
-      {afterStr}
-    </span>
-  )
 }
 
 /**
