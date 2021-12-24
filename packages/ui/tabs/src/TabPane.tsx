@@ -14,6 +14,7 @@ export interface TabPaneProps {
   disabled?: boolean
   tabId: string
   tabTitle: React.ReactNode
+  tabDesc?: React.ReactNode
   closeable?: boolean
   active?: boolean
 }
