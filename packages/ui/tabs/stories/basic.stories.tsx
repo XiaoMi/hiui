@@ -5,7 +5,7 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="tabs-basic__wrap" style={{ background: '#ccc', padding: 20 }}>
+      <div className="tabs-basic__wrap">
         <Tabs>
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1

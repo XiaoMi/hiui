@@ -26,6 +26,7 @@ interface TabItemProps extends TabPaneProps {
   onDragEnd?: (e: React.DragEvent<HTMLDivElement>, dragNode: TabPaneProps) => void
   itemRef: HTMLDivElement | null
   direction: 'horizontal' | 'vertical'
+  type: 'desc' | 'default' | 'button' | 'card'
 }
 
 export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
@@ -35,6 +36,7 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
       style,
       disabled,
       tabTitle,
+      tabDesc,
       prefixCls,
       tabId,
       onTabClick,
@@ -48,6 +50,7 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
       onDragEnd,
       itemRef,
       draggable,
+      type = 'default',
       direction: layout = 'horizontal',
     },
     ref
@@ -140,7 +143,8 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
           }
         }}
       >
-        <span>{tabTitle}</span>
+        <span className={`${prefixCls}-item__title`}>{tabTitle}</span>
+        {type === 'desc' && <span className={`${prefixCls}-item__desc`}>{tabDesc}</span>}
         {editable && (
           <span
             className={`${prefixCls}__close-btn`}

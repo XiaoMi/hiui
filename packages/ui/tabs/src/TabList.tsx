@@ -128,6 +128,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 ref={(node) => {
                   itemsRef.current[`${d.tabId}`] = node
                 }}
+                type={type}
                 itemRef={itemsRef.current[`${d.tabId}`]}
                 index={index}
                 active={activeTab === d.tabId}
