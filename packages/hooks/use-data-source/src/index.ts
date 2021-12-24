@@ -11,7 +11,9 @@ export const useDataSource = <T = Record<string, any>[]>({
   dataSource: dataSourceProp,
   validate = isArray as any,
 }: UseDataSourceProps<T>) => {
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
+  // pending | 'loading' | 'fulfilled' | 'rejected'
+  const [status, setStatus] = useState('pending')
 
   const cancelControllerRef = useRef<AbortController | null>(null)
 
@@ -73,6 +75,7 @@ export const useDataSource = <T = Record<string, any>[]>({
 
   const loadRemoteData = useCallback(
     (keyword: React.ReactText) => {
+      setStatus('pending')
       return new Promise<T>((resolve, reject) => {
         const dataSourceLatest = dataSourceLatestRef.current
         const validate = validateLatestRef.current
@@ -82,37 +85,39 @@ export const useDataSource = <T = Record<string, any>[]>({
           : dataSourceLatest
 
         if (isUndefined(resultMayBePromise)) {
+          setStatus('rejected')
           reject(resultMayBePromise)
           return
         }
 
         if (validate(resultMayBePromise)) {
+          setStatus('fulfilled')
           resolve(resultMayBePromise)
           return
         }
 
         if (isPromise(resultMayBePromise)) {
-          setLoading(true)
+          setStatus('loading')
 
           resultMayBePromise
             .then((res) => {
-              setLoading(false)
-
               if (isUndefined(res)) {
+                setStatus('rejected')
                 reject(res)
                 return
               }
 
               if (validate(res)) {
+                setStatus('fulfilled')
                 resolve(res)
                 return
               }
 
+              setStatus('rejected')
               reject(res)
             })
             .catch((err) => {
-              setLoading(false)
-
+              setStatus('rejected')
               reject(err)
             })
 
@@ -123,32 +128,31 @@ export const useDataSource = <T = Record<string, any>[]>({
           if (__DEV__) {
             console.log('Warning: Please Return Correct data when using DataSource.')
           }
-
+          setStatus('rejected')
           reject(resultMayBePromise)
           return
         }
 
-        setLoading(true)
-
+        setStatus('loading')
         request(resultMayBePromise, keyword)
           .then((data) => {
-            setLoading(false)
-
             if (isUndefined(data)) {
+              setStatus('rejected')
               reject(data)
               return
             }
 
             if (validate(data)) {
+              setStatus('fulfilled')
               resolve(data)
               return
             }
 
+            setStatus('rejected')
             reject(data)
           })
           .catch((error) => {
-            setLoading(false)
-
+            setStatus('rejected')
             reject(error)
           })
       })
@@ -156,7 +160,11 @@ export const useDataSource = <T = Record<string, any>[]>({
     [dataSourceLatestRef, request, validateLatestRef]
   )
 
-  return { loading, loadRemoteData }
+  return {
+    loading: status === 'loading',
+    hasError: status === 'rejected',
+    loadRemoteData,
+  }
 }
 
 export interface UseDataSource<T = any> {

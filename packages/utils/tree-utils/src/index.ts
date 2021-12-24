@@ -487,3 +487,18 @@ export const filterTree = <T extends BaseTreeNodeData>(
 ) => {
   return cloneTree(tree).filter((node) => filterTreeNode(node, filterFunc))
 }
+
+/**
+ * 基于树结构，获取所有祖先节点(非叶子节点)
+ */
+export const getTreeAncestors = <T extends BaseTreeNodeData>(tree: T[]) => {
+  const ancestors = [] as T[]
+
+  visitTree(tree, (node) => {
+    if (node.children) {
+      ancestors.push(node)
+    }
+  })
+
+  return ancestors
+}

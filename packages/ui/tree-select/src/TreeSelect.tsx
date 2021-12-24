@@ -7,11 +7,17 @@ import { PopperProps } from '@hi-ui/popper'
 import { Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Picker, PickerProps } from '@hi-ui/picker'
-import { cloneTree, flattenTree, getNodeAncestors, filterTree } from '@hi-ui/tree-utils'
-import { isArray, isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
-import { useDataSource } from '@hi-ui/use-data-source'
+import { flattenTree } from '@hi-ui/tree-utils'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { uniqBy } from 'lodash'
 import { Highlighter } from '@hi-ui/highlighter'
+import {
+  useAsyncSearch,
+  useFilterSearch,
+  useHighlightSearch,
+  useSearchMode,
+  useTreeCustomSearch,
+} from '@hi-ui/use-search-mode'
 
 const TREE_SELECT_PREFIX = getPrefixCls('tree-select')
 const DEFAULT_DATA = [] as []
@@ -43,14 +49,14 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       defaultValue = '',
       value: valueProp,
       onChange,
-      // displayRender,
-      // placeholder,
-      autoload,
+      // autoload,
       searchable: searchableProp,
       searchMode: searchModeProp,
       onLoadChildren,
       titleRender,
       filterOption,
+      // displayRender,
+      // placeholder,
       // emptyContent,
       // optionWidth,
       // overlayClassName,
@@ -59,21 +65,6 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
     },
     ref
   ) => {
-    // 帮助用户自动开启 searchable
-    const searchMode = useMemo(() => {
-      if (searchableProp === false) return ''
-
-      if (dataSource) return 'dataSource'
-
-      if (filterOption) return 'filterOption'
-
-      if (searchModeProp === 'highlight' || searchModeProp === 'filter') return searchModeProp
-
-      return ''
-    }, [searchModeProp, searchableProp, dataSource, filterOption])
-
-    const searchable = searchMode !== ''
-
     const [menuVisible, menuVisibleAction] = useToggle()
 
     /**
@@ -96,6 +87,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
     }, [data, getKeyFields])
 
     // TODO: 抽离展开hook
+    // TODO: onLoadChildren 和 defaultExpandAll 共存时
     const [expandedIds, tryChangeExpandedIds] = useUncontrolledState(
       function getDefaultExpandedIds() {
         // 开启默认展开全部
@@ -122,114 +114,41 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       [menuVisibleAction, tryChangeValue]
     )
 
-    const filterByCustom = isFunction(filterOption)
-
-    // TODO: 抽离 useSearch
-    const [searchValue, setSearchValue] = useState('')
-
-    // 搜索时临时节点展开态
-    const [expandedIdsInSearch, setExpandedIdsInSearch] = useState<React.ReactText[]>([])
-    const [dataInSearch, setDataInSearch] = useState<any[]>(data)
-    const [matchedCount, setMatchedCount] = useState(0)
+    // 搜索时临时选中缓存数据
+    const [selectedItem, setSelectedItem] = useState<TreeSelectDataItem | null>(null)
 
     // ************************** 异步搜索 ************************* //
 
-    const [selectedItem, setSelectedItem] = useState<TreeSelectDataItem | null>(null)
+    // const { loading, hasError, loadRemoteData } = useDataSource({ dataSource, validate: isArray })
 
-    const { loadRemoteData } = useDataSource({ dataSource, validate: isArray })
+    const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({ dataSource })
+    const customSearchStrategy = useTreeCustomSearch({ data, filterOption })
+    const filterSearchStrategy = useFilterSearch({
+      data,
+      flattedData,
+      searchMode: searchModeProp,
+    })
+    const highlightSearchStrategy = useHighlightSearch({
+      data,
+      flattedData,
+      searchMode: searchModeProp,
+    })
 
-    const [status, setStatus] = useState('pending')
-    const loading = status === 'loading'
-    const hasError = status === 'rejected'
-
-    const onAsyncSearch = useCallback(
-      (keyword: string) => {
-        setStatus('loading')
-        loadRemoteData(keyword)
-          .then((asyncData) => {
-            setStatus('fulfilled')
-            setDataInSearch(asyncData)
-            setMatchedCount(asyncData.length)
-          })
-          .catch(() => {
-            setStatus('rejected')
-          })
-      },
-      [loadRemoteData]
-    )
-
-    const onSearch = useCallback(
-      (keyword: string) => {
-        if (!searchable) return
-
-        setSearchValue(keyword)
-
-        if (!keyword) return
-
-        if (dataSource) {
-          onAsyncSearch(keyword)
-          return
-        }
-        // TODO: 是否过滤 disabled
-
-        let matchedNodes
-        let filteredNodeIds
-        let showData
-
-        // 自定义筛选
-        if (filterByCustom) {
-          matchedNodes = filterTree(data, (node) => filterOption(keyword, node))
-          filteredNodeIds = flattedData.map((item) => {
-            return item.id
-          })
-
-          // console.log(matchedNodes, filteredNodeIds)
-
-          // filterOption 模式展开全部
-          setDataInSearch(matchedNodes)
-          setMatchedCount(matchedNodes.length)
-          setExpandedIdsInSearch(Array.from(new Set(filteredNodeIds)))
-          return
-        }
-
-        switch (searchMode) {
-          case 'highlight':
-            // 1. 展开匹配节点树
-            // 2. 高亮匹配节点文本
-            matchedNodes = getMatchedNodes(flattedData, keyword)
-            filteredNodeIds = getFilteredIds(matchedNodes)
-            setExpandedIdsInSearch(filteredNodeIds)
-            setMatchedCount(matchedNodes.length)
-            setDataInSearch(data)
-            return
-          case 'filter':
-            // 1. 展开匹配节点树
-            // 2. 高亮匹配节点文本
-            // 3. 过滤掉（隐藏）不相干的兄弟和祖先节点
-            matchedNodes = getMatchedNodes(flattedData, keyword)
-            filteredNodeIds = getFilteredIds(matchedNodes)
-            showData = getSearchedData(
-              cloneTree(data),
-              matchedNodes.map((v) => v.id),
-              filteredNodeIds
-            )
-            setExpandedIdsInSearch(filteredNodeIds)
-            setDataInSearch(showData)
-            setMatchedCount(matchedNodes.length)
-        }
-      },
-      [
-        searchable,
-        flattedData,
-        searchMode,
-        setExpandedIdsInSearch,
-        filterOption,
-        filterByCustom,
-        data,
-        dataSource,
-        onAsyncSearch,
-      ]
-    )
+    const {
+      state: stateInSearch,
+      setStateInSearch,
+      searchable,
+      searchMode,
+      onSearch,
+      keyword: searchValue,
+    } = useSearchMode({
+      strategies: [
+        dataSourceStrategy,
+        customSearchStrategy,
+        filterSearchStrategy,
+        highlightSearchStrategy,
+      ],
+    })
 
     // 拦截 titleRender，自定义高亮展示
     const proxyTitleRender = useCallback(
@@ -250,12 +169,17 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
     )
 
     const shouldUseSearch = !!searchValue && !hasError
+
     const treeProps = {
-      data: shouldUseSearch ? dataInSearch : data,
-      expandedIds: shouldUseSearch ? expandedIdsInSearch : expandedIds,
-      onExpand: shouldUseSearch ? setExpandedIdsInSearch : tryChangeExpandedIds,
+      data: shouldUseSearch ? stateInSearch.data : data,
+      expandedIds: shouldUseSearch ? stateInSearch.expandedIds : expandedIds,
+      onExpand: shouldUseSearch
+        ? (ids: any) => setStateInSearch((prev: any) => ({ ...prev, expandedIds: ids }))
+        : tryChangeExpandedIds,
       titleRender: proxyTitleRender,
     }
+
+    console.log(shouldUseSearch, treeProps)
 
     // 下拉菜单不能合并（因为树形数据，不知道是第几级）
     const mergedData: any[] = useMemo(() => {
@@ -282,7 +206,8 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         data={mergedData}
         searchable={searchable}
         onSearch={onSearch}
-        showEmpty={matchedCount === 0}
+        showNotfound={shouldUseSearch ? !stateInSearch.matched : false}
+        showEmpty={shouldUseSearch ? false : mergedData.length === 0}
         loading={loading}
       >
         {isArrayNonEmpty(treeProps.data) ? (
@@ -423,69 +348,4 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange'> 
 
 if (__DEV__) {
   TreeSelect.displayName = 'TreeSelect'
-}
-
-/**
- * 从 value 中 找到指定的 options（逐层查找）
- */
-const getMatchedNodes = (
-  flattedData: any[],
-  searchValue: string,
-  filter?: (option: any) => boolean
-): any[] => {
-  if (!searchValue) return []
-
-  return flattedData.filter((node) => {
-    if (typeof node.title !== 'string') {
-      if (__DEV__) {
-        console.info('WARNING: The `option.title` should be `string` when searchable is enabled.')
-      }
-      return false
-    }
-
-    if (filter && filter(node)) return false
-
-    // 匹配策略：`String.include`
-    return node.title.includes?.(searchValue)
-  })
-}
-
-const getFilteredIds = (matchedNodes: any[]) => {
-  const expandNodeIdsSet = new Set<React.ReactText>()
-
-  matchedNodes.forEach((item) => {
-    if (isArrayNonEmpty(item.children)) {
-      expandNodeIdsSet.add(item.id)
-    }
-    const ancestors = getNodeAncestors(item)
-    ancestors.forEach((ancestor) => {
-      expandNodeIdsSet.add(ancestor.id)
-    })
-  })
-  return Array.from(expandNodeIdsSet)
-}
-
-/**
- * 获取搜索高亮展示的数据
- */
-const getSearchedData = (
-  treeData: any[],
-  matchedIds: React.ReactText[],
-  filteredIds: React.ReactText[]
-) => {
-  for (let i = 0; i < treeData.length; ++i) {
-    const node = treeData[i]
-    if (matchedIds.includes(node.id)) {
-      // do nothing
-    } else if (filteredIds.includes(node.id)) {
-      if (node.children) {
-        getSearchedData(node.children, matchedIds, filteredIds)
-      }
-    } else {
-      treeData.splice(i, 1)
-      i = i - 1
-    }
-  }
-
-  return treeData
 }
