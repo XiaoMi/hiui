@@ -17,7 +17,7 @@ export const Button = () => {
             Content of Tab Panel 3
           </TabPane>
         </Tabs>
-        <Tabs type="button" direction="horizontal">
+        <Tabs type="button" direction="horizontal" draggable>
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1
           </TabPane>
