@@ -79,7 +79,7 @@ $dots-content-class: '#{$dots-class}__content' !default;
       width: 12px;
       height: 4px;
       border-radius: 2px;
-      transition: width 0.15s linear;
+      transition: width 0.15s linear,background 0.2s ease-out;
 
       &--active{
         width: 24px;
