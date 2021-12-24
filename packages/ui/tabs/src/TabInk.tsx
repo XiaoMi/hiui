@@ -27,8 +27,8 @@ export const TabInk: React.FC<TabInkProps> = ({
       let _style: React.CSSProperties = {}
       if (direction === 'vertical') {
         _style = {
-          top: `${itemRect.top - listRect.top - translate}px`,
-          height: `${itemRect.height}px`,
+          top: `${itemRect.top - listRect.top - translate + 2}px`,
+          height: `${itemRect.height - 4}px`,
           left: '',
           width: '',
         }

@@ -9,49 +9,52 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
   &__close-btn {
     cursor: pointer;
-    color: use-color-static('black');
-    margin-left: 4px;
+    color: use-color('gray', 500);
+    margin-left: use-spacing(2);
+    transition: color 0.3s;
+
+    &:hover {
+      color: use-color-mode('primary');
+    }
   }
 
   &__list {
     position: relative;
     font-size: use-text-size('normal');
-    color: use-color-static('black');
+    color: use-color('gray', 500);
     display: flex;
     overflow: hidden;
     align-items: center;
 
     &--card {
       .#{$prefix}__item {
-        margin: 0 4px 0 0;
-        padding: 4px 8px;
         background-color: use-color('gray', 200);
-        border-radius: 4px 4px 0 0;
-        border: 1px solid use-color('gray', 300);
+        margin: 0;
+        padding: use-spacing(4) use-spacing(10);
+        border-radius: use-border-radius('normal') use-border-radius('normal') 0 0;
+        transition: all 0.3s;
 
         &--active {
           color: use-color-mode('primary');
           background-color: use-color-static('white');
-          border-bottom: 2px solid use-color-static('white');
         }
       }
     }
 
-    &::before {
-      content: '';
-      clear: both;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background-color: use-color('gray', 200);
-      display: block;
-    }
+    // &::before {
+    //   content: '';
+    //   clear: both;
+    //   position: absolute;
+    //   bottom: 0;
+    //   left: 0;
+    //   right: 0;
+    //   height: 1px;
+    //   background-color: use-color('gray', 200);
+    //   display: block;
+    // }
 
     &--inner {
       display: flex;
-      // align-items: center;
       flex: 1;
       position: relative;
       overflow: hidden;
@@ -73,32 +76,31 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
       &--card {
         .#{$prefix}__item {
-          margin: 0 0 4px 0;
-          padding: 4px 8px;
+          margin: 0;
+          padding: use-spacing(4) use-spacing(10);
           background-color: use-color('gray', 200);
-          border-radius: 4px 0 0  4px;
-          border: 1px solid use-color('gray', 300);
+          border-radius: use-border-radius('normal') 0 0  use-border-radius('normal');
+          transition: all 0.3s;
 
           &--active {
             color: use-color-mode('primary');
             background-color: use-color-static('white');
-            border-right: 1px solid use-color-static('white');
           }
         }
       }
 
-      &::before {
-        content: '';
-        clear: both;
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: auto;
-        height: 100%;
-        width: 1px;
-        background-color: use-color('gray', 200);
-        display: block;
-      }
+      // &::before {
+      //   content: '';
+      //   clear: both;
+      //   position: absolute;
+      //   top: 0;
+      //   right: 0;
+      //   left: auto;
+      //   height: 100%;
+      //   width: 1px;
+      //   background-color: use-color('gray', 200);
+      //   display: block;
+      // }
 
       &--inner {
         width: auto;
@@ -113,9 +115,9 @@ $prefix: '#{$component-prefix}-tabs' !default;
     }
 
     .#{$prefix}__item {
-      line-height: 22px;
-      padding: 0 8px;
-      margin: 8px 0;
+      line-height: use-text-lineheight('lg');
+      padding: 0 use-spacing(10);
+      margin: use-spacing(4) 0;
       transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
 
       &--prev {
@@ -136,7 +138,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     .#{$prefix}__ink {
       position: absolute;
-      right: 0;
+      left: 0;
       bottom: auto;
       width: 2px;
       background-color: use-color-mode('primary');
@@ -155,9 +157,9 @@ $prefix: '#{$component-prefix}-tabs' !default;
   }
 
   &__item {
-    line-height: 22px;
-    padding: 8px 0;
-    margin: 0 16px;
+    line-height: use-text-lineheight('lg');
+    padding: use-spacing(4) 0;
+    margin: 0 use-spacing(10);
     cursor: pointer;
     flex-shrink: 0;
     transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
@@ -168,8 +170,6 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &--active {
       color: use-color-mode('primary');
-
-      // font-weight: bold;
     }
 
     &--prev {
@@ -195,7 +195,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
   &__content {
     width: 100%;
     overflow: hidden;
-    padding-top: 16px;
+    padding-top: use-spacing(8);
     box-sizing: border-box;
   }
 

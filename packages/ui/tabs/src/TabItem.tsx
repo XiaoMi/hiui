@@ -144,7 +144,8 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
         {editable && (
           <span
             className={`${prefixCls}__close-btn`}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation()
               if (onDelete) {
                 onDelete({ tabId, tabTitle }, index)
               }
