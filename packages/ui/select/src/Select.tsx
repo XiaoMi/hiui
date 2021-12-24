@@ -5,7 +5,7 @@ import Input, { MockInput } from '@hi-ui/input'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useSelect } from './use-select'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
-import Popper, { PopperProps } from '@hi-ui/popper'
+import { PopperProps, PopperPortal } from '@hi-ui/popper'
 import { DownOutlined, SearchOutlined } from '@hi-ui/icons'
 import { SelectProvider, useSelectContext } from './context'
 import { SelectItem } from './types'
@@ -85,7 +85,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
             displayRender={displayRender}
             suffix={<DownOutlined />}
           />
-          <Popper
+          <PopperPortal
             {...popper}
             attachEl={targetElRef}
             visible={menuVisible}
@@ -99,7 +99,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                 return <SelectOption key={item.id} option={item} />
               })}
             </div>
-          </Popper>
+          </PopperPortal>
         </div>
       </SelectProvider>
     )
