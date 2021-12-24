@@ -3,41 +3,60 @@ import React, { useState } from 'react'
 import Tag from '../src'
 
 export const Basic = () => {
-  const [list, setList] = useState<string[]>(['Round editable', 'Round linear editable'])
-
-  const onEdit = (content: string, index: number) => {
-    setList((pre) => {
-      const result = [...pre]
-      result[index] = content
-      return result
-    })
-  }
-
   return (
     <>
-      <h1>Tag</h1>
-      <div className="tag-basic__wrap">
-        <Tag>Round</Tag>
-        <Tag shape="square">Square</Tag>
-        <Tag appearance="line">Round line</Tag>
-        <Tag appearance="line" shape="square">
-          Square line
+      <h1>Tag colors</h1>
+      <div style={{ display: 'flex' }}>
+        <Tag type="warning">待审批</Tag>
+        <Tag type="primary">审批中</Tag>
+        <Tag type="success">已通过</Tag>
+        <Tag type="danger">已驳回</Tag>
+        <Tag type="default">待审批</Tag>
+      </div>
+      <div style={{ display: 'flex', marginTop: '32px' }}>
+        <Tag type="warning" appearance="solid">
+          待审批
         </Tag>
-        <Tag color="#ff5975">Round</Tag>
-        <Tag shape="square" color="#ff5975">
-          Square
+        <Tag type="primary" appearance="solid">
+          审批中
         </Tag>
-        <Tag appearance="line" color="#ff5975">
-          Round line
+        <Tag type="success" appearance="solid">
+          已通过
         </Tag>
-        <Tag appearance="line" shape="square" color="#ff5975">
-          Square line
+        <Tag type="danger" appearance="solid">
+          已驳回
         </Tag>
-        <Tag color="#46bc99" editable onEdit={(e) => onEdit(e, 0)}>
-          {list[0]}
+        <Tag type="default" appearance="solid">
+          待审批
         </Tag>
-        <Tag color="#46bc99" appearance="line" editable onEdit={(e) => onEdit(e, 0)}>
-          {list[0]}
+      </div>
+      <h1>Tag size</h1>
+      <h2>Mini</h2>
+      <Tag size="mini">一个标签</Tag>
+      <h2>Small</h2>
+      <Tag size="small">一个标签</Tag>
+      <h2>Medium</h2>
+      <Tag size="medium">一个标签</Tag>
+      <h1>Custom color</h1>
+      <div style={{ display: 'flex' }}>
+        <Tag color="#48D4CF">color #48D4CF</Tag>
+        <Tag background="#48D4CF" appearance="solid">
+          background #48D4CF
+        </Tag>
+      </div>
+      <h1>Closeable</h1>
+      <div style={{ display: 'flex' }}>
+        <Tag appearance="default" type="primary" closeable>
+          Closeable default
+        </Tag>
+        <Tag appearance="default" closeable>
+          Closeable default
+        </Tag>
+        <Tag appearance="solid" type="primary" closeable>
+          Closeable solid
+        </Tag>
+        <Tag appearance="solid" closeable>
+          Closeable solid
         </Tag>
       </div>
     </>

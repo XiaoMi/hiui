@@ -1,5 +1,6 @@
-import React, { forwardRef, useMemo, MouseEvent, useState } from 'react'
+import React, { forwardRef, useMemo, MouseEvent, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
+import { CloseOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
 
 const _role = 'tag'
@@ -17,36 +18,49 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       children,
       style,
       color,
-      type = 'primary',
+      background,
+      type = 'default',
       appearance = 'default',
-      shape = 'round',
+      size = 'small',
       onClick,
       closeable = false,
       editable = false,
+      onDelete,
       onEdit,
+      autoEditable = false,
     },
     ref
   ) => {
     // 根容器样式
     // 如果 color 存在则注入
     const rootStyle = useMemo(() => {
-      const result = { ...style }
+      const result = { ...style } as React.CSSProperties
 
       if (color) {
-        result.borderColor = color
-        if (appearance === 'default') {
-          result.background = color
-        } else {
-          result.color = color
-        }
+        result.color = color
+      }
+
+      if (background) {
+        result.background = background
       }
 
       return result
-    }, [color, style, appearance])
+    }, [style, color, background])
 
     const [isInEdit, setIsInEdit] = useState(false)
     const [editValueCache, setEditValueCache] = useState('')
 
+    useEffect(
+      () => {
+        if (autoEditable) {
+          setEditValueCache(children as string)
+          setIsInEdit(true)
+        }
+      },
+      // 此处请不要添加任何作为依赖，autoEditable 只会在组件创建时起作用
+      // @ts-ignore
+      []
+    )
     const rootClassName = useMemo(
       () =>
         cx(
@@ -54,13 +68,14 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
           className,
           `${prefixCls}--type-${type}`,
           `${prefixCls}--appearance-${appearance}`,
-          `${prefixCls}--shape-${shape}`,
+          `${prefixCls}--size-${size}`,
           {
             [`${prefixCls}--editable`]: editable,
             [`${prefixCls}--in-edit`]: editable && isInEdit,
+            [`${prefixCls}--hover-enable`]: editable || closeable,
           }
         ),
-      [prefixCls, className, type, appearance, shape, editable, isInEdit]
+      [prefixCls, className, type, appearance, size, editable, isInEdit]
     )
 
     return (
@@ -89,6 +104,11 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
             }}
           />
         )}
+        {!isInEdit && closeable && (
+          <div className={`${prefixCls}__close-button`} onClick={onDelete}>
+            <CloseOutlined />
+          </div>
+        )}
       </div>
     )
   }
@@ -113,20 +133,27 @@ export interface TagProps {
   style?: React.CSSProperties
   /**
    * 类型状态
+   * @default 'default'
    */
-  type?: 'primary' | 'success' | 'warning' | 'danger'
+  type?: 'primary' | 'success' | 'warning' | 'danger' | 'default'
   /**
    * 外观
+   * @default 'default'
    */
-  appearance?: 'default' | 'line'
+  appearance?: 'default' | 'solid'
   /**
-   * 形状
+   * 标签尺寸
+   * @default 'small'
    */
-  shape?: 'round' | 'square'
+  size?: 'mini' | 'small' | 'medium'
+  /**
+   * 标签文字颜色
+   */
+  color?: string
   /**
    * 标签背景色
    */
-  color?: string
+  background?: string
   /**
    * 点击标签内容时的回调
    */
@@ -141,7 +168,11 @@ export interface TagProps {
    * 是否可编辑
    */
   editable?: boolean
-
+  /**
+   * 是否一开始自动可编辑
+   * @default false
+   */
+  autoEditable?: boolean
   /**
    * tag 修改操作
    * @param content tag 修改后内容
