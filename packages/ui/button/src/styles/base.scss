@@ -131,4 +131,27 @@ $prefix: '#{$component-prefix}-button' !default;
   @include render-flat-button();
   @include render-line-button();
   @include render-link-button();
+
+  &-group {
+    display: inline-block;
+    .#{$prefix} {
+      &:first-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      &:not(:first-child):not(:last-child) {
+        border-radius: 0;
+      }
+
+      &:not(:first-child) {
+        margin-left: 1px;
+      }
+
+      &:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
 }

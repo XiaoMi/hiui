@@ -1,0 +1,47 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$input-prefix: '#{$component-prefix}-time-picker__input' !default;
+$interact-area: '#{$input-prefix}__interact-area' !default;
+
+.#{$input-prefix} {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  font-size: use-text-size('normal');
+  color: use-color('gray', 700);
+
+  &--disabled {
+    color: use-color('gray', 400);
+  }
+
+  &--not-valid {
+    color: use-color('red', 500);
+  }
+
+  &--range {
+    .#{$interact-area} {
+      text-align: center;
+    }
+  }
+
+  &__interact-area {
+    color: inherit;
+    border: none;
+    outline: none;
+    height: 30px;
+    width: 208px;
+    line-height: 30px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    font-size: inherit;
+    background: transparent;
+
+    &:disabled {
+      background: transparent;
+    }
+
+    &::placeholder {
+      color: use-color('gray',500);
+    }
+  }
+}

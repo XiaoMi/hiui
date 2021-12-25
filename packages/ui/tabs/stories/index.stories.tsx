@@ -6,6 +6,8 @@ export * from './editable.stories'
 export * from './scroll.stories'
 export * from './draggable.stories'
 export * from './type.stories'
+export * from './button.stories'
+export * from './desc.stories'
 
 export default {
   title: 'Tabs',

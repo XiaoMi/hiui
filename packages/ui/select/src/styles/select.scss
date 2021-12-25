@@ -16,16 +16,8 @@ $prefix: '#{$component-prefix}-select' !default;
   box-sizing: border-box;
   flex-shrink: 0;
   display: inline-block;
-  min-width: 160px;
-  min-height: 160px;
-  max-height: 260px;
+  // min-width: 160px;
   overflow: auto;
-  padding-bottom: 10px;
-
-  // 分界线
-  &:not(:last-child) {
-    // border-right: 1px solid #e8e8e8;
-  }
 
   $this: &;
 
