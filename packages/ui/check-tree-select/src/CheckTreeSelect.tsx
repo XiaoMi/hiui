@@ -1,7 +1,12 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { DataSourceFunc, FieldNames, TreeSelectDataItem, TreeSelectDataSource } from './types'
+import {
+  DataSourceFunc,
+  FieldNames,
+  CheckTreeSelectDataItem,
+  CheckTreeSelectDataSource,
+} from './types'
 import { useToggle } from '@hi-ui/use-toggle'
 import { PopperProps } from '@hi-ui/popper'
 import { Tree, TreeNodeEventData } from '@hi-ui/tree'
@@ -19,20 +24,20 @@ import {
   useTreeCustomSearch,
 } from '@hi-ui/use-search-mode'
 
-const TREE_SELECT_PREFIX = getPrefixCls('tree-select')
+const TREE_SELECT_PREFIX = getPrefixCls('check-tree-select')
 const DEFAULT_DATA = [] as []
-// const DEFAULT_VALUE = [] as []
+const DEFAULT_VALUE = [] as []
 const DEFAULT_FIELD_NAMES = {} as any
 const DEFAULT_EXPANDED_IDS = [] as []
 
 /**
- * TODO: What is TreeSelect
+ * TODO: What is CheckTreeSelect
  */
-export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
+export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelectProps>(
   (
     {
       prefixCls = TREE_SELECT_PREFIX,
-      role = 'tree-select',
+      role = 'check-tree-select',
       className,
       data = DEFAULT_DATA,
       dataSource,
@@ -46,7 +51,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       expandedIds: expandedIdsProp,
       defaultExpandedIds = DEFAULT_EXPANDED_IDS,
       onExpand,
-      defaultValue = '',
+      defaultValue = DEFAULT_VALUE,
       value: valueProp,
       onChange,
       // autoload,
@@ -101,21 +106,26 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
     )
 
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
+    // 搜索时临时选中缓存数据
+    const [selectedItems, setSelectedItems] = useState<CheckTreeSelectDataItem[]>([])
 
     const onSelect = useCallback(
-      (selectedId: React.ReactText | null, selectedNode: TreeNodeEventData | null) => {
-        if (selectedId) {
-          tryChangeValue(selectedId, selectedNode)
-          setSelectedItem(selectedNode)
-        }
+      ({ checkedIds }, node: TreeNodeEventData, checked: boolean) => {
+        tryChangeValue(checkedIds, node)
         // 关闭弹窗
         menuVisibleAction.off()
+        setSelectedItems((prev) => {
+          const next = [...prev]
+          if (checked) {
+            next.push(node)
+          } else {
+            next.filter((item) => item.id !== node.id)
+          }
+          return next
+        })
       },
       [menuVisibleAction, tryChangeValue]
     )
-
-    // 搜索时临时选中缓存数据
-    const [selectedItem, setSelectedItem] = useState<TreeSelectDataItem | null>(null)
 
     // ************************** 异步搜索 ************************* //
 
@@ -183,15 +193,13 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
 
     // 下拉菜单不能合并（因为树形数据，不知道是第几级）
     const mergedData: any[] = useMemo(() => {
-      if (selectedItem) {
-        const nextData = [selectedItem].concat(flattedData as any[])
-        return uniqBy(nextData, 'id')
-      }
-
-      return flattedData
-    }, [selectedItem, flattedData])
+      const nextData = selectedItems.concat(flattedData as any[])
+      return uniqBy(nextData, 'id')
+    }, [selectedItems, flattedData])
 
     const cls = cx(prefixCls, className)
+
+    console.log(mergedData)
 
     return (
       <Picker
@@ -211,9 +219,9 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         {isArrayNonEmpty(treeProps.data) ? (
           <Tree
             className={`${prefixCls}__tree`}
-            selectable
-            selectedId={value}
-            onSelect={onSelect}
+            checkable
+            checkedIds={value}
+            onCheck={onSelect}
             // TODO: 支持 fieldNames
             // 禁用时被选中的样式处理
             onLoadChildren={onLoadChildren}
@@ -225,11 +233,11 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
   }
 )
 
-export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange'> {
+export interface CheckTreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'value'> {
   /**
    * 展示数据
    */
-  data?: TreeSelectDataItem[]
+  data?: CheckTreeSelectDataItem[]
   /**
    * 设置 data 中 id, title, disabled, children 对应的 key (3.0 新增)	object	-	{ title: 'title', id: 'id',disabled:'disabled', children: 'children'}
    */
@@ -272,15 +280,15 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange'> 
   /**
    * 默认选中项 （非受控）
    */
-  defaultValue?: React.ReactText
+  defaultValue?: React.ReactText[]
   /**
    * 默认选中项 （受控）
    */
-  value?: React.ReactText
+  value?: React.ReactText[]
   /**
    * 自定义渲染 Input 中展示内容
    */
-  displayRender?: (item: TreeSelectDataItem) => React.ReactNode
+  displayRender?: (item: CheckTreeSelectDataItem) => React.ReactNode
   /**
    * 输入框占位	string	-	请选择
    */
@@ -294,7 +302,7 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange'> 
    * 第一个参数为输入的关键字，
    * 第二个为数据项，返回值为 true 时将出现在结果项
    */
-  filterOption?: (keyword: string, item: TreeSelectDataItem) => boolean
+  filterOption?: (keyword: string, item: CheckTreeSelectDataItem) => boolean
   /**
    * 自定义渲染节点的 title 内容
    */
@@ -302,7 +310,7 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange'> 
   /**
    * 点击异步加载子项
    */
-  onLoadChildren?: (node: TreeNodeEventData) => void | Promise<TreeSelectDataItem[] | void>
+  onLoadChildren?: (node: TreeNodeEventData) => void | Promise<CheckTreeSelectDataItem[] | void>
   /**
    * 从远端获取数据，初始时是否自动加载
    */
@@ -310,7 +318,7 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange'> 
   /**
    * 异步加载数据
    */
-  dataSource?: DataSourceFunc | TreeSelectDataSource | Promise<TreeSelectDataItem[]>
+  dataSource?: DataSourceFunc | CheckTreeSelectDataSource | Promise<CheckTreeSelectDataItem[]>
   /**
    * 没有选项时的提示
    */
@@ -330,9 +338,9 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange'> 
    * currentNode: 当前操作节点
    */
   onChange?: (
-    selectedIds: React.ReactText,
-    changedItem: TreeSelectDataItem,
-    currentNode: TreeSelectDataItem
+    selectedIds: React.ReactText[],
+    changedItem: CheckTreeSelectDataItem[],
+    currentNode: CheckTreeSelectDataItem
   ) => void
   /**
    * 是否可清空
@@ -345,5 +353,5 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange'> 
 }
 
 if (__DEV__) {
-  TreeSelect.displayName = 'TreeSelect'
+  CheckTreeSelect.displayName = 'CheckTreeSelect'
 }

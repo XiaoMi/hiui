@@ -35,7 +35,6 @@ $prefix: '#{$component-prefix}-picker' !default;
   }
 
   &__empty,
-  &__notfound,
   &__loading {
     padding: use-spacing(5) use-spacing(4);
     font-size: use-text-size('normal');
@@ -48,9 +47,5 @@ $prefix: '#{$component-prefix}-picker' !default;
 
   &__loading {
     justify-content: space-between;
-  }
-
-  &__empty {
-    justify-content: center;
   }
 }

@@ -38,10 +38,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       placeholder,
       searchPlaceholder,
       loadingContent = '数据加载中...',
-      notfoundContent = '未找到相关结果',
-      emptyContent = '暂无数据',
-      showEmpty = false,
-      showNotfound = false,
+      emptyContent = '无匹配数据',
+      showEmpty = true,
       loading = false,
       optionWidth,
       overlayClassName,
@@ -58,8 +56,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
     const [searchValue, setSearchValue] = useState('')
 
-    const inSearch = searchable && !!searchValue
-    const isEmpty = inSearch && showEmpty
+    // const inSearch = searchable && !!searchValue
+    // const isEmpty = inSearch && showEmpty
 
     const onSearchLatest = useLatestCallback(onSearch)
 
@@ -134,6 +132,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
+    console.log(children)
+
     return (
       <div
         ref={ref}
@@ -188,31 +188,22 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
               </div>
             ) : null}
             {/* TODO: 抽离页面数据处理渲染器
-            1. 有数据
-            3. 无数据
-            2. 动态加载中
-            4. 动态搜索无结果
+                1. 有数据
+                3. 无数据
+                2. 动态加载中
+                4. 动态搜索无结果
             */}
-            {isEmpty ? (
-              <div className={`${prefixCls}__body`}>
-                <span className={`${prefixCls}__empty`}>{emptyContent}</span>
-              </div>
-            ) : (
-              <div className={`${prefixCls}__body`}>
-                {!loading && showNotfound ? (
-                  <span className={`${prefixCls}__notfound`}>{notfoundContent}</span>
-                ) : null}
-
-                {loading && !showNotfound ? (
-                  <div className={`${prefixCls}__loading`}>
-                    {loadingContent}
-                    <Loading size="sm" />
-                  </div>
-                ) : (
-                  children
-                )}
-              </div>
-            )}
+            <div className={`${prefixCls}__body`}>
+              {loading ? (
+                <div className={`${prefixCls}__loading`}>
+                  {loadingContent}
+                  <Loading size="sm" />
+                </div>
+              ) : (
+                children ||
+                (showEmpty ? <span className={`${prefixCls}__empty`}>{emptyContent}</span> : null)
+              )}
+            </div>
           </div>
         </Popper>
       </div>
@@ -256,7 +247,7 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 展示未搜索结果
    */
-  showNotfound?: boolean
+  showEmpty?: boolean
   /**
    * 自定义下拉选项宽度
    */
@@ -306,14 +297,9 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    */
   onClose?: () => void
   /**
-   * 展示空内容
-   */
-  showEmpty?: boolean
-  /**
    * 是否在加载中
    */
   loading?: boolean
-  notfoundContent?: React.ReactNode
 }
 
 if (__DEV__) {
