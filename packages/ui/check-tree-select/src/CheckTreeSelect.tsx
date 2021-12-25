@@ -112,8 +112,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     const onSelect = useCallback(
       ({ checkedIds }, node: TreeNodeEventData, checked: boolean) => {
         tryChangeValue(checkedIds, node)
-        // 关闭弹窗
-        menuVisibleAction.off()
+        // 存取异步选中数据
         setSelectedItems((prev) => {
           const next = [...prev]
           if (checked) {
@@ -124,7 +123,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
           return next
         })
       },
-      [menuVisibleAction, tryChangeValue]
+      [tryChangeValue]
     )
 
     // ************************** 异步搜索 ************************* //

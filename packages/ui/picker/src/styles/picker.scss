@@ -6,9 +6,9 @@ $prefix: '#{$component-prefix}-picker' !default;
   @include component-reset;
 
   display: inline-block;
+  width: 100%;
   flex-shrink: 0;
   overflow: hidden;
-  width: auto;
   cursor: pointer;
   // animation
   transition-timing-function: use-motion-bezier('normal');
