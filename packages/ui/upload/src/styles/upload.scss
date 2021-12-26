@@ -43,6 +43,10 @@ $prefix: '#{$component-prefix}-upload' !default;
     }
   }
 
+  &__error-icon {
+    font-size: 40px !important;
+  }
+
   &__item {
     height: 48px;
     cursor: default;
@@ -258,25 +262,18 @@ $prefix: '#{$component-prefix}-upload' !default;
       text-align: center;
       padding: 0;
       margin: 8px;
-      overflow: visible;
+      cursor: pointer;
       vertical-align: middle;
       background: use-color('gray', 50);
       border-radius: use-border-radius('normal');
+      overflow: hidden;
 
-      &:focus:not(.#{$prefix}__item--upload) {
+      &:focus:not(.#{$prefix}__item--upload):not(.#{$prefix}__item--error) {
         box-shadow: 0 0 0 1px use-color-mode('primary');
       }
 
-      &--photo-error {
-        height: 28px;
-        background: rgba(0, 0, 0, 0.5);
-        position: absolute;
-        width: 100%;
-        color: use-color-static('white');
-        bottom: 0;
-        line-height: 28px;
-        font-size: 16px;
-        border-radius: 0 0 2px 2px;
+      &--error {
+        border: 1px solid use-color-mode('danger');
       }
 
       &:not(:last-child) {
@@ -305,43 +302,24 @@ $prefix: '#{$component-prefix}-upload' !default;
         }
       }
 
-      &-mask {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background: rgba(0, 0, 0, 0.4);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: use-color-static('white');
-        opacity: 0;
-        transition: 0.3s ease;
-        z-index: 2;
-        border-radius: 4px;
-        cursor: pointer;
+      .#{$prefix}__action-group {
+        display: none;
 
-        i {
-          line-height: 32px;
-          font-size: 32px;
-        }
+        svg[class^=hi-v4-icon] {
+          font-size: use-text-size('lg');
 
-        span {
-          font-size: 16px;
+          &:not(:last-of-type) {
+            margin-right: use-spacing(4);
+          }
         }
       }
 
       &:hover {
-        .#{$prefix}__photo-del {
+        .#{$prefix}__action-group {
           display: block;
-          color: use-color-static('black');
-          z-index: 4;
         }
-
-        .#{$prefix}__item-mask {
-          opacity: 1;
+        .#{$prefix}__error-icon {
+          display: none;
         }
       }
     }
@@ -388,15 +366,6 @@ $prefix: '#{$component-prefix}-upload' !default;
         border-color: use-color-mode('primary');
       }
     }
-  }
-
-  &__photo-del {
-    position: absolute;
-    right: -8px;
-    top: -8px;
-    font-size: 20px;
-    display: none;
-    z-index: 3;
   }
 
   &__precent {
@@ -506,44 +475,8 @@ $prefix: '#{$component-prefix}-upload' !default;
             max-width: 50px;
             max-height: 50px;
           }
-
-          .img-mask {
-            width: 50px;
-            height: 50px;
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: rgba(0, 0, 0, 0.3);
-          }
         }
       }
-    }
-  }
-
-  .hi-modal__content {
-    padding: 16px 24px;
-  }
-
-  &__modal-tips {
-    display: flex;
-  }
-
-  &__error {
-    &—content {
-      margin: 12px;
-    }
-
-    &-title {
-      width: 300px;
-      line-height: 24px;
-      font-size: 16px;
-      color: use-color-static('black');
-      margin-bottom: 4px;
-    }
-
-    &-info {
-      font-size: use-text-size('normal');
-      color: use-color('gray', 800);
     }
   }
 
@@ -560,11 +493,5 @@ $prefix: '#{$component-prefix}-upload' !default;
 
   li {
     list-style: none;
-  }
-}
-
-.hi-modal {
-  .content {
-    font-size: 0;
   }
 }
