@@ -89,7 +89,7 @@ export interface ButtonProps {
    */
   type?: 'primary' | 'success' | 'danger' | 'default' | 'secondary'
   /**
-   * 设置按钮外观
+   * 设置按钮尺寸
    */
   size?: 'large' | 'small' | 'default' | 'x-large'
   /**

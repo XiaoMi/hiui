@@ -27,6 +27,7 @@ export const PaginationMini = forwardRef<HTMLDivElement | null, PaginationMiniPr
       pageSize = 10,
       showTotal = true,
       showJumper = true,
+      size = 'md',
       ...rest
     },
     ref
@@ -122,6 +123,10 @@ export interface PaginationMiniProps extends HiBaseHTMLProps<'div'> {
    * 	页码改变时的回调
    */
   onChange?: (current: number, prev: number, pageSize: number) => void
+  /**
+   * 设置尺寸
+   */
+  size?: 'sm' | 'md' | 'lg'
 }
 
 if (__DEV__) {

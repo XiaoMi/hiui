@@ -154,7 +154,7 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
   visible?: boolean
   onClose?: () => void
   closeOnEsc?: boolean
-  onEscKeyDown?: (event: KeyboardEvent) => void
+  onEscKeyDown?: (event: React.KeyboardEvent) => void
   /**
    * 是否允许点击蒙层关闭抽屉
    */
