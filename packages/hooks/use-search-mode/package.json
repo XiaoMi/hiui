@@ -48,5 +48,12 @@
   "devDependencies": {
     "@hi-ui/hi-build": "^4.0.0-alpha.0",
     "react": "^17.0.1"
+  },
+  "dependencies": {
+    "@hi-ui/dom-utils": "^4.0.0-alpha.4",
+    "@hi-ui/loading": "^4.0.0-alpha.12",
+    "@hi-ui/tree-utils": "^4.0.0-alpha.4",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.9",
+    "@hi-ui/use-data-source": "^4.0.0-alpha.0"
   }
 }

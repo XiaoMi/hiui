@@ -436,6 +436,13 @@ export const getNodeAncestorsWithMe = <T extends BaseFlattedTreeNodeDataWithPare
   return getNodeAncestors(node, filter, [node])
 }
 
+/**
+ * 基于扁平树结构，获取自顶向下的祖先节点，包括自己
+ */
+export const getTopDownAncestors = <T extends BaseFlattedTreeNodeDataWithParent>(node: T) => {
+  return getNodeAncestorsWithMe(node).reverse()
+}
+
 const copy = <T>(node: T) => ({ ...node })
 
 export const cloneTreeNode = <T extends BaseTreeNodeData>(node: T) => {

@@ -1,7 +1,7 @@
 import React from 'react'
-import TreeSelect from '../src'
+import CheckTreeSelect from '../src'
 
-export const Basic = () => {
+export const Clearable = () => {
   const [data] = React.useState([
     {
       title: '手机类',
@@ -84,12 +84,13 @@ export const Basic = () => {
 
   return (
     <>
-      <h1>Basic</h1>
-      <div className="tree-select-basic__wrap">
-        <TreeSelect
+      <h1>Clearable</h1>
+      <div className="tree-select-clearable__wrap">
+        <CheckTreeSelect
+          clearable
           data={data}
           onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('TreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+            console.log('CheckTreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
           }}
         />
       </div>

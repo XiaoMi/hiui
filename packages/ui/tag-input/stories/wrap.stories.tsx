@@ -2,12 +2,13 @@ import { DownOutlined } from '@hi-ui/icons'
 import React from 'react'
 import { TagInputMock } from '../src'
 
-export const Mock = () => {
+export const Wrap = () => {
   return (
     <>
-      <h1>Mock</h1>
-      <div className="tag-input-basic__wrap">
+      <h1>Wrap</h1>
+      <div className="tag-input-wrap__wrap">
         <TagInputMock
+          wrap
           clearable
           // style={{ width: 380 }}
           // wrap={false}

@@ -3,10 +3,10 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import { PickerDataItem } from './types'
-import Input, { MockInput } from '@hi-ui/input'
+import Input from '@hi-ui/input'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { PopperPortal as Popper, PopperProps } from '@hi-ui/popper'
-import { DownOutlined, SearchOutlined } from '@hi-ui/icons'
+import { SearchOutlined } from '@hi-ui/icons'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import Loading from '@hi-ui/loading'
@@ -48,6 +48,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       closeOnEsc = true,
       invalid = false,
       onKeyDown,
+      trigger,
       ...rest
     },
     ref
@@ -132,8 +133,6 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
-    console.log(children)
-
     return (
       <div
         ref={ref}
@@ -143,20 +142,11 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
         onKeyDown={mockDefaultHandlers(onKeyDown, onEscClose)}
         {...rest}
       >
-        <MockInput
-          ref={targetElementRef}
-          onClick={openMenu}
-          disabled={disabled}
-          clearable={clearable}
-          placeholder={placeholder}
-          displayRender={displayRender}
-          suffix={<DownOutlined />}
-          data={data}
-          value={value}
-          onChange={onChange}
-          // @ts-ignore
-          invalid={invalid}
-        />
+        {React.cloneElement(trigger, {
+          ref: targetElementRef,
+          onClick: openMenu,
+          disabled: disabled,
+        })}
         <Popper
           matchWidth={optionWidth === undefined}
           gutterGap={2}
@@ -300,6 +290,7 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 是否在加载中
    */
   loading?: boolean
+  trigger: any
 }
 
 if (__DEV__) {

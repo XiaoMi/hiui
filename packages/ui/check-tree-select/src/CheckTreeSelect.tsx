@@ -9,13 +9,15 @@ import {
 } from './types'
 import { useToggle } from '@hi-ui/use-toggle'
 import { PopperProps } from '@hi-ui/popper'
-import { Tree, TreeNodeEventData } from '@hi-ui/tree'
+import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { flattenTree } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { uniqBy } from 'lodash'
 import { Highlighter } from '@hi-ui/highlighter'
+import { TagInputMock } from '@hi-ui/tag-input'
+import { UpOutlined, DownOutlined } from '@hi-ui/icons'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -60,17 +62,22 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       onLoadChildren,
       titleRender,
       filterOption,
-      // displayRender,
-      // placeholder,
       // emptyContent,
+      // ********* popper ********* //
       // optionWidth,
       // overlayClassName,
       // popper,
+      // ********* picker ********* //
+      clearable,
+      invalid,
+      displayRender,
+      placeholder,
       ...rest
     },
     ref
   ) => {
     const [menuVisible, menuVisibleAction] = useToggle()
+    // const [viewSelected, setViewSelected] = useState(false)
 
     /**
      * 转换对象
@@ -188,8 +195,6 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       titleRender: proxyTitleRender,
     }
 
-    console.log(shouldUseSearch, treeProps)
-
     // 下拉菜单不能合并（因为树形数据，不知道是第几级）
     const mergedData: any[] = useMemo(() => {
       const nextData = selectedItems.concat(flattedData as any[])
@@ -198,7 +203,15 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
 
     const cls = cx(prefixCls, className)
 
-    console.log(mergedData)
+    // 过滤掉未选中的数据
+    // const tagList = useMemo(() => {
+    //   // @ts-ignore
+    //   const [semiCheckedIds] = getSemiCheckedIdsWithSet(flattedData, (id) => value.includes(id))
+
+    //   const ids = Array.from(new Set([...semiCheckedIds, ...value]))
+
+    //   return flattedData.filter((item) => ids.includes(item.id))
+    // }, [value, flattedData])
 
     return (
       <Picker
@@ -206,19 +219,46 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         className={cls}
         {...rest}
         visible={menuVisible}
-        onOpen={menuVisibleAction.on}
+        onOpen={() => {
+          // setViewSelected(false)
+          menuVisibleAction.on()
+        }}
         onClose={menuVisibleAction.off}
-        value={value}
-        onChange={tryChangeValue}
-        data={mergedData}
+        // value={value}
+        // onChange={tryChangeValue}
+        // data={mergedData}
         searchable={searchable}
         onSearch={onSearch}
         loading={loading}
+        trigger={
+          <TagInputMock
+            // ref={targetElementRef}
+            // onClick={openMenu}
+            // disabled={disabled}
+            clearable={clearable}
+            placeholder={placeholder}
+            // @ts-ignore
+            displayRender={displayRender}
+            suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+            value={value}
+            onChange={tryChangeValue}
+            data={mergedData}
+            // @ts-ignore
+            invalid={invalid}
+            onExpand={() => {
+              // setViewSelected(true)
+              menuVisibleAction.on()
+            }}
+          />
+        }
       >
+        {/* {!viewSelected && isArrayNonEmpty(treeProps.data) ? ( */}
         {isArrayNonEmpty(treeProps.data) ? (
           <Tree
             className={`${prefixCls}__tree`}
+            selectable={false}
             checkable
+            // checkOnSelect
             checkedIds={value}
             onCheck={onSelect}
             // TODO: 支持 fieldNames
@@ -227,12 +267,27 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             {...treeProps}
           />
         ) : null}
+
+        {/* 设计成一种搜索模式，过滤掉为选中的节点 */}
+        {/* {viewSelected ? (
+          <Tree
+            className={`${prefixCls}__tree`}
+            selectable={false}
+            checkable
+            checkedIds={value}
+            onCheck={onSelect}
+            onLoadChildren={onLoadChildren}
+            flattedData={tagList}
+            defaultExpandAll={true}
+          />
+        ) : null} */}
       </Picker>
     )
   }
 )
 
-export interface CheckTreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'value'> {
+export interface CheckTreeSelectProps
+  extends Omit<PickerProps, 'data' | 'onChange' | 'value' | 'trigger'> {
   /**
    * 展示数据
    */
@@ -353,4 +408,60 @@ export interface CheckTreeSelectProps extends Omit<PickerProps, 'data' | 'onChan
 
 if (__DEV__) {
   CheckTreeSelect.displayName = 'CheckTreeSelect'
+}
+
+const ALWAYS_ALLOW = () => true
+
+/**
+ * 在 checkedIdsSet 为数据合法的情况下，查找所有的半选中态的节点 ids
+ *
+ * @param checkedIdsSet
+ * @param flattedData
+ * @returns
+ */
+export const getSemiCheckedIdsWithSet = (
+  flattedData: FlattedTreeNodeData[],
+  isChecked: (id: React.ReactText) => boolean,
+  allowCheck: (targetItem: FlattedTreeNodeData) => boolean = ALWAYS_ALLOW
+) => {
+  const semiCheckedNodes = [] as FlattedTreeNodeData[]
+  const semiCheckedIdsSet = new Set<React.ReactText>()
+
+  let parentId: React.ReactText | undefined
+  let parent: FlattedTreeNodeData | undefined
+
+  flattedData.forEach((node) => {
+    parent = node.parent
+
+    if (parent && parent.id !== undefined) {
+      if (!allowCheck(parent)) return
+
+      parentId = parent.id
+      if (semiCheckedIdsSet.has(parentId)) return
+
+      // 父节点没选中，但是当前节点被选中，则视为半选
+      if (!isChecked(parentId) && isChecked(node.id)) {
+        semiCheckedIdsSet.add(parentId)
+        semiCheckedNodes.push(parent)
+      }
+    }
+  })
+
+  // 自下而上设置半选态
+  semiCheckedNodes.forEach((node) => {
+    parent = node.parent
+    while (parent && parent.id !== undefined) {
+      if (!allowCheck(parent)) return
+
+      parentId = parent.id
+      // 可能存在兄弟节点，共同祖先需要去重，避免重复计算
+      if (semiCheckedIdsSet.has(parentId)) return
+
+      semiCheckedIdsSet.add(parentId)
+      parent = parent.parent
+    }
+  })
+
+  const semiCheckedIds = Array.from(semiCheckedIdsSet)
+  return [semiCheckedIds, semiCheckedIdsSet] as const
 }

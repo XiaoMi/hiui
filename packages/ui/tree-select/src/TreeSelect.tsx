@@ -11,6 +11,8 @@ import { flattenTree } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { uniqBy } from 'lodash'
 import { Highlighter } from '@hi-ui/highlighter'
+import { MockInput } from '@hi-ui/input'
+import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -55,12 +57,16 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       onLoadChildren,
       titleRender,
       filterOption,
-      // displayRender,
-      // placeholder,
-      // emptyContent,
+      // ********* popper ********* //
       // optionWidth,
       // overlayClassName,
       // popper,
+      // ********* picker ********* //
+      clearable,
+      invalid,
+      displayRender,
+      placeholder,
+      // emptyContent,
       ...rest
     },
     ref
@@ -179,8 +185,6 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       titleRender: proxyTitleRender,
     }
 
-    console.log(shouldUseSearch, treeProps)
-
     // 下拉菜单不能合并（因为树形数据，不知道是第几级）
     const mergedData: any[] = useMemo(() => {
       if (selectedItem) {
@@ -201,12 +205,28 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         visible={menuVisible}
         onOpen={menuVisibleAction.on}
         onClose={menuVisibleAction.off}
-        value={value}
-        onChange={tryChangeValue}
-        data={mergedData}
+        // value={value}
+        // onChange={tryChangeValue}
+        // data={mergedData}
         searchable={searchable}
         onSearch={onSearch}
         loading={loading}
+        trigger={
+          <MockInput
+            // ref={targetElementRef}
+            // onClick={openMenu}
+            // disabled={disabled}
+            clearable={clearable}
+            placeholder={placeholder}
+            displayRender={displayRender}
+            suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+            value={value}
+            onChange={tryChangeValue}
+            data={mergedData}
+            // @ts-ignore
+            invalid={invalid}
+          />
+        }
       >
         {isArrayNonEmpty(treeProps.data) ? (
           <Tree
@@ -214,6 +234,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
             selectable
             selectedId={value}
             onSelect={onSelect}
+            // onLoadChildren 缓存数据
             // TODO: 支持 fieldNames
             // 禁用时被选中的样式处理
             onLoadChildren={onLoadChildren}
@@ -225,7 +246,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
   }
 )
 
-export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange'> {
+export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'trigger'> {
   /**
    * 展示数据
    */

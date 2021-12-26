@@ -29,12 +29,15 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       data = NOOP_ARRAY,
       clearable = false,
       disabled = false,
+      wrap = false,
       suffix,
+      // tag 最小宽度
       tagWidth = 20,
       displayRender,
       onMouseOver,
       onMouseLeave,
       onClear,
+      onExpand,
       ...rest
     },
     ref
@@ -50,9 +53,15 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
     const [containerWidth = 0, setContainerWidth] = useState<number>()
 
     const mergedTagList = useMemo(() => {
+      if (wrap) {
+        return tagList
+      }
       return tagList.slice(0, Math.min(tagList.length, containerWidth / tagWidth))
-    }, [tagList, tagWidth, containerWidth])
+    }, [tagList, tagWidth, containerWidth, wrap])
+
     const showTags = mergedTagList.length > 0
+
+    const showTagCount = !wrap && showTags
 
     const [tagsWidth, setTagsWidth] = useState<{ [key: string]: number }>({})
     const getTagWidth = useCallback(
@@ -127,10 +136,24 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       [disabled]
     )
 
+    const handleExpand = useCallback(
+      (evt: React.MouseEvent) => {
+        evt.stopPropagation()
+        onExpand?.()
+      },
+      [onExpand]
+    )
+
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
     const showClearableIcon = clearable && showTags && !disabled
+    console.log('showClearableIcon', showClearableIcon)
 
-    const cls = cx(prefixCls, className, disabled && 'disabled')
+    const cls = cx(
+      prefixCls,
+      className,
+      disabled && `${prefixCls}--disabled`,
+      wrap && `${prefixCls}--wrap`
+    )
 
     return (
       <ResizeDetector
@@ -161,7 +184,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
               {mergedTagList.map((option, index) => {
                 return (
                   <MockTag
-                    hidden={index > tagMaxCount}
+                    hidden={wrap ? false : index > tagMaxCount}
                     key={option.id}
                     prefixCls={prefixCls}
                     disabled={disabled}
@@ -189,13 +212,14 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
             }}
           >
             {/* suffix 后缀区域渲染 */}
-            {!!suffix || (showClearableIcon && hover) || showTags ? (
+            {!!suffix || (showClearableIcon && hover) || showTagCount ? (
               <span className={`${prefixCls}__suffix`}>
-                {showTags ? (
-                  <span className={cx(`${prefixCls}__tag--total`)}>
+                {showTagCount ? (
+                  <span className={cx(`${prefixCls}__tag--total`)} onClick={handleExpand}>
                     {`${tagCount > 99 ? '99+' : tagCount}`}
                   </span>
-                ) : showClearableIcon && hover ? (
+                ) : null}
+                {showClearableIcon && hover ? (
                   <span
                     className={`${prefixCls}__clear`}
                     role="button"
@@ -204,8 +228,9 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
                   >
                     <CloseCircleFilled />
                   </span>
-                ) : null}
-                {suffix}
+                ) : (
+                  suffix
+                )}
               </span>
             ) : null}
           </ResizeDetector>
@@ -261,6 +286,11 @@ export interface TagInputMockProps
    * 设置 tag 的默认宽度
    */
   tagWidth?: number
+  /**
+   * 是否开启换行全展示
+   */
+  wrap?: boolean
+  onExpand?: () => void
 }
 
 if (__DEV__) {

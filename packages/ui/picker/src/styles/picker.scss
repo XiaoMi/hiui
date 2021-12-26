@@ -18,6 +18,18 @@ $prefix: '#{$component-prefix}-picker' !default;
   &--open {
     .#{$component-prefix}-mock-input {
       border-color: use-color-mode('primary');
+
+      &__suffix {
+        color: use-color-mode('primary');
+      }
+    }
+
+    .#{$component-prefix}-tag-input-mock {
+      border-color: use-color-mode('primary');
+
+      &__suffix {
+        color: use-color-mode('primary');
+      }
     }
   }
 

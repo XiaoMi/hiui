@@ -18,6 +18,7 @@ import {
   TreeLevelStatus,
   TreeNodeRequiredProps,
   TreeNodeEventData,
+  FlattedTreeNodeData,
 } from './types'
 import { TreeProvider } from './context'
 import VirtualList from 'rc-virtual-list'
@@ -78,13 +79,17 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       showLine = false,
       titleRender,
       onContextMenu,
+      flattedData: flattedDataProp,
       ...rest
     },
     ref
   ) => {
     const [treeData, setTreeData] = useCache(data)
 
-    const flattedData = useMemo(() => flattenTreeData(treeData), [treeData])
+    const flattedData = useMemo(() => flattedDataProp || flattenTreeData(treeData), [
+      treeData,
+      flattedDataProp,
+    ])
 
     const [selectedId, onNodeSelect] = useSelect(
       !selectable,
@@ -392,6 +397,7 @@ export interface TreeProps {
    * 自定义节点右键菜单
    */
   onContextMenu?: (event: React.MouseEvent, node: TreeNodeEventData) => void
+  flattedData?: FlattedTreeNodeData[]
 }
 
 if (__DEV__) {
