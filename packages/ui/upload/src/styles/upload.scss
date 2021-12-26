@@ -321,6 +321,21 @@ $prefix: '#{$component-prefix}-upload' !default;
         .#{$prefix}__error-icon {
           display: none;
         }
+
+        .#{$prefix}__mask {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          top: 0;
+          background: rgba(0, 0, 0, 0.5);
+          color: use-color-static('white');
+          font-size: use-text-size('normal');
+          justify-content: center;
+          align-items: center;
+          border-radius: use-border-radius('normal');
+          display: flex;
+        }
       }
     }
   }
@@ -355,6 +370,10 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &--avatar {
+    .#{$prefix}__item {
+      width: 80px;
+      height: 80px;
+    }
     .#{$prefix}__item--upload {
       width: 80px;
       height: 80px;
@@ -368,11 +387,15 @@ $prefix: '#{$component-prefix}-upload' !default;
     }
   }
 
+  &__mask {
+    display: none;
+  }
+
   &__precent {
     position: absolute;
-    width: 140px;
-    height: 140px;
     left: 0;
+    right: 0;
+    bottom: 0;
     top: 0;
     background: rgba(0, 0, 0, 0.5);
     color: use-color-static('white');
@@ -381,16 +404,6 @@ $prefix: '#{$component-prefix}-upload' !default;
     justify-content: center;
     align-items: center;
     border-radius: use-border-radius('normal');
-  }
-
-  &__precent--small {
-    width: 80px;
-    height: 80px;
-  }
-
-  &__precent--large {
-    width: 200px;
-    height: 200px;
   }
 
   &__loading-bar {

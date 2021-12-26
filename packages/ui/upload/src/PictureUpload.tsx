@@ -164,22 +164,40 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                   onKeyDown={(e) => handleItemKeydown(e, file, index)}
                 >
                   <img src={file.url} className={`${prefixCls}__thumb`} />
-                  <div className={`${prefixCls}__precent ${prefixCls}__precent--${photoSize}`}>
-                    <ExpressionOutlined className={`${prefixCls}__error-icon`} />
-                    <div className={`${prefixCls}__action-group`}>
-                      <DeleteOutlined
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          deleteFile(file, index)
-                        }}
-                      />
-                      <EyeOutlined
-                        onClick={() => {
-                          previewImage(index)
-                        }}
-                      />
+                  {file.uploadState !== 'error' ? (
+                    <div className={`${prefixCls}__mask`}>
+                      <div className={`${prefixCls}__action-group`}>
+                        <EyeOutlined
+                          onClick={() => {
+                            previewImage(index)
+                          }}
+                        />
+                        <DeleteOutlined
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            deleteFile(file, index)
+                          }}
+                        />
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className={`${prefixCls}__precent`}>
+                      <ExpressionOutlined className={`${prefixCls}__error-icon`} />
+                      <div className={`${prefixCls}__action-group`}>
+                        <EyeOutlined
+                          onClick={() => {
+                            previewImage(index)
+                          }}
+                        />
+                        <DeleteOutlined
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            deleteFile(file, index)
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
                 </li>
               )
             }
