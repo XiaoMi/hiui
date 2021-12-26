@@ -49,6 +49,10 @@ $prefix: '#{$component-prefix}-search' !default;
 
     &-item {
       &:not(.#{$prefix}__dropdown-group) {
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+
         margin-bottom: use-spacing(4);
         box-sizing: border-box;
         min-height: use-height-size('normal');
