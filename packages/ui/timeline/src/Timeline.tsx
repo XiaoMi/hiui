@@ -26,7 +26,7 @@ export const Timeline = forwardRef<HTMLDivElement | null, TimelineProps>(
           return <RightItem {...item} key={index} />
         }
         if (type === 'cross') {
-          return <CrossItem {...item} key={index} />
+          return <RightItem {...item} key={index} />
         }
       },
       [type]
