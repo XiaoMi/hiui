@@ -59,6 +59,9 @@ export default {
     hours: '時',
     minutes: '分',
     seconds: '秒',
+    weekrange: function (year: number, week: number) {
+      return year + '-W' + week
+    },
   },
   pagination: {
     total: ['共', '條'],
@@ -101,7 +104,6 @@ export default {
   upload: {
     buttonText: '上傳',
     uploadSuccess: '上傳成功',
-    uploadFailed: '上傳失敗',
     cancel: '取消',
     delete: '刪除',
     drag: '點擊或将文件拖拽至此上傳',

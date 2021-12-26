@@ -1,17 +1,21 @@
-import React, { useEffect, forwardRef, useRef, useCallback } from 'react'
+import React, { useEffect, forwardRef, useCallback, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { CSSTransition } from 'react-transition-group'
-import { useScrollLock } from '@hi-ui/use-scroll-lock'
 import { Portal } from '@hi-ui/portal'
-import { stackManager, useStackManager } from './hooks'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useToggle } from '@hi-ui/use-toggle'
+import { callAllFuncs } from '@hi-ui/func-utils'
+import { IconButton } from '@hi-ui/icon-button'
+import { CloseOutlined } from '@hi-ui/icons'
+import Button from '@hi-ui/button'
+import { useModal, UseModalProps } from './use-modal'
 
 const _role = 'modal'
-const _prefix = getPrefixCls(_role)
+export const _prefix = getPrefixCls(_role)
+
+const defaultCloseIcon = <CloseOutlined />
 
 /**
  * TODO: What is Modal
@@ -20,31 +24,38 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   (
     {
       prefixCls = _prefix,
-      role = _role,
       className,
       children,
       portalClassName,
       overlayClassName,
-      visible = false,
       size = 'md',
-      container,
       disabledPortal = false,
-      lockScroll = true,
-      closable = true,
-      closeOnEsc = true,
-      onEscKeyDown,
-      closeOnOverlayClick = true,
+      closeable = true,
       onOverlayClick,
-      closeIcon = 'close',
       timeout = 300,
-      onClose,
-      onAfterOpen,
-      onAfterClose,
       onExited: onExitedProp,
+      title,
+      cancelText,
+      confirmText,
+      confirmLoading,
+      footer,
+      // TODO: 分离 onCancel 和 onClose
+      onCancel,
+      onConfirm,
+      container,
+      closeIcon = defaultCloseIcon,
+      showHeaderDivider = true,
+      // TODO: 废弃警告
+      showFooterDivider = true,
+      width,
+      height,
+      // TODO: 统一性能优化参数
+      preload = false,
+      unmountOnClose = true,
+      visible = false,
+      onClose: onCloseProp,
+      innerRef,
       // transitionProps,
-      // returnFoucsOnClose = false,
-      // trapFocus = true,
-      // contentOutside = false,
       ...rest
     },
     ref
@@ -52,79 +63,43 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     const [transitionVisible, transitionVisibleAction] = useToggle(false)
     const [transitionExited, transitionExitedAction] = useToggle(true)
 
-    const modalRef = useRef<HTMLDivElement>(null)
-    // const [_container, tryAppend, tryRemove] = useContainer(container)
+    const onRequestCloseLatest = useLatestCallback(() => callAllFuncs(onCloseProp, onCancel)())
 
-    // 多任务以栈维护，可以控制显隐时序（后显先隐）
-    useStackManager(modalRef, transitionVisible)
-
-    // 控制锁滚
-    const enabledScrollLock = lockScroll || transitionVisible
-    useScrollLock(modalRef, { enabled: enabledScrollLock })
-
-    const onRequestCloseLatest = useLatestCallback(onClose)
-
-    const onOverlayClickLatest = useLatestCallback(onOverlayClick)
-
-    const handleClickOverlay = useCallback(
-      (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        onOverlayClickLatest(event)
-
-        if (closeOnOverlayClick) {
-          onRequestCloseLatest()
-        }
-      },
-      [onOverlayClickLatest, onRequestCloseLatest, closeOnOverlayClick]
-    )
-
-    const onEscKeyDownLatest = useLatestCallback(onEscKeyDown)
-
-    const handleKeydown = useCallback(
-      (evt: KeyboardEvent) => {
-        // only close the top modal when pressing `Esc`
-        if (evt.keyCode !== 27) return
-
-        if (!stackManager.isTop(modalRef)) return
-
-        onEscKeyDownLatest(evt)
-
-        if (closeOnEsc) {
-          onRequestCloseLatest()
-        }
-      },
-      [closeOnEsc, onRequestCloseLatest, onEscKeyDownLatest]
-    )
+    const { rootProps, getModalProps, getOverlayProps } = useModal({
+      ...rest,
+      visible: !transitionExited,
+      onClose: onRequestCloseLatest,
+      container,
+    })
 
     useEffect(() => {
       transitionVisibleAction.set(visible)
 
       if (visible) {
         transitionExitedAction.off()
-
-        if (closeOnEsc) {
-          document.addEventListener('keydown', handleKeydown)
-        }
       }
 
       return () => {
         if (!visible) {
           transitionVisibleAction.off()
         }
-
-        if (closeOnEsc) {
-          document.removeEventListener('keydown', handleKeydown)
-        }
       }
-    }, [visible, closeOnEsc, transitionVisibleAction, transitionExitedAction, handleKeydown])
-
-    const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
+    }, [visible, transitionVisibleAction, transitionExitedAction])
 
     const onExitedLatest = useLatestCallback(onExitedProp)
-
     const onExited = useCallback(() => {
       transitionExitedAction.on()
       onExitedLatest()
     }, [onExitedLatest, transitionExitedAction])
+
+    useImperativeHandle(innerRef, () => ({ close: transitionVisibleAction.off }))
+
+    const hasHeader = !!title || closeable
+    const hasConfirm = confirmText !== null
+    const hasCancel = cancelText !== null
+    const hasFooter = hasConfirm || hasCancel || footer !== null
+
+    const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
 
     return (
       <Portal className={portalClassName} container={container} disabled={disabledPortal}>
@@ -132,18 +107,59 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
           classNames={`${prefixCls}--motion`}
           in={transitionVisible}
           timeout={timeout}
+          appear
           onExited={onExited}
+          mountOnEnter={!preload}
+          unmountOnExit={unmountOnClose}
         >
-          <div
-            className={`${prefixCls}__root`}
-            style={{ display: transitionExited ? 'none' : undefined }}
-          >
+          <div className={cls} {...getModalProps(rootProps, ref)}>
             <div
               className={cx(`${prefixCls}__overlay`, overlayClassName)}
-              onClick={closeOnOverlayClick || onOverlayClick ? handleClickOverlay : undefined}
+              {...getOverlayProps({ onClick: onOverlayClick })}
             />
-            <div role={role} ref={useMergeRefs(modalRef, ref)} className={cls} {...rest}>
-              <div className={`${prefixCls}__body`}>{children}</div>
+            <div className={`${prefixCls}__wrapper`} style={{ width, height }}>
+              {hasHeader ? (
+                <header
+                  className={cx(
+                    `${prefixCls}__header`,
+                    showHeaderDivider && `${prefixCls}__header--divided`
+                  )}
+                >
+                  {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
+                  {closeable ? (
+                    <IconButton icon={closeIcon} onClick={onRequestCloseLatest} />
+                  ) : null}
+                </header>
+              ) : null}
+              <main className={`${prefixCls}__body`}>{children}</main>
+              {hasFooter ? (
+                <footer
+                  className={cx(
+                    `${prefixCls}__footer`,
+                    showFooterDivider && `${prefixCls}__footer--divided`
+                  )}
+                >
+                  {footer === undefined
+                    ? [
+                        hasCancel ? (
+                          <Button key="1" type="default" onClick={onRequestCloseLatest}>
+                            {cancelText || '取消'}
+                          </Button>
+                        ) : null,
+                        hasConfirm ? (
+                          <Button
+                            key="2"
+                            type="primary"
+                            loading={confirmLoading}
+                            onClick={() => onConfirm?.()}
+                          >
+                            {confirmText || '确认'}
+                          </Button>
+                        ) : null,
+                      ]
+                    : footer}
+                </footer>
+              ) : null}
             </div>
           </div>
         </CSSTransition>
@@ -152,23 +168,9 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   }
 )
 
-export interface ModalProps extends HiBaseHTMLProps<'div'> {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export type ModalSizeType = 'sm' | 'md' | 'lg'
+
+export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
   /**
    * 外层挂载节点的样式类
    */
@@ -178,21 +180,20 @@ export interface ModalProps extends HiBaseHTMLProps<'div'> {
    */
   overlayClassName?: string
   /**
-   * 弹窗大小
+   * 模态框尺寸
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: ModalSizeType
+  /**
+   * 是否显示模态框
+   */
   visible?: boolean
-  onClose?: () => void
-  closeOnEsc?: boolean
-  onEscKeyDown?: (event: KeyboardEvent) => void
-  closeOnOverlayClick?: boolean
   onOverlayClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-  closable?: boolean
+  /**
+   * 是否展示右上角关闭按钮
+   */
+  closeable?: boolean
   closeIcon?: string
-  lockScroll?: boolean
-  onAfterOpen?: () => void
   timeout?: number
-  onAfterClose?: () => void
   /**
    * 禁用 portal
    */
@@ -200,8 +201,51 @@ export interface ModalProps extends HiBaseHTMLProps<'div'> {
   /**
    * 指定 portal 的容器
    */
-  container?: (() => HTMLElement | null) | HTMLElement | null
+  container?: HTMLElement | null
   onExited?: () => void
+  /**
+   * 模态框标题
+   */
+  title?: React.ReactNode
+  /**
+   * 	取消按钮文案
+   */
+  cancelText?: React.ReactNode
+  /**
+   * 	确认按钮文案
+   */
+  confirmText?: React.ReactNode
+  /**
+   * 确认按钮 loading 状态
+   */
+  confirmLoading?: boolean
+  /**
+   * 自定义模态框底部
+   */
+  footer?: React.ReactNode
+  /**
+   * 确认事件触发时的回调
+   */
+  onConfirm?: () => void
+  /**
+   * 取消事件触发时的回调
+   */
+  onCancel?: () => void
+  onClose?: () => void
+  /**
+   * 展示 header 与内容的分割线
+   */
+  showHeaderDivider?: boolean
+  /**
+   * 展示 footer 与内容的分割线
+   * @deprecated
+   */
+  showFooterDivider?: boolean
+  preload?: boolean
+  unmountOnClose?: boolean
+  width?: React.ReactText
+  height?: React.ReactText
+  innerRef?: React.RefObject<{ close: () => void }>
 }
 
 if (__DEV__) {

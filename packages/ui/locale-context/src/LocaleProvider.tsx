@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback } from 'react'
+import { ValueOf } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { LocaleContext } from './LocaleContext'
 import localeMap from './locale'
@@ -42,17 +43,32 @@ export const LocaleProvider: React.FC<LocaleProviderProps> = ({
   )
 
   const providedValue = useMemo(() => {
-    return { ...localeMap[locale], get }
+    return {
+      ...localeMap[locale],
+      get,
+      locale,
+    }
   }, [locale, get])
 
   return <LocaleContext.Provider value={providedValue}>{children}</LocaleContext.Provider>
 }
 
+export const LocaleEnum = {
+  'zh-CN': 'zh-CN',
+  'en-US': 'en-US',
+  'zh-HK': 'zh-HK',
+  'zh-TW': 'zh-TW',
+} as const
+
+// 对外暴露同名联合类型
+// eslint-disable-next-line no-redeclare
+export type LocaleEnum = ValueOf<typeof LocaleEnum>
+
 export interface LocaleProviderProps {
   /**
    * 组件默认的选择器类
    */
-  locale: 'zh-CN' | 'en-US' | 'zh-HK' | 'zh-TW'
+  locale: LocaleEnum
 }
 
 if (__DEV__) {

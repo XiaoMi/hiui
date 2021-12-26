@@ -11,7 +11,7 @@ export const Basic = () => {
         <Button
           onClick={() => {
             message.open({
-              title: 'xxxx',
+              title: '欢迎使用 HiUI 组件库',
               type: 'success',
             })
           }}

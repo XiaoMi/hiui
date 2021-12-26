@@ -20,6 +20,7 @@ export const PageOption: React.FC<PageOptionProps> = ({
   return (
     <Select
       className={cls}
+      style={{ width: 110 }}
       data={pageSizeOptions}
       value={pageSize}
       clearable={false}

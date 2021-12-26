@@ -51,8 +51,8 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
     },
     ref
   ) => {
-    const [transitionVisible, setTransitionVisible] = useState(false)
-    const [transitionExisted, setTransitionExisted] = useState(true)
+    const [transitionVisible, setTransitionVisible] = useState(visible)
+    const [transitionExisted, setTransitionExisted] = useState(!transitionVisible)
 
     useEffect(() => {
       setTransitionVisible(visible)
@@ -107,6 +107,8 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       <CSSTransition
         classNames={`${prefixCls}--motion`}
         in={transitionVisible}
+        appear
+        // @DesignToken
         timeout={201}
         mountOnEnter={!preload}
         unmountOnExit={unmountOnClose}

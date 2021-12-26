@@ -7,6 +7,18 @@ import { ProgressProvider } from './context'
 
 const DASHBOARD_PROGRESS_PREFIX = getPrefixCls('dashboard-progress')
 
+const sizeMap = {
+  sm: 48,
+  md: 64,
+  lg: 80,
+}
+
+const strokeWidthMap = {
+  sm: 2,
+  md: 4,
+  lg: 8,
+}
+
 /**
  * TODO: What is Progress
  */
@@ -17,12 +29,15 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
       role = 'DashboardProgress',
       className,
       children,
+      type = 'primary',
       percent: percentNum = 0,
       content,
       status,
       radius: radiusThis,
-      showInfo,
+      width,
+      showInfo = true,
       style,
+      size = 'md',
       ...rest
     },
     ref
@@ -31,10 +46,11 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
     const { rootProps, ...context } = useProgress(rest)
 
     const percent = percentNum > 0 ? percentNum : 0
-    const radius = radiusThis > 0 ? radiusThis : 40
-    const totalRadiusWidth = radius + 10
+    const _width = width || sizeMap[size]
+    const radius = _width / 2
+    const totalRadiusWidth = radius + strokeWidthMap[size]
     const strokeDash = radius * 2 * Math.PI
-    const openWidth = 70
+    const openWidth = strokeDash / 6
     const pathString = `M ${totalRadiusWidth},${totalRadiusWidth} m 0,${radius}
     a ${radius},${radius} 0 1 1 0,-${2 * radius}
     a ${radius},${radius} 0 1 1 0,${2 * radius}`
@@ -42,12 +58,14 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
       strokeDasharray: `${strokeDash - openWidth}px ${strokeDash}px`,
       strokeDashoffset: `-${openWidth / 2}px`,
       transition: 'stroke-dashoffset 0.3s ease 0s, stroke 0.3s ease',
+      strokeWidth: strokeWidthMap[size],
     }
     const strokePathStyle = {
       strokeDasharray: `${(percent / 100) * (strokeDash - openWidth)}px ${strokeDash}px`,
       strokeDashoffset: `-${openWidth / 2}px`,
       transition: 'stroke-dashoffset 0.3s ease 0s, stroke 0.3s ease',
       fill: '#fff',
+      strokeWidth: strokeWidthMap[size],
     }
 
     const cls = cx(prefixCls, className)
@@ -59,7 +77,7 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
           className={cls}
           role={role}
           // data-value={value}
-          style={{ width: radius * 2, height: radius * 2 }}
+          style={{ width: _width, height: _width }}
           {...rootProps}
         >
           <svg viewBox={`0 0 ${totalRadiusWidth * 2} ${totalRadiusWidth * 2}`}>
@@ -71,15 +89,15 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
               style={trailPathStyle}
             />
             <path
-              className={`${prefixCls}__dashboard ${prefixCls}__dashboard--${status}`}
+              className={`${prefixCls}__dashboard ${prefixCls}__dashboard--${type}`}
               d={pathString}
               strokeLinecap="round"
               style={strokePathStyle}
             />
           </svg>
           {showInfo && (
-            <div className={`${prefixCls}__text ${prefixCls}__text--${status}`}>
-              {content || `${percent}%`}
+            <div className={`${prefixCls}__text ${prefixCls}__text--${type}`}>
+              {content !== undefined ? content : `${percent}%`}
             </div>
           )}
         </div>

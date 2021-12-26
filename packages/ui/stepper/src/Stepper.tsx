@@ -45,7 +45,7 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
               key={index}
               stepperItem={d}
               index={index}
-              isActive={!!current && current >= index}
+              isActive={current !== undefined && current >= index}
               isFirst={index === 0}
               isLast={index === data.length - 1}
               isLastActive={current === index}
@@ -60,7 +60,7 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
               key={index}
               stepperItem={d}
               index={index}
-              isActive={!!current && current >= index}
+              isActive={current !== undefined && current >= index}
               isFirst={index === 0}
               isLast={index === data.length - 1}
               isLastActive={current === index}

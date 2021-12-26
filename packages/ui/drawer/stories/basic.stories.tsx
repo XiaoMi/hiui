@@ -1,7 +1,6 @@
 import React from 'react'
 import Drawer from '../src'
 import Button from '@hi-ui/button'
-import { EditOutlined } from '@hi-ui/icons'
 
 export const Basic = () => {
   const [visible, setVisible] = React.useState(false)
@@ -13,7 +12,6 @@ export const Basic = () => {
         <Button onClick={() => setVisible(!visible)}>open</Button>
         <Drawer
           title="Drawer Header Title"
-          extra={<EditOutlined />}
           visible={visible}
           closeOnOverlayClick={true}
           onClose={() => setVisible(false)}

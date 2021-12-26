@@ -1,0 +1,73 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-picker' !default;
+
+.#{$prefix} {
+  @include component-reset;
+
+  display: inline-block;
+  width: 100%;
+  flex-shrink: 0;
+  cursor: pointer;
+
+  // 耦合注入
+  &--open {
+    .#{$component-prefix}-mock-input {
+      border-color: use-color-mode('primary');
+
+      &__suffix {
+        color: use-color-mode('primary');
+      }
+    }
+
+    .#{$component-prefix}-tag-input-mock {
+      border-color: use-color-mode('primary');
+
+      &__suffix {
+        color: use-color-mode('primary');
+      }
+    }
+  }
+
+  // &--closed {
+  //   .#{$component-prefix}-mock-input {
+  //     &__suffix {
+  //       color: use-color('gray', 500);
+  //     }
+  //   }
+
+  //   .#{$component-prefix}-tag-input-mock {
+  //     &__suffix {
+  //       color: use-color('gray', 500);
+  //     }
+  //   }
+  // }
+
+  &__body {
+    max-height: 260px;
+    overflow-y: auto;
+  }
+
+  &__panel {
+    padding: 0 use-spacing(4);
+  }
+
+  &__search {
+    padding-top: use-spacing(4);
+  }
+
+  &__empty,
+  &__loading {
+    padding: use-spacing(5) use-spacing(4);
+    font-size: use-text-size('normal');
+    font-weight: use-text-weight('normal');
+    color: use-color('gray', 500);
+    line-height: use-text-lineheight('normal');
+    display: flex;
+    align-items: center;
+  }
+
+  &__loading {
+    justify-content: space-between;
+  }
+}

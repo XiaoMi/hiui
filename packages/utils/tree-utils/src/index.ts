@@ -484,6 +484,13 @@ export const getNodeAncestorsWithMe = <T extends BaseFlattedTreeNodeDataWithPare
   return getNodeAncestors(node, filter, [node])
 }
 
+/**
+ * 基于扁平树结构，获取自顶向下的祖先节点，包括自己
+ */
+export const getTopDownAncestors = <T extends BaseFlattedTreeNodeDataWithParent>(node: T) => {
+  return getNodeAncestorsWithMe(node).reverse()
+}
+
 const copy = <T>(node: T) => ({ ...node })
 
 export const cloneTreeNode = <T extends BaseTreeNode>(node: T) => {
@@ -548,4 +555,50 @@ export const groupByTreeDepth = <T extends BaseTreeNode>(tree: T[]) => {
     groupedTree[depth].push(node)
   })
   return groupedTree
+}
+
+export const filterTreeNode = <T extends BaseTreeNodeData>(
+  node: T,
+  filterFunc: (...arg: any[]) => boolean
+) => {
+  if (!filterFunc(node)) return false
+
+  const dig = (node: BaseTreeNodeData) => {
+    if (node.children) {
+      node.children = node.children.filter((child) => {
+        if (!filterFunc(child)) return false
+
+        dig(child)
+        return true
+      })
+    }
+  }
+
+  dig(node)
+  return true
+}
+
+/**
+ * 过滤树
+ */
+export const filterTree = <T extends BaseTreeNodeData>(
+  tree: T[],
+  filterFunc: (...arg: any[]) => boolean
+) => {
+  return cloneTree(tree).filter((node) => filterTreeNode(node, filterFunc))
+}
+
+/**
+ * 基于树结构，获取所有祖先节点(非叶子节点)
+ */
+export const getTreeAncestors = <T extends BaseTreeNodeData>(tree: T[]) => {
+  const ancestors = [] as T[]
+
+  visitTree(tree, (node) => {
+    if (node.children) {
+      ancestors.push(node)
+    }
+  })
+
+  return ancestors
 }

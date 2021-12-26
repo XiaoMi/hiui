@@ -75,9 +75,12 @@ export const useTooltip = ({
   }, [startOpenTimer, disabled])
 
   const usePopperProps: UsePopperProps = useMemo(() => {
-    const popperProps: PopperPortalProps = withDefaultProps(popper, {
+    const popperProps = withDefaultProps(popper, {
       placement: 'top',
-      zIndex: 1060,
+      // @DesignToken
+      zIndex: 1100,
+      // @DesignToken
+      gutterGap: 14,
     })
 
     return {
@@ -156,6 +159,8 @@ export const useTooltip = ({
   return {
     visible,
     visibleAction,
+    triggerElement,
+    setTriggerElement,
     getTooltipProps,
     getTriggerProps,
     getPopperProps,
@@ -188,7 +193,7 @@ export interface UseTooltipProps {
   /**
    * popper 透传的 props
    */
-  popper?: PopperPortalProps
+  popper?: Omit<PopperPortalProps, 'attachEl' | 'visible'>
 }
 
 export type UseTooltipReturn = ReturnType<typeof useTooltip>

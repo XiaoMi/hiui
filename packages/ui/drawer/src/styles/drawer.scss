@@ -9,14 +9,6 @@ $prefix: '#{$component-prefix}-drawer' !default;
   z-index: use-zindex('drawer');
   overflow: hidden;
 
-  &__extra {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-    margin-right: use-spacing(8);
-    align-items: center;
-  }
-
   &--placement-left {
     left: 0;
   }
@@ -40,7 +32,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
     height: 100%;
   }
 
-  &__body {
+  &__wrapper {
     color: use-color('gray', 700);
     font-size: use-text-size('normal');
     transition: transform 0.3s, opacity 0.3s;
@@ -49,7 +41,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
       outline: 0;
     }
 
-    width: var(--hi-v4-drawer-body-width, 360px);
+    width: var(--hi-v4-drawer-body-width, 404px);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -153,30 +145,48 @@ $prefix: '#{$component-prefix}-drawer' !default;
   }
 
   &__header {
+    box-sizing: border-box;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    font-size: use-text-size('normal');
+    font-size: use-text-size('lg');
     font-weight: use-text-weight('medium');
-    height: 56px;
+    line-height: use-text-lineheight('sm');
     color: use-color('gray', 700);
-    border-bottom: 1px solid use-color('gray', 200);
-    box-sizing: border-box;
-    padding: 0 use-spacing(10);
+    padding: use-spacing(9) use-spacing(10);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 1px solid use-color('gray', 200);
   }
 
-  &__content {
+  &__title {
+    flex: 1;
+  }
+
+  &__body {
     box-sizing: border-box;
     overflow: auto;
     flex: 1;
-    padding: use-spacing(10);
+    padding: use-spacing(12) use-spacing(10);
+    line-height: use-text-lineheight('lg');
   }
 
   &__footer {
-    border-top: 1px solid use-color('gray', 200);
-    padding: use-spacing(10);
+    padding: 0 use-spacing(10) use-spacing(10);
     flex-shrink: 0;
+    position: relative;
+
+    &::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      content: '';
+      display: block;
+      width: 100%;
+      margin-top: -32px;
+      height: 32px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    }
   }
 }

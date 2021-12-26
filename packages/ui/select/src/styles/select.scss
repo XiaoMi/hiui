@@ -16,16 +16,8 @@ $prefix: '#{$component-prefix}-select' !default;
   box-sizing: border-box;
   flex-shrink: 0;
   display: inline-block;
-  min-width: 160px;
-  min-height: 160px;
-  max-height: 260px;
+  // min-width: 160px;
   overflow: auto;
-  padding-bottom: 10px;
-
-  // 分界线
-  &:not(:last-child) {
-    // border-right: 1px solid #e8e8e8;
-  }
 
   $this: &;
 
@@ -38,7 +30,12 @@ $prefix: '#{$component-prefix}-select' !default;
   }
 
   &-option {
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
     padding: 0 use-spacing(4) + 2px;
+    margin-bottom: use-spacing(4);
     box-sizing: border-box;
     min-height: 32px;
     width: 100%;
@@ -46,25 +43,25 @@ $prefix: '#{$component-prefix}-select' !default;
     align-items: center;
     position: relative;
     justify-content: space-between;
+    border-radius: use-border-radius('normal');
+    cursor: pointer;
 
     &:hover {
-      background-color: use-color-mode('primary-10');
+      background-color: use-color('gray', 100);
     }
 
     &--selected {
-      background-color: use-color-mode('primary-10');
-      font-weight: 700;
+      background-color: use-color-mode('primary-05');
       color: use-color-mode('primary');
     }
 
     &--focused {
-      background-color: use-color-mode('primary-05');
+      background-color: use-color('gray', 100);
     }
 
     &--disabled {
       cursor: not-allowed;
       color: use-color('gray', 500);
-      font-weight: 400;
 
       .#{$prefix}-menu-switcher {
         color: use-color('gray', 500);
@@ -81,6 +78,9 @@ $prefix: '#{$component-prefix}-select' !default;
   white-space: nowrap;
   box-sizing: border-box;
   // padding: 6px 0;
+  border-radius: use-border-radius('normal');
+  padding: use-spacing(4);
+  font-size: use-text-size('normal');
 }
 
 .#{$prefix}-search {
@@ -98,7 +98,6 @@ $prefix: '#{$component-prefix}-select' !default;
     display: inline-block;
     margin-top: 20px;
     font-size: 14px;
-    font-weight: 400;
     color: #999;
     line-height: 20px;
   }

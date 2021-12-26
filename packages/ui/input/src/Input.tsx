@@ -1,12 +1,12 @@
-import React, { forwardRef, useState, useCallback, useRef, useMemo } from 'react'
+import React, { forwardRef, useState, useCallback, useRef, useMemo, isValidElement } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { CloseCircleFilled } from '@hi-ui/icons'
+import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 
-const _role = 'input'
-const _prefix = getPrefixCls(_role)
+const _prefix = getPrefixCls('input')
 
 /**
  * TODO: What is Input
@@ -15,7 +15,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
   (
     {
       prefixCls = _prefix,
-      role = _role,
+      role = 'input',
       className,
       style,
       autoFocus = false,
@@ -24,7 +24,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       name,
       maxLength,
       type = 'text',
-      size = 'sm',
+      size = 'md',
       appearance = 'outline',
       floatLabel,
       placeholder,
@@ -40,10 +40,26 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       clearableTrigger = 'hover',
       clearable = false,
       trimValueOnBlur = false,
+      invalid = false,
       ...rest
     },
     ref
   ) => {
+    // @TODO: 临时方案，后面迁移至 InputGroup
+    const [unsetPrepend, unsetAppend] = useMemo(() => {
+      const shouldUnset = [false, false]
+      // @ts-ignore
+      if (isValidElement(prepend) && ['Select', 'Button'].includes(prepend.type.HiName)) {
+        shouldUnset[0] = true
+      }
+
+      // @ts-ignore
+      if (isValidElement(append) && ['Select', 'Button'].includes(append.type.HiName)) {
+        shouldUnset[1] = true
+      }
+      return shouldUnset
+    }, [prepend, append])
+
     const inputRef = useRef<HTMLInputElement>(null)
 
     const proxyOnChange = useCallback(
@@ -119,7 +135,9 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       className,
       `${prefixCls}__outer`,
       prepend && `${prefixCls}__outer--prepend`,
+      prepend && unsetPrepend && `${prefixCls}__outer--prepend-unset`,
       append && `${prefixCls}__outer--append`,
+      append && unsetAppend && `${prefixCls}__outer--append-unset`,
       `${prefixCls}--appearance-${appearance}`,
       `${prefixCls}--size-${size}`
     )
@@ -132,9 +150,11 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
             `${prefixCls}__inner`,
             prefix && `${prefixCls}__inner--prefix`,
             suffix && `${prefixCls}__inner--suffix`,
+            // TODO: bem规范统一
             focused && `focused`,
             disabled && 'disabled',
-            readOnly && 'readonly'
+            readOnly && 'readonly',
+            invalid && 'invalid'
           )}
           onMouseOver={(e) => {
             setHover(true)
@@ -187,23 +207,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
   }
 )
 
-export interface InputProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
   /**
    * 开启输入框只读
    */
@@ -231,7 +235,7 @@ export interface InputProps {
   /**
    * 设置输入框类型，支持原生 input 的 type 属性所有值
    */
-  type?: 'text' | 'number'
+  type?: 'text' | 'number' | string
   /**
    * 输入最大长度
    */
@@ -274,6 +278,7 @@ export interface InputProps {
   placeholder?: string
   /**
    * 设置展现形式
+   * 其中 `underline` 内部使用，不对外提供支持（风格去线型化：由线性过渡到面性）
    */
   appearance?: 'outline' | 'unset' | 'filled' | 'underline'
   /**
@@ -284,14 +289,6 @@ export interface InputProps {
    * 值改变时的回调
    */
   onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void
-  /**
-   * 获得焦点时的回调
-   */
-  onFocus?: (evt: React.FocusEvent<HTMLInputElement>) => void
-  /**
-   * 失去焦点时的回调
-   */
-  onBlur?: (evt: React.FocusEvent<HTMLInputElement>) => void
 }
 
 if (__DEV__) {
@@ -299,7 +296,7 @@ if (__DEV__) {
 }
 
 /**
- * 伪造目标事件 target
+ * 模拟伪装目标事件 target
  *
  * @param target
  * @param evt

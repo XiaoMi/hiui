@@ -9,16 +9,16 @@ export const Nested = () => {
   return (
     <>
       <h1>Nested</h1>
-      <div>
+      <div className="modal-nested__wrap">
         <Button onClick={() => setVisible(!visible)}>open</Button>
-      </div>
-      <Modal visible={visible} closeOnOverlayClick={true} onClose={() => setVisible(false)}>
-        <div>Modal content</div>
-        <Button onClick={() => setNestVisible(!nestVisible)}>Nested</Button>
-        <Modal visible={nestVisible} onClose={() => setNestVisible(false)}>
-          NestModal content
+        <Modal visible={visible} closeable={false} onClose={() => setVisible(false)}>
+          <div>Modal content</div>
+          <Button onClick={() => setNestVisible(!nestVisible)}>Nested</Button>
+          <Modal visible={nestVisible} closeable={false} onCancel={() => setNestVisible(false)}>
+            NestModal content
+          </Modal>
         </Modal>
-      </Modal>
+      </div>
     </>
   )
 }

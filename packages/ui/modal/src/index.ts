@@ -1,6 +1,13 @@
 import './styles/index.scss'
 
-export * from './Modal'
-export { Modal as default } from './Modal'
+import { Modal as PureModal } from './Modal'
+import { withModal } from './with-api'
 
-export * from './hooks'
+export * from './Modal'
+// export { Modal as default } from './Modal'
+
+// export * from './hooks'
+export * from './use-modal'
+
+export const Modal = withModal(PureModal)
+export default Modal

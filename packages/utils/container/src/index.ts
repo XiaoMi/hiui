@@ -23,7 +23,7 @@ export const getContainer = (selector: string, doc = document) => {
 export const removeContainer = (selector: string, doc = document) => {
   const rootElm = doc.querySelector(selector)
 
-  if (rootElm && rootElm.parentElement) {
-    rootElm.parentElement.removeChild(rootElm)
+  if (rootElm && rootElm.parentNode) {
+    rootElm.parentNode.removeChild(rootElm)
   }
 }
