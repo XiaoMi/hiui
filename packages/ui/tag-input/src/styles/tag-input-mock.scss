@@ -26,19 +26,31 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   border: use-border-size('normal') use-color-static('transparent');
   background-color: use-color-static('white');
 
-  &:not(.disabled):hover {
+  $this: &;
+
+  &:not(#{$this}--disabled):hover {
     z-index: calc(#{use-zindex('absolute')} + 1);
   }
 
-  &:not(.disabled).focused {
+  &:not(#{$this}--disabled).focused {
     z-index: calc(#{use-zindex('absolute')} + 1);
   }
 
-  &.disabled {
+  &#{$this}--disabled {
     cursor: not-allowed;
 
     .#{$tag-input-mock-prefix}__tag {
       background-color: use-color('gray', 200);
+    }
+  }
+
+  &--wrap {
+    .#{$tag-input-mock-prefix}__value {
+      height: auto;
+    }
+
+    .#{$tag-input-mock-prefix}__tags {
+      white-space: normal;
     }
   }
 
@@ -139,7 +151,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       color: rgba(142, 142, 142, 1);
       cursor: pointer;
 
-      .disabled & {
+      #{$this}--disabled & {
         cursor: not-allowed;
       }
     }

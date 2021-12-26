@@ -46,7 +46,8 @@ export const Mock = () => {
         <TagInputMock
           clearable
           suffix={<DownOutlined />}
-          style={{ width: 380 }}
+          // style={{ width: 380 }}
+          // wrap={false}
           // disabled
           value={value}
           data={data}

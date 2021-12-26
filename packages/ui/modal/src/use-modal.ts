@@ -88,7 +88,7 @@ export const useModal = ({
   const onEscKeyDownLatest = useLatestCallback(onEscKeyDown)
 
   const onEscClose = useCallback(
-    (evt: KeyboardEvent) => {
+    (evt: React.KeyboardEvent) => {
       // only close the top modal when pressing `Esc`
       if (evt.keyCode !== 27) return
 
@@ -97,6 +97,8 @@ export const useModal = ({
       onEscKeyDownLatest(evt)
 
       if (closeOnEsc) {
+        evt.preventDefault()
+        evt.stopPropagation()
         onRequestCloseLatest()
       }
     },
@@ -104,7 +106,7 @@ export const useModal = ({
   )
 
   const trapTabKey = useCallback(
-    (evt) => {
+    (evt: React.KeyboardEvent) => {
       if (!modalElementRef.current) return
 
       // ESCAPE
@@ -182,7 +184,7 @@ export interface UseModalProps {
    */
   visible?: boolean
   closeOnEsc?: boolean
-  onEscKeyDown?: (event: KeyboardEvent) => void
+  onEscKeyDown?: (event: React.KeyboardEvent) => void
   maskClosable?: boolean
   lockScroll?: boolean
   /**
