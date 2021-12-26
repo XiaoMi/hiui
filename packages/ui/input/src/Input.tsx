@@ -1,10 +1,10 @@
-import React, { forwardRef, useState, useCallback, useRef, useMemo } from 'react'
+import React, { forwardRef, useState, useCallback, useRef, useMemo, isValidElement } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { CloseCircleFilled } from '@hi-ui/icons'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 
 const _prefix = getPrefixCls('input')
 
@@ -24,7 +24,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       name,
       maxLength,
       type = 'text',
-      size = 'sm',
+      size = 'md',
       appearance = 'outline',
       floatLabel,
       placeholder,
@@ -40,10 +40,26 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       clearableTrigger = 'hover',
       clearable = false,
       trimValueOnBlur = false,
+      invalid = false,
       ...rest
     },
     ref
   ) => {
+    // @TODO: 临时方案，后面迁移至 InputGroup
+    const [unsetPrepend, unsetAppend] = useMemo(() => {
+      const shouldUnset = [false, false]
+      // @ts-ignore
+      if (isValidElement(prepend) && ['Select', 'Button'].includes(prepend.type.HiName)) {
+        shouldUnset[0] = true
+      }
+
+      // @ts-ignore
+      if (isValidElement(append) && ['Select', 'Button'].includes(append.type.HiName)) {
+        shouldUnset[1] = true
+      }
+      return shouldUnset
+    }, [prepend, append])
+
     const inputRef = useRef<HTMLInputElement>(null)
 
     const proxyOnChange = useCallback(
@@ -119,7 +135,9 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       className,
       `${prefixCls}__outer`,
       prepend && `${prefixCls}__outer--prepend`,
+      prepend && unsetPrepend && `${prefixCls}__outer--prepend-unset`,
       append && `${prefixCls}__outer--append`,
+      append && unsetAppend && `${prefixCls}__outer--append-unset`,
       `${prefixCls}--appearance-${appearance}`,
       `${prefixCls}--size-${size}`
     )
@@ -132,9 +150,11 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
             `${prefixCls}__inner`,
             prefix && `${prefixCls}__inner--prefix`,
             suffix && `${prefixCls}__inner--suffix`,
+            // TODO: bem规范统一
             focused && `focused`,
             disabled && 'disabled',
-            readOnly && 'readonly'
+            readOnly && 'readonly',
+            invalid && 'invalid'
           )}
           onMouseOver={(e) => {
             setHover(true)
@@ -187,7 +207,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
   }
 )
 
-export interface InputProps extends HiBaseHTMLProps<'input'> {
+export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
   /**
    * 开启输入框只读
    */
@@ -258,6 +278,7 @@ export interface InputProps extends HiBaseHTMLProps<'input'> {
   placeholder?: string
   /**
    * 设置展现形式
+   * 其中 `underline` 内部使用，不对外提供支持（风格去线型化：由线性过渡到面性）
    */
   appearance?: 'outline' | 'unset' | 'filled' | 'underline'
   /**

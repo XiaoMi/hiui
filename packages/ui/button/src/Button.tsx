@@ -126,6 +126,9 @@ export interface ButtonProps {
   icon?: React.ReactNode
 }
 
+// @ts-ignore
+Button.HiName = 'Button'
+
 if (__DEV__) {
   Button.displayName = 'Button'
 }
