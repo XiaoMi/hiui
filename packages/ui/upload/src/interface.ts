@@ -1,6 +1,6 @@
 import React from 'react'
 
-export interface UploadFileItem extends File {
+export interface UploadFileItem extends Partial<File> {
   fileId?: string
   fileType?: string
   uploadState?: 'success' | 'loading' | 'error'
