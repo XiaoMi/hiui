@@ -4,7 +4,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
 
 .#{$prefix} {
   position: relative;
-  padding: 4px;
+  padding: use-spacing(4);
 
   ul {
     margin: 0 !important;
@@ -21,14 +21,14 @@ $prefix: '#{$component-prefix}-timeline' !default;
         margin-bottom: 0;
 
         .item__line {
-          height: 7px !important;
+          height: 7px;
         }
       }
 
       &:first-of-type {
         .item__line {
           top: 7px;
-          height: calc(100% + 20px - 7px) !important;
+          height: calc(100% + 20px - 7px);
         }
       }
 
@@ -93,16 +93,17 @@ $prefix: '#{$component-prefix}-timeline' !default;
           width: 70%;
 
           .item__title {
-            color: use-color-static('black');
+            color: use-color('gray', 700);
             font-size: use-text-size('normal');
             line-height: use-text-lineheight('normal');
+            font-weight: use-text-weight('medium');
             margin-bottom: 2px;
           }
 
           .item__content {
-            color: use-color('gray', 800);
+            color: use-color('gray', 600);
             font-size: use-text-size('sm');
-            line-height: 20px;
+            line-height: use-text-lineheight('sm');
           }
         }
       }
@@ -146,9 +147,9 @@ $prefix: '#{$component-prefix}-timeline' !default;
           }
 
           .item__extra {
-            color: use-color('gray', 800);
+            color: use-color('gray', 600);
             font-size: use-text-size('sm');
-            line-height: 20px;
+            line-height: use-text-lineheight('sm');
           }
         }
 
@@ -163,9 +164,9 @@ $prefix: '#{$component-prefix}-timeline' !default;
           }
 
           .item__content {
-            color: use-color('gray', 800);
+            color: use-color('gray', 600);
             font-size: use-text-size('sm');
-            line-height: 20px;
+            line-height: use-text-lineheight('sm');
           }
         }
       }
@@ -179,23 +180,24 @@ $prefix: '#{$component-prefix}-timeline' !default;
       margin-left: 24px;
 
       .item__title {
-        color: use-color-static('black');
+        color: use-color('gray', 700);
         font-size: use-text-size('normal');
         line-height: use-text-lineheight('normal');
-        margin-bottom: 2px;
+        font-weight: use-text-weight('medium');
+        margin-bottom: use-spacing(2);
       }
 
       .item__content {
-        color: use-color('gray', 800);
+        color: use-color('gray', 600);
         font-size: use-text-size('sm');
-        line-height: 20px;
-        margin-bottom: 6px;
+        line-height: use-text-lineheight('sm');
+        margin-bottom: use-spacing(4);
       }
 
       .item__time {
-        color: use-color('gray', 700);
+        color: use-color('gray', 500);
         font-size: use-text-size('sm');
-        line-height: 20px;
+        line-height: use-text-lineheight('sm');
       }
 
       &:last-of-type {
@@ -315,20 +317,20 @@ $prefix: '#{$component-prefix}-timeline' !default;
 
       .item--left {
         text-align: right;
-        width: calc(30% - 20px);
-        margin-right: 20px;
+        width: calc(30% - #{use-spacing(11)});
+        margin-right: use-spacing(11);
 
         .item__time {
-          color: use-color-static('black');
+          color: use-color('gray', 600);
           font-size: use-text-size('normal');
           line-height: use-text-lineheight('normal');
-          margin-bottom: 2px;
+          font-weight: use-text-weight('medium');
         }
 
         .item__extra {
-          color: use-color('gray', 800);
+          color: use-color('gray', 600);
           font-size: use-text-size('sm');
-          line-height: 20px;
+          line-height: use-text-lineheight('sm');
         }
       }
 
@@ -365,21 +367,22 @@ $prefix: '#{$component-prefix}-timeline' !default;
       }
 
       .item--right {
-        width: calc(70% - 20px);
-        margin-left: 20px;
-        margin-bottom: 20px;
+        width: calc(70% - #{use-spacing(11)});
+        margin-left: use-spacing(11);
+        margin-bottom: use-spacing(12);
 
         .item__title {
-          color: use-color-static('black');
+          color: use-color('gray', 700);
           font-size: use-text-size('normal');
           line-height: use-text-lineheight('normal');
-          margin-bottom: 2px;
+          font-weight: use-text-weight('medium');
+          margin-bottom: use-spacing(2);
         }
 
         .item__content {
-          color: use-color('gray', 800);
+          color: use-color('gray', 600);
           font-size: use-text-size('sm');
-          line-height: 20px;
+          line-height: use-text-lineheight('sm');
         }
       }
 
