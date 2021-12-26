@@ -69,7 +69,7 @@ export interface UploadProps {
     file: UploadFileItem,
     fileList: UploadFileItem[],
     response: object
-  ) => boolean | Promise<boolean>
+  ) => void | boolean | Promise<boolean>
   onRemove?: (
     file: UploadFileItem,
     fileList: UploadFileItem[],
