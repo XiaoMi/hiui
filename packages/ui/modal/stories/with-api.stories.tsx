@@ -8,7 +8,7 @@ export const WithAPI = () => {
       <h1>WithAPI</h1>
       <div className="modal-with-api__wrap">
         <Button
-          type="primary"
+          type="danger"
           onClick={() =>
             Modal.confirm({
               type: 'error',
@@ -22,7 +22,7 @@ export const WithAPI = () => {
           打开错误提示
         </Button>
         <Button
-          type="primary"
+          type="default"
           onClick={() =>
             Modal.confirm({
               type: 'warning',
@@ -36,6 +36,44 @@ export const WithAPI = () => {
           }
         >
           打开警告提示
+        </Button>
+
+        <Button
+          type="success"
+          onClick={() =>
+            Modal.confirm({
+              type: 'success',
+              title: '成功',
+              content: (
+                <div style={{ lineHeight: '48px' }}>
+                  这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述
+                </div>
+              ),
+              cancelText: null,
+              confirmText: '确定',
+            })
+          }
+        >
+          打开成功提示
+        </Button>
+
+        <Button
+          type="secondary"
+          onClick={() =>
+            Modal.confirm({
+              type: 'info',
+              title: '普通',
+              content: (
+                <div style={{ lineHeight: '48px' }}>
+                  这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述
+                </div>
+              ),
+              cancelText: null,
+              confirmText: '确定',
+            })
+          }
+        >
+          打开普通提示
         </Button>
       </div>
     </>
