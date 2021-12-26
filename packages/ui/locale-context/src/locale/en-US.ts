@@ -88,7 +88,6 @@ export default {
   upload: {
     buttonText: 'Upload',
     uploadSuccess: 'Success',
-    uploadFailed: 'Failed',
     cancel: 'Cancel',
     delete: 'Delete',
     drag: 'Click or drag and drop file to upload',

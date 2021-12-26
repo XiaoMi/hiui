@@ -65,13 +65,13 @@ UploadProps): [
   )
 
   const onSuccess = useCallback(
-    (file: UploadFileItem, res) => {
+    (file: UploadFileItem, body: Object) => {
       const newFileList = [...fileListRef.current]
       file.uploadState = 'success'
       delete file.abort
       const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
       const result: boolean | Promise<boolean> | undefined =
-        onChange && onChange(file, newFileList, res)
+        onChange && onChange(file, newFileList, body)
       // 处理如果onChange return false 的时候需要删除该文件
       if (typeof result === 'boolean' && !result) {
         deleteFile(file, idx)
@@ -98,21 +98,24 @@ UploadProps): [
     [onChange, deleteFile, fileList]
   )
 
-  const onProgress = useCallback((file: UploadFileItem, e) => {
-    const newFileList = [...fileListRef.current]
-    file.progressNumber = e.percent
-    const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
-    newFileList.splice(idx, 1, file)
-    fileListRef.current = newFileList
-    updateFileList(fileListRef.current)
-  }, [])
+  const onProgress = useCallback(
+    (file: UploadFileItem, event: ProgressEvent<EventTarget>, percent: number) => {
+      const newFileList = [...fileListRef.current]
+      file.progressNumber = percent
+      const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
+      newFileList.splice(idx, 1, file)
+      fileListRef.current = newFileList
+      updateFileList(fileListRef.current)
+    },
+    []
+  )
 
   const onError = useCallback(
-    (file: UploadFileItem, error, res) => {
+    (file: UploadFileItem, event: ProgressEvent<EventTarget>, body?: Object | undefined) => {
       const newFileList = [...fileListRef.current]
       file.uploadState = 'error'
       const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
-      const result = onChange && onChange(file, newFileList, res)
+      const result = onChange && onChange(file, newFileList, body)
 
       // 处理如果onChange return false 的时候需要删除该文件
       if (typeof result === 'boolean' && !result) {
@@ -203,8 +206,8 @@ UploadProps): [
                   data,
 
                   onSuccess,
-                  onError,
-                  onProgress,
+                  onError: onError,
+                  onProgress: onProgress,
                 })
                 file.abort = action.abort
               }
