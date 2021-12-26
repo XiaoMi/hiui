@@ -104,6 +104,7 @@ export interface TimelineItem {
   timestamp?: string
   extraTime?: string
   icon?: React.ReactNode
+  children?: TimelineItem[]
 }
 export interface TimelineGroupItem {
   groupTitle: string | React.ReactNode

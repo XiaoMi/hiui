@@ -212,6 +212,28 @@ $prefix: '#{$component-prefix}-timeline' !default;
   }
 
   &--default {
+    .timeline__collapse {
+      .timeline__item {
+        .item__dot {
+          background: use-color-mode('primary');
+          width: 6px;
+          height: 6px;
+        }
+      }
+
+      &:not(:last-of-type) {
+        .timeline__item:last-of-type {
+          .item__line {
+            height: 100%;
+          }
+
+          .item--right {
+            margin-bottom: use-spacing(12);
+          }
+        }
+      }
+    }
+
     .timeline__group {
       .timeline__item {
         .item__line {
