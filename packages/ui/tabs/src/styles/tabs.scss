@@ -239,8 +239,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     .#{$prefix}__item {
       line-height: use-text-lineheight('lg');
-      padding: 0 use-spacing(10);
-      margin: use-spacing(4) 0;
+      padding: use-spacing(4) use-spacing(10);
+      margin: 0;
       transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
 
       &--prev {
@@ -281,8 +281,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
   &__item {
     line-height: use-text-lineheight('lg');
-    padding: use-spacing(4) 0;
-    margin: 0 use-spacing(10);
+    padding: use-spacing(4) use-spacing(10);
+    margin: 0;
     cursor: pointer;
     flex-shrink: 0;
     transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
