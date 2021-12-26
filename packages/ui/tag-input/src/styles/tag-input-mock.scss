@@ -3,41 +3,39 @@
 $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
 .#{$tag-input-mock-prefix} {
+  @include input-reset();
+
+  $input-shadow: 0 0 0 2px use-color-mode('primary-10');
+  $input-error-shadow: 0 0 0 2px use-color-mode('error-10');
+
   position: relative;
-  flex: 1;
-  box-sizing: border-box;
-  width: 100%;
-  min-width: 160px;
-  font-size: 14px;
-  vertical-align: middle;
-  color: use-color-static('black');
-  border: 1px solid transparent;
-  background-color: use-color-static('white');
-  transition: all 0.3s;
-  padding: 0 10px;
+  overflow: hidden;
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 32px;
-  overflow: hidden;
-
-  // outline
-  border-color: use-color('gray', 300);
-  border-radius: 4px;
+  flex: 1;
+  transition-property: all;
+  transition-duration: use-motion-duration('normal');
+  transition-timing-function: use-motion-bezier('normal');
+  width: 100%;
+  height: auto;
+  z-index: auto;
+  font-size: inherit;
+  line-height: inherit;
+  color: use-color('gray', 700);
+  border: use-border-size('normal') use-color-static('transparent');
+  background-color: use-color-static('white');
 
   &:not(.disabled):hover {
-    border-color: use-color-mode('primary');
+    z-index: calc(#{use-zindex('absolute')} + 1);
   }
 
   &:not(.disabled).focused {
-    // box-shadow: 0 0 0 1px use-color-mode('primary');
-    border-color: use-color-mode('primary');
+    z-index: calc(#{use-zindex('absolute')} + 1);
   }
 
   &.disabled {
     cursor: not-allowed;
-    color: use-color('gray', 500);
-    background-color: use-color('gray', 100);
 
     .#{$tag-input-mock-prefix}__tag {
       background-color: use-color('gray', 200);
@@ -49,12 +47,14 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   }
 
   &__suffix {
-    font-size: 16px;
     display: inline-flex;
     align-items: center;
     justify-content: flex-end;
-    min-width: 32px;
     flex-shrink: 0;
+    color: use-color-static('black');
+    font-size: use-text-size('lg');
+    padding-left: use-spacing(4);
+    text-align: center;
   }
 
   &__clear {
@@ -62,11 +62,13 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     align-items: center;
     width: 16px;
     height: 16px;
-    font-size: 14px;
+    font-size: use-text-size('normal');
     color: use-color('gray', 500);
     flex-shrink: 0;
     cursor: pointer;
-    transition: all 0.3s;
+    transition-property: all;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
 
     &:hover {
       color: use-color-static('black');
@@ -75,24 +77,14 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
   &__value {
     box-sizing: border-box;
-    // width: 100%;
     height: 22px;
     line-height: 22px;
     flex-shrink: 1;
-    // display: inline-flex;
-    // align-items: center;
   }
 
   &__tags {
     position: relative;
     box-sizing: border-box;
-    // flex: 0 1 auto;
-    // // 用于自适应高度计算
-    // display: inline-block;
-    // // 右边临近放置 `+ count`
-    // width: fit-content;
-    // height: 100%;
-    // margin-top: -4px;
     white-space: nowrap;
     overflow: hidden;
   }
@@ -149,6 +141,101 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
       .disabled & {
         cursor: not-allowed;
+      }
+    }
+  }
+
+  // 减去左或右边框 1px
+  $input-padding-width: calc(#{use-spacing(6)} - 1px);
+
+  &--size {
+    &-sm {
+      font-size: use-text-size('sm');
+      line-height: get-text-lineheight('sm');
+      border-radius: use-border-radius('normal');
+      padding: 1px $input-padding-width;
+    }
+
+    &-md {
+      font-size: use-text-size('normal');
+      line-height: get-text-lineheight('normal');
+      border-radius: use-border-radius('normal');
+      padding: 4px $input-padding-width;
+    }
+
+    &-lg {
+      font-size: use-text-size('lg');
+      line-height: get-text-lineheight('lg');
+      border-radius: use-border-radius('normal');
+      padding: 7px $input-padding-width;
+    }
+  }
+
+  &--appearance {
+    &-outline {
+      border-color: use-color('gray', 300);
+
+      &:not(.disabled):hover {
+        border-color: use-color-mode('primary');
+      }
+
+      &:not(.disabled).focused {
+        box-shadow: $input-shadow;
+        border-color: use-color-mode('primary');
+      }
+
+      &:not(.disabled).invalid {
+        border-color: use-color-mode('error');
+
+        &.hover {
+          border-color: use-color-mode('error');
+        }
+
+        &.focused {
+          box-shadow: $input-error-shadow;
+        }
+      }
+    }
+
+    &-unset {
+      justify-content: flex-start;
+      padding-left: 0;
+      padding-right: 0;
+      border-radius: 0;
+      border-color: transparent;
+    }
+
+    &-filled {
+      background-color: use-color('gray', 100);
+
+      &:not(.disabled):hover {
+        border-color: use-color-mode('primary');
+      }
+
+      &:not(.disabled).focused {
+        box-shadow: $input-shadow;
+        border-color: use-color-mode('primary');
+        background-color: use-color-static('white');
+      }
+
+      &:not(.disabled).invalid {
+        border-color: use-color-mode('error');
+
+        &.hover {
+          border-color: use-color-mode('error');
+        }
+
+        &.focused {
+          box-shadow: $input-error-shadow;
+        }
+      }
+    }
+
+    &-outline,
+    &-filled {
+      &.disabled {
+        color: use-color('gray', 400);
+        background-color: use-color('gray', 200);
       }
     }
   }

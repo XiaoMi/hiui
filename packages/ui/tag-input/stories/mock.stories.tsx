@@ -3,52 +3,231 @@ import React from 'react'
 import { TagInputMock } from '../src'
 
 export const Mock = () => {
+  const [value] = React.useState(['1', '2', '不存在的测试', '11', '12', '13', '14'])
+  const [data] = React.useState([
+    {
+      id: '1',
+      title: 'title1',
+    },
+    {
+      id: '2',
+      title: '二锅头',
+    },
+    {
+      id: '3',
+      title: '梦幻3',
+    },
+    {
+      id: '4',
+      title: '老四',
+    },
+    {
+      id: '11',
+      title: '1title1',
+    },
+    {
+      id: '12',
+      title: '1二锅头',
+    },
+    {
+      id: '13',
+      title: '1梦幻3',
+    },
+    {
+      id: '14',
+      title: '1老四',
+    },
+  ])
+
   return (
     <>
       <h1>Mock</h1>
       <div className="tag-input-basic__wrap">
         <TagInputMock
           clearable
-          style={{ width: 380 }}
-          // wrap={false}
-          // disabled
-          defaultValue={['1', '2', '不存在的测试', '11', '12', '13', '14']}
           suffix={<DownOutlined />}
-          data={[
-            {
-              id: '1',
-              title: 'title1',
-            },
-            {
-              id: '2',
-              title: '二锅头',
-            },
-            {
-              id: '3',
-              title: '梦幻3',
-            },
-            {
-              id: '4',
-              title: '老四',
-            },
-            {
-              id: '11',
-              title: '1title1',
-            },
-            {
-              id: '12',
-              title: '1二锅头',
-            },
-            {
-              id: '13',
-              title: '1梦幻3',
-            },
-            {
-              id: '14',
-              title: '1老四',
-            },
-          ]}
+          style={{ width: 380 }}
+          // disabled
+          value={value}
+          data={data}
         />
+
+        <div>
+          <h2>Outline</h2>
+          <TagInputMock
+            appearance="outline"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="sm"
+            appearance="outline"
+            clearable
+            placeholder="请输入"
+            value={value}
+            data={data}
+            suffix={<DownOutlined />}
+          />
+          <br />
+          <br />
+          <TagInputMock
+            size="md"
+            appearance="outline"
+            focused
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            invalid
+            appearance="outline"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            invalid
+            focused
+            appearance="outline"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            appearance="outline"
+            disabled
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+        </div>
+
+        <div>
+          <h2>Filled</h2>
+          <TagInputMock
+            appearance="filled"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="sm"
+            appearance="filled"
+            clearable
+            placeholder="请输入"
+            value={value}
+            data={data}
+            suffix={<DownOutlined />}
+          />
+          <br />
+          <br />
+          <TagInputMock
+            size="md"
+            appearance="filled"
+            focused
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            invalid
+            appearance="filled"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            invalid
+            focused
+            appearance="filled"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            appearance="filled"
+            disabled
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+        </div>
+
+        <div>
+          <h2>Unset</h2>
+          <TagInputMock
+            appearance="unset"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="sm"
+            appearance="unset"
+            clearable
+            placeholder="请输入"
+            value={value}
+            data={data}
+            suffix={<DownOutlined />}
+          />
+          <br />
+          <br />
+          <TagInputMock
+            size="md"
+            appearance="unset"
+            focused
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            invalid
+            appearance="unset"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            invalid
+            focused
+            appearance="unset"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            appearance="unset"
+            disabled
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+        </div>
       </div>
     </>
   )

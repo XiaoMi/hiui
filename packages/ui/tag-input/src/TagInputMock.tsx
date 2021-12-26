@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CloseCircleFilled, CloseOutlined } from '@hi-ui/icons'
 import { TagInputOption } from './types'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
 import ResizeDetector from 'react-resize-detector'
@@ -27,8 +27,13 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       onChange,
       placeholder,
       data = NOOP_ARRAY,
-      clearable = false,
       disabled = false,
+      clearable = false,
+      focused = false,
+      invalid = false,
+      readOnly = false,
+      size = 'md',
+      appearance = 'outline',
       suffix,
       tagWidth = 20,
       displayRender,
@@ -130,7 +135,16 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
     const showClearableIcon = clearable && showTags && !disabled
 
-    const cls = cx(prefixCls, className, disabled && 'disabled')
+    const cls = cx(
+      prefixCls,
+      className,
+      `${prefixCls}--appearance-${appearance}`,
+      `${prefixCls}--size-${size}`,
+      focused && `focused`,
+      disabled && 'disabled',
+      readOnly && 'readonly',
+      invalid && 'invalid'
+    )
 
     return (
       <ResizeDetector
@@ -216,7 +230,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
 )
 
 export interface TagInputMockProps
-  extends Omit<HiBaseHTMLProps<'div'>, 'defaultValue' | 'onChange' | 'value'> {
+  extends Omit<HiBaseHTMLFieldProps<'div'>, 'defaultValue' | 'onChange' | 'value'> {
   /**
    * 设置当前多选值
    */
@@ -261,6 +275,22 @@ export interface TagInputMockProps
    * 设置 tag 的默认宽度
    */
   tagWidth?: number
+  /**
+   * 是否聚焦
+   */
+  focused?: boolean
+  /**
+   * 开启输入框只读
+   */
+  readOnly?: boolean
+  /**
+   * 设置展现形式
+   */
+  appearance?: 'outline' | 'unset' | 'filled'
+  /**
+   * 设置输入框尺寸
+   */
+  size?: 'sm' | 'md' | 'lg'
 }
 
 if (__DEV__) {

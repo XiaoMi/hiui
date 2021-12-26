@@ -10,6 +10,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
 
   // basic
   position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -48,14 +49,16 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     align-items: center;
     width: 16px;
     height: 16px;
-    font-size: 14px;
+    font-size: use-text-size('normal');
     text-align: center;
     color: use-color('gray', 500);
     flex-shrink: 0;
     cursor: pointer;
     visibility: hidden;
     opacity: 0;
-    transition: all 0.3s;
+    transition-property: all;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
 
     &:hover {
       color: use-color-static('black');
