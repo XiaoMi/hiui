@@ -8,13 +8,9 @@ $prefix: '#{$component-prefix}-picker' !default;
   display: inline-block;
   width: 100%;
   flex-shrink: 0;
-  overflow: hidden;
   cursor: pointer;
-  // animation
-  transition-timing-function: use-motion-bezier('normal');
-  transition-duration: use-motion-duration('normal');
-  transition-property: border-color;
 
+  // 耦合注入
   &--open {
     .#{$component-prefix}-mock-input {
       border-color: use-color-mode('primary');
@@ -32,6 +28,20 @@ $prefix: '#{$component-prefix}-picker' !default;
       }
     }
   }
+
+  // &--closed {
+  //   .#{$component-prefix}-mock-input {
+  //     &__suffix {
+  //       color: use-color('gray', 500);
+  //     }
+  //   }
+
+  //   .#{$component-prefix}-tag-input-mock {
+  //     &__suffix {
+  //       color: use-color('gray', 500);
+  //     }
+  //   }
+  // }
 
   &__body {
     max-height: 260px;

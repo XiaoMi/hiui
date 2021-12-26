@@ -74,6 +74,18 @@ export const Mock = () => {
           <br />
           <br />
           <TagInputMock
+            size="sm"
+            focused
+            appearance="outline"
+            clearable
+            placeholder="请输入"
+            value={value}
+            data={data}
+            suffix={<DownOutlined />}
+          />
+          <br />
+          <br />
+          <TagInputMock
             size="md"
             appearance="outline"
             focused
@@ -123,6 +135,18 @@ export const Mock = () => {
           <br />
           <TagInputMock
             size="sm"
+            appearance="filled"
+            clearable
+            placeholder="请输入"
+            value={value}
+            data={data}
+            suffix={<DownOutlined />}
+          />
+          <br />
+          <br />
+          <TagInputMock
+            size="sm"
+            focused
             appearance="filled"
             clearable
             placeholder="请输入"
@@ -183,6 +207,18 @@ export const Mock = () => {
           <TagInputMock
             size="sm"
             appearance="unset"
+            clearable
+            placeholder="请输入"
+            value={value}
+            data={data}
+            suffix={<DownOutlined />}
+          />
+          <br />
+          <br />
+          <TagInputMock
+            size="sm"
+            appearance="unset"
+            focused
             clearable
             placeholder="请输入"
             value={value}

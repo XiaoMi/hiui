@@ -149,6 +149,7 @@ $prefix: '#{$component-prefix}-input' !default;
 
   &--size {
     &-sm {
+      height: use-height-size('xs');
       font-size: use-text-size('sm');
       line-height: get-text-lineheight('sm');
 
@@ -174,6 +175,7 @@ $prefix: '#{$component-prefix}-input' !default;
     }
 
     &-md {
+      height: use-height-size('normal');
       font-size: use-text-size('normal');
       line-height: get-text-lineheight('normal');
 
@@ -199,6 +201,7 @@ $prefix: '#{$component-prefix}-input' !default;
     }
 
     &-lg {
+      height: use-height-size('xl');
       font-size: use-text-size('lg');
       line-height: get-text-lineheight('lg');
 
@@ -261,7 +264,32 @@ $prefix: '#{$component-prefix}-input' !default;
       .#{$prefix} {
         padding-left: 0;
         padding-right: 0;
+        // border-color: transparent;
       }
+
+      // .#{$prefix}__inner {
+      //   &:not(.disabled):hover {
+      //     background-color: use-color('gray', 100);
+      //   }
+
+      //   &:not(.disabled).focused {
+      //     box-shadow: $input-shadow;
+      //     background-color: use-color-static('white');
+      //     border-color: use-color-mode('primary');
+      //   }
+
+      //   &:not(.disabled).invalid {
+      //     border-color: use-color-mode('error');
+
+      //     &.hover {
+      //       border-color: use-color-mode('error');
+      //     }
+
+      //     &.focused {
+      //       box-shadow: $input-error-shadow;
+      //     }
+      //   }
+      // }
 
       &.#{$prefix}__outer--prepend,
       .#{$prefix}__inner--prefix {
@@ -287,7 +315,7 @@ $prefix: '#{$component-prefix}-input' !default;
         background-color: use-color('gray', 100);
 
         &:not(.disabled):hover {
-          // box-shadow: 0 0 0 1px use-color-mode('primary');
+          background-color: use-color-static('white');
           border-color: use-color-mode('primary');
         }
 
