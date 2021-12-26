@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { plus, minus } from 'number-precision'
 import { cx } from '@hi-ui/classname'
-import { isBrowser, __DEV__ } from '@hi-ui/env'
+import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
 import { useToggle } from '@hi-ui/use-toggle'
@@ -9,9 +9,6 @@ import { isNumeric } from '@hi-ui/type-assertion'
 import { CounterProps } from './Counter'
 
 const DEFAULT_VALUE = 0
-
-const pointerDown =
-  isBrowser && 'ontouchstart' in document.documentElement ? 'onTouchStart' : 'onMouseDown'
 
 export const useCounter = ({
   prefixCls,
@@ -247,7 +244,7 @@ export const useCounter = ({
       'aria-valuenow': value,
       'aria-valuemin': minProp,
       'aria-valuemax': maxProp,
-      value: inputValue,
+      value: inputValue as string,
       tabIndex,
       autoFocus: autoFocus,
       disabled: disabled,
@@ -280,7 +277,7 @@ export const useCounter = ({
       'aria-disabled': disabledMinus ? true : undefined,
       tabIndex: -1,
       disabled: disabledMinus,
-      [pointerDown]: handleMinusButtonTouch,
+      onClick: handleMinusButtonTouch,
     }
   }, [prefixCls, disabledMinus, handleMinusButtonTouch])
 
@@ -291,7 +288,7 @@ export const useCounter = ({
       'aria-disabled': disabledPlus ? true : undefined,
       tabIndex: -1,
       disabled: disabledPlus,
-      [pointerDown]: handlePlusButtonTouch,
+      onClick: handlePlusButtonTouch,
     }
   }, [prefixCls, disabledPlus, handlePlusButtonTouch])
 

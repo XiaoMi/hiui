@@ -4,9 +4,9 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { CloseCircleFilled } from '@hi-ui/icons'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
-const _role = 'input'
-const _prefix = getPrefixCls(_role)
+const _prefix = getPrefixCls('input')
 
 /**
  * TODO: What is Input
@@ -15,7 +15,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
   (
     {
       prefixCls = _prefix,
-      role = _role,
+      role = 'input',
       className,
       style,
       autoFocus = false,
@@ -187,23 +187,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
   }
 )
 
-export interface InputProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface InputProps extends HiBaseHTMLProps<'input'> {
   /**
    * 开启输入框只读
    */
@@ -231,7 +215,7 @@ export interface InputProps {
   /**
    * 设置输入框类型，支持原生 input 的 type 属性所有值
    */
-  type?: 'text' | 'number'
+  type?: 'text' | 'number' | string
   /**
    * 输入最大长度
    */
@@ -284,14 +268,6 @@ export interface InputProps {
    * 值改变时的回调
    */
   onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void
-  /**
-   * 获得焦点时的回调
-   */
-  onFocus?: (evt: React.FocusEvent<HTMLInputElement>) => void
-  /**
-   * 失去焦点时的回调
-   */
-  onBlur?: (evt: React.FocusEvent<HTMLInputElement>) => void
 }
 
 if (__DEV__) {
@@ -299,7 +275,7 @@ if (__DEV__) {
 }
 
 /**
- * 伪造目标事件 target
+ * 模拟伪装目标事件 target
  *
  * @param target
  * @param evt

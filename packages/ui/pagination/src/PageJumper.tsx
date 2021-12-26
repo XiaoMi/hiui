@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Input } from '@hi-ui/input'
 import { __DEV__ } from '@hi-ui/env'
 
@@ -7,10 +7,10 @@ import { __DEV__ } from '@hi-ui/env'
  */
 export const PageJumper: React.FC<PageJumperProps> = ({ pageText, prefixCls, onJump, maxJump }) => {
   const [jumpPage, setJumpPage] = useState<string>('')
-  const onJumperChange = useCallback<(e: React.ChangeEvent<HTMLInputElement>) => void>((e) => {
+  const onJumperChange = useCallback((e) => {
     setJumpPage(e.target.value)
   }, [])
-  const _onJump = useCallback<(evt: React.FocusEvent<HTMLInputElement>) => void>(
+  const _onJump = useCallback(
     (e) => {
       if (e.target.value) {
         let value = Number(e.target.value)
@@ -29,19 +29,17 @@ export const PageJumper: React.FC<PageJumperProps> = ({ pageText, prefixCls, onJ
     },
     [onJump, maxJump]
   )
-  const jumperRef = useRef<HTMLInputElement>(null)
+
   return (
     <div className={`${prefixCls}__jumper`}>
       {pageText[0]}
       <Input
-        ref={jumperRef}
         value={jumpPage}
         style={{ width: 50, margin: '0 8px' }}
         onBlur={_onJump}
-        // @ts-ignore
         onKeyDown={(e) => {
           if (e.keyCode === 13) {
-            _onJump(e)
+            _onJump(e as any)
           }
         }}
         onChange={onJumperChange}

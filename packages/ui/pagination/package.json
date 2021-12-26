@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.2",
+    "@hi-ui/core": "^4.0.0-alpha.8",
     "@hi-ui/core-css": "^4.0.0-alpha.6",
     "@hi-ui/counter": "^4.0.0-alpha.15",
     "@hi-ui/env": "^4.0.0-alpha.0",

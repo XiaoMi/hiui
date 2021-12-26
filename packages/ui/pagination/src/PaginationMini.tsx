@@ -5,19 +5,20 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useCounter } from '@hi-ui/counter'
 import { calculateCurrentPageSize, calculatePage, MIN_PAGE } from './util'
 import { useLatestRef } from '@hi-ui/use-latest'
-import { LeftOutlined, RightOutlined } from '@hi-ui/icons'
+import { PagerButton } from './PagerButton'
+import Input from '@hi-ui/input'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
-const _role = 'input-pagination'
-const _prefix = getPrefixCls(_role)
+const _prefix = getPrefixCls('pagination-mini')
 
 /**
- * TODO: What is InputPagination
+ * TODO: What is PaginationMini
  */
-export const InputPagination = forwardRef<HTMLDivElement | null, InputPaginationProps>(
+export const PaginationMini = forwardRef<HTMLDivElement | null, PaginationMiniProps>(
   (
     {
       prefixCls = _prefix,
-      role = _role,
+      role = 'pagination',
       onChange,
       className,
       total,
@@ -72,40 +73,26 @@ export const InputPagination = forwardRef<HTMLDivElement | null, InputPagination
 
     return (
       <div ref={ref} role={role} {...rootProps}>
-        <button {...getMinusButtonProps()}>
-          <LeftOutlined />
-        </button>
+        {/* TODO: 分离实现
+          分页的快捷键是回车下一页，
+          counter 的快捷键焦点始终在 input 之上，上下控制加减
+        */}
+        <PagerButton {...getMinusButtonProps()} type="prev" />
+
         {showJumper ? (
           <>
-            <input {...getInputProps()} />
+            <Input {...getInputProps()} />
             {showTotal ? <span className={`${prefixCls}__total`}>{`/ ${maxPage}`}</span> : null}
           </>
         ) : null}
-        <button {...getPlusButtonProps()}>
-          <RightOutlined />
-        </button>
+
+        <PagerButton {...getPlusButtonProps()} type="next" />
       </div>
     )
   }
 )
 
-export interface InputPaginationProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface PaginationMiniProps extends HiBaseHTMLProps<'div'> {
   /**
    * 当前页码
    */
@@ -138,5 +125,5 @@ export interface InputPaginationProps {
 }
 
 if (__DEV__) {
-  InputPagination.displayName = 'InputPagination'
+  PaginationMini.displayName = 'PaginationMini'
 }
