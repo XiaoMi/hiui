@@ -150,6 +150,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
         <Popper
           matchWidth={optionWidth === undefined}
           gutterGap={2}
+          zIndex={800}
           {...popper}
           className={cx(`${prefixCls}__popper`, overlayClassName)}
           autoFocus={false}
