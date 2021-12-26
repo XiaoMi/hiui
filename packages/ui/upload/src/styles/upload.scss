@@ -9,9 +9,9 @@ $prefix: '#{$component-prefix}-upload' !default;
 
   &__tips {
     font-size: use-text-size('sm');
-    color: use-color('gray', 700);
-    line-height: 20px;
-    margin-top: 8px;
+    color: use-color('gray', 500);
+    line-height: use-text-lineheight('sm');
+    margin: use-spacing(4) 0;
 
     &--single-line {
       display: block;
@@ -29,6 +29,20 @@ $prefix: '#{$component-prefix}-upload' !default;
     overflow: hidden;
   }
 
+  &__del-btn {
+    color: use-color('gray', 600);
+    cursor: pointer;
+    width: 20px;
+    text-align: center;
+    height: 20px;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: use-color('gray', 300);
+      border-radius: use-border-radius('normal');
+    }
+  }
+
   &__item {
     height: 48px;
     cursor: default;
@@ -43,28 +57,23 @@ $prefix: '#{$component-prefix}-upload' !default;
     overflow: hidden;
     position: relative;
 
-    &:hover {
-      background: use-color-mode('primary-10');
-    }
-
-    a:focus {
-      outline: 0;
-    }
-
     &:focus {
-      background: use-color-mode('primary-10');
+      background: use-color-mode('primary-05');
       outline: 0;
     }
 
     a.#{$prefix}__filename {
       text-decoration: none;
-      flex: 1;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
       font-size: use-text-size('normal');
       cursor: pointer;
       color: use-color('gray', 800);
+
+      &:not(.#{$prefix}__filename--error):hover {
+        color: use-color-mode('primary');
+      }
 
       &--error {
         color: use-color-mode('error');
@@ -107,13 +116,12 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &__upstatus {
-    width: calc(100% - 30px);
-    margin-left: 30px;
+    width: 100%;
     height: 2px;
-    background: #f2f2f2;
-    border-radius: 9px;
+    background: use-color('gray', 200);
     position: absolute;
     bottom: 0;
+    left: 0;
 
     &-line {
       display: inline-block;

@@ -68,7 +68,7 @@ export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
                 >
                   {file.name}
                 </a>
-                <span>
+                <span className={`${prefixCls}__del-btn`}>
                   {file.uploadState === 'loading' ? (
                     <CloseOutlined onClick={() => onDelete(file, index)} />
                   ) : (
