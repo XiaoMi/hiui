@@ -16,15 +16,25 @@ $prefix: '#{$component-prefix}-preview' !default;
     }
 
     &-enter-active {
-      opacity: 1;
+      opacity: 0.3;
+      transition: opacity 0.3s;
+    }
+
+    &-enter-done {
+      opacity: 0.3;
       transition: opacity 0.3s;
     }
 
     &-exit {
-      opacity: 1;
+      opacity: 0.3;
     }
 
     &-exit-active {
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    &-exit-done {
       opacity: 0;
       transition: opacity 0.3s;
     }
@@ -36,7 +46,20 @@ $prefix: '#{$component-prefix}-preview' !default;
     bottom: 0;
     right: 0;
     left: 0;
-    background-color: use-color('gray', 600);
+    background-color: use-color('gray', 700);
+  }
+
+  &__header {
+    position: absolute;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: use-color-static('white');
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 2;
   }
 
   &__container {
@@ -62,7 +85,7 @@ $prefix: '#{$component-prefix}-preview' !default;
     bottom: 20px;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #fff;
+    background: use-color-static('white');
     padding: 0 32px;
     height: 48px;
     display: flex;
@@ -79,11 +102,11 @@ $prefix: '#{$component-prefix}-preview' !default;
   &__close-btn {
     position: absolute;
     right: 10px;
-    top: 10px;
+    top: 6px;
     width: 36px;
     height: 36px;
-    line-height: 1;
-    font-size: 36px;
+    line-height: 36px;
+    font-size: 24px;
     cursor: pointer;
   }
 
@@ -91,10 +114,10 @@ $prefix: '#{$component-prefix}-preview' !default;
     position: absolute;
     left: 10px;
     top: 50%;
-    width: 36px;
-    height: 36px;
-    line-height: 1;
-    font-size: 36px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 24px;
     cursor: pointer;
     margin-top: -18px;
     border-radius: 50%;
@@ -106,10 +129,10 @@ $prefix: '#{$component-prefix}-preview' !default;
     position: absolute;
     right: 10px;
     top: 50%;
-    width: 36px;
-    height: 36px;
-    line-height: 1;
-    font-size: 36px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 24px;
     cursor: pointer;
     margin-top: -18px;
     border-radius: 50%;
