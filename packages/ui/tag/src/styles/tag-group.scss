@@ -1,0 +1,20 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$tag-group-prefix: '#{$component-prefix}-tag-group' !default;
+
+.#{$tag-group-prefix}{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  &__item{
+    margin-bottom: 8px;
+  }
+
+  &__add-new-button{
+    height: 24px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+}

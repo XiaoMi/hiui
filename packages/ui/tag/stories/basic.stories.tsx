@@ -3,6 +3,11 @@ import React, { useState } from 'react'
 import Tag from '../src'
 
 export const Basic = () => {
+  const [testValue1, setTestValue1] = useState('test-value')
+  const [testValue2, setTestValue2] = useState('test-value')
+  const [maxEditableValue, setMaxEditableValue] = useState(
+    'max 180px editable (placeholder1 placeholder2 placeholder3 placeholder4)'
+  )
   return (
     <>
       <h1>Tag colors</h1>
@@ -57,6 +62,25 @@ export const Basic = () => {
         </Tag>
         <Tag appearance="solid" closeable>
           Closeable solid
+        </Tag>
+      </div>
+      <h1>Editable</h1>
+      <div style={{ display: 'flex' }}>
+        <Tag editable onEdit={setTestValue1} type={'primary'}>
+          {testValue1}
+        </Tag>
+        <Tag appearance={'solid'} editable onEdit={setTestValue2} type={'primary'}>
+          {testValue2}
+        </Tag>
+      </div>
+      <h1>Max width</h1>
+      <div style={{ display: 'flex' }}>
+        <Tag maxWidth={240}>max 240px (placeholder1 placeholder2 placeholder3 placeholder4)</Tag>
+        <Tag maxWidth={240} closeable>
+          max 240px (placeholder1 placeholder2 placeholder3 placeholder4)
+        </Tag>
+        <Tag maxWidth={180} editable onEdit={setMaxEditableValue}>
+          {maxEditableValue}
         </Tag>
       </div>
     </>
