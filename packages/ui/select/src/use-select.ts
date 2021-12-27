@@ -53,13 +53,13 @@ export const useSelect = ({
             const { props } = item as any
             const { groupId, label, children, ...rest } = props
 
-            const optGroup: SelectGroupDataItem = {
-              groupId: groupId,
+            const optGroup = {
+              groupId,
               groupTitle: label,
-              children: [] as SelectDataItem[],
+              children: [],
               // @ts-ignore
               rootProps: rest,
-            }
+            } as SelectGroupDataItem
 
             // @ts-ignore
             if (children) {

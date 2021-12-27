@@ -2,7 +2,6 @@ import React, { forwardRef, useCallback, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLFieldProps } from '@hi-ui/core'
-import { PickerDataItem } from './types'
 import Input from '@hi-ui/input'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { PopperPortal as Popper, PopperProps } from '@hi-ui/popper'
@@ -12,7 +11,6 @@ import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import Loading from '@hi-ui/loading'
 
 const PICKER_PREFIX = getPrefixCls('picker')
-const DEFAULT_DATA = [] as []
 
 /**
  * TODO: What is Picker
@@ -24,7 +22,6 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       role = 'picker',
       className,
       children,
-      data = DEFAULT_DATA,
       disabled = false,
       clearable = false,
       bordered = true,
@@ -32,9 +29,6 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       visible,
       onOpen,
       onClose,
-      value,
-      onChange,
-      displayRender,
       placeholder,
       searchPlaceholder = '搜索',
       loadingContent = '数据加载中...',
@@ -207,10 +201,6 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
 export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
   /**
-   * 展示数据
-   */
-  data?: PickerDataItem[]
-  /**
    * 是否有边框
    */
   bordered?: boolean
@@ -218,14 +208,6 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 是否禁用
    */
   disabled?: boolean
-  /**
-   * 默认选中项 （受控）
-   */
-  value?: React.ReactText
-  /**
-   * 自定义渲染 Input 中展示内容
-   */
-  displayRender?: (item: PickerDataItem) => React.ReactNode
   /**
    * 输入框占位	string	-	请选择
    */
@@ -266,10 +248,6 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 自定义控制 popper 行为
    */
   popper?: PopperProps
-  /**
-   * 值改变时回调
-   */
-  onChange?: (value: React.ReactText) => void
   /**
    * 开启 Esc 快捷键关闭
    */

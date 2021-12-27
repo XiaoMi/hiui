@@ -58,11 +58,6 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
   ) => {
     const [menuVisible, menuVisibleAction] = useToggle()
 
-    const openMenu = useCallback(() => {
-      if (disabled) return
-      menuVisibleAction.on()
-    }, [disabled, menuVisibleAction])
-
     // 搜索时临时选中缓存数据
     const [selectedItem, setSelectedItem] = useState<SelectDataItem | null>(null)
 
@@ -149,7 +144,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           {...rootProps}
           visible={menuVisible}
           disabled={disabled}
-          onOpen={openMenu}
+          onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
           // value={value}
           // onChange={tryChangeValue}

@@ -151,7 +151,6 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
 
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
     const showClearableIcon = clearable && showTags && !disabled
-    console.log('showClearableIcon', showClearableIcon)
 
     const cls = cx(
       prefixCls,

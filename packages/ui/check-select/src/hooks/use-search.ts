@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react'
-import { CheckSelectOptionOrOptionGroupItem } from '../types'
+import { CheckSelectItem } from '../types'
 import { useLatestRef } from '@hi-ui/use-latest'
 import { __DEV__ } from '@hi-ui/env'
 import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
@@ -8,11 +8,11 @@ import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
  * 支持搜索功能的 hook
  */
 export const useSearch = (
-  flattedData: CheckSelectOptionOrOptionGroupItem[],
-  filter?: (keyword: string, option: CheckSelectOptionOrOptionGroupItem) => boolean
+  flattedData: CheckSelectItem[],
+  filter?: (keyword: string, option: CheckSelectItem) => boolean
 ) => {
   const [searchValue, setSearchValue] = useState('')
-  const [matchedNodes, setMatchedNodes] = useState<CheckSelectOptionOrOptionGroupItem[]>([])
+  const [matchedNodes, setMatchedNodes] = useState<CheckSelectItem[]>([])
 
   const flattedDataRef = useLatestRef(flattedData)
 
@@ -51,10 +51,10 @@ export const useSearch = (
  * 从 value 中 找到指定的 options（逐层查找）
  */
 const getMatchedNodes = (
-  flattedData: CheckSelectOptionOrOptionGroupItem[],
+  flattedData: CheckSelectItem[],
   searchValue: string,
-  filter?: (keyword: string, option: CheckSelectOptionOrOptionGroupItem) => boolean
-): CheckSelectOptionOrOptionGroupItem[] => {
+  filter?: (keyword: string, option: CheckSelectItem) => boolean
+): CheckSelectItem[] => {
   if (!searchValue) return []
 
   const matchedResult: any[] = []
