@@ -9,9 +9,9 @@ import {
   ZoomOutOutlined,
   RotateLeftOutlined,
   RotateRightOutlined,
-  CloseCircleFilled,
   LeftOutlined,
   RightOutlined,
+  CloseOutlined,
 } from '@hi-ui/icons'
 
 const PREVIEW_PREFIX = getPrefixCls('preview')
@@ -36,6 +36,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       current,
       defaultCurrent,
       onPreviewChange,
+      title,
       onError,
       onClose,
       src,
@@ -172,75 +173,81 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
             <div className={`${prefixCls}__mask`} />
           </CSSTransition>
           {visible && (
-            <div
-              className={`${prefixCls}__container`}
-              onClick={onClickContainer}
-              tabIndex={-1}
-              onWheel={handleWheel}
-              ref={previewRef}
-              onMouseMove={onMoving}
-            >
-              <img
-                ref={imgRef}
-                onLoad={() => {
-                  setIsLoaded(true)
-                }}
-                onMouseDown={onMoveStart}
-                onMouseUp={onMoveEnd}
-                src={Array.isArray(src) ? src[active] : src}
-                className={`${prefixCls}__image`}
-                style={{
-                  transform: `scale(${imgTransfrom.scale}, ${imgTransfrom.scale}) translate(${imgTransfrom.translateX}px,${imgTransfrom.translateY}px) rotate(${imgTransfrom.rotate}deg)`,
-                }}
-              />
-              <div className={`${prefixCls}__toolbar`}>
-                <ZoomInOutlined
-                  onClick={() => {
-                    handleZoom('zoomIn')
-                  }}
-                />
-                <ZoomOutOutlined
-                  onClick={() => {
-                    if (imgTransfrom.scale >= 0.25) {
-                      handleZoom('zoomOut')
-                    }
-                  }}
-                />
-                <RotateLeftOutlined
-                  onClick={() => {
-                    handleRotate('left')
-                  }}
-                />
-                <RotateRightOutlined
-                  onClick={() => {
-                    handleRotate('right')
-                  }}
-                />
+            <>
+              <div className={`${prefixCls}__header`}>
+                {title}
+                <div className={`${prefixCls}__close-btn`} onClick={onClose}>
+                  <CloseOutlined />
+                </div>
               </div>
-              <div className={`${prefixCls}__close-btn`} onClick={onClose}>
-                <CloseCircleFilled />
+              <div
+                className={`${prefixCls}__container`}
+                onClick={onClickContainer}
+                tabIndex={-1}
+                onWheel={handleWheel}
+                ref={previewRef}
+                onMouseMove={onMoving}
+              >
+                <img
+                  ref={imgRef}
+                  onLoad={() => {
+                    setIsLoaded(true)
+                  }}
+                  onMouseDown={onMoveStart}
+                  onMouseUp={onMoveEnd}
+                  src={Array.isArray(src) ? src[active] : src}
+                  className={`${prefixCls}__image`}
+                  style={{
+                    transform: `scale(${imgTransfrom.scale}, ${imgTransfrom.scale}) translate(${imgTransfrom.translateX}px,${imgTransfrom.translateY}px) rotate(${imgTransfrom.rotate}deg)`,
+                  }}
+                />
+                <div className={`${prefixCls}__toolbar`}>
+                  <ZoomInOutlined
+                    onClick={() => {
+                      handleZoom('zoomIn')
+                    }}
+                  />
+                  <ZoomOutOutlined
+                    onClick={() => {
+                      if (imgTransfrom.scale >= 0.25) {
+                        handleZoom('zoomOut')
+                      }
+                    }}
+                  />
+                  <RotateLeftOutlined
+                    onClick={() => {
+                      handleRotate('left')
+                    }}
+                  />
+                  <RotateRightOutlined
+                    onClick={() => {
+                      handleRotate('right')
+                    }}
+                  />
+                </div>
+
+                {Array.isArray(src) && (
+                  <>
+                    <div
+                      className={`${prefixCls}__left-btn`}
+                      onClick={() => {
+                        setActive(active - 1 < 0 ? src.length - 1 : active - 1)
+                      }}
+                    >
+                      <LeftOutlined />
+                    </div>
+                    <div
+                      className={`${prefixCls}__right-btn`}
+                      onClick={() => {
+                        setActive(active + 1 >= src.length ? 0 : active + 1)
+                      }}
+                    >
+                      <RightOutlined />
+                    </div>
+                  </>
+                )}
               </div>
-              {Array.isArray(src) && (
-                <>
-                  <div
-                    className={`${prefixCls}__left-btn`}
-                    onClick={() => {
-                      setActive(active - 1 < 0 ? src.length - 1 : active - 1)
-                    }}
-                  >
-                    <LeftOutlined />
-                  </div>
-                  <div
-                    className={`${prefixCls}__right-btn`}
-                    onClick={() => {
-                      setActive(active + 1 >= src.length ? 0 : active + 1)
-                    }}
-                  >
-                    <RightOutlined />
-                  </div>
-                </>
-              )}
-            </div>
+            </>
           )}
         </div>
       </Portal>
@@ -293,6 +300,7 @@ export interface PreviewProps {
    * 关闭预览的回调
    */
   onClose?: (event: React.MouseEvent) => void
+  title?: string
 }
 
 if (__DEV__) {
