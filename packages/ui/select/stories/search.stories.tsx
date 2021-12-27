@@ -1,5 +1,5 @@
 import React from 'react'
-import Select, { SelectOption } from '../src'
+import Select from '../src'
 
 const data = [
   {
@@ -25,15 +25,12 @@ export const Search = () => {
     <>
       <h1>Search</h1>
       <div className="cascader-search__wrap">
-        <Select searchable placeholder="请选择品类" searchPlaceholder="请输入搜索内容">
-          {data.map((item) => {
-            return (
-              <SelectOption key={item.id} value={item.id}>
-                {item.title}
-              </SelectOption>
-            )
-          })}
-        </Select>
+        <Select
+          searchable
+          placeholder="请选择品类"
+          searchPlaceholder="请输入搜索内容"
+          data={data}
+        />
       </div>
     </>
   )

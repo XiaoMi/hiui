@@ -7,8 +7,8 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="picker-basic__wrap">
-        <Picker searchable trigger={<Button>Trigger</Button>}>
-          content
+        <Picker searchable trigger={<Button>Trigger</Button>} footer="1">
+          <div>content</div>
         </Picker>
       </div>
     </>

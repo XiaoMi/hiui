@@ -87,14 +87,16 @@ $prefix: '#{$component-prefix}-select' !default;
 
   &__title {
     display: inline-block;
-    padding: use-spacing(3) 0 use-spacing(3) use-spacing(3);
+    box-sizing: border-box;
+    width: 100%;
+    padding: use-spacing(3);
     font-size: inherit;
     font-weight: inherit;
     color: inherit;
     line-height: inherit;
   }
 
-  &:hover {
+  &:not(.#{$prefix}-option--selected):not(.#{$prefix}-option--focused):not(.#{$prefix}-option--disabled):hover {
     background-color: use-color('gray', 100);
   }
 

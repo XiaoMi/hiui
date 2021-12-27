@@ -34,6 +34,7 @@ export const PageJumper: React.FC<PageJumperProps> = ({ pageText, prefixCls, onJ
     <div className={`${prefixCls}__jumper`}>
       {pageText[0]}
       <Input
+        appearance="filled"
         value={jumpPage}
         style={{ width: 50, margin: '0 8px' }}
         onBlur={_onJump}

@@ -49,6 +49,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       invalid = false,
       onKeyDown,
       trigger,
+      footer,
+      onOverlayScroll,
       ...rest
     },
     ref
@@ -184,7 +186,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
                 2. 动态加载中
                 4. 动态搜索无结果
             */}
-            <div className={`${prefixCls}__body`}>
+            <div className={`${prefixCls}__body`} onScroll={onOverlayScroll}>
               {loading ? (
                 <div className={`${prefixCls}__loading`}>
                   {loadingContent}
@@ -195,6 +197,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
                 (showEmpty ? <span className={`${prefixCls}__empty`}>{emptyContent}</span> : null)
               )}
             </div>
+            {footer ? <div className={`${prefixCls}__footer`}>{footer}</div> : null}
           </div>
         </Popper>
       </div>
@@ -292,6 +295,14 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    */
   loading?: boolean
   trigger: any
+  /**
+   * 自定义下拉菜单底部渲染
+   */
+  footer?: React.ReactNode
+  /**
+   * 下拉列表滚动时的回调
+   */
+  onOverlayScroll?: () => void
 }
 
 if (__DEV__) {

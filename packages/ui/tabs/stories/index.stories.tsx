@@ -8,6 +8,7 @@ export * from './draggable.stories'
 export * from './type.stories'
 export * from './button.stories'
 export * from './desc.stories'
+export * from './tab-list.stories'
 
 export default {
   title: 'Tabs',

@@ -16,6 +16,8 @@ export const Basic = () => {
           按钮
         </Button>
         <Preview
+          title="a.png"
+          src={'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'}
           visible={show}
           onClose={() => {
             setShow(false)

@@ -43,9 +43,12 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/button": "^4.0.0-alpha.10",
     "@hi-ui/classname": "^4.0.0-alpha.2",
     "@hi-ui/core-css": "^4.0.0-alpha.8",
-    "@hi-ui/env": "^4.0.0-alpha.3"
+    "@hi-ui/env": "^4.0.0-alpha.3",
+    "@hi-ui/icons": "^4.0.0-alpha.13",
+    "@hi-ui/tooltip": "^4.0.0-alpha.4"
   },
   "peerDependencies": {
     "react": "^17.0.1",
