@@ -216,8 +216,8 @@ export interface UseDataSourceAPIOptions<T = any> {
 
 export type UseDataSource<T> =
   | T
-  | ((keyword: React.ReactText) => T | undefined)
-  | ((keyword: React.ReactText) => Promise<T | undefined>)
+  | ((keyword: React.ReactText) => T | void | undefined)
+  | ((keyword: React.ReactText) => Promise<T | void | undefined>)
   | UseDataSourceAPIOptions<T>
   | ((keyword: React.ReactText) => UseDataSourceAPIOptions<T>)
 

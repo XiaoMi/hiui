@@ -4,13 +4,14 @@ import { SelectProps } from './Select'
 import { useSearch } from './hooks'
 import { useSelect as useSelectDefault } from '@hi-ui/use-check'
 import { cx } from '@hi-ui/classname'
-import { SelectDataItem, SelectGroupDataItem, SelectItem } from './types'
+import { SelectDataItem, SelectGroupDataItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { toArray } from '@hi-ui/use-children'
 import { flattenTree } from '@hi-ui/tree-utils'
 
 const NOOP_ARRAY = [] as []
 const NOOP_VALUE = ''
+const DEFAULT_FIELD_NAMES = {} as any
 
 export const useSelect = ({
   data: dataProp = NOOP_ARRAY,
@@ -22,6 +23,7 @@ export const useSelect = ({
   onSelect,
   emptyContent = '无匹配选项',
   searchPlaceholder,
+  fieldNames = DEFAULT_FIELD_NAMES,
   ...rest
 }: UseSelectProps) => {
   const data = useMemo(() => {
@@ -78,6 +80,16 @@ export const useSelect = ({
     return selectData
   }, [children, dataProp])
 
+  /**
+   * 转换对象
+   */
+  const getKeyFields = useCallback(
+    (node: any, key: string) => {
+      return node[fieldNames[key] || key]
+    },
+    [fieldNames]
+  )
+
   const flattedData = useMemo(() => {
     // @ts-ignore
     return flattenTree(data, (node) => {
@@ -89,20 +101,23 @@ export const useSelect = ({
         // @ts-ignore
         node.groupId = node.raw.groupId
       } else {
-        node.id = node.raw.id
+        // TODO：support children field map
+        node.id = getKeyFields(node.raw, 'id')
         // @ts-ignore
-        node.title = node.raw.title
+        node.title = getKeyFields(node.raw, 'title')
+        // @ts-ignore
+        node.disabled = getKeyFields(node.raw, 'disabled')
       }
       return node
     })
-  }, [data])
+  }, [data, getKeyFields])
 
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
 
   const onSelectLatest = useLatestCallback(onSelect)
 
   const proxyTryChangeValue = useCallback(
-    (value: React.ReactText, item: SelectItem) => {
+    (value: React.ReactText, item: SelectDataItem) => {
       tryChangeValue(value, item)
       onSelectLatest(value, item)
     },
@@ -162,7 +177,12 @@ export const useSelect = ({
   }
 }
 
-export interface UseSelectProps extends SelectProps {}
+export interface UseSelectProps extends SelectProps {
+  /**
+   * 设置 data 中 id, title, disabled, children 对应的 key
+   */
+  fieldNames?: Record<string, string>
+}
 
 export type UseSelectReturn = ReturnType<typeof useSelect>
 

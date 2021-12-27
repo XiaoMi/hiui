@@ -226,6 +226,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
           // setViewSelected(false)
           menuVisibleAction.on()
         }}
+        disabled={disabled}
         onClose={menuVisibleAction.off}
         // value={value}
         // onChange={tryChangeValue}

@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback } from 'react'
+import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Input, { MockInput } from '@hi-ui/input'
@@ -7,8 +7,8 @@ import { useSelect } from './use-select'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { DownOutlined, SearchOutlined, UpOutlined } from '@hi-ui/icons'
 import { SelectProvider, useSelectContext } from './context'
-import { SelectItem } from './types'
-import { useLatestCallback } from '@hi-ui/use-latest'
+import { SelectDataItem, SelectItem } from './types'
+import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import VirtualList from 'rc-virtual-list'
 import { times } from '@hi-ui/times'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
@@ -21,6 +21,7 @@ import {
   useSearchMode,
   useTreeCustomSearch,
 } from '@hi-ui/use-search-mode'
+import { uniqBy } from 'lodash'
 
 const _role = 'select'
 const _prefix = getPrefixCls(_role)
@@ -37,7 +38,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       children,
       disabled = false,
       clearable = true,
-      placeholder,
+      placeholder = '请选择',
       displayRender: displayRenderProp,
       onSelect: onSelectProp,
       popper,
@@ -50,6 +51,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       filterOption,
       searchable: searchableProp,
       titleRender,
+      renderExtraFooter,
       ...rest
     },
     ref
@@ -61,10 +63,15 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       menuVisibleAction.on()
     }, [disabled, menuVisibleAction])
 
+    // 搜索时临时选中缓存数据
+    const [selectedItem, setSelectedItem] = useState<SelectDataItem | null>(null)
+
     const onSelectLatest = useLatestCallback(onSelectProp)
     const onSelect = useCallback(
-      (value: React.ReactText, item: SelectItem) => {
+      (value: React.ReactText, item: SelectDataItem) => {
         onSelectLatest(value, item)
+        setSelectedItem(item)
+
         // 关闭弹窗
         menuVisibleAction.off()
       },
@@ -77,6 +84,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
 
     // ************************** 异步搜索 ************************* //
 
+    // TODO: 支持对 Item 传入 状态
     const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({ dataSource })
     const customSearchStrategy = useTreeCustomSearch({ data: selectData, filterOption })
     const filterSearchStrategy = useFilterSearch({
@@ -121,7 +129,15 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       titleRender: proxyTitleRender,
     }
 
-    console.log('searchable', selectProps, stateInSearch)
+    // 下拉菜单不能合并（因为树形数据，不知道是第几级）
+    const mergedData: any[] = useMemo(() => {
+      if (selectedItem) {
+        const nextData = [selectedItem].concat(selectData as any[])
+        return uniqBy(nextData, 'id')
+      }
+
+      return selectData
+    }, [selectedItem, selectData])
 
     const cls = cx(prefixCls, className)
 
@@ -132,7 +148,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           className={cls}
           {...rootProps}
           visible={menuVisible}
-          // 支持disabled
+          disabled={disabled}
           onOpen={openMenu}
           onClose={menuVisibleAction.off}
           // value={value}
@@ -141,6 +157,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           searchable={searchable}
           onSearch={onSearch}
           loading={loading}
+          footer={renderExtraFooter ? renderExtraFooter() : null}
           trigger={
             <MockInput
               // ref={targetElementRef}
@@ -154,7 +171,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
               value={value}
               onChange={tryChangeValue}
               // @ts-ignore
-              data={selectData.filter((item) => !('groupTitle' in item))}
+              data={mergedData.filter((item) => !('groupTitle' in item))}
               // @ts-ignore
               invalid={invalid}
               appearance={appearance}
@@ -200,11 +217,11 @@ export interface SelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'tr
   /**
    * 选中值改变时的回调
    */
-  onChange?: (value: React.ReactText, targetOption?: SelectItem) => void
+  onChange?: (value: React.ReactText, targetOption?: SelectDataItem) => void
   /**
    * 选中值时回调
    */
-  onSelect?: (value: React.ReactText, targetOption?: SelectItem) => void
+  onSelect?: (value: React.ReactText, targetOption?: SelectDataItem) => void
   /**
    * 是否可搜索（仅在 title 为字符串时支持）
    */
@@ -216,11 +233,11 @@ export interface SelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'tr
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: SelectItem) => React.ReactNode
+  titleRender?: (item: SelectDataItem) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容，只在 title 为字符串时有效
    */
-  displayRender?: (option: SelectItem) => React.ReactNode
+  displayRender?: (option: SelectDataItem) => React.ReactNode
   /**
    * 触发器输入框占位符
    */
@@ -254,11 +271,15 @@ export interface SelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'tr
    * 第一个参数为输入的关键字，
    * 第二个为数据项，返回值为 true 时将出现在结果项
    */
-  filterOption?: (keyword: string, item: SelectItem) => boolean
+  filterOption?: (keyword: string, item: SelectDataItem) => boolean
   /**
    * 异步加载数据
    */
-  dataSource?: UseDataSource<SelectItem>
+  dataSource?: UseDataSource<SelectDataItem>
+  /**
+   * 自定义下拉菜单底部渲染
+   */
+  renderExtraFooter?: () => React.ReactNode
 }
 
 // @ts-ignore
@@ -308,6 +329,14 @@ export const SelectOption = forwardRef<HTMLDivElement | null, SelectOptionProps>
 
     const { id, disabled = false } = option
     const selected = isSelectedId(id)
+
+    const eventNodeRef = useLatestRef(
+      Object.assign({}, option, {
+        disabled: disabled,
+        selected,
+      })
+    )
+
     const cls = cx(
       prefixCls,
       className,
@@ -318,10 +347,10 @@ export const SelectOption = forwardRef<HTMLDivElement | null, SelectOptionProps>
     const onClickLatest = useLatestCallback(onClick)
     const handleClick = useCallback(
       (evt) => {
-        onSelect(option)
+        onSelect(eventNodeRef.current)
         onClickLatest(evt)
       },
-      [onSelect, option, onClickLatest]
+      [onSelect, onClickLatest, eventNodeRef]
     )
 
     const renderTitle = useCallback(
@@ -337,7 +366,7 @@ export const SelectOption = forwardRef<HTMLDivElement | null, SelectOptionProps>
     return (
       <div ref={ref} className={cls} onClick={handleClick} {...rest}>
         {renderIndent(prefixCls, depth)}
-        {renderTitle(option, titleRender)}
+        {renderTitle(eventNodeRef.current, titleRender)}
         {/* <span className={`${prefixCls}__title`}>{option.title}</span> */}
       </div>
     )

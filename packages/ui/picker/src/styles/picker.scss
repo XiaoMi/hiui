@@ -46,15 +46,23 @@ $prefix: '#{$component-prefix}-picker' !default;
   &__body {
     max-height: 260px;
     overflow-y: auto;
-    padding-top: use-spacing(4);
+    padding: use-spacing(4) use-spacing(4);
+  }
+
+  $top-normal-shadow: 0 -2px 4px 0 rgba(31, 39, 51, 0.1) !default;
+
+  &__footer {
+    box-shadow: $top-normal-shadow;
+    padding: use-spacing(4) use-spacing(4);
+    background-color: use-color-static('white');
   }
 
   &__panel {
-    padding: 0 use-spacing(4);
+    padding: 0;
   }
 
   &__search {
-    padding-top: use-spacing(4);
+    padding: use-spacing(4) use-spacing(4) 0;
   }
 
   &__empty,

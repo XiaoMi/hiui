@@ -206,6 +206,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         className={cls}
         {...rest}
         visible={menuVisible}
+        disabled={disabled}
         onOpen={menuVisibleAction.on}
         onClose={menuVisibleAction.off}
         // value={value}
