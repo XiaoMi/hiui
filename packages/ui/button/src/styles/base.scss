@@ -19,7 +19,6 @@ $prefix: '#{$component-prefix}-button' !default;
   appearance: none;
   margin: 0;
   border: 1px solid transparent;
-  border-radius: use-border-radius('normal');
   font-weight: use-text-weight('normal');
   text-align: center;
   text-decoration: none;
@@ -37,6 +36,15 @@ $prefix: '#{$component-prefix}-button' !default;
     outline: 0;
     z-index: 1; // Display box-shadow in front
   }
+  // 形状通用
+  &--shape-square {
+    border-radius: use-border-radius('normal');
+  }
+
+  &--shape-circle {
+    border-radius: use-border-radius('full');
+  }
+
   // 禁用通用
   &--disabled,
   &[disabled]:not(&--loading) {

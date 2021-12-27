@@ -8,6 +8,7 @@ export * from './icon.stories'
 export * from './loading.stories'
 export * from './disabled.stories'
 export * from './group.stories'
+export * from './shape.stories'
 
 export default {
   title: 'Button',
