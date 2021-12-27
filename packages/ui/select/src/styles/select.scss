@@ -96,7 +96,7 @@ $prefix: '#{$component-prefix}-select' !default;
     line-height: inherit;
   }
 
-  &:hover {
+  &:not(.#{$prefix}-option--selected):not(.#{$prefix}-option--focused):not(.#{$prefix}-option--disabled):hover {
     background-color: use-color('gray', 100);
   }
 

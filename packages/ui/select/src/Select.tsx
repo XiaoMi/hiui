@@ -90,7 +90,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     const filterSearchStrategy = useFilterSearch({
       data: selectData,
       flattedData: selectData,
-      searchMode: 'filter',
+      searchMode: searchableProp ? 'filter' : undefined,
     })
 
     const {
