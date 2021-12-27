@@ -8,6 +8,7 @@ export * from './disabled.stories'
 export * from './all-check.stories'
 export * from './searchable.stories'
 export * from './pagination.stories'
+export * from './draggable.stories'
 
 export default {
   title: 'Transfer',

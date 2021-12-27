@@ -34,8 +34,7 @@ export default function upload(option: UploadRequestOption) {
     })
   }
 
-  // @ts-ignore TS2345: Argument of type 'UploadFileItem' is not assignable to parameter of type 'string | Blob'.
-  formData.append(option.name, option.file)
+  formData.append(option.name, option.file as File)
 
   xhr.onerror = (e) => {
     option.onError(option.file, e, {})
