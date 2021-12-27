@@ -240,6 +240,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             // @ts-ignore
             displayRender={displayRender}
             suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+            focused={menuVisible}
             value={value}
             onChange={tryChangeValue}
             data={mergedData}

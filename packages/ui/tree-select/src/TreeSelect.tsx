@@ -220,6 +220,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
             placeholder={placeholder}
             displayRender={displayRender}
             suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+            focused={menuVisible}
             value={value}
             onChange={tryChangeValue}
             data={mergedData}
