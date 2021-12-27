@@ -160,6 +160,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       onSearch,
       keyword: searchValue,
     } = useSearchMode({
+      searchable: searchableProp,
       strategies: [
         dataSourceStrategy,
         customSearchStrategy,

@@ -20,7 +20,7 @@ export const useDataSource = <T = Record<string, any>[]>({
   const dataSourceLatestRef = useLatestRef(dataSourceProp)
   const validateLatestRef = useLatestRef(validate)
 
-  const request = useCallback((options: UseDataSource, keyword: React.ReactText) => {
+  const request = useCallback((options: UseDataSourceAPIOptions, keyword: React.ReactText) => {
     const {
       url: urlProp,
       method = 'GET',
@@ -167,7 +167,7 @@ export const useDataSource = <T = Record<string, any>[]>({
   }
 }
 
-export interface UseDataSource<T = any> {
+export interface UseDataSourceAPIOptions<T = any> {
   /**
    * 请求的 url
    */
@@ -214,13 +214,15 @@ export interface UseDataSource<T = any> {
   onError?: (error: any) => void
 }
 
+export type UseDataSource<T> =
+  | T
+  | ((keyword: React.ReactText) => T | undefined)
+  | ((keyword: React.ReactText) => Promise<T | undefined>)
+  | UseDataSourceAPIOptions<T>
+  | ((keyword: React.ReactText) => UseDataSourceAPIOptions<T>)
+
 export interface UseDataSourceProps<T = any> {
-  dataSource?:
-    | T
-    | ((keyword: React.ReactText) => T | undefined)
-    | ((keyword: React.ReactText) => Promise<T | undefined>)
-    | UseDataSource<T>
-    | ((keyword: React.ReactText) => UseDataSource<T>)
+  dataSource?: UseDataSource<T>
   validate?: (arg: unknown) => arg is T
 }
 

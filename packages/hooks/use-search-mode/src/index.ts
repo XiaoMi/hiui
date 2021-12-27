@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
-import { useDataSource } from '@hi-ui/use-data-source'
+import { UseDataSource, useDataSource } from '@hi-ui/use-data-source'
 import { __DEV__ } from '@hi-ui/env'
 import { filterTree, getNodeAncestors, cloneTree } from '@hi-ui/tree-utils'
 
@@ -9,9 +9,9 @@ import { filterTree, getNodeAncestors, cloneTree } from '@hi-ui/tree-utils'
  */
 export const useSearchMode = ({
   searchable: searchableProp,
-  searchMode: searchModeProp,
-  dataSource,
-  filterOption,
+  // searchMode: searchModeProp,
+  // dataSource,
+  // filterOption,
   strategies,
 }: UseSearchModeProps) => {
   // TODO: 抽离 useSearch
@@ -37,7 +37,7 @@ export const useSearchMode = ({
     return strategy && strategy.enabled
   })
 
-  const searchable = !!strategy
+  const searchable = searchableProp === false ? false : !!strategy
   const searchMode = (searchable && strategy.name) || false
 
   const onSearch = useCallback(
@@ -64,7 +64,7 @@ export const useSearchMode = ({
   }
 }
 
-export interface UseSearchModeProps {
+export interface UseSearchModeProps<T = any> {
   /**
    * 节点搜索模式，仅在mode=normal模式下生效
    */
@@ -82,7 +82,7 @@ export interface UseSearchModeProps {
   /**
    * 异步加载数据
    */
-  dataSource?: any
+  dataSource?: UseDataSource<T>
   //  DataSourceFun | TreeSelectDataSource | Promise<TreeSelectDataItem[]>
   strategies: any[]
 }
@@ -142,7 +142,6 @@ export const useHighlightSearch = ({ data, flattedData, searchMode }: any) => {
       // 2. 高亮匹配节点文本
       const matchedNodes = getMatchedNodes(flattedData, keyword)
       const filteredNodeIds = getFilteredIds(matchedNodes)
-      console.log(matchedNodes)
 
       dispatch({
         matched: isArrayNonEmpty(matchedNodes),
