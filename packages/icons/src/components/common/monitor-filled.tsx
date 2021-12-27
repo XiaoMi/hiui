@@ -1,3 +1,4 @@
+
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -11,21 +12,7 @@ export const MonitorFilled = forwardRef<SVGSVGElement | null, IconProps>(
     const cls = cx(prefixCls, className)
 
     return (
-      <svg
-        className={cls}
-        ref={ref}
-        role={role}
-        style={style}
-        onClick={onClick}
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1024 1024"
-        version="1.1"
-      >
-        <path
-          d="M789.333333 106.666667a128 128 0 0 1 128 128v384a128 128 0 0 1-128 128H554.666667v85.333333h128a42.666667 42.666667 0 1 1 0 85.333333H341.333333a42.666667 42.666667 0 1 1 0-85.333333h128v-85.333333H234.666667a128 128 0 0 1-128-128V234.666667a128 128 0 0 1 128-128h554.666666zM533.333333 576h-42.666666a42.666667 42.666667 0 0 0-3.2 85.226667L490.666667 661.333333h42.666666a42.666667 42.666667 0 1 0 0-85.333333z"
-          p-id="15201"
-        ></path>
-      </svg>
+      <svg className={cls} ref={ref} role={role} style={style} onClick={onClick}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"><path d="M789.333333 106.666667a128 128 0 0 1 128 128v384a128 128 0 0 1-128 128H554.666667v85.333333h128a42.666667 42.666667 0 1 1 0 85.333333H341.333333a42.666667 42.666667 0 1 1 0-85.333333h128v-85.333333H234.666667a128 128 0 0 1-128-128V234.666667a128 128 0 0 1 128-128h554.666666zM533.333333 576h-42.666666a42.666667 42.666667 0 0 0-3.2 85.226667L490.666667 661.333333h42.666666a42.666667 42.666667 0 1 0 0-85.333333z" p-id="15201"></path></svg>
     )
   }
 )
@@ -33,3 +20,4 @@ export const MonitorFilled = forwardRef<SVGSVGElement | null, IconProps>(
 if (__DEV__) {
   MonitorFilled.displayName = 'MonitorFilled'
 }
+  

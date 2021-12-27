@@ -103,6 +103,38 @@ if (__DEV__) {
   `
 }
 
+const generateStoryData = (componentInfo) => {
+  const targetDataFile = Path.join(__dirname, '../stories/data.ts')
+  const collector = new Map()
+  const allNeedImportComponents = []
+
+  componentInfo.forEach(({ withTypeName, belong, type }) => {
+    if (!collector.has(belong)) {
+      collector.set(belong, [])
+    }
+
+    const componentName = transformToUpperCamelCase(withTypeName)
+    allNeedImportComponents.push(componentName)
+    collector.get(belong).push({
+      componentName,
+      type: type,
+      name: withTypeName,
+    })
+  })
+
+  const belongs = Array.from(collector.keys())
+  const getDataString = ({ type, componentName, name }) =>
+    `\n{type:'${type}',component:${componentName}, name:'${name}', tagName:'${componentName}' }`
+  const content = `
+  export const ComponentGroup = {
+    ${belongs
+      .map((belong) => `${belong}: [${collector.get(belong).map(getDataString).join(',')}]`)
+      .join(',\n')}
+  }`
+  const allImportStatement = `import {${allNeedImportComponents.join(',')}} from '../src'`
+  Fs.writeFileSync(targetDataFile, allImportStatement + content)
+}
+
 const componentFileInfo = getAllSvgComponentFileInfo()
 
 console.log(`Auto generate: total ${componentFileInfo.length}`)
@@ -134,3 +166,6 @@ ${componentFileInfo
 export * from './@types/props'
 `
 Fs.writeFileSync(Path.join(__dirname, '../src/index.ts'), indexTsContent)
+
+// 生成story book 所需数据
+generateStoryData(componentFileInfo)
