@@ -60,6 +60,12 @@ $prefix: '#{$component-prefix}-checkbox' !default;
       &::after {
         border-color: use-color('gray', 300);
       }
+
+      &--indeterminate {
+        &::after {
+          border-color: use-color-static('white');
+        }
+      }
     }
 
     .#{$prefix}__icon--checked {

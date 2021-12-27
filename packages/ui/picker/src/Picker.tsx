@@ -36,7 +36,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       onChange,
       displayRender,
       placeholder,
-      searchPlaceholder,
+      searchPlaceholder = '搜索',
       loadingContent = '数据加载中...',
       emptyContent = '无匹配数据',
       showEmpty = true,

@@ -71,7 +71,9 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       clearable,
       invalid,
       displayRender,
-      placeholder,
+      placeholder = '请选择',
+      appearance,
+      // searchPlaceholder,
       ...rest
     },
     ref
@@ -241,6 +243,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             displayRender={displayRender}
             suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
             focused={menuVisible}
+            appearance={appearance}
             value={value}
             onChange={tryChangeValue}
             data={mergedData}
@@ -405,6 +408,10 @@ export interface CheckTreeSelectProps
    * 自定义控制 popper 行为
    */
   popper?: PopperProps
+  /**
+   * 设置展现形式
+   */
+  appearance?: 'outline' | 'unset' | 'filled'
 }
 
 if (__DEV__) {

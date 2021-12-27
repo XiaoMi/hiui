@@ -65,7 +65,9 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       clearable,
       invalid,
       displayRender,
-      placeholder,
+      placeholder = '请选择',
+      appearance,
+      // searchPlaceholder,
       // emptyContent,
       ...rest
     },
@@ -226,6 +228,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
             data={mergedData}
             // @ts-ignore
             invalid={invalid}
+            appearance={appearance}
           />
         }
       >
@@ -364,6 +367,10 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' |
    * 自定义控制 popper 行为
    */
   popper?: PopperProps
+  /**
+   * 设置展现形式
+   */
+  appearance?: 'outline' | 'unset' | 'filled'
 }
 
 if (__DEV__) {
