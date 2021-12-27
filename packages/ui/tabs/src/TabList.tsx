@@ -3,9 +3,12 @@ import { TabPaneProps } from './TabPane'
 import { __DEV__ } from '@hi-ui/env'
 import { TabItem } from './TabItem'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { cx } from '@hi-ui/classname'
+import { cx, getPrefixCls } from '@hi-ui/classname'
 import { TabInk } from './TabInk'
 import { PlusOutlined, LeftOutlined, RightOutlined, UpOutlined, DownOutlined } from '@hi-ui/icons'
+const _role = 'tabs'
+const _prefix = getPrefixCls(_role)
+
 export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
   (
     {
@@ -16,7 +19,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       defaultActiveId,
       onChange,
       onTabClick,
-      prefixCls,
+      prefixCls = _prefix,
       direction = 'horizontal',
       editable,
       onAdd,
@@ -210,7 +213,7 @@ export interface TabListProps {
   className?: string
   prefixCls?: string
   data: TabPaneProps[]
-  direction: 'horizontal' | 'vertical'
+  direction?: 'horizontal' | 'vertical'
   onChange?: (tabId: string) => void
   onTabClick?: (tabId: string) => void
   /**
