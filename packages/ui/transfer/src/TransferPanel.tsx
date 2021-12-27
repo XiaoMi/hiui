@@ -117,20 +117,23 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
           <div className={`${prefixCls}__header`}>
             {showCheckAll ? (
               <div className={`${prefixCls}__check-all`}>
+                <div className={`${prefixCls}__check-all--left`}>
+
                 <Checkbox
                   indeterminate={!checkedAll && currentPanelHasChecked}
                   checked={checkedAll}
                   onChange={handleCheckAll}
                 />
-                <span>
+                {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
+                </div>
+                
+                <span className={`${prefixCls}__check-all--right`}>
                   {currentPanelHasChecked
                     ? `${checkedIds.length}/${cacheData.length}`
                     : `${cacheData.length}`}
                 </span>
-                <span>项</span>
               </div>
-            ) : null}
-            {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
+            ) :(title ? <div className={`${prefixCls}__title`}>{title}</div> : null)}
           </div>
         ) : null}
         <div className={`${prefixCls}__body`}>

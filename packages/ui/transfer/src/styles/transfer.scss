@@ -7,6 +7,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
   position: relative;
   display: flex;
   align-items: stretch;
+  color: use-color('gray', 700);
 
   &--type {
     &-default {
@@ -93,15 +94,26 @@ $prefix: '#{$component-prefix}-transfer' !default;
   }
 
   &__check-all {
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    width: 100%;
+    &--left {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+    &--right {
+      font-size: use-text-size('sm');
+      color: use-color('gray', 500);
+      font-weight: use-text-weight('norma;');
+    }
   }
 
   &__header,
   &__footer {
     box-sizing: border-box;
     height: 40px;
-    padding: 0 12px;
+    padding: 0 use-spacing(8);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -111,6 +123,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
   &__header {
     border-bottom: 1px solid use-color('gray', 300);
     background: use-color('gray', 100);
+    font-weight: use-text-weight('medium');
   }
 
   &__footer {
@@ -126,14 +139,13 @@ $prefix: '#{$component-prefix}-transfer' !default;
   box-sizing: border-box;
   position: relative;
   margin: use-spacing(4);
-  border-radius: use-border-radius('normal');
-  overflow: hidden;
+  
 
   &__title,
   .#{$component-prefix}-checkbox {
     width: 100%;
     min-height: 32px;
-    padding: 0 12px;
+    padding: 0 use-spacing(4);
     line-height: 32px;
   }
 
@@ -141,6 +153,8 @@ $prefix: '#{$component-prefix}-transfer' !default;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    
+    
   }
 
   &__wrap {
@@ -152,6 +166,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     line-height: 22px;
     cursor: pointer;
     transition: all 0.3s;
+    border-radius: use-border-radius('normal');
 
     &:hover {
       background-color: use-color('gray', 100);
@@ -192,7 +207,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
 
   &--disabled {
     #{$this}__wrap {
-      color: #ccc;
+      color: use-color('gray', 400);
       cursor: not-allowed;
     }
   }
@@ -238,7 +253,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
 
   .#{$component-prefix}-button {
     margin-top: -4px;
-    font-size: 16px;
+    font-size: use-text-size('lg');
   }
 
   .#{$component-prefix}-button + .#{$component-prefix}-button {

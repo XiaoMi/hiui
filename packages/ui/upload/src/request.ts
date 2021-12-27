@@ -34,7 +34,7 @@ export default function upload(option: UploadRequestOption) {
     })
   }
 
-  formData.append(option.name, option.file)
+  formData.append(option.name, option.file as File)
 
   xhr.onerror = (e) => {
     option.onError(option.file, e, {})

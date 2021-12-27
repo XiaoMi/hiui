@@ -1,7 +1,7 @@
 import React from 'react'
 import Transfer from '../src'
 
-export const AllCheck = () => {
+export const Draggable = () => {
   const generateData = () => {
     const arr = []
     for (let i = 1; i < 100; i++) {
@@ -19,7 +19,7 @@ export const AllCheck = () => {
 
   return (
     <>
-      <h1>AllCheck</h1>
+      <h1>可排序</h1>
       <div className="transfer-all-check__wrap">
         <Transfer
           type="multiple"
@@ -28,6 +28,7 @@ export const AllCheck = () => {
           onChange={(ids) => setTargetIds(ids)}
           emptyContent={['暂无数据']}
           showCheckAll
+          draggable
           title={['源数据', '目标数据']}
         />
       </div>
