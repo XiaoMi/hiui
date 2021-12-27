@@ -82,7 +82,7 @@ export const PaginationMini = forwardRef<HTMLDivElement | null, PaginationMiniPr
 
         {showJumper ? (
           <>
-            <Input {...getInputProps()} />
+            <Input {...getInputProps()} appearance="filled" />
             {showTotal ? <span className={`${prefixCls}__total`}>{`/ ${maxPage}`}</span> : null}
           </>
         ) : null}

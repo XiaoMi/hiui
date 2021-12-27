@@ -1,11 +1,11 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import Input, { MockInput } from '@hi-ui/input'
+import { MockInput } from '@hi-ui/input'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useSelect } from './use-select'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
-import { DownOutlined, SearchOutlined, UpOutlined } from '@hi-ui/icons'
+import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { SelectProvider, useSelectContext } from './context'
 import { SelectDataItem, SelectItem } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
@@ -286,27 +286,6 @@ export interface SelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'tr
 Select.HiName = 'Select'
 if (__DEV__) {
   Select.displayName = 'Select'
-}
-
-const searchPrefix = getPrefixCls('select-search')
-
-export const SelectSearch = forwardRef<HTMLInputElement | null, SelectSearchProps>(
-  ({ prefixCls = searchPrefix, className, ...rest }, ref) => {
-    const { isEmpty, emptyContent, getSearchInputProps } = useSelectContext()
-
-    return (
-      <div ref={ref} className={cx(prefixCls, className)} {...rest}>
-        <Input appearance="underline" prefix={<SearchOutlined />} {...getSearchInputProps()} />
-        {isEmpty ? <span className={`${prefixCls}__empty`}>{emptyContent}</span> : null}
-      </div>
-    )
-  }
-)
-
-export interface SelectSearchProps extends HiBaseHTMLProps {}
-
-if (__DEV__) {
-  SelectSearch.displayName = 'SelectSearch'
 }
 
 const optionPrefix = getPrefixCls('select-option')
