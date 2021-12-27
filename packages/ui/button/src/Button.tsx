@@ -21,6 +21,7 @@ export const Button = forwardRef<any, ButtonProps>(
       disabled = false,
       loading = false,
       icon = null,
+      shape = 'square',
       href,
       ...rest
     },
@@ -34,6 +35,7 @@ export const Button = forwardRef<any, ButtonProps>(
       `${prefixCls}--appearance-${appearance}`,
       `${prefixCls}--size-${size}`,
       `${prefixCls}--type-${type}`,
+      `${prefixCls}--shape-${shape}`,
       isEmptyChildren && `${prefixCls}--icon-only`,
       disabled && `${prefixCls}--disabled`,
       loading && `${prefixCls}--loading`
@@ -124,6 +126,7 @@ export interface ButtonProps {
    * 设置按钮图标
    */
   icon?: React.ReactNode
+  shape?: 'square' | 'circle'
 }
 
 if (__DEV__) {
