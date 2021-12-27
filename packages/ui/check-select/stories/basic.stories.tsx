@@ -1,7 +1,19 @@
 import React from 'react'
-import CheckSelect, { CheckSelectOption, CheckSelectOptionGroup } from '../src'
+import CheckSelect from '../src'
 
 export const Basic = () => {
+  const [data] = React.useState([
+    { title: '手机', id: '2' },
+    { title: '小米2', id: '2-1' },
+    { title: '小米3', id: '2-2' },
+    { title: '小米4', id: '2-3' },
+    { title: '小米5', id: '2-4' },
+    { title: '电脑', id: '3' },
+    { title: '笔记本', id: '4' },
+    { title: '生活周边', id: '5' },
+    { title: '其它', id: '6' },
+  ])
+
   return (
     <>
       <h1>Basic</h1>
@@ -10,7 +22,7 @@ export const Basic = () => {
           placeholder="请选择"
           searchable
           clearable
-          wrap={false}
+          data={data}
           // titleRender={(option) => {
           //   if (option.id === 'ABC1') {
           //     return '不限'
@@ -18,18 +30,7 @@ export const Basic = () => {
 
           //   return true
           // }}
-        >
-          <CheckSelectOptionGroup style={{ color: 'red' }} label="title1">
-            <CheckSelectOption value="ABC1">Option-ABC1</CheckSelectOption>
-            <CheckSelectOption value="ABC2">Option-ABC2</CheckSelectOption>
-            <CheckSelectOption value="ABC3">Option-ABC3</CheckSelectOption>
-          </CheckSelectOptionGroup>
-          <CheckSelectOptionGroup label="title2">
-            <CheckSelectOption value="ABC4">Option-ABC4</CheckSelectOption>
-            <CheckSelectOption value="ABC5">Option-ABC5</CheckSelectOption>
-            <CheckSelectOption value="ABC6">Option-ABC6</CheckSelectOption>
-          </CheckSelectOptionGroup>
-        </CheckSelect>
+        />
       </div>
     </>
   )

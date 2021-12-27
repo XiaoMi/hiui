@@ -17,7 +17,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
         border-color: $color;
 
         &::after {
-          background: use-color-staic('white');
+          background: use-color-static('white');
         }
       }
 
@@ -59,6 +59,12 @@ $prefix: '#{$component-prefix}-checkbox' !default;
 
       &::after {
         border-color: use-color('gray', 300);
+      }
+
+      &--indeterminate {
+        &::after {
+          border-color: use-color-static('white');
+        }
       }
     }
 

@@ -10,9 +10,22 @@ export const AutoClose = () => {
         {/* <Message></Message> */}
         <Button
           onClick={() => {
-            message.open({
+            const toastId = message.open({
               autoClose: false,
-              title: '欢迎使用 HiUI 组件库',
+              title: (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span>这个 Toast 将不会自动被关闭哦 </span>
+                  <Button
+                    type="primary"
+                    appearance="link"
+                    onClick={() => {
+                      message.close(toastId)
+                    }}
+                  >
+                    撤销
+                  </Button>
+                </div>
+              ),
               type: 'success',
             })
           }}

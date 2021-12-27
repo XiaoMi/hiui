@@ -1,6 +1,12 @@
 export type Dict<T = any> = Record<string, T>
 
-export type Nullish = null | undefined | void
+export type Undefined = undefined | void
+export type Nullish = null | Undefined
+
+/**
+ * Assert is undefined
+ */
+export const isUndefined = (arg: unknown): arg is Undefined => arg === undefined
 
 /**
  * Assert is Nullish

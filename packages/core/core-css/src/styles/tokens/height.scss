@@ -4,10 +4,11 @@
 $height-size-base-map: (
   xxs: 16px,
   xs: 24px,
-  normal: 32px,
   sm: 28px,
+  normal: 32px,
   md: 32px,
-  lg: 36px
+  lg: 36px,
+  xl: 40px
 ) !default;
 
 @function get-height($size) {

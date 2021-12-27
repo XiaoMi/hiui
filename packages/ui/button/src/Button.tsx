@@ -91,7 +91,7 @@ export interface ButtonProps {
    */
   type?: 'primary' | 'success' | 'danger' | 'default' | 'secondary'
   /**
-   * 设置按钮外观
+   * 设置按钮尺寸
    */
   size?: 'large' | 'small' | 'default' | 'x-large'
   /**
@@ -128,6 +128,9 @@ export interface ButtonProps {
   icon?: React.ReactNode
   shape?: 'square' | 'circle'
 }
+
+// @ts-ignore
+Button.HiName = 'Button'
 
 if (__DEV__) {
   Button.displayName = 'Button'

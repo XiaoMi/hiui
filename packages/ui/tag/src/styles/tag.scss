@@ -1,62 +1,115 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
-$color-map: (
-  'primary': use-color-mode('primary'),
-  'warning': use-color-mode('warning'),
-  'success': use-color-mode('success'),
-  'danger': use-color-mode('danger'),
-  'default': use-color('gray', 700)
+$solid-color-map: (
+  'primary': (
+    'normal': use-color('brandblue',500),
+    'hover': use-color('brandblue',400)
+  ),
+  'warning': (
+    'normal': use-color('yellow', 500),
+    'hover': use-color('yellow', 400)
+  ),
+  'success': (
+    'normal': use-color('green', 500),
+    'hover': use-color('green', 400)
+  ),
+  'danger': (
+    'normal': use-color('red',500),
+    'hover': use-color('red',400)
+  ),
+  'default': (
+    'normal': use-color('gray', 400),
+    'hover': use-color('gray', 300)
+  )
 ) !default;
 
-$line-height: 20px !default;
-$border-width: 1px !default;
+$default-color-map: (
+  'primary': (
+    'color': use-color('brandblue',500),
+    'background':use-color('brandblue',50),
+    'hover-background':use-color('brandblue',100),
+  ),
+  'warning': (
+    'color': use-color('yellow', 500),
+    'background': use-color('yellow', 50),
+    'hover-background': use-color('yellow', 100),
+  ),
+  'success': (
+    'color': use-color('green', 500),
+    'background': use-color('green', 50),
+    'hover-background': use-color('green', 100)
+  ),
+  'danger': (
+    'color': use-color('red',500),
+    'background': use-color('red',50),
+    'hover-background': use-color('red',100)
+  ),
+  'default': (
+    'color': use-color('gray', 700),
+    'background': use-color('gray', 100),
+    'hover-background': use-color('gray', 200)
+  )
+) !default;
 
 $prefix: '#{$component-prefix}-tag' !default;
 
 .#{$prefix} {
-  padding: 0 8px;
-  line-height: $line-height;
-  box-sizing: border-box;
   margin-right: 8px;
-  font-size: 12px;
-  display: inline-block;
+  display: inline-flex;
   user-select: none;
   transition: opacity 0.3s;
   position: relative;
-
-  &:hover {
-    opacity: 0.85;
-  }
+  align-items: center;
 
   // 实心 为 彩色底+白色字
-  &--appearance-default {
+  &--appearance-solid {
     color: use-color-static('white');
 
-    @each $key, $value in $color-map {
+    @each $key, $value in $solid-color-map {
       &.#{$prefix}--type-#{$key} {
-        background: $value;
+        background: map-get($value,'normal');
+
+        &.#{$prefix}--hover-enable:hover{
+          background: map-get($value,'hover');
+        }
       }
     }
   }
 
-  &--appearance-line {
-    @each $key, $value in $color-map {
+  &--appearance-default {
+    @each $key, $value in $default-color-map {
       &.#{$prefix}--type-#{$key} {
-        color: $value;
+        color: map-get($value,'color');
+        background: map-get($value,'background');
+
+        &.#{$prefix}--hover-enable:hover{
+          background: map-get($value,'hover-background');
+        }
       }
     }
   }
 
-  &--shape-round {
-    border-radius: 11px;
+  &--size-mini{
+    height: 20px;
+    line-height: 20px;
+    border-radius: use-border-radius('sm');
+    font-size: use-text-size('sm');
   }
-
-  &--shape-square {
-    border-radius: 2px;
+  &--size-small{
+    height: 24px;
+    line-height: 24px;
+    border-radius: use-border-radius('normal');
+    font-size: use-text-size('sm');
+  }
+  &--size-medium{
+    height: 32px;
+    line-height: 32px;
+    border-radius: use-border-radius('normal');
+    font-size: use-text-size('normal');
   }
 
   @mixin edit-shadow {
-    box-shadow: 0 0 4px use-color-mode('primary');
+    box-shadow: 0 0 4px use-color('brandblue', 500);
   }
 
   &--editable {
@@ -71,27 +124,32 @@ $prefix: '#{$component-prefix}-tag' !default;
     .#{$prefix}__content {
       opacity: 0;
     }
-  }
 
-  @each $key, $value in $color-map {
-    &.#{$prefix}--type-#{$key} {
-      border: $border-width solid $value;
+    .#{$prefix}__content-wrapper{
+      min-width: 36px;
     }
   }
 
   &__content-wrapper {
     position: relative;
+    padding: 0 8px;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  &__content{
+    @include  ellipsis();
+    max-width: 100%;
   }
 
   &__double-click-trigger {
     position: absolute;
     z-index: 1;
-    width: calc(100% + 2 * #{$border-width});
-    height: calc(100% + 2 * #{$border-width});
+    width: 100%;
+    height: 100%;
     border-radius: inherit;
-    left: -$border-width;
-    top: -$border-width;
-    border: inherit;
+    left: 0;
+    top: 0;
     background: transparent;
     box-sizing: border-box;
     border-color: transparent;
@@ -108,16 +166,26 @@ $prefix: '#{$component-prefix}-tag' !default;
     background: transparent;
     border: none;
     outline: none;
-    width: 100%;
     color: inherit;
     padding: 0;
     font-size: inherit;
     font-weight: inherit;
     font-family: inherit;
-    line-height: $line-height;
+    width: calc(100% - 16px);
     position: absolute;
-    left: 0;
+    line-height: inherit;
+    left: 8px;
     top: 0;
     z-index: 1;
+  }
+
+  &__close-button{
+    height: calc(100% - 8px);
+    padding:0 8px;
+    border-left:1px solid use-color('gray',300) ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   }
 }

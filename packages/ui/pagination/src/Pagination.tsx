@@ -142,14 +142,14 @@ export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
             type="prev"
             prefixCls={prefixCls}
             disabled={current === 1}
-            onClick={onClick}
+            onChange={onClick}
             current={current}
           />
           {renderPagers()}
           <PagerButton
             type="next"
             prefixCls={prefixCls}
-            onClick={onClick}
+            onChange={onClick}
             current={current}
             disabled={current === maxPage}
           />

@@ -1,5 +1,10 @@
 import React from 'react'
-import { LeftOutlined, RightOutlined, DoubleRightOutlined, DoubleLeftOutlined } from '@hi-ui/icons'
+import {
+  LeftOutlined,
+  RightOutlined,
+  DirectionRightOutlined,
+  DirectionLeftOutlined,
+} from '@hi-ui/icons'
 import moment, { DurationInputArg1 } from 'moment'
 import { LocaleData } from '../context'
 
@@ -61,7 +66,7 @@ const Header = ({
             className={`${prefixCls}__header-icon`}
             onClick={() => headerChangeDateEvent('year', view === 'year' ? -12 : -1)}
           >
-            <DoubleLeftOutlined />
+            <DirectionLeftOutlined />
           </span>
           {view !== 'year' && view !== 'month' && (
             <span
@@ -95,7 +100,7 @@ const Header = ({
             onClick={() => headerChangeDateEvent('year', view === 'year' ? 12 : 1)}
             className={`${prefixCls}__header-icon`}
           >
-            <DoubleRightOutlined />
+            <DirectionRightOutlined />
           </span>
         </div>
       }

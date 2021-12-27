@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
@@ -68,13 +68,10 @@ export function useUncontrolledToggle({
     isEqual
   )
 
-  const proxySetBool: typeof setBool = useCallback(
-    (stateOrFunction) => {
-      if (disabled) return
-      setBool(stateOrFunction)
-    },
-    [setBool, disabled]
-  )
+  const proxySetBool: typeof setBool = useLatestCallback((stateOrFunction) => {
+    if (disabled) return
+    setBool(stateOrFunction)
+  })
 
   const toggle = useMemo(
     () => ({

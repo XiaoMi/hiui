@@ -93,7 +93,7 @@ export interface CounterProps {
    * 开启滑轮改值
    */
   changeOnWheel?: boolean
-  onWheel?: (evt: React.WheelEvent) => void
+  onWheel?: (evt: React.WheelEvent<HTMLDivElement>) => void
   onFocus?: (evt: React.FocusEvent<HTMLDivElement>) => void
   onBlur?: (evt: React.FocusEvent<HTMLDivElement>) => void
 }

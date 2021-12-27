@@ -3,7 +3,7 @@ import React, { ReactText } from 'react'
 export declare type HiBaseHTMLProps<T extends React.ElementType = any, P = {}> = Omit<
   React.ComponentPropsWithoutRef<T>,
   // 剔除组件内使用的关键字属性，不允许继承（原生自带）
-  'defaultValue' | 'onChange' | 'value' | 'onSelect' | 'title' | keyof P
+  'defaultValue' | 'onChange' | 'value' | 'onSelect' | 'title' | 'size' | 'prefix' | keyof P
 > & {
   /**
    * 组件默认的选择器类
