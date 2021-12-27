@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/picker",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.2",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,16 +44,16 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.0",
-    "@hi-ui/core": "^4.0.0-alpha.0",
-    "@hi-ui/core-css": "^4.0.0-alpha.0",
+    "@hi-ui/core": "^4.0.0-alpha.10",
+    "@hi-ui/core-css": "^4.0.0-alpha.8",
     "@hi-ui/dom-utils": "^4.0.0-alpha.4",
     "@hi-ui/env": "^4.0.0-alpha.0",
-    "@hi-ui/icons": "^4.0.0-alpha.13",
-    "@hi-ui/input": "^4.0.0-alpha.17",
-    "@hi-ui/loading": "^4.0.0-alpha.12",
-    "@hi-ui/popper": "^4.0.0-alpha.11",
+    "@hi-ui/icons": "^4.0.0-alpha.15",
+    "@hi-ui/input": "^4.0.0-alpha.19",
+    "@hi-ui/loading": "^4.0.0-alpha.14",
+    "@hi-ui/popper": "^4.0.0-alpha.13",
     "@hi-ui/use-latest": "^4.0.0-alpha.3",
-    "@hi-ui/use-toggle": "^4.0.0-alpha.6"
+    "@hi-ui/use-toggle": "^4.0.0-alpha.8"
   },
   "peerDependencies": {
     "react": "^17.0.1",
