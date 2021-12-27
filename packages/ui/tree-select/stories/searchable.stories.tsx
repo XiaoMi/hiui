@@ -2,7 +2,7 @@ import React from 'react'
 import TreeSelect from '../src'
 
 export const Searchable = () => {
-  const [data, setData] = React.useState([
+  const [data] = React.useState([
     {
       title: '手机类',
       id: '0',

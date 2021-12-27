@@ -33,8 +33,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       invalid = false,
       readOnly = false,
       size = 'md',
-      // appearance = 'outline',
-      appearance = 'filled',
+      appearance = 'outline',
       wrap = false,
       suffix,
       // tag 最小宽度

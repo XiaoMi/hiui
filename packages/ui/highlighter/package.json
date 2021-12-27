@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/highlighter",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.2",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,8 +44,8 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.0",
-    "@hi-ui/core": "^4.0.0-alpha.0",
-    "@hi-ui/core-css": "^4.0.0-alpha.0",
+    "@hi-ui/core": "^4.0.0-alpha.10",
+    "@hi-ui/core-css": "^4.0.0-alpha.8",
     "@hi-ui/env": "^4.0.0-alpha.0"
   },
   "peerDependencies": {

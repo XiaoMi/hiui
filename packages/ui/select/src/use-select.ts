@@ -75,8 +75,12 @@ export const useSelect = ({
       selectData = dfs(children)
     }
 
+    return selectData
+  }, [children, dataProp])
+
+  const flattedData = useMemo(() => {
     // @ts-ignore
-    const result = flattenTree(selectData, (node) => {
+    return flattenTree(data, (node) => {
       if ('groupId' in node.raw) {
         // @ts-ignore
         node.id = node.raw.groupId
@@ -91,11 +95,7 @@ export const useSelect = ({
       }
       return node
     })
-
-    console.log(result)
-
-    return result
-  }, [children, dataProp])
+  }, [data])
 
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
 
@@ -149,6 +149,7 @@ export const useSelect = ({
   return {
     rootProps,
     data: inSearch ? matchedItems : data,
+    flattedData,
     value,
     onSelect: onOptionClick,
     isSelectedId,

@@ -53,13 +53,14 @@ $prefix: '#{$component-prefix}-input' !default;
   }
 
   &__outer {
-    display: flex;
+    display: inline-flex;
     position: relative;
     margin: 0;
     padding: 0;
     justify-content: space-between;
     height: auto;
     width: 100%;
+    vertical-align: middle;
   }
 
   // clear icon

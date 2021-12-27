@@ -150,6 +150,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       onSearch,
       keyword: searchValue,
     } = useSearchMode({
+      searchable: searchableProp,
       strategies: [
         dataSourceStrategy,
         customSearchStrategy,

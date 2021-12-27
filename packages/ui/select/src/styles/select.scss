@@ -3,21 +3,21 @@
 $prefix: '#{$component-prefix}-select' !default;
 
 .#{$prefix} {
-  &--open {
-    .#{$component-prefix}-mock-input {
-      border-color: use-color-mode('primary');
-    }
-  }
+  // &--open {
+  //   .#{$component-prefix}-mock-input {
+  //     border-color: use-color-mode('primary');
+  //   }
+  // }
 
-  @include component-reset;
+  // @include component-reset;
 
-  list-style: none;
-  width: auto;
-  box-sizing: border-box;
-  flex-shrink: 0;
-  display: inline-block;
-  // min-width: 160px;
-  overflow: auto;
+  // list-style: none;
+  // width: auto;
+  // box-sizing: border-box;
+  // flex-shrink: 0;
+  // display: inline-block;
+  // // min-width: 160px;
+  // overflow: auto;
 
   $this: &;
 
@@ -64,10 +64,6 @@ $prefix: '#{$component-prefix}-select' !default;
 }
 
 .#{$prefix}-option {
-  &:last-of-type {
-    margin-bottom: 0;
-  }
-
   // padding: 0 use-spacing(4);
   margin-top: use-spacing(2);
   margin-bottom: use-spacing(2);
@@ -78,6 +74,10 @@ $prefix: '#{$component-prefix}-select' !default;
   position: relative;
   border-radius: use-border-radius('normal');
   cursor: pointer;
+  font-size: use-text-size('normal');
+  font-weight: use-text-weight('normal');
+  color: use-color('gray', 700);
+  line-height: use-text-lineheight('sm');
 
   &__indent {
     display: inline-block;
@@ -88,10 +88,10 @@ $prefix: '#{$component-prefix}-select' !default;
   &__title {
     display: inline-block;
     padding: use-spacing(3) 0 use-spacing(3) use-spacing(3);
-    font-size: use-text-size('normal');
-    font-weight: use-text-weight('normal');
-    color: use-color('gray', 700);
-    line-height: use-text-lineheight('sm');
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    line-height: inherit;
   }
 
   &:hover {
