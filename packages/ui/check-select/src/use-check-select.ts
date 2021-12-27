@@ -25,9 +25,10 @@ export const useCheckSelect = ({
 }: UseSelectProps) => {
   const data = useMemo(() => {
     if (children) {
+      const arr: any[] = []
+
       const dfs = (child: any) => {
         const list = toArray(child)
-        const arr: any[] = []
 
         list.forEach((item) => {
           if (!React.isValidElement(item)) return

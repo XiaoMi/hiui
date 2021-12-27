@@ -8,8 +8,10 @@ import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { PopperProps, PopperPortal } from '@hi-ui/popper'
 import { DownOutlined, SearchOutlined } from '@hi-ui/icons'
 import { SelectProvider, useSelectContext } from './context'
-import { SelectItem } from './types'
+import { SelectDataItem, SelectItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
+import VirtualList from 'rc-virtual-list'
+import { times } from '@hi-ui/times'
 
 const _role = 'select'
 const _prefix = getPrefixCls(_role)
@@ -25,12 +27,15 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       className,
       children,
       disabled = false,
-      clearable = false,
+      clearable = true,
       searchable = false,
       placeholder,
       displayRender: displayRenderProp,
       onSelect: onSelectProp,
       popper,
+      height,
+      itemHeight = 40,
+      virtual = true,
       ...rest
     },
     ref
@@ -54,7 +59,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     )
 
     const displayRender = useCallback(
-      (item: SelectItem) => {
+      (item: SelectDataItem) => {
         if (displayRenderProp) {
           return displayRenderProp(item)
         }
@@ -79,7 +84,8 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
             disabled={disabled}
             clearable={clearable}
             placeholder={placeholder}
-            data={selectData}
+            // @ts-ignore
+            data={selectData.filter((item) => !('groupTitle' in item))}
             value={value}
             onChange={tryChangeValue}
             displayRender={displayRender}
@@ -93,11 +99,24 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           >
             <div className={`${prefixCls}-panel`}>
               {searchable ? <SelectSearch /> : null}
-              {/* {children} */}
-              {/* 反向 map，搜索删选数据时会对数据进行处理 */}
-              {selectData.map((item) => {
-                return <SelectOption key={item.id} option={item} />
-              })}
+              <VirtualList
+                itemKey="id"
+                fullHeight={false}
+                height={height}
+                itemHeight={itemHeight}
+                virtual={virtual}
+                data={selectData}
+              >
+                {(node) => {
+                  /* 反向 map，搜索删选数据时会对数据进行处理 */
+                  return 'groupTitle' in node ? (
+                    <SelectOptionGroup label={node.groupTitle} />
+                  ) : (
+                    // @ts-ignore
+                    <SelectOption option={node.raw} depth={node.depth} />
+                  )
+                }}
+              </VirtualList>
             </div>
           </PopperPortal>
         </div>
@@ -167,6 +186,18 @@ export interface SelectProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange' | '
    * 选项数据
    */
   data?: SelectItem[]
+  /**
+   * 设置虚拟滚动容器的可视高度
+   */
+  height?: number
+  /**
+   * 设置虚拟列表每项的固定高度
+   */
+  itemHeight?: number
+  /**
+   * 	设置 `true` 开启虚拟滚动
+   */
+  virtual?: boolean
 }
 
 // @ts-ignore
@@ -199,10 +230,20 @@ if (__DEV__) {
 const optionPrefix = getPrefixCls('select-option')
 
 export const SelectOption = forwardRef<HTMLDivElement | null, SelectOptionProps>(
-  ({ prefixCls = optionPrefix, className, children, option = {}, onClick, ...rest }, ref) => {
+  (
+    { prefixCls = optionPrefix, className, children, option = {}, depth, onClick, ...rest },
+    ref
+  ) => {
     const { isSelectedId, onSelect } = useSelectContext()
 
-    const cls = cx(prefixCls, className, isSelectedId(option.id) && `${prefixCls}--selected`)
+    const { id, disabled = false } = option
+    const selected = isSelectedId(id)
+    const cls = cx(
+      prefixCls,
+      className,
+      selected && `${prefixCls}--selected`,
+      disabled && `${prefixCls}--disabled`
+    )
 
     const onClickLatest = useLatestCallback(onClick)
     const handleClick = useCallback(
@@ -215,6 +256,7 @@ export const SelectOption = forwardRef<HTMLDivElement | null, SelectOptionProps>
 
     return (
       <div ref={ref} className={cls} onClick={handleClick} {...rest}>
+        {renderIndent(prefixCls, depth)}
         <span className={`${prefixCls}__title`}>{option.title}</span>
       </div>
     )
@@ -227,4 +269,42 @@ SelectOption.HiName = 'SelectOption'
 
 if (__DEV__) {
   SelectOption.displayName = 'SelectOption'
+}
+
+const optionGroupPrefix = getPrefixCls('select-option-group')
+
+/**
+ * TODO: What is SelectOptionGroup
+ */
+export const SelectOptionGroup = forwardRef<HTMLDivElement | null, SelectOptionGroupProps>(
+  ({ prefixCls = optionGroupPrefix, className, children, label, onClick, ...rest }, ref) => {
+    const cls = cx(prefixCls, className)
+
+    return (
+      <div ref={ref} className={cls} {...rest}>
+        <span>{label}</span>
+      </div>
+    )
+  }
+)
+
+export interface SelectOptionGroupProps extends HiBaseHTMLProps {}
+
+// @ts-ignore
+SelectOptionGroup.HiName = 'SelectOptionGroup'
+if (__DEV__) {
+  SelectOptionGroup.displayName = 'SelectOptionGroup'
+}
+
+/**
+ * 渲染空白占位
+ */
+const renderIndent = (prefixCls: string, depth: number) => {
+  return times(depth, (index: number) => {
+    return (
+      <span key={index} style={{ alignSelf: 'stretch' }}>
+        <span className={cx(`${prefixCls}__indent`)} />
+      </span>
+    )
+  })
 }

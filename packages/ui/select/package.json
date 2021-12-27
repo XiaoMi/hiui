@@ -50,11 +50,14 @@
     "@hi-ui/icons": "^4.0.0-alpha.13",
     "@hi-ui/input": "^4.0.0-alpha.17",
     "@hi-ui/popper": "^4.0.0-alpha.11",
+    "@hi-ui/times": "^4.0.0-alpha.3",
+    "@hi-ui/tree-utils": "^4.0.0-alpha.4",
     "@hi-ui/use-check": "^4.0.0-alpha.10",
     "@hi-ui/use-children": "^4.0.0-alpha.2",
     "@hi-ui/use-latest": "^4.0.0-alpha.3",
     "@hi-ui/use-toggle": "^4.0.0-alpha.6",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.8"
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.8",
+    "rc-virtual-list": "^3.4.2"
   },
   "peerDependencies": {
     "react": "^17.0.1",

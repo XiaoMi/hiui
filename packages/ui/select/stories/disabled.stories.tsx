@@ -1,7 +1,7 @@
 import React from 'react'
 import Select from '../src'
 
-export const Basic = () => {
+export const Disabled = () => {
   const [data] = React.useState([
     { title: '电视', id: '3', disabled: true },
     { title: '手机', id: '2' },
@@ -12,9 +12,9 @@ export const Basic = () => {
 
   return (
     <>
-      <h1>Basic</h1>
-      <div className="select-basic__wrap">
-        <Select clearable={false} style={{ width: 200 }} data={data} />
+      <h1>Disabled</h1>
+      <div className="select-disabled__wrap">
+        <Select disabled style={{ width: 200 }} data={data} />
       </div>
     </>
   )

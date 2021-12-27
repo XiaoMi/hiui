@@ -292,17 +292,18 @@ if (__DEV__) {
 /**
  * TODO: What is CheckSelectOptionGroup
  */
-export const CheckSelectOptionGroup = forwardRef<HTMLDivElement | null, CheckSelectOptionProps>(
-  ({ prefixCls = optionPrefix, className, children, label, onClick, ...rest }, ref) => {
-    const cls = cx(prefixCls, className)
+export const CheckSelectOptionGroup = forwardRef<
+  HTMLDivElement | null,
+  CheckSelectOptionGroupProps
+>(({ prefixCls = optionPrefix, className, children, label, onClick, ...rest }, ref) => {
+  const cls = cx(prefixCls, className)
 
-    return (
-      <div ref={ref} className={cls} {...rest}>
-        <span>{label}</span>
-      </div>
-    )
-  }
-)
+  return (
+    <div ref={ref} className={cls} {...rest}>
+      <span>{label}</span>
+    </div>
+  )
+})
 
 export interface CheckSelectOptionGroupProps extends HiBaseHTMLProps {}
 
