@@ -13,12 +13,19 @@ const getAllSvgComponentFileInfo = () => {
       } else {
         // 获取到svg文件
         if (item.endsWith('.svg')) {
+          const dirs = dir.trim().split(Path.sep)
           const fileName = item.replace('.svg', '')
+          const type = dirs[dirs.length - 1]
+          const belong = dirs[dirs.length - 2]
           // 处理插件带来的数字后缀影响
           const pureName = fileName.split(' ')[0].trim()
           result.push({
             path: fullPath,
             name: pureName,
+            type,
+            belong,
+            withTypeName: `${pureName}-${type}`,
+            generateFileRelativePath: `${belong}/${pureName}-${type}`,
           })
         }
       }
@@ -75,7 +82,7 @@ const generateComponentTsxContent = (svg, name) => {
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { IconProps } from '../@types/props'
+import { IconProps } from '../../@types/props'
 
 const _role = 'icon-${name}'
 const _prefix = getPrefixCls(_role)
@@ -99,20 +106,29 @@ if (__DEV__) {
 const componentFileInfo = getAllSvgComponentFileInfo()
 
 console.log(`Auto generate: total ${componentFileInfo.length}`)
-
-componentFileInfo.forEach(({ name, path }) => {
+componentFileInfo.forEach(({ withTypeName, path, generateFileRelativePath }) => {
   const svg = disposeSvgSourceFile(Fs.readFileSync(path).toString())
-  const targetFilePath = Path.join(__dirname, `../src/components/${name}.tsx`)
-
-  Fs.writeFileSync(targetFilePath, generateComponentTsxContent(svg, name))
-  console.log(`Auto generate: ${name}`)
+  const targetFilePath = Path.join(
+    __dirname,
+    '../src/components',
+    generateFileRelativePath + '.tsx'
+  )
+  // 保证文件夹存在
+  if (!Fs.existsSync(Path.dirname(targetFilePath))) {
+    Fs.mkdirSync(Path.dirname(targetFilePath))
+  }
+  Fs.writeFileSync(targetFilePath, generateComponentTsxContent(svg, withTypeName))
+  console.log(`Auto generate: ${withTypeName}`)
 })
 
-const indexTsContent = `
-import './styles/index.scss'
+const indexTsContent = `import './styles/index.scss'
 
 ${componentFileInfo
-  .map(({ name }) => `export { ${transformToUpperCamelCase(name)} } from './components/${name}'`)
+  .map(({ withTypeName, generateFileRelativePath }) => {
+    return `export { ${transformToUpperCamelCase(
+      withTypeName
+    )} } from './components/${generateFileRelativePath}'`
+  })
   .join('\n')}
 
 export * from './@types/props'
