@@ -1,11 +1,4 @@
-import {
-  cloneTree,
-  groupByTreeDepth,
-  flattenTree,
-  fFindNestedChildNodesByIndex,
-  getNodeAncestors,
-  getNodeRootParent,
-} from '@hi-ui/tree-utils'
+import { cloneTree, flattenTree, getNodeRootParent } from '@hi-ui/tree-utils'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import {
@@ -28,15 +21,16 @@ import { useColumns } from './hooks/use-colgroup'
 import { setAttrStatus } from '@hi-ui/dom-utils'
 import { useCache } from '@hi-ui/use-cache'
 import { useTableDrag } from './hooks/use-drag'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
 const DEFAULT_COLUMNS = [] as []
 const DEFAULT_DATA = [] as []
 const DEFAULT_ERROR_ROW_KEYS = [] as []
 const DEFAULT_HIGHLIGHTED_ROW_KEYS = [] as []
 const DEFAULT_HIGHLIGHTED_COL_KEYS = [] as []
-const DEFAULT_CHECKED_ROW_KEYS = [] as any[]
+// const DEFAULT_CHECKED_ROW_KEYS = [] as any[]
 const DEFAULT_EXPAND_ROW_KEYS = [] as []
-const DEFAULT_ROW_SELECTION = {} as TableRowSelection
+// const DEFAULT_ROW_SELECTION = {} as TableRowSelection
 const DEFAULT_ALLOW = () => true
 
 export const useTable = ({
@@ -60,11 +54,13 @@ export const useTable = ({
   onHeaderRow,
   expandedRender,
   maxHeight,
+  // @ts-ignore
   dataSource,
   showColMenu,
   showColHighlight,
   sticky,
   stickyTop = 0,
+  // @ts-ignore
   onLoadChildren,
   rowExpandable = DEFAULT_ALLOW,
   scrollWidth,
@@ -94,7 +90,7 @@ export const useTable = ({
   // ********************** cache *********************** //
 
   const [cacheData, setCacheData] = useCache(data)
-  const [columns, setColumns] = useCache(columnsProp)
+  const [columns] = useCache(columnsProp)
 
   /**
    * 扁平化数据，支持树形 table
@@ -130,21 +126,21 @@ export const useTable = ({
 
   // ********************** 内嵌式面板 *********************** //
 
-  /**
-   * 行内嵌面板展开
-   */
-  const [expandEmbedRows, trySetExpandEmbedRows] = useUncontrolledState(
-    // 展开全部
-    [],
-    expandEmbedRowKeysProp,
-    onEmbedExpand
-  )
+  // /**
+  //  * 行内嵌面板展开
+  //  */
+  // const [expandEmbedRows, trySetExpandEmbedRows] = useUncontrolledState(
+  //   // 展开全部
+  //   [],
+  //   expandEmbedRowKeysProp,
+  //   onEmbedExpand
+  // )
 
-  const [onExpandEmbedRowsChange, isExpandEmbedRows] = useCheck({
-    checkedIds: expandEmbedRows,
-    onCheck: trySetExpandEmbedRows as any,
-    idFieldName: 'key',
-  })
+  // const [onExpandEmbedRowsChange, isExpandEmbedRows] = useCheck({
+  //   checkedIds: expandEmbedRows,
+  //   onCheck: trySetExpandEmbedRows as any,
+  //   idFieldName: 'key',
+  // })
 
   // 异步展开内嵌面板
 
@@ -171,15 +167,7 @@ export const useTable = ({
 
   // ************************ 列冻结 ************************ //
 
-  // 冻结列
-  // const [leftFrozenColKeys, setLeftFrozenColKeys] = useState<React.ReactText[]>([])
-  // const [rightFrozenColKeys, setRightFrozenColKeys] = useState<React.ReactText[]>([])
-
-  // 冻结列总宽度
-  const [leftFrozenColWidth, setLeftFrozenColWidth] = useState(0)
-  const [rightFrozenColWidth, setRightFrozenColWidth] = useState(0)
-
-  const [fixedColWidth, setFixedColWidth] = useState<number[]>([])
+  const [fixedColWidth] = useState<number[]>([])
   const firstRowElementRef = useRef<HTMLTableRowElement>(null)
 
   const bodyTableRef = useRef<HTMLTableElement>(null)
@@ -302,15 +290,6 @@ export const useTable = ({
 
     const rightFixedColumnsWidth = getMaskItemsWIdth(rightColumns)
 
-    // console.log({
-    //   mergedColumns2,
-    //   leftFrozenColKeys: leftColumns,
-    //   rightFrozenColKeys: rightColumns,
-    //   columns: nextColumns,
-    //   leftFixedColumnsWidth,
-    //   rightFixedColumnsWidth,
-    // })
-
     return {
       leftFrozenColKeys: leftColumns,
       rightFrozenColKeys: rightColumns,
@@ -337,6 +316,14 @@ export const useTable = ({
       scrollRight,
     }))
   }, [leftFrozenColKeys, rightFrozenColKeys])
+
+  // const canScroll = scrollSize.scrollRight > 0
+
+  // 实时计算
+  const canScroll =
+    bodyTableRef.current && scrollBodyElementRef.current
+      ? scrollBodyElementRef.current.clientWidth < bodyTableRef.current.clientWidth
+      : false
 
   /**
    * 同步 双 table 左右滚动偏移
@@ -393,15 +380,6 @@ export const useTable = ({
     [syncScrollLeft]
   )
 
-  // // 同步滚动条
-  // const stickyHeaderRef = useRef(null)
-  // const leftFixedscrollBodyElementRef = useRef(null)
-  // const rightFixedscrollBodyElementRef = useRef(null)
-
-  // const hiTable = useRef(null)
-  // const [activeSorterColumn, setActiveSorterColumn] = useState(null)
-  // const [activeSorterType, setActiveSorterType] = useState(null)
-
   // ************************ 列高亮 ************************ //
 
   /**
@@ -432,7 +410,7 @@ export const useTable = ({
 
   // ************************ 列宽 resizable ************************ //
 
-  const { getColgroupProps, onColumnResizable, setHeaderTableElement, colWidths } = useColWidth({
+  const { getColgroupProps, onColumnResizable, colWidths } = useColWidth({
     data,
     columns,
     resizable,
@@ -458,14 +436,6 @@ export const useTable = ({
 
   const isErrorRow = useCallback((key: string) => errorRowKeys.includes(key), [errorRowKeys])
 
-  const [eachRowHeight, setEachRowHeight] = useState({})
-  const loadChildren = useRef(null)
-
-  // const isStickyHeaderRef = useRef(false)
-  // isStickyHeaderRef.current = flattedColumns.some((col) => {
-  //   return typeof col.leftStickyWidth !== 'undefined' || typeof col.rightStickyWidth !== 'undefined'
-  // })
-
   // 末级 column
   const flattedColumnsWithoutChildren = React.useMemo(() => {
     return mergedColumns1.filter((col) => !isArrayNonEmpty(col.children))
@@ -482,9 +452,11 @@ export const useTable = ({
 
   // console.log('mergedColumns1', mergedColumns1, groupedColumns, mergedColumns1)
 
-  const getStickyColProps = React.useCallback((column) => {
+  const getStickyColProps = useLatestCallback((column) => {
     const { rightStickyWidth, leftStickyWidth, align } = column
-    const sticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
+    const sticky =
+      canScroll &&
+      (typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined')
 
     return {
       style: {
@@ -493,10 +465,10 @@ export const useTable = ({
         right: rightStickyWidth + 'px',
         left: leftStickyWidth + 'px',
         // backgroundColor: '#fff',
-      },
+      } as React.CSSProperties,
       'data-sticky': setAttrStatus(sticky),
     }
-  }, [])
+  })
 
   const getTableHeaderProps = React.useCallback(() => {
     const style: React.CSSProperties = {
@@ -514,6 +486,7 @@ export const useTable = ({
   }, [sticky, stickyTop, maxHeight])
 
   return {
+    canScroll,
     maxHeight,
     getTableHeaderProps,
     isErrorRow,
@@ -568,7 +541,7 @@ export const useTable = ({
     onHoveredColChange,
     // 行拖拽
     draggable,
-    highlightColumns: [],
+    highlightColumns: [] as any,
     dragRowRef,
     onDrop,
     // alignLeftColumns,
@@ -579,8 +552,8 @@ export const useTable = ({
     isLoadingTreeNodeId,
     onTreeNodeSwitch,
     // 内嵌面板展开
-    onExpandEmbedRowsChange,
-    isExpandEmbedRows,
+    // onExpandEmbedRowsChange,
+    // isExpandEmbedRows,
     rowExpandable,
     resizable,
     colWidths,
@@ -734,7 +707,7 @@ export interface UseTableProps {
     dragRowData: object,
     dropRowData: object,
     data: object,
-    level: Level
+    level: any
   ) => boolean | Promise<any>
   onDropEnd?: (dragRowData: object, dropRowData: object, data: object) => void
   expandedRowKeys?: string[]

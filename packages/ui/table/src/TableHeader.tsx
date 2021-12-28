@@ -3,7 +3,6 @@ import { Resizable } from 'react-resizable'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { isFunction } from '@hi-ui/type-assertion'
-import { Checkbox } from '@hi-ui/checkbox'
 import { useTableContext } from './context'
 
 const _prefix = getPrefixCls('table-header')
@@ -14,7 +13,7 @@ const _prefix = getPrefixCls('table-header')
 export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
   ({ prefixCls = _prefix }, ref) => {
     const {
-      columns,
+      // columns,
       groupedColumns,
       resizable,
       colWidths,
@@ -22,9 +21,7 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
       onColumnResizable,
       getStickyColProps,
       onTableBodyScrollMock,
-      onTableBodyScroll,
       scrollHeaderElementRef,
-      fixedColWidth,
       leafColumns,
       getTableHeaderProps,
     } = useTableContext()
@@ -37,7 +34,7 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
         {/* header 内置 table，利用 table colgroup 特性，实现单独表头的分组 */}
         <table style={{ width: '100%', position: 'relative' }}>
           <colgroup>
-            {leafColumns.map((col, idx) => {
+            {leafColumns.map((col: any, idx) => {
               return (
                 <col key={idx} className={`${prefixCls}-col`} {...getColgroupProps(col, idx)} />
               )
@@ -56,7 +53,9 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
                       <th
                         key={dataKey}
                         {...getStickyColProps(col)}
+                        // @ts-ignore
                         colSpan={col.colSpan}
+                        // @ts-ignore
                         rowSpan={col.rowSpan}
                       >
                         {titleContent}

@@ -105,6 +105,7 @@ export const useColWidth = ({
           // TODO（疑惑）: minWidth 所要解决的问题
           minWidth: width,
         },
+        // @ts-ignore
         'data-hover-highlight': setAttrStatus(isHoveredCol(column.dataKey)),
       }
     },

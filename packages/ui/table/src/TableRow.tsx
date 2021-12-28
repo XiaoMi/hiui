@@ -1,21 +1,15 @@
+// @ts-nocheck
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 // import { Column, RowSelection } from './Table'
-import { Checkbox } from '@hi-ui/checkbox'
 import { useTableContext } from './context'
 // import { cloneTree } from '@hi-ui/tree-utils'
-import { IconButton } from '@hi-ui/icon-button'
 import { TableCell } from './TableCell'
 import { TableExpandedRow } from './TableExpandedRow'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import {
-  defaultCollapseIcon,
-  defaultExpandIcon,
-  defaultLeafIcon,
-  defaultLoadingIcon,
-} from './icons'
 import { setAttrAria } from '@hi-ui/dom-utils'
+import { TableRowSelection, TableColumnItem } from './types'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -23,7 +17,7 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is TableRow
  */
-export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
+export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
   (
     {
       prefixCls = _prefix,
@@ -36,36 +30,23 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
       expandedTree,
       expandedTreeRows,
       setExpandedTreeRows,
-      isFixed,
       isSumRow, // 是否为合计行
       isAvgRow, // 是否为平均行
       rowIndex,
-      innerRef,
-      rowHeight,
       isTree,
-      dragStatus,
-      setDragStatus,
-      dragRowKey,
-      setDragRowKey,
     },
     ref
   ) => {
     const {
       onHighlightedRowChange,
       isHighlightedRow,
-      checkboxColWidth,
-      flattedColumns,
       flattedColumnsWithoutChildren,
       isErrorRow,
       rowSelection,
-      highlightedRowKeys,
-      setHighlightRows,
       columns,
       expandedRender,
       hoverRow,
       // prefixCls,
-      rowExpandable,
-      onExpand,
       disabledData,
       draggable,
       onDragStart: onDragStartContext,
@@ -73,10 +54,6 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
       onDragEnd: onDragEndContext,
       onDrop: onDropContext,
       dragRowRef,
-      onCheckedRowKeysChange,
-      isCheckedRowKey,
-      onExpandEmbedRowsChange,
-      isExpandEmbedRows,
     } = useTableContext()
     const rowData = rowDataProp.raw
     const rowKey = rowData.key
@@ -93,13 +70,13 @@ export const TableRow = forwardRef<HTMLDivElement | null, TableRowProps>(
       disabledData.current.push(rowKey)
     }
 
-    const rowExpand = rowExpandable && rowExpandable(rowData)
+    // const rowExpand = rowExpandable && rowExpandable(rowData)
 
-    const sticky = flattedColumnsWithoutChildren.some((item) => {
-      return (
-        typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
-      )
-    })
+    // const sticky = flattedColumnsWithoutChildren.some((item) => {
+    //   return (
+    //     typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
+    //   )
+    // })
 
     // ** ************** 拖拽管理 *************** *//
 
@@ -302,7 +279,7 @@ export interface TableRowProps {
   /**
    * 列配置项
    */
-  columns: Column[]
+  columns: TableColumnItem[]
   /**
    * 数据配置项
    */
@@ -312,58 +289,9 @@ export interface TableRowProps {
    */
   firstRowRef: React.RefObject<HTMLTableRowElement>
   fixedColWidth: number[]
-  rowSelection?: RowSelection
+  rowSelection?: TableRowSelection
 }
 
 if (__DEV__) {
   TableRow.displayName = 'TableRow'
-}
-
-const renderSwitcher = ({
-  prefixCls,
-  rowExpand,
-  sticky,
-  expanded,
-  onNodeExpand,
-  expandIcon,
-  collapseIcon,
-}: {
-  prefixCls: string
-  rowExpand: boolean
-  sticky: boolean
-  expanded: string
-  onNodeExpand: any
-  expandIcon: any
-  collapseIcon: any
-}) => {
-  // console.log(rowExpand)
-
-  if (React.isValidElement(rowExpand)) {
-    return rowExpand
-  }
-
-  if (rowExpand) {
-    if (expanded === 'loading') {
-      return (
-        <IconButton
-          className={cx(`${prefixCls}__switcher`, `${prefixCls}__switcher--loading`)}
-          icon={defaultLoadingIcon}
-        />
-      )
-    } else {
-      return (
-        <IconButton
-          tabIndex={-1}
-          className={cx(
-            `${prefixCls}__switcher`,
-            expanded ? `${prefixCls}__switcher--expanded` : `${prefixCls}__switcher--collapse`
-          )}
-          icon={expanded ? expandIcon : collapseIcon}
-          onClick={() => onNodeExpand(!expanded)}
-        />
-      )
-    }
-  }
-
-  return null
 }

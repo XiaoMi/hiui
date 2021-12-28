@@ -39,6 +39,8 @@ export const useColHidden = ({
 
   const visibleCols = useMemo(() => {
     // TODO: 支持隐藏叶子结点，而不是根节点
+
+    // @ts-ignore
     return columns.filter((col) => !hiddenColKeys.includes(col.dataKey))
   }, [columns, hiddenColKeys])
 

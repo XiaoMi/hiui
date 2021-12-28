@@ -47,7 +47,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       bordered: borderedProp,
       columns = DEFAULT_COLUMNS,
       striped = false,
-      rowExpandable = false,
+      rowExpandable = true,
       expandEmbedRowKeys: expandEmbedRowKeysProp,
       onEmbedExpand,
       expandedRender,
@@ -71,7 +71,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     const [onExpandEmbedRowsChange, isExpandEmbedRows] = useCheck({
       checkedIds: expandEmbedRows,
       onCheck: trySetExpandEmbedRows as any,
-      idFieldName: 'key',
+      // idFieldName: 'key',
     })
 
     // 异步展开内嵌面板
@@ -98,13 +98,14 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           expandIcon: any
           collapseIcon: any
         }) => {
-          // console.log(rowExpand)
+          console.log(rowExpand)
 
           if (React.isValidElement(rowExpand)) {
             return rowExpand
           }
 
           if (rowExpand) {
+            // @ts-ignore
             if (expanded === 'loading') {
               return (
                 <IconButton
@@ -135,21 +136,13 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
         const embedPanelColumn: TableColumnItem = {
           title: '',
           dataKey: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-          // fixed: fixedColumn,
-          // className: `${prefixCls}-row-expand-icon-cell`,
           width: 50,
           render: (_: any, rowItem: any, index: number) => {
             // const rowKey = getRowKey(rowItem, index)
-            const rowKey = rowItem.key
+            const rowKey = rowItem.id
             const sticky = true
             const rowExpand = isFunction(rowExpandable) ? rowExpandable(rowItem) : rowExpandable
             const expanded = isExpandEmbedRows(rowKey)
-
-            // const sticky = flattedColumnsWithoutChildren.some((item) => {
-            //   return (
-            //     typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
-            //   )
-            // })
 
             const switcherIcon = renderSwitcher({
               prefixCls,
@@ -162,6 +155,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               expandIcon: defaultExpandIcon,
               collapseIcon: defaultCollapseIcon,
             })
+
             return switcherIcon
           },
         }
@@ -194,7 +188,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     const extraHeader = extra && extra.header
     const extraFooter = extra && extra.footer
 
-    const providedValue = useTable({ ...rest, columns: mergedColumns })
+    const providedValue = useTable({ ...rest, columns: mergedColumns, expandedRender })
 
     const {
       bordered,
@@ -217,12 +211,22 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       size && `${prefixCls}--size-${size}`
     )
 
+    console.log('scrollLeft', scrollLeft, leftFrozenColKeys)
+
     // TODO：处理 column 模型支持 cellRender，一直出 checkbox、expandIcon 高级选项
 
     return (
       <div ref={ref} role={role} className={cls}>
         <div className={`${prefixCls}__wrapper`}>
-          <TableProvider value={providedValue}>
+          <TableProvider
+            value={{
+              ...providedValue,
+              expandedRender,
+              // @ts-ignore
+              isExpandEmbedRows,
+              onExpandEmbedRowsChange,
+            }}
+          >
             <div style={{ position: 'relative' }}>
               <TableHeader prefixCls={prefixCls} />
 
@@ -363,6 +367,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
      * 扁平化数据，支持树形 table
      */
     const flattedData = useMemo(() => {
+      // @ts-ignore
       const clonedData = cloneTree(data)
 
       // @ts-ignore
@@ -426,9 +431,10 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           rowIndex: number,
           dataKey: string
         ) => {
-          const { node, checked } = renderCell(_, rowItem, rowIndex)
+          const { node } = renderCell(_, rowItem, rowIndex)
 
           if (rowSelection!.render) {
+            // @ts-ignore
             return rowSelection!.render(node, rowItem, rowIndex, rowItem.id)
           }
 
@@ -450,7 +456,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         }
 
         const renderSelectionTitleCell = () => {
-          const { node, checked, semiChecked } = renderTitleCell()
+          const { node } = renderTitleCell()
 
           if (rowSelection.checkAllOptions && rowSelection.checkAllOptions.render) {
             return rowSelection.checkAllOptions.render(node)
@@ -463,6 +469,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           width: checkboxColWidth,
           className: `${prefixCls}-selection-column`,
           title: renderSelectionTitleCell,
+          // @ts-ignore
           render: renderSelectionCell,
         }
         return selectionColumn

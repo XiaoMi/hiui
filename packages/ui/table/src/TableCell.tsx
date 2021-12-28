@@ -5,7 +5,7 @@ import { __DEV__ } from '@hi-ui/env'
 // import { Checkbox } from '@hi-ui/checkbox'
 import { useTableContext } from './context'
 import { times } from '@hi-ui/times'
-import { TableColumnItem, TableRowEventData } from './types'
+import { TableRowEventData, TableRowSelection } from './types'
 import { IconButton } from '@hi-ui/icon-button'
 import {
   defaultCollapseIcon,
@@ -20,23 +20,16 @@ const _prefix = getPrefixCls('table-cell')
 /**
  * TODO: What is TableCell
  */
-export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
+export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>(
   (
     {
       prefixCls = _prefix,
       className,
-      data,
-      columns,
-      firstRowRef,
-      fixedColWidth,
-      rowSelection,
       column,
       rowIndex,
       depth,
       columnIndex,
       expandedTree,
-      expandedTreeRows,
-      setExpandedTreeRows,
       isTree,
       // icons
       expandIcon = defaultExpandIcon,
@@ -49,30 +42,22 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
     const {
       // onHighlightedColChange,
       isHighlightedCol,
-      alignRightColumns,
       // prefixCls,
+      // @ts-ignore
       onLoadChildren,
-      loadChildren,
       // isHoveredCol,
       // onHoveredColChange,
       showColHighlight,
-      isHoveredCol,
       onHoveredColChange,
-      onExpandTreeRowsChange,
-      isExpandTreeRows,
       onTreeNodeSwitch,
       getStickyColProps,
+      canScroll,
     } = useTableContext()
 
-    const [loading, setLoading] = React.useState(false)
+    const [loading] = React.useState(false)
 
     const { raw: rawColumn, leftStickyWidth, rightStickyWidth } = column
-    const {
-      render: rawRender,
-      dataKey,
-
-      align = 'left',
-    } = rawColumn
+    const { render: rawRender, dataKey } = rawColumn
 
     /**
      * normalize 单元格渲染内容，支持自定义 render
@@ -122,7 +107,7 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
       className,
       isHighlightedCol(dataKey) && `${prefixCls}__col--highlight`,
       // isHoveredCol(dataKey) && `${prefixCls}__col--hovered-highlight`,
-      sticky && `${prefixCls}__col--sticky`
+      canScroll && sticky && `${prefixCls}__col--sticky`
     )
 
     // 交互：第一列为操作节点列
@@ -132,14 +117,6 @@ export const TableCell = forwardRef<HTMLDivElement | null, TableCellProps>(
       <td
         key={dataKey}
         className={cls}
-        // style={{
-        //   position: sticky ? 'sticky' : undefined,
-        //   // 从 column 中读取
-        //   textAlign: 'left',
-        //   right: rightStickyWidth + 'px',
-        //   left: leftStickyWidth + 'px',
-        //   backgroundColor: '#fff',
-        // }}
         {...getStickyColProps(column)}
         colSpan={cellContent.props.colSpan}
         rowSpan={cellContent.props.rowSpan}
@@ -178,9 +155,20 @@ export interface TableCellProps {
   /**
    * 列配置项
    */
-  column: { raw: TableColumnItem }
+  // column: { raw: TableColumnItem }
   fixedColWidth: number[]
-  rowSelection?: RowSelection
+  rowSelection?: TableRowSelection
+  className?: any
+  column?: any
+  rowIndex?: any
+  depth?: any
+  columnIndex?: any
+  expandedTree?: any
+  isTree?: any
+  expandIcon?: any
+  collapseIcon?: any
+  leafIcon?: any
+  rowData?: any
 }
 
 if (__DEV__) {

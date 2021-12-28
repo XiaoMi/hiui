@@ -13,14 +13,19 @@ const _prefix = getPrefixCls('table-expanded-row')
  */
 export const TableExpandedRow = forwardRef<HTMLDivElement | null, TableExpandedRowProps>(
   ({ prefixCls = _prefix, rowSelection, columns, rowData, rowIndex, expandedRender }, ref) => {
-    const { onExpandEmbedRowsChange, isExpandEmbedRows } = useTableContext()
+    // @ts-ignore
+    const { isExpandEmbedRows } = useTableContext()
 
     const [expandedRow, setExpandedRow] = React.useState(null)
     const [loading, setLoading] = React.useState(false)
 
     const rowDataLatestRef = useLatestRef(rowData)
+    // @ts-ignore
+    const expanded = isExpandEmbedRows(rowData.id)
 
     useEffect(() => {
+      if (!expanded) return
+
       const rowData = rowDataLatestRef.current
       const embedContentMaybePromise = expandedRender(rowData, rowIndex)
 
@@ -31,29 +36,24 @@ export const TableExpandedRow = forwardRef<HTMLDivElement | null, TableExpandedR
           .then((jsxElement: any) => {
             setLoading(false)
             setExpandedRow(jsxElement)
-            onExpandEmbedRowsChange(rowData, true)
           })
           .catch((err: any) => {
             setLoading(false)
 
             setExpandedRow(err)
-            onExpandEmbedRowsChange(rowData, true)
           })
       } else {
         // 同步 onChange 存在闭包问题，当前是有请求然后展开，无法受控
         // 对于这个功能，需要使用 defaultExpandAllEmbed
         requestAnimationFrame(() => {
           setExpandedRow(embedContentMaybePromise)
-          onExpandEmbedRowsChange(rowData, true)
         })
       }
       // for onExpandEmbedRowsChange
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rowIndex, expandedRender, rowDataLatestRef])
+    }, [rowIndex, expandedRender, rowDataLatestRef, expanded])
 
-    const expanded = isExpandEmbedRows(rowData.key)
-
-    // console.log('TableExpandedRow', expanded, rowData)
+    console.log('TableExpandedRow', expanded, rowData)
 
     // 可展开的内嵌面板
     return expanded ? (
@@ -61,7 +61,7 @@ export const TableExpandedRow = forwardRef<HTMLDivElement | null, TableExpandedR
         {/* 多选占位 */}
         {rowSelection ? <td /> : null}
         {/* 可展开内嵌显示 */}
-        <td colSpan={columns.length + 1}>
+        <td colSpan={columns.length}>
           {expandedRow}
           {loading ? <Loading size="sm" /> : null}
         </td>

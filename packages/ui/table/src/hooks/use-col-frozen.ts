@@ -30,9 +30,13 @@ export const useColFrozen = ({
       }
       return {
         ...node,
+        // @ts-ignore
         width: node.raw.width,
+        // @ts-ignore
         id: node.raw.dataKey,
+        // @ts-ignore
         dataKey: node.raw.dataKey,
+        // @ts-ignore
         title: node.raw.title,
       }
     })

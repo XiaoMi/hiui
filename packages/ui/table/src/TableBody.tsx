@@ -15,7 +15,7 @@ const _prefix = getPrefixCls(_role)
 export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
   ({ prefixCls = _prefix }, ref) => {
     const {
-      columns,
+      // columns,
       leafColumns,
       firstRowElementRef,
       isExpandTreeRows,
@@ -25,6 +25,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       scrollBodyElementRef,
       onTableBodyScroll,
       maxHeight,
+      canScroll,
       // fixedColWidth,
     } = useTableContext()
 
@@ -37,9 +38,10 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
     //     .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
     // }
 
-    const getTreeNodeRequiredProps = useLatestCallback(
+    const getRequiredProps = useLatestCallback(
       (id: React.ReactText): TableRowRequiredProps => {
         return {
+          // @ts-ignore
           expandedTree: isExpandTreeRows(id),
           // checked: isCheckedId(id),
           // semiChecked: isSemiCheckedId(id),
@@ -52,9 +54,6 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
 
     // TODO: 空状态
 
-    // console.log('transitionData', transitionData)
-    // const sticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
-
     return (
       // 外层增加 div 作为滚动容器
       <div
@@ -65,21 +64,18 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
           maxHeight: maxHeight || 'auto',
           // maxHeight 小于 table 实际高度才出现纵向滚动条
           overflowY:
-            bodyTableRef.current && bodyTableRef.current.clientHeight > maxHeight
+            maxHeight !== undefined &&
+            bodyTableRef.current &&
+            bodyTableRef.current.clientHeight > maxHeight
               ? 'scroll'
               : undefined,
           // 表格宽度大于div宽度才出现横向滚动条
-          overflowX:
-            bodyTableRef.current &&
-            scrollBodyElementRef.current &&
-            scrollBodyElementRef.current.clientWidth < bodyTableRef.current.clientWidth
-              ? 'scroll'
-              : undefined,
+          overflowX: canScroll ? 'scroll' : undefined,
         }}
       >
         <table ref={bodyTableRef} style={{ width: '100%' }}>
           <colgroup>
-            {leafColumns.map((col, idx) => {
+            {leafColumns.map((col: any, idx) => {
               return (
                 <col key={idx} className={`${prefixCls}-col`} {...getColgroupProps(col, idx)} />
               )
@@ -92,12 +88,13 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                   ref={index === 0 ? firstRowElementRef : null}
                   // key={depth + index}
                   key={row.id}
+                  // @ts-ignore
                   rowIndex={index}
                   rowData={row}
                   setDragRowKey={() => {}}
                   setDragStatus={() => {}}
                   // expandedTree={isExpandTreeRows(row.id)}
-                  {...getTreeNodeRequiredProps(row.id)}
+                  {...getRequiredProps(row.id)}
                 />
               )
             })}

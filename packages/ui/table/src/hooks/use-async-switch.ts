@@ -1,18 +1,18 @@
 import React, { useCallback, useState } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { CascaderItemEventData } from '../types'
+import { TableRowEventData } from '../types'
 import { addChildrenById, cloneTree } from '@hi-ui/tree-utils'
 
 export const useAsyncSwitch = (
   setCascaderData: React.Dispatch<React.SetStateAction<any[]>>,
-  onExpand?: (selectedOption: CascaderItemEventData, onlyExpand: boolean) => void,
-  onLoadChildren?: (item: CascaderItemEventData) => Promise<any[] | void> | void
+  onExpand?: (selectedOption: TableRowEventData, onlyExpand: boolean) => void,
+  onLoadChildren?: (item: TableRowEventData) => Promise<any[] | void> | void
 ) => {
   const onLoadChildrenLatest = useLatestCallback(onLoadChildren)
 
   // 加载节点
   const loadChildren = useCallback(
-    async (node: CascaderItemEventData) => {
+    async (node: TableRowEventData) => {
       const childrenNodes = await onLoadChildrenLatest(node)
 
       if (Array.isArray(childrenNodes)) {
@@ -30,7 +30,7 @@ export const useAsyncSwitch = (
   const onExpandLatest = useLatestCallback(onExpand)
 
   const onNodeSwitch = useCallback(
-    async (node: CascaderItemEventData, onlyExpand = false) => {
+    async (node: TableRowEventData, onlyExpand = false) => {
       // 直接触发选中该节点
       onExpandLatest(node, onlyExpand)
 

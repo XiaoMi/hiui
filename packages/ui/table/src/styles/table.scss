@@ -10,10 +10,13 @@ $prefix: '#{$component-prefix}-table' !default;
   table {
     width: 100%;
     text-align: left;
+    background-color: use-color-static('white');
     border-radius: 2px 2px 0 0;
-    border-collapse: separate;
     border-spacing: 0;
-    background: #fff;
+    border-collapse: separate;
+    display: table;
+    table-layout: fixed;
+    overflow: auto;
   }
 
   &__wrapper {
@@ -60,9 +63,6 @@ $prefix: '#{$component-prefix}-table' !default;
   &__header {
     overflow: hidden;
     position: relative;
-
-    th {
-    }
 
     tr {
       & > th {
