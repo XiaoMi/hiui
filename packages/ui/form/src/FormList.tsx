@@ -4,8 +4,6 @@ import { useFormContext } from './context'
 import { setNested, getNested } from '@hi-ui/func-utils'
 import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { FormState } from './types'
-import { UseFormFieldProps } from './use-form-field'
-import { FormLabelProps } from './FormLabel'
 
 const fieldListSymbol = Symbol('field-list')
 
@@ -139,7 +137,7 @@ export const FormList: React.FC<FormListProps> = ({ children, name: nameProp }) 
   return children(listFields, { add, remove, swap, insertBefore, move })
 }
 
-export interface FormListProps extends UseFormFieldProps, FormLabelProps {
+export interface FormListProps {
   /**
    * 表单控件
    */

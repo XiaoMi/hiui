@@ -65,21 +65,15 @@ export const List = () => {
                         </FormItem>
 
                         <div>
-                          <span style={{ paddingTop: '6px' }} onClick={() => remove(index)}>
-                            <CloseOutlined
-                              style={{ color: '#999', fontSize: 16, cursor: 'pointer' }}
-                            />
-                          </span>
+                          <Button icon={<CloseOutlined />} onClick={() => remove(index)}></Button>
 
-                          <span
-                            style={{ paddingTop: '6px' }}
+                          <Button
                             onClick={() => insertBefore(index, { username: '', password: '' })}
                           >
                             insertBefore
-                          </span>
-                          <span style={{ paddingTop: '6px' }} onClick={() => move(index, 0)}>
-                            swap with list[0]
-                          </span>
+                          </Button>
+
+                          <Button onClick={() => move(index, 0)}>moveTo [0]</Button>
                         </div>
                       </div>
                     )
