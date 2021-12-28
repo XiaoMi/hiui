@@ -23,7 +23,7 @@ import { withPerformance } from "storybook-addon-performance";
 export const decorators = [
   function withThemeProvider(Story, context) {
     const theme = context.globals.theme;
-    console.log("[ theme ] >", theme);
+    console.log("[ theme ] >", theme, context);
 
     // TODO: Inject HiUI ThemeProvider
     return (
@@ -33,9 +33,10 @@ export const decorators = [
     );
   },
   function withLayout(Story, context) {
+    const { direction } = context.globals;
     // TODO: Inject Container placed UI
     return (
-      <div className="hi-v4-box">
+      <div className="hi-v4-box" style={{ direction }}>
         <Story {...context} />
       </div>
     );

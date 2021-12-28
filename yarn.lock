@@ -3781,6 +3781,13 @@
     hoist-non-react-statics "^3.3.0"
     redux "^4.0.0"
 
+"@types/react-resizable@^1.7.4":
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/@types/react-resizable/-/react-resizable-1.7.4.tgz#8138e370338511b480ad00267d4efdd217f45741"
+  integrity sha512-+xsGkd+Gvb9+8mLR1EyhNN8kBRJcsT1uJF4WpkFpFPIoApX2S89BmJA2RVtMdkhwe6YxV4RbHfaJ3bIdcgHc7g==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-router-dom@~4.3.1":
   version "4.3.5"
   resolved "https://registry.nlark.com/@types/react-router-dom/download/@types/react-router-dom-4.3.5.tgz#72f229967690c890d00f96e6b85e9ee5780db31f"
@@ -4677,6 +4684,13 @@ axios@^0.21.1:
   resolved "https://registry.npm.taobao.org/axios/download/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
   dependencies:
     follow-redirects "^1.10.0"
+
+axios@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
+  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
+  dependencies:
+    follow-redirects "^1.14.4"
 
 axobject-query@^2.0.2:
   version "2.2.0"
@@ -8009,6 +8023,11 @@ flush-write-stream@^1.0.0:
 follow-redirects@^1.10.0:
   version "1.14.1"
   resolved "https://registry.nlark.com/follow-redirects/download/follow-redirects-1.14.1.tgz?cache=0&sync_timestamp=1620555234886&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ffollow-redirects%2Fdownload%2Ffollow-redirects-1.14.1.tgz#d9114ded0a1cfdd334e164e6662ad02bfd91ff43"
+
+follow-redirects@^1.14.4:
+  version "1.14.6"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.6.tgz#8cfb281bbc035b3c067d6cd975b0f6ade6e855cd"
+  integrity sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==
 
 for-in@^1.0.1, for-in@^1.0.2:
   version "1.0.2"
@@ -13975,6 +13994,14 @@ react-refresh@^0.8.3:
 react-resizable@^1.10.1:
   version "1.11.1"
   resolved "https://registry.nlark.com/react-resizable/download/react-resizable-1.11.1.tgz?cache=0&sync_timestamp=1623764006293&other_urls=https%3A%2F%2Fregistry.nlark.com%2Freact-resizable%2Fdownload%2Freact-resizable-1.11.1.tgz#02ca6850afa7a22c1b3e623e64aef71ee252af69"
+  dependencies:
+    prop-types "15.x"
+    react-draggable "^4.0.3"
+
+react-resizable@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-resizable/-/react-resizable-3.0.4.tgz#aa20108eff28c52c6fddaa49abfbef8abf5e581b"
+  integrity sha512-StnwmiESiamNzdRHbSSvA65b0ZQJ7eVQpPusrSmcpyGKzC0gojhtO62xxH6YOBmepk9dQTBi9yxidL3W4s3EBA==
   dependencies:
     prop-types "15.x"
     react-draggable "^4.0.3"

@@ -12,6 +12,7 @@ export const useSelect = ({
   selectedId,
   onSelect,
   allowSelect,
+  idFieldName = 'id',
 }: UseSelectProps) => {
   const allowSelectRef = useLatestRef(allowSelect)
 
@@ -21,12 +22,12 @@ export const useSelect = ({
       if (allowSelectRef.current && allowSelectRef.current(targetItem) === false) return
 
       if (shouldSelected) {
-        onSelect(targetItem.id, targetItem, true)
+        onSelect(targetItem[idFieldName], targetItem, true)
       } else {
         onSelect(NOOP_ID, targetItem, false)
       }
     },
-    [disabled, allowSelectRef, onSelect]
+    [disabled, allowSelectRef, onSelect, idFieldName]
   )
 
   const isSelectedId = useCallback(
@@ -54,4 +55,8 @@ export interface UseSelectProps<T extends UseCheckItem = any> {
    * 返回 true 允许选中
    */
   allowSelect?: (targetItem: T) => boolean
+  /**
+   * id 映射的字段
+   */
+  idFieldName?: string
 }
