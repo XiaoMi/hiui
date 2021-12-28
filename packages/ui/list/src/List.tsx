@@ -78,7 +78,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
               })}
             </ul>
           ) : (
-            { emptyText }
+            emptyText
           )}
         </div>
         {pagination && (
