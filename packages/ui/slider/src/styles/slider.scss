@@ -3,20 +3,16 @@
 $prefix: '#{$component-prefix}-slider' !default;
 
 .#{$prefix} {
-  $color-map: (
-    'primary': use-color-mode('primary'),
-    'warning': use-color-mode('warning'),
-    'success': use-color-mode('success'),
-    'danger': use-color-mode('danger')
-  ) !default;
+  $color: var(with-prefix-var('slider-color'), use-color-mode('primary'));
 
   box-sizing: border-box;
   color: use-color('gray', 800);
   font-size: use-text-size('normal');
   font-variant: tabular-nums;
-  line-height: 1.5715;
+  line-height: use-text-lineheight('normal');
   list-style: none;
   position: relative;
+  // 属于自定义空间，不属于designToken规范
   height: 12px;
   margin: 10px 6px;
   padding: 4px 0;
@@ -24,30 +20,34 @@ $prefix: '#{$component-prefix}-slider' !default;
   &.#{$prefix}--disabled {
     cursor: not-allowed;
 
+    > div {
+      cursor: not-allowed;
+    }
+
+    .#{$prefix}__rail {
+      background: use-color('gray', 100);
+    }
+
     .#{$prefix}__track {
-      background: use-color('gray', 500);
+      background: use-color('gray', 300);
     }
 
     .#{$prefix}__handle {
-      border-color: use-color('gray', 500);
+      border-color: use-color('gray', 300);
 
       &:focus {
         box-shadow: none;
       }
     }
-
-    > * {
-      cursor: not-allowed !important;
-    }
   }
 
   &.#{$prefix}--vertical {
     height: 100%;
-    margin: 0;
+    width: 12px;
+    margin: 6px 10px;
     padding: 0 4px;
 
     .#{$prefix}__rail {
-      height: 100%;
       width: 4px;
     }
 
@@ -65,19 +65,14 @@ $prefix: '#{$component-prefix}-slider' !default;
       position: absolute;
       width: 4px;
       height: 100%;
-      z-index: -1;
+    }
 
-      &-mark {
-        position: absolute;
-        border-radius: 50%;
-        transform: translate(-50%, 50%);
-        left: 2px;
-        top: auto;
-        width: 7px;
-        height: 7px;
-        background: use-color-static('white');
-        border: 1px solid use-color-mode('primary');
-      }
+    .#{$prefix}__mark {
+      position: absolute;
+      border-radius: use-background-radius('full');
+      // transform: translate(-50%, 4px);
+      transform: translate(-50%, 25%);
+      left: 2px;
     }
 
     .#{$prefix}__labels {
@@ -85,20 +80,27 @@ $prefix: '#{$component-prefix}-slider' !default;
       width: 40px;
       position: absolute;
       margin: 0;
-      right: 15px;
+      right: 18px;
+      text-align: right;
+
+      .#{$prefix}__label {
+        right: 0;
+      }
 
       .#{$prefix}__min {
         transform: translateX(0%);
         position: absolute;
-        bottom: -10px;
         right: 0;
+        margin-top: 0;
+        text-align: right;
       }
 
       .#{$prefix}__max {
-        position: absolute;
-        top: -4px;
         transform: translateX(0%);
+        position: absolute;
         right: 0;
+        margin-top: 0;
+        text-align: right;
       }
     }
   }
@@ -107,9 +109,8 @@ $prefix: '#{$component-prefix}-slider' !default;
     position: absolute;
     width: 100%;
     height: 4px;
-    background-color: use-color('gray', 50);
-    border-radius: 2px;
-    transition: background-color 0.3s;
+    background-color: use-color('gray', 200);
+    border-radius: use-border-radius('sm');
     cursor: pointer;
   }
 
@@ -119,39 +120,37 @@ $prefix: '#{$component-prefix}-slider' !default;
     height: 4px;
     background: 0 0;
     cursor: pointer;
-    z-index: -1;
+    // z-index: -1;
   }
 
   &__mark {
     position: absolute;
-    border-radius: 50%;
-    transform: translateX(-50%);
-    top: -3px;
-    width: 7px;
-    height: 7px;
-    background: use-color-static('white');
-    border: 1px solid use-color-mode('primary');
+    border-radius: use-border-radius('full');
+    transform: translate(-50%, 0%);
+    box-sizing: border-box;
+    width: 10px;
+    height: 10px;
+    margin-top: -4px;
+    background-color: use-color-static('white');
+    border: use-border-size('semibold') use-color('gray', 200);
+    transition-property: background-color;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
 
-    &.#{$prefix}__step-dotDisabled {
-      background: use-color('gray', 300);
-      border: 1px solid use-color('gray', 300);
+    &[data-checked] {
+      border-color: use-color-mode('primary');
     }
   }
 
-  .#{$prefix}__stepText {
-    margin-top: 10px;
+  .#{$prefix}__labels {
     width: 100%;
     height: 4px;
     background: 0 0;
+  }
 
-    .#{$prefix}__min {
-      transform: translateX(-50%);
-    }
-
-    .#{$prefix}__max {
-      right: 0;
-      transform: translateX(50%);
-    }
+  .#{$prefix}__label {
+    margin-top: 10px;
+    position: absolute;
 
     &-dot {
       position: absolute;
@@ -160,22 +159,34 @@ $prefix: '#{$component-prefix}-slider' !default;
     }
   }
 
+  .#{$prefix}__min {
+    left: 0;
+    transform: translateX(-50%);
+  }
+
+  .#{$prefix}__max {
+    right: 0;
+    transform: translateX(50%);
+  }
+
   .#{$prefix}__handle {
     position: absolute;
     width: 14px;
     height: 14px;
     margin-top: -5px;
     background-color: use-color-static('white');
-    border: solid 2px use-color-mode('primary');
     border-radius: 50%;
     box-sizing: border-box;
     z-index: 20;
     cursor: pointer;
     transform: translateX(-50%);
     user-select: none;
+    border: use-border-size('semibold') use-color-static('transparent');
+    border-color: $color;
 
     &:focus {
-      box-shadow: 0 0 0 5px use-color-mode('primary-20');
+      // 定制色，抽离变量
+      box-shadow: 0 0 0 4px rgba(#4284f5, 0.2);
       outline: none;
     }
   }
@@ -183,8 +194,9 @@ $prefix: '#{$component-prefix}-slider' !default;
   .#{$prefix}__track {
     position: absolute;
     height: 4px;
-    background: use-color-mode('primary');
+    // background: use-color-mode('primary');
     border-radius: 2px;
+    background: $color;
   }
 
   .#{$prefix}__tooltip {
@@ -211,22 +223,6 @@ $prefix: '#{$component-prefix}-slider' !default;
     &-exit-done {
       opacity: 0;
       transition: opacity 200ms;
-    }
-  }
-
-  @each $key, $value in $color-map {
-    &--#{$key} {
-      .#{$prefix}__track {
-        background-color: $value;
-      }
-
-      .#{$prefix}__handle {
-        border-color: $value;
-      }
-
-      .#{$prefix}__step-dot {
-        border-color: $value;
-      }
     }
   }
 }

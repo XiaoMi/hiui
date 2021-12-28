@@ -1,11 +1,11 @@
 import React from 'react'
-import { CaretDownOutlined } from '@hi-ui/icons'
+import { CaretDownFilled } from '@hi-ui/icons'
 
 export const defaultCollapseIcon = (
-  <CaretDownOutlined style={{ transition: 'transform 0.3s', transform: 'rotate(-90deg)' }} />
+  <CaretDownFilled style={{ transition: 'transform 0.3s', transform: 'rotate(-90deg)' }} />
 )
 export const defaultExpandIcon = (
-  <CaretDownOutlined style={{ transition: 'transform 0.3s', transform: 'rotate(0)' }} />
+  <CaretDownFilled style={{ transition: 'transform 0.3s', transform: 'rotate(0)' }} />
 )
 export const defaultLeafIcon = <span style={{ display: 'inline-block', width: 16 }} />
 
