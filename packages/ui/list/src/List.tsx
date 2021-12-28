@@ -49,7 +49,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className, { [`${prefixCls}--bordered`]: bordered })
+    const cls = cx(prefixCls, className, { [`${prefixCls}--bordered`]: bordered ,[`${prefixCls}--with-pagination`]: pagination})
 
     const renderListItem = useCallback(
       (item, index) => {
@@ -69,7 +69,6 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
     )
 
     return (
-      <>
         <div ref={ref} role={role} className={cls} {...rest}>
           {data && data.length > 0 ? (
             <ul className={cx(`${prefixCls}__wrapper`)}>
@@ -80,8 +79,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
           ) : (
             emptyText
           )}
-        </div>
-        {pagination && (
+          {pagination && (
           <div
             className={`${prefixCls}__pagination`}
             style={{
@@ -93,7 +91,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
             <Pagination {...pagination} />
           </div>
         )}
-      </>
+        </div>
     )
   }
 )
@@ -123,7 +121,7 @@ export interface ListProps {
   pagination?: PaginationProps & { position: 'left' | 'middle' | 'right' }
   bordered?: boolean
   layout?: 'vertical' | 'horizontal'
-  emptyText?: React.ReactNode
+  emptyText?: React.ReactNode,
 }
 export type ListItemProps = {
   /**

@@ -1,12 +1,13 @@
 import React from 'react'
 import List from '../src'
 
-export const Basic = () => {
+export const NoSplit = () => {
   return (
     <>
-      <h1>Basic</h1>
+      <h1>不带分割线</h1>
       <div className="list-basic__wrap">
         <List
+          split={false}
           data={[
             {
               title: '下单量-指标',

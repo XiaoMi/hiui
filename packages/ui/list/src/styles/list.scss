@@ -13,6 +13,9 @@ $prefix: '#{$component-prefix}-list' !default;
     justify-content: flex-end;
     margin-top: use-spacing(8);
   }
+  &--with-pagination {
+    padding-bottom: use-spacing(8);
+  }
 
   &--bordered {
     border: 1px solid use-color('gray', 200);
@@ -63,6 +66,14 @@ $prefix: '#{$component-prefix}-list' !default;
 
     &--split:not(:last-of-type) {
       border-bottom: 1px solid use-color('gray', 200);
+    }
+  }
+
+  &.#{$prefix}--with-pagination {
+    .#{$prefix}-item {
+      &--split:last-of-type{
+        border-bottom: 1px solid use-color('gray', 200);
+      }
     }
   }
 
