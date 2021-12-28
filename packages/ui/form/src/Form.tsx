@@ -10,7 +10,7 @@ const _role = 'form'
 const _prefix = getPrefixCls(_role)
 
 // form 注册表
-const FORM_REGISTER_TABLE: Record<string, FormRuleModel> = {}
+export const FORM_REGISTER_TABLE: Record<string, FormRuleModel> = {}
 
 /**
  * TODO: What is Form
@@ -51,7 +51,7 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
     return (
       // @ts-ignore
       <FormProvider value={providedValue}>
-        <form ref={ref} role={role} className={cls} {...rest} {...getRootProps()}>
+        <form ref={ref} role={role} className={cls} {...getRootProps()}>
           {children}
         </form>
       </FormProvider>
@@ -92,8 +92,7 @@ if (__DEV__) {
   Form.displayName = 'Form'
 }
 
-// @ts-ignore
-Form.extends = (model: FormRuleModel) => {
+const formExtends = (model: FormRuleModel) => {
   // @ts-ignore
   if (typeof model.name === 'string') {
     // @ts-ignore
@@ -104,3 +103,5 @@ Form.extends = (model: FormRuleModel) => {
     }
   }
 }
+
+Object.assign(Form, { extends: formExtends })

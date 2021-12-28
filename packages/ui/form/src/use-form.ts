@@ -9,7 +9,7 @@ import {
   FormErrorMessage,
   FormSetState,
 } from './types'
-import { useLatestRef } from '@hi-ui/use-latest'
+import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { isArray, isFunction } from '@hi-ui/type-assertion'
 import { callAllFuncs, setNested, getNested } from '@hi-ui/func-utils'
 import { stopEvent } from '@hi-ui/dom-utils'
@@ -31,6 +31,7 @@ export const useForm = <Values = Record<string, any>>({
   rules = EMPTY_RULES,
   validateAfterTouched = true,
   validateTrigger: validateTriggerProp = DEFAULT_VALIDATE_TRIGGER,
+  ...rest
 }: UseFormProps<Values>) => {
   /**
    * 处理校验触发器，保证 memo 依赖的是数组每个项，避免无效重渲染
@@ -316,12 +317,13 @@ export const useForm = <Values = Record<string, any>>({
     formDispatch({ type: 'SET_STATE', payload: stateOrFunc })
   }, [])
 
-  const getRootProps = useCallback(() => {
+  const getRootProps = useLatestCallback(() => {
     return {
+      ...rest,
       onSubmit: handleSubmit,
       onReset: handleReset,
     }
-  }, [handleReset, handleSubmit])
+  })
 
   const getFieldProps = useCallback(
     (props = {}, ref = null) => {
