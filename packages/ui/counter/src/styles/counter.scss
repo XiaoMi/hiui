@@ -1,27 +1,160 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-counter' !default;
+$content-class: '#{$prefix}__content' !default;
+$minus-class: '#{$prefix}__minus' !default;
+$plus-class: '#{$prefix}__plus' !default;
+$input-class: '#{$prefix}__input' !default;
+$input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
 .#{$prefix} {
   position: relative;
-  display: inline-flex;
-  height: auto;
-  min-height: 32px;
-  box-sizing: border-box;
-  color: use-color('gray', 800);
+  display: inline-block;
+  color: use-color('gray', 700);
   font-size: use-text-size('normal');
-  outline: none;
+  z-index: use-zindex('normal');
 
   $this: &;
 
-  &--focused {
-    .#{$prefix}__input {
-      border: 1px solid use-color-mode('primary');
+  &__content{
+    display: flex;
+    box-sizing: border-box;
+    border-radius: use-border-radius('normal');
+  }
+
+  &--appearance-outline {
+    .#{$content-class}{
+      border: use-border-size('normal') use-color('gray',300);
+    }
+
+    &#{$this}--focused{
+      .#{$content-class}{
+        border-color:use-color('brandblue', 500);
+      }
+
+      &::before{
+        background: use-color('brandblue', 50);
+      }
+
+      &#{$this}--out-of-bounds {
+        color: use-color('red', 500);
+        .#{$content-class}{
+          border-color:use-color('red', 500);
+        }
+
+        &::before{
+          background: use-color('red', 50);
+        }
+      }
+    }
+
+    &::before{
+      position: absolute;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      content: '';
+      border-radius: use-border-radius('lg');
+      z-index: -1;
+    }
+
+    .#{$input-class}{
+      border: use-border-size('normal') use-color('gray',300);
+      border-top: none;
+      border-bottom: none;
+
+      &:disabled{
+        background: use-color('gray', 50);
+      }
+    }
+
+    .#{$minus-class},
+    .#{$plus-class}{
+      background: use-color-static('white');
+      color: use-color('gray', 700);
+
+      &:hover{
+        background: use-color('gray', 50);
+      }
+      &:active{
+        background: use-color('gray', 200);
+      }
+      &.disabled{
+        background: use-color('gray', 50);
+        color: use-color('gray', 300);
+      }
     }
   }
 
-  &--out-of-bounds {
-    color: use-color-mode('danger');
+  &--appearance-filled {
+    &#{$this}--focused{
+      .#{$input-class}{
+        background: use-color-static('white');
+        border: use-border-size('normal') use-color('brandblue', 500);
+        border-radius: use-border-radius('sm');
+      }
+
+      .#{$input-wrapper-class}{
+        &::before{
+          background: use-color('brandblue', 50);
+        }
+      }
+
+      &#{$this}--out-of-bounds {
+        color: use-color('red', 500);
+
+        .#{$input-class}{
+          border-color:use-color('red', 500);
+        }
+
+        .#{$input-wrapper-class}{
+          &::before{
+            background: use-color('red', 50);
+          }
+        }
+      }
+    }
+
+    .#{$input-wrapper-class}{
+      position: relative;
+      z-index: use-zindex('normal');
+
+      &::before{
+        position: absolute;
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        content: '';
+        border-radius: use-border-radius('normal');
+        z-index: -1;
+      }
+    }
+
+    .#{$input-class}{
+      border: use-border-size('normal') use-color-static('white');
+      border-top: none;
+      border-bottom: none;
+      background: use-color('gray', 100);
+    }
+
+    .#{$minus-class},
+    .#{$plus-class}{
+      background: use-color('gray', 100);
+      color: use-color('gray', 700);
+
+      &:hover{
+        background: use-color('gray', 200);
+      }
+
+      &.disabled{
+        background: use-color('gray', 100);
+        color: use-color('gray', 300);
+      }
+    }
   }
 
   &__minus,
@@ -38,41 +171,108 @@ $prefix: '#{$component-prefix}-counter' !default;
     justify-content: center;
     flex: 0 0 auto;
     box-sizing: border-box;
-    width: 32px;
-    height: 32px;
-    line-height: 32px;
-    border: 1px solid use-color('gray', 300);
-    border-radius: 2px;
+    //width: 32px;
+    //height: 32px;
+    //line-height: 32px;
     font-weight: bold;
-    color: use-color-mode('primary');
     cursor: pointer;
 
     &.disabled {
-      color: use-color('gray', 500);
       cursor: not-allowed;
     }
   }
 
-  &__minus {
-    border-right: none;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+
+  .#{$minus-class}{
+    border-radius: use-border-radius('normal') 0 0 use-border-radius('normal');
   }
 
-  &__plus {
-    border-left: none;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+  .#{$plus-class}{
+    border-radius: 0 use-border-radius('normal')  use-border-radius('normal') 0;
+  }
+
+  &__input-wrapper{
+    //height: 32px;
+    display: flex;
+    align-items: center;
   }
 
   &__input {
-    flex: 1 1 auto;
-    width: 2 * 32px;
+    height: 100%;
+    //width: 2 * 32px;
     padding: 0 6px;
-    border: 1px solid use-color('gray', 300);
     color: inherit;
     outline: none;
+    border: none;
     box-sizing: border-box;
-    transition: border-color 0.2s ease;
+    text-align: center;
+
+    &:disabled{
+      color: use-color('gray',400);
+    }
+  }
+
+  &--size-xs{
+    .#{$minus-class},.#{$plus-class}{
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+    }
+
+    .#{$input-wrapper-class}{
+      height: 24px;
+    }
+
+    .#{$input-class}{
+      width: 43px;
+    }
+  }
+
+  &--size-sm{
+    .#{$minus-class},.#{$plus-class}{
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+    }
+
+    .#{$input-wrapper-class}{
+      height: 28px;
+    }
+
+    .#{$input-class}{
+      width: 56px;
+    }
+  }
+
+  &--size-md{
+    .#{$minus-class},.#{$plus-class}{
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+    }
+
+    .#{$input-wrapper-class}{
+      height: 32px;
+    }
+
+    .#{$input-class}{
+      width: 58px;
+    }
+  }
+
+  &--size-lg{
+    .#{$minus-class},.#{$plus-class}{
+      width: 36px;
+      height: 36px;
+      line-height: 36px;
+    }
+
+    .#{$input-wrapper-class}{
+      height: 36px;
+    }
+
+    .#{$input-class}{
+      width: 58px;
+    }
   }
 }
