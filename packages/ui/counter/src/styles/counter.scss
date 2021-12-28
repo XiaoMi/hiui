@@ -171,9 +171,9 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     justify-content: center;
     flex: 0 0 auto;
     box-sizing: border-box;
-    width: 32px;
-    height: 32px;
-    line-height: 32px;
+    //width: 32px;
+    //height: 32px;
+    //line-height: 32px;
     font-weight: bold;
     cursor: pointer;
 
@@ -192,14 +192,14 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &__input-wrapper{
-    height: 32px;
+    //height: 32px;
     display: flex;
     align-items: center;
   }
 
   &__input {
     height: 100%;
-    width: 2 * 32px;
+    //width: 2 * 32px;
     padding: 0 6px;
     color: inherit;
     outline: none;
@@ -209,6 +209,70 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
     &:disabled{
       color: use-color('gray',400);
+    }
+  }
+
+  &--size-xs{
+    .#{$minus-class},.#{$plus-class}{
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+    }
+
+    .#{$input-wrapper-class}{
+      height: 24px;
+    }
+
+    .#{$input-class}{
+      width: 43px;
+    }
+  }
+
+  &--size-sm{
+    .#{$minus-class},.#{$plus-class}{
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+    }
+
+    .#{$input-wrapper-class}{
+      height: 28px;
+    }
+
+    .#{$input-class}{
+      width: 56px;
+    }
+  }
+
+  &--size-md{
+    .#{$minus-class},.#{$plus-class}{
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+    }
+
+    .#{$input-wrapper-class}{
+      height: 32px;
+    }
+
+    .#{$input-class}{
+      width: 58px;
+    }
+  }
+
+  &--size-lg{
+    .#{$minus-class},.#{$plus-class}{
+      width: 36px;
+      height: 36px;
+      line-height: 36px;
+    }
+
+    .#{$input-wrapper-class}{
+      height: 36px;
+    }
+
+    .#{$input-class}{
+      width: 58px;
     }
   }
 }
