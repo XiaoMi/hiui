@@ -1,0 +1,43 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-carousel' !default;
+$wrapper-class: '#{$prefix}__wrapper' !default;
+
+.#{$prefix} {
+  width: 100%;
+  height: 100%;
+
+  &__wrapper{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: use-border-radius('lg');
+    overflow: hidden;
+    // 创建层级作用域，避免内部层级泄漏
+    z-index: use-zindex('normal');
+  }
+
+  &--dot-outer{
+    .#{$wrapper-class}{
+      height: calc(100% - 32px);
+    }
+  }
+
+  &__content{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    transition: 300ms ease-in-out all;
+  }
+
+  &__item-wrapper{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+}

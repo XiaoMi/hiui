@@ -15,14 +15,13 @@ export const Badge = forwardRef<HTMLDivElement | null, BadgeProps>(
       role = _role,
       className,
       children,
-      type,
+      type = 'bubble',
       max,
       offset,
       content,
       color,
-      visible,
+      visible = true,
       style,
-      ...rest
     },
     ref
   ) => {
@@ -72,6 +71,7 @@ export interface BadgeProps {
    * 组件的注入样式
    */
   style?: React.CSSProperties
+  children?: React.ReactNode
 
   type?: 'bubble' | 'dot'
   content?: React.ReactNode

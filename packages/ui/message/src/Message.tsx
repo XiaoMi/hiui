@@ -145,6 +145,7 @@ export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | 'title
   autoClose?: boolean
   /**
    * 内部使用，勿覆盖
+   * @private
    */
   $destroy?: () => void
 }

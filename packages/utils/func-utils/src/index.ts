@@ -1,5 +1,5 @@
 import clone from 'lodash/clone'
-import { isArray, isNullish, isObjectLike } from '@hi-ui/type-assertion'
+import { isArray, isNullish, isObjectLike, isFunction } from '@hi-ui/type-assertion'
 
 export type AnyFunction<T = any> = (...args: T[]) => any
 
@@ -97,4 +97,12 @@ export const setNested = <T>(obj: T, paths: (string | number)[], value: any) => 
   target[props[i]] = value
 
   return obj
+}
+
+/**
+ * 如果值是函数，则执行使用返回值，
+ * 否则直接使用值
+ */
+export const runIfFunc = <T, R>(valueOrFn: T | ((...fnArgs: R[]) => T), ...args: R[]): T => {
+  return isFunction(valueOrFn) ? valueOrFn.apply(null, args) : valueOrFn
 }

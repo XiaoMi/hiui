@@ -1,140 +1,172 @@
-import React, { useState, useCallback, useMemo } from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import React, {
+  cloneElement,
+  isValidElement,
+  forwardRef,
+  useState,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import Popper, { PopperProps } from '@hi-ui/popper'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useTooltip, UseTooltipProps } from './use-tooltip'
+import { CSSTransition } from 'react-transition-group'
+import { useUncontrolledToggle } from '@hi-ui/use-toggle'
+import { Portal, PortalProps } from '@hi-ui/portal'
+import { isElement, isString } from '@hi-ui/type-assertion'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
-const _role = 'tooltip'
-const _prefix = getPrefixCls(_role)
-
-const tooltipInstance: Record<string, HTMLDivElement> = {}
-
-const open = (target: HTMLElement | null, tooltipProps: TooltipProps, key: string): void => {
-  const mountNode = document.createElement('div')
-  const { title, placement = 'top', prefixCls = _prefix, overlayClassName } = tooltipProps
-  const cls = cx(prefixCls, overlayClassName)
-  render(
-    <Popper className={cls} visible attachEl={target} placement={placement} arrow>
-      <div className={`${prefixCls}__content`}>{title}</div>
-    </Popper>,
-    mountNode
-  )
-  tooltipInstance[key] = mountNode
-}
-const close = (key: string): void => {
-  const instance = tooltipInstance[key]
-  if (instance) {
-    unmountComponentAtNode(instance)
-    instance.parentNode?.removeChild(instance)
-  }
-}
+export const _prefix = getPrefixCls('tooltip')
 
 /**
  * TODO: What is Tooltip
  */
-
-// TODO:需要考虑 children 禁用的情况
-// TODO:需要考虑 children 为数组的情况
-// TODO:考虑 delay 消失的情况
-// TODO: 目前 popper 有遮照组件的问题
-const TooltipComp: React.FC<TooltipProps> = ({
-  prefixCls = _prefix,
-  role = _role,
-  overlayClassName,
-  overlayStyle,
-  children,
-  title,
-  visible,
-  placement = 'top',
-}) => {
-  const cls = cx(prefixCls, overlayClassName)
-  const [tipVisible, setTipVisible] = useUncontrolledState(false, visible)
-  const [triggerRef, setTriggerRef] = useState<HTMLElement | null>(null)
-
-  const onMouseEnter = useCallback<(event: React.MouseEvent) => void>(
-    (e) => {
-      if (React.isValidElement(children)) {
-        if (children.props.onMouseEnter) {
-          children.props.onMouseEnter(e)
-        }
-
-        setTipVisible(true)
-      }
+export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
+  (
+    {
+      prefixCls = _prefix,
+      className,
+      children,
+      title,
+      arrow = true,
+      visible: visibleProp,
+      portal,
+      onOpen,
+      onClose,
+      preload = false,
+      unmountOnClose = true,
+      onExited,
+      innerRef,
+      ...rest
     },
-    [children, setTipVisible]
-  )
+    ref
+  ) => {
+    const [transitionVisible, transitionVisibleAction] = useUncontrolledToggle({
+      defaultVisible: false,
+      visible: visibleProp,
+      onOpen,
+      onClose,
+    })
 
-  const onMouseLeave = useCallback<(event: React.MouseEvent) => void>(
-    (e) => {
-      if (React.isValidElement(children)) {
-        if (children.props.onMouseLeave) {
-          children.props?.onMouseLeave(e)
-        }
+    // TODO: 1. 优化封装完全非受控 2. useTooltip 支持 attachEl 设置
+    // 用于 api 式完全非受控隐藏
+    const [internalVisible, setInternalVisible] = useState<boolean | undefined>(undefined)
 
-        setTipVisible(false)
+    useImperativeHandle(innerRef, () => ({ close: () => setInternalVisible(false) }))
+
+    const [transitionExisted, setTransitionExisted] = useState(!transitionVisible)
+
+    // 由 CSSTransition 设置动效结束
+    const onExitedLatest = useLatestCallback(() => {
+      setTransitionExisted(true)
+      onExited?.()
+    })
+
+    useEffect(() => {
+      transitionVisibleAction.set(transitionVisible)
+      if (transitionVisible) {
+        setTransitionExisted(false)
       }
-    },
-    [children, setTipVisible]
-  )
+    }, [transitionVisible, transitionVisibleAction])
 
-  const child = useMemo(() => {
-    if (React.isValidElement(children)) {
-      return React.cloneElement(children, { ref: setTriggerRef, onMouseEnter, onMouseLeave })
-    } else {
-      console.error('The children of Tooltip must be a valid element')
-    }
-  }, [children, onMouseEnter, onMouseLeave])
+    const {
+      setTriggerElement,
+      getTriggerProps,
+      getPopperProps,
+      getTooltipProps,
+      getArrowProps,
+    } = useTooltip({
+      ...rest,
+      visible: !transitionExisted,
+      onOpen: transitionVisibleAction.on,
+      onClose: transitionVisibleAction.off,
+    })
 
-  return (
-    <>
-      {child}
-      <Popper
-        attachEl={triggerRef}
-        visible={tipVisible}
-        arrow
-        placement="top"
-        className={cls}
-        gutterGap={19}
-      >
-        <div className={`${prefixCls}__content`}>{title}</div>
-      </Popper>
-    </>
-  )
-}
-export const Tooltip = Object.assign(TooltipComp, { open, close })
+    const triggerMemo = useMemo(() => {
+      let trigger: React.ReactElement | null | undefined
 
-export interface TooltipProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  overlayClassName?: string
+      if (isElement(children)) {
+        trigger = null
+        setTriggerElement(children as HTMLElement)
+      } else if (isValidElement(children)) {
+        trigger = cloneElement(
+          children,
+          // @ts-ignore
+          getTriggerProps(children.props, children.ref)
+        )
+      } else {
+        if (isString(children)) {
+          trigger = (
+            <span tabIndex={0} {...getTriggerProps()}>
+              {children}
+            </span>
+          )
+        } else {
+          // TODO: invariant(true, 'The children should be an React.Element.')
+          if (__DEV__) {
+            console.warn('WARNING (Tooltip): The children should be an React.Element.')
+          }
+        }
+      }
+      return trigger
+    }, [children, getTriggerProps, setTriggerElement])
 
-  /**
-   * 组件的注入选择器类
-   */
-  overlayStyle?: React.CSSProperties
+    if (triggerMemo === undefined) return null
 
+    const cls = cx(prefixCls, className)
+
+    return (
+      <>
+        {triggerMemo}
+
+        <Portal {...portal}>
+          <CSSTransition
+            classNames={`${prefixCls}--motion`}
+            appear
+            timeout={201}
+            in={internalVisible ?? transitionVisible}
+            mountOnEnter={!preload}
+            unmountOnExit={unmountOnClose}
+            onExited={onExitedLatest}
+          >
+            <div className={`${prefixCls}__popper`} {...getPopperProps()}>
+              <div ref={ref} className={cls} {...getTooltipProps()}>
+                {arrow ? <div className={`${prefixCls}__arrow`} {...getArrowProps()} /> : null}
+                <div className={`${prefixCls}__content`}>{title}</div>
+              </div>
+            </div>
+          </CSSTransition>
+        </Portal>
+      </>
+    )
+  }
+)
+
+export interface TooltipProps extends HiBaseHTMLProps<'div'>, UseTooltipProps {
   /**
-   * 是否显示（受控）
-   */
-  visible?: boolean
-  /**
-   * 内容
+   * 	提醒内容
+   * TODO: 使用 content 统一字段
    */
   title: React.ReactNode
   /**
-   * 展示位置
+   * 是否显示箭头
    */
-  placement?: PopperProps['placement']
+  arrow?: boolean
+  /**
+   * 传送门 props
+   */
+  portal?: PortalProps
+  /**
+   * 开启预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
+   */
+  preload?: boolean
+  /**
+   * 开启关闭时销毁，用于性能优化，优先级大于 `preload`
+   */
+  unmountOnClose?: boolean
+  onExited?: () => void
+  innerRef?: React.RefObject<{ close: () => void }>
 }
 
 if (__DEV__) {

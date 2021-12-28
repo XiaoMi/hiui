@@ -24,11 +24,11 @@ export const VerticalStepper = forwardRef<HTMLDivElement | null, VStepperProps>(
               }
             }}
             className={cx(`${prefixCls}__item`, {
-              [`${prefixCls}__item--active`]: !!current && current >= index,
-              // [`${prefixCls}__item--first`]: index === 0,
+              [`${prefixCls}__item--active`]: current !== undefined && current >= index,
+              [`${prefixCls}__item--first`]: index === 0,
               [`${prefixCls}__item--last`]: index === data.length - 1,
-              // [`${prefixCls}__item--left-active`]: !!current && current >= index,
-              // [`${prefixCls}__item--right-active`]: current === index,
+              [`${prefixCls}__item--left-active`]: current !== undefined && current >= index,
+              [`${prefixCls}__item--right-active`]: current !== undefined && current > index,
             })}
           >
             <div className={cx('item-step__wrapper')}>

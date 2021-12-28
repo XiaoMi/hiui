@@ -6,38 +6,38 @@ export const Basic = () => {
     width: '100%',
     padding: '16px 0',
     textAlign: 'center',
-    opacity: '.8',
+    opacity: '0.8',
     color: '#fff',
   }
 
   return (
     <>
       <h1>Basic</h1>
-      <div className="grid-basic__wrap">
+      <div className="grid-basic__wrap" style={{ width: 764 }}>
         <Row>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#4284f5' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>
               col-6
               <br />
               25%
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#ff6700' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>
               col-6
               <br />
               25%
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#4284f5' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>
               col-6
               <br />
               25%
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#ff6700' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>
               col-6
               <br />
               25%

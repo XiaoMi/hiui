@@ -1,15 +1,27 @@
-import React, { forwardRef, useCallback, useState } from 'react'
+import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import Input, { MockInput } from '@hi-ui/input'
+import { MockInput } from '@hi-ui/input'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useSelect } from './use-select'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
-import Popper, { PopperProps } from '@hi-ui/popper'
-import { DownOutlined, SearchOutlined } from '@hi-ui/icons'
+import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { SelectProvider, useSelectContext } from './context'
-import { SelectItem } from './types'
-import { useLatestCallback } from '@hi-ui/use-latest'
+import { SelectDataItem, SelectItem } from './types'
+import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
+import VirtualList from 'rc-virtual-list'
+import { times } from '@hi-ui/times'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { Picker, PickerProps } from '@hi-ui/picker'
+import { Highlighter } from '@hi-ui/highlighter'
+import { UseDataSource } from '@hi-ui/use-data-source'
+import {
+  useAsyncSearch,
+  useFilterSearch,
+  useSearchMode,
+  useTreeCustomSearch,
+} from '@hi-ui/use-search-mode'
+import { uniqBy } from 'lodash'
 
 const _role = 'select'
 const _prefix = getPrefixCls(_role)
@@ -25,88 +37,170 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       className,
       children,
       disabled = false,
-      clearable = false,
-      searchable = false,
-      placeholder,
+      clearable = true,
+      placeholder = '请选择',
       displayRender: displayRenderProp,
       onSelect: onSelectProp,
       popper,
+      height,
+      itemHeight = 40,
+      virtual = true,
+      appearance,
+      invalid,
+      dataSource,
+      filterOption,
+      searchable: searchableProp,
+      titleRender,
+      renderExtraFooter,
       ...rest
     },
     ref
   ) => {
     const [menuVisible, menuVisibleAction] = useToggle()
-    const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
 
-    const openMenu = useCallback(() => {
-      if (disabled) return
-      menuVisibleAction.on()
-    }, [disabled, menuVisibleAction])
+    // 搜索时临时选中缓存数据
+    const [selectedItem, setSelectedItem] = useState<SelectDataItem | null>(null)
 
     const onSelectLatest = useLatestCallback(onSelectProp)
     const onSelect = useCallback(
-      (value: React.ReactText, item: SelectItem) => {
+      (value: React.ReactText, item: SelectDataItem) => {
         onSelectLatest(value, item)
+        setSelectedItem(item)
+
         // 关闭弹窗
         menuVisibleAction.off()
       },
       [menuVisibleAction, onSelectLatest]
     )
 
-    const displayRender = useCallback(
-      (item: SelectItem) => {
-        if (displayRenderProp) {
-          return displayRenderProp(item)
-        }
-
-        return item.title
-      },
-      [displayRenderProp]
-    )
-
     // @ts-ignore
     const { rootProps, ...context } = useSelect({ ...rest, onSelect, children })
-    const { value, tryChangeValue, data: selectData } = context
+    const { value, tryChangeValue, flattedData: selectData } = context
+
+    // ************************** 异步搜索 ************************* //
+
+    // TODO: 支持对 Item 传入 状态
+    const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({ dataSource })
+    const customSearchStrategy = useTreeCustomSearch({ data: selectData, filterOption })
+    const filterSearchStrategy = useFilterSearch({
+      data: selectData,
+      flattedData: selectData,
+      searchMode: searchableProp ? 'filter' : undefined,
+    })
+
+    const {
+      state: stateInSearch,
+      searchable,
+      searchMode,
+      onSearch,
+      keyword: searchValue,
+    } = useSearchMode({
+      searchable: searchableProp,
+      strategies: [dataSourceStrategy, customSearchStrategy, filterSearchStrategy],
+    })
+
+    // 拦截 titleRender，自定义高亮展示
+    const proxyTitleRender = useCallback(
+      (node: any) => {
+        if (titleRender) {
+          const ret = titleRender(node)
+          if (ret && ret !== true) return ret
+        }
+
+        // 本地搜索执行默认高亮规则
+        const highlight = !!searchValue && (searchMode === 'highlight' || searchMode === 'filter')
+
+        const ret = highlight ? <Highlighter keyword={searchValue}>{node.title}</Highlighter> : true
+
+        return ret
+      },
+      [titleRender, searchValue, searchMode]
+    )
+
+    const shouldUseSearch = !!searchValue && !hasError
+
+    const selectProps = {
+      data: shouldUseSearch ? stateInSearch.data : selectData,
+      titleRender: proxyTitleRender,
+    }
+
+    // 下拉菜单不能合并（因为树形数据，不知道是第几级）
+    const mergedData: any[] = useMemo(() => {
+      if (selectedItem) {
+        const nextData = [selectedItem].concat(selectData as any[])
+        return uniqBy(nextData, 'id')
+      }
+
+      return selectData
+    }, [selectedItem, selectData])
 
     const cls = cx(prefixCls, className)
 
     return (
       <SelectProvider value={context}>
-        <div ref={ref} role={role} className={cls} {...rootProps}>
-          <MockInput
-            ref={setTargetElRef}
-            onClick={openMenu}
-            disabled={disabled}
-            clearable={clearable}
-            placeholder={placeholder}
-            data={selectData}
-            value={value}
-            onChange={tryChangeValue}
-            displayRender={displayRender}
-            suffix={<DownOutlined />}
-          />
-          <Popper
-            {...popper}
-            attachEl={targetElRef}
-            visible={menuVisible}
-            onClose={menuVisibleAction.off}
-          >
-            <div className={`${prefixCls}-panel`}>
-              {searchable ? <SelectSearch /> : null}
-              {/* {children} */}
-              {/* 反向 map，搜索删选数据时会对数据进行处理 */}
-              {selectData.map((item) => {
-                return <SelectOption key={item.id} option={item} />
-              })}
-            </div>
-          </Popper>
-        </div>
+        <Picker
+          ref={ref}
+          className={cls}
+          {...rootProps}
+          visible={menuVisible}
+          disabled={disabled}
+          onOpen={menuVisibleAction.on}
+          onClose={menuVisibleAction.off}
+          // value={value}
+          // onChange={tryChangeValue}
+          // data={mergedData}
+          searchable={searchable}
+          onSearch={onSearch}
+          loading={loading}
+          footer={renderExtraFooter ? renderExtraFooter() : null}
+          trigger={
+            <MockInput
+              // ref={targetElementRef}
+              // onClick={openMenu}
+              // disabled={disabled}
+              clearable={clearable}
+              placeholder={placeholder}
+              displayRender={displayRenderProp}
+              suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+              focused={menuVisible}
+              value={value}
+              onChange={tryChangeValue}
+              // @ts-ignore
+              data={mergedData.filter((item) => !('groupTitle' in item))}
+              // @ts-ignore
+              invalid={invalid}
+              appearance={appearance}
+            />
+          }
+        >
+          {isArrayNonEmpty(selectProps.data) ? (
+            <VirtualList
+              itemKey="id"
+              fullHeight={false}
+              height={height}
+              itemHeight={itemHeight}
+              virtual={virtual}
+              data={selectProps.data}
+            >
+              {(node: any) => {
+                /* 反向 map，搜索删选数据时会对数据进行处理 */
+                return 'groupTitle' in node ? (
+                  <SelectOptionGroup label={node.groupTitle} />
+                ) : (
+                  // @ts-ignore
+                  <SelectOption option={node} depth={node.depth} titleRender={proxyTitleRender} />
+                )
+              }}
+            </VirtualList>
+          ) : null}
+        </Picker>
       </SelectProvider>
     )
   }
 )
 
-export interface SelectProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange' | 'onSelect'> {
+export interface SelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'trigger'> {
+  // export interface SelectProps extends Omit<HiBaseHTMLFieldProps<'div'>, 'onChange' | 'onSelect'> {
   /**
    * 设置当前选中值
    */
@@ -118,11 +212,11 @@ export interface SelectProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange' | '
   /**
    * 选中值改变时的回调
    */
-  onChange?: (value: React.ReactText, targetOption?: SelectItem) => void
+  onChange?: (value: React.ReactText, targetOption?: SelectDataItem) => void
   /**
    * 选中值时回调
    */
-  onSelect?: (value: React.ReactText, targetOption?: SelectItem) => void
+  onSelect?: (value: React.ReactText, targetOption?: SelectDataItem) => void
   /**
    * 是否可搜索（仅在 title 为字符串时支持）
    */
@@ -132,41 +226,55 @@ export interface SelectProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange' | '
    */
   clearable?: boolean
   /**
-   * 是否禁止使用
-   */
-  disabled?: boolean
-  /**
-   * 设置选项为空时展示的内容
-   */
-  emptyContent?: React.ReactNode
-  /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: SelectItem) => React.ReactNode
+  titleRender?: (item: SelectDataItem) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容，只在 title 为字符串时有效
    */
-  displayRender?: (option: SelectItem) => React.ReactNode
+  displayRender?: (option: SelectDataItem) => React.ReactNode
   /**
    * 触发器输入框占位符
    */
   placeholder?: string
   /**
-   * 搜索输入框占位符
-   */
-  searchPlaceholder?: string
-  /**
-   * 自定义控制 popper 行为
-   */
-  popper?: PopperProps
-  /**
-   * 搜索数据
-   */
-  onSearch?: (item: SelectItem) => Promise<SelectItem[] | void> | void
-  /**
    * 选项数据
    */
   data?: SelectItem[]
+  /**
+   * 设置虚拟滚动容器的可视高度
+   */
+  height?: number
+  /**
+   * 设置虚拟列表每项的固定高度
+   */
+  itemHeight?: number
+  /**
+   * 	设置 `true` 开启虚拟滚动
+   */
+  virtual?: boolean
+  /**
+   * 设置展现形式
+   */
+  appearance?: 'outline' | 'unset' | 'filled'
+  /**
+   * 节点搜索模式，仅在mode=normal模式下生效
+   */
+  searchMode?: 'highlight' | 'filter'
+  /**
+   * 自定义搜索过滤器，仅在 searchable 为 true 时有效
+   * 第一个参数为输入的关键字，
+   * 第二个为数据项，返回值为 true 时将出现在结果项
+   */
+  filterOption?: (keyword: string, item: SelectDataItem) => boolean
+  /**
+   * 异步加载数据
+   */
+  dataSource?: UseDataSource<SelectDataItem>
+  /**
+   * 自定义下拉菜单底部渲染
+   */
+  renderExtraFooter?: () => React.ReactNode
 }
 
 // @ts-ignore
@@ -175,47 +283,65 @@ if (__DEV__) {
   Select.displayName = 'Select'
 }
 
-const searchPrefix = getPrefixCls('select-search')
-
-export const SelectSearch = forwardRef<HTMLInputElement | null, SelectSearchProps>(
-  ({ prefixCls = searchPrefix, className, ...rest }, ref) => {
-    const { isEmpty, emptyContent, getSearchInputProps } = useSelectContext()
-
-    return (
-      <div ref={ref} className={cx(prefixCls, className)} {...rest}>
-        <Input appearance="underline" prefix={<SearchOutlined />} {...getSearchInputProps()} />
-        {isEmpty ? <span className={`${prefixCls}__empty`}>{emptyContent}</span> : null}
-      </div>
-    )
-  }
-)
-
-export interface SelectSearchProps extends HiBaseHTMLProps {}
-
-if (__DEV__) {
-  SelectSearch.displayName = 'SelectSearch'
-}
-
 const optionPrefix = getPrefixCls('select-option')
 
 export const SelectOption = forwardRef<HTMLDivElement | null, SelectOptionProps>(
-  ({ prefixCls = optionPrefix, className, children, option = {}, onClick, ...rest }, ref) => {
+  (
+    {
+      prefixCls = optionPrefix,
+      className,
+      children,
+      option = {},
+      depth,
+      onClick,
+      titleRender,
+      ...rest
+    },
+    ref
+  ) => {
     const { isSelectedId, onSelect } = useSelectContext()
 
-    const cls = cx(prefixCls, className, isSelectedId(option.id) && `${prefixCls}--selected`)
+    const { id, disabled = false } = option
+    const selected = isSelectedId(id)
+
+    const eventNodeRef = useLatestRef(
+      Object.assign({}, option, {
+        disabled: disabled,
+        selected,
+      })
+    )
+
+    const cls = cx(
+      prefixCls,
+      className,
+      selected && `${prefixCls}--selected`,
+      disabled && `${prefixCls}--disabled`
+    )
 
     const onClickLatest = useLatestCallback(onClick)
     const handleClick = useCallback(
       (evt) => {
-        onSelect(option)
+        onSelect(eventNodeRef.current)
         onClickLatest(evt)
       },
-      [onSelect, option, onClickLatest]
+      [onSelect, onClickLatest, eventNodeRef]
+    )
+
+    const renderTitle = useCallback(
+      (node: any, titleRender?: (node: any) => React.ReactNode) => {
+        // 如果 titleRender 返回 `true`，则使用默认 title
+        const title = titleRender ? titleRender(node) : true
+
+        return <div className={`${prefixCls}__title`}>{title === true ? node.title : title}</div>
+      },
+      [prefixCls]
     )
 
     return (
       <div ref={ref} className={cls} onClick={handleClick} {...rest}>
-        <span className={`${prefixCls}__title`}>{option.title}</span>
+        {renderIndent(prefixCls, depth)}
+        {renderTitle(eventNodeRef.current, titleRender)}
+        {/* <span className={`${prefixCls}__title`}>{option.title}</span> */}
       </div>
     )
   }
@@ -227,4 +353,42 @@ SelectOption.HiName = 'SelectOption'
 
 if (__DEV__) {
   SelectOption.displayName = 'SelectOption'
+}
+
+const optionGroupPrefix = getPrefixCls('select-option-group')
+
+/**
+ * TODO: What is SelectOptionGroup
+ */
+export const SelectOptionGroup = forwardRef<HTMLDivElement | null, SelectOptionGroupProps>(
+  ({ prefixCls = optionGroupPrefix, className, children, label, onClick, ...rest }, ref) => {
+    const cls = cx(prefixCls, className)
+
+    return (
+      <div ref={ref} className={cls} {...rest}>
+        <span>{label}</span>
+      </div>
+    )
+  }
+)
+
+export interface SelectOptionGroupProps extends HiBaseHTMLProps {}
+
+// @ts-ignore
+SelectOptionGroup.HiName = 'SelectOptionGroup'
+if (__DEV__) {
+  SelectOptionGroup.displayName = 'SelectOptionGroup'
+}
+
+/**
+ * 渲染空白占位
+ */
+const renderIndent = (prefixCls: string, depth: number) => {
+  return times(depth, (index: number) => {
+    return (
+      <span key={index} style={{ alignSelf: 'stretch' }}>
+        <span className={cx(`${prefixCls}__indent`)} />
+      </span>
+    )
+  })
 }

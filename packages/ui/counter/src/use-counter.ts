@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { plus, minus } from 'number-precision'
 import { cx } from '@hi-ui/classname'
-import { isBrowser, __DEV__ } from '@hi-ui/env'
+import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
 import { useToggle } from '@hi-ui/use-toggle'
@@ -9,9 +9,6 @@ import { isNumeric } from '@hi-ui/type-assertion'
 import { CounterProps } from './Counter'
 
 const DEFAULT_VALUE = 0
-
-const pointerDown =
-  isBrowser && 'ontouchstart' in document.documentElement ? 'onTouchStart' : 'onMouseDown'
 
 export const useCounter = ({
   prefixCls,
@@ -30,6 +27,8 @@ export const useCounter = ({
   onBlur,
   changeOnWheel = false,
   onWheel,
+  size = 'md',
+  appearance = 'outline',
   ...rest
 }: UseCounterProps) => {
   const min = minProp ?? Number.MIN_SAFE_INTEGER
@@ -228,6 +227,8 @@ export const useCounter = ({
   const cls = cx(
     prefixCls,
     className,
+    `${prefixCls}--size-${size}`,
+    `${prefixCls}--appearance-${appearance}`,
     focus && `${prefixCls}--focused`,
     !isNumeric(value) && `${prefixCls}--invalid`,
     isOutOfRange(value, min, max) && `${prefixCls}--out-of-bounds`
@@ -247,7 +248,7 @@ export const useCounter = ({
       'aria-valuenow': value,
       'aria-valuemin': minProp,
       'aria-valuemax': maxProp,
-      value: inputValue,
+      value: inputValue as string,
       tabIndex,
       autoFocus: autoFocus,
       disabled: disabled,
@@ -280,7 +281,7 @@ export const useCounter = ({
       'aria-disabled': disabledMinus ? true : undefined,
       tabIndex: -1,
       disabled: disabledMinus,
-      [pointerDown]: handleMinusButtonTouch,
+      onClick: handleMinusButtonTouch,
     }
   }, [prefixCls, disabledMinus, handleMinusButtonTouch])
 
@@ -291,15 +292,29 @@ export const useCounter = ({
       'aria-disabled': disabledPlus ? true : undefined,
       tabIndex: -1,
       disabled: disabledPlus,
-      [pointerDown]: handlePlusButtonTouch,
+      onClick: handlePlusButtonTouch,
     }
   }, [prefixCls, disabledPlus, handlePlusButtonTouch])
+
+  const getContentProps = useCallback(() => {
+    return {
+      className: cx(`${prefixCls}__content`),
+    }
+  }, [prefixCls])
+
+  const getInputWrapperProps = useCallback(() => {
+    return {
+      className: cx(`${prefixCls}__input-wrapper`),
+    }
+  }, [prefixCls])
 
   return {
     rootProps,
     getInputProps,
     getMinusButtonProps,
     getPlusButtonProps,
+    getContentProps,
+    getInputWrapperProps,
   }
 }
 

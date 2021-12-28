@@ -200,7 +200,7 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
       vertical-align: middle;
       color: use-color-static('black');
       border: 1px solid transparent;
-      background-color: use-color-mode('white');
+      background-color: use-color-statc('white');
       transition: all 0.3s;
       padding: 3px 0;
       display: inline-flex;

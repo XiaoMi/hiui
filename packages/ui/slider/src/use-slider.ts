@@ -3,6 +3,8 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { __DEV__ } from '@hi-ui/env'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { useToggle } from '@hi-ui/use-toggle'
+import { getPrefixStyleVar } from '@hi-ui/classname'
+import { setAttrStatus } from '@hi-ui/dom-utils'
 
 export const useSlider = ({
   value: valueProp,
@@ -10,13 +12,13 @@ export const useSlider = ({
   defaultValue = 0,
   min: minProp = 0,
   max: maxProp = 100,
-  step = 0,
+  step = 1,
   vertical = false,
   disabled = false,
-  tipFormatter,
   marks = {},
   showRangeLabel = false,
   reversed = false,
+  color,
   ...rest
 }: UseSliderProps) => {
   /**
@@ -59,14 +61,14 @@ export const useSlider = ({
   const [tooltipVisible, tooltipVisibleAction] = useToggle()
 
   const sliderRef = useRef<HTMLDivElement>(null)
-  const handleElRef = useRef<HTMLDivElement>(null)
 
   /**
    * 计算 track 滑动长度占总 Slider 长度占比
    */
   const getTrackPercent = useCallback(
     (value) => {
-      return ((value - min) / rangeLength) * 100
+      const percent = ((value - min) / rangeLength) * 100
+      return Math.max(Math.min(percent, 100), 0)
     },
     [rangeLength, min]
   )
@@ -78,7 +80,7 @@ export const useSlider = ({
    */
   const onHandleClick = useCallback(
     (evt) => {
-      // TODO: Remove
+      // TODO: Remove, using tooltip
       if (lastTime - firstTime < 200) {
         evt.stopPropagation()
         tooltipVisibleAction.on()
@@ -178,8 +180,6 @@ export const useSlider = ({
 
       if (disabled) return
 
-      // const { clientX, clientY } = evt
-
       setInMoving(true)
 
       setValueByDrag(evt)
@@ -200,11 +200,17 @@ export const useSlider = ({
   /**
    * 手指松开 handle，停止拖动
    */
-  const onDragEnd = useCallback((evt) => {
-    evt.stopPropagation()
-    setLastTime(Date.now())
-    setInMoving(false)
-  }, [])
+  const onDragEnd = useCallback(
+    (evt) => {
+      console.log('dadsaddas')
+      if (!inMoving) return
+      evt.stopPropagation()
+      setLastTime(Date.now())
+      setInMoving(false)
+      tooltipVisibleAction.off()
+    },
+    [tooltipVisibleAction, inMoving]
+  )
 
   useEffect(() => {
     if (disabled) return
@@ -275,12 +281,6 @@ export const useSlider = ({
     [value, max, min, proxyTryChangeValue, step]
   )
 
-  // const [didMount, setDidMount] = useState(false)
-
-  // useEffect(() => {
-  //   setDidMount(true)
-  // }, [])
-
   /**
    * 对 tooltip 的处理
    */
@@ -297,19 +297,14 @@ export const useSlider = ({
       touchAction: 'none',
     }
 
-    // TODO: 如何只测量 DOM 一次盒尺寸，现在是每次渲染都会拿取
     if (vertical) {
-      const handleHeight = handleElRef.current?.getBoundingClientRect?.().height ?? 0
-      style.top = `calc(${100 - currentPositionOffset}% - ${handleHeight / 2}px)`
+      style.top = `${100 - currentPositionOffset}%`
     } else {
-      const handleWidth = handleElRef.current?.getBoundingClientRect?.().width ?? 0
-      style.left = `calc(${currentPositionOffset}% - ${handleWidth / 2}px)`
+      style.left = `${currentPositionOffset}%`
     }
 
     return {
-      ref: handleElRef,
       style,
-      // onMouseDown: onDragStart,
       onMouseEnter,
       onMouseLeave,
       onClick: onHandleClick,
@@ -330,8 +325,8 @@ export const useSlider = ({
 
   const getRailProps = useCallback(() => {
     const style: React.CSSProperties = {
-      width: '100%',
       position: 'absolute',
+      [vertical ? 'height' : 'width']: '100%',
     }
 
     return {
@@ -353,17 +348,19 @@ export const useSlider = ({
 
   const getMarkProps = useCallback(
     (props) => {
-      const value = ((props.value - min) / rangeLength) * 100
+      const dotValue = ((props.value - min) / rangeLength) * 100
+
       return {
         style: {
-          [!vertical ? 'left' : 'bottom']: value + '%',
+          [!vertical ? 'left' : 'bottom']: dotValue + '%',
         },
+        'data-checked': setAttrStatus(dotValue <= value),
         onClick: (evt: React.MouseEvent) => {
-          onMarkClick(evt, value)
+          onMarkClick(evt, dotValue)
         },
       }
     },
-    [onMarkClick, vertical, min, rangeLength]
+    [onMarkClick, vertical, min, rangeLength, value]
   )
 
   const getMarkLabelProps = useCallback(
@@ -387,10 +384,13 @@ export const useSlider = ({
   const rootProps = {
     ...rest,
     style: {
+      // @ts-ignore
+      ...rest.style,
       position: 'relative',
       userSelect: 'none',
       touchAction: 'none',
       outline: 0,
+      [getPrefixStyleVar('slider-color')]: color,
     } as React.CSSProperties,
     ref: sliderRef,
     // 指定某个 slider 被点击时触发，不能挂载到全局
@@ -398,6 +398,12 @@ export const useSlider = ({
   }
 
   return {
+    value,
+    min,
+    max,
+    vertical,
+    disabled,
+    tooltipVisible,
     rootProps: rootProps,
     getHandleProps,
     getRailProps,
@@ -433,10 +439,6 @@ export interface UseSliderProps {
    */
   showRangeLabel?: boolean
   /**
-   * 自定义 Tooltip 中显示文案
-   */
-  tipFormatter?: (value: number) => React.ReactNode
-  /**
    * 刻度标记，key 的类型必须为 number，且取值在闭区间 [min, max] 内
    */
   marks?: Record<number, any>
@@ -456,6 +458,10 @@ export interface UseSliderProps {
    * 当 Slider 的值发生改变时触发，value 为变化后的值
    */
   onChange?: (value: number) => void
+  /**
+   * 自定义颜色
+   */
+  color?: string
 }
 
 export type UseSliderReturn = ReturnType<typeof useSlider>

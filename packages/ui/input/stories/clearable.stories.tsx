@@ -8,11 +8,11 @@ export const Clearable = () => {
       <div className="input-clearable__wrap">
         <Input
           clearable
-          placeholder="请输入"
+          placeholder="内容输入后只在 hover 时可清除"
           onChange={(e) => console.log('change', e.target.value)}
         ></Input>
         <br />
-        <Input clearable clearableTrigger="always" placeholder="请输入"></Input>
+        <Input clearable clearableTrigger="always" placeholder="内容输入后就可清除"></Input>
       </div>
     </>
   )

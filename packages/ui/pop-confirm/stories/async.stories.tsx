@@ -1,11 +1,10 @@
 import Button from '@hi-ui/button'
 import React from 'react'
 import PopConfirm from '../src'
-import message from '@hi-ui/message'
 
 export const Async = () => {
   const [visible, setVisible] = React.useState(false)
-
+  const [loading, setLoading] = React.useState(false)
   return (
     <>
       <h1>Async</h1>
@@ -15,13 +14,26 @@ export const Async = () => {
           visible={visible}
           onClose={() => setVisible(false)}
           popper={{ closeOnOutsideClick: false, closeOnEsc: false }}
-          closeOnConfirm={false}
-          onConfirm={() => {
-            message.open({ title: 'PopConfirm will close after 2s.' })
-            setTimeout(() => {
-              setVisible(false)
-            }, 2000)
-          }}
+          footer={[
+            <Button key="1" type="default" size="small" onClick={() => setVisible(false)}>
+              取消
+            </Button>,
+            <Button
+              key="2"
+              type="primary"
+              size="small"
+              loading={loading}
+              onClick={() => {
+                setLoading(true)
+                setTimeout(() => {
+                  setLoading(false)
+                  setVisible(false)
+                }, 2000)
+              }}
+            >
+              确认
+            </Button>,
+          ]}
         >
           <Button onClick={() => setVisible(true)}>Trigger</Button>
         </PopConfirm>

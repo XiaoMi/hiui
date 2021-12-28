@@ -55,6 +55,7 @@ const getMatchedNodes = (
   if (!searchValue) return []
 
   return flattedData.filter((node) => {
+    // @ts-ignore
     if (typeof node.title !== 'string') {
       if (__DEV__) {
         console.info('WARNING: The `option.title` should be `string` when searchable is enabled.')
@@ -65,6 +66,7 @@ const getMatchedNodes = (
     if (filter && filter(node)) return false
 
     // 匹配策略：`String.include`
+    // @ts-ignore
     return node.title.includes?.(searchValue)
   })
 }

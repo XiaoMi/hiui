@@ -14,24 +14,23 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
       children,
       indicator = <DefaultIndicator />,
       title,
-      subtitle,
       imageStyle,
       imageClassName,
+      size = 'small',
       ...rest
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
     const imageCls = cx(`${prefixCls}__image`, imageClassName)
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
         <div className={imageCls} style={imageStyle}>
-          {indicator}
+          {typeof indicator === 'string' ? <img src={indicator} alt={'indicator'} /> : indicator}
         </div>
         {title ? <span className={`${prefixCls}__title`}>{title}</span> : null}
-        {subtitle ? <span className={`${prefixCls}__subtitle`}>{subtitle}</span> : null}
-        {children}
+        {children && <div className={`${prefixCls}__slot`}>{children}</div>}
       </div>
     )
   }
@@ -56,9 +55,15 @@ export interface EmptyStateProps {
   style?: React.CSSProperties
   indicator?: React.ReactNode
   title?: React.ReactNode
-  subtitle?: React.ReactNode
   imageStyle?: React.CSSProperties
   imageClassName?: string
+  /**
+   * 图标尺寸
+   * @default 'small'
+   */
+  size?: 'small' | 'medium' | 'large'
+
+  children?: React.ReactNode
 }
 
 if (__DEV__) {

@@ -1,0 +1,16 @@
+$shadow-color-base: rgba(#1f2733, 0.1) !default;
+
+// 基础阴影
+$shadow-base-map: (
+  'none': 'none',
+  // 阴影颜色设计成绝对值，表示统一标准，无需使用 token
+  'xs': '0 1px 2px 0 #{$shadow-color-base}',
+  'sm': '0 2px 4px 0 #{$shadow-color-base}',
+  'normal': '0 4px 8px 0 #{$shadow-color-base}', // md
+  'md': '0 4px 8px 0 #{$shadow-color-base}',
+  'lg': '0 8px 16px 0 #{$shadow-color-base}',
+) !default;
+
+@function get-shadow($name) {
+  @return map-safe-get($shadow-base-map, $name);
+}

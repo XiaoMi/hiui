@@ -9,13 +9,25 @@ const _prefix = getPrefixCls(_role)
  * TODO: What is Breadcrumb
  */
 export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
-  ({ prefixCls = _prefix, role = _role, className, data, separator, onClick, ...rest }, ref) => {
-    const cls = cx(prefixCls, className)
+  (
+    {
+      prefixCls = _prefix,
+      role = _role,
+      className,
+      data,
+      separator,
+      onClick,
+      size = 'md',
+      ...rest
+    },
+    ref
+  ) => {
+    const cls = cx(prefixCls, `${prefixCls}--${size}`, className)
 
     return (
       <ul ref={ref} role={role} className={cls} {...rest}>
         {data?.map((item, index) => (
-          <li key={index} className={`${cls}__item`}>
+          <li key={index} className={`${prefixCls}__item`}>
             {item.href && index !== data.length - 1 ? (
               <a
                 href={item.href}
@@ -25,16 +37,16 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
                     onClick(e, item, index)
                   }
                 }}
-                className={cx(`${cls}__content`, {
-                  [`${cls}__content--active`]: index === data.length - 1,
+                className={cx(`${prefixCls}__content`, {
+                  [`${prefixCls}__content--active`]: index === data.length - 1,
                 })}
               >
                 {item.content}
               </a>
             ) : (
               <span
-                className={cx(`${cls}__content`, {
-                  [`${cls}__content--active`]: index === data.length - 1,
+                className={cx(`${prefixCls}__content`, {
+                  [`${prefixCls}__content--active`]: index === data.length - 1,
                 })}
                 onClick={(e) => {
                   if (onClick) {
@@ -46,7 +58,7 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
               </span>
             )}
 
-            <span className={`${cls}__separator`}>{separator}</span>
+            <span className={`${prefixCls}__separator`}>{separator}</span>
           </li>
         ))}
       </ul>
@@ -94,6 +106,10 @@ export interface BreadcrumbProps {
    * 面包屑数据项
    */
   data?: BreadcrumbItemProps[]
+  /**
+   * 面包屑尺寸
+   */
+  size?: 'sm' | 'md'
   /**
    * 点击事件
    */

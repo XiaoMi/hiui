@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tag",
-  "version": "4.0.0-alpha.7",
+  "version": "4.0.0-alpha.13",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,16 +43,19 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/button": "^4.0.0-alpha.13",
     "@hi-ui/classname": "^4.0.0-alpha.2",
-    "@hi-ui/core-css": "^4.0.0-alpha.3",
-    "@hi-ui/env": "^4.0.0-alpha.3"
+    "@hi-ui/core-css": "^4.0.0-alpha.8",
+    "@hi-ui/env": "^4.0.0-alpha.3",
+    "@hi-ui/icons": "^4.0.0-alpha.16",
+    "@hi-ui/tooltip": "^4.0.0-alpha.4"
   },
   "peerDependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.2",
+    "@hi-ui/hi-build": "^4.0.0-alpha.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

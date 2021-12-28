@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { defaultTipIcon } from './icons'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
@@ -7,11 +6,9 @@ import { withDefaultProps, mergeRefs } from '@hi-ui/react-utils'
 import { PopperPortalProps } from '@hi-ui/popper'
 
 export const usePopConfirm = ({
-  role = 'alert-dialog',
   visible: visibleProp,
   onClose: onCloseProp,
   disabled = false,
-  icon = defaultTipIcon,
   closeOnCancel = true,
   closeOnConfirm = true,
   onCancel: onCancelProp,
@@ -75,7 +72,12 @@ export const usePopConfirm = ({
   )
 
   const getPopperProps = useCallback(() => {
-    const popperProps = withDefaultProps(popper, { arrow: true, placement: 'top' })
+    const popperProps = withDefaultProps(popper, {
+      arrow: true,
+      placement: 'top',
+      // @DesignToken 10
+      gutterGap: 14,
+    })
 
     return {
       ...popperProps,
@@ -86,8 +88,8 @@ export const usePopConfirm = ({
   }, [visible, targetEl, popper, onClose])
 
   const rootProps = {
+    role: 'alert-dialog',
     ...rest,
-    role,
   }
 
   return {
@@ -101,10 +103,6 @@ export const usePopConfirm = ({
 
 export interface UsePopConfirmProps {
   /**
-   * 语义化标签
-   */
-  role?: React.AriaRole
-  /**
    *  是否显示确认框
    */
   visible?: boolean
@@ -112,14 +110,6 @@ export interface UsePopConfirmProps {
    * 确认框关闭时回调
    */
   onClose?: () => void
-  /**
-   * 取消按钮文案
-   */
-  cancelText?: React.ReactNode
-  /**
-   * 确认按钮文案
-   */
-  confirmText?: React.ReactNode
   /**
    * 取消时关闭确认框
    */
@@ -140,10 +130,6 @@ export interface UsePopConfirmProps {
    * 是否开启禁用
    */
   disabled?: boolean
-  /**
-   * 自定义提示的 icon 图标
-   */
-  icon?: React.ReactNode
   /**
    * 自定义控制 popper 行为，参见 `PopperProps`
    */

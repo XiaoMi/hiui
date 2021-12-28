@@ -1,18 +1,6 @@
 import React from 'react'
 import Stepper from '../src'
 
-const list = [
-  {
-    title: '账号信息',
-  },
-  {
-    title: '邮箱激活',
-  },
-  {
-    title: '信息登记',
-  },
-]
-
 const list2 = [
   {
     title: '账号信息',
@@ -33,7 +21,7 @@ export const VerticalLayout = () => {
     <>
       <h1>Stepper</h1>
       <div className="stepper-basic__wrap">
-        <Stepper data={list2} current={2} placement="vertical" />
+        <Stepper data={list2} current={1} placement="vertical" />
       </div>
     </>
   )

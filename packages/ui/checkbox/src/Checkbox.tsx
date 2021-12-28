@@ -57,8 +57,10 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
     )
 
     const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-      if (disabled) return
+      evt.preventDefault()
+      evt.stopPropagation()
 
+      if (disabled) return
       tryChangeChecked(evt.target.checked, evt)
     }
 

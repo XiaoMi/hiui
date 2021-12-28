@@ -5,3 +5,22 @@ export const isBrowser = !!(
   window.document &&
   window.document.createElement
 )
+
+export const invariant = (condition: any, format: string, ...args: any[]) => {
+  if (__DEV__) {
+    if (!condition) {
+      let argIndex = 0
+      const message = `[HiUI ${'table'}] ` + format.replace(/%s/g, () => args[argIndex++])
+
+      try {
+        // To find the call stack of error.
+        throw new Error(message)
+      } catch (error) {
+        // support for SSR.
+        if (typeof console !== 'undefined') {
+          console.error(error)
+        }
+      }
+    }
+  }
+}

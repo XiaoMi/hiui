@@ -1,6 +1,5 @@
 import React from 'react'
 import Button from '../src'
-import * as Icon from '@hi-ui/icons'
 
 export const Line = () => {
   const btnRef = React.useRef(null)
@@ -11,25 +10,20 @@ export const Line = () => {
     <>
       <h1>Button</h1>
       <div className="button-basic__wrap">
-        <Button appearance="line" type="primary">
-          点击
+        <Button type="primary" appearance="line">
+          主要按钮
         </Button>
-        <Button appearance="line" type="primary" loading>
-          点击
+        <Button type="secondary" appearance="line">
+          次要按钮
         </Button>
-        <Button appearance="line" type="success">
-          安全按钮
+        <Button type="default" appearance="line">
+          中性按钮
         </Button>
-        <Button appearance="line" type="success" loading>
-          安全按钮
-        </Button>
-        <Button appearance="line" type="danger" loading>
-          <Icon.PlusOutlined />
+        <Button type="danger" appearance="line">
           危险按钮
         </Button>
-        <Button appearance="line" type="default">
-          <Icon.PlusOutlined />
-          普通按钮
+        <Button type="success" appearance="line">
+          成功按钮
         </Button>
       </div>
     </>

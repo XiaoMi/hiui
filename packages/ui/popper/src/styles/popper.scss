@@ -114,13 +114,15 @@ $prefix: '#{$component-prefix}-popper' !default;
     position: relative;
     box-sizing: border-box;
     background-color: use-color-static('white');
-    box-shadow: 0 1px 12px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: use-shadow('normal');
     border-radius: use-spacing(2);
     // 为了保证 arrow 三角形可以正常展示
     min-width: 36px;
     min-height: 36px;
     // animation
-    transition: opacity 0.1s linear, transform 0.1s ease-out;
+    transition-timing-function: use-motion-bezier('normal');
+    transition-duration: use-motion-duration('normal');
+    transition-property: opacity, transform;
     // 该变量通过 JS 注入👇🏻
     transform-origin: var(--popper-transform-origin);
     opacity: 0;
@@ -139,7 +141,7 @@ $prefix: '#{$component-prefix}-popper' !default;
     &-enter-active {
       .#{$prefix}__overlay {
         opacity: 1;
-        transform: scale(0);
+        transform: scale(1);
       }
     }
 

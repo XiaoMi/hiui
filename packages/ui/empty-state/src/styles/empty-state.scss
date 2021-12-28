@@ -1,17 +1,33 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-empty-state' !default;
+$image-container: '#{$prefix}__image' !default;
 
 .#{$prefix} {
   margin: 0 auto;
-  font-size: 14px;
-  line-height: 1.5;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &--size-small{
+    .#{$image-container}{
+      height: 72px;
+    }
+  }
+
+  &--size-medium{
+    .#{$image-container}{
+      height: 96px;
+    }
+  }
+
+  &--size-large{
+    .#{$image-container}{
+      height: 120px;
+    }
+  }
 
   &__image {
-    height: 100px;
-    margin-bottom: 8px;
-
     img {
       object-fit: cover;
       height: 100%;
@@ -19,17 +35,15 @@ $prefix: '#{$component-prefix}-empty-state' !default;
     }
   }
 
-  &__title,
-  &__subtitle {
+  &__title{
+    margin-top: 8px;
     display: block;
-    margin-bottom: 4px;
+    color: use-color('gray', 500);
+    font-size: use-text-size('normal');
+    line-height: use-text-lineheight('sm');
   }
 
-  &__title {
-    color: rgba(0, 0, 0, 1);
-  }
-
-  &__subtitle {
-    color: rgba(0, 0, 0, 0.3);
+  &__slot{
+    margin-top: 10px;
   }
 }

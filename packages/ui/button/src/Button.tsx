@@ -21,6 +21,7 @@ export const Button = forwardRef<any, ButtonProps>(
       disabled = false,
       loading = false,
       icon = null,
+      shape = 'square',
       href,
       ...rest
     },
@@ -34,6 +35,7 @@ export const Button = forwardRef<any, ButtonProps>(
       `${prefixCls}--appearance-${appearance}`,
       `${prefixCls}--size-${size}`,
       `${prefixCls}--type-${type}`,
+      `${prefixCls}--shape-${shape}`,
       isEmptyChildren && `${prefixCls}--icon-only`,
       disabled && `${prefixCls}--disabled`,
       loading && `${prefixCls}--loading`
@@ -87,11 +89,11 @@ export interface ButtonProps {
   /**
    * 设置按钮类型
    */
-  type?: 'primary' | 'success' | 'danger' | 'default'
+  type?: 'primary' | 'success' | 'danger' | 'default' | 'secondary'
   /**
-   * 设置按钮外观
+   * 设置按钮尺寸
    */
-  size?: 'large' | 'small' | 'default'
+  size?: 'large' | 'small' | 'default' | 'x-large'
   /**
    * 设置铺满宽度
    */
@@ -124,7 +126,11 @@ export interface ButtonProps {
    * 设置按钮图标
    */
   icon?: React.ReactNode
+  shape?: 'square' | 'circle'
 }
+
+// @ts-ignore
+Button.HiName = 'Button'
 
 if (__DEV__) {
   Button.displayName = 'Button'

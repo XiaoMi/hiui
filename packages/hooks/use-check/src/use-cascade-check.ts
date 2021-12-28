@@ -8,6 +8,7 @@ const NOOP_ARRAY = [] as []
 
 /**
  * 用于级联项选择的 hook
+ * TODO: 1. 添加 idFieldName 以及 childrenFieldName
  */
 export const useCascadeCheck = ({
   cascaded = true,
@@ -52,7 +53,7 @@ export const useCascadeCheck = ({
 
         onCheck(nextCheckedIds, targetItem, shouldChecked, nextSemiCheckedIds)
       } else {
-        const nextCheckedIds = checkDefault(checkedIds, targetItem, shouldChecked)
+        const nextCheckedIds = checkDefault(checkedIds, targetItem, shouldChecked, 'id')
 
         onCheck(nextCheckedIds, targetItem, shouldChecked, [])
       }

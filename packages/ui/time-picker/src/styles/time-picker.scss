@@ -1,0 +1,114 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-time-picker' !default;
+$input-wrapper-class: '#{$prefix}__input-wrapper' !default;
+
+.#{$prefix} {
+  width: fit-content;
+  border-radius: 4px;
+
+  &--border {
+    position: relative;
+    z-index: 0;
+
+    .#{$input-wrapper-class} {
+      border-radius: use-border-radius('md');
+      background: use-color-static('white');
+      border: use-border-size('normal') use-color('gray', 300);
+    }
+
+    &::before {
+      content: '';
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      background: use-color('brandblue', 500);
+      opacity: 0;
+      pointer-events: none;
+      z-index: -1;
+      border-radius: 6px;
+    }
+  }
+
+  &--border#{&}--input-not-valid{
+    .#{$input-wrapper-class} {
+      border-color: use-color('red', 500);
+    }
+
+    &::before {
+      background: use-color('red', 500);
+    }
+  }
+
+  &--active {
+    .#{$input-wrapper-class} {
+      box-shadow: 0 0 2px  #237ffa33;
+      border-color: use-color('brandblue', 500);
+    }
+
+    &::before {
+      opacity: 0.2;
+    }
+  }
+
+  &__input-wrapper {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      border-color: use-color('brandblue', 500);
+    }
+  }
+
+  &__pop-function-buttons{
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 8px;
+    border-top: 1px solid use-color('gray', 100);
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+  }
+
+  &__pop-now-button{
+    height: 22px;
+    width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: use-text-size('sm');
+    color: use-color('brandblue', 500);
+    cursor: pointer;
+    margin-right: 12px;
+    user-select: none;
+  }
+
+  &__function-button {
+    margin-right: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: use-color('gray', 500);
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    background: get-color('gray', 300);
+
+    .#{$input-wrapper-class} {
+      pointer-events: none;
+      opacity: 0.3;
+    }
+  }
+
+  &__close-button {
+    &:hover {
+      color: get-color('gray', 600);
+    }
+  }
+}

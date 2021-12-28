@@ -1,6 +1,12 @@
 export type Dict<T = any> = Record<string, T>
 
-export type Nullish = null | undefined | void
+export type Undefined = undefined | void
+export type Nullish = null | Undefined
+
+/**
+ * Assert is undefined
+ */
+export const isUndefined = (arg: unknown): arg is Undefined => arg === undefined
 
 /**
  * Assert is Undefined
@@ -56,3 +62,10 @@ export const isNumeric = (arg: unknown): arg is string | number => !Number.isNaN
  */
 export const isFunction = <T extends Function = Function>(arg: any): arg is T =>
   typeof arg === 'function'
+
+const toString = Object.prototype.toString
+
+/**
+ * Assert is string
+ */
+export const isString = (arg: unknown): arg is string => toString.call(arg) === '[object String]'

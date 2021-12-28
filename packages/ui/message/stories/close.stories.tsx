@@ -16,7 +16,7 @@ export const Close = () => {
 
   function addToast() {
     const id = message.open({
-      title: 'some text',
+      title: '问君能有几多愁，恰似一江春水向东流',
       type: ['error', 'warning', 'success', 'info'][Math.floor(Math.random() * 4)] as any,
     })
     toastIdsRef.current.push(id)

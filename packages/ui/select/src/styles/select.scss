@@ -3,103 +3,125 @@
 $prefix: '#{$component-prefix}-select' !default;
 
 .#{$prefix} {
-  &--open {
-    .#{$component-prefix}-mock-input {
-      border-color: use-color-mode('primary');
-    }
-  }
+  // &--open {
+  //   .#{$component-prefix}-mock-input {
+  //     border-color: use-color-mode('primary');
+  //   }
+  // }
 
-  @include component-reset;
+  // @include component-reset;
 
-  list-style: none;
-  width: auto;
-  box-sizing: border-box;
-  flex-shrink: 0;
-  display: inline-block;
-  min-width: 160px;
-  min-height: 160px;
-  max-height: 260px;
-  overflow: auto;
-  padding-bottom: 10px;
-
-  // 分界线
-  &:not(:last-child) {
-    // border-right: 1px solid #e8e8e8;
-  }
+  // list-style: none;
+  // width: auto;
+  // box-sizing: border-box;
+  // flex-shrink: 0;
+  // display: inline-block;
+  // // min-width: 160px;
+  // overflow: auto;
 
   $this: &;
 
-  &-item {
-    width: 100%;
-    padding: use-spacing(2) 0;
-    position: relative;
-    cursor: pointer;
-    display: flex;
-  }
-
-  &-option {
-    padding: 0 use-spacing(4) + 2px;
-    box-sizing: border-box;
-    min-height: 32px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    position: relative;
-    justify-content: space-between;
-
-    &:hover {
-      background-color: use-color-mode('primary-10');
-    }
-
-    &--selected {
-      background-color: use-color-mode('primary-10');
-      font-weight: 700;
-      color: use-color-mode('primary');
-    }
-
-    &--focused {
-      background-color: use-color-mode('primary-05');
-    }
-
-    &--disabled {
-      cursor: not-allowed;
-      color: use-color('gray', 500);
-      font-weight: 400;
-
-      .#{$prefix}-menu-switcher {
-        color: use-color('gray', 500);
-      }
-    }
-  }
-
-  .title__text {
-    flex: 1;
-  }
+  // &-item {
+  //   width: 100%;
+  //   padding: use-spacing(2) 0;
+  //   position: relative;
+  //   cursor: pointer;
+  //   display: flex;
+  // }
 }
 
-.#{$prefix}-panel {
-  white-space: nowrap;
-  box-sizing: border-box;
-  // padding: 6px 0;
-}
+// .#{$prefix}-panel {
+//   white-space: nowrap;
+//   box-sizing: border-box;
+//   // padding: 6px 0;
+//   border-radius: use-border-radius('normal');
+//   padding: use-spacing(4);
+//   font-size: use-text-size('normal');
+// }
 
-.#{$prefix}-search {
+// .#{$prefix}-search {
+//   box-sizing: border-box;
+//   // padding: 10px;
+//   padding: 0 10px 10px;
+//   position: relative;
+
+//   .#{$component-prefix}-input__prefix {
+//     font-size: 16px;
+//     padding-left: 0;
+//   }
+
+//   &__empty {
+//     display: inline-block;
+//     margin-top: 20px;
+//     font-size: 14px;
+//     color: #999;
+//     line-height: 20px;
+//   }
+// }
+
+.#{$prefix}-option {
+  // padding: 0 use-spacing(4);
+  margin-top: use-spacing(2);
+  margin-bottom: use-spacing(2);
   box-sizing: border-box;
-  // padding: 10px;
-  padding: 0 10px 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
   position: relative;
+  border-radius: use-border-radius('normal');
+  cursor: pointer;
+  font-size: use-text-size('normal');
+  font-weight: use-text-weight('normal');
+  color: use-color('gray', 700);
+  line-height: use-text-lineheight('sm');
 
-  .#{$component-prefix}-input__prefix {
-    font-size: 16px;
-    padding-left: 0;
+  &__indent {
+    display: inline-block;
+    width: 16px;
+    height: 100%;
   }
 
-  &__empty {
+  &__title {
     display: inline-block;
-    margin-top: 20px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #999;
-    line-height: 20px;
+    box-sizing: border-box;
+    width: 100%;
+    padding: use-spacing(3);
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    line-height: inherit;
+  }
+
+  &:not(.#{$prefix}-option--selected):not(.#{$prefix}-option--focused):not(.#{$prefix}-option--disabled):hover {
+    background-color: use-color('gray', 100);
+  }
+
+  &--selected {
+    background-color: use-color-mode('primary-05');
+    color: use-color-mode('primary');
+  }
+
+  &--focused {
+    background-color: use-color('gray', 100);
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    color: use-color('gray', 500);
+  }
+}
+
+.#{$prefix}-option-group {
+  display: inline-block;
+  margin-top: use-spacing(6);
+  margin-bottom: use-spacing(2);
+  padding: use-spacing(3) 0 use-spacing(3) use-spacing(3);
+  font-size: use-text-size('normal');
+  font-weight: use-text-weight('normal');
+  color: use-color('gray', 500);
+  line-height: use-text-lineheight('sm');
+
+  &:first-child {
+    margin-top: use-spacing(2);
   }
 }

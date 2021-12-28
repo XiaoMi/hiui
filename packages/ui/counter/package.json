@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/counter",
-  "version": "4.0.0-alpha.12",
+  "version": "4.0.0-alpha.18",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -37,18 +37,19 @@
     "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
     "build:cjs": "hi-build ./src/index.ts --format cjs -d ./lib/cjs",
     "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
-    "build": "concurrently yarn:build:*"
+    "build": "concurrently yarn:build:*",
+    "start": "nodemon --watch src --exec yarn build -e ts,tsx"
   },
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.2",
-    "@hi-ui/core-css": "^4.0.0-alpha.3",
+    "@hi-ui/core-css": "^4.0.0-alpha.8",
     "@hi-ui/env": "^4.0.0-alpha.3",
-    "@hi-ui/icons": "^4.0.0-alpha.10",
-    "@hi-ui/type-assertion": "^4.0.0-alpha.7",
-    "@hi-ui/use-toggle": "^4.0.0-alpha.4",
+    "@hi-ui/icons": "^4.0.0-alpha.16",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.11",
+    "@hi-ui/use-toggle": "^4.0.0-alpha.8",
     "number-precision": "^1.5.0"
   },
   "peerDependencies": {
@@ -56,7 +57,7 @@
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.2",
+    "@hi-ui/hi-build": "^4.0.0-alpha.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

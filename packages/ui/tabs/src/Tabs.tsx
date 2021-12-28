@@ -21,11 +21,25 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       activeId,
       onChange,
       onTabClick,
+      editable,
+      direction = 'horizontal',
+      onAdd,
+      onDelete,
+      draggable = false,
+      onDragStart,
+      onDragOver,
+      onDragEnd,
+      onDrop,
+      style,
+      type = 'default',
       ...rest
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, {
+      [`${prefixCls}--vertical`]: direction === 'vertical',
+      [`${prefixCls}--${type}`]: type,
+    })
 
     const tabList = useMemo(() => {
       const list: TabPaneProps[] = []
@@ -53,17 +67,26 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
     )
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
+      <div ref={ref} role={role} className={cls} style={style} {...rest}>
         <TabList
           prefixCls={prefixCls}
           data={tabList}
           activeId={activeId}
           onChange={_onChange}
           onTabClick={onTabClick}
+          direction={direction}
+          editable={editable}
+          onAdd={onAdd}
+          onDelete={onDelete}
+          draggable={draggable}
+          onDragEnd={onDragEnd}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
+          type={type}
+          onDragStart={onDragStart}
         />
         <div className={`${_prefix}__content`}>
           {React.Children.map(children, (child) => {
-            console.log(child, child?.props.tabId, activeId)
             return (
               child &&
               React.cloneElement(child, {
@@ -114,6 +137,15 @@ export interface TabsProps {
    * 高亮id
    */
   activeId?: string
+
+  /**
+   * 布局方向
+   */
+  direction?: 'horizontal' | 'vertical'
+  /**
+   * 布局类型
+   */
+  type?: 'desc' | 'card' | 'button' | 'default'
   /**
    * `activeId` 改变的回调
    */
@@ -122,6 +154,26 @@ export interface TabsProps {
    * 标签点击触发回调
    */
   onTabClick?: (tabId: string) => void
+
+  /**
+   * 节点增加时触发
+   */
+  onAdd?: () => void
+  /**
+   * 节点删除时时触发
+   */
+  onDelete?: (deletedNode: TabPaneProps, index: number) => void
+  onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void
+  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void
+  onDrop?: (
+    e: React.DragEvent<HTMLDivElement>,
+    {
+      dragNode,
+      dropNode,
+      direction,
+    }: { dragNode: TabPaneProps; dropNode: TabPaneProps; direction: string | null }
+  ) => void
+  onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void
 }
 
 if (__DEV__) {

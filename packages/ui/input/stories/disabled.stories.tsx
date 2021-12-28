@@ -1,0 +1,27 @@
+import React from 'react'
+import Input from '../src'
+
+export const Disabled = () => {
+  return (
+    <>
+      <h1>Disabled for Input</h1>
+      <div className="input-disabled__wrap">
+        <div>
+          <Input appearance="outline" disabled placeholder="请输入"></Input>
+          <br />
+          <Input appearance="unset" disabled placeholder="请输入"></Input>
+          <br />
+          <Input appearance="filled" disabled placeholder="请输入"></Input>
+        </div>
+        <br />
+        <div>
+          <Input invalid appearance="outline" disabled placeholder="请输入"></Input>
+          <br />
+          <Input invalid appearance="unset" disabled placeholder="请输入"></Input>
+          <br />
+          <Input invalid appearance="filled" disabled placeholder="请输入"></Input>
+        </div>
+      </div>
+    </>
+  )
+}

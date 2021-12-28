@@ -7,6 +7,7 @@ export * from './lazy.stories'
 export * from './toggle.stories'
 export * from './portal.stories'
 export * from './container.stories'
+export * from './hook.stories'
 
 export default {
   title: 'Popper',

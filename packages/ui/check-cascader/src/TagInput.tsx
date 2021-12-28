@@ -55,7 +55,10 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
         if (disabled) return
 
         evt.stopPropagation()
-        tryChangeValue(NOOP_ARRAY)
+
+        tryChangeValue(NOOP_ARRAY, {
+          trigger: 'clear',
+        })
       },
       [tryChangeValue, disabled]
     )
@@ -124,7 +127,10 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
 
                             evt.stopPropagation()
                             const nextValue = [...value].filter((id) => id !== option.id)
-                            tryChangeValue(nextValue)
+                            // TODO: 点击 close 时，级联选项也需要处理，让其取消级联
+                            tryChangeValue(nextValue, {
+                              trigger: 'close',
+                            })
                           }}
                         >
                           <CloseOutlined />

@@ -7,26 +7,32 @@ $icon-class: #{$panel-prefix}__icon !default;
   font-size: use-text-size('normal');
   position: relative;
   z-index: 0;
+  border-bottom: 1px solid use-color('gray', 200);
 
-  &::after {
-    transition: all 0.2s ease-out;
-    position: absolute;
-    z-index: 1;
-    content: '';
-    width: 100%;
-    height: 1px;
-    background-color: use-color('gray', 300);
-    bottom: 0;
-    left: 0;
+  &:last-of-type {
+    border-radius: 0 0 use-border-radius('normal') use-border-radius('normal');
+    overflow: hidden;
+    border-bottom: none;
+  }
+
+  &:first-of-type {
+    border-radius: use-border-radius('normal') use-border-radius('normal') 0 0;
+    overflow: hidden;
   }
 
   &__head {
     display: flex;
     align-items: center;
     background-color: use-color-static('white');
-    padding: 12px 0 12px 16px;
-    color: rgba(0, 0, 0, 0.85);
+    padding: use-spacing(7) 0;
+    color: use-color('gray', 700);
+    font-weight: use-text-weight('medium');
     cursor: pointer;
+    border-bottom: 1px solid transparent;
+
+    [class^=hi-v4-icon] {
+      font-size: use-text-size('lg');
+    }
 
     &:focus {
       outline: none;
@@ -35,13 +41,18 @@ $icon-class: #{$panel-prefix}__icon !default;
 
   &__title {
     flex: 1;
-    line-height: 1;
     margin-right: 10px;
+    font-size: use-text-size('normal');
   }
 
   .#{$icon-class} {
     transition: all 0.2s ease-out;
-    margin-right: 10px;
+
+    &--right {
+      transition: all 0.2s ease-out;
+    }
+
+    margin-right: use-spacing(5);
   }
 
   &__content-wrapper {
@@ -51,9 +62,8 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__content {
-    padding: 16px;
-    color: rgba(0, 0, 0, 0.65);
-    background-color: use-color('gray', 100);
+    padding: use-spacing(3) use-spacing(10) use-spacing(10) use-spacing(10);
+    color: use-color('gray', 700);
   }
 
   &--show {
@@ -61,14 +71,18 @@ $icon-class: #{$panel-prefix}__icon !default;
       background-color: transparent;
     }
     .#{$icon-class} {
-      transform: rotate(-180deg);
+      transform: rotate(90deg);
+
+      &--right {
+        transform: rotate(180deg);
+      }
     }
   }
 
   &--disabled {
     .#{$panel-prefix}__head {
       cursor: not-allowed;
-      color: use-color('gray', 500);
+      color: use-color('gray', 300);
     }
   }
 }

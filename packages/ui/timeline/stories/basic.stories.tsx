@@ -19,6 +19,18 @@ export const Basic = () => {
               content: '总参',
               timestamp: '10:00',
               extraTime: '02-27',
+              children: [
+                {
+                  title: 'Sub 1',
+                  content: 'Here are some descriptions',
+                  timestamp: '10:00',
+                  extraTime: '02-23',
+                },
+                {
+                  title: 'Sub 2',
+                  content: 'Here are some descriptions',
+                },
+              ],
             },
             {
               title: '管理层例会',
@@ -31,6 +43,18 @@ export const Basic = () => {
               content: '总参',
               timestamp: '11:00',
               extraTime: '03-10',
+              children: [
+                {
+                  title: 'Sub 1',
+                  content: 'Here are some descriptions',
+                  timestamp: '10:00',
+                  extraTime: '02-23',
+                },
+                {
+                  title: 'Sub 2',
+                  content: 'Here are some descriptions',
+                },
+              ],
             },
           ]}
         />
