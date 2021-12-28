@@ -7,15 +7,15 @@ import {
   FormRuleModel,
   FormFieldPath,
   FormErrorMessage,
+  FormSetState,
 } from './types'
 import { useLatestRef } from '@hi-ui/use-latest'
 import { isArray, isFunction } from '@hi-ui/type-assertion'
 import { callAllFuncs, setNested, getNested } from '@hi-ui/func-utils'
 import { stopEvent } from '@hi-ui/dom-utils'
-import { FormSetState } from '.'
 
 const EMPTY_RULES = {}
-const EMPTY_ERRORS = {}
+const EMPTY_ERRORS = {} as any
 const EMPTY_TOUCHED = {}
 const DEFAULT_VALIDATE_TRIGGER = ['onChange', 'onBlur']
 
@@ -60,8 +60,10 @@ export const useForm = <Values = Record<string, any>>({
   // 使用 latest ref 维护，保证每次主动拿取的 formState 都是最新的
   const formStateRef = useLatestRef(formState)
 
+  // @ts-ignore
   const getFieldNames = useCallback(() => Object.keys(formStateRef.current.values), [formStateRef])
 
+  // @ts-ignore
   const getFieldValue = useCallback((fieldName: string) => formStateRef.current.values[fieldName], [
     formStateRef,
   ])
@@ -74,6 +76,7 @@ export const useForm = <Values = Record<string, any>>({
     (field: FormFieldPath, errorMessage: FormErrorMessage | undefined) => {
       formDispatch({
         type: 'SET_FIELD_ERROR',
+        // @ts-ignore
         payload: { field, value: errorMessage },
       })
     },
@@ -83,6 +86,7 @@ export const useForm = <Values = Record<string, any>>({
   const setFieldTouched = useCallback((field: FormFieldPath, touched = false) => {
     formDispatch({
       type: 'SET_FIELD_TOUCHED',
+      // @ts-ignore
       payload: { field, value: touched },
     })
   }, [])
@@ -142,6 +146,7 @@ export const useForm = <Values = Record<string, any>>({
    */
   const setFieldValue = useCallback(
     (field: string, value: unknown, shouldValidate?: boolean) => {
+      // @ts-ignore
       formDispatch({ type: 'SET_FIELD_VALUE', payload: { field, value } })
 
       const shouldValidateField =
@@ -169,6 +174,7 @@ export const useForm = <Values = Record<string, any>>({
         : normalizeValueFromChange(evt)
 
       setFieldValue(fieldName, nextValue, shouldValidate)
+      // @ts-ignore
       onValuesChange?.({ ...formState.values, [fieldName]: nextValue }, formState.values)
     },
     [setFieldValue, onValuesChange, formState.values, normalizeValueFromChange]
@@ -209,6 +215,7 @@ export const useForm = <Values = Record<string, any>>({
       const errors = nextState && nextState.errors ? nextState.errors : initialErrorsRef.current
       const touched = nextState && nextState.touched ? nextState.touched : initialTouchedRef.current
       initialValuesRef.current = values
+      // @ts-ignore
       initialErrorsRef.current = errors
       initialTouchedRef.current = touched
 
@@ -229,6 +236,7 @@ export const useForm = <Values = Record<string, any>>({
       }
 
       if (onResetLatestRef.current) {
+        // @ts-ignore
         await onResetLatestRef.current(formState.values)
         dispatchFn()
       } else {
@@ -250,6 +258,7 @@ export const useForm = <Values = Record<string, any>>({
       if (isActuallyValid) {
         let promiseOrUndefined
         try {
+          // @ts-ignore
           promiseOrUndefined = onSubmit?.(formState.values)
         } catch (error) {
           // throw error
@@ -278,7 +287,7 @@ export const useForm = <Values = Record<string, any>>({
 
   const handleSubmit = useCallback(
     (evt?: React.FormEvent<HTMLFormElement>) => {
-      stopEvent(evt)
+      stopEvent(evt as any)
       submitForm().catch(console.error)
     },
     [submitForm]
@@ -286,7 +295,7 @@ export const useForm = <Values = Record<string, any>>({
 
   const handleReset = useCallback(
     (evt?: React.FormEvent<HTMLFormElement>) => {
-      stopEvent(evt)
+      stopEvent(evt as any)
       resetForm()
     },
     [resetForm]
@@ -318,7 +327,6 @@ export const useForm = <Values = Record<string, any>>({
     (props = {}, ref = null) => {
       const {
         field,
-        rules,
         valuePropName = 'value',
         valueCollectPropName = 'onChange',
         valueCollectPipe,
@@ -347,7 +355,9 @@ export const useForm = <Values = Record<string, any>>({
 
       validateTrigger
         .filter((triggerName) => [valueCollectPropName, 'onBlur'].indexOf(triggerName) === -1)
+        // @ts-ignore
         .forEach((triggerName: string) => {
+          // @ts-ignore
           returnProps[triggerName] = callAllFuncs(props[triggerName], handleFieldTrigger(field))
         })
 
@@ -369,8 +379,6 @@ export const useForm = <Values = Record<string, any>>({
     },
     [rules]
   )
-
-  console.log('formState', formState)
 
   return {
     ...formState,

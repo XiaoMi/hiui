@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useMemo } from 'react'
 import { FormFieldPath, FormRuleModel } from './types'
 import { useFormContext } from './context'
-import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import Validater from 'async-validator'
 import { toArray } from '@hi-ui/func-utils'
 // import yup from 'yup'
@@ -24,6 +24,7 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
    * 处理校验规则，item 优先级大于 form
    */
   const fieldRules = useMemo(() => {
+    // @ts-ignore
     const rules = toArray(rulesProp ?? getFieldRules(field))
 
     // switch(valueType) {
@@ -59,9 +60,10 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
       console.log('fieldRules', fieldRules, 'value:', value)
 
       const validater = new Validater({
+        // @ts-ignore
         [field]: fieldRules,
       })
-
+      // @ts-ignore
       return validater.validate({ [field]: value }, { firstFields: true }, console.log)
     },
     [fieldRules, field]
@@ -70,6 +72,7 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
   // 注入当前 field 及其验证规则到 Form
   useEffect(() => {
     if (field) {
+      // @ts-ignore
       registerField(field, {
         validate: fieldValidate,
       })
@@ -77,6 +80,7 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
 
     return () => {
       if (field) {
+        // @ts-ignore
         unregisterField(field)
       }
     }
@@ -97,7 +101,7 @@ export interface UseFormFieldProps<T = Record<string, any>> {
   /**
    * 设置字段的验证规则，会覆盖 Form 设置的 rules
    */
-  rules?: FormRuleModel<T>[]
+  rules?: FormRuleModel[]
   /**
    * 自定义设置 Form 往表单控件注入值的属性，如 Switch Radio Checkbox 的是 'checked'
    */

@@ -9,23 +9,16 @@ import { FormLabelProps } from './FormLabel'
 
 const fieldListSymbol = Symbol('field-list')
 
-interface FormFields {
-  // 唯一
-  name: string
-  // sort
-  field: string
-  symbol: Symbol
-}
-
 /**
  * TODO: What is FormList
  */
 export const FormList: React.FC<FormListProps> = ({ children, name: nameProp }) => {
-  const { values, getFieldError, setFormState } = useFormContext()
+  const { values, setFormState } = useFormContext()
 
   // 唯一 id 生成器
-  const listCountRef = React.useRef(0)
+  // const listCountRef = React.useRef(0)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const name = isArray(nameProp) ? nameProp : [nameProp]
 
   /**

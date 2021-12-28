@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useImperativeHandle, useMemo } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { FormProvider } from './context'
@@ -49,6 +49,7 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
     const cls = cx(prefixCls, className)
 
     return (
+      // @ts-ignore
       <FormProvider value={providedValue}>
         <form ref={ref} role={role} className={cls} {...rest} {...getRootProps()}>
           {children}
@@ -93,7 +94,9 @@ if (__DEV__) {
 
 // @ts-ignore
 Form.extends = (model: FormRuleModel) => {
+  // @ts-ignore
   if (typeof model.name === 'string') {
+    // @ts-ignore
     FORM_REGISTER_TABLE[model.name] = model
   } else {
     if (__DEV__) {

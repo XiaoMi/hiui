@@ -44,9 +44,14 @@
   },
   "dependencies": {
     "@flcwly/validater": "^0.1.4",
+    "@hi-ui/button": "^4.0.0-alpha.13",
     "@hi-ui/classname": "^4.0.0-alpha.0",
     "@hi-ui/core-css": "^4.0.0-alpha.0",
+    "@hi-ui/dom-utils": "^4.0.0-alpha.4",
     "@hi-ui/env": "^4.0.0-alpha.0",
+    "@hi-ui/func-utils": "^4.0.0-alpha.3",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.11",
+    "@hi-ui/use-latest": "^4.0.0-alpha.3",
     "async-validator": "^4.0.7",
     "yup": "^0.32.11"
   },

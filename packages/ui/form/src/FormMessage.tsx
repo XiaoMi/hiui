@@ -20,6 +20,7 @@ export const FormMessage = forwardRef<HTMLSpanElement | null, FormMessageProps>(
 
     return message ? (
       <span ref={ref} role={role} className={cls} {...rest}>
+        {/* @ts-ignore */}
         {message}
       </span>
     ) : null

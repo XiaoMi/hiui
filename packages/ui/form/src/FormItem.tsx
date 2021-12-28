@@ -14,6 +14,7 @@ export const FormItem: React.FC<FormItemProps> = ({ field, children, valueType, 
       <FormField field={field} valueType={valueType}>
         {children}
       </FormField>
+      {/* @ts-ignore */}
       <FormMessage field={field} />
     </FormLabel>
   )

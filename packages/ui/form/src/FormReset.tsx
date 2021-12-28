@@ -17,6 +17,7 @@ export const FormReset = forwardRef<HTMLDivElement | null, FormResetProps>(
     const cls = cx(prefixCls, className)
 
     return (
+      // @ts-ignore
       <div ref={ref} className={cls} {...rest} onClick={callAllFuncs(resetForm, onClick)}>
         {children}
       </div>

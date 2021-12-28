@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useFormContext } from './context'
-import { isUndef, isNumeric } from '@hi-ui/type-assertion'
+import { isNumeric } from '@hi-ui/type-assertion'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'form-label'
@@ -13,9 +13,13 @@ const _prefix = getPrefixCls(_role)
  */
 export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((props, ref) => {
   const {
+    // @ts-ignore
     labelWidth: labelWidthContext,
+    // @ts-ignore
     labelPlacement,
+    // @ts-ignore
     colon: colonContext,
+    // @ts-ignore
     contentPosition: contentPositionContext,
   } = useFormContext()
 
@@ -26,11 +30,13 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     style: styleProp,
     children,
     label,
+    // @ts-ignore
     field,
     required = false,
     // Item’s priority is higher than Form
     labelWidth: labelWidthProp = labelWidthContext,
     colon = colonContext,
+    // @ts-ignore
     contentPosition = contentPositionContext,
     ...rest
   } = props
