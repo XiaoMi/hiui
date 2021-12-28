@@ -29,10 +29,11 @@ export const useTreeSearch = (BaseTree: Tree) => {
         <>
           <div className={`${treeProps.prefixCls}-searcher`}>
             <Input
+              appearance="filled"
               clearable
               clearableTrigger="always"
               {...searchInputProps}
-              suffix={searchInputProps.value ? null : <SearchOutlined />}
+              prefix={searchInputProps.value ? null : <SearchOutlined />}
             />
             {isEmpty ? (
               <span className={`${treeProps.prefixCls}-searcher--empty`}>未找到相关结果</span>
