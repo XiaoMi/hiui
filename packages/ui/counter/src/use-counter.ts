@@ -27,6 +27,8 @@ export const useCounter = ({
   onBlur,
   changeOnWheel = false,
   onWheel,
+  size = 'md',
+  appearance = 'outline',
   ...rest
 }: UseCounterProps) => {
   const min = minProp ?? Number.MIN_SAFE_INTEGER
@@ -225,6 +227,8 @@ export const useCounter = ({
   const cls = cx(
     prefixCls,
     className,
+    `${prefixCls}--size-${size}`,
+    `${prefixCls}--appearance-${appearance}`,
     focus && `${prefixCls}--focused`,
     !isNumeric(value) && `${prefixCls}--invalid`,
     isOutOfRange(value, min, max) && `${prefixCls}--out-of-bounds`
@@ -292,11 +296,25 @@ export const useCounter = ({
     }
   }, [prefixCls, disabledPlus, handlePlusButtonTouch])
 
+  const getContentProps = useCallback(() => {
+    return {
+      className: cx(`${prefixCls}__content`),
+    }
+  }, [prefixCls])
+
+  const getInputWrapperProps = useCallback(() => {
+    return {
+      className: cx(`${prefixCls}__input-wrapper`),
+    }
+  }, [prefixCls])
+
   return {
     rootProps,
     getInputProps,
     getMinusButtonProps,
     getPlusButtonProps,
+    getContentProps,
+    getInputWrapperProps,
   }
 }
 
