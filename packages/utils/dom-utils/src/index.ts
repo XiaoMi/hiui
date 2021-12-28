@@ -45,7 +45,7 @@ export const setAttrAria = (bool?: boolean) => (bool ? true : undefined)
 /**
  * 阻止事件的行为，包括默认事件和冒泡
  */
-export const stopEvent = (evt: React.SyntheticEvent) => {
-  evt.preventDefault()
-  evt.stopPropagation()
+export const stopEvent = (evt?: React.SyntheticEvent) => {
+  evt?.preventDefault()
+  evt?.stopPropagation()
 }

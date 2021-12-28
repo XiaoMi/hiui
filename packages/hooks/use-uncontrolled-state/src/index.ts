@@ -42,5 +42,5 @@ export function useUncontrolledState<T>(
     [uncontrolled, stateLatestRef, onChangeLatest, stateIsEqualLatest]
   )
 
-  return [state, tryChangeState] as const
+  return [state, tryChangeState, uncontrolled] as const
 }

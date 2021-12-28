@@ -1,0 +1,18 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-svg-icon' !default;
+
+.#{$prefix} {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 1em;
+  flex-shrink: 0;
+  color: inherit;
+  font-size: inherit;
+
+  // https://stackoverflow.com/questions/34907256/svgnotroot-overflow-hidden-and-css-transforms-in-ie9
+  &:not(:root) {
+    overflow: hidden;
+  }
+}

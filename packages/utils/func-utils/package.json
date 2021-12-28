@@ -44,5 +44,8 @@
   },
   "devDependencies": {
     "@hi-ui/hi-build": "^4.0.0-alpha.3"
+  },
+  "dependencies": {
+    "@hi-ui/type-assertion": "^4.0.0-alpha.6"
   }
 }

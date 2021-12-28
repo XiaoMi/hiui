@@ -5,6 +5,7 @@ import {
   BaseFlattedTreeNodeData,
   BaseFlattedTreeNodeDataWithParent,
   BaseFlattedTreeNodeDataWithChildren,
+  BaseTreeNode,
 } from './types'
 
 /**
@@ -14,7 +15,7 @@ import {
  *  depth 以 0 打头表示最外层，可以结合数组下标 0 开头方便记忆
  *  parent 将为 null ，如果当前 node 是最外层节点
  */
-export const visitTree = <T extends BaseTreeNodeData>(
+export const visitTree = <T extends BaseTreeNode>(
   tree: T[],
   visit?: (node: T, depth: number, parent: T | null) => void
 ) => {
@@ -45,31 +46,40 @@ export const visitTree = <T extends BaseTreeNodeData>(
  */
 export const flattenTree = <T extends BaseTreeNodeData>(
   tree: T[],
-  transform?: (node: BaseFlattedTreeNodeData<any, T>) => any
+  transform?: (node: BaseFlattedTreeNodeData<any, T>, rootIndex: number) => any
 ) => {
   const flattedTree: BaseFlattedTreeNodeData<any>[] = []
 
   const dig = (
     depth: number,
     node: BaseTreeNodeData,
-    parent: BaseFlattedTreeNodeDataWithChildren<any>
+    parent: BaseFlattedTreeNodeDataWithChildren<any>,
+    rootIndex: number
   ) => {
     const { id, children } = node
 
-    const flattedNode: BaseFlattedTreeNodeData<any> = {
+    let flattedNode: BaseFlattedTreeNodeData<any> = {
       id,
       depth,
       parent,
       raw: node,
     }
 
-    flattedTree.push(transform ? transform(flattedNode) : flattedNode)
+    flattedNode = transform ? transform(flattedNode, rootIndex) : flattedNode
+
+    flattedTree.push(flattedNode)
 
     if (children) {
       const childDepth = depth + 1
 
       flattedNode.children = children.map((child) => {
-        return dig(childDepth, child, flattedNode as BaseFlattedTreeNodeDataWithChildren<any>)
+        return dig(
+          childDepth,
+          child,
+          flattedNode as BaseFlattedTreeNodeDataWithChildren<any>,
+          // 存储自身所在树的 root 节点索引
+          rootIndex
+        )
       })
     }
 
@@ -79,7 +89,7 @@ export const flattenTree = <T extends BaseTreeNodeData>(
   // @ts-ignore
   const treeRoot: NodeRoot<BaseFlattedTreeNodeData<any>> = getTreeRoot()
   // @ts-ignore
-  treeRoot.children = tree.map((node) => dig(0, node, treeRoot))
+  treeRoot.children = tree.map((node, index) => dig(0, node, treeRoot, index))
 
   return flattedTree
 }
@@ -106,19 +116,32 @@ export const fFindNestedChildNodesById = <T extends BaseFlattedTreeNodeData<T>>(
   flattedTreeData: T[],
   targetId: React.ReactText
 ) => {
-  const childrenNodes = [] as T[]
-
-  const { length } = flattedTreeData
   const targetNodeIndex = flattedTreeData.findIndex((node) => node.id === targetId)
+  const nestedChildren = fFindNestedChildNodesByIndex(flattedTreeData, targetNodeIndex)
+  return [nestedChildren, targetNodeIndex] as const
+}
 
-  if (targetNodeIndex < 0 || targetNodeIndex === length - 1) {
-    return [childrenNodes, targetNodeIndex] as const
+/**
+ * 根据指定节点索引查找其所有（包含嵌套）孩子节点的 ids
+ *
+ * f 开头表示基于扁平 tree 数据，而不是基于原始 tree 数据操作
+ *
+ */
+export const fFindNestedChildNodesByIndex = <T extends BaseFlattedTreeNodeData<T>>(
+  flattedTreeData: T[],
+  targetIndex: number
+) => {
+  const childrenNodes = [] as T[]
+  const { length } = flattedTreeData
+
+  if (targetIndex < 0 || targetIndex === length - 1) {
+    return childrenNodes
   }
 
-  const boundNodeDepth = flattedTreeData[targetNodeIndex].depth
+  const boundNodeDepth = flattedTreeData[targetIndex].depth
 
   // 判定子节点：后面连续部分层级大于目标元素的层级
-  for (let i = targetNodeIndex + 1; i < length; ++i) {
+  for (let i = targetIndex + 1; i < length; ++i) {
     const node = flattedTreeData[i]
 
     if (node.depth > boundNodeDepth) {
@@ -128,7 +151,7 @@ export const fFindNestedChildNodesById = <T extends BaseFlattedTreeNodeData<T>>(
     }
   }
 
-  return [childrenNodes, targetNodeIndex] as const
+  return childrenNodes
 }
 
 /**
@@ -188,20 +211,23 @@ export const fFindNodesByIds = <T extends BaseTreeNodeData>(
  * @param targetId
  * @returns 返回第一个被查找到的节点
  */
-export const findNodeById = <T extends BaseTreeNodeData>(
+export const findNodeById = <T extends BaseTreeNode>(
   treeData: T[],
-  targetId: React.ReactText
+  targetId: React.ReactText,
+  options?: { idFieldName?: string; childrenFieldName?: string }
 ): null | T => {
+  const { idFieldName = 'id', childrenFieldName = 'children' } = options || {}
+
   const { length } = treeData
   for (let i = 0; i < length; ++i) {
     const node = treeData[i]
 
-    if (targetId === node.id) {
+    if (targetId === node[idFieldName]) {
       return node
     }
 
-    if (node.children) {
-      const foundNode = findNodeById(node.children, targetId)
+    if (node[childrenFieldName]) {
+      const foundNode = findNodeById(node[childrenFieldName], targetId)
 
       if (foundNode) {
         return foundNode as T
@@ -264,19 +290,24 @@ export const findNodesByIds = <T extends BaseTreeNodeData>(
  * @param targetId
  * @returns
  */
-export const deleteNodeById = <T extends BaseTreeNodeData>(
+export const deleteNodeById = <T extends BaseTreeNode>(
   treeData: T[],
-  targetId: React.ReactText
+  targetId: React.ReactText,
+  options?: { idFieldName?: string; childrenFieldName?: string }
 ) => {
+  const { idFieldName = 'id', childrenFieldName = 'children' } = options || {}
+
   const { length } = treeData
+
   for (let i = 0; i < length; ++i) {
     const node = treeData[i]
 
-    if (targetId === node.id) {
+    if (targetId === node[idFieldName]) {
       return treeData.splice(i, 1)
     }
-    if (node.children) {
-      deleteNodeById(node.children, targetId)
+
+    if (node[childrenFieldName]) {
+      deleteNodeById(node[childrenFieldName], targetId, options)
     }
   }
 }
@@ -326,7 +357,7 @@ export const addChildNodeById = <T extends BaseTreeNodeData>(
  * @param targetId
  * @param children
  */
-export const addChildrenById = <T extends BaseTreeNodeData>(
+export const addChildrenById = <T extends BaseTreeNode>(
   treeData: T[],
   targetId: React.ReactText,
   children: T[]
@@ -354,23 +385,26 @@ export const addChildrenById = <T extends BaseTreeNodeData>(
  * @param position 0 表示插入到指定节点之前，1 表示之后
  * @returns
  */
-export const insertNodeById = <T extends BaseTreeNodeData>(
+export const insertNodeById = <T extends BaseTreeNode>(
   treeData: T[],
   targetId: React.ReactText,
   sourceNode: T,
-  position: 0 | 1
+  position: 0 | 1,
+  options?: { idFieldName?: string; childrenFieldName?: string }
 ) => {
+  const { idFieldName = 'id', childrenFieldName = 'children' } = options || {}
+
   const { length } = treeData
   for (let i = 0; i < length; ++i) {
     const node = treeData[i]
 
-    if (targetId === node.id) {
+    if (targetId === node[idFieldName]) {
       treeData.splice(i + position, 0, sourceNode)
       return
     }
 
-    if (node.children) {
-      insertNodeById(node.children, targetId, sourceNode, position)
+    if (node[childrenFieldName]) {
+      insertNodeById(node[childrenFieldName], targetId, sourceNode, position)
     }
   }
 }
@@ -401,6 +435,20 @@ export const findNestedChildren = <T extends BaseTreeNodeData>(
 
   dig(node)
   return allChildren
+}
+
+/**
+ * 基于扁平树结构，获取根祖先节点
+ */
+export const getNodeRootParent = <T extends BaseFlattedTreeNodeDataWithParent>(node: T) => {
+  let tNode = node
+
+  // @ts-ignore
+  while (tNode && tNode.depth > 0) {
+    tNode = tNode.parent
+  }
+
+  return tNode
 }
 
 /**
@@ -445,9 +493,9 @@ export const getTopDownAncestors = <T extends BaseFlattedTreeNodeDataWithParent>
 
 const copy = <T>(node: T) => ({ ...node })
 
-export const cloneTreeNode = <T extends BaseTreeNodeData>(node: T) => {
+export const cloneTreeNode = <T extends BaseTreeNode>(node: T) => {
   const nextTreeNode = copy(node)
-  const dig = (node: BaseTreeNodeData) => {
+  const dig = (node: BaseTreeNode) => {
     if (node.children) {
       node.children = node.children.map((child) => dig(copy(child)))
     }
@@ -460,8 +508,53 @@ export const cloneTreeNode = <T extends BaseTreeNodeData>(node: T) => {
 /**
  * 递归浅拷贝树数据结构，避免数据循环引用处理
  */
-export const cloneTree = <T extends BaseTreeNodeData>(tree: T[]) => {
+export const cloneTree = <T extends BaseTreeNode>(tree: T[]) => {
   return tree.map((node) => cloneTreeNode(node))
+}
+
+export const isLeaf = <T extends BaseTreeNode>(treeNode: T) => {
+  return !Array.isArray(treeNode.children) || treeNode.isLeaf
+}
+
+/**
+ * 获取指定节点的所有后代叶子节点
+ */
+export const getLeafChildren = <T extends BaseTreeNode>(treeNode: T) => {
+  const leafNodes: T[] = []
+
+  const dig = (node: BaseTreeNode) => {
+    if (node.children) {
+      node.children.forEach((subNode) => {
+        if (subNode.children) {
+          dig(subNode)
+        } else {
+          leafNodes.push(subNode as T)
+        }
+      })
+    }
+    return node
+  }
+
+  dig(treeNode)
+
+  return leafNodes
+}
+
+/**
+ *  将树形数据按照层级分组
+ */
+export const groupByTreeDepth = <T extends BaseTreeNode>(tree: T[]) => {
+  const groupedTree: T[][] = []
+
+  visitTree(tree, (node) => {
+    // TODO: remove using groupBy
+    const depth = node.depth
+    if (!groupedTree[depth]) {
+      groupedTree[depth] = []
+    }
+    groupedTree[depth].push(node)
+  })
+  return groupedTree
 }
 
 export const filterTreeNode = <T extends BaseTreeNodeData>(

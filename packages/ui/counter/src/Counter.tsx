@@ -12,7 +12,14 @@ const _prefix = getPrefixCls(_role)
  */
 export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
   ({ prefixCls = _prefix, role = _role, ...rest }, ref) => {
-    const { rootProps, getInputProps, getMinusButtonProps, getPlusButtonProps } = useCounter({
+    const {
+      rootProps,
+      getInputProps,
+      getMinusButtonProps,
+      getPlusButtonProps,
+      getContentProps,
+      getInputWrapperProps,
+    } = useCounter({
       prefixCls,
       role,
       ...rest,
@@ -20,13 +27,17 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
 
     return (
       <div ref={ref} {...rootProps}>
-        <button {...getMinusButtonProps()}>
-          <MinusOutlined />
-        </button>
-        <input {...getInputProps()} />
-        <button {...getPlusButtonProps()}>
-          <PlusOutlined />
-        </button>
+        <div {...getContentProps()}>
+          <button {...getMinusButtonProps()}>
+            <MinusOutlined />
+          </button>
+          <div {...getInputWrapperProps()}>
+            <input {...getInputProps()} />
+          </div>
+          <button {...getPlusButtonProps()}>
+            <PlusOutlined />
+          </button>
+        </div>
       </div>
     )
   }
@@ -89,6 +100,16 @@ export interface CounterProps {
    * 改变值时的回调
    */
   onChange?: (value: number) => void
+  /**
+   * 设置展现形式
+   * @default 'outline'
+   */
+  appearance?: 'outline' | 'filled'
+  /**
+   * 设置计数器尺寸
+   * @default 'md'
+   */
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   /**
    * 开启滑轮改值
    */

@@ -152,25 +152,30 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     }
 
     const callback = useCallback(
-      (dates: any, emitOnChange = true) => {
+      (dates: (moment.Moment | null)[], emitOnChange = true) => {
         // 在判断数值是否改变时，需要比较的数目（比如日期选择就只需要比较第一个数据即可）
         // 此处是为了过滤掉单选情况下，数组第二个数据所带来的影响
         let compareNumber = 1
         const _dates = _.cloneDeep(dates)
-        let returnDate = {}
+        let returnDate = {} as any
         let returnDateStr = '' as any
         if (type.includes('week')) {
           returnDate = {
-            start: _dates[0].toDate(),
-            end: _dates[1].toDate(),
+            start: _dates[0]?.toDate(),
+            end: _dates[1]?.toDate(),
           }
-          const getWeekString = (disposeDate: moment.Moment) =>
-            format
-              ? disposeDate.format(realFormat)
-              : localeData.datePicker.weekrange(
-                  getBelongWeekYear(disposeDate, safeWeekOffset),
-                  getBelongWeek(disposeDate, safeWeekOffset)
-                )
+          const getWeekString = (disposeDate: moment.Moment | null) => {
+            if (disposeDate) {
+              return format
+                ? disposeDate.format(realFormat)
+                : localeData.datePicker.weekrange(
+                    getBelongWeekYear(disposeDate, safeWeekOffset),
+                    getBelongWeek(disposeDate, safeWeekOffset)
+                  )
+            } else {
+              return ''
+            }
+          }
           returnDateStr = type.includes('range')
             ? {
                 start: getWeekString(_dates[0]),
@@ -179,14 +184,17 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             : getWeekString(_dates[0])
         } else if (type.includes('range') || type === 'timeperiod') {
           returnDate = {
-            start: _dates[0].toDate(),
-            end: _dates[1].toDate(),
+            start: _dates[0]?.toDate(),
+            end: _dates[1]?.toDate(),
           }
-          returnDateStr = { start: _dates[0].format(realFormat), end: _dates[1].format(realFormat) }
+          returnDateStr = {
+            start: _dates[0]?.format(realFormat),
+            end: _dates[1]?.format(realFormat),
+          }
           compareNumber = 2
         } else {
-          returnDate = _dates[0].toDate()
-          returnDateStr = _dates[0].format(realFormat)
+          returnDate = _dates[0]?.toDate()
+          returnDateStr = _dates[0]?.format(realFormat)
         }
 
         // 只有发生了改变，才会去通知外部

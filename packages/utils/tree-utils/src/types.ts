@@ -1,5 +1,9 @@
 import React from 'react'
 
+export interface BaseTreeNode extends Record<string, any> {
+  children?: BaseTreeNode[]
+}
+
 export interface BaseTreeNodeData {
   id: React.ReactText
   children?: BaseTreeNodeData[]

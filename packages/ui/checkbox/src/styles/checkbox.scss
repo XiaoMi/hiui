@@ -13,16 +13,16 @@ $prefix: '#{$component-prefix}-checkbox' !default;
 
     &__icon {
       &--indeterminate {
-        background: $color;
+        background-color: $color;
         border-color: $color;
 
         &::after {
-          background: use-color-static('white');
+          background-color: use-color-static('white');
         }
       }
 
       &--checked {
-        background: $color;
+        background-color: $color;
         border-color: $color;
       }
     }
@@ -55,7 +55,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
 
     .#{$prefix}__icon {
       border-color: use-color('gray', 300);
-      background: use-color('gray', 100);
+      background-color: use-color('gray', 100);
 
       &::after {
         border-color: use-color('gray', 300);
@@ -70,7 +70,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
 
     .#{$prefix}__icon--checked {
       border-color: use-color-mode('primary');
-      background: use-color-mode('primary');
+      background-color: use-color-mode('primary');
       opacity: 0.4;
 
       &::after {
@@ -100,7 +100,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     width: 16px;
     height: 16px;
     border: 1px solid use-color('gray', 300);
-    margin-right: use-spacing(2);
+    margin: 0;
     border-radius: use-border-radius('sm');
     transition: 0.3s ease-out;
     line-height: 1;
@@ -145,6 +145,8 @@ $prefix: '#{$component-prefix}-checkbox' !default;
 
   &__text {
     padding: 0;
+    margin-inline-start: use-spacing(2);
+    margin-inline-end: 0;
     line-height: unset;
     color: use-color('gray', 700);
   }
