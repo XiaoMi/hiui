@@ -190,6 +190,8 @@ $prefix: '#{$component-prefix}-tree' !default;
     color: use-color('gray', 500);
 
     #{$this}__wrap {
+      background-color: use-color-static('white');
+
       &:hover {
         background-color: use-color-static('white');
       }

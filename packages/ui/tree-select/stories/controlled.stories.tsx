@@ -7,7 +7,6 @@ export const Controlled = () => {
     {
       title: '手机类',
       id: '0',
-      disabled: true,
       children: [
         {
           title: 'Redmi系列',
@@ -66,6 +65,7 @@ export const Controlled = () => {
     {
       title: '电视',
       id: '1',
+      disabled: true,
       children: [
         {
           title: '小米电视 大师 65英寸OLED',
