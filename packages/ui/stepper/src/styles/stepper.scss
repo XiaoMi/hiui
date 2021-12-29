@@ -42,6 +42,10 @@ $prefix: '#{$component-prefix}-stepper' !default;
         &__dot {
           background-color: use-color-mode('primary');
         }
+
+        &__icon {
+          color: use-color-mode('primary');
+        }
       }
     }
 
@@ -65,7 +69,8 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
 
       &__icon {
-        color: use-color('gray', 700);
+        color: use-color('gray', 200);
+        font-size: 24px;
       }
 
       &__title {
@@ -97,6 +102,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
   display: flex;
   font-size: use-text-size('normal');
   overflow: auto;
+  align-items: center;
 
   
 
@@ -107,6 +113,9 @@ $prefix: '#{$component-prefix}-stepper' !default;
       .item-step {
         &__dot {
           background-color: use-color-mode('primary');
+        }
+        &__icon {
+          color: use-color-mode('primary');
         }
       }
     }
@@ -133,7 +142,8 @@ $prefix: '#{$component-prefix}-stepper' !default;
       }
 
       &__icon {
-        color: use-color('gray', 500);
+        color: use-color('gray', 200);
+        font-size: 24px;
       }
 
       &__title {
@@ -232,6 +242,10 @@ $prefix: '#{$component-prefix}-stepper' !default;
         &__title {
           position: relative;
           padding-right: use-spacing(6);
+        }
+
+        &__icon {
+          margin-right: use-spacing(4);
         }
       }
 

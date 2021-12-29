@@ -1,15 +1,20 @@
 import React from 'react'
 import Stepper from '../src'
+import {UserOutlined} from '@hi-ui/icons'
 
 const list = [
   {
     title: '账号信息',
+    icon: <UserOutlined/>
+    
   },
   {
     title: '邮箱激活',
+    
   },
   {
     title: '信息登记',
+    icon: <UserOutlined/>
   },
 ]
 

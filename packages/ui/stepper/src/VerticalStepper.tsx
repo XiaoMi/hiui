@@ -32,7 +32,7 @@ export const VerticalStepper = forwardRef<HTMLDivElement | null, VStepperProps>(
             })}
           >
             <div className={cx('item-step__wrapper')}>
-              {type === 'dot' ? <div className={cx('item-step__dot')} /> :<div className={cx('item-step')}>{index + 1}</div>}
+              {d.icon? <div className={cx('item-step__icon')}>{d.icon}</div> :(type === 'dot' ? <div className={cx('item-step__dot')} /> :<div className={cx('item-step')}>{index + 1}</div>)}
             </div>
             <div className="vertical-wrapper">
               <div className={cx('item-step__title')}>{d.title}</div>
