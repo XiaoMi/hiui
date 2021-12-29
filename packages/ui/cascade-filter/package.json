@@ -44,12 +44,12 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.0",
-    "@hi-ui/core": "^4.0.0-alpha.10",
-    "@hi-ui/core-css": "^4.0.0-alpha.8",
-    "@hi-ui/env": "^4.0.0-alpha.0",
-    "@hi-ui/filter": "^4.0.0-alpha.6",
-    "@hi-ui/type-assertion": "^4.0.0-alpha.11",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.10"
+    "@hi-ui/core": "^4.0.0-alpha.11",
+    "@hi-ui/core-css": "^4.0.0-alpha.9",
+    "@hi-ui/env": "^4.0.0-alpha.4",
+    "@hi-ui/filter": "^4.0.0-alpha.7",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.12",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.11"
   },
   "peerDependencies": {
     "react": "^17.0.1",
