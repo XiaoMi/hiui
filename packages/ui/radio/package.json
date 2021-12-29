@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/radio",
-  "version": "4.0.0-alpha.7",
+  "version": "4.0.0-alpha.8",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,13 +44,13 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.0",
-    "@hi-ui/core": "^4.0.0-alpha.10",
-    "@hi-ui/core-css": "^4.0.0-alpha.8",
-    "@hi-ui/dom-utils": "^4.0.0-alpha.4",
-    "@hi-ui/env": "^4.0.0-alpha.0",
-    "@hi-ui/func-utils": "^4.0.0-alpha.3",
-    "@hi-ui/type-assertion": "^4.0.0-alpha.11",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.10"
+    "@hi-ui/core": "^4.0.0-alpha.11",
+    "@hi-ui/core-css": "^4.0.0-alpha.9",
+    "@hi-ui/dom-utils": "^4.0.0-alpha.5",
+    "@hi-ui/env": "^4.0.0-alpha.4",
+    "@hi-ui/func-utils": "^4.0.0-alpha.4",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.12",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.11"
   },
   "peerDependencies": {
     "react": "^17.0.1",
