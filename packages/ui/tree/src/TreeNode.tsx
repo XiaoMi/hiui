@@ -253,7 +253,15 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
           onLoadChildren
         )}
 
-        {renderCheckbox(eventNodeRef.current, checkable, disabled, checked, semiChecked, onCheck)}
+        {renderCheckbox(
+          eventNodeRef.current,
+          checkable,
+          prefixCls,
+          disabled,
+          checked,
+          semiChecked,
+          onCheck
+        )}
 
         {renderTitle(eventNodeRef.current, titleRender)}
       </div>
@@ -357,6 +365,7 @@ const renderIndent = (prefixCls: string, node: FlattedTreeNodeData) => {
 const renderCheckbox = (
   node: TreeNodeEventData,
   checkable: boolean,
+  prefixCls: string,
   disabled?: boolean,
   checked?: boolean,
   semiChecked?: boolean,
@@ -372,6 +381,7 @@ const renderCheckbox = (
       onChange={() => {
         onCheck?.(node, !checked)
       }}
+      className={`${prefixCls}__checkbox`}
     />
   ) : null
 }

@@ -1,47 +1,29 @@
 import React from 'react'
 import Tree from '../src'
 
+function dig(path = '0', level = 3) {
+  const list = []
+  for (let i = 0; i < 10; i += 1) {
+    const id = `${path}-${i}`
+    const treeNode = {
+      title: id,
+      id,
+      children: [] as any[],
+    }
+
+    if (level > 0) {
+      treeNode.children = dig(id, level - 1)
+    }
+
+    list.push(treeNode)
+  }
+  return list
+}
+
+const treeData = dig('0', 4)
+
 export const VirtualList = () => {
-  const [treeData, setTreeData] = React.useState([
-    {
-      id: 1,
-      title: '小米',
-      children: [
-        {
-          id: 2,
-          title: '技术',
-          children: [
-            { id: 3, title: '后端' },
-            { id: 4, title: '运维' },
-            { id: 5, title: '前端' },
-          ],
-        },
-        {
-          id: 6,
-          title: '产品',
-
-          children: [
-            { id: 61, title: '后端' },
-            { id: 62, title: '运维' },
-            { id: 63, title: '前端' },
-          ],
-        },
-        {
-          id: 8,
-          title: '发发发',
-
-          children: [],
-        },
-      ],
-    },
-    {
-      id: 11,
-      title: '大米',
-      children: Array(100)
-        .fill(null)
-        .map((_, index) => ({ id: '大米' + index, title: '技术' + index })),
-    },
-  ])
+  console.error(treeData)
 
   return (
     <>
