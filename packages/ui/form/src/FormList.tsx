@@ -26,7 +26,7 @@ export const FormList: React.FC<FormListProps> = ({ children, name: nameProp }) 
     (stateFunc: Function, alterTouched: boolean | Function, alterErrors: boolean | Function) => {
       setFormState((prev: FormState<any>) => {
         const values = setNested(prev.values, name, stateFunc(getNested(prev.values, name)))
-        console.log(values, stateFunc(getNested(prev.values, name)))
+        // console.log(values, stateFunc(getNested(prev.values, name)))
 
         const updateErrors = typeof alterErrors === 'function' ? alterErrors : stateFunc
         const updateTouched = typeof alterTouched === 'function' ? alterTouched : stateFunc

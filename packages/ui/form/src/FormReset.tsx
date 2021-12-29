@@ -2,30 +2,41 @@ import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useFormContext } from './context'
-import { ButtonProps } from '@hi-ui/button'
-import { callAllFuncs } from '@hi-ui/func-utils'
+import Button, { ButtonProps } from '@hi-ui/button'
 
 const FORM_RESET_PREFIX = getPrefixCls('form-reset')
 
 /**
  * TODO: What is FormReset
  */
-export const FormReset = forwardRef<HTMLDivElement | null, FormResetProps>(
-  ({ prefixCls = FORM_RESET_PREFIX, className, children, onClick, ...rest }, ref) => {
+export const FormReset = forwardRef<HTMLButtonElement | null, FormResetProps>(
+  (
+    { prefixCls = FORM_RESET_PREFIX, className, children, type = 'secondary', onClick, ...rest },
+    ref
+  ) => {
     const { resetForm } = useFormContext()
 
     const cls = cx(prefixCls, className)
-
     return (
-      // @ts-ignore
-      <div ref={ref} className={cls} {...rest} onClick={callAllFuncs(resetForm, onClick)}>
+      <Button
+        ref={ref}
+        className={cls}
+        type={type}
+        {...rest}
+        onClick={() => {
+          resetForm()
+          onClick?.()
+        }}
+      >
         {children}
-      </div>
+      </Button>
     )
   }
 )
 
-export interface FormResetProps extends ButtonProps {}
+export interface FormResetProps extends ButtonProps {
+  onClick?: () => void
+}
 
 if (__DEV__) {
   FormReset.displayName = 'FormReset'

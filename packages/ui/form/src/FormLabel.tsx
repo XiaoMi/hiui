@@ -68,7 +68,7 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     }
   }, [contentPosition])
 
-  const colonMemo = useMemo(() => (colon ? ':' : null), [colon])
+  const colonMemo = useMemo(() => colon || '：', [colon])
 
   const cls = cx(
     prefixCls,

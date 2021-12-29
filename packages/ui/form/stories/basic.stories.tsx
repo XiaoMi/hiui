@@ -6,9 +6,10 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="form-basic__wrap">
+      <div className="form-basic__wrap" style={{ width: 400 }}>
         <Form
           initialValues={{ testInput: 'testInput', testInput2: 'testInput2' }}
+          // validateTrigger={['onBlur']}
           labelWidth={80}
           rules={{
             testInput: [

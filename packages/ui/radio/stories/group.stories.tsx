@@ -2,6 +2,7 @@ import React from 'react'
 import Radio, { RadioGroup } from '../src'
 
 export const Group = () => {
+  const [value, setValue] = React.useState<React.ReactText>(0)
   const data = [
     {
       id: 0,
@@ -31,9 +32,10 @@ export const Group = () => {
       <h1>Group</h1>
       <div className="radio-group__wrap">
         <RadioGroup
-          defaultValue={0}
+          value={value}
           onChange={(value) => {
             console.log('onChange', value)
+            setValue(value)
           }}
         >
           {data.map((item) => {

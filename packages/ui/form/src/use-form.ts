@@ -1,3 +1,4 @@
+import { stringify, parse } from './utils'
 import React, { useCallback, useMemo, useReducer, useRef } from 'react'
 import {
   FormAction,
@@ -10,8 +11,8 @@ import {
   FormSetState,
 } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
-import { isArray, isFunction } from '@hi-ui/type-assertion'
-import { callAllFuncs, setNested, getNested } from '@hi-ui/func-utils'
+import { isArray, isFunction, isObjectLike } from '@hi-ui/type-assertion'
+import { callAllFuncs, setNested, getNested, runIfFunc } from '@hi-ui/func-utils'
 import { stopEvent } from '@hi-ui/dom-utils'
 
 const EMPTY_RULES = {}
@@ -29,7 +30,7 @@ export const useForm = <Values = Record<string, any>>({
   onSubmit,
   // 以下为 Field 同名属性，用于统一配置，优先级低于个体 Item 的设置
   rules = EMPTY_RULES,
-  validateAfterTouched = true,
+  validateAfterTouched = false,
   validateTrigger: validateTriggerProp = DEFAULT_VALIDATE_TRIGGER,
   ...rest
 }: UseFormProps<Values>) => {
@@ -43,7 +44,7 @@ export const useForm = <Values = Record<string, any>>({
   /**
    * 收集 Field 的校验器注册表
    */
-  const [getValidation, registerField, unregisterField] = useCollection<
+  const [getValidation, registerField, unregisterField, getRegisteredKeys] = useCollection<
     FormFieldCollection<Values>
   >()
 
@@ -61,17 +62,23 @@ export const useForm = <Values = Record<string, any>>({
   // 使用 latest ref 维护，保证每次主动拿取的 formState 都是最新的
   const formStateRef = useLatestRef(formState)
 
-  // @ts-ignore
-  const getFieldNames = useCallback(() => Object.keys(formStateRef.current.values), [formStateRef])
+  // const getFieldNames = useCallback(() => Object.keys(formStateRef.current.values as any), [
+  //   formStateRef,
+  // ])
 
-  // @ts-ignore
-  const getFieldValue = useCallback((fieldName: string) => formStateRef.current.values[fieldName], [
-    formStateRef,
-  ])
+  const getFieldValue = useCallback(
+    (fieldName: FormFieldPath) => getNested(formStateRef.current.values, fieldName),
+    [formStateRef]
+  )
 
-  const getFieldError = useCallback((fieldName: string) => formStateRef.current.errors[fieldName], [
-    formStateRef,
-  ])
+  const getFieldsValue = useCallback(() => formStateRef.current.values as any, [formStateRef])
+
+  const getFieldError = useCallback(
+    (fieldName: FormFieldPath) => getNested(formStateRef.current.errors, fieldName),
+    [formStateRef]
+  )
+
+  const getFieldsError = useCallback(() => formStateRef.current.errors as any, [formStateRef])
 
   const setFieldError = useCallback(
     (field: FormFieldPath, errorMessage: FormErrorMessage | undefined) => {
@@ -96,7 +103,7 @@ export const useForm = <Values = Record<string, any>>({
    * 使用单个 Field 规则对给定值进行校验
    */
   const validateField = useCallback(
-    async (field: string, value: unknown) => {
+    async (field: FormFieldPath, value: unknown) => {
       const fieldValidation = getValidation(field)
       if (!fieldValidation) return
 
@@ -104,21 +111,23 @@ export const useForm = <Values = Record<string, any>>({
 
       const errorResultAsPromise = fieldValidation.validate(value)
 
-      console.log('validate', errorResultAsPromise)
-
-      errorResultAsPromise
-        .then((result) => {
-          console.log('result', result)
+      return errorResultAsPromise.then(
+        (result) => {
           formDispatch({ type: 'SET_VALIDATING', payload: false })
           setFieldError(field, '')
-        })
-        .catch((errorMsg: Error) => {
+
+          return setNested({}, field, value)
+        },
+        (errorMsg: Error) => {
+          formDispatch({ type: 'SET_VALIDATING', payload: false })
           // @ts-ignore
           setFieldError(field, errorMsg.fields[field][0].message)
-        })
-        .finally(() => {
-          formDispatch({ type: 'SET_VALIDATING', payload: false })
-        })
+
+          // TODO: 回调和promise支持
+          throw errorMsg
+        }
+      )
+      // .catch()
     },
     [getValidation, setFieldError]
   )
@@ -127,7 +136,7 @@ export const useForm = <Values = Record<string, any>>({
    * 校验单个 Field 及其当前值
    */
   const validateFieldState = useCallback(
-    (field: string) => {
+    (field: FormFieldPath) => {
       const value = getFieldValue(field)
       return validateField(field, value)
     },
@@ -138,20 +147,30 @@ export const useForm = <Values = Record<string, any>>({
    * 检验所有字段
    */
   const validateAll = useCallback(() => {
-    const fieldNames = getFieldNames()
-    return Promise.all(fieldNames.map((fieldName) => validateFieldState(fieldName)))
-  }, [getFieldNames, validateFieldState])
+    const fieldNames = getRegisteredKeys()
+    console.log('fieldNames', fieldNames)
+
+    return Promise.all(
+      fieldNames.map((fieldName) => {
+        return validateFieldState(fieldName)
+      })
+    )
+  }, [getRegisteredKeys, validateFieldState])
 
   /**
    * 控件值更新策略
    */
   const setFieldValue = useCallback(
-    (field: string, value: unknown, shouldValidate?: boolean) => {
+    (field: FormFieldPath, value: unknown, shouldValidate?: boolean) => {
       // @ts-ignore
       formDispatch({ type: 'SET_FIELD_VALUE', payload: { field, value } })
 
+      // touched 给外部控制展示，而不是当做参数暴露
       const shouldValidateField =
-        shouldValidate ?? (validateAfterTouched ? formState.touched[field] : true)
+        // shouldValidate ?? (validateAfterTouched ? getNested(formState.touched, field) : true)
+        validateAfterTouched
+          ? getNested(formState.touched, field) && shouldValidate
+          : shouldValidate
 
       if (shouldValidateField) {
         validateField(field, value)
@@ -160,23 +179,61 @@ export const useForm = <Values = Record<string, any>>({
     [validateField, validateAfterTouched, formState]
   )
 
-  const normalizeValueFromChange = useCallback((eventOrValue: React.ChangeEvent<any>) => {
-    // TODO: handle correct value
-    return eventOrValue.target.value
-  }, [])
+  const setFieldsValue = useCallback(
+    (fields: Record<string, any>, shouldValidate?: boolean) => {
+      Object.entries(fields).forEach(([fieldName, value]) => {
+        setFieldValue(fieldName, value, shouldValidate)
+      })
+    },
+    [setFieldValue]
+  )
+
+  const normalizeValueFromChange = useCallback(
+    (eventOrValue: React.ChangeEvent<any>, valuePropName: string) => {
+      let nextValue = eventOrValue
+
+      if (isObjectLike(eventOrValue) && eventOrValue.target) {
+        const event = eventOrValue as React.ChangeEvent<any>
+
+        // @see https://reactjs.org/docs/events.html#event-pooling
+        runIfFunc(event.persist)
+
+        const target = event.target || event.currentTarget
+
+        // if (hasOwnProp(target, valuePropName)) {
+        //   nextValue = target[valuePropName]
+        // }
+
+        // TODO: support all native html field
+        if (/checkbox/.test(target.type)) {
+          nextValue = target.checked
+        } else {
+          nextValue = target.value
+        }
+      }
+
+      return nextValue
+    },
+    []
+  )
 
   const handleFieldChange = useCallback(
-    (fieldName: string, valueCollectPipe: any, shouldValidate?: boolean) => (
-      evt: React.ChangeEvent<any>
-    ) => {
+    (
+      fieldName: FormFieldPath,
+      valuePropName: string,
+      valueCollectPipe: any,
+      shouldValidate?: boolean
+    ) => (evt: React.ChangeEvent<any>) => {
       // TODO: 传递 onChange 其它参数
       const nextValue = isFunction(valueCollectPipe)
         ? valueCollectPipe(evt)
-        : normalizeValueFromChange(evt)
+        : normalizeValueFromChange(evt, valuePropName)
 
       setFieldValue(fieldName, nextValue, shouldValidate)
-      // @ts-ignore
-      onValuesChange?.({ ...formState.values, [fieldName]: nextValue }, formState.values)
+
+      const changedValues: any = setNested({}, fieldName, nextValue)
+      const allValues = setNested({ ...(formState.values as any) }, fieldName, nextValue)
+      onValuesChange?.(changedValues, allValues)
     },
     [setFieldValue, onValuesChange, formState.values, normalizeValueFromChange]
   )
@@ -185,7 +242,7 @@ export const useForm = <Values = Record<string, any>>({
    * 控件失焦策略
    */
   const handleFieldBlur = useCallback(
-    (fieldName: string, shouldValidate?: boolean) => (evt?: any) => {
+    (fieldName: FormFieldPath, shouldValidate?: boolean) => (evt?: any) => {
       if (shouldValidate) {
         validateFieldState(fieldName)
       }
@@ -195,7 +252,7 @@ export const useForm = <Values = Record<string, any>>({
   )
 
   const handleFieldTrigger = useCallback(
-    (fieldName: string) => (evt?: any) => {
+    (fieldName: FormFieldPath) => (evt?: any) => {
       validateFieldState(fieldName)
     },
     [validateFieldState]
@@ -252,44 +309,59 @@ export const useForm = <Values = Record<string, any>>({
    */
   const submitForm = useCallback(async () => {
     formDispatch({ type: 'SUBMIT_ATTEMPT' })
-    return validateAll().then((combinedErrors: FormErrors<any>) => {
-      const isInstanceOfError = combinedErrors instanceof Error
-      const isActuallyValid = !isInstanceOfError && Object.keys(combinedErrors).length === 0
 
-      if (isActuallyValid) {
-        let promiseOrUndefined
-        try {
-          // @ts-ignore
-          promiseOrUndefined = onSubmit?.(formState.values)
-        } catch (error) {
-          // throw error
+    return validateAll().then(
+      (combinedErrors: FormErrors<any>) => {
+        const isInstanceOfError = combinedErrors instanceof Error
+        const isActuallyValid = !isInstanceOfError
+
+        if (isActuallyValid) {
+          let promiseOrUndefined
+          try {
+            // @ts-ignore
+            promiseOrUndefined = onSubmit?.(formState.values)
+          } catch (error) {
+            formDispatch({ type: 'SUBMIT_DONE' })
+
+            throw error
+          }
+
+          if (promiseOrUndefined === undefined) {
+            formDispatch({ type: 'SUBMIT_DONE' })
+            // return combinedErrors
+            return formState.values
+          }
+
+          return Promise.resolve(promiseOrUndefined)
+            .then((result) => {
+              formDispatch({ type: 'SUBMIT_DONE' })
+              // return result
+              // TODO: 满足promise 如果既给到values 又给到 errors
+              return formState.values
+            })
+            .catch((_errors) => {
+              formDispatch({ type: 'SUBMIT_DONE' })
+              throw _errors
+            })
+        } else {
+          formDispatch({ type: 'SUBMIT_DONE' })
+
+          if (isInstanceOfError) {
+            throw combinedErrors
+          }
         }
-
-        if (promiseOrUndefined === undefined) return
-
-        return Promise.resolve(promiseOrUndefined)
-          .then((result) => {
-            formDispatch({ type: 'SUBMIT_DONE' })
-            return result
-          })
-          .catch((_errors) => {
-            formDispatch({ type: 'SUBMIT_DONE' })
-            throw _errors
-          })
-      } else {
+      },
+      (error) => {
         formDispatch({ type: 'SUBMIT_DONE' })
-
-        if (isInstanceOfError) {
-          throw combinedErrors
-        }
+        throw error
       }
-    })
+    )
   }, [formState, onSubmit, validateAll])
 
   const handleSubmit = useCallback(
     (evt?: React.FormEvent<HTMLFormElement>) => {
       stopEvent(evt as any)
-      submitForm().catch(console.error)
+      return submitForm()
     },
     [submitForm]
   )
@@ -302,9 +374,7 @@ export const useForm = <Values = Record<string, any>>({
     [resetForm]
   )
 
-  const resetValidations = useCallback(() => {}, [])
-
-  const clearErrors = useCallback(() => {
+  const resetErrors = useCallback(() => {
     formDispatch({
       // TODO: reset errorMsg
       type: 'SET_ERRORS',
@@ -336,12 +406,12 @@ export const useForm = <Values = Record<string, any>>({
         onBlur,
       } = props
 
-      const validateTrigger = isArray(validateTriggerProp)
+      const validateTrigger = (isArray(validateTriggerProp)
         ? validateTriggerProp
-        : [validateTriggerProp]
+        : [validateTriggerProp]) as string[]
 
       const validateOnCollect = validateTrigger.includes(valueCollectPropName)
-      const validateOnBlur = validateTrigger.includes('onChange')
+      const validateOnBlur = validateTrigger.includes('onBlur')
 
       const returnProps = {
         ref,
@@ -349,19 +419,18 @@ export const useForm = <Values = Record<string, any>>({
         // 字段 change 时校验
         [valueCollectPropName]: callAllFuncs(
           props[valueCollectPropName],
-          handleFieldChange(field, valueCollectPipe, validateOnCollect)
+          handleFieldChange(field, valuePropName, valueCollectPipe, validateOnCollect)
         ),
         onBlur: callAllFuncs(onBlur, handleFieldBlur(field, validateOnBlur)),
         invalid: getFieldError(field),
       }
 
-      validateTrigger
-        .filter((triggerName) => [valueCollectPropName, 'onBlur'].indexOf(triggerName) === -1)
-        // @ts-ignore
-        .forEach((triggerName: string) => {
+      validateTrigger.forEach((triggerName: string) => {
+        if ([valueCollectPropName, 'onBlur'].indexOf(triggerName) === -1) {
           // @ts-ignore
           returnProps[triggerName] = callAllFuncs(props[triggerName], handleFieldTrigger(field))
-        })
+        }
+      })
 
       return returnProps
     },
@@ -376,8 +445,8 @@ export const useForm = <Values = Record<string, any>>({
   )
 
   const getFieldRules = useCallback(
-    (fieldName: string) => {
-      return rules[fieldName]
+    (fieldName: FormFieldPath) => {
+      return getNested(rules, fieldName)
     },
     [rules]
   )
@@ -388,6 +457,7 @@ export const useForm = <Values = Record<string, any>>({
     setFieldValue,
     setFieldError,
     setFieldTouched,
+    getFieldValue,
     getFieldError,
     getFieldRules,
     getRootProps,
@@ -396,6 +466,12 @@ export const useForm = <Values = Record<string, any>>({
     unregisterField,
     submitForm,
     resetForm,
+    resetErrors,
+    validateFieldState,
+    validateValue: validateField,
+    getFieldsValue,
+    setFieldsValue,
+    getFieldsError,
   }
 }
 
@@ -506,20 +582,29 @@ const useCollection = <T>() => {
   const collectionMp = useMemo(() => new Map(), [])
   const collectionRef = useRef<Map<string, T>>(collectionMp)
 
-  const register = useCallback((key: string, value: T) => {
-    collectionRef.current.set(key, value)
+  const register = useCallback((keyOrKeys: FormFieldPath, value: T) => {
+    collectionRef.current.set(stringify(keyOrKeys), value)
   }, [])
 
-  const unregister = useCallback((key: string) => {
-    collectionRef.current.delete(key)
+  const unregister = useCallback((keyOrKeys: FormFieldPath) => {
+    collectionRef.current.delete(stringify(keyOrKeys))
   }, [])
 
-  const getCollection = useCallback((key: string) => {
+  const getCollection = useCallback((keyOrKeys: FormFieldPath) => {
+    const key = stringify(keyOrKeys)
     if (collectionRef.current.has(key)) {
       return collectionRef.current.get(key)
     }
     return null
   }, [])
 
-  return [getCollection, register, unregister] as const
+  const getRegisteredKeys = useCallback(() => {
+    const keys = [] as FormFieldPath[]
+    collectionRef.current.forEach((_, key) => {
+      keys.push(parse(key))
+    })
+    return keys
+  }, [])
+
+  return [getCollection, register, unregister, getRegisteredKeys] as const
 }

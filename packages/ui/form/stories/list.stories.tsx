@@ -11,7 +11,7 @@ export const List = () => {
       <div className="form-list__wrap">
         <Form
           initialValues={{ testInput: 'testInput', testInput2: 'testInput2' }}
-          labelWidth={80}
+          labelWidth={110}
           rules={{
             testInput: [
               {

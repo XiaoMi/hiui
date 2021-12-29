@@ -15,15 +15,16 @@ export const FormMessage = forwardRef<HTMLSpanElement | null, FormMessageProps>(
 
     // field 支持数组，递归去设置或者获取对象中的属性值
     // 如何变成映射的 key，特殊处理化
-    const message = field ? getFieldError(field) : null
-    const cls = cx(prefixCls, className)
+    const message: any = field ? getFieldError(field) : null
 
-    return message ? (
+    const cls = cx(prefixCls, className, message && `${prefixCls}--show`)
+
+    return (
       <span ref={ref} role={role} className={cls} {...rest}>
         {/* @ts-ignore */}
         {message}
       </span>
-    ) : null
+    )
   }
 )
 

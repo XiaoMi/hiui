@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef, useImperativeHandle, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { FormProvider } from './context'
@@ -25,7 +25,7 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
       innerRef,
       labelWidth,
       labelPlacement = 'right',
-      placement,
+      placement = 'vertical',
       verticalAlign,
       colon,
       ...rest
@@ -35,7 +35,23 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
     const formContext = useForm(rest)
 
     const { getRootProps } = formContext
-    // useImperativeHandle(innerRef, () => formContext)
+
+    // @ts-ignore
+    useImperativeHandle(innerRef, () => {
+      return {
+        validate: formContext.submitForm,
+        reset: formContext.resetForm,
+        validateField: formContext.validateFieldState,
+        // validateFields: formContext.va,
+        setFieldValue: formContext.setFieldValue,
+        setFieldsValue: formContext.setFieldsValue,
+        getFieldValue: formContext.getFieldValue,
+        getFieldsValue: formContext.getFieldsValue,
+        getFieldError: formContext.getFieldError,
+        getFieldsError: formContext.getFieldsError,
+        clearValidates: formContext.resetErrors,
+      }
+    })
 
     const providedValue = useMemo(() => {
       return {
@@ -43,10 +59,11 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
         labelPlacement,
         colon,
         ...formContext,
+        prefixCls,
       }
-    }, [labelWidth, formContext, labelPlacement, colon])
+    }, [labelWidth, formContext, labelPlacement, colon, prefixCls])
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, placement && `${prefixCls}--placement-${placement}`)
 
     return (
       // @ts-ignore

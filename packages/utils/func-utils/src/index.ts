@@ -29,7 +29,10 @@ export const toArray = <T>(arg: T | T[] | undefined): T[] => {
  *
  * get({ a: { b: 3 } }, ['a', 'b']) // 3
  */
-export const getNested = <T, E>(obj: E, paths: (string | number)[]): T | undefined => {
+export const getNested = <T, E>(
+  obj: E,
+  paths: (string | number)[] | string | number
+): T | undefined => {
   paths = toArray(paths)
   const props = paths.map((p) => p + '').filter((p) => p !== '')
 
@@ -55,7 +58,7 @@ export const getNested = <T, E>(obj: E, paths: (string | number)[]): T | undefin
  *
  * setNested({ a: { b: 2 } }, ['a', 'b'], 4) // { a: { b: 4 } }
  */
-export const setNested = <T>(obj: T, paths: (string | number)[], value: any) => {
+export const setNested = <T>(obj: T, paths: (string | number)[] | string | number, value: any) => {
   paths = toArray(paths)
 
   // just support array

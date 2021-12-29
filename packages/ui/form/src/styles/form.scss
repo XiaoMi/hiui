@@ -21,13 +21,15 @@ $prefix: '#{$component-prefix}-form' !default;
     color: use-color('gray', 800);
   }
 
-  &--inline {
-    display: flex;
-    flex-wrap: wrap;
+  &--placement {
+    &-horizontal {
+      display: flex;
+      flex-wrap: wrap;
 
-    // 上下布局只在水平表单中自动填充高度
-    .#{$prefix}-label__indent {
-      min-height: 32px;
+      // 上下布局只在水平表单中自动填充高度
+      .#{$prefix}-label__indent {
+        min-height: 32px;
+      }
     }
   }
 }
@@ -48,9 +50,8 @@ $prefix: '#{$component-prefix}-form' !default;
   }
 
   &__text {
-    margin-top: 5px;
-    min-height: 22px;
     padding-right: use-spacing(4);
+    min-height: 22px;
     line-height: 22px;
 
     .#{$prefix}-label--placement-left & {
@@ -68,19 +69,19 @@ $prefix: '#{$component-prefix}-form' !default;
     }
 
     .#{$prefix}-label--required & {
-      &::after {
+      &::before {
         margin-right: use-spacing(2);
         content: '*';
-        color: use-color-mode('primary');
+        color: use-color-mode('error');
       }
     }
   }
 
-  .#{$prefix}-label--placement-top {
-    padding-right: 0;
+  &--placement-top {
     text-align: left;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom: use-spacing(10);
+    padding-right: 0;
   }
 
   &__content {
@@ -90,17 +91,36 @@ $prefix: '#{$component-prefix}-form' !default;
     min-height: 32px;
     flex-shrink: 0;
   }
+
+  &__control {
+    // display: flex;
+    // align-items: center;
+  }
 }
 
 .#{$prefix}-message {
+  display: block;
   font-size: use-text-size('normal');
   min-height: 24px;
   padding: 2px 0;
   box-sizing: border-box;
   line-height: 20px;
-  transition: all 0.3s;
   transform: translateY(-10%);
-  // opacity: 0;
+  opacity: 0;
   color: use-color-mode('error');
   // TODO: 动效
+  transition: all 0.3s;
+
+  &--show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.#{$prefix}-item {
+  position: relative;
+
+  &__message {
+    position: absolute;
+  }
 }
