@@ -16,10 +16,11 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
     defaultActive = 0,
     duration,
     showArrows = true,
-    arrowSize = 'middle',
+    arrowSize = 'md',
     dotPosition = 'bottom',
     dotType = 'slider',
     showDots = true,
+    showPages = false,
     ...rest
   } = props
   const cls = cx(prefixCls, className, dotPosition === 'outer' && `${prefixCls}--dot-outer`)
@@ -179,6 +180,9 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
             prefixCls={prefixCls}
             inAnimation={isInAnimation}
           />
+        )}
+        {showPages && (
+          <div className={`${prefixCls}__page-number`}>{`${activeIndex + 1} / ${childCount}`}</div>
         )}
         {showDots && !isDisabledAllInteract && dotPosition !== 'outer' && (
           <Dots

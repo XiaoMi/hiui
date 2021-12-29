@@ -38,7 +38,7 @@ $arrows-class: '#{$component-prefix}-carousel__arrows-button' !default;
     }
   }
 
-  &--large{
+  &--lg{
     width: 40px;
     height: 40px;
     font-size: 28px;
@@ -51,7 +51,7 @@ $arrows-class: '#{$component-prefix}-carousel__arrows-button' !default;
     }
   }
 
-  &--middle{
+  &--md{
     width: 32px;
     height: 32px;
     font-size: 20px;
@@ -64,7 +64,7 @@ $arrows-class: '#{$component-prefix}-carousel__arrows-button' !default;
     }
   }
 
-  &--small{
+  &--sm{
     width: 24px;
     height: 24px;
     font-size: 16px;

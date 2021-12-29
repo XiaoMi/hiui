@@ -66,11 +66,9 @@ export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
 
     const onClick = useCallback(
       (page) => {
-        if (onChange) {
-          onChange(page, current, pageSize)
-        }
+        trySetCurrent(page)
       },
-      [onChange, current, pageSize]
+      [trySetCurrent]
     )
 
     const cls = cx(prefixCls, className)

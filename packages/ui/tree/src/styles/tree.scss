@@ -76,11 +76,17 @@ $prefix: '#{$component-prefix}-tree' !default;
   &__indent {
     display: inline-block;
     width: use-spacing(8);
+    margin-right: use-spacing(2);
     height: 100%;
   }
 
+  &__checkbox{
+    margin-right: use-spacing(2);
+  }
+
   &__switcher {
-    margin-left: -4px;
+    margin-right: use-spacing(2);
+    //margin-left: -4px;
     height: 100%;
 
     &--loading {
@@ -94,7 +100,6 @@ $prefix: '#{$component-prefix}-tree' !default;
     align-items: center;
     position: relative;
     min-height: 32px;
-    margin-left: use-spacing(2);
     line-height: get-text-lineheight('lg');
     font-size: use-text-size('normal');
     cursor: inherit;
@@ -185,6 +190,8 @@ $prefix: '#{$component-prefix}-tree' !default;
     color: use-color('gray', 500);
 
     #{$this}__wrap {
+      background-color: use-color-static('white');
+
       &:hover {
         background-color: use-color-static('white');
       }
