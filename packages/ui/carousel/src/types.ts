@@ -2,7 +2,7 @@ import React from 'react'
 
 import { HiBaseHTMLProps } from '@hi-ui/core'
 
-export type CarouselArrowSize = 'large' | 'middle' | 'small'
+export type CarouselArrowSize = 'lg' | 'md' | 'sm'
 
 export type CarouselDotType = 'line' | 'slider' | 'dot'
 export type CarouselDotPosition = 'left' | 'right' | 'top' | 'bottom' | 'outer'
@@ -35,7 +35,7 @@ export interface CarouselProps extends HiBaseHTMLProps<'div'> {
   showPages?: boolean
   /**
    * 箭头指示器尺寸
-   * @default 'middle'
+   * @default 'md'
    */
   arrowSize?: CarouselArrowSize
   /**
