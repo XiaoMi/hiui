@@ -73,7 +73,12 @@ export const CheckCascaderMenu = ({
         const optionCls = cx(
           `${prefixCls}-option`,
           option.checkable && checked && `${prefixCls}-option--checked`,
-          selected && `${prefixCls}-option--selected`,
+          // 此处 option.children?.length || !option.checkable 的含义是
+          // 如果存在子节点，则可以展现选择态
+          // 不存在子节点，如不是可勾选item，则可以展现勾选态
+          selected &&
+            (option.children?.length || !option.checkable) &&
+            `${prefixCls}-option--selected`,
           loading && `${prefixCls}-option--loading`,
           disabled && `${prefixCls}-option--disabled`
         )
