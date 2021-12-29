@@ -7,7 +7,7 @@ import Input from '@hi-ui/input'
 import { TransferItem } from './TransferItem'
 import Checkbox from '@hi-ui/checkbox'
 import { SearchOutlined, InfoCircleOutlined } from '@hi-ui/icons'
-import { InputPagination } from '@hi-ui/pagination'
+import { PaginationMini } from '@hi-ui/pagination'
 
 const _role = 'transfer-panel'
 const _prefix = getPrefixCls(_role)
@@ -117,20 +117,23 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
           <div className={`${prefixCls}__header`}>
             {showCheckAll ? (
               <div className={`${prefixCls}__check-all`}>
-                <Checkbox
-                  indeterminate={!checkedAll && currentPanelHasChecked}
-                  checked={checkedAll}
-                  onChange={handleCheckAll}
-                />
-                <span>
+                <div className={`${prefixCls}__check-all--left`}>
+                  <Checkbox
+                    indeterminate={!checkedAll && currentPanelHasChecked}
+                    checked={checkedAll}
+                    onChange={handleCheckAll}
+                  />
+                  {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
+                </div>
+                <span className={`${prefixCls}__check-all--right`}>
                   {currentPanelHasChecked
                     ? `${checkedIds.length}/${cacheData.length}`
                     : `${cacheData.length}`}
                 </span>
-                <span>项</span>
               </div>
+            ) : title ? (
+              <div className={`${prefixCls}__title`}>{title}</div>
             ) : null}
-            {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
           </div>
         ) : null}
         <div className={`${prefixCls}__body`}>
@@ -176,7 +179,8 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
         </div>
         {pageSize ? (
           <div className={`${prefixCls}__footer`}>
-            <InputPagination
+            <PaginationMini
+              size="sm"
               className={`${prefixCls}__pagination`}
               total={cacheData.length}
               current={current}

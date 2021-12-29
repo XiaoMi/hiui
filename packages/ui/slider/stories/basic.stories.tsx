@@ -6,7 +6,12 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="slider-basic__wrap">
-        <Slider></Slider>
+        <Slider
+          style={{ width: 300 }}
+          onChange={(value) => {
+            console.log(value)
+          }}
+        ></Slider>
       </div>
     </>
   )

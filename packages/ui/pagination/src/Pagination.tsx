@@ -66,11 +66,9 @@ export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
 
     const onClick = useCallback(
       (page) => {
-        if (onChange) {
-          onChange(page, current, pageSize)
-        }
+        trySetCurrent(page)
       },
-      [onChange, current, pageSize]
+      [trySetCurrent]
     )
 
     const cls = cx(prefixCls, className)
@@ -136,6 +134,24 @@ export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
             className={`${prefixCls}__total`}
           >{`${pagination.total[0]} ${total} ${pagination.total[1]}`}</div>
         ) : null}
+
+        <ul className={`${prefixCls}__list`}>
+          <PagerButton
+            type="prev"
+            prefixCls={prefixCls}
+            disabled={current === 1}
+            onChange={onClick}
+            current={current}
+          />
+          {renderPagers()}
+          <PagerButton
+            type="next"
+            prefixCls={prefixCls}
+            onChange={onClick}
+            current={current}
+            disabled={current === maxPage}
+          />
+        </ul>
         {pageSizeOptions ? (
           <PageOption
             pageSize={pageSize}
@@ -143,11 +159,6 @@ export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
             onPageSizeChange={_onPageSizeChange}
           />
         ) : null}
-        <ul className={`${prefixCls}__list`}>
-          <PagerButton type="prev" prefixCls={prefixCls} onClick={onClick} current={current} />
-          {renderPagers()}
-          <PagerButton type="next" prefixCls={prefixCls} onClick={onClick} current={current} />
-        </ul>
         {showJumper ? (
           <PageJumper
             prefixCls={prefixCls}

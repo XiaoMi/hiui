@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/select",
-  "version": "4.0.0-alpha.9",
+  "version": "4.0.0-alpha.15",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,24 +44,33 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.2",
-    "@hi-ui/core": "^4.0.0-alpha.6",
-    "@hi-ui/core-css": "^4.0.0-alpha.4",
-    "@hi-ui/env": "^4.0.0-alpha.0",
-    "@hi-ui/icons": "^4.0.0-alpha.11",
-    "@hi-ui/input": "^4.0.0-alpha.15",
-    "@hi-ui/popper": "^4.0.0-alpha.9",
-    "@hi-ui/use-check": "^4.0.0-alpha.9",
-    "@hi-ui/use-children": "^4.0.0-alpha.1",
-    "@hi-ui/use-latest": "^4.0.0-alpha.2",
-    "@hi-ui/use-toggle": "^4.0.0-alpha.4",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.7"
+    "@hi-ui/core": "^4.0.0-alpha.11",
+    "@hi-ui/core-css": "^4.0.0-alpha.9",
+    "@hi-ui/env": "^4.0.0-alpha.4",
+    "@hi-ui/highlighter": "^4.0.0-alpha.3",
+    "@hi-ui/icons": "^4.0.0-alpha.17",
+    "@hi-ui/input": "^4.0.0-alpha.21",
+    "@hi-ui/picker": "^4.0.0-alpha.4",
+    "@hi-ui/popper": "^4.0.0-alpha.14",
+    "@hi-ui/times": "^4.0.0-alpha.3",
+    "@hi-ui/tree-utils": "^4.0.0-alpha.7",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.12",
+    "@hi-ui/use-check": "^4.0.0-alpha.13",
+    "@hi-ui/use-children": "^4.0.0-alpha.2",
+    "@hi-ui/use-data-source": "^4.0.0-alpha.4",
+    "@hi-ui/use-latest": "^4.0.0-alpha.3",
+    "@hi-ui/use-search-mode": "^4.0.0-alpha.4",
+    "@hi-ui/use-toggle": "^4.0.0-alpha.9",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.11",
+    "rc-virtual-list": "^3.4.2"
   },
   "peerDependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.0",
+    "@hi-ui/hi-build": "^4.0.0-alpha.3",
+    "pinyin-match": "^1.2.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

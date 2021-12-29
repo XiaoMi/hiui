@@ -25,6 +25,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       onClose,
       preload = false,
       unmountOnClose = true,
+      autoFocus = true,
       arrow = false,
       closeOnOutsideClick,
       closeOnEsc,
@@ -50,8 +51,8 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
     },
     ref
   ) => {
-    const [transitionVisible, setTransitionVisible] = useState(false)
-    const [transitionExisted, setTransitionExisted] = useState(true)
+    const [transitionVisible, setTransitionVisible] = useState(visible)
+    const [transitionExisted, setTransitionExisted] = useState(!transitionVisible)
 
     useEffect(() => {
       setTransitionVisible(visible)
@@ -89,9 +90,11 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
     const onExitedLatest = useLatestCallback(onExited)
 
     const handleEntered = useCallback(() => {
-      popperElement?.focus()
+      if (autoFocus) {
+        popperElement?.focus()
+      }
       onEnteredLatest()
-    }, [onEnteredLatest, popperElement])
+    }, [onEnteredLatest, popperElement, autoFocus])
 
     const handleExited = useCallback(() => {
       setTransitionExisted(true)
@@ -104,6 +107,8 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       <CSSTransition
         classNames={`${prefixCls}--motion`}
         in={transitionVisible}
+        appear
+        // @DesignToken
         timeout={201}
         mountOnEnter={!preload}
         unmountOnExit={unmountOnClose}
@@ -135,6 +140,10 @@ export interface PopperProps extends HiBaseHTMLProps<'div'>, UsePopperProps {
    * 开启 popper 关不时销毁，用于性能优化，优先级大于 `preload`
    */
   unmountOnClose?: boolean
+  /**
+   * 开启自动聚焦弹出层
+   */
+  autoFocus?: boolean
   /**
    * 开始动画弹出时回调
    */

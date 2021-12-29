@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UploadProps } from './interface'
 import { FileSelect } from '@hi-ui/file-select'
-import { PlusOutlined, CloseCircleFilled } from '@hi-ui/icons'
+import { PlusOutlined, ExpressionOutlined, DeleteOutlined, EyeOutlined } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
 import { LocaleContext } from '@hi-ui/locale-context'
 import { Preview } from '@hi-ui/preview'
@@ -158,27 +158,45 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                 <li
                   tabIndex={0}
                   key={index}
-                  className={cx(`${prefixCls}__item`, `${prefixCls}__item--${photoSize}`)}
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => {
-                    previewImage(index)
-                  }}
+                  className={cx(`${prefixCls}__item`, `${prefixCls}__item--${photoSize}`, {
+                    [`${prefixCls}__item--error`]: file.uploadState === 'error',
+                  })}
                   onKeyDown={(e) => handleItemKeydown(e, file, index)}
                 >
-                  <img
-                    src={file.url}
-                    className={`${prefixCls}__thumb ${file.uploadState === 'error' && 'error'}`}
-                  />
-                  <CloseCircleFilled
-                    className={`${prefixCls}__photo-del`}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      deleteFile(file, index)
-                    }}
-                  />
-
-                  {file.uploadState === 'error' && (
-                    <div className={`${prefixCls}__item--photo-error`}>{upload.uploadFailed}</div>
+                  <img src={file.url} className={`${prefixCls}__thumb`} />
+                  {file.uploadState !== 'error' ? (
+                    <div className={`${prefixCls}__mask`}>
+                      <div className={`${prefixCls}__action-group`}>
+                        <EyeOutlined
+                          onClick={() => {
+                            previewImage(index)
+                          }}
+                        />
+                        <DeleteOutlined
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            deleteFile(file, index)
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className={`${prefixCls}__precent`}>
+                      <ExpressionOutlined className={`${prefixCls}__error-icon`} />
+                      <div className={`${prefixCls}__action-group`}>
+                        <EyeOutlined
+                          onClick={() => {
+                            previewImage(index)
+                          }}
+                        />
+                        <DeleteOutlined
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            deleteFile(file, index)
+                          }}
+                        />
+                      </div>
+                    </div>
                   )}
                 </li>
               )

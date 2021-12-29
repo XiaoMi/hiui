@@ -23,14 +23,18 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
       icon = defaultTipIcon,
       cancelText = '取消',
       confirmText = '确认',
+      footer,
       ...rest
     },
     ref
   ) => {
-    // TODO: 使用 自定义hook 抽离逻辑，若不需要可以移除
     const { rootProps, getPopperProps, getTriggerProps, onCancel, onConfirm } = usePopConfirm(rest)
 
     const cls = cx(prefixCls, className)
+
+    const hasConfirm = confirmText !== null
+    const hasCancel = cancelText !== null
+    const hasFooter = hasConfirm || hasCancel || footer !== null
 
     return (
       <>
@@ -47,25 +51,37 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
               {icon ? <span className={`${prefixCls}__content-icon`}>{icon}</span> : null}
               <div className={`${prefixCls}__content-title`}>{title}</div>
             </section>
-            <div className={`${prefixCls}__footer`}>
-              <Button
-                className={`${prefixCls}__btn-cancel`}
-                type="default"
-                appearance="line"
-                size="small"
-                onClick={onCancel}
-              >
-                {cancelText}
-              </Button>
-              <Button
-                className={`${prefixCls}__btn-confirm`}
-                type="primary"
-                size="small"
-                onClick={onConfirm}
-              >
-                {confirmText}
-              </Button>
-            </div>
+
+            {hasFooter ? (
+              <footer className={`${prefixCls}__footer`}>
+                {footer === undefined
+                  ? [
+                      hasCancel ? (
+                        <Button
+                          key="1"
+                          className={`${prefixCls}__btn-cancel`}
+                          type="default"
+                          size="small"
+                          onClick={onCancel}
+                        >
+                          {cancelText}
+                        </Button>
+                      ) : null,
+                      hasConfirm ? (
+                        <Button
+                          key="2"
+                          className={`${prefixCls}__btn-confirm`}
+                          type="primary"
+                          size="small"
+                          onClick={onConfirm}
+                        >
+                          {confirmText}
+                        </Button>
+                      ) : null,
+                    ]
+                  : footer}
+              </footer>
+            ) : null}
           </div>
         </PopperPortal>
       </>
@@ -78,6 +94,22 @@ export interface PopConfirmProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, 
    * 确认框标题
    */
   title: React.ReactNode
+  /**
+   * 取消按钮文案
+   */
+  cancelText?: React.ReactNode
+  /**
+   * 确认按钮文案
+   */
+  confirmText?: React.ReactNode
+  /**
+   * 自定义提示的 icon 图标
+   */
+  icon?: React.ReactNode
+  /**
+   * 自定义底部内容
+   */
+  footer?: React.ReactNode
 }
 
 if (__DEV__) {

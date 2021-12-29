@@ -1,6 +1,7 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
+import { UserFilled } from '@hi-ui/icons'
 
 const _role = 'avatar'
 const _prefix = getPrefixCls(_role)
@@ -20,21 +21,49 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
       shape = 'circle',
       initials,
       name,
+      icon,
+
       ...rest
     },
     ref
   ) => {
     const cls = cx(prefixCls, `${prefixCls}--${size}`, `${prefixCls}--${shape}`, className)
 
-    return (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        {src ? (
-          <img className={`${prefixCls}__image`} src={src} alt={name} />
-        ) : (
-          <span aria-label={name} className={`${prefixCls}__initials`}>
+    const renderAvatar = useCallback(() => {
+      if (src) {
+        return <img className={`${prefixCls}__image`} src={src} alt={name} />
+      }
+      if (icon) {
+        return (
+          <span aria-label={name} className={`${prefixCls}__content`}>
+            {icon}
+          </span>
+        )
+      }
+      if (initials) {
+        return (
+          <span aria-label={name} className={`${prefixCls}__content`}>
             {initials}
           </span>
-        )}
+        )
+      }
+      if (children) {
+        return (
+          <span aria-label={name} className={`${prefixCls}__content`}>
+            {children}
+          </span>
+        )
+      }
+      return (
+        <span aria-label={name} className={`${prefixCls}__content ${prefixCls}--empty`}>
+          <UserFilled />
+        </span>
+      )
+    }, [src, initials, icon, name, children, prefixCls])
+
+    return (
+      <div ref={ref} role={role} className={cls} {...rest}>
+        {renderAvatar()}
       </div>
     )
   }
@@ -63,6 +92,10 @@ export interface AvatarProps {
   shape?: 'circle' | 'square'
   src?: string
   name?: string
+  /**
+   * 设置按钮图标
+   */
+  icon?: React.ReactNode
 }
 
 if (__DEV__) {

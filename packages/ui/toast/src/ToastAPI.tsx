@@ -3,6 +3,8 @@ import { render, unmountComponentAtNode } from 'react-dom'
 import * as Container from '@hi-ui/container'
 import { ToastManager, ToastManagerProps, _prefix } from './ToastManager'
 import { ToastEventOptions } from './types'
+import { withDefaultProps } from '@hi-ui/react-utils'
+import { uuid } from '@hi-ui/use-id'
 
 export class ToastAPI<T = ToastEventOptions> {
   static defaultOptions = {
@@ -12,14 +14,14 @@ export class ToastAPI<T = ToastEventOptions> {
   protected toastManager!: React.RefObject<ToastManager>
   protected container!: Element | undefined
   protected options!: ToastAPIOptions
+  protected id!: string
 
   constructor(toastAPIOptions: ToastAPIOptions) {
-    const options = { ...toastAPIOptions }
-    if (options.prefixCls === undefined) {
-      options.prefixCls = ToastAPI.defaultOptions.prefixCls
-    }
+    this.options = withDefaultProps(toastAPIOptions, ToastAPI.defaultOptions)
 
-    this.options = options
+    // Ensure that Toast is a singleton.
+    this.id = uuid()
+
     this.initManager()
   }
 
@@ -28,14 +30,14 @@ export class ToastAPI<T = ToastEventOptions> {
   }
 
   get selector() {
-    return `.${this.options.prefixCls}__portal`
+    return `.${this.options.prefixCls}__portal__${this.id}`
   }
 
   initManager() {
     this.container = Container.getContainer(this.selector)
     this.toastManager = React.createRef<ToastManager>()
 
-    render(<ToastManager ref={this.toastManager} {...this.options} />, this.container)
+    render(<ToastManager {...this.options} ref={this.toastManager} />, this.container)
   }
 
   open = (props: T) => {

@@ -1,0 +1,83 @@
+import React from 'react'
+import Button from '../src'
+import { PlusOutlined } from '@hi-ui/icons'
+
+export const Disabled = () => {
+  const btnRef = React.useRef(null)
+  React.useEffect(() => {
+    console.log(btnRef)
+  }, [])
+  return (
+    <>
+      <h1>禁用</h1>
+      <div className="button-basic__wrap">
+        <div style={{ marginBottom: 24 }}>
+          <Button type="primary" icon={<PlusOutlined />} disabled>
+            面性按钮
+          </Button>
+          <Button type="primary" icon={<PlusOutlined />} disabled />
+          <Button type="secondary" icon={<PlusOutlined />} disabled>
+            面性按钮
+          </Button>
+          <Button type="secondary" icon={<PlusOutlined />} disabled />
+          <Button icon={<PlusOutlined />} disabled>
+            面性按钮
+          </Button>
+          <Button icon={<PlusOutlined />} disabled />
+          <Button type="danger" icon={<PlusOutlined />} disabled>
+            面性按钮
+          </Button>
+          <Button type="danger" icon={<PlusOutlined />} disabled />
+          <Button type="success" icon={<PlusOutlined />} disabled>
+            面性按钮
+          </Button>
+          <Button type="success" icon={<PlusOutlined />} disabled />
+        </div>
+        <div style={{ marginBottom: 24 }}>
+          <Button type="primary" icon={<PlusOutlined />} appearance="line" disabled>
+            面性按钮
+          </Button>
+          <Button type="primary" icon={<PlusOutlined />} appearance="line" disabled />
+          <Button type="secondary" icon={<PlusOutlined />} appearance="line" disabled>
+            面性按钮
+          </Button>
+          <Button type="secondary" icon={<PlusOutlined />} appearance="line" disabled />
+          <Button icon={<PlusOutlined />} appearance="line" disabled>
+            面性按钮
+          </Button>
+          <Button icon={<PlusOutlined />} appearance="line" disabled />
+          <Button type="danger" icon={<PlusOutlined />} appearance="line" disabled>
+            面性按钮
+          </Button>
+          <Button type="danger" icon={<PlusOutlined />} appearance="line" disabled />
+          <Button type="success" icon={<PlusOutlined />} appearance="line" disabled>
+            面性按钮
+          </Button>
+          <Button type="success" icon={<PlusOutlined />} appearance="line" disabled />
+        </div>
+        <div>
+          <Button type="primary" icon={<PlusOutlined />} appearance="link" disabled>
+            面性按钮
+          </Button>
+          <Button type="primary" icon={<PlusOutlined />} appearance="link" disabled />
+          <Button type="secondary" icon={<PlusOutlined />} appearance="link" disabled>
+            面性按钮
+          </Button>
+          <Button type="secondary" icon={<PlusOutlined />} appearance="link" disabled />
+          <Button icon={<PlusOutlined />} appearance="link" disabled>
+            面性按钮
+          </Button>
+          <Button icon={<PlusOutlined />} appearance="link" disabled />
+          <Button type="danger" icon={<PlusOutlined />} appearance="link" disabled>
+            面性按钮
+          </Button>
+          <Button type="danger" icon={<PlusOutlined />} appearance="link" disabled />
+          <Button type="success" icon={<PlusOutlined />} appearance="link" disabled>
+            面性按钮
+          </Button>
+          <Button type="success" icon={<PlusOutlined />} appearance="link" disabled />
+        </div>
+      </div>
+    </>
+  )
+}

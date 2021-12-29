@@ -1,13 +1,15 @@
 import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { useSearch } from './hooks'
+// import { useSearch } from './hooks'
 import { useCheck as useCheckDefault } from '@hi-ui/use-check'
-import { CheckSelectOptionItem, CheckSelectOptionOrOptionGroupItem } from './types'
+import { CheckSelectDataGroupItem, CheckSelectDataItem, CheckSelectEventData } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { toArray } from '@hi-ui/use-children'
+import { flattenTree } from '@hi-ui/tree-utils'
 
 const NOOP_ARRAY = [] as []
 const NOOP_VALUE = [] as []
+const DEFAULT_FIELD_NAMES = {} as any
 
 export const useCheckSelect = ({
   data: dataProp = NOOP_ARRAY,
@@ -20,14 +22,14 @@ export const useCheckSelect = ({
   emptyContent = '无匹配选项',
   searchPlaceholder,
   filter,
-  titleRender,
+  fieldNames = DEFAULT_FIELD_NAMES,
   ...rest
-}: UseSelectProps) => {
+}: UseCheckSelectProps) => {
   const data = useMemo(() => {
     if (children) {
       const dfs = (child: any) => {
-        const list = toArray(child)
         const arr: any[] = []
+        const list = toArray(child)
 
         list.forEach((item) => {
           if (!React.isValidElement(item)) return
@@ -41,18 +43,19 @@ export const useCheckSelect = ({
               title: children,
               disabled: disabled,
               rootProps: rest,
-            }
+            } as CheckSelectDataItem
             arr.push(option)
             // @ts-ignore
           } else if (item.type.HiName === 'CheckSelectOptionGroup') {
             const { props } = item as any
-            const { label, children, ...rest } = props
+            const { groupId, label, children, ...rest } = props
 
             const optGroup = {
+              groupId,
               groupTitle: label,
               children: [],
               rootProps: rest,
-            }
+            } as CheckSelectDataGroupItem
 
             // @ts-ignore
             if (children) {
@@ -69,15 +72,48 @@ export const useCheckSelect = ({
 
       return dfs(children)
     }
+
     return dataProp
   }, [children, dataProp])
+
+  /**
+   * 转换对象
+   */
+  const getKeyFields = useCallback(
+    (node: any, key: string) => {
+      return node[fieldNames[key] || key]
+    },
+    [fieldNames]
+  )
+
+  const flattedData = useMemo(() => {
+    // @ts-ignore
+    return flattenTree(data, (node) => {
+      if ('groupId' in node.raw) {
+        // @ts-ignore
+        node.id = node.raw.groupId
+        // @ts-ignore
+        node.groupTitle = node.raw.groupTitle
+        // @ts-ignore
+        node.groupId = node.raw.groupId
+      } else {
+        // TODO：support children field map
+        node.id = getKeyFields(node.raw, 'id')
+        // @ts-ignore
+        node.title = getKeyFields(node.raw, 'title')
+        // @ts-ignore
+        node.disabled = getKeyFields(node.raw, 'disabled')
+      }
+      return node
+    })
+  }, [data, getKeyFields])
 
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
 
   const onSelectLatest = useLatestCallback(onSelect)
 
   const proxyTryChangeValue = useCallback(
-    (value: React.ReactText[], item: CheckSelectOptionItem, shouldChecked: boolean) => {
+    (value: React.ReactText[], item: CheckSelectEventData, shouldChecked: boolean) => {
       tryChangeValue(value, item, shouldChecked)
       onSelectLatest(value, item, shouldChecked)
     },
@@ -91,33 +127,34 @@ export const useCheckSelect = ({
     allowCheck,
   })
 
-  const [inSearch, matchedItems, inputProps, isEmpty, resetSearch] = useSearch(data, filter)
+  // const [inSearch, matchedItems, inputProps, isEmpty, resetSearch] = useSearch(data, filter)
 
-  const getSearchInputProps = useCallback(
-    () => ({
-      placeholder: searchPlaceholder,
-      value: inputProps.value,
-      onChange: inputProps.onChange,
-    }),
-    [searchPlaceholder, inputProps]
-  )
+  // const getSearchInputProps = useCallback(
+  //   () => ({
+  //     placeholder: searchPlaceholder,
+  //     value: inputProps.value,
+  //     onChange: inputProps.onChange,
+  //   }),
+  //   [searchPlaceholder, inputProps]
+  // )
 
   return {
     rootProps: rest,
-    data: inSearch ? matchedItems : data,
+    // data: inSearch ? matchedItems : data,
+    data,
+    flattedData,
     value,
+    tryChangeValue,
     onSelect: onOptionCheck,
     isSelectedId,
     emptyContent,
-    getSearchInputProps,
-    tryChangeValue,
-    isEmpty,
-    resetSearch,
-    titleRender,
+    // getSearchInputProps,
+    // isEmpty,
+    // resetSearch,
   }
 }
 
-export interface UseSelectProps {
+export interface UseCheckSelectProps {
   /**
    * 设置当前选中值
    */
@@ -131,7 +168,7 @@ export interface UseSelectProps {
    */
   onChange?: (
     value: React.ReactText[],
-    targetOption?: CheckSelectOptionItem,
+    targetOption?: CheckSelectEventData,
     shouldChecked?: boolean
   ) => void
   /**
@@ -139,8 +176,8 @@ export interface UseSelectProps {
    */
   onSelect?: (
     value: React.ReactText[],
-    targetOption?: CheckSelectOptionItem,
-    shouldChecked?: boolean
+    targetOption: CheckSelectEventData,
+    shouldChecked: boolean
   ) => void
   /**
    * 是否禁止使用
@@ -151,13 +188,9 @@ export interface UseSelectProps {
    */
   emptyContent?: React.ReactNode
   /**
-   * 自定义渲染节点的 title 内容
-   */
-  titleRender?: (item: CheckSelectOptionItem) => React.ReactNode
-  /**
    * 自定义选择后触发器所展示的内容，只在 title 为字符串时有效
    */
-  displayRender?: (option: CheckSelectOptionItem) => React.ReactNode
+  displayRender?: (option: CheckSelectEventData) => React.ReactNode
   /**
    * 触发器输入框占位符
    */
@@ -169,15 +202,19 @@ export interface UseSelectProps {
   /**
    * 启用自定义过滤函数实现根据搜索框内容，自定义搜索
    */
-  filter?: (keyword: string, option: CheckSelectOptionOrOptionGroupItem) => boolean
+  filter?: (keyword: string, option: CheckSelectEventData) => boolean
   /**
    * 选项数据
    */
-  data?: CheckSelectOptionItem[]
+  data?: CheckSelectDataItem[]
   /**
    * JSX 子节点
    */
   children?: React.ReactNode
+  /**
+   * 设置 data 中 id, title, disabled, children 对应的 key
+   */
+  fieldNames?: Record<string, string>
 }
 
 export type UseSelectReturn = ReturnType<typeof useCheckSelect>

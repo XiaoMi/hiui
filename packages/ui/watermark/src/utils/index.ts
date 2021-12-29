@@ -128,7 +128,8 @@ export class WatermarkGenerator {
     const defaultProps: OptionsInterface = {
       textAlign: 'left',
       font: 28,
-      color: 'rgba(148, 148, 148, 0.2)',
+      // @DesignToken
+      color: 'rgba(95, 106, 122, 0.2)',
       rotate: -30,
       grayLogo: true,
       isAutoWrap: false,

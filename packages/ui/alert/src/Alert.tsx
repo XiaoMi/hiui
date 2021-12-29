@@ -1,9 +1,23 @@
 import React, { forwardRef, useState, useCallback, useEffect, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
+import {
+  InfoCircleFilled,
+  CloseCircleFilled,
+  CheckCircleFilled,
+  ExclamationCircleFilled,
+  CloseOutlined,
+} from '@hi-ui/icons'
 
 const _role = 'alert'
 const _prefix = getPrefixCls(_role)
+
+const alertIconMap: any = {
+  success: <CheckCircleFilled />,
+  danger: <CloseCircleFilled />,
+  warning: <ExclamationCircleFilled />,
+  primary: <InfoCircleFilled />,
+}
 
 /**
  * What is Alert
@@ -48,21 +62,18 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
       }
     }, [duration, handleClose])
 
-    const cls = cx(prefixCls, className, `${prefixCls}--${type}`)
+    const cls = cx(prefixCls, className, `${prefixCls}--${type}`, {
+      [`${prefixCls}--with-content`]: content,
+    })
 
     return internalVisible ? (
       <div ref={ref} role={role} className={cls} {...rest}>
         <div className={`${prefixCls}__title`}>
-          {/* TODO: icon 集成后更改 */}
-          {/* @ts-ignore */}
-          <i name={type} filled />
+          <span className={`${prefixCls}__icon`}>{alertIconMap[type]}</span>
           {title}
         </div>
         {content && <div className={`${prefixCls}__content`}>{content}</div>}
-        {closeable && (
-          // @ts-ignore
-          <i name="close" className={`${prefixCls}__action`} onClick={handleClose} />
-        )}
+        {closeable && <CloseOutlined onClick={handleClose} className={`${prefixCls}__close`} />}
       </div>
     ) : null
   }
@@ -86,7 +97,7 @@ export interface AlertProps {
    */
   style?: React.CSSProperties
 
-  type?: 'info' | 'success' | 'error' | 'warning'
+  type?: 'primary' | 'success' | 'danger' | 'warning'
   duration?: number
   closeable?: boolean
   title?: React.ReactNode

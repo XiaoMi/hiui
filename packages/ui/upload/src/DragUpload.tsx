@@ -118,8 +118,10 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             onKeyDown={handleContainerKeyDown}
           >
             <div className={'drag-upload__desc'}>
-              <CloudUploadOutlined />
-              <span>{content || upload.drag}</span>
+              <span className={'drag-upload__title'}>
+                <CloudUploadOutlined />
+                {content || upload.drag}
+              </span>
               {tips && (
                 <span className={`${prefixCls}__tips ${prefixCls}__tips--single-line`}>{tips}</span>
               )}

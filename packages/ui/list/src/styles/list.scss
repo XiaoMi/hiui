@@ -1,0 +1,84 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-list' !default;
+
+.#{$prefix} {
+  padding: 0 use-spacing(8);
+  color: use-color('gray', 700);
+  font-size: use-text-size('normal');
+  line-height: use-text-lineheight('normal');
+
+  &__pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: use-spacing(8);
+  }
+  &--with-pagination {
+    padding-bottom: use-spacing(8);
+  }
+
+  &--bordered {
+    border: 1px solid use-color('gray', 200);
+    border-radius: use-border-radius('normal');
+  }
+
+  &-item {
+    padding: use-spacing(8) 0;
+    display: flex;
+
+    &__wrapper {
+      list-style: none;
+    }
+
+    &__title {
+      font-size: use-text-size('lg');
+      line-height: use-text-lineheight('lg');
+      font-weight: use-text-weight('medium');
+      margin-bottom: use-spacing(2);
+    }
+
+    &__extra {
+      color: use-color('gray', 600);
+      margin-top: use-spacing(2);
+    }
+
+    &__content {
+      flex: 1;
+    }
+
+    &__action {
+      flex-shrink: 0;
+    }
+
+    &__avatar {
+      width: 56px;
+      height: 56px;
+      margin-right: use-spacing(8);
+      border-radius: use-border-radius('normal');
+      overflow: hidden;
+
+      & > img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+
+    &--split:not(:last-of-type) {
+      border-bottom: 1px solid use-color('gray', 200);
+    }
+  }
+
+  &.#{$prefix}--with-pagination {
+    .#{$prefix}-item {
+      &--split:last-of-type{
+        border-bottom: 1px solid use-color('gray', 200);
+      }
+    }
+  }
+
+  &__wrapper {
+    padding: 0;
+    margin: 0;
+  }
+}

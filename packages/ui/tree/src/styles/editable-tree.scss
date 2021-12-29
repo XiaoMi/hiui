@@ -22,14 +22,14 @@ $prefix: '#{$component-prefix}-tree' !default;
       list-style: none;
       color: use-color('gray', 800);
       background-color: use-color-static('white');
-      width: 140px;
+      width: 160px;
       box-shadow: 0 2px 8px 0 use-color('gray', 100);
-      padding: 4px 0;
+      padding: 12px 0;
       border-radius: 4px;
 
       &__item {
         list-style: none;
-        padding: 0 8px;
+        padding: 0 12px;
         height: 32px;
         line-height: 32px;
         font-size: 14px;
@@ -38,13 +38,14 @@ $prefix: '#{$component-prefix}-tree' !default;
         white-space: nowrap;
         overflow: hidden;
         transition: background-color 0.3s;
+        color: use-color('brandblue',500);
 
         &:not(:last-of-type) {
           margin-bottom: 8px;
         }
 
         &:hover {
-          background-color: #ecf2fe;
+          background-color: use-color('brandblue',50);
         }
       }
 

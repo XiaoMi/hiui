@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/zen-mode",
-  "version": "4.0.0-alpha.11",
+  "version": "4.0.0-alpha.17",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,16 +44,16 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.2",
-    "@hi-ui/core-css": "^4.0.0-alpha.4",
-    "@hi-ui/env": "^4.0.0-alpha.3",
-    "@hi-ui/icons": "^4.0.0-alpha.11"
+    "@hi-ui/core-css": "^4.0.0-alpha.9",
+    "@hi-ui/env": "^4.0.0-alpha.4",
+    "@hi-ui/icons": "^4.0.0-alpha.17"
   },
   "peerDependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.2",
+    "@hi-ui/hi-build": "^4.0.0-alpha.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

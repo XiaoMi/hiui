@@ -8,6 +8,7 @@ import { useUnmountEffect } from '@hi-ui/use-unmount-effect'
 import { normalizeArray } from '@hi-ui/array-utils'
 import { TriggerActionEnum } from './types'
 import { useTimeout } from '@hi-ui/use-timeout'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
 export const useTooltip = ({
   visible: visibleProp,
@@ -59,25 +60,28 @@ export const useTooltip = ({
     },
   })
 
-  const handlePopperLeave = useCallback(() => {
+  const handlePopperLeave = useLatestCallback(() => {
     hoveringRef.current = false
 
     clearOpenTimer()
     startCloseTimer()
-  }, [startCloseTimer, clearOpenTimer])
+  })
 
-  const handlePopperEnter = useCallback(() => {
+  const handlePopperEnter = useLatestCallback(() => {
     if (disabled) return
 
     hoveringRef.current = true
 
     startOpenTimer()
-  }, [startOpenTimer, disabled])
+  })
 
   const usePopperProps: UsePopperProps = useMemo(() => {
-    const popperProps: PopperPortalProps = withDefaultProps(popper, {
+    const popperProps = withDefaultProps(popper, {
       placement: 'top',
-      zIndex: 1060,
+      // @DesignToken
+      zIndex: 1100,
+      // @DesignToken
+      gutterGap: 14,
     })
 
     return {
@@ -156,6 +160,8 @@ export const useTooltip = ({
   return {
     visible,
     visibleAction,
+    triggerElement,
+    setTriggerElement,
     getTooltipProps,
     getTriggerProps,
     getPopperProps,
@@ -188,7 +194,7 @@ export interface UseTooltipProps {
   /**
    * popper 透传的 props
    */
-  popper?: PopperPortalProps
+  popper?: Omit<PopperPortalProps, 'attachEl' | 'visible'>
 }
 
 export type UseTooltipReturn = ReturnType<typeof useTooltip>

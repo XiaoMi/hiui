@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CloseCircleFilled } from '@hi-ui/icons'
-import type { HiBaseDataItem, HiBaseHTMLProps } from '@hi-ui/core'
+import type { HiBaseDataItem, HiBaseHTMLFieldProps } from '@hi-ui/core'
 
 const _role = 'mock-input'
 const _prefix = getPrefixCls(_role)
@@ -27,6 +27,11 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
       placeholder,
       disabled = false,
       clearable = false,
+      focused = false,
+      invalid = false,
+      readOnly = false,
+      size = 'md',
+      appearance = 'outline',
       clearableTrigger = 'hover',
       displayRender,
       suffix,
@@ -77,7 +82,16 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
       return clearable && hasValue && !disabled && (clearableTrigger === 'always' || hover)
     }, [clearable, hasValue, disabled, clearableTrigger, hover])
 
-    const cls = cx(prefixCls, className, disabled && 'disabled')
+    const cls = cx(
+      prefixCls,
+      className,
+      `${prefixCls}--appearance-${appearance}`,
+      `${prefixCls}--size-${size}`,
+      focused && `focused`,
+      disabled && 'disabled',
+      readOnly && 'readonly',
+      invalid && 'invalid'
+    )
 
     return (
       <div
@@ -120,7 +134,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
   }
 )
 
-export type MockInputProps = HiBaseHTMLProps<
+export type MockInputProps = HiBaseHTMLFieldProps<
   'div',
   {
     /**
@@ -167,6 +181,22 @@ export type MockInputProps = HiBaseHTMLProps<
      * 展示数据源
      */
     data?: HiBaseDataItem[]
+    /**
+     * 是否聚焦
+     */
+    focused?: boolean
+    /**
+     * 开启输入框只读
+     */
+    readOnly?: boolean
+    /**
+     * 设置展现形式
+     */
+    appearance?: 'outline' | 'unset' | 'filled'
+    /**
+     * 设置输入框尺寸
+     */
+    size?: 'sm' | 'md' | 'lg'
   }
 >
 

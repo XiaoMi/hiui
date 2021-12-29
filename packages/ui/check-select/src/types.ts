@@ -1,6 +1,6 @@
 import React from 'react'
 
-export interface CheckSelectOptionItem {
+export interface CheckSelectDataItem {
   /**
    * 节点唯一 id
    */
@@ -15,7 +15,7 @@ export interface CheckSelectOptionItem {
   disabled?: boolean
 }
 
-export interface CheckSelectOptionGroupItem {
+export interface CheckSelectDataGroupItem {
   /**
    * 节点组标题
    */
@@ -23,7 +23,35 @@ export interface CheckSelectOptionGroupItem {
   /**
    * 是否禁用该节点
    */
-  children?: CheckSelectOptionItem[]
+  children?: CheckSelectDataItem[]
 }
 
-export type CheckSelectOptionOrOptionGroupItem = CheckSelectOptionItem & CheckSelectOptionGroupItem
+export type CheckSelectItem = CheckSelectDataItem & CheckSelectDataGroupItem
+
+export interface CheckSelectRequiredProps {
+  checked: boolean
+  focused: boolean
+}
+
+export interface FlattedCheckSelectDataItem extends CheckSelectDataItem {
+  /**
+   * 该节点的子节点列表
+   */
+  children?: FlattedCheckSelectDataItem[]
+  /**
+   * 关联用户传入的原始节点
+   */
+  raw: CheckSelectDataItem
+  /**
+   * 该节点的层级，从 0（顶层）开始
+   */
+  depth: number
+  /**
+   * 该节点的父节点
+   */
+  parent?: FlattedCheckSelectDataItem
+}
+
+export interface CheckSelectEventData
+  extends FlattedCheckSelectDataItem,
+    CheckSelectRequiredProps {}

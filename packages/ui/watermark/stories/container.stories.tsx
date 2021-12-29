@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import Watermark from '../src'
+import { Button } from '@hi-ui/button'
+
 export const Container = () => {
-  const containerRef = useState(null)
+  const containerState = useState(null)
+
   return (
     <>
       <h1>Container</h1>
@@ -11,17 +14,19 @@ export const Container = () => {
           width: '100vw',
           textAlign: 'center',
         }}
-        ref={containerRef[1]}
+        ref={containerState[1]}
         className="watermark-container__wrap"
-      ></div>
+      >
+        <Button type="primary">测试交互</Button>
+      </div>
       <Watermark
+        density="low"
+        style={{ position: 'fixed', pointerEvents: 'none' }}
         content={['HIUI', '做中台，就用 HIUI']}
         logo="https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05"
-        container={containerRef[0]}
+        container={containerState[0]?.ownerDocument?.body ?? undefined}
         allowCopy={true}
-      >
-        Container
-      </Watermark>
+      />
     </>
   )
 }

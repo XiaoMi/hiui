@@ -70,7 +70,7 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
           accept={accept}
         >
           <Button
-            type="primary"
+            type="secondary"
             disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
             loading={loading}
           >

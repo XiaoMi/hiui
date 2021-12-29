@@ -1,6 +1,8 @@
 import React from 'react'
 
 export * from './basic.stories'
+export * from './appearance.stories'
+export * from './size.stories'
 export * from './controlled.stories'
 export * from './step.stories'
 export * from './Wheel.stories'

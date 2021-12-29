@@ -12,9 +12,10 @@ export const Container = () => {
         ref={setContainer}
         className="drawer-container__wrap"
         style={{
-          width: 500,
-          height: 400,
+          width: 640,
+          height: 420,
           background: '#ecdecd',
+          boxShadow: '1px 2px 8px #ccc',
 
           // need add
           position: 'relative',
@@ -26,6 +27,7 @@ export const Container = () => {
           style={{ position: 'absolute' }}
           container={container}
           visible={visible}
+          closeable={false}
           closeOnOverlayClick={true}
           onClose={() => setVisible(false)}
         >

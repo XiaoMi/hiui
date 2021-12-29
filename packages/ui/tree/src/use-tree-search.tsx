@@ -9,6 +9,7 @@ import { TreeProps, Tree, _prefix } from './Tree'
 import { SearchOutlined } from '@hi-ui/icons'
 
 import './styles/searchable-tree.scss'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
 const NOOP_ARRAY = [] as any[]
 
@@ -28,10 +29,11 @@ export const useTreeSearch = (BaseTree: Tree) => {
         <>
           <div className={`${treeProps.prefixCls}-searcher`}>
             <Input
+              appearance="filled"
               clearable
               clearableTrigger="always"
               {...searchInputProps}
-              suffix={searchInputProps.value ? null : <SearchOutlined />}
+              prefix={searchInputProps.value ? null : <SearchOutlined />}
             />
             {isEmpty ? (
               <span className={`${treeProps.prefixCls}-searcher--empty`}>未找到相关结果</span>
@@ -62,6 +64,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     onExpand,
     titleRender,
     draggable,
+    onSearch,
     ...nativeTreeProps
   } = props
   const flattedData = useMemo(() => flattenTreeData(data), [data])
@@ -115,11 +118,14 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     draggable: inSearch ? !inSearch : draggable,
   }
 
+  const onSearchLatest = useLatestCallback(onSearch)
+
   const handleChange = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
       const nextSearchValue = evt.target.value
 
       setSearchValue(nextSearchValue)
+      onSearchLatest(nextSearchValue)
 
       // 匹配到搜索的节点，将这些节点进行展开显示，其它均隐藏
       const matchedNodes = getMatchedNodes(flattedData, nextSearchValue)
@@ -129,7 +135,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
       setFilteredIds(filteredNodeIds)
       tryToggleExpandedIds(filteredNodeIds)
     },
-    [flattedData, tryToggleExpandedIds]
+    [flattedData, tryToggleExpandedIds, onSearchLatest]
   )
 
   const inputProps = {
@@ -145,6 +151,10 @@ export interface SearchableTreeProps extends TreeProps {
    * 节点可搜索，仅在 node.title 类型为字符串下支持
    */
   searchable?: boolean
+  /**
+   * 输入关键字搜索时触发回调
+   */
+  onSearch?: (keyword: string) => void
 }
 
 /**

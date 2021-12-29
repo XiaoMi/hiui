@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo, useCallback } from 'react'
+import React, { forwardRef, useMemo, useCallback, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { CheckCascaderItem, ExpandTrigger, CheckCascaderItemEventData } from './types'
@@ -23,7 +23,13 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
       role = _role,
       className,
       children,
-      data,
+      data = NOOP_ARRAY,
+      // 内部属性
+      // @ts-ignore
+      cascaderData: cascaderDataProp,
+      // 内部属性
+      // @ts-ignore
+      setCascaderData: setCascaderDataProp,
       value,
       defaultValue = NOOP_ARRAY,
       disabled = false,
@@ -43,7 +49,10 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
     },
     ref
   ) => {
-    const [cascaderData, setCascaderData] = useCache(data)
+    const [cascaderCacheData, setCascaderCacheData] = useCache(data)
+
+    const cascaderData = cascaderDataProp ?? cascaderCacheData
+    const setCascaderData = setCascaderDataProp ?? setCascaderCacheData
 
     const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
 
@@ -104,6 +113,20 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
       [titleRender, inSearch, inputProps.value]
     )
 
+    const [inputElement, setInputElement] = useState<HTMLInputElement | null>(null)
+    useEffect(() => {
+      if (!inputElement) return
+
+      // 临时方案，解决 input 无法正常 autoFocus
+      const timer = window.setTimeout(() => {
+        inputElement.focus()
+      }, 200)
+
+      return () => {
+        window.clearTimeout(timer)
+      }
+    }, [inputElement])
+
     const cls = cx(prefixCls, className)
 
     return (
@@ -111,6 +134,8 @@ export const CheckCascaderPanel = forwardRef<HTMLDivElement | null, CheckCascade
         {searchable ? (
           <div className={`${prefixCls}-search`}>
             <Input
+              // @ts-ignore
+              ref={setInputElement}
               appearance="underline"
               placeholder={placeholder}
               prefix={<SearchOutlined />}

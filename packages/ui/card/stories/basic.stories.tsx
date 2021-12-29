@@ -6,7 +6,10 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="card-basic__wrap">
-        <Card title="标题" size="default" extra={<a>链接</a>} showHeaderDivider>
+        <Card title="标题" size="default" extra={<a>链接</a>}>
+          基础卡片
+        </Card>
+        <Card title="标题" size="default" showHeaderDivider extra={<a>链接</a>}>
           基础卡片
         </Card>
       </div>

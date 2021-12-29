@@ -15,6 +15,7 @@ const postcssPresetEnv = require('postcss-preset-env')
 const postcssFlexBugfix = require('postcss-flexbugs-fixes')
 const cssnano = require('cssnano')
 const autoprefixer = require('autoprefixer')
+const json = require('@rollup/plugin-json')
 
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
 
@@ -151,6 +152,7 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
           modules: cssModules,
         }),
         compress && terser(),
+        json()
       ].filter(Boolean),
     }
 

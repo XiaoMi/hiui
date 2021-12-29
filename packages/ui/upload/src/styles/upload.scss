@@ -9,9 +9,9 @@ $prefix: '#{$component-prefix}-upload' !default;
 
   &__tips {
     font-size: use-text-size('sm');
-    color: use-color('gray', 700);
-    line-height: 20px;
-    margin-top: 8px;
+    color: use-color('gray', 500);
+    line-height: use-text-lineheight('sm');
+    margin: use-spacing(4) 0;
 
     &--single-line {
       display: block;
@@ -29,38 +29,55 @@ $prefix: '#{$component-prefix}-upload' !default;
     overflow: hidden;
   }
 
+  &__del-btn {
+    color: use-color('gray', 600);
+    cursor: pointer;
+    width: 20px;
+    text-align: center;
+    height: 20px;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: use-color('gray', 300);
+      border-radius: use-border-radius('normal');
+    }
+  }
+
+  &__error-icon {
+    font-size: 40px !important;
+  }
+
   &__item {
-    height: 36px;
+    height: 48px;
     cursor: default;
     color: use-color('gray', 800);
+    background: use-color('gray', 50);
     display: flex;
+    border-radius: use-border-radius('normal');
+    padding: use-spacing(6);
+    margin-bottom: use-spacing(5);
+    box-sizing: border-box;
     align-items: center;
-    padding: 6px;
     overflow: hidden;
     position: relative;
 
-    &:hover {
-      background: use-color-mode('primary-10');
-    }
-
-    a:focus {
-      outline: 0;
-    }
-
     &:focus {
-      background: use-color-mode('primary-10');
+      background: use-color-mode('primary-05');
       outline: 0;
     }
 
     a.#{$prefix}__filename {
       text-decoration: none;
-      flex: 1;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
       font-size: use-text-size('normal');
       cursor: pointer;
       color: use-color('gray', 800);
+
+      &:not(.#{$prefix}__filename--error):hover {
+        color: use-color-mode('primary');
+      }
 
       &--error {
         color: use-color-mode('error');
@@ -73,8 +90,8 @@ $prefix: '#{$component-prefix}-upload' !default;
 
     &-tips {
       color: use-color-mode('primary');
-      border-radius: 2px;
-      font-size: 14px;
+      border-radius: use-border-radius('normal');
+      font-size: use-text-size('normal');
       padding: 8px 12px;
       height: auto !important;
       background-color: use-color-mode('primary-20');
@@ -103,13 +120,12 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &__upstatus {
-    width: calc(100% - 30px);
-    margin-left: 30px;
+    width: 100%;
     height: 2px;
-    background: #f2f2f2;
-    border-radius: 9px;
+    background: use-color('gray', 200);
     position: absolute;
     bottom: 0;
+    left: 0;
 
     &-line {
       display: inline-block;
@@ -128,7 +144,7 @@ $prefix: '#{$component-prefix}-upload' !default;
       right: 60px;
       top: -32px;
       font-style: normal;
-      font-size: 12px;
+      font-size: use-text-size('normal');
       color: use-color-mode('primary');
     }
   }
@@ -137,13 +153,15 @@ $prefix: '#{$component-prefix}-upload' !default;
   &--drag {
     position: relative;
     width: 100%;
+    background: use-color('gray', 50);
     min-height: 172px;
     box-sizing: border-box;
-    border: 1px dashed use-color('gray', 300);
+    border: 2px dashed use-color('gray', 300);
     transition: border-color 0.3s;
-    border-radius: 2px;
+    border-radius: use-border-radius('normal');
     cursor: pointer;
-    padding: 12px;
+    padding: use-spacing(6);
+    margin-bottom: use-spacing(10);
 
     &:hover:not(.#{$prefix}--nohover) {
       border-color: use-color-mode('primary');
@@ -187,12 +205,23 @@ $prefix: '#{$component-prefix}-upload' !default;
       height: 172px;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: use-text-size('normal');
       color: use-color-static('black');
+
+      .drag-upload__title {
+        font-size: use-text-size('xl');
+
+        [class^=hi-v4-icon] {
+          font-size: use-text-size('xxl');
+          margin-right: use-spacing(4);
+        }
+      }
 
       .#{$prefix}__tips--single-line {
         padding: 0;
-        margin-top: 4px;
+        margin-top: use-spacing(5);
+        color: use-color('gray', 500);
+        font-size: use-text-size('normal');
       }
 
       .icon {
@@ -233,25 +262,18 @@ $prefix: '#{$component-prefix}-upload' !default;
       text-align: center;
       padding: 0;
       margin: 8px;
-      overflow: visible;
+      cursor: pointer;
       vertical-align: middle;
-      background: use-color-static('white');
-      border-radius: 2px;
+      background: use-color('gray', 50);
+      border-radius: use-border-radius('normal');
+      overflow: hidden;
 
-      &:focus:not(.#{$prefix}__item--upload) {
+      &:focus:not(.#{$prefix}__item--upload):not(.#{$prefix}__item--error) {
         box-shadow: 0 0 0 1px use-color-mode('primary');
       }
 
-      &--photo-error {
-        height: 28px;
-        background: rgba(0, 0, 0, 0.5);
-        position: absolute;
-        width: 100%;
-        color: use-color-static('white');
-        bottom: 0;
-        line-height: 28px;
-        font-size: 16px;
-        border-radius: 0 0 2px 2px;
+      &--error {
+        border: 1px solid use-color-mode('danger');
       }
 
       &:not(:last-child) {
@@ -280,43 +302,39 @@ $prefix: '#{$component-prefix}-upload' !default;
         }
       }
 
-      &-mask {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background: rgba(0, 0, 0, 0.4);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: use-color-static('white');
-        opacity: 0;
-        transition: 0.3s ease;
-        z-index: 2;
-        border-radius: 4px;
-        cursor: pointer;
+      .#{$prefix}__action-group {
+        display: none;
 
-        i {
-          line-height: 32px;
-          font-size: 32px;
-        }
+        svg[class^=hi-v4-icon] {
+          font-size: use-text-size('lg');
 
-        span {
-          font-size: 16px;
+          &:not(:last-of-type) {
+            margin-right: use-spacing(4);
+          }
         }
       }
 
       &:hover {
-        .#{$prefix}__photo-del {
+        .#{$prefix}__action-group {
           display: block;
-          color: use-color-static('black');
-          z-index: 4;
+        }
+        .#{$prefix}__error-icon {
+          display: none;
         }
 
-        .#{$prefix}__item-mask {
-          opacity: 1;
+        .#{$prefix}__mask {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          top: 0;
+          background: rgba(0, 0, 0, 0.5);
+          color: use-color-static('white');
+          font-size: use-text-size('normal');
+          justify-content: center;
+          align-items: center;
+          border-radius: use-border-radius('normal');
+          display: flex;
         }
       }
     }
@@ -352,6 +370,10 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &--avatar {
+    .#{$prefix}__item {
+      width: 80px;
+      height: 80px;
+    }
     .#{$prefix}__item--upload {
       width: 80px;
       height: 80px;
@@ -365,38 +387,23 @@ $prefix: '#{$component-prefix}-upload' !default;
     }
   }
 
-  &__photo-del {
-    position: absolute;
-    right: -8px;
-    top: -8px;
-    font-size: 20px;
+  &__mask {
     display: none;
-    z-index: 3;
   }
 
   &__precent {
     position: absolute;
-    width: 140px;
-    height: 140px;
     left: 0;
+    right: 0;
+    bottom: 0;
     top: 0;
     background: rgba(0, 0, 0, 0.5);
     color: use-color-static('white');
-    font-size: 14px;
+    font-size: use-text-size('normal');
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 2px;
-  }
-
-  &__precent--small {
-    width: 80px;
-    height: 80px;
-  }
-
-  &__precent--large {
-    width: 200px;
-    height: 200px;
+    border-radius: use-border-radius('normal');
   }
 
   &__loading-bar {
@@ -439,13 +446,12 @@ $prefix: '#{$component-prefix}-upload' !default;
       overflow: auto;
 
       .#{$prefix}__item {
-        height: 64px;
+        height: 72px;
         box-sizing: border-box;
-        border: 1px solid use-color('gray', 300);
-        border-radius: 2px;
-        padding: 8px 18px 8px 6px;
+        border-radius: use-border-radius('normal');
+        padding: use-spacing(6);
         margin-bottom: 12px;
-        font-size: 12px;
+        font-size: use-text-size('normal');
         color: use-color-static('black');
 
         &--error {
@@ -482,44 +488,8 @@ $prefix: '#{$component-prefix}-upload' !default;
             max-width: 50px;
             max-height: 50px;
           }
-
-          .img-mask {
-            width: 50px;
-            height: 50px;
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: rgba(0, 0, 0, 0.3);
-          }
         }
       }
-    }
-  }
-
-  .hi-modal__content {
-    padding: 16px 24px;
-  }
-
-  &__modal-tips {
-    display: flex;
-  }
-
-  &__error {
-    &—content {
-      margin: 12px;
-    }
-
-    &-title {
-      width: 300px;
-      line-height: 24px;
-      font-size: 16px;
-      color: use-color-static('black');
-      margin-bottom: 4px;
-    }
-
-    &-info {
-      font-size: 14px;
-      color: use-color('gray', 800);
     }
   }
 
@@ -536,11 +506,5 @@ $prefix: '#{$component-prefix}-upload' !default;
 
   li {
     list-style: none;
-  }
-}
-
-.hi-modal {
-  .content {
-    font-size: 0;
   }
 }

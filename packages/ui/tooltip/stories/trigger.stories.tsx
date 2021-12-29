@@ -7,22 +7,22 @@ export const Trigger = () => {
     <>
       <h1>Trigger</h1>
       <div className="Tooltip-trigger__wrap">
-        <Tooltip content="Tooltip Title">
+        <Tooltip title="Tooltip Title">
           <Button>default</Button>
         </Tooltip>
         <br />
         <br />
-        <Tooltip content="Tooltip Title" trigger="click">
+        <Tooltip title="Tooltip Title" trigger="click">
           <Button>click</Button>
         </Tooltip>
         <br />
         <br />
-        <Tooltip content="Tooltip Title" trigger="contextmenu">
+        <Tooltip title="Tooltip Title" trigger="contextmenu">
           <Button>contextmenu</Button>
         </Tooltip>
         <br />
         <br />
-        <Tooltip content="Tooltip Title" trigger="focus">
+        <Tooltip title="Tooltip Title" trigger="focus">
           <Button>focus</Button>
         </Tooltip>
       </div>

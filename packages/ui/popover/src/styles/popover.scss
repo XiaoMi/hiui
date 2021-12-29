@@ -5,15 +5,23 @@ $prefix: '#{$component-prefix}-popover' !default;
 .#{$prefix} {
   @include text-reset();
 
-  color: use-color('gray', 900);
   background: use-color-static('white');
+  padding: use-spacing(10);
 
   &__title {
-    padding: use-spacing(4) use-spacing(8);
-    border-bottom: use-border-size('normal') use-color('gray', 200);
+    box-sizing: border-box;
+    padding-bottom: use-spacing(8);
+    color: use-color('gray', 700);
+    font-size: use-text-size('lg');
+    font-weight: use-text-weight('medium');
+    line-height: use-text-lineheight('lg');
   }
 
   &__content {
-    padding: use-spacing(4)  use-spacing(8);
+    box-sizing: border-box;
+    color: use-color('gray', 600);
+    line-height: use-text-lineheight('sm');
+    font-size: use-text-size('normal');
+    font-weight: use-text-weight('medium');
   }
 }

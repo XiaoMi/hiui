@@ -6,6 +6,7 @@ $prefix: '#{$component-prefix}-tree' !default;
   @include component-reset;
 
   list-style-type: none;
+  padding: use-spacing(2) use-spacing(4);
 
   // 控制折叠收起动画
   &-motion-node {
@@ -48,22 +49,22 @@ $prefix: '#{$component-prefix}-tree' !default;
 
 .#{$prefix}-node {
   position: relative;
-  color: use-color('gray', 800);
+  color: use-color('gray', 700);
   cursor: pointer;
   // 节点间隔控制
-  padding: 4px 0;
 
   // 用于选中涂色
   &__wrap {
     display: flex;
     align-items: center;
     justify-items: stretch;
-    border-radius: 4px;
-    padding: 0 4px;
+    border-radius: use-border-radius('normal');
+    padding: 0 use-spacing(4) 0 use-spacing(6);
     outline: 0;
+    transition: all 0.3s;
 
     &:hover {
-      background-color: use-color-mode('primary-05');
+      background-color: use-color('gray', 100);
     }
 
     &.dragging {
@@ -74,12 +75,18 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &__indent {
     display: inline-block;
-    width: 22px;
+    width: use-spacing(8);
+    margin-right: use-spacing(2);
     height: 100%;
   }
 
+  &__checkbox{
+    margin-right: use-spacing(2);
+  }
+
   &__switcher {
-    margin-left: -4px;
+    margin-right: use-spacing(2);
+    //margin-left: -4px;
     height: 100%;
 
     &--loading {
@@ -163,14 +170,14 @@ $prefix: '#{$component-prefix}-tree' !default;
     }
 
     #{$this}__title {
-      color: use-color('gray', 800);
+      color: use-color('gray', 700);
     }
   }
 
   // TODO: 约定好组件的修饰词和元素书写顺序
   &--selected {
     #{$this}__wrap {
-      background-color: use-color-mode('primary-10');
+      background-color: use-color-mode('primary-05');
     }
 
     #{$this}__title {
@@ -207,7 +214,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     }
 
     #{$this}__switcher:not(#{$this}__switcher--noop) {
-      color: use-color('gray', 800);
+      color: use-color('gray', 700);
     }
   }
 

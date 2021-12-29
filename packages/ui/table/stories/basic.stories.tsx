@@ -34,7 +34,7 @@ export const Basic = () => {
               dataKey: 'stock',
             },
           ]}
-          rowSelection={{ selectedRowKeys: [] }}
+          // rowSelection={{ selectedRowKeys: [] }}
           data={[
             {
               name: '小米9',
@@ -84,31 +84,7 @@ export const Basic = () => {
             },
           ]}
         />
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-        <div>1231231312</div>
-
-        <div>1231231312</div>
+        <div style={{ height: 800 }}>模拟外层滚动</div>
       </div>
     </>
   )

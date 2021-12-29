@@ -33,10 +33,13 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
       [`${prefixCls}--${size}`]: size,
       [`${prefixCls}--hoverable`]: hoverable,
       [`${prefixCls}--bordered`]: bordered,
+      [`${prefixCls}--no-header`]: !(title || extra),
     })
 
     return (
       <div ref={ref} role={role} className={cls} style={style}>
+        {cover ? <div className={`${prefixCls}__cover`}>{cover}</div> : null}
+        {coverURL ? <img src={coverURL} /> : null}
         {title || extra ? (
           <div
             className={cx(`${prefixCls}__header`, {
@@ -47,9 +50,6 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
             {extra && <div className={`${prefixCls}__extra`}>{extra}</div>}
           </div>
         ) : null}
-
-        {cover ? <div className={`${prefixCls}__cover`}>{cover}</div> : null}
-        {coverURL ? <img src={coverURL} /> : null}
         {loading !== undefined ? (
           <Loading visible={loading}>
             <div className={`${prefixCls}__body`}>{children}</div>

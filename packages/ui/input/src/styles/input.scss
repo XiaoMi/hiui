@@ -3,27 +3,25 @@
 $prefix: '#{$component-prefix}-input' !default;
 
 .#{$prefix} {
-  // reset native input
-  margin: 0;
-  border: none;
-  outline: none;
-  box-shadow: none;
-  appearance: none;
-  height: inherit;
-  background-color: transparent;
-  cursor: text;
+  $input-shadow: 0 0 0 2px use-color-mode('primary-10');
+  $input-error-shadow: 0 0 0 2px use-color-mode('error-10');
+
+  @include input-reset;
+
   // basic
   flex: 1;
   display: inline-block;
   box-sizing: border-box;
-  transition: all 0.3s;
+  transition-property: all;
+  transition-duration: use-motion-duration('normal');
+  transition-timing-function: use-motion-bezier('normal');
   width: 100%;
   font-size: inherit;
-  color: use-color-static('black');
-  line-height: get-text-lineheight('normal');
+  line-height: inherit;
+  color: use-color('gray', 700);
 
   &::placeholder {
-    color: use-color('gray', 500);
+    color: use-color('gray', 400);
   }
 
   &:disabled {
@@ -37,28 +35,32 @@ $prefix: '#{$component-prefix}-input' !default;
     width: 100%;
     box-sizing: border-box;
     font-size: inherit;
-    border: 1px solid transparent;
+    border: use-border-size('normal') use-color-static('transparent');
     background-color: use-color-static('white');
-    transition: all 0.3s;
-    outline: 2px solid transparent;
+    transition-property: all;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
+    outline: none;
+    z-index: auto;
 
     &:not(.disabled):hover {
-      z-index: 1;
+      z-index: calc(#{use-zindex('absolute')} + 1);
     }
 
     &:not(.disabled).focused {
-      z-index: 1;
+      z-index: calc(#{use-zindex('absolute')} + 1);
     }
   }
 
   &__outer {
-    display: flex;
+    display: inline-flex;
     position: relative;
     margin: 0;
     padding: 0;
     justify-content: space-between;
     height: auto;
     width: 100%;
+    vertical-align: middle;
   }
 
   // clear icon
@@ -66,17 +68,19 @@ $prefix: '#{$component-prefix}-input' !default;
     display: inline-flex;
     align-items: center;
     height: auto;
-    font-size: 14px;
     text-align: center;
+    font-size: use-text-size('normal');
     color: use-color('gray', 500);
     flex-shrink: 0;
     cursor: pointer;
-    transition: all 0.3s;
+    transition-property: all;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
     visibility: hidden;
     opacity: 0;
 
     &:hover {
-      color: use-color-static('black');
+      color: use-color('gray', 700);
     }
 
     &.active {
@@ -86,7 +90,7 @@ $prefix: '#{$component-prefix}-input' !default;
 
     // 和用户传入 suffix 保持间隔
     .#{$prefix}__inner--suffix & {
-      margin-right: 4px;
+      margin-inline-end: use-spacing(2);
     }
   }
 
@@ -95,13 +99,13 @@ $prefix: '#{$component-prefix}-input' !default;
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
-    color: use-color-static('black');
+    color: use-color('gray', 700);
     font-size: inherit;
     text-align: center;
   }
 
   // 减去左或右边框 1px
-  $input-padding-width: 11px;
+  $input-padding-width: calc(#{use-spacing(6)} - 1px);
 
   &__prefix {
     padding-left: $input-padding-width;
@@ -115,95 +119,111 @@ $prefix: '#{$component-prefix}-input' !default;
   &__prepend,
   &__append {
     position: relative;
-    color: use-color-static('black');
+    color: use-color('gray', 700);
+    background-color: use-color('gray', 50);
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
     font-size: inherit;
     text-align: center;
-    transition: all 0.3s;
     padding: 0 $input-padding-width;
-    border: 1px solid transparent;
+    border: use-border-size('normal') use-color-static('transparent');
     white-space: nowrap;
-    background-color: rgb(248, 248, 248);
+    transition-property: all;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
+    // 处理 input 和 pend 边界框出现
+    z-index: use-zindex('absolute');
   }
 
   &__prepend {
-    border-right-width: 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    margin-right: -1px;
   }
 
   &__append {
-    border-left-width: 0;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    margin-left: -1px;
   }
 
   &--size {
     &-sm {
-      font-size: use-text-size('normal');
+      height: use-height-size('xs');
+      font-size: use-text-size('sm');
+      line-height: get-text-lineheight('sm');
 
       .#{$prefix} {
-        padding: use-spacing(2) $input-padding-width;
+        padding: 1px $input-padding-width;
       }
 
-      .#{$prefix}__inner {
-        border-radius: 4px;
+      .#{$prefix}__inner,
+      .#{$prefix}__prepend,
+      .#{$prefix}__append {
+        border-radius: use-border-radius('normal');
       }
 
       .#{$prefix}__prepend {
-        border-top-left-radius: 2px;
-        border-bottom-left-radius: 2px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
       }
 
       .#{$prefix}__append {
-        border-top-right-radius: 2px;
-        border-bottom-right-radius: 2px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
       }
     }
 
     &-md {
-      font-size: use-text-size('lg');
+      height: use-height-size('normal');
+      font-size: use-text-size('normal');
+      line-height: get-text-lineheight('normal');
 
       .#{$prefix} {
-        padding: use-spacing(4) $input-padding-width;
+        padding: 4px $input-padding-width;
       }
 
-      .#{$prefix}__inner {
-        border-radius: 6px;
+      .#{$prefix}__inner,
+      .#{$prefix}__prepend,
+      .#{$prefix}__append {
+        border-radius: use-border-radius('normal');
       }
 
       .#{$prefix}__prepend {
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
       }
 
       .#{$prefix}__append {
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
       }
     }
 
     &-lg {
-      font-size: use-text-size('xl');
+      height: use-height-size('xl');
+      font-size: use-text-size('lg');
+      line-height: get-text-lineheight('lg');
 
       .#{$prefix} {
-        padding: use-spacing(6) $input-padding-width;
+        padding: 7px $input-padding-width;
       }
 
-      .#{$prefix}__inner {
-        border-radius: 8px;
+      .#{$prefix}__inner,
+      .#{$prefix}__prepend,
+      .#{$prefix}__append {
+        border-radius: use-border-radius('normal');
       }
 
       .#{$prefix}__prepend {
-        border-top-left-radius: 6px;
-        border-bottom-left-radius: 6px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
       }
 
       .#{$prefix}__append {
-        border-top-right-radius: 6px;
-        border-bottom-right-radius: 6px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
       }
     }
   }
@@ -218,13 +238,20 @@ $prefix: '#{$component-prefix}-input' !default;
         }
 
         &:not(.disabled).focused {
-          box-shadow: 0 0 0 1px use-color-mode('primary');
+          box-shadow: $input-shadow;
           border-color: use-color-mode('primary');
         }
 
-        &.disabled {
-          color: use-color('gray', 500);
-          background-color: use-color('gray', 100);
+        &:not(.disabled).invalid {
+          border-color: use-color-mode('error');
+
+          &.hover {
+            border-color: use-color-mode('error');
+          }
+
+          &.focused {
+            box-shadow: $input-error-shadow;
+          }
         }
       }
 
@@ -238,7 +265,32 @@ $prefix: '#{$component-prefix}-input' !default;
       .#{$prefix} {
         padding-left: 0;
         padding-right: 0;
+        // border-color: transparent;
       }
+
+      // .#{$prefix}__inner {
+      //   &:not(.disabled):hover {
+      //     background-color: use-color('gray', 100);
+      //   }
+
+      //   &:not(.disabled).focused {
+      //     box-shadow: $input-shadow;
+      //     background-color: use-color-static('white');
+      //     border-color: use-color-mode('primary');
+      //   }
+
+      //   &:not(.disabled).invalid {
+      //     border-color: use-color-mode('error');
+
+      //     &.hover {
+      //       border-color: use-color-mode('error');
+      //     }
+
+      //     &.focused {
+      //       box-shadow: $input-error-shadow;
+      //     }
+      //   }
+      // }
 
       &.#{$prefix}__outer--prepend,
       .#{$prefix}__inner--prefix {
@@ -261,17 +313,29 @@ $prefix: '#{$component-prefix}-input' !default;
 
     &-filled {
       .#{$prefix}__inner {
-        background-color: rgb(248, 248, 248);
+        background-color: use-color('gray', 100);
 
         &:not(.disabled):hover {
-          box-shadow: 0 0 0 1px use-color-mode('primary');
+          background-color: use-color-static('white');
           border-color: use-color-mode('primary');
         }
 
         &:not(.disabled).focused {
-          box-shadow: 0 0 0 1px use-color-mode('primary');
+          box-shadow: $input-shadow;
           border-color: use-color-mode('primary');
           background-color: use-color-static('white');
+        }
+
+        &:not(.disabled).invalid {
+          border-color: use-color-mode('error');
+
+          &.hover {
+            border-color: use-color-mode('error');
+          }
+
+          &.focused {
+            box-shadow: $input-error-shadow;
+          }
         }
       }
     }
@@ -321,8 +385,31 @@ $prefix: '#{$component-prefix}-input' !default;
         &:not(.disabled).focused {
           &::after {
             border-bottom-color: use-color-mode('primary');
-            box-shadow: 0 1px 0 0 use-color-mode('primary');
           }
+        }
+
+        &:not(.disabled).invalid {
+          &::after {
+            border-bottom-color: use-color-mode('error');
+          }
+
+          &.hover {
+            &::after {
+              border-bottom-color: use-color-mode('error');
+            }
+          }
+        }
+      }
+    }
+
+    &-outline,
+    &-unset,
+    &-filled,
+    &-underline {
+      .#{$prefix}__inner {
+        &.disabled {
+          color: use-color('gray', 400);
+          background-color: use-color('gray', 200);
         }
       }
     }
@@ -334,12 +421,47 @@ $prefix: '#{$component-prefix}-input' !default;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
+
+    &-unset {
+      .#{$prefix}__prepend {
+        border: none;
+        padding: 0;
+
+        // .hi-input__prepend .hi-btn, .hi-input__prepend .hi-select__input, .hi-input_m__prepend .hi-btn, .hi-input_m__prepend .hi-select__input
+        &  .#{$component-prefix}-mock-input {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        &  .#{$component-prefix}-button {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+      }
+    }
   }
 
   &__outer--append {
     .#{$prefix}__inner {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
+    }
+
+    &-unset {
+      .#{$prefix}__append {
+        border: none;
+        padding: 0;
+
+        &  .#{$component-prefix}-mock-input {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+
+        &  .#{$component-prefix}-button {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+      }
     }
   }
 }

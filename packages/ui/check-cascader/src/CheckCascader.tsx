@@ -1,9 +1,8 @@
-import React, { forwardRef, useState, useRef } from 'react'
+import React, { forwardRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { DownOutlined } from '@hi-ui/icons'
 import { CheckCascaderPanel } from './CheckCascaderPanel'
 import { TagInput } from './TagInput'
@@ -14,6 +13,7 @@ import {
   CheckCascaderItemEventData,
   FlattedCheckCascaderItem,
 } from './types'
+import { useCache } from './hooks'
 
 const _role = 'check-cascader'
 const _prefix = getPrefixCls(_role)
@@ -31,7 +31,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       defaultValue = NOOP_ARRAY,
       value: valueProp,
       onChange,
-      data,
+      data = NOOP_ARRAY,
       placeholder,
       clearable,
       onSelect,
@@ -53,6 +53,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     },
     ref
   ) => {
+    const [cascaderData, setCascaderData] = useCache(data)
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
     const [menuVisible, menuVisibleAction] = useToggle()
@@ -65,7 +66,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       <div ref={ref} role={role} className={cls} {...rest}>
         <TagInput
           ref={setTargetElRef}
-          data={data}
+          data={cascaderData}
           value={value}
           onChange={tryChangeValue}
           disabled={disabled}
@@ -81,6 +82,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         />
         <Popper
           attachEl={targetElRef}
+          autoFocus={false}
           visible={menuVisible}
           onClose={menuVisibleAction.off}
           // TODO: 是否从 props omit 所有 popper 相关的 props 应用到 Popper
@@ -92,6 +94,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             // 向下传递
             {...{
               data,
+              cascaderData,
+              setCascaderData,
               onSelect,
               expandTrigger,
               searchable,

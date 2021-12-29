@@ -44,6 +44,9 @@ export default {
     hours: 'H',
     minutes: 'M',
     seconds: 'S',
+    weekrange: function (year: number, week: number) {
+      return year + '-W' + week
+    },
   },
   pagination: {
     total: ['Total', 'items'],
@@ -85,10 +88,9 @@ export default {
   upload: {
     buttonText: 'Upload',
     uploadSuccess: 'Success',
-    uploadFailed: 'Failed',
     cancel: 'Cancel',
     delete: 'Delete',
-    drag: 'Drag and drop files for uploading',
+    drag: 'Click or drag and drop file to upload',
     dragTips: 'Please click or drag and drop file upload',
     dragTipsLimited: 'The number has reached the upper limit',
     preview: 'Preview',

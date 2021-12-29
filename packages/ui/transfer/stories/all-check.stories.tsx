@@ -28,6 +28,7 @@ export const AllCheck = () => {
           onChange={(ids) => setTargetIds(ids)}
           emptyContent={['暂无数据']}
           showCheckAll
+          title={['源数据', '目标数据']}
         />
       </div>
     </>

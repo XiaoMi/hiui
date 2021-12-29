@@ -26,7 +26,7 @@ export const Timeline = forwardRef<HTMLDivElement | null, TimelineProps>(
           return <RightItem {...item} key={index} />
         }
         if (type === 'cross') {
-          return <CrossItem {...item} key={index} />
+          return <RightItem {...item} key={index} />
         }
       },
       [type]
@@ -104,6 +104,7 @@ export interface TimelineItem {
   timestamp?: string
   extraTime?: string
   icon?: React.ReactNode
+  children?: TimelineItem[]
 }
 export interface TimelineGroupItem {
   groupTitle: string | React.ReactNode

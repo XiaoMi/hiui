@@ -42,7 +42,7 @@ export const Pager: React.FC<PagerProps> = ({
       onKeyPress={handleKeyPress}
       tabIndex={page !== '...' ? 0 : -1}
     >
-      <a rel="nofollow">{page}</a>
+      {page}
     </li>
   )
 }

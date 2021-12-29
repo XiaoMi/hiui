@@ -2,9 +2,37 @@ import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UploadFileItem, UploadFileList } from './interface'
-import { CloseOutlined, DeleteOutlined, FileFilled } from '@hi-ui/icons'
+import {
+  CloseOutlined,
+  DeleteOutlined,
+  FileFilled,
+  FileExeOutlined,
+  FileJpgOutlined,
+  FilePdfOutlined,
+  FilePptOutlined,
+  FileKeynoteOutlined,
+  FileMusicOutlined,
+  FileTxtOutlined,
+  FileVideoOutlined,
+  FileWordOutlined,
+  FileZipOutlined,
+  FileExcelOutlined,
+} from '@hi-ui/icons'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
+const fileTypeMap = {
+  img: <FileJpgOutlined />,
+  exe: <FileExeOutlined />,
+  audio: <FileMusicOutlined />,
+  pdf: <FilePdfOutlined />,
+  key: <FileKeynoteOutlined />,
+  video: <FileVideoOutlined />,
+  txt: <FileTxtOutlined />,
+  word: <FileWordOutlined />,
+  excel: <FileExcelOutlined />,
+  zip: <FileZipOutlined />,
+  ppt: <FilePptOutlined />,
+} as Record<string, any>
 
 /**
  * TODO: What is Upload
@@ -46,7 +74,7 @@ export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
                   <img src={file.url} />
                 </div>
               ) : (
-                <FileFilled />
+                (file.fileType && fileTypeMap[file.fileType]) || <FileFilled />
               )}
               <div className={`${prefixCls}__right-content`}>
                 <a
@@ -68,7 +96,7 @@ export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
                 >
                   {file.name}
                 </a>
-                <span>
+                <span className={`${prefixCls}__del-btn`}>
                   {file.uploadState === 'loading' ? (
                     <CloseOutlined onClick={() => onDelete(file, index)} />
                   ) : (

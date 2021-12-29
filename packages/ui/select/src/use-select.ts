@@ -4,12 +4,14 @@ import { SelectProps } from './Select'
 import { useSearch } from './hooks'
 import { useSelect as useSelectDefault } from '@hi-ui/use-check'
 import { cx } from '@hi-ui/classname'
-import { SelectItem } from './types'
+import { SelectDataItem, SelectGroupDataItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { toArray } from '@hi-ui/use-children'
+import { flattenTree } from '@hi-ui/tree-utils'
 
 const NOOP_ARRAY = [] as []
 const NOOP_VALUE = ''
+const DEFAULT_FIELD_NAMES = {} as any
 
 export const useSelect = ({
   data: dataProp = NOOP_ARRAY,
@@ -21,48 +23,101 @@ export const useSelect = ({
   onSelect,
   emptyContent = '无匹配选项',
   searchPlaceholder,
+  fieldNames = DEFAULT_FIELD_NAMES,
   ...rest
 }: UseSelectProps) => {
   const data = useMemo(() => {
+    let selectData = dataProp
     if (children) {
-      const list = toArray(children)
-      const arr: any[] = []
-      const dfs = (list: any[]) => {
+      const dfs = (children: any) => {
+        const arr: any[] = []
+        const list = toArray(children)
+
         list.forEach((item) => {
           if (!React.isValidElement(item)) return
 
           // @ts-ignore
           if (item.type && item.type.HiName === 'SelectOption') {
-            arr.push(item)
+            const { props } = item as any
+            const { value, children, disabled, groupTitle, ...rest } = props
+            const option = {
+              id: value,
+              title: children,
+              disabled: disabled,
+              rootProps: rest,
+            } as SelectDataItem
+            arr.push(option)
+
             // @ts-ignore
           } else if (item.type && item.type.HiName === 'SelectOptionGroup') {
-            // @ts-ignore
-            if (item.props && item.props.children) {
+            const { props } = item as any
+            const { groupId, label, children, ...rest } = props
+
+            const optGroup = {
+              groupId,
+              groupTitle: label,
+              children: [],
               // @ts-ignore
-              const list = toArray(item.props.children)
-              dfs(list)
+              rootProps: rest,
+            } as SelectGroupDataItem
+
+            // @ts-ignore
+            if (children) {
+              // @ts-ignore
+              optGroup.children = dfs(children)
             }
+
+            arr.push(optGroup)
           }
         })
+
+        return arr
       }
 
-      dfs(list)
-
-      return arr.map(({ props }) => ({
-        id: props.value,
-        title: props.children,
-        disabled: props.disabled || false,
-      }))
+      selectData = dfs(children)
     }
-    return dataProp
+
+    return selectData
   }, [children, dataProp])
+
+  /**
+   * 转换对象
+   */
+  const getKeyFields = useCallback(
+    (node: any, key: string) => {
+      return node[fieldNames[key] || key]
+    },
+    [fieldNames]
+  )
+
+  const flattedData = useMemo(() => {
+    // @ts-ignore
+    return flattenTree(data, (node) => {
+      if ('groupId' in node.raw) {
+        // @ts-ignore
+        node.id = node.raw.groupId
+        // @ts-ignore
+        node.groupTitle = node.raw.groupTitle
+        // @ts-ignore
+        node.groupId = node.raw.groupId
+      } else {
+        // TODO：support children field map
+        node.id = getKeyFields(node.raw, 'id')
+        // @ts-ignore
+        node.title = getKeyFields(node.raw, 'title')
+        // @ts-ignore
+        node.disabled = getKeyFields(node.raw, 'disabled')
+      }
+      return node
+    })
+  }, [data, getKeyFields])
 
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
 
   const onSelectLatest = useLatestCallback(onSelect)
 
   const proxyTryChangeValue = useCallback(
-    (value: React.ReactText, item: SelectItem) => {
+    (value: React.ReactText, item: SelectDataItem) => {
       tryChangeValue(value, item)
       onSelectLatest(value, item)
     },
@@ -109,6 +164,7 @@ export const useSelect = ({
   return {
     rootProps,
     data: inSearch ? matchedItems : data,
+    flattedData,
     value,
     onSelect: onOptionClick,
     isSelectedId,
@@ -121,7 +177,12 @@ export const useSelect = ({
   }
 }
 
-export interface UseSelectProps extends SelectProps {}
+export interface UseSelectProps extends SelectProps {
+  /**
+   * 设置 data 中 id, title, disabled, children 对应的 key
+   */
+  fieldNames?: Record<string, string>
+}
 
 export type UseSelectReturn = ReturnType<typeof useSelect>
 

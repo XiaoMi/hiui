@@ -33,7 +33,7 @@ export const HorizontalItem = forwardRef<HTMLDivElement | null, StepperProps>(
           [`${prefixCls}__item--first`]: isFirst,
           [`${prefixCls}__item--last`]: isLast,
           [`${prefixCls}__item--left-active`]: isActive,
-          [`${prefixCls}__item--right-active`]: !isLastActive,
+          [`${prefixCls}__item--right-active`]: !isLastActive && isActive,
         })}
       >
         <div className={cx('item-step__wrapper')}>
