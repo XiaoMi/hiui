@@ -33,7 +33,7 @@ export const Vertical = () => {
     <>
       <h1>Stepper</h1>
       <div className="stepper-basic__wrap">
-        <Stepper itemLayout="vertical" data={list} current={1} />
+        <Stepper itemLayout="vertical" data={list} current={1}  type='dot'/>
         <Stepper data={list2} current={2} itemLayout="vertical" />
       </div>
     </>

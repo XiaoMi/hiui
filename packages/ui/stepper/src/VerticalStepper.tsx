@@ -10,7 +10,7 @@ const _prefix = getPrefixCls(_role)
  * TODO: What is Stepper
  */
 export const VerticalStepper = forwardRef<HTMLDivElement | null, VStepperProps>(
-  ({ prefixCls = _prefix, role = _role, className, data, current, onChange, ...rest }, ref) => {
+  ({ prefixCls = _prefix, role = _role, className, data, current, onChange, type, ...rest }, ref) => {
     const cls = cx(`${prefixCls}--vertical`, className)
 
     return (
@@ -32,7 +32,7 @@ export const VerticalStepper = forwardRef<HTMLDivElement | null, VStepperProps>(
             })}
           >
             <div className={cx('item-step__wrapper')}>
-              <div className={cx('item-step')}>{index + 1}</div>
+              {type === 'dot' ? <div className={cx('item-step__dot')} /> :<div className={cx('item-step')}>{index + 1}</div>}
             </div>
             <div className="vertical-wrapper">
               <div className={cx('item-step__title')}>{d.title}</div>
@@ -75,6 +75,7 @@ export interface VStepperProps {
    * 步骤项的变更回调
    */
   onChange?: (current: number) => void
+  type?: 'dot' | 'default'
 }
 
 if (__DEV__) {

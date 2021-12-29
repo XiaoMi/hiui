@@ -37,6 +37,14 @@ $prefix: '#{$component-prefix}-stepper' !default;
       }
     }
 
+    &.#{$prefix}__item--active {
+      .item-step {
+        &__dot {
+          background-color: use-color-mode('primary');
+        }
+      }
+    }
+
     .item-step {
       width: use-height-size('xs');
       height: use-height-size('xs');
@@ -45,6 +53,16 @@ $prefix: '#{$component-prefix}-stepper' !default;
       border-radius: use-border-radius('full');
       color: use-color-static('white');
       background-color: use-color('gray', 200);
+
+
+      &__dot {
+        background-color: use-color('gray', 200);
+        width: 8px;
+        height: 8px;
+        border-radius: use-border-radius('full');
+        margin: use-spacing(4);
+      }
+
 
       &__icon {
         color: use-color('gray', 700);
@@ -80,8 +98,18 @@ $prefix: '#{$component-prefix}-stepper' !default;
   font-size: use-text-size('normal');
   overflow: auto;
 
+  
+
   &__item {
     overflow: hidden;
+
+    &.#{$prefix}__item--active {
+      .item-step {
+        &__dot {
+          background-color: use-color-mode('primary');
+        }
+      }
+    }
 
     .item-step {
       width: use-height-size('xs');
@@ -91,6 +119,14 @@ $prefix: '#{$component-prefix}-stepper' !default;
       border-radius: use-border-radius('full');
       color: use-color('gray', 500);
       background-color: use-color('gray', 200);
+
+      &__dot {
+        background-color: use-color('gray', 200);
+        width: 8px;
+        height: 8px;
+        border-radius: use-border-radius('full');
+        margin: use-spacing(4);
+      }
 
       &::after {
         background-color: use-color('gray', 200);

@@ -21,7 +21,7 @@ export const VerticalLayout = () => {
     <>
       <h1>Stepper</h1>
       <div className="stepper-basic__wrap">
-        <Stepper data={list2} current={1} placement="vertical" />
+        <Stepper data={list2} current={1} placement="vertical" type='dot'/>
       </div>
     </>
   )
