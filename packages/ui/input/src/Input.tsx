@@ -203,7 +203,7 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
   /**
    * 设置输入框类型，支持原生 input 的 type 属性所有值
    */
-  type?: 'text' | 'number' | 'textarea'
+  type?: 'text' | 'number' | string
   /**
    * 输入最大长度
    */
