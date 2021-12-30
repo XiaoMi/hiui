@@ -2,7 +2,6 @@ import React from 'react'
 import Radio, { RadioGroup } from '../src'
 
 export const Group = () => {
-  const [value, setValue] = React.useState<React.ReactText>(0)
   const data = [
     {
       id: 0,
@@ -31,21 +30,59 @@ export const Group = () => {
     <>
       <h1>Group</h1>
       <div className="radio-group__wrap">
-        <RadioGroup
-          value={value}
-          onChange={(value) => {
-            console.log('onChange', value)
-            setValue(value)
-          }}
-        >
-          {data.map((item) => {
-            return (
-              <Radio key={item.id} disabled={item.disabled} value={item.id}>
-                {item.content}
-              </Radio>
-            )
-          })}
-        </RadioGroup>
+        <h2>default</h2>
+        <div>
+          <RadioGroup
+            defaultValue={0}
+            onChange={(value) => {
+              console.log('onChange', value)
+            }}
+          >
+            {data.map((item) => {
+              return (
+                <Radio key={item.id} disabled={item.disabled} value={item.id}>
+                  {item.content}
+                </Radio>
+              )
+            })}
+          </RadioGroup>
+        </div>
+        <h2>button</h2>
+        <div>
+          <RadioGroup
+            defaultValue={0}
+            type={'button'}
+            onChange={(value) => {
+              console.log('onChange', value)
+            }}
+          >
+            {data.map((item) => {
+              return (
+                <Radio key={item.id} disabled={item.disabled} value={item.id}>
+                  {item.content}
+                </Radio>
+              )
+            })}
+          </RadioGroup>
+        </div>
+        <h2>vertical</h2>
+        <div>
+          <RadioGroup
+            defaultValue={0}
+            placement={'vertical'}
+            onChange={(value) => {
+              console.log('onChange', value)
+            }}
+          >
+            {data.map((item) => {
+              return (
+                <Radio key={item.id} disabled={item.disabled} value={item.id}>
+                  {item.content}
+                </Radio>
+              )
+            })}
+          </RadioGroup>
+        </div>
       </div>
     </>
   )

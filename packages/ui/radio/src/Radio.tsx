@@ -20,6 +20,7 @@ export const Radio = forwardRef<HTMLLabelElement | null, RadioProps>(
       isChecked: isCheckedContext,
       name: nameContext,
       onChange: onChangeContext,
+      type = 'default',
       // From the use, Radio can be separated from RadioGroup.
     } = groupContext || {}
 
@@ -56,7 +57,7 @@ export const Radio = forwardRef<HTMLLabelElement | null, RadioProps>(
     const inputProps = getInputProps()
     const labelProps = getLabelProps()
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`)
 
     return (
       <label ref={ref} role={role} className={cls} {...rootProps}>
