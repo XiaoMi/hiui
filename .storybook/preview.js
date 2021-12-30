@@ -23,7 +23,7 @@ import { withPerformance } from "storybook-addon-performance";
 export const decorators = [
   function withThemeProvider(Story, context) {
     const theme = context.globals.theme;
-    console.log("[ theme ] >", theme, context);
+    // console.log("[ theme ] >", theme, context);
 
     // TODO: Inject HiUI ThemeProvider
     return (

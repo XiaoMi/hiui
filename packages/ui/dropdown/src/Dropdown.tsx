@@ -1,0 +1,303 @@
+import React, { cloneElement, forwardRef } from 'react'
+import { cx, getPrefixCls } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { PopperPortal, PopperPortalProps } from '@hi-ui/popper'
+import { DropDownProvider, useDropDownContext } from './context'
+import { useDropdown, UseDropdownProps } from './use-dropdown'
+import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
+import Button, { ButtonGroup } from '@hi-ui/button'
+import { DownOutlined } from '@hi-ui/icons'
+import { DropdownDataItem } from './types'
+
+const _role = 'dropdown'
+const _prefix = getPrefixCls(_role)
+const DEFAULT_DATA = [] as []
+
+/**
+ * TODO: What is Dropdown
+ */
+export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
+  (
+    {
+      prefixCls = _prefix,
+      role = _role,
+      className,
+      children,
+      data = DEFAULT_DATA,
+      title,
+      type = 'text',
+      onClick,
+      onButtonClick,
+      overlayClassName,
+      ...rest
+    },
+    ref
+  ) => {
+    const { rootProps, ...providedValue } = useDropdown(rest)
+
+    const { getMenuProps, getTriggerProps, disabled, menuVisibleAction } = providedValue
+
+    const cls = cx(prefixCls, className, disabled && `${prefixCls}--disabled`)
+
+    const dig = (treeData: DropdownDataItem[]) => {
+      return treeData.map((item: any) => {
+        const menu = isArrayNonEmpty(item.children) ? (
+          <DropdownMenu popper={{ gutterGap: 16 }}>{dig(item.children)}</DropdownMenu>
+        ) : null
+
+        // TODO: remove it
+        const shouldRenderDivider = item.title === '-'
+
+        if (shouldRenderDivider) {
+          return <li key={item.id} className={`${prefixCls}-divider`} />
+        }
+
+        return (
+          <DropdownMenuItem
+            key={item.id}
+            disabled={item.disabled}
+            href={item.href}
+            target={item.target}
+            value={item.id}
+            menu={menu}
+            onClick={() => {
+              onClick?.(item.id)
+              if (!isArray(item.children)) {
+                menuVisibleAction.off()
+              }
+            }}
+          >
+            {item.title}
+          </DropdownMenuItem>
+        )
+      })
+    }
+
+    return (
+      <DropDownProvider value={providedValue}>
+        <div ref={ref} role={role} className={cls} {...rootProps}>
+          {/* TODO： 支持非 Button 元素 */}
+
+          {type === 'text' || type === 'button' ? (
+            <Button {...getTriggerProps()} appearance={type === 'button' ? 'flat' : 'link'}>
+              {title}
+              <DownOutlined style={{ marginInlineStart: 2 }} />
+            </Button>
+          ) : null}
+
+          {type === 'group' ? (
+            <ButtonGroup>
+              <Button onClick={onButtonClick}>{title}</Button>
+              <Button
+                className={cx(`${prefixCls}__icon`, `${prefixCls}__icon-btn-wrap`)}
+                {...getTriggerProps()}
+              >
+                <DownOutlined />
+              </Button>
+            </ButtonGroup>
+          ) : null}
+
+          {isArrayNonEmpty(data) ? (
+            <DropdownMenu
+              {...getMenuProps({ popper: { disabledPortal: false, className: overlayClassName } })}
+            >
+              {dig(data)}
+            </DropdownMenu>
+          ) : null}
+        </div>
+      </DropDownProvider>
+    )
+  }
+)
+
+export interface DropdownProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, UseDropdownProps {
+  /**
+   * 下拉菜单显示标题的内容
+   */
+  title?: React.ReactNode
+  /**
+   * 下拉菜单数据项
+   */
+  data?: DropdownDataItem[]
+  /**
+   * 设置下拉面板宽度
+   */
+  width?: number
+  /**
+   * 	下拉菜单按钮类型
+   */
+  type?: 'text' | 'button' | 'group'
+  /**
+   * 点击左侧按钮的回调，仅在 type 为 group 时有效
+   */
+  onButtonClick?: (event: React.MouseEvent) => void
+  /**
+   * 点击后的回调
+   */
+  onClick?: (id: React.ReactText) => void
+  /**
+   * 下拉根元素的类名称
+   */
+  overlayClassName?: string
+}
+
+if (__DEV__) {
+  Dropdown.displayName = 'Dropdown'
+}
+
+const dropdownButtonPrefix = getPrefixCls('dropdown-button')
+
+/**
+ * TODO: What is DropdownButton
+ */
+const DropdownButton = forwardRef<HTMLDivElement | null, DropdownButtonProps>(
+  ({ prefixCls = dropdownButtonPrefix, role = _role, className, children, ...rest }, ref) => {
+    const { getTriggerProps } = useDropDownContext()
+    const triggerProps = getTriggerProps()
+
+    const cls = cx(prefixCls, className)
+
+    return (
+      <div role={role} className={cls} {...rest} {...triggerProps}>
+        {children}
+      </div>
+    )
+  }
+)
+
+interface DropdownButtonProps extends HiBaseHTMLProps<'div'> {}
+
+if (__DEV__) {
+  DropdownButton.displayName = 'DropdownButton'
+}
+
+const dropdownMenuPrefix = getPrefixCls('dropdown-menu')
+
+/**
+ * TODO: What is DropdownMenu
+ */
+const DropdownMenu = forwardRef<HTMLUListElement | null, DropdownMenuProps>(
+  (
+    { prefixCls = dropdownMenuPrefix, role = _role, popper, parents, className, children, ...rest },
+    ref
+  ) => {
+    const cls = cx(prefixCls, className)
+
+    return (
+      <PopperPortal {...(popper as PopperPortalProps)}>
+        <ul ref={ref} className={cls} {...rest}>
+          {children
+            ? React.Children.map(children, (child: any) => {
+                return cloneElement(child, {
+                  parents,
+                })
+              })
+            : children}
+        </ul>
+      </PopperPortal>
+    )
+  }
+)
+
+interface DropdownMenuProps extends HiBaseHTMLProps<'ul'> {
+  /**
+   * 透传 popper 对象
+   */
+  popper?: Omit<PopperPortalProps, 'visible' | 'attachEl'>
+  /**
+   * 祖先吸附元素DOM引用数组
+   */
+  parents?: React.RefObject<HTMLElement>[]
+}
+
+if (__DEV__) {
+  DropdownMenu.displayName = 'DropdownMenu'
+}
+
+const dropdownMenuItemPrefix = getPrefixCls('dropdown-menu-item')
+
+/**
+ * TODO: What is DropdownMenuItem
+ */
+const DropdownMenuItem = forwardRef<HTMLLIElement | null, DropdownMenuItemProps>(
+  (
+    {
+      prefixCls = dropdownMenuItemPrefix,
+      role = _role,
+      className,
+      children,
+      href,
+      value,
+      target,
+      disabled,
+      parents: parentsProp,
+      menu,
+      ...rest
+    },
+    ref
+  ) => {
+    const { triggerMethods, width } = useDropDownContext()
+
+    const { rootProps, getTriggerProps, getMenuProps } = useDropdown({
+      popper: { placement: 'right-start', disabledPortal: true },
+      width,
+      ...rest,
+      trigger: triggerMethods,
+      parents: parentsProp,
+    })
+
+    const cls = cx(prefixCls, className)
+    const shouldUseLink = href && !disabled
+
+    return (
+      <li ref={ref} className={cls} {...rootProps}>
+        <div className={`${prefixCls}__trigger`} {...getTriggerProps()}>
+          {shouldUseLink ? (
+            <a className={`${prefixCls}__link`} href={href} target={target}>
+              {children}
+            </a>
+          ) : (
+            children
+          )}
+        </div>
+        {menu
+          ? cloneElement(menu, {
+              ...getMenuProps(menu.props),
+            })
+          : null}
+      </li>
+    )
+  }
+)
+
+interface DropdownMenuItemProps extends HiBaseHTMLProps<'li'> {
+  /**
+   * 级联子菜单
+   */
+  menu?: ReturnType<typeof DropdownMenu>
+  /**
+   * 点击跳转的路径
+   */
+  href?: string
+  /**
+   * 当前 Menuitem 唯一标识值
+   */
+  value?: React.ReactText
+  /**
+   * 同 a 标签的 target 属性，仅在设置 href 后有效 (3.0 新增)
+   */
+  target?: '_self' | '_blank' | '_parent' | '_top'
+  /**
+   * 是否禁用
+   */
+  disabled?: boolean
+  /**
+   * 祖先吸附元素DOM引用数组
+   */
+  parents?: React.RefObject<HTMLElement>[]
+}
+
+if (__DEV__) {
+  DropdownMenuItem.displayName = 'DropdownMenuItem'
+}

@@ -55,13 +55,13 @@ $prefix: '#{$component-prefix}-button' !default;
     font-size: use-text-size('sm');
     line-height: get-text-lineheight('sm');
     &:not(.#{$prefix}--icon-only) {
-      [class^=hi-v4-icon] {
-        margin-right: use-spacing(2);
+      .#{$prefix}__icon {
+        margin-inline-end: use-spacing(2);
       }
     }
     &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
       .#{$prefix}__icon {
-        margin-right: use-spacing(2);
+        margin-inline-end: use-spacing(2);
       }
     }
   }
@@ -70,13 +70,13 @@ $prefix: '#{$component-prefix}-button' !default;
     font-size: use-text-size('normal');
     line-height: get-text-lineheight('normal');
     &:not(.#{$prefix}--icon-only) {
-      [class^=hi-v4-icon] {
-        margin-right: use-spacing(3);
+      .#{$prefix}__icon {
+        margin-inline-end: use-spacing(3);
       }
     }
     &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
       .#{$prefix}__icon {
-        margin-right: use-spacing(3);
+        margin-inline-end: use-spacing(3);
       }
     }
   }
@@ -85,13 +85,13 @@ $prefix: '#{$component-prefix}-button' !default;
     font-size: use-text-size('lg');
     line-height: get-text-lineheight('lg');
     &:not(.#{$prefix}--icon-only) {
-      [class^=hi-v4-icon] {
-        margin-right: use-spacing(4);
+      .#{$prefix}__icon {
+        margin-inline-end: use-spacing(4);
       }
     }
     &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
       .#{$prefix}__icon {
-        margin-right: use-spacing(4);
+        margin-inline-end: use-spacing(4);
       }
     }
   }
@@ -101,13 +101,13 @@ $prefix: '#{$component-prefix}-button' !default;
     line-height: get-text-lineheight('xl');
 
     &:not(.#{$prefix}--icon-only) {
-      [class^=hi-v4-icon]:not(.#{$prefix}--icon-only) {
-        margin-right: use-spacing(6);
+      .#{$prefix}__icon:not(.#{$prefix}--icon-only) {
+        margin-inline-end: use-spacing(6);
       }
     }
     &.#{$prefix}--loading {
       .#{$prefix}__icon:not(.#{$prefix}--icon-only) {
-        margin-right: use-spacing(6);
+        margin-inline-end: use-spacing(6);
       }
     }
   }

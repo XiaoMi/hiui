@@ -28,6 +28,13 @@ export const Button = forwardRef<any, ButtonProps>(
     ref
   ) => {
     const isEmptyChildren = !children || (typeof children === 'string' && !children.trim())
+    const isNonInteractive = disabled || loading
+
+    const prepend = loading ? (
+      <IconLoading className={`${prefixCls}__icon`} />
+    ) : icon ? (
+      <span className={`${prefixCls}__icon`}>{icon}</span>
+    ) : null
 
     const cls = cx(
       prefixCls,
@@ -40,9 +47,6 @@ export const Button = forwardRef<any, ButtonProps>(
       disabled && `${prefixCls}--disabled`,
       loading && `${prefixCls}--loading`
     )
-
-    const isNonInteractive = disabled || loading
-    const prepend = loading ? <IconLoading className={`${prefixCls}__icon`} /> : icon
 
     return !href ? (
       <button
