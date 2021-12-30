@@ -12,7 +12,16 @@ const RADIO_GROUP_PREFIX = getPrefixCls('radio-group')
  */
 export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
   ({ prefixCls = RADIO_GROUP_PREFIX, className, children, ...rest }, ref) => {
-    const { rootProps, name, value, onChange, isChecked, disabled } = useRadioGroup(rest)
+    const {
+      rootProps,
+      name,
+      value,
+      onChange,
+      isChecked,
+      disabled,
+      type,
+      placement,
+    } = useRadioGroup(rest)
 
     const providedValue = useMemo(
       () => ({
@@ -21,11 +30,18 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
         value,
         isChecked,
         disabled,
+        type,
+        placement,
       }),
-      [name, onChange, value, isChecked, disabled]
+      [name, onChange, value, isChecked, disabled, type, placement]
     )
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(
+      prefixCls,
+      className,
+      `${prefixCls}--placement-${placement}`,
+      `${prefixCls}--type-${type}`
+    )
 
     return (
       <RadioGroupProvider value={providedValue}>

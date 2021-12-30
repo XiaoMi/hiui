@@ -7,6 +7,8 @@ export const useRadioGroup = ({
   onChange,
   defaultValue = '',
   disabled = false,
+  type = 'default' as RadioGroupType,
+  placement = 'horizontal',
   ...rest
 }: UseRadioGroupProps) => {
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
@@ -29,7 +31,7 @@ export const useRadioGroup = ({
     role: 'radiogroup',
   }
 
-  return { rootProps, value, onChange: handleChange, name, isChecked, disabled }
+  return { rootProps, value, onChange: handleChange, name, isChecked, disabled, type, placement }
 }
 
 export interface UseRadioGroupProps {
@@ -54,6 +56,17 @@ export interface UseRadioGroupProps {
    * 是否禁用
    */
   disabled?: boolean
+  /**
+   * 单选按钮展示类型
+   * @default 'default'
+   */
+  type?: RadioGroupType
+  /**
+   * 设置水平或垂直展示
+   * @default 'horizontal'
+   */
+  placement?: 'vertical' | 'horizontal'
 }
 
+export type RadioGroupType = 'default' | 'button'
 export type UseRadioGroupReturn = ReturnType<typeof useRadioGroup>
