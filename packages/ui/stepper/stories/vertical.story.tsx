@@ -1,15 +1,19 @@
 import React from 'react'
 import Stepper from '../src'
+import {UserOutlined} from '@hi-ui/icons'
 
 const list = [
   {
     title: '账号信息',
+    icon: <UserOutlined/>
   },
   {
     title: '邮箱激活',
+    
   },
   {
     title: '信息登记',
+    icon: <UserOutlined/>
   },
 ]
 
@@ -33,7 +37,7 @@ export const Vertical = () => {
     <>
       <h1>Stepper</h1>
       <div className="stepper-basic__wrap">
-        <Stepper itemLayout="vertical" data={list} current={1} />
+        <Stepper itemLayout="vertical" data={list} current={1}  type='dot'/>
         <Stepper data={list2} current={2} itemLayout="vertical" />
       </div>
     </>

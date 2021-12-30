@@ -22,6 +22,7 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
       onChange,
       itemLayout = 'horizontal',
       placement = 'horizontal',
+      type = 'default',
       ...rest
     },
     ref
@@ -36,6 +37,7 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
         onChange={onChange}
         prefixCls={prefixCls}
         className={className}
+        type={type}
       />
     ) : (
       <div ref={ref} role={role} className={cls} {...rest}>
@@ -45,6 +47,7 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
               key={index}
               stepperItem={d}
               index={index}
+              type={type}
               isActive={current !== undefined && current >= index}
               isFirst={index === 0}
               isLast={index === data.length - 1}
@@ -60,6 +63,7 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
               key={index}
               stepperItem={d}
               index={index}
+              type={type}
               isActive={current !== undefined && current >= index}
               isFirst={index === 0}
               isLast={index === data.length - 1}
@@ -131,6 +135,10 @@ export interface StepperProps {
    * 步骤项的变更回调
    */
   onChange?: (current: number) => void
+  /**
+   * 节点类型
+   */
+  type?: 'dot' | 'default'
 }
 
 if (__DEV__) {

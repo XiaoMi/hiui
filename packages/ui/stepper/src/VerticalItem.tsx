@@ -20,6 +20,7 @@ export const VerticalItem = forwardRef<HTMLDivElement | null, StepperProps>(
       isActive,
       isLastActive,
       index,
+      type
     },
     ref
   ) => {
@@ -37,7 +38,7 @@ export const VerticalItem = forwardRef<HTMLDivElement | null, StepperProps>(
         })}
       >
         <div className={cx('item-step__wrapper')}>
-          <div className={cx('item-step')}>{index + 1}</div>
+        {stepperItem.icon? <div className={cx('item-step__icon')}>{stepperItem.icon}</div> :(type === 'dot' ? <div className={cx('item-step__dot')} /> :<div className={cx('item-step')}>{index + 1}</div>)}
         </div>
         <div className={cx('item-step__title')}>{stepperItem.title}</div>
         <div className={cx('item-step__content')}>{stepperItem.content}</div>
@@ -93,6 +94,7 @@ export interface StepperProps {
    * 步骤项的变更回调
    */
   onClick?: (current: number) => void
+  type?: 'dot' | 'default'
 }
 
 if (__DEV__) {
