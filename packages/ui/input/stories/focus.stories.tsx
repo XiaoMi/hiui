@@ -11,6 +11,7 @@ export const Focus = () => {
       <div className="input-focus__wrap">
         <Input autoFocus placeholder="请输入"></Input>
         <br />
+        <br />
         <Button
           onClick={() => {
             inputRef.current?.focus()

@@ -10,6 +10,7 @@ export const Addon = () => {
         <h2>prefix or suffix</h2>
         <Input placeholder="请输入" prefix="http://" suffix=".com"></Input>
         <br />
+        <br />
         <Input
           clearable
           clearableTrigger="always"
@@ -17,7 +18,9 @@ export const Addon = () => {
           suffix={<SearchOutlined />}
         ></Input>
         <br />
+        <br />
         <Input placeholder="请输入" prefix={<ExpressionOutlined />}></Input>
+        <br />
         <br />
         <Input
           placeholder="请输入"
@@ -35,6 +38,7 @@ export const Addon = () => {
         <h2>prepend or append</h2>
         <Input placeholder="请输入" prepend="http://" append=".com"></Input>
         <br />
+        <br />
         <Input
           clearable
           clearableTrigger="always"
@@ -42,7 +46,9 @@ export const Addon = () => {
           append={<SearchOutlined />}
         ></Input>
         <br />
+        <br />
         <Input placeholder="请输入" prepend={<ExpressionOutlined />}></Input>
+        <br />
         <br />
         <Input
           placeholder="请输入"

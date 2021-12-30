@@ -1,10 +1,10 @@
 import React, { forwardRef, useState, useCallback, useRef, useMemo, isValidElement } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { CloseCircleFilled } from '@hi-ui/icons'
 import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { useInput } from './use-input'
 
 const _prefix = getPrefixCls('input')
 
@@ -18,29 +18,29 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       role = 'input',
       className,
       style,
-      autoFocus = false,
-      disabled = false,
-      readOnly = false,
-      name,
-      maxLength,
       type = 'text',
       size = 'md',
       appearance = 'outline',
-      floatLabel,
-      placeholder,
       prepend,
       append,
       prefix,
       suffix,
-      defaultValue = '',
+      clearableTrigger = 'hover',
+      clearable = false,
+      invalid = false,
+      // use-input
+      name,
+      autoFocus,
+      disabled,
+      readOnly,
+      maxLength,
+      placeholder,
+      defaultValue,
       value: valueProp,
       onChange,
       onFocus,
       onBlur,
-      clearableTrigger = 'hover',
-      clearable = false,
-      trimValueOnBlur = false,
-      invalid = false,
+      trimValueOnBlur,
       ...rest
     },
     ref
@@ -60,51 +60,33 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       return shouldUnset
     }, [prepend, append])
 
-    const inputRef = useRef<HTMLInputElement>(null)
+    const inputElementRef = useRef<HTMLInputElement>(null)
 
     const proxyOnChange = useCallback(
       (value: string, evt: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
         if (!onChange) return
-        onChangeMock(onChange, evt, inputRef.current, value)
+        onChangeMock(onChange, evt, inputElementRef.current, value)
       },
       [onChange]
     )
 
-    const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, proxyOnChange)
-
-    const handleChange = useCallback(
-      (evt: React.ChangeEvent<HTMLInputElement>) => {
-        const nextValue = evt.target.value
-        tryChangeValue(nextValue, evt)
-      },
-      [tryChangeValue]
-    )
-
-    const [focused, setFocused] = useState(autoFocus)
-
-    const handleFocus = useCallback(
-      (evt: React.FocusEvent<HTMLInputElement>) => {
-        setFocused(true)
-        onFocus?.(evt)
-      },
-      [onFocus]
-    )
-
-    const handleBlur = useCallback(
-      (event: React.FocusEvent<HTMLInputElement>) => {
-        setFocused(false)
-
-        if (trimValueOnBlur) {
-          const nextValue = event.target.value
-          tryChangeValue(nextValue.trim(), event)
-        }
-        onBlur?.(event)
-      },
-      [onBlur, tryChangeValue, trimValueOnBlur]
-    )
+    const { tryChangeValue, focused, value, getInputProps } = useInput({
+      name,
+      autoFocus,
+      disabled,
+      readOnly,
+      maxLength,
+      placeholder,
+      defaultValue,
+      value: valueProp,
+      onChange: proxyOnChange,
+      onFocus,
+      onBlur,
+      trimValueOnBlur,
+    })
 
     const focus = useCallback(() => {
-      inputRef.current?.focus()
+      inputElementRef.current?.focus()
     }, [])
 
     const handleReset = useCallback(
@@ -115,21 +97,11 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       [tryChangeValue, focus]
     )
 
-    const nativeInputProps = useMemo(
-      () => ({
-        name,
-        disabled,
-        readOnly,
-        autoFocus,
-        placeholder,
-        maxLength,
-      }),
-      [disabled, readOnly, autoFocus, placeholder, maxLength, name]
-    )
-
     const [hover, setHover] = useState(false)
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
     const showClearableIcon = clearable && !!value && !disabled
+
+    const mergedRef = useMergeRefs(ref, inputElementRef)
 
     const cls = cx(
       className,
@@ -166,7 +138,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
           {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
 
           <input
-            ref={useMergeRefs(ref, inputRef)}
+            ref={mergedRef}
             className={cx(
               prefixCls,
               focused && `focused`,
@@ -174,12 +146,8 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
               readOnly && 'readonly'
             )}
             type={type}
-            value={value}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
+            {...getInputProps()}
             {...rest}
-            {...nativeInputProps}
           />
 
           {suffix || showClearableIcon ? (
@@ -235,7 +203,7 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
   /**
    * 设置输入框类型，支持原生 input 的 type 属性所有值
    */
-  type?: 'text' | 'number' | string
+  type?: 'text' | 'number' | 'textarea'
   /**
    * 输入最大长度
    */

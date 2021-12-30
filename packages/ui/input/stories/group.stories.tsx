@@ -27,6 +27,7 @@ export const Group = () => {
           }
         />
         <br />
+        <br />
         <Input
           clearable
           clearableTrigger="always"

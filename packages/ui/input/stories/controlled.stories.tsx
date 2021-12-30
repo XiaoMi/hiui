@@ -15,6 +15,7 @@ export const Controlled = () => {
           onChange={(e) => setValue(e.target.value)}
         ></Input>
         <br />
+        <br />
         <Input placeholder="请输入" defaultValue="defaultValue"></Input>
       </div>
     </>

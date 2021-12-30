@@ -46,7 +46,7 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
     )
 
     const checkedWithContext =
-      checkedProp ?? (valueGroup && value !== undefined ? valueGroup.includes(value) : false)
+      checkedProp ?? (valueGroup && value !== undefined ? valueGroup.includes(value) : checkedProp)
 
     const disabled = disabledProp ?? disabledGroup
 
@@ -57,7 +57,6 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
     )
 
     const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-      evt.preventDefault()
       evt.stopPropagation()
 
       if (disabled) return

@@ -12,6 +12,7 @@ export const Clearable = () => {
           onChange={(e) => console.log('change', e.target.value)}
         ></Input>
         <br />
+        <br />
         <Input clearable clearableTrigger="always" placeholder="内容输入后就可清除"></Input>
       </div>
     </>

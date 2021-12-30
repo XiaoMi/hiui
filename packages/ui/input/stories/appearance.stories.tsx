@@ -10,6 +10,7 @@ export const Appearance = () => {
         <h2>outline</h2>
         <Input size="md" appearance="outline" placeholder="请输入内容"></Input>
         <br />
+        <br />
         <Input
           size="md"
           clearable
@@ -20,8 +21,10 @@ export const Appearance = () => {
           append={<div>Send</div>}
         ></Input>
         <br />
+        <br />
         <h2>unset</h2>
         <Input size="md" appearance="unset" placeholder="请输入内容"></Input>
+        <br />
         <br />
         <Input
           appearance="unset"
@@ -34,8 +37,10 @@ export const Appearance = () => {
           append={<div>Send</div>}
         ></Input>
         <br />
+        <br />
         <h2>filled</h2>
         <Input size="md" appearance="filled" placeholder="请输入内容"></Input>
+        <br />
         <br />
         <Input
           appearance="filled"
@@ -48,8 +53,10 @@ export const Appearance = () => {
           append={<div>Send</div>}
         ></Input>
         <br />
+        <br />
         <h2>underline</h2>
         <Input size="md" appearance="underline" placeholder="请输入内容"></Input>
+        <br />
         <br />
         <Input
           appearance="underline"
@@ -61,6 +68,7 @@ export const Appearance = () => {
           suffix={<AudioOutlined />}
           append={<div>Send</div>}
         ></Input>
+        <br />
         <br />
       </div>
     </>

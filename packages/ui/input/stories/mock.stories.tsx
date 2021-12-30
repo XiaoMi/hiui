@@ -18,6 +18,8 @@ export const Mock = () => {
           ></MockInput>
           <br />
           <br />
+          <br />
+          <br />
           <MockInput
             size="sm"
             appearance="outline"
@@ -38,6 +40,8 @@ export const Mock = () => {
           />
           <br />
           <br />
+          <br />
+          <br />
           <MockInput
             size="md"
             appearance="outline"
@@ -47,6 +51,8 @@ export const Mock = () => {
           ></MockInput>
           <br />
           <br />
+          <br />
+          <br />
           <MockInput
             size="lg"
             invalid
@@ -54,6 +60,8 @@ export const Mock = () => {
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></MockInput>
+          <br />
+          <br />
           <br />
           <br />
           <MockInput
@@ -66,6 +74,8 @@ export const Mock = () => {
           ></MockInput>
           <br />
           <br />
+          <br />
+          <br />
           <MockInput
             size="lg"
             appearance="outline"
@@ -73,6 +83,8 @@ export const Mock = () => {
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></MockInput>
+          <br />
+          <br />
           <br />
           <br />
         </div>
@@ -82,6 +94,8 @@ export const Mock = () => {
           <MockInput appearance="filled" placeholder="请输入" suffix={<DownOutlined />}></MockInput>
           <br />
           <br />
+          <br />
+          <br />
           <MockInput
             size="sm"
             appearance="filled"
@@ -102,6 +116,8 @@ export const Mock = () => {
           />
           <br />
           <br />
+          <br />
+          <br />
           <MockInput
             size="md"
             appearance="filled"
@@ -111,6 +127,8 @@ export const Mock = () => {
           ></MockInput>
           <br />
           <br />
+          <br />
+          <br />
           <MockInput
             size="lg"
             invalid
@@ -118,6 +136,8 @@ export const Mock = () => {
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></MockInput>
+          <br />
+          <br />
           <br />
           <br />
           <MockInput
@@ -130,6 +150,8 @@ export const Mock = () => {
           ></MockInput>
           <br />
           <br />
+          <br />
+          <br />
           <MockInput
             size="lg"
             appearance="filled"
@@ -137,6 +159,8 @@ export const Mock = () => {
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></MockInput>
+          <br />
+          <br />
           <br />
           <br />
         </div>
@@ -146,6 +170,8 @@ export const Mock = () => {
           <MockInput appearance="unset" placeholder="请输入" suffix={<DownOutlined />}></MockInput>
           <br />
           <br />
+          <br />
+          <br />
           <MockInput
             size="sm"
             appearance="unset"
@@ -166,6 +192,8 @@ export const Mock = () => {
           />
           <br />
           <br />
+          <br />
+          <br />
           <MockInput
             size="md"
             appearance="unset"
@@ -175,6 +203,8 @@ export const Mock = () => {
           ></MockInput>
           <br />
           <br />
+          <br />
+          <br />
           <MockInput
             size="lg"
             invalid
@@ -182,6 +212,8 @@ export const Mock = () => {
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></MockInput>
+          <br />
+          <br />
           <br />
           <br />
           <MockInput
@@ -194,6 +226,8 @@ export const Mock = () => {
           ></MockInput>
           <br />
           <br />
+          <br />
+          <br />
           <MockInput
             size="lg"
             appearance="unset"
@@ -201,6 +235,8 @@ export const Mock = () => {
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></MockInput>
+          <br />
+          <br />
           <br />
           <br />
         </div>

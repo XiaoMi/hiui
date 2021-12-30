@@ -14,12 +14,14 @@ export const Size = () => {
           suffix={<AudioOutlined style={{ marginRight: 4 }} />}
         ></Input>
         <br />
+        <br />
         <Input
           size="md"
           placeholder="md"
           prefix={<ExpressionOutlined />}
           suffix={<AudioOutlined style={{ marginRight: 4 }} />}
         ></Input>
+        <br />
         <br />
         <Input
           size="lg"

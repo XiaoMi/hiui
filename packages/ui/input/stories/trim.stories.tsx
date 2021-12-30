@@ -12,6 +12,7 @@ export const Trim = () => {
           trimValueOnBlur
         ></Input>
         <br />
+        <br />
         <Input disabled placeholder="请输入"></Input>
       </div>
     </>

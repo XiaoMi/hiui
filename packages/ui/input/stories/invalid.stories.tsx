@@ -9,9 +9,12 @@ export const Invalid = () => {
         <div>
           <Input appearance="outline" invalid placeholder="请输入"></Input>
           <br />
+          <br />
           <Input appearance="unset" invalid placeholder="请输入"></Input>
           <br />
+          <br />
           <Input appearance="filled" invalid placeholder="请输入"></Input>
+          <br />
           <br />
           <Input appearance="underline" invalid placeholder="请输入"></Input>
         </div>

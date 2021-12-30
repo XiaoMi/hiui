@@ -56,3 +56,20 @@ export const mergeRefs = <T>(...refs: (ReactRef<T> | null)[]) => {
     })
   }
 }
+
+export type RecordName = string | number | symbol
+
+/**
+ * Filtering props
+ */
+export const filterProps = <T extends Record<RecordName, any>, R extends RecordName[]>(
+  props: T,
+  omitProps: R
+): Pick<T, Exclude<keyof T, R[number]>> => {
+  return Object.keys(props)
+    .filter((key) => !omitProps.includes(key))
+    .reduce((filteredObj, key) => {
+      filteredObj[key] = props[key]
+      return filteredObj
+    }, {} as any)
+}
