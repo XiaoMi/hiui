@@ -6,7 +6,6 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
   @include button-reset;
 
   font-size: use-text-size('lg');
-  color: inherit;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -16,6 +15,7 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
   position: relative;
   flex-shrink: 0;
   z-index: use-zindex('absolute');
+  color: use-color('gray', 600);
 
   &--virtual-area {
     &::after {

@@ -169,6 +169,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
                   // TODO: Why not take effect
                   // autoFocus
                   prefix={<SearchOutlined />}
+                  clearable
+                  clearableTrigger="always"
                   placeholder={searchPlaceholder}
                   {...getSearchInputProps()}
                 />

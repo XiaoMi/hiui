@@ -42,7 +42,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     align-items: center;
     justify-items: stretch;
     border-radius: use-border-radius('normal');
-    padding: 0 use-spacing(5);
+    padding: 0 use-spacing(3);
     outline: 0;
     transition: all 0.3s;
     // transition-property: all;
@@ -146,7 +146,8 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &--focused {
     #{$this}__wrap {
-      background-color: use-color-mode('primary-05');
+      // background-color: use-color-mode('primary-05');
+      background-color: use-color('gray', 100);
     }
 
     #{$this}__title {
@@ -180,12 +181,15 @@ $prefix: '#{$component-prefix}-tree' !default;
     &#{$this}--selected {
       color: use-color('gray', 400);
 
-      #{$this}__title {
-        color: use-color('gray', 400);
-        background-color: use-color-static('white');
+      #{$this}__wrap {
+        background-color: use-color-mode('primary-05');
+
+        #{$this}__title {
+          color: use-color('gray', 500);
+        }
 
         &:hover {
-          background-color: use-color-static('white');
+          background-color: use-color-mode('primary-05');
         }
       }
     }
@@ -197,7 +201,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     }
 
     #{$this}__switcher:not(#{$this}__switcher--noop) {
-      color: use-color('gray', 700);
+      color: use-color('gray', 600);
     }
   }
 
