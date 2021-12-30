@@ -1,6 +1,9 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-radio' !default;
+$input-class: '#{$prefix}__input' !default;
+$controller-class: '#{$prefix}__controller' !default;
+$label-class: '#{$prefix}__label' !default;
 
 .#{$prefix} {
   @include text-reset;
@@ -11,91 +14,188 @@ $prefix: '#{$component-prefix}-radio' !default;
   display: inline-flex;
   align-items: center;
   vertical-align: middle;
-  margin-inline-end: use-spacing(16);
 
-  &__input {
-    &:focus + .#{$prefix}__controller {
-      border-color: use-color-mode('primary');
-      box-shadow: 0 0 0 2px use-color-mode('primary-10');
-    }
-  }
-
-  &__controller {
-    @include flex;
-
-    position: relative;
-    box-sizing: border-box;
-    width: 16px;
-    height: 16px;
-    border: 1px solid use-color('gray', 300);
-    border-radius: use-border-radius('full');
+  &--type-button{
+    height: 32px;
+    padding: 0 12px;
+    color: use-color('gray', 600);
+    background: use-color('gray', 100);
+    cursor: pointer;
     transition: all use-motion-duration('normal');
 
-    &::after {
-      position: absolute;
-      top: 0;
-      left: 0;
-      box-sizing: border-box;
-      display: inline-block;
-      width: 14px;
-      height: 14px;
-      content: '';
-      background: use-color-mode('primary');
-      border-radius: use-border-radius('full');
-      opacity: 0;
-      transition: all use-motion-duration('normal');
-      transform: scale(0);
-    }
-
-    .#{$prefix}:hover & {
-      border-color: use-color-mode('primary');
-    }
-
-    .#{$prefix}[data-checked] & {
-      border-color: use-color-mode('primary');
-      background: use-color-mode('primary');
-
-      &::after {
-        opacity: 1;
-        transform: scale(0.3);
-        background-color: use-color-static('white');
+    .#{$prefix}{
+      &__input{
+        display: none;
+        &:focus + .#{$prefix}__label {
+          color: use-color-mode('primary');
+        }
+      }
+      &__controller{
+        display: none;
       }
     }
 
-    .#{$prefix}[data-checked].#{$prefix}[data-disabled] & {
-      border-color: use-color-mode('primary');
-      background: use-color-mode('primary');
-      opacity: 0.4;
-
-      &::after {
-        opacity: 1;
-        transform: scale(0.3);
-        background-color: use-color-static('white');
-      }
+    &:hover,&[data-checked]{
+      background: use-color('brandblue', 50);
+      color: use-color('brandblue', 500);
     }
 
-    .#{$prefix}[data-disabled] & {
+    &[data-disabled] {
       cursor: not-allowed;
-      border-color: use-color('gray', 300);
-      background: use-color('gray', 100);
+      background: use-color('gray',200);
+      color: use-color('gray',400);
+    }
 
-      &::after {
-        background: use-color('gray', 300);
-      }
+    &[data-checked]#{&}[data-disabled]{
+      background: use-color('brandblue', 50);
+      color: use-color('brandblue', 300);
     }
   }
 
-  &__label {
-    box-sizing: border-box;
-    margin-inline-start: use-spacing(2);
-    color: use-color('gray', 700);
+  &--type-default{
+    .#{$prefix}{
+      &__input {
+        &:focus + .#{$prefix}__controller {
+          border-color: use-color-mode('primary');
+          box-shadow: 0 0 0 2px use-color-mode('primary-10');
+        }
+      }
 
-    .#{$prefix}[data-disabled] & {
-      color: use-color('gray', 500);
+      &__controller {
+        @include flex;
+
+        position: relative;
+        box-sizing: border-box;
+        width: 16px;
+        height: 16px;
+        border: 1px solid use-color('gray', 300);
+        border-radius: use-border-radius('full');
+        transition: all use-motion-duration('normal');
+
+        &::after {
+          position: absolute;
+          top: 0;
+          left: 0;
+          box-sizing: border-box;
+          display: inline-block;
+          width: 14px;
+          height: 14px;
+          content: '';
+          background: use-color-mode('primary');
+          border-radius: use-border-radius('full');
+          opacity: 0;
+          transition: all use-motion-duration('normal');
+          transform: scale(0);
+        }
+      }
+
+      &__label {
+        box-sizing: border-box;
+        margin-inline-start: use-spacing(2);
+        color: use-color('gray', 700);
+      }
+    }
+
+    &:hover{
+      .#{$controller-class}{
+        border-color: use-color-mode('primary');
+      }
+    }
+
+    &[data-checked]{
+      .#{$controller-class}{
+        border-color: use-color-mode('primary');
+        background: use-color-mode('primary');
+
+        &::after {
+          opacity: 1;
+          transform: scale(0.3);
+          background-color: use-color-static('white');
+        }
+      }
+    }
+
+    &[data-checked]#{&}[data-disabled]{
+      .#{$controller-class}{
+        border-color: use-color-mode('primary');
+        background: use-color-mode('primary');
+        opacity: 0.4;
+
+        &::after {
+          opacity: 1;
+          transform: scale(0.3);
+          background-color: use-color-static('white');
+        }
+      }
+    }
+
+    &[data-disabled]{
+      cursor: not-allowed;
+
+      .#{$controller-class}{
+        border-color: use-color('gray', 300);
+        background: use-color('gray', 100);
+
+        &::after {
+          background: use-color('gray', 300);
+        }
+      }
+      .#{$label-class}{
+        color: use-color('gray', 500);
+      }
     }
   }
 }
 
 .#{$prefix}-group {
-  display: inline-block;
+  display: inline-flex;
+  position: relative;
+  z-index: use-zindex('normal');
+
+  &--type-button{
+    border-radius: use-border-radius('md');
+    overflow: hidden;
+  }
+
+  &--placement-horizontal{
+    align-items: center;
+
+    .#{$prefix}--type-default{
+      margin-right: use-spacing(16);
+    }
+
+    .#{$prefix}--type-button{
+      &::after{
+        content: '';
+        background: use-color('gray',300);
+        width: 1px;
+        left: 100%;
+        top: 8px;
+        bottom: 8px;
+        position: absolute;
+        z-index: use-zindex('absolute');
+      }
+    }
+  }
+
+  &--placement-vertical{
+    flex-direction: column;
+
+    .#{$prefix}--type-default{
+      margin-bottom: use-spacing(8);
+    }
+
+    .#{$prefix}--type-button{
+      &::after{
+        content: '';
+        background: use-color('gray',300);
+        height: 1px;
+        left: 8px;
+        right: 8px;
+        top: 100%;
+        position: absolute;
+        z-index: use-zindex('absolute');
+      }
+    }
+  }
 }
