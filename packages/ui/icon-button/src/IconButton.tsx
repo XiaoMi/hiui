@@ -6,7 +6,11 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 const ICON_BUTTON_PREFIX = getPrefixCls('icon-button')
 
 /**
- * TODO: What is IconButton
+ * 专门用于把 icon 当按钮的场景，和 Button 的边界区分如下：
+ *
+ * 1. IconButton 要求尺寸上是 svg 的原始尺寸，而不是 Button 的大尺寸，不占文档流空间
+ * 2. 带有点击区域放大的功能，不占文档流空间
+ * 3. 样式上也是 svg 的样式，不带任何修饰，hover | focus 后是圆型的态，也不占文档流空间
  */
 export const IconButton = forwardRef<HTMLButtonElement | null, IconButtonProps>(
   (
@@ -17,7 +21,8 @@ export const IconButton = forwardRef<HTMLButtonElement | null, IconButtonProps>(
       children,
       icon,
       active = false,
-      areaExpand = true,
+      virtualArea = true,
+      effect = false,
       ...rest
     },
     ref
@@ -26,7 +31,8 @@ export const IconButton = forwardRef<HTMLButtonElement | null, IconButtonProps>(
       prefixCls,
       className,
       active && `${prefixCls}--active`,
-      areaExpand && `${prefixCls}--area-expand`
+      virtualArea && `${prefixCls}--virtual-area`,
+      effect && `${prefixCls}--effect`
     )
     return (
       <button ref={ref} role={role} className={cls} {...rest}>
@@ -48,7 +54,11 @@ export interface IconButtonProps extends HiBaseHTMLProps<'button'> {
   /**
    * 扩大点击区域
    */
-  areaExpand?: boolean
+  virtualArea?: boolean
+  /**
+   * 是否开启 hover  和 focus 展示底色变化效果
+   */
+  effect?: boolean
 }
 
 if (__DEV__) {

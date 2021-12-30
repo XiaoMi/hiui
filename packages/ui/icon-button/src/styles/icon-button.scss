@@ -17,7 +17,7 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
   flex-shrink: 0;
   z-index: use-zindex('absolute');
 
-  &--area-expand {
+  &--virtual-area {
     &::after {
       content: '';
       position: absolute;
@@ -30,28 +30,30 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
     }
   }
 
+  &--effect {
+    &::before {
+      content: '';
+      position: absolute;
+      display: block;
+      right: calc(-1 * #{use-spacing(1)});
+      top: calc(-1 * #{use-spacing(1)});
+      bottom: calc(-1 * #{use-spacing(1)});
+      left: calc(-1 * #{use-spacing(1)});
+      z-index: -1;
+      background-color: transparent;
+      transition: background-color use-motion-duration('normal');
+      border-radius: use-border-radius('full');
+    }
+
+    &:hover,
+    &:focus {
+      &::before {
+        background-color: use-color('gray', 100);
+      }
+    }
+  }
+
   &--active {
     color: use-color-mode('primary');
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    display: block;
-    right: calc(-1 * #{use-spacing(1)});
-    top: calc(-1 * #{use-spacing(1)});
-    bottom: calc(-1 * #{use-spacing(1)});
-    left: calc(-1 * #{use-spacing(1)});
-    z-index: -1;
-    background-color: transparent;
-    transition: background-color use-motion-duration('normal');
-    border-radius: use-border-radius('full');
-  }
-
-  &:hover,
-  &:focus {
-    &::before {
-      background-color: use-color('gray', 100);
-    }
   }
 }

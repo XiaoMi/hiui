@@ -110,7 +110,9 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
               {hasHeader ? (
                 <header className={`${prefixCls}__header`}>
                   {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
-                  {closeable ? <IconButton onClick={onClose} icon={<CloseOutlined />} /> : null}
+                  {closeable ? (
+                    <IconButton effect onClick={onClose} icon={<CloseOutlined />} />
+                  ) : null}
                 </header>
               ) : null}
               <main className={`${prefixCls}__body`}>{children}</main>

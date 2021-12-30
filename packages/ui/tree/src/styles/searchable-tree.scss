@@ -6,15 +6,17 @@ $prefix: '#{$component-prefix}-tree' !default;
   &-searcher {
     position: relative;
     color: use-color('gray', 700);
-    padding: 0 use-spacing(4);
+    // padding: 0 use-spacing(4);
+    box-sizing: border-box;
 
     &--empty {
+      box-sizing: border-box;
       display: inline-block;
-      color: use-color('gray', 700);
-      font-size: 14px;
-      line-height: 20px;
-      font-weight: 400;
-      padding: 10px 10px 0;
+      color: use-color('gray', 500);
+      font-size: use-text-size('normal');
+      line-height: use-text-lineheight('normal');
+      font-weight: use-text-weight('normal');
+      padding: use-spacing(6) use-spacing(2) 0;
     }
   }
 

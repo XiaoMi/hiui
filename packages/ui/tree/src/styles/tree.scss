@@ -4,64 +4,50 @@ $prefix: '#{$component-prefix}-tree' !default;
 
 .#{$prefix} {
   @include component-reset;
+  @include list-reset;
 
   list-style-type: none;
-  padding: use-spacing(2) use-spacing(4);
+
+  // 单独树存在不设置左右间距
+  // padding: 0 use-spacing(4);
 
   // 控制折叠收起动画
   &-motion-node {
-    transition: all 0.3s ease;
     overflow-y: hidden;
+    transition: all 0.3s;
+    // transition-property: all;
+    // transition-duration: use-motion-duration('normal');
+    // transition-timing-function: use-motion-bezier('slow');
   }
-
-  // &-motion {
-  //   &-enter {
-  //     opacity: 0;
-  //     transform: translate3D(20px, 0, 0);
-  //   }
-
-  //   &-enter-active {
-  //     opacity: 1;
-  //     transform: translate3D(0, 0, 0);
-  //   }
-
-  //   &-enter-done {
-  //     opacity: 1;
-  //     transform: translate3D(0, 0, 0);
-  //   }
-
-  //   &-exit {
-  //     opacity: 1;
-  //     transform: translate3D(0, 0, 0);
-  //   }
-
-  //   &-exit-active {
-  //     opacity: 0;
-  //     transform: translate3D(20px, 0, 0);
-  //   }
-
-  //   &-exit-done {
-  //     opacity: 0;
-  //     transform: translate3D(20px, 0, 0);
-  //   }
-  // }
 }
 
 .#{$prefix}-node {
+  @include list-item-reset;
+
   position: relative;
   color: use-color('gray', 700);
   cursor: pointer;
   // 节点间隔控制
+  padding: use-spacing(2) 0;
 
-  // 用于选中涂色
+  &__indent,
+  &__checkbox,
+  &__switcher {
+    margin: 0 use-spacing(1);
+  }
+
+  // 用于节点选中涂色
   &__wrap {
     display: flex;
     align-items: center;
     justify-items: stretch;
     border-radius: use-border-radius('normal');
-    padding: 0 use-spacing(4) 0 use-spacing(6);
+    padding: 0 use-spacing(5);
     outline: 0;
     transition: all 0.3s;
+    // transition-property: all;
+    // transition-duration: use-motion-duration('normal');
+    // transition-timing-function: use-motion-bezier('slow');
 
     &:hover {
       background-color: use-color('gray', 100);
@@ -76,17 +62,10 @@ $prefix: '#{$component-prefix}-tree' !default;
   &__indent {
     display: inline-block;
     width: use-spacing(8);
-    margin-right: use-spacing(2);
     height: 100%;
   }
 
-  &__checkbox{
-    margin-right: use-spacing(2);
-  }
-
   &__switcher {
-    margin-right: use-spacing(2);
-    //margin-left: -4px;
     height: 100%;
 
     &--loading {
@@ -99,12 +78,13 @@ $prefix: '#{$component-prefix}-tree' !default;
     display: inline-flex;
     align-items: center;
     position: relative;
-    min-height: 32px;
+    min-height: use-height-size('normal');
     line-height: get-text-lineheight('lg');
     font-size: use-text-size('normal');
     cursor: inherit;
     color: inherit;
     background-color: transparent;
+    padding: 0 use-spacing(1);
 
     // 拖拽指示器-小圆球
     &::before {
@@ -187,7 +167,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &--disabled {
     cursor: not-allowed;
-    color: use-color('gray', 500);
+    color: use-color('gray', 400);
 
     #{$this}__wrap {
       background-color: use-color-static('white');
@@ -198,9 +178,10 @@ $prefix: '#{$component-prefix}-tree' !default;
     }
 
     &#{$this}--selected {
-      color: use-color('gray', 500);
+      color: use-color('gray', 400);
 
       #{$this}__title {
+        color: use-color('gray', 400);
         background-color: use-color-static('white');
 
         &:hover {
@@ -237,8 +218,10 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &--drag-inside {
     #{$this}__title {
-      background-color: use-color-mode('primary');
-      color: use-color-static('white');
+      // background-color: use-color-mode('primary');
+      background-color: use-color-mode('primary-05');
+      color: use-color-mode('primary');
+      border-radius: use-border-radius('normal');
     }
   }
 
