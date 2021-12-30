@@ -92,9 +92,8 @@ export interface TextAreaProps
    */
   appearance?: 'outline' | 'unset' | 'filled' | 'underline'
   /**
-   * 是否聚焦
+   * 值改变时回调
    */
-  focused?: boolean
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
