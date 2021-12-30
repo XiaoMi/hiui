@@ -1,7 +1,7 @@
 import React from 'react'
 import Dropdown from '../src'
 
-export const Basic = () => {
+export const ButtonGroup = () => {
   const [list] = React.useState([
     {
       id: 0,
@@ -28,27 +28,13 @@ export const Basic = () => {
       id: 5,
       title: '菜单六',
     },
-    {
-      id: 6,
-      title: '菜单七',
-    },
-    {
-      id: 7,
-      title: '-',
-    },
-    {
-      id: 8,
-      title: '小米商城',
-      href: 'https://www.mi.com',
-      disabled: true,
-    },
   ])
 
   return (
     <>
-      <h1>Basic</h1>
-      <div className="dropdown-basic__wrap">
-        <Dropdown data={list} title="鼠标悬停" onClick={console.log} />
+      <h1>ButtonGroup</h1>
+      <div className="dropdown-button-group__wrap">
+        <Dropdown data={list} title="鼠标悬停" type="group" onClick={console.log} />
       </div>
     </>
   )

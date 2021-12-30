@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 import { UseDropdownReturn } from './use-dropdown'
-interface DropDownContext extends UseDropdownReturn {}
+interface DropDownContext extends Omit<UseDropdownReturn, 'rootProps'> {}
 
 const dropDownContext = createContext<DropDownContext | null>(null)
 

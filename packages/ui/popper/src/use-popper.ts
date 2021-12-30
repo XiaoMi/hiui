@@ -11,7 +11,7 @@ const DEFAULT_MODIFIERS = [] as []
 
 export const usePopper = ({
   modifiers: customModifiers = DEFAULT_MODIFIERS,
-  strategy = 'absolute',
+  strategy = 'fixed',
   placement = 'bottom-start',
   zIndex = 1060,
   crossGap = 0,

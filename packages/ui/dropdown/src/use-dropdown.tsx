@@ -1,40 +1,98 @@
-import React, { useRef, useState, useMemo, useCallback } from 'react'
+import React, { useRef, useMemo, useCallback } from 'react'
 import { TriggerActionEnum } from './types'
 import { normalizeTrigger } from './utils'
-import { useToggle } from '@hi-ui/use-toggle'
+import { useUncontrolledToggle } from '@hi-ui/use-toggle'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import { useTimeout } from '@hi-ui/use-timeout'
+import { useUnmountEffect } from '@hi-ui/use-unmount-effect'
+import { PopperPortalProps } from '@hi-ui/popper'
+import { getPrefixStyleVar } from '@hi-ui/classname'
+import { mergeRefs } from '@hi-ui/react-utils'
 
 const NOOP_ARRAY = [] as []
 
 export const useDropdown = (props: UseDropdownProps) => {
-  const { data = NOOP_ARRAY, trigger = TriggerActionEnum.HOVER, ...rest } = props
+  const {
+    trigger: triggerProp = TriggerActionEnum.HOVER,
+    disabled = false,
+    parents = NOOP_ARRAY,
+    width,
+    popper,
+    ...rest
+  } = props
 
-  const dropdownRef = useRef<HTMLElement>(null)
+  const triggerElementRef = useRef<HTMLElement>(null)
+  const popperElementRef = useRef<HTMLElement>(null)
 
-  const [menuVisible, menuVisibleAction] = useToggle()
-  const [activeMenuIds, setActiveMenuIds] = useState([])
+  /**
+   * 抹平数组或字符串结构，同时 memo 处理，减少重渲染
+   */
+  const trigger = normalizeTrigger(triggerProp)
 
-  const triggerMethods = useMemo(() => normalizeTrigger(trigger), [trigger])
-  const handleMouseLeave = useCallback(
-    (evt: MouseEvent) => {
-      console.log(evt)
-      if (dropdownRef.current?.contains(evt.target as HTMLElement)) return
-      menuVisibleAction.off()
-    },
-    [menuVisibleAction]
-  )
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const triggerMethods = useMemo(() => trigger, trigger)
 
-  // 事件收集
-  // 'click' | 'contextmenu' | 'hover'
+  const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+    defaultVisible: false,
+    disabled,
+  })
+
+  /**
+   * 维护 trigger 元素 或 tooltip 弹出层元素的 hover 态
+   */
+  const hoveringRef = useRef<boolean>(false)
+
+  const { start: startOpenTimer, clear: clearOpenTimer } = useTimeout(() => {
+    if (disabled) return
+    menuVisibleAction.on()
+  }, 0)
+
+  const { start: startCloseTimer, clear: clearCloseTimer } = useTimeout(() => {
+    if (disabled) return
+    if (hoveringRef.current) return
+
+    menuVisibleAction.off()
+  }, 100)
+
+  const clearToggleTimer = useCallback(() => {
+    clearOpenTimer()
+    clearCloseTimer()
+  }, [clearOpenTimer, clearCloseTimer])
+
+  useUnmountEffect(clearToggleTimer)
+
+  const handlePopperLeave = useLatestCallback((evt) => {
+    hoveringRef.current = false
+    // if (triggerElementRef.current?.contains(evt.target as HTMLElement)) return
+
+    clearOpenTimer()
+    startCloseTimer()
+  })
+
+  const handlePopperEnter = useLatestCallback(() => {
+    if (disabled) return
+
+    hoveringRef.current = true
+
+    startOpenTimer()
+  })
+
+  /**
+   * 事件收集
+   * 'click' | 'contextmenu' | 'hover'
+   */
   const eventHandler = useMemo(() => {
     return triggerMethods.reduce((acc, cur) => {
       switch (cur) {
-        // TODO: 处理冒泡，模拟冒泡阻止事件触发
         case TriggerActionEnum.HOVER:
-          acc.onMouseEnter = menuVisibleAction.on
-          acc.onMouseLeave = handleMouseLeave
+          acc.onMouseEnter = handlePopperEnter
+          acc.onMouseLeave = handlePopperLeave
           break
         case TriggerActionEnum.CONTEXTMENU:
-          acc.onContextMenu = menuVisibleAction.not
+          acc.onContextMenu = (evt: React.MouseEvent) => {
+            evt.preventDefault()
+            menuVisibleAction.not()
+          }
           break
         case TriggerActionEnum.CLICK:
           acc.onClick = menuVisibleAction.not
@@ -43,52 +101,71 @@ export const useDropdown = (props: UseDropdownProps) => {
 
       return acc
     }, {} as any)
-  }, [triggerMethods, menuVisibleAction, handleMouseLeave])
+  }, [triggerMethods, menuVisibleAction, handlePopperEnter, handlePopperLeave])
 
   const getTriggerProps = useCallback(() => {
     return {
-      onContextMenu: eventHandler.onContextMenu,
-      onClick: eventHandler.onClick,
-      ref: dropdownRef,
+      ref: triggerElementRef,
+      disabled,
+      ...eventHandler,
     }
-  }, [eventHandler])
+  }, [eventHandler, disabled])
 
-  const getRootProps = useCallback(() => {
-    return {
-      ...rest,
-      onMouseEnter: eventHandler.onMouseEnter,
-      onMouseLeave: eventHandler.onMouseLeave,
+  const rootProps = rest
+
+  const getMenuProps = useLatestCallback((props = {}, ref = null) => {
+    const menuParents = parents.concat(triggerElementRef)
+
+    const menuProps = {
+      ...props,
+      ref: mergeRefs(popperElementRef, ref),
+      parents: menuParents,
+      style: {
+        ...props.style,
+        [getPrefixStyleVar('dropdown-menu-item-width')]: `${width}px`,
+      },
+      popper: {
+        ...popper,
+        ...props.popper,
+        closeOnOutsideClick: true,
+        visible: menuVisible,
+        attachEl: triggerElementRef.current,
+        onClose: menuVisibleAction.off,
+        // containedElementRefs: menuParents,
+      },
     }
-  }, [rest, eventHandler])
+
+    if (triggerMethods.includes(TriggerActionEnum.HOVER)) {
+      // @ts-ignore
+      menuProps.onMouseEnter = () => {
+        hoveringRef.current = true
+      }
+
+      // @ts-ignore
+      menuProps.onMouseLeave = handlePopperLeave
+    }
+
+    return menuProps
+  })
 
   return {
-    dropdownRef,
-    visible: menuVisible,
+    width,
+    rootProps,
+    disabled,
+    menuVisible,
+    menuVisibleAction,
+    triggerElementRef,
     triggerMethods,
     getTriggerProps,
-    getRootProps,
-    data,
-    menuVisibleAction,
+    getMenuProps,
   }
 }
 
 export interface UseDropdownProps {
   /**
-   * 下拉菜单数据项
-   */
-  data?: DropdownDataItem[]
-  /**
-   * 下拉菜单按钮类型
-   */
-  type?: 'text' | 'button' | 'group'
-  /**
    * 下拉菜单触发方式
    */
   trigger?: TriggerActionEnum | TriggerActionEnum[]
-  /**
-   * 下拉菜单触发元素
-   */
-  triggerButton?: React.ReactNode
   /**
    * 是否禁用下拉菜单
    */
@@ -98,36 +175,14 @@ export interface UseDropdownProps {
    */
   width?: number
   /**
-   * 下拉根元素的类名称
+   * 祖先吸附节点
+   * @private
    */
-  overlayClassName?: string
+  parents?: any[]
   /**
-   * 点击左侧按钮的回调
+   * 自定义控制 下拉 popper 行为
    */
-  onButtonClick?: (evt: Event) => void
+  popper?: Omit<PopperPortalProps, 'visible' | 'attachEl'>
 }
 
 export type UseDropdownReturn = ReturnType<typeof useDropdown>
-
-export type DropdownDataItem = {
-  /**
-   * 标题的内容，设置为 '-' 时是分割线
-   */
-  title?: React.ReactNode
-  /**
-   * 唯一标识 id
-   */
-  id?: React.ReactText
-  /**
-   * 是否禁用
-   */
-  disabled?: boolean
-  /**
-   * 点击跳转的路径
-   */
-  href?: string
-  /**
-   * 同 a 标签的 target 属性，仅在设置 href 后有效
-   */
-  target?: '_self' | '_blank' | '_parent' | '_top'
-}

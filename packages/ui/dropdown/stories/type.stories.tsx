@@ -1,7 +1,8 @@
 import React from 'react'
 import Dropdown from '../src'
+import message from '@hi-ui/message'
 
-export const Basic = () => {
+export const Type = () => {
   const [list] = React.useState([
     {
       id: 0,
@@ -46,9 +47,23 @@ export const Basic = () => {
 
   return (
     <>
-      <h1>Basic</h1>
-      <div className="dropdown-basic__wrap">
-        <Dropdown data={list} title="鼠标悬停" onClick={console.log} />
+      <h1>Type</h1>
+      <div className="dropdown-type__wrap">
+        <Dropdown type="text" data={list} title="鼠标悬停" onClick={console.log} />
+        <br />
+        <br />
+        <Dropdown type="button" data={list} title="鼠标悬停" onClick={console.log} />
+        <br />
+        <br />
+        <Dropdown
+          type="group"
+          data={list}
+          title="鼠标悬停"
+          onClick={console.log}
+          onButtonClick={() => {
+            message.open({ title: '点击左侧按钮' })
+          }}
+        />
       </div>
     </>
   )

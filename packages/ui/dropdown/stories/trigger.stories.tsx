@@ -1,7 +1,7 @@
 import React from 'react'
 import Dropdown from '../src'
 
-export const Basic = () => {
+export const Trigger = () => {
   const [list] = React.useState([
     {
       id: 0,
@@ -31,6 +31,7 @@ export const Basic = () => {
     {
       id: 6,
       title: '菜单七',
+      disabled: true,
     },
     {
       id: 7,
@@ -40,15 +41,20 @@ export const Basic = () => {
       id: 8,
       title: '小米商城',
       href: 'https://www.mi.com',
-      disabled: true,
     },
   ])
 
   return (
     <>
-      <h1>Basic</h1>
-      <div className="dropdown-basic__wrap">
-        <Dropdown data={list} title="鼠标悬停" onClick={console.log} />
+      <h1>Trigger</h1>
+      <div className="dropdown-trigger__wrap">
+        <Dropdown overlayClassName="xxx" data={list} trigger="click" title="左键单击" />
+        <br />
+        <br />
+        <Dropdown overlayClassName="xxx" data={list} trigger="hover" title="鼠标悬停" />
+        <br />
+        <br />
+        <Dropdown overlayClassName="xxx" data={list} trigger="contextmenu" title="右键单击" />
       </div>
     </>
   )
