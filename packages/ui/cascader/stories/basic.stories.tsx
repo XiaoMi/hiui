@@ -69,7 +69,7 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="cascader-basic__wrap" style={{ width: 80 }}>
+      <div className="cascader-basic__wrap" style={{ width: 120 }}>
         <Cascader
           searchable={false}
           clearable

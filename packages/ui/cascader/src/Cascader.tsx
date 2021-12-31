@@ -1,22 +1,41 @@
-import React, { forwardRef, useState, useCallback, useEffect } from 'react'
+import React, { forwardRef, useState, useCallback, useEffect, useMemo } from 'react'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useCascader } from './use-cascader'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import Input, { MockInput } from '@hi-ui/input'
-import { Popper, PopperProps } from '@hi-ui/popper'
-import { DownOutlined, SearchOutlined } from '@hi-ui/icons'
+import { PopperProps } from '@hi-ui/popper'
+import { DownOutlined, SearchOutlined, UpOutlined } from '@hi-ui/icons'
 import { defaultLeafIcon, defaultLoadingIcon, defaultSuffixIcon } from './icons'
-import { checkCanLoadChildren, getCascaderItemEventData, getTopDownAncestors } from './utils'
+import {
+  checkCanLoadChildren,
+  flattenTreeData,
+  getCascaderItemEventData,
+  getTopDownAncestors,
+} from './utils'
 import { CascaderProvider, useCascaderContext } from './context'
 import { CascaderItem, ExpandTrigger, FlattedCascaderItem, CascaderItemEventData } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { getNodeAncestorsWithMe } from '@hi-ui/tree-utils'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { Picker, PickerProps } from '@hi-ui/picker'
+// import { Highlighter } from '@hi-ui/highlighter'
+import { UseDataSource } from '@hi-ui/use-data-source'
+import {
+  useAsyncSearch,
+  useNormalFilterSearch,
+  useSearchMode,
+  useTreeCustomSearch,
+  useTreeUpMatchSearch,
+} from '@hi-ui/use-search-mode'
+import { uniqBy } from 'lodash'
+import { useCache } from '@hi-ui/use-cache'
 
 const _role = 'cascader'
 const _prefix = getPrefixCls(_role)
+
+const NOOP_ARRAY = [] as []
 
 /**
  * TODO: What is Cascader
@@ -25,49 +44,92 @@ const _prefix = getPrefixCls(_role)
 export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props, ref) => {
   const {
     prefixCls = _prefix,
-    role = _role,
     className,
-    popper,
     placeholder,
-    searchable = true,
     clearable = true,
+    flatted = false,
+    upMatch = false,
     displayRender: displayRenderProp,
     onSelect: onSelectProp,
+    onLoadChildren,
+    appearance,
+    invalid,
+    dataSource,
+    filterOption,
+    searchable: searchableProp,
     titleRender,
+    overlayClassName,
+    data = NOOP_ARRAY,
     ...rest
   } = props
 
   const [menuVisible, menuVisibleAction] = useToggle()
-  const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
-
+  // 搜索时临时选中缓存数据
+  const [selectedItem, setSelectedItem] = useState<any | null>(null)
   const onSelectLatest = useLatestCallback(onSelectProp)
   const onSelect = useCallback(
     (value: React.ReactText, item: CascaderItemEventData, itemPaths: FlattedCascaderItem[]) => {
       onSelectLatest(value, item, itemPaths)
+      setSelectedItem(item)
       // 关闭弹窗
       menuVisibleAction.off()
     },
     [menuVisibleAction, onSelectLatest]
   )
 
-  const { rootProps, ...context } = useCascader({
-    ...rest,
-    onSelect,
+  // 拦截 titleRender，自定义高亮展示
+  const proxyTitleRender = (node: any) => {
+    // 本地搜索执行默认高亮规则
+    const highlight = !!searchValue && (searchMode === 'upMatch' || searchMode === 'filter')
+
+    if (highlight) {
+      return renderHighlightTitle(searchValue, node, titleRender)
+    }
+
+    return true
+  }
+
+  const [cascaderData, setCascaderData] = useCache(data)
+
+  const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
+
+  // ************************** 异步搜索 ************************* //
+
+  // TODO: 支持对 Item 传入 状态
+  const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({ dataSource })
+  const customSearchStrategy = useTreeCustomSearch({ data: flattedData, filterOption })
+  const filterSearchStrategy = useNormalFilterSearch({
+    flattedData: flattedData,
+    searchMode: searchableProp && !upMatch ? 'filter' : undefined,
+    exclude: (option: any) => {
+      return checkCanLoadChildren(option, onLoadChildren)
+    },
   })
 
-  const { disabled, value, flattedData, tryChangeValue, reset } = context
+  const upMatchSearchStrategy = useTreeUpMatchSearch({
+    data: cascaderData,
+    flattedData: flattedData,
+    enabled: upMatch,
+    exclude: (option: any) => {
+      return checkCanLoadChildren(option, onLoadChildren)
+    },
+  })
 
-  useEffect(() => {
-    // 关闭展示时，重置搜索值和展开选项
-    if (!menuVisible) {
-      reset()
-    }
-  }, [menuVisible, reset])
-
-  const openMenu = useCallback(() => {
-    if (disabled) return
-    menuVisibleAction.on()
-  }, [disabled, menuVisibleAction])
+  const {
+    state: stateInSearch,
+    searchable,
+    searchMode,
+    onSearch,
+    keyword: searchValue,
+  } = useSearchMode({
+    searchable: searchableProp,
+    strategies: [
+      dataSourceStrategy,
+      customSearchStrategy,
+      filterSearchStrategy,
+      upMatchSearchStrategy,
+    ],
+  })
 
   const displayRender = useCallback(
     (item: FlattedCascaderItem) => {
@@ -76,46 +138,112 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         return displayRenderProp(item, itemPaths)
       }
 
-      return itemPaths.map((item) => item.title as string).join(' / ')
+      const mergedTitle = itemPaths.reduce((acc, item, index) => {
+        acc.push(item.title)
+        if (itemPaths.length - 1 !== index) {
+          acc.push('/')
+        }
+
+        return acc
+      }, [] as any[])
+
+      return <span className="title__text">{mergedTitle}</span>
+
+      // return itemPaths.map((item) => item.title as string).join(' / ')
     },
     [displayRenderProp]
   )
+
+  const shouldUseSearch = !!searchValue && !hasError
+
+  const selectProps = {
+    data: shouldUseSearch ? stateInSearch.data : flattedData,
+    titleRender: proxyTitleRender,
+  }
+
+  const { rootProps, ...context } = useCascader({
+    ...rest,
+    onSelect,
+    titleRender: proxyTitleRender,
+    // @ts-ignore
+    cascaderData,
+    setCascaderData,
+    flattedData,
+    matchedItems: selectProps.data,
+    inSearch: !!searchValue,
+    flatted: flatted || !!searchValue,
+    onLoadChildren,
+    data,
+  })
+
+  const { disabled, value, tryChangeValue, reset } = context
+
+  useEffect(() => {
+    // 关闭展示时，重置搜索值和展开选项
+    if (!menuVisible) {
+      reset()
+    }
+  }, [menuVisible, reset])
+
+  // 下拉菜单不能合并（因为树形数据，不知道是第几级）
+  const mergedData: any[] = useMemo(() => {
+    if (selectedItem) {
+      const nextData = [selectedItem].concat(flattedData as any[])
+      return uniqBy(nextData, 'id')
+    }
+
+    return flattedData
+  }, [selectedItem, flattedData])
 
   const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
   return (
     <CascaderProvider value={context}>
-      <div ref={ref} role={role} className={cls} {...rootProps}>
-        <MockInput
-          ref={setTargetElRef}
-          onClick={openMenu}
-          disabled={disabled}
-          clearable={clearable}
-          placeholder={placeholder}
-          value={value}
-          data={flattedData}
-          onChange={tryChangeValue}
-          // @ts-ignore
-          displayRender={displayRender}
-          suffix={<DownOutlined />}
-        />
-        <Popper
-          {...popper}
-          attachEl={targetElRef}
-          visible={menuVisible}
-          onClose={menuVisibleAction.off}
-        >
-          <div className={`${prefixCls}-panel`}>
-            {searchable ? <CascaderSearch /> : null}
-            <CascaderMenuList />
-          </div>
-        </Popper>
-      </div>
+      <Picker
+        ref={ref}
+        className={cls}
+        overlayClassName={cx(`${prefixCls}__popper`, overlayClassName)}
+        {...rootProps}
+        // 这种展现形式宽度是不固定的，关掉宽度匹配策略
+        popper={{ matchWidth: false, ...rest.popper }}
+        visible={menuVisible}
+        disabled={disabled}
+        onOpen={menuVisibleAction.on}
+        onClose={menuVisibleAction.off}
+        // value={value}
+        // onChange={tryChangeValue}
+        // data={mergedData}
+        searchable={searchable}
+        onSearch={onSearch}
+        loading={loading}
+        trigger={
+          <MockInput
+            // ref={targetElementRef}
+            // onClick={openMenu}
+            // disabled={disabled}
+            clearable={clearable}
+            placeholder={placeholder}
+            // @ts-ignore
+            displayRender={displayRender}
+            suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+            focused={menuVisible}
+            value={value}
+            onChange={tryChangeValue}
+            // @ts-ignore
+            data={mergedData.filter((item) => !('groupTitle' in item))}
+            // @ts-ignore
+            invalid={invalid}
+            appearance={appearance}
+          />
+        }
+      >
+        {isArrayNonEmpty(selectProps.data) ? <CascaderMenuList /> : null}
+      </Picker>
     </CascaderProvider>
   )
 })
 
-export interface CascaderProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange' | 'onSelect'> {
+export interface CascaderProps extends Omit<PickerProps, 'data' | 'onChange' | 'trigger'> {
   /**
    * 设置选择项数据源
    */
@@ -203,6 +331,24 @@ export interface CascaderProps extends Omit<HiBaseHTMLProps<'div'>, 'onChange' |
    * 自定义控制 popper 行为
    */
   popper?: PopperProps
+  /**
+   * 设置展现形式
+   */
+  appearance?: 'outline' | 'unset' | 'filled'
+  /**
+   * 节点搜索模式，仅在mode=normal模式下生效
+   */
+  searchMode?: 'highlight' | 'filter'
+  /**
+   * 自定义搜索过滤器，仅在 searchable 为 true 时有效
+   * 第一个参数为输入的关键字，
+   * 第二个为数据项，返回值为 true 时将出现在结果项
+   */
+  filterOption?: (keyword: string, item: CascaderItemEventData) => boolean
+  /**
+   * 异步加载数据
+   */
+  dataSource?: UseDataSource<CascaderItemEventData>
 }
 
 if (__DEV__) {
@@ -246,6 +392,7 @@ export const CascaderMenuList = forwardRef<HTMLDivElement | null, CascaderMenuLi
     return (
       <div ref={ref} className={cls} {...rest}>
         {menuList.map((menu, menuIndex) => {
+          // @ts-ignore
           return isArrayNonEmpty(menu) ? <CascaderMenu key={menuIndex} data={menu} /> : null
         })}
       </div>

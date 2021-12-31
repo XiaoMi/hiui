@@ -3,9 +3,12 @@
 $prefix: '#{$component-prefix}-cascader' !default;
 
 .#{$prefix} {
-  &--open {
-    .#{$component-prefix}-mock-input {
-      border-color: use-color-mode('primary');
+  &__popper {
+    .#{$component-prefix}-picker {
+      &__body {
+        padding-left: 0;
+        padding-right: 0;
+      }
     }
   }
 }
@@ -63,9 +66,9 @@ $prefix: '#{$component-prefix}-cascader' !default;
   max-height: 260px;
   overflow: auto;
   padding: 4px 8px;
-  border-right: use-border-size('normal') use-color('gray',200);
+  border-right: use-border-size('normal') use-color('gray', 200);
 
-  &:last-of-type{
+  &:last-of-type {
     border: none;
   }
 
@@ -98,7 +101,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
       background-color: use-color('brandblue', 50);
       color: use-color('brandblue', 500);
 
-      .#{$prefix}-menu-switcher{
+      .#{$prefix}-menu-switcher {
         color: use-color('brandblue', 500);
       }
     }
@@ -168,19 +171,23 @@ $prefix: '#{$component-prefix}-cascader' !default;
   }
 }
 
-// TODO: 迁移
-.hi-v4-tree--icon-loading {
-  animation-name: hi-rotate;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-}
+.#{$prefix}__icon--loading {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke: none;
+  cursor: default;
+  fill: currentColor;
 
-@keyframes hi-rotate {
-  from {
-    transform: rotate(0);
-  }
+  svg {
+    @keyframes rotate {
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
-  to {
-    transform: rotate(360deg);
+    animation-name: hi-rotate;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
   }
 }

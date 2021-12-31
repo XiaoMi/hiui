@@ -8,7 +8,7 @@ import {
   getActiveNodePaths,
   checkCanLoadChildren,
 } from './utils'
-import { useCache, useSearch, useSelect, useAsyncSwitch } from './hooks'
+import { useCache, useSelect, useAsyncSwitch, useSearch } from './hooks'
 
 import { CascaderProps } from './Cascader'
 
@@ -32,11 +32,26 @@ export const useCascader = ({
   titleRender,
   displayRender,
   onLoadChildren,
+  // @ts-ignore
+  cascaderData: cascaderDataProp,
+  // @ts-ignore
+  setCascaderData: setCascaderDataProp,
+  // @ts-ignore
+  flattedData: flattedDataProp,
+  // @ts-ignore
+  matchedItems: matchedItemsProp,
+  // @ts-ignore
+  inSearch: inSearchProp,
   ...rest
 }: UseCascaderProps) => {
-  const [cascaderData, setCascaderData] = useCache(data)
+  const [cacheData, setCacheData] = useCache(data)
+  const cascaderData = cascaderDataProp ?? cacheData
+  const setCascaderData = setCascaderDataProp ?? setCacheData
 
-  const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
+  const flattedData = useMemo(() => flattedDataProp ?? flattenTreeData(cascaderData), [
+    cascaderData,
+    flattedDataProp,
+  ])
 
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
 
@@ -84,11 +99,13 @@ export const useCascader = ({
     [onLoadChildren]
   )
 
-  const [inSearch, matchedItems, inputProps, isEmpty, resetSearch] = useSearch(
+  const [inSearchInner, matchedItemsInner, inputProps, isEmpty, resetSearch] = useSearch(
     flattedData,
     upMatch,
     isCanLoadChildren
   )
+  const inSearch = inSearchProp ?? inSearchInner
+  const matchedItems = matchedItemsProp ?? matchedItemsInner
 
   const menuList = useMemo(() => {
     if (inSearch) {
@@ -126,7 +143,7 @@ export const useCascader = ({
   const reset = useCallback(() => {
     resetSearch()
     setSelectedId(value)
-  }, [resetSearch, setSelectedId, value])
+  }, [setSelectedId, value, resetSearch])
 
   return {
     rootProps: rest,

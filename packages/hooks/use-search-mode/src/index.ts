@@ -181,13 +181,32 @@ export const useFilterSearch = ({ data, flattedData, searchMode, exclude }: any)
   return { name: 'filter', enabled: searchMode === 'filter', run: onSearch }
 }
 
-export const useTreeUpMatchSearch = ({ enabled, flattedData, data }: any) => {
+export const useNormalFilterSearch = ({ flattedData, searchMode, exclude }: any) => {
+  const onSearch = useCallback(
+    (keyword: string, dispatch: any) => {
+      // 1. 展开匹配节点树
+      // 2. 高亮匹配节点文本
+      // 3. 过滤掉（隐藏）不相干的兄弟和祖先节点
+      const matchedNodes = getMatchedNodes(flattedData, keyword, exclude)
+
+      dispatch({
+        matched: isArrayNonEmpty(matchedNodes),
+        data: matchedNodes,
+      })
+    },
+    [flattedData]
+  )
+
+  return { name: 'filter', enabled: searchMode === 'filter', run: onSearch }
+}
+
+export const useTreeUpMatchSearch = ({ enabled, flattedData, data, exclude }: any) => {
   const onSearch = useCallback(
     (keyword: string, dispatch: any) => {
       // 1. 从子至父匹配节点
       // 2. 高亮匹配节点文本
       // 3. 过滤掉（隐藏）不相干的兄弟和祖先节点
-      const matchedNodes = getMatchedUpMatchNodes(flattedData, keyword)
+      const matchedNodes = getMatchedUpMatchNodes(flattedData, keyword, exclude)
 
       dispatch({
         matched: isArrayNonEmpty(matchedNodes),
@@ -260,13 +279,17 @@ const getSearchedData = (
 /**
  * 从 value 中 找到指定的 options（逐层并向上查找）
  */
-const getMatchedUpMatchNodes = (flattedData: any[], searchValue: string): any[] => {
+const getMatchedUpMatchNodes = (
+  flattedData: any[],
+  searchValue: string,
+  filter: (option: any) => boolean
+): any[] => {
   if (!searchValue) return []
 
   const visitedResultSet = new Set<React.ReactText>()
 
   return flattedData.filter((node) => {
-    if (!node.checkable) return false
+    if (filter && filter(node)) return false
 
     while (node.parent) {
       if (visitedResultSet.has(node.id)) {

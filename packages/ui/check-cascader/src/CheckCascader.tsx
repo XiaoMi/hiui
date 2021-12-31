@@ -111,6 +111,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       data: cascaderData,
       flattedData: flattedData,
       enabled: upMatch,
+      exclude: (node: any) => !node.checkable,
     })
 
     const {
