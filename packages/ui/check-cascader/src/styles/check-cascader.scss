@@ -3,20 +3,12 @@
 $prefix: '#{$component-prefix}-check-cascader' !default;
 
 .#{$prefix} {
-  color: #333;
-
-  &__suffix {
-    font-size: 16px;
-    transform: rotate(0);
-  }
-
-  &--open {
-    .#{$prefix}__suffix {
-      transform: rotate(-180deg);
-    }
-
-    .#{$component-prefix}-tag-input {
-      border-color: use-color-mode('primary');
+  &__popper {
+    .#{$component-prefix}-picker {
+      &__body {
+        padding-left: 0;
+        padding-right: 0;
+      }
     }
   }
 }
@@ -72,23 +64,16 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
   min-height: 160px;
   max-height: 256px;
   overflow: auto;
-  padding: 4px 8px;
-  border-right: use-border-size('normal') use-color('gray',200);
+  padding: 0 use-spacing(4);
+  border-right: use-border-size('normal') use-color('gray', 200);
 
-  &:last-of-type{
+  &:last-of-type {
     border: none;
   }
 
   $this: &;
 
   &--checkable {
-    //.title__text {
-    //  padding-left: 24px;
-    //}
-    //
-    //#{$this}-checkbox + .title__text {
-    //  padding-left: 0;
-    //}
     #{$this}-checkbox + .title__text {
       padding-left: 8px;
     }
@@ -139,11 +124,11 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     }
 
     // 叶节点选中，不添加选中态
-    &#{&}--selected{
+    &#{&}--selected {
       background: use-color('brandblue', 50);
       color: use-color('brandblue', 500);
 
-      .#{$prefix}-menu-switcher{
+      .#{$prefix}-menu-switcher {
         color: use-color('brandblue', 500);
       }
     }

@@ -155,13 +155,13 @@ export const useHighlightSearch = ({ data, flattedData, searchMode }: any) => {
   return { name: 'highlight', enabled: searchMode === 'highlight', run: onSearch }
 }
 
-export const useFilterSearch = ({ data, flattedData, searchMode }: any) => {
+export const useFilterSearch = ({ data, flattedData, searchMode, exclude }: any) => {
   const onSearch = useCallback(
     (keyword: string, dispatch: any) => {
       // 1. 展开匹配节点树
       // 2. 高亮匹配节点文本
       // 3. 过滤掉（隐藏）不相干的兄弟和祖先节点
-      const matchedNodes = getMatchedNodes(flattedData, keyword)
+      const matchedNodes = getMatchedNodes(flattedData, keyword, exclude)
       const filteredNodeIds = getFilteredIds(matchedNodes)
       const showData = getSearchedData(
         cloneTree(data),
@@ -181,6 +181,25 @@ export const useFilterSearch = ({ data, flattedData, searchMode }: any) => {
   return { name: 'filter', enabled: searchMode === 'filter', run: onSearch }
 }
 
+export const useTreeUpMatchSearch = ({ enabled, flattedData, data }: any) => {
+  const onSearch = useCallback(
+    (keyword: string, dispatch: any) => {
+      // 1. 从子至父匹配节点
+      // 2. 高亮匹配节点文本
+      // 3. 过滤掉（隐藏）不相干的兄弟和祖先节点
+      const matchedNodes = getMatchedUpMatchNodes(flattedData, keyword)
+
+      dispatch({
+        matched: isArrayNonEmpty(matchedNodes),
+        data: matchedNodes,
+      })
+    },
+    [flattedData]
+  )
+
+  return { name: 'upMatch', enabled, run: onSearch }
+}
+
 /**
  * 从 value 中 找到指定的 options（逐层查找）
  */
@@ -192,17 +211,9 @@ const getMatchedNodes = (
   if (!searchValue) return []
 
   return data.filter((node) => {
-    if (typeof node.title !== 'string') {
-      if (__DEV__) {
-        console.info('WARNING: The `option.title` should be `string` when searchable is enabled.')
-      }
-      return false
-    }
-
     if (filter && filter(node)) return false
 
-    // 匹配策略：`String.include`
-    return node.title.includes?.(searchValue)
+    return matchStrategy(node.title, searchValue) !== -1
   })
 }
 
@@ -244,4 +255,51 @@ const getSearchedData = (
   }
 
   return treeData
+}
+
+/**
+ * 从 value 中 找到指定的 options（逐层并向上查找）
+ */
+const getMatchedUpMatchNodes = (flattedData: any[], searchValue: string): any[] => {
+  if (!searchValue) return []
+
+  const visitedResultSet = new Set<React.ReactText>()
+
+  return flattedData.filter((node) => {
+    if (!node.checkable) return false
+
+    while (node.parent) {
+      if (visitedResultSet.has(node.id)) {
+        return true
+      }
+
+      if (matchStrategy(node.title, searchValue) !== -1) {
+        visitedResultSet.add(node.id)
+        return true
+      }
+
+      node = node.parent
+    }
+    return false
+  })
+}
+
+/**
+ * 匹配策略
+ */
+export const matchStrategy = (content: unknown, keyword: string, ignoreCase = true) => {
+  if (typeof content !== 'string') {
+    if (__DEV__) {
+      console.info('WARNING: The `title` should be `string` when searchable is enabled.')
+    }
+    // 返回 -1 表示无法完成匹配
+    return -1
+  }
+
+  if (ignoreCase) {
+    // 忽略大小写敏感进行匹配
+    return content.toLowerCase().indexOf(keyword.toLowerCase())
+  }
+
+  return content.indexOf(keyword)
 }

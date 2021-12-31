@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import Input from '@hi-ui/input'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
-import { PopperPortal as Popper, PopperProps } from '@hi-ui/popper'
+import { PopperPortal as Popper, PopperPortalProps } from '@hi-ui/popper'
 import { SearchOutlined } from '@hi-ui/icons'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
@@ -249,7 +249,7 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 自定义控制 popper 行为
    */
-  popper?: PopperProps
+  popper?: Omit<PopperPortalProps, 'visible' | 'attachEl'>
   /**
    * 开启 Esc 快捷键关闭
    */

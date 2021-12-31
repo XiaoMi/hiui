@@ -228,6 +228,7 @@ export const Search = () => {
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
           data={dataOnlyLastCheckable}
+          searchable
         />
       </div>
 
