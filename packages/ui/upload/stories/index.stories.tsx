@@ -7,6 +7,6 @@ export * from './picture.stories'
 export * from './avatar.stories'
 
 export default {
-  title: 'Upload',
+  title: 'Data Input/Upload',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

@@ -5,6 +5,6 @@ export * from './close.stories'
 export * from './auto-close.stories'
 
 export default {
-  title: 'Notification',
+  title: 'FeedBacck/Notification',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

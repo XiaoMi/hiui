@@ -11,6 +11,6 @@ export * from './group.stories'
 export * from './shape.stories'
 
 export default {
-  title: 'Button',
+  title: 'Basic/Button',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

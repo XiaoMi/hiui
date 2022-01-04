@@ -5,6 +5,6 @@ export * from './vertical.story'
 export * from './vertical-layout.story'
 
 export default {
-  title: 'Stepper',
+  title: 'Navigation/Stepper',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

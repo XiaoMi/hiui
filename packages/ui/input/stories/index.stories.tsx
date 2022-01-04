@@ -16,6 +16,6 @@ export * from './textarea.stories'
 export * from './mock.stories'
 
 export default {
-  title: 'Input',
+  title: 'Data Input/Input',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

@@ -10,6 +10,6 @@ export * from './custom-color.stories'
 export * from './mark.stories'
 
 export default {
-  title: 'Slider',
+  title: 'Data Input/Slider',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

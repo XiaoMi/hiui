@@ -5,6 +5,6 @@ export * from './custom-disabled.stories'
 export * from './format.stories'
 
 export default {
-  title: 'TimePicker',
+  title: 'Data Input/TimePicker',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

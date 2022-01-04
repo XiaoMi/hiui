@@ -6,6 +6,6 @@ export * from './extra.stories'
 export * from './placement.stories'
 
 export default {
-  title: 'Drawer',
+  title: 'FeedBacck/Drawer',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

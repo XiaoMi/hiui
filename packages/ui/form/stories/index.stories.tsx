@@ -12,6 +12,6 @@ export * from './list.stories'
 export * from './cascade.stories'
 
 export default {
-  title: 'Form',
+  title: 'Data Input/Form',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

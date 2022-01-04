@@ -12,6 +12,6 @@ export * from './custom-title.stories'
 export * from './custom-icon.stories'
 
 export default {
-  title: 'Tree',
+  title: 'Data Display/Tree',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

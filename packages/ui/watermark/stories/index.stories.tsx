@@ -5,6 +5,6 @@ export * from './density.stories'
 export * from './container.stories'
 
 export default {
-  title: 'Watermark',
+  title: 'Others/Watermark',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

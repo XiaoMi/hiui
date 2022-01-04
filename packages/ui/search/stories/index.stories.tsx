@@ -4,6 +4,6 @@ export * from './basic.stories'
 export * from './data.stories'
 
 export default {
-  title: 'Search',
+  title: 'Data Input/Search',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

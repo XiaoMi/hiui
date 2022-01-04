@@ -15,6 +15,6 @@ export * from './filter-options.stories'
 export * from './pinyin.stories'
 
 export default {
-  title: 'Select',
+  title: 'Data Input/Select',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

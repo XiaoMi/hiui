@@ -7,6 +7,6 @@ export * from './break-word.stories'
 export * from './with-api.stories'
 
 export default {
-  title: 'Tooltip',
+  title: 'Data Display/Tooltip',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

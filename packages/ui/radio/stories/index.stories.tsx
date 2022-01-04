@@ -6,6 +6,6 @@ export * from './controlled.stories'
 export * from './group.stories'
 
 export default {
-  title: 'Radio',
+  title: 'Data Input/Radio',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

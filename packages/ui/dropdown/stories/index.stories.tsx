@@ -8,6 +8,6 @@ export * from './placement.stories'
 export * from './type.stories'
 
 export default {
-  title: 'Dropdown',
+  title: 'Navigation/Dropdown',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

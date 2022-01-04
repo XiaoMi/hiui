@@ -3,6 +3,6 @@ import React from 'react'
 export * from './basic.stories'
 
 export default {
-  title: 'IconButton',
+  title: 'Private/IconButton',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

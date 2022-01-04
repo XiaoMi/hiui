@@ -5,6 +5,6 @@ export * from './shape.stories'
 export * from './size.stories'
 
 export default {
-  title: 'Avatar',
+  title: 'Data Display/Avatar',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

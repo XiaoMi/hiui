@@ -10,6 +10,6 @@ export * from './container.stories'
 export * from './with-api.stories'
 
 export default {
-  title: 'Modal',
+  title: 'FeedBacck/Modal',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

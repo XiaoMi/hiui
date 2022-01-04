@@ -6,6 +6,6 @@ export * from './cross.stories'
 export * from './group.stories'
 
 export default {
-  title: 'Timeline',
+  title: 'Data Display/Timeline',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

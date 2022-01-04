@@ -11,6 +11,6 @@ export * from './pagination.stories'
 export * from './draggable.stories'
 
 export default {
-  title: 'Transfer',
+  title: 'Data Input/Transfer',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

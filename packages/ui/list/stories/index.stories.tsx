@@ -6,6 +6,6 @@ export * from './no-split.stories'
 export * from './action.stories'
 
 export default {
-  title: 'List',
+  title: 'Data Display/List',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

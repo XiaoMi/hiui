@@ -11,6 +11,6 @@ export * from './default-expand-all.stories'
 export * from './async.stories'
 
 export default {
-  title: 'TreeSelect',
+  title: 'Data Input/TreeSelect',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

@@ -16,6 +16,6 @@ export * from './pinyin.stories'
 export * from './virtual-list.stories'
 
 export default {
-  title: 'CheckSelect',
+  title: 'Data Input/CheckSelect',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

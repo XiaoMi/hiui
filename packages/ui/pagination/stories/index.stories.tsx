@@ -6,6 +6,6 @@ export * from './simple.stories'
 export * from './mini-input.stories'
 
 export default {
-  title: 'Pagination',
+  title: 'Navigation/Pagination',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

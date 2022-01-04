@@ -6,6 +6,6 @@ export * from './hoverable.stories'
 export * from './img.stories'
 
 export default {
-  title: 'Card',
+  title: 'Data Display/Card',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

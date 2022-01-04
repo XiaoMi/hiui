@@ -7,6 +7,6 @@ export * from './fat.stories'
 export * from './vertical-fat.stories'
 
 export default {
-  title: 'Menu',
+  title: 'Navigation/Menu',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

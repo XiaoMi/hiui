@@ -11,6 +11,6 @@ export * from './desc.stories'
 export * from './tab-list.stories'
 
 export default {
-  title: 'Tabs',
+  title: 'Navigation/Tabs',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

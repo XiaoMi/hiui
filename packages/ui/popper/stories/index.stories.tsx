@@ -10,6 +10,6 @@ export * from './container.stories'
 export * from './hook.stories'
 
 export default {
-  title: 'Popper',
+  title: 'Private/Popper',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

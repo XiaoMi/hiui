@@ -9,6 +9,6 @@ export * from './dot-position.stories'
 export * from './config.stories'
 
 export default {
-  title: 'Carousel',
+  title: 'Data Display/Carousel',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

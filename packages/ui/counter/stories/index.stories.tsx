@@ -8,6 +8,6 @@ export * from './step.stories'
 export * from './Wheel.stories'
 
 export default {
-  title: 'Counter',
+  title: 'Data Input/Counter',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

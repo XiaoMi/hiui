@@ -4,6 +4,6 @@ export * from './basic.stories'
 export * from './tag-group.stories'
 
 export default {
-  title: 'Tag',
+  title: 'FeedBacck/Tag',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

@@ -7,6 +7,6 @@ export * from './nested.stories'
 export * from './justify.stories'
 
 export default {
-  title: 'Grid',
+  title: 'Basic/Grid',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

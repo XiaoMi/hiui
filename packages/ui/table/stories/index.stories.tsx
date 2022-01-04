@@ -18,6 +18,6 @@ export * from './hidden-cols.stories'
 export * from './loading.stories'
 
 export default {
-  title: 'Table',
+  title: 'Data Display/Table',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

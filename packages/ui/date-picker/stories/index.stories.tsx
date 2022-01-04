@@ -8,6 +8,6 @@ export * from './shortcut.stories'
 export * from './lunar.stories'
 
 export default {
-  title: 'DatePicker',
+  title: 'Data Input/DatePicker',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

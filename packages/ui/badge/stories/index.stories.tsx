@@ -4,6 +4,6 @@ export * from './basic.stories'
 export * from './bubble.stories'
 
 export default {
-  title: 'Badge',
+  title: 'FeedBacck/Badge',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

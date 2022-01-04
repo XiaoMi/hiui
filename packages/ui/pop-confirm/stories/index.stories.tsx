@@ -5,6 +5,6 @@ export * from './custom-icon.stories'
 export * from './async.stories'
 
 export default {
-  title: 'PopConfirm',
+  title: 'FeedBacck/PopConfirm',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

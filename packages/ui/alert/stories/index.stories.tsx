@@ -5,6 +5,6 @@ export * from './content.stories'
 export * from './closable.stories'
 
 export default {
-  title: 'Alert',
+  title: 'FeedBacck/Alert',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

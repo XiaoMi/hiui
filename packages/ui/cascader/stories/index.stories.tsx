@@ -11,6 +11,6 @@ export * from './flatted.stories'
 export * from './embed.stories'
 
 export default {
-  title: 'Cascader',
+  title: 'Data Input/Cascader',
   decorators: [(story: Function) => <div>{story()}</div>],
 }
