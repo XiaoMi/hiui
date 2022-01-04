@@ -6639,6 +6639,11 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
+cxs@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.nlark.com/cxs/download/cxs-6.2.0.tgz#f11ca3bdaef154b93bdadca5df70f2cb3e37ca24"
+  integrity sha1-8Ryjva7xVLk72tyl33Dyyz43yiQ=
+
 cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/cyclist/download/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
@@ -12327,6 +12332,11 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+performance-now@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.nlark.com/performance-now/download/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
+  integrity sha1-M+8wxcd9TqIcWlOGnZG1bY8lVeU=
+
 performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/performance-now/download/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
@@ -13670,7 +13680,7 @@ raf-schd@^4.0.2:
   version "4.0.3"
   resolved "https://registry.npm.taobao.org/raf-schd/download/raf-schd-4.0.3.tgz?cache=0&sync_timestamp=1618282126076&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fraf-schd%2Fdownload%2Fraf-schd-4.0.3.tgz#5d6c34ef46f8b2a0e880a8fcdb743efc5bfdbc1a"
 
-raf@^3.2.0:
+raf@^3.1.0, raf@^3.2.0:
   version "3.4.1"
   resolved "https://registry.npm.taobao.org/raf/download/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
   dependencies:
@@ -13946,6 +13956,11 @@ react-fast-compare@^3.0.1, react-fast-compare@^3.2.0:
   version "3.2.0"
   resolved "https://registry.nlark.com/react-fast-compare/download/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
 
+react-fast-marquee@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.npmmirror.com/react-fast-marquee/download/react-fast-marquee-1.3.1.tgz#e026ecbf95e73f287c94af9233bed5886913883c"
+  integrity sha512-JUlQMU+IVVNKV+D4BRfRaNEaBj+VyHcI0uupBKyeFhkSY2GBkKw7oGvpNdCkPtKd8Q3H0M5eY7PyUj7AdmKCRA==
+
 react-google-charts@^3.0.15:
   version "3.0.15"
   resolved "https://registry.npm.taobao.org/react-google-charts/download/react-google-charts-3.0.15.tgz#30759a470f48336e744fd383d054122b039a1ff2"
@@ -13997,6 +14012,15 @@ react-live@^2.2.3:
 react-load-script@^0.0.6:
   version "0.0.6"
   resolved "https://registry.nlark.com/react-load-script/download/react-load-script-0.0.6.tgz#db6851236aaa25bb622677a2eb51dad4f8d2c258"
+
+react-motion@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.npm.taobao.org/react-motion/download/react-motion-0.5.2.tgz#0dd3a69e411316567927917c6626551ba0607316"
+  integrity sha1-DdOmnkETFlZ5J5F8ZiZVG6BgcxY=
+  dependencies:
+    performance-now "^0.2.0"
+    prop-types "^15.5.8"
+    raf "^3.1.0"
 
 react-popper-tooltip@^3.1.1:
   version "3.1.1"
@@ -14086,6 +14110,14 @@ react-syntax-highlighter@^13.5.3:
     lowlight "^1.14.0"
     prismjs "^1.21.0"
     refractor "^3.1.0"
+
+react-text-loop-next@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.npmmirror.com/react-text-loop-next/download/react-text-loop-next-0.0.3.tgz#ab200f31afc8a922c673f8830c9129156e242b23"
+  integrity sha1-qyAPMa/IqSLGc/iDDJEpFW4kKyM=
+  dependencies:
+    cxs "^6.2.0"
+    react-motion "^0.5.2"
 
 react-textarea-autosize@^8.3.0:
   version "8.3.3"

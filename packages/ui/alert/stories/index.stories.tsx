@@ -6,6 +6,7 @@ export * from './closable.stories'
 export * from './duration.stories'
 export * from './banner.stories'
 export * from './close-icon.stories'
+export * from './carousel.stories'
 
 export default {
   title: 'FeedBacck/Alert',
