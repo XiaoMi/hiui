@@ -22,7 +22,7 @@ export const Circle = () => {
         />
 
         <CircleProgress
-          type="danger"
+          type="error"
           content={<ExclamationOutlined style={{ fontSize: '20px' }} />}
           percent={20}
         />

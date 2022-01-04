@@ -12,7 +12,8 @@ export const Basic = () => {
         <br />
         <Progress type="warning" content="警示" percent={50} />
         <br />
-        <Progress type="danger" content="错误" percent={20} />
+        <Progress type="error" content="错误" percent={20} />
+        <br />
         <Progress percent={75} />
         <br />
       </div>

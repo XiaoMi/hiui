@@ -14,7 +14,7 @@ export const Inside = () => {
         <br />
         <Progress type="warning" content="警示" percent={50} placement="inside" strokeWidth={20} />
         <br />
-        <Progress type="danger" content="错误" percent={20} placement="inside" strokeWidth={20} />
+        <Progress type="error" content="错误" percent={20} placement="inside" strokeWidth={20} />
         <Progress percent={75} strokeWidth={20} />
         <br />
       </div>

@@ -2,8 +2,7 @@ import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { useProgress, UseProgressProps } from './use-progress'
-import { ProgressProvider } from './context'
+import { ProgressProps } from './Progress'
 
 const DASHBOARD_PROGRESS_PREFIX = getPrefixCls('dashboard-progress')
 
@@ -26,13 +25,12 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
   (
     {
       prefixCls = DASHBOARD_PROGRESS_PREFIX,
-      role = 'DashboardProgress',
+      role = 'progressbar',
       className,
       children,
       type = 'primary',
       percent: percentNum = 0,
       content,
-      status,
       radius: radiusThis,
       width,
       showInfo = true,
@@ -42,9 +40,6 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
     },
     ref
   ) => {
-    // TODO: 使用 自定义hook 抽离逻辑，若不需要可以移除
-    const { rootProps, ...context } = useProgress(rest)
-
     const percent = percentNum > 0 ? percentNum : 0
     const _width = width || sizeMap[size]
     const radius = _width / 2
@@ -71,44 +66,40 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
     const cls = cx(prefixCls, className)
 
     return (
-      <ProgressProvider value={context}>
-        <div
-          ref={ref}
-          className={cls}
-          role={role}
-          // data-value={value}
-          style={{ width: _width, height: _width }}
-          {...rootProps}
-        >
-          <svg viewBox={`0 0 ${totalRadiusWidth * 2} ${totalRadiusWidth * 2}`}>
-            <path
-              className={`${prefixCls}__svgbackground`}
-              d={pathString}
-              fillOpacity="0"
-              strokeLinecap="round"
-              style={trailPathStyle}
-            />
-            <path
-              className={`${prefixCls}__dashboard ${prefixCls}__dashboard--${type}`}
-              d={pathString}
-              strokeLinecap="round"
-              style={strokePathStyle}
-            />
-          </svg>
-          {showInfo && (
-            <div className={`${prefixCls}__text ${prefixCls}__text--${type}`}>
-              {content !== undefined ? content : `${percent}%`}
-            </div>
-          )}
-        </div>
-      </ProgressProvider>
+      <div
+        ref={ref}
+        className={cls}
+        role={role}
+        aria-valuenow={percent}
+        style={{ width: _width, height: _width }}
+        {...rest}
+      >
+        <svg viewBox={`0 0 ${totalRadiusWidth * 2} ${totalRadiusWidth * 2}`}>
+          <path
+            className={`${prefixCls}__background`}
+            d={pathString}
+            fillOpacity="0"
+            strokeLinecap="round"
+            style={trailPathStyle}
+          />
+          <path
+            className={`${prefixCls}__dashboard ${prefixCls}__dashboard--${type}`}
+            d={pathString}
+            strokeLinecap="round"
+            style={strokePathStyle}
+          />
+        </svg>
+        {showInfo ? (
+          <div className={`${prefixCls}__text ${prefixCls}__text--${type}`}>
+            {content !== undefined ? content : `${percent}%`}
+          </div>
+        ) : null}
+      </div>
     )
   }
 )
 
-export interface DashboardProgressProps extends HiBaseHTMLProps<'div'>, UseProgressProps {
-  status?: any
-}
+export interface DashboardProgressProps extends HiBaseHTMLProps<'div'>, ProgressProps {}
 
 if (__DEV__) {
   DashboardProgress.displayName = 'DashboardProgress'

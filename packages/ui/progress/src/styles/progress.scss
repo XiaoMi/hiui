@@ -4,7 +4,7 @@ $prefix: '#{$component-prefix}-progress' !default;
 $progress-color-map: (
   'warning': use-color-mode('warning'),
   'success': use-color-mode('success'),
-  'danger': use-color-mode('danger'),
+  'error': use-color-mode('danger'),
   'primary': use-color-mode('primary')
 ) !default;
 
@@ -124,7 +124,7 @@ $progress-color-map: (
 
     background-color: currentColor;
 
-    .#{$prefix}__indeterminate & {
+    .#{$prefix}--indeterminate & {
       transform-origin: 50% 50%;
       animation: linear-bar-indeterminate 1s linear infinite;
     }
@@ -179,7 +179,7 @@ $circle-progress-prefix: '#{$component-prefix}-circle-progress' !default;
     }
   }
 
-  &__svgbackground {
+  &__background {
     fill: none;
     stroke: use-color('gray', 200);
   }
@@ -228,7 +228,7 @@ $dashboard-progress-prefix: '#{$component-prefix}-dashboard-progress' !default;
     }
   }
 
-  &__svgbackground {
+  &__background {
     fill: none;
     stroke: use-color('gray', 200);
   }

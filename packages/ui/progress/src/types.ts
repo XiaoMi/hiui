@@ -1,12 +1,31 @@
-import React from 'react'
+import { ValueOf } from '@hi-ui/core'
 
-export interface ProgressDataItem {
-  /**
-   * 节点唯一 id
-   */
-  id: React.ReactText
-  /**
-   * 节点标题
-   */
-  title: React.ReactNode
-}
+export const ProgressTypeEnum = {
+  PRIMARY: 'primary',
+  WARNING: 'warning',
+  ERROR: 'error',
+  SUCCESS: 'success',
+} as const
+
+// 对外暴露同名联合类型
+// eslint-disable-next-line no-redeclare
+export type ProgressTypeEnum = ValueOf<typeof ProgressTypeEnum>
+
+export const ProgressSizeEnum = {
+  sm: 'sm',
+  md: 'md',
+  lg: 'lg',
+} as const
+
+// 对外暴露同名联合类型
+// eslint-disable-next-line no-redeclare
+export type ProgressSizeEnum = ValueOf<typeof ProgressSizeEnum>
+
+export const ProgressPlacementEnum = {
+  inside: 'inside',
+  outside: 'outside',
+} as const
+
+// 对外暴露同名联合类型
+// eslint-disable-next-line no-redeclare
+export type ProgressPlacementEnum = ValueOf<typeof ProgressPlacementEnum>
