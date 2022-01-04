@@ -2,41 +2,65 @@
 
 $prefix: '#{$component-prefix}-badge' !default;
 
-$dotSize: 10px !default;
-$bubbleSize: 20px !default;
-
 .#{$prefix} {
+  $dotSize: 10px;
+  $bubbleSize: 20px;
+  $borderSize: 2px;
+
+  @include component-reset;
+
   display: inline-block;
   position: relative;
   line-height: 1;
 
-  &-value {
-    position: absolute;
-    top: calc(-#{($bubbleSize + 2px * 2) / 2});
-    right: 0;
+  &__value {
     transform: translateX(50%);
-    height: $bubbleSize;
-    padding: 0 use-spacing(3);
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    top: calc(#{-(($bubbleSize + $borderSize * 2) / 2)});
     min-width: $bubbleSize - 12px;
-    border: 2px solid use-color-static('white');
-    border-radius: use-border-radius('full');
+    height: $bubbleSize;
     line-height: $bubbleSize;
-    background: use-color-mode('danger');
-    font-size: use-text-size('sm');
+    padding: 0 use-spacing(3);
     color: use-color-static('white');
+    font-size: use-text-size('sm');
     letter-spacing: 0;
     text-align: center;
+    border: use-border-size('semibold') use-color-static('white');
+    background-color: use-color-mode('danger');
+    border-radius: use-border-radius('full');
   }
 
-  &-dot {
+  &__dot {
     position: absolute;
+    z-index: 1;
+    top: calc(#{-(($dotSize + $borderSize * 2) / 2)});
+    right: calc(#{-(($dotSize + $borderSize * 2) / 2)});
     width: $dotSize;
     height: $dotSize;
-    top: calc(-#{($dotSize + 2px * 2) / 2});
-    right: calc(-#{($dotSize + 2px * 2) / 2});
-    background: use-color-mode('danger');
-    border: 2px solid use-color-static('white');
-    border-radius: 50%;
+    background-color: use-color-mode('danger');
+    border: use-border-size('semibold') use-color-static('white');
+    border-radius: use-border-radius('full');
+  }
+
+  &__custom {
+    transform: translate(50%, -50%);
+    position: absolute;
+    top: 0;
+    right: 0;
     z-index: 1;
+  }
+
+  &--independent {
+    .#{$prefix}__dot,
+    .#{$prefix}__value,
+    .#{$prefix}__custom {
+      position: relative;
+      top: auto;
+      right: auto;
+      transform: none;
+      display: block;
+    }
   }
 }

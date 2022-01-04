@@ -1,6 +1,5 @@
 import React from 'react'
 import Badge from '../src'
-import { Button } from '@hi-ui/button'
 import { BellOutlined } from '@hi-ui/icons'
 
 export const Bubble = () => {
