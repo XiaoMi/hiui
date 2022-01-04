@@ -95,10 +95,6 @@ export const TagGroup = forwardRef<HTMLDivElement | null, TagGroupProps>(
   }
 )
 
-if (__DEV__) {
-  TagGroup.displayName = 'TagGroup'
-}
-
 export interface TagGroupProps {
   /**
    * 组件默认的选择器类
@@ -153,4 +149,8 @@ export interface TagGroupNode extends Omit<TagProps, 'role' | 'prefixCls' | 'aut
    * 标签唯一 id
    */
   tagId: string | number
+}
+
+if (__DEV__) {
+  TagGroup.displayName = 'TagGroup'
 }

@@ -3,13 +3,17 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { CloseOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
 import { Tooltip } from '@hi-ui/tooltip'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'tag'
 const _prefix = getPrefixCls(_role)
 
 const DEFAULT_TRANSFORMER = (e: React.ReactNode) => e?.toString() || ''
+
 /**
- * 标签 用来标记信息的属性，用以区分信息
+ * 标签
+ *
+ * 用来标记信息的属性，用以区分信息
  */
 export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
   (
@@ -36,6 +40,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
     ref
   ) => {
     const contentRef = useRef<HTMLDivElement | null>(null)
+
     const [isInEdit, setIsInEdit] = useState(false)
     const [editValueCache, setEditValueCache] = useState('')
     const [isShowPopover, setIsShowPopover] = useState(false)
@@ -159,7 +164,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
   }
 )
 
-export interface TagProps {
+export interface TagProps extends HiBaseHTMLProps<'div'> {
   /**
    * 组件默认的选择器类
    */

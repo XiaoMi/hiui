@@ -12,10 +12,12 @@ import { alertIconMap, defaultCloseIcon } from './icons'
 const _prefix = getPrefixCls('alert')
 
 /**
- * What is Alert
- * TODO
+ * 警告提示
+ *
+ * 作用于页面的内容区域的提示，非触发类信息
+ *
+ * TODO:
  *  1. 添加关闭动效
- *  2 轮播示例
  */
 export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
   (
@@ -102,7 +104,7 @@ export interface AlertProps extends HiBaseHTMLProps<'div'> {
    */
   duration?: number
   /**
-   * 关闭时回调
+   * 关闭事件触发时的回调
    */
   onClose?: () => void
   /**
@@ -112,6 +114,7 @@ export interface AlertProps extends HiBaseHTMLProps<'div'> {
   closeIcon?: React.ReactNode
   /**
    * 是否显示提示图标
+   * @version 4.0.0
    */
   showIcon?: boolean
 }

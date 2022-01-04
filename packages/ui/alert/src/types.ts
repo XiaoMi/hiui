@@ -7,9 +7,6 @@ export const AlertTypeEnum = {
   SUCCESS: 'success',
 } as const
 
-export const triggerActions = Object.values(AlertTypeEnum)
-
 // 对外暴露同名联合类型
-
 // eslint-disable-next-line no-redeclare
 export type AlertTypeEnum = ValueOf<typeof AlertTypeEnum>

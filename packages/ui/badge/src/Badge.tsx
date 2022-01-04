@@ -3,11 +3,14 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { isNullish } from '@hi-ui/type-assertion'
+import { BadgeTypeEnum } from './types'
 
 const _prefix = getPrefixCls('badge')
 
 /**
- * TODO: What is Badge
+ * 红点 / 徽标
+ *
+ * 红点用来展示新消息的提示，徽标用于展示消息的数量、提示
  *
  * 1. 数字滚动展示
  * 2. visible 显隐动效
@@ -58,7 +61,7 @@ export const Badge = forwardRef<HTMLSpanElement | null, BadgeProps>(
     }, [content, max])
 
     const badgeNode = useMemo(() => {
-      if (type === 'dot') {
+      if (type === BadgeTypeEnum.DOT) {
         return <span className={`${prefixCls}__dot`} style={badgeStyle} />
       }
 
@@ -98,7 +101,7 @@ export interface BadgeProps extends HiBaseHTMLProps<'span'> {
    * 气泡显示的形态，可选带文字的气泡或小红点
    */
 
-  type?: 'bubble' | 'dot'
+  type?: BadgeTypeEnum
   /**
    * 气泡显示的最大值，超过值用'+'号替代
    */
