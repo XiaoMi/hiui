@@ -1,38 +1,36 @@
-import React, { forwardRef, useState, useCallback, useEffect, useRef } from 'react'
+import React, { forwardRef, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import {
-  InfoCircleFilled,
-  CloseCircleFilled,
-  CheckCircleFilled,
-  ExclamationCircleFilled,
-  CloseOutlined,
-} from '@hi-ui/icons'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
-const _role = 'alert'
-const _prefix = getPrefixCls(_role)
+import { AlertTypeEnum } from './types'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import { useTimeout } from '@hi-ui/use-timeout'
+import { IconButton } from '@hi-ui/icon-button'
+import { alertIconMap, defaultCloseIcon } from './icons'
 
-const alertIconMap: any = {
-  success: <CheckCircleFilled />,
-  danger: <CloseCircleFilled />,
-  warning: <ExclamationCircleFilled />,
-  primary: <InfoCircleFilled />,
-}
+const _prefix = getPrefixCls('alert')
 
 /**
  * What is Alert
+ * TODO
+ *  1. 添加关闭动效
+ *  2 轮播示例
  */
 export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
   (
     {
       prefixCls = _prefix,
-      role = _role,
+      role = 'alert',
       className,
       children,
       title,
       content,
       type = 'primary',
-      closeable = false,
+      closeable = true,
+      showIcon = true,
+      closeIcon = defaultCloseIcon,
+      // duration小于 0，表示不开启自动关闭
       duration = -1,
       onClose,
       ...rest
@@ -41,68 +39,81 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
   ) => {
     const [internalVisible, setInternalVisible] = useState(true)
 
-    const handleClose = useCallback(() => {
+    const handleClose = useLatestCallback(() => {
       setInternalVisible(false)
       onClose?.()
-    }, [onClose])
+    })
 
-    const prevUpdaterRef = useRef(0)
+    const { start: startCloseTimer, clear: clearCloseTimer } = useTimeout(() => {
+      handleClose()
+    }, duration)
 
     useEffect(() => {
-      // TODO: 1. 抽离为 useTimeout 逻辑（props变化需要取消定时器以及页面卸载时取消定时器这一套逻辑） 2. 处理 window 支持 SSR
-      if (typeof duration === 'number' && duration > 0) {
-        window.clearTimeout(prevUpdaterRef.current)
-
-        prevUpdaterRef.current = window.setTimeout(() => {
-          handleClose()
-        }, duration)
-      }
+      clearCloseTimer()
+      startCloseTimer()
       return () => {
-        window.clearTimeout(prevUpdaterRef.current)
+        clearCloseTimer()
       }
-    }, [duration, handleClose])
+    }, [clearCloseTimer, startCloseTimer])
 
-    const cls = cx(prefixCls, className, `${prefixCls}--${type}`, {
-      [`${prefixCls}--with-content`]: content,
-    })
+    const suffixIcon = alertIconMap[type] || null
+
+    const cls = cx(
+      prefixCls,
+      className,
+      suffixIcon && `${prefixCls}--type-${type}`,
+      content && `${prefixCls}--with-content`
+    )
 
     return internalVisible ? (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <div className={`${prefixCls}__title`}>
-          <span className={`${prefixCls}__icon`}>{alertIconMap[type]}</span>
-          {title}
+        {showIcon && suffixIcon ? <span className={`${prefixCls}__icon`}>{suffixIcon}</span> : null}
+        <div className={`${prefixCls}__message`}>
+          <div className={`${prefixCls}__title`}>{title}</div>
+          {content ? <div className={`${prefixCls}__content`}>{content}</div> : null}
         </div>
-        {content && <div className={`${prefixCls}__content`}>{content}</div>}
-        {closeable && <CloseOutlined onClick={handleClose} className={`${prefixCls}__close`} />}
+        {closeable && closeIcon ? (
+          <IconButton className={`${prefixCls}__close`} onClick={handleClose} icon={closeIcon} />
+        ) : null}
       </div>
     ) : null
   }
 )
 
-export interface AlertProps {
+export interface AlertProps extends HiBaseHTMLProps<'div'> {
   /**
-   * 组件默认的选择器类
+   * 	警告提示类型
    */
-  prefixCls?: string
+  type?: AlertTypeEnum
   /**
-   * 组件的语义化 Role 属性
+   * 	警告提示标题
    */
-  role?: string
+  title: React.ReactNode
   /**
-   * 组件的注入选择器类
+   * 	警告提示内容
    */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-
-  type?: 'primary' | 'success' | 'danger' | 'warning'
-  duration?: number
-  closeable?: boolean
-  title?: React.ReactNode
   content?: React.ReactNode
+  /**
+   * 	是否可关闭
+   */
+  closeable?: boolean
+  /**
+   * 	自动关闭时间，单位为毫秒
+   */
+  duration?: number
+  /**
+   * 关闭时回调
+   */
   onClose?: () => void
+  /**
+   * 自定义关闭 Icon
+   * @version 4.0.0
+   */
+  closeIcon?: React.ReactNode
+  /**
+   * 是否显示提示图标
+   */
+  showIcon?: boolean
 }
 
 if (__DEV__) {

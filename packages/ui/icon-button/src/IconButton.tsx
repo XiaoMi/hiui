@@ -2,6 +2,7 @@ import React, { Children, forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { isString } from '@hi-ui/type-assertion'
 
 const ICON_BUTTON_PREFIX = getPrefixCls('icon-button')
 
@@ -36,7 +37,7 @@ export const IconButton = forwardRef<HTMLButtonElement | null, IconButtonProps>(
     )
     return (
       <button ref={ref} role={role} className={cls} {...rest}>
-        {Children.only(icon)}
+        {isString(icon) ? icon : Children.only(icon)}
       </button>
     )
   }

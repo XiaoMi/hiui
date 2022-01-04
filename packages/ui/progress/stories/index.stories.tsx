@@ -10,6 +10,6 @@ export * from './dashboard.stories'
 export * from './dashboard-size.stories'
 
 export default {
-  title: 'Data Display/Progress',
+  title: 'FeedBacck/Progress',
   decorators: [(story: Function) => <div>{story()}</div>],
 }
