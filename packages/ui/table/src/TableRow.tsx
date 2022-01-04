@@ -243,6 +243,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
               column={column}
               columnIndex={idx}
               rowData={rowDataProp}
+              depth={rowDataProp.depth}
               rowIndex={rowIndex}
               showColHighlight={showColHighlight}
               hoverColIndex={hoverColIndex}

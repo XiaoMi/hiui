@@ -28,7 +28,8 @@ import { cloneTree, flattenTree } from '@hi-ui/tree-utils'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useCheck } from '@hi-ui/use-check'
 import { IconButton } from '@hi-ui/icon-button'
-import { defaultCollapseIcon, defaultExpandIcon, defaultLoadingIcon } from './icons'
+import { defaultLoadingIcon } from './icons'
+import { PlusSquareOutlined, MinusSquareOutlined } from '@hi-ui/icons'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
@@ -137,6 +138,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           title: '',
           dataKey: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           width: 50,
+          align: 'center',
           render: (_: any, rowItem: any, index: number) => {
             // const rowKey = getRowKey(rowItem, index)
             const rowKey = rowItem.id
@@ -152,8 +154,8 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               onNodeExpand: (shouldExpanded: boolean) => {
                 onExpandEmbedRowsChange(rowItem, shouldExpanded)
               },
-              expandIcon: defaultExpandIcon,
-              collapseIcon: defaultCollapseIcon,
+              expandIcon: <MinusSquareOutlined />,
+              collapseIcon: <PlusSquareOutlined />,
             })
 
             return switcherIcon
@@ -211,7 +213,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       size && `${prefixCls}--size-${size}`
     )
 
-    console.log('scrollLeft', scrollLeft, leftFrozenColKeys)
+    // console.log('scrollLeft', scrollLeft, leftFrozenColKeys)
 
     // TODO：处理 column 模型支持 cellRender，一直出 checkbox、expandIcon 高级选项
 

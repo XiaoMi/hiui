@@ -1,6 +1,7 @@
 import React from 'react'
 import { FlattedTableColumnItemData, TableColumnItem } from '../types'
 import { setAttrStatus } from '@hi-ui/dom-utils'
+import { getMaskItemsWIdth } from '../utils'
 
 export const useColWidth = ({
   data,
@@ -19,7 +20,8 @@ export const useColWidth = ({
 }) => {
   const [colWidths, setColWidths] = React.useState(() => {
     // css width default is 'auto'
-    return columns.map((c) => c.width)
+    // return columns.map((c) => c.width)
+    return columns.map((column) => getMaskItemsWIdth([column]))
   })
 
   /**

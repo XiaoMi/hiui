@@ -30,7 +30,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       depth,
       columnIndex,
       expandedTree,
-      isTree,
+      // isTree,
       // icons
       expandIcon = defaultExpandIcon,
       collapseIcon = defaultCollapseIcon,
@@ -52,6 +52,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       onTreeNodeSwitch,
       getStickyColProps,
       canScroll,
+      isTree,
     } = useTableContext()
 
     const [loading] = React.useState(false)
@@ -247,4 +248,5 @@ const renderSwitcher = ({
   }
 
   return null
+  // return renderIndent({ depth: 1, prefixCls })
 }

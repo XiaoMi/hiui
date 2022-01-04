@@ -48,7 +48,7 @@ $prefix: '#{$component-prefix}-table' !default;
   }
 
   &--striped {
-    .#{$prefix}-row:nth-child(2n) {
+    .#{$prefix}-row:not(:hover):nth-child(2n) {
       .#{$prefix}-cell {
         background-color: use-color('gray', 50);
       }
@@ -61,16 +61,18 @@ $prefix: '#{$component-prefix}-table' !default;
   }
 
   &__header {
-    overflow: hidden;
     position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
 
     tr {
       & > th {
-        padding: 16px;
-        color: #999;
-        // background: rgb(251, 251, 251);
+        color: use-color('gray', 700);
+        font-size: use-text-size('normal');
+        font-weight: use-text-weight('medium');
+        line-height: use-text-lineheight('sm');
+        padding: use-spacing(7) use-spacing(8);
         border-bottom: 1px solid #f0f0f0;
-        font-weight: 500;
       }
     }
   }
@@ -89,15 +91,9 @@ $prefix: '#{$component-prefix}-table' !default;
 
   &-row {
     &:hover {
-      & > td {
-        background-color: use-color-mode('primary-10');
+      .#{$prefix}-cell {
+        background-color: use-color-mode('primary-05');
       }
-    }
-
-    &__indent {
-      display: inline-block;
-      width: 14px;
-      height: 100%;
     }
 
     &--hovered {
@@ -120,13 +116,13 @@ $prefix: '#{$component-prefix}-table' !default;
 
     &--highlight {
       & > td {
-        background-color: use-color-mode('primary-10');
+        background-color: use-color-mode('primary-05');
       }
     }
 
     &--dragging {
       // background: use-color('primary-20');
-      background-color: use-color-mode('primary-10');
+      background-color: use-color-mode('primary-05');
 
       // .hi-table__col--sticky {
       //   background: use-color('primary-20');
@@ -155,7 +151,7 @@ $prefix: '#{$component-prefix}-table' !default;
 
     &[data-hover-highlight] {
       .#{$prefix}__body  & {
-        background-color: use-color-mode('primary-10');
+        background-color: use-color-mode('primary-05');
       }
 
       .#{$prefix}__header  & {
@@ -173,33 +169,46 @@ $prefix: '#{$component-prefix}-table' !default;
       width: 2px;
       height: 100%;
       bottom: 0;
-      right: -5px;
+      right: 0;
       cursor: col-resize;
       z-index: 1;
-      background-color: use-color-mode('primary');
+
+      &:hover {
+        background-color: use-color-mode('primary');
+      }
     }
   }
 }
 
 // 单元格
 .#{$prefix}-cell {
-  // background: #fff;
-  // white-space: nowrap;
-  padding: 16px;
-  color: #333;
-  border-bottom: 1px solid #f0f0f0;
   word-break: break-word;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: use-text-size('normal');
+  font-weight: use-text-weight('normal');
+  color: use-color('gray', 700);
+  line-height: use-text-lineheight('normal');
+  padding: use-spacing(7) use-spacing(8);
 
-  // &__col--hovered-highlight {
-  //   background-color: use-color-mode('primary-10');
-  // }
   &[data-sticky] {
     background-color: use-color-static('white');
+  }
+
+  &__indent {
+    display: inline-block;
+    width: 14px;
+    height: 100%;
+    margin-right: use-spacing(1);
+  }
+
+  &__switcher.hi-v4-icon-button {
+    margin-right: use-spacing(1);
   }
 }
 
 th[data-sticky] {
   background-color: use-color('gray', 50);
+  z-index: 1;
 }
 
 // 冻结列 阴影
@@ -243,48 +252,102 @@ th[data-sticky] {
   width: 16px;
   background: rgb(251, 251, 251);
 
-  &__content {
-    height: 400px;
-    overflow-y: scroll;
-  }
-
   &__btn-group {
     display: flex;
-    border-top: 1px solid rgba(231, 231, 231, 1);
     height: 48px;
     align-items: center;
-  }
-
-  &__btn {
-    width: 50%;
-    text-align: center;
-    cursor: pointer;
-
-    &:first-child {
-      border-right: 1px solid rgba(231, 231, 231, 1);
-    }
+    justify-content: flex-end;
   }
 }
 
 .#{$prefix}-setting-item {
-  @include flex(space-between);
+  position: relative;
+  padding-top: use-spacing(1);
+  padding-bottom: use-spacing(1);
+  box-sizing: border-box;
 
-  user-select: none;
-  padding: use-spacing(2);
-  margin-bottom: use-spacing(2);
-  border: use-border-size('normal') use-color-static('transparent');
+  $this: &;
 
-  &--dragging {
-    border: use-border-size('normal') use-color-mode('primary');
+  &__wrap {
+    user-select: none;
+
+    @include flex(space-between);
+
+    padding: use-spacing(3) use-spacing(4);
+    line-height: use-text-lineheight('sm');
+    // border: use-border-size('normal') use-color-static('transparent');
+    border-radius: use-border-radius('normal');
+
+    &:hover {
+      background-color: use-color-mode('primary-05');
+    }
+
+    #{$this}--dragging & {
+      opacity: 0.6;
+    }
+  }
+
+  // 拖拽指示器-小圆球
+  &::before {
+    position: absolute;
+    left: 0;
+    z-index: 9999;
+    display: none;
+    box-sizing: border-box;
+    width: 8px;
+    height: 8px;
+    content: '';
+    background-color: use-color-static('white');
+    border: 1px solid use-color-mode('primary');
+    border-radius: 100%;
+  }
+
+  // 拖拽指示器-线条
+  &::after {
+    position: absolute;
+    content: '';
+    // TODO: zIndex 全局约定设置
+    z-index: 9998;
+    display: block;
+    box-sizing: border-box;
+    border-bottom-width: 0;
+    border-bottom-style: solid;
+    border-bottom-color: use-color-mode('primary');
+    left: 0;
+    width: 100%;
+  }
+
+  &::before,
+  &::after {
+    margin-left: -10px;
+    margin-right: -10px;
   }
 
   &--direction {
     &-before {
-      border-top-color: use-color-mode('primary');
+      &::before {
+        display: block;
+        top: -0.5px;
+        transform: translateY(-4px);
+      }
+
+      &::after {
+        top: -0.5px;
+        border-bottom-width: 1px;
+      }
     }
 
     &-after {
-      border-bottom-color: use-color-mode('primary');
+      &::before {
+        display: block;
+        bottom: 0.5px;
+        transform: translateY(4px);
+      }
+
+      &::after {
+        bottom: 0.5px;
+        border-bottom-width: 1px;
+      }
     }
   }
 }

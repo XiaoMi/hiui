@@ -2,17 +2,18 @@ import React, { forwardRef, useEffect, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UseTableProps } from './use-table'
-import { SettingOutlined, ColumnsOutlined } from '@hi-ui/icons'
+import { SettingOutlined, MenuOutlined } from '@hi-ui/icons'
 import { IconButton } from '@hi-ui/icon-button'
-import Popper from '@hi-ui/popper'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useLocaleContext } from '@hi-ui/locale-context'
-import { Switch } from '@hi-ui/switch'
 import { runIfFunc } from '@hi-ui/func-utils'
 import { useDrag, useDrop } from '@hi-ui/use-drag-sorter'
 import { UseColSorterReturn } from './hooks/use-col-sorter'
 import { UseColHiddenReturn } from './hooks/use-col-hidden'
+import { Drawer } from '@hi-ui/drawer'
+import { Button } from '@hi-ui/button'
+import { Checkbox } from '@hi-ui/checkbox'
 
 const _prefix = getPrefixCls('table-setting')
 
@@ -54,7 +55,6 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
     })
 
     const [menuVisible, menuVisibleAction] = useToggle()
-    const [menuTrigger, setMenuTrigger] = React.useState<HTMLDivElement | null>(null)
 
     const resetLatest = useLatestCallback(() => {
       setCacheHiddenColKeys(hiddenColKeys)
@@ -84,47 +84,45 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
     // TODO：处理 column 模型支持 cellRender，一直出 checkbox、expandIcon 高级选项
     return (
       <div ref={ref} className={cls}>
-        <IconButton
-          // @ts-ignore
-          ref={setMenuTrigger}
-          icon={<SettingOutlined />}
-          onClick={menuVisibleAction.not}
-        />
+        <IconButton icon={<SettingOutlined />} onClick={menuVisibleAction.not} />
 
-        <Popper
-          className={`${prefixCls}__popper`}
+        <Drawer
+          className={`${prefixCls}__drawer`}
+          title="字段管理"
           visible={menuVisible}
-          attachEl={menuTrigger}
-          // zIndex={1040}
           onClose={menuVisibleAction.off}
-          placement="bottom-end"
+          footer={
+            <div className={`${prefixCls}__btn-group`}>
+              <Button key={0} className={`${prefixCls}__btn-cancel`} onClick={resetLatest}>
+                {i18n.get('table.reset') || '重置'}
+              </Button>
+              <Button
+                key={1}
+                className={`${prefixCls}__btn-confirm`}
+                onClick={onConfirm}
+                type="primary"
+              >
+                {i18n.get('table.confirm') || '确定'}
+              </Button>
+            </div>
+          }
         >
           <div className={`${prefixCls}__content`}>
-            <div style={{ padding: '16px 20px' }}>
-              {cacheSortedCols.map((col: any, index: number) => {
-                return (
-                  <TableSettingMenuItem
-                    key={col.dataKey}
-                    prefixCls={prefixCls}
-                    column={col}
-                    index={index}
-                    dropProps={dropProps}
-                    cacheHiddenColKeys={cacheHiddenColKeys}
-                    setCacheHiddenColKeys={setCacheHiddenColKeys}
-                  />
-                )
-              })}
-            </div>
-            <div className={`${prefixCls}__btn-group`}>
-              <div className={`${prefixCls}__btn`} onClick={onConfirm}>
-                {i18n.get('table.confirm') || 'confirm'}
-              </div>
-              <div className={`${prefixCls}__btn`} onClick={resetLatest}>
-                {i18n.get('table.reset') || 'reset'}
-              </div>
-            </div>
+            {cacheSortedCols.map((col: any, index: number) => {
+              return (
+                <TableSettingMenuItem
+                  key={col.dataKey}
+                  prefixCls={prefixCls}
+                  column={col}
+                  index={index}
+                  dropProps={dropProps}
+                  cacheHiddenColKeys={cacheHiddenColKeys}
+                  setCacheHiddenColKeys={setCacheHiddenColKeys}
+                />
+              )
+            })}
           </div>
-        </Popper>
+        </Drawer>
       </div>
     )
   }
@@ -168,25 +166,28 @@ function TableSettingMenuItem({
       {...getDragTriggerProps()}
       {...getDropTriggerProps()}
     >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <Switch
-          checked={!cacheHiddenColKeys.includes(dataKey)}
-          onChange={(shouldChecked) => {
-            const nextCacheHiddenColKeys = shouldChecked
-              ? cacheHiddenColKeys.filter((col: any) => col !== dataKey)
-              : cacheHiddenColKeys.concat(dataKey)
-
-            setCacheHiddenColKeys(nextCacheHiddenColKeys)
+      <div className={`${prefixCls}-item__wrap`}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
           }}
-        />
-        <span style={{ display: 'inline-block', marginLeft: 9 }}>{runIfFunc(title)}</span>
+        >
+          <Checkbox
+            checked={!cacheHiddenColKeys.includes(dataKey)}
+            onChange={(evt) => {
+              const shouldChecked = evt.target.checked
+              const nextCacheHiddenColKeys = shouldChecked
+                ? cacheHiddenColKeys.filter((col: any) => col !== dataKey)
+                : cacheHiddenColKeys.concat(dataKey)
+
+              setCacheHiddenColKeys(nextCacheHiddenColKeys)
+            }}
+          />
+          <span style={{ display: 'inline-block', marginLeft: 9 }}>{runIfFunc(title)}</span>
+        </div>
+        <MenuOutlined />
       </div>
-      <ColumnsOutlined />
     </div>
   )
 }

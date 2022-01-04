@@ -5,7 +5,7 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic for Table</h1>
-      <div className="table-basic__wrap" style={{ width: 800 }}>
+      <div className="table-basic__wrap" style={{ width: 800, background: '#eee' }}>
         <Table
           fixedToColumn={'type'}
           columns={[
@@ -84,7 +84,6 @@ export const Basic = () => {
             },
           ]}
         />
-        <div style={{ height: 800 }}>模拟外层滚动</div>
       </div>
     </>
   )

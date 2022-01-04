@@ -165,10 +165,48 @@ export const useTable = ({
     // flattedColumnsWithoutChildren,
   } = useColumns({ columns })
 
-  // ************************ 列冻结 ************************ //
+  // ************************ 列高亮 ************************ //
 
-  const [fixedColWidth] = useState<number[]>([])
+  /**
+   * 控制列高亮，依据 column 中的 dataKey 控制
+   */
+  const [highlightedColKeys, trySetHighlightedColKeys] = useUncontrolledState(
+    DEFAULT_HIGHLIGHTED_COL_KEYS,
+    highlightedColKeysProp
+  )
+
+  const [onHighlightedColChange, isHighlightedCol] = useCheck({
+    checkedIds: highlightedColKeys,
+    onCheck: trySetHighlightedColKeys as any,
+    idFieldName: 'dataKey',
+  })
+
+  /**
+   * 设置列 hover 时高亮，依据 column 中的 dataKey 控制
+   * 与 highlightedColKeys 互不影响
+   */
+  const [hoveredColKey, setHoveredColKey] = useState<React.ReactText>('')
+
+  const [onHoveredColChange, isHoveredCol] = useSelect({
+    selectedId: hoveredColKey,
+    onSelect: setHoveredColKey,
+    idFieldName: 'dataKey',
+  })
+
+  // ************************ 列宽 resizable ************************ //
+
   const firstRowElementRef = useRef<HTMLTableRowElement>(null)
+
+  const { getColgroupProps, onColumnResizable, colWidths } = useColWidth({
+    data,
+    columns,
+    resizable,
+    dataSource,
+    firstRowElementRef,
+    isHoveredCol,
+  })
+
+  // ************************ 列冻结 ************************ //
 
   const bodyTableRef = useRef<HTMLTableElement>(null)
   const scrollBodyElementRef = useRef<HTMLTableElement>(null)
@@ -260,7 +298,14 @@ export const useTable = ({
       })
     }
 
-    const leftFixedColumnsWidth = getMaskItemsWIdth(leftColumns)
+    // const leftFixedColumnsWidth = getMaskItemsWIdth(leftColumns)
+    // @TODO: resizable 和 列冻结宽兼容，统一宽度设置来源
+    const leftFixedColumnsWidth = colWidths.reduce(
+      (acc, width, index) => (acc += index <= leftFrozenColIndex! ? width : 0),
+      0
+    )
+
+    console.log(colWidths, leftFixedColumnsWidth)
 
     // 右侧
     let rightColumns = [] as any[]
@@ -299,7 +344,7 @@ export const useTable = ({
       // scrollRight: tableWidth - tableBodyWidth,
       // scrollLeft: 0,
     }
-  }, [mergedColumns2, fixedToColumnMemo, rowSelection, expandedRender, scrollWidth])
+  }, [mergedColumns2, fixedToColumnMemo, rowSelection, expandedRender, scrollWidth, colWidths])
 
   const [scrollSize, setScrollSize] = useState({ scrollLeft: 0, scrollRight: 1 })
 
@@ -380,45 +425,6 @@ export const useTable = ({
     [syncScrollLeft]
   )
 
-  // ************************ 列高亮 ************************ //
-
-  /**
-   * 控制列高亮，依据 column 中的 dataKey 控制
-   */
-  const [highlightedColKeys, trySetHighlightedColKeys] = useUncontrolledState(
-    DEFAULT_HIGHLIGHTED_COL_KEYS,
-    highlightedColKeysProp
-  )
-
-  const [onHighlightedColChange, isHighlightedCol] = useCheck({
-    checkedIds: highlightedColKeys,
-    onCheck: trySetHighlightedColKeys as any,
-    idFieldName: 'dataKey',
-  })
-
-  /**
-   * 设置列 hover 时高亮，依据 column 中的 dataKey 控制
-   * 与 highlightedColKeys 互不影响
-   */
-  const [hoveredColKey, setHoveredColKey] = useState<React.ReactText>('')
-
-  const [onHoveredColChange, isHoveredCol] = useSelect({
-    selectedId: hoveredColKey,
-    onSelect: setHoveredColKey,
-    idFieldName: 'dataKey',
-  })
-
-  // ************************ 列宽 resizable ************************ //
-
-  const { getColgroupProps, onColumnResizable, colWidths } = useColWidth({
-    data,
-    columns,
-    resizable,
-    dataSource,
-    firstRowElementRef,
-    isHoveredCol,
-  })
-
   // ************************ 行高亮 ************************ //
 
   /**
@@ -485,6 +491,15 @@ export const useTable = ({
     }
   }, [sticky, stickyTop, maxHeight])
 
+  const isTreeView = useMemo(() => {
+    return isArrayNonEmpty(data)
+      ? data.some((row) => {
+          // @ts-ignore
+          return (row.children && row.children.length) || (onLoadChildren && !row.isLeaf)
+        })
+      : false
+  }, [data, onLoadChildren])
+
   return {
     canScroll,
     maxHeight,
@@ -497,7 +512,6 @@ export const useTable = ({
     transitionData,
     flattedColumns,
     flattedColumnsWithoutChildren,
-    fixedColWidth,
     expandedRender,
     // 行多选
     rowSelection,
@@ -558,6 +572,7 @@ export const useTable = ({
     resizable,
     colWidths,
     onColumnResizable,
+    isTree: isTreeView,
   }
 }
 

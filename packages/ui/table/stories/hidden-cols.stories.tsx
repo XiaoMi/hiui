@@ -121,7 +121,7 @@ const dataSource = [
 ]
 
 export const HiddenCols = () => {
-  const [hiddenColKeys, setHiddenColKeys] = React.useState([])
+  const [hiddenColKeys, setHiddenColKeys] = React.useState(['type', 'price'])
   const columnsMemo = React.useMemo(() => {
     return [
       {
@@ -237,6 +237,7 @@ export const HiddenCols = () => {
           onHiddenColKeysChange={setHiddenColKeys}
           columns={columnsMemo}
           data={dataSource}
+          setting
         />
       </div>
     </>
