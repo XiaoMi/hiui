@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/pop-confirm",
-  "version": "4.0.0-alpha.11",
+  "version": "4.0.0-alpha.12",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,14 +43,14 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^4.0.0-alpha.16",
+    "@hi-ui/button": "^4.0.0-alpha.17",
     "@hi-ui/classname": "^4.0.0-alpha.3",
-    "@hi-ui/core": "^4.0.0-alpha.13",
+    "@hi-ui/core": "^4.0.0-alpha.14",
     "@hi-ui/core-css": "^4.0.0-alpha.10",
     "@hi-ui/dom-utils": "^4.0.0-alpha.6",
     "@hi-ui/env": "^4.0.0-alpha.5",
-    "@hi-ui/icons": "^4.0.0-alpha.19",
-    "@hi-ui/popper": "^4.0.0-alpha.16",
+    "@hi-ui/icons": "^4.0.0-alpha.20",
+    "@hi-ui/popper": "^4.0.0-alpha.17",
     "@hi-ui/react-utils": "^4.0.0-alpha.6",
     "@hi-ui/use-latest": "^4.0.0-alpha.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.12"
