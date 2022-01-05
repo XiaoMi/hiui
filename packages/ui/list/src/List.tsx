@@ -1,7 +1,8 @@
-import React, { forwardRef, useCallback, useContext } from 'react'
+import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { PaginationProps, Pagination } from '@hi-ui/pagination'
+import { EmptyState } from '@hi-ui/empty-state'
 import { ListItem } from './ListItem'
 
 const LIST_PREFIX = getPrefixCls('list')
@@ -49,7 +50,10 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className, { [`${prefixCls}--bordered`]: bordered ,[`${prefixCls}--with-pagination`]: pagination})
+    const cls = cx(prefixCls, className, {
+      [`${prefixCls}--bordered`]: bordered,
+      [`${prefixCls}--with-pagination`]: pagination,
+    })
 
     const renderListItem = useCallback(
       (item, index) => {
@@ -69,17 +73,17 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
     )
 
     return (
-        <div ref={ref} role={role} className={cls} {...rest}>
-          {data && data.length > 0 ? (
-            <ul className={cx(`${prefixCls}__wrapper`)}>
-              {data.map((item, index) => {
-                return renderListItem(item, index)
-              })}
-            </ul>
-          ) : (
-            emptyText
-          )}
-          {pagination && (
+      <div ref={ref} role={role} className={cls} {...rest}>
+        {data && data.length > 0 ? (
+          <ul className={cx(`${prefixCls}__wrapper`)}>
+            {data.map((item, index) => {
+              return renderListItem(item, index)
+            })}
+          </ul>
+        ) : (
+          <EmptyState title={emptyText} size="medium" style={{ margin: 16 }} />
+        )}
+        {pagination && (
           <div
             className={`${prefixCls}__pagination`}
             style={{
@@ -91,7 +95,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
             <Pagination {...pagination} />
           </div>
         )}
-        </div>
+      </div>
     )
   }
 )
@@ -121,7 +125,7 @@ export interface ListProps {
   pagination?: PaginationProps & { position: 'left' | 'middle' | 'right' }
   bordered?: boolean
   layout?: 'vertical' | 'horizontal'
-  emptyText?: React.ReactNode,
+  emptyText?: React.ReactNode
 }
 export type ListItemProps = {
   /**
