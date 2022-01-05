@@ -4,6 +4,7 @@ import Stepper from '../src'
 export * from './basic.stories'
 export * from './vertical.story'
 export * from './vertical-layout.story'
+export * from './dot.stories'
 
 export default {
   title: 'Navigation/Stepper',

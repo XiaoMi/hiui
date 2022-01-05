@@ -58,7 +58,6 @@ $prefix: '#{$component-prefix}-stepper' !default;
       color: use-color-static('white');
       background-color: use-color('gray', 200);
 
-
       &__dot {
         background-color: use-color('gray', 200);
         width: 8px;
@@ -66,7 +65,6 @@ $prefix: '#{$component-prefix}-stepper' !default;
         border-radius: use-border-radius('full');
         margin: use-spacing(4);
       }
-
 
       &__icon {
         color: use-color('gray', 200);
@@ -102,9 +100,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
   display: flex;
   font-size: use-text-size('normal');
   overflow: auto;
-  align-items: center;
-
-  
+  // align-items: center;
 
   &__item {
     overflow: hidden;
@@ -114,6 +110,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
         &__dot {
           background-color: use-color-mode('primary');
         }
+
         &__icon {
           color: use-color-mode('primary');
         }
@@ -144,6 +141,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
       &__icon {
         color: use-color('gray', 200);
         font-size: 24px;
+        line-height: 24px;
       }
 
       &__title {
