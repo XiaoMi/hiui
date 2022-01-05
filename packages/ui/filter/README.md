@@ -6,9 +6,9 @@
 
 对列表进行筛选场景
 
-## Stories
+## 使用示例
 
-<!-- Inject -->
+<!-- Inject Stories -->
 
 ## Props
 
