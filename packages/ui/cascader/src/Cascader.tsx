@@ -305,7 +305,7 @@ export interface CascaderProps extends Omit<PickerProps, 'data' | 'onChange' | '
    */
   displayRender?: (
     checkedOption: FlattedCascaderItem,
-    checkedOptions: FlattedCascaderItem[]
+    checkedOptionPaths: FlattedCascaderItem[]
   ) => React.ReactNode
   /**
    * 将选项拍平展示，不支持 `onLoadChildren` 异步加载交互
