@@ -1,4 +1,5 @@
 import React from 'react'
+import Input from '../src'
 
 export * from './basic.stories'
 export * from './disabled.stories'
@@ -17,5 +18,6 @@ export * from './mock.stories'
 
 export default {
   title: 'Data Input/Input',
+  component: Input,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

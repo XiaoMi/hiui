@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '../src'
 
 export * from './status.stories'
 export * from './line.stories'
@@ -12,5 +13,6 @@ export * from './shape.stories'
 
 export default {
   title: 'Basic/Button',
+  component: Button,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

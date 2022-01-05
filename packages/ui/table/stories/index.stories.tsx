@@ -1,4 +1,5 @@
 import React from 'react'
+import Table from '../src'
 
 export * from './basic.stories'
 export * from './frozen.stories'
@@ -19,5 +20,6 @@ export * from './loading.stories'
 
 export default {
   title: 'Data Display/Table',
+  component: Table,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

@@ -10,4 +10,17 @@ module.exports = {
     "@storybook/preset-scss",
     "storybook-addon-performance/register",
   ],
+  typescript: {
+    check: false,
+    reactDocgen: 'react-docgen-typescript',
+    reactDocgenTypescriptOptions: {
+      shouldExtractLiteralValuesFromEnum: true,
+      shouldRemoveUndefinedFromOptional: true,
+      propFilter: (prop) => {
+        if (['prefixCls'].includes(prop.name)) return false
+
+        return (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true)
+      }
+    },
+  },
 }

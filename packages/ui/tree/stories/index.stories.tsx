@@ -1,4 +1,5 @@
 import React from 'react'
+import Tree from '../src'
 
 export * from './basic.stories'
 export * from './draggable.stories'
@@ -13,5 +14,6 @@ export * from './custom-icon.stories'
 
 export default {
   title: 'Data Display/Tree',
+  component: Tree,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

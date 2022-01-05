@@ -1,4 +1,5 @@
 import React from 'react'
+import Cascader from '../src'
 
 export * from './basic.stories'
 export * from './disabled.stories'
@@ -12,5 +13,6 @@ export * from './embed.stories'
 
 export default {
   title: 'Data Input/Cascader',
+  component: Cascader,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

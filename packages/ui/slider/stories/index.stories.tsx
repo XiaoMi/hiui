@@ -1,4 +1,5 @@
 import React from 'react'
+import Slider from '../src'
 
 export * from './basic.stories'
 export * from './controlled.stories'
@@ -11,5 +12,6 @@ export * from './mark.stories'
 
 export default {
   title: 'Data Input/Slider',
+  component: Slider,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

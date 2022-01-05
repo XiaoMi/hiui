@@ -1,8 +1,10 @@
 import React from 'react'
+import Highlighter from '../src'
 
 export * from './basic.stories'
 
 export default {
   title: 'Private/Highlighter',
+  component: Highlighter,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

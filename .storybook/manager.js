@@ -5,7 +5,7 @@ addons.setConfig({
   theme: hiuiTheme,
   isFullscreen: false,
   showNav: true,
-  showPanel: false,
+  showPanel: true,
   panelPosition: 'bottom',
   sidebarAnimations: true,
   enableShortcuts: true,

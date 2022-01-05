@@ -1,4 +1,5 @@
 import React from 'react'
+import Form from '../src'
 
 export * from './basic.stories'
 export * from './label-placement.stories'
@@ -13,5 +14,6 @@ export * from './cascade.stories'
 
 export default {
   title: 'Data Input/Form',
+  component: Form,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import Transfer from '../src'
 
 export * from './basic.stories'
 export * from './title.stories'
@@ -12,5 +13,6 @@ export * from './draggable.stories'
 
 export default {
   title: 'Data Input/Transfer',
+  component: Transfer,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

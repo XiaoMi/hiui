@@ -1,4 +1,5 @@
 import React from 'react'
+import CheckSelect from '../src'
 
 export * from './basic.stories'
 export * from './controlled.stories'
@@ -17,5 +18,6 @@ export * from './virtual-list.stories'
 
 export default {
   title: 'Data Input/CheckSelect',
+  component: CheckSelect,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'button'
 const _prefix = getPrefixCls(_role)
@@ -8,7 +9,7 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is Button
  */
-export const Button = forwardRef<any, ButtonProps>(
+export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   (
     {
       prefixCls = _prefix,
@@ -55,13 +56,13 @@ export const Button = forwardRef<any, ButtonProps>(
         className={cls}
         disabled={isNonInteractive}
         type="button"
-        {...rest}
+        {...(rest as any)}
       >
         {prepend}
         {children}
       </button>
     ) : (
-      <a ref={ref} role={role} className={cls} {...rest}>
+      <a ref={ref} role={role} className={cls} {...(rest as any)}>
         {prepend}
         {children}
       </a>
@@ -69,27 +70,7 @@ export const Button = forwardRef<any, ButtonProps>(
   }
 )
 
-export interface ButtonProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-  /**
-   * 组件的孩子节点
-   */
-  children?: React.ReactNode
+export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
   /**
    * 设置按钮类型
    */
@@ -98,10 +79,6 @@ export interface ButtonProps {
    * 设置按钮尺寸
    */
   size?: 'large' | 'small' | 'default' | 'x-large'
-  /**
-   * 设置铺满宽度
-   */
-  fullWidth?: boolean
   /**
    * 设置按钮外观
    */
@@ -130,6 +107,9 @@ export interface ButtonProps {
    * 设置按钮图标
    */
   icon?: React.ReactNode
+  /**
+   * 设置按钮形状
+   */
   shape?: 'square' | 'circle'
 }
 

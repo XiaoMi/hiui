@@ -1,4 +1,5 @@
 import React from 'react'
+import TreeSelect from '../src'
 
 export * from './basic.stories'
 export * from './controlled.stories'
@@ -12,5 +13,6 @@ export * from './async.stories'
 
 export default {
   title: 'Data Input/TreeSelect',
+  component: TreeSelect,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

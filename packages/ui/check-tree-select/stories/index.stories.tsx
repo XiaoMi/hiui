@@ -1,4 +1,5 @@
 import React from 'react'
+import CheckTreeSelect from '../src'
 
 export * from './basic.stories'
 export * from './controlled.stories'
@@ -12,5 +13,6 @@ export * from './async.stories'
 
 export default {
   title: 'Data Input/CheckTreeSelect',
+  component: CheckTreeSelect,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

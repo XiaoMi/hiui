@@ -1,4 +1,5 @@
 import React from 'react'
+import Radio from '../src'
 
 export * from './basic.stories'
 export * from './disabled.stories'
@@ -7,5 +8,6 @@ export * from './group.stories'
 
 export default {
   title: 'Data Input/Radio',
+  component: Radio,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

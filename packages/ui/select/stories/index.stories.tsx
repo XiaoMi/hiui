@@ -1,4 +1,5 @@
 import React from 'react'
+import Select from '../src'
 
 export * from './basic.stories'
 export * from './controlled.stories'
@@ -16,5 +17,6 @@ export * from './pinyin.stories'
 
 export default {
   title: 'Data Input/Select',
+  component: Select,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

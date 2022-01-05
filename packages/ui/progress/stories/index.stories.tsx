@@ -1,4 +1,5 @@
 import React from 'react'
+import Progress from '../src'
 
 export * from './basic.stories'
 export * from './bar-size.stories'
@@ -11,5 +12,6 @@ export * from './dashboard-size.stories'
 
 export default {
   title: 'FeedBacck/Progress',
+  component: Progress,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

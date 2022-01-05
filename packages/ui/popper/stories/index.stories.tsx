@@ -1,4 +1,5 @@
 import React from 'react'
+import Popper from '../src'
 
 export * from './basic.stories'
 export * from './placement.stories'
@@ -11,5 +12,6 @@ export * from './hook.stories'
 
 export default {
   title: 'Private/Popper',
+  component: Popper,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

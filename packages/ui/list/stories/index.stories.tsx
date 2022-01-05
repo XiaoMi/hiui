@@ -1,4 +1,5 @@
 import React from 'react'
+import List from '../src'
 
 export * from './basic.stories'
 export * from './pagination.stories'
@@ -7,5 +8,6 @@ export * from './action.stories'
 
 export default {
   title: 'Data Display/List',
+  component: List,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

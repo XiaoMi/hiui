@@ -1,4 +1,5 @@
 import React from 'react'
+import Tabs from '../src'
 
 export * from './basic.stories'
 export * from './vertical.stories'
@@ -12,5 +13,6 @@ export * from './tab-list.stories'
 
 export default {
   title: 'Navigation/Tabs',
+  component: Tabs,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import Carousel from '../src'
 
 export * from './basic.stories'
 export * from './resize.stories'
@@ -10,5 +11,6 @@ export * from './config.stories'
 
 export default {
   title: 'Data Display/Carousel',
+  component: Carousel,
   decorators: [(story: Function) => <div>{story()}</div>],
 }
