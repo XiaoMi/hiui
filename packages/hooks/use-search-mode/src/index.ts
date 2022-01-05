@@ -7,13 +7,7 @@ import { filterTree, getNodeAncestors, cloneTree } from '@hi-ui/tree-utils'
 /**
  * TODO: What is useSearchMode
  */
-export const useSearchMode = ({
-  searchable: searchableProp,
-  // searchMode: searchModeProp,
-  // dataSource,
-  // filterOption,
-  strategies,
-}: UseSearchModeProps) => {
+export const useSearchMode = ({ searchable: searchableProp, strategies }: UseSearchModeProps) => {
   // TODO: 抽离 useSearch
   const [searchValue, setSearchValue] = useState('')
   // 搜索时临时节点展开态
