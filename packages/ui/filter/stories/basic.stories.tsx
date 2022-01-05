@@ -1,45 +1,81 @@
 import React from 'react'
-import Filter, { FilterItem } from '../src'
+import Filter from '../src'
 
 export const Basic = () => {
-  const data = [
-    {
-      id: 1,
-      content: '深空',
-    },
-    {
-      id: 2,
-      content: '白色',
-    },
-    {
-      id: 3,
-      content: '亮黑色',
-    },
-    {
-      id: 4,
-      content: '金色',
-    },
-  ]
-
   return (
     <>
       <h1>Basic</h1>
       <div className="filter-basic__wrap">
         <Filter
-          label={'颜色'}
-          defaultValue={2}
-          onChange={(value) => {
-            console.log('value', value)
-          }}
-        >
-          {data.map((item) => {
-            return (
-              <FilterItem key={item.id} value={item.id}>
-                {item.content}
-              </FilterItem>
-            )
-          })}
-        </Filter>
+          label={['渠道', '分店', '机型']}
+          defaultValue={[2, 21]}
+          data={[
+            {
+              id: 1,
+              title: '小米商城',
+              children: [
+                {
+                  id: 11,
+                  title: '小米商城',
+                },
+                {
+                  id: 12,
+                  title: '米家优品',
+                  disabled: true,
+                },
+              ],
+            },
+            {
+              id: 2,
+              title: '米家有品',
+              children: [
+                {
+                  id: 21,
+                  title: '五彩城店',
+                  children: [
+                    {
+                      id: '小米9',
+                      title: '小米9',
+                    },
+                    {
+                      id: '小米MIXS',
+                      title: '小米MIXS',
+                    },
+                    {
+                      id: '小米8',
+                      title: '小米8',
+                    },
+                  ],
+                },
+                {
+                  id: 22,
+                  title: '清河店',
+                },
+                {
+                  id: 23,
+                  title: '西三旗店',
+                },
+              ],
+            },
+
+            {
+              id: 3,
+              title: '京东商城',
+              children: [
+                {
+                  id: 31,
+                  title: '小米直营',
+                  children: [
+                    {
+                      id: '线下KA',
+                      title: '线下KA',
+                    },
+                  ],
+                },
+              ],
+            },
+          ]}
+        />
       </div>
     </>
   )
