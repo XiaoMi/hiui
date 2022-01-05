@@ -4,7 +4,6 @@ import { __DEV__ } from '@hi-ui/env'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
-import { PopperJS } from '@hi-ui/popper'
 import {
   CheckCascaderItem,
   ExpandTrigger,
@@ -58,7 +57,6 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       upMatch,
       searchPlaceholder,
       onLoadChildren,
-      placement,
       wrap,
       // picker
       appearance,
@@ -271,22 +269,6 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
 export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-  /**
    * 设置选择项数据源
    */
   data: CheckCascaderItem[]
@@ -305,6 +287,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   onChange?: (values: React.ReactText[]) => void
   /**
    * 选项被点击时的回调
+   * @private
    */
   onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderItemEventData) => void
   /**
@@ -365,20 +348,13 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   onLoadChildren?: (item: CheckCascaderItemEventData) => Promise<CheckCascaderItem[] | void> | void
   /**
    * 是否单行展示，超出 +1
+   * @private
    */
   wrap?: boolean
-  /**
-   * 相对 reference 的位置
-   */
-  placement?: PopperJS.Placement
   /**
    * 设置展现形式
    */
   appearance?: 'outline' | 'unset' | 'filled'
-  /**
-   * 节点搜索模式
-   */
-  searchMode?: 'highlight' | 'filter' | 'upMatch'
   /**
    * 自定义搜索过滤器，仅在 searchable 为 true 时有效
    * 第一个参数为输入的关键字，

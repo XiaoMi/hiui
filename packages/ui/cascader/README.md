@@ -43,13 +43,13 @@
 
 ## Events
 
-| 名称               | 说明               | 类型                                                                     | 参数               | 返回值 |
-| ------------------ | ------------------ | ------------------------------------------------------------------------ | ------------------ | ------ |
-| onChange           | 选择后的回调       | (values: ReactText[]) => void                                            | values: 选中项集合 | -      |
-| onActiveItemChange | 选中项改变时的回调 | (values: string[]) => void                                               | values: 选中项集合 | -      |
-| onOpen             | 下拉菜单打开时回调 | () => void                                                               | -                  | -      |
-| onClose            | 下拉菜单关闭时回调 | () => void                                                               | -                  | -      |
-| onLoadChildren     | 异步请求更新数据   | (item: CascaderItemEventData) => Promise<CascaderItem[] \| void> \| void | -                  | -      |
+| 名称               | 说明               | 类型                                                                       | 参数               | 返回值 |
+| ------------------ | ------------------ | -------------------------------------------------------------------------- | ------------------ | ------ |
+| onChange           | 选择后的回调       | (values: ReactText[]) => void                                              | values: 选中项集合 | -      |
+| onActiveItemChange | 选中项改变时的回调 | (values: string[]) => void                                                 | values: 选中项集合 | -      |
+| onOpen             | 下拉菜单打开时回调 | () => void                                                                 | -                  | -      |
+| onClose            | 下拉菜单关闭时回调 | () => void                                                                 | -                  | -      |
+| onLoadChildren     | 异步请求更新数据   | (item: CascaderItemEventData) => Promise\<CascaderItem[] \| void\> \| void | -                  | -      |
 
 ## Type
 
@@ -57,9 +57,24 @@
 
 | 参数     | 说明     | 类型    | 可选值        | 默认值 |
 | -------- | -------- | ------- | ------------- | ------ |
-| title    | 选择项   | string  | -             | -      |
 | id       | 选择项值 | string  | -             | -      |
+| title    | 选择项   | string  | -             | -      |
 | disabled | 是否禁用 | boolean | true \| false | false  |
+
+### CascaderItemEventData
+
+| 参数     | 说明                             | 类型     | 可选值        | 默认值 |
+| -------- | -------------------------------- | -------- | ------------- | ------ |
+| id       | 选择项值                         | string   | -             | -      |
+| title    | 选择项                           | string   | -             | -      |
+| disabled | 是否禁用                         | boolean  | true \| false | false  |
+| depth    | 选项的层级，根节点层级为 0       | number   | -             | -      |
+| raw      | 原始数据，包括约定模型之外的数据 | object   | -             | -      |
+| parent   | 选项的父级节点数据               | object   | -             | -      |
+| children | 选项的孩子节点列表数据           | object[] | -             | -      |
+| selected | 节点是否被选中                   | boolean  | true \| false | -      |
+| loading  | 节点是否在异步加载子项数据中     | boolean  | true \| false | -      |
+| focused  | 节点是否被聚焦                   | boolean  | true \| false | -      |
 
 ### DataSource
 
