@@ -10,7 +10,7 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is FormSubmit
  */
-export const FormSubmit = forwardRef<HTMLDivElement | null, FormLabelProps>(
+export const FormSubmit = forwardRef<HTMLButtonElement | HTMLAnchorElement | null, FormLabelProps>(
   (
     { prefixCls = _prefix, role = _role, className, children, type = 'primary', onClick, ...rest },
     ref
