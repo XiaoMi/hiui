@@ -15,7 +15,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   content,
   disabled,
   id,
-  level,
+  level = 1,
   children,
   parentIds,
 }) => {

@@ -123,8 +123,8 @@ export type MenuItemProps = {
   id: string | number
   disabled?: boolean
   children?: MenuItemProps[]
-  level: number
-  parentIds: React.ReactText[]
+  level?: number
+  parentIds?: React.ReactText[]
 }
 export interface MenuProps {
   /**
@@ -154,9 +154,9 @@ export interface MenuProps {
   onClickSubMenu?: (subMenuId: React.ReactText) => void
   onCollapse?: (collapsed: boolean) => void
   overlayClassName?: string
-  expandedType: 'default' | 'pop'
-  defaultExpandedIds: React.ReactText[]
-  defaultActiveId: React.ReactText
+  expandedType?: 'default' | 'pop'
+  defaultExpandedIds?: React.ReactText[]
+  defaultActiveId?: React.ReactText
 }
 
 if (__DEV__) {
