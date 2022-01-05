@@ -20,7 +20,6 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import { getNodeAncestorsWithMe } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { Picker, PickerProps } from '@hi-ui/picker'
-// import { Highlighter } from '@hi-ui/highlighter'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import {
   useAsyncSearch,
@@ -266,6 +265,7 @@ export interface CascaderProps extends Omit<PickerProps, 'data' | 'onChange' | '
   ) => void
   /**
    * 选中选项时触发，仅供内部使用
+   * @private
    */
   onSelect?: (
     value: React.ReactText,
@@ -335,10 +335,6 @@ export interface CascaderProps extends Omit<PickerProps, 'data' | 'onChange' | '
    * 设置展现形式
    */
   appearance?: 'outline' | 'unset' | 'filled'
-  /**
-   * 节点搜索模式，仅在mode=normal模式下生效
-   */
-  searchMode?: 'highlight' | 'filter'
   /**
    * 自定义搜索过滤器，仅在 searchable 为 true 时有效
    * 第一个参数为输入的关键字，
