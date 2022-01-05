@@ -35,7 +35,7 @@ export declare type HiBaseHTMLFieldProps<
   P = {}
 > = HiBaseHTMLProps<T, P> & {
   /**
-   * 表单控件组件输入是否无效
+   * 开启表单控件组件输入无效态
    */
   invalid?: boolean
 }
