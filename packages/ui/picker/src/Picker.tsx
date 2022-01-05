@@ -24,7 +24,6 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       children,
       disabled = false,
       clearable = false,
-      bordered = true,
       searchable = false,
       visible,
       onOpen,
@@ -203,19 +202,15 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
 export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
   /**
-   * 是否有边框
-   */
-  bordered?: boolean
-  /**
    * 是否禁用
    */
   disabled?: boolean
   /**
-   * 输入框占位	string	-	请选择
+   * 输入框占位
    */
   placeholder?: string
   /**
-   * 没有选项时的提示
+   * 设置选项为空时展示的内容
    */
   emptyContent?: React.ReactNode
   /**
@@ -231,11 +226,11 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    */
   optionWidth?: number
   /**
-   * 下拉根元素的类名称 (3.0 新增)
+   * 下拉根元素的类名称
    */
   overlayClassName?: string
   /**
-   * 开启搜索
+   * 是否可搜索
    */
   searchable?: boolean
   /**
@@ -263,18 +258,17 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    */
   visible?: boolean
   /**
-   * 打开时回调
+   * 下拉菜单打开时回调
    */
   onOpen?: () => void
   /**
-   * 关闭时回调
+   * 下拉菜单关闭时回调
    */
   onClose?: () => void
   /**
    * 是否在加载中
    */
   loading?: boolean
-  trigger: any
   /**
    * 自定义下拉菜单底部渲染
    */
@@ -283,6 +277,7 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 下拉列表滚动时的回调
    */
   onOverlayScroll?: () => void
+  trigger: any
 }
 
 if (__DEV__) {
