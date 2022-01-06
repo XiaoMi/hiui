@@ -239,7 +239,7 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    */
   onDelete?: () => void
   /**
-   * 最大宽度，如超出，则截断末尾添加省略号，鼠标悬浮气泡展示（当使用此功能时，如果 children.toString 无法自动转换成预期的字符串，则请自行配置转换器 childrenToStringTransformer 属性）
+   * 最大宽度，如超出，则截断末尾添加省略号，鼠标悬浮气泡展示（当使用此功能时，请保证children为纯文本类型）
    * @default 0 代表不限制宽度
    */
   maxWidth?: number
