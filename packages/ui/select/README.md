@@ -59,11 +59,11 @@
 
 ### DataItem
 
-| 参数     | 说明             | 类型      | 可选值        | 默认值 |
-| -------- | ---------------- | --------- | ------------- | ------ |
-| id       | 下拉选择项唯一值 | ReactText | -             | -      |
-| title    | 下拉选择项标题   | string    | -             | -      |
-| disabled | 是否禁用         | boolean   | true \| false | false  |
+| 参数     | 说明              | 类型      | 可选值        | 默认值 |
+| -------- | ----------------- | --------- | ------------- | ------ |
+| id       | 下拉选择项唯一 id | ReactText | -             | -      |
+| title    | 下拉选择项标题    | string    | -             | -      |
+| disabled | 是否禁用          | boolean   | true \| false | false  |
 
 ### CheckSelectEventData
 
