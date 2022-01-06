@@ -376,7 +376,7 @@ const renderCheckbox = (
       indeterminate={semiChecked}
       checked={checked}
       disabled={disabled}
-      focusable={false}
+      tabIndex={-1}
       onClick={(evt) => evt.stopPropagation()}
       onChange={() => {
         onCheck?.(node, !checked)
