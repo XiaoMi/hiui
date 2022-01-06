@@ -53,7 +53,7 @@ export const useCascadeCheck = ({
 
         onCheck(nextCheckedIds, targetItem, shouldChecked, nextSemiCheckedIds)
       } else {
-        const nextCheckedIds = checkDefault(checkedIds, targetItem, shouldChecked, 'id')
+        const nextCheckedIds = checkDefault(checkedIds, targetItem.id, shouldChecked)
 
         onCheck(nextCheckedIds, targetItem, shouldChecked, [])
       }

@@ -21,7 +21,7 @@ export const useCheck = ({
       if (allowCheckRef.current && allowCheckRef.current(targetItem) === false) return
 
       const checkedIds = checkedIdsLatestRef.current
-      const nextCheckedIds = checkDefault(checkedIds, targetItem, shouldChecked, idFieldName)
+      const nextCheckedIds = checkDefault(checkedIds, targetItem[idFieldName], shouldChecked)
 
       onCheck(nextCheckedIds, targetItem, shouldChecked)
     },
@@ -61,14 +61,12 @@ export interface UseCheckProps<T extends UseCheckItem = any> {
 /**
  * 普通多选
  */
-export const checkDefault = <T extends UseCheckItem>(
+export const checkDefault = (
   checkedIds: React.ReactText[],
-  targetItem: T,
-  shouldChecked: boolean,
-  idFieldName: string
+  targetId: React.ReactText,
+  shouldChecked: boolean
 ) => {
   let nextCheckedIds = checkedIds
-  const targetId = targetItem[idFieldName]
 
   if (shouldChecked) {
     if (nextCheckedIds.indexOf(targetId) === -1) {

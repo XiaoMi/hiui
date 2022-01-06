@@ -1,14 +1,16 @@
-import React, { forwardRef, useCallback } from 'react'
+import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useCheckboxGroupContext } from './context'
+import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { withDefaultProp } from '@hi-ui/react-utils'
 
 const _role = 'checkbox'
 const _prefix = getPrefixCls(_role)
 
 /**
- * TODO: What is Checkbox
+ * 复选
  */
 export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
   (
@@ -19,7 +21,6 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
       children,
       name,
       value,
-      focusable = true,
       disabled: disabledProp,
       indeterminate = false,
       autoFocus = false,
@@ -32,28 +33,23 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
   ) => {
     const {
       disabled: disabledGroup,
+      name: nameGroup,
       value: valueGroup,
       onChange: onChangeGroup,
     } = useCheckboxGroupContext()
 
-    const onChange = useCallback(
-      (_: boolean, evt: React.ChangeEvent<HTMLInputElement>) => {
-        // TODO: 约定所有该类型组件的双重回调的执行顺序，子优于父（方便单独设置，父作为默认）
-        onChangeProp?.(evt)
-        onChangeGroup?.(evt)
-      },
-      [onChangeProp, onChangeGroup]
-    )
+    const disabled = withDefaultProp(withDefaultProp(disabledProp, disabledGroup), false) as boolean
 
     const checkedWithContext =
       checkedProp ?? (valueGroup && value !== undefined ? valueGroup.includes(value) : checkedProp)
 
-    const disabled = disabledProp ?? disabledGroup
-
     const [checked, tryChangeChecked] = useUncontrolledState(
       defaultChecked,
       checkedWithContext,
-      onChange
+      (_: boolean, evt: React.ChangeEvent<HTMLInputElement>) => {
+        onChangeProp?.(evt)
+        onChangeGroup?.(evt)
+      }
     )
 
     const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,67 +59,69 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
       tryChangeChecked(evt.target.checked, evt)
     }
 
-    // TODO: 统一约定组件库 className 和 自定义样式控制先后顺序
-    const cls = cx(prefixCls, disabled && `${prefixCls}--disabled`, className)
-
-    const iconCls = cx(
-      `${prefixCls}__icon`,
-      // TODO: 约定所有 className 写法，使用 && 或 三元
-      indeterminate && `${prefixCls}__icon--indeterminate`,
-      checked && !indeterminate && `${prefixCls}__icon--checked`
-    )
+    const cls = cx(prefixCls, className, disabled && `${prefixCls}--disabled`)
 
     return (
       <label ref={ref} role={role} className={cls} {...rest}>
         <input
           className={`${prefixCls}__input`}
           type="checkbox"
+          // input 将被隐藏，只使用其交互功能，UI 使用 span 自定义绘制
           aria-hidden="true"
           autoFocus={autoFocus}
           disabled={disabled}
-          name={name}
+          name={name ?? nameGroup}
           value={value}
           checked={checked}
           onChange={handleChange}
-          tabIndex={focusable ? 0 : -1}
           onClick={(evt) => evt.stopPropagation()}
         />
-        <span className={iconCls} />
+        <span
+          className={cx(
+            `${prefixCls}__icon`,
+            indeterminate && `${prefixCls}__icon--indeterminate`,
+            checked && !indeterminate && `${prefixCls}__icon--checked`
+          )}
+        />
         {children ? <span className={`${prefixCls}__text`}>{children}</span> : null}
       </label>
     )
   }
 )
 
-export interface CheckboxProps {
+export interface CheckboxProps extends HiBaseHTMLFieldProps<'label'> {
   /**
-   * 组件默认的选择器类
+   * 	是否自动获取焦点
    */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-  children?: React.ReactNode
   autoFocus?: boolean
+  /**
+   * 	是否选中
+   */
   checked?: boolean
+  /**
+   * 	是否默认选中
+   */
   defaultChecked?: boolean
+  /**
+   * 	是否禁用
+   */
   disabled?: boolean
+  /**
+   * 	不全选的样式控制，优先级大于 checked
+   */
   indeterminate?: boolean
-  name?: string
-  focusable?: boolean
-  // TODO: 约定所有表单组件兼容 number | string
-  value?: React.ReactText
+  /**
+   * 	变化时的回调
+   */
   onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void
-  onClick?: (evt: React.MouseEvent<HTMLLabelElement>) => void
+  /**
+   * 	checkbox 表单控件的名称，用于 form 提交
+   */
+  name?: string
+  /**
+   * checkbox 表单控件绑定的值，用于 form 提交
+   */
+  value?: React.ReactText
 }
 
 if (__DEV__) {

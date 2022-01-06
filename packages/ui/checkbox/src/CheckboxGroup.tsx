@@ -1,8 +1,14 @@
-import React, { forwardRef, useCallback, useMemo } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CheckboxGroupProvider } from './context'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { CheckboxPlacementEnum, CheckboxDataItem } from './types'
+import { checkDefault } from '@hi-ui/use-check'
+import { Checkbox } from './Checkbox'
+import { isArrayNonEmpty, isObject } from '@hi-ui/type-assertion'
 
 const _role = 'checkbox-group'
 const _prefix = getPrefixCls(_role)
@@ -17,84 +23,107 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
       role = _role,
       className,
       disabled = false,
-      placement = 'horizontal',
+      placement = CheckboxPlacementEnum.horizontal,
       defaultValue = [],
+      name,
       value: valueProp,
       onChange,
+      data: dataProp,
+      children,
       ...rest
     },
     ref
   ) => {
-    const [value, tryChange] = useUncontrolledState(defaultValue, valueProp, onChange)
+    const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
-    const handleChange = useCallback(
-      (evt: React.ChangeEvent<HTMLInputElement>) => {
-        const { checked, value: selectedItem } = evt.target
-
-        const nextValue = updateMultipleSelectedItems(value, selectedItem, checked)
-        tryChange(nextValue)
-      },
-      [tryChange, value]
-    )
-
-    const cls = cx(prefixCls, placement === 'vertical' && `${prefixCls}--vertical`, className)
+    const handleChange = useLatestCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
+      const { checked, value: selectedItem } = evt.target
+      const nextValue = checkDefault(value, selectedItem, checked)
+      tryChangeValue(nextValue)
+    })
 
     const providedValue = useMemo(
       () => ({
         onChange: handleChange,
+        name,
         value,
         disabled,
       }),
-      [handleChange, disabled, value]
+      [handleChange, disabled, value, name]
     )
+
+    const data = useMemo(() => {
+      if (!dataProp) return null
+      return dataProp.map((item) => {
+        return isObject(item) ? item : { id: item, content: item }
+      })
+    }, [dataProp])
+
+    const hasData = isArrayNonEmpty(data)
+
+    const cls = cx(
+      prefixCls,
+      className,
+      placement === 'vertical' && `${prefixCls}--vertical`,
+      hasData && `${prefixCls}--data-wrap`
+    )
+
+    // data 优先级大于内嵌式组合
+    if (hasData) {
+      children = data!.map(({ id, disabled, content }) => (
+        <Checkbox
+          key={id}
+          value={id}
+          disabled={disabled}
+          checked={value.includes(id)}
+          className={`${prefixCls}__item`}
+        >
+          {content}
+        </Checkbox>
+      ))
+    }
 
     return (
       <CheckboxGroupProvider value={providedValue}>
-        {/* TODO: 抽离为排版 Flex 组件，同一排版使用 */}
-        <div ref={ref} className={cls} {...rest} />
+        <div ref={ref} className={cls} {...rest}>
+          {children}
+        </div>
       </CheckboxGroupProvider>
     )
   }
 )
 
-export interface CheckboxGroupProps {
+export interface CheckboxGroupProps extends HiBaseHTMLProps<'div'> {
   /**
-   * 组件默认的选择器类
+   * 排列方式
    */
-  prefixCls?: string
+  placement?: CheckboxPlacementEnum
   /**
-   * 组件的语义化 Role 属性
+   *   指定可选项
    */
-  role?: string
+  data?: React.ReactText[] | CheckboxDataItem[]
   /**
-   * 组件的注入选择器类
+   * 默认选中的项
    */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-  children?: React.ReactNode
-  placement?: 'vertical' | 'horizontal'
-  disabled?: boolean
-  value?: React.ReactText[]
   defaultValue?: React.ReactText[]
-  onChange?: (checkedList: React.ReactText[]) => void
+  /**
+   * 是否禁用
+   */
+  disabled?: boolean
+  /**
+   * CheckboxGroup 下所有 input[type="checkbox"] 的 name 属性
+   */
+  name?: string
+  /**
+   * 变化时的回调
+   */
+  onChange?: (checkedIds: React.ReactText[]) => void
+  /**
+   * 指定选中的项
+   */
+  value?: React.ReactText[]
 }
 
 if (__DEV__) {
   CheckboxGroup.displayName = 'CheckboxGroup'
-}
-
-function updateMultipleSelectedItems<T>(list: T[], updatedItem: T, shouldAdd = false) {
-  const nextList = list.filter((item) => {
-    const removed = item === updatedItem
-    return !removed
-  })
-
-  if (shouldAdd) {
-    nextList.push(updatedItem)
-  }
-
-  return nextList
 }

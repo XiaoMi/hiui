@@ -153,18 +153,22 @@ $prefix: '#{$component-prefix}-checkbox' !default;
 
   // Using for theme mixin
   @include hi-checkbox-style();
+}
 
-  // Using for checkbox-group
-  &-group {
+// Using for checkbox-group
+.#{$prefix}-group {
+  @include component-reset;
+
+  $this: &;
+
+  &--data-wrap {
     display: inline-flex;
-    gap: 32px;
+    gap: use-spacing(10);
+  }
 
-    &--vertical {
+  &--vertical {
+    #{$this}--data-wrap {
       flex-direction: column;
-
-      #{$prefix} {
-        height: 32px;
-      }
     }
   }
 }
