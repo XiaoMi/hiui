@@ -7,6 +7,7 @@ export * from './trigger.stories'
 export * from './multi-menu.stories'
 export * from './placement.stories'
 export * from './type.stories'
+export * from './trigger-button.stories'
 
 export default {
   title: 'Navigation/Dropdown',

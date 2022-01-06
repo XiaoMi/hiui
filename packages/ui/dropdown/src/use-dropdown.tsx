@@ -8,6 +8,7 @@ import { useUnmountEffect } from '@hi-ui/use-unmount-effect'
 import { PopperPortalProps } from '@hi-ui/popper'
 import { getPrefixStyleVar } from '@hi-ui/classname'
 import { mergeRefs } from '@hi-ui/react-utils'
+import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 
 const NOOP_ARRAY = [] as []
 
@@ -77,39 +78,44 @@ export const useDropdown = (props: UseDropdownProps) => {
     startOpenTimer()
   })
 
-  /**
-   * 事件收集
-   * 'click' | 'contextmenu' | 'hover'
-   */
-  const eventHandler = useMemo(() => {
-    return triggerMethods.reduce((acc, cur) => {
-      switch (cur) {
-        case TriggerActionEnum.HOVER:
-          acc.onMouseEnter = handlePopperEnter
-          acc.onMouseLeave = handlePopperLeave
-          break
-        case TriggerActionEnum.CONTEXTMENU:
-          acc.onContextMenu = (evt: React.MouseEvent) => {
-            evt.preventDefault()
-            menuVisibleAction.not()
-          }
-          break
-        case TriggerActionEnum.CLICK:
-          acc.onClick = menuVisibleAction.not
-          break
+  const getTriggerProps = useCallback(
+    (props = {}, ref = null) => {
+      const triggerProps = {
+        ref: mergeRefs(triggerElementRef, ref),
+        disabled,
       }
 
-      return acc
-    }, {} as any)
-  }, [triggerMethods, menuVisibleAction, handlePopperEnter, handlePopperLeave])
+      /**
+       * 事件收集
+       * 'click' | 'contextmenu' | 'hover'
+       */
+      triggerMethods.reduce((acc, cur) => {
+        switch (cur) {
+          case TriggerActionEnum.HOVER:
+            acc.onMouseEnter = mockDefaultHandlers(props.onMouseEnter, handlePopperEnter)
+            acc.onMouseLeave = mockDefaultHandlers(props.onMouseLeave, handlePopperLeave)
+            break
+          case TriggerActionEnum.CONTEXTMENU:
+            acc.onContextMenu = mockDefaultHandlers(
+              props.onContextMenu,
+              (evt: React.MouseEvent) => {
+                evt.preventDefault()
+                menuVisibleAction.not()
+              }
+            )
+            break
+          case TriggerActionEnum.CLICK:
+            acc.onClick = mockDefaultHandlers(props.onClick, menuVisibleAction.not)
+            break
+        }
 
-  const getTriggerProps = useCallback(() => {
-    return {
-      ref: triggerElementRef,
-      disabled,
-      ...eventHandler,
-    }
-  }, [eventHandler, disabled])
+        return acc
+      }, triggerProps as any)
+
+      return triggerProps
+    },
+    [disabled, triggerMethods, menuVisibleAction, handlePopperEnter, handlePopperLeave]
+  )
 
   const rootProps = rest
 

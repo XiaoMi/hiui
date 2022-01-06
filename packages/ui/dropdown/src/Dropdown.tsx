@@ -30,6 +30,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
       onClick,
       onButtonClick,
       overlayClassName,
+      triggerButton,
       ...rest
     },
     ref
@@ -74,29 +75,42 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
       })
     }
 
+    const renderButton = () => {
+      if (triggerButton) {
+        // @ts-ignore
+        return cloneElement(triggerButton, getTriggerProps(triggerButton.props, triggerButton.ref))
+      }
+
+      if (type === 'text' || type === 'button') {
+        return (
+          <Button {...getTriggerProps()} appearance={type === 'button' ? 'flat' : 'link'}>
+            {title}
+            <DownOutlined style={{ marginInlineStart: 2 }} />
+          </Button>
+        )
+      }
+
+      if (type === 'group') {
+        return (
+          <ButtonGroup>
+            <Button onClick={onButtonClick}>{title}</Button>
+            <Button
+              className={cx(`${prefixCls}__icon`, `${prefixCls}__icon-btn-wrap`)}
+              {...getTriggerProps()}
+            >
+              <DownOutlined />
+            </Button>
+          </ButtonGroup>
+        )
+      }
+
+      return null
+    }
+
     return (
       <DropDownProvider value={providedValue}>
         <div ref={ref} role={role} className={cls} {...rootProps}>
-          {/* TODO： 支持非 Button 元素 */}
-
-          {type === 'text' || type === 'button' ? (
-            <Button {...getTriggerProps()} appearance={type === 'button' ? 'flat' : 'link'}>
-              {title}
-              <DownOutlined style={{ marginInlineStart: 2 }} />
-            </Button>
-          ) : null}
-
-          {type === 'group' ? (
-            <ButtonGroup>
-              <Button onClick={onButtonClick}>{title}</Button>
-              <Button
-                className={cx(`${prefixCls}__icon`, `${prefixCls}__icon-btn-wrap`)}
-                {...getTriggerProps()}
-              >
-                <DownOutlined />
-              </Button>
-            </ButtonGroup>
-          ) : null}
+          {renderButton()}
 
           {isArrayNonEmpty(data) ? (
             <DropdownMenu
@@ -140,36 +154,19 @@ export interface DropdownProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, 
    * 下拉根元素的类名称
    */
   overlayClassName?: string
+  /**
+   * 自定义下拉菜单触发按钮
+   * 注意：自定义按钮需要支持 ref 获取元素 dom 引用 以及 trigger 对应的事件：
+   *
+   * hover: onMouseEnter \ onMouseLeave
+   * click: onClick
+   * contextmenu: onContextMenu
+   */
+  triggerButton?: React.ReactElement
 }
 
 if (__DEV__) {
   Dropdown.displayName = 'Dropdown'
-}
-
-const dropdownButtonPrefix = getPrefixCls('dropdown-button')
-
-/**
- * TODO: What is DropdownButton
- */
-const DropdownButton = forwardRef<HTMLDivElement | null, DropdownButtonProps>(
-  ({ prefixCls = dropdownButtonPrefix, role = _role, className, children, ...rest }, ref) => {
-    const { getTriggerProps } = useDropDownContext()
-    const triggerProps = getTriggerProps()
-
-    const cls = cx(prefixCls, className)
-
-    return (
-      <div role={role} className={cls} {...rest} {...triggerProps}>
-        {children}
-      </div>
-    )
-  }
-)
-
-interface DropdownButtonProps extends HiBaseHTMLProps<'div'> {}
-
-if (__DEV__) {
-  DropdownButton.displayName = 'DropdownButton'
 }
 
 const dropdownMenuPrefix = getPrefixCls('dropdown-menu')
