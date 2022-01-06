@@ -20,7 +20,7 @@ export const HorizontalItem = forwardRef<HTMLDivElement | null, StepperProps>(
       isActive,
       isLastActive,
       index,
-      type
+      type,
     },
     ref
   ) => {
@@ -38,7 +38,13 @@ export const HorizontalItem = forwardRef<HTMLDivElement | null, StepperProps>(
         })}
       >
         <div className={cx('item-step__wrapper')}>
-        {stepperItem.icon? <div className={cx('item-step__icon')}>{stepperItem.icon}</div> :(type === 'dot' ? <div className={cx('item-step__dot')} /> :<div className={cx('item-step')}>{index + 1}</div>)}
+          {stepperItem.icon ? (
+            <div className={cx('item-step__icon')}>{stepperItem.icon}</div>
+          ) : type === 'dot' ? (
+            <div className={cx('item-step__dot')} />
+          ) : (
+            <div className={cx('item-step')}>{index + 1}</div>
+          )}
           <div className={cx('item-step__title')}>{stepperItem.title}</div>
         </div>
         <div className={cx('item-step__content')}>{stepperItem.content}</div>
