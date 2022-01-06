@@ -46,6 +46,15 @@
 
 ## CHANGELOG
 
+```tsx
+export interface TagGroupNode extends Omit<TagProps, 'role' | 'prefixCls' | 'autoEditable'> {
+  /**
+   * 标签唯一 id
+   */
+  tagId: string | number
+}
+```
+
 | 参数                          | 变更类型       | 变更内容                                                                                       | 解决的问题          |
 | --------------------------- | ---------- | ------------------------------------------------------------------------------------------ | -------------- |
 | type                        | update     | 新增'default'，变更默认为'default'                                                                 |                |
