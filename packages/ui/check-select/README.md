@@ -45,9 +45,9 @@
 
 ## Events
 
-| 名称     | 说明               | 类型                                             | 参数                                                                       | 返回值                                                           |
-| -------- | ------------------ | ------------------------------------------------ | -------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| onChange | 改变选项时触发函数 | (selectedIds: string[], changedItems: DataItem[] | changedItem, afterChangedItems:DataItem[], shouldChecked: boolean) => void | selectedIds: 所有选中项的 id 集合 <br /> changedItem: 变更的选项 | - |
+| 名称     | 说明               | 类型                                             | 参数                                                                     | 返回值                                                           |
+| -------- | ------------------ | ------------------------------------------------ | ------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| onChange | 改变选项时触发函数 | (selectedIds: string[], changedItems: DataItem[] | DataItem, afterChangedItems: DataItem[], shouldChecked: boolean) => void | selectedIds: 所有选中项的 id 集合 <br /> changedItem: 变更的选项 | - |
 
 ## Type
 
@@ -95,27 +95,25 @@
 
 ## CHANGELOG
 
-| 参数                | 变更类型                        | 变更内容                              | 解决的问题                                                                           |
-| ------------------- | ------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------ |
-| propName            | feature \| deprecated \| update | 变更了什么                            | 之前是什么样子，解决什么问题                                                         |
-| ----                | ----                            | ----                                  | ----                                                                                 |
-| value               | update                          | 类型 string[] => string[] \| number[] | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）       |
-| defaultValue        | update                          | 类型 string[] => string[] \| number[] | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）       |
-| id                  | update                          | 类型 string => string \| number       | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）       |
-| bordered            | deprecated                      | 字段 `bordered` => `appearance`       | 对于 Picker 类型的组件，统一使用 appearance 设置外形（线\面\无边框）值               |
-| searchPlaceholder   | feature                         | -                                     | Picker 类型组件统一支持                                                              |
-| loadingContent      | feature                         | -                                     | Picker 类型组件统一支持，适配新 UI                                                   |
-| popper              | feature                         | -                                     | Picker 类型组件统一支持，聚合管理。比如： placement，之前有的加了有的没加            |
-| onLoadChildren      | feature                         | -                                     | 树形数据懒加载统一方案，并强化返回值 Promise 功能，保持一致，替代 onActiveItemChange |
-| onActiveItemChange  | deprecated                      | -                                     | 使用 onLoadChildren 替代                                                             |
-| titleRender         | feature                         | 字段 render => titleRender            | 统一支持自定义渲染每一项                                                             |
-| virtual             | feature                         | -                                     | 支持虚拟列表                                                                         |
-| height              | feature                         | -                                     | 支持虚拟列表                                                                         |
-| itemHeight          | feature                         | -                                     | 支持虚拟列表                                                                         |
-| type                | deprecated                      | -                                     | 拆分单选多选组件单独维护                                                             |
-| autoload            | deprecated                      | -                                     | 页面级首次渲染执行数据加载操作，取消内置                                             |
-| onSearch            | deprecated                      | -                                     | 使用 dataSource 替代，功能重合                                                       |
-| appearance          | feature                         | -                                     | 统一支持：线性\面性\无边框                                                           |
-| displayRender       | feature                         | -                                     | 统一支持选择后内容自定义渲染                                                         |
-| setOverlayContainer | deprecated                      | -                                     | 使用 popper.container 替代，功能重合                                                 |
-| onChange            | update                          | 添加 shouldChecked 第四个参数         | 方便用户获取，执行相应拦截之类的操作                                                 |
+| 参数                | 变更类型                        | 变更内容                              | 解决的问题                                                                                       |
+| ------------------- | ------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| propName            | feature \| deprecated \| update | 变更了什么                            | 之前是什么样子，解决什么问题                                                                     |
+| ----                | ----                            | ----                                  | ----                                                                                             |
+| value               | update                          | 类型 string[] => string[] \| number[] | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）                   |
+| defaultValue        | update                          | 类型 string[] => string[] \| number[] | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）                   |
+| id                  | update                          | 类型 string => string \| number       | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）                   |
+| bordered            | deprecated                      | 字段 `bordered` => `appearance`       | 对于 Picker 类型的组件，统一使用 appearance 设置外形（线\面\无边框）值                           |
+| searchPlaceholder   | feature                         | -                                     | Picker 类型组件统一支持                                                                          |
+| loadingContent      | feature                         | -                                     | Picker 类型组件统一支持，适配新 UI                                                               |
+| popper              | feature                         | -                                     | Picker 类型组件统一支持，聚合管理。比如： placement setOverlayContainer 等，之前有的加了有的没加 |
+| titleRender         | feature                         | 字段 render => titleRender            | 统一支持自定义渲染每一项                                                                         |
+| virtual             | feature                         | -                                     | 支持虚拟列表                                                                                     |
+| height              | feature                         | -                                     | 支持虚拟列表                                                                                     |
+| itemHeight          | feature                         | -                                     | 支持虚拟列表                                                                                     |
+| type                | deprecated                      | -                                     | 拆分单选多选组件单独维护                                                                         |
+| autoload            | deprecated                      | -                                     | 页面级首次渲染执行数据加载操作，取消内置                                                         |
+| onSearch            | deprecated                      | -                                     | 使用 dataSource 替代，功能重合                                                                   |
+| appearance          | feature                         | -                                     | 统一支持：线性\面性\无边框                                                                       |
+| displayRender       | feature                         | -                                     | 统一支持选择后内容自定义渲染                                                                     |
+| setOverlayContainer | deprecated                      | -                                     | 使用 popper.container 替代，功能重合                                                             |
+| onChange            | update                          | 添加 shouldChecked 第四个参数         | 方便用户获取，执行相应拦截之类的操作                                                             |
