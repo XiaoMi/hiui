@@ -103,8 +103,12 @@ const InternalForm = (props) => {
 
       Object.keys(changeValues).forEach((changeValuesKey) => {
         fields.forEach((filedItem) => {
-          const { realField, _type, listname } = filedItem
-          if (realField === changeValuesKey && _type === 'list') {
+          const { field, realField, _type, listname } = filedItem
+          // bugfix: https://github.com/XiaoMi/hiui/issues/2077
+          if (_type === 'SchemaForm' && field === changeValuesKey) {
+            _changeValues[realField] = _transformValues[realField]
+            delete _changeValues[changeValuesKey]
+          } else if (realField === changeValuesKey && _type === 'list') {
             _changeValues[listname] = _transformValues[listname]
             delete _changeValues[changeValuesKey]
           }
