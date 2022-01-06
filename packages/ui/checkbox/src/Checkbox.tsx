@@ -11,6 +11,9 @@ const _prefix = getPrefixCls(_role)
 
 /**
  * 复选
+ *
+ * TODO:
+ * 1. 受控示例
  */
 export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
   (

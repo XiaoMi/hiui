@@ -1,20 +1,18 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { plus, minus } from 'number-precision'
 import { cx } from '@hi-ui/classname'
-import { __DEV__ } from '@hi-ui/env'
+import { invariant } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
 import { useToggle } from '@hi-ui/use-toggle'
 import { isNumeric } from '@hi-ui/type-assertion'
 import { CounterProps } from './Counter'
 
-const DEFAULT_VALUE = 0
-
 export const useCounter = ({
   prefixCls,
   className,
   value: valueProp,
-  defaultValue = DEFAULT_VALUE,
+  defaultValue = 0,
   step = 1,
   min: minProp,
   max: maxProp,
@@ -29,17 +27,21 @@ export const useCounter = ({
   onWheel,
   size = 'md',
   appearance = 'outline',
+  invalid = false,
   ...rest
 }: UseCounterProps) => {
   const min = minProp ?? Number.MIN_SAFE_INTEGER
   const max = maxProp ?? Number.MAX_SAFE_INTEGER
 
-  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
+  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange, Object.is)
 
   const [inputValue, setInputValue] = useState<React.ReactText>(value)
 
   const valueRef = useLatestRef(value)
 
+  /**
+   * TODO: value 完全受控存在 bug，传入 onChange 但不做任何操作时
+   */
   const blockedChange = valueProp !== undefined && !onChange
   const disabled = blockedChange || disabledProp
 
@@ -47,12 +49,7 @@ export const useCounter = ({
     (nextValue: number, syncInput: boolean) => {
       if (disabled) return
 
-      if (__DEV__) {
-        // TODO(统一规范): 对于 ts 类型无法约束到的，但是用户可能存在该行为的，需要开发模式警告提醒
-        if (min > max) {
-          console.info('Warning: the max must large than min.')
-        }
-      }
+      invariant(min <= max, 'The max must large than min.')
 
       if (nextValue > max) {
         nextValue = max
@@ -230,7 +227,7 @@ export const useCounter = ({
     `${prefixCls}--size-${size}`,
     `${prefixCls}--appearance-${appearance}`,
     focus && `${prefixCls}--focused`,
-    !isNumeric(value) && `${prefixCls}--invalid`,
+    (invalid || !isNumeric(value)) && `${prefixCls}--invalid`,
     isOutOfRange(value, min, max) && `${prefixCls}--out-of-bounds`
   )
 

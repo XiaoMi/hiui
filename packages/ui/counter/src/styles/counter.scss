@@ -16,39 +16,40 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
   $this: &;
 
-  &__content{
+  &__content {
     display: flex;
     box-sizing: border-box;
     border-radius: use-border-radius('normal');
   }
 
   &--appearance-outline {
-    .#{$content-class}{
-      border: use-border-size('normal') use-color('gray',300);
+    .#{$content-class} {
+      border: use-border-size('normal') use-color('gray', 300);
     }
 
-    &#{$this}--focused{
-      .#{$content-class}{
-        border-color:use-color('brandblue', 500);
+    &#{$this}--focused {
+      .#{$content-class} {
+        border-color: use-color('brandblue', 500);
       }
 
-      &::before{
+      &::before {
         background: use-color('brandblue', 50);
       }
 
+      &#{$this}--invalid,
       &#{$this}--out-of-bounds {
         color: use-color('red', 500);
-        .#{$content-class}{
-          border-color:use-color('red', 500);
+        .#{$content-class} {
+          border-color: use-color('red', 500);
         }
 
-        &::before{
+        &::before {
           background: use-color('red', 50);
         }
       }
     }
 
-    &::before{
+    &::before {
       position: absolute;
       width: calc(100% + 4px);
       height: calc(100% + 4px);
@@ -60,28 +61,30 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
       z-index: -1;
     }
 
-    .#{$input-class}{
-      border: use-border-size('normal') use-color('gray',300);
+    .#{$input-class} {
+      border: use-border-size('normal') use-color('gray', 300);
       border-top: none;
       border-bottom: none;
 
-      &:disabled{
+      &:disabled {
         background: use-color('gray', 50);
       }
     }
 
     .#{$minus-class},
-    .#{$plus-class}{
+    .#{$plus-class} {
       background: use-color-static('white');
       color: use-color('gray', 700);
 
-      &:hover{
+      &:hover {
         background: use-color('gray', 50);
       }
-      &:active{
+
+      &:active {
         background: use-color('gray', 200);
       }
-      &.disabled{
+
+      &.disabled {
         background: use-color('gray', 50);
         color: use-color('gray', 300);
       }
@@ -89,39 +92,40 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--appearance-filled {
-    &#{$this}--focused{
-      .#{$input-class}{
+    &#{$this}--focused {
+      .#{$input-class} {
         background: use-color-static('white');
         border: use-border-size('normal') use-color('brandblue', 500);
         border-radius: use-border-radius('sm');
       }
 
-      .#{$input-wrapper-class}{
-        &::before{
+      .#{$input-wrapper-class} {
+        &::before {
           background: use-color('brandblue', 50);
         }
       }
 
+      &#{$this}--invalid,
       &#{$this}--out-of-bounds {
         color: use-color('red', 500);
 
-        .#{$input-class}{
-          border-color:use-color('red', 500);
+        .#{$input-class} {
+          border-color: use-color('red', 500);
         }
 
-        .#{$input-wrapper-class}{
-          &::before{
+        .#{$input-wrapper-class} {
+          &::before {
             background: use-color('red', 50);
           }
         }
       }
     }
 
-    .#{$input-wrapper-class}{
+    .#{$input-wrapper-class} {
       position: relative;
       z-index: use-zindex('normal');
 
-      &::before{
+      &::before {
         position: absolute;
         width: calc(100% + 4px);
         height: calc(100% + 4px);
@@ -134,7 +138,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
       }
     }
 
-    .#{$input-class}{
+    .#{$input-class} {
       border: use-border-size('normal') use-color-static('white');
       border-top: none;
       border-bottom: none;
@@ -142,15 +146,15 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     }
 
     .#{$minus-class},
-    .#{$plus-class}{
+    .#{$plus-class} {
       background: use-color('gray', 100);
       color: use-color('gray', 700);
 
-      &:hover{
+      &:hover {
         background: use-color('gray', 200);
       }
 
-      &.disabled{
+      &.disabled {
         background: use-color('gray', 100);
         color: use-color('gray', 300);
       }
@@ -182,16 +186,15 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     }
   }
 
-
-  .#{$minus-class}{
+  .#{$minus-class} {
     border-radius: use-border-radius('normal') 0 0 use-border-radius('normal');
   }
 
-  .#{$plus-class}{
+  .#{$plus-class} {
     border-radius: 0 use-border-radius('normal')  use-border-radius('normal') 0;
   }
 
-  &__input-wrapper{
+  &__input-wrapper {
     //height: 32px;
     display: flex;
     align-items: center;
@@ -207,71 +210,71 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     box-sizing: border-box;
     text-align: center;
 
-    &:disabled{
-      color: use-color('gray',400);
+    &:disabled {
+      color: use-color('gray', 400);
     }
   }
 
-  &--size-xs{
-    .#{$minus-class},.#{$plus-class}{
+  &--size-xs {
+    .#{$minus-class},.#{$plus-class} {
       width: 24px;
       height: 24px;
       line-height: 24px;
     }
 
-    .#{$input-wrapper-class}{
+    .#{$input-wrapper-class} {
       height: 24px;
     }
 
-    .#{$input-class}{
+    .#{$input-class} {
       width: 43px;
     }
   }
 
-  &--size-sm{
-    .#{$minus-class},.#{$plus-class}{
+  &--size-sm {
+    .#{$minus-class},.#{$plus-class} {
       width: 28px;
       height: 28px;
       line-height: 28px;
     }
 
-    .#{$input-wrapper-class}{
+    .#{$input-wrapper-class} {
       height: 28px;
     }
 
-    .#{$input-class}{
+    .#{$input-class} {
       width: 56px;
     }
   }
 
-  &--size-md{
-    .#{$minus-class},.#{$plus-class}{
+  &--size-md {
+    .#{$minus-class},.#{$plus-class} {
       width: 32px;
       height: 32px;
       line-height: 32px;
     }
 
-    .#{$input-wrapper-class}{
+    .#{$input-wrapper-class} {
       height: 32px;
     }
 
-    .#{$input-class}{
+    .#{$input-class} {
       width: 58px;
     }
   }
 
-  &--size-lg{
-    .#{$minus-class},.#{$plus-class}{
+  &--size-lg {
+    .#{$minus-class},.#{$plus-class} {
       width: 36px;
       height: 36px;
       line-height: 36px;
     }
 
-    .#{$input-wrapper-class}{
+    .#{$input-wrapper-class} {
       height: 36px;
     }
 
-    .#{$input-class}{
+    .#{$input-class} {
       width: 58px;
     }
   }

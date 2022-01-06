@@ -3,12 +3,18 @@ import { getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { MinusOutlined, PlusOutlined } from '@hi-ui/icons'
 import { useCounter } from './use-counter'
+import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 
 const _role = 'counter'
 const _prefix = getPrefixCls(_role)
 
 /**
- * TODO: What is Counter
+ * 数字加减器
+ *
+ * TODO:
+ * 1. 修复完全受控时值变化 bug
+ * 2. 优化 useCounter 代码，合理复用 pagination
+ * 3. 支持 inputNumber 组件
  */
 export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
   ({ prefixCls = _prefix, role = _role, ...rest }, ref) => {
@@ -43,29 +49,9 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
   }
 )
 
-export interface CounterProps {
+export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
   /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-  /**
-   * 指示是否可以聚焦
-   */
-  tabIndex?: number
-  /**
-   * 允许自动聚焦
+   * 开启自动聚焦
    */
   autoFocus?: boolean
   /**
@@ -102,21 +88,16 @@ export interface CounterProps {
   onChange?: (value: number) => void
   /**
    * 设置展现形式
-   * @default 'outline'
    */
   appearance?: 'outline' | 'filled'
   /**
    * 设置计数器尺寸
-   * @default 'md'
    */
   size?: 'xs' | 'sm' | 'md' | 'lg'
   /**
    * 开启滑轮改值
    */
   changeOnWheel?: boolean
-  onWheel?: (evt: React.WheelEvent<HTMLDivElement>) => void
-  onFocus?: (evt: React.FocusEvent<HTMLDivElement>) => void
-  onBlur?: (evt: React.FocusEvent<HTMLDivElement>) => void
 }
 
 if (__DEV__) {
