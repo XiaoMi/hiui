@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/pagination",
-  "version": "4.0.0-alpha.21",
+  "version": "4.0.0-alpha.22",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -51,7 +51,7 @@
     "@hi-ui/icons": "^4.0.0-alpha.20",
     "@hi-ui/input": "^4.0.0-alpha.24",
     "@hi-ui/locale-context": "^4.0.0-alpha.11",
-    "@hi-ui/select": "^4.0.0-alpha.20",
+    "@hi-ui/select": "^4.0.0-alpha.21",
     "@hi-ui/use-latest": "^4.0.0-alpha.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.12"
   },
