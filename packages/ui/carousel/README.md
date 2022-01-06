@@ -24,8 +24,8 @@
 
 ## CHANGELOG
 
-| 参数          | 变更类型    | 变更内容    | 解决的问题 |
-| ----------- | ------- | ------- | ----- |
-| arrowSize   | feature | 箭头指示器尺寸 |       |
-| dotType     | feature | 分页指示器类型 |       |
-| dotPosition | feature | 分页指示器位置 |       |
+| 参数          | 变更类型    | 变更内容    | 解决的问题  |
+| ----------- | ------- | ------- | ------ |
+| arrowSize   | feature | 箭头指示器尺寸 | UI新增功能 |
+| dotType     | feature | 分页指示器类型 | UI新增功能 |
+| dotPosition | feature | 分页指示器位置 |        |
