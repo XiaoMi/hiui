@@ -40,6 +40,7 @@
 | titleRender       | 自定义渲染节点的 title 内容径                                                                                              | (item: CascaderItemEventData, flatted: boolean) => React.ReactNode | -                  |
 | filterOption      | 自定义搜索过滤器，仅在 searchable 为 true 时有效。第一个参数为输入的关键字，第二个为数据项，返回值为 true 时将出现在结果项 | (keyword: string, item: CascaderItemEventData) => boolean          | -                  |
 | dataSource        | 异步搜索加载数据                                                                                                           | (key: string) => DataSource \| DataSource \| Promise               | -                  |
+| appearance        | 设置展现形式                                                                                                               | 'outline' \| 'unset' \| 'filled'                                   | 'outline'          |
 
 ## Events
 
@@ -55,11 +56,11 @@
 
 ### CascaderDataItem
 
-| 参数     | 说明     | 类型    | 可选值        | 默认值 |
-| -------- | -------- | ------- | ------------- | ------ |
-| id       | 选择项值 | string  | -             | -      |
-| title    | 选择项   | string  | -             | -      |
-| disabled | 是否禁用 | boolean | true \| false | false  |
+| 参数     | 说明             | 类型      | 可选值        | 默认值 |
+| -------- | ---------------- | --------- | ------------- | ------ |
+| id       | 下拉选择项唯一值 | ReactText | -             | -      |
+| title    | 下拉选择项标题   | string    | -             | -      |
+| disabled | 是否禁用         | boolean   | true \| false | false  |
 
 ### CascaderItemEventData
 
@@ -112,3 +113,4 @@
 | titleRender        | feature                         | -                                     | 统一支持自定义渲染每一项                                                             |
 | filterOption       | feature                         | -                                     | 统一支持自定义过滤                                                                   |
 | dataSource         | feature                         | -                                     | 统一支持异步数据加载                                                                 |
+| appearance         | feature                         | -                                     | 统一支持：线性\面性\无边框                                                           |
