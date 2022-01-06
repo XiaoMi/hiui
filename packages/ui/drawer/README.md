@@ -25,4 +25,29 @@
 | footer       | 自定义抽屉底部      | ReactNode \| null   | -                 | -       |
 | placement    | 抽屉唤起的方向      | string              | 'left' \| 'right' | 'right' |
 
-## 
+## Events
+
+| 名称      | 说明         | 类型                          | 参数            | 返回值 |
+| ------- | ---------- | --------------------------- | ------------- | --- |
+| onClose | 关闭事件触发时的回调 | (event: MouseEvent) => void | event: 鼠标事件对象 | -   |
+
+## CHANGELOG
+
+| 参数                  | 变更类型       | 变更内容        | 解决的问题 |
+| ------------------- | ---------- | ----------- | ----- |
+| preload             | feature    |             |       |
+| unmountOnClose      | feature    |             |       |
+| portalClassName     | feature    |             |       |
+| overlayClassName    | feature    |             |       |
+| onClose             | update     | 去除 event 参数 |       |
+| closeOnEsc          | feature    |             |       |
+| onEscKeyDown        | feature    |             |       |
+| closeOnOverlayClick | feature    |             |       |
+| onOverlayClick      | feature    |             |       |
+| closeIcon           | feature    |             |       |
+| lockScroll          | feature    |             |       |
+| timeout             | feature    |             |       |
+| disabledPortal      | feature    |             |       |
+| container           | feature    |             |       |
+| onExited            | feature    |             |       |
+| maskClosable        | deprecated |             |       |
