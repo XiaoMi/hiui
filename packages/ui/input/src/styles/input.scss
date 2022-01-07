@@ -53,11 +53,10 @@ $prefix: '#{$component-prefix}-input' !default;
   }
 
   &__outer {
-    display: inline-flex;
+    display: inline-block;
     position: relative;
     margin: 0;
     padding: 0;
-    justify-content: space-between;
     height: auto;
     width: 100%;
     vertical-align: middle;

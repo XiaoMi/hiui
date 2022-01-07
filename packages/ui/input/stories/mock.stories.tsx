@@ -7,7 +7,7 @@ export const Mock = () => {
     <>
       <h1>Mock</h1>
       <div className="input-mock__wrap">
-        <p>支持自定义渲染输入框内容，暂时仅供内部 Picker 类组件使用</p>
+        <p>支持自定义渲染输入框内容，暂仅供内部 Picker 类组件使用</p>
 
         <div>
           <h2>Outline</h2>

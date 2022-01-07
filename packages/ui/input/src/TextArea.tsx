@@ -9,7 +9,14 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 const _prefix = getPrefixCls('input')
 
 /**
- * TODO: What is TextArea
+ * 动态文本域输入框
+ *
+ *  @TODO:
+ * 1. 支持带数字展示
+ * 2. 支持自适应行高大小
+ * 3. 支持清空按钮
+ * 4. 支持最大最小行支持
+ * 5. 手动聚焦支持额外配置
  */
 export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
   (
@@ -81,7 +88,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
 
 export interface TextAreaProps
   extends HiBaseHTMLFieldProps<'textarea'>,
-    Omit<UseInputProps, 'onFocus' | 'onBlur' | 'onChange'> {
+    Omit<UseInputProps, 'onFocus' | 'onBlur' | 'onChange' | 'type'> {
   /**
    * 设置输入框尺寸
    */

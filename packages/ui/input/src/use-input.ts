@@ -59,7 +59,7 @@ export const useInput = ({
       const relatedTarget = event.relatedTarget
 
       // 拦截 clear 情况 触发 input 失焦
-      if (clearElementRef.current && clearElementRef.current === relatedTarget) {
+      if (clearElementRef && clearElementRef.current && clearElementRef.current === relatedTarget) {
         return
       }
 

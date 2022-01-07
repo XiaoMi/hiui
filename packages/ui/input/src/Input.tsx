@@ -9,7 +9,14 @@ import { useInput } from './use-input'
 const _prefix = getPrefixCls('input')
 
 /**
- * TODO: What is Input
+ * 输入框
+ *
+ * @TODO:
+ * 1. size api 确认
+ * 2. 修改类名结构
+ * 3. 支持带数字展示
+ * 4. InputGroup 模式支持
+ * 5. 手动聚焦支持额外配置
  */
 export const Input = forwardRef<HTMLInputElement | null, InputProps>(
   (
@@ -194,10 +201,6 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
    */
   autoFocus?: boolean
   /**
-   * 输入框字段名称
-   */
-  name?: string
-  /**
    * 设置输入框的值
    */
   value?: string
@@ -214,11 +217,11 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
    */
   maxLength?: number
   /**
-   * 输入框前置外部标签
+   * 输入框前置外部内容
    */
   prepend?: React.ReactNode
   /**
-   * 输入框后置外部标签
+   * 输入框后置外部内容
    */
   append?: React.ReactNode
   /**
@@ -234,17 +237,13 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
    */
   clearable?: boolean
   /**
-   * 再失焦时触发对值的 trim onChange 给用户
+   * 开启失焦时触发对值的 trim，将触发 onChange 给用户
    */
   trimValueOnBlur?: boolean
   /**
    * 清除按钮展示的触发形态
    */
   clearableTrigger?: 'always' | 'hover'
-  /**
-   * 开启动画浮动提示
-   */
-  floatLabel?: React.ReactNode
   /**
    * 输入框占位符
    */
@@ -255,7 +254,7 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
    */
   appearance?: 'outline' | 'unset' | 'filled' | 'underline'
   /**
-   * 设置输入框尺寸
+   * 设置尺寸
    */
   size?: 'sm' | 'md' | 'lg'
   /**

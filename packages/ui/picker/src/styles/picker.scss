@@ -71,10 +71,10 @@ $prefix: '#{$component-prefix}-picker' !default;
   }
 
   &__search {
-    padding: use-spacing(4) use-spacing(6) 0;
+    padding: use-spacing(4) use-spacing(4) 0;
 
     .#{$component-prefix}-input__prefix {
-      padding-left: 0;
+      padding-left: calc(#{use-spacing(4)} - 1px);
       color: use-color('gray', 700);
     }
   }
