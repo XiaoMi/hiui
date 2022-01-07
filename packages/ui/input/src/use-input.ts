@@ -38,9 +38,10 @@ export const useInput = ({
         value = value.trim()
       }
 
-      evt.target.value = value
+      const event = Object.create(evt)
+      event.target = { ...evt.target, value }
 
-      tryChangeValue(valueTrue, evt)
+      tryChangeValue(valueTrue, event)
     },
     [tryChangeValue, type]
   )
