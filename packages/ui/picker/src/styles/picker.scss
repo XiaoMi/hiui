@@ -10,6 +10,11 @@ $prefix: '#{$component-prefix}-picker' !default;
   flex-shrink: 0;
   cursor: pointer;
 
+  .#{$component-prefix}-tag-input-mock,
+  .#{$component-prefix}-mock-input {
+    cursor: pointer;
+  }
+
   // 耦合注入
   &--open {
     .#{$component-prefix}-mock-input {

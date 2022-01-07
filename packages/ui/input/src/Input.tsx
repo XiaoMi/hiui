@@ -18,7 +18,6 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       role = 'input',
       className,
       style,
-      type = 'text',
       size = 'md',
       appearance = 'outline',
       prepend,
@@ -41,6 +40,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       onFocus,
       onBlur,
       trimValueOnBlur,
+      type,
       ...rest
     },
     ref
@@ -70,7 +70,10 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       [onChange]
     )
 
+    const clearElementRef = useRef<HTMLDivElement>(null)
+
     const { tryChangeValue, focused, value, getInputProps } = useInput({
+      clearElementRef,
       name,
       autoFocus,
       disabled,
@@ -83,6 +86,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       onFocus,
       onBlur,
       trimValueOnBlur,
+      type,
     })
 
     const focus = useCallback(() => {
@@ -154,6 +158,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
             <span className={`${prefixCls}__suffix`}>
               {showClearableIcon ? (
                 <span
+                  ref={clearElementRef}
                   className={cx(
                     `${prefixCls}__clear`,
                     (clearableTrigger === 'always' || hover) && 'active'
@@ -203,7 +208,7 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
   /**
    * 设置输入框类型，支持原生 input 的 type 属性所有值
    */
-  type?: 'text' | 'number' | string
+  type?: 'text' | 'id' | 'tel' | 'card' | 'amount' | 'email'
   /**
    * 输入最大长度
    */
@@ -256,7 +261,7 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
   /**
    * 值改变时的回调
    */
-  onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void
+  onChange?: (evt: React.ChangeEvent<HTMLInputElement>, value: string) => void
 }
 
 if (__DEV__) {
@@ -273,7 +278,7 @@ if (__DEV__) {
  * @returns
  */
 export function onChangeMock(
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onChange: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void,
   evt: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>,
   target: HTMLInputElement | null,
   targetValue: string
@@ -290,11 +295,11 @@ export function onChangeMock(
     event.target = target
     event.currentTarget = target
     target.value = targetValue
-    onChange(event as React.ChangeEvent<HTMLInputElement>)
+    onChange(event as React.ChangeEvent<HTMLInputElement>, targetValue)
     // 重置为之前值
     target.value = originalTargetValue
     return
   }
 
-  onChange(event as React.ChangeEvent<HTMLInputElement>)
+  onChange(event as React.ChangeEvent<HTMLInputElement>, targetValue)
 }

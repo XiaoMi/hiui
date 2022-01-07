@@ -91,13 +91,20 @@ export const pureCard = (val: string) => {
  * 金额自动生成小数
  * @param {string} val  需要处理的值
  */
-export const formatAmount = (val: string) => {
+export const formatAmount = (val: string, fill = false) => {
   val = val.replace(/[^\d|.|,]/g, '').replace(/(\.\d*?)(\.|,).*/, (_, $1) => $1)
-  return val.indexOf('.') > -1 ? val : val + '.00'
+
+  if (fill) {
+    if (!val) return val
+    return val.indexOf('.') > -1 ? val : val + '.00'
+  }
+
+  return val
 }
 
 export const pureAmount = (val: string) => {
-  return val
+  const tmp = val.replace(/[^\d|.]/g, '')
+  return tmp
 }
 
 export const formatEmail = (val: string) => {
@@ -106,4 +113,44 @@ export const formatEmail = (val: string) => {
 
 export const pureEmail = (val: string) => {
   return val
+}
+
+/**
+ * 输入规则
+ */
+export const format = (val: string, type: string) => {
+  switch (type) {
+    case 'id':
+      return formatId(val)
+    case 'tel':
+      return formatTel(val)
+    case 'card':
+      return formatCard(val)
+    case 'email':
+      return formatEmail(val)
+    case 'amount':
+      return formatAmount(val)
+    default:
+      return val
+  }
+}
+
+/**
+ * 净化规则
+ */
+export const pure = (val: string, type: string) => {
+  switch (type) {
+    case 'id':
+      return pureId(val)
+    case 'tel':
+      return pureTel(val)
+    case 'card':
+      return pureCard(val)
+    case 'email':
+      return pureEmail(val)
+    case 'amount':
+      return pureAmount(val)
+    default:
+      return val
+  }
 }

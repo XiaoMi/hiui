@@ -10,6 +10,7 @@ export const Clearable = () => {
           clearable
           placeholder="内容输入后只在 hover 时可清除"
           onChange={(e) => console.log('change', e.target.value)}
+          onBlur={(e) => console.log('onBlur', e.target.value)}
         ></Input>
         <br />
         <br />

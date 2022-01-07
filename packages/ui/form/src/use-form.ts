@@ -11,8 +11,8 @@ import {
   FormSetState,
 } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
-import { isArray, isFunction, isObjectLike } from '@hi-ui/type-assertion'
-import { callAllFuncs, setNested, getNested, runIfFunc } from '@hi-ui/func-utils'
+import { isArray, isObjectLike, isFunction } from '@hi-ui/type-assertion'
+import { callAllFuncs, setNested, getNested } from '@hi-ui/func-utils'
 import { stopEvent } from '@hi-ui/dom-utils'
 
 const EMPTY_RULES = {}
@@ -196,7 +196,9 @@ export const useForm = <Values = Record<string, any>>({
         const event = eventOrValue as React.ChangeEvent<any>
 
         // @see https://reactjs.org/docs/events.html#event-pooling
-        runIfFunc(event.persist)
+        if (isFunction(event.persist)) {
+          event.persist()
+        }
 
         const target = event.target || event.currentTarget
 

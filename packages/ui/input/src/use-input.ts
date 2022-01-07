@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { setAttrStatus } from '@hi-ui/dom-utils'
+import { format, formatAmount, pure } from './utils'
 
 export const useInput = ({
   name,
@@ -16,15 +17,32 @@ export const useInput = ({
   onFocus,
   onBlur,
   trimValueOnBlur = false,
+  type = 'text',
+  clearElementRef,
 }: UseInputProps) => {
-  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
+  // Object.is 避免 trimValueOnBlur 和 点击 clearIcon 触发 2 次相同的 onCHange
+  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange, Object.is)
 
   const handleChange = useCallback(
-    (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, trim = false) => {
+      evt.persist()
+
       const nextValue = evt.target.value
-      tryChangeValue(nextValue, evt)
+      let valueTrue = pure(nextValue, type)
+
+      // 防溢出，保证 onChange 拿到的是值是最新的 formatted value
+      let value = format(nextValue, type)
+
+      if (trim) {
+        valueTrue = valueTrue.trim()
+        value = value.trim()
+      }
+
+      evt.target.value = value
+
+      tryChangeValue(valueTrue, evt)
     },
-    [tryChangeValue]
+    [tryChangeValue, type]
   )
 
   const [focused, setFocused] = useState(autoFocus)
@@ -38,11 +56,21 @@ export const useInput = ({
 
   const handleBlur = useLatestCallback(
     (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const relatedTarget = event.relatedTarget
+
+      // 拦截 clear 情况 触发 input 失焦
+      if (clearElementRef.current && clearElementRef.current === relatedTarget) {
+        return
+      }
+
       setFocused(false)
 
-      if (trimValueOnBlur) {
-        const nextValue = event.target.value
-        tryChangeValue(nextValue.trim(), event)
+      // amount 自动添加小数
+      if (type === 'amount') {
+        event.target.value = formatAmount(value, true)
+        handleChange(event, trimValueOnBlur)
+      } else if (trimValueOnBlur) {
+        handleChange(event, true)
       }
 
       onBlur?.(event)
@@ -65,12 +93,12 @@ export const useInput = ({
   const getInputProps = useCallback(() => {
     return {
       ...nativeInputProps,
-      value,
+      value: format(value, type),
       onChange: handleChange,
       onFocus: handleFocus,
       onBlur: handleBlur,
     }
-  }, [value, handleChange, handleFocus, handleBlur, nativeInputProps])
+  }, [value, type, handleChange, handleFocus, handleBlur, nativeInputProps])
 
   return {
     focused,
@@ -129,6 +157,14 @@ export interface UseInputProps {
    * 输入框失焦时的回调
    */
   onBlur?: (evt: React.FocusEvent<any>) => void
+  /**
+   * 设置输入框类型，支持原生 input 的 type 属性所有值
+   */
+  type?: 'text' | 'id' | 'tel' | 'card' | 'amount' | 'email'
+  /**
+   * @private
+   */
+  clearElementRef?: any
 }
 
 export type useInputReturn = ReturnType<typeof useInput>

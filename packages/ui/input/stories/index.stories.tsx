@@ -13,6 +13,7 @@ export * from './size.stories'
 export * from './type.stories'
 export * from './controlled.stories'
 export * from './trim.stories'
+export * from './format.stories'
 export * from './textarea.stories'
 export * from './mock.stories'
 
