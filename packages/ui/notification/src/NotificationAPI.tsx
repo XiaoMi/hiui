@@ -16,7 +16,8 @@ export class NotificationAPI extends ToastAPI<NotificationOptions> {
 
 export interface NotificationAPIOptions extends ToastAPIOptions {}
 
-export interface NotificationOptions extends Omit<NotificationProps, '$destroy' | 'id'> {
+export interface NotificationOptions
+  extends Omit<NotificationProps, '$destroy' | 'id' | 'visible'> {
   /**
    * 通知唯一标识
    */
