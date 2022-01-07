@@ -1,11 +1,28 @@
-# `@hi-ui/watermark`
+# Watermark 水印
 
-> TODO: description
+用于向元素添加水印
 
-## Usage
+## 何时使用
 
-```
-const Watermark = require('@hi-ui/watermark');
+页面内容涉及到保密或其它情况时
 
-// TODO: DEMONSTRATE API
-```
+## 使用示例
+
+<!-- Inject Stories -->
+
+## Props
+
+| 参数        | 说明                    | 类型                      | 可选值                          | 默认值       |
+| --------- | --------------------- | ----------------------- | ---------------------------- | --------- |
+| density   | 水印间距，调节疏密程度           | string                  | 'low' \| 'default' \| 'high' | 'default' |
+| content   | 水印文案，传入数组代表多行，不建议超过三行 | string \| Array[string] | -                            | '请勿外传'    |
+| logo      | 图片资源地址（暂只支持本地资源）      | string                  | -                            | -         |
+| opacity   | 水印透明度                 | number                  | 0~1                          | 1         |
+| allowCopy | 是否允许拷贝                | boolean                 | -                            | false     |
+
+## CHANGELOG
+
+| 参数        | 变更类型    | 变更内容 | 解决的问题 |
+| --------- | ------- | ---- | ----- |
+| container | feature |      |       |
+| color     | feature |      |       |
