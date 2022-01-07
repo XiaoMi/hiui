@@ -43,7 +43,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     @include component-reset;
 
     list-style: none;
-    padding: 4px 0;
+    padding: use-spacing(2) 0;
 
     &-scroller {
       height: 312px;
@@ -52,7 +52,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
   }
 
   &__search {
-    padding: 0 12px 4px;
+    padding: use-spacing(4) use-spacing(6) use-spacing(2);
 
     .#{$component-prefix}-input__prefix {
       padding-left: 0;

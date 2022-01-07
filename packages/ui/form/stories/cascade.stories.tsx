@@ -5,7 +5,7 @@ import Button from '@hi-ui/button'
 import message from '@hi-ui/message'
 import Select from '@hi-ui/select'
 import { Counter } from '@hi-ui/counter'
-import Checkbox, { CheckboxGroup } from '@hi-ui/checkbox'
+import { CheckboxGroup } from '@hi-ui/checkbox'
 import { DatePicker } from '@hi-ui/date-picker'
 import { Cascader } from '@hi-ui/cascader'
 import { RadioGroup, Radio } from '@hi-ui/radio'
@@ -28,7 +28,7 @@ export const Cascade = () => {
   return (
     <>
       <h1>表单级联</h1>
-      <div className="form-cascade__wrap" style={{ width: 400 }}>
+      <div className="form-cascade__wrap">
         <Form
           labelWidth="140"
           labelPlacement="right"
@@ -81,11 +81,14 @@ export const Cascade = () => {
             ]}
             valueType="string"
           >
-            <CheckboxGroup onChange={(data) => console.log('Checkbox data', data)}>
-              <Checkbox value="DatePicker">DatePicker</Checkbox>
-              <Checkbox value="Cascader">Cascader</Checkbox>
-              <Checkbox value="Radio">Radio</Checkbox>
-            </CheckboxGroup>
+            <CheckboxGroup
+              data={[
+                { id: 'DatePicker', content: 'DatePicker' },
+                { id: 'Cascader', content: 'Cascader' },
+                { id: 'Radio', content: 'Radio' },
+              ]}
+              onChange={(data) => console.log('Checkbox data', data)}
+            ></CheckboxGroup>
           </FormItem>
 
           {formData.checkbox.includes('DatePicker') && (

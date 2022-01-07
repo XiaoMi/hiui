@@ -13,6 +13,10 @@ $prefix: '#{$component-prefix}-picker' !default;
   .#{$component-prefix}-tag-input-mock,
   .#{$component-prefix}-mock-input {
     cursor: pointer;
+
+    &__suffix {
+      color: use-color('gray', 500);
+    }
   }
 
   // 耦合注入
@@ -67,7 +71,12 @@ $prefix: '#{$component-prefix}-picker' !default;
   }
 
   &__search {
-    padding: use-spacing(4) use-spacing(4) 0;
+    padding: use-spacing(4) use-spacing(6) 0;
+
+    .#{$component-prefix}-input__prefix {
+      padding-left: 0;
+      color: use-color('gray', 700);
+    }
   }
 
   &__empty,

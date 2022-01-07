@@ -145,7 +145,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
 
   &__text {
     padding: 0;
-    margin-inline-start: use-spacing(2);
+    margin-inline-start: use-spacing(4);
     margin-inline-end: 0;
     line-height: unset;
     color: use-color('gray', 700);

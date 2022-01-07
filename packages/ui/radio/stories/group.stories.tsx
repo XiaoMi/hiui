@@ -83,6 +83,24 @@ export const Group = () => {
             })}
           </RadioGroup>
         </div>
+        <div>
+          <RadioGroup
+            defaultValue={0}
+            placement={'vertical'}
+            type={'button'}
+            onChange={(value) => {
+              console.log('onChange', value)
+            }}
+          >
+            {data.map((item) => {
+              return (
+                <Radio key={item.id} disabled={item.disabled} value={item.id}>
+                  {item.content}
+                </Radio>
+              )
+            })}
+          </RadioGroup>
+        </div>
       </div>
     </>
   )

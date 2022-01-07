@@ -28,7 +28,7 @@ $prefix: '#{$component-prefix}-notification' !default;
   }
 
   &__content {
-    padding: 0 use-spacing(7) 0 use-spacing(16);
+    padding: 0 use-spacing(7) 0 use-spacing(18);
     word-break: break-word;
     color: use-color('gray', 600);
   }
