@@ -1,7 +1,7 @@
 import React from 'react'
 import { RadioGroup } from '../src'
 
-export const Group = () => {
+export const Button = () => {
   const [data] = React.useState([
     {
       id: 0,
@@ -28,12 +28,12 @@ export const Group = () => {
 
   return (
     <>
-      <h1>Group</h1>
-      <div className="radio-group__wrap">
-        <h2>default</h2>
+      <h1>Button</h1>
+      <div className="radio-button__wrap">
         <div>
           <RadioGroup
             defaultValue={0}
+            type={'button'}
             data={data}
             onChange={(value) => {
               console.log('onChange', value)
@@ -44,8 +44,9 @@ export const Group = () => {
         <div>
           <RadioGroup
             defaultValue={0}
-            data={data}
             placement={'vertical'}
+            type={'button'}
+            data={data}
             onChange={(value) => {
               console.log('onChange', value)
             }}

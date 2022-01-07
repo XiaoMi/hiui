@@ -4,6 +4,9 @@ import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useRadioGroup, UseRadioGroupProps } from './use-radio-group'
 import { RadioGroupProvider } from './context'
+import { RadioDataItem, RadioGroupTypeEnum, RadioGroupPlacementEnum } from './types'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { Radio } from './Radio'
 
 const RADIO_GROUP_PREFIX = getPrefixCls('radio-group')
 
@@ -11,17 +14,19 @@ const RADIO_GROUP_PREFIX = getPrefixCls('radio-group')
  * TODO: What is RadioGroup
  */
 export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
-  ({ prefixCls = RADIO_GROUP_PREFIX, className, children, ...rest }, ref) => {
-    const {
-      rootProps,
-      name,
-      value,
-      onChange,
-      isChecked,
-      disabled,
-      type,
-      placement,
-    } = useRadioGroup(rest)
+  (
+    {
+      prefixCls = RADIO_GROUP_PREFIX,
+      className,
+      children,
+      data,
+      type = RadioGroupTypeEnum.DEFAULT,
+      placement = RadioGroupPlacementEnum.HORIZONTAL,
+      ...rest
+    },
+    ref
+  ) => {
+    const { rootProps, name, value, onChange, isChecked, disabled } = useRadioGroup(rest)
 
     const providedValue = useMemo(
       () => ({
@@ -36,11 +41,30 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
       [name, onChange, value, isChecked, disabled, type, placement]
     )
 
+    const hasData = isArrayNonEmpty(data)
+
+    // data 优先级大于内嵌式组合
+    if (hasData) {
+      children = data!.map(({ id, disabled, content }) => (
+        <Radio
+          key={id}
+          value={id}
+          name={name}
+          disabled={disabled}
+          checked={isChecked(id)}
+          className={`${prefixCls}__item`}
+        >
+          {content}
+        </Radio>
+      ))
+    }
+
     const cls = cx(
       prefixCls,
       className,
       `${prefixCls}--placement-${placement}`,
-      `${prefixCls}--type-${type}`
+      `${prefixCls}--type-${type}`,
+      hasData && `${prefixCls}--data-wrap`
     )
 
     return (
@@ -53,7 +77,20 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
   }
 )
 
-export interface RadioGroupProps extends HiBaseHTMLProps<'div'>, UseRadioGroupProps {}
+export interface RadioGroupProps extends HiBaseHTMLProps<'div'>, UseRadioGroupProps {
+  /**
+   *   指定可选项
+   */
+  data?: RadioDataItem[]
+  /**
+   * 单选按钮展示类型
+   */
+  type?: RadioGroupTypeEnum
+  /**
+   * 设置水平或垂直展示
+   */
+  placement?: RadioGroupPlacementEnum
+}
 
 if (__DEV__) {
   RadioGroup.displayName = 'RadioGroup'

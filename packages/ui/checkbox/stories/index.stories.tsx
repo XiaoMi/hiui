@@ -3,6 +3,7 @@ import Checkbox from '../src'
 
 export * from './basic.stories'
 export * from './disabled.stories'
+export * from './controlled.stories'
 export * from './group.stories'
 export * from './placement.stories'
 export * from './check-all.stories'

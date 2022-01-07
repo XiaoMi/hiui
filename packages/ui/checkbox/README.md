@@ -16,14 +16,13 @@
 
 ### Checkbox
 
-| 参数           | 说明             | 类型                                                   | 可选值        | 默认值 |
-| -------------- | ---------------- | ------------------------------------------------------ | ------------- | ------ |
-| autoFocus      | 是否自动获取焦点 | boolean                                                | true \| false | false  |
-| checked        | 是否选中         | boolean                                                | true \| false | false  |
-| defaultChecked | 是否默认选中     | boolean                                                | true \| false | false  |
-| disabled       | 是否禁用         | boolean                                                | true \| false | false  |
-| indeterminate  | 不全选的样式控制 | boolean                                                | true \| false | false  |
-| onChange       | 变化时的回调     | (event: React.ChangeEvent\<HTMLInputElement\>) => void | -             | -      |
+| 参数           | 说明             | 类型    | 可选值        | 默认值 |
+| -------------- | ---------------- | ------- | ------------- | ------ |
+| autoFocus      | 是否自动获取焦点 | boolean | true \| false | false  |
+| checked        | 是否选中         | boolean | true \| false | false  |
+| defaultChecked | 是否默认选中     | boolean | true \| false | false  |
+| disabled       | 是否禁用         | boolean | true \| false | false  |
+| indeterminate  | 不全选的样式控制 | boolean | true \| false | false  |
 
 ### Checkbox.Group
 
@@ -41,9 +40,9 @@
 
 ### Checkbox
 
-| 名称     | 说明         | 类型                              | 参数                  | 返回值 |
-| -------- | ------------ | --------------------------------- | --------------------- | ------ |
-| onChange | 变化时的回调 | (event: HTMLInputElement) => void | event: input 事件对象 | -      |
+| 名称     | 说明         | 类型                                                   | 参数                  | 返回值 |
+| -------- | ------------ | ------------------------------------------------------ | --------------------- | ------ |
+| onChange | 变化时的回调 | (event: React.ChangeEvent\<HTMLInputElement\>) => void | event: input 事件对象 | -      |
 
 ### Checkbox.Group
 
@@ -58,15 +57,7 @@
 | 参数     | 说明            | 类型      |
 | -------- | --------------- | --------- |
 | id       | 选项唯一标识 id | ReactText |
-| content  | 选项显示内容    | ReactText |
-| disabled | 是否禁用该选项  | boolean   |
-
-### DataItem
-
-| 参数     | 说明            | 类型      |
-| -------- | --------------- | --------- |
-| id       | 选项唯一标识 id | ReactText |
-| content  | 选项显示内容    | ReactText |
+| content  | 选项显示内容    | ReactNode |
 | disabled | 是否禁用该选项  | boolean   |
 
 ## CHANGELOG
@@ -77,3 +68,4 @@
 | ----     | ----                            | ----                            | ----                                       |
 | children | feature                         | CheckboxGroup 支持内嵌 Checkbox | 实现灵活的布局                             |
 | data     | deprecated                      | 只支持 DataItem[] 模型数据      | 1. 规范统一；2. ReactText[] 用法接受度不高 |
+| content  | feature                         | 类型：string -> ReactNode       | 1. 强化类型支持                            |

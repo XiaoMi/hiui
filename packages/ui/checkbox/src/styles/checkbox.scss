@@ -163,11 +163,11 @@ $prefix: '#{$component-prefix}-checkbox' !default;
 
   &--data-wrap {
     display: inline-flex;
-    gap: use-spacing(10);
+    gap: use-spacing(8);
   }
 
-  &--vertical {
-    #{$this}--data-wrap {
+  &--placement-vertical {
+    &#{$this}--data-wrap {
       flex-direction: column;
     }
   }

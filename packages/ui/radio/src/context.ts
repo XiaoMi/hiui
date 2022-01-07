@@ -1,8 +1,11 @@
 import { createContext, useContext } from 'react'
+import { RadioGroupTypeEnum } from './types'
 
 import { UseRadioGroupReturn } from './use-radio-group'
 
-const RadioGroupContext = createContext<Omit<UseRadioGroupReturn, 'rootProps'> | null>(null)
+const RadioGroupContext = createContext<
+  (Omit<UseRadioGroupReturn, 'rootProps'> & { type: RadioGroupTypeEnum }) | null
+>(null)
 
 export const RadioGroupProvider = RadioGroupContext.Provider
 

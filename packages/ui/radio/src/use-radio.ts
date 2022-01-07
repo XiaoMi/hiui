@@ -13,7 +13,6 @@ export const useRadio = ({
   checked: checkedProp,
   readOnly = false,
   disabled = false,
-  gap,
   ...rest
 }: UseRadioProps) => {
   const [checked, tryChangeChecked] = useUncontrolledState(defaultChecked, checkedProp, onChange)
@@ -64,17 +63,10 @@ export const useRadio = ({
     'data-readonly': setAttrStatus(readOnly),
   }
 
-  const getLabelProps = useCallback(() => {
-    return {
-      style: { marginInlineStart: gap },
-    }
-  }, [gap])
-
   return {
     state,
     rootProps,
     getInputProps,
-    getLabelProps,
   }
 }
 
@@ -116,10 +108,6 @@ export interface UseRadioProps {
    * 是否只读
    */
   readOnly?: boolean
-  /**
-   * 和文本的间距
-   */
-  gap?: number
 }
 
 export type UseRadioReturn = ReturnType<typeof useRadio>

@@ -46,7 +46,7 @@ export const Radio = forwardRef<HTMLLabelElement | null, RadioProps>(
           }, onChangeProp)
         : onChangeProp
 
-    const { rootProps, getInputProps, getLabelProps } = useRadio({
+    const { rootProps, getInputProps } = useRadio({
       ...rest,
       disabled,
       name,
@@ -55,7 +55,6 @@ export const Radio = forwardRef<HTMLLabelElement | null, RadioProps>(
     })
 
     const inputProps = getInputProps()
-    const labelProps = getLabelProps()
 
     const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`)
 
@@ -63,11 +62,7 @@ export const Radio = forwardRef<HTMLLabelElement | null, RadioProps>(
       <label ref={ref} role={role} className={cls} {...rootProps}>
         <input {...inputProps} tabIndex={0} className={`${prefixCls}__input`} />
         <span className={`${prefixCls}__controller`} />
-        {children ? (
-          <span className={`${prefixCls}__label`} {...labelProps}>
-            {children}
-          </span>
-        ) : null}
+        {children ? <span className={`${prefixCls}__label`}>{children}</span> : null}
       </label>
     )
   }

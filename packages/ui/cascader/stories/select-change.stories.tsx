@@ -146,6 +146,7 @@ export const SelectChange = () => {
         <Cascader
           placeholder="请选择品类"
           changeOnSelect
+          expandTrigger="hover"
           searchPlaceholder="请输入搜索内容"
           data={dataOnlyLastCheckable}
         />

@@ -64,7 +64,7 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
     const cls = cx(
       prefixCls,
       className,
-      placement === 'vertical' && `${prefixCls}--vertical`,
+      placement === 'vertical' && `${prefixCls}--placement-vertical`,
       hasData && `${prefixCls}--data-wrap`
     )
 
@@ -74,6 +74,7 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
         <Checkbox
           key={id}
           value={id}
+          name={name}
           disabled={disabled}
           checked={value.includes(id)}
           className={`${prefixCls}__item`}

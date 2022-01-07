@@ -15,7 +15,7 @@ $label-class: '#{$prefix}__label' !default;
   align-items: center;
   vertical-align: middle;
 
-  &--type-button{
+  &--type-button {
     height: 32px;
     padding: 0 12px;
     color: use-color('gray', 600);
@@ -23,37 +23,40 @@ $label-class: '#{$prefix}__label' !default;
     cursor: pointer;
     transition: all use-motion-duration('normal');
 
-    .#{$prefix}{
-      &__input{
+    .#{$prefix} {
+      &__input {
         display: none;
         &:focus + .#{$prefix}__label {
           color: use-color-mode('primary');
         }
       }
-      &__controller{
+
+      &__controller {
         display: none;
       }
     }
 
-    &:hover,&[data-checked]{
+    &:hover,
+    &[data-checked] {
       background: use-color('brandblue', 50);
       color: use-color('brandblue', 500);
     }
 
     &[data-disabled] {
       cursor: not-allowed;
-      background: use-color('gray',200);
-      color: use-color('gray',400);
+      background: use-color('gray', 200);
+      color: use-color('gray', 400);
     }
 
-    &[data-checked]#{&}[data-disabled]{
+    &[data-checked]#{&}[data-disabled] {
       background: use-color('brandblue', 50);
       color: use-color('brandblue', 300);
     }
   }
 
-  &--type-default{
-    .#{$prefix}{
+  &--type-default {
+
+    .#{$prefix} {
       &__input {
         &:focus + .#{$prefix}__controller {
           border-color: use-color-mode('primary');
@@ -71,6 +74,7 @@ $label-class: '#{$prefix}__label' !default;
         border: 1px solid use-color('gray', 300);
         border-radius: use-border-radius('full');
         transition: all use-motion-duration('normal');
+        flex: none;
 
         &::after {
           position: absolute;
@@ -91,19 +95,19 @@ $label-class: '#{$prefix}__label' !default;
 
       &__label {
         box-sizing: border-box;
-        margin-inline-start: use-spacing(2);
+        margin-inline-start: use-spacing(4);
         color: use-color('gray', 700);
       }
     }
 
-    &:hover{
-      .#{$controller-class}{
+    &:hover {
+      .#{$controller-class} {
         border-color: use-color-mode('primary');
       }
     }
 
-    &[data-checked]{
-      .#{$controller-class}{
+    &[data-checked] {
+      .#{$controller-class} {
         border-color: use-color-mode('primary');
         background: use-color-mode('primary');
 
@@ -115,8 +119,8 @@ $label-class: '#{$prefix}__label' !default;
       }
     }
 
-    &[data-checked]#{&}[data-disabled]{
-      .#{$controller-class}{
+    &[data-checked]#{&}[data-disabled] {
+      .#{$controller-class} {
         border-color: use-color-mode('primary');
         background: use-color-mode('primary');
         opacity: 0.4;
@@ -129,10 +133,10 @@ $label-class: '#{$prefix}__label' !default;
       }
     }
 
-    &[data-disabled]{
+    &[data-disabled] {
       cursor: not-allowed;
 
-      .#{$controller-class}{
+      .#{$controller-class} {
         border-color: use-color('gray', 300);
         background: use-color('gray', 100);
 
@@ -140,7 +144,7 @@ $label-class: '#{$prefix}__label' !default;
           background: use-color('gray', 300);
         }
       }
-      .#{$label-class}{
+      .#{$label-class} {
         color: use-color('gray', 500);
       }
     }
@@ -148,26 +152,33 @@ $label-class: '#{$prefix}__label' !default;
 }
 
 .#{$prefix}-group {
-  display: inline-flex;
   position: relative;
-  z-index: use-zindex('normal');
 
-  &--type-button{
+  &--data-wrap {
+    display: inline-flex;
+    z-index: use-zindex('normal');
+  }
+
+  &--type-button {
     border-radius: use-border-radius('md');
     overflow: hidden;
   }
 
-  &--placement-horizontal{
-    align-items: center;
+  &--type-default {
+    &.#{$prefix}-group--data-wrap {
+      gap: use-spacing(8);
+    }
+  }
 
-    .#{$prefix}--type-default{
-      margin-right: use-spacing(16);
+  &--placement-horizontal {
+    &.#{$prefix}-group--data-wrap {
+      align-items: center;
     }
 
-    .#{$prefix}--type-button{
-      &::after{
+    .#{$prefix}--type-button {
+      &::after {
         content: '';
-        background: use-color('gray',300);
+        background: use-color('gray', 300);
         width: 1px;
         left: 100%;
         top: 8px;
@@ -178,17 +189,13 @@ $label-class: '#{$prefix}__label' !default;
     }
   }
 
-  &--placement-vertical{
+  &--placement-vertical {
     flex-direction: column;
 
-    .#{$prefix}--type-default{
-      margin-bottom: use-spacing(8);
-    }
-
-    .#{$prefix}--type-button{
-      &::after{
+    .#{$prefix}--type-button {
+      &::after {
         content: '';
-        background: use-color('gray',300);
+        background: use-color('gray', 300);
         height: 1px;
         left: 8px;
         right: 8px;
