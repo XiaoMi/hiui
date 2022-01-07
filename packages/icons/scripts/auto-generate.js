@@ -60,10 +60,7 @@ const disposeSvgSourceFile = (file) => {
   }
 
   const insertReactProps = (source) => {
-    return source.replace(
-      /<svg/g,
-      '<svg className={cls} ref={ref} role={role} style={style} onClick={onClick} '
-    )
+    return source.replace(/<svg/g, '<svg className={cls} ref={ref} role="icon" {...rest} ')
   }
 
   const pureSvg = removeDoctypeDeclaration(removeXmlDeclaration(file))
@@ -84,11 +81,10 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { IconProps } from '../../@types/props'
 
-const _role = 'icon-${name}'
-const _prefix = getPrefixCls(_role)
+const _prefix = getPrefixCls('icon-${name}')
 
 export const ${componentName} = forwardRef<SVGSVGElement | null, IconProps>(
-  ({ prefixCls = _prefix, role = _role, className, children, style, onClick }, ref) => {
+  ({ prefixCls = _prefix, className, children, ...rest }, ref) => {
     const cls = cx(prefixCls, className)
 
     return (
