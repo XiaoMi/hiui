@@ -16,7 +16,7 @@ export class MessageAPI extends ToastAPI<MessageOptions> {
 
 export interface MessageAPIOptions extends ToastAPIOptions {}
 
-export interface MessageOptions extends Omit<MessageProps, '$destroy' | 'id'> {
+export interface MessageOptions extends Omit<MessageProps, '$destroy' | 'id' | 'visible'> {
   /**
    * 通知唯一标识
    */
