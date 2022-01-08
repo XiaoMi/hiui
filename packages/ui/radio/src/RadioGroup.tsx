@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import { useRadioGroup, UseRadioGroupProps } from './use-radio-group'
 import { RadioGroupProvider } from './context'
 import { RadioDataItem, RadioGroupTypeEnum, RadioGroupPlacementEnum } from './types'
@@ -77,7 +77,7 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
   }
 )
 
-export interface RadioGroupProps extends HiBaseHTMLProps<'div'>, UseRadioGroupProps {
+export interface RadioGroupProps extends HiBaseHTMLFieldProps<'div'>, UseRadioGroupProps {
   /**
    *   指定可选项
    */

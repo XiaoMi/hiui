@@ -6,7 +6,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="radio-basic__wrap">
-        <Radio>Radio</Radio>
+        <Radio onChange={console.log}>Radio</Radio>
       </div>
     </>
   )

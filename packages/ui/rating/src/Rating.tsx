@@ -3,7 +3,8 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
-import * as Icons from './StarSVG'
+import * as Icons from './icons'
+import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 
 const _role = 'rating'
 const _prefix = getPrefixCls(_role)
@@ -245,23 +246,7 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
   }
 )
 
-export interface RatingProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface RatingProps extends HiBaseHTMLFieldProps<'ul'> {
   /**
    * 禁用，无法进行交互,鼠标禁用交互效果
    */
@@ -310,12 +295,10 @@ export interface RatingProps {
    * 悬停反馈，当用户的鼠标悬停在评分组件上时，可以获取对应的分值
    */
   onHover?: (value: number) => void
-  tabIndex?: number
+  /**
+   * 是否自动获取焦点
+   */
   autoFocus?: boolean
-  onFocus?: (evt: React.FocusEvent<HTMLUListElement>) => void
-  onBlur?: (evt: React.FocusEvent<HTMLUListElement>) => void
-  onMouseLeave?: (e: React.MouseEvent<HTMLUListElement>) => void
-  onKeyDown?: (e: React.KeyboardEvent<HTMLUListElement>) => void
 }
 
 if (__DEV__) {

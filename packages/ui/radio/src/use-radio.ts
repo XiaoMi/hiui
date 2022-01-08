@@ -6,7 +6,6 @@ export const useRadio = ({
   name: nameProp,
   // 是否作为必传参数使用
   value: valueProp,
-  invalid,
   autoFocus = false,
   defaultChecked = false,
   onChange,
@@ -15,7 +14,13 @@ export const useRadio = ({
   disabled = false,
   ...rest
 }: UseRadioProps) => {
-  const [checked, tryChangeChecked] = useUncontrolledState(defaultChecked, checkedProp, onChange)
+  const [checked, tryChangeChecked] = useUncontrolledState(
+    defaultChecked,
+    checkedProp,
+    (_, evt: React.ChangeEvent<HTMLInputElement>) => {
+      onChange?.(evt)
+    }
+  )
 
   const nonInteractive = disabled || readOnly
 
@@ -49,16 +54,14 @@ export const useRadio = ({
   const state = useMemo(() => {
     return {
       disabled,
-      invalid,
       checked,
       readOnly,
     }
-  }, [disabled, invalid, checked, readOnly])
+  }, [disabled, checked, readOnly])
 
   const rootProps = {
     ...rest,
     'data-disabled': setAttrStatus(disabled),
-    'data-invalid': setAttrStatus(invalid),
     'data-checked': setAttrStatus(checked),
     'data-readonly': setAttrStatus(readOnly),
   }
@@ -71,10 +74,6 @@ export const useRadio = ({
 }
 
 export interface UseRadioProps {
-  /**
-   * 是否无效
-   */
-  invalid?: boolean
   /**
    * 字段名称
    */
@@ -95,7 +94,7 @@ export interface UseRadioProps {
   /**
    * 选中态改变时的回调
    */
-  onChange?: (shouldChecked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   /**
    * 是否禁用
    */

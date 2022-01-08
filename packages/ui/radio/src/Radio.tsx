@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import { useRadio, UseRadioProps } from './use-radio'
 import { useRadioGroupContext } from './context'
 import { isNullish } from '@hi-ui/type-assertion'
@@ -39,8 +39,8 @@ export const Radio = forwardRef<HTMLLabelElement | null, RadioProps>(
 
     const onChange =
       onChangeContext && !isNullish(valueProp)
-        ? callAllFuncs((shouldChecked: boolean) => {
-            if (shouldChecked) {
+        ? callAllFuncs((evt: React.ChangeEvent<HTMLInputElement>) => {
+            if (evt.target.checked) {
               onChangeContext(valueProp)
             }
           }, onChangeProp)
@@ -68,7 +68,7 @@ export const Radio = forwardRef<HTMLLabelElement | null, RadioProps>(
   }
 )
 
-export interface RadioProps extends HiBaseHTMLProps<'label'>, UseRadioProps {}
+export interface RadioProps extends HiBaseHTMLFieldProps<'label'>, UseRadioProps {}
 
 if (__DEV__) {
   Radio.displayName = 'Radio'
