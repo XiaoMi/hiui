@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
+import DefaultIcon from './default-icon'
 
 const _role = 'empty-state'
 const _prefix = getPrefixCls(_role)
@@ -71,13 +72,7 @@ if (__DEV__) {
 }
 
 const DefaultIndicator: React.FC<DefaultIndicatorProps> = (props) => {
-  return (
-    <img
-      alt="empty"
-      src="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-      {...props}
-    />
-  )
+  return <img alt="empty" src={DefaultIcon} {...props} />
 }
 
 export interface DefaultIndicatorProps {

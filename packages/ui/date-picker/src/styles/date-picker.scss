@@ -14,7 +14,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
 .#{$prefix} {
   position: relative;
-  z-index: 1060;
+  // z-index: 1060;
 
   &__popper {
     //width: 288px;
