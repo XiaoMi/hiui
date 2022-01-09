@@ -1,17 +1,16 @@
 import React, { useCallback, useState } from 'react'
 import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { UseDataSource, useDataSource } from '@hi-ui/use-data-source'
-import { __DEV__ } from '@hi-ui/env'
+import { invariant } from '@hi-ui/env'
 import { filterTree, getNodeAncestors, cloneTree } from '@hi-ui/tree-utils'
 
 /**
  * TODO: What is useSearchMode
  */
 export const useSearchMode = ({ searchable: searchableProp, strategies }: UseSearchModeProps) => {
-  // TODO: 抽离 useSearch
-  const [searchValue, setSearchValue] = useState('')
-  // 搜索时临时节点展开态
+  const [keyword, setKeyword] = useState('')
 
+  // 搜索时的临时节点数据
   const [stateInSearch, setStateInSearch] = useState<any>({
     matched: false,
     data: [],
@@ -26,33 +25,39 @@ export const useSearchMode = ({ searchable: searchableProp, strategies }: UseSea
     })
   }, [])
 
-  // 帮助用户自动开启 searchable
+  // 搜索策略，优先级按数组查找顺序
   const strategy = strategies.find((strategy) => {
     return strategy && strategy.enabled
   })
 
+  // 帮助用户自动开启 searchable
   const searchable = searchableProp === false ? false : !!strategy
-  const searchMode = (searchable && strategy.name) || false
+  const searchMode: string = (searchable && strategy && strategy.name) || ''
 
   const onSearch = useCallback(
     (keyword: string) => {
       if (!searchable) return
 
-      setSearchValue(keyword)
+      setKeyword(keyword)
 
-      if (!keyword) return
-
-      strategy.run(keyword, setStateInSearch)
+      if (keyword) {
+        strategy.run(keyword, setStateInSearch)
+      }
     },
     [searchable, strategy]
   )
 
+  const inSearch = !!keyword
+  const isEmpty = inSearch && stateInSearch.data.length === 0
+
   return {
     searchable,
     searchMode,
+    keyword,
     onSearch,
+    inSearch,
+    isEmpty,
     state: stateInSearch,
-    keyword: searchValue,
     setStateInSearch,
     resetState,
   }
@@ -175,7 +180,7 @@ export const useFilterSearch = ({ data, flattedData, searchMode, exclude }: any)
   return { name: 'filter', enabled: searchMode === 'filter', run: onSearch }
 }
 
-export const useNormalFilterSearch = ({ flattedData, searchMode, exclude }: any) => {
+export const useNormalFilterSearch = ({ enabled, flattedData, searchMode, exclude }: any) => {
   const onSearch = useCallback(
     (keyword: string, dispatch: any) => {
       // 1. 展开匹配节点树
@@ -191,7 +196,7 @@ export const useNormalFilterSearch = ({ flattedData, searchMode, exclude }: any)
     [flattedData]
   )
 
-  return { name: 'filter', enabled: searchMode === 'filter', run: onSearch }
+  return { name: searchMode, enabled, run: onSearch }
 }
 
 export const useTreeUpMatchSearch = ({ enabled, flattedData, data, exclude }: any) => {
@@ -218,15 +223,15 @@ export const useTreeUpMatchSearch = ({ enabled, flattedData, data, exclude }: an
  */
 const getMatchedNodes = (
   data: any[],
-  searchValue: string,
-  filter?: (option: any) => boolean
+  keyword: string,
+  exclude?: (option: any) => boolean
 ): any[] => {
-  if (!searchValue) return []
+  if (!keyword) return []
 
   return data.filter((node) => {
-    if (filter && filter(node)) return false
+    if (exclude && exclude(node)) return false
 
-    return matchStrategy(node.title, searchValue) !== -1
+    return matchStrategy(node.title, keyword) !== -1
   })
 }
 
@@ -275,10 +280,10 @@ const getSearchedData = (
  */
 const getMatchedUpMatchNodes = (
   flattedData: any[],
-  searchValue: string,
+  keyword: string,
   filter: (option: any) => boolean
 ): any[] => {
-  if (!searchValue) return []
+  if (!keyword) return []
 
   const visitedResultSet = new Set<React.ReactText>()
 
@@ -290,7 +295,7 @@ const getMatchedUpMatchNodes = (
         return true
       }
 
-      if (matchStrategy(node.title, searchValue) !== -1) {
+      if (matchStrategy(node.title, keyword) !== -1) {
         visitedResultSet.add(node.id)
         return true
       }
@@ -306,9 +311,8 @@ const getMatchedUpMatchNodes = (
  */
 export const matchStrategy = (content: unknown, keyword: string, ignoreCase = true) => {
   if (typeof content !== 'string') {
-    if (__DEV__) {
-      console.info('WARNING: The `title` should be `string` when searchable is enabled.')
-    }
+    invariant(true, 'The `title` should be `string` when searchable is enabled.')
+
     // 返回 -1 表示无法完成匹配
     return -1
   }

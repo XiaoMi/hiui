@@ -95,6 +95,67 @@ export const flattenTree = <T extends BaseTreeNodeData>(
 }
 
 /**
+ * 转换对象
+ */
+const getChildrenField = (node: any) => {
+  return node.children
+}
+
+export const flattenTree1 = <T extends BaseTreeNodeData>({
+  tree,
+  transform,
+  childrenFieldName = getChildrenField,
+}: {
+  tree: T[]
+  transform?: (node: BaseFlattedTreeNodeData<any, T>, rootIndex: number) => any
+  childrenFieldName?: (node: BaseTreeNodeData) => BaseTreeNodeData[]
+}) => {
+  const flattedTree: BaseFlattedTreeNodeData<any>[] = []
+
+  const dig = (
+    depth: number,
+    node: BaseTreeNodeData,
+    parent: BaseFlattedTreeNodeDataWithChildren<any>,
+    rootIndex: number
+  ) => {
+    const children = childrenFieldName(node)
+
+    let flattedNode: BaseFlattedTreeNodeData<any> = {
+      depth,
+      parent,
+      raw: node,
+    }
+
+    flattedNode = transform ? transform(flattedNode, rootIndex) : flattedNode
+
+    flattedTree.push(flattedNode)
+
+    if (children) {
+      const childDepth = depth + 1
+
+      flattedNode.children = children.map((child) => {
+        return dig(
+          childDepth,
+          child,
+          flattedNode as BaseFlattedTreeNodeDataWithChildren<any>,
+          // 存储自身所在树的 root 节点索引
+          rootIndex
+        )
+      })
+    }
+
+    return flattedNode
+  }
+
+  // @ts-ignore
+  const treeRoot: NodeRoot<BaseFlattedTreeNodeData<any>> = getTreeRoot()
+  // @ts-ignore
+  treeRoot.children = tree.map((node, index) => dig(0, node, treeRoot, index))
+
+  return flattedTree
+}
+
+/**
  * 作为树的 ROOT_HOST，用于快速获取兄弟节点
  */
 const getTreeRoot = () => {

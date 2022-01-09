@@ -2,12 +2,12 @@ import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { MockInput } from '@hi-ui/input'
-import { useToggle } from '@hi-ui/use-toggle'
-import { useSelect } from './use-select'
+import { useUncontrolledToggle } from '@hi-ui/use-toggle'
+import { useSelect, UseSelectProps } from './use-select'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { SelectProvider, useSelectContext } from './context'
-import { SelectDataItem, SelectItem } from './types'
+import { SelectDataItem } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import VirtualList from 'rc-virtual-list'
 import { times } from '@hi-ui/times'
@@ -22,6 +22,7 @@ import {
   useTreeCustomSearch,
 } from '@hi-ui/use-search-mode'
 import { uniqBy } from 'lodash'
+import { useData } from './hooks/use-data'
 
 const _role = 'select'
 const _prefix = getPrefixCls(_role)
@@ -36,29 +37,38 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       role = _role,
       className,
       children,
+      appearance,
+      invalid = false,
       disabled = false,
+      // picker
       clearable = true,
       placeholder = '请选择',
       displayRender: displayRenderProp,
-      onSelect: onSelectProp,
-      popper,
+      // Virtual List
       height,
       itemHeight = 40,
       virtual = true,
-      appearance,
-      invalid,
+      // search
+      searchable: searchableProp,
       dataSource,
       filterOption,
-      searchable: searchableProp,
-      titleRender,
+      // popper
+      onOpen,
+      onClose,
+      popper,
+      // render
       renderExtraFooter,
+      titleRender,
+      data: dataProp,
+      fieldNames,
+      onSelect: onSelectProp,
       ...rest
     },
     ref
   ) => {
-    const [menuVisible, menuVisibleAction] = useToggle()
+    const [menuVisible, menuVisibleAction] = useUncontrolledToggle({ disabled, onOpen, onClose })
 
-    // 搜索时临时选中缓存数据
+    // 搜索时临时缓存选中异步数据
     const [selectedItem, setSelectedItem] = useState<SelectDataItem | null>(null)
 
     const onSelectLatest = useLatestCallback(onSelectProp)
@@ -73,8 +83,9 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       [menuVisibleAction, onSelectLatest]
     )
 
-    // @ts-ignore
-    const { rootProps, ...context } = useSelect({ ...rest, onSelect, children })
+    const data = useData({ data: dataProp, children, fieldNames })
+
+    const { rootProps, ...context } = useSelect({ ...rest, onSelect, data })
     const { value, tryChangeValue, flattedData: selectData } = context
 
     // ************************** 异步搜索 ************************* //
@@ -146,18 +157,12 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           disabled={disabled}
           onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
-          // value={value}
-          // onChange={tryChangeValue}
-          // data={mergedData}
           searchable={searchable}
           onSearch={onSearch}
           loading={loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           trigger={
             <MockInput
-              // ref={targetElementRef}
-              // onClick={openMenu}
-              // disabled={disabled}
               clearable={clearable}
               placeholder={placeholder}
               displayRender={displayRenderProp}
@@ -199,28 +204,17 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
   }
 )
 
-export interface SelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'trigger'> {
-  // export interface SelectProps extends Omit<HiBaseHTMLFieldProps<'div'>, 'onChange' | 'onSelect'> {
+export interface SelectProps
+  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger'>,
+    UseSelectProps {
   /**
-   * 设置当前选中值
+   * 设置展现形式
    */
-  value?: React.ReactText
+  appearance?: 'outline' | 'unset' | 'filled'
   /**
-   * 设置当前选中值默认值
+   * 触发器输入框占位符
    */
-  defaultValue?: React.ReactText
-  /**
-   * 选中值改变时的回调
-   */
-  onChange?: (value: React.ReactText, targetOption?: SelectDataItem) => void
-  /**
-   * 选中值时回调
-   */
-  onSelect?: (value: React.ReactText, targetOption?: SelectDataItem) => void
-  /**
-   * 是否可搜索（仅在 title 为字符串时支持）
-   */
-  searchable?: boolean
+  placeholder?: string
   /**
    * 是否可清空
    */
@@ -234,13 +228,9 @@ export interface SelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'tr
    */
   displayRender?: (option: SelectDataItem) => React.ReactNode
   /**
-   * 触发器输入框占位符
+   * 自定义下拉菜单底部渲染
    */
-  placeholder?: string
-  /**
-   * 选项数据
-   */
-  data?: SelectItem[]
+  renderExtraFooter?: () => React.ReactNode
   /**
    * 设置虚拟滚动容器的可视高度
    */
@@ -254,9 +244,9 @@ export interface SelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'tr
    */
   virtual?: boolean
   /**
-   * 设置展现形式
+   * 是否可搜索（仅在 title 为字符串时支持）
    */
-  appearance?: 'outline' | 'unset' | 'filled'
+  searchable?: boolean
   /**
    * 节点搜索模式，仅在mode=normal模式下生效
    */
@@ -271,10 +261,6 @@ export interface SelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'tr
    * 异步加载数据
    */
   dataSource?: UseDataSource<SelectDataItem>
-  /**
-   * 自定义下拉菜单底部渲染
-   */
-  renderExtraFooter?: () => React.ReactNode
 }
 
 // @ts-ignore
