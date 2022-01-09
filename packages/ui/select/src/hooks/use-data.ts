@@ -13,6 +13,6 @@ export const useData = ({ data, children, fieldNames }: any) => {
       mergedData = parseChildren(children)
     }
 
-    return mergedData
+    return mergedData || []
   }, [children, data])
 }

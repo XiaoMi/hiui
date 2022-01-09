@@ -62,3 +62,10 @@ export interface FlattedSelectItem extends SelectDataItem {
    */
   children?: FlattedSelectItem[]
 }
+
+export interface SelectItemRequiredProps {
+  selected: boolean
+  focused: boolean
+}
+
+export interface SelectItemEventData extends FlattedSelectItem, SelectItemRequiredProps {}

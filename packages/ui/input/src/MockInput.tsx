@@ -43,27 +43,33 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
   ) => {
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
-    const displayValue = useMemo(() => {
+    const displayItem = useMemo(() => {
       if (value === '') return null
 
       const displayItem = data.find((item) => item.id === value)
-      if (!displayItem) return null
+
+      return displayItem || null
+    }, [value, data])
+
+    const displayValue = useMemo(() => {
+      if (!displayItem) return ''
 
       if (displayRender) {
         return displayRender(displayItem)
       }
 
       return displayItem.title
-    }, [data, value, displayRender])
+    }, [displayItem, displayRender])
 
     const handleClear = useCallback(
       (evt) => {
         if (disabled) return
 
         evt.stopPropagation()
-        tryChangeValue(NOOP_VALUE)
+
+        tryChangeValue(NOOP_VALUE, displayItem)
       },
-      [tryChangeValue, disabled]
+      [tryChangeValue, disabled, displayItem]
     )
 
     const [hover, setHover] = useState(false)
@@ -148,7 +154,7 @@ export type MockInputProps = HiBaseHTMLFieldProps<
     /**
      * 多选值改变时的回调
      */
-    onChange?: (values: React.ReactText) => void
+    onChange?: (value: React.ReactText, item: any) => void
     /**
      * 是否可清空
      */

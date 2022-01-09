@@ -38,6 +38,7 @@ const parseOption = (node: React.ReactElement) => {
     id: value,
     title: children,
     disabled: disabled,
+    // TODO:使用 Symbol 注入，避免 data 传入使用
     rootProps: rest,
   } as SelectDataItem
 
@@ -46,13 +47,13 @@ const parseOption = (node: React.ReactElement) => {
 
 const parseOptionGroup = (node: React.ReactElement) => {
   const {
+    key,
     props: { groupId, label, children, ...rest },
   } = node
 
   const optGroup = {
-    groupId,
+    groupId: key ?? groupId,
     groupTitle: label,
-    children: [],
     rootProps: rest,
   } as SelectGroupDataItem
 

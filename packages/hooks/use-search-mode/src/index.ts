@@ -154,7 +154,13 @@ export const useHighlightSearch = ({ data, flattedData, searchMode }: any) => {
   return { name: 'highlight', enabled: searchMode === 'highlight', run: onSearch }
 }
 
-export const useFilterSearch = ({ data, flattedData, searchMode, exclude }: any) => {
+export const useFilterSearch = ({
+  enabled,
+  searchMode = 'filter',
+  data,
+  flattedData,
+  exclude,
+}: any) => {
   const onSearch = useCallback(
     (keyword: string, dispatch: any) => {
       // 1. 展开匹配节点树
@@ -177,23 +183,23 @@ export const useFilterSearch = ({ data, flattedData, searchMode, exclude }: any)
     [data, flattedData]
   )
 
-  return { name: 'filter', enabled: searchMode === 'filter', run: onSearch }
+  return { name: searchMode, enabled, run: onSearch }
 }
 
-export const useNormalFilterSearch = ({ enabled, flattedData, searchMode, exclude }: any) => {
+export const useNormalFilterSearch = ({ enabled, searchMode = 'filter', data, exclude }: any) => {
   const onSearch = useCallback(
     (keyword: string, dispatch: any) => {
       // 1. 展开匹配节点树
       // 2. 高亮匹配节点文本
       // 3. 过滤掉（隐藏）不相干的兄弟和祖先节点
-      const matchedNodes = getMatchedNodes(flattedData, keyword, exclude)
+      const matchedNodes = getMatchedNodes(data, keyword, exclude)
 
       dispatch({
         matched: isArrayNonEmpty(matchedNodes),
         data: matchedNodes,
       })
     },
-    [flattedData]
+    [data]
   )
 
   return { name: searchMode, enabled, run: onSearch }

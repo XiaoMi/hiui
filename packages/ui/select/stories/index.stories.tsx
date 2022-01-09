@@ -14,6 +14,7 @@ export * from './title-render.stories'
 export * from './footer.stories'
 export * from './filter-options.stories'
 export * from './pinyin.stories'
+export * from './children.stories'
 
 export default {
   title: 'Data Input/Select',

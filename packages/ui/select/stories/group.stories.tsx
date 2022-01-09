@@ -35,6 +35,7 @@ export const Group = () => {
         <Select
           data={data}
           placeholder="请选择"
+          searchable
           style={{ width: 200 }}
           value={value}
           onChange={(selectedId) => {

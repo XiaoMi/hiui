@@ -1,80 +1,63 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useSelect as useSelectDefault } from '@hi-ui/use-check'
-import { FieldNames, FieldNamesKeys, SelectDataItem } from './types'
-import { flattenTree1 } from '@hi-ui/tree-utils'
+import { FlattedSelectItem, SelectItemEventData, SelectItemRequiredProps } from './types'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
-const NOOP_ARRAY = [] as []
 const NOOP_VALUE = ''
-const DEFAULT_FIELD_NAMES = {} as any
 
 const allowSelect = (option: any) => !option.disabled
 
 export const useSelect = ({
-  data = NOOP_ARRAY,
   disabled = false,
   value: valueProp,
   defaultValue = NOOP_VALUE,
   onChange: onChangeProp,
   onSelect: onSelectProp,
-  fieldNames = DEFAULT_FIELD_NAMES,
   ...rest
 }: UseSelectProps) => {
-  const flattedData = useMemo(() => {
-    const getKeyFields = (node: any, key: FieldNamesKeys) => node[fieldNames[key] || key]
-
-    return flattenTree1({
-      tree: data,
-      childrenFieldName: (node) => getKeyFields(node, 'children'),
-      transform: (node: any) => {
-        if ('groupId' in node.raw) {
-          node.id = node.raw.groupId
-          node.groupId = node.raw.groupId
-          node.groupTitle = node.raw.groupTitle
-        } else {
-          node.id = getKeyFields(node.raw, 'id')
-          node.title = getKeyFields(node.raw, 'title')
-          node.disabled = getKeyFields(node.raw, 'disabled')
-        }
-        return node
-      },
-    })
-  }, [data, fieldNames])
-
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
 
   const [onSelect, isSelectedId] = useSelectDefault({
     disabled,
     allowSelect,
     selectedId: value,
-    onSelect: (value: React.ReactText, item: SelectDataItem) => {
+    onSelect: (value: React.ReactText, item: SelectItemEventData) => {
       tryChangeValue(value, item)
       onSelectProp?.(value, item)
     },
+  })
+
+  const getRequiredProps = useLatestCallback(
+    (id: React.ReactText): SelectItemRequiredProps => {
+      return {
+        selected: isSelectedId(id),
+        focused: false,
+      }
+    }
+  )
+
+  const getSelectItemEventData = useLatestCallback((node: FlattedSelectItem) => {
+    return {
+      ...node,
+      ...getRequiredProps(node.id),
+    }
   })
 
   const rootProps = rest
 
   return {
     rootProps,
-    data,
-    flattedData,
     value,
     tryChangeValue,
     onSelect,
     isSelectedId,
+    getRequiredProps,
+    getSelectItemEventData,
   }
 }
 
 export interface UseSelectProps {
-  /**
-   * 选项数据
-   */
-  data?: SelectDataItem[]
-  /**
-   * 设置 data 中 id, title, disabled, children 对应的 key
-   */
-  fieldNames?: FieldNames
   /**
    * 设置当前选中值
    */
@@ -86,15 +69,11 @@ export interface UseSelectProps {
   /**
    * 选中值改变时的回调
    */
-  onChange?: (
-    selectedId: React.ReactText,
-    changedItem: SelectDataItem,
-    shouldChecked: boolean
-  ) => void
+  onChange?: (selectedId: React.ReactText, changedItem: SelectItemEventData) => void
   /**
    * 选中值时回调
    */
-  onSelect?: (value: React.ReactText, targetOption?: SelectDataItem) => void
+  onSelect?: (value: React.ReactText, targetOption: SelectItemEventData) => void
   /**
    * 是否禁止使用
    */

@@ -101,7 +101,7 @@ const getChildrenField = (node: any) => {
   return node.children
 }
 
-export const flattenTree1 = <T extends BaseTreeNodeData>({
+export const baseFlattenTree = <T extends BaseTreeNodeData>({
   tree,
   transform,
   childrenFieldName = getChildrenField,
@@ -121,9 +121,9 @@ export const flattenTree1 = <T extends BaseTreeNodeData>({
     const children = childrenFieldName(node)
 
     let flattedNode: BaseFlattedTreeNodeData<any> = {
+      raw: node,
       depth,
       parent,
-      raw: node,
     }
 
     flattedNode = transform ? transform(flattedNode, rootIndex) : flattedNode

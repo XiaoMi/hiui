@@ -29,6 +29,7 @@ export const DataSource = () => {
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
           data={data}
+          onChange={console.log}
           dataSource={(keyword) => {
             console.log('DataSource', keyword)
             const url =

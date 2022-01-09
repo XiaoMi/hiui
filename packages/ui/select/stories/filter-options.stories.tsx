@@ -18,6 +18,7 @@ export const FilterOptions = () => {
           clearable={false}
           style={{ width: 200 }}
           data={data}
+          searchPlaceholder="搜索：id >= keyword"
           filterOption={(keyword, item) => {
             return item.id >= parseInt(keyword)
           }}
