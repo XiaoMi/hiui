@@ -32,7 +32,7 @@ const dataSource = [
   {
     name: '小米9',
     type: '手机',
-    size: '6G+64G 全息幻彩蓝',
+    size: '6G+64G 幻彩蓝',
     price: '3299.00',
     address: '华润五彩城店',
     stock: '29,000',
@@ -41,7 +41,7 @@ const dataSource = [
   {
     name: '小米9 SE',
     type: '手机',
-    size: '6G+64G 全息幻彩蓝',
+    size: '6G+64G 幻彩蓝',
     price: '1999.00',
     address: '清河店',
     stock: '10,000',
@@ -50,7 +50,7 @@ const dataSource = [
   {
     name: '小米8',
     type: '手机',
-    size: '6G+64G 全息幻彩蓝',
+    size: '6G+64G 幻彩蓝',
     price: '2599.00',
     address: '双安店',
     stock: '12,000',
@@ -59,7 +59,7 @@ const dataSource = [
   {
     name: 'Redmi Note7',
     type: '手机',
-    size: '6G+64G 全息幻彩蓝',
+    size: '6G+64G 幻彩蓝',
     price: '999.00',
     address: '华润五彩城店',
     stock: '140,000',
@@ -68,7 +68,7 @@ const dataSource = [
   {
     name: '小米8 SE',
     type: '手机',
-    size: '6G+64G 全息幻彩蓝',
+    size: '6G+64G 幻彩蓝',
     price: '699.00',
     address: '双安店',
     stock: '12,000',
@@ -77,7 +77,7 @@ const dataSource = [
   {
     name: '小米10',
     type: '手机',
-    size: '6G+64G 全息幻彩蓝',
+    size: '6G+64G 幻彩蓝',
     price: '3299.00',
     address: '华润五彩城店',
     stock: '29,000',
@@ -86,7 +86,7 @@ const dataSource = [
   {
     name: '小米10 SE',
     type: '手机',
-    size: '6G+64G 全息幻彩蓝',
+    size: '6G+64G 幻彩蓝',
     price: '1999.00',
     address: '清河店',
     stock: '10,000',
@@ -95,7 +95,7 @@ const dataSource = [
   {
     name: '小米8',
     type: '手机',
-    size: '6G+64G 全息幻彩蓝',
+    size: '6G+64G 幻彩蓝',
     price: '2599.00',
     address: '双安店',
     stock: '12,000',
@@ -104,7 +104,7 @@ const dataSource = [
   {
     name: 'Redmi Note7',
     type: '手机',
-    size: '6G+64G 全息幻彩蓝',
+    size: '6G+64G 幻彩蓝',
     price: '999.00',
     address: '华润五彩城店',
     stock: '140,000',
@@ -113,7 +113,7 @@ const dataSource = [
   {
     name: '小米8 SE',
     type: '手机',
-    size: '6G+64G 全息幻彩蓝',
+    size: '6G+64G 幻彩蓝',
     price: '699.00',
     address: '双安店',
     stock: '12,000',

@@ -99,7 +99,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       onClose,
     })
 
-    const openMenu = useCallback(() => {
+    const showMenu = useCallback(() => {
       if (disabled) return
       menuVisibleAction.on()
     }, [disabled, menuVisibleAction])
@@ -139,7 +139,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       >
         {React.cloneElement(trigger, {
           ref: targetElementRef,
-          onClick: openMenu,
+          onClick: menuVisible ? hideMenu : showMenu,
           disabled: disabled,
         })}
         <Popper

@@ -2,6 +2,7 @@ import React from 'react'
 import Table from '../src'
 
 export * from './basic.stories'
+export * from './width.stories'
 export * from './frozen.stories'
 export * from './resizable.stories'
 export * from './highlight.stories'

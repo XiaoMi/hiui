@@ -52,7 +52,7 @@ export interface FlattedSelectItem extends SelectDataItem {
   /**
    * 该节点的层级，从 0（顶层）开始
    */
-  depth: number
+  depth?: number
   /**
    * 该节点的父节点
    */

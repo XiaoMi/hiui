@@ -16,7 +16,12 @@ export const useSelect = ({
   onSelect: onSelectProp,
   ...rest
 }: UseSelectProps) => {
-  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
+  const [value, tryChangeValue] = useUncontrolledState(
+    defaultValue,
+    valueProp,
+    onChangeProp,
+    Object.is
+  )
 
   const [onSelect, isSelectedId] = useSelectDefault({
     disabled,
@@ -38,10 +43,14 @@ export const useSelect = ({
   )
 
   const getSelectItemEventData = useLatestCallback((node: FlattedSelectItem) => {
-    return {
+    const event = {
       ...node,
       ...getRequiredProps(node.id),
     }
+
+    // 数据污染清理
+    delete event.depth
+    return event
   })
 
   const rootProps = rest
