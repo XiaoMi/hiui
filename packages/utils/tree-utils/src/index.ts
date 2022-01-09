@@ -120,6 +120,7 @@ export const baseFlattenTree = <T extends BaseTreeNodeData>({
   ) => {
     const children = childrenFieldName(node)
 
+    // @ts-ignore
     let flattedNode: BaseFlattedTreeNodeData<any> = {
       raw: node,
       depth,

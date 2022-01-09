@@ -33,7 +33,7 @@ export const useColWidth = ({
     if (!dataSource) {
       // 收集所有列宽，通过 table 的第一行
       if (firstRowElementRef.current) {
-        console.log('firstRowElementRef.current', firstRowElementRef.current)
+        // console.log('firstRowElementRef.current', firstRowElementRef.current)
 
         const _realColumnsWidth = Array.from(firstRowElementRef.current.childNodes).map((node) => {
           return (node as HTMLElement).getBoundingClientRect().width || 0

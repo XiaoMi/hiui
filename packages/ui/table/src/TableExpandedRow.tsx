@@ -49,11 +49,11 @@ export const TableExpandedRow = forwardRef<HTMLDivElement | null, TableExpandedR
           setExpandedRow(embedContentMaybePromise)
         })
       }
-      // for onExpandEmbedRowsChange
+      // Exclude for `onExpandEmbedRowsChange`
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rowIndex, expandedRender, rowDataLatestRef, expanded])
 
-    console.log('TableExpandedRow', expanded, rowData)
+    // console.log('TableExpandedRow', expanded, rowData)
 
     // 可展开的内嵌面板
     return expanded ? (

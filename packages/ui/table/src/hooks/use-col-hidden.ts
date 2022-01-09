@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { TableProps } from '../Table'
+import { parseLocalArray } from '../utils'
 
 const DEFAULT_COLUMNS = [] as []
 /**
@@ -12,11 +13,12 @@ export const useColHidden = ({
   hiddenColKeys: hiddenColKeysProp,
   onHiddenColKeysChange,
 }: TableProps) => {
+  const cacheKey = uniqueId ? `${uniqueId}_hiddenColKeys` : ''
+
   const [_hiddenColKeys, setHiddenColKeys] = useUncontrolledState<string[]>(
     () => {
       return parseLocalArray({
-        key: `${uniqueId}_hiddenColKeys`,
-        disabled: !uniqueId,
+        key: cacheKey,
         defaultValue: [],
       })
     },
@@ -30,9 +32,9 @@ export const useColHidden = ({
   }, [_hiddenColKeys])
 
   useEffect(() => {
-    if (!uniqueId) return
-    window.localStorage.setItem(`${uniqueId}_hiddenColKeys`, JSON.stringify(hiddenColKeys))
-  }, [uniqueId, hiddenColKeys])
+    if (!cacheKey) return
+    window.localStorage.setItem(cacheKey, JSON.stringify(hiddenColKeys))
+  }, [cacheKey, hiddenColKeys])
 
   // 用于维护列操作时显隐临时状态
   const [cacheHiddenColKeys, setCacheHiddenColKeys] = useState(hiddenColKeys)
@@ -54,21 +56,3 @@ export const useColHidden = ({
 }
 
 export type UseColHiddenReturn = ReturnType<typeof useColHidden>
-
-const parseLocalArray = ({ key, defaultValue, disabled }: any) => {
-  if (!disabled) {
-    try {
-      let localArr = window.localStorage.getItem(key)
-
-      if (localArr) {
-        localArr = JSON.parse(localArr)
-
-        if (Array.isArray(localArr)) {
-          return localArr
-        }
-      }
-    } catch (error) {}
-  }
-
-  return defaultValue
-}

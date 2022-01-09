@@ -20,7 +20,7 @@ export interface BaseFlattedTreeNodeDataWithChildren<T extends BaseFlattedTreeNo
 }
 
 export interface BaseFlattedTreeNodeData<T extends BaseFlattedTreeNodeData<T, any>, R = any> {
-  id?: React.ReactText
+  id: React.ReactText
   parent?: BaseFlattedTreeNodeDataWithChildren<T>
   children?: T[]
   depth: number

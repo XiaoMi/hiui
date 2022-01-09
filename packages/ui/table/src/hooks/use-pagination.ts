@@ -8,17 +8,17 @@ export const useTablePagination = ({
   data: dataProp,
   dataSource,
 }: {
-  data?: object[]
-  pagination?: PaginationProps
+  data: object[]
+  pagination: PaginationProps
   dataSource?: (current: number) => AxiosRequestConfig<any>
 }) => {
   const [currentPage, trySetCurrentPage] = useUncontrolledState(
     1,
-    pagination?.current,
-    pagination?.onChange
+    pagination.current,
+    pagination.onChange
   )
 
-  const [remoteTableData, setRemoteTableData] = React.useState([])
+  const [remoteTableData, setRemoteTableData] = React.useState<object[]>([])
   const mergedData = dataSource ? remoteTableData : dataProp
 
   // 内置远程数据配置 table，包括 data，pagination

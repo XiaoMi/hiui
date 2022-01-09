@@ -33,7 +33,12 @@ export type TableRowSelection = {
     targetRow?: object | object[],
     shouldChecked?: boolean
   ) => void
-  render?: (checkboxNode: React.ReactNode, rowItem: object, rowIndex: number) => React.ReactNode
+  render?: (
+    checkboxNode: React.ReactNode,
+    rowItem: object,
+    rowIndex: number,
+    dataKey: React.ReactText
+  ) => React.ReactNode
   /**
    * 全选配置集合
    */

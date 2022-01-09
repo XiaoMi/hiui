@@ -305,7 +305,7 @@ export const useTable = ({
       0
     )
 
-    console.log(colWidths, leftFixedColumnsWidth)
+    // console.log(colWidths, leftFixedColumnsWidth)
 
     // 右侧
     let rightColumns = [] as any[]

@@ -11,8 +11,8 @@ import { isFunction } from '@hi-ui/type-assertion'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useCheck } from '@hi-ui/use-check'
 import { IconButton } from '@hi-ui/icon-button'
-import { defaultLoadingIcon } from './icons'
 import { PlusSquareOutlined, MinusSquareOutlined } from '@hi-ui/icons'
+import { defaultLoadingIcon } from './icons'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
@@ -46,7 +46,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
      * 行内嵌面板展开
      */
     const [expandEmbedRows, trySetExpandEmbedRows] = useUncontrolledState(
-      // 展开全部
+      // TODO: 展开全部
       [],
       expandEmbedRowKeysProp,
       onEmbedExpand
@@ -55,7 +55,6 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     const [onExpandEmbedRowsChange, isExpandEmbedRows] = useCheck({
       checkedIds: expandEmbedRows,
       onCheck: trySetExpandEmbedRows as any,
-      // idFieldName: 'key',
     })
 
     // 异步展开内嵌面板
@@ -82,8 +81,6 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           expandIcon: any
           collapseIcon: any
         }) => {
-          console.log(rowExpand)
-
           if (React.isValidElement(rowExpand)) {
             return rowExpand
           }
@@ -195,8 +192,6 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       striped && `${prefixCls}--striped`,
       size && `${prefixCls}--size-${size}`
     )
-
-    // console.log('scrollLeft', scrollLeft, leftFrozenColKeys)
 
     // TODO：处理 column 模型支持 cellRender，一直出 checkbox、expandIcon 高级选项
 

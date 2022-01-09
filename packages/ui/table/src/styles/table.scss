@@ -24,6 +24,56 @@ $prefix: '#{$component-prefix}-table' !default;
     // z-index: 1;
   }
 
+  &--size {
+    &-md {
+      table {
+        tbody {
+          & > tr > td {
+            padding: use-spacing(7);
+          }
+        }
+
+        thead {
+          & > tr > th {
+            padding: use-spacing(7);
+          }
+        }
+      }
+    }
+
+    &-sm {
+      table {
+        tbody {
+          & > tr > td {
+            padding: use-spacing(4);
+          }
+        }
+
+        thead {
+          & > tr > th {
+            padding: use-spacing(4);
+          }
+        }
+      }
+    }
+
+    &-lg {
+      table {
+        tbody {
+          & > tr > td {
+            padding: use-spacing(10);
+          }
+        }
+
+        thead {
+          & > tr > th {
+            padding: use-spacing(10);
+          }
+        }
+      }
+    }
+  }
+
   &--bordered {
     table {
       thead {
@@ -145,16 +195,16 @@ $prefix: '#{$component-prefix}-table' !default;
 
   // 利用 table colgroup 控制列
   &-col {
-    .#{$prefix}__header  & {
+    .#{$prefix}__header & {
       background-color: use-color('gray', 50);
     }
 
     &[data-hover-highlight] {
-      .#{$prefix}__body  & {
+      .#{$prefix}__body & {
         background-color: use-color-mode('primary-05');
       }
 
-      .#{$prefix}__header  & {
+      .#{$prefix}__header & {
         background-color: use-color('gray', 100);
       }
     }
@@ -194,6 +244,10 @@ $prefix: '#{$component-prefix}-table' !default;
     background-color: use-color-static('white');
   }
 
+  &__col--highlight {
+    background-color: use-color-mode('primary-05');
+  }
+
   &__indent {
     display: inline-block;
     width: 14px;
@@ -203,6 +257,12 @@ $prefix: '#{$component-prefix}-table' !default;
 
   &__switcher.hi-v4-icon-button {
     margin-right: use-spacing(1);
+  }
+}
+
+.#{$prefix}-th {
+  &__col--highlight {
+    background-color: use-color('gray', 100);
   }
 }
 

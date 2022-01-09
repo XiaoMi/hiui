@@ -87,7 +87,7 @@ export const parseFixedColumns = (
     const _parentStickyWidth = item[key]
     const { children } = item
     children.forEach((childrenItem: any, index: number) => {
-      console.log(childrenItem)
+      // console.log(childrenItem)
 
       parseFixedColumns(
         childrenItem,
@@ -108,3 +108,21 @@ export const parseFixedColumns = (
  * @returns unique id
  */
 export const uuid = () => Math.random().toString(36).substring(5).split('').join('.')
+
+export const parseLocalArray = ({ key, defaultValue }: any) => {
+  if (key) {
+    try {
+      let localArr = window.localStorage.getItem(key)
+
+      if (localArr) {
+        localArr = JSON.parse(localArr)
+
+        if (Array.isArray(localArr)) {
+          return localArr
+        }
+      }
+    } catch (error) {}
+  }
+
+  return defaultValue
+}

@@ -8,17 +8,16 @@ const DEFAULT_CHECKED_ROW_KEYS = [] as any[]
 export const useTableCheck = ({
   rowSelection,
   flattedData,
-  getRowKeyField,
 }: {
   rowSelection: TableRowSelection | undefined
   flattedData: FlattedTableRowData[]
-  getRowKeyField: (item: any) => string
 }) => {
   const checkRowIsDisabledCheckbox = React.useCallback(
     (rowItem: any) => {
-      const checkboxConfig = rowSelection?.getCheckboxConfig?.(rowItem)
-      const disabled = checkboxConfig?.disabled ?? false
-      return disabled
+      const checkboxConfig =
+        rowSelection && rowSelection.getCheckboxConfig && rowSelection.getCheckboxConfig(rowItem)
+
+      return (checkboxConfig && checkboxConfig.disabled) || false
     },
     [rowSelection]
   )
@@ -29,11 +28,10 @@ export const useTableCheck = ({
     rowSelection?.onChange
   )
 
-  // 暂时不支持正反选
+  // TODO: 暂时不支持正反选
   const [onCheckedRowKeysChange, isCheckedRowKey] = useCheck({
     checkedIds: checkedRowKeys,
     onCheck: trySetCheckedRowKeys as any,
-    idFieldName: 'id',
   })
 
   // 判断是否全选
@@ -43,12 +41,10 @@ export const useTableCheck = ({
         return [false, false]
       }
 
-      // TODO: 对于分页来讲，此处的 flattedData 应该是当前页的数据
-      // TODO: flattedTree 处理出来的对象对用户来说应该是无感知的。
       const checkedAll = flattedData
-        .filter((item: any) => !checkRowIsDisabledCheckbox(item.raw))
-        // TODO: 数组项内容完全匹配工具函数
-        .every((item: any) => isCheckedRowKey(getRowKeyField(item.raw)))
+        .filter((item) => !checkRowIsDisabledCheckbox(item.raw))
+        // TODO: 数组项完全匹配工具函数
+        .every((item) => isCheckedRowKey(item.id))
 
       return [checkedAll, checkedAll ? false : checkedRowKeys.length > 0]
     }
@@ -57,23 +53,22 @@ export const useTableCheck = ({
   }, [
     flattedData,
     rowSelection,
-    getRowKeyField,
-    checkRowIsDisabledCheckbox,
     isCheckedRowKey,
     checkedRowKeys.length,
+    checkRowIsDisabledCheckbox,
   ])
 
   const tryCheckAllRow = React.useCallback(() => {
     if (checkedAll) {
-      trySetCheckedRowKeys([] as any, [], !checkedAll)
+      trySetCheckedRowKeys([] as any, [], false)
       return
     }
 
-    const targetItems = flattedData.filter((item: any) => !checkRowIsDisabledCheckbox(item))
-    const checkedRowKeys = targetItems.map((item: any) => getRowKeyField(item.raw))
+    const targetItems = flattedData.filter((item: any) => !checkRowIsDisabledCheckbox(item.raw))
+    const checkedRowKeys = targetItems.map((item: any) => item.id)
 
-    trySetCheckedRowKeys(checkedRowKeys, targetItems, !checkedAll)
-  }, [trySetCheckedRowKeys, flattedData, checkRowIsDisabledCheckbox, getRowKeyField, checkedAll])
+    trySetCheckedRowKeys(checkedRowKeys, targetItems, true)
+  }, [trySetCheckedRowKeys, flattedData, checkRowIsDisabledCheckbox, checkedAll])
 
   return {
     tryCheckAllRow,
@@ -83,5 +78,6 @@ export const useTableCheck = ({
     isCheckedRowKey,
     checkedRowKeys,
     trySetCheckedRowKeys,
+    checkRowIsDisabledCheckbox,
   }
 }

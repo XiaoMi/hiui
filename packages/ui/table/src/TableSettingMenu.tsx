@@ -46,7 +46,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
           const nextCacheSortColKeys = [...prev]
           const [removed] = nextCacheSortColKeys.splice(info.dragIndex, 1)
           nextCacheSortColKeys.splice(info.dropIndex, 0, removed)
-          console.log(nextCacheSortColKeys, info)
+          // console.log(nextCacheSortColKeys, info)
 
           return nextCacheSortColKeys
         })
@@ -71,7 +71,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
     }, [menuVisible, resetLatest])
 
     const onConfirm = () => {
-      console.log('cacheHiddenColKeys', cacheHiddenColKeys, cacheSortedCols)
+      // console.log('cacheHiddenColKeys', cacheHiddenColKeys, cacheSortedCols)
 
       // 触发 table 更新列显隐及排序
       setHiddenColKeys(cacheHiddenColKeys)

@@ -4,6 +4,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { isFunction } from '@hi-ui/type-assertion'
 import { useTableContext } from './context'
+import { TableHeaderCellMenu } from './TableHeaderCellMenu'
 
 const _prefix = getPrefixCls('table-header')
 
@@ -17,6 +18,7 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
       groupedColumns,
       resizable,
       colWidths,
+      isHighlightedCol,
       getColgroupProps,
       onColumnResizable,
       getStickyColProps,
@@ -53,12 +55,16 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
                       <th
                         key={dataKey}
                         {...getStickyColProps(col)}
+                        className={cx(
+                          isHighlightedCol(dataKey!) && `${prefixCls}-th__col--highlight`
+                        )}
                         // @ts-ignore
                         colSpan={col.colSpan}
                         // @ts-ignore
                         rowSpan={col.rowSpan}
                       >
                         {titleContent}
+                        {<TableHeaderCellMenu />}
                       </th>
                     )
 

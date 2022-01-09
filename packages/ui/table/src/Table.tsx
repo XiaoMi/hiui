@@ -34,8 +34,12 @@ const STANDARD_PRESET = {
 
 const DEFAULT_DATA = [] as []
 
+const DEFAULT_PAGINATION = {
+  placement: 'right',
+}
+
 /**
- * TODO: What is Table
+ * 表格
  */
 export const Table = forwardRef<HTMLDivElement | null, TableProps>(
   (
@@ -44,7 +48,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       standard = false,
       loading = false,
       dataSource,
-      pagination,
+      pagination: paginationProp,
       uniqueId,
       columns: columnsProp,
       hiddenColKeys: hiddenColKeysProp,
@@ -82,14 +86,18 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       setCacheHiddenColKeys,
     } = useColHidden({
       uniqueId,
+      // 基于排序的 columns，隐藏的也能排序
       columns: sortedCols,
       hiddenColKeys: hiddenColKeysProp,
       onHiddenColKeysChange,
     })
 
+    const pagination = withDefaultProps(paginationProp, DEFAULT_PAGINATION)
+    // 优化数据在一页内时，不展示 pagination 配置项
+    const hiddenPagination = !paginationProp || data.length < pagination.pageSize
+
     /**
      * 数据分页
-     * TODO: 优化数据在一页内时，不展示 pagination 配置项
      */
     const { mergedData, currentPage, trySetCurrentPage } = useTablePagination({
       pagination,
@@ -98,43 +106,31 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     })
 
     /**
-     * 获取 key 字段值
+     * 扁平化数据，支持树形 table
      */
-    const getRowKeyField = React.useCallback(
-      (item: any) => {
+    const flattedData = useMemo(() => {
+      // 获取 key 字段值
+      const getRowKeyField = (item: any) => {
         const val = item[fieldKey]
+
         invariant(
           !isNullish(val),
           'Not found for the unique %s attribute in each row of data prop.',
           fieldKey
         )
+
         return val
-      },
-      [fieldKey]
-    )
+      }
 
-    /**
-     * 扁平化数据，支持树形 table
-     */
-    const flattedData = useMemo(() => {
-      // @ts-ignore
-      const clonedData = cloneTree(data)
-
-      // @ts-ignore
+      // 对于分页来讲，flattedData 应该是当前页的数据
+      const clonedData = cloneTree(mergedData) as any
       return flattenTree(clonedData, (node: any) => {
-        // TODO: flattenTree 内置了 id 结构，需要处理 key 映射为 id
+        // 兼容老api，映射 key 为 id
         return { ...node, id: getRowKeyField(node.raw) }
       }) as FlattedTableRowData[]
-    }, [data, getRowKeyField])
+    }, [mergedData, fieldKey])
 
-    // 预处理 column 支持 多选渲染
-    const {
-      checkedAll,
-      semiChecked,
-      tryCheckAllRow,
-      isCheckedRowKey,
-      onCheckedRowKeysChange,
-    } = useTableCheck({ rowSelection, flattedData, getRowKeyField })
+    // ************************ 行多选 ************************ //
 
     // 自定义设置 checkbox 列宽度
     const checkboxColWidth = React.useMemo(() => {
@@ -143,28 +139,29 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         : 50
     }, [rowSelection])
 
-    /**
-     * 表格列多选操作区
-     */
+    // 预处理 column 支持 多选渲染
+    const {
+      checkedAll,
+      semiChecked,
+      tryCheckAllRow,
+      isCheckedRowKey,
+      onCheckedRowKeysChange,
+      checkRowIsDisabledCheckbox,
+    } = useTableCheck({ rowSelection, flattedData })
+
+    // 表格列多选操作区
     const getSelectionColumn = React.useCallback(
       (rowSelection: TableRowSelection) => {
         const renderCell = (_: any, rowItem: any, rowIndex: number) => {
-          // const rowKey = getRowKeyField(rowItem)
           const rowKey = rowItem.id
           const checked = isCheckedRowKey(rowKey)
-          console.log('rowItem', rowItem)
-
-          const checkboxConfig =
-            rowSelection &&
-            rowSelection.getCheckboxConfig &&
-            rowSelection.getCheckboxConfig(rowItem)
-          const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false
+          const disabledCheckbox = checkRowIsDisabledCheckbox(rowItem)
 
           return {
             node: (
               <Checkbox
                 checked={isCheckedRowKey(rowKey)}
-                disabled={checkboxDisabled}
+                disabled={disabledCheckbox}
                 onChange={(evt) => {
                   onCheckedRowKeysChange(rowItem, evt.target.checked)
                 }}
@@ -181,11 +178,12 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           rowIndex: number,
           dataKey: string
         ) => {
-          const { node } = renderCell(_, rowItem, rowIndex)
+          const { node, checked } = renderCell(_, rowItem, rowIndex)
 
-          if (rowSelection!.render) {
-            // @ts-ignore
-            return rowSelection!.render(node, rowItem, rowIndex, rowItem.id)
+          // 自定义渲染
+          if (rowSelection.render) {
+            // TODO: 获取 requiredProps 方法
+            return rowSelection.render(node, { ...rowItem, checked }, rowIndex, dataKey)
           }
 
           return node
@@ -200,8 +198,8 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 onChange={tryCheckAllRow}
               />
             ),
-            checked: false,
-            semiChecked: false,
+            checked: checkedAll,
+            semiChecked: semiChecked,
           }
         }
 
@@ -229,9 +227,9 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         semiChecked,
         tryCheckAllRow,
         checkboxColWidth,
-        // getRowKeyField,
         isCheckedRowKey,
         onCheckedRowKeysChange,
+        checkRowIsDisabledCheckbox,
         prefixCls,
       ]
     )
@@ -244,6 +242,8 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
 
       return visibleCols
     }, [rowSelection, getSelectionColumn, visibleCols])
+
+    // ************************ loading ************************ //
 
     const TableWrapper = loading ? Loading : Fragment
 
@@ -272,17 +272,17 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
             ) : null,
           }}
         />
-        {pagination ? (
+        {hiddenPagination ? null : (
           <Pagination
             className={cx(
               `${prefixCls}-pagination`,
-              `${prefixCls}-pagination--placement-${pagination.placement ?? 'right'}`
+              pagination.placement && `${prefixCls}-pagination--placement-${pagination.placement}`
             )}
             {...pagination}
             current={currentPage}
             onChange={trySetCurrentPage}
           />
-        ) : null}
+        )}
       </TableWrapper>
     )
   }
