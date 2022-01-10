@@ -8,6 +8,7 @@ export const Basic = () => {
       <div className="slider-basic__wrap">
         <Slider
           style={{ width: 300 }}
+          reversed
           onChange={(value) => {
             console.log(value)
           }}

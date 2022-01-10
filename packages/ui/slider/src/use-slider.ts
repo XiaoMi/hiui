@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { __DEV__ } from '@hi-ui/env'
+import { invariant } from '@hi-ui/env'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { useToggle } from '@hi-ui/use-toggle'
 import { getPrefixStyleVar } from '@hi-ui/classname'
@@ -15,8 +15,6 @@ export const useSlider = ({
   step = 1,
   vertical = false,
   disabled = false,
-  marks = {},
-  showRangeLabel = false,
   reversed = false,
   color,
   ...rest
@@ -26,9 +24,8 @@ export const useSlider = ({
    */
   const [min, max, rangeLength] = useMemo(() => {
     if (maxProp < minProp) {
-      if (__DEV__) {
-        console.info('Warning: the max must large than min.')
-      }
+      invariant(true, 'The max must large than min.')
+
       return [maxProp, minProp, minProp - maxProp]
     }
     return [minProp, maxProp, maxProp - minProp]
@@ -202,7 +199,6 @@ export const useSlider = ({
    */
   const onDragEnd = useCallback(
     (evt) => {
-      console.log('dadsaddas')
       if (!inMoving) return
       evt.stopPropagation()
       setLastTime(Date.now())
@@ -298,9 +294,11 @@ export const useSlider = ({
     }
 
     if (vertical) {
-      style.top = `${100 - currentPositionOffset}%`
+      const attr = reversed ? 'bottom' : 'top'
+      style[attr] = `${100 - currentPositionOffset}%`
     } else {
-      style.left = `${currentPositionOffset}%`
+      const attr = reversed ? 'right' : 'left'
+      style[attr] = `${currentPositionOffset}%`
     }
 
     return {
@@ -321,6 +319,7 @@ export const useSlider = ({
     currentPositionOffset,
     vertical,
     onBlur,
+    reversed,
   ])
 
   const getRailProps = useCallback(() => {
@@ -335,10 +334,13 @@ export const useSlider = ({
   }, [])
 
   const getTrackProps = useCallback(() => {
+    const verticalAttr = reversed ? 'top' : 'bottom'
+    const horizontalAttr = reversed ? 'right' : 'left'
+
     const style: React.CSSProperties = {
       position: 'absolute',
       [vertical ? 'height' : 'width']: `${currentPositionOffset}%`,
-      [vertical ? 'bottom' : 'left']: 0,
+      [vertical ? verticalAttr : horizontalAttr]: 0,
     }
 
     return {
@@ -350,9 +352,12 @@ export const useSlider = ({
     (props) => {
       const dotValue = ((props.value - min) / rangeLength) * 100
 
+      const verticalAttr = reversed ? 'top' : 'bottom'
+      const horizontalAttr = reversed ? 'right' : 'left'
+
       return {
         style: {
-          [!vertical ? 'left' : 'bottom']: dotValue + '%',
+          [vertical ? verticalAttr : horizontalAttr]: dotValue + '%',
         },
         'data-checked': setAttrStatus(dotValue <= value),
         onClick: (evt: React.MouseEvent) => {
@@ -367,9 +372,12 @@ export const useSlider = ({
     (props) => {
       const value = ((props.value - min) / rangeLength) * 100
 
+      const verticalAttr = reversed ? 'top' : 'bottom'
+      const horizontalAttr = reversed ? 'right' : 'left'
+
       return {
         style: {
-          [!vertical ? 'left' : 'bottom']: value + '%',
+          [vertical ? verticalAttr : horizontalAttr]: value + '%',
           transform: !vertical ? 'translateX(-50%)' : 'translateY(50%)',
         },
         onClick: (evt: React.MouseEvent) => {
@@ -434,14 +442,6 @@ export interface UseSliderProps {
    * 开启禁用状态
    */
   disabled?: boolean
-  /**
-   * 是否显示范围label
-   */
-  showRangeLabel?: boolean
-  /**
-   * 刻度标记，key 的类型必须为 number，且取值在闭区间 [min, max] 内
-   */
-  marks?: Record<number, any>
   /**
    * 步长
    */

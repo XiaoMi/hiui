@@ -13,6 +13,7 @@ const _prefix = getPrefixCls(_role)
 
 /**
  * TODO: What is Rating
+ * TODO：支持 step 自定义小数分精度，目前只支持半分
  */
 export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
   (

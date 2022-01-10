@@ -11,6 +11,10 @@ const SLIDER_PREFIX = getPrefixCls('slider')
 
 /**
  * TODO: What is Slider
+ * TODO:
+ * 1. 计算偏移 bug
+ * 2. 支持 reversed
+ * 2. 添加 RangeSlider 新组件
  */
 export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
   (
@@ -63,7 +67,6 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
         <div className={`${prefixCls}__track`} {...getTrackProps()} />
         <div className={`${prefixCls}__handle`} {...getHandleProps()}>
           <Tooltip
-            // trigger="hover"
             visible={tooltipVisible}
             title={
               <div style={{ textAlign: 'center' }}>
@@ -122,6 +125,14 @@ export interface SliderProps extends HiBaseHTMLProps<'div'>, UseSliderProps {
    * 自定义 Tooltip 中显示文案
    */
   tipFormatter?: (value: number) => React.ReactNode
+  /**
+   * 是否显示范围label
+   */
+  showRangeLabel?: boolean
+  /**
+   * 刻度标记，key 的类型必须为 number，且取值在闭区间 [min, max] 内
+   */
+  marks?: Record<number, any>
 }
 
 if (__DEV__) {
