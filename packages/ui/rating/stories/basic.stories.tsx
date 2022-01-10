@@ -8,14 +8,18 @@ export const Basic = () => {
       <div className="rating-basic__wrap">
         <Rating
           readOnly
-          autoFocus
           defaultValue={4}
           allowHalf={false}
           halfPlacement="horizontal"
           color="red"
         ></Rating>
         <br />
-        <Rating defaultValue={3.5} halfPlacement="vertical" onHover={console.log}></Rating>
+        <Rating
+          autoFocus
+          defaultValue={3.5}
+          halfPlacement="vertical"
+          onHover={console.log}
+        ></Rating>
         <br />
         <Rating defaultValue={3.5} halfPlacement="vertical" character="HiUI" />
         <Rating

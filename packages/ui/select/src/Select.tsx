@@ -138,10 +138,16 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       fieldNames,
     })
 
-    const selectProps = {
-      data: shouldUseSearch ? flattedDataAsync : flattedData,
-      titleRender: proxyTitleRender,
-    }
+    const showData = useMemo(() => {
+      if (shouldUseSearch) {
+        if (searchMode === 'dataSource') {
+          return flattedDataAsync
+        }
+        return stateInSearch.data
+      }
+
+      return flattedData
+    }, [shouldUseSearch, searchMode, flattedData, flattedDataAsync, stateInSearch.data])
 
     const mergedData = useMemo(() => {
       let nextData = flattedData as FlattedSelectItem[]
@@ -187,14 +193,14 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
             />
           }
         >
-          {isArrayNonEmpty(selectProps.data) ? (
+          {isArrayNonEmpty(showData) ? (
             <VirtualList
               itemKey="id"
               fullHeight={false}
               height={height}
               itemHeight={itemHeight}
               virtual={virtual}
-              data={selectProps.data}
+              data={showData}
             >
               {(node: any) => {
                 /* 反向 map，搜索删选数据时会对数据进行处理 */

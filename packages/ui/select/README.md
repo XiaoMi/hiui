@@ -73,7 +73,7 @@
 | title    | 选择项                           | string  | -             | -      |
 | disabled | 是否禁用                         | boolean | true \| false | false  |
 | raw      | 原始数据，包括约定模型之外的数据 | object  | -             | -      |
-| checked  | 节点是否被选中                   | boolean | true \| false | -      |
+| selected  | 节点是否被选中                   | boolean | true \| false | -      |
 | focused  | 节点是否被聚焦                   | boolean | true \| false | -      |
 
 ### DataSource
