@@ -78,8 +78,8 @@ export const useTooltip = ({
   const usePopperProps: UsePopperProps = useMemo(() => {
     const popperProps = withDefaultProps(popper, {
       placement: 'top',
-      // @DesignToken
-      zIndex: 1100,
+      // @DesignToken zIndex: tooltip
+      zIndex: 1060,
       // @DesignToken
       gutterGap: 14,
     })

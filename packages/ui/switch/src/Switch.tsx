@@ -1,100 +1,79 @@
-import React, { forwardRef, useEffect, useState, useCallback } from 'react'
+import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 
-const _role = 'switch'
-const _prefix = getPrefixCls(_role)
+const _prefix = getPrefixCls('switch')
 
 /**
  * TODO: What is Switch
+ * TODO：
+ * 1. loading 态
+ * 2. 添加 size 支持
  */
 export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
   (
     {
       prefixCls = _prefix,
-      role = _role,
       className,
       onChange,
       content,
-      checked,
-      defaultChecked,
-      disabled,
+      checked: checkedProp,
+      defaultChecked = false,
+      disabled = false,
+      onClick,
+      onKeyDown,
       ...rest
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
-    const [value, setValue] = useState(checked || defaultChecked || false)
+    const [checked, tryChangeChecked] = useUncontrolledState(defaultChecked, checkedProp, onChange)
 
-    useEffect(() => {
-      if (checked !== undefined) {
-        setValue(checked)
-      }
-    }, [checked])
-
-    const changeSwitch = useCallback(
-      (e: React.MouseEvent | React.KeyboardEvent) => {
-        if (!disabled) {
-          if (onChange) {
-            onChange(!value)
-          }
-          if (checked === undefined) {
-            setValue(!value)
-          }
-        }
-      },
-      [disabled, onChange, checked, value]
-    )
+    const changeSwitch = useCallback(() => {
+      if (disabled) return
+      tryChangeChecked((prev) => !prev)
+    }, [disabled, tryChangeChecked])
 
     const handleKeydown = useCallback(
-      (e: React.KeyboardEvent) => {
-        if ([13, 32].includes(e.keyCode)) {
-          e.stopPropagation()
-          e.preventDefault()
-          changeSwitch(e)
+      (evt: React.KeyboardEvent<HTMLSpanElement>) => {
+        if ([13, 32].includes(evt.keyCode)) {
+          evt.preventDefault()
+          evt.stopPropagation()
+
+          changeSwitch()
         }
       },
       [changeSwitch]
     )
 
+    const cls = cx(
+      prefixCls,
+      className,
+      `${prefixCls}--${checked ? 'open' : 'closed'}`,
+      disabled && `${prefixCls}--disabled`
+    )
+
     return (
       <span
         ref={ref}
-        role={role}
-        className={cx(cls, {
-          [`${cls}--closed`]: !value,
-          [`${cls}--disabled`]: disabled,
-        })}
+        role="switch"
+        className={cls}
         tabIndex={disabled ? -1 : 0}
-        onClick={changeSwitch}
-        onKeyDown={handleKeydown}
+        onClick={mockDefaultHandlers(onClick, changeSwitch)}
+        onKeyDown={mockDefaultHandlers(onKeyDown, handleKeydown)}
         {...rest}
       >
-        {content && content.length === 2 && (
-          <span className={`${cls}__text`}>{value ? content[0] : content[1]}</span>
-        )}
+        {Array.isArray(content) && content.length === 2 ? (
+          <span className={`${prefixCls}__text`}>{checked ? content[0] : content[1]}</span>
+        ) : null}
       </span>
     )
   }
 )
 
-export interface SwitchProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface SwitchProps extends HiBaseHTMLProps<'span'> {
   /**
    * 是否禁用
    */
@@ -107,7 +86,6 @@ export interface SwitchProps {
    * 是否默认选中
    */
   defaultChecked?: boolean
-
   /**
    * 值改变事件
    */

@@ -25,7 +25,7 @@ export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((prop
     density = 'default',
     opacity = 1,
     content = '请勿外传',
-    zIndex = 1000,
+    zIndex = 1100,
     ...rest
   } = props
   const cls = cx(prefixCls, className)

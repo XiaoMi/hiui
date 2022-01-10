@@ -133,7 +133,8 @@ export const usePopover = ({
     const popperProps: PopperPortalProps = withDefaultProps(popper, {
       arrow: true,
       placement: 'top',
-      zIndex: 1060,
+      // @DesignToken zIndex: `popper`
+      zIndex: 1030,
       // @DesignToken 10
       gutterGap: 14,
     })

@@ -13,7 +13,8 @@ export const usePopper = ({
   modifiers: customModifiers = DEFAULT_MODIFIERS,
   strategy = 'fixed',
   placement = 'bottom-start',
-  zIndex = 1060,
+  // @DesignToken zIndex: `popper`
+  zIndex = 1030,
   crossGap = 0,
   gutterGap = 8,
   arrowPadding = 12,

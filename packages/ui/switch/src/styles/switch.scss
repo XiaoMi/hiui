@@ -16,6 +16,7 @@ $prefix: '#{$component-prefix}-switch' !default;
   cursor: pointer;
   position: relative;
   vertical-align: middle;
+  flex: none;
 
   &:not(.#{$prefix}--disabled) {
     background: use-color-mode('primary');
@@ -31,6 +32,7 @@ $prefix: '#{$component-prefix}-switch' !default;
 
   &--disabled {
     background: use-color('gray', 100);
+    cursor: not-allowed;
   }
 
   &::after {
@@ -62,9 +64,5 @@ $prefix: '#{$component-prefix}-switch' !default;
     .#{$prefix}__text {
       margin: 0 use-spacing(4) 0 use-spacing(11);
     }
-  }
-
-  &--disabled {
-    cursor: not-allowed;
   }
 }
