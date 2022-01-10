@@ -33,6 +33,7 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
       useEmoji = false,
       halfPlacement = 'horizontal',
       characterRender,
+      descRender,
       clearable = true,
       tooltips = [],
       color,
@@ -184,76 +185,79 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
     // TODO: 如何在不耦合 tooltip 的情况下对每个 ⭐️ 可以有单独的 tooltip 功能？
     // 可以把⭐️拆原子组件，给用户灵活组合（本质类似 radioGroup 和 radio）
     return (
-      <ul
-        ref={useMergeRefs(ref, ratingRef)}
-        role={role}
-        className={cls}
-        tabIndex={tabIndex}
-        style={rootStyle}
-        onMouseLeave={handleIconLeave}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        onKeyDown={handleKeyDown}
-        {...rest}
-      >
-        {stars.map((_, idx) => {
-          // 满星值
-          const indexValue = idx + 1
-          // 半星值
-          const halfIndexValue = allowHalf ? idx + 0.5 : indexValue
+      <>
+        <ul
+          ref={useMergeRefs(ref, ratingRef)}
+          role={role}
+          className={cls}
+          tabIndex={tabIndex}
+          style={rootStyle}
+          onMouseLeave={handleIconLeave}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+          {...rest}
+        >
+          {stars.map((_, idx) => {
+            // 满星值
+            const indexValue = idx + 1
+            // 半星值
+            const halfIndexValue = allowHalf ? idx + 0.5 : indexValue
 
-          return (
-            <li className={starCls} key={indexValue}>
-              <ToolTipWrapper title={tooltips[idx]}>
-                {/* HalfStar 1 */}
-                <div
-                  className={cx(
-                    halfStarCls,
-                    `${halfStarCls}--${isVertical ? 'bottom' : 'left'}`,
-                    halfIndexValue > displayValue && 'grayscale'
-                  )}
-                  onClick={() => proxyTryChangeValue(halfIndexValue)}
-                  onMouseEnter={() => proxyTryChangeHoverValue(halfIndexValue)}
-                >
-                  <StarIcon
-                    index={0}
-                    value={indexValue}
-                    className={starIconCls}
-                    disabled={isNonInteractive}
-                    displayValue={displayValue}
-                    allowHalf={allowHalf}
-                    character={character}
-                    useEmoji={useEmoji}
-                    characterRender={characterRender}
-                  />
-                </div>
-                {/* HalfStar 2 */}
-                <div
-                  className={cx(
-                    halfStarCls,
-                    `${halfStarCls}--${isVertical ? 'top' : 'right'}`,
-                    indexValue > displayValue && 'grayscale'
-                  )}
-                  onClick={() => proxyTryChangeValue(indexValue)}
-                  onMouseEnter={() => proxyTryChangeHoverValue(indexValue)}
-                >
-                  <StarIcon
-                    index={1}
-                    value={indexValue}
-                    className={starIconCls}
-                    disabled={isNonInteractive}
-                    displayValue={displayValue}
-                    allowHalf={allowHalf}
-                    character={character}
-                    useEmoji={useEmoji}
-                    characterRender={characterRender}
-                  />
-                </div>
-              </ToolTipWrapper>
-            </li>
-          )
-        })}
-      </ul>
+            return (
+              <li className={starCls} key={indexValue}>
+                <ToolTipWrapper title={tooltips[idx]}>
+                  {/* HalfStar 1 */}
+                  <div
+                    className={cx(
+                      halfStarCls,
+                      `${halfStarCls}--${isVertical ? 'bottom' : 'left'}`,
+                      halfIndexValue > displayValue && 'grayscale'
+                    )}
+                    onClick={() => proxyTryChangeValue(halfIndexValue)}
+                    onMouseEnter={() => proxyTryChangeHoverValue(halfIndexValue)}
+                  >
+                    <StarIcon
+                      index={0}
+                      value={indexValue}
+                      className={starIconCls}
+                      disabled={isNonInteractive}
+                      displayValue={displayValue}
+                      allowHalf={allowHalf}
+                      character={character}
+                      useEmoji={useEmoji}
+                      characterRender={characterRender}
+                    />
+                  </div>
+                  {/* HalfStar 2 */}
+                  <div
+                    className={cx(
+                      halfStarCls,
+                      `${halfStarCls}--${isVertical ? 'top' : 'right'}`,
+                      indexValue > displayValue && 'grayscale'
+                    )}
+                    onClick={() => proxyTryChangeValue(indexValue)}
+                    onMouseEnter={() => proxyTryChangeHoverValue(indexValue)}
+                  >
+                    <StarIcon
+                      index={1}
+                      value={indexValue}
+                      className={starIconCls}
+                      disabled={isNonInteractive}
+                      displayValue={displayValue}
+                      allowHalf={allowHalf}
+                      character={character}
+                      useEmoji={useEmoji}
+                      characterRender={characterRender}
+                    />
+                  </div>
+                </ToolTipWrapper>
+              </li>
+            )
+          })}
+        </ul>
+        {descRender ? <div className={`${prefixCls}__desc`}>{descRender(displayValue)}</div> : null}
+      </>
     )
   }
 )
@@ -323,6 +327,10 @@ export interface RatingProps extends HiBaseHTMLFieldProps<'ul'> {
    * 自定义渲染 character 函数
    */
   characterRender?: (value: number, index: number) => React.ReactNode
+  /**
+   * 自定义辅助文字函数
+   */
+  descRender?: (value: number) => React.ReactNode
 }
 
 if (__DEV__) {
