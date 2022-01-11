@@ -1,10 +1,11 @@
 import React, { forwardRef, useCallback, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { LeftOutlined, RightOutlined } from '@hi-ui/icons'
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
 import { MenuItem } from './MenuItem'
 import MenuContext from './context'
 import { getAncestorIds } from './util'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -24,13 +25,19 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       showAllSubMenus = false,
       defaultExpandedIds,
       defaultActiveId,
+      activeId,
       onClickSubMenu,
       onClick,
       ...rest
     },
     ref
   ) => {
-    const [_activeId, updateActiveId] = useState(defaultActiveId || '')
+    const [_activeId, updateActiveId] = useUncontrolledState(
+      defaultActiveId || '',
+      activeId,
+      onClick
+    )
+
     const [activeParents, updateActiveParents] = useState(getAncestorIds(_activeId, data))
     useEffect(() => {
       updateActiveParents(getAncestorIds(_activeId, data))
@@ -40,11 +47,8 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const clickMenu = useCallback(
       (id: React.ReactText) => {
         updateActiveId(id)
-        if (onClick) {
-          onClick(id)
-        }
       },
-      [onClick]
+      [updateActiveId]
     )
     const clickSubMenu = useCallback(
       (id: React.ReactText) => {
@@ -105,7 +109,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
           </ul>
           {placement === 'vertical' && showCollapse && (
             <div className={cx(`${prefixCls}__toggle`)} onClick={onToggle}>
-              {mini ? <RightOutlined /> : <LeftOutlined />}
+              {mini ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </div>
           )}
         </MenuContext.Provider>
@@ -143,7 +147,7 @@ export interface MenuProps {
    * 组件的注入样式
    */
   data: MenuItemProps[]
-  activeId?: string | number
+  activeId?: React.ReactText
   placement?: 'horizontal' | 'vertical'
   collapsed?: boolean
   showCollapse?: boolean
