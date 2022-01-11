@@ -174,7 +174,6 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
       validChecker,
       componentClass,
       disabled,
-      type,
     ]
   )
 

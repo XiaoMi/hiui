@@ -6,7 +6,7 @@ export const Button = () => {
     <>
       <h1>胶囊式</h1>
       <div className="tabs-basic__wrap">
-        <Tabs type="button" direction="vertical" style={{ marginBottom: 40 }}>
+        <Tabs type="button" placement="vertical" style={{ marginBottom: 40 }}>
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1
           </TabPane>
@@ -17,7 +17,7 @@ export const Button = () => {
             Content of Tab Panel 3
           </TabPane>
         </Tabs>
-        <Tabs type="button" direction="horizontal" draggable>
+        <Tabs type="button" placement="horizontal" draggable>
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1
           </TabPane>

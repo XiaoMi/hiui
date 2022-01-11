@@ -22,7 +22,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onChange,
       onTabClick,
       editable,
-      direction = 'horizontal',
+      placement = 'horizontal',
       onAdd,
       onDelete,
       draggable = false,
@@ -37,7 +37,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
     ref
   ) => {
     const cls = cx(prefixCls, className, {
-      [`${prefixCls}--vertical`]: direction === 'vertical',
+      [`${prefixCls}--vertical`]: placement === 'vertical',
       [`${prefixCls}--${type}`]: type,
     })
 
@@ -56,7 +56,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
 
     const [activePane, setActivePane] = useState(activeId || defaultActiveId || tabList[0]?.tabId)
 
-    const _onChange = useCallback<(tabId: string) => void>(
+    const _onChange = useCallback<(tabId: React.ReactText) => void>(
       (tabId) => {
         if (onChange) {
           onChange(tabId)
@@ -74,7 +74,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           activeId={activeId}
           onChange={_onChange}
           onTabClick={onTabClick}
-          direction={direction}
+          direction={placement}
           editable={editable}
           onAdd={onAdd}
           onDelete={onDelete}
@@ -132,16 +132,16 @@ export interface TabsProps {
   /**
    * 默认高亮id
    */
-  defaultActiveId?: string
+  defaultActiveId?: React.ReactText
   /**
    * 高亮id
    */
-  activeId?: string
+  activeId?: React.ReactText
 
   /**
    * 布局方向
    */
-  direction?: 'horizontal' | 'vertical'
+  placement?: 'horizontal' | 'vertical'
   /**
    * 布局类型
    */
@@ -149,11 +149,11 @@ export interface TabsProps {
   /**
    * `activeId` 改变的回调
    */
-  onChange?: (tabId: string) => void
+  onChange?: (tabId: React.ReactText) => void
   /**
    * 标签点击触发回调
    */
-  onTabClick?: (tabId: string) => void
+  onTabClick?: (tabId: React.ReactText) => void
 
   /**
    * 节点增加时触发

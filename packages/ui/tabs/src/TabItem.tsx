@@ -8,7 +8,7 @@ interface TabItemProps extends TabPaneProps {
   active: boolean
   draggable?: boolean
 
-  onTabClick: (key: string) => void
+  onTabClick: (key: React.ReactText, event: React.MouseEvent) => void
   prefixCls?: string
   editable?: boolean
   onDelete?: (deletedNode: TabPaneProps, index: number) => void
@@ -60,7 +60,7 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
     const _onClick = useCallback(
       (e: React.MouseEvent) => {
         if (onTabClick) {
-          onTabClick(tabId)
+          onTabClick(tabId, e)
         }
       },
       [onTabClick, tabId]
