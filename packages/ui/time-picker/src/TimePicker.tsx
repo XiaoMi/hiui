@@ -172,6 +172,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
                   onChange([...cacheValue])
                 }
               }
+              showPopperRef.current = false
               setShowPopper(false)
             }}
           >
@@ -182,6 +183,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
               className={`${prefixCls}__pop-now-button`}
               onClick={() => {
                 onCacheChange([getNowString(format)])
+                showPopperRef.current = false
                 setShowPopper(false)
               }}
             >
@@ -229,16 +231,17 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           <div
             className={`${prefixCls}__function-button`}
             onClick={() => {
-              // pop正打开，此时点击按钮为清除功能
-              if (showPopperRef.current) {
-                onCacheChange(type === 'single' ? [''] : ['', ''])
-              }
-              showPopperRef.current = !showPopper
+              showPopperRef.current = !showPopperRef.current
               setShowPopper((pre) => !pre)
             }}
           >
             {showPopper ? (
-              <CloseCircleFilled className={`${prefixCls}__close-button`} />
+              <CloseCircleFilled
+                className={`${prefixCls}__close-button`}
+                onClick={() => {
+                  onCacheChange(type === 'single' ? [''] : ['', ''])
+                }}
+              />
             ) : (
               <TimeOutlined />
             )}
