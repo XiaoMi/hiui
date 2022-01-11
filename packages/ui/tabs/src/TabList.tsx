@@ -53,9 +53,9 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     }, [scrollRef, innerRef, direction])
 
     const onClickTab = useCallback(
-      (key: string) => {
+      (key: string, event: React.MouseEvent) => {
         if (onTabClick) {
-          onTabClick(key)
+          onTabClick(key, event)
         }
         if (key !== activeTab && setActiveTab) {
           setActiveTab(key)
@@ -214,16 +214,16 @@ export interface TabListProps {
   prefixCls?: string
   data: TabPaneProps[]
   direction?: 'horizontal' | 'vertical'
-  onChange?: (tabId: string) => void
-  onTabClick?: (tabId: string) => void
+  onChange?: (tabId: React.ReactText) => void
+  onTabClick?: (tabId: React.ReactText, event: React.MouseEvent) => void
   /**
    * 默认高亮id
    */
-  defaultActiveId?: string
+  defaultActiveId?: React.ReactText
   /**
    * 高亮id
    */
-  activeId?: string
+  activeId?: React.ReactText
   editable?: boolean
   draggable?: boolean
   type?: 'desc' | 'card' | 'button' | 'default'

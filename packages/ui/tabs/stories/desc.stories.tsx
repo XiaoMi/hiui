@@ -6,7 +6,7 @@ export const Desc = () => {
     <>
       <h1>带描述</h1>
       <div className="tabs-basic__wrap">
-        <Tabs type="desc" direction="vertical" style={{ marginBottom: 40 }}>
+        <Tabs type="desc" placement="vertical" style={{ marginBottom: 40 }}>
           <TabPane tabId="1" tabTitle="Tab 1" tabDesc="关于标签的描">
             Content of Tab Panel 1
           </TabPane>
@@ -17,7 +17,7 @@ export const Desc = () => {
             Content of Tab Panel 3
           </TabPane>
         </Tabs>
-        <Tabs type="desc" direction="horizontal">
+        <Tabs type="desc" placement="horizontal">
           <TabPane tabId="1" tabTitle="Tab 1" tabDesc="关于标签的描">
             Content of Tab Panel 1
           </TabPane>

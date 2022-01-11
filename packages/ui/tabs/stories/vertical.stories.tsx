@@ -6,7 +6,7 @@ export const Vertical = () => {
     <>
       <h1>Basic</h1>
       <div className="tabs-basic__wrap" style={{ marginBottom: 30 }}>
-        <Tabs direction="vertical">
+        <Tabs placement="vertical">
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1
           </TabPane>
@@ -19,7 +19,7 @@ export const Vertical = () => {
         </Tabs>
       </div>
       <div className="tabs-basic__wrap" style={{ marginBottom: 30 }}>
-        <Tabs direction="vertical" draggable>
+        <Tabs placement="vertical" draggable>
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1
           </TabPane>
@@ -33,7 +33,7 @@ export const Vertical = () => {
       </div>
 
       <div className="tabs-basic__wrap" style={{ marginBottom: 30 }}>
-        <Tabs direction="vertical" editable>
+        <Tabs placement="vertical" editable>
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1
           </TabPane>
@@ -46,7 +46,7 @@ export const Vertical = () => {
         </Tabs>
       </div>
       <div className="tabs-basic__wrap" style={{ marginBottom: 30 }}>
-        <Tabs direction="vertical" style={{ height: 400 }}>
+        <Tabs placement="vertical" style={{ height: 400 }}>
           <TabPane tabId={String(Math.random())} tabTitle="Tab 1">
             Content of Tab Panel 1
           </TabPane>

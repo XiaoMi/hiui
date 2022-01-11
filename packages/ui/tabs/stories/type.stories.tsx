@@ -6,7 +6,7 @@ export const Type = () => {
     <>
       <h1>Basic</h1>
       <div className="tabs-basic__wrap">
-        <Tabs type="card" direction="vertical" style={{ marginBottom: 40 }}>
+        <Tabs type="card" placement="vertical" style={{ marginBottom: 40 }}>
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1
           </TabPane>
@@ -17,7 +17,7 @@ export const Type = () => {
             Content of Tab Panel 3
           </TabPane>
         </Tabs>
-        <Tabs type="card" direction="horizontal">
+        <Tabs type="card" placement="horizontal">
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1
           </TabPane>

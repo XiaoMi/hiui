@@ -12,7 +12,7 @@ export interface TabPaneProps {
   style?: React.CSSProperties
   className?: string
   disabled?: boolean
-  tabId: string
+  tabId: React.ReactText
   tabTitle: React.ReactNode
   tabDesc?: React.ReactNode
   closeable?: boolean
