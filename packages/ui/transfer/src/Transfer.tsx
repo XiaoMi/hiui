@@ -8,6 +8,7 @@ import { TransferDataItem } from './types'
 import { TransferProvider } from './context'
 import { useCheck } from '@hi-ui/use-check'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'transfer'
 const _prefix = getPrefixCls(_role)
@@ -16,7 +17,10 @@ const NOOP_ARRAY = [] as []
 const allowCheck = (item: any) => !item.disabled
 
 /**
- * TODO: What is Transfer
+ * 穿梭框
+ * TODO:
+ * 1. titleRender 支持 checkbox自定义渲染
+ * 2. 单选逻辑复用多选，从数据层隔离，而非交互层
  */
 export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
   (
@@ -298,23 +302,8 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
   }
 )
 
-export interface TransferProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface TransferProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'placeholder' | 'onDragStart' | 'onDragEnd' | 'onDrop'> {
   /**
    * 穿梭框类型
    */

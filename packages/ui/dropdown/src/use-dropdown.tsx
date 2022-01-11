@@ -9,6 +9,7 @@ import { PopperPortalProps } from '@hi-ui/popper'
 import { getPrefixStyleVar } from '@hi-ui/classname'
 import { mergeRefs } from '@hi-ui/react-utils'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
+import { isNumeric } from '@hi-ui/type-assertion'
 
 const NOOP_ARRAY = [] as []
 
@@ -128,7 +129,7 @@ export const useDropdown = (props: UseDropdownProps) => {
       parents: menuParents,
       style: {
         ...props.style,
-        [getPrefixStyleVar('dropdown-menu-item-width')]: `${width}px`,
+        [getPrefixStyleVar('dropdown-menu-width')]: isNumeric(width) ? width + 'px' : width,
       },
       popper: {
         ...popper,
