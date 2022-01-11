@@ -164,9 +164,10 @@ class Input extends Component {
 
               value = format(value, type)
               // 保证 onChange 拿到的是值是最新的 formatted value
-              e.target.value = value
+              const event = Object.create(e)
+              event.target = { ...e.target, value }
 
-              this.props.onChange && this.props.onChange(e, valueTrue)
+              this.props.onChange && this.props.onChange(event, valueTrue)
 
               this.props.value === undefined && this.setState({ value, valueTrue })
             }}
