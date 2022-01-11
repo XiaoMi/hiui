@@ -98,7 +98,7 @@ const Root = ({
         </div>
         {renderRange && (
           <React.Fragment>
-            <span className={`${prefixCls}__input--connection`}>{localeData.datePicker.to}</span>
+            <span className={`${prefixCls}__input--connection`}>-</span>
             <div
               className={cx(
                 `${prefixCls}__input-selector`,
