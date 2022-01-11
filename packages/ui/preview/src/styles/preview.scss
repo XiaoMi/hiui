@@ -3,7 +3,7 @@
 $prefix: '#{$component-prefix}-preview' !default;
 
 .#{$prefix} {
-  z-index: 1000;
+  z-index: use-zindex('dialog');
   position: fixed;
   top: 0;
   bottom: 0;

@@ -10,14 +10,14 @@ export const Custom = () => {
         <p>自定义文字 </p>
         <Switch
           content={['开', '关']}
-          onChange={() => console.log('change')}
+          onChange={(checked) => console.log('change', checked)}
           style={{ marginRight: 8 }}
         />
-        <Switch content={['ON', 'OFF']} onChange={() => console.log('change')} />
+        <Switch content={['ON', 'OFF']} onChange={(checked) => console.log('change', checked)} />
         <p>自定义图标 </p>
         <Switch
           content={[<CheckOutlined key={1} />, <CloseOutlined key={2} />]}
-          onChange={() => console.log('change')}
+          onChange={(checked) => console.log('change', checked)}
         />
       </div>
     </>

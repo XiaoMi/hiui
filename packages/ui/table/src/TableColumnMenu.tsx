@@ -63,7 +63,8 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
           className={`${prefixCls}__popper`}
           visible={menuVisible}
           attachEl={menuTrigger}
-          zIndex={1040}
+          // @DesignToken zIndex: `overlay`
+          zIndex={1050}
         >
           <div className={`${prefixCls}__content`}>
             {canSort ? (

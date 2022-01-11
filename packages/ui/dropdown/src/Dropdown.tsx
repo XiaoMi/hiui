@@ -15,7 +15,12 @@ const _prefix = getPrefixCls(_role)
 const DEFAULT_DATA = [] as []
 
 /**
- * TODO: What is Dropdown
+ * 下拉菜单
+ *
+ * TODO:
+ * 1. 支持自定义icon
+ * 2. 支持 titleRender
+ * 3. 支持 onClick 阻止默认行为关闭
  */
 export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
   (
@@ -163,6 +168,10 @@ export interface DropdownProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, 
    * contextmenu: onContextMenu
    */
   triggerButton?: React.ReactElement
+  /**
+   * 自定义控制 下拉 popper 行为
+   */
+  popper?: Omit<PopperPortalProps, 'visible' | 'attachEl'>
 }
 
 if (__DEV__) {

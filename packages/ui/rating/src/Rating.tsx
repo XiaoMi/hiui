@@ -1,16 +1,19 @@
-import React, { forwardRef, useState, useMemo, useEffect, useRef, useCallback } from 'react'
+import React, { forwardRef, useState, useMemo, useRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import * as Icons from './icons'
 import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import Tooltip from '@hi-ui/tooltip'
+import { useDidMount } from '@hi-ui/use-did-mount'
 
 const _role = 'rating'
 const _prefix = getPrefixCls(_role)
 
 /**
  * TODO: What is Rating
+ * TODO：支持 step 自定义小数分精度，目前只支持半分
  */
 export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
   (
@@ -19,17 +22,21 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
       role = _role,
       className,
       children,
+      style,
       disabled = false,
       readOnly = false,
       count = 5,
       value: valueProp,
       defaultValue = 0,
       onChange,
-      allowHalf = true,
+      allowHalf: allowHalfProp = true,
       character,
+      useEmoji = false,
       halfPlacement = 'horizontal',
+      characterRender,
+      descRender,
       clearable = true,
-      style,
+      tooltips = [],
       color,
       onHover,
       tabIndex = 0,
@@ -42,8 +49,11 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
     },
     ref
   ) => {
+    const allowHalf = useEmoji ? false : allowHalfProp
+
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
-    const [hoverValue, setHoverValue] = useState(0)
+    // 使用 value 作为初始值，自动聚焦时可依据此值作为起始
+    const [hoverValue, setHoverValue] = useState(value)
 
     const stepOrMinHoverValue = allowHalf ? 0.5 : 1
 
@@ -99,14 +109,11 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
       }
     }, [disabled])
 
-    // TODO: useDidMount 抽离，如何更好地配合组件库使用
-    // 思考：useFocus 把聚焦逻辑（涉及到表单交互组件都需要）抽离处理
-    useEffect(() => {
+    useDidMount(() => {
       if (autoFocus) {
         focusRating()
       }
-      // 不依赖 `autoFocus`，保证只触发第一次
-    }, [])
+    })
 
     const handleFocus = useCallback(
       (evt: React.FocusEvent<HTMLUListElement>) => {
@@ -132,6 +139,7 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
       if (disabled) return
 
       evt.stopPropagation()
+      console.log(hoverValue)
 
       // right asc
       if (evt.keyCode === 39) {
@@ -178,70 +186,79 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
     // TODO: 如何在不耦合 tooltip 的情况下对每个 ⭐️ 可以有单独的 tooltip 功能？
     // 可以把⭐️拆原子组件，给用户灵活组合（本质类似 radioGroup 和 radio）
     return (
-      <ul
-        ref={useMergeRefs(ref, ratingRef)}
-        role={role}
-        className={cls}
-        tabIndex={tabIndex}
-        style={rootStyle}
-        onMouseLeave={handleIconLeave}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        onKeyDown={handleKeyDown}
-        {...rest}
-      >
-        {stars.map((_, idx) => {
-          // 满星值
-          const indexValue = idx + 1
-          // 半星值
-          const halfIndexValue = allowHalf ? idx + 0.5 : indexValue
+      <>
+        <ul
+          ref={useMergeRefs(ref, ratingRef)}
+          role={role}
+          className={cls}
+          tabIndex={tabIndex}
+          style={rootStyle}
+          onMouseLeave={handleIconLeave}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+          {...rest}
+        >
+          {stars.map((_, idx) => {
+            // 满星值
+            const indexValue = idx + 1
+            // 半星值
+            const halfIndexValue = allowHalf ? idx + 0.5 : indexValue
 
-          return (
-            <li className={starCls} key={indexValue}>
-              {/* HalfStar 1 */}
-              <div
-                className={cx(
-                  halfStarCls,
-                  `${halfStarCls}--${isVertical ? 'bottom' : 'left'}`,
-                  halfIndexValue > displayValue && 'grayscale'
-                )}
-                onClick={() => proxyTryChangeValue(halfIndexValue)}
-                onMouseEnter={() => proxyTryChangeHoverValue(halfIndexValue)}
-              >
-                <StarIcon
-                  index={0}
-                  value={indexValue}
-                  className={starIconCls}
-                  disabled={isNonInteractive}
-                  displayValue={displayValue}
-                  allowHalf={allowHalf}
-                  character={character}
-                />
-              </div>
-              {/* HalfStar 2 */}
-              <div
-                className={cx(
-                  halfStarCls,
-                  `${halfStarCls}--${isVertical ? 'top' : 'right'}`,
-                  indexValue > displayValue && 'grayscale'
-                )}
-                onClick={() => proxyTryChangeValue(indexValue)}
-                onMouseEnter={() => proxyTryChangeHoverValue(indexValue)}
-              >
-                <StarIcon
-                  index={1}
-                  value={indexValue}
-                  className={starIconCls}
-                  disabled={isNonInteractive}
-                  displayValue={displayValue}
-                  allowHalf={allowHalf}
-                  character={character}
-                />
-              </div>
-            </li>
-          )
-        })}
-      </ul>
+            return (
+              <li className={starCls} key={indexValue}>
+                <ToolTipWrapper title={tooltips[idx]}>
+                  {/* HalfStar 1 */}
+                  <div
+                    className={cx(
+                      halfStarCls,
+                      `${halfStarCls}--${isVertical ? 'bottom' : 'left'}`,
+                      halfIndexValue > displayValue && 'grayscale'
+                    )}
+                    onClick={() => proxyTryChangeValue(halfIndexValue)}
+                    onMouseEnter={() => proxyTryChangeHoverValue(halfIndexValue)}
+                  >
+                    <StarIcon
+                      index={0}
+                      value={indexValue}
+                      className={starIconCls}
+                      disabled={isNonInteractive}
+                      displayValue={displayValue}
+                      allowHalf={allowHalf}
+                      character={character}
+                      useEmoji={useEmoji}
+                      characterRender={characterRender}
+                    />
+                  </div>
+                  {/* HalfStar 2 */}
+                  <div
+                    className={cx(
+                      halfStarCls,
+                      `${halfStarCls}--${isVertical ? 'top' : 'right'}`,
+                      indexValue > displayValue && 'grayscale'
+                    )}
+                    onClick={() => proxyTryChangeValue(indexValue)}
+                    onMouseEnter={() => proxyTryChangeHoverValue(indexValue)}
+                  >
+                    <StarIcon
+                      index={1}
+                      value={indexValue}
+                      className={starIconCls}
+                      disabled={isNonInteractive}
+                      displayValue={displayValue}
+                      allowHalf={allowHalf}
+                      character={character}
+                      useEmoji={useEmoji}
+                      characterRender={characterRender}
+                    />
+                  </div>
+                </ToolTipWrapper>
+              </li>
+            )
+          })}
+        </ul>
+        {descRender ? <div className={`${prefixCls}__desc`}>{descRender(displayValue)}</div> : null}
+      </>
     )
   }
 )
@@ -299,6 +316,22 @@ export interface RatingProps extends HiBaseHTMLFieldProps<'ul'> {
    * 是否自动获取焦点
    */
   autoFocus?: boolean
+  /**
+   * 自定义每项的提示信息
+   */
+  tooltips?: React.ReactNode[]
+  /**
+   * 是否使用表情
+   */
+  useEmoji?: boolean
+  /**
+   * 自定义渲染 character 函数
+   */
+  characterRender?: (value: number, index: number) => React.ReactNode
+  /**
+   * 自定义辅助文字函数
+   */
+  descRender?: (value: number) => React.ReactNode
 }
 
 if (__DEV__) {
@@ -313,7 +346,13 @@ function StarIcon({
   disabled,
   allowHalf,
   character,
+  useEmoji,
+  characterRender,
 }: StarIconProps) {
+  if (typeof characterRender === 'function') {
+    return characterRender(displayValue, value)
+  }
+
   if (typeof character === 'function') {
     return character(displayValue, value)
   } else if (character) {
@@ -321,6 +360,24 @@ function StarIcon({
   }
 
   let svgIcon: any
+
+  if (useEmoji) {
+    const emojiValue = displayValue > 5 ? 5 : displayValue
+    const Emojis = [
+      Icons.EmojiOne,
+      Icons.EmojiTwo,
+      Icons.EmojiThree,
+      Icons.EmojiFour,
+      Icons.EmojiFive,
+    ]
+    if (value <= emojiValue) {
+      svgIcon = React.createElement(Emojis[emojiValue - 1])
+    } else {
+      svgIcon = <Icons.EmojiDefault />
+    }
+
+    return <i className={className}>{svgIcon}</i>
+  }
 
   if (value <= displayValue) {
     // 渲染整个星星
@@ -348,6 +405,8 @@ interface StarIconProps {
   disabled: boolean
   allowHalf: boolean
   character: React.ReactNode | ((value: number, index: number) => React.ReactNode)
+  useEmoji?: boolean
+  characterRender?: (value: number, index: number) => React.ReactNode
 }
 
 const formatRangeValue = (val: number, min: number, max: number) => {
@@ -357,4 +416,14 @@ const formatRangeValue = (val: number, min: number, max: number) => {
     val = max
   }
   return val
+}
+
+function ToolTipWrapper({ children, title }: any) {
+  return title ? (
+    <Tooltip title={title}>
+      <div>{children}</div>
+    </Tooltip>
+  ) : (
+    children
+  )
 }

@@ -3,6 +3,7 @@
 $prefix: '#{$component-prefix}-rating' !default;
 
 .#{$prefix} {
+  vertical-align: middle;
   list-style: none;
   outline: none;
   margin: 0;
@@ -10,12 +11,12 @@ $prefix: '#{$component-prefix}-rating' !default;
   display: inline-flex;
   gap: 6px;
   width: fit-content;
-  align-items:center;
+  align-items: center;
   height: 24px;
   line-height: 24px;
   font-size: 24px;
-  color: #FF8E26;
-  fill: #FF8E26;
+  color: #ff8e26;
+  fill: #ff8e26;
 
   &--disabled {
     .#{$prefix}__star {
@@ -102,5 +103,12 @@ $prefix: '#{$component-prefix}-rating' !default;
       width: 1em;
       height: 1em;
     }
+  }
+
+  &__desc {
+    margin-left: use-spacing(7);
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
   }
 }

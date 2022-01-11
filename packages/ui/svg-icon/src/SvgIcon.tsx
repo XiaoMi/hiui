@@ -61,7 +61,7 @@ export interface SvgIconProps extends HiBaseHTMLProps<'svg'> {
   /**
    * svg 尺寸大小
    */
-  size?: React.ReactText
+  size?: number
 }
 
 if (__DEV__) {

@@ -6,17 +6,20 @@ $zindex-base-map: (
   auto: 'auto',
   normal: 0,
   absolute: 1,
-  // Select
-  overlay: 800,
   // Header
-  sticky: 1000,
-  drawer: 1020,
-  modal: 1040,
-  popper: 1060,
+  sticky: 800,
+  drawer: 1000,
+  modal: 1000,
+  // drawer\modal\Preview\ZenMode
+  dialog: 1000,
   // message\notification
-  toast: 1080,
-  tooltip: 1100,
-  watermark: 2000,
+  toast: 1010,
+  // popover\popConfirm
+  popper: 1030,
+  // select\picker
+  overlay: 1050,
+  tooltip: 1060,
+  watermark: 1100,
 ) !default;
 
 /// 获取层及对应 z-index
