@@ -30,7 +30,6 @@ export const TableExpandedRow = forwardRef<HTMLDivElement | null, TableExpandedR
       const embedContentMaybePromise = expandedRender(rowData, rowIndex)
 
       if (embedContentMaybePromise.toString() === '[object Promise]') {
-        // setExpanded('loading')
         setLoading(true)
         embedContentMaybePromise
           .then((jsxElement: any) => {
@@ -52,8 +51,6 @@ export const TableExpandedRow = forwardRef<HTMLDivElement | null, TableExpandedR
       // Exclude for `onExpandEmbedRowsChange`
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rowIndex, expandedRender, rowDataLatestRef, expanded])
-
-    // console.log('TableExpandedRow', expanded, rowData)
 
     // 可展开的内嵌面板
     return expanded ? (

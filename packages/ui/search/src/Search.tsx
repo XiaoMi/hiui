@@ -27,6 +27,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
       data,
       defaultValue = '',
       value: valueProp,
+      ...rest
     },
     ref
   ) => {
@@ -162,7 +163,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
     )
 
     return (
-      <div className={cls} ref={ref}>
+      <div className={cls} ref={ref} {...rest}>
         <Input
           className={`${prefixCls}__input`}
           ref={setTargetElRef}
@@ -176,9 +177,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
           // @ts-ignore
           onKeyDown={onKeyDown}
           value={String(value)}
-          onBlur={(e) => {
-            onBlur && onBlur(e)
-          }}
+          onBlur={onBlur}
           onFocus={() => {
             if (data && data.length > 0) {
               setVisible(true)

@@ -259,11 +259,12 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
             header: setting ? (
               <TableSettingMenu
                 prefixCls={`${prefixCls}-setting`}
+                // sort
                 sortedCols={sortedCols}
                 setSortCols={setSortCols}
                 cacheSortedCols={cacheSortedCols}
                 setCacheSortedCols={setCacheSortedCols}
-                // visibleCols={visibleCols}
+                // hidden
                 hiddenColKeys={hiddenColKeys}
                 setHiddenColKeys={setHiddenColKeys}
                 cacheHiddenColKeys={cacheHiddenColKeys}
