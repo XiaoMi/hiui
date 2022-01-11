@@ -3,7 +3,7 @@ import moment from 'moment'
 import DPContext from './context'
 import Provider from '../context/index'
 import { useDate, useFormat, useAltData } from './hooks'
-import { getInRangeDate } from './utils'
+import { getInRangeDate, normalizeWeekOffset } from './utils'
 import _ from 'lodash'
 import classNames from 'classnames'
 import Popper from '../popper/index'
@@ -103,19 +103,35 @@ const BasePicker = ({
     }
   }
 
+  const _weekOffset = weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1
+
   const callback = (dates, emitOnChange = true) => {
     const _dates = _.cloneDeep(dates)
     let returnDate = {}
     let returnDateStr = ''
-    if (type.includes('range') || type === 'timeperiod' || type === 'week') {
+
+    const formatWeek = (disposeDate) => {
+      if (!disposeDate) return ''
+      if (typeof format !== 'undefined') return disposeDate.format(iFormat)
+
+      const clone = normalizeWeekOffset(disposeDate, _weekOffset)
+      return clone.weekYear() + '-W' + clone.week()
+    }
+
+    if (type.includes('week')) {
       returnDate = {
         start: _dates[0].toDate(),
         end: _dates[1].toDate()
       }
-      returnDateStr =
-        type === 'week'
-          ? _dates[0].format(iFormat)
-          : { start: _dates[0].format(iFormat), end: _dates[1].format(iFormat) }
+      returnDateStr = type.includes('range')
+        ? { start: formatWeek(_dates[0]), end: formatWeek(_dates[1]) }
+        : formatWeek(_dates[0])
+    } else if (type.includes('range') || type === 'timeperiod') {
+      returnDate = {
+        start: _dates[0].toDate(),
+        end: _dates[1].toDate()
+      }
+      returnDateStr = { start: _dates[0].format(iFormat), end: _dates[1].format(iFormat) }
     } else {
       returnDate = _dates[0].toDate()
       returnDateStr = _dates[0].format(iFormat)
@@ -173,7 +189,6 @@ const BasePicker = ({
     shortcuts && 'hi-datepicker__popper--shortcuts',
     isLarge && 'hi-datepicker__popper--large'
   )
-  const _weekOffset = weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1
   return (
     <DPContext.Provider
       value={{

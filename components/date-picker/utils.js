@@ -246,3 +246,10 @@ export const parseValue = (value, type, format, weekOffset, locale = 'zh-CN') =>
   }
   return [isValid ? _value : null]
 }
+
+// fix: 周计算 52 53 周偏差
+export const normalizeWeekOffset = (date, weekOffset) => {
+  const clone = date.clone()
+  clone.locale(weekOffset === 1 ? 'zh-CN' : 'en-US')
+  return clone
+}
