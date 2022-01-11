@@ -47,6 +47,7 @@
     "@hi-ui/core-css": "^4.0.0-alpha.11",
     "@hi-ui/env": "^4.0.0-alpha.5",
     "@hi-ui/tooltip": "^4.0.0-alpha.11",
+    "@hi-ui/use-did-mount": "^4.0.0-alpha.1",
     "@hi-ui/use-merge-refs": "^4.0.0-alpha.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.12"
   },
