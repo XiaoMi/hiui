@@ -58,4 +58,4 @@ const Menu = require('@hi-ui/menu');
 | ----         | ----                            | ----                                                                           | ----                         |
 | onClick        | update                          | 移除第二个参数prevActiveId | 这个感觉没有意义           |
 | onClickSubMenu        | update                          | 将入参由索引变更为subMenuId | 之前的入参感觉比较奇怪，意义不大           |
-| icon        | update                          | icon 不再支持 string 模式 | Menu 组件与 Icon 组件真正结偶          |
+| icon        | update                          | icon 不再支持 string 模式 | Menu 组件与 Icon 组件真正解耦          |
