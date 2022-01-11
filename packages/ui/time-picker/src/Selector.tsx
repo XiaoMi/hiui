@@ -33,6 +33,7 @@ export const Selector: FC<SelectorProps> = (props) => {
   const stopScrollTimeoutHandler = useRef(-1)
   // 滚动容器引用
   const scrollContainerRef = useRef<HTMLDivElement | null>(null)
+  const lastValueMatchIndexCache = useRef(-1)
 
   const safePadding = useMemo(
     () => ((fullDisplayItemNumber - 1) * (itemHeight + ITEM_MARGIN_SIZE)) / 2,
@@ -96,7 +97,9 @@ export const Selector: FC<SelectorProps> = (props) => {
   useEffect(() => {
     const currentIndex = data.findIndex((item) => item.id === value)
     // 避免非法值跳转
-    if (currentIndex >= 0) {
+    // 避免重复执行操作，只有当 value 对应的下标改变的时候才需要执行
+    if (currentIndex >= 0 && lastValueMatchIndexCache.current !== currentIndex) {
+      lastValueMatchIndexCache.current = currentIndex
       scrollToMatchIndex(currentIndex)
     }
   }, [data, value, scrollToMatchIndex])

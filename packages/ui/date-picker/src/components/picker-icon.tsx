@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { cx } from '@hi-ui/classname'
-import { CloseCircleFilled, TimeOutlined, StartDateOutlined } from '@hi-ui/icons'
+import { CloseCircleFilled, TimeOutlined, CalendarOutlined } from '@hi-ui/icons'
 import { DatePickerType } from '../types'
 
 const PickerIcon = ({
@@ -33,7 +33,7 @@ const PickerIcon = ({
     } else if (type.includes('time') || showTime) {
       return TimeOutlined
     } else {
-      return StartDateOutlined
+      return CalendarOutlined
     }
   }, [clearable, focus, showTime, type])
 
