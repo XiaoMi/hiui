@@ -169,11 +169,17 @@ $prefix: '#{$component-prefix}-menu' !default;
   }
 
   &--vertical {
+    display: flex;
+    flex-direction: column;
     padding: use-spacing(4);
     width: 232px;
     height: 100%;
-    overflow: auto;
     transition: width 0.3s;
+
+    .#{$prefix}__wrapper {
+      flex: 1;
+      overflow: auto;
+    }
 
     &.#{$prefix}--mini {
       width: 56px;
