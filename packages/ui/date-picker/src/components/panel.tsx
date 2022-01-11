@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useCallback } from 'react'
 import classNames from 'classnames'
 import Header from './header'
 import Calendar from './calendar'
@@ -57,44 +57,47 @@ const Panel = (props: PanelProps) => {
     setCalRenderDates([rDate])
   }, [outDate])
 
-  const onCalenderPick = (date: moment.Moment) => {
-    onSelect(date, true)
-    if (type === 'year' || (type === 'month' && view === 'month')) {
-      // year || month picker
-      onPick(
-        [
-          type === 'year'
-            ? moment(date.year().toString())
-            : moment(`${date.year().toString()}-${date.month() + 1}`),
-        ],
-        false
-      )
-      return
-    }
-    if (type === 'week' && view === 'date') {
-      // week picker
-      // 根据偏移判断当前使用的周格式
-      // 抛弃使用 isoWeek week 函数区分周计算方式，统一使用 week + instance locale 方法
-      // const weekMethod = weekOffset ? 'isoWeek' : 'week'
-      // onPick([moment(date).startOf(weekMethod), moment(date).endOf(weekMethod)], false)
-      onPick(getBelongWeekRange(date, weekOffset), false)
-      return
-    }
-    let _view = view
-    if (view === 'year') {
-      _view = 'month'
-    }
-    if (view === 'month') {
-      _view = 'date'
-    }
-    setView(_view)
-    const _innerDates = genNewDates(calRenderDates, date)
-    if (view === 'date') {
-      onPick(_innerDates, showTime)
-      return
-    }
-    setCalRenderDates(_innerDates)
-  }
+  const onCalenderPick = useCallback(
+    (date: moment.Moment) => {
+      onSelect(date, true)
+      if (type === 'year' || (type === 'month' && view === 'month')) {
+        // year || month picker
+        onPick(
+          [
+            type === 'year'
+              ? moment(date.year().toString())
+              : moment(`${date.year().toString()}-${date.month() + 1}`),
+          ],
+          false
+        )
+        return
+      }
+      if (type === 'week' && view === 'date') {
+        // week picker
+        // 根据偏移判断当前使用的周格式
+        // 抛弃使用 isoWeek week 函数区分周计算方式，统一使用 week + instance locale 方法
+        // const weekMethod = weekOffset ? 'isoWeek' : 'week'
+        // onPick([moment(date).startOf(weekMethod), moment(date).endOf(weekMethod)], false)
+        onPick(getBelongWeekRange(date, weekOffset), false)
+        return
+      }
+      let _view = view
+      if (view === 'year') {
+        _view = 'month'
+      }
+      if (view === 'month') {
+        _view = 'date'
+      }
+      setView(_view)
+      const _innerDates = genNewDates(calRenderDates, date)
+      if (view === 'date') {
+        onPick(_innerDates, showTime)
+        return
+      }
+      setCalRenderDates(_innerDates)
+    },
+    [calRenderDates, onPick, onSelect, showTime, type, view, weekOffset]
+  )
 
   const panelCls = classNames(
     `${prefixCls}__panel`,
@@ -105,21 +108,24 @@ const Panel = (props: PanelProps) => {
   const timePickerFormat = useTimePickerFormat(realFormat)
   const timePickerData = useTimePickerData(calRenderDates, timePickerFormat)
 
-  const onTimeChange = (date: string[]) => {
-    // 关闭之后，不再响应事件
-    if (showPanel) {
-      const d = timePickerValueAdaptor({
-        timePickerValue: date,
-        format: timePickerFormat,
-        data: calRenderDates,
-        isRange: false,
-      })
-      // 此处函数调用未知作用，暂且注释
-      // d[0].setCalRenderDates(d)
+  const onTimeChange = useCallback(
+    (date: string[]) => {
+      // 关闭之后，不再响应事件
+      if (showPanel) {
+        const d = timePickerValueAdaptor({
+          timePickerValue: date,
+          format: timePickerFormat,
+          data: calRenderDates,
+          isRange: false,
+        })
+        // 此处函数调用未知作用，暂且注释
+        // d[0].setCalRenderDates(d)
 
-      onPick(d, true)
-    }
-  }
+        onPick(d, true)
+      }
+    },
+    [calRenderDates, onPick, showPanel, timePickerFormat]
+  )
 
   const onArrowEvent = (date: moment.Moment) => {
     const _innerDates = genNewDates(calRenderDates, date)
