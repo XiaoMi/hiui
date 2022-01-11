@@ -124,7 +124,7 @@ export type MenuItemProps = {
   prefixCls?: string
   content: React.ReactNode
   icon?: React.ReactNode
-  id: string | number
+  id: React.ReactText
   disabled?: boolean
   children?: MenuItemProps[]
   level?: number
