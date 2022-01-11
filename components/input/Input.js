@@ -280,6 +280,7 @@ class Input extends Component {
 
     return (
       <textarea
+        ref={this._Input}
         className={`hi-input theme__${theme} ${active ? 'active' : ''} ${disabled ? 'disabled' : ''} ${
           className || ''
         }`}
