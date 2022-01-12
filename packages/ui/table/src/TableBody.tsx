@@ -94,8 +94,6 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                     // @ts-ignore
                     rowIndex={index}
                     rowData={row}
-                    setDragRowKey={() => {}}
-                    setDragStatus={() => {}}
                     // expandedTree={isExpandTreeRows(row.id)}
                     {...getRequiredProps(row.id)}
                   />
