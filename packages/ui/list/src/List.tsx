@@ -40,7 +40,6 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
       className,
       children,
       pagination,
-      layout = 'horizontal',
       split = true,
       renderItem,
       bordered = true,
@@ -60,7 +59,6 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
         return (
           <li
             className={cx(`${prefixCls}-item__wrapper`, {
-              [`${prefixCls}-item__colume`]: layout === 'vertical',
               [`${prefixCls}-item--split`]: split,
             })}
             key={index}
@@ -69,7 +67,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
           </li>
         )
       },
-      [renderItem, split, prefixCls, layout]
+      [renderItem, split, prefixCls]
     )
 
     return (
@@ -124,7 +122,6 @@ export interface ListProps {
   split?: boolean
   pagination?: PaginationProps & { position: 'left' | 'middle' | 'right' }
   bordered?: boolean
-  layout?: 'vertical' | 'horizontal'
   emptyText?: React.ReactNode
 }
 export type ListItemProps = {
