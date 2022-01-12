@@ -25,6 +25,7 @@ export * from './merged-cell.stories'
 export * from './pagination.stories'
 export * from './hidden-cols.stories'
 export * from './loading.stories'
+export * from './empty.stories'
 
 export default {
   title: 'Data Display/Table',

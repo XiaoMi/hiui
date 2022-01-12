@@ -5,6 +5,8 @@ import { TableRow } from './TableRow'
 import { useTableContext } from './context'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { TableRowRequiredProps } from './types'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { EmptyState } from '@hi-ui/empty-state'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -15,7 +17,7 @@ const _prefix = getPrefixCls(_role)
 export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
   ({ prefixCls = _prefix }, ref) => {
     const {
-      // columns,
+      columns,
       leafColumns,
       firstRowElementRef,
       isExpandTreeRows,
@@ -82,22 +84,30 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             })}
           </colgroup>
           <tbody>
-            {transitionData.map((row, index) => {
-              return (
-                <TableRow
-                  ref={index === 0 ? firstRowElementRef : null}
-                  // key={depth + index}
-                  key={row.id}
-                  // @ts-ignore
-                  rowIndex={index}
-                  rowData={row}
-                  setDragRowKey={() => {}}
-                  setDragStatus={() => {}}
-                  // expandedTree={isExpandTreeRows(row.id)}
-                  {...getRequiredProps(row.id)}
-                />
-              )
-            })}
+            {isArrayNonEmpty(transitionData) ? (
+              transitionData.map((row, index) => {
+                return (
+                  <TableRow
+                    ref={index === 0 ? firstRowElementRef : null}
+                    // key={depth + index}
+                    key={row.id}
+                    // @ts-ignore
+                    rowIndex={index}
+                    rowData={row}
+                    setDragRowKey={() => {}}
+                    setDragStatus={() => {}}
+                    // expandedTree={isExpandTreeRows(row.id)}
+                    {...getRequiredProps(row.id)}
+                  />
+                )
+              })
+            ) : (
+              <tr>
+                <td colSpan={columns.length} style={{ textAlign: 'center', height: 60 }}>
+                  <EmptyState style={{ marginTop: 24 }} />
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

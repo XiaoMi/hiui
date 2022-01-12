@@ -194,6 +194,7 @@ $prefix: '#{$component-prefix}-table' !default;
   }
 
   // 利用 table colgroup 控制列
+  &-header-col,
   &-col {
     .#{$prefix}-header & {
       background-color: use-color('gray', 50);
