@@ -148,7 +148,6 @@ export const useForm = <Values = Record<string, any>>({
    */
   const validateAll = useCallback(() => {
     const fieldNames = getRegisteredKeys()
-    console.log('fieldNames', fieldNames)
 
     return Promise.all(
       fieldNames.map((fieldName) => {

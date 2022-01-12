@@ -1,8 +1,6 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-// import { Column, RowSelection } from './Table'
-// import { Checkbox } from '@hi-ui/checkbox'
 import { useTableContext } from './context'
 import { times } from '@hi-ui/times'
 import { TableRowEventData, TableRowSelection } from './types'
@@ -53,6 +51,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       getStickyColProps,
       canScroll,
       isTree,
+      cellRender,
     } = useTableContext()
 
     const [loading] = React.useState(false)
@@ -68,6 +67,8 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
 
       if (isFunction(rawRender)) {
         content = rawRender(content, rowData, rowIndex, dataKey)
+      } else if (isFunction(cellRender)) {
+        content = cellRender(content)
       }
 
       //  处理单元格内容，重载支持配置式合并单元格
@@ -84,7 +85,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
           rowSpan: '',
         },
       }
-    }, [rawRender, dataKey, rowData, rowIndex])
+    }, [rawRender, dataKey, rowData, rowIndex, cellRender])
 
     if (cellContent.props.colSpan === 0 || cellContent.props.rowSpan === 0) {
       return null

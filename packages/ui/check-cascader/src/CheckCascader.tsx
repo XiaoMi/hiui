@@ -81,7 +81,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     const proxyOnChange = useLatestCallback(
       (value: React.ReactText[], item: any, shouldChecked: boolean) => {
         tryChangeValue(value, item, shouldChecked)
-        console.log('proxyOnChange', value)
+        // console.log('proxyOnChange', value)
 
         // 包括所有全选的数据，包括全选
         if (shouldChecked) {

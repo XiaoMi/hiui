@@ -70,8 +70,6 @@ const open = ({
     },
     onConfirm: () => {
       onConfirm?.()
-      console.log(toastManagerRef.current)
-
       toastManagerRef.current?.close()
     },
     onCancel: () => {

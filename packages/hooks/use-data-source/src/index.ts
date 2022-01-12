@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react'
 import { isFunction, isArray, isPromise, isUndefined } from '@hi-ui/type-assertion'
 import { useLatestRef } from '@hi-ui/use-latest'
-import { __DEV__ } from '@hi-ui/env'
+import { invariant } from '@hi-ui/env'
 
 /**
  * TODO: What is useDataSource
@@ -125,9 +125,8 @@ export const useDataSource = <T = Record<string, any>[]>({
         }
 
         if (typeof resultMayBePromise.url !== 'string') {
-          if (__DEV__) {
-            console.log('Warning: Please Return Correct data when using DataSource.')
-          }
+          invariant(true, 'Please Return Correct result when using DataSource.')
+
           setStatus('rejected')
           reject(resultMayBePromise)
           return

@@ -82,6 +82,7 @@ export const parseFixedColumns = (
   const rowSelectionWith = rowSelection && index === 0 && key === 'leftStickyWidth' ? 50 : 0
   const width = (arr[index - 1] || { width: 0 }).width || 0
   const stickyWidth = (arr[index - 1] || { width: 0 })[key] || 0
+  item = { ...item }
   item[key] = width + stickyWidth + rowSelectionWith + parentStickyWidth
   if (item.children) {
     const _parentStickyWidth = item[key]

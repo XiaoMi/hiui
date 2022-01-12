@@ -70,6 +70,7 @@ export const useTable = ({
   onDrop: onDropProp,
   onDropEnd,
   emptyContent,
+  cellRender,
 }: UseTableProps) => {
   /**
    * 获取 key 字段值
@@ -222,6 +223,11 @@ export const useTable = ({
     return fixedToColumn
   }, [fixedToColumn])
 
+  // TODO: 支持受控
+  const [leftFreezeColumn, setLeftFreezeColumn] = React.useState(fixedToColumnMemo.left)
+  const [rightFreezeColumn] = React.useState(fixedToColumnMemo.right)
+  // console.log(leftFreezeColumn)
+
   const {
     leftFrozenColKeys,
     rightFrozenColKeys,
@@ -231,7 +237,9 @@ export const useTable = ({
     // scrollRight,
     // scrollLeft,
   } = React.useMemo(() => {
-    const { left: leftFrozenColKey, right: rightFrozenKey } = fixedToColumnMemo
+    // const { right: rightFrozenKey } = fixedToColumnMemo
+    const leftFrozenColKey = leftFreezeColumn
+    const rightFrozenKey = rightFreezeColumn
 
     // 获取左右冻结列的下标
     let leftFrozenColIndex: number | undefined
@@ -251,7 +259,7 @@ export const useTable = ({
     })
 
     // 保持内部循环引用关系，如果 cloneTree，将破坏关系
-    let nextColumns = mergedColumns2
+    let nextColumns = [...mergedColumns2]
 
     // TODO: 为什么冻结列，需要设置默认宽度
     if (
@@ -305,8 +313,6 @@ export const useTable = ({
       0
     )
 
-    // console.log(colWidths, leftFixedColumnsWidth)
-
     // 右侧
     let rightColumns = [] as any[]
     if (typeof rightFrozenColIndex === 'number') {
@@ -315,6 +321,7 @@ export const useTable = ({
       // const afterColumns = nextColumns.filter((_, idx) => idx > rightFrozenColIndex!)
       // // @ts-ignore
       // rightColumns = beforeColumns.concat(targetColumn).concat(afterColumns)
+
       const root = getNodeRootParent(targetColumn)
       rightColumns = [root].concat(
         nextColumns.filter((item, index) => index > rightFrozenColIndex! && item.depth === 0)
@@ -344,7 +351,16 @@ export const useTable = ({
       // scrollRight: tableWidth - tableBodyWidth,
       // scrollLeft: 0,
     }
-  }, [mergedColumns2, fixedToColumnMemo, rowSelection, expandedRender, scrollWidth, colWidths])
+  }, [
+    mergedColumns2,
+    // fixedToColumnMemo,
+    rowSelection,
+    expandedRender,
+    scrollWidth,
+    colWidths,
+    leftFreezeColumn,
+    rightFreezeColumn,
+  ])
 
   const [scrollSize, setScrollSize] = useState({ scrollLeft: 0, scrollRight: 1 })
 
@@ -500,7 +516,34 @@ export const useTable = ({
       : false
   }, [data, onLoadChildren])
 
+  const [activeSorterColumn, setActiveSorterColumn] = useState<string | null>(null)
+  const [activeSorterType, setActiveSorterType] = useState<string | null>(null)
+
+  //* *************** 根据排序列处理数据 ************** *//
+
+  const showData = useMemo(() => {
+    let _data = transitionData.concat()
+
+    if (activeSorterColumn) {
+      const sorter =
+        columns.filter((d) => d.dataKey === activeSorterColumn)[0] &&
+        columns.filter((d) => d.dataKey === activeSorterColumn)[0].sorter
+      if (sorter) {
+        _data =
+          activeSorterType === 'ascend'
+            ? [..._data].sort(sorter)
+            : [..._data].sort(sorter).reverse()
+      }
+    }
+
+    return _data
+  }, [activeSorterColumn, activeSorterType, transitionData, columns])
+
   return {
+    activeSorterColumn,
+    setActiveSorterColumn,
+    activeSorterType,
+    setActiveSorterType,
     canScroll,
     maxHeight,
     getTableHeaderProps,
@@ -509,7 +552,8 @@ export const useTable = ({
     scrollBodyElementRef,
     columns: mergedColumns1,
     data: cacheData,
-    transitionData,
+    // transitionData,
+    transitionData: showData,
     flattedColumns,
     flattedColumnsWithoutChildren,
     expandedRender,
@@ -526,6 +570,8 @@ export const useTable = ({
     scrollHeaderElementRef,
     errorRowKeys: [],
     // 冻结列
+    leftFreezeColumn,
+    setLeftFreezeColumn,
     onTableBodyScroll,
     onTableBodyScrollMock,
     // freezeColKeys,
@@ -573,6 +619,8 @@ export const useTable = ({
     colWidths,
     onColumnResizable,
     isTree: isTreeView,
+    cellRender,
+    showColMenu,
   }
 }
 
@@ -728,6 +776,7 @@ export interface UseTableProps {
   expandedRowKeys?: string[]
   defaultExpandAll?: boolean
   extra?: React.ReactNode
+  cellRender?: (text: any) => React.ReactNode
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>

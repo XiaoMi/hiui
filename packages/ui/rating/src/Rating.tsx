@@ -139,7 +139,6 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
       if (disabled) return
 
       evt.stopPropagation()
-      console.log(hoverValue)
 
       // right asc
       if (evt.keyCode === 39) {

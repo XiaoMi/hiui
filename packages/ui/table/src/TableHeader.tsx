@@ -4,7 +4,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { isFunction } from '@hi-ui/type-assertion'
 import { useTableContext } from './context'
-import { TableHeaderCellMenu } from './TableHeaderCellMenu'
+import { renderFilter } from './TableAdvancedFilter'
 
 const _prefix = getPrefixCls('table-header')
 
@@ -12,7 +12,7 @@ const _prefix = getPrefixCls('table-header')
  * TODO: What is TableHeader
  */
 export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
-  ({ prefixCls = _prefix }, ref) => {
+  ({ prefixCls = _prefix, className }, ref) => {
     const {
       // columns,
       groupedColumns,
@@ -26,10 +26,12 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
       scrollHeaderElementRef,
       leafColumns,
       getTableHeaderProps,
+      showColMenu,
     } = useTableContext()
 
     // TODO: 需要增加一下错误提示，比如rowSelection类型不合法等等
-    const cls = cx(`${prefixCls}__header`)
+
+    const cls = cx(prefixCls, className)
 
     return (
       <div className={cls} ref={scrollHeaderElementRef} {...getTableHeaderProps()}>
@@ -64,7 +66,12 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
                         rowSpan={col.rowSpan}
                       >
                         {titleContent}
-                        {<TableHeaderCellMenu />}
+                        {renderFilter({
+                          prefixCls: `${prefixCls}-filter`,
+                          columnKey: dataKey,
+                          showColMenu,
+                          column: col,
+                        })}
                       </th>
                     )
 
@@ -101,6 +108,7 @@ export interface TableHeaderProps {
    * 组件默认的选择器类
    */
   prefixCls?: string
+  className?: string
 }
 
 if (__DEV__) {

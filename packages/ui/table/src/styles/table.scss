@@ -87,7 +87,7 @@ $prefix: '#{$component-prefix}-table' !default;
       }
     }
 
-    .#{$prefix}__header {
+    .#{$prefix}-header {
       border-top: use-border-size('normal') use-color('gray', 200);
       border-left: use-border-size('normal') use-color('gray', 200);
     }
@@ -110,7 +110,7 @@ $prefix: '#{$component-prefix}-table' !default;
     top: 0;
   }
 
-  &__header {
+  &-header {
     position: relative;
     box-sizing: border-box;
     overflow: hidden;
@@ -195,7 +195,7 @@ $prefix: '#{$component-prefix}-table' !default;
 
   // 利用 table colgroup 控制列
   &-col {
-    .#{$prefix}__header & {
+    .#{$prefix}-header & {
       background-color: use-color('gray', 50);
     }
 
@@ -204,7 +204,7 @@ $prefix: '#{$component-prefix}-table' !default;
         background-color: use-color-mode('primary-05');
       }
 
-      .#{$prefix}__header & {
+      .#{$prefix}-header & {
         background-color: use-color('gray', 100);
       }
     }
@@ -268,7 +268,7 @@ $prefix: '#{$component-prefix}-table' !default;
 
 th[data-sticky] {
   background-color: use-color('gray', 50);
-  z-index: 1;
+  z-index: use-zindex('absolute', 1);
 }
 
 // 冻结列 阴影
@@ -292,6 +292,75 @@ th[data-sticky] {
     margin-left: 10px;
     right: 0;
     box-shadow: -6px 0 6px -4px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.#{$prefix}-filter-dropdown {
+  &__trigger {
+    &.#{$component-prefix}-icon-button {
+      margin-left: 4px;
+    }
+  }
+
+  &__content {
+    width: 124px;
+    padding: use-spacing(6) use-spacing(4);
+    font-weight: use-text-weight('normal');
+  }
+
+  &__item {
+    margin-top: use-spacing(4);
+    padding: use-spacing(3) use-spacing(4);
+    border-radius: use-border-radius('normal');
+    display: flex;
+    justify-content: space-between;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &--active {
+      background-color: use-color-mode('primary-05');
+    }
+  }
+}
+
+.#{$prefix}-filter-sorter {
+  display: inline-flex;
+  flex-direction: column;
+  height: 20px;
+  margin-top: 2px;
+  margin-left: 6px;
+
+  &__icon {
+    display: inline-block;
+    height: 8px;
+    cursor: pointer;
+    overflow: hidden;
+    // font-size: 16px;
+    font-weight: use-text-weight('normal');
+    color: use-color('gray', 500);
+
+    svg {
+      position: relative;
+      top: -5px;
+    }
+
+    &--active {
+      color: use-color-mode('primary');
+    }
+  }
+}
+
+.#{$prefix}-filter-custom {
+  &__trigger {
+    margin-left: 6px;
+    color: use-color('gray', 500);
+    cursor: pointer;
+  }
+
+  &__content {
+    padding: 12px 8px;
   }
 }
 
