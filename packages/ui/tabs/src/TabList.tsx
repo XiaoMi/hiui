@@ -53,7 +53,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     }, [scrollRef, innerRef, direction])
 
     const onClickTab = useCallback(
-      (key: string, event: React.MouseEvent) => {
+      (key: React.ReactText, event: React.MouseEvent) => {
         if (onTabClick) {
           onTabClick(key, event)
         }
