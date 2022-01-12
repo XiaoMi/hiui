@@ -70,8 +70,8 @@
     "react-resizable": "^3.0.4"
   },
   "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": ">=16.8.6",
+    "react-dom": ">=16.8.6"
   },
   "devDependencies": {
     "@hi-ui/hi-build": "^4.0.0-alpha.4",

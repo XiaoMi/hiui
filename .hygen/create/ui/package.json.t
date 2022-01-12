@@ -52,11 +52,11 @@ to: <%= h.uiDir(`${name}/package.json`) %>
     "@hi-ui/env": "^4.0.0-alpha.0"
   },
   "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": ">=16.8.6",
+    "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.0",
+    "@hi-ui/hi-build": "^4.0.0-alpha.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
