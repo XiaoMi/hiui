@@ -9,7 +9,7 @@ $prefix: '#{$component-prefix}-button' !default;
 
 .#{$prefix} {
   & + & {
-    margin-inline-start: use-spacing(5);
+    margin-inline-start: use-spacing(6);
   }
 
   background-color: transparent;
@@ -36,6 +36,7 @@ $prefix: '#{$component-prefix}-button' !default;
     outline: 0;
     z-index: 1; // Display box-shadow in front
   }
+
   // 形状通用
   &--shape-square {
     border-radius: use-border-radius('normal');

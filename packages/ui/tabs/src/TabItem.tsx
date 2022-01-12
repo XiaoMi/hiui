@@ -55,7 +55,7 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
     },
     ref
   ) => {
-    const [dragId, setDragId] = useState<string | null>(null)
+    const [dragId, setDragId] = useState<React.ReactText | null>(null)
     const [direction, setDirection] = useState<'prev' | 'next' | null>(null)
     const _onClick = useCallback(
       (e: React.MouseEvent) => {

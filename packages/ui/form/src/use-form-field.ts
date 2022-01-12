@@ -2,8 +2,9 @@ import { useEffect, useCallback, useMemo } from 'react'
 import { FormFieldPath, FormRuleModel } from './types'
 import { useFormContext } from './context'
 import { isArrayNonEmpty, isNullish, isArray } from '@hi-ui/type-assertion'
-import Validater from 'async-validator'
+import Validater, { Rules } from 'async-validator'
 import { toArray } from '@hi-ui/func-utils'
+import { stringify } from './utils'
 // import yup from 'yup'
 
 export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => {
@@ -14,7 +15,7 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
   /**
    * 处理校验规则，item 优先级大于 form
    */
-  const fieldRules = useMemo(() => {
+  const fieldRules: Rules[] = useMemo(() => {
     // @ts-ignore
     const rules = toArray(rulesProp ?? getFieldRules(field))
     return rules.map((rule: any) => ({ type: valueType, ...rule }))
@@ -28,14 +29,10 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
       }
 
       // TODO: rules 处理成 Async Validate 的指定结构
+      const fieldMD5 = stringify(field as FormFieldPath)
 
-      const validater = new Validater({
-        // @ts-ignore
-        [field]: fieldRules,
-      })
-
-      // @ts-ignore
-      return validater.validate({ [field]: value }, { firstFields: true })
+      const validater = new Validater({ [fieldMD5]: fieldRules })
+      return validater.validate({ [fieldMD5]: value }, { firstFields: true })
     },
     [fieldRules, field]
   )

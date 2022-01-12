@@ -121,7 +121,7 @@ export const useForm = <Values = Record<string, any>>({
         (errorMsg: Error) => {
           formDispatch({ type: 'SET_VALIDATING', payload: false })
           // @ts-ignore
-          setFieldError(field, errorMsg.fields[field][0].message)
+          setFieldError(field, errorMsg.fields[stringify(field)]?.[0]?.message ?? '')
 
           // TODO: 回调和promise支持
           throw errorMsg
@@ -404,9 +404,11 @@ export const useForm = <Values = Record<string, any>>({
         valuePropName = 'value',
         valueCollectPropName = 'onChange',
         valueCollectPipe,
+        valueSyncPipe,
         validateTrigger: validateTriggerProp = validateTriggersMemo,
-        onBlur,
+        children,
       } = props
+      const controlProps = children.props || {}
 
       const validateTrigger = (isArray(validateTriggerProp)
         ? validateTriggerProp
@@ -415,22 +417,29 @@ export const useForm = <Values = Record<string, any>>({
       const validateOnCollect = validateTrigger.includes(valueCollectPropName)
       const validateOnBlur = validateTrigger.includes('onBlur')
 
+      const controlledValue = getNested(formState.values, field)
+
       const returnProps = {
         ref,
-        [valuePropName]: getNested(formState.values, field),
+        [valuePropName]: isFunction(valueSyncPipe)
+          ? valueSyncPipe(controlledValue)
+          : controlledValue,
         // 字段 change 时校验
         [valueCollectPropName]: callAllFuncs(
-          props[valueCollectPropName],
+          controlProps[valueCollectPropName],
           handleFieldChange(field, valuePropName, valueCollectPipe, validateOnCollect)
         ),
-        onBlur: callAllFuncs(onBlur, handleFieldBlur(field, validateOnBlur)),
+        onBlur: callAllFuncs(controlProps.onBlur, handleFieldBlur(field, validateOnBlur)),
         invalid: getFieldError(field),
       }
 
       validateTrigger.forEach((triggerName: string) => {
         if ([valueCollectPropName, 'onBlur'].indexOf(triggerName) === -1) {
           // @ts-ignore
-          returnProps[triggerName] = callAllFuncs(props[triggerName], handleFieldTrigger(field))
+          returnProps[triggerName] = callAllFuncs(
+            controlProps[triggerName],
+            handleFieldTrigger(field)
+          )
         }
       })
 
