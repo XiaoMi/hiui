@@ -19,7 +19,7 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
       extra,
       title,
       cover,
-      coverURL,
+      coverUrl,
       loading,
       hoverable,
       bordered = true,
@@ -39,7 +39,7 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
     return (
       <div ref={ref} role={role} className={cls} style={style}>
         {cover ? <div className={`${prefixCls}__cover`}>{cover}</div> : null}
-        {coverURL ? <img src={coverURL} /> : null}
+        {coverUrl ? <img src={coverUrl} /> : null}
         {title || extra ? (
           <div
             className={cx(`${prefixCls}__header`, {
@@ -110,7 +110,7 @@ export interface CardProps {
   /**
    * 卡片的封面的图片链接
    */
-  coverURL?: string
+  coverUrl?: string
   /**
    * 卡片的尺寸
    */
