@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { __DEV__ } from '@hi-ui/env'
+import { __DEV__, invariant } from '@hi-ui/env'
 import { FormProvider } from './context'
 import { useForm, UseFormProps } from './use-form'
 import { HiBaseHTMLProps } from '@hi-ui/core'
@@ -115,9 +115,7 @@ const formExtends = (model: FormRuleModel) => {
     // @ts-ignore
     FORM_REGISTER_TABLE[model.name] = model
   } else {
-    if (__DEV__) {
-      console.log('WARNING: the name should be unique string and not empty.')
-    }
+    invariant(true, 'The name should be unique string and not empty.')
   }
 }
 

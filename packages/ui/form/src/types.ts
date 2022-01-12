@@ -88,58 +88,54 @@ export interface FormHelpers<T = any> {
   /**
    * 对整个表单进行校验, 对应 Form.Submit中的 API
    */
-  validate?: () => Promise<T>
+  validate: () => Promise<T>
   /**
    * 重置整个表单的验证,对应 Form.Reset中的 API
    */
-  reset?: (fields?: [], toDefault?: boolean) => Promise<T>
+  reset: (fields?: [], toDefault?: boolean) => Promise<T>
   /**
    * 对指定表单字段进行校验
    */
-  validateField?: (fields?: string[] | string) => Promise<T>
+  validateField: (fields?: string[] | string) => Promise<T>
   /**
    * 对指定表单字段进行校验
    */
-  validateFields?: (fields?: string[] | string) => Promise<T>
+  validateFields: (fields?: string[] | string) => Promise<T>
   /**
    * 设置表单的值，在异步获取的数据回显的时候，使用该方法
    */
-  setFieldValue?: (field: string, value: any) => void
+  setFieldValue: (field: string, value: any) => void
   /**
    * 设置多个表单的值，在异步获取的数据回显的时候，使用该方法
    */
-  setFieldsValue?: (field: Record<string, any>) => void
-
+  setFieldsValue: (field: Record<string, any>) => void
   /**
    * 	获取一个字段名对应的 Values 返回为数组形式, 不传入 fields；默认返回全部信息, 不会触发表单校验
    */
-  getFieldValue?: (field: string) => any
+  getFieldValue: (field: string) => any
   /**
    * 	获取所有字段名对应的 Values 返回为数组形式, 不传入 fields；默认返回全部信息, 不会触发表单校验
    */
-  getFieldsValue?: () => any
+  getFieldsValue: () => any
   /**
    * 获取一组字段名对应的错误信息，返回为数组形式, 不传入 fields；默认返回全部信息
    */
-  getFieldError?: (field: string) => any
+  getFieldError: (field: string) => any
   /**
    * 获取所有字段名对应的错误信息，返回为数组形式, 不传入 fields；默认返回全部信息
    */
-  getFieldsError?: () => any
+  getFieldsError: () => any
   /**
    * 移除所有表单项的校验结果
    */
-  clearValidates?: () => void
+  clearValidates: () => void
   /**
    *  移除表单项的校验结果，传入待移除的表单项的 field 属性组成的数组
    */
-  clearFieldsValidates?: (fields: string[]) => void
+  clearFieldsValidates: (fields: string[]) => void
 }
 
 export type FormFieldPath = (string | number)[] | string | number
-
-// TODO: 支持数组获取对象嵌套属性
-//  | string[]
 
 export type FormErrorMessage = string
 

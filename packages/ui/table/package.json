@@ -56,6 +56,7 @@
     "@hi-ui/pagination": "^4.0.0-alpha.25",
     "@hi-ui/popper": "^4.0.0-alpha.19",
     "@hi-ui/react-utils": "^4.0.0-alpha.6",
+    "@hi-ui/select": "^4.0.0-alpha.24",
     "@hi-ui/times": "^4.0.0-alpha.4",
     "@hi-ui/tree-utils": "^4.0.0-alpha.10",
     "@hi-ui/type-assertion": "^4.0.0-alpha.13",

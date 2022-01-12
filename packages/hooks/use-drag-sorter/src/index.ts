@@ -110,8 +110,6 @@ export const useDrag = ({
       const clientY = evt.clientY
       const dragId = item[idFieldName]
 
-      console.log(item, idFieldName)
-
       dragInfoRef.current = {
         startClientY: clientY,
         dragId,

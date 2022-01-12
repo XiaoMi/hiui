@@ -46,7 +46,6 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
      * 行内嵌面板展开
      */
     const [expandEmbedRows, trySetExpandEmbedRows] = useUncontrolledState(
-      // TODO: 展开全部
       [],
       expandEmbedRowKeysProp,
       onEmbedExpand
@@ -54,7 +53,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
     const [onExpandEmbedRowsChange, isExpandEmbedRows] = useCheck({
       checkedIds: expandEmbedRows,
-      onCheck: trySetExpandEmbedRows as any,
+      onCheck: trySetExpandEmbedRows,
     })
 
     // 异步展开内嵌面板
@@ -167,9 +166,6 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       return columns
     }, [embedExpandable, getEmbedPanelColumn, columns])
 
-    const extraHeader = extra && extra.header
-    const extraFooter = extra && extra.footer
-
     const providedValue = useTable({ ...rest, columns: mergedColumns, expandedRender })
 
     const {
@@ -185,6 +181,9 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
     const hasBorder = borderedProp ?? bordered
 
+    const extraHeader = extra && extra.header
+    const extraFooter = extra && extra.footer
+
     const cls = cx(
       prefixCls,
       className,
@@ -192,8 +191,6 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       striped && `${prefixCls}--striped`,
       size && `${prefixCls}--size-${size}`
     )
-
-    // TODO：处理 column 模型支持 cellRender，一直出 checkbox、expandIcon 高级选项
 
     return (
       <div ref={ref} role={role} className={cls}>
@@ -208,7 +205,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
             }}
           >
             <div style={{ position: 'relative' }}>
-              <TableHeader prefixCls={prefixCls} />
+              <TableHeader prefixCls={`${prefixCls}-header`} />
 
               {/* 不跟随内部 header 横向滚动，固定到右侧 */}
               {extraHeader ? (
