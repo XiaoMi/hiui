@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/alert",
-  "version": "4.0.0-alpha.19",
+  "version": "4.0.0-alpha.20",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,11 +44,11 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.3",
-    "@hi-ui/core": "^4.0.0-alpha.15",
-    "@hi-ui/core-css": "^4.0.0-alpha.11",
+    "@hi-ui/core": "^4.0.0-alpha.16",
+    "@hi-ui/core-css": "^4.0.0-alpha.12",
     "@hi-ui/env": "^4.0.0-alpha.5",
-    "@hi-ui/icon-button": "^4.0.0-alpha.11",
-    "@hi-ui/icons": "^4.0.0-alpha.22",
+    "@hi-ui/icon-button": "^4.0.0-alpha.12",
+    "@hi-ui/icons": "^4.0.0-alpha.23",
     "@hi-ui/use-latest": "^4.0.0-alpha.4",
     "@hi-ui/use-timeout": "^4.0.0-alpha.4"
   },
