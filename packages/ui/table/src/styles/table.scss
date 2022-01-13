@@ -367,6 +367,13 @@ th[data-sticky] {
   }
 }
 
+.#{$prefix}-embed-row {
+  & > td {
+    background-color: use-color('gray', 200);
+    padding: use-spacing(10);
+  }
+}
+
 .#{$prefix}-setting {
   position: absolute;
   height: 100%;

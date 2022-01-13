@@ -6,7 +6,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useTableContext } from './context'
 // import { cloneTree } from '@hi-ui/tree-utils'
 import { TableCell } from './TableCell'
-import { TableExpandedRow } from './TableExpandedRow'
+import { TableEmbedRow } from './TableEmbedRow'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { setAttrAria } from '@hi-ui/dom-utils'
 import { TableRowSelection, TableColumnItem } from './types'
@@ -260,7 +260,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
 
       // 可展开的内嵌面板
       expandedRender ? (
-        <TableExpandedRow
+        <TableEmbedRow
           expandedRender={expandedRender}
           rowSelection={rowSelection}
           columns={columns}

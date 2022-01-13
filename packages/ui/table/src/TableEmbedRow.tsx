@@ -6,12 +6,12 @@ import Loading from '@hi-ui/loading'
 import { TableColumnItem, TableRowSelection } from './types'
 import { useLatestRef } from '@hi-ui/use-latest'
 
-const _prefix = getPrefixCls('table-expanded-row')
+const _prefix = getPrefixCls('table-embed-row')
 
 /**
- * TODO: What is TableExpandedRow
+ * TODO: What is TableEmbedRow
  */
-export const TableExpandedRow = forwardRef<HTMLDivElement | null, TableExpandedRowProps>(
+export const TableEmbedRow = forwardRef<HTMLDivElement | null, TableEmbedRowProps>(
   ({ prefixCls = _prefix, rowSelection, columns, rowData, rowIndex, expandedRender }, ref) => {
     // @ts-ignore
     const { isExpandEmbedRows } = useTableContext()
@@ -25,6 +25,7 @@ export const TableExpandedRow = forwardRef<HTMLDivElement | null, TableExpandedR
 
     useEffect(() => {
       if (!expanded) return
+      if (expandedRow) return
 
       const rowData = rowDataLatestRef.current
       const embedContentMaybePromise = expandedRender(rowData, rowIndex)
@@ -54,7 +55,7 @@ export const TableExpandedRow = forwardRef<HTMLDivElement | null, TableExpandedR
 
     // 可展开的内嵌面板
     return expanded ? (
-      <tr key="expanded-row" className={`${prefixCls}--expanded`}>
+      <tr key="expanded-row" className={prefixCls}>
         {/* 多选占位 */}
         {rowSelection ? <td /> : null}
         {/* 可展开内嵌显示 */}
@@ -67,7 +68,7 @@ export const TableExpandedRow = forwardRef<HTMLDivElement | null, TableExpandedR
   }
 )
 
-export interface TableExpandedRowProps {
+export interface TableEmbedRowProps {
   /**
    * 组件默认的选择器类
    */
@@ -80,10 +81,6 @@ export interface TableExpandedRowProps {
    * 数据配置项
    */
   data: object[]
-  /**
-   * 第一行ref
-   */
-  // firstRowRef: React.RefObject<HTMLTableExpandedRowElement>
   fixedColWidth: number[]
   rowSelection?: TableRowSelection
   rowData?: object
@@ -92,5 +89,5 @@ export interface TableExpandedRowProps {
 }
 
 if (__DEV__) {
-  TableExpandedRow.displayName = 'TableExpandedRow'
+  TableEmbedRow.displayName = 'TableEmbedRow'
 }
