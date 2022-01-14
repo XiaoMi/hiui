@@ -31,7 +31,6 @@ const DEFAULT_HIGHLIGHTED_COL_KEYS = [] as []
 // const DEFAULT_CHECKED_ROW_KEYS = [] as any[]
 const DEFAULT_EXPAND_ROW_KEYS = [] as []
 // const DEFAULT_ROW_SELECTION = {} as TableRowSelection
-const DEFAULT_ALLOW = () => true
 
 export const useTable = ({
   data = DEFAULT_DATA,
@@ -48,11 +47,8 @@ export const useTable = ({
   expandRowKeys: expandRowKeysProp,
   onExpand,
   defaultExpandAll = false,
-  // expandERowKeys: expandRowKeysProp,
-  expandEmbedRowKeys: expandEmbedRowKeysProp,
-  onEmbedExpand,
   onHeaderRow,
-  expandedRender,
+
   maxHeight,
   // @ts-ignore
   dataSource,
@@ -62,7 +58,6 @@ export const useTable = ({
   stickyTop = 0,
   // @ts-ignore
   onLoadChildren,
-  rowExpandable = DEFAULT_ALLOW,
   scrollWidth,
   draggable = false,
   fieldKey = 'key',
@@ -124,26 +119,6 @@ export const useTable = ({
     onExpandTreeRowsChange,
     onLoadChildren
   )
-
-  // ********************** 内嵌式面板 *********************** //
-
-  // /**
-  //  * 行内嵌面板展开
-  //  */
-  // const [expandEmbedRows, trySetExpandEmbedRows] = useUncontrolledState(
-  //   // 展开全部
-  //   [],
-  //   expandEmbedRowKeysProp,
-  //   onEmbedExpand
-  // )
-
-  // const [onExpandEmbedRowsChange, isExpandEmbedRows] = useCheck({
-  //   checkedIds: expandEmbedRows,
-  //   onCheck: trySetExpandEmbedRows as any,
-  //   idFieldName: 'key',
-  // })
-
-  // 异步展开内嵌面板
 
   // ************************ 拖拽 ************************ //
 
@@ -299,7 +274,7 @@ export const useTable = ({
           index,
           leftColumns,
           'leftStickyWidth',
-          expandedRender || rowSelection
+          rowSelection
         )
 
         nextColumns[index] = item
@@ -333,7 +308,7 @@ export const useTable = ({
           index,
           rightColumns,
           'rightStickyWidth',
-          expandedRender || rowSelection
+          rowSelection
         )
 
         nextColumns[nextColumns.length - 1 - index] = _item
@@ -355,7 +330,7 @@ export const useTable = ({
     mergedColumns2,
     // fixedToColumnMemo,
     rowSelection,
-    expandedRender,
+
     scrollWidth,
     colWidths,
     leftFreezeColumn,
@@ -556,7 +531,7 @@ export const useTable = ({
     transitionData: showData,
     flattedColumns,
     flattedColumnsWithoutChildren,
-    expandedRender,
+
     // 行多选
     rowSelection,
     cacheData,
@@ -574,12 +549,9 @@ export const useTable = ({
     setLeftFreezeColumn,
     onTableBodyScroll,
     onTableBodyScrollMock,
-    // freezeColKeys,
-    // setFreezeColKeys,
     scrollSize,
     leftFrozenColKeys,
     rightFrozenColKeys,
-    // fixedColumnsWidth,
     leftFixedColumnsWidth,
     rightFixedColumnsWidth,
     ...scrollSize,
@@ -604,17 +576,12 @@ export const useTable = ({
     highlightColumns: [] as any,
     dragRowRef,
     onDrop,
-    // alignLeftColumns,
     groupedColumns,
     // 子树展开
     onExpandTreeRowsChange,
     isExpandTreeRows,
     isLoadingTreeNodeId,
     onTreeNodeSwitch,
-    // 内嵌面板展开
-    // onExpandEmbedRowsChange,
-    // isExpandEmbedRows,
-    rowExpandable,
     resizable,
     colWidths,
     onColumnResizable,
@@ -654,17 +621,6 @@ export interface UseTableProps {
    */
   highlightedColKeys?: string[]
   /**
-   *  表格展开项
-   */
-  expandedRender?: (
-    record: TableColumnItem,
-    index: number
-  ) => React.ReactNode | Promise<React.ReactNode>
-  /**
-   *  设置是否允许行展开
-   */
-  rowExpandable?: (record: TableColumnItem) => React.ReactNode
-  /**
    *  树形表格展开的行（受控）
    */
   expandRowKeys?: React.ReactText[]
@@ -676,22 +632,6 @@ export interface UseTableProps {
    *  树形表格展开时的回调函数
    */
   onExpand?: (expandIds: React.ReactText[], targetRow: TableRowEventData, expanded: boolean) => void
-  /**
-   *  内嵌式表格展开的行（受控）
-   */
-  expandEmbedRowKeys?: React.ReactText[]
-  /**
-   *  内嵌式表格默认展开的行
-   */
-  defaultExpandEmbedRowKeys?: React.ReactText[]
-  /**
-   *  内嵌式表格展开时的回调函数
-   */
-  onEmbedExpand?: (
-    expandIds: React.ReactText[],
-    targetRow: TableColumnItem,
-    expanded: boolean
-  ) => void
   /**
    *  表格最大高度，当穿过该高度时，展示滚动条且表头固定
    */

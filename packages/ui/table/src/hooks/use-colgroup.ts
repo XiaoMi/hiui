@@ -47,17 +47,7 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
   }, [flattedColumns])
 
   const [mergedColumns, groupedColumns, leafColumns] = React.useMemo(() => {
-    // const preset: FlattedTableColumnItemData[] = [
-    //   rowSelection && {
-    //     type: 'checkbox',
-    //     width: 50,
-    //   },
-    //   expandedRender && {
-    //     type: 'embedPanel',
-    //   },
-    // ].filter(Boolean)
     const preset: FlattedTableColumnItemData[] = []
-    // console.log('flattedColumns', flattedColumns)
 
     const nextColumns = preset.concat(
       // @ts-ignore
@@ -82,13 +72,7 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
     const groupedColumns = groupByTreeDepth(nextColumns)
 
     return [nextColumns, groupedColumns, leafColumns] as const
-  }, [
-    // columns,
-    flattedColumns,
-    maxColumnDepth,
-    // rowSelection,
-    // expandedRender,
-  ])
+  }, [flattedColumns, maxColumnDepth])
 
   return {
     // getColgroupProps,

@@ -127,10 +127,6 @@ export interface TableRowData {
 
 export interface FlattedTableRowData extends TableRowData {
   /**
-   * 树节点唯一 id
-   */
-  // id: React.ReactText
-  /**
    * 该节点的子节点列表
    */
   children?: FlattedTableRowData[]

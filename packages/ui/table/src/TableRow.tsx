@@ -44,7 +44,8 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       isErrorRow,
       rowSelection,
       columns,
-      expandedRender,
+      embedExpandable,
+      onEmbedSwitch,
       hoverRow,
       // prefixCls,
       disabledData,
@@ -259,10 +260,9 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       </tr>,
 
       // 可展开的内嵌面板
-      expandedRender ? (
+      embedExpandable ? (
         <TableEmbedRow
-          expandedRender={expandedRender}
-          rowSelection={rowSelection}
+          onEmbedSwitch={onEmbedSwitch}
           columns={columns}
           rowData={rowDataProp}
           rowIndex={rowIndex}

@@ -1,8 +1,11 @@
 import { createContext, useContext } from 'react'
+import { UseEmbedExpandReturn } from './hooks/use-embed-expand'
 
 import { UseTableReturn } from './use-table'
 
-const TableContext = createContext<Omit<UseTableReturn, 'rootProps'> | null>(null)
+const TableContext = createContext<
+  (Omit<UseTableReturn, 'rootProps'> & UseEmbedExpandReturn) | null
+>(null)
 
 export const TableProvider = TableContext.Provider
 

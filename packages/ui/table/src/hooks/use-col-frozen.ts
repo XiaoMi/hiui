@@ -50,18 +50,7 @@ export const useColFrozen = ({
   }, [flattedColumns])
 
   const [mergedColumns, groupedColumns] = React.useMemo(() => {
-    // const preset: FlattedTableColumnItemData[] = [
-    //   rowSelection && {
-    //     type: 'checkbox',
-    //     width: 50,
-    //   },
-    //   expandedRender && {
-    //     type: 'embedPanel',
-    //   },
-    // ].filter(Boolean)
     const preset: FlattedTableColumnItemData[] = []
-    // console.log('flattedColumns', flattedColumns)
-
     const nextColumns = preset.concat(
       // @ts-ignore
       flattedColumns.filter((col) => isLeaf(col)) as FlattedTableColumnItemData[]
@@ -82,13 +71,7 @@ export const useColFrozen = ({
 
     const groupedColumns = groupByTreeDepth(columns)
     return [nextColumns, groupedColumns] as const
-  }, [
-    columns,
-    flattedColumns,
-    maxColumnDepth,
-    // rowSelection,
-    // expandedRender,
-  ])
+  }, [columns, flattedColumns, maxColumnDepth])
 
   return {
     // getColgroupProps,

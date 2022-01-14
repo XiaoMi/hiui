@@ -9,32 +9,7 @@ export const AsyncExpandedRender = () => {
         <Table
           // rowSelection={{}}
           fixedToColumn={'type'}
-          columns={[
-            {
-              title: '商品名',
-              dataKey: 'name',
-            },
-            {
-              title: '品类',
-              dataKey: 'type',
-            },
-            {
-              title: '规格',
-              dataKey: 'size',
-            },
-            {
-              title: '单价',
-              dataKey: 'price',
-            },
-            {
-              title: '门店',
-              dataKey: 'address',
-            },
-            {
-              title: '库存',
-              dataKey: 'stock',
-            },
-          ]}
+          defaultExpandEmbedRowKeys={[1]}
           expandedRender={(rowData, index) => {
             console.log('expandedRender', rowData, index)
 
@@ -106,6 +81,32 @@ export const AsyncExpandedRender = () => {
               }, 3000)
             })
           }}
+          columns={[
+            {
+              title: '商品名',
+              dataKey: 'name',
+            },
+            {
+              title: '品类',
+              dataKey: 'type',
+            },
+            {
+              title: '规格',
+              dataKey: 'size',
+            },
+            {
+              title: '单价',
+              dataKey: 'price',
+            },
+            {
+              title: '门店',
+              dataKey: 'address',
+            },
+            {
+              title: '库存',
+              dataKey: 'stock',
+            },
+          ]}
           data={[
             {
               name: '小米9',

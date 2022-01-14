@@ -1,72 +1,43 @@
-import React, { forwardRef, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useTableContext } from './context'
 import Loading from '@hi-ui/loading'
-import { TableColumnItem, TableRowSelection } from './types'
-import { useLatestRef } from '@hi-ui/use-latest'
+import { TableColumnItem, FlattedTableRowData } from './types'
 
 const _prefix = getPrefixCls('table-embed-row')
 
 /**
- * TODO: What is TableEmbedRow
+ *  可展开的内嵌面板
  */
-export const TableEmbedRow = forwardRef<HTMLDivElement | null, TableEmbedRowProps>(
-  ({ prefixCls = _prefix, rowSelection, columns, rowData, rowIndex, expandedRender }, ref) => {
-    // @ts-ignore
-    const { isExpandEmbedRows } = useTableContext()
+export const TableEmbedRow = ({
+  prefixCls = _prefix,
+  columns,
+  rowIndex,
+  rowData,
+}: TableEmbedRowProps) => {
+  const { isExpandEmbedRows, getEmbedPanelById, isLoadingId, onEmbedSwitch } = useTableContext()
 
-    const [expandedRow, setExpandedRow] = React.useState(null)
-    const [loading, setLoading] = React.useState(false)
+  const loading = isLoadingId(rowData.id)
+  const expanded = isExpandEmbedRows(rowData.id)
 
-    const rowDataLatestRef = useLatestRef(rowData)
-    // @ts-ignore
-    const expanded = isExpandEmbedRows(rowData.id)
+  useEffect(() => {
+    if (expanded) {
+      onEmbedSwitch(rowData, rowIndex)
+    }
+  }, [onEmbedSwitch, expanded, rowData, rowIndex])
 
-    useEffect(() => {
-      if (!expanded) return
-      if (expandedRow) return
-
-      const rowData = rowDataLatestRef.current
-      const embedContentMaybePromise = expandedRender(rowData, rowIndex)
-
-      if (embedContentMaybePromise.toString() === '[object Promise]') {
-        setLoading(true)
-        embedContentMaybePromise
-          .then((jsxElement: any) => {
-            setLoading(false)
-            setExpandedRow(jsxElement)
-          })
-          .catch((err: any) => {
-            setLoading(false)
-
-            setExpandedRow(err)
-          })
-      } else {
-        // 同步 onChange 存在闭包问题，当前是有请求然后展开，无法受控
-        // 对于这个功能，需要使用 defaultExpandAllEmbed
-        requestAnimationFrame(() => {
-          setExpandedRow(embedContentMaybePromise)
-        })
-      }
-      // Exclude for `onExpandEmbedRowsChange`
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rowIndex, expandedRender, rowDataLatestRef, expanded])
-
-    // 可展开的内嵌面板
-    return expanded ? (
-      <tr key="expanded-row" className={prefixCls}>
-        {/* 多选占位 */}
-        {rowSelection ? <td /> : null}
-        {/* 可展开内嵌显示 */}
-        <td colSpan={columns.length}>
-          {expandedRow}
-          {loading ? <Loading size="sm" /> : null}
-        </td>
-      </tr>
-    ) : null
-  }
-)
+  return expanded ? (
+    <tr key="expanded-row" className={prefixCls}>
+      <td colSpan={columns.length}>
+        {/* 乐观渲染：内嵌面板内容 */}
+        <Loading size="sm" visible={loading}>
+          {getEmbedPanelById(rowData.id)}
+        </Loading>
+      </td>
+    </tr>
+  ) : null
+}
 
 export interface TableEmbedRowProps {
   /**
@@ -78,14 +49,13 @@ export interface TableEmbedRowProps {
    */
   columns: TableColumnItem[]
   /**
-   * 数据配置项
+   * 操作展开行的行数据
    */
-  data: object[]
-  fixedColWidth: number[]
-  rowSelection?: TableRowSelection
-  rowData?: object
-  rowIndex?: number
-  expandedRender: any
+  rowData: FlattedTableRowData
+  /**
+   * 操作展开行的行下标
+   */
+  rowIndex: number
 }
 
 if (__DEV__) {
