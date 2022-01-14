@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { getIconGroupInfo } from '../src'
+import { getIconComponentFromTagName, getIconGroupInfo, getAllIconDescription } from '../src'
 
 const ComponentGroup = getIconGroupInfo()
 
