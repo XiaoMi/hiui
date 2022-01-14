@@ -99,8 +99,8 @@ if (__DEV__) {
   `
 }
 
-const generateStoryData = (componentInfo) => {
-  const targetDataFile = Path.join(__dirname, '../stories/data.ts')
+const generateIconGroupData = (componentInfo) => {
+  const targetDataFile = Path.join(__dirname, '../src/@types/group.ts')
   const collector = new Map()
   const allNeedImportComponents = []
 
@@ -122,12 +122,25 @@ const generateStoryData = (componentInfo) => {
   const getDataString = ({ type, componentName, name }) =>
     `\n{type:'${type}',component:${componentName}, name:'${name}', tagName:'${componentName}' }`
   const content = `
-  export const ComponentGroup = {
+  export interface IconDescription{
+    type:'filled'|'outlined',
+    component:IconComponent,
+    name:string,
+    tagName:string
+  }
+  export interface IconGroupInfo{
+    alert: IconDescription[]
+    common: IconDescription[]
+    direction: IconDescription[]
+    edit: IconDescription[]
+  }
+  export const ComponentGroup:IconGroupInfo = {
     ${belongs
       .map((belong) => `${belong}: [${collector.get(belong).map(getDataString).join(',')}]`)
       .join(',\n')}
   }`
-  const allImportStatement = `import {${allNeedImportComponents.join(',')}} from '../src'`
+  const allImportStatement = `import {IconComponent} from './component'
+  import {${allNeedImportComponents.join(',')}} from '../'`
   Fs.writeFileSync(targetDataFile, allImportStatement + content)
 }
 
@@ -160,8 +173,9 @@ ${componentFileInfo
   .join('\n')}
 
 export * from './@types/props'
+export * from './tools/group'
 `
 Fs.writeFileSync(Path.join(__dirname, '../src/index.ts'), indexTsContent)
 
-// 生成story book 所需数据
-generateStoryData(componentFileInfo)
+// 生成icon 分组数据
+generateIconGroupData(componentFileInfo)
