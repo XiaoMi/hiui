@@ -285,3 +285,4 @@ export { ZoomInOutlined } from './components/edit/zoom-in-outlined'
 export { ZoomOutOutlined } from './components/edit/zoom-out-outlined'
 
 export * from './@types/props'
+export * from './tools/group'
