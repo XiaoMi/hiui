@@ -16,26 +16,22 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
     let maxDepth = 0
 
     // @ts-ignore
-    const flattedColumns = flattenTree(clonedColumns, (node, rootIndex) => {
+    const flattedColumns = flattenTree(clonedColumns, (node) => {
       if (node.depth > maxDepth) {
         maxDepth = node.depth
       }
 
-      const raw = node.raw
+      const raw = node.raw as any
 
       return {
         ...node,
-        // @ts-ignore
-        width: raw.width,
-        // @ts-ignore
         id: raw.dataKey,
-        // @ts-ignore
+        width: raw.width,
+        // TODO: remove it
         dataKey: raw.dataKey,
-        // @ts-ignore
         title: raw.title,
-        // @ts-ignore
         align: raw.align ?? 'left',
-        rootIndex,
+        render: raw.render,
       }
     })
 

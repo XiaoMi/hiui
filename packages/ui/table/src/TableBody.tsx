@@ -32,7 +32,6 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       avgRow,
       hasSumColumn,
       sumRow,
-      // fixedColWidth,
     } = useTableContext()
 
     const cls = cx(`${prefixCls}-body`)
@@ -50,8 +49,6 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
         }
       }
     )
-
-    console.log('transitionData', transitionData, hasSumColumn)
 
     // 外层增加 div 作为滚动容器
     return (
@@ -99,8 +96,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                 })}
                 {hasSumColumn ? (
                   <TableRow
-                    key={transitionData.length}
-                    // @ts-ignore
+                    key={sumRow.id}
                     rowIndex={transitionData.length}
                     rowData={sumRow}
                     isSumRow
@@ -108,8 +104,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                 ) : null}
                 {hasAvgColumn ? (
                   <TableRow
-                    key={transitionData.length + 1}
-                    // @ts-ignore
+                    key={avgRow.id}
                     rowIndex={transitionData.length + 1}
                     rowData={avgRow}
                     isAvgRow
@@ -117,7 +112,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                 ) : null}
               </>
             ) : (
-              // 空状态
+              // 空状态，colSpan 占满表格整行
               renderEmptyContent({
                 className: `${prefixCls}-empty-content`,
                 colSpan: columns.length,

@@ -71,7 +71,9 @@ export type TableColumnItem = {
     rowItem: Record<string, any>,
     rowIndex: number,
     dataKey: string
-  ) => React.ReactNode
+  ) =>
+    | React.ReactNode
+    | { children: React.ReactNode; props: { colSpan?: number; rowSpan?: number } }
   // @DEPRECATED
   filterIcon?: React.ReactNode
   filterDropdownWidth?: number
@@ -110,10 +112,6 @@ export interface TableRowData {
   /**
    * 树节点唯一 id
    */
-  id: React.ReactText
-  /**
-   * 树节点唯一 id
-   */
   // key: React.ReactText
   /**
    * 该节点的子节点列表
@@ -126,6 +124,10 @@ export interface TableRowData {
 }
 
 export interface FlattedTableRowData extends TableRowData {
+  /**
+   * 树节点唯一 id
+   */
+  id: React.ReactText
   /**
    * 该节点的子节点列表
    */

@@ -56,7 +56,8 @@ export const useTable = ({
   errorRowKeys = DEFAULT_ERROR_ROW_KEYS,
   highlightedColKeys: highlightedColKeysProp,
   highlightedRowKeys: highlightedRowKeysProp,
-  showColHighlight,
+  showColHighlight = false,
+  showRowHighlight = true,
   // tree table
   defaultExpandRowKeys = DEFAULT_EXPAND_ROW_KEYS,
   expandRowKeys: expandRowKeysProp,
@@ -165,7 +166,8 @@ export const useTable = ({
    */
   const [hoveredColKey, setHoveredColKey] = useState<React.ReactText>('')
 
-  const [onHoveredColChange, isHoveredCol] = useSelect({
+  const [onHoveredColChange, isHoveredHighlightCol] = useSelect({
+    disabled: !showRowHighlight,
     selectedId: hoveredColKey,
     onSelect: setHoveredColKey,
     idFieldName: 'dataKey',
@@ -605,7 +607,7 @@ export const useTable = ({
     trySetHighlightedColKeys,
     // 列 hover
     showColHighlight,
-    isHoveredCol,
+    isHoveredHighlightCol,
     onHoveredColChange,
     // 行拖拽
     draggable,
@@ -624,6 +626,7 @@ export const useTable = ({
     isTree: isTreeView,
     cellRender,
     showColMenu,
+    onLoadChildren,
   }
 }
 
@@ -724,6 +727,10 @@ export interface UseTableProps {
    *  表格某一列`hover`时，该列高亮
    */
   showColHighlight?: boolean
+  /**
+   *  表格某一行 `hover` 时，该行高亮
+   */
+  showRowHighlight?: boolean
   /**
    *  表格行可拖拽
    */

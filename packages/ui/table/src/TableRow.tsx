@@ -7,7 +7,8 @@ import { TableCell } from './TableCell'
 import { TableEmbedRow } from './TableEmbedRow'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { setAttrAria } from '@hi-ui/dom-utils'
-import { TableRowSelection, TableColumnItem } from './types'
+import { SELECTION_DATA_KEY } from './Table'
+import { EMBED_DATA_KEY } from './BaseTable'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -221,6 +222,10 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       isAvgRow && `${prefixCls}-row--avg`
     )
 
+    const firstColumn = flattedColumnsWithoutChildren.find((item) => {
+      return item.dataKey !== SELECTION_DATA_KEY && item.dataKey !== EMBED_DATA_KEY
+    })
+
     return [
       <tr
         ref={ref}
@@ -241,6 +246,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
               key={idx}
               column={column}
               columnIndex={idx}
+              isSwitcherCol={firstColumn.id === column.id}
               rowData={rowDataProp}
               depth={rowDataProp.depth}
               rowIndex={rowIndex}
@@ -275,20 +281,10 @@ export interface TableRowProps {
    * 组件默认的选择器类
    */
   prefixCls?: string
-  /**
-   * 列配置项
-   */
-  columns: TableColumnItem[]
-  /**
-   * 数据配置项
-   */
-  data: object[]
-  /**
-   * 第一行ref
-   */
-  firstRowRef: React.RefObject<HTMLTableRowElement>
-  fixedColWidth: number[]
-  rowSelection?: TableRowSelection
+  rowIndex?: number
+  rowData?: Record<string, any>
+  isSumRow?: boolean
+  isAvgRow?: boolean
 }
 
 if (__DEV__) {

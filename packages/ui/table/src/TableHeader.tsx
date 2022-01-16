@@ -17,7 +17,7 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
       groupedColumns,
       resizable,
       colWidths,
-      isHoveredCol,
+      isHoveredHighlightCol,
       isHighlightedCol,
       getColgroupProps,
       onColumnResizable,
@@ -57,7 +57,7 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
                         {...getStickyColProps(col)}
                         className={cx(
                           isHighlightedCol(dataKey!) && `${prefixCls}-th__col--highlight`,
-                          isHoveredCol(dataKey!) && `${prefixCls}__col--hovered-highlight`
+                          isHoveredHighlightCol(dataKey!) && `${prefixCls}__col--hovered-highlight`
                         )}
                         // @ts-ignore
                         colSpan={col.colSpan}

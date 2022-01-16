@@ -10,6 +10,9 @@ export const TableTree = () => {
           // 受控
           // expandRowKeys={[1]}
           rowSelection={{}}
+          expandedRender={(row, index) => {
+            return <div>12313</div>
+          }}
           // fixedToColumn={'a'}
           data={[
             {
