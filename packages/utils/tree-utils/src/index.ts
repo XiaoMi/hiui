@@ -587,14 +587,11 @@ export const getLeafChildren = <T extends BaseTreeNode>(treeNode: T) => {
   const dig = (node: BaseTreeNode) => {
     if (node.children) {
       node.children.forEach((subNode) => {
-        if (subNode.children) {
-          dig(subNode)
-        } else {
-          leafNodes.push(subNode as T)
-        }
+        dig(subNode)
       })
+    } else {
+      leafNodes.push(node as T)
     }
-    return node
   }
 
   dig(treeNode)

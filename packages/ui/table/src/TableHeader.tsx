@@ -14,10 +14,10 @@ const _prefix = getPrefixCls('table-header')
 export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
   ({ prefixCls = _prefix, className }, ref) => {
     const {
-      // columns,
       groupedColumns,
       resizable,
       colWidths,
+      isHoveredCol,
       isHighlightedCol,
       getColgroupProps,
       onColumnResizable,
@@ -28,8 +28,6 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
       getTableHeaderProps,
       showColMenu,
     } = useTableContext()
-
-    // TODO: 需要增加一下错误提示，比如rowSelection类型不合法等等
 
     const cls = cx(prefixCls, className)
 
@@ -58,7 +56,8 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
                         key={dataKey}
                         {...getStickyColProps(col)}
                         className={cx(
-                          isHighlightedCol(dataKey!) && `${prefixCls}-th__col--highlight`
+                          isHighlightedCol(dataKey!) && `${prefixCls}-th__col--highlight`,
+                          isHoveredCol(dataKey!) && `${prefixCls}__col--hovered-highlight`
                         )}
                         // @ts-ignore
                         colSpan={col.colSpan}

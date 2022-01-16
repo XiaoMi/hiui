@@ -16,9 +16,14 @@ export const TableEmbedRow = ({
   rowIndex,
   rowData,
 }: TableEmbedRowProps) => {
-  const { isExpandEmbedRows, getEmbedPanelById, isLoadingId, onEmbedSwitch } = useTableContext()
+  const {
+    isExpandEmbedRows,
+    getEmbedPanelById,
+    isEmbedLoadingId,
+    onEmbedSwitch,
+  } = useTableContext()
 
-  const loading = isLoadingId(rowData.id)
+  const loading = isEmbedLoadingId(rowData.id)
   const expanded = isExpandEmbedRows(rowData.id)
 
   useEffect(() => {

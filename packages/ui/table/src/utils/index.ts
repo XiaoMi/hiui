@@ -1,3 +1,6 @@
+import { TableColumnItem } from './../types'
+import { isNumeric } from '@hi-ui/type-assertion'
+
 export const deleteRowByKey = (data: object[], dragInfo: any) => {
   const { dragKey } = dragInfo
   data.some((item: any, index) => {
@@ -55,14 +58,43 @@ export const setColumnsDefaultWidth = (columns: any, defaultWidth: any) => {
   return _columns
 }
 
-export const getMaskItemsWIdth = (columns: any) => {
+/**
+ * 获取每个 Column 的真实列宽度（排除合并列头）
+ * 如果是多级表头，将会递归 children 得到叶子结点层每项的宽度
+ */
+export const getGroupItemWidth = (columns: TableColumnItem[]) => {
+  const baseColWidths: number[] = []
+
+  const dig = (column: TableColumnItem[]) => {
+    column.forEach(({ children, width }) => {
+      if (Array.isArray(children)) {
+        dig(children)
+        return
+      }
+
+      // 如果没有设置列宽度，css 宽度默认是 `auto`，这里对于非数字 width 均设置为 0
+      const colWidth = isNumeric(width) ? Number(width) : 0
+      baseColWidths.push(colWidth)
+    })
+  }
+
+  dig(columns)
+
+  return baseColWidths
+}
+
+export const getMaskItemsWIdth = (columns: TableColumnItem[]) => {
   let num = 0
-  const getAllItemWidth = (column: any) => {
-    column.forEach((item: any) => {
-      if (item.children) {
-        getAllItemWidth(item.children)
-      } else {
-        num += item.width
+
+  const getAllItemWidth = (column: TableColumnItem[]) => {
+    column.forEach(({ children, width }) => {
+      if (children) {
+        getAllItemWidth(children)
+        return
+      }
+
+      if (isNumeric(width)) {
+        num += Number(width)
       }
     })
   }
@@ -76,26 +108,24 @@ export const parseFixedColumns = (
   index: number,
   arr: any[],
   key: string,
-  rowSelection: any,
   parentStickyWidth = 0
 ) => {
-  const rowSelectionWith = rowSelection && index === 0 && key === 'leftStickyWidth' ? 50 : 0
   const width = (arr[index - 1] || { width: 0 }).width || 0
   const stickyWidth = (arr[index - 1] || { width: 0 })[key] || 0
-  item = { ...item }
-  item[key] = width + stickyWidth + rowSelectionWith + parentStickyWidth
+  // item = { ...item }
+  item[key] = width + stickyWidth + parentStickyWidth
+
   if (item.children) {
     const _parentStickyWidth = item[key]
     const { children } = item
-    children.forEach((childrenItem: any, index: number) => {
-      // console.log(childrenItem)
+    item.children = []
 
-      parseFixedColumns(
+    children.forEach((childrenItem: any, index: number) => {
+      item.children[index] = parseFixedColumns(
         childrenItem,
         index,
         children,
         key,
-        false,
         index === 0 ? _parentStickyWidth : 0
       )
     })
@@ -103,10 +133,40 @@ export const parseFixedColumns = (
   return item
 }
 
+// export const parseFixedColumnsByRoot = ({
+//   column,
+//   prevColumn,
+//   key,
+//   parentStickyWidth = 0,
+// }: any) => {
+//   prevColumn = prevColumn || { width: 0 }
+
+//   const width = prevColumn.width || 0
+//   const stickyWidth = prevColumn[key] || 0
+
+//   column[key] = width + stickyWidth + parentStickyWidth
+
+//   if (column.children) {
+//     const _parentStickyWidth = column[key]
+//     const { children } = column
+//     column.children = []
+
+//     children.forEach((childrenItem: any, index: number) => {
+//       column.children[index] = parseFixedColumnsByRoot(
+//         {
+//           childrenItem,
+//           index,
+//           children,
+//           key,
+//           index === 0 ? _parentStickyWidth : 0
+//         }
+//       )
+//     })
+//   }
+// }
+
 /**
  * 生成 uuid
- *
- * @returns unique id
  */
 export const uuid = () => Math.random().toString(36).substring(5).split('').join('.')
 

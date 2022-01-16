@@ -1,48 +1,48 @@
-import React from 'react'
-import { FlattedTableColumnItemData, TableColumnItem } from '../types'
-import { setAttrStatus } from '@hi-ui/dom-utils'
-import { getMaskItemsWIdth } from '../utils'
+import React, { useRef } from 'react'
+import { FlattedTableColumnItemData, TableColumnItem, TableRowRecord } from '../types'
+import { getGroupItemWidth } from '../utils'
 
 export const useColWidth = ({
+  resizable,
   data,
   columns,
-  resizable,
-  dataSource,
-  firstRowElementRef,
-  isHoveredCol,
 }: {
   resizable: boolean
+  data: TableRowRecord[]
   columns: TableColumnItem[]
-  data: object[]
-  dataSource?: any
-  firstRowElementRef?: any
-  isHoveredCol: (dataKey: string) => boolean
 }) => {
+  const measureRowElementRef = useRef<HTMLTableRowElement>(null)
+
   const [colWidths, setColWidths] = React.useState(() => {
-    // css width default is 'auto'
-    // return columns.map((c) => c.width)
-    return columns.map((column) => getMaskItemsWIdth([column]))
+    return getGroupItemWidth(columns)
   })
 
   /**
-   * 获取每列宽度，数组维护
+   * 根据实际内容区（table 的第一行）渲染，再次精确收集并设置每列宽度
    */
   React.useEffect(() => {
-    // disabledDataRef.current = []
-    // TODO: why don't dataSource
-    if (!dataSource) {
-      // 收集所有列宽，通过 table 的第一行
-      if (firstRowElementRef.current) {
-        // console.log('firstRowElementRef.current', firstRowElementRef.current)
+    let resizeObserver: ResizeObserver
+    const measureRowElement = measureRowElementRef.current
 
-        const _realColumnsWidth = Array.from(firstRowElementRef.current.childNodes).map((node) => {
-          return (node as HTMLElement).getBoundingClientRect().width || 0
-        })
+    if (measureRowElement) {
+      const resizeObserver = new ResizeObserver(() => {
+        if (measureRowElement.childNodes) {
+          const _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node) => {
+            return (node as HTMLElement).getBoundingClientRect().width || 0
+          })
+          setColWidths(_realColumnsWidth)
+        }
+      })
 
-        setColWidths(_realColumnsWidth)
+      resizeObserver.observe(measureRowElement)
+    }
+
+    return () => {
+      if (resizeObserver) {
+        resizeObserver.disconnect()
       }
     }
-  }, [columns, dataSource, data, firstRowElementRef])
+  }, [])
 
   const [headerTableElement, setHeaderTableElement] = React.useState<HTMLTableElement | null>(null)
 
@@ -71,7 +71,7 @@ export const useColWidth = ({
   }, [columns, headerTableElement])
 
   /**
-   * 列宽拖拽 resize
+   * 列宽拖拽 resize，只处理拖拽线两边的列宽度
    */
   const onColumnResizable = React.useCallback(
     (_, { size }, index: number) => {
@@ -98,23 +98,22 @@ export const useColWidth = ({
 
   const getColgroupProps = React.useCallback(
     (column: FlattedTableColumnItemData, index: number) => {
-      const width = resizable ? colWidths[index] : column.width
+      const width = colWidths[index] || undefined
 
       return {
         style: {
-          // width: column.type === 'checkbox' ? checkboxColWidth : width,
           width: width,
           // TODO（疑惑）: minWidth 所要解决的问题
           minWidth: width,
         },
-        // @ts-ignore
-        'data-hover-highlight': setAttrStatus(isHoveredCol(column.dataKey)),
+        // 'data-hover-highlight': setAttrStatus(isHoveredCol(column.dataKey)),
       }
     },
-    [resizable, colWidths, isHoveredCol]
+    [colWidths]
   )
 
   return {
+    measureRowElementRef,
     onColumnResizable,
     getColgroupProps,
     setHeaderTableElement,

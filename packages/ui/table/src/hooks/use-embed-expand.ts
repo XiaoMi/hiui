@@ -121,7 +121,7 @@ export const useEmbedExpand = ({
     embedExpandable,
     onEmbedSwitch,
     getEmbedPanelById,
-    isLoadingId,
+    isEmbedLoadingId: isLoadingId,
     isExpandEmbedRows,
     onExpandEmbedRowsChange,
   }

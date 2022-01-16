@@ -43,7 +43,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       // prefixCls,
       // @ts-ignore
       onLoadChildren,
-      // isHoveredCol,
+      isHoveredCol,
       // onHoveredColChange,
       showColHighlight,
       onHoveredColChange,
@@ -108,7 +108,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       prefixCls,
       className,
       isHighlightedCol(dataKey) && `${prefixCls}__col--highlight`,
-      // isHoveredCol(dataKey) && `${prefixCls}__col--hovered-highlight`,
+      isHoveredCol(dataKey) && `${prefixCls}__col--hovered-highlight`,
       canScroll && sticky && `${prefixCls}__col--sticky`
     )
 

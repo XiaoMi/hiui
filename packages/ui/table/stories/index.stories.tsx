@@ -3,6 +3,7 @@ import Table from '../src'
 
 export * from './basic.stories'
 export * from './width.stories'
+export * from './field-key.stories'
 export * from './frozen.stories'
 export * from './col-menu.stories'
 export * from './data-sorter.stories'

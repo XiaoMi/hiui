@@ -1,7 +1,7 @@
 import React from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { PaginationProps } from '@hi-ui/pagination'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 
 export const useTablePagination = ({
   pagination,
@@ -10,7 +10,7 @@ export const useTablePagination = ({
 }: {
   data: object[]
   pagination: PaginationProps
-  dataSource?: (current: number) => AxiosRequestConfig<any>
+  dataSource?: (current: number) => any
 }) => {
   const [currentPage, trySetCurrentPage] = useUncontrolledState(
     1,

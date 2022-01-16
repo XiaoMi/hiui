@@ -1,12 +1,12 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { TableRow } from './TableRow'
-import { useTableContext } from './context'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { TableRowRequiredProps } from './types'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { EmptyState } from '@hi-ui/empty-state'
+import { TableRow } from './TableRow'
+import { TableRowRequiredProps } from './types'
+import { useTableContext } from './context'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -19,7 +19,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
     const {
       columns,
       leafColumns,
-      firstRowElementRef,
+      measureRowElementRef,
       isExpandTreeRows,
       transitionData,
       getColgroupProps,
@@ -31,14 +31,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       // fixedColWidth,
     } = useTableContext()
 
-    const cls = cx(`${prefixCls}__body`)
-
-    // const calcColPosition = (col, idx) => {
-    //   // TODO: 前缀和优化
-    //   return fixedColWidth
-    //     .slice(0, idx)
-    //     .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    // }
+    const cls = cx(`${prefixCls}-body`)
 
     const getRequiredProps = useLatestCallback(
       (id: React.ReactText): TableRowRequiredProps => {
@@ -54,10 +47,8 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       }
     )
 
-    // TODO: 空状态
-
+    // 外层增加 div 作为滚动容器
     return (
-      // 外层增加 div 作为滚动容器
       <div
         ref={scrollBodyElementRef}
         className={cls}
@@ -84,28 +75,26 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             })}
           </colgroup>
           <tbody>
-            {isArrayNonEmpty(transitionData) ? (
-              transitionData.map((row, index) => {
-                return (
-                  <TableRow
-                    ref={index === 0 ? firstRowElementRef : null}
-                    // key={depth + index}
-                    key={row.id}
-                    // @ts-ignore
-                    rowIndex={index}
-                    rowData={row}
-                    // expandedTree={isExpandTreeRows(row.id)}
-                    {...getRequiredProps(row.id)}
-                  />
-                )
-              })
-            ) : (
-              <tr>
-                <td colSpan={columns.length} style={{ textAlign: 'center', height: 60 }}>
-                  <EmptyState style={{ marginTop: 24 }} />
-                </td>
-              </tr>
-            )}
+            {isArrayNonEmpty(transitionData)
+              ? transitionData.map((row, index) => {
+                  return (
+                    <TableRow
+                      ref={index === 0 ? measureRowElementRef : null}
+                      // key={depth + index}
+                      key={row.id}
+                      // @ts-ignore
+                      rowIndex={index}
+                      rowData={row}
+                      // expandedTree={isExpandTreeRows(row.id)}
+                      {...getRequiredProps(row.id)}
+                    />
+                  )
+                })
+              : // 空状态
+                renderEmptyContent({
+                  className: `${prefixCls}-empty-content`,
+                  colSpan: columns.length,
+                })}
           </tbody>
         </table>
       </div>
@@ -122,4 +111,17 @@ export interface TableBodyProps {
 
 if (__DEV__) {
   TableBody.displayName = 'TableBody'
+}
+
+/**
+ * 负责空状态渲染
+ */
+const renderEmptyContent = ({ className, colSpan }: { colSpan?: number; className?: string }) => {
+  return (
+    <tr className={className}>
+      <td colSpan={colSpan}>
+        <EmptyState />
+      </td>
+    </tr>
+  )
 }

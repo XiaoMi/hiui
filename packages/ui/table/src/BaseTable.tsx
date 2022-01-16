@@ -1,18 +1,18 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { TableBody } from './TableBody'
-import { TableHeader } from './TableHeader'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { useTable, UseTableProps } from './use-table'
-import { TableProvider } from './context'
-import { TableExtra, TableColumnItem } from './types'
-import { useEmbedExpand, UseEmbedExpandProps } from './hooks/use-embed-expand'
 import { IconButton } from '@hi-ui/icon-button'
 import { PlusSquareOutlined, MinusSquareOutlined } from '@hi-ui/icons'
-import { defaultLoadingIcon } from './icons'
 import { isFunction } from '@hi-ui/type-assertion'
+import { TableBody } from './TableBody'
+import { TableHeader } from './TableHeader'
+import { defaultLoadingIcon } from './icons'
+import { TableExtra, TableColumnItem, HeaderRowFunc } from './types'
+import { TableProvider } from './context'
 import { uuid } from './utils'
+import { useTable, UseTableProps } from './use-table'
+import { useEmbedExpand, UseEmbedExpandProps } from './hooks/use-embed-expand'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
@@ -39,7 +39,9 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       onEmbedExpand,
       expandedRender,
       // 其它
+      size,
       extra,
+      onHeaderRow,
       ...rest
     },
     ref
@@ -49,7 +51,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     const {
       embedExpandable,
       onEmbedSwitch,
-      isLoadingId,
+      isEmbedLoadingId,
       getEmbedPanelById,
       isExpandEmbedRows,
       onExpandEmbedRowsChange,
@@ -67,8 +69,8 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     const getEmbedPanelColumn = React.useCallback(
       (embedExpandable: any) => {
         const embedPanelColumn: TableColumnItem = {
-          title: '',
           dataKey: EMBED_DATA_KEY,
+          title: '',
           width: 50,
           align: 'center',
           render: (_: any, rowItem: any) => {
@@ -77,7 +79,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
             const rowExpand = isFunction(rowExpandable) ? rowExpandable(rowItem) : !!rowExpandable
 
             const expanded = isExpandEmbedRows(rowKey)
-            const loading = isLoadingId(rowKey)
+            const loading = isEmbedLoadingId(rowKey)
 
             return renderSwitcher({
               prefixCls,
@@ -95,7 +97,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
         return embedPanelColumn
       },
-      [prefixCls, isExpandEmbedRows, onExpandEmbedRowsChange, isLoadingId]
+      [prefixCls, isExpandEmbedRows, onExpandEmbedRowsChange, isEmbedLoadingId]
     )
 
     const mergedColumns = React.useMemo(() => {
@@ -111,7 +113,6 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
     const {
       bordered,
-      size,
       leftFrozenColKeys,
       rightFrozenColKeys,
       leftFixedColumnsWidth,
@@ -139,14 +140,12 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           <TableProvider
             value={{
               ...providedValue,
-              // expandedRender,
-              // @ts-ignore
               embedExpandable,
               onEmbedSwitch,
               isExpandEmbedRows,
               onExpandEmbedRowsChange,
               getEmbedPanelById,
-              isLoadingId,
+              isEmbedLoadingId,
             }}
           >
             <div style={{ position: 'relative' }}>
@@ -191,6 +190,22 @@ export interface BaseTableProps
     UseTableProps,
     UseEmbedExpandProps {
   extra?: TableExtra
+  /**
+   *  是否展示为斑马纹效果
+   */
+  striped?: boolean
+  /**
+   * 行标题事件处理函数
+   */
+  onHeaderRow?: HeaderRowFunc
+  /**
+   *  数据为空时的展示内容
+   */
+  emptyContent?: React.ReactNode
+  /**
+   *  配置表格尺寸
+   */
+  size?: string
 }
 
 if (__DEV__) {

@@ -8,13 +8,13 @@ import {
   TableRowEventData,
   TableRowSelection,
   FlattedTableRowData,
+  TableDataSource,
 } from './types'
 import { useColHidden } from './hooks/use-col-hidden'
 import { useColSorter } from './hooks/use-col-sorter'
 import { useTablePagination } from './hooks/use-pagination'
 import { withDefaultProps } from '@hi-ui/react-utils'
 import { TableSettingMenu } from './TableSettingMenu'
-import { AxiosRequestConfig } from 'axios'
 import Loading from '@hi-ui/loading'
 import Checkbox from '@hi-ui/checkbox'
 import { useTableCheck } from './hooks/use-check'
@@ -214,6 +214,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         }
 
         const selectionColumn: TableColumnItem = {
+          dataKey: 'selectionColumn',
           width: checkboxColWidth,
           className: `${prefixCls}-selection-column`,
           title: renderSelectionTitleCell,
@@ -255,6 +256,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           prefixCls={prefixCls}
           columns={mergedColumns}
           data={mergedData}
+          fieldKey={fieldKey}
           extra={{
             header: setting ? (
               <TableSettingMenu
@@ -311,13 +313,13 @@ export interface TableProps extends Omit<BaseTableProps, 'extra' | 'role'> {
    */
   onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
   /**
-   *  异步数据源
-   */
-  dataSource?: (current: number) => AxiosRequestConfig<any>
-  /**
    *  表格分页配置项
    */
   pagination?: TablePaginationProps
+  /**
+   *  异步数据源，分页切换时加载数据
+   */
+  dataSource?: (current: number) => TableDataSource
 }
 
 if (__DEV__) {

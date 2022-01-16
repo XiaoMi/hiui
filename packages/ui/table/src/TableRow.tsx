@@ -2,9 +2,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-// import { Column, RowSelection } from './Table'
 import { useTableContext } from './context'
-// import { cloneTree } from '@hi-ui/tree-utils'
 import { TableCell } from './TableCell'
 import { TableEmbedRow } from './TableEmbedRow'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -56,9 +54,9 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       onDrop: onDropContext,
       dragRowRef,
     } = useTableContext()
+
     const rowData = rowDataProp.raw
     const rowKey = rowData.key
-    // const rowKey = rowData.key
 
     // ** ************** checkbox 处理 *************** *//
 

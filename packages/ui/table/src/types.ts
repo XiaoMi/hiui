@@ -6,8 +6,8 @@ import { PaginationProps } from '@hi-ui/pagination'
 export type TableAlign = 'left' | 'right' | 'center'
 
 export type TableFrozenColumnOptions = {
-  left?: string
-  right?: string
+  left?: React.ReactText
+  right?: React.ReactText
 }
 
 export type TableExtra = {
@@ -204,3 +204,5 @@ export interface TableRowRequiredProps {
   loading: boolean
   focused: boolean
 }
+
+export type TableRowRecord = Record<string, any>

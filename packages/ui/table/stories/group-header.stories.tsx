@@ -15,7 +15,7 @@ export const GroupHeader = () => {
         {
           title: 'Age',
           dataKey: 'age',
-          width: 100,
+          width: 80,
         },
         {
           title: 'Address',
@@ -33,12 +33,12 @@ export const GroupHeader = () => {
                 {
                   title: 'Building',
                   dataKey: 'building',
-                  width: 100,
+                  width: 90,
                 },
                 {
                   title: 'Door No.',
                   dataKey: 'number',
-                  width: 100,
+                  width: 90,
                 },
               ],
             },
@@ -125,7 +125,18 @@ export const GroupHeader = () => {
     {
       title: 'Name14',
       dataKey: 'name14',
-      width: 100,
+      children: [
+        {
+          title: 'Address14',
+          dataKey: 'address14',
+          width: 100,
+        },
+        {
+          title: 'Company14',
+          dataKey: 'company14',
+          width: 100,
+        },
+      ],
     },
     {
       title: 'Gender',
@@ -162,7 +173,7 @@ export const GroupHeader = () => {
   return (
     <>
       <h1>GroupHeader for Table</h1>
-      <div className="table-group-header__wrap" style={{ width: 800 }}>
+      <div className="table-group-header__wrap" style={{ width: 980 }}>
         <Table
           rowSelection={{}}
           fixedToColumn={{
@@ -170,6 +181,7 @@ export const GroupHeader = () => {
             // left: 'address',
             left: 'number',
             right: 'gender',
+            // right: 'address14',
             // right: 'companyName',
             // right: 'companyAddress',
           }}
