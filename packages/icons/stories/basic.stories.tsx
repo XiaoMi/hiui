@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
-import { ComponentGroup } from './data'
+import { getIconComponentFromTagName, getIconGroupInfo, getAllIconDescription } from '../src'
+
+const ComponentGroup = getIconGroupInfo()
 
 export const Basic = () => {
   const keys = useMemo(() => Object.keys(ComponentGroup).sort(), [])
@@ -35,11 +37,15 @@ export const Basic = () => {
               <h2>{belong}</h2>
               <h3>filled</h3>
               <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {ComponentGroup[belong].filter((item) => item.type === 'filled').map(renderIcon)}
+                {ComponentGroup[belong as keyof typeof ComponentGroup]
+                  .filter((item) => item.type === 'filled')
+                  .map(renderIcon)}
               </div>
               <h3>outlined</h3>
               <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {ComponentGroup[belong].filter((item) => item.type === 'outlined').map(renderIcon)}
+                {ComponentGroup[belong as keyof typeof ComponentGroup]
+                  .filter((item) => item.type === 'outlined')
+                  .map(renderIcon)}
               </div>
             </React.Fragment>
           )
