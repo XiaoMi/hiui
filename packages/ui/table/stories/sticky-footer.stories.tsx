@@ -121,7 +121,7 @@ const dataSource = [
   },
 ]
 
-export const Pagination = () => {
+export const StickyFooter = () => {
   const [paginationState, setPaginationState] = React.useState({
     current: 0,
     data: dataSource.slice(0, 5),
@@ -131,9 +131,11 @@ export const Pagination = () => {
 
   return (
     <>
-      <h1>Pagination for Table</h1>
-      <div className="table-pagination__wrap" style={{ width: 800 }}>
+      <h1>StickyFooter for Table</h1>
+      <div className="table-sticky-footer__wrap" style={{ width: 800 }}>
         <Table
+          stickyFooter
+          maxHeight={200}
           pagination={{
             showTotal: true,
             showJumper: true,

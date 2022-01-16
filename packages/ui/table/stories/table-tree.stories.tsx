@@ -9,7 +9,8 @@ export const TableTree = () => {
         <Table
           // 受控
           // expandRowKeys={[1]}
-          fixedToColumn={'a'}
+          rowSelection={{}}
+          // fixedToColumn={'a'}
           data={[
             {
               a: 'a-1',

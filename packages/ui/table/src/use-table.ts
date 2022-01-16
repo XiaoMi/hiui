@@ -18,7 +18,12 @@ import {
 } from './types'
 import { PaginationProps } from '@hi-ui/pagination'
 import { useColWidth } from './hooks/use-col-width'
-import { parseFixedColumns, setColumnsDefaultWidth } from './utils'
+import {
+  checkNeedTotalOrEvg,
+  getTotalOrEvgRowData,
+  parseFixedColumns,
+  setColumnsDefaultWidth,
+} from './utils'
 import { isArrayNonEmpty, isNullish } from '@hi-ui/type-assertion'
 import { useCheck, useSelect } from '@hi-ui/use-check'
 import { invariant } from '@hi-ui/env'
@@ -72,6 +77,7 @@ export const useTable = ({
   rowSelection,
   cellRender,
   fieldKey = 'key',
+  ...rootProps
 }: UseTableProps) => {
   /**
    * 获取 key 字段值
@@ -508,7 +514,45 @@ export const useTable = ({
     return _data
   }, [activeSorterColumn, activeSorterType, transitionData, columns])
 
+  // 确保包含 avg 属性，且值为数字类型的字符串
+  const avgRow = { id: 'avg', raw: { key: 'avg' } }
+  let hasAvgColumn = false
+
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      // @ts-ignore
+      avgRow.raw[column.dataKey] = '平均值'
+    }
+    if (checkNeedTotalOrEvg(data, column, 'avg')) {
+      hasAvgColumn = true
+      // @ts-ignore
+      avgRow.raw[column.dataKey] = getTotalOrEvgRowData(data, column, true)
+    }
+  })
+
+  // 确保包含total属性，且值为数字类型的字符串
+  const sumRow = { id: 'sum', raw: { key: 'sum' } }
+  let hasSumColumn = false
+
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      // @ts-ignore
+      sumRow.raw[column.dataKey] = '总计'
+    }
+    if (checkNeedTotalOrEvg(data, column, 'total')) {
+      hasSumColumn = true
+      // 获取当前数据最大小数点个数，并设置最后总和值小数点
+      // @ts-ignore
+      sumRow.raw[column.dataKey] = getTotalOrEvgRowData(data, column, false)
+    }
+  })
+
   return {
+    rootProps,
+    hasAvgColumn,
+    avgRow,
+    hasSumColumn,
+    sumRow,
     activeSorterColumn,
     setActiveSorterColumn,
     activeSorterType,

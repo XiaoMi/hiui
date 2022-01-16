@@ -165,7 +165,7 @@ export const FixedHeader = () => {
       <div className="table-fixed-header__wrap" style={{ width: 800 }}>
         <Table
           rowSelection={{}}
-          maxHeight={200}
+          maxHeight={400}
           fixedToColumn={{
             // left: 'building',
             // left: 'address',

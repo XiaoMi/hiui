@@ -15,25 +15,26 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
     const clonedColumns = cloneTree(columns)
     let maxDepth = 0
 
-    // TODO: flattenTree 支持不带 id 的
-    // TODO: 支持多级表头
     // @ts-ignore
     const flattedColumns = flattenTree(clonedColumns, (node, rootIndex) => {
       if (node.depth > maxDepth) {
         maxDepth = node.depth
       }
+
+      const raw = node.raw
+
       return {
         ...node,
         // @ts-ignore
-        width: node.raw.width,
+        width: raw.width,
         // @ts-ignore
-        id: node.raw.dataKey,
+        id: raw.dataKey,
         // @ts-ignore
-        dataKey: node.raw.dataKey,
+        dataKey: raw.dataKey,
         // @ts-ignore
-        title: node.raw.title,
+        title: raw.title,
         // @ts-ignore
-        align: node.raw.align ?? 'left',
+        align: raw.align ?? 'left',
         rootIndex,
       }
     })

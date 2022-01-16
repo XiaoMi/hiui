@@ -28,6 +28,10 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       onTableBodyScroll,
       maxHeight,
       canScroll,
+      hasAvgColumn,
+      avgRow,
+      hasSumColumn,
+      sumRow,
       // fixedColWidth,
     } = useTableContext()
 
@@ -47,6 +51,8 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       }
     )
 
+    console.log('transitionData', transitionData, hasSumColumn)
+
     // 外层增加 div 作为滚动容器
     return (
       <div
@@ -54,7 +60,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
         className={cls}
         onScroll={onTableBodyScroll}
         style={{
-          maxHeight: maxHeight || 'auto',
+          maxHeight: maxHeight !== undefined ? maxHeight : undefined,
           // maxHeight 小于 table 实际高度才出现纵向滚动条
           overflowY:
             maxHeight !== undefined &&
@@ -75,8 +81,9 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             })}
           </colgroup>
           <tbody>
-            {isArrayNonEmpty(transitionData)
-              ? transitionData.map((row, index) => {
+            {isArrayNonEmpty(transitionData) ? (
+              <>
+                {transitionData.map((row, index) => {
                   return (
                     <TableRow
                       ref={index === 0 ? measureRowElementRef : null}
@@ -89,12 +96,33 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                       {...getRequiredProps(row.id)}
                     />
                   )
-                })
-              : // 空状态
-                renderEmptyContent({
-                  className: `${prefixCls}-empty-content`,
-                  colSpan: columns.length,
                 })}
+                {hasSumColumn ? (
+                  <TableRow
+                    key={transitionData.length}
+                    // @ts-ignore
+                    rowIndex={transitionData.length}
+                    rowData={sumRow}
+                    isSumRow
+                  />
+                ) : null}
+                {hasAvgColumn ? (
+                  <TableRow
+                    key={transitionData.length + 1}
+                    // @ts-ignore
+                    rowIndex={transitionData.length + 1}
+                    rowData={avgRow}
+                    isAvgRow
+                  />
+                ) : null}
+              </>
+            ) : (
+              // 空状态
+              renderEmptyContent({
+                className: `${prefixCls}-empty-content`,
+                colSpan: columns.length,
+              })
+            )}
           </tbody>
         </table>
       </div>

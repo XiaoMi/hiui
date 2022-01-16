@@ -187,3 +187,32 @@ export const parseLocalArray = ({ key, defaultValue }: any) => {
 
   return defaultValue
 }
+
+// 检查是否需要展示Total或average
+export const checkNeedTotalOrEvg = (_data: any[], item: any, calcKey: string) => {
+  if (item[calcKey]) {
+    // 当每一项都为数字类型字符串时，才进行求和计算
+    const isDataKeyValueAllNumber = _data.every((dataItem) => isNumeric(dataItem[item.dataKey]))
+    return isDataKeyValueAllNumber
+  }
+  return false
+}
+
+// 获取总和或取平均值
+export const getTotalOrEvgRowData = (_data: any[], c: any, isAvg: boolean) => {
+  const dataPointCountList = _data.map((dataItem) => {
+    const strNum = dataItem[c.dataKey] + ''
+    const afterPonterStr = strNum.split('.')[1]
+    return afterPonterStr ? afterPonterStr.length : 0
+  })
+  const maxPointCount =
+    dataPointCountList && dataPointCountList.length ? Math.max(...dataPointCountList) : 0
+  const columnSumData = _data.reduce((acc, cur) => (acc += Number(cur[c.dataKey])), 0)
+
+  if (isAvg) {
+    const avgData = columnSumData / _data.length
+    return maxPointCount > 0 ? avgData.toFixed(maxPointCount) : avgData
+  }
+
+  return maxPointCount > 0 ? columnSumData.toFixed(maxPointCount) : columnSumData
+}

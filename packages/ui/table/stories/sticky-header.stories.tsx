@@ -162,10 +162,13 @@ export const StickyHeader = () => {
   return (
     <>
       <h1>StickyHeader for Table</h1>
-      <div className="table-sticky-header__wrap" style={{ width: 800 }}>
+      <div
+        className="table-sticky-header__wrap"
+        style={{ width: 800, maxHeight: 1000, overflow: 'scroll' }}
+      >
         <Table
           sticky
-          stickyTop={63}
+          stickyTop={0}
           fixedToColumn={{
             // left: 'building',
             // left: 'address',

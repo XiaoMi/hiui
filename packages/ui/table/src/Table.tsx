@@ -21,6 +21,7 @@ import { useTableCheck } from './hooks/use-check'
 import { isNullish } from '@hi-ui/type-assertion'
 import { cloneTree, flattenTree } from '@hi-ui/tree-utils'
 import { BaseTable, BaseTableProps } from './BaseTable'
+import { uuid } from './utils'
 
 const _prefix = getPrefixCls('table')
 
@@ -32,6 +33,7 @@ const STANDARD_PRESET = {
   showColMenu: true,
 }
 
+export const SELECTION_DATA_KEY = `SELECTION_DATA_KEY_${uuid()}`
 const DEFAULT_DATA = [] as []
 
 const DEFAULT_PAGINATION = {
@@ -55,6 +57,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       onHiddenColKeysChange,
       rowSelection,
       fieldKey = 'key',
+      stickyFooter = false,
       data = DEFAULT_DATA,
       ...rest
     },
@@ -93,8 +96,12 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     })
 
     const pagination = withDefaultProps(paginationProp, DEFAULT_PAGINATION)
+
     // 优化数据在一页内时，不展示 pagination 配置项
-    const hiddenPagination = !paginationProp || data.length < pagination.pageSize
+    const hiddenPagination =
+      !paginationProp ||
+      typeof pagination.pageSize !== 'number' ||
+      data.length < pagination.pageSize
 
     /**
      * 数据分页
@@ -214,7 +221,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         }
 
         const selectionColumn: TableColumnItem = {
-          dataKey: 'selectionColumn',
+          dataKey: SELECTION_DATA_KEY,
           width: checkboxColWidth,
           className: `${prefixCls}-selection-column`,
           title: renderSelectionTitleCell,
@@ -253,6 +260,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         <BaseTable
           ref={ref}
           {...baseTableProps}
+          stickyFooter={stickyFooter}
           prefixCls={prefixCls}
           columns={mergedColumns}
           data={mergedData}
@@ -273,19 +281,20 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 setCacheHiddenColKeys={setCacheHiddenColKeys}
               />
             ) : null,
+            footer: hiddenPagination ? null : (
+              <Pagination
+                className={cx(
+                  `${prefixCls}-pagination`,
+                  pagination.placement &&
+                    `${prefixCls}-pagination--placement-${pagination.placement}`
+                )}
+                {...pagination}
+                current={currentPage}
+                onChange={trySetCurrentPage}
+              />
+            ),
           }}
         />
-        {hiddenPagination ? null : (
-          <Pagination
-            className={cx(
-              `${prefixCls}-pagination`,
-              pagination.placement && `${prefixCls}-pagination--placement-${pagination.placement}`
-            )}
-            {...pagination}
-            current={currentPage}
-            onChange={trySetCurrentPage}
-          />
-        )}
       </TableWrapper>
     )
   }
@@ -320,6 +329,10 @@ export interface TableProps extends Omit<BaseTableProps, 'extra' | 'role'> {
    *  异步数据源，分页切换时加载数据
    */
   dataSource?: (current: number) => TableDataSource
+  /**
+   * 底部吸底
+   */
+  stickyFooter?: boolean
 }
 
 if (__DEV__) {

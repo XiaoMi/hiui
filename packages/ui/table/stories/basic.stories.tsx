@@ -7,7 +7,6 @@ export const Basic = () => {
       <h1>Basic for Table</h1>
       <div className="table-basic__wrap" style={{ width: 800, background: '#eee' }}>
         <Table
-          fixedToColumn={'type'}
           columns={[
             {
               title: '商品名',

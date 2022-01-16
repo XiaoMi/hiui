@@ -42,6 +42,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       size,
       extra,
       onHeaderRow,
+      stickyFooter,
       ...rest
     },
     ref
@@ -112,13 +113,14 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     const providedValue = useTable({ ...rest, columns: mergedColumns })
 
     const {
+      rootProps,
       bordered,
       leftFrozenColKeys,
       rightFrozenColKeys,
       leftFixedColumnsWidth,
       rightFixedColumnsWidth,
-      scrollLeft,
-      scrollRight,
+      scrollSize,
+      getTableHeaderProps,
     } = providedValue
 
     const hasBorder = borderedProp ?? bordered
@@ -135,7 +137,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     )
 
     return (
-      <div ref={ref} role={role} className={cls}>
+      <div ref={ref} role={role} className={cls} {...rootProps}>
         <div className={`${prefixCls}__wrapper`}>
           <TableProvider
             value={{
@@ -148,7 +150,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               isEmbedLoadingId,
             }}
           >
-            <div style={{ position: 'relative' }}>
+            <div {...getTableHeaderProps()}>
               <TableHeader prefixCls={`${prefixCls}-header`} />
 
               {/* 不跟随内部 header 横向滚动，固定到右侧 */}
@@ -163,7 +165,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           </TableProvider>
 
           {/* 左冻结列内侧阴影效果 */}
-          {scrollLeft > 0 && leftFrozenColKeys.length > 0 ? (
+          {scrollSize.scrollLeft > 0 && leftFrozenColKeys.length > 0 ? (
             <div
               className={`${prefixCls}-freeze-shadow  ${prefixCls}-freeze-shadow--left`}
               style={{ width: leftFixedColumnsWidth + 'px' }}
@@ -171,15 +173,27 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           ) : null}
 
           {/* 右冻结列内侧阴影效果 */}
-          {scrollRight > 0 && rightFrozenColKeys.length > 0 ? (
+          {scrollSize.scrollRight > 0 && rightFrozenColKeys.length > 0 ? (
             <div
               className={`${prefixCls}-freeze-shadow ${prefixCls}-freeze-shadow--right`}
               style={{ width: rightFixedColumnsWidth + 'px' }}
             />
           ) : null}
         </div>
-
-        {extraFooter}
+        <div
+          className={`${prefixCls}-footer`}
+          style={
+            stickyFooter
+              ? {
+                  position: 'sticky',
+                  bottom: 0,
+                  // boxShadow: '0 5px 15px 0 rgba(0, 0, 0, 0.1)'
+                }
+              : undefined
+          }
+        >
+          {extraFooter}
+        </div>
       </div>
     )
   }
@@ -206,6 +220,10 @@ export interface BaseTableProps
    *  配置表格尺寸
    */
   size?: string
+  /**
+   * 底部吸底
+   */
+  stickyFooter?: boolean
 }
 
 if (__DEV__) {
@@ -240,7 +258,7 @@ const renderSwitcher = ({
         tabIndex={-1}
         className={cx(
           `${prefixCls}__switcher`,
-          expanded ? `${prefixCls}__switcher--expanded` : `${prefixCls}__switcher--collapse`
+          `${prefixCls}__switcher--${expanded ? 'expanded' : 'collapse'}`
         )}
         icon={expanded ? expandIcon : collapseIcon}
         onClick={() => onSwitch(!expanded)}

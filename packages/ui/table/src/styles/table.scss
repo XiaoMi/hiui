@@ -183,6 +183,19 @@ $prefix: '#{$component-prefix}-table' !default;
         border-bottom: 2px dashed use-color-mode('primary');
       }
     }
+
+    &--avg,
+    &--total {
+      .#{$prefix}-cell {
+        background-color: rgba(251, 251, 251, 1);
+      }
+
+      &:hover {
+        .#{$prefix}-cell {
+          background-color: rgba(251, 251, 251, 1);
+        }
+      }
+    }
   }
 
   // 利用 table colgroup 控制列
@@ -493,7 +506,8 @@ th[data-sticky] {
   display: flex;
   flex-wrap: wrap;
   row-gap: 8px;
-  margin: use-spacing(8) 0;
+  padding: use-spacing(6) 0;
+  background-color: use-color-static('white');
 
   &--placement-left {
     justify-content: flex-start;
