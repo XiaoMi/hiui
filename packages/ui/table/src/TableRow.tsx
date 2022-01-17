@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -9,6 +8,7 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import { setAttrAria } from '@hi-ui/dom-utils'
 import { SELECTION_DATA_KEY } from './Table'
 import { EMBED_DATA_KEY } from './BaseTable'
+import { FlattedTableRowData } from './types'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -21,18 +21,10 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
     {
       prefixCls = _prefix,
       rowData: rowDataProp,
-      // allRowData,
-      level,
-      showColHighlight,
-      hoverColIndex,
-      setHoverColIndex,
       expandedTree,
-      expandedTreeRows,
-      setExpandedTreeRows,
       isSumRow, // 是否为合计行
       isAvgRow, // 是否为平均行
       rowIndex,
-      isTree,
     },
     ref
   ) => {
@@ -41,34 +33,22 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       isHighlightedRow,
       flattedColumnsWithoutChildren,
       isErrorRow,
-      rowSelection,
       columns,
       embedExpandable,
-      onEmbedSwitch,
+      // @ts-ignore
       hoverRow,
-      // prefixCls,
-      disabledData,
       draggable,
+      // @ts-ignore
       onDragStart: onDragStartContext,
+      // @ts-ignore
       onDragLeave: onDragLeaveContext,
+      // @ts-ignore
       onDragEnd: onDragEndContext,
       onDrop: onDropContext,
       dragRowRef,
     } = useTableContext()
 
-    const rowData = rowDataProp.raw
-    const rowKey = rowData.key
-
-    // ** ************** checkbox 处理 *************** *//
-
-    // TODO: 提取到外部
-    const checkboxConfig =
-      rowSelection && rowSelection.getCheckboxConfig && rowSelection.getCheckboxConfig(rowData)
-    const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false
-
-    if (checkboxDisabled) {
-      disabledData.current.push(rowKey)
-    }
+    const { raw: rowData, id: rowId } = rowDataProp
 
     // const rowExpand = rowExpandable && rowExpandable(rowData)
 
@@ -95,18 +75,17 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
 
         dragRowRef.current = {
           startClientY: clientY,
-          dragId: rowKey,
-          level: level,
+          dragId: rowId,
           rowData: rowData,
         }
 
         setDragging(true)
 
-        evt.dataTransfer.setData('tableRow', JSON.stringify({ sourceId: rowKey }))
+        evt.dataTransfer.setData('tableRow', JSON.stringify({ sourceId: rowId }))
 
         onDragStartContextLatest(rowData)
       },
-      [draggable, dragRowRef, onDragStartContextLatest, rowData, level, rowKey]
+      [draggable, dragRowRef, onDragStartContextLatest, rowData, rowId]
     )
 
     const onDragOver = React.useCallback(
@@ -120,7 +99,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
 
         const { startClientY, dragId } = dragRowRef.current
 
-        if (dragId === rowKey) return
+        if (dragId === rowId) return
 
         const hoverClientY = evt.clientY
 
@@ -130,7 +109,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
           setDragDirection('bottom')
         }
       },
-      [draggable, dragRowRef, rowKey]
+      [draggable, dragRowRef, rowId]
     )
 
     const onDragLeaveContextLatest = useLatestCallback(onDragLeaveContext)
@@ -185,7 +164,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
         setDragDirection(undefined)
         dragRowRef.current = null
 
-        const targetId = rowKey
+        const targetId = rowId
 
         if (dragId === targetId) return
 
@@ -197,7 +176,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
           console.error(error)
         }
       },
-      [draggable, dragRowRef, onDropContextLatest, dragDirection, rowKey]
+      [draggable, dragRowRef, onDropContextLatest, dragDirection, rowId]
     )
 
     const handleRowDoubleClick = () => {
@@ -206,9 +185,9 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
 
     // ** ************** 行状态管理 *************** *//
 
-    const highlighted = isHighlightedRow(rowKey)
-    const hovered = hoverRow === rowKey
-    const hasError = isErrorRow(rowKey)
+    const highlighted = isHighlightedRow(rowId)
+    const hovered = hoverRow === rowId
+    const hasError = isErrorRow(rowId)
 
     const cls = cx(
       `${prefixCls}-row`,
@@ -226,53 +205,41 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       return item.dataKey !== SELECTION_DATA_KEY && item.dataKey !== EMBED_DATA_KEY
     })
 
-    return [
-      <tr
-        ref={ref}
-        className={cls}
-        key="row"
-        onDoubleClick={handleRowDoubleClick}
-        draggable={setAttrAria(draggable)}
-        onDragStart={onDragStart}
-        onDragOver={onDragOver}
-        onDragEnd={onDragEnd}
-        onDragLeave={onDragLeave}
-        onDrop={onDrop}
-      >
-        {/* 表格列数据 */}
-        {flattedColumnsWithoutChildren.map((column, idx) => {
-          return (
-            <TableCell
-              key={idx}
-              column={column}
-              columnIndex={idx}
-              isSwitcherCol={firstColumn.id === column.id}
-              rowData={rowDataProp}
-              depth={rowDataProp.depth}
-              rowIndex={rowIndex}
-              showColHighlight={showColHighlight}
-              hoverColIndex={hoverColIndex}
-              setHoverColIndex={setHoverColIndex}
-              level={level}
-              isTree={isTree}
-              expandedTree={expandedTree}
-              expandedTreeRows={expandedTreeRows}
-              setExpandedTreeRows={setExpandedTreeRows}
-            />
-          )
-        })}
-      </tr>,
+    return (
+      <>
+        <tr
+          ref={ref}
+          className={cls}
+          key="row"
+          onDoubleClick={handleRowDoubleClick}
+          draggable={setAttrAria(draggable)}
+          onDragStart={onDragStart}
+          onDragOver={onDragOver}
+          onDragEnd={onDragEnd}
+          onDragLeave={onDragLeave}
+          onDrop={onDrop}
+        >
+          {/* 表格列数据 */}
+          {flattedColumnsWithoutChildren.map((column, idx) => {
+            return (
+              <TableCell
+                key={idx}
+                column={column}
+                isSwitcherCol={firstColumn ? firstColumn.id === column.id : false}
+                rowData={rowDataProp}
+                rowIndex={rowIndex}
+                expandedTree={expandedTree}
+              />
+            )
+          })}
+        </tr>
 
-      // 可展开的内嵌面板
-      embedExpandable ? (
-        <TableEmbedRow
-          onEmbedSwitch={onEmbedSwitch}
-          colSpan={columns.length}
-          rowData={rowDataProp}
-          rowIndex={rowIndex}
-        />
-      ) : null,
-    ]
+        {/* 可展开的内嵌面板 */}
+        {embedExpandable ? (
+          <TableEmbedRow colSpan={columns.length} rowData={rowDataProp} rowIndex={rowIndex} />
+        ) : null}
+      </>
+    )
   }
 )
 
@@ -281,10 +248,26 @@ export interface TableRowProps {
    * 组件默认的选择器类
    */
   prefixCls?: string
-  rowIndex?: number
-  rowData?: Record<string, any>
+  /**
+   * 是否为总计行
+   */
   isSumRow?: boolean
+  /**
+   * 是否为均值行
+   */
   isAvgRow?: boolean
+  /**
+   * 表格行数据
+   */
+  rowData: FlattedTableRowData
+  /**
+   * 表格行数据下标
+   */
+  rowIndex: number
+  /**
+   * 是否展开树表格行
+   */
+  expandedTree?: boolean
 }
 
 if (__DEV__) {

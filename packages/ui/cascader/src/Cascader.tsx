@@ -22,8 +22,8 @@ import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import {
-  useAsyncSearch,
-  useNormalFilterSearch,
+  // useAsyncSearch,
+  // useNormalFilterSearch,
   useSearchMode,
   useTreeCustomSearch,
   useTreeUpMatchSearch,
@@ -47,7 +47,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     placeholder,
     clearable = true,
     flatted = false,
-    upMatch = false,
+    // upMatch = true,
     displayRender: displayRenderProp,
     onSelect: onSelectProp,
     onLoadChildren,
@@ -95,20 +95,20 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
   // ************************** 异步搜索 ************************* //
 
   // TODO: 支持对 Item 传入 状态
-  const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({ dataSource })
+  // const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({ dataSource })
   const customSearchStrategy = useTreeCustomSearch({ data: flattedData, filterOption })
-  const filterSearchStrategy = useNormalFilterSearch({
-    flattedData: flattedData,
-    searchMode: searchableProp && !upMatch ? 'filter' : undefined,
-    exclude: (option: any) => {
-      return checkCanLoadChildren(option, onLoadChildren)
-    },
-  })
+  // const filterSearchStrategy = useNormalFilterSearch({
+  //   flattedData: flattedData,
+  //   enabled: searchableProp && !upMatch,
+  //   exclude: (option: any) => {
+  //     return checkCanLoadChildren(option, onLoadChildren)
+  //   },
+  // })
 
   const upMatchSearchStrategy = useTreeUpMatchSearch({
     data: cascaderData,
     flattedData: flattedData,
-    enabled: upMatch,
+    enabled: searchableProp,
     exclude: (option: any) => {
       return checkCanLoadChildren(option, onLoadChildren)
     },
@@ -123,9 +123,9 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
   } = useSearchMode({
     searchable: searchableProp,
     strategies: [
-      dataSourceStrategy,
+      // dataSourceStrategy,
       customSearchStrategy,
-      filterSearchStrategy,
+      // filterSearchStrategy,
       upMatchSearchStrategy,
     ],
   })
@@ -153,7 +153,8 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     [displayRenderProp]
   )
 
-  const shouldUseSearch = !!searchValue && !hasError
+  // const shouldUseSearch = !!searchValue && !hasError
+  const shouldUseSearch = !!searchValue
 
   const selectProps = {
     data: shouldUseSearch ? stateInSearch.data : flattedData,
@@ -209,17 +210,11 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         disabled={disabled}
         onOpen={menuVisibleAction.on}
         onClose={menuVisibleAction.off}
-        // value={value}
-        // onChange={tryChangeValue}
-        // data={mergedData}
         searchable={searchable}
         onSearch={onSearch}
-        loading={loading}
+        // loading={loading}
         trigger={
           <MockInput
-            // ref={targetElementRef}
-            // onClick={openMenu}
-            // disabled={disabled}
             clearable={clearable}
             placeholder={placeholder}
             // @ts-ignore

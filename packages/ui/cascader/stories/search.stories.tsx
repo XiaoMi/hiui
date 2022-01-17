@@ -231,11 +231,6 @@ export const Search = () => {
           searchable
         />
       </div>
-
-      <h1>Search with UpMatch</h1>
-      <div className="cascader-search__wrap">
-        <Cascader upMatch data={dataOnlyLastCheckable} />
-      </div>
     </>
   )
 }

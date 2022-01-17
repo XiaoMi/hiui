@@ -435,7 +435,9 @@ export const useTable = ({
     idFieldName: 'key',
   })
 
-  const isErrorRow = useCallback((key: string) => errorRowKeys.includes(key), [errorRowKeys])
+  const isErrorRow = useCallback((key: React.ReactText) => errorRowKeys.includes(key), [
+    errorRowKeys,
+  ])
 
   // 末级 column
   const flattedColumnsWithoutChildren = React.useMemo(() => {
@@ -694,7 +696,7 @@ export interface UseTableProps {
   /**
    *  错误列（受控）
    */
-  errorRowKeys?: string[]
+  errorRowKeys?: React.ReactText[]
   /**
    *  高亮行（受控）
    */

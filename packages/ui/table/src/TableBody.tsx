@@ -98,7 +98,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                   <TableRow
                     key={sumRow.id}
                     rowIndex={transitionData.length}
-                    rowData={sumRow}
+                    rowData={sumRow as any}
                     isSumRow
                   />
                 ) : null}
@@ -106,7 +106,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                   <TableRow
                     key={avgRow.id}
                     rowIndex={transitionData.length + 1}
-                    rowData={avgRow}
+                    rowData={avgRow as any}
                     isAvgRow
                   />
                 ) : null}
