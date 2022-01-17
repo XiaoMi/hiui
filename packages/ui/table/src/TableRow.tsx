@@ -267,7 +267,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       embedExpandable ? (
         <TableEmbedRow
           onEmbedSwitch={onEmbedSwitch}
-          columns={columns}
+          colSpan={columns.length}
           rowData={rowDataProp}
           rowIndex={rowIndex}
         />

@@ -3,7 +3,7 @@ import { getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useTableContext } from './context'
 import Loading from '@hi-ui/loading'
-import { TableColumnItem, FlattedTableRowData } from './types'
+import { FlattedTableRowData } from './types'
 
 const _prefix = getPrefixCls('table-embed-row')
 
@@ -12,7 +12,7 @@ const _prefix = getPrefixCls('table-embed-row')
  */
 export const TableEmbedRow = ({
   prefixCls = _prefix,
-  columns,
+  colSpan,
   rowIndex,
   rowData,
 }: TableEmbedRowProps) => {
@@ -27,6 +27,7 @@ export const TableEmbedRow = ({
   const expanded = isExpandEmbedRows(rowData.id)
 
   useEffect(() => {
+    // 每次展开都执行，由于异步渲染原因，放在 Effect 中
     if (expanded) {
       onEmbedSwitch(rowData, rowIndex)
     }
@@ -34,7 +35,7 @@ export const TableEmbedRow = ({
 
   return expanded ? (
     <tr key="expanded-row" className={prefixCls}>
-      <td colSpan={columns.length}>
+      <td colSpan={colSpan}>
         {/* 乐观渲染：内嵌面板内容 */}
         <Loading size="sm" visible={loading}>
           {getEmbedPanelById(rowData.id)}
@@ -50,9 +51,9 @@ export interface TableEmbedRowProps {
    */
   prefixCls?: string
   /**
-   * 列配置项
+   * 所占列数
    */
-  columns: TableColumnItem[]
+  colSpan: number
   /**
    * 操作展开行的行数据
    */

@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment, useMemo } from 'react'
+import React, { forwardRef, Fragment, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
 import Pagination from '@hi-ui/pagination'
@@ -112,12 +112,9 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       dataSource,
     })
 
-    /**
-     * 扁平化数据，支持树形 table
-     */
-    const flattedData = useMemo(() => {
-      // 获取 key 字段值
-      const getRowKeyField = (item: any) => {
+    // 获取 key 字段值
+    const getRowKeyField = useCallback(
+      (item: any) => {
         const val = item[fieldKey]
 
         invariant(
@@ -127,15 +124,21 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         )
 
         return val
-      }
+      },
+      [fieldKey]
+    )
 
+    /**
+     * 扁平化数据，支持树形 table
+     */
+    const flattedData = useMemo(() => {
       // 对于分页来讲，flattedData 应该是当前页的数据
       const clonedData = cloneTree(mergedData) as any
       return flattenTree(clonedData, (node: any) => {
         // 兼容老api，映射 key 为 id
         return { ...node, id: getRowKeyField(node.raw) }
       }) as FlattedTableRowData[]
-    }, [mergedData, fieldKey])
+    }, [mergedData, getRowKeyField])
 
     // ************************ 行多选 ************************ //
 
@@ -154,13 +157,13 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       isCheckedRowKey,
       onCheckedRowKeysChange,
       checkRowIsDisabledCheckbox,
-    } = useTableCheck({ rowSelection, flattedData })
+    } = useTableCheck({ rowSelection, flattedData, fieldKey })
 
     // 表格列多选操作区
     const getSelectionColumn = React.useCallback(
       (rowSelection: TableRowSelection) => {
         const renderCell = (_: any, rowItem: any, rowIndex: number) => {
-          const rowKey = rowItem.id
+          const rowKey = getRowKeyField(rowItem)
           const checked = isCheckedRowKey(rowKey)
           const disabledCheckbox = checkRowIsDisabledCheckbox(rowItem)
 
@@ -231,6 +234,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         return selectionColumn
       },
       [
+        getRowKeyField,
         checkedAll,
         semiChecked,
         tryCheckAllRow,

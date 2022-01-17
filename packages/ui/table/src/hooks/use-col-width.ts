@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { FlattedTableColumnItemData, TableColumnItem, TableRowRecord } from '../types'
 import { getGroupItemWidth } from '../utils'
+import { useUpdateEffect } from '@hi-ui/use-update-effect'
 
 export const useColWidth = ({
   resizable,
@@ -16,6 +17,10 @@ export const useColWidth = ({
   const [colWidths, setColWidths] = React.useState(() => {
     return getGroupItemWidth(columns)
   })
+
+  useUpdateEffect(() => {
+    setColWidths(getGroupItemWidth(columns))
+  }, [columns])
 
   /**
    * 根据实际内容区（table 的第一行）渲染，再次精确收集并设置每列宽度

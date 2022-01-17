@@ -1,12 +1,12 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { times } from '@hi-ui/times'
 import { isObject, isFunction } from '@hi-ui/type-assertion'
 import { IconButton } from '@hi-ui/icon-button'
 import { useTableContext } from './context'
-import { TableRowEventData, FlattedTableRowData } from './types'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { TableRowEventData, FlattedTableRowData, FlattedTableColumnItemData } from './types'
 import {
   defaultCollapseIcon,
   defaultExpandIcon,
@@ -25,8 +25,8 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       prefixCls = _prefix,
       className,
       column,
-      rowIndex,
       rowData,
+      rowIndex,
       isSwitcherCol = false,
       expandedTree = false,
       // icons
@@ -58,7 +58,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
      */
     const cellContent = React.useMemo(() => {
       const row = rowData.raw
-      let content = (row as any)[dataKey]
+      let content = row[dataKey]
 
       if (isFunction(rawRender)) {
         content = rawRender(content, row, rowIndex, dataKey)
@@ -124,10 +124,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
               leafIcon,
               onLoadChildren,
               isTree,
-              onNodeExpand: (shouldExpanded: boolean) => {
-                // @ts-ignore
-                onTreeNodeSwitch(rowData, shouldExpanded)
-              },
+              onNodeExpand: (shouldExpanded) => onTreeNodeSwitch(rowData, shouldExpanded),
             })
           : null}
         {cellContent.children}
@@ -137,7 +134,10 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
 )
 
 export interface TableCellProps extends HiBaseHTMLProps<'td'> {
-  column?: any
+  /**
+   * 表格当前列配置信息
+   */
+  column: FlattedTableColumnItemData
   /**
    * 表格行数据
    */
@@ -145,11 +145,15 @@ export interface TableCellProps extends HiBaseHTMLProps<'td'> {
   /**
    * 表格行数据下标
    */
-  rowIndex?: number
+  rowIndex: number
   /**
    * 是否展开树表格行
    */
   expandedTree?: boolean
+  /**
+   *  作为操作树节点展开列（数据第一列）
+   */
+  isSwitcherCol?: boolean
   /**
    * 节点收起时的默认图标
    */
@@ -162,10 +166,6 @@ export interface TableCellProps extends HiBaseHTMLProps<'td'> {
    * 叶子结点的默认图标
    */
   leafIcon?: React.ReactNode
-  /**
-   *  作为操作树节点展开列（数据第一列）
-   */
-  isSwitcherCol?: boolean
 }
 
 if (__DEV__) {

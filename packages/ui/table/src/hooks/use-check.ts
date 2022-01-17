@@ -8,9 +8,11 @@ const DEFAULT_CHECKED_ROW_KEYS = [] as any[]
 export const useTableCheck = ({
   rowSelection,
   flattedData,
+  fieldKey,
 }: {
   rowSelection: TableRowSelection | undefined
   flattedData: FlattedTableRowData[]
+  fieldKey: string
 }) => {
   const checkRowIsDisabledCheckbox = React.useCallback(
     (rowItem: any) => {
@@ -32,6 +34,7 @@ export const useTableCheck = ({
   const [onCheckedRowKeysChange, isCheckedRowKey] = useCheck({
     checkedIds: checkedRowKeys,
     onCheck: trySetCheckedRowKeys as any,
+    idFieldName: fieldKey,
   })
 
   // 判断是否全选
