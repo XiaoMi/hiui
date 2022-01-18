@@ -34,6 +34,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     disabled = false,
     clearable = true,
     flatted = false,
+    fieldNames,
     expandTrigger = 'click',
     displayRender: displayRenderProp,
     onSelect: onSelectProp,
@@ -83,7 +84,10 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
 
   const [cascaderData, setCascaderData] = useCache(data)
 
-  const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
+  const flattedData = useMemo(() => flattenTreeData(cascaderData, fieldNames), [
+    cascaderData,
+    fieldNames,
+  ])
 
   // ************************** 异步搜索 ************************* //
 
@@ -133,6 +137,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
   const { rootProps, ...context } = useCascader({
     ...rest,
     disabled,
+    fieldNames,
     // 搜索的结果列表也采用 flatted 模式进行展示
     flatted: flatted || !!searchValue,
     onSelect,

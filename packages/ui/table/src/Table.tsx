@@ -97,12 +97,6 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
 
     const pagination = withDefaultProps(paginationProp, DEFAULT_PAGINATION)
 
-    // 优化数据在一页内时，不展示 pagination 配置项
-    const hiddenPagination =
-      !paginationProp ||
-      typeof pagination.pageSize !== 'number' ||
-      data.length < pagination.pageSize
-
     /**
      * 数据分页
      */
@@ -111,6 +105,12 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       data,
       dataSource,
     })
+
+    // 优化数据在第一页且数据一页内时，不展示 pagination 配置项
+    const hiddenPagination =
+      !paginationProp ||
+      typeof pagination.pageSize !== 'number' ||
+      (currentPage === 1 && data.length < pagination.pageSize)
 
     // 获取 key 字段值
     const getRowKeyField = useCallback(
@@ -328,7 +328,7 @@ export interface TableProps extends Omit<BaseTableProps, 'extra' | 'role'> {
   /**
    *  表格分页配置项
    */
-  pagination?: TablePaginationProps
+  pagination?: TablePaginationProps & { pageSize: number }
   /**
    *  异步数据源，分页切换时加载数据
    */

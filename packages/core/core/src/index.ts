@@ -41,3 +41,15 @@ export declare type HiBaseHTMLFieldProps<
 }
 
 export declare type ValueOf<T> = T[keyof T]
+
+/**
+ * 设置模型数据读取映射
+ */
+export type HiBaseFieldNames = {
+  id?: string
+  title?: string
+  disabled?: string
+  children?: string
+}
+
+export type HiBaseFieldNameKeys = keyof HiBaseFieldNames
