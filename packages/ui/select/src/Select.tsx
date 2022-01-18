@@ -50,7 +50,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       placeholder = '请选择',
       displayRender: displayRenderProp,
       // Virtual List
-      height,
+      height = 260,
       itemHeight = 40,
       virtual = true,
       // search
@@ -180,12 +180,18 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
             <MockInput
               clearable={clearable}
               placeholder={placeholder}
-              displayRender={displayRenderProp as any}
+              displayRender={
+                displayRenderProp
+                  ? (item: any) => {
+                      return displayRenderProp(getSelectItemEventData(item))
+                    }
+                  : undefined
+              }
               suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
               focused={menuVisible}
               value={value}
               onChange={(value, item) => {
-                tryChangeValue(value, getSelectItemEventData(item))
+                tryChangeValue(value, item.raw)
               }}
               data={mergedData}
               invalid={invalid}
@@ -265,10 +271,12 @@ export interface SelectProps
   renderExtraFooter?: () => React.ReactNode
   /**
    * 设置虚拟滚动容器的可视高度
+   * @private
    */
   height?: number
   /**
    * 设置虚拟列表每项的固定高度
+   * @private
    */
   itemHeight?: number
   /**
@@ -288,7 +296,7 @@ export interface SelectProps
   /**
    * 异步加载数据
    */
-  dataSource?: UseDataSource<SelectItemEventData>
+  dataSource?: UseDataSource<SelectMergedItem[]>
 }
 
 ;(Select as any).HiName = 'Select'

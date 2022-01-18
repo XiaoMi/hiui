@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback } from 'react'
+import type { HiBaseFieldNames } from '@hi-ui/core'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useCache } from '@hi-ui/use-cache'
 import {
@@ -35,15 +36,17 @@ export const useCascader = ({
   setCascaderData: setCascaderDataProp,
   // @ts-ignore
   flattedData: flattedDataProp,
+  fieldNames,
   ...rest
 }: UseCascaderProps) => {
   const [cacheData, setCacheData] = useCache(data)
   const cascaderData = cascaderDataProp ?? cacheData
   const setCascaderData = setCascaderDataProp ?? setCacheData
 
-  const flattedData = useMemo(() => flattedDataProp ?? flattenTreeData(cascaderData), [
+  const flattedData = useMemo(() => flattedDataProp ?? flattenTreeData(cascaderData, fieldNames), [
     cascaderData,
     flattedDataProp,
+    fieldNames,
   ])
 
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
@@ -133,6 +136,10 @@ export const useCascader = ({
 }
 
 export interface UseCascaderProps {
+  /**
+   * 设置 data 中 id, title, disabled, children 对应的 key
+   */
+  fieldNames?: HiBaseFieldNames
   /**
    * 设置选择项数据源
    */

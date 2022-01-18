@@ -1,5 +1,6 @@
-import { flattenTree, getTopDownAncestors } from '@hi-ui/tree-utils'
 import React from 'react'
+import { flattenTree, getTopDownAncestors } from '@hi-ui/tree-utils'
+import type { HiBaseFieldNames } from '@hi-ui/core'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import {
   CascaderItemRequiredProps,
@@ -11,13 +12,27 @@ import {
 /**
  * 扁平化树数据结构，基于前序遍历
  */
-export const flattenTreeData = (treeData: CascaderItem[]) => {
+export const flattenTreeData = (treeData: CascaderItem[], fieldNames?: HiBaseFieldNames) => {
+  /**
+   * 转换对象
+   */
+  const getKeyFields = (node: any, key: any) => {
+    if (fieldNames) {
+      return node[(fieldNames as any)[key] || key]
+    }
+    return node[key]
+  }
+
   return flattenTree<CascaderItem>(treeData, (node) => {
     const flattedNode: FlattedCascaderItem = node as FlattedCascaderItem
-    const { title, isLeaf = false, disabled = false } = node.raw
-    flattedNode.title = title
-    flattedNode.isLeaf = isLeaf
-    flattedNode.disabled = disabled
+    const raw = node.raw
+
+    flattedNode.id = getKeyFields(raw, 'id')
+    flattedNode.title = getKeyFields(raw, 'title')
+    flattedNode.children = getKeyFields(raw, 'children')
+    flattedNode.disabled = getKeyFields(raw, 'disabled') ?? false
+    flattedNode.isLeaf = raw.isLeaf ?? false
+
     return flattedNode
   }) as FlattedCascaderItem[]
 }

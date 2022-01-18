@@ -110,15 +110,15 @@ const dataSource = [
     stock: '140,000',
     key: 9,
   },
-  {
-    name: '小米8 SE',
-    type: '手机',
-    size: '6G+64G 幻彩蓝',
-    price: '699.00',
-    address: '双安店',
-    stock: '12,000',
-    key: 10,
-  },
+  // {
+  //   name: '小米8 SE',
+  //   type: '手机',
+  //   size: '6G+64G 幻彩蓝',
+  //   price: '699.00',
+  //   address: '双安店',
+  //   stock: '12,000',
+  //   key: 10,
+  // },
 ]
 
 export const Pagination = () => {

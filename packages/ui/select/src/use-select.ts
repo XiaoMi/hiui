@@ -28,7 +28,7 @@ export const useSelect = ({
     allowSelect,
     selectedId: value,
     onSelect: (value: React.ReactText, item: SelectItemEventData) => {
-      tryChangeValue(value, item)
+      tryChangeValue(value, item.raw)
       onSelectProp?.(value, item)
     },
   })

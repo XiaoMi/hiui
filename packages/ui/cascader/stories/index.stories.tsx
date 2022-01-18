@@ -9,7 +9,7 @@ export * from './select-change.stories'
 export * from './hover-expand.stories'
 export * from './dynamic.stories'
 export * from './display-render.stories'
-// export * from './flatted.stories'
+export * from './field-names.stories'
 
 export default {
   title: 'Data Input/Cascader',

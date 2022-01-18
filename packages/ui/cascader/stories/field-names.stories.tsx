@@ -1,87 +1,87 @@
 import React from 'react'
 import { Cascader } from '../src'
 
-export const Flatted = () => {
+export const FieldNames = () => {
   const [data] = React.useState([
     {
-      id: '0',
-      title: '0',
+      value: '0',
+      label: '0',
       children: [
         {
-          id: '0-0',
-          title: '0-0',
+          value: '0-0',
+          label: '0-0',
           children: [
             {
-              id: '0-0-0',
-              title: '0-0-0',
+              value: '0-0-0',
+              label: '0-0-0',
             },
             {
-              id: '0-0-1',
-              title: '0-0-1',
+              value: '0-0-1',
+              label: '0-0-1',
             },
             {
-              id: '0-0-2',
-              title: '0-0-2',
+              value: '0-0-2',
+              label: '0-0-2',
             },
           ],
         },
         {
-          id: '0-1',
-          title: '0-1',
+          value: '0-1',
+          label: '0-1',
           checkable: true,
           children: [
             {
-              id: '0-1-0',
-              title: '0-1-0',
+              value: '0-1-0',
+              label: '0-1-0',
             },
             {
-              id: '0-1-1',
-              title: '0-1-1',
+              value: '0-1-1',
+              label: '0-1-1',
             },
           ],
         },
         {
-          id: '0-2',
-          title: '0-2',
+          value: '0-2',
+          label: '0-2',
           checkable: true,
           children: [
             {
-              id: '0-2-0',
-              title: '0-2-0',
+              value: '0-2-0',
+              label: '0-2-0',
             },
             {
-              id: '0-2-1',
-              title: '0-2-1',
+              value: '0-2-1',
+              label: '0-2-1',
             },
           ],
         },
       ],
     },
     {
-      id: '1',
-      title: '1',
+      value: '1',
+      label: '1',
       children: [
         {
-          id: '1-0',
-          title: '1-0',
+          value: '1-0',
+          label: '1-0',
         },
         {
-          id: '1-1',
-          title: '1-1',
+          value: '1-1',
+          label: '1-1',
         },
       ],
     },
     {
-      id: '2',
-      title: '2',
+      value: '2',
+      label: '2',
       children: [
         {
-          id: '2-0',
-          title: '2-0',
+          value: '2-0',
+          label: '2-0',
         },
         {
-          id: '2-1',
-          title: '2-1',
+          value: '2-1',
+          label: '2-1',
         },
       ],
     },
@@ -106,9 +106,16 @@ export const Flatted = () => {
 
   return (
     <>
-      <h1>Flatted</h1>
-      <div className="cascader-flatted__wrap">
-        <Cascader flatted data={dataOnlyLeafCheckable} />
+      <h1>FieldNames</h1>
+      <div className="cascader-field-names__wrap">
+        <Cascader
+          fieldNames={{
+            id: 'value',
+            title: 'label',
+          }}
+          defaultValue={['0', '0-0', '0-0-1']}
+          data={dataOnlyLeafCheckable}
+        />
       </div>
     </>
   )
