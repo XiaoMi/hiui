@@ -22,6 +22,7 @@ const Tabs = require('@hi-ui/tabs');
 | activeId        | 设置激活的标签，设置此值后变为受控模式             | React.ReactText | -                                                    | -            |
 | draggable       | 是否支持拖拽         | boolean          | true \| false                                        | false        |
 | editable       | 是否可编辑         | boolean          | true \| false                                        | false        |
+| extra       | 右侧扩展区域         | React.ReactNode          | -                                        | -        |
 
 ### Tabs.Pane
 
@@ -59,6 +60,7 @@ const Tabs = require('@hi-ui/tabs');
 | onDragStart        | update                          |   入参调整       |            |
 | onDragOver        | feature                          |   新增钩子       |            |
 | onDragEnd        | feature                          |   新增钩子       |            |
+|extra        | feature                          |   右侧额外操作区       |   功能增强        |
 | onDrop        | update                         |   入参调整       |            |
 | type        | update                          | 选项移除 'editable'类型，'line'类型改为'default', 默认type由'card'类型改为'default' | editable 拆为配置项更合理，根据通用场景，'default‘模式用的更多，故更改默认类型          |
 | editable        | feature                          | 选项移除type 的 'editable'类型，迁移为一个配置项 | editable 拆为配置项更合理，解决editable 和 type的组合问题         |

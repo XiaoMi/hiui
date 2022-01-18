@@ -30,6 +30,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       onDrop,
       onDragEnd,
       type = 'default',
+      extra,
     },
     ref
   ) => {
@@ -203,6 +204,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
             <PlusOutlined />
           </div>
         )}
+        {extra}
       </div>
     )
   }
@@ -227,6 +229,10 @@ export interface TabListProps {
   editable?: boolean
   draggable?: boolean
   type?: 'desc' | 'card' | 'button' | 'default'
+  /**
+   * 右侧的拓展区域
+   */
+  extra?: React.ReactNode
   /**
    * 节点增加时触发
    */

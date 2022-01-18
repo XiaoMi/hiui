@@ -32,6 +32,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onDrop,
       style,
       type = 'default',
+      extra,
       ...rest
     },
     ref
@@ -84,6 +85,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           onDrop={onDrop}
           type={type}
           onDragStart={onDragStart}
+          extra={extra}
         />
         <div className={`${_prefix}__content`}>
           {React.Children.map(children, (child) => {
@@ -154,6 +156,10 @@ export interface TabsProps {
    * 标签点击触发回调
    */
   onTabClick?: (tabId: React.ReactText) => void
+  /**
+   * 右侧的拓展区域
+   */
+  extra?: React.ReactNode
 
   /**
    * 节点增加时触发
