@@ -43,7 +43,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "peerDependencies": {
-    "react": "^17.0.1"
+    "react": ">=16.8.6"
   },
   "dependencies": {
     "@hi-ui/type-assertion": "^4.0.0-alpha.13"
