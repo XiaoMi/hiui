@@ -211,7 +211,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         overlayClassName={cx(`${prefixCls}__popper`, overlayClassName)}
         {...rest}
         // 这种展现形式宽度是不固定的，关掉宽度匹配策略
-        popper={{ matchWidth: false, ...rest.popper }}
+        overlay={{ matchWidth: false, ...rest.overlay }}
         visible={menuVisible}
         onOpen={() => {
           // setViewSelected(false)

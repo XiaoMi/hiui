@@ -1,5 +1,5 @@
 import React from 'react'
-import { flattenTree, getTopDownAncestors } from '@hi-ui/tree-utils'
+import { baseFlattenTree, getTopDownAncestors } from '@hi-ui/tree-utils'
 import type { HiBaseFieldNames } from '@hi-ui/core'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import {
@@ -23,17 +23,20 @@ export const flattenTreeData = (treeData: CascaderItem[], fieldNames?: HiBaseFie
     return node[key]
   }
 
-  return flattenTree<CascaderItem>(treeData, (node) => {
-    const flattedNode: FlattedCascaderItem = node as FlattedCascaderItem
-    const raw = node.raw
+  return baseFlattenTree<CascaderItem>({
+    tree: treeData,
+    childrenFieldName: (node) => getKeyFields(node, 'children'),
+    transform: (node) => {
+      const flattedNode: FlattedCascaderItem = node as FlattedCascaderItem
+      const raw = node.raw
 
-    flattedNode.id = getKeyFields(raw, 'id')
-    flattedNode.title = getKeyFields(raw, 'title')
-    flattedNode.children = getKeyFields(raw, 'children')
-    flattedNode.disabled = getKeyFields(raw, 'disabled') ?? false
-    flattedNode.isLeaf = raw.isLeaf ?? false
+      flattedNode.id = getKeyFields(raw, 'id')
+      flattedNode.title = getKeyFields(raw, 'title')
+      flattedNode.disabled = getKeyFields(raw, 'disabled') ?? false
+      flattedNode.isLeaf = getKeyFields(raw, 'isLeaf') ?? false
 
-    return flattedNode
+      return flattedNode
+    },
   }) as FlattedCascaderItem[]
 }
 
@@ -95,7 +98,7 @@ export const checkCanLoadChildren = (node: FlattedCascaderItem, onLoadChildren?:
   return hasChildren || (onLoadChildren && !node.isLeaf && !node.children)
 }
 
-export function getCascaderItemEventData(
+export function getItemEventData(
   node: FlattedCascaderItem,
   requiredProps: CascaderItemRequiredProps
 ): CascaderItemEventData {

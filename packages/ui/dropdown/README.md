@@ -14,17 +14,17 @@
 
 ## Props
 
-| 参数             | 说明                                    | 类型                                       | 可选值                              | 默认值  |
-| ---------------- | --------------------------------------- | ------------------------------------------ | ----------------------------------- | ------- |
-| data             | 下拉菜单数据项                          | DataItem []                                | -                                   | -       |
-| title            | 下拉菜单显示标题的内容                  | ReactNode                                  | -                                   | -       |
-| type             | 下拉菜单按钮类型                        | string                                     | 'text' \| 'button' \| 'group'       | 'text'  |
-| trigger          | 下拉菜单触发方式                        | string \| string []                        | 'click' \| 'contextmenu' \| 'hover' | 'hover' |
-| disabled         | 是否禁用下拉菜单                        | boolean                                    | true \| false                       | -       |
-| width            | 菜单项宽度                              | number                                     | -                                   | 180     |
-| overlayClassName | 下拉根元素的类名称                      | string                                     | -                                   | -       |
-| popper           | 自定义控制弹出层 popper 行为            | Omit<PopperProps, 'visible' \| 'attachEl'> | -                                   | -       |
-| triggerButton    | 自定义下拉菜单触发按钮，优先级大于 type | ReactElement                               | -                                   | -       |
+| 参数             | 说明                                    | 类型                | 可选值                              | 默认值  |
+| ---------------- | --------------------------------------- | ------------------- | ----------------------------------- | ------- |
+| data             | 下拉菜单数据项                          | DataItem []         | -                                   | -       |
+| title            | 下拉菜单显示标题的内容                  | ReactNode           | -                                   | -       |
+| type             | 下拉菜单按钮类型                        | string              | 'text' \| 'button' \| 'group'       | 'text'  |
+| trigger          | 下拉菜单触发方式                        | string \| string [] | 'click' \| 'contextmenu' \| 'hover' | 'hover' |
+| disabled         | 是否禁用下拉菜单                        | boolean             | true \| false                       | -       |
+| width            | 菜单项宽度                              | number              | -                                   | 180     |
+| overlayClassName | 下拉根元素的类名称                      | string              | -                                   | -       |
+| overlay          | 自定义控制弹出层 popper 行为            | PopperOverlayProps  | -                                   | -       |
+| triggerButton    | 自定义下拉菜单触发按钮，优先级大于 type | ReactElement        | -                                   | -       |
 
 > 注意：自定义按钮需要支持 ref 获取元素 dom 引用 以及 trigger 对应的事件：
 >

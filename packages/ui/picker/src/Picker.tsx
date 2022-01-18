@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import Input from '@hi-ui/input'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
-import { PopperPortal as Popper, PopperPortalProps } from '@hi-ui/popper'
+import { PopperOverlayProps, PopperPortal as Popper } from '@hi-ui/popper'
 import { SearchOutlined } from '@hi-ui/icons'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
@@ -36,7 +36,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       loading = false,
       optionWidth,
       overlayClassName,
-      popper,
+      overlay,
       onSearch,
       closeOnEsc = true,
       invalid = false,
@@ -147,8 +147,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
           gutterGap={2}
           // @DesignToken zIndex: overlay
           zIndex={1050}
-          {...popper}
-          className={cx(`${prefixCls}__popper`, overlayClassName)}
+          {...overlay}
+          className={cx(`${prefixCls}__popper`, overlayClassName, overlay?.className)}
           autoFocus={false}
           visible={menuVisible}
           onClose={hideMenu}
@@ -245,7 +245,7 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 自定义控制 popper 行为
    */
-  popper?: Omit<PopperPortalProps, 'visible' | 'attachEl'>
+  overlay?: PopperOverlayProps
   /**
    * 开启 Esc 快捷键关闭
    */

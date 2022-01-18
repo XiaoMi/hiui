@@ -3,7 +3,6 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { DataSourceFunc, FieldNames, TreeSelectDataItem, TreeSelectDataSource } from './types'
 import { useToggle } from '@hi-ui/use-toggle'
-import { PopperProps } from '@hi-ui/popper'
 import { Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Picker, PickerProps } from '@hi-ui/picker'
@@ -366,10 +365,6 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' |
    * 是否可清空
    */
   clearable?: boolean
-  /**
-   * 自定义控制 popper 行为
-   */
-  popper?: PopperProps
   /**
    * 设置展现形式
    */

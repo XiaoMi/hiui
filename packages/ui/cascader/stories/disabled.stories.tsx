@@ -28,7 +28,6 @@ export const Disabled = () => {
         {
           id: '0-1',
           title: '0-1',
-          checkable: true,
           children: [
             {
               id: '0-1-0',
@@ -43,7 +42,6 @@ export const Disabled = () => {
         {
           id: '0-2',
           title: '0-2',
-          checkable: true,
           disabled: true,
           children: [
             {
@@ -77,8 +75,6 @@ export const Disabled = () => {
         {
           id: '0-4',
           title: '0-4',
-          checkable: true,
-          disabledCheckbox: true,
           children: [
             {
               id: '0-4-0',
@@ -93,7 +89,6 @@ export const Disabled = () => {
         {
           id: '0-5',
           title: '0-5',
-          checkable: true,
           children: [
             {
               id: '0-5-0',
@@ -114,12 +109,10 @@ export const Disabled = () => {
         {
           id: '1-0',
           title: '1-0',
-          disabledCheckbox: true,
           children: [
             {
               id: '1-0-0',
               title: '1-0-0',
-              checkable: false,
             },
             {
               id: '1-0-1',
@@ -144,7 +137,6 @@ export const Disabled = () => {
         {
           id: '1-1',
           title: '1-1',
-          checkable: false,
         },
         {
           id: '1-2',

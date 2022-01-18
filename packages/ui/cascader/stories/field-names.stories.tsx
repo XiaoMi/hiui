@@ -6,11 +6,11 @@ export const FieldNames = () => {
     {
       value: '0',
       label: '0',
-      children: [
+      kids: [
         {
           value: '0-0',
           label: '0-0',
-          children: [
+          kids: [
             {
               value: '0-0-0',
               label: '0-0-0',
@@ -28,8 +28,7 @@ export const FieldNames = () => {
         {
           value: '0-1',
           label: '0-1',
-          checkable: true,
-          children: [
+          kids: [
             {
               value: '0-1-0',
               label: '0-1-0',
@@ -43,8 +42,7 @@ export const FieldNames = () => {
         {
           value: '0-2',
           label: '0-2',
-          checkable: true,
-          children: [
+          kids: [
             {
               value: '0-2-0',
               label: '0-2-0',
@@ -60,7 +58,7 @@ export const FieldNames = () => {
     {
       value: '1',
       label: '1',
-      children: [
+      kids: [
         {
           value: '1-0',
           label: '1-0',
@@ -74,7 +72,7 @@ export const FieldNames = () => {
     {
       value: '2',
       label: '2',
-      children: [
+      kids: [
         {
           value: '2-0',
           label: '2-0',
@@ -87,23 +85,6 @@ export const FieldNames = () => {
     },
   ])
 
-  const getDataOnlyLeafCheckable = (data: any) => {
-    return data.map((item) => {
-      if (item.children) {
-        item.checkable = item.checkable ?? false
-        item.children = getDataOnlyLeafCheckable(item.children)
-      } else {
-        item.checkable = true
-      }
-
-      return item
-    })
-  }
-
-  const dataOnlyLeafCheckable = getDataOnlyLeafCheckable(data)
-
-  console.log(dataOnlyLeafCheckable)
-
   return (
     <>
       <h1>FieldNames</h1>
@@ -112,9 +93,10 @@ export const FieldNames = () => {
           fieldNames={{
             id: 'value',
             title: 'label',
+            children: 'kids',
           }}
           defaultValue={['0', '0-0', '0-0-1']}
-          data={dataOnlyLeafCheckable}
+          data={data}
         />
       </div>
     </>

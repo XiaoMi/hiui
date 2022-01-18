@@ -1,14 +1,14 @@
 import React from 'react'
 
-export interface CascaderItem {
+export interface CascaderItem extends Record<string, any> {
   /**
    * 树节点唯一 id
    */
-  id: React.ReactText
+  id?: React.ReactText
   /**
    * 树节点标题
    */
-  title: React.ReactNode
+  title?: React.ReactNode
   /**
    * 该节点的子节点列表
    */
@@ -30,13 +30,17 @@ export interface FlattedCascaderItemWithChildren extends FlattedCascaderItem {
 
 export interface FlattedCascaderItem extends Required<Omit<CascaderItem, 'children'>> {
   /**
+   * 树节点唯一 id
+   */
+  id: React.ReactText
+  /**
+   * 树节点标题
+   */
+  title: React.ReactNode
+  /**
    * 该节点的子节点列表
    */
   children?: FlattedCascaderItem[]
-  /**
-   * 该节点的所有祖先节点列表
-   */
-  ancestors?: FlattedCascaderItemWithChildren[]
   /**
    * 关联用户传入的原始节点
    */

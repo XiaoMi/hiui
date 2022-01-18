@@ -9,6 +9,7 @@ export * from './select-change.stories'
 export * from './hover-expand.stories'
 export * from './dynamic.stories'
 export * from './display-render.stories'
+export * from './title-render.stories'
 export * from './field-names.stories'
 
 export default {

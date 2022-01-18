@@ -3,7 +3,6 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCheckSelect, UseCheckSelectProps } from './use-check-select'
 import type { HiBaseAppearanceEnum, HiBaseHTMLProps } from '@hi-ui/core'
-import { PopperProps } from '@hi-ui/popper'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { CheckSelectProvider, useCheckSelectContext } from './context'
 import { CheckSelectDataItem, CheckSelectEventData } from './types'
@@ -46,7 +45,6 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       placeholder = '请选择',
       displayRender: displayRenderProp,
       onSelect: onSelectProp,
-      popper,
       height,
       itemHeight = 40,
       virtual = true,
@@ -255,10 +253,6 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 )
 
 export interface CheckSelectProps extends Omit<PickerProps, 'trigger'>, UseCheckSelectProps {
-  /**
-   * 自定义控制 popper 行为
-   */
-  popper?: PopperProps
   /**
    * 设置虚拟滚动容器的可视高度
    */

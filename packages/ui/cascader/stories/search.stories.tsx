@@ -48,7 +48,6 @@ export const Search = () => {
         {
           id: '0-1',
           title: '0-1',
-          checkable: true,
           children: [
             {
               id: '0-1-0',
@@ -63,7 +62,6 @@ export const Search = () => {
         {
           id: '0-2',
           title: '0-2',
-          checkable: true,
           children: [
             {
               id: '0-2-0',
@@ -96,7 +94,6 @@ export const Search = () => {
         {
           id: '0-4',
           title: '0-4',
-          checkable: true,
           children: [
             {
               id: '0-4-0',
@@ -111,7 +108,6 @@ export const Search = () => {
         {
           id: '0-5',
           title: '0-5',
-          checkable: true,
           children: [
             {
               id: '0-5-0',
@@ -144,7 +140,6 @@ export const Search = () => {
         {
           id: '0-7',
           title: '0-7',
-          checkable: true,
           children: [
             {
               id: '0-7-0',
@@ -159,7 +154,6 @@ export const Search = () => {
         {
           id: '0-8',
           title: '0-8',
-          checkable: true,
           children: [
             {
               id: '0-8-0',
@@ -203,23 +197,6 @@ export const Search = () => {
     },
   ])
 
-  const getDataOnlyLeafCheckable = (data: any) => {
-    return data.map((item) => {
-      if (item.children) {
-        item.checkable = item.checkable ?? false
-        item.children = getDataOnlyLeafCheckable(item.children)
-      } else {
-        item.checkable = true
-      }
-
-      return item
-    })
-  }
-
-  const dataOnlyLeafCheckable = getDataOnlyLeafCheckable(data)
-
-  console.log(dataOnlyLeafCheckable)
-
   return (
     <>
       <h1>Search</h1>
@@ -227,7 +204,7 @@ export const Search = () => {
         <Cascader
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
-          data={dataOnlyLeafCheckable}
+          data={data}
           searchable
           onChange={console.log}
         />

@@ -8,7 +8,6 @@ import {
   CheckTreeSelectDataSource,
 } from './types'
 import { useToggle } from '@hi-ui/use-toggle'
-import { PopperProps } from '@hi-ui/popper'
 import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Picker, PickerProps } from '@hi-ui/picker'
@@ -407,10 +406,6 @@ export interface CheckTreeSelectProps
    * 是否可清空
    */
   clearable?: boolean
-  /**
-   * 自定义控制 popper 行为
-   */
-  popper?: PopperProps
   /**
    * 设置展现形式
    */

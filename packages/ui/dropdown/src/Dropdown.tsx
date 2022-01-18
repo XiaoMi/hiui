@@ -2,7 +2,7 @@ import React, { cloneElement, forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { PopperPortal, PopperPortalProps } from '@hi-ui/popper'
+import { PopperOverlayProps, PopperPortal, PopperPortalProps } from '@hi-ui/popper'
 import { DropDownProvider, useDropDownContext } from './context'
 import { useDropdown, UseDropdownProps } from './use-dropdown'
 import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
@@ -49,7 +49,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
     const dig = (treeData: DropdownDataItem[]) => {
       return treeData.map((item: any) => {
         const menu = isArrayNonEmpty(item.children) ? (
-          <DropdownMenu popper={{ gutterGap: 16 }}>{dig(item.children)}</DropdownMenu>
+          <DropdownMenu overlay={{ gutterGap: 16 }}>{dig(item.children)}</DropdownMenu>
         ) : null
 
         // TODO: remove it
@@ -119,7 +119,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
 
           {isArrayNonEmpty(data) ? (
             <DropdownMenu
-              {...getMenuProps({ popper: { disabledPortal: false, className: overlayClassName } })}
+              {...getMenuProps({ overlay: { disabledPortal: false, className: overlayClassName } })}
             >
               {dig(data)}
             </DropdownMenu>
@@ -171,7 +171,7 @@ export interface DropdownProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, 
   /**
    * 自定义控制 下拉 popper 行为
    */
-  popper?: Omit<PopperPortalProps, 'visible' | 'attachEl'>
+  overlay?: PopperOverlayProps
 }
 
 if (__DEV__) {
@@ -185,13 +185,21 @@ const dropdownMenuPrefix = getPrefixCls('dropdown-menu')
  */
 const DropdownMenu = forwardRef<HTMLUListElement | null, DropdownMenuProps>(
   (
-    { prefixCls = dropdownMenuPrefix, role = _role, popper, parents, className, children, ...rest },
+    {
+      prefixCls = dropdownMenuPrefix,
+      role = _role,
+      overlay,
+      parents,
+      className,
+      children,
+      ...rest
+    },
     ref
   ) => {
     const cls = cx(prefixCls, className)
 
     return (
-      <PopperPortal {...(popper as PopperPortalProps)}>
+      <PopperPortal {...(overlay as PopperPortalProps)}>
         <ul ref={ref} className={cls} {...rest}>
           {children
             ? React.Children.map(children, (child: any) => {
@@ -210,7 +218,7 @@ interface DropdownMenuProps extends HiBaseHTMLProps<'ul'> {
   /**
    * 透传 popper 对象
    */
-  popper?: Omit<PopperPortalProps, 'visible' | 'attachEl'>
+  overlay?: Omit<PopperPortalProps, 'visible' | 'attachEl'>
   /**
    * 祖先吸附元素DOM引用数组
    */
@@ -246,7 +254,7 @@ const DropdownMenuItem = forwardRef<HTMLLIElement | null, DropdownMenuItemProps>
     const { triggerMethods, width } = useDropDownContext()
 
     const { rootProps, getTriggerProps, getMenuProps } = useDropdown({
-      popper: { placement: 'right-start', disabledPortal: true },
+      overlay: { placement: 'right-start', disabledPortal: true },
       width,
       ...rest,
       trigger: triggerMethods,

@@ -40,7 +40,7 @@ export const Placement = () => {
                   data={list}
                   title="鼠标悬停"
                   trigger="hover"
-                  popper={{ placement: 'top-start' }}
+                  overlay={{ placement: 'top-start' }}
                 >
                   <Button>top-start</Button>
                 </Dropdown>
@@ -50,7 +50,7 @@ export const Placement = () => {
                   data={list}
                   title="鼠标悬停"
                   trigger="hover"
-                  popper={{ placement: 'top' }}
+                  overlay={{ placement: 'top' }}
                 >
                   <Button>top</Button>
                 </Dropdown>
@@ -60,7 +60,7 @@ export const Placement = () => {
                   data={list}
                   title="鼠标悬停"
                   trigger="hover"
-                  popper={{ placement: 'top-end' }}
+                  overlay={{ placement: 'top-end' }}
                 >
                   <Button>top-end</Button>
                 </Dropdown>
@@ -73,7 +73,7 @@ export const Placement = () => {
                   data={list}
                   title="鼠标悬停"
                   trigger="hover"
-                  popper={{ placement: 'left-start' }}
+                  overlay={{ placement: 'left-start' }}
                 >
                   <Button>left-start</Button>
                 </Dropdown>
@@ -86,7 +86,7 @@ export const Placement = () => {
                   data={list}
                   title="鼠标悬停"
                   trigger="hover"
-                  popper={{ placement: 'right-start' }}
+                  overlay={{ placement: 'right-start' }}
                 >
                   <Button>right-start</Button>
                 </Dropdown>
@@ -98,7 +98,7 @@ export const Placement = () => {
                   data={list}
                   title="鼠标悬停"
                   trigger="hover"
-                  popper={{ placement: 'left' }}
+                  overlay={{ placement: 'left' }}
                 >
                   <Button>left</Button>
                 </Dropdown>
@@ -111,7 +111,7 @@ export const Placement = () => {
                   data={list}
                   title="鼠标悬停"
                   trigger="hover"
-                  popper={{ placement: 'right' }}
+                  overlay={{ placement: 'right' }}
                 >
                   <Button>right</Button>
                 </Dropdown>
@@ -123,7 +123,7 @@ export const Placement = () => {
                   data={list}
                   title="鼠标悬停"
                   trigger="hover"
-                  popper={{ placement: 'left-end' }}
+                  overlay={{ placement: 'left-end' }}
                 >
                   <Button>left-end</Button>
                 </Dropdown>
@@ -136,7 +136,7 @@ export const Placement = () => {
                   data={list}
                   title="鼠标悬停"
                   trigger="hover"
-                  popper={{ placement: 'right-end' }}
+                  overlay={{ placement: 'right-end' }}
                 >
                   <Button>right-end</Button>
                 </Dropdown>
@@ -149,7 +149,7 @@ export const Placement = () => {
                   data={list}
                   title="鼠标悬停"
                   trigger="hover"
-                  popper={{ placement: 'bottom-start' }}
+                  overlay={{ placement: 'bottom-start' }}
                 >
                   <Button>bottom-start</Button>
                 </Dropdown>
@@ -159,7 +159,7 @@ export const Placement = () => {
                   data={list}
                   title="鼠标悬停"
                   trigger="hover"
-                  popper={{ placement: 'bottom' }}
+                  overlay={{ placement: 'bottom' }}
                 >
                   <Button>bottom</Button>
                 </Dropdown>
@@ -169,7 +169,7 @@ export const Placement = () => {
                   data={list}
                   title="鼠标悬停"
                   trigger="hover"
-                  popper={{ placement: 'bottom-end' }}
+                  overlay={{ placement: 'bottom-end' }}
                 >
                   <Button>bottom-end</Button>
                 </Dropdown>

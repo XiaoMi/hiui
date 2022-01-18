@@ -5,14 +5,14 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { useCascader, UseCascaderProps } from './use-cascader'
 import { MockInput } from '@hi-ui/input'
-import { PopperProps } from '@hi-ui/popper'
+import type { PopperOverlayProps } from '@hi-ui/popper'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { defaultLeafIcon, defaultLoadingIcon, defaultSuffixIcon } from './icons'
-import { checkCanLoadChildren, flattenTreeData, getCascaderItemEventData } from './utils'
+import { checkCanLoadChildren, flattenTreeData, getItemEventData } from './utils'
 import { CascaderProvider, useCascaderContext } from './context'
 import { CascaderItem, ExpandTrigger, FlattedCascaderItem, CascaderItemEventData } from './types'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { useSearchMode, useTreeCustomSearch, useTreeUpMatchSearch } from '@hi-ui/use-search-mode'
 import { uniqBy } from 'lodash'
@@ -43,7 +43,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     invalid,
     filterOption,
     searchable: searchableProp,
-    titleRender,
+    render: titleRender,
     overlayClassName,
     data = NOOP_ARRAY,
     onOpen,
@@ -79,7 +79,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
       return renderHighlightTitle(searchValue, node, titleRender)
     }
 
-    return true
+    return isFunction(titleRender) ? titleRender(node) : true
   }
 
   const [cascaderData, setCascaderData] = useCache(data)
@@ -114,11 +114,16 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     strategies: [customSearchStrategy, upMatchSearchStrategy],
   })
 
-  const displayRender = (item: FlattedCascaderItem) => {
+  const displayRender = (item: CascaderItemEventData) => {
     const itemPaths = getTopDownAncestors(item)
 
     if (displayRenderProp) {
-      return displayRenderProp(item, itemPaths)
+      const eventOption = getItemEventData(item, getItemRequiredProps(item))
+
+      return displayRenderProp(
+        eventOption,
+        itemPaths.map((item) => getItemEventData(item, getItemRequiredProps(item)))
+      )
     }
 
     const mergedTitle = itemPaths.reduce((acc, item, index, { length }) => {
@@ -149,7 +154,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     flattedData,
   })
 
-  const { value, tryChangeValue, reset, menuList } = context
+  const { value, tryChangeValue, reset, menuList, getItemRequiredProps } = context
 
   const shouldUseSearch = !!searchValue
   const showData = useMemo(() => {
@@ -188,7 +193,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         overlayClassName={cx(`${prefixCls}__popper`, overlayClassName)}
         {...rootProps}
         // 这种展现形式宽度是不固定的，关掉宽度匹配策略
-        popper={{ matchWidth: false, ...rest.popper }}
+        overlay={{ matchWidth: false, ...rest.overlay }}
         visible={menuVisible}
         disabled={disabled}
         onOpen={menuVisibleAction.on}
@@ -240,13 +245,13 @@ export interface CascaderProps
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: CascaderItemEventData) => React.ReactNode
+  render?: (item: CascaderItemEventData, keyword?: string) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容，只在 title 为字符串时有效
    */
   displayRender?: (
-    checkedOption: FlattedCascaderItem,
-    checkedOptionPaths: FlattedCascaderItem[]
+    checkedOption: CascaderItemEventData,
+    checkedOptionPaths: CascaderItemEventData[]
   ) => React.ReactNode
   /**
    * 触发器输入框占位符
@@ -265,7 +270,7 @@ export interface CascaderProps
   /**
    * 自定义控制 popper 行为
    */
-  popper?: PopperProps
+  overlay?: PopperOverlayProps
   /**
    * 设置展现形式
    */
@@ -317,7 +322,7 @@ export const CascaderMenu = ({
     onItemHover,
     titleRender,
     onLoadChildren,
-    getCascaderItemRequiredProps,
+    getItemRequiredProps,
   } = useCascaderContext()
 
   const cls = cx(prefixCls, className)
@@ -325,7 +330,7 @@ export const CascaderMenu = ({
   return (
     <ul className={cls} role={role}>
       {menu.map((option) => {
-        const eventOption = getCascaderItemEventData(option, getCascaderItemRequiredProps(option))
+        const eventOption = getItemEventData(option, getItemRequiredProps(option))
 
         const { selected, loading } = eventOption
         const disabled = disabledContext || option.disabled
@@ -382,7 +387,10 @@ const renderSuffix = (
   prefixCls: string,
   item: FlattedCascaderItem,
   loading: boolean,
-  onLoadChildren?: (item: CascaderItemEventData) => Promise<CascaderItem[] | void> | void
+  onLoadChildren?: (
+    item: CascaderItemEventData,
+    idPaths: React.ReactText[]
+  ) => Promise<CascaderItem[] | void> | void
 ) => {
   if (loading) {
     return (
@@ -411,10 +419,10 @@ const renderSuffix = (
 
 const renderFlattedTitle = (
   option: CascaderItemEventData,
-  titleRender?: (item: CascaderItemEventData, flatted: boolean) => React.ReactNode
+  titleRender?: (item: CascaderItemEventData) => React.ReactNode
 ) => {
   // 如果 titleRender 返回 `true`，则使用默认 title
-  const title = titleRender ? titleRender(option, true) : true
+  const title = titleRender ? titleRender(option) : true
   if (title !== true) return title
 
   return (
@@ -430,10 +438,10 @@ const renderFlattedTitle = (
 
 const renderDefaultTitle = (
   option: CascaderItemEventData,
-  titleRender?: (item: CascaderItemEventData, flatted: boolean) => React.ReactNode
+  titleRender?: (item: CascaderItemEventData) => React.ReactNode
 ) => {
   // 如果 titleRender 返回 `true`，则使用默认 title
-  const title = titleRender ? titleRender(option, false) : true
+  const title = titleRender ? titleRender(option) : true
   if (title !== true) return title
 
   return <span className="title__text">{option.title}</span>
@@ -442,10 +450,10 @@ const renderDefaultTitle = (
 const renderHighlightTitle = (
   keyword: string,
   option: CascaderItemEventData,
-  titleRender?: (item: CascaderItemEventData, flatted: boolean) => React.ReactNode
+  titleRender?: (item: CascaderItemEventData, keyword?: string) => React.ReactNode
 ) => {
   // 如果 titleRender 返回 `true`，则使用默认 title
-  const title = titleRender ? titleRender(option, true) : true
+  const title = titleRender ? titleRender(option, keyword) : true
   if (title !== true) return title
 
   if (typeof option.title !== 'string') {

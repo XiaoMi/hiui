@@ -102,7 +102,7 @@ export const useCascader = ({
       : getActiveMenus(flattedData, selectedId)
   }, [flatted, flattedData, selectedId, isCanLoadChildren])
 
-  const getCascaderItemRequiredProps = useCallback(
+  const getItemRequiredProps = useCallback(
     ({ id, depth }: FlattedCascaderItem): CascaderItemRequiredProps => {
       return {
         selected: flatted ? selectedId === id : selectedIds[depth] === id,
@@ -124,7 +124,7 @@ export const useCascader = ({
     flattedData,
     value,
     tryChangeValue,
-    getCascaderItemRequiredProps,
+    getItemRequiredProps,
     flatted,
     onItemClick: onItemExpand,
     onItemHover,
@@ -186,7 +186,10 @@ export interface UseCascaderProps {
   /**
    * 异步请求更新数据
    */
-  onLoadChildren?: (item: CascaderItemEventData) => Promise<CascaderItem[] | void> | void
+  onLoadChildren?: (
+    item: CascaderItemEventData,
+    idPaths: React.ReactText[]
+  ) => Promise<CascaderItem[] | void> | void
 }
 
 export type UseCascaderReturn = ReturnType<typeof useCascader>

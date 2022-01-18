@@ -15,7 +15,7 @@ export const useSelect = (
     itemPaths: FlattedCascaderItem[]
   ) => void,
   changeOnSelect: boolean,
-  onLoadChildren?: (item: CascaderItemEventData) => void
+  onLoadChildren?: (item: CascaderItemEventData, idPaths: React.ReactText[]) => void
 ) => {
   const onSelectLatest = useLatestCallback(onSelect)
 

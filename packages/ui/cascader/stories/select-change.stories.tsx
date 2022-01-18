@@ -28,7 +28,6 @@ export const SelectChange = () => {
         {
           id: '0-1',
           title: '0-1',
-          checkable: true,
           children: [
             {
               id: '0-1-0',
@@ -43,7 +42,6 @@ export const SelectChange = () => {
         {
           id: '0-2',
           title: '0-2',
-          checkable: true,
           disabled: true,
           children: [
             {
@@ -77,8 +75,6 @@ export const SelectChange = () => {
         {
           id: '0-4',
           title: '0-4',
-          checkable: true,
-          disabledCheckbox: true,
           children: [
             {
               id: '0-4-0',
@@ -93,7 +89,6 @@ export const SelectChange = () => {
         {
           id: '0-5',
           title: '0-5',
-          checkable: true,
           children: [
             {
               id: '0-5-0',
@@ -124,21 +119,6 @@ export const SelectChange = () => {
     },
   ])
 
-  const getDataOnlyLeafCheckable = (data: any) => {
-    return data.map((item) => {
-      if (item.children) {
-        item.checkable = item.checkable ?? false
-        item.children = getDataOnlyLeafCheckable(item.children)
-      } else {
-        item.checkable = true
-      }
-
-      return item
-    })
-  }
-
-  const dataOnlyLeafCheckable = getDataOnlyLeafCheckable(data)
-
   return (
     <>
       <h1>SelectChange</h1>
@@ -148,7 +128,7 @@ export const SelectChange = () => {
           changeOnSelect
           expandTrigger="hover"
           searchPlaceholder="请输入搜索内容"
-          data={dataOnlyLeafCheckable}
+          data={data}
         />
       </div>
     </>

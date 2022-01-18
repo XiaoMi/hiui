@@ -101,7 +101,7 @@ const getChildrenField = (node: any) => {
   return node.children
 }
 
-export const baseFlattenTree = <T extends BaseTreeNodeData>({
+export const baseFlattenTree = <T extends Record<string, any>>({
   tree,
   transform,
   childrenFieldName = getChildrenField,

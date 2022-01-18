@@ -53,19 +53,6 @@ export const Basic = () => {
     },
   ])
 
-  const getDataOnlyLeafCheckable = (data: any) => {
-    return data.map((item) => {
-      if (item.children) {
-        item.checkable = item.checkable ?? false
-        item.children = getDataOnlyLeafCheckable(item.children)
-      }
-
-      return item
-    })
-  }
-
-  const dataOnlyLeafCheckable = getDataOnlyLeafCheckable(data)
-
   return (
     <>
       <h1>Basic</h1>
@@ -75,7 +62,7 @@ export const Basic = () => {
           clearable
           placeholder="请选择品类"
           defaultValue={['手机', '红米', '红米4']}
-          data={dataOnlyLeafCheckable}
+          data={data}
           onChange={(...args) => {
             console.log('onChange', ...args)
           }}

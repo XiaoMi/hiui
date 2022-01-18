@@ -12,8 +12,6 @@ export const Async = () => {
         <PopConfirm
           title="Are U ok ?"
           visible={visible}
-          onClose={() => setVisible(false)}
-          popper={{ closeOnOutsideClick: false, closeOnEsc: false }}
           footer={[
             <Button key="1" type="default" size="small" onClick={() => setVisible(false)}>
               取消

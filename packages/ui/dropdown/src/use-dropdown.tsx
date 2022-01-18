@@ -5,7 +5,7 @@ import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useTimeout } from '@hi-ui/use-timeout'
 import { useUnmountEffect } from '@hi-ui/use-unmount-effect'
-import { PopperPortalProps } from '@hi-ui/popper'
+import { PopperOverlayProps } from '@hi-ui/popper'
 import { getPrefixStyleVar } from '@hi-ui/classname'
 import { mergeRefs } from '@hi-ui/react-utils'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
@@ -19,7 +19,7 @@ export const useDropdown = (props: UseDropdownProps) => {
     disabled = false,
     parents = NOOP_ARRAY,
     width,
-    popper,
+    overlay,
     ...rest
   } = props
 
@@ -131,9 +131,9 @@ export const useDropdown = (props: UseDropdownProps) => {
         ...props.style,
         [getPrefixStyleVar('dropdown-menu-width')]: isNumeric(width) ? width + 'px' : width,
       },
-      popper: {
-        ...popper,
-        ...props.popper,
+      overlay: {
+        ...overlay,
+        ...props.overlay,
         closeOnOutsideClick: true,
         visible: menuVisible,
         attachEl: triggerElementRef.current,
@@ -189,7 +189,7 @@ export interface UseDropdownProps {
   /**
    * 自定义控制 下拉 popper 行为
    */
-  popper?: Omit<PopperPortalProps, 'visible' | 'attachEl'>
+  overlay?: PopperOverlayProps
 }
 
 export type UseDropdownReturn = ReturnType<typeof useDropdown>
