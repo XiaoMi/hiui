@@ -62,7 +62,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         {children}
       </button>
     ) : (
-      <a ref={ref} role={role} className={cls} {...(rest as any)}>
+      <a ref={ref} role={role} href={href} className={cls} {...(rest as any)}>
         {prepend}
         {children}
       </a>
