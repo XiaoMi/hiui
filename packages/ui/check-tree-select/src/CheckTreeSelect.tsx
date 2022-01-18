@@ -18,6 +18,7 @@ import { uniqBy } from 'lodash'
 import { Highlighter } from '@hi-ui/highlighter'
 import { TagInputMock } from '@hi-ui/tag-input'
 import { UpOutlined, DownOutlined } from '@hi-ui/icons'
+import { HiBaseAppearanceEnum } from '@hi-ui/core'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -413,7 +414,7 @@ export interface CheckTreeSelectProps
   /**
    * 设置展现形式
    */
-  appearance?: 'outline' | 'unset' | 'filled'
+  appearance?: HiBaseAppearanceEnum
 }
 
 if (__DEV__) {

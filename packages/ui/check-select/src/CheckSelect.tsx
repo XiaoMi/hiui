@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCheckSelect, UseCheckSelectProps } from './use-check-select'
-import type { HiBaseHTMLProps } from '@hi-ui/core'
+import type { HiBaseAppearanceEnum, HiBaseHTMLProps } from '@hi-ui/core'
 import { PopperProps } from '@hi-ui/popper'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { CheckSelectProvider, useCheckSelectContext } from './context'
@@ -306,7 +306,7 @@ export interface CheckSelectProps extends Omit<PickerProps, 'trigger'>, UseCheck
   /**
    * 设置展现形式
    */
-  appearance?: 'outline' | 'unset' | 'filled'
+  appearance?: HiBaseAppearanceEnum
   /**
    * 节点搜索模式，仅在mode=normal模式下生效
    */

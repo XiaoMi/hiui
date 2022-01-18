@@ -1,5 +1,5 @@
 import React, { forwardRef, useState, useMemo, useEffect } from 'react'
-import type { HiBaseHTMLProps } from '@hi-ui/core'
+import type { HiBaseHTMLProps, HiBaseAppearanceEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -269,7 +269,7 @@ export interface CascaderProps
   /**
    * 设置展现形式
    */
-  appearance?: 'outline' | 'unset' | 'filled'
+  appearance?: HiBaseAppearanceEnum
 }
 
 if (__DEV__) {

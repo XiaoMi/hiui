@@ -12,7 +12,7 @@ export const Textarea = () => {
           onChange={(evt) => setValue(evt.target.value)}
           placeholder="请输入"
           rows={3}
-          appearance="outline"
+          appearance="line"
         />
         <br />
         <br />

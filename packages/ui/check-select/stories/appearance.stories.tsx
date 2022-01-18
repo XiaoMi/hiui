@@ -35,7 +35,7 @@ export const Appearance = () => {
             data={data}
             value={value}
             clearable
-            appearance="outline"
+            appearance="line"
             onChange={(value, targetItem) => {
               console.log('CheckSelect onChange: ', value, targetItem)
               setValue(value)

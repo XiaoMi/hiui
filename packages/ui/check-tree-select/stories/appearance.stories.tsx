@@ -107,7 +107,7 @@ export const Appearance = () => {
             data={data}
             value={value}
             clearable
-            appearance="outline"
+            appearance="line"
             onChange={(value, checkedNodes, currentNode) => {
               console.log('CheckTreeSelect onChange: ', value, checkedNodes, currentNode)
               setValue(value)

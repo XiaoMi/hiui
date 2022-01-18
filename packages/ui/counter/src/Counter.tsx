@@ -89,7 +89,7 @@ export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 设置展现形式
    */
-  appearance?: 'outline' | 'filled'
+  appearance?: 'line' | 'filled'
   /**
    * 设置计数器尺寸
    */

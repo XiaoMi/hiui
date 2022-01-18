@@ -23,6 +23,7 @@ import { useData, useFlattenData } from './hooks'
 import { SelectOption } from './SelectOption'
 import { SelectOptionGroup } from './SelectOptionGroup'
 import { uniqBy } from 'lodash'
+import { HiBaseAppearanceEnum } from '@hi-ui/core'
 
 const _role = 'select'
 const _prefix = getPrefixCls(_role)
@@ -248,7 +249,7 @@ export interface SelectProps
   /**
    * 设置展现形式
    */
-  appearance?: 'outline' | 'unset' | 'filled'
+  appearance?: HiBaseAppearanceEnum
   /**
    * 触发器输入框占位符
    */

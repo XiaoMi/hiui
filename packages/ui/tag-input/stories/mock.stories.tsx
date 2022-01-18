@@ -56,7 +56,7 @@ export const Mock = () => {
         <div>
           <h2>Outline</h2>
           <TagInputMock
-            appearance="outline"
+            appearance="line"
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></TagInputMock>
@@ -64,7 +64,7 @@ export const Mock = () => {
           <br />
           <TagInputMock
             size="sm"
-            appearance="outline"
+            appearance="line"
             clearable
             placeholder="请输入"
             value={value}
@@ -76,7 +76,7 @@ export const Mock = () => {
           <TagInputMock
             size="sm"
             focused
-            appearance="outline"
+            appearance="line"
             clearable
             placeholder="请输入"
             value={value}
@@ -87,7 +87,7 @@ export const Mock = () => {
           <br />
           <TagInputMock
             size="md"
-            appearance="outline"
+            appearance="line"
             focused
             placeholder="请输入"
             suffix={<DownOutlined />}
@@ -97,7 +97,7 @@ export const Mock = () => {
           <TagInputMock
             size="lg"
             invalid
-            appearance="outline"
+            appearance="line"
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></TagInputMock>
@@ -107,7 +107,7 @@ export const Mock = () => {
             size="lg"
             invalid
             focused
-            appearance="outline"
+            appearance="line"
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></TagInputMock>
@@ -115,7 +115,7 @@ export const Mock = () => {
           <br />
           <TagInputMock
             size="lg"
-            appearance="outline"
+            appearance="line"
             disabled
             placeholder="请输入"
             suffix={<DownOutlined />}

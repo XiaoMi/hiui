@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CloseCircleFilled } from '@hi-ui/icons'
-import type { HiBaseDataItem, HiBaseHTMLFieldProps } from '@hi-ui/core'
+import type { HiBaseAppearanceEnum, HiBaseDataItem, HiBaseHTMLFieldProps } from '@hi-ui/core'
 
 const _role = 'mock-input'
 const _prefix = getPrefixCls(_role)
@@ -31,7 +31,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
       invalid = false,
       readOnly = false,
       size = 'md',
-      appearance = 'outline',
+      appearance = 'line',
       clearableTrigger = 'hover',
       displayRender,
       suffix,
@@ -198,7 +198,7 @@ export type MockInputProps = HiBaseHTMLFieldProps<
     /**
      * 设置展现形式
      */
-    appearance?: 'outline' | 'unset' | 'filled'
+    appearance?: HiBaseAppearanceEnum
     /**
      * 设置输入框尺寸
      */
