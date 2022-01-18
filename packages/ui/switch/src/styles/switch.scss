@@ -9,7 +9,7 @@ $prefix: '#{$component-prefix}-switch' !default;
     box-shadow: 0 0 0 2px use-color-mode('primary-20');
   }
 
-  display: inline-block;
+  display: inline-flex;
   min-width: 40px;
   height: use-height-size('xs');
   border-radius: use-border-radius('full');

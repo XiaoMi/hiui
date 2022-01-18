@@ -18,6 +18,12 @@ $prefix: '#{$component-prefix}-tabs' !default;
     }
   }
 
+  &--card {
+    .#{$prefix}__content {
+      background-color: use-color-static('white');
+    }
+  }
+
   &__list {
     position: relative;
     font-size: use-text-size('normal');
