@@ -202,11 +202,11 @@ const data = [
   },
 ]
 
-const getDataOnlyLastCheckable = (data: any) => {
+const getDataOnlyLeafCheckable = (data: any) => {
   return data.map((item) => {
     if (item.children) {
       item.checkable = item.checkable ?? false
-      item.children = getDataOnlyLastCheckable(item.children)
+      item.children = getDataOnlyLeafCheckable(item.children)
     } else {
       item.checkable = true
     }
@@ -215,10 +215,10 @@ const getDataOnlyLastCheckable = (data: any) => {
   })
 }
 
-const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
+const dataOnlyLeafCheckable = getDataOnlyLeafCheckable(data)
 
 export const Search = () => {
-  console.log(dataOnlyLastCheckable)
+  console.log(dataOnlyLeafCheckable)
 
   return (
     <>
@@ -227,14 +227,14 @@ export const Search = () => {
         <CheckCascader
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
-          data={dataOnlyLastCheckable}
+          data={dataOnlyLeafCheckable}
           searchable
         />
       </div>
 
       <h1>Search with UpMatch</h1>
       <div className="cascader-search__wrap">
-        <CheckCascader upMatch data={dataOnlyLastCheckable} />
+        <CheckCascader upMatch data={dataOnlyLeafCheckable} />
       </div>
     </>
   )

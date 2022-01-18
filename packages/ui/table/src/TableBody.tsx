@@ -1,10 +1,12 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { TableRow } from './TableRow'
-import { useTableContext } from './context'
 import { useLatestCallback } from '@hi-ui/use-latest'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { EmptyState } from '@hi-ui/empty-state'
+import { TableRow } from './TableRow'
 import { TableRowRequiredProps } from './types'
+import { useTableContext } from './context'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -15,9 +17,9 @@ const _prefix = getPrefixCls(_role)
 export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
   ({ prefixCls = _prefix }, ref) => {
     const {
-      // columns,
+      columns,
       leafColumns,
-      firstRowElementRef,
+      measureRowElementRef,
       isExpandTreeRows,
       transitionData,
       getColgroupProps,
@@ -26,17 +28,13 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       onTableBodyScroll,
       maxHeight,
       canScroll,
-      // fixedColWidth,
+      hasAvgColumn,
+      avgRow,
+      hasSumColumn,
+      sumRow,
     } = useTableContext()
 
-    const cls = cx(`${prefixCls}__body`)
-
-    // const calcColPosition = (col, idx) => {
-    //   // TODO: 前缀和优化
-    //   return fixedColWidth
-    //     .slice(0, idx)
-    //     .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    // }
+    const cls = cx(`${prefixCls}-body`)
 
     const getRequiredProps = useLatestCallback(
       (id: React.ReactText): TableRowRequiredProps => {
@@ -52,16 +50,14 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       }
     )
 
-    // TODO: 空状态
-
+    // 外层增加 div 作为滚动容器
     return (
-      // 外层增加 div 作为滚动容器
       <div
         ref={scrollBodyElementRef}
         className={cls}
         onScroll={onTableBodyScroll}
         style={{
-          maxHeight: maxHeight || 'auto',
+          maxHeight: maxHeight !== undefined ? maxHeight : undefined,
           // maxHeight 小于 table 实际高度才出现纵向滚动条
           overflowY:
             maxHeight !== undefined &&
@@ -82,22 +78,46 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             })}
           </colgroup>
           <tbody>
-            {transitionData.map((row, index) => {
-              return (
-                <TableRow
-                  ref={index === 0 ? firstRowElementRef : null}
-                  // key={depth + index}
-                  key={row.id}
-                  // @ts-ignore
-                  rowIndex={index}
-                  rowData={row}
-                  setDragRowKey={() => {}}
-                  setDragStatus={() => {}}
-                  // expandedTree={isExpandTreeRows(row.id)}
-                  {...getRequiredProps(row.id)}
-                />
-              )
-            })}
+            {isArrayNonEmpty(transitionData) ? (
+              <>
+                {transitionData.map((row, index) => {
+                  return (
+                    <TableRow
+                      ref={index === 0 ? measureRowElementRef : null}
+                      // key={depth + index}
+                      key={row.id}
+                      // @ts-ignore
+                      rowIndex={index}
+                      rowData={row}
+                      // expandedTree={isExpandTreeRows(row.id)}
+                      {...getRequiredProps(row.id)}
+                    />
+                  )
+                })}
+                {hasSumColumn ? (
+                  <TableRow
+                    key={sumRow.id}
+                    rowIndex={transitionData.length}
+                    rowData={sumRow as any}
+                    isSumRow
+                  />
+                ) : null}
+                {hasAvgColumn ? (
+                  <TableRow
+                    key={avgRow.id}
+                    rowIndex={transitionData.length + 1}
+                    rowData={avgRow as any}
+                    isAvgRow
+                  />
+                ) : null}
+              </>
+            ) : (
+              // 空状态，colSpan 占满表格整行
+              renderEmptyContent({
+                className: `${prefixCls}-empty-content`,
+                colSpan: columns.length,
+              })
+            )}
           </tbody>
         </table>
       </div>
@@ -114,4 +134,17 @@ export interface TableBodyProps {
 
 if (__DEV__) {
   TableBody.displayName = 'TableBody'
+}
+
+/**
+ * 负责空状态渲染
+ */
+const renderEmptyContent = ({ className, colSpan }: { colSpan?: number; className?: string }) => {
+  return (
+    <tr className={className}>
+      <td colSpan={colSpan}>
+        <EmptyState />
+      </td>
+    </tr>
+  )
 }

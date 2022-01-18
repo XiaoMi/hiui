@@ -1,22 +1,23 @@
-import React, { forwardRef, useCallback, useMemo } from 'react'
+import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { TableBody } from './TableBody'
-import { TableHeader } from './TableHeader'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { useTable, UseTableProps } from './use-table'
-import { TableProvider } from './context'
-import { TableColumnItem, TableExtra } from './types'
-import { isFunction } from '@hi-ui/type-assertion'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { useCheck } from '@hi-ui/use-check'
 import { IconButton } from '@hi-ui/icon-button'
 import { PlusSquareOutlined, MinusSquareOutlined } from '@hi-ui/icons'
+import { isFunction } from '@hi-ui/type-assertion'
+import { TableBody } from './TableBody'
+import { TableHeader } from './TableHeader'
 import { defaultLoadingIcon } from './icons'
+import { TableExtra, TableColumnItem, HeaderRowFunc } from './types'
+import { TableProvider } from './context'
+import { uuid } from './utils'
+import { useTable, UseTableProps } from './use-table'
+import { useEmbedExpand, UseEmbedExpandProps } from './hooks/use-embed-expand'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
 
+export const EMBED_DATA_KEY = `TABLE_EMBED_DATA_KEY_${uuid()}`
 const DEFAULT_COLUMNS = [] as []
 
 /**
@@ -28,134 +29,77 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       prefixCls = _prefix,
       role = _role,
       className,
-      bordered: borderedProp,
       columns = DEFAULT_COLUMNS,
       striped = false,
-      rowExpandable = true,
-      expandEmbedRowKeys: expandEmbedRowKeysProp,
+      bordered: borderedProp,
+      // 内嵌面板
+      rowExpandable,
+      defaultExpandEmbedRowKeys,
+      expandEmbedRowKeys,
       onEmbedExpand,
       expandedRender,
+      // 其它
+      size,
       extra,
+      onHeaderRow,
+      stickyFooter,
       ...rest
     },
     ref
   ) => {
     // ********************** 内嵌式面板 *********************** //
 
-    /**
-     * 行内嵌面板展开
-     */
-    const [expandEmbedRows, trySetExpandEmbedRows] = useUncontrolledState(
-      [],
-      expandEmbedRowKeysProp,
-      onEmbedExpand
-    )
-
-    const [onExpandEmbedRowsChange, isExpandEmbedRows] = useCheck({
-      checkedIds: expandEmbedRows,
-      onCheck: trySetExpandEmbedRows,
+    const {
+      embedExpandable,
+      onEmbedSwitch,
+      isEmbedLoadingId,
+      getEmbedPanelById,
+      isExpandEmbedRows,
+      onExpandEmbedRowsChange,
+    } = useEmbedExpand({
+      defaultExpandEmbedRowKeys,
+      rowExpandable,
+      expandEmbedRowKeys,
+      onEmbedExpand,
+      expandedRender,
     })
-
-    // 异步展开内嵌面板
 
     /**
      * 表格列展开折叠操作区
      */
-    const getEmbedPanelColumn = useCallback(
+    const getEmbedPanelColumn = React.useCallback(
       (embedExpandable: any) => {
-        const renderSwitcher = ({
-          prefixCls,
-          rowExpand,
-          sticky,
-          expanded,
-          onNodeExpand,
-          expandIcon,
-          collapseIcon,
-        }: {
-          prefixCls: string
-          rowExpand: any
-          sticky: boolean
-          expanded: boolean
-          onNodeExpand: any
-          expandIcon: any
-          collapseIcon: any
-        }) => {
-          if (React.isValidElement(rowExpand)) {
-            return rowExpand
-          }
-
-          if (rowExpand) {
-            // @ts-ignore
-            if (expanded === 'loading') {
-              return (
-                <IconButton
-                  className={cx(`${prefixCls}__switcher`, `${prefixCls}__switcher--loading`)}
-                  icon={defaultLoadingIcon}
-                />
-              )
-            } else {
-              return (
-                <IconButton
-                  tabIndex={-1}
-                  className={cx(
-                    `${prefixCls}__switcher`,
-                    expanded
-                      ? `${prefixCls}__switcher--expanded`
-                      : `${prefixCls}__switcher--collapse`
-                  )}
-                  icon={expanded ? expandIcon : collapseIcon}
-                  onClick={() => onNodeExpand(!expanded)}
-                />
-              )
-            }
-          }
-
-          return null
-        }
-
         const embedPanelColumn: TableColumnItem = {
+          dataKey: EMBED_DATA_KEY,
           title: '',
-          dataKey: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           width: 50,
           align: 'center',
-          render: (_: any, rowItem: any, index: number) => {
-            // const rowKey = getRowKey(rowItem, index)
-            const rowKey = rowItem.id
-            const sticky = true
-            const rowExpand = isFunction(rowExpandable) ? rowExpandable(rowItem) : rowExpandable
-            const expanded = isExpandEmbedRows(rowKey)
+          render: (_: any, rowItem: any) => {
+            const { id: rowKey } = rowItem
+            const { rowExpandable } = embedExpandable
+            const rowExpand = isFunction(rowExpandable) ? rowExpandable(rowItem) : !!rowExpandable
 
-            const switcherIcon = renderSwitcher({
+            const expanded = isExpandEmbedRows(rowKey)
+            const loading = isEmbedLoadingId(rowKey)
+
+            return renderSwitcher({
               prefixCls,
               rowExpand,
-              sticky,
+              loading,
               expanded,
-              onNodeExpand: (shouldExpanded: boolean) => {
+              onSwitch: (shouldExpanded: boolean) => {
                 onExpandEmbedRowsChange(rowItem, shouldExpanded)
               },
               expandIcon: <MinusSquareOutlined />,
               collapseIcon: <PlusSquareOutlined />,
             })
-
-            return switcherIcon
           },
         }
 
         return embedPanelColumn
       },
-      [prefixCls, isExpandEmbedRows, onExpandEmbedRowsChange, rowExpandable]
+      [prefixCls, isExpandEmbedRows, onExpandEmbedRowsChange, isEmbedLoadingId]
     )
-
-    const embedExpandable = useMemo(() => {
-      if (!expandedRender) return false
-
-      return {
-        rowExpandable,
-        expandEmbedRowKeys: expandEmbedRowKeysProp,
-        onEmbedExpand,
-        expandedRender,
-      }
-    }, [rowExpandable, expandEmbedRowKeysProp, onEmbedExpand, expandedRender])
 
     const mergedColumns = React.useMemo(() => {
       if (embedExpandable) {
@@ -166,17 +110,17 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       return columns
     }, [embedExpandable, getEmbedPanelColumn, columns])
 
-    const providedValue = useTable({ ...rest, columns: mergedColumns, expandedRender })
+    const providedValue = useTable({ ...rest, columns: mergedColumns })
 
     const {
+      rootProps,
       bordered,
-      size,
       leftFrozenColKeys,
       rightFrozenColKeys,
       leftFixedColumnsWidth,
       rightFixedColumnsWidth,
-      scrollLeft,
-      scrollRight,
+      scrollSize,
+      getTableHeaderProps,
     } = providedValue
 
     const hasBorder = borderedProp ?? bordered
@@ -193,18 +137,20 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     )
 
     return (
-      <div ref={ref} role={role} className={cls}>
+      <div ref={ref} role={role} className={cls} {...rootProps}>
         <div className={`${prefixCls}__wrapper`}>
           <TableProvider
             value={{
               ...providedValue,
-              expandedRender,
-              // @ts-ignore
+              embedExpandable,
+              onEmbedSwitch,
               isExpandEmbedRows,
               onExpandEmbedRowsChange,
+              getEmbedPanelById,
+              isEmbedLoadingId,
             }}
           >
-            <div style={{ position: 'relative' }}>
+            <div {...getTableHeaderProps()}>
               <TableHeader prefixCls={`${prefixCls}-header`} />
 
               {/* 不跟随内部 header 横向滚动，固定到右侧 */}
@@ -219,7 +165,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           </TableProvider>
 
           {/* 左冻结列内侧阴影效果 */}
-          {scrollLeft > 0 && leftFrozenColKeys.length > 0 ? (
+          {scrollSize.scrollLeft > 0 && leftFrozenColKeys.length > 0 ? (
             <div
               className={`${prefixCls}-freeze-shadow  ${prefixCls}-freeze-shadow--left`}
               style={{ width: leftFixedColumnsWidth + 'px' }}
@@ -227,15 +173,27 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           ) : null}
 
           {/* 右冻结列内侧阴影效果 */}
-          {scrollRight > 0 && rightFrozenColKeys.length > 0 ? (
+          {scrollSize.scrollRight > 0 && rightFrozenColKeys.length > 0 ? (
             <div
               className={`${prefixCls}-freeze-shadow ${prefixCls}-freeze-shadow--right`}
               style={{ width: rightFixedColumnsWidth + 'px' }}
             />
           ) : null}
         </div>
-
-        {extraFooter}
+        <div
+          className={`${prefixCls}-footer`}
+          style={
+            stickyFooter
+              ? {
+                  position: 'sticky',
+                  bottom: 0,
+                  // boxShadow: '0 5px 15px 0 rgba(0, 0, 0, 0.1)'
+                }
+              : undefined
+          }
+        >
+          {extraFooter}
+        </div>
       </div>
     )
   }
@@ -243,10 +201,70 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
 export interface BaseTableProps
   extends Omit<HiBaseHTMLProps<'div'>, 'onDrop' | 'draggable' | 'onDragStart'>,
-    UseTableProps {
+    UseTableProps,
+    UseEmbedExpandProps {
   extra?: TableExtra
+  /**
+   *  是否展示为斑马纹效果
+   */
+  striped?: boolean
+  /**
+   * 行标题事件处理函数
+   */
+  onHeaderRow?: HeaderRowFunc
+  /**
+   *  数据为空时的展示内容
+   */
+  emptyContent?: React.ReactNode
+  /**
+   *  配置表格尺寸
+   */
+  size?: string
+  /**
+   * 底部吸底
+   */
+  stickyFooter?: boolean
 }
 
 if (__DEV__) {
   BaseTable.displayName = 'BaseTable'
+}
+
+const renderSwitcher = ({
+  prefixCls,
+  rowExpand,
+  loading,
+  expanded,
+  onSwitch,
+  expandIcon,
+  collapseIcon,
+}: any) => {
+  if (React.isValidElement(rowExpand)) {
+    return rowExpand
+  }
+
+  if (rowExpand === true) {
+    if (loading) {
+      return (
+        <IconButton
+          className={cx(`${prefixCls}__switcher`, `${prefixCls}__switcher--loading`)}
+          icon={defaultLoadingIcon}
+        />
+      )
+    }
+
+    return (
+      <IconButton
+        tabIndex={-1}
+        className={cx(
+          `${prefixCls}__switcher`,
+          `${prefixCls}__switcher--${expanded ? 'expanded' : 'collapse'}`
+        )}
+        icon={expanded ? expandIcon : collapseIcon}
+        onClick={() => onSwitch(!expanded)}
+      />
+    )
+  }
+
+  return null
 }

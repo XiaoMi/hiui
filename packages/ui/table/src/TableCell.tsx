@@ -1,22 +1,23 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
-import { useTableContext } from './context'
 import { times } from '@hi-ui/times'
-import { TableRowEventData, TableRowSelection } from './types'
+import { isObject, isFunction } from '@hi-ui/type-assertion'
 import { IconButton } from '@hi-ui/icon-button'
+import { useTableContext } from './context'
+import { TableRowEventData, FlattedTableRowData, FlattedTableColumnItemData } from './types'
 import {
   defaultCollapseIcon,
   defaultExpandIcon,
   defaultLeafIcon,
   defaultLoadingIcon,
 } from './icons'
-import { isObject, isFunction } from '@hi-ui/type-assertion'
 
 const _prefix = getPrefixCls('table-cell')
 
 /**
- * TODO: What is TableCell
+ * 表格 body 单元格渲染
  */
 export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>(
   (
@@ -24,27 +25,21 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       prefixCls = _prefix,
       className,
       column,
+      rowData,
       rowIndex,
-      depth,
-      columnIndex,
-      expandedTree,
-      // isTree,
+      isSwitcherCol = false,
+      expandedTree = false,
       // icons
       expandIcon = defaultExpandIcon,
       collapseIcon = defaultCollapseIcon,
       leafIcon = defaultLeafIcon,
-      rowData,
     },
     ref
   ) => {
     const {
-      // onHighlightedColChange,
       isHighlightedCol,
-      // prefixCls,
-      // @ts-ignore
       onLoadChildren,
-      // isHoveredCol,
-      // onHoveredColChange,
+      isHoveredHighlightCol,
       showColHighlight,
       onHoveredColChange,
       onTreeNodeSwitch,
@@ -52,83 +47,72 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       canScroll,
       isTree,
       cellRender,
+      isLoadingTreeNodeId,
     } = useTableContext()
 
-    const [loading] = React.useState(false)
-
-    const { raw: rawColumn, leftStickyWidth, rightStickyWidth } = column
-    const { render: rawRender, dataKey } = rawColumn
+    const { id: dataKey, leftStickyWidth, rightStickyWidth, render: rawRender } = column
+    const { depth, id: rowId } = rowData
 
     /**
      * normalize 单元格渲染内容，支持自定义 render
      */
     const cellContent = React.useMemo(() => {
-      let content = rowData.raw[dataKey]
+      const row = rowData.raw
+      let content = row[dataKey]
 
       if (isFunction(rawRender)) {
-        content = rawRender(content, rowData, rowIndex, dataKey)
+        content = rawRender(content, row, rowIndex, dataKey)
       } else if (isFunction(cellRender)) {
         content = cellRender(content)
       }
 
       //  处理单元格内容，重载支持配置式合并单元格
-      const isMergedCell = isObject(content) && !React.isValidElement(content)
+      const childrenMaybePropsReturn = isObject(content) && !React.isValidElement(content)
 
-      if (isMergedCell) {
+      if (childrenMaybePropsReturn) {
         return content
       }
 
       return {
         children: content,
         props: {
-          colSpan: '',
-          rowSpan: '',
+          colSpan: undefined,
+          rowSpan: undefined,
         },
       }
     }, [rawRender, dataKey, rowData, rowIndex, cellRender])
 
+    // 将被其它单元格（用户配置）合并，不进行渲染
     if (cellContent.props.colSpan === 0 || cellContent.props.rowSpan === 0) {
       return null
     }
 
-    // const cellTextAlign = alignRightColumns.includes(dataKey) ? 'right' : align
-
-    /**
-     * 点击展开节点时触发
-     */
-    const onNodeExpand = (shouldExpanded: boolean) => {
-      // console.log(shouldExpanded)
-
-      onTreeNodeSwitch(rowData, shouldExpanded)
-    }
-
+    const loading = isLoadingTreeNodeId(rowId)
     const sticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
 
     const cls = cx(
       prefixCls,
       className,
+      canScroll && sticky && `${prefixCls}__col--sticky`,
       isHighlightedCol(dataKey) && `${prefixCls}__col--highlight`,
-      // isHoveredCol(dataKey) && `${prefixCls}__col--hovered-highlight`,
-      canScroll && sticky && `${prefixCls}__col--sticky`
+      isHoveredHighlightCol(dataKey) && `${prefixCls}__col--hovered-highlight`
     )
-
-    // 交互：第一列为操作节点列
-    const isSwitcherCol = columnIndex === 0
 
     return (
       <td
+        ref={ref}
         key={dataKey}
         className={cls}
         {...getStickyColProps(column)}
         colSpan={cellContent.props.colSpan}
         rowSpan={cellContent.props.rowSpan}
-        // 按需绑定函数，避免频繁的 setState 特别消耗性能
-        onMouseEnter={showColHighlight ? () => onHoveredColChange(rawColumn, true) : undefined}
-        onMouseLeave={showColHighlight ? () => onHoveredColChange(rawColumn, false) : undefined}
+        // 按需绑定函数，避免频繁调用 setState 特别消耗性能
+        onMouseEnter={showColHighlight ? () => onHoveredColChange(column, true) : undefined}
+        onMouseLeave={showColHighlight ? () => onHoveredColChange(column, false) : undefined}
       >
-        {/* 渲染缩进 */}
+        {/* 渲染树形表格缩进 */}
         {isSwitcherCol && depth > 0 ? renderIndent({ depth, prefixCls }) : null}
-        {/* 渲染切换器 */}
+        {/* 渲染树形表格切换器 */}
         {isSwitcherCol
           ? renderSwitcher({
               prefixCls,
@@ -140,7 +124,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
               leafIcon,
               onLoadChildren,
               isTree,
-              onNodeExpand,
+              onNodeExpand: (shouldExpanded) => onTreeNodeSwitch(rowData, shouldExpanded),
             })
           : null}
         {cellContent.children}
@@ -149,28 +133,39 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
   }
 )
 
-export interface TableCellProps {
+export interface TableCellProps extends HiBaseHTMLProps<'td'> {
   /**
-   * 组件默认的选择器类
+   * 表格当前列配置信息
    */
-  prefixCls?: string
+  column: FlattedTableColumnItemData
   /**
-   * 列配置项
+   * 表格行数据
    */
-  // column: { raw: TableColumnItem }
-  fixedColWidth: number[]
-  rowSelection?: TableRowSelection
-  className?: any
-  column?: any
-  rowIndex?: any
-  depth?: any
-  columnIndex?: any
-  expandedTree?: any
-  isTree?: any
-  expandIcon?: any
-  collapseIcon?: any
-  leafIcon?: any
-  rowData?: any
+  rowData: FlattedTableRowData
+  /**
+   * 表格行数据下标
+   */
+  rowIndex: number
+  /**
+   * 是否展开树表格行
+   */
+  expandedTree?: boolean
+  /**
+   *  作为操作树节点展开列（数据第一列）
+   */
+  isSwitcherCol?: boolean
+  /**
+   * 节点收起时的默认图标
+   */
+  collapseIcon?: React.ReactNode
+  /**
+   * 节点展开时的默认图标
+   */
+  expandIcon?: React.ReactNode
+  /**
+   * 叶子结点的默认图标
+   */
+  leafIcon?: React.ReactNode
 }
 
 if (__DEV__) {
@@ -180,8 +175,8 @@ if (__DEV__) {
 /**
  * 渲染空白占位
  */
-const renderIndent = ({ prefixCls, depth }: any) => {
-  return times(depth, (index: number) => {
+const renderIndent = ({ prefixCls, depth }: { prefixCls?: string; depth: number }) => {
+  return times(depth, (index) => {
     return <span className={`${prefixCls}__indent`} key={index} />
   })
 }
@@ -201,7 +196,7 @@ const renderSwitcher = ({
   onLoadChildren,
   isTree,
 }: {
-  node: TableRowEventData
+  node: any
   prefixCls: string
   loading: boolean
   expanded: boolean
@@ -230,10 +225,13 @@ const renderSwitcher = ({
         tabIndex={-1}
         className={cx(
           `${prefixCls}__switcher`,
-          expanded ? `${prefixCls}__switcher--expanded` : `${prefixCls}__switcher--collapse`
+          `${prefixCls}__switcher--${expanded ? 'expanded' : 'collapse'}`
         )}
         icon={expanded ? expandIcon : collapseIcon}
-        onClick={() => onNodeExpand(!expanded)}
+        onClick={() => {
+          const shouldExpanded = !expanded
+          onNodeExpand(shouldExpanded)
+        }}
       />
     )
   }
@@ -242,12 +240,11 @@ const renderSwitcher = ({
     return (
       <IconButton
         tabIndex={-1}
-        icon={leafIcon}
         className={cx(`${prefixCls}__switcher`, `${prefixCls}__switcher--noop`)}
+        icon={leafIcon}
       />
     )
   }
 
   return null
-  // return renderIndent({ depth: 1, prefixCls })
 }

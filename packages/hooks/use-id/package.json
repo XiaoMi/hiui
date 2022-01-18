@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-id",
-  "version": "4.0.0-alpha.3",
+  "version": "4.0.0-alpha.4",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,7 +43,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "peerDependencies": {
-    "react": "^17.0.1"
+    "react": ">=16.8.6"
   },
   "devDependencies": {
     "@hi-ui/hi-build": "^4.0.0-alpha.4",

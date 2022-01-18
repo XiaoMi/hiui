@@ -101,11 +101,12 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
     onDelete
   )
 
-  const renderTitleWithEditable = (node: FlattedTreeNodeData) => {
+  const renderTitleWithEditable = (node: FlattedTreeNodeData, title?: React.ReactNode) => {
     return (
       <EditableTreeNodeTitle
         prefixCls={prefixCls}
         node={node}
+        title={title}
         placeholder={placeholder}
         menuOptions={menuOptions}
         onSave={saveEdit}
@@ -123,7 +124,10 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
   const proxyTitleRender = (node: TreeNodeEventData) => {
     if (titleRender) {
       const ret = titleRender(node)
-      if (ret && ret !== true) return ret
+
+      if (ret && ret !== true) {
+        return editable ? renderTitleWithEditable(node, ret) : ret
+      }
     }
 
     return editable ? renderTitleWithEditable(node) : true
@@ -182,7 +186,7 @@ export interface EditableTreeProps extends TreeProps {
 }
 
 const EditableTreeNodeTitle = (props: EditableTreeNodeTitleProps) => {
-  const { prefixCls, node } = props
+  const { prefixCls, node, title } = props
 
   // 如果是添加节点，则进入节点编辑临时态
   const [editing, editingAction] = useToggle(() => node.raw.type === TreeNodeType.ADD || false)
@@ -193,7 +197,7 @@ const EditableTreeNodeTitle = (props: EditableTreeNodeTitleProps) => {
 
   return (
     <div className={`${prefixCls}__title`}>
-      <span className="title__text">{node.title}</span>
+      <span className="title__text">{title || node.title}</span>
       <EditableNodeMenu {...props} editingAction={editingAction} />
     </div>
   )
@@ -201,6 +205,7 @@ const EditableTreeNodeTitle = (props: EditableTreeNodeTitleProps) => {
 
 interface EditableTreeNodeTitleProps {
   prefixCls: string
+  title?: React.ReactNode
   node: FlattedTreeNodeData
   expandedIds: React.ReactText[]
   onCancel: (node: FlattedTreeNodeData) => void

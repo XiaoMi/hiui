@@ -1,9 +1,6 @@
-// @ts-nocheck
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
-import { UseTableProps } from './use-table'
 import {
   LockOutlined,
   DownOutlined,
@@ -15,15 +12,15 @@ import { IconButton } from '@hi-ui/icon-button'
 import Popper from '@hi-ui/popper'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useTableContext } from './context'
+import { FlattedTableColumnItemData } from './types'
 
-const _role = 'TableColumnMenu'
 const _prefix = getPrefixCls('table-column-menu')
 
 /**
- * TODO: What is Table
+ * 表头每列下拉式菜单，包含冻结、高亮、递增、递减操作
  */
 export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenuProps>(
-  ({ prefixCls = _prefix, role = _role, className, columnKey, column, ...rest }, ref) => {
+  ({ prefixCls = _prefix, column }, ref) => {
     const {
       activeSorterType,
       activeSorterColumn,
@@ -35,15 +32,14 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
       onHighlightedColChange,
     } = useTableContext()
 
-    const canSort = !!column.raw.sorter
+    const { id: dataKey, raw: columnRaw } = column
+    const canSort = !!columnRaw.sorter
 
     const [menuVisible, menuVisibleAction] = useToggle()
-    const [menuTrigger, setMenuTrigger] = React.useState<HTMLDivElement | null>(null)
+    const [menuTrigger, setMenuTrigger] = React.useState<HTMLButtonElement | null>(null)
 
-    // TODO：处理 column 模型支持 cellRender，一直出 checkbox、expandIcon 高级选项
     return (
       <>
-        {/* @ts-ignore */}
         <IconButton
           className={`${prefixCls}__trigger`}
           ref={setMenuTrigger}
@@ -63,19 +59,20 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
             {canSort ? (
               <TableColumnMenuItem
                 prefixCls={prefixCls}
-                active={activeSorterType === 'ascend' && activeSorterColumn === columnKey}
+                active={activeSorterType === 'ascend' && activeSorterColumn === dataKey}
                 // {/* TODO: 国际化 */}
                 // {/* {localeDatas.table.ascend} */}
                 content={'递增'}
                 icon={<SortAscendingOutlined />}
-                onClick={() => {
-                  if (activeSorterType === 'ascend' && activeSorterColumn === columnKey) {
+                onSwitch={(shouldActive) => {
+                  if (shouldActive) {
+                    setActiveSorterType('ascend')
+                    setActiveSorterColumn(dataKey)
+                  } else {
                     setActiveSorterType(null)
                     setActiveSorterColumn(null)
-                  } else {
-                    setActiveSorterType('ascend')
-                    setActiveSorterColumn(columnKey)
                   }
+
                   menuVisibleAction.off()
                 }}
               />
@@ -84,19 +81,20 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
             {canSort ? (
               <TableColumnMenuItem
                 prefixCls={prefixCls}
-                active={activeSorterType === 'descend' && activeSorterColumn === columnKey}
+                active={activeSorterType === 'descend' && activeSorterColumn === dataKey}
                 // {/* TODO: 国际化 */}
                 // {/* {localeDatas.table.descend} */}
                 content={'递减'}
                 icon={<SortDescendingOutlined />}
-                onClick={() => {
-                  if (activeSorterType === 'descend' && activeSorterColumn === columnKey) {
+                onSwitch={(shouldActive) => {
+                  if (shouldActive) {
+                    setActiveSorterType('descend')
+                    setActiveSorterColumn(dataKey)
+                  } else {
                     setActiveSorterType(null)
                     setActiveSorterColumn(null)
-                  } else {
-                    setActiveSorterType('descend')
-                    setActiveSorterColumn(columnKey)
                   }
+
                   menuVisibleAction.off()
                 }}
               />
@@ -104,30 +102,32 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
 
             <TableColumnMenuItem
               prefixCls={prefixCls}
-              active={isHighlightedCol(columnKey)}
+              active={isHighlightedCol(dataKey)}
               // {/* TODO: 国际化 */}
               // {/* {localeDatas.table.highlight} */}
               content={'高亮'}
               icon={<ColumnHeightOutlined />}
-              onClick={() => {
-                onHighlightedColChange(column, !isHighlightedCol(columnKey))
+              onSwitch={(shouldActive) => {
+                onHighlightedColChange(column, shouldActive)
+
                 menuVisibleAction.off()
               }}
             />
 
             <TableColumnMenuItem
               prefixCls={prefixCls}
-              active={leftFreezeColumn === columnKey}
+              active={leftFreezeColumn === dataKey}
               // {/* TODO: 国际化 */}
               // {/* {localeDatas.table.freeze} */}
               content={'冻结'}
               icon={<LockOutlined />}
-              onClick={() => {
-                if (leftFreezeColumn === columnKey) {
-                  setLeftFreezeColumn(null)
+              onSwitch={(shouldActive) => {
+                if (shouldActive) {
+                  setLeftFreezeColumn(dataKey)
                 } else {
-                  setLeftFreezeColumn(columnKey)
+                  setLeftFreezeColumn('')
                 }
+
                 menuVisibleAction.off()
               }}
             />
@@ -138,22 +138,38 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
   }
 )
 
-export interface TableColumnMenuProps
-  extends Omit<HiBaseHTMLProps<'div'>, 'onDrop' | 'draggable' | 'onDragStart'>,
-    UseTableProps {
-  columnKey?: string
-  column?: object
+export interface TableColumnMenuProps {
+  /**
+   * 组件默认的选择器类
+   */
+  prefixCls?: string
+  /**
+   * 表格当前列配置信息
+   */
+  column: FlattedTableColumnItemData
 }
 
 if (__DEV__) {
   TableColumnMenu.displayName = 'TableColumnMenu'
 }
 
-export const TableColumnMenuItem = ({ prefixCls, active, onClick, content, icon }: any) => {
+export const TableColumnMenuItem = ({
+  prefixCls,
+  active,
+  onSwitch,
+  content,
+  icon,
+}: {
+  prefixCls?: string
+  active: boolean
+  onSwitch: (shouldActive: boolean) => void
+  icon?: React.ReactNode
+  content?: React.ReactNode
+}) => {
   return (
     <div
       className={cx(`${prefixCls}__item`, active && `${prefixCls}__item--active`)}
-      onClick={onClick}
+      onClick={() => onSwitch(!active)}
     >
       <span>{content}</span>
       {icon}

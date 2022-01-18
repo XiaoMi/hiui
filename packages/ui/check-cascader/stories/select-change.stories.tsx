@@ -123,11 +123,11 @@ const data = [
   },
 ]
 
-const getDataOnlyLastCheckable = (data: any) => {
+const getDataOnlyLeafCheckable = (data: any) => {
   return data.map((item) => {
     if (item.children) {
       item.checkable = item.checkable ?? false
-      item.children = getDataOnlyLastCheckable(item.children)
+      item.children = getDataOnlyLeafCheckable(item.children)
     } else {
       item.checkable = true
     }
@@ -136,7 +136,7 @@ const getDataOnlyLastCheckable = (data: any) => {
   })
 }
 
-const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
+const dataOnlyLeafCheckable = getDataOnlyLeafCheckable(data)
 
 export const SelectChange = () => {
   return (
@@ -147,7 +147,7 @@ export const SelectChange = () => {
           placeholder="请选择品类"
           changeOnSelect
           searchPlaceholder="请输入搜索内容"
-          data={dataOnlyLastCheckable}
+          data={dataOnlyLeafCheckable}
         />
       </div>
     </>

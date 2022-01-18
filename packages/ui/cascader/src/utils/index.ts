@@ -1,5 +1,6 @@
-import { flattenTree, getNodeAncestorsWithMe } from '@hi-ui/tree-utils'
+import { flattenTree, getTopDownAncestors } from '@hi-ui/tree-utils'
 import React from 'react'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import {
   CascaderItemRequiredProps,
   CascaderItemEventData,
@@ -19,13 +20,6 @@ export const flattenTreeData = (treeData: CascaderItem[]) => {
     flattedNode.disabled = disabled
     return flattedNode
   }) as FlattedCascaderItem[]
-}
-
-/**
- * 获取自顶向下的祖先节点，包括自己
- */
-export const getTopDownAncestors = (node: FlattedCascaderItem) => {
-  return getNodeAncestorsWithMe(node).reverse()
 }
 
 /**
@@ -82,8 +76,8 @@ export const getFlattedMenus = (
 }
 
 export const checkCanLoadChildren = (node: FlattedCascaderItem, onLoadChildren?: any) => {
-  const hasChildren = node.children && node.children.length > 0
-  return hasChildren || (onLoadChildren && !node.children && !node.isLeaf)
+  const hasChildren = isArrayNonEmpty(node.children)
+  return hasChildren || (onLoadChildren && !node.isLeaf && !node.children)
 }
 
 export function getCascaderItemEventData(

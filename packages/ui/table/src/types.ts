@@ -6,8 +6,8 @@ import { PaginationProps } from '@hi-ui/pagination'
 export type TableAlign = 'left' | 'right' | 'center'
 
 export type TableFrozenColumnOptions = {
-  left?: string
-  right?: string
+  left?: React.ReactText
+  right?: React.ReactText
 }
 
 export type TableExtra = {
@@ -37,7 +37,7 @@ export type TableRowSelection = {
     checkboxNode: React.ReactNode,
     rowItem: object,
     rowIndex: number,
-    dataKey: React.ReactText
+    dataKey: string
   ) => React.ReactNode
   /**
    * 全选配置集合
@@ -71,7 +71,9 @@ export type TableColumnItem = {
     rowItem: Record<string, any>,
     rowIndex: number,
     dataKey: string
-  ) => React.ReactNode
+  ) =>
+    | React.ReactNode
+    | { children: React.ReactNode; props: { colSpan?: number; rowSpan?: number } }
   // @DEPRECATED
   filterIcon?: React.ReactNode
   filterDropdownWidth?: number
@@ -97,39 +99,31 @@ export type TableDataSource = {
   transformResponse?: (response: object) => object[]
 }
 
-// export  interface TableDataSource extends AxiosRequestConfig<any> {
-
-// }
-
 export interface TablePaginationProps extends PaginationProps {
   // TODO： 建议统一关键词 center
   placement?: 'left' | 'middle'
 }
 
-export interface TableRowData {
+export interface TableRowData extends Record<string, any> {
   /**
    * 树节点唯一 id
    */
-  id: React.ReactText
-  /**
-   * 树节点唯一 id
-   */
-  // key: React.ReactText
-  /**
-   * 该节点的子节点列表
-   */
-  children?: TableRowData[]
-  /**
-   * 是否为叶子节点
-   */
-  isLeaf?: boolean
+  key?: React.ReactText
+  // /**
+  //  * 该节点的子节点列表
+  //  */
+  // children?: TableRowData[]
+  // /**
+  //  * 是否为叶子节点
+  //  */
+  // isLeaf?: boolean
 }
 
 export interface FlattedTableRowData extends TableRowData {
   /**
    * 树节点唯一 id
    */
-  // id: React.ReactText
+  id: React.ReactText
   /**
    * 该节点的子节点列表
    */
@@ -156,7 +150,7 @@ export interface FlattedTableColumnItemData extends TableColumnItem {
   /**
    * 树节点唯一 id
    */
-  // id: React.ReactText
+  id: string
   /**
    * 该节点的子节点列表
    */
@@ -177,15 +171,17 @@ export interface FlattedTableColumnItemData extends TableColumnItem {
    * 节点所在列表数据中的下标
    */
   pos?: number
+  leftStickyWidth?: number
+  rightStickyWidth?: number
 }
 
 export interface TableNodeRequiredProps {
-  expanded: boolean
-  checked: boolean
-  semiChecked: boolean
-  selected: boolean
-  loading: boolean
-  focused: boolean
+  // expanded: boolean
+  // checked: boolean
+  // semiChecked: boolean
+  // selected: boolean
+  // loading: boolean
+  // focused: boolean
 }
 
 export interface TableRowEventData extends FlattedTableRowData, TableNodeRequiredProps {}
@@ -208,3 +204,5 @@ export interface TableRowRequiredProps {
   loading: boolean
   focused: boolean
 }
+
+export type TableRowRecord = Record<string, any>

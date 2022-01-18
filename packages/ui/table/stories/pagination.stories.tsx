@@ -134,14 +134,13 @@ export const Pagination = () => {
       <h1>Pagination for Table</h1>
       <div className="table-pagination__wrap" style={{ width: 800 }}>
         <Table
-          fixedToColumn={'type'}
           pagination={{
             showTotal: true,
             showJumper: true,
             pageSize: 5,
             total: dataSource.length,
             current: paginationState.current,
-            onChange: (page, pre, size) => {
+            onChange: (page, pre, size = 5) => {
               console.log('onPaginationChange', page, pre, size)
 
               setPaginationState({

@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment, useMemo } from 'react'
+import React, { forwardRef, Fragment, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
 import Pagination from '@hi-ui/pagination'
@@ -8,19 +8,20 @@ import {
   TableRowEventData,
   TableRowSelection,
   FlattedTableRowData,
+  TableDataSource,
 } from './types'
 import { useColHidden } from './hooks/use-col-hidden'
 import { useColSorter } from './hooks/use-col-sorter'
 import { useTablePagination } from './hooks/use-pagination'
 import { withDefaultProps } from '@hi-ui/react-utils'
 import { TableSettingMenu } from './TableSettingMenu'
-import { AxiosRequestConfig } from 'axios'
 import Loading from '@hi-ui/loading'
 import Checkbox from '@hi-ui/checkbox'
 import { useTableCheck } from './hooks/use-check'
 import { isNullish } from '@hi-ui/type-assertion'
 import { cloneTree, flattenTree } from '@hi-ui/tree-utils'
 import { BaseTable, BaseTableProps } from './BaseTable'
+import { uuid } from './utils'
 
 const _prefix = getPrefixCls('table')
 
@@ -32,6 +33,7 @@ const STANDARD_PRESET = {
   showColMenu: true,
 }
 
+export const SELECTION_DATA_KEY = `SELECTION_DATA_KEY_${uuid()}`
 const DEFAULT_DATA = [] as []
 
 const DEFAULT_PAGINATION = {
@@ -55,6 +57,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       onHiddenColKeysChange,
       rowSelection,
       fieldKey = 'key',
+      stickyFooter = false,
       data = DEFAULT_DATA,
       ...rest
     },
@@ -93,8 +96,12 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     })
 
     const pagination = withDefaultProps(paginationProp, DEFAULT_PAGINATION)
+
     // 优化数据在一页内时，不展示 pagination 配置项
-    const hiddenPagination = !paginationProp || data.length < pagination.pageSize
+    const hiddenPagination =
+      !paginationProp ||
+      typeof pagination.pageSize !== 'number' ||
+      data.length < pagination.pageSize
 
     /**
      * 数据分页
@@ -105,12 +112,9 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       dataSource,
     })
 
-    /**
-     * 扁平化数据，支持树形 table
-     */
-    const flattedData = useMemo(() => {
-      // 获取 key 字段值
-      const getRowKeyField = (item: any) => {
+    // 获取 key 字段值
+    const getRowKeyField = useCallback(
+      (item: any) => {
         const val = item[fieldKey]
 
         invariant(
@@ -120,15 +124,21 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         )
 
         return val
-      }
+      },
+      [fieldKey]
+    )
 
+    /**
+     * 扁平化数据，支持树形 table
+     */
+    const flattedData = useMemo(() => {
       // 对于分页来讲，flattedData 应该是当前页的数据
       const clonedData = cloneTree(mergedData) as any
       return flattenTree(clonedData, (node: any) => {
         // 兼容老api，映射 key 为 id
         return { ...node, id: getRowKeyField(node.raw) }
       }) as FlattedTableRowData[]
-    }, [mergedData, fieldKey])
+    }, [mergedData, getRowKeyField])
 
     // ************************ 行多选 ************************ //
 
@@ -147,13 +157,13 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       isCheckedRowKey,
       onCheckedRowKeysChange,
       checkRowIsDisabledCheckbox,
-    } = useTableCheck({ rowSelection, flattedData })
+    } = useTableCheck({ rowSelection, flattedData, fieldKey })
 
     // 表格列多选操作区
     const getSelectionColumn = React.useCallback(
       (rowSelection: TableRowSelection) => {
         const renderCell = (_: any, rowItem: any, rowIndex: number) => {
-          const rowKey = rowItem.id
+          const rowKey = getRowKeyField(rowItem)
           const checked = isCheckedRowKey(rowKey)
           const disabledCheckbox = checkRowIsDisabledCheckbox(rowItem)
 
@@ -214,6 +224,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         }
 
         const selectionColumn: TableColumnItem = {
+          dataKey: SELECTION_DATA_KEY,
           width: checkboxColWidth,
           className: `${prefixCls}-selection-column`,
           title: renderSelectionTitleCell,
@@ -223,6 +234,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         return selectionColumn
       },
       [
+        getRowKeyField,
         checkedAll,
         semiChecked,
         tryCheckAllRow,
@@ -252,9 +264,11 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         <BaseTable
           ref={ref}
           {...baseTableProps}
+          stickyFooter={stickyFooter}
           prefixCls={prefixCls}
           columns={mergedColumns}
           data={mergedData}
+          fieldKey={fieldKey}
           extra={{
             header: setting ? (
               <TableSettingMenu
@@ -271,19 +285,20 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 setCacheHiddenColKeys={setCacheHiddenColKeys}
               />
             ) : null,
+            footer: hiddenPagination ? null : (
+              <Pagination
+                className={cx(
+                  `${prefixCls}-pagination`,
+                  pagination.placement &&
+                    `${prefixCls}-pagination--placement-${pagination.placement}`
+                )}
+                {...pagination}
+                current={currentPage}
+                onChange={trySetCurrentPage}
+              />
+            ),
           }}
         />
-        {hiddenPagination ? null : (
-          <Pagination
-            className={cx(
-              `${prefixCls}-pagination`,
-              pagination.placement && `${prefixCls}-pagination--placement-${pagination.placement}`
-            )}
-            {...pagination}
-            current={currentPage}
-            onChange={trySetCurrentPage}
-          />
-        )}
       </TableWrapper>
     )
   }
@@ -311,13 +326,17 @@ export interface TableProps extends Omit<BaseTableProps, 'extra' | 'role'> {
    */
   onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
   /**
-   *  异步数据源
-   */
-  dataSource?: (current: number) => AxiosRequestConfig<any>
-  /**
    *  表格分页配置项
    */
   pagination?: TablePaginationProps
+  /**
+   *  异步数据源，分页切换时加载数据
+   */
+  dataSource?: (current: number) => TableDataSource
+  /**
+   * 底部吸底
+   */
+  stickyFooter?: boolean
 }
 
 if (__DEV__) {

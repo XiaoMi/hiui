@@ -52,18 +52,18 @@ const data = [
   },
 ]
 
-const getDataOnlyLastCheckable = (data: any) => {
+const getDataOnlyLeafCheckable = (data: any) => {
   return data.map((item) => {
     if (item.children) {
       item.checkable = item.checkable ?? false
-      item.children = getDataOnlyLastCheckable(item.children)
+      item.children = getDataOnlyLeafCheckable(item.children)
     }
 
     return item
   })
 }
 
-const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
+const dataOnlyLeafCheckable = getDataOnlyLeafCheckable(data)
 
 export const Basic = () => {
   return (
@@ -74,7 +74,7 @@ export const Basic = () => {
           searchable={false}
           placeholder="请选择品类"
           defaultValue={['手机', '红米', '红米4']}
-          data={dataOnlyLastCheckable}
+          data={dataOnlyLeafCheckable}
         ></CheckCascader>
       </div>
     </>

@@ -25,54 +25,6 @@
   @return $result;
 }
 
-/// Use CSS variable
-/// @access public
-/// @Todo: switch to postcss
-/// @example:
-/// :root {
-///   --color-brand: #ff6700;
-/// }
-/// .modern {
-///   @include use-var(background-color, color-brand);
-/// }
-/// .modern-with-fallback {
-///   @include use-var(background-color, color-brand, #000);
-/// }
-/// .legacy {
-///   @include use-var(background-color, color-brand, #000, true);
-/// }
-/// .legacy-with-test {
-///   @include use-var(background-color, color-brand, #000, '.no-custom-properties');
-/// }
-@mixin use-var($property, $value, $fallback: false, $compatible-mode: false) {
-  // if fallback value given
-  @if $fallback {
-    // if need compatible selector
-    @if $compatible-mode {
-      @if type-of($compatible-mode) == string {
-        #{$property}: var(--#{$value}, #{$fallback});
-
-        #{$compatible-mode} & {
-          #{$property}: $fallback;
-        }
-      }
-
-      @else {
-        #{$property}: $fallback;
-        #{$property}: var(--#{$value}, #{$fallback});
-      }
-    }
-
-    @else {
-      #{$property}: var(--#{$value}, #{$fallback});
-    }
-  }
-
-  @else {
-    #{$property}: var(--#{$value});
-  }
-}
-
 // 换算标准，相对于默认根元素 fontSize，即 16px 计算
 // 采用 rem/em，为了实现较为灵活自动的响应式
 @function p($size) {

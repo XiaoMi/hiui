@@ -18,8 +18,7 @@ import { Checkbox } from '@hi-ui/checkbox'
 const _prefix = getPrefixCls('table-setting')
 
 /**
- * TODO: What is Table
- * 高级定制功能
+ * 表头右侧高级设置菜单（抽屉式）
  */
 export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMenuProps>(
   (
@@ -46,7 +45,6 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
           const nextCacheSortColKeys = [...prev]
           const [removed] = nextCacheSortColKeys.splice(info.dragIndex, 1)
           nextCacheSortColKeys.splice(info.dropIndex, 0, removed)
-          // console.log(nextCacheSortColKeys, info)
 
           return nextCacheSortColKeys
         })
@@ -71,8 +69,6 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
     }, [menuVisible, resetLatest])
 
     const onConfirm = () => {
-      // console.log('cacheHiddenColKeys', cacheHiddenColKeys, cacheSortedCols)
-
       // 触发 table 更新列显隐及排序
       setHiddenColKeys(cacheHiddenColKeys)
       setSortCols(cacheSortedCols)
@@ -81,7 +77,6 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
 
     const cls = cx(prefixCls)
 
-    // TODO：处理 column 模型支持 cellRender，一直出 checkbox、expandIcon 高级选项
     return (
       <div ref={ref} className={cls}>
         <IconButton icon={<SettingOutlined />} onClick={menuVisibleAction.not} />

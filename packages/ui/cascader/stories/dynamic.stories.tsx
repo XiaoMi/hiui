@@ -54,7 +54,7 @@ export const Dynamic = () => {
     <>
       <h1>Dynamic for Tree</h1>
       <div className="tree-basic__wrap">
-        <Cascader data={treeData} onLoadChildren={loadChildren}></Cascader>
+        <Cascader data={treeData} onLoadChildren={loadChildren} onChange={console.log}></Cascader>
       </div>
     </>
   )

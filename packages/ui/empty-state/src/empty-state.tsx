@@ -14,7 +14,7 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
       className,
       children,
       indicator = <DefaultIndicator />,
-      title,
+      title = '暂无数据',
       imageStyle,
       imageClassName,
       size = 'small',

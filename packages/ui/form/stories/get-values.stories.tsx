@@ -19,7 +19,9 @@ export const GetValues = () => {
           }}
           labelPlacement="left"
           labelWidth={80}
-          innerRef={formRef}
+          innerRef={(ref) => {
+            formRef.current = ref
+          }}
         >
           <FormItem
             label="手机号"

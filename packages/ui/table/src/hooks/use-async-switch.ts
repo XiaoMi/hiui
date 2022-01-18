@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { TableRowEventData } from '../types'
 import { addChildrenById, cloneTree } from '@hi-ui/tree-utils'
+import { useCheckState } from '@hi-ui/use-check-state'
 
 export const useAsyncSwitch = (
   setCascaderData: React.Dispatch<React.SetStateAction<any[]>>,
@@ -26,7 +27,9 @@ export const useAsyncSwitch = (
     [onLoadChildrenLatest, setCascaderData]
   )
 
-  const [loadingIds, addLoadingIds, removeLoadingIds] = useList<React.ReactText>()
+  const { state: loadingIds, add: addLoadingIds, remove: removeLoadingIds } = useCheckState<
+    React.ReactText
+  >()
   const onExpandLatest = useLatestCallback(onExpand)
 
   const onNodeSwitch = useCallback(
@@ -60,18 +63,4 @@ export const useAsyncSwitch = (
   const isLoadingId = (id: React.ReactText) => loadingIds.indexOf(id) !== -1
 
   return [isLoadingId, onNodeSwitch] as const
-}
-
-const useList = <T>(initialValue: T[] = []) => {
-  const [keyList, setKeyList] = useState<T[]>(initialValue)
-
-  const remove = useCallback((targetKey: T) => {
-    setKeyList((prev) => prev.filter((key) => key !== targetKey))
-  }, [])
-
-  const add = useCallback((targetKey: T) => {
-    setKeyList((prev) => (prev.indexOf(targetKey) === -1 ? prev.concat(targetKey) : prev))
-  }, [])
-
-  return [keyList, add, remove] as const
 }

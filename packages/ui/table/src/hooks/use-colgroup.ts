@@ -15,26 +15,23 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
     const clonedColumns = cloneTree(columns)
     let maxDepth = 0
 
-    // TODO: flattenTree 支持不带 id 的
-    // TODO: 支持多级表头
     // @ts-ignore
-    const flattedColumns = flattenTree(clonedColumns, (node, rootIndex) => {
+    const flattedColumns = flattenTree(clonedColumns, (node) => {
       if (node.depth > maxDepth) {
         maxDepth = node.depth
       }
+
+      const raw = node.raw as any
+
       return {
         ...node,
-        // @ts-ignore
-        width: node.raw.width,
-        // @ts-ignore
-        id: node.raw.dataKey,
-        // @ts-ignore
-        dataKey: node.raw.dataKey,
-        // @ts-ignore
-        title: node.raw.title,
-        // @ts-ignore
-        align: node.raw.align ?? 'left',
-        rootIndex,
+        id: raw.dataKey,
+        width: raw.width,
+        // TODO: remove it
+        dataKey: raw.dataKey,
+        title: raw.title,
+        align: raw.align ?? 'left',
+        render: raw.render,
       }
     })
 
@@ -47,17 +44,7 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
   }, [flattedColumns])
 
   const [mergedColumns, groupedColumns, leafColumns] = React.useMemo(() => {
-    // const preset: FlattedTableColumnItemData[] = [
-    //   rowSelection && {
-    //     type: 'checkbox',
-    //     width: 50,
-    //   },
-    //   expandedRender && {
-    //     type: 'embedPanel',
-    //   },
-    // ].filter(Boolean)
     const preset: FlattedTableColumnItemData[] = []
-    // console.log('flattedColumns', flattedColumns)
 
     const nextColumns = preset.concat(
       // @ts-ignore
@@ -82,13 +69,7 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
     const groupedColumns = groupByTreeDepth(nextColumns)
 
     return [nextColumns, groupedColumns, leafColumns] as const
-  }, [
-    // columns,
-    flattedColumns,
-    maxColumnDepth,
-    // rowSelection,
-    // expandedRender,
-  ])
+  }, [flattedColumns, maxColumnDepth])
 
   return {
     // getColgroupProps,

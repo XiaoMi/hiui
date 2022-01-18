@@ -1,8 +1,15 @@
-import { createContext, useContext } from 'react'
+import React, { createContext, useContext } from 'react'
+import { CascaderItemEventData, ExpandTrigger } from './types'
 
 import { UseCascaderReturn } from './use-cascader'
 
-const cascaderContext = createContext<Omit<UseCascaderReturn, 'rootProps'> | null>(null)
+const cascaderContext = createContext<
+  | (Omit<UseCascaderReturn, 'rootProps'> & {
+      expandTrigger: ExpandTrigger
+      titleRender: (item: CascaderItemEventData) => React.ReactNode
+    })
+  | null
+>(null)
 
 export const CascaderProvider = cascaderContext.Provider
 
