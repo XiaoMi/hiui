@@ -100,7 +100,11 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         {children?.length &&
           placement === 'horizontal' &&
           level === 1 &&
-          (expandedIds?.includes(id) ? <UpOutlined /> : <DownOutlined />)}
+          (expandedIds?.includes(id) ? (
+            <UpOutlined style={{ marginLeft: 4 }} />
+          ) : (
+            <DownOutlined style={{ marginLeft: 4 }} />
+          ))}
       </div>
       {/* 垂直菜单-纵向展开 */}
       {children?.length &&

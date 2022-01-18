@@ -163,7 +163,6 @@ $prefix: '#{$component-prefix}-menu' !default;
         text-overflow: ellipsis;
         white-space: nowrap;
         max-width: 100px;
-        margin-right: use-spacing(4);
       }
     }
   }
