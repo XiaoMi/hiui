@@ -154,13 +154,14 @@ $prefix: '#{$component-prefix}-upload' !default;
     position: relative;
     width: 100%;
     background: use-color('gray', 50);
-    min-height: 172px;
+    // min-height: 172px;
+    height: 88px;
     box-sizing: border-box;
     border: 2px dashed use-color('gray', 300);
     transition: border-color 0.3s;
     border-radius: use-border-radius('normal');
     cursor: pointer;
-    padding: use-spacing(6);
+    padding: use-spacing(10) use-spacing(6);
     margin-bottom: use-spacing(10);
 
     &:hover:not(.#{$prefix}--nohover) {
@@ -202,26 +203,25 @@ $prefix: '#{$component-prefix}-upload' !default;
     .drag-upload__desc {
       display: flex;
       flex-direction: column;
-      height: 172px;
       align-items: center;
       justify-content: center;
       font-size: use-text-size('normal');
       color: use-color-static('black');
 
       .drag-upload__title {
-        font-size: use-text-size('xl');
+        font-size: use-text-size('normal');
 
         [class^=hi-v4-icon] {
-          font-size: use-text-size('xxl');
+          font-size: use-text-size('lg');
           margin-right: use-spacing(4);
         }
       }
 
       .#{$prefix}__tips--single-line {
         padding: 0;
-        margin-top: use-spacing(5);
+        margin-top: use-spacing(2);
         color: use-color('gray', 500);
-        font-size: use-text-size('normal');
+        font-size: use-text-size('sm');
       }
 
       .icon {
