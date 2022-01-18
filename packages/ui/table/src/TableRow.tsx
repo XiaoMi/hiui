@@ -21,10 +21,10 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
     {
       prefixCls = _prefix,
       rowData: rowDataProp,
+      rowIndex,
       expandedTree,
       isSumRow, // 是否为合计行
       isAvgRow, // 是否为平均行
-      rowIndex,
     },
     ref
   ) => {
@@ -49,14 +49,6 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
     } = useTableContext()
 
     const { raw: rowData, id: rowId } = rowDataProp
-
-    // const rowExpand = rowExpandable && rowExpandable(rowData)
-
-    // const sticky = flattedColumnsWithoutChildren.some((item) => {
-    //   return (
-    //     typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
-    //   )
-    // })
 
     // ** ************** 拖拽管理 *************** *//
 
@@ -151,8 +143,6 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
     // 放置目标元素时触发事件
     const onDrop = React.useCallback(
       (evt: React.DragEvent) => {
-        // console.log(dragRowRef.current)
-
         if (!draggable) return
         if (!dragRowRef.current) return
 

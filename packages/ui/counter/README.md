@@ -32,7 +32,7 @@
 | ------------- | ------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | propName      | feature \| deprecated \| update | 变更了什么                                                 | 之前是什么样子，解决什么问题                                                          |
 | ----          | ----                            | ----                                                       | ----                                                                                  |
-| onChange      | update                          | (value: number)=>void -> (evt: Event, value: number)=>void | 1. onChange 来源众多，触发事件并不一致；2. 之前暴露的也是假的事件对象，不符合前端认知 |
+| onChange      | update                          | (evt: Event, value: number)=>void -> (value: number)=>void | 1. onChange 来源众多，触发事件并不一致；2. 之前暴露的也是假的事件对象，不符合前端认知 |
 | autoFocus     | feature                         | 表单控件组件统一支持是否自动聚焦                           |
 | focusOnStep   | feature                         | 强化功能，保持输入态聚焦                                   |
 | appearance    | feature                         | UI 适配线面型                                              |

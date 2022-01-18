@@ -1,6 +1,12 @@
 import React, { useMemo, useCallback } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { FlattedCascaderItem, CascaderItemRequiredProps, CascaderItemEventData } from './types'
+import { useCache } from '@hi-ui/use-cache'
+import {
+  FlattedCascaderItem,
+  CascaderItemRequiredProps,
+  CascaderItemEventData,
+  CascaderItem,
+} from './types'
 import {
   flattenTreeData,
   getActiveMenus,
@@ -8,12 +14,10 @@ import {
   getActiveNodePaths,
   checkCanLoadChildren,
 } from './utils'
-import { useCache, useSelect, useAsyncSwitch, useSearch } from './hooks'
-
-import { CascaderProps } from './Cascader'
+import { useSelect, useAsyncSwitch } from './hooks'
 
 const NOOP_ARRAY = [] as []
-const NOOP_VALUE = ''
+const NOOP_VALUE = [] as []
 
 export const useCascader = ({
   defaultValue = NOOP_VALUE,
@@ -22,15 +26,8 @@ export const useCascader = ({
   data = NOOP_ARRAY,
   disabled = false,
   changeOnSelect = false,
-  flatted: flattedProp = false,
-  upMatch = false,
-  expandTrigger = 'click',
-  emptyContent = '无匹配选项',
-  placeholder,
-  searchPlaceholder,
-  onSelect,
-  titleRender,
-  displayRender,
+  flatted = false,
+  onSelect: onSelectProp,
   onLoadChildren,
   // @ts-ignore
   cascaderData: cascaderDataProp,
@@ -38,10 +35,6 @@ export const useCascader = ({
   setCascaderData: setCascaderDataProp,
   // @ts-ignore
   flattedData: flattedDataProp,
-  // @ts-ignore
-  matchedItems: matchedItemsProp,
-  // @ts-ignore
-  inSearch: inSearchProp,
   ...rest
 }: UseCascaderProps) => {
   const [cacheData, setCacheData] = useCache(data)
@@ -55,18 +48,19 @@ export const useCascader = ({
 
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
 
-  const proxyTryChangeValue = useCallback(
-    (value: React.ReactText, item: CascaderItemEventData, itemPaths: FlattedCascaderItem[]) => {
-      tryChangeValue(value, item, itemPaths)
-      onSelect?.(value, item, itemPaths)
-    },
-    [tryChangeValue, onSelect]
-  )
+  const onSelect = (
+    value: React.ReactText,
+    item: CascaderItemEventData,
+    itemPaths: FlattedCascaderItem[]
+  ) => {
+    tryChangeValue(itemPaths.map(({ id }) => id))
+    onSelectProp?.(value, item, itemPaths)
+  }
 
   // 单击选中某项
   const [selectedId, onOptionSelect, setSelectedId] = useSelect(
     disabled,
-    proxyTryChangeValue,
+    onSelect,
     changeOnSelect,
     onLoadChildren
   )
@@ -99,25 +93,11 @@ export const useCascader = ({
     [onLoadChildren]
   )
 
-  const [inSearchInner, matchedItemsInner, inputProps, isEmpty, resetSearch] = useSearch(
-    flattedData,
-    upMatch,
-    isCanLoadChildren
-  )
-  const inSearch = inSearchProp ?? inSearchInner
-  const matchedItems = matchedItemsProp ?? matchedItemsInner
-
   const menuList = useMemo(() => {
-    if (inSearch) {
-      return [matchedItems]
-    }
-    return flattedProp
+    return flatted
       ? getFlattedMenus(flattedData, isCanLoadChildren)
       : getActiveMenus(flattedData, selectedId)
-  }, [inSearch, flattedProp, matchedItems, flattedData, selectedId, isCanLoadChildren])
-
-  // 搜索的结果列表也采用 flatted 模式进行展示
-  const flatted = flattedProp || inSearch
+  }, [flatted, flattedData, selectedId, isCanLoadChildren])
 
   const getCascaderItemRequiredProps = useCallback(
     ({ id, depth }: FlattedCascaderItem): CascaderItemRequiredProps => {
@@ -131,19 +111,9 @@ export const useCascader = ({
     [flatted, selectedId, selectedIds, isLoadingId]
   )
 
-  const getSearchInputProps = useCallback(
-    () => ({
-      placeholder: searchPlaceholder,
-      value: inputProps.value,
-      onChange: inputProps.onChange,
-    }),
-    [searchPlaceholder, inputProps]
-  )
-
   const reset = useCallback(() => {
-    resetSearch()
-    setSelectedId(value)
-  }, [setSelectedId, value, resetSearch])
+    setSelectedId(value[value.length - 1])
+  }, [setSelectedId, value])
 
   return {
     rootProps: rest,
@@ -152,24 +122,64 @@ export const useCascader = ({
     value,
     tryChangeValue,
     getCascaderItemRequiredProps,
-    expandTrigger,
     flatted,
     onItemClick: onItemExpand,
     onItemHover,
     changeOnSelect,
     onLoadChildren,
-    keyword: inputProps.value,
     disabled,
     menuList,
-    isEmpty,
-    placeholder,
-    displayRender,
-    titleRender,
-    emptyContent,
-    getSearchInputProps,
   }
 }
 
-export interface UseCascaderProps extends CascaderProps {}
+export interface UseCascaderProps {
+  /**
+   * 设置选择项数据源
+   */
+  data: CascaderItem[]
+  /**
+   * 设置当前选中值
+   */
+  value?: React.ReactText[]
+  /**
+   * 设置当前选中值默认值
+   */
+  defaultValue?: React.ReactText[]
+  /**
+   * 选中值改变时的回调
+   */
+  onChange?: (
+    value: React.ReactText[]
+    // @API：暂时不对外
+    // targetOption?: CascaderItemEventData,
+    // optionPaths?: FlattedCascaderItem[]
+  ) => void
+  /**
+   * 选中选项时触发，仅供内部使用
+   * @private
+   */
+  onSelect?: (
+    value: React.ReactText,
+    targetOption: CascaderItemEventData,
+    optionPaths: FlattedCascaderItem[]
+  ) => void
+  /**
+   * 是否禁止使用
+   */
+  disabled?: boolean
+  /**
+   * 是否启用选择即改变功能
+   */
+  changeOnSelect?: boolean
+  /**
+   * 将选项拍平展示，不支持 `onLoadChildren` 异步加载交互
+   * @private
+   */
+  flatted?: boolean
+  /**
+   * 异步请求更新数据
+   */
+  onLoadChildren?: (item: CascaderItemEventData) => Promise<CascaderItem[] | void> | void
+}
 
 export type UseCascaderReturn = ReturnType<typeof useCascader>

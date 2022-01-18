@@ -12373,8 +12373,8 @@ pinkie@^2.0.0:
 
 pinyin-match@^1.2.2:
   version "1.2.2"
-  resolved "https://registry.nlark.com/pinyin-match/download/pinyin-match-1.2.2.tgz#24a60a5bce89fb2903f33f37492782d3f8e34eeb"
-  integrity sha1-JKYKW86J+ykD8z83SSeC0/jjTus=
+  resolved "https://registry.yarnpkg.com/pinyin-match/-/pinyin-match-1.2.2.tgz#24a60a5bce89fb2903f33f37492782d3f8e34eeb"
+  integrity sha512-C0yOq4LkToJMkDHiQFKOY69El2GRcwdS2lVEjgWjIV8go3wE4mloGFNkVicGHFGYHDg523m2/lKzW8Hh+JR9nw==
   dependencies:
     rollup "^2.44.0"
 

@@ -94,23 +94,24 @@
 
 ## CHANGELOG
 
-| 参数               | 变更类型                        | 变更内容                              | 解决的问题                                                                           |
-| ------------------ | ------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------ |
-| propName           | feature \| deprecated \| update | 变更了什么                            | 之前是什么样子，解决什么问题                                                         |
-| ----               | ----                            | ----                                  | ----                                                                                 |
-| value              | update                          | 类型 string[] => string[] \| number[] | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）       |
-| defaultValue       | update                          | 类型 string[] => string[] \| number[] | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）       |
-| id                 | update                          | 类型 string => string \| number       | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）       |
-| bordered           | deprecated                      | 字段 `bordered` => `appearance`       | 对于 Picker 类型的组件，统一使用 appearance 设置外形（线\面\无边框）值               |
-| content            | deprecated                      | 字段 `content` => `title`             | 对于 DataItem 模型数据，统一使用 title                                               |
-| searchPlaceholder  | feature                         | -                                     | Picker 类型组件统一支持                                                              |
-| loadingContent     | feature                         | -                                     | Picker 类型组件统一支持，适配新 UI                                                   |
-| popper             | feature                         | -                                     | Picker 类型组件统一支持，聚合管理。比如： placement，之前有的加了有的没加            |
-| onLoadChildren     | feature                         | -                                     | 树形数据懒加载统一方案，并强化返回值 Promise 功能，保持一致，替代 onActiveItemChange |
-| onActiveItemChange | deprecated                      | -                                     | 使用 onLoadChildren 替代                                                             |
-| flatted            | feature                         | -                                     | 支持级联数据扁平模式展示，只展示可选的选项                                           |
-| upMatch            | feature                         | -                                     | 支持向上查找路径                                                                     |
-| titleRender        | feature                         | -                                     | 统一支持自定义渲染每一项                                                             |
-| filterOption       | feature                         | -                                     | 统一支持自定义过滤                                                                   |
-| dataSource         | feature                         | -                                     | 统一支持异步数据加载                                                                 |
-| appearance         | feature                         | -                                     | 统一支持：线性\面性\无边框                                                           |
+| 参数               | 变更类型                        | 变更内容                                                                                                        | 解决的问题                                                                           |
+| ------------------ | ------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| propName           | feature \| deprecated \| update | 变更了什么                                                                                                      | 之前是什么样子，解决什么问题                                                         |
+| ----               | ----                            | ----                                                                                                            | ----                                                                                 |
+| value              | update                          | 类型 string[] => string[] \| number[]                                                                           | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）       |
+| defaultValue       | update                          | 类型 string[] => string[] \| number[]                                                                           | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）       |
+| id                 | update                          | 类型 string => string \| number                                                                                 | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）       |
+| bordered           | deprecated                      | 字段 `bordered` => `appearance`                                                                                 | 对于 Picker 类型的组件，统一使用 appearance 设置外形（线\面\无边框）值               |
+| content            | deprecated                      | 字段 `content` => `title`                                                                                       | 对于 DataItem 模型数据，统一使用 title                                               |
+| searchPlaceholder  | feature                         | -                                                                                                               | Picker 类型组件统一支持                                                              |
+| loadingContent     | feature                         | -                                                                                                               | Picker 类型组件统一支持，适配新 UI                                                   |
+| popper             | feature                         | -                                                                                                               | Picker 类型组件统一支持，聚合管理。比如： placement，之前有的加了有的没加            |
+| onLoadChildren     | feature                         | -                                                                                                               | 树形数据懒加载统一方案，并强化返回值 Promise 功能，保持一致，替代 onActiveItemChange |
+| onActiveItemChange | deprecated                      | -                                                                                                               | 使用 onLoadChildren 替代                                                             |
+| flatted            | feature                         | -                                                                                                               | 支持级联数据扁平模式展示，只展示可选的选项                                           |
+| upMatch            | feature                         | -                                                                                                               | 支持向上查找路径                                                                     |
+| titleRender        | feature                         | -                                                                                                               | 统一支持自定义渲染每一项                                                             |
+| filterOption       | feature                         | -                                                                                                               | 统一支持自定义过滤                                                                   |
+| dataSource         | feature                         | -                                                                                                               | 统一支持异步数据加载                                                                 |
+| appearance         | feature                         | -                                                                                                               | 统一支持：线性\面性\无边框                                                           |
+| displayRender      | feature                         | (value: string[]) => string -> (item: CascaderItemEventData, items: CascaderItemEventData[]) => React.ReactNode | 支持自定义节点渲染                                                                   |

@@ -1,7 +1,8 @@
 import React from 'react'
 import Cascader from '../src'
+import pinyinMatch from 'pinyin-match'
 
-export const DisplayRender = () => {
+export const FilterOptions = () => {
   const [data] = React.useState([
     {
       id: '手机',
@@ -53,38 +54,19 @@ export const DisplayRender = () => {
     },
   ])
 
-  const getDataOnlyLeafCheckable = (data: any) => {
-    return data.map((item) => {
-      if (item.children) {
-        item.checkable = item.checkable ?? false
-        item.children = getDataOnlyLeafCheckable(item.children)
-      }
-
-      return item
-    })
-  }
-
-  const dataOnlyLeafCheckable = getDataOnlyLeafCheckable(data)
-
-  console.log(dataOnlyLeafCheckable)
-
   return (
     <>
-      <h1>DisplayRender</h1>
-      <div className="cascader-display-render__wrap">
+      <h1>FilterOptions</h1>
+      <div className="select-filter-options__wrap">
         <Cascader
-          placeholder="请选择品类"
-          defaultValue={['手机', '红米', '红米4']}
-          data={dataOnlyLeafCheckable}
-          displayRender={(option) => {
-            const titleArr = []
-            while (option.parent) {
-              titleArr.push(option.title)
-              option = option.parent
-            }
-            return titleArr.reverse().join(' | ')
+          clearable={false}
+          style={{ width: 200 }}
+          data={data}
+          searchPlaceholder="拼音检索"
+          filterOption={(keyword, item) => {
+            return !!pinyinMatch.match(item.title as string, keyword)
           }}
-        ></Cascader>
+        />
       </div>
     </>
   )

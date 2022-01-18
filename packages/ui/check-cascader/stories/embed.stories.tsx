@@ -86,11 +86,11 @@ const data = [
   },
 ]
 
-const getDataOnlyLastCheckable = (data: any) => {
+const getDataOnlyLeafCheckable = (data: any) => {
   return data.map((item) => {
     if (item.children) {
       item.checkable = item.checkable ?? false
-      item.children = getDataOnlyLastCheckable(item.children)
+      item.children = getDataOnlyLeafCheckable(item.children)
     } else {
       item.checkable = true
     }
@@ -99,16 +99,16 @@ const getDataOnlyLastCheckable = (data: any) => {
   })
 }
 
-const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
+const dataOnlyLeafCheckable = getDataOnlyLeafCheckable(data)
 
 export const Embed = () => {
-  console.log(dataOnlyLastCheckable)
+  console.log(dataOnlyLeafCheckable)
 
   return (
     <>
       <h1>Embed</h1>
       <div className="cascader-basic__wrap">
-        <CheckCascaderPanel defaultValue={['手机', '红米', '红米4']} data={dataOnlyLastCheckable} />
+        <CheckCascaderPanel defaultValue={['手机', '红米', '红米4']} data={dataOnlyLeafCheckable} />
       </div>
     </>
   )

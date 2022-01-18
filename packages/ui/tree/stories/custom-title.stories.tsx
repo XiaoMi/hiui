@@ -1,6 +1,5 @@
 import React from 'react'
-import Tree from '../src'
-import { TreeNodeData } from '../src/TreeNode'
+import Tree, { TreeNodeData } from '../src'
 
 export const CustomTitle = () => {
   const [treeData, setTreeData] = React.useState([
@@ -45,7 +44,7 @@ export const CustomTitle = () => {
     },
   ])
 
-  const CustomTreeNodeTitle = (node: TreeNodeData) => {
+  const renderTreeNodeTitle = (node: TreeNodeData) => {
     return (
       <div
         style={{
@@ -76,7 +75,7 @@ export const CustomTitle = () => {
     <>
       <h1>CustomTitle for Tree</h1>
       <div className="tree-basic__wrap">
-        <Tree data={treeData} titleRender={CustomTreeNodeTitle}></Tree>
+        <Tree data={treeData} titleRender={renderTreeNodeTitle}></Tree>
       </div>
     </>
   )

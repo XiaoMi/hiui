@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import { CascaderItemEventData, FlattedCascaderItem } from '../types'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { checkCanLoadChildren, getTopDownAncestors } from '../utils'
+import { getTopDownAncestors } from '@hi-ui/tree-utils'
+import { checkCanLoadChildren } from '../utils'
 
 /**
  * 用于选中的 hook

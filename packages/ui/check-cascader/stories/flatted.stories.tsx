@@ -86,11 +86,11 @@ const data = [
   },
 ]
 
-const getDataOnlyLastCheckable = (data: any) => {
+const getDataOnlyLeafCheckable = (data: any) => {
   return data.map((item) => {
     if (item.children) {
       item.checkable = item.checkable ?? false
-      item.children = getDataOnlyLastCheckable(item.children)
+      item.children = getDataOnlyLeafCheckable(item.children)
     } else {
       item.checkable = true
     }
@@ -99,16 +99,16 @@ const getDataOnlyLastCheckable = (data: any) => {
   })
 }
 
-const dataOnlyLastCheckable = getDataOnlyLastCheckable(data)
+const dataOnlyLeafCheckable = getDataOnlyLeafCheckable(data)
 
 export const Flatted = () => {
-  console.log(dataOnlyLastCheckable)
+  console.log(dataOnlyLeafCheckable)
 
   return (
     <>
       <h1>Flatted</h1>
       <div className="cascader-flatted__wrap">
-        <CheckCascader flatted data={dataOnlyLastCheckable} />
+        <CheckCascader flatted data={dataOnlyLeafCheckable} />
       </div>
     </>
   )
