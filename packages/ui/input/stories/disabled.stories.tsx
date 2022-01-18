@@ -7,7 +7,7 @@ export const Disabled = () => {
       <h1>Disabled for Input</h1>
       <div className="input-disabled__wrap">
         <div>
-          <Input appearance="outline" disabled placeholder="请输入"></Input>
+          <Input appearance="line" disabled placeholder="请输入"></Input>
           <br />
           <br />
           <Input appearance="unset" disabled placeholder="请输入"></Input>
@@ -18,7 +18,7 @@ export const Disabled = () => {
         <br />
         <br />
         <div>
-          <Input invalid appearance="outline" disabled placeholder="请输入"></Input>
+          <Input invalid appearance="line" disabled placeholder="请输入"></Input>
           <br />
           <br />
           <Input invalid appearance="unset" disabled placeholder="请输入"></Input>

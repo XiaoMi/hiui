@@ -13,6 +13,7 @@ import { uniqBy } from 'lodash'
 import { Highlighter } from '@hi-ui/highlighter'
 import { MockInput } from '@hi-ui/input'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
+import { HiBaseAppearanceEnum } from '@hi-ui/core'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -372,7 +373,7 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' |
   /**
    * 设置展现形式
    */
-  appearance?: 'outline' | 'unset' | 'filled'
+  appearance?: HiBaseAppearanceEnum
 }
 
 if (__DEV__) {

@@ -126,7 +126,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   }
 
   &--appearance {
-    &-outline {
+    &-line {
       border-color: use-color('gray', 300);
 
       &:not(.disabled):hover {
@@ -206,7 +206,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
       }
     }
 
-    &-outline,
+    &-line,
     &-unset,
     &-filled {
       &.disabled {
@@ -214,7 +214,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
       }
     }
 
-    &-outline,
+    &-line,
     &-filled {
       &.disabled {
         background-color: use-color('gray', 200);

@@ -14,25 +14,25 @@
 
 ## Input Props
 
-| 参数             | 说明                                              | 类型                             | 可选值                                                                 | 默认值  |
-| ---------------- | ------------------------------------------------- | -------------------------------- | ---------------------------------------------------------------------- | ------- |
-| value            | 设置输入框的值                                    | string                           | -                                                                      | -       |
-| defaultValue     | 设置输入框的默认值                                | string                           | -                                                                      | -       |
-| type             | 设置输入框类型                                    | string                           | 'text' \| 'textarea' \| 'id' \| 'tel' \| 'card' \| 'amount' \| 'email' | 'text'  |
-| prepend          | 输入框前置外部内容                                | ReactNode                        | -                                                                      | -       |
-| append           | 输入框后置外部内容                                | ReactNode                        | -                                                                      | -       |
-| disabled         | 是否禁用                                          | boolean                          | true \| false                                                          | false   |
-| clearable        | 是否可清空                                        | boolean                          | true \| false                                                          | false   |
-| placeholder      | 输入框占位符                                      | string                           | -                                                                      | -       |
-| readOnly         | 开启输入框只读                                    | boolean                          | true \| false                                                          | false   |
-| autoFocus        | 开启输入框自动聚焦                                | boolean                          | true \| false                                                          | false   |
-| maxLength        | 输入最大长度                                      | number                           | -                                                                      | -       |
-| prefix           | 输入框内置内容                                    | ReactNode                        | -                                                                      | -       |
-| suffix           | 输入框后置内容                                    | ReactNode                        | -                                                                      | -       |
-| trimValueOnBlur  | 开启失焦时触发对值的 trim，将触发 onChange 给用户 | boolean                          | true \| false                                                          | false   |
-| clearableTrigger | 清除按钮展示的触发形态                            | string                           | 'always'                                                               | 'hover' | 'hover' |
-| appearance       | 设置展现形式                                      | 'outline' \| 'unset' \| 'filled' | 'outline'                                                              |
-| size             | 设置尺寸                                          | string                           | 'sm' \| 'md' \| 'lg'                                                   | 'md'    |
+| 参数             | 说明                                              | 类型                          | 可选值                                                                 | 默认值  |
+| ---------------- | ------------------------------------------------- | ----------------------------- | ---------------------------------------------------------------------- | ------- |
+| value            | 设置输入框的值                                    | string                        | -                                                                      | -       |
+| defaultValue     | 设置输入框的默认值                                | string                        | -                                                                      | -       |
+| type             | 设置输入框类型                                    | string                        | 'text' \| 'textarea' \| 'id' \| 'tel' \| 'card' \| 'amount' \| 'email' | 'text'  |
+| prepend          | 输入框前置外部内容                                | ReactNode                     | -                                                                      | -       |
+| append           | 输入框后置外部内容                                | ReactNode                     | -                                                                      | -       |
+| disabled         | 是否禁用                                          | boolean                       | true \| false                                                          | false   |
+| clearable        | 是否可清空                                        | boolean                       | true \| false                                                          | false   |
+| placeholder      | 输入框占位符                                      | string                        | -                                                                      | -       |
+| readOnly         | 开启输入框只读                                    | boolean                       | true \| false                                                          | false   |
+| autoFocus        | 开启输入框自动聚焦                                | boolean                       | true \| false                                                          | false   |
+| maxLength        | 输入最大长度                                      | number                        | -                                                                      | -       |
+| prefix           | 输入框内置内容                                    | ReactNode                     | -                                                                      | -       |
+| suffix           | 输入框后置内容                                    | ReactNode                     | -                                                                      | -       |
+| trimValueOnBlur  | 开启失焦时触发对值的 trim，将触发 onChange 给用户 | boolean                       | true \| false                                                          | false   |
+| clearableTrigger | 清除按钮展示的触发形态                            | string                        | 'always'                                                               | 'hover' | 'hover' |
+| appearance       | 设置展现形式                                      | 'line' \| 'unset' \| 'filled' | 'line'                                                                 |
+| size             | 设置尺寸                                          | string                        | 'sm' \| 'md' \| 'lg'                                                   | 'md'    |
 
 ## Input Events
 
@@ -42,19 +42,19 @@
 
 ## TextArea Props
 
-| 参数            | 说明                                              | 类型                             | 可选值               | 默认值 |
-| --------------- | ------------------------------------------------- | -------------------------------- | -------------------- | ------ |
-| value           | 设置输入框的值                                    | string                           | -                    | -      |
-| defaultValue    | 设置输入框的默认值                                | string                           | -                    | -      |
-| appearance      | 设置展现形式                                      | 'outline' \| 'unset' \| 'filled' | 'outline'            |
-| size            | 设置尺寸                                          | string                           | 'sm' \| 'md' \| 'lg' | 'md'   |
-| disabled        | 是否禁用                                          | boolean                          | true \| false        | false  |
-| placeholder     | 输入框占位符                                      | string                           | -                    | -      |
-| readOnly        | 开启输入框只读                                    | boolean                          | true \| false        | false  |
-| autoFocus       | 开启输入框自动聚焦                                | boolean                          | true \| false        | false  |
-| maxLength       | 输入最大长度                                      | number                           | -                    | -      |
-| trimValueOnBlur | 开启失焦时触发对值的 trim，将触发 onChange 给用户 | boolean                          | true \| false        | false  |
-| rows            | 设置文本域行数，超出触发滚动                      | number                           | -                    | -      |
+| 参数            | 说明                                              | 类型                          | 可选值               | 默认值 |
+| --------------- | ------------------------------------------------- | ----------------------------- | -------------------- | ------ |
+| value           | 设置输入框的值                                    | string                        | -                    | -      |
+| defaultValue    | 设置输入框的默认值                                | string                        | -                    | -      |
+| appearance      | 设置展现形式                                      | 'line' \| 'unset' \| 'filled' | 'line'               |
+| size            | 设置尺寸                                          | string                        | 'sm' \| 'md' \| 'lg' | 'md'   |
+| disabled        | 是否禁用                                          | boolean                       | true \| false        | false  |
+| placeholder     | 输入框占位符                                      | string                        | -                    | -      |
+| readOnly        | 开启输入框只读                                    | boolean                       | true \| false        | false  |
+| autoFocus       | 开启输入框自动聚焦                                | boolean                       | true \| false        | false  |
+| maxLength       | 输入最大长度                                      | number                        | -                    | -      |
+| trimValueOnBlur | 开启失焦时触发对值的 trim，将触发 onChange 给用户 | boolean                       | true \| false        | false  |
+| rows            | 设置文本域行数，超出触发滚动                      | number                        | -                    | -      |
 
 ## TextArea Events
 

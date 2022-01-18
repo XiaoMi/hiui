@@ -228,7 +228,7 @@ $prefix: '#{$component-prefix}-input' !default;
   }
 
   &--appearance {
-    &-outline {
+    &-line {
       .#{$prefix}__inner {
         border-color: use-color('gray', 300);
 
@@ -401,7 +401,7 @@ $prefix: '#{$component-prefix}-input' !default;
       }
     }
 
-    &-outline,
+    &-line,
     &-unset,
     &-filled,
     &-underline {
@@ -533,7 +533,7 @@ textarea.#{$prefix} {
   }
 
   &--appearance {
-    &-outline {
+    &-line {
       border-color: use-color('gray', 300);
 
       &:not(.disabled):hover {
@@ -637,7 +637,7 @@ textarea.#{$prefix} {
       }
     }
 
-    &-outline,
+    &-line,
     &-unset,
     &-filled,
     &-underline {

@@ -53,3 +53,13 @@ export type HiBaseFieldNames = {
 }
 
 export type HiBaseFieldNameKeys = keyof HiBaseFieldNames
+
+export const HiBaseAppearanceEnum = {
+  LINE: 'line',
+  FILLED: 'filled',
+  UNSET: 'unset',
+} as const
+
+// 对外暴露同名联合类型
+// eslint-disable-next-line no-redeclare
+export type HiBaseAppearanceEnum = ValueOf<typeof HiBaseAppearanceEnum>

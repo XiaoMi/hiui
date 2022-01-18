@@ -6,19 +6,19 @@
 
 ## Props
 
-| 参数          | 说明                   | 类型    | 可选值                       | 默认值    |
-| ------------- | ---------------------- | ------- | ---------------------------- | --------- |
-| value         | 设置当前值             | number  | -                            | -         |
-| defaultValue  | 设置默认值             | number  | -                            | 0         |
-| step          | 每次改变值的大小       | number  | -                            | -         |
-| min           | 最小值                 | number  | -                            | -         |
-| max           | 最大值                 | number  | -                            | -         |
-| disabled      | 是否禁用               | boolean | true \| false                | false     |
-| autoFocus     | 开启自动聚焦           | boolean | true \| false                | false     |
-| focusOnStep   | 开启加减值时聚焦 input | boolean | true \| false                | false     |
-| appearance    | 设置展现形式           | string  | 'outline' \| 'filled'        | 'outline' |
-| size          | 设置尺寸               | string  | 'xs' \| 'sm' \| 'md' \| 'lg' | 'md'      |
-| changeOnWheel | 开启滑轮改值           | boolean | true \| false                | false     |
+| 参数          | 说明                   | 类型    | 可选值                       | 默认值 |
+| ------------- | ---------------------- | ------- | ---------------------------- | ------ |
+| value         | 设置当前值             | number  | -                            | -      |
+| defaultValue  | 设置默认值             | number  | -                            | 0      |
+| step          | 每次改变值的大小       | number  | -                            | -      |
+| min           | 最小值                 | number  | -                            | -      |
+| max           | 最大值                 | number  | -                            | -      |
+| disabled      | 是否禁用               | boolean | true \| false                | false  |
+| autoFocus     | 开启自动聚焦           | boolean | true \| false                | false  |
+| focusOnStep   | 开启加减值时聚焦 input | boolean | true \| false                | false  |
+| appearance    | 设置展现形式           | string  | 'line' \| 'filled'           | 'line' |
+| size          | 设置尺寸               | string  | 'xs' \| 'sm' \| 'md' \| 'lg' | 'md'   |
+| changeOnWheel | 开启滑轮改值           | boolean | true \| false                | false  |
 
 ## Events
 

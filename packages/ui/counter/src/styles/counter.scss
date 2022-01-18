@@ -22,7 +22,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     border-radius: use-border-radius('normal');
   }
 
-  &--appearance-outline {
+  &--appearance-line {
     .#{$content-class} {
       border: use-border-size('normal') use-color('gray', 300);
     }

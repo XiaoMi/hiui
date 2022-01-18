@@ -8,7 +8,7 @@ export const Appearance = () => {
       <h1>Appearance for Input</h1>
       <div className="input-appearance__wrap">
         <h2>outline</h2>
-        <Input size="md" appearance="outline" placeholder="请输入内容"></Input>
+        <Input size="md" appearance="line" placeholder="请输入内容"></Input>
         <br />
         <br />
         <Input

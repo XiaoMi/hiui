@@ -27,6 +27,7 @@ import { getNodeAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { HiBaseAppearanceEnum } from '@hi-ui/core'
 
 const _prefix = getPrefixCls('check-cascader')
 const NOOP_ARRAY = [] as []
@@ -354,7 +355,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   /**
    * 设置展现形式
    */
-  appearance?: 'outline' | 'unset' | 'filled'
+  appearance?: HiBaseAppearanceEnum
   /**
    * 自定义搜索过滤器，仅在 searchable 为 true 时有效
    * 第一个参数为输入的关键字，

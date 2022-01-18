@@ -26,7 +26,7 @@ export const useCounter = ({
   changeOnWheel = false,
   onWheel,
   size = 'md',
-  appearance = 'outline',
+  appearance = 'line',
   invalid = false,
   ...rest
 }: UseCounterProps) => {

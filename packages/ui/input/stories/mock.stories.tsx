@@ -11,18 +11,14 @@ export const Mock = () => {
 
         <div>
           <h2>Outline</h2>
-          <MockInput
-            appearance="outline"
-            placeholder="请输入"
-            suffix={<DownOutlined />}
-          ></MockInput>
+          <MockInput appearance="line" placeholder="请输入" suffix={<DownOutlined />}></MockInput>
           <br />
           <br />
           <br />
           <br />
           <MockInput
             size="sm"
-            appearance="outline"
+            appearance="line"
             clearable
             placeholder="请输入"
             defaultValue={1}
@@ -44,7 +40,7 @@ export const Mock = () => {
           <br />
           <MockInput
             size="md"
-            appearance="outline"
+            appearance="line"
             focused
             placeholder="请输入"
             suffix={<DownOutlined />}
@@ -56,7 +52,7 @@ export const Mock = () => {
           <MockInput
             size="lg"
             invalid
-            appearance="outline"
+            appearance="line"
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></MockInput>
@@ -68,7 +64,7 @@ export const Mock = () => {
             size="lg"
             invalid
             focused
-            appearance="outline"
+            appearance="line"
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></MockInput>
@@ -78,7 +74,7 @@ export const Mock = () => {
           <br />
           <MockInput
             size="lg"
-            appearance="outline"
+            appearance="line"
             disabled
             placeholder="请输入"
             suffix={<DownOutlined />}

@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
-import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps } from '@hi-ui/core'
 import { useInput, UseInputProps } from './use-input'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
@@ -25,7 +25,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
       className,
       style,
       size = 'md',
-      appearance = 'outline',
+      appearance = 'line',
       invalid = false,
       // use-input
       name,
@@ -97,7 +97,7 @@ export interface TextAreaProps
    * 设置展现形式
    * 其中 `underline` 内部使用，不对外提供支持（风格去线型化：由线性过渡到面性）
    */
-  appearance?: 'outline' | 'unset' | 'filled' | 'underline'
+  appearance?: HiBaseAppearanceEnum | 'underline'
   /**
    * 值改变时回调
    */

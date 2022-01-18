@@ -7,7 +7,7 @@ export const Invalid = () => {
       <h1>Invalid for Input</h1>
       <div className="input-invalid__wrap">
         <div>
-          <Input appearance="outline" invalid placeholder="请输入"></Input>
+          <Input appearance="line" invalid placeholder="请输入"></Input>
           <br />
           <br />
           <Input appearance="unset" invalid placeholder="请输入"></Input>
