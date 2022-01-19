@@ -3,6 +3,9 @@ import Select from '../src'
 import { SelectOptionGroup } from '../src/SelectOptionGroup'
 import { SelectOption } from '../src/SelectOption'
 
+/**
+ * @private
+ */
 export const Children = () => {
   const [value, setValue] = React.useState<React.ReactText>('jack')
 

@@ -38,6 +38,7 @@ const DEFAULT_DATA = [] as []
 
 const DEFAULT_PAGINATION = {
   placement: 'right',
+  autoHide: false,
 }
 
 /**
@@ -109,8 +110,10 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     // 优化数据在第一页且数据一页内时，不展示 pagination 配置项
     const hiddenPagination =
       !paginationProp ||
-      typeof pagination.pageSize !== 'number' ||
-      (currentPage === 1 && data.length < pagination.pageSize)
+      (pagination.autoHide &&
+        currentPage === 1 &&
+        typeof pagination.pageSize === 'number' &&
+        data.length <= pagination.pageSize)
 
     // 获取 key 字段值
     const getRowKeyField = useCallback(

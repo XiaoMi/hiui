@@ -18,7 +18,7 @@ export const TitleRender = () => {
           clearable={false}
           style={{ width: 200 }}
           data={data}
-          titleRender={(item) => {
+          render={(item) => {
             console.log(item)
             return (
               <React.Fragment>

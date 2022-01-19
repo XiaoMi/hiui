@@ -24,6 +24,7 @@ import { SelectOption } from './SelectOption'
 import { SelectOptionGroup } from './SelectOptionGroup'
 import { uniqBy } from 'lodash'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
+import { callAllFuncs } from '@hi-ui/func-utils'
 
 const _role = 'select'
 const _prefix = getPrefixCls(_role)
@@ -63,10 +64,11 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       onClose,
       // render
       renderExtraFooter,
-      titleRender,
+      render: titleRender,
       data: dataProp,
       fieldNames,
       onSelect: onSelectProp,
+      onSearch: onSearchProp,
       ...rest
     },
     ref
@@ -173,7 +175,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
           searchable={searchable}
-          onSearch={onSearch}
+          onSearch={callAllFuncs(onSearchProp, onSearch)}
           loading={loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           trigger={
@@ -260,7 +262,7 @@ export interface SelectProps
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: SelectItemEventData) => React.ReactNode
+  render?: (item: SelectItemEventData) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容，只在 title 为字符串时有效
    */
@@ -297,6 +299,10 @@ export interface SelectProps
    * 异步加载数据
    */
   dataSource?: UseDataSource<SelectMergedItem[]>
+  /**
+   * 搜索时触发
+   */
+  onSearch?: (keyword: string) => void
 }
 
 ;(Select as any).HiName = 'Select'
