@@ -94,13 +94,16 @@ export const useEdit = (
 
   const saveEdit = useCallback(
     async (targetNode: FlattedTreeNodeData) => {
+      const beforeTreeData = cloneTree(treeData)
+      deleteNodeById(beforeTreeData, targetNode.id)
+
       const nextTreeData = cloneTree(treeData)
       _saveEdit(targetNode, nextTreeData)
 
       if (onBeforeSaveRef.current) {
         const result = await onBeforeSaveRef.current(
           targetNode,
-          { before: treeData, after: nextTreeData },
+          { before: beforeTreeData, after: nextTreeData },
           targetNode.depth
         )
 
@@ -108,6 +111,9 @@ export const useEdit = (
         if (result === true) {
           setTreeData(nextTreeData)
           onSaveRef.current?.(targetNode, nextTreeData)
+        } else {
+          // 清空编辑态，还原编辑前原状态
+          setTreeData(beforeTreeData)
         }
       } else {
         // 没有 onBeforeSave 的情况下，直接非受控修改数据

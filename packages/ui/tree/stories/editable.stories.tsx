@@ -10,8 +10,9 @@ export const Editable = () => {
       <div className="tree-basic__wrap">
         <ActionTree
           {...{
-            onBeforeDelete: () => Promise.resolve(true),
-            onBeforeSave: () => Promise.resolve(true),
+            // onSelect: console.log,
+            // onBeforeDelete: () => Promise.resolve(false),
+            // onBeforeSave: () => Promise.resolve(false),
             placeholder: '请填写菜单',
             menuOptions: [
               {

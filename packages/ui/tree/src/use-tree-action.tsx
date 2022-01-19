@@ -371,14 +371,16 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
   }, [])
 
   return (
-    <div className={cx(`${prefixCls}__title`, `${prefixCls}__title--editing`)}>
+    <div
+      className={cx(`${prefixCls}__title`, `${prefixCls}__title--editing`)}
+      // TODO： 整行不允许冒泡触发节点选中
+      onClick={(evt) => evt.stopPropagation()}
+    >
       <Input
         autoFocus
         style={{ flex: 1 }}
         // 避免冒泡到 tree 失焦
-        onBlur={(e) => {
-          e.stopPropagation()
-        }}
+        onBlur={(evt) => evt.stopPropagation()}
         placeholder={placeholder}
         value={inputValue}
         onChange={handleChange}
