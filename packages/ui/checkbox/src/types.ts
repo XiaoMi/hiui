@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ValueOf } from '@hi-ui/core'
 
-export interface CheckboxDataItem {
+export interface CheckboxDataItem extends Record<string, any> {
   /**
    * 选项唯一标识 id
    */
@@ -10,7 +10,7 @@ export interface CheckboxDataItem {
   /**
    * 选项显示内容
    */
-  content?: React.ReactNode
+  title?: React.ReactNode
   /**
    * 是否禁用该选项
    */

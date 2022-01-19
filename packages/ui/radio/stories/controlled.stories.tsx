@@ -13,9 +13,9 @@ export const Controlled = () => {
         <br />
         <Radio
           checked={checked}
-          onChange={(shouldChecked) => {
-            console.log('onChange', shouldChecked)
-            setChecked(shouldChecked)
+          onChange={(evt) => {
+            console.log('onChange', evt)
+            setChecked(evt.target.checked)
           }}
         >
           Radio

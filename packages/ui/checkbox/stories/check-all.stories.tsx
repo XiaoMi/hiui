@@ -1,22 +1,24 @@
 import React from 'react'
-import { Checkbox, CheckboxGroup } from '../src'
+import { Checkbox } from '../src'
 
 export const CheckAll = () => {
+  const CheckboxGroup = Checkbox.Group
+
   const [data] = React.useState([
     {
-      content: '手机',
+      title: '手机',
       id: 'Phone',
     },
     {
-      content: '电脑',
+      title: '电脑',
       id: 'Computer',
     },
     {
-      content: '智能',
+      title: '智能',
       id: 'Intelli',
     },
     {
-      content: '出行',
+      title: '出行',
       id: 'Transfer',
     },
   ])

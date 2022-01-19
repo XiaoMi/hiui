@@ -5,15 +5,18 @@ import Button from '@hi-ui/button'
 import message from '@hi-ui/message'
 import Select from '@hi-ui/select'
 import { Counter } from '@hi-ui/counter'
-import { CheckboxGroup } from '@hi-ui/checkbox'
+import Checkbox from '@hi-ui/checkbox'
 import { DatePicker } from '@hi-ui/date-picker'
 import { Cascader } from '@hi-ui/cascader'
-import { RadioGroup, Radio } from '@hi-ui/radio'
+import Radio from '@hi-ui/radio'
 import { Switch } from '@hi-ui/switch'
 import { Rating } from '@hi-ui/rating'
 import { Upload } from '@hi-ui/upload'
 
 export const Cascade = () => {
+  const CheckboxGroup = Checkbox.Group
+  const RadioGroup = Radio.Group
+
   const formRef = React.useRef<FormHelpers>(null)
   const [formData, setFormData] = React.useState<any>({
     controlCounter: 'show',

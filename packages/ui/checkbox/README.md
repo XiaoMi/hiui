@@ -57,15 +57,15 @@
 | 参数     | 说明            | 类型      |
 | -------- | --------------- | --------- |
 | id       | 选项唯一标识 id | ReactText |
-| content  | 选项显示内容    | ReactNode |
+| title    | 选项显示内容    | ReactNode |
 | disabled | 是否禁用该选项  | boolean   |
 
 ## CHANGELOG
 
-| 参数     | 变更类型                        | 变更内容                        | 解决的问题                                 |
-| -------- | ------------------------------- | ------------------------------- | ------------------------------------------ |
-| propName | feature \| deprecated \| update | 变更了什么                      | 之前是什么样子，解决什么问题               |
-| ----     | ----                            | ----                            | ----                                       |
-| children | feature                         | CheckboxGroup 支持内嵌 Checkbox | 实现灵活的布局                             |
-| data     | deprecated                      | 只支持 DataItem[] 模型数据      | 1. 规范统一；2. ReactText[] 用法接受度不高 |
-| content  | feature                         | 类型：string -> ReactNode       | 1. 强化类型支持                            |
+| 参数     | 变更类型                        | 变更内容                                                | 解决的问题                                 |
+| -------- | ------------------------------- | ------------------------------------------------------- | ------------------------------------------ |
+| propName | feature \| deprecated \| update | 变更了什么                                              | 之前是什么样子，解决什么问题               |
+| ----     | ----                            | ----                                                    | ----                                       |
+| children | feature                         | CheckboxGroup 支持内嵌 Checkbox                         | 实现灵活的布局                             |
+| data     | deprecated                      | 只支持 DataItem[] 模型数据                              | 1. 规范统一；2. ReactText[] 用法接受度不高 |
+| title    | feature                         | 1. 字段：content -> title; 2. 类型：string -> ReactNode | 1. 强化类型支持                            |

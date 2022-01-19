@@ -1,5 +1,5 @@
 import React from 'react'
-import Radio from '../src'
+import { Radio } from '../src'
 
 export const Basic = () => {
   return (

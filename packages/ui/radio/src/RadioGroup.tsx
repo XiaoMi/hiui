@@ -45,7 +45,7 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
 
     // data 优先级大于内嵌式组合
     if (hasData) {
-      children = data!.map(({ id, disabled, content }) => (
+      children = data!.map(({ id, disabled, title }) => (
         <Radio
           key={id}
           value={id}
@@ -54,7 +54,7 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
           checked={isChecked(id)}
           className={`${prefixCls}__item`}
         >
-          {content}
+          {title}
         </Radio>
       ))
     }

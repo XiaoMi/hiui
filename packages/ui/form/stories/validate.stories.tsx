@@ -3,10 +3,12 @@ import Form, { FormHelpers, FormItem, FormRules } from '../src'
 import Input from '@hi-ui/input'
 import { Select } from '@hi-ui/select'
 import { Cascader } from '@hi-ui/cascader'
-import { RadioGroup, Radio } from '@hi-ui/radio'
+import Radio from '@hi-ui/radio'
 import Button from '@hi-ui/button'
 
 export const Validate = () => {
+  const RadioGroup = Radio.Group
+
   const formRef = React.useRef<FormHelpers>(null)
 
   const [cascaderOptions] = React.useState([

@@ -1,8 +1,10 @@
 import React from 'react'
-import Checkbox, { CheckboxGroup } from '../src'
+import Checkbox from '../src'
 import { Row, Col } from '@hi-ui/grid'
 
 export const Children = () => {
+  const CheckboxGroup = Checkbox.Group
+
   const [selectedList, setSelectedList] = React.useState<React.ReactText[]>([
     'Phone',
     'Intelligent',

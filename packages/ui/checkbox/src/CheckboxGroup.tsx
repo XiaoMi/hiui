@@ -55,22 +55,15 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
     const data = useMemo(() => {
       if (!dataProp) return null
       return dataProp.map((item) => {
-        return isObject(item) ? item : { id: item, content: item }
+        return isObject(item) ? item : { id: item, title: item }
       })
     }, [dataProp])
 
     const hasData = isArrayNonEmpty(data)
 
-    const cls = cx(
-      prefixCls,
-      className,
-      placement === 'vertical' && `${prefixCls}--placement-vertical`,
-      hasData && `${prefixCls}--data-wrap`
-    )
-
     // data 优先级大于内嵌式组合
     if (hasData) {
-      children = data!.map(({ id, disabled, content }) => (
+      children = data!.map(({ id, disabled, title }) => (
         <Checkbox
           key={id}
           value={id}
@@ -79,10 +72,17 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
           checked={value.includes(id)}
           className={`${prefixCls}__item`}
         >
-          {content}
+          {title}
         </Checkbox>
       ))
     }
+
+    const cls = cx(
+      prefixCls,
+      className,
+      placement === 'vertical' && `${prefixCls}--placement-vertical`,
+      hasData && `${prefixCls}--data-wrap`
+    )
 
     return (
       <CheckboxGroupProvider value={providedValue}>

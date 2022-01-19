@@ -10,7 +10,7 @@ export interface RadioDataItem {
   /**
    * 选项显示内容
    */
-  content?: React.ReactNode
+  title?: React.ReactNode
   /**
    * 是否禁用该选项
    */

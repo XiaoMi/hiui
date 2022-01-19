@@ -1,8 +1,10 @@
 import React from 'react'
-import Radio, { RadioGroup } from '../src'
+import Radio from '../src'
 import { Row, Col } from '@hi-ui/grid'
 
 export const Children = () => {
+  const RadioGroup = Radio.Group
+
   const [selectedId, setSelectedId] = React.useState<React.ReactText>('Phone')
 
   return (
