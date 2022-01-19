@@ -3,7 +3,7 @@ import { getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { MinusOutlined, PlusOutlined } from '@hi-ui/icons'
 import { useCounter } from './use-counter'
-import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, HiBaseSizeEnum } from '@hi-ui/core'
 
 const _role = 'counter'
 const _prefix = getPrefixCls(_role)
@@ -80,6 +80,7 @@ export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
   disabled?: boolean
   /**
    * 点击加减器改变值时触发聚焦
+   * @private
    */
   focusOnStep?: boolean
   /**
@@ -93,7 +94,7 @@ export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 设置计数器尺寸
    */
-  size?: 'xs' | 'sm' | 'md' | 'lg'
+  size?: HiBaseSizeEnum
   /**
    * 开启滑轮改值
    */

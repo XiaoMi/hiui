@@ -215,7 +215,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     }
   }
 
-  &--size-xs {
+  &--size-sm {
     .#{$minus-class},.#{$plus-class} {
       width: 24px;
       height: 24px;
@@ -228,22 +228,6 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
     .#{$input-class} {
       width: 43px;
-    }
-  }
-
-  &--size-sm {
-    .#{$minus-class},.#{$plus-class} {
-      width: 28px;
-      height: 28px;
-      line-height: 28px;
-    }
-
-    .#{$input-wrapper-class} {
-      height: 28px;
-    }
-
-    .#{$input-class} {
-      width: 56px;
     }
   }
 
@@ -265,9 +249,9 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
   &--size-lg {
     .#{$minus-class},.#{$plus-class} {
-      width: 36px;
-      height: 36px;
-      line-height: 36px;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
     }
 
     .#{$input-wrapper-class} {
@@ -275,7 +259,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     }
 
     .#{$input-class} {
-      width: 58px;
+      width: 62px;
     }
   }
 }

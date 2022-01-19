@@ -63,3 +63,13 @@ export const HiBaseAppearanceEnum = {
 // 对外暴露同名联合类型
 // eslint-disable-next-line no-redeclare
 export type HiBaseAppearanceEnum = ValueOf<typeof HiBaseAppearanceEnum>
+
+export const HiBaseSizeEnum = {
+  SM: 'sm',
+  MD: 'md',
+  LG: 'lg',
+} as const
+
+// 对外暴露同名联合类型
+// eslint-disable-next-line no-redeclare
+export type HiBaseSizeEnum = ValueOf<typeof HiBaseSizeEnum>

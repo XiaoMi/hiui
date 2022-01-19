@@ -7,26 +7,24 @@ export const Size = () => {
       <h1>Counter size</h1>
       <div>
         <h2>outline</h2>
-        <Counter size={'xs'} />
         <br />
         <br />
         <Counter size={'sm'} />
         <br />
         <br />
-        <Counter />
+        <Counter size="md" />
         <br />
         <br />
         <Counter size={'lg'} />
       </div>
       <div>
         <h2>filled</h2>
-        <Counter size={'xs'} appearance={'filled'} />
         <br />
         <br />
         <Counter size={'sm'} appearance={'filled'} />
         <br />
         <br />
-        <Counter appearance={'filled'} />
+        <Counter size="md" appearance={'filled'} />
         <br />
         <br />
         <Counter size={'lg'} appearance={'filled'} />
