@@ -91,6 +91,7 @@ import DemoAsync from "../../demo/table/section-async.jsx";
 | hiddenColKeys         | 隐藏列（受控） (v3.9.0 新增)                                                                                       | string[]                                                  | -                                         | -          |
 | onHiddenColKeysChange | 列隐藏设置时回调 (v3.9.0 新增)                                                                                     | (hiddenColKeys: string[]) => void                         | -                                         | -          |
 | cellRender            | 全局控制单元格自定义渲染，优先级低于 column 的 render 方法                                                         | (text: DataItem[ColumnItem[dataKey]]) => ReactNode        | -                                         | -          |
+| fixedColumnTrigger    | 自定义冻结列触发展示行为                                                                                           | string                                                    | 'auto' \| 'always'                        | 'auto'     |
 
 ## Event
 

@@ -72,6 +72,7 @@ export interface TableProps {
   sticky?: boolean
   draggable?: boolean
   stickyTop?: number
+  fixedColumnTrigger?: 'auto' | 'always'
   expandRowKeys?: React.ReactText[]
   highlightedColKeys?: string[]
   expandedRender?: (record: object, index: number) => JSX.Element | Promise
