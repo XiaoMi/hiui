@@ -42,6 +42,7 @@ const Table = ({
   expandRowKeys,
   onExpand,
   onHeaderRow = defaultHeaderRow,
+  onRow = defaultHeaderRow,
   columns: propsColumns = [],
   expandedRender,
   maxHeight,
@@ -313,6 +314,7 @@ const Table = ({
         expandedRowKeys,
         // 标题点击回调事件
         onHeaderRow,
+        onRow,
         onExpand,
         realColumnsWidth,
         setRealColumnsWidth,

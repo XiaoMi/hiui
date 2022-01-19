@@ -96,6 +96,7 @@ import DemoAsync from "../../demo/table/section-async.jsx";
 
 | 属性名         | 描述               | 类型                                                                              | 可选值                                                                                  | 默认值                                                                                                |
 | -------------- | ------------------ | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| onRow          | 行事件处理函数     | () => object                                                                      | -                                                                                       | -                                                                                                     |
 | onHeaderRow    | 行标题事件处理函数 | (item: ColumnItem[], index: number) => object                                     | -                                                                                       | -                                                                                                     |
 | onLoadChildren | 点击异步加载子项   | (row: DataItem) => object[] \| Promise                                            | -                                                                                       | -                                                                                                     |
 | onDragStart    | 开始拖拽时触发     | (rowData: object) => void                                                         | rowData: 当前行的数据                                                                   | -                                                                                                     |
@@ -104,7 +105,7 @@ import DemoAsync from "../../demo/table/section-async.jsx";
 
 > 在 onLoadChildren 方法中，返回的数据中会根据 `isLeaf` 字符控制左侧展开按钮的显示状态
 
-### onHeaderRow 使用方法
+### onHeaderRow\onRow 使用方法
 
 ```js
 // demo 见【行操作-标题事件处理】
