@@ -41,7 +41,9 @@ const Table = ({
   expandedRowKeys: propsExpandRowKeys,
   expandRowKeys,
   onExpand,
+  fixedColumnTrigger = 'auto',
   onHeaderRow = defaultHeaderRow,
+  onRow = defaultHeaderRow,
   columns: propsColumns = [],
   expandedRender,
   maxHeight,
@@ -289,6 +291,8 @@ const Table = ({
   const checkboxColWidth =
     rowSelection && typeof rowSelection.checkboxColWidth === 'number' ? rowSelection.checkboxColWidth : 50
 
+  const alwaysFixedColumn = fixedColumnTrigger === 'always'
+
   return (
     <TableContext.Provider
       value={{
@@ -313,6 +317,7 @@ const Table = ({
         expandedRowKeys,
         // 标题点击回调事件
         onHeaderRow,
+        onRow,
         onExpand,
         realColumnsWidth,
         setRealColumnsWidth,
@@ -391,7 +396,7 @@ const Table = ({
           <HeaderTable />
           <BodyTable fatherRef={hiTable} emptyContent={emptyContent} />
           {/* 显示阴影 */}
-          {scrollSize.scrollLeft > 0 && realLeftFixedColumns.length > 0 && (
+          {(alwaysFixedColumn || scrollSize.scrollLeft > 0) && realLeftFixedColumns.length > 0 && (
             <div
               className={`${prefix}__shadow-mask  ${prefix}__shadow-left`}
               style={{ width: fixedColumnsWidth.left + 'px' }}
@@ -399,7 +404,7 @@ const Table = ({
               <div className={`${prefix}__shadow-lock`}></div>
             </div>
           )}
-          {scrollSize.scrollRight > 0 && realRightFixedColumns.length > 0 && (
+          {(alwaysFixedColumn || scrollSize.scrollRight > 0) && realRightFixedColumns.length > 0 && (
             <div
               className={`${prefix}__shadow-mask ${prefix}__shadow-right`}
               style={{ width: fixedColumnsWidth.right + 'px' }}

@@ -51,7 +51,8 @@ const Row = ({
     disabledData,
     draggable,
     onDragStart,
-    dargInfo
+    dargInfo,
+    onRow
   } = useContext(TableContext)
   const _columns = cloneArray(columns)
   const depthArray = []
@@ -102,12 +103,15 @@ const Row = ({
     [rowKey, dropHightLineStatus, draggable]
   )
 
+  const rowProps = onRow()
+
   return [
     <tr
       style={isFixed && rowHeight ? { height: rowHeight } : {}}
       ref={innerRef}
       id={rowKey}
       draggable={draggable}
+      {...rowProps}
       onMouseMove={() => {
         setDragRowKey(null)
         setDragStatus(false)
@@ -141,6 +145,9 @@ const Row = ({
       })}
       key="row"
       onDoubleClick={(e) => {
+        if (rowProps && rowProps.onDoubleClick) {
+          rowProps.onDoubleClick(e)
+        }
         if (highlightedRowKeys.includes(rowData.key)) {
           setHighlightRows(highlightedRowKeys.filter((r) => r !== rowData.key))
         } else {

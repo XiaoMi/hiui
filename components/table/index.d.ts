@@ -61,6 +61,8 @@ export type TableHeaderRowReturn = {
 
 export type HeaderRowFunc = (colums: TableColumnItem[], index: number) => TableHeaderRowReturn
 
+export type RowFunc = () => TableHeaderRowReturn
+
 export interface TableProps {
   size?: 'small' | 'large' | 'default' | 'mini'
   fieldKey?: string
@@ -70,6 +72,7 @@ export interface TableProps {
   sticky?: boolean
   draggable?: boolean
   stickyTop?: number
+  fixedColumnTrigger?: 'auto' | 'always'
   expandRowKeys?: React.ReactText[]
   highlightedColKeys?: string[]
   expandedRender?: (record: object, index: number) => JSX.Element | Promise
@@ -92,6 +95,7 @@ export interface TableProps {
   standard?: boolean
   emptyContent?: string | JSX.Element
   onHeaderRow?: HeaderRowFunc
+  onRow?: RowFunc
   columns: TableColumnItem[]
   data: object[]
   style?: React.CSSProperties
