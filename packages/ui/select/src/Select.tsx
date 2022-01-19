@@ -61,7 +61,6 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       // popper
       onOpen,
       onClose,
-      popper,
       // render
       renderExtraFooter,
       titleRender,
