@@ -1,12 +1,12 @@
 import React from 'react'
 import { TextArea } from '../src'
 
-export const Textarea = () => {
+export const Basic = () => {
   const [value, setValue] = React.useState('')
   return (
     <>
-      <h1>TextArea for Input</h1>
-      <div className="input-textarea__wrap">
+      <h1>Basic for Input</h1>
+      <div className="textarea-basic__wrap">
         <TextArea
           value={value}
           onChange={(evt) => setValue(evt.target.value)}

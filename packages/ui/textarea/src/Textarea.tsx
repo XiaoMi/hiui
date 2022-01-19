@@ -3,10 +3,10 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
 import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps } from '@hi-ui/core'
-import { useInput, UseInputProps } from './use-input'
+import { useInput, UseInputProps } from '@hi-ui/input'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
-const _prefix = getPrefixCls('input')
+const _prefix = getPrefixCls('textarea')
 
 /**
  * 动态文本域输入框
