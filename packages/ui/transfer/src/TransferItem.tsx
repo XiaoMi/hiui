@@ -45,7 +45,7 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
 
     const disabled = disabledContext || item.disabled
 
-    const enabledFocus = !disabled && type === 'basic'
+    const enabledFocus = !disabled && type === 'single'
 
     const renderTitle = (data: TransferDataItem) => {
       // 如果 titleRender 返回 `true`，则使用默认 title
@@ -205,7 +205,7 @@ export interface TransferItemProps {
   /**
    * 穿梭框类型
    */
-  type?: 'default' | 'multiple'
+  type?: 'single' | 'multiple'
   /**
    * 是否展示全选按钮
    */

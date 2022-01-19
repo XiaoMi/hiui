@@ -214,7 +214,7 @@ export interface TransferPanelProps {
   /**
    * 穿梭框类型
    */
-  type?: 'default' | 'multiple'
+  type?: 'single' | 'multiple'
   /**
    * 是否展示全选按钮
    */

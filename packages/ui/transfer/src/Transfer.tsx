@@ -19,7 +19,7 @@ const allowCheck = (item: any) => !item.disabled
 /**
  * 穿梭框
  * TODO:
- * 1. titleRender 支持 checkbox自定义渲染
+ * 1. titleRender 支持 checkbox 自定义渲染
  * 2. 单选逻辑复用多选，从数据层隔离，而非交互层
  */
 export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
@@ -31,8 +31,8 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       disabled = false,
       showCheckAll = false,
       searchable = false,
-      type = 'default',
-      targetSortType = 'head',
+      type = 'single',
+      targetSortType = 'default',
       pagination = false,
       data = NOOP_ARRAY,
       defaultTargetIds = NOOP_ARRAY,
@@ -41,7 +41,7 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       title,
       placeholder,
       emptyContent,
-      titleRender,
+      render: titleRender,
       draggable = false,
       onChange,
       onDragStart,
@@ -90,7 +90,7 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
 
       const defaultLimited = sourceCheckedIdsLength + targetListLength > targetLimit
 
-      if (type === 'default') {
+      if (type === 'single') {
         return defaultLimited || targetListLength >= targetLimit
       }
 
@@ -307,7 +307,7 @@ export interface TransferProps
   /**
    * 穿梭框类型
    */
-  type?: 'default' | 'multiple'
+  type?: 'single' | 'multiple'
   /**
    * 是否展示全选按钮
    */
@@ -355,7 +355,7 @@ export interface TransferProps
   /**
    * 目标框内的排序方式
    */
-  targetSortType?: 'head' | 'queue'
+  targetSortType?: 'default' | 'queue'
   /**
    * 选中元素被移动到目标框内后的回调
    */
@@ -367,7 +367,7 @@ export interface TransferProps
   /**
    * 自定义每项标题渲染
    */
-  titleRender?: (item: TransferDataItem) => React.ReactNode
+  render?: (item: TransferDataItem) => React.ReactNode
   /**
    * 拖拽开始时的回调函数
    */
