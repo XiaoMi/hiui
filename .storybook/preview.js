@@ -8,7 +8,7 @@ import { withPerformance } from "storybook-addon-performance";
 // import { Meta, ArgsTable, Source, Story, Canvas } from '@storybook/addon-docs/blocks'
 // import { Title, Subtitle, Description, Primary, ArgsTable, Stories, PRIMARY_STORY } from '@storybook/addon-docs/blocks'
 // import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live'
-
+import LocaleProvider from '@hi-ui/locale-context'
 // import Popper from '../packages/ui/popper/src/index.js'
 // import Alert from '../packages/ui/alert/es/index.js'
 // import Select from '../packages/ui/select/src/index.js'
@@ -21,14 +21,16 @@ import { withPerformance } from "storybook-addon-performance";
  * Add global stories Decorators for switching codePreview and theme, i18n provider
  */
 export const decorators = [
-  function withThemeProvider(Story, context) {
+  function withHiUIProvider(Story, context) {
     const theme = context.globals.theme;
-    // console.log("[ theme ] >", theme, context);
+    const locale = context.globals.locale;
 
     // TODO: Inject HiUI ThemeProvider
     return (
       <div theme={theme}>
-        <Story {...context} />
+        <LocaleProvider locale={locale}>
+          <Story {...context} />
+        </LocaleProvider>
       </div>
     );
   },
@@ -99,12 +101,14 @@ export const globalTypes = {
   locale: {
     name: "Locale",
     description: "Internationalization locale",
-    defaultValue: "zh",
+    defaultValue: "zh-CN",
     toolbar: {
       icon: "globe",
       items: [
-        { value: "zh", right: "🇨🇳", title: "中文" },
-        { value: "en", right: "🇺🇸", title: "English" },
+        { value: "zh-CN", right: "🇨🇳", title: "中文" },
+        { value: "en-US", right: "🇺🇸", title: "English" },
+        { value: "zh-HK", right: "🇨🇳", title: "香港" },
+        { value: "zh-TW", right: "🇨🇳", title: "台湾" },
       ],
     },
   },

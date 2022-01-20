@@ -83,13 +83,13 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
 
         <Drawer
           className={`${prefixCls}__drawer`}
-          title="字段管理"
+          title={i18n.get('table.fieldExplorer')}
           visible={menuVisible}
           onClose={menuVisibleAction.off}
           footer={
             <div className={`${prefixCls}__btn-group`}>
               <Button key={0} className={`${prefixCls}__btn-cancel`} onClick={resetLatest}>
-                {i18n.get('table.reset') || '重置'}
+                {i18n.get('table.reset')}
               </Button>
               <Button
                 key={1}
@@ -97,7 +97,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
                 onClick={onConfirm}
                 type="primary"
               >
-                {i18n.get('table.confirm') || '确定'}
+                {i18n.get('table.confirm')}
               </Button>
             </div>
           }

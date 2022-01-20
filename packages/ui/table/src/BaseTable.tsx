@@ -10,15 +10,17 @@ import { TableHeader } from './TableHeader'
 import { defaultLoadingIcon } from './icons'
 import { TableExtra, TableColumnItem, HeaderRowFunc } from './types'
 import { TableProvider } from './context'
-import { uuid } from './utils'
+import { checkNeedTotalOrEvg, getTotalOrEvgRowData, uuid } from './utils'
 import { useTable, UseTableProps } from './use-table'
 import { useEmbedExpand, UseEmbedExpandProps } from './hooks/use-embed-expand'
+import { useLocaleContext } from '@hi-ui/locale-context'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
 
 export const EMBED_DATA_KEY = `TABLE_EMBED_DATA_KEY_${uuid()}`
 const DEFAULT_COLUMNS = [] as []
+const DEFAULT_DATA = [] as []
 
 /**
  * TODO: What is BaseTable
@@ -30,6 +32,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       role = _role,
       className,
       columns = DEFAULT_COLUMNS,
+      data = DEFAULT_DATA,
       striped = false,
       bordered: borderedProp,
       // 内嵌面板
@@ -110,7 +113,42 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       return columns
     }, [embedExpandable, getEmbedPanelColumn, columns])
 
-    const providedValue = useTable({ ...rest, columns: mergedColumns })
+    const i18n = useLocaleContext()
+
+    // 确保包含 avg 属性，且值为数字类型的字符串
+    const avgRow = { id: 'avg', raw: { key: 'avg' } }
+    let hasAvgColumn = false
+
+    columns.forEach((column, index) => {
+      if (index === 0) {
+        // @ts-ignore
+        avgRow.raw[column.dataKey] = i18n.get('table.average')
+      }
+      if (checkNeedTotalOrEvg(data, column, 'avg')) {
+        hasAvgColumn = true
+        // @ts-ignore
+        avgRow.raw[column.dataKey] = getTotalOrEvgRowData(data, column, true)
+      }
+    })
+
+    // 确保包含total属性，且值为数字类型的字符串
+    const sumRow = { id: 'sum', raw: { key: 'sum' } }
+    let hasSumColumn = false
+
+    columns.forEach((column, index) => {
+      if (index === 0) {
+        // @ts-ignore
+        sumRow.raw[column.dataKey] = i18n.get('table.total')
+      }
+      if (checkNeedTotalOrEvg(data, column, 'total')) {
+        hasSumColumn = true
+        // 获取当前数据最大小数点个数，并设置最后总和值小数点
+        // @ts-ignore
+        sumRow.raw[column.dataKey] = getTotalOrEvgRowData(data, column, false)
+      }
+    })
+
+    const providedValue = useTable({ ...rest, columns: mergedColumns, data })
 
     const {
       rootProps,
@@ -148,6 +186,10 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               onExpandEmbedRowsChange,
               getEmbedPanelById,
               isEmbedLoadingId,
+              avgRow,
+              hasAvgColumn,
+              sumRow,
+              hasSumColumn,
             }}
           >
             <div {...getTableHeaderProps()}>

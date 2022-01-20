@@ -327,6 +327,8 @@ th[data-sticky] {
       border-radius: use-border-radius('normal');
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
 
       &:first-child {
         margin-top: 0;

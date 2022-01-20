@@ -137,6 +137,7 @@ export default {
 
     total: 'Total',
     average: 'Average',
+    fieldExplorer: 'Field Explorer',
   },
 
   watermark: {

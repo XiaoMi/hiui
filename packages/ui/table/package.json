@@ -54,6 +54,7 @@
     "@hi-ui/icon-button": "^4.0.0-alpha.15",
     "@hi-ui/icons": "^4.0.0-alpha.27",
     "@hi-ui/loading": "^4.0.0-alpha.21",
+    "@hi-ui/locale-context": "^4.0.0-alpha.16",
     "@hi-ui/pagination": "^4.0.0-alpha.31",
     "@hi-ui/popper": "^4.0.0-alpha.23",
     "@hi-ui/react-utils": "^4.0.0-alpha.7",

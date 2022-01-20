@@ -152,6 +152,7 @@ export default {
     freeze: '冻结',
     total: '合计',
     average: '平均值',
+    fieldExplorer: '字段管理',
   },
   watermark: {
     content: '请勿外传',

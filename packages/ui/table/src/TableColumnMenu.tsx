@@ -13,6 +13,7 @@ import Popper from '@hi-ui/popper'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useTableContext } from './context'
 import { FlattedTableColumnItemData } from './types'
+import { useLocaleContext } from '@hi-ui/locale-context'
 
 const _prefix = getPrefixCls('table-column-menu')
 
@@ -21,6 +22,8 @@ const _prefix = getPrefixCls('table-column-menu')
  */
 export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenuProps>(
   ({ prefixCls = _prefix, column }, ref) => {
+    const i18n = useLocaleContext()
+
     const {
       activeSorterType,
       activeSorterColumn,
@@ -60,9 +63,7 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
               <TableColumnMenuItem
                 prefixCls={prefixCls}
                 active={activeSorterType === 'ascend' && activeSorterColumn === dataKey}
-                // {/* TODO: 国际化 */}
-                // {/* {localeDatas.table.ascend} */}
-                content={'递增'}
+                content={i18n.get('table.ascend')}
                 icon={<SortAscendingOutlined />}
                 onSwitch={(shouldActive) => {
                   if (shouldActive) {
@@ -82,9 +83,7 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
               <TableColumnMenuItem
                 prefixCls={prefixCls}
                 active={activeSorterType === 'descend' && activeSorterColumn === dataKey}
-                // {/* TODO: 国际化 */}
-                // {/* {localeDatas.table.descend} */}
-                content={'递减'}
+                content={i18n.get('table.descend')}
                 icon={<SortDescendingOutlined />}
                 onSwitch={(shouldActive) => {
                   if (shouldActive) {
@@ -103,9 +102,7 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
             <TableColumnMenuItem
               prefixCls={prefixCls}
               active={isHighlightedCol(dataKey)}
-              // {/* TODO: 国际化 */}
-              // {/* {localeDatas.table.highlight} */}
-              content={'高亮'}
+              content={i18n.get('table.highlight')}
               icon={<ColumnHeightOutlined />}
               onSwitch={(shouldActive) => {
                 onHighlightedColChange(column, shouldActive)
@@ -117,9 +114,7 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
             <TableColumnMenuItem
               prefixCls={prefixCls}
               active={leftFreezeColumn === dataKey}
-              // {/* TODO: 国际化 */}
-              // {/* {localeDatas.table.freeze} */}
-              content={'冻结'}
+              content={i18n.get('table.freeze')}
               icon={<LockOutlined />}
               onSwitch={(shouldActive) => {
                 if (shouldActive) {

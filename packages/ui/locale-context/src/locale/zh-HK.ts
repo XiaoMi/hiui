@@ -153,6 +153,7 @@ export default {
 
     total: '合計',
     average: '平均值',
+    fieldExplorer: '字段管理',
   },
   watermark: {
     content: '請勿外傳',

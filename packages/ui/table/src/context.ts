@@ -4,7 +4,14 @@ import { UseEmbedExpandReturn } from './hooks/use-embed-expand'
 import { UseTableReturn } from './use-table'
 
 const TableContext = createContext<
-  (Omit<UseTableReturn, 'rootProps'> & UseEmbedExpandReturn) | null
+  | (Omit<UseTableReturn, 'rootProps'> &
+      UseEmbedExpandReturn & {
+        avgRow: Record<string, any>
+        hasAvgColumn: boolean
+        sumRow: Record<string, any>
+        hasSumColumn: boolean
+      })
+  | null
 >(null)
 
 export const TableProvider = TableContext.Provider
