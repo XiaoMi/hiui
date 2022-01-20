@@ -43,7 +43,7 @@ export const transformValues = (allvalue, fields) => {
       let readField = realField
 
       // bugfix: https://github.com/XiaoMi/hiui/issues/2077
-      if (_type === 'SchemaForm') {
+      if (_type === 'SchemaForm' && field) {
         if (Object.keys(allvalue).includes(field)) {
           readField = field
         }
