@@ -2,7 +2,7 @@ import React from 'react'
 import CheckSelect from '../src'
 
 const data = []
-for (let i = 0; i < 30000; i++) {
+for (let i = 0; i < 10000; i++) {
   const value = `${i.toString(36)}-${i}`
   data.push({
     id: value,

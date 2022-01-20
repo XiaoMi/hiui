@@ -162,7 +162,10 @@ const renderSuffix = (
   prefixCls: string,
   node: FlattedCheckCascaderItem,
   loading: boolean,
-  onLoadChildren?: (item: CheckCascaderItemEventData) => Promise<CheckCascaderItem[] | void> | void
+  onLoadChildren?: (
+    item: CheckCascaderItemEventData,
+    idPaths: React.ReactText[]
+  ) => Promise<CheckCascaderItem[] | void> | void
 ) => {
   if (loading) {
     return (

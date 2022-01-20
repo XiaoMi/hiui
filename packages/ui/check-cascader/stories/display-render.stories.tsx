@@ -74,7 +74,7 @@ export const DisplayRender = () => {
       <div className="cascader-display-render__wrap">
         <CheckCascader
           placeholder="请选择品类"
-          defaultValue={['手机', '红米', '红米4']}
+          defaultValue={[['手机', '红米', '红米4']]}
           data={dataOnlyLeafCheckable}
           displayRender={(option) => {
             const titleArr = []

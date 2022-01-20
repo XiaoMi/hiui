@@ -5,11 +5,10 @@ export * from './basic.stories'
 export * from './disabled.stories'
 export * from './search.stories'
 export * from './select-change.stories'
-export * from './nowrap.stories'
+// export * from './nowrap.stories'
 export * from './dynamic.stories'
 export * from './display-render.stories'
-export * from './flatted.stories'
-export * from './embed.stories'
+// export * from './flatted.stories'
 
 export default {
   title: 'Data Input/CheckCascader',

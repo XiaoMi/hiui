@@ -37,17 +37,17 @@
 | renderExtraFooter | 自定义下拉菜单底部渲染                                                                                   | () => ReactNode                                                     | -                                            | 无内容                                                                |
 | overlayClassName  | 下拉根元素的类名称                                                                                       | string                                                              | -                                            | -                                                                     |
 | onOverlayScroll   | 下拉列表滚动时的回调                                                                                     | function                                                            | -                                            | -                                                                     |
-| popper            | 自定义控制弹出层 popper 行为                                                                             | Omit<PopperProps, 'visible' \| 'attachEl'>                          | -                                            | -                                                                     |
-| titleRender       | 自定义渲染节点的 title 内容径                                                                            | (item: CheckSelectEventData, keyword: string) => React.ReactNode    | -                                            |
+| overlay           | 自定义控制弹出层 popper 行为                                                                             | PopperOverlayProps                                                  | -                                            | -                                                                     |
+| render            | 自定义渲染节点的 title 内容径                                                                            | (item: CheckSelectEventData, keyword: string) => React.ReactNode    | -                                            |
 | displayRender     | 自定义选择后展示的内容                                                                                   | (selectedItems: DataItem[]) => string                               | -                                            | -                                                                     |
 
-> 注意，如果发现下拉菜单跟随页面滚动，或者需要在其他弹层中触发 CheckSelect，请尝试使用 `popper={ container: triggerNode.parentElement }` 将下拉弹层渲染节点固定在触发器的父元素中。
+> 注意，如果发现下拉菜单跟随页面滚动，或者需要在其他弹层中触发 CheckSelect，请尝试使用 `overlay={ container: triggerNode.parentElement }` 将下拉弹层渲染节点固定在触发器的父元素中。
 
 ## Events
 
-| 名称     | 说明               | 类型                                             | 参数                                                                     | 返回值                                                           |
-| -------- | ------------------ | ------------------------------------------------ | ------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| onChange | 改变选项时触发函数 | (selectedIds: string[], changedItems: DataItem[] | DataItem, afterChangedItems: DataItem[], shouldChecked: boolean) => void | selectedIds: 所有选中项的 id 集合 <br /> changedItem: 变更的选项 | - |
+| 名称     | 说明               | 类型                                                                                     | 参数                                                                                                            | 返回值 |
+| -------- | ------------------ | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------ |
+| onChange | 改变选项时触发函数 | (selectedIds: string[], changedItems: DataItem[], afterChangedItems: DataItem[]) => void | selectedIds: 所有选中项的 id 集合 <br /> changedItem: 变更的选项集合 <br /> afterChangedItems：变更后的选项集合 | -      |
 
 ## Type
 
@@ -107,8 +107,7 @@
 | bordered            | deprecated                      | 字段 `bordered` => `appearance`       | 对于 Picker 类型的组件，统一使用 appearance 设置外形（线\面\无边框）值                           |
 | searchPlaceholder   | feature                         | -                                     | Picker 类型组件统一支持                                                                          |
 | loadingContent      | feature                         | -                                     | Picker 类型组件统一支持，适配新 UI                                                               |
-| popper              | feature                         | -                                     | Picker 类型组件统一支持，聚合管理。比如： placement setOverlayContainer 等，之前有的加了有的没加 |
-| titleRender         | feature                         | 字段 render => titleRender            | 统一支持自定义渲染每一项                                                                         |
+| overlay             | feature                         | -                                     | Picker 类型组件统一支持，聚合管理。比如： placement setOverlayContainer 等，之前有的加了有的没加 |
 | virtual             | feature                         | -                                     | 支持虚拟列表                                                                                     |
 | height              | feature                         | -                                     | 支持虚拟列表                                                                                     |
 | itemHeight          | feature                         | -                                     | 支持虚拟列表                                                                                     |
@@ -117,5 +116,4 @@
 | onSearch            | deprecated                      | -                                     | 使用 dataSource 替代，功能重合                                                                   |
 | appearance          | feature                         | -                                     | 统一支持：线性\面性\无边框                                                                       |
 | displayRender       | feature                         | -                                     | 统一支持选择后内容自定义渲染                                                                     |
-| setOverlayContainer | deprecated                      | -                                     | 使用 popper.container 替代，功能重合                                                             |
-| onChange            | update                          | 添加 shouldChecked 第四个参数         | 方便用户获取，执行相应拦截之类的操作                                                             |
+| setOverlayContainer | deprecated                      | -                                     | 使用 overlay.container 替代，功能重合                                                            |

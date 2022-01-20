@@ -33,7 +33,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     placeholder,
     disabled = false,
     clearable = true,
-    flatted = false,
+    type = 'tree',
     fieldNames,
     expandTrigger = 'click',
     displayRender: displayRenderProp,
@@ -50,6 +50,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     onClose,
     ...rest
   } = props
+  const flatted = type === 'flatted'
 
   const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
     disabled,
@@ -73,7 +74,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
   // 拦截 titleRender，自定义高亮展示
   const proxyTitleRender = (node: CascaderItemEventData) => {
     // 本地搜索执行默认高亮规则
-    const highlight = !!searchValue && (searchMode === 'upMatch' || searchMode === 'filter')
+    const highlight = !!searchValue && searchMode === 'upMatch'
 
     if (highlight) {
       return renderHighlightTitle(searchValue, node, titleRender)
@@ -226,6 +227,11 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
 export interface CascaderProps
   extends Omit<PickerProps, 'data' | 'onChange' | 'trigger'>,
     UseCascaderProps {
+  /**
+   * 将 check 子项拍平展示
+   * @private
+   */
+  type?: 'flatted' | 'tree'
   /**
    * 次级菜单的展开方式
    */

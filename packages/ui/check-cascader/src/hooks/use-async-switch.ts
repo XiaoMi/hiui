@@ -1,12 +1,15 @@
 import React, { useCallback, useState } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { CheckCascaderItem, CheckCascaderItemEventData } from '../types'
-import { addChildrenById, cloneTree } from '@hi-ui/tree-utils'
+import { addChildrenById, cloneTree, getTopDownAncestors } from '@hi-ui/tree-utils'
 
 export const useAsyncSwitch = (
   setCascaderData: React.Dispatch<React.SetStateAction<CheckCascaderItem[]>>,
   onExpand?: (selectedOption: CheckCascaderItemEventData) => void,
-  onLoadChildren?: (item: CheckCascaderItemEventData) => Promise<CheckCascaderItem[] | void> | void
+  onLoadChildren?: (
+    item: CheckCascaderItemEventData,
+    idPaths: React.ReactText[]
+  ) => Promise<CheckCascaderItem[] | void> | void
 ) => {
   const [loadingIds, addLoadingIds, removeLoadingIds] = useList<React.ReactText>()
 
@@ -14,8 +17,10 @@ export const useAsyncSwitch = (
   const loadChildren = useCallback(
     async (node: CheckCascaderItemEventData) => {
       if (!onLoadChildren) return
-
-      const childrenNodes = await onLoadChildren(node)
+      const childrenNodes = await onLoadChildren(
+        node,
+        getTopDownAncestors(node).map(({ id }) => id)
+      )
 
       if (Array.isArray(childrenNodes)) {
         setCascaderData((prev) => {

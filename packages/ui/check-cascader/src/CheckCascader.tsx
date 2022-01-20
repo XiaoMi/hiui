@@ -15,17 +15,10 @@ import { Picker, PickerProps } from '@hi-ui/picker'
 import { TagInputMock } from '@hi-ui/tag-input'
 import { uniqBy } from 'lodash'
 import { CheckCascaderMenus } from './CheckCascaderMenus'
-import {
-  useAsyncSearch,
-  useFilterSearch,
-  useSearchMode,
-  useTreeCustomSearch,
-  useTreeUpMatchSearch,
-} from '@hi-ui/use-search-mode'
+import { useSearchMode, useTreeCustomSearch, useTreeUpMatchSearch } from '@hi-ui/use-search-mode'
 import { flattenTreeData } from './utils'
-import { getNodeAncestors } from '@hi-ui/tree-utils'
-import { useLatestCallback } from '@hi-ui/use-latest'
-import { UseDataSource } from '@hi-ui/use-data-source'
+import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
+import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
 
@@ -51,11 +44,9 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       disabled,
       emptyContent,
       changeOnSelect,
-      titleRender,
+      render: titleRender,
       displayRender,
       checkCascaded,
-      flatted,
-      upMatch,
       searchPlaceholder,
       onLoadChildren,
       wrap,
@@ -63,26 +54,35 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       appearance,
       invalid,
       // search
-      dataSource,
       filterOption,
       searchable: searchableProp,
       overlayClassName,
+      type = 'tree',
       ...rest
     },
     ref
   ) => {
+    const flatted = type === 'flatted'
+
     const [menuVisible, menuVisibleAction] = useToggle()
 
     const [cascaderData, setCascaderData] = useCache(data)
 
     const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
 
-    const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
+    const [_value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
+    const value = _value.map((path) => path[path.length - 1])
 
+    const flattedDataLatestRef = useLatestRef(flattedData)
     const proxyOnChange = useLatestCallback(
       (value: React.ReactText[], item: any, shouldChecked: boolean) => {
-        tryChangeValue(value, item, shouldChecked)
-        // console.log('proxyOnChange', value)
+        const flattedItems = flattedDataLatestRef.current
+        const itemsPaths = flattedItems
+          .filter((item) => value.includes(item.id))
+          .map((item) => getTopDownAncestors(item).map(({ id }) => id))
+
+        // TODO: 找到所有 id 的祖先节点路径
+        tryChangeValue(itemsPaths)
 
         // 包括所有全选的数据，包括全选
         if (shouldChecked) {
@@ -96,20 +96,12 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     // ************************** 异步搜索 ************************* //
 
-    // TODO: 支持对 Item 传入 状态
-    const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({ dataSource })
     const customSearchStrategy = useTreeCustomSearch({ data: flattedData, filterOption })
-    const filterSearchStrategy = useFilterSearch({
-      data: flattedData,
-      flattedData: flattedData,
-      searchMode: searchableProp && !upMatch ? 'filter' : undefined,
-      exclude: (node: any) => !node.checkable,
-    })
 
     const upMatchSearchStrategy = useTreeUpMatchSearch({
       data: cascaderData,
       flattedData: flattedData,
-      enabled: upMatch,
+      enabled: searchableProp,
       exclude: (node: any) => !node.checkable,
     })
 
@@ -121,12 +113,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       keyword: searchValue,
     } = useSearchMode({
       searchable: searchableProp,
-      strategies: [
-        dataSourceStrategy,
-        customSearchStrategy,
-        filterSearchStrategy,
-        upMatchSearchStrategy,
-      ],
+      strategies: [customSearchStrategy, upMatchSearchStrategy],
     })
 
     // 拦截 titleRender，自定义高亮展示
@@ -138,13 +125,13 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         }
 
         // 本地搜索执行默认高亮规则
-        const highlight = !!searchValue && (searchMode === 'upMatch' || searchMode === 'filter')
+        const highlight = !!searchValue && searchMode === 'upMatch'
 
         let found = false
 
         const ret = highlight ? (
           <span className={cx(`title__text`, `title__text--cols`)}>
-            {getNodeAncestors(node)
+            {getNodeAncestorsWithMe(node)
               .map((item) => {
                 const { title, id } = item
                 const raw = (
@@ -189,7 +176,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     // 搜索时临时选中缓存数据
     const [selectedItems, setSelectedItems] = useState<any[]>([])
 
-    const shouldUseSearch = !!searchValue && !hasError
+    const shouldUseSearch = !!searchValue
 
     const selectProps = {
       data: shouldUseSearch ? stateInSearch.data : flattedData,
@@ -221,7 +208,6 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         onClose={menuVisibleAction.off}
         searchable={searchable}
         onSearch={onSearch}
-        loading={loading}
         trigger={
           <TagInputMock
             clearable={clearable}
@@ -247,7 +233,6 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
           <CheckCascaderMenus
             disabled={disabled}
             value={value}
-            defaultValue={defaultValue}
             // @ts-ignore
             onChange={proxyOnChange}
             expandTrigger={expandTrigger}
@@ -276,16 +261,16 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   /**
    * 设置当前多选值
    */
-  value?: React.ReactText[]
+  value?: React.ReactText[][]
   /**
    * 设置当前多选值默认值
    */
-  defaultValue?: React.ReactText[]
+  defaultValue?: React.ReactText[][]
   /**
    * 多选值改变时的回调
    * TODO: 是否有这样的需求：暴露操作的原始数据对象？包括 点击 checkbox、点击 tag 删除按钮、点击清空按钮
    */
-  onChange?: (values: React.ReactText[]) => void
+  onChange?: (values: React.ReactText[][]) => void
   /**
    * 选项被点击时的回调
    * @private
@@ -318,7 +303,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: CheckCascaderItemEventData) => React.ReactNode
+  render?: (item: CheckCascaderItemEventData) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容
    */
@@ -329,12 +314,9 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   checkCascaded?: boolean
   /**
    * 将 check 子项拍平展示
+   * @private
    */
-  flatted?: boolean
-  /**
-   * 开启全量搜索，默认只对开启 checkable 的选项进行搜索，不向上查找路径
-   */
-  upMatch?: boolean
+  type?: 'flatted' | 'tree'
   /**
    * 触发器输入框占位符
    */
@@ -346,7 +328,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   /**
    * 异步请求更新数据
    */
-  onLoadChildren?: (item: CheckCascaderItemEventData) => Promise<CheckCascaderItem[] | void> | void
+  onLoadChildren?: (
+    item: CheckCascaderItemEventData,
+    idPaths: React.ReactText[]
+  ) => Promise<CheckCascaderItem[] | void> | void
   /**
    * 是否单行展示，超出 +1
    * @private
@@ -362,10 +347,6 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
    * 第二个为数据项，返回值为 true 时将出现在结果项
    */
   filterOption?: (keyword: string, item: any) => boolean
-  /**
-   * 异步加载数据
-   */
-  dataSource?: UseDataSource<any>
 }
 
 if (__DEV__) {

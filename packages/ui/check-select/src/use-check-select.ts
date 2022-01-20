@@ -3,7 +3,7 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 // import { useSearch } from './hooks'
 import { useCheck as useCheckDefault } from '@hi-ui/use-check'
 import { CheckSelectDataGroupItem, CheckSelectDataItem, CheckSelectEventData } from './types'
-import { useLatestCallback } from '@hi-ui/use-latest'
+import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { toArray } from '@hi-ui/use-children'
 import { flattenTree } from '@hi-ui/tree-utils'
 
@@ -26,6 +26,7 @@ export const useCheckSelect = ({
   ...rest
 }: UseCheckSelectProps) => {
   const data = useMemo(() => {
+    // @private
     if (children) {
       const dfs = (child: any) => {
         const arr: any[] = []
@@ -102,7 +103,7 @@ export const useCheckSelect = ({
         // @ts-ignore
         node.title = getKeyFields(node.raw, 'title')
         // @ts-ignore
-        node.disabled = getKeyFields(node.raw, 'disabled')
+        node.disabled = getKeyFields(node.raw, 'disabled') ?? false
       }
       return node
     })
@@ -112,15 +113,22 @@ export const useCheckSelect = ({
 
   const onSelectLatest = useLatestCallback(onSelect)
 
+  const flattedDataRef = useLatestRef(flattedData)
+
   const proxyTryChangeValue = useCallback(
     (value: React.ReactText[], item: CheckSelectEventData, shouldChecked: boolean) => {
-      tryChangeValue(value, item, shouldChecked)
+      // 调用用户的select
+      const checkedItems = flattedDataRef.current
+        .filter((item) => isCheckedId(item.id))
+        .map((item) => item.raw)
+
+      tryChangeValue(value, [item], checkedItems)
       onSelectLatest(value, item, shouldChecked)
     },
-    [tryChangeValue, onSelectLatest]
+    [tryChangeValue, onSelectLatest, flattedDataRef]
   )
 
-  const [onOptionCheck, isSelectedId] = useCheckDefault({
+  const [onOptionCheck, isCheckedId] = useCheckDefault({
     disabled,
     checkedIds: value,
     onCheck: proxyTryChangeValue,
@@ -146,7 +154,7 @@ export const useCheckSelect = ({
     value,
     tryChangeValue,
     onSelect: onOptionCheck,
-    isSelectedId,
+    isCheckedId,
     emptyContent,
     // getSearchInputProps,
     // isEmpty,
@@ -165,11 +173,14 @@ export interface UseCheckSelectProps {
   defaultValue?: React.ReactText[]
   /**
    * 选中值改变时的回调
+   * value: 所有选中项的 id 集合
+   * changedItems: 变更的选项集合
+   * checkedItems：所有选中项的选项集合
    */
   onChange?: (
     value: React.ReactText[],
-    targetOption?: CheckSelectEventData,
-    shouldChecked?: boolean
+    changedItems?: CheckSelectDataItem[],
+    checkedItems?: CheckSelectDataItem[]
   ) => void
   /**
    * 选中值时回调

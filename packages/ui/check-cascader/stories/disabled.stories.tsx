@@ -176,7 +176,7 @@ export const Disabled = () => {
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
           data={data}
-          defaultValue={['0-2']}
+          defaultValue={[['0', '0-2']]}
         />
       </div>
     </>

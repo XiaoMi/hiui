@@ -8,7 +8,10 @@ import {
 } from './types'
 
 interface CheckCascaderContext {
-  onLoadChildren?: (item: CheckCascaderItemEventData) => Promise<CheckCascaderItem[] | void> | void
+  onLoadChildren?: (
+    item: CheckCascaderItemEventData,
+    idPaths: React.ReactText[]
+  ) => Promise<CheckCascaderItem[] | void> | void
   disabled?: boolean
   expandTrigger?: ExpandTrigger
   onCheck?: (option: CheckCascaderItemEventData, shouldChecked: boolean) => void

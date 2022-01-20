@@ -37,7 +37,7 @@ $prefix: '#{$component-prefix}-check-select' !default;
 
     $this: &;
 
-    // &:not(#{$this}--selected):not(#{$this}--focused):not(#{$this}--disabled):hover {
+    // &:not(#{$this}--checked):not(#{$this}--focused):not(#{$this}--disabled):hover {
     //   background-color: use-color('gray', 100);
     // }
 
@@ -45,7 +45,7 @@ $prefix: '#{$component-prefix}-check-select' !default;
       background-color: use-color('gray', 100);
     }
 
-    &--selected {
+    &--checked {
       // background-color: use-color-mode('primary-05');
       // color: use-color-mode('primary');
     }

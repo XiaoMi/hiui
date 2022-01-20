@@ -18,6 +18,7 @@ import { Highlighter } from '@hi-ui/highlighter'
 import { useToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import { times } from '@hi-ui/times'
+import { callAllFuncs } from '@hi-ui/func-utils'
 
 import {
   useAsyncSearch,
@@ -45,7 +46,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       placeholder = '请选择',
       displayRender: displayRenderProp,
       onSelect: onSelectProp,
-      height,
+      height = 260,
       itemHeight = 40,
       virtual = true,
       onOpen,
@@ -57,8 +58,9 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       dataSource,
       filterOption,
       searchable: searchableProp,
-      titleRender,
+      render: titleRender,
       renderExtraFooter,
+      onSearch: onSearchProp,
       ...rest
     },
     ref
@@ -68,6 +70,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     const displayRender = useCallback(
       (item: CheckSelectDataItem) => {
         if (isFunction(displayRenderProp)) {
+          // @ts-ignore
           return displayRenderProp(item)
         }
 
@@ -192,18 +195,12 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           }}
           disabled={disabled}
           onClose={menuVisibleAction.off}
-          // value={value}
-          // onChange={tryChangeValue}
-          // data={mergedData}
           searchable={searchable}
-          onSearch={onSearch}
+          onSearch={callAllFuncs(onSearchProp, onSearch)}
           loading={loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           trigger={
             <TagInputMock
-              // ref={targetElementRef}
-              // onClick={openMenu}
-              // disabled={disabled}
               clearable={clearable}
               placeholder={placeholder}
               // @ts-ignore
@@ -214,7 +211,6 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
               value={value}
               onChange={tryChangeValue}
               data={mergedData}
-              // @ts-ignore
               invalid={invalid}
               onExpand={() => {
                 // setViewSelected(true)
@@ -255,10 +251,12 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 export interface CheckSelectProps extends Omit<PickerProps, 'trigger'>, UseCheckSelectProps {
   /**
    * 设置虚拟滚动容器的可视高度
+   * @private
    */
   height?: number
   /**
    * 设置虚拟列表每项的固定高度
+   * @private
    */
   itemHeight?: number
   /**
@@ -288,11 +286,11 @@ export interface CheckSelectProps extends Omit<PickerProps, 'trigger'>, UseCheck
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: CheckSelectEventData) => React.ReactNode
+  render?: (item: CheckSelectEventData) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容，只在 title 为字符串时有效
    */
-  displayRender?: (option: CheckSelectDataItem) => React.ReactNode
+  displayRender?: (option: CheckSelectEventData) => React.ReactNode
   /**
    * 触发器输入框占位符
    */
@@ -362,31 +360,31 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
     },
     ref
   ) => {
-    const { isSelectedId, onSelect } = useCheckSelectContext()
+    const { isCheckedId, onSelect } = useCheckSelectContext()
 
     const { id, disabled = false } = option
-    const selected = isSelectedId(id)
+    const checked = isCheckedId(id)
 
     const eventNodeRef = useLatestRef(
       Object.assign({}, option, {
         disabled: disabled,
-        checked: selected,
+        checked: checked,
       })
     )
 
     const cls = cx(
       prefixCls,
       className,
-      selected && `${prefixCls}--selected`,
+      checked && `${prefixCls}--checked`,
       disabled && `${prefixCls}--disabled`
     )
 
     const handleOptionCheck = useCallback(
       (evt) => {
-        onSelect(option, !selected)
+        onSelect(option, !checked)
         onClick?.(evt)
       },
-      [onSelect, option, selected, onClick]
+      [onSelect, option, checked, onClick]
     )
 
     const renderTitle = useCallback(

@@ -57,7 +57,7 @@ export const Dynamic = () => {
         <CheckCascader
           data={treeData}
           onLoadChildren={loadChildren}
-          defaultValue={[1]}
+          defaultValue={[[1]]}
           onChange={console.log}
         ></CheckCascader>
       </div>

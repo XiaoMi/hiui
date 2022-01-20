@@ -203,7 +203,10 @@ export interface CascaderMenusProps {
    */
   flatted?: boolean
 
-  onLoadChildren?: (item: CheckCascaderItemEventData) => Promise<CheckCascaderItem[] | void> | void
+  onLoadChildren?: (
+    item: CheckCascaderItemEventData,
+    idPaths: React.ReactText[]
+  ) => Promise<CheckCascaderItem[] | void> | void
 }
 
 if (__DEV__) {
