@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/form",
-  "version": "4.0.0-alpha.10",
+  "version": "4.0.0-alpha.11",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@flcwly/validater": "^0.1.4",
-    "@hi-ui/button": "^4.0.0-alpha.22",
+    "@hi-ui/button": "^4.0.0-alpha.23",
     "@hi-ui/classname": "^4.0.0-alpha.3",
     "@hi-ui/core-css": "^4.0.0-alpha.13",
     "@hi-ui/dom-utils": "^4.0.0-alpha.7",
