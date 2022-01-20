@@ -12,14 +12,7 @@ export const renderFilter = ({ prefixCls, columnKey, column, showColMenu }: Rend
   const { sorter, filterIcon, selectFilters } = column.raw
 
   return [
-    showColMenu && (
-      <TableColumnMenu
-        prefixCls={`${prefixCls}-dropdown`}
-        key="0"
-        columnKey={columnKey}
-        column={column}
-      />
-    ),
+    showColMenu && <TableColumnMenu prefixCls={`${prefixCls}-dropdown`} key="0" column={column} />,
     sorter && !showColMenu && (
       <SorterMenu prefixCls={`${prefixCls}-sorter`} key="1" column={column} />
     ),
