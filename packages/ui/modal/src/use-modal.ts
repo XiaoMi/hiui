@@ -146,13 +146,18 @@ export const useModal = ({
 
   const getModalProps = useCallback(
     (props = {}, ref = null) => {
+      const style = { outline: 0, ...props.style }
+      if (!visible) {
+        style.display = 'none'
+      }
+
       return {
         role: 'dialog',
         'aria-modal': true,
         ...props,
         ref: mergeRefs(setModalElement, ref),
         tabIndex: -1,
-        style: { ...props.style, display: !visible ? 'none' : undefined },
+        style,
         onKeyDown: mockDefaultHandlers(props.onKeyDown, trapTabKey),
       }
     },
