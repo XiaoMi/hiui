@@ -58,6 +58,7 @@
     "@hi-ui/popper": "^4.0.0-alpha.23",
     "@hi-ui/react-utils": "^4.0.0-alpha.7",
     "@hi-ui/select": "^4.0.0-alpha.30",
+    "@hi-ui/spinner": "^4.0.0-alpha.0",
     "@hi-ui/times": "^4.0.0-alpha.4",
     "@hi-ui/tree-utils": "^4.0.0-alpha.12",
     "@hi-ui/type-assertion": "^4.0.0-alpha.13",

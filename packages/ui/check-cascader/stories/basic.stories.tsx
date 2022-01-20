@@ -72,9 +72,11 @@ export const Basic = () => {
       <div className="cascader-basic__wrap">
         <CheckCascader
           searchable={false}
+          // clearable
           placeholder="请选择品类"
           defaultValue={[['手机', '红米', '红米4']]}
           data={dataOnlyLeafCheckable}
+          onChange={console.log}
         ></CheckCascader>
       </div>
     </>

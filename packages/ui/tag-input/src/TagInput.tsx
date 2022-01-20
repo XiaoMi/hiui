@@ -29,7 +29,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
       placeholder,
       data = NOOP_ARRAY,
       wrap = true,
-      clearable = false,
+      clearable = true,
       disabled = false,
       suffix,
       displayRender,
@@ -48,19 +48,19 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
 
     const onClearLatest = useLatestCallback(onClear)
 
+    const tagList = useMemo(
+      () => value.map((id) => data.find((item) => item.id === id) || { id, title: id }),
+      [value, data]
+    )
+
     const handleClear = useCallback(
       (evt) => {
         if (disabled) return
         evt.stopPropagation()
-        tryChangeValue(NOOP_ARRAY)
+        tryChangeValue(NOOP_ARRAY, tagList, false)
         onClearLatest()
       },
-      [tryChangeValue, disabled, onClearLatest]
-    )
-
-    const tagList = useMemo(
-      () => value.map((id) => data.find((item) => item.id === id) || { id, title: id }),
-      [value, data]
+      [tryChangeValue, disabled, onClearLatest, tagList]
     )
 
     const [hover, setHover] = useState(false)
@@ -130,7 +130,7 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
 
                             evt.stopPropagation()
                             const nextValue = [...value].filter((id) => id !== option.id)
-                            tryChangeValue(nextValue)
+                            tryChangeValue(nextValue, [option], false)
                           }}
                         >
                           <CloseOutlined />

@@ -19,7 +19,7 @@ export const TitleRender = () => {
           clearable={false}
           style={{ width: 200 }}
           data={data}
-          titleRender={(item) => {
+          render={(item) => {
             return (
               <React.Fragment>
                 <span style={{ float: 'left' }}>{item.title}</span>

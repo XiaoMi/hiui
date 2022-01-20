@@ -28,7 +28,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       placeholder,
       data = NOOP_ARRAY,
       disabled = false,
-      clearable = false,
+      clearable = true,
       focused = false,
       invalid = false,
       readOnly = false,
@@ -126,10 +126,10 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
         if (disabled) return
 
         evt.stopPropagation()
-        tryChangeValue(NOOP_ARRAY)
+        tryChangeValue(NOOP_ARRAY, tagList, false)
         onClearLatest()
       },
-      [tryChangeValue, disabled, onClearLatest]
+      [tryChangeValue, disabled, onClearLatest, tagList]
     )
 
     const [hover, setHover] = useState(false)
@@ -262,7 +262,11 @@ export interface TagInputMockProps
   /**
    * 多选值改变时的回调
    */
-  onChange?: (values: React.ReactText[]) => void
+  onChange?: (
+    values: React.ReactText[],
+    targetItem: TagInputOption[],
+    shouldChecked: boolean
+  ) => void
   /**
    * 是否可清空	boolean	true | false	true
    */
@@ -373,7 +377,7 @@ function MockTag({
 
                 evt.stopPropagation()
                 const nextValue = value.filter((id: any) => id !== option.id)
-                tryChangeValue(nextValue)
+                tryChangeValue(nextValue, [option], false)
               }}
             >
               <CloseOutlined />

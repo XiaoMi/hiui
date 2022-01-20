@@ -209,6 +209,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
               focused={menuVisible}
               appearance={appearance}
               value={value}
+              // @ts-ignore
               onChange={tryChangeValue}
               data={mergedData}
               invalid={invalid}

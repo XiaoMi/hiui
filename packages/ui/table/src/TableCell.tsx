@@ -13,6 +13,7 @@ import {
   defaultLeafIcon,
   defaultLoadingIcon,
 } from './icons'
+import { EMBED_DATA_KEY } from './BaseTable'
 
 const _prefix = getPrefixCls('table-cell')
 
@@ -61,7 +62,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       let content = row[dataKey]
 
       if (isFunction(rawRender)) {
-        content = rawRender(content, row, rowIndex, dataKey)
+        content = rawRender(content, EMBED_DATA_KEY === dataKey ? rowData : row, rowIndex, dataKey)
       } else if (isFunction(cellRender)) {
         content = cellRender(content)
       }

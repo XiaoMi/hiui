@@ -116,15 +116,34 @@ export const useCheckSelect = ({
   const flattedDataRef = useLatestRef(flattedData)
 
   const proxyTryChangeValue = useCallback(
-    (value: React.ReactText[], item: CheckSelectEventData, shouldChecked: boolean) => {
+    (
+      value: React.ReactText[],
+      item: CheckSelectEventData | CheckSelectEventData[],
+      shouldChecked: boolean
+    ) => {
       // 调用用户的select
       const checkedItems = flattedDataRef.current
-        .filter((item) => isCheckedId(item.id))
+        // 使用最新的value
+        .filter((item) => value.includes(item.id))
         .map((item) => item.raw)
 
-      tryChangeValue(value, [item], checkedItems)
-      onSelectLatest(value, item, shouldChecked)
+      let changedItems = item as CheckSelectEventData[]
+
+      if (!Array.isArray(item)) {
+        changedItems = [item]
+
+        onSelectLatest(value, item, shouldChecked)
+      }
+
+      tryChangeValue(
+        value,
+        // TODO: 处理脏数据
+        changedItems.map((item) => ('raw' in item ? item.raw : item)),
+        checkedItems
+      )
     },
+    // deps-ignore: isCheckedId no changed
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [tryChangeValue, onSelectLatest, flattedDataRef]
   )
 
@@ -152,7 +171,7 @@ export const useCheckSelect = ({
     data,
     flattedData,
     value,
-    tryChangeValue,
+    tryChangeValue: proxyTryChangeValue,
     onSelect: onOptionCheck,
     isCheckedId,
     emptyContent,

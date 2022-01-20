@@ -23,7 +23,7 @@ export const Basic = () => {
           searchable
           clearable
           data={data}
-          // titleRender={(option) => {
+          // render={(option) => {
           //   if (option.id === 'ABC1') {
           //     return '不限'
           //   }

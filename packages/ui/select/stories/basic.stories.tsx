@@ -8,6 +8,8 @@ export const Basic = () => {
     { title: '笔记本', id: '4', disabled: true },
     { title: '生活周边', id: '5' },
     { title: '办公', id: '6' },
+    { title: '生活周边7', id: '7' },
+    { title: '办公8', id: '8' },
   ])
 
   return (
