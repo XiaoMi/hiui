@@ -52,7 +52,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       placeholder = '请选择',
       displayRender: displayRenderProp,
       // Virtual List
-      height = 260,
+      height,
       itemHeight = 40,
       virtual = true,
       // search

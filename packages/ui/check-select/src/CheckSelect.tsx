@@ -46,7 +46,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       placeholder = '请选择',
       displayRender: displayRenderProp,
       onSelect: onSelectProp,
-      height = 260,
+      height,
       itemHeight = 40,
       virtual = true,
       onOpen,
