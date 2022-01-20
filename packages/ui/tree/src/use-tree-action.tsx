@@ -370,8 +370,18 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
     setInputValue(evt.target.value)
   }, [])
 
+  const editElementRef = React.useRef<HTMLDivElement | null>(null)
+
+  const cancelEdit = () => {
+    editingAction.off()
+    onCancel?.(node)
+  }
+
+  useOutsideClick(editElementRef, cancelEdit)
+
   return (
     <div
+      ref={editElementRef}
       className={cx(`${prefixCls}__title`, `${prefixCls}__title--editing`)}
       // TODO： 整行不允许冒泡触发节点选中
       onClick={(evt) => evt.stopPropagation()}
@@ -425,8 +435,7 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
             // 阻止冒泡，避免触发节点选中
             evt.stopPropagation()
 
-            editingAction.off()
-            onCancel?.(node)
+            cancelEdit()
           }}
         />
       </span>
