@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/check-tree-select",
-  "version": "4.0.0-alpha.19",
+  "version": "4.0.0-alpha.20",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -51,7 +51,7 @@
     "@hi-ui/icons": "^4.0.0-alpha.27",
     "@hi-ui/picker": "^4.0.0-alpha.16",
     "@hi-ui/popper": "^4.0.0-alpha.23",
-    "@hi-ui/tag-input": "^4.0.0-alpha.22",
+    "@hi-ui/tag-input": "^4.0.0-alpha.23",
     "@hi-ui/tree": "^4.0.0-alpha.39",
     "@hi-ui/tree-utils": "^4.0.0-alpha.12",
     "@hi-ui/type-assertion": "^4.0.0-alpha.13",

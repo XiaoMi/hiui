@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/list",
-  "version": "4.0.0-alpha.20",
+  "version": "4.0.0-alpha.21",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -48,8 +48,8 @@
     "@hi-ui/core-css": "^4.0.0-alpha.13",
     "@hi-ui/empty-state": "^4.0.0-alpha.18",
     "@hi-ui/env": "^4.0.0-alpha.5",
-    "@hi-ui/locale-context": "^4.0.0-alpha.16",
-    "@hi-ui/pagination": "^4.0.0-alpha.31"
+    "@hi-ui/locale-context": "^4.0.0-alpha.17",
+    "@hi-ui/pagination": "^4.0.0-alpha.32"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
