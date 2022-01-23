@@ -25,15 +25,12 @@ export const Search = () => {
     <>
       <h1>Search</h1>
       <div className="check-select-search__wrap">
-        <CheckSelect searchable placeholder="请选择品类" searchPlaceholder="请输入搜索内容">
-          {data.map((item) => {
-            return (
-              <CheckSelectOption key={item.id} value={item.id}>
-                {item.title}
-              </CheckSelectOption>
-            )
-          })}
-        </CheckSelect>
+        <CheckSelect
+          searchable
+          data={data}
+          placeholder="请选择品类"
+          searchPlaceholder="请输入搜索内容"
+        />
       </div>
     </>
   )

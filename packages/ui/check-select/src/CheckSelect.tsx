@@ -9,7 +9,7 @@ import { CheckSelectDataItem, CheckSelectEventData } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
 import { TagInputMock } from '@hi-ui/tag-input'
-import { isFunction, isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import VirtualList from 'rc-virtual-list'
 import { Picker, PickerProps } from '@hi-ui/picker'
 
@@ -19,6 +19,7 @@ import { useToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import { times } from '@hi-ui/times'
 import { callAllFuncs } from '@hi-ui/func-utils'
+import { useLocaleContext } from '@hi-ui/locale-context'
 
 import {
   useAsyncSearch,
@@ -43,7 +44,9 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       disabled = false,
       clearable = true,
       wrap = true,
-      placeholder,
+      showCheckAll = false,
+      showOnlyShowChecked = false,
+      placeholder: placeholderProp,
       displayRender: displayRenderProp,
       onSelect: onSelectProp,
       height,
@@ -65,6 +68,12 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const placeholder = isUndef(placeholderProp)
+      ? i18n.get('checkSelect.placeholder')
+      : placeholderProp
+
     const [menuVisible, menuVisibleAction] = useToggle()
 
     const displayRender = useCallback(
@@ -108,7 +117,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     const filterSearchStrategy = useFilterSearch({
       data: flattedData,
       flattedData: flattedData,
-      searchMode: searchableProp ? 'filter' : undefined,
+      enabled: searchableProp,
     })
 
     const {
@@ -171,14 +180,77 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
               groupTitle: cur.groupTitle,
               rootProps: cur.rootProps,
             })
-            return acc.concat(cur.children)
+          } else {
+            acc.push(cur)
           }
 
-          acc.push(cur)
           return acc
         }, []),
       [selectProps.data]
     )
+
+    const [filterItems, setFilterItems] = useState<any[] | null>(null)
+    const dropdownItems = filterItems || virtualData
+
+    const [allChecked, indeterminate] = useMemo(() => {
+      const dropdownIds = dropdownItems
+        .filter((item: any) => !('groupTitle' in item))
+        .map(({ id }: any) => id)
+      const dropdownIdsSet = new Set(dropdownIds)
+
+      let hasValue = false
+
+      value.forEach((id) => {
+        if (dropdownIdsSet.has(id)) {
+          hasValue = true
+          dropdownIdsSet.delete(id)
+        }
+      })
+
+      return [hasValue && dropdownIdsSet.size === 0, hasValue && dropdownIdsSet.size > 0]
+    }, [dropdownItems, value])
+
+    const toggleCheckAll = useCallback(
+      (showChecked: boolean) => {
+        const checkedItems = mergedData.filter((item) => {
+          return value.includes(item.id)
+        })
+
+        const items = dropdownItems.filter((item: any) => !('groupTitle' in item))
+
+        if (showChecked) {
+          tryChangeValue(
+            items.map(({ id }: any) => id),
+            checkedItems,
+            showChecked
+          )
+        } else {
+          tryChangeValue([], checkedItems, showChecked)
+        }
+      },
+      [dropdownItems, mergedData, value, tryChangeValue]
+    )
+
+    const renderDefaultFooter = () => {
+      const extra = renderExtraFooter ? renderExtraFooter() : null
+      if (showCheckAll) {
+        return (
+          <>
+            <Checkbox
+              indeterminate={indeterminate}
+              checked={allChecked}
+              onChange={(evt) => {
+                toggleCheckAll(evt.target.checked)
+              }}
+            >
+              {i18n.get('checkSelect.checkAll')}
+            </Checkbox>
+            {extra}
+          </>
+        )
+      }
+      return extra
+    }
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
@@ -190,7 +262,11 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           {...rest}
           visible={menuVisible}
           onOpen={() => {
-            // setViewSelected(false)
+            if (showOnlyShowChecked) {
+              if (filterItems) {
+                setFilterItems(null)
+              }
+            }
             menuVisibleAction.on()
           }}
           disabled={disabled}
@@ -198,7 +274,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           searchable={searchable}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
           loading={loading}
-          footer={renderExtraFooter ? renderExtraFooter() : null}
+          footer={renderDefaultFooter()}
           trigger={
             <TagInputMock
               clearable={clearable}
@@ -214,20 +290,27 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
               data={mergedData}
               invalid={invalid}
               onExpand={() => {
-                // setViewSelected(true)
+                if (showOnlyShowChecked) {
+                  setFilterItems(() => {
+                    return mergedData.filter((item) => {
+                      return value.includes(item.id)
+                    })
+                  })
+                }
+
                 menuVisibleAction.on()
               }}
             />
           }
         >
-          {isArrayNonEmpty(virtualData) ? (
+          {isArrayNonEmpty(dropdownItems) ? (
             <VirtualList
               itemKey="id"
               fullHeight={false}
               height={height}
               itemHeight={itemHeight}
               virtual={virtual}
-              data={virtualData}
+              data={dropdownItems}
             >
               {(node: any) => {
                 /* 反向 map，搜索删选数据时会对数据进行处理 */
@@ -334,6 +417,14 @@ export interface CheckSelectProps extends Omit<PickerProps, 'trigger'>, UseCheck
    * 面板关闭时回调
    */
   onClose?: () => void
+  /**
+   * 是否开启全选功能
+   */
+  showCheckAll?: boolean
+  /**
+   * 是否开启查看仅已选功能
+   */
+  showOnlyShowChecked?: boolean
 }
 
 // @ts-ignore

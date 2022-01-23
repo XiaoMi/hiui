@@ -7,12 +7,13 @@ import { Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { flattenTree } from '@hi-ui/tree-utils'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { uniqBy } from 'lodash'
 import { Highlighter } from '@hi-ui/highlighter'
 import { MockInput } from '@hi-ui/input'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
+import { useLocaleContext } from '@hi-ui/locale-context'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -65,14 +66,18 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       clearable,
       invalid,
       displayRender,
-      placeholder = '请选择',
+      placeholder: placeholderProp,
       appearance,
-      // searchPlaceholder,
-      // emptyContent,
       ...rest
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const placeholder = isUndef(placeholderProp)
+      ? i18n.get('treeSelect.placeholder')
+      : placeholderProp
+
     const [menuVisible, menuVisibleAction] = useToggle()
 
     /**

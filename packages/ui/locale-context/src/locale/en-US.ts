@@ -57,6 +57,10 @@ export default {
     placeholder: 'Please select',
     noFoundTip: 'Not found',
   },
+  checkCascader: {
+    placeholder: 'Please select',
+    noFoundTip: 'Not found',
+  },
   select: {
     placeholder: 'Please select',
     emptyContent: 'Not found',
@@ -142,5 +146,24 @@ export default {
   },
   emptyState: {
     emptyContent: 'No data',
+  },
+  checkSelect: {
+    placeholder: 'Please select',
+    emptyContent: 'Not found',
+    searchPlaceholder: 'Please search',
+    checkAll: 'Check all',
+    justSelected: 'Just Selected',
+  },
+  treeSelect: {
+    placeholder: 'Please select',
+  },
+  checkTreeSelect: {
+    placeholder: 'Please select',
+  },
+  picker: {
+    placeholder: 'Please select',
+    emptyContent: 'Not found',
+    searchPlaceholder: 'Please search',
+    loadingContent: 'loading data...',
   },
 }

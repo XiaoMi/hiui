@@ -11,7 +11,7 @@ export const Basic = () => {
       <div className="empty-state-basic__wrap">
         <h2>Size</h2>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <EmptyState title="暂无数据" size={'sm'} />
+          <EmptyState size={'sm'} />
           <EmptyState title="暂无数据" size={'md'} />
           <EmptyState title="暂无数据" size={'lg'} />
         </div>

@@ -77,7 +77,31 @@ export default {
     noFoundTip: '无匹配数据',
     emptyContent: '暂无数据',
   },
+  checkCascader: {
+    placeholder: '请选择',
+    noFoundTip: '无匹配数据',
+    emptyContent: '暂无数据',
+  },
+  picker: {
+    placeholder: '请选择',
+    emptyContent: '无匹配数据',
+    searchPlaceholder: '搜索',
+    loadingContent: '数据加载中...',
+  },
+  treeSelect: {
+    placeholder: '请选择',
+  },
+  checkTreeSelect: {
+    placeholder: '请选择',
+  },
   select: {
+    placeholder: '请选择',
+    emptyContent: '无匹配数据',
+    searchPlaceholder: '搜索',
+    checkAll: '全选',
+    justSelected: '仅看已选',
+  },
+  checkSelect: {
     placeholder: '请选择',
     emptyContent: '无匹配数据',
     searchPlaceholder: '搜索',

@@ -9,6 +9,8 @@ import { SearchOutlined } from '@hi-ui/icons'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import Loading from '@hi-ui/loading'
+import { useLocaleContext } from '@hi-ui/locale-context'
+import { isUndef } from '@hi-ui/type-assertion'
 
 const PICKER_PREFIX = getPrefixCls('picker')
 
@@ -28,10 +30,9 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       visible,
       onOpen,
       onClose,
-      placeholder,
-      searchPlaceholder = '搜索',
-      loadingContent = '数据加载中...',
-      emptyContent = '无匹配数据',
+      searchPlaceholder: searchPlaceholderProp,
+      loadingContent: loadingContentProp,
+      emptyContent: emptyContentProp,
       showEmpty = true,
       loading = false,
       optionWidth,
@@ -48,6 +49,18 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const searchPlaceholder = isUndef(searchPlaceholderProp)
+      ? i18n.get('picker.searchPlaceholder')
+      : searchPlaceholderProp
+    const loadingContent = isUndef(loadingContentProp)
+      ? i18n.get('picker.loadingContent')
+      : loadingContentProp
+    const emptyContent = isUndef(emptyContentProp)
+      ? i18n.get('picker.emptyContent')
+      : emptyContentProp
+
     // *********************** 搜索管理 ********************** //
 
     const [searchValue, setSearchValue] = useState('')
@@ -206,10 +219,6 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 是否禁用
    */
   disabled?: boolean
-  /**
-   * 输入框占位
-   */
-  placeholder?: string
   /**
    * 设置选项为空时展示的内容
    */

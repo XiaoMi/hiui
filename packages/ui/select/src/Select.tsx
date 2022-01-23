@@ -9,7 +9,7 @@ import { SelectProvider } from './context'
 import { FieldNames, FlattedSelectItem, SelectItemEventData, SelectMergedItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import VirtualList from 'rc-virtual-list'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { Highlighter } from '@hi-ui/highlighter'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -25,6 +25,7 @@ import { SelectOptionGroup } from './SelectOptionGroup'
 import { uniqBy } from 'lodash'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
+import { useLocaleContext } from '@hi-ui/locale-context'
 
 const _role = 'select'
 const _prefix = getPrefixCls(_role)
@@ -49,7 +50,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       disabled = false,
       // picker
       clearable = true,
-      placeholder = '请选择',
+      placeholder: placeholderProp,
       displayRender: displayRenderProp,
       // Virtual List
       height,
@@ -73,6 +74,10 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp
+
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({ disabled, onOpen, onClose })
 
     const onSelect = useLatestCallback((value: React.ReactText, item: SelectItemEventData) => {

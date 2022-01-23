@@ -4,7 +4,7 @@ export interface CheckSelectDataItem {
   /**
    * 节点唯一 id
    */
-  id: React.ReactText
+  id?: React.ReactText
   /**
    * 节点标题
    */

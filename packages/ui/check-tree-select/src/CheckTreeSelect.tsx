@@ -12,12 +12,13 @@ import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { flattenTree } from '@hi-ui/tree-utils'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { uniqBy } from 'lodash'
 import { Highlighter } from '@hi-ui/highlighter'
 import { TagInputMock } from '@hi-ui/tag-input'
 import { UpOutlined, DownOutlined } from '@hi-ui/icons'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
+import { useLocaleContext } from '@hi-ui/locale-context'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -71,13 +72,19 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       clearable,
       invalid,
       displayRender,
-      placeholder,
+      placeholder: placeholderProp,
       appearance,
       // searchPlaceholder,
       ...rest
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const placeholder = isUndef(placeholderProp)
+      ? i18n.get('checkTreeSelect.placeholder')
+      : placeholderProp
+
     const [menuVisible, menuVisibleAction] = useToggle()
     // const [viewSelected, setViewSelected] = useState(false)
 

@@ -12,11 +12,12 @@ import { checkCanLoadChildren, flattenTreeData, getItemEventData } from './utils
 import { CascaderProvider, useCascaderContext } from './context'
 import { CascaderItem, ExpandTrigger, FlattedCascaderItem, CascaderItemEventData } from './types'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
-import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { useSearchMode, useTreeCustomSearch, useTreeUpMatchSearch } from '@hi-ui/use-search-mode'
 import { uniqBy } from 'lodash'
 import { useCache } from '@hi-ui/use-cache'
+import { useLocaleContext } from '@hi-ui/locale-context'
 
 const _prefix = getPrefixCls('cascader')
 
@@ -30,7 +31,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
   const {
     prefixCls = _prefix,
     className,
-    placeholder,
+    placeholder: placeholderProp,
     disabled = false,
     clearable = true,
     type = 'tree',
@@ -50,6 +51,10 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     onClose,
     ...rest
   } = props
+  const i18n = useLocaleContext()
+
+  const placeholder = isUndef(placeholderProp) ? i18n.get('cascader.placeholder') : placeholderProp
+
   const flatted = type === 'flatted'
 
   const [menuVisible, menuVisibleAction] = useUncontrolledToggle({

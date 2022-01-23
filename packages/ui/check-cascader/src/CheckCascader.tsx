@@ -19,8 +19,9 @@ import { useSearchMode, useTreeCustomSearch, useTreeUpMatchSearch } from '@hi-ui
 import { flattenTreeData } from './utils'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
+import { useLocaleContext } from '@hi-ui/locale-context'
 
 const _prefix = getPrefixCls('check-cascader')
 const NOOP_ARRAY = [] as []
@@ -37,7 +38,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       value: valueProp,
       onChange,
       data = NOOP_ARRAY,
-      placeholder,
+      placeholder: placeholderProp,
       clearable,
       onSelect,
       expandTrigger,
@@ -62,6 +63,12 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const placeholder = isUndef(placeholderProp)
+      ? i18n.get('checkCascader.placeholder')
+      : placeholderProp
+
     const flatted = type === 'flatted'
 
     const [menuVisible, menuVisibleAction] = useToggle()
