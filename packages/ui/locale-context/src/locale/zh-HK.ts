@@ -1,7 +1,4 @@
 export default {
-  misc: {
-    components: '基礎組件',
-  },
   datePicker: {
     ok: '確認',
     to: '至',
@@ -157,5 +154,8 @@ export default {
   },
   watermark: {
     content: '請勿外傳',
+  },
+  emptyState: {
+    emptyContent: '暫無數據',
   },
 }

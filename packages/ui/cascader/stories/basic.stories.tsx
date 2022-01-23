@@ -58,7 +58,6 @@ export const Basic = () => {
       <h1>Basic</h1>
       <div className="cascader-basic__wrap" style={{ width: 240 }}>
         <Cascader
-          searchable={false}
           clearable
           placeholder="请选择品类"
           defaultValue={['手机', '红米', '红米4']}

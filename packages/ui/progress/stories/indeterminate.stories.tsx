@@ -6,7 +6,7 @@ export const Indeterminate = () => {
     <>
       <h1>Indeterminate</h1>
       <div className="progress-indeterminate__wrap">
-        <Progress mode="indeterminate" />
+        <Progress indeterminate />
       </div>
     </>
   )

@@ -1,6 +1,7 @@
 import React from 'react'
 import EmptyState from '../src'
 import { Button } from '@hi-ui/button'
+// @ts-ignore
 import CustomIcon from './custom.svg'
 
 export const Basic = () => {
@@ -10,9 +11,9 @@ export const Basic = () => {
       <div className="empty-state-basic__wrap">
         <h2>Size</h2>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <EmptyState title="暂无数据" size={'small'} />
-          <EmptyState title="暂无数据" size={'medium'} />
-          <EmptyState title="暂无数据" size={'large'} />
+          <EmptyState title="暂无数据" size={'sm'} />
+          <EmptyState title="暂无数据" size={'md'} />
+          <EmptyState title="暂无数据" size={'lg'} />
         </div>
         <h2>Combination</h2>
         <div style={{ display: 'flex', alignItems: 'center' }}>

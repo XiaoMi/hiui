@@ -71,7 +71,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       clearable,
       invalid,
       displayRender,
-      placeholder = '请选择',
+      placeholder,
       appearance,
       // searchPlaceholder,
       ...rest

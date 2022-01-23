@@ -1,7 +1,4 @@
 export default {
-  misc: {
-    components: 'Basic Components',
-  },
   datePicker: {
     ok: 'OK',
     to: 'to',
@@ -142,5 +139,8 @@ export default {
 
   watermark: {
     content: 'Please do not gaiden',
+  },
+  emptyState: {
+    emptyContent: 'No data',
   },
 }

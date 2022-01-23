@@ -45,7 +45,9 @@
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.3",
     "@hi-ui/core-css": "^4.0.0-alpha.13",
-    "@hi-ui/env": "^4.0.0-alpha.5"
+    "@hi-ui/env": "^4.0.0-alpha.5",
+    "@hi-ui/locale-context": "^4.0.0-alpha.17",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.13"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

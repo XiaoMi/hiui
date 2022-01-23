@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
-import { ValueOf } from '@hi-ui/core'
 import { invariant, __DEV__ } from '@hi-ui/env'
 import { LocaleContext, getLanguage } from './LocaleContext'
 import localeMap from './locale'
+import { LocaleEnum, LocaleLanguage } from './types'
 
 const DEFAULT_LOCALE = 'zh-CN'
 
@@ -14,7 +14,7 @@ export const LocaleProvider: React.FC<LocaleProviderProps> = ({
   locale = DEFAULT_LOCALE,
 }) => {
   const get = useMemo(() => {
-    let languageData: any = localeMap[locale]
+    let languageData: LocaleLanguage = localeMap[locale]
 
     if (!languageData) {
       invariant(
@@ -38,17 +38,6 @@ export const LocaleProvider: React.FC<LocaleProviderProps> = ({
 
   return <LocaleContext.Provider value={providedValue}>{children}</LocaleContext.Provider>
 }
-
-export const LocaleEnum = {
-  'zh-CN': 'zh-CN',
-  'en-US': 'en-US',
-  'zh-HK': 'zh-HK',
-  'zh-TW': 'zh-TW',
-} as const
-
-// 对外暴露同名联合类型
-// eslint-disable-next-line no-redeclare
-export type LocaleEnum = ValueOf<typeof LocaleEnum>
 
 export interface LocaleProviderProps {
   /**

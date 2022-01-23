@@ -1,7 +1,10 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import DefaultIcon from './default-icon'
+import { useLocaleContext } from '@hi-ui/locale-context'
+import { isUndef } from '@hi-ui/type-assertion'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { defaultIndicatorIcon } from './icons'
 
 const _role = 'empty-state'
 const _prefix = getPrefixCls(_role)
@@ -13,22 +16,25 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
       role = _role,
       className,
       children,
-      indicator = <DefaultIndicator />,
-      title = '暂无数据',
+      indicator = defaultIndicatorIcon,
+      title: titleProp,
       imageStyle,
       imageClassName,
-      size = 'small',
+      size = HiBaseSizeEnum.MD,
       ...rest
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const title = isUndef(titleProp) ? i18n.get('emptyState.emptyContent') : titleProp
+
     const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
-    const imageCls = cx(`${prefixCls}__image`, imageClassName)
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <div className={imageCls} style={imageStyle}>
-          {typeof indicator === 'string' ? <img src={indicator} alt={'indicator'} /> : indicator}
+        <div className={cx(`${prefixCls}__image`, imageClassName)} style={imageStyle}>
+          {typeof indicator === 'string' ? <img src={indicator} alt="indicator" /> : indicator}
         </div>
         {title ? <span className={`${prefixCls}__title`}>{title}</span> : null}
         {children && <div className={`${prefixCls}__slot`}>{children}</div>}
@@ -37,47 +43,31 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
   }
 )
 
-export interface EmptyStateProps {
+export interface EmptyStateProps extends HiBaseHTMLProps<'div'> {
   /**
-   * 组件默认的选择器类
+   * 指示器图标，如果是字符串将被设置为 Img src
    */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的根选择器类
-   */
-  className?: string
-  /**
-   * 组件的根样式
-   */
-  style?: React.CSSProperties
   indicator?: React.ReactNode
+  /**
+   * 空状态的标题
+   */
   title?: React.ReactNode
-  imageStyle?: React.CSSProperties
-  imageClassName?: string
   /**
    * 图标尺寸
-   * @default 'small'
    */
-  size?: 'small' | 'medium' | 'large'
-
-  children?: React.ReactNode
+  size?: HiBaseSizeEnum
+  /**
+   * 指示器的样式
+   * @private
+   */
+  imageStyle?: React.CSSProperties
+  /**
+   * 指示器的类名
+   * @private
+   */
+  imageClassName?: string
 }
 
 if (__DEV__) {
   EmptyState.displayName = 'EmptyState'
-}
-
-const DefaultIndicator: React.FC<DefaultIndicatorProps> = (props) => {
-  return <img alt="empty" src={DefaultIcon} {...props} />
-}
-
-export interface DefaultIndicatorProps {
-  prefixCls?: string
-  role?: string
-  className?: string
-  style?: React.CSSProperties
 }

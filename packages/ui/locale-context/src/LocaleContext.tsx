@@ -1,22 +1,15 @@
 import { createContext, useContext } from 'react'
-import { Locale } from './locale/interface'
+import { LocaleLanguage, LocaleEnum } from './types'
 import defaultLocale from './locale/zh-CN'
-import { LocaleEnum } from './LocaleProvider'
 import { getNested } from '@hi-ui/func-utils'
-
-interface UseLocaleContext extends Locale {
-  get: (key: string, data?: Record<string, string>) => string
-  locale: LocaleEnum
-}
+import { invariant } from '@hi-ui/env'
 
 // 1. 赋予动态能力，获取 国际化文案值
 // 2. 查找异常拦截，进行报错提示
-export const getLanguage = (languageData: Record<string, any>) => (key: string, data?: any) => {
+export const getLanguage = (languageData: LocaleLanguage) => (key: string, data?: any) => {
   let value: any = getNested(languageData, key.split('.'))
 
-  if (typeof value !== 'string') {
-    throw new Error(`HiUI : The ${key} in language package is missing.`)
-  }
+  invariant(typeof value !== 'string', `The ${key} in language package is missing.`)
 
   if (data) {
     Object.keys(data).forEach((key) => {
@@ -29,7 +22,7 @@ export const getLanguage = (languageData: Record<string, any>) => (key: string, 
 
 export const LocaleContext = createContext<UseLocaleContext>({
   ...defaultLocale,
-  locale: LocaleEnum['zh-CN'],
+  locale: LocaleEnum.ZH_CN,
   get: getLanguage(defaultLocale),
 })
 
@@ -43,4 +36,9 @@ export const useLocaleContext = () => {
   }
 
   return context
+}
+
+interface UseLocaleContext extends LocaleLanguage {
+  get: (key: string, data?: Record<string, string>) => string
+  locale: LocaleEnum
 }

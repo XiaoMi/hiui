@@ -10,7 +10,7 @@ export const invariant = (condition: any, format: string, ...args: any[]) => {
   if (__DEV__) {
     if (!condition) {
       let argIndex = 0
-      const message = `[HiUI ${'table'}] ` + format.replace(/%s/g, () => args[argIndex++])
+      const message = `[HiUI] ` + format.replace(/%s/g, () => args[argIndex++])
 
       try {
         // To find the call stack of error.

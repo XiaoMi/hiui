@@ -9,20 +9,20 @@ $image-container: '#{$prefix}__image' !default;
   flex-direction: column;
   align-items: center;
 
-  &--size-small{
-    .#{$image-container}{
+  &--size-sm {
+    .#{$image-container} {
       height: 72px;
     }
   }
 
-  &--size-medium{
-    .#{$image-container}{
+  &--size-md {
+    .#{$image-container} {
       height: 96px;
     }
   }
 
-  &--size-large{
-    .#{$image-container}{
+  &--size-lg {
+    .#{$image-container} {
       height: 120px;
     }
   }
@@ -35,7 +35,7 @@ $image-container: '#{$prefix}__image' !default;
     }
   }
 
-  &__title{
+  &__title {
     margin-top: 8px;
     display: block;
     color: use-color('gray', 500);
@@ -43,7 +43,7 @@ $image-container: '#{$prefix}__image' !default;
     line-height: use-text-lineheight('sm');
   }
 
-  &__slot{
+  &__slot {
     margin-top: 10px;
   }
 }
