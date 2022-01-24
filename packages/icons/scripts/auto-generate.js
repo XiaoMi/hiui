@@ -100,7 +100,7 @@ if (__DEV__) {
 }
 
 const generateIconGroupData = (componentInfo) => {
-  const targetDataFile = Path.join(__dirname, '../src/@types/group.ts')
+  const targetDataFile = Path.join(__dirname, '../stories/group.ts')
   const collector = new Map()
   const allNeedImportComponents = []
 
@@ -124,7 +124,7 @@ const generateIconGroupData = (componentInfo) => {
   const content = `
   export interface IconDescription{
     type:'filled'|'outlined',
-    component:IconComponent,
+    component:FunctionComponent,
     name:string,
     tagName:string
   }
@@ -139,7 +139,7 @@ const generateIconGroupData = (componentInfo) => {
       .map((belong) => `${belong}: [${collector.get(belong).map(getDataString).join(',')}]`)
       .join(',\n')}
   }`
-  const allImportStatement = `import {IconComponent} from './component'
+  const allImportStatement = `import { FunctionComponent } from 'react'
   import {${allNeedImportComponents.join(',')}} from '../'`
   Fs.writeFileSync(targetDataFile, allImportStatement + content)
 }
@@ -166,14 +166,21 @@ const indexTsContent = `import './styles/index.scss'
 
 ${componentFileInfo
   .map(({ withTypeName, generateFileRelativePath }) => {
-    return `export { ${transformToUpperCamelCase(
+    return `import { ${transformToUpperCamelCase(
       withTypeName
     )} } from './components/${generateFileRelativePath}'`
   })
   .join('\n')}
 
 export * from './@types/props'
-export * from './tools/group'
+
+export {
+  ${componentFileInfo.map((item) => transformToUpperCamelCase(item.withTypeName)).join(',\n')}
+}
+const SummationObject = {
+${componentFileInfo.map((item) => transformToUpperCamelCase(item.withTypeName)).join(',\n')}
+}
+export { SummationObject }
 `
 Fs.writeFileSync(Path.join(__dirname, '../src/index.ts'), indexTsContent)
 

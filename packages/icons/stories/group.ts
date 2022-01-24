@@ -1,4 +1,4 @@
-import { IconComponent } from './component'
+import { FunctionComponent } from 'react'
 import {
   CheckCircleFilled,
   CheckSquareFilled,
@@ -270,6 +270,8 @@ import {
   DuplicateOutlined,
   EditOutlined,
   EllipsisCircleOutlined,
+  EllipsisVerticalOutlined,
+  EllipsisOutlined,
   EmptyOutlined,
   EqualProportionOutlined,
   FilterOutlined,
@@ -284,8 +286,6 @@ import {
   ScissorOutlined,
   SortAscendingOutlined,
   SortDescendingOutlined,
-  Spot1Outlined,
-  Spot2Outlined,
   SummationOutlined,
   TableOutlined,
   ZoomInOutlined,
@@ -293,7 +293,7 @@ import {
 } from '../'
 export interface IconDescription {
   type: 'filled' | 'outlined'
-  component: IconComponent
+  component: FunctionComponent
   name: string
   tagName: string
 }
@@ -1418,6 +1418,18 @@ export const ComponentGroup: IconGroupInfo = {
     },
     {
       type: 'outlined',
+      component: EllipsisVerticalOutlined,
+      name: 'ellipsis-vertical-outlined',
+      tagName: 'EllipsisVerticalOutlined',
+    },
+    {
+      type: 'outlined',
+      component: EllipsisOutlined,
+      name: 'ellipsis-outlined',
+      tagName: 'EllipsisOutlined',
+    },
+    {
+      type: 'outlined',
       component: EmptyOutlined,
       name: 'empty-outlined',
       tagName: 'EmptyOutlined',
@@ -1494,18 +1506,6 @@ export const ComponentGroup: IconGroupInfo = {
       component: SortDescendingOutlined,
       name: 'sort-descending-outlined',
       tagName: 'SortDescendingOutlined',
-    },
-    {
-      type: 'outlined',
-      component: Spot1Outlined,
-      name: 'spot-1-outlined',
-      tagName: 'Spot1Outlined',
-    },
-    {
-      type: 'outlined',
-      component: Spot2Outlined,
-      name: 'spot-2-outlined',
-      tagName: 'Spot2Outlined',
     },
     {
       type: 'outlined',
