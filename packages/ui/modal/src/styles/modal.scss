@@ -163,17 +163,19 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
     flex-shrink: 0;
     position: relative;
 
-    &::before {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      content: '';
-      display: block;
-      width: 100%;
-      margin-top: -32px;
-      height: 32px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    &--divided {
+      &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        content: '';
+        display: block;
+        width: 100%;
+        margin-top: -32px;
+        height: 32px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+      }
     }
   }
 }

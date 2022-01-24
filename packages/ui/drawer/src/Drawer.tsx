@@ -24,11 +24,8 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       prefixCls = DRAWER_PREFIX,
       className,
       children,
-      portalClassName,
-      overlayClassName,
       disabledPortal = false,
       closeable = true,
-      onOverlayClick,
       timeout = 300,
       onExited: onExitedProp,
       title,
@@ -36,9 +33,8 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       container,
       closeIcon = defaultCloseIcon,
       width,
-      // contentSize,
       preload = false,
-      unmountOnClose = true,
+      unmountOnClose = false,
       visible = false,
       onClose,
       showMask = true,
@@ -50,7 +46,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     const [transitionVisible, transitionVisibleAction] = useToggle(false)
     const [transitionExited, transitionExitedAction] = useToggle(true)
 
-    const { rootProps, getModalProps, getOverlayProps } = useModal({
+    const { rootProps, getModalProps, getModalWrapperProps } = useModal({
       ...rest,
       visible: !transitionExited,
       onClose,
@@ -82,7 +78,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     const cls = cx(prefixCls, className, `${prefixCls}--placement-${placement}`)
 
     return (
-      <Portal className={portalClassName} container={container} disabled={disabledPortal}>
+      <Portal container={container} disabled={disabledPortal}>
         <CSSTransition
           classNames={`${prefixCls}--motion`}
           in={transitionVisible}
@@ -93,12 +89,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
           unmountOnExit={unmountOnClose}
         >
           <div className={cls} {...getModalProps(rootProps, ref)}>
-            {showMask ? (
-              <div
-                className={cx(`${prefixCls}__overlay`, overlayClassName)}
-                {...getOverlayProps({ onClick: onOverlayClick })}
-              />
-            ) : null}
+            {showMask ? <div className={`${prefixCls}__overlay`} /> : null}
             <div
               className={`${prefixCls}__wrapper`}
               style={{
@@ -106,6 +97,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
                   ? width + 'px'
                   : width,
               }}
+              {...getModalWrapperProps()}
             >
               {hasHeader ? (
                 <header className={`${prefixCls}__header`}>
@@ -142,43 +134,50 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
    * 自定义抽屉宽度
    */
   width?: number
+  /**
+   * 开启预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
+   */
   preload?: boolean
+  /**
+   * 开启关闭时销毁，用于性能优化，优先级大于 `preload`
+   */
   unmountOnClose?: boolean
-
   /**
-   * 外层挂载节点的样式类
+   * 关闭事件触发时的回调
    */
-  portalClassName?: string
-  /**
-   * 弹出层样式类
-   */
-  overlayClassName?: string
-  visible?: boolean
   onClose?: () => void
-  closeOnEsc?: boolean
-  onEscKeyDown?: (event: React.KeyboardEvent) => void
-  /**
-   * 是否允许点击蒙层关闭抽屉
-   */
-  closeOnOverlayClick?: boolean
-  onOverlayClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-  closeIcon?: string
-  lockScroll?: boolean
-  timeout?: number
-  /**
-   * 禁用 portal
-   */
-  disabledPortal?: boolean
   /**
    * 指定 portal 的容器
    */
   container?: HTMLElement
-  onExited?: () => void
-  placement?: 'right' | 'left' | 'top' | 'bottom'
+  /**
+   * 设置唤起的方向
+   */
+  placement?: 'right' | 'left'
   /**
    * 是否展示右上角关闭按钮
    */
   closeable?: boolean
+  /**
+   * 自定义关闭时 icon
+   * @private
+   */
+  closeIcon?: React.ReactNode
+  /**
+   * 自定义动画过渡时长
+   * @private
+   */
+  timeout?: number
+  /**
+   * 禁用 portal
+   * @private
+   */
+  disabledPortal?: boolean
+  /**
+   * 关闭动画退出时回调
+   * @private
+   */
+  onExited?: () => void
 }
 
 if (__DEV__) {

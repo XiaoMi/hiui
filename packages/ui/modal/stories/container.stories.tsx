@@ -31,7 +31,7 @@ export const Container = () => {
           style={{ position: 'absolute' }}
           visible={visible}
           closeable={false}
-          onClose={() => setVisible(false)}
+          onCancel={() => setVisible(false)}
           container={container}
         >
           我是挂载指定容器的模态框内容

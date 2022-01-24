@@ -55,7 +55,6 @@
 | portalClassName     | feature    |                  |            |
 | overlayClassName    | feature    |                  |            |
 | size                | update     | 枚举值改变       |            |
-| onOverlayClick      | update     |                  |            |
 | closeIcon           | feature    |                  |            |
 | timeout             | feature    |                  |            |
 | disabledPortal      | feature    |                  |            |

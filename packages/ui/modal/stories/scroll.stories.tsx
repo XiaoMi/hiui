@@ -11,7 +11,7 @@ export const Scroll = () => {
       <h1>Scroll</h1>
       <div className="modal-scroll__wrap">
         <Button onClick={() => setVisible(!visible)}>open</Button>
-        <Modal visible={visible} title="弹框的滚动标题" onClose={() => setVisible(false)}>
+        <Modal visible={visible} title="弹框的滚动标题" onCancel={() => setVisible(false)}>
           <div>
             模拟超长的内容区
             <br />

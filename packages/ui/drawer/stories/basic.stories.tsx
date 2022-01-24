@@ -13,7 +13,6 @@ export const Basic = () => {
         <Drawer
           title="Drawer Header Title"
           visible={visible}
-          closeOnOverlayClick={true}
           onClose={() => setVisible(false)}
           footer={
             <div style={{ textAlign: 'right' }}>

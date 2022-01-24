@@ -28,7 +28,6 @@ export const Container = () => {
           container={container}
           visible={visible}
           closeable={false}
-          closeOnOverlayClick={true}
           onClose={() => setVisible(false)}
         >
           Drawer content

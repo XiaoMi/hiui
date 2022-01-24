@@ -11,7 +11,7 @@ export const Basic = () => {
       <h1>Basic</h1>
       <div className="modal-basic__wrap">
         <Button onClick={() => setVisible(!visible)}>open</Button>
-        <Modal visible={visible} closeable={false} onClose={() => setVisible(false)}>
+        <Modal visible={visible} closeable={false} onCancel={() => setVisible(false)}>
           代码如写诗
           <br />
           <br />

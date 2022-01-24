@@ -60,3 +60,4 @@
 | triggerButton | feature                         | -                                                                        | 功能强化                                                                                                   |
 | popper        | feature                         | 字段 placement -> popper                                                 | Picker 类型组件统一支持，聚合管理。比如： placement arrow container disablePortal 等，之前有的加了有的没加 |
 | id            | update                          | 对于表单控件 id 值的控制，均使用 ReactText（即 string 和 number 都支持） | 之前是 string 类型                                                                                         |
+| data          | update                          | 添加 { type: }                                                           | 扩展分割线                                                                                                 |

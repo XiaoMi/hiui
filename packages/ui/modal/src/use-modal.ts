@@ -16,10 +16,7 @@ export const useModal = ({
   closeOnEsc = true,
   autoFocus = true,
   onEscKeyDown,
-  // TODO: 统一命名
-  // closeOnOverlayClick = true,
   maskClosable = true,
-  // onOverlayClick,
   onClose: onCloseProp,
   focusElementOnClose,
   trapFocus = true,
@@ -29,10 +26,9 @@ export const useModal = ({
 }: UseModalProps) => {
   const [modalElement, setModalElement] = useState<HTMLDivElement | null>(null)
   const modalElementRef = useLatestRef(modalElement)
+  const modalElementWrapperRef = useRef<HTMLDivElement | null>(null)
 
   const returnFocusedElementRef = useRef<HTMLElement | null>(null)
-
-  // const [_container, tryAppend, tryRemove] = useContainer(container)
 
   // 多任务以栈维护，可以控制显隐时序（后显先隐）
   useStackManager(modalElementRef, visible)
@@ -75,14 +71,19 @@ export const useModal = ({
   const onRequestCloseLatest = useLatestCallback(onCloseProp)
 
   const handleClickOverlay = useCallback(
-    (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      evt.stopPropagation()
+    (evt: React.MouseEvent<HTMLDivElement>) => {
+      // @ts-ignore
+      if (modalElementWrapperRef.current?.contains(evt.target)) return
 
       if (maskClosable) {
+        if (!stackManager.isTop(modalElementRef)) return
+
+        evt.stopPropagation()
+
         onRequestCloseLatest()
       }
     },
-    [onRequestCloseLatest, maskClosable]
+    [onRequestCloseLatest, maskClosable, modalElementRef]
   )
 
   const onEscKeyDownLatest = useLatestCallback(onEscKeyDown)
@@ -146,7 +147,7 @@ export const useModal = ({
 
   const getModalProps = useCallback(
     (props = {}, ref = null) => {
-      const style = { outline: 0, ...props.style }
+      const style = { outline: 'none', ...props.style }
       if (!visible) {
         style.display = 'none'
       }
@@ -159,48 +160,78 @@ export const useModal = ({
         tabIndex: -1,
         style,
         onKeyDown: mockDefaultHandlers(props.onKeyDown, trapTabKey),
-      }
-    },
-    [visible, trapTabKey]
-  )
-
-  const getOverlayProps = useCallback(
-    (props = {}, ref = null) => {
-      return {
-        ...props,
-        ref,
         onClick: mockDefaultHandlers(props.onClick, maskClosable ? handleClickOverlay : undefined),
       }
     },
-    [maskClosable, handleClickOverlay]
+    [visible, trapTabKey, maskClosable, handleClickOverlay]
   )
+
+  const getModalWrapperProps = useCallback((props = {}, ref = null) => {
+    return {
+      ...props,
+      ref: mergeRefs(modalElementWrapperRef, ref),
+      onClick: (evt: React.MouseEvent) => evt.stopPropagation(),
+    }
+  }, [])
 
   return {
     rootProps: rest,
     modalElementRef,
     getModalProps,
-    getOverlayProps,
+    getModalWrapperProps,
   }
 }
 
 export interface UseModalProps {
   /**
-   * 是否显示模态框
+   * 	是否弹出显示
    */
   visible?: boolean
+  /**
+   * 开启 Esc 快捷键关闭
+   */
   closeOnEsc?: boolean
+  /**
+   * 按下 Esc 时触发
+   * @private
+   */
   onEscKeyDown?: (event: React.KeyboardEvent) => void
+  /**
+   * 开启点击蒙层时关闭
+   */
   maskClosable?: boolean
-  lockScroll?: boolean
   /**
    * 指定 portal 的容器
    */
   container?: HTMLElement | null
+  /**
+   * 关闭时回调
+   */
   onClose?: () => void
+  /**
+   * 开启弹出时滚动条锁定
+   * @private
+   */
+  lockScroll?: boolean
+  /**
+   * 设置关闭后聚焦元素，默认是上一个聚焦元素
+   * @private
+   */
   focusElementOnClose?: HTMLElement
+  /**
+   * 开启跟踪收敛焦点到弹出层
+   * @private
+   */
   trapFocus?: boolean
+  /**
+   * 开启关闭后焦点返回
+   * @private
+   */
   returnFocusOnClose?: boolean
-  contentOutside?: boolean
+  /**
+   * 开启自动聚焦
+   * @private
+   */
   autoFocus?: boolean
 }
 

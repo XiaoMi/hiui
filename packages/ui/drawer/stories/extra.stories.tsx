@@ -19,7 +19,6 @@ export const Extra = () => {
             </div>
           }
           visible={visible}
-          closeOnOverlayClick={true}
           onClose={() => setVisible(false)}
           footer={
             <div style={{ textAlign: 'right' }}>

@@ -1,9 +1,9 @@
 import React from 'react'
 import Button from '@hi-ui/button'
-import Modal, { ModalSizeType } from '../src'
+import Modal, { ModalSizeEnum } from '../src'
 
 export const Size = () => {
-  const [visibleModalSize, setVisibleModalSize] = React.useState<ModalSizeType | ''>('')
+  const [visibleModalSize, setVisibleModalSize] = React.useState<ModalSizeEnum | ''>('')
 
   return (
     <>
@@ -17,8 +17,8 @@ export const Size = () => {
         <Modal
           visible={!!visibleModalSize}
           closeable={false}
-          size={visibleModalSize as ModalSizeType}
-          onClose={() => setVisibleModalSize('')}
+          size={visibleModalSize as ModalSizeEnum}
+          onCancel={() => setVisibleModalSize('')}
         >
           这是一个标题描述…
           <br />

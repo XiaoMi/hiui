@@ -11,7 +11,7 @@ export const Nested = () => {
       <h1>Nested</h1>
       <div className="modal-nested__wrap">
         <Button onClick={() => setVisible(!visible)}>open</Button>
-        <Modal visible={visible} closeable={false} onClose={() => setVisible(false)}>
+        <Modal visible={visible} closeable={false} onCancel={() => setVisible(false)}>
           <div>Modal content</div>
           <Button onClick={() => setNestVisible(!nestVisible)}>Nested</Button>
           <Modal visible={nestVisible} closeable={false} onCancel={() => setNestVisible(false)}>

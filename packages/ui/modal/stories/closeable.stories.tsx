@@ -11,7 +11,12 @@ export const Closeable = () => {
       <h1>Closeable</h1>
       <div className="modal-closeable__wrap">
         <Button onClick={() => setVisible(!visible)}>open</Button>
-        <Modal visible={visible} title="提示消息" closeable onCancel={() => setVisible(false)}>
+        <Modal
+          visible={visible}
+          title="提示消息"
+          closeable={false}
+          onCancel={() => setVisible(false)}
+        >
           <span>哈哈哈哈哈....</span>
           <br />
           <span>哈哈哈哈哈...</span>

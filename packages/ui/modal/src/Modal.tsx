@@ -1,12 +1,11 @@
 import React, { useEffect, forwardRef, useCallback, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { CSSTransition } from 'react-transition-group'
 import { Portal } from '@hi-ui/portal'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useToggle } from '@hi-ui/use-toggle'
-import { callAllFuncs } from '@hi-ui/func-utils'
 import { IconButton } from '@hi-ui/icon-button'
 import { CloseOutlined } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
@@ -26,12 +25,9 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       prefixCls = _prefix,
       className,
       children,
-      portalClassName,
-      overlayClassName,
       size = 'md',
       disabledPortal = false,
       closeable = true,
-      onOverlayClick,
       timeout = 300,
       onExited: onExitedProp,
       title,
@@ -39,23 +35,19 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       confirmText,
       confirmLoading,
       footer,
-      // TODO: 分离 onCancel 和 onClose
-      onCancel,
+      onCancel: onCloseProp,
       onConfirm,
       container,
       closeIcon = defaultCloseIcon,
+      showMask = true,
       showHeaderDivider = true,
-      // TODO: 废弃警告
       showFooterDivider = true,
       width,
       height,
-      // TODO: 统一性能优化参数
       preload = false,
-      unmountOnClose = true,
+      unmountOnClose = false,
       visible = false,
-      onClose: onCloseProp,
       innerRef,
-      // transitionProps,
       ...rest
     },
     ref
@@ -63,9 +55,9 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     const [transitionVisible, transitionVisibleAction] = useToggle(false)
     const [transitionExited, transitionExitedAction] = useToggle(true)
 
-    const onRequestCloseLatest = useLatestCallback(() => callAllFuncs(onCloseProp, onCancel)())
+    const onRequestCloseLatest = useLatestCallback(() => onCloseProp?.())
 
-    const { rootProps, getModalProps, getOverlayProps } = useModal({
+    const { rootProps, getModalProps, getModalWrapperProps } = useModal({
       ...rest,
       visible: !transitionExited,
       onClose: onRequestCloseLatest,
@@ -102,7 +94,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
 
     return (
-      <Portal className={portalClassName} container={container} disabled={disabledPortal}>
+      <Portal container={container} disabled={disabledPortal}>
         <CSSTransition
           classNames={`${prefixCls}--motion`}
           in={transitionVisible}
@@ -113,11 +105,12 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
           unmountOnExit={unmountOnClose}
         >
           <div className={cls} {...getModalProps(rootProps, ref)}>
+            {showMask ? <div className={`${prefixCls}__overlay`} /> : null}
             <div
-              className={cx(`${prefixCls}__overlay`, overlayClassName)}
-              {...getOverlayProps({ onClick: onOverlayClick })}
-            />
-            <div className={`${prefixCls}__wrapper`} style={{ width, height }}>
+              className={`${prefixCls}__wrapper`}
+              style={{ width, height }}
+              {...getModalWrapperProps()}
+            >
               {hasHeader ? (
                 <header
                   className={cx(
@@ -168,41 +161,25 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   }
 )
 
-export type ModalSizeType = 'sm' | 'md' | 'lg'
+export type ModalSizeEnum = HiBaseSizeEnum
 
 export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
   /**
-   * 外层挂载节点的样式类
-   */
-  portalClassName?: string
-  /**
-   * 弹出层样式类
-   */
-  overlayClassName?: string
-  /**
    * 模态框尺寸
    */
-  size?: ModalSizeType
+  size?: ModalSizeEnum
   /**
    * 是否显示模态框
    */
   visible?: boolean
-  onOverlayClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   /**
    * 是否展示右上角关闭按钮
    */
   closeable?: boolean
-  closeIcon?: string
-  timeout?: number
-  /**
-   * 禁用 portal
-   */
-  disabledPortal?: boolean
   /**
    * 指定 portal 的容器
    */
   container?: HTMLElement | null
-  onExited?: () => void
   /**
    * 模态框标题
    */
@@ -231,21 +208,59 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
    * 取消事件触发时的回调
    */
   onCancel?: () => void
-  onClose?: () => void
+  /**
+   * 开启预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
+   */
+  preload?: boolean
+  /**
+   * 开启关闭时销毁，用于性能优化，优先级大于 `preload`
+   */
+  unmountOnClose?: boolean
+  /**
+   * 弹出层宽度设置
+   */
+  width?: React.ReactText
+  /**
+   * 弹出层高度设置
+   */
+  height?: React.ReactText
+  /**
+   * 是否显示蒙层
+   */
+  showMask?: boolean
   /**
    * 展示 header 与内容的分割线
    */
   showHeaderDivider?: boolean
   /**
-   * 展示 footer 与内容的分割线
-   * @deprecated
+   * 展示 footer 与内容的分割阴影
+   * @private
    */
   showFooterDivider?: boolean
-  preload?: boolean
-  unmountOnClose?: boolean
-  width?: React.ReactText
-  height?: React.ReactText
+  /**
+   * 禁用 portal
+   * @private
+   */
+  disabledPortal?: boolean
+  /**
+   * 自定义关闭时 icon
+   * @private
+   */
+  closeIcon?: React.ReactNode
+  /**
+   * 自定义动画过渡时长
+   * @private
+   */
+  timeout?: number
+  /**
+   * @private
+   */
   innerRef?: React.RefObject<{ close: () => void }>
+  /**
+   * 关闭动画退出时回调
+   * @private
+   */
+  onExited?: () => void
 }
 
 if (__DEV__) {

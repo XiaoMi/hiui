@@ -261,7 +261,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
               confirmCropper(cropperFile.name)
             }
           }}
-          onClose={() => {
+          onCancel={() => {
             setCropperVisible(false)
           }}
           backDrop={false}

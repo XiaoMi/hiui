@@ -2,18 +2,18 @@ import React from 'react'
 import Drawer from '../src'
 import Button from '@hi-ui/button'
 
-export const Placement = () => {
+export const Mask = () => {
   const [visible, setVisible] = React.useState(false)
 
   return (
     <>
-      <h1>Placement</h1>
-      <div className="drawer-placement__wrap">
+      <h1>Mask</h1>
+      <div className="drawer-mask__wrap">
         <Button onClick={() => setVisible(!visible)}>open</Button>
         <Drawer
           title="Drawer Header Title"
           visible={visible}
-          placement="left"
+          showMask={false}
           onClose={() => setVisible(false)}
           footer={
             <div style={{ textAlign: 'right' }}>
