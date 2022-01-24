@@ -107,7 +107,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     &--right {
       font-size: use-text-size('sm');
       color: use-color('gray', 500);
-      font-weight: use-text-weight('norma;');
+      font-weight: use-text-weight('normal');
     }
   }
 
