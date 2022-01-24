@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/button",
-  "version": "4.0.0-alpha.23",
+  "version": "4.0.0-alpha.24",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -46,7 +46,7 @@
     "@hi-ui/classname": "^4.0.0-alpha.3",
     "@hi-ui/core": "^4.0.0-alpha.19",
     "@hi-ui/core-css": "^4.0.0-alpha.13",
-    "@hi-ui/env": "^4.0.0-alpha.5"
+    "@hi-ui/env": "^4.0.0-alpha.6"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/popper",
-  "version": "4.0.0-alpha.23",
+  "version": "4.0.0-alpha.24",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -47,8 +47,8 @@
     "@hi-ui/core": "^4.0.0-alpha.19",
     "@hi-ui/core-css": "^4.0.0-alpha.13",
     "@hi-ui/dom-utils": "^4.0.0-alpha.7",
-    "@hi-ui/env": "^4.0.0-alpha.5",
-    "@hi-ui/portal": "^4.0.0-alpha.18",
+    "@hi-ui/env": "^4.0.0-alpha.6",
+    "@hi-ui/portal": "^4.0.0-alpha.19",
     "@hi-ui/react-utils": "^4.0.0-alpha.7",
     "@hi-ui/use-latest": "^4.0.0-alpha.5",
     "@hi-ui/use-lazy-render": "^4.0.0-alpha.4",
