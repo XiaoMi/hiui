@@ -1,0 +1,22 @@
+
+import React, { forwardRef } from 'react'
+import { cx, getPrefixCls } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
+import { IconProps } from '../../@types/props'
+
+const _prefix = getPrefixCls('icon-ellipsis-vertical-outlined')
+
+export const EllipsisVerticalOutlined = forwardRef<SVGSVGElement | null, IconProps>(
+  ({ prefixCls = _prefix, className, children, ...rest }, ref) => {
+    const cls = cx(prefixCls, className)
+
+    return (
+      <svg className={cls} ref={ref} role="icon" {...rest}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"><path d="M597.333333 213.333333a64 64 0 0 1-64 64h-42.666666a64 64 0 0 1-64-64V170.666667a64 64 0 0 1 64-64h42.666666a64 64 0 0 1 64 64v42.666666z m0 320a64 64 0 0 1-64 64h-42.666666a64 64 0 0 1-64-64v-42.666666a64 64 0 0 1 64-64h42.666666a64 64 0 0 1 64 64v42.666666z m0 320a64 64 0 0 1-64 64h-42.666666a64 64 0 0 1-64-64v-42.666666a64 64 0 0 1 64-64h42.666666a64 64 0 0 1 64 64v42.666666z" p-id="44986"></path></svg>
+    )
+  }
+)
+
+if (__DEV__) {
+  EllipsisVerticalOutlined.displayName = 'EllipsisVerticalOutlined'
+}
+  
