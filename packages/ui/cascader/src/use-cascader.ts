@@ -6,7 +6,7 @@ import {
   FlattedCascaderItem,
   CascaderItemRequiredProps,
   CascaderItemEventData,
-  CascaderItem,
+  CascaderDataItem,
 } from './types'
 import {
   flattenTreeData,
@@ -143,7 +143,7 @@ export interface UseCascaderProps {
   /**
    * 设置选择项数据源
    */
-  data: CascaderItem[]
+  data: CascaderDataItem[]
   /**
    * 设置当前选中值
    */
@@ -189,7 +189,7 @@ export interface UseCascaderProps {
   onLoadChildren?: (
     item: CascaderItemEventData,
     idPaths: React.ReactText[]
-  ) => Promise<CascaderItem[] | void> | void
+  ) => Promise<CascaderDataItem[] | void> | void
 }
 
 export type UseCascaderReturn = ReturnType<typeof useCascader>

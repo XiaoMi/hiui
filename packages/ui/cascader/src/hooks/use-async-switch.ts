@@ -1,16 +1,16 @@
 import React, { useCallback } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { CascaderItem, CascaderItemEventData } from '../types'
+import { CascaderDataItem, CascaderItemEventData } from '../types'
 import { addChildrenById, cloneTree, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useCheckState } from '@hi-ui/use-check-state'
 
 export const useAsyncSwitch = (
-  setCascaderData: React.Dispatch<React.SetStateAction<CascaderItem[]>>,
+  setCascaderData: React.Dispatch<React.SetStateAction<CascaderDataItem[]>>,
   onExpand?: (selectedOption: CascaderItemEventData, onlyExpand: boolean) => void,
   onLoadChildren?: (
     item: CascaderItemEventData,
     idPaths: React.ReactText[]
-  ) => Promise<CascaderItem[] | void> | void
+  ) => Promise<CascaderDataItem[] | void> | void
 ) => {
   const onLoadChildrenLatest = useLatestCallback(onLoadChildren)
 

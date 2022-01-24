@@ -5,14 +5,14 @@ import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import {
   CascaderItemRequiredProps,
   CascaderItemEventData,
-  CascaderItem,
+  CascaderDataItem,
   FlattedCascaderItem,
 } from '../types'
 
 /**
  * 扁平化树数据结构，基于前序遍历
  */
-export const flattenTreeData = (treeData: CascaderItem[], fieldNames?: HiBaseFieldNames) => {
+export const flattenTreeData = (treeData: CascaderDataItem[], fieldNames?: HiBaseFieldNames) => {
   /**
    * 转换对象
    */
@@ -23,7 +23,7 @@ export const flattenTreeData = (treeData: CascaderItem[], fieldNames?: HiBaseFie
     return node[key]
   }
 
-  return baseFlattenTree<CascaderItem>({
+  return baseFlattenTree<CascaderDataItem>({
     tree: treeData,
     childrenFieldName: (node) => getKeyFields(node, 'children'),
     transform: (node) => {

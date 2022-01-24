@@ -79,7 +79,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
             })}
           </ul>
         ) : (
-          <EmptyState title={emptyText} size="medium" style={{ margin: 16 }} />
+          <EmptyState title={emptyText} style={{ margin: 16 }} />
         )}
         {pagination && (
           <div

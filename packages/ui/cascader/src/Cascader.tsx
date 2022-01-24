@@ -10,7 +10,12 @@ import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { defaultLeafIcon, defaultLoadingIcon, defaultSuffixIcon } from './icons'
 import { checkCanLoadChildren, flattenTreeData, getItemEventData } from './utils'
 import { CascaderProvider, useCascaderContext } from './context'
-import { CascaderItem, ExpandTrigger, FlattedCascaderItem, CascaderItemEventData } from './types'
+import {
+  CascaderDataItem,
+  ExpandTrigger,
+  FlattedCascaderItem,
+  CascaderItemEventData,
+} from './types'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
 import { Picker, PickerProps } from '@hi-ui/picker'
@@ -401,7 +406,7 @@ const renderSuffix = (
   onLoadChildren?: (
     item: CascaderItemEventData,
     idPaths: React.ReactText[]
-  ) => Promise<CascaderItem[] | void> | void
+  ) => Promise<CascaderDataItem[] | void> | void
 ) => {
   if (loading) {
     return (

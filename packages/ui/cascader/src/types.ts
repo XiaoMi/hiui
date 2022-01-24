@@ -1,6 +1,6 @@
 import React from 'react'
 
-export interface CascaderItem extends Record<string, any> {
+export interface CascaderDataItem extends Record<string, any> {
   /**
    * 树节点唯一 id
    */
@@ -12,7 +12,7 @@ export interface CascaderItem extends Record<string, any> {
   /**
    * 该节点的子节点列表
    */
-  children?: CascaderItem[]
+  children?: CascaderDataItem[]
   /**
    * 是否为叶子节点
    */
@@ -28,7 +28,7 @@ export interface FlattedCascaderItemWithChildren extends FlattedCascaderItem {
   children: FlattedCascaderItem[]
 }
 
-export interface FlattedCascaderItem extends Required<Omit<CascaderItem, 'children'>> {
+export interface FlattedCascaderItem extends Required<Omit<CascaderDataItem, 'children'>> {
   /**
    * 树节点唯一 id
    */
@@ -44,7 +44,7 @@ export interface FlattedCascaderItem extends Required<Omit<CascaderItem, 'childr
   /**
    * 关联用户传入的原始节点
    */
-  raw: CascaderItem
+  raw: CascaderDataItem
   /**
    * 该节点的层级，从 0（顶层）开始
    */
