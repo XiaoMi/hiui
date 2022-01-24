@@ -177,10 +177,10 @@ export * from './@types/props'
 export {
   ${componentFileInfo.map((item) => transformToUpperCamelCase(item.withTypeName)).join(',\n')}
 }
-const SummationObject = {
+const IconSummation = {
 ${componentFileInfo.map((item) => transformToUpperCamelCase(item.withTypeName)).join(',\n')}
 }
-export { SummationObject }
+export { IconSummation }
 `
 Fs.writeFileSync(Path.join(__dirname, '../src/index.ts'), indexTsContent)
 

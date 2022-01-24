@@ -585,7 +585,7 @@ export {
   ZoomInOutlined,
   ZoomOutOutlined,
 }
-const SummationObject = {
+const IconSummation = {
   CheckCircleFilled,
   CheckSquareFilled,
   CloseCircleFilled,
@@ -877,4 +877,4 @@ const SummationObject = {
   ZoomInOutlined,
   ZoomOutOutlined,
 }
-export { SummationObject }
+export { IconSummation }

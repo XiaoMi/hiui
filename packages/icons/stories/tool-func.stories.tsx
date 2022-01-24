@@ -1,53 +1,51 @@
 import React, { FunctionComponent, useCallback, useMemo, useState } from 'react'
-import { SummationObject, IconProps } from '../src'
+import { IconSummation, IconProps } from '../src'
 import { Select } from '@hi-ui/select'
 import { SelectDataItem } from '@hi-ui/select/lib/types/types'
 
-/**
- * 首字母大写驼峰转中划线
- * @param hump 驼峰命名字符串(EM: ApproveFilled)
- */
-const transformHumpToStrike = (hump: string) => {
-  const preDisposed = hump[0].toLowerCase() + hump.slice(1)
-  return preDisposed.replace(/[A-Z]/g, function (match) {
-    return '-' + match.toLowerCase()
-  })
-}
-
-/**
- * 获取 Icons 组件所有 Icon 以及其描述信息
- */
-const getAllIcons = () => {
-  const keys = Object.keys(SummationObject).sort((a, b) => (a > b ? 1 : -1))
-  return keys.map((item) => ({
-    component: SummationObject[item as keyof typeof SummationObject] as FunctionComponent<
-      IconProps
-    >,
-    tagName: item,
-    strike: transformHumpToStrike(item),
-  }))
-}
-
-/**
- * 从标签名获取 icon 组件
- * @param tagName 首字母大写驼峰命名(EM: ApproveFilled)
- */
-const getComponentFromTagName = (tagName: string) =>
-  SummationObject[tagName as keyof typeof SummationObject]
-
-/**
- * 中划线命名转换为首字母大写驼峰命名
- * @param strike 中划线命名(EM: approve-filled)
- */
-const transformStrikeToHump = (strike: string) => {
-  const preDisposed = strike[0].toUpperCase() + strike.slice(1)
-  return preDisposed.replace(/-\D/g, function (match) {
-    return match.charAt(1).toUpperCase()
-  })
-}
-
 export const ToolFunc = () => {
   const [selectedIcon, setSelectedIcon] = useState('')
+
+  /**
+   * 首字母大写驼峰转中划线
+   * @param hump 驼峰命名字符串(EM: ApproveFilled)
+   */
+  const transformHumpToStrike = (hump: string) => {
+    const preDisposed = hump[0].toLowerCase() + hump.slice(1)
+    return preDisposed.replace(/[A-Z]/g, function (match) {
+      return '-' + match.toLowerCase()
+    })
+  }
+
+  /**
+   * 获取 Icons 组件所有 Icon 以及其描述信息
+   */
+  const getAllIcons = () => {
+    const keys = Object.keys(IconSummation).sort((a, b) => (a > b ? 1 : -1))
+    return keys.map((item) => ({
+      component: IconSummation[item as keyof typeof IconSummation] as FunctionComponent<IconProps>,
+      tagName: item,
+      strike: transformHumpToStrike(item),
+    }))
+  }
+
+  /**
+   * 从标签名获取 icon 组件
+   * @param tagName 首字母大写驼峰命名(EM: ApproveFilled)
+   */
+  const getComponentFromTagName = (tagName: string) =>
+    IconSummation[tagName as keyof typeof IconSummation]
+
+  /**
+   * 中划线命名转换为首字母大写驼峰命名
+   * @param strike 中划线命名(EM: approve-filled)
+   */
+  const transformStrikeToHump = (strike: string) => {
+    const preDisposed = strike[0].toUpperCase() + strike.slice(1)
+    return preDisposed.replace(/-\D/g, function (match) {
+      return match.charAt(1).toUpperCase()
+    })
+  }
 
   const IconSelectData: SelectDataItem[] = useMemo(() => {
     return getAllIcons().map((item) => ({
