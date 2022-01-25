@@ -12,38 +12,38 @@ export const Shape = () => {
       <h1>不同形状</h1>
       <div className="button-basic__wrap">
         <div style={{ marginBottom: 24 }}>
-          <Button type="primary" size="small">
+          <Button type="primary" size="sm">
             小号按钮
           </Button>
-          <Button type="primary" icon={<PlusOutlined />} size="small" />
+          <Button type="primary" icon={<PlusOutlined />} size="sm" />
           <Button type="primary">正常按钮</Button>
           <Button type="primary" icon={<PlusOutlined />} />
-          <Button type="primary" size="large">
+          <Button type="primary" size="lg">
             大号按钮
           </Button>
-          <Button type="primary" icon={<PlusOutlined />} size="large" />
-          <Button type="primary" size="x-large">
+          <Button type="primary" icon={<PlusOutlined />} size="lg" />
+          <Button type="primary" size="xl">
             超大号按钮
           </Button>
-          <Button type="primary" icon={<PlusOutlined />} size="x-large" />
+          <Button type="primary" icon={<PlusOutlined />} size="xl" />
         </div>
         <div style={{ marginBottom: 24 }}>
-          <Button type="primary" shape="circle" size="small">
+          <Button type="primary" shape="round" size="sm">
             小号按钮
           </Button>
-          <Button type="primary" shape="circle" icon={<PlusOutlined />} size="small" />
-          <Button type="primary" shape="circle">
+          <Button type="primary" shape="round" icon={<PlusOutlined />} size="sm" />
+          <Button type="primary" shape="round">
             正常按钮
           </Button>
-          <Button type="primary" shape="circle" icon={<PlusOutlined />} />
-          <Button type="primary" shape="circle" size="large">
+          <Button type="primary" shape="round" icon={<PlusOutlined />} />
+          <Button type="primary" shape="round" size="lg">
             大号按钮
           </Button>
-          <Button type="primary" shape="circle" icon={<PlusOutlined />} size="large" />
-          <Button type="primary" shape="circle" size="x-large">
+          <Button type="primary" shape="round" icon={<PlusOutlined />} size="lg" />
+          <Button type="primary" shape="round" size="xl">
             超大号按钮
           </Button>
-          <Button type="primary" shape="circle" icon={<PlusOutlined />} size="x-large" />
+          <Button type="primary" shape="round" icon={<PlusOutlined />} size="xl" />
         </div>
       </div>
     </>
