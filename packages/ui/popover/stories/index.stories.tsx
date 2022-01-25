@@ -3,6 +3,7 @@ import Popover from '../src'
 
 export * from './basic.stories'
 export * from './controlled.stories'
+export * from './placement.stories'
 
 export default {
   title: 'Data Display/Popover',

@@ -1,7 +1,7 @@
 import React from 'react'
 import { TriggerActionEnum } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
-import { PopperPortalProps } from '@hi-ui/popper'
+import { omitPopperOverlayProps, PopperOverlayProps } from '@hi-ui/popper'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { mergeRefs, withDefaultProps } from '@hi-ui/react-utils'
 import { useUID } from '@hi-ui/use-id'
@@ -14,9 +14,11 @@ export const usePopover = ({
   onOpen,
   onClose,
   trigger: triggerProp = 'click',
-  popper,
-  ...rest
+  ...restProps
 }: UsePopoverProps) => {
+  // TODO: 移除 popper，使用 hook 重写
+  const [popper, rest] = omitPopperOverlayProps(restProps) as any
+
   const openTimerRef = React.useRef<number>()
   const closeTimerRef = React.useRef<number>()
 
@@ -130,7 +132,7 @@ export const usePopover = ({
   )
 
   const getPopperProps = React.useCallback(() => {
-    const popperProps: PopperPortalProps = withDefaultProps(popper, {
+    const popperProps = withDefaultProps(popper, {
       arrow: true,
       placement: 'top',
       // @DesignToken zIndex: `popper`
@@ -150,7 +152,7 @@ export const usePopover = ({
   return { rootProps: rest, getOverlayProps, getTriggerProps, getPopperProps }
 }
 
-export interface UsePopoverProps {
+export interface UsePopoverProps extends PopperOverlayProps {
   /**
    * 控制气泡卡片的显示和隐藏（受控）
    */
@@ -167,10 +169,6 @@ export interface UsePopoverProps {
    * 	气泡卡片触发方式
    */
   trigger?: TriggerActionEnum[] | TriggerActionEnum
-  /**
-   * popper 透传的 props
-   */
-  popper?: PopperPortalProps
 }
 
 export type UsePopoverReturn = ReturnType<typeof usePopover>

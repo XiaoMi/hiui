@@ -15,7 +15,7 @@ const tooltipInstanceCache: {
 // TODO： 抽离合并到 Toast API
 const open = (
   target: HTMLElement,
-  { key, title, popper }: TooltipApiProps = DEFAULT_TOOLTIP_OPTIONS
+  { key, title, ...popper }: TooltipApiProps = DEFAULT_TOOLTIP_OPTIONS
 ) => {
   let container: any = Container.getContainer(`${selector}__${key}`)
 
@@ -25,7 +25,7 @@ const open = (
     innerRef: toastManagerRef,
     title,
     visible: true,
-    popper,
+    ...popper,
     onExited: () => {
       // 卸载
       if (container) {
@@ -60,16 +60,11 @@ const close = (key: string) => {
   delete tooltipInstanceCache[key]
 }
 
-export interface TooltipApiProps extends Pick<TooltipProps, 'title' | 'popper'> {
+export interface TooltipApiProps extends TooltipProps {
   /**
    * 标识 tooltip 的唯一 key，仅用于关闭
    */
   key?: string
-  /**
-   * 要显示 tooltip 的元素	HTMLElement
-   * TODO: 收敛进对象
-   */
-  // target: React.ReactNode
 }
 
 export function withTooltip(instance: typeof Tooltip) {

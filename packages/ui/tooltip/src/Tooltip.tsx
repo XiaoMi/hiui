@@ -13,7 +13,7 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useTooltip, UseTooltipProps } from './use-tooltip'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
-import { Portal, PortalProps } from '@hi-ui/portal'
+import { Portal } from '@hi-ui/portal'
 import { isElement, isString } from '@hi-ui/type-assertion'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
@@ -31,10 +31,12 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       title,
       arrow = true,
       visible: visibleProp,
-      portal,
+      container,
+      disabledPortal = false,
       onOpen,
       onClose,
       preload = false,
+      // 默认行为一直销毁
       unmountOnClose = true,
       onExited,
       innerRef,
@@ -119,8 +121,7 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
     return (
       <>
         {triggerMemo}
-
-        <Portal {...portal}>
+        <Portal container={container} disabled={disabledPortal}>
           <CSSTransition
             classNames={`${prefixCls}--motion`}
             appear
@@ -154,19 +155,34 @@ export interface TooltipProps extends HiBaseHTMLProps<'div'>, UseTooltipProps {
    */
   arrow?: boolean
   /**
-   * 传送门 props
-   */
-  portal?: PortalProps
-  /**
    * 开启预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
+   * @private
    */
   preload?: boolean
   /**
    * 开启关闭时销毁，用于性能优化，优先级大于 `preload`
+   * @private
    */
   unmountOnClose?: boolean
+  /**
+   * 关闭动画退出时回调
+   * @private
+   */
   onExited?: () => void
+  /**
+   * @private
+   */
   innerRef?: React.RefObject<{ close: () => void }>
+  /**
+   * 指定 portal 的容器
+   * @private
+   */
+  container?: HTMLElement
+  /**
+   * 禁用 portal
+   * @private
+   */
+  disabledPortal?: boolean
 }
 
 if (__DEV__) {

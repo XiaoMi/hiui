@@ -1,63 +1,48 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { useCallback, useState } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { withDefaultProps, mergeRefs } from '@hi-ui/react-utils'
-import { PopperPortalProps } from '@hi-ui/popper'
+import { omitPopperOverlayProps } from '@hi-ui/popper'
+import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 
 export const usePopConfirm = ({
   visible: visibleProp,
-  onClose: onCloseProp,
   disabled = false,
   closeOnCancel = true,
   closeOnConfirm = true,
   onCancel: onCancelProp,
   onConfirm: onConfirmProp,
-  popper,
-  ...rest
+  onOpen,
+  onClose,
+  ...restProps
 }: UsePopConfirmProps) => {
-  const [visible, trySetVisible] = useUncontrolledState(
-    false,
-    visibleProp,
-    (nextVisible: boolean) => {
-      if (!nextVisible) {
-        onCloseProp?.()
-      }
-    }
-  )
+  // TODO: 移除 popper，使用 hook 重写
+  const [popper, rest] = omitPopperOverlayProps(restProps) as any
 
-  const onToggle = useCallback(() => {
-    trySetVisible((prev) => !prev)
-  }, [trySetVisible])
+  const [visible, visibleAction] = useUncontrolledToggle({
+    defaultVisible: false,
+    visible: visibleProp,
+    onOpen,
+    onClose: () => {
+      onClose?.()
+      onCancelProp?.()
+    },
+  })
 
-  const onClose = useCallback(() => {
-    trySetVisible(false)
-  }, [trySetVisible])
-
-  const cancelClose = useCallback(() => {
+  const onCancel = useCallback(() => {
     if (closeOnCancel) {
-      onClose()
+      visibleAction.off()
     }
-  }, [closeOnCancel, onClose])
+  }, [closeOnCancel, visibleAction])
 
-  const confirmClose = useCallback(() => {
-    if (closeOnConfirm) {
-      onClose()
-    }
-  }, [closeOnConfirm, onClose])
-
-  const onCancelLatest = useLatestCallback(onCancelProp)
   const onConfirmLatest = useLatestCallback(onConfirmProp)
 
-  const onCancel = useMemo(() => mockDefaultHandlers(onCancelLatest, cancelClose), [
-    onCancelLatest,
-    cancelClose,
-  ])
-
-  const onConfirm = useMemo(() => mockDefaultHandlers(onConfirmLatest, confirmClose), [
-    onConfirmLatest,
-    confirmClose,
-  ])
+  const onConfirm = useCallback(() => {
+    onConfirmLatest()
+    if (closeOnConfirm) {
+      visibleAction.off()
+    }
+  }, [closeOnConfirm, visibleAction, onConfirmLatest])
 
   const [targetEl, setTargetEl] = useState<HTMLElement | null>(null)
 
@@ -65,10 +50,10 @@ export const usePopConfirm = ({
     (props, ref) => {
       return {
         ref: mergeRefs(setTargetEl, ref),
-        onClick: mockDefaultHandlers(props.onClick, onToggle),
+        onClick: mockDefaultHandlers(props.onClick, visibleAction.not),
       }
     },
-    [onToggle, setTargetEl]
+    [visibleAction, setTargetEl]
   )
 
   const getPopperProps = useCallback(() => {
@@ -83,9 +68,9 @@ export const usePopConfirm = ({
       ...popperProps,
       visible,
       attachEl: targetEl,
-      onClose,
+      onClose: visibleAction.off,
     }
-  }, [visible, targetEl, popper, onClose])
+  }, [visible, targetEl, popper, visibleAction])
 
   const rootProps = {
     role: 'alert-dialog',
@@ -107,33 +92,36 @@ export interface UsePopConfirmProps {
    */
   visible?: boolean
   /**
-   * 确认框关闭时回调
-   */
-  onClose?: () => void
-  /**
    * 取消时关闭确认框
+   * @private
    */
   closeOnCancel?: boolean
   /**
    * 确认时关闭确认框
+   * @private
    */
   closeOnConfirm?: boolean
   /**
+   * 弹窗打开时回调
+   */
+  onOpen?: () => void
+  /**
+   * 弹窗关闭时回调
+   */
+  onClose?: () => void
+  /**
    * 点击取消按钮时回调
    */
-  onCancel?: (event: React.MouseEvent) => void
+  onCancel?: () => void
   /**
    * 点击确认按钮时回调
    */
-  onConfirm?: (event: React.MouseEvent) => void
+  onConfirm?: () => void
   /**
    * 是否开启禁用
+   * @private
    */
   disabled?: boolean
-  /**
-   * 自定义控制 popper 行为，参见 `PopperProps`
-   */
-  popper?: Omit<PopperPortalProps, 'visible' | 'attachEl' | 'onClose'>
 }
 
 export type UsePopConfirmReturn = ReturnType<typeof usePopConfirm>

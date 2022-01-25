@@ -26,7 +26,6 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
       style,
       content,
       strokeWidth,
-      formatText,
       width,
       ...rest
     },
@@ -129,17 +128,9 @@ export interface ProgressProps extends HiBaseHTMLProps<'div'> {
    */
   percent?: number
   /**
-   * 进度条缓冲区百分比值
-   */
-  bufferPercent?: number
-  /**
    * 进度条颜色
    */
   color?: string
-  /**
-   * 自定义格式化展示
-   */
-  formatText?: (percent: number, bufferPercent: number) => string
   /**
    * 开启进度条加载
    */
@@ -148,6 +139,11 @@ export interface ProgressProps extends HiBaseHTMLProps<'div'> {
    * 进度条线性宽度
    */
   strokeWidth?: number
+  /**
+   * 进度条缓冲区百分比值
+   * @private
+   */
+  bufferPercent?: number
 }
 
 if (__DEV__) {

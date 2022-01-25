@@ -14,7 +14,7 @@ export const WithAPI = () => {
       Tooltip.open(triggerElementRef.current, {
         key: '123',
         title: 'Click again to hide me.',
-        popper: { placement: 'right' },
+        placement: 'right',
       })
       setShowTooltip(true)
     }

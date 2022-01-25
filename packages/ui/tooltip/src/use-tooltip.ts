@@ -1,6 +1,11 @@
 import { useRef, useCallback, useState, useMemo } from 'react'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
-import { usePopper, PopperPortalProps, UsePopperProps } from '@hi-ui/popper'
+import {
+  usePopper,
+  UsePopperProps,
+  omitPopperOverlayProps,
+  PopperOverlayProps,
+} from '@hi-ui/popper'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { mergeRefs, withDefaultProps } from '@hi-ui/react-utils'
 import { useUID } from '@hi-ui/use-id'
@@ -15,10 +20,11 @@ export const useTooltip = ({
   onOpen,
   onClose,
   trigger: triggerProp = 'hover',
-  popper,
   disabled = false,
-  ...rest
+  ...restProps
 }: UseTooltipProps) => {
+  const [popper, rest] = omitPopperOverlayProps(restProps) as any
+
   const [triggerElement, setTriggerElement] = useState<HTMLElement | null>(null)
 
   /**
@@ -170,15 +176,11 @@ export const useTooltip = ({
   }
 }
 
-export interface UseTooltipProps {
+export interface UseTooltipProps extends PopperOverlayProps {
   /**
    * 控制气泡卡片的显示和隐藏（受控）
    */
   visible?: boolean
-  /**
-   * 开启禁用
-   */
-  disabled?: boolean
   /**
    * 打开时回调
    */
@@ -192,9 +194,10 @@ export interface UseTooltipProps {
    */
   trigger?: TriggerActionEnum[] | TriggerActionEnum
   /**
-   * popper 透传的 props
+   * 开启禁用
+   * @private
    */
-  popper?: Omit<PopperPortalProps, 'attachEl' | 'visible'>
+  disabled?: boolean
 }
 
 export type UseTooltipReturn = ReturnType<typeof useTooltip>
