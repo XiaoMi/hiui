@@ -52,13 +52,12 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     )
     const clickSubMenu = useCallback(
       (id: React.ReactText) => {
-        updateExpanedIds(
-          _expandedIds.includes(id)
-            ? _expandedIds.filter((expandedid) => expandedid !== id)
-            : _expandedIds.concat(id)
-        )
+        const expandedIds = _expandedIds.includes(id)
+        ? _expandedIds.filter((expandedid) => expandedid !== id)
+        : _expandedIds.concat(id)
+        updateExpanedIds(expandedIds)
         if (onClickSubMenu) {
-          onClickSubMenu(id)
+          onClickSubMenu(id, expandedIds)
         }
       },
       [onClickSubMenu, _expandedIds]
@@ -155,7 +154,7 @@ export interface MenuProps {
   accordion?: boolean
   style?: React.CSSProperties
   onClick?: (menuId: React.ReactText) => void
-  onClickSubMenu?: (subMenuId: React.ReactText) => void
+  onClickSubMenu?: (subMenuId: React.ReactText, expandedIds: React.ReactText[]) => void
   onCollapse?: (collapsed: boolean) => void
   overlayClassName?: string
   expandedType?: 'collapse' | 'pop'
