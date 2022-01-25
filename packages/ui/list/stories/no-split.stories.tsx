@@ -24,7 +24,7 @@ export const NoSplit = () => {
               action: '编辑',
             },
           ]}
-          renderItem={(dataItem) => {
+          render={(dataItem) => {
             return <List.Item {...dataItem} />
           }}
         />

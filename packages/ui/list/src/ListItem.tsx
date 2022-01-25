@@ -35,7 +35,7 @@ export const ListItem: React.FC<ListItemProps> = ({
   extra,
   action,
   avatar,
-  actionPosition = 'center',
+  actionPlacement = 'center',
 }) => {
   return (
     <div className={cx(`${prefixCls}-item`, className)}>
@@ -53,7 +53,7 @@ export const ListItem: React.FC<ListItemProps> = ({
         <div
           className={`${prefixCls}-item__action`}
           key="action"
-          style={{ alignSelf: getActionPosition(actionPosition) }}
+          style={{ alignSelf: getActionPosition(actionPlacement) }}
         >
           {action}
         </div>

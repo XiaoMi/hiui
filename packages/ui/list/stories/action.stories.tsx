@@ -24,7 +24,7 @@ export const Action = () => {
               action: '编辑',
             },
           ]}
-          renderItem={(dataItem) => {
+          render={(dataItem) => {
             return <List.Item {...dataItem} />
           }}
         />
@@ -46,8 +46,8 @@ export const Action = () => {
               action: '编辑',
             },
           ]}
-          renderItem={(dataItem) => {
-            return <List.Item {...dataItem} actionPosition={'top'} />
+          render={(dataItem) => {
+            return <List.Item {...dataItem} actionPlacement={'top'} />
           }}
         />
          <List
@@ -67,8 +67,8 @@ export const Action = () => {
               action: '编辑',
             },
           ]}
-          renderItem={(dataItem) => {
-            return <List.Item {...dataItem} actionPosition={'bottom'} />
+          render={(dataItem) => {
+            return <List.Item {...dataItem} actionPlacement={'bottom'} />
           }}
         />
       </div>
