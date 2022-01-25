@@ -21,7 +21,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       data,
       placement = 'vertical',
       showCollapse,
-      expandedType = 'default',
+      expandedType = 'collapse',
       showAllSubMenus = false,
       defaultExpandedIds,
       defaultActiveId,
@@ -122,7 +122,7 @@ export type MenuItemProps = {
    * 组件默认的选择器类
    */
   prefixCls?: string
-  content: React.ReactNode
+  title: React.ReactNode
   icon?: React.ReactNode
   id: React.ReactText
   disabled?: boolean
@@ -158,7 +158,7 @@ export interface MenuProps {
   onClickSubMenu?: (subMenuId: React.ReactText) => void
   onCollapse?: (collapsed: boolean) => void
   overlayClassName?: string
-  expandedType?: 'default' | 'pop'
+  expandedType?: 'collapse' | 'pop'
   defaultExpandedIds?: React.ReactText[]
   defaultActiveId?: React.ReactText
 }
