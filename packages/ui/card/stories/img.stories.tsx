@@ -6,13 +6,13 @@ export const Img = () => {
     <>
       <h1>Basic</h1>
       <div className="card-basic__wrap">
-        <Card style={{ width: 600 }} coverURL="http://i1.mifile.cn/f/i/hiui/docs/card/pic_9.png">
+        <Card style={{ width: 600 }} coverUrl="http://i1.mifile.cn/f/i/hiui/docs/card/pic_9.png">
           基础卡片
         </Card>
         <Card
           style={{ width: 600 }}
           title="卡片标题"
-          coverURL="http://i1.mifile.cn/f/i/hiui/docs/card/pic_9.png"
+          coverUrl="http://i1.mifile.cn/f/i/hiui/docs/card/pic_9.png"
         >
           基础卡片
         </Card>

@@ -23,7 +23,7 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
       loading,
       hoverable,
       bordered = true,
-      size = 'default',
+      size = 'md',
       showHeaderDivider,
       style,
     },
@@ -114,7 +114,7 @@ export interface CardProps {
   /**
    * 卡片的尺寸
    */
-  size?: 'small' | 'default' | 'large'
+  size?: 'sm' | 'md' | 'lg'
   /**
    * 是否展示卡片头部和内容区域分割线
    */
