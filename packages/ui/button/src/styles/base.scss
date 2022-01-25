@@ -42,7 +42,7 @@ $prefix: '#{$component-prefix}-button' !default;
     border-radius: use-border-radius('normal');
   }
 
-  &--shape-circle {
+  &--shape-round {
     border-radius: use-border-radius('full');
   }
 
@@ -52,7 +52,7 @@ $prefix: '#{$component-prefix}-button' !default;
     cursor: not-allowed;
   }
   // 尺寸通用
-  &--size-small {
+  &--size-sm {
     font-size: use-text-size('sm');
     line-height: get-text-lineheight('sm');
     &:not(.#{$prefix}--icon-only) {
@@ -67,7 +67,7 @@ $prefix: '#{$component-prefix}-button' !default;
     }
   }
 
-  &--size-default {
+  &--size-md {
     font-size: use-text-size('normal');
     line-height: get-text-lineheight('normal');
     &:not(.#{$prefix}--icon-only) {
@@ -82,7 +82,7 @@ $prefix: '#{$component-prefix}-button' !default;
     }
   }
 
-  &--size-large {
+  &--size-lg {
     font-size: use-text-size('lg');
     line-height: get-text-lineheight('lg');
     &:not(.#{$prefix}--icon-only) {
@@ -97,7 +97,7 @@ $prefix: '#{$component-prefix}-button' !default;
     }
   }
 
-  &--size-x-large {
+  &--size-xl {
     font-size: use-text-size('xl');
     line-height: get-text-lineheight('xl');
 
