@@ -1,4 +1,3 @@
-import React from 'react'
 import { Message as MessageComponent, MessageProps, _prefix } from './Message'
 import { ToastAPI, ToastAPIOptions } from '@hi-ui/toast'
 import { withDefaultProps } from '@hi-ui/react-utils'
@@ -16,11 +15,6 @@ export class MessageAPI extends ToastAPI<MessageOptions> {
 
 export interface MessageAPIOptions extends ToastAPIOptions {}
 
-export interface MessageOptions extends Omit<MessageProps, '$destroy' | 'id' | 'visible'> {
-  /**
-   * 通知唯一标识
-   */
-  id?: React.ReactText
-}
+export interface MessageOptions extends Omit<MessageProps, 'destroy' | 'visible'> {}
 
 export const message = new MessageAPI({ component: MessageComponent })

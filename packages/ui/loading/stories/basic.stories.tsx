@@ -2,19 +2,20 @@ import React from 'react'
 import Loading from '../src'
 
 export const Basic = () => {
-  const loadingRef = React.useRef(null)
+  const loadingIdRef = React.useRef(null)
 
   React.useEffect(() => {
     return () => {
-      loadingRef.current.close()
+      Loading.close(loadingIdRef.current)
     }
   }, [])
+  const elementRef = React.useRef()
 
   return (
     <>
       <h1>Loading</h1>
-      <div className="loading-basic__wrap">
-        <Loading label="Loading..." delay={500}>
+      <div ref={elementRef} className="loading-basic__wrap" style={{ position: 'relative' }}>
+        <Loading content="Loading..." delay={500}>
           <div
             style={{
               width: 500,
@@ -28,7 +29,7 @@ export const Basic = () => {
         <div>
           <button
             onClick={() => {
-              loadingRef.current = Loading.open()
+              loadingIdRef.current = Loading.open(elementRef.current)
             }}
           >
             Awake by API

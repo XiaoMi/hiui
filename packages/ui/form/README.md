@@ -164,6 +164,7 @@
 | valueCollectPipe     | feature                         | -                                                   | 强化功能                     |
 | valueSyncPipe        | feature                         | -                                                   | 强化功能                     |
 | validateTrigger      | feature                         | -                                                   | 强化功能                     |
+| children             | feature                         | 支持函数自定义渲染表单控件                          | 强化功能                     |
 
 ### FormList
 

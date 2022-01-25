@@ -47,6 +47,7 @@
     "@hi-ui/core": "^4.0.0-alpha.19",
     "@hi-ui/core-css": "^4.0.0-alpha.13",
     "@hi-ui/env": "^4.0.0-alpha.6",
+    "@hi-ui/icon-button": "^4.0.0-alpha.16",
     "@hi-ui/icons": "^4.0.0-alpha.28",
     "@hi-ui/react-utils": "^4.0.0-alpha.7",
     "@hi-ui/toast": "^4.0.0-alpha.17",

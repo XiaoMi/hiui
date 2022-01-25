@@ -1,4 +1,3 @@
-import React from 'react'
 import { Notification as NotificationComponent, NotificationProps, _prefix } from './Notification'
 import { ToastAPI, ToastAPIOptions } from '@hi-ui/toast'
 import { withDefaultProps } from '@hi-ui/react-utils'
@@ -16,12 +15,6 @@ export class NotificationAPI extends ToastAPI<NotificationOptions> {
 
 export interface NotificationAPIOptions extends ToastAPIOptions {}
 
-export interface NotificationOptions
-  extends Omit<NotificationProps, '$destroy' | 'id' | 'visible'> {
-  /**
-   * 通知唯一标识
-   */
-  id?: React.ReactText
-}
+export interface NotificationOptions extends Omit<NotificationProps, 'destroy' | 'visible'> {}
 
 export const notification = new NotificationAPI({ component: NotificationComponent })

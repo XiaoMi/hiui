@@ -120,17 +120,14 @@ $prefix: '#{$component-prefix}-notification' !default;
   }
 
   &__close {
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    outline: none;
     position: absolute;
-    padding: 0;
-    margin: 0;
     top: use-spacing(10);
     right: use-spacing(10);
-    color: use-color('gray', 600);
-    font-size: use-text-size('normal');
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: use-spacing(10);
   }
 }

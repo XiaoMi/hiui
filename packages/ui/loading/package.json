@@ -45,8 +45,12 @@
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.3",
     "@hi-ui/container": "^4.0.0-alpha.6",
+    "@hi-ui/core": "^4.0.0-alpha.19",
     "@hi-ui/core-css": "^4.0.0-alpha.13",
     "@hi-ui/env": "^4.0.0-alpha.6",
+    "@hi-ui/portal": "^4.0.0-alpha.19",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.13",
+    "@hi-ui/use-id": "^4.0.0-alpha.4",
     "lodash": "^4.17.21",
     "react-transition-group": "^4.4.2"
   },

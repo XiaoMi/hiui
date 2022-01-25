@@ -3,6 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
+import { IconButton } from '@hi-ui/icon-button'
 import {
   InfoCircleFilled,
   CloseCircleFilled,
@@ -31,7 +32,6 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
       role = _role,
       className,
       children,
-      id,
       title,
       content,
       visible = true,
@@ -39,7 +39,8 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
       autoClose = true,
       closable = true,
       type = 'info',
-      $destroy,
+      action,
+      destroy,
       onClose,
       ...rest
     },
@@ -97,7 +98,7 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
         onExit={open}
         onExiting={close}
         onExited={() => {
-          $destroy?.()
+          destroy?.()
           onClose?.()
         }}
       >
@@ -108,10 +109,14 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
               <span className={`${prefixCls}__title`}>{title}</span>
             </div>
             {content ? <div className={`${prefixCls}__content`}>{content}</div> : null}
+            {action ? <div className={`${prefixCls}__footer`}>{action}</div> : null}
             {closable ? (
-              <button className={`${prefixCls}__close`} onClick={requestClose}>
-                <CloseOutlined />
-              </button>
+              <IconButton
+                className={`${prefixCls}__close`}
+                effect
+                icon={<CloseOutlined />}
+                onClick={requestClose}
+              />
             ) : null}
           </div>
         </div>
@@ -120,7 +125,7 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
   }
 )
 
-export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | 'title'> {
+export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'title'> {
   /**
    * 开启可见
    */
@@ -129,10 +134,6 @@ export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | '
    * 关闭时触发的回调函数
    */
   onClose?: () => void
-  /**
-   * 通知唯一标识
-   */
-  id: React.ReactText
   /**
    * 通知框标题
    */
@@ -149,11 +150,6 @@ export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | '
    * 自动关闭时间，单位为 ms
    */
   duration?: number
-
-  /**
-   * 动画过渡时长
-   */
-  timeout?: number
   /**
    * 是否开启自动关闭
    */
@@ -164,8 +160,18 @@ export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | '
   closable?: boolean
   /**
    * 内部使用，勿覆盖
+   * @private
    */
-  $destroy?: () => void
+  destroy?: () => void
+  /**
+   * 动画过渡时长
+   * @private
+   */
+  timeout?: number
+  /**
+   * 操作配置
+   */
+  action?: React.ReactNode
 }
 
 if (__DEV__) {

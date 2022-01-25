@@ -30,13 +30,12 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
       role = _role,
       className,
       children,
-      id,
       title,
       visible = true,
       duration = 5000,
       autoClose = true,
       type = 'info',
-      $destroy,
+      destroy,
       onClose,
       ...rest
     },
@@ -94,7 +93,7 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
         onExit={open}
         onExiting={close}
         onExited={() => {
-          $destroy?.()
+          destroy?.()
           onClose?.()
         }}
       >
@@ -109,7 +108,7 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
   }
 )
 
-export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | 'title'> {
+export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'title'> {
   /**
    * 开启可见
    */
@@ -118,10 +117,6 @@ export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | 'title
    * 关闭时触发的回调函数
    */
   onClose?: () => void
-  /**
-   * 通知唯一标识
-   */
-  id: React.ReactText
   /**
    * 通知框内容
    */
@@ -134,20 +129,20 @@ export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'id' | 'title
    * 自动关闭时间，单位为 ms
    */
   duration?: number
-
-  /**
-   * 动画过渡时长
-   */
-  timeout?: number
   /**
    * 是否开启自动关闭
    */
   autoClose?: boolean
   /**
-   * 内部使用，勿覆盖
+   * 执行销毁，内部使用，勿覆盖
    * @private
    */
-  $destroy?: () => void
+  destroy?: () => void
+  /**
+   * 动画过渡时长
+   * @private
+   */
+  timeout?: number
 }
 
 if (__DEV__) {

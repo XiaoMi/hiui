@@ -1,29 +1,48 @@
-import React, { createRef, forwardRef } from 'react'
-import { render, unmountComponentAtNode, createPortal } from 'react-dom'
+import { createRef, createElement } from 'react'
+import { render, unmountComponentAtNode } from 'react-dom'
 import * as Container from '@hi-ui/container'
 import { _prefix, Loading, LoadingProps } from './Loading'
-import { __DEV__ } from '@hi-ui/env'
+import { uuid } from '@hi-ui/use-id'
+import { isPlus } from '@hi-ui/type-assertion'
 
 const prefixCls = _prefix
+const selector = `.${prefixCls}-wrapper`
+
 const loadingInstanceCache: {
   [key: string]: () => void
 } = {}
 
-const wrapperCls = `.${prefixCls}-wrapper`
+const open = (
+  target?: HTMLElement | null,
+  { content, key, duration, size, autoClose = true }: LoadingApiProps = {}
+) => {
+  if (!key) {
+    key = uuid()
+  }
 
-const open = ({ key, label }: LoadingApiProps = {}) => {
-  let mountNode: HTMLDivElement | null = document.createElement('div')
-  const ref = createRef<any>()
+  let container: Element | null = Container.getContainer(`${selector}__${key}`)
 
-  render(<LoadingFull ref={ref} label={label} />, mountNode)
+  const innerRef = createRef<any>()
+
+  const ClonedLoading = createElement(Loading, {
+    innerRef: innerRef,
+    content: content,
+    container: target,
+    full: !target,
+    size: size,
+  })
+
+  render(ClonedLoading, container)
 
   const close = () => {
-    ref.current?.$close()
+    innerRef.current?.close()
 
     setTimeout(() => {
-      unmountComponentAtNode(mountNode as Element)
-      mountNode = null
-      Container.removeContainer(wrapperCls)
+      if (container) {
+        unmountComponentAtNode(container as Element)
+        container = null
+      }
+      Container.removeContainer(selector)
     }, 300)
   }
 
@@ -31,7 +50,12 @@ const open = ({ key, label }: LoadingApiProps = {}) => {
     loadingInstanceCache[key] = close
   }
 
-  return { close }
+  // TODO: 迁移至 loading 内部实现
+  if (autoClose && isPlus(duration)) {
+    setTimeout(close, duration)
+  }
+
+  return key
 }
 
 const close = (key: string) => {
@@ -42,27 +66,21 @@ const close = (key: string) => {
   delete loadingInstanceCache[key]
 }
 
-type LoadingFullProps = {
-  label?: string
-}
-
-type LoadingApiProps = LoadingFullProps & {
+export interface LoadingApiProps extends Pick<LoadingProps, 'content' | 'size'> {
+  /**
+   * 唯一标识
+   */
   key?: string
+  /**
+   * 自动关闭的时间，单位为毫秒
+   */
+  duration?: number
+  /**
+   * 是否开启自动关闭
+   */
+  autoClose?: boolean
 }
 
-const LoadingFull = forwardRef<null, LoadingProps>(({ label }, ref) => {
-  const wrapper = Container.getContainer(wrapperCls) as HTMLElement
-  const children = <Loading ref={ref} full label={label} />
-
-  return createPortal(children, wrapper)
-})
-
-if (__DEV__) {
-  LoadingFull.displayName = 'LoadingFull'
-}
-
-function withLoading(instance: typeof Loading) {
+export function withLoading(instance: typeof Loading) {
   return Object.assign(instance, { open, close })
 }
-
-export default withLoading

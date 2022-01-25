@@ -6,15 +6,16 @@ import React, {
   forwardRef,
   useRef,
 } from 'react'
-import { createPortal } from 'react-dom'
 import debounce from 'lodash/debounce'
 import { CSSTransition } from 'react-transition-group'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import type { DebouncedFunc } from 'lodash'
+import { Portal } from '@hi-ui/portal'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 
 const _role = 'loading'
-export const _prefix = getPrefixCls(_role)
+export const _prefix = getPrefixCls('loading')
 
 export const Loading = forwardRef<null, LoadingProps>(
   (
@@ -24,11 +25,14 @@ export const Loading = forwardRef<null, LoadingProps>(
       children,
       role = _role,
       container,
-      label,
+      content,
       visible = true,
       full = false,
       size = 'md',
       delay = -1,
+      disabledPortal = false,
+      innerRef,
+      timeout = 300,
       ...restProps
     },
     ref
@@ -71,19 +75,14 @@ export const Loading = forwardRef<null, LoadingProps>(
       }
     }, [debouncedLoadingUpdater])
 
-    // @ts-ignore
-    useImperativeHandle(ref, () => ({
-      // @ts-ignore
-      local: ref?.current,
-      $close: () => setInternalVisible(false),
+    useImperativeHandle(innerRef, () => ({
+      close: () => setInternalVisible(false),
     }))
-
-    const mountNode = container || (full ? document.body : '')
 
     const maskCls = cx(
       `${prefixCls}__mask`,
       children && `${prefixCls}__mask--withchildren`,
-      full && `${prefixCls}__mask--full`,
+      `${prefixCls}__mask--${full ? 'full' : 'part'}`,
       size && `${prefixCls}--size-${size}`
     )
 
@@ -92,7 +91,7 @@ export const Loading = forwardRef<null, LoadingProps>(
         classNames={`${prefixCls}__mask`}
         in={internalVisible}
         unmountOnExit
-        timeout={300}
+        timeout={timeout}
       >
         <div className={maskCls} {...restProps}>
           <div ref={ref} role={role} className={cx(prefixCls, className)}>
@@ -102,14 +101,15 @@ export const Loading = forwardRef<null, LoadingProps>(
                 <div />
               </div>
             </div>
-            {label ? <span className={`${prefixCls}__label`}>{label}</span> : null}
+            {content ? <span className={`${prefixCls}__content`}>{content}</span> : null}
           </div>
         </div>
       </CSSTransition>
     )
 
     return (
-      <Portal target={mountNode}>
+      // @ts-ignore
+      <Portal container={container} disabled={!container && !full}>
         {children ? (
           // 可以测量 children margin，实现按内容位置偏移，排除 margin 影响
           // 暂时不考虑，如果有需要，完全可以把 margin 设置到加到父节点
@@ -125,25 +125,50 @@ export const Loading = forwardRef<null, LoadingProps>(
   }
 )
 
-export interface LoadingProps {
-  prefixCls?: string
-  role?: string
-  className?: string
-  style?: React.CSSProperties
-  children?: React.ReactNode
-  label?: React.ReactNode
+export type LoadingSizeEnum = HiBaseSizeEnum
+
+export interface LoadingProps extends HiBaseHTMLProps<'div'> {
+  /**
+   * 	自定义加载中状态的文案
+   */
+  content?: React.ReactNode
+  /**
+   * 是否开启显示
+   */
   visible?: boolean
+  /**
+   * 是否全屏展示，开启节点将挂载到 body
+   */
   full?: boolean
-  container?: React.ReactNode
+  /**
+   * 延迟显示加载效果的时长（可用于防止闪烁）
+   */
   delay?: number
-  size?: 'md' | 'lg' | 'sm'
+  /**
+   * 自定义尺寸
+   */
+  size?: LoadingSizeEnum
+  /**
+   * 禁用 portal
+   * @private
+   */
+  disabledPortal?: boolean
+  /**
+   * @private
+   */
+  innerRef?: React.RefObject<{ close: () => void }>
+  /**
+   * 指定 portal 的容器
+   * @private
+   */
+  container?: HTMLElement | null
+  /**
+   * 自定义动画过渡时长
+   * @private
+   */
+  timeout?: number
 }
 
 if (__DEV__) {
   Loading.displayName = 'Loading'
-}
-
-// TODO: 抽离封装
-function Portal({ target, children }: any) {
-  return target ? createPortal(children, target) : children
 }

@@ -17,7 +17,7 @@ export class ToastManager extends Component<ToastManagerProps, ToastManagerState
     queue: [],
   }
 
-  add = (notice: ToastOptions) => {
+  private add = (notice: ToastOptions) => {
     this.setState((prev) => {
       return {
         queue: prev.queue.concat(notice),
@@ -25,7 +25,7 @@ export class ToastManager extends Component<ToastManagerProps, ToastManagerState
     })
   }
 
-  remove = (id: React.ReactText) => {
+  private remove = (id: React.ReactText) => {
     this.setState((prev) => {
       return {
         queue: prev.queue.filter((item) => item.id !== id),
@@ -33,14 +33,16 @@ export class ToastManager extends Component<ToastManagerProps, ToastManagerState
     })
   }
 
-  create = (options: ToastEventOptions): ToastOptions => {
+  private create = (options: ToastEventOptions): ToastOptions => {
     ToastManager.counter++
-    const id = options.id ?? ToastManager.counter
+    const key = ToastManager.counter
+    const id = options.id ?? key
 
     return {
       ...options,
+      key,
       id,
-      $destroy: () => this.remove(id),
+      destroy: () => this.remove(id),
     }
   }
 
@@ -66,7 +68,7 @@ export class ToastManager extends Component<ToastManagerProps, ToastManagerState
     })
   }
 
-  getStyle = (placement: ToastPlacement): React.CSSProperties => {
+  private getStyle = (placement: ToastPlacement): React.CSSProperties => {
     let top: string | undefined
     let bottom: string | undefined
     let transform: string | undefined
@@ -107,7 +109,7 @@ export class ToastManager extends Component<ToastManagerProps, ToastManagerState
         style={this.getStyle(placement!)}
       >
         {queue.map((notice) => {
-          if (As) return <As key={notice.id} {...notice} />
+          if (As) return <As {...notice} />
 
           if (isFunction(render)) return render(notice)
 

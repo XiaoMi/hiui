@@ -39,8 +39,16 @@ $prefixCls: #{$component-prefix}-loading !default;
       right: 0;
       bottom: 0;
       left: 0;
-      z-index: 39;
+      z-index: 9999;
       background: rgba(#fff, 0.64);
+    }
+
+    &--part {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
     }
   }
 
@@ -166,7 +174,7 @@ $prefixCls: #{$component-prefix}-loading !default;
     }
   }
 
-  &__label {
+  &__content {
     margin-top: 6px;
     animation: #{$component-prefix}-flash 1.6s linear infinite;
     color: #f63;
