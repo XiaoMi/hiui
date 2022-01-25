@@ -23,7 +23,7 @@ export const ZenMode: React.FC<ZenModeProps> = ({
   visible,
   showBack = true,
   style,
-  onReturn = () => {},
+  onBack = () => {},
   toolbar = [],
   zoom = 1.8,
 }) => {
@@ -77,7 +77,7 @@ export const ZenMode: React.FC<ZenModeProps> = ({
           }}
         >
           {showBack && (
-            <span onClick={onReturn} className={`${prefixCls}__back-btn`}>
+            <span onClick={onBack} className={`${prefixCls}__back-btn`}>
               <LeftOutlined />
               返回
             </span>
@@ -122,7 +122,7 @@ export interface ZenModeProps {
   /**
    * 点击返回按钮的回调
    */
-  onReturn?: () => void
+  onBack?: () => void
   /**
    * 自定义工具栏
    */
