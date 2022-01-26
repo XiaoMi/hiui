@@ -137,7 +137,7 @@ $prefix: '#{$component-prefix}-button' !default;
     }
   }
 
-  @include render-flat-button();
+  @include render-filled-button();
   @include render-line-button();
   @include render-link-button();
 
