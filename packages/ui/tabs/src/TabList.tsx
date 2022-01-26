@@ -29,7 +29,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       onDragOver,
       onDrop,
       onDragEnd,
-      type = 'default',
+      type = 'line',
       extra,
     },
     ref
@@ -148,7 +148,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 direction={direction}
               />
             ))}
-            {type === 'default' && (
+            {type === 'line' && (
               <TabInk
                 translate={direction === 'horizontal' ? translateX : translateY}
                 prefixCls={prefixCls}
@@ -228,7 +228,7 @@ export interface TabListProps {
   activeId?: React.ReactText
   editable?: boolean
   draggable?: boolean
-  type?: 'desc' | 'card' | 'button' | 'default'
+  type?: 'desc' | 'card' | 'button' | 'line'
   /**
    * 右侧的拓展区域
    */
@@ -241,17 +241,23 @@ export interface TabListProps {
    * 节点删除时时触发
    */
   onDelete?: (deletedNode: TabPaneProps, index: number) => void
-  onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void
-  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void
+  onDragStart?: (
+    e: React.DragEvent<HTMLDivElement>,
+    { dragNode }: { dragNode: TabPaneProps }
+  ) => void
+  onDragOver?: (
+    e: React.DragEvent<HTMLDivElement>,
+    { targetNode }: { targetNode: TabPaneProps }
+  ) => void
   onDrop?: (
     e: React.DragEvent<HTMLDivElement>,
     {
       dragNode,
-      dropNode,
+      targetNode,
       direction,
-    }: { dragNode: TabPaneProps; dropNode: TabPaneProps; direction: string | null }
+    }: { dragNode: TabPaneProps; targetNode: TabPaneProps; direction: 'prev' | 'next' | null }
   ) => void
-  onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void
+  onDragEnd?: (e: React.DragEvent<HTMLDivElement>, { dragNode }: { dragNode: TabPaneProps }) => void
 }
 
 if (__DEV__) {

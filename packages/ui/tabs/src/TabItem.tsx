@@ -13,20 +13,26 @@ interface TabItemProps extends TabPaneProps {
   editable?: boolean
   onDelete?: (deletedNode: TabPaneProps, index: number) => void
   index: number
-  onDragStart?: (e: React.DragEvent<HTMLDivElement>, dragNode: TabPaneProps) => void
-  onDragOver?: (e: React.DragEvent<HTMLDivElement>, dragNode: TabPaneProps) => void
+  onDragStart?: (
+    e: React.DragEvent<HTMLDivElement>,
+    { dragNode }: { dragNode: TabPaneProps }
+  ) => void
+  onDragOver?: (
+    e: React.DragEvent<HTMLDivElement>,
+    { targetNode }: { targetNode: TabPaneProps }
+  ) => void
   onDrop?: (
     e: React.DragEvent<HTMLDivElement>,
     {
       dragNode,
-      dropNode,
+      targetNode,
       direction,
-    }: { dragNode: TabPaneProps; dropNode: TabPaneProps; direction: 'prev' | 'next' | null }
+    }: { dragNode: TabPaneProps; targetNode: TabPaneProps; direction: 'prev' | 'next' | null }
   ) => void
-  onDragEnd?: (e: React.DragEvent<HTMLDivElement>, dragNode: TabPaneProps) => void
+  onDragEnd?: (e: React.DragEvent<HTMLDivElement>, { dragNode }: { dragNode: TabPaneProps }) => void
   itemRef: HTMLDivElement | null
   direction: 'horizontal' | 'vertical'
-  type: 'desc' | 'default' | 'button' | 'card'
+  type: 'desc' | 'line' | 'button' | 'card'
 }
 
 export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
@@ -50,7 +56,8 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
       onDragEnd,
       itemRef,
       draggable,
-      type = 'default',
+      type = 'line',
+      closeable = true,
       direction: layout = 'horizontal',
     },
     ref
@@ -81,7 +88,7 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
           e.dataTransfer.setData('tab', JSON.stringify({ tabId, tabTitle }))
           setDragId(tabId)
           if (onDragStart) {
-            onDragStart(e, { tabId, tabTitle })
+            onDragStart(e, { dragNode: { tabId, tabTitle } as TabPaneProps })
           }
         }}
         onDragEnd={(e) => {
@@ -90,7 +97,7 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
           e.dataTransfer.clearData()
           setDragId(null)
           if (onDragEnd) {
-            onDragEnd(e, { tabId, tabTitle })
+            onDragEnd(e, { dragNode: { tabId, tabTitle } as TabPaneProps })
           }
         }}
         onDragLeave={(e) => {
@@ -123,7 +130,7 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
             }
           }
           if (onDragOver) {
-            onDragOver(e, { tabId, tabTitle })
+            onDragOver(e, { targetNode: { tabId, tabTitle } as TabPaneProps })
           }
         }}
         onDrop={(e) => {
@@ -134,7 +141,7 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
             const passedData = JSON.parse(e.dataTransfer.getData('tab')) as TabPaneProps
             onDrop(e, {
               dragNode: { tabId, tabTitle },
-              dropNode: {
+              targetNode: {
                 tabId: passedData.tabId,
                 tabTitle: passedData.tabTitle,
               },
@@ -145,7 +152,7 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
       >
         <span className={`${prefixCls}-item__title`}>{tabTitle}</span>
         {type === 'desc' && <span className={`${prefixCls}-item__desc`}>{tabDesc}</span>}
-        {editable && (
+        {editable && closeable && (
           <span
             className={`${prefixCls}__close-btn`}
             onClick={(e) => {
