@@ -3,20 +3,29 @@ import { TreeNodeData, TreeNodeEventData } from '../types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { cloneTree } from '@hi-ui/tree-utils'
 import { addChildrenById } from '../utils'
+import { UseDataSource, useDataSource } from '@hi-ui/use-data-source'
 
 export const useAsyncSwitch = (
   setTreeData: React.Dispatch<React.SetStateAction<TreeNodeData[]>>,
   onExpand?: (expandedNode: TreeNodeEventData, isExpanded: boolean) => void,
-  onLoadChildren?: (node: TreeNodeEventData) => void | Promise<TreeNodeData[] | void>
+  onLoadChildren?:
+    | UseDataSource<TreeNodeData[]>
+    | ((node: TreeNodeEventData) => void | Promise<TreeNodeData[] | void>)
 ) => {
   const [loadingIds, addLoadingIds, removeLoadingIds] = useList<React.ReactText>()
+
+  const { loadRemoteData } = useDataSource({
+    dataSource: onLoadChildren,
+    validate: Array.isArray,
+    abort: false,
+  })
 
   // 加载节点
   const loadChildren = useCallback(
     async (node: TreeNodeEventData) => {
       if (!onLoadChildren) return
 
-      const childrenNodes = await onLoadChildren(node)
+      const childrenNodes = await loadRemoteData(node).catch(() => {})
 
       if (Array.isArray(childrenNodes)) {
         setTreeData((prev) => {
@@ -26,7 +35,7 @@ export const useAsyncSwitch = (
         })
       }
     },
-    [onLoadChildren, setTreeData]
+    [onLoadChildren, setTreeData, loadRemoteData]
   )
 
   const onExpandLatest = useLatestCallback(onExpand)

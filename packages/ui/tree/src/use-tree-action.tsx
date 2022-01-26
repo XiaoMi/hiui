@@ -377,6 +377,31 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
     onCancel?.(node)
   }
 
+  const saveEdit = () => {
+    if (!inputValue) return
+
+    try {
+      onSave?.({ ...node, title: inputValue }).then(() => {
+        editingAction.off()
+        // 在编辑或创建节点成功，需要 focus 该节点
+        focusTree()
+      })
+    } catch (error) {
+      editingAction.off()
+      // 在编辑或创建节点成功，需要 focus 该节点
+      focusTree()
+    }
+  }
+
+  const onKeydown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    if (evt.keyCode === 13) {
+      evt.preventDefault()
+      evt.stopPropagation()
+
+      saveEdit()
+    }
+  }
+
   useOutsideClick(editElementRef, cancelEdit)
 
   return (
@@ -394,6 +419,7 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
         placeholder={placeholder}
         value={inputValue}
         onChange={handleChange}
+        onKeyDown={onKeydown}
       />
       <span className={`${prefixCls}__action`}>
         <IconButton
@@ -407,20 +433,7 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
           onClick={(evt) => {
             // 阻止冒泡，避免触发节点选中
             evt.stopPropagation()
-
-            if (!inputValue) return
-
-            try {
-              onSave?.({ ...node, title: inputValue }).then(() => {
-                editingAction.off()
-                // 在编辑或创建节点成功，需要 focus 该节点
-                focusTree()
-              })
-            } catch (error) {
-              editingAction.off()
-              // 在编辑或创建节点成功，需要 focus 该节点
-              focusTree()
-            }
+            saveEdit()
           }}
         />
         <IconButton

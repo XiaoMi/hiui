@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { isFunction, isArray, isPromise, isUndefined } from '@hi-ui/type-assertion'
 import { useLatestRef } from '@hi-ui/use-latest'
 import { invariant } from '@hi-ui/env'
@@ -10,8 +10,8 @@ import { invariant } from '@hi-ui/env'
 export const useDataSource = <T = Record<string, any>[]>({
   dataSource: dataSourceProp,
   validate = isArray as any,
+  abort = true,
 }: UseDataSourceProps<T>) => {
-  // const [loading, setLoading] = useState(false)
   // pending | 'loading' | 'fulfilled' | 'rejected'
   const [status, setStatus] = useState('pending')
 
@@ -20,61 +20,66 @@ export const useDataSource = <T = Record<string, any>[]>({
   const dataSourceLatestRef = useLatestRef(dataSourceProp)
   const validateLatestRef = useLatestRef(validate)
 
-  const request = useCallback((options: UseDataSourceAPIOptions, keyword: React.ReactText) => {
-    const {
-      url: urlProp,
-      method = 'GET',
-      headers,
-      data,
-      params: paramsProp,
-      credentials: credentialsProp,
-      withCredentials = false,
-      transformResponse,
-      key,
-      onError,
-      ...rest
-    } = options
+  const request = useCallback(
+    (options: UseDataSourceAPIOptions, keyword: any) => {
+      const {
+        url: urlProp,
+        method = 'GET',
+        headers,
+        data,
+        params: paramsProp,
+        credentials: credentialsProp,
+        withCredentials = false,
+        transformResponse,
+        key,
+        onError,
+        ...rest
+      } = options
 
-    // Inject the keyword
-    const params = key ? { [key]: keyword, ...paramsProp } : paramsProp
-    const credentials = withCredentials ? 'include' : credentialsProp
+      // Inject the keyword
+      const params = key ? { [key]: keyword, ...paramsProp } : paramsProp
+      const credentials = withCredentials ? 'include' : credentialsProp
 
-    // @Optimize: Cancel the last request
-    cancelControllerRef.current?.abort?.()
-    cancelControllerRef.current = new AbortController()
+      if (abort) {
+        // @Optimize: Cancel the last request
+        cancelControllerRef.current?.abort?.()
+        cancelControllerRef.current = new AbortController()
+      }
 
-    let url: URL | string = urlProp
+      let url: URL | string = urlProp
 
-    if (params) {
-      url = new URL(urlProp)
-      url.search = new URLSearchParams(params).toString()
-    }
+      if (params) {
+        url = new URL(urlProp)
+        url.search = new URLSearchParams(params).toString()
+      }
 
-    return fetch(url.toString(), {
-      signal: cancelControllerRef.current ? cancelControllerRef.current.signal : undefined,
-      ...rest,
-      method,
-      body: data as any,
-      credentials,
-      headers,
-    })
-      .then(
-        (response) => {
-          cancelControllerRef.current = null
-          return response.json()
-        },
-        (error) => {
-          cancelControllerRef.current = null
-          onError?.(error)
-        }
-      )
-      .then((response) => {
-        return transformResponse?.(response)
+      return fetch(url.toString(), {
+        signal: cancelControllerRef.current ? cancelControllerRef.current.signal : undefined,
+        ...rest,
+        method,
+        body: data as any,
+        credentials,
+        headers,
       })
-  }, [])
+        .then(
+          (response) => {
+            cancelControllerRef.current = null
+            return response.json()
+          },
+          (error) => {
+            cancelControllerRef.current = null
+            onError?.(error)
+          }
+        )
+        .then((response) => {
+          return transformResponse?.(response)
+        })
+    },
+    [abort]
+  )
 
   const loadRemoteData = useCallback(
-    (keyword: React.ReactText) => {
+    (keyword: any) => {
       setStatus('pending')
       return new Promise<T>((resolve, reject) => {
         const dataSourceLatest = dataSourceLatestRef.current
@@ -215,14 +220,18 @@ export interface UseDataSourceAPIOptions<T = any> {
 
 export type UseDataSource<T> =
   | T
-  | ((keyword: React.ReactText) => T | void | undefined)
-  | ((keyword: React.ReactText) => Promise<T | void | undefined>)
+  | ((keyword: any) => T | void | undefined)
+  | ((keyword: any) => Promise<T | void | undefined>)
   | UseDataSourceAPIOptions<T>
-  | ((keyword: React.ReactText) => UseDataSourceAPIOptions<T>)
+  | ((keyword: any) => UseDataSourceAPIOptions<T>)
 
 export interface UseDataSourceProps<T = any> {
   dataSource?: UseDataSource<T>
   validate?: (arg: unknown) => arg is T
+  /**
+   * 请求时，是否取消上一次请求
+   */
+  abort?: boolean
 }
 
 export type UseDataSourceReturn = ReturnType<typeof useDataSource>
