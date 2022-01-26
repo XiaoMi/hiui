@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { PaginationMini } from '../src'
+import { Pagination } from '../src'
 
 export const MiniInput = () => {
   const [current, setCurrent] = useState(1)
@@ -7,7 +7,8 @@ export const MiniInput = () => {
     <>
       <h1>MiniInput</h1>
       <div className="pagination-mini-input__wrap">
-        <PaginationMini
+        <Pagination
+          type="shrink"
           total={200}
           pageSize={10}
           current={current}
