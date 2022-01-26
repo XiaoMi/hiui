@@ -24,7 +24,7 @@
 | width            | 菜单项宽度                              | number              | -                                   | 180     |
 | overlayClassName | 下拉根元素的类名称                      | string              | -                                   | -       |
 | overlay          | 自定义控制弹出层 popper 行为            | PopperOverlayProps  | -                                   | -       |
-| triggerButton    | 自定义下拉菜单触发按钮，优先级大于 type | ReactElement        | -                                   | -       |
+| children         | 自定义下拉菜单触发按钮，优先级大于 type | ReactElement        | -                                   | -       |
 
 > 注意：自定义按钮需要支持 ref 获取元素 dom 引用 以及 trigger 对应的事件：
 >
@@ -53,11 +53,11 @@
 
 ## CHANGELOG
 
-| 参数          | 变更类型                        | 变更内容                                                                 | 解决的问题                                                                                                 |
-| ------------- | ------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| propName      | feature \| deprecated \| update | 变更了什么                                                               | 之前是什么样子，解决什么问题                                                                               |
-| ----          | ----                            | ----                                                                     | ----                                                                                                       |
-| triggerButton | feature                         | -                                                                        | 功能强化                                                                                                   |
-| popper        | feature                         | 字段 placement -> popper                                                 | Picker 类型组件统一支持，聚合管理。比如： placement arrow container disablePortal 等，之前有的加了有的没加 |
-| id            | update                          | 对于表单控件 id 值的控制，均使用 ReactText（即 string 和 number 都支持） | 之前是 string 类型                                                                                         |
-| data          | update                          | 添加 { type: }                                                           | 扩展分割线                                                                                                 |
+| 参数     | 变更类型                        | 变更内容                                                                 | 解决的问题                                                                                                 |
+| -------- | ------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| propName | feature \| deprecated \| update | 变更了什么                                                               | 之前是什么样子，解决什么问题                                                                               |
+| ----     | ----                            | ----                                                                     | ----                                                                                                       |
+| children | feature                         | 自定义下拉菜单触发按钮                                                   | 功能强化                                                                                                   |
+| popper   | feature                         | 字段 placement -> popper                                                 | Picker 类型组件统一支持，聚合管理。比如： placement arrow container disablePortal 等，之前有的加了有的没加 |
+| id       | update                          | 对于表单控件 id 值的控制，均使用 ReactText（即 string 和 number 都支持） | 之前是 string 类型                                                                                         |
+| data     | update                          | 添加 { type: }                                                           | 扩展分割线                                                                                                 |

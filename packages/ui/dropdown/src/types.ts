@@ -35,4 +35,8 @@ export interface DropdownDataItem {
    * 是否禁用
    */
   disabled?: boolean
+  /**
+   * 是否在其底部建立分隔线
+   */
+  split?: boolean
 }

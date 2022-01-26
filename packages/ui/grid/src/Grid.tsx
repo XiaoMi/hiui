@@ -25,7 +25,7 @@ export const Row = forwardRef<HTMLDivElement | null, RowProps>(
       children,
       style: styleProp,
       justify: justifyContent,
-      rows = 24,
+      columns = 24,
       rowGap = DEFAULT_ROW_GAP,
       gutter: gutterProp = false,
       ...rest
@@ -65,7 +65,7 @@ export const Row = forwardRef<HTMLDivElement | null, RowProps>(
 
     const cls = cx(prefixCls, className)
 
-    const providedContext = useMemo(() => ({ rows }), [rows])
+    const providedContext = useMemo(() => ({ columns }), [columns])
 
     return (
       <GridProvider value={providedContext}>
@@ -104,8 +104,9 @@ export interface RowProps extends HiBaseHTMLProps<'div'> {
   gutter?: boolean | number
   /**
    * 设置栅格列总数，一般是 24 或者 48
+   * @private
    */
-  rows?: number
+  columns?: number
   /**
    * Row 与 Row 之间的距离
    */
@@ -137,11 +138,11 @@ export const Col = forwardRef<HTMLDivElement | null, ColProps>(
     },
     ref
   ) => {
-    const { rows = 24 } = useGridContext()
+    const { columns = 24 } = useGridContext()
 
     // 需要 warning 不合法
-    const span = isNumeric(spanProp) && spanProp >= 0 && spanProp < rows ? spanProp : 1
-    const offset = isNumeric(offsetProp) && offsetProp >= 0 && offsetProp < rows ? offsetProp : 0
+    const span = isNumeric(spanProp) && spanProp >= 0 && spanProp < columns ? spanProp : 1
+    const offset = isNumeric(offsetProp) && offsetProp >= 0 && offsetProp < columns ? offsetProp : 0
 
     const style = Object.assign(
       justifyContent
@@ -153,8 +154,8 @@ export const Col = forwardRef<HTMLDivElement | null, ColProps>(
         : {},
       styleProp,
       {
-        [spanNameVar]: `calc(${span} / ${rows} * 100%)`,
-        [offsetNameVar]: `calc(${offset} / ${rows} * 100%)`,
+        [spanNameVar]: `calc(${span} / ${columns} * 100%)`,
+        [offsetNameVar]: `calc(${offset} / ${columns} * 100%)`,
       }
     )
 

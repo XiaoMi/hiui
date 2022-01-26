@@ -2,6 +2,10 @@
 
 $prefix: '#{$component-prefix}-dropdown' !default;
 
+.#{$prefix} {
+  display: inline-block;
+}
+
 .#{$prefix}-menu {
   @include list-reset();
 
@@ -26,12 +30,17 @@ $prefix: '#{$component-prefix}-dropdown' !default;
   margin: 0;
   box-sizing: border-box;
   overflow: visible;
+  padding: use-spacing(2) 0;
 
   &__link {
     color: use-color('gray', 700);
     width: 100%;
     text-decoration: none;
     box-sizing: border-box;
+  }
+
+  &__arrow {
+    transform: rotate(-90deg);
   }
 
   $this: &;
@@ -42,13 +51,18 @@ $prefix: '#{$component-prefix}-dropdown' !default;
     height: 100%;
     cursor: pointer;
     border-radius: use-border-radius('normal');
-    padding: use-spacing(5) use-spacing(6);
+    padding: use-spacing(4) use-spacing(6);
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     &:hover {
       background-color: use-color('gray', 100);
     }
+  }
+
+  &--active > &__trigger {
+    background-color: use-color('gray', 100);
   }
 }
 

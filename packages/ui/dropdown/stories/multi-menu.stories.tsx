@@ -197,7 +197,7 @@ export const MultiMenu = () => {
     <>
       <h1>MultiMenu</h1>
       <div className="dropdown-multi-menu__wrap">
-        <Dropdown data={list} title="操作" width={120} trigger="hover" />
+        <Dropdown data={list} title="操作" width={120} trigger="click" />
       </div>
     </>
   )

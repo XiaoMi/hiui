@@ -1,7 +1,7 @@
 import React from 'react'
 import Dropdown from '../src'
 import { Tooltip } from '@hi-ui/tooltip'
-import Button from '@hi-ui/button'
+import { Avatar } from '@hi-ui/avatar'
 
 export const TriggerButton = () => {
   const [list] = React.useState([
@@ -50,18 +50,13 @@ export const TriggerButton = () => {
     <>
       <h1>TriggerButton</h1>
       <div className="dropdown-trigger-button__wrap">
-        <Dropdown
-          data={list}
-          title="鼠标悬停"
-          onClick={console.log}
-          triggerButton={
-            <span>
-              <Tooltip title="Dropdown 触发的事件传给 tooltip 不会影响 button 哦">
-                <Button>自定义触发器</Button>
-              </Tooltip>
-            </span>
-          }
-        />
+        <Dropdown data={list} title="鼠标悬停" onClick={console.log}>
+          <div style={{ display: 'inline-block' }}>
+            <Tooltip title="Dropdown 触发的事件传给 tooltip 不会影响 Avatar 哦">
+              <Avatar initials="M" />
+            </Tooltip>
+          </div>
+        </Dropdown>
       </div>
     </>
   )

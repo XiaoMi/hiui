@@ -23,22 +23,15 @@ export const Trigger = () => {
     {
       id: 4,
       title: '菜单五',
+      disabled: true,
     },
     {
       id: 5,
       title: '菜单六',
+      split: true,
     },
     {
       id: 6,
-      title: '菜单七',
-      disabled: true,
-    },
-    {
-      id: 7,
-      title: '-',
-    },
-    {
-      id: 8,
       title: '小米商城',
       href: 'https://www.mi.com',
     },

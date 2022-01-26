@@ -28,14 +28,13 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
       prefixCls = _prefix,
       role = _role,
       className,
-      children,
+      children: triggerButton,
       data = DEFAULT_DATA,
       title,
       type = 'text',
       onClick,
       onButtonClick,
       overlayClassName,
-      triggerButton,
       ...rest
     },
     ref
@@ -52,10 +51,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
           <DropdownMenu overlay={{ gutterGap: 16 }}>{dig(item.children)}</DropdownMenu>
         ) : null
 
-        // TODO: remove it
-        const shouldRenderDivider = item.title === '-'
-
-        if (shouldRenderDivider) {
+        if (item.split) {
           return <li key={item.id} className={`${prefixCls}-divider`} />
         }
 
@@ -167,7 +163,7 @@ export interface DropdownProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, 
    * click: onClick
    * contextmenu: onContextMenu
    */
-  triggerButton?: React.ReactElement
+  children?: React.ReactNode
   /**
    * 自定义控制 下拉 popper 行为
    */
@@ -253,7 +249,7 @@ const DropdownMenuItem = forwardRef<HTMLLIElement | null, DropdownMenuItemProps>
   ) => {
     const { triggerMethods, width } = useDropDownContext()
 
-    const { rootProps, getTriggerProps, getMenuProps } = useDropdown({
+    const { menuVisible, rootProps, getTriggerProps, getMenuProps } = useDropdown({
       overlay: { placement: 'right-start', disabledPortal: true },
       width,
       ...rest,
@@ -261,7 +257,7 @@ const DropdownMenuItem = forwardRef<HTMLLIElement | null, DropdownMenuItemProps>
       parents: parentsProp,
     })
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, menuVisible && `${prefixCls}--active`)
     const shouldUseLink = href && !disabled
 
     return (
@@ -274,6 +270,11 @@ const DropdownMenuItem = forwardRef<HTMLLIElement | null, DropdownMenuItemProps>
           ) : (
             children
           )}
+          {menu ? (
+            <span className={`${prefixCls}__arrow`}>
+              <DownOutlined />
+            </span>
+          ) : null}
         </div>
         {menu
           ? cloneElement(menu, {

@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
 
 interface GridContext {
-  rows?: number
+  columns?: number
 }
 
 const gridContext = createContext<GridContext>({})
