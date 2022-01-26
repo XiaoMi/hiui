@@ -15,10 +15,10 @@
 
 | 参数             | 说明               | 类型                | 可选值        | 默认值 |
 | ---------------- | ------------------ | ------------------- | ------------- | ------ |
-| prepend          | 输入框前置内容     | string \| ReactNode | -             | -      |
+| prepend          | 输入框前置内容     | ReactNode | -             | -      |
 | disabled         | 是否禁用           | boolean             | true \| false | false  |
 | loading          | 加载中             | boolean             | true \| false | false  |
-| placeholder      | 输入框占位符       | string \| ReactNode | -             | -      |
+| placeholder      | 输入框占位符       | string | -             | -      |
 | data             | 搜索结果的数据     | `Array<DataItem>`   | -             | -      |
 | append           | 搜索按钮           | ReactNode           | -             | -      |
 | overlayClassName | 下拉根元素的类名称 | string              | -             | -      |
@@ -56,4 +56,3 @@
 | value        | feature                         | -                                                                                  | 功能强化                     |
 | onChange     | update                          | 定义：(event: HTMLInputEvent) => void -> (inputVal: ReactText) => void             | -                            |
 | onSearch     | update                          | 定义：(inputVal: string, item ?:DataItem) => void -> (inputVal: ReactText) => void | -                            |
-| prepend      | deprecated                      | -                                                                                  | -                            |

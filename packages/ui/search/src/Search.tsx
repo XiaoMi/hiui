@@ -25,6 +25,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
       disabled,
       overlayClassName,
       data,
+      prepend,
       defaultValue = '',
       value: valueProp,
       ...rest
@@ -168,6 +169,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
           className={`${prefixCls}__input`}
           ref={setTargetElRef}
           disabled={disabled}
+          prepend={prepend}
           onChange={(e) => {
             tryChangeValue(e.target.value)
             if (data && data.length > 0) {
@@ -224,6 +226,7 @@ export interface SearchDataItem {
 }
 export interface SearchProps extends HiBaseHTMLProps<'input'> {
   disabled?: boolean
+  prepend?: React.ReactNode
   loading?: boolean
   placeholder?: string
   append?: React.ReactNode
