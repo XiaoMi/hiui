@@ -20,6 +20,8 @@ $zindex-base-map: (
   overlay: 1050,
   tooltip: 1060,
   watermark: 1100,
+  // global loading
+  top: 9999,
 ) !default;
 
 /// 获取层及对应 z-index

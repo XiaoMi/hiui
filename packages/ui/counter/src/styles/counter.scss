@@ -20,6 +20,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     display: flex;
     box-sizing: border-box;
     border-radius: use-border-radius('normal');
+    height: 100%;
   }
 
   &--appearance-line {
@@ -216,30 +217,22 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--size-sm {
-    .#{$minus-class},.#{$plus-class} {
-      width: 24px;
-      height: 24px;
-      line-height: 24px;
-    }
+    height: 24px;
 
-    .#{$input-wrapper-class} {
-      height: 24px;
+    .#{$minus-class}, .#{$plus-class} {
+      width: 24px;
     }
 
     .#{$input-class} {
-      width: 43px;
+      width: 44px;
     }
   }
 
   &--size-md {
-    .#{$minus-class},.#{$plus-class} {
-      width: 32px;
-      height: 32px;
-      line-height: 32px;
-    }
+    height: 32px;
 
-    .#{$input-wrapper-class} {
-      height: 32px;
+    .#{$minus-class}, .#{$plus-class} {
+      width: 32px;
     }
 
     .#{$input-class} {
@@ -248,18 +241,14 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--size-lg {
-    .#{$minus-class},.#{$plus-class} {
-      width: 40px;
-      height: 40px;
-      line-height: 40px;
-    }
+    height: 40px;
 
-    .#{$input-wrapper-class} {
-      height: 36px;
+    .#{$minus-class}, .#{$plus-class} {
+      width: 40px;
     }
 
     .#{$input-class} {
-      width: 62px;
+      width: 66px;
     }
   }
 }

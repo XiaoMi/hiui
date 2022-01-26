@@ -68,7 +68,12 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     }
   }, [contentPosition])
 
-  const colonMemo = useMemo(() => colon || '：', [colon])
+  const colonMemo = useMemo(() => {
+    if (typeof colon === 'boolean') {
+      return colon ? '：' : ''
+    }
+    return colon ?? '：'
+  }, [colon])
 
   const cls = cx(
     prefixCls,

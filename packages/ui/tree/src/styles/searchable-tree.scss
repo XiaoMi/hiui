@@ -20,7 +20,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     }
   }
 
-  .title__text {
+  .#{$prefix}__title-text {
     &--matched {
       color: use-color-mode('primary');
     }

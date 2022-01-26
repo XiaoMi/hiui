@@ -59,7 +59,7 @@ export const useInput = ({
     (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const relatedTarget = event.relatedTarget
 
-      // 拦截 clear 情况 触发 input 失焦
+      // 拦截 clearIcon 点击清空，阻止其触发 input 失焦
       if (clearElementRef && clearElementRef.current && clearElementRef.current === relatedTarget) {
         return
       }

@@ -197,7 +197,7 @@ const EditableTreeNodeTitle = (props: EditableTreeNodeTitleProps) => {
 
   return (
     <div className={`${prefixCls}__title`}>
-      <span className="title__text">{title || node.title}</span>
+      <span className={`${prefixCls}__title-text`}>{title || node.title}</span>
       <EditableNodeMenu {...props} editingAction={editingAction} />
     </div>
   )

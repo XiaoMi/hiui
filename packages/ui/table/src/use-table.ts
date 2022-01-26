@@ -293,8 +293,6 @@ export const useTable = ({
       0
     )
 
-    // console.log('leftColumns', leftColumns, leftLeafNodes, leftFixedColumnsWidth)
-
     // 右侧
     let rightColumns = [] as any[]
     if (typeof rightFrozenColIndex === 'number') {
@@ -316,8 +314,6 @@ export const useTable = ({
 
         rightColumns[index] = _item
       })
-
-      // console.log('rightLeafNodes', rightColumns, nextColumns)
     }
 
     const rightLeafNodes = getLeafNodes(rightColumns)

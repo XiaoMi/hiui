@@ -94,11 +94,11 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
         if (ret && ret !== true) return ret
       }
 
-      const ret = inSearch ? renderTitleWithHighlight(node, searchValue) : true
+      const ret = inSearch ? renderTitleWithHighlight(node, searchValue, prefixCls) : true
 
       return ret
     },
-    [titleRender, inSearch, searchValue]
+    [titleRender, inSearch, searchValue, prefixCls]
   )
 
   const showData = useMemo(() => getSearchedData(cloneTree(data), matchedIds, filteredIds), [
@@ -160,7 +160,11 @@ export interface SearchableTreeProps extends TreeProps {
 /**
  * 高亮节点的文本内容
  */
-const renderTitleWithHighlight = (node: TreeNodeEventData, searchValue: string) => {
+const renderTitleWithHighlight = (
+  node: TreeNodeEventData,
+  searchValue: string,
+  prefixCls: string
+) => {
   if (typeof node.title !== 'string') {
     return
   }
@@ -174,7 +178,7 @@ const renderTitleWithHighlight = (node: TreeNodeEventData, searchValue: string) 
   return (
     <span>
       {beforeStr}
-      <span className="title__text--matched">{searchValue}</span>
+      <span className={`${prefixCls}__title-text--matched`}>{searchValue}</span>
       {afterStr}
     </span>
   )

@@ -97,23 +97,24 @@
 
 > 从 Select 组件抽离多选模式出来，作为为单独 CheckSelect 组件。
 
-| 参数                | 变更类型                        | 变更内容                              | 解决的问题                                                                                       |
-| ------------------- | ------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| propName            | feature \| deprecated \| update | 变更了什么                            | 之前是什么样子，解决什么问题                                                                     |
-| ----                | ----                            | ----                                  | ----                                                                                             |
-| value               | update                          | 类型 string[] => string[] \| number[] | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）                   |
-| defaultValue        | update                          | 类型 string[] => string[] \| number[] | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）                   |
-| id                  | update                          | 类型 string => string \| number       | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）                   |
-| bordered            | deprecated                      | 字段 `bordered` => `appearance`       | 对于 Picker 类型的组件，统一使用 appearance 设置外形（线\面\无边框）值                           |
-| searchPlaceholder   | feature                         | -                                     | Picker 类型组件统一支持                                                                          |
-| loadingContent      | feature                         | -                                     | Picker 类型组件统一支持，适配新 UI                                                               |
-| overlay             | feature                         | -                                     | Picker 类型组件统一支持，聚合管理。比如： placement setOverlayContainer 等，之前有的加了有的没加 |
-| virtual             | feature                         | -                                     | 支持虚拟列表                                                                                     |
-| height              | feature                         | -                                     | 支持虚拟列表                                                                                     |
-| itemHeight          | feature                         | -                                     | 支持虚拟列表                                                                                     |
-| type                | deprecated                      | -                                     | 拆分单选多选组件单独维护                                                                         |
-| autoload            | deprecated                      | -                                     | 页面级首次渲染执行数据加载操作，取消内置                                                         |
-| onSearch            | deprecated                      | -                                     | 使用 dataSource 替代，功能重合                                                                   |
-| appearance          | feature                         | -                                     | 统一支持：线性\面性\无边框                                                                       |
-| displayRender       | feature                         | -                                     | 统一支持选择后内容自定义渲染                                                                     |
-| setOverlayContainer | deprecated                      | -                                     | 使用 overlay.container 替代，功能重合                                                            |
+| 参数                | 变更类型                        | 变更内容                                | 解决的问题                                                                                       |
+| ------------------- | ------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| propName            | feature \| deprecated \| update | 变更了什么                              | 之前是什么样子，解决什么问题                                                                     |
+| ----                | ----                            | ----                                    | ----                                                                                             |
+| value               | update                          | 类型 string[] => string[] \| number[]   | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）                   |
+| defaultValue        | update                          | 类型 string[] => string[] \| number[]   | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）                   |
+| id                  | update                          | 类型 string => string \| number         | 对于表单控件 id 值的控制，均使用 React.ReactText（即 string 和 number 都支持）                   |
+| bordered            | deprecated                      | 字段 `bordered` => `appearance`         | 对于 Picker 类型的组件，统一使用 appearance 设置外形（线\面\无边框）值                           |
+| searchPlaceholder   | feature                         | -                                       | Picker 类型组件统一支持                                                                          |
+| loadingContent      | feature                         | -                                       | Picker 类型组件统一支持，适配新 UI                                                               |
+| overlay             | feature                         | -                                       | Picker 类型组件统一支持，聚合管理。比如： placement setOverlayContainer 等，之前有的加了有的没加 |
+| virtual             | feature                         | -                                       | 支持虚拟列表                                                                                     |
+| height              | feature                         | -                                       | 支持虚拟列表                                                                                     |
+| itemHeight          | feature                         | -                                       | 支持虚拟列表                                                                                     |
+| type                | deprecated                      | -                                       | 拆分单选多选组件单独维护                                                                         |
+| autoload            | deprecated                      | -                                       | 页面级首次渲染执行数据加载操作，取消内置                                                         |
+| onSearch            | deprecated                      | -                                       | 使用 dataSource 替代，功能重合                                                                   |
+| appearance          | feature                         | -                                       | 统一支持：线性\面性\无边框                                                                       |
+| displayRender       | feature                         | -                                       | 统一支持选择后内容自定义渲染                                                                     |
+| setOverlayContainer | deprecated                      | -                                       | 使用 overlay.container 替代，功能重合                                                            |
+| showOnlyShowChecked | update                          | showJustSelected -> showOnlyShowChecked | 规范命名                                                                                         |

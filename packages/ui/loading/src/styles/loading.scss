@@ -39,7 +39,7 @@ $prefixCls: #{$component-prefix}-loading !default;
       right: 0;
       bottom: 0;
       left: 0;
-      z-index: 9999;
+      z-index: use-zindex('top');
       background: rgba(#fff, 0.64);
     }
 

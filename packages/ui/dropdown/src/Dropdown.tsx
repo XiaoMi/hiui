@@ -84,7 +84,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
 
       if (type === 'text' || type === 'button') {
         return (
-          <Button {...getTriggerProps()} appearance={type === 'button' ? 'flat' : 'link'}>
+          <Button {...getTriggerProps()} appearance={type === 'button' ? 'filled' : 'link'}>
             {title}
             <DownOutlined style={{ marginInlineStart: 2 }} />
           </Button>
