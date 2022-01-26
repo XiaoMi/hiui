@@ -31,7 +31,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onDragEnd,
       onDrop,
       style,
-      type = 'default',
+      type = 'line',
       extra,
       ...rest
     },
@@ -147,7 +147,7 @@ export interface TabsProps {
   /**
    * 布局类型
    */
-  type?: 'desc' | 'card' | 'button' | 'default'
+  type?: 'desc' | 'card' | 'button' | 'line'
   /**
    * `activeId` 改变的回调
    */
@@ -169,17 +169,23 @@ export interface TabsProps {
    * 节点删除时时触发
    */
   onDelete?: (deletedNode: TabPaneProps, index: number) => void
-  onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void
-  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void
+  onDragStart?: (
+    e: React.DragEvent<HTMLDivElement>,
+    { dragNode }: { dragNode: TabPaneProps }
+  ) => void
+  onDragOver?: (
+    e: React.DragEvent<HTMLDivElement>,
+    { targetNode }: { targetNode: TabPaneProps }
+  ) => void
   onDrop?: (
     e: React.DragEvent<HTMLDivElement>,
     {
       dragNode,
-      dropNode,
+      targetNode,
       direction,
-    }: { dragNode: TabPaneProps; dropNode: TabPaneProps; direction: string | null }
+    }: { dragNode: TabPaneProps; targetNode: TabPaneProps; direction: 'prev' | 'next' | null }
   ) => void
-  onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void
+  onDragEnd?: (e: React.DragEvent<HTMLDivElement>, { dragNode }: { dragNode: TabPaneProps }) => void
 }
 
 if (__DEV__) {
