@@ -41,7 +41,8 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
                   [`${prefixCls}__content--active`]: index === data.length - 1,
                 })}
               >
-                {item.content}
+                {item.icon}
+                {item.title}
               </a>
             ) : (
               <span
@@ -54,7 +55,8 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
                   }
                 }}
               >
-                {item.content}
+                {item.icon}
+                {item.title}
               </span>
             )}
 
@@ -70,7 +72,7 @@ export interface BreadcrumbItemProps {
   /**
    * 面包屑的内容
    */
-  content?: React.ReactNode
+  title?: React.ReactNode
   /**
    * 要跳转的路径
    */
@@ -79,6 +81,7 @@ export interface BreadcrumbItemProps {
    * 要跳转的打开方式
    */
   target?: '_self' | '_blank' | '_parent' | '_top'
+  icon?: React.ReactNode
 }
 
 export interface BreadcrumbProps {
