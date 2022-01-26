@@ -12,9 +12,9 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 const _prefix = getPrefixCls('pagination-mini')
 
 /**
- * TODO: What is PaginationMini
+ * TODO: What is ShrinkPagination
  */
-export const PaginationMini = forwardRef<HTMLDivElement | null, PaginationMiniProps>(
+export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginationProps>(
   (
     {
       prefixCls = _prefix,
@@ -93,7 +93,7 @@ export const PaginationMini = forwardRef<HTMLDivElement | null, PaginationMiniPr
   }
 )
 
-export interface PaginationMiniProps extends HiBaseHTMLProps<'div'> {
+export interface ShrinkPaginationProps extends HiBaseHTMLProps<'div'> {
   /**
    * 当前页码
    */
@@ -130,5 +130,5 @@ export interface PaginationMiniProps extends HiBaseHTMLProps<'div'> {
 }
 
 if (__DEV__) {
-  PaginationMini.displayName = 'PaginationMini'
+  ShrinkPagination.displayName = 'ShrinkPagination'
 }

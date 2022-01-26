@@ -14,6 +14,7 @@ const Pagination = require('@hi-ui/pagination');
 
 | 参数            | 说明                     | 类型     | 可选值                            | 默认值    |
 | --------------- | ------------------------ | -------- | --------------------------------- | --------- |
+| type  | 	分页的类型           | string   | 'default' | 'shrink'                                | 'default'        |
 | defaultCurrent  | 默认的当前页数           | number   | -                                 | 1         |
 | current         | 当前页数                 | number   | -                                 | -         |
 | max             | 最大显示的页数           | number   | -                                 | 2         |
@@ -23,6 +24,7 @@ const Pagination = require('@hi-ui/pagination');
 | showTotal           | 是否显示数据总数                 | boolean   | -                                 | false         |
 | autoHide（没做）        | 只有一页时是否隐藏分页器 | boolean  | true \| false                     | false     |
 | showJumper      | 是否显示跳转             | boolean  | true \| false                     | false     |
+| showPagers      | 是否显示页码             | boolean  | true \| false                     | true     |
 
 ## Events
 
@@ -36,4 +38,4 @@ const Pagination = require('@hi-ui/pagination');
 
 | 参数         | 变更类型                        | 变更内容                                                                       | 解决的问题                   |
 | ------------ | ------------------------------- | ------------------------------------------------------------------------------ | ---------------------------- |
-| type        | deprecated                          | 移除type字段，改为原子化引用 | 建议还是恢复为type形态，这个变更意义不是特别大           |
+| type        | update                          | 废弃'simple' |            |
