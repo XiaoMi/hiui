@@ -12,10 +12,10 @@ const LIST_PREFIX = getPrefixCls('list')
  */
 type Position = 'flex-start' | 'flex-end' | 'center'
 const getPagePosition = (
-  pagination: PaginationProps & { position: 'left' | 'middle' | 'right' }
+  pagination: PaginationProps & { placement: 'left' | 'middle' | 'right' }
 ): Position => {
   let pagePosition: Position = 'flex-end'
-  switch (pagination.position) {
+  switch (pagination.placement) {
     case 'left':
       pagePosition = 'flex-start'
       break
@@ -41,10 +41,10 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
       children,
       pagination,
       split = true,
-      renderItem,
+      render,
       bordered = true,
       data,
-      emptyText = '暂无数据',
+      emptyContent = '暂无数据',
       ...rest
     },
     ref
@@ -63,11 +63,11 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
             })}
             key={index}
           >
-            {renderItem && renderItem(item)}
+            {render && render(item)}
           </li>
         )
       },
-      [renderItem, split, prefixCls]
+      [render, split, prefixCls]
     )
 
     return (
@@ -79,14 +79,14 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
             })}
           </ul>
         ) : (
-          <EmptyState title={emptyText} style={{ margin: 16 }} />
+          <EmptyState title={emptyContent} style={{ margin: 16 }} />
         )}
         {pagination && (
           <div
             className={`${prefixCls}__pagination`}
             style={{
               justifyContent: getPagePosition(
-                pagination as PaginationProps & { position: 'left' | 'middle' | 'right' }
+                pagination as PaginationProps & { placement: 'left' | 'middle' | 'right' }
               ),
             }}
           >
@@ -117,12 +117,12 @@ export interface ListProps {
    */
   style?: React.CSSProperties
   data: ListItemProps[]
-  renderItem?: (item: ListItemProps) => React.ReactNode
+  render?: (item: ListItemProps) => React.ReactNode
 
   split?: boolean
-  pagination?: PaginationProps & { position: 'left' | 'middle' | 'right' }
+  pagination?: PaginationProps & { placement: 'left' | 'middle' | 'right' }
   bordered?: boolean
-  emptyText?: React.ReactNode
+  emptyContent?: React.ReactNode
 }
 export type ListItemProps = {
   /**
@@ -142,7 +142,7 @@ export type ListItemProps = {
   extra?: React.ReactNode
   avatar?: string
   action?: React.ReactNode
-  actionPosition?: 'top' | 'center' | 'bottom'
+  actionPlacement?: 'top' | 'center' | 'bottom'
 }
 
 if (__DEV__) {

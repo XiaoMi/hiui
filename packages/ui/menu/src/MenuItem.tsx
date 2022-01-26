@@ -12,7 +12,7 @@ const MENU_PREFIX = getPrefixCls('menu')
 export const MenuItem: React.FC<MenuItemProps> = ({
   prefixCls = MENU_PREFIX,
   icon,
-  content,
+  title,
   disabled,
   id,
   level = 1,
@@ -64,14 +64,14 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             }
             if (
               closeAllPopper &&
-              !(placement === 'vertical' && expandedType === 'default' && mini === false)
+              !(placement === 'vertical' && expandedType === 'collapse' && mini === false)
             ) {
               closeAllPopper()
             }
           }
         }}
         style={
-          placement === 'vertical' && expandedType === 'default' && !mini
+          placement === 'vertical' && expandedType === 'collapse' && !mini
             ? {
                 paddingLeft:
                   level > 1 ? 12 + (level - 1 > 0 ? 1 : 0) * 20 + (level - 2 || 0) * 16 : 12,
@@ -80,12 +80,12 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         }
       >
         {icon}
-        <span className={`${prefixCls}-item__content`}>{content}</span>
+        <span className={`${prefixCls}-item__content`}>{title}</span>
         {/* 垂直菜单-纵向展开 */}
         {children?.length &&
           !mini &&
           placement === 'vertical' &&
-          expandedType === 'default' &&
+          expandedType === 'collapse' &&
           !showAllSubMenus &&
           (expandedIds?.includes(id) ? <UpOutlined /> : <DownOutlined />)}
         {/* 垂直菜单-mini */}
@@ -111,7 +111,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         placement === 'vertical' &&
         !mini &&
         !showAllSubMenus &&
-        expandedType === 'default' && (
+        expandedType === 'collapse' && (
           <Expander visible={!!expandedIds?.includes(id)}>
             <ul className={`${prefixCls}-submenu`}>
               {children.map((child) => (
@@ -125,7 +125,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         placement === 'vertical' &&
         mini &&
         !showAllSubMenus &&
-        expandedType === 'default' &&
+        expandedType === 'collapse' &&
         (level === 1 ? (
           <PopperPortal
             visible={!!expandedIds?.includes(id)}
@@ -222,7 +222,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             {children.map((child) => {
               return (
                 <div key={child.id} className={`${prefixCls}-fat-menu__group`}>
-                  <div className={`${prefixCls}-group-item`}>{child.content}</div>
+                  <div className={`${prefixCls}-group-item`}>{child.title}</div>
                   {child?.children?.length && (
                     <ul>
                       {child.children.map((item) => (
@@ -240,7 +240,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
                           })}
                           key={item.id}
                         >
-                          {item.content}
+                          {item.title}
                         </div>
                       ))}
                     </ul>
@@ -309,7 +309,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             {children.map((child) => {
               return (
                 <div key={child.id} className={`${prefixCls}-fat-menu__group`}>
-                  <div className={`${prefixCls}-group-item`}>{child.content}</div>
+                  <div className={`${prefixCls}-group-item`}>{child.title}</div>
                   {child?.children?.length && (
                     <ul>
                       {child.children.map((item) => (
@@ -327,7 +327,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
                           }}
                           key={item.id}
                         >
-                          {item.content}
+                          {item.title}
                         </div>
                       ))}
                     </ul>

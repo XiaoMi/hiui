@@ -2,7 +2,7 @@ import React, { createContext } from 'react'
 
 const MenuContext = createContext<{
   placement?: 'vertical' | 'horizontal'
-  expandedType?: 'default' | 'pop'
+  expandedType?: 'collapse' | 'pop'
   showAllSubMenus?: boolean
   mini?: boolean
   expandedIds?: React.ReactText[]

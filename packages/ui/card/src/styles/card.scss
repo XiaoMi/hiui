@@ -12,15 +12,15 @@ $prefix: '#{$component-prefix}-card' !default;
     }
   }
 
-  &--small {
+  &--sm {
     width: 276px;
   }
 
-  &--default {
+  &--md {
     width: 376px;
   }
 
-  &--large {
+  &--lg {
     width: 576px;
   }
 

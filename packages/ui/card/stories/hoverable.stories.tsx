@@ -6,7 +6,7 @@ export const Hoverable = () => {
     <>
       <h1>Basic</h1>
       <div className="card-basic__wrap">
-        <Card size="default" hoverable style={{ width: 600 }}>
+        <Card hoverable style={{ width: 600 }}>
           基础卡片
         </Card>
       </div>

@@ -8,7 +8,7 @@ export const Empty = () => {
       <div className="list-basic__wrap">
         <List
           data={[]}
-          renderItem={(dataItem) => {
+          render={(dataItem) => {
             return <List.Item {...dataItem} />
           }}
         />

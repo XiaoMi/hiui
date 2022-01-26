@@ -21,7 +21,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       data,
       placement = 'vertical',
       showCollapse,
-      expandedType = 'default',
+      expandedType = 'collapse',
       showAllSubMenus = false,
       defaultExpandedIds,
       defaultActiveId,
@@ -52,13 +52,12 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     )
     const clickSubMenu = useCallback(
       (id: React.ReactText) => {
-        updateExpanedIds(
-          _expandedIds.includes(id)
-            ? _expandedIds.filter((expandedid) => expandedid !== id)
-            : _expandedIds.concat(id)
-        )
+        const expandedIds = _expandedIds.includes(id)
+        ? _expandedIds.filter((expandedid) => expandedid !== id)
+        : _expandedIds.concat(id)
+        updateExpanedIds(expandedIds)
         if (onClickSubMenu) {
-          onClickSubMenu(id)
+          onClickSubMenu(id, expandedIds)
         }
       },
       [onClickSubMenu, _expandedIds]
@@ -122,7 +121,7 @@ export type MenuItemProps = {
    * 组件默认的选择器类
    */
   prefixCls?: string
-  content: React.ReactNode
+  title: React.ReactNode
   icon?: React.ReactNode
   id: React.ReactText
   disabled?: boolean
@@ -155,10 +154,10 @@ export interface MenuProps {
   accordion?: boolean
   style?: React.CSSProperties
   onClick?: (menuId: React.ReactText) => void
-  onClickSubMenu?: (subMenuId: React.ReactText) => void
+  onClickSubMenu?: (subMenuId: React.ReactText, expandedIds: React.ReactText[]) => void
   onCollapse?: (collapsed: boolean) => void
   overlayClassName?: string
-  expandedType?: 'default' | 'pop'
+  expandedType?: 'collapse' | 'pop'
   defaultExpandedIds?: React.ReactText[]
   defaultActiveId?: React.ReactText
 }

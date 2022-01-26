@@ -36,6 +36,6 @@
 | 参数         | 变更类型    | 变更内容                       | 解决的问题 |
 | ---------- | ------- | -------------------------- | ----- |
 | type       | update  | 删除'line'，新增'secondary'     |       |
-| size       | update  | 新增'x-large'                |       |
-| appearance | update  | 删除'button'，新增'flat'、'line' |       |
-| shape      | feature |                            |       |
+| size       | update  | 变更为 'sm' | 'md' | 'lg' | 'xl'                |       |
+| appearance | update  | 删除'button'，新增'filled'、'line' |       |
+| shape      | feature |  增加形状 'round'| 'square'                       |       |

@@ -17,8 +17,8 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       className,
       children,
       type = 'default',
-      size = 'default',
-      appearance = 'flat',
+      size = 'md',
+      appearance = 'filled',
       disabled = false,
       loading = false,
       icon = null,
@@ -78,11 +78,11 @@ export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
   /**
    * 设置按钮尺寸
    */
-  size?: 'large' | 'small' | 'default' | 'x-large'
+  size?: 'lg' | 'sm' | 'md' | 'xl'
   /**
    * 设置按钮外观
    */
-  appearance?: 'flat' | 'link' | 'line'
+  appearance?: 'filled' | 'link' | 'line'
   /**
    * 设置按钮是否禁用
    */
@@ -110,7 +110,7 @@ export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
   /**
    * 设置按钮形状
    */
-  shape?: 'square' | 'circle'
+  shape?: 'square' | 'round'
 }
 
 // @ts-ignore

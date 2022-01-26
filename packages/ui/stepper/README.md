@@ -16,7 +16,7 @@ const Stepper = require('@hi-ui/stepper');
 | ---------- | ------------------------------- | ------------------------- | -------------------------- | ------------ |
 | type       | 步骤条项节点类型                    | string               | 'default' | 'dot'                        | 'default'            |
 | data       | 步骤数据项源                    | StepperItem[]                | -                          | -            |
-| current    | 当前步骤位置索引，从 0 开始计数 | number                    | -                          | -            |
+| current    | 当前步骤位置索引，从 1 开始计数 | number                    | -                          | -            |
 | placement  | 水平或垂直展示步骤条            | string                    | 'vertical' \| 'horizontal' | 'horizontal' |
 | itemLayout | 步骤项的布局方式                | string                    | 'vertical' \| 'horizontal' | 'horizontal'   |
 | onChange   | 点击切换步骤时触发              | (current: number) => void | -                          | -            |

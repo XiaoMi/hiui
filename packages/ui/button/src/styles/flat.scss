@@ -1,7 +1,7 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 // 默认态
-$flat-background-map: (
+$filled-background-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary-05'),
   'default': use-color('gray', 100),
@@ -9,7 +9,7 @@ $flat-background-map: (
   'danger': use-color-mode('danger-05'),
 ) !default;
 
-$flat-color-map: (
+$filled-color-map: (
   'primary': use-color-static('white'),
   'secondary': use-color-mode('primary'),
   'default': use-color('gray', 700),
@@ -18,7 +18,7 @@ $flat-color-map: (
 ) !default;
 
 // hover 态
-$flat-hover-background-map: (
+$filled-hover-background-map: (
   'primary': use-color-mode('primary-40'),
   'secondary': use-color-mode('primary-10'),
   'default': use-color('gray', 200),
@@ -26,10 +26,10 @@ $flat-hover-background-map: (
   'danger': use-color-mode('danger-10'),
 ) !default;
 
-$flat-hover-color-map: $flat-color-map !default;
+$filled-hover-color-map: $filled-color-map !default;
 
 // active 态
-$flat-active-background-map: (
+$filled-active-background-map: (
   'primary': use-color-mode('primary-60'),
   'secondary': use-color-mode('primary-20'),
   'default': use-color('gray', 300),
@@ -37,10 +37,10 @@ $flat-active-background-map: (
   'danger': use-color-mode('danger-20'),
 ) !default;
 
-$flat-active-color-map: $flat-color-map !default;
+$filled-active-color-map: $filled-color-map !default;
 
 // 禁用态
-$flat-disabled-background-map: (
+$filled-disabled-background-map: (
   'primary': use-color-mode('primary-20'),
   'secondary': use-color-mode('primary-05'),
   'default': use-color('gray', 100),
@@ -48,7 +48,7 @@ $flat-disabled-background-map: (
   'danger': use-color-mode('danger-05'),
 ) !default;
 
-$flat-disabled-color-map: (
+$filled-disabled-color-map: (
   'primary': use-color-static('white'),
   'secondary': use-color-mode('primary-30'),
   'default': use-color('gray', 400),
@@ -57,7 +57,7 @@ $flat-disabled-color-map: (
 ) !default;
 
 // focus 态
-$flat-focus-shadow-map: (
+$filled-focus-shadow-map: (
   'primary': use-color-mode('primary-20'),
   'secondary': use-color-mode('primary-20'),
   'default': use-color-mode('primary-20'),
@@ -65,11 +65,11 @@ $flat-focus-shadow-map: (
   'danger': use-color-mode('danger-20'),
 ) !default;
 
-@mixin render-flat-button() {
+@mixin render-filled-button() {
   & {
 
     // 尺寸
-    &--appearance-flat#{&}--size-small {
+    &--appearance-filled#{&}--size-sm {
       height: calc(#{get-text-lineheight('sm')} + #{2px * 2 + 1px * 2});
       padding: 2px 7px;
 
@@ -78,7 +78,7 @@ $flat-focus-shadow-map: (
         padding: 0;
       }
     }
-    &--appearance-flat#{&}--size-default {
+    &--appearance-filled#{&}--size-md {
       height: calc(#{get-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
       padding: 4px 11px;
 
@@ -88,7 +88,7 @@ $flat-focus-shadow-map: (
       }
     }
 
-    &--appearance-flat#{&}--size-large {
+    &--appearance-filled#{&}--size-lg {
       height: calc(#{get-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
       padding: 7px 15px;
 
@@ -98,7 +98,7 @@ $flat-focus-shadow-map: (
       }
     }
 
-    &--appearance-flat#{&}--size-x-large {
+    &--appearance-filled#{&}--size-xl {
       height: calc(#{get-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
       padding: 13px 60px;
 
@@ -110,31 +110,31 @@ $flat-focus-shadow-map: (
 
     @each $key, $value in 'primary', 'secondary', 'default', 'success', 'danger' {
       $prefix: & !default;
-      &--appearance-flat#{&}--type-#{$key} {
-        background-color: map-get($flat-background-map, $key);
-        border: 1px solid map-get($flat-background-map, $key);
-        color: map-get($flat-color-map, $key);
+      &--appearance-filled#{&}--type-#{$key} {
+        background-color: map-get($filled-background-map, $key);
+        border: 1px solid map-get($filled-background-map, $key);
+        color: map-get($filled-color-map, $key);
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):hover {
-          background-color: map-get($flat-hover-background-map, $key);
-          border: 1px solid map-get($flat-hover-background-map, $key);
-          color: map-get($flat-hover-color-map, $key);
+          background-color: map-get($filled-hover-background-map, $key);
+          border: 1px solid map-get($filled-hover-background-map, $key);
+          color: map-get($filled-hover-color-map, $key);
         }
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):active {
-          background-color: map-get($flat-active-background-map, $key);
-          border: 1px solid map-get($flat-active-background-map, $key);
-          color: map-get($flat-active-color-map, $key);
+          background-color: map-get($filled-active-background-map, $key);
+          border: 1px solid map-get($filled-active-background-map, $key);
+          color: map-get($filled-active-color-map, $key);
         }
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
-          box-shadow: 0 0 0 2px map-get($flat-focus-shadow-map, $key);
+          box-shadow: 0 0 0 2px map-get($filled-focus-shadow-map, $key);
         }
 
         &.#{$prefix}--disabled {
-          background-color: map-get($flat-disabled-background-map, $key);
-          border: 1px solid map-get($flat-disabled-background-map, $key);
-          color: map-get($flat-disabled-color-map, $key);
+          background-color: map-get($filled-disabled-background-map, $key);
+          border: 1px solid map-get($filled-disabled-background-map, $key);
+          color: map-get($filled-disabled-color-map, $key);
         }
       }
     }

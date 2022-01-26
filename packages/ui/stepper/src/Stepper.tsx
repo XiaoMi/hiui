@@ -48,13 +48,13 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
               stepperItem={d}
               index={index}
               type={type}
-              isActive={current !== undefined && current >= index}
+              isActive={current !== undefined && current >= index + 1}
               isFirst={index === 0}
               isLast={index === data.length - 1}
               isLastActive={current === index}
               onClick={() => {
                 if (onChange) {
-                  onChange(index)
+                  onChange(index + 1)
                 }
               }}
             />
@@ -64,13 +64,13 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
               stepperItem={d}
               index={index}
               type={type}
-              isActive={current !== undefined && current >= index}
+              isActive={current !== undefined && current >= index + 1}
               isFirst={index === 0}
               isLast={index === data.length - 1}
-              isLastActive={current === index}
+              isLastActive={current === index + 1}
               onClick={() => {
                 if (onChange) {
-                  onChange(index)
+                  onChange(index + 1)
                 }
               }}
             />
@@ -120,7 +120,7 @@ export interface StepperProps {
    */
   data: StepperItem[]
   /**
-   * 当前步骤位置索引，从 0 开始计数
+   * 当前步骤位置索引，从 1 开始计数
    */
   current?: number
   /**

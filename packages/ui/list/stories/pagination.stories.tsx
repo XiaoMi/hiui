@@ -26,9 +26,9 @@ export const Pagination = () => {
           pagination={{
             total: 200,
             pageSize: 10,
-            position: 'right',
+            placement: 'right',
           }}
-          renderItem={(dataItem) => {
+          render={(dataItem) => {
             return <List.Item {...dataItem} />
           }}
         />
@@ -53,9 +53,9 @@ export const Pagination = () => {
           pagination={{
             total: 200,
             pageSize: 10,
-            position: 'left',
+            placement: 'left',
           }}
-          renderItem={(dataItem) => {
+          render={(dataItem) => {
             return <List.Item {...dataItem} />
           }}
         />
@@ -80,9 +80,9 @@ export const Pagination = () => {
           pagination={{
             total: 200,
             pageSize: 10,
-            position: 'middle',
+            placement: 'middle',
           }}
-          renderItem={(dataItem) => {
+          render={(dataItem) => {
             return <List.Item {...dataItem} />
           }}
         />

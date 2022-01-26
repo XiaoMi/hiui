@@ -6,7 +6,7 @@ export const NoHeader = () => {
     <>
       <h1>Basic</h1>
       <div className="card-basic__wrap">
-        <Card size="default" style={{ width: 600 }}>
+        <Card  style={{ width: 600 }}>
           基础卡片
         </Card>
       </div>
