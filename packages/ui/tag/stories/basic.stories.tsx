@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import Tag from '../src'
+import { SunFilled } from '@hi-ui/icons'
 
 export const Basic = () => {
   const [testValue1, setTestValue1] = useState('test-value')
@@ -103,6 +104,22 @@ export const Basic = () => {
         </Tag>
         <Tag maxWidth={180} editable onEdit={setMaxEditableValue}>
           {maxEditableValue}
+        </Tag>
+      </div>
+      <h1>Custom render</h1>
+      <div>
+        <Tag
+          type={'primary'}
+          render={(e) => (
+            <span>
+              <SunFilled style={{ marginRight: '2px' }} />
+              {e}
+            </span>
+          )}
+          maxWidth={240}
+          editable
+        >
+          Test Content Max Length Placeholder Max Length Placeholder
         </Tag>
       </div>
     </>
