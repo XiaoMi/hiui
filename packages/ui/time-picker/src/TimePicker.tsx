@@ -69,10 +69,18 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     const formatControlledValue = useMemo(() => getValueMatchString(controlledValue), [
       controlledValue,
     ])
+    const formatNotifyOutside = useCallback(
+      (disposeValue: string[]) => {
+        const result = disposeValue.filter((item) => item)
+        notifyOutside && notifyOutside(result.length > 1 ? result : result[0])
+      },
+      [notifyOutside]
+    )
+
     const [value, onChange] = useUncontrolledState<string[]>(
       formatUncontrolledValue,
       formatControlledValue,
-      notifyOutside
+      formatNotifyOutside
     )
 
     const placeholder = useMemo(
@@ -358,20 +366,15 @@ export interface TimePickerProps extends ExtendType {
    */
   placeholder?: string | string[]
   /**
-   * 选择器高
-   * @default 32
+   * 选择器外观
+   * @default 'line'
    */
-  // itemHeight?: number
-  /**
-   * 完全展示item的数目，必须为奇数
-   * @default 7
-   */
-  // fullDisplayItemNumber?: number
+  appearance?: 'line' | 'filled' | 'unset'
   /**
    * 值改变事件
    * @param value
    */
-  onChange?: (value: string[]) => void
+  onChange?: (value: string | string[]) => void
 }
 
 if (__DEV__) {
