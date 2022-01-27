@@ -53,6 +53,9 @@ $default-color-map: (
 
 $prefix: '#{$component-prefix}-tag' !default;
 
+$shape-square: '#{$prefix}--shape-square';
+$shape-round: '#{$prefix}--shape-round';
+
 .#{$prefix} {
   margin-right: 8px;
   display: inline-flex;
@@ -89,23 +92,44 @@ $prefix: '#{$component-prefix}-tag' !default;
     }
   }
 
-  &--size-mini{
+  &--size-sm{
     height: 20px;
     line-height: 20px;
-    border-radius: use-border-radius('sm');
     font-size: use-text-size('sm');
+
+    &.#{$shape-square}{
+      border-radius: use-border-radius('sm');
+    }
+
+    &.#{$shape-round}{
+      border-radius: 10px;
+    }
   }
-  &--size-small{
+  &--size-md{
     height: 24px;
     line-height: 24px;
-    border-radius: use-border-radius('normal');
     font-size: use-text-size('sm');
+
+    &.#{$shape-square}{
+      border-radius: use-border-radius('normal');
+    }
+
+    &.#{$shape-round}{
+      border-radius: 12px;
+    }
   }
-  &--size-medium{
+  &--size-lg{
     height: 32px;
     line-height: 32px;
-    border-radius: use-border-radius('normal');
     font-size: use-text-size('normal');
+
+    &.#{$shape-square}{
+      border-radius: use-border-radius('normal');
+    }
+
+    &.#{$shape-round}{
+      border-radius: 16px;
+    }
   }
 
   @mixin edit-shadow {

@@ -27,7 +27,8 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       background,
       type = 'default',
       appearance = 'default',
-      size = 'small',
+      size = 'md',
+      shape = 'square',
       onClick,
       closeable = false,
       editable = false,
@@ -84,6 +85,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
           `${prefixCls}--type-${type}`,
           `${prefixCls}--appearance-${appearance}`,
           `${prefixCls}--size-${size}`,
+          `${prefixCls}--shape-${shape}`,
           {
             [`${prefixCls}--editable`]: editable,
             [`${prefixCls}--in-edit`]: editable && isInEdit,
@@ -192,10 +194,15 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    */
   appearance?: 'default' | 'solid'
   /**
-   * 标签尺寸
-   * @default 'small'
+   * 形状
+   * @default 'square'
    */
-  size?: 'mini' | 'small' | 'medium'
+  shape?: 'square' | 'round'
+  /**
+   * 标签尺寸
+   * @default 'md'
+   */
+  size?: 'sm' | 'md' | 'lg'
   /**
    * 标签文字颜色
    */

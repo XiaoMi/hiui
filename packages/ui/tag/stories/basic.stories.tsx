@@ -35,13 +35,18 @@ export const Basic = () => {
           待审批
         </Tag>
       </div>
+      <h1>Tag shape</h1>
+      <h2>square</h2>
+      <Tag>一个标签</Tag>
+      <h2>round</h2>
+      <Tag shape={'round'}>一个标签</Tag>
       <h1>Tag size</h1>
-      <h2>Mini</h2>
-      <Tag size="mini">一个标签</Tag>
-      <h2>Small</h2>
-      <Tag size="small">一个标签</Tag>
-      <h2>Medium</h2>
-      <Tag size="medium">一个标签</Tag>
+      <h2>Sm</h2>
+      <Tag size="sm">一个标签</Tag>
+      <h2>Md</h2>
+      <Tag size="md">一个标签</Tag>
+      <h2>Lg</h2>
+      <Tag size="lg">一个标签</Tag>
       <h1>Custom color</h1>
       <div style={{ display: 'flex' }}>
         <Tag color="#48D4CF">color #48D4CF</Tag>
