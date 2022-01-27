@@ -30,11 +30,11 @@ export const CustomFilter = () => {
                   setFilterDropdownVisible(false)
                 }}
                 type="primary"
-                size="small"
+                size="sm"
               >
                 确定
               </Button>
-              <Button onClick={() => setFilterDropdownVisible(false)} size="small">
+              <Button onClick={() => setFilterDropdownVisible(false)} size="sm">
                 取消
               </Button>
             </div>

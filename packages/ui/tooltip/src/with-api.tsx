@@ -34,8 +34,9 @@ const open = (
       }
       container = undefined
     },
+    // @ts-ignore
     children: target,
-    portal: { container },
+    container,
   })
 
   // TODO：存在弹出时延迟感

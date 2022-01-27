@@ -7,7 +7,7 @@ import Input from '@hi-ui/input'
 import { TransferItem } from './TransferItem'
 import Checkbox from '@hi-ui/checkbox'
 import { SearchOutlined, InfoCircleOutlined } from '@hi-ui/icons'
-import { PaginationMini } from '@hi-ui/pagination'
+import { ShrinkPagination } from '@hi-ui/pagination'
 
 const _role = 'transfer-panel'
 const _prefix = getPrefixCls(_role)
@@ -179,7 +179,7 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
         </div>
         {pageSize ? (
           <div className={`${prefixCls}__footer`}>
-            <PaginationMini
+            <ShrinkPagination
               size="sm"
               className={`${prefixCls}__pagination`}
               total={cacheData.length}

@@ -163,7 +163,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           <Button
             className={`${prefixCls}__pop-confirm-button`}
             type={'primary'}
-            size="small"
+            size="sm"
             disabled={!isInputValid}
             onClick={() => {
               // 合法，才去通知外部
