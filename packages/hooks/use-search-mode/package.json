@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-search-mode",
-  "version": "4.0.0-alpha.13",
+  "version": "4.0.0-alpha.14",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -52,9 +52,9 @@
   "dependencies": {
     "@hi-ui/dom-utils": "^4.0.0-alpha.7",
     "@hi-ui/env": "^4.0.0-alpha.6",
-    "@hi-ui/loading": "^4.0.0-alpha.22",
+    "@hi-ui/loading": "^4.0.0-alpha.23",
     "@hi-ui/tree-utils": "^4.0.0-alpha.12",
-    "@hi-ui/type-assertion": "^4.0.0-alpha.13",
-    "@hi-ui/use-data-source": "^4.0.0-alpha.7"
+    "@hi-ui/type-assertion": "^4.0.0-alpha.14",
+    "@hi-ui/use-data-source": "^4.0.0-alpha.8"
   }
 }

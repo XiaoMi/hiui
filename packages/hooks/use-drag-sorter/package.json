@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-drag-sorter",
-  "version": "4.0.0-alpha.10",
+  "version": "4.0.0-alpha.11",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -50,8 +50,8 @@
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/core": "^4.0.0-alpha.19",
-    "@hi-ui/type-assertion": "^4.0.0-alpha.13",
+    "@hi-ui/core": "^4.0.0-alpha.20",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.14",
     "@hi-ui/use-latest": "^4.0.0-alpha.5"
   }
 }

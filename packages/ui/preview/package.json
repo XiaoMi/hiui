@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/preview",
-  "version": "4.0.0-alpha.19",
+  "version": "4.0.0-alpha.20",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,12 +44,12 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.3",
-    "@hi-ui/core": "^4.0.0-alpha.19",
-    "@hi-ui/core-css": "^4.0.0-alpha.13",
+    "@hi-ui/core": "^4.0.0-alpha.20",
+    "@hi-ui/core-css": "^4.0.0-alpha.14",
     "@hi-ui/env": "^4.0.0-alpha.6",
-    "@hi-ui/icons": "^4.0.0-alpha.28",
-    "@hi-ui/portal": "^4.0.0-alpha.19",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.13",
+    "@hi-ui/icons": "^4.0.0-alpha.29",
+    "@hi-ui/portal": "^4.0.0-alpha.20",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.14",
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {
