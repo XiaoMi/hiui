@@ -23,11 +23,44 @@ $solid-color-map: (
   )
 ) !default;
 
-$default-color-map: (
+$line-color-map: (
+  'primary': (
+    'text': use-color('brandblue',500),
+    'border': use-color('brandblue',200),
+    'hover-text': use-color('brandblue',400),
+    'hover-border': use-color('brandblue',100)
+  ),
+  'warning': (
+    'text': use-color('yellow',500),
+    'border': use-color('yellow',200),
+    'hover-text': use-color('yellow',400),
+    'hover-border': use-color('yellow',100)
+  ),
+  'success': (
+    'text': use-color('green',500),
+    'border': use-color('green',200),
+    'hover-text': use-color('green',400),
+    'hover-border': use-color('green',100)
+  ),
+  'danger': (
+    'text': use-color('red',500),
+    'border': use-color('red',200),
+    'hover-text': use-color('red',400),
+    'hover-border': use-color('red',100)
+  ),
+  'default': (
+    'text': use-color('gray',700),
+    'border': use-color('gray',300),
+    'hover-text': use-color('gray',600),
+    'hover-border': use-color('gray',200)
+  )
+) !default;
+
+$filled-color-map: (
   'primary': (
     'color': use-color('brandblue',500),
     'background':use-color('brandblue',50),
-    'hover-background':use-color('brandblue',100),
+    'hover-background':use-color('brandblue',100)
   ),
   'warning': (
     'color': use-color('yellow', 500),
@@ -79,8 +112,8 @@ $shape-round: '#{$prefix}--shape-round';
     }
   }
 
-  &--appearance-default {
-    @each $key, $value in $default-color-map {
+  &--appearance-filled {
+    @each $key, $value in $filled-color-map {
       &.#{$prefix}--type-#{$key} {
         color: map-get($value,'color');
         background: map-get($value,'background');
@@ -92,9 +125,24 @@ $shape-round: '#{$prefix}--shape-round';
     }
   }
 
+  &--appearance-line {
+    @each $key, $value in $line-color-map {
+      &.#{$prefix}--type-#{$key} {
+        color: map-get($value,'text');
+        border: #{get-border-size('normal')} map-get($value,'border');
+        box-sizing: border-box;
+
+        &.#{$prefix}--hover-enable:hover{
+          color: map-get($value,'text-hover');
+          border-color: map-get($value,'border-hover');
+        }
+      }
+    }
+  }
+
   &--size-sm{
     height: 20px;
-    line-height: 20px;
+    //line-height: 20px;
     font-size: use-text-size('sm');
 
     &.#{$shape-square}{
@@ -107,7 +155,7 @@ $shape-round: '#{$prefix}--shape-round';
   }
   &--size-md{
     height: 24px;
-    line-height: 24px;
+    //line-height: 24px;
     font-size: use-text-size('sm');
 
     &.#{$shape-square}{
@@ -120,7 +168,7 @@ $shape-round: '#{$prefix}--shape-round';
   }
   &--size-lg{
     height: 32px;
-    line-height: 32px;
+    //line-height: 32px;
     font-size: use-text-size('normal');
 
     &.#{$shape-square}{
@@ -154,13 +202,23 @@ $shape-round: '#{$prefix}--shape-round';
     }
   }
 
+
   &__content-wrapper {
     position: relative;
     padding: 0 8px;
     height: 100%;
     overflow: hidden;
+    display: flex;
+    align-items: center;
   }
 
+  &--appearance-line{
+    .#{$prefix}{
+      &__content-wrapper{
+        padding: 0 7px;
+      }
+    }
+  }
   &__content{
     @include  ellipsis();
     max-width: 100%;
@@ -199,7 +257,8 @@ $shape-round: '#{$prefix}--shape-round';
     position: absolute;
     line-height: inherit;
     left: 8px;
-    top: 0;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 1;
   }
 

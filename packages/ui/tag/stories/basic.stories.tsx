@@ -19,6 +19,23 @@ export const Basic = () => {
         <Tag type="default">待审批</Tag>
       </div>
       <div style={{ display: 'flex', marginTop: '32px' }}>
+        <Tag type="warning" appearance={'line'}>
+          待审批
+        </Tag>
+        <Tag type="primary" appearance={'line'}>
+          审批中
+        </Tag>
+        <Tag type="success" appearance={'line'}>
+          已通过
+        </Tag>
+        <Tag type="danger" appearance={'line'}>
+          已驳回
+        </Tag>
+        <Tag type="default" appearance={'line'}>
+          待审批
+        </Tag>
+      </div>
+      <div style={{ display: 'flex', marginTop: '32px' }}>
         <Tag type="warning" appearance="solid">
           待审批
         </Tag>
@@ -56,10 +73,10 @@ export const Basic = () => {
       </div>
       <h1>Closeable</h1>
       <div style={{ display: 'flex' }}>
-        <Tag appearance="default" type="primary" closeable>
+        <Tag appearance="filled" type="primary" closeable>
           Closeable default
         </Tag>
-        <Tag appearance="default" closeable>
+        <Tag appearance="filled" closeable>
           Closeable default
         </Tag>
         <Tag appearance="solid" type="primary" closeable>

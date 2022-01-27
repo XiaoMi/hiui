@@ -26,7 +26,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       color,
       background,
       type = 'default',
-      appearance = 'default',
+      appearance = 'filled',
       size = 'md',
       shape = 'square',
       onClick,
@@ -190,9 +190,9 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'default'
   /**
    * 外观
-   * @default 'default'
+   * @default 'solid'
    */
-  appearance?: 'default' | 'solid'
+  appearance?: 'line' | 'solid' | 'filled'
   /**
    * 形状
    * @default 'square'
