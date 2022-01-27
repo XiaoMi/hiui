@@ -8,6 +8,7 @@ import {
   TimePickerFormat,
   TimePickerPanelType,
   TimePickerFilterProps,
+  TimePickerValue,
 } from './@types'
 import { Input, InputRef } from './Input'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -18,13 +19,22 @@ import { valueChecker } from './utils/valueChecker'
 import { useFilter } from './hooks/useFilter'
 import { Button } from '@hi-ui/button'
 import { getNowString } from './utils/getNowString'
+import DayJs from 'dayjs'
 
 const _role = 'time-picker'
 export const _prefix = getPrefixCls(_role)
 
-const DefaultValue = ['', '']
+const DefaultValue = ['', ''] as TimePickerValue[]
 const DefaultDisabledFunc = () => []
 const DefaultPlaceholder = ['', '']
+
+const getValueMatchString = (value?: TimePickerValue[] | TimePickerValue) => {
+  if (!value) {
+    return undefined
+  }
+  const result = Array.isArray(value) ? value : [value]
+  return result.map((item) => (typeof item === 'string' ? item : DayJs(item).format('HH:mm:ss')))
+}
 
 export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
   (
@@ -33,8 +43,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       role = _role,
       className,
       value: controlledValue,
-      itemHeight = 24,
-      fullDisplayItemNumber = 7,
+      // itemHeight = 24,
+      // fullDisplayItemNumber = 7,
       hourStep = 1,
       minuteStep = 1,
       secondStep = 1,
@@ -47,17 +57,29 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       disabledMinutes: originalDisabledMinutes = DefaultDisabledFunc,
       bordered = true,
       onChange: notifyOutside,
-      placeholder = DefaultPlaceholder,
+      placeholder: originalPlaceholder = DefaultPlaceholder,
       inputReadonly = false,
     },
     ref
   ) => {
     const [attachEl, setAttachEl] = useState<HTMLElement | null>(null)
-    const [value, onChange] = useUncontrolledState<string[]>(
+    const formatUncontrolledValue = useMemo(() => getValueMatchString(uncontrolledValue)!, [
       uncontrolledValue,
+    ])
+    const formatControlledValue = useMemo(() => getValueMatchString(controlledValue), [
       controlledValue,
+    ])
+    const [value, onChange] = useUncontrolledState<string[]>(
+      formatUncontrolledValue,
+      formatControlledValue,
       notifyOutside
     )
+
+    const placeholder = useMemo(
+      () => (Array.isArray(originalPlaceholder) ? originalPlaceholder : [originalPlaceholder]),
+      [originalPlaceholder]
+    )
+
     const inputRef = useRef<InputRef | null>(null)
     const [isInputValid, setIsInputValid] = useState(true)
     const [cacheValue, setCacheValue] = useState<string[]>(value)
@@ -262,8 +284,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           preload
         >
           <PopContent
-            itemHeight={itemHeight}
-            fullDisplayItemNumber={fullDisplayItemNumber}
+            // itemHeight={itemHeight}
+            // fullDisplayItemNumber={fullDisplayItemNumber}
             type={type}
             prefix={prefixCls}
             format={format}
@@ -311,11 +333,11 @@ export interface TimePickerProps extends ExtendType {
   /**
    * 当前值（type='single'取数组第一个值，type='range'取数组第一个作为开始，第二个作为结束）
    */
-  value?: string[]
+  value?: TimePickerValue[] | TimePickerValue
   /**
    * 默认值
    */
-  defaultValue?: string[]
+  defaultValue?: TimePickerValue[] | TimePickerValue
   /**
    * 输入框是否不可编辑
    * @default false
@@ -334,17 +356,17 @@ export interface TimePickerProps extends ExtendType {
   /**
    * 输入框占位符
    */
-  placeholder?: string[]
+  placeholder?: string | string[]
   /**
    * 选择器高
    * @default 32
    */
-  itemHeight?: number
+  // itemHeight?: number
   /**
    * 完全展示item的数目，必须为奇数
    * @default 7
    */
-  fullDisplayItemNumber?: number
+  // fullDisplayItemNumber?: number
   /**
    * 值改变事件
    * @param value

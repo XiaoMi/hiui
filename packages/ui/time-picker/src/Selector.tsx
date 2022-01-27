@@ -19,45 +19,50 @@ interface SelectorProps {
   value: string
   data: SelectorItem[]
   onChange: (item: SelectorItem) => void
-  itemHeight: number
-  // 必须为奇数
-  fullDisplayItemNumber: number
+  // itemHeight: number
+  // // 必须为奇数
+  // fullDisplayItemNumber: number
   position: SelectorPosition
 }
 
 const ITEM_MARGIN_SIZE = 8
 
 export const Selector: FC<SelectorProps> = (props) => {
-  const { prefix, value, data, onChange, itemHeight, fullDisplayItemNumber, position } = props
+  const { prefix, value, data, onChange, /* itemHeight, fullDisplayItemNumber, */ position } = props
   const componentPrefix = `${prefix}__selector`
   const stopScrollTimeoutHandler = useRef(-1)
   // 滚动容器引用
   const scrollContainerRef = useRef<HTMLDivElement | null>(null)
+  const topItemGagerRef = useRef<HTMLDivElement | null>(null)
+  const bottomItemGagerRef = useRef<HTMLDivElement | null>(null)
+
   const lastValueMatchIndexCache = useRef(-1)
 
-  const safePadding = useMemo(
-    () => ((fullDisplayItemNumber - 1) * (itemHeight + ITEM_MARGIN_SIZE)) / 2,
-    [fullDisplayItemNumber, itemHeight]
-  )
+  // const safePadding = useMemo(
+  //   () => ((fullDisplayItemNumber - 1) * (itemHeight + ITEM_MARGIN_SIZE)) / 2,
+  //   [fullDisplayItemNumber, itemHeight]
+  // )
 
-  const calcCurrentIndex = useCallback(
-    (scrollTop: number) => {
-      return Math.floor(
-        (scrollTop - safePadding + (fullDisplayItemNumber * (itemHeight + ITEM_MARGIN_SIZE)) / 2) /
-          (itemHeight + ITEM_MARGIN_SIZE)
-      )
-    },
-    [safePadding, itemHeight, fullDisplayItemNumber]
-  )
+  const calcCurrentIndex = useCallback((scrollTop: number) => {
+    return Math.floor(
+      scrollTop /
+        (topItemGagerRef.current!.clientHeight +
+          (bottomItemGagerRef.current!.offsetTop -
+            topItemGagerRef.current!.offsetTop -
+            topItemGagerRef.current!.clientHeight))
+    )
+  }, [])
 
-  const scrollToMatchIndex = useCallback(
-    (index: number) => {
-      if (scrollContainerRef.current) {
-        scrollContainerRef.current.scrollTop = index * (itemHeight + ITEM_MARGIN_SIZE)
-      }
-    },
-    [itemHeight]
-  )
+  const scrollToMatchIndex = useCallback((index: number) => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop =
+        index *
+        (topItemGagerRef.current!.clientHeight +
+          (bottomItemGagerRef.current!.offsetTop -
+            topItemGagerRef.current!.offsetTop -
+            topItemGagerRef.current!.clientHeight))
+    }
+  }, [])
 
   const onScroll = useCallback(
     (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
@@ -109,25 +114,36 @@ export const Selector: FC<SelectorProps> = (props) => {
       <div
         onScroll={onScroll}
         ref={scrollContainerRef}
-        className={`${componentPrefix}__scroll-part`}
-        style={{
-          height: `${fullDisplayItemNumber * (itemHeight + ITEM_MARGIN_SIZE)}px`,
-          padding: `${safePadding}px 0`,
-        }}
+        // 此处使用了取巧的办法
+        // 将 item 与 scroll-part 部分共享一个 demarcate 划分界限
+        className={cx(`${componentPrefix}__scroll-part`, `${componentPrefix}__demarcate`)}
       >
         {data.map((item, index) => (
           <div
-            className={cx(`${componentPrefix}__item`, {
+            className={cx(`${componentPrefix}__item`, `${componentPrefix}__demarcate`, {
               [`${componentPrefix}__item--disabled`]: item.disabled,
               [`${componentPrefix}__item--active`]: item.id === value,
             })}
             key={item.id}
             onClick={() => onItemClick(item, index)}
-            style={{ height: `${itemHeight}px` }}
           >
             {item.title}
           </div>
         ))}
+        {/* 测量者，用于测量 Item 高度以及间距 */}
+        <div
+          style={{
+            pointerEvents: 'none',
+            opacity: '0',
+            position: 'absolute',
+            zIndex: -1,
+            left: '0',
+            top: '0',
+          }}
+        >
+          <div className={`${componentPrefix}__demarcate`} ref={topItemGagerRef} />
+          <div className={`${componentPrefix}__demarcate`} ref={bottomItemGagerRef} />
+        </div>
       </div>
     </div>
   )
