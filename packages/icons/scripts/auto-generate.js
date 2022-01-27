@@ -164,6 +164,19 @@ componentFileInfo.forEach(({ withTypeName, path, generateFileRelativePath }) => 
 
 const indexTsContent = `import './styles/index.scss'
 
+export * from './@types/props'
+
+import { IconSummation } from './icon-summation'
+
+export const {
+  ${componentFileInfo.map((item) => transformToUpperCamelCase(item.withTypeName)).join(',\n')}
+} = IconSummation
+
+export { IconSummation }
+`
+Fs.writeFileSync(Path.join(__dirname, '../src/index.ts'), indexTsContent)
+
+const iconSummationTsContent = `
 ${componentFileInfo
   .map(({ withTypeName, generateFileRelativePath }) => {
     return `import { ${transformToUpperCamelCase(
@@ -172,17 +185,13 @@ ${componentFileInfo
   })
   .join('\n')}
 
-export * from './@types/props'
-
-export {
-  ${componentFileInfo.map((item) => transformToUpperCamelCase(item.withTypeName)).join(',\n')}
-}
 const IconSummation = {
 ${componentFileInfo.map((item) => transformToUpperCamelCase(item.withTypeName)).join(',\n')}
 }
 export { IconSummation }
 `
-Fs.writeFileSync(Path.join(__dirname, '../src/index.ts'), indexTsContent)
+
+Fs.writeFileSync(Path.join(__dirname, '../src/icon-summation.ts'), iconSummationTsContent)
 
 // 生成icon 分组数据
 generateIconGroupData(componentFileInfo)
