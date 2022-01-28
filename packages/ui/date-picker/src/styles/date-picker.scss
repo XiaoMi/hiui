@@ -2,7 +2,6 @@
 
 $prefix: '#{$component-prefix}-date-picker' !default;
 $error-color: use-color('red', 600) !default;
-$input-container-class: '#{$prefix}__input' !default;
 $row-class: '#{$prefix}__row' !default;
 $cell-class: '#{$prefix}__cell' !default;
 
@@ -13,6 +12,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
 .#{$prefix} {
   position: relative;
+  width: fit-content;
 
   &__popper {
     //width: 288px;
@@ -53,7 +53,6 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   }
 
   &__picker {
-    background: use-color-static('white');
     border-radius: use-border-radius('md');
     height: 32px;
     width: 240px;
@@ -64,59 +63,57 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     box-sizing: border-box;
     position: relative;
     z-index: 0;
+    border:  use-border-size('normal') transparent;
 
-    &.bordered {
-      .#{$input-container-class} {
-        border: use-border-size('normal') use-color('gray', 300);
-      }
+    $line: '#{&}--appearance-line';
+    $filled: '#{&}--appearance-filled';
+    $unset: '#{&}--appearance-unset';
 
-      &::before {
-        content: '';
-        width: calc(100% + 4px);
-        height: calc(100% + 4px);
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        background: use-color('brandblue', 500);
-        opacity: 0;
-        pointer-events: none;
-        z-index: -1;
-        border-radius: 6px;
-      }
-    }
+    &--appearance-line{
+      border: use-border-size('normal') use-color('gray', 300);
 
-    &:hover:not(.#{$prefix}__picker--disabled):not(.#{$prefix}__picker--error).bordered {
-      .#{$input-container-class} {
+      &:hover{
         border-color: use-color('brandblue', 500);
       }
     }
 
-    &--focus.bordered {
-      .#{$input-container-class} {
-        border-color: use-color('brandblue', 500);
-      }
+    &--appearance-filled{
+      background: use-color('gray', 100);
 
-      &::before {
-        opacity: 0.2;
+      &:hover{
+        background: use-color('gray', 200);
       }
     }
 
-    &--error.bordered {
-      .#{$input-container-class} {
-        border-color: $error-color;
+    &--appearance-unset{
+      &:hover{
+        background: use-color('gray', 100);
+      }
+    }
+
+    &--focus {
+      &#{$line}{
+        border-color: use-color('brandblue', 500);
       }
 
-      &::before {
-        background: $error-color;
+      &:hover{
+        background: transparent;
       }
+      background: transparent;
+      box-shadow: 0 0 0 2px use-color('brandblue', 100);
+    }
+
+    &--error {
+      box-shadow: 0 0 0 2px use-color('red', 100);
     }
 
     &--disabled {
       cursor: not-allowed;
+      background: use-color('gray', 100);
 
-      .#{$input-container-class} {
+      &:hover{
         background: use-color('gray', 100);
+        border-color: transparent;
       }
     }
 
@@ -148,6 +145,10 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       width: 240px;
     }
 
+    &#{$unset}{
+      width: auto;
+    }
+
     .hi-icon {
       margin-right: 8px;
       font-size: 16px;
@@ -170,12 +171,42 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     //  color: use-color-static('black');
     //}
 
-    input {
-      outline: none;
-      border: 0;
+
+    &__input-container{
+      position: relative;
+      z-index: 0;
       height: 24px;
       line-height: 24px;
       width: 190px;
+    }
+
+    &--appearance-unset{
+      .#{$prefix}__picker__input-container{
+        width: fit-content;
+      }
+    }
+
+    &__input-shadow{
+      font-size: inherit;
+      font-weight: inherit;
+      font-family: inherit;
+      color: transparent;
+    }
+
+    &__input {
+      width: 100%;
+      outline: none;
+      border: 0;
+      font-size: inherit;
+      font-weight: inherit;
+      font-family: inherit;
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      font-size: inherit;
+      font-weight: inherit;
+      font-family: inherit;
       background: transparent;
       padding: 0;
       margin: 0;
@@ -184,13 +215,13 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
         color: use-color('gray', 400);
       }
 
-      &.disabled {
+      &--disabled {
         cursor: not-allowed;
       }
     }
   }
 
-  &__input {
+  &__picker__wrapper {
     display: inline-flex;
     justify-content: space-between;
     align-items: center;
@@ -198,7 +229,6 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     height: calc(100% - 2px);
     border-radius: use-border-radius('md');
     font-size: use-text-size('normal');
-    background: use-color-static('white');
     color: use-color('gray', 700);
     overflow: hidden;
   }

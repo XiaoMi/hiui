@@ -60,8 +60,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       dateMarkPreset,
       overlayClassName,
       inputReadOnly,
-      // locale = 'zh-CN',
-      bordered = true,
       disabledDate = DEFAULT_DISABLED_DATE,
       max: configMax,
       min: configMin,
@@ -73,6 +71,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       disabledHours = DEFAULT_DISABLED_FUNCTION,
       disabledMinutes = DEFAULT_DISABLED_FUNCTION,
       disabledSeconds = DEFAULT_DISABLED_FUNCTION,
+      appearance = 'line',
       ...otherProps
     },
     ref
@@ -315,6 +314,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         value={{
           ...otherProps,
           locale,
+          appearance,
           localeData,
           type,
           outDate,
@@ -346,7 +346,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           secondStep,
           inputReadOnly,
           value,
-          bordered,
           disabledDate,
           onSelect,
           prefixCls,

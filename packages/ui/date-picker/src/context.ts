@@ -39,6 +39,7 @@ type ExtendsType = Omit<
       | 'disabledSeconds'
       | 'weekOffset'
       | 'timeInterval'
+      | 'appearance'
     >
   >
 
