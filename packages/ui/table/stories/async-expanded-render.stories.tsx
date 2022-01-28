@@ -8,8 +8,8 @@ export const AsyncExpandedRender = () => {
       <div className="table-async-expanded-render__wrap" style={{ width: 800 }}>
         <Table
           // rowSelection={{}}
-          fixedToColumn={'type'}
-          defaultExpandEmbedRowKeys={[1]}
+          fixedToColumn={{ left: 'type' }}
+          defaultExpandedEmbedRowKeys={[1]}
           expandedRender={(rowData, index) => {
             console.log('expandedRender', rowData, index)
 

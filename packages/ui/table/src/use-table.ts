@@ -54,8 +54,8 @@ export const useTable = ({
   showColHighlight = false,
   showRowHighlight = true,
   // tree table
-  defaultExpandRowKeys = DEFAULT_EXPAND_ROW_KEYS,
-  expandRowKeys: expandRowKeysProp,
+  defaultExpandedRowKeys = DEFAULT_EXPAND_ROW_KEYS,
+  expandedRowKeys: expandRowKeysProp,
   onExpand,
   defaultExpandAll = false,
   onLoadChildren,
@@ -111,7 +111,7 @@ export const useTable = ({
 
   const [transitionData, onExpandTreeRowsChange, isExpandTreeRows] = useExpand(
     flattedData,
-    defaultExpandRowKeys,
+    defaultExpandedRowKeys,
     expandRowKeysProp,
     onExpand,
     defaultExpandAll
@@ -618,11 +618,11 @@ export interface UseTableProps {
   /**
    *  树形表格展开的行（受控）
    */
-  expandRowKeys?: React.ReactText[]
+  expandedRowKeys?: React.ReactText[]
   /**
    *  树形表格默认展开的行
    */
-  defaultExpandRowKeys?: React.ReactText[]
+  defaultExpandedRowKeys?: React.ReactText[]
   /**
    *  树形表格展开时的回调函数
    */
@@ -703,7 +703,6 @@ export interface UseTableProps {
     level: any
   ) => boolean | Promise<any>
   onDropEnd?: (dragRowData: object, dropRowData: object, data: object) => void
-  expandedRowKeys?: string[]
   /**
    * 初始时展开所有行
    */

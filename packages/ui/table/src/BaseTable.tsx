@@ -8,7 +8,7 @@ import { isFunction } from '@hi-ui/type-assertion'
 import { TableBody } from './TableBody'
 import { TableHeader } from './TableHeader'
 import { defaultLoadingIcon } from './icons'
-import { TableExtra, TableColumnItem, HeaderRowFunc } from './types'
+import { TableExtra, TableColumnItem, TableRowFunc, TableHeaderRowFunc } from './types'
 import { TableProvider } from './context'
 import { checkNeedTotalOrEvg, getTotalOrEvgRowData, uuid } from './utils'
 import { useTable, UseTableProps } from './use-table'
@@ -37,15 +37,17 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       bordered: borderedProp,
       // 内嵌面板
       rowExpandable,
-      defaultExpandEmbedRowKeys,
-      expandEmbedRowKeys,
+      defaultExpandedEmbedRowKeys,
+      expandedEmbedRowKeys,
       onEmbedExpand,
       expandedRender,
       // 其它
       size,
       extra,
+      onRow,
       onHeaderRow,
       stickyFooter,
+      fixedColumnTrigger = 'auto',
       ...rest
     },
     ref
@@ -60,9 +62,9 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       isExpandEmbedRows,
       onExpandEmbedRowsChange,
     } = useEmbedExpand({
-      defaultExpandEmbedRowKeys,
+      defaultExpandedEmbedRowKeys,
       rowExpandable,
-      expandEmbedRowKeys,
+      expandedEmbedRowKeys,
       onEmbedExpand,
       expandedRender,
     })
@@ -166,6 +168,8 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     const extraHeader = extra && extra.header
     const extraFooter = extra && extra.footer
 
+    const alwaysFixedColumn = fixedColumnTrigger === 'always'
+
     const cls = cx(
       prefixCls,
       className,
@@ -180,6 +184,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           <TableProvider
             value={{
               ...providedValue,
+              onRow,
               embedExpandable,
               onEmbedSwitch,
               isExpandEmbedRows,
@@ -207,7 +212,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           </TableProvider>
 
           {/* 左冻结列内侧阴影效果 */}
-          {scrollSize.scrollLeft > 0 && leftFrozenColKeys.length > 0 ? (
+          {(alwaysFixedColumn || scrollSize.scrollLeft > 0) && leftFrozenColKeys.length > 0 ? (
             <div
               className={`${prefixCls}-freeze-shadow  ${prefixCls}-freeze-shadow--left`}
               style={{ width: leftFixedColumnsWidth + 'px' }}
@@ -215,7 +220,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           ) : null}
 
           {/* 右冻结列内侧阴影效果 */}
-          {scrollSize.scrollRight > 0 && rightFrozenColKeys.length > 0 ? (
+          {(alwaysFixedColumn || scrollSize.scrollRight > 0) && rightFrozenColKeys.length > 0 ? (
             <div
               className={`${prefixCls}-freeze-shadow ${prefixCls}-freeze-shadow--right`}
               style={{ width: rightFixedColumnsWidth + 'px' }}
@@ -251,9 +256,13 @@ export interface BaseTableProps
    */
   striped?: boolean
   /**
+   * 表格内容行事件处理函数
+   */
+  onRow?: TableRowFunc
+  /**
    * 行标题事件处理函数
    */
-  onHeaderRow?: HeaderRowFunc
+  onHeaderRow?: TableHeaderRowFunc
   /**
    *  数据为空时的展示内容
    */
@@ -266,6 +275,10 @@ export interface BaseTableProps
    * 底部吸底
    */
   stickyFooter?: boolean
+  /**
+   * 自定义冻结列触发展示行为
+   */
+  fixedColumnTrigger?: 'auto' | 'always'
 }
 
 if (__DEV__) {

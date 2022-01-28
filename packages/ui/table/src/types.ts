@@ -33,19 +33,22 @@ export type TableRowSelection = {
     targetRow?: object | object[],
     shouldChecked?: boolean
   ) => void
-  render?: (
-    checkboxNode: React.ReactNode,
-    rowItem: object,
-    rowIndex: number,
-    dataKey: string
-  ) => React.ReactNode
+  /**
+   * @private
+   */
+  // render?: (
+  //   checkboxNode: React.ReactNode,
+  //   rowItem: object,
+  //   rowIndex: number,
+  //   dataKey: string
+  // ) => React.ReactNode
   /**
    * 全选配置集合
    */
   checkAllOptions?: TableCheckAllOptions
 }
 
-export type TableHeaderRowReturn = {
+export type TableRowReturn = {
   onClick?: (event: React.MouseEvent) => void
   onDoubleClick?: (event: React.MouseEvent) => void
   onContextMenu?: (event: React.MouseEvent) => void
@@ -53,7 +56,8 @@ export type TableHeaderRowReturn = {
   onMouseLeave?: (event: React.MouseEvent) => void
 }
 
-export type HeaderRowFunc = (columns: TableColumnItem[], index: number) => TableHeaderRowReturn
+export type TableHeaderRowFunc = (columns: TableColumnItem[], index: number) => TableRowReturn
+export type TableRowFunc = () => TableRowReturn
 
 export type TableColumnItem = {
   title: React.ReactNode

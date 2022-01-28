@@ -27,7 +27,7 @@
 | expandedRender        | 表格展开项                                                                                                         | (record: dataItem, index: number) => ReactNode \| Promise | -                                         | -          |
 | rowExpandable         | 设置是否允许行展开                                                                                                 | (record: dataItem ) => ReactNode \| Boolean               | -                                         | true       |
 | onExpand              | 表格展开时的回调函数                                                                                               | (expanded, row: object) => void                           | -                                         | -          |
-| expandRowKeys         | 内嵌式表格以及树形表格展开的行                                                                                     | number[]                                                  | -                                         | -          |
+| expandedRowKeys       | 内嵌式表格以及树形表格展开的行                                                                                     | number[]                                                  | -                                         | -          |
 | maxHeight             | 表格最大高度，当穿过该高度时，展示滚动条且表头固定                                                                 | number                                                    | -                                         | -          |
 | fixedToColumn         | 表格列冻结设置，为 string 时仅支持从左侧冻结至某一列                                                               | string \| FixedOption                                     | columns 中对应的 dataKey                  | null       |
 | size                  | 配置表格尺寸                                                                                                       | string                                                    | 'large' \| 'default' \| 'small' \| 'mini' | 'default'  |
@@ -151,16 +151,14 @@
 
 ## CHANGELOG
 
-| 参数                 | 变更类型   | 变更内容                                                                                               | 解决的问题                                |
-| -------------------- | ---------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
-| selectFilters        | deprecated | 取消内嵌 Select                                                                                        | -                                         | 使用 filterDropdown 能替代满足场景 |
-| onLoadChildren       | feature    | 必须返回数据 -> 返回 undefined 不做任何处理                                                            | -                                         | 强化功能：支持自定义控制更新 |
-| expandEmbedRowKeys   | feature    | -                                                                                                      | 字段：expandRowKeys -> expandEmbedRowKeys | 强化功能：支持内嵌面板独立控制 |
-| onEmbedExpand        | feature    | 字段：onExpand -> onEmbedExpand                                                                        | 强化功能：支持内嵌面板独立控制            |
-| stickyFooter         | feature    | boolean                                                                                                | 强化功能：支持底部吸底                    |
-| rowSelection.render  | feature    | (checkboxNode: React.ReactNode, rowItem: object, rowIndex: number, dataKey: string) => React.ReactNode | 强化功能：支持 checkbox 自定义渲染        |
-| rowSelection.render  | feature    | (checkboxNode: React.ReactNode, rowItem: object, rowIndex: number, dataKey: string) => React.ReactNode | 强化功能：支持 checkbox 自定义渲染        |
-| defaultFixedToColumn | feature    | 1. 定义：非受控；2. 类型：对象                                                                         | 强化功能持久化                            |
-| fixedToColumn        | feature    | 1. 定义：受控；2. 类型：对象                                                                           | 强化功能持久化                            |
-| onFixedToColumn      | feature    | 1. 定义：冻结列回调；2. 类型：对象                                                                     | 强化功能持久化                            |
-| showRowHighlight     | feature    | -                                                                                                      | 强化功能持久化                            |
+| 参数                 | 变更类型   | 变更内容                                    | 解决的问题                                  |
+| -------------------- | ---------- | ------------------------------------------- | ------------------------------------------- |
+| selectFilters        | deprecated | 取消内嵌 Select                             | -                                           | 使用 filterDropdown 能替代满足场景 |
+| onLoadChildren       | feature    | 必须返回数据 -> 返回 undefined 不做任何处理 | -                                           | 强化功能：支持自定义控制更新 |
+| expandedEmbedRowKeys | feature    | -                                           | 字段：expandRowKeys -> expandedEmbedRowKeys | 强化功能：支持内嵌面板独立控制 |
+| onEmbedExpand        | feature    | 字段：onExpand -> onEmbedExpand             | 强化功能：支持内嵌面板独立控制              |
+| stickyFooter         | feature    | boolean                                     | 强化功能：支持底部吸底                      |
+| defaultFixedToColumn | feature    | 1. 定义：非受控；2. 类型：对象              | 强化功能持久化                              |
+| fixedToColumn        | feature    | 1. 定义：受控；2. 类型：对象                | 强化功能持久化                              |
+| onFixedToColumn      | feature    | 1. 定义：冻结列回调；2. 类型：对象          | 强化功能持久化                              |
+| showRowHighlight     | feature    | -                                           | 强化功能持久化                              |

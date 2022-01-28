@@ -8,7 +8,7 @@ export const TableTree = () => {
       <div className="table-TableTree__wrap" style={{ width: 800 }}>
         <Table
           // 受控
-          // expandRowKeys={[1]}
+          // expandedRowKeys={[1]}
           rowSelection={{}}
           expandedRender={(row, index) => {
             return <div>12313</div>

@@ -12,8 +12,8 @@ const DEFAULT_EXPAND_EMBED_ROW_KEYS = [] as []
  */
 export const useEmbedExpand = ({
   rowExpandable = true,
-  defaultExpandEmbedRowKeys = DEFAULT_EXPAND_EMBED_ROW_KEYS,
-  expandEmbedRowKeys: expandEmbedRowKeysProp,
+  defaultExpandedEmbedRowKeys = DEFAULT_EXPAND_EMBED_ROW_KEYS,
+  expandedEmbedRowKeys: expandEmbedRowKeysProp,
   onEmbedExpand,
   expandedRender,
 }: UseEmbedExpandProps) => {
@@ -35,7 +35,7 @@ export const useEmbedExpand = ({
    * 是否展开状态控制
    */
   const [expandEmbedRows, trySetExpandEmbedRows] = useUncontrolledState(
-    defaultExpandEmbedRowKeys,
+    defaultExpandedEmbedRowKeys,
     expandEmbedRowKeysProp,
     onEmbedExpand
   )
@@ -131,11 +131,11 @@ export interface UseEmbedExpandProps {
   /**
    *  内嵌式表格展开的行（受控）
    */
-  expandEmbedRowKeys?: React.ReactText[]
+  expandedEmbedRowKeys?: React.ReactText[]
   /**
    *  内嵌式表格默认展开的行
    */
-  defaultExpandEmbedRowKeys?: React.ReactText[]
+  defaultExpandedEmbedRowKeys?: React.ReactText[]
   /**
    *  内嵌式表格展开时的回调函数
    */

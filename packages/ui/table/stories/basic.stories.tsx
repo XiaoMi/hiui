@@ -11,6 +11,10 @@ export const Basic = () => {
             {
               title: '商品名',
               dataKey: 'name',
+              render: (text, row) => {
+                console.log(text, row)
+                return text + '*'
+              },
             },
             {
               title: '品类',

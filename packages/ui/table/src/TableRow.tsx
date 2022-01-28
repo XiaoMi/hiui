@@ -9,6 +9,7 @@ import { setAttrAria } from '@hi-ui/dom-utils'
 import { SELECTION_DATA_KEY } from './Table'
 import { EMBED_DATA_KEY } from './BaseTable'
 import { FlattedTableRowData } from './types'
+import { isFunction } from '@hi-ui/type-assertion'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -46,6 +47,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       onDragEnd: onDragEndContext,
       onDrop: onDropContext,
       dragRowRef,
+      onRow,
     } = useTableContext()
 
     const { raw: rowData, id: rowId } = rowDataProp
@@ -169,10 +171,6 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       [draggable, dragRowRef, onDropContextLatest, dragDirection, rowId]
     )
 
-    const handleRowDoubleClick = () => {
-      onHighlightedRowChange(rowData, !highlighted)
-    }
-
     // ** ************** 行状态管理 *************** *//
 
     const highlighted = isHighlightedRow(rowId)
@@ -195,13 +193,21 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       return item.dataKey !== SELECTION_DATA_KEY && item.dataKey !== EMBED_DATA_KEY
     })
 
+    const rowExtraProps = isFunction(onRow) ? onRow() : {}
+
     return (
       <>
         <tr
           ref={ref}
           className={cls}
           key="row"
-          onDoubleClick={handleRowDoubleClick}
+          {...rowExtraProps}
+          onDoubleClick={(evt) => {
+            if (rowExtraProps.onDoubleClick) {
+              rowExtraProps.onDoubleClick(evt)
+            }
+            onHighlightedRowChange(rowData, !highlighted)
+          }}
           draggable={setAttrAria(draggable)}
           onDragStart={onDragStart}
           onDragOver={onDragOver}
