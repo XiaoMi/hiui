@@ -84,7 +84,7 @@ export const TagGroup = forwardRef<HTMLDivElement | null, TagGroupProps>(
             autoEditable
             editable
             onEdit={(e) => {
-              onAdd && onAdd(e)
+              onAdd && onAdd(e, data.length)
               setIsInAdding(false)
             }}
             className={`${prefixCls}__item`}
@@ -141,7 +141,7 @@ export interface TagGroupProps {
   /**
    * 标签新增后触发
    */
-  onAdd?: (newStringValue: string) => void
+  onAdd?: (newStringValue: string, index: number) => void
 }
 
 export interface TagGroupNode extends Omit<TagProps, 'role' | 'prefixCls' | 'autoEditable'> {

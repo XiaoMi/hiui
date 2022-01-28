@@ -10,6 +10,8 @@ export enum TimePickerSelectorType {
   second,
 }
 
+export type TimePickerValue = Date | number | string
+
 export interface TimePickerStep {
   /**
    * 小时选项间隔

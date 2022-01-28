@@ -50,13 +50,6 @@ export const Basic = () => {
             console.log('onChange', date, dateStr)
           }}
         />
-        <h2>无边框</h2>
-        <DatePicker
-          bordered={false}
-          onChange={(date, dateStr) => {
-            console.log('onChange', date, dateStr)
-          }}
-        />
       </div>
     </>
   )

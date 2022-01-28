@@ -8,7 +8,7 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 const _role = 'tag'
 const _prefix = getPrefixCls(_role)
 
-const DEFAULT_TRANSFORMER = (e: React.ReactNode) => e?.toString() || ''
+const DEFAULT_RENDER = (e?: React.ReactText) => e
 
 /**
  * 标签
@@ -21,13 +21,14 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       prefixCls = _prefix,
       role = _role,
       className,
-      children,
+      children = '',
       style,
       color,
       background,
       type = 'default',
-      appearance = 'default',
-      size = 'small',
+      appearance = 'filled',
+      size = 'md',
+      shape = 'square',
       onClick,
       closeable = false,
       editable = false,
@@ -35,7 +36,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       onEdit,
       autoEditable = false,
       maxWidth,
-      childrenToStringTransformer = DEFAULT_TRANSFORMER,
+      render = DEFAULT_RENDER,
     },
     ref
   ) => {
@@ -68,7 +69,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
     useEffect(
       () => {
         if (autoEditable) {
-          setEditValueCache(childrenToStringTransformer(children))
+          setEditValueCache(String(children))
           setIsInEdit(true)
         }
       },
@@ -84,6 +85,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
           `${prefixCls}--type-${type}`,
           `${prefixCls}--appearance-${appearance}`,
           `${prefixCls}--size-${size}`,
+          `${prefixCls}--shape-${shape}`,
           {
             [`${prefixCls}--editable`]: editable,
             [`${prefixCls}--in-edit`]: editable && isInEdit,
@@ -113,7 +115,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
           ? {
               component: Tooltip,
               componentProps: {
-                title: childrenToStringTransformer(children),
+                title: render(children),
                 trigger: 'hover',
               },
             }
@@ -121,7 +123,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
               component: React.Fragment,
               componentProps: {},
             },
-      [isShowPopover, children, isInEdit, childrenToStringTransformer]
+      [isShowPopover, children, isInEdit, render]
     )
 
     return (
@@ -129,7 +131,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
         <div ref={ref} role={role} className={rootClassName} style={rootStyle} onClick={onClick}>
           <div className={`${prefixCls}__content-wrapper`}>
             <div className={`${prefixCls}__content`} ref={contentRef}>
-              {isInEdit ? editValueCache : children}
+              {isInEdit ? editValueCache : render(children)}
             </div>
             {editable && isInEdit && (
               <input
@@ -147,7 +149,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
               <div
                 className={`${prefixCls}__double-click-trigger`}
                 onDoubleClick={(e) => {
-                  setEditValueCache(childrenToStringTransformer(children))
+                  setEditValueCache(String(children))
                   setIsInEdit(true)
                 }}
               />
@@ -188,14 +190,19 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'default'
   /**
    * 外观
-   * @default 'default'
+   * @default 'solid'
    */
-  appearance?: 'default' | 'solid'
+  appearance?: 'line' | 'solid' | 'filled'
+  /**
+   * 形状
+   * @default 'square'
+   */
+  shape?: 'square' | 'round'
   /**
    * 标签尺寸
-   * @default 'small'
+   * @default 'md'
    */
-  size?: 'mini' | 'small' | 'medium'
+  size?: 'sm' | 'md' | 'lg'
   /**
    * 标签文字颜色
    */
@@ -205,11 +212,11 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    */
   background?: string
   /**
-   * 子代转换为 string 类型转换器
+   * 内容渲染器
    * @param children 子代对象
-   * @default e => e?.toString() || ''
+   * @default e => e
    */
-  childrenToStringTransformer?: (children: React.ReactNode) => string
+  render?: (children?: React.ReactText) => React.ReactNode
   /**
    * 点击标签内容时的回调
    */
@@ -220,7 +227,7 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    */
   closeable?: boolean
   /**
-   * 是否可编辑（当使用此功能时，如果 children.toString 无法自动转换成预期的字符串，则请自行配置转换器 childrenToStringTransformer 属性）
+   * 是否可编辑
    * @default false
    */
   editable?: boolean
@@ -244,7 +251,7 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    */
   maxWidth?: number
 
-  children?: React.ReactNode
+  children?: React.ReactText
 }
 
 if (__DEV__) {

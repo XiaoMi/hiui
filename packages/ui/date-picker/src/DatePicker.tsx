@@ -21,7 +21,15 @@ import { PopperPortal } from '@hi-ui/popper'
 import Root from './components/root'
 import Panel from './components/panel'
 import RangePanel from './components/range-panel'
-import { DatePickerProps, DatePickerType } from './types'
+import {
+  CalendarItemV3,
+  DatePickerOnChange,
+  DatePickerOnSelectV3,
+  DatePickerProps,
+  DatePickerType,
+  DatePickerValueV3,
+  DateRange,
+} from './types'
 import { getBelongWeek, getBelongWeekYear } from './utils/week'
 import { DateRangeTimePanel } from './components/date-range-time-panel'
 import { GranularityMap } from './utils/constants'
@@ -39,40 +47,39 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       role = 'date-picker',
       className,
       type: propType = 'date',
-      value,
-      defaultValue,
+      value: controlledValue,
+      defaultValue: uncontrolledValue,
       placeholder,
       showTime = false,
       format,
       disabled,
       clearable = true,
-      width = 'auto',
+      // width = 'auto',
       weekOffset,
       hourStep = 1,
       minuteStep = 1,
       secondStep = 1,
-      onChange = DEFAULT_ON_CHANGE,
+      onChange: onChangeOriginal = DEFAULT_ON_CHANGE,
       timeInterval = 240,
       shortcuts,
-      altCalendar,
+      altCalendar: altCalendarOriginal,
       altCalendarPreset,
       dateMarkRender,
       dateMarkPreset,
-      overlayClassName,
       inputReadOnly,
-      // locale = 'zh-CN',
-      bordered = true,
       disabledDate = DEFAULT_DISABLED_DATE,
       max: configMax,
       min: configMin,
       maxDate,
       minDate,
-      onSelect: propsOnSelect,
+      onSelect: propsOnSelectOriginal,
       theme,
-      placement,
       disabledHours = DEFAULT_DISABLED_FUNCTION,
       disabledMinutes = DEFAULT_DISABLED_FUNCTION,
       disabledSeconds = DEFAULT_DISABLED_FUNCTION,
+      appearance = 'line',
+      size = 'md',
+      overlay,
       ...otherProps
     },
     ref
@@ -107,10 +114,78 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       setType(propType)
     }, [propType])
 
+    const propsOnSelect = useCallback<DatePickerOnSelectV3>(
+      (data: moment.Moment, isCompleted: boolean) => {
+        propsOnSelectOriginal && propsOnSelectOriginal(moment(data).toDate(), isCompleted)
+      },
+      [propsOnSelectOriginal]
+    )
+
     const safeWeekOffset = useMemo(
       () => (weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1),
       [weekOffset, locale]
     )
+
+    const valueAdapter = useCallback((original?: DatePickerValueV3 | DatePickerValueV3[]) => {
+      if (!original) {
+        return undefined
+      } else {
+        if (Array.isArray(original)) {
+          return {
+            start: original[0],
+            end: original[1],
+          } as DateRange
+        } else {
+          return original
+        }
+      }
+    }, [])
+
+    const altCalendar = useMemo<CalendarItemV3[] | undefined>(
+      () =>
+        altCalendarOriginal &&
+        altCalendarOriginal.map((item) => ({
+          date: item.date,
+          text: item.content,
+          highlight: item.highlighted,
+        })),
+      [altCalendarOriginal]
+    )
+
+    // 将 v4 的 api 格式转换成 v3 的 api 格式内部使用
+    const onChange = useCallback<DatePickerOnChange>(
+      (disposeDate, disposeString) => {
+        let resultData
+        let resultString
+
+        if (disposeDate) {
+          resultData = ((disposeDate as unknown) as DateRange).start
+            ? [
+                moment(((disposeDate as unknown) as DateRange).start).toDate(),
+                moment(((disposeDate as unknown) as DateRange).end).toDate(),
+              ]
+            : moment(disposeDate as any).toDate()
+        }
+
+        if (disposeString) {
+          resultString = (((disposeString as unknown) as DateRange).start as string)
+            ? [
+                ((disposeString as unknown) as DateRange).start as string,
+                ((disposeString as unknown) as DateRange).end as string,
+              ]
+            : (disposeString as string)
+        }
+
+        onChangeOriginal(resultData, resultString)
+      },
+      [onChangeOriginal]
+    )
+
+    const value = useMemo(() => valueAdapter(controlledValue), [valueAdapter, controlledValue])
+    const defaultValue = useMemo(() => valueAdapter(uncontrolledValue), [
+      valueAdapter,
+      uncontrolledValue,
+    ])
 
     const [outDate, changeOutDate] = useDate({
       value,
@@ -272,7 +347,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     )
 
     const popperCls = cx(
-      overlayClassName,
       `${prefixCls}__popper`,
       type === 'date' && showTime && `${prefixCls}__popper--time`,
       type.includes('range') && `${prefixCls}__popper--range`,
@@ -315,6 +389,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         value={{
           ...otherProps,
           locale,
+          appearance,
           localeData,
           type,
           outDate,
@@ -340,18 +415,17 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           disabledSeconds,
           clearable,
           theme,
-          width,
           hourStep,
           minuteStep,
           secondStep,
           inputReadOnly,
           value,
-          bordered,
           disabledDate,
           onSelect,
           prefixCls,
           showPanel,
           isInDateRangeTimeMode,
+          size,
         }}
       >
         <div className={cx(prefixCls, className)} {...otherProps}>
@@ -368,12 +442,13 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             dateRangeTimePanelNow={dateRangeTimePanelNow}
           />
           <PopperPortal
+            {...(overlay || {})}
             visible={showPanel}
-            placement={placement}
             onClose={onPopperClose}
             attachEl={attachEl}
             unmountOnClose={false}
             preload
+            autoFocus={false}
           >
             {popContent}
           </PopperPortal>

@@ -8,23 +8,33 @@ import {
   TimePickerFormat,
   TimePickerPanelType,
   TimePickerFilterProps,
+  TimePickerValue,
 } from './@types'
 import { Input, InputRef } from './Input'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { PopperPortal } from '@hi-ui/popper'
+import { PopperOverlayProps, PopperPortal } from '@hi-ui/popper'
 import { CloseCircleFilled, TimeOutlined } from '@hi-ui/icons'
 import { PopContent } from './PopContent'
 import { valueChecker } from './utils/valueChecker'
 import { useFilter } from './hooks/useFilter'
 import { Button } from '@hi-ui/button'
 import { getNowString } from './utils/getNowString'
+import DayJs from 'dayjs'
 
 const _role = 'time-picker'
 export const _prefix = getPrefixCls(_role)
 
-const DefaultValue = ['', '']
+const DefaultValue = ['', ''] as TimePickerValue[]
 const DefaultDisabledFunc = () => []
 const DefaultPlaceholder = ['', '']
+
+const getValueMatchString = (value?: TimePickerValue[] | TimePickerValue) => {
+  if (!value) {
+    return undefined
+  }
+  const result = Array.isArray(value) ? value : [value]
+  return result.map((item) => (typeof item === 'string' ? item : DayJs(item).format('HH:mm:ss')))
+}
 
 export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
   (
@@ -33,31 +43,53 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       role = _role,
       className,
       value: controlledValue,
-      itemHeight = 24,
-      fullDisplayItemNumber = 7,
+      // itemHeight = 24,
+      // fullDisplayItemNumber = 7,
       hourStep = 1,
       minuteStep = 1,
       secondStep = 1,
       format = 'HH:mm:ss',
       type = 'single',
+      appearance = 'line',
       defaultValue: uncontrolledValue = DefaultValue,
       disabled = false,
       disabledHours: originalDisabledHours = DefaultDisabledFunc,
       disabledSeconds: originalDisabledSeconds = DefaultDisabledFunc,
       disabledMinutes: originalDisabledMinutes = DefaultDisabledFunc,
-      bordered = true,
       onChange: notifyOutside,
-      placeholder = DefaultPlaceholder,
+      placeholder: originalPlaceholder = DefaultPlaceholder,
       inputReadonly = false,
+      overlay,
+      size = 'md',
     },
     ref
   ) => {
     const [attachEl, setAttachEl] = useState<HTMLElement | null>(null)
-    const [value, onChange] = useUncontrolledState<string[]>(
+    const formatUncontrolledValue = useMemo(() => getValueMatchString(uncontrolledValue)!, [
       uncontrolledValue,
+    ])
+    const formatControlledValue = useMemo(() => getValueMatchString(controlledValue), [
       controlledValue,
-      notifyOutside
+    ])
+    const formatNotifyOutside = useCallback(
+      (disposeValue: string[]) => {
+        const result = disposeValue.filter((item) => item)
+        notifyOutside && notifyOutside(result.length > 1 ? result : result[0])
+      },
+      [notifyOutside]
     )
+
+    const [value, onChange] = useUncontrolledState<string[]>(
+      formatUncontrolledValue,
+      formatControlledValue,
+      formatNotifyOutside
+    )
+
+    const placeholder = useMemo(
+      () => (Array.isArray(originalPlaceholder) ? originalPlaceholder : [originalPlaceholder]),
+      [originalPlaceholder]
+    )
+
     const inputRef = useRef<InputRef | null>(null)
     const [isInputValid, setIsInputValid] = useState(true)
     const [cacheValue, setCacheValue] = useState<string[]>(value)
@@ -150,8 +182,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     const [showPopper, setShowPopper] = useState(false)
     const showPopperRef = useRef(false)
 
-    const cls = cx(prefixCls, className, {
-      [`${prefixCls}--border`]: bordered,
+    const cls = cx(prefixCls, className, `${prefixCls}--appearance-${appearance}`, {
       [`${prefixCls}--active`]: showPopper && !disabled,
       [`${prefixCls}--disabled`]: disabled,
       [`${prefixCls}--input-not-valid`]: !isInputValid,
@@ -208,6 +239,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       <div ref={ref} role={role} className={cls}>
         <div ref={setAttachEl} className={`${prefixCls}__input-wrapper`}>
           <Input
+            size={size}
+            isFitContent={appearance === 'unset'}
             ref={inputRef}
             onValidChange={setIsInputValid}
             disabled={inputReadonly || disabled}
@@ -248,9 +281,11 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           </div>
         </div>
         <PopperPortal
+          {...(overlay || {})}
           unmountOnClose={false}
           visible={showPopper && !disabled}
           attachEl={attachEl}
+          autoFocus={false}
           onClose={() => {
             // 关闭弹窗，视作，抛弃之前的选择行为，复位
             showPopperRef.current = false
@@ -262,8 +297,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           preload
         >
           <PopContent
-            itemHeight={itemHeight}
-            fullDisplayItemNumber={fullDisplayItemNumber}
+            // itemHeight={itemHeight}
+            // fullDisplayItemNumber={fullDisplayItemNumber}
             type={type}
             prefix={prefixCls}
             format={format}
@@ -311,21 +346,20 @@ export interface TimePickerProps extends ExtendType {
   /**
    * 当前值（type='single'取数组第一个值，type='range'取数组第一个作为开始，第二个作为结束）
    */
-  value?: string[]
+  value?: TimePickerValue[] | TimePickerValue
   /**
    * 默认值
    */
-  defaultValue?: string[]
+  defaultValue?: TimePickerValue[] | TimePickerValue
+  /**
+   * 自定义控制弹出层 popper
+   */
+  overlay?: PopperOverlayProps
   /**
    * 输入框是否不可编辑
    * @default false
    */
   inputReadonly?: boolean
-  /**
-   * 是否有边框
-   * @default true
-   */
-  bordered?: boolean
   /**
    * 是否禁用
    * @default false
@@ -334,22 +368,22 @@ export interface TimePickerProps extends ExtendType {
   /**
    * 输入框占位符
    */
-  placeholder?: string[]
+  placeholder?: string | string[]
   /**
-   * 选择器高
-   * @default 32
+   * 选择器外观
+   * @default 'line'
    */
-  itemHeight?: number
+  appearance?: 'line' | 'filled' | 'unset'
   /**
-   * 完全展示item的数目，必须为奇数
-   * @default 7
+   * 尺寸
+   * @default 'md'
    */
-  fullDisplayItemNumber?: number
+  size?: 'sm' | 'md' | 'lg'
   /**
    * 值改变事件
    * @param value
    */
-  onChange?: (value: string[]) => void
+  onChange?: (value: string | string[]) => void
 }
 
 if (__DEV__) {

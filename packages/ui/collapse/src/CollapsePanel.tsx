@@ -14,7 +14,17 @@ const ActionDelayMs = 100
  */
 export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProps>(
   (
-    { prefixCls = _prefix, role = _role, className, children, style, disabled = false, id, title },
+    {
+      prefixCls = _prefix,
+      role = _role,
+      className,
+      children,
+      style,
+      disabled = false,
+      id,
+      title,
+      extra,
+    },
     ref
   ) => {
     const isInInitialize = useRef(true)
@@ -86,9 +96,12 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
       >
         <div className={`${prefixCls}__head`} onClick={() => !disabled && onClickPanel(id)}>
           {showArrow && arrowPlacement === 'left' && (
-            <RightOutlined className={`${prefixCls}__icon`} />
+            <RightOutlined className={`${prefixCls}__icon--left`} />
           )}
-          <div className={`${prefixCls}__title`}>{title}</div>
+          <div className={`${prefixCls}__title-container`}>
+            <div className={`${prefixCls}__title`}>{title}</div>
+            <div className={`${prefixCls}__extra`}>{extra}</div>
+          </div>
           {showArrow && arrowPlacement === 'right' && (
             <DownOutlined className={`${prefixCls}__icon--right`} />
           )}
@@ -133,6 +146,10 @@ export interface CollapsePanelProps {
    * 面板的标题
    */
   title: React.ReactNode
+  /**
+   * 额外元素
+   */
+  extra?: React.ReactNode
   /**
    * 是否禁用面板
    * @default false

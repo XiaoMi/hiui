@@ -20,8 +20,8 @@ interface PanelProps extends ExtendType {
   value: string
   onChange: (value: string) => void
   format: TimePickerFormat
-  itemHeight: number
-  fullDisplayItemNumber: number
+  // itemHeight: number
+  // fullDisplayItemNumber: number
 }
 
 export const Panel: FC<PanelProps> = (props) => {
@@ -37,8 +37,8 @@ export const Panel: FC<PanelProps> = (props) => {
     value,
     panel,
     onChange,
-    itemHeight,
-    fullDisplayItemNumber,
+    // itemHeight,
+    // fullDisplayItemNumber,
   } = props
 
   const componentPrefix = useMemo(() => `${prefix}__panel`, [prefix])
@@ -114,8 +114,8 @@ export const Panel: FC<PanelProps> = (props) => {
                 value={String(separateValue[index])}
                 prefix={prefix}
                 position={position}
-                itemHeight={itemHeight}
-                fullDisplayItemNumber={fullDisplayItemNumber}
+                // itemHeight={itemHeight}
+                // fullDisplayItemNumber={fullDisplayItemNumber}
                 onChange={(e) => {
                   let result = [...separateValue].slice(0, selectorTypes.length)
                   // 如果 value = ''，则代表为空值
@@ -134,7 +134,7 @@ export const Panel: FC<PanelProps> = (props) => {
                   [`${componentPrefix}__indicator--left`]: index === 0,
                   [`${componentPrefix}__indicator--right`]: index === selectorTypes.length - 1,
                 })}
-                style={{ height: `${itemHeight}px` }}
+                // style={{ height: `${itemHeight}px` }}
               />
             </div>
           )
@@ -148,8 +148,8 @@ export const Panel: FC<PanelProps> = (props) => {
     getSelectorData,
     onChange,
     separateValue,
-    itemHeight,
-    fullDisplayItemNumber,
+    // itemHeight,
+    // fullDisplayItemNumber,
     value,
   ])
 

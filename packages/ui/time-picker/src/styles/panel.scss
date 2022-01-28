@@ -7,6 +7,7 @@ $separate-line-color: get-color('gray', 200);
   //min-width: 180px;
   padding: 4px 8px;
   box-sizing: border-box;
+  height: 100%;
 
   //&__header{
   //  display: flex;
@@ -46,6 +47,7 @@ $separate-line-color: get-color('gray', 200);
     background: use-color('brandblue', 50);
     z-index: -1;
     width: 54px;
+    height: 24px;
 
     &--left{
       border-top-left-radius: 4px;

@@ -174,13 +174,11 @@ const Panel = (props: PanelProps) => {
               hourStep={hourStep}
               minuteStep={minuteStep}
               secondStep={secondStep}
-              itemHeight={24}
-              fullDisplayItemNumber={7}
               type="single"
               format={timePickerFormat}
-              disabledHours={disabledHours as any}
-              disabledMinutes={disabledMinutes as any}
-              disabledSeconds={disabledSeconds as any}
+              disabledHours={disabledHours}
+              disabledMinutes={disabledMinutes}
+              disabledSeconds={disabledSeconds}
             />
           </div>
         </div>

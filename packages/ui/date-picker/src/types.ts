@@ -1,7 +1,8 @@
 import React from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { PopperJS } from '@hi-ui/popper'
+import { PopperOverlayProps } from '@hi-ui/popper'
 import moment from 'moment'
+import { TimePickerPanelType } from '@hi-ui/time-picker'
 
 export type CalendarView = 'date' | 'year' | 'month'
 
@@ -11,7 +12,16 @@ export interface DateRange {
 }
 
 export interface CalendarItem {
-  date: Date | string
+  date: Date | string | number
+  content: string
+  /**
+   * @default false
+   */
+  highlighted?: boolean
+}
+
+export interface CalendarItemV3 {
+  date: Date | string | number
   text: string
   /**
    * @default false
@@ -53,7 +63,20 @@ export interface CalendarMarkPreset {
   [key: string]: React.ReactNode
 }
 
-export type DatePickerValue = Date | string | number | DateRange | undefined | null
+export type DatePickerValueV3 = Date | string | number | DateRange | undefined | null
+
+export type DatePickerValue = Date | string | number
+
+export type DatePickerOnSelectV3 = (data: moment.Moment, isCompleted: boolean) => void
+
+export type DatePickerOnSelect = (data: Date, isCompleted: boolean) => void
+
+export type DatePickerOnChange = (
+  date: Date | Date[] | undefined,
+  dateStr: string | string[] | undefined
+) => void
+export type DatePickerOnChangeV3 = (date: Date | DateRange, dateStr: string | DateRange) => void
+
 export type DatePickerType =
   | 'date'
   | 'daterange'
@@ -76,9 +99,9 @@ type ExtendsType = Omit<HiBaseHTMLProps<'div'>, 'placeholder'>
 export interface DatePickerProps extends ExtendsType {
   type?: DatePickerType
 
-  defaultValue?: DatePickerValue
-  value?: DatePickerValue
-  width?: number | string
+  defaultValue?: DatePickerValue | DatePickerValue[]
+  value?: DatePickerValue | DatePickerValue[]
+  // width?: number | string
 
   min?: Date
   max?: Date
@@ -89,15 +112,9 @@ export interface DatePickerProps extends ExtendsType {
    */
   disabled?: boolean
   /**
-   * @default true
-   */
-  bordered?: boolean
-  /**
    * @default false
    */
   inputReadOnly?: boolean
-
-  placement?: PopperJS.Placement
   /**
    * @default () => false
    */
@@ -146,15 +163,29 @@ export interface DatePickerProps extends ExtendsType {
 
   dateMarkPreset?: string
 
-  overlayClassName?: string
+  disabledHours?: ((panel: TimePickerPanelType) => number[]) | number[]
 
-  disabledHours?: (() => number[]) | number[]
+  disabledMinutes?: ((selectedHour: number, panel: TimePickerPanelType) => number[]) | number[]
 
-  disabledMinutes?: ((selectedHour: number) => number[]) | number[]
+  disabledSeconds?:
+    | ((selectedHour: number, selectedMinute: number, panel: TimePickerPanelType) => number[])
+    | number[]
 
-  disabledSeconds?: ((selectedHour: number, selectedMinute: number) => number[]) | number[]
+  onSelect?: DatePickerOnSelect
 
-  onSelect?: (data: moment.Moment, isCompleted: boolean) => void
-
-  onChange?: (date: Date | DateRange, dateStr: string | DateRange) => void
+  onChange?: DatePickerOnChange
+  /**
+   * 外观
+   * @default 'line'
+   */
+  appearance?: 'line' | 'unset' | 'filled'
+  /**
+   * 尺寸
+   * @default 'md'
+   */
+  size?: 'sm' | 'md' | 'lg'
+  /**
+   * 自定义控制弹出层 popper
+   */
+  overlay?: PopperOverlayProps
 }

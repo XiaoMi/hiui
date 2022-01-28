@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import Tag from '../src'
+import { SunFilled } from '@hi-ui/icons'
 
 export const Basic = () => {
   const [testValue1, setTestValue1] = useState('test-value')
@@ -19,6 +20,23 @@ export const Basic = () => {
         <Tag type="default">待审批</Tag>
       </div>
       <div style={{ display: 'flex', marginTop: '32px' }}>
+        <Tag type="warning" appearance={'line'}>
+          待审批
+        </Tag>
+        <Tag type="primary" appearance={'line'}>
+          审批中
+        </Tag>
+        <Tag type="success" appearance={'line'}>
+          已通过
+        </Tag>
+        <Tag type="danger" appearance={'line'}>
+          已驳回
+        </Tag>
+        <Tag type="default" appearance={'line'}>
+          待审批
+        </Tag>
+      </div>
+      <div style={{ display: 'flex', marginTop: '32px' }}>
         <Tag type="warning" appearance="solid">
           待审批
         </Tag>
@@ -35,13 +53,18 @@ export const Basic = () => {
           待审批
         </Tag>
       </div>
+      <h1>Tag shape</h1>
+      <h2>square</h2>
+      <Tag>一个标签</Tag>
+      <h2>round</h2>
+      <Tag shape={'round'}>一个标签</Tag>
       <h1>Tag size</h1>
-      <h2>Mini</h2>
-      <Tag size="mini">一个标签</Tag>
-      <h2>Small</h2>
-      <Tag size="small">一个标签</Tag>
-      <h2>Medium</h2>
-      <Tag size="medium">一个标签</Tag>
+      <h2>Sm</h2>
+      <Tag size="sm">一个标签</Tag>
+      <h2>Md</h2>
+      <Tag size="md">一个标签</Tag>
+      <h2>Lg</h2>
+      <Tag size="lg">一个标签</Tag>
       <h1>Custom color</h1>
       <div style={{ display: 'flex' }}>
         <Tag color="#48D4CF">color #48D4CF</Tag>
@@ -51,10 +74,10 @@ export const Basic = () => {
       </div>
       <h1>Closeable</h1>
       <div style={{ display: 'flex' }}>
-        <Tag appearance="default" type="primary" closeable>
+        <Tag appearance="filled" type="primary" closeable>
           Closeable default
         </Tag>
-        <Tag appearance="default" closeable>
+        <Tag appearance="filled" closeable>
           Closeable default
         </Tag>
         <Tag appearance="solid" type="primary" closeable>
@@ -81,6 +104,22 @@ export const Basic = () => {
         </Tag>
         <Tag maxWidth={180} editable onEdit={setMaxEditableValue}>
           {maxEditableValue}
+        </Tag>
+      </div>
+      <h1>Custom render</h1>
+      <div>
+        <Tag
+          type={'primary'}
+          render={(e) => (
+            <span>
+              <SunFilled style={{ marginRight: '2px' }} />
+              {e}
+            </span>
+          )}
+          maxWidth={240}
+          editable
+        >
+          Test Content Max Length Placeholder Max Length Placeholder
         </Tag>
       </div>
     </>

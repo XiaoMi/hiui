@@ -17,13 +17,13 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
     duration,
     showArrows = true,
     arrowSize = 'md',
-    dotPosition = 'bottom',
+    dotPlacement = 'bottom',
     dotType = 'slider',
     showDots = true,
     showPages = false,
     ...rest
   } = props
-  const cls = cx(prefixCls, className, dotPosition === 'outer' && `${prefixCls}--dot-outer`)
+  const cls = cx(prefixCls, className, dotPlacement === 'outer' && `${prefixCls}--dot-outer`)
 
   // 当前活跃下标
   const [activeIndex, setActiveIndex] = useState(defaultActive)
@@ -184,9 +184,9 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
         {showPages && (
           <div className={`${prefixCls}__page-number`}>{`${activeIndex + 1} / ${childCount}`}</div>
         )}
-        {showDots && !isDisabledAllInteract && dotPosition !== 'outer' && (
+        {showDots && !isDisabledAllInteract && dotPlacement !== 'outer' && (
           <Dots
-            position={dotPosition}
+            position={dotPlacement}
             type={dotType}
             activeIndex={activeIndex}
             count={childCount}
@@ -197,9 +197,9 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
         )}
       </div>
       {/* 在外部的时候，需要占用dom实际空间，所以不能再放到 wrapper 中 */}
-      {showDots && !isDisabledAllInteract && dotPosition === 'outer' && (
+      {showDots && !isDisabledAllInteract && dotPlacement === 'outer' && (
         <Dots
-          position={dotPosition}
+          position={dotPlacement}
           type={dotType}
           activeIndex={activeIndex}
           count={childCount}

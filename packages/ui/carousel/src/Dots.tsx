@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
-import { CarouselDotPosition, CarouselDotType } from './types'
+import { CarouselDotPlacement, CarouselDotType } from './types'
 import { cx } from '@hi-ui/classname'
 
 interface DotsProps {
-  position: CarouselDotPosition
+  position: CarouselDotPlacement
   type: CarouselDotType
   prefixCls: string
   activeIndex: number
