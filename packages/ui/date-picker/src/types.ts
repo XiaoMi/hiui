@@ -2,6 +2,7 @@ import React from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { PopperJS } from '@hi-ui/popper'
 import moment from 'moment'
+import { TimePickerPanelType } from '@hi-ui/time-picker'
 
 export type CalendarView = 'date' | 'year' | 'month'
 
@@ -89,10 +90,6 @@ export interface DatePickerProps extends ExtendsType {
    */
   disabled?: boolean
   /**
-   * @default true
-   */
-  bordered?: boolean
-  /**
    * @default false
    */
   inputReadOnly?: boolean
@@ -148,13 +145,20 @@ export interface DatePickerProps extends ExtendsType {
 
   overlayClassName?: string
 
-  disabledHours?: (() => number[]) | number[]
+  disabledHours?: ((panel: TimePickerPanelType) => number[]) | number[]
 
-  disabledMinutes?: ((selectedHour: number) => number[]) | number[]
+  disabledMinutes?: ((selectedHour: number, panel: TimePickerPanelType) => number[]) | number[]
 
-  disabledSeconds?: ((selectedHour: number, selectedMinute: number) => number[]) | number[]
+  disabledSeconds?:
+    | ((selectedHour: number, selectedMinute: number, panel: TimePickerPanelType) => number[])
+    | number[]
 
   onSelect?: (data: moment.Moment, isCompleted: boolean) => void
 
   onChange?: (date: Date | DateRange, dateStr: string | DateRange) => void
+  /**
+   * 外观
+   * @default 'line'
+   */
+  appearance?: 'line' | 'unset' | 'filled'
 }
