@@ -1,7 +1,8 @@
 import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { FlattedTreeNodeData, TreeNodeEventData, TreeNodeData } from '../types'
-import { findNestedChildIds } from '../utils'
+import { findNestedChildIds, processCheckedIds } from '../utils'
+import { getNodeAncestors, isTreeRoot } from '@hi-ui/tree-utils'
 
 /**
  * 用于 tree 组件复选的 hook
@@ -14,6 +15,7 @@ import { findNestedChildIds } from '../utils'
  * @returns
  */
 export const useCheck = (
+  checkedMode: string,
   disabled: boolean,
   flattedData: FlattedTreeNodeData[],
   defaultCheckedIds: React.ReactText[],
@@ -32,11 +34,13 @@ export const useCheck = (
     defaultCheckedIds,
     checkedIdsProp,
     (checkedIds, checkedNode, checked, semiCheckedIds) => {
+      const processedIds = processCheckedIds(checkedMode, checkedIds, flattedData)
+
       const nextCheckedNodes = flattedData
-        .filter((item) => checkedIds.includes(item.id))
+        .filter((item) => processedIds.includes(item.id))
         .map((item) => item.raw)
 
-      onCheck?.(checkedIds, {
+      onCheck?.(processedIds, {
         checkedNodes: nextCheckedNodes,
         targetNode: checkedNode,
         semiCheckedIds,
@@ -62,7 +66,8 @@ export const useCheck = (
       const semiCheckedIdsSet = new Set(semiCheckedIds)
 
       const checkedNodeId = checkedNode.id
-      const ancestors = checkedNode.ancestors || []
+      const ancestors = getNodeAncestors(checkedNode)
+
       const childrenIds = findNestedChildIds(checkedNode)
 
       if (checked) {
@@ -154,7 +159,8 @@ const getSemiCheckedIdsWithSet = (
 
   flattedData.forEach((node) => {
     parent = node.parent
-    if (parent) {
+    // 非顶层节点
+    if (!isTreeRoot(parent)) {
       parentId = parent.id
       if (semiCheckedIdsSet.has(parentId)) return
 
@@ -169,7 +175,8 @@ const getSemiCheckedIdsWithSet = (
   // 自下而上设置半选态
   semiCheckedNodes.forEach((node) => {
     parent = node.parent
-    while (parent) {
+    // 非顶层节点
+    while (!isTreeRoot(parent)) {
       parentId = parent.id
       // 可能存在兄弟节点，共同祖先需要去重，避免重复计算
       if (semiCheckedIdsSet.has(parentId)) return

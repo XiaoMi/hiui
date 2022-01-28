@@ -695,14 +695,26 @@ export interface UseTableProps {
    * 唯一 id 前缀，废弃
    */
   uniqueId?: string
-  onDragStart?: (rowData: object) => void
+  onDragStart?: (
+    evt: React.DragEvent,
+    option: {
+      dragNode: object
+    }
+  ) => void
   onDrop?: (
-    dragRowData: object,
-    dropRowData: object,
-    data: object,
-    level: any
+    evt: React.DragEvent,
+    option: {
+      dragNode: object
+      dropNode: object
+      dataStatus: { after: object }
+      // level: { before: number; after: number }
+    }
   ) => boolean | Promise<any>
-  onDropEnd?: (dragRowData: object, dropRowData: object, data: object) => void
+  onDropEnd?: (option: {
+    dragNode: object
+    dropNode: object
+    dataStatus: { after: object }
+  }) => void
   /**
    * 初始时展开所有行
    */

@@ -13,21 +13,22 @@ interface TransferContext {
   /**
    * 拖拽开始时的回调函数
    */
-  onDragStart?: (item: TransferDataItem) => void
+  onDragStart?: (evt: React.DragEvent, option: { dragNode: TransferDataItem }) => void
   /**
    * 拖拽结束时的回调函数(完成拖拽)
    */
-  onDragEnd?: (item: TransferDataItem) => void
+  onDragEnd?: (evt: React.DragEvent, option: { dragNode: TransferDataItem }) => void
   /**
    * 放开拖拽元素时的回调函数，返回 false 将阻止拖拽到对应位置
    */
   onDrop?: (
+    evt: React.DragEvent,
     sourceItem: React.ReactText,
     targetItem: React.ReactText,
     direction: string | null
   ) => void
-  onDragLeave?: (item: TransferDataItem) => void
-  onDragOver?: (item: TransferDataItem) => void
+  onDragLeave?: (evt: React.DragEvent, option: { dropNode: TransferDataItem }) => void
+  onDragOver?: (evt: React.DragEvent, option: { dropNode: TransferDataItem }) => void
 }
 
 const transferContext = createContext<TransferContext | null>(null)

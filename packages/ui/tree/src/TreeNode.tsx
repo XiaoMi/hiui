@@ -14,6 +14,7 @@ import { useTreeContext } from './context'
 import { FlattedTreeNodeData, TreeNodeDragDirection, TreeNodeEventData } from './types'
 import { getTreeNodeEventData } from './utils'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
+import { getNodeSiblings } from '@hi-ui/tree-utils'
 
 const _role = 'tree-node'
 const _prefix = getPrefixCls(_role)
@@ -362,7 +363,9 @@ if (__DEV__) {
  * 渲染空白占位
  */
 const renderIndent = (prefixCls: string, node: FlattedTreeNodeData) => {
-  const { id, depth, siblings } = node
+  const { id, depth } = node
+  const siblings = getNodeSiblings(node)
+
   const isSiblingLast = siblings && siblings[siblings.length - 1].id === id
 
   return times(depth, (index: number) => {

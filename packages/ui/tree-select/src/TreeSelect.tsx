@@ -3,10 +3,10 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { DataSourceFunc, FieldNames, TreeSelectDataItem, TreeSelectDataSource } from './types'
 import { useToggle } from '@hi-ui/use-toggle'
-import { Tree, TreeNodeEventData } from '@hi-ui/tree'
+import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Picker, PickerProps } from '@hi-ui/picker'
-import { flattenTree } from '@hi-ui/tree-utils'
+import { baseFlattenTree } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { uniqBy } from 'lodash'
 import { Highlighter } from '@hi-ui/highlighter'
@@ -44,7 +44,6 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       // bordered = true,
       fieldNames = DEFAULT_FIELD_NAMES,
       showCheckedMode,
-      // type,
       defaultExpandAll = false,
       expandedIds: expandedIdsProp,
       defaultExpandedIds = DEFAULT_EXPANDED_IDS,
@@ -52,11 +51,10 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       defaultValue = '',
       value: valueProp,
       onChange,
-      // autoload,
       searchable: searchableProp,
       searchMode: searchModeProp,
       onLoadChildren,
-      titleRender,
+      render: titleRender,
       filterOption,
       // ********* popper ********* //
       // optionWidth,
@@ -65,7 +63,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       // ********* picker ********* //
       clearable,
       invalid,
-      displayRender,
+      displayRender: displayRenderProp,
       placeholder: placeholderProp,
       appearance,
       ...rest
@@ -91,12 +89,21 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
     )
 
     const flattedData = useMemo(() => {
-      return flattenTree(data, (node) => {
-        node.id = getKeyFields(node.raw, 'id')
-        // @ts-ignore
-        node.title = getKeyFields(node.raw, 'title')
-        return node
-      })
+      return baseFlattenTree<TreeSelectDataItem>({
+        tree: data,
+        childrenFieldName: (node) => getKeyFields(node, 'children'),
+        transform: (node) => {
+          const flattedNode = node as FlattedTreeNodeData
+          const raw = node.raw
+
+          flattedNode.id = getKeyFields(raw, 'id')
+          flattedNode.title = getKeyFields(raw, 'title')
+          flattedNode.disabled = getKeyFields(raw, 'disabled') ?? false
+          flattedNode.isLeaf = getKeyFields(raw, 'isLeaf') ?? false
+
+          return flattedNode
+        },
+      }) as FlattedTreeNodeData[]
     }, [data, getKeyFields])
 
     // TODO: 抽离展开hook
@@ -117,6 +124,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
 
     const onSelect = useCallback(
       (selectedId: React.ReactText | null, selectedNode: TreeNodeEventData | null) => {
+        // 关闭反选功能
         if (selectedId) {
           tryChangeValue(selectedId, selectedNode)
           setSelectedItem(selectedNode)
@@ -190,7 +198,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       onExpand: shouldUseSearch
         ? (ids: any) => setStateInSearch((prev: any) => ({ ...prev, expandedIds: ids }))
         : tryChangeExpandedIds,
-      titleRender: proxyTitleRender,
+      render: proxyTitleRender,
     }
 
     // 下拉菜单不能合并（因为树形数据，不知道是第几级）
@@ -222,12 +230,10 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         loading={loading}
         trigger={
           <MockInput
-            // ref={targetElementRef}
-            // onClick={openMenu}
             // disabled={disabled}
             clearable={clearable}
             placeholder={placeholder}
-            displayRender={displayRender}
+            displayRender={displayRenderProp}
             suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
             focused={menuVisible}
             value={value}
@@ -330,7 +336,7 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' |
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (node: TreeNodeEventData) => React.ReactNode
+  render?: (node: TreeNodeEventData) => React.ReactNode
   /**
    * 点击异步加载子项
    */
@@ -357,15 +363,10 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' |
   overlayClassName?: string
   /**
    * 选中时触发
-   * checkedIds | checkedId: 选中项 ID 集合 | ID
-   * checkedNodes | checkedNode: 选中项数据项集合|数据项
-   * currentNode: 当前操作节点
+   * selectedId : 选中项 ID
+   * selectedItem: 选中项数据项
    */
-  onChange?: (
-    selectedIds: React.ReactText,
-    changedItem: TreeSelectDataItem,
-    currentNode: TreeSelectDataItem
-  ) => void
+  onChange?: (selectedId: React.ReactText, selectedItem: TreeSelectDataItem) => void
   /**
    * 是否可清空
    */

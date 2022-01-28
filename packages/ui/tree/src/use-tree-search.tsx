@@ -3,7 +3,7 @@ import { __DEV__ } from '@hi-ui/env'
 import Input from '@hi-ui/input'
 import { TreeNodeData, FlattedTreeNodeData, TreeNodeEventData } from './types'
 import { useExpandProps } from './hooks'
-import { cloneTree } from '@hi-ui/tree-utils'
+import { cloneTree, getNodeAncestors } from '@hi-ui/tree-utils'
 import { flattenTreeData } from './utils'
 import { TreeProps, Tree, _prefix } from './Tree'
 import { SearchOutlined } from '@hi-ui/icons'
@@ -226,7 +226,9 @@ const getMatchedNodes = (
 const getFilteredIds = (matchedNodes: FlattedTreeNodeData[]) => {
   const filterIdsSet = new Set<React.ReactText>()
   matchedNodes.forEach((node) => {
-    node.ancestors?.forEach((ancestor) => {
+    const ancestors = getNodeAncestors(node)
+
+    ancestors.forEach((ancestor) => {
       filterIdsSet.add(ancestor.id)
     })
   })

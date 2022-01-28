@@ -69,32 +69,32 @@ describe('utils', () => {
       )
     })
 
-    it('ancestors should be from bottom to up', () => {
-      const flattedData = flattenTreeData([
-        gNode('0', [
-          gNode('0-0'),
-          gNode('0-1', [
-            // break line
-            gNode('0-1-0'),
-          ]),
-        ]),
-        gNode('1', [
-          // break line
-          gNode('1-0'),
-          gNode('1-1'),
-        ]),
-      ])
+    // it('ancestors should be from bottom to up', () => {
+    //   const flattedData = flattenTreeData([
+    //     gNode('0', [
+    //       gNode('0-0'),
+    //       gNode('0-1', [
+    //         // break line
+    //         gNode('0-1-0'),
+    //       ]),
+    //     ]),
+    //     gNode('1', [
+    //       // break line
+    //       gNode('1-0'),
+    //       gNode('1-1'),
+    //     ]),
+    //   ])
 
-      expect(flattedData.map(({ ancestors }) => ancestors?.map(({ id }) => id))).toEqual([
-        undefined,
-        ['0'],
-        ['0'],
-        ['0-1', '0'],
-        undefined,
-        ['1'],
-        ['1'],
-      ])
-    })
+    //   expect(flattedData.map(({ ancestors }) => ancestors?.map(({ id }) => id))).toEqual([
+    //     undefined,
+    //     ['0'],
+    //     ['0'],
+    //     ['0-1', '0'],
+    //     undefined,
+    //     ['1'],
+    //     ['1'],
+    //   ])
+    // })
 
     it('raw should be original node data', () => {
       const rawTreeData = [

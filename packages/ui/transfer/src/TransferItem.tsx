@@ -95,7 +95,7 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
             dragNodeRef.current = item
             evt.dataTransfer.setData('transferNode', JSON.stringify({ sourceId: id }))
 
-            onDragStartContext?.(item)
+            onDragStartContext?.(evt, { dragNode: item })
           }}
           onDragEnd={(evt) => {
             evt.preventDefault()
@@ -104,13 +104,13 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
             dragNodeRef.current = null
             setDirection(null)
             setIsDragging(false)
-            onDragEndContext?.(item)
+            onDragEndContext?.(evt, { dragNode: item })
           }}
           onDragLeave={(evt) => {
             evt.preventDefault()
             evt.stopPropagation()
             setDirection(null)
-            onDragLeaveContext?.(item)
+            onDragLeaveContext?.(evt, { dropNode: item })
           }}
           onDragOver={(evt) => {
             const dragId = dragNodeRef.current?.id
@@ -138,7 +138,7 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
               }
             }
 
-            onDragOverContext?.(item)
+            onDragOverContext?.(evt, { dropNode: item })
           }}
           onDrop={(evt) => {
             const dragId = dragNodeRef.current?.id
@@ -152,7 +152,7 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
             if (onDropContext && dragId !== targetId) {
               try {
                 const { sourceId } = JSON.parse(evt.dataTransfer.getData('transferNode'))
-                onDropContext(sourceId, targetId, direction)
+                onDropContext(evt, sourceId, targetId, direction)
               } catch (error) {
                 console.error(error)
               }

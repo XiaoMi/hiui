@@ -1,4 +1,5 @@
 import React from 'react'
+import { baseFlattenTree } from '@hi-ui/tree-utils'
 import { TreeNodeData, FlattedTreeNodeData } from '../types'
 
 /**
@@ -8,48 +9,20 @@ import { TreeNodeData, FlattedTreeNodeData } from '../types'
  * @returns
  */
 export const flattenTreeData = (treeData: TreeNodeData[]) => {
-  const flattedTreeData: FlattedTreeNodeData[] = []
+  return baseFlattenTree({
+    tree: treeData,
+    transform: (node: any) => {
+      const raw = node.raw
 
-  const dig = (
-    node: TreeNodeData,
-    siblings: TreeNodeData[],
-    depth: number,
-    parent?: FlattedTreeNodeData,
-    ancestors?: FlattedTreeNodeData[]
-  ) => {
-    const { id, title, isLeaf = false, disabled = false, children } = node
-    const flattedNode: FlattedTreeNodeData = {
-      id,
-      title,
-      isLeaf,
-      disabled,
-      depth,
-      parent,
-      ancestors,
-      siblings,
-      raw: node,
-      // pos: flattedTreeData.length,
-    }
+      node.id = raw.id
+      node.title = raw.title
+      node.isLeaf = raw.isLeaf ?? false
+      node.disabled = raw.disabled ?? false
 
-    flattedTreeData.push(flattedNode)
-
-    if (children) {
-      const childDepth = depth + 1
       // 祖先节点顺序由下至上
-      const childAncestors = [flattedNode].concat(ancestors || [])
-
-      flattedNode.children = children.map((child) => {
-        return dig(child, children, childDepth, flattedNode, childAncestors)
-      })
-    }
-
-    return flattedNode
-  }
-
-  treeData.forEach((node) => {
-    dig(node, treeData, 0)
-  })
-  return flattedTreeData
+      return node
+    },
+  }) as FlattedTreeNodeData[]
 }
 
 /**

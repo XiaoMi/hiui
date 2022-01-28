@@ -48,7 +48,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       // clearable = false,
       // bordered = true,
       fieldNames = DEFAULT_FIELD_NAMES,
-      showCheckedMode,
+      checkedMode,
       // type,
       defaultExpandAll = false,
       expandedIds: expandedIdsProp,
@@ -61,7 +61,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       searchable: searchableProp,
       searchMode: searchModeProp,
       onLoadChildren,
-      titleRender,
+      render: titleRender,
       filterOption,
       // emptyContent,
       // ********* popper ********* //
@@ -126,15 +126,24 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     const [selectedItems, setSelectedItems] = useState<CheckTreeSelectDataItem[]>([])
 
     const onSelect = useCallback(
-      ({ checkedIds }, node: TreeNodeEventData, checked: boolean) => {
-        tryChangeValue(checkedIds, node)
+      (
+        checkedIds: React.ReactText[],
+        option: {
+          checkedNodes: CheckTreeSelectDataItem[]
+          semiCheckedIds: React.ReactText[]
+          targetNode: TreeNodeEventData
+          checked: boolean
+        }
+      ) => {
+        tryChangeValue(checkedIds, option)
         // 存取异步选中数据
         setSelectedItems((prev) => {
           const next = [...prev]
+          const { targetNode, checked } = option
           if (checked) {
-            next.push(node)
+            next.push(targetNode)
           } else {
-            next.filter((item) => item.id !== node.id)
+            next.filter((item) => item.id !== targetNode.id)
           }
           return next
         })
@@ -202,7 +211,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       onExpand: shouldUseSearch
         ? (ids: any) => setStateInSearch((prev: any) => ({ ...prev, expandedIds: ids }))
         : tryChangeExpandedIds,
-      titleRender: proxyTitleRender,
+      render: proxyTitleRender,
     }
 
     // 下拉菜单不能合并（因为树形数据，不知道是第几级）
@@ -271,7 +280,9 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             className={`${prefixCls}__tree`}
             selectable={false}
             checkable
+            // TODO: 支持 点击 select 交互
             // checkOnSelect
+            checkedMode={checkedMode}
             checkedIds={value}
             onCheck={onSelect}
             // TODO: 支持 fieldNames
@@ -315,7 +326,7 @@ export interface CheckTreeSelectProps
    * PARENT: 当所有子节点被选中时将只保留父节点
    * CHILD: 仅显示子节点
    */
-  showCheckedMode?: 'ALL' | 'PARENT' | 'CHILD'
+  checkedMode?: 'ALL' | 'PARENT' | 'CHILD'
   /**
    * 数据选择类型
    */
@@ -373,7 +384,7 @@ export interface CheckTreeSelectProps
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (node: TreeNodeEventData) => React.ReactNode
+  render?: (node: TreeNodeEventData) => React.ReactNode
   /**
    * 点击异步加载子项
    */
@@ -400,14 +411,19 @@ export interface CheckTreeSelectProps
   overlayClassName?: string
   /**
    * 选中时触发
-   * checkedIds | checkedId: 选中项 ID 集合 | ID
-   * checkedNodes | checkedNode: 选中项数据项集合|数据项
-   * currentNode: 当前操作节点
+   * checkedIds: 选中项 ID 集合
+   * checkedNodes: 选中项数据项集合
+   * targetNode: 当前操作节点
+   * checked: 当前操作是否为选中操作
    */
   onChange?: (
-    selectedIds: React.ReactText[],
-    changedItem: CheckTreeSelectDataItem[],
-    currentNode: CheckTreeSelectDataItem
+    checkedIds: React.ReactText[],
+    options: {
+      checkedNodes: CheckTreeSelectDataItem[]
+      semiCheckedIds: React.ReactText[]
+      targetNode: TreeNodeEventData
+      checked: boolean
+    }
   ) => void
   /**
    * 是否可清空

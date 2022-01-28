@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { TreeNodeEventData, TreeNodeRequiredProps, FlattedTreeNodeData } from '../types'
 import { getTreeNodeEventData } from '../utils'
+import { isTreeRoot } from '@hi-ui/tree-utils'
 
 export const useFocus = (
   getTreeNodeRequiredProps: (id: React.ReactText) => TreeNodeRequiredProps,
@@ -95,7 +96,7 @@ export const useFocus = (
         if (eventNode.expanded) {
           onSwitch(eventNode, false)
         } else {
-          if (focusNode.parent) {
+          if (!isTreeRoot(focusNode.parent)) {
             setFocusedId(focusNode.parent.id)
           }
           // 跳过 disabled

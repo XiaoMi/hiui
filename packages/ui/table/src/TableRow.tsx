@@ -77,7 +77,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
 
         evt.dataTransfer.setData('tableRow', JSON.stringify({ sourceId: rowId }))
 
-        onDragStartContextLatest(rowData)
+        onDragStartContextLatest(evt, { dragNode: rowData })
       },
       [draggable, dragRowRef, onDragStartContextLatest, rowData, rowId]
     )
@@ -163,7 +163,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
         try {
           const { sourceId } = JSON.parse(evt.dataTransfer.getData('tableRow'))
 
-          onDropContextLatest(sourceId, targetId, dragDirection)
+          onDropContextLatest(evt, sourceId, targetId, dragDirection)
         } catch (error) {
           console.error(error)
         }

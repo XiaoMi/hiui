@@ -45,6 +45,8 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       draggable = false,
       onChange,
       onDragStart,
+      onDragLeave,
+      onDragOver,
       onDragEnd,
       onDrop,
       ...rest
@@ -168,7 +170,12 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
     }, [emptyContent])
 
     const dropItem = useCallback(
-      (sourceId: React.ReactText, targetId: React.ReactText, direction: string | null) => {
+      (
+        evt: React.DragEvent,
+        sourceId: React.ReactText,
+        targetId: React.ReactText,
+        direction: string | null
+      ) => {
         if (sourceId === targetId) return
 
         let targetIdx = targetIds.findIndex((item) => item === targetId)
@@ -190,18 +197,32 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
         const nextTargetIds = nextTargetList.map(({ id }) => id)
 
         if (onDrop) {
-          const result = onDrop(targetItem, sourceItem, {
-            before: targetIds,
-            after: nextTargetIds,
+          const result = onDrop(evt, {
+            dropNode: targetItem,
+            dragNode: sourceItem,
+            dataStatus: {
+              before: targetIds,
+              after: nextTargetIds,
+            },
           })
 
           if (result === true) {
             tryChangeTargetIds(nextTargetIds)
-            onDragEnd?.(nextTargetList)
+            onDragEnd?.({
+              dataStatus: {
+                before: targetIds,
+                after: nextTargetIds,
+              },
+            })
           }
         } else {
           tryChangeTargetIds(nextTargetIds)
-          onDragEnd?.(nextTargetList)
+          onDragEnd?.({
+            dataStatus: {
+              before: targetIds,
+              after: nextTargetIds,
+            },
+          })
         }
       },
       [targetIds, tryChangeTargetIds, onDrop, targetList, onDragEnd]
@@ -220,6 +241,9 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
         titleRender,
         pageSize,
         onDrop: dropItem,
+        onDragStart,
+        onDragLeave,
+        onDragOver,
       }),
       [
         disabled,
@@ -233,6 +257,9 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
         titleRender,
         pageSize,
         dropItem,
+        onDragStart,
+        onDragLeave,
+        onDragOver,
       ]
     )
 
@@ -242,6 +269,7 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
     const cls = cx(prefixCls, className, type && `${prefixCls}--type-${type}`)
 
     return (
+      // @ts-ignore
       <TransferProvider value={providedValue}>
         <div ref={ref} role={role} className={cls} {...rest}>
           <TransferPanel
@@ -371,18 +399,30 @@ export interface TransferProps
   /**
    * 拖拽开始时的回调函数
    */
-  onDragStart?: (item: TransferDataItem) => Boolean
+  onDragStart?: (evt: React.DragEvent, option: { dragNode: TransferDataItem }) => Boolean
   /**
    * 拖拽结束时的回调函数(完成拖拽)
+   * @private
    */
-  onDragEnd?: (targetList: TransferDataItem[]) => void
+  onDragEnd?: (option: {
+    dataStatus: {
+      before: React.ReactText[]
+      after: React.ReactText[]
+    }
+  }) => void
   /**
    * 放开拖拽元素时的回调函数，返回 false 将阻止拖拽到对应位置
    */
   onDrop?: (
-    targetItem: TransferDataItem,
-    sourceItem: TransferDataItem,
-    info: { before: React.ReactText[]; after: React.ReactText[] }
+    evt: React.DragEvent,
+    option: {
+      dropNode: TransferDataItem
+      dragNode: TransferDataItem
+      dataStatus: {
+        before: React.ReactText[]
+        after: React.ReactText[]
+      }
+    }
   ) => boolean | void
   /**
    * 开启分页

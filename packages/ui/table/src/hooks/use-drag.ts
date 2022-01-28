@@ -24,7 +24,7 @@ export const useTableDrag = ({
   const onDropEndLatest = useLatestCallback(onDropEnd)
 
   const onDrop = useCallback(
-    (sourceId, targetId, dragDirection) => {
+    (evt, sourceId, targetId, dragDirection) => {
       // console.log(sourceId, targetId, dragDirection)
 
       if (!draggable) return
@@ -50,19 +50,31 @@ export const useTableDrag = ({
 
       const resultMaybePromise = isFunction(onDropProp)
         ? // TODO: 支持 tree 拖拽层级，第四个参数
-          onDropProp(sourceNode, targetNode, { before: cacheData, after: nextTreeData }, 1)
+          onDropProp(evt, {
+            dragNode: sourceNode,
+            dropNode: targetNode,
+            dataStatus: { before: cacheData, after: nextTreeData },
+          })
         : true
 
       if (isPromise(resultMaybePromise)) {
         resultMaybePromise.then((returnResult) => {
           if (returnResult === true) {
             setCacheData(nextTreeData)
-            onDropEndLatest(sourceNode, targetNode, cacheData)
+            onDropEndLatest({
+              dragNode: sourceNode,
+              dropNode: targetNode,
+              dataStatus: { before: cacheData, after: nextTreeData },
+            })
           }
         })
       } else if (resultMaybePromise === true) {
         setCacheData(nextTreeData)
-        onDropEndLatest(sourceNode, targetNode, cacheData)
+        onDropEndLatest({
+          dragNode: sourceNode,
+          dropNode: targetNode,
+          dataStatus: { before: cacheData, after: nextTreeData },
+        })
       }
     },
     [draggable, onDropProp, cacheData, onDropEndLatest, setCacheData]

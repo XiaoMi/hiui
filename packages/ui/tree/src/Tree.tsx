@@ -80,6 +80,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       render: titleRender,
       onContextMenu,
       flattedData: flattedDataProp,
+      checkedMode = 'ALL',
       ...rest
     },
     ref
@@ -99,6 +100,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     )
 
     const [onNodeCheck, isCheckedId, isSemiCheckedId] = useCheck(
+      checkedMode,
       !checkable,
       flattedData,
       defaultCheckedIds,
@@ -413,6 +415,18 @@ export interface TreeProps {
    * 自定义节点右键菜单
    */
   onContextMenu?: (event: React.MouseEvent, node: TreeNodeEventData) => void
+  /**
+   * 多选数据交互时回填、回显模式
+   * ALL: 所有被选中节点，不区分父子节点
+   * PARENT: 当所有子节点被选中时将只保留父节点
+   * CHILD: 仅显示子节点
+   * SEPARATE：父子完全独立受控，暂时不支持
+   */
+  checkedMode?: 'PARENT' | 'CHILD' | 'ALL' | 'SEPARATE'
+  /**
+   * 直接传入扁平数据使用
+   * @private
+   */
   flattedData?: FlattedTreeNodeData[]
 }
 

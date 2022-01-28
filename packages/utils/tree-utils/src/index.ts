@@ -166,6 +166,16 @@ const getTreeRoot = () => {
 }
 
 /**
+ * 判断是否到顶
+ */
+export const isTreeRoot = <T extends { depth: number }>(
+  parent: T | null | undefined
+): parent is null | undefined => {
+  // parent && parent.depth >= 0
+  return !parent || parent.depth === -1
+}
+
+/**
  * 根据指定 id 的节点查找其所有（包含嵌套）孩子节点的 ids
  *
  * f 开头表示基于扁平 tree 数据，而不是基于原始 tree 数据操作
@@ -534,6 +544,15 @@ export const getNodeAncestors = <T extends BaseFlattedTreeNodeDataWithParent>(
   }
 
   return ancestors
+}
+
+/**
+ * 基于扁平树结构，获取兄弟节点，包含自身节点
+ */
+export const getNodeSiblings = <T extends BaseFlattedTreeNodeDataWithParent>(node: T) => {
+  const tNode = node.parent
+
+  return tNode ? tNode.children : []
 }
 
 /**

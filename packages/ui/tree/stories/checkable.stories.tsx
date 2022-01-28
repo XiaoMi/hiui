@@ -2,7 +2,7 @@ import React from 'react'
 import Tree from '../src'
 
 export const Checkable = () => {
-  const [treeData, setTreeData] = React.useState([
+  const [treeData] = React.useState([
     {
       id: 1,
       title: '小米',
@@ -48,7 +48,12 @@ export const Checkable = () => {
     <>
       <h1>Checkable for Tree</h1>
       <div className="tree-basic__wrap">
-        <Tree checkable data={treeData} onCheck={console.log}></Tree>
+        <Tree
+          checkable
+          data={treeData}
+          render={(node) => `${node.title}(${node.id})`}
+          onCheck={console.log}
+        ></Tree>
       </div>
     </>
   )

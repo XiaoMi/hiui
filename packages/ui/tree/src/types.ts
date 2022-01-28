@@ -45,14 +45,6 @@ export interface FlattedTreeNodeData extends TreeNodeData {
    */
   parent?: FlattedTreeNodeData
   /**
-   * 该节点的所有祖先节点列表
-   */
-  ancestors?: FlattedTreeNodeData[]
-  /**
-   * 该节点的兄弟节点列表（其中包含节点本身）
-   */
-  siblings?: TreeNodeData[]
-  /**
    * 节点所在列表数据中的下标
    */
   pos?: number
