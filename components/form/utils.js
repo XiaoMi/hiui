@@ -40,8 +40,14 @@ export const transformValues = (allvalue, fields) => {
         tranformValues[listname] = [allvalue[realField]]
       }
     } else {
+      let readField = realField
+
       // bugfix: https://github.com/XiaoMi/hiui/issues/2077
-      const readField = _type === 'SchemaForm' ? field : realField
+      if (_type === 'SchemaForm' && field) {
+        if (Object.keys(allvalue).includes(field)) {
+          readField = field
+        }
+      }
 
       if (Array.isArray(propsField)) {
         const chainKeys = propsField.reduceRight((pre, next) => {
