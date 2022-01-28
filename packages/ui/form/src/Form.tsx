@@ -27,7 +27,7 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
       labelPlacement = 'right',
       placement = 'vertical',
       verticalAlign,
-      colon,
+      showColon,
       ...rest
     },
     ref
@@ -57,11 +57,11 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
       return {
         labelWidth,
         labelPlacement,
-        colon,
+        showColon,
         ...formContext,
         prefixCls,
       }
-    }, [labelWidth, formContext, labelPlacement, colon, prefixCls])
+    }, [labelWidth, formContext, labelPlacement, showColon, prefixCls])
 
     const cls = cx(prefixCls, className, placement && `${prefixCls}--placement-${placement}`)
 
@@ -82,7 +82,7 @@ export interface FormProps<Values = Record<string, any>>
   /**
    * 提供辅助方法的内部引用
    */
-  innerRef?: React.RefObject<FormHelpers<Values>>
+  innerRef?: React.Ref<FormHelpers<Values>>
   /**
    * label 宽度，可用任意 CSS 长度单位
    */
@@ -102,7 +102,7 @@ export interface FormProps<Values = Record<string, any>>
   /**
    * 配置是否展示冒号
    */
-  colon?: boolean
+  showColon?: boolean
 }
 
 if (__DEV__) {

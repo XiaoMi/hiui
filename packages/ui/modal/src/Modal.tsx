@@ -255,7 +255,7 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
   /**
    * @private
    */
-  innerRef?: React.RefObject<{ close: () => void }>
+  innerRef?: React.Ref<{ close: () => void }>
   /**
    * 关闭动画退出时回调
    * @private

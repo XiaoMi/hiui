@@ -1,7 +1,9 @@
 import React from 'react'
-import Form, { FormItem } from '../src'
+import Form from '../src'
 import Input from '@hi-ui/input'
 import Button from '@hi-ui/button'
+
+const FormItem = Form.Item
 
 export const Placement = () => {
   return (

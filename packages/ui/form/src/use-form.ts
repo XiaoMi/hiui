@@ -222,12 +222,11 @@ export const useForm = <Values = Record<string, any>>({
     (
       fieldName: FormFieldPath,
       valuePropName: string,
-      valueCollectPipe: any,
+      valueDispatchTransform: any,
       shouldValidate?: boolean
-    ) => (evt: React.ChangeEvent<any>) => {
-      // TODO: 传递 onChange 其它参数
-      const nextValue = isFunction(valueCollectPipe)
-        ? valueCollectPipe(evt)
+    ) => (evt: React.ChangeEvent<any>, ...args: any[]) => {
+      const nextValue = isFunction(valueDispatchTransform)
+        ? valueDispatchTransform(evt, ...args)
         : normalizeValueFromChange(evt, valuePropName)
 
       setFieldValue(fieldName, nextValue, shouldValidate)
@@ -401,9 +400,9 @@ export const useForm = <Values = Record<string, any>>({
       const {
         field,
         valuePropName = 'value',
-        valueCollectPropName = 'onChange',
-        valueCollectPipe,
-        valueSyncPipe,
+        valueChangeFuncPropName = 'onChange',
+        valueDispatchTransform,
+        valueConnectTransform,
         validateTrigger: validateTriggerProp = validateTriggersMemo,
         children,
       } = props
@@ -413,28 +412,27 @@ export const useForm = <Values = Record<string, any>>({
         ? validateTriggerProp
         : [validateTriggerProp]) as string[]
 
-      const validateOnCollect = validateTrigger.includes(valueCollectPropName)
+      const validateOnCollect = validateTrigger.includes(valueChangeFuncPropName)
       const validateOnBlur = validateTrigger.includes('onBlur')
 
       const controlledValue = getNested(formState.values, field)
 
-      const returnProps = {
+      const returnProps: any = {
         ref,
-        [valuePropName]: isFunction(valueSyncPipe)
-          ? valueSyncPipe(controlledValue)
+        [valuePropName]: isFunction(valueConnectTransform)
+          ? valueConnectTransform(controlledValue)
           : controlledValue,
         // 字段 change 时校验
-        [valueCollectPropName]: callAllFuncs(
-          controlProps[valueCollectPropName],
-          handleFieldChange(field, valuePropName, valueCollectPipe, validateOnCollect)
+        [valueChangeFuncPropName]: callAllFuncs(
+          controlProps[valueChangeFuncPropName],
+          handleFieldChange(field, valuePropName, valueDispatchTransform, validateOnCollect)
         ),
         onBlur: callAllFuncs(controlProps.onBlur, handleFieldBlur(field, validateOnBlur)),
         invalid: getFieldError(field),
       }
 
       validateTrigger.forEach((triggerName: string) => {
-        if ([valueCollectPropName, 'onBlur'].indexOf(triggerName) === -1) {
-          // @ts-ignore
+        if ([valueChangeFuncPropName, 'onBlur'].indexOf(triggerName) === -1) {
           returnProps[triggerName] = callAllFuncs(
             controlProps[triggerName],
             handleFieldTrigger(field)
@@ -496,6 +494,7 @@ export interface UseFormProps<T = Record<string, any>> {
   initialErrors?: Record<keyof T, string>
   /**
    * 初始化是否已被触碰
+   * @private
    */
   initialTouched?: Record<string, boolean>
   /**
@@ -503,29 +502,18 @@ export interface UseFormProps<T = Record<string, any>> {
    */
   rules?: Record<string, FormRuleModel[]>
   /**
-   * 开启在 onBlur 时触发校验
-   */
-  // validateOnBlur?: boolean
-  /**
-   * 开启在 onChange 时触发校验
-   */
-  // validateOnChange?: boolean
-  /**
    * 设置统一的表单校验时机
    */
   validateTrigger?: string | string[]
   /**
    * 在触摸控件之后才开启校验
+   * @private
    */
   validateAfterTouched?: boolean
   /**
    * 开启惰性校验，发现第一个检验失败的表单控件，就停止向下继续校验
    */
   lazyValidate?: boolean
-  // /**
-  //  * 重置时使用最新传入的 initialValues
-  //  */
-  // useLatestInitialValuesOnReset?: boolean
   /**
    * 字段值更新时触发回调事件：changedValues: 改变的表单对象，allValues: 所有表单项对象
    */

@@ -1,10 +1,15 @@
 /* eslint-disable node/no-callback-literal */
 import React from 'react'
-import Form, { FormHelpers, FormItem, FormReset, FormSubmit } from '../src'
+import Form, { FormHelpers } from '../src'
 import Input from '@hi-ui/input'
 import Button from '@hi-ui/button'
-import { Col, Row } from '@hi-ui/grid'
 import { Select } from '@hi-ui/select'
+import Grid from '@hi-ui/grid'
+
+const { Row, Col } = Grid
+const FormItem = Form.Item
+const FormSubmit = Form.Submit
+const FormReset = Form.Reset
 
 export const SetValues = () => {
   const formRef = React.useRef<FormHelpers>(null)

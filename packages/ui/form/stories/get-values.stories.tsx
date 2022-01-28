@@ -1,9 +1,11 @@
 /* eslint-disable node/no-callback-literal */
 import React from 'react'
-import Form, { FormHelpers, FormItem } from '../src'
+import Form, { FormHelpers } from '../src'
 import Input from '@hi-ui/input'
 import Button from '@hi-ui/button'
 import message from '@hi-ui/message'
+
+const FormItem = Form.Item
 
 export const GetValues = () => {
   const formRef = React.useRef<FormHelpers>(null)
@@ -19,9 +21,7 @@ export const GetValues = () => {
           }}
           labelPlacement="left"
           labelWidth={80}
-          innerRef={(ref) => {
-            formRef.current = ref
-          }}
+          innerRef={formRef}
         >
           <FormItem
             label="手机号"

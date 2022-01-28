@@ -1,6 +1,9 @@
 import React from 'react'
-import Form, { FormHelpers, FormItem, FormSubmit } from '../src'
+import Form, { FormHelpers } from '../src'
 import Input from '@hi-ui/input'
+
+const FormItem = Form.Item
+const FormSubmit = Form.Submit
 
 export const LabelPlacement = () => {
   const formRef = React.useRef<FormHelpers>(null)
@@ -13,7 +16,7 @@ export const LabelPlacement = () => {
           <h2>左对齐</h2>
           <div>
             <Form
-              ref={formRef}
+              innerRef={formRef}
               initialValues={{ productCode: '', productName: '' }}
               labelWidth="100"
               labelPlacement="left"
@@ -43,7 +46,7 @@ export const LabelPlacement = () => {
           <h2>右对齐</h2>
           <div>
             <Form
-              ref={formRef}
+              innerRef={formRef}
               initialValues={{ productCode: '', productName: '' }}
               labelWidth="100"
               labelPlacement="right"
@@ -73,7 +76,7 @@ export const LabelPlacement = () => {
           <h2>顶对齐</h2>
           <div>
             <Form
-              ref={formRef}
+              innerRef={formRef}
               initialValues={{ productCode: '', productName: '' }}
               labelWidth="100"
               labelPlacement="top"

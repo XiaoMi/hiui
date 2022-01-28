@@ -1,14 +1,13 @@
 import { useEffect, useCallback, useMemo } from 'react'
-import { FormFieldPath, FormRuleModel } from './types'
+import { FormFieldPath, FormRuleModel, FormRuleType } from './types'
 import { useFormContext } from './context'
 import { isArrayNonEmpty, isNullish, isArray } from '@hi-ui/type-assertion'
 import Validater, { Rules } from 'async-validator'
 import { toArray } from '@hi-ui/func-utils'
 import { stringify } from './utils'
-// import yup from 'yup'
 
 export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => {
-  const { field, rules: rulesProp, valueType } = props
+  const { field, rules: rulesProp, valueType = 'any' } = props
 
   const { getFieldRules, getFieldProps, registerField, unregisterField } = useFormContext()
 
@@ -61,11 +60,11 @@ export interface UseFormFieldProps<T = Record<string, any>> {
   /**
    * 字段名，支持数组
    */
-  field: FormFieldPath | null
+  field?: FormFieldPath
   /**
    * 指定控件值数据结构类型
    */
-  valueType: 'string' | 'boolean' | 'number' | 'array' | 'object' | 'date' | null
+  valueType?: FormRuleType
   /**
    * 设置字段的验证规则，会覆盖 Form 设置的 rules
    */
@@ -77,17 +76,17 @@ export interface UseFormFieldProps<T = Record<string, any>> {
   /**
    * form 从控件个体采集数据的转换器，最终会把返回值转发给 Form
    */
-  valueCollectPipe?: (value: any) => T
+  valueDispatchTransform?: (...args: any[]) => T
   /**
    * 控件个体接收 form 下发数据的转换器，最终会把返回值转发给 FormField
    */
-  valueSyncPipe?: (value: any) => T
+  valueConnectTransform?: (value: any) => T
   /**
    * 自定义设置 Form 从表单控件采集数据回调的属性
    */
-  valueCollectPropName?: string
+  valueChangeFuncPropName?: string
   /**
-   * 设置触发该字段校验的时机，会覆盖 Form 设置的 validateTrigger
+   * 设置触发该字段校验的时机（值必须是回调函数），会覆盖 Form 设置的 validateTrigger
    */
   validateTrigger?: string | string[]
 }

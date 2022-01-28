@@ -1,9 +1,13 @@
 /* eslint-disable node/no-callback-literal */
 import React from 'react'
-import Form, { FormHelpers, FormItem, FormReset, FormSubmit } from '../src'
+import Form, { FormHelpers } from '../src'
 import Input from '@hi-ui/input'
 import Checkbox from '@hi-ui/checkbox'
 import message from '@hi-ui/message'
+
+const FormItem = Form.Item
+const FormReset = Form.Reset
+const FormSubmit = Form.Submit
 
 export const NestedField = () => {
   const formRef = React.useRef<FormHelpers>(null)
@@ -69,8 +73,8 @@ export const NestedField = () => {
             field="remember"
             valuePropName="checked"
             valueType="boolean"
-            valueCollectPropName="onChange"
-            // valueCollectPipe={(evt) => {
+            valueChangeFuncPropName="onChange"
+            // valueDispatchTransform={(evt) => {
             //   console.log('valueSync', evt)
             //   return evt.target.checked
             // }}

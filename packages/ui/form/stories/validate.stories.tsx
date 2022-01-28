@@ -1,10 +1,12 @@
 import React from 'react'
-import Form, { FormHelpers, FormItem, FormRules } from '../src'
+import Form, { FormHelpers, FormRules } from '../src'
 import Input from '@hi-ui/input'
 import { Select } from '@hi-ui/select'
 import { Cascader } from '@hi-ui/cascader'
 import Radio from '@hi-ui/radio'
 import Button from '@hi-ui/button'
+
+const FormItem = Form.Item
 
 export const Validate = () => {
   const RadioGroup = Radio.Group

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Checkbox } from '../src'
+import Checkbox from '../src'
 
 export const CheckAll = () => {
   const CheckboxGroup = Checkbox.Group

@@ -17,9 +17,9 @@ export const FormItem: React.FC<FormItemProps> = ({
   valueType,
   rules,
   valuePropName,
-  valueCollectPropName,
-  valueCollectPipe,
-  valueSyncPipe,
+  valueChangeFuncPropName,
+  valueDispatchTransform,
+  valueConnectTransform,
   validateTrigger,
   ...rest
 }) => {
@@ -33,9 +33,9 @@ export const FormItem: React.FC<FormItemProps> = ({
         valueType={valueType}
         rules={rules}
         valuePropName={valuePropName}
-        valueCollectPropName={valueCollectPropName}
-        valueCollectPipe={valueCollectPipe}
-        valueSyncPipe={valueSyncPipe}
+        valueChangeFuncPropName={valueChangeFuncPropName}
+        valueDispatchTransform={valueDispatchTransform}
+        valueConnectTransform={valueConnectTransform}
         validateTrigger={validateTrigger}
       >
         {children}

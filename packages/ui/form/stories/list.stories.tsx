@@ -1,8 +1,11 @@
 import React from 'react'
-import Form, { FormItem, FormList } from '../src'
+import Form from '../src'
 import Input from '@hi-ui/input'
 import { CloseOutlined } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
+
+const FormItem = Form.Item
+const FormList = Form.List
 
 export const List = () => {
   return (

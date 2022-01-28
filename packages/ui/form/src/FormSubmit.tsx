@@ -10,7 +10,7 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is FormSubmit
  */
-export const FormSubmit = forwardRef<HTMLButtonElement | HTMLAnchorElement | null, FormLabelProps>(
+export const FormSubmit = forwardRef<HTMLButtonElement | HTMLAnchorElement | null, FormSubmitProps>(
   (
     { prefixCls = _prefix, role = _role, className, children, type = 'primary', onClick, ...rest },
     ref
@@ -45,7 +45,7 @@ export const FormSubmit = forwardRef<HTMLButtonElement | HTMLAnchorElement | nul
   }
 )
 
-export interface FormLabelProps extends Omit<ButtonProps, 'onClick'> {
+export interface FormSubmitProps extends Omit<ButtonProps, 'onClick'> {
   // TODO: 重新设计
   onClick?: (value: any, error: any) => void
 }

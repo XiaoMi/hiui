@@ -1,6 +1,8 @@
 import React from 'react'
-import Form, { FormItem } from '../src'
+import Form from '../src'
 import Input from '@hi-ui/input'
+
+const FormItem = Form.Item
 
 export const Basic = () => {
   return (

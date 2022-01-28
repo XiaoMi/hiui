@@ -1,5 +1,7 @@
 import React from 'react'
-import { Row, Col } from '../src'
+import Grid from '../src'
+
+const { Row, Col } = Grid
 
 export const Gutter = () => {
   const blockStyle: React.CSSProperties = {

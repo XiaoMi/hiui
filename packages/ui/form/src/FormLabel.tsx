@@ -4,6 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useFormContext } from './context'
 import { isNumeric } from '@hi-ui/type-assertion'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useLocaleContext } from '@hi-ui/locale-context'
 
 const _role = 'form-label'
 const _prefix = getPrefixCls(_role)
@@ -12,13 +13,15 @@ const _prefix = getPrefixCls(_role)
  * TODO: What is FormLabel
  */
 export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((props, ref) => {
+  const i18n = useLocaleContext()
+
   const {
     // @ts-ignore
     labelWidth: labelWidthContext,
     // @ts-ignore
     labelPlacement,
     // @ts-ignore
-    colon: colonContext,
+    showColon: showColonContext,
     // @ts-ignore
     contentPosition: contentPositionContext,
   } = useFormContext()
@@ -35,7 +38,7 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     required = false,
     // Item’s priority is higher than Form
     labelWidth: labelWidthProp = labelWidthContext,
-    colon = colonContext,
+    showColon = showColonContext,
     // @ts-ignore
     contentPosition = contentPositionContext,
     ...rest
@@ -68,12 +71,7 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     }
   }, [contentPosition])
 
-  const colonMemo = useMemo(() => {
-    if (typeof colon === 'boolean') {
-      return colon ? '：' : ''
-    }
-    return colon ?? '：'
-  }, [colon])
+  const colon = showColon ? i18n.get('form.colon') : null
 
   const cls = cx(
     prefixCls,
@@ -91,7 +89,7 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
       {label ? (
         <label className={`${prefixCls}__text`} style={{ width: labelWidth }}>
           {label}
-          {colonMemo}
+          {colon}
         </label>
       ) : (
         <span className={`${prefixCls}__indent`} style={{ width: labelWidth }} />
@@ -115,7 +113,7 @@ export interface FormLabelProps extends HiBaseHTMLProps<'div'> {
   /**
    * 是否显示冒号
    */
-  colon?: boolean
+  showColon?: boolean
   /**
    * label 宽度，可使用任意 CSS 长度单位。优先级高于 Form 设置的 labelWidth
    */

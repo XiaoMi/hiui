@@ -1,6 +1,6 @@
 /* eslint-disable node/no-callback-literal */
 import React from 'react'
-import Form, { FormHelpers, FormItem, FormReset, FormSubmit } from '../src'
+import Form, { FormHelpers } from '../src'
 import Button from '@hi-ui/button'
 import message from '@hi-ui/message'
 import Select from '@hi-ui/select'
@@ -12,6 +12,10 @@ import Radio from '@hi-ui/radio'
 import { Switch } from '@hi-ui/switch'
 import { Rating } from '@hi-ui/rating'
 import { Upload } from '@hi-ui/upload'
+
+const FormItem = Form.Item
+const FormReset = Form.Reset
+const FormSubmit = Form.Submit
 
 export const Cascade = () => {
   const CheckboxGroup = Checkbox.Group
@@ -86,9 +90,9 @@ export const Cascade = () => {
           >
             <CheckboxGroup
               data={[
-                { id: 'DatePicker', content: 'DatePicker' },
-                { id: 'Cascader', content: 'Cascader' },
-                { id: 'Radio', content: 'Radio' },
+                { id: 'DatePicker', title: 'DatePicker' },
+                { id: 'Cascader', title: 'Cascader' },
+                { id: 'Radio', title: 'Radio' },
               ]}
               onChange={(data) => console.log('Checkbox data', data)}
             ></CheckboxGroup>
@@ -167,11 +171,14 @@ export const Cascade = () => {
           )}
           {formData.checkbox.includes('Radio') && (
             <FormItem label="Radio" field="radio" valueType="string">
-              <RadioGroup onChange={(data) => console.log('radio data', data)}>
-                <Radio value={0}>手机类</Radio>
-                <Radio value={1}>电脑类</Radio>
-                <Radio value={2}>生活类</Radio>
-              </RadioGroup>
+              <RadioGroup
+                data={[
+                  { id: 0, title: '手机类' },
+                  { id: 1, title: '电脑类' },
+                  { id: 2, title: '生活类' },
+                ]}
+                onChange={(data) => console.log('radio data', data)}
+              ></RadioGroup>
             </FormItem>
           )}
 
@@ -187,14 +194,12 @@ export const Cascade = () => {
               type="photo"
               uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
               onChange={(file, fileList, response) => {
-                file.id = 'file唯一标识'
                 console.log('upload callback', file, fileList, response)
               }}
               onRemove={(file, fileList, index) => {
                 console.log('remove callback', file, fileList, index)
                 return new Promise((resolve, reject) => resolve(true))
               }}
-              params={{ id: 'uid', channel: 'youpin' }}
               name={'files[]'}
               defaultFileList={[
                 {

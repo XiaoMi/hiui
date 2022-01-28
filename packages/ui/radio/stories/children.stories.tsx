@@ -1,6 +1,8 @@
 import React from 'react'
 import Radio from '../src'
-import { Row, Col } from '@hi-ui/grid'
+import Grid from '@hi-ui/grid'
+
+const { Row, Col } = Grid
 
 export const Children = () => {
   const RadioGroup = Radio.Group

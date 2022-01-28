@@ -137,34 +137,32 @@
 
 ### Form
 
-| 参数                 | 变更类型                        | 变更内容                                            | 解决的问题                                                        |
-| -------------------- | ------------------------------- | --------------------------------------------------- | ----------------------------------------------------------------- |
-| propName             | feature \| deprecated \| update | 变更了什么                                          | 之前是什么样子，解决什么问题                                      |
-| ----                 | ----                            | ----                                                | ----                                                              |
-| colon                | feature                         | 字段：showColon -> colon 类型：boolean -> ReactText | 强化支持自定义 colon                                              |
-| innerRef             | update                          | ref -> innerRef                                     | 解决名字占用，ref 功能作为 dom 引用获取，回调方法写法支持 Promise |
-| initialErrors        | feature                         | -                                                   | 强化功能                                                          |
-| initialTouched       | feature                         | -                                                   | 强化功能                                                          |
-| validateTrigger      | feature                         | -                                                   | 强化功能                                                          |
-| validateAfterTouched | feature                         | -                                                   | 强化功能                                                          |
-| lazyValidate         | feature                         | -                                                   | 强化功能                                                          |
-| onSubmit             | feature                         | -                                                   | 强化功能                                                          |
-| onReset              | feature                         | -                                                   | 强化功能                                                          |
+| 参数                 | 变更类型                        | 变更内容        | 解决的问题                                                        |
+| -------------------- | ------------------------------- | --------------- | ----------------------------------------------------------------- |
+| propName             | feature \| deprecated \| update | 变更了什么      | 之前是什么样子，解决什么问题                                      |
+| ----                 | ----                            | ----            | ----                                                              |
+| innerRef             | update                          | ref -> innerRef | 解决名字占用，ref 功能作为 dom 引用获取，回调方法写法支持 Promise |
+| initialErrors        | feature                         | -               | 强化功能                                                          |
+| initialTouched       | feature                         | -               | 强化功能                                                          |
+| validateTrigger      | feature                         | -               | 强化功能                                                          |
+| validateAfterTouched | feature                         | -               | 强化功能                                                          |
+| lazyValidate         | feature                         | -               | 强化功能                                                          |
+| onSubmit             | feature                         | -               | 强化功能                                                          |
+| onReset              | feature                         | -               | 强化功能                                                          |
 
 ### FormItem
 
-| 参数                 | 变更类型                        | 变更内容                                            | 解决的问题                   |
-| -------------------- | ------------------------------- | --------------------------------------------------- | ---------------------------- |
-| propName             | feature \| deprecated \| update | 变更了什么                                          | 之前是什么样子，解决什么问题 |
-| ----                 | ----                            | ----                                                | ----                         |
-| colon                | feature                         | 字段：showColon -> colon 类型：boolean -> ReactText | 强化支持自定义 colon         |
-| required             | update                          | 定义：只做展示，不做校验                            | 优化功能                     |
-| valueType            | feature                         | -                                                   | 强化功能                     |
-| valueCollectPropName | feature                         | -                                                   | 强化功能                     |
-| valueCollectPipe     | feature                         | -                                                   | 强化功能                     |
-| valueSyncPipe        | feature                         | -                                                   | 强化功能                     |
-| validateTrigger      | feature                         | -                                                   | 强化功能                     |
-| children             | feature                         | 支持函数自定义渲染表单控件                          | 强化功能                     |
+| 参数                    | 变更类型                        | 变更内容                   | 解决的问题                   |
+| ----------------------- | ------------------------------- | -------------------------- | ---------------------------- |
+| propName                | feature \| deprecated \| update | 变更了什么                 | 之前是什么样子，解决什么问题 |
+| ----                    | ----                            | ----                       | ----                         |
+| required                | update                          | 定义：只做展示，不做校验   | 优化功能                     |
+| valueType               | feature                         | -                          | 强化功能                     |
+| valueChangeFuncPropName | feature                         | -                          | 强化功能                     |
+| valueDispatchTransform  | feature                         | -                          | 强化功能                     |
+| valueConnectTransform   | feature                         | -                          | 强化功能                     |
+| validateTrigger         | feature                         | -                          | 强化功能                     |
+| children                | feature                         | 支持函数自定义渲染表单控件 | 强化功能                     |
 
 ### FormList
 

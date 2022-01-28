@@ -50,6 +50,7 @@
     "@hi-ui/dom-utils": "^4.0.0-alpha.7",
     "@hi-ui/env": "^4.0.0-alpha.6",
     "@hi-ui/func-utils": "^4.0.0-alpha.6",
+    "@hi-ui/locale-context": "^4.0.0-alpha.19",
     "@hi-ui/type-assertion": "^4.0.0-alpha.14",
     "@hi-ui/use-latest": "^4.0.0-alpha.5",
     "async-validator": "^4.0.7",

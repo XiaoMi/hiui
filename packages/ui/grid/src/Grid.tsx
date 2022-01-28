@@ -245,5 +245,3 @@ export interface BrProps extends HiBaseHTMLProps<'div'> {
 if (__DEV__) {
   Br.displayName = 'Br'
 }
-
-export const Grid = { Row, Col, Br }

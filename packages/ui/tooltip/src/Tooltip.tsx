@@ -172,7 +172,7 @@ export interface TooltipProps extends HiBaseHTMLProps<'div'>, UseTooltipProps {
   /**
    * @private
    */
-  innerRef?: React.RefObject<{ close: () => void }>
+  innerRef?: React.Ref<{ close: () => void }>
   /**
    * 指定 portal 的容器
    * @private
