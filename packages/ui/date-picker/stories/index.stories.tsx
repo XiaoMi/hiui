@@ -8,6 +8,7 @@ export * from './date-time.stories'
 export * from './range.stories'
 export * from './shortcut.stories'
 export * from './lunar.stories'
+export * from './size.stories'
 
 export default {
   title: 'Data Input/DatePicker',

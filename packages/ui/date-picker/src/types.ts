@@ -161,4 +161,9 @@ export interface DatePickerProps extends ExtendsType {
    * @default 'line'
    */
   appearance?: 'line' | 'unset' | 'filled'
+  /**
+   * 尺寸
+   * @default 'md'
+   */
+  size?: 'sm' | 'md' | 'lg'
 }

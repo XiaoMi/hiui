@@ -72,6 +72,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       disabledMinutes = DEFAULT_DISABLED_FUNCTION,
       disabledSeconds = DEFAULT_DISABLED_FUNCTION,
       appearance = 'line',
+      size = 'md',
       ...otherProps
     },
     ref
@@ -351,6 +352,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           prefixCls,
           showPanel,
           isInDateRangeTimeMode,
+          size,
         }}
       >
         <div className={cx(prefixCls, className)} {...otherProps}>
@@ -373,6 +375,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             attachEl={attachEl}
             unmountOnClose={false}
             preload
+            autoFocus={false}
           >
             {popContent}
           </PopperPortal>

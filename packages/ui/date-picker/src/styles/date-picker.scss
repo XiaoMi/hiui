@@ -16,7 +16,6 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
   &__popper {
     //width: 288px;
-    font-size: 14px;
     display: flex;
     flex-direction: column;
     border-radius: use-border-radius('md');
@@ -54,9 +53,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
   &__picker {
     border-radius: use-border-radius('md');
-    height: 32px;
     width: 240px;
-    line-height: 28px;
     display: inline-flex;
     align-items: center;
     justify-content: space-around;
@@ -64,6 +61,24 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     position: relative;
     z-index: 0;
     border:  use-border-size('normal') transparent;
+
+    &--size-sm{
+      line-height: use-height-size('xs');
+      font-size: use-text-size('sm');
+      height: use-height-size('xs');
+    }
+
+    &--size-md{
+      line-height: use-height-size('normal');
+      font-size: use-text-size('normal');
+      height: use-height-size('normal');
+    }
+
+    &--size-lg{
+      line-height: use-height-size('xl');
+      font-size: use-text-size('lg');
+      height: use-height-size('xl');
+    }
 
     $line: '#{&}--appearance-line';
     $filled: '#{&}--appearance-filled';
@@ -175,7 +190,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     &__input-container{
       position: relative;
       z-index: 0;
-      height: 24px;
+      height: 100%;
       line-height: 24px;
       width: 190px;
     }
@@ -203,7 +218,8 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       position: absolute;
       z-index: 1;
       left: 0;
-      top: 0;
+      top: 50%;
+      transform: translateY(-50%);
       font-size: inherit;
       font-weight: inherit;
       font-family: inherit;
@@ -228,15 +244,16 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     width: calc(100% - 2px);
     height: calc(100% - 2px);
     border-radius: use-border-radius('md');
-    font-size: use-text-size('normal');
     color: use-color('gray', 700);
     overflow: hidden;
   }
 
   &__input-selector {
     display: flex;
-    margin: 0 12px;
     border-radius: use-border-radius('normal');
+    height: calc(100% - 4px);
+    padding: 0 8px;
+    margin: 0 4px;
 
     &--date-time-range {
       &:hover {

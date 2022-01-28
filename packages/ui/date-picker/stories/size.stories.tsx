@@ -1,37 +1,31 @@
 import React, { useState } from 'react'
 import DatePicker from '../src'
 
-export const Appearanec = () => {
+export const Size = () => {
   return (
     <>
-      <h1>Appearance</h1>
-      <div className="date-picker-appearance__wrap">
-        <h2>Line</h2>
+      <h1>Size</h1>
+      <div className="date-picker-size__wrap">
+        <h2>sm</h2>
         <DatePicker
+          size={'sm'}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
         />
-        <h2>filled</h2>
+        <h2>md</h2>
         <DatePicker
-          appearance={'filled'}
+          size={'md'}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
         />
-        <h2>unset</h2>
+        <h2>lg</h2>
         <DatePicker
-          appearance={'unset'}
+          size={'lg'}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
-        />
-        <DatePicker
-          appearance={'unset'}
-          onChange={(date, dateStr) => {
-            console.log('onChange', date, dateStr)
-          }}
-          type={'daterange'}
         />
       </div>
     </>

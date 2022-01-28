@@ -40,6 +40,7 @@ type ExtendsType = Omit<
       | 'weekOffset'
       | 'timeInterval'
       | 'appearance'
+      | 'size'
     >
   >
 

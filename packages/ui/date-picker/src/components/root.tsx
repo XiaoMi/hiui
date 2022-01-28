@@ -38,6 +38,7 @@ const Root = ({
     isInDateRangeTimeMode,
     showPanel,
     appearance,
+    size,
   } = useContext(DPContext)
   const [inputData, setInputData] = useState(outDate)
 
@@ -66,6 +67,7 @@ const Root = ({
     `theme__${theme}`,
     `${prefixCls}__picker--${type}`,
     `${prefixCls}__picker--appearance-${appearance}`,
+    `${prefixCls}__picker--size-${size}`,
     inputFocus && `${prefixCls}__picker--focus`,
     disabled && `${prefixCls}__picker--disabled`,
     showTime && `${prefixCls}__picker--hastime`
