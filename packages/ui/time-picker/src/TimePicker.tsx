@@ -50,12 +50,12 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       secondStep = 1,
       format = 'HH:mm:ss',
       type = 'single',
+      appearance = 'line',
       defaultValue: uncontrolledValue = DefaultValue,
       disabled = false,
       disabledHours: originalDisabledHours = DefaultDisabledFunc,
       disabledSeconds: originalDisabledSeconds = DefaultDisabledFunc,
       disabledMinutes: originalDisabledMinutes = DefaultDisabledFunc,
-      bordered = true,
       onChange: notifyOutside,
       placeholder: originalPlaceholder = DefaultPlaceholder,
       inputReadonly = false,
@@ -180,8 +180,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     const [showPopper, setShowPopper] = useState(false)
     const showPopperRef = useRef(false)
 
-    const cls = cx(prefixCls, className, {
-      [`${prefixCls}--border`]: bordered,
+    const cls = cx(prefixCls, className, `${prefixCls}--appearance-${appearance}`, {
       [`${prefixCls}--active`]: showPopper && !disabled,
       [`${prefixCls}--disabled`]: disabled,
       [`${prefixCls}--input-not-valid`]: !isInputValid,
@@ -238,6 +237,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       <div ref={ref} role={role} className={cls}>
         <div ref={setAttachEl} className={`${prefixCls}__input-wrapper`}>
           <Input
+            isFitContent={appearance === 'unset'}
             ref={inputRef}
             onValidChange={setIsInputValid}
             disabled={inputReadonly || disabled}
@@ -281,6 +281,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           unmountOnClose={false}
           visible={showPopper && !disabled}
           attachEl={attachEl}
+          autoFocus={false}
           onClose={() => {
             // 关闭弹窗，视作，抛弃之前的选择行为，复位
             showPopperRef.current = false
@@ -351,11 +352,6 @@ export interface TimePickerProps extends ExtendType {
    * @default false
    */
   inputReadonly?: boolean
-  /**
-   * 是否有边框
-   * @default true
-   */
-  bordered?: boolean
   /**
    * 是否禁用
    * @default false

@@ -24,15 +24,29 @@ $interact-area: '#{$input-prefix}__interact-area' !default;
     }
   }
 
+  &--fit-content{
+    .#{$interact-area} {
+      width: auto;
+    }
+  }
+
+  &__wrapper{
+    width: fit-content;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 0;
+    height: 30px;
+    line-height: 30px;
+  }
+
   &__interact-area {
+    box-sizing: border-box;
+    width: 208px;
+    padding: 0 12px;
     color: inherit;
     border: none;
     outline: none;
     height: 30px;
-    width: 208px;
-    line-height: 30px;
-    padding: 0 12px;
-    box-sizing: border-box;
     font-size: inherit;
     background: transparent;
 

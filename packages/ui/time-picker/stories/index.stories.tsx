@@ -4,6 +4,7 @@ import TimePicker from '../src'
 export * from './basic.stories'
 export * from './custom-disabled.stories'
 export * from './format.stories'
+export * from './appearance.stories'
 
 export default {
   title: 'Data Input/TimePicker',

@@ -31,6 +31,7 @@ interface InputProps extends ExtendType {
   disabled: boolean
   // onBlur: () => void
   onValidChange: (isValid: boolean) => void
+  isFitContent: boolean
 }
 
 export interface InputRef {
@@ -58,6 +59,7 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
     onFocus,
     disabled,
     onValidChange,
+    isFitContent,
   } = props
   const componentClass = useMemo(() => `${prefix}__input`, [prefix])
 
@@ -159,21 +161,24 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
             }}
             value={matchValue}
             placeholder={placeholders[index]}
+            size={
+              isFitContent ? matchValue.length || (placeholders[index] || '').length : undefined
+            }
           />
         </div>
       )
     },
     [
-      placeholders,
-      format,
-      onFocus,
-      onChange,
-      cacheValue,
-      getPanelType,
-      // onBlur,
-      validChecker,
       componentClass,
       disabled,
+      placeholders,
+      isFitContent,
+      format,
+      cacheValue,
+      validChecker,
+      getPanelType,
+      onChange,
+      onFocus,
     ]
   )
 
@@ -195,6 +200,7 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
         [`${componentClass}--not-valid`]: !judgeIsValid(cacheValue),
         [`${componentClass}--range`]: type === 'range',
         [`${componentClass}--disabled`]: disabled,
+        [`${componentClass}--fit-content`]: isFitContent,
       })}
     >
       {renderInput(cacheValue[0], 0)}
