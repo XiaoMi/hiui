@@ -1,11 +1,9 @@
-import React from 'react'
-
 import { HiBaseHTMLProps } from '@hi-ui/core'
 
 export type CarouselArrowSize = 'lg' | 'md' | 'sm'
 
 export type CarouselDotType = 'line' | 'slider' | 'dot'
-export type CarouselDotPosition = 'left' | 'right' | 'top' | 'bottom' | 'outer'
+export type CarouselDotPlacement = 'left' | 'right' | 'top' | 'bottom' | 'outer'
 
 export interface CarouselProps extends HiBaseHTMLProps<'div'> {
   /**
@@ -47,5 +45,5 @@ export interface CarouselProps extends HiBaseHTMLProps<'div'> {
    * 分页指示器位置
    * @default 'bottom'
    */
-  dotPosition?: CarouselDotPosition
+  dotPlacement?: CarouselDotPlacement
 }
