@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/transfer",
-  "version": "4.0.0-alpha.38",
+  "version": "4.0.0-alpha.39",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,14 +44,14 @@
   },
   "dependencies": {
     "@hi-ui/button": "^4.0.0-alpha.25",
-    "@hi-ui/checkbox": "^4.0.0-alpha.31",
+    "@hi-ui/checkbox": "^4.0.0-alpha.32",
     "@hi-ui/classname": "^4.0.0-alpha.3",
     "@hi-ui/core-css": "^4.0.0-alpha.14",
     "@hi-ui/env": "^4.0.0-alpha.6",
     "@hi-ui/icons": "^4.0.0-alpha.29",
     "@hi-ui/input": "^4.0.0-alpha.34",
-    "@hi-ui/pagination": "^4.0.0-alpha.34",
-    "@hi-ui/use-check": "^4.0.0-alpha.20",
+    "@hi-ui/pagination": "^4.0.0-alpha.35",
+    "@hi-ui/use-check": "^4.0.0-alpha.21",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.14"
   },
   "peerDependencies": {
