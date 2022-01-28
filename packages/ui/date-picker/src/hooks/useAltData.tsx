@@ -24,7 +24,7 @@ const useAltData = (config: {
 
   // 合并用户自定义的日期信息作为presetData
   const getAltCalendarData = useCallback(
-    (allPRCDate: CalendarAltCalendarPreset, altCalendar: CalendarItemV3[]) => {
+    (allPRCDate: CalendarAltCalendarPreset, x: CalendarItemV3[]) => {
       const result = {} as CalendarAltCalendarPreset
       altCalendar.length > 0 &&
         altCalendar.forEach((item) => {

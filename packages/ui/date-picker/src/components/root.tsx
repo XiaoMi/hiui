@@ -30,7 +30,6 @@ const Root = ({
     disabled,
     clearable,
     theme,
-    width,
     value,
     format,
     prefixCls,
@@ -76,8 +75,8 @@ const Root = ({
   const renderRange = type.includes('range') || type === 'timeperiod'
 
   return (
-    <div className={_cls} ref={setAttachEl} style={{ width: width }}>
-      <div className={`${prefixCls}__picker__wrapper`} style={{ width: width }}>
+    <div className={_cls} ref={setAttachEl}>
+      <div className={`${prefixCls}__picker__wrapper`}>
         <div
           className={cx(
             `${prefixCls}__input-selector`,

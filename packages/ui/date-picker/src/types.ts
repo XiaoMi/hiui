@@ -67,6 +67,10 @@ export type DatePickerValueV3 = Date | string | number | DateRange | undefined |
 
 export type DatePickerValue = Date | string | number
 
+export type DatePickerOnSelectV3 = (data: moment.Moment, isCompleted: boolean) => void
+
+export type DatePickerOnSelect = (data: Date, isCompleted: boolean) => void
+
 export type DatePickerOnChange = (
   date: Date | Date[] | undefined,
   dateStr: string | string[] | undefined
@@ -159,8 +163,6 @@ export interface DatePickerProps extends ExtendsType {
 
   dateMarkPreset?: string
 
-  overlayClassName?: string
-
   disabledHours?: ((panel: TimePickerPanelType) => number[]) | number[]
 
   disabledMinutes?: ((selectedHour: number, panel: TimePickerPanelType) => number[]) | number[]
@@ -169,7 +171,7 @@ export interface DatePickerProps extends ExtendsType {
     | ((selectedHour: number, selectedMinute: number, panel: TimePickerPanelType) => number[])
     | number[]
 
-  onSelect?: (data: moment.Moment, isCompleted: boolean) => void
+  onSelect?: DatePickerOnSelect
 
   onChange?: DatePickerOnChange
   /**

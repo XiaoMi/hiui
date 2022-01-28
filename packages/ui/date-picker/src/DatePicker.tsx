@@ -24,6 +24,7 @@ import RangePanel from './components/range-panel'
 import {
   CalendarItemV3,
   DatePickerOnChange,
+  DatePickerOnSelectV3,
   DatePickerProps,
   DatePickerType,
   DatePickerValueV3,
@@ -65,14 +66,13 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       altCalendarPreset,
       dateMarkRender,
       dateMarkPreset,
-      overlayClassName,
       inputReadOnly,
       disabledDate = DEFAULT_DISABLED_DATE,
       max: configMax,
       min: configMin,
       maxDate,
       minDate,
-      onSelect: propsOnSelect,
+      onSelect: propsOnSelectOriginal,
       theme,
       disabledHours = DEFAULT_DISABLED_FUNCTION,
       disabledMinutes = DEFAULT_DISABLED_FUNCTION,
@@ -113,6 +113,13 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     useEffect(() => {
       setType(propType)
     }, [propType])
+
+    const propsOnSelect = useCallback<DatePickerOnSelectV3>(
+      (data: moment.Moment, isCompleted: boolean) => {
+        propsOnSelectOriginal && propsOnSelectOriginal(moment(data).toDate(), isCompleted)
+      },
+      [propsOnSelectOriginal]
+    )
 
     const safeWeekOffset = useMemo(
       () => (weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1),
@@ -340,7 +347,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     )
 
     const popperCls = cx(
-      overlayClassName,
       `${prefixCls}__popper`,
       type === 'date' && showTime && `${prefixCls}__popper--time`,
       type.includes('range') && `${prefixCls}__popper--range`,
