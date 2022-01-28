@@ -1,5 +1,5 @@
 import React from 'react'
-import { DatePickerProps, DatePickerValueV3 } from './types'
+import { CalendarItemV3, DatePickerProps, DatePickerValueV3 } from './types'
 import moment from 'moment'
 
 const DPContext = React.createContext<DPContextData>({} as DPContextData)
@@ -24,6 +24,7 @@ type ExtendsType = Omit<
   | 'weekOffset'
   | 'timeInterval'
   | 'value'
+  | 'altCalendar'
 > &
   Required<
     Pick<
@@ -59,5 +60,7 @@ export interface DPContextData extends ExtendsType {
   isInDateRangeTimeMode: boolean
   // 内部现在暂时使用 v3 的数据格式
   value: DatePickerValueV3
+  // 内部现在暂时使用 v3 的数据格式
+  altCalendar?: CalendarItemV3[]
 }
 export default DPContext

@@ -13,6 +13,15 @@ export interface DateRange {
 
 export interface CalendarItem {
   date: Date | string
+  content: string
+  /**
+   * @default false
+   */
+  highlighted?: boolean
+}
+
+export interface CalendarItemV3 {
+  date: Date | string
   text: string
   /**
    * @default false

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { getPRCDate, deconstructDate } from '../utils'
 import {
-  CalendarItem,
+  CalendarItemV3,
   DatePickerAltCalendarPreset,
   CalendarAltCalendarPreset,
   CalendarMarkPreset,
@@ -9,7 +9,7 @@ import {
 
 const useAltData = (config: {
   altCalendarPreset?: DatePickerAltCalendarPreset
-  altCalendar?: CalendarItem[]
+  altCalendar?: CalendarItemV3[]
   dateMarkPreset?: string
   showPanel: boolean
   prefixCls: string
@@ -24,7 +24,7 @@ const useAltData = (config: {
 
   // 合并用户自定义的日期信息作为presetData
   const getAltCalendarData = useCallback(
-    (allPRCDate: CalendarAltCalendarPreset, altCalendar: CalendarItem[]) => {
+    (allPRCDate: CalendarAltCalendarPreset, altCalendar: CalendarItemV3[]) => {
       const result = {} as CalendarAltCalendarPreset
       altCalendar.length > 0 &&
         altCalendar.forEach((item) => {

@@ -22,6 +22,7 @@ import Root from './components/root'
 import Panel from './components/panel'
 import RangePanel from './components/range-panel'
 import {
+  CalendarItemV3,
   DatePickerOnChange,
   DatePickerProps,
   DatePickerType,
@@ -60,7 +61,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       onChange: onChangeOriginal = DEFAULT_ON_CHANGE,
       timeInterval = 240,
       shortcuts,
-      altCalendar,
+      altCalendar: altCalendarOriginal,
       altCalendarPreset,
       dateMarkRender,
       dateMarkPreset,
@@ -132,6 +133,17 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         }
       }
     }, [])
+
+    const altCalendar = useMemo<CalendarItemV3[] | undefined>(
+      () =>
+        altCalendarOriginal &&
+        altCalendarOriginal.map((item) => ({
+          date: item.date,
+          text: item.content,
+          highlight: item.highlighted,
+        })),
+      [altCalendarOriginal]
+    )
 
     // 将 v4 的 api 格式转换成 v3 的 api 格式内部使用
     const onChange = useCallback<DatePickerOnChange>(

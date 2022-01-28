@@ -6,7 +6,7 @@ import Lunar from './toLunar'
 // import { getLocaleTypeFormatMap } from './constants'
 import {
   CalendarAltCalendarPreset,
-  CalendarItem,
+  CalendarItemV3,
   CalendarMarkPreset,
   CalendarView,
   DateMarkRender,
@@ -190,7 +190,7 @@ export const getFullTime = ({
   altCalendarPresetData: CalendarAltCalendarPreset
   dateMarkPresetData: CalendarMarkPreset
   dateMarkRender?: DateMarkRender
-  altCalendar?: CalendarItem[]
+  altCalendar?: CalendarItemV3[]
   altCalendarPreset?: DatePickerAltCalendarPreset
 }) => {
   if (cell.type === 'disabled') return false
