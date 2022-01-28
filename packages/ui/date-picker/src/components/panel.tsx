@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState, useContext, useCallback } from 'react'
 import classNames from 'classnames'
 import Header from './header'
