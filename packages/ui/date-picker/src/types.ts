@@ -54,7 +54,16 @@ export interface CalendarMarkPreset {
   [key: string]: React.ReactNode
 }
 
-export type DatePickerValue = Date | string | number | DateRange | undefined | null
+export type DatePickerValueV3 = Date | string | number | DateRange | undefined | null
+
+export type DatePickerValue = Date | string | number
+
+export type DatePickerOnChange = (
+  date: Date | Date[] | undefined,
+  dateStr: string | string[] | undefined
+) => void
+export type DatePickerOnChangeV3 = (date: Date | DateRange, dateStr: string | DateRange) => void
+
 export type DatePickerType =
   | 'date'
   | 'daterange'
@@ -77,8 +86,8 @@ type ExtendsType = Omit<HiBaseHTMLProps<'div'>, 'placeholder'>
 export interface DatePickerProps extends ExtendsType {
   type?: DatePickerType
 
-  defaultValue?: DatePickerValue
-  value?: DatePickerValue
+  defaultValue?: DatePickerValue | DatePickerValue[]
+  value?: DatePickerValue | DatePickerValue[]
   width?: number | string
 
   min?: Date
@@ -155,7 +164,7 @@ export interface DatePickerProps extends ExtendsType {
 
   onSelect?: (data: moment.Moment, isCompleted: boolean) => void
 
-  onChange?: (date: Date | DateRange, dateStr: string | DateRange) => void
+  onChange?: DatePickerOnChange
   /**
    * 外观
    * @default 'line'

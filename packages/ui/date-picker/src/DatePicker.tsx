@@ -21,7 +21,13 @@ import { PopperPortal } from '@hi-ui/popper'
 import Root from './components/root'
 import Panel from './components/panel'
 import RangePanel from './components/range-panel'
-import { DatePickerProps, DatePickerType } from './types'
+import {
+  DatePickerOnChange,
+  DatePickerProps,
+  DatePickerType,
+  DatePickerValueV3,
+  DateRange,
+} from './types'
 import { getBelongWeek, getBelongWeekYear } from './utils/week'
 import { DateRangeTimePanel } from './components/date-range-time-panel'
 import { GranularityMap } from './utils/constants'
@@ -39,8 +45,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       role = 'date-picker',
       className,
       type: propType = 'date',
-      value,
-      defaultValue,
+      value: controlledValue,
+      defaultValue: uncontrolledValue,
       placeholder,
       showTime = false,
       format,
@@ -51,7 +57,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       hourStep = 1,
       minuteStep = 1,
       secondStep = 1,
-      onChange = DEFAULT_ON_CHANGE,
+      onChange: onChangeOriginal = DEFAULT_ON_CHANGE,
       timeInterval = 240,
       shortcuts,
       altCalendar,
@@ -111,6 +117,56 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       () => (weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1),
       [weekOffset, locale]
     )
+
+    const valueAdapter = useCallback((original?: DatePickerValueV3 | DatePickerValueV3[]) => {
+      if (!original) {
+        return undefined
+      } else {
+        if (Array.isArray(original)) {
+          return {
+            start: original[0],
+            end: original[1],
+          } as DateRange
+        } else {
+          return original
+        }
+      }
+    }, [])
+
+    // 将 v4 的 api 格式转换成 v3 的 api 格式内部使用
+    const onChange = useCallback<DatePickerOnChange>(
+      (disposeDate, disposeString) => {
+        let resultData
+        let resultString
+
+        if (disposeDate) {
+          resultData = ((disposeDate as unknown) as DateRange).start
+            ? [
+                moment(((disposeDate as unknown) as DateRange).start).toDate(),
+                moment(((disposeDate as unknown) as DateRange).end).toDate(),
+              ]
+            : moment(disposeDate as any).toDate()
+        }
+
+        if (disposeString) {
+          resultString = (((disposeString as unknown) as DateRange).start as string)
+            ? [
+                ((disposeString as unknown) as DateRange).start as string,
+                ((disposeString as unknown) as DateRange).end as string,
+              ]
+            : (disposeString as string)
+        }
+
+        onChangeOriginal(resultData, resultString)
+      },
+      [onChangeOriginal]
+    )
+
+    const value = useMemo(() => valueAdapter(controlledValue), [valueAdapter, controlledValue])
+    const defaultValue = useMemo(() => valueAdapter(uncontrolledValue), [
+      valueAdapter,
+      uncontrolledValue,
+    ])
 
     const [outDate, changeOutDate] = useDate({
       value,

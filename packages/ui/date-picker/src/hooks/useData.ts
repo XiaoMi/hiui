@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment'
 import { parseValue } from '../utils'
-import { DatePickerType, DatePickerValue } from '../types'
+import { DatePickerType, DatePickerValueV3 } from '../types'
 
 interface IUseDateConfig {
-  value: DatePickerValue
-  defaultValue: DatePickerValue
+  value: DatePickerValueV3
+  defaultValue: DatePickerValueV3
   format?: string
   locale?: string
   cacheDate: React.MutableRefObject<(moment.Moment | null)[]>

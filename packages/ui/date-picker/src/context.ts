@@ -1,5 +1,5 @@
 import React from 'react'
-import { DatePickerProps } from './types'
+import { DatePickerProps, DatePickerValueV3 } from './types'
 import moment from 'moment'
 
 const DPContext = React.createContext<DPContextData>({} as DPContextData)
@@ -23,6 +23,7 @@ type ExtendsType = Omit<
   | 'disabledSeconds'
   | 'weekOffset'
   | 'timeInterval'
+  | 'value'
 > &
   Required<
     Pick<
@@ -56,5 +57,7 @@ export interface DPContextData extends ExtendsType {
   min: Date | null
   max: Date | null
   isInDateRangeTimeMode: boolean
+  // 内部现在暂时使用 v3 的数据格式
+  value: DatePickerValueV3
 }
 export default DPContext

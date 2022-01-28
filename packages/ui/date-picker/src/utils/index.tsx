@@ -13,7 +13,7 @@ import {
   DatePickerAltCalendarPreset,
   DatePickerProps,
   DatePickerType,
-  DatePickerValue,
+  DatePickerValueV3,
   DateRange,
   FormatCalendarItem,
 } from '../types'
@@ -289,7 +289,7 @@ export const getInRangeDate = (
  * @param format 日期格式
  */
 export const parseValue = (
-  value: DatePickerValue,
+  value: DatePickerValueV3,
   type: DatePickerType,
   weekOffset: number,
   format?: string
