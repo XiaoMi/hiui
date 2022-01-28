@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import DatePicker from '../src'
+import moment from 'moment'
 
 export const Lunar = () => {
   const [customValue, setCustomValue] = useState(new Date('2020/4/8'))
@@ -22,14 +23,17 @@ export const Lunar = () => {
           altCalendar={[
             {
               date: '2020/4/8',
-              text: '十周年',
-              highlight: true,
+              content: '十周年',
+              highlighted: true,
             },
           ]}
           dateMarkRender={(currentDate, today) => {
-            const date = DatePicker.format(currentDate, 'yyyy/M/D')
-            const yesterday = DatePicker.format(today - 86400000, 'yyyy/M/D')
-            const currentday = DatePicker.format(customValue, 'yyyy/M/D')
+            // const date = DatePicker.format(currentDate, 'yyyy/M/D')
+            // const yesterday = DatePicker.format(today - 86400000, 'yyyy/M/D')
+            // const currentday = DatePicker.format(customValue, 'yyyy/M/D')
+
+            const date = moment(currentDate).format('yyyy/M/D')
+            const yesterday = moment(today - 86400000).format('yyyy/M/D')
 
             if (date === '2020/4/8') {
               return (

@@ -52,8 +52,9 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   }
 
   &__picker {
+    width: auto;
     border-radius: use-border-radius('md');
-    width: 240px;
+    //width: 240px;
     display: inline-flex;
     align-items: center;
     justify-content: space-around;

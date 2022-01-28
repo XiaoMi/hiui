@@ -1,6 +1,6 @@
 import React from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { PopperJS, PopperOverlayProps } from '@hi-ui/popper'
+import { PopperOverlayProps } from '@hi-ui/popper'
 import moment from 'moment'
 import { TimePickerPanelType } from '@hi-ui/time-picker'
 
@@ -12,7 +12,7 @@ export interface DateRange {
 }
 
 export interface CalendarItem {
-  date: Date | string
+  date: Date | string | number
   content: string
   /**
    * @default false
@@ -21,7 +21,7 @@ export interface CalendarItem {
 }
 
 export interface CalendarItemV3 {
-  date: Date | string
+  date: Date | string | number
   text: string
   /**
    * @default false
@@ -97,7 +97,7 @@ export interface DatePickerProps extends ExtendsType {
 
   defaultValue?: DatePickerValue | DatePickerValue[]
   value?: DatePickerValue | DatePickerValue[]
-  width?: number | string
+  // width?: number | string
 
   min?: Date
   max?: Date
