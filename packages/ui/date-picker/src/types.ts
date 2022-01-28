@@ -1,6 +1,6 @@
 import React from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { PopperJS } from '@hi-ui/popper'
+import { PopperJS, PopperOverlayProps } from '@hi-ui/popper'
 import moment from 'moment'
 import { TimePickerPanelType } from '@hi-ui/time-picker'
 
@@ -111,8 +111,6 @@ export interface DatePickerProps extends ExtendsType {
    * @default false
    */
   inputReadOnly?: boolean
-
-  placement?: PopperJS.Placement
   /**
    * @default () => false
    */
@@ -184,4 +182,8 @@ export interface DatePickerProps extends ExtendsType {
    * @default 'md'
    */
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * 自定义控制弹出层 popper
+   */
+  overlay?: PopperOverlayProps
 }

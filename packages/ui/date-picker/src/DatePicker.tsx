@@ -74,12 +74,12 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       minDate,
       onSelect: propsOnSelect,
       theme,
-      placement,
       disabledHours = DEFAULT_DISABLED_FUNCTION,
       disabledMinutes = DEFAULT_DISABLED_FUNCTION,
       disabledSeconds = DEFAULT_DISABLED_FUNCTION,
       appearance = 'line',
       size = 'md',
+      overlay,
       ...otherProps
     },
     ref
@@ -437,8 +437,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             dateRangeTimePanelNow={dateRangeTimePanelNow}
           />
           <PopperPortal
+            {...(overlay || {})}
             visible={showPanel}
-            placement={placement}
             onClose={onPopperClose}
             attachEl={attachEl}
             unmountOnClose={false}
