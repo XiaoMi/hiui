@@ -25,15 +25,23 @@ export const useTreeDrop = (
   flattedData: FlattedTreeNodeData[],
   setTreeData: React.Dispatch<React.SetStateAction<TreeNodeData[]>>,
   onDrop?: (
-    dragNode: TreeNodeEventData,
-    dropNode: TreeNodeEventData,
-    dataStatus: TreeDataStatus,
-    level: TreeLevelStatus
+    evt: React.DragEvent,
+    options: {
+      dragNode: TreeNodeEventData
+      dropNode: TreeNodeEventData
+      dataStatus: TreeDataStatus
+      level: TreeLevelStatus
+    }
   ) => boolean | Promise<any>,
-  onDropEnd?: (dragNode: TreeNodeEventData, dropNode: TreeNodeEventData) => void
+  onDropEnd?: (options: { dragNode: TreeNodeEventData; dropNode: TreeNodeEventData }) => void
 ) => {
   const moveNode = useCallback(
-    (sourceId: React.ReactText, targetId: React.ReactText, direction: TreeNodeDragDirection) => {
+    (
+      evt: React.DragEvent,
+      sourceId: React.ReactText,
+      targetId: React.ReactText,
+      direction: TreeNodeDragDirection
+    ) => {
       if (targetId === sourceId) {
         // console.log('阻止将节点拖拽到自己')
         return
@@ -84,24 +92,30 @@ export const useTreeDrop = (
           getTreeNodeRequiredProps(targetNode.id)
         )
 
-        const result = onDrop(
-          eventSourceNode,
-          eventTargetNode,
-          getBeforeAfter(treeData, nextTreeData),
-          getBeforeAfter(
+        const result = onDrop(evt, {
+          dragNode: eventSourceNode,
+          dropNode: eventTargetNode,
+          dataStatus: getBeforeAfter(treeData, nextTreeData),
+          level: getBeforeAfter(
             sourceNode.depth,
             isInsertToInside ? targetNode.depth + 1 : targetNode.depth
-          )
-        )
+          ),
+        })
 
         // 根据 onDrop 用户返回结果，判断是否需要非受控，进行内部更新树结构
         if (result === true) {
           setTreeData(nextTreeData)
-          onDropEnd?.(eventSourceNode, eventTargetNode)
+          onDropEnd?.({
+            dragNode: eventSourceNode,
+            dropNode: eventTargetNode,
+          })
         } else if (result && typeof result.then === 'function') {
           result.then(() => {
             setTreeData(nextTreeData)
-            onDropEnd?.(eventSourceNode, eventTargetNode)
+            onDropEnd?.({
+              dragNode: eventSourceNode,
+              dropNode: eventTargetNode,
+            })
           })
         }
       } else {

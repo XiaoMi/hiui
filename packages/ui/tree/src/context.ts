@@ -6,28 +6,42 @@ interface TreeContext {
   onSelect?: (node: TreeNodeEventData) => void
   onExpand?: (node: TreeNodeEventData, shouldExpanded: boolean) => Promise<void>
   draggable?: boolean
-  onDragStart?: (dragNode: TreeNodeEventData) => void
-  onDragEnd?: (dragNode: TreeNodeEventData) => void
+  dragNodeRef: React.MutableRefObject<TreeNodeEventData | null>
+  onDragStart?: (evt: React.DragEvent, options: { dragNode: TreeNodeEventData }) => void
+  onDragEnd?: (evt: React.DragEvent, options: { dragNode: TreeNodeEventData }) => void
   onDrop?: (
+    evt: React.DragEvent,
     dragId: React.ReactText,
     dropId: React.ReactText,
     direction: TreeNodeDragDirection
   ) => void
-  onDragLeave?: (node: TreeNodeEventData) => void
-  onDragOver?: (node: TreeNodeEventData) => void
+  onDragLeave?: (
+    evt: React.DragEvent,
+    options: {
+      // dragNode: TreeNodeEventData
+      dropNode: TreeNodeEventData
+    }
+  ) => void
+  onDragOver?: (
+    evt: React.DragEvent,
+    options: {
+      // dragNode: TreeNodeEventData
+      dropNode: TreeNodeEventData
+    }
+  ) => void
   onLoadChildren?: (node: TreeNodeEventData) => void | Promise<any>
   checkable?: boolean
   onCheck?: (checkedNode: TreeNodeEventData, shouldChecked: boolean) => void
   titleRender?: (node: TreeNodeEventData) => React.ReactNode
   onFocus?: (node: TreeNodeEventData) => void
   showLine?: boolean
-  collapseIcon?: React.ReactNode
-  expandIcon?: React.ReactNode
+  collapsedIcon?: React.ReactNode
+  expandedIcon?: React.ReactNode
   leafIcon?: React.ReactNode
   onContextMenu?: (event: React.MouseEvent, node: TreeNodeEventData) => void
 }
 
-const treeContext = createContext<TreeContext>({})
+const treeContext = createContext<TreeContext | null>(null)
 
 export const TreeProvider = treeContext.Provider
 

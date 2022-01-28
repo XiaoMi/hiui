@@ -1,8 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { useLatestRef } from '@hi-ui/use-latest'
-
-import { FlattedTreeNodeData, TreeNodeEventData } from '../types'
+import { FlattedTreeNodeData, TreeNodeEventData, TreeNodeData } from '../types'
 import { findNestedChildIds } from '../utils'
 
 /**
@@ -21,23 +19,30 @@ export const useCheck = (
   defaultCheckedIds: React.ReactText[],
   checkedIdsProp?: React.ReactText[],
   onCheck?: (
-    checkedInfo: {
-      checkedIds: React.ReactText[]
+    checkedIds: React.ReactText[],
+    options: {
+      checkedNodes: TreeNodeData[]
       semiCheckedIds: React.ReactText[]
-    },
-    node: TreeNodeEventData,
-    checked: boolean
+      targetNode: TreeNodeEventData
+      checked: boolean
+    }
   ) => void
 ) => {
-  const onCheckRef = useLatestRef(onCheck)
-  const proxyOnCheck = useCallback((checkedIds, checkedNode, checked, semiCheckedIds) => {
-    onCheckRef.current?.({ checkedIds, semiCheckedIds }, checkedNode, checked)
-  }, [])
-
   const [checkedIds, trySetCheckedIds] = useUncontrolledState(
     defaultCheckedIds,
     checkedIdsProp,
-    proxyOnCheck
+    (checkedIds, checkedNode, checked, semiCheckedIds) => {
+      const nextCheckedNodes = flattedData
+        .filter((item) => checkedIds.includes(item.id))
+        .map((item) => item.raw)
+
+      onCheck?.(checkedIds, {
+        checkedNodes: nextCheckedNodes,
+        targetNode: checkedNode,
+        semiCheckedIds,
+        checked,
+      })
+    }
   )
 
   const checkedIdsSet = useMemo(() => new Set(checkedIds), [checkedIds])

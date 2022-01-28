@@ -31,8 +31,8 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       isSwitcherCol = false,
       expandedTree = false,
       // icons
-      expandIcon = defaultExpandIcon,
-      collapseIcon = defaultCollapseIcon,
+      expandedIcon = defaultExpandIcon,
+      collapsedIcon = defaultCollapseIcon,
       leafIcon = defaultLeafIcon,
     },
     ref
@@ -120,8 +120,8 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
               node: rowData,
               loading,
               expanded: expandedTree,
-              expandIcon,
-              collapseIcon,
+              expandedIcon,
+              collapsedIcon,
               leafIcon,
               onLoadChildren,
               isTree,
@@ -158,11 +158,11 @@ export interface TableCellProps extends HiBaseHTMLProps<'td'> {
   /**
    * 节点收起时的默认图标
    */
-  collapseIcon?: React.ReactNode
+  collapsedIcon?: React.ReactNode
   /**
    * 节点展开时的默认图标
    */
-  expandIcon?: React.ReactNode
+  expandedIcon?: React.ReactNode
   /**
    * 叶子结点的默认图标
    */
@@ -190,8 +190,8 @@ const renderSwitcher = ({
   node,
   loading,
   expanded,
-  expandIcon,
-  collapseIcon,
+  expandedIcon,
+  collapsedIcon,
   leafIcon,
   onNodeExpand,
   onLoadChildren,
@@ -201,8 +201,8 @@ const renderSwitcher = ({
   prefixCls: string
   loading: boolean
   expanded: boolean
-  expandIcon: React.ReactNode
-  collapseIcon: React.ReactNode
+  expandedIcon: React.ReactNode
+  collapsedIcon: React.ReactNode
   leafIcon: React.ReactNode
   onNodeExpand: (shouldExpanded: boolean) => void
   onLoadChildren?: (node: TableRowEventData) => void | Promise<any>
@@ -228,7 +228,7 @@ const renderSwitcher = ({
           `${prefixCls}__switcher`,
           `${prefixCls}__switcher--${expanded ? 'expanded' : 'collapse'}`
         )}
-        icon={expanded ? expandIcon : collapseIcon}
+        icon={expanded ? expandedIcon : collapsedIcon}
         onClick={() => {
           const shouldExpanded = !expanded
           onNodeExpand(shouldExpanded)

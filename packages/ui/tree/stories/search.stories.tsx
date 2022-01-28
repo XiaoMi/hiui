@@ -35,12 +35,7 @@ export const Search = () => {
     <>
       <h1>Search for Tree</h1>
       <div className="tree-search__wrap">
-        <SearchTree
-          {...{
-            searchable: true,
-            data,
-          }}
-        />
+        <SearchTree searchable={true} searchPlaceholder={'搜索'} data={data} />
       </div>
     </>
   )

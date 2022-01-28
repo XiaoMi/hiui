@@ -51,8 +51,8 @@ export const CustomIcon = () => {
       <div className="tree-basic__wrap">
         <Tree
           data={treeData}
-          collapseIcon={<FolderOutlined />}
-          expandIcon={<FolderOpenOutlined />}
+          collapsedIcon={<FolderOutlined />}
+          expandedIcon={<FolderOpenOutlined />}
           leafIcon={<FileOutlined />}
         />
       </div>

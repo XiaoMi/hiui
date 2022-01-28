@@ -2,7 +2,7 @@ import React from 'react'
 import Tree from '../src'
 
 export const Draggable = () => {
-  const [treeData, setTreeData] = React.useState([
+  const [treeData] = React.useState([
     {
       id: 1,
       title: '小米',
@@ -36,13 +36,17 @@ export const Draggable = () => {
         <Tree
           showLine
           draggable
-          onDrop={(dragNode, dropNode, data, level) => {
-            console.log('onDrop', dragNode, dropNode, data, level)
+          onDrop={(...args) => {
+            console.log('onDrop', ...args)
             // setTreeData(data.after)
             return true
           }}
           data={treeData}
-        ></Tree>
+          onDragStart={console.log}
+          onDragEnd={console.log}
+          onDragOver={console.log}
+          onDragLeave={console.log}
+        />
       </div>
     </>
   )

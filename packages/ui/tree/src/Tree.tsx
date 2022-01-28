@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef, useMemo, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
@@ -72,12 +72,12 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       checkedIds: checkedIdsProp,
       onCheck,
       // custom switcher
-      collapseIcon,
-      expandIcon,
+      collapsedIcon,
+      expandedIcon,
       leafIcon,
       // others
       showLine = false,
-      titleRender,
+      render: titleRender,
       onContextMenu,
       flattedData: flattedDataProp,
       ...rest
@@ -133,6 +133,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       }
     )
 
+    const dragNodeRef = useRef<TreeNodeEventData | null>(null)
     const dropTree = useTreeDrop(
       getTreeNodeRequiredProps,
       treeData,
@@ -160,6 +161,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         draggable,
         checkable,
         onCheck: onNodeCheck,
+        dragNodeRef,
         onDragStart,
         onDragEnd,
         onDragOver,
@@ -167,8 +169,8 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         onDrop: dropTree,
         onLoadChildren,
         showLine,
-        collapseIcon,
-        expandIcon,
+        collapsedIcon,
+        expandedIcon,
         leafIcon,
         titleRender,
         onContextMenu,
@@ -188,8 +190,8 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         dropTree,
         onLoadChildren,
         showLine,
-        collapseIcon,
-        expandIcon,
+        collapsedIcon,
+        expandedIcon,
         leafIcon,
         titleRender,
       ]
@@ -312,32 +314,45 @@ export interface TreeProps {
   /**
    * 节点开始拖拽时触发
    */
-  onDragStart?: (dragNode: TreeNodeEventData) => void
+  onDragStart?: (evt: React.DragEvent, options: { dragNode: TreeNodeEventData }) => void
   /**
    * 节点结束拖拽时触发
    */
-  onDragEnd?: (dragNode: TreeNodeEventData) => void
+  onDragEnd?: (evt: React.DragEvent, options: { dragNode: TreeNodeEventData }) => void
   /**
    * 节点放开时触发，返回 true 表示允许更新拖拽后数据
    */
   onDrop?: (
-    dragNode: TreeNodeEventData,
-    dropNode: TreeNodeEventData,
-    dataStatus: TreeDataStatus,
-    level: TreeLevelStatus
+    evt: React.DragEvent,
+    options: {
+      dragNode: TreeNodeEventData
+      dropNode: TreeNodeEventData
+      dataStatus: TreeDataStatus
+      level: TreeLevelStatus
+    }
   ) => boolean | Promise<any>
   /**
    * 节点拖拽成功时触发，`onDrop` 不拦截或者返回 `false` 才会触发
    */
-  onDropEnd?: (dragNode: TreeNodeEventData, dropNode: TreeNodeEventData) => void
+  onDropEnd?: (options: { dragNode: TreeNodeEventData; dropNode: TreeNodeEventData }) => void
   /**
    * 节点 drag leaver 时调用
    */
-  onDragLeave?: (node: TreeNodeEventData) => void
+  onDragLeave?: (
+    evt: React.DragEvent,
+    options: {
+      dropNode: TreeNodeEventData
+    }
+  ) => void
   /**
    * 节点 drag over 时调用
    */
-  onDragOver?: (node: TreeNodeEventData) => void
+  onDragOver?: (
+    evt: React.DragEvent,
+    options: {
+      dropNode: TreeNodeEventData
+    }
+  ) => void
   /**
    * 节点前添加 Checkbox 复选框（暂不支持与 draggable 和 editable 同时使用）
    */
@@ -354,12 +369,13 @@ export interface TreeProps {
    * 点击节点多选框触发
    */
   onCheck?: (
-    checkedInfo: {
-      checkedIds: React.ReactText[]
+    checkedIds: React.ReactText[],
+    options: {
+      checkedNodes: TreeNodeData[]
       semiCheckedIds: React.ReactText[]
-    },
-    node: TreeNodeEventData,
-    checked: boolean
+      targetNode: TreeNodeEventData
+      checked: boolean
+    }
   ) => void
   /**
    * 设置虚拟滚动容器的可视高度
@@ -380,11 +396,11 @@ export interface TreeProps {
   /**
    * 节点收起时的默认图标
    */
-  collapseIcon?: React.ReactNode
+  collapsedIcon?: React.ReactNode
   /**
    * 节点展开时的默认图标
    */
-  expandIcon?: React.ReactNode
+  expandedIcon?: React.ReactNode
   /**
    * 叶子结点的默认图标
    */
@@ -392,7 +408,7 @@ export interface TreeProps {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (node: TreeNodeEventData) => React.ReactNode
+  render?: (node: TreeNodeEventData) => React.ReactNode
   /**
    * 自定义节点右键菜单
    */

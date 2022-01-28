@@ -13,7 +13,7 @@ import { IconButton } from './IconButton'
 import { useTreeContext } from './context'
 import { FlattedTreeNodeData, TreeNodeDragDirection, TreeNodeEventData } from './types'
 import { getTreeNodeEventData } from './utils'
-import { useLatestRef } from '@hi-ui/use-latest'
+import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 
 const _role = 'tree-node'
 const _prefix = getPrefixCls(_role)
@@ -34,8 +34,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     loading = false,
     focused = false,
     // custom switcher
-    collapseIcon: collapseIconProp = defaultCollapseIcon,
-    expandIcon: expandIconProp = defaultExpandIcon,
+    collapsedIcon: collapseIconProp = defaultCollapseIcon,
+    expandedIcon: expandIconProp = defaultExpandIcon,
     leafIcon: leafIconProp = defaultLeafIcon,
     ...rest
   } = props
@@ -46,6 +46,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     onExpand,
     onFocus,
     onContextMenu,
+    dragNodeRef,
     onDragStart: onDragStartContext,
     onDragEnd: onDragEndContext,
     onDragOver: onDragOverContext,
@@ -55,13 +56,13 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     onCheck,
     showLine,
     titleRender,
-    collapseIcon: collapseIconContext,
-    expandIcon: expandIconContext,
+    collapsedIcon: collapseIconContext,
+    expandedIcon: expandIconContext,
     leafIcon: leafIconContext,
   } = useTreeContext()
 
-  const collapseIcon = collapseIconContext || collapseIconProp
-  const expandIcon = expandIconContext || expandIconProp
+  const collapsedIcon = collapseIconContext || collapseIconProp
+  const expandedIcon = expandIconContext || expandIconProp
   const leafIcon = leafIconContext || leafIconProp
 
   const { disabled, isLeaf } = node
@@ -82,9 +83,9 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
   const [direction, setDirection] = useState<TreeNodeDragDirection>(null)
 
   const treeNodeTitleRef = useRef<HTMLDivElement>(null)
-  const dragIdRef = useRef<React.ReactText | null>(null)
 
   // 拖拽管理
+  const onDragStartContextLatest = useLatestCallback(onDragStartContext)
   const onDragStart = useCallback(
     (evt: React.DragEvent) => {
       if (!enableDraggable) return
@@ -94,45 +95,54 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
       evt.stopPropagation()
 
       setIsDragging(true)
-      dragIdRef.current = id
+      dragNodeRef.current = eventNodeRef.current
       evt.dataTransfer.setData('treeNode', JSON.stringify({ sourceId: id }))
 
-      onDragStartContext?.(eventNodeRef.current)
+      onDragStartContextLatest(evt, { dragNode: eventNodeRef.current })
     },
-    [onDragStartContext, enableDraggable]
+    [onDragStartContextLatest, enableDraggable, eventNodeRef, dragNodeRef]
   )
 
+  const onDragEndContextLatest = useLatestCallback(onDragEndContext)
   const onDragEnd = useCallback(
     (evt: React.DragEvent) => {
       evt.preventDefault()
       evt.stopPropagation()
       evt.dataTransfer.clearData()
-      dragIdRef.current = null
+      dragNodeRef.current = null
       setDirection(null)
       setIsDragging(false)
 
-      onDragEndContext?.(eventNodeRef.current)
+      onDragEndContextLatest(evt, { dragNode: eventNodeRef.current })
     },
-    [onDragEndContext]
+    [onDragEndContextLatest, eventNodeRef, dragNodeRef]
   )
 
+  const onDragLeaveContextLatest = useLatestCallback(onDragLeaveContext)
   const onDragLeave = useCallback(
     (evt: React.DragEvent) => {
       evt.preventDefault()
       evt.stopPropagation()
       setDirection(null)
-      onDragLeaveContext?.(eventNodeRef.current)
+      onDragLeaveContextLatest(evt, {
+        // dragNode: dragNodeRef.current,
+        dropNode: eventNodeRef.current,
+      })
     },
-    [onDragLeaveContext]
+    [onDragLeaveContextLatest, eventNodeRef]
   )
 
   // 拖至到目标元素上时触发事件
+  const onDragOverContextLatest = useLatestCallback(onDragOverContext)
   const onDragOver = useCallback(
     (evt: React.DragEvent) => {
-      const dragId = dragIdRef.current
+      const dragNode = dragNodeRef.current
+      if (!dragNode) return
 
       evt.preventDefault()
       evt.stopPropagation()
+
+      const dragId = dragNode.id
 
       // 这里需要考虑3点：
       // 1. 拖到自己的老位置，不处理 TODO
@@ -158,33 +168,39 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
         }
       }
 
-      onDragOverContext?.(eventNodeRef.current)
+      onDragOverContextLatest(evt, { dropNode: eventNodeRef.current })
     },
-    [onDragOverContext]
+    [onDragOverContextLatest, eventNodeRef, dragNodeRef, node.id]
   )
 
   // 放置目标元素时触发事件
+  const onDropContextLatestRef = useLatestRef(onDropContext)
+
   const onDrop = useCallback(
     (evt: React.DragEvent) => {
-      const dragId = dragIdRef.current
+      const dragNode = dragNodeRef.current
+      if (!dragNode) return
+
+      const dragId = dragNode.id
 
       evt.preventDefault()
       evt.stopPropagation()
       setDirection(null)
 
       const targetId = eventNodeRef.current.id
+      const onDropContext = onDropContextLatestRef.current
 
       if (onDropContext && dragId !== targetId) {
         try {
           const { sourceId } = JSON.parse(evt.dataTransfer.getData('treeNode'))
 
-          onDropContext(sourceId, targetId, direction)
+          onDropContext(evt, sourceId, targetId, direction)
         } catch (error) {
           console.error(error)
         }
       }
     },
-    [onDropContext, direction]
+    [onDropContextLatestRef, direction, eventNodeRef, dragNodeRef]
   )
 
   const onNodeExpand = async (evt: React.MouseEvent) => {
@@ -233,12 +249,14 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
       <div
         className={cx(`${prefixCls}__wrap`, isDragging && 'dragging')}
         draggable={enableDraggable}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragLeave={onDragLeave}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-        onContextMenu={(evt) => onContextMenu?.(evt, eventNodeRef.current)}
+        onDragStart={enableDraggable ? onDragStart : undefined}
+        onDragEnd={enableDraggable ? onDragEnd : undefined}
+        onDragLeave={enableDraggable ? onDragLeave : undefined}
+        onDragOver={enableDraggable ? onDragOver : undefined}
+        onDrop={enableDraggable ? onDrop : undefined}
+        onContextMenu={
+          onContextMenu ? (evt) => onContextMenu(evt, eventNodeRef.current) : undefined
+        }
         tabIndex={0}
         onFocus={() => onFocus?.(eventNodeRef.current)}
         onClick={() => onSelect?.(eventNodeRef.current)}
@@ -250,8 +268,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
           prefixCls,
           loading,
           expanded,
-          expandIcon,
-          collapseIcon,
+          expandedIcon,
+          collapsedIcon,
           leafIcon,
           onNodeExpand,
           onLoadChildren
@@ -317,11 +335,11 @@ export interface TreeNodeProps {
   /**
    * 节点收起时的默认图标
    */
-  collapseIcon?: React.ReactNode
+  collapsedIcon?: React.ReactNode
   /**
    * 节点展开时的默认图标
    */
-  expandIcon?: React.ReactNode
+  expandedIcon?: React.ReactNode
   /**
    * 叶子结点的默认图标
    */
@@ -398,8 +416,8 @@ const renderSwitcher = (
   prefixCls: string,
   loading: boolean,
   expanded: boolean,
-  expandIcon: React.ReactNode,
-  collapseIcon: React.ReactNode,
+  expandedIcon: React.ReactNode,
+  collapsedIcon: React.ReactNode,
   leafIcon: React.ReactNode,
   onNodeExpand: (evt: React.MouseEvent) => void,
   onLoadChildren?: (node: TreeNodeEventData) => void | Promise<any>
@@ -425,7 +443,7 @@ const renderSwitcher = (
           `${prefixCls}__switcher`,
           expanded ? `${prefixCls}__switcher--expanded` : `${prefixCls}__switcher--collapse`
         )}
-        icon={expanded ? expandIcon : collapseIcon}
+        icon={expanded ? expandedIcon : collapsedIcon}
         onClick={onNodeExpand}
       />
     )

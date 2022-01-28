@@ -75,7 +75,7 @@ export const CustomTitle = () => {
     <>
       <h1>CustomTitle for Tree</h1>
       <div className="tree-basic__wrap">
-        <Tree data={treeData} titleRender={renderTreeNodeTitle}></Tree>
+        <Tree data={treeData} render={renderTreeNodeTitle}></Tree>
       </div>
     </>
   )

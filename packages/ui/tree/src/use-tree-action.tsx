@@ -65,13 +65,13 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
     defaultExpandedIds = [],
     onExpand,
     defaultExpandAll = false,
-    titleRender,
+    render: titleRender,
     onBeforeSave,
     onBeforeDelete,
     onSave,
     onDelete,
     menuOptions,
-    placeholder,
+    editPlaceholder: placeholder,
     ...nativeTreeProps
   } = props
   const [treeData, setTreeData] = useCache(data)
@@ -135,7 +135,7 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
 
   const treeProps = {
     ...nativeTreeProps,
-    titleRender: proxyTitleRender,
+    render: proxyTitleRender,
     data: editable ? treeData : data,
     expandedIds,
     onExpand: tryToggleExpandedIds,
@@ -182,7 +182,7 @@ export interface EditableTreeProps extends TreeProps {
   /**
    * 输入框占位符
    */
-  placeholder?: string
+  editPlaceholder?: string
 }
 
 const EditableTreeNodeTitle = (props: EditableTreeNodeTitleProps) => {

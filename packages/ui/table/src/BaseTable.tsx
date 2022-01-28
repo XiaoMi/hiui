@@ -93,8 +93,8 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               onSwitch: (shouldExpanded: boolean) => {
                 onExpandEmbedRowsChange(rowItem, shouldExpanded)
               },
-              expandIcon: <MinusSquareOutlined />,
-              collapseIcon: <PlusSquareOutlined />,
+              expandedIcon: <MinusSquareOutlined />,
+              collapsedIcon: <PlusSquareOutlined />,
             })
           },
         }
@@ -278,8 +278,8 @@ const renderSwitcher = ({
   loading,
   expanded,
   onSwitch,
-  expandIcon,
-  collapseIcon,
+  expandedIcon,
+  collapsedIcon,
 }: any) => {
   if (React.isValidElement(rowExpand)) {
     return rowExpand
@@ -302,7 +302,7 @@ const renderSwitcher = ({
           `${prefixCls}__switcher`,
           `${prefixCls}__switcher--${expanded ? 'expanded' : 'collapse'}`
         )}
-        icon={expanded ? expandIcon : collapseIcon}
+        icon={expanded ? expandedIcon : collapsedIcon}
         onClick={() => onSwitch(!expanded)}
       />
     )

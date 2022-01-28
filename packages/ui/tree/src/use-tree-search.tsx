@@ -58,11 +58,12 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     prefixCls = _prefix,
     data,
     searchable = true,
+    searchPlaceholder,
     defaultExpandAll = false,
     expandedIds: expandedIdsProp,
     defaultExpandedIds = NOOP_ARRAY,
     onExpand,
-    titleRender,
+    render: titleRender,
     draggable,
     onSearch,
     ...nativeTreeProps
@@ -113,7 +114,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     data: isEmpty || !inSearch ? data : showData,
     expandedIds: expandedIds,
     onExpand: tryToggleExpandedIds,
-    titleRender: proxyTitleRender,
+    render: proxyTitleRender,
     // 在搜索中时不允许节点拖拽操作，纯展示
     draggable: inSearch ? !inSearch : draggable,
   }
@@ -141,6 +142,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
   const inputProps = {
     value: searchValue,
     onChange: handleChange,
+    placeholder: searchPlaceholder,
   }
 
   return [treeProps, inputProps, isEmpty] as const
@@ -151,6 +153,10 @@ export interface SearchableTreeProps extends TreeProps {
    * 节点可搜索，仅在 node.title 类型为字符串下支持
    */
   searchable?: boolean
+  /**
+   * 搜索输入占位符
+   */
+  searchPlaceholder?: string
   /**
    * 输入关键字搜索时触发回调
    */
