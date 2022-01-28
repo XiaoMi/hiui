@@ -6,14 +6,14 @@ import Lunar from './toLunar'
 // import { getLocaleTypeFormatMap } from './constants'
 import {
   CalendarAltCalendarPreset,
-  CalendarItem,
+  CalendarItemV3,
   CalendarMarkPreset,
   CalendarView,
   DateMarkRender,
   DatePickerAltCalendarPreset,
   DatePickerProps,
   DatePickerType,
-  DatePickerValue,
+  DatePickerValueV3,
   DateRange,
   FormatCalendarItem,
 } from '../types'
@@ -26,7 +26,7 @@ const holiday = {
   PRCLunar: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCLunar.json?',
   IndiaHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/IndiaHoliday.json?',
 }
-export const deconstructDate = (original: Date | string) => {
+export const deconstructDate = (original: Date | string | number) => {
   const date = moment(original)
 
   return {
@@ -190,7 +190,7 @@ export const getFullTime = ({
   altCalendarPresetData: CalendarAltCalendarPreset
   dateMarkPresetData: CalendarMarkPreset
   dateMarkRender?: DateMarkRender
-  altCalendar?: CalendarItem[]
+  altCalendar?: CalendarItemV3[]
   altCalendarPreset?: DatePickerAltCalendarPreset
 }) => {
   if (cell.type === 'disabled') return false
@@ -289,7 +289,7 @@ export const getInRangeDate = (
  * @param format 日期格式
  */
 export const parseValue = (
-  value: DatePickerValue,
+  value: DatePickerValueV3,
   type: DatePickerType,
   weekOffset: number,
   format?: string

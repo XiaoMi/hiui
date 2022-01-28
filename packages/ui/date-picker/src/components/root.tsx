@@ -30,14 +30,14 @@ const Root = ({
     disabled,
     clearable,
     theme,
-    width,
     value,
     format,
-    bordered,
     prefixCls,
     weekOffset,
     isInDateRangeTimeMode,
     showPanel,
+    appearance,
+    size,
   } = useContext(DPContext)
   const [inputData, setInputData] = useState(outDate)
 
@@ -65,17 +65,18 @@ const Root = ({
     `${prefixCls}__picker`,
     `theme__${theme}`,
     `${prefixCls}__picker--${type}`,
+    `${prefixCls}__picker--appearance-${appearance}`,
+    `${prefixCls}__picker--size-${size}`,
     inputFocus && `${prefixCls}__picker--focus`,
     disabled && `${prefixCls}__picker--disabled`,
-    showTime && `${prefixCls}__picker--hastime`,
-    { bordered }
+    showTime && `${prefixCls}__picker--hastime`
   )
 
   const renderRange = type.includes('range') || type === 'timeperiod'
 
   return (
-    <div className={_cls} ref={setAttachEl} style={{ width: width }}>
-      <div className={`${prefixCls}__input`} style={{ width: width }}>
+    <div className={_cls} ref={setAttachEl}>
+      <div className={`${prefixCls}__picker__wrapper`}>
         <div
           className={cx(
             `${prefixCls}__input-selector`,

@@ -82,6 +82,8 @@ export const Range = () => {
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
+          size={'md'}
+          appearance={'unset'}
         />
         <h2>时间段快速选择</h2>
         <DatePicker

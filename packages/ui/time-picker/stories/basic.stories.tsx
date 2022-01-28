@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import TimePicker from '../src'
 
 export const Basic = () => {
-  const [basicValue, setBasicValue] = useState(['12:00:00'])
-  const [rangeValue, setRangeValue] = useState(['11:11:11', '12:00:00'])
-  const [inputReadonlyValue, setInputReadonlyValue] = useState(['11:11:11'])
+  const [basicValue, setBasicValue] = useState<string | string[]>(['12:00:00'])
+  const [rangeValue, setRangeValue] = useState<string | string[]>(['11:11:11', '12:00:00'])
+  const [inputReadonlyValue, setInputReadonlyValue] = useState<string | string[]>(['11:11:11'])
 
   return (
     <>

@@ -39,20 +39,24 @@ $icon-class: #{$panel-prefix}__icon !default;
     }
   }
 
-  &__title {
+  &__title-container {
     flex: 1;
-    margin-right: 10px;
+    display: flex;
+    align-items: center;
     font-size: use-text-size('normal');
+    justify-content: space-between;
   }
 
   .#{$icon-class} {
     transition: all 0.2s ease-out;
 
     &--right {
-      transition: all 0.2s ease-out;
+      margin-left: 24px;
     }
 
-    margin-right: use-spacing(5);
+    &--left {
+      margin-right: use-spacing(3);
+    }
   }
 
   &__content-wrapper {
@@ -62,7 +66,7 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__content {
-    padding: use-spacing(3) use-spacing(10) use-spacing(10) use-spacing(10);
+    padding: use-spacing(3) use-spacing(12) use-spacing(10) use-spacing(12);
     color: use-color('gray', 700);
   }
 
@@ -71,7 +75,9 @@ $icon-class: #{$panel-prefix}__icon !default;
       background-color: transparent;
     }
     .#{$icon-class} {
-      transform: rotate(90deg);
+      &--left{
+        transform: rotate(90deg);
+      }
 
       &--right {
         transform: rotate(180deg);

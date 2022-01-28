@@ -51,7 +51,8 @@
     "@hi-ui/env": "^4.0.0-alpha.6",
     "@hi-ui/icons": "^4.0.0-alpha.29",
     "@hi-ui/popper": "^4.0.0-alpha.25",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.14"
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.14",
+    "dayjs": "^1.10.7"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

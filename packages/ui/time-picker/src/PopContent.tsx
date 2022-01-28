@@ -22,8 +22,8 @@ interface PopContentProps extends ExtendType {
   onChange: (value: string[]) => void
   format: TimePickerFormat
   type: TimePickerType
-  itemHeight: number
-  fullDisplayItemNumber: number
+  // itemHeight: number
+  // fullDisplayItemNumber: number
   style?: React.CSSProperties
 }
 
@@ -36,8 +36,8 @@ export const PopContent: FC<PopContentProps> = (props) => {
     onChange,
     format,
     type,
-    itemHeight,
-    fullDisplayItemNumber,
+    // itemHeight,
+    // fullDisplayItemNumber,
     hourStep,
     minuteStep,
     secondStep,
@@ -172,13 +172,14 @@ export const PopContent: FC<PopContentProps> = (props) => {
   )
 
   const componentClass = useMemo(() => `${prefix}__pop-content`, [prefix])
+
   const renderPanel = useCallback(
     (index: number) => {
       return (
         <div className={`${componentClass}__panel-container`}>
           <Panel
-            itemHeight={itemHeight}
-            fullDisplayItemNumber={fullDisplayItemNumber}
+            // itemHeight={itemHeight}
+            // fullDisplayItemNumber={fullDisplayItemNumber}
             hourStep={hourStep}
             secondStep={secondStep}
             minuteStep={minuteStep}
@@ -210,8 +211,8 @@ export const PopContent: FC<PopContentProps> = (props) => {
       type,
       value,
       onChange,
-      fullDisplayItemNumber,
-      itemHeight,
+      // fullDisplayItemNumber,
+      // itemHeight,
       componentClass,
     ]
   )
