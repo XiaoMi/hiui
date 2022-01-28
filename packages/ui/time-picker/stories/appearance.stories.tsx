@@ -12,6 +12,11 @@ export const Appearance = () => {
         <TimePicker placeholder={['请选择时间']} appearance={'filled'} />
         <h2>unset</h2>
         <TimePicker placeholder={['请选择时间']} appearance={'unset'} />
+        <TimePicker
+          placeholder={['1234567', '请选择结束时间']}
+          appearance={'unset'}
+          type={'range'}
+        />
       </div>
     </>
   )

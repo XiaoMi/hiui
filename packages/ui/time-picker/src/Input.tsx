@@ -145,6 +145,9 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
         return undefined
       }
 
+      console.error(
+        isFitContent ? matchValue.length || (placeholders[index] || '').length : undefined
+      )
       return (
         <div className={`${componentClass}__wrapper`}>
           <input
@@ -161,10 +164,13 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
             }}
             value={matchValue}
             placeholder={placeholders[index]}
-            size={
-              isFitContent ? matchValue.length || (placeholders[index] || '').length : undefined
-            }
+            // size={
+            //   isFitContent ? matchValue.length || (placeholders[index] || '').length : undefined
+            // }
           />
+          <div className={`${componentClass}__shadow-text`}>
+            {matchValue || placeholders[index]}
+          </div>
         </div>
       )
     },
