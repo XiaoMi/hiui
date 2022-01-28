@@ -7,7 +7,7 @@ export const generateContent = () => {
       style={{
         display: 'flex',
         alignItems: 'center',
-        justifyItems: 'center',
+        justifyContent: 'center',
         width: '100%',
         height: '100%',
         position: 'relative',
