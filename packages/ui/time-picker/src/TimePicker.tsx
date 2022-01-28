@@ -12,7 +12,7 @@ import {
 } from './@types'
 import { Input, InputRef } from './Input'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { PopperPortal } from '@hi-ui/popper'
+import { PopperOverlayProps, PopperPortal } from '@hi-ui/popper'
 import { CloseCircleFilled, TimeOutlined } from '@hi-ui/icons'
 import { PopContent } from './PopContent'
 import { valueChecker } from './utils/valueChecker'
@@ -59,6 +59,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       onChange: notifyOutside,
       placeholder: originalPlaceholder = DefaultPlaceholder,
       inputReadonly = false,
+      overlay,
     },
     ref
   ) => {
@@ -278,6 +279,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           </div>
         </div>
         <PopperPortal
+          {...(overlay || {})}
           unmountOnClose={false}
           visible={showPopper && !disabled}
           attachEl={attachEl}
@@ -347,6 +349,10 @@ export interface TimePickerProps extends ExtendType {
    * 默认值
    */
   defaultValue?: TimePickerValue[] | TimePickerValue
+  /**
+   * 自定义控制弹出层 popper
+   */
+  overlay?: PopperOverlayProps
   /**
    * 输入框是否不可编辑
    * @default false
