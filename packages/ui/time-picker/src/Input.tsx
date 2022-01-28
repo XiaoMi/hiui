@@ -32,6 +32,7 @@ interface InputProps extends ExtendType {
   // onBlur: () => void
   onValidChange: (isValid: boolean) => void
   isFitContent: boolean
+  size: 'sm' | 'md' | 'lg'
 }
 
 export interface InputRef {
@@ -60,6 +61,7 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
     disabled,
     onValidChange,
     isFitContent,
+    size,
   } = props
   const componentClass = useMemo(() => `${prefix}__input`, [prefix])
 
@@ -145,9 +147,6 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
         return undefined
       }
 
-      console.error(
-        isFitContent ? matchValue.length || (placeholders[index] || '').length : undefined
-      )
       return (
         <div className={`${componentClass}__wrapper`}>
           <input
@@ -202,7 +201,7 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
   )
   return (
     <div
-      className={cx(componentClass, {
+      className={cx(componentClass, `${componentClass}--size-${size}`, {
         [`${componentClass}--not-valid`]: !judgeIsValid(cacheValue),
         [`${componentClass}--range`]: type === 'range',
         [`${componentClass}--disabled`]: disabled,

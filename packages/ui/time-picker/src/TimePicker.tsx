@@ -60,6 +60,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       placeholder: originalPlaceholder = DefaultPlaceholder,
       inputReadonly = false,
       overlay,
+      size = 'md',
     },
     ref
   ) => {
@@ -238,6 +239,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       <div ref={ref} role={role} className={cls}>
         <div ref={setAttachEl} className={`${prefixCls}__input-wrapper`}>
           <Input
+            size={size}
             isFitContent={appearance === 'unset'}
             ref={inputRef}
             onValidChange={setIsInputValid}
@@ -372,6 +374,11 @@ export interface TimePickerProps extends ExtendType {
    * @default 'line'
    */
   appearance?: 'line' | 'filled' | 'unset'
+  /**
+   * 尺寸
+   * @default 'md'
+   */
+  size?: 'sm' | 'md' | 'lg'
   /**
    * 值改变事件
    * @param value

@@ -2,12 +2,12 @@
 
 $input-prefix: '#{$component-prefix}-time-picker__input' !default;
 $interact-area: '#{$input-prefix}__interact-area' !default;
+$wrapper: '#{$input-prefix}__wrapper';
 
 .#{$input-prefix} {
   display: flex;
   align-items: center;
   width: fit-content;
-  font-size: use-text-size('normal');
   color: use-color('gray', 700);
 
   &--disabled {
@@ -29,6 +29,33 @@ $interact-area: '#{$input-prefix}__interact-area' !default;
       &__wrapper{
         width: fit-content;
       }
+    }
+  }
+
+  &--size-sm{
+    line-height: use-height-size('xs');
+    font-size: use-text-size('sm');
+
+    .#{$wrapper}{
+      height: use-height-size('xs');
+    }
+  }
+
+  &--size-md{
+    line-height: use-height-size('normal');
+    font-size: use-text-size('normal');
+
+    .#{$wrapper}{
+      height: use-height-size('normal');
+    }
+  }
+
+  &--size-lg{
+    line-height: use-height-size('xl');
+    font-size: use-text-size('lg');
+
+    .#{$wrapper}{
+      height: use-height-size('xl');
     }
   }
 
@@ -57,7 +84,7 @@ $interact-area: '#{$input-prefix}__interact-area' !default;
     color: inherit;
     border: none;
     outline: none;
-    height: 30px;
+    height: 100%;
     font-size: inherit;
     background: transparent;
     font-weight: inherit;
