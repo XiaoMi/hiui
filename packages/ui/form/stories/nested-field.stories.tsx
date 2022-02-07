@@ -37,8 +37,6 @@ export const NestedField = () => {
             valueType="string"
             rules={[
               {
-                trigger: 'onChange',
-                type: 'number',
                 required: true,
                 validator: (rule, value, callback) => {
                   const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
@@ -61,8 +59,6 @@ export const NestedField = () => {
             field={['login', 'password']}
             rules={[
               {
-                trigger: 'onBlur',
-                type: 'string',
                 required: true,
               },
             ]}
