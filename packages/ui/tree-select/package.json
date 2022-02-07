@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tree-select",
-  "version": "4.0.0-alpha.24",
+  "version": "4.0.0-alpha.25",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -56,7 +56,7 @@
     "@hi-ui/tree": "^4.0.0-alpha.42",
     "@hi-ui/tree-utils": "^4.0.0-alpha.13",
     "@hi-ui/type-assertion": "^4.0.0-alpha.14",
-    "@hi-ui/use-search-mode": "^4.0.0-alpha.15",
+    "@hi-ui/use-search-mode": "^4.0.0-alpha.16",
     "@hi-ui/use-toggle": "^4.0.0-alpha.12",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.14",
     "lodash": "^4.17.21"
