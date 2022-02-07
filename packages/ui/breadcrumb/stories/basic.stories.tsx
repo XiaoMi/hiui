@@ -3,15 +3,15 @@ import Breadcrumb from '../src'
 
 const data = [
   {
-    content: '首页',
+    title: '首页',
     path: '/home',
   },
   {
-    content: '列表',
+    title: '列表',
     path: '/list',
   },
   {
-    content: '手机详情',
+    title: '手机详情',
     path: '/phone',
   },
 ]

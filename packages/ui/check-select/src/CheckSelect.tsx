@@ -249,7 +249,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
         <Picker
           ref={ref}
           className={cls}
-          {...rest}
+          {...rootProps}
           visible={menuVisible}
           onOpen={() => {
             if (showOnlyShowChecked) {
