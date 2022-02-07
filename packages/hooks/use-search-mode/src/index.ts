@@ -3,6 +3,7 @@ import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { UseDataSource, useDataSource } from '@hi-ui/use-data-source'
 import { invariant } from '@hi-ui/env'
 import { filterTree, getNodeAncestors, cloneTree } from '@hi-ui/tree-utils'
+import { useLatestRef } from '@hi-ui/use-latest'
 
 /**
  * TODO: What is useSearchMode
@@ -88,9 +89,10 @@ export interface UseSearchModeProps<T = any> {
 
 export type UseSearchModeReturn = ReturnType<typeof useSearchMode>
 
-export const useAsyncSearch = ({ dataSource }: any) => {
+export const useAsyncSearch = ({ dataSource, dataTransform }: any) => {
   // 提到外部
   const { loading, hasError, loadRemoteData } = useDataSource({ dataSource, validate: isArray })
+  const dataTransformLatestRef = useLatestRef(dataTransform)
 
   const onAsyncSearch = useCallback(
     (keyword: string, dispatch) => {
@@ -98,9 +100,10 @@ export const useAsyncSearch = ({ dataSource }: any) => {
       loadRemoteData(keyword)
         .then((asyncData: any) => {
           // setStatus('fulfilled')
+          const dataTransform = dataTransformLatestRef.current
           dispatch({
             matched: isArrayNonEmpty(asyncData),
-            data: asyncData,
+            data: dataTransform ? dataTransform(asyncData) : asyncData,
             expandedIds: [],
           })
         })
@@ -108,7 +111,7 @@ export const useAsyncSearch = ({ dataSource }: any) => {
           // setStatus('rejected')
         })
     },
-    [loadRemoteData]
+    [loadRemoteData, dataTransformLatestRef]
   )
 
   return { name: 'dataSource', enabled: !!dataSource, run: onAsyncSearch, loading, hasError }

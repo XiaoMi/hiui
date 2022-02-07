@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react'
-import { CheckSelectItem } from '../types'
+import { CheckSelectMergedItem } from '../types'
 import { useLatestRef } from '@hi-ui/use-latest'
 import { __DEV__ } from '@hi-ui/env'
 import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
@@ -8,11 +8,11 @@ import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
  * 支持搜索功能的 hook
  */
 export const useSearch = (
-  flattedData: CheckSelectItem[],
-  filter?: (keyword: string, option: CheckSelectItem) => boolean
+  flattedData: CheckSelectMergedItem[],
+  filter?: (keyword: string, option: CheckSelectMergedItem) => boolean
 ) => {
   const [searchValue, setSearchValue] = useState('')
-  const [matchedNodes, setMatchedNodes] = useState<CheckSelectItem[]>([])
+  const [matchedNodes, setMatchedNodes] = useState<CheckSelectMergedItem[]>([])
 
   const flattedDataRef = useLatestRef(flattedData)
 
@@ -51,10 +51,10 @@ export const useSearch = (
  * 从 value 中 找到指定的 options（逐层查找）
  */
 const getMatchedNodes = (
-  flattedData: CheckSelectItem[],
+  flattedData: CheckSelectMergedItem[],
   searchValue: string,
-  filter?: (keyword: string, option: CheckSelectItem) => boolean
-): CheckSelectItem[] => {
+  filter?: (keyword: string, option: CheckSelectMergedItem) => boolean
+): CheckSelectMergedItem[] => {
   if (!searchValue) return []
 
   const matchedResult: any[] = []

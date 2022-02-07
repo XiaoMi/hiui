@@ -15,7 +15,7 @@ export interface CheckSelectDataItem {
   disabled?: boolean
 }
 
-export interface CheckSelectDataGroupItem {
+export interface CheckSelectGroupDataItem {
   /**
    * 节点组标题
    */
@@ -26,7 +26,7 @@ export interface CheckSelectDataGroupItem {
   children?: CheckSelectDataItem[]
 }
 
-export type CheckSelectItem = CheckSelectDataItem & CheckSelectDataGroupItem
+export type CheckSelectMergedItem = CheckSelectDataItem & CheckSelectGroupDataItem
 
 export interface CheckSelectRequiredProps {
   checked: boolean

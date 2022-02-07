@@ -55,6 +55,7 @@
     "@hi-ui/loading": "^4.0.0-alpha.24",
     "@hi-ui/tree-utils": "^4.0.0-alpha.13",
     "@hi-ui/type-assertion": "^4.0.0-alpha.14",
-    "@hi-ui/use-data-source": "^4.0.0-alpha.8"
+    "@hi-ui/use-data-source": "^4.0.0-alpha.8",
+    "@hi-ui/use-latest": "^4.0.0-alpha.5"
   }
 }

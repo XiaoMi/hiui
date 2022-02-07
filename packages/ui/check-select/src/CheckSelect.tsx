@@ -5,7 +5,7 @@ import { useCheckSelect, UseCheckSelectProps } from './use-check-select'
 import type { HiBaseAppearanceEnum, HiBaseHTMLProps } from '@hi-ui/core'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { CheckSelectProvider, useCheckSelectContext } from './context'
-import { CheckSelectDataItem, CheckSelectEventData } from './types'
+import { CheckSelectDataItem, CheckSelectEventData, CheckSelectMergedItem } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
 import { TagInputMock } from '@hi-ui/tag-input'
@@ -27,9 +27,12 @@ import {
   useSearchMode,
   useTreeCustomSearch,
 } from '@hi-ui/use-search-mode'
+import { flattenData } from './hooks'
 
 const _role = 'check-select'
 const _prefix = getPrefixCls(_role)
+
+const DEFAULT_FIELD_NAMES = {} as any
 
 /**
  * TODO: What is CheckSelect
@@ -64,29 +67,35 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       render: titleRender,
       renderExtraFooter,
       onSearch: onSearchProp,
+      fieldNames = DEFAULT_FIELD_NAMES,
       ...rest
     },
     ref
   ) => {
+    // ************************** 国际化 ************************* //
+
     const i18n = useLocaleContext()
 
     const placeholder = isUndef(placeholderProp)
       ? i18n.get('checkSelect.placeholder')
       : placeholderProp
 
+    // ************************** Picker ************************* //
+
     const [menuVisible, menuVisibleAction] = useToggle()
 
     const displayRender = useCallback(
-      (item: CheckSelectDataItem) => {
+      (item: CheckSelectEventData) => {
         if (isFunction(displayRenderProp)) {
-          // @ts-ignore
           return displayRenderProp(item)
         }
-
         return item.title
       },
       [displayRenderProp]
     )
+
+    // 搜索时临时选中缓存数据
+    const [selectedItems, setSelectedItems] = useState<CheckSelectDataItem[]>([])
 
     const onSelect = useLatestCallback(
       (value: React.ReactText[], item: CheckSelectEventData, shouldChecked: boolean) => {
@@ -104,15 +113,19 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     const { rootProps, ...context } = useCheckSelect({
       ...rest,
       children,
+      fieldNames,
       onSelect,
     })
 
     const { value, tryChangeValue, flattedData } = context
 
-    // ************************** 异步搜索 ************************* //
+    // ************************** 搜索 ************************* //
 
-    // TODO: 支持对 Item 传入 状态
-    const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({ dataSource })
+    const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({
+      dataSource,
+      dataTransform: (data: CheckSelectMergedItem) => flattenData({ data, fieldNames }),
+    })
+
     const customSearchStrategy = useTreeCustomSearch({ data: flattedData, filterOption })
     const filterSearchStrategy = useFilterSearch({
       data: flattedData,
@@ -140,7 +153,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
         }
 
         // 本地搜索执行默认高亮规则
-        const highlight = !!searchValue && (searchMode === 'highlight' || searchMode === 'filter')
+        const highlight = !!searchValue && searchMode === 'filter'
 
         const ret = highlight ? (
           <Checkbox checked={node.checked} disabled={node.disabled}>
@@ -156,14 +169,9 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     )
 
     const shouldUseSearch = !!searchValue && !hasError
-
-    const selectProps = {
-      data: shouldUseSearch ? stateInSearch.data : flattedData,
-      titleRender: proxyTitleRender,
-    }
-
-    // 搜索时临时选中缓存数据
-    const [selectedItems, setSelectedItems] = useState<CheckSelectDataItem[]>([])
+    const showData = useMemo(() => {
+      return shouldUseSearch ? stateInSearch.data : flattedData
+    }, [shouldUseSearch, flattedData, stateInSearch.data])
 
     // 下拉菜单不能合并（因为树形数据，不知道是第几级）
     const mergedData: any[] = useMemo(() => {
@@ -171,26 +179,8 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       return uniqBy(nextData, 'id')
     }, [selectedItems, flattedData])
 
-    const virtualData = useMemo(
-      () =>
-        selectProps.data.reduce((acc: any, cur: any, index: number) => {
-          if ('groupTitle' in cur) {
-            acc.push({
-              id: `group-${index}`,
-              groupTitle: cur.groupTitle,
-              rootProps: cur.rootProps,
-            })
-          } else {
-            acc.push(cur)
-          }
-
-          return acc
-        }, []),
-      [selectProps.data]
-    )
-
     const [filterItems, setFilterItems] = useState<any[] | null>(null)
-    const dropdownItems = filterItems || virtualData
+    const dropdownItems = filterItems || showData
 
     const [allChecked, indeterminate] = useMemo(() => {
       const dropdownIds = dropdownItems
@@ -524,7 +514,7 @@ const optionGroupPrefix = getPrefixCls('select-option-group')
 export const CheckSelectOptionGroup = forwardRef<
   HTMLDivElement | null,
   CheckSelectOptionGroupProps
->(({ prefixCls = optionGroupPrefix, className, children, label, onClick, ...rest }, ref) => {
+>(({ prefixCls = optionGroupPrefix, className, label, ...rest }, ref) => {
   const cls = cx(prefixCls, className)
 
   return (
