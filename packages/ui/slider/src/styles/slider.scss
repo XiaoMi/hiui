@@ -69,9 +69,8 @@ $prefix: '#{$component-prefix}-slider' !default;
 
     .#{$prefix}__mark {
       position: absolute;
-      border-radius: use-background-radius('full');
-      // transform: translate(-50%, 4px);
-      transform: translate(-50%, 25%);
+      border-radius: use-border-radius('full');
+      transform: translate(-50%, 50%);
       left: 2px;
     }
 
@@ -160,12 +159,10 @@ $prefix: '#{$component-prefix}-slider' !default;
   }
 
   .#{$prefix}__min {
-    left: 0;
     transform: translateX(-50%);
   }
 
   .#{$prefix}__max {
-    right: 0;
     transform: translateX(50%);
   }
 

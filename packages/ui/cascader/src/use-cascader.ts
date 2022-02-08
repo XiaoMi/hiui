@@ -162,7 +162,7 @@ export interface UseCascaderProps {
     // optionPaths?: FlattedCascaderItem[]
   ) => void
   /**
-   * 选中选项时触发，仅供内部使用
+   * 选中选项时触发，仅供内部使用。暂不对外暴露
    * @private
    */
   onSelect?: (
@@ -179,7 +179,7 @@ export interface UseCascaderProps {
    */
   changeOnSelect?: boolean
   /**
-   * 将选项拍平展示，不支持 `onLoadChildren` 异步加载交互
+   * 将选项拍平展示，不支持 `onLoadChildren` 异步加载交互。暂不对外暴露
    * @private
    */
   flatted?: boolean

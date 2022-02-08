@@ -155,31 +155,32 @@ export interface TooltipProps extends HiBaseHTMLProps<'div'>, UseTooltipProps {
    */
   arrow?: boolean
   /**
-   * 开启预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
+   * 开启预加载渲染，用于性能优化，优先级小于 `unmountOnClose`。暂不对外暴露
    * @private
    */
   preload?: boolean
   /**
-   * 开启关闭时销毁，用于性能优化，优先级大于 `preload`
+   * 开启关闭时销毁，用于性能优化，优先级大于 `preload`。暂不对外暴露
    * @private
    */
   unmountOnClose?: boolean
   /**
-   * 关闭动画退出时回调
+   * 关闭动画退出时回调。暂不对外暴露
    * @private
    */
   onExited?: () => void
   /**
+   *。暂不对外暴露
    * @private
    */
   innerRef?: React.Ref<{ close: () => void }>
   /**
-   * 指定 portal 的容器
+   * 指定 portal 的容器。暂不对外暴露
    * @private
    */
   container?: HTMLElement
   /**
-   * 禁用 portal
+   * 禁用 portal。暂不对外暴露
    * @private
    */
   disabledPortal?: boolean

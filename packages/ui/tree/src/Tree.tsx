@@ -383,7 +383,7 @@ export interface TreeProps {
     }
   ) => void
   /**
-   * 开启点击选中交互触发 check
+   * 开启点击选中交互触发 check。暂不对外暴露
    * @private
    */
   checkOnSelect?: boolean
@@ -432,7 +432,7 @@ export interface TreeProps {
    */
   checkedMode?: 'PARENT' | 'CHILD' | 'ALL' | 'SEPARATE'
   /**
-   * 直接传入扁平数据使用
+   * 直接传入扁平数据使用。暂不对外暴露
    * @private
    */
   flattedData?: FlattedTreeNodeData[]

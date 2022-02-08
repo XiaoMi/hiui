@@ -493,7 +493,7 @@ export interface UseFormProps<T = Record<string, any>> {
    */
   initialErrors?: Record<keyof T, string>
   /**
-   * 初始化是否已被触碰
+   * 初始化是否已被触碰。暂不对外暴露
    * @private
    */
   initialTouched?: Record<string, boolean>
@@ -506,7 +506,7 @@ export interface UseFormProps<T = Record<string, any>> {
    */
   validateTrigger?: string | string[]
   /**
-   * 在触摸控件之后才开启校验
+   * 在触摸控件之后才开启校验。暂不对外暴露
    * @private
    */
   validateAfterTouched?: boolean

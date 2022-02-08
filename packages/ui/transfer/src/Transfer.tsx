@@ -401,7 +401,7 @@ export interface TransferProps
    */
   onDragStart?: (evt: React.DragEvent, option: { dragNode: TransferDataItem }) => Boolean
   /**
-   * 拖拽结束时的回调函数(完成拖拽)
+   * 拖拽结束时的回调函数(完成拖拽)。暂不对外暴露
    * @private
    */
   onDragEnd?: (option: {

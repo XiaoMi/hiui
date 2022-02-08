@@ -279,7 +279,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
    */
   onChange?: (values: React.ReactText[][]) => void
   /**
-   * 选项被点击时的回调
+   * 选项被点击时的回调。暂不对外暴露
    * @private
    */
   onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderItemEventData) => void
@@ -320,7 +320,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
    */
   checkCascaded?: boolean
   /**
-   * 将 check 子项拍平展示
+   * 将 check 子项拍平展示。暂不对外暴露
    * @private
    */
   type?: 'flatted' | 'tree'
@@ -340,7 +340,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
     idPaths: React.ReactText[]
   ) => Promise<CheckCascaderItem[] | void> | void
   /**
-   * 是否单行展示，超出 +1
+   * 是否单行展示，超出 +1。暂不对外暴露
    * @private
    */
   wrap?: boolean

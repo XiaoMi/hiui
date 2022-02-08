@@ -159,12 +159,12 @@ export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>
    */
   closable?: boolean
   /**
-   * 内部使用，勿覆盖
+   * 内部使用，勿覆盖。暂不对外暴露
    * @private
    */
   destroy?: () => void
   /**
-   * 动画过渡时长
+   * 动画过渡时长。暂不对外暴露
    * @private
    */
   timeout?: number

@@ -34,6 +34,7 @@ export type TableRowSelection = {
     shouldChecked?: boolean
   ) => void
   /**
+   *。暂不对外暴露
    * @private
    */
   // render?: (

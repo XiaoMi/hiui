@@ -149,21 +149,21 @@ export interface LoadingProps extends HiBaseHTMLProps<'div'> {
    */
   size?: LoadingSizeEnum
   /**
-   * 禁用 portal
+   * 禁用 portal。暂不对外暴露
    * @private
    */
   disabledPortal?: boolean
-  /**
+  /** 。暂不对外暴露
    * @private
    */
   innerRef?: React.Ref<{ close: () => void }>
   /**
-   * 指定 portal 的容器
+   * 指定 portal 的容器。暂不对外暴露
    * @private
    */
   container?: HTMLElement | null
   /**
-   * 自定义动画过渡时长
+   * 自定义动画过渡时长。暂不对外暴露
    * @private
    */
   timeout?: number

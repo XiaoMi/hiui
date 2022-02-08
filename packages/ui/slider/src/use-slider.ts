@@ -294,11 +294,11 @@ export const useSlider = ({
     }
 
     if (vertical) {
-      const attr = reversed ? 'bottom' : 'top'
-      style[attr] = `${100 - currentPositionOffset}%`
+      const value = reversed ? `${currentPositionOffset}%` : `${100 - currentPositionOffset}%`
+      style.top = value
     } else {
-      const attr = reversed ? 'right' : 'left'
-      style[attr] = `${currentPositionOffset}%`
+      const value = reversed ? `${100 - currentPositionOffset}%` : `${currentPositionOffset}%`
+      style.left = value
     }
 
     return {
@@ -346,18 +346,18 @@ export const useSlider = ({
     return {
       style,
     }
-  }, [vertical, currentPositionOffset])
+  }, [vertical, currentPositionOffset, reversed])
 
   const getMarkProps = useCallback(
     (props) => {
       const dotValue = ((props.value - min) / rangeLength) * 100
 
-      const verticalAttr = reversed ? 'top' : 'bottom'
-      const horizontalAttr = reversed ? 'right' : 'left'
+      const attr = vertical ? 'bottom' : 'left'
+      const attrValue = reversed ? `${100 - dotValue}%` : `${dotValue}%`
 
       return {
         style: {
-          [vertical ? verticalAttr : horizontalAttr]: dotValue + '%',
+          [attr]: attrValue,
         },
         'data-checked': setAttrStatus(dotValue <= value),
         onClick: (evt: React.MouseEvent) => {
@@ -365,19 +365,19 @@ export const useSlider = ({
         },
       }
     },
-    [onMarkClick, vertical, min, rangeLength, value]
+    [onMarkClick, vertical, min, rangeLength, value, reversed]
   )
 
   const getMarkLabelProps = useCallback(
     (props) => {
       const value = ((props.value - min) / rangeLength) * 100
 
-      const verticalAttr = reversed ? 'top' : 'bottom'
-      const horizontalAttr = reversed ? 'right' : 'left'
+      const attr = vertical ? 'bottom' : 'left'
+      const attrValue = reversed ? `${100 - value}%` : `${value}%`
 
       return {
         style: {
-          [vertical ? verticalAttr : horizontalAttr]: value + '%',
+          [attr]: attrValue,
           transform: !vertical ? 'translateX(-50%)' : 'translateY(50%)',
         },
         onClick: (evt: React.MouseEvent) => {
@@ -386,7 +386,7 @@ export const useSlider = ({
         children: props.content,
       }
     },
-    [onMarkClick, vertical, min, rangeLength]
+    [onMarkClick, vertical, min, rangeLength, reversed]
   )
 
   const rootProps = {
@@ -451,7 +451,8 @@ export interface UseSliderProps {
    */
   vertical?: boolean
   /**
-   * 开启反转
+   * 开启反转。暂不对外暴露
+   * @private
    */
   reversed?: boolean
   /**

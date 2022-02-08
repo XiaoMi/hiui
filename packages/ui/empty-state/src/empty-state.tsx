@@ -57,12 +57,12 @@ export interface EmptyStateProps extends HiBaseHTMLProps<'div'> {
    */
   size?: HiBaseSizeEnum
   /**
-   * 指示器的样式
+   * 指示器的样式。暂不对外暴露
    * @private
    */
   imageStyle?: React.CSSProperties
   /**
-   * 指示器的类名
+   * 指示器的类名。暂不对外暴露
    * @private
    */
   imageClassName?: string

@@ -194,7 +194,7 @@ export interface UseTooltipProps extends PopperOverlayProps {
    */
   trigger?: TriggerActionEnum[] | TriggerActionEnum
   /**
-   * 开启禁用
+   * 开启禁用。暂不对外暴露
    * @private
    */
   disabled?: boolean

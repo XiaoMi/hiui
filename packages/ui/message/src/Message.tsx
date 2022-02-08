@@ -134,12 +134,12 @@ export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'title'> {
    */
   autoClose?: boolean
   /**
-   * 执行销毁，内部使用，勿覆盖
+   * 执行销毁，内部使用，勿覆盖。暂不对外暴露
    * @private
    */
   destroy?: () => void
   /**
-   * 动画过渡时长
+   * 动画过渡时长。暂不对外暴露
    * @private
    */
   timeout?: number

@@ -192,7 +192,7 @@ export interface UseModalProps {
    */
   closeOnEsc?: boolean
   /**
-   * 按下 Esc 时触发
+   * 按下 Esc 时触发。暂不对外暴露
    * @private
    */
   onEscKeyDown?: (event: React.KeyboardEvent) => void
@@ -209,27 +209,27 @@ export interface UseModalProps {
    */
   onClose?: () => void
   /**
-   * 开启弹出时滚动条锁定
+   * 开启弹出时滚动条锁定。暂不对外暴露
    * @private
    */
   lockScroll?: boolean
   /**
-   * 设置关闭后聚焦元素，默认是上一个聚焦元素
+   * 设置关闭后聚焦元素，默认是上一个聚焦元素。暂不对外暴露
    * @private
    */
   focusElementOnClose?: HTMLElement
   /**
-   * 开启跟踪收敛焦点到弹出层
+   * 开启跟踪收敛焦点到弹出层。暂不对外暴露
    * @private
    */
   trapFocus?: boolean
   /**
-   * 开启关闭后焦点返回
+   * 开启关闭后焦点返回。暂不对外暴露
    * @private
    */
   returnFocusOnClose?: boolean
   /**
-   * 开启自动聚焦
+   * 开启自动聚焦。暂不对外暴露
    * @private
    */
   autoFocus?: boolean

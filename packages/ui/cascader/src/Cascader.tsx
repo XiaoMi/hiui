@@ -238,7 +238,7 @@ export interface CascaderProps
   extends Omit<PickerProps, 'data' | 'onChange' | 'trigger'>,
     UseCascaderProps {
   /**
-   * 将 check 子项拍平展示
+   * 将 check 子项拍平展示。暂不对外暴露
    * @private
    */
   type?: 'flatted' | 'tree'

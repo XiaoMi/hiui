@@ -162,7 +162,7 @@ export interface UseInputProps {
    * 设置输入框类型，支持原生 input 的 type 属性所有值
    */
   type?: 'text' | 'id' | 'tel' | 'card' | 'amount' | 'email' | string
-  /**
+  /** 。暂不对外暴露
    * @private
    */
   clearElementRef?: any

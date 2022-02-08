@@ -182,7 +182,7 @@ export interface UseDropdownProps {
    */
   width?: number
   /**
-   * 祖先吸附节点
+   * 祖先吸附节点。暂不对外暴露
    * @private
    */
   parents?: any[]

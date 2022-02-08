@@ -4,8 +4,8 @@ import Slider from '../src'
 export const Mark = () => {
   const [marks] = React.useState({
     0: '0°C',
-    26: '26°C',
-    37: '37°C',
+    27: '27°C',
+    45: '45°C',
     100: '100°C',
   })
   return (

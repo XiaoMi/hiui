@@ -260,31 +260,31 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
    */
   showHeaderDivider?: boolean
   /**
-   * 展示 footer 与内容的分割阴影
+   * 展示 footer 与内容的分割阴影。暂不对外暴露
    * @private
    */
   showFooterDivider?: boolean
   /**
-   * 禁用 portal
+   * 禁用 portal。暂不对外暴露
    * @private
    */
   disabledPortal?: boolean
   /**
-   * 自定义关闭时 icon
+   * 自定义关闭时 icon。暂不对外暴露
    * @private
    */
   closeIcon?: React.ReactNode
   /**
-   * 自定义动画过渡时长
+   * 自定义动画过渡时长。暂不对外暴露
    * @private
    */
   timeout?: number
-  /**
+  /** 。暂不对外暴露
    * @private
    */
   innerRef?: React.Ref<{ close: () => void }>
   /**
-   * 关闭动画退出时回调
+   * 关闭动画退出时回调。暂不对外暴露
    * @private
    */
   onExited?: () => void

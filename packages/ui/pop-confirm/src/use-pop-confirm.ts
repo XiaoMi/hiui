@@ -92,12 +92,12 @@ export interface UsePopConfirmProps {
    */
   visible?: boolean
   /**
-   * 取消时关闭确认框
+   * 取消时关闭确认框。暂不对外暴露
    * @private
    */
   closeOnCancel?: boolean
   /**
-   * 确认时关闭确认框
+   * 确认时关闭确认框。暂不对外暴露
    * @private
    */
   closeOnConfirm?: boolean
@@ -118,7 +118,7 @@ export interface UsePopConfirmProps {
    */
   onConfirm?: () => void
   /**
-   * 是否开启禁用
+   * 是否开启禁用。暂不对外暴露
    * @private
    */
   disabled?: boolean

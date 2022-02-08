@@ -103,7 +103,7 @@ export interface RowProps extends HiBaseHTMLProps<'div'> {
    */
   gutter?: boolean | number
   /**
-   * 设置栅格列总数，一般是 24 或者 48
+   * 设置栅格列总数，一般是 24 或者 48。暂不对外暴露
    * @private
    */
   columns?: number

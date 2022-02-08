@@ -79,7 +79,7 @@ export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
    */
   disabled?: boolean
   /**
-   * 点击加减器改变值时触发聚焦
+   * 点击加减器改变值时触发聚焦。暂不对外暴露
    * @private
    */
   focusOnStep?: boolean

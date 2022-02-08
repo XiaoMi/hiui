@@ -108,7 +108,7 @@ export interface UseCheckSelectProps {
     checkedItems?: CheckSelectDataItem[]
   ) => void
   /**
-   * 选中值时回调
+   * 选中值时回调。暂不对外暴露
    * @private
    */
   onSelect?: (

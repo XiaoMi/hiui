@@ -2,6 +2,7 @@ import React from 'react'
 import Slider from '../src'
 
 export * from './basic.stories'
+export * from './reversed.stories'
 export * from './controlled.stories'
 export * from './range.stories'
 export * from './disabled.stories'

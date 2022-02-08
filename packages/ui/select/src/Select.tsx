@@ -277,12 +277,12 @@ export interface SelectProps
    */
   renderExtraFooter?: () => React.ReactNode
   /**
-   * 设置虚拟滚动容器的可视高度
+   * 设置虚拟滚动容器的可视高度。暂不对外暴露
    * @private
    */
   height?: number
   /**
-   * 设置虚拟列表每项的固定高度
+   * 设置虚拟列表每项的固定高度。暂不对外暴露
    * @private
    */
   itemHeight?: number
