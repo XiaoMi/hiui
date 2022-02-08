@@ -71,6 +71,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       defaultCheckedIds = NOOP_ARRAY,
       checkedIds: checkedIdsProp,
       onCheck,
+      checkOnSelect = false,
       // custom switcher
       collapsedIcon,
       expandedIcon,
@@ -163,6 +164,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         draggable,
         checkable,
         onCheck: onNodeCheck,
+        checkOnSelect,
         dragNodeRef,
         onDragStart,
         onDragEnd,
@@ -184,6 +186,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         onNodeSwitch,
         draggable,
         checkable,
+        checkOnSelect,
         onNodeCheck,
         onDragStart,
         onDragEnd,
@@ -379,6 +382,11 @@ export interface TreeProps {
       checked: boolean
     }
   ) => void
+  /**
+   * 开启点击选中交互触发 check
+   * @private
+   */
+  checkOnSelect?: boolean
   /**
    * 设置虚拟滚动容器的可视高度
    */

@@ -43,6 +43,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
   const {
     draggable = false,
     checkable = false,
+    checkOnSelect,
     onSelect,
     onExpand,
     onFocus,
@@ -260,7 +261,12 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
         }
         tabIndex={0}
         onFocus={() => onFocus?.(eventNodeRef.current)}
-        onClick={() => onSelect?.(eventNodeRef.current)}
+        onClick={() => {
+          onSelect?.(eventNodeRef.current)
+          if (checkOnSelect) {
+            onCheck?.(eventNodeRef.current, !checked)
+          }
+        }}
       >
         {renderIndent(prefixCls, node)}
 

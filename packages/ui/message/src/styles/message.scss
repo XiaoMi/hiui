@@ -6,10 +6,10 @@ $prefix: '#{$component-prefix}-message' !default;
   box-sizing: border-box;
   width: auto;
   padding: use-spacing(5) use-spacing(10);
-  margin: use-spacing(4);
+  margin: use-spacing(5);
   border-radius: use-border-radius('lg');
   pointer-events: auto;
-  box-shadow: 0 1px 6px -1px rgba(0, 0, 0, 0.12);
+  box-shadow: use-shadow('md');
   display: flex;
   align-items: center;
   font-size: use-text-size('normal');
@@ -23,7 +23,7 @@ $prefix: '#{$component-prefix}-message' !default;
       // color: use-color-mode('primary-40');
 
       svg {
-        fill: use-color-mode('primary');
+        color: use-color-mode('primary');
       }
     }
 

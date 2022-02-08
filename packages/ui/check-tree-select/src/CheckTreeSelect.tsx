@@ -280,8 +280,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             className={`${prefixCls}__tree`}
             selectable={false}
             checkable
-            // TODO: 支持 点击 select 交互
-            // checkOnSelect
+            checkOnSelect
             checkedMode={checkedMode}
             checkedIds={value}
             onCheck={onSelect}
