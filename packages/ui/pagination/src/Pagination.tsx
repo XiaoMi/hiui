@@ -8,7 +8,14 @@ const PAGINATION_PREFIX = getPrefixCls('pagination')
 
 export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
   (
-    { prefixCls = PAGINATION_PREFIX, role = 'pagination', type, className, children, ...rest },
+    {
+      prefixCls = PAGINATION_PREFIX,
+      role = 'pagination',
+      type = 'default',
+      className,
+      children,
+      ...rest
+    },
     ref
   ) => {
     const cls = cx(prefixCls, className)

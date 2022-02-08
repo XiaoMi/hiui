@@ -189,7 +189,7 @@ export const Cascade = () => {
           <FormItem label="Rating" field="rating" valueType="number">
             <Rating />
           </FormItem>
-          <FormItem label="Upload" field="upload" valueType="string">
+          <FormItem label="Upload" field="upload" valueType="string" contentPosition="top">
             <Upload
               type="photo"
               uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"

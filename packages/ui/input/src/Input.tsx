@@ -156,7 +156,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
               disabled && 'disabled',
               readOnly && 'readonly'
             )}
-            type={type}
+            // type={type}
             {...getInputProps()}
             {...rest}
           />

@@ -16,13 +16,9 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
   const i18n = useLocaleContext()
 
   const {
-    // @ts-ignore
     labelWidth: labelWidthContext,
-    // @ts-ignore
     labelPlacement,
-    // @ts-ignore
     showColon: showColonContext,
-    // @ts-ignore
     contentPosition: contentPositionContext,
   } = useFormContext()
 
@@ -33,13 +29,10 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     style: styleProp,
     children,
     label,
-    // @ts-ignore
-    field,
     required = false,
     // Item’s priority is higher than Form
     labelWidth: labelWidthProp = labelWidthContext,
     showColon = showColonContext,
-    // @ts-ignore
     contentPosition = contentPositionContext,
     ...rest
   } = props
@@ -122,6 +115,10 @@ export interface FormLabelProps extends HiBaseHTMLProps<'div'> {
    * label 文案
    */
   label?: React.ReactNode
+  /**
+   * 在 vertical 放置时，label 相对表单控件垂直对齐的方式，优先级低于 Form
+   */
+  contentPosition?: 'top' | 'center' | 'bottom'
 }
 
 if (__DEV__) {

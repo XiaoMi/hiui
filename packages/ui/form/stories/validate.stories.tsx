@@ -158,12 +158,13 @@ export const Validate = () => {
             />
           </FormItem>
           <FormItem label="地区" field="region" valueType="string">
-            <RadioGroup>
-              {/* TODO: why not work */}
-              <Radio value="beijing">北京</Radio>
-              <Radio value="shanghai">上海</Radio>
-              <Radio value="chongqing">重庆</Radio>
-            </RadioGroup>
+            <RadioGroup
+              data={[
+                { id: 'beijing', title: '北京' },
+                { id: 'shanghai', title: '上海' },
+                { id: 'chongqing', title: '重庆' },
+              ]}
+            />
           </FormItem>
 
           <FormItem valueType={null} field={null}>

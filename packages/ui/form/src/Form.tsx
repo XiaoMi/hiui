@@ -26,7 +26,7 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
       labelWidth,
       labelPlacement = 'right',
       placement = 'vertical',
-      verticalAlign,
+      contentPosition = 'center',
       showColon,
       ...rest
     },
@@ -58,10 +58,11 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
         labelWidth,
         labelPlacement,
         showColon,
+        contentPosition,
         ...formContext,
         prefixCls,
       }
-    }, [labelWidth, formContext, labelPlacement, showColon, prefixCls])
+    }, [labelWidth, formContext, labelPlacement, showColon, prefixCls, contentPosition])
 
     const cls = cx(prefixCls, className, placement && `${prefixCls}--placement-${placement}`)
 
@@ -98,7 +99,7 @@ export interface FormProps<Values = Record<string, any>>
   /**
    * 在 vertical 放置时，label 相对表单控件垂直对齐的方式
    */
-  verticalAlign?: 'top' | 'center' | 'bottom'
+  contentPosition?: 'top' | 'center' | 'bottom'
   /**
    * 配置是否展示冒号
    */

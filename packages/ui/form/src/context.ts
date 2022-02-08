@@ -1,8 +1,15 @@
-import { createContext, useContext } from 'react'
+import React, { createContext, useContext } from 'react'
 
 import { UseFormReturn } from './use-form'
 
-const formContext = createContext<Omit<UseFormReturn, 'rootProps'> | null>(null)
+export interface FormContextProps extends UseFormReturn {
+  labelWidth: React.ReactText
+  labelPlacement: 'left' | 'right' | 'top'
+  contentPosition: 'top' | 'center' | 'bottom'
+  showColon: boolean
+}
+
+const formContext = createContext<Omit<FormContextProps, 'rootProps'> | null>(null)
 
 export const FormProvider = formContext.Provider
 

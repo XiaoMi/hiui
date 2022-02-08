@@ -51,8 +51,8 @@ $prefix: '#{$component-prefix}-form' !default;
 
   &__text {
     padding-right: use-spacing(4);
-    min-height: 22px;
-    line-height: 22px;
+    min-height: 32px;
+    line-height: 32px;
 
     .#{$prefix}-label--placement-left & {
       text-align: left;
