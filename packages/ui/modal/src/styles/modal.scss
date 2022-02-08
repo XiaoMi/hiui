@@ -143,15 +143,64 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
 
   &__title {
     flex: 1;
+    display: flex;
+    align-items: center;
+    font-size: use-text-size('lg');
   }
 
   &__body {
     box-sizing: border-box;
     overflow: auto;
     flex: 1;
-    // margin-top: use-spacing(12);
-    // padding: 0 use-spacing(12) use-spacing(12);
     padding: use-spacing(12);
+    font-size: use-text-size('normal');
+  }
+
+  &__icon {
+    font-size: 24px;
+    margin-inline-end: use-spacing(4);
+  }
+
+  &--type {
+    &-success {
+      .#{$prefix}__icon {
+        color: use-color-mode('success');
+      }
+
+      .#{$prefix}__body {
+        padding-top: use-spacing(2);
+      }
+    }
+
+    &-error {
+      .#{$prefix}__icon {
+        color: use-color-mode('danger');
+      }
+
+      .#{$prefix}__body {
+        padding-top: use-spacing(2);
+      }
+    }
+
+    &-warning {
+      .#{$prefix}__icon {
+        color: use-color-mode('warning');
+      }
+
+      .#{$prefix}__body {
+        padding-top: use-spacing(2);
+      }
+    }
+
+    &-info {
+      .#{$prefix}__icon {
+        color: use-color-mode('primary');
+      }
+
+      .#{$prefix}__body {
+        padding-top: use-spacing(2);
+      }
+    }
   }
 
   &__footer {

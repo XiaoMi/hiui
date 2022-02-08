@@ -23,12 +23,10 @@ export const Footer = () => {
           data={data}
           renderExtraFooter={() => {
             return (
-              <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                <Input style={{ width: '100px' }} />
-                <Button appearance="link" icon={<PlusOutlined />}>
-                  新增
-                </Button>
-              </div>
+              <Input
+                placeholder="添加选项"
+                suffix={<PlusOutlined style={{ cursor: 'pointer' }} />}
+              />
             )
           }}
         />

@@ -28,7 +28,16 @@ export const Action = () => {
                   >
                     取消
                   </Button>
-                  <Button type="primary">确认</Button>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      if (notificationIdRef.current) {
+                        notification.close(notificationIdRef.current)
+                      }
+                    }}
+                  >
+                    确认
+                  </Button>
                 </>
               ),
             })

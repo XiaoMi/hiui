@@ -7,14 +7,28 @@ import { Portal } from '@hi-ui/portal'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useToggle } from '@hi-ui/use-toggle'
 import { IconButton } from '@hi-ui/icon-button'
-import { CloseOutlined } from '@hi-ui/icons'
+import {
+  CloseOutlined,
+  CheckCircleFilled,
+  CloseCircleFilled,
+  ExclamationCircleFilled,
+  InfoCircleFilled,
+} from '@hi-ui/icons'
 import Button from '@hi-ui/button'
 import { useModal, UseModalProps } from './use-modal'
+import { ModalType } from './type'
 
 const _role = 'modal'
 export const _prefix = getPrefixCls(_role)
 
 const defaultCloseIcon = <CloseOutlined />
+const modalIconMap = {
+  // TODO: designToken 颜色抽离 css 为代码
+  [ModalType.SUCCESS]: <CheckCircleFilled />,
+  [ModalType.ERROR]: <CloseCircleFilled />,
+  [ModalType.WARNING]: <ExclamationCircleFilled />,
+  [ModalType.INFO]: <InfoCircleFilled />,
+}
 
 /**
  * TODO: What is Modal
@@ -29,6 +43,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       disabledPortal = false,
       closeable = true,
       timeout = 300,
+      type,
       onExited: onExitedProp,
       title,
       cancelText,
@@ -91,7 +106,12 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     const hasCancel = cancelText !== null
     const hasFooter = hasConfirm || hasCancel || footer !== null
 
-    const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
+    const cls = cx(
+      prefixCls,
+      className,
+      `${prefixCls}--size-${size}`,
+      type && `${prefixCls}--type-${type}`
+    )
 
     return (
       <Portal container={container} disabled={disabledPortal}>
@@ -118,7 +138,14 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                     showHeaderDivider && `${prefixCls}__header--divided`
                   )}
                 >
-                  {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
+                  {title ? (
+                    <div className={`${prefixCls}__title`}>
+                      {type && modalIconMap[type] ? (
+                        <span className={`${prefixCls}__icon`}>{modalIconMap[type]}</span>
+                      ) : null}
+                      {title}
+                    </div>
+                  ) : null}
                   {closeable ? (
                     <IconButton effect icon={closeIcon} onClick={onRequestCloseLatest} />
                   ) : null}
@@ -261,6 +288,10 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
    * @private
    */
   onExited?: () => void
+  /**
+   * 确认框类型
+   */
+  type?: ModalType
 }
 
 if (__DEV__) {

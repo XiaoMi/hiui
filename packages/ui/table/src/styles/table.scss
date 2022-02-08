@@ -126,6 +126,25 @@ $prefix: '#{$component-prefix}-table' !default;
       }
     }
 
+    &__resizable {
+      position: relative;
+      background-clip: padding-box;
+
+      &-handle {
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        bottom: 0;
+        right: 0;
+        cursor: col-resize;
+        z-index: 1;
+
+        &:hover {
+          background-color: use-color-mode('primary');
+        }
+      }
+    }
+
     &__col--hovered-highlight {
       background-color: use-color('gray', 100);
     }
@@ -217,27 +236,6 @@ $prefix: '#{$component-prefix}-table' !default;
   }
 }
 
-.#{$prefix}-header {
-  &__resizable {
-    position: relative;
-    background-clip: padding-box;
-
-    &-handle {
-      position: absolute;
-      width: 2px;
-      height: 100%;
-      bottom: 0;
-      right: 0;
-      cursor: col-resize;
-      z-index: 1;
-
-      &:hover {
-        background-color: use-color-mode('primary');
-      }
-    }
-  }
-}
-
 // 单元格
 .#{$prefix}-cell {
   word-break: break-word;
@@ -245,7 +243,7 @@ $prefix: '#{$component-prefix}-table' !default;
   font-size: use-text-size('normal');
   font-weight: use-text-weight('normal');
   color: use-color('gray', 700);
-  line-height: use-text-lineheight('normal');
+  line-height: use-text-lineheight('sm');
   padding: use-spacing(7) use-spacing(8);
 
   &[data-sticky] {
@@ -406,7 +404,6 @@ th[data-sticky] {
 
   &__btn-group {
     display: flex;
-    height: 48px;
     align-items: center;
     justify-content: flex-end;
   }

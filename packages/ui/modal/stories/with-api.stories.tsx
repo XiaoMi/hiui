@@ -13,7 +13,7 @@ export const WithAPI = () => {
             Modal.confirm({
               type: 'error',
               title: '错误',
-              content: <div style={{ lineHeight: '48px' }}>操作失败，请联系管理员！</div>,
+              content: '操作失败，请联系管理员！',
               cancelText: null,
               confirmText: '我知道了',
             })
@@ -27,9 +27,7 @@ export const WithAPI = () => {
             Modal.confirm({
               type: 'warning',
               title: '警告',
-              content: (
-                <div style={{ lineHeight: '48px' }}>执行该操作后将无法撤销，是否确定继续？</div>
-              ),
+              content: '执行该操作后将无法撤销，是否确定继续？',
               cancelText: null,
               confirmText: '确定',
             })
@@ -44,11 +42,8 @@ export const WithAPI = () => {
             Modal.confirm({
               type: 'success',
               title: '成功',
-              content: (
-                <div style={{ lineHeight: '48px' }}>
-                  这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述
-                </div>
-              ),
+              content:
+                '这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述',
               cancelText: null,
               confirmText: '确定',
             })
@@ -63,11 +58,8 @@ export const WithAPI = () => {
             Modal.confirm({
               type: 'info',
               title: '普通',
-              content: (
-                <div style={{ lineHeight: '48px' }}>
-                  这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述
-                </div>
-              ),
+              content:
+                '这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述',
               cancelText: null,
               confirmText: '确定',
             })

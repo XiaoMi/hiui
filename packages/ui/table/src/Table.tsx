@@ -194,8 +194,10 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           const { node, checked } = renderCell(_, rowItem, rowIndex)
 
           // 自定义渲染
+          // @ts-ignore
           if (rowSelection.render) {
             // TODO: 获取 requiredProps 方法
+            // @ts-ignore
             return rowSelection.render(node, { ...rowItem, checked }, rowIndex, dataKey)
           }
 
