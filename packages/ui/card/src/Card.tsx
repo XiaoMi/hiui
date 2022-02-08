@@ -50,13 +50,12 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
             {extra && <div className={`${prefixCls}__extra`}>{extra}</div>}
           </div>
         ) : null}
-        {loading !== undefined ? (
-          <Loading visible={loading}>
-            <div className={`${prefixCls}__body`}>{children}</div>
-          </Loading>
-        ) : (
-          <div className={`${prefixCls}__body`}>{children}</div>
-        )}
+        <div className={`${prefixCls}__body`}>
+          {children}
+          {typeof loading === 'boolean' ? (
+            <Loading className={`${prefixCls}__loading`} visible={loading} />
+          ) : null}
+        </div>
       </div>
     )
   }

@@ -7,7 +7,7 @@ export const RowSelection = () => {
       <h1>RowSelection for Table</h1>
       <div className="table-row-selection__wrap" style={{ width: 800 }}>
         <Table
-          fixedToColumn={'type'}
+          fixedToColumn={{ left: 'type' }}
           columns={[
             {
               title: '商品名',

@@ -55,6 +55,15 @@ $prefix: '#{$component-prefix}-card' !default;
     padding: 0 use-spacing(10) use-spacing(10) use-spacing(10);
     font-size: use-text-size('normal');
     color: use-color('gray', 600);
+    position: relative;
+  }
+
+  &__loading {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
   }
 
   &__title {

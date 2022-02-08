@@ -7,7 +7,6 @@ export const Empty = () => {
       <h1>Empty for Table</h1>
       <div className="table-empty__wrap" style={{ width: 800, background: '#eee' }}>
         <Table
-          fixedToColumn={'type'}
           columns={[
             {
               title: '商品名',

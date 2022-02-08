@@ -7,7 +7,7 @@ export const FieldKey = () => {
       <h1>FieldKey for Table</h1>
       <div className="table-field-key__wrap" style={{ width: 800, background: '#eee' }}>
         <Table
-          fixedToColumn={'type'}
+          fixedToColumn={{ left: 'type' }}
           fieldKey="name"
           columns={[
             {

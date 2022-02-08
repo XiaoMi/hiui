@@ -7,7 +7,7 @@ export const ExpandedRender = () => {
       <h1>ExpandedRender for Table</h1>
       <div className="table-expanded-render__wrap" style={{ width: 800 }}>
         <Table
-          fixedToColumn={'type'}
+          fixedToColumn={{ left: 'type' }}
           columns={[
             {
               title: '商品名',

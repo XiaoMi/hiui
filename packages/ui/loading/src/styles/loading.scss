@@ -54,8 +54,8 @@ $prefixCls: #{$component-prefix}-loading !default;
 
   &__wrapper {
     position: relative;
-    width: fit-content;
-    height: fit-content;
+    width: auto;
+    height: auto;
   }
 
   &__icon {
