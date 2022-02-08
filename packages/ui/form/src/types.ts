@@ -92,19 +92,19 @@ export interface FormHelpers<T = any> {
   /**
    * 重置整个表单的验证,对应 Form.Reset中的 API
    */
-  reset: (fields?: [], toDefault?: boolean) => Promise<T>
+  reset: (fields?: FormFieldPath, toDefault?: boolean) => Promise<T>
   /**
    * 对指定表单字段进行校验
    */
-  validateField: (fields?: string[] | string) => Promise<T>
+  validateField: (fields?: FormFieldPath) => Promise<T>
   /**
    * 对指定表单字段进行校验
    */
-  validateFields: (fields?: string[] | string) => Promise<T>
+  validateFields: (fields?: FormFieldPath) => Promise<T>
   /**
    * 设置表单的值，在异步获取的数据回显的时候，使用该方法
    */
-  setFieldValue: (field: string, value: any) => void
+  setFieldValue: (field: FormFieldPath, value: any) => void
   /**
    * 设置多个表单的值，在异步获取的数据回显的时候，使用该方法
    */
@@ -112,7 +112,7 @@ export interface FormHelpers<T = any> {
   /**
    * 	获取一个字段名对应的 Values 返回为数组形式, 不传入 fields；默认返回全部信息, 不会触发表单校验
    */
-  getFieldValue: (field: string) => any
+  getFieldValue: (field: FormFieldPath) => any
   /**
    * 	获取所有字段名对应的 Values 返回为数组形式, 不传入 fields；默认返回全部信息, 不会触发表单校验
    */
@@ -120,7 +120,7 @@ export interface FormHelpers<T = any> {
   /**
    * 获取一组字段名对应的错误信息，返回为数组形式, 不传入 fields；默认返回全部信息
    */
-  getFieldError: (field: string) => any
+  getFieldError: (field: FormFieldPath) => any
   /**
    * 获取所有字段名对应的错误信息，返回为数组形式, 不传入 fields；默认返回全部信息
    */
@@ -132,7 +132,7 @@ export interface FormHelpers<T = any> {
   /**
    *  移除表单项的校验结果，传入待移除的表单项的 field 属性组成的数组
    */
-  clearFieldsValidates: (fields: string[]) => void
+  clearFieldsValidates: (fields: FormFieldPath) => void
 }
 
 export type FormFieldPath = (string | number)[] | string | number
