@@ -483,9 +483,6 @@ export const insertNodeById = <T extends BaseTreeNode>(
 
 /**
  * 寻找某一节点的所有子节点
- *
- * @param node
- * @returns
  */
 export const findNestedChildren = <T extends BaseTreeNodeData>(
   node: T,
@@ -497,9 +494,12 @@ export const findNestedChildren = <T extends BaseTreeNodeData>(
     if (node.children) {
       node.children.forEach((child: BaseTreeNodeData) => {
         // 过滤节点及其子树
-        if (filter && filter(child) === false) return
+        const filtered = filter && filter(child) === false
 
-        allChildren.push(child as T)
+        if (!filtered) {
+          allChildren.push(child as T)
+        }
+
         dig(child)
       })
     }
