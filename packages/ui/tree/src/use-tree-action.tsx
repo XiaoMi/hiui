@@ -23,6 +23,7 @@ import { CheckOutlined, CloseOutlined } from '@hi-ui/icons'
 // import Button from '@hi-ui/button'
 import { IconButton } from './IconButton'
 import { defaultActionIcon } from './icons'
+import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
 
 import './styles/editable-tree.scss'
 
@@ -178,7 +179,7 @@ export interface EditableTreeProps extends TreeProps {
   /**
    * 自定义树菜单行为项
    */
-  menuOptions?: TreeMenuActionOption[]
+  menuOptions?: TreeMenuActionOption[] | ((node: FlattedTreeNodeData) => TreeMenuActionOption[])
   /**
    * 输入框占位符
    */
@@ -215,7 +216,7 @@ interface EditableTreeNodeTitleProps {
   addSiblingNode: (node: FlattedTreeNodeData) => void
   onExpand: (ids: React.ReactText[]) => void
   placeholder?: string
-  menuOptions?: TreeMenuActionOption[]
+  menuOptions?: TreeMenuActionOption[] | ((node: FlattedTreeNodeData) => TreeMenuActionOption[])
   focusTree: () => void
 }
 
@@ -229,7 +230,7 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
     addSiblingNode,
     expandedIds,
     onExpand,
-    menuOptions,
+    menuOptions: menuOptionsProp,
   } = props
 
   const [menuVisible, menuVisibleAction] = useToggle(false)
@@ -308,6 +309,18 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
     [menuActionsRef]
   )
 
+  const menuOptions = useMemo(() => {
+    let menuOptions = menuOptionsProp
+
+    if (isFunction(menuOptionsProp)) {
+      menuOptions = menuOptionsProp(node)
+    }
+
+    return menuOptions
+  }, [menuOptionsProp, node])
+
+  if (!isArrayNonEmpty(menuOptions)) return null
+
   return (
     <div className={`${prefixCls}-actions`} ref={containerRef}>
       <IconButton
@@ -342,7 +355,6 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
           </ul>
         </div>
       ) : null}
-      {/* {Modal} */}
     </div>
   )
 }

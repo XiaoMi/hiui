@@ -79,36 +79,35 @@ export const Loading = forwardRef<null, LoadingProps>(
       close: () => setInternalVisible(false),
     }))
 
-    const maskCls = cx(
-      `${prefixCls}__mask`,
-      children && `${prefixCls}__mask--withchildren`,
-      `${prefixCls}__mask--${full ? 'full' : 'part'}`,
-      size && `${prefixCls}--size-${size}`
+    const cls = cx(
+      prefixCls,
+      className,
+      size && `${prefixCls}--size-${size}`,
+      children && `${prefixCls}--withchildren`,
+      `${prefixCls}--${full ? 'full' : 'part'}`
     )
 
     const loadingComponent = (
       <CSSTransition
-        classNames={`${prefixCls}__mask`}
+        classNames={`${prefixCls}--motion`}
         in={internalVisible}
-        unmountOnExit
         timeout={timeout}
+        unmountOnExit
       >
-        <div className={maskCls} {...restProps}>
-          <div ref={ref} role={role} className={cx(prefixCls, className)}>
-            <div className={`${prefixCls}__icon-wrapper`}>
-              <div className={`${prefixCls}__icon`}>
-                <div />
-                <div />
-              </div>
+        <div ref={ref} role={role} className={cls} {...restProps}>
+          <div className={`${prefixCls}__mask`} />
+          <div className={`${prefixCls}__icon-wrapper`}>
+            <div className={`${prefixCls}__icon`}>
+              <div />
+              <div />
             </div>
-            {content ? <span className={`${prefixCls}__content`}>{content}</span> : null}
           </div>
+          {content ? <span className={`${prefixCls}__content`}>{content}</span> : null}
         </div>
       </CSSTransition>
     )
 
     return (
-      // @ts-ignore
       <Portal container={container} disabled={!container && !full}>
         {children ? (
           // 可以测量 children margin，实现按内容位置偏移，排除 margin 影响

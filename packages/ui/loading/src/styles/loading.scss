@@ -11,44 +11,25 @@ $prefixCls: #{$component-prefix}-loading !default;
     @include component-reset;
     @include flex;
 
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: use-zindex('back');
+    background: rgba(#fff, 0.64);
     transition: 0.3s ease;
-    z-index: 19;
 
-    &-enter {
-      opacity: 0;
-
-      &-active {
-        opacity: 1;
-      }
-    }
-
-    &-exit {
+    .#{$prefixCls}--motion-enter & {
       opacity: 0;
     }
 
-    &--withchildren {
-      @include full-fill;
-
-      position: absolute;
-      background: rgba(#fff, 0.64);
+    .#{$prefixCls}--motion-enter-active & {
+      opacity: 1;
     }
 
-    &--full {
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      z-index: use-zindex('top');
-      background: rgba(#fff, 0.64);
-    }
-
-    &--part {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
+    .#{$prefixCls}--motion-exit & {
+      opacity: 0;
     }
   }
 
@@ -66,7 +47,7 @@ $prefixCls: #{$component-prefix}-loading !default;
       display: inline-block;
       position: absolute;
 
-      @keyframes animDotF {
+      @keyframes #{$component-prefix}-left-dot {
         0% {
           transform: translateX(0);
           z-index: 1;
@@ -93,7 +74,7 @@ $prefixCls: #{$component-prefix}-loading !default;
         }
       }
 
-      @keyframes animDotL {
+      @keyframes #{$component-prefix}-right-dot {
         0% {
           transform: translateX(0);
           z-index: 0;
@@ -124,16 +105,22 @@ $prefixCls: #{$component-prefix}-loading !default;
         background: #f63;
         left: 0;
         transform: translateX(0);
-        animation: animDotF 1.5s linear infinite;
+        animation: #{$component-prefix}-left-dot 1.5s linear infinite;
       }
 
       &:last-child {
         background: use-color-mode('primary');
         right: 0;
         transform: translateX(0);
-        animation: animDotL 1.5s linear infinite;
+        animation: #{$component-prefix}-right-dot 1.5s linear infinite;
       }
     }
+  }
+
+  &__content {
+    margin-top: 6px;
+    animation: #{$component-prefix}-flash 1.6s linear infinite;
+    color: #f63;
   }
 
   &--size {
@@ -174,10 +161,27 @@ $prefixCls: #{$component-prefix}-loading !default;
     }
   }
 
-  &__content {
-    margin-top: 6px;
-    animation: #{$component-prefix}-flash 1.6s linear infinite;
-    color: #f63;
+  &--withchildren {
+    @include full-fill;
+
+    position: absolute;
+  }
+
+  &--full {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: use-zindex('top');
+  }
+
+  &--part {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
   }
 }
 
