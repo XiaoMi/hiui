@@ -6,26 +6,43 @@ $prefix: '#{$component-prefix}-input' !default;
   $input-shadow: 0 0 0 2px use-color-mode('primary-10');
   $input-error-shadow: 0 0 0 2px use-color-mode('error-10');
 
-  @include input-reset;
-
-  // basic
-  flex: 1;
+  position: relative;
   display: inline-block;
   box-sizing: border-box;
-  transition-property: all;
-  transition-duration: use-motion-duration('normal');
-  transition-timing-function: use-motion-bezier('normal');
   width: 100%;
-  font-size: inherit;
-  line-height: inherit;
-  color: use-color('gray', 700);
 
-  &::placeholder {
-    color: use-color('gray', 400);
+  &__outer {
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    position: relative;
+    height: 100%;
+    width: 100%;
   }
 
-  &:disabled {
-    cursor: not-allowed;
+  // 原生 input
+  &__text {
+    @include input-reset;
+
+    // basic
+    flex: 1;
+    display: inline-block;
+    box-sizing: border-box;
+    transition-property: all;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
+    width: 100%;
+    font-size: inherit;
+    line-height: inherit;
+    color: use-color('gray', 700);
+
+    &::placeholder {
+      color: use-color('gray', 400);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 
   &__inner {
@@ -43,23 +60,13 @@ $prefix: '#{$component-prefix}-input' !default;
     outline: none;
     z-index: auto;
 
-    &:not(.disabled):hover {
+    &:not(.#{$prefix}__inner--disabled):hover {
       z-index: calc(#{use-zindex('absolute')} + 1);
     }
 
-    &:not(.disabled).focused {
+    &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
       z-index: calc(#{use-zindex('absolute')} + 1);
     }
-  }
-
-  &__outer {
-    display: inline-flex;
-    position: relative;
-    margin: 0;
-    padding: 0;
-    height: auto;
-    width: 100%;
-    vertical-align: middle;
   }
 
   // clear icon
@@ -82,7 +89,7 @@ $prefix: '#{$component-prefix}-input' !default;
       color: use-color('gray', 700);
     }
 
-    &.active {
+    &.#{$prefix}__clear--active {
       visibility: visible;
       opacity: 1;
     }
@@ -153,7 +160,7 @@ $prefix: '#{$component-prefix}-input' !default;
       font-size: use-text-size('sm');
       line-height: get-text-lineheight('sm');
 
-      .#{$prefix} {
+      .#{$prefix}__text {
         padding: 1px $input-padding-width;
       }
 
@@ -179,7 +186,7 @@ $prefix: '#{$component-prefix}-input' !default;
       font-size: use-text-size('normal');
       line-height: get-text-lineheight('normal');
 
-      .#{$prefix} {
+      .#{$prefix}__text {
         padding: 4px $input-padding-width;
       }
 
@@ -205,7 +212,7 @@ $prefix: '#{$component-prefix}-input' !default;
       font-size: use-text-size('lg');
       line-height: get-text-lineheight('lg');
 
-      .#{$prefix} {
+      .#{$prefix}__text {
         padding: 7px $input-padding-width;
       }
 
@@ -232,23 +239,23 @@ $prefix: '#{$component-prefix}-input' !default;
       .#{$prefix}__inner {
         border-color: use-color('gray', 300);
 
-        &:not(.disabled):hover {
+        &:not(.#{$prefix}__inner--disabled):hover {
           border-color: use-color-mode('primary');
         }
 
-        &:not(.disabled).focused {
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
           box-shadow: $input-shadow;
           border-color: use-color-mode('primary');
         }
 
-        &:not(.disabled).invalid {
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
           border-color: use-color-mode('error');
 
-          &.hover {
+          &:hover {
             border-color: use-color-mode('error');
           }
 
-          &.focused {
+          &.#{$prefix}__inner--focused {
             box-shadow: $input-error-shadow;
           }
         }
@@ -261,46 +268,21 @@ $prefix: '#{$component-prefix}-input' !default;
     }
 
     &-unset {
-      .#{$prefix} {
+      .#{$prefix}__text {
         padding-left: 0;
         padding-right: 0;
-        // border-color: transparent;
       }
-
-      // .#{$prefix}__inner {
-      //   &:not(.disabled):hover {
-      //     background-color: use-color('gray', 100);
-      //   }
-
-      //   &:not(.disabled).focused {
-      //     box-shadow: $input-shadow;
-      //     background-color: use-color-static('white');
-      //     border-color: use-color-mode('primary');
-      //   }
-
-      //   &:not(.disabled).invalid {
-      //     border-color: use-color-mode('error');
-
-      //     &.hover {
-      //       border-color: use-color-mode('error');
-      //     }
-
-      //     &.focused {
-      //       box-shadow: $input-error-shadow;
-      //     }
-      //   }
-      // }
 
       &.#{$prefix}__outer--prepend,
       .#{$prefix}__inner--prefix {
-        .#{$prefix} {
+        .#{$prefix}__text {
           padding-left: $input-padding-width;
         }
       }
 
       &.#{$prefix}__outer--append,
       .#{$prefix}__inner--suffix {
-        .#{$prefix} {
+        .#{$prefix}__text {
           padding-right: $input-padding-width;
         }
       }
@@ -314,25 +296,25 @@ $prefix: '#{$component-prefix}-input' !default;
       .#{$prefix}__inner {
         background-color: use-color('gray', 100);
 
-        &:not(.disabled):hover {
+        &:not(.#{$prefix}__inner--disabled):hover {
           background-color: use-color-static('white');
           border-color: use-color-mode('primary');
         }
 
-        &:not(.disabled).focused {
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
           box-shadow: $input-shadow;
           border-color: use-color-mode('primary');
           background-color: use-color-static('white');
         }
 
-        &:not(.disabled).invalid {
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
           border-color: use-color-mode('error');
 
-          &.hover {
+          &:hover {
             border-color: use-color-mode('error');
           }
 
-          &.focused {
+          &.#{$prefix}__inner--focused {
             box-shadow: $input-error-shadow;
           }
         }
@@ -340,21 +322,21 @@ $prefix: '#{$component-prefix}-input' !default;
     }
 
     &-underline {
-      .#{$prefix} {
+      .#{$prefix}__text {
         padding-left: 0;
         padding-right: 0;
       }
 
       &.#{$prefix}__outer--prepend,
       .#{$prefix}__inner--prefix {
-        .#{$prefix} {
+        .#{$prefix}__text {
           padding-left: $input-padding-width;
         }
       }
 
       &.#{$prefix}__outer--append,
       .#{$prefix}__inner--suffix {
-        .#{$prefix} {
+        .#{$prefix}__text {
           padding-right: $input-padding-width;
         }
       }
@@ -375,19 +357,19 @@ $prefix: '#{$component-prefix}-input' !default;
           transition: all 0.3s;
         }
 
-        &:not(.disabled):hover {
+        &:not(.#{$prefix}__inner--disabled):hover {
           &::after {
             border-bottom-color: use-color-mode('primary');
           }
         }
 
-        &:not(.disabled).focused {
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
           &::after {
             border-bottom-color: use-color-mode('primary');
           }
         }
 
-        &:not(.disabled).invalid {
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
           &::after {
             border-bottom-color: use-color-mode('error');
           }
@@ -402,13 +384,21 @@ $prefix: '#{$component-prefix}-input' !default;
     }
 
     &-line,
-    &-unset,
-    &-filled,
-    &-underline {
+    &-filled {
       .#{$prefix}__inner {
-        &.disabled {
+        &.#{$prefix}__inner--disabled {
           color: use-color('gray', 400);
           background-color: use-color('gray', 200);
+        }
+      }
+    }
+
+    &-unset,
+    &-underline {
+      .#{$prefix}__inner {
+        &.#{$prefix}__inner--disabled {
+          color: use-color('gray', 400);
+          background-color: transparent;
         }
       }
     }

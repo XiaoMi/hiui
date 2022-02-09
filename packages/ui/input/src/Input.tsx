@@ -115,73 +115,72 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
     const mergedRef = useMergeRefs(ref, inputElementRef)
 
     const cls = cx(
+      prefixCls,
       className,
+      `${prefixCls}--size-${size}`,
+      `${prefixCls}--appearance-${appearance}`
+    )
+
+    const outerCls = cx(
       `${prefixCls}__outer`,
       prepend && `${prefixCls}__outer--prepend`,
       prepend && unsetPrepend && `${prefixCls}__outer--prepend-unset`,
       append && `${prefixCls}__outer--append`,
-      append && unsetAppend && `${prefixCls}__outer--append-unset`,
-      `${prefixCls}--appearance-${appearance}`,
-      `${prefixCls}--size-${size}`
+      append && unsetAppend && `${prefixCls}__outer--append-unset`
     )
 
     return (
       <div role={role} className={cls} style={style}>
-        {prepend ? <div className={`${prefixCls}__prepend`}>{prepend}</div> : null}
-        <div
-          className={cx(
-            `${prefixCls}__inner`,
-            prefix && `${prefixCls}__inner--prefix`,
-            suffix && `${prefixCls}__inner--suffix`,
-            // TODO: bem规范统一
-            focused && `focused`,
-            disabled && 'disabled',
-            readOnly && 'readonly',
-            invalid && 'invalid'
-          )}
-          onMouseOver={(e) => {
-            setHover(true)
-          }}
-          onMouseLeave={(e) => {
-            setHover(false)
-          }}
-        >
-          {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
-
-          <input
-            ref={mergedRef}
+        <div className={outerCls}>
+          {prepend ? <div className={`${prefixCls}__prepend`}>{prepend}</div> : null}
+          <div
             className={cx(
-              prefixCls,
-              focused && `focused`,
-              disabled && 'disabled',
-              readOnly && 'readonly'
+              `${prefixCls}__inner`,
+              prefix && `${prefixCls}__inner--prefix`,
+              suffix && `${prefixCls}__inner--suffix`,
+              focused && `${prefixCls}__inner--focused`,
+              disabled && `${prefixCls}-__inner-disabled`,
+              readOnly && `${prefixCls}-__inner-readonly`,
+              invalid && `${prefixCls}__inner--invalid`
             )}
-            // type={type}
-            {...getInputProps()}
-            {...rest}
-          />
+            onMouseOver={(e) => {
+              setHover(true)
+            }}
+            onMouseLeave={(e) => {
+              setHover(false)
+            }}
+          >
+            {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
 
-          {suffix || showClearableIcon ? (
-            <span className={`${prefixCls}__suffix`}>
-              {showClearableIcon ? (
-                <span
-                  ref={clearElementRef}
-                  className={cx(
-                    `${prefixCls}__clear`,
-                    (clearableTrigger === 'always' || hover) && 'active'
-                  )}
-                  role="button"
-                  tabIndex={-1}
-                  onClick={handleReset}
-                >
-                  <CloseCircleFilled />
-                </span>
-              ) : null}
-              {suffix}
-            </span>
-          ) : null}
+            <input
+              ref={mergedRef}
+              className={`${prefixCls}__text`}
+              {...getInputProps()}
+              {...rest}
+            />
+
+            {suffix || showClearableIcon ? (
+              <span className={`${prefixCls}__suffix`}>
+                {showClearableIcon ? (
+                  <span
+                    ref={clearElementRef}
+                    className={cx(
+                      `${prefixCls}__clear`,
+                      (clearableTrigger === 'always' || hover) && `${prefixCls}__clear--active`
+                    )}
+                    role="button"
+                    tabIndex={-1}
+                    onClick={handleReset}
+                  >
+                    <CloseCircleFilled />
+                  </span>
+                ) : null}
+                {suffix}
+              </span>
+            ) : null}
+          </div>
+          {append ? <div className={`${prefixCls}__append`}>{append}</div> : null}
         </div>
-        {append ? <div className={`${prefixCls}__append`}>{append}</div> : null}
       </div>
     )
   }

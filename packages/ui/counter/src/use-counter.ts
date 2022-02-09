@@ -128,14 +128,14 @@ export const useCounter = ({
     [onMinus, onPlus, proxyTryChangeValue, getCurrentValue]
   )
 
-  const [focus, focusAction] = useToggle()
+  const [focused, focusedAction] = useToggle()
 
   const onFocusLatest = useLatestCallback(onFocus)
   const onBlurLatest = useLatestCallback(onBlur)
 
   useEffect(() => {
     if (autoFocus && !disabled) {
-      focusAction.on()
+      focusedAction.on()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -144,33 +144,34 @@ export const useCounter = ({
     if (disabled) return
     if (!inputRef.current) return
 
-    if (focus) {
+    if (focused) {
       inputRef.current.focus()
     }
-  }, [disabled, focus])
+  }, [disabled, focused])
 
   const handleMinusButtonTouch = useCallback(
     (evt: React.MouseEvent) => {
       if (focusOnStep) {
         evt.preventDefault()
-        focusAction.on()
+        focusedAction.on()
       }
 
       onMinus()
     },
-    [onMinus, focusAction, focusOnStep]
+    [onMinus, focusedAction, focusOnStep]
   )
 
   const handlePlusButtonTouch = useCallback(
     (evt: React.MouseEvent) => {
       if (focusOnStep) {
         evt.preventDefault()
-        focusAction.on()
+        evt.stopPropagation()
+        focusedAction.on()
       }
 
       onPlus()
     },
-    [onPlus, focusAction, focusOnStep]
+    [onPlus, focusedAction, focusOnStep]
   )
 
   const onInputChange = useCallback(
@@ -186,21 +187,34 @@ export const useCounter = ({
 
   const onInputFocus = useCallback(
     (evt) => {
-      focusAction.on()
+      focusedAction.on()
       onFocusLatest(evt)
     },
-    [onFocusLatest, focusAction]
+    [onFocusLatest, focusedAction]
   )
+
+  const plusButtonElementRef = useRef<HTMLButtonElement | null>(null)
+  const minusButtonElementRef = useRef<HTMLButtonElement | null>(null)
 
   const onInputBlur = useCallback(
     (evt) => {
+      const relatedTarget = evt.relatedTarget
+
+      // 拦截加减按钮点击，阻止其触发 input 失焦
+      if (
+        (plusButtonElementRef.current && plusButtonElementRef.current === relatedTarget) ||
+        (minusButtonElementRef.current && minusButtonElementRef.current === relatedTarget)
+      ) {
+        return
+      }
+
       const currentValue = getCurrentValue()
       proxyTryChangeValue(currentValue, true)
 
-      focusAction.off()
+      focusedAction.off()
       onBlurLatest(evt)
     },
-    [getCurrentValue, proxyTryChangeValue, onBlurLatest, focusAction]
+    [getCurrentValue, proxyTryChangeValue, onBlurLatest, focusedAction]
   )
 
   const onWheeLatest = useLatestCallback(onWheel)
@@ -226,7 +240,7 @@ export const useCounter = ({
     className,
     `${prefixCls}--size-${size}`,
     `${prefixCls}--appearance-${appearance}`,
-    focus && `${prefixCls}--focused`,
+    focused && `${prefixCls}--focused`,
     (invalid || !isNumeric(value)) && `${prefixCls}--invalid`,
     isOutOfRange(value, min, max) && `${prefixCls}--out-of-bounds`
   )
@@ -273,6 +287,7 @@ export const useCounter = ({
 
   const getMinusButtonProps = useCallback(() => {
     return {
+      ref: minusButtonElementRef,
       className: cx(`${prefixCls}__minus`, disabledMinus && 'disabled'),
       role: 'button',
       'aria-disabled': disabledMinus ? true : undefined,
@@ -284,6 +299,7 @@ export const useCounter = ({
 
   const getPlusButtonProps = useCallback(() => {
     return {
+      ref: plusButtonElementRef,
       className: cx(`${prefixCls}__plus`, disabledPlus && 'disabled'),
       role: 'button',
       'aria-disabled': disabledPlus ? true : undefined,
