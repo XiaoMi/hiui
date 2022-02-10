@@ -86,7 +86,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="check-tree-select-basic__wrap">
-        <CheckTreeSelect data={data}></CheckTreeSelect>
+        <CheckTreeSelect data={data} />
       </div>
     </>
   )

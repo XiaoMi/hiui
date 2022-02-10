@@ -51,6 +51,7 @@ export const Checkable = () => {
         <Tree
           checkable
           data={treeData}
+          checkedMode="PARENT"
           render={(node) => `${node.title}(${node.id})`}
           onCheck={console.log}
         ></Tree>

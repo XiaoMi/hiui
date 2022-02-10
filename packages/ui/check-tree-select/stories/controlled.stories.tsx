@@ -90,9 +90,9 @@ export const Controlled = () => {
         <CheckTreeSelect
           data={data}
           clearable
-          showCheckedMode="PARENT"
+          checkedMode="PARENT"
           value={value}
-          onChange={(checkedIds, checkedNodes, currentNode) => {
+          onChange={(checkedIds) => {
             setValue(checkedIds)
           }}
         ></CheckTreeSelect>

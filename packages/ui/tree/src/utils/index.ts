@@ -1,7 +1,8 @@
 import { fFindNodeById } from './tree'
 import React from 'react'
 import { TreeNodeEventData, FlattedTreeNodeData, TreeNodeRequiredProps } from '../types'
-import { isTreeRoot } from '@hi-ui/tree-utils'
+import { getNodeAncestors } from '@hi-ui/tree-utils'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 export * from './tree'
 
 /**
@@ -43,29 +44,31 @@ export const processCheckedIds = (
         const node = fFindNodeById(flattenData, id)
 
         if (node) {
-          let children: any[] = []
-          if (node.children && node.children.length > 0) {
-            children = node.children
-          }
+          const { children } = node
 
-          if (children.length === 0) {
-            return true
-          }
-
-          if (children.every((node) => keySet.has(node.id))) {
-            return false
+          if (isArrayNonEmpty(children)) {
+            if (children.filter((node) => !node.disabled).every((node) => keySet.has(node.id))) {
+              return false
+            }
           }
         }
+
+        // 没有孩子节点，保留
         return true
       })
 
     case 'PARENT':
       return checkedIds.filter((id) => {
         const node = fFindNodeById(flattenData, id)
-        const parent = node ? node.parent : null
-        if (!isTreeRoot(parent) && keySet.has(parent.id)) {
-          return false
+        if (node) {
+          // 向上递归遍历是否被勾选
+          const ancestors = getNodeAncestors(node)
+
+          if (ancestors.some((parent) => keySet.has(parent.id))) {
+            return false
+          }
         }
+
         return true
       })
   }
