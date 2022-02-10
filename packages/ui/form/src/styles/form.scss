@@ -50,7 +50,7 @@ $prefix: '#{$component-prefix}-form' !default;
   }
 
   &__text {
-    padding-right: use-spacing(4);
+    padding-right: use-spacing(6);
     min-height: 32px;
     line-height: 32px;
 

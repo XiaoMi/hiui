@@ -29,7 +29,6 @@ export const useTreeSearch = (BaseTree: Tree) => {
         <>
           <div className={`${treeProps.prefixCls}-searcher`}>
             <Input
-              appearance="filled"
               clearable
               clearableTrigger="always"
               {...searchInputProps}

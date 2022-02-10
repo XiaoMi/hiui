@@ -6,7 +6,7 @@ $prefix: '#{$component-prefix}-tree' !default;
   &-searcher {
     position: relative;
     color: use-color('gray', 700);
-    // padding: 0 use-spacing(4);
+    margin-bottom: use-spacing(4);
     box-sizing: border-box;
 
     &--empty {
