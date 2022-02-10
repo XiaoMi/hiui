@@ -1,5 +1,6 @@
 import React from 'react'
 import Menu from '../src'
+import { EditOutlined, HomeOutlined } from '@hi-ui/icons'
 
 export const Basic = () => {
   return (
@@ -13,14 +14,17 @@ export const Basic = () => {
             {
               title: '电视',
               id: 1,
+              icon: <HomeOutlined />,
             },
             {
               title: '小米MIX',
               id: 2,
+              icon: <HomeOutlined />,
             },
             {
               title: '手机',
               id: 3,
+              icon: <HomeOutlined />,
               children: [
                 {
                   title: '小米',
@@ -61,11 +65,13 @@ export const Basic = () => {
                 {
                   title: '红米',
                   id: 'hongmi',
+                  icon: <HomeOutlined />,
                 },
                 {
                   title: '小米note',
                   disabled: true,
                   id: 'xiaominote',
+                  icon: <HomeOutlined />,
                   children: [
                     {
                       title: '小米 note7',
@@ -94,6 +100,7 @@ export const Basic = () => {
             {
               title: '超长超长超长字符超长超长超长字符',
               id: 4,
+              icon: <HomeOutlined />,
             },
           ]}
         />

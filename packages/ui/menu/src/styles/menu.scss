@@ -210,9 +210,9 @@ $prefix: '#{$component-prefix}-menu' !default;
         border-radius: use-border-radius('normal');
         transition: all 0.3s;
 
-        &--mini {
-          justify-content: center;
-        }
+        // &--mini {
+        //   justify-content: center;
+        // }
 
         &--active {
           color: use-color-mode('primary');
@@ -226,6 +226,12 @@ $prefix: '#{$component-prefix}-menu' !default;
         &:not(.#{$prefix}-item__inner--active):hover {
           background-color: use-color('gray', 100);
         }
+      }
+
+      svg[class^=hi-v4-icon] {
+        flex-shrink: 0;
+        margin-right: use-spacing(4);
+        margin-left: 1px;
       }
 
       &__content {
