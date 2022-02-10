@@ -1,7 +1,7 @@
 import React from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { FlattedTreeNodeData, TreeNodeEventData, TreeNodeData } from '../types'
-import { processCheckedIds } from '../utils'
+import { parseCheckDataDirty, processCheckedIds } from '../utils'
 import { useCascadeCheck } from '@hi-ui/use-check'
 
 /**
@@ -27,6 +27,7 @@ export const useCheck = (
     defaultCheckedIds,
     checkedIdsProp,
     (checkedIds, checkedNode, checked, semiCheckedIds) => {
+      // 出口数据处理
       const processedIds = processCheckedIds(checkedMode, checkedIds, flattedData)
 
       const nextCheckedNodes = flattedData
@@ -42,13 +43,16 @@ export const useCheck = (
     }
   )
 
+  // 入口数据处理
+  const parsedCheckedIds = parseCheckDataDirty(checkedMode, checkedIds, flattedData)
+
   const cascaded = checkedMode !== 'SEPARATE'
 
   return useCascadeCheck({
     cascaded,
     disabled,
     flattedData,
-    checkedIds,
+    checkedIds: parsedCheckedIds,
     onCheck: trySetCheckedIds,
     allowCheck,
   })

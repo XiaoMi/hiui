@@ -2,6 +2,7 @@ import React from 'react'
 import Tree from '../src'
 
 export const Checkable = () => {
+  const [checkedIds, setCheckedIds] = React.useState([])
   const [treeData] = React.useState([
     {
       id: 1,
@@ -51,9 +52,12 @@ export const Checkable = () => {
         <Tree
           checkable
           data={treeData}
-          checkedMode="PARENT"
+          checkedIds={checkedIds}
+          onCheck={(...args) => {
+            console.log(...args)
+            setCheckedIds(args[0])
+          }}
           render={(node) => `${node.title}(${node.id})`}
-          onCheck={console.log}
         ></Tree>
       </div>
     </>

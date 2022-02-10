@@ -494,6 +494,10 @@ export const findNestedChildren = <T extends BaseTreeNodeData>(
     if (node.children) {
       node.children.forEach((child: BaseTreeNodeData) => {
         // 过滤节点及其子树
+        // if (filter && filter(child) === false) return
+        // allChildren.push(child)
+
+        // 仅过滤当前节点，不过滤子树
         const filtered = filter && filter(child) === false
 
         if (!filtered) {
@@ -536,10 +540,17 @@ export const getNodeAncestors = <T extends BaseFlattedTreeNodeDataWithParent>(
   let tNode = node.parent
 
   while (tNode && tNode.parent) {
-    // 过滤节点及其子树
-    if (filter && filter(tNode) === false) break
+    // 仅过滤当前节点，不过滤子树
+    const filtered = filter && filter(tNode) === false
 
-    ancestors.push(tNode)
+    if (!filtered) {
+      ancestors.push(tNode as T)
+    }
+
+    // 过滤节点及其子树
+    // if (filter && filter(tNode) === false) break
+    // ancestors.push(tNode)
+
     tNode = tNode.parent
   }
 

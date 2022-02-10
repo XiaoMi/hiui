@@ -48,6 +48,7 @@ export const useCascadeCheck = ({
           semiCheckedIds!,
           targetItem,
           shouldChecked,
+          // 可添加 legacyV3 开关
           allowCheckRef.current
         )
 
@@ -135,10 +136,18 @@ export const checkCascade = (
 
     // - 对于选中节点的祖先影响处理
     ancestors.forEach((ancestor) => {
-      const { id, children } = ancestor
+      const {
+        id,
+        // children
+      } = ancestor
 
       // 当该节点的子节点都被全选中时，则该节点为标记为全选，否则为半选
-      if (children!.filter(allowCheck).some((child) => !checkedIdsSet.has(child.id)) === false) {
+      const nestedChildren = findNestedChildren(ancestor, allowCheck)
+      if (
+        nestedChildren!
+          // .filter(allowCheck)
+          .some((child) => !checkedIdsSet.has(child.id)) === false
+      ) {
         semiCheckedIdsSet.delete(id)
         checkedIdsSet.add(id)
       } else {
@@ -151,7 +160,10 @@ export const checkCascade = (
 
     // - 对于取消选中节点对祖先的影响处理
     ancestors.forEach((ancestor) => {
-      const { id, children } = ancestor
+      const {
+        id,
+        // children
+      } = ancestor
 
       if (checkedIdsSet.has(id)) {
         checkedIdsSet.delete(id)
@@ -159,9 +171,11 @@ export const checkCascade = (
       }
 
       // 当该节点的子节点都未被选中时，则该节点为标记为未选中
+      const nestedChildren = findNestedChildren(ancestor, allowCheck)
+
       if (
-        children!
-          .filter(allowCheck)
+        nestedChildren!
+          // .filter(allowCheck)
           .some((child) => checkedIdsSet.has(child.id) || semiCheckedIdsSet.has(child.id)) === false
       ) {
         semiCheckedIdsSet.delete(id)
