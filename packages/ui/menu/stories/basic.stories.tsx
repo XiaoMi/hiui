@@ -65,13 +65,12 @@ export const Basic = () => {
                 {
                   title: '红米',
                   id: 'hongmi',
-                  icon: <HomeOutlined />,
                 },
                 {
                   title: '小米note',
                   disabled: true,
                   id: 'xiaominote',
-                  icon: <HomeOutlined />,
+
                   children: [
                     {
                       title: '小米 note7',
