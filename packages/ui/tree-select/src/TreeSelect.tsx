@@ -43,7 +43,6 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       // clearable = false,
       // bordered = true,
       fieldNames = DEFAULT_FIELD_NAMES,
-      showCheckedMode,
       defaultExpandAll = false,
       expandedIds: expandedIdsProp,
       defaultExpandedIds = DEFAULT_EXPANDED_IDS,
@@ -272,13 +271,6 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' |
    * 设置 data 中 id, title, disabled, children 对应的 key (3.0 新增)	object	-	{ title: 'title', id: 'id',disabled:'disabled', children: 'children'}
    */
   fieldNames?: FieldNames
-  /**
-   * 数据回显模式	string
-   * ALL: 所有被选中节点，不区分父子节点
-   * PARENT: 当所有子节点被选中时将只保留父节点
-   * CHILD: 仅显示子节点
-   */
-  showCheckedMode?: 'ALL' | 'PARENT' | 'CHILD'
   /**
    * 数据选择类型
    */

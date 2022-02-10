@@ -108,6 +108,8 @@ export const CheckCascaderMenu = ({
                   checked={checked}
                   disabled={disabled || option.disabledCheckbox}
                   onClick={(evt) => evt.stopPropagation()}
+                  // 当前是半选时，点击将设置为全选，
+                  // 又因子节点某个选项未选中但是禁用，当前态将一直是半选，那操作将一直是设置全选操作
                   onChange={(evt) => {
                     onCheck?.(eventOption, !checked)
                     onSelect?.(eventOption)
