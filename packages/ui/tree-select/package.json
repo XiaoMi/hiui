@@ -43,22 +43,22 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.0-alpha.3",
-    "@hi-ui/core": "^4.0.0-alpha.21",
-    "@hi-ui/core-css": "^4.0.0-alpha.15",
-    "@hi-ui/env": "^4.0.0-alpha.6",
-    "@hi-ui/highlighter": "^4.0.0-alpha.14",
-    "@hi-ui/icons": "^4.0.0-alpha.30",
-    "@hi-ui/locale-context": "^4.0.0-alpha.20",
-    "@hi-ui/picker": "^4.0.0-alpha.23",
-    "@hi-ui/popper": "^4.0.0-alpha.26",
-    "@hi-ui/tag-input": "^4.0.0-alpha.26",
-    "@hi-ui/tree": "^4.0.0-alpha.49",
-    "@hi-ui/tree-utils": "^4.0.0-alpha.16",
-    "@hi-ui/type-assertion": "^4.0.0-alpha.14",
-    "@hi-ui/use-search-mode": "^4.0.0-alpha.22",
-    "@hi-ui/use-toggle": "^4.0.0-alpha.12",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-alpha.14",
+    "@hi-ui/classname": "^4.0.0-beta.0",
+    "@hi-ui/core": "^4.0.0-beta.0",
+    "@hi-ui/core-css": "^4.0.0-beta.0",
+    "@hi-ui/env": "^4.0.0-beta.0",
+    "@hi-ui/highlighter": "^4.0.0-beta.0",
+    "@hi-ui/icons": "^4.0.0-beta.0",
+    "@hi-ui/locale-context": "^4.0.0-beta.0",
+    "@hi-ui/picker": "^4.0.0-beta.0",
+    "@hi-ui/popper": "^4.0.0-beta.0",
+    "@hi-ui/tag-input": "^4.0.0-beta.0",
+    "@hi-ui/tree": "^4.0.0-beta.0",
+    "@hi-ui/tree-utils": "^4.0.0-beta.0",
+    "@hi-ui/type-assertion": "^4.0.0-beta.0",
+    "@hi-ui/use-search-mode": "^4.0.0-beta.0",
+    "@hi-ui/use-toggle": "^4.0.0-beta.0",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.0",
     "lodash": "^4.17.21"
   },
   "peerDependencies": {
@@ -66,7 +66,7 @@
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.4",
+    "@hi-ui/hi-build": "^4.0.0-beta.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

@@ -44,13 +44,13 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.0-alpha.3",
-    "@hi-ui/core": "^4.0.0-alpha.21",
-    "@hi-ui/core-css": "^4.0.0-alpha.15",
-    "@hi-ui/env": "^4.0.0-alpha.6",
-    "@hi-ui/icons": "^4.0.0-alpha.30",
-    "@hi-ui/type-assertion": "^4.0.0-alpha.14",
-    "@hi-ui/use-toggle": "^4.0.0-alpha.12",
+    "@hi-ui/classname": "^4.0.0-beta.0",
+    "@hi-ui/core": "^4.0.0-beta.0",
+    "@hi-ui/core-css": "^4.0.0-beta.0",
+    "@hi-ui/env": "^4.0.0-beta.0",
+    "@hi-ui/icons": "^4.0.0-beta.0",
+    "@hi-ui/type-assertion": "^4.0.0-beta.0",
+    "@hi-ui/use-toggle": "^4.0.0-beta.0",
     "number-precision": "^1.5.0"
   },
   "peerDependencies": {
@@ -58,7 +58,7 @@
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.4",
+    "@hi-ui/hi-build": "^4.0.0-beta.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
