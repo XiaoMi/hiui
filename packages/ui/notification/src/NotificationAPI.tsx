@@ -1,10 +1,14 @@
-import { Notification as NotificationComponent, NotificationProps, _prefix } from './Notification'
+import {
+  Notification as NotificationComponent,
+  NotificationProps,
+  notificationPrefix,
+} from './Notification'
 import { ToastAPI, ToastAPIOptions } from '@hi-ui/toast'
 import { withDefaultProps } from '@hi-ui/react-utils'
 
 export class NotificationAPI extends ToastAPI<NotificationOptions> {
   static defaultOptions = {
-    prefixCls: _prefix,
+    prefixCls: notificationPrefix,
   }
 
   constructor(options: NotificationAPIOptions) {

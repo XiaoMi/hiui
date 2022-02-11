@@ -27,7 +27,7 @@ import { TreeNode } from './TreeNode'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
 const _role = 'tree'
-export const _prefix = getPrefixCls(_role)
+export const treePrefix = getPrefixCls(_role)
 
 const NOOP_ARRAY = [] as []
 
@@ -37,7 +37,7 @@ const NOOP_ARRAY = [] as []
 export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls = treePrefix,
       role = _role,
       className,
       children,

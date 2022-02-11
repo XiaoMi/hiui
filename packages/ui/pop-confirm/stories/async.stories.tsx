@@ -13,13 +13,13 @@ export const Async = () => {
           title="Are U ok ?"
           visible={visible}
           footer={[
-            <Button key="1" type="default" size="small" onClick={() => setVisible(false)}>
+            <Button key="1" type="default" size="sm" onClick={() => setVisible(false)}>
               取消
             </Button>,
             <Button
               key="2"
               type="primary"
-              size="small"
+              size="sm"
               loading={loading}
               onClick={() => {
                 setLoading(true)

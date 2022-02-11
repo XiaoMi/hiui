@@ -13,7 +13,7 @@ import {
 } from '@hi-ui/icons'
 
 const _role = 'notification'
-export const _prefix = getPrefixCls(_role)
+export const notificationPrefix = getPrefixCls(_role)
 
 const notificationIconMap: any = {
   success: <CheckCircleFilled />,
@@ -28,7 +28,7 @@ const notificationIconMap: any = {
 export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls = notificationPrefix,
       role = _role,
       className,
       children,

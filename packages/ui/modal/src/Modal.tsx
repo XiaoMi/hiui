@@ -19,7 +19,7 @@ import { useModal, UseModalProps } from './use-modal'
 import { ModalType } from './type'
 
 const _role = 'modal'
-export const _prefix = getPrefixCls(_role)
+export const modalPrefix = getPrefixCls(_role)
 
 const defaultCloseIcon = <CloseOutlined />
 const modalIconMap = {
@@ -36,7 +36,7 @@ const modalIconMap = {
 export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls = modalPrefix,
       className,
       children,
       size = 'md',

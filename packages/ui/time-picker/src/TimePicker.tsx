@@ -22,7 +22,7 @@ import { getNowString } from './utils/getNowString'
 import DayJs from 'dayjs'
 
 const _role = 'time-picker'
-export const _prefix = getPrefixCls(_role)
+export const timePickerPrefix = getPrefixCls(_role)
 
 const DefaultValue = ['', ''] as TimePickerValue[]
 const DefaultDisabledFunc = () => []
@@ -39,7 +39,7 @@ const getValueMatchString = (value?: TimePickerValue[] | TimePickerValue) => {
 export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls = timePickerPrefix,
       role = _role,
       className,
       value: controlledValue,

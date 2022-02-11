@@ -17,14 +17,14 @@ import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { getNodeSiblings } from '@hi-ui/tree-utils'
 
 const _role = 'tree-node'
-const _prefix = getPrefixCls(_role)
+const treePrefix = getPrefixCls(_role)
 
 /**
  * TODO: What is TreeNode
  */
 export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, ref) => {
   const {
-    prefixCls = _prefix,
+    prefixCls = treePrefix,
     role = _role,
     className,
     data: node,

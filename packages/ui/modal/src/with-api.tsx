@@ -2,9 +2,9 @@ import React, { createRef, createElement } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import * as Container from '@hi-ui/container'
 
-import { _prefix, Modal, ModalProps } from './Modal'
+import { modalPrefix, Modal, ModalProps } from './Modal'
 
-const prefixCls = _prefix
+const prefixCls = modalPrefix
 const selector = `.${prefixCls}-wrapper`
 
 // TODO： 抽离合并到 Toast API

@@ -1,4 +1,4 @@
-import { WatermarkProps, _prefix } from '..'
+import { WatermarkProps, watermarkPrefix } from '../Watermark'
 import { __DEV__ } from '@hi-ui/env'
 
 type CanvasTextBaseline = 'alphabetic' | 'bottom' | 'hanging' | 'ideographic' | 'middle' | 'top'
@@ -156,7 +156,7 @@ export class WatermarkGenerator {
     const cOptions = Object.assign({}, defaultProps, _markSize, options)
 
     const { width, height, textAlign, textBaseline, font, color, logo, rotate } = cOptions
-    const key = _prefix + '-' + Math.floor(Math.random() * (9999 - 1000)) + 1000 + '__wm'
+    const key = watermarkPrefix + '-' + Math.floor(Math.random() * (9999 - 1000)) + 1000 + '__wm'
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
     canvas.setAttribute('width', width + 'px')

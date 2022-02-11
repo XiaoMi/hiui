@@ -11,7 +11,7 @@ import { getRange } from './utils/getRange'
 import { Panel } from './Panel'
 import { analysisFormat } from './utils/analysisFormat'
 import { getFormatDefault } from './utils/getFormatDefault'
-import { _prefix } from './TimePicker'
+import { timePickerPrefix } from './TimePicker'
 import { useFilter } from './hooks/useFilter'
 
 type ExtendType = Partial<TimePickerFilterProps> & Required<TimePickerStep>
@@ -31,7 +31,7 @@ const DefaultDisabledFunc = () => []
 
 export const PopContent: FC<PopContentProps> = (props) => {
   const {
-    prefix = _prefix,
+    prefix = timePickerPrefix,
     value: dangerousValue,
     onChange,
     format,

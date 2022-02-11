@@ -5,7 +5,7 @@ import { TreeNodeData, FlattedTreeNodeData, TreeNodeEventData } from './types'
 import { useExpandProps } from './hooks'
 import { cloneTree, getNodeAncestors } from '@hi-ui/tree-utils'
 import { flattenTreeData } from './utils'
-import { TreeProps, Tree, _prefix } from './Tree'
+import { TreeProps, Tree, treePrefix } from './Tree'
 import { SearchOutlined } from '@hi-ui/icons'
 
 import './styles/searchable-tree.scss'
@@ -54,7 +54,7 @@ export const useTreeSearch = (BaseTree: Tree) => {
 
 export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
   const {
-    prefixCls = _prefix,
+    prefixCls = treePrefix,
     data,
     searchable = true,
     searchPlaceholder,

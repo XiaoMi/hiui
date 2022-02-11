@@ -7,14 +7,14 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 
 const _role = 'watermark'
-export const _prefix = getPrefixCls(_role)
+export const watermarkPrefix = getPrefixCls(_role)
 
 /**
  * TODO: What is Watermark
  */
 export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((props, ref) => {
   const {
-    prefixCls = _prefix,
+    prefixCls = watermarkPrefix,
     role = _role,
     children,
     style,

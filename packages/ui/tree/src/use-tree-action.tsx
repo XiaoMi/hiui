@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useRef, forwardRef } from 'react'
 import { __DEV__ } from '@hi-ui/env'
 import { cx } from '@hi-ui/classname'
-import { TreeProps, Tree, _prefix } from './Tree'
+import { TreeProps, Tree, treePrefix } from './Tree'
 import {
   FlattedTreeNodeData,
   TreeNodeType,
@@ -58,7 +58,7 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
   ref: React.RefObject<HTMLElement | null>
 ) => {
   const {
-    prefixCls = _prefix,
+    prefixCls = treePrefix,
     className,
     data,
     editable = true,
@@ -222,7 +222,7 @@ interface EditableTreeNodeTitleProps {
 
 const EditableNodeMenu = (props: EditableNodeMenuProps) => {
   const {
-    prefixCls = _prefix,
+    prefixCls = treePrefix,
     node,
     editingAction,
     onDelete,
@@ -368,7 +368,7 @@ interface EditableNodeMenuProps extends EditableTreeNodeTitleProps {
  */
 const EditableNodeInput = (props: EditableNodeInputProps) => {
   const {
-    prefixCls = _prefix,
+    prefixCls = treePrefix,
     node,
     onSave,
     onCancel,

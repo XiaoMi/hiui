@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
 const _role = 'icon-button'
-const _prefix = getPrefixCls(_role)
+const treePrefix = getPrefixCls(_role)
 
 /**
  * TODO: What is IconButton
@@ -14,7 +14,7 @@ const _prefix = getPrefixCls(_role)
  * 2. 样式上也是svg的样式，不带任何修饰，hover后是圆型的态，并且也不占文档流空间
  */
 export const IconButton = forwardRef<HTMLButtonElement | null, IconButtonProps>(
-  ({ prefixCls = _prefix, icon, className, active = false, ...rest }, ref) => {
+  ({ prefixCls = treePrefix, icon, className, active = false, ...rest }, ref) => {
     const cls = cx(prefixCls, className, active && `${prefixCls}--active`)
 
     return (

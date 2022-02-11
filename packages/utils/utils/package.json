@@ -43,11 +43,17 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/array-utils": "^4.0.0-alpha.7",
     "@hi-ui/classname": "^4.0.0-alpha.3",
     "@hi-ui/container": "^4.0.0-alpha.6",
+    "@hi-ui/dom-utils": "^4.0.0-alpha.7",
     "@hi-ui/env": "^4.0.0-alpha.6",
+    "@hi-ui/func-utils": "^4.0.0-alpha.6",
+    "@hi-ui/react-utils": "^4.0.0-alpha.8",
     "@hi-ui/request": "^4.0.0-alpha.4",
-    "@hi-ui/tree-utils": "^4.0.0-alpha.16"
+    "@hi-ui/times": "^4.0.0-alpha.4",
+    "@hi-ui/tree-utils": "^4.0.0-alpha.16",
+    "@hi-ui/type-assertion": "^4.0.0-alpha.14"
   },
   "devDependencies": {
     "@hi-ui/hi-build": "^4.0.0-alpha.4"

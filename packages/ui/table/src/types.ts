@@ -1,6 +1,5 @@
 import React from 'react'
 import { SelectProps } from '@hi-ui/select'
-import { ValueOf } from '@hi-ui/core'
 import { PaginationProps } from '@hi-ui/pagination'
 
 export type TableAlign = 'left' | 'right' | 'center'
@@ -190,16 +189,6 @@ export interface TableNodeRequiredProps {
 }
 
 export interface TableRowEventData extends FlattedTableRowData, TableNodeRequiredProps {}
-
-// 表示节点类型
-export const TreeNodeType = {
-  SHOW: 'show',
-  HIDE: 'hide',
-  ADD: 'add',
-} as const
-
-// eslint-disable-next-line no-redeclare
-export type TreeNodeType = ValueOf<typeof TreeNodeType>
 
 export interface TableRowRequiredProps {
   expanded: boolean
