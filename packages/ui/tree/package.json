@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tree",
-  "version": "4.0.0-alpha.48",
+  "version": "4.0.0-alpha.49",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,12 +43,12 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/checkbox": "^4.0.0-alpha.35",
+    "@hi-ui/checkbox": "^4.0.0-alpha.36",
     "@hi-ui/classname": "^4.0.0-alpha.3",
-    "@hi-ui/core-css": "^4.0.0-alpha.14",
+    "@hi-ui/core-css": "^4.0.0-alpha.15",
     "@hi-ui/env": "^4.0.0-alpha.6",
-    "@hi-ui/icons": "^4.0.0-alpha.29",
-    "@hi-ui/input": "^4.0.0-alpha.36",
+    "@hi-ui/icons": "^4.0.0-alpha.30",
+    "@hi-ui/input": "^4.0.0-alpha.37",
     "@hi-ui/times": "^4.0.0-alpha.4",
     "@hi-ui/tree-utils": "^4.0.0-alpha.16",
     "@hi-ui/type-assertion": "^4.0.0-alpha.14",
