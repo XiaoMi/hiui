@@ -59,8 +59,8 @@ $filled-disabled-color-map: (
 // focus 态
 $filled-focus-shadow-map: (
   'primary': use-color-mode('primary-20'),
-  'secondary': use-color-mode('primary-20'),
-  'default': use-color-mode('primary-20'),
+  'secondary': use-color-mode('primary-10'),
+  'default': use-color('gray', 200),
   'success': use-color-mode('success-20'),
   'danger': use-color-mode('danger-20'),
 ) !default;

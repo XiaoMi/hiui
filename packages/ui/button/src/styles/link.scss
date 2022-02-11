@@ -42,11 +42,11 @@ $link-disabled-color-map: (
 
 // focus 态
 $link-focus-shadow-map: (
-  'primary': use-color-mode('primary-20'),
-  'secondary': use-color-mode('primary-20'),
-  'default': use-color-mode('primary-20'),
-  'success': use-color-mode('success-20'),
-  'danger': use-color-mode('danger-20'),
+  'primary': use-color-static('transparent'),
+  'secondary': use-color-static('transparent'),
+  'default': use-color-static('transparent'),
+  'success': use-color-static('transparent'),
+  'danger': use-color-static('transparent'),
 ) !default;
 
 @mixin render-link-button() {
