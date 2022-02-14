@@ -51,7 +51,10 @@ $link-focus-shadow-map: (
 
 @mixin render-link-button() {
   & {
-    $prefix: & !default;
+    &--appearance-link {
+      padding: 0;
+      border: 0;
+    }
 
     @each $key, $value in 'primary', 'secondary', 'default', 'success', 'danger' {
       $prefix: & !default;

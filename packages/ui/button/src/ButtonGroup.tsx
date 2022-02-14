@@ -6,20 +6,14 @@ const _role = 'button'
 const _prefix = getPrefixCls(_role)
 
 export const ButtonGroup = forwardRef<any, ButtonGroupProps>(
-  (
-    {
-      prefixCls = _prefix,
-      role = _role,
-      className,
-      children,
-      style,
-    },
-    ref
-  ) => {
-
+  ({ prefixCls = _prefix, role = _role, className, children, style }, ref) => {
     const cls = cx(`${prefixCls}-group`, className)
 
-    return <div role={role} className={cls} style={style} ref={ref}>{children}</div>
+    return (
+      <div role={role} className={cls} style={style} ref={ref}>
+        {children}
+      </div>
+    )
   }
 )
 

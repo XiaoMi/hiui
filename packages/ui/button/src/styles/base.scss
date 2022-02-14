@@ -2,6 +2,7 @@
 @import './flat.scss';
 @import './link.scss';
 @import './line.scss';
+@import './unset.scss';
 
 $prefix: '#{$component-prefix}-button' !default;
 
@@ -144,6 +145,7 @@ $prefix: '#{$component-prefix}-button' !default;
   @include render-filled-button();
   @include render-line-button();
   @include render-link-button();
+  @include render-unset-button();
 
   &-group {
     display: inline-block;

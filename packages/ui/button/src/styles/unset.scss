@@ -1,0 +1,168 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+// 默认态
+$unset-background-map: (
+  'primary': use-color-mode('primary'),
+  'secondary': use-color-mode('primary-05'),
+  'default': use-color('gray', 100),
+  'success': use-color-mode('success-05'),
+  'danger': use-color-mode('danger-05'),
+) !default;
+
+$unset-color-map: (
+  'primary': use-color-mode('primary'),
+  'secondary': use-color-mode('primary-40'),
+  'default': use-color('gray', 700),
+  'success': use-color-mode('success'),
+  'danger': use-color-mode('danger'),
+) !default;
+
+// hover 态
+$unset-hover-background-map: (
+  'primary': use-color-mode('primary-05'),
+  'secondary': use-color-mode('primary-05'),
+  'default': use-color('gray', 100),
+  'success': use-color-mode('success-05'),
+  'danger': use-color-mode('danger-05'),
+) !default;
+
+$unset-hover-color-map: (
+  'primary': use-color-mode('primary'),
+  'secondary': use-color-mode('primary-40'),
+  'default': use-color('gray', 700),
+  'success': use-color-mode('success'),
+  'danger': use-color-mode('danger'),
+) !default;
+
+// active 态
+$unset-active-background-map: (
+  'primary': use-color-mode('primary-10'),
+  'secondary': use-color-mode('primary-10'),
+  'default': use-color('gray', 300),
+  'success': use-color-mode('success-10'),
+  'danger': use-color-mode('danger-10'),
+) !default;
+
+// $unset-active-color-map: $unset-color-map !default;
+$unset-active-color-map: (
+  'primary': use-color-mode('primary'),
+  'secondary': use-color-mode('primary-40'),
+  'default': use-color('gray', 700),
+  'success': use-color-mode('success'),
+  'danger': use-color-mode('danger'),
+) !default;
+
+// 禁用态
+$unset-disabled-background-map: (
+  'primary': use-color-mode('primary-20'),
+  'secondary': use-color-mode('primary-05'),
+  'default': use-color('gray', 100),
+  'success': use-color-mode('success-05'),
+  'danger': use-color-mode('danger-05'),
+) !default;
+
+$unset-disabled-color-map: (
+  'primary': use-color-mode('primary-30'),
+  'secondary': use-color-mode('primary-20'),
+  'default': use-color('gray', 500),
+  'success': use-color-mode('success-30'),
+  'danger': use-color-mode('danger-30'),
+) !default;
+
+// focus 态
+$unset-focus-shadow-map: (
+  'primary': use-color-mode('primary-20'),
+  'secondary': use-color-mode('primary-10'),
+  'default': use-color('gray', 200),
+  'success': use-color-mode('success-20'),
+  'danger': use-color-mode('danger-20'),
+) !default;
+
+// 禁用态
+$unset-disabled-color-map: (
+  'primary': use-color-mode('primary-30'),
+  'secondary': use-color-mode('primary-20'),
+  'default': use-color('gray', 500),
+  'success': use-color-mode('success-30'),
+  'danger': use-color-mode('danger-30'),
+) !default;
+
+// focus 态
+$unset-focus-shadow-map: (
+  'primary': use-color-mode('primary-20'),
+  'secondary': use-color-mode('primary-10'),
+  'default': use-color('gray', 200),
+  'success': use-color-mode('success-20'),
+  'danger': use-color-mode('danger-20'),
+) !default;
+
+@mixin render-unset-button() {
+  & {
+    // 尺寸
+    &--appearance-unset#{&}--size-sm {
+      height: calc(#{get-text-lineheight('sm')} + #{2px * 2 + 1px * 2});
+      padding: 2px 7px;
+
+      &.#{$prefix}--icon-only {
+        width: calc(#{get-text-lineheight('sm')} + #{2px * 2 + 1px * 2});
+        padding: 0;
+      }
+    }
+    &--appearance-unset#{&}--size-md {
+      height: calc(#{get-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
+      padding: 4px 11px;
+
+      &.#{$prefix}--icon-only {
+        width: calc(#{get-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
+        padding: 0;
+      }
+    }
+
+    &--appearance-unset#{&}--size-lg {
+      height: calc(#{get-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
+      padding: 7px 15px;
+
+      &.#{$prefix}--icon-only {
+        width: calc(#{get-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
+        padding: 0;
+      }
+    }
+
+    &--appearance-unset#{&}--size-xl {
+      height: calc(#{get-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
+      padding: 13px 60px;
+
+      &.#{$prefix}--icon-only {
+        width: calc(#{get-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
+        padding: 0;
+      }
+    }
+
+    @each $key, $value in 'primary', 'secondary', 'default', 'success', 'danger' {
+      $prefix: & !default;
+      &--appearance-unset#{&}--type-#{$key} {
+        color: map-get($unset-color-map, $key);
+
+        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):hover {
+          background-color: map-get($unset-hover-background-map, $key);
+          border: 1px solid map-get($unset-hover-background-map, $key);
+          color: map-get($unset-hover-color-map, $key);
+        }
+
+        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):active {
+          background-color: map-get($unset-active-background-map, $key);
+          border: 1px solid map-get($unset-active-background-map, $key);
+          color: map-get($unset-active-color-map, $key);
+        }
+
+        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
+          box-shadow: 0 0 0 2px map-get($unset-focus-shadow-map, $key);
+        }
+
+        &.#{$prefix}--disabled {
+          color: map-get($unset-disabled-color-map, $key);
+        }
+      }
+    }
+  }
+}
