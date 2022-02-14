@@ -10,6 +10,7 @@ export const Range = () => {
         <h2>日期</h2>
         <DatePicker
           type="daterange"
+          style={{ width: 480 }}
           format="YYYY-MM-DD"
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
@@ -17,6 +18,7 @@ export const Range = () => {
         />
         <DatePicker
           type="daterange"
+          style={{ width: 480 }}
           altCalendarPreset="zh-CN"
           dateMarkPreset="zh-CN"
           format="YYYY-MM-DD"
