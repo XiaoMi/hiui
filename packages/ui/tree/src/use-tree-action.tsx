@@ -17,8 +17,7 @@ import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useToggle, UseToggleAction } from '@hi-ui/use-toggle'
 import { useLatestRef } from '@hi-ui/use-latest'
-
-import { usePopper } from 'react-popper'
+import { PopperPortal as Popper } from '@hi-ui/popper'
 import { CheckOutlined, CloseOutlined } from '@hi-ui/icons'
 // import Button from '@hi-ui/button'
 import { IconButton } from './IconButton'
@@ -234,30 +233,7 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
   } = props
 
   const [menuVisible, menuVisibleAction] = useToggle(false)
-
   const [targetElRef, setTargetElRef] = useState<HTMLButtonElement | null>(null)
-  const popperElRef = useRef<HTMLDivElement | null>(null)
-  const [arrowElRef, setArrowElmRef] = useState<HTMLDivElement | null>(null)
-
-  const { styles, attributes } = usePopper(targetElRef, popperElRef.current, {
-    placement: 'bottom-end',
-    modifiers: [
-      {
-        enabled: true,
-        name: 'arrow',
-        options: {
-          element: arrowElRef,
-        },
-      },
-      {
-        enabled: true,
-        name: 'offset',
-        options: {
-          offset: [4, 4],
-        },
-      },
-    ],
-  })
 
   // const [setTargetEl, Modal, open] = useConfirmPopper({
   //   prefixCls,
@@ -266,9 +242,6 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
   //   confirmText: '确定',
   //   cancelText: '取消',
   // })
-
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  useOutsideClick(containerRef, menuVisibleAction.off)
 
   const menuActionsRef = useLatestRef({
     editNode: () => {
@@ -322,10 +295,10 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
   if (!isArrayNonEmpty(menuOptions)) return null
 
   return (
-    <div className={`${prefixCls}-actions`} ref={containerRef}>
+    <>
       <IconButton
         tabIndex={-1}
-        className={`${prefixCls}-action__btn`}
+        className={cx(`${prefixCls}-action-btn`, menuVisible && `${prefixCls}-action-btn--visible`)}
         // ref={useMergeRefs(setTargetElRef, setTargetEl)}
         ref={setTargetElRef}
         icon={defaultActionIcon}
@@ -335,27 +308,31 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
           menuVisibleAction.not()
         }}
       />
-      {menuOptions && menuVisible ? (
-        <div ref={popperElRef} style={{ ...styles.popper, zIndex: 2 }} {...attributes.popper}>
-          <div ref={setArrowElmRef} style={styles.arrow} />
-          <ul className={`${prefixCls}-action`}>
-            {menuOptions.map((option, idx) => (
-              <li
-                key={idx}
-                className={`${prefixCls}-action__item`}
-                onClick={(evt) => {
-                  // 阻止冒泡，避免触发节点选中
-                  evt.stopPropagation()
-                  handleMenuClick(node, option)
-                }}
-              >
-                {option.title}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
-    </div>
+      <Popper
+        crossGap={8}
+        className={`${prefixCls}__popper`}
+        placement="bottom-end"
+        visible={!!menuOptions && menuVisible}
+        onClose={menuVisibleAction.off}
+        attachEl={targetElRef}
+      >
+        <ul className={`${prefixCls}-action`}>
+          {menuOptions.map((option, idx) => (
+            <li
+              key={idx}
+              className={`${prefixCls}-action__item`}
+              onClick={(evt) => {
+                // 阻止冒泡，避免触发节点选中
+                evt.stopPropagation()
+                handleMenuClick(node, option)
+              }}
+            >
+              {option.title}
+            </li>
+          ))}
+        </ul>
+      </Popper>
+    </>
   )
 }
 

@@ -17,58 +17,64 @@ $prefix: '#{$component-prefix}-tree' !default;
       margin-left: 4px;
     }
 
+    .#{$prefix}-action-btn {
+      position: relative;
+      color: use-color('gray', 800);
+      transition: opacity 0.3s;
+      opacity: 0;
+      visibility: hidden;
+
+      &:hover {
+        color: use-color-mode('primary');
+      }
+
+      &--visible {
+        visibility: visible;
+        opacity: 1;
+        color: use-color-mode('primary');
+      }
+    }
+
+    .#{$prefix}-node:hover {
+      .#{$prefix}-action-btn {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+
+  &__popper {
     .#{$prefix}-action {
-      z-index: 10;
+      margin: 0;
       list-style: none;
       color: use-color('gray', 800);
       background-color: use-color-static('white');
       width: 160px;
       box-shadow: 0 2px 8px 0 use-color('gray', 100);
-      padding: 12px 0;
+      padding: use-spacing(6) use-spacing(4);
       border-radius: 4px;
 
       &__item {
         list-style: none;
-        padding: 0 12px;
-        height: 32px;
-        line-height: 32px;
-        font-size: 14px;
+        padding: 0 use-spacing(6);
+        height: use-height-size('normal');
+        line-height: use-height-size('normal');
+        font-size: use-text-size('normal');
         cursor: pointer;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
         transition: background-color 0.3s;
-        color: use-color('brandblue',500);
+        color: use-color('gray', 700);
+        border-radius: use-border-radius('normal');
 
         &:not(:last-of-type) {
-          margin-bottom: 8px;
+          margin-bottom: use-spacing(4);
         }
 
         &:hover {
-          background-color: use-color('brandblue',50);
+          background-color: use-color('gray', 100);
         }
-      }
-
-      &__btn {
-        position: relative;
-        color: use-color('gray', 800);
-
-        &:hover {
-          color: use-color-mode('primary');
-        }
-      }
-    }
-
-    .#{$prefix}-actions {
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s;
-    }
-
-    .#{$prefix}-node:hover {
-      .#{$prefix}-actions {
-        visibility: visible;
-        opacity: 1;
       }
     }
   }
