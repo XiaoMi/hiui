@@ -149,7 +149,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     const checkboxColWidth = React.useMemo(() => {
       return rowSelection && typeof rowSelection.checkboxColWidth === 'number'
         ? rowSelection.checkboxColWidth
-        : 50
+        : 38
     }, [rowSelection])
 
     // 预处理 column 支持 多选渲染
@@ -231,7 +231,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         const selectionColumn: TableColumnItem = {
           dataKey: SELECTION_DATA_KEY,
           width: checkboxColWidth,
-          className: `${prefixCls}-selection-column`,
+          className: `${prefixCls}__selection-col`,
           title: renderSelectionTitleCell,
           // @ts-ignore
           render: renderSelectionCell,

@@ -51,7 +51,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       isLoadingTreeNodeId,
     } = useTableContext()
 
-    const { id: dataKey, leftStickyWidth, rightStickyWidth, render: rawRender } = column
+    const { id: dataKey, leftStickyWidth, rightStickyWidth, render: rawRender, raw } = column
     const { depth, id: rowId } = rowData
 
     /**
@@ -94,6 +94,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
     const cls = cx(
       prefixCls,
       className,
+      raw.className,
       canScroll && sticky && `${prefixCls}__col--sticky`,
       isHighlightedCol(dataKey) && `${prefixCls}__col--highlight`,
       isHoveredHighlightCol(dataKey) && `${prefixCls}__col--hovered-highlight`

@@ -77,7 +77,8 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
         const embedPanelColumn: TableColumnItem = {
           dataKey: EMBED_DATA_KEY,
           title: '',
-          width: 50,
+          width: 38,
+          className: `${prefixCls}__embed-col`,
           align: 'center',
           render: (_: any, rowItem: any) => {
             const { id: rowKey } = rowItem

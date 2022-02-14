@@ -81,7 +81,7 @@ $line-focus-shadow-map: (
       }
     }
 
-    &--size-xl {
+    &--appearance-line#{&}--size-xl {
       height: calc(#{get-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
       padding: 13px 60px;
 

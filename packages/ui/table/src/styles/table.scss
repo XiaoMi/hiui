@@ -115,17 +115,6 @@ $prefix: '#{$component-prefix}-table' !default;
     box-sizing: border-box;
     overflow: hidden;
 
-    tr {
-      & > th {
-        color: use-color('gray', 700);
-        font-size: use-text-size('normal');
-        font-weight: use-text-weight('medium');
-        line-height: use-text-lineheight('sm');
-        padding: use-spacing(7) use-spacing(8);
-        border-bottom: 1px solid #f0f0f0;
-      }
-    }
-
     &__resizable {
       position: relative;
       background-clip: padding-box;
@@ -236,6 +225,20 @@ $prefix: '#{$component-prefix}-table' !default;
   }
 }
 
+.#{$prefix}-header-cell {
+  color: use-color('gray', 700);
+  font-size: use-text-size('normal');
+  font-weight: use-text-weight('medium');
+  line-height: use-text-lineheight('sm');
+  padding: use-spacing(7) use-spacing(8);
+  border-bottom: 1px solid #f0f0f0;
+
+  &.#{$prefix}__embed-col,
+  &.#{$prefix}__selection-col {
+    padding: use-spacing(7) use-spacing(5);
+  }
+}
+
 // 单元格
 .#{$prefix}-cell {
   word-break: break-word;
@@ -267,6 +270,11 @@ $prefix: '#{$component-prefix}-table' !default;
 
   &__switcher.hi-v4-icon-button {
     margin-right: use-spacing(1);
+  }
+
+  &.#{$prefix}__embed-col,
+  &.#{$prefix}__selection-col {
+    padding: use-spacing(7) use-spacing(5);
   }
 }
 

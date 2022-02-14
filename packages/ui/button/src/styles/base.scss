@@ -51,6 +51,7 @@ $prefix: '#{$component-prefix}-button' !default;
   &[disabled]:not(&--loading) {
     cursor: not-allowed;
   }
+
   // 尺寸通用
   &--size-sm {
     font-size: use-text-size('sm');

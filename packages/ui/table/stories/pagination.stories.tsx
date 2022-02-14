@@ -125,6 +125,7 @@ export const Pagination = () => {
   const [paginationState, setPaginationState] = React.useState({
     current: 1,
     data: dataSource.slice(0, 5),
+    pageSize: 5,
   })
 
   console.log('paginationState', paginationState)
@@ -137,16 +138,24 @@ export const Pagination = () => {
           pagination={{
             showTotal: true,
             showJumper: true,
-            pageSize: 5,
+            pageSize: paginationState.pageSize,
+            pageSizeOptions: [5, 10, 20],
+            onPageSizeChange: (pageSize) => {
+              setPaginationState((prev) => ({
+                ...prev,
+                pageSize,
+              }))
+            },
             total: dataSource.length,
             current: paginationState.current,
             onChange: (page, pre, size = 5) => {
               console.log('onPaginationChange', page, pre, size)
 
-              setPaginationState({
+              setPaginationState((prev) => ({
+                ...prev,
                 current: page,
                 data: dataSource.slice(size * (page - 1), size * page),
-              })
+              }))
             },
           }}
           columns={columns}

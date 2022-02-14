@@ -48,7 +48,7 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
               return (
                 <tr key={colsIndex}>
                   {cols.map((col, colIndex) => {
-                    const { dataKey, title } = col || {}
+                    const { dataKey, title, raw } = col || {}
                     const titleContent = isFunction(title) ? title(col) : title
 
                     const cell = (
@@ -56,6 +56,8 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
                         key={dataKey}
                         {...getStickyColProps(col)}
                         className={cx(
+                          `${prefixCls}-cell`,
+                          raw.className,
                           isHighlightedCol(dataKey!) && `${prefixCls}-th__col--highlight`,
                           isHoveredHighlightCol(dataKey!) && `${prefixCls}__col--hovered-highlight`
                         )}

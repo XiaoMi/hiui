@@ -70,6 +70,7 @@ export type TableColumnItem = {
   children?: TableColumnItem[]
   selectFilters?: SelectProps
   defaultSortOrder?: 'ascend' | 'descend'
+  className?: string
   render?: (
     text: any,
     rowItem: Record<string, any>,
