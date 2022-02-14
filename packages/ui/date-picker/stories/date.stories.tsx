@@ -9,11 +9,13 @@ export const Basic = () => {
       <div className="date-picker-basic__wrap">
         <h2>基础</h2>
         <DatePicker
+          style={{ width: 240 }}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
         />
         <DatePicker
+          style={{ width: 338 }}
           altCalendarPreset="zh-CN"
           dateMarkPreset="zh-CN"
           onChange={(date, dateStr) => {

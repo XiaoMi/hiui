@@ -35,7 +35,10 @@ export const useColWidth = ({
           const _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node) => {
             return (node as HTMLElement).getBoundingClientRect().width || 0
           })
-          setColWidths(_realColumnsWidth)
+
+          if (_realColumnsWidth.some((width) => width && width > 0)) {
+            setColWidths(_realColumnsWidth)
+          }
         }
       })
 

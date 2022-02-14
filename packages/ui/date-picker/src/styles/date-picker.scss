@@ -5,46 +5,21 @@ $error-color: use-color('red', 600) !default;
 $row-class: '#{$prefix}__row' !default;
 $cell-class: '#{$prefix}__cell' !default;
 
-$calendar-large-indicator-size: 40px;
-$calendar-large-indicator-border-radius: 8px;
-$calendar-large-diff: 6px;
-$calendar-large-background-border-radius: $calendar-large-indicator-border-radius + $calendar-large-diff/2;
+$calendar-large-indicator-size: 40px !default;
+$calendar-large-indicator-border-radius: 8px !default;
+$calendar-large-diff: 6px !default;
+$calendar-large-background-border-radius: $calendar-large-indicator-border-radius + $calendar-large-diff/2 !default;
 
 .#{$prefix} {
   position: relative;
-  width: fit-content;
+  width: 100%;
 
   &__popper {
-    //width: 288px;
     display: flex;
     flex-direction: column;
     border-radius: use-border-radius('md');
     overflow: hidden;
-
-    //&--range {
-    //  //width: 576px;
-    //
-    //  &.#{$prefix}__popper--large {
-    //    width: 866px;
-    //  }
-    //}
-
-    //&--timeperiod,
-    //&--large {
-    //  width: 432px;
-    //}
-
-    //&--timeperiod{
-    //  width: 432px;
-    //}
-
-    //&--time {
-    //  width: 468px;
-    //}
-
-    //&--shortcuts {
-    //  width: 681px;
-    //}
+    width: 100%;
   }
 
   &__root {
@@ -52,30 +27,30 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   }
 
   &__picker {
-    width: auto;
+    width: 100%;
     border-radius: use-border-radius('md');
-    //width: 240px;
     display: inline-flex;
     align-items: center;
     justify-content: space-around;
     box-sizing: border-box;
     position: relative;
     z-index: 0;
-    border:  use-border-size('normal') transparent;
+    border: use-border-size('normal') transparent;
+    cursor: pointer;
 
-    &--size-sm{
+    &--size-sm {
       line-height: use-height-size('xs');
       font-size: use-text-size('sm');
       height: use-height-size('xs');
     }
 
-    &--size-md{
+    &--size-md {
       line-height: use-height-size('normal');
       font-size: use-text-size('normal');
       height: use-height-size('normal');
     }
 
-    &--size-lg{
+    &--size-lg {
       line-height: use-height-size('xl');
       font-size: use-text-size('lg');
       height: use-height-size('xl');
@@ -85,36 +60,41 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     $filled: '#{&}--appearance-filled';
     $unset: '#{&}--appearance-unset';
 
-    &--appearance-line{
+    &--appearance-line {
       border: use-border-size('normal') use-color('gray', 300);
 
-      &:hover{
+      &:hover {
         border-color: use-color('brandblue', 500);
       }
     }
 
-    &--appearance-filled{
+    &--appearance-filled {
       background: use-color('gray', 100);
 
-      &:hover{
+      &:hover {
         background: use-color('gray', 200);
       }
     }
 
-    &--appearance-unset{
-      &:hover{
+    &--appearance-unset {
+      &:hover {
         background: use-color('gray', 100);
+      }
+
+      .#{$prefix}__picker__input-container {
+        width: fit-content;
       }
     }
 
     &--focus {
-      &#{$line}{
+      &#{$line} {
         border-color: use-color('brandblue', 500);
       }
 
-      &:hover{
+      &:hover {
         background: transparent;
       }
+
       background: transparent;
       box-shadow: 0 0 0 2px use-color('brandblue', 100);
     }
@@ -127,7 +107,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       cursor: not-allowed;
       background: use-color('gray', 100);
 
-      &:hover{
+      &:hover {
         background: use-color('gray', 100);
         border-color: transparent;
       }
@@ -138,7 +118,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     &--yearrange,
     &--timerange,
     &--monthrange {
-      width: 320px;
+      width: 100%;
 
       input {
         text-align: center;
@@ -161,7 +141,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       width: 240px;
     }
 
-    &#{$unset}{
+    &#{$unset} {
       width: auto;
     }
 
@@ -187,22 +167,15 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     //  color: use-color-static('black');
     //}
 
-
-    &__input-container{
+    &__input-container {
       position: relative;
       z-index: 0;
       height: 100%;
       line-height: 24px;
-      width: 190px;
+      width: auto;
     }
 
-    &--appearance-unset{
-      .#{$prefix}__picker__input-container{
-        width: fit-content;
-      }
-    }
-
-    &__input-shadow{
+    &__input-shadow {
       font-size: inherit;
       font-weight: inherit;
       font-family: inherit;
@@ -221,9 +194,6 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       left: 0;
       top: 50%;
       transform: translateY(-50%);
-      font-size: inherit;
-      font-weight: inherit;
-      font-family: inherit;
       background: transparent;
       padding: 0;
       margin: 0;
@@ -252,6 +222,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   &__input-selector {
     display: flex;
     border-radius: use-border-radius('normal');
+    width: 100%;
     height: calc(100% - 4px);
     padding: 0 8px;
     margin: 0 4px;

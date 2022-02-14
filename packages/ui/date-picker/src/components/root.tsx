@@ -51,6 +51,7 @@ const Root = ({
     setInputData(value ? parseValue(value, type, weekOffset, format) : outDate)
   }, [value, format, type, outDate, weekOffset])
   const onPickerClickEvent = (index: number) => {
+    if (disabled) return
     onTrigger(index)
   }
 
@@ -88,12 +89,12 @@ const Root = ({
               dateRangeTimePanelNow === 0 &&
               `${prefixCls}__input-selector--active`
           )}
+          onClick={() => onPickerClickEvent(0)}
         >
           <Input
             date={inputData[0]}
             placeholder={placeholders[0]}
             onChange={inputChangeEvent}
-            onFocus={() => onPickerClickEvent(0)}
             dir={0}
           />
         </div>
@@ -111,12 +112,12 @@ const Root = ({
                   dateRangeTimePanelNow === 1 &&
                   `${prefixCls}__input-selector--active`
               )}
+              onClick={() => onPickerClickEvent(1)}
             >
               <Input
                 date={inputData[1]}
                 placeholder={placeholders[1]}
                 onChange={inputChangeEvent}
-                onFocus={() => onPickerClickEvent(1)}
                 dir={1}
               />
             </div>

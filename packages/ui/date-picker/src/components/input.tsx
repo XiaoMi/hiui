@@ -15,7 +15,7 @@ const Input = ({
 }: {
   placeholder: string
   dir: number
-  onFocus: () => void
+  onFocus?: () => void
   onChange: InputChangeEvent
   date: moment.Moment | null
 }) => {

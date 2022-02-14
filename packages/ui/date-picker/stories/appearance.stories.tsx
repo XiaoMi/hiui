@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import DatePicker from '../src'
 
-export const Appearanec = () => {
+export const Appearanece = () => {
   return (
     <>
       <h1>Appearance</h1>

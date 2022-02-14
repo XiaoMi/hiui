@@ -40,8 +40,11 @@ const PickerIcon = ({
   return (
     <MatchIcon
       className={cls}
-      onClick={(e) => {
+      onClick={(evt) => {
+        evt.stopPropagation()
+
         if (disabled) return
+
         onClick(!!(focus && clearable))
       }}
     />

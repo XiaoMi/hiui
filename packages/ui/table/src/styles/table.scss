@@ -45,13 +45,13 @@ $prefix: '#{$component-prefix}-table' !default;
       table {
         tbody {
           & > tr > td {
-            padding: use-spacing(4);
+            padding: use-spacing(5);
           }
         }
 
         thead {
           & > tr > th {
-            padding: use-spacing(4);
+            padding: use-spacing(5);
           }
         }
       }
@@ -61,13 +61,13 @@ $prefix: '#{$component-prefix}-table' !default;
       table {
         tbody {
           & > tr > td {
-            padding: use-spacing(10);
+            padding: use-spacing(9);
           }
         }
 
         thead {
           & > tr > th {
-            padding: use-spacing(10);
+            padding: use-spacing(9);
           }
         }
       }

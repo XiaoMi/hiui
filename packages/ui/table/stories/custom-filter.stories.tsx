@@ -159,7 +159,8 @@ export const CustomFilter = () => {
       key: 17,
     },
   ])
-  const [data, setData] = React.useState([
+
+  const initialData = React.useRef([
     {
       key: '1',
       name: 'John Brown',
@@ -261,14 +262,19 @@ export const CustomFilter = () => {
       address: 'Dublin No. 2 Lake Park',
     },
   ])
+  const [data, setData] = React.useState(initialData.current)
 
   const customFilterData = (keyword, label) => {
-    setData((prev) => {
-      return prev.filter((item) => {
-        console.log('customFilterData', item)
-        return item[label].includes(keyword)
+    if (keyword) {
+      setData((prev) => {
+        return prev.filter((item) => {
+          console.log('customFilterData', item)
+          return item[label].includes(keyword)
+        })
       })
-    })
+    } else {
+      setData(initialData.current)
+    }
   }
 
   return (

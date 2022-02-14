@@ -84,7 +84,7 @@ export type TableColumnItem = {
   filterDropdownWidth?: number
   filterDropdownClassName?: string
   filterDropdown?: (props: {
-    ColumnItem: TableColumnItem
+    columnData: TableColumnItem
     setFilterDropdownVisible: Function
   }) => React.ReactNode
   onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, item: TableColumnItem) => void
