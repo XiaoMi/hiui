@@ -3,9 +3,12 @@
 $prefixCls: #{$component-prefix}-loading !default;
 
 .#{$prefixCls} {
-  @include flex(center, center, column);
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: use-color-static('primary');
+  position: relative;
+  z-index: use-zindex('absolute');
 
   &__mask {
     @include component-reset;
@@ -161,12 +164,6 @@ $prefixCls: #{$component-prefix}-loading !default;
     }
   }
 
-  &--withchildren {
-    @include full-fill;
-
-    position: absolute;
-  }
-
   &--full {
     position: fixed;
     top: 0;
@@ -177,11 +174,9 @@ $prefixCls: #{$component-prefix}-loading !default;
   }
 
   &--part {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    @include full-fill;
+
+    z-index: use-zindex('absolute');
   }
 }
 

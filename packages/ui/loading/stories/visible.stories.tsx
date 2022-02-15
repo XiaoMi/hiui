@@ -7,7 +7,10 @@ export const Visible = () => {
   return (
     <>
       <h1>Visible</h1>
-      <div className="loading-visible__wrap">
+      <div
+        className="loading-visible__wrap"
+        style={{ position: 'relative', width: 500, height: 300 }}
+      >
         <Loading visible={visible} content="Loading..." delay={500}>
           <div
             onClick={() => {
@@ -16,6 +19,7 @@ export const Visible = () => {
             style={{
               width: 500,
               height: 300,
+              boxSizing: 'border-box',
               background: '#ccc',
               padding: 20,
               border: '20px solid #000',

@@ -37,7 +37,7 @@ export const TableEmbedRow = ({
     <tr key="expanded-row" className={prefixCls}>
       <td colSpan={colSpan}>
         {/* 乐观渲染：内嵌面板内容 */}
-        <Loading size="sm" visible={loading}>
+        <Loading size="sm" visible={loading} part>
           {getEmbedPanelById(rowData.id)}
         </Loading>
       </td>

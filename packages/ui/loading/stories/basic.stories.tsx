@@ -14,12 +14,17 @@ export const Basic = () => {
   return (
     <>
       <h1>Loading</h1>
-      <div ref={elementRef} className="loading-basic__wrap" style={{ position: 'relative' }}>
+      <div
+        ref={elementRef}
+        className="loading-basic__wrap"
+        style={{ position: 'relative', width: 500, height: 300 }}
+      >
         <Loading content="Loading..." delay={500}>
           <div
             style={{
               width: 500,
               height: 300,
+              boxSizing: 'border-box',
               background: '#ccc',
               padding: 20,
               border: '20px solid #000',

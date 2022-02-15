@@ -28,6 +28,7 @@ export const Loading = forwardRef<null, LoadingProps>(
       content,
       visible = true,
       full = false,
+      part = false,
       size = 'md',
       delay = -1,
       disabledPortal = false,
@@ -83,8 +84,8 @@ export const Loading = forwardRef<null, LoadingProps>(
       prefixCls,
       className,
       size && `${prefixCls}--size-${size}`,
-      children && `${prefixCls}--withchildren`,
-      `${prefixCls}--${full ? 'full' : 'part'}`
+      !full && (part || !!children) && `${prefixCls}--part`,
+      full && `${prefixCls}--full`
     )
 
     const loadingComponent = (
@@ -166,6 +167,11 @@ export interface LoadingProps extends HiBaseHTMLProps<'div'> {
    * @private
    */
   timeout?: number
+  /**
+   * 局部定位。暂不对外暴露
+   * @private
+   */
+  part?: boolean
 }
 
 if (__DEV__) {

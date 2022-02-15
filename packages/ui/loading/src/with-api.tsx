@@ -30,6 +30,7 @@ const open = (
     container: target,
     full: !target,
     size: size,
+    part: true,
   })
 
   render(ClonedLoading, container)
