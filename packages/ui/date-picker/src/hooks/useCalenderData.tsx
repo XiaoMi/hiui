@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import moment from 'moment'
 import { DAY_MILLISECONDS } from '../utils/constants'
 import { DatePickerType, DisabledDate } from '../types'
-import { LocaleData } from '../context'
 import { getBelongWeekBoundary } from '../utils/week'
+import { UseLocaleContext } from '@hi-ui/locale-context'
 
 const getYearOrMonthRows = ({
   originDate,
@@ -11,7 +11,7 @@ const getYearOrMonthRows = ({
   type,
   view,
   range,
-  localeData,
+  i18n,
   min,
   max,
   disabledDate,
@@ -21,7 +21,7 @@ const getYearOrMonthRows = ({
   type: DatePickerType
   view: string
   range?: CalenderSelectedRange
-  localeData: LocaleData
+  i18n: UseLocaleContext
   min: Date | null
   max: Date | null
   disabledDate: DisabledDate
@@ -40,12 +40,14 @@ const getYearOrMonthRows = ({
     formatRange.end = temp
   }
 
+  const monthText = i18n.get('datePicker.month')
+
   for (let i = 0; i < 4; i++) {
     const row = trs[i]
     for (let j = 0; j < 3; j++) {
       const col = row[j] || (row[j] = { type: 'normal' } as CalendarColInfo)
       const y = start + num
-      view === 'year' ? (col.text = y) : (col.text = localeData.datePicker.month[y])
+      view === 'year' ? (col.text = y) : (col.text = monthText[y])
       col.value = y
       num++
       const currentYM = (_date as any)[view](y)
@@ -362,7 +364,7 @@ const useDate = ({
   view,
   originDate,
   weekOffset,
-  localeData,
+  i18n,
   range,
   type,
   min,
@@ -378,7 +380,7 @@ const useDate = ({
   type: DatePickerType
   weekOffset: number
   view: string
-  localeData: LocaleData
+  i18n: UseLocaleContext
   range?: CalenderSelectedRange
 }) => {
   const [rows, setRows] = useState<CalendarRowInfo[]>([])
@@ -390,7 +392,7 @@ const useDate = ({
             renderDate,
             type,
             view,
-            localeData,
+            i18n,
             range,
             min,
             max,
@@ -407,7 +409,7 @@ const useDate = ({
             disabledDate,
           })
     setRows(_rows)
-  }, [renderDate, view, range, type, disabledDate, localeData, max, min, weekOffset, originDate])
+  }, [renderDate, view, range, type, disabledDate, i18n, max, min, weekOffset, originDate])
 
   return [rows]
 }

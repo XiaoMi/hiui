@@ -1,18 +1,23 @@
 import { useMemo } from 'react'
 import { DatePickerType } from '../types'
+import { UseLocaleContext } from '@hi-ui/locale-context'
 
 interface ParsePlaceholderConfig {
   type: DatePickerType
   placeholder?: string | string[]
   showTime: boolean
-  localeData: any
+  i18n: UseLocaleContext
 }
 const parsePlaceholder = (config: ParsePlaceholderConfig) => {
-  const { type, placeholder: _placeholder, showTime, localeData } = config
-  const typePlaceholder = localeData.datePicker.placeholders[type]
+  const { type, placeholder: _placeholder, showTime, i18n } = config
+  const placeholdersText = i18n.get('datePicker.placeholders') as any
+  const placeholderText = i18n.get('datePicker.placeholder') as any
+  const placeholderTimePeriodText = i18n.get('datePicker.placeholderTimePeriod') as any
+
+  const typePlaceholder = placeholdersText[type]
   const tempPlaceholder = showTime
-    ? localeData.datePicker.placeholderTimeperiod
-    : typePlaceholder || [localeData.datePicker.placeholder]
+    ? placeholderTimePeriodText
+    : typePlaceholder || [placeholderText]
 
   let leftPlaceholder = tempPlaceholder[0]
   let rightPlaceholder = tempPlaceholder[1] || leftPlaceholder
@@ -28,13 +33,13 @@ const parsePlaceholder = (config: ParsePlaceholderConfig) => {
 }
 
 const usePlaceholder = (args: ParsePlaceholderConfig) => {
-  const { type, showTime, placeholder, localeData } = args
+  const { type, showTime, placeholder, i18n } = args
 
-  return useMemo(() => parsePlaceholder({ type, showTime, placeholder, localeData }), [
+  return useMemo(() => parsePlaceholder({ type, showTime, placeholder, i18n }), [
     type,
     showTime,
     placeholder,
-    localeData,
+    i18n,
   ])
 }
 

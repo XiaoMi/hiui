@@ -7,7 +7,7 @@ export const Action = () => {
       <h1>带操作</h1>
       <div className="list-basic__wrap">
         <List
-          style={{marginBottom: 20}}
+          style={{ marginBottom: 20 }}
           data={[
             {
               title: '下单量-指标',
@@ -28,8 +28,8 @@ export const Action = () => {
             return <List.Item {...dataItem} />
           }}
         />
-         <List
-          style={{marginBottom: 20}}
+        <List
+          style={{ marginBottom: 20 }}
           data={[
             {
               title: '下单量-指标',
@@ -50,7 +50,7 @@ export const Action = () => {
             return <List.Item {...dataItem} actionPlacement={'top'} />
           }}
         />
-         <List
+        <List
           data={[
             {
               title: '下单量-指标',

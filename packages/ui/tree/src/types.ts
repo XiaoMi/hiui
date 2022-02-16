@@ -108,9 +108,9 @@ export type TreeMenuActionOption = {
 }
 
 export type TreeEditActions = {
-  editNode: (node: FlattedTreeNodeData) => void
-  addChildNode: (node: FlattedTreeNodeData) => void
-  addSiblingNode: (node: FlattedTreeNodeData) => void
-  deleteNode: (node: FlattedTreeNodeData) => void
+  editNode: () => void
+  addChildNode: () => void
+  addSiblingNode: () => void
+  deleteNode: () => void
   closeMenu: () => void
 }

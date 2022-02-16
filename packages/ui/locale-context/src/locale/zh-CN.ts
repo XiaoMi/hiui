@@ -1,9 +1,14 @@
 export default {
+  timePicker: {
+    ok: '确认',
+    to: '至',
+    now: '此刻',
+  },
   datePicker: {
     ok: '确认',
     to: '至',
     placeholder: ['请选择日期'],
-    placeholderTimeperiod: ['请选择时间'],
+    placeholderTimePeriod: ['请选择时间'],
     dateChoose: '日期选择',
     timeChoose: '时间选择',
     undefinedType: '类型未定义',
@@ -56,9 +61,7 @@ export default {
     hours: '时',
     minutes: '分',
     seconds: '秒',
-    weekrange: function (year: number, week: number) {
-      return year + '-W' + week
-    },
+    weekRange: '{{year}}-W{{week}}',
   },
   pagination: {
     total: ['共', '条'],
@@ -84,7 +87,8 @@ export default {
   },
   picker: {
     placeholder: '请选择',
-    emptyContent: '无匹配数据',
+    emptyContent: '暂无数据',
+    noFoundTip: '无匹配数据',
     searchPlaceholder: '搜索',
     loadingContent: '数据加载中...',
   },
@@ -180,5 +184,12 @@ export default {
   },
   emptyState: {
     emptyContent: '暂无数据',
+  },
+  zenMode: {
+    back: '返回',
+  },
+  popConfirm: {
+    confirmText: '确定',
+    cancelText: '取消',
   },
 }

@@ -15,7 +15,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="popover-basic__wrap">
-        <Popover title={title} content={content} trigger="click">
+        <Popover title={title} content={content} trigger="hover">
           <Button>trigger</Button>
         </Popover>
       </div>

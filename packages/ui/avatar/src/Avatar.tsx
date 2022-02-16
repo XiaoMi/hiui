@@ -2,6 +2,7 @@ import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UserFilled } from '@hi-ui/icons'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'avatar'
 const _prefix = getPrefixCls(_role)
@@ -69,28 +70,26 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
   }
 )
 
-export interface AvatarProps {
+export interface AvatarProps extends HiBaseHTMLProps<'div'> {
   /**
-   * 组件默认的选择器类
+   * 头像尺寸
    */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-  children?: React.ReactNode
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  /**
+   * 头像缩写字母
+   */
   initials?: string
+  /**
+   * 设置形状
+   */
   shape?: 'circle' | 'square'
+  /**
+   * 头像 url
+   */
   src?: string
+  /**
+   * 头像名，用于语义化设置
+   */
   name?: string
   /**
    * 设置按钮图标

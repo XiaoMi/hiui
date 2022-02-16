@@ -8,6 +8,7 @@ import { TransferItem } from './TransferItem'
 import Checkbox from '@hi-ui/checkbox'
 import { SearchOutlined, InfoCircleOutlined } from '@hi-ui/icons'
 import { ShrinkPagination } from '@hi-ui/pagination'
+import { useLocaleContext } from '@hi-ui/locale-context'
 
 const _role = 'transfer-panel'
 const _prefix = getPrefixCls(_role)
@@ -42,6 +43,9 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+    const limitContent = i18n.get('transfer.limit')
+
     const { searchable, pageSize, showCheckAll } = useTransferContext()
 
     const [searchValue, setSearchValue] = useState('')
@@ -119,6 +123,7 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
               <div className={`${prefixCls}__check-all`}>
                 <div className={`${prefixCls}__check-all--left`}>
                   <Checkbox
+                    className={`${prefixCls}__check-all-box`}
                     indeterminate={!checkedAll && currentPanelHasChecked}
                     checked={checkedAll}
                     onChange={handleCheckAll}
@@ -154,7 +159,7 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
             {overflowed ? (
               <div className={`${prefixCls}__limit`}>
                 <InfoCircleOutlined className={`${prefixCls}__limit-icon`} />
-                <span>数量达上限，无法添加</span>
+                <span>{limitContent}</span>
               </div>
             ) : null}
             {showData.length > 0 ? (

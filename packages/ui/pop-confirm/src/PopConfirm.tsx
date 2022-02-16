@@ -6,6 +6,8 @@ import { usePopConfirm, UsePopConfirmProps } from './use-pop-confirm'
 import Button from '@hi-ui/button'
 import { PopperPortal } from '@hi-ui/popper'
 import { defaultTipIcon } from './icons'
+import { useLocaleContext } from '@hi-ui/locale-context'
+import { isUndef } from '@hi-ui/type-assertion'
 
 const POP_CONFIRM_PREFIX = getPrefixCls('pop-confirm')
 
@@ -21,13 +23,20 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
       children,
       title,
       icon = defaultTipIcon,
-      cancelText = '取消',
-      confirmText = '确认',
+      cancelText: cancelTextProp,
+      confirmText: confirmTextProp,
       footer,
       ...rest
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const cancelText = isUndef(cancelTextProp) ? i18n.get('popConfirm.cancelText') : cancelTextProp
+    const confirmText = isUndef(confirmTextProp)
+      ? i18n.get('popConfirm.confirmText')
+      : confirmTextProp
+
     const { rootProps, getPopperProps, getTriggerProps, onCancel, onConfirm } = usePopConfirm(rest)
 
     const cls = cx(prefixCls, className)

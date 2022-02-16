@@ -47,7 +47,9 @@
     "@hi-ui/core": "^4.0.0-beta.0",
     "@hi-ui/core-css": "^4.0.0-beta.0",
     "@hi-ui/env": "^4.0.0-beta.0",
+    "@hi-ui/locale-context": "^4.0.0-beta.0",
     "@hi-ui/portal": "^4.0.0-beta.0",
+    "@hi-ui/type-assertion": "^4.0.0-beta.0",
     "@hi-ui/use-merge-refs": "^4.0.0-beta.0"
   },
   "peerDependencies": {

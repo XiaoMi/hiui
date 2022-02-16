@@ -1,16 +1,8 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import _ from 'lodash'
-import { LocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/locale-context'
 import moment from 'moment'
 import { useDate } from './hooks/useData'
 import useFormat from './hooks/useFormat'
@@ -68,10 +60,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       dateMarkPreset,
       inputReadOnly,
       disabledDate = DEFAULT_DISABLED_DATE,
-      max: configMax,
-      min: configMin,
-      maxDate,
-      minDate,
+      maxDate: max = null,
+      minDate: min = null,
       onSelect: propsOnSelectOriginal,
       theme,
       disabledHours = DEFAULT_DISABLED_FUNCTION,
@@ -84,21 +74,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     },
     ref
   ) => {
-    const { datePicker, locale = 'zh-CN' } = useContext(LocaleContext)
-    // 适配器，暂时兼容老代码
-    const localeData = useMemo(() => ({ datePicker }), [datePicker])
-    // 此处应为历史兼容，需要兼容 max maxDate
-    const [max, setMax] = useState(configMax || maxDate || null)
-    const [min, setMin] = useState(configMin || minDate || null)
+    const i18n = useLocaleContext()
+    const locale = i18n.locale
+
     const [dateRangeTimePanelNow, setDateRangeTimePanelNow] = useState(0)
-
-    useEffect(() => {
-      setMax(configMax || maxDate || null)
-    }, [configMax, maxDate])
-
-    useEffect(() => {
-      setMin(configMin || minDate || null)
-    }, [configMin, minDate])
 
     const cacheDate = useRef<(moment.Moment | null)[]>([])
     const [inputFocus, setInputFocus] = useState(false)
@@ -243,10 +222,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             if (disposeDate) {
               return format
                 ? disposeDate.format(realFormat)
-                : localeData.datePicker.weekrange(
-                    getBelongWeekYear(disposeDate, safeWeekOffset),
-                    getBelongWeek(disposeDate, safeWeekOffset)
-                  )
+                : i18n.get('datePicker.weekRange', {
+                    year: getBelongWeekYear(disposeDate, safeWeekOffset),
+                    week: getBelongWeek(disposeDate, safeWeekOffset),
+                  })
             } else {
               return ''
             }
@@ -286,7 +265,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           emitOnChange && onChange(returnDate as any, returnDateStr)
         }
       },
-      [format, localeData.datePicker, onChange, realFormat, safeWeekOffset, type, showTime]
+      [format, i18n, onChange, realFormat, safeWeekOffset, type, showTime]
     )
 
     const onPick = useCallback(
@@ -390,7 +369,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           ...otherProps,
           locale,
           appearance,
-          localeData,
+          i18n,
           type,
           outDate,
           weekOffset: safeWeekOffset,

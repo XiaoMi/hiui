@@ -27,7 +27,7 @@ const Input = ({
     minuteStep,
     secondStep,
     inputReadOnly,
-    localeData,
+    i18n,
     realFormat,
     weekOffset,
     locale,
@@ -46,10 +46,10 @@ const Input = ({
       // }
 
       if (typeof format === 'undefined') {
-        vals = localeData.datePicker.weekrange(
-          getBelongWeekYear(date, weekOffset),
-          getBelongWeek(date, weekOffset)
-        )
+        vals = i18n.get('datePicker.weekRange', {
+          year: getBelongWeekYear(date, weekOffset),
+          week: getBelongWeek(date, weekOffset),
+        })
       } else {
         const y = moment(date).weekYear()
         const _date = moment(date).year(y)
@@ -58,7 +58,7 @@ const Input = ({
     }
     setValue(vals)
     cacheValues.current = vals
-  }, [date, weekOffset, localeData, type, format, realFormat, locale])
+  }, [date, weekOffset, i18n, type, format, realFormat, locale])
   const inputChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
     setValue(val)

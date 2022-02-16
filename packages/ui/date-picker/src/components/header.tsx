@@ -6,10 +6,10 @@ import {
   DirectionLeftOutlined,
 } from '@hi-ui/icons'
 import moment, { DurationInputArg1 } from 'moment'
-import { LocaleData } from '../context'
+import { UseLocaleContext } from '@hi-ui/locale-context'
 
 const getHeaderCenterContent = (
-  localeData: LocaleData,
+  i18n: UseLocaleContext,
   view: string,
   renderDate: moment.Moment,
   locale = 'zh-CN'
@@ -23,7 +23,10 @@ const getHeaderCenterContent = (
   if (view === 'month') {
     return year
   }
-  const arr = [localeData.datePicker.monthShort[month]]
+
+  const monthShortText = i18n.get('datePicker.monthShort')
+  const arr = [monthShortText[month]]
+
   if (locale === 'zh-CN') {
     arr.unshift(year + '年    ')
   } else {
@@ -35,7 +38,7 @@ const Header = ({
   view,
   changeView,
   onArrowEvent,
-  localeData,
+  i18n,
   panelPosition,
   renderDate,
   locale,
@@ -46,7 +49,7 @@ const Header = ({
   locale?: string
   panelPosition: number
   onArrowEvent: (date: moment.Moment, position: number) => void
-  localeData: LocaleData
+  i18n: UseLocaleContext
   renderDate: moment.Moment
   prefixCls: string
 }) => {
@@ -84,7 +87,7 @@ const Header = ({
           changeView()
         }}
       >
-        {getHeaderCenterContent(localeData, view, renderDate, locale)}
+        {getHeaderCenterContent(i18n, view, renderDate, locale)}
       </span>
       {
         <div className={`${prefixCls}__header-btns`}>

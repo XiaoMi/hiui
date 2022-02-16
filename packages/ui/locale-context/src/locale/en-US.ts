@@ -1,9 +1,14 @@
 export default {
+  timePicker: {
+    ok: 'OK',
+    to: 'to',
+    now: 'Now',
+  },
   datePicker: {
     ok: 'OK',
     to: 'to',
     placeholder: ['Select Date'],
-    placeholderTimeperiod: ['Select Time'],
+    placeholderTimePeriod: ['Select Time'],
     dateChoose: 'Select Date',
     timeChoose: 'Select Time',
     undefinedType: 'undefined type',
@@ -41,9 +46,7 @@ export default {
     hours: 'H',
     minutes: 'M',
     seconds: 'S',
-    weekrange: function (year: number, week: number) {
-      return year + '-W' + week
-    },
+    weekRange: '{{year}}-W{{week}}',
   },
   pagination: {
     total: ['Total', 'items'],
@@ -162,8 +165,16 @@ export default {
   },
   picker: {
     placeholder: 'Please select',
-    emptyContent: 'Not found',
+    emptyContent: 'No data',
+    noFoundTip: 'Not found',
     searchPlaceholder: 'Please search',
     loadingContent: 'loading data...',
+  },
+  zenMode: {
+    back: 'back',
+  },
+  popConfirm: {
+    confirmText: 'OK',
+    cancelText: 'Cancel',
   },
 }

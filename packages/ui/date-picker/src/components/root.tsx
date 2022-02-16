@@ -22,7 +22,7 @@ const Root = ({
   dateRangeTimePanelNow: number
 }) => {
   const {
-    localeData,
+    i18n,
     type,
     outDate,
     placeholder,
@@ -45,7 +45,7 @@ const Root = ({
     type,
     showTime,
     placeholder,
-    localeData,
+    i18n,
   })
   useEffect(() => {
     setInputData(value ? parseValue(value, type, weekOffset, format) : outDate)

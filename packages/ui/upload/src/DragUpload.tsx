@@ -1,10 +1,10 @@
-import React, { forwardRef, useContext, useCallback, useRef, useState } from 'react'
+import React, { forwardRef, useCallback, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UploadProps } from './interface'
 import { FileSelect } from '@hi-ui/file-select'
 import useUpload from './hooks/use-upload'
-import { LocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/locale-context'
 import { CloudUploadOutlined } from '@hi-ui/icons'
 import { FileList } from './FileList'
 
@@ -43,8 +43,12 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const dragText = i18n.get('upload.drag')
+
     const cls = cx(prefixCls, className)
-    const { upload } = useContext(LocaleContext)
+
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
       defaultFileList,
@@ -120,7 +124,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             <div className={'drag-upload__desc'}>
               <span className={'drag-upload__title'}>
                 <CloudUploadOutlined />
-                {content || upload.drag}
+                {content || dragText}
               </span>
               {tips && (
                 <span className={`${prefixCls}__tips ${prefixCls}__tips--single-line`}>{tips}</span>

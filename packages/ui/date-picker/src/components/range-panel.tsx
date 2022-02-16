@@ -20,7 +20,7 @@ const RangePanel = () => {
     outDate,
     type,
     onPick,
-    localeData,
+    i18n,
     showTime,
     realFormat,
     timeInterval,
@@ -210,13 +210,13 @@ const RangePanel = () => {
       let days
       const currentDate = moment()
       switch (item) {
-        case localeData.datePicker.lastWeek:
+        case i18n.get('datePicker.lastWeek'):
           days = 7
           break
-        case localeData.datePicker.lastMonth:
+        case i18n.get('datePicker.lastMonth'):
           days = 30
           break
-        case localeData.datePicker.lastThreeMonth:
+        case i18n.get('datePicker.lastThreeMonth'):
           days = 90
           break
         default:
@@ -275,7 +275,7 @@ const RangePanel = () => {
                 // renderDates={calRenderDates}
                 changeView={() => changeViewEvent(0)}
                 onArrowEvent={onArrowEvent}
-                localeData={localeData}
+                i18n={i18n}
                 view={views[0]}
                 panelPosition={0}
                 // 暂未找到此 props
@@ -312,7 +312,7 @@ const RangePanel = () => {
                   renderDate={calRenderDates[1]}
                   changeView={() => changeViewEvent(1)}
                   onArrowEvent={onArrowEvent}
-                  localeData={localeData}
+                  i18n={i18n}
                   view={views[1]}
                   // 暂未找到此 props
                   // leftDate={calRenderDates[0]}

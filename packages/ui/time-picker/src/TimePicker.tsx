@@ -20,6 +20,7 @@ import { useFilter } from './hooks/useFilter'
 import { Button } from '@hi-ui/button'
 import { getNowString } from './utils/getNowString'
 import DayJs from 'dayjs'
+import { useLocaleContext } from '@hi-ui/locale-context'
 
 const _role = 'time-picker'
 export const timePickerPrefix = getPrefixCls(_role)
@@ -64,6 +65,11 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const confirmText = i18n.get('timePicker.ok')
+    const nowText = i18n.get('timePicker.now')
+
     const [attachEl, setAttachEl] = useState<HTMLElement | null>(null)
     const formatUncontrolledValue = useMemo(() => getValueMatchString(uncontrolledValue)!, [
       uncontrolledValue,
@@ -207,7 +213,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
               setShowPopper(false)
             }}
           >
-            确认
+            {confirmText}
           </Button>
           {type === 'single' && (
             <div
@@ -218,12 +224,14 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
                 setShowPopper(false)
               }}
             >
-              此刻
+              {nowText}
             </div>
           )}
         </div>
       )
     }, [
+      confirmText,
+      nowText,
       prefixCls,
       isInputValid,
       type,

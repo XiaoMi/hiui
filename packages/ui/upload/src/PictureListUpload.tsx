@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext } from 'react'
+import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UploadProps } from './interface'
@@ -6,7 +6,7 @@ import { FileSelect } from '@hi-ui/file-select'
 import { Button } from '@hi-ui/button'
 import useUpload from './hooks/use-upload'
 import { FileList } from './FileList'
-import { LocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/locale-context'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 
@@ -43,8 +43,12 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const buttonText = i18n.get('upload.buttonText')
+
     const cls = cx(prefixCls, `${prefixCls}--picture-card`, className)
-    const { upload } = useContext(LocaleContext)
+
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
       defaultFileList,
@@ -74,7 +78,7 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
             loading={loading}
           >
-            {content || upload.buttonText}
+            {content || buttonText}
           </Button>
         </FileSelect>
         {tips && <div className={`${prefixCls}__tips`}>{tips}</div>}

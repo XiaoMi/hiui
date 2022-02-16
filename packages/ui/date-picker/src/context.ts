@@ -1,12 +1,10 @@
 import React from 'react'
 import { CalendarItemV3, DatePickerProps, DatePickerValueV3 } from './types'
 import moment from 'moment'
+import type { UseLocaleContext } from '@hi-ui/locale-context'
 
 const DPContext = React.createContext<DPContextData>({} as DPContextData)
 
-export type LocaleData = {
-  datePicker: any
-}
 type ExtendsType = Omit<
   DatePickerProps,
   | 'max'
@@ -48,7 +46,7 @@ type ExtendsType = Omit<
 
 export interface DPContextData extends ExtendsType {
   prefixCls: string
-  localeData: LocaleData
+  i18n: UseLocaleContext
   outDate: (moment.Moment | null)[]
   onPick: (dates: (moment.Moment | null)[], isShowPanel?: boolean) => void
   realFormat: string

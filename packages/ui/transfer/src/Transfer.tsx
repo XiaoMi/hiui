@@ -9,6 +9,7 @@ import { TransferProvider } from './context'
 import { useCheck } from '@hi-ui/use-check'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useLocaleContext } from '@hi-ui/locale-context'
 
 const _role = 'transfer'
 const _prefix = getPrefixCls(_role)
@@ -157,17 +158,26 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       return title
     }, [title])
 
+    const i18n = useLocaleContext()
+
+    const defaultPlaceholder = i18n.get('transfer.searchPlaceholder')
+    const defaultEmptyContent = i18n.get('transfer.searchPlaceholder')
+
     const panelPlaceholders = useMemo(() => {
-      if (!placeholder) return []
+      if (!placeholder) {
+        return [defaultPlaceholder, defaultPlaceholder]
+      }
       if (placeholder.length === 1) return [placeholder[0], placeholder[0]]
       return placeholder
-    }, [placeholder])
+    }, [placeholder, defaultPlaceholder])
 
     const panelEmptyContents = useMemo(() => {
-      if (!emptyContent) return []
+      if (!emptyContent) {
+        return [defaultEmptyContent, defaultEmptyContent]
+      }
       if (emptyContent.length === 1) return [emptyContent[0], emptyContent[0]]
       return emptyContent
-    }, [emptyContent])
+    }, [emptyContent, defaultEmptyContent])
 
     const dropItem = useCallback(
       (

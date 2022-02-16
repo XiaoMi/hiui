@@ -19,13 +19,11 @@ const useUpload = ({
   onRemove,
   beforeUpload,
   customUpload,
-}: // localeDatas,
-UploadProps): [
+}: UploadProps): [
   UploadFileItem[],
   (files: HTMLInputElement['files']) => Promise<void>,
   (file: UploadFileItem, index: any) => void
 ] => {
-  // const localMap = localeDatas.upload || {}
   const [_fileList, updateFileList] = useState(fileList || defaultFileList || [])
   const fileListRef = useRef(fileList || defaultFileList || [])
 

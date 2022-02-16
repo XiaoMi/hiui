@@ -17,6 +17,8 @@ import {
 import Button from '@hi-ui/button'
 import { useModal, UseModalProps } from './use-modal'
 import { ModalType } from './type'
+import { useLocaleContext } from '@hi-ui/locale-context'
+import { isUndef } from '@hi-ui/type-assertion'
 
 const _role = 'modal'
 export const modalPrefix = getPrefixCls(_role)
@@ -46,8 +48,8 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       type,
       onExited: onExitedProp,
       title,
-      cancelText,
-      confirmText,
+      cancelText: cancelTextProp,
+      confirmText: confirmTextProp,
       confirmLoading,
       footer,
       onCancel: onCloseProp,
@@ -67,6 +69,11 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const cancelText = isUndef(cancelTextProp) ? i18n.get('modal.cancelText') : cancelTextProp
+    const confirmText = isUndef(confirmTextProp) ? i18n.get('modal.confirmText') : confirmTextProp
+
     const [transitionVisible, transitionVisibleAction] = useToggle(false)
     const [transitionExited, transitionExitedAction] = useToggle(true)
 
@@ -163,7 +170,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                     ? [
                         hasCancel ? (
                           <Button key="1" type="default" onClick={onRequestCloseLatest}>
-                            {cancelText || '取消'}
+                            {cancelText}
                           </Button>
                         ) : null,
                         hasConfirm ? (
@@ -173,7 +180,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                             loading={confirmLoading}
                             onClick={() => onConfirm?.()}
                           >
-                            {confirmText || '确认'}
+                            {confirmText}
                           </Button>
                         ) : null,
                       ]

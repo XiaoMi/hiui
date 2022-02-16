@@ -25,7 +25,7 @@ const Panel = (props: PanelProps) => {
     // outDate,
     type,
     // onPick,
-    localeData,
+    i18n,
     showTime,
     theme,
     weekOffset,
@@ -145,7 +145,7 @@ const Panel = (props: PanelProps) => {
               // renderDates={calRenderDates}
               changeView={() => setView('year')}
               onArrowEvent={onArrowEvent}
-              localeData={localeData}
+              i18n={i18n}
               view={view}
               panelPosition={0}
               // 疑问：尚未找到这个 props

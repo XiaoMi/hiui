@@ -1,11 +1,11 @@
-import React, { forwardRef, useContext, useCallback, useRef, useState, useMemo } from 'react'
+import React, { forwardRef, useCallback, useRef, useState, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UploadProps } from './interface'
 import { FileSelect } from '@hi-ui/file-select'
 import { PlusOutlined, ExpressionOutlined, DeleteOutlined, EyeOutlined } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
-import { LocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/locale-context'
 import { Preview } from '@hi-ui/preview'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
@@ -39,8 +39,12 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
+    const uploadSuccessText = i18n.get('upload.uploadSuccess')
+
     const cls = cx(prefixCls, `${prefixCls}--photo`, className)
-    const { upload } = useContext(LocaleContext)
+
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
       defaultFileList,
@@ -139,7 +143,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                       {file.progressNumber
                         ? file.progressNumber < 100
                           ? file.progressNumber && file.progressNumber.toFixed(2) + '%'
-                          : upload.uploadSuccess
+                          : uploadSuccessText
                         : 0 + '%'}
                     </p>
                     <div

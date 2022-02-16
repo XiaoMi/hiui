@@ -29,7 +29,7 @@ const Calendar = ({
 }) => {
   const {
     weekOffset,
-    localeData,
+    i18n,
     type,
     min,
     max,
@@ -58,7 +58,7 @@ const Calendar = ({
     view,
     renderDate,
     originDate,
-    localeData,
+    i18n,
     weekOffset,
     range,
     min,
@@ -101,7 +101,7 @@ const Calendar = ({
   }, [prefixCls, view])
 
   const getWeeks = () => {
-    const week = localeData.datePicker.week
+    const week: string[] = i18n.get('datePicker.week') as any
     // 根据偏移做数组移位，展示顶部星期文案
     return week.slice(weekOffset).concat(week.slice(0, weekOffset))
   }

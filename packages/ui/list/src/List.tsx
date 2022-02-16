@@ -3,7 +3,6 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { PaginationProps, Pagination } from '@hi-ui/pagination'
 import { EmptyState } from '@hi-ui/empty-state'
-import { ListItem } from './ListItem'
 
 const LIST_PREFIX = getPrefixCls('list')
 
@@ -44,7 +43,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
       render,
       bordered = true,
       data,
-      emptyContent = '暂无数据',
+      emptyContent,
       ...rest
     },
     ref
@@ -98,7 +97,6 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
   }
 )
 
-Object.assign(List, { Item: ListItem })
 export interface ListProps {
   /**
    * 组件默认的选择器类

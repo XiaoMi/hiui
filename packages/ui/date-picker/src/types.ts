@@ -102,9 +102,6 @@ export interface DatePickerProps extends ExtendsType {
   defaultValue?: DatePickerValue | DatePickerValue[]
   value?: DatePickerValue | DatePickerValue[]
   // width?: number | string
-
-  min?: Date
-  max?: Date
   minDate?: Date
   maxDate?: Date
   /**

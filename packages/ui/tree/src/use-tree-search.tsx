@@ -7,9 +7,11 @@ import { cloneTree, getNodeAncestors } from '@hi-ui/tree-utils'
 import { flattenTreeData } from './utils'
 import { TreeProps, Tree, treePrefix } from './Tree'
 import { SearchOutlined } from '@hi-ui/icons'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import { useLocaleContext } from '@hi-ui/locale-context'
+import { isUndef } from '@hi-ui/type-assertion'
 
 import './styles/searchable-tree.scss'
-import { useLatestCallback } from '@hi-ui/use-latest'
 
 const NOOP_ARRAY = [] as any[]
 
@@ -23,7 +25,7 @@ export const useTreeSearch = (BaseTree: Tree) => {
   const AdvancedTreeMemo = useMemo(() => {
     // 高阶组件
     const AdvancedTree = forwardRef<HTMLUListElement | null, SearchableTreeProps>((props, ref) => {
-      const [treeProps, searchInputProps, isEmpty] = useTreeSearchProps(props)
+      const { treeProps, searchInputProps, isEmpty, searchEmptyResult } = useTreeSearchProps(props)
 
       return (
         <>
@@ -35,13 +37,14 @@ export const useTreeSearch = (BaseTree: Tree) => {
               prefix={searchInputProps.value ? null : <SearchOutlined />}
             />
             {isEmpty ? (
-              <span className={`${treeProps.prefixCls}-searcher--empty`}>未找到相关结果</span>
+              <span className={`${treeProps.prefixCls}-searcher--empty`}>{searchEmptyResult}</span>
             ) : null}
           </div>
           <BaseTree ref={ref} {...treeProps} />
         </>
       )
     })
+
     if (__DEV__) {
       AdvancedTree.displayName = 'AdvancedTree'
     }
@@ -57,7 +60,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     prefixCls = treePrefix,
     data,
     searchable = true,
-    searchPlaceholder,
+    searchPlaceholder: searchPlaceholderProp,
     defaultExpandAll = false,
     expandedIds: expandedIdsProp,
     defaultExpandedIds = NOOP_ARRAY,
@@ -67,6 +70,13 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     onSearch,
     ...nativeTreeProps
   } = props
+  const i18n = useLocaleContext()
+
+  const searchPlaceholder = isUndef(searchPlaceholderProp)
+    ? i18n.get('tree.searchPlaceholder')
+    : searchPlaceholderProp
+  const searchEmptyResult = i18n.get('tree.searchEmptyResult')
+
   const flattedData = useMemo(() => flattenTreeData(data), [data])
 
   // 拦截 expand：用于搜索时控制将搜到的结果高亮，并且自动展开节点
@@ -138,13 +148,13 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     [flattedData, tryToggleExpandedIds, onSearchLatest]
   )
 
-  const inputProps = {
+  const searchInputProps = {
     value: searchValue,
     onChange: handleChange,
     placeholder: searchPlaceholder,
   }
 
-  return [treeProps, inputProps, isEmpty] as const
+  return { treeProps, searchInputProps, isEmpty, searchEmptyResult }
 }
 
 export interface SearchableTreeProps extends TreeProps {

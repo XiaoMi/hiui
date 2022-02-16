@@ -1,5 +1,4 @@
 import React, {
-  FC,
   forwardRef,
   useCallback,
   useEffect,
@@ -17,6 +16,7 @@ import {
 import { cx } from '@hi-ui/classname'
 import { valueChecker } from './utils/valueChecker'
 import { disposeInputValue } from './utils/disposeInputValue'
+import { useLocaleContext } from '@hi-ui/locale-context'
 
 type ExtendType = Required<TimePickerFilter> & Required<TimePickerStep>
 
@@ -63,6 +63,10 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
     isFitContent,
     size,
   } = props
+  const i18n = useLocaleContext()
+
+  const toText = i18n.get('timePicker.to')
+
   const componentClass = useMemo(() => `${prefix}__input`, [prefix])
 
   const [cacheValue, setCacheValue] = useState<string[]>(value)
@@ -209,7 +213,7 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
       })}
     >
       {renderInput(cacheValue[0], 0)}
-      {type === 'range' && <div className={`${componentClass}__range-separator`}>至</div>}
+      {type === 'range' && <div className={`${componentClass}__range-separator`}>{toText}</div>}
       {type === 'range' && renderInput(cacheValue[1], 1)}
     </div>
   )

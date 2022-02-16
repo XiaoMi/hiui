@@ -50,7 +50,9 @@
     "@hi-ui/env": "^4.0.0-beta.0",
     "@hi-ui/icons": "^4.0.0-beta.0",
     "@hi-ui/input": "^4.0.0-beta.0",
+    "@hi-ui/locale-context": "^4.0.0-beta.0",
     "@hi-ui/pagination": "^4.0.0-beta.1",
+    "@hi-ui/type-assertion": "^4.0.0-beta.0",
     "@hi-ui/use-check": "^4.0.0-beta.0",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.0"
   },

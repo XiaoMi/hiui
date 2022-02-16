@@ -1,5 +1,6 @@
 import React from 'react'
 import Tree, { useTreeAction } from '../src'
+import { Modal } from '@hi-ui/modal'
 
 export const Editable = () => {
   const ActionTree = useTreeAction(Tree)
@@ -20,8 +21,19 @@ export const Editable = () => {
               title: '新建兄弟节点',
             },
             {
-              type: 'deleteNode',
+              // type: 'deleteNode',
               title: '删除当前菜单',
+              onClick(node, action) {
+                action.closeMenu()
+
+                Modal.confirm({
+                  title: '提示',
+                  content: '确定删除吗？',
+                  onConfirm: () => {
+                    action.deleteNode()
+                  },
+                })
+              },
             },
             {
               type: 'editNode',

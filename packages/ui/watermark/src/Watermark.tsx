@@ -5,6 +5,8 @@ import { WatermarkGenerator } from './utils'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
+import { useLocaleContext } from '@hi-ui/locale-context'
+import { isUndef } from '@hi-ui/type-assertion'
 
 const _role = 'watermark'
 export const watermarkPrefix = getPrefixCls(_role)
@@ -24,10 +26,15 @@ export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((prop
     logo = '',
     density = 'default',
     opacity = 1,
-    content = '请勿外传',
+    content: contentProp,
     zIndex = 1100,
     ...rest
   } = props
+
+  const i18n = useLocaleContext()
+
+  const content = isUndef(contentProp) ? i18n.get('watermark.content') : contentProp
+
   const cls = cx(prefixCls, className)
   const [waterMarkElement, setWaterMarkElement] = useState<HTMLDivElement | null>(null)
 

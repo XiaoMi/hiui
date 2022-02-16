@@ -15,7 +15,8 @@ const TimePeriodPanel = ({
   value: string[]
   showPanel: boolean
 }) => {
-  const { timeInterval = 240, localeData, prefixCls } = useContext(DPContext)
+  const { timeInterval = 240, i18n, prefixCls } = useContext(DPContext)
+
   const listEl = useRef<HTMLUListElement | null>(null)
   const [periodData, setPeriodData] = useState<ReturnType<typeof getTimePeriodData>>([])
 
@@ -60,7 +61,7 @@ const TimePeriodPanel = ({
 
   return (
     <div className={`${prefixCls}__time-period`}>
-      <div className={`${prefixCls}__period-header`}>{localeData.datePicker.timePeriod}</div>
+      <div className={`${prefixCls}__period-header`}>{i18n.get('datePicker.timePeriod')}</div>
       <div className={`${prefixCls}__period-body`}>
         <ul className={`${prefixCls}__period-list`} ref={listEl}>
           {periodData.map((item, index) => {

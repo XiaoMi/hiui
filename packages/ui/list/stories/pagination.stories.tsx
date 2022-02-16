@@ -33,7 +33,7 @@ export const Pagination = () => {
           }}
         />
         <List
-          style={{marginBottom: 20}}
+          style={{ marginBottom: 20 }}
           data={[
             {
               title: '下单量-指标',
@@ -60,7 +60,7 @@ export const Pagination = () => {
           }}
         />
         <List
-          style={{marginBottom: 20}}
+          style={{ marginBottom: 20 }}
           data={[
             {
               title: '下单量-指标',

@@ -38,7 +38,7 @@ export const useLocaleContext = () => {
   return context
 }
 
-interface UseLocaleContext extends LocaleLanguage {
-  get: (key: string, data?: Record<string, string>) => string
+export interface UseLocaleContext extends LocaleLanguage {
+  get: (key: string, data?: Record<string, string | number>) => string
   locale: LocaleEnum
 }

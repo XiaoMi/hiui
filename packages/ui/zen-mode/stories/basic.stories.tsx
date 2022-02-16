@@ -17,7 +17,7 @@ export const Basic = () => {
         </Button>
         <ZenMode
           visible={visible}
-          onReturn={() => {
+          onBack={() => {
             setVisible(false)
           }}
           toolbar={[

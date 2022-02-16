@@ -144,9 +144,9 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
     const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({ dataSource })
     const customSearchStrategy = useTreeCustomSearch({ data, filterOption })
     const filterSearchStrategy = useFilterSearch({
+      enabled: searchModeProp === 'filter',
       data,
       flattedData,
-      searchMode: searchModeProp,
     })
     const highlightSearchStrategy = useHighlightSearch({
       data,

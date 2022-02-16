@@ -3,10 +3,14 @@ import { createPortal } from 'react-dom'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { LeftOutlined } from '@hi-ui/icons'
+import { useLocaleContext } from '@hi-ui/locale-context'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'zen-mode'
 const _prefix = getPrefixCls(_role)
 
+const NOOP_ARRAY = [] as []
+const NOOP_FUNC = () => {}
 /**
  * TODO: What is ZenMode
  */
@@ -22,11 +26,15 @@ export const ZenMode: React.FC<ZenModeProps> = ({
   children,
   visible,
   showBack = true,
-  style,
-  onBack = () => {},
-  toolbar = [],
+  onBack = NOOP_FUNC,
+  toolbar = NOOP_ARRAY,
   zoom = 1.8,
+  ...rest
 }) => {
+  const i18n = useLocaleContext()
+
+  const backContent = i18n.get('zenMode.back')
+
   const defaultContainer = useRef(getDefaultContainer())
   const [hide, setToolbarHide] = useState(false)
 
@@ -53,13 +61,15 @@ export const ZenMode: React.FC<ZenModeProps> = ({
     createPortal(
       <div
         className={cls}
-        style={style}
-        onScroll={(e) => {
-          e.preventDefault()
+        onScroll={(evt) => {
+          evt.preventDefault()
           if (!hide) {
             setToolbarHide(true)
           }
+
+          rest.onScroll?.(evt)
         }}
+        {...rest}
       >
         <div
           className={cx(`${prefixCls}__toolbar`, { [`${prefixCls}__toolbar--hide`]: hide })}
@@ -79,7 +89,7 @@ export const ZenMode: React.FC<ZenModeProps> = ({
           {showBack && (
             <span onClick={onBack} className={`${prefixCls}__back-btn`}>
               <LeftOutlined />
-              返回
+              {backContent}
             </span>
           )}
           <div className={`${prefixCls}__toolbar-opt`}>{toolbar}</div>
@@ -102,19 +112,7 @@ export const ZenMode: React.FC<ZenModeProps> = ({
 
 export default ZenMode
 
-export interface ZenModeProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface ZenModeProps extends HiBaseHTMLProps<'div'> {
   /**
    * 是否开启禅模式
    */

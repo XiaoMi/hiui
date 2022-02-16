@@ -1,11 +1,11 @@
-import React, { forwardRef, useCallback, useContext, useMemo } from 'react'
+import React, { forwardRef, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { PagerButton } from './PagerButton'
 import { Pager } from './Pager'
 import { calculatePage } from './util'
 import { PageOption } from './PageOption'
-import { LocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/locale-context'
 import { PageJumper } from './PageJumper'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
@@ -36,16 +36,22 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
     },
     ref
   ) => {
-    const { pagination } = useContext(LocaleContext)
+    const i18n = useLocaleContext()
+
+    const totalText = i18n.get('pagination.total')
+    const itemText = i18n.get('pagination.item')
+    const itemPerPageText = i18n.get('pagination.itemPerPage')
+    const gotoText = i18n.get('pagination.goto')
+    const pageText = i18n.get('pagination.page')
 
     const _pageSizeOptions = useMemo(() => {
       if (pageSizeOptions) {
         return pageSizeOptions.map((opt) => ({
           id: opt,
-          title: `${opt} ${pagination.item} / ${pagination.itemPerPage}`,
+          title: `${opt} ${itemText} / ${itemPerPageText}`,
         }))
       }
-    }, [pageSizeOptions, pagination])
+    }, [pageSizeOptions, itemText, itemPerPageText])
 
     const [current, trySetCurrent] = useUncontrolledState(defaultCurrent, currentProp, onChange)
 
@@ -131,9 +137,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
     return (
       <div ref={ref} role={role} className={cls}>
         {showTotal ? (
-          <div
-            className={`${prefixCls}__total`}
-          >{`${pagination.total[0]} ${total} ${pagination.total[1]}`}</div>
+          <div className={`${prefixCls}__total`}>{`${totalText[0]} ${total} ${totalText[1]}`}</div>
         ) : null}
 
         {showPagers ? (
@@ -165,7 +169,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
         {showJumper ? (
           <PageJumper
             prefixCls={prefixCls}
-            pageText={[pagination.goto, pagination.page]}
+            pageText={[gotoText, pageText]}
             onJump={trySetCurrent}
             maxJump={calculatePageCount(total, pageSize)}
           />
