@@ -6,6 +6,7 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { TabInk } from './TabInk'
 import { PlusOutlined, LeftOutlined, RightOutlined, UpOutlined, DownOutlined } from '@hi-ui/icons'
+import { isUndef } from '@hi-ui/type-assertion'
 const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
 
@@ -34,8 +35,14 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     },
     ref
   ) => {
-    const [activeTab, setActiveTab] = useUncontrolledState(
-      defaultActiveId || data[0]?.tabId,
+    const [activeTabId, setActiveTabId] = useUncontrolledState(
+      () => {
+        if (isUndef(defaultActiveId)) {
+          return data[0] ? data[0].tabId : ''
+        }
+
+        return defaultActiveId
+      },
       activeId,
       onChange
     )
@@ -58,11 +65,11 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
         if (onTabClick) {
           onTabClick(key, event)
         }
-        if (key !== activeTab && setActiveTab) {
-          setActiveTab(key)
+        if (key !== activeTabId && setActiveTabId) {
+          setActiveTabId(key)
         }
       },
-      [activeTab, onTabClick, setActiveTab]
+      [activeTabId, onTabClick, setActiveTabId]
     )
     return (
       <div
@@ -135,7 +142,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 type={type}
                 itemRef={itemsRef.current[`${d.tabId}`]}
                 index={index}
-                active={activeTab === d.tabId}
+                active={activeTabId === d.tabId}
                 prefixCls={prefixCls}
                 draggable={draggable}
                 onTabClick={onClickTab}
@@ -154,7 +161,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 prefixCls={prefixCls}
                 direction={direction}
                 tabListRef={innerRef as HTMLDivElement}
-                itemRef={itemsRef.current?.[activeTab] as HTMLDivElement}
+                itemRef={itemsRef.current?.[activeTabId] as HTMLDivElement}
               />
             )}
           </div>

@@ -1,12 +1,16 @@
 import React from 'react'
 import { Tabs, TabPane } from '../src'
+import Button from '@hi-ui/button'
 
 export const Basic = () => {
+  const [activeTab, setActiveTab] = React.useState('1')
+
   return (
     <>
       <h1>Basic</h1>
+      <Button onClick={() => setActiveTab('2')}>更新面板</Button>
       <div className="tabs-basic__wrap">
-        <Tabs>
+        <Tabs activeId={activeTab}>
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1
           </TabPane>

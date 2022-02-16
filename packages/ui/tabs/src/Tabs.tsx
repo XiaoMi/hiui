@@ -1,8 +1,10 @@
-import React, { forwardRef, useMemo, useState, useCallback } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { TabPaneProps } from './TabPane'
 import { TabList } from './TabList'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { isUndef } from '@hi-ui/type-assertion'
 
 const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
@@ -55,16 +57,16 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       return list
     }, [children])
 
-    const [activePane, setActivePane] = useState(activeId || defaultActiveId || tabList[0]?.tabId)
-
-    const _onChange = useCallback<(tabId: React.ReactText) => void>(
-      (tabId) => {
-        if (onChange) {
-          onChange(tabId)
+    const [activeTabId, setActiveTabId] = useUncontrolledState(
+      () => {
+        if (isUndef(defaultActiveId)) {
+          return tabList[0] ? tabList[0].tabId : ''
         }
-        setActivePane(tabId)
+
+        return defaultActiveId
       },
-      [onChange]
+      activeId,
+      onChange
     )
 
     return (
@@ -73,7 +75,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           prefixCls={prefixCls}
           data={tabList}
           activeId={activeId}
-          onChange={_onChange}
+          onChange={setActiveTabId}
           onTabClick={onTabClick}
           direction={placement}
           editable={editable}
@@ -92,7 +94,8 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
             return (
               child &&
               React.cloneElement(child, {
-                active: activePane === child.props.tabId,
+                className: cx(`${_prefix}-tab-pane`, child.props.className),
+                active: activeTabId === child.props.tabId,
               })
             )
           })}
