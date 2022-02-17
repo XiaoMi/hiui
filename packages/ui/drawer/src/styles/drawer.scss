@@ -167,7 +167,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
     box-sizing: border-box;
     overflow: auto;
     flex: 1;
-    padding: use-spacing(12) use-spacing(10);
+    padding: use-spacing(10) use-spacing(10) use-spacing(12) use-spacing(10);
     line-height: use-text-lineheight('lg');
   }
 

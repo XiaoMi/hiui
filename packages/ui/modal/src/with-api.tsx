@@ -39,7 +39,7 @@ const open = ({ onConfirm, onCancel, content, ...rest }: ModalApiProps = {}) => 
       onCancel?.()
       toastManagerRef.current?.close()
     },
-    children: content,
+    children: <div style={{ paddingLeft: 32 }}>{content}</div>,
   })
 
   // TODO：存在弹出时延迟感

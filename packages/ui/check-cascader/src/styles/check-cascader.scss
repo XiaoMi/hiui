@@ -9,6 +9,11 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
         padding-left: 0;
         padding-right: 0;
       }
+
+      &__loading,
+      &__empty {
+        padding: use-spacing(5) use-spacing(8);
+      }
     }
   }
 }

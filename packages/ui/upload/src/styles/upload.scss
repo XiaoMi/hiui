@@ -11,7 +11,7 @@ $prefix: '#{$component-prefix}-upload' !default;
     font-size: use-text-size('sm');
     color: use-color('gray', 500);
     line-height: use-text-lineheight('sm');
-    margin: use-spacing(4) 0;
+    margin-top: use-spacing(4);
 
     &--single-line {
       display: block;
@@ -48,14 +48,14 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &__item {
-    height: 48px;
+    height: 40px;
     cursor: default;
     color: use-color('gray', 800);
     background: use-color('gray', 50);
     display: flex;
     border-radius: use-border-radius('normal');
     padding: use-spacing(6);
-    margin-bottom: use-spacing(5);
+    margin-top: use-spacing(4);
     box-sizing: border-box;
     align-items: center;
     overflow: hidden;
@@ -162,7 +162,7 @@ $prefix: '#{$component-prefix}-upload' !default;
     border-radius: use-border-radius('normal');
     cursor: pointer;
     padding: use-spacing(10) use-spacing(6);
-    margin-bottom: use-spacing(10);
+    margin: 0;
 
     &:hover:not(.#{$prefix}--nohover) {
       border-color: use-color-mode('primary');
@@ -261,7 +261,7 @@ $prefix: '#{$component-prefix}-upload' !default;
       position: relative;
       text-align: center;
       padding: 0;
-      margin: 8px;
+      margin: 6px;
       cursor: pointer;
       vertical-align: middle;
       background: use-color('gray', 50);
@@ -442,15 +442,15 @@ $prefix: '#{$component-prefix}-upload' !default;
     }
 
     .#{$prefix}__list {
-      margin-top: 15px;
+      margin: 0;
       overflow: auto;
 
       .#{$prefix}__item {
-        height: 72px;
+        height: 56px;
         box-sizing: border-box;
         border-radius: use-border-radius('normal');
-        padding: use-spacing(6);
-        margin-bottom: 12px;
+        padding: use-spacing(4);
+        margin-top: use-spacing(4);
         font-size: use-text-size('normal');
         color: use-color-static('black');
 
@@ -473,9 +473,11 @@ $prefix: '#{$component-prefix}-upload' !default;
 
         .img-wrap {
           float: left;
-          width: 50px;
-          height: 50px;
-          margin-right: 12px;
+          width: 40px;
+          height: 40px;
+          border-radius: use-border-radius('normal');
+          overflow: hidden;
+          margin-inline-end: use-spacing(6);
           position: relative;
 
           img {
@@ -485,8 +487,9 @@ $prefix: '#{$component-prefix}-upload' !default;
             right: 0;
             bottom: 0;
             margin: auto;
-            max-width: 50px;
-            max-height: 50px;
+            max-width: 40px;
+            max-height: 40px;
+            object-fit: cover;
           }
         }
       }

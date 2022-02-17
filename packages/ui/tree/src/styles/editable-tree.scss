@@ -14,7 +14,11 @@ $prefix: '#{$component-prefix}-tree' !default;
 
     .#{$prefix}__action {
       flex-shrink: 0;
-      margin-left: 4px;
+      margin-inline-start: use-spacing(2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 36px;
     }
 
     .#{$prefix}-action-btn {

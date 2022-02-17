@@ -7,6 +7,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { TabInk } from './TabInk'
 import { PlusOutlined, LeftOutlined, RightOutlined, UpOutlined, DownOutlined } from '@hi-ui/icons'
 import { isUndef } from '@hi-ui/type-assertion'
+import { IconButton } from '@hi-ui/icon-button'
 const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
 
@@ -78,8 +79,10 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
         ref={ref}
       >
         {showScrollBtn && direction === 'horizontal' && (
-          <div
-            className={`${prefixCls}__add-btn`}
+          <IconButton
+            className={`${prefixCls}__left-btn`}
+            effect
+            icon={<LeftOutlined />}
             onClick={() => {
               if (scrollRef && innerRef) {
                 const canScroll = -translateX - innerRef.clientWidth
@@ -93,13 +96,13 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 setTranslateX(translateX + moveWidth)
               }
             }}
-          >
-            <LeftOutlined />
-          </div>
+          />
         )}
         {showScrollBtn && direction === 'vertical' && (
-          <div
-            className={`${prefixCls}__add-btn`}
+          <IconButton
+            className={`${prefixCls}__up-btn`}
+            effect
+            icon={<UpOutlined />}
             onClick={() => {
               if (scrollRef && innerRef) {
                 const canScroll = -translateY - innerRef.clientHeight
@@ -113,9 +116,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 setTranslateY(translateY + moveWidth)
               }
             }}
-          >
-            <UpOutlined />
-          </div>
+          />
         )}
         <div className={cx(`${prefixCls}__list--inner`)} ref={setInnerRef}>
           <div
@@ -167,8 +168,10 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
           </div>
         </div>
         {showScrollBtn && direction === 'horizontal' && (
-          <div
-            className={`${prefixCls}__add-btn`}
+          <IconButton
+            effect
+            className={`${prefixCls}__right-btn`}
+            icon={<RightOutlined />}
             onClick={() => {
               if (scrollRef && innerRef) {
                 const canScroll = scrollRef.clientWidth - innerRef.clientWidth + translateX
@@ -182,13 +185,13 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 setTranslateX(translateX - moveWidth)
               }
             }}
-          >
-            <RightOutlined />
-          </div>
+          />
         )}
         {showScrollBtn && direction === 'vertical' && (
-          <div
-            className={`${prefixCls}__add-btn`}
+          <IconButton
+            effect
+            className={`${prefixCls}__down-btn`}
+            icon={<DownOutlined />}
             onClick={() => {
               if (scrollRef && innerRef) {
                 const canScroll = scrollRef.clientHeight - innerRef.clientHeight + translateY
@@ -202,15 +205,11 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 setTranslateY(translateY - moveWidth)
               }
             }}
-          >
-            <DownOutlined />
-          </div>
+          />
         )}
-        {editable && (
-          <div className={`${prefixCls}__add-btn`} onClick={onAdd}>
-            <PlusOutlined />
-          </div>
-        )}
+        {editable ? (
+          <IconButton icon={<PlusOutlined />} className={`${prefixCls}__add-btn`} onClick={onAdd} />
+        ) : null}
         {extra}
       </div>
     )

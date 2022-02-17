@@ -18,6 +18,7 @@ export * from './filter-options.stories'
 export * from './pinyin.stories'
 export * from './virtual-list.stories'
 export * from './empty-content.stories'
+export * from './only-checked.stories'
 
 export default {
   title: 'Data Input/CheckSelect',

@@ -46,6 +46,7 @@
     "@hi-ui/classname": "^4.0.0-beta.0",
     "@hi-ui/core-css": "^4.0.0-beta.0",
     "@hi-ui/env": "^4.0.0-beta.0",
+    "@hi-ui/icon-button": "^4.0.0-beta.0",
     "@hi-ui/icons": "^4.0.0-beta.0",
     "@hi-ui/type-assertion": "^4.0.0-beta.0",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.0"

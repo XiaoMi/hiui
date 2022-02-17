@@ -150,6 +150,10 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       color: use-color('gray', 500);
       cursor: pointer;
 
+      &:hover {
+        color: use-color('gray', 600);
+      }
+
       #{$this}--disabled & {
         cursor: not-allowed;
       }

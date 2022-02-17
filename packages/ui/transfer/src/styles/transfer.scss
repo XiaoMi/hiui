@@ -52,10 +52,10 @@ $prefix: '#{$component-prefix}-transfer' !default;
   }
 
   &__search {
-    padding: use-spacing(4) use-spacing(6) use-spacing(2);
+    padding: use-spacing(4) use-spacing(4) use-spacing(2);
 
     .#{$component-prefix}-input__prefix {
-      padding-left: 0;
+      padding-left: use-spacing(4);
     }
 
     .#{$component-prefix}-input {

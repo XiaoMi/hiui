@@ -63,7 +63,7 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
     min-height: 18px;
     background: use-color-static('white');
     border-radius: use-border-radius('lg');
-    box-shadow: $box-shadow-primary;
+    box-shadow: use-box-shadow('lg');
     transition: use-motion-duration('slow') use-motion-bezier('normal');
     opacity: 0;
     transform: scale(0);
@@ -126,15 +126,15 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
 
   &__header {
     box-sizing: border-box;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 22px;
-    color: use-color-static('black');
+    font-size: use-text-size('lg');
+    font-weight: use-text-weight('semibold');
+    line-height: use-text-lineheight('normal');
+    color: use-color('gray', 700);
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
-    padding: calc(#{use-spacing(7)} - 1px) use-spacing(12);
+    padding: calc(#{use-spacing(8)} - 1px) use-spacing(12);
 
     &--divided {
       border-bottom: use-border-size('normal') use-color('gray', 200);
@@ -152,7 +152,7 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
     box-sizing: border-box;
     overflow: auto;
     flex: 1;
-    padding: use-spacing(12);
+    padding: use-spacing(10) use-spacing(12);
     font-size: use-text-size('normal');
   }
 

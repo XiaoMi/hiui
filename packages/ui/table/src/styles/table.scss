@@ -24,6 +24,19 @@ $prefix: '#{$component-prefix}-table' !default;
     z-index: 0;
   }
 
+  // 内嵌面板
+  &__switcher {
+    &.#{$component-prefix}-icon-button {
+      color: use-color('gray', 500);
+    }
+
+    &--expanded {
+      &.#{$component-prefix}-icon-button {
+        color: use-color-mode('primary-40');
+      }
+    }
+  }
+
   &--size {
     &-md {
       table {
@@ -195,12 +208,12 @@ $prefix: '#{$component-prefix}-table' !default;
     &--avg,
     &--total {
       .#{$prefix}-cell {
-        background-color: rgba(251, 251, 251, 1);
+        background-color: use-color('gray', 50);
       }
 
       &:hover {
         .#{$prefix}-cell {
-          background-color: rgba(251, 251, 251, 1);
+          background-color: use-color('gray', 50);
         }
       }
     }
@@ -268,8 +281,12 @@ $prefix: '#{$component-prefix}-table' !default;
     margin-right: use-spacing(1);
   }
 
-  &__switcher.hi-v4-icon-button {
-    margin-right: use-spacing(1);
+  // 树形展开
+  &__switcher {
+    &.#{$component-prefix}-icon-button {
+      margin-right: use-spacing(1);
+      color: use-color('gray', 500);
+    }
   }
 
   &.#{$prefix}__embed-col,
@@ -340,8 +357,16 @@ th[data-sticky] {
         margin-top: 0;
       }
 
+      &:hover {
+        background-color: use-color('gray', 50);
+      }
+
       &--active {
         background-color: use-color-mode('primary-05');
+
+        &:hover {
+          background-color: use-color-mode('primary-05');
+        }
       }
     }
   }

@@ -4,7 +4,18 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
 .#{$prefix} {
   &__add-btn {
-    cursor: pointer;
+    &.#{$component-prefix}-icon-button {
+      font-size: use-text-size('normal');
+    }
+  }
+
+  &__up-btn,
+  &__down-btn,
+  &__left-btn,
+  &__right-btn {
+    &.#{$component-prefix}-icon-button {
+      margin: use-spacing(1);
+    }
   }
 
   &__close-btn {
