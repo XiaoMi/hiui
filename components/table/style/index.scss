@@ -53,7 +53,7 @@
 }
 
 .#{$table} {
-  .hi-checkbox__input:not(.hi-checkbox__input--checked) {
+  .hi-checkbox__input:not(.hi-checkbox__input--checked):not(.hi-checkbox__input--indeterminate) {
     background: use-color('white');
   }
 
