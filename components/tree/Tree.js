@@ -386,9 +386,14 @@ const Tree = (props) => {
         { title: localMap.addNode, type: 'addSiblingNode' },
         { title: localMap.del, type: 'deleteNode' }
       ]
-      if (contextMenu) {
+
+      if (Array.isArray(contextMenu)) {
+        menu = contextMenu
+      } else if (typeof contextMenu === 'function') {
         menu = contextMenu(node)
       }
+
+      if (!(Array.isArray(menu) && menu.length > 0)) return null
 
       return (
         <ul className={`${PREFIX}__menu theme__${theme}`}>
