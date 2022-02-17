@@ -15,7 +15,7 @@ const _prefix = getPrefixCls(_role)
  * TODO: What is TableBody
  */
 export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
-  ({ prefixCls = _prefix }, ref) => {
+  ({ prefixCls = _prefix, emptyContent }, ref) => {
     const {
       columns,
       leafColumns,
@@ -116,6 +116,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
               renderEmptyContent({
                 className: `${prefixCls}-empty-content`,
                 colSpan: columns.length,
+                emptyContent,
               })
             )}
           </tbody>
@@ -130,6 +131,10 @@ export interface TableBodyProps {
    * 组件默认的选择器类
    */
   prefixCls?: string
+  /**
+   *  数据为空时的展示内容
+   */
+  emptyContent?: React.ReactNode
 }
 
 if (__DEV__) {
@@ -139,12 +144,18 @@ if (__DEV__) {
 /**
  * 负责空状态渲染
  */
-const renderEmptyContent = ({ className, colSpan }: { colSpan?: number; className?: string }) => {
+const renderEmptyContent = ({
+  className,
+  colSpan,
+  emptyContent,
+}: {
+  colSpan?: number
+  className?: string
+  emptyContent: React.ReactNode
+}) => {
   return (
     <tr className={className}>
-      <td colSpan={colSpan}>
-        <EmptyState />
-      </td>
+      <td colSpan={colSpan}>{emptyContent || <EmptyState />}</td>
     </tr>
   )
 }

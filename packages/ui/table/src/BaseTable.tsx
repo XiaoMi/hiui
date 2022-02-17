@@ -48,6 +48,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       onHeaderRow,
       stickyFooter,
       fixedColumnTrigger = 'auto',
+      emptyContent,
       ...rest
     },
     ref
@@ -209,7 +210,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               ) : null}
             </div>
 
-            <TableBody prefixCls={prefixCls} />
+            <TableBody prefixCls={prefixCls} emptyContent={emptyContent} />
           </TableProvider>
 
           {/* 左冻结列内侧阴影效果 */}

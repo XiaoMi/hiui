@@ -1,5 +1,6 @@
 import React from 'react'
 import Table from '../src'
+import EmptyState from '@hi-ui/empty-state'
 
 export const Empty = () => {
   return (
@@ -34,6 +35,7 @@ export const Empty = () => {
             },
           ]}
           data={[]}
+          emptyContent={<EmptyState title={'暂时没有数据，请联系管理员'} />}
         />
       </div>
     </>
