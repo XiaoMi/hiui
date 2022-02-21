@@ -9,7 +9,7 @@ import { invariant } from '@hi-ui/env'
 export const getLanguage = (languageData: LocaleLanguage) => (key: string, data?: any) => {
   let value: any = getNested(languageData, key.split('.'))
 
-  invariant(typeof value === 'string', `The ${key} in language package is missing.`)
+  invariant(!!value, `The ${key} in language package is missing.`)
 
   if (data) {
     Object.keys(data).forEach((key) => {
