@@ -117,7 +117,8 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
         tagMaxCount = 0
       }
 
-      setTagMaxCount(tagMaxCount)
+      // 保底要展示 1 个
+      setTagMaxCount(isArrayNonEmpty(mergedTagList) && tagMaxCount < 1 ? 1 : tagMaxCount)
     }, [tagsWidth, suffixWidth, getTagWidth, containerWidth, mergedTagList, suffix])
 
     const onClearLatest = useLatestCallback(onClear)
@@ -151,6 +152,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
 
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
     const showClearableIcon = clearable && showTags && !disabled
+    const maxTagWidth = containerWidth - suffixWidth
 
     const cls = cx(
       prefixCls,
@@ -194,6 +196,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
                 return (
                   <MockTag
                     hidden={wrap ? false : index > tagMaxCount}
+                    maxWidth={maxTagWidth}
                     key={option.id}
                     prefixCls={prefixCls}
                     disabled={disabled}
@@ -343,6 +346,7 @@ function MockTag({
   onTagResize,
   tryChangeValue,
   displayRender,
+  maxWidth,
   hidden = false,
 }: any) {
   const title = isFunction(displayRender) ? displayRender(option) : true
@@ -363,7 +367,7 @@ function MockTag({
       <div style={{ display: 'inline-block' }}>
         <span
           className={`${prefixCls}__tag`}
-          style={hidden ? hiddenStyle : undefined}
+          style={hidden ? hiddenStyle : { maxWidth }}
           key={option.id}
         >
           <span className={`${prefixCls}__tag-content`}>

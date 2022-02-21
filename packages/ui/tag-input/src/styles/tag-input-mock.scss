@@ -57,11 +57,12 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   &__suffix {
     display: inline-flex;
     align-items: center;
+    box-sizing: border-box;
     justify-content: flex-end;
     flex-shrink: 0;
     color: use-color-static('black');
     font-size: use-text-size('lg');
-    padding-left: use-spacing(4);
+    padding: 0;
     text-align: center;
   }
 
@@ -97,6 +98,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     vertical-align: middle;
     user-select: none;
     cursor: pointer;
+    margin-left: use-spacing(4);
     margin-right: use-spacing(3);
     padding: 0 use-spacing(4);
     font-size: use-text-size('sm');
