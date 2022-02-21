@@ -44,7 +44,10 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &__error-icon {
-    font-size: 40px !important;
+    .#{$prefix} & {
+      font-size: 40px;
+      color: use-color('gray', 100);
+    }
   }
 
   &__item {

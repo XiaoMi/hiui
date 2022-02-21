@@ -7,7 +7,7 @@ $wrapper-class: '#{$prefix}__wrapper' !default;
   width: 100%;
   height: 100%;
 
-  &__wrapper{
+  &__wrapper {
     width: 100%;
     height: 100%;
     position: relative;
@@ -17,13 +17,13 @@ $wrapper-class: '#{$prefix}__wrapper' !default;
     z-index: use-zindex('normal');
   }
 
-  &--dot-outer{
-    .#{$wrapper-class}{
+  &--dot-outer {
+    .#{$wrapper-class} {
       height: calc(100% - 32px);
     }
   }
 
-  &__content{
+  &__content {
     width: 100%;
     height: 100%;
     position: relative;
@@ -33,7 +33,7 @@ $wrapper-class: '#{$prefix}__wrapper' !default;
     transition: 300ms ease-in-out all;
   }
 
-  &__item-wrapper{
+  &__item-wrapper {
     width: 100%;
     height: 100%;
     display: flex;
@@ -43,7 +43,7 @@ $wrapper-class: '#{$prefix}__wrapper' !default;
     flex-shrink: 0;
   }
 
-  &__page-number{
+  &__page-number {
     position: absolute;
     right: 12px;
     bottom: 16px;

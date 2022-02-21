@@ -1,3 +1,4 @@
+import Button from '@hi-ui/button'
 import React from 'react'
 import CheckSelect from '../src'
 
@@ -15,6 +16,15 @@ export const Controlled = () => {
     <>
       <h1>Controlled</h1>
       <div className="select-controlled__wrap">
+        <Button
+          onClick={() => {
+            setValue([])
+          }}
+        >
+          清空
+        </Button>
+        <br />
+        <br />
         <CheckSelect
           style={{ width: 200 }}
           clearable={false}

@@ -6,10 +6,16 @@ export const Basic = () => {
     <>
       <h1>Counter</h1>
       <div className="counter-basic__wrap">
-        <Counter value={0} min={1} />
+        <Counter defaultValue={2} min={1} />
         <br />
         <br />
-        <Counter autoFocus defaultValue={0} min={1} onChange={(v) => console.log('onChange', v)} />
+        <Counter
+          autoFocus
+          defaultValue={0}
+          min={1}
+          value={2}
+          onChange={(v) => console.log('onChange', v)}
+        />
       </div>
     </>
   )

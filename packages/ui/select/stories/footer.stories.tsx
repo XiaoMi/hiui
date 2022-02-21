@@ -1,17 +1,18 @@
 import Input from '@hi-ui/input'
 import React from 'react'
 import Select from '../src'
-import Button from '@hi-ui/button'
 import { PlusOutlined } from '@hi-ui/icons'
 
 export const Footer = () => {
-  const [data] = React.useState([
+  const [data, setData] = React.useState([
     { title: '电视', id: '3', disabled: true },
     { title: '手机', id: '2' },
     { title: '笔记本', id: '4', disabled: true },
     { title: '生活周边', id: '5' },
     { title: '办公', id: '6' },
   ])
+
+  const [inputValue, setInputValue] = React.useState('')
 
   return (
     <>
@@ -25,7 +26,21 @@ export const Footer = () => {
             return (
               <Input
                 placeholder="添加选项"
-                suffix={<PlusOutlined style={{ cursor: 'pointer' }} />}
+                value={inputValue}
+                onChange={(evt) => {
+                  setInputValue(evt.target.value)
+                }}
+                suffix={
+                  <PlusOutlined
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setData((prev) => {
+                        return [...prev, { id: Math.random() + inputValue, title: inputValue }]
+                      })
+                      setInputValue('')
+                    }}
+                  />
+                }
               />
             )
           }}

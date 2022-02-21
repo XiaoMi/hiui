@@ -2,7 +2,7 @@ import React from 'react'
 import TreeSelect from '../src'
 
 export const Uncontrolled = () => {
-  const [data, setData] = React.useState([
+  const [data] = React.useState([
     {
       title: '手机类',
       id: '0',
@@ -90,8 +90,8 @@ export const Uncontrolled = () => {
           data={data}
           defaultValue={'1-2'}
           // defaultValue={defaultValue}
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('TreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(selectedId, selectedItem) => {
+            console.log('TreeSelect onChange: ', selectedId, selectedItem)
           }}
         />
       </div>

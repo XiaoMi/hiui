@@ -20,6 +20,7 @@ export const usePopper = ({
   arrowPadding = 12,
   flip = true,
   matchWidth = false,
+  matchWidthStrictly = false,
   eventListeners = true,
   preventOverflow = true,
   closeOnEsc = true,
@@ -30,7 +31,10 @@ export const usePopper = ({
   onOutsideClick,
   preload = false,
   unmountOnClose = true,
+  // 保证内容能正常展示，即使开启了 matchWidth
+  minWidth: minWidthProp = 'max-content',
 }: UsePopperProps) => {
+  const minWidth = matchWidthStrictly ? undefined : minWidthProp
   const nonInteractive = !visible
 
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null)
@@ -42,7 +46,7 @@ export const usePopper = ({
         position: strategy,
         zIndex,
         inset: '0 auto auto 0',
-        minWidth: 'max-content',
+        minWidth: minWidth,
         visibility: 'hidden',
       },
       arrow: {
@@ -63,8 +67,7 @@ export const usePopper = ({
           styles: {
             popper: {
               zIndex,
-              // 保证内容能正常展示，即使开启了 matchWidth
-              minWidth: 'max-content',
+              minWidth: minWidth,
               ...state.styles.popper,
             } as React.CSSProperties,
             arrow: {
@@ -77,7 +80,7 @@ export const usePopper = ({
       },
       requires: ['computeStyles'],
     }),
-    [zIndex]
+    [zIndex, minWidth]
   )
 
   const instanceRef = useRef<PopperJS.Instance | null>(null)
@@ -88,7 +91,7 @@ export const usePopper = ({
       placement,
       modifiers: [
         getTransformOriginModifier(),
-        getMatchWidthModifier(matchWidth),
+        getMatchWidthModifier(matchWidth, matchWidthStrictly),
         getEventListenersModifier(eventListeners),
         {
           name: 'arrow',
@@ -284,6 +287,14 @@ export interface UsePopperProps {
    */
   matchWidth?: boolean
   /**
+   * 弹窗层最小宽度
+   */
+  minWidth?: React.ReactText
+  /**
+   * 开启宽度匹配严格模式，将不会根据内容自适应撑开
+   */
+  matchWidthStrictly?: boolean
+  /**
    * 开启重新定位，当 `scroll` 和 `resize` 触发时
    */
   eventListeners?: boolean | { scroll?: boolean; resize?: boolean }
@@ -336,18 +347,31 @@ export interface UsePopperProps {
 
 export type UsePopperReturn = ReturnType<typeof usePopper>
 
-export const getMatchWidthModifier = (enabled: boolean): PopperJS.Modifier<'matchWidth', any> => {
+export const getMatchWidthModifier = (
+  enabled: boolean,
+  matchWidthStrictly: boolean
+): PopperJS.Modifier<'matchWidth', any> => {
   return {
     name: 'matchWidth',
     enabled,
     phase: 'beforeWrite',
     requires: ['computeStyles'],
     fn: ({ state }) => {
-      state.styles.popper.width = `${state.rects.reference.width}px`
+      const widthValue = `${state.rects.reference.width}px`
+
+      if (matchWidthStrictly) {
+        state.styles.popper.minWidth = widthValue
+      }
+      state.styles.popper.width = widthValue
     },
     effect: ({ state }) => () => {
       const reference = state.elements.reference as HTMLElement
-      state.elements.popper.style.width = `${reference.offsetWidth}px`
+      const widthValue = `${reference.offsetWidth}px`
+
+      if (matchWidthStrictly) {
+        state.elements.popper.style.minWidth = widthValue
+      }
+      state.elements.popper.style.width = widthValue
     },
   }
 }

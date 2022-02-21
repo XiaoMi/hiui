@@ -8,6 +8,7 @@ export * from './duration.stories'
 export * from './dot-type.stories'
 export * from './dot-position.stories'
 export * from './config.stories'
+export * from './responsive.stories'
 
 export default {
   title: 'Data Display/Carousel',

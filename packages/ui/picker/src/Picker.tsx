@@ -157,6 +157,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
         })}
         <Popper
           matchWidth={optionWidth === undefined}
+          matchWidthStrictly
           gutterGap={2}
           // @DesignToken zIndex: overlay
           zIndex={1050}
@@ -173,7 +174,10 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
           }}
           attachEl={targetElementRef.current}
         >
-          <div className={`${prefixCls}__panel`} style={{ width: optionWidth }}>
+          <div
+            className={`${prefixCls}__panel`}
+            style={{ minWidth: optionWidth, width: optionWidth }}
+          >
             {searchable ? (
               <div className={`${prefixCls}__search`}>
                 <Input

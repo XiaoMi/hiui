@@ -4,7 +4,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UploadProps, UploadFileItem } from './interface'
 import { FileSelect } from '@hi-ui/file-select'
-import { PlusOutlined, ExpressionOutlined, DeleteOutlined, EyeOutlined } from '@hi-ui/icons'
+import { PlusOutlined, DeleteOutlined, EyeOutlined, SadFilled } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { Preview } from '@hi-ui/preview'
@@ -220,7 +220,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                   </div>
                 ) : (
                   <div className={`${prefixCls}__precent`}>
-                    <ExpressionOutlined className={`${prefixCls}__error-icon`} />
+                    <SadFilled className={`${prefixCls}__error-icon`} />
                     <div className={`${prefixCls}__action-group`}>
                       <EyeOutlined
                         onClick={() => {

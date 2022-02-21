@@ -16,7 +16,7 @@ export const useCounter = ({
   step = 1,
   min: minProp,
   max: maxProp,
-  disabled: disabledProp = false,
+  disabled = false,
   onChange,
   tabIndex = 0,
   autoFocus = false,
@@ -38,12 +38,6 @@ export const useCounter = ({
   const [inputValue, setInputValue] = useState<React.ReactText>(value)
 
   const valueRef = useLatestRef(value)
-
-  /**
-   * TODO: value 完全受控存在 bug，传入 onChange 但不做任何操作时
-   */
-  const blockedChange = valueProp !== undefined && !onChange
-  const disabled = blockedChange || disabledProp
 
   const proxyTryChangeValue = useCallback(
     (nextValue: number, syncInput: boolean) => {
@@ -78,12 +72,10 @@ export const useCounter = ({
     setInputValue(value)
   }, [value])
 
-  useEffect(() => {
-    // 如果是数值类型，则立即进行修改原始值，保证输入错误也能显示最接近的正确值
-    if (isNumeric(inputValue)) {
-      inputNumericRef.current = Number(inputValue)
-    }
-  }, [inputValue])
+  // 如果是数值类型，则立即进行修改原始值，保证输入错误也能显示最接近的正确值
+  if (isNumeric(inputValue)) {
+    inputNumericRef.current = Number(inputValue)
+  }
 
   const getCurrentValue = useCallback(() => {
     if (typeof inputNumericRef.current !== 'number') {
@@ -95,18 +87,18 @@ export const useCounter = ({
   const onMinus = useCallback(() => {
     if (disabledMinus) return
     const currentValue = getCurrentValue()
-    proxyTryChangeValue(minus(currentValue, step), true)
+
+    proxyTryChangeValue(minus(currentValue, step), false)
   }, [proxyTryChangeValue, disabledMinus, step, getCurrentValue])
 
   const onPlus = useCallback(() => {
     if (disabledPlus) return
     const currentValue = getCurrentValue()
-    proxyTryChangeValue(plus(currentValue, step), true)
+    proxyTryChangeValue(plus(currentValue, step), false)
   }, [proxyTryChangeValue, disabledPlus, step, getCurrentValue])
 
   const onInputKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      // TODO(规范): 统一组件库键盘按键兼容方案
       // 下键
       if (e.keyCode === 40) {
         e.preventDefault()
@@ -122,7 +114,7 @@ export const useCounter = ({
       if (e.keyCode === 13) {
         e.preventDefault()
         const currentValue = getCurrentValue()
-        proxyTryChangeValue(currentValue, true)
+        proxyTryChangeValue(currentValue, false)
       }
     },
     [onMinus, onPlus, proxyTryChangeValue, getCurrentValue]
@@ -180,9 +172,9 @@ export const useCounter = ({
 
       const { value } = evt.target
 
-      setInputValue(value)
+      tryChangeValue(value as any)
     },
-    [disabled]
+    [disabled, tryChangeValue]
   )
 
   const onInputFocus = useCallback(
@@ -202,9 +194,11 @@ export const useCounter = ({
 
       // 拦截加减按钮点击，阻止其触发 input 失焦
       if (
-        (plusButtonElementRef.current && plusButtonElementRef.current === relatedTarget) ||
-        (minusButtonElementRef.current && minusButtonElementRef.current === relatedTarget)
+        inputRef.current &&
+        ((plusButtonElementRef.current && plusButtonElementRef.current === relatedTarget) ||
+          (minusButtonElementRef.current && minusButtonElementRef.current === relatedTarget))
       ) {
+        inputRef.current.focus()
         return
       }
 

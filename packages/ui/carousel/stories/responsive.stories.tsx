@@ -1,7 +1,7 @@
 import React from 'react'
 import Carousel from '../src'
 
-export const ArrowSize = () => {
+export const Responsive = () => {
   const generateContent = () => {
     return [
       <div
@@ -65,18 +65,22 @@ export const ArrowSize = () => {
 
   return (
     <>
-      <h1>arrow size</h1>
-      <h2>lg(large)</h2>
-      <div style={{ width: '760px', height: '320px' }}>
-        <Carousel arrowSize={'lg'}>{generateContent()}</Carousel>
-      </div>
-      <h2>md(middle)</h2>
-      <div style={{ width: '760px', height: '320px' }}>
-        <Carousel arrowSize={'md'}>{generateContent()}</Carousel>
-      </div>
-      <h2>sm(small)</h2>
-      <div style={{ width: '760px', height: '320px' }}>
-        <Carousel arrowSize={'sm'}>{generateContent()}</Carousel>
+      <h1>Responsive</h1>
+      <div className="carousel-Responsive__wrap" style={{ display: 'flex' }}>
+        <div style={{ flex: 1, overflow: 'hidden' }}>
+          <Carousel>{generateContent()}</Carousel>
+        </div>
+        <div
+          style={{
+            width: '100px',
+            flexBasis: '100px',
+            height: '100%',
+            flexShrink: 0,
+            backgroundColor: '#237ffa',
+          }}
+        >
+          模拟侧边栏定宽
+        </div>
       </div>
     </>
   )

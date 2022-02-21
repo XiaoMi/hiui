@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo, useCallback, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Button from '@hi-ui/button'
-import { LeftOutlined, RightOutlined } from '@hi-ui/icons'
+import { LeftOutlined, LeftRightOutlined, RightOutlined } from '@hi-ui/icons'
 import { TransferPanel } from './TransferPanel'
 import { TransferDataItem } from './types'
 import { TransferProvider } from './context'
@@ -316,7 +316,9 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
                   onClick={() => moveTo('left')}
                 />
               </>
-            ) : null}
+            ) : (
+              <LeftRightOutlined className={`${prefixCls}-operation-arrow`} />
+            )}
           </div>
           <TransferPanel
             disabled={disabled}

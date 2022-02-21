@@ -86,6 +86,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
           title={i18n.get('table.fieldExplorer')}
           visible={menuVisible}
           onClose={menuVisibleAction.off}
+          width={304}
           footer={
             <div className={`${prefixCls}__btn-group`}>
               <Button key={0} className={`${prefixCls}__btn-cancel`} onClick={resetLatest}>
