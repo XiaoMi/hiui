@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/upload",
-  "version": "4.0.0-beta.5",
+  "version": "4.0.0-beta.6",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,16 +43,16 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^4.0.0-beta.2",
+    "@hi-ui/button": "^4.0.0-beta.3",
     "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/core": "^4.0.0-beta.0",
-    "@hi-ui/core-css": "^4.0.0-beta.0",
+    "@hi-ui/core": "^4.0.0-beta.1",
+    "@hi-ui/core-css": "^4.0.0-beta.1",
     "@hi-ui/env": "^4.0.0-beta.0",
-    "@hi-ui/file-select": "^4.0.0-beta.0",
-    "@hi-ui/icons": "^4.0.0-beta.0",
-    "@hi-ui/locale-context": "^4.0.0-beta.2",
-    "@hi-ui/modal": "^4.0.0-beta.5",
-    "@hi-ui/preview": "^4.0.0-beta.0",
+    "@hi-ui/file-select": "^4.0.0-beta.1",
+    "@hi-ui/icons": "^4.0.0-beta.1",
+    "@hi-ui/locale-context": "^4.0.0-beta.3",
+    "@hi-ui/modal": "^4.0.0-beta.6",
+    "@hi-ui/preview": "^4.0.0-beta.1",
     "react-cropper": "^2.1.8",
     "uuid": "^8.3.2"
   },

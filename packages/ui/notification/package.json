@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/notification",
-  "version": "4.0.0-beta.0",
+  "version": "4.0.0-beta.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,13 +44,13 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/core": "^4.0.0-beta.0",
-    "@hi-ui/core-css": "^4.0.0-beta.0",
+    "@hi-ui/core": "^4.0.0-beta.1",
+    "@hi-ui/core-css": "^4.0.0-beta.1",
     "@hi-ui/env": "^4.0.0-beta.0",
-    "@hi-ui/icon-button": "^4.0.0-beta.0",
-    "@hi-ui/icons": "^4.0.0-beta.0",
+    "@hi-ui/icon-button": "^4.0.0-beta.1",
+    "@hi-ui/icons": "^4.0.0-beta.1",
     "@hi-ui/react-utils": "^4.0.0-beta.0",
-    "@hi-ui/toast": "^4.0.0-beta.0",
+    "@hi-ui/toast": "^4.0.0-beta.1",
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {
