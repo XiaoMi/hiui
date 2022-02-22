@@ -1,4 +1,4 @@
-import { IconComponent } from './component'
+import { FunctionComponent } from 'react'
 import {
   CheckCircleFilled,
   CheckSquareFilled,
@@ -125,6 +125,7 @@ import {
   CalendarOutlined,
   CameraOutlined,
   ChatOutlined,
+  ClockOutlined,
   CloseCodeOutlined,
   CloudOutlined,
   CloudDownloadOutlined,
@@ -177,6 +178,7 @@ import {
   MobileOutlined,
   MonitorOutlined,
   MoonOutlined,
+  MoveOutlined,
   PadOutlined,
   PauseOutlined,
   PhoneOutlined,
@@ -202,6 +204,7 @@ import {
   SoundOutlined,
   StarOutlined,
   StartDateOutlined,
+  StudentOutlined,
   SunOutlined,
   SynchronizeOutlined,
   TagOutlined,
@@ -270,6 +273,8 @@ import {
   DuplicateOutlined,
   EditOutlined,
   EllipsisCircleOutlined,
+  EllipsisVerticalOutlined,
+  EllipsisOutlined,
   EmptyOutlined,
   EqualProportionOutlined,
   FilterOutlined,
@@ -284,8 +289,6 @@ import {
   ScissorOutlined,
   SortAscendingOutlined,
   SortDescendingOutlined,
-  Spot1Outlined,
-  Spot2Outlined,
   SummationOutlined,
   TableOutlined,
   ZoomInOutlined,
@@ -293,7 +296,7 @@ import {
 } from '../'
 export interface IconDescription {
   type: 'filled' | 'outlined'
-  component: IconComponent
+  component: FunctionComponent
   name: string
   tagName: string
 }
@@ -754,6 +757,12 @@ export const ComponentGroup: IconGroupInfo = {
     { type: 'outlined', component: ChatOutlined, name: 'chat-outlined', tagName: 'ChatOutlined' },
     {
       type: 'outlined',
+      component: ClockOutlined,
+      name: 'clock-outlined',
+      tagName: 'ClockOutlined',
+    },
+    {
+      type: 'outlined',
       component: CloseCodeOutlined,
       name: 'close-code-outlined',
       tagName: 'CloseCodeOutlined',
@@ -999,6 +1008,7 @@ export const ComponentGroup: IconGroupInfo = {
       tagName: 'MonitorOutlined',
     },
     { type: 'outlined', component: MoonOutlined, name: 'moon-outlined', tagName: 'MoonOutlined' },
+    { type: 'outlined', component: MoveOutlined, name: 'move-outlined', tagName: 'MoveOutlined' },
     { type: 'outlined', component: PadOutlined, name: 'pad-outlined', tagName: 'PadOutlined' },
     {
       type: 'outlined',
@@ -1103,6 +1113,12 @@ export const ComponentGroup: IconGroupInfo = {
       component: StartDateOutlined,
       name: 'start-date-outlined',
       tagName: 'StartDateOutlined',
+    },
+    {
+      type: 'outlined',
+      component: StudentOutlined,
+      name: 'student-outlined',
+      tagName: 'StudentOutlined',
     },
     { type: 'outlined', component: SunOutlined, name: 'sun-outlined', tagName: 'SunOutlined' },
     {
@@ -1418,6 +1434,18 @@ export const ComponentGroup: IconGroupInfo = {
     },
     {
       type: 'outlined',
+      component: EllipsisVerticalOutlined,
+      name: 'ellipsis-vertical-outlined',
+      tagName: 'EllipsisVerticalOutlined',
+    },
+    {
+      type: 'outlined',
+      component: EllipsisOutlined,
+      name: 'ellipsis-outlined',
+      tagName: 'EllipsisOutlined',
+    },
+    {
+      type: 'outlined',
       component: EmptyOutlined,
       name: 'empty-outlined',
       tagName: 'EmptyOutlined',
@@ -1494,18 +1522,6 @@ export const ComponentGroup: IconGroupInfo = {
       component: SortDescendingOutlined,
       name: 'sort-descending-outlined',
       tagName: 'SortDescendingOutlined',
-    },
-    {
-      type: 'outlined',
-      component: Spot1Outlined,
-      name: 'spot-1-outlined',
-      tagName: 'Spot1Outlined',
-    },
-    {
-      type: 'outlined',
-      component: Spot2Outlined,
-      name: 'spot-2-outlined',
-      tagName: 'Spot2Outlined',
     },
     {
       type: 'outlined',

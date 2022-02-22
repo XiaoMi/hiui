@@ -1,7 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { getIconComponentFromTagName, getIconGroupInfo, getAllIconDescription } from '../src'
-
-const ComponentGroup = getIconGroupInfo()
+import { ComponentGroup } from './group'
 
 export const Basic = () => {
   const keys = useMemo(() => Object.keys(ComponentGroup).sort(), [])

@@ -4,9 +4,9 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { IconProps } from '../../@types/props'
 
-const _prefix = getPrefixCls('icon-spot-1-outlined')
+const _prefix = getPrefixCls('icon-ellipsis-outlined')
 
-export const Spot1Outlined = forwardRef<SVGSVGElement | null, IconProps>(
+export const EllipsisOutlined = forwardRef<SVGSVGElement | null, IconProps>(
   ({ prefixCls = _prefix, className, children, ...rest }, ref) => {
     const cls = cx(prefixCls, className)
 
@@ -17,6 +17,6 @@ export const Spot1Outlined = forwardRef<SVGSVGElement | null, IconProps>(
 )
 
 if (__DEV__) {
-  Spot1Outlined.displayName = 'Spot1Outlined'
+  EllipsisOutlined.displayName = 'EllipsisOutlined'
 }
   
