@@ -62,7 +62,7 @@ $prefix: '#{$component-prefix}-picker' !default;
 
   &__footer {
     box-shadow: $top-normal-shadow;
-    padding: use-spacing(4) use-spacing(4);
+    padding: use-spacing(5) use-spacing(7);
     background-color: use-color-static('white');
   }
 

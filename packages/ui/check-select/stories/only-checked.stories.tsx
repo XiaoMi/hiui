@@ -24,7 +24,7 @@ export const OnlyChecked = () => {
           clearable
           data={data}
           showOnlyShowChecked
-          showCheckAll
+          // showCheckAll
         />
       </div>
     </>

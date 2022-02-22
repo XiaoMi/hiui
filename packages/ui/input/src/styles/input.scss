@@ -158,7 +158,7 @@ $prefix: '#{$component-prefix}-input' !default;
     &-sm {
       height: use-height-size('xs');
       font-size: use-text-size('sm');
-      line-height: get-text-lineheight('sm');
+      line-height: use-text-lineheight('sm');
 
       .#{$prefix}__text {
         padding: 1px $input-padding-width;
@@ -184,7 +184,7 @@ $prefix: '#{$component-prefix}-input' !default;
     &-md {
       height: use-height-size('normal');
       font-size: use-text-size('normal');
-      line-height: get-text-lineheight('normal');
+      line-height: use-text-lineheight('normal');
 
       .#{$prefix}__text {
         padding: 4px $input-padding-width;
@@ -210,7 +210,7 @@ $prefix: '#{$component-prefix}-input' !default;
     &-lg {
       height: use-height-size('xl');
       font-size: use-text-size('lg');
-      line-height: get-text-lineheight('lg');
+      line-height: use-text-lineheight('lg');
 
       .#{$prefix}__text {
         padding: 7px $input-padding-width;

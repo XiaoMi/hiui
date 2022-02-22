@@ -18,10 +18,10 @@ export const Placement = () => {
           placement="horizontal"
           labelPlacement="right"
         >
-          <FormItem label="账号" labelWidth="50" field="account" valueType="string">
+          <FormItem label="账号" labelWidth="58" field="account" valueType="string">
             <Input placeholder={'请输入'} />
           </FormItem>
-          <FormItem label="密码" labelWidth="50" field="password" valueType="string">
+          <FormItem label="密码" labelWidth="58" field="password" valueType="string">
             <Input type="password" placeholder={'请输入'} />
           </FormItem>
           <FormItem field={null} valueType={null}>

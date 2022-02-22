@@ -13,7 +13,7 @@ $prefix: '#{$component-prefix}-message' !default;
   display: flex;
   align-items: center;
   font-size: use-text-size('normal');
-  line-height: get-text-lineheight('normal');
+  line-height: use-text-lineheight('normal');
   background-color: use-color-static('white');
   color: use-color('gray', 700);
 

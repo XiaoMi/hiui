@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo, useState } from 'react'
+import React, { forwardRef, useCallback, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCheckSelect, UseCheckSelectProps } from './use-check-select'
@@ -242,6 +242,8 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       return extra
     }
 
+    const expandedViewRef = useRef<'normal' | 'onlyChecked'>('normal')
+
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
     return (
@@ -251,15 +253,8 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           className={cls}
           {...rootProps}
           visible={menuVisible}
-          onOpen={() => {
-            if (showOnlyShowChecked) {
-              if (filterItems) {
-                setFilterItems(null)
-              }
-            }
-            menuVisibleAction.on()
-          }}
           disabled={disabled}
+          onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
           searchable={searchable}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
@@ -279,16 +274,51 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
               onChange={tryChangeValue}
               data={mergedData}
               invalid={invalid}
-              onExpand={() => {
-                if (showOnlyShowChecked) {
-                  setFilterItems(() => {
-                    return mergedData.filter((item) => {
-                      return value.includes(item.id)
-                    })
-                  })
+              onClick={(evt) => {
+                if (!showOnlyShowChecked) return
+                if (disabled) return
+
+                // 阻止 Picker 调用 onOpen/onClose
+                evt.preventDefault()
+
+                if (filterItems) {
+                  setFilterItems(null)
                 }
 
-                menuVisibleAction.on()
+                if (menuVisible) {
+                  if (expandedViewRef.current === 'normal') {
+                    menuVisibleAction.off()
+                  }
+                } else {
+                  menuVisibleAction.on()
+                }
+
+                expandedViewRef.current = 'normal'
+              }}
+              expandable={showOnlyShowChecked}
+              onExpand={(evt) => {
+                if (!showOnlyShowChecked) return
+                if (disabled) return
+
+                // 阻止冒泡触发外层 onClick
+                evt.stopPropagation()
+                evt.preventDefault()
+
+                setFilterItems(() => {
+                  return mergedData.filter((item) => {
+                    return value.includes(item.id)
+                  })
+                })
+
+                if (menuVisible) {
+                  if (expandedViewRef.current !== 'normal') {
+                    menuVisibleAction.off()
+                  }
+                } else {
+                  menuVisibleAction.on()
+                }
+
+                expandedViewRef.current = 'onlyChecked'
               }}
             />
           }

@@ -10,6 +10,7 @@ export * from './all-check.stories'
 export * from './searchable.stories'
 export * from './pagination.stories'
 export * from './draggable.stories'
+export * from './render.stories'
 
 export default {
   title: 'Data Input/Transfer',

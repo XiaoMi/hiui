@@ -58,4 +58,9 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
       display: none;
     }
   }
+
+  &__icon {
+    margin-inline-end: use-spacing(2);
+    font-size: use-text-size('lg');
+  }
 }

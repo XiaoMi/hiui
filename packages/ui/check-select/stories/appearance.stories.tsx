@@ -2,7 +2,7 @@ import React from 'react'
 import CheckSelect from '../src'
 
 export const Appearance = () => {
-  const [value, setValue] = React.useState<React.ReactText[]>([])
+  const [value, setValue] = React.useState<React.ReactText[]>(['2'])
   const [data] = React.useState([
     { title: '电视', id: '3', disabled: true },
     { title: '手机', id: '2' },
@@ -50,6 +50,7 @@ export const Appearance = () => {
             value={value}
             clearable
             appearance="unset"
+            optionWidth={260}
             onChange={(value, targetItem) => {
               console.log('CheckSelect onChange: ', value, targetItem)
               setValue(value)

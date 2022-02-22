@@ -63,7 +63,7 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
     min-height: 18px;
     background: use-color-static('white');
     border-radius: use-border-radius('lg');
-    box-shadow: use-box-shadow('lg');
+    box-shadow: use-shadow('lg');
     transition: use-motion-duration('slow') use-motion-bezier('normal');
     opacity: 0;
     transform: scale(0);
@@ -154,6 +154,7 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
     flex: 1;
     padding: use-spacing(10) use-spacing(12);
     font-size: use-text-size('normal');
+    color: use-color('gray', 700);
   }
 
   &__icon {

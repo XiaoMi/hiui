@@ -1,7 +1,8 @@
+import { RightOutlined } from '@hi-ui/icons'
 import React from 'react'
 import Breadcrumb from '../src'
 
-export const Basic = () => {
+export const Separator = () => {
   const [data] = React.useState([
     {
       title: '首页',
@@ -19,17 +20,11 @@ export const Basic = () => {
 
   return (
     <>
-      <h1>基础用法</h1>
-      <div className="breadcrumb-basic__wrap">
+      <h1>自定义分隔符</h1>
+      <div className="breadcrumb-separator__wrap">
         <Breadcrumb
           data={data}
-          onClick={(path) => {
-            console.log('go path: ', path)
-          }}
-        />
-        <Breadcrumb
-          data={data}
-          size="sm"
+          separator={<RightOutlined style={{ fontSize: 16 }} />}
           onClick={(path) => {
             console.log('go path: ', path)
           }}

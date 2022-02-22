@@ -6,7 +6,7 @@ export const Basic = () => {
     <>
       <h1>Counter</h1>
       <div className="counter-basic__wrap">
-        <Counter defaultValue={2} min={1} />
+        <Counter defaultValue={2} min={1} max={0} />
         <br />
         <br />
         <Counter

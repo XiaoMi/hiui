@@ -152,7 +152,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       >
         {React.cloneElement(trigger, {
           ref: targetElementRef,
-          onClick: menuVisible ? hideMenu : showMenu,
+          onClick: mockDefaultHandlers(trigger.props.onClick, menuVisible ? hideMenu : showMenu),
           disabled: disabled,
         })}
         <Popper

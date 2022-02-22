@@ -4,7 +4,7 @@ import Select from '../src'
 export const VirtualList = () => {
   const [data] = React.useState(() => {
     const defaultData = []
-    for (let i = 0; i < 100000; i++) {
+    for (let i = 0; i < 5000; i++) {
       defaultData.push({
         id: `id${i}`,
         title: `title${i}`,

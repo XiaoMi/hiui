@@ -45,7 +45,7 @@ $prefix: '#{$component-prefix}-textarea' !default;
       // height: use-height-size('xs');
       height: auto;
       font-size: use-text-size('sm');
-      line-height: get-text-lineheight('sm');
+      line-height: use-text-lineheight('sm');
       padding: 1px $input-padding-width;
       border-radius: use-border-radius('normal');
     }
@@ -54,7 +54,7 @@ $prefix: '#{$component-prefix}-textarea' !default;
       height: auto;
       // height: use-height-size('normal');
       font-size: use-text-size('normal');
-      line-height: get-text-lineheight('normal');
+      line-height: use-text-lineheight('normal');
       padding: 4px $input-padding-width;
       border-radius: use-border-radius('normal');
     }
@@ -63,7 +63,7 @@ $prefix: '#{$component-prefix}-textarea' !default;
       // height: use-height-size('xl');
       height: auto;
       font-size: use-text-size('lg');
-      line-height: get-text-lineheight('lg');
+      line-height: use-text-lineheight('lg');
       padding: 7px $input-padding-width;
       border-radius: use-border-radius('normal');
     }

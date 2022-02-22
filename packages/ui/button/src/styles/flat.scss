@@ -70,40 +70,40 @@ $filled-focus-shadow-map: (
 
     // 尺寸
     &--appearance-filled#{&}--size-sm {
-      height: calc(#{get-text-lineheight('sm')} + #{2px * 2 + 1px * 2});
-      padding: 2px 7px;
+      height: calc(#{use-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
+      padding: 1px 7px;
 
       &.#{$prefix}--icon-only {
-        width: calc(#{get-text-lineheight('sm')} + #{2px * 2 + 1px * 2});
+        width: calc(#{use-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
         padding: 0;
       }
     }
     &--appearance-filled#{&}--size-md {
-      height: calc(#{get-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
+      height: calc(#{use-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
       padding: 4px 11px;
 
       &.#{$prefix}--icon-only {
-        width: calc(#{get-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
+        width: calc(#{use-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
         padding: 0;
       }
     }
 
     &--appearance-filled#{&}--size-lg {
-      height: calc(#{get-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
+      height: calc(#{use-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
       padding: 7px 15px;
 
       &.#{$prefix}--icon-only {
-        width: calc(#{get-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
+        width: calc(#{use-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
         padding: 0;
       }
     }
 
     &--appearance-filled#{&}--size-xl {
-      height: calc(#{get-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
+      height: calc(#{use-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
       padding: 13px 60px;
 
       &.#{$prefix}--icon-only {
-        width: calc(#{get-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
+        width: calc(#{use-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
         padding: 0;
       }
     }

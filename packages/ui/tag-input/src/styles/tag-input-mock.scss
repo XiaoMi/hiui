@@ -97,15 +97,21 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     box-sizing: border-box;
     vertical-align: middle;
     user-select: none;
-    cursor: pointer;
+    cursor: inherit;
     margin-left: use-spacing(4);
     margin-right: use-spacing(3);
     padding: 0 use-spacing(4);
     font-size: use-text-size('sm');
-    background-color: use-color-mode('primary-05');
-    color: use-color-mode('primary');
     border-radius: use-border-radius('normal');
     line-height: use-text-lineheight('sm');
+    // 默认使用灰，开启使用蓝
+    background-color: use-color('gray', 100);
+    color: use-color('gray', 700);
+
+    .#{$tag-input-mock-prefix}--expandable & {
+      background-color: use-color-mode('primary-05');
+      color: use-color-mode('primary');
+    }
   }
 
   &__suffix,
@@ -153,11 +159,15 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       cursor: pointer;
 
       &:hover {
-        color: use-color('gray', 600);
+        color: use-color-mode('primary');
       }
 
       #{$this}--disabled & {
         cursor: not-allowed;
+
+        &:hover {
+          color: use-color('gray', 500);
+        }
       }
     }
   }
@@ -169,7 +179,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     &-sm {
       height: use-height-size('xs');
       font-size: use-text-size('sm');
-      line-height: get-text-lineheight('sm');
+      line-height: use-text-lineheight('sm');
       border-radius: use-border-radius('normal');
       padding: 0 $input-padding-width;
 
@@ -184,7 +194,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     &-md {
       height: use-height-size('normal');
       font-size: use-text-size('normal');
-      line-height: get-text-lineheight('normal');
+      line-height: use-text-lineheight('normal');
       border-radius: use-border-radius('normal');
       padding: 2px $input-padding-width;
     }
@@ -192,7 +202,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     &-lg {
       height: use-height-size('xl');
       font-size: use-text-size('lg');
-      line-height: get-text-lineheight('lg');
+      line-height: use-text-lineheight('lg');
       border-radius: use-border-radius('normal');
       padding: 5px $input-padding-width;
     }
@@ -238,6 +248,17 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
         .#{$tag-input-mock-prefix}__tag {
           background-color: use-color-static('white');
         }
+
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color-static('white');
+        }
+
+        &.#{$tag-input-mock-prefix}--expandable {
+          .#{$tag-input-mock-prefix}__tag--total {
+            background-color: use-color-mode('primary-05');
+            color: use-color-mode('primary');
+          }
+        }
       }
 
       &:not(.#{$tag-input-mock-prefix}--disabled).focused {
@@ -247,6 +268,17 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
         .#{$tag-input-mock-prefix}__tag {
           background-color: use-color('gray', 100);
+        }
+
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color('gray', 100);
+        }
+
+        &.#{$tag-input-mock-prefix}--expandable {
+          .#{$tag-input-mock-prefix}__tag--total {
+            background-color: use-color-mode('primary-05');
+            color: use-color-mode('primary');
+          }
         }
       }
 
@@ -266,12 +298,38 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     &-filled {
       background-color: use-color('gray', 100);
 
+      .#{$tag-input-mock-prefix}__tag {
+        background-color: use-color-static('white');
+      }
+
+      .#{$tag-input-mock-prefix}__tag--total {
+        background-color: use-color-static('white');
+      }
+
+      &.#{$tag-input-mock-prefix}--expandable {
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color-mode('primary-05');
+          color: use-color-mode('primary');
+        }
+      }
+
       &:not(.#{$tag-input-mock-prefix}--disabled):hover {
         background-color: use-color-static('white');
         border-color: use-color-mode('primary');
 
         .#{$tag-input-mock-prefix}__tag {
           background-color: use-color('gray', 100);
+        }
+
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color('gray', 100);
+        }
+
+        &.#{$tag-input-mock-prefix}--expandable {
+          .#{$tag-input-mock-prefix}__tag--total {
+            background-color: use-color-mode('primary-05');
+            color: use-color-mode('primary');
+          }
         }
       }
 
@@ -282,6 +340,17 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
         .#{$tag-input-mock-prefix}__tag {
           background-color: use-color('gray', 100);
+        }
+
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color('gray', 100);
+        }
+
+        &.#{$tag-input-mock-prefix}--expandable {
+          .#{$tag-input-mock-prefix}__tag--total {
+            background-color: use-color-mode('primary-05');
+            color: use-color-mode('primary');
+          }
         }
       }
 
@@ -295,10 +364,6 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
         &.focused {
           box-shadow: $input-error-shadow;
         }
-      }
-
-      .#{$tag-input-mock-prefix}__tag {
-        background-color: use-color-static('white');
       }
     }
 

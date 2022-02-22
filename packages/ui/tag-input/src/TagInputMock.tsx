@@ -35,6 +35,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       size = 'md',
       appearance = 'line',
       wrap = false,
+      expandable = false,
       suffix,
       // tag 最小宽度
       tagWidth = 20,
@@ -142,14 +143,6 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       [disabled]
     )
 
-    const handleExpand = useCallback(
-      (evt: React.MouseEvent) => {
-        evt.stopPropagation()
-        onExpand?.()
-      },
-      [onExpand]
-    )
-
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
     const showClearableIcon = clearable && showTags && !disabled
     const maxTagWidth = containerWidth - suffixWidth
@@ -163,7 +156,8 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       readOnly && 'readonly',
       invalid && 'invalid',
       disabled && `${prefixCls}--disabled`,
-      wrap && `${prefixCls}--wrap`
+      wrap && `${prefixCls}--wrap`,
+      expandable && `${prefixCls}--expandable`
     )
 
     return (
@@ -227,7 +221,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
             {!!suffix || (showClearableIcon && hover) || showTagCount ? (
               <span className={`${prefixCls}__suffix`}>
                 {showTagCount ? (
-                  <span className={cx(`${prefixCls}__tag--total`)} onClick={handleExpand}>
+                  <span className={cx(`${prefixCls}__tag--total`)} onClick={onExpand}>
                     {`${tagCount > 99 ? '99+' : tagCount}`}
                   </span>
                 ) : null}
@@ -322,7 +316,14 @@ export interface TagInputMockProps
    * 是否开启换行全展示
    */
   wrap?: boolean
-  onExpand?: () => void
+  /**
+   * 开启展开
+   */
+  expandable?: boolean
+  /**
+   * 展开时回调
+   */
+  onExpand?: (evt: React.MouseEvent) => void
 }
 
 if (__DEV__) {

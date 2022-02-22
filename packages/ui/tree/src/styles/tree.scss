@@ -79,7 +79,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     align-items: center;
     position: relative;
     min-height: use-height-size('normal');
-    line-height: get-text-lineheight('lg');
+    line-height: use-text-lineheight('lg');
     font-size: use-text-size('normal');
     cursor: inherit;
     color: inherit;

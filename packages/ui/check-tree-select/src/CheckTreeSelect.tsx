@@ -267,10 +267,10 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             data={mergedData}
             // @ts-ignore
             invalid={invalid}
-            onExpand={() => {
-              // setViewSelected(true)
-              menuVisibleAction.on()
-            }}
+            // onExpand={() => {
+            //   // setViewSelected(true)
+            //   menuVisibleAction.on()
+            // }}
           />
         }
       >

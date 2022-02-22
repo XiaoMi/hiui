@@ -15,7 +15,7 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
       role = _role,
       className,
       data,
-      separator,
+      separator = '/',
       onClick,
       size = 'md',
       ...rest
@@ -55,7 +55,7 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
                   }
                 }}
               >
-                {item.icon}
+                {item.icon ? <span className={`${prefixCls}__icon`}> {item.icon}</span> : null}
                 {item.title}
               </span>
             )}
@@ -68,7 +68,7 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
   }
 )
 
-export interface BreadcrumbItemProps {
+export interface BreadcrumbDataItem {
   /**
    * 面包屑的内容
    */
@@ -81,8 +81,13 @@ export interface BreadcrumbItemProps {
    * 要跳转的打开方式
    */
   target?: '_self' | '_blank' | '_parent' | '_top'
+  /**
+   * 自定义 icon
+   */
   icon?: React.ReactNode
 }
+
+export interface BreadcrumbItemProps extends BreadcrumbDataItem {}
 
 export interface BreadcrumbProps {
   /**
@@ -108,7 +113,7 @@ export interface BreadcrumbProps {
   /**
    * 面包屑数据项
    */
-  data?: BreadcrumbItemProps[]
+  data?: BreadcrumbDataItem[]
   /**
    * 面包屑尺寸
    */
@@ -116,7 +121,7 @@ export interface BreadcrumbProps {
   /**
    * 点击事件
    */
-  onClick?: (e: React.MouseEvent, item: BreadcrumbItemProps, index: number) => void
+  onClick?: (e: React.MouseEvent, item: BreadcrumbDataItem, index: number) => void
 }
 
 if (__DEV__) {

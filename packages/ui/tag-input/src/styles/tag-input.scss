@@ -123,7 +123,7 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     color: use-color-mode('primary');
     border-radius: 4px;
     line-height: 22px;
-    cursor: pointer;
+    cursor: inherit;
   }
 
   &__tag {

@@ -229,10 +229,10 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             onChange={proxyOnChange}
             data={mergedData}
             invalid={invalid}
-            onExpand={() => {
-              // setViewSelected(true)
-              menuVisibleAction.on()
-            }}
+            // onExpand={() => {
+            //   // setViewSelected(true)
+            //   menuVisibleAction.on()
+            // }}
           />
         }
       >
