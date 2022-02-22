@@ -123,6 +123,7 @@ import { CalculatorOutlined } from './components/common/calculator-outlined'
 import { CalendarOutlined } from './components/common/calendar-outlined'
 import { CameraOutlined } from './components/common/camera-outlined'
 import { ChatOutlined } from './components/common/chat-outlined'
+import { ClockOutlined } from './components/common/clock-outlined'
 import { CloseCodeOutlined } from './components/common/close-code-outlined'
 import { CloudOutlined } from './components/common/cloud-outlined'
 import { CloudDownloadOutlined } from './components/common/cloud-download-outlined'
@@ -175,6 +176,7 @@ import { MessageOutlined } from './components/common/message-outlined'
 import { MobileOutlined } from './components/common/mobile-outlined'
 import { MonitorOutlined } from './components/common/monitor-outlined'
 import { MoonOutlined } from './components/common/moon-outlined'
+import { MoveOutlined } from './components/common/move-outlined'
 import { PadOutlined } from './components/common/pad-outlined'
 import { PauseOutlined } from './components/common/pause-outlined'
 import { PhoneOutlined } from './components/common/phone-outlined'
@@ -200,6 +202,7 @@ import { SkinOutlined } from './components/common/skin-outlined'
 import { SoundOutlined } from './components/common/sound-outlined'
 import { StarOutlined } from './components/common/star-outlined'
 import { StartDateOutlined } from './components/common/start-date-outlined'
+import { StudentOutlined } from './components/common/student-outlined'
 import { SunOutlined } from './components/common/sun-outlined'
 import { SynchronizeOutlined } from './components/common/synchronize-outlined'
 import { TagOutlined } from './components/common/tag-outlined'
@@ -415,6 +418,7 @@ const IconSummation = {
   CalendarOutlined,
   CameraOutlined,
   ChatOutlined,
+  ClockOutlined,
   CloseCodeOutlined,
   CloudOutlined,
   CloudDownloadOutlined,
@@ -467,6 +471,7 @@ const IconSummation = {
   MobileOutlined,
   MonitorOutlined,
   MoonOutlined,
+  MoveOutlined,
   PadOutlined,
   PauseOutlined,
   PhoneOutlined,
@@ -492,6 +497,7 @@ const IconSummation = {
   SoundOutlined,
   StarOutlined,
   StartDateOutlined,
+  StudentOutlined,
   SunOutlined,
   SynchronizeOutlined,
   TagOutlined,

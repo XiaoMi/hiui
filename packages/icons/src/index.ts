@@ -130,6 +130,7 @@ export const {
   CalendarOutlined,
   CameraOutlined,
   ChatOutlined,
+  ClockOutlined,
   CloseCodeOutlined,
   CloudOutlined,
   CloudDownloadOutlined,
@@ -182,6 +183,7 @@ export const {
   MobileOutlined,
   MonitorOutlined,
   MoonOutlined,
+  MoveOutlined,
   PadOutlined,
   PauseOutlined,
   PhoneOutlined,
@@ -207,6 +209,7 @@ export const {
   SoundOutlined,
   StarOutlined,
   StartDateOutlined,
+  StudentOutlined,
   SunOutlined,
   SynchronizeOutlined,
   TagOutlined,
@@ -297,4 +300,5 @@ export const {
   ZoomOutOutlined,
 } = IconSummation
 
-export { IconSummation }
+// 暂不确定导出形式
+// export { IconSummation }
