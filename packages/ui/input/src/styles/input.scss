@@ -156,7 +156,7 @@ $prefix: '#{$component-prefix}-input' !default;
 
   &--size {
     &-sm {
-      height: use-height-size('xs');
+      height: use-height-size('sm');
       font-size: use-text-size('sm');
       line-height: use-text-lineheight('sm');
 
@@ -208,7 +208,7 @@ $prefix: '#{$component-prefix}-input' !default;
     }
 
     &-lg {
-      height: use-height-size('xl');
+      height: use-height-size('lg');
       font-size: use-text-size('lg');
       line-height: use-text-lineheight('lg');
 

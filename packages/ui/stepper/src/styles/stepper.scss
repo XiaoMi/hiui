@@ -22,10 +22,10 @@ $prefix: '#{$component-prefix}-stepper' !default;
     &::after {
       content: '';
       position: absolute;
-      top: calc(#{use-height-size('xs')} + #{use-spacing(8)});
+      top: calc(#{use-height-size('sm')} + #{use-spacing(8)});
       left: 11px;
       width: 1px;
-      height: calc(100% - #{use-spacing(8)} * 2 - #{use-height-size('xs')});
+      height: calc(100% - #{use-spacing(8)} * 2 - #{use-height-size('sm')});
       background-color: use-color('gray', 200);
     }
 
@@ -50,10 +50,10 @@ $prefix: '#{$component-prefix}-stepper' !default;
     }
 
     .item-step {
-      width: use-height-size('xs');
-      height: use-height-size('xs');
+      width: use-height-size('sm');
+      height: use-height-size('sm');
       text-align: center;
-      line-height: use-height-size('xs');
+      line-height: use-height-size('sm');
       border-radius: use-border-radius('full');
       color: use-color-static('white');
       background-color: use-color('gray', 200);
@@ -118,10 +118,10 @@ $prefix: '#{$component-prefix}-stepper' !default;
     }
 
     .item-step {
-      width: use-height-size('xs');
-      height: use-height-size('xs');
+      width: use-height-size('sm');
+      height: use-height-size('sm');
       text-align: center;
-      line-height: use-height-size('xs');
+      line-height: use-height-size('sm');
       border-radius: use-border-radius('full');
       color: use-color('gray', 500);
       background-color: use-color('gray', 200);
@@ -277,8 +277,8 @@ $prefix: '#{$component-prefix}-stepper' !default;
         }
 
         &__wrapper {
-          height: use-height-size('xs');
-          width: use-height-size('xs');
+          height: use-height-size('sm');
+          width: use-height-size('sm');
           display: flex;
           align-items: center;
           justify-content: center;
@@ -312,7 +312,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
         content: '';
         position: absolute;
         top: use-spacing(6);
-        width: calc(50% - #{use-spacing(4)} - #{use-height-size('xs')} / 2);
+        width: calc(50% - #{use-spacing(4)} - #{use-height-size('sm')} / 2);
         left: 0;
         height: 1px;
         background-color: use-color('gray', 200);
@@ -323,7 +323,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
         position: absolute;
         top: use-spacing(6);
         right: 0;
-        width: calc(50% - #{use-spacing(4)} - #{use-height-size('xs')} / 2);
+        width: calc(50% - #{use-spacing(4)} - #{use-height-size('sm')} / 2);
         height: 1px;
         background-color: use-color('gray', 200);
       }

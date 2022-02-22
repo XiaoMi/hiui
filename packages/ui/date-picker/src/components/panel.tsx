@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useEffect, useState, useContext, useCallback } from 'react'
-import classNames from 'classnames'
+import { cx } from '@hi-ui/classname'
 import Header from './header'
 import Calendar from './calendar'
 import moment from 'moment'
@@ -100,7 +100,7 @@ const Panel = (props: PanelProps) => {
     [calRenderDates, onPick, onSelect, showTime, type, view, weekOffset]
   )
 
-  const panelCls = classNames(
+  const panelCls = cx(
     `${prefixCls}__panel`,
     `theme__${theme}`,
     showTime && `${prefixCls}__panel--time ${prefixCls}__panel--noshadow`

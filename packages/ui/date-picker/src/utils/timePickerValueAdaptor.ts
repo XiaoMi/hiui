@@ -1,5 +1,5 @@
 import moment from 'moment'
-import _ from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 import { TimePickerFormat } from '@hi-ui/time-picker'
 export const timePickerValueAdaptor = (config: {
   timePickerValue: string[]
@@ -8,7 +8,7 @@ export const timePickerValueAdaptor = (config: {
   format: TimePickerFormat
 }) => {
   const { timePickerValue, data, isRange, format } = config
-  const result = _.cloneDeep(data)
+  const result = cloneDeep(data)
 
   const setKeyMap = {
     hh: 'hours',

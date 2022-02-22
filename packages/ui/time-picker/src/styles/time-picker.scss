@@ -8,9 +8,12 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   border-radius: 4px;
   box-shadow: 0 0 0 2px transparent;
 
-  &__input-wrapper{
+  &__input-wrapper {
     border: use-border-size('normal') use-color-static('transparent');
-    border-radius: use-border-radius('md');
+    border-radius: use-border-radius('normal');
+    width: fit-content;
+    display: flex;
+    align-items: center;
   }
 
   &--appearance-line {
@@ -19,57 +22,52 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
     .#{$input-wrapper-class} {
       background: use-color-static('white');
-      border-color:use-color('gray', 300);
+      border-color: use-color('gray', 300);
     }
 
-    &:hover{
+    &:hover {
       .#{$input-wrapper-class} {
-        border-color: use-color('brandblue', 500);
+        border-color: use-color-mode('primary');
       }
     }
   }
 
-  &--appearance-filled{
+  &--appearance-filled {
     background: use-color('gray', 100);
 
-    &:hover{
+    &:hover {
       background: use-color('gray', 200);
     }
   }
 
-  &--appearance-unset{
-    &:hover{
+  &--appearance-unset {
+    &:hover {
       background: use-color('gray', 100);
     }
   }
 
   &--active {
     .#{$input-wrapper-class} {
-      border-color: use-color('brandblue', 500);
+      border-color: use-color-mode('primary');
     }
-    box-shadow: 0 0 0 2px use-color('brandblue', 100);
+
+    box-shadow: 0 0 0 2px use-color-mode('primary-10');
     background: transparent;
 
-    &:hover{
+    &:hover {
       background: transparent;
     }
   }
 
-  &--input-not-valid{
-    .#{$input-wrapper-class}{
-      border-color: use-color('red', 500);
+  &--input-not-valid {
+    .#{$input-wrapper-class} {
+      border-color: use-color-mode('danger');
     }
-    box-shadow: 0 0 0 2px use-color('red', 100);
+
+    box-shadow: 0 0 0 2px use-color-mode('danger-10');
   }
 
-
-  &__input-wrapper {
-    width: fit-content;
-    display: flex;
-    align-items: center;
-  }
-
-  &__pop-function-buttons{
+  &__pop-function-buttons {
     display: flex;
     justify-content: space-between;
     padding: 6px 8px;
@@ -79,14 +77,14 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     flex-direction: row-reverse;
   }
 
-  &__pop-now-button{
+  &__pop-now-button {
     height: 22px;
     width: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: use-text-size('sm');
-    color: use-color('brandblue', 500);
+    color: use-color-mode('primary');
     cursor: pointer;
     margin-right: 12px;
     user-select: none;

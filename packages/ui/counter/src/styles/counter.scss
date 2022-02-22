@@ -30,22 +30,22 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
     &#{$this}--focused {
       .#{$content-class} {
-        border-color: use-color('brandblue', 500);
+        border-color: use-color-mode('primary');
       }
 
       &::before {
-        background: use-color('brandblue', 50);
+        background: use-color-mode('primary-05');
       }
 
       &#{$this}--invalid,
       &#{$this}--out-of-bounds {
-        color: use-color('red', 500);
+        color: use-color-mode('danger');
         .#{$content-class} {
-          border-color: use-color('red', 500);
+          border-color: use-color-mode('danger');
         }
 
         &::before {
-          background: use-color('red', 50);
+          background: use-color-mode('danger-05');
         }
       }
     }
@@ -96,27 +96,27 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     &#{$this}--focused {
       .#{$input-class} {
         background: use-color-static('white');
-        border: use-border-size('normal') use-color('brandblue', 500);
+        border: use-border-size('normal') use-color-mode('primary');
         border-radius: use-border-radius('sm');
       }
 
       .#{$input-wrapper-class} {
         &::before {
-          background: use-color('brandblue', 50);
+          background: use-color-mode('primary-05');
         }
       }
 
       &#{$this}--invalid,
       &#{$this}--out-of-bounds {
-        color: use-color('red', 500);
+        color: use-color-mode('danger');
 
         .#{$input-class} {
-          border-color: use-color('red', 500);
+          border-color: use-color-mode('danger');
         }
 
         .#{$input-wrapper-class} {
           &::before {
-            background: use-color('red', 50);
+            background: use-color-mode('danger-05');
           }
         }
       }

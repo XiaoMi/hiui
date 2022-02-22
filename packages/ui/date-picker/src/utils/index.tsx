@@ -1,5 +1,5 @@
 // import React from 'react'
-import _ from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment'
 import request from 'axios'
 import Lunar from './toLunar'
@@ -55,7 +55,7 @@ export const getView = (type: DatePickerType) => {
  * @param {Number} index 更新数组位置
  */
 export const genNewDates = (currentDates: moment.Moment[], newDate: moment.Moment, index = 0) => {
-  const newDates = _.cloneDeep(currentDates)
+  const newDates = cloneDeep(currentDates)
   newDates[index] = newDate
   return newDates
 }
@@ -66,7 +66,7 @@ export const genNewDates = (currentDates: moment.Moment[], newDate: moment.Momen
  * @param {String} type 选择器类型
  */
 export const parseRenderDates = (dates: (moment.Moment | null)[], type: DatePickerType) => {
-  let [leftDate, rightDate] = _.cloneDeep(dates)
+  let [leftDate, rightDate] = cloneDeep(dates)
   const getRightDate = () => {
     if (type === 'yearrange') {
       if (!rightDate) {

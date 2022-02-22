@@ -14,7 +14,7 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
   }
 
   &--sm {
-    line-height: use-height-size('xs');
+    line-height: use-height-size('sm');
     font-size: use-text-size('sm');
   }
 

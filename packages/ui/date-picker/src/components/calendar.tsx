@@ -1,9 +1,8 @@
 import React, { useContext, useState, useEffect, useRef, useMemo } from 'react'
-import classNames from 'classnames'
 import DPContext, { DPContextData } from '../context'
 import moment from 'moment'
 import useCalenderData, { CalendarColInfo, CalenderSelectedRange } from '../hooks/useCalenderData'
-import _ from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 import { getFullTime } from '../utils'
 import { CSSTransition } from 'react-transition-group'
 import { CalendarView, FormatCalendarItem } from '../types'
@@ -97,7 +96,7 @@ const Calendar = ({
   }
 
   useEffect(() => {
-    setCalenderCls(classNames(`${prefixCls}__calendar`, `${prefixCls}__calendar--${view}`))
+    setCalenderCls(cx(`${prefixCls}__calendar`, `${prefixCls}__calendar--${view}`))
   }, [prefixCls, view])
 
   const getWeeks = () => {
@@ -145,7 +144,7 @@ const Calendar = ({
 
   const onTableMouseMove = (e: React.MouseEvent<HTMLTableElement, MouseEvent>) => {
     const ele = e.target as HTMLTableElement
-    const panelDate = _.cloneDeep(renderDate)!
+    const panelDate = cloneDeep(renderDate)!
     if (type.includes('range')) {
       const val = ele.getAttribute('value')
       const cellType = ele.getAttribute('type')

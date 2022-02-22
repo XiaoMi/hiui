@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import _ from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import moment from 'moment'
 import { useDate } from './hooks/useData'
@@ -193,7 +193,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     })
     const inputChangeEvent = (val: moment.Moment, dir: number) => {
       if (val.isValid()) {
-        const oData = _.cloneDeep(outDate)
+        const oData = cloneDeep(outDate)
         oData[dir] = val
         // 位置开始一定小于结束
         if (oData[0] && oData[1] && oData[0]?.isAfter(oData[1])) {
@@ -210,7 +210,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         // 在判断数值是否改变时，需要比较的数目（比如日期选择就只需要比较第一个数据即可）
         // 此处是为了过滤掉单选情况下，数组第二个数据所带来的影响
         let compareNumber = 1
-        const _dates = _.cloneDeep(dates)
+        const _dates = cloneDeep(dates)
         let returnDate = {} as any
         let returnDateStr = '' as any
         if (type.includes('week')) {

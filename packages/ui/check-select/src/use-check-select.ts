@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { uniqBy } from 'lodash'
+import uniqBy from 'lodash/uniqBy'
 import { useCheck as useCheckDefault } from '@hi-ui/use-check'
 import { CheckSelectDataItem, CheckSelectEventData } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'

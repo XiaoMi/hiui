@@ -9,7 +9,7 @@ $prefix: '#{$component-prefix}-message' !default;
   margin: use-spacing(5);
   border-radius: use-border-radius('lg');
   pointer-events: auto;
-  box-shadow: use-shadow('md');
+  box-shadow: use-shadow('normal');
   display: flex;
   align-items: center;
   font-size: use-text-size('normal');

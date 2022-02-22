@@ -3,7 +3,7 @@
 $panel-prefix: '#{$component-prefix}-time-picker__panel' !default;
 $separate-line-color: get-color('gray', 200);
 
-.#{$panel-prefix}{
+.#{$panel-prefix} {
   //min-width: 180px;
   padding: 4px 8px;
   box-sizing: border-box;
@@ -28,40 +28,40 @@ $separate-line-color: get-color('gray', 200);
   //  color: get-color('gray', 700);
   //}
 
-  &__selector-container{
+  &__selector-container {
     display: flex;
     position: relative;
     z-index: 0;
     justify-content: center;
   }
 
-  &__selector-content{
+  &__selector-content {
     position: relative;
   }
 
-  &__indicator{
+  &__indicator {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-    background: use-color('brandblue', 50);
+    background: use-color-mode('primary-05');
     z-index: -1;
     width: 54px;
     height: 24px;
 
-    &--left{
+    &--left {
       border-top-left-radius: 4px;
       border-bottom-left-radius: 4px;
       left: 0;
     }
 
-    &--right{
+    &--right {
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
       right: 0;
     }
 
-    &--middle{
+    &--middle {
       left: 0;
     }
   }

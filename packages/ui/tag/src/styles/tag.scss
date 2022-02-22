@@ -2,20 +2,20 @@
 
 $solid-color-map: (
   'primary': (
-    'normal': use-color('brandblue',500),
-    'hover': use-color('brandblue',400)
+    'normal': use-color-mode('primary'),
+    'hover': use-color-mode('primary-40')
   ),
   'warning': (
-    'normal': use-color('yellow', 500),
-    'hover': use-color('yellow', 400)
+    'normal':use-color-mode('warning'),
+    'hover':use-color-mode('warning-40')
   ),
   'success': (
-    'normal': use-color('green', 500),
-    'hover': use-color('green', 400)
+    'normal':use-color-mode('success'),
+    'hover':use-color-mode('success-40')
   ),
   'danger': (
-    'normal': use-color('red',500),
-    'hover': use-color('red',400)
+    'normal': use-color-mode('danger'),
+    'hover': use-color-mode('danger-40')
   ),
   'default': (
     'normal': use-color('gray', 400),
@@ -25,57 +25,57 @@ $solid-color-map: (
 
 $line-color-map: (
   'primary': (
-    'text': use-color('brandblue',500),
-    'border': use-color('brandblue',200),
-    'hover-text': use-color('brandblue',400),
-    'hover-border': use-color('brandblue',100)
+    'text': use-color-mode('primary'),
+    'border': use-color-mode('primary-20'),
+    'hover-text': use-color-mode('primary-40'),
+    'hover-border': use-color-mode('primary-10')
   ),
   'warning': (
-    'text': use-color('yellow',500),
-    'border': use-color('yellow',200),
-    'hover-text': use-color('yellow',400),
-    'hover-border': use-color('yellow',100)
+    'text':use-color-mode('warning'),
+    'border':use-color-mode('warning-20'),
+    'hover-text':use-color-mode('warning-40'),
+    'hover-border':use-color-mode('warning-10')
   ),
   'success': (
-    'text': use-color('green',500),
-    'border': use-color('green',200),
-    'hover-text': use-color('green',400),
-    'hover-border': use-color('green',100)
+    'text':use-color-mode('success'),
+    'border':use-color-mode('success-20'),
+    'hover-text':use-color-mode('success-40'),
+    'hover-border':use-color-mode('success-10')
   ),
   'danger': (
-    'text': use-color('red',500),
-    'border': use-color('red',200),
-    'hover-text': use-color('red',400),
-    'hover-border': use-color('red',100)
+    'text': use-color-mode('danger'),
+    'border': use-color-mode('danger-20'),
+    'hover-text': use-color-mode('danger-40'),
+    'hover-border': use-color-mode('danger-10')
   ),
   'default': (
-    'text': use-color('gray',700),
-    'border': use-color('gray',300),
-    'hover-text': use-color('gray',600),
-    'hover-border': use-color('gray',200)
+    'text': use-color('gray', 700),
+    'border': use-color('gray', 300),
+    'hover-text': use-color('gray', 600),
+    'hover-border': use-color('gray', 200)
   )
 ) !default;
 
 $filled-color-map: (
   'primary': (
-    'color': use-color('brandblue',500),
-    'background':use-color('brandblue',50),
-    'hover-background':use-color('brandblue',100)
+    'color': use-color-mode('primary'),
+    'background':use-color-mode('primary-05'),
+    'hover-background':use-color-mode('primary-10')
   ),
   'warning': (
-    'color': use-color('yellow', 500),
-    'background': use-color('yellow', 50),
-    'hover-background': use-color('yellow', 100),
+    'color':use-color-mode('warning'),
+    'background':use-color-mode('warning-05'),
+    'hover-background':use-color-mode('warning-10'),
   ),
   'success': (
-    'color': use-color('green', 500),
-    'background': use-color('green', 50),
-    'hover-background': use-color('green', 100)
+    'color':use-color-mode('success'),
+    'background':use-color-mode('success-05'),
+    'hover-background':use-color-mode('success-10')
   ),
   'danger': (
-    'color': use-color('red',500),
-    'background': use-color('red',50),
-    'hover-background': use-color('red',100)
+    'color': use-color-mode('danger'),
+    'background': use-color-mode('danger-05'),
+    'hover-background': use-color-mode('danger-10')
   ),
   'default': (
     'color': use-color('gray', 700),
@@ -86,8 +86,8 @@ $filled-color-map: (
 
 $prefix: '#{$component-prefix}-tag' !default;
 
-$shape-square: '#{$prefix}--shape-square';
-$shape-round: '#{$prefix}--shape-round';
+$shape-square: '#{$prefix}--shape-square' !default;
+$shape-round: '#{$prefix}--shape-round' !default;
 
 .#{$prefix} {
   margin-right: 8px;
@@ -103,10 +103,10 @@ $shape-round: '#{$prefix}--shape-round';
 
     @each $key, $value in $solid-color-map {
       &.#{$prefix}--type-#{$key} {
-        background: map-get($value,'normal');
+        background: map-get($value, 'normal');
 
-        &.#{$prefix}--hover-enable:hover{
-          background: map-get($value,'hover');
+        &.#{$prefix}--hover-enable:hover {
+          background: map-get($value, 'hover');
         }
       }
     }
@@ -115,11 +115,11 @@ $shape-round: '#{$prefix}--shape-round';
   &--appearance-filled {
     @each $key, $value in $filled-color-map {
       &.#{$prefix}--type-#{$key} {
-        color: map-get($value,'color');
-        background: map-get($value,'background');
+        color: map-get($value, 'color');
+        background: map-get($value, 'background');
 
-        &.#{$prefix}--hover-enable:hover{
-          background: map-get($value,'hover-background');
+        &.#{$prefix}--hover-enable:hover {
+          background: map-get($value, 'hover-background');
         }
       }
     }
@@ -128,60 +128,62 @@ $shape-round: '#{$prefix}--shape-round';
   &--appearance-line {
     @each $key, $value in $line-color-map {
       &.#{$prefix}--type-#{$key} {
-        color: map-get($value,'text');
-        border: #{get-border-size('normal')} map-get($value,'border');
+        color: map-get($value, 'text');
+        border: #{get-border-size('normal')} map-get($value, 'border');
         box-sizing: border-box;
 
-        &.#{$prefix}--hover-enable:hover{
-          color: map-get($value,'text-hover');
-          border-color: map-get($value,'border-hover');
+        &.#{$prefix}--hover-enable:hover {
+          color: map-get($value, 'text-hover');
+          border-color: map-get($value, 'border-hover');
         }
       }
     }
   }
 
-  &--size-sm{
+  &--size-sm {
     height: 20px;
     //line-height: 20px;
     font-size: use-text-size('sm');
 
-    &.#{$shape-square}{
+    &.#{$shape-square} {
       border-radius: use-border-radius('sm');
     }
 
-    &.#{$shape-round}{
+    &.#{$shape-round} {
       border-radius: 10px;
     }
   }
-  &--size-md{
+
+  &--size-md {
     height: 24px;
     //line-height: 24px;
     font-size: use-text-size('sm');
 
-    &.#{$shape-square}{
+    &.#{$shape-square} {
       border-radius: use-border-radius('normal');
     }
 
-    &.#{$shape-round}{
+    &.#{$shape-round} {
       border-radius: 12px;
     }
   }
-  &--size-lg{
+
+  &--size-lg {
     height: 32px;
     //line-height: 32px;
     font-size: use-text-size('normal');
 
-    &.#{$shape-square}{
+    &.#{$shape-square} {
       border-radius: use-border-radius('normal');
     }
 
-    &.#{$shape-round}{
+    &.#{$shape-round} {
       border-radius: 16px;
     }
   }
 
   @mixin edit-shadow {
-    box-shadow: 0 0 4px use-color('brandblue', 500);
+    box-shadow: 0 0 4px use-color-mode('primary');
   }
 
   &--editable {
@@ -197,11 +199,10 @@ $shape-round: '#{$prefix}--shape-round';
       opacity: 0;
     }
 
-    .#{$prefix}__content-wrapper{
+    .#{$prefix}__content-wrapper {
       min-width: 36px;
     }
   }
-
 
   &__content-wrapper {
     position: relative;
@@ -212,15 +213,17 @@ $shape-round: '#{$prefix}--shape-round';
     align-items: center;
   }
 
-  &--appearance-line{
-    .#{$prefix}{
-      &__content-wrapper{
+  &--appearance-line {
+    .#{$prefix} {
+      &__content-wrapper {
         padding: 0 7px;
       }
     }
   }
-  &__content{
-    @include  ellipsis();
+
+  &__content {
+    @include ellipsis();
+
     max-width: 100%;
   }
 
@@ -262,10 +265,10 @@ $shape-round: '#{$prefix}--shape-round';
     z-index: 1;
   }
 
-  &__close-button{
+  &__close-button {
     height: calc(100% - 8px);
-    padding:0 4px;
-    border-left:1px solid use-color('gray',300) ;
+    padding: 0 4px;
+    border-left: 1px solid use-color('gray', 300);
     display: flex;
     align-items: center;
     justify-content: center;

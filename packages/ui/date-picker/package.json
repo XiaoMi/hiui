@@ -52,6 +52,7 @@
     "@hi-ui/locale-context": "^4.0.0-beta.2",
     "@hi-ui/popper": "^4.0.0-beta.1",
     "@hi-ui/time-picker": "^4.0.0-beta.4",
+    "axios": "^0.26.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "react-transition-group": "^4.4.2"

@@ -22,7 +22,7 @@ import {
 import { useData, useFlattenData } from './hooks'
 import { SelectOption } from './SelectOption'
 import { SelectOptionGroup } from './SelectOptionGroup'
-import { uniqBy } from 'lodash'
+import uniqBy from 'lodash/uniqBy'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { useLocaleContext } from '@hi-ui/locale-context'

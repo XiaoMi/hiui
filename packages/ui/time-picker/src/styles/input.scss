@@ -2,7 +2,7 @@
 
 $input-prefix: '#{$component-prefix}-time-picker__input' !default;
 $interact-area: '#{$input-prefix}__interact-area' !default;
-$wrapper: '#{$input-prefix}__wrapper';
+$wrapper: '#{$input-prefix}__wrapper' !default;
 
 .#{$input-prefix} {
   display: flex;
@@ -15,7 +15,7 @@ $wrapper: '#{$input-prefix}__wrapper';
   }
 
   &--not-valid {
-    color: use-color('red', 500);
+    color: use-color-mode('danger');
   }
 
   &--range {
@@ -24,42 +24,42 @@ $wrapper: '#{$input-prefix}__wrapper';
     }
   }
 
-  &--fit-content{
-    .#{$input-prefix}{
-      &__wrapper{
+  &--fit-content {
+    .#{$input-prefix} {
+      &__wrapper {
         width: fit-content;
       }
     }
   }
 
-  &--size-sm{
-    line-height: use-height-size('xs');
+  &--size-sm {
+    line-height: use-height-size('sm');
     font-size: use-text-size('sm');
 
-    .#{$wrapper}{
-      height: use-height-size('xs');
+    .#{$wrapper} {
+      height: use-height-size('sm');
     }
   }
 
-  &--size-md{
+  &--size-md {
     line-height: use-height-size('normal');
     font-size: use-text-size('normal');
 
-    .#{$wrapper}{
+    .#{$wrapper} {
       height: use-height-size('normal');
     }
   }
 
-  &--size-lg{
-    line-height: use-height-size('xl');
+  &--size-lg {
+    line-height: use-height-size('lg');
     font-size: use-text-size('lg');
 
-    .#{$wrapper}{
-      height: use-height-size('xl');
+    .#{$wrapper} {
+      height: use-height-size('lg');
     }
   }
 
-  &__wrapper{
+  &__wrapper {
     width: 208px;
     box-sizing: border-box;
     position: relative;
@@ -69,7 +69,7 @@ $wrapper: '#{$input-prefix}__wrapper';
     padding: 0 12px;
   }
 
-  &__shadow-text{
+  &__shadow-text {
     display: inline-block;
     font-size: inherit;
     font-weight: inherit;
@@ -98,7 +98,7 @@ $wrapper: '#{$input-prefix}__wrapper';
     }
 
     &::placeholder {
-      color: use-color('gray',500);
+      color: use-color('gray', 500);
     }
   }
 }

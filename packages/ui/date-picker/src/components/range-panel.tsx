@@ -6,7 +6,7 @@ import Calendar from './calendar'
 import moment from 'moment'
 import DPContext from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
-import _ from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 import { getView, parseRenderDates, genNewDates } from '../utils'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
 import { useTimePickerData } from '../hooks/useTimePickerData'
@@ -51,7 +51,7 @@ const RangePanel = () => {
   const [timePeriod, setTimePeriod] = useState(['', ''])
 
   useEffect(() => {
-    const _outDate = _.cloneDeep(outDate)
+    const _outDate = cloneDeep(outDate)
     setRange({
       start: _outDate[0],
       end: _outDate[1],
@@ -126,7 +126,7 @@ const RangePanel = () => {
       const _innerDates = genNewDates(calRenderDates, date, uIndex)
       setCalRenderDates(_innerDates)
     }
-    const _views = _.cloneDeep(views)
+    const _views = cloneDeep(views)
     if (views[uIndex] === 'month' && !type.includes('month')) {
       _views[uIndex] = 'date'
     }
@@ -181,7 +181,7 @@ const RangePanel = () => {
   const onTimePeriodPick = useCallback(
     (ts1: string, ts2: string) => {
       setTimePeriod([ts1.trim(), ts2.trim()])
-      const [leftDate] = _.cloneDeep(calRenderDates)
+      const [leftDate] = cloneDeep(calRenderDates)
       if (leftDate) {
         onPick(
           [

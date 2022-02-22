@@ -102,11 +102,11 @@ $prefix: '#{$component-prefix}-cascader' !default;
     }
 
     &#{&}--selected {
-      background-color: use-color('brandblue', 50);
-      color: use-color('brandblue', 500);
+      background-color: use-color-mode('primary-05');
+      color: use-color-mode('primary');
 
       .#{$prefix}-menu-switcher {
-        color: use-color('brandblue', 500);
+        color: use-color-mode('primary');
       }
     }
 

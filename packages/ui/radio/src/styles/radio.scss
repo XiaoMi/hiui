@@ -38,8 +38,8 @@ $label-class: '#{$prefix}__label' !default;
 
     &:hover,
     &[data-checked] {
-      background: use-color('brandblue', 50);
-      color: use-color('brandblue', 500);
+      background: use-color-mode('primary-05');
+      color: use-color-mode('primary');
     }
 
     &[data-disabled] {
@@ -49,8 +49,8 @@ $label-class: '#{$prefix}__label' !default;
     }
 
     &[data-checked]#{&}[data-disabled] {
-      background: use-color('brandblue', 50);
-      color: use-color('brandblue', 300);
+      background: use-color-mode('primary-05');
+      color: use-color-mode('primary-30');
     }
   }
 
@@ -160,7 +160,7 @@ $label-class: '#{$prefix}__label' !default;
   }
 
   &--type-button {
-    border-radius: use-border-radius('md');
+    border-radius: use-border-radius('normal');
     overflow: hidden;
   }
 
