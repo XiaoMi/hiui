@@ -1,590 +1,293 @@
-import { CheckCircleFilled } from './components/alert/check-circle-filled'
-import { CheckSquareFilled } from './components/alert/check-square-filled'
-import { CloseCircleFilled } from './components/alert/close-circle-filled'
-import { CloseSquareFilled } from './components/alert/close-square-filled'
-import { ExclamationCircleFilled } from './components/alert/exclamation-circle-filled'
-import { InfoCircleFilled } from './components/alert/info-circle-filled'
-import { QuestionCircleFilled } from './components/alert/question-circle-filled'
-import { StopFilled } from './components/alert/stop-filled'
-import { WarningFilled } from './components/alert/warning-filled'
-import { CheckOutlined } from './components/alert/check-outlined'
-import { CheckCircleOutlined } from './components/alert/check-circle-outlined'
-import { CheckSquareOutlined } from './components/alert/check-square-outlined'
-import { CloseOutlined } from './components/alert/close-outlined'
-import { CloseCircleOutlined } from './components/alert/close-circle-outlined'
-import { CloseSquareOutlined } from './components/alert/close-square-outlined'
-import { ExclamationOutlined } from './components/alert/exclamation-outlined'
-import { ExclamationCircleOutlined } from './components/alert/exclamation-circle-outlined'
-import { InfoOutlined } from './components/alert/info-outlined'
-import { InfoCircleOutlined } from './components/alert/info-circle-outlined'
-import { MinusOutlined } from './components/alert/minus-outlined'
-import { MinusSquareOutlined } from './components/alert/minus-square-outlined'
-import { PlusOutlined } from './components/alert/plus-outlined'
-import { PlusSquareOutlined } from './components/alert/plus-square-outlined'
-import { QuestionOutlined } from './components/alert/question-outlined'
-import { QuestionCircleOutlined } from './components/alert/question-circle-outlined'
-import { StopOutlined } from './components/alert/stop-outlined'
-import { WarningOutlined } from './components/alert/warning-outlined'
-import { AlarmFilled } from './components/common/alarm-filled'
-import { AlarmClockFilled } from './components/common/alarm-clock-filled'
-import { AppStoreFilled } from './components/common/app-store-filled'
-import { ApproveFilled } from './components/common/approve-filled'
-import { ArchiveFilled } from './components/common/archive-filled'
-import { AssetMonitorFilled } from './components/common/asset-monitor-filled'
-import { AudioFilled } from './components/common/audio-filled'
-import { BankCardFilled } from './components/common/bank-card-filled'
-import { BellFilled } from './components/common/bell-filled'
-import { BlockFilled } from './components/common/block-filled'
-import { BookmarkFilled } from './components/common/bookmark-filled'
-import { BuildingFilled } from './components/common/building-filled'
-import { BulbFilled } from './components/common/bulb-filled'
-import { CalculatorFilled } from './components/common/calculator-filled'
-import { CalendarFilled } from './components/common/calendar-filled'
-import { CameraFilled } from './components/common/camera-filled'
-import { ChatFilled } from './components/common/chat-filled'
-import { CloudFilled } from './components/common/cloud-filled'
-import { CloudDownloadFilled } from './components/common/cloud-download-filled'
-import { CloudUploadFilled } from './components/common/cloud-upload-filled'
-import { CollectionFilled } from './components/common/collection-filled'
-import { DataMonitorFilled } from './components/common/data-monitor-filled'
-import { DislikeFilled } from './components/common/dislike-filled'
-import { DocumentFilled } from './components/common/document-filled'
-import { DocumentExclamationFilled } from './components/common/document-exclamation-filled'
-import { EndDateFilled } from './components/common/end-date-filled'
-import { ExpressionFilled } from './components/common/expression-filled'
-import { FileFilled } from './components/common/file-filled'
-import { FireFilled } from './components/common/fire-filled'
-import { FlagFilled } from './components/common/flag-filled'
-import { FolderFilled } from './components/common/folder-filled'
-import { FolderOpenFilled } from './components/common/folder-open-filled'
-import { HeartFilled } from './components/common/heart-filled'
-import { HomeFilled } from './components/common/home-filled'
-import { KeyFilled } from './components/common/key-filled'
-import { LightningFilled } from './components/common/lightning-filled'
-import { LikeFilled } from './components/common/like-filled'
-import { LocationFilled } from './components/common/location-filled'
-import { LockFilled } from './components/common/lock-filled'
-import { MailFilled } from './components/common/mail-filled'
-import { MailOpenFilled } from './components/common/mail-open-filled'
-import { MailSendFilled } from './components/common/mail-send-filled'
-import { ManFilled } from './components/common/man-filled'
-import { MessageFilled } from './components/common/message-filled'
-import { MobileFilled } from './components/common/mobile-filled'
-import { MonitorFilled } from './components/common/monitor-filled'
-import { MoonFilled } from './components/common/moon-filled'
-import { PadFilled } from './components/common/pad-filled'
-import { PauseFilled } from './components/common/pause-filled'
-import { PhoneFilled } from './components/common/phone-filled'
-import { PictureFilled } from './components/common/picture-filled'
-import { PinFilled } from './components/common/pin-filled'
-import { PlayFilled } from './components/common/play-filled'
-import { PrinterFilled } from './components/common/printer-filled'
-import { QrCodeFilled } from './components/common/qr-code-filled'
-import { RelationFilled } from './components/common/relation-filled'
-import { RmbFilled } from './components/common/rmb-filled'
-import { SadFilled } from './components/common/sad-filled'
-import { SettingFilled } from './components/common/setting-filled'
-import { ShoppingFilled } from './components/common/shopping-filled'
-import { SkinFilled } from './components/common/skin-filled'
-import { SoundFilled } from './components/common/sound-filled'
-import { StarFilled } from './components/common/star-filled'
-import { StartDateFilled } from './components/common/start-date-filled'
-import { SunFilled } from './components/common/sun-filled'
-import { TagFilled } from './components/common/tag-filled'
-import { TaskFilled } from './components/common/task-filled'
-import { TemplateFilled } from './components/common/template-filled'
-import { TimeFilled } from './components/common/time-filled'
-import { ToolFilled } from './components/common/tool-filled'
-import { TravelFilled } from './components/common/travel-filled'
-import { TruckFilled } from './components/common/truck-filled'
-import { UmbrellaFilled } from './components/common/umbrella-filled'
-import { UnlockFilled } from './components/common/unlock-filled'
-import { UpdateFilled } from './components/common/update-filled'
-import { UserFilled } from './components/common/user-filled'
-import { VideoCameraFilled } from './components/common/video-camera-filled'
-import { WebpageFilled } from './components/common/webpage-filled'
-import { AlarmOutlined } from './components/common/alarm-outlined'
-import { AlarmClockOutlined } from './components/common/alarm-clock-outlined'
-import { AppStoreOutlined } from './components/common/app-store-outlined'
-import { ApproveOutlined } from './components/common/approve-outlined'
-import { ArchiveOutlined } from './components/common/archive-outlined'
-import { AssetMonitorOutlined } from './components/common/asset-monitor-outlined'
-import { AudioOutlined } from './components/common/audio-outlined'
-import { BankCardOutlined } from './components/common/bank-card-outlined'
-import { BarsOutlined } from './components/common/bars-outlined'
-import { BellOutlined } from './components/common/bell-outlined'
-import { BlockOutlined } from './components/common/block-outlined'
-import { BookmarkOutlined } from './components/common/bookmark-outlined'
-import { BuildingOutlined } from './components/common/building-outlined'
-import { BulbOutlined } from './components/common/bulb-outlined'
-import { BusinessCardTransverseOutlined } from './components/common/business-card-transverse-outlined'
-import { BusinessCardOutlined } from './components/common/business-card-outlined'
-import { CalculatorOutlined } from './components/common/calculator-outlined'
-import { CalendarOutlined } from './components/common/calendar-outlined'
-import { CameraOutlined } from './components/common/camera-outlined'
-import { ChatOutlined } from './components/common/chat-outlined'
-import { ClockOutlined } from './components/common/clock-outlined'
-import { CloseCodeOutlined } from './components/common/close-code-outlined'
-import { CloudOutlined } from './components/common/cloud-outlined'
-import { CloudDownloadOutlined } from './components/common/cloud-download-outlined'
-import { CloudUploadOutlined } from './components/common/cloud-upload-outlined'
-import { CollectionOutlined } from './components/common/collection-outlined'
-import { DataMonitorOutlined } from './components/common/data-monitor-outlined'
-import { DiagramOutlined } from './components/common/diagram-outlined'
-import { DislikeOutlined } from './components/common/dislike-outlined'
-import { DocumentOutlined } from './components/common/document-outlined'
-import { DocumentExclamationOutlined } from './components/common/document-exclamation-outlined'
-import { DownloadOutlined } from './components/common/download-outlined'
-import { EndDateOutlined } from './components/common/end-date-outlined'
-import { ExportOutlined } from './components/common/export-outlined'
-import { ExpressionOutlined } from './components/common/expression-outlined'
-import { EyeOutlined } from './components/common/eye-outlined'
-import { EyeInvisibleOutlined } from './components/common/eye-invisible-outlined'
-import { FileOutlined } from './components/common/file-outlined'
-import { FileExcelOutlined } from './components/common/file-excel-outlined'
-import { FileExeOutlined } from './components/common/file-exe-outlined'
-import { FileJpgOutlined } from './components/common/file-jpg-outlined'
-import { FileKeynoteOutlined } from './components/common/file-keynote-outlined'
-import { FileMusicOutlined } from './components/common/file-music-outlined'
-import { FilePdfOutlined } from './components/common/file-pdf-outlined'
-import { FilePptOutlined } from './components/common/file-ppt-outlined'
-import { FileQuestionOutlined } from './components/common/file-question-outlined'
-import { FileTxtOutlined } from './components/common/file-txt-outlined'
-import { FileVideoOutlined } from './components/common/file-video-outlined'
-import { FileWordOutlined } from './components/common/file-word-outlined'
-import { FileZipOutlined } from './components/common/file-zip-outlined'
-import { FireOutlined } from './components/common/fire-outlined'
-import { FlagOutlined } from './components/common/flag-outlined'
-import { FolderOutlined } from './components/common/folder-outlined'
-import { FolderOpenOutlined } from './components/common/folder-open-outlined'
-import { GlobalOutlined } from './components/common/global-outlined'
-import { HeartOutlined } from './components/common/heart-outlined'
-import { HomeOutlined } from './components/common/home-outlined'
-import { ImportOutlined } from './components/common/import-outlined'
-import { KeyOutlined } from './components/common/key-outlined'
-import { LightningOutlined } from './components/common/lightning-outlined'
-import { LikeOutlined } from './components/common/like-outlined'
-import { LinkOutlined } from './components/common/link-outlined'
-import { LocationOutlined } from './components/common/location-outlined'
-import { LockOutlined } from './components/common/lock-outlined'
-import { MailOutlined } from './components/common/mail-outlined'
-import { MailOpenOutlined } from './components/common/mail-open-outlined'
-import { MailSendOutlined } from './components/common/mail-send-outlined'
-import { ManOutlined } from './components/common/man-outlined'
-import { MenuOutlined } from './components/common/menu-outlined'
-import { MessageOutlined } from './components/common/message-outlined'
-import { MobileOutlined } from './components/common/mobile-outlined'
-import { MonitorOutlined } from './components/common/monitor-outlined'
-import { MoonOutlined } from './components/common/moon-outlined'
-import { MoveOutlined } from './components/common/move-outlined'
-import { PadOutlined } from './components/common/pad-outlined'
-import { PauseOutlined } from './components/common/pause-outlined'
-import { PhoneOutlined } from './components/common/phone-outlined'
-import { PictureOutlined } from './components/common/picture-outlined'
-import { PinOutlined } from './components/common/pin-outlined'
-import { PlayOutlined } from './components/common/play-outlined'
-import { PowerOffOutlined } from './components/common/power-off-outlined'
-import { PrinterOutlined } from './components/common/printer-outlined'
-import { QrCodeOutlined } from './components/common/qr-code-outlined'
-import { RelationOutlined } from './components/common/relation-outlined'
-import { ResetOutlined } from './components/common/reset-outlined'
-import { RmbOutlined } from './components/common/rmb-outlined'
-import { SadOutlined } from './components/common/sad-outlined'
-import { ScanOutlined } from './components/common/scan-outlined'
-import { SearchOutlined } from './components/common/search-outlined'
-import { SendOutOutlined } from './components/common/send-out-outlined'
-import { SettingOutlined } from './components/common/setting-outlined'
-import { ShareOutlined } from './components/common/share-outlined'
-import { ShopOutlined } from './components/common/shop-outlined'
-import { ShoppingOutlined } from './components/common/shopping-outlined'
-import { ShowCodeOutlined } from './components/common/show-code-outlined'
-import { SkinOutlined } from './components/common/skin-outlined'
-import { SoundOutlined } from './components/common/sound-outlined'
-import { StarOutlined } from './components/common/star-outlined'
-import { StartDateOutlined } from './components/common/start-date-outlined'
-import { StudentOutlined } from './components/common/student-outlined'
-import { SunOutlined } from './components/common/sun-outlined'
-import { SynchronizeOutlined } from './components/common/synchronize-outlined'
-import { TagOutlined } from './components/common/tag-outlined'
-import { TaskOutlined } from './components/common/task-outlined'
-import { TemplateOutlined } from './components/common/template-outlined'
-import { TimeOutlined } from './components/common/time-outlined'
-import { TimeRewindOutlined } from './components/common/time-rewind-outlined'
-import { ToolOutlined } from './components/common/tool-outlined'
-import { TravelOutlined } from './components/common/travel-outlined'
-import { TruckOutlined } from './components/common/truck-outlined'
-import { UmberOutlined } from './components/common/umber-outlined'
-import { UmbrellaOutlined } from './components/common/umbrella-outlined'
-import { UnlockOutlined } from './components/common/unlock-outlined'
-import { UpdateOutlined } from './components/common/update-outlined'
-import { UploadOutlined } from './components/common/upload-outlined'
-import { UserOutlined } from './components/common/user-outlined'
-import { UserAddOutlined } from './components/common/user-add-outlined'
-import { UsersOutlined } from './components/common/users-outlined'
-import { VideoCameraOutlined } from './components/common/video-camera-outlined'
-import { WebpageOutlined } from './components/common/webpage-outlined'
-import { WomanOutlined } from './components/common/woman-outlined'
-import { CaretDownFilled } from './components/direction/caret-down-filled'
-import { CaretLeftFilled } from './components/direction/caret-left-filled'
-import { CaretRightFilled } from './components/direction/caret-right-filled'
-import { CaretUpFilled } from './components/direction/caret-up-filled'
-import { ArrowDownOutlined } from './components/direction/arrow-down-outlined'
-import { ArrowLeftOutlined } from './components/direction/arrow-left-outlined'
-import { ArrowRightOutlined } from './components/direction/arrow-right-outlined'
-import { ArrowUpOutlined } from './components/direction/arrow-up-outlined'
-import { DirectionDownOutlined } from './components/direction/direction-down-outlined'
-import { DirectionLeftOutlined } from './components/direction/direction-left-outlined'
-import { DirectionRightOutlined } from './components/direction/direction-right-outlined'
-import { DirectionUpOutlined } from './components/direction/direction-up-outlined'
-import { DownOutlined } from './components/direction/down-outlined'
-import { ExpandOutlined } from './components/direction/expand-outlined'
-import { FullscreenOutlined } from './components/direction/fullscreen-outlined'
-import { FullscreenExitOutlined } from './components/direction/fullscreen-exit-outlined'
-import { LeftOutlined } from './components/direction/left-outlined'
-import { LeftRightOutlined } from './components/direction/left-right-outlined'
-import { MenuFoldOutlined } from './components/direction/menu-fold-outlined'
-import { MenuUnfoldOutlined } from './components/direction/menu-unfold-outlined'
-import { RightOutlined } from './components/direction/right-outlined'
-import { ShrinkOutlined } from './components/direction/shrink-outlined'
-import { ToBottomOutlined } from './components/direction/to-bottom-outlined'
-import { ToTopOutlined } from './components/direction/to-top-outlined'
-import { UpOutlined } from './components/direction/up-outlined'
-import { CopyFilled } from './components/edit/copy-filled'
-import { DeleteFilled } from './components/edit/delete-filled'
-import { DetailsFilled } from './components/edit/details-filled'
-import { DuplicateFilled } from './components/edit/duplicate-filled'
-import { EditFilled } from './components/edit/edit-filled'
-import { EllipsisCircleFilled } from './components/edit/ellipsis-circle-filled'
-import { EmptyFilled } from './components/edit/empty-filled'
-import { FilterFilled } from './components/edit/filter-filled'
-import { FolderAddFilled } from './components/edit/folder-add-filled'
-import { FolderMoveFilled } from './components/edit/folder-move-filled'
-import { PasteFilled } from './components/edit/paste-filled'
-import { AverageOutlined } from './components/edit/average-outlined'
-import { ColumnHeightOutlined } from './components/edit/column-height-outlined'
-import { ColumnsOutlined } from './components/edit/columns-outlined'
-import { CopyOutlined } from './components/edit/copy-outlined'
-import { DeleteOutlined } from './components/edit/delete-outlined'
-import { DetailsOutlined } from './components/edit/details-outlined'
-import { DocumentSearchOutlined } from './components/edit/document-search-outlined'
-import { DragOutlined } from './components/edit/drag-outlined'
-import { DuplicateOutlined } from './components/edit/duplicate-outlined'
-import { EditOutlined } from './components/edit/edit-outlined'
-import { EllipsisCircleOutlined } from './components/edit/ellipsis-circle-outlined'
-import { EllipsisVerticalOutlined } from './components/edit/ellipsis-vertical-outlined'
-import { EllipsisOutlined } from './components/edit/ellipsis-outlined'
-import { EmptyOutlined } from './components/edit/empty-outlined'
-import { EqualProportionOutlined } from './components/edit/equal-proportion-outlined'
-import { FilterOutlined } from './components/edit/filter-outlined'
-import { FolderAddOutlined } from './components/edit/folder-add-outlined'
-import { FolderMoveOutlined } from './components/edit/folder-move-outlined'
-import { FreezeColumnOutlined } from './components/edit/freeze-column-outlined'
-import { FrozenLineOutlined } from './components/edit/frozen-line-outlined'
-import { PasteOutlined } from './components/edit/paste-outlined'
-import { RotateLeftOutlined } from './components/edit/rotate-left-outlined'
-import { RotateRightOutlined } from './components/edit/rotate-right-outlined'
-import { SaveOutlined } from './components/edit/save-outlined'
-import { ScissorOutlined } from './components/edit/scissor-outlined'
-import { SortAscendingOutlined } from './components/edit/sort-ascending-outlined'
-import { SortDescendingOutlined } from './components/edit/sort-descending-outlined'
-import { SummationOutlined } from './components/edit/summation-outlined'
-import { TableOutlined } from './components/edit/table-outlined'
-import { ZoomInOutlined } from './components/edit/zoom-in-outlined'
-import { ZoomOutOutlined } from './components/edit/zoom-out-outlined'
-
-const IconSummation = {
-  CheckCircleFilled,
-  CheckSquareFilled,
-  CloseCircleFilled,
-  CloseSquareFilled,
-  ExclamationCircleFilled,
-  InfoCircleFilled,
-  QuestionCircleFilled,
-  StopFilled,
-  WarningFilled,
-  CheckOutlined,
-  CheckCircleOutlined,
-  CheckSquareOutlined,
-  CloseOutlined,
-  CloseCircleOutlined,
-  CloseSquareOutlined,
-  ExclamationOutlined,
-  ExclamationCircleOutlined,
-  InfoOutlined,
-  InfoCircleOutlined,
-  MinusOutlined,
-  MinusSquareOutlined,
-  PlusOutlined,
-  PlusSquareOutlined,
-  QuestionOutlined,
-  QuestionCircleOutlined,
-  StopOutlined,
-  WarningOutlined,
-  AlarmFilled,
-  AlarmClockFilled,
-  AppStoreFilled,
-  ApproveFilled,
-  ArchiveFilled,
-  AssetMonitorFilled,
-  AudioFilled,
-  BankCardFilled,
-  BellFilled,
-  BlockFilled,
-  BookmarkFilled,
-  BuildingFilled,
-  BulbFilled,
-  CalculatorFilled,
-  CalendarFilled,
-  CameraFilled,
-  ChatFilled,
-  CloudFilled,
-  CloudDownloadFilled,
-  CloudUploadFilled,
-  CollectionFilled,
-  DataMonitorFilled,
-  DislikeFilled,
-  DocumentFilled,
-  DocumentExclamationFilled,
-  EndDateFilled,
-  ExpressionFilled,
-  FileFilled,
-  FireFilled,
-  FlagFilled,
-  FolderFilled,
-  FolderOpenFilled,
-  HeartFilled,
-  HomeFilled,
-  KeyFilled,
-  LightningFilled,
-  LikeFilled,
-  LocationFilled,
-  LockFilled,
-  MailFilled,
-  MailOpenFilled,
-  MailSendFilled,
-  ManFilled,
-  MessageFilled,
-  MobileFilled,
-  MonitorFilled,
-  MoonFilled,
-  PadFilled,
-  PauseFilled,
-  PhoneFilled,
-  PictureFilled,
-  PinFilled,
-  PlayFilled,
-  PrinterFilled,
-  QrCodeFilled,
-  RelationFilled,
-  RmbFilled,
-  SadFilled,
-  SettingFilled,
-  ShoppingFilled,
-  SkinFilled,
-  SoundFilled,
-  StarFilled,
-  StartDateFilled,
-  SunFilled,
-  TagFilled,
-  TaskFilled,
-  TemplateFilled,
-  TimeFilled,
-  ToolFilled,
-  TravelFilled,
-  TruckFilled,
-  UmbrellaFilled,
-  UnlockFilled,
-  UpdateFilled,
-  UserFilled,
-  VideoCameraFilled,
-  WebpageFilled,
-  AlarmOutlined,
-  AlarmClockOutlined,
-  AppStoreOutlined,
-  ApproveOutlined,
-  ArchiveOutlined,
-  AssetMonitorOutlined,
-  AudioOutlined,
-  BankCardOutlined,
-  BarsOutlined,
-  BellOutlined,
-  BlockOutlined,
-  BookmarkOutlined,
-  BuildingOutlined,
-  BulbOutlined,
-  BusinessCardTransverseOutlined,
-  BusinessCardOutlined,
-  CalculatorOutlined,
-  CalendarOutlined,
-  CameraOutlined,
-  ChatOutlined,
-  ClockOutlined,
-  CloseCodeOutlined,
-  CloudOutlined,
-  CloudDownloadOutlined,
-  CloudUploadOutlined,
-  CollectionOutlined,
-  DataMonitorOutlined,
-  DiagramOutlined,
-  DislikeOutlined,
-  DocumentOutlined,
-  DocumentExclamationOutlined,
-  DownloadOutlined,
-  EndDateOutlined,
-  ExportOutlined,
-  ExpressionOutlined,
-  EyeOutlined,
-  EyeInvisibleOutlined,
-  FileOutlined,
-  FileExcelOutlined,
-  FileExeOutlined,
-  FileJpgOutlined,
-  FileKeynoteOutlined,
-  FileMusicOutlined,
-  FilePdfOutlined,
-  FilePptOutlined,
-  FileQuestionOutlined,
-  FileTxtOutlined,
-  FileVideoOutlined,
-  FileWordOutlined,
-  FileZipOutlined,
-  FireOutlined,
-  FlagOutlined,
-  FolderOutlined,
-  FolderOpenOutlined,
-  GlobalOutlined,
-  HeartOutlined,
-  HomeOutlined,
-  ImportOutlined,
-  KeyOutlined,
-  LightningOutlined,
-  LikeOutlined,
-  LinkOutlined,
-  LocationOutlined,
-  LockOutlined,
-  MailOutlined,
-  MailOpenOutlined,
-  MailSendOutlined,
-  ManOutlined,
-  MenuOutlined,
-  MessageOutlined,
-  MobileOutlined,
-  MonitorOutlined,
-  MoonOutlined,
-  MoveOutlined,
-  PadOutlined,
-  PauseOutlined,
-  PhoneOutlined,
-  PictureOutlined,
-  PinOutlined,
-  PlayOutlined,
-  PowerOffOutlined,
-  PrinterOutlined,
-  QrCodeOutlined,
-  RelationOutlined,
-  ResetOutlined,
-  RmbOutlined,
-  SadOutlined,
-  ScanOutlined,
-  SearchOutlined,
-  SendOutOutlined,
-  SettingOutlined,
-  ShareOutlined,
-  ShopOutlined,
-  ShoppingOutlined,
-  ShowCodeOutlined,
-  SkinOutlined,
-  SoundOutlined,
-  StarOutlined,
-  StartDateOutlined,
-  StudentOutlined,
-  SunOutlined,
-  SynchronizeOutlined,
-  TagOutlined,
-  TaskOutlined,
-  TemplateOutlined,
-  TimeOutlined,
-  TimeRewindOutlined,
-  ToolOutlined,
-  TravelOutlined,
-  TruckOutlined,
-  UmberOutlined,
-  UmbrellaOutlined,
-  UnlockOutlined,
-  UpdateOutlined,
-  UploadOutlined,
-  UserOutlined,
-  UserAddOutlined,
-  UsersOutlined,
-  VideoCameraOutlined,
-  WebpageOutlined,
-  WomanOutlined,
-  CaretDownFilled,
-  CaretLeftFilled,
-  CaretRightFilled,
-  CaretUpFilled,
-  ArrowDownOutlined,
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
-  ArrowUpOutlined,
-  DirectionDownOutlined,
-  DirectionLeftOutlined,
-  DirectionRightOutlined,
-  DirectionUpOutlined,
-  DownOutlined,
-  ExpandOutlined,
-  FullscreenOutlined,
-  FullscreenExitOutlined,
-  LeftOutlined,
-  LeftRightOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  RightOutlined,
-  ShrinkOutlined,
-  ToBottomOutlined,
-  ToTopOutlined,
-  UpOutlined,
-  CopyFilled,
-  DeleteFilled,
-  DetailsFilled,
-  DuplicateFilled,
-  EditFilled,
-  EllipsisCircleFilled,
-  EmptyFilled,
-  FilterFilled,
-  FolderAddFilled,
-  FolderMoveFilled,
-  PasteFilled,
-  AverageOutlined,
-  ColumnHeightOutlined,
-  ColumnsOutlined,
-  CopyOutlined,
-  DeleteOutlined,
-  DetailsOutlined,
-  DocumentSearchOutlined,
-  DragOutlined,
-  DuplicateOutlined,
-  EditOutlined,
-  EllipsisCircleOutlined,
-  EllipsisVerticalOutlined,
-  EllipsisOutlined,
-  EmptyOutlined,
-  EqualProportionOutlined,
-  FilterOutlined,
-  FolderAddOutlined,
-  FolderMoveOutlined,
-  FreezeColumnOutlined,
-  FrozenLineOutlined,
-  PasteOutlined,
-  RotateLeftOutlined,
-  RotateRightOutlined,
-  SaveOutlined,
-  ScissorOutlined,
-  SortAscendingOutlined,
-  SortDescendingOutlined,
-  SummationOutlined,
-  TableOutlined,
-  ZoomInOutlined,
-  ZoomOutOutlined,
-}
-export { IconSummation }
+export { CheckCircleFilled } from './components/alert/check-circle-filled'
+export { CheckSquareFilled } from './components/alert/check-square-filled'
+export { CloseCircleFilled } from './components/alert/close-circle-filled'
+export { CloseSquareFilled } from './components/alert/close-square-filled'
+export { ExclamationCircleFilled } from './components/alert/exclamation-circle-filled'
+export { InfoCircleFilled } from './components/alert/info-circle-filled'
+export { QuestionCircleFilled } from './components/alert/question-circle-filled'
+export { StopFilled } from './components/alert/stop-filled'
+export { WarningFilled } from './components/alert/warning-filled'
+export { CheckOutlined } from './components/alert/check-outlined'
+export { CheckCircleOutlined } from './components/alert/check-circle-outlined'
+export { CheckSquareOutlined } from './components/alert/check-square-outlined'
+export { CloseOutlined } from './components/alert/close-outlined'
+export { CloseCircleOutlined } from './components/alert/close-circle-outlined'
+export { CloseSquareOutlined } from './components/alert/close-square-outlined'
+export { ExclamationOutlined } from './components/alert/exclamation-outlined'
+export { ExclamationCircleOutlined } from './components/alert/exclamation-circle-outlined'
+export { InfoOutlined } from './components/alert/info-outlined'
+export { InfoCircleOutlined } from './components/alert/info-circle-outlined'
+export { MinusOutlined } from './components/alert/minus-outlined'
+export { MinusSquareOutlined } from './components/alert/minus-square-outlined'
+export { PlusOutlined } from './components/alert/plus-outlined'
+export { PlusSquareOutlined } from './components/alert/plus-square-outlined'
+export { QuestionOutlined } from './components/alert/question-outlined'
+export { QuestionCircleOutlined } from './components/alert/question-circle-outlined'
+export { StopOutlined } from './components/alert/stop-outlined'
+export { WarningOutlined } from './components/alert/warning-outlined'
+export { AlarmFilled } from './components/common/alarm-filled'
+export { AlarmClockFilled } from './components/common/alarm-clock-filled'
+export { AppStoreFilled } from './components/common/app-store-filled'
+export { ApproveFilled } from './components/common/approve-filled'
+export { ArchiveFilled } from './components/common/archive-filled'
+export { AssetMonitorFilled } from './components/common/asset-monitor-filled'
+export { AudioFilled } from './components/common/audio-filled'
+export { BankCardFilled } from './components/common/bank-card-filled'
+export { BellFilled } from './components/common/bell-filled'
+export { BlockFilled } from './components/common/block-filled'
+export { BookmarkFilled } from './components/common/bookmark-filled'
+export { BuildingFilled } from './components/common/building-filled'
+export { BulbFilled } from './components/common/bulb-filled'
+export { CalculatorFilled } from './components/common/calculator-filled'
+export { CalendarFilled } from './components/common/calendar-filled'
+export { CameraFilled } from './components/common/camera-filled'
+export { ChatFilled } from './components/common/chat-filled'
+export { CloudFilled } from './components/common/cloud-filled'
+export { CloudDownloadFilled } from './components/common/cloud-download-filled'
+export { CloudUploadFilled } from './components/common/cloud-upload-filled'
+export { CollectionFilled } from './components/common/collection-filled'
+export { DataMonitorFilled } from './components/common/data-monitor-filled'
+export { DislikeFilled } from './components/common/dislike-filled'
+export { DocumentFilled } from './components/common/document-filled'
+export { DocumentExclamationFilled } from './components/common/document-exclamation-filled'
+export { EndDateFilled } from './components/common/end-date-filled'
+export { ExpressionFilled } from './components/common/expression-filled'
+export { FileFilled } from './components/common/file-filled'
+export { FireFilled } from './components/common/fire-filled'
+export { FlagFilled } from './components/common/flag-filled'
+export { FolderFilled } from './components/common/folder-filled'
+export { FolderOpenFilled } from './components/common/folder-open-filled'
+export { HeartFilled } from './components/common/heart-filled'
+export { HomeFilled } from './components/common/home-filled'
+export { KeyFilled } from './components/common/key-filled'
+export { LightningFilled } from './components/common/lightning-filled'
+export { LikeFilled } from './components/common/like-filled'
+export { LocationFilled } from './components/common/location-filled'
+export { LockFilled } from './components/common/lock-filled'
+export { MailFilled } from './components/common/mail-filled'
+export { MailOpenFilled } from './components/common/mail-open-filled'
+export { MailSendFilled } from './components/common/mail-send-filled'
+export { ManFilled } from './components/common/man-filled'
+export { MessageFilled } from './components/common/message-filled'
+export { MobileFilled } from './components/common/mobile-filled'
+export { MonitorFilled } from './components/common/monitor-filled'
+export { MoonFilled } from './components/common/moon-filled'
+export { PadFilled } from './components/common/pad-filled'
+export { PauseFilled } from './components/common/pause-filled'
+export { PhoneFilled } from './components/common/phone-filled'
+export { PictureFilled } from './components/common/picture-filled'
+export { PinFilled } from './components/common/pin-filled'
+export { PlayFilled } from './components/common/play-filled'
+export { PrinterFilled } from './components/common/printer-filled'
+export { QrCodeFilled } from './components/common/qr-code-filled'
+export { RelationFilled } from './components/common/relation-filled'
+export { RmbFilled } from './components/common/rmb-filled'
+export { SadFilled } from './components/common/sad-filled'
+export { SettingFilled } from './components/common/setting-filled'
+export { ShoppingFilled } from './components/common/shopping-filled'
+export { SkinFilled } from './components/common/skin-filled'
+export { SoundFilled } from './components/common/sound-filled'
+export { StarFilled } from './components/common/star-filled'
+export { StartDateFilled } from './components/common/start-date-filled'
+export { SunFilled } from './components/common/sun-filled'
+export { TagFilled } from './components/common/tag-filled'
+export { TaskFilled } from './components/common/task-filled'
+export { TemplateFilled } from './components/common/template-filled'
+export { TimeFilled } from './components/common/time-filled'
+export { ToolFilled } from './components/common/tool-filled'
+export { TravelFilled } from './components/common/travel-filled'
+export { TruckFilled } from './components/common/truck-filled'
+export { UmbrellaFilled } from './components/common/umbrella-filled'
+export { UnlockFilled } from './components/common/unlock-filled'
+export { UpdateFilled } from './components/common/update-filled'
+export { UserFilled } from './components/common/user-filled'
+export { VideoCameraFilled } from './components/common/video-camera-filled'
+export { WebpageFilled } from './components/common/webpage-filled'
+export { AlarmOutlined } from './components/common/alarm-outlined'
+export { AlarmClockOutlined } from './components/common/alarm-clock-outlined'
+export { AppStoreOutlined } from './components/common/app-store-outlined'
+export { ApproveOutlined } from './components/common/approve-outlined'
+export { ArchiveOutlined } from './components/common/archive-outlined'
+export { AssetMonitorOutlined } from './components/common/asset-monitor-outlined'
+export { AudioOutlined } from './components/common/audio-outlined'
+export { BankCardOutlined } from './components/common/bank-card-outlined'
+export { BarsOutlined } from './components/common/bars-outlined'
+export { BellOutlined } from './components/common/bell-outlined'
+export { BlockOutlined } from './components/common/block-outlined'
+export { BookmarkOutlined } from './components/common/bookmark-outlined'
+export { BuildingOutlined } from './components/common/building-outlined'
+export { BulbOutlined } from './components/common/bulb-outlined'
+export { BusinessCardTransverseOutlined } from './components/common/business-card-transverse-outlined'
+export { BusinessCardOutlined } from './components/common/business-card-outlined'
+export { CalculatorOutlined } from './components/common/calculator-outlined'
+export { CalendarOutlined } from './components/common/calendar-outlined'
+export { CameraOutlined } from './components/common/camera-outlined'
+export { ChatOutlined } from './components/common/chat-outlined'
+export { ClockOutlined } from './components/common/clock-outlined'
+export { CloseCodeOutlined } from './components/common/close-code-outlined'
+export { CloudOutlined } from './components/common/cloud-outlined'
+export { CloudDownloadOutlined } from './components/common/cloud-download-outlined'
+export { CloudUploadOutlined } from './components/common/cloud-upload-outlined'
+export { CollectionOutlined } from './components/common/collection-outlined'
+export { DataMonitorOutlined } from './components/common/data-monitor-outlined'
+export { DiagramOutlined } from './components/common/diagram-outlined'
+export { DislikeOutlined } from './components/common/dislike-outlined'
+export { DocumentOutlined } from './components/common/document-outlined'
+export { DocumentExclamationOutlined } from './components/common/document-exclamation-outlined'
+export { DownloadOutlined } from './components/common/download-outlined'
+export { EndDateOutlined } from './components/common/end-date-outlined'
+export { ExportOutlined } from './components/common/export-outlined'
+export { ExpressionOutlined } from './components/common/expression-outlined'
+export { EyeOutlined } from './components/common/eye-outlined'
+export { EyeInvisibleOutlined } from './components/common/eye-invisible-outlined'
+export { FileOutlined } from './components/common/file-outlined'
+export { FileExcelOutlined } from './components/common/file-excel-outlined'
+export { FileExeOutlined } from './components/common/file-exe-outlined'
+export { FileJpgOutlined } from './components/common/file-jpg-outlined'
+export { FileKeynoteOutlined } from './components/common/file-keynote-outlined'
+export { FileMusicOutlined } from './components/common/file-music-outlined'
+export { FilePdfOutlined } from './components/common/file-pdf-outlined'
+export { FilePptOutlined } from './components/common/file-ppt-outlined'
+export { FileQuestionOutlined } from './components/common/file-question-outlined'
+export { FileTxtOutlined } from './components/common/file-txt-outlined'
+export { FileVideoOutlined } from './components/common/file-video-outlined'
+export { FileWordOutlined } from './components/common/file-word-outlined'
+export { FileZipOutlined } from './components/common/file-zip-outlined'
+export { FireOutlined } from './components/common/fire-outlined'
+export { FlagOutlined } from './components/common/flag-outlined'
+export { FolderOutlined } from './components/common/folder-outlined'
+export { FolderOpenOutlined } from './components/common/folder-open-outlined'
+export { GlobalOutlined } from './components/common/global-outlined'
+export { HeartOutlined } from './components/common/heart-outlined'
+export { HomeOutlined } from './components/common/home-outlined'
+export { ImportOutlined } from './components/common/import-outlined'
+export { KeyOutlined } from './components/common/key-outlined'
+export { LightningOutlined } from './components/common/lightning-outlined'
+export { LikeOutlined } from './components/common/like-outlined'
+export { LinkOutlined } from './components/common/link-outlined'
+export { LocationOutlined } from './components/common/location-outlined'
+export { LockOutlined } from './components/common/lock-outlined'
+export { MailOutlined } from './components/common/mail-outlined'
+export { MailOpenOutlined } from './components/common/mail-open-outlined'
+export { MailSendOutlined } from './components/common/mail-send-outlined'
+export { ManOutlined } from './components/common/man-outlined'
+export { MenuOutlined } from './components/common/menu-outlined'
+export { MessageOutlined } from './components/common/message-outlined'
+export { MobileOutlined } from './components/common/mobile-outlined'
+export { MonitorOutlined } from './components/common/monitor-outlined'
+export { MoonOutlined } from './components/common/moon-outlined'
+export { MoveOutlined } from './components/common/move-outlined'
+export { PadOutlined } from './components/common/pad-outlined'
+export { PauseOutlined } from './components/common/pause-outlined'
+export { PhoneOutlined } from './components/common/phone-outlined'
+export { PictureOutlined } from './components/common/picture-outlined'
+export { PinOutlined } from './components/common/pin-outlined'
+export { PlayOutlined } from './components/common/play-outlined'
+export { PowerOffOutlined } from './components/common/power-off-outlined'
+export { PrinterOutlined } from './components/common/printer-outlined'
+export { QrCodeOutlined } from './components/common/qr-code-outlined'
+export { RelationOutlined } from './components/common/relation-outlined'
+export { ResetOutlined } from './components/common/reset-outlined'
+export { RmbOutlined } from './components/common/rmb-outlined'
+export { SadOutlined } from './components/common/sad-outlined'
+export { ScanOutlined } from './components/common/scan-outlined'
+export { SearchOutlined } from './components/common/search-outlined'
+export { SendOutOutlined } from './components/common/send-out-outlined'
+export { SettingOutlined } from './components/common/setting-outlined'
+export { ShareOutlined } from './components/common/share-outlined'
+export { ShopOutlined } from './components/common/shop-outlined'
+export { ShoppingOutlined } from './components/common/shopping-outlined'
+export { ShowCodeOutlined } from './components/common/show-code-outlined'
+export { SkinOutlined } from './components/common/skin-outlined'
+export { SoundOutlined } from './components/common/sound-outlined'
+export { StarOutlined } from './components/common/star-outlined'
+export { StartDateOutlined } from './components/common/start-date-outlined'
+export { StudentOutlined } from './components/common/student-outlined'
+export { SunOutlined } from './components/common/sun-outlined'
+export { SynchronizeOutlined } from './components/common/synchronize-outlined'
+export { TagOutlined } from './components/common/tag-outlined'
+export { TaskOutlined } from './components/common/task-outlined'
+export { TemplateOutlined } from './components/common/template-outlined'
+export { TimeOutlined } from './components/common/time-outlined'
+export { TimeRewindOutlined } from './components/common/time-rewind-outlined'
+export { ToolOutlined } from './components/common/tool-outlined'
+export { TravelOutlined } from './components/common/travel-outlined'
+export { TruckOutlined } from './components/common/truck-outlined'
+export { UmberOutlined } from './components/common/umber-outlined'
+export { UmbrellaOutlined } from './components/common/umbrella-outlined'
+export { UnlockOutlined } from './components/common/unlock-outlined'
+export { UpdateOutlined } from './components/common/update-outlined'
+export { UploadOutlined } from './components/common/upload-outlined'
+export { UserOutlined } from './components/common/user-outlined'
+export { UserAddOutlined } from './components/common/user-add-outlined'
+export { UsersOutlined } from './components/common/users-outlined'
+export { VideoCameraOutlined } from './components/common/video-camera-outlined'
+export { WebpageOutlined } from './components/common/webpage-outlined'
+export { WomanOutlined } from './components/common/woman-outlined'
+export { CaretDownFilled } from './components/direction/caret-down-filled'
+export { CaretLeftFilled } from './components/direction/caret-left-filled'
+export { CaretRightFilled } from './components/direction/caret-right-filled'
+export { CaretUpFilled } from './components/direction/caret-up-filled'
+export { ArrowDownOutlined } from './components/direction/arrow-down-outlined'
+export { ArrowLeftOutlined } from './components/direction/arrow-left-outlined'
+export { ArrowRightOutlined } from './components/direction/arrow-right-outlined'
+export { ArrowUpOutlined } from './components/direction/arrow-up-outlined'
+export { DirectionDownOutlined } from './components/direction/direction-down-outlined'
+export { DirectionLeftOutlined } from './components/direction/direction-left-outlined'
+export { DirectionRightOutlined } from './components/direction/direction-right-outlined'
+export { DirectionUpOutlined } from './components/direction/direction-up-outlined'
+export { DownOutlined } from './components/direction/down-outlined'
+export { ExpandOutlined } from './components/direction/expand-outlined'
+export { FullscreenOutlined } from './components/direction/fullscreen-outlined'
+export { FullscreenExitOutlined } from './components/direction/fullscreen-exit-outlined'
+export { LeftOutlined } from './components/direction/left-outlined'
+export { LeftRightOutlined } from './components/direction/left-right-outlined'
+export { MenuFoldOutlined } from './components/direction/menu-fold-outlined'
+export { MenuUnfoldOutlined } from './components/direction/menu-unfold-outlined'
+export { RightOutlined } from './components/direction/right-outlined'
+export { ShrinkOutlined } from './components/direction/shrink-outlined'
+export { ToBottomOutlined } from './components/direction/to-bottom-outlined'
+export { ToTopOutlined } from './components/direction/to-top-outlined'
+export { UpOutlined } from './components/direction/up-outlined'
+export { CopyFilled } from './components/edit/copy-filled'
+export { DeleteFilled } from './components/edit/delete-filled'
+export { DetailsFilled } from './components/edit/details-filled'
+export { DuplicateFilled } from './components/edit/duplicate-filled'
+export { EditFilled } from './components/edit/edit-filled'
+export { EllipsisCircleFilled } from './components/edit/ellipsis-circle-filled'
+export { EmptyFilled } from './components/edit/empty-filled'
+export { FilterFilled } from './components/edit/filter-filled'
+export { FolderAddFilled } from './components/edit/folder-add-filled'
+export { FolderMoveFilled } from './components/edit/folder-move-filled'
+export { PasteFilled } from './components/edit/paste-filled'
+export { AverageOutlined } from './components/edit/average-outlined'
+export { ColumnHeightOutlined } from './components/edit/column-height-outlined'
+export { ColumnsOutlined } from './components/edit/columns-outlined'
+export { CopyOutlined } from './components/edit/copy-outlined'
+export { DeleteOutlined } from './components/edit/delete-outlined'
+export { DetailsOutlined } from './components/edit/details-outlined'
+export { DocumentSearchOutlined } from './components/edit/document-search-outlined'
+export { DragOutlined } from './components/edit/drag-outlined'
+export { DuplicateOutlined } from './components/edit/duplicate-outlined'
+export { EditOutlined } from './components/edit/edit-outlined'
+export { EllipsisCircleOutlined } from './components/edit/ellipsis-circle-outlined'
+export { EllipsisVerticalOutlined } from './components/edit/ellipsis-vertical-outlined'
+export { EllipsisOutlined } from './components/edit/ellipsis-outlined'
+export { EmptyOutlined } from './components/edit/empty-outlined'
+export { EqualProportionOutlined } from './components/edit/equal-proportion-outlined'
+export { FilterOutlined } from './components/edit/filter-outlined'
+export { FolderAddOutlined } from './components/edit/folder-add-outlined'
+export { FolderMoveOutlined } from './components/edit/folder-move-outlined'
+export { FreezeColumnOutlined } from './components/edit/freeze-column-outlined'
+export { FrozenLineOutlined } from './components/edit/frozen-line-outlined'
+export { PasteOutlined } from './components/edit/paste-outlined'
+export { RotateLeftOutlined } from './components/edit/rotate-left-outlined'
+export { RotateRightOutlined } from './components/edit/rotate-right-outlined'
+export { SaveOutlined } from './components/edit/save-outlined'
+export { ScissorOutlined } from './components/edit/scissor-outlined'
+export { SortAscendingOutlined } from './components/edit/sort-ascending-outlined'
+export { SortDescendingOutlined } from './components/edit/sort-descending-outlined'
+export { SummationOutlined } from './components/edit/summation-outlined'
+export { TableOutlined } from './components/edit/table-outlined'
+export { ZoomInOutlined } from './components/edit/zoom-in-outlined'
+export { ZoomOutOutlined } from './components/edit/zoom-out-outlined'

@@ -125,6 +125,7 @@ import {
   CalendarOutlined,
   CameraOutlined,
   ChatOutlined,
+  ClockOutlined,
   CloseCodeOutlined,
   CloudOutlined,
   CloudDownloadOutlined,
@@ -177,6 +178,7 @@ import {
   MobileOutlined,
   MonitorOutlined,
   MoonOutlined,
+  MoveOutlined,
   PadOutlined,
   PauseOutlined,
   PhoneOutlined,
@@ -202,6 +204,7 @@ import {
   SoundOutlined,
   StarOutlined,
   StartDateOutlined,
+  StudentOutlined,
   SunOutlined,
   SynchronizeOutlined,
   TagOutlined,
@@ -754,6 +757,12 @@ export const ComponentGroup: IconGroupInfo = {
     { type: 'outlined', component: ChatOutlined, name: 'chat-outlined', tagName: 'ChatOutlined' },
     {
       type: 'outlined',
+      component: ClockOutlined,
+      name: 'clock-outlined',
+      tagName: 'ClockOutlined',
+    },
+    {
+      type: 'outlined',
       component: CloseCodeOutlined,
       name: 'close-code-outlined',
       tagName: 'CloseCodeOutlined',
@@ -999,6 +1008,7 @@ export const ComponentGroup: IconGroupInfo = {
       tagName: 'MonitorOutlined',
     },
     { type: 'outlined', component: MoonOutlined, name: 'moon-outlined', tagName: 'MoonOutlined' },
+    { type: 'outlined', component: MoveOutlined, name: 'move-outlined', tagName: 'MoveOutlined' },
     { type: 'outlined', component: PadOutlined, name: 'pad-outlined', tagName: 'PadOutlined' },
     {
       type: 'outlined',
@@ -1103,6 +1113,12 @@ export const ComponentGroup: IconGroupInfo = {
       component: StartDateOutlined,
       name: 'start-date-outlined',
       tagName: 'StartDateOutlined',
+    },
+    {
+      type: 'outlined',
+      component: StudentOutlined,
+      name: 'student-outlined',
+      tagName: 'StudentOutlined',
     },
     { type: 'outlined', component: SunOutlined, name: 'sun-outlined', tagName: 'SunOutlined' },
     {

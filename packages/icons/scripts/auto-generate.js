@@ -162,33 +162,54 @@ componentFileInfo.forEach(({ withTypeName, path, generateFileRelativePath }) => 
   console.log(`Auto generate: ${withTypeName}`)
 })
 
+// 留存，避免再次使用
+// const indexTsContent = `import './styles/index.scss'
+//
+// export * from './@types/props'
+//
+// import { IconSummation } from './icon-summation'
+//
+// export const {
+//   ${componentFileInfo.map((item) => transformToUpperCamelCase(item.withTypeName)).join(',\n')}
+// } = IconSummation
+//
+// // 暂不确定导出形式
+// // export { IconSummation }
+// `
+
 const indexTsContent = `import './styles/index.scss'
 
 export * from './@types/props'
 
-import { IconSummation } from './icon-summation'
-
-export const {
-  ${componentFileInfo.map((item) => transformToUpperCamelCase(item.withTypeName)).join(',\n')}
-} = IconSummation
-
-export { IconSummation }
+export * from './icon-summation'
 `
+
 Fs.writeFileSync(Path.join(__dirname, '../src/index.ts'), indexTsContent)
+
+// 留存，避免再次使用
+// const iconSummationTsContent = `
+// ${componentFileInfo
+//   .map(({ withTypeName, generateFileRelativePath }) => {
+//     return `import { ${transformToUpperCamelCase(
+//       withTypeName
+//     )} } from './components/${generateFileRelativePath}'`
+//   })
+//   .join('\n')}
+//
+// const IconSummation = {
+// ${componentFileInfo.map((item) => transformToUpperCamelCase(item.withTypeName)).join(',\n')}
+// }
+// export { IconSummation }
+// `
 
 const iconSummationTsContent = `
 ${componentFileInfo
   .map(({ withTypeName, generateFileRelativePath }) => {
-    return `import { ${transformToUpperCamelCase(
+    return `export { ${transformToUpperCamelCase(
       withTypeName
     )} } from './components/${generateFileRelativePath}'`
   })
   .join('\n')}
-
-const IconSummation = {
-${componentFileInfo.map((item) => transformToUpperCamelCase(item.withTypeName)).join(',\n')}
-}
-export { IconSummation }
 `
 
 Fs.writeFileSync(Path.join(__dirname, '../src/icon-summation.ts'), iconSummationTsContent)
