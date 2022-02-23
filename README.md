@@ -28,6 +28,12 @@ yarn build
 yarn storybook
 ```
 
+## 发布
+
+```sh
+yarn run publish:pkg
+```
+
 ### 创建模板
 
 1. 创建组件
@@ -56,12 +62,30 @@ yarn create:pkg hook `hook-name`
 
 ---
 
-## 常用方法
+## lerna 常用命令集
 
-### 受控非受控模式处理
+1. 给指定包添加依赖包
 
-> packages/hooks/use-uncontrolled-state
+```sh
+yarn lerna add @hi-ui/button --scope=@hi-ui/date-picker
+```
 
-### 合并 ref 指向处理
+2. 对指定包执行 build 等命令
 
-> packages/hooks/use-merge-refs
+```sh
+yarn lerna run build --scope=@hi-ui/date-picker
+
+yarn lerna run test --scope=@hi-ui/date-picker
+```
+
+---
+
+## 通用方法
+
+### hooks
+
+> packages/hooks
+
+### utils
+
+> packages/utils
