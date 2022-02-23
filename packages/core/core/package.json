@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/core",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.2",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,9 +43,9 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-beta.0"
+    "@hi-ui/hi-build": "^4.0.0-beta.1"
   },
   "dependencies": {
-    "@hi-ui/core-css": "^4.0.0-beta.1"
+    "@hi-ui/core-css": "^4.0.0-beta.2"
   }
 }

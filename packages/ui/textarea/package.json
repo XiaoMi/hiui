@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/textarea",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.2",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,18 +44,18 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/core": "^4.0.0-beta.1",
-    "@hi-ui/core-css": "^4.0.0-beta.1",
+    "@hi-ui/core": "^4.0.0-beta.2",
+    "@hi-ui/core-css": "^4.0.0-beta.2",
     "@hi-ui/env": "^4.0.0-beta.0",
-    "@hi-ui/input": "^4.0.0-beta.1",
-    "@hi-ui/use-latest": "^4.0.0-beta.0"
+    "@hi-ui/input": "^4.0.0-beta.2",
+    "@hi-ui/use-latest": "^4.0.0-beta.1"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-beta.0",
+    "@hi-ui/hi-build": "^4.0.0-beta.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
