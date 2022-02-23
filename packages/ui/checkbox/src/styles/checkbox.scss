@@ -7,7 +7,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     &__input {
       &:focus + .#{$prefix}__icon {
         border-color: $color;
-        box-shadow: 0 0 0 2px use-color-mode('primary-10');
+        box-shadow: 0 0 0 2px use-color-mode('primary', 100);
       }
     }
 

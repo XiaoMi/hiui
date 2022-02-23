@@ -27,82 +27,80 @@
   @return var(#{$var-name}, #{$var-value});
 }
 
-@function use-color-mode($key, $mode: 'dark') {
+// 强调色
+@function use-color-mode($scheme, $gradation: 500) {
   $color-system-map: (
     // TODO: 无法做到动态，所以这个方案不太行，实现主题支持黑夜白天模式
     // TODO: 需要给每个组件颜色都定义变量（表示具体实质，而不是颜色语义化值）
     // 用于自动切换
-    'dark': (
+    'primary': (
       // 值改成 var 引用，再引用真实色 var 引用
-      'primary': use-var('primary-500', use-color-var('brandblue', 500)),
-      'primary-80': use-var('primary-800', use-color-var('brandblue', 800)),
-      'primary-70': use-var('primary-700', use-color-var('brandblue', 700)),
-      'primary-60': use-var('primary-600', use-color-var('brandblue', 600)),
-      'primary-50': use-var('primary-500', use-color-var('brandblue', 500)),
-      'primary-40': use-var('primary-400', use-color-var('brandblue', 400)),
-      'primary-30': use-var('primary-300', use-color-var('brandblue', 300)),
-      'primary-20': use-var('primary-200', use-color-var('brandblue', 200)),
-      'primary-10': use-var('primary-100', use-color-var('brandblue', 100)),
-      'primary-05': use-var('primary-50', use-color-var('brandblue', 50)),
-
-      'danger': use-var('danger-500', use-color-var('red', 500)),
-      'danger-80': use-var('danger-800', use-color-var('red', 800)),
-      'danger-70': use-var('danger-700', use-color-var('red', 700)),
-      'danger-60': use-var('danger-600', use-color-var('red', 600)),
-      'danger-50': use-var('danger-500', use-color-var('red', 500)),
-      'danger-40': use-var('danger-400', use-color-var('red', 400)),
-      'danger-30': use-var('danger-300', use-color-var('red', 300)),
-      'danger-20': use-var('danger-200', use-color-var('red', 200)),
-      'danger-10': use-var('danger-100', use-color-var('red', 100)),
-      'danger-05': use-var('danger-50', use-color-var('red', 50)),
-
-      'error': use-var('danger-500', use-color-var('red', 500)),
-      'error-80': use-var('danger-800', use-color-var('red', 800)),
-      'error-70': use-var('danger-700', use-color-var('red', 700)),
-      'error-60': use-var('danger-600', use-color-var('red', 600)),
-      'error-50': use-var('danger-500', use-color-var('red', 500)),
-      'error-40': use-var('danger-400', use-color-var('red', 400)),
-      'error-30': use-var('danger-300', use-color-var('red', 300)),
-      'error-20': use-var('danger-200', use-color-var('red', 200)),
-      'error-10': use-var('danger-100', use-color-var('red', 100)),
-      'error-05': use-var('danger-50', use-color-var('red', 50)),
-
-      'warning': use-var('warning-500', use-color-var('yellow', 500)),
-      'warning-80': use-var('warning-800', use-color-var('yellow', 800)),
-      'warning-70': use-var('warning-700', use-color-var('yellow', 700)),
-      'warning-60': use-var('warning-600', use-color-var('yellow', 600)),
-      'warning-50': use-var('warning-500', use-color-var('yellow', 500)),
-      'warning-40': use-var('warning-400', use-color-var('yellow', 400)),
-      'warning-30': use-var('warning-300', use-color-var('yellow', 300)),
-      'warning-20': use-var('warning-200', use-color-var('yellow', 200)),
-      'warning-10': use-var('warning-100', use-color-var('yellow', 100)),
-      'warning-05': use-var('warning-50', use-color-var('yellow', 50)),
-
-      'success': use-var('success-500', use-color-var('green', 500)),
-      'success-80': use-var('success-800', use-color-var('green', 800)),
-      'success-70': use-var('success-700', use-color-var('green', 700)),
-      'success-60': use-var('success-600', use-color-var('green', 600)),
-      'success-50': use-var('success-500', use-color-var('green', 500)),
-      'success-40': use-var('success-400', use-color-var('green', 400)),
-      'success-30': use-var('success-300', use-color-var('green', 300)),
-      'success-20': use-var('success-200', use-color-var('green', 200)),
-      'success-10': use-var('success-100', use-color-var('green', 100)),
-      'success-05': use-var('success-50', use-color-var('green', 50)),
+      // 'primary': use-var('primary-500', use-color-var('brandblue', 500)),
+      900: use-var('color-primary-900', use-color-var('brandblue', 900)),
+      800: use-var('color-primary-800', use-color-var('brandblue', 800)),
+      700: use-var('color-primary-700', use-color-var('brandblue', 700)),
+      600: use-var('color-primary-600', use-color-var('brandblue', 600)),
+      500: use-var('color-primary-500', use-color-var('brandblue', 500)),
+      400: use-var('color-primary-400', use-color-var('brandblue', 400)),
+      300: use-var('color-primary-300', use-color-var('brandblue', 300)),
+      200: use-var('color-primary-200', use-color-var('brandblue', 200)),
+      100: use-var('color-primary-100', use-color-var('brandblue', 100)),
+      50: use-var('color-primary-50', use-color-var('brandblue', 50)),
     ),
-    // 'light': (
-    //   // TODO: 每个组件反色可能不一样，白色不一定对应纯黑，可能是灰黑更合适
-    //   white: use-color-var('static', 'black'),
-    //   black: use-color-var('static', 'white'),
-    //   'primary': use-color-var('primary', 10),
-    //   'error': use-color-var('error', 10),
-    //   'warning': use-color-var('warning', 10),
-    //   'success': use-color-var('success', 10),
-    // ),
+    'danger': (
+      900: use-var('color-danger-900', use-color-var('red', 900)),
+      800: use-var('color-danger-800', use-color-var('red', 800)),
+      700: use-var('color-danger-700', use-color-var('red', 700)),
+      600: use-var('color-danger-600', use-color-var('red', 600)),
+      500: use-var('color-danger-500', use-color-var('red', 500)),
+      400: use-var('color-danger-400', use-color-var('red', 400)),
+      300: use-var('color-danger-300', use-color-var('red', 300)),
+      200: use-var('color-danger-200', use-color-var('red', 200)),
+      100: use-var('color-danger-100', use-color-var('red', 100)),
+      50: use-var('color-danger-50', use-color-var('red', 50)),
+    ),
+    'error': (
+      // 同 danger，这里只是为了编写代码时 foreach 之类的用法可能更方便
+      900: use-var('color-danger-900', use-color-var('red', 900)),
+      800: use-var('color-danger-800', use-color-var('red', 800)),
+      700: use-var('color-danger-700', use-color-var('red', 700)),
+      600: use-var('color-danger-600', use-color-var('red', 600)),
+      500: use-var('color-danger-500', use-color-var('red', 500)),
+      400: use-var('color-danger-400', use-color-var('red', 400)),
+      300: use-var('color-danger-300', use-color-var('red', 300)),
+      200: use-var('color-danger-200', use-color-var('red', 200)),
+      100: use-var('color-danger-100', use-color-var('red', 100)),
+      50: use-var('color-danger-50', use-color-var('red', 50)),
+    ),
+    'warning': (
+      900: use-var('color-warning-900', use-color-var('yellow', 900)),
+      800: use-var('color-warning-800', use-color-var('yellow', 800)),
+      700: use-var('color-warning-700', use-color-var('yellow', 700)),
+      600: use-var('color-warning-600', use-color-var('yellow', 600)),
+      500: use-var('color-warning-500', use-color-var('yellow', 500)),
+      400: use-var('color-warning-400', use-color-var('yellow', 400)),
+      300: use-var('color-warning-300', use-color-var('yellow', 300)),
+      200: use-var('color-warning-200', use-color-var('yellow', 200)),
+      100: use-var('color-warning-100', use-color-var('yellow', 100)),
+      50: use-var('color-warning-50', use-color-var('yellow', 50)),
+    ),
+    'success': (
+      900: use-var('color-success-900', use-color-var('green', 900)),
+      800: use-var('color-success-800', use-color-var('green', 800)),
+      700: use-var('color-success-700', use-color-var('green', 700)),
+      600: use-var('color-success-600', use-color-var('green', 600)),
+      500: use-var('color-success-500', use-color-var('green', 500)),
+      400: use-var('color-success-400', use-color-var('green', 400)),
+      300: use-var('color-success-300', use-color-var('green', 300)),
+      200: use-var('color-success-200', use-color-var('green', 200)),
+      100: use-var('color-success-100', use-color-var('green', 100)),
+      50: use-var('color-success-50', use-color-var('green', 50)),
+    ),
   );
 
   @return map-safe-get(
-    map-safe-get($color-system-map, $mode),
-    $key
+    map-safe-get($color-system-map, $scheme),
+    $gradation,
   );
 }
 

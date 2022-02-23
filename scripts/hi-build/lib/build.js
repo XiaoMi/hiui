@@ -137,7 +137,7 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
             }),
             postcssPresetEnv({
               autoprefixer: false,
-              stage: 3,
+              stage: 4,
             }),
             postcssImport(),
             simpleVars(),

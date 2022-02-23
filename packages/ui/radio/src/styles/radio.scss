@@ -38,7 +38,7 @@ $label-class: '#{$prefix}__label' !default;
 
     &:hover,
     &[data-checked] {
-      background: use-color-mode('primary-05');
+      background: use-color-mode('primary', 50);
       color: use-color-mode('primary');
     }
 
@@ -49,8 +49,8 @@ $label-class: '#{$prefix}__label' !default;
     }
 
     &[data-checked]#{&}[data-disabled] {
-      background: use-color-mode('primary-05');
-      color: use-color-mode('primary-30');
+      background: use-color-mode('primary', 50);
+      color: use-color-mode('primary', 300);
     }
   }
 
@@ -60,7 +60,7 @@ $label-class: '#{$prefix}__label' !default;
       &__input {
         &:focus + .#{$prefix}__controller {
           border-color: use-color-mode('primary');
-          box-shadow: 0 0 0 2px use-color-mode('primary-10');
+          box-shadow: 0 0 0 2px use-color-mode('primary', 100);
         }
       }
 

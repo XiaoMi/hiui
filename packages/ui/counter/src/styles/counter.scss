@@ -34,7 +34,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
       }
 
       &::before {
-        background: use-color-mode('primary-05');
+        background: use-color-mode('primary', 50);
       }
 
       &#{$this}--invalid,
@@ -45,7 +45,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
         }
 
         &::before {
-          background: use-color-mode('danger-05');
+          background: use-color-mode('danger', 50);
         }
       }
     }
@@ -102,7 +102,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
       .#{$input-wrapper-class} {
         &::before {
-          background: use-color-mode('primary-05');
+          background: use-color-mode('primary', 50);
         }
       }
 
@@ -116,7 +116,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
         .#{$input-wrapper-class} {
           &::before {
-            background: use-color-mode('danger-05');
+            background: use-color-mode('danger', 50);
           }
         }
       }

@@ -13,7 +13,7 @@ $prefix: '#{$component-prefix}-avatar' !default;
   overflow: hidden;
 
   &--empty {
-    background-color: use-color-mode('primary-10');
+    background-color: use-color-mode('primary', 100);
   }
 
   &__content {

@@ -119,7 +119,7 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     vertical-align: middle;
     font-size: 12px;
     user-select: none;
-    background-color: use-color-mode('primary-10');
+    background-color: use-color-mode('primary', 100);
     color: use-color-mode('primary');
     border-radius: 4px;
     line-height: 22px;

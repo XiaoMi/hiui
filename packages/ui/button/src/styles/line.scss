@@ -4,7 +4,7 @@
 
 $line-color-map: (
   'primary': use-color-mode('primary'),
-  'secondary': use-color-mode('primary-40'),
+  'secondary': use-color-mode('primary', 400),
   'default': use-color('gray', 700),
   'success': use-color-mode('success'),
   'danger': use-color-mode('danger'),
@@ -13,40 +13,40 @@ $line-color-map: (
 // hover 态
 
 $line-hover-color-map:(
-  'primary': use-color-mode('primary-40'),
-  'secondary': use-color-mode('primary-30'),
+  'primary': use-color-mode('primary', 400),
+  'secondary': use-color-mode('primary', 300),
   'default': use-color('gray', 600),
-  'success': use-color-mode('success-40'),
-  'danger': use-color-mode('danger-40'),
+  'success': use-color-mode('success', 400),
+  'danger': use-color-mode('danger', 400),
 ) !default;
 
 // active 态
 
 $line-active-color-map: (
-  'primary': use-color-mode('primary-60'),
+  'primary': use-color-mode('primary', 600),
   'secondary': use-color-mode('primary'),
   'default': use-color-static('black'),
-  'success': use-color-mode('success-60'),
-  'danger': use-color-mode('danger-60'),
+  'success': use-color-mode('success', 600),
+  'danger': use-color-mode('danger', 600),
 ) !default;
 
 // 禁用态
 
 $line-disabled-color-map: (
-  'primary': use-color-mode('primary-30'),
-  'secondary': use-color-mode('primary-20'),
+  'primary': use-color-mode('primary', 300),
+  'secondary': use-color-mode('primary', 200),
   'default': use-color('gray', 500),
-  'success': use-color-mode('success-30'),
-  'danger': use-color-mode('danger-30'),
+  'success': use-color-mode('success', 300),
+  'danger': use-color-mode('danger', 300),
 ) !default;
 
 // focus 态
 $line-focus-shadow-map: (
-  'primary': use-color-mode('primary-20'),
-  'secondary': use-color-mode('primary-10'),
+  'primary': use-color-mode('primary', 200),
+  'secondary': use-color-mode('primary', 100),
   'default': use-color('gray', 300),
-  'success': use-color-mode('success-20'),
-  'danger': use-color-mode('danger-20'),
+  'success': use-color-mode('success', 200),
+  'danger': use-color-mode('danger', 200),
 ) !default;
 
 @mixin render-line-button() {
@@ -91,7 +91,9 @@ $line-focus-shadow-map: (
       }
     }
 
-    @each $key, $value in 'primary', 'secondary', 'default', 'success', 'danger' {
+    $color-list: ('primary', 'secondary', 'default', 'success', 'danger');
+
+    @each $key in $color-list {
       $prefix: & !default;
       &--appearance-line#{&}--type-#{$key} {
         background-color: use-color-static('white');

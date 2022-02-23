@@ -5,8 +5,8 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
 .#{$mock-input-prefix} {
   @include input-reset();
 
-  $input-shadow: 0 0 0 2px use-color-mode('primary-10');
-  $input-error-shadow: 0 0 0 2px use-color-mode('error-10');
+  $input-shadow: 0 0 0 2px use-color-mode('primary', 100);
+  $input-error-shadow: 0 0 0 2px use-color-mode('danger', 100);
 
   // basic
   position: relative;

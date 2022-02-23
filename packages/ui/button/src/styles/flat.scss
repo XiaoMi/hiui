@@ -3,10 +3,10 @@
 // 默认态
 $filled-background-map: (
   'primary': use-color-mode('primary'),
-  'secondary': use-color-mode('primary-05'),
+  'secondary': use-color-mode('primary', 50),
   'default': use-color('gray', 100),
-  'success': use-color-mode('success-05'),
-  'danger': use-color-mode('danger-05'),
+  'success': use-color-mode('success', 50),
+  'danger': use-color-mode('danger', 50),
 ) !default;
 
 $filled-color-map: (
@@ -19,50 +19,50 @@ $filled-color-map: (
 
 // hover 态
 $filled-hover-background-map: (
-  'primary': use-color-mode('primary-40'),
-  'secondary': use-color-mode('primary-10'),
+  'primary': use-color-mode('primary', 400),
+  'secondary': use-color-mode('primary', 100),
   'default': use-color('gray', 200),
-  'success': use-color-mode('success-10'),
-  'danger': use-color-mode('danger-10'),
+  'success': use-color-mode('success', 100),
+  'danger': use-color-mode('danger', 100),
 ) !default;
 
 $filled-hover-color-map: $filled-color-map !default;
 
 // active 态
 $filled-active-background-map: (
-  'primary': use-color-mode('primary-60'),
-  'secondary': use-color-mode('primary-20'),
+  'primary': use-color-mode('primary', 600),
+  'secondary': use-color-mode('primary', 200),
   'default': use-color('gray', 300),
-  'success': use-color-mode('success-20'),
-  'danger': use-color-mode('danger-20'),
+  'success': use-color-mode('success', 200),
+  'danger': use-color-mode('danger', 200),
 ) !default;
 
 $filled-active-color-map: $filled-color-map !default;
 
 // 禁用态
 $filled-disabled-background-map: (
-  'primary': use-color-mode('primary-20'),
-  'secondary': use-color-mode('primary-05'),
+  'primary': use-color-mode('primary', 200),
+  'secondary': use-color-mode('primary', 50),
   'default': use-color('gray', 100),
-  'success': use-color-mode('success-05'),
-  'danger': use-color-mode('danger-05'),
+  'success': use-color-mode('success', 50),
+  'danger': use-color-mode('danger', 50),
 ) !default;
 
 $filled-disabled-color-map: (
   'primary': use-color-static('white'),
-  'secondary': use-color-mode('primary-30'),
+  'secondary': use-color-mode('primary', 300),
   'default': use-color('gray', 400),
-  'success': use-color-mode('success-30'),
-  'danger': use-color-mode('danger-30'),
+  'success': use-color-mode('success', 300),
+  'danger': use-color-mode('danger', 300),
 ) !default;
 
 // focus 态
 $filled-focus-shadow-map: (
-  'primary': use-color-mode('primary-20'),
-  'secondary': use-color-mode('primary-10'),
+  'primary': use-color-mode('primary', 200),
+  'secondary': use-color-mode('primary', 100),
   'default': use-color('gray', 200),
-  'success': use-color-mode('success-20'),
-  'danger': use-color-mode('danger-20'),
+  'success': use-color-mode('success', 200),
+  'danger': use-color-mode('danger', 200),
 ) !default;
 
 @mixin render-filled-button() {
@@ -108,7 +108,9 @@ $filled-focus-shadow-map: (
       }
     }
 
-    @each $key, $value in 'primary', 'secondary', 'default', 'success', 'danger' {
+    $color-list: ('primary', 'secondary', 'default', 'success', 'danger');
+
+    @each $key in $color-list {
       $prefix: & !default;
       &--appearance-filled#{&}--type-#{$key} {
         background-color: map-get($filled-background-map, $key);

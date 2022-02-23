@@ -129,7 +129,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
     // 叶节点选中，不添加选中态
     &#{&}--selected {
-      background: use-color-mode('primary-05');
+      background: use-color-mode('primary', 50);
       color: use-color-mode('primary');
 
       .#{$prefix}-menu-switcher {
@@ -138,7 +138,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     }
 
     &--focused {
-      background-color: use-color-mode('primary-05');
+      background-color: use-color-mode('primary', 50);
     }
 
     &--disabled {

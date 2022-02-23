@@ -32,7 +32,7 @@ $prefix: '#{$component-prefix}-table' !default;
 
     &--expanded {
       &.#{$component-prefix}-icon-button {
-        color: use-color-mode('primary-40');
+        color: use-color-mode('primary', 400);
       }
     }
   }
@@ -155,7 +155,7 @@ $prefix: '#{$component-prefix}-table' !default;
   &-row {
     &:hover {
       .#{$prefix}-cell {
-        background-color: use-color-mode('primary-05');
+        background-color: use-color-mode('primary', 50);
       }
     }
 
@@ -179,13 +179,13 @@ $prefix: '#{$component-prefix}-table' !default;
 
     &--highlight {
       & > td {
-        background-color: use-color-mode('primary-05');
+        background-color: use-color-mode('primary', 50);
       }
     }
 
     &--dragging {
       // background: use-color('primary-20');
-      background-color: use-color-mode('primary-05');
+      background-color: use-color-mode('primary', 50);
 
       // .hi-table__col--sticky {
       //   background: use-color('primary-20');
@@ -228,7 +228,7 @@ $prefix: '#{$component-prefix}-table' !default;
 
     &[data-hover-highlight] {
       .#{$prefix}-body & {
-        background-color: use-color-mode('primary-05');
+        background-color: use-color-mode('primary', 50);
       }
 
       .#{$prefix}-header & {
@@ -267,11 +267,11 @@ $prefix: '#{$component-prefix}-table' !default;
   }
 
   &__col--highlight {
-    background-color: use-color-mode('primary-05');
+    background-color: use-color-mode('primary', 50);
   }
 
   &__col--hovered-highlight {
-    background-color: use-color-mode('primary-05');
+    background-color: use-color-mode('primary', 50);
   }
 
   &__indent {
@@ -362,10 +362,10 @@ th[data-sticky] {
       }
 
       &--active {
-        background-color: use-color-mode('primary-05');
+        background-color: use-color-mode('primary', 50);
 
         &:hover {
-          background-color: use-color-mode('primary-05');
+          background-color: use-color-mode('primary', 50);
         }
       }
     }
@@ -464,7 +464,7 @@ th[data-sticky] {
     border-radius: use-border-radius('normal');
 
     &:hover {
-      background-color: use-color-mode('primary-05');
+      background-color: use-color-mode('primary', 50);
     }
 
     #{$this}--dragging & {

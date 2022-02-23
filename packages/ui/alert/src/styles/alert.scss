@@ -56,16 +56,11 @@ $prefix: '#{$component-prefix}-alert' !default;
     }
   }
 
-  $color-map: (
-    'primary': use-color-mode('primary'),
-    'warning': use-color-mode('warning'),
-    'success': use-color-mode('success'),
-    'danger': use-color-mode('danger'),
-  ) !default;
+  $color-list: ('primary', 'warning', 'success', 'danger');
 
-  @each $key, $value in $color-map {
+  @each $key in $color-list {
     &--type-#{$key} {
-      background-color: use-color-mode('#{$key}-05');
+      background-color: use-color-mode(#{$key}, 50);
 
       .#{$prefix}__icon {
         color: use-color-mode(#{$key});

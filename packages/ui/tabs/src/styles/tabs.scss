@@ -72,7 +72,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
         &--active {
           color: use-color-mode('primary');
-          background-color: use-color-mode('primary-05');
+          background-color: use-color-mode('primary', 50);
         }
       }
     }
@@ -107,7 +107,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
         &--active {
           color: use-color-mode('primary');
-          background-color: use-color-mode('primary-05');
+          background-color: use-color-mode('primary', 50);
           .#{$prefix}-item {
             &__title {
               color: use-color-mode('primary');
@@ -182,7 +182,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
           &--active {
             color: use-color-mode('primary');
-            background-color: use-color-mode('primary-05');
+            background-color: use-color-mode('primary', 50);
           }
         }
       }
@@ -216,7 +216,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
           &--active {
             color: use-color-mode('primary');
-            background-color: use-color-mode('primary-05');
+            background-color: use-color-mode('primary', 50);
             .#{$prefix}-item {
               &__title {
                 color: use-color-mode('primary');

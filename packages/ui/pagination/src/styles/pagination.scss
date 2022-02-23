@@ -51,12 +51,12 @@ $prefix: '#{$component-prefix}-pagination' !default;
 
     &:hover:not(#{&}--break) {
       color: use-color-mode('primary');
-      background-color: use-color-mode('primary-05');
+      background-color: use-color-mode('primary', 50);
     }
 
     &:focus:not(#{&}--break) {
       color: use-color-mode('primary');
-      box-shadow: 0 0 0 2px use-color-mode('primary-10');
+      box-shadow: 0 0 0 2px use-color-mode('primary', 100);
     }
 
     &--active {
@@ -66,8 +66,8 @@ $prefix: '#{$component-prefix}-pagination' !default;
 
       &:hover {
         color: use-color-static('white') !important;
-        background-color: use-color-mode('primary-60') !important;
-        border-color: use-color-mode('primary-60') !important;
+        background-color: use-color-mode('primary', 600) !important;
+        border-color: use-color-mode('primary', 600) !important;
       }
     }
 
@@ -112,12 +112,12 @@ $prefix: '#{$component-prefix}-pagination' !default;
     &:not(#{&}--disabled) > button {
       &:hover {
         color: use-color-mode('primary');
-        background-color: use-color-mode('primary-05');
+        background-color: use-color-mode('primary', 50);
       }
 
       &:focus {
         color: use-color-mode('primary');
-        box-shadow: 0 0 0 2px use-color-mode('primary-10');
+        box-shadow: 0 0 0 2px use-color-mode('primary', 100);
       }
     }
   }

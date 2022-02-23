@@ -6,7 +6,7 @@ $prefix: '#{$component-prefix}-switch' !default;
   &:not(.#{$prefix}--disabled):focus {
     outline: 0;
     z-index: 1;
-    box-shadow: 0 0 0 2px use-color-mode('primary-20');
+    box-shadow: 0 0 0 2px use-color-mode('primary', 200);
   }
 
   display: inline-flex;
@@ -27,7 +27,7 @@ $prefix: '#{$component-prefix}-switch' !default;
   }
 
   &--closed.#{$prefix}--disabled {
-    background: use-color-mode('primary-05');
+    background: use-color-mode('primary', 50);
   }
 
   &--disabled {

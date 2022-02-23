@@ -65,7 +65,7 @@ $prefix: '#{$component-prefix}-upload' !default;
     position: relative;
 
     &:focus {
-      background: use-color-mode('primary-05');
+      background: use-color-mode('primary', 50);
       outline: 0;
     }
 
@@ -97,8 +97,8 @@ $prefix: '#{$component-prefix}-upload' !default;
       font-size: use-text-size('normal');
       padding: 8px 12px;
       height: auto !important;
-      background-color: use-color-mode('primary-20');
-      border: 1px solid use-color-mode('primary-40');
+      background-color: use-color-mode('primary', 200);
+      border: 1px solid use-color-mode('primary', 400);
     }
 
     .hi-icon {

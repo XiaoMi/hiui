@@ -46,7 +46,7 @@ $prefix: '#{$component-prefix}-check-select' !default;
     }
 
     &--checked {
-      // background-color: use-color-mode('primary-05');
+      // background-color: use-color-mode('primary', 50);
       // color: use-color-mode('primary');
     }
 

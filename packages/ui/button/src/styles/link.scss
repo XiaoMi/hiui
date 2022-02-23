@@ -4,7 +4,7 @@
 
 $link-color-map: (
   'primary': use-color-mode('primary'),
-  'secondary': use-color-mode('primary-40'),
+  'secondary': use-color-mode('primary', 400),
   'default': use-color('gray', 700),
   'success': use-color-mode('success'),
   'danger': use-color-mode('danger'),
@@ -13,31 +13,31 @@ $link-color-map: (
 // hover 态
 
 $link-hover-color-map:(
-  'primary': use-color-mode('primary-40'),
-  'secondary': use-color-mode('primary-30'),
+  'primary': use-color-mode('primary', 400),
+  'secondary': use-color-mode('primary', 300),
   'default': use-color('gray', 600),
-  'success': use-color-mode('success-40'),
-  'danger': use-color-mode('danger-40'),
+  'success': use-color-mode('success', 400),
+  'danger': use-color-mode('danger', 400),
 ) !default;
 
 // active 态
 
 $link-active-color-map: (
-  'primary': use-color-mode('primary-60'),
+  'primary': use-color-mode('primary', 600),
   'secondary': use-color-mode('primary'),
   'default': use-color-static('black'),
-  'success': use-color-mode('success-60'),
-  'danger': use-color-mode('danger-60'),
+  'success': use-color-mode('success', 600),
+  'danger': use-color-mode('danger', 600),
 ) !default;
 
 // 禁用态
 
 $link-disabled-color-map: (
-  'primary': use-color-mode('primary-30'),
-  'secondary': use-color-mode('primary-20'),
+  'primary': use-color-mode('primary', 300),
+  'secondary': use-color-mode('primary', 200),
   'default': use-color('gray', 500),
-  'success': use-color-mode('success-30'),
-  'danger': use-color-mode('danger-30'),
+  'success': use-color-mode('success', 300),
+  'danger': use-color-mode('danger', 300),
 ) !default;
 
 // focus 态
@@ -56,7 +56,9 @@ $link-focus-shadow-map: (
       border: 0;
     }
 
-    @each $key, $value in 'primary', 'secondary', 'default', 'success', 'danger' {
+    $color-list: ('primary', 'secondary', 'default', 'success', 'danger');
+
+    @each $key in $color-list {
       $prefix: & !default;
       &--appearance-link#{&}--type-#{$key} {
         color: map-get($link-color-map, $key);

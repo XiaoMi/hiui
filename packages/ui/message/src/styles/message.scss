@@ -19,8 +19,8 @@ $prefix: '#{$component-prefix}-message' !default;
 
   &--type {
     &-info {
-      // background-color: use-color-mode('primary-10');
-      // color: use-color-mode('primary-40');
+      // background-color: use-color-mode('primary', 100);
+      // color: use-color-mode('primary', 400);
 
       svg {
         color: use-color-mode('primary');
@@ -28,8 +28,8 @@ $prefix: '#{$component-prefix}-message' !default;
     }
 
     &-success {
-      // background-color: use-color-mode('success-10');
-      // color: use-color-mode('success-40');
+      // background-color: use-color-mode('success', 100);
+      // color: use-color-mode('success', 400);
 
       svg {
         color: use-color-mode('success');
@@ -37,8 +37,8 @@ $prefix: '#{$component-prefix}-message' !default;
     }
 
     &-error {
-      // background-color: use-color-mode('danger-10');
-      // color: use-color-mode('danger-40');
+      // background-color: use-color-mode('danger', 100);
+      // color: use-color-mode('danger', 400);
 
       svg {
         color: use-color-mode('danger');
@@ -46,8 +46,8 @@ $prefix: '#{$component-prefix}-message' !default;
     }
 
     &-warning {
-      // background-color: use-color-mode('warning-10');
-      // color: use-color-mode('warning-40');
+      // background-color: use-color-mode('warning', 100);
+      // color: use-color-mode('warning', 400);
 
       svg {
         color: use-color-mode('warning');

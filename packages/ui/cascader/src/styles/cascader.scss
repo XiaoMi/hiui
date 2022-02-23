@@ -102,7 +102,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
     }
 
     &#{&}--selected {
-      background-color: use-color-mode('primary-05');
+      background-color: use-color-mode('primary', 50);
       color: use-color-mode('primary');
 
       .#{$prefix}-menu-switcher {
@@ -111,7 +111,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
     }
 
     &--focused {
-      background-color: use-color-mode('primary-05');
+      background-color: use-color-mode('primary', 50);
     }
 
     &--checked {

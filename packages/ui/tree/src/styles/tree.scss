@@ -146,7 +146,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &--focused {
     #{$this}__wrap {
-      // background-color: use-color-mode('primary-05');
+      // background-color: use-color-mode('primary', 50);
       background-color: use-color('gray', 100);
     }
 
@@ -158,7 +158,7 @@ $prefix: '#{$component-prefix}-tree' !default;
   // TODO: 约定好组件的修饰词和元素书写顺序
   &--selected {
     #{$this}__wrap {
-      background-color: use-color-mode('primary-05');
+      background-color: use-color-mode('primary', 50);
     }
 
     #{$this}__title {
@@ -182,14 +182,14 @@ $prefix: '#{$component-prefix}-tree' !default;
       color: use-color('gray', 400);
 
       #{$this}__wrap {
-        background-color: use-color-mode('primary-05');
+        background-color: use-color-mode('primary', 50);
 
         #{$this}__title {
           color: use-color('gray', 500);
         }
 
         &:hover {
-          background-color: use-color-mode('primary-05');
+          background-color: use-color-mode('primary', 50);
         }
       }
     }
@@ -223,7 +223,7 @@ $prefix: '#{$component-prefix}-tree' !default;
   &--drag-inside {
     #{$this}__title {
       // background-color: use-color-mode('primary');
-      background-color: use-color-mode('primary-05');
+      background-color: use-color-mode('primary', 50);
       color: use-color-mode('primary');
       border-radius: use-border-radius('normal');
     }

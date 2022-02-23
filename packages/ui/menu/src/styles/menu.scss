@@ -35,7 +35,7 @@ $prefix: '#{$component-prefix}-menu' !default;
 
     &--active {
       color: use-color-mode('primary');
-      background-color: use-color-mode('primary-05');
+      background-color: use-color-mode('primary', 50);
     }
 
     &:not(.#{$prefix}-item--active):hover {
@@ -74,7 +74,7 @@ $prefix: '#{$component-prefix}-menu' !default;
 
       &--active {
         color: use-color-mode('primary');
-        background-color: use-color-mode('primary-05');
+        background-color: use-color-mode('primary', 50);
       }
 
       &--active-p {
@@ -216,7 +216,7 @@ $prefix: '#{$component-prefix}-menu' !default;
 
         &--active {
           color: use-color-mode('primary');
-          background-color: use-color-mode('primary-05');
+          background-color: use-color-mode('primary', 50);
         }
 
         &--active-p {

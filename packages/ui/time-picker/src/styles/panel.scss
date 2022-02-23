@@ -44,7 +44,7 @@ $separate-line-color: get-color('gray', 200);
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-    background: use-color-mode('primary-05');
+    background: use-color-mode('primary', 50);
     z-index: -1;
     width: 54px;
     height: 24px;

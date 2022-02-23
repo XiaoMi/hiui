@@ -49,7 +49,7 @@ $prefix: '#{$component-prefix}-zen-mode' !default;
     background-color: use-color-static('white');
     display: flex;
     align-items: center;
-    padding: 0 use-spaing(10);
+    padding: 0 use-spacing(10);
     opacity: 0.8;
     transition: opacity 0.8s;
   }

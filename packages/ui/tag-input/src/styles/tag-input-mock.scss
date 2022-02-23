@@ -5,8 +5,8 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 .#{$tag-input-mock-prefix} {
   @include input-reset();
 
-  $input-shadow: 0 0 0 2px use-color-mode('primary-10');
-  $input-error-shadow: 0 0 0 2px use-color-mode('error-10');
+  $input-shadow: 0 0 0 2px use-color-mode('primary', 100);
+  $input-error-shadow: 0 0 0 2px use-color-mode('danger', 100);
 
   position: relative;
   overflow: hidden;
@@ -109,7 +109,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     color: use-color('gray', 700);
 
     .#{$tag-input-mock-prefix}--expandable & {
-      background-color: use-color-mode('primary-05');
+      background-color: use-color-mode('primary', 50);
       color: use-color-mode('primary');
     }
   }
@@ -255,7 +255,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
         &.#{$tag-input-mock-prefix}--expandable {
           .#{$tag-input-mock-prefix}__tag--total {
-            background-color: use-color-mode('primary-05');
+            background-color: use-color-mode('primary', 50);
             color: use-color-mode('primary');
           }
         }
@@ -276,7 +276,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
         &.#{$tag-input-mock-prefix}--expandable {
           .#{$tag-input-mock-prefix}__tag--total {
-            background-color: use-color-mode('primary-05');
+            background-color: use-color-mode('primary', 50);
             color: use-color-mode('primary');
           }
         }
@@ -308,7 +308,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
       &.#{$tag-input-mock-prefix}--expandable {
         .#{$tag-input-mock-prefix}__tag--total {
-          background-color: use-color-mode('primary-05');
+          background-color: use-color-mode('primary', 50);
           color: use-color-mode('primary');
         }
       }
@@ -327,7 +327,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
         &.#{$tag-input-mock-prefix}--expandable {
           .#{$tag-input-mock-prefix}__tag--total {
-            background-color: use-color-mode('primary-05');
+            background-color: use-color-mode('primary', 50);
             color: use-color-mode('primary');
           }
         }
@@ -348,7 +348,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
         &.#{$tag-input-mock-prefix}--expandable {
           .#{$tag-input-mock-prefix}__tag--total {
-            background-color: use-color-mode('primary-05');
+            background-color: use-color-mode('primary', 50);
             color: use-color-mode('primary');
           }
         }

@@ -1,7 +1,7 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-date-picker' !default;
-$error-color: use-color-mode('danger-60') !default;
+$error-color: use-color-mode('danger', 600) !default;
 $row-class: '#{$prefix}__row' !default;
 $cell-class: '#{$prefix}__cell' !default;
 
@@ -96,11 +96,11 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       }
 
       background: transparent;
-      box-shadow: 0 0 0 2px use-color-mode('primary-10');
+      box-shadow: 0 0 0 2px use-color-mode('primary', 100);
     }
 
     &--error {
-      box-shadow: 0 0 0 2px use-color-mode('danger-10');
+      box-shadow: 0 0 0 2px use-color-mode('danger', 100);
     }
 
     &--disabled {
@@ -229,12 +229,12 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &--date-time-range {
       &:hover {
-        background: use-color-mode('primary-05');
+        background: use-color-mode('primary', 50);
       }
     }
 
     &--active {
-      background: use-color-mode('primary-05');
+      background: use-color-mode('primary', 50);
     }
   }
 
@@ -424,7 +424,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--range:not(.#{$prefix}__cell--out) {
-      background: use-color-mode('primary-05');
+      background: use-color-mode('primary', 50);
     }
 
     &--disabled {
@@ -453,7 +453,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       &:not(.#{$cell-class}--week-mode-select) {
         .#{$prefix} {
           &__cell-text {
-            background: use-color-mode('primary-05');
+            background: use-color-mode('primary', 50);
             color: use-color-mode('primary');
           }
 
@@ -462,13 +462,13 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
           }
 
           &__lunar {
-            color: use-color-mode('primary-20');
+            color: use-color-mode('primary', 200);
           }
         }
       }
 
       &.#{$cell-class}--range-start,&.#{$cell-class}--range-end {
-        background: use-color-mode('primary-05');
+        background: use-color-mode('primary', 50);
         .#{$cell-class}-text {
           background: use-color-mode('primary');
           color: use-color-static('white');
@@ -562,7 +562,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     &--has-selected#{&}--week-mode-select {
       .#{$cell-class} {
         &-week-indicator {
-          background: use-color-mode('primary-05');
+          background: use-color-mode('primary', 50);
         }
 
         color: use-color-mode('primary');
@@ -583,13 +583,13 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       }
 
       .#{$prefix}__lunar {
-        color: use-color-mode('primary-20');
+        color: use-color-mode('primary', 200);
       }
     }
 
     &--has-start#{&}--week-mode-select {
       .#{$cell-class} {
-        background: use-color-mode('primary-05');
+        background: use-color-mode('primary', 50);
 
         &--range-start {
           border-radius: 0;
@@ -609,7 +609,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &--has-end#{&}--week-mode-select {
       .#{$cell-class} {
-        background: use-color-mode('primary-05');
+        background: use-color-mode('primary', 50);
 
         &--range-end {
           border-radius: 0;
@@ -649,11 +649,11 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     transform: scale(0.6);
 
     &--rest {
-      color: use-color-mode('success-60');
+      color: use-color-mode('success', 600);
     }
 
     &--work {
-      color: use-color-mode('danger-60');
+      color: use-color-mode('danger', 600);
     }
   }
 
@@ -737,7 +737,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--active {
-      background: use-color-mode('primary-05');
+      background: use-color-mode('primary', 50);
       color: use-color-mode('primary');
     }
   }

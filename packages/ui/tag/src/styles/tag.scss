@@ -3,19 +3,19 @@
 $solid-color-map: (
   'primary': (
     'normal': use-color-mode('primary'),
-    'hover': use-color-mode('primary-40')
+    'hover': use-color-mode('primary', 400)
   ),
   'warning': (
     'normal':use-color-mode('warning'),
-    'hover':use-color-mode('warning-40')
+    'hover':use-color-mode('warning', 400)
   ),
   'success': (
     'normal':use-color-mode('success'),
-    'hover':use-color-mode('success-40')
+    'hover':use-color-mode('success', 400)
   ),
   'danger': (
     'normal': use-color-mode('danger'),
-    'hover': use-color-mode('danger-40')
+    'hover': use-color-mode('danger', 400)
   ),
   'default': (
     'normal': use-color('gray', 400),
@@ -26,27 +26,27 @@ $solid-color-map: (
 $line-color-map: (
   'primary': (
     'text': use-color-mode('primary'),
-    'border': use-color-mode('primary-20'),
-    'hover-text': use-color-mode('primary-40'),
-    'hover-border': use-color-mode('primary-10')
+    'border': use-color-mode('primary', 200),
+    'hover-text': use-color-mode('primary', 400),
+    'hover-border': use-color-mode('primary', 100)
   ),
   'warning': (
     'text':use-color-mode('warning'),
-    'border':use-color-mode('warning-20'),
-    'hover-text':use-color-mode('warning-40'),
-    'hover-border':use-color-mode('warning-10')
+    'border':use-color-mode('warning', 200),
+    'hover-text':use-color-mode('warning', 400),
+    'hover-border':use-color-mode('warning', 100)
   ),
   'success': (
     'text':use-color-mode('success'),
-    'border':use-color-mode('success-20'),
-    'hover-text':use-color-mode('success-40'),
-    'hover-border':use-color-mode('success-10')
+    'border':use-color-mode('success', 200),
+    'hover-text':use-color-mode('success', 400),
+    'hover-border':use-color-mode('success', 100)
   ),
   'danger': (
     'text': use-color-mode('danger'),
-    'border': use-color-mode('danger-20'),
-    'hover-text': use-color-mode('danger-40'),
-    'hover-border': use-color-mode('danger-10')
+    'border': use-color-mode('danger', 200),
+    'hover-text': use-color-mode('danger', 400),
+    'hover-border': use-color-mode('danger', 100)
   ),
   'default': (
     'text': use-color('gray', 700),
@@ -59,23 +59,23 @@ $line-color-map: (
 $filled-color-map: (
   'primary': (
     'color': use-color-mode('primary'),
-    'background':use-color-mode('primary-05'),
-    'hover-background':use-color-mode('primary-10')
+    'background':use-color-mode('primary', 50),
+    'hover-background':use-color-mode('primary', 100)
   ),
   'warning': (
     'color':use-color-mode('warning'),
-    'background':use-color-mode('warning-05'),
-    'hover-background':use-color-mode('warning-10'),
+    'background':use-color-mode('warning', 50),
+    'hover-background':use-color-mode('warning', 100),
   ),
   'success': (
     'color':use-color-mode('success'),
-    'background':use-color-mode('success-05'),
-    'hover-background':use-color-mode('success-10')
+    'background':use-color-mode('success', 50),
+    'hover-background':use-color-mode('success', 100)
   ),
   'danger': (
     'color': use-color-mode('danger'),
-    'background': use-color-mode('danger-05'),
-    'hover-background': use-color-mode('danger-10')
+    'background': use-color-mode('danger', 50),
+    'hover-background': use-color-mode('danger', 100)
   ),
   'default': (
     'color': use-color('gray', 700),
