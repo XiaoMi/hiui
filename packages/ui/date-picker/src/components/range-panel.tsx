@@ -1,6 +1,5 @@
-// @ts-nocheck
 import React, { useEffect, useState, useCallback, useContext, useRef } from 'react'
-import classNames from 'classnames'
+import { cx } from '@hi-ui/classname'
 import Header from './header'
 import Calendar from './calendar'
 import moment from 'moment'
@@ -92,7 +91,7 @@ const RangePanel = () => {
       }
       // 此处是明显的语法错误，故而注释修改
       // onSelect(date, calendarClickIsEnd)
-      onSelect(date, calendarClickIsEnd.current)
+      onSelect(date as any, calendarClickIsEnd.current)
       if (type === 'weekrange') {
         onPick([newRange.start!.startOf('week'), newRange.end!.endOf('week')], showTime)
       } else {
@@ -102,7 +101,7 @@ const RangePanel = () => {
       newRange.selecting = true
       newRange.start = date
       newRange.end = null
-      onSelect(date, false)
+      onSelect(date as any, false)
     }
     setRange(newRange)
   }
@@ -116,7 +115,7 @@ const RangePanel = () => {
 
     if (type === 'timeperiod' && views[uIndex] === 'date') {
       onPick([date, moment(date).hour(date.hour() + timeInterval / 60)], true)
-      onSelect(date, true)
+      onSelect(date as any, true)
       return
     }
     // V4修改：type === 'weekrange' -> views[uIndex] === 'date' （修正，周模式下，无法使用年份月份快捷切换面板BUG）
@@ -160,7 +159,7 @@ const RangePanel = () => {
   }
   const getRangeDateStr = () => {
     const _format = realFormat.substr(realFormat.match(/[H|h]\s*/)!.index!)
-    const cls = classNames(showRangeMask && `${prefixCls}__timetext`)
+    const cls = cx(showRangeMask && `${prefixCls}__timetext`)
     const startOfDay = moment().startOf('day').format(_format)
     const endOfDay = moment().endOf('day').format(_format)
     return (
@@ -251,7 +250,7 @@ const RangePanel = () => {
     }
   }
   const isDisableFooter = range.start && range.end && !range.selecting
-  const panelCls = classNames(
+  const panelCls = cx(
     `${prefixCls}__panel`,
     `theme__${theme}`,
     type.includes('range') && `${prefixCls}__panel--range`,

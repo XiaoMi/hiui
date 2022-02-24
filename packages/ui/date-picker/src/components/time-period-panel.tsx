@@ -1,5 +1,5 @@
 import React, { useRef, useContext, useState, useEffect, useCallback } from 'react'
-import classNames from 'classnames'
+import { cx } from '@hi-ui/classname'
 import { getTimePeriodData } from '../utils'
 import DPContext from '../context'
 import moment from 'moment'
@@ -65,7 +65,7 @@ const TimePeriodPanel = ({
       <div className={`${prefixCls}__period-body`}>
         <ul className={`${prefixCls}__period-list`} ref={listEl}>
           {periodData.map((item, index) => {
-            const cls = classNames(
+            const cls = cx(
               `${prefixCls}__period-item`,
               getActiveIndex() === index && `${prefixCls}__period-item--active`
             )

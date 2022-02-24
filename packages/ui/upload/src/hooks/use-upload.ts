@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useEffect, useCallback, useRef } from 'react'
 import request from '../request'
 import { getFileType } from '../utils'
@@ -68,7 +67,7 @@ const useUpload = ({
       file.uploadState = 'success'
       delete file.abort
       const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
-      const result: boolean | Promise<boolean> | undefined =
+      const result: boolean | Promise<boolean> | undefined | void =
         onChange && onChange(file, newFileList, body)
       // 处理如果onChange return false 的时候需要删除该文件
       if (typeof result === 'boolean' && !result) {
@@ -113,7 +112,7 @@ const useUpload = ({
       const newFileList = [...fileListRef.current]
       file.uploadState = 'error'
       const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
-      const result = onChange && onChange(file, newFileList, body)
+      const result = onChange && onChange(file, newFileList, body as any)
 
       // 处理如果onChange return false 的时候需要删除该文件
       if (typeof result === 'boolean' && !result) {
@@ -180,12 +179,12 @@ const useUpload = ({
                   const url = (e.target?.result || '') as string
                   file.url = url
                 }
-                fr.readAsDataURL(file)
+                fr.readAsDataURL(file as any)
               }
               _files.push(file)
               if (uploadAction) {
                 let _uploadAction =
-                  typeof uploadAction === 'string' ? uploadAction : uploadAction(file)
+                  typeof uploadAction === 'string' ? uploadAction : uploadAction(file as any)
                 if (_uploadAction.toString() === '[object Promise]') {
                   await (_uploadAction as Promise<string>)
                     .then((res) => {

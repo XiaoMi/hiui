@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { forwardRef, useCallback, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -95,7 +94,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
         setCropperVisible(true)
         setCropperFile(file)
       }
-      fr.readAsDataURL(file)
+      fr.readAsDataURL(file as any)
     }, [])
 
     const selectFile = useCallback(
@@ -133,7 +132,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
           const file: UploadFileItem = base2blob(dataUrl, filename)
           file.url = dataUrl
           file.fileType = 'img'
-          uploadFiles([file])
+          uploadFiles([file] as any)
           setCropperVisible(false)
         }
       },
@@ -262,13 +261,12 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
           visible={cropperVisible}
           onConfirm={() => {
             if (cropperFile) {
-              confirmCropper(cropperFile.name)
+              confirmCropper(cropperFile.name as any)
             }
           }}
           onCancel={() => {
             setCropperVisible(false)
           }}
-          backDrop={false}
         >
           <Cropper
             src={cropperFile?.url || ''}

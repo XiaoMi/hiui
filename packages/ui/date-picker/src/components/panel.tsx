@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useEffect, useState, useContext, useCallback } from 'react'
 import { cx } from '@hi-ui/classname'
 import Header from './header'
@@ -60,7 +59,7 @@ const Panel = (props: PanelProps) => {
 
   const onCalenderPick = useCallback(
     (date: moment.Moment) => {
-      onSelect(date, true)
+      onSelect(date as any, true)
       if (type === 'year' || (type === 'month' && view === 'month')) {
         // year || month picker
         onPick(
