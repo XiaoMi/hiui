@@ -1,9 +1,5 @@
-import clone from 'lodash.clone'
 import { isNullish, isObjectLike } from '@hi-ui/type-assertion'
 import { normalizeArray } from '@hi-ui/array-utils'
-
-export { default as clone } from 'lodash.clone'
-export { default as cloneDeep } from 'lodash.clonedeep'
 
 const hasOwnProperty = Object.prototype.hasOwnProperty
 export const hasOwnProp = (obj: object, key: string): boolean => hasOwnProperty.call(obj, key)
@@ -87,4 +83,71 @@ export const setNested = <T>(obj: T, paths: (string | number)[] | string | numbe
   target[props[i]] = value
 
   return obj
+}
+
+/**
+ * Will return the object type for any structure
+ */
+export const getObjectType = (o: unknown): string => Object.prototype.toString.call(o).slice(8, -1)
+
+export const clone = <T>(obj: T): T => {
+  if (isNullish(obj)) return obj
+
+  const objType = getObjectType(obj)
+
+  switch (objType) {
+    case 'Date':
+      const objDate: Date = obj as any
+      const clonedDate = new Date()
+      clonedDate.setTime(objDate.getTime())
+
+      return (clonedDate as any) as T
+
+    case 'Object':
+      if (isCyclic(obj) === true) return obj
+
+      const copiedObject: any = {}
+
+      for (const key in obj) {
+        copiedObject[key] = clone(obj[key])
+      }
+      return copiedObject as T
+
+    case 'Array':
+      const copiedArray = []
+      const objArray: Record<string, any>[] = obj as any
+
+      for (let i = 0; i < objArray.length; ++i) {
+        copiedArray.push(clone(objArray[i]))
+      }
+
+      return (copiedArray as any) as T
+    default:
+      // not need clone such as `BitInt`, `BitFloat`, 'RegExp'
+      return obj
+  }
+}
+
+/**
+ * 循环引用检查
+ */
+function isCyclic(obj: Object): boolean {
+  const visitedItems: Object[] = []
+
+  function detect(obj: any) {
+    if (obj && getObjectType(obj) === 'Object') {
+      if (visitedItems.indexOf(obj) !== -1) return true
+
+      visitedItems.push(obj)
+
+      for (const key in obj) {
+        if (hasOwnProp(obj, key) && detect(obj[key])) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
+  return detect(obj)
 }

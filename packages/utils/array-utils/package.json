@@ -46,8 +46,6 @@
     "@hi-ui/hi-build": "^4.0.0-beta.1"
   },
   "dependencies": {
-    "@hi-ui/type-assertion": "^4.0.0-beta.1",
-    "@types/lodash.uniqby": "^4.7.6",
-    "lodash.uniqby": "^4.7.0"
+    "@hi-ui/type-assertion": "^4.0.0-beta.1"
   }
 }

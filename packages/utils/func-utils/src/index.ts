@@ -1,4 +1,4 @@
-import clone from 'lodash.clone'
+import { clone } from '@hi-ui/object-utils'
 import { isArray, isNullish, isObjectLike, isFunction } from '@hi-ui/type-assertion'
 
 export type AnyFunction<T = any> = (...args: T[]) => any
