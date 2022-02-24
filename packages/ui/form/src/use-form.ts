@@ -12,7 +12,8 @@ import {
 } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { isArray, isObjectLike, isFunction } from '@hi-ui/type-assertion'
-import { callAllFuncs, setNested, getNested } from '@hi-ui/func-utils'
+import { callAllFuncs } from '@hi-ui/func-utils'
+import { setNested, getNested } from '@hi-ui/object-utils'
 import { stopEvent } from '@hi-ui/dom-utils'
 
 const EMPTY_RULES = {}

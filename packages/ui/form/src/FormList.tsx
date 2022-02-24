@@ -1,7 +1,7 @@
 import React from 'react'
 import { __DEV__ } from '@hi-ui/env'
 import { useFormContext } from './context'
-import { setNested, getNested } from '@hi-ui/func-utils'
+import { setNested, getNested } from '@hi-ui/object-utils'
 import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { FormState } from './types'
 

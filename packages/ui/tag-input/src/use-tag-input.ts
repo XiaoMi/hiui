@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useLayoutEffect } from 'react'
-import { debounce } from './utils'
+import { debounce } from '@hi-ui/func-utils'
 
 // 表示 tag 的 marginRight
 const TAG_MARGIN_RIGHT = 4

@@ -44,6 +44,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/array-utils": "^4.0.0-beta.1",
     "@hi-ui/checkbox": "^4.0.0-beta.2",
     "@hi-ui/classname": "^4.0.0-beta.0",
     "@hi-ui/core-css": "^4.0.0-beta.2",
@@ -65,10 +66,7 @@
     "@hi-ui/use-outside-click": "^4.0.0-beta.1",
     "@hi-ui/use-search-mode": "^4.0.0-beta.3",
     "@hi-ui/use-toggle": "^4.0.0-beta.1",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.1",
-    "@popperjs/core": "^2.9.3",
-    "lodash": "^4.17.21",
-    "react-popper": "^2.2.5"
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.1"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

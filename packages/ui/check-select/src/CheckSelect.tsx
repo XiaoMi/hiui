@@ -13,7 +13,7 @@ import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import VirtualList from 'rc-virtual-list'
 import { Picker, PickerProps } from '@hi-ui/picker'
 
-import uniqBy from 'lodash/uniqBy'
+import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { useToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'

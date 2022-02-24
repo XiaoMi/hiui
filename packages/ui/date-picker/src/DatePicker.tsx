@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import cloneDeep from 'lodash/cloneDeep'
+import { cloneDeep } from '@hi-ui/object-utils'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import moment from 'moment'
 import { useDate } from './hooks/useData'

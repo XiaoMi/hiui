@@ -3,7 +3,7 @@ import { FormFieldPath, FormRuleModel, FormRuleType } from './types'
 import { useFormContext } from './context'
 import { isArrayNonEmpty, isNullish, isArray } from '@hi-ui/type-assertion'
 import Validater, { Rules } from 'async-validator'
-import { toArray } from '@hi-ui/func-utils'
+import { normalizeArray } from '@hi-ui/array-utils'
 import { stringify } from './utils'
 
 export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => {
@@ -16,7 +16,7 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
    */
   const fieldRules: Rules[] = useMemo(() => {
     // @ts-ignore
-    const rules = toArray(rulesProp ?? getFieldRules(field))
+    const rules = normalizeArray(rulesProp ?? getFieldRules(field))
     return rules.map((rule: any) => ({ type: valueType, ...rule }))
   }, [rulesProp, field, getFieldRules, valueType])
 

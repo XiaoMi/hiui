@@ -13,7 +13,7 @@ import {
 import { matchStrategy, useCache } from './hooks'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { TagInputMock } from '@hi-ui/tag-input'
-import uniqBy from 'lodash/uniqBy'
+import { uniqBy } from '@hi-ui/array-utils'
 import { CheckCascaderMenus } from './CheckCascaderMenus'
 import { useSearchMode, useTreeCustomSearch, useTreeUpMatchSearch } from '@hi-ui/use-search-mode'
 import { flattenTreeData } from './utils'

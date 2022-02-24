@@ -46,6 +46,8 @@
     "@hi-ui/hi-build": "^4.0.0-beta.1"
   },
   "dependencies": {
-    "@hi-ui/type-assertion": "^4.0.0-beta.1"
+    "@hi-ui/type-assertion": "^4.0.0-beta.1",
+    "@types/lodash.clone": "^4.5.6",
+    "lodash.clone": "^4.5.0"
   }
 }

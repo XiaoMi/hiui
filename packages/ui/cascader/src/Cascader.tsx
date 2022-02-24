@@ -20,7 +20,7 @@ import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { useSearchMode, useTreeCustomSearch, useTreeUpMatchSearch } from '@hi-ui/use-search-mode'
-import uniqBy from 'lodash/uniqBy'
+import { uniqBy } from '@hi-ui/array-utils'
 import { useCache } from '@hi-ui/use-cache'
 import { useLocaleContext } from '@hi-ui/locale-context'
 

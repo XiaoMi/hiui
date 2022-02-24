@@ -6,11 +6,11 @@ import React, {
   forwardRef,
   useRef,
 } from 'react'
-import debounce from 'lodash/debounce'
+import { debounce } from '@hi-ui/func-utils'
+import type { DebounceReturn } from '@hi-ui/func-utils'
 import { CSSTransition } from 'react-transition-group'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import type { DebouncedFunc } from 'lodash'
 import { Portal } from '@hi-ui/portal'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 
@@ -46,7 +46,7 @@ export const Loading = forwardRef<null, LoadingProps>(
       setInternalVisible(visible)
     }, [internalVisible, visible])
 
-    const prevDebouncedUpdateRef = useRef<null | DebouncedFunc<typeof updateLoadingStatus>>(null)
+    const prevDebouncedUpdateRef = useRef<null | DebounceReturn>(null)
 
     const cancelWaitingLoading = () => {
       prevDebouncedUpdateRef.current?.cancel()

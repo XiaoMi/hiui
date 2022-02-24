@@ -1,5 +1,5 @@
 import moment from 'moment'
-import cloneDeep from 'lodash/cloneDeep'
+import { cloneDeep } from '@hi-ui/object-utils'
 import { TimePickerFormat } from '@hi-ui/time-picker'
 export const timePickerValueAdaptor = (config: {
   timePickerValue: string[]

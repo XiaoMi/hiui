@@ -4,7 +4,7 @@ import withLive from './components/withLive'
 import Button from '@hi-ui/hiui/es/button'
 import './index.scss'
 import theme from './theme'
-import isEqual from 'lodash/isEqual'
+import isEqual from 'lodash.isequal'
 import EditorWrapper from './components/EditorWrapper'
 
 const importRegx = /import\s+([\w*{}\n, ])+.*;?/gm

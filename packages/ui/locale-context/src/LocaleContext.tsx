@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
 import { LocaleLanguage, LocaleEnum } from './types'
 import defaultLocale from './locale/zh-CN'
-import { getNested } from '@hi-ui/func-utils'
+import { getNested } from '@hi-ui/object-utils'
 import { invariant } from '@hi-ui/env'
 
 // 1. 赋予动态能力，获取 国际化文案值

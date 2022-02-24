@@ -1,12 +1,9 @@
-import clone from 'lodash/clone'
+import clone from 'lodash.clone'
 import { isArray, isNullish, isObjectLike, isFunction } from '@hi-ui/type-assertion'
 
 export type AnyFunction<T = any> = (...args: T[]) => any
 
 export const noop: AnyFunction = () => {}
-
-const hasOwnProperty = Object.prototype.hasOwnProperty
-export const hasOwnProp = (obj: object, key: string): boolean => hasOwnProperty.call(obj, key)
 
 export const callAllFuncs = <T extends AnyFunction>(...funcs: (T | undefined)[]) => {
   return function mergedFunc(...args: any) {
@@ -16,6 +13,9 @@ export const callAllFuncs = <T extends AnyFunction>(...funcs: (T | undefined)[])
   }
 }
 
+/**
+ * @deprecated Remove funcs when published RC, please use normalizeArray in `@hi-ui/array-utils`
+ */
 export const toArray = <T>(arg: T | T[] | undefined): T[] => {
   if (isNullish(arg)) return []
   return isArray(arg) ? arg : [arg]
@@ -23,6 +23,8 @@ export const toArray = <T>(arg: T | T[] | undefined): T[] => {
 
 /**
  * Get value by deep key in nested object
+ *
+ * @deprecated Remove funcs when published RC
  *
  * @refs https://github.com/Flcwl/unext/blob/master/src/get.ts
  * @example
@@ -53,6 +55,8 @@ export const getNested = <T, E>(
 
 /**
  * Set value to deep key in nested object
+ *
+ * @deprecated Remove funcs when published RC
  *
  * @example
  *
@@ -109,3 +113,39 @@ export const setNested = <T>(obj: T, paths: (string | number)[] | string | numbe
 export const runIfFunc = <T, R>(valueOrFn: T | ((...fnArgs: R[]) => T), ...args: R[]): T => {
   return isFunction(valueOrFn) ? valueOrFn.apply(null, args) : valueOrFn
 }
+
+/**
+ * 函数防抖优化
+ * @param func 被优化函数
+ * @param delay 抖动间隔
+ * @returns
+ */
+export const debounce = <T extends AnyFunction>(func?: T, delay = 150) => {
+  let timer = 0
+
+  const cancel = () => {
+    if (timer) {
+      window.clearTimeout(timer)
+      timer = 0
+    }
+  }
+
+  const debounceFn = (...args: any[]) => {
+    if (timer) {
+      cancel()
+    }
+
+    if (func) {
+      timer = window.setTimeout(() => {
+        func.apply(null, args)
+        timer = 0
+      }, delay)
+    }
+  }
+
+  debounceFn.cancel = cancel
+
+  return debounceFn as T & { cancel: () => void }
+}
+
+export type DebounceReturn = ReturnType<typeof debounce>
