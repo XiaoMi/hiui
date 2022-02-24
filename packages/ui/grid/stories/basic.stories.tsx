@@ -17,6 +17,11 @@ export const Basic = () => {
       <h1>Basic</h1>
       <div className="grid-basic__wrap" style={{ width: 764 }}>
         <Row>
+          <Col span={24}>
+            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>col-24</div>
+          </Col>
+        </Row>
+        <Row>
           <Col span={6}>
             <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>
               col-6

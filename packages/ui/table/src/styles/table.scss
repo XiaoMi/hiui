@@ -16,7 +16,6 @@ $prefix: '#{$component-prefix}-table' !default;
     border-collapse: separate;
     display: table;
     table-layout: fixed;
-    overflow: auto;
   }
 
   &__wrapper {
@@ -236,6 +235,11 @@ $prefix: '#{$component-prefix}-table' !default;
       }
     }
   }
+}
+
+.#{$prefix}-body {
+  position: relative;
+  overflow: auto;
 }
 
 .#{$prefix}-header-cell {

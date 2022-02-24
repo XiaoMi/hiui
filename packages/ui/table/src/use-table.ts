@@ -456,6 +456,8 @@ export const useTable = ({
         textAlign: align,
         right: rightStickyWidth + 'px',
         left: leftStickyWidth + 'px',
+        // @designToken absolute
+        zIndex: 1,
         // backgroundColor: '#fff',
       } as React.CSSProperties,
       'data-sticky': setAttrStatus(sticky),

@@ -2,7 +2,7 @@ import React from 'react'
 import CheckCascader from '../src'
 
 export const Dynamic = () => {
-  const [treeData, setTreeData] = React.useState([
+  const [treeData] = React.useState([
     {
       id: 1,
       title: '小米',

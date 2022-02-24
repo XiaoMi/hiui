@@ -134,6 +134,9 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
       }
       return pagers
     }, [current, maxPage, max, onClick, prefixCls])
+
+    const disabled = maxPage === 0
+
     return (
       <div ref={ref} role={role} className={cls}>
         {showTotal ? (
@@ -145,7 +148,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
             <PagerButton
               type="prev"
               prefixCls={prefixCls}
-              disabled={current === 1}
+              disabled={disabled || current === 1}
               onChange={onClick}
               current={current}
             />
@@ -155,7 +158,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
               prefixCls={prefixCls}
               onChange={onClick}
               current={current}
-              disabled={current === maxPage}
+              disabled={disabled || current === maxPage}
             />
           </ul>
         ) : null}
