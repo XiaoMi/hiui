@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/object-utils",
-  "version": "4.0.0-beta.0",
+  "version": "4.0.0-beta.1",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -46,7 +46,7 @@
     "@hi-ui/hi-build": "^4.0.0-alpha.0"
   },
   "dependencies": {
-    "@hi-ui/array-utils": "^4.0.0-beta.1",
+    "@hi-ui/array-utils": "^4.0.0-beta.2",
     "@hi-ui/type-assertion": "^4.0.0-beta.1",
     "@types/lodash.clone": "^4.5.6",
     "@types/lodash.clonedeep": "^4.5.6",
