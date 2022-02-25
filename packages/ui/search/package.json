@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/search",
-  "version": "4.0.0-beta.5",
+  "version": "4.0.0-beta.6",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -49,7 +49,7 @@
     "@hi-ui/core-css": "^4.0.0-beta.2",
     "@hi-ui/env": "^4.0.0-beta.0",
     "@hi-ui/input": "^4.0.0-beta.2",
-    "@hi-ui/popper": "^4.0.0-beta.3",
+    "@hi-ui/popper": "^4.0.0-beta.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.1"
   },
   "peerDependencies": {

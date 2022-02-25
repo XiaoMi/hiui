@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/select",
-  "version": "4.0.0-beta.7",
+  "version": "4.0.0-beta.8",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -53,8 +53,8 @@
     "@hi-ui/icons": "^4.0.0-beta.2",
     "@hi-ui/input": "^4.0.0-beta.2",
     "@hi-ui/locale-context": "^4.0.0-beta.6",
-    "@hi-ui/picker": "^4.0.0-beta.7",
-    "@hi-ui/popper": "^4.0.0-beta.3",
+    "@hi-ui/picker": "^4.0.0-beta.8",
+    "@hi-ui/popper": "^4.0.0-beta.4",
     "@hi-ui/times": "^4.0.0-beta.1",
     "@hi-ui/tree-utils": "^4.0.0-beta.1",
     "@hi-ui/type-assertion": "^4.0.0-beta.1",

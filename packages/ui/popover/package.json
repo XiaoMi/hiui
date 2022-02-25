@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/popover",
-  "version": "4.0.0-beta.7",
+  "version": "4.0.0-beta.8",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -49,7 +49,7 @@
     "@hi-ui/core-css": "^4.0.0-beta.2",
     "@hi-ui/dom-utils": "^4.0.0-beta.1",
     "@hi-ui/env": "^4.0.0-beta.0",
-    "@hi-ui/popper": "^4.0.0-beta.3",
+    "@hi-ui/popper": "^4.0.0-beta.4",
     "@hi-ui/react-utils": "^4.0.0-beta.1",
     "@hi-ui/use-id": "^4.0.0-beta.1",
     "@hi-ui/use-toggle": "^4.0.0-beta.1",
