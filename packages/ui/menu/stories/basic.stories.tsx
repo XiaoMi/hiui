@@ -1,6 +1,6 @@
 import React from 'react'
 import Menu from '../src'
-import { EditOutlined, HomeOutlined } from '@hi-ui/icons'
+import { HomeOutlined } from '@hi-ui/icons'
 
 export const Basic = () => {
   return (

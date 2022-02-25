@@ -6,6 +6,7 @@ import { DownOutlined, UpOutlined, RightOutlined } from '@hi-ui/icons'
 import MenuContext from './context'
 import { PopperPortal, Popper } from '@hi-ui/popper'
 import { Expander } from './Expander'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -36,6 +37,8 @@ export const MenuItem: React.FC<MenuItemProps> = ({
 
   const _parentIds = (parentIds || []).concat(id)
 
+  const hasChildren = isArrayNonEmpty(children)
+
   return (
     <li
       ref={itemRef}
@@ -54,7 +57,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
           [`${prefixCls}-item__inner--active-p`]: activeParents?.includes(id),
         })}
         onClick={() => {
-          if (children?.length) {
+          if (isArrayNonEmpty(children)) {
             if (clickSubMenu) {
               clickSubMenu(id)
             }
@@ -82,22 +85,24 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         {icon}
         <span className={`${prefixCls}-item__content`}>{title}</span>
         {/* 垂直菜单-纵向展开 */}
-        {children?.length &&
+        {hasChildren &&
           !mini &&
           placement === 'vertical' &&
           expandedType === 'collapse' &&
           !showAllSubMenus &&
           (expandedIds?.includes(id) ? <UpOutlined /> : <DownOutlined />)}
         {/* 垂直菜单-mini */}
-        {children?.length && mini && level > 1 && placement === 'vertical' && <RightOutlined />}
+        {hasChildren && mini && level > 1 && placement === 'vertical' ? <RightOutlined /> : null}
         {/* 垂直菜单-弹出展开 */}
-        {children?.length &&
-          !mini &&
-          placement === 'vertical' &&
-          (expandedType === 'pop' || showAllSubMenus) && <RightOutlined />}
+        {hasChildren &&
+        !mini &&
+        placement === 'vertical' &&
+        (expandedType === 'pop' || showAllSubMenus) ? (
+          <RightOutlined />
+        ) : null}
         {/* 水平菜单 */}
-        {children?.length && placement === 'horizontal' && level > 1 && <RightOutlined />}
-        {children?.length &&
+        {hasChildren && placement === 'horizontal' && level > 1 ? <RightOutlined /> : null}
+        {hasChildren &&
           placement === 'horizontal' &&
           level === 1 &&
           (expandedIds?.includes(id) ? (
@@ -107,21 +112,21 @@ export const MenuItem: React.FC<MenuItemProps> = ({
           ))}
       </div>
       {/* 垂直菜单-纵向展开 */}
-      {children?.length &&
-        placement === 'vertical' &&
-        !mini &&
-        !showAllSubMenus &&
-        expandedType === 'collapse' && (
-          <Expander visible={!!expandedIds?.includes(id)}>
-            <ul className={`${prefixCls}-submenu`}>
-              {children.map((child) => (
-                <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
-              ))}
-            </ul>
-          </Expander>
-        )}
+      {hasChildren &&
+      placement === 'vertical' &&
+      !mini &&
+      !showAllSubMenus &&
+      expandedType === 'collapse' ? (
+        <Expander visible={!!expandedIds?.includes(id)}>
+          <ul className={`${prefixCls}-submenu`}>
+            {children!.map((child) => (
+              <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+            ))}
+          </ul>
+        </Expander>
+      ) : null}
       {/* 垂直菜单-纵向展开-mini */}
-      {children?.length &&
+      {hasChildren &&
         placement === 'vertical' &&
         mini &&
         !showAllSubMenus &&
@@ -139,7 +144,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             }}
           >
             <ul className={`${prefixCls}-popmenu`}>
-              {children.map((child) => (
+              {children!.map((child) => (
                 <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
               ))}
             </ul>
@@ -157,14 +162,14 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             }}
           >
             <ul className={`${prefixCls}-popmenu`}>
-              {children.map((child) => (
+              {children!.map((child) => (
                 <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
               ))}
             </ul>
           </Popper>
         ))}
       {/* 垂直菜单-弹出展开 */}
-      {children?.length &&
+      {hasChildren &&
         placement === 'vertical' &&
         !showAllSubMenus &&
         expandedType === 'pop' &&
@@ -181,7 +186,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             }}
           >
             <ul className={`${prefixCls}-popmenu`}>
-              {children.map((child) => (
+              {children!.map((child) => (
                 <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
               ))}
             </ul>
@@ -199,14 +204,14 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             }}
           >
             <ul className={`${prefixCls}-popmenu`}>
-              {children.map((child) => (
+              {children!.map((child) => (
                 <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
               ))}
             </ul>
           </Popper>
         ))}
       {/* 垂直胖菜单 */}
-      {children?.length && placement === 'vertical' && showAllSubMenus && (
+      {hasChildren && placement === 'vertical' && showAllSubMenus ? (
         <PopperPortal
           visible={!!expandedIds?.includes(id)}
           attachEl={itemRef.current}
@@ -219,11 +224,11 @@ export const MenuItem: React.FC<MenuItemProps> = ({
           }}
         >
           <div className={`${prefixCls}-fat-menu`}>
-            {children.map((child) => {
+            {children!.map((child) => {
               return (
                 <div key={child.id} className={`${prefixCls}-fat-menu__group`}>
                   <div className={`${prefixCls}-group-item`}>{child.title}</div>
-                  {child?.children?.length && (
+                  {child && isArrayNonEmpty(child.children) ? (
                     <ul>
                       {child.children.map((item) => (
                         <div
@@ -244,15 +249,15 @@ export const MenuItem: React.FC<MenuItemProps> = ({
                         </div>
                       ))}
                     </ul>
-                  )}
+                  ) : null}
                 </div>
               )
             })}
           </div>
         </PopperPortal>
-      )}
+      ) : null}
       {/* 水平菜单 */}
-      {children?.length &&
+      {hasChildren &&
         placement === 'horizontal' &&
         !showAllSubMenus &&
         (level === 1 ? (
@@ -293,7 +298,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
           </Popper>
         ))}
       {/* 水平胖菜单 */}
-      {children?.length && placement === 'horizontal' && showAllSubMenus && (
+      {hasChildren && placement === 'horizontal' && showAllSubMenus ? (
         <PopperPortal
           visible={!!expandedIds?.includes(id)}
           attachEl={itemRef.current}
@@ -310,7 +315,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
               return (
                 <div key={child.id} className={`${prefixCls}-fat-menu__group`}>
                   <div className={`${prefixCls}-group-item`}>{child.title}</div>
-                  {child?.children?.length && (
+                  {child && isArrayNonEmpty(child.children) ? (
                     <ul>
                       {child.children.map((item) => (
                         <div
@@ -331,13 +336,13 @@ export const MenuItem: React.FC<MenuItemProps> = ({
                         </div>
                       ))}
                     </ul>
-                  )}
+                  ) : null}
                 </div>
               )
             })}
           </div>
         </PopperPortal>
-      )}
+      ) : null}
     </li>
   )
 }
