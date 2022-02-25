@@ -49,6 +49,7 @@
     "@hi-ui/classname": "^4.0.0-beta.0",
     "@hi-ui/core-css": "^4.0.0-beta.2",
     "@hi-ui/env": "^4.0.0-beta.0",
+    "@hi-ui/func-utils": "^4.0.0-beta.3",
     "@hi-ui/icons": "^4.0.0-beta.2",
     "@hi-ui/input": "^4.0.0-beta.2",
     "@hi-ui/locale-context": "^4.0.0-beta.6",

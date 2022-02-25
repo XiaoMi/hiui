@@ -14,6 +14,7 @@ import { MockInput } from '@hi-ui/input'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
 import { useLocaleContext } from '@hi-ui/locale-context'
+import { callAllFuncs } from '@hi-ui/func-utils'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -55,6 +56,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       onLoadChildren,
       render: titleRender,
       filterOption,
+      onSearch: onSearchProp,
       // ********* popper ********* //
       // optionWidth,
       // overlayClassName,
@@ -225,7 +227,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         // onChange={tryChangeValue}
         // data={mergedData}
         searchable={searchable}
-        onSearch={onSearch}
+        onSearch={callAllFuncs(onSearchProp, onSearch)}
         loading={loading}
         trigger={
           <MockInput

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { PopperPortal } from '@hi-ui/popper'
+import Popper from '@hi-ui/popper'
 import { SearchDropdownProps } from './Search'
 import { cx } from '@hi-ui/classname'
 
@@ -43,7 +43,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({
     [keyword, prefixCls]
   )
   return (
-    <PopperPortal
+    <Popper
       className={overlayClassName}
       attachEl={inputRef}
       visible={visible}
@@ -84,6 +84,6 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({
           </>
         ))}
       </div>
-    </PopperPortal>
+    </Popper>
   )
 }

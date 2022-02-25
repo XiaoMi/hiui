@@ -23,6 +23,7 @@ import { useSearchMode, useTreeCustomSearch, useTreeUpMatchSearch } from '@hi-ui
 import { uniqBy } from '@hi-ui/array-utils'
 import { useCache } from '@hi-ui/use-cache'
 import { useLocaleContext } from '@hi-ui/locale-context'
+import { callAllFuncs } from '@hi-ui/func-utils'
 
 const _prefix = getPrefixCls('cascader')
 
@@ -49,6 +50,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     invalid,
     filterOption,
     searchable: searchableProp,
+    onSearch: onSearchProp,
     render: titleRender,
     overlayClassName,
     data = NOOP_ARRAY,
@@ -210,7 +212,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         onOpen={menuVisibleAction.on}
         onClose={menuVisibleAction.off}
         searchable={searchable}
-        onSearch={onSearch}
+        onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
           <MockInput
             clearable={clearable}

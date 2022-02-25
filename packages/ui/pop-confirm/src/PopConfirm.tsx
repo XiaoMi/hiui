@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { usePopConfirm, UsePopConfirmProps } from './use-pop-confirm'
 import Button from '@hi-ui/button'
-import { PopperPortal } from '@hi-ui/popper'
+import Popper from '@hi-ui/popper'
 import { defaultTipIcon } from './icons'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { isUndef } from '@hi-ui/type-assertion'
@@ -54,7 +54,7 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
               getTriggerProps(children.props, children.ref)
             )
           : null}
-        <PopperPortal {...getPopperProps()}>
+        <Popper {...getPopperProps()}>
           <div ref={ref} className={cls} {...rootProps}>
             <section className={`${prefixCls}__content`}>
               {icon ? <span className={`${prefixCls}__content-icon`}>{icon}</span> : null}
@@ -92,7 +92,7 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
               </footer>
             ) : null}
           </div>
-        </PopperPortal>
+        </Popper>
       </>
     )
   }

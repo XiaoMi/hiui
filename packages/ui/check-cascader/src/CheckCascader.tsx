@@ -22,6 +22,7 @@ import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
 import { useLocaleContext } from '@hi-ui/locale-context'
+import { callAllFuncs } from '@hi-ui/func-utils'
 
 const _prefix = getPrefixCls('check-cascader')
 const NOOP_ARRAY = [] as []
@@ -57,6 +58,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       // search
       filterOption,
       searchable: searchableProp,
+      onSearch: onSearchProp,
       overlayClassName,
       type = 'tree',
       ...rest
@@ -214,7 +216,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         disabled={disabled}
         onClose={menuVisibleAction.off}
         searchable={searchable}
-        onSearch={onSearch}
+        onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
           <TagInputMock
             clearable={clearable}

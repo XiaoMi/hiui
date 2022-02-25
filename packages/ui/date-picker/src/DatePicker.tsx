@@ -9,7 +9,7 @@ import useFormat from './hooks/useFormat'
 import useAltData from './hooks/useAltData'
 import { getInRangeDate } from './utils'
 import DPContext from './context'
-import { PopperPortal } from '@hi-ui/popper'
+import Popper from '@hi-ui/popper'
 import Root from './components/root'
 import Panel from './components/panel'
 import RangePanel from './components/range-panel'
@@ -420,7 +420,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             setAttachEl={setAttachEl}
             dateRangeTimePanelNow={dateRangeTimePanelNow}
           />
-          <PopperPortal
+          <Popper
             {...(overlay || {})}
             visible={showPanel}
             onClose={onPopperClose}
@@ -430,7 +430,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             autoFocus={false}
           >
             {popContent}
-          </PopperPortal>
+          </Popper>
         </div>
       </DPContext.Provider>
     )

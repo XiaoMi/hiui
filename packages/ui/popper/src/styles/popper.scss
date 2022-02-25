@@ -10,11 +10,6 @@ $prefix: '#{$component-prefix}-popper' !default;
     z-index: 1;
     position: relative;
 
-    &.hidden {
-      visibility: hidden;
-      opacity: 0;
-    }
-
     &::before,
     &::after {
       content: '';
@@ -110,7 +105,7 @@ $prefix: '#{$component-prefix}-popper' !default;
     }
   }
 
-  &__overlay {
+  &__container {
     position: relative;
     box-sizing: border-box;
     background-color: use-color-static('white');
@@ -130,37 +125,42 @@ $prefix: '#{$component-prefix}-popper' !default;
     will-change: transform;
   }
 
+  &__content {
+    position: relative;
+    box-sizing: border-box;
+  }
+
   &--motion {
     &-enter {
-      .#{$prefix}__overlay {
+      .#{$prefix}__container {
         opacity: 0;
         transform: scale(0);
       }
     }
 
     &-enter-active {
-      .#{$prefix}__overlay {
+      .#{$prefix}__container {
         opacity: 1;
         transform: scale(1);
       }
     }
 
     &-enter-done {
-      .#{$prefix}__overlay {
+      .#{$prefix}__container {
         opacity: 1;
         transform: scale(1);
       }
     }
 
     &-exit {
-      .#{$prefix}__overlay {
+      .#{$prefix}__container {
         opacity: 1;
         transform: scale(1) translateX(100%);
       }
     }
 
     &-exit-active {
-      .#{$prefix}__overlay {
+      .#{$prefix}__container {
         opacity: 1;
         transform: scale(0);
       }
@@ -170,7 +170,7 @@ $prefix: '#{$component-prefix}-popper' !default;
       // 即使保留dom，但是需要 hidden 不可点击
       visibility: hidden;
 
-      .#{$prefix}__overlay {
+      .#{$prefix}__container {
         opacity: 0;
       }
     }

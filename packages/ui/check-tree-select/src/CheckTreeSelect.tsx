@@ -19,6 +19,7 @@ import { TagInputMock } from '@hi-ui/tag-input'
 import { UpOutlined, DownOutlined } from '@hi-ui/icons'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
 import { useLocaleContext } from '@hi-ui/locale-context'
+import { callAllFuncs } from '@hi-ui/func-utils'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -63,6 +64,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       onLoadChildren,
       render: titleRender,
       filterOption,
+      onSearch: onSearchProp,
       // emptyContent,
       // ********* popper ********* //
       // optionWidth,
@@ -248,7 +250,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         // onChange={tryChangeValue}
         // data={mergedData}
         searchable={searchable}
-        onSearch={onSearch}
+        onSearch={callAllFuncs(onSearchProp, onSearch)}
         loading={loading}
         trigger={
           <TagInputMock

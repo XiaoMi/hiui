@@ -12,7 +12,7 @@ import {
 } from './@types'
 import { Input, InputRef } from './Input'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { PopperOverlayProps, PopperPortal } from '@hi-ui/popper'
+import { PopperOverlayProps, Popper } from '@hi-ui/popper'
 import { CloseCircleFilled, TimeOutlined } from '@hi-ui/icons'
 import { PopContent } from './PopContent'
 import { valueChecker } from './utils/valueChecker'
@@ -288,7 +288,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             )}
           </div>
         </div>
-        <PopperPortal
+        <Popper
           {...(overlay || {})}
           unmountOnClose={false}
           visible={showPopper && !disabled}
@@ -331,7 +331,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             }}
           />
           {functionButtons}
-        </PopperPortal>
+        </Popper>
       </div>
     )
   }

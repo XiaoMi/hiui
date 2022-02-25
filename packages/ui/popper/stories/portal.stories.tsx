@@ -1,5 +1,5 @@
 import React from 'react'
-import { PopperPortal } from '../src'
+import Popper from '../src'
 import Button from '@hi-ui/button'
 
 export const Portal = () => {
@@ -13,9 +13,14 @@ export const Portal = () => {
         <Button ref={setBtnRef} onClick={() => setVisible(true)}>
           Open
         </Button>
-        <PopperPortal visible={visible} attachEl={btnRef} onClose={() => setVisible(false)}>
+        <Popper
+          visible={visible}
+          disabledPortal
+          attachEl={btnRef}
+          onClose={() => setVisible(false)}
+        >
           The content of the Popper.
-        </PopperPortal>
+        </Popper>
       </div>
     </>
   )

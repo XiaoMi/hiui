@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useCallback, useEffect } from 'react'
+import React, { forwardRef, useState, useEffect } from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -6,6 +6,8 @@ import * as PopperJS from '@popperjs/core'
 import { CSSTransition } from 'react-transition-group'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { usePopper, UsePopperProps } from './use-popper'
+import { Portal } from '@hi-ui/portal'
+import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 
 export { PopperJS }
 
@@ -21,7 +23,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       className,
       children,
       style,
-      visible = false,
+      visible: visibleProp = false,
       onClose,
       preload = false,
       unmountOnClose = true,
@@ -44,32 +46,42 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       modifiers,
       arrowPadding,
       strategy,
+      // animation
       onEnter,
       onExit,
       onEntered,
       onExited,
+      // portal
+      container,
+      disabledPortal = false,
       ...rest
     },
     ref
   ) => {
-    const [transitionVisible, setTransitionVisible] = useState(visible)
+    const [transitionVisible, transitionVisibleAction] = useUncontrolledToggle({
+      defaultVisible: false,
+      visible: visibleProp,
+      onClose,
+    })
+
     const [transitionExisted, setTransitionExisted] = useState(!transitionVisible)
 
     useEffect(() => {
-      setTransitionVisible(visible)
-      if (visible) {
+      transitionVisibleAction.set(transitionVisible)
+      if (transitionVisible) {
         setTransitionExisted(false)
       }
-    }, [visible])
+    }, [transitionVisible, transitionVisibleAction])
 
     const { popperElement, getPopperProps, getArrowProps } = usePopper({
       attachEl,
       // 关闭时不启用，内部执行销毁
       visible: !transitionExisted,
-      // 消失动画期间，也不会触发 onClose
       onClose: () => {
-        if (!visible) return
-        onClose?.()
+        // 消失动画期间，也不会触发 onClose
+        if (transitionVisible) {
+          transitionVisibleAction.off()
+        }
       },
       placement,
       zIndex,
@@ -88,43 +100,44 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       onOutsideClick,
     })
 
-    const onEnteredLatest = useLatestCallback(onEntered)
-    const onExitedLatest = useLatestCallback(onExited)
-
-    const handleEntered = useCallback(() => {
+    const onEnteredLatest = useLatestCallback(() => {
       if (autoFocus) {
         popperElement?.focus()
       }
-      onEnteredLatest()
-    }, [onEnteredLatest, popperElement, autoFocus])
+      onEntered?.()
+    })
 
-    const handleExited = useCallback(() => {
+    // 由 CSSTransition 设置动效结束
+    const onExitedLatest = useLatestCallback(() => {
       setTransitionExisted(true)
-      onExitedLatest()
-    }, [onExitedLatest])
+      onExited?.()
+    })
 
     const cls = cx(prefixCls, className)
 
     return (
-      <CSSTransition
-        classNames={`${prefixCls}--motion`}
-        in={transitionVisible}
-        appear
-        // @DesignToken
-        timeout={201}
-        mountOnEnter={!preload}
-        unmountOnExit={unmountOnClose}
-        onEnter={onEnter}
-        onExit={onExit}
-        onEntered={handleEntered}
-        onExited={handleExited}
-      >
-        <div className={cls} {...getPopperProps(rest, ref)}>
-          <div className={cx(`${prefixCls}__arrow`, !arrow && `hidden`)} {...getArrowProps()} />
-
-          <div className={`${prefixCls}__overlay`}>{children}</div>
-        </div>
-      </CSSTransition>
+      <Portal container={container} disabled={disabledPortal}>
+        <CSSTransition
+          classNames={`${prefixCls}--motion`}
+          in={transitionVisible}
+          appear
+          // @DesignToken
+          timeout={201}
+          mountOnEnter={!preload}
+          unmountOnExit={unmountOnClose}
+          onEnter={onEnter}
+          onExit={onExit}
+          onEntered={onEnteredLatest}
+          onExited={onExitedLatest}
+        >
+          <div className={cls} {...getPopperProps(rest, ref)}>
+            <div className={`${prefixCls}__container`}>
+              {arrow ? <div className={`${prefixCls}__arrow`} {...getArrowProps()} /> : null}
+              <div className={`${prefixCls}__content`}>{children}</div>
+            </div>
+          </div>
+        </CSSTransition>
+      </Portal>
     )
   }
 )
@@ -162,6 +175,14 @@ export interface PopperProps extends HiBaseHTMLProps<'div'>, UsePopperProps {
    * 结束动画隐藏时回调
    */
   onExited?: () => void
+  /**
+   * 禁用 portal
+   */
+  disabledPortal?: boolean
+  /**
+   * 指定 portal 的容器
+   */
+  container?: (() => HTMLElement | null) | HTMLElement | null
 }
 
 if (__DEV__) {

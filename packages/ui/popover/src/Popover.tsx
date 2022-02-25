@@ -2,7 +2,7 @@ import React, { cloneElement, isValidElement, forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { PopperPortal as Popper } from '@hi-ui/popper'
+import Popper from '@hi-ui/popper'
 import { usePopover, UsePopoverProps } from './use-popover'
 
 const _role = 'popover'

@@ -2,7 +2,7 @@ import React, { cloneElement, forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { PopperOverlayProps, PopperPortal, PopperPortalProps } from '@hi-ui/popper'
+import { PopperOverlayProps, Popper, PopperProps } from '@hi-ui/popper'
 import { DropDownProvider, useDropDownContext } from './context'
 import { useDropdown, UseDropdownProps } from './use-dropdown'
 import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
@@ -195,7 +195,7 @@ const DropdownMenu = forwardRef<HTMLUListElement | null, DropdownMenuProps>(
     const cls = cx(prefixCls, className)
 
     return (
-      <PopperPortal {...(overlay as PopperPortalProps)}>
+      <Popper {...(overlay as PopperProps)}>
         <ul ref={ref} className={cls} {...rest}>
           {children
             ? React.Children.map(children, (child: any) => {
@@ -205,7 +205,7 @@ const DropdownMenu = forwardRef<HTMLUListElement | null, DropdownMenuProps>(
               })
             : children}
         </ul>
-      </PopperPortal>
+      </Popper>
     )
   }
 )
@@ -214,7 +214,7 @@ interface DropdownMenuProps extends HiBaseHTMLProps<'ul'> {
   /**
    * 透传 popper 对象
    */
-  overlay?: Omit<PopperPortalProps, 'visible' | 'attachEl'>
+  overlay?: Omit<PopperProps, 'visible' | 'attachEl'>
   /**
    * 祖先吸附元素DOM引用数组
    */
