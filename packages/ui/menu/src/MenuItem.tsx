@@ -273,7 +273,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             }}
           >
             <ul className={`${prefixCls}-popmenu`}>
-              {children.map((child) => (
+              {children!.map((child) => (
                 <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
               ))}
             </ul>
@@ -291,7 +291,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             }}
           >
             <ul className={`${prefixCls}-popmenu`}>
-              {children.map((child) => (
+              {children!.map((child) => (
                 <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
               ))}
             </ul>
@@ -311,7 +311,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
           }}
         >
           <div className={`${prefixCls}-fat-menu`}>
-            {children.map((child) => {
+            {children!.map((child) => {
               return (
                 <div key={child.id} className={`${prefixCls}-fat-menu__group`}>
                   <div className={`${prefixCls}-group-item`}>{child.title}</div>
