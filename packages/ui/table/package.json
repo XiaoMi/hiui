@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/table",
-  "version": "4.0.0-beta.14",
+  "version": "4.0.0-beta.15",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -57,7 +57,7 @@
     "@hi-ui/loading": "^4.0.0-beta.5",
     "@hi-ui/locale-context": "^4.0.0-beta.6",
     "@hi-ui/object-utils": "^4.0.0-beta.2",
-    "@hi-ui/pagination": "^4.0.0-beta.8",
+    "@hi-ui/pagination": "^4.0.0-beta.9",
     "@hi-ui/popper": "^4.0.0-beta.3",
     "@hi-ui/react-utils": "^4.0.0-beta.1",
     "@hi-ui/select": "^4.0.0-beta.7",
