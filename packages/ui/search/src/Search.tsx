@@ -234,9 +234,9 @@ export interface SearchProps extends HiBaseHTMLProps<'input'> {
   data?: SearchDataItem[]
   defaultValue?: string
   value?: string
-  onChange: (inputVal: string | number) => void
-  onSearch: (inputVal: string | number) => void
-  onBlur: (event: React.FocusEvent<HTMLInputElement>) => void
+  onChange?: (inputVal: string | number) => void
+  onSearch?: (inputVal: string | number) => void
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
 }
 
 export interface SearchDropdownProps {
