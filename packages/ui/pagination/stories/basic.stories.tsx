@@ -11,8 +11,9 @@ export const Basic = () => {
           total={200}
           pageSize={10}
           current={current}
-          onChange={(cur) => {
+          onChange={(cur, prev, pageSize) => {
             updateCurrent(cur)
+            console.log('onChange', cur, prev, pageSize)
           }}
         />
       </div>

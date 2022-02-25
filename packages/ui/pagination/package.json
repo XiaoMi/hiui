@@ -52,6 +52,7 @@
     "@hi-ui/input": "^4.0.0-beta.2",
     "@hi-ui/locale-context": "^4.0.0-beta.6",
     "@hi-ui/select": "^4.0.0-beta.7",
+    "@hi-ui/type-assertion": "^4.0.0-beta.1",
     "@hi-ui/use-latest": "^4.0.0-beta.1",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.1"
   },

@@ -8,9 +8,13 @@ import { PageOption } from './PageOption'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { PageJumper } from './PageJumper'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import { isFunction } from '@hi-ui/type-assertion'
 
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
+
+const calculatePageCount = (total: number, pageSize: number) => Math.ceil(total / pageSize)
 
 /**
  * TODO: What is Pagination
@@ -25,7 +29,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
       current: currentProp,
       defaultCurrent = 1,
       pageSizeOptions,
-      pageSize = 10,
+      pageSize: pageSizeProp,
       max = 2,
       total,
       onPageSizeChange,
@@ -53,29 +57,38 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
       }
     }, [pageSizeOptions, itemText, itemPerPageText])
 
-    const [current, trySetCurrent] = useUncontrolledState(defaultCurrent, currentProp, onChange)
+    const [current, trySetCurrent] = useUncontrolledState(
+      defaultCurrent,
+      currentProp,
+      onChange,
+      Object.is
+    )
 
-    const calculatePageCount = useCallback((total: number, pageSize: number) => {
-      return Math.ceil(total / pageSize)
-    }, [])
+    const proxyTrySetCurrent = useLatestCallback((nextCurrent: number, size?: number) => {
+      const nextPageSize = size === undefined ? pageSize : size
+      trySetCurrent(nextCurrent, current, nextPageSize)
+    })
 
-    const _onPageSizeChange = useCallback(
-      (pageSize: number) => {
-        const pages = calculatePageCount(total, pageSize)
-        const newCurrent = current > pages ? pages : current
-        if (onPageSizeChange) {
-          onPageSizeChange(pageSize, newCurrent)
-          trySetCurrent(newCurrent)
-        }
+    const [pageSize, trySetPageSize] = useUncontrolledState(
+      10,
+      pageSizeProp,
+      (nextPageSize: number) => {
+        if (!isFunction(onPageSizeChange)) return
+
+        const pageCount = calculatePageCount(total, nextPageSize)
+        const nextCurrent = current > pageCount ? pageCount : current
+
+        onPageSizeChange(nextPageSize, nextCurrent)
+        proxyTrySetCurrent(nextCurrent, nextPageSize)
       },
-      [total, calculatePageCount, onPageSizeChange, current, trySetCurrent]
+      Object.is
     )
 
     const onClick = useCallback(
       (page) => {
-        trySetCurrent(page)
+        proxyTrySetCurrent(page)
       },
-      [trySetCurrent]
+      [proxyTrySetCurrent]
     )
 
     const cls = cx(prefixCls, className)
@@ -166,14 +179,14 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
           <PageOption
             pageSize={pageSize}
             pageSizeOptions={_pageSizeOptions as { id: number; title: string }[]}
-            onPageSizeChange={_onPageSizeChange}
+            onPageSizeChange={trySetPageSize}
           />
         ) : null}
         {showJumper ? (
           <PageJumper
             prefixCls={prefixCls}
             pageText={[gotoText, pageText]}
-            onJump={trySetCurrent}
+            onJump={proxyTrySetCurrent}
             maxJump={calculatePageCount(total, pageSize)}
           />
         ) : null}
