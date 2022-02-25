@@ -2,12 +2,19 @@ import React from 'react'
 import Table from '../src'
 
 export const RowSelection = () => {
+  const [selectedRowKeys, setSelectedRowKeys] = React.useState([])
+  console.log('selectedRowKeys', selectedRowKeys)
+
   return (
     <>
       <h1>RowSelection for Table</h1>
       <div className="table-row-selection__wrap" style={{ width: 800 }}>
         <Table
           fixedToColumn={{ left: 'type' }}
+          rowSelection={{
+            selectedRowKeys,
+            onChange: setSelectedRowKeys,
+          }}
           columns={[
             {
               title: '商品名',
@@ -34,7 +41,6 @@ export const RowSelection = () => {
               dataKey: 'stock',
             },
           ]}
-          rowSelection={{}}
           data={[
             {
               name: '小米9',

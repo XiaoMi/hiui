@@ -2,6 +2,9 @@ import React from 'react'
 import Table from '../src'
 
 export const FieldKey = () => {
+  const [selectedRowKeys, setSelectedRowKeys] = React.useState([])
+  console.log('selectedRowKeys', selectedRowKeys)
+
   return (
     <>
       <h1>FieldKey for Table</h1>
@@ -9,6 +12,10 @@ export const FieldKey = () => {
         <Table
           fixedToColumn={{ left: 'type' }}
           fieldKey="name"
+          rowSelection={{
+            selectedRowKeys,
+            onChange: setSelectedRowKeys,
+          }}
           columns={[
             {
               title: '商品名',
@@ -35,7 +42,6 @@ export const FieldKey = () => {
               dataKey: 'stock',
             },
           ]}
-          // rowSelection={{ selectedRowKeys: [] }}
           data={[
             {
               name: '小米9',

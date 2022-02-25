@@ -66,8 +66,8 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
   ) => {
     // ************************ 预置标准模式 ************************ //
 
-    const baseTableProps = withDefaultProps(rest, standard ? STANDARD_PRESET : undefined)
-    const setting = baseTableProps.setting ?? false
+    const tableProps = withDefaultProps(rest, standard ? STANDARD_PRESET : undefined)
+    const { setting = false, ...baseTableProps } = tableProps
 
     // ************************ 高级功能 ************************ //
 
