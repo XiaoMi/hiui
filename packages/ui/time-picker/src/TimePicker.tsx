@@ -62,6 +62,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       inputReadonly = false,
       overlay,
       size = 'md',
+      invalid = false,
     },
     ref
   ) => {
@@ -191,7 +192,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     const cls = cx(prefixCls, className, `${prefixCls}--appearance-${appearance}`, {
       [`${prefixCls}--active`]: showPopper && !disabled,
       [`${prefixCls}--disabled`]: disabled,
-      [`${prefixCls}--input-not-valid`]: !isInputValid,
+      [`${prefixCls}--input-not-valid`]: !isInputValid || invalid,
     })
 
     const functionButtons = useMemo(() => {
@@ -392,6 +393,11 @@ export interface TimePickerProps extends ExtendType {
    * @param value
    */
   onChange?: (value: string | string[]) => void
+  /**
+   * 是否非法
+   * @default false
+   */
+  invalid?: boolean
 }
 
 if (__DEV__) {

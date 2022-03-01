@@ -70,6 +70,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       appearance = 'line',
       size = 'md',
       overlay,
+      invalid = false,
       ...otherProps
     },
     ref
@@ -419,6 +420,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             }}
             setAttachEl={setAttachEl}
             dateRangeTimePanelNow={dateRangeTimePanelNow}
+            invalid={invalid}
           />
           <Popper
             {...(overlay || {})}
