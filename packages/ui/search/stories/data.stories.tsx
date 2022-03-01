@@ -7,6 +7,7 @@ export const Data = () => {
       <h1>带关联数据</h1>
       <div className="search-basic__wrap">
         <div>
+          <h2>普通数据</h2>
           <Search
             style={{ width: 260 }}
             placeholder="搜索关键字"
@@ -26,6 +27,7 @@ export const Data = () => {
           />
         </div>
         <div>
+          <h2>分组</h2>
           <Search
             style={{ width: 260 }}
             placeholder="搜索关键字"

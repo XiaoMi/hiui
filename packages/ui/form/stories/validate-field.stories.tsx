@@ -41,7 +41,7 @@ export const ValidateField = () => {
       <h1>ValidateField</h1>
       <div className="form-validate-field__wrap" style={{ width: 400 }}>
         <Form
-          labelWidth="80"
+          labelWidth="100"
           labelPlacement="right"
           innerRef={formRef}
           initialValues={{

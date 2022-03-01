@@ -3,15 +3,12 @@
 $prefix: '#{$component-prefix}-search' !default;
 
 .#{$prefix} {
-  &__input {
-    width: 280px;
-  }
-
   &__dropdown {
     box-sizing: border-box;
-    width: 280px;
     padding: use-spacing(4);
     font-size: use-text-size('normal');
+    // 填充没有选项时 loading 展示空间
+    min-height: 48px;
 
     &--highlight {
       color: use-color-mode('primary');

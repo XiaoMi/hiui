@@ -9,11 +9,9 @@ export const Basic = () => {
         <Search
           style={{ width: 260 }}
           placeholder="搜索关键字"
-
-          // onSearch={(keyword) => {
-          //   console.log('Input Value', keyword)
-          //   keyword && alert('Input Value: ' + keyword)
-          // }}
+          onSearch={(keyword) => {
+            console.log('onSearch', keyword)
+          }}
         />
       </div>
     </>

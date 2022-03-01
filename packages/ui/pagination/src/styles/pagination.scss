@@ -144,9 +144,11 @@ $input-pagination-prefix: '#{$component-prefix}-pagination-mini' !default;
   }
 
   &__input {
-    flex: 1 1 auto;
-    width: 48px;
-    margin-inline-start: use-spacing(4);
+    &.#{$component-prefix}-input {
+      flex: 1 1 auto;
+      width: 48px;
+      margin-inline-start: use-spacing(4);
+    }
   }
 
   &__total {

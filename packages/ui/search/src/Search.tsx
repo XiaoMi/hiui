@@ -1,14 +1,19 @@
-import React, { forwardRef, useState, useCallback } from 'react'
+import React, { forwardRef, useState, useCallback, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { Input } from '@hi-ui/input'
+import { Input, InputProps } from '@hi-ui/input'
 import { SearchOutlined } from '@hi-ui/icons'
-import { HiBaseHTMLProps } from '@hi-ui/core'
 import { Button } from '@hi-ui/button'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import { SearchDataItem } from './types'
+import { callAllFuncs } from '@hi-ui/func-utils'
+import type { PopperOverlayProps } from '@hi-ui/popper'
 import { SearchDropdown } from './SearchDropdown'
 
 const SEARCH_PREFIX = getPrefixCls('search')
+const NOOP_ARRAY = [] as []
 
 /**
  * TODO: What is Search
@@ -18,35 +23,43 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
     {
       prefixCls = SEARCH_PREFIX,
       className,
-      onChange,
-      onBlur,
-      append,
-      onSearch,
-      disabled,
-      overlayClassName,
-      data,
-      prepend,
+      disabled = false,
+      loading = false,
+      size = 'md',
+      append: appendProp,
       defaultValue = '',
       value: valueProp,
+      onChange,
+      onSearch: onSearchProp,
+      data = NOOP_ARRAY,
+      overlayClassName,
+      // input
+      onFocus,
+      onKeyDown: onKeyDownProp,
+      overlay,
       ...rest
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
-    const [targetElRef, setTargetElRef] = useState<HTMLElement | null>(null)
     const [visible, setVisible] = useState<boolean>(false)
+    const targetElRef = useRef<HTMLDivElement | null>(null)
+
     const [focusIndex, setFocusIndex] = useState<number | null>(null)
     const [subFocusIndex, setSubFocusIndex] = useState<number | null>(null)
-    const [value, tryChangeValue] = useUncontrolledState<string | number>(
+
+    const [value, tryChangeValue] = useUncontrolledState<string>(
       defaultValue,
       valueProp,
-      onChange
+      onChange,
+      Object.is
     )
-    const _onSearch = useCallback<() => void>(() => {
-      if (onSearch) {
-        onSearch(value)
+
+    const onSearch = useLatestCallback((nextValue: any) => {
+      if (typeof nextValue !== 'string') {
+        nextValue = value
       }
-    }, [onSearch, value])
+      onSearchProp?.(nextValue)
+    })
 
     const closeDropdown = useCallback(() => {
       setVisible(false)
@@ -54,202 +67,220 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
       setSubFocusIndex(null)
     }, [])
 
-    const moveFocus = useCallback(
-      (direction, data) => {
-        let newFocusIndex = null
-        let newSubFocusIndex = null
+    const moveFocus = useLatestCallback((direction: 'up' | 'down') => {
+      let newFocusIndex = null
+      let newSubFocusIndex = null
 
-        if (direction === 'up') {
-          if (focusIndex === null) {
-            newFocusIndex = data.length - 1
-            if (data[newFocusIndex].children && data[newFocusIndex].children.length > 0) {
-              newSubFocusIndex = data[newFocusIndex].children.length - 1
-            }
-          } else {
-            if (!(data[focusIndex].children && data[focusIndex].children.length > 0)) {
-              newFocusIndex = focusIndex === 0 ? data.length - 1 : focusIndex - 1
-
-              if (data[newFocusIndex].children && data[newFocusIndex].children.length > 0) {
-                newSubFocusIndex = data[newFocusIndex].children.length - 1
-              }
-            } else {
-              if (subFocusIndex === 0) {
-                newFocusIndex = focusIndex === 0 ? data.length - 1 : focusIndex - 1
-                if (data[newFocusIndex].children && data[newFocusIndex].children.length > 0) {
-                  newSubFocusIndex = data[newFocusIndex].children.length - 1
-                }
-              } else {
-                newFocusIndex = focusIndex
-                newSubFocusIndex = subFocusIndex !== null ? subFocusIndex - 1 : 0
-              }
-            }
+      if (direction === 'up') {
+        if (focusIndex === null) {
+          newFocusIndex = data.length - 1
+          const focusItem = data[newFocusIndex]
+          if (focusItem && isArrayNonEmpty(focusItem.children)) {
+            newSubFocusIndex = focusItem.children.length - 1
           }
         } else {
-          // 不存在 focusIndex
-          if (focusIndex === null) {
-            newFocusIndex = 0
-            if (data[newFocusIndex].children && data[newFocusIndex].children.length > 0) {
-              newSubFocusIndex = 0
+          const focusItem = data[focusIndex]
+          if (focusItem && isArrayNonEmpty(focusItem.children)) {
+            if (subFocusIndex === 0) {
+              newFocusIndex = focusIndex === 0 ? data.length - 1 : focusIndex - 1
+              const nextFocusItem = data[newFocusIndex]
+              if (nextFocusItem && isArrayNonEmpty(nextFocusItem.children)) {
+                newSubFocusIndex = nextFocusItem.children.length - 1
+              }
+            } else {
+              newFocusIndex = focusIndex
+              newSubFocusIndex = subFocusIndex !== null ? subFocusIndex - 1 : 0
             }
           } else {
-            // 存在 focusIndex
-            // 当前focus 项没有子项
-            if (!(data[focusIndex].children && data[focusIndex].children.length > 0)) {
+            newFocusIndex = focusIndex === 0 ? data.length - 1 : focusIndex - 1
+            const nextFocusItem = data[newFocusIndex]
+
+            if (nextFocusItem && isArrayNonEmpty(nextFocusItem.children)) {
+              newSubFocusIndex = nextFocusItem.children.length - 1
+            }
+          }
+        }
+      } else {
+        // 不存在 focusIndex
+        if (focusIndex === null) {
+          newFocusIndex = 0
+          const nextFocusItem = data[newFocusIndex]
+
+          if (nextFocusItem && isArrayNonEmpty(nextFocusItem.children)) {
+            newSubFocusIndex = 0
+          }
+        } else {
+          // 存在 focusIndex
+          // 当前focus 项没有子项
+          const focusItem = data[focusIndex]
+          if (focusItem && isArrayNonEmpty(focusItem.children)) {
+            // 当前focus 有子项
+            if (subFocusIndex === focusItem.children.length - 1) {
               newFocusIndex = focusIndex === data.length - 1 ? 0 : focusIndex + 1
-              if (data[newFocusIndex].children && data[newFocusIndex].children.length > 0) {
+              const nextFocusItem = data[newFocusIndex]
+
+              if (nextFocusItem && isArrayNonEmpty(nextFocusItem.children)) {
                 newSubFocusIndex = 0
               }
             } else {
-              // 当前focus 有子项
-              if (subFocusIndex === data[focusIndex].children.length - 1) {
-                newFocusIndex = focusIndex === data.length - 1 ? 0 : focusIndex + 1
-                if (data[newFocusIndex].children && data[newFocusIndex].children.length > 0) {
-                  newSubFocusIndex = 0
-                }
-              } else {
-                newFocusIndex = focusIndex
-                newSubFocusIndex = subFocusIndex !== null ? subFocusIndex + 1 : 0
-              }
-            }
-          }
-        }
-        setFocusIndex(newFocusIndex)
-        setSubFocusIndex(newSubFocusIndex)
-      },
-      [focusIndex, subFocusIndex]
-    )
-
-    const onKeyDown = useCallback(
-      (e) => {
-        // ESC
-        if (e.keyCode === 27) {
-          e.preventDefault()
-          closeDropdown()
-        }
-        // TAB
-        if (e.keyCode === 9) {
-          closeDropdown()
-        }
-        // UP
-        if (e.keyCode === 38) {
-          e.preventDefault()
-          moveFocus('up', data)
-        }
-        // DOWN
-        if (e.keyCode === 40) {
-          e.preventDefault()
-          moveFocus('down', data)
-        }
-        // ENTER
-        if (e.keyCode === 13) {
-          e.preventDefault()
-          let _inputValue = '' as React.ReactText
-          if (focusIndex !== null && data) {
-            if (subFocusIndex !== null) {
-              _inputValue = (data[focusIndex].children as SearchDataItem[])[subFocusIndex].title
-            } else {
-              _inputValue = data[focusIndex].title
+              newFocusIndex = focusIndex
+              newSubFocusIndex = subFocusIndex !== null ? subFocusIndex + 1 : 0
             }
           } else {
-            _inputValue = value
+            newFocusIndex = focusIndex === data.length - 1 ? 0 : focusIndex + 1
+            const nextFocusItem = data[newFocusIndex]
+
+            if (nextFocusItem && isArrayNonEmpty(nextFocusItem.children)) {
+              newSubFocusIndex = 0
+            }
           }
-          if (onSearch) {
-            onSearch(_inputValue)
-          }
-          tryChangeValue(_inputValue)
-          closeDropdown()
         }
-      },
-      [closeDropdown, moveFocus, onSearch, value, focusIndex, subFocusIndex, data, tryChangeValue]
-    )
+      }
+
+      setFocusIndex(newFocusIndex)
+      setSubFocusIndex(newSubFocusIndex)
+    })
+
+    const onKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+      // ESC
+      if (evt.keyCode === 27) {
+        evt.preventDefault()
+        closeDropdown()
+      }
+      // TAB
+      if (evt.keyCode === 9) {
+        evt.preventDefault()
+        closeDropdown()
+      }
+      // UP
+      if (evt.keyCode === 38) {
+        evt.preventDefault()
+        moveFocus('up')
+      }
+      // DOWN
+      if (evt.keyCode === 40) {
+        evt.preventDefault()
+        moveFocus('down')
+      }
+      // ENTER
+      if (evt.keyCode === 13) {
+        evt.preventDefault()
+
+        let nextValue = '' as React.ReactText
+        if (focusIndex !== null && isArrayNonEmpty(data)) {
+          const focusItem = data[focusIndex]
+
+          if (subFocusIndex !== null && isArrayNonEmpty(focusItem.children)) {
+            nextValue = focusItem.children[subFocusIndex].title
+          } else {
+            nextValue = focusItem.title
+          }
+        } else {
+          nextValue = value
+        }
+
+        onSearch(nextValue)
+        tryChangeValue(nextValue)
+        closeDropdown()
+      }
+    }
+
+    const openDropdown = useCallback(() => {
+      setVisible(true)
+    }, [])
+
+    const cls = cx(prefixCls, className)
 
     return (
-      <div className={cls} ref={ref} {...rest}>
+      <>
         <Input
-          className={`${prefixCls}__input`}
-          ref={setTargetElRef}
-          disabled={disabled}
-          prepend={prepend}
-          onChange={(e) => {
-            tryChangeValue(e.target.value)
-            if (data && data.length > 0) {
-              setVisible(true)
-            }
-          }}
-          // @ts-ignore
-          onKeyDown={onKeyDown}
-          value={String(value)}
-          onBlur={onBlur}
-          onFocus={() => {
-            if (data && data.length > 0) {
-              setVisible(true)
-            }
-          }}
+          className={cls}
+          ref={ref}
+          containerRef={targetElRef}
           clearable
+          disabled={disabled}
+          size={size}
+          value={value}
+          onChange={(evt) => {
+            tryChangeValue(evt.target.value)
+            openDropdown()
+          }}
+          onFocus={callAllFuncs(openDropdown, onFocus)}
+          onKeyDown={callAllFuncs(onKeyDownProp, onKeyDown)}
           append={
-            append !== undefined ? (
-              append
+            appendProp === undefined ? (
+              <Button
+                type="primary"
+                disabled={disabled}
+                onClick={onSearch}
+                size={size}
+                icon={<SearchOutlined />}
+              />
             ) : (
-              <Button disabled={disabled} onClick={_onSearch} icon={<SearchOutlined />} />
+              appendProp
             )
           }
+          {...rest}
         />
-        {data && data.length > 0 && (
+        {loading || isArrayNonEmpty(data) ? (
           <SearchDropdown
-            data={data}
-            overlayClassName={overlayClassName}
-            focusIndex={focusIndex}
-            inputRef={targetElRef}
-            onClose={closeDropdown}
-            subFocusIndex={subFocusIndex}
             prefixCls={prefixCls}
-            visible={visible}
+            popper={{
+              matchWidth: true,
+              ...overlay,
+              autoFocus: false,
+              visible: visible,
+              onClose: closeDropdown,
+              attachEl: targetElRef.current,
+              className: overlayClassName,
+            }}
+            loading={loading}
+            data={data}
+            focusIndex={focusIndex}
+            subFocusIndex={subFocusIndex}
             keyword={value}
             onSelect={(item) => {
-              if (onSearch) {
-                onSearch(item.title)
-              }
+              onSearch(item.title)
               tryChangeValue(item.title)
-              targetElRef?.focus()
+              targetElRef.current?.focus()
               closeDropdown()
             }}
           />
-        )}
-      </div>
+        ) : null}
+      </>
     )
   }
 )
-export interface SearchDataItem {
-  id: string | number
-  title: string | number
-  children?: SearchDataItem[]
-}
-export interface SearchProps extends HiBaseHTMLProps<'input'> {
-  disabled?: boolean
-  prepend?: React.ReactNode
-  loading?: boolean
-  placeholder?: string
-  append?: React.ReactNode
-  overlayClassName?: string
-  data?: SearchDataItem[]
-  defaultValue?: string
-  value?: string
-  onChange?: (inputVal: string | number) => void
-  onSearch?: (inputVal: string | number) => void
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
-}
 
-export interface SearchDropdownProps {
+export interface SearchProps extends Omit<InputProps, 'onChange' | 'appearance'> {
+  /**
+   * 是否展示 loading
+   */
+  loading?: boolean
+  /**
+   * 设置展现形式
+   */
+  appearance?: 'line' | 'filled'
+  /**
+   * 值改变时的回调
+   */
+  onChange?: (value: string) => void
+  /**
+   * 点击搜索图标、清除图标，或聚焦按下回车键时的回调
+   */
+  onSearch?: (value: string) => void
+  /**
+   * 下拉根元素的类名称
+   */
   overlayClassName?: string
-  data: SearchDataItem[]
-  focusIndex: number | null
-  subFocusIndex: number | null
-  visible: boolean
-  inputRef: HTMLElement | null
-  onClose: () => void
-  prefixCls: string
-  onSelect: (item: SearchDataItem) => void
-  keyword: string | number
+  /**
+   * 搜索结果的数据
+   */
+  data?: SearchDataItem[]
+  /**
+   * 自定义控制 popper 行为
+   */
+  overlay?: PopperOverlayProps
 }
 
 if (__DEV__) {

@@ -1,89 +1,112 @@
-import React, { useCallback } from 'react'
-import Popper from '@hi-ui/popper'
-import { SearchDropdownProps } from './Search'
+import React, { Fragment } from 'react'
 import { cx } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
+import Popper, { PopperProps } from '@hi-ui/popper'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { Highlighter } from '@hi-ui/highlighter'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import Loading from '@hi-ui/loading'
+import { SearchDataItem } from './types'
+import { SearchProps } from './Search'
+
+const NOOP_ARRAY = [] as []
 
 export const SearchDropdown: React.FC<SearchDropdownProps> = ({
-  overlayClassName,
-  inputRef,
-  visible,
-  onClose,
-  data,
   prefixCls,
+  data = NOOP_ARRAY,
+  loading,
   focusIndex,
   subFocusIndex,
   onSelect,
   keyword,
+  popper,
 }) => {
-  const highlightKeyword = useCallback(
-    (title: string) => {
-      const searchbarValue = String(keyword)
-      let _keyword = searchbarValue
-      _keyword = searchbarValue.includes('[') ? _keyword.replace(/\[/gi, '\\[') : _keyword
-      _keyword = searchbarValue.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
-      _keyword = searchbarValue.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
+  const highlightKeyword = useLatestCallback((title: string) => {
+    if (keyword && keyword.length > 0) {
+      return <Highlighter keyword={keyword}>{title}</Highlighter>
+    }
 
-      const parts = title.split(new RegExp(`(${_keyword})`, 'gi'))
-      return _keyword && _keyword.length > 0 ? (
-        <div>
-          {parts.map((part, idx) =>
-            part === searchbarValue ? (
-              <span key={idx} className={`${prefixCls}__dropdown--highlight`}>
-                {part}
-              </span>
-            ) : (
-              part
-            )
-          )}
-        </div>
-      ) : (
-        title
-      )
-    },
-    [keyword, prefixCls]
-  )
+    return title
+  })
+
   return (
-    <Popper
-      className={overlayClassName}
-      attachEl={inputRef}
-      visible={visible}
-      autoFocus={false}
-      onClose={onClose}
-    >
-      <div className={`${prefixCls}__dropdown`}>
-        {data?.map((d, index) => (
-          <>
-            <div
-              className={cx(`${prefixCls}__dropdown-item`, {
-                [`${prefixCls}__dropdown-group`]: d.children,
-                [`${prefixCls}__dropdown-item--focus`]: focusIndex === index && !d.children,
-              })}
-              key={d.id}
-              onClick={() => {
-                if (!d.children) {
-                  onSelect(d)
-                }
-              }}
-            >
-              {d?.children ? d.title : highlightKeyword(d.title as string)}
-            </div>
-            {d?.children?.map((sub, idx) => (
-              <div
-                className={cx(`${prefixCls}__dropdown-subitem`, {
-                  [`${prefixCls}__dropdown-subitem--focus`]:
-                    subFocusIndex === idx && focusIndex === index,
-                })}
-                key={sub.id}
-                onClick={() => {
-                  onSelect(sub)
-                }}
-              >
-                {highlightKeyword(sub.title as string)}
-              </div>
-            ))}
-          </>
-        ))}
-      </div>
+    <Popper {...popper}>
+      <Loading visible={loading}>
+        <div className={`${prefixCls}__dropdown`}>
+          {data.map((item, index) => {
+            const isGroup = !!item.children
+
+            return (
+              <Fragment key={item.id}>
+                <div
+                  className={cx(
+                    `${prefixCls}__dropdown-item`,
+                    isGroup && `${prefixCls}__dropdown-group`,
+                    focusIndex === index && !isGroup && `${prefixCls}__dropdown-item--focus`
+                  )}
+                  onClick={() => {
+                    if (!isGroup) {
+                      onSelect(item)
+                    }
+                  }}
+                >
+                  {/* groupTitle 不参与高亮检索 */}
+                  {isGroup ? item.title : highlightKeyword(item.title as string)}
+                </div>
+                {isArrayNonEmpty(item.children)
+                  ? item.children.map((subItem, idx) => (
+                      <div
+                        key={subItem.id}
+                        className={cx(
+                          `${prefixCls}__dropdown-subitem`,
+                          subFocusIndex === idx &&
+                            focusIndex === index &&
+                            `${prefixCls}__dropdown-subitem--focus`
+                        )}
+                        onClick={() => {
+                          onSelect(subItem)
+                        }}
+                      >
+                        {highlightKeyword(subItem.title as string)}
+                      </div>
+                    ))
+                  : null}
+              </Fragment>
+            )
+          })}
+        </div>
+      </Loading>
     </Popper>
   )
+}
+
+export interface SearchDropdownProps extends Pick<SearchProps, 'prefixCls' | 'loading'> {
+  /**
+   * 下拉选项
+   */
+  data?: SearchDataItem[]
+  /**
+   * 下拉 popper 透传的 props
+   */
+  popper: PopperProps
+  /**
+   * 聚焦选项数组索引
+   */
+  focusIndex: number | null
+  /**
+   * 聚焦子选项数组索引
+   */
+  subFocusIndex: number | null
+  /**
+   * 点击选中时回调
+   */
+  onSelect: (item: SearchDataItem) => void
+  /**
+   * 搜索关键词
+   */
+  keyword: string
+}
+
+if (__DEV__) {
+  SearchDropdown.displayName = 'SearchDropdown'
 }

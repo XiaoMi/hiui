@@ -47,7 +47,9 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       onFocus,
       onBlur,
       trimValueOnBlur,
+      onClear,
       type,
+      containerRef,
       ...rest
     },
     ref
@@ -100,14 +102,6 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       inputElementRef.current?.focus()
     }, [])
 
-    const handleReset = useCallback(
-      (evt: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        tryChangeValue('', evt)
-        focus()
-      },
-      [tryChangeValue, focus]
-    )
-
     const [hover, setHover] = useState(false)
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
     const showClearableIcon = clearable && !!value && !disabled
@@ -130,7 +124,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
     )
 
     return (
-      <div role={role} className={cls} style={style}>
+      <div role={role} className={cls} style={style} ref={containerRef}>
         <div className={outerCls}>
           {prepend ? <div className={`${prefixCls}__prepend`}>{prepend}</div> : null}
           <div
@@ -170,7 +164,11 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
                     )}
                     role="button"
                     tabIndex={-1}
-                    onClick={handleReset}
+                    onClick={(evt: React.MouseEvent<HTMLElement>) => {
+                      tryChangeValue('', evt)
+                      onClear?.()
+                      focus()
+                    }}
                   >
                     <CloseCircleFilled />
                   </span>
@@ -260,6 +258,16 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
    * 值改变时的回调
    */
   onChange?: (evt: React.ChangeEvent<HTMLInputElement>, value: string) => void
+  /**
+   * 点击清空时回调。暂不对外暴露
+   * @private
+   */
+  onClear?: () => void
+  /**
+   * 外部包裹容器元素的 ref。暂不对外暴露
+   * @private
+   */
+  containerRef?: React.Ref<HTMLDivElement>
 }
 
 if (__DEV__) {

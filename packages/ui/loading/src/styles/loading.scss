@@ -4,6 +4,7 @@ $prefixCls: #{$component-prefix}-loading !default;
 
 .#{$prefixCls} {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   color: use-color-static('primary');

@@ -8,5 +8,9 @@ export interface SearchDataItem {
   /**
    * 节点标题
    */
-  title: React.ReactNode
+  title: string
+  /**
+   * 孩子节点
+   */
+  children?: SearchDataItem[]
 }
