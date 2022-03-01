@@ -397,7 +397,7 @@ export const useForm = <Values = Record<string, any>>({
   })
 
   const getFieldProps = useCallback(
-    (props = {}, ref = null) => {
+    (props = {}) => {
       const {
         field,
         valuePropName = 'value',
@@ -407,7 +407,7 @@ export const useForm = <Values = Record<string, any>>({
         validateTrigger: validateTriggerProp = validateTriggersMemo,
         children,
       } = props
-      const controlProps = children.props || {}
+      const controlProps = (children && children.props) || {}
 
       const validateTrigger = (isArray(validateTriggerProp)
         ? validateTriggerProp
@@ -419,7 +419,6 @@ export const useForm = <Values = Record<string, any>>({
       const controlledValue = getNested(formState.values, field)
 
       const returnProps: any = {
-        ref,
         [valuePropName]: isFunction(valueConnectTransform)
           ? valueConnectTransform(controlledValue)
           : controlledValue,

@@ -44,7 +44,6 @@ export const SetValues = () => {
                 rules={[
                   {
                     trigger: 'onChange',
-                    type: 'number',
                     validator: (rule, value, callback) => {
                       const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
                       if (!value) {
@@ -62,9 +61,9 @@ export const SetValues = () => {
               </FormItem>
             </Col>
             <Col>
-              <a href="#Props" style={{ margin: '0 8px', lineHeight: '32px' }}>
+              <Button appearance="link" style={{ lineHeight: '32px' }} type="secondary">
                 Help?
-              </a>
+              </Button>
             </Col>
           </Row>
           <FormItem label="Select" field="select" required={true} valueType="string">

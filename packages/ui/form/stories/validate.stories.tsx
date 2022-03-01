@@ -67,7 +67,6 @@ export const Validate = () => {
   const [rules] = React.useState<FormRules>({
     name: [
       {
-        type: 'string',
         required: true,
         message: '请输入名称',
         trigger: 'onBlur,onChange',
@@ -75,7 +74,6 @@ export const Validate = () => {
     ],
     region: [
       {
-        type: 'string',
         required: true,
         message: '请选择区域',
         trigger: 'onChange',

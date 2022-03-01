@@ -30,7 +30,6 @@ export const GetValues = () => {
             rules={[
               {
                 trigger: 'onChange',
-                type: 'number',
                 validator: (rule, value, callback) => {
                   const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
                   if (!value) {

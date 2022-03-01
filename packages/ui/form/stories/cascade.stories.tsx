@@ -82,11 +82,10 @@ export const Cascade = () => {
             rules={[
               {
                 trigger: 'onChange',
-                type: 'array',
                 required: true,
               },
             ]}
-            valueType="string"
+            valueType="array"
           >
             <CheckboxGroup
               data={[

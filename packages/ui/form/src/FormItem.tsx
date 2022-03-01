@@ -21,6 +21,7 @@ export const FormItem: React.FC<FormItemProps> = ({
   valueDispatchTransform,
   valueConnectTransform,
   validateTrigger,
+  render,
   ...rest
 }) => {
   // @ts-ignore
@@ -37,6 +38,7 @@ export const FormItem: React.FC<FormItemProps> = ({
         valueDispatchTransform={valueDispatchTransform}
         valueConnectTransform={valueConnectTransform}
         validateTrigger={validateTrigger}
+        render={render}
       >
         {children}
       </FormField>
@@ -51,6 +53,10 @@ export interface FormItemProps extends UseFormFieldProps, FormLabelProps {
    * 表单控件
    */
   children?: React.ReactElement
+  /**
+   * 支持表单控件 render 渲染
+   */
+  render?: (props: Record<string, any>) => React.ReactElement
 }
 
 if (__DEV__) {
