@@ -13,6 +13,7 @@ const Root = ({
   inputFocus,
   setAttachEl,
   dateRangeTimePanelNow,
+  invalid,
 }: {
   onTrigger: (index: number) => void
   onClear: () => void
@@ -20,6 +21,7 @@ const Root = ({
   inputFocus: boolean
   inputChangeEvent: InputChangeEvent
   dateRangeTimePanelNow: number
+  invalid: boolean
 }) => {
   const {
     i18n,
@@ -70,7 +72,8 @@ const Root = ({
     `${prefixCls}__picker--size-${size}`,
     inputFocus && `${prefixCls}__picker--focus`,
     disabled && `${prefixCls}__picker--disabled`,
-    showTime && `${prefixCls}__picker--hastime`
+    showTime && `${prefixCls}__picker--hastime`,
+    invalid && `${prefixCls}__picker--invalid`
   )
 
   const renderRange = type.includes('range') || type === 'timeperiod'

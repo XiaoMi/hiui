@@ -99,7 +99,8 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       box-shadow: 0 0 0 2px use-color-mode('primary', 100);
     }
 
-    &--error {
+    &--invalid,&--invalid:hover,&--invalid#{&}--focus, {
+      border: use-border-size('normal') use-color-mode('danger', 500);
       box-shadow: 0 0 0 2px use-color-mode('danger', 100);
     }
 

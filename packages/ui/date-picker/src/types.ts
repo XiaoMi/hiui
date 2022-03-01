@@ -185,4 +185,9 @@ export interface DatePickerProps extends ExtendsType {
    * 自定义控制弹出层 popper
    */
   overlay?: PopperOverlayProps
+  /**
+   * 是否非法
+   * @default false
+   */
+  invalid?: boolean
 }
