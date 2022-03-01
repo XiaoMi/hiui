@@ -60,7 +60,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--input-not-valid {
-    .#{$input-wrapper-class} {
+    .#{$input-wrapper-class},.#{$input-wrapper-class}:hover {
       border-color: use-color-mode('danger');
     }
 
