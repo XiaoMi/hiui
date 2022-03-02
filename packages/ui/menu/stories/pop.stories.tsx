@@ -5,7 +5,7 @@ export const Pop = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20 }}>
+      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20, minWidth: 600 }}>
         <Menu
           expandedType="pop"
           data={[

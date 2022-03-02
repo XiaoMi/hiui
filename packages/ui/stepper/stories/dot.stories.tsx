@@ -1,7 +1,7 @@
 import React from 'react'
 import Stepper from '../src'
 
-const list = [
+const list1 = [
   {
     title: '账号信息',
   },
@@ -31,9 +31,11 @@ const list2 = [
 export const Dot = () => {
   return (
     <>
-      <h1>Stepper</h1>
-      <div className="stepper-basic__wrap">
-        <Stepper data={list} current={1} type="dot" />
+      <h1>Dot</h1>
+      <div className="stepper-dot__wrap">
+        <Stepper data={list1} current={1} type="dot" />
+        <br />
+        <br />
         <Stepper data={list2} current={2} type="dot" />
       </div>
     </>

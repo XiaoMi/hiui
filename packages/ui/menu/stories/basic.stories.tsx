@@ -1,35 +1,42 @@
 import React from 'react'
 import Menu from '../src'
-import { HomeOutlined } from '@hi-ui/icons'
+import {
+  // HomeOutlined,
+  UserOutlined,
+  SunOutlined,
+  PadOutlined,
+  ManOutlined,
+  LockOutlined,
+} from '@hi-ui/icons'
 
 export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20 }}>
+      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20, minWidth: 600 }}>
         <Menu
           showCollapse
           defaultExpandedIds={[3]}
           data={[
             {
-              title: '电视',
+              title: '首页',
               id: 1,
-              icon: <HomeOutlined />,
+              // icon: <HomeOutlined />,
             },
             {
               title: '小米MIX',
               id: 2,
-              icon: <HomeOutlined />,
+              icon: <UserOutlined />,
             },
             {
               title: '手机',
               id: 3,
-              icon: <HomeOutlined />,
+              icon: <SunOutlined />,
               children: [
                 {
                   title: '小米',
                   id: 666,
-
+                  icon: <LockOutlined />,
                   children: [
                     {
                       title: '小米9',
@@ -43,6 +50,7 @@ export const Basic = () => {
                     {
                       title: '小米7',
                       id: 'xiaomi7',
+                      icon: <ManOutlined />,
                     },
                     {
                       title: '小米6',
@@ -99,7 +107,7 @@ export const Basic = () => {
             {
               title: '超长超长超长字符超长超长超长字符',
               id: 4,
-              icon: <HomeOutlined />,
+              icon: <PadOutlined />,
             },
           ]}
         />

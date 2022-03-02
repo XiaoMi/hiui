@@ -1,7 +1,8 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { StepperItem } from './Stepper'
+import { StepperDataItem } from './types'
+import { CheckOutlined } from '@hi-ui/icons'
 
 const _role = 'stepper'
 const _prefix = getPrefixCls(_role)
@@ -14,11 +15,11 @@ export const VerticalStepper = forwardRef<HTMLDivElement | null, VStepperProps>(
     { prefixCls = _prefix, role = _role, className, data, current, onChange, type, ...rest },
     ref
   ) => {
-    const cls = cx(`${prefixCls}--vertical`, className)
+    const cls = cx(`${prefixCls}--vertical`, `${prefixCls}--type-${type}`, className)
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        {data.map((d, index) => (
+        {data.map((stepperItem, index) => (
           <div
             key={index}
             onClick={() => {
@@ -35,17 +36,21 @@ export const VerticalStepper = forwardRef<HTMLDivElement | null, VStepperProps>(
             })}
           >
             <div className={cx('item-step__wrapper')}>
-              {d.icon ? (
-                <div className={cx('item-step__icon')}>{d.icon}</div>
+              {stepperItem.icon ? (
+                <div className={cx('item-step__icon')}>{stepperItem.icon}</div>
               ) : type === 'dot' ? (
                 <div className={cx('item-step__dot')} />
+              ) : current !== undefined && current > index + 1 ? (
+                <div className={cx('item-step')}>
+                  <CheckOutlined />
+                </div>
               ) : (
                 <div className={cx('item-step')}>{index + 1}</div>
               )}
             </div>
             <div className="vertical-wrapper">
-              <div className={cx('item-step__title')}>{d.title}</div>
-              <div className={cx('item-step__content')}>{d.content}</div>
+              <div className={cx('item-step__title')}>{stepperItem.title}</div>
+              <div className={cx('item-step__content')}>{stepperItem.content}</div>
             </div>
           </div>
         ))}
@@ -75,7 +80,7 @@ export interface VStepperProps {
   /**
    * 步骤条数据项
    */
-  data: StepperItem[]
+  data: StepperDataItem[]
   /**
    * 当前步骤位置索引，从 0 开始计数
    */

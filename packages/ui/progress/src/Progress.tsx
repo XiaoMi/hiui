@@ -21,7 +21,7 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
       size = 'md',
       active = false,
       indeterminate = false,
-      showInfo = true,
+      showInfo: showInfoProp,
       placement = 'outside',
       style,
       content,
@@ -44,7 +44,11 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
       indeterminate && `${prefixCls}--indeterminate`
     )
 
-    const _content = content !== undefined ? content : `${rate * 100}%`
+    const showInfo = showInfoProp === undefined ? !indeterminate : showInfoProp
+
+    if (showInfo && content === undefined) {
+      content = `${rate * 100}%`
+    }
 
     return (
       <div ref={ref} className={cls} role="progressbar" style={{ ...style, width }} {...rest}>
@@ -73,13 +77,13 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
                     contentElement && contentElement?.clientWidth >= barElement?.clientWidth - 8,
                 })}
               >
-                {_content}
+                {content}
               </span>
             )}
           </span>
         </div>
         {showInfo && placement === 'outside' && (
-          <div className={`${prefixCls}__content`}>{_content}</div>
+          <div className={`${prefixCls}__content`}>{content}</div>
         )}
       </div>
     )

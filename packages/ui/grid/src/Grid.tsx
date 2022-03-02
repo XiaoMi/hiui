@@ -12,7 +12,7 @@ const gapNameVar = getPrefixStyleVar('grid-row-gap')
 // Row 与 Row 默认间距
 const DEFAULT_ROW_GAP = 24
 // Row 内每项 Col 默认间距
-const DEFAULT_GUTTER_GAP = 24
+const DEFAULT_GUTTER_GAP = 16
 
 /**
  * TODO: What is Grid Row
@@ -78,22 +78,6 @@ export const Row = forwardRef<HTMLDivElement | null, RowProps>(
 )
 
 export interface RowProps extends HiBaseHTMLProps<'div'> {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
   /**
    * 里面的元素排布方式
    */
@@ -171,22 +155,6 @@ export const Col = forwardRef<HTMLDivElement | null, ColProps>(
 
 export interface ColProps extends HiBaseHTMLProps<'div'> {
   /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-  /**
    *  Col 元素占多少个栅格
    */
   span?: number
@@ -220,22 +188,6 @@ export const Br = forwardRef<HTMLDivElement | null, BrProps>(
 )
 
 export interface BrProps extends HiBaseHTMLProps<'div'> {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
   /**
    *  换行符高度
    */

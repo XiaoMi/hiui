@@ -43,13 +43,17 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/array-utils": "^4.0.0-beta.3",
     "@hi-ui/classname": "^4.0.0-beta.0",
     "@hi-ui/core": "^4.0.0-beta.2",
     "@hi-ui/core-css": "^4.0.0-beta.2",
     "@hi-ui/env": "^4.0.0-beta.0",
     "@hi-ui/icons": "^4.0.0-beta.2",
     "@hi-ui/popper": "^4.0.0-beta.4",
+    "@hi-ui/times": "^4.0.0-beta.1",
+    "@hi-ui/tooltip": "^4.0.0-beta.7",
     "@hi-ui/type-assertion": "^4.0.0-beta.1",
+    "@hi-ui/use-merge-refs": "^4.0.0-beta.1",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.1",
     "react-transition-group": "^4.4.2"
   },

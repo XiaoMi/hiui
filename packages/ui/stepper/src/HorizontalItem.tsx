@@ -1,7 +1,9 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { StepperItem } from './Stepper'
+import { StepperDataItem } from './types'
+import { CheckOutlined } from '@hi-ui/icons'
+
 const _role = 'stepper'
 const _prefix = getPrefixCls(_role)
 
@@ -24,6 +26,8 @@ export const HorizontalItem = forwardRef<HTMLDivElement | null, StepperProps>(
     },
     ref
   ) => {
+    const hasDone = !isLastActive && isActive
+
     return (
       <div
         ref={ref}
@@ -34,20 +38,26 @@ export const HorizontalItem = forwardRef<HTMLDivElement | null, StepperProps>(
           [`${prefixCls}__item--first`]: isFirst,
           [`${prefixCls}__item--last`]: isLast,
           [`${prefixCls}__item--left-active`]: isActive,
-          [`${prefixCls}__item--right-active`]: !isLastActive && isActive,
+          [`${prefixCls}__item--right-active`]: hasDone,
         })}
       >
+        {stepperItem.icon ? (
+          <div className={cx('item-step__icon')}>{stepperItem.icon}</div>
+        ) : type === 'dot' ? (
+          <div className={cx('item-step__dot')} />
+        ) : hasDone ? (
+          <div className={cx('item-step')}>
+            <CheckOutlined />
+          </div>
+        ) : (
+          <div className={cx('item-step')}>{index + 1}</div>
+        )}
         <div className={cx('item-step__wrapper')}>
-          {stepperItem.icon ? (
-            <div className={cx('item-step__icon')}>{stepperItem.icon}</div>
-          ) : type === 'dot' ? (
-            <div className={cx('item-step__dot')} />
-          ) : (
-            <div className={cx('item-step')}>{index + 1}</div>
-          )}
-          <div className={cx('item-step__title')}>{stepperItem.title}</div>
+          <div className={cx('item-step__title')}>
+            <span>{stepperItem.title}</span>
+          </div>
+          <div className={cx('item-step__content')}>{stepperItem.content}</div>
         </div>
-        <div className={cx('item-step__content')}>{stepperItem.content}</div>
       </div>
     )
   }
@@ -71,7 +81,7 @@ export interface StepperProps {
   /**
    * 步骤条数据项
    */
-  stepperItem: StepperItem
+  stepperItem: StepperDataItem
   /**
    * 是否高亮
    */

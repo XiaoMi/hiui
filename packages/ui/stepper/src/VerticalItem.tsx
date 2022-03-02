@@ -1,7 +1,8 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { StepperItem } from './Stepper'
+import { StepperDataItem } from './types'
+import { CheckOutlined } from '@hi-ui/icons'
 const _role = 'stepper'
 const _prefix = getPrefixCls(_role)
 
@@ -24,17 +25,19 @@ export const VerticalItem = forwardRef<HTMLDivElement | null, StepperProps>(
     },
     ref
   ) => {
+    const hasDone = !isLastActive && isActive
+
     return (
       <div
         ref={ref}
-        onClick={() => onClick}
+        onClick={onClick}
         className={cx(`${prefixCls}__item`, {
           [`${prefixCls}__item--vertical`]: true,
           [`${prefixCls}__item--active`]: isActive,
           [`${prefixCls}__item--first`]: isFirst,
           [`${prefixCls}__item--last`]: isLast,
           [`${prefixCls}__item--left-active`]: isActive,
-          [`${prefixCls}__item--right-active`]: !isLastActive && isActive,
+          [`${prefixCls}__item--right-active`]: hasDone,
         })}
       >
         <div className={cx('item-step__wrapper')}>
@@ -42,6 +45,10 @@ export const VerticalItem = forwardRef<HTMLDivElement | null, StepperProps>(
             <div className={cx('item-step__icon')}>{stepperItem.icon}</div>
           ) : type === 'dot' ? (
             <div className={cx('item-step__dot')} />
+          ) : hasDone ? (
+            <div className={cx('item-step')}>
+              <CheckOutlined />
+            </div>
           ) : (
             <div className={cx('item-step')}>{index + 1}</div>
           )}
@@ -71,7 +78,7 @@ export interface StepperProps {
   /**
    * 步骤条数据项
    */
-  stepperItem: StepperItem
+  stepperItem: StepperDataItem
   /**
    * 是否高亮
    */
@@ -99,7 +106,7 @@ export interface StepperProps {
   /**
    * 步骤项的变更回调
    */
-  onClick?: (current: number) => void
+  onClick?: () => void
   type?: 'dot' | 'default'
 }
 

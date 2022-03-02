@@ -6,6 +6,9 @@ import { MenuItem } from './MenuItem'
 import MenuContext from './context'
 import { getAncestorIds } from './util'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { MenuDataItem } from './types'
+import Tooltip from '@hi-ui/tooltip'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -21,6 +24,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       data,
       placement = 'vertical',
       showCollapse,
+      // 仅对垂直模式有效
       expandedType = 'collapse',
       showAllSubMenus = false,
       defaultExpandedIds,
@@ -53,8 +57,8 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const clickSubMenu = useCallback(
       (id: React.ReactText) => {
         const expandedIds = _expandedIds.includes(id)
-        ? _expandedIds.filter((expandedid) => expandedid !== id)
-        : _expandedIds.concat(id)
+          ? _expandedIds.filter((expandedId) => expandedId !== id)
+          : _expandedIds.concat(id)
         updateExpanedIds(expandedIds)
         if (onClickSubMenu) {
           onClickSubMenu(id, expandedIds)
@@ -65,7 +69,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     const closePopper = useCallback(
       (id: React.ReactText) => {
-        updateExpanedIds(_expandedIds.filter((expandedid) => expandedid !== id))
+        updateExpanedIds(_expandedIds.filter((expandedId) => expandedId !== id))
       },
       [_expandedIds]
     )
@@ -77,12 +81,15 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const [mini, setMini] = useState(false)
     const cls = cx(prefixCls, className, `${prefixCls}--${placement}`, {
       [`${prefixCls}--mini`]: mini,
+      [`${prefixCls}--popup`]: expandedType === 'pop' || showAllSubMenus || mini,
     })
 
     const onToggle = useCallback(() => {
       setMini(!mini)
       closeAllPopper()
     }, [mini, closeAllPopper])
+
+    const canToggle = placement === 'vertical' && showCollapse
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
@@ -102,57 +109,35 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
           }}
         >
           <ul className={cx(`${prefixCls}__wrapper`)}>
-            {data.map((d) => (
-              <MenuItem {...d} key={d.id} level={1} />
-            ))}
+            {data.map((item) => {
+              return canToggle && mini ? (
+                <Tooltip title={item.title} key={item.id} placement="right">
+                  <MenuItem {...item} level={1} />
+                </Tooltip>
+              ) : (
+                <MenuItem {...item} key={item.id} level={1} />
+              )
+            })}
           </ul>
-          {placement === 'vertical' && showCollapse && (
+          {canToggle ? (
             <div className={cx(`${prefixCls}__toggle`)} onClick={onToggle}>
               {mini ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </div>
-          )}
+          ) : null}
         </MenuContext.Provider>
       </div>
     )
   }
 )
-export type MenuItemProps = {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  title: React.ReactNode
-  icon?: React.ReactNode
-  id: React.ReactText
-  disabled?: boolean
-  children?: MenuItemProps[]
-  level?: number
-  parentIds?: React.ReactText[]
-}
-export interface MenuProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  data: MenuItemProps[]
+
+export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
+  data: MenuDataItem[]
   activeId?: React.ReactText
   placement?: 'horizontal' | 'vertical'
   collapsed?: boolean
   showCollapse?: boolean
   showAllSubMenus?: boolean
   accordion?: boolean
-  style?: React.CSSProperties
   onClick?: (menuId: React.ReactText) => void
   onClickSubMenu?: (subMenuId: React.ReactText, expandedIds: React.ReactText[]) => void
   onCollapse?: (collapsed: boolean) => void

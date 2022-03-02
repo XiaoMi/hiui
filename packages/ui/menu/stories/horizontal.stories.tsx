@@ -1,29 +1,41 @@
 import React from 'react'
+import {
+  HomeOutlined,
+  UserOutlined,
+  SunOutlined,
+  PadOutlined,
+  ManOutlined,
+  LockOutlined,
+} from '@hi-ui/icons'
 import Menu from '../src'
 
 export const Horizontal = () => {
   return (
     <>
       <h1>水平菜单</h1>
-      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20 }}>
+      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20, minWidth: 600 }}>
         <Menu
           placement="horizontal"
           data={[
             {
               title: '电视',
               id: 1,
+              icon: <HomeOutlined />,
             },
             {
               title: '小米MIX',
               id: 2,
+              icon: <UserOutlined />,
             },
             {
               title: '手机',
               id: 3,
+              icon: <SunOutlined />,
               children: [
                 {
                   title: '小米',
                   id: 666,
+                  icon: <LockOutlined />,
 
                   children: [
                     {
@@ -42,6 +54,7 @@ export const Horizontal = () => {
                     {
                       title: '小米6',
                       id: 'xiaomi6',
+                      icon: <ManOutlined />,
                     },
                     {
                       title: '小米5',
@@ -65,6 +78,7 @@ export const Horizontal = () => {
                   title: '小米note',
                   disabled: true,
                   id: 'xiaominote',
+
                   children: [
                     {
                       title: '小米 note7',
@@ -93,6 +107,7 @@ export const Horizontal = () => {
             {
               title: '超长超长超长字符超长超长超长字符',
               id: 4,
+              icon: <PadOutlined />,
             },
           ]}
         />

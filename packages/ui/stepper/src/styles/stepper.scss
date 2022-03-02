@@ -77,11 +77,9 @@ $prefix: '#{$component-prefix}-stepper' !default;
       }
 
       &__content {
+        @include ellipsis(2);
+
         text-align: center;
-        display: box;
-        -webkit-line-clamp: 2;
-        box-orient: vertical;
-        overflow: hidden;
         font-size: use-text-size('sm');
         color: use-color('gray', 500);
         padding: 0;
@@ -125,6 +123,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
       border-radius: use-border-radius('full');
       color: use-color('gray', 500);
       background-color: use-color('gray', 200);
+      flex-shrink: 0;
 
       &__dot {
         background-color: use-color('gray', 200);
@@ -132,6 +131,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
         height: 8px;
         border-radius: use-border-radius('full');
         margin: use-spacing(4);
+        flex-shrink: 0;
       }
 
       &::after {
@@ -153,11 +153,9 @@ $prefix: '#{$component-prefix}-stepper' !default;
       }
 
       &__content {
+        @include ellipsis(2);
+
         text-align: center;
-        display: box;
-        -webkit-line-clamp: 2;
-        box-orient: vertical;
-        overflow: hidden;
         font-size: use-text-size('sm');
         color: use-color('gray', 500);
         padding: 0 use-spacing(6) px;
@@ -212,7 +210,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
     &--horizontal {
       display: flex;
       position: relative;
-      flex-direction: column;
+      flex-direction: row;
       align-items: flex-start;
       min-width: 20%;
       flex: 1;
@@ -226,20 +224,34 @@ $prefix: '#{$component-prefix}-stepper' !default;
         margin-right: use-spacing(4);
 
         &__content {
-          padding-left: use-spacing(16) !important;
+          text-align: left;
+          margin-top: use-spacing(3);
+          // 写死，否则 flex 下最后一项内容过长会撑满，挤压其他元素空间
+          max-width: 160px;
         }
 
         &__wrapper {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          margin-bottom: use-spacing(4);
+          display: inline-block;
+          margin-bottom: 0;
           z-index: 1;
+          max-width: 100%;
+          min-width: 1px;
+          width: 100%;
         }
 
         &__title {
           position: relative;
           padding-right: use-spacing(6);
+          line-height: use-text-lineheight('lg');
+          display: inline-block;
+          box-sizing: content-box;
+
+          & > span {
+            @include ellipsis();
+
+            vertical-align: middle;
+            max-width: 126px;
+          }
         }
 
         &__icon {
@@ -253,10 +265,11 @@ $prefix: '#{$component-prefix}-stepper' !default;
             &::after {
               content: '';
               position: absolute;
-              top: use-spacing(4);
               left: 100%;
-              width: 9999px !important;
+              width: 9999px;
               height: 1px;
+              top: 50%;
+              transform: translateY(-50%);
             }
           }
         }

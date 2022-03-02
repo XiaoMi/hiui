@@ -20,7 +20,7 @@ export const Nested = () => {
           <Col span={16}>
             <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>
               col-16
-              <Row gutter={true}>
+              <Row gutter={8}>
                 <Col span={12}>
                   <div style={{ ...blockStyle, backgroundColor: '#237ffa', opacity: 1 }}>
                     col-12

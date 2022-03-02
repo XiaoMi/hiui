@@ -1,7 +1,6 @@
 import React from 'react'
 import Form from '../src'
 import Input from '@hi-ui/input'
-import { CloseOutlined } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
 
 const FormItem = Form.Item
@@ -34,11 +33,11 @@ export const List = () => {
             ],
           }}
         >
-          <FormItem field="testInput" valueType="string" label="用户名">
+          <FormItem field="testInput" valueType="string" label="供应商">
             <Input />
           </FormItem>
 
-          <FormItem field="testInput2" valueType="string" label="密码">
+          <FormItem field="testInput2" valueType="string" label="供应渠道">
             <Input />
           </FormItem>
 
@@ -52,7 +51,7 @@ export const List = () => {
                         <FormItem
                           field={['testList', index, 'username']}
                           valueType="string"
-                          label={`材料名称${index}`}
+                          label={`材料名称${index + 1}`}
                         >
                           <Input />
                         </FormItem>
@@ -60,26 +59,34 @@ export const List = () => {
                         <FormItem
                           field={['testList', index, 'password']}
                           valueType="string"
-                          label={`材料颜色${index}`}
+                          label={`材料颜色${index + 1}`}
                         >
                           <Input />
                         </FormItem>
 
-                        <div>
-                          <Button icon={<CloseOutlined />} onClick={() => remove(index)}></Button>
+                        <FormItem field={null} valueType={null}>
+                          <div>
+                            <Button type="danger" onClick={() => remove(index)}>
+                              删除
+                            </Button>
 
-                          <Button
-                            onClick={() => insertBefore(index, { username: '', password: '' })}
-                          >
-                            insertBefore
-                          </Button>
+                            <Button
+                              onClick={() => insertBefore(index, { username: '', password: '' })}
+                            >
+                              动态插入（在该组之前插入）
+                            </Button>
 
-                          <Button onClick={() => move(index, 0)}>moveTo [0]</Button>
-                        </div>
+                            <Button onClick={() => move(index, 0)}>
+                              移到（移到数组索引 0 位置）
+                            </Button>
+                          </div>
+                        </FormItem>
                       </div>
                     )
                   })}
-                  <Button onClick={() => add({ username: '', password: '' })}>Add Field</Button>
+                  <Button onClick={() => add({ username: '', password: '' })}>
+                    动态添加成组表单
+                  </Button>
                 </div>
               )
             }}
