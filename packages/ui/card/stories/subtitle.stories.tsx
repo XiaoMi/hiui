@@ -1,12 +1,12 @@
 import React from 'react'
 import Card from '../src'
 
-export const Basic = () => {
+export const Subtitle = () => {
   return (
     <>
-      <h1>Basic</h1>
-      <div className="card-basic__wrap">
-        <Card title="标题" extra={<a>链接</a>}>
+      <h1>Subtitle</h1>
+      <div className="card-subtitle__wrap">
+        <Card title="标题" extra={<a>链接</a>} subtitle="这是一句简要的卡片副标题">
           <div
             style={{
               height: 174,
@@ -21,7 +21,12 @@ export const Basic = () => {
         </Card>
         <br />
         <br />
-        <Card title="标题" showHeaderDivider extra={<a>链接</a>}>
+        <Card
+          title="标题"
+          showHeaderDivider
+          extra={<a>链接</a>}
+          subtitle="这是一句简要的卡片副标题"
+        >
           <div
             style={{
               height: 174,

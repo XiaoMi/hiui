@@ -1,12 +1,13 @@
 import React from 'react'
 import Card from '../src'
 
-export const Basic = () => {
+export const Size = () => {
   return (
     <>
-      <h1>Basic</h1>
-      <div className="card-basic__wrap">
-        <Card title="标题" extra={<a>链接</a>}>
+      <h1>Size</h1>
+      <div className="card-size__wrap">
+        <h2>常规</h2>
+        <Card title="标题" size="md" extra={<a>链接</a>}>
           <div
             style={{
               height: 174,
@@ -20,8 +21,8 @@ export const Basic = () => {
           </div>
         </Card>
         <br />
-        <br />
-        <Card title="标题" showHeaderDivider extra={<a>链接</a>}>
+        <h2>紧凑</h2>
+        <Card title="标题" size="sm" extra={<a>链接</a>}>
           <div
             style={{
               height: 174,

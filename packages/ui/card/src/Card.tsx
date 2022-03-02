@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Loading from '@hi-ui/loading'
@@ -18,40 +19,49 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
       children,
       extra,
       title,
+      subtitle,
       cover,
       coverUrl,
       loading,
-      hoverable,
+      hoverable = false,
       bordered = true,
       size = 'md',
       showHeaderDivider,
-      style,
+      ...rest
     },
     ref
   ) => {
+    const hasHeader = !!title || !!extra || !!subtitle
+
     const cls = cx(prefixCls, className, {
-      [`${prefixCls}--${size}`]: size,
+      [`${prefixCls}--size-${size}`]: size,
       [`${prefixCls}--hoverable`]: hoverable,
       [`${prefixCls}--bordered`]: bordered,
-      [`${prefixCls}--no-header`]: !(title || extra),
+      [`${prefixCls}--no-header`]: !hasHeader,
     })
 
     return (
-      <div ref={ref} role={role} className={cls} style={style}>
+      <div ref={ref} role={role} className={cls} {...rest}>
         {cover ? <div className={`${prefixCls}__cover`}>{cover}</div> : null}
         {coverUrl ? <img src={coverUrl} /> : null}
-        {title || extra ? (
+        {hasHeader ? (
           <div
             className={cx(`${prefixCls}__header`, {
               [`${prefixCls}__header--divider`]: showHeaderDivider,
             })}
           >
-            {title && <div className={`${prefixCls}__title`}>{title}</div>}
-            {extra && <div className={`${prefixCls}__extra`}>{extra}</div>}
+            {title || extra ? (
+              <div className={`${prefixCls}__head`}>
+                {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
+                {extra ? <div className={`${prefixCls}__extra`}>{extra}</div> : null}
+              </div>
+            ) : null}
+            {subtitle ? <div className={`${prefixCls}__subtitle`}>{subtitle}</div> : null}
           </div>
         ) : null}
         <div className={`${prefixCls}__body`}>
           {children}
+          {/* 需要用到这个功能才开启，即传入 boolean */}
           {typeof loading === 'boolean' ? (
             <Loading className={`${prefixCls}__loading`} visible={loading} />
           ) : null}
@@ -61,29 +71,18 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
   }
 )
 
-export interface CardProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export type CardSizeEnum = Omit<HiBaseSizeEnum, 'lg'>
 
+export interface CardProps extends HiBaseHTMLProps<'div'> {
   /**
    * 卡片标题
    */
   title?: React.ReactNode
-
+  /**
+   * 卡片副标题。暂不对外暴露
+   * @private
+   */
+  subtitle?: React.ReactNode
   /**
    * 是否展示边框
    */
@@ -105,7 +104,6 @@ export interface CardProps {
    * 卡片的封面
    */
   cover?: React.ReactNode
-
   /**
    * 卡片的封面的图片链接
    */
@@ -113,7 +111,7 @@ export interface CardProps {
   /**
    * 卡片的尺寸
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: CardSizeEnum
   /**
    * 是否展示卡片头部和内容区域分割线
    */

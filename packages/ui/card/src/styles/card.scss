@@ -6,22 +6,37 @@ $prefix: '#{$component-prefix}-card' !default;
   border-radius: use-border-radius('lg');
   box-sizing: border-box;
   background: use-color-static('white');
+  width: 100%;
+
   &#{&}--no-header {
     .#{$prefix}__body {
       padding-top: use-spacing(10);
     }
   }
 
-  &--sm {
-    width: 276px;
-  }
+  &--size {
+    &-sm {
+      .#{$prefix} {
+        &__header {
+          padding: use-spacing(7) use-spacing(10);
+          font-size: use-text-size('normal');
+          line-height: use-text-lineheight('sm');
+        }
 
-  &--md {
-    width: 376px;
-  }
+        &__title {
+          line-height: use-text-lineheight('sm');
+          font-size: use-text-size('normal');
+        }
 
-  &--lg {
-    width: 576px;
+        &__extra {
+          font-size: use-text-size('sm');
+        }
+
+        &__subtitle {
+          font-size: use-text-size('sm');
+        }
+      }
+    }
   }
 
   // 解决 img 底部空白问题
@@ -35,8 +50,7 @@ $prefix: '#{$component-prefix}-card' !default;
     padding: use-spacing(8) use-spacing(10);
     line-height: use-text-lineheight('lg');
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
     position: relative;
     box-sizing: border-box;
     overflow: hidden;
@@ -45,6 +59,20 @@ $prefix: '#{$component-prefix}-card' !default;
       border-bottom: 1px solid use-color('gray', 200);
       margin-bottom: use-spacing(8);
     }
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__subtitle {
+    margin-top: use-spacing(2);
+    font-size: use-text-size('normal');
+    font-weight: use-text-weight('normal');
+    line-height: use-text-lineheight('sm');
+    color: use-color('gray', 500);
   }
 
   &__cover {
@@ -75,11 +103,13 @@ $prefix: '#{$component-prefix}-card' !default;
     flex: 1;
     color: use-color('gray', 700);
     font-size: use-text-size('lg');
-    font-weight: use-text-weight('bold');
+    font-weight: use-text-weight('semibold');
   }
 
   &__extra {
     font-size: use-text-size('normal');
+    color: use-color('gray', 500);
+    font-weight: use-text-weight('normal');
   }
 
   &--bordered {
