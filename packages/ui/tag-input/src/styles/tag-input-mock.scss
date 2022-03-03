@@ -107,10 +107,20 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     // 默认使用灰，开启使用蓝
     background-color: use-color('gray', 100);
     color: use-color('gray', 700);
+    transition-property: background-color, color;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
 
     .#{$tag-input-mock-prefix}--expandable & {
       background-color: use-color-mode('primary', 50);
       color: use-color-mode('primary');
+    }
+
+    &.#{$tag-input-mock-prefix}__tag--active {
+      .#{$tag-input-mock-prefix}--expandable & {
+        background-color: use-color-mode('primary');
+        color: use-color-static('white');
+      }
     }
   }
 

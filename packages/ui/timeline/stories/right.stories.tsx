@@ -4,8 +4,8 @@ import Timeline from '../src'
 export const Right = () => {
   return (
     <>
-      <h1>Basic</h1>
-      <div className="timeline-basic__wrap">
+      <h1>Right</h1>
+      <div className="timeline-right__wrap">
         <Timeline
           type="right"
           data={[

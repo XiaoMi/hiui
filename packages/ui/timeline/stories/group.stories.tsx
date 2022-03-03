@@ -4,8 +4,8 @@ import Timeline from '../src'
 export const Group = () => {
   return (
     <>
-      <h1>Basic</h1>
-      <div className="timeline-basic__wrap">
+      <h1>Group</h1>
+      <div className="timeline-group__wrap">
         <Timeline
           data={[
             {

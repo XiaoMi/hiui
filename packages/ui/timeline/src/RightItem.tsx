@@ -1,8 +1,8 @@
 import React from 'react'
 import { cx } from '@hi-ui/classname'
-import { TimelineItem } from './Timeline'
+import { TimelineDataItem } from './types'
 
-const RightItem: React.FC<TimelineItem> = ({ title, content, timestamp, extraTime, icon }) => {
+const RightItem: React.FC<TimelineDataItem> = ({ title, content, timestamp, extraTime, icon }) => {
   return (
     <div className={cx('timeline__item')}>
       <div className="item__title">{title}</div>

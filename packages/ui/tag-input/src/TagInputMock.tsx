@@ -36,6 +36,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       appearance = 'line',
       wrap = false,
       expandable = false,
+      activeExpandable = false,
       suffix,
       // tag 最小宽度
       tagWidth = 20,
@@ -221,7 +222,13 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
             {!!suffix || (showClearableIcon && hover) || showTagCount ? (
               <span className={`${prefixCls}__suffix`}>
                 {showTagCount ? (
-                  <span className={cx(`${prefixCls}__tag--total`)} onClick={onExpand}>
+                  <span
+                    className={cx(
+                      `${prefixCls}__tag--total`,
+                      activeExpandable && `${prefixCls}__tag--active`
+                    )}
+                    onClick={onExpand}
+                  >
                     {`${tagCount > 99 ? '99+' : tagCount}`}
                   </span>
                 ) : null}
@@ -320,6 +327,10 @@ export interface TagInputMockProps
    * 开启展开
    */
   expandable?: boolean
+  /**
+   * 展开激活
+   */
+  activeExpandable?: boolean
   /**
    * 展开时回调
    */

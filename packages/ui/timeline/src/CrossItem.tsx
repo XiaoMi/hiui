@@ -1,8 +1,8 @@
 import React from 'react'
 import { cx } from '@hi-ui/classname'
-import { TimelineItem } from './Timeline'
+import { TimelineDataItem } from './types'
 
-const CrossItem: React.FC<TimelineItem> = ({
+const CrossItem: React.FC<TimelineDataItem> = ({
   title,
   content,
   timestamp,

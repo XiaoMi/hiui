@@ -181,6 +181,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 
     const [filterItems, setFilterItems] = useState<any[] | null>(null)
     const dropdownItems = filterItems || showData
+    const activeExpandable = showOnlyShowChecked && !!filterItems && menuVisible
 
     const [allChecked, indeterminate] = useMemo(() => {
       const dropdownIds = dropdownItems
@@ -296,6 +297,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
                 expandedViewRef.current = 'normal'
               }}
               expandable={showOnlyShowChecked}
+              activeExpandable={activeExpandable}
               onExpand={(evt) => {
                 if (!showOnlyShowChecked) return
                 if (disabled) return

@@ -3,21 +3,33 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import RightItem from './RightItem'
 import CrossItem from './CrossItem'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { TimelineMergedItem, TimelineDataItem, TimelineGroupDataItem } from './types'
 
 const _role = 'timeline'
 const _prefix = getPrefixCls(_role)
+
+const NOOP_ARRAY = [] as []
 
 /**
  * TODO: What is Timeline
  */
 export const Timeline = forwardRef<HTMLDivElement | null, TimelineProps>(
   (
-    { prefixCls = _prefix, role = _role, className, children, type = 'default', data, ...rest },
+    {
+      prefixCls = _prefix,
+      role = _role,
+      className,
+      children,
+      type = 'default',
+      data = NOOP_ARRAY,
+      ...rest
+    },
     ref
   ) => {
     const cls = cx(prefixCls, className, `${prefixCls}--${type}`)
 
-    const renderItem = useCallback<(item: TimelineItem, index: number) => React.ReactNode>(
+    const renderItem = useCallback<(item: TimelineDataItem, index: number) => React.ReactNode>(
       (item, index) => {
         if (type === 'default') {
           return <CrossItem {...item} key={index} />
@@ -32,7 +44,9 @@ export const Timeline = forwardRef<HTMLDivElement | null, TimelineProps>(
       [type]
     )
 
-    const renderGroup = useCallback<(item: TimelineGroupItem, index: number) => React.ReactNode>(
+    const renderGroup = useCallback<
+      (item: TimelineGroupDataItem, index: number) => React.ReactNode
+    >(
       (item, index) => {
         return (
           <div key={index} className={cx('timeline__group')}>
@@ -59,10 +73,10 @@ export const Timeline = forwardRef<HTMLDivElement | null, TimelineProps>(
       <div ref={ref} role={role} className={cls} {...rest}>
         <ul>
           {data.map((item, index) => {
-            if ((item as TimelineGroupItem).groupTitle) {
-              return renderGroup(item as TimelineGroupItem, index)
+            if ((item as TimelineGroupDataItem).groupTitle) {
+              return renderGroup(item as TimelineGroupDataItem, index)
             } else {
-              return renderItem(item as TimelineItem, index)
+              return renderItem(item as TimelineDataItem, index)
             }
           })}
         </ul>
@@ -71,24 +85,7 @@ export const Timeline = forwardRef<HTMLDivElement | null, TimelineProps>(
   }
 )
 
-export interface TimelineProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-
+export interface TimelineProps extends HiBaseHTMLProps<'div'> {
   /**
    * 时间轴类型
    */
@@ -96,19 +93,7 @@ export interface TimelineProps {
   /**
    * 时间轴数据
    */
-  data: TimelineGroupItem[] | TimelineItem[]
-}
-export interface TimelineItem {
-  title: string | React.ReactNode
-  content?: string | React.ReactNode
-  timestamp?: string
-  extraTime?: string
-  icon?: React.ReactNode
-  children?: TimelineItem[]
-}
-export interface TimelineGroupItem {
-  groupTitle: string | React.ReactNode
-  children: TimelineItem[]
+  data: TimelineMergedItem[]
 }
 
 if (__DEV__) {
