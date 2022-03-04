@@ -3,5 +3,85 @@
 $prefix: '#{$component-prefix}-descriptions' !default;
 
 .#{$prefix} {
+  &-view {
+    width: 100%;
 
+    table {
+      width: 100%;
+      table-layout: fixed;
+    }
+  }
+
+  &-row {
+    >th,
+    >td {
+      padding-bottom: 12px;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &-item {
+    vertical-align: top;
+
+    &-container {
+      display: flex;
+
+      .#{$prefix}-item-label,
+      .#{$prefix}-item-content {
+        display: inline-flex;
+        align-items: baseline;
+        font-size: 14px;
+      }
+
+      .#{$prefix}-item-label {
+        color: #929aa6;
+        margin-right: use-spacing(6);
+      }
+
+      .#{$prefix}-item-content {
+        color: #1f2733;
+      }
+    }
+  }
+
+  &-bordered {
+    .#{$prefix}-view {
+      border: 1px solid #f2f4f7;
+
+      >table {
+        table-layout: auto;
+        border-collapse: collapse;
+        border-color: #dfe2e8;
+      }
+
+      .#{$prefix}-item-label,
+      .#{$prefix}-item-content {
+        padding: 14px;
+        border-right: 1px solid #dfe2e8;
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+
+      .#{$prefix}-item-label {
+        background-color: #f2f4f7;
+      }
+
+      .#{$prefix}-item-content {
+        // border-bottom: 1px solid #f2f4f7;
+      }
+
+      .#{$prefix}-row {
+        border-bottom: 1px solid #dfe2e8;
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
 }
