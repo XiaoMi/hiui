@@ -15,6 +15,8 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
   labelStyle?: React.CSSProperties
   contentStyle?: React.CSSProperties
   isAligned?: boolean
+  className?: string
+  style?: React.CSSProperties
 }
 /**
  * TODO: What is Descriptions
@@ -85,6 +87,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       prefixCls = DESCRIPTIONS_PREFIX,
       role = 'descriptions',
       className,
+      style,
       children,
       column = 3,
       layout,
@@ -100,7 +103,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
 
     const rows = getRows(children, mergedColumn)
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
+      <div ref={ref} role={role} className={cls} {...rest} style={style}>
         <div className={`${prefixCls}-view`}>
           <table>
             <tbody>
