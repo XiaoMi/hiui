@@ -149,6 +149,10 @@ $prefix: '#{$component-prefix}-table' !default;
     &__col--hovered-highlight {
       background-color: use-color('gray', 100);
     }
+
+    &__col--active {
+      background-color: use-color('gray', 100);
+    }
   }
 
   &-row {
@@ -356,6 +360,8 @@ th[data-sticky] {
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
+      color: use-color('gray', 700);
+      font-size: use-text-size('normal');
 
       &:first-child {
         margin-top: 0;
@@ -433,14 +439,14 @@ th[data-sticky] {
   right: 0;
   display: flex;
   align-items: center;
-  border-left: 1px solid #e0e1e2;
-  border-bottom: 1px solid #e0e1e2;
+  border-left: use-border-size('normal') use-color('gray', 300);
+  border-bottom: none;
   border-top: none;
-  color: #999;
+  color: use-color('gray', 500);
   cursor: pointer;
-  font-size: 14px;
-  width: 16px;
-  background: rgb(251, 251, 251);
+  font-size: use-text-size('sm');
+  width: 18px;
+  background: use-color('gray', 50);
 
   &__btn-group {
     display: flex;
@@ -459,6 +465,7 @@ th[data-sticky] {
 
   &__wrap {
     user-select: none;
+    cursor: move;
 
     @include flex(space-between);
 

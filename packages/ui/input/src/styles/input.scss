@@ -389,6 +389,10 @@ $prefix: '#{$component-prefix}-input' !default;
         &.#{$prefix}__inner--disabled {
           color: use-color('gray', 400);
           background-color: use-color('gray', 200);
+
+          .#{$prefix}__text {
+            color: use-color('gray', 400);
+          }
         }
       }
     }
@@ -399,6 +403,10 @@ $prefix: '#{$component-prefix}-input' !default;
         &.#{$prefix}__inner--disabled {
           color: use-color('gray', 400);
           background-color: transparent;
+
+          .#{$prefix}__text {
+            color: use-color('gray', 400);
+          }
         }
       }
     }

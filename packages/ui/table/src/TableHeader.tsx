@@ -5,6 +5,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { isFunction } from '@hi-ui/type-assertion'
 import { useTableContext } from './context'
 import { renderFilter } from './TableAdvancedFilter'
+import { useCheckState } from '@hi-ui/use-check-state'
 
 const _prefix = getPrefixCls('table-header')
 
@@ -28,6 +29,8 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
       getTableHeaderProps,
       showColMenu,
     } = useTableContext()
+
+    const activeColumnKeysAction = useCheckState()
 
     const cls = cx(prefixCls, className)
 
@@ -59,7 +62,8 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
                           `${prefixCls}-cell`,
                           raw.className,
                           isHighlightedCol(dataKey!) && `${prefixCls}-th__col--highlight`,
-                          isHoveredHighlightCol(dataKey!) && `${prefixCls}__col--hovered-highlight`
+                          isHoveredHighlightCol(dataKey!) && `${prefixCls}__col--hovered-highlight`,
+                          activeColumnKeysAction.has(dataKey!) && `${prefixCls}__col--active`
                         )}
                         // @ts-ignore
                         colSpan={col.colSpan}
@@ -72,6 +76,8 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
                           columnKey: dataKey,
                           showColMenu,
                           column: col,
+                          onOpen: () => activeColumnKeysAction.add(dataKey),
+                          onClose: () => activeColumnKeysAction.remove(dataKey),
                         })}
                       </th>
                     )

@@ -43,10 +43,20 @@ $prefix: '#{$component-prefix}-upload' !default;
     }
   }
 
+  &__action-icon,
   &__error-icon {
     .#{$prefix} & {
-      font-size: 40px;
-      color: use-color('gray', 100);
+      // font-size: 40px;
+      // color: use-color('gray', 100);
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      flex-shrink: 0;
+      background-color: use-color-mode('error');
+      border-radius: use-border-radius('full');
+      font-size: use-text-size('xxl');
+      color: use-color-static('white');
+      text-align: center;
     }
   }
 
@@ -305,22 +315,27 @@ $prefix: '#{$component-prefix}-upload' !default;
         }
       }
 
-      .#{$prefix}__action-group {
+      // .#{$prefix}__action-group {
+      //   display: none;
+
+      //   svg[class^=hi-v4-icon] {
+      //     font-size: use-text-size('lg');
+
+      //     &:not(:last-of-type) {
+      //       margin-right: use-spacing(4);
+      //     }
+      //   }
+      // }
+
+      .#{$prefix}__action-icon {
         display: none;
-
-        svg[class^=hi-v4-icon] {
-          font-size: use-text-size('lg');
-
-          &:not(:last-of-type) {
-            margin-right: use-spacing(4);
-          }
-        }
       }
 
       &:hover {
-        .#{$prefix}__action-group {
+        .#{$prefix}__action-icon {
           display: block;
         }
+
         .#{$prefix}__error-icon {
           display: none;
         }
@@ -400,7 +415,7 @@ $prefix: '#{$component-prefix}-upload' !default;
     right: 0;
     bottom: 0;
     top: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(31, 39, 51, 0.7);
     color: use-color-static('white');
     font-size: use-text-size('normal');
     display: flex;

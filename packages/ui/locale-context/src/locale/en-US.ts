@@ -1,12 +1,12 @@
 export default {
   timePicker: {
     ok: 'OK',
-    to: 'to',
+    to: '-',
     now: 'Now',
   },
   datePicker: {
     ok: 'OK',
-    to: 'to',
+    to: '-',
     placeholder: ['Select Date'],
     placeholderTimePeriod: ['Select Time'],
     dateChoose: 'Select Date',

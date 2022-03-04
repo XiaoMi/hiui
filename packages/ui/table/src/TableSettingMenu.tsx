@@ -2,7 +2,7 @@ import React, { forwardRef, useEffect, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UseTableProps } from './use-table'
-import { SettingOutlined, MenuOutlined } from '@hi-ui/icons'
+import { MoveOutlined, EllipsisVerticalOutlined } from '@hi-ui/icons'
 import { IconButton } from '@hi-ui/icon-button'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -79,7 +79,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
 
     return (
       <div ref={ref} className={cls}>
-        <IconButton icon={<SettingOutlined />} onClick={menuVisibleAction.not} />
+        <IconButton icon={<EllipsisVerticalOutlined />} onClick={menuVisibleAction.not} />
 
         <Drawer
           className={`${prefixCls}__drawer`}
@@ -163,26 +163,20 @@ function TableSettingMenuItem({
       {...getDropTriggerProps()}
     >
       <div className={`${prefixCls}-item__wrap`}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
+        <Checkbox
+          checked={!cacheHiddenColKeys.includes(dataKey)}
+          onChange={(evt) => {
+            const shouldChecked = evt.target.checked
+            const nextCacheHiddenColKeys = shouldChecked
+              ? cacheHiddenColKeys.filter((col: any) => col !== dataKey)
+              : cacheHiddenColKeys.concat(dataKey)
+
+            setCacheHiddenColKeys(nextCacheHiddenColKeys)
           }}
         >
-          <Checkbox
-            checked={!cacheHiddenColKeys.includes(dataKey)}
-            onChange={(evt) => {
-              const shouldChecked = evt.target.checked
-              const nextCacheHiddenColKeys = shouldChecked
-                ? cacheHiddenColKeys.filter((col: any) => col !== dataKey)
-                : cacheHiddenColKeys.concat(dataKey)
-
-              setCacheHiddenColKeys(nextCacheHiddenColKeys)
-            }}
-          />
-          <span style={{ display: 'inline-block', marginLeft: 9 }}>{runIfFunc(title)}</span>
-        </div>
-        <MenuOutlined />
+          <span>{runIfFunc(title)}</span>
+        </Checkbox>
+        <MoveOutlined />
       </div>
     </div>
   )

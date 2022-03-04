@@ -20,7 +20,7 @@ $wrapper: '#{$input-prefix}__wrapper' !default;
 
   &--range {
     .#{$interact-area} {
-      text-align: center;
+      text-align: left;
     }
   }
 

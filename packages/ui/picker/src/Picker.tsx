@@ -11,6 +11,7 @@ import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import Loading from '@hi-ui/loading'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { isUndef } from '@hi-ui/type-assertion'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
 const PICKER_PREFIX = getPrefixCls('picker')
 
@@ -63,7 +64,12 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
     // *********************** 搜索管理 ********************** //
 
-    const [searchValue, setSearchValue] = useState('')
+    const [searchValue, setSearchValue] = useUncontrolledState(
+      '' as string,
+      undefined,
+      onSearch,
+      Object.is
+    )
 
     // const inSearch = searchable && !!searchValue
     // const isEmpty = inSearch && showEmpty
@@ -77,16 +83,13 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
         const nextSearchValue = evt.target.value
 
         setSearchValue(nextSearchValue)
-        // TODO: debounce
-        onSearchLatest(nextSearchValue)
       },
-      [onSearchLatest, searchable]
+      [searchable, setSearchValue]
     )
 
     const resetSearch = useCallback(() => {
       setSearchValue('')
-      onSearchLatest('')
-    }, [onSearchLatest])
+    }, [setSearchValue])
 
     const getSearchInputProps = useCallback(() => {
       return {

@@ -68,6 +68,9 @@ export type TableColumnItem = {
   total?: boolean
   width?: number
   children?: TableColumnItem[]
+  /**
+   * @deprecated
+   */
   selectFilters?: SelectProps
   defaultSortOrder?: 'ascend' | 'descend'
   className?: string

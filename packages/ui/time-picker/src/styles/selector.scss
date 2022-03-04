@@ -9,75 +9,75 @@ $item-class: '#{$selector-prefix}__item' !default;
   position: relative;
   z-index: 0;
   width: 54px;
-  color:get-color('gray', 600);
+  color: get-color('gray', 600);
   display: flex;
   align-items: center;
   justify-content: center;
 
-  &:hover{
-    .#{$selector-shortcut-class}{
+  &:hover {
+    .#{$selector-shortcut-class} {
       opacity: 1;
     }
   }
 
-
-  &--position-left{
-    .#{$item-class}{
+  &--position-left {
+    .#{$item-class} {
       border-radius: 4px 0 0 4px;
     }
+
     margin-right: 1px;
   }
 
-  &--position-right{
-    .#{$item-class}{
+  &--position-right {
+    .#{$item-class} {
       border-radius: 0 4px 4px 0;
     }
+
     margin-left: 1px;
   }
 
-  &--position-single{
-    .#{$item-class}{
+  &--position-single {
+    .#{$item-class} {
       border-radius: 4px;
     }
   }
 
-  &__item{
+  &__item {
     display: flex;
     align-items: center;
     justify-content: center;
     user-select: none;
     font-size: 14px;
 
-
-    &:hover{
+    &:hover {
       background: use-color('gray', 100);
     }
 
-    //&#{&}--active{
-    //  font-weight: 700;
-    //  background: transparent;
-    //}
+    &#{&}--active {
+      color: use-color-mode('primary');
+    }
 
-    &#{&}--disabled{
+    &#{&}--disabled {
       opacity: 0.2;
       cursor: not-allowed;
       background: transparent;
     }
   }
 
-  &__demarcate{
+  &__demarcate {
     margin: 8px 0;
-    height: 24px;
+    height: 32px;
 
-    &:first-of-type{
+    &:first-of-type {
       margin-top: 0;
     }
-    &:last-of-type{
+
+    &:last-of-type {
       margin-bottom: 0;
     }
   }
 
-  &__scroll-part{
+  &__scroll-part {
     overflow-y: auto;
     box-sizing: content-box;
     scroll-behavior: smooth;
@@ -93,7 +93,7 @@ $item-class: '#{$selector-prefix}__item' !default;
     }
   }
 
-  &__shortcut{
+  &__shortcut {
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,7 +1,7 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $panel-prefix: '#{$component-prefix}-time-picker__panel' !default;
-$separate-line-color: get-color('gray', 200);
+$separate-line-color: get-color('gray', 200) !default;
 
 .#{$panel-prefix} {
   //min-width: 180px;
@@ -47,7 +47,7 @@ $separate-line-color: get-color('gray', 200);
     background: use-color-mode('primary', 50);
     z-index: -1;
     width: 54px;
-    height: 24px;
+    height: 32px;
 
     &--left {
       border-top-left-radius: 4px;

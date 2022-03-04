@@ -101,12 +101,7 @@ export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
         range={range}
       />
       <div className={`${prefixCls}__date-range-time-bottom`}>
-        <HiButton
-          type={'primary'}
-          size="sm"
-          disabled={isConfirmButtonDisabled}
-          onClick={onConfirmButtonClick}
-        >
+        <HiButton type="primary" disabled={isConfirmButtonDisabled} onClick={onConfirmButtonClick}>
           确认
         </HiButton>
       </div>

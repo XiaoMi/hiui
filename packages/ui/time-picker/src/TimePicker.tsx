@@ -199,9 +199,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       return (
         <div className={`${prefixCls}__pop-function-buttons`}>
           <Button
-            className={`${prefixCls}__pop-confirm-button`}
+            className={`${prefixCls}__pop-confirm-btn`}
             type={'primary'}
-            size="sm"
             disabled={!isInputValid}
             onClick={() => {
               // 合法，才去通知外部
@@ -217,8 +216,10 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             {confirmText}
           </Button>
           {type === 'single' && (
-            <div
-              className={`${prefixCls}__pop-now-button`}
+            <Button
+              className={`${prefixCls}__pop-now-btn`}
+              appearance="link"
+              type="primary"
               onClick={() => {
                 onCacheChange([getNowString(format)])
                 showPopperRef.current = false
@@ -226,7 +227,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
               }}
             >
               {nowText}
-            </div>
+            </Button>
           )}
         </div>
       )

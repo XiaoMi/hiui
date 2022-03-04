@@ -3,7 +3,13 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UploadProps } from './interface'
 import { FileSelect } from '@hi-ui/file-select'
-import { PlusOutlined, DeleteOutlined, EyeOutlined, SadFilled } from '@hi-ui/icons'
+import {
+  PlusOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  CloseCircleOutlined,
+  ExclamationCircleOutlined,
+} from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { Preview } from '@hi-ui/preview'
@@ -186,20 +192,18 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                     </div>
                   ) : (
                     <div className={`${prefixCls}__precent`}>
-                      <SadFilled className={`${prefixCls}__error-icon`} />
-                      <div className={`${prefixCls}__action-group`}>
-                        <EyeOutlined
-                          onClick={() => {
-                            previewImage(index)
-                          }}
-                        />
-                        <DeleteOutlined
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            deleteFile(file, index)
-                          }}
-                        />
-                      </div>
+                      <span className={`${prefixCls}__error-icon`}>
+                        <ExclamationCircleOutlined />
+                      </span>
+                      <span
+                        className={cx(`${prefixCls}__action-icon`)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          deleteFile(file, index)
+                        }}
+                      >
+                        <CloseCircleOutlined />
+                      </span>
                     </div>
                   )}
                 </li>

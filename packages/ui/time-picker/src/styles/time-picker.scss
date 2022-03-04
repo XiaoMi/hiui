@@ -74,20 +74,13 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     border-top: 1px solid use-color('gray', 100);
     align-items: center;
     flex-wrap: wrap;
+    // 单个情况下居右
     flex-direction: row-reverse;
-  }
 
-  &__pop-now-button {
-    height: 22px;
-    width: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: use-text-size('sm');
-    color: use-color-mode('primary');
-    cursor: pointer;
-    margin-right: 12px;
-    user-select: none;
+    .#{$prefix}__pop-now-btn {
+      margin-inline-start: 0;
+      margin-inline-end: use-spacing(6);
+    }
   }
 
   &__function-button {

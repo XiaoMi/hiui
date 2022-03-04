@@ -1,12 +1,12 @@
 export default {
   timePicker: {
     ok: '確認',
-    to: '至',
+    to: '-',
     now: '此刻',
   },
   datePicker: {
     ok: '確認',
-    to: '至',
+    to: '-',
     placeholder: ['請選擇日期'],
     placeholderTimePeriod: ['請選擇時間'],
     dateChoose: '日期選擇',

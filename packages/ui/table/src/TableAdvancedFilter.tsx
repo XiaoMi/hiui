@@ -8,16 +8,38 @@ import Popper from '@hi-ui/popper'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { isFunction } from '@hi-ui/type-assertion'
 
-export const renderFilter = ({ prefixCls, columnKey, column, showColMenu }: RenderFilterProps) => {
+export const renderFilter = ({
+  prefixCls,
+  column,
+  showColMenu,
+  onOpen,
+  onClose,
+}: RenderFilterProps) => {
   const { sorter, filterIcon, selectFilters } = column.raw
 
   return [
-    showColMenu && <TableColumnMenu prefixCls={`${prefixCls}-dropdown`} key="0" column={column} />,
+    showColMenu && (
+      <TableColumnMenu
+        prefixCls={`${prefixCls}-dropdown`}
+        key="0"
+        column={column}
+        onOpen={onOpen}
+        onClose={onClose}
+      />
+    ),
     sorter && !showColMenu && (
       <SorterMenu prefixCls={`${prefixCls}-sorter`} key="1" column={column} />
     ),
     selectFilters && <Select prefixCls={`${prefixCls}-select`} key="2" {...selectFilters} />,
-    filterIcon && <FilterDropdown prefixCls={`${prefixCls}-custom`} key="3" column={column} />,
+    filterIcon && (
+      <FilterDropdown
+        prefixCls={`${prefixCls}-custom`}
+        key="3"
+        column={column}
+        onOpen={onOpen}
+        onClose={onClose}
+      />
+    ),
   ].filter(Boolean)
 }
 
@@ -26,6 +48,8 @@ export interface RenderFilterProps {
   columnKey?: string
   column?: any
   showColMenu?: boolean
+  onOpen?: () => void
+  onClose?: () => void
 }
 
 export const SorterMenu = ({ prefixCls, column }: any) => {
@@ -78,7 +102,7 @@ export const SorterMenu = ({ prefixCls, column }: any) => {
   )
 }
 
-export const FilterDropdown = ({ prefixCls, column }: any) => {
+export const FilterDropdown = ({ prefixCls, column, onOpen, onClose }: any) => {
   const {
     filterIcon,
     filterDropdown,
@@ -87,9 +111,16 @@ export const FilterDropdown = ({ prefixCls, column }: any) => {
     filterDropdownClassName,
   } = column.raw
   const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
-    onOpen: () => onFilterDropdownVisibleChange?.(true, column),
-    onClose: () => onFilterDropdownVisibleChange?.(false, column),
+    onOpen: () => {
+      onOpen?.()
+      onFilterDropdownVisibleChange?.(true, column)
+    },
+    onClose: () => {
+      onClose?.()
+      onFilterDropdownVisibleChange?.(false, column)
+    },
   })
+
   const [menuTrigger, setMenuTrigger] = React.useState<HTMLSpanElement | null>(null)
 
   return (

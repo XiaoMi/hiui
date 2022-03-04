@@ -10,7 +10,7 @@ import {
 } from '@hi-ui/icons'
 import { IconButton } from '@hi-ui/icon-button'
 import Popper from '@hi-ui/popper'
-import { useToggle } from '@hi-ui/use-toggle'
+import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { useTableContext } from './context'
 import { FlattedTableColumnItemData } from './types'
 import { useLocaleContext } from '@hi-ui/locale-context'
@@ -21,7 +21,7 @@ const _prefix = getPrefixCls('table-column-menu')
  * 表头每列下拉式菜单，包含冻结、高亮、递增、递减操作
  */
 export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenuProps>(
-  ({ prefixCls = _prefix, column }, ref) => {
+  ({ prefixCls = _prefix, column, onOpen, onClose }, ref) => {
     const i18n = useLocaleContext()
 
     const {
@@ -38,7 +38,11 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
     const { id: dataKey, raw: columnRaw } = column
     const canSort = !!columnRaw.sorter
 
-    const [menuVisible, menuVisibleAction] = useToggle()
+    const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+      onOpen,
+      onClose,
+    })
+
     const [menuTrigger, setMenuTrigger] = React.useState<HTMLButtonElement | null>(null)
 
     return (
@@ -142,6 +146,8 @@ export interface TableColumnMenuProps {
    * 表格当前列配置信息
    */
   column: FlattedTableColumnItemData
+  onOpen?: () => void
+  onClose?: () => void
 }
 
 if (__DEV__) {

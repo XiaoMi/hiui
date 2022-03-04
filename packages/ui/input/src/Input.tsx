@@ -133,8 +133,8 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
               prefix && `${prefixCls}__inner--prefix`,
               suffix && `${prefixCls}__inner--suffix`,
               focused && `${prefixCls}__inner--focused`,
-              disabled && `${prefixCls}-__inner-disabled`,
-              readOnly && `${prefixCls}-__inner-readonly`,
+              disabled && `${prefixCls}__inner--disabled`,
+              readOnly && `${prefixCls}__inner--readonly`,
               invalid && `${prefixCls}__inner--invalid`
             )}
             onMouseOver={(e) => {
