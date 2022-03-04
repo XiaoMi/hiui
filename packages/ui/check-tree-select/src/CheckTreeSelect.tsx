@@ -7,7 +7,7 @@ import {
   CheckTreeSelectDataItem,
   CheckTreeSelectDataSource,
 } from './types'
-import { useToggle } from '@hi-ui/use-toggle'
+import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Picker, PickerProps } from '@hi-ui/picker'
@@ -46,6 +46,8 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       data = DEFAULT_DATA,
       dataSource,
       disabled = false,
+      onOpen,
+      onClose,
       // clearable = false,
       // bordered = true,
       fieldNames = DEFAULT_FIELD_NAMES,
@@ -87,7 +89,12 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       ? i18n.get('checkTreeSelect.placeholder')
       : placeholderProp
 
-    const [menuVisible, menuVisibleAction] = useToggle()
+    const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+      disabled,
+      onOpen,
+      onClose,
+    })
+
     // const [viewSelected, setViewSelected] = useState(false)
 
     /**

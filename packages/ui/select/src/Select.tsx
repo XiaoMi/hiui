@@ -78,7 +78,11 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
 
     const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp
 
-    const [menuVisible, menuVisibleAction] = useUncontrolledToggle({ disabled, onOpen, onClose })
+    const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+      disabled,
+      onOpen,
+      onClose,
+    })
 
     const onSelect = useLatestCallback((value: React.ReactText, item: SelectItemEventData) => {
       onSelectProp?.(value, item)

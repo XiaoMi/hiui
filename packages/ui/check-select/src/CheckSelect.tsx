@@ -15,7 +15,7 @@ import { Picker, PickerProps } from '@hi-ui/picker'
 
 import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
-import { useToggle } from '@hi-ui/use-toggle'
+import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import { times } from '@hi-ui/times'
 import { callAllFuncs } from '@hi-ui/func-utils'
@@ -82,7 +82,11 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 
     // ************************** Picker ************************* //
 
-    const [menuVisible, menuVisibleAction] = useToggle()
+    const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+      disabled,
+      onOpen,
+      onClose,
+    })
 
     const displayRender = useCallback(
       (item: CheckSelectEventData) => {

@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { DataSourceFunc, FieldNames, TreeSelectDataItem, TreeSelectDataSource } from './types'
-import { useToggle } from '@hi-ui/use-toggle'
+import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Picker, PickerProps } from '@hi-ui/picker'
@@ -41,6 +41,8 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       data = DEFAULT_DATA,
       dataSource,
       disabled = false,
+      onOpen,
+      onClose,
       // clearable = false,
       // bordered = true,
       fieldNames = DEFAULT_FIELD_NAMES,
@@ -77,7 +79,11 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       ? i18n.get('treeSelect.placeholder')
       : placeholderProp
 
-    const [menuVisible, menuVisibleAction] = useToggle()
+    const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+      disabled,
+      onOpen,
+      onClose,
+    })
 
     /**
      * 转换对象

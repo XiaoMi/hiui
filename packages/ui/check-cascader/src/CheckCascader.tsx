@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { useToggle } from '@hi-ui/use-toggle'
+import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import {
@@ -43,7 +43,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       clearable,
       onSelect,
       expandTrigger,
-      disabled,
+      disabled = false,
       emptyContent,
       changeOnSelect,
       render: titleRender,
@@ -61,6 +61,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       onSearch: onSearchProp,
       overlayClassName,
       type = 'tree',
+      onOpen,
+      onClose,
       ...rest
     },
     ref
@@ -73,7 +75,11 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const flatted = type === 'flatted'
 
-    const [menuVisible, menuVisibleAction] = useToggle()
+    const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+      disabled,
+      onOpen,
+      onClose,
+    })
 
     const [cascaderData, setCascaderData] = useCache(data)
 
