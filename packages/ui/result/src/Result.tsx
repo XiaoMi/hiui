@@ -18,7 +18,7 @@ import {
 const RESULT_PREFIX = getPrefixCls('result')
 
 /**
- * TODO: What is Result
+ * Result(结果页):用于反馈一系列操作任务的处理结果
  */
 export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
   (
@@ -38,30 +38,32 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
     ref
   ) => {
     const cls = cx(prefixCls, className)
+
     const IconSizeMap = {
-      sm: { fontSize: 64, padding: 18 },
-      md: { fontSize: 88, padding: 26 },
-      lg: { fontSize: 114, padding: 33 },
+      sm: { width: '64px', height: '64px' },
+      md: { width: '88px', height: '88px' },
+      lg: { width: '114px', height: '114px' },
     }
+
     const IconContainerSizeMap = {
-      sm: { width: 100, height: 100 },
-      md: { width: 140, height: 140 },
-      lg: { width: 180, height: 180 },
+      sm: { width: '100px', height: '100px' },
+      md: { width: '140px', height: '140px' },
+      lg: { width: '180px', height: '180px' },
     }
 
     const renderIcon = () => {
       const IconMap = {
         [ResultTypeEnum.info]: (
-          <ExclamationCircleFilled style={{ ...IconSizeMap[iconSize], color: '#237FFA' }} />
+          <ExclamationCircleFilled style={{ ...IconSizeMap[iconSize], color: '#237ffa' }} />
         ),
         [ResultTypeEnum.success]: (
-          <CheckCircleFilled style={{ ...IconSizeMap[iconSize], color: '#14CA64' }} />
+          <CheckCircleFilled style={{ ...IconSizeMap[iconSize], color: '#14ca64' }} />
         ),
         [ResultTypeEnum.warn]: (
-          <ExclamationCircleFilled style={{ ...IconSizeMap[iconSize], color: '#FAB007' }} />
+          <ExclamationCircleFilled style={{ ...IconSizeMap[iconSize], color: '#fab007' }} />
         ),
         [ResultTypeEnum.error]: (
-          <CloseCircleFilled style={{ ...IconSizeMap[iconSize], color: '#FF5959' }} />
+          <CloseCircleFilled style={{ ...IconSizeMap[iconSize], color: '#ff5959' }} />
         ),
         [ResultTypeEnum.operationSucceed]: <IconSucceed />,
         [ResultTypeEnum.operationFailed]: <IconFailed />,
@@ -73,18 +75,23 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
         [ResultTypeEnum.noCollection]: <IconNoCollection />,
       }
 
-      return <div style={IconContainerSizeMap[iconSize]}>{IconMap[type]}</div>
+      return (
+        <div
+          style={icon ? {} : IconContainerSizeMap[iconSize]}
+          className={`${prefixCls}__image-container`}
+        >
+          {icon || IconMap[type]}
+        </div>
+      )
     }
-    const renderExtra = () => {
-      return <div>extra</div>
-    }
+
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
         {renderIcon()}
-        <div className={`${prefixCls}-title`}>{title}</div>
-        {subTitle && <div className={`${prefixCls}-subtitle`}>{subTitle}</div>}
-        {renderExtra()}
-        {children && <div className={`${prefixCls}-content`}>{children}</div>}
+        <div className={`${prefixCls}__title`}>{title}</div>
+        {subTitle && <div className={`${prefixCls}__subtitle`}>{subTitle}</div>}
+        {extra && <div className={`${prefixCls}__extra`}>{extra}</div>}
+        {children && <div className={`${prefixCls}__content`}>{children}</div>}
       </div>
     )
   }
@@ -112,7 +119,7 @@ export interface ResultProps extends HiBaseHTMLProps<'div'> {
    */
   subTitle?: React.ReactNode
   /**
-   * 额外内容
+   * 操作区域
    */
   extra?: React.ReactNode
 }

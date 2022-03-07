@@ -1,7 +1,7 @@
 import React from 'react'
 
 const IconNetError = () => (
-  <svg width="100%" height="100%">
+  <svg width="100%" height="100%" viewBox="0 0 140 140">
     <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g transform="translate(-730.000000, -6421.000000)">
         <g transform="translate(80.000000, 2101.000000)">

@@ -1,7 +1,7 @@
 import React from 'react'
 
 const IconSucceed = () => (
-  <svg width="100%" height="100%">
+  <svg width="100%" height="100%" viewBox="0 0 140 140">
     <defs>
       <polygon id="path-1" points="0 0 118.211404 0 118.211404 96.3673624 0 96.3673624"></polygon>
     </defs>
