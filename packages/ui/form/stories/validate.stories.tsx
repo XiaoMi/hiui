@@ -65,13 +65,6 @@ export const Validate = () => {
   ])
 
   const [rules] = React.useState<FormRules>({
-    name: [
-      {
-        required: true,
-        message: '请输入名称',
-        trigger: 'onBlur,onChange',
-      },
-    ],
     region: [
       {
         required: true,
@@ -100,7 +93,7 @@ export const Validate = () => {
             cb('必须是正数')
           } else {
             // eslint-disable-next-line node/no-callback-literal
-            cb('')
+            cb()
           }
         },
       },
@@ -114,16 +107,29 @@ export const Validate = () => {
         <Form
           innerRef={formRef}
           rules={rules}
+          // lazyValidate
           labelWidth="80"
           labelPlacement="right"
           initialValues={{
+            user: { name: '' },
             name: '',
             region: '',
             count: '',
             store: '',
           }}
         >
-          <FormItem label="名称" field="name" valueType="string">
+          <FormItem
+            label="名称"
+            field={['user', 'name']}
+            valueType="string"
+            rules={[
+              {
+                required: true,
+                message: '请输入名称',
+                trigger: 'onBlur,onChange',
+              },
+            ]}
+          >
             <Input placeholder="请输入" />
           </FormItem>
           <FormItem label="数量" field="count" valueType="string">
@@ -173,7 +179,14 @@ export const Validate = () => {
                   console.log(formRef.current.getFieldsValue())
 
                   // TODO: 检验返回
-                  formRef.current.validate().then(console.log).catch(console.log)
+                  formRef.current
+                    .validate()
+                    .then((values) => {
+                      console.log('values', values)
+                    })
+                    .catch((errors) => {
+                      console.log('error', errors)
+                    })
                 }}
               >
                 提交

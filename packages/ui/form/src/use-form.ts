@@ -149,13 +149,87 @@ export const useForm = <Values = Record<string, any>>({
    */
   const validateAll = useCallback(() => {
     const fieldNames = getRegisteredKeys()
+    formDispatch({ type: 'SET_VALIDATING', payload: true })
 
     return Promise.all(
       fieldNames.map((fieldName) => {
-        return validateFieldState(fieldName)
+        const value = getFieldValue(fieldName)
+        const fieldValidation = getValidation(fieldName)
+
+        if (!fieldValidation) {
+          return Promise.resolve(null)
+        }
+
+        // catch 错误，保证检验所有表单项
+        return fieldValidation.validate(value).catch((error) => {
+          // 第一个出错，即退出校验
+          if (lazyValidate) {
+            throw error
+          }
+
+          return error
+        })
       })
     )
-  }, [getRegisteredKeys, validateFieldState])
+      .then((result) => {
+        // 合并错误，批量更新并返回
+        const combinedError = result.reduce((prev, cur, index) => {
+          const fieldName = fieldNames[index]
+          let errorMsg
+          if (cur instanceof Error) {
+            // @ts-ignore
+            errorMsg = cur.fields[stringify(fieldName)]?.[0]?.message || ''
+            if (typeof errorMsg === 'string' && !!errorMsg) {
+              return setNested(prev, fieldName, errorMsg)
+            }
+          }
+          return prev
+        }, {} as Record<string, any>)
+
+        formDispatch({ type: 'SET_VALIDATING', payload: false })
+        formDispatch({
+          type: 'SET_ERRORS',
+          payload: combinedError,
+        })
+
+        return combinedError
+      })
+      .catch((error) => {
+        const fieldNameStrings = fieldNames.map((item) => stringify(item))
+        // @ts-ignore
+        const fieldNameString = Object.keys(error.fields).find((item) =>
+          fieldNameStrings.includes(item)
+        )
+
+        let combinedError = {}
+
+        if (!fieldNameString) {
+          formDispatch({ type: 'SET_VALIDATING', payload: false })
+          return error
+        }
+
+        let errorMsg
+
+        if (error instanceof Error) {
+          // @ts-ignore
+          errorMsg = error.fields[fieldNameString]?.[0]?.message || ''
+        }
+
+        const fieldName = parse(fieldNameString)
+
+        if (typeof errorMsg === 'string' && !!errorMsg) {
+          combinedError = setNested(combinedError, fieldName, errorMsg)
+        }
+
+        formDispatch({ type: 'SET_VALIDATING', payload: false })
+        formDispatch({
+          type: 'SET_ERRORS',
+          payload: combinedError,
+        })
+
+        return combinedError
+      })
+  }, [getRegisteredKeys, getFieldValue, getValidation, lazyValidate])
 
   /**
    * 控件值更新策略
@@ -314,7 +388,8 @@ export const useForm = <Values = Record<string, any>>({
     return validateAll().then(
       (combinedErrors: FormErrors<any>) => {
         const isInstanceOfError = combinedErrors instanceof Error
-        const isActuallyValid = !isInstanceOfError
+        const isActuallyValid =
+          !!combinedErrors && !isInstanceOfError && Object.keys(combinedErrors).length === 0
 
         if (isActuallyValid) {
           let promiseOrUndefined
@@ -349,6 +424,8 @@ export const useForm = <Values = Record<string, any>>({
 
           if (isInstanceOfError) {
             throw combinedErrors
+          } else {
+            throw new TypeError('Validation Error')
           }
         }
       },
@@ -511,7 +588,8 @@ export interface UseFormProps<T = Record<string, any>> {
    */
   validateAfterTouched?: boolean
   /**
-   * 开启惰性校验，发现第一个检验失败的表单控件，就停止向下继续校验
+   * 开启惰性校验，发现第一个检验失败的表单控件，就停止向下继续校验。暂不对外暴露
+   * @private
    */
   lazyValidate?: boolean
   /**
