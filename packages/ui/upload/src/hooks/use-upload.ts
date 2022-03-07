@@ -18,6 +18,7 @@ const useUpload = ({
   onRemove,
   beforeUpload,
   customUpload,
+  maxCount,
 }: UploadProps): [
   UploadFileItem[],
   (files: HTMLInputElement['files']) => Promise<void>,
@@ -148,7 +149,10 @@ const useUpload = ({
       } else {
         const _files: UploadFileItem[] = []
         if (files) {
-          for (let i = 0; i < files.length; i++) {
+          // 最多上传限制数量
+          const length = typeof maxCount === 'number' ? maxCount : files.length
+
+          for (let i = 0; i < length; i++) {
             if (beforeUpload) {
               const result = beforeUpload(files[i], fileListRef.current)
               if (result === false) {

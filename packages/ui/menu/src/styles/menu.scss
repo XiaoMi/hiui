@@ -226,7 +226,8 @@ $prefix: '#{$component-prefix}-menu' !default;
     display: flex;
     flex-direction: column;
     padding: use-spacing(4);
-    width: 232px;
+    width: 216px;
+    box-sizing: border-box;
     height: 100%;
     transition: width 0.3s;
 

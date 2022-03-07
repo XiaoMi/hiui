@@ -21,7 +21,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       className,
       maxCount,
       content,
-      disabled,
+      disabled = false,
       multiple,
       tips,
       showUploadList = true,
@@ -55,6 +55,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onChange,
       uploadAction,
       maxSize,
+      maxCount,
       name,
       withCredentials,
       headers,
@@ -63,6 +64,9 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
     })
+
+    const nonInteractive = disabled || (!!maxCount && _fileList.length >= maxCount)
+
     const dragRef = useRef<HTMLDivElement>(null)
     const [dragging, setDragging] = useState(false)
     const onDragOver = useCallback((e) => {
@@ -81,18 +85,18 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       (e) => {
         e.preventDefault()
         e.stopPropagation()
-        if (!disabled) {
+        if (!nonInteractive) {
           uploadFiles(e.dataTransfer.files)
         }
         setDragging(false)
       },
-      [disabled, uploadFiles]
+      [nonInteractive, uploadFiles]
     )
     const dragCls = cx(
       `${prefixCls}`,
       `${prefixCls}--drag`,
-      dragging && !disabled && 'drop-over',
-      disabled && `${prefixCls}--disabled`,
+      dragging && !nonInteractive && 'drop-over',
+      nonInteractive && `${prefixCls}--disabled`,
       _fileList.length > 0 && `${prefixCls}--nohover`
     )
 
@@ -109,7 +113,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
         <FileSelect
           onSelect={uploadFiles}
           multiple={multiple}
-          disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
+          disabled={nonInteractive}
           accept={accept}
         >
           <div

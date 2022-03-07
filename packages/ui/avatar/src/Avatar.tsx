@@ -28,6 +28,7 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
     },
     ref
   ) => {
+    // TODO: 调整修饰类名
     const cls = cx(prefixCls, `${prefixCls}--${size}`, `${prefixCls}--${shape}`, className)
 
     const renderAvatar = useCallback(() => {

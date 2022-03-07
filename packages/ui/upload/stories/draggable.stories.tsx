@@ -14,7 +14,6 @@ export const Draggable = () => {
             console.log('upload callback', file, fileList, response)
           }}
           tips="仅支持 jpg/png 文件，且不超过 500kb"
-          hasBorder={true}
           data={{ id: 'uid', channel: 'youpin' }}
           name={'files[]'}
           multiple={true}
