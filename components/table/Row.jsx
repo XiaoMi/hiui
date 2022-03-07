@@ -52,7 +52,8 @@ const Row = ({
     draggable,
     onDragStart,
     dargInfo,
-    onRow
+    onRow,
+    highlightRowOnDoubleClick
   } = useContext(TableContext)
   const _columns = cloneArray(columns)
   const depthArray = []
@@ -147,6 +148,10 @@ const Row = ({
       onDoubleClick={(e) => {
         if (rowProps && rowProps.onDoubleClick) {
           rowProps.onDoubleClick(e)
+        }
+
+        if (highlightRowOnDoubleClick === false) {
+          return
         }
         if (highlightedRowKeys.includes(rowData.key)) {
           setHighlightRows(highlightedRowKeys.filter((r) => r !== rowData.key))

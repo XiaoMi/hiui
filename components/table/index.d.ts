@@ -107,6 +107,8 @@ export interface TableProps {
   hiddenColKeys?: string[]
   onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
   cellRender?: (text: any) => React.ReactNode
+  highlightRowOnDoubleClick?: boolean
 }
+
 declare const Table: React.ComponentType<TableProps>
 export default Table
