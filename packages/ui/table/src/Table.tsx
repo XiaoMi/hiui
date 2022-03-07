@@ -56,6 +56,8 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       columns: columnsProp,
       hiddenColKeys: hiddenColKeysProp,
       onHiddenColKeysChange,
+      sortedColKeys: sortedColKeysProp,
+      onSortedColKeysChange,
       rowSelection,
       fieldKey = 'key',
       stickyFooter = false,
@@ -74,9 +76,11 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     /**
      * 列排序
      */
-    const { sortedCols, setSortCols, cacheSortedCols, setCacheSortedCols } = useColSorter({
+    const { sortedCols, setSortColKeys, cacheSortedCols, setCacheSortedCols } = useColSorter({
       uniqueId,
       columns: columnsProp,
+      sortedColKeys: sortedColKeysProp,
+      onSortedColKeysChange,
     })
 
     /**
@@ -280,7 +284,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 prefixCls={`${prefixCls}-setting`}
                 // sort
                 sortedCols={sortedCols}
-                setSortCols={setSortCols}
+                setSortColKeys={setSortColKeys}
                 cacheSortedCols={cacheSortedCols}
                 setCacheSortedCols={setCacheSortedCols}
                 // hidden
@@ -330,6 +334,14 @@ export interface TableProps extends Omit<BaseTableProps, 'extra' | 'role'> {
    *  列隐藏设置时回调 (v3.9.0 新增)
    */
   onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
+  /**
+   *  排序列（受控） (v3.9.0 新增)，需要 column 中必须传入唯一的 dataKey 用于列隐藏
+   */
+  sortedColKeys?: string[]
+  /**
+   *  列排序设置时回调 (v3.9.0 新增)
+   */
+  onSortedColKeysChange?: (sortedColKeys: string[]) => void
   /**
    *  表格分页配置项
    */

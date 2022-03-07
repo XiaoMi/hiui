@@ -25,7 +25,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
     {
       prefixCls = _prefix,
       sortedCols,
-      setSortCols,
+      setSortColKeys,
       cacheSortedCols,
       setCacheSortedCols,
       hiddenColKeys,
@@ -42,11 +42,11 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
       idFieldName: 'dataKey',
       onSwap: async (dragItem, dropItem, direction, info) => {
         setCacheSortedCols((prev: any[]) => {
-          const nextCacheSortColKeys = [...prev]
-          const [removed] = nextCacheSortColKeys.splice(info.dragIndex, 1)
-          nextCacheSortColKeys.splice(info.dropIndex, 0, removed)
+          const nextCacheSortCols = [...prev]
+          const [removed] = nextCacheSortCols.splice(info.dragIndex, 1)
+          nextCacheSortCols.splice(info.dropIndex, 0, removed)
 
-          return nextCacheSortColKeys
+          return nextCacheSortCols
         })
         return true
       },
@@ -71,7 +71,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
     const onConfirm = () => {
       // 触发 table 更新列显隐及排序
       setHiddenColKeys(cacheHiddenColKeys)
-      setSortCols(cacheSortedCols)
+      setSortColKeys(cacheSortedCols.map((col) => col.dataKey!))
       menuVisibleAction.off()
     }
 
