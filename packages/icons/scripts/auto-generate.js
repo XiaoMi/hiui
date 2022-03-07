@@ -1,6 +1,10 @@
 const Path = require('path')
 const Fs = require('fs')
 
+const Config = {
+  reserveFillColorType: ['colorful'],
+}
+
 const getAllSvgComponentFileInfo = () => {
   const result = []
   const recursion = (dir) => {
@@ -37,7 +41,7 @@ const getAllSvgComponentFileInfo = () => {
   return result
 }
 
-const disposeSvgSourceFile = (file) => {
+const disposeSvgSourceFile = (file, info) => {
   const removeXmlDeclaration = (source) => {
     return source.replace(/<\?xml.*?\?>/g, '').trim()
   }
@@ -64,7 +68,14 @@ const disposeSvgSourceFile = (file) => {
   }
 
   const pureSvg = removeDoctypeDeclaration(removeXmlDeclaration(file))
-  return insertReactProps(removePathFill(removeSvgSize(removeSvgClass(pureSvg))))
+
+  const removeUselessProperty = removeSvgSize(removeSvgClass(pureSvg))
+
+  const resultSvg = Config.reserveFillColorType.includes(info.type)
+    ? removeUselessProperty
+    : removePathFill(removeUselessProperty)
+
+  return insertReactProps(resultSvg)
 }
 
 const transformToUpperCamelCase = (name) => {
@@ -103,6 +114,7 @@ const generateIconGroupData = (componentInfo) => {
   const targetDataFile = Path.join(__dirname, '../stories/group.ts')
   const collector = new Map()
   const allNeedImportComponents = []
+  const types = new Set()
 
   componentInfo.forEach(({ withTypeName, belong, type }) => {
     if (!collector.has(belong)) {
@@ -116,6 +128,7 @@ const generateIconGroupData = (componentInfo) => {
       type: type,
       name: withTypeName,
     })
+    types.add(type)
   })
 
   const belongs = Array.from(collector.keys())
@@ -123,16 +136,15 @@ const generateIconGroupData = (componentInfo) => {
     `\n{type:'${type}',component:${componentName}, name:'${name}', tagName:'${componentName}' }`
   const content = `
   export interface IconDescription{
-    type:'filled'|'outlined',
+    type:${Array.from(types)
+      .map((type) => `'${type}'`)
+      .join('|')},
     component:FunctionComponent,
     name:string,
     tagName:string
   }
   export interface IconGroupInfo{
-    alert: IconDescription[]
-    common: IconDescription[]
-    direction: IconDescription[]
-    edit: IconDescription[]
+    ${belongs.map((belong) => `${belong}: IconDescription[]`).join('\n')}
   }
   export const ComponentGroup:IconGroupInfo = {
     ${belongs
@@ -147,8 +159,9 @@ const generateIconGroupData = (componentInfo) => {
 const componentFileInfo = getAllSvgComponentFileInfo()
 
 console.log(`Auto generate: total ${componentFileInfo.length}`)
-componentFileInfo.forEach(({ withTypeName, path, generateFileRelativePath }) => {
-  const svg = disposeSvgSourceFile(Fs.readFileSync(path).toString())
+componentFileInfo.forEach((info) => {
+  const { withTypeName, path, generateFileRelativePath } = info
+  const svg = disposeSvgSourceFile(Fs.readFileSync(path).toString(), info)
   const targetFilePath = Path.join(
     __dirname,
     '../src/components',

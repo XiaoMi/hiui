@@ -293,9 +293,18 @@ import {
   TableOutlined,
   ZoomInOutlined,
   ZoomOutOutlined,
+  ExcelColorful,
+  ExeColorful,
+  JpgColorful,
+  MusicColorful,
+  PdfColorful,
+  PptColorful,
+  QuestionColorful,
+  WordColorful,
+  ZipColorful,
 } from '../'
 export interface IconDescription {
-  type: 'filled' | 'outlined'
+  type: 'filled' | 'outlined' | 'colorful'
   component: FunctionComponent
   name: string
   tagName: string
@@ -305,6 +314,7 @@ export interface IconGroupInfo {
   common: IconDescription[]
   direction: IconDescription[]
   edit: IconDescription[]
+  file: IconDescription[]
 }
 export const ComponentGroup: IconGroupInfo = {
   alert: [
@@ -1547,5 +1557,31 @@ export const ComponentGroup: IconGroupInfo = {
       name: 'zoom-out-outlined',
       tagName: 'ZoomOutOutlined',
     },
+  ],
+  file: [
+    {
+      type: 'colorful',
+      component: ExcelColorful,
+      name: 'excel-colorful',
+      tagName: 'ExcelColorful',
+    },
+    { type: 'colorful', component: ExeColorful, name: 'exe-colorful', tagName: 'ExeColorful' },
+    { type: 'colorful', component: JpgColorful, name: 'jpg-colorful', tagName: 'JpgColorful' },
+    {
+      type: 'colorful',
+      component: MusicColorful,
+      name: 'music-colorful',
+      tagName: 'MusicColorful',
+    },
+    { type: 'colorful', component: PdfColorful, name: 'pdf-colorful', tagName: 'PdfColorful' },
+    { type: 'colorful', component: PptColorful, name: 'ppt-colorful', tagName: 'PptColorful' },
+    {
+      type: 'colorful',
+      component: QuestionColorful,
+      name: 'question-colorful',
+      tagName: 'QuestionColorful',
+    },
+    { type: 'colorful', component: WordColorful, name: 'word-colorful', tagName: 'WordColorful' },
+    { type: 'colorful', component: ZipColorful, name: 'zip-colorful', tagName: 'ZipColorful' },
   ],
 }

@@ -30,21 +30,22 @@ export const Basic = () => {
       <h1>Icons</h1>
       <div className="icons-basic__wrap">
         {keys.map((belong) => {
+          const types = Array.from(
+            new Set(ComponentGroup[belong as keyof typeof ComponentGroup].map((item) => item.type))
+          )
           return (
             <React.Fragment key={belong}>
               <h2>{belong}</h2>
-              <h3>filled</h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {ComponentGroup[belong as keyof typeof ComponentGroup]
-                  .filter((item) => item.type === 'filled')
-                  .map(renderIcon)}
-              </div>
-              <h3>outlined</h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {ComponentGroup[belong as keyof typeof ComponentGroup]
-                  .filter((item) => item.type === 'outlined')
-                  .map(renderIcon)}
-              </div>
+              {types.map((type) => (
+                <React.Fragment key={type}>
+                  <h3>{type}</h3>
+                  <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    {ComponentGroup[belong as keyof typeof ComponentGroup]
+                      .filter((item) => item.type === type)
+                      .map(renderIcon)}
+                  </div>
+                </React.Fragment>
+              ))}
             </React.Fragment>
           )
         })}
