@@ -53,7 +53,7 @@ const Row = ({
     onDragStart,
     dargInfo,
     onRow,
-    highlightedRowOnDoubleClick
+    highlightRowOnDoubleClick
   } = useContext(TableContext)
   const _columns = cloneArray(columns)
   const depthArray = []
@@ -150,7 +150,7 @@ const Row = ({
           rowProps.onDoubleClick(e)
         }
 
-        if (highlightedRowOnDoubleClick === false) {
+        if (highlightRowOnDoubleClick === false) {
           return
         }
         if (highlightedRowKeys.includes(rowData.key)) {

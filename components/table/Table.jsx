@@ -78,7 +78,7 @@ const Table = ({
   onDropEnd,
   cellRender,
   emptyContent = localeDatas.table.emptyContent,
-  highlightedRowOnDoubleClick = true
+  highlightRowOnDoubleClick = true
 }) => {
   const dargInfo = useRef({ dragKey: null })
   const [data, setData] = useState(propsData)
@@ -380,7 +380,7 @@ const Table = ({
         onDragStart,
         onDrop,
         onDropEnd,
-        highlightedRowOnDoubleClick
+        highlightRowOnDoubleClick
       }}
     >
       <div
