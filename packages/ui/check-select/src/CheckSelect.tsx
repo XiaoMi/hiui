@@ -422,7 +422,7 @@ export interface CheckSelectProps extends Omit<PickerProps, 'trigger'>, UseCheck
   /**
    * 异步加载数据
    */
-  dataSource?: UseDataSource<CheckSelectDataItem>
+  dataSource?: UseDataSource<CheckSelectMergedItem[]>
   /**
    * 自定义下拉菜单底部渲染
    */

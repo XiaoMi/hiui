@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { DataSourceFunc, FieldNames, TreeSelectDataItem, TreeSelectDataSource } from './types'
+import { FieldNames, TreeSelectDataItem } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -15,6 +15,7 @@ import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { callAllFuncs } from '@hi-ui/func-utils'
+import { UseDataSource } from '@hi-ui/use-data-source'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -348,7 +349,7 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' |
   /**
    * 异步加载数据
    */
-  dataSource?: DataSourceFunc | TreeSelectDataSource | Promise<TreeSelectDataItem[]>
+  dataSource?: UseDataSource<TreeSelectDataItem[]>
   /**
    * 没有选项时的提示
    */
