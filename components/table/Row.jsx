@@ -132,7 +132,7 @@ const Row = ({
         setDropHightLineStatus(null)
       }}
       onDoubleClick={(e) => {
-        if (onRowProps.onDoubleClick) {
+        if (onRowProps && onRowProps.onDoubleClick) {
           onRowProps.onDoubleClick(e)
         }
         if (highlightRowOnDoubleClick === false) {
