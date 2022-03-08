@@ -1,6 +1,7 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-descriptions' !default;
+$borderColor: #dfe2e8 !default;
 
 .#{$prefix} {
   &-view {
@@ -49,18 +50,18 @@ $prefix: '#{$component-prefix}-descriptions' !default;
 
   &-bordered {
     .#{$prefix}-view {
-      border: 1px solid #f2f4f7;
+      border: 1px solid $borderColor;
 
       >table {
         table-layout: auto;
         border-collapse: collapse;
-        border-color: #dfe2e8;
+        border-color: $borderColor;
       }
 
       .#{$prefix}-item-label,
       .#{$prefix}-item-content {
         padding: 14px;
-        border-right: 1px solid #dfe2e8;
+        border-right: 1px solid $borderColor;
 
         &:last-child {
           border-right: none;
@@ -71,12 +72,8 @@ $prefix: '#{$component-prefix}-descriptions' !default;
         background-color: #f2f4f7;
       }
 
-      .#{$prefix}-item-content {
-        // border-bottom: 1px solid #f2f4f7;
-      }
-
       .#{$prefix}-row {
-        border-bottom: 1px solid #dfe2e8;
+        border-bottom: 1px solid $borderColor;
 
         &:last-child {
           border-bottom: none;

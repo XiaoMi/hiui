@@ -30,7 +30,7 @@ const Cell: React.FC<CellProps> = ({
   label,
   content,
 }) => {
-  const Component = component as any
+  const Component: any = component
   if (bordered) {
     return (
       <Component
