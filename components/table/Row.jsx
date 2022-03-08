@@ -104,15 +104,23 @@ const Row = ({
     [rowKey, dropHightLineStatus, draggable]
   )
 
-  const rowProps = onRow()
-
   return [
     <tr
       style={isFixed && rowHeight ? { height: rowHeight } : {}}
       ref={innerRef}
       id={rowKey}
       draggable={draggable}
-      {...rowProps}
+      onDoubleClick={(e) => {
+        if (highlightRowOnDoubleClick === false) {
+          return
+        }
+        if (highlightedRowKeys.includes(rowData.key)) {
+          setHighlightRows(highlightedRowKeys.filter((r) => r !== rowData.key))
+        } else {
+          setHighlightRows(highlightedRowKeys.concat(rowData.key))
+        }
+      }}
+      {...onRow(rowData, index, { isAvgRow, isSumRow, element: innerRef })}
       onMouseMove={() => {
         setDragRowKey(null)
         setDragStatus(false)
@@ -145,20 +153,6 @@ const Row = ({
         [`${prefix}__row--avg`]: isAvgRow
       })}
       key="row"
-      onDoubleClick={(e) => {
-        if (rowProps && rowProps.onDoubleClick) {
-          rowProps.onDoubleClick(e)
-        }
-
-        if (highlightRowOnDoubleClick === false) {
-          return
-        }
-        if (highlightedRowKeys.includes(rowData.key)) {
-          setHighlightRows(highlightedRowKeys.filter((r) => r !== rowData.key))
-        } else {
-          setHighlightRows(highlightedRowKeys.concat(rowData.key))
-        }
-      }}
     >
       {rowSelection && isFixed !== 'right' && !isSumRow && !isAvgRow && (
         <td
