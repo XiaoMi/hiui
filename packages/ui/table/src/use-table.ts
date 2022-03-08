@@ -266,10 +266,16 @@ export const useTable = ({
       )
 
       leftColumns.forEach((currentItem, index) => {
-        const item = parseFixedColumns(currentItem, index, leftColumns, 'leftStickyWidth')
+        const item = parseFixedColumns(
+          currentItem,
+          index,
+          nextColumns,
+          leftColumns,
+          'leftStickyWidth'
+        )
 
         leftColumns[index] = item
-        nextColumns[index] = item
+        nextColumns[item.index] = item
       })
     }
 
@@ -310,9 +316,16 @@ export const useTable = ({
         .reverse()
 
       rightColumns.forEach((currentItem, index) => {
-        const _item = parseFixedColumns(currentItem, index, rightColumns, 'rightStickyWidth')
+        const item = parseFixedColumns(
+          currentItem,
+          index,
+          nextColumns,
+          rightColumns,
+          'rightStickyWidth'
+        )
 
-        rightColumns[index] = _item
+        rightColumns[index] = item
+        nextColumns[item.index] = item
       })
     }
 
@@ -450,16 +463,20 @@ export const useTable = ({
       canScroll &&
       (typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined')
 
+    const style: React.CSSProperties = {
+      textAlign: align,
+    }
+
+    if (sticky) {
+      style.position = 'sticky'
+      style.right = rightStickyWidth + 'px'
+      style.left = leftStickyWidth + 'px'
+      // the value is same with v3
+      style.zIndex = 5
+    }
+
     return {
-      style: {
-        position: sticky ? 'sticky' : undefined,
-        textAlign: align,
-        right: rightStickyWidth + 'px',
-        left: leftStickyWidth + 'px',
-        // @designToken absolute
-        zIndex: 1,
-        // backgroundColor: '#fff',
-      } as React.CSSProperties,
+      style,
       'data-sticky': setAttrStatus(sticky),
     }
   })
@@ -470,7 +487,7 @@ export const useTable = ({
       top: sticky ? stickyTop : undefined,
       boxShadow: maxHeight ? '0px 2px 6px 0px rgba(0,0,0,0.12)' : undefined,
       overflow: 'hidden',
-      zIndex: 10,
+      zIndex: sticky ? 10 : undefined,
     }
 
     return {

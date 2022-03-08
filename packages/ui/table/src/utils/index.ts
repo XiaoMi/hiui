@@ -106,13 +106,14 @@ export const getMaskItemsWIdth = (columns: TableColumnItem[]) => {
 export const parseFixedColumns = (
   item: any,
   index: number,
+  columns: any[],
   arr: any[],
   key: string,
   parentStickyWidth = 0
 ) => {
   const width = (arr[index - 1] || { width: 0 }).width || 0
   const stickyWidth = (arr[index - 1] || { width: 0 })[key] || 0
-  // item = { ...item }
+  item = { ...item }
   item[key] = width + stickyWidth + parentStickyWidth
 
   if (item.children) {
@@ -120,14 +121,18 @@ export const parseFixedColumns = (
     const { children } = item
     item.children = []
 
-    children.forEach((childrenItem: any, index: number) => {
-      item.children[index] = parseFixedColumns(
+    children.forEach((childrenItem: any, idx: number) => {
+      const child = parseFixedColumns(
         childrenItem,
-        index,
+        idx,
+        columns,
         children,
         key,
-        index === 0 ? _parentStickyWidth : 0
+        index === 0 ? 0 : _parentStickyWidth
       )
+
+      item.children[idx] = child
+      columns[child.index] = child
     })
   }
   return item

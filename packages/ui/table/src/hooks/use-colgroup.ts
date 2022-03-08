@@ -35,6 +35,12 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
       }
     })
 
+    // 记录下标位置，方便冻结列操作计算时快速获取更新
+    flattedColumns.forEach((column, index) => {
+      // @ts-ignore
+      column.index = index
+    })
+
     return [flattedColumns, maxDepth] as const
   }, [columns])
 
