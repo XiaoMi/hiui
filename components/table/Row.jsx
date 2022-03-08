@@ -104,13 +104,14 @@ const Row = ({
     [rowKey, dropHightLineStatus, draggable]
   )
 
+  const onRowProps = onRow(isAvgRow || isSumRow ? null : rowData, index)
   return [
     <tr
       style={isFixed && rowHeight ? { height: rowHeight } : {}}
       ref={innerRef}
       id={rowKey}
       draggable={draggable}
-      {...onRow(isAvgRow || isSumRow ? null : rowData, index)}
+      {...onRowProps}
       onMouseMove={() => {
         setDragRowKey(null)
         setDragStatus(false)
@@ -131,8 +132,8 @@ const Row = ({
         setDropHightLineStatus(null)
       }}
       onDoubleClick={(e) => {
-        if (onRow().onDoubleClick) {
-          onRow(rowData, index).onDoubleClick(e)
+        if (onRowProps.onDoubleClick) {
+          onRowProps.onDoubleClick(e)
         }
         if (highlightRowOnDoubleClick === false) {
           return
