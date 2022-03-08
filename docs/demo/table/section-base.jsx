@@ -182,16 +182,13 @@ const code = [
           }
         ]
       }
-      onRow(record, index, otherArgs) {
-        const { element, isAvgRow, isSumRow } = otherArgs
+      onRow(record, index) {
         return {
           onClick: (event) => {
-            console.log(record, index, event, element)
+            console.log(record, index, event)
           },
           onDoubleClick: (event) => {
-            // 如需禁用双击选中功能，可自定义此函数
             console.log(record, index, event)
-            return false
           },
           onContextMenu: (event) => {
             console.log(record, index, event)

@@ -110,17 +110,7 @@ const Row = ({
       ref={innerRef}
       id={rowKey}
       draggable={draggable}
-      onDoubleClick={(e) => {
-        if (highlightRowOnDoubleClick === false) {
-          return
-        }
-        if (highlightedRowKeys.includes(rowData.key)) {
-          setHighlightRows(highlightedRowKeys.filter((r) => r !== rowData.key))
-        } else {
-          setHighlightRows(highlightedRowKeys.concat(rowData.key))
-        }
-      }}
-      {...onRow(rowData, index, { isAvgRow, isSumRow, element: innerRef })}
+      {...onRow(isAvgRow || isSumRow ? null : rowData, index)}
       onMouseMove={() => {
         setDragRowKey(null)
         setDragStatus(false)
@@ -139,6 +129,19 @@ const Row = ({
       onDragLeave={() => {
         if (!draggable) return
         setDropHightLineStatus(null)
+      }}
+      onDoubleClick={(e) => {
+        if (onRow().onDoubleClick) {
+          onRow(rowData, index).onDoubleClick(e)
+        }
+        if (highlightRowOnDoubleClick === false) {
+          return
+        }
+        if (highlightedRowKeys.includes(rowData.key)) {
+          setHighlightRows(highlightedRowKeys.filter((r) => r !== rowData.key))
+        } else {
+          setHighlightRows(highlightedRowKeys.concat(rowData.key))
+        }
       }}
       className={classNames(`${prefix}__row`, {
         [`${prefix}__row--error`]: errorRowKeys.includes(rowData.key),
