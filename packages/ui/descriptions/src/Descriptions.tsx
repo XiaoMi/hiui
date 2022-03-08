@@ -8,15 +8,14 @@ import Row from './Row'
 const DESCRIPTIONS_PREFIX = getPrefixCls('descriptions')
 export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
   children?: React.ReactNode
-  title?: React.ReactNode
   layout?: 'horizontal' | 'vertical'
   bordered?: boolean
   column?: number
   labelStyle?: React.CSSProperties
   contentStyle?: React.CSSProperties
-  isAligned?: boolean
   className?: string
   style?: React.CSSProperties
+  noBackground?: boolean
 }
 /**
  * TODO: What is Descriptions
@@ -60,7 +59,6 @@ function getRows(children: React.ReactNode, column: number) {
     const span: number | undefined = node?.props?.span
     const mergedSpan = span || 1
 
-    // Additional handle last one
     if (index === children.length - 1) {
       tmpRow.push(getFilledItem(node, span, rowRestCol))
       rows.push(tmpRow)
@@ -94,11 +92,16 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       bordered,
       labelStyle,
       contentStyle,
+      noBackground,
       ...rest
     },
     ref
   ) => {
-    const cls = cx(prefixCls, { [`${prefixCls}-bordered`]: !!bordered }, className)
+    const cls = cx(
+      prefixCls,
+      { [`${prefixCls}-bordered`]: !!bordered, [`${prefixCls}-no-background`]: !!noBackground },
+      className
+    )
     const mergedColumn = getColumn(column)
 
     const rows = getRows(children, mergedColumn)
@@ -117,6 +120,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
                   row={row}
                   rootLabelStyle={labelStyle}
                   rootContentStyle={contentStyle}
+                  noBackground={noBackground}
                 />
               ))}
             </tbody>

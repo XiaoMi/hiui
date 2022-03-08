@@ -5,7 +5,7 @@ export const Basic = () => {
   return (
     <>
       <div className="descriptions-basic__wrap" style={{ minWidth: 1250 }}>
-        <Descriptions bordered>
+        <Descriptions layout="vertical">
           <Descriptions.Item label="名字">张三</Descriptions.Item>
           <Descriptions.Item label="Phone">15311969622</Descriptions.Item>
           <Descriptions.Item label="Address">北京天安门</Descriptions.Item>

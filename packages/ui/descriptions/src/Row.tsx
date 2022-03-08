@@ -86,10 +86,11 @@ export interface RowProps {
   index: number
   rootLabelStyle?: React.CSSProperties
   rootContentStyle?: React.CSSProperties
+  noBackground?: boolean
 }
 
 const Row: React.FC<RowProps> = (props) => {
-  const { prefixCls, vertical, row, index, bordered } = props
+  const { prefixCls, vertical, row, index, bordered, noBackground } = props
 
   if (vertical) {
     return (
@@ -114,7 +115,7 @@ const Row: React.FC<RowProps> = (props) => {
   return (
     <tr key={index} className={`${prefixCls}-row`}>
       {renderCells(row, props, {
-        component: bordered ? ['th', 'td'] : 'td',
+        component: bordered || noBackground ? ['th', 'td'] : 'td',
         type: 'item',
         showLabel: true,
         showContent: true,
