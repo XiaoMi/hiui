@@ -151,14 +151,16 @@
 
 ## CHANGELOG
 
-| 参数                 | 变更类型   | 变更内容                                    | 解决的问题                                  |
-| -------------------- | ---------- | ------------------------------------------- | ------------------------------------------- |
-| selectFilters        | deprecated | 取消内嵌 Select                             | -                                           | 使用 filterDropdown 能替代满足场景 |
-| onLoadChildren       | feature    | 必须返回数据 -> 返回 undefined 不做任何处理 | -                                           | 强化功能：支持自定义控制更新 |
-| expandedEmbedRowKeys | feature    | -                                           | 字段：expandRowKeys -> expandedEmbedRowKeys | 强化功能：支持内嵌面板独立控制 |
-| onEmbedExpand        | feature    | 字段：onExpand -> onEmbedExpand             | 强化功能：支持内嵌面板独立控制              |
-| stickyFooter         | feature    | boolean                                     | 强化功能：支持底部吸底                      |
-| defaultFixedToColumn | feature    | 1. 定义：非受控；2. 类型：对象              | 强化功能持久化                              |
-| fixedToColumn        | feature    | 1. 定义：受控；2. 类型：对象                | 强化功能持久化                              |
-| onFixedToColumn      | feature    | 1. 定义：冻结列回调；2. 类型：对象          | 强化功能持久化                              |
-| showRowHighlight     | feature    | -                                           | 强化功能持久化                              |
+| 参数                  | 变更类型   | 变更内容                                    | 解决的问题                                  |
+| --------------------- | ---------- | ------------------------------------------- | ------------------------------------------- |
+| selectFilters         | deprecated | 取消内嵌 Select                             | -                                           | 使用 filterDropdown 能替代满足场景 |
+| onLoadChildren        | feature    | 必须返回数据 -> 返回 undefined 不做任何处理 | -                                           | 强化功能：支持自定义控制更新 |
+| expandedEmbedRowKeys  | feature    | -                                           | 字段：expandRowKeys -> expandedEmbedRowKeys | 强化功能：支持内嵌面板独立控制 |
+| onEmbedExpand         | feature    | 字段：onExpand -> onEmbedExpand             | 强化功能：支持内嵌面板独立控制              |
+| stickyFooter          | feature    | boolean                                     | 强化功能：支持底部吸底                      |
+| defaultFixedToColumn  | feature    | 1. 定义：非受控；2. 类型：对象              | 强化功能持久化                              |
+| fixedToColumn         | feature    | 1. 定义：受控；2. 类型：对象                | 强化功能持久化                              |
+| onFixedToColumn       | feature    | 1. 定义：冻结列回调；2. 类型：对象          | 强化功能持久化                              |
+| showRowHighlight      | feature    | -                                           | 强化功能持久化                              |
+| sortedColKeys         | feature    | 列排序受控                                  | 强化功能持久化                              |
+| onSortedColKeysChange | feature    | 列排序设置回调                              | 强化功能持久化                              |

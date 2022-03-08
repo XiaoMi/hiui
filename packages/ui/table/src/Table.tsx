@@ -335,11 +335,11 @@ export interface TableProps extends Omit<BaseTableProps, 'extra' | 'role'> {
    */
   onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
   /**
-   *  排序列（受控） (v3.9.0 新增)，需要 column 中必须传入唯一的 dataKey 用于列隐藏
+   *  排序列（受控)，需要 column 中必须传入唯一的 dataKey 用于列隐藏
    */
   sortedColKeys?: string[]
   /**
-   *  列排序设置时回调 (v3.9.0 新增)
+   *  列排序设置时回调
    */
   onSortedColKeysChange?: (sortedColKeys: string[]) => void
   /**
