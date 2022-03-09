@@ -65,7 +65,7 @@ $item-class: '#{$selector-prefix}__item' !default;
   }
 
   &__demarcate {
-    margin: 8px 0;
+    margin: 2px 0;
     height: 32px;
 
     &:first-of-type {

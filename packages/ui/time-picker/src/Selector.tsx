@@ -25,8 +25,6 @@ interface SelectorProps {
   position: SelectorPosition
 }
 
-const ITEM_MARGIN_SIZE = 8
-
 export const Selector: FC<SelectorProps> = (props) => {
   const { prefix, value, data, onChange, /* itemHeight, fullDisplayItemNumber, */ position } = props
   const componentPrefix = `${prefix}__selector`
@@ -38,13 +36,8 @@ export const Selector: FC<SelectorProps> = (props) => {
 
   const lastValueMatchIndexCache = useRef(-1)
 
-  // const safePadding = useMemo(
-  //   () => ((fullDisplayItemNumber - 1) * (itemHeight + ITEM_MARGIN_SIZE)) / 2,
-  //   [fullDisplayItemNumber, itemHeight]
-  // )
-
   const calcCurrentIndex = useCallback((scrollTop: number) => {
-    return Math.floor(
+    return Math.round(
       scrollTop /
         (topItemGagerRef.current!.clientHeight +
           (bottomItemGagerRef.current!.offsetTop -
