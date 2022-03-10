@@ -39,11 +39,6 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className, {
-      [`${prefixCls}--vertical`]: placement === 'vertical',
-      [`${prefixCls}--${type}`]: type,
-    })
-
     const tabList = useMemo(() => {
       const list: TabPaneProps[] = []
       React.Children.map(children, (child) => {
@@ -69,6 +64,13 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onChange
     )
 
+    const cls = cx(
+      prefixCls,
+      className,
+      placement && `${prefixCls}--placement-${placement}`,
+      type && `${prefixCls}--type-${type}`
+    )
+
     return (
       <div ref={ref} role={role} className={cls} style={style} {...rest}>
         <TabList
@@ -91,13 +93,13 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
         />
         <div className={`${_prefix}__content`}>
           {React.Children.map(children, (child) => {
-            return (
-              child &&
-              React.cloneElement(child, {
-                className: cx(`${_prefix}-tab-pane`, child.props.className),
-                active: activeTabId === child.props.tabId,
-              })
-            )
+            return child
+              ? React.cloneElement(child, {
+                  key: child.props.tabId,
+                  className: cx(`${_prefix}-tab-pane`, child.props.className),
+                  active: activeTabId === child.props.tabId,
+                })
+              : null
           })}
         </div>
       </div>

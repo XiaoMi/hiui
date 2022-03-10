@@ -8,6 +8,7 @@ import { TabInk } from './TabInk'
 import { PlusOutlined, LeftOutlined, RightOutlined, UpOutlined, DownOutlined } from '@hi-ui/icons'
 import { isUndef } from '@hi-ui/type-assertion'
 import { IconButton } from '@hi-ui/icon-button'
+
 const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
 

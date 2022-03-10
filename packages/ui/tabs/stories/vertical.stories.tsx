@@ -4,8 +4,8 @@ import { Tabs, TabPane } from '../src'
 export const Vertical = () => {
   return (
     <>
-      <h1>Basic</h1>
-      <div className="tabs-basic__wrap" style={{ marginBottom: 30 }}>
+      <h1>Vertical</h1>
+      <div className="tabs-vertical__wrap" style={{ marginBottom: 30 }}>
         <Tabs placement="vertical">
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1

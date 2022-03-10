@@ -146,14 +146,58 @@ $prefix: '#{$component-prefix}-tabs' !default;
     }
   }
 
-  &--vertical {
+  &--placement-vertical {
     display: flex;
-    .#{$prefix}__list {
+
+    // 使用 `>` 限定关系，避免嵌套使用时样式污染
+    & > .#{$prefix}__content {
+      padding-left: 16px;
+      padding-top: 0;
+    }
+
+    & > .#{$prefix}__list {
       flex-shrink: 0;
       flex-direction: column;
       // height: 100%;
 
-      &--card {
+      .#{$prefix}__list--inner {
+        width: auto;
+        display: block;
+        position: relative;
+      }
+
+      .#{$prefix}__list--scroll {
+        flex-direction: column;
+        position: relative;
+      }
+
+      .#{$prefix}__item {
+        line-height: use-text-lineheight('lg');
+        padding: use-spacing(4) use-spacing(10);
+        margin: 0;
+        transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
+
+        &--prev {
+          border-top: 1px dashed use-color-mode('primary');
+          border-left: none;
+        }
+
+        &--next {
+          border-bottom: 1px dashed use-color-mode('primary');
+          border-right: none;
+        }
+      }
+
+      .#{$prefix}__ink {
+        position: absolute;
+        left: 0;
+        bottom: auto;
+        width: 2px;
+        background-color: use-color-mode('primary');
+        transition: top 0.2s cubic-bezier(0.34, 0.69, 0.1, 1), height 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
+      }
+
+      .#{$prefix}__list--card {
         .#{$prefix}__item {
           margin: 0;
           padding: use-spacing(4) use-spacing(10);
@@ -168,7 +212,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
         }
       }
 
-      &--button {
+      .#{$prefix}__list--button {
         .#{$prefix}__item {
           margin: 0 0 use-spacing(2) 0;
           padding: use-spacing(2) use-spacing(10);
@@ -187,7 +231,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
         }
       }
 
-      &--desc {
+      .#{$prefix}__list--desc {
         .#{$prefix}-item {
           &__title {
             color: use-color('gray', 700);
@@ -229,60 +273,6 @@ $prefix: '#{$component-prefix}-tabs' !default;
           }
         }
       }
-      // &::before {
-      //   content: '';
-      //   clear: both;
-      //   position: absolute;
-      //   top: 0;
-      //   right: 0;
-      //   left: auto;
-      //   height: 100%;
-      //   width: 1px;
-      //   background-color: use-color('gray', 200);
-      //   display: block;
-      // }
-
-      &--inner {
-        width: auto;
-        display: block;
-        position: relative;
-      }
-
-      &--scroll {
-        flex-direction: column;
-        position: relative;
-      }
-    }
-
-    .#{$prefix}__item {
-      line-height: use-text-lineheight('lg');
-      padding: use-spacing(4) use-spacing(10);
-      margin: 0;
-      transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
-
-      &--prev {
-        border-top: 1px dashed use-color-mode('primary');
-        border-left: none;
-      }
-
-      &--next {
-        border-bottom: 1px dashed use-color-mode('primary');
-        border-right: none;
-      }
-    }
-
-    .#{$prefix}__content {
-      padding-left: 16px;
-      padding-top: 0;
-    }
-
-    .#{$prefix}__ink {
-      position: absolute;
-      left: 0;
-      bottom: auto;
-      width: 2px;
-      background-color: use-color-mode('primary');
-      transition: top 0.2s cubic-bezier(0.34, 0.69, 0.1, 1), height 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
     }
   }
 

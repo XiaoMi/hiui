@@ -4,8 +4,8 @@ import { Tabs, TabPane } from '../src'
 export const Editable = () => {
   return (
     <>
-      <h1>Basic</h1>
-      <div className="tabs-basic__wrap">
+      <h1>Editable</h1>
+      <div className="tabs-editable__wrap">
         <Tabs
           editable
           onAdd={() => {

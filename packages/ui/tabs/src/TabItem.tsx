@@ -4,37 +4,6 @@ import { cx } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { CloseOutlined } from '@hi-ui/icons'
 
-interface TabItemProps extends TabPaneProps {
-  active: boolean
-  draggable?: boolean
-
-  onTabClick: (key: React.ReactText, event: React.MouseEvent) => void
-  prefixCls?: string
-  editable?: boolean
-  onDelete?: (deletedNode: TabPaneProps, index: number) => void
-  index: number
-  onDragStart?: (
-    e: React.DragEvent<HTMLDivElement>,
-    { dragNode }: { dragNode: TabPaneProps }
-  ) => void
-  onDragOver?: (
-    e: React.DragEvent<HTMLDivElement>,
-    { targetNode }: { targetNode: TabPaneProps }
-  ) => void
-  onDrop?: (
-    e: React.DragEvent<HTMLDivElement>,
-    {
-      dragNode,
-      targetNode,
-      direction,
-    }: { dragNode: TabPaneProps; targetNode: TabPaneProps; direction: 'prev' | 'next' | null }
-  ) => void
-  onDragEnd?: (e: React.DragEvent<HTMLDivElement>, { dragNode }: { dragNode: TabPaneProps }) => void
-  itemRef: HTMLDivElement | null
-  direction: 'horizontal' | 'vertical'
-  type: 'desc' | 'line' | 'button' | 'card'
-}
-
 export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
   (
     {
@@ -169,6 +138,38 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
     )
   }
 )
+
+interface TabItemProps extends TabPaneProps {
+  active: boolean
+  draggable?: boolean
+
+  onTabClick: (key: React.ReactText, event: React.MouseEvent) => void
+  prefixCls?: string
+  editable?: boolean
+  onDelete?: (deletedNode: TabPaneProps, index: number) => void
+  index: number
+  onDragStart?: (
+    e: React.DragEvent<HTMLDivElement>,
+    { dragNode }: { dragNode: TabPaneProps }
+  ) => void
+  onDragOver?: (
+    e: React.DragEvent<HTMLDivElement>,
+    { targetNode }: { targetNode: TabPaneProps }
+  ) => void
+  onDrop?: (
+    e: React.DragEvent<HTMLDivElement>,
+    {
+      dragNode,
+      targetNode,
+      direction,
+    }: { dragNode: TabPaneProps; targetNode: TabPaneProps; direction: 'prev' | 'next' | null }
+  ) => void
+  onDragEnd?: (e: React.DragEvent<HTMLDivElement>, { dragNode }: { dragNode: TabPaneProps }) => void
+  itemRef: HTMLDivElement | null
+  direction: 'horizontal' | 'vertical'
+  type: 'desc' | 'line' | 'button' | 'card'
+}
+
 if (__DEV__) {
   TabItem.displayName = 'TabItem'
 }

@@ -1,15 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import { cx } from '@hi-ui/classname'
 
-interface TabInkProps {
-  disabled?: boolean
-  prefixCls?: string
-  itemRef: HTMLElement
-  tabListRef: HTMLElement
-  direction: 'vertical' | 'horizontal'
-  translate: number
-}
-
 export const TabInk: React.FC<TabInkProps> = ({
   disabled,
   prefixCls,
@@ -54,4 +45,11 @@ export const TabInk: React.FC<TabInkProps> = ({
   )
 }
 
-export default TabInk
+interface TabInkProps {
+  disabled?: boolean
+  prefixCls?: string
+  itemRef: HTMLElement
+  tabListRef: HTMLElement
+  direction: 'vertical' | 'horizontal'
+  translate: number
+}

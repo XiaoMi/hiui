@@ -4,8 +4,8 @@ import { Tabs, TabPane } from '../src'
 export const Draggable = () => {
   return (
     <>
-      <h1>Basic</h1>
-      <div className="tabs-basic__wrap">
+      <h1>Draggable</h1>
+      <div className="tabs-draggable__wrap">
         <Tabs
           draggable
           onAdd={() => {

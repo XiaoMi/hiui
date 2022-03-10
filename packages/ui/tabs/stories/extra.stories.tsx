@@ -6,7 +6,7 @@ export const Extra = () => {
   return (
     <>
       <h1>Extra</h1>
-      <div className="tabs-basic__wrap">
+      <div className="tabs-extra__wrap">
         <Tabs extra={<Button>申请</Button>}>
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1
