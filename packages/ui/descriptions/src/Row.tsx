@@ -11,7 +11,7 @@ interface CellConfig {
   rootContentStyle?: React.CSSProperties
 }
 
-function renderCells(
+function renderCols(
   items: React.ReactElement<DescriptionsItemProps>[],
   { prefixCls, bordered, rootLabelStyle, rootContentStyle }: RowProps,
   { component, type, showLabel, showContent }: CellConfig
@@ -96,14 +96,14 @@ const Row: React.FC<RowProps> = (props) => {
     return (
       <>
         <tr key={`label-${index}`} className={`${prefixCls}-row`}>
-          {renderCells(row, props, {
+          {renderCols(row, props, {
             component: 'th',
             type: 'label',
             showLabel: true,
           })}
         </tr>
         <tr key={`content-${index}`} className={`${prefixCls}-row`}>
-          {renderCells(row, props, {
+          {renderCols(row, props, {
             component: 'td',
             type: 'content',
             showContent: true,
@@ -114,7 +114,7 @@ const Row: React.FC<RowProps> = (props) => {
   }
   return (
     <tr key={index} className={`${prefixCls}-row`}>
-      {renderCells(row, props, {
+      {renderCols(row, props, {
         component: bordered || noBackground ? ['th', 'td'] : 'td',
         type: 'item',
         showLabel: true,

@@ -1,12 +1,12 @@
 import React from 'react'
 import Descriptions from '../src'
 
-export const Basic = () => {
+export const VerticalBorder = () => {
   return (
     <>
-      <h1>基础用法</h1>
+      <h1>垂直带边框</h1>
       <div className="descriptions-basic__wrap">
-        <Descriptions>
+        <Descriptions layout="vertical" bordered>
           <Descriptions.Item label="名字">张三</Descriptions.Item>
           <Descriptions.Item label="Phone">15311969622</Descriptions.Item>
           <Descriptions.Item label="Address">北京天安门</Descriptions.Item>

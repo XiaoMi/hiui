@@ -1,7 +1,5 @@
 import * as React from 'react'
 
-export const { isValidElement } = React
-
 type AnyObject = Record<any, any>
 
 type RenderProps = undefined | AnyObject | ((originProps: AnyObject) => AnyObject | undefined)
@@ -11,7 +9,7 @@ export function replaceElement(
   replacement: React.ReactNode,
   props: RenderProps
 ): React.ReactNode {
-  if (!isValidElement(element)) return replacement
+  if (!React.isValidElement(element)) return replacement
 
   return React.cloneElement(
     element,
@@ -21,4 +19,12 @@ export function replaceElement(
 
 export function cloneElement(element: React.ReactNode, props?: RenderProps): React.ReactElement {
   return replaceElement(element, element, props) as React.ReactElement
+}
+
+export function toArray(children: React.ReactNode) {
+  const res: any = []
+  React.Children.forEach(children, (c) => {
+    res.push(c)
+  })
+  return res
 }

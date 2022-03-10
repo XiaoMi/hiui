@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { cloneElement } from './util'
+import { cloneElement, toArray } from './util'
 import Row from './Row'
 
 const DESCRIPTIONS_PREFIX = getPrefixCls('descriptions')
@@ -21,7 +21,7 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
  * TODO: What is Descriptions
  */
 
-function getFilledItem(
+function computeFilledItem(
   node: React.ReactElement,
   span: number | undefined,
   rowRestCol: number
@@ -32,50 +32,46 @@ function getFilledItem(
     clone = cloneElement(node, {
       span: rowRestCol,
     })
-    console.warn(
-      span === undefined,
-      'Descriptions',
-      'Sum of column `span` in a line not match `column` of Descriptions.'
-    )
   }
 
   return clone
 }
-function getColumn(column: DescriptionsProps['column']): number {
+
+function computeColumn(column: DescriptionsProps['column']): number {
   if (typeof column === 'number') {
     return column
   }
   return 3
 }
 
-function getRows(children: React.ReactNode, column: number) {
+function computeRows(children: React.ReactNode, column: number) {
   if (!Array.isArray(children)) return []
+  const childrenNodes = toArray(children)
   const rows: React.ReactElement[][] = []
 
-  let tmpRow: React.ReactElement[] = []
+  let rowItems: React.ReactElement[] = []
   let rowRestCol = column
 
-  children.forEach((node: React.ReactElement, index: number) => {
+  childrenNodes.forEach((node: React.ReactElement, index: number) => {
     const span: number | undefined = node?.props?.span
     const mergedSpan = span || 1
 
     if (index === children.length - 1) {
-      tmpRow.push(getFilledItem(node, span, rowRestCol))
-      rows.push(tmpRow)
+      rowItems.push(computeFilledItem(node, span, rowRestCol))
+      rows.push(rowItems)
       return
     }
 
     if (mergedSpan < rowRestCol) {
       rowRestCol -= mergedSpan
-      tmpRow.push(node)
+      rowItems.push(node)
     } else {
-      tmpRow.push(getFilledItem(node, mergedSpan, rowRestCol))
-      rows.push(tmpRow)
+      rowItems.push(computeFilledItem(node, mergedSpan, rowRestCol))
+      rows.push(rowItems)
       rowRestCol = column
-      tmpRow = []
+      rowItems = []
     }
   })
-
   return rows
 }
 
@@ -102,9 +98,9 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       { [`${prefixCls}-bordered`]: !!bordered, [`${prefixCls}-no-background`]: !!noBackground },
       className
     )
-    const mergedColumn = getColumn(column)
+    const mergedColumn = computeColumn(column)
 
-    const rows = getRows(children, mergedColumn)
+    const rows = computeRows(children, mergedColumn)
     return (
       <div ref={ref} role={role} className={cls} {...rest} style={style}>
         <div className={`${prefixCls}-view`}>
