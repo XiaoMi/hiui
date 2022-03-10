@@ -10,7 +10,7 @@ const gutterNameVar = getPrefixStyleVar('grid-row-gutter')
 const gapNameVar = getPrefixStyleVar('grid-row-gap')
 
 // Row 与 Row 默认间距
-const DEFAULT_ROW_GAP = 24
+const DEFAULT_ROW_GAP = 16
 // Row 内每项 Col 默认间距
 const DEFAULT_GUTTER_GAP = 16
 

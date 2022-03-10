@@ -14,6 +14,8 @@ import { isFunction } from '@hi-ui/type-assertion'
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
 
+const EMBED_ON_ROW_PROPS = {} as any
+
 /**
  * TODO: What is TableRow
  */
@@ -193,7 +195,9 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       return item.dataKey !== SELECTION_DATA_KEY && item.dataKey !== EMBED_DATA_KEY
     })
 
-    const rowExtraProps = isFunction(onRow) ? onRow() : {}
+    const rowExtraProps = isFunction(onRow)
+      ? onRow(isSumRow || isAvgRow ? null : rowData, rowIndex)
+      : EMBED_ON_ROW_PROPS
 
     return (
       <>

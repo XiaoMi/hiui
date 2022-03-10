@@ -47,6 +47,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       onRow,
       onHeaderRow,
       stickyFooter,
+      stickyFooterBottom = 0,
       fixedColumnTrigger = 'auto',
       emptyContent,
       ...rest
@@ -235,7 +236,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
             stickyFooter
               ? {
                   position: 'sticky',
-                  bottom: 0,
+                  bottom: stickyFooterBottom,
                   // boxShadow: '0 5px 15px 0 rgba(0, 0, 0, 0.1)'
                 }
               : undefined
@@ -277,6 +278,10 @@ export interface BaseTableProps
    * 底部吸底
    */
   stickyFooter?: boolean
+  /**
+   * 底部吸底距离视口底部距离
+   */
+  stickyFooterBottom?: number
   /**
    * 自定义冻结列触发展示行为
    */

@@ -1,5 +1,6 @@
 import React from 'react'
 import Cascader from '../src'
+import Alert from '@hi-ui/alert'
 
 export const Dynamic = () => {
   const [treeData, setTreeData] = React.useState([
@@ -52,8 +53,17 @@ export const Dynamic = () => {
 
   return (
     <>
-      <h1>Dynamic for Tree</h1>
-      <div className="tree-basic__wrap">
+      <h1>Dynamic for Cascader</h1>
+      <div className="cascader-dynamic__wrap">
+        <Alert
+          type="danger"
+          closeable={false}
+          showIcon={false}
+          title={
+            '注意：对于异步加载子节点，可以配合 `node.isLeaf: true` 来表明是否为叶子结点。以此来告诉组件是否有下一级子面板'
+          }
+        ></Alert>
+        <br />
         <Cascader data={treeData} onLoadChildren={loadChildren} onChange={console.log}></Cascader>
       </div>
     </>

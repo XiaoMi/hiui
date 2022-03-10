@@ -1,6 +1,7 @@
 import React from 'react'
 import Tree from '../src'
 import { cloneTree } from '@hi-ui/tree-utils'
+import Alert from '@hi-ui/alert'
 
 // 给定一个结合，根据 id 寻找节点
 const findNode = (itemId, data) => {
@@ -71,6 +72,15 @@ export const Dynamic = () => {
     <>
       <h1>Dynamic for Tree</h1>
       <div className="tree-basic__wrap">
+        <Alert
+          type="danger"
+          closeable={false}
+          showIcon={false}
+          title={
+            '注意：对于异步加载子节点，可以配合 `node.isLeaf: true` 来表明是否为叶子结点。以此来告诉组件该节点是否有下一级子树'
+          }
+        ></Alert>
+        <br />
         <Tree data={treeData} onLoadChildren={loadChildren}></Tree>
       </div>
     </>

@@ -57,7 +57,11 @@ export type TableRowReturn = {
 }
 
 export type TableHeaderRowFunc = (columns: TableColumnItem[], index: number) => TableRowReturn
-export type TableRowFunc = () => TableRowReturn
+
+/**
+ * 对于合计行或者均值行统计，rowData 为 null
+ */
+export type TableRowFunc = (rowData: Record<string, any> | null, index: number) => TableRowReturn
 
 export type TableColumnItem = {
   title: React.ReactNode

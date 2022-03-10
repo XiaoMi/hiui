@@ -60,7 +60,6 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       onSortedColKeysChange,
       rowSelection,
       fieldKey = 'key',
-      stickyFooter = false,
       data = DEFAULT_DATA,
       ...rest
     },
@@ -273,7 +272,6 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         <BaseTable
           ref={ref}
           {...baseTableProps}
-          stickyFooter={stickyFooter}
           prefixCls={prefixCls}
           columns={mergedColumns}
           data={mergedData}
@@ -350,10 +348,6 @@ export interface TableProps extends Omit<BaseTableProps, 'extra' | 'role'> {
    *  异步数据源，分页切换时加载数据
    */
   dataSource?: (current: number) => TableDataSource
-  /**
-   * 底部吸底
-   */
-  stickyFooter?: boolean
 }
 
 if (__DEV__) {

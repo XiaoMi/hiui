@@ -20,6 +20,8 @@ $prefix: '#{$component-prefix}-grid' !default;
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: var(with-prefix-var('grid-col-span'));
+    // 避免被内部溢宽撑开
+    max-width: var(with-prefix-var('grid-col-span'));
     margin-left: var(with-prefix-var('grid-col-offset'));
     padding-left: calc(var(#{with-prefix-var('grid-row-gutter')}) / 2);
     padding-right: calc(var(#{with-prefix-var('grid-row-gutter')}) / 2);

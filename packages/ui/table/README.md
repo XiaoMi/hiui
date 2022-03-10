@@ -158,9 +158,10 @@
 | expandedEmbedRowKeys  | feature    | -                                           | 字段：expandRowKeys -> expandedEmbedRowKeys | 强化功能：支持内嵌面板独立控制 |
 | onEmbedExpand         | feature    | 字段：onExpand -> onEmbedExpand             | 强化功能：支持内嵌面板独立控制              |
 | stickyFooter          | feature    | boolean                                     | 强化功能：支持底部吸底                      |
+| stickyFooterBottom    | feature    | 底部吸底距离视口底部距离                    | 强化功能                                    |
 | defaultFixedToColumn  | feature    | 1. 定义：非受控；2. 类型：对象              | 强化功能持久化                              |
 | fixedToColumn         | feature    | 1. 定义：受控；2. 类型：对象                | 强化功能持久化                              |
 | onFixedToColumn       | feature    | 1. 定义：冻结列回调；2. 类型：对象          | 强化功能持久化                              |
-| showRowHighlight      | feature    | -                                           | 强化功能持久化                              |
+| showRowHighlight      | feature    | -                                           | 强化功能受控化                              |
 | sortedColKeys         | feature    | 列排序受控                                  | 强化功能持久化                              |
 | onSortedColKeysChange | feature    | 列排序设置回调                              | 强化功能持久化                              |
