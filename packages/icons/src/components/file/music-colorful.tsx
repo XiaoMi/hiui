@@ -19,3 +19,4 @@ export const MusicColorful = forwardRef<SVGSVGElement | null, IconProps>(
 if (__DEV__) {
   MusicColorful.displayName = 'MusicColorful'
 }
+  

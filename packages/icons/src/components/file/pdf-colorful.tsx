@@ -19,3 +19,4 @@ export const PdfColorful = forwardRef<SVGSVGElement | null, IconProps>(
 if (__DEV__) {
   PdfColorful.displayName = 'PdfColorful'
 }
+  

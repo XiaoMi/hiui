@@ -19,3 +19,4 @@ export const ZipColorful = forwardRef<SVGSVGElement | null, IconProps>(
 if (__DEV__) {
   ZipColorful.displayName = 'ZipColorful'
 }
+  
