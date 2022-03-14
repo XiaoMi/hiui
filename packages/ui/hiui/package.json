@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.0.0-beta.27",
+  "version": "4.0.0-beta.28",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -86,7 +86,7 @@
     "@hi-ui/stepper": "^4.0.0-beta.4",
     "@hi-ui/svg-icon": "^4.0.0-beta.3",
     "@hi-ui/switch": "^4.0.0-beta.3",
-    "@hi-ui/table": "^4.0.0-beta.24",
+    "@hi-ui/table": "^4.0.0-beta.25",
     "@hi-ui/tabs": "^4.0.0-beta.7",
     "@hi-ui/tag": "^4.0.0-beta.11",
     "@hi-ui/textarea": "^4.0.0-beta.6",
