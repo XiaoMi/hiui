@@ -88,6 +88,13 @@ export const RowSelection = () => {
               key: 5,
             },
           ]}
+          onRow={() => {
+            return {
+              onClick: (evt) => {
+                console.log('aaaaa', evt)
+              },
+            }
+          }}
         />
       </div>
     </>

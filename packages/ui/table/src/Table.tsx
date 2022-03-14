@@ -181,6 +181,9 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 onChange={(evt) => {
                   onCheckedRowKeysChange(rowItem, evt.target.checked)
                 }}
+                onClick={(evt) => {
+                  evt.stopPropagation()
+                }}
               />
             ),
             checked,

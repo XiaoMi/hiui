@@ -323,7 +323,11 @@ const renderSwitcher = ({
           `${prefixCls}__switcher--${expanded ? 'expanded' : 'collapse'}`
         )}
         icon={expanded ? expandedIcon : collapsedIcon}
-        onClick={() => onSwitch(!expanded)}
+        onClick={(evt) => {
+          // 阻止传递给 onRow 的 onClick 事件
+          evt.stopPropagation()
+          onSwitch(!expanded)
+        }}
       />
     )
   }
