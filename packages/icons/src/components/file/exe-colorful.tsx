@@ -19,3 +19,4 @@ export const ExeColorful = forwardRef<SVGSVGElement | null, IconProps>(
 if (__DEV__) {
   ExeColorful.displayName = 'ExeColorful'
 }
+  
