@@ -2,16 +2,16 @@
 
 $tag-group-prefix: '#{$component-prefix}-tag-group' !default;
 
-.#{$tag-group-prefix}{
+.#{$tag-group-prefix} {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
 
-  &__item{
+  &__item {
     margin-bottom: 8px;
   }
 
-  &__add-new-button{
+  &__add-new-button {
     height: 24px;
     display: flex;
     align-items: center;

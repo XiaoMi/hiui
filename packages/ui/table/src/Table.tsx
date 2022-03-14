@@ -60,6 +60,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       onSortedColKeysChange,
       rowSelection,
       fieldKey = 'key',
+      extra,
       data = DEFAULT_DATA,
       ...rest
     },
@@ -307,6 +308,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 onChange={trySetCurrentPage}
               />
             ),
+            ...extra,
           }}
         />
       </TableWrapper>
@@ -314,7 +316,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
   }
 )
 
-export interface TableProps extends Omit<BaseTableProps, 'extra' | 'role'> {
+export interface TableProps extends BaseTableProps {
   /**
    * 加载中状态
    */

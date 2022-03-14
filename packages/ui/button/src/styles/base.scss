@@ -58,6 +58,11 @@ $prefix: '#{$component-prefix}-button' !default;
     font-size: use-text-size('sm');
     line-height: use-text-lineheight('sm');
 
+    .#{$prefix}__icon {
+      // 定制大小，非 token
+      font-size: 14px;
+    }
+
     &:not(.#{$prefix}--icon-only) {
       .#{$prefix}__icon {
         margin-inline-end: use-spacing(2);
@@ -73,6 +78,11 @@ $prefix: '#{$component-prefix}-button' !default;
   &--size-md {
     font-size: use-text-size('normal');
     line-height: use-text-lineheight('normal');
+
+    .#{$prefix}__icon {
+      // 定制大小，非 token
+      font-size: 16px;
+    }
 
     &:not(.#{$prefix}--icon-only) {
       .#{$prefix}__icon {
@@ -90,6 +100,11 @@ $prefix: '#{$component-prefix}-button' !default;
     font-size: use-text-size('lg');
     line-height: use-text-lineheight('lg');
 
+    .#{$prefix}__icon {
+      // 定制大小，非 token
+      font-size: 20px;
+    }
+
     &:not(.#{$prefix}--icon-only) {
       .#{$prefix}__icon {
         margin-inline-end: use-spacing(4);
@@ -105,6 +120,11 @@ $prefix: '#{$component-prefix}-button' !default;
   &--size-xl {
     font-size: use-text-size('xl');
     line-height: use-text-lineheight('xl');
+
+    .#{$prefix}__icon {
+      // 定制大小，非 token
+      font-size: 24px;
+    }
 
     &:not(.#{$prefix}--icon-only) {
       .#{$prefix}__icon:not(.#{$prefix}--icon-only) {

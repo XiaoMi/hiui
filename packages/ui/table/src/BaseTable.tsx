@@ -253,6 +253,10 @@ export interface BaseTableProps
   extends Omit<HiBaseHTMLProps<'div'>, 'onDrop' | 'draggable' | 'onDragStart'>,
     UseTableProps,
     UseEmbedExpandProps {
+  /**
+   * 覆盖 header 的setting icon 和 footer 的 pagination。暂不对外暴露
+   * @private
+   */
   extra?: TableExtra
   /**
    *  是否展示为斑马纹效果

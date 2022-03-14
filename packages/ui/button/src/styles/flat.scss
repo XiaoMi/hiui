@@ -75,7 +75,7 @@ $filled-focus-shadow-map: (
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
-        padding: 0;
+        padding: 1px 0;
       }
     }
     &--appearance-filled#{&}--size-md {
@@ -84,7 +84,7 @@ $filled-focus-shadow-map: (
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
-        padding: 0;
+        padding: 4px 0;
       }
     }
 
@@ -94,7 +94,7 @@ $filled-focus-shadow-map: (
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
-        padding: 0;
+        padding: 7px 0;
       }
     }
 
@@ -104,7 +104,7 @@ $filled-focus-shadow-map: (
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
-        padding: 0;
+        padding: 13px 0;
       }
     }
 
