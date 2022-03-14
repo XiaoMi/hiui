@@ -181,6 +181,8 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       font-weight: inherit;
       font-family: inherit;
       color: transparent;
+      word-break: keep-all;
+      white-space: nowrap;
     }
 
     &__input {

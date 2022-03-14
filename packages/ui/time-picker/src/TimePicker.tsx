@@ -85,6 +85,10 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       },
       [notifyOutside]
     )
+    const isInSingleValueFormat = useMemo(() => {
+      const singleFormat: TimePickerFormat[] = ['HH', 'mm', 'ss']
+      return singleFormat.includes(format)
+    }, [format])
 
     const [value, onChange] = useUncontrolledState<string[]>(
       formatUncontrolledValue,
@@ -215,13 +219,13 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           >
             {confirmText}
           </Button>
-          {type === 'single' && (
+          {type === 'single' && !isInSingleValueFormat && (
             <Button
               className={`${prefixCls}__pop-now-btn`}
               appearance="link"
               type="primary"
               onClick={() => {
-                onCacheChange([getNowString(format)])
+                onChange([getNowString(format)])
                 showPopperRef.current = false
                 setShowPopper(false)
               }}
@@ -238,11 +242,11 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       isInputValid,
       type,
       format,
-      onCacheChange,
       cacheValue,
       value,
       onChange,
       validChecker,
+      isInSingleValueFormat,
     ])
 
     return (

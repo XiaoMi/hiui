@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { cx } from '@hi-ui/classname'
 import Input, { InputChangeEvent } from './input'
 import PickerIcon from './picker-icon'
 import DPContext from '../context'
 import usePlaceholder from '../hooks/usePlaceholders'
 import { parseValue } from '../utils'
+import moment from 'moment'
 
 const Root = ({
   onTrigger,
@@ -39,6 +40,8 @@ const Root = ({
     isInDateRangeTimeMode,
     showPanel,
     appearance,
+    min,
+    max,
     size,
   } = useContext(DPContext)
   const [inputData, setInputData] = useState(outDate)
@@ -64,6 +67,30 @@ const Root = ({
     }
     onPickerClickEvent(0)
   }
+
+  const renderRange = type.includes('range') || type === 'timeperiod'
+
+  const isValueValid = useMemo(() => {
+    const isInRange = (date: moment.Moment) => {
+      if (min && date.isBefore(min)) {
+        return false
+      }
+      if (max && date.isAfter(max)) {
+        return false
+      }
+      return true
+    }
+
+    if (inputData[0] && !isInRange(inputData[0])) {
+      return false
+    }
+
+    if (renderRange && inputData[1] && !isInRange(inputData[1])) {
+      return false
+    }
+    return true
+  }, [inputData, min, max, renderRange])
+
   const _cls = cx(
     `${prefixCls}__picker`,
     `theme__${theme}`,
@@ -73,10 +100,8 @@ const Root = ({
     inputFocus && `${prefixCls}__picker--focus`,
     disabled && `${prefixCls}__picker--disabled`,
     showTime && `${prefixCls}__picker--hastime`,
-    invalid && `${prefixCls}__picker--invalid`
+    (invalid || !isValueValid) && `${prefixCls}__picker--invalid`
   )
-
-  const renderRange = type.includes('range') || type === 'timeperiod'
 
   return (
     <div className={_cls} ref={setAttachEl}>
