@@ -49,6 +49,7 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       visible: visibleProp,
       onOpen,
       onClose,
+      isEqual: Object.is,
     })
 
     // TODO: 1. 优化封装完全非受控 2. useTooltip 支持 attachEl 设置
@@ -66,7 +67,7 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
     })
 
     useEffect(() => {
-      transitionVisibleAction.set(transitionVisible)
+      // transitionVisibleAction.set(transitionVisible)
       if (transitionVisible) {
         setTransitionExisted(false)
       }

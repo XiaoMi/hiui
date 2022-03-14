@@ -5,33 +5,31 @@ import { UploadFileItem, UploadFileList } from './interface'
 import {
   CloseOutlined,
   DeleteOutlined,
-  FileFilled,
-  FileExeOutlined,
-  FileJpgOutlined,
-  FilePdfOutlined,
-  FilePptOutlined,
-  FileKeynoteOutlined,
-  FileMusicOutlined,
-  FileTxtOutlined,
-  FileVideoOutlined,
-  FileWordOutlined,
-  FileZipOutlined,
-  FileExcelOutlined,
+  JpgColorful,
+  ExeColorful,
+  PdfColorful,
+  ZipColorful,
+  MusicColorful,
+  PptColorful,
+  ExcelColorful,
+  WordColorful,
+  QuestionColorful,
 } from '@hi-ui/icons'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 const fileTypeMap = {
-  img: <FileJpgOutlined />,
-  exe: <FileExeOutlined />,
-  audio: <FileMusicOutlined />,
-  pdf: <FilePdfOutlined />,
-  key: <FileKeynoteOutlined />,
-  video: <FileVideoOutlined />,
-  txt: <FileTxtOutlined />,
-  word: <FileWordOutlined />,
-  excel: <FileExcelOutlined />,
-  zip: <FileZipOutlined />,
-  ppt: <FilePptOutlined />,
+  img: <JpgColorful />,
+  exe: <ExeColorful />,
+  audio: <MusicColorful />,
+  pdf: <PdfColorful />,
+  key: <WordColorful />,
+  video: <MusicColorful />,
+  txt: <WordColorful />,
+  word: <WordColorful />,
+  excel: <ExcelColorful />,
+  zip: <ZipColorful />,
+  ppt: <PptColorful />,
+  default: <QuestionColorful />,
 } as Record<string, any>
 
 /**
@@ -70,11 +68,13 @@ export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
               }}
             >
               {showPic && file.url ? (
-                <div className="img-wrap">
+                <div className={`${prefixCls}__item-img`}>
                   <img src={file.url} />
                 </div>
               ) : (
-                (file.fileType && fileTypeMap[file.fileType]) || <FileFilled />
+                <span className={`${prefixCls}__item-icon`}>
+                  {(file.fileType && fileTypeMap[file.fileType]) || fileTypeMap.default}
+                </span>
               )}
               <div className={`${prefixCls}__right-content`}>
                 <a

@@ -62,12 +62,13 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       defaultVisible: false,
       visible: visibleProp,
       onClose,
+      isEqual: Object.is,
     })
 
     const [transitionExisted, setTransitionExisted] = useState(!transitionVisible)
 
     useEffect(() => {
-      transitionVisibleAction.set(transitionVisible)
+      // transitionVisibleAction.set(transitionVisible)
       if (transitionVisible) {
         setTransitionExisted(false)
       }

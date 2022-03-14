@@ -110,16 +110,6 @@ $prefix: '#{$component-prefix}-upload' !default;
       background-color: use-color-mode('primary', 200);
       border: 1px solid use-color-mode('primary', 400);
     }
-
-    .hi-icon {
-      cursor: pointer;
-      font-size: 16px;
-      color: use-color('gray', 500);
-    }
-
-    .icon-plus {
-      font-size: 24px;
-    }
   }
 
   &__right-content {
@@ -189,12 +179,6 @@ $prefix: '#{$component-prefix}-upload' !default;
     .#{$prefix}__operate-icon {
       color: use-color-mode('primary');
       cursor: pointer;
-    }
-
-    .#{$prefix}__item-tips {
-      .hi-icon {
-        color: use-color-mode('primary');
-      }
     }
 
     &.#{$prefix}--disabled {
@@ -513,13 +497,17 @@ $prefix: '#{$component-prefix}-upload' !default;
           color: use-color('gray', 700);
         }
 
-        .img-wrap {
+        &-icon {
+          margin-inline-end: use-spacing(4);
+        }
+
+        &-img {
           float: left;
           width: 40px;
           height: 40px;
           border-radius: use-border-radius('normal');
           overflow: hidden;
-          margin-inline-end: use-spacing(6);
+          margin-inline-end: use-spacing(4);
           position: relative;
 
           img {
