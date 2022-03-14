@@ -49,16 +49,15 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
       >
         {Children.map(children, (child, index) => {
           const childBody = <div className={`${prefixCls}__item`}>{child}</div>
-          const childDom =
-            split && childCount > index + 1 ? (
-              <>
-                {childBody}
-                {split}
-              </>
-            ) : (
-              childBody
-            )
-          return childDom
+
+          return split && childCount > index + 1 ? (
+            <>
+              {childBody}
+              {split}
+            </>
+          ) : (
+            childBody
+          )
         })}
       </div>
     )
