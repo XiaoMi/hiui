@@ -2,12 +2,12 @@ import React from 'react'
 import Space from '../src'
 import Button from '@hi-ui/button'
 
-export const Basic = () => {
+export const Direction = () => {
   return (
     <>
-      <h1>基本使用</h1>
+      <h1>垂直排列</h1>
       <div className="space-basic__wrap">
-        <Space>
+        <Space direction="column" size="normal">
           <Button>Button1</Button>
           <Button type="primary">Button2</Button>
           <Button type="danger">Button3</Button>

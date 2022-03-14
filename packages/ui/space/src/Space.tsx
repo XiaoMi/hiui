@@ -1,4 +1,7 @@
-import React, { forwardRef, Children, ReactDOM } from 'react'
+/**
+ * this is a easy to layout component
+ */
+import React, { forwardRef, Children, ReactNode } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
@@ -8,21 +11,19 @@ import { SizeEnum, SizeType } from './types'
 
 const SPACE_PREFIX = getPrefixCls('space')
 
-/**
- * TODO: What is Space
- */
 export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
   (
     {
       prefixCls = SPACE_PREFIX,
       role = 'space',
-      className,
-      children,
       align = 'start',
       direction = 'row',
       size = SizeEnum.Small,
+      style = {},
+      className,
       split,
       wrap,
+      children,
       ...rest
     },
     ref
@@ -39,19 +40,25 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
     const formatGap = handleTransformGap(size)
 
     return (
-      <div ref={ref} role={role} className={cls} style={{ gap: formatGap as string }} {...rest}>
+      <div
+        ref={ref}
+        role={role}
+        className={cls}
+        style={{ gap: formatGap as number, ...style }}
+        {...rest}
+      >
         {Children.map(children, (child, index) => {
-          // child dom
-          const childContent =
-            split && childCount < index + 1 ? (
+          const childBody = <div className={`${prefixCls}__item`}>{child}</div>
+          const childDom =
+            split && childCount > index + 1 ? (
               <>
+                {childBody}
                 {split}
-                {child}
               </>
             ) : (
-              child
+              childBody
             )
-          return <div className={`${prefixCls}__item`}>{childContent}</div>
+          return childDom
         })}
       </div>
     )
@@ -62,7 +69,7 @@ export interface SpaceProps extends HiBaseHTMLProps<'div'> {
   align?: 'start' | 'end' | 'center' | 'baseline'
   direction?: 'row' | 'column'
   size?: SizeType
-  split?: ReactDOM
+  split?: ReactNode
   wrap?: boolean
 }
 

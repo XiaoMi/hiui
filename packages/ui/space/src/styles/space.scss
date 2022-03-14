@@ -17,7 +17,7 @@ $align-list: start center end baseline;
 }
 
 @each $align-item in $align-list {
-  .#{$prefix}--#{$align-item} {
+  .#{$prefix}--align--#{$align-item} {
     align-items: #{$align-item}
   }
 }
