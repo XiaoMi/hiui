@@ -1,16 +1,13 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-descriptions' !default;
-$borderColor: #dfe2e8 !default;
 
 .#{$prefix} {
-  &-view {
-    width: 100%;
+  width: 100%;
 
-    table {
-      width: 100%;
-      table-layout: fixed;
-    }
+  table {
+    width: 100%;
+    table-layout: fixed;
   }
 
   &-row {
@@ -34,51 +31,49 @@ $borderColor: #dfe2e8 !default;
       .#{$prefix}-item-content {
         display: inline-flex;
         align-items: baseline;
-        font-size: 14px;
+        font-size: use-text-size('normal');
       }
 
       .#{$prefix}-item-label {
-        color: #929aa6;
+        color: use-color('gray', 500);
         margin-right: use-spacing(6);
       }
 
       .#{$prefix}-item-content {
-        color: #1f2733;
+        color: use-color('gray', 700);
       }
     }
   }
 
   &-bordered {
-    .#{$prefix}-view {
-      border: 1px solid $borderColor;
+    border: 1px solid use-color('gray', 300);
 
-      >table {
-        table-layout: auto;
-        border-collapse: collapse;
-        border-color: $borderColor;
+    >table {
+      table-layout: auto;
+      border-collapse: collapse;
+      border-color: use-color('gray', 300);
+    }
+
+    .#{$prefix}-item-label,
+    .#{$prefix}-item-content {
+      padding: 14px;
+      border-right: 1px solid use-color('gray', 300);
+
+      &:last-child {
+        border-right: none;
       }
+    }
 
-      .#{$prefix}-item-label,
-      .#{$prefix}-item-content {
-        padding: 14px;
-        border-right: 1px solid $borderColor;
+    .#{$prefix}-item-label {
+      background-color: use-color('gray', 100);
+      text-align: left;
+    }
 
-        &:last-child {
-          border-right: none;
-        }
-      }
+    .#{$prefix}-row {
+      border-bottom: 1px solid use-color('gray', 300);
 
-      .#{$prefix}-item-label {
-        background-color: #f2f4f7;
-        text-align: left;
-      }
-
-      .#{$prefix}-row {
-        border-bottom: 1px solid $borderColor;
-
-        &:last-child {
-          border-bottom: none;
-        }
+      &:last-child {
+        border-bottom: none;
       }
     }
   }

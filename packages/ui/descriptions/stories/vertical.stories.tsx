@@ -6,7 +6,7 @@ export const Vertical = () => {
     <>
       <h1>垂直列表</h1>
       <div className="descriptions-basic__wrap">
-        <Descriptions layout="vertical">
+        <Descriptions placement="vertical">
           <Descriptions.Item label="名字">张三</Descriptions.Item>
           <Descriptions.Item label="Phone">15311969622</Descriptions.Item>
           <Descriptions.Item label="Address">北京天安门</Descriptions.Item>

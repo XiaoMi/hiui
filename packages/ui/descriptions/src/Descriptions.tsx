@@ -3,20 +3,10 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { cloneElement, toArray } from './util'
-import Row from './Row'
+import { Row } from './Row'
 
 const DESCRIPTIONS_PREFIX = getPrefixCls('descriptions')
-export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
-  children?: React.ReactNode
-  layout?: 'horizontal' | 'vertical'
-  bordered?: boolean
-  column?: number
-  labelStyle?: React.CSSProperties
-  contentStyle?: React.CSSProperties
-  className?: string
-  style?: React.CSSProperties
-  noBackground?: boolean
-}
+
 /**
  * TODO: What is Descriptions
  */
@@ -84,10 +74,8 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       style,
       children,
       column = 3,
-      layout,
-      bordered,
-      labelStyle,
-      contentStyle,
+      placement,
+      appearance,
       noBackground,
       ...rest
     },
@@ -95,7 +83,10 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
   ) => {
     const cls = cx(
       prefixCls,
-      { [`${prefixCls}-bordered`]: !!bordered, [`${prefixCls}-no-background`]: !!noBackground },
+      {
+        [`${prefixCls}-bordered`]: appearance === 'table',
+        [`${prefixCls}-no-background`]: !!noBackground,
+      },
       className
     )
     const mergedColumn = computeColumn(column)
@@ -103,29 +94,47 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
     const rows = computeRows(children, mergedColumn)
     return (
       <div ref={ref} role={role} className={cls} {...rest} style={style}>
-        <div className={`${prefixCls}-view`}>
-          <table>
-            <tbody>
-              {rows.map((row, index) => (
-                <Row
-                  key={index}
-                  index={index}
-                  prefixCls={prefixCls}
-                  vertical={layout === 'vertical'}
-                  bordered={bordered}
-                  row={row}
-                  rootLabelStyle={labelStyle}
-                  rootContentStyle={contentStyle}
-                  noBackground={noBackground}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <table>
+          <tbody>
+            {rows.map((row, index) => (
+              <Row
+                key={index}
+                index={index}
+                prefixCls={prefixCls}
+                vertical={placement === 'vertical'}
+                bordered={appearance === 'table'}
+                row={row}
+                noBackground={noBackground}
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
     )
   }
 )
+
+export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
+  /**
+   * 	children
+   */
+  children?: React.ReactNode
+  /**
+   * 	 布局方式，默认'horizontal'
+   */
+  placement?: 'horizontal' | 'vertical'
+  /**
+   * 	 描述样式，分为table样式和unset
+   */
+  appearance?: 'table' | 'unset'
+  /**
+   * 	 列数，表示一行包含DescriptionItems的数量
+   */
+  column?: number
+  className?: string
+  style?: React.CSSProperties
+  noBackground?: boolean
+}
 
 if (__DEV__) {
   Descriptions.displayName = 'Descriptions'

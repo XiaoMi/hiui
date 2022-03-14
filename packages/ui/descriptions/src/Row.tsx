@@ -7,13 +7,11 @@ interface CellConfig {
   type: string
   showLabel?: boolean
   showContent?: boolean
-  rootLabelStyle?: React.CSSProperties
-  rootContentStyle?: React.CSSProperties
 }
 
 function renderCols(
   items: React.ReactElement<DescriptionsItemProps>[],
-  { prefixCls, bordered, rootLabelStyle, rootContentStyle }: RowProps,
+  { prefixCls, bordered }: RowProps,
   { component, type, showLabel, showContent }: CellConfig
 ) {
   return items.map(
@@ -26,8 +24,6 @@ function renderCols(
           className,
           style,
           span = 1,
-          labelStyle,
-          contentStyle,
         },
         key,
       },
@@ -39,8 +35,6 @@ function renderCols(
             key={`${type}-${key || index}`}
             className={className}
             style={style}
-            labelStyle={{ ...rootLabelStyle, ...labelStyle }}
-            contentStyle={{ ...rootContentStyle, ...contentStyle }}
             span={span}
             component={component}
             itemPrefixCls={itemPrefixCls}
@@ -60,7 +54,6 @@ function renderCols(
           itemPrefixCls={itemPrefixCls}
           bordered={bordered}
           label={label}
-          labelStyle={{ ...rootLabelStyle, ...labelStyle }}
         />,
         <Cell
           key={`content-${key || index}`}
@@ -71,7 +64,6 @@ function renderCols(
           itemPrefixCls={itemPrefixCls}
           bordered={bordered}
           content={children}
-          contentStyle={{ ...rootContentStyle, ...contentStyle }}
         />,
       ]
     }
@@ -89,7 +81,7 @@ export interface RowProps {
   noBackground?: boolean
 }
 
-const Row: React.FC<RowProps> = (props) => {
+export const Row: React.FC<RowProps> = (props) => {
   const { prefixCls, vertical, row, index, bordered, noBackground } = props
 
   if (vertical) {
@@ -123,5 +115,3 @@ const Row: React.FC<RowProps> = (props) => {
     </tr>
   )
 }
-
-export default Row

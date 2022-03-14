@@ -1,5 +1,5 @@
 import './styles/index.scss'
-import DescriptionsItem from './DescriptionsItem'
+import { DescriptionsItem } from './DescriptionsItem'
 import { Descriptions as _Descriptions } from './Descriptions'
 
 const Descriptions = Object.assign(_Descriptions, { Item: DescriptionsItem })

@@ -2,6 +2,7 @@ import React from 'react'
 
 export * from './basic.stories'
 export * from './bordered.stories'
+export * from './col.stories'
 export * from './vertical.stories'
 export * from './vertical-border.stories'
 

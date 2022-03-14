@@ -1,9 +1,6 @@
 import * as React from 'react'
 import classNames from 'classnames'
-
-function notEmpty(val: any) {
-  return val !== undefined && val !== null
-}
+import { isNullish } from '@hi-ui/type-assertion'
 
 export interface CellProps {
   itemPrefixCls: string
@@ -11,8 +8,6 @@ export interface CellProps {
   className?: string
   component: string
   style?: React.CSSProperties
-  labelStyle?: React.CSSProperties
-  contentStyle?: React.CSSProperties
   bordered?: boolean
   label?: React.ReactNode
   content?: React.ReactNode
@@ -24,8 +19,6 @@ const Cell: React.FC<CellProps> = ({
   span,
   className,
   style,
-  labelStyle,
-  contentStyle,
   bordered,
   label,
   content,
@@ -36,16 +29,16 @@ const Cell: React.FC<CellProps> = ({
       <Component
         className={classNames(
           {
-            [`${itemPrefixCls}-item-label`]: notEmpty(label),
-            [`${itemPrefixCls}-item-content`]: notEmpty(content),
+            [`${itemPrefixCls}-item-label`]: !isNullish(label),
+            [`${itemPrefixCls}-item-content`]: !isNullish(content),
           },
           className
         )}
-        style={labelStyle}
+        style={style}
         colSpan={span}
       >
-        {notEmpty(label) && <span>{label}</span>}
-        {notEmpty(content) && <span>{content}</span>}
+        {!isNullish(label) && <span>{label}</span>}
+        {!isNullish(content) && <span>{content}</span>}
       </Component>
     )
   }
@@ -56,16 +49,8 @@ const Cell: React.FC<CellProps> = ({
       colSpan={span}
     >
       <div className={`${itemPrefixCls}-item-container`}>
-        {label && (
-          <span className={classNames(`${itemPrefixCls}-item-label`)} style={labelStyle}>
-            {label}
-          </span>
-        )}
-        {content && (
-          <span className={classNames(`${itemPrefixCls}-item-content`)} style={contentStyle}>
-            {content}
-          </span>
-        )}
+        {label && <span className={classNames(`${itemPrefixCls}-item-label`)}>{label}</span>}
+        {content && <span className={classNames(`${itemPrefixCls}-item-content`)}>{content}</span>}
       </div>
     </Component>
   )

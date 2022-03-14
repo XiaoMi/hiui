@@ -6,7 +6,7 @@ export const Bordered = () => {
     <>
       <h1>带边框的</h1>
       <div className="descriptions-basic__wrap">
-        <Descriptions bordered>
+        <Descriptions appearance="table">
           <Descriptions.Item label="名字">张三</Descriptions.Item>
           <Descriptions.Item label="Phone">15311969622</Descriptions.Item>
           <Descriptions.Item label="Address">北京天安门</Descriptions.Item>

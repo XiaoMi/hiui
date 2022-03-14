@@ -1,12 +1,12 @@
 import React from 'react'
 import Descriptions from '../src'
 
-export const VerticalBorder = () => {
+export const Col = () => {
   return (
     <>
-      <h1>垂直带边框</h1>
+      <h1>不同列</h1>
       <div className="descriptions-basic__wrap">
-        <Descriptions placement="vertical" appearance="table">
+        <Descriptions column={1}>
           <Descriptions.Item label="名字">张三</Descriptions.Item>
           <Descriptions.Item label="Phone">15311969622</Descriptions.Item>
           <Descriptions.Item label="Address">北京天安门</Descriptions.Item>
