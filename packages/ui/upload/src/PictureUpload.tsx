@@ -177,26 +177,30 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                   {file.uploadState !== 'error' ? (
                     <div className={`${prefixCls}__mask`}>
                       <div className={`${prefixCls}__action-group`}>
-                        <EyeOutlined
-                          onClick={() => {
-                            previewImage(index)
-                          }}
-                        />
-                        <DeleteOutlined
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            deleteFile(file, index)
-                          }}
-                        />
+                        <span className={`${prefixCls}__action-btn`}>
+                          <EyeOutlined
+                            onClick={() => {
+                              previewImage(index)
+                            }}
+                          />
+                        </span>
+                        <span className={`${prefixCls}__action-btn`}>
+                          <DeleteOutlined
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              deleteFile(file, index)
+                            }}
+                          />
+                        </span>
                       </div>
                     </div>
                   ) : (
                     <div className={`${prefixCls}__precent`}>
-                      <span className={`${prefixCls}__error-icon`}>
+                      <span className={`${prefixCls}__error-btn`}>
                         <ExclamationCircleOutlined />
                       </span>
                       <span
-                        className={cx(`${prefixCls}__action-icon`)}
+                        className={cx(`${prefixCls}__delete-btn`)}
                         onClick={(e) => {
                           e.stopPropagation()
                           deleteFile(file, index)

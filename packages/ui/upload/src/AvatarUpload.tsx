@@ -210,22 +210,26 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                 {file.uploadState !== 'error' ? (
                   <div className={`${prefixCls}__mask`}>
                     <div className={`${prefixCls}__action-group`}>
-                      <EyeOutlined
-                        onClick={() => {
-                          previewImage(file.url || '')
-                        }}
-                      />
-                      <DeleteOutlined
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          deleteFile(file, 0)
-                        }}
-                      />
+                      <span className={`${prefixCls}__action-btn`}>
+                        <EyeOutlined
+                          onClick={() => {
+                            previewImage(file.url || '')
+                          }}
+                        />
+                      </span>
+                      <span className={`${prefixCls}__action-btn`}>
+                        <DeleteOutlined
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            deleteFile(file, 0)
+                          }}
+                        />
+                      </span>
                     </div>
                   </div>
                 ) : (
                   <div className={`${prefixCls}__precent`}>
-                    <span className={`${prefixCls}__error-icon`}>
+                    <span className={`${prefixCls}__error-btn`}>
                       <ExclamationCircleOutlined />
                     </span>
                     <span

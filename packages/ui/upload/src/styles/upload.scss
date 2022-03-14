@@ -43,8 +43,8 @@ $prefix: '#{$component-prefix}-upload' !default;
     }
   }
 
-  &__action-icon,
-  &__error-icon {
+  &__delete-btn,
+  &__error-btn {
     .#{$prefix} & {
       // font-size: 40px;
       // color: use-color('gray', 100);
@@ -315,44 +315,50 @@ $prefix: '#{$component-prefix}-upload' !default;
         }
       }
 
-      // .#{$prefix}__action-group {
-      //   display: none;
+      .#{$prefix}__action-group {
+        .#{$prefix}__action-btn {
+          font-size: use-text-size('lg');
 
-      //   svg[class^=hi-v4-icon] {
-      //     font-size: use-text-size('lg');
+          & + .#{$prefix}__action-btn {
+            margin-inline-start: use-spacing(4);
+          }
+        }
+      }
 
-      //     &:not(:last-of-type) {
-      //       margin-right: use-spacing(4);
-      //     }
-      //   }
-      // }
+      .#{$prefix}__delete-btn,
+      .#{$prefix}__error-btn {
+        position: absolute;
+        display: inline-block;
+        transition-property: transform, visibility;
+        transition-duration: use-motion-duration('normal');
+        transition-timing-function: use-motion-bezier('normal');
+      }
 
-      .#{$prefix}__action-icon {
-        display: none;
+      .#{$prefix}__delete-btn {
+        visibility: hidden;
+        transform: translateY(-200%);
+      }
+
+      .#{$prefix}__error-btn {
+        visibility: visible;
+        transform: translateY(0%);
       }
 
       &:hover {
-        .#{$prefix}__action-icon {
-          display: block;
+        .#{$prefix}__delete-btn {
+          visibility: visible;
+          transform: translateY(0%);
         }
 
-        .#{$prefix}__error-icon {
-          display: none;
+        .#{$prefix}__error-btn {
+          visibility: hidden;
+          transform: translateY(200%);
         }
 
         .#{$prefix}__mask {
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          top: 0;
-          background: rgba(0, 0, 0, 0.5);
-          color: use-color-static('white');
-          font-size: use-text-size('normal');
-          justify-content: center;
-          align-items: center;
-          border-radius: use-border-radius('normal');
-          display: flex;
+          opacity: 1;
+          visibility: visible;
+          pointer-events: all;
         }
       }
     }
@@ -406,7 +412,25 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &__mask {
-    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    color: use-color-static('white');
+    font-size: use-text-size('normal');
+    border-radius: use-border-radius('normal');
+    // 动效过渡
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition-property: opacity, visibility;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
   }
 
   &__precent {
