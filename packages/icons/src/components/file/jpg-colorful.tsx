@@ -19,3 +19,4 @@ export const JpgColorful = forwardRef<SVGSVGElement | null, IconProps>(
 if (__DEV__) {
   JpgColorful.displayName = 'JpgColorful'
 }
+  

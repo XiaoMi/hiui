@@ -19,3 +19,4 @@ export const WordColorful = forwardRef<SVGSVGElement | null, IconProps>(
 if (__DEV__) {
   WordColorful.displayName = 'WordColorful'
 }
+  

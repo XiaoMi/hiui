@@ -19,3 +19,4 @@ export const PptColorful = forwardRef<SVGSVGElement | null, IconProps>(
 if (__DEV__) {
   PptColorful.displayName = 'PptColorful'
 }
+  
