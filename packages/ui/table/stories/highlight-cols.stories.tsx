@@ -228,7 +228,7 @@ export const HighlightCols = () => {
     <>
       <h1>HighlightCols for Table</h1>
       <div className="table-highlight-cols__wrap" style={{ width: 800, background: '#eee' }}>
-        <Table columns={column} data={data} highlightedColKeys={['name']} />
+        <Table columns={column} data={data} highlightedColKeys={['name']} striped />
       </div>
     </>
   )

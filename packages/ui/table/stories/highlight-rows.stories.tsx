@@ -228,7 +228,7 @@ export const HighlightRows = () => {
     <>
       <h1>HighlightRows for Table</h1>
       <div className="table-highlight-rows__wrap" style={{ width: 800, background: '#eee' }}>
-        <Table columns={column} data={data} highlightedRowKeys={[1]} />
+        <Table columns={column} data={data} highlightedRowKeys={[1, 4]} striped />
       </div>
     </>
   )

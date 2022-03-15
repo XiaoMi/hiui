@@ -120,7 +120,7 @@ const dataSource = [
   },
 ]
 
-export const HiddenCols = () => {
+export const Setting = () => {
   const [hiddenColKeys, setHiddenColKeys] = React.useState(['type', 'price'])
   const columnsMemo = React.useMemo(() => {
     return [
@@ -222,7 +222,7 @@ export const HiddenCols = () => {
       },
       {
         title: '库存',
-        dataKey: 'stock',
+        dataKey: '',
         width: 150,
       },
     ]
@@ -230,8 +230,8 @@ export const HiddenCols = () => {
 
   return (
     <>
-      <h1>HiddenCols for Table</h1>
-      <div className="table-hidden-cols__wrap" style={{ width: 800 }}>
+      <h1>Setting for Table</h1>
+      <div className="table-setting__wrap" style={{ width: 800 }}>
         <Table
           hiddenColKeys={hiddenColKeys}
           onHiddenColKeysChange={setHiddenColKeys}

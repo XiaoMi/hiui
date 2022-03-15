@@ -12,6 +12,7 @@ const TableContext = createContext<
         sumRow: Record<string, any>
         hasSumColumn: boolean
         onRow?: TableRowFunc
+        striped: boolean
       })
   | null
 >(null)

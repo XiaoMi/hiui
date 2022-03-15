@@ -187,6 +187,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           <TableProvider
             value={{
               ...providedValue,
+              striped,
               onRow,
               embedExpandable,
               onEmbedSwitch,

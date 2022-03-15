@@ -27,7 +27,7 @@ export * from './async-expanded-render.stories'
 export * from './row-selection.stories'
 export * from './merged-cell.stories'
 export * from './pagination.stories'
-export * from './hidden-cols.stories'
+export * from './setting.stories'
 export * from './loading.stories'
 export * from './empty.stories'
 

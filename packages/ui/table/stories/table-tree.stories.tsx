@@ -7,6 +7,7 @@ export const TableTree = () => {
       <h1>TableTree for Table</h1>
       <div className="table-TableTree__wrap" style={{ width: 800 }}>
         <Table
+          striped
           // 受控
           // expandedRowKeys={[1]}
           rowSelection={{}}

@@ -32,14 +32,13 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
     ref
   ) => {
     const {
+      striped,
       onHighlightedRowChange,
       isHighlightedRow,
       flattedColumnsWithoutChildren,
       isErrorRow,
       columns,
       embedExpandable,
-      // @ts-ignore
-      hoverRow,
       draggable,
       // @ts-ignore
       onDragStart: onDragStartContext,
@@ -176,13 +175,12 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
     // ** ************** 行状态管理 *************** *//
 
     const highlighted = isHighlightedRow(rowId)
-    const hovered = hoverRow === rowId
     const hasError = isErrorRow(rowId)
 
     const cls = cx(
       `${prefixCls}-row`,
+      striped && (rowIndex & 1) === 1 && `${prefixCls}-row--striped`,
       hasError && `${prefixCls}-row--error`,
-      hovered && `${prefixCls}-row--hovered`,
       highlighted && `${prefixCls}-row--highlight`,
       draggable && `${prefixCls}-row--draggable`,
       draggable && dragging && `${prefixCls}-row--dragging`,

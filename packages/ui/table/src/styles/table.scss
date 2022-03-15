@@ -109,13 +109,14 @@ $prefix: '#{$component-prefix}-table' !default;
     }
   }
 
-  &--striped {
-    .#{$prefix}-row:not(:hover):nth-child(2n) {
-      .#{$prefix}-cell {
-        background-color: use-color('gray', 50);
-      }
-    }
-  }
+  // 嵌到式table，将会导致样式污染
+  // &--striped {
+  // tr:not(:hover):nth-child(2n) {
+  //   td {
+  //     background-color: use-color('gray', 50);
+  //   }
+  // }
+  // }
 
   &--sticky {
     position: sticky;
@@ -146,6 +147,14 @@ $prefix: '#{$component-prefix}-table' !default;
       }
     }
 
+    th[data-sticky] {
+      background-color: use-color('gray', 50);
+    }
+
+    &__col--highlight {
+      background-color: use-color('gray', 100);
+    }
+
     &__col--hovered-highlight {
       background-color: use-color('gray', 100);
     }
@@ -157,65 +166,62 @@ $prefix: '#{$component-prefix}-table' !default;
 
   &-row {
     &:hover {
-      .#{$prefix}-cell {
+      & > .#{$prefix}-cell {
         background-color: use-color-mode('primary', 50);
       }
     }
 
-    &--hovered {
-      background: #f0f5fe;
+    &--striped {
+      & > .#{$prefix}-cell {
+        background-color: use-color('gray', 50);
+      }
     }
 
     &--expanded {
-      background: #fbfbfb;
-
-      & > td {
+      & > .#{$prefix}-cell {
         color: use-color('gray', 800);
       }
     }
 
     &--error {
-      & > td {
+      & > .#{$prefix}-cell {
         color: use-color-mode('danger');
       }
     }
 
     &--highlight {
-      & > td {
+      & > .#{$prefix}-cell {
         background-color: use-color-mode('primary', 50);
       }
     }
 
     &--dragging {
-      // background: use-color('primary-20');
-      background-color: use-color-mode('primary', 50);
-
-      // .hi-table__col--sticky {
-      //   background: use-color('primary-20');
-      // }
+      & > .#{$prefix}-cell {
+        background-color: use-color-mode('primary', 50);
+      }
     }
 
     &--drag-top {
       // TODO: 使用伪类，避免位置抖动
-      td {
+      & > .#{$prefix}-cell {
         border-top: 2px dashed use-color-mode('primary');
       }
     }
 
     &--drag-bottom {
-      td {
+      & > .#{$prefix}-cell {
         border-bottom: 2px dashed use-color-mode('primary');
       }
     }
 
     &--avg,
     &--total {
-      .#{$prefix}-cell {
+      & > .#{$prefix}-cell {
         background-color: use-color('gray', 50);
       }
 
       &:hover {
-        .#{$prefix}-cell {
+        & > .#{$prefix}-cell {
           background-color: use-color('gray', 50);
         }
       }
@@ -270,18 +276,6 @@ $prefix: '#{$component-prefix}-table' !default;
   line-height: use-text-lineheight('sm');
   padding: use-spacing(7) use-spacing(8);
 
-  &[data-sticky] {
-    background-color: use-color-static('white');
-  }
-
-  &__col--highlight {
-    background-color: use-color-mode('primary', 50);
-  }
-
-  &__col--hovered-highlight {
-    background-color: use-color-mode('primary', 50);
-  }
-
   &__indent {
     display: inline-block;
     width: 14px;
@@ -301,17 +295,18 @@ $prefix: '#{$component-prefix}-table' !default;
   &.#{$prefix}__selection-col {
     padding: use-spacing(7) use-spacing(5);
   }
-}
 
-.#{$prefix}-th {
-  &__col--highlight {
-    background-color: use-color('gray', 100);
+  &[data-sticky] {
+    background-color: use-color-static('white');
   }
-}
 
-th[data-sticky] {
-  background-color: use-color('gray', 50);
-  z-index: use-zindex('absolute', 1);
+  &.#{$prefix}-cell__col--highlight {
+    background-color: use-color-mode('primary', 50);
+  }
+
+  &.#{$prefix}-cell__col--hovered-highlight {
+    background-color: use-color-mode('primary', 50);
+  }
 }
 
 // 冻结列 阴影

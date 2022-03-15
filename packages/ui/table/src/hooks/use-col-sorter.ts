@@ -51,7 +51,14 @@ export const useColSorter = ({
   }, [cacheKey, sortedColKeys])
 
   // 用于维护列操作时排序临时状态（（未确认保存时））
-  const [cacheSortedCols, setCacheSortedCols] = useState(sortedCols)
+  const [_cacheSortedCols, setCacheSortedCols] = useState(sortedCols)
+
+  // 保证排序的 column，是有效的可展示的列
+  const cacheSortedCols = useMemo(() => {
+    return _cacheSortedCols.filter(
+      (col) => col && typeof col.dataKey === 'string' && col.dataKey !== ''
+    )
+  }, [_cacheSortedCols])
 
   return {
     sortedCols,

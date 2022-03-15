@@ -61,7 +61,7 @@ export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
                         className={cx(
                           `${prefixCls}-cell`,
                           raw.className,
-                          isHighlightedCol(dataKey!) && `${prefixCls}-th__col--highlight`,
+                          isHighlightedCol(dataKey!) && `${prefixCls}__col--highlight`,
                           isHoveredHighlightCol(dataKey!) && `${prefixCls}__col--hovered-highlight`,
                           activeColumnKeysAction.has(dataKey!) && `${prefixCls}__col--active`
                         )}
