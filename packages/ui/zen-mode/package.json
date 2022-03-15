@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/zen-mode",
-  "version": "4.0.0-beta.9",
+  "version": "4.0.0-beta.10",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -47,7 +47,7 @@
     "@hi-ui/core": "^4.0.0-beta.3",
     "@hi-ui/core-css": "^4.0.0-beta.3",
     "@hi-ui/env": "^4.0.0-beta.0",
-    "@hi-ui/icons": "^4.0.0-beta.4",
+    "@hi-ui/icons": "^4.0.0-beta.5",
     "@hi-ui/locale-context": "^4.0.0-beta.8"
   },
   "peerDependencies": {
