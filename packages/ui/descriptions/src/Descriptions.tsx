@@ -95,7 +95,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
     const rows = computeRows(children, mergedColumn)
     return (
       <div ref={ref} role={role} className={cls} {...rest} style={style}>
-        <table className={cx({ [`${prefixCls}-table-no-background`]: !!noBackground })}>
+        <table>
           <tbody>
             {rows.map((row, index) => (
               <Row

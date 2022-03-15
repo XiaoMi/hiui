@@ -77,7 +77,8 @@ $prefix: '#{$component-prefix}-descriptions' !default;
       }
     }
 
-    .#{$prefix}-table-no-background {
+    &.#{$prefix}-no-background {
+      border: none;
 
       .#{$prefix}-item-label {
         background-color: use-color('static', 'white');
@@ -93,9 +94,5 @@ $prefix: '#{$component-prefix}-descriptions' !default;
         border-right: none;
       }
     }
-  }
-
-  &-no-background {
-    border: none;
   }
 }
