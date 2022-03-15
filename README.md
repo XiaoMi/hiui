@@ -10,7 +10,7 @@
 yarn
 ```
 
-### 为每个包安装依赖
+### lerna bootstrap
 
 ```sh
 yarn bootstrap
