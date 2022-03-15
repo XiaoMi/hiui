@@ -77,6 +77,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       placement,
       appearance,
       noBackground,
+      labelPlacement,
       ...rest
     },
     ref
@@ -94,7 +95,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
     const rows = computeRows(children, mergedColumn)
     return (
       <div ref={ref} role={role} className={cls} {...rest} style={style}>
-        <table>
+        <table className={cx({ [`${prefixCls}-table-no-background`]: !!noBackground })}>
           <tbody>
             {rows.map((row, index) => (
               <Row
@@ -105,6 +106,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
                 bordered={appearance === 'table'}
                 row={row}
                 noBackground={noBackground}
+                labelPlacement={labelPlacement}
               />
             ))}
           </tbody>
@@ -116,11 +118,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
 
 export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
   /**
-   * 	children
-   */
-  children?: React.ReactNode
-  /**
-   * 	 布局方式，默认'horizontal'
+   * 	 对齐方式，默认'horizontal'
    */
   placement?: 'horizontal' | 'vertical'
   /**
@@ -131,8 +129,13 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
    * 	 列数，表示一行包含DescriptionItems的数量
    */
   column?: number
-  className?: string
-  style?: React.CSSProperties
+  /**
+   * 	 label对齐方式，只在appearance为'table'下生效
+   */
+  labelPlacement?: 'left' | 'center' | 'right'
+  /**
+   * 	 无边框，无背景色，只在appearance为'table'下生效
+   */
   noBackground?: boolean
 }
 

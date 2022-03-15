@@ -14,11 +14,12 @@ const Descriptions = require('@hi-ui/descriptions');
 
 ### Descriptions
 
-| 参数       | 说明                         | 类型   | 可选值                     | 默认值     |
-| ---------- | ---------------------------- | ------ | -------------------------- | ---------- |
-| appearance | 表格样式或者非表格样式       | string | `table` \| `unset`         | false      |
-| column     | 一行的 DescriptionItems 数量 | number | -                          | 3          |
-| placement  | 布局方式                     | string | `horizontal` \| `vertical` | horizontal |
+| 参数           | 说明                                            | 类型   | 可选值                        | 默认值     |
+| -------------- | ----------------------------------------------- | ------ | ----------------------------- | ---------- |
+| appearance     | 表格样式或者非表格样式                          | string | `table` \| `unset`            | false      |
+| column         | 一行的 DescriptionItems 数量                    | number | -                             | 3          |
+| placement      | 布局方式                                        | string | `horizontal` \| `vertical`    | horizontal |
+| labelPlacement | label 对齐方式，只在 appearance 为'table'下生效 | string | `left` \| `center` \| `right` | left       |
 
 ### Descriptions.Item
 

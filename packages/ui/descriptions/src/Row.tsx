@@ -11,7 +11,7 @@ interface CellConfig {
 
 function renderCols(
   items: React.ReactElement<DescriptionsItemProps>[],
-  { prefixCls, bordered }: RowProps,
+  { prefixCls, bordered, labelPlacement }: RowProps,
   { component, type, showLabel, showContent }: CellConfig
 ) {
   return items.map(
@@ -48,7 +48,7 @@ function renderCols(
         <Cell
           key={`label-${key || index}`}
           className={className}
-          style={style}
+          style={{ textAlign: labelPlacement, ...style }}
           span={1}
           component={component[0]}
           itemPrefixCls={itemPrefixCls}
@@ -79,6 +79,7 @@ export interface RowProps {
   rootLabelStyle?: React.CSSProperties
   rootContentStyle?: React.CSSProperties
   noBackground?: boolean
+  labelPlacement?: 'left' | 'center' | 'right'
 }
 
 export const Row: React.FC<RowProps> = (props) => {

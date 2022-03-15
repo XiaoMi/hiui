@@ -13,7 +13,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
   &-row {
     >th,
     >td {
-      padding-bottom: 12px;
+      padding-bottom: use-spacing(6);
     }
 
     &:last-child {
@@ -56,7 +56,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
 
     .#{$prefix}-item-label,
     .#{$prefix}-item-content {
-      padding: 14px;
+      padding: use-spacing(7);
       border-right: 1px solid use-color('gray', 300);
 
       &:last-child {
@@ -76,5 +76,26 @@ $prefix: '#{$component-prefix}-descriptions' !default;
         border-bottom: none;
       }
     }
+
+    .#{$prefix}-table-no-background {
+
+      .#{$prefix}-item-label {
+        background-color: use-color('static', 'white');
+        color: use-color('gray', 500);
+      }
+
+      .#{$prefix}-row {
+        border-bottom: none;
+      }
+
+      .#{$prefix}-item-label,
+      .#{$prefix}-item-content {
+        border-right: none;
+      }
+    }
+  }
+
+  &-no-background {
+    border: none;
   }
 }
