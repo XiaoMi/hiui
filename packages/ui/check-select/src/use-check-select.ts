@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { uniqBy } from '@hi-ui/array-utils'
 import { useCheck as useCheckDefault } from '@hi-ui/use-check'
-import { CheckSelectDataItem, CheckSelectEventData } from './types'
+import { CheckSelectDataItem, CheckSelectEventData, CheckSelectMergedItem } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { useFlattenData, useData } from './hooks'
 import { HiBaseFieldNames } from '@hi-ui/core'
@@ -123,7 +123,7 @@ export interface UseCheckSelectProps {
   /**
    * 选项数据
    */
-  data?: CheckSelectDataItem[]
+  data?: CheckSelectMergedItem[]
   /**
    * JSX 子节点
    */

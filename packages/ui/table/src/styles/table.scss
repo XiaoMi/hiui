@@ -165,9 +165,12 @@ $prefix: '#{$component-prefix}-table' !default;
   }
 
   &-row {
-    &:hover {
-      & > .#{$prefix}-cell {
-        background-color: use-color-mode('primary', 50);
+    // 表示开启行hover高亮
+    &--hover {
+      &:hover {
+        & > .#{$prefix}-cell {
+          background-color: use-color-mode('primary', 50);
+        }
       }
     }
 

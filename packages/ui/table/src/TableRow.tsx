@@ -33,6 +33,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
   ) => {
     const {
       striped,
+      showRowHighlight,
       onHighlightedRowChange,
       isHighlightedRow,
       flattedColumnsWithoutChildren,
@@ -179,6 +180,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
 
     const cls = cx(
       `${prefixCls}-row`,
+      showRowHighlight && `${prefixCls}-row--hover`,
       striped && (rowIndex & 1) === 1 && `${prefixCls}-row--striped`,
       hasError && `${prefixCls}-row--error`,
       highlighted && `${prefixCls}-row--highlight`,
@@ -208,7 +210,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
             if (rowExtraProps.onDoubleClick) {
               rowExtraProps.onDoubleClick(evt)
             }
-            onHighlightedRowChange(rowData, !highlighted)
+            onHighlightedRowChange(rowDataProp, !highlighted)
           }}
           draggable={setAttrAria(draggable)}
           onDragStart={onDragStart}

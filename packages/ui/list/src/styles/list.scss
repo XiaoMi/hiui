@@ -3,7 +3,7 @@
 $prefix: '#{$component-prefix}-list' !default;
 
 .#{$prefix} {
-  padding: 0 use-spacing(8);
+  padding: 0 use-spacing(10);
   color: use-color('gray', 700);
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
@@ -13,6 +13,7 @@ $prefix: '#{$component-prefix}-list' !default;
     justify-content: flex-end;
     margin-top: use-spacing(8);
   }
+
   &--with-pagination {
     padding-bottom: use-spacing(8);
   }
@@ -71,7 +72,7 @@ $prefix: '#{$component-prefix}-list' !default;
 
   &.#{$prefix}--with-pagination {
     .#{$prefix}-item {
-      &--split:last-of-type{
+      &--split:last-of-type {
         border-bottom: 1px solid use-color('gray', 200);
       }
     }

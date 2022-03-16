@@ -17,7 +17,9 @@ export const Container = () => {
         ref={containerState[1]}
         className="watermark-container__wrap"
       >
-        <Button type="primary">测试交互</Button>
+        <Button type="primary" onClick={console.log}>
+          测试交互
+        </Button>
       </div>
       <Watermark
         density="low"

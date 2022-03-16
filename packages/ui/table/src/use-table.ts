@@ -53,6 +53,7 @@ export const useTable = ({
   highlightedRowKeys: highlightedRowKeysProp,
   showColHighlight = false,
   showRowHighlight = true,
+  highlightRowOnDoubleClick = true,
   // tree table
   defaultExpandedRowKeys = DEFAULT_EXPAND_ROW_KEYS,
   expandedRowKeys: expandRowKeysProp,
@@ -133,6 +134,7 @@ export const useTable = ({
     flattedData,
     onDropEnd,
     onDrop: onDropProp,
+    fieldKey,
   })
 
   // ************************ colgroup ************************ //
@@ -162,10 +164,9 @@ export const useTable = ({
   const [hoveredColKey, setHoveredColKey] = useState<React.ReactText>('')
 
   const [onHoveredColChange, isHoveredHighlightCol] = useSelect({
-    disabled: !showRowHighlight,
+    disabled: !showColHighlight,
     selectedId: hoveredColKey,
     onSelect: setHoveredColKey,
-    idFieldName: 'dataKey',
   })
 
   // ************************ 列宽 resizable ************************ //
@@ -433,10 +434,11 @@ export const useTable = ({
     DEFAULT_HIGHLIGHTED_ROW_KEYS,
     highlightedRowKeysProp
   )
+
   const [onHighlightedRowChange, isHighlightedRow] = useCheck({
+    disabled: !highlightRowOnDoubleClick,
     checkedIds: highlightedRowKeys,
     onCheck: trySetHighlightedRowKeys as any,
-    idFieldName: 'key',
   })
 
   const isErrorRow = useCallback((key: React.ReactText) => errorRowKeys.includes(key), [
@@ -575,6 +577,8 @@ export const useTable = ({
     isHighlightedRow,
     highlightedRowKeys,
     trySetHighlightedRowKeys,
+    // 行 hover
+    showRowHighlight,
     // 列高亮
     onHighlightedColChange,
     isHighlightedCol,
@@ -706,6 +710,10 @@ export interface UseTableProps {
    *  表格某一行 `hover` 时，该行高亮
    */
   showRowHighlight?: boolean
+  /**
+   *  表格某一行被双击时，该行高亮
+   */
+  highlightRowOnDoubleClick?: boolean
   /**
    *  表格行可拖拽
    */

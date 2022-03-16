@@ -8,6 +8,7 @@ export const Highlight = () => {
       <div className="table-highlight__wrap" style={{ width: 800 }}>
         <Table
           showColHighlight
+          showRowHighlight={false}
           striped
           columns={[
             {

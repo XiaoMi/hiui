@@ -18,7 +18,7 @@ import { CheckCascaderMenus } from './CheckCascaderMenus'
 import { useSearchMode, useTreeCustomSearch, useTreeUpMatchSearch } from '@hi-ui/use-search-mode'
 import { flattenTreeData } from './utils'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
-import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
+import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
 import { useLocaleContext } from '@hi-ui/locale-context'
@@ -86,15 +86,27 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
 
     const [_value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
+    // 内部实现使用尾部 id
     const value = _value.map((path) => path[path.length - 1])
 
-    const flattedDataLatestRef = useLatestRef(flattedData)
     const proxyOnChange = useLatestCallback(
       (value: React.ReactText[], item: any, shouldChecked: boolean) => {
-        const flattedItems = flattedDataLatestRef.current
-        const itemsPaths = flattedItems
-          .filter((item) => value.includes(item.id))
-          .map((item) => getTopDownAncestors(item).map(({ id }) => id))
+        const flattedItems = flattedData
+
+        const itemsPaths = value.map((lastId) => {
+          const item = flattedItems.find((item) => item.id === lastId)
+          if (item) {
+            return getTopDownAncestors(item).map(({ id }) => id)
+          }
+
+          // 对于传入的数据未匹配到，保持不变吐出去
+          const idPaths = _value.find((item) => item[item.length - 1] === lastId)
+          return idPaths || [lastId]
+        })
+
+        // const itemsPaths = flattedItems
+        //   .filter((item) => value.includes(item.id))
+        //   .map((item) => getTopDownAncestors(item).map(({ id }) => id))
 
         // TODO: 找到所有 id 的祖先节点路径
         tryChangeValue(itemsPaths)

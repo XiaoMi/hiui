@@ -222,7 +222,7 @@ export const Setting = () => {
       },
       {
         title: '库存',
-        dataKey: '',
+        dataKey: 'stock',
         width: 150,
       },
     ]

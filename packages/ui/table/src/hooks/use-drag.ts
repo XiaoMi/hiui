@@ -11,6 +11,7 @@ export const useTableDrag = ({
   flattedData,
   onDropEnd,
   onDrop: onDropProp,
+  fieldKey,
 }: {
   cacheData: any
   setCacheData: any
@@ -18,6 +19,7 @@ export const useTableDrag = ({
   flattedData: FlattedTableRowData[]
   onDropEnd: any
   onDrop: any
+  fieldKey: string
 }) => {
   const dragRowRef = React.useRef<any | null>(null)
 
@@ -33,8 +35,8 @@ export const useTableDrag = ({
       // TODO： 根据 id 查询数据原始数据或者直接使用引用值，两者选择，避免bug
       // const { rowData, dropRowData, level } = dragRowRef.current
 
-      const sourceNode = findNodeById(cacheData, sourceId, { idFieldName: 'key' })
-      const targetNode = findNodeById(cacheData, targetId, { idFieldName: 'key' })
+      const sourceNode = findNodeById(cacheData, sourceId, { idFieldName: fieldKey })
+      const targetNode = findNodeById(cacheData, targetId, { idFieldName: fieldKey })
 
       if (!sourceNode || !targetNode) {
         // console.log('未找到任何节点(sourceNode, targetNode)', sourceNode, targetNode)
@@ -43,9 +45,9 @@ export const useTableDrag = ({
 
       const nextTreeData = cloneTree(cacheData)
 
-      deleteNodeById(nextTreeData, sourceId, { idFieldName: 'key' })
+      deleteNodeById(nextTreeData, sourceId, { idFieldName: fieldKey })
       insertNodeById(nextTreeData, targetId, sourceNode, dragDirection === 'top' ? 0 : 1, {
-        idFieldName: 'key',
+        idFieldName: fieldKey,
       })
 
       const resultMaybePromise = isFunction(onDropProp)

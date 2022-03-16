@@ -1,17 +1,21 @@
 import React from 'react'
 import CheckSelect from '../src'
 
-const data = []
-for (let i = 0; i < 5000; i++) {
-  const value = `${i.toString(36)}-${i}`
-  data.push({
-    id: value,
-    title: value,
-    disabled: i === 10,
-  })
-}
-
 export const VirtualList = () => {
+  const [data] = React.useState(() => {
+    const data = []
+    for (let i = 0; i < 5000; i++) {
+      const value = `${i.toString(36)}-${i}`
+      data.push({
+        id: value,
+        title: value,
+        disabled: i === 10,
+      })
+    }
+
+    return data
+  })
+
   console.log('data', data)
 
   return (

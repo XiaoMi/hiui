@@ -3,6 +3,7 @@ import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Loading from '@hi-ui/loading'
+import { isNullish } from '@hi-ui/type-assertion'
 
 const _role = 'card'
 const _prefix = getPrefixCls(_role)
@@ -59,13 +60,16 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
             {subtitle ? <div className={`${prefixCls}__subtitle`}>{subtitle}</div> : null}
           </div>
         ) : null}
-        <div className={`${prefixCls}__body`}>
-          {children}
-          {/* 需要用到这个功能才开启，即传入 boolean */}
-          {typeof loading === 'boolean' ? (
-            <Loading className={`${prefixCls}__loading`} visible={loading} />
-          ) : null}
-        </div>
+        {/* 没有 children 且非 loading 态 ，则不渲染 body 内容 */}
+        {!isNullish(children) || loading ? (
+          <div className={`${prefixCls}__body`}>
+            {children}
+            {/* 需要用到这个功能才开启，即传入 boolean */}
+            {typeof loading === 'boolean' ? (
+              <Loading className={`${prefixCls}__loading`} visible={loading} />
+            ) : null}
+          </div>
+        ) : null}
       </div>
     )
   }
