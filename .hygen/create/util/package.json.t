@@ -46,6 +46,6 @@ to: <%= h.utilsDir(`${name}/package.json`) %>
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.0"
+    "@hi-ui/hi-build": "^4.0.0-beta.0"
   }
 }

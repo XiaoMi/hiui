@@ -46,16 +46,16 @@ to: <%= h.uiDir(`${name}/package.json`) %>
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.0-alpha.0",
-    "@hi-ui/core": "^4.0.0-alpha.0",
-    "@hi-ui/core-css": "^4.0.0-alpha.0",
-    "@hi-ui/env": "^4.0.0-alpha.0"
+    "@hi-ui/classname": "^4.0.0-beta.0",
+    "@hi-ui/core": "^4.0.0-beta.0",
+    "@hi-ui/core-css": "^4.0.0-beta.0",
+    "@hi-ui/env": "^4.0.0-beta.0"
   },
   "peerDependencies": {
     "react": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-alpha.4",
+    "@hi-ui/hi-build": "^4.0.0-beta.4",
     "react": "^17.0.1"
   }
 }
