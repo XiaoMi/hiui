@@ -93,8 +93,8 @@ $prefix: '#{$component-prefix}-form' !default;
   }
 
   &__control {
-    // display: flex;
-    // align-items: center;
+    // 适应容器 flex 宽度，不被内部撑开
+    min-width: 1px;
   }
 }
 

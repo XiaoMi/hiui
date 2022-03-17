@@ -44,9 +44,10 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-alpha.0",
-    "@hi-ui/core": "^4.0.0-alpha.0",
-    "@hi-ui/core-css": "^4.0.0-alpha.0",
-    "@hi-ui/env": "^4.0.0-alpha.0"
+    "@hi-ui/core": "^4.0.0-alpha.3",
+    "@hi-ui/core-css": "^4.0.0-alpha.3",
+    "@hi-ui/env": "^4.0.0-alpha.0",
+    "@hi-ui/type-assertion": "^4.0.0-beta.1"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

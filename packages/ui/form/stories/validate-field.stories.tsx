@@ -78,8 +78,8 @@ export const ValidateField = () => {
           >
             <Input placeholder="请输入手机号" style={{ width: 240 }} />
           </FormItem>
-          <Row>
-            <Col>
+          <Row gutter={20}>
+            <Col span={14}>
               <FormItem
                 label="验证码"
                 field="code"
@@ -103,7 +103,7 @@ export const ValidateField = () => {
                 <Input placeholder="请输入验证码" style={{ width: 130 }} />
               </FormItem>
             </Col>
-            <Col>
+            <Col span={10}>
               <Button
                 type="primary"
                 disabled={codeDisabled && countDown <= 60 && countDown >= 0}

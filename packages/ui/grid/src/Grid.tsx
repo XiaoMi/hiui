@@ -125,7 +125,7 @@ export const Col = forwardRef<HTMLDivElement | null, ColProps>(
     const { columns = 24 } = useGridContext()
 
     // 需要 warning 不合法
-    const span = isNumeric(spanProp) && spanProp >= 0 && spanProp <= columns ? spanProp : 1
+    const span = isNumeric(spanProp) && spanProp >= 0 && spanProp <= columns ? spanProp : null
     const offset = isNumeric(offsetProp) && offsetProp >= 0 && offsetProp < columns ? offsetProp : 0
 
     const style = Object.assign(
@@ -138,7 +138,7 @@ export const Col = forwardRef<HTMLDivElement | null, ColProps>(
         : {},
       styleProp,
       {
-        [spanNameVar]: `calc(${span} / ${columns} * 100%)`,
+        [spanNameVar]: span === null ? 'unset' : `calc(${span} / ${columns} * 100%)`,
         [offsetNameVar]: `calc(${offset} / ${columns} * 100%)`,
       }
     )

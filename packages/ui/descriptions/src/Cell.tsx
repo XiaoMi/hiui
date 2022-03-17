@@ -1,5 +1,5 @@
 import * as React from 'react'
-import classNames from 'classnames'
+import { cx } from '@hi-ui/classname'
 import { isNullish } from '@hi-ui/type-assertion'
 
 export const Cell: React.FC<CellProps> = ({
@@ -17,7 +17,7 @@ export const Cell: React.FC<CellProps> = ({
   if (bordered) {
     return (
       <Component
-        className={classNames(
+        className={cx(
           {
             [`${itemPrefixCls}-item__label`]: !isNullish(label),
             [`${itemPrefixCls}-item__content`]: !isNullish(content),
@@ -34,14 +34,10 @@ export const Cell: React.FC<CellProps> = ({
   }
 
   return (
-    <Component
-      className={classNames(`${itemPrefixCls}-item`, className)}
-      style={style}
-      colSpan={span}
-    >
+    <Component className={cx(`${itemPrefixCls}-item`, className)} style={style} colSpan={span}>
       <div className={`${itemPrefixCls}-item__container`}>
-        {label && <span className={classNames(`${itemPrefixCls}-item__label`)}>{label}</span>}
-        {content && <span className={classNames(`${itemPrefixCls}-item__content`)}>{content}</span>}
+        {label && <span className={cx(`${itemPrefixCls}-item__label`)}>{label}</span>}
+        {content && <span className={cx(`${itemPrefixCls}-item__content`)}>{content}</span>}
       </div>
     </Component>
   )
