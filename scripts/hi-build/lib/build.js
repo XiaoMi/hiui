@@ -16,6 +16,7 @@ const postcssFlexBugfix = require('postcss-flexbugs-fixes')
 const cssnano = require('cssnano')
 const autoprefixer = require('autoprefixer')
 const json = require('@rollup/plugin-json')
+const postcssInject2Css =  require('rollup-plugin-postcss-inject-to-css').default
 
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
 
@@ -88,7 +89,7 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
   const {
     target = 'browser',
     format: formatOptions = 'cjs',
-    sourceMaps = true,
+    sourceMaps = false,
     cssExtract = false,
     cssModules = false,
     preserved = true,
@@ -146,11 +147,12 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
           ],
           extensions: ['.scss', '.css'],
           // Extract styleInject as a external module
-          inject: (variableName) =>
-            `;var __styleInject__=require('style-inject/dist/style-inject.es.js').default;__styleInject__(${variableName});`,
+          inject: true,
+
           extract: cssExtract,
           modules: cssModules,
         }),
+        postcssInject2Css(),
         compress && terser(),
         json()
       ].filter(Boolean),
