@@ -2,17 +2,6 @@ import * as React from 'react'
 import classNames from 'classnames'
 import { isNullish } from '@hi-ui/type-assertion'
 
-export interface CellProps {
-  itemPrefixCls: string
-  span: number
-  className?: string
-  component: string
-  style?: React.CSSProperties
-  bordered?: boolean
-  label?: React.ReactNode
-  content?: React.ReactNode
-}
-
 export const Cell: React.FC<CellProps> = ({
   itemPrefixCls,
   component,
@@ -56,4 +45,15 @@ export const Cell: React.FC<CellProps> = ({
       </div>
     </Component>
   )
+}
+
+export interface CellProps {
+  itemPrefixCls: string
+  span: number
+  className?: string
+  component: string
+  style?: React.CSSProperties
+  bordered?: boolean
+  label?: React.ReactNode
+  content?: React.ReactNode
 }
