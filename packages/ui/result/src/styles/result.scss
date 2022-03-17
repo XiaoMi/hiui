@@ -23,7 +23,7 @@ $prefix: '#{$component-prefix}-result' !default;
     line-height: use-text-lineheight('normal');
   }
 
-  &__subtitle {
+  &__content {
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');
     color: use-color('gray', 600);
@@ -31,12 +31,10 @@ $prefix: '#{$component-prefix}-result' !default;
     margin-top: use-spacing(2);
   }
 
-  &__extra {
+  &__children {
+    width: 100%;
+    text-align: center;
     margin-top: use-spacing(12);
   }
 
-  &__content {
-    width: 100%;
-    margin-top: use-spacing(15);
-  }
 }

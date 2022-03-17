@@ -1,5 +1,15 @@
 import React from 'react'
-import Result from '../src'
+import {
+  Result,
+  IconSucceed,
+  IconFailed,
+  IconProcessed,
+  IconNetError,
+  IconNoComment,
+  IconNoContent,
+  IconNoPermission,
+  IconNoCollection,
+} from '../src'
 import Button from '@hi-ui/button'
 
 export const Basic = () => {
@@ -7,34 +17,28 @@ export const Basic = () => {
     <>
       <h1>基础功能</h1>
       <div className="result-basic__wrap" style={{ width: '760px' }}>
-        <Result
-          type="info"
-          title="这是一条常规信息"
-          subTitle="这是对常规信息的说明文案"
-          extra={<Button type="primary">返回</Button>}
-        />
-        <Result
-          type="success"
-          title="这是一条成功信息"
-          subTitle="这是对成功信息的说明文案"
-          extra={[
+        <Result type="info" title="这是一条常规信息" content="这是对常规信息的说明文案">
+          <Button type="primary">返回</Button>
+        </Result>
+        <Result type="success" title="这是一条成功信息" content="这是对成功信息的说明文案">
+          {[
             <Button key="refresh">刷新</Button>,
             <Button type="primary" key="back">
               返回
             </Button>,
           ]}
-        />
+        </Result>
         <Result
-          type="warn"
+          type="warning"
           title="这是一条警示信息"
-          subTitle="这是对警示信息的说明文案"
-          extra={<Button type="primary">返回</Button>}
+          content="这是对警示信息的说明文案"
+          children={<Button type="primary">返回</Button>}
         />
         <Result
           type="error"
           title="这是一条错误信息"
-          subTitle="这是对错误信息的说明文案"
-          extra={[
+          content="这是对错误信息的说明文案"
+          children={[
             <Button key="refresh">刷新</Button>,
             <Button type="primary" key="back">
               返回
@@ -42,10 +46,10 @@ export const Basic = () => {
           ]}
         />
         <Result
-          type="operation-succeed"
+          image={<IconSucceed />}
           title="操作成功"
-          subTitle="这是对操作成功的说明文案"
-          extra={[
+          content="这是对操作成功的说明文案"
+          children={[
             <Button key="refresh">刷新</Button>,
             <Button type="primary" key="back">
               返回
@@ -53,10 +57,10 @@ export const Basic = () => {
           ]}
         />
         <Result
-          type="operation-failed"
+          image={<IconFailed />}
           title="操作失败"
-          subTitle="这是对操作失败的说明文案"
-          extra={[
+          content="这是对操作失败的说明文案"
+          children={[
             <Button key="refresh">刷新</Button>,
             <Button type="primary" key="back">
               返回
@@ -64,16 +68,16 @@ export const Basic = () => {
           ]}
         />
         <Result
-          type="processed"
+          image={<IconProcessed />}
           title="处理完成"
-          subTitle="这是对处理完成的说明文案"
-          extra={<Button type="primary">返回</Button>}
+          content="这是对处理完成的说明文案"
+          children={<Button type="primary">返回</Button>}
         />
         <Result
-          type="net-error"
+          image={<IconNetError />}
           title="网络连接失败"
-          subTitle="这是对网络连接失败的说明文案"
-          extra={[
+          content="这是对网络连接失败的说明文案"
+          children={[
             <Button key="refresh">刷新</Button>,
             <Button type="primary" key="back">
               返回
@@ -81,10 +85,10 @@ export const Basic = () => {
           ]}
         />
         <Result
-          type="no-content"
+          image={<IconNoContent />}
           title="暂无内容"
-          subTitle="这是对暂无内容的说明文案"
-          extra={[
+          content="这是对暂无内容的说明文案"
+          children={[
             <Button key="refresh">刷新</Button>,
             <Button type="primary" key="back">
               返回
@@ -92,10 +96,10 @@ export const Basic = () => {
           ]}
         />
         <Result
-          type="no-comment"
+          image={<IconNoComment />}
           title="暂无评论"
-          subTitle="这是对暂无评论的说明文案"
-          extra={[
+          content="这是对暂无评论的说明文案"
+          children={[
             <Button key="refresh">刷新</Button>,
             <Button type="primary" key="back">
               返回
@@ -103,10 +107,10 @@ export const Basic = () => {
           ]}
         />
         <Result
-          type="no-permission"
+          image={<IconNoPermission />}
           title="暂无权限"
-          subTitle="这是对暂无权限的说明文案"
-          extra={[
+          content="这是对暂无权限的说明文案"
+          children={[
             <Button key="refresh">刷新</Button>,
             <Button type="primary" key="back">
               返回
@@ -114,10 +118,10 @@ export const Basic = () => {
           ]}
         />
         <Result
-          type="no-collection"
+          image={<IconNoCollection />}
           title="暂无收藏"
-          subTitle="这是对暂无收藏的说明文案"
-          extra={[
+          content="这是对暂无收藏的说明文案"
+          children={[
             <Button key="refresh">重试</Button>,
             <Button type="primary" key="back">
               返回

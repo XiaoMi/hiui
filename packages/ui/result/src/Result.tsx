@@ -3,19 +3,23 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { CheckCircleFilled, CloseCircleFilled, ExclamationCircleFilled } from '@hi-ui/icons'
+import { isNullish, isUndefined } from '@hi-ui/type-assertion'
 import { ResultTypeEnum } from './types'
-import {
-  IconFailed,
-  IconNetError,
-  IconNoCollection,
-  IconNoComment,
-  IconNoContent,
-  IconNoPermission,
-  IconProcessed,
-  IconSucceed,
-} from './icons'
+import invariant from 'invariant'
 
 const RESULT_PREFIX = getPrefixCls('result')
+
+const ImageSizeMap = {
+  [HiBaseSizeEnum.SM]: { width: '64px', height: '64px' },
+  [HiBaseSizeEnum.MD]: { width: '88px', height: '88px' },
+  [HiBaseSizeEnum.LG]: { width: '114px', height: '114px' },
+}
+
+const ImageContainerSizeMap = {
+  [HiBaseSizeEnum.SM]: { width: '100px', height: '100px' },
+  [HiBaseSizeEnum.MD]: { width: '140px', height: '140px' },
+  [HiBaseSizeEnum.LG]: { width: '180px', height: '180px' },
+}
 
 /**
  * Result(结果页):用于反馈一系列操作任务的处理结果
@@ -26,12 +30,11 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
       prefixCls = RESULT_PREFIX,
       role = 'result',
       className,
-      icon,
-      iconSize = 'md',
+      image,
+      imageSize = 'md',
       type = 'info',
       title,
-      subTitle,
-      extra,
+      content,
       children,
       ...rest
     },
@@ -39,59 +42,41 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
   ) => {
     const cls = cx(prefixCls, className)
 
-    const IconSizeMap = {
-      sm: { width: '64px', height: '64px' },
-      md: { width: '88px', height: '88px' },
-      lg: { width: '114px', height: '114px' },
-    }
-
-    const IconContainerSizeMap = {
-      sm: { width: '100px', height: '100px' },
-      md: { width: '140px', height: '140px' },
-      lg: { width: '180px', height: '180px' },
-    }
-
-    const renderIcon = () => {
+    const renderImage = () => {
       const IconMap = {
         [ResultTypeEnum.info]: (
-          <ExclamationCircleFilled style={{ ...IconSizeMap[iconSize], color: '#237ffa' }} />
+          <ExclamationCircleFilled style={{ ...ImageSizeMap[imageSize], color: '#237ffa' }} />
         ),
         [ResultTypeEnum.success]: (
-          <CheckCircleFilled style={{ ...IconSizeMap[iconSize], color: '#14ca64' }} />
+          <CheckCircleFilled style={{ ...ImageSizeMap[imageSize], color: '#14ca64' }} />
         ),
         [ResultTypeEnum.warn]: (
-          <ExclamationCircleFilled style={{ ...IconSizeMap[iconSize], color: '#fab007' }} />
+          <ExclamationCircleFilled style={{ ...ImageSizeMap[imageSize], color: '#fab007' }} />
         ),
         [ResultTypeEnum.error]: (
-          <CloseCircleFilled style={{ ...IconSizeMap[iconSize], color: '#ff5959' }} />
+          <CloseCircleFilled style={{ ...ImageSizeMap[imageSize], color: '#ff5959' }} />
         ),
-        [ResultTypeEnum.operationSucceed]: <IconSucceed />,
-        [ResultTypeEnum.operationFailed]: <IconFailed />,
-        [ResultTypeEnum.processed]: <IconProcessed />,
-        [ResultTypeEnum.netError]: <IconNetError />,
-        [ResultTypeEnum.noContent]: <IconNoContent />,
-        [ResultTypeEnum.noComment]: <IconNoComment />,
-        [ResultTypeEnum.noPermission]: <IconNoPermission />,
-        [ResultTypeEnum.noCollection]: <IconNoCollection />,
+      }
+
+      // image和type至少有一个是正确的
+      if (isNullish(image) && isUndefined(IconMap[type])) {
+        invariant(true, 'The image or type ensure that at least one is correct.')
+        return
       }
 
       return (
-        <div
-          style={icon ? {} : IconContainerSizeMap[iconSize]}
-          className={`${prefixCls}__image-container`}
-        >
-          {icon || IconMap[type]}
+        <div style={ImageContainerSizeMap[imageSize]} className={`${prefixCls}__image-container`}>
+          {image || IconMap[type]}
         </div>
       )
     }
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        {renderIcon()}
+        {renderImage()}
         <div className={`${prefixCls}__title`}>{title}</div>
-        {subTitle && <div className={`${prefixCls}__subtitle`}>{subTitle}</div>}
-        {extra && <div className={`${prefixCls}__extra`}>{extra}</div>}
-        {children && <div className={`${prefixCls}__content`}>{children}</div>}
+        {!isNullish(content) && <div className={`${prefixCls}__content`}>{content}</div>}
+        {!isNullish(children) && <div className={`${prefixCls}__children`}>{children}</div>}
       </div>
     )
   }
@@ -99,13 +84,13 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
 
 export interface ResultProps extends HiBaseHTMLProps<'div'> {
   /**
-   * 自定义图标
+   * 自定义图标、图片
    */
-  icon?: React.ReactNode
+  image?: React.ReactNode
   /**
-   * 自定义图标尺寸
+   * 自定义图标/图片尺寸
    */
-  iconSize?: HiBaseSizeEnum
+  imageSize?: HiBaseSizeEnum
   /**
    * 组件类型
    */
@@ -115,15 +100,13 @@ export interface ResultProps extends HiBaseHTMLProps<'div'> {
    */
   title: React.ReactNode
   /**
-   * 副标题
+   * 内容
    */
-  subTitle?: React.ReactNode
-  /**
-   * 操作区域
-   */
-  extra?: React.ReactNode
+  content?: React.ReactNode
 }
 
 if (__DEV__) {
   Result.displayName = 'Result'
 }
+
+export * from './icons/index'

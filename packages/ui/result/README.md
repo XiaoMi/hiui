@@ -14,12 +14,11 @@
 
 | 参数             | 说明         | 类型            | 可选值        | 默认值 |
 | ---------------- | ----------- | -------------- | ------------- | ------ |
-| icon             | 自定义图标    | ReactNode      | -             | -      |
-| iconSize         | 图标尺寸      | string         | 'sm' \| 'md' \| 'lg' | 'md'  |
-| type             | 组件类型      | string         | 'info' \| 'success' \| 'warn' \| 'error' \| 'operation-succeed' \| 'operation-failed' \| 'processed' \| 'net-error' \| 'no-content' \| 'no-comment' \| 'no-permission' \| 'no-collection' | 'info'  |
+| image            | 自定义图标    | ReactNode      | -             | -      |
+| imageSize        | 图标尺寸      | string         | 'sm' \| 'md' \| 'lg' | 'md'  |
+| type             | 组件类型      | string         | 'info' \| 'success' \| 'warning' \| 'error' | 'info'  |
 | title            | 标题         | ReactNode      | -             | -      |
-| subTitle         | 副标题       | ReactNode      | -             | -      |
-| extra            | 操作区域      | ReactNode      | -             | -      |
+| content          | 内容         | ReactNode      | -             | -      |
 
 ## CHANGELOG
 
