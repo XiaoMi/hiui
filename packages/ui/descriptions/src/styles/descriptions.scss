@@ -1,0 +1,98 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-descriptions' !default;
+
+.#{$prefix} {
+  width: 100%;
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  &-row {
+    >th,
+    >td {
+      padding-bottom: use-spacing(6);
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &-item {
+    vertical-align: top;
+
+    &-container {
+      display: flex;
+
+      .#{$prefix}-item-label,
+      .#{$prefix}-item-content {
+        display: inline-flex;
+        align-items: baseline;
+        font-size: use-text-size('normal');
+      }
+
+      .#{$prefix}-item-label {
+        color: use-color('gray', 500);
+        margin-right: use-spacing(6);
+      }
+
+      .#{$prefix}-item-content {
+        color: use-color('gray', 700);
+      }
+    }
+  }
+
+  &-bordered {
+    border: 1px solid use-color('gray', 300);
+
+    >table {
+      table-layout: auto;
+      border-collapse: collapse;
+      border-color: use-color('gray', 300);
+    }
+
+    .#{$prefix}-item-label,
+    .#{$prefix}-item-content {
+      padding: use-spacing(7);
+      border-right: 1px solid use-color('gray', 300);
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+
+    .#{$prefix}-item-label {
+      background-color: use-color('gray', 100);
+      text-align: left;
+    }
+
+    .#{$prefix}-row {
+      border-bottom: 1px solid use-color('gray', 300);
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    &.#{$prefix}-no-background {
+      border: none;
+
+      .#{$prefix}-item-label {
+        background-color: use-color('static', 'white');
+        color: use-color('gray', 500);
+      }
+
+      .#{$prefix}-row {
+        border-bottom: none;
+      }
+
+      .#{$prefix}-item-label,
+      .#{$prefix}-item-content {
+        border-right: none;
+      }
+    }
+  }
+}
