@@ -5,14 +5,15 @@ $prefix: '#{$component-prefix}-descriptions' !default;
 .#{$prefix} {
   width: 100%;
 
-  table {
+  // 避免嵌套表格样式污染
+  & > table {
     width: 100%;
     table-layout: fixed;
   }
 
   &-row {
-    >th,
-    >td {
+    > th,
+    > td {
       padding-bottom: use-spacing(6);
     }
 
@@ -24,74 +25,80 @@ $prefix: '#{$component-prefix}-descriptions' !default;
   &-item {
     vertical-align: top;
 
-    &-container {
+    &__container {
       display: flex;
+    }
 
-      .#{$prefix}-item-label,
-      .#{$prefix}-item-content {
-        display: inline-flex;
-        align-items: baseline;
-        font-size: use-text-size('normal');
-      }
+    &__label,
+    &__content {
+      align-items: baseline;
+      font-size: use-text-size('normal');
+    }
 
-      .#{$prefix}-item-label {
-        color: use-color('gray', 500);
-        margin-right: use-spacing(6);
-      }
+    &__label {
+      color: use-color('gray', 500);
+      margin-inline-end: use-spacing(6);
+    }
 
-      .#{$prefix}-item-content {
-        color: use-color('gray', 700);
-      }
+    &__content {
+      color: use-color('gray', 700);
     }
   }
 
-  &-bordered {
-    border: 1px solid use-color('gray', 300);
+  &--appearance {
+    &-table {
+      border: 1px solid use-color('gray', 300);
+      background-color: use-color-static('white');
 
-    >table {
-      table-layout: auto;
-      border-collapse: collapse;
-      border-color: use-color('gray', 300);
-    }
-
-    .#{$prefix}-item-label,
-    .#{$prefix}-item-content {
-      padding: use-spacing(7);
-      border-right: 1px solid use-color('gray', 300);
-
-      &:last-child {
-        border-right: none;
+      > table {
+        table-layout: auto;
+        border-collapse: collapse;
+        border-color: use-color('gray', 300);
       }
-    }
 
-    .#{$prefix}-item-label {
-      background-color: use-color('gray', 100);
-      text-align: left;
-    }
+      .#{$prefix}-item__label,
+      .#{$prefix}-item__content {
+        padding: use-spacing(7);
+        border-right: 1px solid use-color('gray', 300);
 
-    .#{$prefix}-row {
-      border-bottom: 1px solid use-color('gray', 300);
-
-      &:last-child {
-        border-bottom: none;
+        &:last-child {
+          border-right: none;
+        }
       }
-    }
 
-    &.#{$prefix}-no-background {
-      border: none;
-
-      .#{$prefix}-item-label {
-        background-color: use-color('static', 'white');
-        color: use-color('gray', 500);
+      .#{$prefix}-item__label {
+        color: use-color('gray', 700);
+        background-color: use-color('gray', 100);
+        font-weight: use-text-weight('medium');
+        text-align: left;
       }
 
       .#{$prefix}-row {
-        border-bottom: none;
+        border-bottom: 1px solid use-color('gray', 300);
+
+        &:last-child {
+          border-bottom: none;
+        }
       }
 
-      .#{$prefix}-item-label,
-      .#{$prefix}-item-content {
-        border-right: none;
+      &.#{$prefix}--no-background {
+        background-color: use-color-static('transparent');
+        border: none;
+
+        .#{$prefix}-item__label {
+          background-color: use-color-static('transparent');
+          color: use-color('gray', 500);
+          font-weight: use-text-weight('normal');
+        }
+
+        .#{$prefix}-row {
+          border-bottom: none;
+        }
+
+        .#{$prefix}-item__label,
+        .#{$prefix}-item__content {
+          border-right: none;
+        }
       }
     }
   }

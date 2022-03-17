@@ -1,6 +1,10 @@
-import * as React from 'react'
+import React from 'react'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
-export interface DescriptionsItemProps {
+export const DescriptionsItem: React.FC<DescriptionsItemProps> = ({ children }) =>
+  children as React.ReactElement
+
+export interface DescriptionsItemProps extends HiBaseHTMLProps<'div'> {
   /**
    * 	 包含列的数量
    */
@@ -9,12 +13,4 @@ export interface DescriptionsItemProps {
    * 	 内容标题
    */
   label?: React.ReactNode
-  prefixCls?: string
-  className?: string
-  style?: React.CSSProperties
-  children: React.ReactNode
 }
-
-export const DescriptionsItem: React.FC<DescriptionsItemProps> = ({ children }) =>
-  // eslint-disable-next-line no-undef
-  children as JSX.Element

@@ -16,6 +16,7 @@ export const VerticalBorder = () => {
             <div>test</div>
           </Descriptions.Item>
           <Descriptions.Item label="Money4">1000000222201133</Descriptions.Item>
+          <Descriptions.Item label="Money4">1000000222201133</Descriptions.Item>
         </Descriptions>
       </div>
     </>

@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { __DEV__ } from '@hi-ui/env'
+import { invariant, __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { cloneElement, toArray } from './util'
 import { Row } from './Row'
@@ -11,90 +11,36 @@ const DESCRIPTIONS_PREFIX = getPrefixCls('descriptions')
  * TODO: What is Descriptions
  */
 
-function computeFilledItem(
-  node: React.ReactElement,
-  span: number | undefined,
-  rowRestCol: number
-): React.ReactElement {
-  let clone = node
-
-  if (span === undefined || span > rowRestCol) {
-    clone = cloneElement(node, {
-      span: rowRestCol,
-    })
-  }
-
-  return clone
-}
-
-function computeColumn(column: DescriptionsProps['column']): number {
-  if (typeof column === 'number') {
-    return column
-  }
-  return 3
-}
-
-function computeRows(children: React.ReactNode, column: number) {
-  if (!Array.isArray(children)) return []
-  const childrenNodes = toArray(children)
-  const rows: React.ReactElement[][] = []
-
-  let rowItems: React.ReactElement[] = []
-  let rowRestCol = column
-
-  childrenNodes.forEach((node: React.ReactElement, index: number) => {
-    const span: number | undefined = node?.props?.span
-    const mergedSpan = span || 1
-
-    if (index === children.length - 1) {
-      rowItems.push(computeFilledItem(node, span, rowRestCol))
-      rows.push(rowItems)
-      return
-    }
-
-    if (mergedSpan < rowRestCol) {
-      rowRestCol -= mergedSpan
-      rowItems.push(node)
-    } else {
-      rowItems.push(computeFilledItem(node, mergedSpan, rowRestCol))
-      rows.push(rowItems)
-      rowRestCol = column
-      rowItems = []
-    }
-  })
-  return rows
-}
-
 export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>(
   (
     {
       prefixCls = DESCRIPTIONS_PREFIX,
       role = 'descriptions',
       className,
-      style,
       children,
       column = 3,
-      placement,
-      appearance,
-      noBackground,
-      labelPlacement,
+      placement = 'horizontal',
+      appearance = 'unset',
+      noBackground = false,
+      labelPlacement = 'left',
       ...rest
     },
     ref
   ) => {
+    const rows = computeRows(children, column)
+
     const cls = cx(
       prefixCls,
-      {
-        [`${prefixCls}-bordered`]: appearance === 'table',
-        [`${prefixCls}-no-background`]: !!noBackground,
-      },
+      appearance && `${prefixCls}--appearance-${appearance}`,
+      !!noBackground && `${prefixCls}--no-background`,
       className
     )
-    const mergedColumn = computeColumn(column)
 
-    const rows = computeRows(children, mergedColumn)
+    const vertical = placement === 'vertical'
+    const bordered = appearance === 'table'
+
     return (
-      <div ref={ref} role={role} className={cls} {...rest} style={style}>
+      <div ref={ref} role={role} className={cls} {...rest}>
         <table>
           <tbody>
             {rows.map((row, index) => (
@@ -102,9 +48,9 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
                 key={index}
                 index={index}
                 prefixCls={prefixCls}
-                vertical={placement === 'vertical'}
-                bordered={appearance === 'table'}
                 row={row}
+                vertical={vertical}
+                bordered={bordered}
                 noBackground={noBackground}
                 labelPlacement={labelPlacement}
               />
@@ -134,11 +80,62 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
    */
   labelPlacement?: 'left' | 'center' | 'right'
   /**
-   * 	 无边框，无背景色，只在appearance为'table'下生效
+   * 	 无边框，无背景色，只在appearance为'table'下生效。暂时不对外暴露
+   * @private
    */
   noBackground?: boolean
 }
 
 if (__DEV__) {
   Descriptions.displayName = 'Descriptions'
+}
+
+function computeRows(children: React.ReactNode, column: number) {
+  if (!Array.isArray(children)) return []
+
+  const childrenNodes = toArray(children)
+
+  const rows: React.ReactElement[][] = []
+
+  let rowItems: React.ReactElement[] = []
+  let rowRestCol = column
+
+  // 根据 column 计算生成二维表格展示
+  childrenNodes.forEach((node: React.ReactElement, index: number) => {
+    let span: number = node?.props?.span ?? 1
+
+    if (span < 1) {
+      invariant(true, 'The span should be a positive integer in Descriptions component.')
+      span = 1
+    }
+
+    if (index === children.length - 1) {
+      rowItems.push(computeFilledItem(node, undefined, rowRestCol))
+      rows.push(rowItems)
+      return
+    }
+
+    if (span < rowRestCol) {
+      rowRestCol -= span
+      rowItems.push(node)
+    } else {
+      rowItems.push(computeFilledItem(node, span, rowRestCol))
+      rows.push(rowItems)
+      rowRestCol = column
+      rowItems = []
+    }
+  })
+  return rows
+}
+
+function computeFilledItem(node: React.ReactElement, span: number | undefined, rowRestCol: number) {
+  let clone: React.ReactElement = node
+
+  if (span === undefined || span > rowRestCol) {
+    clone = cloneElement(node, {
+      span: rowRestCol,
+    })
+  }
+
+  return clone
 }

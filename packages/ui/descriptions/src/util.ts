@@ -4,7 +4,7 @@ type AnyObject = Record<any, any>
 
 type RenderProps = undefined | AnyObject | ((originProps: AnyObject) => AnyObject | undefined)
 
-export function cloneElement(element: React.ReactNode, props?: RenderProps): React.ReactNode {
+export function cloneElement(element: React.ReactElement, props?: RenderProps) {
   if (!React.isValidElement(element)) return element
 
   return React.cloneElement(element, props)

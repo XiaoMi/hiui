@@ -13,7 +13,7 @@ export interface CellProps {
   content?: React.ReactNode
 }
 
-const Cell: React.FC<CellProps> = ({
+export const Cell: React.FC<CellProps> = ({
   itemPrefixCls,
   component,
   span,
@@ -24,13 +24,14 @@ const Cell: React.FC<CellProps> = ({
   content,
 }) => {
   const Component: any = component
+
   if (bordered) {
     return (
       <Component
         className={classNames(
           {
-            [`${itemPrefixCls}-item-label`]: !isNullish(label),
-            [`${itemPrefixCls}-item-content`]: !isNullish(content),
+            [`${itemPrefixCls}-item__label`]: !isNullish(label),
+            [`${itemPrefixCls}-item__content`]: !isNullish(content),
           },
           className
         )}
@@ -42,18 +43,17 @@ const Cell: React.FC<CellProps> = ({
       </Component>
     )
   }
+
   return (
     <Component
       className={classNames(`${itemPrefixCls}-item`, className)}
       style={style}
       colSpan={span}
     >
-      <div className={`${itemPrefixCls}-item-container`}>
-        {label && <span className={classNames(`${itemPrefixCls}-item-label`)}>{label}</span>}
-        {content && <span className={classNames(`${itemPrefixCls}-item-content`)}>{content}</span>}
+      <div className={`${itemPrefixCls}-item__container`}>
+        {label && <span className={classNames(`${itemPrefixCls}-item__label`)}>{label}</span>}
+        {content && <span className={classNames(`${itemPrefixCls}-item__content`)}>{content}</span>}
       </div>
     </Component>
   )
 }
-
-export default Cell

@@ -9,6 +9,6 @@ export * from './vertical.stories'
 export * from './vertical-border.stories'
 
 export default {
-  title: 'Data Display/Descriptions（alpha）',
+  title: 'Data Display/Descriptions (alpha)',
   decorators: [(story: Function) => <div style={{ width: '900px' }}>{story()}</div>],
 }

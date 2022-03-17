@@ -3,7 +3,6 @@
 $prefix: '#{$component-prefix}-alert' !default;
 
 .#{$prefix} {
-  $alert-min-width: 280px;
   $alert-icon-size: 20px;
 
   position: relative;
@@ -14,7 +13,8 @@ $prefix: '#{$component-prefix}-alert' !default;
   line-height: use-text-lineheight('sm');
   display: flex;
   align-items: flex-start;
-  min-width: $alert-min-width;
+  width: 100%;
+  box-sizing: border-box;
 
   &.#{$prefix}--with-content {
     padding: use-spacing(10);

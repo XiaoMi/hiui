@@ -1,6 +1,54 @@
 import * as React from 'react'
 import { DescriptionsItemProps } from './DescriptionsItem'
-import Cell from './Cell'
+import { Cell } from './Cell'
+
+export const Row: React.FC<RowProps> = (props) => {
+  const { prefixCls, vertical, row, index, bordered, noBackground } = props
+
+  if (vertical) {
+    return (
+      <>
+        <tr key={`label-${index}`} className={`${prefixCls}-row`}>
+          {renderCols(row, props, {
+            component: 'th',
+            type: 'label',
+            showLabel: true,
+          })}
+        </tr>
+        <tr key={`content-${index}`} className={`${prefixCls}-row`}>
+          {renderCols(row, props, {
+            component: 'td',
+            type: 'content',
+            showContent: true,
+          })}
+        </tr>
+      </>
+    )
+  }
+
+  return (
+    <tr key={index} className={`${prefixCls}-row`}>
+      {renderCols(row, props, {
+        component: bordered || noBackground ? ['th', 'td'] : 'td',
+        type: 'item',
+        showLabel: true,
+        showContent: true,
+      })}
+    </tr>
+  )
+}
+
+export interface RowProps {
+  prefixCls: string
+  vertical: boolean
+  row: React.ReactElement<DescriptionsItemProps>[]
+  bordered?: boolean
+  index: number
+  rootLabelStyle?: React.CSSProperties
+  rootContentStyle?: React.CSSProperties
+  noBackground?: boolean
+  labelPlacement?: 'left' | 'center' | 'right'
+}
 
 interface CellConfig {
   component: string | [string, string]
@@ -67,52 +115,5 @@ function renderCols(
         />,
       ]
     }
-  )
-}
-
-export interface RowProps {
-  prefixCls: string
-  vertical: boolean
-  row: React.ReactElement<DescriptionsItemProps>[]
-  bordered?: boolean
-  index: number
-  rootLabelStyle?: React.CSSProperties
-  rootContentStyle?: React.CSSProperties
-  noBackground?: boolean
-  labelPlacement?: 'left' | 'center' | 'right'
-}
-
-export const Row: React.FC<RowProps> = (props) => {
-  const { prefixCls, vertical, row, index, bordered, noBackground } = props
-
-  if (vertical) {
-    return (
-      <>
-        <tr key={`label-${index}`} className={`${prefixCls}-row`}>
-          {renderCols(row, props, {
-            component: 'th',
-            type: 'label',
-            showLabel: true,
-          })}
-        </tr>
-        <tr key={`content-${index}`} className={`${prefixCls}-row`}>
-          {renderCols(row, props, {
-            component: 'td',
-            type: 'content',
-            showContent: true,
-          })}
-        </tr>
-      </>
-    )
-  }
-  return (
-    <tr key={index} className={`${prefixCls}-row`}>
-      {renderCols(row, props, {
-        component: bordered || noBackground ? ['th', 'td'] : 'td',
-        type: 'item',
-        showLabel: true,
-        showContent: true,
-      })}
-    </tr>
   )
 }
