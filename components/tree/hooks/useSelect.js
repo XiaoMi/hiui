@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 const useSelect = ({ defaultSelectedId, selectedId, onSelect, selectable }) => {
   const [_selectedId, setSelectedId] = useState((selectable && selectedId) || (selectable && defaultSelectedId) || null)
@@ -9,6 +9,9 @@ const useSelect = ({ defaultSelectedId, selectedId, onSelect, selectable }) => {
     }
   }, [selectedId, selectable])
 
+  const onSelectRef = useRef(onSelect)
+  onSelectRef.current = onSelect
+
   const onSelectNode = useCallback(
     (selectedNode) => {
       if (!selectable) return
@@ -18,6 +21,7 @@ const useSelect = ({ defaultSelectedId, selectedId, onSelect, selectable }) => {
       if (selectedNode !== undefined && !selectedId) {
         setSelectedId(selectedNode.id)
       }
+      const onSelect = onSelectRef.current
       if (onSelect) {
         onSelect(selectedNode)
       }
