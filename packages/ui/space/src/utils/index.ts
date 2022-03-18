@@ -1,12 +1,13 @@
-import { SizeEnum, SizeType } from '../types'
+import { HiBaseSizeEnum } from '@hi-ui/core'
+import { SizeType } from '../types'
 
 const SizeValueEnum = {
-  [SizeEnum.Small]: 8,
-  [SizeEnum.Normal]: 16,
-  [SizeEnum.Large]: 24,
+  [HiBaseSizeEnum.SM]: 8,
+  [HiBaseSizeEnum.MD]: 16,
+  [HiBaseSizeEnum.LG]: 24,
 }
 
-const SIZE_ENUM_LIST = [SizeEnum.Large, SizeEnum.Normal, SizeEnum.Small]
+const SIZE_ENUM_LIST = [HiBaseSizeEnum.SM, HiBaseSizeEnum.MD, HiBaseSizeEnum.LG]
 
 /**
  *
@@ -14,8 +15,8 @@ const SIZE_ENUM_LIST = [SizeEnum.Large, SizeEnum.Normal, SizeEnum.Small]
  * @returns 处理成标准格式flex gap
  */
 export const handleTransformGap = (gap: SizeType) => {
-  if (SIZE_ENUM_LIST.includes(gap as SizeEnum)) {
-    const activeSize = SizeValueEnum[gap as SizeEnum]
+  if (SIZE_ENUM_LIST.includes(gap as HiBaseSizeEnum)) {
+    const activeSize = SizeValueEnum[gap as HiBaseSizeEnum]
     return activeSize || gap
   } else if (typeof gap === 'string' || typeof gap === 'number') {
     return Number(gap)

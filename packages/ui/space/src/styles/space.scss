@@ -2,27 +2,6 @@
 
 $prefix: '#{$component-prefix}-space' !default;
 
-$direction-list: row column;
-$align-list: start center end baseline;
-
-
 .#{$prefix} {
   display: inline-flex;
-}
-
-@each $direction-item in $direction-list {
-  .#{$prefix}--#{$direction-item} {
-    flex-direction: #{$direction-item}
-  }
-}
-
-@each $align-item in $align-list {
-  .#{$prefix}--align--#{$align-item} {
-    align-items: #{$align-item}
-  }
-}
-
-
-.#{$prefix}--wrap {
-  flex-wrap: wrap;
 }

@@ -4,10 +4,10 @@
 import React, { forwardRef, Children, ReactNode } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 
 import { handleTransformGap } from './utils'
-import { SizeEnum, SizeType } from './types'
+import { SizeType } from './types'
 
 const SPACE_PREFIX = getPrefixCls('space')
 
@@ -16,25 +16,20 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
     {
       prefixCls = SPACE_PREFIX,
       role = 'space',
-      align = 'start',
+      inline = true,
+      align = 'center',
       direction = 'row',
-      size = SizeEnum.Small,
-      style = {},
+      size = HiBaseSizeEnum.SM,
+      wrap = false,
+      style,
       className,
       split,
-      wrap,
       children,
       ...rest
     },
     ref
   ) => {
-    const cls = cx(
-      prefixCls,
-      className,
-      `${prefixCls}--${direction}`,
-      `${prefixCls}--align--${align}`,
-      wrap && `${prefixCls}--wrap`
-    )
+    const cls = cx(prefixCls, className)
 
     const childCount = Children.count(children)
     const formatGap = handleTransformGap(size)
@@ -44,19 +39,23 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
         ref={ref}
         role={role}
         className={cls}
-        style={{ gap: formatGap as number, ...style }}
+        style={{
+          flex: inline ? 'inline-flex' : 'flex',
+          gap: formatGap as number,
+          flexDirection: direction,
+          alignItems: align,
+          flexWrap: wrap ? 'wrap' : 'nowrap',
+          ...style,
+        }}
         {...rest}
       >
         {Children.map(children, (child, index) => {
-          const childBody = <div className={`${prefixCls}__item`}>{child}</div>
-
-          return split && childCount > index + 1 ? (
+          const showSplit = !!split && childCount > index + 1
+          return (
             <>
-              {childBody}
-              {split}
+              {child}
+              {showSplit && split}
             </>
-          ) : (
-            childBody
           )
         })}
       </div>
@@ -65,10 +64,34 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
 )
 
 export interface SpaceProps extends HiBaseHTMLProps<'div'> {
-  align?: 'start' | 'end' | 'center' | 'baseline'
+  /**
+   * 是否 inline-flex
+   * 默认: false
+   */
+  inline?: boolean
+  /**
+   * 当前轴垂直方向布局，alignItems
+   * 默认: center
+   */
+  align?: 'flex-start' | 'flex-end' | 'center' | 'baseline'
+  /**
+   * flex轴方向
+   * 默认: row
+   */
   direction?: 'row' | 'column'
+  /**
+   * 间距大小，推荐使用枚举，如不符合需求可以设置具体数值
+   * 默认: 'sm'
+   */
   size?: SizeType
+  /**
+   * space-item 之间插入 dom 结构
+   */
   split?: ReactNode
+  /**
+   * 是否换行
+   * 默认: false
+   */
   wrap?: boolean
 }
 

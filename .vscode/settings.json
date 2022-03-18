@@ -40,5 +40,12 @@
     "Viewbox",
     "yahei",
     "zindex"
-  ]
+  ],
+  "files.associations": {
+    "*.cjson": "jsonc",
+    "*.wxss": "css",
+    "*.wxs": "javascript",
+    "*.ttml": "xml",
+    "*.ttss": "css"
+  }
 }
