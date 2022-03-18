@@ -47,12 +47,11 @@ const InternalModalComp = ({
   if (defaultContainer.current === false && !container) {
     defaultContainer.current = getDefaultContainer()
   }
-
   const focusedElementBeforeOpenModal = useRef(null)
   const modalRef = useRef(null)
   const [closeable, setCloseable] = useState(propCloseable)
   useEffect(() => {
-    setCloseable(closeable)
+    setCloseable(propCloseable)
   }, [propCloseable])
   const trapTabKey = useCallback((e) => {
     // Find all focusable children
