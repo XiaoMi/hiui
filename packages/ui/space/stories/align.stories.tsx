@@ -8,8 +8,8 @@ export const Align = () => {
     <>
       <h1>对齐方式</h1>
       <div className="space-basic__wrap">
-        <Space size="10">
-          <Space align="start" size="normal" style={{ border: '1px solid #f1f1f1', padding: 10 }}>
+        <Space size={10}>
+          <Space align="flex-start" size="md" style={{ border: '1px solid #f1f1f1', padding: 10 }}>
             <Avatar
               src="https://avatars.githubusercontent.com/u/810438?v=4"
               initials="P"
@@ -18,7 +18,7 @@ export const Align = () => {
             <span>HiUI</span>
             <Button type="primary">button</Button>
           </Space>
-          <Space align="center" size="normal" style={{ border: '1px solid #f1f1f1', padding: 10 }}>
+          <Space align="center" size="md" style={{ border: '1px solid #f1f1f1', padding: 10 }}>
             <Avatar
               src="https://avatars.githubusercontent.com/u/810438?v=4"
               initials="P"
@@ -27,7 +27,7 @@ export const Align = () => {
             <span>HiUI</span>
             <Button type="primary">button</Button>
           </Space>
-          <Space align="end" size="normal" style={{ border: '1px solid #f1f1f1', padding: 10 }}>
+          <Space align="flex-end" size="md" style={{ border: '1px solid #f1f1f1', padding: 10 }}>
             <Avatar
               src="https://avatars.githubusercontent.com/u/810438?v=4"
               initials="P"
@@ -36,11 +36,7 @@ export const Align = () => {
             <span>HiUI</span>
             <Button type="primary">button</Button>
           </Space>
-          <Space
-            align="baseline"
-            size="normal"
-            style={{ border: '1px solid #f1f1f1', padding: 10 }}
-          >
+          <Space align="baseline" size="md" style={{ border: '1px solid #f1f1f1', padding: 10 }}>
             <Avatar
               src="https://avatars.githubusercontent.com/u/810438?v=4"
               initials="P"

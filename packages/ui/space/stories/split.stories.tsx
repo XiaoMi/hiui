@@ -3,7 +3,7 @@ import Space from '../src'
 import Button from '@hi-ui/button'
 import { ArrowRightOutlined } from '@hi-ui/icons'
 
-export const Diliver = () => {
+export const Split = () => {
   return (
     <>
       <h1>分隔符</h1>

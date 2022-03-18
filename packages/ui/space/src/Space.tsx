@@ -1,5 +1,6 @@
 /**
- * this is a easy to layout component
+ * Space
+ * easy to layout
  */
 import React, { forwardRef, Children, ReactNode } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
@@ -53,7 +54,7 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
           const showSplit = !!split && childCount > index + 1
           return (
             <>
-              {child}
+              <div className={`${cls}__item`}>{child}</div>
               {showSplit && split}
             </>
           )

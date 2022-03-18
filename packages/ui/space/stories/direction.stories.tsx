@@ -7,7 +7,7 @@ export const Direction = () => {
     <>
       <h1>垂直排列</h1>
       <div className="space-basic__wrap">
-        <Space direction="column" size="normal">
+        <Space direction="column" size="lg">
           <Button>Button1</Button>
           <Button type="primary">Button2</Button>
           <Button type="danger">Button3</Button>
