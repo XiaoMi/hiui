@@ -3,7 +3,7 @@ import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Loading from '@hi-ui/loading'
-import { isNullish } from '@hi-ui/type-assertion'
+import { isNullish, isUndef } from '@hi-ui/type-assertion'
 
 const _role = 'card'
 const _prefix = getPrefixCls(_role)
@@ -28,6 +28,7 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
       bordered = true,
       size = 'md',
       showHeaderDivider,
+      scrollHeight,
       ...rest
     },
     ref
@@ -40,6 +41,8 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
       [`${prefixCls}--bordered`]: bordered,
       [`${prefixCls}--no-header`]: !hasHeader,
     })
+
+    const enabledBodyScroll = isUndef(scrollHeight)
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
@@ -62,7 +65,13 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
         ) : null}
         {/* 没有 children 且非 loading 态 ，则不渲染 body 内容 */}
         {!isNullish(children) || loading ? (
-          <div className={`${prefixCls}__body`}>
+          <div
+            className={`${prefixCls}__body`}
+            style={{
+              maxHeight: enabledBodyScroll ? scrollHeight : undefined,
+              overflowY: enabledBodyScroll ? 'auto' : undefined,
+            }}
+          >
             {children}
             {/* 需要用到这个功能才开启，即传入 boolean */}
             {typeof loading === 'boolean' ? (
@@ -124,6 +133,11 @@ export interface CardProps extends HiBaseHTMLProps<'div'> {
    * 内容区域
    */
   children?: React.ReactNode
+  /**
+   * 设置内容区滚动高度，超出该高度触发内容区整体滚动。暂时不对外暴露
+   * @private
+   */
+  scrollHeight?: number
 }
 
 if (__DEV__) {

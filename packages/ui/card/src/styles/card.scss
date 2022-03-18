@@ -84,6 +84,7 @@ $prefix: '#{$component-prefix}-card' !default;
     font-size: use-text-size('normal');
     color: use-color('gray', 600);
     position: relative;
+    overflow-wrap: break-word;
   }
 
   &__loading {

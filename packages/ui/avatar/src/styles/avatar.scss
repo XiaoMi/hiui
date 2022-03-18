@@ -11,6 +11,7 @@ $prefix: '#{$component-prefix}-avatar' !default;
   color: use-color-static('white');
   font-size: use-text-size('xl');
   overflow: hidden;
+  flex-shrink: 0;
 
   &--empty {
     background-color: use-color-mode('primary', 100);
@@ -24,7 +25,8 @@ $prefix: '#{$component-prefix}-avatar' !default;
     font-size: inherit;
     height: 100%;
 
-    img {
+    // 避免污染
+    & > img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -37,45 +39,49 @@ $prefix: '#{$component-prefix}-avatar' !default;
     object-fit: cover;
   }
 
-  &--circle {
-    border-radius: use-border-radius('full');
+  &--shape {
+    &-circle {
+      border-radius: use-border-radius('full');
+    }
+
+    &-square {
+      border-radius: var(--hi-v4-global-border-radius, 4px);
+    }
   }
 
-  &--square {
-    border-radius: var(--hi-v4-global-border-radius, 4px);
-  }
+  &--size {
+    &-md {
+      width: var(--hi-v4-avatar-profile-size-md, 40px);
+      height: var(--hi-v4-avatar-profile-size-md, 40px);
+      line-height: var(--hi-v4-avatar-profile-size-md, 40px);
+    }
 
-  &--md {
-    width: var(--hi-v4-avatar-profile-size-md, 40px);
-    height: var(--hi-v4-avatar-profile-size-md, 40px);
-    line-height: var(--hi-v4-avatar-profile-size-md, 40px);
-  }
+    &-sm {
+      width: var(--hi-v4-avatar-profile-size-sm, 32px);
+      height: var(--hi-v4-avatar-profile-size-sm, 32px);
+      line-height: var(--hi-v4-avatar-profile-size-md, 32px);
+      font-size: use-text-size('lg');
+    }
 
-  &--sm {
-    width: var(--hi-v4-avatar-profile-size-sm, 32px);
-    height: var(--hi-v4-avatar-profile-size-sm, 32px);
-    line-height: var(--hi-v4-avatar-profile-size-md, 32px);
-    font-size: use-text-size('lg');
-  }
+    &-xs {
+      width: var(--hi-v4-avatar-profile-size-xs, 24px);
+      height: var(--hi-v4-avatar-profile-size-xs, 24px);
+      line-height: var(--hi-v4-avatar-profile-size-md, 24px);
+      font-size: use-text-size('normal');
+    }
 
-  &--xs {
-    width: var(--hi-v4-avatar-profile-size-xs, 24px);
-    height: var(--hi-v4-avatar-profile-size-xs, 24px);
-    line-height: var(--hi-v4-avatar-profile-size-md, 24px);
-    font-size: use-text-size('normal');
-  }
+    &-lg {
+      width: var(--hi-v4-avatar-profile-size-lg, 48px);
+      height: var(--hi-v4-avatar-profile-size-lg, 48px);
+      line-height: var(--hi-v4-avatar-profile-size-md, 48px);
+      font-size: use-text-size('xxl');
+    }
 
-  &--lg {
-    width: var(--hi-v4-avatar-profile-size-lg, 48px);
-    height: var(--hi-v4-avatar-profile-size-lg, 48px);
-    line-height: var(--hi-v4-avatar-profile-size-md, 48px);
-    font-size: use-text-size('xxl');
-  }
-
-  &--xl {
-    width: var(--hi-v4-avatar-profile-size-xl, 64px);
-    height: var(--hi-v4-avatar-profile-size-xl, 64px);
-    line-height: var(--hi-v4-avatar-profile-size-md, 64px);
-    font-size: use-text-size('xxl');
+    &-xl {
+      width: var(--hi-v4-avatar-profile-size-xl, 64px);
+      height: var(--hi-v4-avatar-profile-size-xl, 64px);
+      line-height: var(--hi-v4-avatar-profile-size-md, 64px);
+      font-size: use-text-size('xxl');
+    }
   }
 }

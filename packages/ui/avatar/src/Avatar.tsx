@@ -2,7 +2,8 @@ import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UserFilled } from '@hi-ui/icons'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { useLatestRef } from '@hi-ui/use-latest'
 
 const _role = 'avatar'
 const _prefix = getPrefixCls(_role)
@@ -15,6 +16,7 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
     {
       prefixCls = _prefix,
       role = _role,
+      style: styleProp,
       className,
       children,
       src,
@@ -23,17 +25,23 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
       initials,
       name,
       icon,
-
+      srcSet,
+      onError,
       ...rest
     },
     ref
   ) => {
-    // TODO: 调整修饰类名
-    const cls = cx(prefixCls, `${prefixCls}--${size}`, `${prefixCls}--${shape}`, className)
-
+    const onErrorLatestRef = useLatestRef(onError)
     const renderAvatar = useCallback(() => {
       if (src) {
-        return <img className={`${prefixCls}__image`} src={src} alt={name} />
+        return (
+          <img
+            className={`${prefixCls}__image`}
+            src={src}
+            alt={name}
+            onError={onErrorLatestRef.current}
+          />
+        )
       }
       if (icon) {
         return (
@@ -61,21 +69,45 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
           <UserFilled />
         </span>
       )
-    }, [src, initials, icon, name, children, prefixCls])
+    }, [src, initials, icon, name, children, prefixCls, onErrorLatestRef])
+
+    const shouldUseSpecialSize = typeof size === 'number'
+
+    const cls = cx(
+      prefixCls,
+      !shouldUseSpecialSize && `${prefixCls}--size-${size}`,
+      `${prefixCls}--shape-${shape}`,
+      className
+    )
+
+    let style = styleProp
+
+    if (shouldUseSpecialSize) {
+      const sizeVal = `${size}px`
+      style = {
+        width: sizeVal,
+        height: sizeVal,
+        lineHeight: sizeVal,
+        fontSize: size * 0.56,
+        ...styleProp,
+      }
+    }
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
+      <div ref={ref} role={role} className={cls} {...rest} style={style}>
         {renderAvatar()}
       </div>
     )
   }
 )
 
+export type AvatarSizeEnum = HiBaseSizeEnum | 'xs' | 'xl'
+
 export interface AvatarProps extends HiBaseHTMLProps<'div'> {
   /**
    * 头像尺寸
    */
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  size?: AvatarSizeEnum | number
   /**
    * 头像缩写字母
    */
@@ -96,6 +128,18 @@ export interface AvatarProps extends HiBaseHTMLProps<'div'> {
    * 设置按钮图标
    */
   icon?: React.ReactNode
+  /**
+   * 针对 img 不同的屏幕分辨率来源地址设置
+   */
+  srcSet?: string
+  /**
+   * 针对 img 加载失败回调
+   */
+  onError?: React.ReactEventHandler<HTMLImageElement>
+  // label?: React.ReactNode
+  // content?: React.ReactNode
+  // gap?: number
+  // direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse'
 }
 
 if (__DEV__) {

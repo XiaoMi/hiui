@@ -56,7 +56,7 @@ to: <%= h.uiDir(`${name}/package.json`) %>
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-beta.4",
+    "@hi-ui/hi-build": "^4.0.0-beta.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
