@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useState, useEffect, useCallback } from 'react'
+import React, { useRef, useContext, useState, useEffect, useCallback, useMemo } from 'react'
 import { cx } from '@hi-ui/classname'
 import { getTimePeriodData } from '../utils'
 import DPContext from '../context'
@@ -24,6 +24,15 @@ const TimePeriodPanel = ({
     setPeriodData(getTimePeriodData(timeInterval))
   }, [timeInterval])
 
+  const criticalDisposedValue = useMemo(() => {
+    const result = [...value]
+    if (result[1] === '00:00') {
+      result[1] = '24:00'
+    }
+
+    return result
+  }, [value])
+
   useEffect(() => {
     // 判断当前时间是否合法（存在于选项中）
     // 如果不存在，则通知外部，重置为第一个（模拟第一个时间被点击操作）
@@ -35,14 +44,14 @@ const TimePeriodPanel = ({
           item.timeStr
             .split('~')
             .map((item) => item.trim())
-            .join('') === value.join('')
+            .join('') === criticalDisposedValue.join('')
       ) &&
       showPanel
     ) {
       const [ts, te] = periodData[0].timeStr.split('~')
       onTimePeriodPick(ts, te)
     }
-  }, [periodData, value, onTimePeriodPick, showPanel])
+  }, [periodData, criticalDisposedValue, onTimePeriodPick, showPanel])
 
   const getActiveIndex = useCallback(() => {
     return Number(
