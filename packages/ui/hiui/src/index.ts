@@ -149,3 +149,6 @@ export { default as ZenMode } from '@hi-ui/zen-mode'
 // export * from '@hi-ui/highlighter'
 export * from '@hi-ui/select'
 export { default as Select } from '@hi-ui/select'
+
+export * from '@hi-ui/space'
+export { default as Space } from '@hi-ui/space'
