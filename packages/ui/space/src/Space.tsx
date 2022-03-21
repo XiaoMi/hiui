@@ -52,7 +52,7 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
         {...rest}
       >
         {Children.map(children, (child, index) => {
-          const showSplit = isNullish(split) && childCount > index + 1
+          const showSplit = !isNullish(split) && childCount > index + 1
           return (
             <Fragment key={index}>
               <div className={`${cls}__item`}>{child}</div>
