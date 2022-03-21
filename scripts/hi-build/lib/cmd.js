@@ -35,7 +35,7 @@ const cmd = (callback) => {
     )
     .option('--compress', 'Build with compress', false)
     .option('--preserved', 'Build with preserved modules', true)
-    .option('--source-maps', 'Generate source map', true)
+    .option('--source-maps', 'Generate source map', false)
     .option('--css-extract', 'Turns on Extract css', false)
     .option('--css-modules', 'Turns on css-modules', false)
     .description('Build once and exit')
