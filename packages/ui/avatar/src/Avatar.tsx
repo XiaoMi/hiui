@@ -88,7 +88,8 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
         width: sizeVal,
         height: sizeVal,
         lineHeight: sizeVal,
-        fontSize: size * 0.56,
+        // @ts-ignore
+        fontSize: 0.56 * size,
         ...styleProp,
       }
     }

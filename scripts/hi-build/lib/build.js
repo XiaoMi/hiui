@@ -153,7 +153,7 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
           extract: cssExtract,
           modules: cssModules,
         }),
-        !cssExtract && injectCSSImport(),
+        // !cssExtract && injectCSSImport(),
         compress && terser(),
         json()
       ].filter(Boolean),
