@@ -42,7 +42,7 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
       [`${prefixCls}--no-header`]: !hasHeader,
     })
 
-    const enabledBodyScroll = isUndef(scrollHeight)
+    const enabledBodyScroll = !isUndef(scrollHeight)
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
