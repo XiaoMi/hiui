@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/toast",
-  "version": "4.0.0-beta.3",
+  "version": "4.0.0-beta.4",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -45,19 +45,19 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/container": "^4.0.0-beta.1",
+    "@hi-ui/container": "^4.0.0-beta.2",
     "@hi-ui/core-css": "^4.0.0-beta.3",
     "@hi-ui/env": "^4.0.0-beta.0",
-    "@hi-ui/react-utils": "^4.0.0-beta.1",
-    "@hi-ui/type-assertion": "^4.0.0-beta.1",
-    "@hi-ui/use-id": "^4.0.0-beta.1"
+    "@hi-ui/react-utils": "^4.0.0-beta.2",
+    "@hi-ui/type-assertion": "^4.0.0-beta.2",
+    "@hi-ui/use-id": "^4.0.0-beta.2"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-beta.1",
+    "@hi-ui/hi-build": "^4.0.0-beta.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
