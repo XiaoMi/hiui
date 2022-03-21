@@ -5,6 +5,6 @@ export * from './custom.stories'
 export * from './complete.stories'
 
 export default {
-  title: 'FeedBacck/Result',
+  title: 'FeedBacck/Result (Alpha 暂不推荐业务项目中使用)',
   decorators: [(story: Function) => <div>{story()}</div>],
 }
