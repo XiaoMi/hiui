@@ -6,6 +6,8 @@ import IconNoComment from './IconNoComment'
 import IconNoContent from './IconNoContent'
 import IconNoPermission from './IconNoPermission'
 import IconNoCollection from './IconNoCollection'
+import IconNotFound from './IconNotFound'
+import IconServerError from './IconServerError'
 export {
   IconSucceed,
   IconFailed,
@@ -15,4 +17,6 @@ export {
   IconNoContent,
   IconNoPermission,
   IconNoCollection,
+  IconNotFound,
+  IconServerError,
 }

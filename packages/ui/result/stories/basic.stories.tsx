@@ -9,6 +9,8 @@ import {
   IconNoContent,
   IconNoPermission,
   IconNoCollection,
+  IconNotFound,
+  IconServerError,
 } from '../src'
 import Button from '@hi-ui/button'
 
@@ -127,6 +129,18 @@ export const Basic = () => {
               返回
             </Button>,
           ]}
+        />
+        <Result
+          image={<IconNotFound />}
+          title="404"
+          content="抱歉，服务器开小差了！"
+          children={<Button type="primary">立即申请</Button>}
+        />
+        <Result
+          image={<IconServerError />}
+          title="500"
+          content="抱歉，服务器开小差了！"
+          children={<Button type="primary">立即申请</Button>}
         />
       </div>
     </>
