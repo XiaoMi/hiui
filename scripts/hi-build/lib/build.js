@@ -16,7 +16,7 @@ const postcssFlexBugfix = require('postcss-flexbugs-fixes')
 const cssnano = require('cssnano')
 const autoprefixer = require('autoprefixer')
 const json = require('@rollup/plugin-json')
-const injectCSSImport =  require('./plugins/inject-css-import')
+// const injectCSSImport =  require('./plugins/inject-css-import')
 
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
 
