@@ -217,7 +217,7 @@ const FormItem = (props) => {
         }
       )
     },
-    [props]
+    [props, getRules, getFilteredRule]
   )
 
   const updateFieldInfoToReducer = () => {
@@ -304,7 +304,7 @@ const FormItem = (props) => {
       handleField(eventName, nextValue)
       setValue(nextValue)
     } else if (eventName === 'onBlur') {
-      handleField(eventName, eventInfo.current ? eventInfo.current.value : value)
+      handleField(eventName, eventInfo.current ? eventInfo.current.value : value === undefined ? nextValue : value)
 
       // 处理 onBlur 事件
       const _children = childrenRef.current
