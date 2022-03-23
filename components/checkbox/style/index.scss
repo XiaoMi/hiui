@@ -1,4 +1,5 @@
 @import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 $prefixCls: '.hi-checkbox' !default;
 
@@ -57,6 +58,7 @@ $prefixCls: '.hi-checkbox' !default;
     width: 16px;
     height: 16px;
     border: 1px solid #d8d8d8;
+    background-color: use-color('white');
     margin-right: 8px;
     border-radius: 2px;
     transition: 0.3s ease-out;
