@@ -53,7 +53,9 @@ const Panel = (props: PanelProps) => {
   }, [type])
 
   useEffect(() => {
-    const rDate = outDate[0] ? moment(outDate[0]) : moment()
+    const rDate = outDate[0]
+      ? moment(outDate[0])
+      : moment().set('hour', 0).set('minute', 0).set('second', 0)
     setCalRenderDates([rDate])
   }, [outDate])
 
