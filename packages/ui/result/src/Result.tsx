@@ -1,11 +1,10 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { __DEV__ } from '@hi-ui/env'
+import { __DEV__, invariant } from '@hi-ui/env'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { CheckCircleFilled, CloseCircleFilled, ExclamationCircleFilled } from '@hi-ui/icons'
 import { isNullish, isUndefined } from '@hi-ui/type-assertion'
 import { ResultTypeEnum } from './types'
-import invariant from 'invariant'
 
 const RESULT_PREFIX = getPrefixCls('result')
 
