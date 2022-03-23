@@ -4,9 +4,9 @@ import Descriptions from '../src'
 export const NoBackground = () => {
   return (
     <>
-      <h1>table样式下，无背景的组件</h1>
+      <h1>unset样式下，label对齐</h1>
       <div className="descriptions-basic__wrap">
-        <Descriptions appearance="table" noBackground labelPlacement="right">
+        <Descriptions labelPlacement="right">
           <Descriptions.Item label="名字">张三</Descriptions.Item>
           <Descriptions.Item label="Phone">15311969622</Descriptions.Item>
           <Descriptions.Item label="Address">北京天安门</Descriptions.Item>

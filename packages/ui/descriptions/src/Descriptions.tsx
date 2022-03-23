@@ -21,13 +21,16 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       column = 3,
       placement = 'horizontal',
       appearance = 'unset',
-      noBackground = false,
       labelPlacement = 'left',
       ...rest
     },
     ref
   ) => {
     const rows = computeRows(children, column)
+    const noBackground = appearance === 'unset' && labelPlacement === 'right'
+
+    const vertical = placement === 'vertical'
+    const bordered = appearance === 'table' || noBackground
 
     const cls = cx(
       prefixCls,
@@ -35,9 +38,6 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       !!noBackground && `${prefixCls}--no-background`,
       className
     )
-
-    const vertical = placement === 'vertical'
-    const bordered = appearance === 'table'
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
