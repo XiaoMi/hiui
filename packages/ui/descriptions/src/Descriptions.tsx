@@ -76,14 +76,9 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
    */
   column?: number
   /**
-   * 	 label对齐方式，只在appearance为'table'下生效
+   * 	 label对齐方式
    */
-  labelPlacement?: 'left' | 'center' | 'right'
-  /**
-   * 	 无边框，无背景色，只在appearance为'table'下生效。暂时不对外暴露
-   * @private
-   */
-  noBackground?: boolean
+  labelPlacement?: 'left' | 'right'
 }
 
 if (__DEV__) {

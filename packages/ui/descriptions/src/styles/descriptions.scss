@@ -4,6 +4,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
 
 .#{$prefix} {
   width: 100%;
+  box-sizing: border-box;
 
   // 避免嵌套表格样式污染
   & > table {
