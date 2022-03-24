@@ -34,7 +34,7 @@ export const Basic = () => {
             ],
           }}
         >
-          <FormItem field="testInput" valueType="string" label="用户名">
+          <FormItem valueType="string" label="用户名">
             <Input onChange={console.log} />
           </FormItem>
           <FormItem field="testInput2" valueType="string" label="密码">

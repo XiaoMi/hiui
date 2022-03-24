@@ -1,4 +1,4 @@
-import { stringify, parse } from './utils'
+import { stringify, parse, isValidField } from './utils'
 import React, { useCallback, useMemo, useReducer, useRef } from 'react'
 import {
   FormAction,
@@ -484,6 +484,11 @@ export const useForm = <Values = Record<string, any>>({
         validateTrigger: validateTriggerProp = validateTriggersMemo,
         children,
       } = props
+
+      // field 未设置，不进行收集管理
+      if (!isValidField(field)) return {}
+
+      // 控件的 props
       const controlProps = (children && children.props) || {}
 
       const validateTrigger = (isArray(validateTriggerProp)

@@ -1,10 +1,10 @@
 import { useEffect, useCallback, useMemo } from 'react'
 import { FormFieldPath, FormRuleModel, FormRuleType } from './types'
 import { useFormContext } from './context'
-import { isArrayNonEmpty, isNullish, isArray } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import Validater, { Rules } from 'async-validator'
 import { normalizeArray } from '@hi-ui/array-utils'
-import { stringify } from './utils'
+import { isValidField, stringify } from './utils'
 
 export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => {
   const { field, rules: rulesProp, valueType = 'any' } = props
@@ -38,16 +38,14 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
 
   // 注入当前 field 及其验证规则到 Form
   useEffect(() => {
-    if (isNullish(field) || field === '') return
-    if (isArray(field) && field.every((item) => isNullish(item) || item === '')) return
+    if (!isValidField(field)) return
 
     registerField(field, {
       validate: fieldValidate,
     })
 
     return () => {
-      if (isNullish(field) || field === '') return
-      if (isArray(field) && field.every((item) => isNullish(item) || item === '')) return
+      if (!isValidField(field)) return
 
       unregisterField(field)
     }
