@@ -48,6 +48,7 @@ export interface RowProps {
   rootContentStyle?: React.CSSProperties
   noBackground?: boolean
   labelPlacement?: 'left' | 'center' | 'right'
+  rootLabelWidth?: string
 }
 
 interface CellConfig {
@@ -59,7 +60,7 @@ interface CellConfig {
 
 function renderCols(
   items: React.ReactElement<DescriptionsItemProps>[],
-  { prefixCls, bordered, labelPlacement }: RowProps,
+  { prefixCls, bordered, labelPlacement, rootLabelWidth }: RowProps,
   { component, type, showLabel, showContent }: CellConfig
 ) {
   return items.map(
@@ -71,6 +72,7 @@ function renderCols(
           prefixCls: itemPrefixCls = prefixCls,
           className,
           style,
+          labelWidth,
           span = 1,
         },
         key,
@@ -89,6 +91,7 @@ function renderCols(
             bordered={bordered}
             label={showLabel ? label : null}
             content={showContent ? children : null}
+            labelWidth={labelWidth || rootLabelWidth}
           />
         )
       }
@@ -102,6 +105,7 @@ function renderCols(
           itemPrefixCls={itemPrefixCls}
           bordered={bordered}
           label={label}
+          labelWidth={labelWidth || rootLabelWidth}
         />,
         <Cell
           key={`content-${key || index}`}

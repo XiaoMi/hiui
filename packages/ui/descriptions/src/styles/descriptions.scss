@@ -6,6 +6,12 @@ $prefix: '#{$component-prefix}-descriptions' !default;
   width: 100%;
   box-sizing: border-box;
 
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
   // 避免嵌套表格样式污染
   & > table {
     width: 100%;

@@ -13,4 +13,8 @@ export interface DescriptionsItemProps extends HiBaseHTMLProps<'div'> {
    * 	 内容标题
    */
   label?: React.ReactNode
+  /**
+   * 	 label宽度
+   */
+  labelWidth?: string
 }
