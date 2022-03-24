@@ -91,7 +91,7 @@ function renderCols(
             bordered={bordered}
             label={showLabel ? label : null}
             content={showContent ? children : null}
-            labelWidth={labelWidth || rootLabelWidth}
+            labelWidth={labelWidth ?? rootLabelWidth}
           />
         )
       }
@@ -105,7 +105,7 @@ function renderCols(
           itemPrefixCls={itemPrefixCls}
           bordered={bordered}
           label={label}
-          labelWidth={labelWidth || rootLabelWidth}
+          labelWidth={labelWidth ?? rootLabelWidth}
         />,
         <Cell
           key={`content-${key || index}`}

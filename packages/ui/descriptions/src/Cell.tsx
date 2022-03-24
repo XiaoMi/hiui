@@ -41,12 +41,14 @@ export const Cell: React.FC<CellProps> = ({
   return (
     <Component className={cx(`${itemPrefixCls}-item`, className)} style={style} colSpan={span}>
       <div className={`${itemPrefixCls}-item__container`}>
-        {label && (
+        {!isNullish(label) && (
           <span className={cx(`${itemPrefixCls}-item__label`)} style={{ width: labelWidth }}>
             {label}
           </span>
         )}
-        {content && <span className={cx(`${itemPrefixCls}-item__content`)}>{content}</span>}
+        {!isNullish(content) && (
+          <span className={cx(`${itemPrefixCls}-item__content`)}>{content}</span>
+        )}
       </div>
     </Component>
   )

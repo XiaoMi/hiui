@@ -3,17 +3,12 @@
 $prefix: '#{$component-prefix}-descriptions' !default;
 
 .#{$prefix} {
-  width: 100%;
   box-sizing: border-box;
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
+  width: 100%;
 
   // 避免嵌套表格样式污染
   & > table {
+    box-sizing: border-box;
     width: 100%;
     table-layout: fixed;
   }
@@ -21,43 +16,52 @@ $prefix: '#{$component-prefix}-descriptions' !default;
   &-row {
     >th,
     >td {
+      box-sizing: border-box;
       padding-bottom: use-spacing(6);
     }
 
     &:last-child {
+      box-sizing: border-box;
       border-bottom: none;
     }
   }
 
   &-item {
+    box-sizing: border-box;
     vertical-align: top;
 
     &__container {
+      box-sizing: border-box;
       display: flex;
     }
 
     &__label,
     &__content {
+      box-sizing: border-box;
       align-items: baseline;
       font-size: use-text-size('normal');
     }
 
     &__label {
+      box-sizing: border-box;
       color: use-color('gray', 500);
       margin-inline-end: use-spacing(6);
     }
 
     &__content {
+      box-sizing: border-box;
       color: use-color('gray', 700);
     }
   }
 
   &--appearance {
     &-table {
+      box-sizing: border-box;
       border: 1px solid use-color('gray', 300);
       background-color: use-color-static('white');
 
       >table {
+        box-sizing: border-box;
         table-layout: auto;
         border-collapse: collapse;
         border-color: use-color('gray', 300);
@@ -65,15 +69,18 @@ $prefix: '#{$component-prefix}-descriptions' !default;
 
       .#{$prefix}-item__label,
       .#{$prefix}-item__content {
+        box-sizing: border-box;
         padding: use-spacing(7);
         border-right: 1px solid use-color('gray', 300);
 
         &:last-child {
+          box-sizing: border-box;
           border-right: none;
         }
       }
 
       .#{$prefix}-item__label {
+        box-sizing: border-box;
         color: use-color('gray', 700);
         background-color: use-color('gray', 100);
         font-weight: use-text-weight('medium');
@@ -81,29 +88,35 @@ $prefix: '#{$component-prefix}-descriptions' !default;
       }
 
       .#{$prefix}-row {
+        box-sizing: border-box;
         border-bottom: 1px solid use-color('gray', 300);
 
         &:last-child {
+          box-sizing: border-box;
           border-bottom: none;
         }
       }
 
       &.#{$prefix}--no-background {
+        box-sizing: border-box;
         background-color: use-color-static('transparent');
         border: none;
 
         .#{$prefix}-item__label {
+          box-sizing: border-box;
           background-color: use-color-static('transparent');
           color: use-color('gray', 500);
           font-weight: use-text-weight('normal');
         }
 
         .#{$prefix}-row {
+          box-sizing: border-box;
           border-bottom: none;
         }
 
         .#{$prefix}-item__label,
         .#{$prefix}-item__content {
+          box-sizing: border-box;
           border-right: none;
           padding: use-spacing(7);
         }
@@ -111,22 +124,28 @@ $prefix: '#{$component-prefix}-descriptions' !default;
     }
 
     &-unset {
+      box-sizing: border-box;
+
       &.#{$prefix}--no-background {
+        box-sizing: border-box;
         background-color: use-color-static('transparent');
         border: none;
 
         .#{$prefix}-item__label {
+          box-sizing: border-box;
           background-color: use-color-static('transparent');
           color: use-color('gray', 500);
           font-weight: use-text-weight('normal');
         }
 
         .#{$prefix}-row {
+          box-sizing: border-box;
           border-bottom: none;
         }
 
         .#{$prefix}-item__label,
         .#{$prefix}-item__content {
+          box-sizing: border-box;
           border-right: none;
           padding: use-spacing(7);
         }
