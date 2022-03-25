@@ -28,7 +28,7 @@ $prefix: '#{$component-prefix}-form' !default;
 
       // 上下布局只在水平表单中自动填充高度
       .#{$prefix}-label__indent {
-        min-height: 32px;
+        min-height: use-height-size('normal');
       }
     }
   }
@@ -37,8 +37,9 @@ $prefix: '#{$component-prefix}-form' !default;
 .#{$prefix}-label {
   display: flex;
   font-size: use-text-size('normal');
-  margin-right: use-spacing(4);
-  margin-bottom: 24px;
+  box-sizing: border-box;
+  margin-right: 0;
+  margin-bottom: use-spacing(12);
 
   &__text,
   &__indent {
@@ -51,8 +52,8 @@ $prefix: '#{$component-prefix}-form' !default;
 
   &__text {
     padding-right: use-spacing(6);
-    min-height: 32px;
-    line-height: 32px;
+    min-height: use-height-size('normal');
+    line-height: use-height-size('normal');
 
     .#{$prefix}-label--placement-left & {
       text-align: left;
@@ -64,8 +65,10 @@ $prefix: '#{$component-prefix}-form' !default;
 
     .#{$prefix}-label--placement-top & {
       height: 22px;
-      padding-right: 8px;
-      margin-bottom: 8px;
+      min-height: 22px;
+      line-height: 22px;
+      padding-right: 0;
+      margin-bottom: use-spacing(4);
     }
 
     .#{$prefix}-label--required & {
@@ -80,7 +83,7 @@ $prefix: '#{$component-prefix}-form' !default;
   &--placement-top {
     text-align: left;
     flex-direction: column;
-    margin-bottom: use-spacing(10);
+    margin-bottom: use-spacing(12);
     padding-right: 0;
   }
 
@@ -88,7 +91,7 @@ $prefix: '#{$component-prefix}-form' !default;
     flex: 1;
     position: relative;
     vertical-align: top;
-    min-height: 32px;
+    min-height: use-height-size('normal');
     flex-shrink: 0;
   }
 
