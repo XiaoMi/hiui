@@ -63,5 +63,5 @@ export interface CellProps {
   bordered?: boolean
   label?: React.ReactNode
   content?: React.ReactNode
-  labelWidth?: string
+  labelWidth?: React.ReactText
 }

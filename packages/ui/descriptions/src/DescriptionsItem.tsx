@@ -16,5 +16,5 @@ export interface DescriptionsItemProps extends HiBaseHTMLProps<'div'> {
   /**
    * 	 label宽度
    */
-  labelWidth?: string
+  labelWidth?: React.ReactText
 }

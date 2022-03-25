@@ -48,7 +48,7 @@ export interface RowProps {
   rootContentStyle?: React.CSSProperties
   noBackground?: boolean
   labelPlacement?: 'left' | 'center' | 'right'
-  rootLabelWidth?: string
+  rootLabelWidth?: React.ReactText
 }
 
 interface CellConfig {
