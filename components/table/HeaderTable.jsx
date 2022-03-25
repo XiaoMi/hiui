@@ -67,11 +67,8 @@ const HeaderTable = ({ rightFixedIndex }) => {
     // 判断是否全选
     if (rowSelection) {
       const { selectedRowKeys = [] } = rowSelection
-      const flattedData = flatTreeData(cloneArray(data))
-      const _isAllChecked =
-        flattedData
-          .filter((data) => !disabledData.current.includes(data.key))
-          .every((d) => selectedRowKeys.includes(d.key)) && flattedData.length !== 0
+      const flattedData = flatTreeData(cloneArray(data)).filter((data) => !disabledData.current.includes(data.key))
+      const _isAllChecked = flattedData.every((d) => selectedRowKeys.includes(d.key)) && flattedData.length !== 0
       setIsAllChecked(_isAllChecked)
     }
   }, [data, rowSelection])
