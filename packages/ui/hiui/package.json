@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.0.0-beta.38",
+  "version": "4.0.0-beta.39",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -62,7 +62,7 @@
     "@hi-ui/dropdown": "^4.0.0-beta.11",
     "@hi-ui/empty-state": "^4.0.0-beta.11",
     "@hi-ui/filter": "^4.0.0-beta.5",
-    "@hi-ui/form": "^4.0.0-beta.18",
+    "@hi-ui/form": "^4.0.0-beta.19",
     "@hi-ui/grid": "^4.0.0-beta.9",
     "@hi-ui/input": "^4.0.0-beta.9",
     "@hi-ui/list": "^4.0.0-beta.20",
