@@ -7,6 +7,7 @@ export * from './no-background.stories'
 export * from './col.stories'
 export * from './vertical.stories'
 export * from './vertical-border.stories'
+export * from './label-width.stories'
 
 export default {
   title: 'Data Display/Descriptions (Alpha 暂不推荐业务项目中使用)',

@@ -11,10 +11,15 @@ export const Cell: React.FC<CellProps> = ({
   bordered,
   label,
   content,
+  labelWidth,
 }) => {
   const Component: any = component
 
   if (bordered) {
+    const compareStyle =
+      !isNullish(labelWidth) && !isNullish(label)
+        ? { ...style, width: labelWidth, wordBreak: 'break-word' }
+        : style
     return (
       <Component
         className={cx(
@@ -24,7 +29,7 @@ export const Cell: React.FC<CellProps> = ({
           },
           className
         )}
-        style={style}
+        style={compareStyle}
         colSpan={span}
       >
         {!isNullish(label) && <span>{label}</span>}
@@ -36,8 +41,14 @@ export const Cell: React.FC<CellProps> = ({
   return (
     <Component className={cx(`${itemPrefixCls}-item`, className)} style={style} colSpan={span}>
       <div className={`${itemPrefixCls}-item__container`}>
-        {label && <span className={cx(`${itemPrefixCls}-item__label`)}>{label}</span>}
-        {content && <span className={cx(`${itemPrefixCls}-item__content`)}>{content}</span>}
+        {!isNullish(label) && (
+          <span className={cx(`${itemPrefixCls}-item__label`)} style={{ width: labelWidth }}>
+            {label}
+          </span>
+        )}
+        {!isNullish(content) && (
+          <span className={cx(`${itemPrefixCls}-item__content`)}>{content}</span>
+        )}
       </div>
     </Component>
   )
@@ -52,4 +63,5 @@ export interface CellProps {
   bordered?: boolean
   label?: React.ReactNode
   content?: React.ReactNode
+  labelWidth?: React.ReactText
 }

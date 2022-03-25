@@ -22,6 +22,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       placement = 'horizontal',
       appearance = 'unset',
       labelPlacement = 'left',
+      labelWidth,
       ...rest
     },
     ref
@@ -53,6 +54,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
                 bordered={bordered}
                 noBackground={noBackground}
                 labelPlacement={labelPlacement}
+                rootLabelWidth={labelWidth}
               />
             ))}
           </tbody>
@@ -79,6 +81,10 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
    * 	 label对齐方式
    */
   labelPlacement?: 'left' | 'right'
+  /**
+   * 	 label宽度
+   */
+  labelWidth?: React.ReactText
 }
 
 if (__DEV__) {
