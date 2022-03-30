@@ -7,6 +7,7 @@ $prefix: '#{$component-prefix}-avatar' !default;
   justify-content: center;
   align-items: center;
   vertical-align: middle;
+  text-align: center;
   background-color: use-color-mode('primary');
   color: use-color-static('white');
   font-size: use-text-size('xl');
@@ -25,7 +26,7 @@ $prefix: '#{$component-prefix}-avatar' !default;
     font-size: inherit;
     height: 100%;
 
-    // 避免污染
+    // 确定层级，避免污染
     & > img {
       width: 100%;
       height: 100%;
@@ -45,42 +46,42 @@ $prefix: '#{$component-prefix}-avatar' !default;
     }
 
     &-square {
-      border-radius: var(--hi-v4-global-border-radius, 4px);
+      border-radius: use-border-radius('normal');
     }
   }
 
   &--size {
     &-md {
-      width: var(--hi-v4-avatar-profile-size-md, 40px);
-      height: var(--hi-v4-avatar-profile-size-md, 40px);
-      line-height: var(--hi-v4-avatar-profile-size-md, 40px);
+      width: use-height-size('lg');
+      height: use-height-size('lg');
+      line-height: use-height-size('lg');
     }
 
     &-sm {
-      width: var(--hi-v4-avatar-profile-size-sm, 32px);
-      height: var(--hi-v4-avatar-profile-size-sm, 32px);
-      line-height: var(--hi-v4-avatar-profile-size-md, 32px);
+      width: use-height-size('normal');
+      height: use-height-size('normal');
+      line-height: use-height-size('normal');
       font-size: use-text-size('lg');
     }
 
     &-xs {
-      width: var(--hi-v4-avatar-profile-size-xs, 24px);
-      height: var(--hi-v4-avatar-profile-size-xs, 24px);
-      line-height: var(--hi-v4-avatar-profile-size-md, 24px);
+      width: use-height-size('sm');
+      height: use-height-size('sm');
+      line-height: use-height-size('sm');
       font-size: use-text-size('normal');
     }
 
     &-lg {
-      width: var(--hi-v4-avatar-profile-size-lg, 48px);
-      height: var(--hi-v4-avatar-profile-size-lg, 48px);
-      line-height: var(--hi-v4-avatar-profile-size-md, 48px);
+      width: use-height-size('xl');
+      height: use-height-size('xl');
+      line-height: use-height-size('xl');
       font-size: use-text-size('xxl');
     }
 
     &-xl {
-      width: var(--hi-v4-avatar-profile-size-xl, 64px);
-      height: var(--hi-v4-avatar-profile-size-xl, 64px);
-      line-height: var(--hi-v4-avatar-profile-size-md, 64px);
+      width: use-height-size('xxl');
+      height: use-height-size('xxl');
+      line-height: use-height-size('xxl');
       font-size: use-text-size('xxl');
     }
   }

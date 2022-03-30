@@ -1,29 +1,31 @@
 import React from 'react'
 import Tree from '../src'
 
-function dig(path = '0', level = 3) {
-  const list = []
-  for (let i = 0; i < 10; i += 1) {
-    const id = `${path}-${i}`
-    const treeNode = {
-      title: id,
-      id,
-      children: [] as any[],
-    }
-
-    if (level > 0) {
-      treeNode.children = dig(id, level - 1)
-    }
-
-    list.push(treeNode)
-  }
-  return list
-}
-
-const treeData = dig('0', 4)
-
 export const VirtualList = () => {
-  console.error(treeData)
+  // 模拟 10^4 个数据量
+  const [treeData] = React.useState(() => {
+    function dig(path = '0', level) {
+      const list = []
+      for (let i = 0; i < 10; i += 1) {
+        const id = `${path}-${i}`
+        const treeNode = {
+          title: id,
+          id,
+          children: [] as any[],
+        }
+
+        if (level > 0) {
+          treeNode.children = dig(id, level - 1)
+        }
+
+        list.push(treeNode)
+      }
+      return list
+    }
+
+    const treeData = dig('0', 4)
+    return treeData
+  })
 
   return (
     <>

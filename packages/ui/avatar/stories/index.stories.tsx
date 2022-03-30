@@ -4,6 +4,7 @@ import Avatar from '../src'
 export * from './basic.stories'
 export * from './shape.stories'
 export * from './size.stories'
+export * from './custom-size.stories'
 export * from './custom-color.stories'
 
 export default {

@@ -1,22 +1,7 @@
 import React from 'react'
 import Tree from '../src'
-import { cloneTree } from '@hi-ui/tree-utils'
+import { cloneTree, findNodeById } from '@hi-ui/tree-utils'
 import Alert from '@hi-ui/alert'
-
-// 给定一个结合，根据 id 寻找节点
-const findNode = (itemId, data) => {
-  let node
-  data.forEach((d, index) => {
-    if (d.id === itemId) {
-      node = d
-    } else {
-      if (d.children && findNode(itemId, d.children)) {
-        node = findNode(itemId, d.children)
-      }
-    }
-  })
-  return node
-}
 
 export const Dynamic = () => {
   const [treeData, setTreeData] = React.useState([
@@ -56,9 +41,10 @@ export const Dynamic = () => {
           data[0].parent = treeData
         }
 
+        // Utils Helper: import { cloneTree, findNodeById } from '@hi-ui/utils'
         setTreeData((prev) => {
           const nextData = cloneTree(prev)
-          const loadNode = findNode(node.id, nextData)
+          const loadNode = findNodeById(nextData, node.id)
           loadNode.children = data
           console.log(loadNode, nextData)
           return nextData
