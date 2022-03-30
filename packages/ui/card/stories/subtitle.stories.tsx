@@ -1,3 +1,4 @@
+import Button from '@hi-ui/button'
 import React from 'react'
 import Card from '../src'
 
@@ -6,7 +7,11 @@ export const Subtitle = () => {
     <>
       <h1>Subtitle</h1>
       <div className="card-subtitle__wrap">
-        <Card title="标题" extra={<a>链接</a>} subtitle="这是一句简要的卡片副标题">
+        <Card
+          title="标题"
+          extra={<Button appearance="link">链接</Button>}
+          subtitle="这是一句简要的卡片副标题"
+        >
           <div
             style={{
               height: 174,
@@ -24,7 +29,7 @@ export const Subtitle = () => {
         <Card
           title="标题"
           showHeaderDivider
-          extra={<a>链接</a>}
+          extra={<Button appearance="link">链接</Button>}
           subtitle="这是一句简要的卡片副标题"
         >
           <div

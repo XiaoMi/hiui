@@ -1,12 +1,15 @@
 import React from 'react'
 import Card from '../src'
 
-export const Hoverable = () => {
+export const NoBordered = () => {
   return (
     <>
-      <h1>Hoverable</h1>
-      <div className="card-hoverable__wrap">
-        <Card hoverable>
+      <h1>无边框</h1>
+      <div
+        className="card-no-header__wrap"
+        style={{ padding: 32, backgroundColor: 'rgb(243, 244, 247)' }}
+      >
+        <Card bordered={false} title="我是标题">
           <div
             style={{
               height: 174,

@@ -33,7 +33,7 @@ $prefix: '#{$component-prefix}-card' !default;
           font-size: use-text-size('sm');
         }
 
-        &__subtitle {
+        &__subhead {
           font-size: use-text-size('sm');
         }
       }
@@ -68,7 +68,7 @@ $prefix: '#{$component-prefix}-card' !default;
     justify-content: space-between;
   }
 
-  &__subtitle {
+  &__subhead {
     margin-top: use-spacing(2);
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');

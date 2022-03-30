@@ -1,3 +1,4 @@
+import Button from '@hi-ui/button'
 import React from 'react'
 import Card from '../src'
 
@@ -7,7 +8,7 @@ export const Size = () => {
       <h1>Size</h1>
       <div className="card-size__wrap">
         <h2>常规</h2>
-        <Card title="标题" size="md" extra={<a>链接</a>}>
+        <Card title="标题" size="md" extra={<Button appearance="link">链接</Button>}>
           <div
             style={{
               height: 174,
@@ -22,7 +23,7 @@ export const Size = () => {
         </Card>
         <br />
         <h2>紧凑</h2>
-        <Card title="标题" size="sm" extra={<a>链接</a>}>
+        <Card title="标题" size="sm" extra={<Button appearance="link">链接</Button>}>
           <div
             style={{
               height: 174,

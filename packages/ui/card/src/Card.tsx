@@ -60,11 +60,11 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
                 {extra ? <div className={`${prefixCls}__extra`}>{extra}</div> : null}
               </div>
             ) : null}
-            {subtitle ? <div className={`${prefixCls}__subtitle`}>{subtitle}</div> : null}
+            {subtitle ? <div className={`${prefixCls}__subhead`}>{subtitle}</div> : null}
           </div>
         ) : null}
         {/* 没有 children 且非 loading 态 ，则不渲染 body 内容 */}
-        {!isNullish(children) || loading ? (
+        {!isNullish(children) || loading === true ? (
           <div
             className={`${prefixCls}__body`}
             style={{
@@ -74,9 +74,7 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
           >
             {children}
             {/* 需要用到这个功能才开启，即传入 boolean */}
-            {typeof loading === 'boolean' ? (
-              <Loading className={`${prefixCls}__loading`} visible={loading} />
-            ) : null}
+            {loading ? <Loading className={`${prefixCls}__loading`} visible={loading} /> : null}
           </div>
         ) : null}
       </div>

@@ -1,12 +1,13 @@
 import React from 'react'
 import Card from '../src'
+import Button from '@hi-ui/button'
 
 export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
       <div className="card-basic__wrap">
-        <Card title="标题" extra={<a>链接</a>}>
+        <Card title="标题" extra={<Button appearance="link">链接</Button>}>
           <div
             style={{
               height: 174,
@@ -21,7 +22,7 @@ export const Basic = () => {
         </Card>
         <br />
         <br />
-        <Card title="标题" showHeaderDivider extra={<a>链接</a>}>
+        <Card title="标题" showHeaderDivider extra={<Button appearance="link">链接</Button>}>
           <div
             style={{
               height: 174,

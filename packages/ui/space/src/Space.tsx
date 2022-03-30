@@ -42,7 +42,7 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
         role={role}
         className={cls}
         style={{
-          flex: inline ? 'inline-flex' : 'flex',
+          display: inline ? 'inline-flex' : 'flex',
           flexWrap: wrap ? 'wrap' : 'nowrap',
           flexDirection: direction,
           gap: formatGap,

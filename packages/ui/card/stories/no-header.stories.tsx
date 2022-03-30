@@ -6,7 +6,7 @@ export const NoHeader = () => {
     <>
       <h1>NoHeader</h1>
       <div className="card-no-header__wrap">
-        <Card style={{ width: 600 }}>
+        <Card>
           <div
             style={{
               height: 174,
