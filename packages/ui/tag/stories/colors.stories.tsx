@@ -1,10 +1,10 @@
 import React from 'react'
 import Tag from '../src'
 
-export const Basic = () => {
+export const Colors = () => {
   return (
     <>
-      <h1>Tag Basic</h1>
+      <h1>Tag colors</h1>
       <div style={{ display: 'flex', gap: 8 }}>
         <Tag type="warning">待审批</Tag>
         <Tag type="primary">审批中</Tag>

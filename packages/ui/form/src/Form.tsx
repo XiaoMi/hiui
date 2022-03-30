@@ -116,7 +116,7 @@ const formExtends = (model: FormRuleModel) => {
     // @ts-ignore
     FORM_REGISTER_TABLE[model.name] = model
   } else {
-    invariant(true, 'The name should be unique string and not empty.')
+    invariant(false, 'The name should be unique string and not empty.')
   }
 }
 

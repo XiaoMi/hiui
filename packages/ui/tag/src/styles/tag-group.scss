@@ -6,15 +6,17 @@ $tag-group-prefix: '#{$component-prefix}-tag-group' !default;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  margin-top: calc(-1 * #{use-spacing(4)});
 
   &__item {
-    margin-bottom: 8px;
+    margin-top: use-spacing(4);
+    margin-inline-end: use-spacing(4);
   }
 
   &__add-new-button {
-    height: 24px;
+    height: use-height-size('normal');
     display: flex;
     align-items: center;
-    margin-bottom: 8px;
+    margin-top: use-spacing(4);
   }
 }

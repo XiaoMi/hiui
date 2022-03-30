@@ -90,7 +90,6 @@ $shape-square: '#{$prefix}--shape-square' !default;
 $shape-round: '#{$prefix}--shape-round' !default;
 
 .#{$prefix} {
-  margin-inline-end: 8px;
   display: inline-flex;
   user-select: none;
   transition: opacity 0.3s;
@@ -213,7 +212,7 @@ $shape-round: '#{$prefix}--shape-round' !default;
     align-items: center;
   }
 
-  &--appearance-line {
+  &--appearance-line { /* stylelint-disable-line */
     .#{$prefix} {
       &__content-wrapper {
         padding: 0 7px;

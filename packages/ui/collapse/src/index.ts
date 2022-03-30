@@ -1,16 +1,11 @@
 import './styles/index.scss'
 
 import { Collapse as _Collapse } from './Collapse'
-import { CollapsePanel } from './CollapsePanel'
+import { CollapsePanel as Panel } from './CollapsePanel'
 
-const Collapse: typeof _Collapse & {
-  Panel: typeof CollapsePanel
-} = _Collapse as any
+const Collapse = Object.assign(_Collapse, { Panel })
 
-Collapse.Panel = CollapsePanel
-
-export { Collapse }
 export default Collapse
 
-export type { CollapseProps } from './Collapse'
-export type { CollapsePanelProps } from './CollapsePanel'
+export * from './Collapse'
+export * from './CollapsePanel'

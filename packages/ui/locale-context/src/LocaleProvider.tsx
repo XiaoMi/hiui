@@ -18,7 +18,7 @@ export const LocaleProvider: React.FC<LocaleProviderProps> = ({
 
     if (!languageData) {
       invariant(
-        true,
+        false,
         `Will use ${DEFAULT_LOCALE} as default locale because of the ${locale} language package is missing.`
       )
 

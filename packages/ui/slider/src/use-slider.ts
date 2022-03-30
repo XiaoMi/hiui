@@ -24,7 +24,7 @@ export const useSlider = ({
    */
   const [min, max, rangeLength] = useMemo(() => {
     if (maxProp < minProp) {
-      invariant(true, 'The max must large than min.')
+      invariant(false, 'The max must large than min.')
 
       return [maxProp, minProp, minProp - maxProp]
     }

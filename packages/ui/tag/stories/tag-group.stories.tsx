@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { Tag, TagGroupNode } from '../src'
+import Tag, { TagGroupDataItem } from '../src'
 
 export const TagGroupStory = () => {
-  const [baseData, setBaseData] = useState<TagGroupNode[]>([
+  const [baseData, setBaseData] = useState<TagGroupDataItem[]>([
     {
       children: 'Test',
-      tagId: '0',
+      id: '0',
     },
   ])
 
@@ -35,7 +35,7 @@ export const TagGroupStory = () => {
               const result = [...pre]
               result.push({
                 children: e,
-                tagId: Math.random(),
+                id: Math.random(),
               })
               return result
             })

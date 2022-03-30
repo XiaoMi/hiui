@@ -59,7 +59,7 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
 
       // image和type至少有一个是正确的
       if (isNullish(image) && isUndefined(IconMap[type])) {
-        invariant(true, 'The image or type ensure that at least one is correct.')
+        invariant(false, 'The image or type ensure that at least one is correct.')
         return
       }
 

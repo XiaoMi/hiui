@@ -3,7 +3,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useFormContext } from './context'
 import { setNested, getNested } from '@hi-ui/object-utils'
 import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
-import { FormState } from './types'
+import { FormListChildrenAction, FormState } from './types'
 
 const fieldListSymbol = Symbol('field-list')
 
@@ -141,7 +141,7 @@ export interface FormListProps {
   /**
    * 表单控件
    */
-  children?: (fields: any[], action: any) => React.ReactElement | null
+  children?: (fields: any[], action: FormListChildrenAction) => React.ReactElement | null
   /**
    * 列表名称
    */

@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo, MouseEvent, useState, useEffect, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { CloseOutlined } from '@hi-ui/icons'
-import { __DEV__ } from '@hi-ui/env'
+import { __DEV__, invariant } from '@hi-ui/env'
 import { Tooltip } from '@hi-ui/tooltip'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 
@@ -74,9 +74,10 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
         }
       },
       // 此处请不要添加任何作为依赖，autoEditable 只会在组件创建时起作用
-      // @ts-ignore
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     )
+
     const rootClassName = useMemo(
       () =>
         cx(
@@ -115,7 +116,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
           ? {
               component: Tooltip,
               componentProps: {
-                title: render(children),
+                title: render(children as React.ReactText),
                 trigger: 'hover',
               },
             }
@@ -126,12 +127,21 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       [isShowPopover, children, isInEdit, render]
     )
 
+    if (__DEV__) {
+      if (editable) {
+        invariant(
+          typeof children === 'string',
+          'The children prop should be `string` when editable enabled in Tag component.'
+        )
+      }
+    }
+
     return (
       <WrapperComponent {...(componentProps as any)}>
         <div ref={ref} role={role} className={rootClassName} style={rootStyle} onClick={onClick}>
           <div className={`${prefixCls}__content-wrapper`}>
             <div className={`${prefixCls}__content`} ref={contentRef}>
-              {isInEdit ? editValueCache : render(children)}
+              {isInEdit ? editValueCache : render(children as React.ReactText)}
             </div>
             {editable && isInEdit && (
               <input
@@ -167,22 +177,6 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
 )
 
 export interface TagProps extends HiBaseHTMLProps<'div'> {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
   /**
    * 类型状态
    * @default 'default'
@@ -227,7 +221,7 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    */
   closeable?: boolean
   /**
-   * 是否可编辑
+   * 是否可编辑，若启用需要确保 children 传入类型为 `string`
    * @default false
    */
   editable?: boolean
@@ -250,8 +244,6 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    * @default 0 代表不限制宽度
    */
   maxWidth?: number
-
-  children?: React.ReactText
 }
 
 if (__DEV__) {

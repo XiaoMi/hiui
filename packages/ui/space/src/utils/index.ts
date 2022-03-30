@@ -29,6 +29,6 @@ export const handleTransformGap = (gap: SpaceSizeEnum) => {
     return gap.map((gapItem) => `${gapItem}px`).join(' ')
   }
 
-  invariant(true, 'The gap prop is not valid value in Space')
+  invariant(false, 'The gap prop is not valid value in Space')
   return gap
 }

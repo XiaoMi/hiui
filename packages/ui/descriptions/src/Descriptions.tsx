@@ -106,7 +106,7 @@ function computeRows(children: React.ReactNode, column: number) {
     let span: number = node?.props?.span ?? 1
 
     if (span < 1) {
-      invariant(true, 'The span should be a positive integer in Descriptions component.')
+      invariant(false, 'The span should be a positive integer in Descriptions component.')
       span = 1
     }
 

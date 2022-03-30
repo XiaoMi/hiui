@@ -1,14 +1,11 @@
 import './styles/index.scss'
 
-import { TagGroup } from './TagGroup'
+import { TagGroup as Group } from './TagGroup'
 import { Tag as _Tag } from './Tag'
 
-const Tag: typeof _Tag & {
-  Group: typeof TagGroup
-} = _Tag as any
-Tag.Group = TagGroup
+const Tag = Object.assign(_Tag, { Group })
 
-export { Tag }
-export { Tag as default } from './Tag'
-export type { TagGroupNode, TagGroupProps } from './TagGroup'
-export type { TagProps } from './Tag'
+export default Tag
+
+export * from './Tag'
+export * from './TagGroup'

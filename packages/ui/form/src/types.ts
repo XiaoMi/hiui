@@ -140,3 +140,28 @@ export type FormFieldPath = (string | number)[] | string | number
 export type FormErrorMessage = string
 
 export type FormRules = Record<string, FormRuleModel[]>
+
+export type FormFieldRenderFunc = (props: Record<string, any>) => React.ReactElement
+
+export interface FormListChildrenAction {
+  /**
+   * 在尾部追加一个 FormItems
+   */
+  add: (value: any) => void
+  /**
+   * 移除指定下标的 FormItems
+   */
+  remove: (index: number) => void
+  /**
+   * 交换指定下标的 FormItems
+   */
+  swap: (aIndex: number, bIndex: number) => void
+  /**
+   * 在指定下标前插入 FormItems
+   */
+  insertBefore: (index: number, value: any) => void
+  /**
+   * 移动指定下标的 FormItems 到另一个下标位置
+   */
+  move: (fromIndex: number, toIndex: number) => void
+}

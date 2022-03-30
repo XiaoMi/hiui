@@ -54,7 +54,7 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
   return getFieldProps(props)
 }
 
-export interface UseFormFieldProps<T = Record<string, any>> {
+export interface UseFormFieldProps<T = any> {
   /**
    * 字段名，支持数组
    */
