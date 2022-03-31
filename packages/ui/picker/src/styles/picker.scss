@@ -27,6 +27,12 @@ $prefix: '#{$component-prefix}-picker' !default;
       &__suffix {
         color: use-color-mode('primary');
       }
+
+      &.invalid {
+        .#{$component-prefix}-mock-input__suffix {
+          color: use-color-mode('error');
+        }
+      }
     }
 
     .#{$component-prefix}-tag-input-mock {
@@ -34,6 +40,12 @@ $prefix: '#{$component-prefix}-picker' !default;
 
       &__suffix {
         color: use-color-mode('primary');
+      }
+
+      &.invalid {
+        .#{$component-prefix}-tag-input-mock__suffix {
+          color: use-color-mode('error');
+        }
       }
     }
   }
@@ -73,9 +85,11 @@ $prefix: '#{$component-prefix}-picker' !default;
   &__search {
     padding: use-spacing(4) use-spacing(4) 0;
 
-    .#{$component-prefix}-input__prefix {
-      padding-left: calc(#{use-spacing(4)} - 1px);
-      color: use-color('gray', 700);
+    .#{$component-prefix}-input {
+      &__prefix {
+        padding-left: calc(#{use-spacing(4)} - 1px);
+        color: use-color('gray', 700);
+      }
     }
   }
 

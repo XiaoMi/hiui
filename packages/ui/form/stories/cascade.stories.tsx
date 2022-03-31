@@ -79,9 +79,9 @@ export const Cascade = () => {
           <FormItem
             label="Checkbox"
             field="checkbox"
+            validateTrigger="onChange"
             rules={[
               {
-                trigger: 'onChange',
                 required: true,
               },
             ]}

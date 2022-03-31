@@ -60,9 +60,7 @@ export interface FormFieldCollection<T> {
 //   transform?: (v: T) => any
 // }
 
-export interface FormRuleModel extends RuleItem {
-  trigger?: string | string[]
-}
+export interface FormRuleModel extends RuleItem, Record<string, any> {}
 
 export type FormRuleType =
   | 'string'

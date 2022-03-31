@@ -228,8 +228,19 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         const renderSelectionTitleCell = () => {
           const { node } = renderTitleCell()
 
-          if (rowSelection.checkAllOptions && rowSelection.checkAllOptions.render) {
-            return rowSelection.checkAllOptions.render(node)
+          if (rowSelection.checkAllOptions) {
+            if (rowSelection.checkAllOptions.render) {
+              return rowSelection.checkAllOptions.render(node)
+            }
+
+            if (rowSelection.checkAllOptions.filterIcon) {
+              return (
+                <>
+                  {node}
+                  {rowSelection.checkAllOptions.filterIcon}
+                </>
+              )
+            }
           }
 
           return node

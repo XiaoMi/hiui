@@ -69,20 +69,17 @@ export const Validate = () => {
       {
         required: true,
         message: '请选择区域',
-        trigger: 'onChange',
       },
     ],
     store: [
       {
         required: true,
         message: '请选择门店',
-        trigger: 'onChange',
       },
     ],
     count: [
       {
         required: true,
-        trigger: 'onChange',
         validator: (rule, value, cb) => {
           const count = +value
           if (isNaN(count)) {
@@ -122,11 +119,11 @@ export const Validate = () => {
             label="名称"
             field={['user', 'name']}
             valueType="string"
+            validateTrigger={['onBlur', 'onChange']}
             rules={[
               {
                 required: true,
                 message: '请输入名称',
-                trigger: 'onBlur,onChange',
               },
             ]}
           >

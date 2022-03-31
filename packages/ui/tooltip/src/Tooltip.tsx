@@ -106,7 +106,6 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
             </span>
           )
         } else {
-          // TODO: invariant(true, 'The children should be an React.Element.')
           if (__DEV__) {
             console.warn('WARNING (Tooltip): The children should be an React.Element.')
           }

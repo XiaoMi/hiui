@@ -59,9 +59,9 @@ export const ValidateField = () => {
             label="手机号"
             field="phone"
             valueType="number"
+            validateTrigger="onChange"
             rules={[
               {
-                trigger: 'onChange',
                 validator: (rule, value, callback) => {
                   const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
 
@@ -84,9 +84,9 @@ export const ValidateField = () => {
                 label="验证码"
                 field="code"
                 valueType="string"
+                validateTrigger="onChange"
                 rules={[
                   {
-                    trigger: 'onChange',
                     validator: (rule, value, callback) => {
                       const telReg = /^[0-9]{6}$/
                       if (!value) {
@@ -125,9 +125,9 @@ export const ValidateField = () => {
             label="密码"
             field="password"
             valueType="string"
+            validateTrigger="onChange"
             rules={[
               {
-                trigger: 'onChange',
                 validator: (rule, value, callback) => {
                   const telReg = /^(?![^a-zA-Z]+$)(?!\D+$).{8,16}$/
                   if (!value) {
@@ -148,9 +148,9 @@ export const ValidateField = () => {
             label="确认密码"
             field="passwordConfirm"
             valueType="string"
+            validateTrigger="onChange"
             rules={[
               {
-                trigger: 'onChange',
                 validator: (rule, value, callback) => {
                   console.log(value, formData.password)
 
