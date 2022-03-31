@@ -25,6 +25,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       prefixCls = UPLOAD_PREFIX,
       role = 'upload',
       className,
+      children,
       maxCount,
       disabled,
       multiple,
@@ -42,6 +43,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       photoSize = 'default',
+      ...rest
     },
     ref
   ) => {
@@ -133,7 +135,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     )
 
     return (
-      <div ref={ref} role={role} className={cls}>
+      <div ref={ref} role={role} className={cls} {...rest}>
         <ul className={`${prefixCls}__list`}>
           {_fileList.map((file, index) => {
             if (file.uploadState === 'loading') {
@@ -222,20 +224,24 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
               accept={accept}
               style={{ display: 'inline-block' }}
             >
-              <li
-                className={cx(
-                  `${prefixCls}__item`,
-                  `${prefixCls}__item--upload`,
-                  `${prefixCls}__item--${photoSize}`
-                )}
-                tabIndex={0}
-                onKeyDown={handleUploadKeydown}
-                ref={uploadRef}
-              >
-                <label style={{ display: 'block', cursor: 'pointer' }}>
-                  <PlusOutlined />
-                </label>
-              </li>
+              {children === undefined ? (
+                <li
+                  className={cx(
+                    `${prefixCls}__item`,
+                    `${prefixCls}__item--upload`,
+                    `${prefixCls}__item--${photoSize}`
+                  )}
+                  tabIndex={0}
+                  onKeyDown={handleUploadKeydown}
+                  ref={uploadRef}
+                >
+                  <label style={{ display: 'block', cursor: 'pointer' }}>
+                    <PlusOutlined />
+                  </label>
+                </li>
+              ) : (
+                children
+              )}
             </FileSelect>
           )}
         </ul>

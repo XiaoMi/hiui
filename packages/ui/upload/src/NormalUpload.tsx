@@ -20,6 +20,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       prefixCls = UPLOAD_PREFIX,
       role = 'upload',
       className,
+      children,
       maxCount,
       content,
       disabled,
@@ -41,6 +42,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onChange,
       beforeUpload,
       customUpload,
+      ...rest
     },
     ref
   ) => {
@@ -66,7 +68,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     })
 
     return (
-      <div ref={ref} role={role} className={cls}>
+      <div ref={ref} role={role} className={cls} {...rest}>
         <FileSelect
           style={{ display: 'inline-block' }}
           onSelect={uploadFiles}
@@ -74,14 +76,18 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
           disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
           accept={accept}
         >
-          <Button
-            type="secondary"
-            disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
-            loading={loading}
-            icon={<UploadOutlined />}
-          >
-            {content || buttonText}
-          </Button>
+          {children === undefined ? (
+            <Button
+              type="secondary"
+              disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
+              loading={loading}
+              icon={<UploadOutlined />}
+            >
+              {content || buttonText}
+            </Button>
+          ) : (
+            children
+          )}
         </FileSelect>
         {tips && <div className={`${prefixCls}__tips`}>{tips}</div>}
         {showUploadList && _fileList.length > 0 && (

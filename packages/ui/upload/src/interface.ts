@@ -1,3 +1,4 @@
+import { HiBaseHTMLProps } from '@hi-ui/core'
 import React from 'react'
 
 export interface UploadFileItem extends Partial<File> {
@@ -30,18 +31,7 @@ export interface UploadRequestOption {
   timeout?: number
 }
 
-export interface UploadProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
+export interface UploadProps extends HiBaseHTMLProps<'div'> {
   type?: 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
   accept?: string
   content?: React.ReactNode

@@ -28,6 +28,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       prefixCls = UPLOAD_PREFIX,
       role = 'upload',
       className,
+      children,
       maxCount,
       disabled,
       multiple,
@@ -46,6 +47,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       customUpload,
       photoSize = 'small',
       avatarOptions = {},
+      ...rest
     },
     ref
   ) => {
@@ -175,7 +177,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     )
     const file = _fileList[0]
     return (
-      <div ref={ref} role={role} className={cls}>
+      <div ref={ref} role={role} className={cls} {...rest}>
         <ul className={`${prefixCls}__list`}>
           {!!file &&
             (file.uploadState === 'loading' ? (
@@ -253,14 +255,18 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
               accept={accept}
               style={{ display: 'inline-block' }}
             >
-              <li
-                className={`${prefixCls}__item ${prefixCls}__item--upload`}
-                ref={uploadRef}
-                tabIndex={0}
-                onKeyDown={handleUploadKeydown}
-              >
-                <PlusOutlined />
-              </li>
+              {children === undefined ? (
+                <li
+                  className={`${prefixCls}__item ${prefixCls}__item--upload`}
+                  ref={uploadRef}
+                  tabIndex={0}
+                  onKeyDown={handleUploadKeydown}
+                >
+                  <PlusOutlined />
+                </li>
+              ) : (
+                children
+              )}
             </FileSelect>
           )}
         </ul>

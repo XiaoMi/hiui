@@ -14,7 +14,7 @@ const UPLOAD_PREFIX = getPrefixCls('upload')
  * TODO: What is Upload
  */
 export const Upload = forwardRef<HTMLDivElement | null, UploadProps>(
-  ({ prefixCls = UPLOAD_PREFIX, role = 'upload', type, className, children, ...rest }, ref) => {
+  ({ prefixCls = UPLOAD_PREFIX, role = 'upload', type, className, ...rest }, ref) => {
     const cls = cx(prefixCls, className)
     if (type === 'drag') {
       return <DragUpload ref={ref} className={cls} {...rest} />

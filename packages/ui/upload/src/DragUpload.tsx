@@ -19,6 +19,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       prefixCls = UPLOAD_PREFIX,
       role = 'upload',
       className,
+      children,
       maxCount,
       content,
       disabled = false,
@@ -40,6 +41,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onChange,
       beforeUpload,
       customUpload,
+      ...rest
     },
     ref
   ) => {
@@ -109,32 +111,38 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     }, [])
 
     return (
-      <div ref={ref} role={role} className={cls}>
+      <div ref={ref} role={role} className={cls} {...rest}>
         <FileSelect
           onSelect={uploadFiles}
           multiple={multiple}
           disabled={nonInteractive}
           accept={accept}
         >
-          <div
-            className={dragCls}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-            tabIndex={0}
-            ref={dragRef}
-            onKeyDown={handleContainerKeyDown}
-          >
-            <div className={'drag-upload__desc'}>
-              <span className={'drag-upload__title'}>
-                <CloudUploadOutlined />
-                {content || dragText}
-              </span>
-              {tips && (
-                <span className={`${prefixCls}__tips ${prefixCls}__tips--single-line`}>{tips}</span>
-              )}
+          {children === undefined ? (
+            <div
+              className={dragCls}
+              onDragOver={onDragOver}
+              onDragLeave={onDragLeave}
+              onDrop={onDrop}
+              tabIndex={0}
+              ref={dragRef}
+              onKeyDown={handleContainerKeyDown}
+            >
+              <div className={'drag-upload__desc'}>
+                <span className={'drag-upload__title'}>
+                  <CloudUploadOutlined />
+                  {content || dragText}
+                </span>
+                {tips && (
+                  <span className={`${prefixCls}__tips ${prefixCls}__tips--single-line`}>
+                    {tips}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
+          ) : (
+            children
+          )}
         </FileSelect>
         {showUploadList && _fileList.length > 0 && (
           <FileList

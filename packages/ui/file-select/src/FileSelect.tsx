@@ -39,7 +39,7 @@ export const FileSelect = forwardRef<HTMLDivElement | null, FileSelectProps>(
           accept={accept}
           style={{ display: 'none' }}
           onChange={(e) => {
-            onSelect(e.target.files)
+            onSelect?.(e.target.files)
             if (inputRef.current) {
               inputRef.current.value = ''
             }
@@ -84,9 +84,8 @@ export interface FileSelectProps {
   /**
    * 选择上传的事件
    */
-  onSelect: (files: HTMLInputElement['files']) => void
-
-  children: React.ReactNode
+  onSelect?: (files: HTMLInputElement['files']) => void
+  children?: React.ReactNode
 }
 
 if (__DEV__) {

@@ -6,7 +6,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="file-select-basic__wrap">
-        <FileSelect></FileSelect>
+        <FileSelect onSelect={console.log}>Upload</FileSelect>
       </div>
     </>
   )
