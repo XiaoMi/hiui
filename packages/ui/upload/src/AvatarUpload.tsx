@@ -181,7 +181,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             (file.uploadState === 'loading' ? (
               <li className={`${prefixCls}__item`}>
                 <img src={file.url} className={`${prefixCls}__thumb`} />
-                <div className={`${prefixCls}__precent`}>
+                <div className={`${prefixCls}__percent`}>
                   <p className={`${prefixCls}__loading-text`}>
                     {file.progressNumber
                       ? file.progressNumber < 100
@@ -228,12 +228,12 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                     </div>
                   </div>
                 ) : (
-                  <div className={`${prefixCls}__precent`}>
+                  <div className={`${prefixCls}__percent`}>
                     <span className={`${prefixCls}__error-btn`}>
                       <ExclamationCircleOutlined />
                     </span>
                     <span
-                      className={cx(`${prefixCls}__action-icon`)}
+                      className={cx(`${prefixCls}__delete-btn`)}
                       onClick={(e) => {
                         e.stopPropagation()
                         deleteFile(file, 0)

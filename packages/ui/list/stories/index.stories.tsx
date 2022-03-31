@@ -6,6 +6,7 @@ export * from './pagination.stories'
 export * from './no-split.stories'
 export * from './action.stories'
 export * from './empty.stories'
+export * from './no-border.stories'
 
 export default {
   title: 'Data Display/List',

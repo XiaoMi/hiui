@@ -1,4 +1,4 @@
-import React, { forwardRef, Children, ReactNode, Fragment } from 'react'
+import React, { forwardRef, Children, Fragment } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
@@ -89,7 +89,7 @@ export interface SpaceProps extends HiBaseHTMLProps<'div'> {
   /**
    * space-item 之间插入 dom 结构
    */
-  split?: ReactNode
+  split?: React.ReactNode
   /**
    * 是否换行
    * 默认: false

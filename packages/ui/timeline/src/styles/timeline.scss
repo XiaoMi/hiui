@@ -4,11 +4,10 @@ $prefix: '#{$component-prefix}-timeline' !default;
 
 .#{$prefix} {
   position: relative;
-  padding: use-spacing(4);
 
-  ul {
-    margin: 0 !important;
-    padding: 0 !important;
+  & > ul {
+    margin: 0;
+    padding: 0;
   }
 
   &--cross {

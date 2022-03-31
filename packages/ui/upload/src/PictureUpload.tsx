@@ -144,7 +144,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                   tabIndex={0}
                 >
                   <img src={file.url} className={`${prefixCls}__thumb`} />
-                  <div className={`${prefixCls}__precent ${prefixCls}__precent--${photoSize}`}>
+                  <div className={`${prefixCls}__percent ${prefixCls}__percent--${photoSize}`}>
                     <p className={`${prefixCls}__loading-text`}>
                       {file.progressNumber
                         ? file.progressNumber < 100
@@ -195,7 +195,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                       </div>
                     </div>
                   ) : (
-                    <div className={`${prefixCls}__precent`}>
+                    <div className={`${prefixCls}__percent`}>
                       <span className={`${prefixCls}__error-btn`}>
                         <ExclamationCircleOutlined />
                       </span>

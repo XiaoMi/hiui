@@ -3,7 +3,9 @@
 $prefix: '#{$component-prefix}-list' !default;
 
 .#{$prefix} {
-  padding: 0 use-spacing(10);
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
   color: use-color('gray', 700);
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
@@ -21,6 +23,7 @@ $prefix: '#{$component-prefix}-list' !default;
   &--bordered {
     border: 1px solid use-color('gray', 200);
     border-radius: use-border-radius('normal');
+    padding: 0 use-spacing(10);
   }
 
   &-item {

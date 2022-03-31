@@ -249,6 +249,8 @@ $prefix: '#{$component-prefix}-upload' !default;
 
     .#{$prefix}__list {
       overflow: visible;
+      // 换行时保持垂直元素间间距，同时不影响 upload 外部布局
+      margin-top: calc(-1 * #{use-spacing(4)});
     }
 
     .#{$prefix}__item {
@@ -258,7 +260,9 @@ $prefix: '#{$component-prefix}-upload' !default;
       position: relative;
       text-align: center;
       padding: 0;
-      margin: 6px;
+      margin: 0;
+      margin-top: use-spacing(4);
+      margin-inline-end: use-spacing(4);
       cursor: pointer;
       vertical-align: middle;
       background: use-color('gray', 50);
@@ -289,6 +293,7 @@ $prefix: '#{$component-prefix}-upload' !default;
         border: 1px dashed use-color('gray', 300);
         transition: border-color 0.3s;
         line-height: 88px;
+        margin-inline-end: 0;
 
         &:hover {
           border-color: use-color-mode('primary');
@@ -304,7 +309,7 @@ $prefix: '#{$component-prefix}-upload' !default;
           font-size: use-text-size('lg');
 
           & + .#{$prefix}__action-btn {
-            margin-inline-start: use-spacing(4);
+            margin-inline-start: use-spacing(6);
           }
         }
       }
@@ -404,7 +409,7 @@ $prefix: '#{$component-prefix}-upload' !default;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.5);
+    background-color: rgba(#1f2733, 0.7);
     color: use-color-static('white');
     font-size: use-text-size('normal');
     border-radius: use-border-radius('normal');
@@ -417,7 +422,7 @@ $prefix: '#{$component-prefix}-upload' !default;
     transition-timing-function: use-motion-bezier('normal');
   }
 
-  &__precent {
+  &__percent {
     position: absolute;
     left: 0;
     right: 0;
