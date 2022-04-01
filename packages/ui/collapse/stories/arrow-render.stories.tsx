@@ -1,13 +1,26 @@
 import React from 'react'
 import Collapse from '../src'
-import { FileFilled } from '@hi-ui/icons'
+import { FileFilled, FolderFilled, FolderOpenFilled } from '@hi-ui/icons'
 
-export const Basic = () => {
+export const ArrowRender = () => {
+  const [activeId, setActiveId] = React.useState<React.ReactText[]>(['2'])
+
   return (
     <>
-      <h1>Collapse</h1>
-      <div className="collapse-basic__wrap">
-        <Collapse defaultActiveId={['2']} arrowPlacement="left">
+      <h1>ArrowRender</h1>
+      <div className="collapse-arrow-render__wrap">
+        <Collapse
+          arrowPlacement="left"
+          activeId={activeId}
+          onChange={setActiveId}
+          arrowRender={(expanded) => {
+            return (
+              <span style={{ marginRight: 8, color: '#fab007', fontSize: 16 }}>
+                {expanded ? <FolderFilled /> : <FolderOpenFilled />}
+              </span>
+            )
+          }}
+        >
           <Collapse.Panel title="小米手机" id="1" disabled>
             我是小米手机的内容
           </Collapse.Panel>

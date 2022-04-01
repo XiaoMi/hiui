@@ -1,13 +1,14 @@
 import React, { forwardRef, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { CollapseProvider, ICollapseContext } from './context'
+import { CollapseProvider, CollapseContext } from './context'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'collapse'
 const _prefix = getPrefixCls(_role)
 
-const EmptyArray = [] as string[]
+const NOOP_ARRAY = [] as string[]
 
 /**
  * 折叠面板
@@ -20,23 +21,22 @@ export const Collapse = forwardRef<HTMLDivElement | null, CollapseProps>(
       className,
       children,
       style,
-      defaultActiveId = EmptyArray,
+      defaultActiveId = NOOP_ARRAY,
       activeId,
-      accordion,
+      accordion = false,
       onChange,
       arrowPlacement = 'right',
       showArrow = true,
+      bordered = true,
+      arrowRender,
+      ...rest
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, bordered && `${prefixCls}--bordered`, className)
 
     // 兼容受控与非受控
-    const [useActiveIds, tryChange] = useUncontrolledState<string[]>(
-      defaultActiveId,
-      activeId,
-      onChange
-    )
+    const [useActiveIds, tryChange] = useUncontrolledState(defaultActiveId, activeId, onChange)
 
     const onClickPanel = useCallback(
       (key: string) => {
@@ -60,19 +60,22 @@ export const Collapse = forwardRef<HTMLDivElement | null, CollapseProps>(
       [accordion, tryChange, useActiveIds]
     )
 
-    const provideData = useMemo<ICollapseContext>(
-      () => ({
-        judgeIsActive: (id) => (accordion ? useActiveIds[0] === id : useActiveIds.includes(id)),
-        onClickPanel: onClickPanel,
-        arrowPlacement,
-        showArrow,
-      }),
-      [accordion, onClickPanel, useActiveIds, showArrow, arrowPlacement]
+    const provideData = useMemo(
+      () =>
+        ({
+          judgeIsActive: (id: string) =>
+            accordion ? useActiveIds[0] === id : useActiveIds.includes(id),
+          onClickPanel: onClickPanel,
+          arrowPlacement,
+          showArrow,
+          arrowRender,
+        } as CollapseContext),
+      [accordion, onClickPanel, useActiveIds, showArrow, arrowPlacement, arrowRender]
     )
 
     return (
       <CollapseProvider value={provideData}>
-        <div ref={ref} role={role} className={cls} style={style}>
+        <div ref={ref} role={role} className={cls} style={style} {...rest}>
           {children}
         </div>
       </CollapseProvider>
@@ -80,41 +83,25 @@ export const Collapse = forwardRef<HTMLDivElement | null, CollapseProps>(
   }
 )
 
-export interface CollapseProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export type CollapseArrowPlacementEnum = 'left' | 'right'
 
+export interface CollapseProps extends HiBaseHTMLProps<'div'> {
   /**
    * 开启手风琴模式
-   * @default false
    */
   accordion?: boolean
   /**
    * 默认展开的面板 id
    */
-  defaultActiveId?: string[]
+  defaultActiveId?: React.ReactText[]
   /**
    * 展开的面板 id
    */
-  activeId?: string[]
+  activeId?: React.ReactText[]
   /**
    * 箭头所在位置
    */
-  arrowPlacement?: 'left' | 'right'
+  arrowPlacement?: CollapseArrowPlacementEnum
   /**
    * 是否显示展开箭头
    */
@@ -122,11 +109,19 @@ export interface CollapseProps {
   /**
    * 切换时的回调
    */
-  onChange?: (ids: string[]) => void
+  onChange?: (ids: React.ReactText[]) => void
   /**
    * 折叠面板
    */
   children?: React.ReactNode
+  /**
+   * 是否开启带边框
+   */
+  bordered?: boolean
+  /**
+   * 箭头渲染
+   */
+  arrowRender?: (active: boolean) => React.ReactNode
 }
 
 if (__DEV__) {

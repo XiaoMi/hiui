@@ -3,7 +3,12 @@
 $prefix: '#{$component-prefix}-collapse' !default;
 
 .#{$prefix} {
-  padding: 0 use-spacing(10);
-  border: 1px solid use-color('gray', 200);
-  border-radius: use-border-radius('normal');
+  @include box-reset;
+
+  background-color: use-color-static('white');
+  border-radius: use-border-radius('lg');
+
+  &--bordered {
+    border: use-border-size('normal') use-color('gray', 200);
+  }
 }

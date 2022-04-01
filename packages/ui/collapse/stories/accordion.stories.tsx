@@ -2,12 +2,12 @@ import React from 'react'
 import Collapse from '../src'
 import { FileFilled } from '@hi-ui/icons'
 
-export const Basic = () => {
+export const Accordion = () => {
   return (
     <>
-      <h1>Collapse</h1>
-      <div className="collapse-basic__wrap">
-        <Collapse defaultActiveId={['2']} arrowPlacement="left">
+      <h1>Accordion</h1>
+      <div className="collapse-accordion__wrap">
+        <Collapse defaultActiveId={['2']} arrowPlacement="left" accordion>
           <Collapse.Panel title="小米手机" id="1" disabled>
             我是小米手机的内容
           </Collapse.Panel>

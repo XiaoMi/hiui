@@ -7,32 +7,37 @@ $icon-class: #{$panel-prefix}__icon !default;
   font-size: use-text-size('normal');
   position: relative;
   z-index: 0;
-  border-bottom: 1px solid use-color('gray', 200);
+  // border-bottom: use-border-size('normal') use-color-static('transparent');
+
+  &::after {
+    content: '';
+    display: block;
+    margin: 1px 20px;
+    box-sizing: border-box;
+    border-bottom: 1px solid use-color('gray', 200);
+  }
 
   &:last-of-type {
-    border-radius: 0 0 use-border-radius('normal') use-border-radius('normal');
+    border-radius: 0 0 use-border-radius('lg') use-border-radius('lg');
     overflow: hidden;
-    border-bottom: none;
+
+    &::after {
+      border-bottom: none;
+    }
   }
 
   &:first-of-type {
-    border-radius: use-border-radius('normal') use-border-radius('normal') 0 0;
+    border-radius: use-border-radius('lg') use-border-radius('lg') 0 0;
     overflow: hidden;
   }
 
   &__head {
     display: flex;
     align-items: center;
-    background-color: use-color-static('white');
-    padding: use-spacing(7) 0;
+    padding: use-spacing(7) use-spacing(10);
     color: use-color('gray', 700);
-    font-weight: use-text-weight('medium');
+    font-weight: use-text-weight('semibold');
     cursor: pointer;
-    border-bottom: 1px solid transparent;
-
-    [class^=hi-v4-icon] {
-      font-size: use-text-size('lg');
-    }
 
     &:focus {
       outline: none;
@@ -48,34 +53,40 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   .#{$icon-class} {
-    transition: all 0.2s ease-out;
-
-    &--right {
-      margin-left: 24px;
-    }
+    transition-property: transform;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
+    font-size: use-text-size('lg');
+    color: use-color('gray', 600);
 
     &--left {
-      margin-right: use-spacing(3);
+      margin-inline-end: use-spacing(3);
     }
   }
 
+  &__extra {
+    color: use-color('gray', 600);
+  }
+
   &__content-wrapper {
-    transition: all 0.2s ease-out;
+    transition-property: height;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
     transform-origin: top;
     overflow: hidden;
   }
 
   &__content {
-    padding: use-spacing(3) use-spacing(12) use-spacing(10) use-spacing(12);
+    padding: 0 use-spacing(10) use-spacing(10);
     color: use-color('gray', 700);
   }
 
   &--show {
     &::after {
-      background-color: transparent;
+      background-color: use-color-static('transparent');
     }
     .#{$icon-class} {
-      &--left{
+      &--left {
         transform: rotate(90deg);
       }
 

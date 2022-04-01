@@ -3,6 +3,8 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCollapseContext } from './context'
 import { RightOutlined, DownOutlined } from '@hi-ui/icons'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { isFunction } from '@hi-ui/type-assertion'
 
 const _role = 'collapse-panel'
 const _prefix = getPrefixCls(_role)
@@ -24,12 +26,19 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
       id,
       title,
       extra,
+      ...rest
     },
     ref
   ) => {
     const isInInitialize = useRef(true)
 
-    const { judgeIsActive, showArrow, arrowPlacement, onClickPanel } = useCollapseContext()
+    const {
+      judgeIsActive,
+      showArrow,
+      arrowPlacement,
+      onClickPanel,
+      arrowRender,
+    } = useCollapseContext()
 
     const active = useMemo(() => judgeIsActive(id), [id, judgeIsActive])
 
@@ -93,18 +102,31 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
           [`${prefixCls}--disabled`]: disabled,
           [`${prefixCls}--show`]: active,
         })}
+        {...rest}
       >
         <div className={`${prefixCls}__head`} onClick={() => !disabled && onClickPanel(id)}>
-          {showArrow && arrowPlacement === 'left' && (
-            <RightOutlined className={`${prefixCls}__icon--left`} />
-          )}
+          {showArrow && arrowPlacement === 'left' ? (
+            isFunction(arrowRender) ? (
+              arrowRender(active)
+            ) : (
+              <span className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--left`)}>
+                <RightOutlined />
+              </span>
+            )
+          ) : null}
           <div className={`${prefixCls}__title-container`}>
             <div className={`${prefixCls}__title`}>{title}</div>
             <div className={`${prefixCls}__extra`}>{extra}</div>
           </div>
-          {showArrow && arrowPlacement === 'right' && (
-            <DownOutlined className={`${prefixCls}__icon--right`} />
-          )}
+          {showArrow && arrowPlacement === 'right' ? (
+            isFunction(arrowRender) ? (
+              arrowRender(active)
+            ) : (
+              <span className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--right`)}>
+                <DownOutlined />
+              </span>
+            )
+          ) : null}
         </div>
         <div
           className={`${prefixCls}__content-wrapper`}
@@ -120,24 +142,7 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
   }
 )
 
-export interface CollapsePanelProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-
+export interface CollapsePanelProps extends HiBaseHTMLProps<'div'> {
   /**
    * 	面板唯一标识
    */

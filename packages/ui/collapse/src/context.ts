@@ -1,29 +1,22 @@
 import { createContext, useContext } from 'react'
+import { CollapseProps } from './Collapse'
 
-export interface ICollapseContext {
+export interface CollapseContext
+  extends Pick<CollapseProps, 'arrowPlacement' | 'showArrow' | 'arrowRender'> {
   judgeIsActive: (id: string) => boolean
   onClickPanel: (id: string) => void
-  arrowPlacement: 'left' | 'right'
-  showArrow: boolean
 }
 
-const context = createContext<ICollapseContext>({
-  arrowPlacement: 'right',
-  showArrow: true,
-  judgeIsActive: (_id) => false,
-  onClickPanel: (_id) => {
-    // default
-  },
-})
+const collapseContext = createContext<CollapseContext | null>(null)
 
-export const CollapseProvider = context.Provider
+export const CollapseProvider = collapseContext.Provider
 
 export const useCollapseContext = () => {
-  const data = useContext(context)
+  const context = useContext(collapseContext)
 
-  if (!data) {
-    throw new Error('Collapse.BasePanel must be the child of the Collapse')
+  if (!context) {
+    throw new Error('The CollapseContext context is not defined.')
   }
 
-  return data
+  return context
 }
