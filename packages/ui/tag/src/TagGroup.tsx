@@ -5,6 +5,8 @@ import { Tag, TagProps } from './Tag'
 import { invariant, __DEV__ } from '@hi-ui/env'
 import { Button } from '@hi-ui/button'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useLocaleContext } from '@hi-ui/locale-context'
+import { isUndef } from '@hi-ui/type-assertion'
 
 const _role = 'tag-group'
 const _prefix = getPrefixCls(_role)
@@ -24,12 +26,16 @@ export const TagGroup = forwardRef<HTMLDivElement | null, TagGroupProps>(
       onAdd,
       onDelete,
       onEdit,
+      addButton,
       ...rest
     },
     ref
   ) => {
     const rootClassName = useMemo(() => cx(className, prefixCls), [className, prefixCls])
     const [isInAdding, setIsInAdding] = useState(false)
+
+    const i18n = useLocaleContext()
+    const addText = i18n.get('tag.add')
 
     const displayTags = useMemo(() => {
       return data.map((item, index) => {
@@ -77,18 +83,17 @@ export const TagGroup = forwardRef<HTMLDivElement | null, TagGroupProps>(
 
     const addNewButton = useMemo(() => {
       return (
-        <div className={`${prefixCls}__add-new-button`}>
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            appearance="link"
-            onClick={() => setIsInAdding(true)}
-          >
-            添加
-          </Button>
+        <div className={`${prefixCls}__add-new-button`} onClick={() => setIsInAdding(true)}>
+          {isUndef(addButton) ? (
+            <Button type="primary" icon={<PlusOutlined />} appearance="link">
+              {addText}
+            </Button>
+          ) : (
+            addButton
+          )}
         </div>
       )
-    }, [prefixCls])
+    }, [prefixCls, addText, addButton])
 
     return (
       <div ref={ref} role={role} className={rootClassName} style={style} {...rest}>
@@ -141,6 +146,11 @@ export interface TagGroupProps extends HiBaseHTMLProps<'div'> {
    * 标签新增后触发
    */
   onAdd?: (newStringValue: string, index: number) => void
+  /**
+   * 添加按钮。暂时不对外暴露
+   * @private
+   */
+  addButton?: React.ReactNode
 }
 
 export interface TagGroupDataItem

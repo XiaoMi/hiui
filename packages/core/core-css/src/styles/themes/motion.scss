@@ -34,5 +34,10 @@
 
 /// 设置 motion bezier 值
 @function use-motion-bezier($key) {
+  // normal 表示通用默认。这里统一收敛，可根据规范调整
+  @if ($key == 'normal') {
+    $key: 'easing';
+  }
+
   @return use-motion-bezier-var($key);
 }

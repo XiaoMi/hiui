@@ -65,16 +65,26 @@
 }
 
 /// 设置 text lineheight 对应 css 变量值
-@function use-text-lineheight($size) {
-  @return use-text-lineheight-var($size);
+@function use-text-lineheight($key) {
+  // normal 表示通用默认。这里统一收敛，可根据规范调整
+  @if ($key == 'normal') {
+    $key: 'md';
+  }
+
+  @return use-text-lineheight-var($key);
 }
 
 /// 设置 text spacing 对应 css 变量值
-@function use-text-spacing($size) {
-  @return use-text-spacing-var($size);
+@function use-text-spacing($key) {
+  @return use-text-spacing-var($key);
 }
 
 /// 设置 text size 对应 css 变量值
-@function use-text-size($size) {
-  @return use-text-size-var($size);
+@function use-text-size($key) {
+  // normal 表示通用默认。这里统一收敛，可根据规范调整
+  @if ($key == 'normal') {
+    $key: 'md';
+  }
+
+  @return use-text-size-var($key);
 }

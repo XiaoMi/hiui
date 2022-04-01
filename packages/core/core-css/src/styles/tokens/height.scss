@@ -9,13 +9,10 @@ $height-size-base-map: (
   3: $height * 3, // 12px
   4: $height * 4, // 16px
   5: $height * 5, //  20px
-  // 表单控件 sm 标准
   6: $height * 6, // 24px
   7: $height * 7, // 28px
-  // 表单控件 md 标准
   8: $height * 8, // 32px
   9: $height * 9, // 36px
-  // 表单控件 lg 标准
   10: $height * 10, // 40px
   11: $height * 11, // 44px
   12: $height * 12, // 48px
@@ -23,13 +20,6 @@ $height-size-base-map: (
   14: $height * 14, // 56px
   15: $height * 15, // 60px
   16: $height * 16, // 64px
-  xs: 16px,
-  sm: 24px,
-  normal: 32px,
-  // md: 32px,
-  lg: 40px,
-  xl: 48px,
-  xxl: 64px,
 ) !default;
 
 @function get-height($size) {

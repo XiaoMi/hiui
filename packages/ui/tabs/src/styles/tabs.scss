@@ -294,6 +294,10 @@ $prefix: '#{$component-prefix}-tabs' !default;
     flex-shrink: 0;
     transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
 
+    &:focus {
+      outline: 0;
+    }
+
     &:not(&--disabled):hover {
       color: use-color-mode('primary');
     }

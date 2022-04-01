@@ -49,7 +49,9 @@
     "@hi-ui/core-css": "^4.0.0-beta.3",
     "@hi-ui/env": "^4.0.0-beta.0",
     "@hi-ui/icons": "^4.0.0-beta.7",
-    "@hi-ui/tooltip": "^4.0.0-beta.11"
+    "@hi-ui/locale-context": "^4.0.0-beta.11",
+    "@hi-ui/tooltip": "^4.0.0-beta.11",
+    "@hi-ui/type-assertion": "^4.0.0-beta.3"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

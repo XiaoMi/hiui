@@ -20,5 +20,10 @@
 
 /// 设置 shadow duration 值
 @function use-shadow($key) {
+  // normal 表示通用默认。这里统一收敛，可根据规范调整
+  @if ($key == 'normal') {
+    $key: 'md';
+  }
+
   @return get-shadow-var($key);
 }

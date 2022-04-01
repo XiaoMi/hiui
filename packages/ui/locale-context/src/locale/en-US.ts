@@ -177,4 +177,7 @@ export default {
     confirmText: 'OK',
     cancelText: 'Cancel',
   },
+  tag: {
+    add: 'Add',
+  },
 }

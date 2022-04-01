@@ -193,4 +193,7 @@ export default {
     confirmText: '確定',
     cancelText: '取消',
   },
+  tag: {
+    add: '添加',
+  },
 }
