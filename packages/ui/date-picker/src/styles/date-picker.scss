@@ -39,21 +39,21 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     cursor: pointer;
 
     &--size-sm {
-      line-height: use-height-size('sm');
+      line-height: use-height-size(6);
       font-size: use-text-size('sm');
-      height: use-height-size('sm');
+      height: use-height-size(6);
     }
 
     &--size-md {
-      line-height: use-height-size('normal');
+      line-height: use-height-size(8);
       font-size: use-text-size('normal');
-      height: use-height-size('normal');
+      height: use-height-size(8);
     }
 
     &--size-lg {
-      line-height: use-height-size('lg');
+      line-height: use-height-size(10);
       font-size: use-text-size('lg');
-      height: use-height-size('lg');
+      height: use-height-size(10);
     }
 
     $line: '#{&}--appearance-line';
@@ -99,7 +99,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       box-shadow: 0 0 0 2px use-color-mode('primary', 100);
     }
 
-    &--invalid,&--invalid:hover,&--invalid#{&}--focus, {
+    &--invalid,&--invalid:hover,&--invalid#{&}--focus {
       border: use-border-size('normal') use-color-mode('danger', 500);
       box-shadow: 0 0 0 2px use-color-mode('danger', 100);
     }

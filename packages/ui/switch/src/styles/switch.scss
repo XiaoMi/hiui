@@ -11,7 +11,7 @@ $prefix: '#{$component-prefix}-switch' !default;
 
   display: inline-flex;
   min-width: 40px;
-  height: use-height-size('sm');
+  height: use-height-size(6);
   border-radius: use-border-radius('full');
   cursor: pointer;
   position: relative;
@@ -37,20 +37,20 @@ $prefix: '#{$component-prefix}-switch' !default;
 
   &::after {
     content: '';
-    width: use-height-size('xs');
-    height: use-height-size('xs');
+    width: use-height-size(4);
+    height: use-height-size(4);
     background: use-color-static('white');
     position: absolute;
     border-radius: use-border-radius('full');
-    top: calc((#{use-height-size('sm')} - #{use-height-size('xs')}) / 2);
-    left: calc(100% - #{use-height-size('xs')} - #{use-spacing(2)});
+    top: calc((#{use-height-size(6)} - #{use-height-size(4)}) / 2);
+    left: calc(100% - #{use-height-size(4)} - #{use-spacing(2)});
     transition: all 200ms linear;
   }
 
   &__text {
     color: use-color-static('white');
     font-size: use-text-size('sm');
-    line-height: use-height-size('sm');
+    line-height: use-height-size(6);
     transition: all 200ms linear;
     margin: 0 use-spacing(11) 0 use-spacing(4);
     user-select: none;

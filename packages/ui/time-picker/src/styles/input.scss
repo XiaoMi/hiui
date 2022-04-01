@@ -33,29 +33,29 @@ $wrapper: '#{$input-prefix}__wrapper' !default;
   }
 
   &--size-sm {
-    line-height: use-height-size('sm');
+    line-height: use-height-size(6);
     font-size: use-text-size('sm');
 
     .#{$wrapper} {
-      height: use-height-size('sm');
+      height: use-height-size(6);
     }
   }
 
   &--size-md {
-    line-height: use-height-size('normal');
+    line-height: use-height-size(8);
     font-size: use-text-size('normal');
 
     .#{$wrapper} {
-      height: use-height-size('normal');
+      height: use-height-size(8);
     }
   }
 
   &--size-lg {
-    line-height: use-height-size('lg');
+    line-height: use-height-size(10);
     font-size: use-text-size('lg');
 
     .#{$wrapper} {
-      height: use-height-size('lg');
+      height: use-height-size(10);
     }
   }
 

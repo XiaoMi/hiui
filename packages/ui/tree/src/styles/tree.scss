@@ -78,7 +78,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     display: inline-flex;
     align-items: center;
     position: relative;
-    min-height: use-height-size('normal');
+    min-height: use-height-size(8);
     line-height: use-text-lineheight('lg');
     font-size: use-text-size('normal');
     cursor: inherit;

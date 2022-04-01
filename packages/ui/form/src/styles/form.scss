@@ -28,7 +28,7 @@ $prefix: '#{$component-prefix}-form' !default;
 
       // 上下布局只在水平表单中自动填充高度
       .#{$prefix}-label__indent {
-        min-height: use-height-size('normal');
+        min-height: use-height-size(8);
       }
     }
   }
@@ -52,8 +52,8 @@ $prefix: '#{$component-prefix}-form' !default;
 
   &__text {
     padding-right: use-spacing(6);
-    min-height: use-height-size('normal');
-    line-height: use-height-size('normal');
+    min-height: use-height-size(8);
+    line-height: use-height-size(8);
 
     .#{$prefix}-label--placement-left & {
       text-align: left;
@@ -91,7 +91,7 @@ $prefix: '#{$component-prefix}-form' !default;
     flex: 1;
     position: relative;
     vertical-align: top;
-    min-height: use-height-size('normal');
+    min-height: use-height-size(8);
     flex-shrink: 0;
   }
 

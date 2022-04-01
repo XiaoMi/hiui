@@ -52,36 +52,36 @@ $prefix: '#{$component-prefix}-avatar' !default;
 
   &--size {
     &-md {
-      width: use-height-size('lg');
-      height: use-height-size('lg');
-      line-height: use-height-size('lg');
+      width: use-height-size(10);
+      height: use-height-size(10);
+      line-height: use-height-size(10);
     }
 
     &-sm {
-      width: use-height-size('normal');
-      height: use-height-size('normal');
-      line-height: use-height-size('normal');
+      width: use-height-size(8);
+      height: use-height-size(8);
+      line-height: use-height-size(8);
       font-size: use-text-size('lg');
     }
 
     &-xs {
-      width: use-height-size('sm');
-      height: use-height-size('sm');
-      line-height: use-height-size('sm');
+      width: use-height-size(6);
+      height: use-height-size(6);
+      line-height: use-height-size(6);
       font-size: use-text-size('normal');
     }
 
     &-lg {
-      width: use-height-size('xl');
-      height: use-height-size('xl');
-      line-height: use-height-size('xl');
+      width: use-height-size(12);
+      height: use-height-size(12);
+      line-height: use-height-size(12);
       font-size: use-text-size('xxl');
     }
 
     &-xl {
-      width: use-height-size('xxl');
-      height: use-height-size('xxl');
-      line-height: use-height-size('xxl');
+      width: use-height-size(16);
+      height: use-height-size(16);
+      line-height: use-height-size(16);
       font-size: use-text-size('xxl');
     }
   }

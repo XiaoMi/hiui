@@ -102,7 +102,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   &--size {
     &-sm {
       &.#{$mock-input-prefix} {
-        height: use-height-size('sm');
+        height: use-height-size(6);
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
         border-radius: use-border-radius('normal');
@@ -112,7 +112,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
 
     &-md {
       &.#{$mock-input-prefix} {
-        height: use-height-size('normal');
+        height: use-height-size(8);
         font-size: use-text-size('normal');
         line-height: use-text-lineheight('normal');
         border-radius: use-border-radius('normal');
@@ -122,7 +122,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
 
     &-lg {
       &.#{$mock-input-prefix} {
-        height: use-height-size('lg');
+        height: use-height-size(10);
         font-size: use-text-size('lg');
         line-height: use-text-lineheight('lg');
         border-radius: use-border-radius('normal');

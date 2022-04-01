@@ -9,12 +9,12 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
   padding: 0;
 
   &--md {
-    line-height: use-height-size('normal');
+    line-height: use-height-size(8);
     font-size: use-text-size('normal');
   }
 
   &--sm {
-    line-height: use-height-size('sm');
+    line-height: use-height-size(6);
     font-size: use-text-size('sm');
   }
 

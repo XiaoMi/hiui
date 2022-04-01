@@ -61,8 +61,8 @@ $prefix: '#{$component-prefix}-tree' !default;
       &__item {
         list-style: none;
         padding: 0 use-spacing(6);
-        height: use-height-size('normal');
-        line-height: use-height-size('normal');
+        height: use-height-size(8);
+        line-height: use-height-size(8);
         font-size: use-text-size('normal');
         cursor: pointer;
         text-overflow: ellipsis;

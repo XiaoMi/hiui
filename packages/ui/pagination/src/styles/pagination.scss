@@ -35,11 +35,11 @@ $prefix: '#{$component-prefix}-pagination' !default;
   &__item {
     display: inline-block;
     margin-left: use-spacing(4);
-    min-width: use-height-size('normal');
+    min-width: use-height-size(8);
     border: none;
     box-sizing: border-box;
-    height: use-height-size('normal');
-    line-height: use-height-size('normal');
+    height: use-height-size(8);
+    line-height: use-height-size(8);
     text-align: center;
     cursor: pointer;
     outline: 0;
@@ -80,8 +80,8 @@ $prefix: '#{$component-prefix}-pagination' !default;
 
   &__btn {
     display: inline-block;
-    min-width: use-height-size('normal');
-    height: use-height-size('normal');
+    min-width: use-height-size(8);
+    height: use-height-size(8);
     outline: 0;
 
     &--disabled {
