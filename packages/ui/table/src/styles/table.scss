@@ -147,20 +147,20 @@ $prefix: '#{$component-prefix}-table' !default;
       }
     }
 
-    th[data-sticky] {
+    &-cell {
       background-color: use-color('gray', 50);
-    }
 
-    &__col--highlight {
-      background-color: use-color('gray', 100);
-    }
+      $this: &;
 
-    &__col--hovered-highlight {
-      background-color: use-color('gray', 100);
-    }
+      &#{$this}__col--highlight,
+      &#{$this}__col--hovered-highlight,
+      &#{$this}__col--active {
+        background-color: use-color('gray', 100);
 
-    &__col--active {
-      background-color: use-color('gray', 100);
+        &[data-sticky] {
+          background-color: use-color('gray', 100);
+        }
+      }
     }
   }
 
@@ -278,6 +278,7 @@ $prefix: '#{$component-prefix}-table' !default;
   color: use-color('gray', 700);
   line-height: use-text-lineheight('sm');
   padding: use-spacing(7) use-spacing(8);
+  background-color: use-color-static('white');
 
   &__indent {
     display: inline-block;
@@ -297,10 +298,6 @@ $prefix: '#{$component-prefix}-table' !default;
   &.#{$prefix}__embed-col,
   &.#{$prefix}__selection-col {
     padding: use-spacing(7) use-spacing(5);
-  }
-
-  &[data-sticky] {
-    background-color: use-color-static('white');
   }
 
   &.#{$prefix}-cell__col--highlight {

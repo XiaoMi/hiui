@@ -6,14 +6,17 @@ export const Calc = () => {
     {
       title: '商品名',
       dataKey: 'name',
+      width: 150,
     },
     {
       title: '品类',
       dataKey: 'type',
+      width: 150,
     },
     {
       title: '规格',
       dataKey: 'size',
+      width: 150,
     },
     {
       title: '单价',
@@ -21,15 +24,18 @@ export const Calc = () => {
       align: 'right',
       total: true,
       avg: true,
+      width: 150,
     },
     {
       title: '门店',
       dataKey: 'address',
+      width: 150,
     },
     {
       title: '库存',
       dataKey: 'stock',
       align: 'right',
+      width: 150,
     },
   ])
   const [data] = React.useState([
@@ -84,7 +90,7 @@ export const Calc = () => {
     <>
       <h1>Basic for Table</h1>
       <div className="table-calc__wrap" style={{ width: 800, background: '#eee' }}>
-        <Table columns={columns} data={data} />
+        <Table columns={columns} data={data} fixedToColumn={{ right: 'stock' }} />
       </div>
     </>
   )

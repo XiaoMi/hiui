@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useState, useRef, useMemo } from 'react'
+import React, { forwardRef, useCallback, useState, useRef } from 'react'
 import { TabPaneProps } from './TabPane'
 import { __DEV__ } from '@hi-ui/env'
 import { TabItem } from './TabItem'
@@ -54,13 +54,14 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     const [translateX, setTranslateX] = useState<number>(0)
     const [translateY, setTranslateY] = useState<number>(0)
     const itemsRef = useRef<Record<string, HTMLDivElement | null>>({})
-    const showScrollBtn = useMemo(() => {
-      if (scrollRef && innerRef) {
-        return direction === 'horizontal'
-          ? scrollRef?.clientWidth > innerRef?.clientWidth
-          : scrollRef?.clientHeight > innerRef?.clientHeight
-      }
-    }, [scrollRef, innerRef, direction])
+
+    let showScrollBtn = false
+    if (scrollRef && innerRef) {
+      showScrollBtn =
+        direction === 'horizontal'
+          ? scrollRef.clientWidth > innerRef.clientWidth
+          : scrollRef.clientHeight > innerRef.clientHeight
+    }
 
     const onClickTab = useCallback(
       (key: React.ReactText, event: React.MouseEvent) => {
