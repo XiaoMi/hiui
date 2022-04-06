@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/rating",
-  "version": "4.0.0-beta.11",
+  "version": "4.0.0-beta.12",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,9 +44,9 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/core-css": "^4.0.0-beta.3",
+    "@hi-ui/core-css": "^4.0.0-beta.4",
     "@hi-ui/env": "^4.0.0-beta.0",
-    "@hi-ui/tooltip": "^4.0.0-beta.11",
+    "@hi-ui/tooltip": "^4.0.0-beta.12",
     "@hi-ui/use-did-mount": "^4.0.0-beta.3",
     "@hi-ui/use-merge-refs": "^4.0.0-beta.3",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.3"
