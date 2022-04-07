@@ -170,7 +170,7 @@ export const useModal = ({
     return {
       ...props,
       ref: mergeRefs(modalElementWrapperRef, ref),
-      onClick: (evt: React.MouseEvent) => evt.stopPropagation(),
+      onClick: mockDefaultHandlers(props.onClick, (evt: React.MouseEvent) => evt.stopPropagation()),
     }
   }, [])
 

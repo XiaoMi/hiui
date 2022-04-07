@@ -39,6 +39,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       onClose,
       showMask = true,
       placement = 'right',
+      drawerConfig,
       ...rest
     },
     ref
@@ -97,7 +98,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
                   ? width + 'px'
                   : width,
               }}
-              {...getModalWrapperProps()}
+              {...getModalWrapperProps(drawerConfig)}
             >
               {hasHeader ? (
                 <header className={`${prefixCls}__header`}>
@@ -178,6 +179,11 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
    * @private
    */
   onExited?: () => void
+  /**
+   * drawer 实体的 props。暂不对外暴露
+   * @private
+   */
+  drawerConfig?: HiBaseHTMLProps<'div'>
 }
 
 if (__DEV__) {
