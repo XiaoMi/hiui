@@ -7469,6 +7469,11 @@ csstype@^2.5.7:
   version "2.6.17"
   resolved "https://registry.nlark.com/csstype/download/csstype-2.6.17.tgz?cache=0&sync_timestamp=1618818393132&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcsstype%2Fdownload%2Fcsstype-2.6.17.tgz#4cf30eb87e1d1a005d8b6510f95292413f6a1c0e"
 
+csstype@^3.0.11:
+  version "3.0.11"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.11.tgz#d66700c5eacfac1940deb4e3ee5642792d85cd33"
+  integrity sha512-sa6P2wJ+CAbgyy4KFssIb/JNMLxFvKF1pCYCSXS8ZMuqZnMsrxqI2E5sPyoTpxoPU/gVZMzr2zjOfg8GIZOMsw==
+
 csstype@^3.0.2:
   version "3.0.8"
   resolved "https://registry.nlark.com/csstype/download/csstype-3.0.8.tgz?cache=0&sync_timestamp=1618818393132&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcsstype%2Fdownload%2Fcsstype-3.0.8.tgz#d2266a792729fb227cd216fb572f43728e1ad340"

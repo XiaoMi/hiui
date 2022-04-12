@@ -1,14 +1,15 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { VerticalItem } from './VerticalItem'
-import { HorizontalItem } from './HorizontalItem'
-import { VerticalStepper } from './VerticalStepper'
-import { StepperDataItem } from './types'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { StepperDataItem } from './types'
+import { StepperItem } from './StepperItem'
 
 const _role = 'stepper'
-const _prefix = getPrefixCls(_role)
+const _prefix = getPrefixCls('stepper')
+
+const NOOP_ARRAY = [] as []
 
 /**
  * TODO: What is Stepper
@@ -19,8 +20,8 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
       prefixCls = _prefix,
       role = _role,
       className,
-      data,
-      current,
+      data = NOOP_ARRAY,
+      current: currentProp,
       onChange,
       itemLayout = 'horizontal',
       placement = 'horizontal',
@@ -29,56 +30,32 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, `${prefixCls}--type-${type}`, className)
+    const [current, trySetCurrent] = useUncontrolledState(0, currentProp, onChange)
 
-    return placement === 'vertical' ? (
-      <VerticalStepper
-        ref={ref}
-        data={data}
-        current={current}
-        onChange={onChange}
-        prefixCls={prefixCls}
-        className={className}
-        type={type}
-        {...rest}
-      />
-    ) : (
+    const cls = cx(
+      prefixCls,
+      className,
+      `${prefixCls}--placement-${placement}`,
+      `${prefixCls}--type-${type}`
+    )
+
+    return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        {data.map((d, index) =>
-          itemLayout === 'vertical' ? (
-            <VerticalItem
-              key={index}
-              stepperItem={d}
-              index={index}
+        {data.map((item, index) => {
+          const step = index + 1
+
+          return (
+            <StepperItem
+              key={step}
+              {...item}
+              className={cx(placement === 'horizontal' && `${prefixCls}__item--${itemLayout}`)}
+              step={step}
               type={type}
-              isActive={current !== undefined && current >= index + 1}
-              isFirst={index === 0}
-              isLast={index === data.length - 1}
-              isLastActive={current === index + 1}
-              onClick={() => {
-                if (onChange) {
-                  onChange(index + 1)
-                }
-              }}
-            />
-          ) : (
-            <HorizontalItem
-              key={index}
-              stepperItem={d}
-              index={index}
-              type={type}
-              isActive={current !== undefined && current >= index + 1}
-              isFirst={index === 0}
-              isLast={index === data.length - 1}
-              isLastActive={current === index + 1}
-              onClick={() => {
-                if (onChange) {
-                  onChange(index + 1)
-                }
-              }}
+              current={current}
+              onClick={() => trySetCurrent(step)}
             />
           )
-        )}
+        })}
       </div>
     )
   }
@@ -94,6 +71,10 @@ export interface StepperProps extends HiBaseHTMLProps<'div'> {
    */
   current?: number
   /**
+   * 步骤项的变更回调
+   */
+  onChange?: (current: number) => void
+  /**
    * 水平或垂直展示步骤条
    */
   placement?: 'vertical' | 'horizontal'
@@ -101,10 +82,6 @@ export interface StepperProps extends HiBaseHTMLProps<'div'> {
    * 步骤项的布局方式
    */
   itemLayout?: 'vertical' | 'horizontal'
-  /**
-   * 步骤项的变更回调
-   */
-  onChange?: (current: number) => void
   /**
    * 节点类型
    */

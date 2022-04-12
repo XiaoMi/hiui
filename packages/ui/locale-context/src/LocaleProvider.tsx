@@ -41,9 +41,9 @@ export const LocaleProvider: React.FC<LocaleProviderProps> = ({
 
 export interface LocaleProviderProps {
   /**
-   * 组件默认的选择器类
+   * 设置国际化 locale 地区标识
    */
-  locale: LocaleEnum
+  locale?: LocaleEnum
 }
 
 if (__DEV__) {

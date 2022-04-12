@@ -2,78 +2,50 @@
 
 $prefix: '#{$component-prefix}-stepper' !default;
 
-.#{$prefix}--vertical {
+.#{$prefix} {
   display: flex;
-  flex-direction: column;
   font-size: use-text-size('normal');
   overflow: auto;
 
-  .vertical-wrapper {
-    margin-left: use-spacing(4);
-  }
+  &__item {
+    overflow: hidden;
 
-  .#{$prefix}__item {
-    display: flex;
-    flex: 1;
-    position: relative;
-    padding-bottom: use-spacing(8);
-    min-height: 80px;
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: calc(#{use-height-size(6)} + #{use-spacing(8)});
-      left: 11px;
-      width: 1px;
-      height: calc(100% - #{use-spacing(8)} * 2 - #{use-height-size(6)});
-      background-color: use-color('gray', 200);
-    }
-
-    &:last-of-type {
-      flex: none;
-
-      &::after {
-        content: none;
+    // 状态
+    &-status {
+      &__step {
+        width: use-height-size(6);
+        height: use-height-size(6);
+        text-align: center;
+        line-height: use-height-size(6);
+        border-radius: use-border-radius('full');
+        color: use-color-static('white');
+        // color: use-color('gray', 500);
+        background-color: use-color('gray', 200);
+        flex-shrink: 0;
       }
-    }
-
-    &.#{$prefix}__item--active {
-      .item-step {
-        &__dot {
-          background-color: use-color-mode('primary');
-        }
-
-        &__icon {
-          color: use-color-mode('primary');
-        }
-      }
-    }
-
-    .item-step {
-      width: use-height-size(6);
-      height: use-height-size(6);
-      text-align: center;
-      line-height: use-height-size(6);
-      border-radius: use-border-radius('full');
-      color: use-color-static('white');
-      background-color: use-color('gray', 200);
 
       &__dot {
         background-color: use-color('gray', 200);
         width: 8px;
         height: 8px;
+        // 24 * 24 size
+        margin: 8px;
         border-radius: use-border-radius('full');
-        margin: use-spacing(4);
+        flex-shrink: 0;
       }
 
       &__icon {
         color: use-color('gray', 200);
         font-size: 24px;
+        line-height: 24px;
       }
+    }
 
+    // 提示文案
+    &-tip {
       &__title {
         color: use-color('gray', 500);
-        margin-bottom: use-spacing(4);
+        line-height: 24px;
       }
 
       &__content {
@@ -86,183 +58,191 @@ $prefix: '#{$component-prefix}-stepper' !default;
       }
     }
 
-    &.#{$prefix}__item--right-active {
-      &::after {
-        background-color: use-color-mode('primary');
-      }
-    }
-  }
-}
+    &.#{$prefix}__item--done {
+      .#{$prefix}__item {
+        &-status {
+          &__step {
+            background-color: use-color-mode('primary', 50);
+            color: use-color-mode('primary');
+          }
 
-.#{$prefix} {
-  display: flex;
-  font-size: use-text-size('normal');
-  overflow: auto;
-  // align-items: center;
-
-  &__item {
-    overflow: hidden;
-
-    &.#{$prefix}__item--active {
-      .item-step {
-        &__dot {
-          background-color: use-color-mode('primary');
-        }
-
-        &__icon {
-          color: use-color-mode('primary');
-        }
-      }
-    }
-
-    .item-step {
-      width: use-height-size(6);
-      height: use-height-size(6);
-      text-align: center;
-      line-height: use-height-size(6);
-      border-radius: use-border-radius('full');
-      color: use-color('gray', 500);
-      background-color: use-color('gray', 200);
-      flex-shrink: 0;
-
-      &__dot {
-        background-color: use-color('gray', 200);
-        width: 8px;
-        height: 8px;
-        border-radius: use-border-radius('full');
-        margin: use-spacing(4);
-        flex-shrink: 0;
-      }
-
-      &::after {
-        background-color: use-color('gray', 200);
-      }
-
-      &__icon {
-        color: use-color('gray', 200);
-        font-size: 24px;
-        line-height: 24px;
-      }
-
-      &__title {
-        color: use-color('gray', 500);
-
-        &::after {
-          background-color: use-color('gray', 200);
-        }
-      }
-
-      &__content {
-        @include ellipsis(2);
-
-        text-align: center;
-        font-size: use-text-size('sm');
-        color: use-color('gray', 500);
-        padding: 0 use-spacing(6) px;
-      }
-    }
-
-    &.#{$prefix}__item--right-active {
-      .item-step {
-        background-color: use-color-mode('primary', 50);
-        color: use-color-mode('primary');
-
-        &::after {
-          background-color: use-color-mode('primary');
-        }
-
-        &__title {
-          color: use-color('gray', 700);
-
-          &::after {
+          &__dot {
             background-color: use-color-mode('primary');
           }
 
+          &__icon {
+            color: use-color-mode('primary');
+          }
+        }
+
+        &-tip {
           &__title {
-            &::after {
-              background-color: use-color-mode('primary') !important;
+            color: use-color('gray', 700);
+          }
+        }
+      }
+    }
+
+    &.#{$prefix}__item--active {
+      .#{$prefix}__item {
+        &-status {
+          &__step {
+            background-color: use-color-mode('primary');
+            color: use-color-static('white');
+          }
+
+          &__dot {
+            background-color: use-color-mode('primary');
+          }
+
+          &__icon {
+            color: use-color-mode('primary');
+            opacity: 1;
+          }
+        }
+
+        &-tip {
+          &__title {
+            color: use-color-mode('primary');
+            font-weight: use-text-weight('medium');
+          }
+
+          &__content {
+            color: use-color('gray', 700);
+          }
+        }
+      }
+    }
+  }
+
+  &--placement {
+    &-vertical {
+      flex-direction: column;
+
+      $line-spacing: use-spacing(6);
+
+      .#{$prefix}__item {
+        position: relative;
+        display: flex;
+        flex: 1;
+        padding-bottom: $line-spacing;
+        min-height: 80px;
+
+        // 线条
+        &::after {
+          content: '';
+          position: absolute;
+          top: calc(#{use-height-size(6)} + #{$line-spacing});
+          left: 11px;
+          width: 1px;
+          height: calc(100% - #{use-height-size(6)} - #{$line-spacing} * 2);
+          background-color: use-color('gray', 200);
+        }
+
+        // 尾部无线
+        &:last-of-type {
+          flex: none;
+          padding-bottom: 0;
+          min-height: 24px;
+
+          &::after {
+            content: none;
+          }
+        }
+
+        // 完成态
+        &.#{$prefix}__item--done {
+          &::after {
+            background-color: use-color-mode('primary');
+          }
+        }
+
+        // 激活态
+        &.#{$prefix}__item--active {
+          .#{$prefix}__item {
+            &__dot {
+              background-color: use-color-mode('primary');
+            }
+
+            &__icon {
+              color: use-color-mode('primary');
             }
           }
         }
-      }
-    }
 
-    &.#{$prefix}__item--active:not(.#{$prefix}__item--right-active) {
-      .item-step {
-        background-color: use-color-mode('primary');
-        color: use-color-static('white');
+        &-tip {
+          margin-inline-start: use-spacing(4);
 
-        &__icon {
-          opacity: 1;
-        }
-
-        &__title {
-          color: use-color-mode('primary');
-          font-weight: use-text-weight('medium');
-        }
-
-        &__content {
-          color: use-color('gray', 700);
-        }
-      }
-    }
-
-    &--horizontal {
-      display: flex;
-      position: relative;
-      flex-direction: row;
-      align-items: flex-start;
-      min-width: 20%;
-      flex: 1;
-      padding-left: use-spacing(6);
-
-      &:last-of-type {
-        flex: none;
-      }
-
-      .item-step {
-        margin-right: use-spacing(4);
-
-        &__content {
-          text-align: left;
-          margin-top: use-spacing(3);
-          // 写死，否则 flex 下最后一项内容过长会撑满，挤压其他元素空间
-          max-width: 160px;
-        }
-
-        &__wrapper {
-          display: inline-block;
-          margin-bottom: 0;
-          z-index: 1;
-          max-width: 100%;
-          min-width: 1px;
-          width: 100%;
-        }
-
-        &__title {
-          position: relative;
-          padding-right: use-spacing(6);
-          line-height: use-text-lineheight('lg');
-          display: inline-block;
-          box-sizing: content-box;
-
-          & > span {
-            @include ellipsis();
-
-            vertical-align: middle;
-            max-width: 126px;
+          &__content {
+            text-align: left;
+            margin-top: use-spacing(3);
           }
         }
-
-        &__icon {
-          margin-right: use-spacing(4);
-        }
       }
+    }
 
-      &:not(:last-of-type) {
-        .item-step {
-          &__title {
-            &::after {
+    &-horizontal {
+      .#{$prefix}__item {
+        &--horizontal {
+          display: flex;
+          position: relative;
+          flex-direction: row;
+          align-items: flex-start;
+          min-width: 20%;
+          flex: 1;
+          // 保持和线的间距
+          padding-inline-start: use-spacing(6);
+
+          &:first-of-type {
+            padding-inline-start: 0;
+          }
+
+          &:last-of-type {
+            flex: none;
+          }
+
+          .#{$prefix}__item {
+            &-tip {
+              display: inline-block;
+              margin-bottom: 0;
+              z-index: 1;
+              max-width: 100%;
+              min-width: 1px;
+              width: 100%;
+
+              &__content {
+                text-align: left;
+                margin-top: use-spacing(3);
+                // 写死，否则 flex 下最后一项内容过长会撑满，挤压其他元素空间
+                max-width: 160px;
+              }
+
+              &__title {
+                position: relative;
+                display: inline-block;
+                padding-inline-end: use-spacing(6);
+                box-sizing: content-box;
+
+                & > div {
+                  @include ellipsis();
+
+                  vertical-align: middle;
+                  max-width: 126px;
+                }
+              }
+            }
+
+            &-status {
+              &__step,
+              &__icon {
+                margin-inline-end: use-spacing(4);
+              }
+            }
+          }
+
+          // 水平线，相对 title 元素
+          &:not(:last-of-type) {
+            .#{$prefix}__item-tip__title::after {
               content: '';
               position: absolute;
               left: 100%;
@@ -272,78 +252,75 @@ $prefix: '#{$component-prefix}-stepper' !default;
               transform: translateY(-50%);
             }
           }
-        }
-      }
-    }
 
-    &--vertical {
-      display: flex;
-      position: relative;
-      align-items: center;
-      flex: 1;
-      min-width: 20%;
-      flex-direction: column;
+          .#{$prefix}__item-tip__title::after {
+            background-color: use-color('gray', 200);
+          }
 
-      .item-step {
-        &__title {
-          margin-bottom: use-spacing(4);
+          &.#{$prefix}__item--done {
+            .#{$prefix}__item-tip__title::after {
+              background-color: use-color-mode('primary');
+            }
+          }
         }
 
-        &__wrapper {
-          height: use-height-size(6);
-          width: use-height-size(6);
+        &--vertical {
           display: flex;
+          position: relative;
           align-items: center;
-          justify-content: center;
-          margin-bottom: use-spacing(6);
-          z-index: 1;
-        }
-      }
+          flex: 1;
+          min-width: 20%;
+          flex-direction: column;
 
-      &.#{$prefix}__item--left-active {
-        &::before {
-          background-color: use-color-mode('primary') !important;
-        }
-      }
+          .#{$prefix}__item {
+            &-tip {
+              &__title {
+                text-align: center;
+                margin-top: use-spacing(6);
+              }
 
-      &.#{$prefix}__item--right-active {
-        &::after {
-          background-color: use-color-mode('primary') !important;
-        }
+              &__content {
+                text-align: center;
+                margin-top: use-spacing(3);
+              }
+            }
 
-        .item-step {
-          background-color: use-color-mode('primary', 50);
-          color: use-color-mode('primary');
+            &-status {
+              height: use-height-size(6);
+              width: use-height-size(6);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              z-index: 1;
+            }
+          }
 
-          &__title {
-            color: use-color('gray', 700);
+          // 水平线，相对 item 元素
+          &:not(:first-of-type)::before,
+          &:not(:last-of-type)::after {
+            content: '';
+            position: absolute;
+            top: use-spacing(6);
+            width: calc(50% - #{use-spacing(4)} - #{use-height-size(6)} / 2);
+            height: 1px;
+            background-color: use-color('gray', 200);
+          }
+
+          &:not(:first-of-type)::before {
+            left: 0;
+          }
+
+          &:not(:last-of-type)::after {
+            right: 0;
+          }
+
+          &.#{$prefix}__item--active::before,
+          &.#{$prefix}__item--done::before,
+          &.#{$prefix}__item--done::after {
+            background-color: use-color-mode('primary');
           }
         }
       }
-
-      &:not(.#{$prefix}__item--first)::before {
-        content: '';
-        position: absolute;
-        top: use-spacing(6);
-        width: calc(50% - #{use-spacing(4)} - #{use-height-size(6)} / 2);
-        left: 0;
-        height: 1px;
-        background-color: use-color('gray', 200);
-      }
-
-      &:not(.#{$prefix}__item--last)::after {
-        content: '';
-        position: absolute;
-        top: use-spacing(6);
-        right: 0;
-        width: calc(50% - #{use-spacing(4)} - #{use-height-size(6)} / 2);
-        height: 1px;
-        background-color: use-color('gray', 200);
-      }
-    }
-
-    &--last {
-      color: use-color('gray', 700);
     }
   }
 }

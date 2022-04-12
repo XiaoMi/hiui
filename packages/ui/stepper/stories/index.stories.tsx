@@ -2,8 +2,8 @@ import React from 'react'
 import Stepper from '../src'
 
 export * from './basic.stories'
-export * from './vertical.story'
-export * from './vertical-layout.story'
+export * from './item-layout.stories'
+export * from './placement.stories'
 export * from './dot.stories'
 
 export default {

@@ -50,6 +50,20 @@ export const Basic = () => {
               25%
             </div>
           </Col>
+          <Col span={6}>
+            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>
+              col-6
+              <br />
+              25%
+            </div>
+          </Col>
+          <Col span={6}>
+            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>
+              col-6
+              <br />
+              25%
+            </div>
+          </Col>
         </Row>
       </div>
     </>

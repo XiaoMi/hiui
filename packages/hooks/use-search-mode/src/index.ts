@@ -320,7 +320,7 @@ const getMatchedUpMatchNodes = (
  */
 export const matchStrategy = (content: unknown, keyword: string, ignoreCase = true) => {
   if (typeof content !== 'string') {
-    invariant(true, 'The `title` should be `string` when searchable is enabled.')
+    invariant(false, 'The `title` should be `string` when searchable is enabled.')
 
     // 返回 -1 表示无法完成匹配
     return -1

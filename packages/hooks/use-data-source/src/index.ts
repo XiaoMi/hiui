@@ -130,7 +130,7 @@ export const useDataSource = <T = Record<string, any>[]>({
         }
 
         if (typeof resultMayBePromise.url !== 'string') {
-          invariant(true, 'Please Return Correct result when using DataSource.')
+          invariant(false, 'Please Return Correct result when using DataSource.')
 
           setStatus('rejected')
           reject(resultMayBePromise)

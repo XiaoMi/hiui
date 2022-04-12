@@ -7,6 +7,8 @@ $prefix: '#{$component-prefix}-grid' !default;
     position: relative;
     box-sizing: border-box;
     display: flex;
+    flex-wrap: wrap;
+    row-gap: var(#{with-prefix-var('grid-row-gap')});
     margin-left: calc(-1 * var(#{with-prefix-var('grid-row-gutter')}) / 2);
     margin-right: calc(-1 * var(#{with-prefix-var('grid-row-gutter')}) / 2);
 

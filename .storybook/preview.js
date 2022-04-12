@@ -9,6 +9,8 @@ import { withPerformance } from "storybook-addon-performance";
 // import { Title, Subtitle, Description, Primary, ArgsTable, Stories, PRIMARY_STORY } from '@storybook/addon-docs/blocks'
 // import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live'
 import LocaleProvider from '@hi-ui/locale-context'
+import HiUIProvider from '@hi-ui/provider'
+
 // import Popper from '../packages/ui/popper/src/index.js'
 // import Alert from '../packages/ui/alert/es/index.js'
 // import Select from '../packages/ui/select/src/index.js'
@@ -22,16 +24,42 @@ import LocaleProvider from '@hi-ui/locale-context'
  */
 export const decorators = [
   function withHiUIProvider(Story, context) {
-    const theme = context.globals.theme;
+    const accentColor = context.globals.accentColor;
     const locale = context.globals.locale;
+    const radius = context.globals.radius;
 
-    // TODO: Inject HiUI ThemeProvider
+    const theme = React.useMemo(() => {
+      const customRadiusSizeMap = {
+        sm: {
+          sm: '2px',
+          md: '2px',
+          lg: '4px',
+        },
+        md: {
+          sm: '2px',
+          md: '4px',
+          lg: '6px',
+        },
+        lg: {
+          sm: '4px',
+          md: '6px',
+          lg: '8px',
+        }
+      }
+
+      return {
+        border: {
+          radius: customRadiusSizeMap[radius]
+        }
+      }
+    }, [radius])
+
     return (
-      <div theme={theme}>
-        <LocaleProvider locale={locale}>
+      <HiUIProvider accentColor={accentColor} locale={locale} theme={theme}>
+        {/* <LocaleProvider locale={locale}> */}
           <Story {...context} />
-        </LocaleProvider>
-      </div>
+        {/* </LocaleProvider> */}
+      </HiUIProvider>
     );
   },
   function withLayout(Story, context) {
@@ -89,13 +117,22 @@ export const parameters = {
  * Add global toolbar menus for switching to theme, i18n and RTL-LTR
  */
 export const globalTypes = {
-  theme: {
-    name: "Theme",
-    description: "Global theme for components",
-    defaultValue: "light",
+  accentColor: {
+    name: "AccentColor",
+    description: "Global accentColor for components",
+    defaultValue: "",
     toolbar: {
       icon: "circlehollow",
-      items: ["light", "dark"],
+      items: [
+        'brandblue',
+        'ultramarine',
+        'pastelblue',
+        'skyblue',
+        'orange',
+        'amber',
+        'purple',
+        'cyan',
+    ],
     },
   },
   locale: {
@@ -119,6 +156,15 @@ export const globalTypes = {
     toolbar: {
       icon: "transfer",
       items: ["LTR", "RTL"],
+    },
+  },
+  radius: {
+    name: "Radius",
+    description: "Global Border Radius for components",
+    defaultValue: "",
+    toolbar: {
+      icon: "lightning",
+      items: ["sm", "md", "lg"],
     },
   },
 };

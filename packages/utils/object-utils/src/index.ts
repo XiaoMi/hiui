@@ -1,4 +1,4 @@
-import { isNullish, isObjectLike } from '@hi-ui/type-assertion'
+import { isNullish, isObject, isObjectLike } from '@hi-ui/type-assertion'
 import { normalizeArray } from '@hi-ui/array-utils'
 
 const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -150,4 +150,57 @@ function isCyclic(obj: Object): boolean {
   }
 
   return detect(obj)
+}
+
+/**
+ * Merge object deep
+ */
+export const merge = <T extends Object, E extends T>(
+  source: T,
+  override: E | null | undefined
+): T => {
+  if (!override) return source
+  if (!source) return clone(override)
+
+  const target: any = source
+
+  for (const key in override) {
+    if (hasOwnProp(override, key)) {
+      if (isObject(override[key])) {
+        if (isObject((source as any)[key])) {
+          target[key] = merge((source as any)[key], override[key])
+        } else {
+          target[key] = clone(override[key])
+        }
+      } else {
+        target[key] = override[key]
+      }
+    }
+  }
+
+  return target as T
+}
+
+/**
+ * Transform object to paths
+ */
+export const object2Paths = <T extends Object>(props: T) => {
+  const objectPaths = [] as any[]
+
+  const dig = (obj: Record<string, any>, parents: string[]) => {
+    Object.keys(obj).forEach((key) => {
+      const value = obj[key]
+      const paths = [...parents, key]
+
+      if (isObject(value)) {
+        dig(value, paths)
+      } else {
+        const varItem = [...paths, value] as any[]
+        objectPaths.push(varItem)
+      }
+    })
+  }
+
+  dig(props, [])
+  return objectPaths
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import Stepper from '../src'
 
-export const VerticalLayout = () => {
+export const Placement = () => {
   const list = [
     {
       title: '账号信息',
@@ -12,14 +12,14 @@ export const VerticalLayout = () => {
       content: '请输入邮箱',
     },
     {
-      title: '信息登记',
+      title: '信息登记信息登记信息登记信息登记信息登记',
       content: '请输入个人信息',
     },
   ]
   return (
     <>
-      <h1>VerticalLayout</h1>
-      <div className="stepper-vertical-layout__wrap">
+      <h1>Placement</h1>
+      <div className="stepper-placement__wrap">
         <Stepper data={list} current={2} placement="vertical" />
       </div>
     </>
