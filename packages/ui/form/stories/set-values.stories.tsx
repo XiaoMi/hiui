@@ -35,7 +35,7 @@ export const SetValues = () => {
             select: '3',
           }}
         >
-          <Row>
+          <Row gutter>
             <Col>
               <FormItem
                 label="Input"
