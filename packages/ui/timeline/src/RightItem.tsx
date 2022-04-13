@@ -1,20 +1,33 @@
 import React from 'react'
-import { cx } from '@hi-ui/classname'
+import { getPrefixCls } from '@hi-ui/classname'
 import { TimelineDataItem } from './types'
+import { isNullish } from '@hi-ui/type-assertion'
 
-const RightItem: React.FC<TimelineDataItem> = ({ title, content, timestamp, extraTime, icon }) => {
+const _prefix = getPrefixCls('timeline-item')
+
+export const RightItem: React.FC<TimelineDataItem> = ({
+  prefixCls = _prefix,
+  title,
+  content,
+  timestamp,
+  extraTime,
+  icon,
+}) => {
   return (
-    <div className={cx('timeline__item')}>
-      <div className="item__title">{title}</div>
-      <div className="item__content">{content}</div>
-      <div className="item__time">
+    <div className={prefixCls}>
+      <div className={`${prefixCls}__title`}>{title}</div>
+      <div className={`${prefixCls}__content`}>{content}</div>
+      <div className={`${prefixCls}__time`}>
         {timestamp} {extraTime}
       </div>
 
-      {(icon && <div className="item__icon">{icon}</div>) || <div className="item__dot" />}
-      <div className="item__line" />
+      {isNullish(icon) ? (
+        <div className={`${prefixCls}__dot`} />
+      ) : (
+        <div className={`${prefixCls}__icon`}>{icon}</div>
+      )}
+
+      <div className={`${prefixCls}__line`} />
     </div>
   )
 }
-
-export default RightItem

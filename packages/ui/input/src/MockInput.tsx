@@ -140,6 +140,17 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
   }
 )
 
+export interface MockInputDataItem extends HiBaseDataItem {
+  /**
+   * 节点 id
+   */
+  id: React.ReactText
+  /**
+   * 节点标题
+   */
+  title: React.ReactNode
+}
+
 export type MockInputProps = HiBaseHTMLFieldProps<
   'div',
   {
@@ -170,7 +181,7 @@ export type MockInputProps = HiBaseHTMLFieldProps<
     /**
      * 自定义选择后触发器所展示的内容
      */
-    displayRender?: (item: HiBaseDataItem) => React.ReactNode
+    displayRender?: (item: MockInputDataItem) => React.ReactNode
     /**
      * 输入框占位符
      */
@@ -186,7 +197,7 @@ export type MockInputProps = HiBaseHTMLFieldProps<
     /**
      * 展示数据源
      */
-    data?: HiBaseDataItem[]
+    data?: MockInputDataItem[]
     /**
      * 是否聚焦
      */

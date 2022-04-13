@@ -1,4 +1,7 @@
-import React, { ReactText } from 'react'
+import React from 'react'
+
+export declare type ValueOf<T> = T[keyof T]
+export declare type Dict<T = any> = Record<string, T>
 
 export declare type HiBaseHTMLProps<T extends React.ElementType = any, P = {}> = Omit<
   React.ComponentPropsWithoutRef<T>,
@@ -23,12 +26,7 @@ export declare type HiBaseHTMLProps<T extends React.ElementType = any, P = {}> =
   role?: string
 } & P
 
-export declare type HiBaseDataItem = {
-  id: ReactText
-  title: React.ReactNode
-}
-
-export declare type HiBaseData = HiBaseDataItem[]
+export declare interface HiBaseDataItem extends Dict {}
 
 export declare type HiBaseHTMLFieldProps<
   T extends React.ElementType = any,
@@ -39,8 +37,6 @@ export declare type HiBaseHTMLFieldProps<
    */
   invalid?: boolean
 }
-
-export declare type ValueOf<T> = T[keyof T]
 
 /**
  * 设置模型数据读取映射

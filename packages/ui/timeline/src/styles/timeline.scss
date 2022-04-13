@@ -11,11 +11,11 @@ $prefix: '#{$component-prefix}-timeline' !default;
   }
 
   &--cross {
-    .timeline__item {
+    .#{$prefix}-item {
       position: relative;
       margin-bottom: use-spacing(12);
 
-      .item__line {
+      .#{$prefix}-item__line {
         top: 7px;
         height: calc(100% + #{use-spacing(12)});
       }
@@ -23,7 +23,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
       &:last-of-type {
         margin-bottom: 0;
 
-        .item__line {
+        .#{$prefix}-item__line {
           height: 0;
         }
       }
@@ -33,7 +33,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
         margin-right: calc(50% + #{use-spacing(11)});
         text-align: right;
 
-        .item__dot {
+        .#{$prefix}-item__dot {
           width: 8px;
           height: 8px;
           border: 2px solid use-color-mode('primary');
@@ -47,7 +47,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
           z-index: 2;
         }
 
-        .item__icon {
+        .#{$prefix}-item__icon {
           position: absolute;
           background: use-color-static('white');
           top: 7px;
@@ -56,7 +56,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
           z-index: 2;
         }
 
-        .item__line {
+        .#{$prefix}-item__line {
           position: absolute;
           right: calc(-22px);
           width: 2px;
@@ -64,13 +64,13 @@ $prefix: '#{$component-prefix}-timeline' !default;
           transform: translateX(50%);
         }
 
-        .item__time {
+        .#{$prefix}-item__time {
           color: use-color('gray', 500);
           font-size: use-text-size('sm');
           line-height: use-text-lineheight('sm');
         }
 
-        .item__title {
+        .#{$prefix}-item__title {
           color: use-color('gray', 700);
           font-size: use-text-size('normal');
           line-height: use-text-lineheight('normal');
@@ -78,7 +78,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
           margin-bottom: use-spacing(2);
         }
 
-        .item__content {
+        .#{$prefix}-item__content {
           color: use-color('gray', 600);
           font-size: use-text-size('sm');
           line-height: use-text-lineheight('sm');
@@ -90,7 +90,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
         width: calc(50% - #{use-spacing(11)});
         margin-left: calc(50% + #{use-spacing(11)});
 
-        .item__dot {
+        .#{$prefix}-item__dot {
           width: 8px;
           height: 8px;
           border: 2px solid use-color-mode('primary');
@@ -104,7 +104,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
           z-index: 2;
         }
 
-        .item__line {
+        .#{$prefix}-item__line {
           position: absolute;
           left: -22px;
           width: 2px;
@@ -112,26 +112,26 @@ $prefix: '#{$component-prefix}-timeline' !default;
           transform: translateX(-50%);
         }
 
-        .item__time {
+        .#{$prefix}-item__time {
           color: use-color('gray', 500);
           font-size: use-text-size('sm');
           line-height: use-text-lineheight('sm');
         }
 
-        .item__extra {
+        .#{$prefix}-item__extra {
           color: use-color('gray', 600);
           font-size: use-text-size('sm');
           line-height: use-text-lineheight('sm');
         }
 
-        .item__title {
+        .#{$prefix}-item__title {
           color: use-color('gray', 700);
           font-size: use-text-size('normal');
           line-height: use-text-lineheight('normal');
           margin-bottom: 2px;
         }
 
-        .item__content {
+        .#{$prefix}-item__content {
           color: use-color('gray', 600);
           font-size: use-text-size('sm');
           line-height: use-text-lineheight('sm');
@@ -141,12 +141,12 @@ $prefix: '#{$component-prefix}-timeline' !default;
   }
 
   &--right {
-    .timeline__item {
+    .#{$prefix}-item {
       position: relative;
       margin-bottom: use-spacing(12);
       margin-left: 24px;
 
-      .item__title {
+      .#{$prefix}-item__title {
         color: use-color('gray', 700);
         font-size: use-text-size('normal');
         line-height: use-text-lineheight('normal');
@@ -154,14 +154,14 @@ $prefix: '#{$component-prefix}-timeline' !default;
         margin-bottom: use-spacing(2);
       }
 
-      .item__content {
+      .#{$prefix}-item__content {
         color: use-color('gray', 600);
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
         margin-bottom: use-spacing(4);
       }
 
-      .item__time {
+      .#{$prefix}-item__time {
         color: use-color('gray', 500);
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
@@ -170,12 +170,12 @@ $prefix: '#{$component-prefix}-timeline' !default;
       &:last-of-type {
         margin-bottom: 0;
 
-        .item__line {
+        .#{$prefix}-item__line {
           height: 0;
         }
       }
 
-      .item__dot {
+      .#{$prefix}-item__dot {
         width: 8px;
         height: 8px;
         border: 2px solid use-color-mode('primary');
@@ -189,7 +189,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
         z-index: 2;
       }
 
-      .item__icon {
+      .#{$prefix}-item__icon {
         position: absolute;
         background: use-color-static('white');
         top: 7px;
@@ -198,7 +198,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
         z-index: 2;
       }
 
-      .item__line {
+      .#{$prefix}-item__line {
         position: absolute;
         left: -22px;
         top: 7px;
@@ -211,9 +211,9 @@ $prefix: '#{$component-prefix}-timeline' !default;
   }
 
   &--default {
-    .timeline__collapse {
-      .timeline__item {
-        .item__dot {
+    .#{$prefix}-item__collapse {
+      .#{$prefix}-item {
+        .#{$prefix}-item__dot {
           background: use-color-mode('primary');
           width: 6px;
           height: 6px;
@@ -221,21 +221,21 @@ $prefix: '#{$component-prefix}-timeline' !default;
       }
 
       &:not(:last-of-type) {
-        .timeline__item:last-of-type {
-          .item__line {
+        .#{$prefix}-item:last-of-type {
+          .#{$prefix}-item__line {
             height: 100%;
           }
 
-          .item--right {
+          .#{$prefix}-item--right {
             margin-bottom: use-spacing(12);
           }
         }
       }
     }
 
-    .timeline__group {
-      .timeline__item {
-        .item__line {
+    .#{$prefix}-group {
+      .#{$prefix}-item {
+        .#{$prefix}-item__line {
           position: absolute;
           left: 30%;
           width: 2px;
@@ -247,9 +247,9 @@ $prefix: '#{$component-prefix}-timeline' !default;
       }
 
       &:first-of-type {
-        .timeline__item {
+        .#{$prefix}-item {
           &:first-of-type {
-            .item__line {
+            .#{$prefix}-item__line {
               top: 7px !important;
               height: 100% !important;
             }
@@ -258,13 +258,13 @@ $prefix: '#{$component-prefix}-timeline' !default;
       }
 
       &:last-of-type {
-        .timeline__item {
+        .#{$prefix}-item {
           &:last-of-type {
-            .item--right {
+            .#{$prefix}-item--right {
               margin-bottom: 0;
             }
 
-            .item__line {
+            .#{$prefix}-item__line {
               height: 0 !important;
             }
           }
@@ -272,7 +272,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
       }
     }
 
-    .timeline__group-title {
+    .#{$prefix}-group-title {
       text-align: right;
       width: calc(30% - #{use-spacing(11)});
       font-size: use-text-size('sm');
@@ -281,7 +281,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
       color: use-color('gray', 600);
       position: relative;
 
-      .item__line {
+      .#{$prefix}-item__line {
         position: absolute;
         top: 7px;
         left: calc(100% + #{use-spacing(11)});
@@ -293,30 +293,30 @@ $prefix: '#{$component-prefix}-timeline' !default;
       }
     }
 
-    .timeline__item {
+    .#{$prefix}-item {
       display: flex;
       position: relative;
 
-      .item--left {
+      .#{$prefix}-item--left {
         text-align: right;
         width: calc(30% - #{use-spacing(11)});
         margin-right: use-spacing(11);
 
-        .item__time {
+        .#{$prefix}-item__time {
           color: use-color('gray', 600);
           font-size: use-text-size('normal');
           line-height: use-text-lineheight('normal');
           font-weight: use-text-weight('medium');
         }
 
-        .item__extra {
+        .#{$prefix}-item__extra {
           color: use-color('gray', 600);
           font-size: use-text-size('sm');
           line-height: use-text-lineheight('sm');
         }
       }
 
-      .item__dot {
+      .#{$prefix}-item__dot {
         width: 8px;
         height: 8px;
         border: 2px solid use-color-mode('primary');
@@ -330,7 +330,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
         z-index: 2;
       }
 
-      .item__icon {
+      .#{$prefix}-item__icon {
         position: absolute;
         background: use-color-static('white');
         top: 7px;
@@ -339,7 +339,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
         z-index: 2;
       }
 
-      .item__line {
+      .#{$prefix}-item__line {
         position: absolute;
         left: 30%;
         top: 7px;
@@ -349,12 +349,12 @@ $prefix: '#{$component-prefix}-timeline' !default;
         transform: translateX(-50%);
       }
 
-      .item--right {
+      .#{$prefix}-item--right {
         width: calc(70% - #{use-spacing(11)});
         margin-left: use-spacing(11);
         margin-bottom: use-spacing(12);
 
-        .item__title {
+        .#{$prefix}-item__title {
           color: use-color('gray', 700);
           font-size: use-text-size('normal');
           line-height: use-text-lineheight('normal');
@@ -362,7 +362,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
           margin-bottom: use-spacing(2);
         }
 
-        .item__content {
+        .#{$prefix}-item__content {
           color: use-color('gray', 600);
           font-size: use-text-size('sm');
           line-height: use-text-lineheight('sm');
@@ -370,11 +370,11 @@ $prefix: '#{$component-prefix}-timeline' !default;
       }
 
       &:last-of-type {
-        .item--right {
+        .#{$prefix}-item--right {
           margin-bottom: 0;
         }
 
-        .item__line {
+        .#{$prefix}-item__line {
           height: 0;
         }
       }

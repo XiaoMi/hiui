@@ -1,8 +1,12 @@
 import React from 'react'
-import { cx } from '@hi-ui/classname'
+import { getPrefixCls } from '@hi-ui/classname'
 import { TimelineDataItem } from './types'
+import { isNullish } from '@hi-ui/type-assertion'
 
-const CrossItem: React.FC<TimelineDataItem> = ({
+const _prefix = getPrefixCls('timeline-item')
+
+export const CrossItem: React.FC<TimelineDataItem> = ({
+  prefixCls = _prefix,
   title,
   content,
   timestamp,
@@ -12,38 +16,45 @@ const CrossItem: React.FC<TimelineDataItem> = ({
 }) => {
   return children ? (
     <>
-      <div className={cx('timeline__item')}>
-        <div className="item--left">
-          <div className="item__time">{timestamp}</div>
-          <div className="item__extra">{extraTime}</div>
+      <div className={prefixCls}>
+        <div className={`${prefixCls}--left`}>
+          <div className={`${prefixCls}__time`}>{timestamp}</div>
+          <div className={`${prefixCls}__extra`}>{extraTime}</div>
         </div>
-        {(icon && <div className="item__icon">{icon}</div>) || <div className="item__dot" />}
-        <div className="item__line" />
-        <div className="item--right">
-          <div className="item__title">{title}</div>
-          <div className="item__content">{content}</div>
+        {isNullish(icon) ? (
+          <div className={`${prefixCls}__dot`} />
+        ) : (
+          <div className={`${prefixCls}__icon`}>{icon}</div>
+        )}
+
+        <div className={`${prefixCls}__line`} />
+        <div className={`${prefixCls}--right`}>
+          <div className={`${prefixCls}__title`}>{title}</div>
+          <div className={`${prefixCls}__content`}>{content}</div>
         </div>
       </div>
-      <div className={cx('timeline__collapse')}>
+      <div className={`${prefixCls}__collapse`}>
         {children?.map((child, idx) => (
           <CrossItem key={idx} {...child} />
         ))}
       </div>
     </>
   ) : (
-    <div className={cx('timeline__item')}>
-      <div className="item--left">
-        <div className="item__time">{timestamp}</div>
-        <div className="item__extra">{extraTime}</div>
+    <div className={prefixCls}>
+      <div className={`${prefixCls}--left`}>
+        <div className={`${prefixCls}__time`}>{timestamp}</div>
+        <div className={`${prefixCls}__extra`}>{extraTime}</div>
       </div>
-      {(icon && <div className="item__icon">{icon}</div>) || <div className="item__dot" />}
-      <div className="item__line" />
-      <div className="item--right">
-        <div className="item__title">{title}</div>
-        <div className="item__content">{content}</div>
+      {isNullish(icon) ? (
+        <div className={`${prefixCls}__dot`} />
+      ) : (
+        <div className={`${prefixCls}__icon`}>{icon}</div>
+      )}
+      <div className={`${prefixCls}__line`} />
+      <div className={`${prefixCls}--right`}>
+        <div className={`${prefixCls}__title`}>{title}</div>
+        <div className={`${prefixCls}__content`}>{content}</div>
       </div>
     </div>
   )
 }
-
-export default CrossItem

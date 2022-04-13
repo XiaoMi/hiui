@@ -1,6 +1,7 @@
+import { HiBaseDataItem } from '@hi-ui/core'
 import React from 'react'
 
-export interface TimelineDataItem {
+export interface TimelineDataItem extends HiBaseDataItem {
   /**
    * 节点标题
    */
@@ -27,7 +28,7 @@ export interface TimelineDataItem {
   children?: TimelineDataItem[]
 }
 
-export interface TimelineGroupDataItem {
+export interface TimelineGroupDataItem extends HiBaseDataItem {
   /**
    * 分组标题
    */
