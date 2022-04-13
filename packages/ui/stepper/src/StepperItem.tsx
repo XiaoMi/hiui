@@ -7,7 +7,7 @@ import { isUndef } from '@hi-ui/type-assertion'
 import { StepperDataItem } from './types'
 
 const _role = 'stepper-item'
-const _prefix = getPrefixCls('stepper')
+const _prefix = getPrefixCls(_role)
 
 /**
  * TODO: What is Stepper
@@ -33,33 +33,31 @@ export const StepperItem = forwardRef<HTMLDivElement | null, StepperItemProps>(
     const pending = step > current
 
     const cls = cx(
-      `${prefixCls}__item`,
-      active && `${prefixCls}__item--active`,
-      done && `${prefixCls}__item--done`,
-      pending && `${prefixCls}__item--pending`,
+      prefixCls,
+      active && `${prefixCls}--active`,
+      done && `${prefixCls}--done`,
+      pending && `${prefixCls}--pending`,
       className
     )
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <div className={cx(`${prefixCls}__item-status`, 'item-step__wrapper')}>
+        <div className={cx(`${prefixCls}-status`, 'item-step__wrapper')}>
           {renderIcon({
-            prefixCls: `${prefixCls}__item-status`,
+            prefixCls: `${prefixCls}-status`,
             icon: icon,
             type,
             step,
             done,
           })}
         </div>
-        <div className={`${prefixCls}__item-tip`}>
+        <div className={`${prefixCls}-tip`}>
           {isUndef(title) ? null : (
-            <div className={`${prefixCls}__item-tip__title`}>
+            <div className={`${prefixCls}-tip__title`}>
               <div>{title}</div>
             </div>
           )}
-          {isUndef(content) ? null : (
-            <div className={`${prefixCls}__item-tip__content`}>{content}</div>
-          )}
+          {isUndef(content) ? null : <div className={`${prefixCls}-tip__content`}>{content}</div>}
         </div>
       </div>
     )

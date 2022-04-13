@@ -7,7 +7,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
   font-size: use-text-size('normal');
   overflow: auto;
 
-  &__item {
+  &-item {
     overflow: hidden;
 
     // 状态
@@ -58,8 +58,8 @@ $prefix: '#{$component-prefix}-stepper' !default;
       }
     }
 
-    &.#{$prefix}__item--done {
-      .#{$prefix}__item {
+    &.#{$prefix}-item--done {
+      .#{$prefix}-item {
         &-status {
           &__step {
             background-color: use-color-mode('primary', 50);
@@ -83,8 +83,8 @@ $prefix: '#{$component-prefix}-stepper' !default;
       }
     }
 
-    &.#{$prefix}__item--active {
-      .#{$prefix}__item {
+    &.#{$prefix}-item--active {
+      .#{$prefix}-item {
         &-status {
           &__step {
             background-color: use-color-mode('primary');
@@ -121,7 +121,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
       $line-spacing: use-spacing(6);
 
-      .#{$prefix}__item {
+      .#{$prefix}-item {
         position: relative;
         display: flex;
         flex: 1;
@@ -151,15 +151,15 @@ $prefix: '#{$component-prefix}-stepper' !default;
         }
 
         // 完成态
-        &.#{$prefix}__item--done {
+        &.#{$prefix}-item--done {
           &::after {
             background-color: use-color-mode('primary');
           }
         }
 
         // 激活态
-        &.#{$prefix}__item--active {
-          .#{$prefix}__item {
+        &.#{$prefix}-item--active {
+          .#{$prefix}-item {
             &__dot {
               background-color: use-color-mode('primary');
             }
@@ -182,7 +182,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
     }
 
     &-horizontal {
-      .#{$prefix}__item {
+      .#{$prefix}-item {
         &--horizontal {
           display: flex;
           position: relative;
@@ -201,7 +201,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
             flex: none;
           }
 
-          .#{$prefix}__item {
+          .#{$prefix}-item {
             &-tip {
               display: inline-block;
               margin-bottom: 0;
@@ -242,7 +242,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
           // 水平线，相对 title 元素
           &:not(:last-of-type) {
-            .#{$prefix}__item-tip__title::after {
+            .#{$prefix}-item-tip__title::after {
               content: '';
               position: absolute;
               left: 100%;
@@ -253,12 +253,12 @@ $prefix: '#{$component-prefix}-stepper' !default;
             }
           }
 
-          .#{$prefix}__item-tip__title::after {
+          .#{$prefix}-item-tip__title::after {
             background-color: use-color('gray', 200);
           }
 
-          &.#{$prefix}__item--done {
-            .#{$prefix}__item-tip__title::after {
+          &.#{$prefix}-item--done {
+            .#{$prefix}-item-tip__title::after {
               background-color: use-color-mode('primary');
             }
           }
@@ -272,7 +272,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
           min-width: 20%;
           flex-direction: column;
 
-          .#{$prefix}__item {
+          .#{$prefix}-item {
             &-tip {
               &__title {
                 text-align: center;
@@ -314,9 +314,9 @@ $prefix: '#{$component-prefix}-stepper' !default;
             right: 0;
           }
 
-          &.#{$prefix}__item--active::before,
-          &.#{$prefix}__item--done::before,
-          &.#{$prefix}__item--done::after {
+          &.#{$prefix}-item--active::before,
+          &.#{$prefix}-item--done::before,
+          &.#{$prefix}-item--done::after {
             background-color: use-color-mode('primary');
           }
         }

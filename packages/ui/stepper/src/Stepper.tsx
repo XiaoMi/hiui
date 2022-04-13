@@ -48,7 +48,8 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
             <StepperItem
               key={step}
               {...item}
-              className={cx(placement === 'horizontal' && `${prefixCls}__item--${itemLayout}`)}
+              prefixCls={`${prefixCls}-item`}
+              className={cx(placement === 'horizontal' && `${prefixCls}-item--${itemLayout}`)}
               step={step}
               type={type}
               current={current}
