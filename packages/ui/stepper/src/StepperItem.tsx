@@ -42,7 +42,7 @@ export const StepperItem = forwardRef<HTMLDivElement | null, StepperItemProps>(
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <div className={cx(`${prefixCls}-status`, 'item-step__wrapper')}>
+        <div className={`${prefixCls}-status`}>
           {renderIcon({
             prefixCls: `${prefixCls}-status`,
             icon: icon,
