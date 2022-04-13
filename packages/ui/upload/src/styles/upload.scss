@@ -36,6 +36,7 @@ $prefix: '#{$component-prefix}-upload' !default;
     text-align: center;
     height: 20px;
     transition: all 0.3s;
+    font-size: use-text-size('lg');
 
     &:hover {
       background-color: use-color('gray', 300);
