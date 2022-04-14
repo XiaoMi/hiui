@@ -59,6 +59,8 @@ export const useSlider = ({
 
   const sliderRef = useRef<HTMLDivElement>(null)
 
+  const handleElementRef = useRef<HTMLDivElement>(null)
+
   /**
    * 计算 track 滑动长度占总 Slider 长度占比
    */
@@ -179,7 +181,10 @@ export const useSlider = ({
 
       setInMoving(true)
 
-      setValueByDrag(evt)
+      // 点击 handler 滑动器时保持值不变，不触发修改
+      if (!(handleElementRef.current && handleElementRef.current.contains(evt.target))) {
+        setValueByDrag(evt)
+      }
     },
     [disabled, setValueByDrag]
   )
@@ -302,6 +307,7 @@ export const useSlider = ({
     }
 
     return {
+      ref: handleElementRef,
       style,
       onMouseEnter,
       onMouseLeave,
@@ -331,7 +337,7 @@ export const useSlider = ({
     return {
       style,
     }
-  }, [])
+  }, [vertical])
 
   const getTrackProps = useCallback(() => {
     const verticalAttr = reversed ? 'top' : 'bottom'

@@ -4,6 +4,8 @@ $prefix: '#{$component-prefix}-notification' !default;
 
 .#{$prefix}-manager {
   margin-top: 6px;
+  overflow-y: auto;
+  bottom: 0;
 }
 
 .#{$prefix} {
@@ -44,9 +46,9 @@ $prefix: '#{$component-prefix}-notification' !default;
     }
   }
 
-  $transition-duration: 0.3s;
-  $transition-height-delay: 0.21s;
-  $transition-height-duration: 0.2s;
+  $transition-duration: use-motion-duration('slow');
+  $transition-height-delay: use-motion-duration('normal');
+  $transition-height-duration:  use-motion-duration('normal');
 
   &-container {
     width: auto;
@@ -54,12 +56,15 @@ $prefix: '#{$component-prefix}-notification' !default;
     align-items: flex-end;
     flex-direction: column;
     position: relative;
+    max-height: 50vh;
+    overflow: hidden;
+    // animation
+    transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration $transition-height-delay;
+    transition-timing-function: use-motion-bezier('normal');
+    opacity: 1;
     transform: translateX(100%);
     transform-origin: 50% 50% 0;
-    overflow: hidden;
-    opacity: 1;
-    max-height: 50vh;
-    transition: transform $transition-duration ease, opacity $transition-duration ease, height $transition-height-duration ease-out $transition-height-delay;
+    will-change: transform;
   }
 
   &--motion {

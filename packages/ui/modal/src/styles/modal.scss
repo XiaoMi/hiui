@@ -26,7 +26,11 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
     width: 100%;
     height: 100%;
     background-color: $modal-overlay-background-color;
-    transition: opacity 0.3s  cubic-bezier(0.4, 0, 0.2, 1);
+
+    // animation
+    transition-timing-function: use-motion-bezier('normal');
+    transition-duration: use-motion-duration('slow');
+    transition-property: opacity;
     opacity: 0;
     pointer-events: none;
 
@@ -65,10 +69,16 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
     border-radius: use-border-radius('lg');
     box-shadow: use-shadow('lg');
     transition: use-motion-duration('slow') use-motion-bezier('normal');
-    opacity: 0;
-    transform: scale(0);
     display: flex;
     flex-direction: column;
+
+    // animation
+    transition-timing-function: use-motion-bezier('normal');
+    transition-duration: use-motion-duration('slow');
+    transition-property: all;
+    opacity: 0;
+    transform: scale(0);
+    will-change: transform;
 
     .#{$prefix}--size-sm & {
       width: 400px;
@@ -87,7 +97,7 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
 
     .#{$prefix}--motion-enter & {
       opacity: 0;
-      transform: scale(0.8);
+      transform: scale(0.5);
     }
 
     .#{$prefix}--motion-enter-active & {
@@ -97,7 +107,7 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
 
     .#{$prefix}--motion-enter-done & {
       opacity: 1;
-      transform: none;
+      transform: scale(1);
     }
 
     .#{$prefix}--motion-exit & {
@@ -106,13 +116,14 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
     }
 
     .#{$prefix}--motion-exit-active & {
-      opacity: 1;
-      transform: scale(0);
+      opacity: 0;
+      transform: scale(0.5);
     }
 
     .#{$prefix}--motion-exit-done & {
       opacity: 0;
       transform: scale(0);
+      transition-property: none;
     }
   }
 

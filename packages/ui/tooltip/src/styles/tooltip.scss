@@ -16,7 +16,7 @@ $prefix: '#{$component-prefix}-tooltip' !default;
 
   // animation
   transition-timing-function: use-motion-bezier('normal');
-  transition-duration: use-motion-duration('faster');
+  transition-duration: use-motion-duration('fast');
   transition-property: opacity, transform;
   // 该变量通过 JS 注入👇🏻
   transform-origin: var(--popper-transform-origin);

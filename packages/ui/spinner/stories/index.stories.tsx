@@ -3,6 +3,6 @@ import React from 'react'
 export * from './basic.stories'
 
 export default {
-  title: 'Private/Spinner',
+  title: 'Private（暂不对外）/Spinner',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

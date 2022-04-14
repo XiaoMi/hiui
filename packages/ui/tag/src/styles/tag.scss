@@ -237,7 +237,7 @@ $shape-round: '#{$prefix}--shape-round' !default;
     box-sizing: border-box;
     border-color: transparent;
     transition-property: box-shadow;
-    transition-duration: use-motion-duration('faster');
+    transition-duration: use-motion-duration('fast');
     transition-timing-function: use-motion-bezier('normal');
 
     &:hover {

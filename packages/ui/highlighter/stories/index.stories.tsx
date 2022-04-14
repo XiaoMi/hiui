@@ -4,7 +4,7 @@ import Highlighter from '../src'
 export * from './basic.stories'
 
 export default {
-  title: 'Private/Highlighter',
+  title: 'Private（暂不对外）/Highlighter',
   component: Highlighter,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

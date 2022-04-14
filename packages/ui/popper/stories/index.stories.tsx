@@ -11,7 +11,7 @@ export * from './container.stories'
 export * from './hook.stories'
 
 export default {
-  title: 'Private/Popper',
+  title: 'Private（暂不对外）/Popper',
   component: Popper,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

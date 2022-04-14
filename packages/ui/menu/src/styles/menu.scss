@@ -259,6 +259,11 @@ $prefix: '#{$component-prefix}-menu' !default;
       color: use-color('gray', 500);
       height: 40px;
 
+      // @animation
+      transition-duration: use-motion-duration('normal');
+      transition-timing-function: use-motion-bezier('normal');
+      transition-property: background-color;
+
       &:hover {
         background-color: use-color('gray', 100);
       }

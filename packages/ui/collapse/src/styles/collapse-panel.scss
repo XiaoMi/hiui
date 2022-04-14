@@ -53,11 +53,14 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   .#{$icon-class} {
+    font-size: use-text-size('lg');
+    color: use-color('gray', 600);
+
+    // @animation
     transition-property: transform;
     transition-duration: use-motion-duration('normal');
     transition-timing-function: use-motion-bezier('normal');
-    font-size: use-text-size('lg');
-    color: use-color('gray', 600);
+    will-change: transform;
 
     &--left {
       margin-inline-end: use-spacing(3);
@@ -69,11 +72,14 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__content-wrapper {
+
+    // @animation
+    overflow: hidden;
     transition-property: height;
     transition-duration: use-motion-duration('normal');
     transition-timing-function: use-motion-bezier('normal');
     transform-origin: top;
-    overflow: hidden;
+    will-change: height;
   }
 
   &__content {

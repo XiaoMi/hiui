@@ -1,10 +1,10 @@
 // 基础动画时长
 $motion-duration-base-map: (
   'none': 0,
-  'faster': 150ms,
+  'fast': 150ms,
   'normal': 200ms,
-  'slow': 350ms,
-  'slower': 500ms,
+  'slow': 300ms,
+  'slower': 400ms,
 ) !default;
 
 // 基础动画曲线

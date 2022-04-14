@@ -6,7 +6,7 @@ export * from './mock.stories'
 export * from './wrap.stories'
 
 export default {
-  title: 'Private/TagInput',
+  title: 'Private（暂不对外）/TagInput',
   component: TagInput,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

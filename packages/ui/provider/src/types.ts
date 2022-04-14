@@ -160,10 +160,10 @@ export interface DesignSystemHeightSizeProps {
 
 export interface DesignSystemMotionDurationProps {
   none: CSS.Property.TransitionDuration
-  faster: CSS.Property.TransitionDuration
+  fast: CSS.Property.TransitionDuration
   normal: CSS.Property.TransitionDuration
   slow: CSS.Property.TransitionDuration
-  slower: CSS.Property.TransitionDuration
+  // slower: CSS.Property.TransitionDuration
 }
 
 export interface DesignSystemMotionBezierProps {

@@ -40,7 +40,7 @@ export const CustomSearch = () => {
 
   return (
     <>
-      <h1>Search for Tree</h1>
+      <h1>CustomSearch for Tree</h1>
       <div className="tree-search__wrap">
         <Input
           value={searchValue}

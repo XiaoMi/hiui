@@ -30,7 +30,7 @@ $prefix: '#{$component-prefix}-button' !default;
     cursor: pointer;
   }
 
-  transition: background-color use-motion-duration('normal') use-motion-bezier('normal'), border-color use-motion-duration('normal') use-motion-bezier('normal'), box-shadow use-motion-duration('faster') use-motion-bezier('normal'), color use-motion-duration('normal') use-motion-bezier('normal');
+  transition: background-color use-motion-duration('normal') use-motion-bezier('normal'), border-color use-motion-duration('normal') use-motion-bezier('normal'), box-shadow use-motion-duration('fast') use-motion-bezier('normal'), color use-motion-duration('normal') use-motion-bezier('normal');
 
   //聚焦通用
   &:focus {
