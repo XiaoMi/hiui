@@ -14,21 +14,21 @@ export const Placement = () => {
               <td>
                 <Tooltip
                   title="我是内容我是内容我是内容我是内容"
-                  trigger="click"
+                  trigger="hover"
                   placement="top-start"
                 >
                   <Button>top-start</Button>
                 </Tooltip>
               </td>
               <td>
-                <Tooltip title="我是内容我是内容我是内容我是内容" trigger="click" placement="top">
+                <Tooltip title="我是内容我是内容我是内容我是内容" trigger="hover" placement="top">
                   <Button>top</Button>
                 </Tooltip>
               </td>
               <td>
                 <Tooltip
                   title="我是内容我是内容我是内容我是内容"
-                  trigger="click"
+                  trigger="hover"
                   placement="top-end"
                 >
                   <Button>top-end</Button>
@@ -40,8 +40,8 @@ export const Placement = () => {
               <td>
                 <Tooltip
                   title="我是内容我是内容我是内容我是内容"
-                  trigger="click"
-                  placement="left-start"
+                  trigger="hover"
+                  placement="bottom"
                 >
                   <Button>left-start</Button>
                 </Tooltip>
@@ -52,7 +52,7 @@ export const Placement = () => {
               <td>
                 <Tooltip
                   title="我是内容我是内容我是内容我是内容"
-                  trigger="click"
+                  trigger="hover"
                   placement="right-start"
                 >
                   <Button>right-start</Button>
@@ -61,7 +61,11 @@ export const Placement = () => {
             </tr>
             <tr>
               <td>
-                <Tooltip title="我是内容我是内容我是内容我是内容" trigger="click" placement="left">
+                <Tooltip
+                  title="我是内容我是内容我是内容我是内容"
+                  trigger="hover"
+                  placement="bottom"
+                >
                   <Button>left</Button>
                 </Tooltip>
               </td>
@@ -69,7 +73,7 @@ export const Placement = () => {
               <td></td>
               <td></td>
               <td>
-                <Tooltip title="我是内容我是内容我是内容我是内容" trigger="click" placement="right">
+                <Tooltip title="我是内容我是内容我是内容我是内容" trigger="hover" placement="right">
                   <Button>right</Button>
                 </Tooltip>
               </td>
@@ -78,8 +82,8 @@ export const Placement = () => {
               <td>
                 <Tooltip
                   title="我是内容我是内容我是内容我是内容"
-                  trigger="click"
-                  placement="left-end"
+                  trigger="hover"
+                  placement="bottom"
                 >
                   <Button>left-end</Button>
                 </Tooltip>
@@ -90,7 +94,7 @@ export const Placement = () => {
               <td>
                 <Tooltip
                   title="我是内容我是内容我是内容我是内容"
-                  trigger="click"
+                  trigger="hover"
                   placement="right-end"
                 >
                   <Button>right-end</Button>
@@ -102,7 +106,7 @@ export const Placement = () => {
               <td>
                 <Tooltip
                   title="我是内容我是内容我是内容我是内容"
-                  trigger="click"
+                  trigger="hover"
                   placement="bottom-start"
                 >
                   <Button>bottom-start</Button>
@@ -111,7 +115,7 @@ export const Placement = () => {
               <td>
                 <Tooltip
                   title="我是内容我是内容我是内容我是内容"
-                  trigger="click"
+                  trigger="hover"
                   placement="bottom"
                 >
                   <Button>bottom</Button>
@@ -120,7 +124,7 @@ export const Placement = () => {
               <td>
                 <Tooltip
                   title="我是内容我是内容我是内容我是内容"
-                  trigger="click"
+                  trigger="hover"
                   placement="bottom-end"
                 >
                   <Button>bottom-end</Button>

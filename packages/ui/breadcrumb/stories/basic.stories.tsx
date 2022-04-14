@@ -5,15 +5,15 @@ export const Basic = () => {
   const [data] = React.useState([
     {
       title: '首页',
-      path: '/home',
+      href: '/home',
     },
     {
       title: '列表',
-      path: '/list',
+      href: '/list',
     },
     {
       title: '手机详情',
-      path: '/phone',
+      href: '/phone',
     },
   ])
 
@@ -23,15 +23,15 @@ export const Basic = () => {
       <div className="breadcrumb-basic__wrap">
         <Breadcrumb
           data={data}
-          onClick={(path) => {
-            console.log('go path: ', path)
+          onClick={(evt, item) => {
+            console.log('get item: ', item)
           }}
         />
         <Breadcrumb
           data={data}
           size="sm"
-          onClick={(path) => {
-            console.log('go path: ', path)
+          onClick={(evt, item) => {
+            console.log('get item: ', item)
           }}
         />
       </div>

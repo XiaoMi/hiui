@@ -6,15 +6,15 @@ export const Separator = () => {
   const [data] = React.useState([
     {
       title: '首页',
-      path: '/home',
+      href: '/home',
     },
     {
       title: '列表',
-      path: '/list',
+      href: '/list',
     },
     {
       title: '手机详情',
-      path: '/phone',
+      href: '/phone',
     },
   ])
 
@@ -25,8 +25,8 @@ export const Separator = () => {
         <Breadcrumb
           data={data}
           separator={<RightOutlined style={{ fontSize: 16 }} />}
-          onClick={(path) => {
-            console.log('go path: ', path)
+          onClick={(evt, item) => {
+            console.log('get item: ', item)
           }}
         />
       </div>

@@ -7,10 +7,12 @@ import { useLatestCallback } from '@hi-ui/use-latest'
  * 2. 处理 window 支持 SSR
  */
 export const useTimeout = (callback: (...args: any[]) => any, timeoutDelayMs: number) => {
-  const timerRef = useRef<number>()
+  const timerRef = useRef<number | undefined>(undefined)
   const callbackLatest = useLatestCallback(callback)
 
   const clear = useCallback(() => {
+    if (timerRef.current === undefined) return
+
     window.clearTimeout(timerRef.current)
     timerRef.current = undefined
   }, [])

@@ -16,7 +16,7 @@ $prefix: '#{$component-prefix}-tooltip' !default;
 
   // animation
   transition-timing-function: use-motion-bezier('normal');
-  transition-duration: use-motion-duration('normal');
+  transition-duration: use-motion-duration('faster');
   transition-property: opacity, transform;
   // 该变量通过 JS 注入👇🏻
   transform-origin: var(--popper-transform-origin);
@@ -33,7 +33,7 @@ $prefix: '#{$component-prefix}-tooltip' !default;
     &-enter {
       .#{$prefix} {
         opacity: 0;
-        transform: scale(0);
+        transform: scale(0.8);
       }
     }
 
@@ -60,8 +60,8 @@ $prefix: '#{$component-prefix}-tooltip' !default;
 
     &-exit-active {
       .#{$prefix} {
-        opacity: 1;
-        transform: scale(0);
+        opacity: 0;
+        transform: scale(0.8);
       }
     }
 
@@ -70,7 +70,9 @@ $prefix: '#{$component-prefix}-tooltip' !default;
       visibility: hidden;
 
       .#{$prefix} {
+        transition-property: none;
         opacity: 0;
+        transform: scale(0);
       }
     }
   }

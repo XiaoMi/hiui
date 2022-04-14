@@ -56,7 +56,7 @@ export const usePopover = ({
     closeTimerRef.current = window.setTimeout(() => {
       if (hoveringRef.current) return
       visibleAction.off()
-    }, 200)
+    }, 100)
   }, [visibleAction])
 
   const handlePopoverEnter = React.useCallback(() => {
@@ -64,7 +64,7 @@ export const usePopover = ({
 
     openTimerRef.current = window.setTimeout(() => {
       visibleAction.on()
-    }, 0)
+    }, 100)
   }, [visibleAction])
 
   const getOverlayProps = React.useCallback(

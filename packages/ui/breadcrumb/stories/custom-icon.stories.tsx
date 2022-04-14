@@ -7,17 +7,17 @@ export const CustomIcon = () => {
     {
       icon: <HomeOutlined />,
       title: '首页',
-      path: '/home',
+      href: '/home',
     },
     {
       icon: <HomeOutlined />,
       title: '列表',
-      path: '/list',
+      href: '/list',
     },
     {
       icon: <HomeOutlined />,
       title: '手机详情',
-      path: '/phone',
+      href: '/phone',
     },
   ])
 
@@ -27,8 +27,8 @@ export const CustomIcon = () => {
       <div className="breadcrumb-custom-icon__wrap">
         <Breadcrumb
           data={data}
-          onClick={(path) => {
-            console.log('go path: ', path)
+          onClick={(evt, item) => {
+            console.log('get item: ', item)
           }}
         />
       </div>

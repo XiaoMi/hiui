@@ -21,6 +21,8 @@ export const useTooltip = ({
   onClose,
   trigger: triggerProp = 'hover',
   disabled = false,
+  mouseEnterDelay = 100,
+  mouseLeaveDelay = 100,
   ...restProps
 }: UseTooltipProps) => {
   const [popper, rest] = omitPopperOverlayProps(restProps) as any
@@ -41,12 +43,12 @@ export const useTooltip = ({
 
   const { start: startOpenTimer, clear: clearOpenTimer } = useTimeout(() => {
     visibleAction.on()
-  }, 0)
+  }, mouseEnterDelay)
 
   const { start: startCloseTimer, clear: clearCloseTimer } = useTimeout(() => {
     if (hoveringRef.current) return
     visibleAction.off()
-  }, 200)
+  }, mouseLeaveDelay)
 
   const clearToggleTimer = useCallback(() => {
     clearOpenTimer()
@@ -198,6 +200,16 @@ export interface UseTooltipProps extends PopperOverlayProps {
    * @private
    */
   disabled?: boolean
+  /**
+   * 鼠标移入展示延时，单位：毫秒。暂不对外暴露
+   * @private
+   */
+  mouseEnterDelay?: number
+  /**
+   * 鼠标移出后隐藏延时，单位：毫秒。暂不对外暴露
+   * @private
+   */
+  mouseLeaveDelay?: number
 }
 
 export type UseTooltipReturn = ReturnType<typeof useTooltip>
