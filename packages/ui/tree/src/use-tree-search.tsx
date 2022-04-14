@@ -24,26 +24,47 @@ const NOOP_ARRAY = [] as any[]
 export const useTreeSearch = (BaseTree: Tree) => {
   const AdvancedTreeMemo = useMemo(() => {
     // 高阶组件
-    const AdvancedTree = forwardRef<HTMLUListElement | null, SearchableTreeProps>((props, ref) => {
-      const { treeProps, searchInputProps, isEmpty, searchEmptyResult } = useTreeSearchProps(props)
+    const AdvancedTree = forwardRef<HTMLUListElement | null, SearchableTreeProps>(
+      (
+        {
+          searchPlaceholder: searchPlaceholderProp,
+          searchEmptyContent: searchEmptyContentProp,
+          ...rest
+        },
+        ref
+      ) => {
+        const i18n = useLocaleContext()
 
-      return (
-        <>
-          <div className={`${treeProps.prefixCls}-searcher`}>
-            <Input
-              clearable
-              clearableTrigger="always"
-              {...searchInputProps}
-              prefix={searchInputProps.value ? null : <SearchOutlined />}
-            />
-            {isEmpty ? (
-              <span className={`${treeProps.prefixCls}-searcher--empty`}>{searchEmptyResult}</span>
-            ) : null}
-          </div>
-          <BaseTree ref={ref} {...treeProps} />
-        </>
-      )
-    })
+        const searchPlaceholder = isUndef(searchPlaceholderProp)
+          ? i18n.get('tree.searchPlaceholder')
+          : searchPlaceholderProp
+        const searchEmptyResult = isUndef(searchEmptyContentProp)
+          ? i18n.get('tree.searchEmptyResult')
+          : searchEmptyContentProp
+
+        const { treeProps, searchInputProps, isEmpty } = useTreeSearchProps(rest)
+
+        return (
+          <>
+            <div className={`${treeProps.prefixCls}-searcher`}>
+              <Input
+                {...searchInputProps}
+                clearable
+                clearableTrigger="always"
+                placeholder={searchPlaceholder}
+                prefix={searchInputProps.value ? null : <SearchOutlined />}
+              />
+              {isEmpty ? (
+                <span className={`${treeProps.prefixCls}-searcher--empty`}>
+                  {searchEmptyResult}
+                </span>
+              ) : null}
+            </div>
+            <BaseTree ref={ref} {...treeProps} />
+          </>
+        )
+      }
+    )
 
     if (__DEV__) {
       AdvancedTree.displayName = 'AdvancedTree'
@@ -70,12 +91,6 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     onSearch,
     ...nativeTreeProps
   } = props
-  const i18n = useLocaleContext()
-
-  const searchPlaceholder = isUndef(searchPlaceholderProp)
-    ? i18n.get('tree.searchPlaceholder')
-    : searchPlaceholderProp
-  const searchEmptyResult = i18n.get('tree.searchEmptyResult')
 
   const flattedData = useMemo(() => flattenTreeData(data), [data])
 
@@ -128,33 +143,39 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     draggable: inSearch ? !inSearch : draggable,
   }
 
-  const onSearchLatest = useLatestCallback(onSearch)
-
-  const handleChange = useCallback(
-    (evt: React.ChangeEvent<HTMLInputElement>) => {
-      const nextSearchValue = evt.target.value
-
-      setSearchValue(nextSearchValue)
-      onSearchLatest(nextSearchValue)
+  const filterTree = useCallback(
+    (keyword: string) => {
+      setSearchValue(keyword)
 
       // 匹配到搜索的节点，将这些节点进行展开显示，其它均隐藏
-      const matchedNodes = getMatchedNodes(flattedData, nextSearchValue)
+      const matchedNodes = getMatchedNodes(flattedData, keyword)
       const filteredNodeIds = getFilteredIds(matchedNodes)
 
       setMatchedIds(matchedNodes.map((v) => v.id))
       setFilteredIds(filteredNodeIds)
       tryToggleExpandedIds(filteredNodeIds)
     },
-    [flattedData, tryToggleExpandedIds, onSearchLatest]
+    [flattedData, tryToggleExpandedIds]
+  )
+
+  const onSearchLatest = useLatestCallback(onSearch)
+
+  const handleChange = useCallback(
+    (evt: React.ChangeEvent<HTMLInputElement>) => {
+      const nextSearchValue = evt.target.value
+
+      onSearchLatest(nextSearchValue)
+      filterTree(nextSearchValue)
+    },
+    [onSearchLatest, filterTree]
   )
 
   const searchInputProps = {
     value: searchValue,
     onChange: handleChange,
-    placeholder: searchPlaceholder,
   }
 
-  return { treeProps, searchInputProps, isEmpty, searchEmptyResult }
+  return { treeProps, searchInputProps, isEmpty, filterTree }
 }
 
 export interface SearchableTreeProps extends TreeProps {
@@ -166,6 +187,10 @@ export interface SearchableTreeProps extends TreeProps {
    * 搜索输入占位符
    */
   searchPlaceholder?: string
+  /**
+   * 搜索结果为空时提示文字
+   */
+  searchEmptyContent?: string
   /**
    * 输入关键字搜索时触发回调
    */
