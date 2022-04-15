@@ -19,8 +19,6 @@ export const Provider: React.FC<ProviderProps> = ({ children, locale, accentColo
 
     const mergedThemes = extendsTheme(accentColorTheme, theme)
 
-    console.log('mergedThemes', mergedThemes)
-
     if (!mergedThemes) return
 
     createSystem(mergedThemes, PREFIX)

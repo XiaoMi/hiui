@@ -49,7 +49,7 @@ export const decorators = [
 
       return {
         border: {
-          radius: customRadiusSizeMap[radius]
+          radius: customRadiusSizeMap[radius] || {}
         }
       }
     }, [radius])

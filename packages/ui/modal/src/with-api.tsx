@@ -1,6 +1,7 @@
 import React, { createRef, createElement } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import * as Container from '@hi-ui/container'
+import { uuid } from '@hi-ui/use-id'
 
 import { modalPrefix, Modal, ModalProps } from './Modal'
 
@@ -9,8 +10,9 @@ const selector = `.${prefixCls}-wrapper`
 
 // TODO： 抽离合并到 Toast API
 const open = ({ onConfirm, onCancel, content, ...rest }: ModalApiProps = {}) => {
-  // TODO: 考虑是否支持多个 Modal 共存
-  let container: any = Container.getContainer(selector)
+  // 支持多个 Modal 共存
+  const selectorId = `${selector}__${uuid()}`
+  let container: any = Container.getContainer(selectorId)
 
   const toastManagerRef = createRef<any>()
 
@@ -26,7 +28,7 @@ const open = ({ onConfirm, onCancel, content, ...rest }: ModalApiProps = {}) => 
       // 卸载
       if (container) {
         unmountComponentAtNode(container)
-        Container.removeContainer(selector)
+        Container.removeContainer(selectorId)
       }
 
       container = undefined
@@ -42,8 +44,9 @@ const open = ({ onConfirm, onCancel, content, ...rest }: ModalApiProps = {}) => 
     children: <div style={{ paddingLeft: 32 }}>{content}</div>,
   })
 
-  // TODO：存在弹出时延迟感
-  render(ClonedModal, container)
+  requestAnimationFrame(() => {
+    render(ClonedModal, container)
+  })
 }
 
 export interface ModalApiProps

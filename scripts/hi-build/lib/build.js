@@ -17,6 +17,7 @@ const cssnano = require('cssnano')
 const autoprefixer = require('autoprefixer')
 const json = require('@rollup/plugin-json')
 // const injectCSSImport =  require('./plugins/inject-css-import')
+const cleanSCSS  =require('./plugins/clean-scss')
 
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
 
@@ -42,7 +43,7 @@ const getBanner = (pkg) => {
 // https://github.com/rollup/plugins/tree/master/packages/babel#babelhelpers
 const getExternals = (pkg) => {
   /** @type {(string | RegExp)[]} */
-  return [/tslib|@babel/]
+  return [/tslib|@babel|style-inject/]
     .concat(Object.keys(pkg.peerDependencies || {}))
     .concat(Object.keys(pkg.dependencies || {}))
 }
@@ -148,11 +149,16 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
           ],
           extensions: ['.scss', '.css'],
           // Extract styleInject as a external module
-         inject: !cssExtract ? (variableName) =>
-            `;var __styleInject__=require('style-inject/dist/style-inject.es.js').default;__styleInject__(${variableName});` : false,
+         inject: !cssExtract ? (variableName) => {
+           if (isESM) {
+            return `;import __styleInject__ from 'style-inject/dist/style-inject.es.js';__styleInject__(${variableName});`
+           }
+           return `;var __styleInject__=require('style-inject/dist/style-inject.es.js').default;__styleInject__(${variableName});`
+         } : false,
           extract: cssExtract,
           modules: cssModules,
         }),
+        cleanSCSS(),
         // !cssExtract && injectCSSImport(),
         compress && terser(),
         json()
