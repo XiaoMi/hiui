@@ -6,6 +6,9 @@
   "homepage": "https://github.com/Flcwl/mdui/tree/master/scripts/hi-props-docs#readme",
   "license": "MIT",
   "main": "lib/hi-props-docs.js",
+  "scripts": {
+    "test": "node ./src/hi-props-docs.js"
+  },
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -20,15 +23,16 @@
     "type": "git",
     "url": "git+https://github.com/Flcwl/hi-ui.git"
   },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
   "bugs": {
     "url": "https://github.com/Flcwl/hi-ui/issues"
   },
   "dependencies": {
     "fast-glob": "^3.2.5",
     "fs-extra": "^10.0.0",
-    "react-docgen-typescript": "^2.0.0"
+    "mdast-builder": "^1.1.1",
+    "react-docgen-typescript": "^2.0.0",
+    "remark-stringify": "^10.0.2",
+    "string-width": "^5.1.2",
+    "unified": "^10.1.2"
   }
 }

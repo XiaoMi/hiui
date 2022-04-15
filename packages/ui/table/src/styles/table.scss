@@ -261,7 +261,7 @@ $prefix: '#{$component-prefix}-table' !default;
   font-weight: use-text-weight('medium');
   line-height: use-text-lineheight('sm');
   padding: use-spacing(7) use-spacing(8);
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: use-border-size('normal') use-color('gray', 300);
 
   &.#{$prefix}__embed-col,
   &.#{$prefix}__selection-col {
@@ -272,7 +272,7 @@ $prefix: '#{$component-prefix}-table' !default;
 // 单元格
 .#{$prefix}-cell {
   word-break: break-word;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: use-border-size('normal') use-color('gray', 300);
   font-size: use-text-size('normal');
   font-weight: use-text-weight('normal');
   color: use-color('gray', 700);
@@ -567,5 +567,9 @@ $prefix: '#{$component-prefix}-table' !default;
   td {
     text-align: center;
     padding: use-spacing(12) 0;
+
+    .#{$prefix}--bordered & {
+      border-bottom: use-border-size('normal') use-color('gray', 300);
+    }
   }
 }
