@@ -44,12 +44,18 @@ export const useTableCheck = ({
         return [false, false]
       }
 
-      const checkedAll = flattedData
+      const idsCanBeChecked = flattedData
         .filter((item) => !checkRowIsDisabledCheckbox(item.raw))
-        // TODO: 数组项完全匹配工具函数
-        .every((item) => isCheckedRowKey(item.id))
+        .map((item) => item.id)
 
-      return [checkedAll, checkedAll ? false : checkedRowKeys.length > 0]
+      // TODO: 数组项完全匹配工具函数
+      const checkedAll = idsCanBeChecked.every((id) => isCheckedRowKey(id))
+
+      const semiChecked = checkedAll
+        ? false
+        : checkedRowKeys.length > 0 && idsCanBeChecked.some((id) => isCheckedRowKey(id))
+
+      return [checkedAll, semiChecked]
     }
 
     return [false, false]
@@ -62,15 +68,29 @@ export const useTableCheck = ({
   ])
 
   const tryCheckAllRow = React.useCallback(() => {
+    const targetItems = flattedData.filter((item: any) => !checkRowIsDisabledCheckbox(item.raw))
+    const checkedRowKeys = targetItems.map((item: any) => item.id)
+    const checkedRowKeysSet = new Set(checkedRowKeys)
+
     if (checkedAll) {
-      trySetCheckedRowKeys([] as any, [], false)
+      // 移除当前页所有行 ids
+      trySetCheckedRowKeys(
+        (prev) => prev.filter((id) => !checkedRowKeysSet.has(id)),
+        targetItems,
+        false
+      )
       return
     }
 
-    const targetItems = flattedData.filter((item: any) => !checkRowIsDisabledCheckbox(item.raw))
-    const checkedRowKeys = targetItems.map((item: any) => item.id)
-
-    trySetCheckedRowKeys(checkedRowKeys, targetItems, true)
+    trySetCheckedRowKeys(
+      // 添加当前页所有行 ids
+      (prev) => {
+        prev.forEach((id) => checkedRowKeysSet.add(id))
+        return Array.from(checkedRowKeysSet)
+      },
+      targetItems,
+      true
+    )
   }, [trySetCheckedRowKeys, flattedData, checkRowIsDisabledCheckbox, checkedAll])
 
   return {
