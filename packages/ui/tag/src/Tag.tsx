@@ -148,10 +148,14 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
                 className={`${prefixCls}__input`}
                 autoFocus
                 value={editValueCache}
-                onChange={(e) => setEditValueCache(e.target.value)}
-                onBlur={(e) => {
+                onChange={(evt) => {
+                  evt.stopPropagation()
+                  setEditValueCache(evt.target.value)
+                }}
+                onBlur={(evt) => {
+                  evt.stopPropagation()
                   setIsInEdit(false)
-                  onEdit && onEdit(e.target.value)
+                  onEdit?.(evt.target.value)
                 }}
               />
             )}
