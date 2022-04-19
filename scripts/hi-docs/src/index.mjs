@@ -1,18 +1,28 @@
-const globAsync = require('fast-glob')
-const Path = require('path')
-const FS = require('fs-extra')
+import Path from 'path'
+import { fileURLToPath } from 'url'
+import FS from 'fs-extra'
+import globAsync from 'fast-glob'
+import docgen from 'react-docgen-typescript'
 
-const docgen = require('react-docgen-typescript')
+import { unified } from 'unified'
+import remarkStringify from 'remark-stringify'
+import stringWidth from 'string-width'
+import remarkGfm from 'remark-gfm'
+import { root, emphasis, heading, tableCell, tableRow, table, text } from 'mdast-builder'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = Path.dirname(__filename)
 
 const rootDir = Path.join(__dirname, '../../../')
 
-const sourcePath = Path.join(rootDir, 'packages/components')
+const sourcePath = Path.join(rootDir, 'packages/ui/select')
+
 const outputPath = Path.join(__dirname, '..', 'components')
 
 const tsConfigPath = Path.join(rootDir, 'tsconfig.json')
 
 async function findComponentFiles() {
-  const tsFiles = await globAsync('**/src/**/*.@(ts)', {
+  const tsFiles = await globAsync('**/src/index.@(ts)', {
     cwd: sourcePath,
   })
 
@@ -22,21 +32,42 @@ async function findComponentFiles() {
 function parseDocsInfo(filePaths) {
   const { parse } = docgen.withCustomConfig(tsConfigPath, {
     shouldRemoveUndefinedFromOptional: true,
-    // propFilter: (prop, component) => {
-    //   const isHook = component.name.startsWith("use-")
+    shouldExtractLiteralValuesFromEnum: true,
+    propFilter: (prop, component) => {
+      // 返回 true 表示保留
 
-    //   const isTypeScriptNative = prop.parent?.fileName.includes("node_modules/typescript") ?? false
+      if (['prefixCls', 'role'].includes(prop.name)) return false
+      // if (['className', 'style'].includes(prop.name)) return true
 
-    //   return (
-    //     (isHook && !isTypeScriptNative) || true
-    //   )
-    // },
+      if (prop.declarations !== undefined && prop.declarations.length > 0) {
+        // 排除 node_modules
+        const hasPropAdditionalDescription = prop.declarations.find((declaration) => {
+          return !declaration.fileName.includes('node_modules')
+        })
+
+        return Boolean(hasPropAdditionalDescription)
+      }
+
+      return true
+    },
   })
 
-  return filePaths.flatMap((file) => {
-    const absolutePath = Path.join(sourcePath, file)
-    return parse(absolutePath)
-  })
+  return filePaths
+    .flatMap((file) => {
+      const absolutePath = Path.join(sourcePath, file)
+      log('parseDocsInfo: ', absolutePath)
+
+      let result = null
+
+      try {
+        result = parse(absolutePath)
+      } catch (e) {
+        console.log(e)
+      }
+
+      return result
+    })
+    .filter(Boolean)
 }
 
 function extractComponentInfo(docs) {
@@ -58,14 +89,16 @@ function extractComponentInfo(docs) {
     }
 
     const exportName = createUniqueName(def.displayName)
-    const fileName = `${exportName}.json`
+    const fileName = `${exportName}.md`
 
     acc.push({
+      markdown: def.markdown,
       def,
       displayName: def.displayName,
       fileName,
       exportName,
       importPath: `../components/${fileName}`,
+      // importPath: Path.join(outputPath, fileName),
     })
     return acc
   }, [])
@@ -77,8 +110,8 @@ function extractComponentInfo(docs) {
 function writeComponentInfoFiles(componentInfo) {
   for (const info of componentInfo) {
     const filePath = Path.join(outputPath, info.fileName)
-    const content = JSON.stringify(info.def)
-    writeFileSync(filePath, content)
+    // const content = JSON.stringify(info.def)
+    writeFileSync(filePath, info.markdown)
   }
 }
 
@@ -90,20 +123,6 @@ async function writeFileSync(path, content) {
 function log(...args) {
   console.info(`[props-docs]`, ...args)
 }
-
-const unified = require('unified')
-const remarkStringify = require('remark-stringify')
-const stringWidth = require('string-width')
-const {
-  root,
-  emphasis,
-  heading,
-  tableCell,
-  tableRow,
-  table,
-  text,
-  Children,
-} = require('mdast-builder')
 
 const isChildren = (content) =>
   !['number', 'string', 'boolean', 'undefined'].includes(typeof content) && content !== null
@@ -124,11 +143,14 @@ function tableAstBuilder(dataSource, columns) {
 }
 
 const isEnumType = (type) => type.name === 'enum' && Array.isArray(type.value)
+const isBooleanType = (type) => type.name === 'boolean'
 
 const tableRenderer = (doc) => {
+  log('table Render: ', doc.displayName)
+
   return [
-    heading(3, text(doc.displayName)),
-    text(doc.description),
+    // heading(3, text(doc.displayName)),
+    // text(doc.description),
     tableAstBuilder(Object.values(doc.props), [
       {
         title: '参数',
@@ -141,30 +163,50 @@ const tableRenderer = (doc) => {
       },
       {
         title: '类型',
-        render: (val) => (isEnumType(val.type) ? val.type.raw : val.type.name),
+        render: (val) => (val.type ? (isEnumType(val.type) ? val.type.raw : val.type.name) : '-'),
       },
       {
         title: '可选值',
-        render: (val) =>
-          isEnumType(val.type) ? val.type.value.map((e) => e.value).join(', ') : '',
+        render: (val) => {
+          if (!val.type) return '-'
+          if (isEnumType(val.type)) return val.type.value.map((e) => e.value).join(' | ')
+          if (isBooleanType(val.type)) return 'true | false'
+          return '-'
+        },
       },
       {
         title: '默认值',
-        render: (val) => (val.defaultValue ? val.defaultValue.value : '-'),
+        render: (val) => {
+          if (val.defaultValue) {
+            if (
+              typeof val.defaultValue.value === 'string' &&
+              !val.defaultValue.value.startsWith('<')
+            ) {
+              return `"${val.defaultValue.value}"`
+            }
+            return val.defaultValue.value
+          }
+          return '-'
+        },
       },
     ]),
   ]
 }
 
-function markdownRender(docs) {
-  return unified()
+function markdownRender(doc) {
+  const remark = unified()
+    .use(remarkGfm, { stringLength: stringWidth })
     .use(remarkStringify, { stringLength: stringWidth })
-    .stringify(root(docs.map((v) => tableRenderer(v))))
+
+  const table = root(tableRenderer(doc))
+
+  return remark.stringify(table)
 }
 
 async function main() {
   const componentFiles = await findComponentFiles()
 
+  FS.removeSync(outputPath)
   if (componentFiles.length) {
     await FS.mkdirp(outputPath)
   }
@@ -173,10 +215,13 @@ async function main() {
   const parsedInfo = parseDocsInfo(componentFiles)
 
   log('Render markdown table...')
-  markdownRender(parsedInfo)
+  parsedInfo.forEach((doc) => {
+    doc.markdown = markdownRender(doc)
+  })
 
   log('Extracting component info...')
   const componentInfo = extractComponentInfo(parsedInfo)
+  // console.log(componentInfo)
 
   log('Writing component info files...')
   writeComponentInfoFiles(componentInfo)
@@ -184,9 +229,12 @@ async function main() {
   log(`Processed ${componentInfo.length} components`)
 }
 
-module.exports = main
+export default main
 
-if (require.main === module) {
-  // run main function if called via cli
-  main().catch(console.error)
-}
+main().catch(console.error)
+
+// const componentDocs = parse(Path.join(rootDir, 'packages/ui/input/src/Input.tsx'), {
+//   savePropValueAsString: true,
+// })
+
+// console.log(reactMarkdownRender(componentDocs))

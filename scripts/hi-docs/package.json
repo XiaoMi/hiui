@@ -1,13 +1,13 @@
 {
-  "name": "@hi-ui/hi-props-docs",
+  "name": "@hi-ui/hi-docs",
   "version": "4.0.0-beta.1",
   "description": "> TODO: description",
   "author": "pengrui3 <pengrui3@xiaomi.com>",
-  "homepage": "https://github.com/Flcwl/mdui/tree/master/scripts/hi-props-docs#readme",
+  "homepage": "https://github.com/Flcwl/mdui/tree/master/scripts/hi-docs#readme",
   "license": "MIT",
-  "main": "lib/hi-props-docs.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "node ./src/hi-props-docs.js"
+    "test": "node ./src/index.js"
   },
   "directories": {
     "lib": "lib",
@@ -27,10 +27,11 @@
     "url": "https://github.com/Flcwl/hi-ui/issues"
   },
   "dependencies": {
-    "fast-glob": "^3.2.5",
-    "fs-extra": "^10.0.0",
+    "fast-glob": "^3.2.11",
+    "fs-extra": "^10.0.1",
     "mdast-builder": "^1.1.1",
-    "react-docgen-typescript": "^2.0.0",
+    "react-docgen-typescript": "^2.2.2",
+    "remark-gfm": "^3.0.1",
     "remark-stringify": "^10.0.2",
     "string-width": "^5.1.2",
     "unified": "^10.1.2"

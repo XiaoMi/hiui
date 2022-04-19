@@ -46,8 +46,8 @@ export const Basic = () => {
         />
         <h2>限制范围</h2>
         <DatePicker
-          min={new Date()}
-          max={new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)}
+          minDate={new Date()}
+          maxDate={new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}

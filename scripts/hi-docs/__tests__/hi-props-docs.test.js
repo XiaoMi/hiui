@@ -2,6 +2,6 @@
 
 const mdPropsDocs = require('..')
 
-describe('@hi-ui/hi-props-docs', () => {
+describe('@hi-ui/hi-docs', () => {
   it('needs tests')
 })

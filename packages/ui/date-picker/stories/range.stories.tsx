@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import DatePicker from '../src'
+import DayJs from 'dayjs'
 
 export const Range = () => {
   const [dynamicSelectedValue, setDynamicSelectedValue] = useState<any>('')
@@ -10,15 +11,31 @@ export const Range = () => {
         <h2>日期</h2>
         <DatePicker
           type="daterange"
+          format={'YYYY-MM-DD'}
           style={{ width: 480 }}
-          format="YYYY-MM-DD"
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
+          }}
+          onSelect={console.log}
+          defaultValue={[new Date(), new Date()]}
+          disabledDate={(val) => {
+            const tomorrow = DayJs(new Date()).isBefore(DayJs(val))
+            if (tomorrow) return true
+
+            if (dynamicSelectedValue) {
+              const start_time = DayJs(dynamicSelectedValue).startOf('month').valueOf()
+              const end_time = DayJs(dynamicSelectedValue).endOf('month').valueOf()
+
+              if (DayJs(val).isBefore(start_time)) return true
+              if (DayJs(val).isAfter(end_time)) return true
+            }
+            return false
           }}
         />
         <DatePicker
           type="daterange"
           style={{ width: 480 }}
+          onSelect={console.log}
           altCalendarPreset="zh-CN"
           dateMarkPreset="zh-CN"
           format="YYYY-MM-DD"
@@ -29,6 +46,7 @@ export const Range = () => {
         <h2>年份</h2>
         <DatePicker
           type="yearrange"
+          onSelect={console.log}
           defaultValue={{ start: new Date(), end: new Date() }}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
@@ -46,6 +64,7 @@ export const Range = () => {
         <h2>月份</h2>
         <DatePicker
           type="monthrange"
+          onSelect={console.log}
           defaultValue={{ start: new Date(), end: new Date() }}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
@@ -63,6 +82,7 @@ export const Range = () => {
         <h2>周</h2>
         <DatePicker
           type="weekrange"
+          onSelect={console.log}
           defaultValue={{ start: new Date(), end: new Date() }}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
@@ -90,6 +110,7 @@ export const Range = () => {
         <h2>时间段快速选择</h2>
         <DatePicker
           type="timeperiod"
+          onSelect={console.log}
           timeInterval={30}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)

@@ -91,7 +91,7 @@ const RangePanel = () => {
       }
       // 此处是明显的语法错误，故而注释修改
       // onSelect(date, calendarClickIsEnd)
-      onSelect(date as any, calendarClickIsEnd.current)
+      onSelect(date as any, true)
       if (type === 'weekrange') {
         onPick([newRange.start!.startOf('week'), newRange.end!.endOf('week')], showTime)
       } else {
