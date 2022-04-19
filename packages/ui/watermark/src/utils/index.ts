@@ -1,5 +1,6 @@
 import { WatermarkProps, watermarkPrefix } from '../Watermark'
 import { __DEV__ } from '@hi-ui/env'
+import { withDefaultProps } from '@hi-ui/react-utils'
 
 type CanvasTextBaseline = 'alphabetic' | 'bottom' | 'hanging' | 'ideographic' | 'middle' | 'top'
 type CanvasTextAlign = 'center' | 'end' | 'left' | 'right' | 'start'
@@ -141,19 +142,15 @@ export class WatermarkGenerator {
 
     const { density = 'default' } = options
 
-    let _markSize = {
-      width: 420,
-      height: 270,
-    }
+    const nextProps = { ...defaultProps }
 
     if (['low', 'high'].includes(density)) {
-      _markSize = {
-        width: density === 'low' ? 540 : 360,
-        height: density === 'low' ? 410 : 210,
-      }
+      nextProps.width = density === 'low' ? 540 : 360
+      nextProps.height = density === 'low' ? 410 : 210
     }
 
-    const cOptions = Object.assign({}, defaultProps, _markSize, options)
+    // @ts-ignore
+    const cOptions: OptionsInterface = withDefaultProps(options, nextProps)
 
     const { width, height, textAlign, textBaseline, fontSize, color, logo, rotate } = cOptions
     const key = watermarkPrefix + '-' + Math.floor(Math.random() * (9999 - 1000)) + 1000 + '__wm'

@@ -74,24 +74,22 @@ export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((prop
     color,
   ])
 
-  const Wrapper = container ? Portal : React.Fragment
-
-  return (
-    <Wrapper container={container}>
-      <div
-        ref={useMergeRefs(setWaterMarkElement, ref)}
-        role={role}
-        className={cls}
-        style={{
-          ...style,
-          userSelect: allowCopy ? 'text' : 'none',
-        }}
-        {...rest}
-      >
-        {children}
-      </div>
-    </Wrapper>
+  const child = (
+    <div
+      ref={useMergeRefs(setWaterMarkElement, ref)}
+      role={role}
+      className={cls}
+      style={{
+        ...style,
+        userSelect: allowCopy ? 'text' : 'none',
+      }}
+      {...rest}
+    >
+      {children}
+    </div>
   )
+
+  return container ? <Portal container={container}>{child}</Portal> : child
 })
 
 export interface WatermarkProps extends HiBaseHTMLProps<'div'> {
