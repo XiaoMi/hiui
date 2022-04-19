@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.0.0-beta.51",
+  "version": "4.0.0-beta.52",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -97,7 +97,7 @@
     "@hi-ui/tree": "^4.0.0-beta.23",
     "@hi-ui/tree-select": "^4.0.0-beta.25",
     "@hi-ui/upload": "^4.0.0-beta.22",
-    "@hi-ui/watermark": "^4.0.0-beta.17",
+    "@hi-ui/watermark": "^4.0.0-beta.18",
     "@hi-ui/zen-mode": "^4.0.0-beta.17"
   },
   "peerDependencies": {
