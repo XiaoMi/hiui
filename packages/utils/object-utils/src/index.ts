@@ -104,8 +104,6 @@ export const clone = <T>(obj: T): T => {
       return (clonedDate as any) as T
 
     case 'Object':
-      if (isCyclic(obj) === true) return obj
-
       const copiedObject: any = {}
 
       for (const key in obj) {
@@ -131,26 +129,26 @@ export const clone = <T>(obj: T): T => {
 /**
  * 循环引用检查
  */
-function isCyclic(obj: Object): boolean {
-  const visitedItems: Object[] = []
+// function isCyclic(obj: Object): boolean {
+//   const visitedItems: Object[] = []
 
-  function detect(obj: any) {
-    if (obj && getObjectType(obj) === 'Object') {
-      if (visitedItems.indexOf(obj) !== -1) return true
+//   function detect(obj: any) {
+//     if (obj && getObjectType(obj) === 'Object') {
+//       if (visitedItems.indexOf(obj) !== -1) return true
 
-      visitedItems.push(obj)
+//       visitedItems.push(obj)
 
-      for (const key in obj) {
-        if (hasOwnProp(obj, key) && detect(obj[key])) {
-          return true
-        }
-      }
-    }
-    return false
-  }
+//       for (const key in obj) {
+//         if (hasOwnProp(obj, key) && detect(obj[key])) {
+//           return true
+//         }
+//       }
+//     }
+//     return false
+//   }
 
-  return detect(obj)
-}
+//   return detect(obj)
+// }
 
 /**
  * Merge object deep
