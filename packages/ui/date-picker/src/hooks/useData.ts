@@ -14,7 +14,12 @@ interface IUseDateConfig {
 }
 export const useDate = (config: IUseDateConfig) => {
   const { value, defaultValue, cacheDate, type, format, locale, weekOffset } = config
-  const [outDate, setOutDate] = useState<(moment.Moment | null)[]>([])
+  const [outDate, setOutDate] = useState<(moment.Moment | null)[]>(() => {
+    const d = parseValue(value || defaultValue, type, weekOffset, format as any) as any
+    cacheDate.current = d
+    return d
+  })
+
   const changeOutDate = (dates: any) => {
     const _datas = [
       dates[0] && moment(dates[0]).isValid() ? dates[0] : null,
@@ -23,10 +28,11 @@ export const useDate = (config: IUseDateConfig) => {
     setOutDate(_datas as any)
   }
   useEffect(() => {
-    const d = parseValue(value || defaultValue, type, weekOffset, format as any) as any
+    if (value === undefined) return
+    const d = parseValue(value, type, weekOffset, format as any) as any
     setOutDate(d)
     cacheDate.current = d
-  }, [value, type, type, weekOffset, format, locale, setOutDate, defaultValue])
+  }, [value, type, weekOffset, format, locale, setOutDate, cacheDate])
 
   return [outDate, changeOutDate] as const
 }

@@ -11,6 +11,7 @@ export const Range = () => {
         <DatePicker
           type="daterange"
           style={{ width: 480 }}
+          defaultValue={[new Date(), new Date()]}
           format="YYYY-MM-DD"
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
@@ -29,7 +30,7 @@ export const Range = () => {
         <h2>年份</h2>
         <DatePicker
           type="yearrange"
-          defaultValue={{ start: new Date(), end: new Date() }}
+          defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -38,7 +39,7 @@ export const Range = () => {
           type="yearrange"
           altCalendarPreset="zh-CN"
           dateMarkPreset="zh-CN"
-          defaultValue={{ start: new Date(), end: new Date() }}
+          defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -46,7 +47,7 @@ export const Range = () => {
         <h2>月份</h2>
         <DatePicker
           type="monthrange"
-          defaultValue={{ start: new Date(), end: new Date() }}
+          defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -55,7 +56,7 @@ export const Range = () => {
           type="monthrange"
           altCalendarPreset="zh-CN"
           dateMarkPreset="zh-CN"
-          defaultValue={{ start: new Date(), end: new Date() }}
+          defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -63,7 +64,7 @@ export const Range = () => {
         <h2>周</h2>
         <DatePicker
           type="weekrange"
-          defaultValue={{ start: new Date(), end: new Date() }}
+          defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -72,7 +73,7 @@ export const Range = () => {
           type="weekrange"
           altCalendarPreset="zh-CN"
           dateMarkPreset="zh-CN"
-          defaultValue={{ start: new Date(), end: new Date() }}
+          defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
