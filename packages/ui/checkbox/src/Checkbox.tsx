@@ -51,7 +51,7 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
       checkedWithContext,
       (_: boolean, evt: React.ChangeEvent<HTMLInputElement>) => {
         onChangeProp?.(evt)
-        onChangeGroup?.(evt)
+        onChangeGroup?.(evt, value)
       }
     )
 
