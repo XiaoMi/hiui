@@ -170,6 +170,12 @@ export const merge = <T extends Object, E extends T>(
         } else {
           target[key] = clone(override[key])
         }
+      } else if (Array.isArray(override[key])) {
+        if (Array.isArray((source as any)[key])) {
+          target[key] = merge((source as any)[key], override[key])
+        } else {
+          target[key] = clone(override[key])
+        }
       } else {
         target[key] = override[key]
       }
@@ -185,18 +191,22 @@ export const merge = <T extends Object, E extends T>(
 export const object2Paths = <T extends Object>(props: T) => {
   const objectPaths = [] as any[]
 
-  const dig = (obj: Record<string, any>, parents: string[]) => {
-    Object.keys(obj).forEach((key) => {
-      const value = obj[key]
-      const paths = [...parents, key]
-
-      if (isObject(value)) {
+  const dig = (obj: any, parents: (string | number)[]) => {
+    if (Array.isArray(obj)) {
+      obj.forEach((value, index) => {
+        const paths = [...parents, index]
         dig(value, paths)
-      } else {
-        const varItem = [...paths, value] as any[]
-        objectPaths.push(varItem)
-      }
-    })
+      })
+    } else if (isObject(obj)) {
+      Object.keys(obj).forEach((key) => {
+        const value = obj[key]
+        const paths = [...parents, key]
+        dig(value, paths)
+      })
+    } else {
+      const varItem = [...parents, obj] as any[]
+      objectPaths.push(varItem)
+    }
   }
 
   dig(props, [])

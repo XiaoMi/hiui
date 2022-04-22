@@ -35,10 +35,10 @@ export type FormAction<T> =
   | { type: 'SUBMIT_DONE' }
   | { type: 'SET_VALIDATING'; payload: boolean }
   | { type: 'SET_SUBMITTING'; payload: boolean }
-  | { type: 'SET_VALUES'; payload: T }
-  | { type: 'SET_FIELD_VALUE'; payload: { field: React.ReactText[]; value?: any } }
-  | { type: 'SET_FIELD_TOUCHED'; payload: { field: React.ReactText[]; value?: boolean } }
-  | { type: 'SET_FIELD_ERROR'; payload: { field: React.ReactText[]; value?: string } }
+  | { type: 'SET_VALUES'; payload: FormSetState<T> }
+  | { type: 'SET_FIELD_VALUE'; payload: { field: FormFieldPath; value?: any } }
+  | { type: 'SET_FIELD_TOUCHED'; payload: { field: FormFieldPath; value?: boolean } }
+  | { type: 'SET_FIELD_ERROR'; payload: { field: FormFieldPath; value?: string } }
   | { type: 'SET_TOUCHED'; payload: FormTouched<T> }
   | { type: 'SET_ERRORS'; payload: FormErrors<T> }
   | { type: 'SET_STATUS'; payload: any }
@@ -82,47 +82,45 @@ export type FormRuleType =
 // export type FormRuleName = 'required' | 'email'
 
 export interface FormHelpers<T = any> {
-  // validate: FormValidateFunction<T>
   /**
    * 对整个表单进行校验, 对应 Form.Submit中的 API
    */
   validate: () => Promise<T>
   /**
-   * 重置整个表单的验证,对应 Form.Reset中的 API
+   * 重置整个表单的验证,对应 Form.Reset中的 API，如果不知道 nextState，则重置为 initialValues
    */
-  reset: (fields?: FormFieldPath, toDefault?: boolean) => Promise<T>
+  reset: (nextState?: Partial<FormState<any>>) => Promise<T>
   /**
    * 对指定表单字段进行校验
    */
-  validateField: (fields?: FormFieldPath) => Promise<T>
+  validateField: (fields: FormFieldPath) => Promise<T>
   /**
-   * 对指定表单字段进行校验
-   */
-  validateFields: (fields?: FormFieldPath) => Promise<T>
-  /**
-   * 设置表单的值，在异步获取的数据回显的时候，使用该方法
+   * 设置某个表单字段的值，在更新表单数据的的时候，使用该方法
    */
   setFieldValue: (field: FormFieldPath, value: any) => void
   /**
    * 设置多个表单的值，在异步获取的数据回显的时候，使用该方法
+   * TODO
    */
-  setFieldsValue: (field: Record<string, any>) => void
+  setFieldsValue: (
+    field: Record<string, any> | ((prevValues: Record<string, any>) => Record<string, any>)
+  ) => void
   /**
-   * 	获取一个字段名对应的 Values 返回为数组形式, 不传入 fields；默认返回全部信息, 不会触发表单校验
+   * 	获取一个字段名对应的 Value，返回为对应 Field 值
    */
   getFieldValue: (field: FormFieldPath) => any
   /**
-   * 	获取所有字段名对应的 Values 返回为数组形式, 不传入 fields；默认返回全部信息, 不会触发表单校验
+   * 	获取所有字段名对应的 Values 返回为字典映射数据结构
    */
   getFieldsValue: () => any
   /**
-   * 获取一组字段名对应的错误信息，返回为数组形式, 不传入 fields；默认返回全部信息
+   * 获取一组字段名对应的 errorMessage，返回为对应 field 错误信息
    */
   getFieldError: (field: FormFieldPath) => any
   /**
-   * 获取所有字段名对应的错误信息，返回为数组形式, 不传入 fields；默认返回全部信息
+   * 获取所有字段名对应的错误信息，返回为字典映射数据结构
    */
-  getFieldsError: () => any
+  getFieldsError: () => FormErrors<any>
   /**
    * 移除所有表单项的校验结果
    */
@@ -130,7 +128,7 @@ export interface FormHelpers<T = any> {
   /**
    *  移除表单项的校验结果，传入待移除的表单项的 field 属性组成的数组
    */
-  clearFieldsValidates: (fields: FormFieldPath) => void
+  clearFieldValidate: (fields: FormFieldPath) => void
 }
 
 export type FormFieldPath = (string | number)[] | string | number

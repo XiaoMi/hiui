@@ -13,7 +13,7 @@ import {
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { isArray, isObjectLike, isFunction } from '@hi-ui/type-assertion'
 import { callAllFuncs } from '@hi-ui/func-utils'
-import { setNested, getNested } from '@hi-ui/object-utils'
+import { setNested, getNested, clone, merge } from '@hi-ui/object-utils'
 import { stopEvent } from '@hi-ui/dom-utils'
 
 const EMPTY_RULES = {}
@@ -236,15 +236,12 @@ export const useForm = <Values = Record<string, any>>({
    */
   const setFieldValue = useCallback(
     (field: FormFieldPath, value: unknown, shouldValidate?: boolean) => {
-      // @ts-ignore
       formDispatch({ type: 'SET_FIELD_VALUE', payload: { field, value } })
 
       // touched 给外部控制展示，而不是当做参数暴露
-      const shouldValidateField =
-        // shouldValidate ?? (validateAfterTouched ? getNested(formState.touched, field) : true)
-        validateAfterTouched
-          ? getNested(formState.touched, field) && shouldValidate
-          : shouldValidate
+      const shouldValidateField = validateAfterTouched
+        ? getNested(formState.touched, field) && shouldValidate
+        : shouldValidate
 
       if (shouldValidateField) {
         validateField(field, value)
@@ -253,14 +250,16 @@ export const useForm = <Values = Record<string, any>>({
     [validateField, validateAfterTouched, formState]
   )
 
-  const setFieldsValue = useCallback(
-    (fields: Record<string, any>, shouldValidate?: boolean) => {
-      Object.entries(fields).forEach(([fieldName, value]) => {
-        setFieldValue(fieldName, value, shouldValidate)
-      })
-    },
-    [setFieldValue]
-  )
+  const setFieldsValue = useCallback((fieldsState: Record<string, any> | Function) => {
+    formDispatch({
+      type: 'SET_VALUES',
+      payload: (prevState) => {
+        return isFunction(fieldsState)
+          ? fieldsState(prevState)
+          : merge(clone(prevState), fieldsState as any)
+      },
+    })
+  }, [])
 
   const normalizeValueFromChange = useCallback(
     (eventOrValue: React.ChangeEvent<any>, valuePropName: string) => {
@@ -454,11 +453,17 @@ export const useForm = <Values = Record<string, any>>({
 
   const resetErrors = useCallback(() => {
     formDispatch({
-      // TODO: reset errorMsg
       type: 'SET_ERRORS',
       payload: {},
     })
   }, [])
+
+  const resetFieldError = useCallback(
+    (field: FormFieldPath) => {
+      setFieldError(field, '')
+    },
+    [setFieldError]
+  )
 
   const setFormState = React.useCallback((stateOrFunc: FormSetState<Values>): void => {
     // @ts-ignore
@@ -557,6 +562,7 @@ export const useForm = <Values = Record<string, any>>({
     submitForm,
     resetForm,
     resetErrors,
+    resetFieldError,
     validateFieldState,
     validateValue: validateField,
     getFieldsValue,
@@ -620,7 +626,10 @@ function formReducer<T>(state: FormState<T>, action: FormAction<T>) {
       const nextState = isFunction(action.payload) ? action.payload(state) : action.payload
       return { ...state, ...nextState }
     case 'SET_VALUES':
-      return { ...state, values: action.payload }
+      const nextValues = isFunction(action.payload)
+        ? action.payload(state.values as any)
+        : action.payload
+      return { ...state, values: nextValues }
     case 'SET_ERRORS':
       return { ...state, errors: action.payload }
     case 'SET_TOUCHED':
