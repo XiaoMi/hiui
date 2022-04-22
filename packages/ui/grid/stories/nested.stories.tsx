@@ -3,6 +3,10 @@ import Grid from '../src'
 
 const { Row, Col } = Grid
 
+/**
+ * @title 嵌套
+ * @desc 嵌套栅格来完成布局
+ */
 export const Nested = () => {
   const blockStyle: React.CSSProperties = {
     width: '100%',

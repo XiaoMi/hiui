@@ -3,6 +3,10 @@ import Grid from '../src'
 
 const { Row, Col } = Grid
 
+/**
+ * @title 区块间隔
+ * @desc 在 Row 设置 gutter = true 来使水平排列有间隔
+ */
 export const Gutter = () => {
   const blockStyle: React.CSSProperties = {
     width: '100%',

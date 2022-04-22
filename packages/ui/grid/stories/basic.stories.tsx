@@ -3,6 +3,10 @@ import Grid from '../src'
 
 const { Row, Col } = Grid
 
+/**
+ * @title 基础用法
+ * @desc 无间隔水平排列
+ */
 export const Basic = () => {
   const blockStyle: React.CSSProperties = {
     width: '100%',

@@ -18,6 +18,31 @@ async function findComponentStoryFiles() {
   return tsFiles
 }
 
+const replaceStory = (content, componentName) => {
+  content = content.replace('../src', `@hi-ui/${componentName.toLowerCase()}`)
+  content = content.replace(/export\sconst\s(\w+)\s=/, (raw, $1) => `export default ${$1};\n${raw}`)
+
+  return content
+}
+
+const getAnnotationInfo = (content) => {
+  // /**
+  //  * @title 基础用法
+  //  * @desc 无间隔水平排列
+  //  */
+  let titleResult = /\s+\*\s@title\s+(.+)\n/.exec(content)
+  if (titleResult) {
+    titleResult = titleResult[1]
+  }
+
+  let descResult = /\s+\*\s@desc\s+(\w+)/.exec(content)
+  if (descResult) {
+    descResult = descResult[1]
+  }
+
+  return { title: titleResult, desc: descResult }
+}
+
 async function groupStoriesByComponent(componentFiles) {
   const componentInfo = {}
 
@@ -47,7 +72,8 @@ async function groupStoriesByComponent(componentFiles) {
       group: componentName,
       name: storyName,
       path: relativePath,
-      content,
+      content: replaceStory(content, componentName),
+      ...getAnnotationInfo(content),
     }
   }
 
@@ -56,7 +82,6 @@ async function groupStoriesByComponent(componentFiles) {
 }
 
 function storyRender(doc) {
-  //
   return [
     // heading(3, text(doc.displayName)),
     // text(doc.description),
@@ -75,11 +100,14 @@ function markdownRender(doc) {
 }
 
 function writeComponentInfoFiles(componentInfo) {
-  for (const info of componentInfo) {
-    const filePath = Path.join(outputPath, info.name)
-    // const content = JSON.stringify(info.def)
-    writeFileAsync(filePath, info.markdown)
-  }
+  Object.keys(componentInfo).forEach((componentName) => {
+    const stories = componentInfo[componentName]
+    Object.keys(stories).forEach((key) => {
+      const story = stories[key]
+      const filePath = Path.join(outputPath, componentName, story.name + '.tsx')
+      writeFileAsync(filePath, story.content)
+    })
+  })
 }
 
 async function main() {
@@ -106,12 +134,12 @@ async function main() {
     Object.keys(stories).forEach((key) => {
       const story = stories[key]
       story.markdown = markdownRender(story)
-      console.log(story.markdown)
     })
   })
 
   // 写入生成 markdown 文件
-  writeComponentInfoFiles()
+  writeComponentInfoFiles(parsedInfo)
+  return parsedInfo
 }
 
 export default main
