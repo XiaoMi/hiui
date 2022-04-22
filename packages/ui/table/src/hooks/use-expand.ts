@@ -80,8 +80,6 @@ export const useExpand = (
 
   const onNodeToggleStart = useCallback(
     (expandedNode: TableRowEventData, shouldExpanded: boolean) => {
-      console.error('onNodeToggleStart---------------', expandedNode, shouldExpanded)
-
       if (isExpandingRef.current) return
 
       const expanded = expandedIdsRef.current.indexOf(expandedNode.id) !== -1
