@@ -282,6 +282,7 @@ const getDateRows = ({
       }
       if (isDisabled) {
         col.type = 'disabled'
+        continue
       }
       if (!isPN && currentTime.isSame(today, 'day') && col.type !== 'disabled') {
         col.type = 'today'
