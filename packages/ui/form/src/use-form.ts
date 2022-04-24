@@ -253,7 +253,7 @@ export const useForm = <Values = Record<string, any>>({
   const setFieldsValue = useCallback((fieldsState: Record<string, any> | Function) => {
     formDispatch({
       type: 'SET_VALUES',
-      payload: (prevState) => {
+      payload: (prevState: any) => {
         return isFunction(fieldsState)
           ? fieldsState(prevState)
           : merge(clone(prevState), fieldsState as any)
@@ -619,16 +619,13 @@ export interface UseFormProps<T = Record<string, any>> {
 
 export type UseFormReturn = ReturnType<typeof useForm>
 
-// TODO: field 支持数组
 function formReducer<T>(state: FormState<T>, action: FormAction<T>) {
   switch (action.type) {
     case 'SET_STATE':
       const nextState = isFunction(action.payload) ? action.payload(state) : action.payload
       return { ...state, ...nextState }
     case 'SET_VALUES':
-      const nextValues = isFunction(action.payload)
-        ? action.payload(state.values as any)
-        : action.payload
+      const nextValues = isFunction(action.payload) ? action.payload(state.values) : action.payload
       return { ...state, values: nextValues }
     case 'SET_ERRORS':
       return { ...state, errors: action.payload }

@@ -35,7 +35,7 @@ export type FormAction<T> =
   | { type: 'SUBMIT_DONE' }
   | { type: 'SET_VALIDATING'; payload: boolean }
   | { type: 'SET_SUBMITTING'; payload: boolean }
-  | { type: 'SET_VALUES'; payload: FormSetState<T> }
+  | { type: 'SET_VALUES'; payload: T }
   | { type: 'SET_FIELD_VALUE'; payload: { field: FormFieldPath; value?: any } }
   | { type: 'SET_FIELD_TOUCHED'; payload: { field: FormFieldPath; value?: boolean } }
   | { type: 'SET_FIELD_ERROR'; payload: { field: FormFieldPath; value?: string } }
