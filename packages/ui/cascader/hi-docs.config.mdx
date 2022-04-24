@@ -1,0 +1,38 @@
+# Cascader 级联选择
+
+一种接收数据的容器，为用户提供选择一部分数据的能力
+
+## 何时使用
+
+需要从大量的离散型数据中选择一部分时使用
+
+备选项数量 5 个以上时
+
+不需要将全部备选项都展示给用户时
+
+## 使用示例
+
+<!-- Inject Stories -->
+
+## Props
+
+<!-- Inject Props -->
+
+## Events
+
+| 名称     | 说明         | 类型                       | 参数               | 返回值 |
+| -------- | ------------ | -------------------------- | ------------------ | ------ |
+| onChange | 选择后的回调 | (values: string[]) => void | values: 选中项集合 | -      |
+| onActiveItemChange | 选中项改变时的回调 | (values: string[]) => void | values: 选中项集合 | -      |
+| onOpen | 下拉菜单打开时回调 | () => void | - | -      |
+| onClose | 下拉菜单关闭时回调 | () => void | - | -      |
+
+## Type
+
+### DataItem
+
+| 参数     | 说明     | 类型    | 可选值        | 默认值 |
+| -------- | -------- | ------- | ------------- | ------ |
+| content  | 选择项   | string  | -             | -      |
+| id       | 选择项值 | string  | -             | -      |
+| disabled | 是否禁用 | boolean | true \| false | false  |

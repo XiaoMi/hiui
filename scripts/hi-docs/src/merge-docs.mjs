@@ -15,7 +15,7 @@ export async function mergeDocs(components) {
     })
   ).catch(console.error)
 
-  // 按组件文件分
+  // 按组件文件写入
   // stories
   // index.mdx
 
