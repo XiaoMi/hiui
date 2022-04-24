@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hooks",
-  "version": "4.0.0-beta.16",
+  "version": "4.0.0-beta.17",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -66,7 +66,7 @@
     "@hi-ui/use-merge-refs": "^4.0.0-beta.4",
     "@hi-ui/use-outside-click": "^4.0.0-beta.4",
     "@hi-ui/use-scroll-lock": "^4.0.0-beta.4",
-    "@hi-ui/use-search-mode": "^4.0.0-beta.15",
+    "@hi-ui/use-search-mode": "^4.0.0-beta.16",
     "@hi-ui/use-timeout": "^4.0.0-beta.5",
     "@hi-ui/use-toggle": "^4.0.0-beta.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.4",
