@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.0.0-beta.57",
+  "version": "4.0.0-beta.58",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -53,7 +53,7 @@
     "@hi-ui/cascader": "^4.0.0-beta.24",
     "@hi-ui/check-cascader": "^4.0.0-beta.28",
     "@hi-ui/check-select": "^4.0.0-beta.27",
-    "@hi-ui/check-tree-select": "^4.0.0-beta.28",
+    "@hi-ui/check-tree-select": "^4.0.0-beta.29",
     "@hi-ui/checkbox": "^4.0.0-beta.10",
     "@hi-ui/collapse": "^4.0.0-beta.10",
     "@hi-ui/counter": "^4.0.0-beta.12",
@@ -94,8 +94,8 @@
     "@hi-ui/timeline": "^4.0.0-beta.8",
     "@hi-ui/tooltip": "^4.0.0-beta.16",
     "@hi-ui/transfer": "^4.0.0-beta.29",
-    "@hi-ui/tree": "^4.0.0-beta.26",
-    "@hi-ui/tree-select": "^4.0.0-beta.28",
+    "@hi-ui/tree": "^4.0.0-beta.27",
+    "@hi-ui/tree-select": "^4.0.0-beta.29",
     "@hi-ui/upload": "^4.0.0-beta.24",
     "@hi-ui/watermark": "^4.0.0-beta.20",
     "@hi-ui/zen-mode": "^4.0.0-beta.19"
