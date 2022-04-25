@@ -95,7 +95,10 @@ export const useEdit = (
   const saveEdit = useCallback(
     async (targetNode: FlattedTreeNodeData) => {
       const beforeTreeData = cloneTree(treeData)
-      deleteNodeById(beforeTreeData, targetNode.id)
+
+      if (targetNode.raw.type === 'add') {
+        deleteNodeById(beforeTreeData, targetNode.id)
+      }
 
       const nextTreeData = cloneTree(treeData)
       _saveEdit(targetNode, nextTreeData)
