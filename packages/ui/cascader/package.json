@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/cascader",
-  "version": "4.0.0-beta.24",
+  "version": "4.0.0-beta.25",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -59,7 +59,7 @@
     "@hi-ui/use-check-state": "^4.0.0-beta.4",
     "@hi-ui/use-data-source": "^4.0.0-beta.5",
     "@hi-ui/use-latest": "^4.0.0-beta.4",
-    "@hi-ui/use-search-mode": "^4.0.0-beta.16",
+    "@hi-ui/use-search-mode": "^4.0.0-beta.17",
     "@hi-ui/use-toggle": "^4.0.0-beta.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.4"
   },
