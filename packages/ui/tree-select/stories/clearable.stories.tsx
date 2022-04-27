@@ -1,6 +1,9 @@
 import React from 'react'
 import TreeSelect from '../src'
 
+/**
+ * @title 清空选中项
+ */
 export const Clearable = () => {
   const [data] = React.useState([
     {
@@ -89,8 +92,8 @@ export const Clearable = () => {
         <TreeSelect
           clearable
           data={data}
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('TreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, selectItem) => {
+            console.log('TreeSelect onChange: ', checkedIds, selectItem)
           }}
         />
       </div>

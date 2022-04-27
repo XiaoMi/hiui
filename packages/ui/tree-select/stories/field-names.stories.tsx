@@ -1,8 +1,12 @@
 import React from 'react'
 import TreeSelect from '../src'
 
+/**
+ * @title 字段别名
+ * @desc 数据中的字段名非title，id或disabled时使用
+ */
 export const FieldNames = () => {
-  const [data, setData] = React.useState([
+  const [data] = React.useState([
     {
       content: '手机类',
       id: '0',
@@ -89,8 +93,8 @@ export const FieldNames = () => {
         <TreeSelect
           data={data}
           fieldNames={{ title: 'content' }}
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('TreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, checkedNode) => {
+            console.log('TreeSelect onChange: ', checkedIds, checkedNode)
           }}
         />
       </div>

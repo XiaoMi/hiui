@@ -1,6 +1,9 @@
 import React from 'react'
 import Carousel from '../src'
 
+/**
+ * @title 显隐配置
+ */
 export const Config = () => {
   const generateContent = () => {
     return [

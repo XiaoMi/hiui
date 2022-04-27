@@ -1,7 +1,11 @@
 import React from 'react'
 import DatePicker from '../src'
 
-export const Appearanece = () => {
+/**
+ * @title 不同UI风格
+ * @desc UI风格包括线性、面性两种
+ */
+export const Appearance = () => {
   return (
     <>
       <h1>Appearance</h1>

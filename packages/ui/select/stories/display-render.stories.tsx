@@ -1,6 +1,9 @@
 import React from 'react'
 import Select from '../src'
 
+/**
+ * @title 自定义回显展示
+ */
 export const DisplayRender = () => {
   const [data] = React.useState([
     { title: '电视', id: '3', disabled: true },

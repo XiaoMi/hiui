@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import DatePicker from '../src'
 import moment from 'moment'
 
+/**
+ * @title 日历面板
+ */
 export const Lunar = () => {
   const [customValue, setCustomValue] = useState(new Date('2020/4/8'))
 

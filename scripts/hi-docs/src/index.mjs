@@ -8,7 +8,7 @@ import { unified } from 'unified'
 import remarkStringify from 'remark-stringify'
 import stringWidth from 'string-width'
 import remarkGfm from 'remark-gfm'
-import { root, emphasis, heading, tableCell, tableRow, table, text } from 'mdast-builder'
+import { root, emphasis, tableCell, tableRow, table, text } from 'mdast-builder'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = Path.dirname(__filename)

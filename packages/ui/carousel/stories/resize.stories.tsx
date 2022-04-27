@@ -1,6 +1,9 @@
 import React from 'react'
 import Carousel from '../src'
 
+/**
+ * @title 自定义宽高
+ */
 export const Resize = () => {
   const generateContent = () => {
     return [

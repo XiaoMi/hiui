@@ -1,6 +1,9 @@
 import React from 'react'
 import Cascader from '../src'
 
+/**
+ * @title hover 展开次级菜单
+ */
 export const HoverExpand = () => {
   const [data] = React.useState([
     {

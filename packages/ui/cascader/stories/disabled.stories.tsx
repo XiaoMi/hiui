@@ -1,6 +1,10 @@
 import React from 'react'
 import Cascader from '../src'
 
+/**
+ * @title
+ * @desc 暂不可操作的状态
+ */
 export const Disabled = () => {
   const [data] = React.useState([
     {

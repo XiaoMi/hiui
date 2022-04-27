@@ -2,8 +2,11 @@ import React from 'react'
 import Cascader from '../src'
 import Alert from '@hi-ui/alert'
 
+/**
+ * @title 异步加载数据
+ */
 export const Dynamic = () => {
-  const [treeData, setTreeData] = React.useState([
+  const [treeData] = React.useState([
     {
       id: 1,
       title: '小米',

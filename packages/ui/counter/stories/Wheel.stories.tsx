@@ -1,6 +1,9 @@
 import React from 'react'
 import Counter from '../src'
 
+/**
+ * @title 滚轮滑动
+ */
 export const Wheel = () => {
   return (
     <>

@@ -1,11 +1,11 @@
 import React from 'react'
 import Button from '../src'
 
+/**
+ * @title 文本链接
+ * @desc 执行操作时发出页面请求，页面会给予明确的反馈
+ */
 export const Link = () => {
-  const btnRef = React.useRef(null)
-  React.useEffect(() => {
-    console.log(btnRef)
-  }, [])
   return (
     <>
       <h1>Button</h1>

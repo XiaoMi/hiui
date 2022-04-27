@@ -1,6 +1,10 @@
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 禁用状态
+ * @desc 暂不可操作的状态
+ */
 export const Disabled = () => {
   const [data] = React.useState([
     { title: '电视', id: '3', disabled: true },

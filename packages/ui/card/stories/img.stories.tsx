@@ -1,6 +1,10 @@
 import React from 'react'
 import Card from '../src'
 
+/**
+ * @title 带头图
+ * @desc 卡片中加入图片，增强识别性，常用于描述应用、项目等
+ */
 export const Img = () => {
   return (
     <>

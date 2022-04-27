@@ -2,6 +2,10 @@ import React from 'react'
 import Collapse from '../src'
 import { FileFilled } from '@hi-ui/icons'
 
+/**
+ * @title 手风琴模式
+ * @desc 一次仅展开一个面板，有效减少垂直空间的占用
+ */
 export const Accordion = () => {
   return (
     <>

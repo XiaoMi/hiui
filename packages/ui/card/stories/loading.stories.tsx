@@ -2,6 +2,9 @@ import Button from '@hi-ui/button'
 import React from 'react'
 import Card from '../src'
 
+/**
+ * @title 加载中状态
+ */
 export const Loading = () => {
   return (
     <>

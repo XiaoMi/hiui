@@ -1,6 +1,10 @@
 import React from 'react'
 import CheckTreeSelect from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 展示从全部备选项选出的部分选项
+ */
 export const Basic = () => {
   const [data] = React.useState([
     {
@@ -86,7 +90,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="check-tree-select-basic__wrap">
-        <CheckTreeSelect data={data} />
+        <CheckTreeSelect data={data} checkedMode="PARENT" onChange={console.log} />
       </div>
     </>
   )

@@ -1,6 +1,9 @@
 import React from 'react'
 import Carousel from '../src'
 
+/**
+ * @title 指示器位置
+ */
 export const dotPlacement = () => {
   const generateContent = () => {
     return [

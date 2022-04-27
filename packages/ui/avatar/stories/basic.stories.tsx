@@ -2,6 +2,9 @@ import React from 'react'
 import Avatar from '../src'
 import { EditOutlined, PlusOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   return (
     <>

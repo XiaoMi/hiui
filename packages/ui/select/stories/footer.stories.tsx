@@ -3,6 +3,9 @@ import React from 'react'
 import Select from '../src'
 import { PlusOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 吸底内容条
+ */
 export const Footer = () => {
   const [data, setData] = React.useState([
     { title: '电视', id: '3', disabled: true },

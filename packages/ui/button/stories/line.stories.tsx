@@ -1,11 +1,10 @@
 import React from 'react'
 import Button from '../src'
 
+/**
+ * @title 线性风格
+ */
 export const Line = () => {
-  const btnRef = React.useRef(null)
-  React.useEffect(() => {
-    console.log(btnRef)
-  }, [])
   return (
     <>
       <h1>Button</h1>

@@ -1,6 +1,9 @@
 import React from 'react'
 import Carousel from '../src'
 
+/**
+ * @title 自动切换间隔
+ */
 export const Duration = () => {
   const generateContent = () => {
     return [

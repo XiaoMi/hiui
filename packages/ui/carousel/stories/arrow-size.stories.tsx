@@ -1,6 +1,9 @@
 import React from 'react'
 import Carousel from '../src'
 
+/**
+ * @title 不同箭头尺寸
+ */
 export const ArrowSize = () => {
   const generateContent = () => {
     return [

@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import DatePicker from '../src'
 
+/**
+ * @title 日期时间
+ * @desc 以时间点为粒度，展示“YYYY-MM-DD HH:mm:ss”
+ */
 export const DateTime = () => {
   return (
     <>

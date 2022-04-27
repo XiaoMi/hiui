@@ -1,6 +1,9 @@
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 类型分组
+ */
 export const Group = () => {
   const [value, setValue] = React.useState<React.ReactText[]>(['3'])
 

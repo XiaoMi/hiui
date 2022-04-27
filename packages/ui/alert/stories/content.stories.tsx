@@ -1,6 +1,10 @@
 import React from 'react'
 import Alert from '../src'
 
+/**
+ * @title 带内容
+ * @desc 反馈给用户的信息较多，需要用户阅读更详细
+ */
 export const Content = () => {
   return (
     <>

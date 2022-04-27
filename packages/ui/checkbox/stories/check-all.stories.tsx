@@ -1,9 +1,11 @@
 import React from 'react'
 import Checkbox from '../src'
 
+/**
+ * @title 全选
+ * @desc 一次操作选中所有选项
+ */
 export const CheckAll = () => {
-  const CheckboxGroup = Checkbox.Group
-
   const [data] = React.useState([
     {
       title: '手机',
@@ -40,7 +42,7 @@ export const CheckAll = () => {
           全选
         </Checkbox>
         <p />
-        <CheckboxGroup
+        <Checkbox.Group
           data={data}
           value={selectedList}
           onChange={(value) => {

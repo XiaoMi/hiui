@@ -2,6 +2,9 @@ import React from 'react'
 import Collapse from '../src'
 import { FileFilled } from '@hi-ui/icons'
 
+/**
+ * @title 带边框
+ */
 export const bordered = () => {
   return (
     <>

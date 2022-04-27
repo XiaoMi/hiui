@@ -1,6 +1,9 @@
 import React from 'react'
 import CheckCascader from '../src'
 
+/**
+ * @title 禁用状态
+ */
 export const Disabled = () => {
   const [data] = React.useState(() => {
     const data = [

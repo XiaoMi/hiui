@@ -1,6 +1,9 @@
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 自定义空内容
+ */
 export const EmptyContent = () => {
   const [data] = React.useState([])
 

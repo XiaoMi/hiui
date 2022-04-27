@@ -12,6 +12,6 @@ export async function parseReadMe(componentPaths) {
 }
 
 async function getComponentReadMe(baseURL) {
-  const content = await readFileAsync('README.md', baseURL)
+  const content = await readFileAsync('hi-docs.config.mdx', baseURL)
   return content
 }

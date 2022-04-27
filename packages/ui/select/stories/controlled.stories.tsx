@@ -1,6 +1,9 @@
 import React from 'react'
 import Select from '../src'
 
+/**
+ * @title 受控
+ */
 export const Controlled = () => {
   const [value, setValue] = React.useState<React.ReactText>('3')
   const [data] = React.useState([

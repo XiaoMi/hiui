@@ -1,6 +1,9 @@
 import React from 'react'
 import Alert from '../src'
 
+/**
+ * @title 自定义关闭按钮
+ */
 export const CloseIcon = () => {
   return (
     <>

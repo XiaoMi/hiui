@@ -3,6 +3,9 @@ import CheckSelect from '../src'
 import Tooltip from '@hi-ui/tooltip'
 import Checkbox from '@hi-ui/checkbox'
 
+/**
+ * @title 带Tooltip提示
+ */
 export const Tip = () => {
   const [data] = React.useState([
     { title: '电视', id: '3', disabled: true },

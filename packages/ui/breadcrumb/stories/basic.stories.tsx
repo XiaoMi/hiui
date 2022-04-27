@@ -1,6 +1,10 @@
 import React from 'react'
 import Breadcrumb from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 明确访问路径的每一个节点
+ */
 export const Basic = () => {
   const [data] = React.useState([
     {

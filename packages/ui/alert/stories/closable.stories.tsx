@@ -1,6 +1,10 @@
 import React from 'react'
 import Alert from '../src'
 
+/**
+ * @title 不可关闭
+ * @desc 反馈信息较为重要，需要引导用户阅读或关注
+ */
 export const Closable = () => {
   return (
     <>

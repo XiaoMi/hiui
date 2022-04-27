@@ -3,6 +3,10 @@ import CheckSelect from '../src'
 
 import pinyinMatch from 'pinyin-match'
 
+/**
+ * @title 拼音搜索
+ * @desc 通过输入拼音搜索关键字
+ */
 export const Pinyin = () => {
   const [data] = React.useState([
     { title: '电视', id: '3', disabled: true },

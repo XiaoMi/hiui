@@ -6,7 +6,7 @@ import { unified } from 'unified'
 import remarkStringify from 'remark-stringify'
 import stringWidth from 'string-width'
 import remarkGfm from 'remark-gfm'
-import { root, emphasis, heading, tableCell, tableRow, table, text, code } from 'mdast-builder'
+import { root, code } from 'mdast-builder'
 
 const sourcePath = Path.join(rootDir, 'packages/ui')
 

@@ -1,6 +1,9 @@
 import React from 'react'
 import Carousel from '../src'
 
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   const generateContent = () => {
     return [

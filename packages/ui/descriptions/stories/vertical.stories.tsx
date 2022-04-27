@@ -1,6 +1,9 @@
 import React from 'react'
 import Descriptions from '../src'
 
+/**
+ * @title 垂直列表
+ */
 export const Vertical = () => {
   return (
     <>

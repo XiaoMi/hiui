@@ -1,6 +1,9 @@
 import React from 'react'
 import Select from '../src'
 
+/**
+ * @title 非受控
+ */
 export const Uncontrolled = () => {
   const [data] = React.useState([
     { title: '电视', id: '3', disabled: true },

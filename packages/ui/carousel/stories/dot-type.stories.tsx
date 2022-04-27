@@ -1,6 +1,9 @@
 import React from 'react'
 import Carousel from '../src'
 
+/**
+ * @title 指示器类型
+ */
 export const DotType = () => {
   const generateContent = () => {
     return [

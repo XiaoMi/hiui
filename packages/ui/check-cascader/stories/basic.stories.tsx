@@ -1,6 +1,10 @@
 import React from 'react'
 import CheckCascader from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 展示从多个收起的备选项中选出的多个选项
+ */
 export const Basic = () => {
   const [dataOnlyLeafCheckable] = React.useState(() => {
     const data = [

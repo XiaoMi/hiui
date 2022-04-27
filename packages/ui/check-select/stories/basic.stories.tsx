@@ -1,6 +1,10 @@
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 展示从全部备选项选出的部分选项
+ */
 export const Basic = () => {
   const [data] = React.useState([
     { title: '手机', id: '2' },

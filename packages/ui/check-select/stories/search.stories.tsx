@@ -1,6 +1,9 @@
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 带搜索
+ */
 export const Search = () => {
   const [data] = React.useState([
     {

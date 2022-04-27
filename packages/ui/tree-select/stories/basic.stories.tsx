@@ -1,6 +1,10 @@
 import React from 'react'
 import TreeSelect from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 展示从多个收起的备选项中选出的一个选项
+ */
 export const Basic = () => {
   const [data] = React.useState([
     {
@@ -88,8 +92,8 @@ export const Basic = () => {
       <div className="tree-select-basic__wrap">
         <TreeSelect
           data={data}
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('TreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, selectItem) => {
+            console.log('TreeSelect onChange: ', checkedIds, selectItem)
           }}
         />
       </div>

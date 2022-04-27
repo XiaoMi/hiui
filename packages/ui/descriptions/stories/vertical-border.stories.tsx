@@ -1,6 +1,9 @@
 import React from 'react'
 import Descriptions from '../src'
 
+/**
+ * @title 垂直带边框
+ */
 export const VerticalBorder = () => {
   return (
     <>

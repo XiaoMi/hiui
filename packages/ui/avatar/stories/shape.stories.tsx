@@ -1,6 +1,9 @@
 import React from 'react'
 import Avatar from '../src'
 
+/**
+ * @title 不同形状
+ */
 export const Shape = () => {
   return (
     <>

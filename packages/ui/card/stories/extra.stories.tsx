@@ -1,20 +1,17 @@
-import Button from '@hi-ui/button'
 import React from 'react'
 import Card from '../src'
+import Button from '@hi-ui/button'
 
 /**
- * @title 带副标题
+ * @title 带操作用法
+ * @desc 可对卡片进行编辑、删除等操作
  */
-export const Subtitle = () => {
+export const Extra = () => {
   return (
     <>
-      <h1>Subtitle</h1>
-      <div className="card-subtitle__wrap">
-        <Card
-          title="标题"
-          extra={<Button appearance="link">链接</Button>}
-          subtitle="这是一句简要的卡片副标题"
-        >
+      <h1>Extra</h1>
+      <div className="card-extra__wrap">
+        <Card title="标题" extra={<Button appearance="link">链接</Button>}>
           <div
             style={{
               height: 174,
@@ -29,12 +26,7 @@ export const Subtitle = () => {
         </Card>
         <br />
         <br />
-        <Card
-          title="标题"
-          showHeaderDivider
-          extra={<Button appearance="link">链接</Button>}
-          subtitle="这是一句简要的卡片副标题"
-        >
+        <Card title="标题" showHeaderDivider extra={<Button appearance="link">链接</Button>}>
           <div
             style={{
               height: 174,

@@ -1,14 +1,15 @@
+import { HiBaseDataItem } from '@hi-ui/core'
 import React from 'react'
 
-export interface CheckTreeSelectDataItem {
+export interface CheckTreeSelectDataItem extends HiBaseDataItem {
   /**
    * 节点唯一 id
    */
-  id: React.ReactText
+  id?: React.ReactText
   /**
    * 节点标题
    */
-  title: React.ReactNode
+  title?: React.ReactNode
   /**
    * 子级数据
    */
@@ -17,6 +18,29 @@ export interface CheckTreeSelectDataItem {
    * 是否禁用
    */
   disabled?: boolean
+  /**
+   * 是否为叶子节点
+   */
+  isLeaf?: boolean
+}
+
+export interface FlattedCheckTreeSelectDataItem extends CheckTreeSelectDataItem {
+  /**
+   * 该节点的子节点列表
+   */
+  children?: FlattedCheckTreeSelectDataItem[]
+  /**
+   * 关联用户传入的原始节点
+   */
+  raw: CheckTreeSelectDataItem
+  /**
+   * 该节点的层级，从 0（顶层）开始
+   */
+  depth: number
+  /**
+   * 该节点的父节点
+   */
+  parent?: FlattedCheckTreeSelectDataItem
 }
 
 export interface CheckTreeSelectDataSource<T = any> {

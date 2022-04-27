@@ -1,6 +1,9 @@
 import React from 'react'
 import Descriptions from '../src'
 
+/**
+ * @title table布局
+ */
 export const Bordered = () => {
   return (
     <>

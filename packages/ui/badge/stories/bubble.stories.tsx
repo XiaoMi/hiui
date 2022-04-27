@@ -2,6 +2,10 @@ import React from 'react'
 import Badge from '../src'
 import { BellOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 徽标
+ * @desc 标识消息数或简洁描述
+ */
 export const Bubble = () => {
   return (
     <>
@@ -9,12 +13,6 @@ export const Bubble = () => {
       <div className="badge-basic__wrap">
         <div>
           <Badge content={8} style={{ marginRight: 20 }}>
-            <BellOutlined style={{ fontSize: '24px' }} />
-          </Badge>
-          <Badge content={12} style={{ marginRight: 20 }}>
-            <BellOutlined style={{ fontSize: '24px' }} />
-          </Badge>
-          <Badge content={88} max={44} style={{ marginRight: 20 }}>
             <BellOutlined style={{ fontSize: '24px' }} />
           </Badge>
           <Badge content={'new'} style={{ marginRight: 20 }}>

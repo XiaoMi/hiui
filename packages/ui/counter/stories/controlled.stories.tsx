@@ -2,6 +2,9 @@ import React from 'react'
 import Counter from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 受控
+ */
 export const Controlled = () => {
   const [current, setCurrent] = React.useState(1)
   return (

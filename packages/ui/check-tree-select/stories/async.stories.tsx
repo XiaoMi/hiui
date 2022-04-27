@@ -1,6 +1,10 @@
 import React from 'react'
 import CheckTreeSelect from '../src'
 
+/**
+ * @title 异步加载搜索
+ * @desc 备选项数量较大时，通过 `onLoadChildren` 异步加载选项下一级节点
+ */
 export const Async = () => {
   const [data] = React.useState([
     {

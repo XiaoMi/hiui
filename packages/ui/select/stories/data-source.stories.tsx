@@ -1,26 +1,30 @@
 import React from 'react'
 import Select from '../src'
 
-const data = [
-  {
-    id: 'up-1',
-    title: 'up',
-  },
-  {
-    id: '0',
-    title: '0',
-  },
-  {
-    id: '1',
-    title: '1',
-  },
-  {
-    id: '2',
-    title: '2',
-  },
-]
-
+/**
+ * @title 异步加载数据
+ * @desc 备选项数量较大时，通过搜索选项关键词调取存储于服务端数据备选项
+ */
 export const DataSource = () => {
+  const [data] = React.useState([
+    {
+      id: 'up-1',
+      title: 'up',
+    },
+    {
+      id: '0',
+      title: '0',
+    },
+    {
+      id: '1',
+      title: '1',
+    },
+    {
+      id: '2',
+      title: '2',
+    },
+  ])
+
   return (
     <>
       <h1>DataSource</h1>

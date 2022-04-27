@@ -1,6 +1,9 @@
 import React from 'react'
 import TreeSelect from '../src'
 
+/**
+ * @title 带搜索
+ */
 export const Searchable = () => {
   const [data] = React.useState([
     {
@@ -91,8 +94,8 @@ export const Searchable = () => {
           data={data}
           searchable
           searchMode="highlight"
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('TreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, checkedNode) => {
+            console.log('TreeSelect onChange: ', checkedIds, checkedNode)
           }}
         />
 
@@ -101,8 +104,8 @@ export const Searchable = () => {
           data={data}
           searchable
           searchMode="filter"
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('TreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, checkedNode) => {
+            console.log('TreeSelect onChange: ', checkedIds, checkedNode)
           }}
         />
 
@@ -129,8 +132,8 @@ export const Searchable = () => {
 
             return matchUp(item)
           }}
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('TreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, checkedNode) => {
+            console.log('TreeSelect onChange: ', checkedIds, checkedNode)
           }}
         />
       </div>

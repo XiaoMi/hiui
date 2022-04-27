@@ -2,6 +2,9 @@ import React from 'react'
 import Button from '../src'
 import { PlusOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 不同尺寸
+ */
 export const Size = () => {
   const btnRef = React.useRef(null)
   React.useEffect(() => {

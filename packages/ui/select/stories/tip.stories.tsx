@@ -2,6 +2,9 @@ import React from 'react'
 import Select from '../src'
 import Tooltip from '@hi-ui/tooltip'
 
+/**
+ * @title 带Tooltip提示
+ */
 export const Tip = () => {
   const [data] = React.useState([
     { title: '电视', id: '3', disabled: true },

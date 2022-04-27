@@ -2,6 +2,9 @@ import Alert from '@hi-ui/alert'
 import React from 'react'
 import CheckCascader from '../src'
 
+/**
+ * @title 异步加载数据
+ */
 export const Dynamic = () => {
   const [treeData] = React.useState([
     {

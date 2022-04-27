@@ -1,10 +1,13 @@
 import React from 'react'
 import Descriptions from '../src'
 
+/**
+ * @title 自定义列数
+ */
 export const Col = () => {
   return (
     <>
-      <h1>不同列</h1>
+      <h1>自定义列数</h1>
       <div className="descriptions-basic__wrap">
         <Descriptions column={1}>
           <Descriptions.Item label="名字">张三</Descriptions.Item>

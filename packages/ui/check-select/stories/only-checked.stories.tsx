@@ -1,6 +1,9 @@
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 仅已选过滤
+ */
 export const OnlyChecked = () => {
   const [data] = React.useState([
     { title: '手机', id: '2' },

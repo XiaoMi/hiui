@@ -63,12 +63,12 @@ function getAnnotationInfo(content) {
   //  * @title 基础用法
   //  * @desc 无间隔水平排列
   //  */
-  let titleResult = /\s+\*\s@title\s+(.+)\n/.exec(content)
+  let titleResult = /\s+\*\s@title\s(.+)\n/.exec(content)
   if (titleResult) {
     titleResult = titleResult[1]
   }
 
-  let descResult = /\s+\*\s@desc\s+(\w+)/.exec(content)
+  let descResult = /\s+\*\s@desc\s(.+)\n/.exec(content)
   if (descResult) {
     descResult = descResult[1]
   }

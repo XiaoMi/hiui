@@ -3,6 +3,9 @@ import Badge from '../src'
 import { Button } from '@hi-ui/button'
 import { BellOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 自定义角标内容
+ */
 export const Custom = () => {
   return (
     <>

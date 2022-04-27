@@ -1,6 +1,9 @@
 import React from 'react'
 import Cascader from '../src'
 
+/**
+ * @title 选中任意层级
+ */
 export const SelectChange = () => {
   const [data] = React.useState([
     {
@@ -129,6 +132,7 @@ export const SelectChange = () => {
           expandTrigger="hover"
           searchPlaceholder="请输入搜索内容"
           data={data}
+          onChange={console.log}
         />
       </div>
     </>

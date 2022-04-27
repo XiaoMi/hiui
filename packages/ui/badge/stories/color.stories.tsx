@@ -2,6 +2,9 @@ import React from 'react'
 import { Button } from '@hi-ui/button'
 import Badge from '../src'
 
+/**
+ * @title 自定义颜色
+ */
 export const Color = () => {
   const colors = [
     'red',

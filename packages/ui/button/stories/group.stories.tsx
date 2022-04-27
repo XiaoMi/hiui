@@ -2,11 +2,11 @@ import React from 'react'
 import { ButtonGroup, Button } from '../src'
 import { EditOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 按钮组
+ * @desc 用于将有并列关系的一组动作，以组的形式展示
+ */
 export const Group = () => {
-  const btnRef = React.useRef(null)
-  React.useEffect(() => {
-    console.log(btnRef)
-  }, [])
   return (
     <>
       <h1>按钮组</h1>

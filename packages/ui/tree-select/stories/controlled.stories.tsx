@@ -1,6 +1,9 @@
 import React from 'react'
 import TreeSelect from '../src'
 
+/**
+ * @title 受控
+ */
 export const Controlled = () => {
   const [value, setValue] = React.useState<React.ReactText>('0')
   const [data] = React.useState([
@@ -90,8 +93,8 @@ export const Controlled = () => {
         <TreeSelect
           data={data}
           value={value}
-          onChange={(value, checkedNodes, currentNode) => {
-            console.log('TreeSelect onChange: ', value, checkedNodes, currentNode)
+          onChange={(value, selectItems) => {
+            console.log('TreeSelect onChange: ', value, selectItems)
             setValue(value)
           }}
         />

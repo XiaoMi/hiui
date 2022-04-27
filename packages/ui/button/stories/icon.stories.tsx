@@ -2,11 +2,11 @@ import React from 'react'
 import Button from '../src'
 import { PlusOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 带图标
+ * @desc 图标能够明确表达按钮的动作含义，成组使用，与文字搭配，突出按钮的重要性
+ */
 export const Icon = () => {
-  const btnRef = React.useRef(null)
-  React.useEffect(() => {
-    console.log(btnRef)
-  }, [])
   return (
     <>
       <h1>带图标</h1>

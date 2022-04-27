@@ -2,6 +2,9 @@ import { RightOutlined } from '@hi-ui/icons'
 import React from 'react'
 import Breadcrumb from '../src'
 
+/**
+ * @title 自定义分隔符
+ */
 export const Separator = () => {
   const [data] = React.useState([
     {

@@ -1,6 +1,9 @@
 import React from 'react'
 import TreeSelect from '../src'
 
+/**
+ * @title 异步加载数据
+ */
 export const Async = () => {
   const [data] = React.useState([
     {

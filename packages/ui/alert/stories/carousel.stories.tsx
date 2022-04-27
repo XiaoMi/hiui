@@ -3,6 +3,9 @@ import { TextLoop } from 'react-text-loop-next'
 import Marquee from 'react-fast-marquee'
 import Alert from '../src'
 
+/**
+ * @title 轮播通知
+ */
 export const Carousel = () => {
   return (
     <>

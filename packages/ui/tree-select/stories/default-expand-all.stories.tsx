@@ -1,8 +1,11 @@
 import React from 'react'
 import TreeSelect from '../src'
 
+/**
+ * @title 默认展开全部
+ */
 export const DefaultExpandAll = () => {
-  const [data, setData] = React.useState([
+  const [data] = React.useState([
     {
       title: '手机类',
       id: '0',
@@ -89,8 +92,8 @@ export const DefaultExpandAll = () => {
         <TreeSelect
           data={data}
           defaultExpandAll
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('TreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, checkedNode) => {
+            console.log('TreeSelect onChange: ', checkedIds, checkedNode)
           }}
         />
       </div>

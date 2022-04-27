@@ -1,6 +1,9 @@
 import React from 'react'
 import CheckTreeSelect from '../src'
 
+/**
+ * @title 默认展开全部
+ */
 export const DefaultExpandAll = () => {
   const [data] = React.useState([
     {
@@ -89,8 +92,8 @@ export const DefaultExpandAll = () => {
         <CheckTreeSelect
           data={data}
           defaultExpandAll
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('CheckTreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, options) => {
+            console.log('CheckTreeSelect onChange: ', checkedIds, options)
           }}
         />
       </div>

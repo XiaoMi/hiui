@@ -1,6 +1,10 @@
 import React from 'react'
 import CheckCascader from '../src'
 
+/**
+ * @title 带搜索
+ * @desc 选项数量较大，不熟悉数据的结构关系情况下，用搜索关键词的方式快速定位
+ */
 export const Search = () => {
   const [dataOnlyLeafCheckable] = React.useState(() => {
     const data = [

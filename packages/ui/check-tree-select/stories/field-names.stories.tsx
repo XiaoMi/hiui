@@ -1,6 +1,10 @@
 import React from 'react'
 import CheckTreeSelect from '../src'
 
+/**
+ * @title 字段别名
+ * @desc 数据中的字段名非title，id或disabled时使用
+ */
 export const FieldNames = () => {
   const [data] = React.useState([
     {
@@ -89,8 +93,8 @@ export const FieldNames = () => {
         <CheckTreeSelect
           data={data}
           fieldNames={{ title: 'content' }}
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('CheckTreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, options) => {
+            console.log('CheckTreeSelect onChange: ', checkedIds, options)
           }}
         />
       </div>

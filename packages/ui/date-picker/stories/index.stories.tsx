@@ -1,7 +1,7 @@
 import React from 'react'
 import DatePicker from '../src'
 
-export * from './date.stories'
+export * from './basic.stories'
 export * from './appearance.stories'
 export * from './year-month-week.stories'
 export * from './date-time.stories'

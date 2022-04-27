@@ -1,6 +1,10 @@
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 异步加载搜索
+ * @desc 备选项数量较大时，通过搜索选项关键词调取存储于服务端数据备选项的一个或多个
+ */
 export const DataSource = () => {
   const [data] = React.useState([
     {

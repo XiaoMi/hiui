@@ -1,6 +1,9 @@
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 清空选中项
+ */
 export const Clearable = () => {
   const [data] = React.useState([
     { title: '电视', id: '3', disabled: true },

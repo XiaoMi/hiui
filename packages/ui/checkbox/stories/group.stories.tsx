@@ -1,6 +1,9 @@
 import React from 'react'
 import Checkbox from '../src'
 
+/**
+ * @title 成组
+ */
 export const Group = () => {
   const CheckboxGroup = Checkbox.Group
 

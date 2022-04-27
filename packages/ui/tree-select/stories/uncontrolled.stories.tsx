@@ -1,6 +1,9 @@
 import React from 'react'
 import TreeSelect from '../src'
 
+/**
+ * @title 非受控
+ */
 export const Uncontrolled = () => {
   const [data] = React.useState([
     {

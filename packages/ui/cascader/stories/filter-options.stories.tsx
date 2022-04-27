@@ -2,6 +2,9 @@ import React from 'react'
 import Cascader from '../src'
 import pinyinMatch from 'pinyin-match'
 
+/**
+ * @title 自定义搜索筛选规则
+ */
 export const FilterOptions = () => {
   const [data] = React.useState([
     {

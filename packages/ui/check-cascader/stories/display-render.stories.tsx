@@ -1,6 +1,9 @@
 import React from 'react'
 import CheckCascader from '../src'
 
+/**
+ * @title 自定义回显展示
+ */
 export const DisplayRender = () => {
   const [dataOnlyLeafCheckable] = React.useState(() => {
     const data = [

@@ -2,6 +2,9 @@ import React from 'react'
 import Badge from '../src'
 import { Button } from '@hi-ui/button'
 
+/**
+ * @title 位置偏移
+ */
 export const Offset = () => {
   return (
     <>

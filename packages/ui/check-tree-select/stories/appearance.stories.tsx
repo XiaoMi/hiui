@@ -1,6 +1,10 @@
 import React from 'react'
 import CheckTreeSelect from '../src'
 
+/**
+ * @title 不同UI风格
+ * @desc UI风格包括线性、面性、无UI三种
+ */
 export const Appearance = () => {
   const [value, setValue] = React.useState<React.ReactText[]>(['0-0'])
   const [data] = React.useState([
@@ -94,8 +98,8 @@ export const Appearance = () => {
             value={value}
             clearable
             appearance="filled"
-            onChange={(value, checkedNodes, currentNode) => {
-              console.log('CheckTreeSelect onChange: ', value, checkedNodes, currentNode)
+            onChange={(value, options) => {
+              console.log('CheckTreeSelect onChange: ', value, options)
               setValue(value)
             }}
           />
@@ -108,8 +112,8 @@ export const Appearance = () => {
             value={value}
             clearable
             appearance="line"
-            onChange={(value, checkedNodes, currentNode) => {
-              console.log('CheckTreeSelect onChange: ', value, checkedNodes, currentNode)
+            onChange={(value, options) => {
+              console.log('CheckTreeSelect onChange: ', value, options)
               setValue(value)
             }}
           />
@@ -122,8 +126,8 @@ export const Appearance = () => {
             value={value}
             clearable
             appearance="unset"
-            onChange={(value, checkedNodes, currentNode) => {
-              console.log('CheckTreeSelect onChange: ', value, checkedNodes, currentNode)
+            onChange={(value, options) => {
+              console.log('CheckTreeSelect onChange: ', value, options)
               setValue(value)
             }}
           />

@@ -21,6 +21,10 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     box-sizing: border-box;
     border-radius: use-border-radius('normal');
     height: 100%;
+    // @animation
+    transition-property: border, background-color;
+    transition-duration: use-motion-duration('fast');
+    transition-timing-function: use-motion-bezier('normal');
   }
 
   &--appearance-line {
@@ -34,7 +38,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
       }
 
       &::before {
-        background: use-color-mode('primary', 50);
+        background-color: use-color-mode('primary', 50);
       }
 
       &#{$this}--invalid,
@@ -45,7 +49,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
         }
 
         &::before {
-          background: use-color-mode('danger', 50);
+          background-color: use-color-mode('danger', 50);
         }
       }
     }
@@ -68,25 +72,25 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
       border-bottom: none;
 
       &:disabled {
-        background: use-color('gray', 50);
+        background-color: use-color('gray', 50);
       }
     }
 
     .#{$minus-class},
     .#{$plus-class} {
-      background: use-color-static('white');
+      background-color: use-color-static('white');
       color: use-color('gray', 700);
 
       &:hover {
-        background: use-color('gray', 50);
+        background-color: use-color('gray', 50);
       }
 
       &:active {
-        background: use-color('gray', 200);
+        background-color: use-color('gray', 200);
       }
 
       &.disabled {
-        background: use-color('gray', 50);
+        background-color: use-color('gray', 50);
         color: use-color('gray', 300);
       }
     }
@@ -95,14 +99,14 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   &--appearance-filled {
     &#{$this}--focused {
       .#{$input-class} {
-        background: use-color-static('white');
+        background-color: use-color-static('white');
         border: use-border-size('normal') use-color-mode('primary');
         border-radius: use-border-radius('sm');
       }
 
       .#{$input-wrapper-class} {
         &::before {
-          background: use-color-mode('primary', 50);
+          background-color: use-color-mode('primary', 50);
         }
       }
 
@@ -116,7 +120,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
         .#{$input-wrapper-class} {
           &::before {
-            background: use-color-mode('danger', 50);
+            background-color: use-color-mode('danger', 50);
           }
         }
       }
@@ -143,20 +147,20 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
       border: use-border-size('normal') use-color-static('white');
       border-top: none;
       border-bottom: none;
-      background: use-color('gray', 100);
+      background-color: use-color('gray', 100);
     }
 
     .#{$minus-class},
     .#{$plus-class} {
-      background: use-color('gray', 100);
+      background-color: use-color('gray', 100);
       color: use-color('gray', 700);
 
       &:hover {
-        background: use-color('gray', 200);
+        background-color: use-color('gray', 200);
       }
 
       &.disabled {
-        background: use-color('gray', 100);
+        background-color: use-color('gray', 100);
         color: use-color('gray', 300);
       }
     }
@@ -176,11 +180,12 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     justify-content: center;
     flex: 0 0 auto;
     box-sizing: border-box;
-    //width: 32px;
-    //height: 32px;
-    //line-height: 32px;
     font-weight: bold;
     cursor: pointer;
+    // @animation
+    transition-property: background-color, color;
+    transition-duration: use-motion-duration('fast');
+    transition-timing-function: use-motion-bezier('normal');
 
     &.disabled {
       cursor: not-allowed;
@@ -210,6 +215,10 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     border: none;
     box-sizing: border-box;
     text-align: center;
+    // @animation
+    transition-property: background-color, color;
+    transition-duration: use-motion-duration('fast');
+    transition-timing-function: use-motion-bezier('normal');
 
     &:disabled {
       color: use-color('gray', 400);

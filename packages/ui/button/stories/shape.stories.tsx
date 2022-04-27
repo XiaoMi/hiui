@@ -2,6 +2,9 @@ import React from 'react'
 import Button from '../src'
 import { PlusOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 不同形状
+ */
 export const Shape = () => {
   const btnRef = React.useRef(null)
   React.useEffect(() => {

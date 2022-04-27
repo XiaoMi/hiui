@@ -1,6 +1,9 @@
 import React from 'react'
 import Cascader from '../src'
 
+/**
+ * @title 自定义回显展示
+ */
 export const DisplayRender = () => {
   const [data] = React.useState([
     {
@@ -65,7 +68,7 @@ export const DisplayRender = () => {
             const titleArr = []
             while (option.parent) {
               titleArr.push(option.title)
-              option = option.parent
+              option = option.parent as any
             }
             return titleArr.reverse().join(' | ')
           }}

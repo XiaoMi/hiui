@@ -3,6 +3,7 @@ import Card from '../src'
 
 export * from './basic.stories'
 export * from './no-border.stories'
+export * from './extra.stories'
 export * from './img.stories'
 export * from './size.stories'
 export * from './loading.stories'

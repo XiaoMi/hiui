@@ -1,10 +1,13 @@
 import React from 'react'
 import Alert from '../src'
 
+/**
+ * @title Banner 公告
+ */
 export const Banner = () => {
   return (
     <>
-      <h1>Banner 展示</h1>
+      <h1>Banner 公告</h1>
       <div className="alert-banner__wrap">
         <Alert
           showIcon={false}

@@ -1,6 +1,10 @@
 import React from 'react'
 import { Cascader } from '../src'
 
+/**
+ * @title 字段别名
+ * @desc 数据中的字段名非title，id或disabled时使用
+ */
 export const FieldNames = () => {
   const [data] = React.useState([
     {

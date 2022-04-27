@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import DatePicker from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 以天为粒度，展示“YYYY-MM-DD”
+ */
 export const Basic = () => {
   const [controlledValue, setControlledValue] = useState(new Date())
   return (

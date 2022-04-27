@@ -2,11 +2,11 @@ import React from 'react'
 import Button from '../src'
 import { PlusOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 加载中状态
+ * @desc 请求服务器发生延迟时或缓冲状态，使用加载中进行状态说明
+ */
 export const Loading = () => {
-  const btnRef = React.useRef(null)
-  React.useEffect(() => {
-    console.log(btnRef)
-  }, [])
   return (
     <>
       <h1>加载中</h1>

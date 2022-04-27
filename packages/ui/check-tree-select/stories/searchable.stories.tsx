@@ -1,6 +1,10 @@
 import React from 'react'
 import CheckTreeSelect from '../src'
 
+/**
+ * @title 带搜索
+ * @desc 选项数量较大，不熟悉数据的结构关系情况下，用搜索关键词的方式快速定位
+ */
 export const Searchable = () => {
   const [data] = React.useState([
     {
@@ -91,8 +95,8 @@ export const Searchable = () => {
           data={data}
           searchable
           searchMode="highlight"
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('CheckTreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, options) => {
+            console.log('CheckTreeSelect onChange: ', checkedIds, options)
           }}
         />
 
@@ -101,8 +105,8 @@ export const Searchable = () => {
           data={data}
           searchable
           searchMode="filter"
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('CheckTreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, options) => {
+            console.log('CheckTreeSelect onChange: ', checkedIds, options)
           }}
         />
 
@@ -129,8 +133,8 @@ export const Searchable = () => {
 
             return matchUp(item)
           }}
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('CheckTreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, options) => {
+            console.log('CheckTreeSelect onChange: ', checkedIds, options)
           }}
         />
       </div>

@@ -1,6 +1,10 @@
 import React from 'react'
 import Alert from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 根据用户的操作进行页面级或模块、区块级的提示
+ */
 export const Basic = () => {
   return (
     <>

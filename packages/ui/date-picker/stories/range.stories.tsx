@@ -2,6 +2,10 @@ import React, { useState } from 'react'
 import DatePicker from '../src'
 import DayJs from 'dayjs'
 
+/**
+ * @title 范围
+ * @desc 以天、周、月、年等粒度展示一个时间的范围
+ */
 export const Range = () => {
   const [dynamicSelectedValue, setDynamicSelectedValue] = useState<any>('')
   return (
@@ -23,11 +27,11 @@ export const Range = () => {
             if (tomorrow) return true
 
             if (dynamicSelectedValue) {
-              const start_time = DayJs(dynamicSelectedValue).startOf('month').valueOf()
-              const end_time = DayJs(dynamicSelectedValue).endOf('month').valueOf()
+              const startTime = DayJs(dynamicSelectedValue).startOf('month').valueOf()
+              const endTime = DayJs(dynamicSelectedValue).endOf('month').valueOf()
 
-              if (DayJs(val).isBefore(start_time)) return true
-              if (DayJs(val).isAfter(end_time)) return true
+              if (DayJs(val).isBefore(startTime)) return true
+              if (DayJs(val).isAfter(endTime)) return true
             }
             return false
           }}
@@ -47,7 +51,7 @@ export const Range = () => {
         <DatePicker
           type="yearrange"
           onSelect={console.log}
-          defaultValue={{ start: new Date(), end: new Date() }}
+          defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -56,7 +60,7 @@ export const Range = () => {
           type="yearrange"
           altCalendarPreset="zh-CN"
           dateMarkPreset="zh-CN"
-          defaultValue={{ start: new Date(), end: new Date() }}
+          defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -65,7 +69,7 @@ export const Range = () => {
         <DatePicker
           type="monthrange"
           onSelect={console.log}
-          defaultValue={{ start: new Date(), end: new Date() }}
+          defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -74,7 +78,7 @@ export const Range = () => {
           type="monthrange"
           altCalendarPreset="zh-CN"
           dateMarkPreset="zh-CN"
-          defaultValue={{ start: new Date(), end: new Date() }}
+          defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -83,7 +87,7 @@ export const Range = () => {
         <DatePicker
           type="weekrange"
           onSelect={console.log}
-          defaultValue={{ start: new Date(), end: new Date() }}
+          defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -92,7 +96,7 @@ export const Range = () => {
           type="weekrange"
           altCalendarPreset="zh-CN"
           dateMarkPreset="zh-CN"
-          defaultValue={{ start: new Date(), end: new Date() }}
+          defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}

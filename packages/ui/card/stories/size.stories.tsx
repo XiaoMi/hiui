@@ -2,6 +2,10 @@ import Button from '@hi-ui/button'
 import React from 'react'
 import Card from '../src'
 
+/**
+ * @title 不同尺寸
+ * @desc 为卡片定义了 2 种尺寸，根据页面的实际空间选用紧凑程度
+ */
 export const Size = () => {
   return (
     <>

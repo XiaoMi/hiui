@@ -3,6 +3,10 @@ import Badge from '../src'
 import { Button } from '@hi-ui/button'
 import { BellOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 基础用法
+ * @desc 标识是否有新消息
+ */
 export const Basic = () => {
   return (
     <>

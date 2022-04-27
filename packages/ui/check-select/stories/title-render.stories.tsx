@@ -2,6 +2,10 @@ import { CheckOutlined } from '@hi-ui/icons'
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 自定义选项展示
+ * @desc 可自定义选项的信息结构或样式
+ */
 export const TitleRender = () => {
   const [data] = React.useState([
     { title: '电视', id: '3', disabled: true },

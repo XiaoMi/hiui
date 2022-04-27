@@ -2,6 +2,9 @@ import React from 'react'
 import Breadcrumb from '../src'
 import { HomeOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 前缀图标
+ */
 export const CustomIcon = () => {
   const [data] = React.useState([
     {

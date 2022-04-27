@@ -1,6 +1,9 @@
 import React from 'react'
 import Carousel from '../src'
 
+/**
+ * @title 响应式
+ */
 export const Responsive = () => {
   const generateContent = () => {
     return [

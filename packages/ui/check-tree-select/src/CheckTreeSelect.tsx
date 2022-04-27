@@ -1,12 +1,12 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { FieldNames, CheckTreeSelectDataItem } from './types'
+import { FieldNames, CheckTreeSelectDataItem, FlattedCheckTreeSelectDataItem } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Picker, PickerProps } from '@hi-ui/picker'
-import { flattenTree } from '@hi-ui/tree-utils'
+import { baseFlattenTree } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
@@ -104,12 +104,21 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     )
 
     const flattedData = useMemo(() => {
-      return flattenTree(data, (node) => {
-        node.id = getKeyFields(node.raw, 'id')
-        // @ts-ignore
-        node.title = getKeyFields(node.raw, 'title')
-        return node
-      })
+      return baseFlattenTree({
+        tree: data,
+        childrenFieldName: (node) => getKeyFields(node, 'children'),
+        transform: (node) => {
+          const flattedNode: FlattedCheckTreeSelectDataItem = node as FlattedCheckTreeSelectDataItem
+          const raw = node.raw
+
+          flattedNode.id = getKeyFields(raw, 'id')
+          flattedNode.title = getKeyFields(raw, 'title')
+          flattedNode.disabled = getKeyFields(raw, 'disabled') ?? false
+          flattedNode.isLeaf = getKeyFields(raw, 'isLeaf') ?? false
+
+          return flattedNode
+        },
+      }) as FlattedCheckTreeSelectDataItem[]
     }, [data, getKeyFields])
 
     // TODO: 抽离展开hook
@@ -290,7 +299,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             checkedIds={value}
             onCheck={onSelect}
             // TODO: 支持 fieldNames
-            // 禁用时被选中的样式处理
+            // @ts-ignore
             onLoadChildren={onLoadChildren}
             {...treeProps}
           />
@@ -394,11 +403,7 @@ export interface CheckTreeSelectProps
    */
   onLoadChildren?: (node: TreeNodeEventData) => void | Promise<CheckTreeSelectDataItem[] | void>
   /**
-   * 从远端获取数据，初始时是否自动加载
-   */
-  autoload?: boolean
-  /**
-   * 异步加载数据
+   * 异步加载数据。暂不对外暴露
    */
   dataSource?: UseDataSource<CheckTreeSelectDataItem[]>
   /**

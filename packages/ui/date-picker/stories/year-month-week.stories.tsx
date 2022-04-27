@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import DatePicker from '../src'
 import LocaleProvider from '@hi-ui/locale-context'
 
+/**
+ * @title 年份 / 月份 / 周
+ * @desc 以年份 / 月份 / 周为展示粒度
+ */
 export const YearMonthWeek = () => {
-  const [controlledValue, setControlledValue] = useState(new Date())
   return (
     <>
       <h1>年份 / 月份 / 周</h1>

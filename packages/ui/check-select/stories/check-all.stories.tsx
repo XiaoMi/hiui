@@ -1,6 +1,9 @@
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 全选
+ */
 export const CheckAll = () => {
   const [value, setValue] = React.useState<React.ReactText[]>(['3'])
 

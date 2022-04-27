@@ -1,6 +1,10 @@
 import React from 'react'
 import Alert from '../src'
 
+/**
+ * @title 倒计时自动关闭
+ * @desc 倒计时自动关闭反馈信息在出现一定时间后自动关闭，不打扰
+ */
 export const Duration = () => {
   return (
     <>

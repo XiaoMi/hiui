@@ -2,6 +2,9 @@ import React from 'react'
 import Checkbox from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 受控
+ */
 export const Controlled = () => {
   const [checked, setChecked] = React.useState(false)
 

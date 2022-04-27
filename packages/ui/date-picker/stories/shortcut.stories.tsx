@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import DatePicker from '../src'
 
+/**
+ * @title 带快捷选项
+ * @desc 将常用的日期或时间提炼成快捷项，节省操作成本
+ */
 export const Shortcut = () => {
   return (
     <>

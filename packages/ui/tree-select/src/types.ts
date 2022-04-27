@@ -4,11 +4,11 @@ export interface TreeSelectDataItem {
   /**
    * 节点唯一 id
    */
-  id: React.ReactText
+  id?: React.ReactText
   /**
    * 节点标题
    */
-  title: React.ReactNode
+  title?: React.ReactNode
   /**
    * 子级数据
    */

@@ -2,6 +2,9 @@ import React from 'react'
 import Collapse from '../src'
 import { FileFilled, FolderFilled, FolderOpenFilled } from '@hi-ui/icons'
 
+/**
+ * @title 自定义箭头
+ */
 export const ArrowRender = () => {
   const [activeId, setActiveId] = React.useState<React.ReactText[]>(['2'])
 

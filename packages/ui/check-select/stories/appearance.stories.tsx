@@ -1,6 +1,10 @@
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 不同UI风格
+ * @desc UI风格包括线性、面性、无UI三种
+ */
 export const Appearance = () => {
   const [value, setValue] = React.useState<React.ReactText[]>(['2'])
   const [data] = React.useState([

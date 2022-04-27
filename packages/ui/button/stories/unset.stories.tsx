@@ -1,11 +1,10 @@
 import React from 'react'
 import Button from '../src'
 
+/**
+ * @title 无 UI 外观
+ */
 export const Unset = () => {
-  const btnRef = React.useRef(null)
-  React.useEffect(() => {
-    console.log(btnRef)
-  }, [])
   return (
     <>
       <h1>Button</h1>

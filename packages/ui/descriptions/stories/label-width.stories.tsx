@@ -1,6 +1,9 @@
 import React from 'react'
 import Descriptions from '../src'
 
+/**
+ * @title 固定label宽度
+ */
 export const LabelWidth = () => {
   return (
     <>

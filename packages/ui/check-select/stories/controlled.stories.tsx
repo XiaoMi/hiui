@@ -2,6 +2,9 @@ import Button from '@hi-ui/button'
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 受控
+ */
 export const Controlled = () => {
   const [value, setValue] = React.useState<React.ReactText[]>(['3'])
   const [data] = React.useState([

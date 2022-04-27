@@ -1,6 +1,10 @@
 import React from 'react'
 import CheckSelect from '../src'
 
+/**
+ * @title 自定义筛选
+ * @desc 可自定义搜索条件的算法
+ */
 export const FilterOptions = () => {
   const [data] = React.useState([
     { title: '电视', id: '3', disabled: true },

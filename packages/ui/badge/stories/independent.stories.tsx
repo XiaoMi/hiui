@@ -1,6 +1,9 @@
 import React from 'react'
 import Badge from '../src'
 
+/**
+ * @title 独立使用
+ */
 export const Independent = () => {
   return (
     <>

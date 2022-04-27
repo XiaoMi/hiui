@@ -2,6 +2,10 @@ import React from 'react'
 import Collapse from '../src'
 import { FileFilled } from '@hi-ui/icons'
 
+/**
+ * @title 基础用法
+ * @desc 可以同时展开多个面板，对垂直空间没有特别限制
+ */
 export const Basic = () => {
   return (
     <>

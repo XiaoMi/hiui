@@ -2,6 +2,10 @@ import React from 'react'
 import Collapse from '../src'
 import { FileFilled } from '@hi-ui/icons'
 
+/**
+ * @title 箭头位置
+ * @desc 指定箭头放置方式
+ */
 export const ArrowPlacement = () => {
   return (
     <>

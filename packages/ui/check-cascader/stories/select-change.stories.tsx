@@ -1,6 +1,9 @@
 import React from 'react'
 import CheckCascader from '../src'
 
+/**
+ * @title 选择即改变
+ */
 export const SelectChange = () => {
   const [dataOnlyLeafCheckable] = React.useState(() => {
     const data = [

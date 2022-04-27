@@ -1,6 +1,10 @@
 import React from 'react'
 import Checkbox from '../src'
 
+/**
+ * @title 垂直样式
+ * @desc 选项的另一种布局形式，视页面空间选用
+ */
 export const Placement = () => {
   const CheckboxGroup = Checkbox.Group
 

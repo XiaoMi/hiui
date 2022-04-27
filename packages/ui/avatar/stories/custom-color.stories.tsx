@@ -1,6 +1,9 @@
 import React from 'react'
 import Avatar from '../src'
 
+/**
+ * @title 自定义颜色
+ */
 export const CustomColor = () => {
   return (
     <>

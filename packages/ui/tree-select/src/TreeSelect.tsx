@@ -261,7 +261,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
             onSelect={onSelect}
             // onLoadChildren 缓存数据
             // TODO: 支持 fieldNames
-            // 禁用时被选中的样式处理
+            // @ts-ignore
             onLoadChildren={onLoadChildren}
             {...treeProps}
           />

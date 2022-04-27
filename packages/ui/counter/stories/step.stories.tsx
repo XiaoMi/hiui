@@ -1,6 +1,9 @@
 import React from 'react'
 import Counter from '../src'
 
+/**
+ * @title 自定义步长
+ */
 export const Step = () => {
   return (
     <>

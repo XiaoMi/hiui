@@ -1,6 +1,9 @@
 import React from 'react'
 import CheckTreeSelect from '../src'
 
+/**
+ * @title 清空选中项
+ */
 export const Clearable = () => {
   const [data] = React.useState([
     {
@@ -89,8 +92,8 @@ export const Clearable = () => {
         <CheckTreeSelect
           clearable
           data={data}
-          onChange={(checkedIds, checkedNodes, currentNode) => {
-            console.log('CheckTreeSelect onChange: ', checkedIds, checkedNodes, currentNode)
+          onChange={(checkedIds, options) => {
+            console.log('CheckTreeSelect onChange: ', checkedIds, options)
           }}
         />
       </div>
