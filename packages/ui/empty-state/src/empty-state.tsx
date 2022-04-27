@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { isUndef } from '@hi-ui/type-assertion'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
-import { defaultIndicatorIcon } from './icons'
+import { IMAGE_NO_DATA } from './icons'
 
 const _role = 'empty-state'
 const _prefix = getPrefixCls(_role)
@@ -16,7 +16,7 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
       role = _role,
       className,
       children,
-      indicator = defaultIndicatorIcon,
+      indicator = IMAGE_NO_DATA,
       title: titleProp,
       imageStyle,
       imageClassName,
