@@ -1,15 +1,16 @@
 import React, { useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import {
-  FlattedCheckCascaderItem,
-  CheckCascaderItemEventData,
-  CheckCascaderItemRequiredProps,
-  CheckCascaderItem,
+  FlattedCheckCascaderDataItem,
+  CheckCascaderDataItemEventData,
+  CheckCascaderDataItemRequiredProps,
+  CheckCascaderDataItem,
 } from './types'
 import { defaultLeafIcon, defaultLoadingIcon, defaultSuffixIcon } from './icons'
 import Checkbox from '@hi-ui/checkbox'
 import { useCheckCascaderContext } from './context'
-import { getCascaderItemEventData, getNodeAncestors } from './utils'
+import { getCascaderItemEventData } from './utils'
+import { getNodeAncestorsWithMe } from '@hi-ui/tree-utils'
 
 const _role = 'check-cascader-menu'
 const _prefix = getPrefixCls(_role)
@@ -33,7 +34,7 @@ export const CheckCascaderMenu = ({
   } = useCheckCascaderContext()
 
   const renderTitle = useCallback(
-    (option: CheckCascaderItemEventData) => {
+    (option: CheckCascaderDataItemEventData) => {
       // 如果 titleRender 返回 `true`，则使用默认 title
       const title = titleRender ? titleRender(option) : true
 
@@ -43,7 +44,7 @@ export const CheckCascaderMenu = ({
 
       return flatted ? (
         <span className={cx(`title__text`, `title__text--cols`)}>
-          {getNodeAncestors(option)
+          {getNodeAncestorsWithMe(option)
             .reverse()
             .map((item, index) => {
               return (
@@ -146,15 +147,17 @@ export interface CheckCascaderMenuProps {
   /**
    * 设置选择项数据源
    */
-  data: FlattedCheckCascaderItem[]
+  data: FlattedCheckCascaderDataItem[]
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: FlattedCheckCascaderItem) => React.ReactNode
+  titleRender?: (item: FlattedCheckCascaderDataItem) => React.ReactNode
   /**
    * 获取级联选项必要状态
    */
-  getCascaderItemRequiredProps: (option: FlattedCheckCascaderItem) => CheckCascaderItemRequiredProps
+  getCascaderItemRequiredProps: (
+    option: FlattedCheckCascaderDataItem
+  ) => CheckCascaderDataItemRequiredProps
 }
 
 /**
@@ -162,12 +165,12 @@ export interface CheckCascaderMenuProps {
  */
 const renderSuffix = (
   prefixCls: string,
-  node: FlattedCheckCascaderItem,
+  node: FlattedCheckCascaderDataItem,
   loading: boolean,
   onLoadChildren?: (
-    item: CheckCascaderItemEventData,
+    item: CheckCascaderDataItemEventData,
     idPaths: React.ReactText[]
-  ) => Promise<CheckCascaderItem[] | void> | void
+  ) => Promise<CheckCascaderDataItem[] | void> | void
 ) => {
   if (loading) {
     return (

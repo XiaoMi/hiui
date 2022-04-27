@@ -425,10 +425,10 @@ export interface TreeProps {
   onContextMenu?: (event: React.MouseEvent, node: TreeNodeEventData) => void
   /**
    * 多选数据交互时回填、回显模式
-   * ALL: 所有被选中节点，不区分父子节点
    * PARENT: 当所有子节点被选中时将只保留父节点
-   * CHILD: 仅显示子节点
-   * SEPARATE：父子完全独立受控，暂时不支持
+   * ALL: 所有被选中节点，不区分父子节点（不支持异步数据加载勾选checkbox）
+   * CHILD: 仅显示子节点（不支持异步数据加载勾选checkbox）
+   * SEPARATE：父子完全独立受控
    */
   checkedMode?: 'PARENT' | 'CHILD' | 'ALL' | 'SEPARATE'
   /**

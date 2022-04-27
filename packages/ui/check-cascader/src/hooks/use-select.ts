@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { CheckCascaderItemEventData } from '../types'
+import { CheckCascaderDataItemEventData } from '../types'
 
 /**
  * 用于选中的 hook
@@ -11,7 +11,7 @@ export const useSelect = (disabled: boolean) => {
   const [selectedId, setSelectedId] = useState<React.ReactText | undefined>()
 
   const onOptionSelect = useCallback(
-    (selectedOption: CheckCascaderItemEventData) => {
+    (selectedOption: CheckCascaderDataItemEventData) => {
       if (disabled || selectedOption.disabled) return
 
       setSelectedId(selectedOption.id)

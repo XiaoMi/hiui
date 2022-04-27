@@ -5,6 +5,12 @@ import { invariant } from '@hi-ui/env'
 import { filterTree, getNodeAncestors, cloneTree } from '@hi-ui/tree-utils'
 import { useLatestRef } from '@hi-ui/use-latest'
 
+const initialStateInSearch = () => ({
+  matched: false,
+  data: [],
+  expandedIds: [],
+})
+
 /**
  * TODO: What is useSearchMode
  */
@@ -12,18 +18,10 @@ export const useSearchMode = ({ searchable: searchableProp, strategies }: UseSea
   const [keyword, setKeyword] = useState('')
 
   // 搜索时的临时节点数据
-  const [stateInSearch, setStateInSearch] = useState<any>({
-    matched: false,
-    data: [],
-    expandedIds: [],
-  })
+  const [stateInSearch, setStateInSearch] = useState<any>(initialStateInSearch)
 
   const resetState = useCallback(() => {
-    setStateInSearch({
-      matched: false,
-      data: [],
-      expandedIds: [],
-    })
+    setStateInSearch(initialStateInSearch)
   }, [])
 
   // 搜索策略，优先级按数组查找顺序
@@ -164,12 +162,14 @@ export const useFilterSearch = ({
   flattedData,
   exclude,
 }: any) => {
+  const excludeLatestRef = useLatestRef(exclude)
+
   const onSearch = useCallback(
     (keyword: string, dispatch: any) => {
       // 1. 展开匹配节点树
       // 2. 高亮匹配节点文本
       // 3. 过滤掉（隐藏）不相干的兄弟和祖先节点
-      const matchedNodes = getMatchedNodes(flattedData, keyword, exclude)
+      const matchedNodes = getMatchedNodes(flattedData, keyword, excludeLatestRef.current)
       const filteredNodeIds = getFilteredIds(matchedNodes)
       const showData = getSearchedData(
         cloneTree(data),
@@ -183,65 +183,51 @@ export const useFilterSearch = ({
         expandedIds: filteredNodeIds,
       })
     },
-    [data, flattedData]
+    [data, flattedData, excludeLatestRef]
   )
 
   return { name: searchMode, enabled, run: onSearch }
 }
 
 export const useNormalFilterSearch = ({ enabled, searchMode = 'filter', data, exclude }: any) => {
+  const excludeLatestRef = useLatestRef(exclude)
+
   const onSearch = useCallback(
     (keyword: string, dispatch: any) => {
       // 1. 展开匹配节点树
       // 2. 高亮匹配节点文本
       // 3. 过滤掉（隐藏）不相干的兄弟和祖先节点
-      const matchedNodes = getMatchedNodes(data, keyword, exclude)
+      const matchedNodes = getMatchedNodes(data, keyword, excludeLatestRef.current)
 
       dispatch({
         matched: isArrayNonEmpty(matchedNodes),
         data: matchedNodes,
       })
     },
-    [data]
+    [data, excludeLatestRef]
   )
 
   return { name: searchMode, enabled, run: onSearch }
 }
 
 export const useTreeUpMatchSearch = ({ enabled, flattedData, data, exclude }: any) => {
+  const excludeLatestRef = useLatestRef(exclude)
   const onSearch = useCallback(
     (keyword: string, dispatch: any) => {
       // 1. 从子至父匹配节点
       // 2. 高亮匹配节点文本
       // 3. 过滤掉（隐藏）不相干的兄弟和祖先节点
-      const matchedNodes = getMatchedUpMatchNodes(flattedData, keyword, exclude)
+      const matchedNodes = getMatchedUpMatchNodes(flattedData, keyword, excludeLatestRef.current)
 
       dispatch({
         matched: isArrayNonEmpty(matchedNodes),
         data: matchedNodes,
       })
     },
-    [flattedData]
+    [flattedData, excludeLatestRef]
   )
 
   return { name: 'upMatch', enabled, run: onSearch }
-}
-
-/**
- * 从 value 中 找到指定的 options（逐层查找）
- */
-const getMatchedNodes = (
-  data: any[],
-  keyword: string,
-  exclude?: (option: any) => boolean
-): any[] => {
-  if (!keyword) return []
-
-  return data.filter((node) => {
-    if (exclude && exclude(node)) return false
-
-    return matchStrategy(node.title, keyword) !== -1
-  })
 }
 
 const getFilteredIds = (matchedNodes: any[]) => {
@@ -285,19 +271,36 @@ const getSearchedData = (
 }
 
 /**
- * 从 value 中 找到指定的 options（逐层并向上查找）
+ * 从 value 中找到指定的 options（逐个查找）
+ */
+const getMatchedNodes = (
+  data: any[],
+  keyword: string,
+  exclude?: (option: any) => boolean
+): any[] => {
+  if (!keyword) return []
+
+  return data.filter((node) => {
+    if (exclude && exclude(node)) return false
+
+    return matchStrategy(node.title, keyword) !== -1
+  })
+}
+
+/**
+ * 从 value 中找到指定的 options（逐层并向上查找）
  */
 const getMatchedUpMatchNodes = (
   flattedData: any[],
   keyword: string,
-  filter: (option: any) => boolean
+  exclude?: (node: any) => boolean
 ): any[] => {
   if (!keyword) return []
 
   const visitedResultSet = new Set<React.ReactText>()
 
   return flattedData.filter((node) => {
-    if (filter && filter(node)) return false
+    if (exclude && exclude(node)) return false
 
     while (node.parent) {
       if (visitedResultSet.has(node.id)) {
@@ -317,12 +320,12 @@ const getMatchedUpMatchNodes = (
 
 /**
  * 匹配策略
+ * 返回 -1 表示无法完成匹配
  */
 export const matchStrategy = (content: unknown, keyword: string, ignoreCase = true) => {
   if (typeof content !== 'string') {
     invariant(false, 'The `title` should be `string` when searchable is enabled.')
 
-    // 返回 -1 表示无法完成匹配
     return -1
   }
 

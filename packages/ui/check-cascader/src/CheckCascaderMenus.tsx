@@ -3,10 +3,10 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import {
   ExpandTrigger,
-  CheckCascaderItemEventData,
-  FlattedCheckCascaderItem,
-  CheckCascaderItem,
-  CheckCascaderItemRequiredProps,
+  CheckCascaderDataItemEventData,
+  FlattedCheckCascaderDataItem,
+  CheckCascaderDataItem,
+  CheckCascaderDataItemRequiredProps,
 } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { CheckCascaderMenu } from './CheckCascaderMenu'
@@ -44,41 +44,40 @@ export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenu
       onSelect,
       titleRender,
       flatted,
+      checkedMode = 'ALL',
       ...rest
     },
     ref
   ) => {
+    if (checkCascaded === false) {
+      checkedMode = 'SEPARATE'
+    }
+
     const [selectedId, onOptionSelect] = useSelect(disabled)
     const selectedIds = getActiveMenuIds(flattedData, selectedId)
 
     const [isLoadingId, onItemExpand] = useAsyncSwitch(onChangeData, onOptionSelect, onLoadChildren)
 
     const [onOptionCheck, isCheckedId, isSemiCheckedId] = useCheck(
-      checkCascaded,
+      checkedMode,
       disabled,
       flattedData,
       defaultValue,
       valueProp,
       ({ checkedIds, semiCheckedIds }, target, shouldChecked) => {
         // @ts-ignore
-        onChange?.(checkedIds, {
-          trigger: 'checkbox',
-          target,
-          shouldChecked,
-          semiCheckedIds,
-          // checkedItems: fFindNodesByIds(flattedData, checkedIds),
-        })
+        onChange?.(checkedIds, target, shouldChecked)
       }
     )
 
     const getCascaderItemRequiredProps = useLatestCallback(
-      ({ id, depth }: FlattedCheckCascaderItem): CheckCascaderItemRequiredProps => {
+      ({ id, depth }: FlattedCheckCascaderDataItem): CheckCascaderDataItemRequiredProps => {
         return {
           selected: flatted ? selectedId === id : selectedIds[depth] === id,
           checked: isCheckedId(id),
           loading: isLoadingId(id),
           semiChecked: isSemiCheckedId(id),
-          focused: false,
+          // focused: false,
         }
       }
     )
@@ -153,15 +152,15 @@ export interface CascaderMenusProps {
   /**
    * 设置选择项数据源
    */
-  data: CheckCascaderItem[]
+  data: CheckCascaderDataItem[]
   /**
    * 更新选择项数据源
    */
-  onChangeData: React.Dispatch<React.SetStateAction<CheckCascaderItem[]>>
+  onChangeData: React.Dispatch<React.SetStateAction<CheckCascaderDataItem[]>>
   /**
    * 设置选择项数据源
    */
-  flattedData: FlattedCheckCascaderItem[]
+  flattedData: FlattedCheckCascaderDataItem[]
   /**
    * 设置当前多选值
    */
@@ -177,7 +176,7 @@ export interface CascaderMenusProps {
   /**
    * 选项被点击时的回调
    */
-  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderItemEventData) => void
+  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderDataItemEventData) => void
   /**
    * 次级菜单的展开方式
    */
@@ -193,7 +192,15 @@ export interface CascaderMenusProps {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: CheckCascaderItemEventData) => React.ReactNode
+  titleRender?: (item: CheckCascaderDataItemEventData) => React.ReactNode
+  /**
+   * 多选数据交互时回填、回显模式
+   * PARENT: 当所有子节点被选中时将只保留父节点
+   * ALL: 所有被选中节点，不区分父子节点（不支持异步数据加载勾选checkbox）
+   * CHILD: 仅显示子节点（不支持异步数据加载勾选checkbox）
+   * SEPARATE：父子完全独立受控
+   */
+  checkedMode?: 'PARENT' | 'CHILD' | 'ALL' | 'SEPARATE'
   /**
    * 支持 checkbox 级联（正反选）功能
    */
@@ -202,11 +209,13 @@ export interface CascaderMenusProps {
    * 将 check 子项拍平展示
    */
   flatted?: boolean
-
+  /**
+   * 点击异步加载子项
+   */
   onLoadChildren?: (
-    item: CheckCascaderItemEventData,
+    item: CheckCascaderDataItemEventData,
     idPaths: React.ReactText[]
-  ) => Promise<CheckCascaderItem[] | void> | void
+  ) => Promise<CheckCascaderDataItem[] | void> | void
 }
 
 if (__DEV__) {

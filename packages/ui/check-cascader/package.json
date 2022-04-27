@@ -47,6 +47,7 @@
     "@hi-ui/array-utils": "^4.0.0-beta.7",
     "@hi-ui/checkbox": "^4.0.0-beta.10",
     "@hi-ui/classname": "^4.0.0-beta.0",
+    "@hi-ui/core": "^4.0.0-beta.8",
     "@hi-ui/core-css": "^4.0.0-beta.5",
     "@hi-ui/env": "^4.0.0-beta.0",
     "@hi-ui/func-utils": "^4.0.0-beta.11",

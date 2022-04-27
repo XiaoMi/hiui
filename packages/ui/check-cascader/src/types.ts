@@ -1,6 +1,6 @@
 import React from 'react'
 
-export interface CheckCascaderItem {
+export interface CheckCascaderDataItem {
   /**
    * 树节点唯一 id
    */
@@ -12,7 +12,7 @@ export interface CheckCascaderItem {
   /**
    * 该节点的子节点列表
    */
-  children?: CheckCascaderItem[]
+  children?: CheckCascaderDataItem[]
   /**
    * 是否为叶子节点
    */
@@ -32,23 +32,24 @@ export interface CheckCascaderItem {
 }
 
 // TODO: ts 类型工具函数 将指定属性转为非可选属性
-export interface FlattedCheckCascaderItemWithChildren extends FlattedCheckCascaderItem {
-  children: FlattedCheckCascaderItem[]
+export interface FlattedCheckCascaderDataItemWithChildren extends FlattedCheckCascaderDataItem {
+  children: FlattedCheckCascaderDataItem[]
 }
 
-export interface FlattedCheckCascaderItem extends Required<Omit<CheckCascaderItem, 'children'>> {
+export interface FlattedCheckCascaderDataItem
+  extends Required<Omit<CheckCascaderDataItem, 'children'>> {
   /**
    * 该节点的子节点列表
    */
-  children?: FlattedCheckCascaderItem[]
+  children?: FlattedCheckCascaderDataItem[]
   /**
    * 该节点的所有祖先节点列表
    */
-  ancestors?: FlattedCheckCascaderItemWithChildren[]
+  ancestors?: FlattedCheckCascaderDataItemWithChildren[]
   /**
    * 关联用户传入的原始节点
    */
-  raw: CheckCascaderItem
+  raw: CheckCascaderDataItem
   /**
    * 该节点的层级，从 0（顶层）开始
    */
@@ -56,20 +57,20 @@ export interface FlattedCheckCascaderItem extends Required<Omit<CheckCascaderIte
   /**
    * 该节点的父节点
    */
-  parent: FlattedCheckCascaderItemWithChildren
+  parent: FlattedCheckCascaderDataItemWithChildren
 }
 
-export interface CheckCascaderItemRequiredProps {
+export interface CheckCascaderDataItemRequiredProps {
   selected: boolean
   checked: boolean
   semiChecked: boolean
   loading: boolean
-  focused: boolean
+  // focused: boolean
 }
 
-export interface CheckCascaderItemEventData
-  extends FlattedCheckCascaderItem,
-    CheckCascaderItemRequiredProps {}
+export interface CheckCascaderDataItemEventData
+  extends FlattedCheckCascaderDataItem,
+    CheckCascaderDataItemRequiredProps {}
 
 export type ExpandTrigger = 'click' | 'hover'
 

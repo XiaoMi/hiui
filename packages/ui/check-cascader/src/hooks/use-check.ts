@@ -1,14 +1,15 @@
 import React from 'react'
-import { useCascadeCheck } from '@hi-ui/use-check'
-import { CheckCascaderItemEventData, FlattedCheckCascaderItem } from '../types'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { useCascadeCheck } from '@hi-ui/use-check'
+import { CheckCascaderDataItemEventData, FlattedCheckCascaderDataItem } from '../types'
+import { parseCheckDataDirty, processCheckedIds } from '../utils'
 
 const NOOP_ARRAY = [] as []
 
 export const useCheck = (
-  cascaded: boolean,
+  checkedMode: string,
   disabled: boolean,
-  flattedData: FlattedCheckCascaderItem[],
+  flattedData: FlattedCheckCascaderDataItem[],
   defaultCheckedIds: React.ReactText[] = NOOP_ARRAY,
   checkedIdsProp?: React.ReactText[],
   onCheck?: (
@@ -16,7 +17,7 @@ export const useCheck = (
       checkedIds: React.ReactText[]
       semiCheckedIds: React.ReactText[]
     },
-    node: CheckCascaderItemEventData,
+    node: CheckCascaderDataItemEventData,
     checked: boolean
   ) => void
 ) => {
@@ -24,21 +25,29 @@ export const useCheck = (
     defaultCheckedIds,
     checkedIdsProp,
     (checkedIds, checkedNode, shouldChecked, semiCheckedIds) => {
-      onCheck?.({ checkedIds, semiCheckedIds }, checkedNode, shouldChecked)
+      // 出口数据处理
+      const processedIds = processCheckedIds(checkedMode, checkedIds, flattedData, allowCheck)
+
+      onCheck?.({ checkedIds: processedIds, semiCheckedIds }, checkedNode, shouldChecked)
     }
   )
+
+  // 入口数据处理
+  const parsedCheckedIds = parseCheckDataDirty(checkedMode, checkedIds, flattedData, allowCheck)
+
+  const cascaded = checkedMode !== 'SEPARATE'
 
   return useCascadeCheck({
     cascaded,
     disabled,
     flattedData,
-    checkedIds,
+    checkedIds: parsedCheckedIds,
     onCheck: trySetCheckedIds,
     allowCheck,
   })
 }
 
-const allowCheck = (targetItem: CheckCascaderItemEventData) => {
+const allowCheck = (targetItem: CheckCascaderDataItemEventData) => {
   if (targetItem.disabled || targetItem.disabledCheckbox || targetItem.checkable === false) {
     return false
   }
