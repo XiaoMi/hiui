@@ -1,6 +1,9 @@
 import React from 'react'
 import Input from '../src'
 
+/**
+ * @title 无效状态
+ */
 export const Invalid = () => {
   return (
     <>

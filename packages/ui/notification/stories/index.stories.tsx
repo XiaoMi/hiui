@@ -7,7 +7,7 @@ export * from './auto-close.stories'
 export * from './action.stories'
 
 export default {
-  title: 'FeedBacck/Notification',
+  title: 'FeedBack/Notification',
   component: Notification,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

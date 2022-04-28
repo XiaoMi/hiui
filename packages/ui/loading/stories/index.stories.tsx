@@ -6,7 +6,7 @@ export * from './duration.stories'
 export * from './visible.stories'
 
 export default {
-  title: 'FeedBacck/Loading',
+  title: 'FeedBack/Loading',
   component: Loading,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

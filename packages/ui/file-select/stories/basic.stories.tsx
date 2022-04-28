@@ -1,6 +1,9 @@
 import React from 'react'
 import FileSelect from '../src'
 
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   return (
     <>

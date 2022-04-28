@@ -10,6 +10,10 @@ const FormItem = Form.Item
 const FormReset = Form.Reset
 const FormSubmit = Form.Submit
 
+/**
+ * @title 校验指定表单项
+ * @desc 针对单个表单控件值进行校验
+ */
 export const ValidateField = () => {
   const formRef = React.useRef<FormHelpers>(null)
 

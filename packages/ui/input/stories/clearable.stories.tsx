@@ -1,6 +1,9 @@
 import React from 'react'
 import Input from '../src'
 
+/**
+ * @title 可清除
+ */
 export const Clearable = () => {
   return (
     <>

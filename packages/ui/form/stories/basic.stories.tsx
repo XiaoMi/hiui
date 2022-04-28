@@ -4,6 +4,9 @@ import Input from '@hi-ui/input'
 
 const FormItem = Form.Item
 
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   return (
     <>

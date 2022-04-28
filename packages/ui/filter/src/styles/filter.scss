@@ -4,7 +4,8 @@ $prefix: '#{$component-prefix}-filter' !default;
 
 .#{$prefix}-item {
   display: flex;
-  height: 44px;
+  align-items: flex-start;
+  height: auto;
   line-height: 44px;
   font-size: use-text-size('normal');
 
@@ -12,6 +13,7 @@ $prefix: '#{$component-prefix}-filter' !default;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
 
     &::after {
       display: inline-block;

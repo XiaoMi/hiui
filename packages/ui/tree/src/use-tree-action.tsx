@@ -72,10 +72,11 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
     onDelete,
     menuOptions,
     editPlaceholder: placeholder,
+    fieldNames,
     ...nativeTreeProps
   } = props
   const [treeData, setTreeData] = useCache(data)
-  const flattedData = useMemo(() => flattenTreeData(treeData), [treeData])
+  const flattedData = useMemo(() => flattenTreeData(treeData, fieldNames), [treeData, fieldNames])
 
   // 拦截 expand：用于添加子节点时自动展开当前节点
   // 但是对外仍然暴露 expand 及其相关 props 原有的功能
@@ -135,6 +136,7 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
 
   const treeProps = {
     ...nativeTreeProps,
+    fieldNames,
     render: proxyTitleRender,
     data: editable ? treeData : data,
     expandedIds,

@@ -1,6 +1,9 @@
 import React from 'react'
 import Loading from '../src'
 
+/**
+ * @title API调用
+ */
 export const Duration = () => {
   const loadingIdRef = React.useRef(null)
 

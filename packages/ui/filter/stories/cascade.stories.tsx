@@ -2,15 +2,15 @@ import React from 'react'
 import Filter from '../src'
 
 /**
- * @title 下划线
+ * @title 级联选择
+ * @desc 一般作为筛选场景，作为筛选项组合,每个级别之间有联动
  */
-export const Underlined = () => {
+export const Cascade = () => {
   return (
     <>
-      <h1>Underlined</h1>
-      <div className="filter-underline__wrap">
+      <h1>Cascade</h1>
+      <div className="filter-cascade__wrap">
         <Filter
-          showUnderline
           label={['渠道', '分店', '机型']}
           defaultValue={[2, 21]}
           data={[

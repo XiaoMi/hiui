@@ -4,6 +4,9 @@ import Input from '@hi-ui/input'
 
 const FormItem = Form.Item
 
+/**
+ * @title 自定义渲染表单控件
+ */
 export const Render = () => {
   return (
     <>

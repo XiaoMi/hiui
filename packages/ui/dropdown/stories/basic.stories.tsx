@@ -1,6 +1,10 @@
 import React from 'react'
 import Dropdown from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 将一组同类的动作收起成为菜单，由一个操作入口展示使用
+ */
 export const Basic = () => {
   const [list] = React.useState([
     {

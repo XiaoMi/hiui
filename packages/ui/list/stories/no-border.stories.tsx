@@ -1,6 +1,10 @@
 import React from 'react'
 import List from '../src'
 
+/**
+ * @title 无边框
+ * @desc 常用在搜索、动态发布信息流、附件等场景
+ */
 export const NoBordered = () => {
   return (
     <>

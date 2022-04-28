@@ -2,6 +2,10 @@ import React from 'react'
 import Dropdown from '../src'
 import message from '@hi-ui/message'
 
+/**
+ * @title 按钮用法
+ * @desc 操作入口以 Button 样式展示，强调重要操作
+ */
 export const Type = () => {
   const [list] = React.useState([
     {

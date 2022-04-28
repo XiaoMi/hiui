@@ -2,6 +2,10 @@ import React from 'react'
 import Dropdown from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 弹出方位
+ * @desc 下拉菜单可打开不同的方向，以应对页面边缘的遮盖问题
+ */
 export const Placement = () => {
   const [list] = React.useState([
     {

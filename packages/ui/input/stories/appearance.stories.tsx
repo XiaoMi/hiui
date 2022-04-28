@@ -2,6 +2,10 @@ import React from 'react'
 import Input from '../src'
 import { ExpressionOutlined, AudioOutlined, MessageOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 不同UI风格
+ * @desc UI风格包括线性、面性、无UI三种
+ */
 export const Appearance = () => {
   return (
     <>

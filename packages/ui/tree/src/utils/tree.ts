@@ -2,22 +2,30 @@ import React from 'react'
 import { baseFlattenTree } from '@hi-ui/tree-utils'
 import { TreeNodeData, FlattedTreeNodeData } from '../types'
 
+const EMPTY_FIELD_NAMES = {} as any
 /**
  * 扁平化树数据结构，基于前序遍历
  *
  * @param treeData
  * @returns
  */
-export const flattenTreeData = (treeData: TreeNodeData[]) => {
+export const flattenTreeData = (treeData: TreeNodeData[], fieldNames: any = EMPTY_FIELD_NAMES) => {
+  /**
+   * 转换对象
+   */
+  const getKeyFields = (node: any, key: string) => {
+    return node[fieldNames[key] || key]
+  }
+
   return baseFlattenTree({
     tree: treeData,
     transform: (node: any) => {
       const raw = node.raw
 
-      node.id = raw.id
-      node.title = raw.title
-      node.isLeaf = raw.isLeaf ?? false
-      node.disabled = raw.disabled ?? false
+      node.id = getKeyFields(raw, 'id')
+      node.title = getKeyFields(raw, 'title')
+      node.isLeaf = getKeyFields(raw, 'isLeaf') ?? false
+      node.disabled = getKeyFields(raw, 'disabled') ?? false
 
       // 祖先节点顺序由下至上
       return node

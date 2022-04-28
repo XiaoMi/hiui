@@ -221,7 +221,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
       return (
         <div ref={treeNodeTitleRef} className={`${prefixCls}__title`}>
           {title === true ? (
-            <span className={`${prefixCls}__title-text`}>{node.raw.title}</span>
+            <span className={`${prefixCls}__title-text`}>{node.title}</span>
           ) : (
             title
           )}

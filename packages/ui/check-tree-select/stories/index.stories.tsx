@@ -7,7 +7,7 @@ export * from './uncontrolled.stories'
 export * from './appearance.stories'
 export * from './clearable.stories'
 export * from './searchable.stories'
-export * from './field-names.stories'
+// export * from './field-names.stories'
 export * from './default-expand-all.stories'
 // export * from './async.stories'
 

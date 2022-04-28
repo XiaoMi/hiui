@@ -2,6 +2,9 @@ import React from 'react'
 import Drawer from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 无蒙层
+ */
 export const Mask = () => {
   const [visible, setVisible] = React.useState(false)
 

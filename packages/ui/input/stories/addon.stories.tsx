@@ -2,6 +2,10 @@ import React from 'react'
 import Input from '../src'
 import { ExpressionOutlined, AudioOutlined, SearchOutlined, MessageOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 前后外置元素
+ * @desc 将输入框与外置的其他元素组合使用
+ */
 export const Addon = () => {
   return (
     <>

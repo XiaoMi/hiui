@@ -89,10 +89,11 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     render: titleRender,
     draggable,
     onSearch,
+    fieldNames,
     ...nativeTreeProps
   } = props
 
-  const flattedData = useMemo(() => flattenTreeData(data), [data])
+  const flattedData = useMemo(() => flattenTreeData(data, fieldNames), [data, fieldNames])
 
   // 拦截 expand：用于搜索时控制将搜到的结果高亮，并且自动展开节点
   // 但是对外仍然暴露 expand 相关 props 原有的功能
@@ -135,6 +136,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
   const treeProps = {
     ...nativeTreeProps,
     prefixCls,
+    fieldNames,
     data: isEmpty || !inSearch ? data : showData,
     expandedIds: expandedIds,
     onExpand: tryToggleExpandedIds,

@@ -1,6 +1,10 @@
 import React from 'react'
 import List from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 常用在数据管理、信息展示等领域
+ */
 export const Basic = () => {
   return (
     <>

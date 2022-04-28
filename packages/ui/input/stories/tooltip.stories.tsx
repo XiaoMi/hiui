@@ -2,6 +2,9 @@ import React from 'react'
 import Input from '../src'
 import HiTooltip from '@hi-ui/tooltip'
 
+/**
+ * @title 带Tooltip
+ */
 export const Tooltip = () => {
   const [value, setValue] = React.useState('Tooltip')
 

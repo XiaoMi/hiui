@@ -5,6 +5,10 @@ import Input from '@hi-ui/input'
 const FormItem = Form.Item
 const FormSubmit = Form.Submit
 
+/**
+ * @title 对齐方式
+ * @desc 表单项较少，对应标题字数易对齐工整
+ */
 export const LabelPlacement = () => {
   const formRef = React.useRef<FormHelpers>(null)
 

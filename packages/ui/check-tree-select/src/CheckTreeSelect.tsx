@@ -15,7 +15,7 @@ import { UpOutlined, DownOutlined } from '@hi-ui/icons'
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { callAllFuncs } from '@hi-ui/func-utils'
-import { UseDataSource } from '@hi-ui/use-data-source'
+// import { UseDataSource } from '@hi-ui/use-data-source'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -40,6 +40,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       role = 'check-tree-select',
       className,
       data = DEFAULT_DATA,
+      // @ts-ignore
       dataSource,
       disabled = false,
       onOpen,
@@ -301,6 +302,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             // TODO: 支持 fieldNames
             // @ts-ignore
             onLoadChildren={onLoadChildren}
+            fieldNames={fieldNames}
             {...treeProps}
           />
         ) : null}
@@ -405,7 +407,7 @@ export interface CheckTreeSelectProps
   /**
    * 异步加载数据。暂不对外暴露
    */
-  dataSource?: UseDataSource<CheckTreeSelectDataItem[]>
+  // dataSource?: UseDataSource<CheckTreeSelectDataItem[]>
   /**
    * 没有选项时的提示
    */

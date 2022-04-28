@@ -1,6 +1,9 @@
 import React from 'react'
 import Filter from '../src'
 
+/**
+ * @title 受控
+ */
 export const Controlled = () => {
   const [value, setValue] = React.useState<React.ReactText[]>([2, 21])
 

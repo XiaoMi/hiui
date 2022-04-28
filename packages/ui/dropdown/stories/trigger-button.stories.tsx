@@ -3,6 +3,9 @@ import Dropdown from '../src'
 import { Tooltip } from '@hi-ui/tooltip'
 import { Avatar } from '@hi-ui/avatar'
 
+/**
+ * @title 自定义触发按钮
+ */
 export const TriggerButton = () => {
   const [list] = React.useState([
     {

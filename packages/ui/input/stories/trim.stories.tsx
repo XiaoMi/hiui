@@ -1,6 +1,9 @@
 import React from 'react'
 import Input from '../src'
 
+/**
+ * @title 自动 Trim
+ */
 export const Trim = () => {
   return (
     <>

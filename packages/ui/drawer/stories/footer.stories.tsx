@@ -3,21 +3,20 @@ import Drawer from '../src'
 import Button from '@hi-ui/button'
 
 /**
- * @title 出现方位
- * @desc 设置抽屉拉出的方向
+ * @title 自定义按钮
+ * @desc 通过 footers 自定义底部的按钮，并执行对应自定义事件，通过 closeBtn 取消右上角关闭按钮
  */
-export const Placement = () => {
+export const Footer = () => {
   const [visible, setVisible] = React.useState(false)
 
   return (
     <>
-      <h1>Placement</h1>
-      <div className="drawer-placement__wrap">
+      <h1>Footer</h1>
+      <div className="drawer-footer__wrap">
         <Button onClick={() => setVisible(!visible)}>open</Button>
         <Drawer
           title="Drawer Header Title"
           visible={visible}
-          placement="left"
           onClose={() => setVisible(false)}
           footer={
             <div style={{ textAlign: 'right' }}>

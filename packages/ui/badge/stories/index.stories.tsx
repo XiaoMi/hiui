@@ -10,7 +10,7 @@ export * from './offset.stories'
 export * from './color.stories'
 
 export default {
-  title: 'FeedBacck/Badge',
+  title: 'FeedBack/Badge',
   component: Badge,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

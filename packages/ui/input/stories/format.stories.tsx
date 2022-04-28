@@ -1,6 +1,9 @@
 import React from 'react'
 import Input from '../src'
 
+/**
+ * @title 特殊格式
+ */
 export const Format = () => {
   return (
     <>

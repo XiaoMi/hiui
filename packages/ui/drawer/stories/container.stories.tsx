@@ -2,6 +2,10 @@ import React from 'react'
 import Drawer from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 局部容器抽屉
+ * @desc `container` 自定义渲染抽屉的容器
+ */
 export const Container = () => {
   const [visible, setVisible] = React.useState(false)
   const [container, setContainer] = React.useState(null)

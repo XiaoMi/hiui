@@ -2,6 +2,9 @@ import React from 'react'
 import Drawer from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   const [visible, setVisible] = React.useState(false)
 

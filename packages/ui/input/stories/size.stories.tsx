@@ -2,6 +2,9 @@ import React from 'react'
 import Input from '../src'
 import { ExpressionOutlined, AudioOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 不同尺寸
+ */
 export const Size = () => {
   return (
     <>

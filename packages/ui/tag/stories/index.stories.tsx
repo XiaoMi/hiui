@@ -13,7 +13,7 @@ export * from './max-width.stories'
 export * from './tag-group.stories'
 
 export default {
-  title: 'FeedBacck/Tag',
+  title: 'FeedBack/Tag',
   component: Tag,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

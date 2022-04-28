@@ -7,6 +7,10 @@ import message from '@hi-ui/message'
 
 const FormItem = Form.Item
 
+/**
+ * @title 获取表单值
+ * @desc 静默获取表单值：不触发校验
+ */
 export const GetValues = () => {
   const formRef = React.useRef<FormHelpers>(null)
 

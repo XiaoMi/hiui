@@ -1,6 +1,10 @@
 import React from 'react'
 import Dropdown from '../src'
 
+/**
+ * @title 触发方式
+ * @desc 不同触发方式呼出菜单
+ */
 export const Trigger = () => {
   const [list] = React.useState([
     {

@@ -2,6 +2,7 @@ import React from 'react'
 import Filter from '../src'
 
 export * from './basic.stories'
+export * from './cascade.stories'
 export * from './controlled.stories'
 export * from './underlined.stories'
 

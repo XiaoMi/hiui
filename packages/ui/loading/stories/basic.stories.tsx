@@ -1,6 +1,10 @@
 import React from 'react'
 import Loading from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 耐心等待，正拼力加载…
+ */
 export const Basic = () => {
   const loadingIdRef = React.useRef(null)
 

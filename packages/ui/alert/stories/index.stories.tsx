@@ -10,7 +10,7 @@ export * from './close-icon.stories'
 export * from './carousel.stories'
 
 export default {
-  title: 'FeedBacck/Alert',
+  title: 'FeedBack/Alert',
   component: Alert,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

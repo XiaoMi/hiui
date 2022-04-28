@@ -5,6 +5,9 @@ import { Select } from '@hi-ui/select'
 import { message } from '@hi-ui/message'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 组合
+ */
 export const Group = () => {
   return (
     <>

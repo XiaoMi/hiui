@@ -11,7 +11,7 @@ export * from './container.stories'
 export * from './with-api.stories'
 
 export default {
-  title: 'FeedBacck/Modal',
+  title: 'FeedBack/Modal',
   component: Modal,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

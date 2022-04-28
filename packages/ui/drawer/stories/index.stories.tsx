@@ -9,7 +9,7 @@ export * from './extra.stories'
 export * from './placement.stories'
 
 export default {
-  title: 'FeedBacck/Drawer',
+  title: 'FeedBack/Drawer',
   component: Drawer,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

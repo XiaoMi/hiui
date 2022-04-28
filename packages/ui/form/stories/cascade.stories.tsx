@@ -17,6 +17,10 @@ const FormItem = Form.Item
 const FormReset = Form.Reset
 const FormSubmit = Form.Submit
 
+/**
+ * @title 表单联动
+ * @desc 根据数据控制某个表单的显示隐藏或校验规则
+ */
 export const Cascade = () => {
   const CheckboxGroup = Checkbox.Group
   const RadioGroup = Radio.Group
@@ -34,7 +38,7 @@ export const Cascade = () => {
 
   return (
     <>
-      <h1>表单级联</h1>
+      <h1>表单联动</h1>
       <div className="form-cascade__wrap">
         <Form
           labelWidth="140"

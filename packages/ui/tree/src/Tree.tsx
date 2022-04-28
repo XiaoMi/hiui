@@ -81,6 +81,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       render: titleRender,
       onContextMenu,
       flattedData: flattedDataProp,
+      fieldNames,
       checkedMode = 'ALL',
       ...rest
     },
@@ -88,9 +89,10 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
   ) => {
     const [treeData, setTreeData] = useCache(data)
 
-    const flattedData = useMemo(() => flattedDataProp || flattenTreeData(treeData), [
+    const flattedData = useMemo(() => flattedDataProp || flattenTreeData(treeData, fieldNames), [
       treeData,
       flattedDataProp,
+      fieldNames,
     ])
 
     const [selectedId, onNodeSelect] = useSelect(
@@ -432,10 +434,15 @@ export interface TreeProps {
    */
   checkedMode?: 'PARENT' | 'CHILD' | 'ALL' | 'SEPARATE'
   /**
-   * 直接传入扁平数据使用。暂不对外暴露
+   * 暂不对外暴露
    * @private
    */
   flattedData?: FlattedTreeNodeData[]
+  /**
+   * 暂不对外暴露
+   * @private
+   */
+  fieldNames?: object
 }
 
 if (__DEV__) {

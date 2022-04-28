@@ -1,6 +1,9 @@
 import React from 'react'
 import Loading from '../src'
 
+/**
+ * @title 局部控制
+ */
 export const Visible = () => {
   const [visible, setVisible] = React.useState(false)
 

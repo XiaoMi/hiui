@@ -3,6 +3,9 @@ import Drawer from '../src'
 import Button from '@hi-ui/button'
 import { EditOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 顶部额外操作
+ */
 export const Extra = () => {
   const [visible, setVisible] = React.useState(false)
 

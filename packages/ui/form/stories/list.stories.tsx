@@ -6,6 +6,10 @@ import Button from '@hi-ui/button'
 const FormItem = Form.Item
 const FormList = Form.List
 
+/**
+ * @title 动态表单组
+ * @desc 动态 Form 删减表单组
+ */
 export const List = () => {
   return (
     <>
