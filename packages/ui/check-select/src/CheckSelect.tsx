@@ -205,25 +205,29 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       return [hasValue && dropdownIdsSet.size === 0, hasValue && dropdownIdsSet.size > 0]
     }, [dropdownItems, value])
 
+    const valueLatestRef = useLatestRef(value)
     const toggleCheckAll = useCallback(
       (showChecked: boolean) => {
-        const checkedItems = mergedData.filter((item) => {
-          return value.includes(item.id)
-        })
-
+        const value = valueLatestRef.current
+        // 当前页的数据选项
         const items = dropdownItems.filter((item: any) => !('groupTitle' in item))
+        const targetIds: any[] = items.map(({ id }: any) => id)
 
         if (showChecked) {
-          tryChangeValue(
-            items.map(({ id }: any) => id),
-            checkedItems,
-            showChecked
-          )
+          const nextCheckedIds = Array.from(new Set(value.concat(targetIds)))
+          const changedIds = nextCheckedIds.filter((id) => !value.includes(id))
+          const changedItems = mergedData.filter(({ id }) => changedIds.includes(id))
+
+          tryChangeValue(nextCheckedIds, changedItems, showChecked)
         } else {
-          tryChangeValue([], checkedItems, showChecked)
+          const nextCheckedIds = value.filter((id) => !targetIds.includes(id))
+          const changedIds = value.filter((id) => !nextCheckedIds.includes(id))
+          const changedItems = mergedData.filter(({ id }) => changedIds.includes(id)) // items
+
+          tryChangeValue(nextCheckedIds, changedItems, showChecked)
         }
       },
-      [dropdownItems, mergedData, value, tryChangeValue]
+      [dropdownItems, mergedData, valueLatestRef, tryChangeValue]
     )
 
     const renderDefaultFooter = () => {
