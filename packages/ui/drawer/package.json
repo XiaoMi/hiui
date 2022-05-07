@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/drawer",
-  "version": "4.0.0-beta.21",
+  "version": "4.0.0-beta.23",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -48,7 +48,7 @@
     "@hi-ui/env": "^4.0.0-beta.0",
     "@hi-ui/icon-button": "^4.0.0-beta.8",
     "@hi-ui/icons": "^4.0.0-beta.10",
-    "@hi-ui/modal": "^4.0.0-beta.21",
+    "@hi-ui/modal": "^4.0.0-beta.23",
     "@hi-ui/portal": "^4.0.0-beta.7",
     "@hi-ui/type-assertion": "^4.0.0-beta.4",
     "@hi-ui/use-latest": "^4.0.0-beta.4",

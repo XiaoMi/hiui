@@ -70,13 +70,14 @@ export const useTableCheck = ({
   const tryCheckAllRow = React.useCallback(() => {
     const targetItems = flattedData.filter((item: any) => !checkRowIsDisabledCheckbox(item.raw))
     const checkedRowKeys = targetItems.map((item: any) => item.id)
+    const targetRowItems = targetItems.map((item: any) => item.raw)
     const checkedRowKeysSet = new Set(checkedRowKeys)
 
     if (checkedAll) {
       // 移除当前页所有行 ids
       trySetCheckedRowKeys(
         (prev) => prev.filter((id) => !checkedRowKeysSet.has(id)),
-        targetItems,
+        targetRowItems,
         false
       )
       return
@@ -88,7 +89,7 @@ export const useTableCheck = ({
         prev.forEach((id) => checkedRowKeysSet.add(id))
         return Array.from(checkedRowKeysSet)
       },
-      targetItems,
+      targetRowItems,
       true
     )
   }, [trySetCheckedRowKeys, flattedData, checkRowIsDisabledCheckbox, checkedAll])

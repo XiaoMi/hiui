@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react'
 
 interface CheckboxGroupContext {
-  onChange?: (val: React.ChangeEvent<HTMLInputElement>) => void
+  onChange?: (evt: React.ChangeEvent<HTMLInputElement>, value: React.ReactText | undefined) => void
   name?: string
   disabled?: boolean
   value?: React.ReactText[]

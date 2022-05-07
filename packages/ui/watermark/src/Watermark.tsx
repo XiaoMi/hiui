@@ -21,13 +21,17 @@ export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((prop
     children,
     style,
     className,
-    allowCopy,
     container,
-    logo = '',
+    logo,
+    color,
+    allowCopy = false,
     density = 'default',
     opacity = 1,
     content: contentProp,
     zIndex = 1100,
+    fontSize = 14,
+    grayscale = true,
+    textOverflowEffect = 'zoom',
     ...rest
   } = props
 
@@ -40,32 +44,52 @@ export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((prop
 
   useEffect(() => {
     if (!waterMarkElement) return
-    const options = { logo, density, opacity, content, zIndex }
+    const options = {
+      logo,
+      density,
+      opacity,
+      content,
+      zIndex,
+      fontSize,
+      grayscale,
+      textOverflowEffect,
+      color,
+    }
+
     const genWatermark = new WatermarkGenerator()
     genWatermark.render(waterMarkElement, options)
     return () => {
       genWatermark.destroy()
     }
-  }, [logo, density, opacity, content, zIndex, waterMarkElement])
+  }, [
+    logo,
+    density,
+    opacity,
+    content,
+    zIndex,
+    waterMarkElement,
+    fontSize,
+    grayscale,
+    textOverflowEffect,
+    color,
+  ])
 
-  const Wrapper = container ? Portal : React.Fragment
-
-  return (
-    <Wrapper container={container}>
-      <div
-        ref={useMergeRefs(setWaterMarkElement, ref)}
-        role={role}
-        className={cls}
-        style={{
-          ...style,
-          userSelect: allowCopy ? 'text' : 'none',
-        }}
-        {...rest}
-      >
-        {children}
-      </div>
-    </Wrapper>
+  const child = (
+    <div
+      ref={useMergeRefs(setWaterMarkElement, ref)}
+      role={role}
+      className={cls}
+      style={{
+        ...style,
+        userSelect: allowCopy ? 'text' : 'none',
+      }}
+      {...rest}
+    >
+      {children}
+    </div>
   )
+
+  return container ? <Portal container={container}>{child}</Portal> : child
 })
 
 export interface WatermarkProps extends HiBaseHTMLProps<'div'> {
@@ -97,6 +121,22 @@ export interface WatermarkProps extends HiBaseHTMLProps<'div'> {
    * 水印层级
    */
   zIndex?: number
+  /**
+   * 水印文字大小
+   */
+  fontSize?: number
+  /**
+   * 开启水印灰度化
+   */
+  grayscale?: boolean
+  /**
+   * 文本长度超出画布长度时的处理方式，zoom - 缩小文字   cut - 截断文字  wrap - 换行
+   */
+  textOverflowEffect?: 'zoom' | 'wrap' | 'cut'
+  /**
+   * 水印文字颜色，建议使用低透明度的 rgba 值
+   */
+  color?: string
 }
 
 if (__DEV__) {

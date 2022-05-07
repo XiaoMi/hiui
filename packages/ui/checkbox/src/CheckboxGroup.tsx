@@ -36,11 +36,14 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
   ) => {
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
-    const handleChange = useLatestCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
-      const { checked, value: selectedItem } = evt.target
-      const nextValue = checkDefault(value, selectedItem, checked)
-      tryChangeValue(nextValue)
-    })
+    const handleChange = useLatestCallback(
+      (evt: React.ChangeEvent<HTMLInputElement>, targetId: React.ReactText | undefined) => {
+        if (targetId === undefined) return
+        const { checked } = evt.target
+        const nextValue = checkDefault(value, targetId, checked)
+        tryChangeValue(nextValue)
+      }
+    )
 
     const providedValue = useMemo(
       () => ({

@@ -199,6 +199,12 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
           &:last-of-type {
             flex: none;
+
+            .#{$prefix}-item-tip {
+              &__title {
+                padding-inline-end: 0;
+              }
+            }
           }
 
           .#{$prefix}-item {
@@ -269,7 +275,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
           position: relative;
           align-items: center;
           flex: 1;
-          min-width: 20%;
+          min-width: 1px;
           flex-direction: column;
 
           .#{$prefix}-item {

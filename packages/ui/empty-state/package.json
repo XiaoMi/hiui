@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/empty-state",
-  "version": "4.0.0-beta.15",
+  "version": "4.0.0-beta.18",
   "description": "> TODO: description",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -46,7 +46,7 @@
     "@hi-ui/classname": "^4.0.0-beta.0",
     "@hi-ui/core-css": "^4.0.0-beta.5",
     "@hi-ui/env": "^4.0.0-beta.0",
-    "@hi-ui/locale-context": "^4.0.0-beta.15",
+    "@hi-ui/locale-context": "^4.0.0-beta.17",
     "@hi-ui/type-assertion": "^4.0.0-beta.4"
   },
   "peerDependencies": {

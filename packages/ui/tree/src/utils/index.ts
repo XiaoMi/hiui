@@ -148,7 +148,7 @@ function fillCheck(
     })
   })
 
-  // 缓存中间结果，优化递归查询
+  // 缓存中间结果，优化查询
   const visitedIds = new Map<React.ReactText, boolean>()
 
   for (let depth = maxDepth - 1; depth >= 0; --depth) {

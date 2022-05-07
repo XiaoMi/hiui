@@ -42,7 +42,6 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
         validate: formContext.submitForm,
         reset: formContext.resetForm,
         validateField: formContext.validateFieldState,
-        // validateFields: formContext.va,
         setFieldValue: formContext.setFieldValue,
         setFieldsValue: formContext.setFieldsValue,
         getFieldValue: formContext.getFieldValue,
@@ -50,6 +49,7 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
         getFieldError: formContext.getFieldError,
         getFieldsError: formContext.getFieldsError,
         clearValidates: formContext.resetErrors,
+        clearFieldValidate: formContext.resetFieldError,
       }
     })
 

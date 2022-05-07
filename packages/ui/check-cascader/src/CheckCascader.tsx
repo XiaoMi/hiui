@@ -1,21 +1,25 @@
-import React, { forwardRef, useCallback, useMemo, useState } from 'react'
+import React, { forwardRef, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import {
-  CheckCascaderItem,
+  CheckCascaderDataItem,
   ExpandTrigger,
-  CheckCascaderItemEventData,
-  FlattedCheckCascaderItem,
+  CheckCascaderDataItemEventData,
+  FlattedCheckCascaderDataItem,
 } from './types'
-import { matchStrategy, useCache } from './hooks'
+import { useCache } from '@hi-ui/use-cache'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { TagInputMock } from '@hi-ui/tag-input'
-import { uniqBy } from '@hi-ui/array-utils'
 import { CheckCascaderMenus } from './CheckCascaderMenus'
-import { useSearchMode, useTreeCustomSearch, useTreeUpMatchSearch } from '@hi-ui/use-search-mode'
+import {
+  matchStrategy,
+  useSearchMode,
+  useTreeCustomSearch,
+  useTreeUpMatchSearch,
+} from '@hi-ui/use-search-mode'
 import { flattenTreeData } from './utils'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -60,6 +64,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       onSearch: onSearchProp,
       overlayClassName,
       type = 'tree',
+      checkedMode,
       onOpen,
       onClose,
       ...rest
@@ -91,6 +96,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     const proxyOnChange = useLatestCallback(
       (value: React.ReactText[], item: any, shouldChecked: boolean) => {
         const flattedItems = flattedData
+        console.log(item)
 
         const itemsPaths = value.map((lastId) => {
           const item = flattedItems.find((item) => item.id === lastId)
@@ -103,24 +109,12 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
           return idPaths || [lastId]
         })
 
-        // const itemsPaths = flattedItems
-        //   .filter((item) => value.includes(item.id))
-        //   .map((item) => getTopDownAncestors(item).map(({ id }) => id))
-
-        // TODO: 找到所有 id 的祖先节点路径
         tryChangeValue(itemsPaths)
-
-        // 包括所有全选的数据，包括全选
-        if (shouldChecked) {
-          // TODO：as useCheckList
-          setSelectedItems((prev) => {
-            return [...prev, item]
-          })
-        }
       }
     )
 
-    // ************************** 异步搜索 ************************* //
+    // ************************** 搜索 ************************* //
+    // 无法做异步搜索，因为下拉菜单不能合并（因为树形数据，不知道是第几级）
 
     const customSearchStrategy = useTreeCustomSearch({ data: flattedData, filterOption })
 
@@ -199,21 +193,12 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       [titleRender, searchValue, searchMode]
     )
 
-    // 搜索时临时选中缓存数据
-    const [selectedItems, setSelectedItems] = useState<any[]>([])
-
     const shouldUseSearch = !!searchValue
 
     const selectProps = {
       data: shouldUseSearch ? stateInSearch.data : flattedData,
       titleRender: proxyTitleRender,
     }
-
-    // 下拉菜单不能合并（因为树形数据，不知道是第几级）
-    const mergedData: any[] = useMemo(() => {
-      const nextData = selectedItems.concat(flattedData as any[])
-      return uniqBy(nextData, 'id')
-    }, [selectedItems, flattedData])
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
@@ -246,7 +231,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             value={value}
             // @ts-ignore
             onChange={proxyOnChange}
-            data={mergedData}
+            data={flattedData}
             invalid={invalid}
             // onExpand={() => {
             //   // setViewSelected(true)
@@ -272,6 +257,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             flattedData={selectProps.data}
             data={cascaderData}
             onChangeData={setCascaderData}
+            checkedMode={checkedMode}
           />
         ) : null}
       </Picker>
@@ -283,7 +269,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   /**
    * 设置选择项数据源
    */
-  data: CheckCascaderItem[]
+  data: CheckCascaderDataItem[]
   /**
    * 设置当前多选值
    */
@@ -301,7 +287,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
    * 选项被点击时的回调。暂不对外暴露
    * @private
    */
-  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderItemEventData) => void
+  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderDataItemEventData) => void
   /**
    * 次级菜单的展开方式
    */
@@ -329,11 +315,11 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   /**
    * 自定义渲染节点的 title 内容
    */
-  render?: (item: CheckCascaderItemEventData) => React.ReactNode
+  render?: (item: CheckCascaderDataItemEventData) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容
    */
-  displayRender?: (checkedOption: FlattedCheckCascaderItem) => React.ReactNode
+  displayRender?: (checkedOption: FlattedCheckCascaderDataItem) => React.ReactNode
   /**
    * 支持 checkbox 级联（正反选）功能
    */
@@ -355,9 +341,9 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
    * 异步请求更新数据
    */
   onLoadChildren?: (
-    item: CheckCascaderItemEventData,
+    item: CheckCascaderDataItemEventData,
     idPaths: React.ReactText[]
-  ) => Promise<CheckCascaderItem[] | void> | void
+  ) => Promise<CheckCascaderDataItem[] | void> | void
   /**
    * 设置展现形式
    */
@@ -368,6 +354,14 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
    * 第二个为数据项，返回值为 true 时将出现在结果项
    */
   filterOption?: (keyword: string, item: any) => boolean
+  /**
+   * 多选数据交互时回填、回显模式
+   * PARENT: 当所有子节点被选中时将只保留父节点
+   * ALL: 所有被选中节点，不区分父子节点（不支持异步数据加载勾选checkbox）
+   * CHILD: 仅显示子节点（不支持异步数据加载勾选checkbox）
+   * SEPARATE：父子完全独立受控
+   */
+  checkedMode?: 'PARENT' | 'CHILD' | 'ALL' | 'SEPARATE'
 }
 
 if (__DEV__) {

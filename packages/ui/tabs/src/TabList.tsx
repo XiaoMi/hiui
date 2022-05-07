@@ -176,15 +176,13 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
             icon={<RightOutlined />}
             onClick={() => {
               if (scrollRef && innerRef) {
-                const canScroll = scrollRef.clientWidth - innerRef.clientWidth + translateX
-                let moveWidth = 0
-                if (canScroll >= innerRef.clientWidth) {
-                  moveWidth = innerRef.clientWidth
-                } else {
-                  moveWidth = canScroll
-                }
+                const scrollWidth = scrollRef.clientWidth
+                const innerWidth = innerRef.clientWidth
 
-                setTranslateX(translateX - moveWidth)
+                const canScrollWidth = scrollWidth - innerWidth + translateX
+                const moveWidth = canScrollWidth < innerWidth ? canScrollWidth : innerWidth
+
+                setTranslateX((prev) => prev - moveWidth)
               }
             }}
           />

@@ -1,19 +1,19 @@
 import { WatermarkProps, watermarkPrefix } from '../Watermark'
 import { __DEV__ } from '@hi-ui/env'
+import { withDefaultProps } from '@hi-ui/react-utils'
 
 type CanvasTextBaseline = 'alphabetic' | 'bottom' | 'hanging' | 'ideographic' | 'middle' | 'top'
 type CanvasTextAlign = 'center' | 'end' | 'left' | 'right' | 'start'
 interface OptionsInterface {
   textAlign: CanvasTextAlign
-  font: number
+  fontSize: number
   color: string
   content?: string | string[]
   rotate: number
   zIndex?: number
   logo?: string | null
-  grayLogo?: boolean // 是否对图标进行灰度处理
-  isAutoWrap: boolean // 文字是否自动换行
-  textOverflowEffect?: string // 当isAutoWrap 为 false 时，文本长度超出画布长度时的处理方式：  zoom - 缩小文字   cut - 截断文字
+  grayscale?: boolean // 是否对图标进行灰度处理
+  textOverflowEffect?: 'zoom' | 'cut' | 'wrap' // 当isAutoWrap 为 false 时，文本长度超出画布长度时的处理方式：  zoom - 缩小文字   cut - 截断文字
   textBaseline: CanvasTextBaseline
   density?: 'default' | 'low' | 'high'
   opacity?: number
@@ -57,7 +57,7 @@ const parseTextData = (
 }
 
 const drawText = (ctx: CanvasRenderingContext2D, options: OptionsInterface) => {
-  const { width, height, textOverflowEffect, content: text, font, isAutoWrap, logo } = options
+  const { width, height, textOverflowEffect, content: text, fontSize, logo } = options
   const oldBaseLine = ctx.textBaseline
   let x = 0
   const y = 16
@@ -69,12 +69,12 @@ const drawText = (ctx: CanvasRenderingContext2D, options: OptionsInterface) => {
    * 内容区域为 画布宽度 - 48 （预留左右各24的 padding）
    * 如含 LOGO ，文字的起始 X 坐标为： 24(padding-left) + 32(logo size) + 4(logo 与 text 间距)
    */
-  const lineHeight = font * 2
+  const lineHeight = fontSize * 2
   if (logo) {
     x += 64
     _w -= 64
   }
-  const lines = parseTextData(ctx, text, width, isAutoWrap)
+  const lines = parseTextData(ctx, text, width, textOverflowEffect === 'wrap')
 
   // 计算 Y 的起始位置
   let lineY = y + ctx.canvas.height / 2 - (lineHeight * lines.length) / 2
@@ -88,12 +88,14 @@ const drawText = (ctx: CanvasRenderingContext2D, options: OptionsInterface) => {
     } else {
       lineX = x + 40
     }
+
     if (textOverflowEffect === 'zoom') {
       const size = Math.sqrt((_w * _w + height * height) / 2)
       ctx.fillText(line, lineX, lineY, size)
     } else {
       ctx.fillText(line, lineX, lineY)
     }
+
     lineY += lineHeight
   }
   ctx.textBaseline = oldBaseLine
@@ -127,12 +129,11 @@ export class WatermarkGenerator {
 
     const defaultProps: OptionsInterface = {
       textAlign: 'left',
-      font: 28,
+      fontSize: 14,
       // @DesignToken
-      color: 'rgba(95, 106, 122, 0.2)',
+      color: 'rgba(95, 106, 122, 0.1)',
       rotate: -30,
-      grayLogo: true,
-      isAutoWrap: false,
+      grayscale: true,
       textOverflowEffect: 'zoom',
       textBaseline: 'hanging',
       width: 420,
@@ -141,21 +142,17 @@ export class WatermarkGenerator {
 
     const { density = 'default' } = options
 
-    let _markSize = {
-      width: 420,
-      height: 270,
-    }
+    const nextProps = { ...defaultProps }
 
     if (['low', 'high'].includes(density)) {
-      _markSize = {
-        width: density === 'low' ? 540 : 360,
-        height: density === 'low' ? 410 : 210,
-      }
+      nextProps.width = density === 'low' ? 540 : 360
+      nextProps.height = density === 'low' ? 410 : 210
     }
 
-    const cOptions = Object.assign({}, defaultProps, _markSize, options)
+    // @ts-ignore
+    const cOptions: OptionsInterface = withDefaultProps(options, nextProps)
 
-    const { width, height, textAlign, textBaseline, font, color, logo, rotate } = cOptions
+    const { width, height, textAlign, textBaseline, fontSize, color, logo, rotate } = cOptions
     const key = watermarkPrefix + '-' + Math.floor(Math.random() * (9999 - 1000)) + 1000 + '__wm'
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
@@ -165,7 +162,7 @@ export class WatermarkGenerator {
       ctx.textAlign = textAlign
       ctx.textBaseline = textBaseline
       ctx.font = `normal normal lighter ${Number(
-        font * 2
+        fontSize * 2
       )}px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`
       ctx.fillStyle = color
       ctx.translate(width / 2, height / 2)
@@ -237,7 +234,7 @@ export class WatermarkGenerator {
       user-select:none !important;
       background-image:url('${base64Url}');
       ${
-        options.grayLogo
+        options.grayscale
           ? '-webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);-ms-filter: grayscale(100%);-o-filter: grayscale(100%);filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);_filter:none;'
           : ''
       }

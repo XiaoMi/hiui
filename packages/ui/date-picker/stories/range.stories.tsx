@@ -15,13 +15,13 @@ export const Range = () => {
         <h2>日期</h2>
         <DatePicker
           type="daterange"
-          format={'YYYY-MM-DD'}
           style={{ width: 480 }}
+          defaultValue={[new Date(), new Date()]}
+          format="YYYY-MM-DD"
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
           onSelect={console.log}
-          defaultValue={[new Date(), new Date()]}
           disabledDate={(val) => {
             const tomorrow = DayJs(new Date()).isBefore(DayJs(val))
             if (tomorrow) return true
@@ -50,7 +50,6 @@ export const Range = () => {
         <h2>年份</h2>
         <DatePicker
           type="yearrange"
-          onSelect={console.log}
           defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
@@ -68,7 +67,6 @@ export const Range = () => {
         <h2>月份</h2>
         <DatePicker
           type="monthrange"
-          onSelect={console.log}
           defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
@@ -86,7 +84,6 @@ export const Range = () => {
         <h2>周</h2>
         <DatePicker
           type="weekrange"
-          onSelect={console.log}
           defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)

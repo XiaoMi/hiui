@@ -142,7 +142,13 @@ $prefix: '#{$component-prefix}-tabs' !default;
     &--scroll {
       display: flex;
       position: relative;
-      transition: all 0.3s;
+      // 保证滚动容器宽度获取正常
+      flex-shrink: 0;
+      // @animation
+      transition-property: transform;
+      transition-duration: use-motion-duration('slow');
+      transition-timing-function: use-motion-bezier('normal');
+      will-change: transform;
     }
   }
 
