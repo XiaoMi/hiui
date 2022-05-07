@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/func-utils",
-  "version": "4.0.0-beta.11",
+  "version": "4.0.0-beta.12",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -46,7 +46,7 @@
     "@hi-ui/hi-build": "^4.0.0-beta.4"
   },
   "dependencies": {
-    "@hi-ui/object-utils": "^4.0.0-beta.10",
+    "@hi-ui/object-utils": "^4.0.0-beta.11",
     "@hi-ui/type-assertion": "^4.0.0-beta.4"
   }
 }
