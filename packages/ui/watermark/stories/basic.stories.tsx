@@ -1,5 +1,9 @@
 import React from 'react'
 import Watermark from '../src/'
+
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   return (
     <>

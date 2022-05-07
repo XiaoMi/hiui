@@ -9,6 +9,10 @@ import {
   LockOutlined,
 } from '@hi-ui/icons'
 
+/**
+ * @title 基础用法
+ * @desc 当导航的菜单项和层级较多时适用，可收起
+ */
 export const Basic = () => {
   return (
     <>

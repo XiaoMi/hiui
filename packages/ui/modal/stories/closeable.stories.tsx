@@ -2,6 +2,9 @@ import React from 'react'
 import Button from '@hi-ui/button'
 import Modal from '../src'
 
+/**
+ * @title 带关闭按钮
+ */
 export const Closeable = () => {
   const [visible, setVisible] = React.useState(false)
   console.log(visible)

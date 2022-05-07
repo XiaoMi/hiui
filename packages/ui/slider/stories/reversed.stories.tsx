@@ -1,6 +1,9 @@
 import React from 'react'
 import Slider from '../src'
 
+/**
+ * @title 方向反转
+ */
 export const Reversed = () => {
   return (
     <>

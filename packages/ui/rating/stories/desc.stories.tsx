@@ -1,6 +1,9 @@
 import React from 'react'
 import Rating from '../src'
 
+/**
+ * @title 辅助文字
+ */
 export const Desc = () => {
   return (
     <>

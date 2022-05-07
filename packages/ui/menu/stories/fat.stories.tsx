@@ -1,11 +1,18 @@
 import React from 'react'
 import Menu from '../src'
 
+/**
+ * @title 水平胖菜单
+ * @desc 二级菜单项，以分组的形式展示，分组数不宜过多
+ */
 export const HorizontalFat = () => {
   return (
     <>
       <h1>水平胖菜单</h1>
-      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20, minWidth: 600 }}>
+      <div
+        className="menu-horizontal-fat__wrap"
+        style={{ background: '#ccc', padding: 20, minWidth: 600 }}
+      >
         <Menu
           placement="horizontal"
           showAllSubMenus

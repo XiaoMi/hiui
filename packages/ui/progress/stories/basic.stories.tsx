@@ -1,6 +1,10 @@
 import React from 'react'
 import Progress from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 有足够的空间，突出展示进度状态
+ */
 export const Basic = () => {
   return (
     <>

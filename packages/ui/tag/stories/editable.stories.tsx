@@ -2,6 +2,9 @@ import { SunFilled } from '@hi-ui/icons'
 import React from 'react'
 import Tag from '../src'
 
+/**
+ * @title 可编辑的
+ */
 export const Editable = () => {
   const [testValue1, setTestValue1] = React.useState('test-value')
   const [testValue2, setTestValue2] = React.useState('test-value')

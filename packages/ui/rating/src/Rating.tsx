@@ -29,7 +29,7 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
       value: valueProp,
       defaultValue = 0,
       onChange,
-      allowHalf: allowHalfProp = true,
+      allowHalf: allowHalfProp = false,
       character,
       useEmoji = false,
       halfPlacement = 'horizontal',

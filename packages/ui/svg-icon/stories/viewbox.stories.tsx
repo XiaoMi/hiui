@@ -1,6 +1,9 @@
 import React from 'react'
 import SvgIcon from '../src'
 
+/**
+ * @title Viewbox
+ */
 export const Viewbox = () => {
   return (
     <>

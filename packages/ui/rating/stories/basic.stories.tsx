@@ -1,36 +1,16 @@
 import React from 'react'
 import Rating from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 评定业务指标、信用等级、满意度等
+ */
 export const Basic = () => {
   return (
     <>
-      <h1>Rating</h1>
+      <h1>Basic</h1>
       <div className="rating-basic__wrap">
-        <Rating
-          readOnly
-          defaultValue={4}
-          allowHalf={false}
-          halfPlacement="horizontal"
-          color="red"
-        ></Rating>
-        <br />
-        <Rating
-          autoFocus
-          defaultValue={3.5}
-          halfPlacement="vertical"
-          onHover={console.log}
-        ></Rating>
-        <br />
-        <Rating defaultValue={3.5} halfPlacement="vertical" character="HiUI" />
-        <Rating
-          defaultValue={3.5}
-          character={
-            <img
-              src="https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05"
-              style={{ width: 24, height: 24 }}
-            />
-          }
-        />
+        <Rating defaultValue={3} />
       </div>
     </>
   )

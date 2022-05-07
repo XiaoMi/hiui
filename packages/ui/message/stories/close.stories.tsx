@@ -2,6 +2,9 @@ import React from 'react'
 import message from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 手动关闭
+ */
 export const Close = () => {
   const toastIdsRef = React.useRef([])
 

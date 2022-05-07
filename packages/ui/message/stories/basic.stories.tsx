@@ -2,12 +2,16 @@ import React from 'react'
 import message from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 基础用法
+ * @desc 一般提醒，不具有明确的引导倾向，自动关闭
+ *
+ */
 export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
       <div className="message-basic__wrap">
-        {/* <Message></Message> */}
         <Button
           onClick={() => {
             message.open({

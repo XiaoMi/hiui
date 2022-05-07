@@ -3,6 +3,7 @@ import Notification from '../src'
 
 export * from './basic.stories'
 export * from './close.stories'
+export * from './title.stories'
 export * from './auto-close.stories'
 export * from './action.stories'
 

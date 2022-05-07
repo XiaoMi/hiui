@@ -9,11 +9,18 @@ import {
 } from '@hi-ui/icons'
 import Menu from '../src'
 
+/**
+ * @title 水平布局
+ * @desc 水平方向的导航菜单，菜单项在4-7个为适
+ */
 export const Horizontal = () => {
   return (
     <>
       <h1>水平菜单</h1>
-      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20, minWidth: 600 }}>
+      <div
+        className="menu-horizontal__wrap"
+        style={{ background: '#ccc', padding: 20, minWidth: 600 }}
+      >
         <Menu
           placement="horizontal"
           data={[

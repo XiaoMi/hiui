@@ -1,6 +1,10 @@
 import React from 'react'
 import Timeline from '../src'
 
+/**
+ * @title 左右结构样式
+ * @desc 不同样式的时间轴，突出时间走向
+ */
 export const Cross = () => {
   return (
     <>

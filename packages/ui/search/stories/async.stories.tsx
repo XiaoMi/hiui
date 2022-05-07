@@ -1,11 +1,9 @@
 import React from 'react'
 import Search from '../src'
 
-const mockDataItem = (str: string, value: number) => ({
-  id: str.repeat(value),
-  title: str.repeat(value),
-})
-
+/**
+ * @title 异步搜索
+ */
 export const Async = () => {
   const [loading, setLoading] = React.useState(false)
   const [data, setData] = React.useState([])
@@ -32,6 +30,11 @@ export const Async = () => {
             // 模拟异步请求数据
             setLoading(true)
             setTimeout(() => {
+              const mockDataItem = (str: string, value: number) => ({
+                id: str.repeat(value),
+                title: str.repeat(value),
+              })
+
               setData([mockDataItem(value, 1), mockDataItem(value, 2), mockDataItem(value, 3)])
               setLoading(false)
             }, 1000)

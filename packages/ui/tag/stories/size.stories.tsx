@@ -1,6 +1,9 @@
 import React from 'react'
 import Tag from '../src'
 
+/**
+ * @title 不同尺寸
+ */
 export const Size = () => {
   return (
     <>

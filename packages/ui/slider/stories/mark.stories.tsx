@@ -1,6 +1,10 @@
 import React from 'react'
 import Slider from '../src'
 
+/**
+ * @title 自定义步长
+ * @desc 按定义步长输入离散型数值，可加入特殊位置
+ */
 export const Mark = () => {
   const [marks] = React.useState({
     0: '0°C',

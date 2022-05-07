@@ -1,13 +1,16 @@
 import React from 'react'
 import Radio from '../src'
 
+/**
+ * @title 禁用状态
+ */
 export const Disabled = () => {
   return (
     <>
       <h1>disabled</h1>
       <div className="radio-disabled__wrap">
         <Radio disabled checked>
-          cisabled Checked Radio
+          disabled Checked Radio
         </Radio>
         <br />
         <Radio disabled>Disabled No-Checked Radio</Radio>

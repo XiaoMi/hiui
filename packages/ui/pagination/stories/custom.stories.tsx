@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import Pagination from '../src'
 
+/**
+ * @title 自定义组合
+ * @desc 灵活搭配，适配不同的场景
+ */
 export const Custom = () => {
   const [current, updateCurrent] = useState(1)
   return (

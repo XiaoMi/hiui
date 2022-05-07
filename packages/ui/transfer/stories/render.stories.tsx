@@ -2,6 +2,9 @@ import React from 'react'
 import Transfer from '../src'
 import { Avatar } from '@hi-ui/avatar'
 
+/**
+ * @title 自定义渲染
+ */
 export const Render = () => {
   const [data] = React.useState([
     { avatarColor: '#237ffa', initials: 'R', id: '荣莎', title: '荣莎', dept: '信息技术部' },

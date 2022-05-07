@@ -2,13 +2,17 @@ import React from 'react'
 import Tree, { useTreeAction } from '../src'
 import { Modal } from '@hi-ui/modal'
 
+/**
+ * @title 编辑用法
+ * @desc 通过树的节点进行新增、删除、编辑等操作
+ */
 export const Editable = () => {
   const ActionTree = useTreeAction(Tree)
 
   return (
     <>
       <h1>Editable for Tree</h1>
-      <div className="tree-basic__wrap">
+      <div className="tree-editable__wrap">
         <ActionTree
           editPlaceholder="请填写菜单"
           menuOptions={[

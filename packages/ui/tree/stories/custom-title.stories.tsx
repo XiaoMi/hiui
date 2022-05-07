@@ -1,8 +1,12 @@
 import React from 'react'
 import Tree, { TreeNodeData } from '../src'
 
+/**
+ * @title 自定义渲染
+ * @desc 自定义渲染树节点标题
+ */
 export const CustomTitle = () => {
-  const [treeData, setTreeData] = React.useState([
+  const [treeData] = React.useState([
     {
       id: 1,
       title: '小米',
@@ -74,7 +78,7 @@ export const CustomTitle = () => {
   return (
     <>
       <h1>CustomTitle for Tree</h1>
-      <div className="tree-basic__wrap">
+      <div className="tree-custom-title__wrap">
         <Tree data={treeData} render={renderTreeNodeTitle}></Tree>
       </div>
     </>

@@ -2,6 +2,10 @@ import React from 'react'
 import Button from '@hi-ui/button'
 import Modal from '../src'
 
+/**
+ * @title 嵌套弹窗
+ * @desc 反复操作确认弹窗场景
+ */
 export const Nested = () => {
   const [visible, setVisible] = React.useState(false)
   const [nestVisible, setNestVisible] = React.useState(false)

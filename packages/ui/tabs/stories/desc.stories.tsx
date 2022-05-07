@@ -1,6 +1,9 @@
 import React from 'react'
 import { Tabs, TabPane } from '../src'
 
+/**
+ * @title 带描述
+ */
 export const Desc = () => {
   return (
     <>

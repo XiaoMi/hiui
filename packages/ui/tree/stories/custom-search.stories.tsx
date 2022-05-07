@@ -3,6 +3,9 @@ import Tree, { useTreeSearchProps } from '../src'
 import Input from '@hi-ui/input'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 自定义搜索 UI
+ */
 export const CustomSearch = () => {
   const [data] = React.useState([
     {
@@ -41,7 +44,7 @@ export const CustomSearch = () => {
   return (
     <>
       <h1>CustomSearch for Tree</h1>
-      <div className="tree-search__wrap">
+      <div className="tree-custom-search__wrap">
         <Input
           value={searchValue}
           onChange={(evt) => setSearchValue(evt.target.value)}

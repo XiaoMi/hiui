@@ -2,6 +2,10 @@ import React from 'react'
 import { DashboardProgress } from '../src'
 import { CheckOutlined, CloseOutlined, ExclamationOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 仪表盘用法
+ * @desc 设置组件和进度条的配合使用
+ */
 export const Dashboard = () => {
   return (
     <>

@@ -2,6 +2,9 @@ import React from 'react'
 import Switch from '../src'
 import { CloseOutlined, CheckOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 自定义内容
+ */
 export const Custom = () => {
   return (
     <>

@@ -1,6 +1,9 @@
 import React from 'react'
 import Radio from '../src'
 
+/**
+ * @title 成组
+ */
 export const Group = () => {
   const RadioGroup = Radio.Group
 
@@ -32,27 +35,13 @@ export const Group = () => {
     <>
       <h1>Group</h1>
       <div className="radio-group__wrap">
-        <h2>default</h2>
-        <div>
-          <RadioGroup
-            defaultValue={0}
-            data={data}
-            onChange={(value) => {
-              console.log('onChange', value)
-            }}
-          />
-        </div>
-        <h2>vertical</h2>
-        <div>
-          <RadioGroup
-            defaultValue={0}
-            data={data}
-            placement={'vertical'}
-            onChange={(value) => {
-              console.log('onChange', value)
-            }}
-          />
-        </div>
+        <RadioGroup
+          defaultValue={0}
+          data={data}
+          onChange={(value) => {
+            console.log('onChange', value)
+          }}
+        />
       </div>
     </>
   )

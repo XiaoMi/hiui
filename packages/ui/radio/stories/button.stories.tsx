@@ -1,6 +1,10 @@
 import React from 'react'
 import Radio from '../src'
 
+/**
+ * @title 按钮组用法
+ * @desc 样式突出，突显在页面的重要级别，选项数5个左右为宜
+ */
 export const Button = () => {
   const RadioGroup = Radio.Group
 

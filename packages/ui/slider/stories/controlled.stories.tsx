@@ -2,6 +2,9 @@ import React from 'react'
 import Slider from '../src'
 import { Counter } from '@hi-ui/counter'
 
+/**
+ * @title 受控
+ */
 export const Controlled = () => {
   const [value, setValue] = React.useState(0)
   return (

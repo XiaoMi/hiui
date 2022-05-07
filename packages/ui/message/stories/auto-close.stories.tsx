@@ -2,12 +2,14 @@ import React from 'react'
 import message from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 取消自动关闭
+ */
 export const AutoClose = () => {
   return (
     <>
       <h1>AutoClose</h1>
       <div className="message-auto-close">
-        {/* <Message></Message> */}
         <Button
           onClick={() => {
             const toastId = message.open({

@@ -2,6 +2,9 @@ import React from 'react'
 import Button from '@hi-ui/button'
 import Modal from '../src'
 
+/**
+ * @title 局部容器弹窗
+ */
 export const Container = () => {
   const [visible, setVisible] = React.useState(false)
   const [container, setContainer] = React.useState(undefined)

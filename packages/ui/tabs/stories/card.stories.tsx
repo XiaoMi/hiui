@@ -1,11 +1,15 @@
 import React from 'react'
 import { Tabs, TabPane } from '../src'
 
-export const Type = () => {
+/**
+ * @title 卡片样式
+ * @desc 常用于面板、卡片等局部空间
+ */
+export const Card = () => {
   return (
     <>
-      <h1>Type</h1>
-      <div className="tabs-type__wrap" style={{ padding: 20, background: '#ebedf0' }}>
+      <h1>Card</h1>
+      <div className="tabs-card__wrap" style={{ padding: 20, background: '#ebedf0' }}>
         <Tabs type="card" placement="vertical" style={{ marginBottom: 40 }}>
           <TabPane tabId="1" tabTitle="Tab 1">
             Content of Tab Panel 1

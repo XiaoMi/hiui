@@ -2,6 +2,9 @@ import Button from '@hi-ui/button'
 import React from 'react'
 import PopConfirm from '../src'
 
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   return (
     <>

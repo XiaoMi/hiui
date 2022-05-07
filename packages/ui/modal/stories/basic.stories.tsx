@@ -2,6 +2,9 @@ import React from 'react'
 import Button from '@hi-ui/button'
 import Modal from '../src'
 
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   const [visible, setVisible] = React.useState(false)
   console.log('visible', visible)

@@ -2,6 +2,10 @@ import React from 'react'
 import Popover from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 基础用法
+ * @desc 用于信息描述、辅助信息等
+ */
 export const Basic = () => {
   const title = <span>Popover Title</span>
   const content = (

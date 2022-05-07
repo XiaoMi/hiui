@@ -2,6 +2,10 @@ import React from 'react'
 import Tree from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 基础用法
+ * @desc 二叉树或多叉树的展现形式，常见于组织架构、文件管理、索引目录等应用场景
+ */
 export const Basic = () => {
   const [expandedIds, setExpandedIds] = React.useState<React.ReactText[]>([])
 

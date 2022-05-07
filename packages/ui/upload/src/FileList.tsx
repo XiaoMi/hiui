@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { UploadFileItem, UploadFileList } from './interface'
+import { UploadFileItem, UploadFileList } from './types'
 import {
   CloseOutlined,
   DeleteOutlined,

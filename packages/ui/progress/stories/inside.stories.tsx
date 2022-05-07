@@ -1,6 +1,10 @@
 import React from 'react'
 import Progress from '../src'
 
+/**
+ * @title 文字内显
+ * @desc 设置组件和进度条的配合使用
+ */
 export const Inside = () => {
   return (
     <>

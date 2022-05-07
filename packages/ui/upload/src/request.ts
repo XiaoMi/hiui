@@ -1,4 +1,4 @@
-import { UploadRequestOption } from './interface'
+import { UploadRequestOption } from './types'
 
 function formatBody(xhr: XMLHttpRequest) {
   const text = xhr.responseText || xhr.response

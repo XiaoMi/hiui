@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { Pagination } from '../src'
 
+/**
+ * @title 文本框用法
+ * @desc 节省页码的占用空间
+ */
 export const MiniInput = () => {
   const [current, setCurrent] = useState(1)
   return (

@@ -1,11 +1,15 @@
 import React from 'react'
 import Upload from '../src'
 
+/**
+ * @title 拖拽上传
+ * @desc 附件上传的区域固定且宽敞，上传附件数量较多，拖拽可有效提高效率
+ */
 export const Draggable = () => {
   return (
     <>
-      <h1>Basic</h1>
-      <div className="upload-basic__wrap">
+      <h1>Draggable</h1>
+      <div className="upload-draggable__wrap">
         <Upload
           type="drag"
           uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"

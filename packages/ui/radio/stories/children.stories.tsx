@@ -2,9 +2,12 @@ import React from 'react'
 import Radio from '../src'
 import Grid from '@hi-ui/grid'
 
-const { Row, Col } = Grid
-
+/**
+ * @title 灵活布局
+ * @desc Radio 与 Grid 组件一起使用，可以实现灵活的布局
+ */
 export const Children = () => {
+  const { Row, Col } = Grid
   const RadioGroup = Radio.Group
 
   const [selectedId, setSelectedId] = React.useState<React.ReactText>('Phone')

@@ -1,6 +1,10 @@
 import React from 'react'
 import Tree from '../src'
 
+/**
+ * @title 基础多选
+ * @desc 用于一次性选中同级多个节点或全选同级节点，可与其它组件搭配使用
+ */
 export const Checkable = () => {
   const [checkedIds, setCheckedIds] = React.useState([])
   const [treeData] = React.useState([
@@ -48,7 +52,7 @@ export const Checkable = () => {
   return (
     <>
       <h1>Checkable for Tree</h1>
-      <div className="tree-basic__wrap">
+      <div className="tree-checkable__wrap">
         <Tree
           checkable
           data={treeData}

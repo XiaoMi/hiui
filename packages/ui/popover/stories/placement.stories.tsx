@@ -1,8 +1,11 @@
 import React from 'react'
 import Popover from '../src'
 import Button from '@hi-ui/button'
-import * as PopperJS from '@popperjs/core'
+import { PopperJS } from '@hi-ui/popper'
 
+/**
+ * @title 不同方位
+ */
 export const Placement = () => {
   const [placement, setPlacement] = React.useState<undefined | PopperJS.Placement>()
 

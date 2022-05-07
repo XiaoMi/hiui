@@ -1,6 +1,10 @@
 import React from 'react'
 import Tree from '../src'
 
+/**
+ * @title 拖拽排序
+ * @desc 通过鼠标拖拽行为，改变树的层级结构
+ */
 export const Draggable = () => {
   const [treeData] = React.useState([
     {
@@ -32,7 +36,7 @@ export const Draggable = () => {
   return (
     <>
       <h1>draggable for Tree</h1>
-      <div className="tree-basic__wrap">
+      <div className="tree-draggable__wrap">
         <Tree
           showLine
           draggable

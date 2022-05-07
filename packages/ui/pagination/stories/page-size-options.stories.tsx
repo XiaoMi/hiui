@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import Pagination from '../src'
 
+/**
+ * @title 每页最大条数
+ * @desc 数据量庞大，分页数较多时使用
+ */
 export const PageSizeOptions = () => {
   const [current, updateCurrent] = useState(1)
   const [pageSize, updatePageSize] = useState(10)

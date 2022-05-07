@@ -1,8 +1,10 @@
 import React from 'react'
-import Popper from '../src'
+import Popper, { PopperJS } from '../src'
 import Button from '@hi-ui/button'
-import * as PopperJS from '@popperjs/core'
 
+/**
+ * @title 不带箭头
+ */
 export const Arrow = () => {
   const [btnEl, setBtnEl] = React.useState(null)
   const [visible, setVisible] = React.useState(false)

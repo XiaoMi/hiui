@@ -1,6 +1,10 @@
 import React from 'react'
 import Timeline from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 以时间为第一维度，展示该时间点的事务、日程、任务或记录
+ */
 export const Basic = () => {
   return (
     <>

@@ -1,6 +1,9 @@
 import React from 'react'
 import Tag from '../src'
 
+/**
+ * @title 文本溢出隐藏
+ */
 export const MaxWidth = () => {
   const [maxEditableValue, setMaxEditableValue] = React.useState(
     'max 180px editable (placeholder1 placeholder2 placeholder3 placeholder4)'

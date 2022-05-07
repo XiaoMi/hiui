@@ -2,6 +2,9 @@ import React from 'react'
 import { Tabs, TabPane } from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 额外元素
+ */
 export const Extra = () => {
   return (
     <>

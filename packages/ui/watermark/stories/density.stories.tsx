@@ -1,5 +1,9 @@
 import React from 'react'
 import Watermark from '../src'
+
+/**
+ * @title 自定义疏密度
+ */
 export const Density = () => {
   return (
     <>

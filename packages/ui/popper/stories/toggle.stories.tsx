@@ -3,6 +3,9 @@ import Popper from '../src'
 import Button from '@hi-ui/button'
 import { useToggle } from '@hi-ui/use-toggle'
 
+/**
+ * @title 受控显隐
+ */
 export const Toggle = () => {
   const [btnRef, setBtnRef] = React.useState(null)
   const [visible, visibleAction] = useToggle(true)

@@ -3,7 +3,7 @@ import request from '../request'
 import { getFileType } from '../utils'
 import { v4 as uuidV4 } from 'uuid'
 // import Modal from '../../modal'
-import { UploadProps, UploadFileItem } from '../interface'
+import { UploadProps, UploadFileItem } from '../types'
 
 const useUpload = ({
   fileList,

@@ -2,6 +2,10 @@ import React from 'react'
 import Button from '@hi-ui/button'
 import Modal from '../src'
 
+/**
+ * @title 关闭锁滚
+ * @desc 和其它弹出层结合等复杂场景，自行控制锁滚行为
+ */
 export const LockScroll = () => {
   const [visible, setVisible] = React.useState(false)
   console.log('visible', visible)

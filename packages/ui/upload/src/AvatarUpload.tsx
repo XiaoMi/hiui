@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { UploadProps, UploadFileItem } from './interface'
+import { UploadProps, UploadFileItem } from './types'
 import { FileSelect } from '@hi-ui/file-select'
 import {
   PlusOutlined,

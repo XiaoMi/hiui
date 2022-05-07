@@ -1,6 +1,10 @@
 import React from 'react'
 import Tag from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 标签的信息重要级别高，识别度较高
+ */
 export const Basic = () => {
   return (
     <>

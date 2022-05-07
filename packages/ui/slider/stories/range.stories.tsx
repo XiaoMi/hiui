@@ -1,6 +1,9 @@
 import React from 'react'
 import Slider from '../src'
 
+/**
+ * @title 可控范围
+ */
 export const Range = () => {
   const [value, setValue] = React.useState(0)
   return (

@@ -2,6 +2,10 @@ import React from 'react'
 import Popper from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 指定挂载容器
+ * @desc 默认挂载到 body 下
+ */
 export const Container = () => {
   const [btnRef, setBtnRef] = React.useState(null)
   const [visible, setVisible] = React.useState(false)

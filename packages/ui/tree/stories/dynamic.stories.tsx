@@ -3,6 +3,10 @@ import Tree from '../src'
 import { cloneTree, findNodeById } from '@hi-ui/tree-utils'
 import Alert from '@hi-ui/alert'
 
+/**
+ * @title 异步加载
+ * @desc 打开下一级时从服务端调取节点数据
+ */
 export const Dynamic = () => {
   const [treeData, setTreeData] = React.useState([
     {
@@ -57,7 +61,7 @@ export const Dynamic = () => {
   return (
     <>
       <h1>Dynamic for Tree</h1>
-      <div className="tree-basic__wrap">
+      <div className="tree-dynamic__wrap">
         <Alert
           type="danger"
           closeable={false}

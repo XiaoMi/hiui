@@ -1,6 +1,10 @@
 import React from 'react'
 import Slider from '../src'
 
+/**
+ * @title 自定义颜色
+ * @desc 自定义滑块条的颜色
+ */
 export const CustomColor = () => {
   const colorMap = [
     {

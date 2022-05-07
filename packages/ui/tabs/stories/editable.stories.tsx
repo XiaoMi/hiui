@@ -1,6 +1,10 @@
 import React from 'react'
 import { Tabs, TabPane } from '../src'
 
+/**
+ * @title 可编辑
+ * @desc 可以自定义标签的增加和关闭
+ */
 export const Editable = () => {
   return (
     <>

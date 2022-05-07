@@ -2,6 +2,9 @@ import React from 'react'
 import Result, { IconNetError } from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 带按钮
+ */
 export const Complete = () => {
   return (
     <>

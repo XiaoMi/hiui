@@ -2,6 +2,10 @@ import React from 'react'
 import Button from '@hi-ui/button'
 import Modal from '../src'
 
+/**
+ * @title 询问式弹窗
+ * @desc 用户在界面交互过程中的行为确认，适合轻量简单的场景
+ */
 export const WithAPI = () => {
   return (
     <>

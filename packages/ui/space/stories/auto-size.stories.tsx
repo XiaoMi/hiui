@@ -4,6 +4,9 @@ import Button from '@hi-ui/button'
 import Counter from '@hi-ui/counter'
 import Switch from '@hi-ui/switch'
 
+/**
+ * @title 自定义间距大小
+ */
 export const AutoSize = () => {
   const [size, setSize] = useState(8)
   const [checked, setChecked] = useState(false)

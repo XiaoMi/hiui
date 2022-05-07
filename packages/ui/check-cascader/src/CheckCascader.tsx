@@ -51,7 +51,6 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       checkCascaded,
       searchPlaceholder,
       onLoadChildren,
-      wrap,
       // picker
       appearance,
       invalid,
@@ -359,11 +358,6 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
     item: CheckCascaderItemEventData,
     idPaths: React.ReactText[]
   ) => Promise<CheckCascaderItem[] | void> | void
-  /**
-   * 是否单行展示，超出 +1。暂不对外暴露
-   * @private
-   */
-  wrap?: boolean
   /**
    * 设置展现形式
    */

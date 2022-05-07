@@ -1,6 +1,10 @@
 import React, { useCallback, useState } from 'react'
 import TimePicker, { TimePickerFormat } from '../src'
 
+/**
+ * @title 不同粒度
+ * @desc 可自定义不同的时间粒度
+ */
 export const Format = () => {
   const [values, setValues] = useState([['11:11:11'], ['11:11'], ['11:11'], ['11'], ['11'], ['11']])
 
@@ -23,9 +27,9 @@ export const Format = () => {
               format={item as TimePickerFormat}
               placeholder={['请选择时间']}
               value={values[index]}
-              onChange={(e) => {
-                console.log(item, e)
-                setMatchIndexValue(e, index)
+              onChange={(value: any) => {
+                console.log(item, value)
+                setMatchIndexValue(value, index)
               }}
             />
           </React.Fragment>

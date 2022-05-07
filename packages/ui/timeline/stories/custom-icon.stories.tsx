@@ -2,6 +2,10 @@ import React from 'react'
 import Timeline from '../src'
 import { EmptyFilled, SunFilled, CheckCircleFilled } from '@hi-ui/icons'
 
+/**
+ * @title 自定义图标
+ * @desc 可运用图标加强对时间节点上的信息状态表示
+ */
 export const CustomIcon = () => {
   return (
     <>

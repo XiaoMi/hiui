@@ -2,6 +2,9 @@ import React from 'react'
 import Button from '@hi-ui/button'
 import Tooltip from '../src'
 
+/**
+ * @title API 调用
+ */
 export const WithAPI = () => {
   const [showTooltip, setShowTooltip] = React.useState(false)
   const triggerElementRef = React.useRef<HTMLSpanElement | null>(null)

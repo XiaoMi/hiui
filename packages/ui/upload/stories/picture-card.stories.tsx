@@ -1,11 +1,14 @@
 import React from 'react'
 import Upload from '../src'
 
-export const PictureList = () => {
+/**
+ * @title 卡片图片
+ */
+export const PictureCard = () => {
   return (
     <>
-      <h1>Basic</h1>
-      <div className="upload-basic__wrap">
+      <h1>PictureCard</h1>
+      <div className="upload-picture-list__wrap">
         <Upload
           type="pictureCard"
           uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"

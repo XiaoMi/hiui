@@ -1,6 +1,9 @@
 import React from 'react'
 import Progress from '../src'
 
+/**
+ * @title 等待中进度
+ */
 export const Indeterminate = () => {
   return (
     <>

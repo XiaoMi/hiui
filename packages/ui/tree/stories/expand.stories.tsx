@@ -1,6 +1,9 @@
 import React from 'react'
 import Tree from '../src'
 
+/**
+ * @title 默认展开所有
+ */
 export const Expand = () => {
   return (
     <>

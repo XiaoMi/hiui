@@ -3,6 +3,9 @@ import Popper from '../src'
 import Button from '@hi-ui/button'
 import * as PopperJS from '@popperjs/core'
 
+/**
+ * @title 不同方位
+ */
 export const Placement = () => {
   const [btnEl, setBtnEl] = React.useState(null)
   const [visible, setVisible] = React.useState(false)

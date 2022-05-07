@@ -2,6 +2,10 @@ import React from 'react'
 import Button from '@hi-ui/button'
 import Modal, { ModalSizeEnum } from '../src'
 
+/**
+ * @title 不同尺寸
+ * @desc 通过 size 自定义尺寸
+ */
 export const Size = () => {
   const [visibleModalSize, setVisibleModalSize] = React.useState<ModalSizeEnum>()
 

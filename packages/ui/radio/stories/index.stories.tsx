@@ -5,6 +5,7 @@ export * from './basic.stories'
 export * from './disabled.stories'
 export * from './controlled.stories'
 export * from './group.stories'
+export * from './placement.stories'
 export * from './children.stories'
 export * from './button.stories'
 

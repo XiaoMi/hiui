@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import Tag, { TagGroupDataItem } from '../src'
 
-export const TagGroupStory = () => {
+/**
+ * @title 标签组用法
+ * @desc 以标签为信息实体进行编辑操作，如品类、频道等管理
+ */
+export const TagGroup = () => {
   const [baseData, setBaseData] = useState<TagGroupDataItem[]>([
     {
       children: 'Test',
@@ -12,7 +16,6 @@ export const TagGroupStory = () => {
   return (
     <>
       <h1>Tag group</h1>
-      <h2>Base</h2>
       <Tag.Group
         data={baseData}
         onEdit={(newString, node, index) => {

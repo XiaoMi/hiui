@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { UploadProps } from './interface'
+import { UploadProps } from './types'
 import { NormalUpload } from './NormalUpload'
 import { DragUpload } from './DragUpload'
 import { PictureListUpload } from './PictureListUpload'

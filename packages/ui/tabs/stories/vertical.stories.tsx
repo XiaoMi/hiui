@@ -1,6 +1,9 @@
 import React from 'react'
 import { Tabs, TabPane } from '../src'
 
+/**
+ * @title 垂直布局
+ */
 export const Vertical = () => {
   return (
     <>

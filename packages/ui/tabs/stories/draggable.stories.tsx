@@ -1,6 +1,10 @@
 import React from 'react'
 import { Tabs, TabPane } from '../src'
 
+/**
+ * @title 拖拽排序
+ * @desc Tabs 排序功能
+ */
 export const Draggable = () => {
   return (
     <>

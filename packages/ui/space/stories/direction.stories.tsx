@@ -2,6 +2,9 @@ import React from 'react'
 import Space from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 垂直排列
+ */
 export const Direction = () => {
   return (
     <>

@@ -1,20 +1,28 @@
 import React from 'react'
 import Transfer from '../src'
 
+/**
+ * @title 可全选
+ * @desc 快速完成源集合的全部选择，避开冗余操作
+ */
 export const AllCheck = () => {
-  const generateData = () => {
-    const arr = []
-    for (let i = 1; i < 100; i++) {
-      arr.push({
-        id: i,
-        title: '选项' + i,
-        disabled: i % 6 === 0,
-      })
+  const [data] = React.useState(() => {
+    const generateData = () => {
+      const arr = []
+      for (let i = 1; i < 100; i++) {
+        arr.push({
+          id: i,
+          title: '选项' + i,
+          disabled: i % 6 === 0,
+        })
+      }
+      return arr
     }
-    return arr
-  }
 
-  const data = generateData()
+    const data = generateData()
+    return data
+  })
+
   const [targetIds, setTargetIds] = React.useState<React.ReactText[]>([2, 3])
 
   return (

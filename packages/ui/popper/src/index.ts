@@ -11,7 +11,7 @@ export * from './PopperPortal'
 
 export type PopperOverlayProps = Pick<
   PopperPortalProps,
-  'matchWidth' | 'className' | 'placement' | 'container' | 'disabledPortal'
+  'matchWidth' | 'className' | 'placement' | 'container' | 'disabledPortal' | 'arrow'
 >
 
 const omitProps = [

@@ -1,8 +1,11 @@
 import React from 'react'
 import Stepper from '../src'
 
+/**
+ * @title 垂直用法
+ */
 export const Placement = () => {
-  const list = [
+  const [data] = React.useState([
     {
       title: '账号信息',
       content: '请输入账号信息',
@@ -15,12 +18,13 @@ export const Placement = () => {
       title: '信息登记信息登记信息登记信息登记信息登记',
       content: '请输入个人信息',
     },
-  ]
+  ])
+
   return (
     <>
       <h1>Placement</h1>
       <div className="stepper-placement__wrap">
-        <Stepper data={list} current={2} placement="vertical" />
+        <Stepper data={data} current={2} placement="vertical" />
       </div>
     </>
   )

@@ -1,6 +1,9 @@
 import React from 'react'
 import { Tabs, TabPane } from '../src'
 
+/**
+ * @title 嵌套 Tabs
+ */
 export const Nested = () => {
   return (
     <>

@@ -1,15 +1,17 @@
 import React from 'react'
 import Upload from '../src'
 
+/**
+ * @title 头像上传
+ * @desc 与其它组件配合使用，常见于名片、通讯录、账号管理等
+ */
 export const Avatar = () => {
   return (
     <>
-      <h1>Basic</h1>
-      <div className="upload-basic__wrap">
+      <h1>Avatar</h1>
+      <div className="upload-avatar__wrap">
         <Upload
           type="avatar"
-          width={180}
-          height={180}
           uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
           headers={{ name: 'mi' }}
           data={{ id: 'uid', channel: 'youpin' }}

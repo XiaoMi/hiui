@@ -1,7 +1,10 @@
 import React from 'react'
-import { PopperPortal as Popper } from '../src'
+import Popper from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 性能优化
+ */
 export const Lazy = () => {
   const [btnRef, setBtnRef] = React.useState(null)
   const [visible, setVisible] = React.useState(false)

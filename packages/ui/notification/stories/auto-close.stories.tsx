@@ -2,6 +2,9 @@ import React from 'react'
 import notification from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 取消自动关闭
+ */
 export const AutoClose = () => {
   return (
     <>

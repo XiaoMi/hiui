@@ -2,6 +2,9 @@ import React from 'react'
 import Slider from '../src'
 import { Counter } from '@hi-ui/counter'
 
+/**
+ * @title 垂直用法
+ */
 export const Vertical = () => {
   const [value, setValue] = React.useState(0)
   return (

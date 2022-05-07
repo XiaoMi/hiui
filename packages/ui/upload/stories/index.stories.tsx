@@ -3,9 +3,10 @@ import Upload from '../src'
 
 export * from './basic.stories'
 export * from './draggable.stories'
-export * from './picture-list.stories'
-export * from './picture.stories'
+export * from './picture-card.stories'
+export * from './photo.stories'
 export * from './avatar.stories'
+export * from './custom-upload.stories'
 
 export default {
   title: 'Data Input/Upload',

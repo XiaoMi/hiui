@@ -3,6 +3,9 @@ import Space from '../src'
 import Avatar from '@hi-ui/avatar'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 对齐方式
+ */
 export const Align = () => {
   return (
     <>

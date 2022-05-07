@@ -2,6 +2,9 @@ import React from 'react'
 import { usePopper } from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title usePopper
+ */
 export const Hook = () => {
   const [btnEl, setBtnEl] = React.useState(null)
   const [visible, setVisible] = React.useState(false)

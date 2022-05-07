@@ -7,6 +7,7 @@ export * from './async.stories'
 export * from './size.stories'
 export * from './addon.stories'
 export * from './appearance.stories'
+export * from './classify.stories'
 
 export default {
   title: 'Data Input/Search',

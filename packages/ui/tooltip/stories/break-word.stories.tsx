@@ -2,6 +2,9 @@ import React from 'react'
 import Tooltip from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 文本换行
+ */
 export const BreakWord = () => {
   return (
     <>

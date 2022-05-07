@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import Preview from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   const [show, setShow] = useState(false)
   return (

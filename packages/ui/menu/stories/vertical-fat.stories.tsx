@@ -1,11 +1,18 @@
 import React from 'react'
 import Menu from '../src'
 
+/**
+ * @title 垂直胖菜单
+ * @desc 二级菜单项，以分组的形式展示，分组数不宜过多
+ */
 export const VerticalFat = () => {
   return (
     <>
       <h1>垂直胖菜单</h1>
-      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20, minWidth: 600 }}>
+      <div
+        className="menu-vertical-fat__wrap"
+        style={{ background: '#ccc', padding: 20, minWidth: 600 }}
+      >
         <Menu
           placement="vertical"
           showAllSubMenus

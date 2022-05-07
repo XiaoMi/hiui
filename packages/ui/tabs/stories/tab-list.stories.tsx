@@ -1,6 +1,9 @@
 import React from 'react'
 import { TabList } from '../src'
 
+/**
+ * @title 单独使用 TabList
+ */
 export const TabsList = () => {
   return (
     <>

@@ -3,6 +3,9 @@ import Result from '../src'
 import Button from '@hi-ui/button'
 import { QuestionCircleFilled } from '@hi-ui/icons'
 
+/**
+ * @title 自定义指示器
+ */
 export const Custom = () => {
   return (
     <>

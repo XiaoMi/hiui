@@ -1,16 +1,19 @@
 import React from 'react'
 import Upload from '../src'
 
-export const Picture = () => {
+/**
+ * @title 照片墙上传
+ * @desc 展示一组照片内容
+ */
+export const Photo = () => {
   return (
     <>
-      <h1>Basic</h1>
-      <div className="upload-basic__wrap">
+      <h1>Photo</h1>
+      <div className="upload-photo__wrap">
         <Upload
           type="photo"
           uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
           onChange={(file, fileList, response) => {
-            file.id = 'file唯一标识'
             console.log('upload callback', file, fileList, response)
           }}
           onRemove={(file, fileList, index) => {

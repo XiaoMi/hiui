@@ -2,6 +2,9 @@ import React from 'react'
 import Search from '../src'
 import { SearchOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 自定义按钮
+ */
 export const Addon = () => {
   const [data] = React.useState([
     {

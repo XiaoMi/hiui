@@ -1,6 +1,10 @@
 import React from 'react'
 import { Tabs, TabPane } from '../src'
 
+/**
+ * @title 胶囊样式
+ * @desc 可用于页面的按钮式布局样式
+ */
 export const Button = () => {
   return (
     <>

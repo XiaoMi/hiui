@@ -1,6 +1,10 @@
 import React from 'react'
 import Search from '../src'
 
+/**
+ * @title 关键词联想数据
+ * @desc 输入搜索关键词时，可以自动联想匹配的关键字，提高检索效率
+ */
 export const Data = () => {
   return (
     <>

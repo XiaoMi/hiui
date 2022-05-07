@@ -1,6 +1,10 @@
 import React from 'react'
 import Slider from '../src'
 
+/**
+ * @title 自定义提示
+ * @desc 可自定义提示内容的格式
+ */
 export const TipFormatter = () => {
   return (
     <>

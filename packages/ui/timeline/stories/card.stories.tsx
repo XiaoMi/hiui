@@ -2,6 +2,9 @@ import React from 'react'
 import Timeline from '../src'
 import HiCard from '@hi-ui/card'
 
+/**
+ * @title 卡片内容
+ */
 export const Card = () => {
   return (
     <>

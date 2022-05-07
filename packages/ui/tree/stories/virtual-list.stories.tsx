@@ -1,6 +1,9 @@
 import React from 'react'
 import Tree from '../src'
 
+/**
+ * @title 大数据
+ */
 export const VirtualList = () => {
   // 模拟 10^4 个数据量
   const [treeData] = React.useState(() => {
@@ -30,7 +33,7 @@ export const VirtualList = () => {
   return (
     <>
       <h1>VirtualList for Tree</h1>
-      <div className="tree-basic__wrap">
+      <div className="tree-virtual-list__wrap">
         <Tree height={300} data={treeData}></Tree>
       </div>
     </>

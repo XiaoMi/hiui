@@ -2,6 +2,9 @@ import React from 'react'
 import notification from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 带操作
+ */
 export const Action = () => {
   const notificationIdRef = React.useRef<React.ReactText>('')
 

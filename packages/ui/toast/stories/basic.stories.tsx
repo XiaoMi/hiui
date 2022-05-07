@@ -4,6 +4,9 @@ import Button from '@hi-ui/button'
 
 const Toast = ToastAPI.create({ prefixCls: 'basic' })
 
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   return (
     <>

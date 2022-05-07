@@ -1,6 +1,9 @@
 import React from 'react'
 import Progress from '../src'
 
+/**
+ * @title 条形进度条不同尺寸
+ */
 export const BarSize = () => {
   return (
     <>

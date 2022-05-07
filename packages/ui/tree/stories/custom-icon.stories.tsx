@@ -2,8 +2,11 @@ import { FileOutlined, FolderOpenOutlined, FolderOutlined } from '@hi-ui/icons'
 import React from 'react'
 import Tree from '../src'
 
+/**
+ * @title 自定义 Icon
+ */
 export const CustomIcon = () => {
-  const [treeData, setTreeData] = React.useState([
+  const [treeData] = React.useState([
     {
       id: 1,
       title: '小米',
@@ -48,7 +51,7 @@ export const CustomIcon = () => {
   return (
     <>
       <h1>CustomIcon for Tree</h1>
-      <div className="tree-basic__wrap">
+      <div className="tree-custom-icon__wrap">
         <Tree
           data={treeData}
           collapsedIcon={<FolderOutlined />}

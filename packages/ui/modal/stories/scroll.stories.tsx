@@ -2,6 +2,9 @@ import React from 'react'
 import Button from '@hi-ui/button'
 import Modal from '../src'
 
+/**
+ * @title 内容溢出滚动
+ */
 export const Scroll = () => {
   const [visible, setVisible] = React.useState(false)
   console.log('visible', visible)

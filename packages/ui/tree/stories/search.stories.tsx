@@ -1,6 +1,10 @@
 import React from 'react'
 import Tree, { useTreeSearch } from '../src'
 
+/**
+ * @title 搜索用法
+ * @desc 树的层级多、节点数量庞大，借助搜索工具快速找到结点
+ */
 export const Search = () => {
   const [data] = React.useState([
     {

@@ -3,6 +3,9 @@ import { AssetMonitorFilled } from '@hi-ui/icons'
 import React from 'react'
 import PopConfirm from '../src'
 
+/**
+ * @title 自定义图标
+ */
 export const customIcon = () => {
   return (
     <>

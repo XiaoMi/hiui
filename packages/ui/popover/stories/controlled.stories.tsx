@@ -2,10 +2,15 @@ import React from 'react'
 import Popover from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 受控显隐
+ * @desc 如何自定义控制创建可悬停和单击的弹出窗口
+ */
 export const Controlled = () => {
-  const [visible, setVisible] = React.useState(false)
+  const [clickVisible, setClickVisible] = React.useState(false)
+  const [hoverVisible, setHoverVisible] = React.useState(false)
 
-  const content = (
+  const contentClick = (
     <div>
       <div>This is click content</div>
       <span
@@ -16,7 +21,7 @@ export const Controlled = () => {
           marginTop: '10px',
         }}
         onClick={() => {
-          setVisible(false)
+          setClickVisible(false)
         }}
       >
         Close
@@ -28,8 +33,39 @@ export const Controlled = () => {
     <>
       <h1>Controlled</h1>
       <div className="popover-controlled__wrap">
-        <Popover visible={visible} content={content}>
-          <Button onClick={() => setVisible(true)}>trigger</Button>
+        <Popover
+          title={<span>Popover Title</span>}
+          content={
+            <div>
+              <p>This is hover content.</p>
+            </div>
+          }
+          style={{ margin: '10px 10px' }}
+          visible={hoverVisible}
+        >
+          <span>
+            <Popover
+              visible={clickVisible}
+              title={<span>Popover Title</span>}
+              content={contentClick}
+            >
+              <Button
+                onMouseEnter={() => {
+                  setHoverVisible(true)
+                  setClickVisible(false)
+                }}
+                onMouseLeave={() => {
+                  setHoverVisible(false)
+                }}
+                onClick={() => {
+                  setHoverVisible(false)
+                  setClickVisible((prev) => !prev)
+                }}
+              >
+                Hover and click / 悬停并单击
+              </Button>
+            </Popover>
+          </span>
         </Popover>
       </div>
     </>

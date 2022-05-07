@@ -1,6 +1,9 @@
 import React from 'react'
 import Tag from '../src'
 
+/**
+ * @title 不同颜色
+ */
 export const Colors = () => {
   return (
     <>

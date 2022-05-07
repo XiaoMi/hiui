@@ -1,6 +1,9 @@
 import React from 'react'
 import Tag from '../src'
 
+/**
+ * @title 可关闭的
+ */
 export const Closeable = () => {
   return (
     <>

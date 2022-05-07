@@ -1,6 +1,9 @@
 import React from 'react'
 import Slider from '../src'
 
+/**
+ * @title 禁用状态
+ */
 export const Disabled = () => {
   return (
     <>

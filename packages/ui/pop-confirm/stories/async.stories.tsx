@@ -2,6 +2,10 @@ import Button from '@hi-ui/button'
 import React from 'react'
 import PopConfirm from '../src'
 
+/**
+ * @title 异步确认关闭
+ * @desc 自定义 `footer` 实现自定义确认按钮以及点击事件
+ */
 export const Async = () => {
   const [visible, setVisible] = React.useState(false)
   const [loading, setLoading] = React.useState(false)

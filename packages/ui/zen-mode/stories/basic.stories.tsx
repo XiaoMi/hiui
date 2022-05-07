@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import ZenMode from '../src'
 import { Button } from '@hi-ui/button'
 
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   const [visible, setVisible] = useState(false)
   return (

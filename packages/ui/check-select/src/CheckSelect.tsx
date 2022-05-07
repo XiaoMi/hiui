@@ -46,7 +46,6 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       children,
       disabled = false,
       clearable = true,
-      wrap = true,
       showCheckAll = false,
       showOnlyShowChecked = false,
       placeholder: placeholderProp,
@@ -381,10 +380,6 @@ export interface CheckSelectProps extends Omit<PickerProps, 'trigger'>, UseCheck
    * 是否可清空
    */
   clearable?: boolean
-  /**
-   * 是否开启换行全展示
-   */
-  wrap?: boolean
   /**
    * 是否点击清理 tags
    */

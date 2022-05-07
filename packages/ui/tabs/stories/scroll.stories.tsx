@@ -1,6 +1,10 @@
 import React from 'react'
 import Tabs from '../src'
 
+/**
+ * @title 超出滚动
+ * @desc 标签数量增多展示滚动条
+ */
 export const Scroll = () => {
   const [data] = React.useState(() => {
     return Array(48)

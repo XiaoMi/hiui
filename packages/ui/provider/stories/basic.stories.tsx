@@ -2,6 +2,9 @@ import React from 'react'
 import Provider from '../src'
 import Alert from '@hi-ui/alert'
 
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   return (
     <>

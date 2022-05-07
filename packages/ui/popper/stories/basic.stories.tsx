@@ -2,6 +2,9 @@ import React from 'react'
 import Popper from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 基础用法
+ */
 export const Basic = () => {
   const [btnRef, setBtnRef] = React.useState(null)
   const [visible, setVisible] = React.useState(false)

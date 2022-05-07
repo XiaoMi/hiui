@@ -1,6 +1,10 @@
 import React from 'react'
 import Tag from '../src'
 
+/**
+ * @title 自定义颜色
+ * @desc 标签的信息重要级别高，识别度较高
+ */
 export const CustomColor = () => {
   return (
     <>

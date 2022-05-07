@@ -2,11 +2,15 @@ import React from 'react'
 import { CircleProgress } from '../src'
 import { CheckOutlined, CloseOutlined, ExclamationOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 环形用法
+ * @desc 在局限空间里展示加载进度，如图片上传、附件上传
+ */
 export const Circle = () => {
   return (
     <>
-      <h1>Circle</h1>
-      <div className="progress-Circle__wrap">
+      <h1>环形用法</h1>
+      <div className="progress-circle__wrap">
         <CircleProgress content="成功" percent={80} />
 
         <CircleProgress

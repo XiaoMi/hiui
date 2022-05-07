@@ -1,6 +1,10 @@
 import React from 'react'
 import Tag from '../src'
 
+/**
+ * @title 不同UI风格
+ * @desc UI风格包括线性、面性、实心三种
+ */
 export const Appearance = () => {
   return (
     <>

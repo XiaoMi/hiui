@@ -1,6 +1,10 @@
 import React from 'react'
 import Timeline from '../src'
 
+/**
+ * @title 信息流样式
+ * @desc 在一段时间范围里，信息流向增长，数量庞大，必要时可收起部分
+ */
 export const Right = () => {
   return (
     <>

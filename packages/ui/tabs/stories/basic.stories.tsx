@@ -2,6 +2,10 @@ import React from 'react'
 import { Tabs, TabPane } from '../src'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 基础用法
+ * @desc 基础标签页
+ */
 export const Basic = () => {
   const [activeTab, setActiveTab] = React.useState<React.ReactText>('1')
 

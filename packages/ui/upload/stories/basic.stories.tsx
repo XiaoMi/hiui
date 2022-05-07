@@ -1,6 +1,10 @@
 import React from 'react'
 import Upload from '../src'
 
+/**
+ * @title 基础用法
+ * @desc 突出上传附件的操作入口，节省页面空间
+ */
 export const Basic = () => {
   return (
     <>
@@ -8,7 +12,6 @@ export const Basic = () => {
       <div className="upload-basic__wrap">
         <Upload
           type="default"
-          // uploadAction="https://mife-gallery.test.mi.com/hiui/upload"
           uploadAction="https://jsonplaceholder.typicode.com/posts/"
           tips="仅支持 jpg/png 文件，且不超过 500kb"
           accept="image/png,image/jpg"

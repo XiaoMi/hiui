@@ -2,6 +2,9 @@ import React from 'react'
 import { Tabs, TabPane } from '../src'
 import { MailSendOutlined, FireOutlined, StarOutlined } from '@hi-ui/icons'
 
+/**
+ * @title 带图标
+ */
 export const WithIcon = () => {
   return (
     <>
