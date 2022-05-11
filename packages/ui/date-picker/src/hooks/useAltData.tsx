@@ -2,13 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { getPRCDate, deconstructDate } from '../utils'
 import {
   CalendarItemV3,
-  DatePickerAltCalendarPreset,
+  DatePickerAltCalendarPresetEnum,
   CalendarAltCalendarPreset,
   CalendarMarkPreset,
 } from '../types'
 
 const useAltData = (config: {
-  altCalendarPreset?: DatePickerAltCalendarPreset
+  altCalendarPreset?: DatePickerAltCalendarPresetEnum
   altCalendar?: CalendarItemV3[]
   dateMarkPreset?: string
   showPanel: boolean

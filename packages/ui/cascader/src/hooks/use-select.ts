@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { CascaderItemEventData, FlattedCascaderItem } from '../types'
+import { CascaderItemEventData, FlattedCascaderDataItem } from '../types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { getTopDownAncestors } from '@hi-ui/tree-utils'
 import { checkCanLoadChildren } from '../utils'
@@ -12,7 +12,7 @@ export const useSelect = (
   onSelect: (
     value: React.ReactText,
     item: CascaderItemEventData,
-    itemPaths: FlattedCascaderItem[]
+    itemPaths: FlattedCascaderDataItem[]
   ) => void,
   changeOnSelect: boolean,
   onLoadChildren?: (item: CascaderItemEventData, idPaths: React.ReactText[]) => void

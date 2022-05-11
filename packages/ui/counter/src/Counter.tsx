@@ -3,7 +3,8 @@ import { getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { MinusOutlined, PlusOutlined } from '@hi-ui/icons'
 import { useCounter } from './use-counter'
-import { HiBaseHTMLFieldProps, HiBaseSizeEnum } from '@hi-ui/core'
+import type { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import type { CounterSizeEnum } from './types'
 
 const _role = 'counter'
 const _prefix = getPrefixCls(_role)
@@ -84,7 +85,7 @@ export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
    */
   focusOnStep?: boolean
   /**
-   * 改变值时的回调
+   * 值改变时的回调
    */
   onChange?: (value: number) => void
   /**
@@ -94,7 +95,7 @@ export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 设置计数器尺寸
    */
-  size?: HiBaseSizeEnum
+  size?: CounterSizeEnum
   /**
    * 开启滑轮改值
    */

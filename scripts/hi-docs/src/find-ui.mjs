@@ -11,11 +11,12 @@ export async function findUI(baseURL) {
 
 async function findComponentPkgFiles(baseURL) {
   const tsFiles = await globAsync('*/package.@(json)', {
-    cwd: Path.join(baseURL),
+    cwd: baseURL,
     ignore: ['**/node_modules/**'],
   })
 
-  return tsFiles
+  return tsFiles.filter((v) => v.includes('tabs'))
+  // return tsFiles
 }
 
 function getComponentInfo(componentPkgFiles, baseURL) {

@@ -14,26 +14,31 @@
 
 ## Props
 
-<!-- Inject Props -->
-
 ## Methods
 
-`Notification.open({ key, type, title, content, closesable, confirmText, onConfirm, size, duration })`
+### notification.open({ type, title, content, closesable, confirmText, onConfirm, size, duration })
 
-| 参数        | 说明                     | 类型                    | 可选值                                      | 默认值 |
-| ----------- | ------------------------ | ----------------------- | ------------------------------------------- | ------ |
-| type        | 通知框类型               | string                  | 'info' \| 'success' \| 'error' \| 'warning' | 'info' |
-| key         | 通知框唯一标识           | string                  | -                                           | -      |
-| title       | 通知框标题               | string                  | -                                           | -      |
-| content     | 通知框内容               | string                  | -                                           | -      |
-| closeable   | 是否可关闭               | boolean                 | true \| false                               | true   |
-| onClose     | 关闭事件触发时的回调     | (e: MouseEvent) => void | -                                           | -      |
-| duration    | 自动关闭时间，单位为毫秒 | number                  | -                                           | 3000   |
-| confirmText | 确认按钮展示文案         | string                  | -                                           | -      |
-| onConfirm   | 确认事件触发时的回调     | () => void              | -                                           | -      |
+> 新开一个 notification 实例
 
-`Notification.close(key)`
+| 参数               | 说明                    | 类型         | 可选值                                      | 默认值 |
+| ------------------ | ----------------------- | ------------ | ------------------------------------------- | ------ |
+| title _(required)_ | 通知框标题              | ReactNode    | -                                           | -      |
+| content            | 通知框内容              | ReactNode    | -                                           | -      |
+| type               | 通知框类型              | string       | "info" \| "success" \| "error" \| "warning" | "info" |
+| duration           | 自动关闭时间，单位为 ms | number       | -                                           | 5000   |
+| autoClose          | 是否开启自动关闭        | boolean      | true \| false                               | true   |
+| closable           | 开启点击关闭            | boolean      | true \| false                               | true   |
+| action             | 操作配置                | ReactNode    | -                                           | -      |
+| onClose            | 关闭时触发的回调函数    | (() => void) | -                                           | -      |
 
-| 参数 | 说明           | 类型   | 可选值 | 默认值 |
-| ---- | -------------- | ------ | ------ | ------ |
-| key  | 通知框唯一标识 | string | -      | -      |
+### notification.close(key)
+
+> 关闭指定 message 弹层实例
+
+| 参数 | 说明                                      | 类型   | 可选值 | 默认值 |
+| ---- | ----------------------------------------- | ------ | ------ | ------ |
+| key  | open 方法返回的 notification 实例唯一标识 | string | -      | -      |
+
+### notification.closeAll()
+
+> 关闭所有 notification 弹层实例

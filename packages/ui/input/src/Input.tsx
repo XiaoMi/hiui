@@ -3,8 +3,9 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { CloseCircleFilled } from '@hi-ui/icons'
-import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import { useInput } from './use-input'
+import { InputAppearanceEnum } from './types'
 
 const _prefix = getPrefixCls('input')
 
@@ -249,7 +250,7 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
    * 设置展现形式
    * 其中 `underline` 内部使用，不对外提供支持（风格去线型化：由线性过渡到面性）
    */
-  appearance?: HiBaseAppearanceEnum | 'underline'
+  appearance?: InputAppearanceEnum
   /**
    * 设置尺寸
    */

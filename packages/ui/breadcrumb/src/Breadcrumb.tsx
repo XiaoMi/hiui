@@ -1,6 +1,8 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
+import { BreadcrumbDataItem, BreadcrumbSizeEnum } from './types'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'breadcrumb'
 const _prefix = getPrefixCls(_role)
@@ -68,44 +70,7 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
   }
 )
 
-export interface BreadcrumbDataItem {
-  /**
-   * 面包屑的内容
-   */
-  title?: React.ReactNode
-  /**
-   * 要跳转的路径
-   */
-  href?: string
-  /**
-   * 要跳转的打开方式
-   */
-  target?: '_self' | '_blank' | '_parent' | '_top'
-  /**
-   * 自定义 icon
-   */
-  icon?: React.ReactNode
-}
-
-export interface BreadcrumbItemProps extends BreadcrumbDataItem {}
-
-export interface BreadcrumbProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface BreadcrumbProps extends Omit<HiBaseHTMLProps<'ul'>, 'onClick'> {
   /**
    * 面包屑分隔符
    */
@@ -117,11 +82,11 @@ export interface BreadcrumbProps {
   /**
    * 面包屑尺寸
    */
-  size?: 'sm' | 'md'
+  size?: BreadcrumbSizeEnum
   /**
    * 点击事件
    */
-  onClick?: (e: React.MouseEvent, item: BreadcrumbDataItem, index: number) => void
+  onClick?: (evt: React.MouseEvent, item: BreadcrumbDataItem, index: number) => void
 }
 
 if (__DEV__) {

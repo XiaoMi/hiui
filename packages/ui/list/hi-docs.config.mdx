@@ -14,39 +14,23 @@
 
 <!-- Inject Props -->
 
-## List
+## Type
 
-| 参数           | 说明                                                          | 类型               | 可选值                       | 默认值     |
-| -------------- | ------------------------------------------------------------- | ------------------ | ---------------------------- | ---------- |
-| type           | 列表类型                                                      | string             | 'default' \| 'card'          | 'default'  |
-| data           | 列表展示的数据                                                | DataItem[]         | -                            | -          |
-| renderItem     | 自定义渲染列表项                                              | item => ReactNode  | -                            | -          |
-| action         | 列表操作内容                                                  | ReactNode          | -                            | -          |
-| actionPosition | 指定列表操作显示的位置                                        | string             | 'top' \| 'center' \|'bottom' | 'bottom'   |
-| split          | 是否展示分割线                                                | boolean \| object  | false                        | true       |
-| pagination     | 对应的 pagination 配置, 设置 false 不显示                     | boolean \| object  | false                        | false      |
-| bordered       | 是否展示边框 (仅在 type==='default'时生效)                    | boolean            | -                            | false      |
-| hoverable      | 鼠标移入时是否显示阴影 (仅在 type==='card'时生效)             | boolean            | -                            | false      |
-| layout         | 设置 List.Item 布局, 设置成 vertical 则竖直样式显示, 默认横排 | string             | 'vertical' \| 'horizontal'   | 'vertical' |
-| emptyText      | 无数据提示内容                                                | string \|ReactNode | -                            | '暂无数据' |
+### ListDataItem
 
-## DataItem
+| 参数            | 说明                   | 类型                    | 可选值                        | 默认值   |
+| --------------- | ---------------------- | ----------------------- | ----------------------------- | -------- |
+| title           | 列表元素的标题         | ReactNode               | -                             | -        |
+| description     | 列表元素的描述内容     | ReactNode               | -                             | -        |
+| extra           | 额外内容               | ReactNode               | -                             | -        |
+| avatar          | 左侧图片资源地址       | string                  | -                             | -        |
+| action          | 右侧操作项             | ReactNode               | -                             | -        |
+| actionPlacement | 右侧操作项垂直对齐位置 | ListActionPlacementEnum | "top" \| "center" \| "bottom" | "center" |
 
-List.Item 的配置项
+### PaginationProps
 
-| 参数         | 说明                   | 类型                       | 可选值                                         | 默认值    |
-| ------------ | ---------------------- | -------------------------- | ---------------------------------------------- | --------- |
-| title        | 列表元素的标题         | string                     | ReactNode                                      | -         |
-| titleTag     | 列表元素的标题中的标签 | string                     | -                                              | -         |
-| titleTagType | 列表展示的数据         | string                     | 'primary' \| 'success' \|'warning' \| 'danger' | 'primary' |
-| description  | 列表元素的描述内容     | string \|ReactNode         | -                                              | -         |
-| extra        | 额外内容               | string \| Array&lt;string> | -                                              | -         |
-| avatar       | 图片资源地址           | string                     | -                                              | -         |
+> 继承 Pagination 组件的 Props
 
-## pagination
-
-分页的配置项
-
-| 参数     | 说明               | 类型   | 可选值                       | 默认值  |
-| -------- | ------------------ | ------ | ---------------------------- | ------- |
-| position | 指定分页显示的位置 | string | 'left' \| 'middle' \|'right' | 'right' |
+| 参数      | 说明               | 类型                        | 可选值                       | 默认值  |
+| --------- | ------------------ | --------------------------- | ---------------------------- | ------- |
+| placement | 指定分页显示的位置 | ListPaginationPlacementEnum | 'left' \| 'middle' \|'right' | 'right' |

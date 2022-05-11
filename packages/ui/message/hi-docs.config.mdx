@@ -14,16 +14,28 @@
 
 ## Props
 
-<!-- Inject Props -->
-
 ## Methods
 
-`Message.open({ type, title, duration })`
+### message.open({ type, title, duration })
 
-| 参数     | 说明                          | 类型     | 可选值                                      | 默认值 |
-| -------- | ----------------------------- | -------- | ------------------------------------------- | ------ |
-| type     | 通知框类型                    | string   | 'info' \| 'success' \| 'error' \| 'warning' | 'info' |
-| title    | 通知框标题                    | string   | -                                           | -      |
-| duration | 自动关闭时间，单位为毫秒      | number   | -                                           | 3000   |
-| onClick  | 点击 message 时触发的回调函数 | function | -                                           | -      |
-| onClose  | 关闭时触发的回调函数          | function | -                                           | -      |
+> 新开一个 message 实例
+
+| 参数               | 说明                    | 类型                                        | 可选值                                      | 默认值 |
+| ------------------ | ----------------------- | ------------------------------------------- | ------------------------------------------- | ------ |
+| onClose            | 关闭时触发的回调函数    | (() => void)                                | -                                           | -      |
+| title _(required)_ | 通知框标题              | ReactNode                                   | -                                           | -      |
+| type               | 通知框类型              | "info" \| "success" \| "error" \| "warning" | "info" \| "success" \| "error" \| "warning" | "info" |
+| duration           | 自动关闭时间，单位为 ms | number                                      | -                                           | 5000   |
+| autoClose          | 是否开启自动关闭        | boolean                                     | true \| false                               | true   |
+
+### message.open(key)
+
+> 关闭指定 message 弹层实例
+
+| 参数 | 说明                                 | 类型   | 可选值 | 默认值 |
+| ---- | ------------------------------------ | ------ | ------ | ------ |
+| key  | open 方法返回的 message 实例唯一标识 | string | -      | -      |
+
+### message.closeAll()
+
+> 关闭所有 message 弹层实例

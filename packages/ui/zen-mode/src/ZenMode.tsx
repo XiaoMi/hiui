@@ -24,7 +24,7 @@ export const ZenMode: React.FC<ZenModeProps> = ({
   prefixCls = _prefix,
   className,
   children,
-  visible,
+  visible = false,
   showBack = true,
   onBack = NOOP_FUNC,
   toolbar = NOOP_ARRAY,
@@ -109,8 +109,6 @@ export const ZenMode: React.FC<ZenModeProps> = ({
     <div className={`${prefixCls}__wrapper`}>{children}</div>
   )
 }
-
-export default ZenMode
 
 export interface ZenModeProps extends HiBaseHTMLProps<'div'> {
   /**

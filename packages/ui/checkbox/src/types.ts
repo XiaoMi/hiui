@@ -4,7 +4,7 @@ import { ValueOf } from '@hi-ui/core'
 
 export interface CheckboxDataItem extends Record<string, any> {
   /**
-   * 选项唯一标识 id
+   * 选项值，唯一 id
    */
   id: React.ReactText
   /**

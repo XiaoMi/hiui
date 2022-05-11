@@ -11,9 +11,6 @@ const _prefix = getPrefixCls(_role)
 
 /**
  * 复选
- *
- * TODO:
- * 1. 受控示例
  */
 export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
   (
@@ -114,10 +111,6 @@ export interface CheckboxProps extends HiBaseHTMLFieldProps<'label'> {
    */
   indeterminate?: boolean
   /**
-   * 	变化时的回调
-   */
-  onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void
-  /**
    * 	checkbox 表单控件的名称，用于 form 提交
    */
   name?: string
@@ -125,6 +118,10 @@ export interface CheckboxProps extends HiBaseHTMLFieldProps<'label'> {
    * checkbox 表单控件绑定的值，用于 form 提交
    */
   value?: React.ReactText
+  /**
+   * 	值变化时的回调
+   */
+  onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 if (__DEV__) {

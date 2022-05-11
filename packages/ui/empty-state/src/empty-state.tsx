@@ -5,6 +5,7 @@ import { useLocaleContext } from '@hi-ui/locale-context'
 import { isUndef } from '@hi-ui/type-assertion'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { IMAGE_NO_DATA } from './icons'
+import { EmptyStateSizeEnum } from './types'
 
 const _role = 'empty-state'
 const _prefix = getPrefixCls(_role)
@@ -45,7 +46,7 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
 
 export interface EmptyStateProps extends HiBaseHTMLProps<'div'> {
   /**
-   * 指示器图标，如果是字符串将被设置为 Img src
+   * 指示器图标，如果是字符串将被设置为 Img 的 src
    */
   indicator?: React.ReactNode
   /**
@@ -55,7 +56,7 @@ export interface EmptyStateProps extends HiBaseHTMLProps<'div'> {
   /**
    * 图标尺寸
    */
-  size?: HiBaseSizeEnum
+  size?: EmptyStateSizeEnum
   /**
    * 指示器的样式。暂不对外暴露
    * @private

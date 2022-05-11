@@ -2,7 +2,6 @@ import React, { cloneElement, isValidElement } from 'react'
 import { __DEV__ } from '@hi-ui/env'
 import { useFormField, UseFormFieldProps } from './use-form-field'
 import { isFunction } from '@hi-ui/type-assertion'
-import { FormFieldRenderFunc } from './types'
 
 /**
  * TODO: What is FormField
@@ -30,11 +29,11 @@ export interface FormFieldProps extends UseFormFieldProps {
   /**
    * 表单控件
    */
-  children?: React.ReactElement | FormFieldRenderFunc
+  children?: React.ReactNode
   /**
    * 支持表单控件 render 渲染
    */
-  render?: FormFieldRenderFunc
+  render?: (props: Record<string, any>) => React.ReactNode
 }
 
 if (__DEV__) {

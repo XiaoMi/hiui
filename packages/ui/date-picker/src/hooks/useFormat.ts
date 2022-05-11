@@ -1,9 +1,9 @@
 import { getLocaleTypeFormatMap } from '../utils/constants'
-import { DatePickerType } from '../types'
+import { DatePickerTypeEnum } from '../types'
 import { useMemo } from 'react'
 
 interface UseFormatConfig {
-  type: DatePickerType
+  type: DatePickerTypeEnum
   showTime: boolean
   format?: string
   locale?: string

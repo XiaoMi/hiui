@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment'
 import { parseValue } from '../utils'
-import { DatePickerType, DatePickerValueV3 } from '../types'
+import { DatePickerTypeEnum, DatePickerValueV3 } from '../types'
 
 interface IUseDateConfig {
   value: DatePickerValueV3
@@ -9,7 +9,7 @@ interface IUseDateConfig {
   format?: string
   locale?: string
   cacheDate: React.MutableRefObject<(moment.Moment | null)[]>
-  type: DatePickerType
+  type: DatePickerTypeEnum
   weekOffset: number
 }
 export const useDate = (config: IUseDateConfig) => {

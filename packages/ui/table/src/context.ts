@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react'
 import { UseEmbedExpandReturn } from './hooks/use-embed-expand'
 
 import { UseTableReturn } from './use-table'
-import { TableRowFunc } from './types'
+import { TableOnRowReturn } from './types'
 
 const TableContext = createContext<
   | (Omit<UseTableReturn, 'rootProps'> &
@@ -11,7 +11,7 @@ const TableContext = createContext<
         hasAvgColumn: boolean
         sumRow: Record<string, any>
         hasSumColumn: boolean
-        onRow?: TableRowFunc
+        onRow?: (rowData: Record<string, any> | null, index: number) => TableOnRowReturn
         striped: boolean
       })
   | null

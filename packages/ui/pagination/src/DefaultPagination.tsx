@@ -10,6 +10,7 @@ import { PageJumper } from './PageJumper'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isFunction } from '@hi-ui/type-assertion'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
@@ -37,6 +38,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
       showJumper,
       showPagers = true,
       type = 'default',
+      ...rest
     },
     ref
   ) => {
@@ -151,7 +153,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
     const disabled = maxPage === 0
 
     return (
-      <div ref={ref} role={role} className={cls}>
+      <div ref={ref} role={role} className={cls} {...rest}>
         {showTotal ? (
           <div className={`${prefixCls}__total`}>{`${totalText[0]} ${total} ${totalText[1]}`}</div>
         ) : null}
@@ -195,23 +197,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
   }
 )
 
-export interface PaginationProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface PaginationProps extends HiBaseHTMLProps<'div'> {
   /**
    * 当前页码
    */

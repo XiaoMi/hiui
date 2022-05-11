@@ -1,9 +1,8 @@
 import React, { useMemo, useCallback } from 'react'
-import type { HiBaseFieldNames } from '@hi-ui/core'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useCache } from '@hi-ui/use-cache'
 import {
-  FlattedCascaderItem,
+  FlattedCascaderDataItem,
   CascaderItemRequiredProps,
   CascaderItemEventData,
   CascaderDataItem,
@@ -54,7 +53,7 @@ export const useCascader = ({
   const onSelect = (
     value: React.ReactText,
     item: CascaderItemEventData,
-    itemPaths: FlattedCascaderItem[]
+    itemPaths: FlattedCascaderDataItem[]
   ) => {
     tryChangeValue(itemPaths.map(({ id }) => id))
     onSelectProp?.(value, item, itemPaths)
@@ -103,7 +102,7 @@ export const useCascader = ({
   }, [flatted, flattedData, selectedId, isCanLoadChildren])
 
   const getItemRequiredProps = useCallback(
-    ({ id, depth }: FlattedCascaderItem): CascaderItemRequiredProps => {
+    ({ id, depth }: FlattedCascaderDataItem): CascaderItemRequiredProps => {
       return {
         selected: flatted ? selectedId === id : selectedIds[depth] === id,
         loading: isLoadingId(id),
@@ -139,11 +138,11 @@ export interface UseCascaderProps {
   /**
    * 设置 data 中 id, title, disabled, children 对应的 key
    */
-  fieldNames?: HiBaseFieldNames
+  fieldNames?: Record<string, string>
   /**
    * 设置选择项数据源
    */
-  data: CascaderDataItem[]
+  data?: CascaderDataItem[]
   /**
    * 设置当前选中值
    */
@@ -159,7 +158,7 @@ export interface UseCascaderProps {
     value: React.ReactText[]
     // @API：暂时不对外
     // targetOption?: CascaderItemEventData,
-    // optionPaths?: FlattedCascaderItem[]
+    // optionPaths?: FlattedCascaderDataItem[]
   ) => void
   /**
    * 选中选项时触发，仅供内部使用。暂不对外暴露
@@ -168,7 +167,7 @@ export interface UseCascaderProps {
   onSelect?: (
     value: React.ReactText,
     targetOption: CascaderItemEventData,
-    optionPaths: FlattedCascaderItem[]
+    optionPaths: FlattedCascaderDataItem[]
   ) => void
   /**
    * 是否禁止使用

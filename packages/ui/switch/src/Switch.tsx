@@ -87,13 +87,13 @@ export interface SwitchProps extends HiBaseHTMLProps<'span'> {
    */
   defaultChecked?: boolean
   /**
-   * 值改变事件
-   */
-  onChange?: (checked: boolean) => void
-  /**
    * 开关状态内容，数组第一项为关闭时显示的内容，第二项为开启时显示的
    */
   content?: [React.ReactNode, React.ReactNode]
+  /**
+   * 状态改变时的回调
+   */
+  onChange?: (checked: boolean) => void
 }
 
 if (__DEV__) {

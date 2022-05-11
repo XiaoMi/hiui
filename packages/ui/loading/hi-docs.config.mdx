@@ -18,18 +18,18 @@
 
 ## Methods
 
-`Loading.open(target, { content, size, duration, key })`
+### Loading.open(target, { content, size, duration, autoClose })
 
-| 参数     | 说明                                          | 类型                | 可选值                          | 默认值    |
-| -------- | --------------------------------------------- | ------------------- | ------------------------------- | --------- |
-| key      | 标识 `Loading` 的唯一 key，仅用于关闭         | string              | -                               | -         |
-| target   | 需要 `Loading` 遮罩的元素, 当不传时为全屏遮罩 | HTMLElement         | -                               | -         |
-| content  | 自定义加载中状态的文案                        | string \| ReactNode | -                               | -         |
-| duration | loading 自动关闭的时间，单位为毫秒            | number              | -                               | -         |
-| size     | loading 的尺寸                                | string              | 'large' \| 'default' \| 'small' | 'default' |
+| 参数      | 说明                                          | 类型                | 可选值               | 默认值 |
+| --------- | --------------------------------------------- | ------------------- | -------------------- | ------ |
+| target    | 需要 `Loading` 遮罩的元素, 当不传时为全屏遮罩 | HTMLElement \| null | -                    | -      |
+| content   | 自定义加载中状态的文案                        | ReactNode           | -                    | -      |
+| duration  | loading 自动关闭的时间，单位为毫秒            | number              | -                    | -      |
+| size      | loading 的尺寸                                | LoadingSizeEnum     | 'lg' \| 'md' \| 'sm' | 'md'   |
+| autoClose | 是否开启 loading 自动关闭                     | boolean             | true \| false        | -      |
 
-`Loading.close(key)`
+### Loading.close(key)
 
-| 参数 | 说明                      | 类型   | 可选值 | 默认值 |
-| ---- | ------------------------- | ------ | ------ | ------ |
-| key  | 标识 `Loading` 的唯一 key | string | -      | -      |
+| 参数 | 说明                                 | 类型   | 可选值 | 默认值 |
+| ---- | ------------------------------------ | ------ | ------ | ------ |
+| key  | open 方法返回的 Loading 实例唯一标识 | string | -      | -      |

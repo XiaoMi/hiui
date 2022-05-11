@@ -28,7 +28,7 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
       children,
       title,
       content,
-      type = 'primary',
+      type = AlertTypeEnum.PRIMARY,
       closeable = true,
       showIcon = true,
       closeIcon = defaultCloseIcon,

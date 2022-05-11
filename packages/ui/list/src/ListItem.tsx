@@ -1,32 +1,14 @@
 import React from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { ListItemProps } from './List'
 import { __DEV__ } from '@hi-ui/env'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { ListDataItem } from './types'
 
 const LIST_PREFIX = getPrefixCls('list')
 
 /**
  * TODO: What is List
  */
-type Position = 'flex-start' | 'flex-end' | 'center'
-
-const getActionPosition = (actionPosition: 'top' | 'center' | 'bottom'): Position => {
-  let _actionPosition: Position = 'flex-end'
-  switch (actionPosition) {
-    case 'top':
-      _actionPosition = 'flex-start'
-      break
-    case 'center':
-      _actionPosition = 'center'
-      break
-    case 'bottom':
-      _actionPosition = 'flex-end'
-      break
-    default:
-      _actionPosition = 'flex-end'
-  }
-  return _actionPosition
-}
 export const ListItem: React.FC<ListItemProps> = ({
   prefixCls = LIST_PREFIX,
   className,
@@ -62,6 +44,26 @@ export const ListItem: React.FC<ListItemProps> = ({
   )
 }
 
+export interface ListItemProps extends HiBaseHTMLProps<'div'>, ListDataItem {}
+
 if (__DEV__) {
   ListItem.displayName = 'ListItem'
+}
+
+const getActionPosition = (actionPosition: 'top' | 'center' | 'bottom') => {
+  let _actionPosition: string = 'flex-end'
+  switch (actionPosition) {
+    case 'top':
+      _actionPosition = 'flex-start'
+      break
+    case 'center':
+      _actionPosition = 'center'
+      break
+    case 'bottom':
+      _actionPosition = 'flex-end'
+      break
+    default:
+      _actionPosition = 'flex-end'
+  }
+  return _actionPosition
 }

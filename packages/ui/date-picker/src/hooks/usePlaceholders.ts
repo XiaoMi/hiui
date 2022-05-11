@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
-import { DatePickerType } from '../types'
+import { DatePickerTypeEnum } from '../types'
 import { UseLocaleContext } from '@hi-ui/locale-context'
 
 interface ParsePlaceholderConfig {
-  type: DatePickerType
+  type: DatePickerTypeEnum
   placeholder?: string | string[]
   showTime: boolean
   i18n: UseLocaleContext

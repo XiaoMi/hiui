@@ -4,11 +4,11 @@ export interface CheckCascaderDataItem {
   /**
    * 树节点唯一 id
    */
-  id: React.ReactText
+  id?: React.ReactText
   /**
    * 树节点标题
    */
-  title: React.ReactNode
+  title?: React.ReactNode
   /**
    * 该节点的子节点列表
    */
@@ -43,10 +43,6 @@ export interface FlattedCheckCascaderDataItem
    */
   children?: FlattedCheckCascaderDataItem[]
   /**
-   * 该节点的所有祖先节点列表
-   */
-  ancestors?: FlattedCheckCascaderDataItemWithChildren[]
-  /**
    * 关联用户传入的原始节点
    */
   raw: CheckCascaderDataItem
@@ -68,11 +64,11 @@ export interface CheckCascaderDataItemRequiredProps {
   // focused: boolean
 }
 
-export interface CheckCascaderDataItemEventData
+export interface CheckCascadeItemEventData
   extends FlattedCheckCascaderDataItem,
     CheckCascaderDataItemRequiredProps {}
 
-export type ExpandTrigger = 'click' | 'hover'
+export type CascaderExpandTriggerEnum = 'click' | 'hover'
 
 export interface NodeRoot<T> {
   depth: -1

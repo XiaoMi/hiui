@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Loading from '@hi-ui/loading'
@@ -82,7 +82,7 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
   }
 )
 
-export type CardSizeEnum = Omit<HiBaseSizeEnum, 'lg'>
+export type CardSizeEnum = 'sm' | 'md'
 
 export interface CardProps extends HiBaseHTMLProps<'div'> {
   /**

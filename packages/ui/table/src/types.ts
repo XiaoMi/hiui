@@ -1,11 +1,16 @@
 import React from 'react'
-import { SelectProps } from '@hi-ui/select'
 import { PaginationProps } from '@hi-ui/pagination'
 
-export type TableAlign = 'left' | 'right' | 'center'
+export type TableColumnItemAlignEnum = 'left' | 'right' | 'center'
 
 export type TableFrozenColumnOptions = {
+  /**
+   * 表格从左侧冻结至某列
+   */
   left?: React.ReactText
+  /**
+   * 表格从右侧冻结至某列
+   */
   right?: React.ReactText
 }
 
@@ -15,8 +20,13 @@ export type TableExtra = {
 }
 
 export type TableCheckAllOptions = {
-  title?: React.ReactNode
+  /**
+   * 添加全选按钮右侧过滤 icon
+   */
   filterIcon?: React.ReactNode
+  /**
+   * 自定义渲染全选内容
+   */
   render?: (
     checkboxNode: React.ReactNode
     // , rowItem: object, rowIndex: number
@@ -24,14 +34,30 @@ export type TableCheckAllOptions = {
 }
 
 export type TableRowSelection = {
+  /**
+   * 设置选中列列宽
+   */
   checkboxColWidth?: number
+  /**
+   * 选中的行（受控
+   */
   selectedRowKeys?: React.ReactText[]
+  /**
+   *  行选择的配置项
+   */
   getCheckboxConfig?: (rowData: object) => { disabled?: boolean }
+  /**
+   * 选中项发生变化时的回调
+   */
   onChange?: (
     selectedRowKeys: React.ReactText[],
     targetRow?: object | object[],
     shouldChecked?: boolean
   ) => void
+  /**
+   * 全选配置集合
+   */
+  checkAllOptions?: TableCheckAllOptions
   /**
    *。暂不对外暴露
    * @private
@@ -42,59 +68,108 @@ export type TableRowSelection = {
   //   rowIndex: number,
   //   dataKey: string
   // ) => React.ReactNode
-  /**
-   * 全选配置集合
-   */
-  checkAllOptions?: TableCheckAllOptions
 }
 
-export type TableRowReturn = {
+export type TableOnRowReturn = {
+  /**
+   * 行点击事件
+   */
   onClick?: (event: React.MouseEvent) => void
+  /**
+   * 行双击事件
+   */
   onDoubleClick?: (event: React.MouseEvent) => void
+  /**
+   * 行右键菜单事件
+   */
   onContextMenu?: (event: React.MouseEvent) => void
+  /**
+   * 行鼠标入场事件
+   */
   onMouseEnter?: (event: React.MouseEvent) => void
+  /**
+   * 行鼠标出场事件
+   */
   onMouseLeave?: (event: React.MouseEvent) => void
 }
 
-export type TableHeaderRowFunc = (columns: TableColumnItem[], index: number) => TableRowReturn
-
-/**
- * 对于合计行或者均值行统计，rowData 为 null
- */
-export type TableRowFunc = (rowData: Record<string, any> | null, index: number) => TableRowReturn
+export interface TableColumnItemRenderReturn {
+  children: React.ReactNode
+  props: {
+    colSpan?: number
+    rowSpan?: number
+  }
+}
 
 export type TableColumnItem = {
-  title: React.ReactNode
+  /**
+   * 列标题
+   */
+  title: React.ReactNode | ((column: TableColumnEventData) => React.ReactNode)
+  /**
+   * 列对应数据项的唯一标识
+   */
   dataKey?: string
-  align?: TableAlign
-  sorter?: (a: any, b: any) => number
-  avg?: boolean
-  total?: boolean
+  /**
+   * 该列宽度
+   */
   width?: number
+  /**
+   * 列对齐方式
+   */
+  align?: TableColumnItemAlignEnum
+  /**
+   * 列排序函数
+   */
+  sorter?: (a: any, b: any) => number
+  /**
+   * 该列是否支持平均值
+   */
+  avg?: boolean
+  /**
+   * 该列是否支持合计
+   */
+  total?: boolean
+  /**
+   * 多级表头
+   */
   children?: TableColumnItem[]
   /**
-   * @deprecated
+   * 控制单元格自定义渲染
    */
-  selectFilters?: SelectProps
-  defaultSortOrder?: 'ascend' | 'descend'
-  className?: string
   render?: (
     text: any,
     rowItem: Record<string, any>,
     rowIndex: number,
     dataKey: string
-  ) =>
-    | React.ReactNode
-    | { children: React.ReactNode; props: { colSpan?: number; rowSpan?: number } }
-  // @DEPRECATED
+  ) => React.ReactNode | TableColumnItemRenderReturn
+  /**
+   * 列类名 className
+   */
+  className?: string
+  /**
+   * 自定义 filter 图标
+   */
   filterIcon?: React.ReactNode
+  /**
+   * 自定义筛选菜单宽度
+   */
   filterDropdownWidth?: number
+  /**
+   * 自定义筛选菜单 className
+   */
   filterDropdownClassName?: string
+  /**
+   * 自定义筛选下拉选项显示状态改变时的回调方法
+   */
+  onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, item: TableColumnItem) => void
+  /**
+   * 自定义筛选菜单，此函数只负责渲染图层，需要自行编写各种交互
+   */
   filterDropdown?: (props: {
     columnData: TableColumnItem
     setFilterDropdownVisible: Function
   }) => React.ReactNode
-  onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, item: TableColumnItem) => void
 }
 
 export type TableDataSource = {
@@ -187,16 +262,8 @@ export interface FlattedTableColumnItemData extends TableColumnItem {
   rightStickyWidth?: number
 }
 
-export interface TableNodeRequiredProps {
-  // expanded: boolean
-  // checked: boolean
-  // semiChecked: boolean
-  // selected: boolean
-  // loading: boolean
-  // focused: boolean
-}
-
-export interface TableRowEventData extends FlattedTableRowData, TableNodeRequiredProps {}
+export interface TableColumnEventData extends FlattedTableColumnItemData {}
+export interface TableRowEventData extends FlattedTableRowData {}
 
 export interface TableRowRequiredProps {
   expanded: boolean

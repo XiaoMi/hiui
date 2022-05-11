@@ -8,7 +8,7 @@ import { isFunction } from '@hi-ui/type-assertion'
 import { TableBody } from './TableBody'
 import { TableHeader } from './TableHeader'
 import { defaultLoadingIcon } from './icons'
-import { TableExtra, TableColumnItem, TableRowFunc, TableHeaderRowFunc } from './types'
+import { TableExtra, TableColumnItem, TableOnRowReturn } from './types'
 import { TableProvider } from './context'
 import { checkNeedTotalOrEvg, getTotalOrEvgRowData, uuid } from './utils'
 import { useTable, UseTableProps } from './use-table'
@@ -264,13 +264,13 @@ export interface BaseTableProps
    */
   striped?: boolean
   /**
-   * 表格内容行事件处理函数
+   * 表格内容行事件处理函数，对于统计行（合计或均值），rowData 为 null
    */
-  onRow?: TableRowFunc
+  onRow?: (rowData: Record<string, any> | null, index: number) => TableOnRowReturn
   /**
    * 行标题事件处理函数
    */
-  onHeaderRow?: TableHeaderRowFunc
+  onHeaderRow?: (columns: TableColumnItem[], index: number) => TableOnRowReturn
   /**
    *  数据为空时的展示内容
    */

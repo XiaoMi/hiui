@@ -1,32 +1,33 @@
 import React from 'react'
+import type { HiBaseAppearanceEnum } from '@hi-ui/core'
 
 export interface CheckSelectDataItem {
   /**
-   * 节点唯一 id
+   * 选择项值，唯一 id
    */
   id?: React.ReactText
   /**
-   * 节点标题
+   * 选项标题
    */
   title?: React.ReactNode
   /**
-   * 是否禁用该节点
+   * 是否禁用该选项
    */
   disabled?: boolean
 }
 
 export interface CheckSelectGroupDataItem {
   /**
-   * 节点组标题
+   * 选项组标题
    */
   groupTitle?: React.ReactNode
   /**
-   * 是否禁用该节点
+   * 组选项列表
    */
   children?: CheckSelectDataItem[]
 }
 
-export type CheckSelectMergedItem = CheckSelectDataItem & CheckSelectGroupDataItem
+export type CheckSelectMergedItem = CheckSelectDataItem | CheckSelectGroupDataItem
 
 export interface CheckSelectRequiredProps {
   checked: boolean
@@ -52,6 +53,8 @@ export interface FlattedCheckSelectDataItem extends CheckSelectDataItem {
   parent?: FlattedCheckSelectDataItem
 }
 
-export interface CheckSelectEventData
+export interface CheckSelectItemEventData
   extends FlattedCheckSelectDataItem,
     CheckSelectRequiredProps {}
+
+export type CheckSelectAppearanceEnum = HiBaseAppearanceEnum | undefined

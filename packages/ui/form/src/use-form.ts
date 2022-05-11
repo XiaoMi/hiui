@@ -573,7 +573,7 @@ export const useForm = <Values = Record<string, any>>({
 
 export interface UseFormProps<T = Record<string, any>> {
   /**
-   * 初始化表单值
+   * 初始化表单值，只在初始化以及重置时生效；该值是不受控的，和表单中的 defaultValue 的作用类似
    */
   initialValues: T
   /**

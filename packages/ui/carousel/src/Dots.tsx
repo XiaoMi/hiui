@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
-import { CarouselDotPlacement, CarouselDotType } from './types'
+import { CarouselDotPlacementEnum, CarouselDotTypeEnum } from './types'
 import { cx } from '@hi-ui/classname'
 
 interface DotsProps {
-  position: CarouselDotPlacement
-  type: CarouselDotType
+  position: CarouselDotPlacementEnum
+  type: CarouselDotTypeEnum
   prefixCls: string
   activeIndex: number
   count: number

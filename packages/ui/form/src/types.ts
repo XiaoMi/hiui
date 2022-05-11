@@ -1,5 +1,5 @@
 import { RuleItem } from 'async-validator'
-import React from 'react'
+
 export interface FormState<T> {
   /**
    * 字段及值的映射存储
@@ -136,8 +136,6 @@ export type FormFieldPath = (string | number)[] | string | number
 export type FormErrorMessage = string
 
 export type FormRules = Record<string, FormRuleModel[]>
-
-export type FormFieldRenderFunc = (props: Record<string, any>) => React.ReactElement
 
 export interface FormListChildrenAction {
   /**

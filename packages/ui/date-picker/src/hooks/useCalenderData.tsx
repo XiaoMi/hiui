@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import moment from 'moment'
 import { DAY_MILLISECONDS } from '../utils/constants'
-import { DatePickerType, DisabledDate } from '../types'
+import { DatePickerTypeEnum, DisabledDate } from '../types'
 import { getBelongWeekBoundary } from '../utils/week'
 import { UseLocaleContext } from '@hi-ui/locale-context'
 
@@ -18,7 +18,7 @@ const getYearOrMonthRows = ({
 }: {
   originDate: moment.Moment | null
   renderDate: moment.Moment | null
-  type: DatePickerType
+  type: DatePickerTypeEnum
   view: string
   range?: CalenderSelectedRange
   i18n: UseLocaleContext
@@ -207,7 +207,7 @@ const getDateRows = ({
 }: {
   originDate: moment.Moment | null
   range?: CalenderSelectedRange
-  type: DatePickerType
+  type: DatePickerTypeEnum
   weekOffset: number
   min: Date | null
   max: Date | null
@@ -378,7 +378,7 @@ const useDate = ({
   disabledDate: DisabledDate
   min: Date | null
   max: Date | null
-  type: DatePickerType
+  type: DatePickerTypeEnum
   weekOffset: number
   view: string
   i18n: UseLocaleContext

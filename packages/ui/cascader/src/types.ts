@@ -2,15 +2,15 @@ import React from 'react'
 
 export interface CascaderDataItem extends Record<string, any> {
   /**
-   * 树节点唯一 id
+   * 选择项值，唯一 id
    */
   id?: React.ReactText
   /**
-   * 树节点标题
+   * 选项标题
    */
   title?: React.ReactNode
   /**
-   * 该节点的子节点列表
+   * 下一级选项列表
    */
   children?: CascaderDataItem[]
   /**
@@ -24,25 +24,25 @@ export interface CascaderDataItem extends Record<string, any> {
 }
 
 // TODO: ts 类型工具函数 将指定属性转为非可选属性
-export interface FlattedCascaderItemWithChildren extends FlattedCascaderItem {
-  children: FlattedCascaderItem[]
+export interface FlattedCascaderDataItemWithChildren extends FlattedCascaderDataItem {
+  children: FlattedCascaderDataItem[]
 }
 
-export interface FlattedCascaderItem extends Required<Omit<CascaderDataItem, 'children'>> {
+export interface FlattedCascaderDataItem extends Required<Omit<CascaderDataItem, 'children'>> {
   /**
-   * 树节点唯一 id
+   * 选择项值，唯一 id
    */
   id: React.ReactText
   /**
-   * 树节点标题
+   * 选项标题
    */
   title: React.ReactNode
   /**
-   * 该节点的子节点列表
+   * 下一级选项列表
    */
-  children?: FlattedCascaderItem[]
+  children?: FlattedCascaderDataItem[]
   /**
-   * 关联用户传入的原始节点
+   * 关联用户传入的原始数据对象
    */
   raw: CascaderDataItem
   /**
@@ -52,7 +52,7 @@ export interface FlattedCascaderItem extends Required<Omit<CascaderDataItem, 'ch
   /**
    * 该节点的父节点
    */
-  parent: FlattedCascaderItemWithChildren
+  parent: FlattedCascaderDataItemWithChildren
 }
 
 export interface CascaderItemRequiredProps {
@@ -61,9 +61,9 @@ export interface CascaderItemRequiredProps {
   focused: boolean
 }
 
-export interface CascaderItemEventData extends FlattedCascaderItem, CascaderItemRequiredProps {}
+export interface CascaderItemEventData extends FlattedCascaderDataItem, CascaderItemRequiredProps {}
 
-export type ExpandTrigger = 'click' | 'hover'
+export type CascaderExpandTriggerEnum = 'click' | 'hover'
 
 export interface NodeRoot<T> {
   depth: -1

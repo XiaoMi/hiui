@@ -3,6 +3,7 @@ import { render, unmountComponentAtNode } from 'react-dom'
 import * as Container from '@hi-ui/container'
 
 import { _prefix, Tooltip, TooltipProps } from './Tooltip'
+import { uuid } from '@hi-ui/use-id'
 
 const prefixCls = _prefix
 const selector = `.${prefixCls}-wrapper`
@@ -17,6 +18,10 @@ const open = (
   target: HTMLElement,
   { key, title, ...popper }: TooltipApiProps = DEFAULT_TOOLTIP_OPTIONS
 ) => {
+  if (!key) {
+    key = uuid()
+  }
+
   let container: any = Container.getContainer(`${selector}__${key}`)
 
   const toastManagerRef = createRef<any>()
@@ -50,7 +55,7 @@ const open = (
     tooltipInstanceCache[key] = close
   }
 
-  return { close }
+  return key
 }
 
 const close = (key: string) => {

@@ -1,11 +1,11 @@
 import moment from 'moment'
-import { DatePickerType } from '../types'
+import { DatePickerTypeEnum } from '../types'
 
 export const DAY_MILLISECONDS = 86400000
 export const RANGE_SPLIT = '~'
 
 export const GranularityMap: {
-  [key in DatePickerType]: moment.unitOfTime.StartOf
+  [key in DatePickerTypeEnum]: moment.unitOfTime.StartOf
 } = {
   year: 'year',
   yearrange: 'year',

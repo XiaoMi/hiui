@@ -14,16 +14,13 @@
 
 <!-- Inject Props -->
 
-## Events
+## Type
 
-| 名称     | 说明             | 类型                                   | 参数                     | 返回值 |
-| -------- | ---------------- | -------------------------------------- | ------------------------ | ------ |
-| onChange | 选择时的回调函数 | (values: string[] \| number[]) => void | values: 选中项的 ID 集合 | -      |
+### FilterDataItem
 
-## DataItem
-
-| 参数     | 说明             | 类型    | 可选值        | 默认值 |
-| -------- | ---------------- | ------- | ------------- | ------ |
-| content  | 选择项的展示内容 | string  | -             | -      |
-| id       | 选择项对应的值   | string  | -             | -      |
-| disabled | 是否禁用         | boolean | true \| false | false  |
+| 参数     | 说明                  | 类型             | 可选值        | 默认值 |
+| -------- | --------------------- | ---------------- | ------------- | ------ |
+| title    | 选项的展示内容        | string           | -             | -      |
+| id       | 选项对应的值，唯一 id | string           | -             | -      |
+| disabled | 是否禁用              | boolean          | true \| false | false  |
+| children | 级联筛选项列表        | FilterDataItem[] | -             | -      |

@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 import { LeftOutlined, RightOutlined } from '@hi-ui/icons'
-import { CarouselArrowSize } from './types'
+import { CarouselArrowSizeEnum } from './types'
 import { cx } from '@hi-ui/classname'
 
 interface ArrowsProps {
-  size: CarouselArrowSize
+  size: CarouselArrowSizeEnum
   onClick: (next: boolean) => void
   prefixCls: string
   inAnimation: boolean

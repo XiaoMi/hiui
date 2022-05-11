@@ -42,7 +42,7 @@ function mergePropsIntoReadme(readmeMarkdown, props) {
 }
 
 async function writeDocs(info, markdown) {
-  await cleanCreateDir(outputPath)
+  // await cleanCreateDir(outputPath)
 
   const dist = Path.join(outputPath, info.name)
 

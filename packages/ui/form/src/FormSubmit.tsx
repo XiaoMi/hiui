@@ -32,9 +32,11 @@ export const FormSubmit = forwardRef<HTMLButtonElement | HTMLAnchorElement | nul
 
           submitForm()
             .then((result) => {
+              // @ts-ignore
               onClick?.(result, null)
             })
             .catch((error) => {
+              // @ts-ignore
               onClick?.(null, error)
             })
         }}
@@ -46,8 +48,10 @@ export const FormSubmit = forwardRef<HTMLButtonElement | HTMLAnchorElement | nul
 )
 
 export interface FormSubmitProps extends Omit<ButtonProps, 'onClick'> {
-  // TODO: 重新设计
-  onClick?: (value: any, error: any) => void
+  /**
+   * 点击提交后触发
+   */
+  onClick?: () => void
 }
 
 if (__DEV__) {

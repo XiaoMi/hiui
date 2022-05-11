@@ -3,6 +3,8 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { PaginationProps, Pagination } from '@hi-ui/pagination'
 import { EmptyState } from '@hi-ui/empty-state'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { ListDataItem, ListPaginationPlacementEnum } from './types'
 
 const LIST_PREFIX = getPrefixCls('list')
 
@@ -11,7 +13,7 @@ const LIST_PREFIX = getPrefixCls('list')
  */
 type Position = 'flex-start' | 'flex-end' | 'center'
 const getPagePosition = (
-  pagination: PaginationProps & { placement: 'left' | 'middle' | 'right' }
+  pagination: PaginationProps & { placement: ListPaginationPlacementEnum }
 ): Position => {
   let pagePosition: Position = 'flex-end'
   switch (pagination.placement) {
@@ -85,7 +87,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
             className={`${prefixCls}__pagination`}
             style={{
               justifyContent: getPagePosition(
-                pagination as PaginationProps & { placement: 'left' | 'middle' | 'right' }
+                pagination as PaginationProps & { placement: ListPaginationPlacementEnum }
               ),
             }}
           >
@@ -97,50 +99,31 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
   }
 )
 
-export interface ListProps {
+export interface ListProps extends HiBaseHTMLProps<'div'> {
   /**
-   * 组件默认的选择器类
+   * 列表展示的数据
    */
-  prefixCls?: string
+  data: ListDataItem[]
   /**
-   * 组件的语义化 Role 属性
+   * 自定义渲染列表项
    */
-  role?: string
+  render?: (item: ListDataItem) => React.ReactNode
   /**
-   * 组件的注入选择器类
+   * 是否展示分割线
    */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-  data: ListItemProps[]
-  render?: (item: ListItemProps) => React.ReactNode
-
   split?: boolean
-  pagination?: PaginationProps & { placement: 'left' | 'middle' | 'right' }
+  /**
+   * 对应的 pagination 配置, 设置 undefined 不显示
+   */
+  pagination?: PaginationProps & { placement: ListPaginationPlacementEnum }
+  /**
+   * 是否展示边框
+   */
   bordered?: boolean
+  /**
+   * 数据为空时的展示内容
+   */
   emptyContent?: React.ReactNode
-}
-export type ListItemProps = {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
-  title: React.ReactNode
-  description?: React.ReactNode
-  extra?: React.ReactNode
-  avatar?: string
-  action?: React.ReactNode
-  actionPlacement?: 'top' | 'center' | 'bottom'
 }
 
 if (__DEV__) {

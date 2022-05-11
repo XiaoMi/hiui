@@ -118,7 +118,7 @@ export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'title'> {
    */
   onClose?: () => void
   /**
-   * 通知框内容
+   * 通知框标题
    */
   title: React.ReactNode
   /**

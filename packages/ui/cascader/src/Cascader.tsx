@@ -1,5 +1,5 @@
 import React, { forwardRef, useState, useMemo, useEffect } from 'react'
-import type { HiBaseHTMLProps, HiBaseAppearanceEnum } from '@hi-ui/core'
+import type { HiBaseAppearanceEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -7,15 +7,9 @@ import { useCascader, UseCascaderProps } from './use-cascader'
 import { MockInput } from '@hi-ui/input'
 import type { PopperOverlayProps } from '@hi-ui/popper'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
-import { defaultLeafIcon, defaultLoadingIcon, defaultSuffixIcon } from './icons'
 import { checkCanLoadChildren, flattenTreeData, getItemEventData } from './utils'
-import { CascaderProvider, useCascaderContext } from './context'
-import {
-  CascaderDataItem,
-  ExpandTrigger,
-  FlattedCascaderItem,
-  CascaderItemEventData,
-} from './types'
+import { CascaderProvider } from './context'
+import { CascaderExpandTriggerEnum, FlattedCascaderDataItem, CascaderItemEventData } from './types'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
 import { Picker, PickerProps } from '@hi-ui/picker'
@@ -24,6 +18,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { useCache } from '@hi-ui/use-cache'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { callAllFuncs } from '@hi-ui/func-utils'
+import { CascaderMenuList } from './CascaderMenuList'
 
 const _prefix = getPrefixCls('cascader')
 
@@ -75,7 +70,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
   const onSelect = (
     value: React.ReactText,
     item: CascaderItemEventData,
-    itemPaths: FlattedCascaderItem[]
+    itemPaths: FlattedCascaderDataItem[]
   ) => {
     onSelectProp?.(value, item, itemPaths)
     setSelectedItem(item)
@@ -111,7 +106,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     data: cascaderData,
     flattedData: flattedData,
     enabled: searchableProp,
-    exclude: (option: FlattedCascaderItem) => {
+    exclude: (option: FlattedCascaderDataItem) => {
       return checkCanLoadChildren(option, onLoadChildren)
     },
   })
@@ -247,7 +242,7 @@ export interface CascaderProps
   /**
    * 次级菜单的展开方式
    */
-  expandTrigger?: ExpandTrigger
+  expandTrigger?: CascaderExpandTriggerEnum
   /**
    * 是否可搜索（仅在 title 为字符串时支持）
    */
@@ -297,172 +292,6 @@ export interface CascaderProps
 
 if (__DEV__) {
   Cascader.displayName = 'Cascader'
-}
-
-const menuListPrefix = getPrefixCls('cascader-menu-list')
-
-export const CascaderMenuList = forwardRef<HTMLDivElement | null, CascaderMenuListProps>(
-  ({ prefixCls = menuListPrefix, className, ...rest }, ref) => {
-    const { flatted, menuList } = useCascaderContext()
-
-    const cls = cx(prefixCls, className, flatted && `${prefixCls}--flatted`)
-
-    return (
-      <div ref={ref} className={cls} {...rest}>
-        {menuList.map((menu, menuIndex) => {
-          // @ts-ignore
-          return isArrayNonEmpty(menu) ? <CascaderMenu key={menuIndex} data={menu} /> : null
-        })}
-      </div>
-    )
-  }
-)
-
-export interface CascaderMenuListProps extends HiBaseHTMLProps {}
-
-if (__DEV__) {
-  CascaderMenuList.displayName = 'CascaderMenuList'
-}
-
-const menuPrefix = getPrefixCls('cascader-menu')
-
-export const CascaderMenu = ({
-  prefixCls = menuPrefix,
-  role = 'menu',
-  className,
-  data: menu,
-}: CascaderMenuProps) => {
-  const {
-    flatted,
-    disabled: disabledContext,
-    expandTrigger,
-    onItemClick,
-    onItemHover,
-    titleRender,
-    onLoadChildren,
-    getItemRequiredProps,
-  } = useCascaderContext()
-
-  const cls = cx(prefixCls, className)
-
-  return (
-    <ul className={cls} role={role}>
-      {menu.map((option) => {
-        const eventOption = getItemEventData(option, getItemRequiredProps(option))
-
-        const { selected, loading } = eventOption
-        const disabled = disabledContext || option.disabled
-
-        const optionCls = cx(
-          `${prefixCls}-option`,
-          loading && `${prefixCls}-option--loading`,
-          disabled && `${prefixCls}-option--disabled`,
-          selected && `${prefixCls}-option--selected`
-        )
-
-        return (
-          <li key={option.id} role="menu-item" className={`${prefixCls}-item`}>
-            <div
-              className={optionCls}
-              onClick={() => {
-                if (disabled) return
-                onItemClick(eventOption)
-              }}
-              onMouseEnter={() => {
-                if (disabled) return
-                if (expandTrigger === 'hover') {
-                  onItemHover(eventOption)
-                }
-              }}
-            >
-              {flatted ? (
-                renderFlattedTitle(eventOption, titleRender)
-              ) : (
-                <>
-                  {renderDefaultTitle(eventOption, titleRender)}
-                  {renderSuffix(prefixCls, option, loading, onLoadChildren)}
-                </>
-              )}
-            </div>
-          </li>
-        )
-      })}
-    </ul>
-  )
-}
-
-export interface CascaderMenuProps extends HiBaseHTMLProps {
-  /**
-   * 设置选择项数据源
-   */
-  data: FlattedCascaderItem[]
-}
-
-/**
- * 渲染菜单子项的展开提示图标
- */
-const renderSuffix = (
-  prefixCls: string,
-  item: FlattedCascaderItem,
-  loading: boolean,
-  onLoadChildren?: (
-    item: CascaderItemEventData,
-    idPaths: React.ReactText[]
-  ) => Promise<CascaderDataItem[] | void> | void
-) => {
-  if (loading) {
-    return (
-      <span className={cx(`${prefixCls}-switcher`, `${prefixCls}-switcher--loading`)}>
-        {defaultLoadingIcon}
-      </span>
-    )
-  }
-
-  const canLoadChildren = checkCanLoadChildren(item, onLoadChildren)
-
-  if (canLoadChildren) {
-    return (
-      <span className={cx(`${prefixCls}-switcher`, `${prefixCls}-switcher--arrow`)}>
-        {defaultSuffixIcon}
-      </span>
-    )
-  }
-
-  return (
-    <span className={cx(`${prefixCls}-switcher`, `${prefixCls}-switcher--noop`)}>
-      {defaultLeafIcon}
-    </span>
-  )
-}
-
-const renderFlattedTitle = (
-  option: CascaderItemEventData,
-  titleRender?: (item: CascaderItemEventData) => React.ReactNode
-) => {
-  // 如果 titleRender 返回 `true`，则使用默认 title
-  const title = titleRender ? titleRender(option) : true
-  if (title !== true) return title
-
-  return (
-    <span className="title__text title__text--cols">
-      {getTopDownAncestors(option).map((item) => (
-        <span key={item.id} className="title__text--col">
-          {item.title}
-        </span>
-      ))}
-    </span>
-  )
-}
-
-const renderDefaultTitle = (
-  option: CascaderItemEventData,
-  titleRender?: (item: CascaderItemEventData) => React.ReactNode
-) => {
-  // 如果 titleRender 返回 `true`，则使用默认 title
-  const title = titleRender ? titleRender(option) : true
-  if (title !== true) return title
-
-  return <span className="title__text">{option.title}</span>
 }
 
 const renderHighlightTitle = (

@@ -4,7 +4,7 @@ import { __DEV__, invariant } from '@hi-ui/env'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { CheckCircleFilled, CloseCircleFilled, ExclamationCircleFilled } from '@hi-ui/icons'
 import { isNullish, isUndefined } from '@hi-ui/type-assertion'
-import { ResultTypeEnum } from './types'
+import { ResultImageSizeEnum, ResultTypeEnum } from './types'
 
 const RESULT_PREFIX = getPrefixCls('result')
 
@@ -89,7 +89,7 @@ export interface ResultProps extends HiBaseHTMLProps<'div'> {
   /**
    * 自定义图标/图片尺寸
    */
-  imageSize?: HiBaseSizeEnum
+  imageSize?: ResultImageSizeEnum
   /**
    * 组件类型
    */

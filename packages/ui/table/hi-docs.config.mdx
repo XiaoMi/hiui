@@ -16,99 +16,77 @@
 
 <!-- Inject Props -->
 
-## Event
-
-| 属性名         | 描述               | 类型                                                                              | 可选值                                                                                  | 默认值                                                                                                |
-| -------------- | ------------------ | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | --- |
-| onHeaderRow    | 行标题事件处理函数 | (item: ColumnItem[], index: number) => object                                     | -                                                                                       | -                                                                                                     |
-| onLoadChildren | 点击异步加载子项   | (row: DataItem) => object[] \| Promise                                            | -                                                                                       | -                                                                                                     |
-| onDragStart    | 开始拖拽时触发     | (rowData: object) => void                                                         | rowData: 当前行的数据                                                                   | -                                                                                                     |
-| onDrop         | 拖拽行放开时触发   | (dragRowData: object, dropRowData: object, data: object, level: Level) => boolean | Promise                                                                                 | dragRowData: 拖拽的行数据 <br/>dropRowData: 目标行数据 <br/>data:当前结构数据 <br/>level:当前级别数据 | -   |
-| onDropEnd      | 拖拽成功时触发     | (dragRowData: object, dropRowData: object, data: object) => void                  | dragRowData: 拖拽的行数据 <br/>dropRowData: 目标行数据 <br/> data: 拖拽完成后的结构数据 | -                                                                                                     |
-
 > 在 onLoadChildren 方法中，返回的数据中会根据 `isLeaf` 字符控制左侧展开按钮的显示状态
-
-### onHeaderRow 使用方法
-
-```js
-// demo 见【行操作-标题事件处理】
-
-<Table
-  onHeaderRow={(columns, index) => {
-    return {
-      onClick: (event) => {}, // 点击行
-      onDoubleClick: (event) => {},
-      onContextMenu: (event) => {},
-      onMouseEnter: (event) => {}, // 鼠标移入行
-      onMouseLeave: (event) => {}
-    }
-  }}
-/>
-```
 
 ### Type
 
-### ColumnItem
+### TableColumnItem
 
-| 参数                    | 说明                                                       | 类型                                                                                              | 可选值                       | 默认值 |
-| ----------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------- | ------ |
-| title                   | 列标题                                                     | string \| () => ReactNode                                                                         | -                            | -      |
-| dataKey                 | 列对应数据项的唯一标识                                     | string \| number                                                                                  | -                            | -      |
-| align                   | 列对齐方式                                                 | string                                                                                            | 'left' \| 'right' \|'center' | 'left' |
-| selectFilters           | 表头的筛选菜单, 更多配置请参考 [Select组件](https://infra.mioffice.cn/hiui/zh-CN/components/select) (v3.7.1新增)  | object                                                                                    | -                            | null   |
-| sorter                  | 列排序函数  (v3.7.1新增)                                               | () => boolean                                                                                     | -                            | null   |
-| defaultSortOrder        | 默认排序顺序  (v3.7.1新增)                                             | ascend \| descend                                                                                 | -                            | null   |
-| filterIcon              | 自定义 filter 图标 (v3.7.1新增)                                        | ReactNode                                                                                         | -                            | null   |
-| filterDropdown          | 自定义筛选菜单，此函数只负责渲染图层，需要自行编写各种交互 (v3.7.1新增) | (props: {ColumnItem, setFilterDropdownVisible}) => ReactNode                                      | -                            | null   |
-| filterDropdownWidth     | 自定义筛选菜单宽度  (v3.7.1新增)                                       | number                                                                                            | -                            | 150    |
-| filterDropdownClassName | 自定义筛选菜单 className  (v3.7.1新增)                                | string                                                                                            | -                            | -      |
-| onFilterDropdownVisibleChange | 自定义筛选下拉选项显示状态改变时的回调方法  (v3.7.1新增)                                                                        | (filterDropdownVisible, ColumnItem) => void               | true \| false                             | false      |
-| avg                     | 该列是否支持平均值                                         | boolean                                                                                           | -                            | false  |
-| total                   | 该列是否支持合计                                           | boolean                                                                                           | -                            | -      |
-| width                   | 该列宽度                                                   | number                                                                                            | -                            | -      |
-| children                | 多级表头                                                   | ColumnItem[]                                                                                      | -                            | -      |
-| render                  | 控制单元格自定义渲染                                       | (text: DataItem[ColumnItem[dataKey]], row: DataItem, index: number, dataKey: string) => ReactNode | -                            | -      |
+| 参数                          | 说明                                                       | 类型                                                                                                               | 可选值                       | 默认值 |
+| ----------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------- | ------ |
+| title                         | 列标题                                                     | string \| () => ReactNode                                                                                          | -                            | -      |
+| dataKey                       | 列对应数据项的唯一标识                                     | string                                                                                                             | -                            | -      |
+| width                         | 该列宽度                                                   | number                                                                                                             | -                            | -      |
+| align                         | 列对齐方式                                                 | string                                                                                                             | 'left' \| 'right' \|'center' | 'left' |
+| render                        | 控制单元格自定义渲染                                       | (text: TableDataItem[TableColumnItem[dataKey]], row: TableColumnItem, index: number, dataKey: string) => ReactNode | -                            | -      |
+| sorter                        | 列排序函数                                                 | (a: any, b: any) => number                                                                                         | -                            | null   |
+| filterIcon                    | 自定义 filter 图标                                         | ReactNode                                                                                                          | -                            | null   |
+| filterDropdown                | 自定义筛选菜单，此函数只负责渲染图层，需要自行编写各种交互 | (props: { columnData: TableColumnItem, setFilterDropdownVisible: Function}) => ReactNode                           | -                            | null   |
+| filterDropdownWidth           | 自定义筛选菜单宽度                                         | number                                                                                                             | -                            | 150    |
+| filterDropdownClassName       | 自定义筛选菜单 className                                   | string                                                                                                             | -                            | -      |
+| onFilterDropdownVisibleChange | 自定义筛选下拉选项显示状态改变时的回调方法                 | (filterDropdownVisible: boolean, column: TableColumnItem) => void                                                  | true \| false                | false  |
+| avg                           | 该列是否支持平均值                                         | boolean                                                                                                            | -                            | false  |
+| total                         | 该列是否支持合计                                           | boolean                                                                                                            | -                            | -      |
+| children                      | 多级表头                                                   | ColumnItem[]                                                                                                       | -                            | -      |
 
-### DataSource
-
-| 参数              | 说明                                      | 类型                              | 可选值                                             | 默认值        |
-| ----------------- | ----------------------------------------- | --------------------------------- | -------------------------------------------------- | ------------- |
-| url               | 请求的 url                                | string                            | -                                                  | -             |
-| type              | 请求方法                                  | string                            | get \| post                                        | get           |
-| data              | post 请求时请求体参数                     | object                            | -                                                  | -             |
-| params            | url 查询参数                              | object                            | -                                                  | -             |
-| headers           | 请求头                                    | object                            | -                                                  | -             |
-| mode              | 请求模式                                  | string                            | 'same-origin' \| 'cors' \| 'no-cors' \| 'navigate' | 'same-origin' |
-| transformResponse | 成功时的回调，需要返回注入 table 的配置项 | (response: object) => TableConfig | -                                                  | -             |
-
-### Pagination
-
-| 参数             | 说明                                                       | 类型                                                      | 可选值                            | 默认值    |
-| ---------------- | ---------------------------------------------------------- | --------------------------------------------------------- | --------------------------------- | --------- | --- |
-| type             | 分页的类型                                                 | string                                                    | 'default' \| 'simple' \| 'shrink' | 'default' |
-| defaultCurrent   | 默认的当前页数                                             | number                                                    | -                                 | 1         |
-| current          | 当前页数                                                   | number                                                    | -                                 | -         |
-| max              | 最大显示的页数                                             | number                                                    | -                                 | 2         |
-| pageSize         | 每页条数                                                   | number                                                    | -                                 | 10        |
-| pageSizeOptions  | 指定每页可以显示多少条                                     | number[]                                                  | -                                 | []        |
-| total            | 数据总数                                                   | number                                                    | -                                 | -         |
-| autoHide         | 只有一页时是否隐藏分页器                                   | boolean                                                   | true \| false                     | false     |
-| showJumper       | 是否显示跳转                                               | boolean                                                   | true \| false                     | false     |
-| onJump           | 快速跳转时触发，回调值为当前页数                           | (current: number) => void                                 | -                                 | -         |
-| onChange         | 页码改变时的回调，回调值为当前页数、之前的页数和每页条数   | (current: number, prev: number, pageSize: number) => void | -                                 | -         | -   |
-| onPageSizeChange | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数 | (pageSize: number, current: number) => void               | -                                 | -         | -   |
-
-### FixedOption
+### TableFrozenColumnOptions
 
 | 参数  | 说明                 | 类型   | 可选值                   | 默认值 |
 | ----- | -------------------- | ------ | ------------------------ | ------ |
 | left  | 表格从左侧冻结至某列 | string | columns 中对应的 dataKey | -      |
 | right | 表格从右侧冻结至某列 | string | columns 中对应的 dataKey | -      |
 
-### RowSelection
+### TableRowSelection
 
-| 参数              | 说明                   | 类型                                | 可选值           | 默认值 |
-| ----------------- | ---------------------- | ----------------------------------- | ---------------- | ------ |
-| selectedRowKeys   | 选中的行（受控）       | string[]                            | row 中对应的 key | -      |
-| getCheckboxConfig | 行选择的配置项         | rowData => object                   | -                | -      |
-| onChange          | 选中项发生变化时的回调 | (selectedRowKeys: string[]) => void | -                | -      |
+| 参数              | 说明                   | 类型                                                                                         | 可选值           | 默认值 |
+| ----------------- | ---------------------- | -------------------------------------------------------------------------------------------- | ---------------- | ------ |
+| selectedRowKeys   | 选中的行（受控）       | ReactText[]                                                                                  | row 中对应的 key | -      |
+| onChange          | 选中项发生变化时的回调 | (selectedRowKeys: string[], targetRow?: object \| object[], shouldChecked?: boolean) => void | -                | -      |
+| checkboxColWidth  | 设置选中列列宽         | number                                                                                       | -                | -      |
+| getCheckboxConfig | 行选择的配置项         | rowData => object                                                                            | -                | -      |
+| checkAllOptions   | 全选项配置集合         | TableCheckAllOptions                                                                         | -                | -      |
+
+### TableCheckAllOptions
+
+| 参数       | 说明                      | 类型                                   | 可选值 | 默认值 |
+| ---------- | ------------------------- | -------------------------------------- | ------ | ------ |
+| filterIcon | 添加全选按钮右侧过滤 icon | ReactNode                              | -      | -      |
+| render     | 自定义渲染全选内容        | (checkboxNode: ReactNode) => ReactNode | -      | -      |
+
+### TableOnRowReturn
+
+| 参数          | 说明           | 类型                        | 可选值 | 默认值 |
+| ------------- | -------------- | --------------------------- | ------ | ------ |
+| onClick       | 行点击事件     | (event: MouseEvent) => void | -      | -      |
+| onDoubleClick | 行双击事件     | (event: MouseEvent) => void | -      | -      |
+| onContextMenu | 行右键菜单事件 | (event: MouseEvent) => void | -      | -      |
+| onMouseEnter  | 行鼠标入场事件 | (event: MouseEvent) => void | -      | -      |
+| onMouseLeave  | 行鼠标出场事件 | (event: MouseEvent) => void | -      | -      |
+
+### TableDataSource
+
+| 参数              | 说明                               | 类型                             | 可选值                                             | 默认值        |
+| ----------------- | ---------------------------------- | -------------------------------- | -------------------------------------------------- | ------------- |
+| url               | 请求的 url                         | string                           | -                                                  | -             |
+| method            | 请求方法                           | string                           | get \| post                                        | get           |
+| data              | post 请求时请求体参数              | object                           | -                                                  | -             |
+| params            | url 查询参数                       | object                           | -                                                  | -             |
+| headers           | 请求头                             | object                           | -                                                  | -             |
+| withCredentials   | 上传请求时是否携带 cookie          | boolean                          | true \| false                                      | false         |
+| transformResponse | 成功时的回调，用于对数据进行预处理 | (response: object) => DataItem[] | -                                                  | -             |
+| onError           | 请求发生异常的回调方法             | (error: object) => void          | -                                                  | -             |
+| mode              | 请求模式                           | string                           | 'same-origin' \| 'cors' \| 'no-cors' \| 'navigate' | 'same-origin' |
+
+### PaginationProps
+
+> 继承 Pagination 组件的 Props.
