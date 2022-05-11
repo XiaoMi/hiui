@@ -70,6 +70,9 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       displayRender: displayRenderProp,
       placeholder: placeholderProp,
       appearance,
+      virtual,
+      itemHeight,
+      height,
       ...rest
     },
     ref
@@ -263,6 +266,9 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
             // TODO: 支持 fieldNames
             // @ts-ignore
             onLoadChildren={onLoadChildren}
+            virtual={virtual}
+            itemHeight={itemHeight}
+            height={height}
             {...treeProps}
           />
         ) : null}
@@ -376,6 +382,20 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' |
    * 设置展现形式
    */
   appearance?: HiBaseAppearanceEnum
+  /**
+   * 设置虚拟滚动容器的可视高度。暂不对外暴露
+   * @private
+   */
+  height?: number
+  /**
+   * 设置虚拟列表每项的固定高度。暂不对外暴露
+   * @private
+   */
+  itemHeight?: number
+  /**
+   * 	设置 `true` 开启虚拟滚动
+   */
+  virtual?: boolean
 }
 
 if (__DEV__) {

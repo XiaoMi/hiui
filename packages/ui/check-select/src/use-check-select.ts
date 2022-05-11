@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { uniqBy } from '@hi-ui/array-utils'
 import { useCheck as useCheckDefault } from '@hi-ui/use-check'
@@ -29,7 +29,9 @@ export const useCheckSelect = ({
 
   const onSelectLatest = useLatestCallback(onSelect)
 
-  const selectedItemsRef = useRef<any[]>([])
+  const usedItemsRef = useRef<any[]>([])
+  // 扁平化的选中数据，可能包括异步临时选中缓存数据
+  const [checkedItems, setCheckedItems] = useState<CheckSelectEventData[]>([])
 
   const proxyTryChangeValue = useCallback(
     (
@@ -42,31 +44,28 @@ export const useCheckSelect = ({
       if (!Array.isArray(item)) {
         changedItems = [item]
 
-        if (shouldChecked) {
-          selectedItemsRef.current.push(item)
-        }
         onSelectLatest(value, item, shouldChecked)
       }
 
-      const selectedItems = uniqBy(
-        [...changedItems, ...selectedItemsRef.current, ...flattedDataRef.current],
+      const usedItems = uniqBy(
+        [...changedItems, ...usedItemsRef.current, ...flattedDataRef.current],
         'id'
       )
 
-      // 调用用户的select
-      const checkedItems = selectedItems
-        // 使用最新的value
-        .filter((item) => value.includes(item.id))
-        .map((item) => ('raw' in item ? item.raw : item))
+      usedItemsRef.current = usedItems
+
+      // 使用最新的value
+      const nextCheckedItems = usedItems.filter((item) => value.includes(item.id))
+      setCheckedItems(nextCheckedItems)
 
       tryChangeValue(
         value,
-        // TODO: 处理脏数据
+        // 处理脏数据
         changedItems.map((item) => ('raw' in item ? item.raw : item)),
-        checkedItems
+        nextCheckedItems.map((item) => ('raw' in item ? item.raw : item))
       )
     },
-    [tryChangeValue, onSelectLatest, flattedDataRef, selectedItemsRef]
+    [tryChangeValue, onSelectLatest, flattedDataRef, usedItemsRef]
   )
 
   const [onOptionCheck, isCheckedId] = useCheckDefault({
@@ -84,6 +83,7 @@ export const useCheckSelect = ({
     tryChangeValue: proxyTryChangeValue,
     onSelect: onOptionCheck,
     isCheckedId,
+    checkedItems,
   }
 }
 
@@ -104,8 +104,8 @@ export interface UseCheckSelectProps {
    */
   onChange?: (
     value: React.ReactText[],
-    changedItems?: CheckSelectDataItem[],
-    checkedItems?: CheckSelectDataItem[]
+    changedItems: CheckSelectDataItem[],
+    checkedItems: CheckSelectDataItem[]
   ) => void
   /**
    * 选中值时回调。暂不对外暴露
