@@ -117,6 +117,8 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       (pagination.autoHide &&
         currentPage === 1 &&
         typeof pagination.pageSize === 'number' &&
+        typeof pagination.total === 'number' &&
+        pagination.total <= pagination.pageSize &&
         data.length <= pagination.pageSize)
 
     // 获取 key 字段值
