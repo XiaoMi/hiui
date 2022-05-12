@@ -102,31 +102,14 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       [displayRenderProp]
     )
 
-    // 搜索时临时选中缓存数据
-    const [selectedItems, setSelectedItems] = useState<CheckSelectDataItem[]>([])
-
-    const onSelect = useLatestCallback(
-      (value: React.ReactText[], item: CheckSelectItemEventData, shouldChecked: boolean) => {
-        onSelectProp?.(value, item, shouldChecked)
-
-        if (shouldChecked) {
-          // TODO：as useCheckList
-          setSelectedItems((prev) => {
-            return [...prev, item]
-          })
-        }
-      }
-    )
-
     const { rootProps, ...context } = useCheckSelect({
       ...rest,
       children,
       fieldNames,
-      onSelect,
+      onSelect: onSelectProp,
     })
 
-    const { value, tryChangeValue, flattedData } = context
-
+    const { value, tryChangeValue, flattedData, checkedItems } = context
     // ************************** 搜索 ************************* //
 
     const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({
@@ -181,11 +164,11 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       return shouldUseSearch ? stateInSearch.data : flattedData
     }, [shouldUseSearch, flattedData, stateInSearch.data])
 
-    // 下拉菜单不能合并（因为树形数据，不知道是第几级）
+    // 根据 id 进行合并，注意必须是扁平数据
     const mergedData: any[] = useMemo(() => {
-      const nextData = selectedItems.concat(flattedData as any[])
+      const nextData = checkedItems.concat(flattedData as any[])
       return uniqBy(nextData, 'id')
-    }, [selectedItems, flattedData])
+    }, [checkedItems, flattedData])
 
     const [filterItems, setFilterItems] = useState<any[] | null>(null)
     const dropdownItems = filterItems || showData
@@ -216,17 +199,18 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
         // 当前页的数据选项
         const items = dropdownItems.filter((item: any) => !('groupTitle' in item))
         const targetIds: any[] = items.map(({ id }: any) => id)
+        const allData: any[] = uniqBy(items.concat(mergedData), 'id')
 
         if (showChecked) {
           const nextCheckedIds = Array.from(new Set(value.concat(targetIds)))
           const changedIds = nextCheckedIds.filter((id) => !value.includes(id))
-          const changedItems = mergedData.filter(({ id }) => changedIds.includes(id))
+          const changedItems = allData.filter(({ id }) => changedIds.includes(id))
 
           tryChangeValue(nextCheckedIds, changedItems, showChecked)
         } else {
           const nextCheckedIds = value.filter((id) => !targetIds.includes(id))
           const changedIds = value.filter((id) => !nextCheckedIds.includes(id))
-          const changedItems = mergedData.filter(({ id }) => changedIds.includes(id)) // items
+          const changedItems = allData.filter(({ id }) => changedIds.includes(id)) // items
 
           tryChangeValue(nextCheckedIds, changedItems, showChecked)
         }

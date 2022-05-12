@@ -1,10 +1,10 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
 import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps } from '@hi-ui/core'
-import { useInput, UseInputProps } from '@hi-ui/input'
-import { useLatestCallback } from '@hi-ui/use-latest'
+import ResizeDetector from 'react-resize-detector'
+import { useTextarea, UseTextareaProps } from './use-textarea'
 
 const _prefix = getPrefixCls('textarea')
 
@@ -13,9 +13,7 @@ const _prefix = getPrefixCls('textarea')
  *
  *  @TODO:
  * 1. 支持带数字展示
- * 2. 支持自适应行高大小
  * 3. 支持清空按钮
- * 4. 支持最大最小行支持
  * 5. 手动聚焦支持额外配置
  */
 export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
@@ -23,11 +21,9 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
     {
       prefixCls = _prefix,
       className,
-      style,
       size = 'md',
       appearance = 'line',
       invalid = false,
-      // use-input
       name,
       autoFocus,
       disabled,
@@ -40,15 +36,15 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
       onFocus,
       onBlur,
       trimValueOnBlur,
-      ...nativeProps
+      maxRows,
+      minRows,
+      autoSize: autoSizeProp,
+      showCount = false,
+      ...rest
     },
     ref
   ) => {
-    const proxyOnChange = useLatestCallback((_, evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onChange?.(evt)
-    })
-
-    const { focused, getInputProps } = useInput({
+    const { focused, autoSize, value, getTextareaProps, onResize } = useTextarea({
       name,
       autoFocus,
       disabled,
@@ -57,38 +53,53 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
       placeholder,
       defaultValue,
       value: valueProp,
-      onChange: proxyOnChange,
+      onChange,
       onFocus,
       onBlur,
       trimValueOnBlur,
+      maxRows,
+      minRows,
+      autoSize: autoSizeProp,
     })
+
+    const dataCount = useMemo(() => {
+      if (!showCount) return undefined
+
+      const max = Number(maxLength)
+      const valueLength = value.length
+
+      return `${valueLength}${max > 0 ? `/${max}` : ''}`
+    }, [showCount, maxLength, value])
 
     const cls = cx(
       prefixCls,
       className,
-      disabled && 'disabled',
-      readOnly && 'readonly',
-      focused && `focused`,
-      invalid && 'invalid',
+      disabled && `${prefixCls}--disabled`,
+      readOnly && `${prefixCls}--readonly`,
+      focused && `${prefixCls}--focused`,
+      invalid && `${prefixCls}--invalid`,
       `${prefixCls}--appearance-${appearance}`,
       `${prefixCls}--size-${size}`
     )
 
-    return (
-      <textarea
-        ref={ref}
-        className={cls}
-        autoComplete="off"
-        {...getInputProps()}
-        {...nativeProps}
-      />
+    const textareaNode = (
+      <div
+        className={cx(`${prefixCls}-wrapper`, showCount && `${prefixCls}-wrapper--show-count`)}
+        data-count={dataCount}
+      >
+        <textarea {...getTextareaProps(rest, ref)} className={cls} />
+      </div>
     )
+
+    if (autoSize) {
+      return <ResizeDetector onResize={onResize}>{textareaNode}</ResizeDetector>
+    }
+
+    return textareaNode
   }
 )
 
-export interface TextAreaProps
-  extends HiBaseHTMLFieldProps<'textarea'>,
-    Omit<UseInputProps, 'onFocus' | 'onBlur' | 'onChange' | 'type'> {
+export interface TextAreaProps extends HiBaseHTMLFieldProps<'textarea'>, UseTextareaProps {
   /**
    * 设置输入框尺寸
    */
@@ -99,9 +110,9 @@ export interface TextAreaProps
    */
   appearance?: HiBaseAppearanceEnum | 'underline'
   /**
-   * 值改变时回调
+   * 是否展示字数
    */
-  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
+  showCount?: boolean
 }
 
 if (__DEV__) {

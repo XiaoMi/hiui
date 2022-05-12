@@ -15,11 +15,12 @@ $prefix: '#{$component-prefix}-textarea' !default;
   position: relative;
   width: 100%;
   z-index: auto;
+  word-break: break-all;
 
   // UI
   border: use-border-size('normal') use-color-static('transparent');
   background-color: use-color-static('white');
-  transition-property: all;
+  transition-property: color, border-color, background-color, box-shadow;
   transition-duration: use-motion-duration('normal');
   transition-timing-function: use-motion-bezier('normal');
   color: use-color('gray', 700);
@@ -32,11 +33,11 @@ $prefix: '#{$component-prefix}-textarea' !default;
     cursor: not-allowed;
   }
 
-  &:not(.disabled):hover {
+  &:not(.#{$prefix}--disabled):hover {
     z-index: calc(#{use-zindex('absolute')} + 1);
   }
 
-  &:not(.disabled).focused {
+  &:not(.#{$prefix}--disabled).#{$prefix}--focused {
     z-index: calc(#{use-zindex('absolute')} + 1);
   }
 
@@ -73,23 +74,23 @@ $prefix: '#{$component-prefix}-textarea' !default;
     &-line {
       border-color: use-color('gray', 300);
 
-      &:not(.disabled):hover {
+      &:not(.#{$prefix}--disabled):hover {
         border-color: use-color-mode('primary');
       }
 
-      &:not(.disabled).focused {
+      &:not(.#{$prefix}--disabled).#{$prefix}--focused {
         box-shadow: $input-shadow;
         border-color: use-color-mode('primary');
       }
 
-      &:not(.disabled).invalid {
+      &:not(.#{$prefix}--disabled).#{$prefix}--invalid {
         border-color: use-color-mode('error');
 
         &.hover {
           border-color: use-color-mode('error');
         }
 
-        &.focused {
+        &.#{$prefix}--focused {
           box-shadow: $input-error-shadow;
         }
       }
@@ -107,25 +108,25 @@ $prefix: '#{$component-prefix}-textarea' !default;
     &-filled {
       background-color: use-color('gray', 100);
 
-      &:not(.disabled):hover {
+      &:not(.#{$prefix}--disabled):hover {
         background-color: use-color-static('white');
         border-color: use-color-mode('primary');
       }
 
-      &:not(.disabled).focused {
+      &:not(.#{$prefix}--disabled).#{$prefix}--focused {
         box-shadow: $input-shadow;
         border-color: use-color-mode('primary');
         background-color: use-color-static('white');
       }
 
-      &:not(.disabled).invalid {
+      &:not(.#{$prefix}--disabled).#{$prefix}--invalid {
         border-color: use-color-mode('error');
 
         &.hover {
           border-color: use-color-mode('error');
         }
 
-        &.focused {
+        &.#{$prefix}--focused {
           box-shadow: $input-error-shadow;
         }
       }
@@ -149,19 +150,19 @@ $prefix: '#{$component-prefix}-textarea' !default;
         transition: all 0.3s;
       }
 
-      &:not(.disabled):hover {
+      &:not(.#{$prefix}--disabled):hover {
         &::after {
           border-bottom-color: use-color-mode('primary');
         }
       }
 
-      &:not(.disabled).focused {
+      &:not(.#{$prefix}--disabled).#{$prefix}--focused {
         &::after {
           border-bottom-color: use-color-mode('primary');
         }
       }
 
-      &:not(.disabled).invalid {
+      &:not(.#{$prefix}--disabled).#{$prefix}--invalid {
         &::after {
           border-bottom-color: use-color-mode('error');
         }
@@ -178,10 +179,33 @@ $prefix: '#{$component-prefix}-textarea' !default;
     &-unset,
     &-filled,
     &-underline {
-      &.disabled {
+      &.#{$prefix}--disabled {
         color: use-color('gray', 400);
         background-color: use-color('gray', 200);
       }
+    }
+  }
+
+  &-wrapper--show-count {
+    position: relative;
+
+    > .#{$prefix} {
+      padding-bottom: use-spacing(10);
+    }
+
+    &[data-count]::after {
+      content: attr(data-count);
+      color: use-color('gray', 500);
+      font-size: use-text-size('sm');
+      font-weight: use-font-weight('normal');
+      line-height: use-text-lineheight('sm');
+      white-space: nowrap;
+      pointer-events: none;
+      float: right;
+      position: absolute;
+      right: use-spacing(5);
+      bottom: use-spacing(1);
+      z-index: calc(#{use-zindex('absolute')} + 1);
     }
   }
 }

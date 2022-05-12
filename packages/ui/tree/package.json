@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tree",
-  "version": "4.0.0-beta.29",
+  "version": "4.0.0-beta.30",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -61,9 +61,7 @@
     "@hi-ui/use-outside-click": "^4.0.0-beta.4",
     "@hi-ui/use-toggle": "^4.0.0-beta.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.4",
-    "@popperjs/core": "^2.9.3",
-    "rc-virtual-list": "^3.3.0",
-    "react-popper": "^2.2.5",
+    "rc-virtual-list": "^3.4.7",
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {

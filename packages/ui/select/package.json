@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/select",
-  "version": "4.0.0-beta.25",
+  "version": "4.0.0-beta.26",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -65,7 +65,7 @@
     "@hi-ui/use-search-mode": "^4.0.0-beta.18",
     "@hi-ui/use-toggle": "^4.0.0-beta.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.4",
-    "rc-virtual-list": "^3.4.2"
+    "rc-virtual-list": "^3.4.7"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
