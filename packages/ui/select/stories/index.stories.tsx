@@ -19,9 +19,6 @@ export * from './virtual-list.stories'
 export * from './empty-content.stories'
 export * from './tip.stories'
 
-// @private
-// export * from './children.stories'
-
 export default {
   title: 'Data Input/Select',
   component: Select,

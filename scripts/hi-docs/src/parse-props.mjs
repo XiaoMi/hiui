@@ -159,7 +159,6 @@ const tableRenderer = (doc) => {
       {
         title: '可选值',
         render: (val) => {
-          console.log(val.type)
           if (!val.type) return '-'
           if (isEnumType(val.type)) return val.type.value.map((e) => e.value).join(' | ')
           if (isBooleanType(val.type)) return 'true | false'

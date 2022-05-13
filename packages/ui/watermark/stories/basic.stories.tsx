@@ -1,5 +1,5 @@
 import React from 'react'
-import Watermark from '../src/'
+import Watermark from '../src'
 
 /**
  * @title 基础用法

@@ -15,7 +15,14 @@ async function findComponentPkgFiles(baseURL) {
     ignore: ['**/node_modules/**'],
   })
 
-  return tsFiles
+  // console.log(tsFiles)
+  return tsFiles.filter(
+    (v) =>
+      !['icon-button', 'locale-context', 'picker', 'tag-input', 'toast'].some((privateName) => {
+        return v.startsWith(privateName + '/')
+      })
+  )
+  // return tsFiles
 }
 
 function getComponentInfo(componentPkgFiles, baseURL) {
