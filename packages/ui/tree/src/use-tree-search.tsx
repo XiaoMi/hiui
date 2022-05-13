@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback, forwardRef } from 'react'
 import { __DEV__ } from '@hi-ui/env'
 import Input from '@hi-ui/input'
-import { TreeNodeData, FlattedTreeNodeData, TreeNodeEventData } from './types'
+import { TreeDataItem, FlattedTreeNodeData, TreeNodeEventData } from './types'
 import { useExpandProps } from './hooks'
 import { cloneTree, getNodeAncestors } from '@hi-ui/tree-utils'
 import { flattenTreeData } from './utils'
@@ -230,7 +230,7 @@ const renderTitleWithHighlight = (
  * 获取搜索高亮展示的数据
  */
 const getSearchedData = (
-  treeData: TreeNodeData[],
+  treeData: TreeDataItem[],
   matchedIds: React.ReactText[],
   filteredIds: React.ReactText[]
 ) => {

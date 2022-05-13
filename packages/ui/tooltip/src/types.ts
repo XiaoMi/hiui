@@ -13,3 +13,4 @@ export const triggerActions = Object.values(TriggerActionEnum)
 
 // eslint-disable-next-line no-redeclare
 export type TriggerActionEnum = ValueOf<typeof TriggerActionEnum>
+export type TooltipTriggerActionEnum = TriggerActionEnum | undefined

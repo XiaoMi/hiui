@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { TreeNodeData, FlattedTreeNodeData, TreeNodeType, TreeDataStatus } from '../types'
+import { TreeDataItem, FlattedTreeNodeData, TreeNodeType, TreeDataStatus } from '../types'
 import { cloneTree } from '@hi-ui/tree-utils'
 import { addChildNodeById, deleteNodeById, insertNodeById, uuid } from '../utils'
 import { useLatestRef } from '@hi-ui/use-latest'
@@ -7,8 +7,8 @@ import { useLatestRef } from '@hi-ui/use-latest'
 const genTreeNode = () => ({ id: uuid(), title: '', type: 'add' } as FlattedTreeNodeData)
 
 export const useEdit = (
-  treeData: TreeNodeData[],
-  setTreeData: React.Dispatch<React.SetStateAction<TreeNodeData[]>>,
+  treeData: TreeDataItem[],
+  setTreeData: React.Dispatch<React.SetStateAction<TreeDataItem[]>>,
   onBeforeSave?: (
     savedNode: FlattedTreeNodeData,
     data: TreeDataStatus,
@@ -19,8 +19,8 @@ export const useEdit = (
     data: TreeDataStatus,
     level: number
   ) => boolean | Promise<boolean>,
-  onSave?: (savedNode: FlattedTreeNodeData, data: TreeNodeData[]) => void,
-  onDelete?: (deletedNode: FlattedTreeNodeData, data: TreeNodeData[]) => void
+  onSave?: (savedNode: FlattedTreeNodeData, data: TreeDataItem[]) => void,
+  onDelete?: (deletedNode: FlattedTreeNodeData, data: TreeDataItem[]) => void
 ) => {
   const addSiblingNode = useCallback(
     (node: FlattedTreeNodeData) => {
@@ -131,7 +131,7 @@ export const useEdit = (
 }
 
 // 修改指定的 id 的 node 内容
-const _saveEdit = (targetNode: TreeNodeData, treeData: TreeNodeData[]) => {
+const _saveEdit = (targetNode: TreeDataItem, treeData: TreeDataItem[]) => {
   const { id, title } = targetNode
 
   treeData.forEach((node) => {

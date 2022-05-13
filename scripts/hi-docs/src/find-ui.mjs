@@ -15,8 +15,7 @@ async function findComponentPkgFiles(baseURL) {
     ignore: ['**/node_modules/**'],
   })
 
-  return tsFiles.filter((v) => v.includes('tabs'))
-  // return tsFiles
+  return tsFiles
 }
 
 function getComponentInfo(componentPkgFiles, baseURL) {

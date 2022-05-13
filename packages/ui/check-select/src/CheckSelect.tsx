@@ -11,7 +11,7 @@ import {
   CheckSelectItemEventData,
   CheckSelectMergedItem,
 } from './types'
-import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
+import { useLatestRef } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
 import { TagInputMock } from '@hi-ui/tag-input'
 import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'

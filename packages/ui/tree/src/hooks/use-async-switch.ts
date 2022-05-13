@@ -1,16 +1,16 @@
 import React, { useState, useCallback } from 'react'
-import { TreeNodeData, TreeNodeEventData } from '../types'
+import { TreeDataItem, TreeNodeEventData } from '../types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { cloneTree } from '@hi-ui/tree-utils'
 import { addChildrenById } from '../utils'
 import { UseDataSource, useDataSource } from '@hi-ui/use-data-source'
 
 export const useAsyncSwitch = (
-  setTreeData: React.Dispatch<React.SetStateAction<TreeNodeData[]>>,
+  setTreeData: React.Dispatch<React.SetStateAction<TreeDataItem[]>>,
   onExpand?: (expandedNode: TreeNodeEventData, isExpanded: boolean) => void,
   onLoadChildren?:
-    | UseDataSource<TreeNodeData[]>
-    | ((node: TreeNodeEventData) => void | Promise<TreeNodeData[] | void>)
+    | UseDataSource<TreeDataItem[]>
+    | ((node: TreeNodeEventData) => void | Promise<TreeDataItem[] | void>)
 ) => {
   const [loadingIds, addLoadingIds, removeLoadingIds] = useList<React.ReactText>()
 

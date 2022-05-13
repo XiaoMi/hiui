@@ -25,7 +25,9 @@ function getComponentProps(pathInfo) {
     .filter((item) => {
       // 内部使用暴露，对外屏蔽文档
       if (
-        ['DefaultPagination', 'ShrinkPagination'].some((name) => item.displayName.includes(name))
+        ['DefaultPagination', 'ShrinkPagination', 'PopContent'].some((name) =>
+          item.displayName.includes(name)
+        )
       ) {
         return false
       }

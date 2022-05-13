@@ -1,6 +1,6 @@
 import React from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { FlattedTreeNodeData, TreeNodeEventData, TreeNodeData } from '../types'
+import { FlattedTreeNodeData, TreeNodeEventData, TreeDataItem } from '../types'
 import { parseCheckDataDirty, processCheckedIds } from '../utils'
 import { useCascadeCheck } from '@hi-ui/use-check'
 
@@ -16,7 +16,7 @@ export const useCheck = (
   onCheck?: (
     checkedIds: React.ReactText[],
     options: {
-      checkedNodes: TreeNodeData[]
+      checkedNodes: TreeDataItem[]
       semiCheckedIds: React.ReactText[]
       targetNode: TreeNodeEventData
       checked: boolean

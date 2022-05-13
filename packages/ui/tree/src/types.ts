@@ -1,6 +1,6 @@
 import React from 'react'
 
-export interface TreeNodeData {
+export interface TreeDataItem {
   /**
    * 树节点唯一 id
    */
@@ -12,7 +12,7 @@ export interface TreeNodeData {
   /**
    * 该节点的子节点列表
    */
-  children?: TreeNodeData[]
+  children?: TreeDataItem[]
   /**
    * 是否为叶子节点
    */
@@ -27,7 +27,7 @@ export interface TreeNodeData {
   type?: TreeNodeType
 }
 
-export interface FlattedTreeNodeData extends TreeNodeData {
+export interface FlattedTreeNodeData extends TreeDataItem {
   /**
    * 该节点的子节点列表
    */
@@ -35,7 +35,7 @@ export interface FlattedTreeNodeData extends TreeNodeData {
   /**
    * 关联用户传入的原始节点
    */
-  raw: TreeNodeData
+  raw: TreeDataItem
   /**
    * 该节点的层级，从 0（顶层）开始
    */
@@ -73,12 +73,24 @@ export const TreeNodeType = {
 export type TreeNodeType = ValueOf<typeof TreeNodeType>
 
 export type TreeDataStatus = {
-  before: TreeNodeData[]
-  after: TreeNodeData[]
+  /**
+   * 更新前整个树的数据结构
+   */
+  before: TreeDataItem[]
+  /**
+   * 更新后整个树的数据结构
+   */
+  after: TreeDataItem[]
 }
 
 export type TreeLevelStatus = {
+  /**
+   * 拖拽前在树中的层级
+   */
   before: number
+  /**
+   * 拖拽后在树中的层级
+   */
   after: number
 }
 
@@ -102,15 +114,39 @@ export interface TreeNodeRequiredProps {
 export interface TreeNodeEventData extends FlattedTreeNodeData, TreeNodeRequiredProps {}
 
 export type TreeMenuActionOption = {
+  /**
+   * 菜单执行的功能
+   */
   type?: 'editNode' | 'addChildNode' | 'addSiblingNode' | 'deleteNode'
+  /**
+   * 菜单标题
+   */
   title: React.ReactNode
+  /**
+   * 菜单执行的功能
+   */
   onClick?: (item: FlattedTreeNodeData, action: TreeEditActions) => void
 }
 
 export type TreeEditActions = {
+  /**
+   * 执行编辑节点操作
+   */
   editNode: () => void
+  /**
+   * 执行添加子节点操作
+   */
   addChildNode: () => void
+  /**
+   * 执行添加兄弟节点操作
+   */
   addSiblingNode: () => void
+  /**
+   * 执行删除节点操作
+   */
   deleteNode: () => void
+  /**
+   * 执行关闭菜单操作
+   */
   closeMenu: () => void
 }
