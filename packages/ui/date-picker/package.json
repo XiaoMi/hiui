@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/date-picker",
-  "version": "4.0.0-beta.28",
+  "version": "4.0.0-beta.29",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,7 +43,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^4.0.0-beta.12",
+    "@hi-ui/button": "^4.0.0-beta.13",
     "@hi-ui/classname": "^4.0.0-beta.0",
     "@hi-ui/core": "^4.0.0-beta.8",
     "@hi-ui/core-css": "^4.0.0-beta.5",
@@ -51,8 +51,8 @@
     "@hi-ui/icons": "^4.0.0-beta.10",
     "@hi-ui/locale-context": "^4.0.0-beta.18",
     "@hi-ui/object-utils": "^4.0.0-beta.11",
-    "@hi-ui/popper": "^4.0.0-beta.13",
-    "@hi-ui/time-picker": "^4.0.0-beta.24",
+    "@hi-ui/popper": "^4.0.0-beta.14",
+    "@hi-ui/time-picker": "^4.0.0-beta.25",
     "axios": "^0.26.0",
     "moment": "^2.29.1",
     "react-transition-group": "^4.4.2"
