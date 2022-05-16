@@ -107,10 +107,13 @@ export const FilterDropdown = ({ prefixCls, column, onOpen, onClose }: any) => {
     filterIcon,
     filterDropdown,
     filterDropdownWidth,
+    filterDropdownVisible,
     onFilterDropdownVisibleChange,
     filterDropdownClassName,
   } = column.raw
   const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+    defaultVisible: false,
+    visible: filterDropdownVisible,
     onOpen: () => {
       onOpen?.()
       onFilterDropdownVisibleChange?.(true, column.raw)

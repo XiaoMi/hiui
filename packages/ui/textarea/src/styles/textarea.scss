@@ -186,26 +186,30 @@ $prefix: '#{$component-prefix}-textarea' !default;
     }
   }
 
-  &-wrapper--show-count {
-    position: relative;
+  &-wrapper {
+    width: 100%;
 
-    > .#{$prefix} {
-      padding-bottom: use-spacing(10);
-    }
+    &--show-count {
+      position: relative;
 
-    &[data-count]::after {
-      content: attr(data-count);
-      color: use-color('gray', 500);
-      font-size: use-text-size('sm');
-      font-weight: use-font-weight('normal');
-      line-height: use-text-lineheight('sm');
-      white-space: nowrap;
-      pointer-events: none;
-      float: right;
-      position: absolute;
-      right: use-spacing(5);
-      bottom: use-spacing(1);
-      z-index: calc(#{use-zindex('absolute')} + 1);
+      > .#{$prefix} {
+        padding-bottom: use-spacing(10);
+      }
+
+      &[data-count]::after {
+        content: attr(data-count);
+        color: use-color('gray', 500);
+        font-size: use-text-size('sm');
+        font-weight: use-font-weight('normal');
+        line-height: use-text-lineheight('sm');
+        white-space: nowrap;
+        pointer-events: none;
+        float: right;
+        position: absolute;
+        right: use-spacing(5);
+        bottom: use-spacing(1);
+        z-index: calc(#{use-zindex('absolute')} + 1);
+      }
     }
   }
 }

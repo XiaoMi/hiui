@@ -156,6 +156,10 @@ export type TableColumnItem = {
    */
   filterDropdownWidth?: number
   /**
+   * 受控控制 dropdown 显隐
+   */
+  filterDropdownVisible?: boolean
+  /**
    * 自定义筛选菜单 className
    */
   filterDropdownClassName?: string
