@@ -27,6 +27,10 @@ export interface CheckTreeSelectDataItem extends HiBaseDataItem {
 
 export interface FlattedCheckTreeSelectDataItem extends CheckTreeSelectDataItem {
   /**
+   * 节点唯一 id
+   */
+  id: React.ReactText
+  /**
    * 该节点的子节点列表
    */
   children?: FlattedCheckTreeSelectDataItem[]

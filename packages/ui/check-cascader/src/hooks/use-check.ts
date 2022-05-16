@@ -26,9 +26,7 @@ export const useCheck = (
     checkedIdsProp,
     (checkedIds, checkedNode, shouldChecked, semiCheckedIds) => {
       // 出口数据处理
-      const processedIds = processCheckedIds(checkedMode, checkedIds, flattedData, allowCheck)
-
-      onCheck?.({ checkedIds: processedIds, semiCheckedIds }, checkedNode, shouldChecked)
+      onCheck?.({ checkedIds, semiCheckedIds }, checkedNode, shouldChecked)
     }
   )
 
@@ -42,7 +40,12 @@ export const useCheck = (
     disabled,
     flattedData,
     checkedIds: parsedCheckedIds,
-    onCheck: trySetCheckedIds,
+    onCheck: (checkedIds, checkedNode, shouldChecked, semiCheckedIds) => {
+      // 出口数据处理
+      const processedIds = processCheckedIds(checkedMode, checkedIds, flattedData, allowCheck)
+
+      trySetCheckedIds(processedIds, checkedNode, shouldChecked, semiCheckedIds)
+    },
     allowCheck,
   })
 }

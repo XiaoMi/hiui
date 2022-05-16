@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo, useState } from 'react'
+import React, { forwardRef, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import {
@@ -27,6 +27,7 @@ import {
   useSearchMode,
   useTreeCustomSearch,
 } from '@hi-ui/use-search-mode'
+import { useCheck } from './hooks/use-check'
 
 const TREE_SELECT_PREFIX = getPrefixCls('check-tree-select')
 const DEFAULT_DATA = [] as []
@@ -52,7 +53,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       // clearable = false,
       // bordered = true,
       fieldNames = DEFAULT_FIELD_NAMES,
-      checkedMode,
+      checkedMode = 'ALL',
       // type,
       defaultExpandAll = false,
       expandedIds: expandedIdsProp,
@@ -99,8 +100,6 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       onClose,
     })
 
-    // const [viewSelected, setViewSelected] = useState(false)
-
     /**
      * 转换对象
      */
@@ -143,11 +142,16 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       onExpand
     )
 
-    const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
-    // 搜索时临时选中缓存数据
-    const [selectedItems, setSelectedItems] = useState<CheckTreeSelectDataItem[]>([])
+    const [value, tryChangeValue, onNodeCheck, checkedNodes, parsedCheckedIds] = useCheck(
+      checkedMode,
+      disabled,
+      flattedData,
+      defaultValue,
+      valueProp,
+      onChange
+    )
 
-    const onSelect = useCallback(
+    const onCheck = useCallback(
       (
         checkedIds: React.ReactText[],
         option: {
@@ -157,20 +161,23 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
           checked: boolean
         }
       ) => {
-        tryChangeValue(checkedIds, option)
-        // 存取异步选中数据
-        setSelectedItems((prev) => {
-          const next = [...prev]
-          const { targetNode, checked } = option
-          if (checked) {
-            next.push(targetNode)
-          } else {
-            next.filter((item) => item.id !== targetNode.id)
-          }
-          return next
-        })
+        const { targetNode, checked } = option
+        onNodeCheck(targetNode, checked)
       },
-      [tryChangeValue]
+      [onNodeCheck]
+    )
+
+    const onValueChange = useCallback(
+      (values: React.ReactText[], targetItem: any[], shouldChecked: boolean) => {
+        // 清空
+        if (values.length === 0) {
+          tryChangeValue([], null, shouldChecked, [])
+        } else {
+          // 操作单个
+          onNodeCheck(targetItem[0], shouldChecked)
+        }
+      },
+      [tryChangeValue, onNodeCheck]
     )
 
     // ************************** 异步搜索 ************************* //
@@ -238,9 +245,9 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
 
     // 下拉菜单不能合并（因为树形数据，不知道是第几级）
     const mergedData: any[] = useMemo(() => {
-      const nextData = selectedItems.concat(flattedData as any[])
+      const nextData = checkedNodes.concat(flattedData as any[])
       return uniqBy(nextData, 'id')
-    }, [selectedItems, flattedData])
+    }, [checkedNodes, flattedData])
 
     const cls = cx(prefixCls, className)
 
@@ -285,7 +292,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             focused={menuVisible}
             appearance={appearance}
             value={value}
-            onChange={tryChangeValue}
+            onChange={onValueChange}
             data={mergedData}
             // @ts-ignore
             invalid={invalid}
@@ -296,16 +303,16 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
           />
         }
       >
-        {/* {!viewSelected && isArrayNonEmpty(treeProps.data) ? ( */}
         {isArrayNonEmpty(treeProps.data) ? (
+          // 只做渲染，不做逻辑处理（比如搜索过滤后，check操作的是对过滤后的data操作，这是不符合预期的）
           <Tree
             className={`${prefixCls}__tree`}
             selectable={false}
             checkable
             checkOnSelect
-            checkedMode={checkedMode}
-            checkedIds={value}
-            onCheck={onSelect}
+            checkedMode={checkedMode === 'SEPARATE' ? 'SEPARATE' : 'ALL'}
+            checkedIds={parsedCheckedIds}
+            onCheck={onCheck}
             // TODO: 支持 fieldNames
             // @ts-ignore
             onLoadChildren={onLoadChildren}
@@ -316,20 +323,6 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             {...treeProps}
           />
         ) : null}
-
-        {/* 设计成一种搜索模式，过滤掉为选中的节点 */}
-        {/* {viewSelected ? (
-          <Tree
-            className={`${prefixCls}__tree`}
-            selectable={false}
-            checkable
-            checkedIds={value}
-            onCheck={onSelect}
-            onLoadChildren={onLoadChildren}
-            flattedData={tagList}
-            defaultExpandAll={true}
-          />
-        ) : null} */}
       </Picker>
     )
   }
@@ -433,7 +426,7 @@ export interface CheckTreeSelectProps
    * 选中时触发
    * checkedIds: 选中项 ID 集合
    * checkedNodes: 选中项数据项集合
-   * targetNode: 当前操作节点
+   * targetNode: 当前操作节点，清空时为 null
    * checked: 当前操作是否为选中操作
    */
   onChange?: (
@@ -441,7 +434,7 @@ export interface CheckTreeSelectProps
     options: {
       checkedNodes: CheckTreeSelectDataItem[]
       semiCheckedIds: React.ReactText[]
-      targetNode: CheckTreeSelectItemEventData
+      targetNode: CheckTreeSelectItemEventData | null
       checked: boolean
     }
   ) => void
