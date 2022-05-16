@@ -1,4 +1,4 @@
-import { stringify, parse, isValidField } from './utils'
+import { stringify, parse, isValidField, mergeValues } from './utils'
 import React, { useCallback, useMemo, useReducer, useRef } from 'react'
 import {
   FormAction,
@@ -13,7 +13,7 @@ import {
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { isArray, isObjectLike, isFunction } from '@hi-ui/type-assertion'
 import { callAllFuncs } from '@hi-ui/func-utils'
-import { setNested, getNested, clone, merge } from '@hi-ui/object-utils'
+import { setNested, getNested } from '@hi-ui/object-utils'
 import { stopEvent } from '@hi-ui/dom-utils'
 
 const EMPTY_RULES = {}
@@ -256,7 +256,7 @@ export const useForm = <Values = Record<string, any>>({
       payload: (prevState: any) => {
         return isFunction(fieldsState)
           ? fieldsState(prevState)
-          : merge(clone(prevState), fieldsState as any)
+          : mergeValues(prevState, fieldsState as any)
       },
     })
   }, [])
