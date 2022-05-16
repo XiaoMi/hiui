@@ -26,7 +26,7 @@
 
 | 名称               | 说明                                                                                      | 类型                                                                                               |
 | ------------------ | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| reset              | 重置整个表单的验证,对应 Form.Reset 中的 API，如果不知道 nextState，则重置为 initialValues | (nextState?: { values?: any, errors?: any }) => Promise<void>                                      |
+| reset              | 重置整个表单的验证,对应 Form.Reset 中的 API，如果不指定 nextState，则重置为 initialValues | (nextState?: { values?: any, errors?: any }) => Promise<void>                                      |
 | validate           | 对整个表单进行校验, 对应 Form.Submit 中的 API                                             | () => Promise<Record<string, any>>                                                                 |
 | validateField      | 对指定表单字段进行校验                                                                    | (fields: FormFieldPath) => Promise<any>                                                            |
 | setFieldValue      | 设置某个表单字段的值，在更新表单数据的的时候，使用该方法                                  | (field: FormFieldPath, value: any) => void                                                         |

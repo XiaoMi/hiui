@@ -14,9 +14,10 @@ export async function mergeDocs(components) {
   return await Promise.all(
     components.map(async (info) => {
       // 元信息合并
-      let markdown = mergeStoriesIntoReadme(info.name, info.readme, info.stories)
+      let markdown = info.readme
       markdown = mergePropsIntoReadme(markdown, info.props)
-
+      markdown = transformJSX(markdown)
+      markdown = mergeStoriesIntoReadme(info.name, markdown, info.stories)
       // 写入
       await writeDocs(info, markdown)
     })
@@ -63,7 +64,16 @@ function mergeStoriesIntoReadme(name, readmeMarkdown, stories) {
 
 function mergePropsIntoReadme(readmeMarkdown, props) {
   const propsMarkdown = propsRender(props)
+
   return readmeMarkdown.replace('<!-- Inject Props -->', propsMarkdown)
+}
+
+// 转成 CodeBlock 支持的 mdx 语法格式，避免识别为 JSX
+const transformJSX = (str) => {
+  return str
+    .replace(/(\w)>/g, (_, $1) => `${$1}\\>`)
+    .replace(/\/>/g, '/\\>')
+    .replace(/\\</g, '<')
 }
 
 async function writeDocs(info, markdown) {

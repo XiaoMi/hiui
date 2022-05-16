@@ -25,7 +25,7 @@ async function findComponentPkgFiles(baseURL) {
         return v.startsWith(privateName + '/')
       })
   )
-  // return tsFiles.filter((v) => v.includes('alert'))
+  // return tsFiles.filter((v) => v.includes('form'))
 }
 
 function getComponentInfo(componentPkgFiles, baseURL) {
