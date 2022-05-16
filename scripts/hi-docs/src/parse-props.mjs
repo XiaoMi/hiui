@@ -125,8 +125,7 @@ function markdownRender(doc) {
     .use(remarkStringify, { stringLength: stringWidth })
 
   const table = root(tableRenderer(doc))
-
-  return remark.stringify(table)
+  return transformJSX(remark.stringify(table))
 }
 
 const isEnumType = (type) =>
@@ -136,6 +135,14 @@ const isEnumType = (type) =>
   (type.raw.includes(' | ') || type.raw.includes('Enum'))
 
 const isBooleanType = (type) => type.name === 'boolean' || type.raw === 'boolean'
+
+// 转成 CodeBlock 支持的语法格式，避免识别为 JSX
+const transformJSX = (str) => {
+  return str
+    .replace(/(\w)>/, (_, $1) => `${$1}\\>`)
+    .replace('/>', '/\\>')
+    .replace('\\<', '<')
+}
 
 const tableRenderer = (doc) => {
   log('Table Renderer: ', doc.displayName)

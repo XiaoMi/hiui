@@ -5,16 +5,16 @@ import Input from '@hi-ui/input'
 import Button from '@hi-ui/button'
 import Grid from '@hi-ui/grid'
 
-const { Row, Col } = Grid
-const FormItem = Form.Item
-const FormReset = Form.Reset
-const FormSubmit = Form.Submit
-
 /**
  * @title 校验指定表单项
  * @desc 针对单个表单控件值进行校验
  */
 export const ValidateField = () => {
+  const { Row, Col } = Grid
+  const FormItem = Form.Item
+  const FormReset = Form.Reset
+  const FormSubmit = Form.Submit
+
   const formRef = React.useRef<FormHelpers>(null)
 
   const [formData, setFormData] = React.useState<any>({
@@ -174,9 +174,8 @@ export const ValidateField = () => {
             <>
               <FormSubmit
                 type="primary"
-                onClick={(values, errors) => {
-                  console.log('Get form value:', values, errors)
-                  console.dir(errors)
+                onClick={() => {
+                  console.log('Get form value:', formRef.current.getFieldsValue())
                 }}
               >
                 提交

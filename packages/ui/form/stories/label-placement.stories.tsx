@@ -2,14 +2,14 @@ import React from 'react'
 import Form, { FormHelpers } from '../src'
 import Input from '@hi-ui/input'
 
-const FormItem = Form.Item
-const FormSubmit = Form.Submit
-
 /**
  * @title 对齐方式
  * @desc 表单项较少，对应标题字数易对齐工整
  */
 export const LabelPlacement = () => {
+  const FormItem = Form.Item
+  const FormSubmit = Form.Submit
+
   const formRef = React.useRef<FormHelpers>(null)
 
   return (
@@ -34,8 +34,8 @@ export const LabelPlacement = () => {
               <FormItem label="" field="productName" valueType="string">
                 <FormSubmit
                   type="primary"
-                  onClick={(values, errors) => {
-                    console.log('Get form value:', values, errors)
+                  onClick={() => {
+                    console.log('Get form value:', formRef.current.getFieldsValue())
                   }}
                 >
                   提交
@@ -64,8 +64,8 @@ export const LabelPlacement = () => {
               <FormItem label="" field="productName" valueType="string">
                 <FormSubmit
                   type="primary"
-                  onClick={(values, errors) => {
-                    console.log('Get form value:', values, errors)
+                  onClick={() => {
+                    console.log('Get form value:', formRef.current.getFieldsValue())
                   }}
                 >
                   提交
@@ -94,8 +94,8 @@ export const LabelPlacement = () => {
               <FormItem label="" field="productName" valueType="string">
                 <FormSubmit
                   type="primary"
-                  onClick={(values, errors) => {
-                    console.log('Get form value:', values, errors)
+                  onClick={() => {
+                    console.log('Get form value:', formRef.current.getFieldsValue())
                   }}
                 >
                   提交

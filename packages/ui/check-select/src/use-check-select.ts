@@ -30,7 +30,7 @@ export const useCheckSelect = ({
 
   const usedItemsRef = useRef<any[]>([])
   // 扁平化的选中数据，可能包括异步临时选中缓存数据
-  const [checkedItems, setCheckedItems] = useState<CheckSelectEventData[]>([])
+  const [checkedItems, setCheckedItems] = useState<CheckSelectItemEventData[]>([])
 
   const proxyTryChangeValue = useCallback(
     (

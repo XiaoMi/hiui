@@ -124,9 +124,9 @@ const getMatchedNodes = (
         continue
       }
 
-      if (typeof optionOrGroup.title === 'string') {
+      if (typeof (optionOrGroup as any).title === 'string') {
         // 匹配策略：`String.include`
-        if (optionOrGroup.title.includes(searchValue)) {
+        if ((optionOrGroup as any).title.includes(searchValue)) {
           matchedResult.push(optionOrGroup)
         }
       } else {

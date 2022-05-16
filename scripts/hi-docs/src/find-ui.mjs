@@ -9,6 +9,9 @@ export async function findUI(baseURL) {
   return componentInfo
 }
 
+const helpfulPrivatePkgs = ['popper', 'file-select', 'portal', 'spinner', 'highlighter']
+const othersPrivatePkgs = ['icon-button', 'locale-context', 'picker', 'tag-input', 'toast']
+
 async function findComponentPkgFiles(baseURL) {
   const tsFiles = await globAsync('*/package.@(json)', {
     cwd: baseURL,
@@ -18,11 +21,11 @@ async function findComponentPkgFiles(baseURL) {
   // console.log(tsFiles)
   return tsFiles.filter(
     (v) =>
-      !['icon-button', 'locale-context', 'picker', 'tag-input', 'toast'].some((privateName) => {
+      !helpfulPrivatePkgs.concat(othersPrivatePkgs).some((privateName) => {
         return v.startsWith(privateName + '/')
       })
   )
-  // return tsFiles
+  // return tsFiles.filter((v) => v.includes('alert'))
 }
 
 function getComponentInfo(componentPkgFiles, baseURL) {

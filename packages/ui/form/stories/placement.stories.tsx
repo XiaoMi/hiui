@@ -3,13 +3,13 @@ import Form from '../src'
 import Input from '@hi-ui/input'
 import Button from '@hi-ui/button'
 
-const FormItem = Form.Item
-
 /**
  * @title 横向表单
  * @desc 适用于筛选或查询数据的场景，和表格配合使用
  */
 export const Placement = () => {
+  const FormItem = Form.Item
+
   return (
     <>
       <h1>Placement</h1>

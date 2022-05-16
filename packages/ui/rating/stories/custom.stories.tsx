@@ -1,26 +1,26 @@
 import React from 'react'
 import Rating from '../src'
 
-const smile1Png =
-  'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/rating-emoji-1%402x.png'
-
-const smile2Png =
-  'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/rating-emoji-2%402x.png'
-
-const smile3Png =
-  'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/rating-emoji-3%402x.png'
-
-const smile4Png =
-  'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/rating-emoji-4%402x.png'
-
-const smile5Png =
-  'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/rating-emoji-5%402x.png'
-
 /**
  * @title 自定义渲染
  * @desc 使用 renderCharacter()=>ReactNode 自定义渲染
  */
 export const Custom = () => {
+  const smile1Png =
+    'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/rating-emoji-1%402x.png'
+
+  const smile2Png =
+    'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/rating-emoji-2%402x.png'
+
+  const smile3Png =
+    'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/rating-emoji-3%402x.png'
+
+  const smile4Png =
+    'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/rating-emoji-4%402x.png'
+
+  const smile5Png =
+    'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/rating-emoji-5%402x.png'
+
   return (
     <>
       <h1>Custom</h1>

@@ -1,20 +1,20 @@
 import React from 'react'
-import ToastAPI from '../src'
+import Toast from '../src'
 import Button from '@hi-ui/button'
-
-const Toast = ToastAPI.create({ prefixCls: 'basic' })
 
 /**
  * @title 基础用法
  */
 export const Basic = () => {
+  const ToastAPI = React.useMemo(() => Toast.create({ prefixCls: 'basic' }), [])
+
   return (
     <>
       <h1>Basic</h1>
       <div className="toast-basic__wrap">
         <Button
           onClick={() => {
-            Toast.open({
+            ToastAPI.open({
               title: 'xxxx',
             })
           }}
@@ -24,7 +24,7 @@ export const Basic = () => {
 
         <Button
           onClick={() => {
-            Toast.destroy()
+            ToastAPI.destroy()
           }}
         >
           Destroy Toast

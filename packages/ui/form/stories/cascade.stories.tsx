@@ -13,15 +13,15 @@ import { Switch } from '@hi-ui/switch'
 import { Rating } from '@hi-ui/rating'
 import { Upload } from '@hi-ui/upload'
 
-const FormItem = Form.Item
-const FormReset = Form.Reset
-const FormSubmit = Form.Submit
-
 /**
  * @title 表单联动
  * @desc 根据数据控制某个表单的显示隐藏或校验规则
  */
 export const Cascade = () => {
+  const FormItem = Form.Item
+  const FormReset = Form.Reset
+  const FormSubmit = Form.Submit
+
   const CheckboxGroup = Checkbox.Group
   const RadioGroup = Radio.Group
 
@@ -219,7 +219,7 @@ export const Cascade = () => {
             <>
               <FormSubmit
                 type="primary"
-                onClick={(_, errors) => {
+                onClick={() => {
                   // console.log('Get form value:', values, errors)
                   const values = formRef.current.getFieldsValue()
                   message.open({

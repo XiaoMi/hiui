@@ -37,7 +37,7 @@ async function findComponentStoryFiles(baseUrl) {
 async function getStoriesByComponent(storyFiles, basePath, componentName) {
   return Promise.all(
     storyFiles.map(async (filepath, index) => {
-      const [, storyName] = /(\w+)\.stories\.tsx$/.exec(filepath)
+      const storyName = Path.basename(filepath).replace('.stories.tsx', '')
       const content = await readFileAsync(filepath, basePath)
 
       // @Meta Story

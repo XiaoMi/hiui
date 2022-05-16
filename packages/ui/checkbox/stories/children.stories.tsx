@@ -2,14 +2,14 @@ import React from 'react'
 import Checkbox from '../src'
 import Grid from '@hi-ui/grid'
 
-const { Row, Col } = Grid
-const CheckboxGroup = Checkbox.Group
-
 /**
  * @title 灵活布局
  * @desc Checkbox 与 Grid 组件一起使用，可以实现灵活的布局
  */
 export const Children = () => {
+  const { Row, Col } = Grid
+  const CheckboxGroup = Checkbox.Group
+
   const [selectedList, setSelectedList] = React.useState<React.ReactText[]>([
     'Phone',
     'Intelligent',

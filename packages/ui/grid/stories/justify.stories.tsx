@@ -1,13 +1,13 @@
 import React from 'react'
 import Grid from '../src'
 
-const { Row, Col } = Grid
-
 /**
  * @title 对齐排列
  * @desc 设置 justify 来指定对齐方式
  */
 export const Justify = () => {
+  const { Row, Col } = Grid
+
   const blockStyle: React.CSSProperties = {
     width: '100%',
     padding: '16px 0',
