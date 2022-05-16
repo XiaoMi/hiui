@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import DatePicker from '../src'
-import moment from 'moment'
+import DayJs from 'dayjs'
 
 /**
  * @title 日历面板
@@ -35,8 +35,8 @@ export const Lunar = () => {
             // const yesterday = DatePicker.format(today - 86400000, 'yyyy/M/D')
             // const currentday = DatePicker.format(customValue, 'yyyy/M/D')
 
-            const date = moment(currentDate).format('yyyy/M/D')
-            const yesterday = moment(today - 86400000).format('yyyy/M/D')
+            const date = DayJs(currentDate).format('yyyy/M/D')
+            const yesterday = DayJs(today - 86400000).format('yyyy/M/D')
 
             if (date === '2020/4/8') {
               return (

@@ -1,9 +1,9 @@
 import { HiBaseHTMLProps } from '@hi-ui/core'
 
-export type CarouselArrowSize = 'lg' | 'md' | 'sm'
+export type CarouselArrowSizeEnum = 'lg' | 'md' | 'sm'
 
-export type CarouselDotType = 'line' | 'slider' | 'dot'
-export type CarouselDotPlacement = 'left' | 'right' | 'top' | 'bottom' | 'outer'
+export type CarouselDotTypeEnum = 'line' | 'slider' | 'dot'
+export type CarouselDotPlacementEnum = 'left' | 'right' | 'top' | 'bottom' | 'outer'
 
 export interface CarouselProps extends HiBaseHTMLProps<'div'> {
   /**
@@ -35,15 +35,15 @@ export interface CarouselProps extends HiBaseHTMLProps<'div'> {
    * 箭头指示器尺寸
    * @default 'md'
    */
-  arrowSize?: CarouselArrowSize
+  arrowSize?: CarouselArrowSizeEnum
   /**
    * 分页指示器类型
    * @default 'slider'
    */
-  dotType?: CarouselDotType
+  dotType?: CarouselDotTypeEnum
   /**
    * 分页指示器位置
    * @default 'bottom'
    */
-  dotPlacement?: CarouselDotPlacement
+  dotPlacement?: CarouselDotPlacementEnum
 }

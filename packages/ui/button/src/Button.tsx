@@ -89,10 +89,6 @@ export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
    */
   disabled?: boolean
   /**
-   * 	点击按钮时的回调
-   */
-  onClick?: (evt: React.MouseEvent) => void
-  /**
    * 是否显示 loading
    */
   loading?: boolean
@@ -112,6 +108,10 @@ export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
    * 设置按钮形状
    */
   shape?: 'square' | 'round'
+  /**
+   * 	点击按钮时的回调
+   */
+  onClick?: (evt: React.MouseEvent) => void
 }
 
 // @ts-ignore

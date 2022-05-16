@@ -15,12 +15,12 @@ import Panel from './components/panel'
 import RangePanel from './components/range-panel'
 import {
   CalendarItemV3,
-  DatePickerOnChange,
-  DatePickerOnSelectV3,
   DatePickerProps,
-  DatePickerType,
+  DatePickerTypeEnum,
   DatePickerValueV3,
   DateRange,
+  DatePickerOnChangeDateString,
+  DatePickerOnChangeDate,
 } from './types'
 import { getBelongWeek, getBelongWeekYear } from './utils/week'
 import { DateRangeTimePanel } from './components/date-range-time-panel'
@@ -82,7 +82,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const cacheDate = useRef<(moment.Moment | null)[]>([])
     const [inputFocus, setInputFocus] = useState(false)
-    const [type, setType] = useState<DatePickerType>(propType)
+    const [type, setType] = useState<DatePickerTypeEnum>(propType)
     useEffect(() => {
       moment.locale(locale === 'en-US' ? 'en' : 'zh-CN')
       // V4: 不使用 weekOffset 判断国际化语言
@@ -94,7 +94,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       setType(propType)
     }, [propType])
 
-    const propsOnSelect = useCallback<DatePickerOnSelectV3>(
+    const propsOnSelect = useCallback(
       (data: moment.Moment, isCompleted: boolean) => {
         propsOnSelectOriginal && propsOnSelectOriginal(moment(data).toDate(), isCompleted)
       },
@@ -133,10 +133,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     )
 
     // 将 v4 的 api 格式转换成 v3 的 api 格式内部使用
-    const onChange = useCallback<DatePickerOnChange>(
-      (disposeDate, disposeString) => {
-        let resultData
-        let resultString
+    const onChange = useCallback(
+      (disposeDate: DatePickerOnChangeDate, disposeString: DatePickerOnChangeDateString) => {
+        let resultData = null
+        let resultString = null
 
         if (disposeDate) {
           resultData = ((disposeDate as unknown) as DateRange).start

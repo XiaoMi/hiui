@@ -18,21 +18,36 @@
 
 <!-- Inject Props -->
 
-## Events
-
-| 名称     | 说明         | 类型                       | 参数               | 返回值 |
-| -------- | ------------ | -------------------------- | ------------------ | ------ |
-| onChange | 选择后的回调 | (values: string[]) => void | values: 选中项集合 | -      |
-| onActiveItemChange | 选中项改变时的回调 | (values: string[]) => void | values: 选中项集合 | -      |
-| onOpen | 下拉菜单打开时回调 | () => void | - | -      |
-| onClose | 下拉菜单关闭时回调 | () => void | - | -      |
-
 ## Type
 
-### DataItem
+### CascaderDataItem
 
-| 参数     | 说明     | 类型    | 可选值        | 默认值 |
-| -------- | -------- | ------- | ------------- | ------ |
-| content  | 选择项   | string  | -             | -      |
-| id       | 选择项值 | string  | -             | -      |
-| disabled | 是否禁用 | boolean | true \| false | false  |
+| 参数     | 说明                                                                  | 类型               | 可选值        | 默认值 |
+| -------- | --------------------------------------------------------------------- | ------------------ | ------------- | ------ |
+| id       | 选择项值，唯一 id                                                     | ReactText          | -             | -      |
+| title    | 选项标题                                                              | ReactNode          | -             | -      |
+| children | 下一级选项列表                                                        | CascaderDataItem[] | -             | -      |
+| disabled | 是否禁用该节点（将禁用级联点击，展开，如果开启 checkbox，也将被禁用） | boolean            | true \| false | false  |
+| isLeaf   | 是否为叶子节点，当 children 为空数组也表示为叶子结点                  | boolean            | true \| false | -      |
+
+### CascaderItemEventData
+
+> 继承自 CascaderDataItem
+
+| 参数     | 说明                           | 类型                    | 可选值 | 默认值 |
+| -------- | ------------------------------ | ----------------------- | ------ | ------ |
+| children | 下一级选项列表                 | CascaderItemEventData[] | -      | -      |
+| raw      | 关联用户传入的原始数据对象     | CascaderDataItem        | -      | -      |
+| depth    | 该节点的层级，从 0（顶层）开始 | number                  | -      | -      |
+| parent   | 该节点的父节点                 | CascaderItemEventData   | -      | -      |
+
+### PopperOverlayProps
+
+| 参数           | 说明                               | 类型                | 可选值                                                                                                                                                                                                     | 默认值         |
+| -------------- | ---------------------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| className      | 弹层类名                           | string              | -                                                                                                                                                                                                          | -              |
+| matchWidth     | 自动计算匹配吸附元素的宽度与其一致 | boolean             | true \| false                                                                                                                                                                                              | false          |
+| placement      | 相对吸附元素的位置                 | PopperPlacementEnum | "top" \| "bottom" \| "right" \| "left" \| "top-start" \| "top-end" \| "bottom-start" \| "bottom-end" \| "right-start" \| "right-end" \| "left-start" \| "left-end" \| "auto" \| "auto-start" \| "auto-end" | "bottom-start" |
+| container      | 指定 portal 的容器                 | HTMLElement         | -                                                                                                                                                                                                          | -              |
+| disabledPortal | 禁用 portal                        | boolean             | true \| false                                                                                                                                                                                              | false          |
+| arrow          | 是否展示箭头                       | boolean             | true \| false                                                                                                                                                                                              | false          |

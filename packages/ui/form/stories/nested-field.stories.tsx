@@ -5,14 +5,14 @@ import Input from '@hi-ui/input'
 import Checkbox from '@hi-ui/checkbox'
 import message from '@hi-ui/message'
 
-const FormItem = Form.Item
-const FormReset = Form.Reset
-const FormSubmit = Form.Submit
-
 /**
  * @title 字段嵌套
  */
 export const NestedField = () => {
+  const FormItem = Form.Item
+  const FormReset = Form.Reset
+  const FormSubmit = Form.Submit
+
   const formRef = React.useRef<FormHelpers>(null)
 
   return (

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { cx } from '@hi-ui/classname'
 import { CloseCircleFilled, TimeOutlined, CalendarOutlined } from '@hi-ui/icons'
-import { DatePickerType } from '../types'
+import { DatePickerTypeEnum } from '../types'
 
 const PickerIcon = ({
   focus,
@@ -15,7 +15,7 @@ const PickerIcon = ({
   clearable?: boolean
   showTime: boolean
   disabled?: boolean
-  type: DatePickerType
+  type: DatePickerTypeEnum
   onClick: (status: boolean) => void
 }) => {
   const cls = cx(

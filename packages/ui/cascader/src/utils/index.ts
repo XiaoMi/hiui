@@ -6,7 +6,7 @@ import {
   CascaderItemRequiredProps,
   CascaderItemEventData,
   CascaderDataItem,
-  FlattedCascaderItem,
+  FlattedCascaderDataItem,
 } from '../types'
 
 /**
@@ -27,7 +27,7 @@ export const flattenTreeData = (treeData: CascaderDataItem[], fieldNames?: HiBas
     tree: treeData,
     childrenFieldName: (node) => getKeyFields(node, 'children'),
     transform: (node) => {
-      const flattedNode: FlattedCascaderItem = node as FlattedCascaderItem
+      const flattedNode: FlattedCascaderDataItem = node as FlattedCascaderDataItem
       const raw = node.raw
 
       flattedNode.id = getKeyFields(raw, 'id')
@@ -37,14 +37,14 @@ export const flattenTreeData = (treeData: CascaderDataItem[], fieldNames?: HiBas
 
       return flattedNode
     },
-  }) as FlattedCascaderItem[]
+  }) as FlattedCascaderDataItem[]
 }
 
 /**
  * 获取选中节点的节点路径，包含选中节点
  */
 export const getActiveNodePaths = (
-  flattedData: FlattedCascaderItem[],
+  flattedData: FlattedCascaderDataItem[],
   selectedId?: React.ReactText
 ) => {
   if (flattedData.length === 0) return []
@@ -59,13 +59,13 @@ export const getActiveNodePaths = (
  * 获取自顶向下的兄弟节点列表菜单
  */
 export const getActiveMenus = (
-  flattedData: FlattedCascaderItem[],
+  flattedData: FlattedCascaderDataItem[],
   selectedId?: React.ReactText
 ) => {
   if (flattedData.length === 0) return []
 
   const root = flattedData[0].parent
-  let menu: FlattedCascaderItem[][] = [root!.children]
+  let menu: FlattedCascaderDataItem[][] = [root!.children]
 
   if (typeof selectedId === 'undefined') return menu
 
@@ -87,19 +87,19 @@ export const getActiveMenus = (
 }
 
 export const getFlattedMenus = (
-  data: FlattedCascaderItem[],
-  filter: (option: FlattedCascaderItem) => boolean
+  data: FlattedCascaderDataItem[],
+  filter: (option: FlattedCascaderDataItem) => boolean
 ) => {
   return [data.filter((item) => !filter(item))]
 }
 
-export const checkCanLoadChildren = (node: FlattedCascaderItem, onLoadChildren?: any) => {
+export const checkCanLoadChildren = (node: FlattedCascaderDataItem, onLoadChildren?: any) => {
   const hasChildren = isArrayNonEmpty(node.children)
   return hasChildren || (onLoadChildren && !node.isLeaf && !node.children)
 }
 
 export function getItemEventData(
-  node: FlattedCascaderItem,
+  node: FlattedCascaderDataItem,
   requiredProps: CascaderItemRequiredProps
 ): CascaderItemEventData {
   return {

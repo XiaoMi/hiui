@@ -1,7 +1,7 @@
 import React from 'react'
 import Popper from '../src'
 import Button from '@hi-ui/button'
-import { useToggle } from '@hi-ui/use-toggle'
+import { useToggle } from '@hi-ui/hooks'
 
 /**
  * @title 受控显隐

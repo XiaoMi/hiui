@@ -1,5 +1,5 @@
 import React from 'react'
-import Tree, { TreeNodeData } from '../src'
+import Tree, { TreeDataItem } from '../src'
 
 /**
  * @title 自定义渲染
@@ -48,7 +48,7 @@ export const CustomTitle = () => {
     },
   ])
 
-  const renderTreeNodeTitle = (node: TreeNodeData) => {
+  const renderTreeNodeTitle = (node: TreeDataItem) => {
     return (
       <div
         style={{

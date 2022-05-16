@@ -4,7 +4,7 @@ import { getTreeNodeEventData } from '../utils/index'
 import {
   TreeNodeRequiredProps,
   TreeNodeEventData,
-  TreeNodeData,
+  TreeDataItem,
   TreeNodeDragDirection,
   FlattedTreeNodeData,
   TreeDataStatus,
@@ -21,9 +21,9 @@ import {
 
 export const useTreeDrop = (
   getTreeNodeRequiredProps: (id: React.ReactText) => TreeNodeRequiredProps,
-  treeData: TreeNodeData[],
+  treeData: TreeDataItem[],
   flattedData: FlattedTreeNodeData[],
-  setTreeData: React.Dispatch<React.SetStateAction<TreeNodeData[]>>,
+  setTreeData: React.Dispatch<React.SetStateAction<TreeDataItem[]>>,
   onDrop?: (
     evt: React.DragEvent,
     options: {

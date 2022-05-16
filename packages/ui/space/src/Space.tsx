@@ -68,22 +68,22 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
 export interface SpaceProps extends HiBaseHTMLProps<'div'> {
   /**
    * 是否 inline-flex
-   * 默认: false
+   * @default false
    */
   inline?: boolean
   /**
    * 当前轴垂直方向布局，alignItems
-   * 默认: center
+   * @default center
    */
   align?: SpaceAlignEnum
   /**
    * flex轴方向
-   * 默认: row
+   * @default row
    */
   direction?: SpaceDirectionEnum
   /**
    * 间距大小，推荐使用枚举，如不符合需求可以设置具体数值
-   * 默认: 'sm'
+   * @default 'sm'
    */
   size?: SpaceSizeEnum
   /**
@@ -92,7 +92,7 @@ export interface SpaceProps extends HiBaseHTMLProps<'div'> {
   split?: React.ReactNode
   /**
    * 是否换行
-   * 默认: false
+   * @default false
    */
   wrap?: boolean
 }

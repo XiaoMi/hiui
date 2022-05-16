@@ -35,6 +35,9 @@ export const FormReset = forwardRef<HTMLButtonElement | null, FormResetProps>(
 )
 
 export interface FormResetProps extends ButtonProps {
+  /**
+   * 点击重置后触发
+   */
   onClick?: () => void
 }
 

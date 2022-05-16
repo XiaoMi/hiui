@@ -131,20 +131,62 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 )
 
 export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
+  /**
+   * 菜单项数据列表
+   */
   data: MenuDataItem[]
-  activeId?: React.ReactText
-  placement?: 'horizontal' | 'vertical'
-  collapsed?: boolean
-  showCollapse?: boolean
-  showAllSubMenus?: boolean
-  accordion?: boolean
-  onClick?: (menuId: React.ReactText) => void
-  onClickSubMenu?: (subMenuId: React.ReactText, expandedIds: React.ReactText[]) => void
-  onCollapse?: (collapsed: boolean) => void
-  overlayClassName?: string
-  expandedType?: 'collapse' | 'pop'
-  defaultExpandedIds?: React.ReactText[]
+  /**
+   * 默认激活的菜单项 id
+   */
   defaultActiveId?: React.ReactText
+  /**
+   * 激活的菜单项 id
+   */
+  activeId?: React.ReactText
+  /**
+   * 设置菜单水平或垂直展示
+   */
+  placement?: 'horizontal' | 'vertical'
+  /**
+   * 是否收起子菜单，菜单垂直展示时有效
+   */
+  collapsed?: boolean
+  /**
+   * 是否显示收缩开关，菜单垂直展示时有效
+   */
+  showCollapse?: boolean
+  /**
+   * 是否以胖菜单的形式展开所有子菜单（仅在水平菜单时有效）
+   */
+  showAllSubMenus?: boolean
+  /**
+   * 手风琴模式，菜单水平展示时有效
+   */
+  accordion?: boolean
+  /**
+   * 下拉框根类名
+   */
+  overlayClassName?: string
+  /**
+   * 弹出层展开方式
+   */
+  expandedType?: 'collapse' | 'pop'
+  /**
+   * 默认展开菜单项 ids 列表
+   */
+  defaultExpandedIds?: React.ReactText[]
+  /**
+   * 点击菜单选项时的回调
+   */
+  onClick?: (menuId: React.ReactText) => void
+  /**
+   * 点击父菜单项时的回调
+   */
+  onClickSubMenu?: (subMenuId: React.ReactText, expandedIds: React.ReactText[]) => void
+  /**
+   * 点击收缩开关时的回调
+   */
+  onCollapse?: (collapsed: boolean) => void
 }
 
 if (__DEV__) {

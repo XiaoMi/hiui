@@ -722,12 +722,18 @@ export interface UseTableProps {
    * 唯一 id 前缀，废弃
    */
   uniqueId?: string
+  /**
+   * 开始拖拽时触发
+   */
   onDragStart?: (
     evt: React.DragEvent,
     option: {
       dragNode: object
     }
   ) => void
+  /**
+   * 拖拽行放开时触发
+   */
   onDrop?: (
     evt: React.DragEvent,
     option: {
@@ -737,6 +743,9 @@ export interface UseTableProps {
       // level: { before: number; after: number }
     }
   ) => boolean | Promise<any>
+  /**
+   * 拖拽成功时触发
+   */
   onDropEnd?: (option: {
     dragNode: object
     dropNode: object
@@ -746,12 +755,14 @@ export interface UseTableProps {
    * 初始时展开所有行
    */
   defaultExpandAll?: boolean
-  extra?: React.ReactNode
   /**
    * 全局控制单元格自定义渲染，优先级低于 column 的 render 方法
    */
   cellRender?: (text: any) => React.ReactNode
-  onLoadChildren?: any
+  /**
+   * 点击异步加载子项
+   */
+  onLoadChildren?: (item: TableRowEventData) => Promise<any[] | void> | void
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>

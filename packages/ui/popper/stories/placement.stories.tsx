@@ -1,7 +1,6 @@
 import React from 'react'
-import Popper from '../src'
+import Popper, { PopperPlacementEnum } from '../src'
 import Button from '@hi-ui/button'
-import * as PopperJS from '@popperjs/core'
 
 /**
  * @title 不同方位
@@ -9,7 +8,7 @@ import * as PopperJS from '@popperjs/core'
 export const Placement = () => {
   const [btnEl, setBtnEl] = React.useState(null)
   const [visible, setVisible] = React.useState(false)
-  const [placement, setPlacement] = React.useState<undefined | PopperJS.Placement>()
+  const [placement, setPlacement] = React.useState<undefined | PopperPlacementEnum>()
 
   const handleClick = (newPlacement) => (event) => {
     setBtnEl(event.currentTarget)

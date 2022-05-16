@@ -1,9 +1,14 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { FieldNames, CheckTreeSelectDataItem, FlattedCheckTreeSelectDataItem } from './types'
+import {
+  CheckTreeSelectDataItem,
+  FlattedCheckTreeSelectDataItem,
+  CheckTreeSelectItemEventData,
+  CheckTreeSelectAppearanceEnum,
+} from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
-import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
+import { FlattedTreeNodeData, Tree } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { baseFlattenTree } from '@hi-ui/tree-utils'
@@ -12,7 +17,6 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { TagInputMock } from '@hi-ui/tag-input'
 import { UpOutlined, DownOutlined } from '@hi-ui/icons'
-import { HiBaseAppearanceEnum } from '@hi-ui/core'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { callAllFuncs } from '@hi-ui/func-utils'
 // import { UseDataSource } from '@hi-ui/use-data-source'
@@ -149,7 +153,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         option: {
           checkedNodes: CheckTreeSelectDataItem[]
           semiCheckedIds: React.ReactText[]
-          targetNode: TreeNodeEventData
+          targetNode: CheckTreeSelectItemEventData
           checked: boolean
         }
       ) => {
@@ -205,7 +209,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
 
     // 拦截 titleRender，自定义高亮展示
     const proxyTitleRender = useCallback(
-      (node: TreeNodeEventData) => {
+      (node: CheckTreeSelectItemEventData) => {
         if (titleRender) {
           const ret = titleRender(node)
           if (ret && ret !== true) return ret
@@ -340,7 +344,7 @@ export interface CheckTreeSelectProps
   /**
    * 设置 data 中 id, title, disabled, children 对应的 key (3.0 新增)	object	-	{ title: 'title', id: 'id',disabled:'disabled', children: 'children'}
    */
-  fieldNames?: FieldNames
+  fieldNames?: Record<string, string>
   /**
    * 多选数据交互时回填、回显模式
    * PARENT: 当所有子节点被选中时将只保留父节点
@@ -349,10 +353,6 @@ export interface CheckTreeSelectProps
    * SEPARATE：父子完全独立受控
    */
   checkedMode?: 'ALL' | 'PARENT' | 'CHILD' | 'SEPARATE'
-  /**
-   * 数据选择类型
-   */
-  type?: 'single' | 'multiple'
   /**
    * 是否有边框
    */
@@ -406,11 +406,13 @@ export interface CheckTreeSelectProps
   /**
    * 自定义渲染节点的 title 内容
    */
-  render?: (node: TreeNodeEventData) => React.ReactNode
+  render?: (node: CheckTreeSelectItemEventData) => React.ReactNode
   /**
    * 点击异步加载子项
    */
-  onLoadChildren?: (node: TreeNodeEventData) => void | Promise<CheckTreeSelectDataItem[] | void>
+  onLoadChildren?: (
+    node: CheckTreeSelectItemEventData
+  ) => void | Promise<CheckTreeSelectDataItem[] | void>
   /**
    * 异步加载数据。暂不对外暴露
    */
@@ -439,7 +441,7 @@ export interface CheckTreeSelectProps
     options: {
       checkedNodes: CheckTreeSelectDataItem[]
       semiCheckedIds: React.ReactText[]
-      targetNode: TreeNodeEventData
+      targetNode: CheckTreeSelectItemEventData
       checked: boolean
     }
   ) => void
@@ -450,7 +452,7 @@ export interface CheckTreeSelectProps
   /**
    * 设置展现形式
    */
-  appearance?: HiBaseAppearanceEnum
+  appearance?: CheckTreeSelectAppearanceEnum
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
    * @private

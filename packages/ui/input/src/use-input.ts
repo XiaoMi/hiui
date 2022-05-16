@@ -139,7 +139,7 @@ export interface UseInputProps {
    */
   maxLength?: number
   /**
-   * 再失焦时触发对值的 trim onChange 给用户
+   * 在失焦时触发对值的 trim 并触发 onChange 回调
    */
   trimValueOnBlur?: boolean
   /**

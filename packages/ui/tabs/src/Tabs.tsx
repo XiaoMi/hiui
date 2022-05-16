@@ -5,6 +5,7 @@ import { TabPaneProps } from './TabPane'
 import { TabList } from './TabList'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { isUndef } from '@hi-ui/type-assertion'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
@@ -107,23 +108,8 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
   }
 )
 
-export interface TabsProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
-  /**
-   * 组件的注入样式
-   */
-  style?: React.CSSProperties
+export interface TabsProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop'> {
   /**
    * 是否可拖拽
    */
@@ -174,14 +160,23 @@ export interface TabsProps {
    * 节点删除时时触发
    */
   onDelete?: (deletedNode: TabPaneProps, index: number) => void
+  /**
+   * 节点开始拖拽时触发
+   */
   onDragStart?: (
     e: React.DragEvent<HTMLDivElement>,
     { dragNode }: { dragNode: TabPaneProps }
   ) => void
+  /**
+   * 节点拖拽移动时触发
+   */
   onDragOver?: (
     e: React.DragEvent<HTMLDivElement>,
     { targetNode }: { targetNode: TabPaneProps }
   ) => void
+  /**
+   * 节点拖拽放下时触发
+   */
   onDrop?: (
     e: React.DragEvent<HTMLDivElement>,
     {
@@ -190,6 +185,9 @@ export interface TabsProps {
       direction,
     }: { dragNode: TabPaneProps; targetNode: TabPaneProps; direction: 'prev' | 'next' | null }
   ) => void
+  /**
+   * 节点拖拽成功时触发
+   */
   onDragEnd?: (e: React.DragEvent<HTMLDivElement>, { dragNode }: { dragNode: TabPaneProps }) => void
 }
 

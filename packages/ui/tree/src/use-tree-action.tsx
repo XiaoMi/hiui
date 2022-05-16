@@ -5,7 +5,7 @@ import { TreeProps, Tree, treePrefix } from './Tree'
 import {
   FlattedTreeNodeData,
   TreeNodeType,
-  TreeNodeData,
+  TreeDataItem,
   TreeDataStatus,
   TreeMenuActionOption,
   TreeNodeEventData,
@@ -164,7 +164,7 @@ export interface EditableTreeProps extends TreeProps {
   /**
    * 	节点保存新增、编辑状态后触发
    */
-  onSave?: (savedNode: FlattedTreeNodeData, data: TreeNodeData[]) => void
+  onSave?: (savedNode: FlattedTreeNodeData, data: TreeDataItem[]) => void
   /**
    * 节点删除前触发，返回 false 则节点删除失败，不会触发 onDelete
    */
@@ -176,7 +176,7 @@ export interface EditableTreeProps extends TreeProps {
   /**
    * 节点删除后触发
    */
-  onDelete?: (deletedNode: FlattedTreeNodeData, data: TreeNodeData[]) => void
+  onDelete?: (deletedNode: FlattedTreeNodeData, data: TreeDataItem[]) => void
   /**
    * 自定义树菜单行为项
    */

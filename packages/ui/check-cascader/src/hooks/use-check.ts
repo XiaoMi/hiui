@@ -1,7 +1,7 @@
 import React from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useCascadeCheck } from '@hi-ui/use-check'
-import { CheckCascaderDataItemEventData, FlattedCheckCascaderDataItem } from '../types'
+import { CheckCascadeItemEventData, FlattedCheckCascaderDataItem } from '../types'
 import { parseCheckDataDirty, processCheckedIds } from '../utils'
 
 const NOOP_ARRAY = [] as []
@@ -17,7 +17,7 @@ export const useCheck = (
       checkedIds: React.ReactText[]
       semiCheckedIds: React.ReactText[]
     },
-    node: CheckCascaderDataItemEventData,
+    node: CheckCascadeItemEventData,
     checked: boolean
   ) => void
 ) => {
@@ -47,7 +47,7 @@ export const useCheck = (
   })
 }
 
-const allowCheck = (targetItem: CheckCascaderDataItemEventData) => {
+const allowCheck = (targetItem: CheckCascadeItemEventData) => {
   if (targetItem.disabled || targetItem.disabledCheckbox || targetItem.checkable === false) {
     return false
   }

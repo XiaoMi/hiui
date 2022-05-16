@@ -2,15 +2,15 @@ import React from 'react'
 
 export interface SearchDataItem {
   /**
-   * 节点唯一 id
+   * 选项唯一 id
    */
   id: React.ReactText
   /**
-   * 节点标题
+   * 选项标题，如果存在 children 则表示分组标题
    */
   title: string
   /**
-   * 孩子节点
+   * 分组选项列表
    */
   children?: SearchDataItem[]
 }

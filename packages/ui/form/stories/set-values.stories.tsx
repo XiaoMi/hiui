@@ -6,16 +6,16 @@ import Button from '@hi-ui/button'
 import { Select } from '@hi-ui/select'
 import Grid from '@hi-ui/grid'
 
-const { Row, Col } = Grid
-const FormItem = Form.Item
-const FormSubmit = Form.Submit
-const FormReset = Form.Reset
-
 /**
  * @title 设置表单值
  * @desc 控制表单项的值
  */
 export const SetValues = () => {
+  const { Row, Col } = Grid
+  const FormItem = Form.Item
+  const FormSubmit = Form.Submit
+  const FormReset = Form.Reset
+
   const formRef = React.useRef<FormHelpers>(null)
 
   const [singleList] = React.useState([
@@ -84,8 +84,8 @@ export const SetValues = () => {
             <>
               <FormSubmit
                 type="primary"
-                onClick={(values, errors) => {
-                  console.log('Get form value:', values, errors)
+                onClick={() => {
+                  console.log('Get form value:', formRef.current.getFieldsValue())
                 }}
               >
                 提交

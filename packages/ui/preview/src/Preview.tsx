@@ -4,6 +4,8 @@ import { __DEV__ } from '@hi-ui/env'
 import { Portal } from '@hi-ui/portal'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useLatestCallback } from '@hi-ui/use-latest'
 import {
   ZoomInOutlined,
   ZoomOutOutlined,
@@ -49,7 +51,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
 
     const [isLoaded, setIsLoaded] = useState(false)
     const [isMoving, setIsMoving] = useState(false)
-    const [imgTransfrom, updateImgTransform] = useState(defaultTransform)
+    const [imgTransform, updateImgTransform] = useState(defaultTransform)
     const movingPosition = useRef({
       pageX: 0,
       pageY: 0,
@@ -73,35 +75,30 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     }, [visible, resetTransform, active])
 
     // 点击容器区域
-    const onClickContainer = useCallback(
-      (e: React.MouseEvent) => {
-        if (e.target === e.currentTarget) {
-          if (onClose) {
-            onClose(e)
-          }
-        }
-      },
-      [onClose]
-    )
+    const onClickContainer = useLatestCallback((e: React.MouseEvent) => {
+      if (e.target === e.currentTarget) {
+        onClose?.()
+      }
+    })
 
     // 缩放处理
     const handleZoom = useCallback(
       (type: 'zoomIn' | 'zoomOut') => {
         const newScale = Number(
-          (imgTransfrom.scale + (type === 'zoomIn' ? 1 : -1) * 0.1).toFixed(1)
+          (imgTransform.scale + (type === 'zoomIn' ? 1 : -1) * 0.1).toFixed(1)
         )
-        updateImgTransform({ ...imgTransfrom, scale: newScale })
+        updateImgTransform({ ...imgTransform, scale: newScale })
       },
-      [imgTransfrom]
+      [imgTransform]
     )
 
     // 翻转处理
     const handleRotate = useCallback(
       (direction: 'left' | 'right') => {
-        const newRotate = imgTransfrom.rotate + (direction === 'right' ? 1 : -1) * 90
-        updateImgTransform({ ...imgTransfrom, rotate: newRotate })
+        const newRotate = imgTransform.rotate + (direction === 'right' ? 1 : -1) * 90
+        updateImgTransform({ ...imgTransform, rotate: newRotate })
       },
-      [imgTransfrom]
+      [imgTransform]
     )
 
     // 滚轮处理
@@ -122,16 +119,16 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
         if (isMoving) {
           e.preventDefault()
           const { originX, originY, pageX, pageY } = movingPosition.current
-          const nextX = originX + (e.pageX - pageX) / imgTransfrom.scale
-          const nextY = originY + (e.pageY - pageY) / imgTransfrom.scale
+          const nextX = originX + (e.pageX - pageX) / imgTransform.scale
+          const nextY = originY + (e.pageY - pageY) / imgTransform.scale
           updateImgTransform({
-            ...imgTransfrom,
+            ...imgTransform,
             translateX: nextX,
             translateY: nextY,
           })
         }
       },
-      [imgTransfrom, isMoving]
+      [imgTransform, isMoving]
     )
     // 移动后
     const onMoveEnd = useCallback((e: React.MouseEvent) => {
@@ -146,10 +143,10 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
         setIsMoving(true)
         movingPosition.current.pageX = e.pageX
         movingPosition.current.pageY = e.pageY
-        movingPosition.current.originX = imgTransfrom.translateX
-        movingPosition.current.originY = imgTransfrom.translateY
+        movingPosition.current.originX = imgTransform.translateX
+        movingPosition.current.originY = imgTransform.translateY
       },
-      [imgTransfrom]
+      [imgTransform]
     )
 
     return (
@@ -193,12 +190,13 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   onLoad={() => {
                     setIsLoaded(true)
                   }}
+                  onError={onError}
                   onMouseDown={onMoveStart}
                   onMouseUp={onMoveEnd}
                   src={Array.isArray(src) ? src[active] : src}
                   className={`${prefixCls}__image`}
                   style={{
-                    transform: `scale(${imgTransfrom.scale}, ${imgTransfrom.scale}) translate(${imgTransfrom.translateX}px,${imgTransfrom.translateY}px) rotate(${imgTransfrom.rotate}deg)`,
+                    transform: `scale(${imgTransform.scale}, ${imgTransform.scale}) translate(${imgTransform.translateX}px,${imgTransform.translateY}px) rotate(${imgTransform.rotate}deg)`,
                   }}
                 />
                 <div className={`${prefixCls}__toolbar`}>
@@ -209,7 +207,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   />
                   <ZoomOutOutlined
                     onClick={() => {
-                      if (imgTransfrom.scale >= 0.25) {
+                      if (imgTransform.scale >= 0.25) {
                         handleZoom('zoomOut')
                       }
                     }}
@@ -255,52 +253,39 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
   }
 )
 
-export interface PreviewProps {
-  /**
-   * 组件默认的选择器类
-   */
-  prefixCls?: string
-  /**
-   * 组件的语义化 Role 属性
-   */
-  role?: string
-  /**
-   * 组件的注入选择器类
-   */
-  className?: string
+export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
   /**
    * 是否显示预览窗体
    */
   visible: boolean
   /**
+   * 预览窗体标题
+   */
+  title?: string
+  /**
    * 预览图片地址
    */
   src: string | string[]
-
   /**
    * 当前预览图片索引(受控)
    */
   current?: number
-
-  /**
-   * 当前预览图片索引(受控)
-   */
-  onPreviewChange?: (current: number) => void
-
   /**
    * 当前预览图片索引
    */
   defaultCurrent?: number
-
   /**
    * 加载错误回调
    */
-  onError?: (event: Event) => void
+  onError?: React.ReactEventHandler<HTMLImageElement>
   /**
    * 关闭预览的回调
    */
-  onClose?: (event: React.MouseEvent) => void
-  title?: string
+  onClose?: () => void
+  /**
+   * 当前预览图片索引(受控)
+   */
+  onPreviewChange?: (current: number) => void
 }
 
 if (__DEV__) {

@@ -8,17 +8,17 @@ import {
   CalendarAltCalendarPreset,
   CalendarItemV3,
   CalendarMarkPreset,
-  CalendarView,
+  CalendarViewEnum,
   DateMarkRender,
-  DatePickerAltCalendarPreset,
+  DatePickerAltCalendarPresetEnum,
   DatePickerProps,
-  DatePickerType,
+  DatePickerTypeEnum,
   DatePickerValueV3,
   DateRange,
   FormatCalendarItem,
 } from '../types'
 import { CalendarColInfo } from '../hooks/useCalenderData'
-// import { CalendarView } from '../components/calendar'
+// import { CalendarViewEnum } from '../components/calendar'
 import { getBelongWeekBoundary } from './week'
 
 const holiday = {
@@ -42,10 +42,10 @@ export const deconstructDate = (original: Date | string | number) => {
  * 获取 yearrange monthrange 类型
  * @param {String} type
  */
-export const getView = (type: DatePickerType) => {
+export const getView = (type: DatePickerTypeEnum) => {
   return (type.includes('year') || type.includes('month')
     ? type.split('range')[0]
-    : 'date') as CalendarView
+    : 'date') as CalendarViewEnum
 }
 
 /**
@@ -65,7 +65,7 @@ export const genNewDates = (currentDates: moment.Moment[], newDate: moment.Momen
  * @param {Array} dates 原始数据
  * @param {String} type 选择器类型
  */
-export const parseRenderDates = (dates: (moment.Moment | null)[], type: DatePickerType) => {
+export const parseRenderDates = (dates: (moment.Moment | null)[], type: DatePickerTypeEnum) => {
   let [leftDate, rightDate] = cloneDeep(dates)
   const getRightDate = () => {
     if (type === 'yearrange') {
@@ -191,7 +191,7 @@ export const getFullTime = ({
   dateMarkPresetData: CalendarMarkPreset
   dateMarkRender?: DateMarkRender
   altCalendar?: CalendarItemV3[]
-  altCalendarPreset?: DatePickerAltCalendarPreset
+  altCalendarPreset?: DatePickerAltCalendarPresetEnum
 }) => {
   if (cell.type === 'disabled') return false
   const newDate = moment(renderDate)
@@ -290,7 +290,7 @@ export const getInRangeDate = (
  */
 export const parseValue = (
   value: DatePickerValueV3,
-  type: DatePickerType,
+  type: DatePickerTypeEnum,
   weekOffset: number,
   format?: string
 ) => {

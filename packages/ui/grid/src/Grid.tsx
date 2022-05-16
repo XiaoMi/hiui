@@ -4,6 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useGridContext, GridProvider } from './context'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { isNumeric } from '@hi-ui/type-assertion'
+import { GridJustifyEnum } from './types'
 
 const rowPrefix = getPrefixCls('grid-row')
 const gutterNameVar = getPrefixStyleVar('grid-row-gutter')
@@ -81,7 +82,7 @@ export interface RowProps extends HiBaseHTMLProps<'div'> {
   /**
    * 里面的元素排布方式
    */
-  justify?: 'flex-start' | 'flex-end' | 'center' | 'space-around' | 'space-between'
+  justify?: GridJustifyEnum
   /**
    * Row 里面元素之间是否有外边距，建议使用偶数
    */
@@ -165,35 +166,9 @@ export interface ColProps extends HiBaseHTMLProps<'div'> {
   /**
    * 里面的元素排布方式
    */
-  justify?: 'flex-start' | 'flex-end' | 'center' | 'space-around' | 'space-between'
+  justify?: GridJustifyEnum
 }
 
 if (__DEV__) {
   Col.displayName = 'Col'
-}
-
-const brPrefix = getPrefixCls('grid-br')
-
-/**
- * TODO: What is Grid Br
- */
-export const Br = forwardRef<HTMLDivElement | null, BrProps>(
-  ({ prefixCls = brPrefix, className, style: styleProp, height, ...rest }, ref) => {
-    const cls = cx(prefixCls, className)
-
-    const style = height ? { ...styleProp, height } : styleProp
-
-    return <div ref={ref} className={cls} style={style} {...rest}></div>
-  }
-)
-
-export interface BrProps extends HiBaseHTMLProps<'div'> {
-  /**
-   *  换行符高度
-   */
-  height?: number
-}
-
-if (__DEV__) {
-  Br.displayName = 'Br'
 }

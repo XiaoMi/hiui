@@ -20,7 +20,24 @@ export async function parseProps(componentPaths) {
 
 function getComponentProps(pathInfo) {
   log('Parsing files for component types...')
-  const parsedInfo = parseDocsInfo(pathInfo).filter((item) => item.displayName !== 'src')
+  const parsedInfo = parseDocsInfo(pathInfo)
+    .filter((item) => item.displayName !== 'src')
+    .filter((item) => {
+      // 内部使用暴露，对外屏蔽文档
+      if (
+        ['DefaultPagination', 'ShrinkPagination', 'PopContent'].some((name) =>
+          item.displayName.includes(name)
+        )
+      ) {
+        return false
+      }
+
+      // 屏蔽 MockInput 内部组件
+      if (item.displayName.startsWith('Mock')) return false
+      // useHook 方式不产生文档，除了 Tree
+      if (item.displayName.startsWith('use')) return item.displayName.includes('Tree')
+      return true
+    })
 
   log('Render component markdown table...')
   parsedInfo.forEach((doc) => {
@@ -38,6 +55,7 @@ function parseDocsInfo(pathInfo) {
   const { parse } = docgen.withCustomConfig(tsConfigPath, {
     shouldRemoveUndefinedFromOptional: true,
     shouldExtractLiteralValuesFromEnum: true,
+    shouldExtractValuesFromUnion: true,
     // 使用同 Array.prototype.filter
     propFilter: (prop, component) => {
       if (['prefixCls', 'role'].includes(prop.name)) return false
@@ -107,12 +125,16 @@ function markdownRender(doc) {
     .use(remarkStringify, { stringLength: stringWidth })
 
   const table = root(tableRenderer(doc))
-
   return remark.stringify(table)
 }
 
-const isEnumType = (type) => type.name === 'enum' && Array.isArray(type.value)
-const isBooleanType = (type) => type.name === 'boolean'
+const isEnumType = (type) =>
+  type.name === 'enum' &&
+  Array.isArray(type.value) &&
+  // 规范化枚举命名
+  (type.raw.includes(' | ') || type.raw.includes('Enum'))
+
+const isBooleanType = (type) => type.name === 'boolean' || type.raw === 'boolean'
 
 const tableRenderer = (doc) => {
   log('Table Renderer: ', doc.displayName)
@@ -130,7 +152,8 @@ const tableRenderer = (doc) => {
       },
       {
         title: '类型',
-        render: (val) => (val.type ? (isEnumType(val.type) ? val.type.raw : val.type.name) : '-'),
+        render: (val) => (val.type ? (val.type.raw ? val.type.raw : val.type.name) : '-'),
+        // render: (val) => (val.type ? (isEnumType(val.type) ? val.type.raw : val.type.name) : '-'),
       },
       {
         title: '可选值',
@@ -145,12 +168,25 @@ const tableRenderer = (doc) => {
         title: '默认值',
         render: (val) => {
           if (val.defaultValue) {
+            // 移除类型定义
             if (
               typeof val.defaultValue.value === 'string' &&
-              !val.defaultValue.value.startsWith('<')
+              val.defaultValue.value.endsWith(' as []')
+            ) {
+              return val.defaultValue.value.slice(0, -6)
+            }
+
+            // 纯字符串类型
+            if (
+              typeof val.defaultValue.value === 'string' &&
+              // JSX
+              !val.defaultValue.value.startsWith('<') &&
+              // Function
+              !val.defaultValue.value.startsWith('(')
             ) {
               return `"${val.defaultValue.value}"`
             }
+
             return val.defaultValue.value
           }
           return '-'

@@ -24,11 +24,11 @@ export interface DropdownDataItem {
    */
   href?: string
   /**
-   * 同 a 标签的 target 属性，仅在设置 href 后有效 (3.0 新增)
+   * 同 a 标签的 target 属性，仅在设置 href 后有效
    */
   target?: '_self' | '_blank' | '_parent' | '_top'
   /**
-   * 标题的内容，设置为 '-' 时是分割线
+   * 标题的内容
    */
   title?: React.ReactNode
   /**

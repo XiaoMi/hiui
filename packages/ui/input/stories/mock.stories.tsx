@@ -1,6 +1,6 @@
 import { DownOutlined } from '@hi-ui/icons'
 import React from 'react'
-import { MockInput } from '../src/MockInput'
+import { MockInput } from '../src'
 
 export const Mock = () => {
   return (

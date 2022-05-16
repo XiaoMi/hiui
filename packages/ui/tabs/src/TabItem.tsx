@@ -139,7 +139,8 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
   }
 )
 
-interface TabItemProps extends TabPaneProps {
+interface TabItemProps
+  extends Omit<TabPaneProps, 'itemRef' | 'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop'> {
   active: boolean
   draggable?: boolean
 

@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react'
 import {
-  ExpandTrigger,
-  CheckCascaderDataItemEventData,
+  CascaderExpandTriggerEnum,
+  CheckCascadeItemEventData,
   CheckCascaderDataItem,
   FlattedCheckCascaderDataItem,
   CheckCascaderDataItemRequiredProps,
@@ -9,16 +9,16 @@ import {
 
 interface CheckCascaderContext {
   onLoadChildren?: (
-    item: CheckCascaderDataItemEventData,
+    item: CheckCascadeItemEventData,
     idPaths: React.ReactText[]
   ) => Promise<CheckCascaderDataItem[] | void> | void
   disabled?: boolean
-  expandTrigger?: ExpandTrigger
-  onCheck?: (option: CheckCascaderDataItemEventData, shouldChecked: boolean) => void
-  onSelect?: (selectedOption: CheckCascaderDataItemEventData) => void
+  expandTrigger?: CascaderExpandTriggerEnum
+  onCheck?: (option: CheckCascadeItemEventData, shouldChecked: boolean) => void
+  onSelect?: (selectedOption: CheckCascadeItemEventData) => void
   flatted?: boolean
   changeOnSelect?: boolean
-  titleRender?: (item: CheckCascaderDataItemEventData) => React.ReactNode
+  titleRender?: (item: CheckCascadeItemEventData) => React.ReactNode
   getCascaderItemRequiredProps?: (
     item: FlattedCheckCascaderDataItem
   ) => CheckCascaderDataItemRequiredProps

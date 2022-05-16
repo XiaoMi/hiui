@@ -6,13 +6,12 @@ import { Cascader } from '@hi-ui/cascader'
 import Radio from '@hi-ui/radio'
 import Button from '@hi-ui/button'
 
-const FormItem = Form.Item
-
 /**
  * @title 表单校验
  * @desc 可在Form中配置全部Item的rules,也可在Form.Item中使用rules校验单个表单项
  */
 export const Validate = () => {
+  const FormItem = Form.Item
   const RadioGroup = Radio.Group
 
   const formRef = React.useRef<FormHelpers>(null)

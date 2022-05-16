@@ -1,11 +1,11 @@
 import React, { createContext, useContext } from 'react'
-import { CascaderItemEventData, ExpandTrigger } from './types'
+import { CascaderItemEventData, CascaderExpandTriggerEnum } from './types'
 
 import { UseCascaderReturn } from './use-cascader'
 
 const cascaderContext = createContext<
   | (Omit<UseCascaderReturn, 'rootProps'> & {
-      expandTrigger: ExpandTrigger
+      expandTrigger: CascaderExpandTriggerEnum
       titleRender: (item: CascaderItemEventData) => React.ReactNode
     })
   | null

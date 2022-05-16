@@ -4,14 +4,17 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CheckboxGroupProvider } from './context'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import { CheckboxPlacementEnum, CheckboxDataItem } from './types'
 import { checkDefault } from '@hi-ui/use-check'
 import { Checkbox } from './Checkbox'
-import { isArrayNonEmpty, isObject } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 
 const _role = 'checkbox-group'
 const _prefix = getPrefixCls(_role)
+
+const DEFAULT_VALUE = [] as []
+const NOOP_ARRAY = [] as []
 
 /**
  * TODO: What is CheckboxGroup
@@ -24,11 +27,11 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
       className,
       disabled = false,
       placement = CheckboxPlacementEnum.horizontal,
-      defaultValue = [],
+      defaultValue = DEFAULT_VALUE,
       name,
       value: valueProp,
       onChange,
-      data: dataProp,
+      data = NOOP_ARRAY,
       children,
       ...rest
     },
@@ -54,13 +57,6 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
       }),
       [handleChange, disabled, value, name]
     )
-
-    const data = useMemo(() => {
-      if (!dataProp) return null
-      return dataProp.map((item) => {
-        return isObject(item) ? item : { id: item, title: item }
-      })
-    }, [dataProp])
 
     const hasData = isArrayNonEmpty(data)
 
@@ -97,7 +93,7 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
   }
 )
 
-export interface CheckboxGroupProps extends HiBaseHTMLProps<'div'> {
+export interface CheckboxGroupProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 排列方式
    */
@@ -105,7 +101,7 @@ export interface CheckboxGroupProps extends HiBaseHTMLProps<'div'> {
   /**
    *   指定可选项
    */
-  data?: React.ReactText[] | CheckboxDataItem[]
+  data?: CheckboxDataItem[]
   /**
    * 默认选中的项
    */
@@ -119,13 +115,13 @@ export interface CheckboxGroupProps extends HiBaseHTMLProps<'div'> {
    */
   name?: string
   /**
-   * 变化时的回调
-   */
-  onChange?: (checkedIds: React.ReactText[]) => void
-  /**
    * 指定选中的项
    */
   value?: React.ReactText[]
+  /**
+   * 值变化时的回调
+   */
+  onChange?: (checkedIds: React.ReactText[]) => void
 }
 
 if (__DEV__) {

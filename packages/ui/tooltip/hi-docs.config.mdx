@@ -18,17 +18,16 @@
 
 ## Methods
 
-`Tooltip.open(target, { title, placement, key })`
+### Tooltip.open(target, { title, placement, key })
 
-| 参数      | 说明                                  | 类型        | 可选值                                 | 默认值 |
-| --------- | ------------------------------------- | ----------- | -------------------------------------- | ------ |
-| target    | 要显示 `tooptip` 的元素               | HTMLElement | -                                      | -      |
-| title     | 提示文字内容                          | string      | -                                      | -      |
-| placement | tooltip 显示的位置                    | string      | 'top' \| 'right' \| 'bottom' \| 'left' | 'top'  |
-| key       | 标识 `tooltip` 的唯一 key，仅用于关闭 | string      | -                                      | -      |
+| 参数   | 说明                                | 类型        | 可选值 | 默认值 |
+| ------ | ----------------------------------- | ----------- | ------ | ------ |
+| target | 要显示 Tooltip 的元素               | HTMLElement | -      | -      |
+| title  | 提示文字内容                        | string      | -      | -      |
+| key    | 标识 Tooltip 的唯一 key，仅用于关闭 | string      | -      | -      |
 
-`Tooltip.close(key)`
+### Tooltip.close(key)
 
-| 参数 | 说明                                  | 类型   | 可选值 | 默认值 |
-| ---- | ------------------------------------- | ------ | ------ | ------ |
-| key  | 标识 `tooltip` 的唯一 key，仅用于关闭 | string | -      | -      |
+| 参数 | 说明                                 | 类型   | 可选值 | 默认值 |
+| ---- | ------------------------------------ | ------ | ------ | ------ |
+| key  | open 方法返回的 Tooltip 实例唯一标识 | string | -      | -      |

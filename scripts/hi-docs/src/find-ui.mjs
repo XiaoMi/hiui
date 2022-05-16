@@ -9,13 +9,23 @@ export async function findUI(baseURL) {
   return componentInfo
 }
 
+const helpfulPrivatePkgs = ['popper', 'file-select', 'portal', 'spinner', 'highlighter']
+const othersPrivatePkgs = ['icon-button', 'locale-context', 'picker', 'tag-input', 'toast']
+
 async function findComponentPkgFiles(baseURL) {
   const tsFiles = await globAsync('*/package.@(json)', {
-    cwd: Path.join(baseURL),
+    cwd: baseURL,
     ignore: ['**/node_modules/**'],
   })
 
-  return tsFiles
+  // console.log(tsFiles)
+  return tsFiles.filter(
+    (v) =>
+      !helpfulPrivatePkgs.concat(othersPrivatePkgs).some((privateName) => {
+        return v.startsWith(privateName + '/')
+      })
+  )
+  // return tsFiles.filter((v) => v.includes('form'))
 }
 
 function getComponentInfo(componentPkgFiles, baseURL) {

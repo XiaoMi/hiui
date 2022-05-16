@@ -5,7 +5,7 @@ export * from './basic.stories'
 export * from './right.stories'
 export * from './cross.stories'
 export * from './group.stories'
-export * from './card.stories'
+export * from './card-content.stories'
 export * from './custom-icon.stories'
 
 export default {

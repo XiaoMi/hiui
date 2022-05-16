@@ -2,7 +2,7 @@ import React from 'react'
 
 export interface FilterDataItem {
   /**
-   * 节点唯一 id
+   * 选项对应的值，唯一 id
    */
   id: React.ReactText
   /**

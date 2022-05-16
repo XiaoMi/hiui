@@ -2,30 +2,30 @@ import React from 'react'
 
 export interface SelectDataItem {
   /**
-   * 树节点唯一 id
+   * 选择项值，唯一 id
    */
   id: React.ReactText
   /**
-   * 树节点标题
+   * 选项标题
    */
   title: React.ReactNode
   /**
-   * 是否禁用该节点（将禁用级联点击，展开，如果开启 checkbox，也将被禁用）
+   * 是否禁用该选项
    */
   disabled?: boolean
 }
 
 export interface SelectGroupDataItem {
   /**
-   *   下拉选项组标题
+   *   选项组标题
    */
   groupTitle?: React.ReactNode
   /**
-   * 下拉选项组唯一 id
+   * 选项组唯一 id
    */
   groupId?: React.ReactText
   /**
-   * 分组的时候使用	DataIt
+   * 分组下选项列表
    */
   children?: SelectDataItem[]
 }

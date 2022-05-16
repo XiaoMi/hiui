@@ -125,7 +125,7 @@ export const Loading = forwardRef<null, LoadingProps>(
   }
 )
 
-export type LoadingSizeEnum = HiBaseSizeEnum
+export type LoadingSizeEnum = HiBaseSizeEnum | undefined
 
 export interface LoadingProps extends HiBaseHTMLProps<'div'> {
   /**

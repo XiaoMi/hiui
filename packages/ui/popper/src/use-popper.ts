@@ -135,6 +135,7 @@ export const usePopper = ({
     updateStateModifier,
     customModifiers,
     arrowElement,
+    matchWidthStrictly,
   ])
 
   const popperOptionsRef = useLatestRef(popperOptions)
@@ -257,6 +258,8 @@ type PopperState = {
   }
 }
 
+export type PopperPlacementEnum = PopperJS.Placement | undefined
+
 export interface UsePopperProps {
   /**
    * 开启 popper 展示（受控）
@@ -283,11 +286,11 @@ export interface UsePopperProps {
    */
   flip?: boolean
   /**
-   * 自动计算匹配 reference 的宽度与其一致
+   * 自动计算匹配吸附元素的宽度与其一致
    */
   matchWidth?: boolean
   /**
-   * 弹窗层最小宽度
+   * 弹出层最小宽度
    */
   minWidth?: React.ReactText
   /**
@@ -299,9 +302,9 @@ export interface UsePopperProps {
    */
   eventListeners?: boolean | { scroll?: boolean; resize?: boolean }
   /**
-   * 相对 reference 的位置
+   * 相对吸附元素的位置
    */
-  placement?: PopperJS.Placement
+  placement?: PopperPlacementEnum
   /**
    * 自定义 popper.js 的装饰器
    */

@@ -11,7 +11,7 @@ import { mergeRefs, withDefaultProps } from '@hi-ui/react-utils'
 import { useUID } from '@hi-ui/use-id'
 import { useUnmountEffect } from '@hi-ui/use-unmount-effect'
 import { normalizeArray } from '@hi-ui/array-utils'
-import { TriggerActionEnum } from './types'
+import { TooltipTriggerActionEnum, TriggerActionEnum } from './types'
 import { useTimeout } from '@hi-ui/use-timeout'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
@@ -194,7 +194,7 @@ export interface UseTooltipProps extends PopperOverlayProps {
   /**
    * 	气泡卡片触发方式
    */
-  trigger?: TriggerActionEnum[] | TriggerActionEnum
+  trigger?: TooltipTriggerActionEnum[] | TooltipTriggerActionEnum
   /**
    * 开启禁用。暂不对外暴露
    * @private

@@ -78,6 +78,7 @@
     "@hi-ui/popover": "^4.0.0-beta.18",
     "@hi-ui/preview": "^4.0.0-beta.11",
     "@hi-ui/progress": "^4.0.0-beta.9",
+    "@hi-ui/provider": "^4.0.0-beta.6",
     "@hi-ui/radio": "^4.0.0-beta.15",
     "@hi-ui/rating": "^4.0.0-beta.17",
     "@hi-ui/search": "^4.0.0-beta.21",

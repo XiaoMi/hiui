@@ -5,7 +5,7 @@ import useCalenderData, { CalendarColInfo, CalenderSelectedRange } from '../hook
 import { clone as cloneDeep } from '@hi-ui/object-utils'
 import { getFullTime } from '../utils'
 import { CSSTransition } from 'react-transition-group'
-import { CalendarView, FormatCalendarItem } from '../types'
+import { CalendarViewEnum, FormatCalendarItem } from '../types'
 import { cx } from '@hi-ui/classname'
 
 const Calendar = ({
@@ -18,7 +18,7 @@ const Calendar = ({
   renderDate,
   disabledDate,
 }: {
-  view: CalendarView
+  view: CalendarViewEnum
   originDate: moment.Moment | null
   onPick: (date: moment.Moment) => void
   range?: CalenderSelectedRange

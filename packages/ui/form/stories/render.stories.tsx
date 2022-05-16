@@ -2,12 +2,12 @@ import React from 'react'
 import Form from '../src'
 import Input from '@hi-ui/input'
 
-const FormItem = Form.Item
-
 /**
  * @title 自定义渲染表单控件
  */
 export const Render = () => {
+  const FormItem = Form.Item
+
   return (
     <>
       <h1>Render</h1>

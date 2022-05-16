@@ -113,11 +113,11 @@ export const FilterDropdown = ({ prefixCls, column, onOpen, onClose }: any) => {
   const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
     onOpen: () => {
       onOpen?.()
-      onFilterDropdownVisibleChange?.(true, column)
+      onFilterDropdownVisibleChange?.(true, column.raw)
     },
     onClose: () => {
       onClose?.()
-      onFilterDropdownVisibleChange?.(false, column)
+      onFilterDropdownVisibleChange?.(false, column.raw)
     },
   })
 
@@ -146,7 +146,7 @@ export const FilterDropdown = ({ prefixCls, column, onOpen, onClose }: any) => {
         >
           {isFunction(filterDropdown)
             ? filterDropdown({
-                columnData: column,
+                columnData: column.raw,
                 setFilterDropdownVisible: menuVisibleAction.set,
               })
             : null}

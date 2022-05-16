@@ -2,10 +2,15 @@ import React, { forwardRef, useCallback, useMemo, useRef, useState } from 'react
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCheckSelect, UseCheckSelectProps } from './use-check-select'
-import type { HiBaseAppearanceEnum, HiBaseHTMLProps } from '@hi-ui/core'
+import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { CheckSelectProvider, useCheckSelectContext } from './context'
-import { CheckSelectDataItem, CheckSelectEventData, CheckSelectMergedItem } from './types'
+import {
+  CheckSelectAppearanceEnum,
+  CheckSelectDataItem,
+  CheckSelectItemEventData,
+  CheckSelectMergedItem,
+} from './types'
 import { useLatestRef } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
 import { TagInputMock } from '@hi-ui/tag-input'
@@ -88,7 +93,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     })
 
     const displayRender = useCallback(
-      (item: CheckSelectEventData) => {
+      (item: CheckSelectItemEventData) => {
         if (isFunction(displayRenderProp)) {
           return displayRenderProp(item)
         }
@@ -132,7 +137,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 
     // 拦截 titleRender，自定义高亮展示
     const proxyTitleRender = useCallback(
-      (node: CheckSelectEventData) => {
+      (node: CheckSelectItemEventData) => {
         if (titleRender) {
           const ret = titleRender(node)
           if (ret && ret !== true) return ret
@@ -379,11 +384,11 @@ export interface CheckSelectProps extends Omit<PickerProps, 'trigger'>, UseCheck
   /**
    * 自定义渲染节点的 title 内容
    */
-  render?: (item: CheckSelectEventData) => React.ReactNode
+  render?: (item: CheckSelectItemEventData) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容，只在 title 为字符串时有效
    */
-  displayRender?: (option: CheckSelectEventData) => React.ReactNode
+  displayRender?: (option: CheckSelectItemEventData) => React.ReactNode
   /**
    * 触发器输入框占位符
    */
@@ -391,7 +396,7 @@ export interface CheckSelectProps extends Omit<PickerProps, 'trigger'>, UseCheck
   /**
    * 设置展现形式
    */
-  appearance?: HiBaseAppearanceEnum
+  appearance?: CheckSelectAppearanceEnum
   /**
    * 节点搜索模式，仅在mode=normal模式下生效
    */

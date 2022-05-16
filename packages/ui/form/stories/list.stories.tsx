@@ -3,14 +3,14 @@ import Form from '../src'
 import Input from '@hi-ui/input'
 import Button from '@hi-ui/button'
 
-const FormItem = Form.Item
-const FormList = Form.List
-
 /**
  * @title 动态表单组
  * @desc 动态 Form 删减表单组
  */
 export const List = () => {
+  const FormItem = Form.Item
+  const FormList = Form.List
+
   return (
     <>
       <h1>List</h1>

@@ -13,7 +13,7 @@ import {
   useFocus,
 } from './hooks'
 import {
-  TreeNodeData,
+  TreeDataItem,
   TreeDataStatus,
   TreeLevelStatus,
   TreeNodeRequiredProps,
@@ -277,7 +277,7 @@ export interface TreeProps {
   /**
    * 展示数据
    */
-  data: TreeNodeData[]
+  data: TreeDataItem[]
   /**
    * 默认展开所有树节点（非受控时才有效）
    */
@@ -297,7 +297,7 @@ export interface TreeProps {
   /**
    * 点击异步加载子项
    */
-  onLoadChildren?: (node: TreeNodeEventData) => void | Promise<TreeNodeData[] | void>
+  onLoadChildren?: (node: TreeNodeEventData) => void | Promise<TreeDataItem[] | void>
   /**
    * 选中的节点
    */
@@ -378,7 +378,7 @@ export interface TreeProps {
   onCheck?: (
     checkedIds: React.ReactText[],
     options: {
-      checkedNodes: TreeNodeData[]
+      checkedNodes: TreeDataItem[]
       semiCheckedIds: React.ReactText[]
       targetNode: TreeNodeEventData
       checked: boolean

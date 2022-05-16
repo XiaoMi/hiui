@@ -2,12 +2,12 @@ import React from 'react'
 import Form from '../src'
 import Input from '@hi-ui/input'
 
-const FormItem = Form.Item
-
 /**
  * @title 基础用法
  */
 export const Basic = () => {
+  const FormItem = Form.Item
+
   return (
     <>
       <h1>Basic</h1>

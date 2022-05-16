@@ -12,7 +12,7 @@ import { useTimePickerData } from '../hooks/useTimePickerData'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import TimePeriodPanel from './time-period-panel'
 import { CalenderSelectedRange } from '../hooks/useCalenderData'
-import { CalendarView } from '../types'
+import { CalendarViewEnum } from '../types'
 
 const RangePanel = () => {
   const {
@@ -39,7 +39,7 @@ const RangePanel = () => {
   } = useContext(DPContext)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
-  const [views, setViews] = useState<CalendarView[]>([getView(type), getView(type)])
+  const [views, setViews] = useState<CalendarViewEnum[]>([getView(type), getView(type)])
   const [calRenderDates, setCalRenderDates] = useState<moment.Moment[]>([])
   const [range, setRange] = useState<CalenderSelectedRange>({
     start: null,

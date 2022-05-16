@@ -1,6 +1,6 @@
 import React from 'react'
 import { baseFlattenTree } from '@hi-ui/tree-utils'
-import { TreeNodeData, FlattedTreeNodeData } from '../types'
+import { TreeDataItem, FlattedTreeNodeData } from '../types'
 
 const EMPTY_FIELD_NAMES = {} as any
 /**
@@ -9,7 +9,7 @@ const EMPTY_FIELD_NAMES = {} as any
  * @param treeData
  * @returns
  */
-export const flattenTreeData = (treeData: TreeNodeData[], fieldNames: any = EMPTY_FIELD_NAMES) => {
+export const flattenTreeData = (treeData: TreeDataItem[], fieldNames: any = EMPTY_FIELD_NAMES) => {
   /**
    * 转换对象
    */
@@ -93,7 +93,7 @@ export const fFindNodeById = (
  * @param targetId
  * @returns
  */
-export const deleteNodeById = (treeData: TreeNodeData[], targetId: React.ReactText) => {
+export const deleteNodeById = (treeData: TreeDataItem[], targetId: React.ReactText) => {
   const { length } = treeData
   for (let i = 0; i < length; ++i) {
     const node = treeData[i]
@@ -117,9 +117,9 @@ export const deleteNodeById = (treeData: TreeNodeData[], targetId: React.ReactTe
  * @returns
  */
 export const addChildNodeById = (
-  treeData: TreeNodeData[],
+  treeData: TreeDataItem[],
   targetId: React.ReactText,
-  sourceNode: TreeNodeData,
+  sourceNode: TreeDataItem,
   position: 0 | 1 = 1
 ) => {
   const { length } = treeData
@@ -153,9 +153,9 @@ export const addChildNodeById = (
  * @param children
  */
 export const addChildrenById = (
-  treeData: TreeNodeData[],
+  treeData: TreeDataItem[],
   targetId: React.ReactText,
-  children: TreeNodeData[]
+  children: TreeDataItem[]
 ) => {
   const { length } = treeData
   for (let i = 0; i < length; ++i) {
@@ -181,9 +181,9 @@ export const addChildrenById = (
  * @returns
  */
 export const insertNodeById = (
-  treeData: TreeNodeData[],
+  treeData: TreeDataItem[],
   targetId: React.ReactText,
-  sourceNode: TreeNodeData,
+  sourceNode: TreeDataItem,
   position: 0 | 1
 ) => {
   const { length } = treeData

@@ -4,7 +4,7 @@ import DPContext, { DPContextData } from '../context'
 import Panel from './panel'
 import { CalenderSelectedRange } from '../hooks/useCalenderData'
 import moment from 'moment'
-import { CalendarView } from '../types'
+import { CalendarViewEnum } from '../types'
 
 interface DateRangeTimePanelProps {
   nowIndex: number
@@ -48,7 +48,7 @@ export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
   )
 
   const panelDisabledDate = useCallback(
-    (date: Date, disposeView: CalendarView) => {
+    (date: Date, disposeView: CalendarViewEnum) => {
       if (disabledDate(date, disposeView)) {
         return true
       } else {

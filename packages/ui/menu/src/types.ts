@@ -2,11 +2,11 @@ import React from 'react'
 
 export interface MenuDataItem {
   /**
-   * 节点唯一 id
+   * 菜单项唯一标识
    */
   id: React.ReactText
   /**
-   * 节点标题
+   * 菜单项标题
    */
   title: React.ReactNode
   /**

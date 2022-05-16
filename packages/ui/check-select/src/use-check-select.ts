@@ -2,10 +2,9 @@ import React, { useCallback, useRef, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { uniqBy } from '@hi-ui/array-utils'
 import { useCheck as useCheckDefault } from '@hi-ui/use-check'
-import { CheckSelectDataItem, CheckSelectEventData, CheckSelectMergedItem } from './types'
+import { CheckSelectDataItem, CheckSelectItemEventData, CheckSelectMergedItem } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { useFlattenData, useData } from './hooks'
-import { HiBaseFieldNames } from '@hi-ui/core'
 
 const NOOP_ARRAY = [] as []
 const NOOP_VALUE = [] as []
@@ -31,15 +30,15 @@ export const useCheckSelect = ({
 
   const usedItemsRef = useRef<any[]>([])
   // 扁平化的选中数据，可能包括异步临时选中缓存数据
-  const [checkedItems, setCheckedItems] = useState<CheckSelectEventData[]>([])
+  const [checkedItems, setCheckedItems] = useState<CheckSelectItemEventData[]>([])
 
   const proxyTryChangeValue = useCallback(
     (
       value: React.ReactText[],
-      item: CheckSelectEventData | CheckSelectEventData[],
+      item: CheckSelectItemEventData | CheckSelectItemEventData[],
       shouldChecked: boolean
     ) => {
-      let changedItems = item as CheckSelectEventData[]
+      let changedItems = item as CheckSelectItemEventData[]
 
       if (!Array.isArray(item)) {
         changedItems = [item]
@@ -113,7 +112,7 @@ export interface UseCheckSelectProps {
    */
   onSelect?: (
     value: React.ReactText[],
-    targetOption: CheckSelectEventData,
+    targetOption: CheckSelectItemEventData,
     shouldChecked: boolean
   ) => void
   /**
@@ -131,7 +130,7 @@ export interface UseCheckSelectProps {
   /**
    * 设置 data 中 id, title, disabled, children 对应的 key
    */
-  fieldNames?: HiBaseFieldNames
+  fieldNames?: Record<string, string>
 }
 
 export type UseSelectReturn = ReturnType<typeof useCheckSelect>

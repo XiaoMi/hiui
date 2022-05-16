@@ -1,6 +1,6 @@
 import React from 'react'
 import Tree from '../src'
-import { cloneTree, findNodeById } from '@hi-ui/tree-utils'
+import { cloneTree, findNodeById } from '@hi-ui/utils'
 import Alert from '@hi-ui/alert'
 
 /**

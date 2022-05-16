@@ -34,7 +34,7 @@ export interface TimelineGroupDataItem extends HiBaseDataItem {
    */
   groupTitle: React.ReactNode
   /**
-   * 标题下集合
+   * 标题下集合列表
    */
   children: TimelineDataItem[]
 }

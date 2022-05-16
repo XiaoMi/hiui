@@ -50,13 +50,13 @@ export const FormItem: React.FC<FormItemProps> = ({
 
 export interface FormItemProps extends UseFormFieldProps, FormLabelProps {
   /**
-   * 表单控件
+   * 表单控件或其渲染函数
    */
-  children?: React.ReactElement
+  children?: React.ReactNode
   /**
    * 支持表单控件 render 渲染
    */
-  render?: (props: Record<string, any>) => React.ReactElement
+  render?: (props: Record<string, any>) => any
 }
 
 if (__DEV__) {

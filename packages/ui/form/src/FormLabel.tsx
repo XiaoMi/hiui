@@ -100,7 +100,7 @@ export interface FormLabelProps extends HiBaseHTMLProps<'div'> {
    */
   labelPlacement?: 'right' | 'left' | 'top'
   /**
-   * 标记是否必填
+   * 是否显示必填信号。这里不做校验处理，若需校验请使用 rules 进行设置
    */
   required?: boolean
   /**

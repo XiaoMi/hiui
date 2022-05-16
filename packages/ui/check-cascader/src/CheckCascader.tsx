@@ -6,14 +6,14 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import {
   CheckCascaderDataItem,
-  ExpandTrigger,
-  CheckCascaderDataItemEventData,
+  CascaderExpandTriggerEnum,
+  CheckCascadeItemEventData,
   FlattedCheckCascaderDataItem,
 } from './types'
 import { useCache } from '@hi-ui/use-cache'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { TagInputMock } from '@hi-ui/tag-input'
-import { CheckCascaderMenus } from './CheckCascaderMenus'
+import { CheckCascaderMenuList } from './CheckCascaderMenuList'
 import {
   matchStrategy,
   useSearchMode,
@@ -241,7 +241,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         }
       >
         {isArrayNonEmpty(selectProps.data) ? (
-          <CheckCascaderMenus
+          <CheckCascaderMenuList
             disabled={disabled}
             value={value}
             // @ts-ignore
@@ -280,18 +280,17 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   defaultValue?: React.ReactText[][]
   /**
    * 多选值改变时的回调
-   * TODO: 是否有这样的需求：暴露操作的原始数据对象？包括 点击 checkbox、点击 tag 删除按钮、点击清空按钮
    */
   onChange?: (values: React.ReactText[][]) => void
   /**
    * 选项被点击时的回调。暂不对外暴露
    * @private
    */
-  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderDataItemEventData) => void
+  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascadeItemEventData) => void
   /**
    * 次级菜单的展开方式
    */
-  expandTrigger?: ExpandTrigger
+  expandTrigger?: CascaderExpandTriggerEnum
   /**
    * 是否可搜索（仅在 title 为字符串时支持）
    */
@@ -315,7 +314,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   /**
    * 自定义渲染节点的 title 内容
    */
-  render?: (item: CheckCascaderDataItemEventData) => React.ReactNode
+  render?: (item: CheckCascadeItemEventData) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容
    */
@@ -341,7 +340,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
    * 异步请求更新数据
    */
   onLoadChildren?: (
-    item: CheckCascaderDataItemEventData,
+    item: CheckCascadeItemEventData,
     idPaths: React.ReactText[]
   ) => Promise<CheckCascaderDataItem[] | void> | void
   /**

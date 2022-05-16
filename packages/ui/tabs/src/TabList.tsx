@@ -8,6 +8,7 @@ import { TabInk } from './TabInk'
 import { PlusOutlined, LeftOutlined, RightOutlined, UpOutlined, DownOutlined } from '@hi-ui/icons'
 import { isUndef } from '@hi-ui/type-assertion'
 import { IconButton } from '@hi-ui/icon-button'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
@@ -34,6 +35,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       onDragEnd,
       type = 'line',
       extra,
+      ...rest
     },
     ref
   ) => {
@@ -79,6 +81,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
         style={style}
         className={cx(`${prefixCls}__list`, { [`${prefixCls}__list--${type}`]: type }, className)}
         ref={ref}
+        {...rest}
       >
         {showScrollBtn && direction === 'horizontal' && (
           <IconButton
@@ -216,13 +219,23 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
   }
 )
 
-export interface TabListProps {
-  style?: React.CSSProperties
-  className?: string
-  prefixCls?: string
+export interface TabListProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop'> {
+  /**
+   * tabs 面板数据
+   */
   data: TabPaneProps[]
+  /**
+   * 是否可编辑
+   */
   direction?: 'horizontal' | 'vertical'
+  /**
+   * `activeId` 改变的回调
+   */
   onChange?: (tabId: React.ReactText) => void
+  /**
+   * 标签点击触发回调
+   */
   onTabClick?: (tabId: React.ReactText, event: React.MouseEvent) => void
   /**
    * 默认高亮id
@@ -232,8 +245,17 @@ export interface TabListProps {
    * 高亮id
    */
   activeId?: React.ReactText
+  /**
+   * 是否可编辑
+   */
   editable?: boolean
+  /**
+   * 是否可拖拽
+   */
   draggable?: boolean
+  /**
+   * 布局类型
+   */
   type?: 'desc' | 'card' | 'button' | 'line'
   /**
    * 右侧的拓展区域
@@ -247,14 +269,23 @@ export interface TabListProps {
    * 节点删除时时触发
    */
   onDelete?: (deletedNode: TabPaneProps, index: number) => void
+  /**
+   * 节点开始拖拽时触发
+   */
   onDragStart?: (
     e: React.DragEvent<HTMLDivElement>,
     { dragNode }: { dragNode: TabPaneProps }
   ) => void
+  /**
+   * 节点拖拽移动时触发
+   */
   onDragOver?: (
     e: React.DragEvent<HTMLDivElement>,
     { targetNode }: { targetNode: TabPaneProps }
   ) => void
+  /**
+   * 节点拖拽放下时触发
+   */
   onDrop?: (
     e: React.DragEvent<HTMLDivElement>,
     {
@@ -263,6 +294,9 @@ export interface TabListProps {
       direction,
     }: { dragNode: TabPaneProps; targetNode: TabPaneProps; direction: 'prev' | 'next' | null }
   ) => void
+  /**
+   * 节点拖拽成功时触发
+   */
   onDragEnd?: (e: React.DragEvent<HTMLDivElement>, { dragNode }: { dragNode: TabPaneProps }) => void
 }
 

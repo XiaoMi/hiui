@@ -2,11 +2,31 @@ import React from 'react'
 
 export interface ListDataItem {
   /**
-   * 节点唯一 id
+   * 列表元素的标题
    */
-  id: React.ReactText
+  title?: React.ReactNode
   /**
-   * 节点标题
+   * 列表元素的描述内容
    */
-  title: React.ReactNode
+  description?: React.ReactNode
+  /**
+   * 额外内容
+   */
+  extra?: React.ReactNode
+  /**
+   * 左侧图片资源地址
+   */
+  avatar?: string
+  /**
+   * 右侧操作项
+   */
+  action?: React.ReactNode
+  /**
+   * 右侧操作项垂直对齐位置
+   */
+  actionPlacement?: ListActionPlacementEnum
 }
+
+export type ListPaginationPlacementEnum = 'left' | 'middle' | 'right'
+
+export type ListActionPlacementEnum = 'top' | 'center' | 'bottom'

@@ -75,7 +75,7 @@ export const useRadio = ({
 
 export interface UseRadioProps {
   /**
-   * 字段名称
+   * input[type="radio"] 的 name 属性
    */
   name?: string
   /**
@@ -92,10 +92,6 @@ export interface UseRadioProps {
    */
   defaultChecked?: boolean
   /**
-   * 选中态改变时的回调
-   */
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-  /**
    * 是否禁用
    */
   disabled?: boolean
@@ -107,6 +103,10 @@ export interface UseRadioProps {
    * 是否只读
    */
   readOnly?: boolean
+  /**
+   * 选中态改变时的回调
+   */
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export type UseRadioReturn = ReturnType<typeof useRadio>

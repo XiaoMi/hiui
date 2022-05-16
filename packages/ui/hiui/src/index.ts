@@ -31,7 +31,17 @@ export { default as SvgIcon } from '@hi-ui/svg-icon'
 
 export * from '@hi-ui/card'
 export { default as Card } from '@hi-ui/card'
+
+export * from '@hi-ui/provider'
+export { default as Provider } from '@hi-ui/provider'
+
+/**
+ * @deprecated
+ */
 export * from '@hi-ui/locale-context'
+/**
+ * @deprecated
+ */
 export { default as LocaleContext } from '@hi-ui/locale-context'
 export * from '@hi-ui/switch'
 export { default as Switch } from '@hi-ui/switch'

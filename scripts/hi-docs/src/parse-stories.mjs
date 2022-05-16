@@ -37,7 +37,7 @@ async function findComponentStoryFiles(baseUrl) {
 async function getStoriesByComponent(storyFiles, basePath, componentName) {
   return Promise.all(
     storyFiles.map(async (filepath, index) => {
-      const [, storyName] = /(\w+)\.stories\.tsx$/.exec(filepath)
+      const storyName = Path.basename(filepath).replace('.stories.tsx', '')
       const content = await readFileAsync(filepath, basePath)
 
       // @Meta Story
@@ -53,7 +53,9 @@ async function getStoriesByComponent(storyFiles, basePath, componentName) {
 
 function replaceStory(content, componentName) {
   content = content.replace('../src', `@hi-ui/${componentName.toLowerCase()}`)
-  content = content.replace(/export\sconst\s(\w+)\s=/, (raw, $1) => `export default ${$1};\n${raw}`)
+  // `export const Avatar = () => {}`
+  // 转化为：`export default () => {}`
+  content = content.replace(/export\sconst\s\w+\s=/, `export default`)
 
   return content
 }

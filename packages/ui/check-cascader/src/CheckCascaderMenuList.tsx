@@ -2,8 +2,8 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import {
-  ExpandTrigger,
-  CheckCascaderDataItemEventData,
+  CascaderExpandTriggerEnum,
+  CheckCascadeItemEventData,
   FlattedCheckCascaderDataItem,
   CheckCascaderDataItem,
   CheckCascaderDataItemRequiredProps,
@@ -20,10 +20,7 @@ const _prefix = getPrefixCls(_role)
 
 const NOOP_ARRAY = [] as []
 
-/**
- * TODO: What is CheckCascaderMenus
- */
-export const CheckCascaderMenus = forwardRef<HTMLDivElement | null, CascaderMenusProps>(
+export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderMenusProps>(
   (
     {
       prefixCls = _prefix,
@@ -176,11 +173,11 @@ export interface CascaderMenusProps {
   /**
    * 选项被点击时的回调
    */
-  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderDataItemEventData) => void
+  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascadeItemEventData) => void
   /**
    * 次级菜单的展开方式
    */
-  expandTrigger?: ExpandTrigger
+  expandTrigger?: CascaderExpandTriggerEnum
   /**
    * 是否禁止使用
    */
@@ -192,7 +189,7 @@ export interface CascaderMenusProps {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: CheckCascaderDataItemEventData) => React.ReactNode
+  titleRender?: (item: CheckCascadeItemEventData) => React.ReactNode
   /**
    * 多选数据交互时回填、回显模式
    * PARENT: 当所有子节点被选中时将只保留父节点
@@ -213,11 +210,11 @@ export interface CascaderMenusProps {
    * 点击异步加载子项
    */
   onLoadChildren?: (
-    item: CheckCascaderDataItemEventData,
+    item: CheckCascadeItemEventData,
     idPaths: React.ReactText[]
   ) => Promise<CheckCascaderDataItem[] | void> | void
 }
 
 if (__DEV__) {
-  CheckCascaderMenus.displayName = 'CheckCascaderMenus'
+  CheckCascaderMenuList.displayName = 'CheckCascaderMenuList'
 }

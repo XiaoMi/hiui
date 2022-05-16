@@ -36,8 +36,8 @@
 | overlayClassName  | 下拉根元素的类名称                                                                                       | string                                                                      | -                                            | -                                                                     |
 | onOverlayScroll   | 下拉列表滚动时的回调                                                                                     | function                                                                    | -                                            | -                                                                     |
 | popper            | 自定义控制弹出层 popper 行为                                                                             | Omit<PopperProps, 'visible' \| 'attachEl'>                                  | -                                            | -                                                                     |
-| render            | 自定义渲染节点的 title 内容径                                                                            | (item: CheckSelectEventData) => React.ReactNode                             | -                                            |
-| displayRender     | 自定义选择后展示的内容                                                                                   | (selectedItem: CheckSelectEventData) => string                              | -                                            | -                                                                     |
+| render            | 自定义渲染节点的 title 内容径                                                                            | (item: CheckSelectItemEventData) => React.ReactNode                         | -                                            |
+| displayRender     | 自定义选择后展示的内容                                                                                   | (selectedItem: CheckSelectItemEventData) => string                          | -                                            | -                                                                     |
 
 > 注意，如果发现下拉菜单跟随页面滚动，或者需要在其他弹层中触发 CheckSelect，请尝试使用 `popper={ container: triggerNode.parentElement }` 将下拉弹层渲染节点固定在触发器的父元素中。
 
@@ -65,7 +65,7 @@
 | title    | 下拉选择项标题    | string    | -             | -      |
 | disabled | 是否禁用          | boolean   | true \| false | false  |
 
-### CheckSelectEventData
+### CheckSelectItemEventData
 
 | 参数     | 说明                             | 类型    | 可选值        | 默认值 |
 | -------- | -------------------------------- | ------- | ------------- | ------ |

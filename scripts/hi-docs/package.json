@@ -7,7 +7,7 @@
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
-    "test": "node ./src/index.js"
+    "test": "node ./src/main.mjs"
   },
   "directories": {
     "lib": "lib",
