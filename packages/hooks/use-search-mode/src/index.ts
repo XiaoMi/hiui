@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { UseDataSource, useDataSource } from '@hi-ui/use-data-source'
 import { invariant } from '@hi-ui/env'
@@ -32,19 +32,35 @@ export const useSearchMode = ({ searchable: searchableProp, strategies }: UseSea
   // 帮助用户自动开启 searchable
   const searchable = searchableProp === false ? false : !!strategy
   const searchMode: string = (searchable && strategy && strategy.name) || ''
+  const runSearchStrategy = strategy ? strategy.run : undefined
+
+  const runSearch = useCallback(
+    (keyword: string) => {
+      if (!searchable) return
+      if (keyword && runSearchStrategy) {
+        runSearchStrategy(keyword, setStateInSearch)
+      }
+    },
+    [searchable, runSearchStrategy]
+  )
 
   const onSearch = useCallback(
     (keyword: string) => {
       if (!searchable) return
 
       setKeyword(keyword)
-
-      if (keyword) {
-        strategy.run(keyword, setStateInSearch)
-      }
+      runSearch(keyword)
     },
-    [searchable, strategy]
+    [searchable, runSearch]
   )
+
+  const keywordLatestRef = useLatestRef(keyword)
+
+  // 外部数据或策略改变时，重新触发搜索
+  useEffect(() => {
+    console.log(11)
+    runSearch(keywordLatestRef.current)
+  }, [keywordLatestRef, runSearch])
 
   const inSearch = !!keyword
   const isEmpty = inSearch && stateInSearch.data.length === 0

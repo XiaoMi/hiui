@@ -16,6 +16,11 @@ export const Pinyin = () => {
     { title: '办公', id: '6' },
   ])
 
+  // 注意 filterOption 是影响搜索渲染的，是完全受控的，useCallback 包裹可以减少无效的重渲染，提升性能
+  const filterOptionMemo = React.useCallback((keyword: string, item: any) => {
+    return !!pinyinMatch.match(item.title as string, keyword)
+  }, [])
+
   return (
     <>
       <h1>Pinyin</h1>
@@ -24,9 +29,7 @@ export const Pinyin = () => {
           clearable={false}
           style={{ width: 200 }}
           data={data}
-          filterOption={(keyword, item) => {
-            return !!pinyinMatch.match(item.title as string, keyword)
-          }}
+          filterOption={filterOptionMemo}
         />
       </div>
     </>

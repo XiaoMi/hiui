@@ -86,6 +86,27 @@ export const Searchable = () => {
     },
   ])
 
+  // 注意 filterOption 是影响搜索渲染的，是完全受控的，useCallback 包裹可以减少无效的重渲染，提升性能
+  const filterOptionMemo = React.useCallback((keyword: string, item: any) => {
+    console.log(keyword, item)
+
+    const match = (node: any) =>
+      typeof node.title === 'string' && node.title.indexOf(keyword) !== -1
+
+    const matchUp = (node: any) => {
+      let found = match(node)
+      const { children } = node
+
+      if (children && !found) {
+        found = children.some((item: any) => matchUp(item))
+      }
+
+      return found
+    }
+
+    return matchUp(item)
+  }, [])
+
   return (
     <>
       <h1>Searchable</h1>
@@ -114,25 +135,7 @@ export const Searchable = () => {
         <CheckTreeSelect
           data={data}
           searchable
-          filterOption={(keyword, item) => {
-            console.log(keyword, item)
-
-            const match = (node) =>
-              typeof node.title === 'string' && node.title.indexOf(keyword) !== -1
-
-            const matchUp = (node) => {
-              let found = match(node)
-              const { children } = node
-
-              if (children && !found) {
-                found = children.some((item) => matchUp(item))
-              }
-
-              return found
-            }
-
-            return matchUp(item)
-          }}
+          filterOption={filterOptionMemo}
           onChange={(checkedIds, options) => {
             console.log('CheckTreeSelect onChange: ', checkedIds, options)
           }}

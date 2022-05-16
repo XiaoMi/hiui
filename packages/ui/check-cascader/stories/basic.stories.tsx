@@ -59,7 +59,7 @@ export const Basic = () => {
     ]
 
     const getDataOnlyLeafCheckable = (data: any) => {
-      return data.map((item) => {
+      return data.map((item: any) => {
         if (item.children) {
           item.checkable = item.checkable ?? false
           item.children = getDataOnlyLeafCheckable(item.children)

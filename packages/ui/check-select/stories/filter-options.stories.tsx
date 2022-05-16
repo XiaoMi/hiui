@@ -14,6 +14,11 @@ export const FilterOptions = () => {
     { title: '办公', id: '6' },
   ])
 
+  // 注意 filterOption 是影响搜索渲染的，是完全受控的，useCallback 包裹可以减少无效的重渲染，提升性能
+  const filterOptionMemo = React.useCallback((keyword: string, item: any) => {
+    return item.id >= parseInt(keyword)
+  }, [])
+
   return (
     <>
       <h1>FilterOptions</h1>
@@ -22,9 +27,7 @@ export const FilterOptions = () => {
           clearable={false}
           style={{ width: 200 }}
           data={data}
-          filterOption={(keyword, item) => {
-            return item.id >= parseInt(keyword)
-          }}
+          filterOption={filterOptionMemo}
         />
       </div>
     </>
