@@ -108,6 +108,7 @@ export const FilterDropdown = ({ prefixCls, column, onOpen, onClose }: any) => {
     filterDropdown,
     filterDropdownWidth,
     filterDropdownVisible,
+    filterDropdownOverlay,
     onFilterDropdownVisibleChange,
     filterDropdownClassName,
   } = column.raw
@@ -137,11 +138,12 @@ export const FilterDropdown = ({ prefixCls, column, onOpen, onClose }: any) => {
       </span>
       <Popper
         className={`${prefixCls}__popper`}
+        // @DesignToken zIndex: `overlay`
+        zIndex={1050}
+        {...filterDropdownOverlay}
         visible={menuVisible}
         attachEl={menuTrigger}
         onClose={menuVisibleAction.off}
-        // @DesignToken zIndex: `overlay`
-        zIndex={1050}
       >
         <div
           className={cx(`${prefixCls}__content`, filterDropdownClassName)}

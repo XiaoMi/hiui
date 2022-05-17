@@ -1,5 +1,6 @@
 import React from 'react'
 import { PaginationProps } from '@hi-ui/pagination'
+import { PopperOverlayProps } from '@hi-ui/popper'
 
 export type TableColumnItemAlignEnum = 'left' | 'right' | 'center'
 
@@ -163,6 +164,10 @@ export type TableColumnItem = {
    * 自定义筛选菜单 className
    */
   filterDropdownClassName?: string
+  /**
+   * 自定义筛选菜单弹窗交互
+   */
+  filterDropdownOverlay: PopperOverlayProps
   /**
    * 自定义筛选下拉选项显示状态改变时的回调方法
    */
