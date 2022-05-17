@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import request from '../request'
 import { getFileType } from '../utils'
-import { v4 as uuidV4 } from 'uuid'
+import { uuid } from '@hi-ui/use-id'
+
 // import Modal from '../../modal'
 import { UploadProps, UploadFileItem } from '../types'
 
@@ -170,7 +171,7 @@ const useUpload = ({
               continue
             }
             const file: UploadFileItem = Object.assign(files[i], {
-              fielId: uuidV4(),
+              fielId: uuid(),
               uploadState: 'loading' as 'loading',
               fileType: getFileType(files[i]),
             })
