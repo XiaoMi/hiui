@@ -120,7 +120,6 @@ const RangePanel = () => {
     }
     // V4修改：type === 'weekrange' -> views[uIndex] === 'date' （修正，周模式下，无法使用年份月份快捷切换面板BUG）
     if (type.includes(views[uIndex]) || (type === 'weekrange' && views[uIndex] === 'date')) {
-      console.warn(date)
       setRanges(date)
     } else {
       const _innerDates = genNewDates(calRenderDates, date, uIndex)
