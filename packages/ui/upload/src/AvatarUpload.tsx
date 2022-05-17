@@ -15,7 +15,6 @@ import { useLocaleContext } from '@hi-ui/locale-context'
 import { Preview } from '@hi-ui/preview'
 import { Modal } from '@hi-ui/modal'
 import Cropper from 'react-cropper'
-import 'cropperjs/dist/cropper.css'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 
