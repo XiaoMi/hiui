@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextArea } from '../src'
+import TextArea from '../src'
 
 /**
  * @title 自动适应高度

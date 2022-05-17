@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextArea } from '../src'
+import TextArea from '../src'
 
 /**
  * @title 展示输入字数

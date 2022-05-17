@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextArea } from '../src'
+import TextArea from '../src'
 
 /**
  * @title 基础用法
