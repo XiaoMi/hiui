@@ -83,8 +83,8 @@ const RangePanel = () => {
   const setRanges = (date: moment.Moment) => {
     const newRange = { ...range }
 
-    if (range.selecting || !calendarClickIsEnd.current) {
-      if (newRange.start! >= date) {
+    if (newRange.start && (range.selecting || !calendarClickIsEnd.current)) {
+      if (date.isSameOrBefore(newRange.start)) {
         newRange.selecting = false
         newRange.end = newRange.start
         newRange.start = date
@@ -120,6 +120,7 @@ const RangePanel = () => {
     }
     // V4修改：type === 'weekrange' -> views[uIndex] === 'date' （修正，周模式下，无法使用年份月份快捷切换面板BUG）
     if (type.includes(views[uIndex]) || (type === 'weekrange' && views[uIndex] === 'date')) {
+      console.warn(date)
       setRanges(date)
     } else {
       const _innerDates = genNewDates(calRenderDates, date, uIndex)
