@@ -167,7 +167,7 @@ export type TableColumnItem = {
   /**
    * 自定义筛选菜单弹窗交互
    */
-  filterDropdownOverlay: PopperOverlayProps
+  filterDropdownOverlay?: PopperOverlayProps
   /**
    * 自定义筛选下拉选项显示状态改变时的回调方法
    */
