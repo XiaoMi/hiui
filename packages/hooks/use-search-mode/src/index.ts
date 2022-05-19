@@ -58,7 +58,6 @@ export const useSearchMode = ({ searchable: searchableProp, strategies }: UseSea
 
   // 外部数据或策略改变时，重新触发搜索
   useEffect(() => {
-    console.log(11)
     runSearch(keywordLatestRef.current)
   }, [keywordLatestRef, runSearch])
 

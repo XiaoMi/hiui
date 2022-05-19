@@ -27,8 +27,6 @@ export const useTableDrag = ({
 
   const onDrop = useCallback(
     (evt, sourceId, targetId, dragDirection) => {
-      // console.log(sourceId, targetId, dragDirection)
-
       if (!draggable) return
       if (targetId === sourceId) return
 

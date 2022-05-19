@@ -9,6 +9,7 @@ import { PlusOutlined, LeftOutlined, RightOutlined, UpOutlined, DownOutlined } f
 import { isUndef } from '@hi-ui/type-assertion'
 import { IconButton } from '@hi-ui/icon-button'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useResizeObserver } from './hooks'
 
 const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
@@ -57,13 +58,39 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     const [translateY, setTranslateY] = useState<number>(0)
     const itemsRef = useRef<Record<string, HTMLDivElement | null>>({})
 
-    let showScrollBtn = false
-    if (scrollRef && innerRef) {
-      showScrollBtn =
-        direction === 'horizontal'
-          ? scrollRef.clientWidth > innerRef.clientWidth
-          : scrollRef.clientHeight > innerRef.clientHeight
-    }
+    const [showScrollBtn, setShowScrollBtn] = useState(false)
+    const showHorizontal = direction === 'horizontal'
+
+    // 响应式滚动按钮展示
+    useResizeObserver({
+      element: innerRef,
+      getSize: (element) => {
+        return showHorizontal ? element.clientWidth : element.clientHeight
+      },
+      onResize: (_, size) => {
+        if (scrollRef) {
+          const showScrollBtn = showHorizontal
+            ? scrollRef.clientWidth > size
+            : scrollRef.clientHeight > size
+          setShowScrollBtn(showScrollBtn)
+        }
+      },
+    })
+
+    useResizeObserver({
+      element: scrollRef,
+      getSize: (element) => {
+        return showHorizontal ? element.clientWidth : element.clientHeight
+      },
+      onResize: (_, size) => {
+        if (innerRef) {
+          const showScrollBtn = showHorizontal
+            ? size > innerRef.clientWidth
+            : size > innerRef.clientHeight
+          setShowScrollBtn(showScrollBtn)
+        }
+      },
+    })
 
     const onClickTab = useCallback(
       (key: React.ReactText, event: React.MouseEvent) => {

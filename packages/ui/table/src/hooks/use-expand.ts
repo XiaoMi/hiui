@@ -144,8 +144,6 @@ export const useExpand = (
     ]
   )
 
-  // console.log('transitionData', transitionData, flattedData)
-
   const onNodeToggleStartLatest = useLatestCallback(onNodeToggleStart)
 
   const onNodeExpand = useCallback(

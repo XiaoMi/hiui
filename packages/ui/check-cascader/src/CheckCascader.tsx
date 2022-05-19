@@ -96,7 +96,6 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     const proxyOnChange = useLatestCallback(
       (value: React.ReactText[], item: any, shouldChecked: boolean) => {
         const flattedItems = flattedData
-        console.log(item)
 
         const itemsPaths = value.map((lastId) => {
           const item = flattedItems.find((item) => item.id === lastId)
