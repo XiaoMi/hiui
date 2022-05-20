@@ -9,3 +9,5 @@ export default Checkbox
 
 export * from './Checkbox'
 export * from './CheckboxGroup'
+
+export * from './types'

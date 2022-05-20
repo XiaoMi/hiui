@@ -16,7 +16,7 @@ import {
 } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
 import { useModal, UseModalProps } from './use-modal'
-import { ModalType } from './type'
+import { ModalType, ModalTypeEnum } from './types'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { isUndef } from '@hi-ui/type-assertion'
 
@@ -298,7 +298,7 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
   /**
    * 确认框类型
    */
-  type?: ModalType
+  type?: ModalTypeEnum
 }
 
 if (__DEV__) {

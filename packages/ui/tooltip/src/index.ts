@@ -9,3 +9,5 @@ export * from './use-tooltip'
 
 export const Tooltip = withTooltip(PureTooltip)
 export default Tooltip
+
+export * from './types'

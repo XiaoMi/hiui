@@ -10,3 +10,5 @@ const Grid = {
 export default Grid
 
 export * from './Grid'
+
+export * from './types'

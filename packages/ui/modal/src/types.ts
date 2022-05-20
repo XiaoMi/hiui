@@ -10,4 +10,4 @@ export const ModalType = {
 
 // 对外暴露同名联合类型
 // eslint-disable-next-line no-redeclare
-export type ModalType = ValueOf<typeof ModalType>
+export type ModalTypeEnum = ValueOf<typeof ModalType>

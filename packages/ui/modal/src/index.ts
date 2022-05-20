@@ -11,3 +11,5 @@ export * from './use-modal'
 
 export const Modal = withModal(PureModal)
 export default Modal
+
+export * from './types'
