@@ -18,6 +18,7 @@ export interface ModalProps extends ModalBaseProps {
   footer?: JSX.Element | null
   style?: React.CSSProperties
   confirmLoading?: boolean
+  modalContentRef?: React.Ref<HTMLDivElement | null>
 }
 
 export interface ModalOptions extends ModalBaseProps {
