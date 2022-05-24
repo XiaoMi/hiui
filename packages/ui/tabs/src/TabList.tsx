@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useState, useRef } from 'react'
+import React, { forwardRef, useState, useRef, useCallback } from 'react'
 import { TabPaneProps } from './TabPane'
 import { __DEV__ } from '@hi-ui/env'
 import { TabItem } from './TabItem'
@@ -6,10 +6,12 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { TabInk } from './TabInk'
 import { PlusOutlined, LeftOutlined, RightOutlined, UpOutlined, DownOutlined } from '@hi-ui/icons'
-import { isUndef } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { IconButton } from '@hi-ui/icon-button'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useResizeObserver } from './hooks'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import { getNextTabId } from './utils'
 
 const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
@@ -49,60 +51,121 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
         return defaultActiveId
       },
       activeId,
-      onChange
+      onChange,
+      Object.is
     )
 
-    const [innerRef, setInnerRef] = useState<HTMLDivElement | null>(null)
-    const [scrollRef, setScrollRef] = useState<HTMLDivElement | null>(null)
-    const [translateX, setTranslateX] = useState<number>(0)
-    const [translateY, setTranslateY] = useState<number>(0)
+    const [innerElement, setInnerElement] = useState<HTMLDivElement | null>(null)
+    const [scrollElement, setScrollElement] = useState<HTMLDivElement | null>(null)
+
+    const showHorizontal = direction === 'horizontal'
+
+    const getClientSize = useCallback(
+      (element: HTMLElement) => (showHorizontal ? element.clientWidth : element.clientHeight),
+      [showHorizontal]
+    )
+
+    const [translatePos, setTranslatePos] = useState<number>(0)
+    const [translateBoundPos, setTranslateBoundPos] = useState<number>(0)
+
     const itemsRef = useRef<Record<string, HTMLDivElement | null>>({})
 
     const [showScrollBtn, setShowScrollBtn] = useState(false)
-    const showHorizontal = direction === 'horizontal'
+
+    const resizeScroll = (scrollSize: number, innerSize: number) => {
+      const showScrollBtn = scrollSize > innerSize
+      setShowScrollBtn(showScrollBtn)
+      if (showScrollBtn) {
+        setTranslateBoundPos(scrollSize - innerSize)
+      }
+    }
 
     // 响应式滚动按钮展示
     useResizeObserver({
-      element: innerRef,
-      getSize: (element) => {
-        return showHorizontal ? element.clientWidth : element.clientHeight
-      },
-      onResize: (_, size) => {
-        if (scrollRef) {
-          const showScrollBtn = showHorizontal
-            ? scrollRef.clientWidth > size
-            : scrollRef.clientHeight > size
-          setShowScrollBtn(showScrollBtn)
+      element: innerElement,
+      getSize: getClientSize,
+      onResize: (_, innerSize) => {
+        if (scrollElement) {
+          const scrollSize = getClientSize(scrollElement)
+          resizeScroll(scrollSize, innerSize)
         }
       },
     })
 
     useResizeObserver({
-      element: scrollRef,
-      getSize: (element) => {
-        return showHorizontal ? element.clientWidth : element.clientHeight
-      },
-      onResize: (_, size) => {
-        if (innerRef) {
-          const showScrollBtn = showHorizontal
-            ? size > innerRef.clientWidth
-            : size > innerRef.clientHeight
-          setShowScrollBtn(showScrollBtn)
+      element: scrollElement,
+      getSize: getClientSize,
+      onResize: (_, scrollSize) => {
+        if (innerElement) {
+          const innerSize = getClientSize(innerElement)
+          resizeScroll(scrollSize, innerSize)
         }
       },
     })
 
-    const onClickTab = useCallback(
-      (key: React.ReactText, event: React.MouseEvent) => {
-        if (onTabClick) {
-          onTabClick(key, event)
+    const getTabPos = useCallback(
+      (tabId: React.ReactText) => {
+        let target = 0
+
+        // 获取目标元素的位置
+        const targetElement = itemsRef.current[tabId]
+        if (targetElement) {
+          const rect = targetElement!.getBoundingClientRect()
+          target = showHorizontal ? rect.left : rect.top
         }
-        if (key !== activeTabId && setActiveTabId) {
-          setActiveTabId(key)
-        }
+        return target
       },
-      [activeTabId, onTabClick, setActiveTabId]
+      [showHorizontal]
     )
+
+    const getTabOffset = useCallback(
+      (tabId: React.ReactText) => {
+        // 获取目标元素的位置
+        const targetPos = getTabPos(tabId)
+
+        // 获取基准元素的位置（第一个）
+        let basePos = 0
+        if (isArrayNonEmpty(data)) {
+          const baseItem = data[0]
+          basePos = getTabPos(baseItem.tabId)
+        }
+
+        // 返回目标元素相对基准元素的偏移量
+        return targetPos ? targetPos - basePos : 0
+      },
+      [data, getTabPos]
+    )
+
+    const syncScrollPosition = (tabId: React.ReactText) => {
+      if (!innerElement) return
+      if (!scrollElement) return
+
+      const scrollSize = getClientSize(scrollElement)
+      const innerSize = getClientSize(innerElement)
+      const offsetValue = getTabOffset(tabId)
+
+      // 左边或上半部内容展示不全
+      const currentOffset = -translatePos
+      if (offsetValue < currentOffset) {
+        setTranslatePos(-offsetValue)
+      } else {
+        // 右边或下半部内容展示不全
+        const nextTabId = getNextTabId(data, tabId)
+        const nextOffsetValue = nextTabId !== null ? getTabOffset(nextTabId) : scrollSize
+        const currentOffset = -translatePos + innerSize
+
+        if (nextOffsetValue > currentOffset) {
+          setTranslatePos(translatePos - (nextOffsetValue - currentOffset))
+        }
+      }
+    }
+
+    const onClickTab = useLatestCallback((tabId: React.ReactText, event: React.MouseEvent) => {
+      onTabClick?.(tabId, event)
+      setActiveTabId(tabId)
+      syncScrollPosition(tabId)
+    })
+
     return (
       <div
         style={style}
@@ -110,72 +173,51 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
         ref={ref}
         {...rest}
       >
-        {showScrollBtn && direction === 'horizontal' && (
+        {showScrollBtn ? (
           <IconButton
-            className={`${prefixCls}__left-btn`}
+            className={showHorizontal ? `${prefixCls}__left-btn` : `${prefixCls}__up-btn`}
             effect
-            icon={<LeftOutlined />}
+            disabled={translatePos === 0}
+            icon={showHorizontal ? <LeftOutlined /> : <UpOutlined />}
             onClick={() => {
-              if (scrollRef && innerRef) {
-                const canScroll = -translateX - innerRef.clientWidth
-                let moveWidth = 0
-                if (canScroll >= 0) {
-                  moveWidth = innerRef.clientWidth
-                } else {
-                  moveWidth = -translateX
-                }
+              if (!scrollElement) return
+              if (!innerElement) return
+              // 向前面滚动
+              const clientSize = getClientSize(innerElement)
+              const canScroll = -translatePos - clientSize
+              const moveWidth = canScroll >= 0 ? clientSize : -translatePos
 
-                setTranslateX(translateX + moveWidth)
-              }
+              setTranslatePos((prev) => prev + moveWidth)
             }}
           />
-        )}
-        {showScrollBtn && direction === 'vertical' && (
-          <IconButton
-            className={`${prefixCls}__up-btn`}
-            effect
-            icon={<UpOutlined />}
-            onClick={() => {
-              if (scrollRef && innerRef) {
-                const canScroll = -translateY - innerRef.clientHeight
-                let moveWidth = 0
-                if (canScroll >= 0) {
-                  moveWidth = innerRef.clientHeight
-                } else {
-                  moveWidth = -translateY
-                }
+        ) : null}
 
-                setTranslateY(translateY + moveWidth)
-              }
-            }}
-          />
-        )}
-        <div className={cx(`${prefixCls}__list--inner`)} ref={setInnerRef}>
+        <div className={cx(`${prefixCls}__list--inner`)} ref={setInnerElement}>
           <div
             className={cx(`${prefixCls}__list--scroll`)}
-            ref={setScrollRef}
+            ref={setScrollElement}
             style={
               showScrollBtn
                 ? {
                     transform:
                       direction === 'horizontal'
-                        ? `translateX(${translateX}px)`
-                        : `translateY(${translateY}px)`,
+                        ? `translateX(${translatePos}px)`
+                        : `translateY(${translatePos}px)`,
                   }
-                : {}
+                : undefined
             }
           >
-            {data.map((d, index) => (
+            {data.map((item, index) => (
               <TabItem
                 key={index}
-                {...d}
+                {...item}
                 ref={(node) => {
-                  itemsRef.current[`${d.tabId}`] = node
+                  itemsRef.current[`${item.tabId}`] = node
                 }}
                 type={type}
-                itemRef={itemsRef.current[`${d.tabId}`]}
+                itemRef={itemsRef.current[`${item.tabId}`]}
                 index={index}
-                active={activeTabId === d.tabId}
+                active={activeTabId === item.tabId}
                 prefixCls={prefixCls}
                 draggable={draggable}
                 onTabClick={onClickTab}
@@ -188,55 +230,36 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 direction={direction}
               />
             ))}
-            {type === 'line' && (
+            {type === 'line' ? (
               <TabInk
-                translate={direction === 'horizontal' ? translateX : translateY}
                 prefixCls={prefixCls}
                 direction={direction}
-                tabListRef={innerRef as HTMLDivElement}
-                itemRef={itemsRef.current?.[activeTabId] as HTMLDivElement}
+                activeItemElement={itemsRef.current[activeTabId]}
+                activeTabId={activeTabId}
+                getTabOffset={getTabOffset}
               />
-            )}
+            ) : null}
           </div>
         </div>
-        {showScrollBtn && direction === 'horizontal' && (
+        {showScrollBtn ? (
           <IconButton
             effect
-            className={`${prefixCls}__right-btn`}
-            icon={<RightOutlined />}
+            className={showHorizontal ? `${prefixCls}__right-btn` : `${prefixCls}__down-btn`}
+            disabled={translateBoundPos === -translatePos}
+            icon={showHorizontal ? <RightOutlined /> : <DownOutlined />}
             onClick={() => {
-              if (scrollRef && innerRef) {
-                const scrollWidth = scrollRef.clientWidth
-                const innerWidth = innerRef.clientWidth
+              if (!scrollElement) return
+              if (!innerElement) return
+              // 向后面滚动
+              const scrollSize = getClientSize(scrollElement)
+              const innerSize = getClientSize(innerElement)
+              const canScrollWidth = scrollSize - innerSize + translatePos
+              const moveWidth = canScrollWidth < innerSize ? canScrollWidth : innerSize
 
-                const canScrollWidth = scrollWidth - innerWidth + translateX
-                const moveWidth = canScrollWidth < innerWidth ? canScrollWidth : innerWidth
-
-                setTranslateX((prev) => prev - moveWidth)
-              }
+              setTranslatePos((prev) => prev - moveWidth)
             }}
           />
-        )}
-        {showScrollBtn && direction === 'vertical' && (
-          <IconButton
-            effect
-            className={`${prefixCls}__down-btn`}
-            icon={<DownOutlined />}
-            onClick={() => {
-              if (scrollRef && innerRef) {
-                const canScroll = scrollRef.clientHeight - innerRef.clientHeight + translateY
-                let moveWidth = 0
-                if (canScroll >= innerRef.clientHeight) {
-                  moveWidth = innerRef.clientHeight
-                } else {
-                  moveWidth = canScroll
-                }
-
-                setTranslateY(translateY - moveWidth)
-              }
-            }}
-          />
-        )}
+        ) : null}
         {editable ? (
           <IconButton icon={<PlusOutlined />} className={`${prefixCls}__add-btn`} onClick={onAdd} />
         ) : null}

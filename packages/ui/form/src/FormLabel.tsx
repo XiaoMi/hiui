@@ -17,7 +17,7 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
 
   const {
     labelWidth: labelWidthContext,
-    labelPlacement,
+    labelPlacement: labelPlacementContext,
     showColon: showColonContext,
     contentPosition: contentPositionContext,
   } = useFormContext()
@@ -34,6 +34,7 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     labelWidth: labelWidthProp = labelWidthContext,
     showColon = showColonContext,
     contentPosition = contentPositionContext,
+    labelPlacement = labelPlacementContext,
     ...rest
   } = props
 

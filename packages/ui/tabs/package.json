@@ -49,9 +49,11 @@
     "@hi-ui/env": "^4.0.0-beta.1",
     "@hi-ui/icon-button": "^4.0.0-beta.10",
     "@hi-ui/icons": "^4.0.0-beta.11",
+    "@hi-ui/react-utils": "^4.0.0-beta.6",
     "@hi-ui/type-assertion": "^4.0.0-beta.5",
     "@hi-ui/use-latest": "^4.0.0-beta.5",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.5"
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.5",
+    "@hi-ui/use-unmount-effect": "^4.0.0-beta.5"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

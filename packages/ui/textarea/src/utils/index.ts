@@ -100,8 +100,6 @@ const SIZING_STYLE = [
   'padding-right',
   'padding-bottom',
   'padding-top',
-  'padding-inline-start',
-  'padding-inline-end',
   // border
   'border-left-width',
   'border-right-width',

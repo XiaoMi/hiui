@@ -1,5 +1,8 @@
 import React from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { filterProps } from '@hi-ui/react-utils'
+
+const omitProps = ['tabId', 'tabTitle', 'disabled', 'tabDesc', 'closeable']
 
 export const TabPane: React.FC<TabPaneProps> = ({
   children,
@@ -8,8 +11,9 @@ export const TabPane: React.FC<TabPaneProps> = ({
   active,
   ...rest
 }) => {
+  const htmlProps = filterProps(rest, omitProps)
   return (
-    <div style={style} className={className} {...rest}>
+    <div style={style} className={className} {...htmlProps}>
       {active ? children : null}
     </div>
   )

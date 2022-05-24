@@ -1,12 +1,21 @@
-import React, { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
 /**
  * A hook for running when component unmount
  */
-export const useUnmountEffect = (cleanup: () => void, deps: React.DependencyList = []) => {
-  return useEffect(
-    () => cleanup,
+export const useUnmountEffect = (cleanup?: () => void) => {
+  const unmountRef = useRef(false)
+  const cleanupLatest = useLatestCallback(cleanup)
+
+  useEffect(
+    () => () => {
+      unmountRef.current = true
+      cleanupLatest()
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    deps
+    []
   )
+
+  return unmountRef
 }

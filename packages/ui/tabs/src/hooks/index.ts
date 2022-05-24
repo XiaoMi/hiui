@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
+import { useUnmountEffect } from '@hi-ui/use-unmount-effect'
 
 interface UseResizeObserverProps {
   element: HTMLElement | null
@@ -8,6 +9,9 @@ interface UseResizeObserverProps {
   getSize?: (element: HTMLElement) => any
 }
 
+/**
+ * 响应式监听元素的 size 变化
+ */
 export const useResizeObserver = ({
   element,
   onResize,
@@ -19,11 +23,15 @@ export const useResizeObserver = ({
 
   const prevSizeRef = useRef(initialSize)
 
+  const unmountRef = useUnmountEffect()
+
   useEffect(() => {
     let resizeObserver: ResizeObserver
 
     if (element) {
       const resizeObserver = new ResizeObserver(() => {
+        if (unmountRef.current) return
+
         const getSize = getSizeLatestRef.current
         if (element) {
           if (getSize) {
@@ -45,5 +53,5 @@ export const useResizeObserver = ({
         resizeObserver.disconnect()
       }
     }
-  }, [element, getSizeLatestRef, onResizeLatest])
+  }, [element, getSizeLatestRef, onResizeLatest, unmountRef])
 }

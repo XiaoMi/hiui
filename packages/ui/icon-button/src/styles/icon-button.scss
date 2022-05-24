@@ -56,4 +56,10 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
   &--active {
     color: use-color-mode('primary');
   }
+
+  &--disabled {
+    &.#{$icon-button-prefix} {
+      color: use-color('gray', 400);
+    }
+  }
 }

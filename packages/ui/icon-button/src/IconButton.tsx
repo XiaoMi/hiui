@@ -24,6 +24,7 @@ export const IconButton = forwardRef<HTMLButtonElement | null, IconButtonProps>(
       active = false,
       virtualArea = true,
       effect = false,
+      disabled = false,
       ...rest
     },
     ref
@@ -31,9 +32,10 @@ export const IconButton = forwardRef<HTMLButtonElement | null, IconButtonProps>(
     const cls = cx(
       prefixCls,
       className,
+      disabled && `${prefixCls}--disabled`,
       active && `${prefixCls}--active`,
       virtualArea && `${prefixCls}--virtual-area`,
-      effect && `${prefixCls}--effect`
+      !disabled && effect && `${prefixCls}--effect`
     )
     return (
       <button ref={ref} role={role} className={cls} {...rest}>
@@ -60,6 +62,10 @@ export interface IconButtonProps extends HiBaseHTMLProps<'button'> {
    * 是否开启 hover  和 focus 展示底色变化效果
    */
   effect?: boolean
+  /**
+   * 是否禁用
+   */
+  disabled?: boolean
 }
 
 if (__DEV__) {

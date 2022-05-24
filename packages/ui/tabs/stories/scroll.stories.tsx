@@ -22,7 +22,7 @@ export const Scroll = () => {
   return (
     <>
       <h1>Scroll</h1>
-      <div className="tabs-scroll__wrap">
+      <div className="tabs-scroll__wrap" style={{ maxWidth: 1000 }}>
         <Tabs>
           {data.map((v) => {
             return (

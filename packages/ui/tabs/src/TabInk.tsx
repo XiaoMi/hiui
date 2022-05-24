@@ -4,36 +4,48 @@ import { cx } from '@hi-ui/classname'
 export const TabInk: React.FC<TabInkProps> = ({
   disabled,
   prefixCls,
-  itemRef,
-  tabListRef,
+  activeItemElement,
   direction,
-  translate,
+  activeTabId,
+  getTabOffset,
 }) => {
   const inkRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (inkRef.current && itemRef && tabListRef) {
-      const itemRect = itemRef.getBoundingClientRect()
-      const listRect = tabListRef.getBoundingClientRect()
-      let _style: React.CSSProperties = {}
-      if (direction === 'vertical') {
-        _style = {
-          top: `${itemRect.top - listRect.top - translate + 2 + 8}px`,
-          height: `${itemRect.height - 4 - 16}px`,
-          left: '',
-          width: '',
-        }
-      } else {
-        _style = {
-          left: `${itemRect.left - listRect.left - translate + 20}px`,
-          width: `${itemRect.width - 40}px`,
-          top: '',
-          height: '',
-        }
+    if (!inkRef.current) return
+    if (!activeItemElement) return
+
+    const computedStyle = getComputedStyle(activeItemElement)
+    const itemRect = activeItemElement.getBoundingClientRect()
+    const offset = getTabOffset(activeTabId)
+
+    let _style: React.CSSProperties
+
+    if (direction === 'vertical') {
+      const paddingTop = parseFloat(computedStyle.getPropertyValue('padding-top'))
+      const paddingBottom = parseFloat(computedStyle.getPropertyValue('padding-bottom'))
+
+      _style = {
+        // 2px 保证尽量和文字顶部对齐，减少文本行高的影响
+        top: offset + paddingTop + 2 + 'px',
+        height: `${itemRect.height - paddingTop - paddingBottom - 4}px`,
+        left: '',
+        width: '',
       }
-      Object.assign(inkRef.current.style, _style)
+    } else {
+      const paddingLeft = parseFloat(computedStyle.getPropertyValue('padding-left'))
+      const paddingRight = parseFloat(computedStyle.getPropertyValue('padding-right'))
+
+      _style = {
+        left: offset + paddingLeft + 'px',
+        width: `${itemRect.width - paddingRight - paddingLeft}px`,
+        top: '',
+        height: '',
+      }
     }
-  }, [itemRef, tabListRef, direction])
+
+    Object.assign(inkRef.current.style, _style)
+  }, [activeItemElement, direction, activeTabId, getTabOffset])
 
   return (
     <div
@@ -46,10 +58,10 @@ export const TabInk: React.FC<TabInkProps> = ({
 }
 
 interface TabInkProps {
-  disabled?: boolean
   prefixCls?: string
-  itemRef: HTMLElement
-  tabListRef: HTMLElement
+  disabled?: boolean
+  activeItemElement: HTMLElement | null
   direction: 'vertical' | 'horizontal'
-  translate: number
+  activeTabId: React.ReactText
+  getTabOffset: (tabId: React.ReactText) => number
 }

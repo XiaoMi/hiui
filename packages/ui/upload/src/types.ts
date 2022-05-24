@@ -73,7 +73,7 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    */
   maxCount?: number
   /**
-   * 必选，上传的地址 \| (file) => Promise
+   * 上传的地址
    */
   uploadAction?: string | ((file: File) => Promise<string>)
   /**
@@ -133,7 +133,7 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    */
   customUpload?: (files: HTMLInputElement['files']) => void
   /**
-   * 上传回调
+   * 上传请求成功后回调
    */
   onChange?: (
     file: UploadFileItem,
