@@ -1,7 +1,7 @@
 import React from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useSelect as useSelectDefault } from '@hi-ui/use-check'
-import { FlattedSelectItem, SelectItemEventData, SelectItemRequiredProps } from './types'
+import { FlattedSelectDataItem, SelectItemEventData, SelectItemRequiredProps } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
 const NOOP_VALUE = ''
@@ -42,7 +42,7 @@ export const useSelect = ({
     }
   )
 
-  const getSelectItemEventData = useLatestCallback((node: FlattedSelectItem) => {
+  const getSelectItemEventData = useLatestCallback((node: FlattedSelectDataItem) => {
     const event = {
       ...node,
       ...getRequiredProps(node.id),

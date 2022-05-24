@@ -49,13 +49,3 @@ export interface TreeSelectDataSource<T = any> {
    */
   transformResponse?: (response: object) => T
 }
-
-export type FilterOptionFunc = (keyword: string, item: TreeSelectDataItem) => boolean
-export type DataSourceFunc = (keyword: string) => TreeSelectDataSource
-
-export type FieldNames = {
-  id?: string
-  title?: string
-  disabled?: string
-  children?: string
-}

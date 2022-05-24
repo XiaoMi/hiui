@@ -6,7 +6,7 @@ import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { useSelect, UseSelectProps } from './use-select'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { SelectProvider } from './context'
-import { FieldNames, FlattedSelectItem, SelectItemEventData, SelectMergedItem } from './types'
+import { FlattedSelectDataItem, SelectItemEventData, SelectMergedItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import VirtualList from 'rc-virtual-list'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
@@ -99,7 +99,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     const { value, tryChangeValue, getSelectItemEventData } = context
 
     // 临时缓存选中异步数据
-    const [selectedItems, setSelectedItems] = useState<FlattedSelectItem[]>([])
+    const [selectedItems, setSelectedItems] = useState<FlattedSelectDataItem[]>([])
 
     // ************************** 异步搜索 ************************* //
 
@@ -161,7 +161,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     }, [shouldUseSearch, searchMode, flattedData, flattedDataAsync, stateInSearch.data])
 
     const mergedData = useMemo(() => {
-      let nextData = flattedData as FlattedSelectItem[]
+      let nextData = flattedData as FlattedSelectDataItem[]
 
       if (selectedItems) {
         nextData = selectedItems.concat(flattedData as any[])
@@ -255,7 +255,7 @@ export interface SelectProps
   /**
    * 设置 data 中 id, title, disabled, children 对应的 key
    */
-  fieldNames?: FieldNames
+  fieldNames?: Record<string, string>
   /**
    * 设置展现形式
    */

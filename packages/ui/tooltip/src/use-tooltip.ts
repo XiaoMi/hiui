@@ -11,7 +11,7 @@ import { mergeRefs, withDefaultProps } from '@hi-ui/react-utils'
 import { useUID } from '@hi-ui/use-id'
 import { useUnmountEffect } from '@hi-ui/use-unmount-effect'
 import { normalizeArray } from '@hi-ui/array-utils'
-import { TooltipTriggerActionEnum, TriggerActionEnum } from './types'
+import { TooltipTriggerActionEnum } from './types'
 import { useTimeout } from '@hi-ui/use-timeout'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
@@ -114,7 +114,7 @@ export const useTooltip = ({
         ...rest,
       }
 
-      if (triggersMemo.includes(TriggerActionEnum.HOVER)) {
+      if (triggersMemo.includes(TooltipTriggerActionEnum.HOVER)) {
         popoverProps.onMouseEnter = mockDefaultHandlers(props.onMouseEnter, () => {
           hoveringRef.current = true
         })
@@ -136,23 +136,23 @@ export const useTooltip = ({
         'aria-expanded': visible,
       }
 
-      if (triggersMemo.includes(TriggerActionEnum.CLICK)) {
+      if (triggersMemo.includes(TooltipTriggerActionEnum.CLICK)) {
         triggerProps.onClick = mockDefaultHandlers(props.onClick, visibleAction.not)
       }
 
-      if (triggersMemo.includes(TriggerActionEnum.HOVER)) {
+      if (triggersMemo.includes(TooltipTriggerActionEnum.HOVER)) {
         // @ref https://www.w3.org/WAI/WCAG21/Understanding/content-on-hover-or-focus.html
         triggerProps.onFocus = mockDefaultHandlers(props.onFocus, visibleAction.on)
         triggerProps.onBlur = mockDefaultHandlers(props.onBlur, visibleAction.off)
 
         triggerProps.onMouseEnter = mockDefaultHandlers(props.onMouseEnter, handlePopperEnter)
         triggerProps.onMouseLeave = mockDefaultHandlers(props.onMouseLeave, handlePopperLeave)
-      } else if (triggersMemo.includes(TriggerActionEnum.FOCUS)) {
+      } else if (triggersMemo.includes(TooltipTriggerActionEnum.FOCUS)) {
         triggerProps.onFocus = mockDefaultHandlers(props.onFocus, visibleAction.on)
         triggerProps.onBlur = mockDefaultHandlers(props.onBlur, visibleAction.off)
       }
 
-      if (triggersMemo.includes(TriggerActionEnum.CONTEXTMENU)) {
+      if (triggersMemo.includes(TooltipTriggerActionEnum.CONTEXTMENU)) {
         triggerProps.onContextMenu = mockDefaultHandlers(props.onContextMenu, (evt: MouseEvent) => {
           // 阻止呼出默认浏览器菜单
           evt.preventDefault()

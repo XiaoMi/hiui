@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import {
-  CascaderExpandTriggerEnum,
+  CheckCascaderExpandTriggerEnum,
   CheckCascadeItemEventData,
   FlattedCheckCascaderDataItem,
   CheckCascaderDataItem,
@@ -177,7 +177,7 @@ export interface CascaderMenusProps {
   /**
    * 次级菜单的展开方式
    */
-  expandTrigger?: CascaderExpandTriggerEnum
+  expandTrigger?: CheckCascaderExpandTriggerEnum
   /**
    * 是否禁止使用
    */

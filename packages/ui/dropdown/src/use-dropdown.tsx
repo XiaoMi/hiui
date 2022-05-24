@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useCallback } from 'react'
-import { TriggerActionEnum } from './types'
+import { DropdownTriggerActionEnum } from './types'
 import { normalizeTrigger } from './utils'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -15,7 +15,7 @@ const NOOP_ARRAY = [] as []
 
 export const useDropdown = (props: UseDropdownProps) => {
   const {
-    trigger: triggerProp = TriggerActionEnum.HOVER,
+    trigger: triggerProp = DropdownTriggerActionEnum.HOVER,
     disabled = false,
     parents = NOOP_ARRAY,
     width,
@@ -92,11 +92,11 @@ export const useDropdown = (props: UseDropdownProps) => {
        */
       triggerMethods.reduce((acc, cur) => {
         switch (cur) {
-          case TriggerActionEnum.HOVER:
+          case DropdownTriggerActionEnum.HOVER:
             acc.onMouseEnter = mockDefaultHandlers(props.onMouseEnter, handlePopperEnter)
             acc.onMouseLeave = mockDefaultHandlers(props.onMouseLeave, handlePopperLeave)
             break
-          case TriggerActionEnum.CONTEXTMENU:
+          case DropdownTriggerActionEnum.CONTEXTMENU:
             acc.onContextMenu = mockDefaultHandlers(
               props.onContextMenu,
               (evt: React.MouseEvent) => {
@@ -105,7 +105,7 @@ export const useDropdown = (props: UseDropdownProps) => {
               }
             )
             break
-          case TriggerActionEnum.CLICK:
+          case DropdownTriggerActionEnum.CLICK:
             acc.onClick = mockDefaultHandlers(props.onClick, menuVisibleAction.not)
             break
         }
@@ -142,7 +142,7 @@ export const useDropdown = (props: UseDropdownProps) => {
       },
     }
 
-    if (triggerMethods.includes(TriggerActionEnum.HOVER)) {
+    if (triggerMethods.includes(DropdownTriggerActionEnum.HOVER)) {
       // @ts-ignore
       menuProps.onMouseEnter = () => {
         hoveringRef.current = true
@@ -172,7 +172,7 @@ export interface UseDropdownProps {
   /**
    * 下拉菜单触发方式
    */
-  trigger?: TriggerActionEnum | TriggerActionEnum[]
+  trigger?: DropdownTriggerActionEnum | DropdownTriggerActionEnum[]
   /**
    * 是否禁用下拉菜单
    */

@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react'
 import {
-  CascaderExpandTriggerEnum,
+  CheckCascaderExpandTriggerEnum,
   CheckCascadeItemEventData,
   CheckCascaderDataItem,
   FlattedCheckCascaderDataItem,
@@ -13,7 +13,7 @@ interface CheckCascaderContext {
     idPaths: React.ReactText[]
   ) => Promise<CheckCascaderDataItem[] | void> | void
   disabled?: boolean
-  expandTrigger?: CascaderExpandTriggerEnum
+  expandTrigger?: CheckCascaderExpandTriggerEnum
   onCheck?: (option: CheckCascadeItemEventData, shouldChecked: boolean) => void
   onSelect?: (selectedOption: CheckCascadeItemEventData) => void
   flatted?: boolean

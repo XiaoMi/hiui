@@ -1,5 +1,5 @@
 import { isArray } from '@hi-ui/type-assertion'
-import { TriggerActionEnum } from '../types'
+import { DropdownTriggerActionEnum } from '../types'
 
 /**
  * 抹平 trigger 结构为数组
@@ -7,5 +7,6 @@ import { TriggerActionEnum } from '../types'
  * @param trigger
  * @returns
  */
-export const normalizeTrigger = (trigger: TriggerActionEnum | TriggerActionEnum[]) =>
-  isArray(trigger) ? Array.from(new Set(trigger)) : [trigger]
+export const normalizeTrigger = (
+  trigger: DropdownTriggerActionEnum | DropdownTriggerActionEnum[]
+) => (isArray(trigger) ? Array.from(new Set(trigger)) : [trigger])

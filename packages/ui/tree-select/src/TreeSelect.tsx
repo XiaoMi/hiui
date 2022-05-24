@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { FieldNames, TreeSelectDataItem } from './types'
+import { TreeSelectDataItem } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -285,7 +285,7 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' |
   /**
    * 设置 data 中 id, title, disabled, children 对应的 key (3.0 新增)	object	-	{ title: 'title', id: 'id',disabled:'disabled', children: 'children'}
    */
-  fieldNames?: FieldNames
+  fieldNames?: Record<string, string>
   /**
    * 数据选择类型
    */

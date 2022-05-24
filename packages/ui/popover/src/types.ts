@@ -1,15 +1,13 @@
 import { ValueOf } from '@hi-ui/core'
 
-export const TriggerActionEnum = {
+export const PopoverTriggerActionEnum = {
   CLICK: 'click',
   CONTEXTMENU: 'contextmenu',
   HOVER: 'hover',
   FOCUS: 'focus',
 } as const
 
-export const triggerActions = Object.values(TriggerActionEnum)
-
 // 对外暴露同名联合类型
 
 // eslint-disable-next-line no-redeclare
-export type TriggerActionEnum = ValueOf<typeof TriggerActionEnum>
+export type PopoverTriggerActionEnum = ValueOf<typeof PopoverTriggerActionEnum>

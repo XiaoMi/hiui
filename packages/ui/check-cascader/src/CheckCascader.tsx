@@ -6,7 +6,7 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import {
   CheckCascaderDataItem,
-  CascaderExpandTriggerEnum,
+  CheckCascaderExpandTriggerEnum,
   CheckCascadeItemEventData,
   FlattedCheckCascaderDataItem,
 } from './types'
@@ -289,7 +289,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
   /**
    * 次级菜单的展开方式
    */
-  expandTrigger?: CascaderExpandTriggerEnum
+  expandTrigger?: CheckCascaderExpandTriggerEnum
   /**
    * 是否可搜索（仅在 title 为字符串时支持）
    */

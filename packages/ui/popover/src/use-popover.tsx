@@ -1,5 +1,5 @@
 import React from 'react'
-import { TriggerActionEnum } from './types'
+import { PopoverTriggerActionEnum } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { omitPopperOverlayProps, PopperOverlayProps } from '@hi-ui/popper'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
@@ -76,7 +76,7 @@ export const usePopover = ({
         id: popoverId,
       }
 
-      if (triggersMemo.includes(TriggerActionEnum.HOVER)) {
+      if (triggersMemo.includes(PopoverTriggerActionEnum.HOVER)) {
         popoverProps.onMouseEnter = mockDefaultHandlers(props.onMouseEnter, () => {
           hoveringRef.current = true
         })
@@ -100,23 +100,23 @@ export const usePopover = ({
         'aria-expanded': visible,
       }
 
-      if (triggersMemo.includes(TriggerActionEnum.CLICK)) {
+      if (triggersMemo.includes(PopoverTriggerActionEnum.CLICK)) {
         triggerProps.onClick = mockDefaultHandlers(props.onClick, visibleAction.not)
       }
 
-      if (triggersMemo.includes(TriggerActionEnum.HOVER)) {
+      if (triggersMemo.includes(PopoverTriggerActionEnum.HOVER)) {
         // @ref https://www.w3.org/WAI/WCAG21/Understanding/content-on-hover-or-focus.html
         triggerProps.onFocus = mockDefaultHandlers(props.onFocus, visibleAction.on)
         triggerProps.onBlur = mockDefaultHandlers(props.onBlur, visibleAction.off)
 
         triggerProps.onMouseEnter = mockDefaultHandlers(props.onMouseEnter, handlePopoverEnter)
         triggerProps.onMouseLeave = mockDefaultHandlers(props.onMouseLeave, handlePopoverLeave)
-      } else if (triggersMemo.includes(TriggerActionEnum.FOCUS)) {
+      } else if (triggersMemo.includes(PopoverTriggerActionEnum.FOCUS)) {
         triggerProps.onFocus = mockDefaultHandlers(props.onFocus, visibleAction.on)
         triggerProps.onBlur = mockDefaultHandlers(props.onBlur, visibleAction.off)
       }
 
-      if (triggersMemo.includes(TriggerActionEnum.CONTEXTMENU)) {
+      if (triggersMemo.includes(PopoverTriggerActionEnum.CONTEXTMENU)) {
         triggerProps.onContextMenu = mockDefaultHandlers(
           props.onContextMenu,
           (evt: React.MouseEvent) => {
@@ -168,7 +168,7 @@ export interface UsePopoverProps extends PopperOverlayProps {
   /**
    * 	气泡卡片触发方式
    */
-  trigger?: TriggerActionEnum[] | TriggerActionEnum
+  trigger?: PopoverTriggerActionEnum[] | PopoverTriggerActionEnum
 }
 
 export type UsePopoverReturn = ReturnType<typeof usePopover>

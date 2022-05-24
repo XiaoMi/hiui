@@ -64,8 +64,3 @@ export interface CascaderItemRequiredProps {
 export interface CascaderItemEventData extends FlattedCascaderDataItem, CascaderItemRequiredProps {}
 
 export type CascaderExpandTriggerEnum = 'click' | 'hover'
-
-export interface NodeRoot<T> {
-  depth: -1
-  children: T[]
-}

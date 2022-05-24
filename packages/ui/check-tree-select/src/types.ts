@@ -79,9 +79,6 @@ export interface CheckTreeSelectDataSource<T = any> {
   transformResponse?: (response: object) => T
 }
 
-export type FilterOptionFunc = (keyword: string, item: CheckTreeSelectDataItem) => boolean
-export type DataSourceFunc = (keyword: string) => CheckTreeSelectDataSource
-
 export interface CheckTreeSelectItemEventData extends TreeNodeEventData {}
 
 export type CheckTreeSelectAppearanceEnum = HiBaseAppearanceEnum | undefined

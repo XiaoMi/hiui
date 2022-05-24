@@ -32,19 +32,7 @@ export interface SelectGroupDataItem {
 
 export type SelectMergedItem = SelectDataItem | SelectGroupDataItem
 
-/**
- * 设置模型数据读取映射
- */
-export type FieldNames = {
-  id?: string
-  title?: string
-  disabled?: string
-  children?: string
-}
-
-export type FieldNamesKeys = keyof FieldNames
-
-export interface FlattedSelectItem extends SelectDataItem {
+export interface FlattedSelectDataItem extends SelectDataItem {
   /**
    * 关联用户传入的原始节点
    */
@@ -56,11 +44,11 @@ export interface FlattedSelectItem extends SelectDataItem {
   /**
    * 该节点的父节点
    */
-  parent?: FlattedSelectItem
+  parent?: FlattedSelectDataItem
   /**
    * 该节点的子节点列表
    */
-  children?: FlattedSelectItem[]
+  children?: FlattedSelectDataItem[]
 }
 
 export interface SelectItemRequiredProps {
@@ -68,4 +56,4 @@ export interface SelectItemRequiredProps {
   focused: boolean
 }
 
-export interface SelectItemEventData extends FlattedSelectItem, SelectItemRequiredProps {}
+export interface SelectItemEventData extends FlattedSelectDataItem, SelectItemRequiredProps {}

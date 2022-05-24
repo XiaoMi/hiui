@@ -1,13 +1,12 @@
 import { useMemo } from 'react'
 import { baseFlattenTree } from '@hi-ui/tree-utils'
-import { FieldNamesKeys } from '../types'
 
 const NOOP_ARRAY = [] as []
 const DEFAULT_FIELD_NAMES = {} as any
 
 export const useFlattenData = ({ data = NOOP_ARRAY, fieldNames = DEFAULT_FIELD_NAMES }: any) => {
   const flattedData = useMemo(() => {
-    const getKeyFields = (node: any, key: FieldNamesKeys) => node[fieldNames[key] || key]
+    const getKeyFields = (node: any, key: string) => node[fieldNames[key] || key]
 
     return baseFlattenTree({
       tree: data,
