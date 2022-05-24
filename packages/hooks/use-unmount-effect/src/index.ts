@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
 /**
- * A hook for running when component unmount
+ * A hook for running when component unmount, will return unmountRef sign
  */
 export const useUnmountEffect = (cleanup?: () => void) => {
   const unmountRef = useRef(false)
