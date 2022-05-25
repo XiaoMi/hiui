@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/slider",
-  "version": "4.0.0-beta.22",
+  "version": "4.0.0-beta.23",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -48,7 +48,7 @@
     "@hi-ui/core-css": "^4.0.0-beta.5",
     "@hi-ui/dom-utils": "^4.0.0-beta.6",
     "@hi-ui/env": "^4.0.0-beta.1",
-    "@hi-ui/tooltip": "^4.0.0-beta.22",
+    "@hi-ui/tooltip": "^4.0.0-beta.23",
     "@hi-ui/type-assertion": "^4.0.0-beta.5",
     "@hi-ui/use-merge-refs": "^4.0.0-beta.5",
     "@hi-ui/use-outside-click": "^4.0.0-beta.5",

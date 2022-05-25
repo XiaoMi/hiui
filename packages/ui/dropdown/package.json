@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/dropdown",
-  "version": "4.0.0-beta.21",
+  "version": "4.0.0-beta.22",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -50,13 +50,13 @@
     "@hi-ui/dom-utils": "^4.0.0-beta.6",
     "@hi-ui/env": "^4.0.0-beta.1",
     "@hi-ui/icons": "^4.0.0-beta.11",
-    "@hi-ui/popper": "^4.0.0-beta.17",
+    "@hi-ui/popper": "^4.0.0-beta.18",
     "@hi-ui/react-utils": "^4.0.0-beta.6",
     "@hi-ui/type-assertion": "^4.0.0-beta.5",
     "@hi-ui/use-latest": "^4.0.0-beta.5",
     "@hi-ui/use-timeout": "^4.0.0-beta.6",
     "@hi-ui/use-toggle": "^4.0.0-beta.5",
-    "@hi-ui/use-unmount-effect": "^4.0.0-beta.7"
+    "@hi-ui/use-unmount-effect": "^4.0.0-beta.8"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
