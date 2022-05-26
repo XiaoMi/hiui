@@ -37,6 +37,7 @@ const InternalModalComp = ({
   style,
   className,
   destroyOnClose,
+  modalContentRef,
   localeDatas,
   foucsElementOnClose = null,
   theme,
@@ -171,7 +172,9 @@ const InternalModalComp = ({
                   />
                 )}
               </div>
-              <div className={`${PREFIX}__content`}>{children}</div>
+              <div ref={modalContentRef} className={`${PREFIX}__content`}>
+                {children}
+              </div>
               {footer !== null && (
                 <div
                   className={Classnames(`${PREFIX}__footer`, {
