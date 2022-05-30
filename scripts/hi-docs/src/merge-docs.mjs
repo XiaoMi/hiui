@@ -108,12 +108,14 @@ function storiesRender(name, stories) {
 function getStoryBlock(name, story) {
   return [
     // CodeBlock mdx
+    heading(3, text(story.title)),
+    story.description ? text(story.description) : false,
     html(`<CodeBlock
   src="${Path.join('../stories', name, story.filepath)}"
   title="${story.title}"
   description="${story.description}"
 />`),
-  ]
+  ].filter(Boolean)
 }
 
 function propsRender(props) {

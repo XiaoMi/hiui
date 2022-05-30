@@ -233,7 +233,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
             {type === 'line' ? (
               <TabInk
                 prefixCls={prefixCls}
-                direction={direction}
+                showHorizontal
                 activeItemElement={itemsRef.current[activeTabId]}
                 activeTabId={activeTabId}
                 getTabOffset={getTabOffset}

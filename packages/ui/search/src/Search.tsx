@@ -266,7 +266,7 @@ export interface SearchProps extends Omit<InputProps, 'onChange' | 'appearance'>
    */
   onChange?: (value: string) => void
   /**
-   * 点击搜索图标、清除图标，或聚焦按下回车键时的回调
+   * 点击搜索图标、清除图标，点击下拉选项，或聚焦按下回车键时的回调
    */
   onSearch?: (value: string) => void
   /**

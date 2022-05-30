@@ -18,7 +18,6 @@ async function findComponentPkgFiles(baseURL) {
     ignore: ['**/node_modules/**'],
   })
 
-  // console.log(tsFiles)
   return tsFiles.filter(
     (v) =>
       !helpfulPrivatePkgs.concat(othersPrivatePkgs).some((privateName) => {

@@ -1,17 +1,18 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useCallback } from 'react'
 import { cx } from '@hi-ui/classname'
+import { useResizeObserver } from './hooks'
 
 export const TabInk: React.FC<TabInkProps> = ({
   disabled,
   prefixCls,
   activeItemElement,
-  direction,
   activeTabId,
   getTabOffset,
+  showHorizontal,
 }) => {
   const inkRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
+  const setTabLnkPositionStyle = useCallback(() => {
     if (!inkRef.current) return
     if (!activeItemElement) return
 
@@ -21,7 +22,7 @@ export const TabInk: React.FC<TabInkProps> = ({
 
     let _style: React.CSSProperties
 
-    if (direction === 'vertical') {
+    if (!showHorizontal) {
       const paddingTop = parseFloat(computedStyle.getPropertyValue('padding-top'))
       const paddingBottom = parseFloat(computedStyle.getPropertyValue('padding-bottom'))
 
@@ -43,9 +44,21 @@ export const TabInk: React.FC<TabInkProps> = ({
         height: '',
       }
     }
-
     Object.assign(inkRef.current.style, _style)
-  }, [activeItemElement, direction, activeTabId, getTabOffset])
+  }, [activeItemElement, activeTabId, getTabOffset, showHorizontal])
+
+  useEffect(() => {
+    setTabLnkPositionStyle()
+  }, [setTabLnkPositionStyle])
+
+  useResizeObserver({
+    element: activeItemElement,
+    getSize: (element) => {
+      const itemRect = element.getBoundingClientRect()
+      return showHorizontal ? itemRect.width : itemRect.height
+    },
+    onResize: setTabLnkPositionStyle,
+  })
 
   return (
     <div
@@ -61,7 +74,7 @@ interface TabInkProps {
   prefixCls?: string
   disabled?: boolean
   activeItemElement: HTMLElement | null
-  direction: 'vertical' | 'horizontal'
   activeTabId: React.ReactText
   getTabOffset: (tabId: React.ReactText) => number
+  showHorizontal: boolean
 }

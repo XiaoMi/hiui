@@ -38,10 +38,6 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
   &#{$this}--disabled {
     cursor: not-allowed;
-
-    .#{$tag-input-mock-prefix}__tag {
-      background-color: use-color('gray', 200);
-    }
   }
 
   &--wrap {
@@ -174,9 +170,10 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
       #{$this}--disabled & {
         cursor: not-allowed;
+        color: use-color('gray', 400);
 
         &:hover {
-          color: use-color('gray', 500);
+          color: use-color('gray', 400);
         }
       }
     }
@@ -378,22 +375,36 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     }
 
     &-line,
-    &-unset,
     &-filled {
       &.#{$tag-input-mock-prefix}--disabled {
+        background-color: use-color('gray', 100);
         color: use-color('gray', 400);
 
-        // .#{$tag-input-mock-prefix}__suffix,
-        // .#{$tag-input-mock-prefix}__placeholder {
-        //   color: use-color('gray', 400);
-        // }
+        .#{$tag-input-mock-prefix}__tag {
+          background-color: use-color-static('white');
+          color: use-color('gray', 400);
+
+          &--total {
+            background-color: use-color-static('white');
+            color: use-color('gray', 400);
+          }
+        }
       }
     }
 
-    &-line,
-    &-filled {
+    &-unset {
       &.#{$tag-input-mock-prefix}--disabled {
-        background-color: use-color('gray', 200);
+        color: use-color('gray', 400);
+
+        .#{$tag-input-mock-prefix}__tag {
+          background-color: use-color('gray', 100);
+          color: use-color('gray', 400);
+
+          &--total {
+            background-color: use-color('gray', 100);
+            color: use-color('gray', 400);
+          }
+        }
       }
     }
   }
