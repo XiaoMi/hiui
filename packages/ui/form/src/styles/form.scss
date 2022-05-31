@@ -25,6 +25,7 @@ $prefix: '#{$component-prefix}-form' !default;
     &-horizontal {
       display: flex;
       flex-wrap: wrap;
+      column-gap: use-spacing(10);
 
       // 上下布局只在水平表单中自动填充高度
       .#{$prefix}-label__indent {

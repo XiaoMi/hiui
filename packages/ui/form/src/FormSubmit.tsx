@@ -51,7 +51,7 @@ export interface FormSubmitProps extends Omit<ButtonProps, 'onClick'> {
   /**
    * 点击提交后触发
    */
-  onClick?: () => void
+  onClick?: (result: any, error: any) => void
 }
 
 if (__DEV__) {
