@@ -4,6 +4,8 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import { setAttrStatus } from '@hi-ui/dom-utils'
 import { format, formatAmount, pure } from './utils'
 
+const EXTRA_TYPE = ['text', 'id', 'tel', 'card', 'amount', 'email']
+
 export const useInput = ({
   name,
   autoFocus = false,
@@ -92,9 +94,12 @@ export const useInput = ({
   )
 
   const getInputProps = useCallback(() => {
+    const nativeType = EXTRA_TYPE.includes(type) ? undefined : type
+
     return {
       ...nativeInputProps,
       value: format(value, type),
+      type: nativeType,
       onChange: handleChange,
       onFocus: handleFocus,
       onBlur: handleBlur,

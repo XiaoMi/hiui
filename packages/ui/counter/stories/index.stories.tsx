@@ -7,6 +7,7 @@ export * from './size.stories'
 export * from './controlled.stories'
 export * from './step.stories'
 export * from './Wheel.stories'
+export * from './number-input.stories'
 
 export default {
   title: 'Data Input/Counter',
