@@ -61,6 +61,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       dataSource,
       filterOption,
       // popper
+      visible,
       onOpen,
       onClose,
       // render
@@ -79,6 +80,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+      visible,
       disabled,
       onOpen,
       onClose,

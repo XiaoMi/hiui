@@ -48,6 +48,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       // @ts-ignore
       dataSource,
       disabled = false,
+      visible,
       onOpen,
       onClose,
       // clearable = false,
@@ -95,6 +96,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       : placeholderProp
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+      visible,
       disabled,
       onOpen,
       onClose,

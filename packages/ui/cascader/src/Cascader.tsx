@@ -49,6 +49,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     render: titleRender,
     overlayClassName,
     data = NOOP_ARRAY,
+    visible,
     onOpen,
     onClose,
     ...rest
@@ -60,6 +61,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
   const flatted = type === 'flatted'
 
   const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+    visible,
     disabled,
     onOpen,
     onClose,

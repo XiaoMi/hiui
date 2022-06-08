@@ -59,6 +59,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       height,
       itemHeight = 40,
       virtual = true,
+      visible,
       onOpen,
       onClose,
       // picker
@@ -87,6 +88,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     // ************************** Picker ************************* //
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+      visible,
       disabled,
       onOpen,
       onClose,

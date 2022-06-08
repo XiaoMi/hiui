@@ -43,6 +43,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       photoSize = 'default',
+      preview,
       ...rest
     },
     ref
@@ -246,6 +247,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
           )}
         </ul>
         <Preview
+          {...preview}
           visible={visible}
           onClose={closeModal}
           src={images}

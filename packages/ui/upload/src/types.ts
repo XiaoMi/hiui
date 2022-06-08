@@ -125,6 +125,10 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    */
   photoSize?: 'small' | 'default' | 'large'
   /**
+   * 预览透传 props
+   */
+  preview?: { className?: string }
+  /**
    * 上传文件前的钩子，返回 true 继续上传，其他终止上传
    */
   beforeUpload?: (file: UploadFileItem, fileList: UploadFileItem[]) => boolean

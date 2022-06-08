@@ -11,6 +11,7 @@ export * from './dynamic.stories'
 export * from './display-render.stories'
 export * from './title-render.stories'
 export * from './field-names.stories'
+export * from './visible.stories'
 
 export default {
   title: 'Data Input/Cascader',

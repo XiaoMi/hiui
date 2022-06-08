@@ -65,6 +65,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       overlayClassName,
       type = 'tree',
       checkedMode,
+      visible,
       onOpen,
       onClose,
       ...rest
@@ -80,6 +81,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     const flatted = type === 'flatted'
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+      visible,
       disabled,
       onOpen,
       onClose,

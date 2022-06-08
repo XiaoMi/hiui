@@ -42,6 +42,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       data = DEFAULT_DATA,
       dataSource,
       disabled = false,
+      visible,
       onOpen,
       onClose,
       // clearable = false,
@@ -84,6 +85,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       : placeholderProp
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
+      visible,
       disabled,
       onOpen,
       onClose,

@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useRef, useState } from 'react'
+import React, { forwardRef, useCallback, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLFieldProps } from '@hi-ui/core'
@@ -106,7 +106,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
     // *********************** 弹窗管理 ********************** //
 
-    const targetElementRef = useRef<HTMLDivElement>(null)
+    const [targetElement, setTargetElement] = useState<HTMLDivElement | null>(null)
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
       defaultVisible: false,
@@ -154,7 +154,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
         {...rest}
       >
         {React.cloneElement(trigger, {
-          ref: targetElementRef,
+          ref: setTargetElement,
           onClick: mockDefaultHandlers(trigger.props.onClick, menuVisible ? hideMenu : showMenu),
           disabled: disabled,
         })}
@@ -175,7 +175,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
               searchInputElement?.focus()
             }
           }}
-          attachEl={targetElementRef.current}
+          attachEl={targetElement}
         >
           <div
             className={`${prefixCls}__panel`}

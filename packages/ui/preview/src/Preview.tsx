@@ -34,6 +34,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       prefixCls = PREVIEW_PREFIX,
       role = 'preview',
       className,
+      style,
       visible = false,
       current,
       defaultCurrent,
@@ -151,7 +152,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
 
     return (
       <Portal>
-        <div ref={ref} role={role} className={cls} style={{ display: 'none' }}>
+        <div ref={ref} role={role} className={cls} style={{ ...style, display: 'none' }}>
           <CSSTransition
             classNames={`${prefixCls}__mask--transition`}
             in={visible}

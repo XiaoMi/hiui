@@ -46,6 +46,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       customUpload,
       photoSize = 'small',
       avatarOptions = {},
+      preview,
       ...rest
     },
     ref
@@ -269,7 +270,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             </FileSelect>
           )}
         </ul>
-        <Preview visible={visible} onClose={closeModal} src={previewFile} />
+        <Preview {...preview} visible={visible} onClose={closeModal} src={previewFile} />
         <Modal
           visible={cropperVisible}
           onConfirm={() => {
