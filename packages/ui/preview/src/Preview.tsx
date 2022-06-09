@@ -75,12 +75,20 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       }
     }, [visible, resetTransform, active])
 
-    // 点击容器区域
-    const onClickContainer = useLatestCallback((e: React.MouseEvent) => {
-      if (e.target === e.currentTarget) {
-        onClose?.()
-      }
+    const handleClose = useLatestCallback((evt: React.MouseEvent) => {
+      evt.stopPropagation()
+      onClose?.()
     })
+
+    // 点击容器区域
+    const onClickContainer = useCallback(
+      (evt: React.MouseEvent) => {
+        if (evt.target === evt.currentTarget) {
+          handleClose(evt)
+        }
+      },
+      [handleClose]
+    )
 
     // 缩放处理
     const handleZoom = useCallback(
@@ -174,7 +182,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
             <>
               <div className={`${prefixCls}__header`}>
                 {title}
-                <div className={`${prefixCls}__close-btn`} onClick={onClose}>
+                <div className={`${prefixCls}__close-btn`} onClick={handleClose}>
                   <CloseOutlined />
                 </div>
               </div>
