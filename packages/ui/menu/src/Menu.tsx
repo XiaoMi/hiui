@@ -12,6 +12,9 @@ import Tooltip from '@hi-ui/tooltip'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
+const DEFAULT_EXPANDED_IDS = [] as []
+const NOOP_ARRAY = [] as []
+
 /**
  * TODO: What is Menu
  */
@@ -21,32 +24,36 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       prefixCls = MENU_PREFIX,
       role = 'menu',
       className,
-      data,
+      data = NOOP_ARRAY,
       placement = 'vertical',
-      showCollapse,
+      showCollapse = false,
       // 仅对垂直模式有效
       expandedType = 'collapse',
       showAllSubMenus = false,
-      defaultExpandedIds,
-      defaultActiveId,
-      activeId,
+      defaultExpandedIds = DEFAULT_EXPANDED_IDS,
+      expandedIds: expandedIdsProp,
+      onExpand,
+      defaultActiveId = '',
+      activeId: activeIdProp,
       onClickSubMenu,
       onClick,
       ...rest
     },
     ref
   ) => {
-    const [_activeId, updateActiveId] = useUncontrolledState(
-      defaultActiveId || '',
-      activeId,
-      onClick
-    )
+    const [activeId, updateActiveId] = useUncontrolledState(defaultActiveId, activeIdProp, onClick)
 
-    const [activeParents, updateActiveParents] = useState(getAncestorIds(_activeId, data))
+    const [activeParents, updateActiveParents] = useState(() => getAncestorIds(activeId, data))
+
     useEffect(() => {
-      updateActiveParents(getAncestorIds(_activeId, data))
-    }, [_activeId, data])
-    const [_expandedIds, updateExpanedIds] = useState(defaultExpandedIds || [])
+      updateActiveParents(getAncestorIds(activeId, data))
+    }, [activeId, data])
+
+    const [expandedIds, updateExpandedIds] = useUncontrolledState(
+      defaultExpandedIds,
+      expandedIdsProp,
+      onExpand
+    )
 
     const clickMenu = useCallback(
       (id: React.ReactText) => {
@@ -54,29 +61,30 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       },
       [updateActiveId]
     )
+
     const clickSubMenu = useCallback(
       (id: React.ReactText) => {
-        const expandedIds = _expandedIds.includes(id)
-          ? _expandedIds.filter((expandedId) => expandedId !== id)
-          : _expandedIds.concat(id)
-        updateExpanedIds(expandedIds)
+        const nextExpandedIds = expandedIds.includes(id)
+          ? expandedIds.filter((expandedId) => expandedId !== id)
+          : expandedIds.concat(id)
+        updateExpandedIds(nextExpandedIds)
         if (onClickSubMenu) {
-          onClickSubMenu(id, expandedIds)
+          onClickSubMenu(id, nextExpandedIds)
         }
       },
-      [onClickSubMenu, _expandedIds]
+      [onClickSubMenu, expandedIds, updateExpandedIds]
     )
 
     const closePopper = useCallback(
       (id: React.ReactText) => {
-        updateExpanedIds(_expandedIds.filter((expandedId) => expandedId !== id))
+        updateExpandedIds(expandedIds.filter((expandedId) => expandedId !== id))
       },
-      [_expandedIds]
+      [expandedIds, updateExpandedIds]
     )
 
     const closeAllPopper = useCallback(() => {
-      updateExpanedIds([])
-    }, [])
+      updateExpandedIds([])
+    }, [updateExpandedIds])
 
     const [mini, setMini] = useState(false)
     const cls = cx(prefixCls, className, `${prefixCls}--${placement}`, {
@@ -104,8 +112,8 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
             closePopper,
             closeAllPopper,
             activeParents,
-            activeId: _activeId,
-            expandedIds: _expandedIds,
+            activeId: activeId,
+            expandedIds: expandedIds,
           }}
         >
           <ul className={cx(`${prefixCls}__wrapper`)}>
@@ -175,6 +183,14 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
    * 默认展开菜单项 ids 列表
    */
   defaultExpandedIds?: React.ReactText[]
+  /**
+   * 展开菜单项 ids 列表
+   */
+  expandedIds?: React.ReactText[]
+  /**
+   * 展开菜单时回调
+   */
+  onExpand?: (expandedIds: React.ReactText[]) => void
   /**
    * 点击菜单选项时的回调
    */
