@@ -9,7 +9,7 @@ const _role = 'input'
 const _prefix = getPrefixCls('number-input')
 
 /**
- * 数字加减器
+ * 数字输入框
  */
 export const NumberInput = forwardRef<HTMLDivElement | null, CounterProps>(
   ({ prefixCls = _prefix, role = _role, ...rest }, ref) => {
@@ -23,11 +23,11 @@ export const NumberInput = forwardRef<HTMLDivElement | null, CounterProps>(
       <div ref={ref} {...rootProps}>
         <input {...getInputProps()} />
         <div className={`${prefixCls}__suffix`}>
-          <button {...getMinusButtonProps()}>
-            <DownOutlined />
-          </button>
           <button {...getPlusButtonProps()}>
             <UpOutlined />
+          </button>
+          <button {...getMinusButtonProps()}>
+            <DownOutlined />
           </button>
         </div>
       </div>

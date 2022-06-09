@@ -235,6 +235,7 @@ export const useCounter = ({
     `${prefixCls}--size-${size}`,
     `${prefixCls}--appearance-${appearance}`,
     focused && `${prefixCls}--focused`,
+    disabled && `${prefixCls}--disabled`,
     (invalid || !isNumeric(value)) && `${prefixCls}--invalid`,
     isOutOfRange(value, min, max) && `${prefixCls}--out-of-bounds`
   )

@@ -50,7 +50,9 @@
     "@hi-ui/env": "^4.0.0-beta.1",
     "@hi-ui/icons": "^4.0.0-beta.11",
     "@hi-ui/type-assertion": "^4.0.0-beta.5",
+    "@hi-ui/use-latest": "^4.0.0-beta.5",
     "@hi-ui/use-toggle": "^4.0.0-beta.5",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.5",
     "number-precision": "^1.5.0"
   },
   "peerDependencies": {

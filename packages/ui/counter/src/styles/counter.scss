@@ -43,7 +43,6 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
       &#{$this}--invalid,
       &#{$this}--out-of-bounds {
-        color: use-color-mode('danger');
         .#{$content-class} {
           border-color: use-color-mode('danger');
         }
@@ -112,8 +111,6 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
       &#{$this}--invalid,
       &#{$this}--out-of-bounds {
-        color: use-color-mode('danger');
-
         .#{$input-class} {
           border-color: use-color-mode('danger');
         }
