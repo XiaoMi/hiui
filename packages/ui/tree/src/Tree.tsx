@@ -21,7 +21,7 @@ import {
   FlattedTreeNodeData,
 } from './types'
 import { TreeProvider } from './context'
-import VirtualList from 'rc-virtual-list'
+import VirtualList from '@hi-ui/virtual-list'
 import { MotionTreeNode } from './MotionTreeNode'
 import { TreeNode } from './TreeNode'
 import { useLatestCallback } from '@hi-ui/use-latest'

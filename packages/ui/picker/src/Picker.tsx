@@ -28,6 +28,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       disabled = false,
       clearable = false,
       searchable = false,
+      scrollable = true,
       visible,
       onOpen,
       onClose,
@@ -202,7 +203,11 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
                 2. 动态加载中
                 4. 动态搜索无结果
             */}
-            <div className={`${prefixCls}__body`} onScroll={onOverlayScroll}>
+            <div
+              className={`${prefixCls}__body`}
+              style={{ overflowY: scrollable ? 'auto' : 'hidden' }}
+              onScroll={onOverlayScroll}
+            >
               {loading ? (
                 <div className={`${prefixCls}__loading`}>
                   {loadingContent}
@@ -295,6 +300,10 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    */
   onOverlayScroll?: () => void
   trigger: any
+  /**
+   * 开启内容区域可滚动
+   */
+  scrollable?: boolean
 }
 
 if (__DEV__) {

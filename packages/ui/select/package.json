@@ -65,7 +65,7 @@
     "@hi-ui/use-search-mode": "^4.0.0-beta.25",
     "@hi-ui/use-toggle": "^4.0.0-beta.5",
     "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.5",
-    "rc-virtual-list": "^3.4.7"
+    "@hi-ui/virtual-list": "^4.0.0-beta.0"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

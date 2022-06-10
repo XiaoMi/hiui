@@ -15,7 +15,7 @@ import { useLatestRef } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
 import { TagInputMock } from '@hi-ui/tag-input'
 import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
-import VirtualList from 'rc-virtual-list'
+import VirtualList, { useCheckInVirtual } from '@hi-ui/virtual-list'
 import { Picker, PickerProps } from '@hi-ui/picker'
 
 import { uniqBy } from '@hi-ui/array-utils'
@@ -243,6 +243,15 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 
     const expandedViewRef = useRef<'normal' | 'onlyChecked'>('normal')
 
+    const virtualListProps = {
+      height: height,
+      itemHeight: itemHeight,
+      virtual: virtual,
+      data: dropdownItems,
+    }
+
+    const { inVirtual } = useCheckInVirtual(virtualListProps)
+
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
     return (
@@ -256,6 +265,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
           searchable={searchable}
+          scrollable={inVirtual}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
           loading={loading}
           footer={renderDefaultFooter()}
@@ -324,14 +334,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           }
         >
           {isArrayNonEmpty(dropdownItems) ? (
-            <VirtualList
-              itemKey="id"
-              fullHeight={false}
-              height={height}
-              itemHeight={itemHeight}
-              virtual={virtual}
-              data={dropdownItems}
-            >
+            <VirtualList itemKey="id" fullHeight={false} {...virtualListProps}>
               {(node: any) => {
                 /* 反向 map，搜索删选数据时会对数据进行处理 */
                 return 'groupTitle' in node ? (

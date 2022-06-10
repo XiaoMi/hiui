@@ -14864,15 +14864,6 @@ rc-util@^5.15.0:
     react-is "^16.12.0"
     shallowequal "^1.1.0"
 
-rc-virtual-list@^3.4.7:
-  version "3.4.7"
-  resolved "https://registry.yarnpkg.com/rc-virtual-list/-/rc-virtual-list-3.4.7.tgz#ca0ba5ecddff686cd3833562d07c2678d1c9cb2e"
-  integrity sha512-PhV8a8g/L9sCmWcmXizzwW7QdqsxK4ebHU6fA9OsUIR7isFdx2bTGU2iAUdRV4teiIF1ZHF3gSQh8NtAxrXh6A==
-  dependencies:
-    classnames "^2.2.6"
-    rc-resize-observer "^1.0.0"
-    rc-util "^5.15.0"
-
 rc-virtual-list@^3.4.8:
   version "3.4.8"
   resolved "https://registry.yarnpkg.com/rc-virtual-list/-/rc-virtual-list-3.4.8.tgz#c24c10c6940546b7e2a5e9809402c6716adfd26c"

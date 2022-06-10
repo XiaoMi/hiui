@@ -8,7 +8,7 @@ import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { SelectProvider } from './context'
 import { FlattedSelectDataItem, SelectItemEventData, SelectMergedItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import VirtualList from 'rc-virtual-list'
+import VirtualList, { useCheckInVirtual } from '@hi-ui/virtual-list'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { Highlighter } from '@hi-ui/highlighter'
@@ -175,6 +175,14 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
 
     const cls = cx(prefixCls, className)
 
+    const virtualListProps = {
+      height: height,
+      itemHeight: itemHeight,
+      virtual: virtual,
+      data: showData,
+    }
+    const { inVirtual } = useCheckInVirtual(virtualListProps)
+
     return (
       <SelectProvider value={context}>
         <Picker
@@ -189,6 +197,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           onSearch={callAllFuncs(onSearchProp, onSearch)}
           loading={loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
+          scrollable={!inVirtual}
           trigger={
             <MockInput
               clearable={clearable}
@@ -213,14 +222,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           }
         >
           {isArrayNonEmpty(showData) ? (
-            <VirtualList
-              itemKey="id"
-              fullHeight={false}
-              height={height}
-              itemHeight={itemHeight}
-              virtual={virtual}
-              data={showData}
-            >
+            <VirtualList itemKey="id" fullHeight={false} {...virtualListProps}>
               {(node: any) => {
                 /* 反向 map，搜索删选数据时会对数据进行处理 */
                 return 'groupTitle' in node ? (
