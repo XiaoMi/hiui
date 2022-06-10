@@ -44,9 +44,7 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
-  "dependencies": {
-    "rc-virtual-list": "^3.4.8"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
