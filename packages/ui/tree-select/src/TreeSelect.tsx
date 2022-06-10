@@ -289,10 +289,6 @@ export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' |
    */
   fieldNames?: Record<string, string>
   /**
-   * 数据选择类型
-   */
-  type?: 'single' | 'multiple'
-  /**
    * 是否有边框
    */
   bordered?: boolean
