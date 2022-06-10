@@ -40,3 +40,9 @@ export interface TimelineGroupDataItem extends HiBaseDataItem {
 }
 
 export type TimelineMergedItem = TimelineDataItem | TimelineGroupDataItem
+
+export type TimelinePlacementEnum = 'horizontal' | 'vertical'
+
+export type TimelineTypeEnum = 'default' | 'right' | 'cross'
+
+export type TimelineItemPlacementEnum = 'left' | 'center'

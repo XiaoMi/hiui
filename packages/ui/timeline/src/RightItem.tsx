@@ -1,7 +1,7 @@
 import React from 'react'
 import { getPrefixCls } from '@hi-ui/classname'
 import { TimelineDataItem } from './types'
-import { isNullish } from '@hi-ui/type-assertion'
+import { DotIcon } from './DotIcon'
 
 const _prefix = getPrefixCls('timeline-item')
 
@@ -20,13 +20,7 @@ export const RightItem: React.FC<TimelineDataItem> = ({
       <div className={`${prefixCls}__time`}>
         {timestamp} {extraTime}
       </div>
-
-      {isNullish(icon) ? (
-        <div className={`${prefixCls}__dot`} />
-      ) : (
-        <div className={`${prefixCls}__icon`}>{icon}</div>
-      )}
-
+      <DotIcon prefixCls={prefixCls} icon={icon} />
       <div className={`${prefixCls}__line`} />
     </div>
   )

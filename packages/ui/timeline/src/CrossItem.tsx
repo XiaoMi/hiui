@@ -1,7 +1,8 @@
 import React from 'react'
 import { getPrefixCls } from '@hi-ui/classname'
 import { TimelineDataItem } from './types'
-import { isNullish } from '@hi-ui/type-assertion'
+import { DotIcon } from './DotIcon'
+import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 
 const _prefix = getPrefixCls('timeline-item')
 
@@ -14,19 +15,14 @@ export const CrossItem: React.FC<TimelineDataItem> = ({
   icon,
   children,
 }) => {
-  return children ? (
+  return isArrayNonEmpty(children) ? (
     <>
       <div className={prefixCls}>
         <div className={`${prefixCls}--left`}>
           <div className={`${prefixCls}__time`}>{timestamp}</div>
           <div className={`${prefixCls}__extra`}>{extraTime}</div>
         </div>
-        {isNullish(icon) ? (
-          <div className={`${prefixCls}__dot`} />
-        ) : (
-          <div className={`${prefixCls}__icon`}>{icon}</div>
-        )}
-
+        <DotIcon prefixCls={prefixCls} icon={icon} />
         <div className={`${prefixCls}__line`} />
         <div className={`${prefixCls}--right`}>
           <div className={`${prefixCls}__title`}>{title}</div>
@@ -34,7 +30,7 @@ export const CrossItem: React.FC<TimelineDataItem> = ({
         </div>
       </div>
       <div className={`${prefixCls}__collapse`}>
-        {children?.map((child, idx) => (
+        {children.map((child, idx) => (
           <CrossItem key={idx} {...child} />
         ))}
       </div>
@@ -45,11 +41,7 @@ export const CrossItem: React.FC<TimelineDataItem> = ({
         <div className={`${prefixCls}__time`}>{timestamp}</div>
         <div className={`${prefixCls}__extra`}>{extraTime}</div>
       </div>
-      {isNullish(icon) ? (
-        <div className={`${prefixCls}__dot`} />
-      ) : (
-        <div className={`${prefixCls}__icon`}>{icon}</div>
-      )}
+      <DotIcon prefixCls={prefixCls} icon={icon} />
       <div className={`${prefixCls}__line`} />
       <div className={`${prefixCls}--right`}>
         <div className={`${prefixCls}__title`}>{title}</div>
