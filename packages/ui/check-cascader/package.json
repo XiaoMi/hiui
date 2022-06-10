@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/check-cascader",
-  "version": "4.0.0-beta.40",
+  "version": "4.0.0-beta.41",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -54,7 +54,7 @@
     "@hi-ui/icons": "^4.0.0-beta.11",
     "@hi-ui/input": "^4.0.0-beta.18",
     "@hi-ui/locale-context": "^4.0.0-beta.19",
-    "@hi-ui/picker": "^4.0.0-beta.31",
+    "@hi-ui/picker": "^4.0.0-beta.32",
     "@hi-ui/popper": "^4.0.0-beta.19",
     "@hi-ui/spinner": "^4.0.0-beta.11",
     "@hi-ui/tag-input": "^4.0.0-beta.20",
