@@ -2,8 +2,7 @@ import React, { forwardRef } from 'react'
 import { getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
-import { useCounter } from './use-counter'
-import { CounterProps } from './Counter'
+import { useCounter, CounterProps } from '@hi-ui/counter'
 
 const _role = 'input'
 const _prefix = getPrefixCls('number-input')

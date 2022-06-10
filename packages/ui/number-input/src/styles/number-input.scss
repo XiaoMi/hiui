@@ -1,13 +1,13 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
-$number-input-prefix:  '#{$component-prefix}-number-input' !default;
+$prefix:  '#{$component-prefix}-number-input' !default;
 
-.#{$number-input-prefix} {
+.#{$prefix} {
   $this: &;
 
-  $minus-class: '#{$number-input-prefix}__minus';
-  $plus-class: '#{$number-input-prefix}__plus';
-  $input-class: '#{$number-input-prefix}__input';
+  $minus-class: '#{$prefix}__minus';
+  $plus-class: '#{$prefix}__plus';
+  $input-class: '#{$prefix}__input';
 
   $input-shadow: 0 0 0 2px use-color-mode('primary', 100);
   $input-error-shadow: 0 0 0 2px use-color-mode('danger', 100);
