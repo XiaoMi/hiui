@@ -10,6 +10,7 @@ import { useToggle } from '@hi-ui/use-toggle'
 import { isNumeric } from '@hi-ui/type-assertion'
 import { CloseOutlined } from '@hi-ui/icons'
 import { IconButton } from '@hi-ui/icon-button'
+import { DrawerPlacementEnum } from './types'
 
 const DRAWER_PREFIX = getPrefixCls('drawer')
 
@@ -132,9 +133,13 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
    */
   showMask?: boolean
   /**
-   * 自定义抽屉宽度
+   * 自定义抽屉宽度，仅在 placement="left" | "right" 有效
    */
   width?: number
+  /**
+   * 自定义抽屉高度，仅在 placement="bottom" | "top" 有效
+   */
+  height?: number
   /**
    * 开启预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
    */
@@ -154,7 +159,7 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
   /**
    * 设置唤起的方向
    */
-  placement?: 'right' | 'left'
+  placement?: DrawerPlacementEnum
   /**
    * 是否展示右上角关闭按钮
    */

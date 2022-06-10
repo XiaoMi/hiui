@@ -44,7 +44,7 @@ export const Placement = () => {
                 <Tooltip
                   title="我是内容我是内容我是内容我是内容"
                   trigger="hover"
-                  placement="bottom"
+                  placement="left-start"
                 >
                   <Button>left-start</Button>
                 </Tooltip>
@@ -64,11 +64,7 @@ export const Placement = () => {
             </tr>
             <tr>
               <td>
-                <Tooltip
-                  title="我是内容我是内容我是内容我是内容"
-                  trigger="hover"
-                  placement="bottom"
-                >
+                <Tooltip title="我是内容我是内容我是内容我是内容" trigger="hover" placement="left">
                   <Button>left</Button>
                 </Tooltip>
               </td>
@@ -86,7 +82,7 @@ export const Placement = () => {
                 <Tooltip
                   title="我是内容我是内容我是内容我是内容"
                   trigger="hover"
-                  placement="bottom"
+                  placement="left-end"
                 >
                   <Button>left-end</Button>
                 </Tooltip>

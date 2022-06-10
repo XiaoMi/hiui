@@ -8,16 +8,92 @@ import Button from '@hi-ui/button'
  */
 export const Placement = () => {
   const [visible, setVisible] = React.useState(false)
+  const [placement, setPlacement] = React.useState<any>('tpp')
 
   return (
     <>
       <h1>Placement</h1>
       <div className="drawer-placement__wrap">
-        <Button onClick={() => setVisible(!visible)}>open</Button>
+        <table className="placement-table" cellSpacing="5">
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>
+                <Button
+                  onClick={() => {
+                    setPlacement('top')
+                    setVisible(true)
+                  }}
+                >
+                  top
+                </Button>
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <Button
+                  onClick={() => {
+                    setPlacement('left')
+                    setVisible(true)
+                  }}
+                >
+                  left
+                </Button>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <Button
+                  onClick={() => {
+                    setPlacement('right')
+                    setVisible(true)
+                  }}
+                >
+                  right
+                </Button>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>
+                <Button
+                  onClick={() => {
+                    setPlacement('bottom')
+                    setVisible(true)
+                  }}
+                >
+                  bottom
+                </Button>
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
         <Drawer
           title="Drawer Header Title"
           visible={visible}
-          placement="left"
+          placement={placement}
           onClose={() => setVisible(false)}
           footer={
             <div style={{ textAlign: 'right' }}>
