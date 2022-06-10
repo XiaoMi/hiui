@@ -1,0 +1,75 @@
+diff --git a/node_modules/rc-virtual-list/es/hooks/useHeights.js b/node_modules/rc-virtual-list/es/hooks/useHeights.js
+index 2557625..e81f056 100644
+--- a/node_modules/rc-virtual-list/es/hooks/useHeights.js
++++ b/node_modules/rc-virtual-list/es/hooks/useHeights.js
+@@ -15,6 +15,18 @@ import { useRef, useEffect } from 'react';
+ import findDOMNode from "rc-util/es/Dom/findDOMNode";
+ import raf from "rc-util/es/raf";
+ import CacheMap from '../utils/CacheMap';
++
++/**
++ * To get exact height to avoid scrolling deviation
++ */
++ function getOuterHeight (el) {
++  var height = el.offsetHeight;
++  var computedStyle = window.getComputedStyle(el);
++  height += parseInt(computedStyle.marginTop, 10);
++  height += parseInt(computedStyle.marginBottom, 10);
++  return height;
++}
++
+ export default function useHeights(getKey, onItemAdd, onItemRemove) {
+   var _React$useState = React.useState(0),
+       _React$useState2 = _slicedToArray(_React$useState, 2),
+@@ -35,10 +47,10 @@ export default function useHeights(getKey, onItemAdd, onItemRemove) {
+       instanceRef.current.forEach(function (element, key) {
+         if (element && element.offsetParent) {
+           var htmlElement = findDOMNode(element);
+-          var offsetHeight = htmlElement.offsetHeight;
++          var outerHeight = getOuterHeight(htmlElement)
+ 
+-          if (heightsRef.current.get(key) !== offsetHeight) {
+-            heightsRef.current.set(key, htmlElement.offsetHeight);
++          if (heightsRef.current.get(key) !== outerHeight) {
++            heightsRef.current.set(key, outerHeight);
+           }
+         }
+       }); // Always trigger update mark to tell parent that should re-calculate heights when resized
+diff --git a/node_modules/rc-virtual-list/lib/hooks/useHeights.js b/node_modules/rc-virtual-list/lib/hooks/useHeights.js
+index 13d5d07..8f9e56c 100644
+--- a/node_modules/rc-virtual-list/lib/hooks/useHeights.js
++++ b/node_modules/rc-virtual-list/lib/hooks/useHeights.js
+@@ -33,6 +33,17 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
+ 
+ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+ 
++/**
++ * To get exact height to avoid scrolling deviation
++ */
++ function getOuterHeight (el) {
++  var height = el.offsetHeight;
++  var computedStyle = window.getComputedStyle(el);
++  height += parseInt(computedStyle.marginTop, 10);
++  height += parseInt(computedStyle.marginBottom, 10);
++  return height;
++}
++
+ function useHeights(getKey, onItemAdd, onItemRemove) {
+   var _React$useState = React.useState(0),
+       _React$useState2 = _slicedToArray(_React$useState, 2),
+@@ -52,11 +63,11 @@ function useHeights(getKey, onItemAdd, onItemRemove) {
+     collectRafRef.current = (0, _raf.default)(function () {
+       instanceRef.current.forEach(function (element, key) {
+         if (element && element.offsetParent) {
+-          var htmlElement = (0, _findDOMNode.default)(element);
+-          var offsetHeight = htmlElement.offsetHeight;
++          var htmlElement = findDOMNode(element);
++          var outerHeight = getOuterHeight(htmlElement)
+ 
+-          if (heightsRef.current.get(key) !== offsetHeight) {
+-            heightsRef.current.set(key, htmlElement.offsetHeight);
++          if (heightsRef.current.get(key) !== outerHeight) {
++            heightsRef.current.set(key, outerHeight);
+           }
+         }
+       }); // Always trigger update mark to tell parent that should re-calculate heights when resized
