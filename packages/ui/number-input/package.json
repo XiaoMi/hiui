@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/number-input",
-  "version": "4.0.0-beta.0",
+  "version": "4.0.0-beta.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/counter": "^4.0.0-beta.17",
+    "@hi-ui/counter": "^4.0.0-beta.18",
     "@hi-ui/env": "^4.0.0-beta.1",
     "@hi-ui/icons": "^4.0.0-beta.11"
   },
