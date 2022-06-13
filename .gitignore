@@ -31,3 +31,5 @@ yarn-error.log
 build/**
 dist/**
 .next/**
+
+storybook-static

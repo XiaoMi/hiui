@@ -81,7 +81,6 @@ $prefix: '#{$component-prefix}-drawer' !default;
 
     .#{$prefix}--placement-left & {
       left: 0;
-      transform: translateX(-100%);
     }
 
     // left
@@ -104,7 +103,6 @@ $prefix: '#{$component-prefix}-drawer' !default;
     // right
     .#{$prefix}--placement-right & {
       right: 0;
-      transform: translateX(100%);
     }
 
     .#{$prefix}--motion-enter.#{$prefix}--placement-right & {
@@ -135,7 +133,6 @@ $prefix: '#{$component-prefix}-drawer' !default;
     // bottom
     .#{$prefix}--placement-bottom & {
       bottom: 0;
-      transform: translateY(100%);
     }
 
     .#{$prefix}--motion-enter.#{$prefix}--placement-bottom & {
@@ -157,7 +154,6 @@ $prefix: '#{$component-prefix}-drawer' !default;
     // top
     .#{$prefix}--placement-top & {
       top: 0;
-      transform: translateY(-100%);
     }
 
     .#{$prefix}--motion-enter.#{$prefix}--placement-top & {
