@@ -93,13 +93,6 @@ const Root = ({
         return false
       }
 
-      // if (min && date.isBefore(min)) {
-      //   return false
-      // }
-      // if (max && date.isAfter(max)) {
-      //   return false
-      // }
-
       return true
     }
 
