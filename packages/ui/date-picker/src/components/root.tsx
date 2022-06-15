@@ -72,12 +72,27 @@ const Root = ({
 
   const isValueValid = useMemo(() => {
     const isInRange = (date: moment.Moment) => {
-      if (min && date.isBefore(min)) {
+      let granularity: moment.unitOfTime.StartOf = 'date'
+
+      if (type.includes('date')) {
+        granularity = 'date'
+      } else if (type.includes('week')) {
+        granularity = 'week'
+      } else if (type.includes('month')) {
+        granularity = 'month'
+      } else if (type.includes('year')) {
+        granularity = 'year'
+      } else if (type.includes('time')) {
+        granularity = 'minute'
+      }
+
+      if (min && date.isBefore(min, granularity)) {
         return false
       }
-      if (max && date.isAfter(max)) {
+      if (max && date.isAfter(max, granularity)) {
         return false
       }
+
       return true
     }
 
@@ -89,7 +104,7 @@ const Root = ({
       return false
     }
     return true
-  }, [inputData, min, max, renderRange])
+  }, [inputData, min, max, renderRange, type])
 
   const _cls = cx(
     `${prefixCls}__picker`,
