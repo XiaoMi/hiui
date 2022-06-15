@@ -17,13 +17,13 @@ $image-container: '#{$prefix}__image' !default;
 
   &--size-md {
     .#{$image-container} {
-      height: 96px;
+      height: 88px;
     }
   }
 
   &--size-lg {
     .#{$image-container} {
-      height: 120px;
+      height: 96px;
     }
   }
 

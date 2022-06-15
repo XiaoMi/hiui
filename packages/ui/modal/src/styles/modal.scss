@@ -236,6 +236,7 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
         margin-top: -32px;
         height: 32px;
         background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+        pointer-events: none;
       }
     }
   }

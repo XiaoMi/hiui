@@ -24,8 +24,19 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
   }
 
   &__content {
-    cursor: pointer;
     transition: all 0.3s;
+    color: use-color('gray', 500);
+  }
+
+  a {
+    &.#{$prefix}__content {
+      cursor: pointer;
+      text-decoration: none;
+
+      &:hover {
+        color: use-color-mode('primary');
+      }
+    }
   }
 
   &__separator {
@@ -37,15 +48,6 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
   &__item {
     display: inline-block;
     color: use-color('gray', 500);
-
-    a {
-      transition: all 0.3s;
-      color: use-color('gray', 500);
-    }
-
-    .#{$prefix}__content:hover {
-      color: use-color-mode('primary');
-    }
   }
 
   &__item:last-child {

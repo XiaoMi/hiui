@@ -17,7 +17,7 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
       role = _role,
       className,
       children,
-      indicator = IMAGE_NO_DATA,
+      indicator,
       title: titleProp,
       imageStyle,
       imageClassName,
@@ -31,6 +31,10 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
     const title = isUndef(titleProp) ? i18n.get('emptyState.emptyContent') : titleProp
 
     const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
+
+    if (isUndef(indicator)) {
+      indicator = IMAGE_NO_DATA
+    }
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>

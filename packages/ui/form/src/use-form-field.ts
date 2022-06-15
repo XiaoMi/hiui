@@ -6,10 +6,9 @@ import Validater, { Rules } from 'async-validator'
 import { normalizeArray } from '@hi-ui/array-utils'
 import { isValidField, stringify } from './utils'
 
-export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => {
+export const useFiledRules = <Values = any>(props: UseFormFieldProps<Values>) => {
   const { field, rules: rulesProp, valueType = 'any' } = props
-
-  const { getFieldRules, getFieldProps, registerField, unregisterField } = useFormContext()
+  const { getFieldRules } = useFormContext()
 
   /**
    * 处理校验规则，item 优先级大于 form
@@ -19,6 +18,16 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
     const rules = normalizeArray(rulesProp ?? getFieldRules(field))
     return rules.map((rule: any) => ({ type: valueType, ...rule }))
   }, [rulesProp, field, getFieldRules, valueType])
+
+  return fieldRules
+}
+
+export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => {
+  const { field } = props
+
+  const { getFieldProps, registerField, unregisterField } = useFormContext()
+
+  const fieldRules: Rules[] = useFiledRules(props)
 
   // 当前 field 的唯一校验器
   const fieldValidate = useCallback(

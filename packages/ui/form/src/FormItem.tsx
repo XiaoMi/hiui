@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { __DEV__ } from '@hi-ui/env'
-import { UseFormFieldProps } from './use-form-field'
+import { useFiledRules, UseFormFieldProps } from './use-form-field'
 import { FormLabel, FormLabelProps } from './FormLabel'
 import { FormMessage } from './FormMessage'
 import { FormField } from './FormField'
@@ -24,11 +24,20 @@ export const FormItem: React.FC<FormItemProps> = ({
   render,
   ...rest
 }) => {
-  // @ts-ignore
-  const { prefixCls } = useFormContext()
+  const { prefixCls, showRequiredOnValidateRequired } = useFormContext()
+
+  const fieldRules = useFiledRules({ field, rules, valueType })
+  const { required } = rest
+
+  const showRequired = useMemo(() => {
+    if (required === undefined) {
+      return showRequiredOnValidateRequired && fieldRules.some((item) => item.required)
+    }
+    return required
+  }, [required, showRequiredOnValidateRequired, fieldRules])
 
   return (
-    <FormLabel {...rest} className={cx(`${prefixCls}-item`, className)}>
+    <FormLabel {...rest} required={showRequired} className={cx(`${prefixCls}-item`, className)}>
       <FormField
         field={field}
         valueType={valueType}

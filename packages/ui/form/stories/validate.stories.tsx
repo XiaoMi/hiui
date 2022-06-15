@@ -171,16 +171,15 @@ export const Validate = () => {
             />
           </FormItem>
 
-          <FormItem valueType={null} field={null}>
+          <FormItem>
             <>
               <Button
                 type="primary"
                 onClick={() => {
-                  console.log(formRef.current.getFieldsValue())
+                  console.log(formRef.current?.getFieldsValue())
 
-                  // TODO: 检验返回
                   formRef.current
-                    .validate()
+                    ?.validate()
                     .then((values) => {
                       console.log('values', values)
                     })
@@ -194,7 +193,7 @@ export const Validate = () => {
               <Button
                 type="default"
                 onClick={() => {
-                  formRef.current.reset()
+                  formRef.current?.reset()
                 }}
               >
                 重置
@@ -202,7 +201,7 @@ export const Validate = () => {
               <Button
                 type="danger"
                 onClick={() => {
-                  formRef.current.clearValidates()
+                  formRef.current?.clearValidates()
                 }}
               >
                 清除校验信息

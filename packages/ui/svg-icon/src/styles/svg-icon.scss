@@ -10,6 +10,7 @@ $prefix: '#{$component-prefix}-svg-icon' !default;
   flex-shrink: 0;
   color: inherit;
   font-size: inherit;
+  vertical-align: -0.15em;
 
   // https://stackoverflow.com/questions/34907256/svgnotroot-overflow-hidden-and-css-transforms-in-ie9
   &:not(:root) {

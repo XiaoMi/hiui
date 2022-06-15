@@ -21,6 +21,8 @@ const EMPTY_ERRORS = {} as any
 const EMPTY_TOUCHED = {}
 const DEFAULT_VALIDATE_TRIGGER = ['onChange', 'onBlur']
 
+const EMPTY_FUNC = () => {}
+
 export const useForm = <Values = Record<string, any>>({
   initialValues,
   initialErrors = EMPTY_ERRORS,
@@ -124,11 +126,9 @@ export const useForm = <Values = Record<string, any>>({
           // @ts-ignore
           setFieldError(field, errorMsg.fields[stringify(field)]?.[0]?.message ?? '')
 
-          // TODO: 回调和promise支持
           throw errorMsg
         }
       )
-      // .catch()
     },
     [getValidation, setFieldError]
   )
@@ -244,7 +244,7 @@ export const useForm = <Values = Record<string, any>>({
         : shouldValidate
 
       if (shouldValidateField) {
-        validateField(field, value)
+        validateField(field, value).catch(EMPTY_FUNC)
       }
     },
     [validateField, validateAfterTouched, formState]
@@ -318,7 +318,7 @@ export const useForm = <Values = Record<string, any>>({
   const handleFieldBlur = useCallback(
     (fieldName: FormFieldPath, shouldValidate?: boolean) => (evt?: any) => {
       if (shouldValidate) {
-        validateFieldState(fieldName)
+        validateFieldState(fieldName).catch(EMPTY_FUNC)
       }
       setFieldTouched(fieldName, true)
     },
@@ -327,7 +327,7 @@ export const useForm = <Values = Record<string, any>>({
 
   const handleFieldTrigger = useCallback(
     (fieldName: FormFieldPath) => (evt?: any) => {
-      validateFieldState(fieldName)
+      validateFieldState(fieldName).catch(EMPTY_FUNC)
     },
     [validateFieldState]
   )

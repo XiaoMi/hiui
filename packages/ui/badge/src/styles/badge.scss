@@ -30,6 +30,7 @@ $prefix: '#{$component-prefix}-badge' !default;
     border: use-border-size('semibold') use-color-static('white');
     background-color: use-color-mode('danger');
     border-radius: use-border-radius('full');
+    box-sizing: content-box;
   }
 
   &__dot {
