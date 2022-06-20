@@ -1,10 +1,12 @@
-interface Props {
+import React from 'react'
+export interface WatermarkProps {
   density?: 	'low' | 'default' | 'high'
-  content?: strgin | string[]
+  content?: string | string[]
   logo?: any
   opacity?: number
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
+  allowCopy?: boolean
 }
-declare const Watermark: React.ComponentType<Props>
+declare const Watermark: React.ComponentType<WatermarkProps>
 export default Watermark

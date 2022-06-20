@@ -15,7 +15,9 @@ export default CompatedDropdown
 
 function convertData(data, prefix = '', suffix = '') {
   const recur = (data) => {
-    return data.map((item) => {
+    return data.map((row) => {
+      const item = { ...row }
+
       if (item.children) {
         item.children = recur(item.children)
       }

@@ -1,11 +1,11 @@
 import React from 'react'
 
-interface IconProps {
+export interface IconProps {
   style?: React.CSSProperties
   className?: string
   filled?: boolean
   name?: string
-  onClick?: (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => void
+  onClick?: (event: React.MouseEvent<SVGSVGElement, React.MouseEvent>) => void
 }
 
 declare class Icon extends React.Component<IconProps, any> {}

@@ -1,22 +1,23 @@
-type Item = {
+import React from "react"
+
+export interface SearchItem {
   id: string | number
   title: string | JSX.Element
+  children?: SearchItem[]
 }
-interface DataItem extends Item{
-  children?: Item[]
-}
-interface Props {
+
+export interface SearchProps {
   prepend?: string | JSX.Element
   append?: JSX.Element
   disabled?: boolean
   loading?: boolean
   placeholder?: string
-  data?: DataItem
-  onSearch?: (inputVal: string, item?: DataItem) => void
+  data?: SearchItem
+  onSearch?: (inputVal: string, item?: SearchItem) => void
   onChange?: (e: string) => void
   overlayClassName?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
-declare const Search: React.ComponentType<Props>
+declare const Search: React.ComponentType<SearchProps>
 export default Search

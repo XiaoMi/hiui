@@ -17,7 +17,8 @@ class Collapse extends Component {
     type: PropTypes.string, // TODO:废弃
     arrow: PropTypes.oneOf(['left', 'right']), // TODO:废弃，使用 arrowPlacement
     arrowPlacement: PropTypes.oneOf(['left', 'right']),
-    showArrow: PropTypes.bool
+    showArrow: PropTypes.bool,
+    extra: PropTypes.node
   }
 
   static defaultProps = {
@@ -79,7 +80,7 @@ class Collapse extends Component {
     Children.forEach(children, (child, index) => {
       if (!child) return
       const key = child.props.id || child.key || String(index)
-      const { header, disabled, title } = child.props
+      const { header, disabled, title, extra } = child.props
 
       const isActive = accordion ? activeKey[0] === key : activeKey.includes(key)
       const props = {
@@ -93,7 +94,8 @@ class Collapse extends Component {
         onClickPanel: disabled ? noop : () => this.onClickPanel(key),
         panels: children,
         panelContainer: this.panelContainer,
-        idx: index
+        idx: index,
+        extra
       }
       newChildren.push(React.cloneElement(child, props))
     })
@@ -101,10 +103,10 @@ class Collapse extends Component {
   }
 
   render() {
-    const { prefixCls, type } = this.props
-    const classnames = classNames(prefixCls, type && `${prefixCls}__${type}`)
+    const { prefixCls, type, className, style } = this.props
+    const classnames = classNames(prefixCls, type && `${prefixCls}__${type}`, className)
     return (
-      <div className={classnames} ref={this.panelContainer}>
+      <div className={classnames} ref={this.panelContainer} style={style}>
         {this.renderPanels()}
       </div>
     )

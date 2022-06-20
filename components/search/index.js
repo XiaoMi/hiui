@@ -43,6 +43,8 @@ const Search = ({
     (value, item) => {
       setInputVal(value)
       setDropdownShow(false)
+
+      onChange && onChange(value)
       onSearch && onSearch(value, item)
     },
     [onSearch]

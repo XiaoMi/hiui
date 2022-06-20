@@ -1,17 +1,27 @@
+import React from "react"
+import {PaginationProps} from '../pagination'
+import { SelectProps } from '../select'
 
-type ColumnItem = {
+export type TableColumnItem = {
   title: string | JSX.Element
   dataKey: string
-  align?: 'left' | 'right'
-  sorter?: () => boolean
+  align?: 'left' | 'right' | 'center'
+  sorter?: (a: any, b: any) => number
   avg?: boolean
   total?: boolean
   width?: number
-  children?: ColumnItem[]
-  render?: (text: string, record: object, index: number) => JSX.Element
+  children?: TableColumnItem[]
+  selectFilters?: SelectProps
+  defaultSortOrder?: 'ascend' | 'descend'
+  filterIcon?: JSX.Element
+  filterDropdown?: (props: {ColumnItem: ColumnItem, setFilterDropdownVisible: Function}) => ReactNode
+  filterDropdownWidth?: number
+  filterDropdownClassName?: string
+  onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, ColumnItem: ColumnItem) => void
+  render?: (text: any, record: object, index: number, dataKey: string) => JSX.Element
 }
 
-type Origin = {
+export type TableDataSource = {
   url: string
   currentPageName?: string
   auto?: boolean
@@ -22,45 +32,61 @@ type Origin = {
   error?: (err: object) => void
   type?: 'GET' | 'POST'
   withCredentials?: boolean
+  transformResponse?: (response: object) => object[]
 }
-type FixedOption = {
+export type TableFixedOption = {
   left?: string
   right?: string
 }
-type RowSelection = {
-  selectedRowKeys?: string[] | number[]
-  onChange?: (selectedRowKeys: string | number) => void
+
+export type TableCheckAllOptions = {
+  filterIcon?: React.ReactNode
 }
 
-type HeaderRowReturn = {
-  onClick?: (event: MouseEvent) => void
-  onDoubleClick?: (event: MouseEvent) => void
-  onContextMenu?: (event: MouseEvent) => void
-  onMouseEnter?: (event: MouseEvent) => void
-  onMouseLeave?: (event: MouseEvent) => void
+export type TableRowSelection = {
+  selectedRowKeys?: React.ReactText[]
+  getCheckboxConfig?: (rowData: object) => object
+  onChange?: (selectedRowKeys: React.ReactText[], targetRow?: object | object[], shouldChecked?: boolean) => void
+  checkboxColWidth?: number
+  checkAllOptions?: TableCheckAllOptions
 }
 
-type HeaderRowFunc = (colums: ColumnItem[], index: number) => HeaderRowReturn
+export type TableHeaderRowReturn = {
+  onClick?: (event: React.MouseEvent) => void
+  onDoubleClick?: (event: React.MouseEvent) => void
+  onContextMenu?: (event: React.MouseEvent) => void
+  onMouseEnter?: (event: React.MouseEvent) => void
+  onMouseLeave?: (event: React.MouseEvent) => void
+}
 
-interface Props {
+export type HeaderRowFunc = (colums: TableColumnItem[], index: number) => TableHeaderRowReturn
+
+export type RowFunc = () => TableHeaderRowReturn
+
+export interface TableProps {
   size?: 'small' | 'large' | 'default' | 'mini'
+  fieldKey?: string
   bordered?: boolean
   striped?: boolean
   loading?: boolean
   sticky?: boolean
+  draggable?: boolean
   stickyTop?: number
-  highlightedColKeys?: string[] | number[]
+  fixedColumnTrigger?: 'auto' | 'always'
+  expandRowKeys?: React.ReactText[]
+  highlightedColKeys?: string[]
   expandedRender?: (record: object, index: number) => JSX.Element | Promise
   onLoadChildren?: (record: object) => object[] | Promise
+  onExpand?: (expanded: boolean, rowData: object) => void
   rowExpandable?: (record: object ) => JSX.Element | Boolean
   maxHeight?: number
   scrollWidth?: number
-  fixedToColumn?: string | FixedOption
+  fixedToColumn?: string | TableFixedOption
   pagination?: PaginationProps
-  errorRowKeys?: string[] | number[]
-  highlightedRowKeys?: string[] | number[]
-  rowSelection?: RowSelection
-  dataSource?: (current: number) => DataSource
+  errorRowKeys?: React.ReactText[]
+  highlightedRowKeys?: React.ReactText[]
+  rowSelection?: TableRowSelection
+  dataSource?: (current: number) => TableDataSource
   showColMenu?: boolean
   showColHighlight?: boolean
   striped?: boolean
@@ -69,11 +95,20 @@ interface Props {
   standard?: boolean
   emptyContent?: string | JSX.Element
   onHeaderRow?: HeaderRowFunc
-  columns: ColumnItem[]
+  onRow?: RowFunc
+  columns: TableColumnItem[]
   data: object[]
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   scrollWidth?: React.ReactText
+  onDragStart?: (rowData: object) => void
+  onDrop?: (dragRowData: object, dropRowData: object, data: object, level: Level) => boolean | Promise
+  onDropEnd?: (dragRowData: object, dropRowData: object, data: object) => void
+  hiddenColKeys?: string[]
+  onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
+  cellRender?: (text: any) => React.ReactNode
+  highlightRowOnDoubleClick?: boolean
 }
-declare const Table: React.ComponentType<Props>
+
+declare const Table: React.ComponentType<TableProps>
 export default Table

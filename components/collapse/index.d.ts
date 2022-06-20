@@ -1,22 +1,26 @@
-interface Props {
+import React from "react"
+export interface CollapseProps {
   accordion?: boolean
   defaultActiveId?: string | string[]
   activeId?: string | string[] | number | number[]
   arrowPlacement?: 'left' | 'right'
   showArrow?: boolean
   onChange?: () => void
-  children: Collapse.Panel
-  style?: CSSProperties
+  children: JSX.Element
+  style?: React.CSSProperties
   className?: string
 }
-interface PanelProps {
+export interface CollapsePanelProps {
   id?: string
   title?: string | JSX.Element
   disabled?: boolean
+  extra?: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
 }
-declare class Panel extends React.Component<PanelProps, any> {
+declare class Panel extends React.Component<CollapsePanelProps, any> {
 }
-declare class Collapse extends React.Component<Props, any> {
+declare class Collapse extends React.Component<CollapseProps, any> {
   static Panel = Panel
 }
 export default Collapse

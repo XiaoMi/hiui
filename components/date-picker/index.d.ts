@@ -1,33 +1,39 @@
+import React from 'react'
 
 export type DateRange = {
   start: Date | string | number | undefined | null
   end: Date | string | number | undefined | null
 }
-type DateRangeString = {
+export type DateRangeString = {
   start: string
   end: string
 }
-type CalendarItem = {
+export type CalendarItem = {
   date?: Date | string
   text?: string
   highlight?: boolean
 }
-export interface CommonProps {
+
+interface CommonProps {
   value?: Date | string | number | DateRange | undefined | null
   defaultValue?: Date | string | number | DateRange | undefined | null
   disabled?: boolean
+  placement?: 'bottom-start' | 'top-start' | 'bottom' | 'top'
   clearable?: boolean
   placeholder?: string | string[]
   format?: string
+  inputReadOnly?: boolean
+  timeInterval?: number
   onChange?: (date: Date | DateRange, dateStr: string | DateRangeString) => void
   onSelect?: (date: Date, isCompleted: boolean) => void
 }
-type Shortcuts = {
+
+export type DatePickerShortcuts = {
   title: string
   range: Date[] | number[]
 }
 
-interface DateProps extends CommonProps {
+export interface DatePickerProps extends CommonProps {
   type?: 'date' | 'daterange' | 'year' | 'month' | 'week' | 'weekrange' | 'timeperiod' | 'yearrange' | 'monthrange'
   min?: Date
   minDate?: Date
@@ -37,16 +43,19 @@ interface DateProps extends CommonProps {
   timeperiod?: number
   disabledDate?: (currentDate: Date) => boolean
   showTime?: boolean
-  shortcuts?: string[] | Shortcuts[]
+  shortcuts?: string[] | DatePickerShortcuts[]
+  disabledHours?: () => number[]
+  disabledMinutes?: (selectedHour: number) => number[]
+  disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[]
   weekOffset?: 0 | 1
   altCalendar?: CalendarItem
   altCalendarPreset?: 'zh-CN' | 'id-ID'
   dateMarkRender?: (currentDate: Date, today: Date) => JSX.Element
   dateMarkPreset?: 'zh-CN'
   overlayClassName?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
 
-declare const DatePicker: React.ComponentType<DateProps>
+declare const DatePicker: React.ComponentType<DatePickerProps>
 export default DatePicker

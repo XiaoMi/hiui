@@ -32,10 +32,12 @@ const InternalModalComp = ({
   showFooterDivider = true,
   footer,
   confirmText,
+  confirmLoading,
   cancelText,
   style,
   className,
   destroyOnClose,
+  modalContentRef,
   localeDatas,
   foucsElementOnClose = null,
   theme,
@@ -46,12 +48,11 @@ const InternalModalComp = ({
   if (defaultContainer.current === false && !container) {
     defaultContainer.current = getDefaultContainer()
   }
-
   const focusedElementBeforeOpenModal = useRef(null)
   const modalRef = useRef(null)
   const [closeable, setCloseable] = useState(propCloseable)
   useEffect(() => {
-    setCloseable(closeable)
+    setCloseable(propCloseable)
   }, [propCloseable])
   const trapTabKey = useCallback((e) => {
     // Find all focusable children
@@ -171,7 +172,9 @@ const InternalModalComp = ({
                   />
                 )}
               </div>
-              <div className={`${PREFIX}__content`}>{children}</div>
+              <div ref={modalContentRef} className={`${PREFIX}__content`}>
+                {children}
+              </div>
               {footer !== null && (
                 <div
                   className={Classnames(`${PREFIX}__footer`, {
@@ -195,6 +198,7 @@ const InternalModalComp = ({
                     <Button
                       type={'primary'}
                       theme={theme}
+                      loading={confirmLoading}
                       onClick={() => {
                         if (onConfirm) {
                           onConfirm()

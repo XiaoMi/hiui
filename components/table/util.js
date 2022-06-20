@@ -1,10 +1,10 @@
 import _ from 'lodash'
+import { cloneTree } from '@hi-ui/tree-utils'
 
 // 将树状数据拍平
 export const flatTreeData = (data = [], flattedData = [], rootIndex) => {
   data.forEach((d, index) => {
-    d._rootIndex = typeof rootIndex === 'undefined' ? index : rootIndex
-    d.isLast = !d.children
+    Object.assign(d, { _rootIndex: typeof rootIndex === 'undefined' ? index : rootIndex, isLast: !d.children })
     flattedData.push(d)
     if (d.children) {
       flatTreeData(d.children, flattedData, d._rootIndex)
@@ -200,3 +200,37 @@ export const getMaskNums = (columns) => {
   getAllItemWidth(columns)
   return num
 }
+
+export const setRowByKey = (data, dragInfo, inSameLevel = true) => {
+  const { dropKey, dropClientY, startClientY, rowData } = dragInfo
+  data.some((item, index) => {
+    const { key, children } = item
+    if (dropKey === key) {
+      const direction = startClientY > dropClientY ? 0 : 1
+      data.splice(index + direction, 0, rowData)
+      return true
+    }
+    if (children) {
+      inSameLevel = false
+      setRowByKey(children, dragInfo, inSameLevel)
+    }
+  })
+  return data
+}
+
+export const deleteRowByKey = (data, dragInfo) => {
+  const { dragKey } = dragInfo
+  data.some((item, index) => {
+    const { key, children } = item
+    if (dragKey === key) {
+      data.splice(index, 1)
+      return true
+    }
+    if (children) {
+      deleteRowByKey(children, dragInfo)
+    }
+  })
+  return data
+}
+
+export const cloneArray = (arr) => (Array.isArray(arr) ? cloneTree(arr) : [])

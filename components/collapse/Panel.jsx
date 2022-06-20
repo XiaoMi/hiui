@@ -4,12 +4,15 @@ import Icon from '../icon'
 import _ from 'lodash'
 
 const Panel = ({
+  className,
+  style,
   key,
   arrow,
   header,
   disabled = false,
   isActive,
   children,
+  extra,
   onClickPanel,
   showArrow,
   panels,
@@ -17,10 +20,14 @@ const Panel = ({
   idx: panelIndex
 }) => {
   const _panels = React.Children.toArray(panels)
-  const classnames = classNames('collapse-item', {
-    'collapse-item--show': isActive,
-    'collapse-item--disabled': disabled
-  })
+  const classnames = classNames(
+    'collapse-item',
+    {
+      'collapse-item--show': isActive,
+      'collapse-item--disabled': disabled
+    },
+    className
+  )
   const onKeyDown = useCallback(
     (e) => {
       if ([13, 32].includes(e.keyCode)) {
@@ -82,7 +89,7 @@ const Panel = ({
     [panels, panelContainer, panelIndex]
   )
   return (
-    <div className={classnames}>
+    <div className={classnames} style={style}>
       <div
         className="collapse-item__head"
         onClick={() => onClickPanel(key)}
@@ -91,6 +98,7 @@ const Panel = ({
       >
         {showArrow && arrow === 'left' && <Icon name="down" className="collapse-item__icon" />}
         <div className="collapse-item__title">{header}</div>
+        {extra ? <div className="collapse-item__extra">{extra}</div> : null}
         {showArrow && arrow === 'right' && <Icon name="down" className="collapse-item__icon" />}
       </div>
       <div className="collapse-item__content">{children}</div>

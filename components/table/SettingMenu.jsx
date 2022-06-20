@@ -1,10 +1,11 @@
-import React, { useRef, useState, useContext } from 'react'
+import React, { useRef, useState, useContext, useEffect } from 'react'
 import TableContext from './context'
 import Popper from '../popper'
 import Switch from '../switch'
 import Icon from '../icon'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import useClickOutside from './hooks/useClickOutside'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
 const SettingMenu = () => {
   const colMenuRef = useRef(null)
@@ -13,12 +14,15 @@ const SettingMenu = () => {
   useClickOutside(popperMenu, () => setShowPopper(false), colMenuRef)
 
   const {
-    sortCol,
-    setSortCol,
-    visibleCols,
-    setVisibleCols,
-    setCacheVisibleCols,
-    columns,
+    getColKeyValue,
+    sortCols,
+    setSortCols,
+    cacheSortCols,
+    setCacheSortCols,
+    cacheHiddenColKeys,
+    setCacheHiddenColKeys,
+    hiddenColKeys,
+    setHiddenColKeys,
     theme,
     localeDatas
   } = useContext(TableContext)
@@ -41,6 +45,22 @@ const SettingMenu = () => {
     width: 250
   })
 
+  const resetLatest = useLatestCallback(() => {
+    setCacheHiddenColKeys(hiddenColKeys)
+    setCacheSortCols(sortCols)
+  })
+
+  // useToggleEffect
+  // 当 visible 由 false 变为 true 时触发
+  const prevShowPopperRef = useRef(!showPopper)
+  useEffect(() => {
+    if (!prevShowPopperRef.current && showPopper) {
+      resetLatest()
+    }
+    prevShowPopperRef.current = showPopper
+  }, [showPopper])
+  // useVisibleEffect
+
   return (
     <React.Fragment>
       <div
@@ -57,10 +77,10 @@ const SettingMenu = () => {
           <DragDropContext
             onDragEnd={(result) => {
               if (result.destination) {
-                const _sortCol = [...sortCol]
+                const _sortCol = [...cacheSortCols]
                 const [removed] = _sortCol.splice(result.source.index, 1)
                 _sortCol.splice(result.destination.index, 0, removed)
-                setSortCol(_sortCol)
+                setCacheSortCols(_sortCol)
               }
             }}
           >
@@ -84,8 +104,8 @@ const SettingMenu = () => {
                   {...provided.droppableProps}
                 >
                   <div style={{ padding: '16px 20px' }}>
-                    {sortCol.map((c, index) => (
-                      <Draggable key={c.dataKey} draggableId={c.dataKey} index={index}>
+                    {cacheSortCols.map((c, index) => (
+                      <Draggable key={getColKeyValue(c)} draggableId={getColKeyValue(c)} index={index}>
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
@@ -108,13 +128,13 @@ const SettingMenu = () => {
                               }}
                             >
                               <Switch
-                                checked={visibleCols.map((vc) => vc.dataKey).includes(c.dataKey)}
-                                onChange={(checked) => {
-                                  if (checked) {
-                                    setVisibleCols(visibleCols.concat(c))
-                                  } else {
-                                    setVisibleCols(visibleCols.filter((col) => col.dataKey !== c.dataKey))
-                                  }
+                                checked={!cacheHiddenColKeys.includes(getColKeyValue(c))}
+                                onChange={(shouldChecked) => {
+                                  const nextCacheHiddenColKeys = shouldChecked
+                                    ? cacheHiddenColKeys.filter((col) => col !== getColKeyValue(c))
+                                    : cacheHiddenColKeys.concat(getColKeyValue(c))
+
+                                  setCacheHiddenColKeys(nextCacheHiddenColKeys)
                                 }}
                               />
                               <span style={{ display: 'inline-block', marginLeft: 9 }}>
@@ -134,20 +154,14 @@ const SettingMenu = () => {
                       className={`btn btn--left`}
                       onClick={(e) => {
                         setShowPopper(false)
-                        setCacheVisibleCols(
-                          sortCol.filter((c) => visibleCols.map((vc) => vc.dataKey).includes(c.dataKey))
-                        )
+                        // 触发 table 更新列显隐及排序
+                        setHiddenColKeys(cacheHiddenColKeys)
+                        setSortCols(cacheSortCols)
                       }}
                     >
                       {localeDatas.table.confirm}
                     </div>
-                    <div
-                      className={`btn`}
-                      onClick={(e) => {
-                        setVisibleCols(columns)
-                        setCacheVisibleCols(columns)
-                      }}
-                    >
+                    <div className={`btn`} onClick={resetLatest}>
                       {localeDatas.table.reset}
                     </div>
                   </div>

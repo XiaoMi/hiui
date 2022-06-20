@@ -1,17 +1,19 @@
-import React, { useContext, useRef, useState, useEffect, useLayoutEffect } from 'react'
+import React, { useRef, useContext, useState, useEffect, useLayoutEffect } from 'react'
+import { Resizable } from 'react-resizable'
+import classnames from 'classnames'
+
 import TableContext from './context'
 import ColumnMenu from './ColumnMenu'
 import SettingMenu from './SettingMenu'
-import _ from 'lodash'
-import classnames from 'classnames'
 import Checkbox from '../checkbox'
-import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth } from './util'
-import { Resizable } from 'react-resizable'
+import AdvanceHeader from './AdvanceHeader'
+import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth, cloneArray } from './util'
 
 const HeaderTable = ({ rightFixedIndex }) => {
   const {
+    checkboxColWidth,
     rowSelection,
-    data,
+    data: propsData,
     columns,
     expandedRender,
     stickyTop,
@@ -35,10 +37,15 @@ const HeaderTable = ({ rightFixedIndex }) => {
     sticky,
     disabledData
   } = useContext(TableContext)
+  const [data, setDate] = useState(cloneArray(propsData))
+  useEffect(() => {
+    setDate(cloneArray(propsData))
+  }, [propsData])
   const [isAllChecked, setIsAllChecked] = useState(false)
   const [groupedColumns, setGroupedColumns] = useState([])
   const [columnsgroup, setColumnsGroup] = useState([])
   const isStickyHeader = useRef(false)
+
   // 隐藏滚动条
   const headerInner = useRef(null)
   const theadRef = useRef()
@@ -46,6 +53,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
   const [minColWidth, setMinColWidth] = useState(Array(columns.length).fill(0))
   useEffect(() => {
     const onwheel = (e) => {
+      e.stopPropagation()
       const { deltaX } = e
       headerTableRef.current.scrollLeft = headerTableRef.current.scrollLeft + deltaX
       syncScrollLeft(headerTableRef.current.scrollLeft, bodyTableRef.current)
@@ -59,18 +67,15 @@ const HeaderTable = ({ rightFixedIndex }) => {
     // 判断是否全选
     if (rowSelection) {
       const { selectedRowKeys = [] } = rowSelection
-      const flattedData = flatTreeData(data)
-      const _isAllChecked =
-        flattedData
-          .filter((data) => !disabledData.current.includes(data.key))
-          .every((d) => selectedRowKeys.includes(d.key)) && flattedData.length !== 0
+      const flattedData = flatTreeData(cloneArray(data)).filter((data) => !disabledData.current.includes(data.key))
+      const _isAllChecked = flattedData.every((d) => selectedRowKeys.includes(d.key)) && flattedData.length !== 0
       setIsAllChecked(_isAllChecked)
     }
   }, [data, rowSelection])
 
   // 处理列的深度
   useEffect(() => {
-    const _columns = _.cloneDeep(columns)
+    const _columns = cloneArray(columns)
     const depthArray = []
     setDepth(_columns, 0, depthArray)
     const maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
@@ -127,13 +132,17 @@ const HeaderTable = ({ rightFixedIndex }) => {
 
   const hasSorterColumn = columnsgroup.filter((col) => col.sorter).map((sorterCol) => sorterCol.dataKey)
 
+  // 自定义 checkboxAll 侧边 icon
+  const checkboxFilterIcon =
+    (rowSelection && rowSelection.checkAllOptions && rowSelection.checkAllOptions.filterIcon) || null
+
   // ******************** 行渲染 ***********************
   const renderBaseRow = (cols, index, isSticky) => {
     const _colums = [rowSelection && index === 0 && 'checkbox', expandedRender && index === 0 && 'expandedButton']
       .concat(cols)
       .filter((column) => !!column)
     const isStickyCol = _colums.some((item) => {
-      return typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
+      return typeof item.leftStickyWidth !== 'undefined'
     })
     return (
       <tr key={index}>
@@ -147,7 +156,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
                 className={classnames({ 'hi-table__col--sticky': isStickyCol })}
                 style={{
                   boxSizing: 'border-box',
-                  width: 50,
+                  width: checkboxColWidth,
                   height: 'auto',
                   backgroundColor: '#fbfbfb'
                 }}
@@ -157,16 +166,15 @@ const HeaderTable = ({ rightFixedIndex }) => {
                   indeterminate={!isAllChecked && rowSelection.selectedRowKeys.length > 0}
                   onChange={(e) => {
                     if (rowSelection.onChange) {
-                      rowSelection.onChange(
-                        isAllChecked
-                          ? []
-                          : flatTreeData(data)
-                              .filter((data) => !disabledData.current.includes(data.key))
-                              .map((d) => d.key)
+                      const targetItems = flatTreeData(cloneArray(data)).filter(
+                        (data) => !disabledData.current.includes(data.key)
                       )
+                      const selectedIds = isAllChecked ? [] : targetItems.map((item) => item.key)
+                      rowSelection.onChange(selectedIds, targetItems, !isAllChecked)
                     }
                   }}
                 />
+                {checkboxFilterIcon}
               </th>
             )
           } else if (c === 'expandedButton') {
@@ -186,38 +194,37 @@ const HeaderTable = ({ rightFixedIndex }) => {
               </th>
             )
           } else {
-            const { rightStickyWidth, leftStickyWidth, dataKey } = c
+            const { rightStickyWidth, leftStickyWidth, dataKey, align, colSpan, rowSpan, title, isLast } = c
             const isSticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
 
             const isRowActive = highlightedColKeys.includes(dataKey) || highlightColumns.includes(dataKey)
             const isColActive = showColHighlight && hoverColIndex === dataKey
+            const textAlign = alignRightColumns.includes(dataKey) ? 'right' : align || 'left'
+
             cell = (
               <th
                 key={idx}
-                colSpan={c.colSpan}
-                rowSpan={c.rowSpan}
+                colSpan={colSpan}
+                rowSpan={rowSpan}
                 // 标题事件处理
                 {...onHeaderRow(_colums, index)}
                 className={classnames({ 'hi-table__col--sticky': isSticky })}
                 style={{
                   height: 'auto',
                   boxSizing: 'border-box',
-                  textAlign: alignRightColumns.includes(dataKey) ? 'right' : 'left',
+                  textAlign,
                   background: isRowActive || isColActive ? '#F4F4F4' : '#fbfbfb',
                   right: rightStickyWidth + 'px',
                   left: leftStickyWidth + 'px'
                 }}
               >
-                <span className="hi-table__header__title">
-                  {typeof c.title === 'function' ? c.title() : c.title}
-                  {showColMenu && c.isLast && (
-                    <ColumnMenu
-                      columnKey={c.dataKey}
-                      canSort={hasSorterColumn.includes(c.dataKey)}
-                      isSticky={isSticky}
-                    />
+                <div className="hi-table__header__title">
+                  {typeof title === 'function' ? title() : title}
+                  {showColMenu && isLast && (
+                    <ColumnMenu columnKey={dataKey} canSort={hasSorterColumn.includes(dataKey)} isSticky={isSticky} />
                   )}
-                </span>
+                  {<AdvanceHeader showColMenu={showColMenu} columnData={c} />}
+                </div>
               </th>
             )
           }
@@ -273,7 +280,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
                 <col
                   key={index}
                   style={{
-                    width: c === 'checkbox' ? 50 : width,
+                    width: c === 'checkbox' ? checkboxColWidth : width,
                     minWidth: width
                   }}
                 />

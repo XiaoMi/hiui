@@ -53,10 +53,6 @@
 }
 
 .#{$table} {
-  .hi-checkbox__input:not(.hi-checkbox__input--checked) {
-    background: use-color('white');
-  }
-
   .hi-checkbox--disabled .hi-checkbox__input {
     border-color: #d8d8d8;
     background: #f2f2f2;
@@ -78,12 +74,14 @@
   &__setting-btn {
     position: absolute;
     height: 100%;
-    z-index: 3;
+    z-index: 11;
+    box-sizing: border-box;
     right: 0;
     display: flex;
     align-items: center;
     border-left: 1px solid #e0e1e2;
     border-bottom: 1px solid #e0e1e2;
+    border-top: none;
     color: #999;
     cursor: pointer;
     font-size: 14px;
@@ -215,6 +213,10 @@
     > table {
       position: relative;
     }
+
+    &__title {
+      display: inline-flex;
+    }
   }
 
   &__header--sticky {
@@ -222,6 +224,26 @@
     z-index: 10;
     top: 0;
     overflow-x: hidden;
+  }
+
+  &__body--draging {
+    table tr {
+      &:hover:not(.hi-table__row--draging) {
+        background: use-color('white');
+
+        .hi-table__col--sticky {
+          background: use-color('white');
+        }
+      }
+
+      &.hi-table__row--draging {
+        background: use-color('primary-20');
+
+        .hi-table__col--sticky {
+          background: use-color('primary-20');
+        }
+      }
+    }
   }
 
   table {
@@ -260,6 +282,18 @@
         padding: 15px;
         border-bottom: 1px solid  use-color('gray-20');
         box-sizing: border-box;
+      }
+
+      &.hi-table__row--draggable__border--top {
+        td {
+          border-top: 2px dashed use-color('primary');
+        }
+      }
+
+      &.hi-table__row--draggable__border--bottom {
+        td {
+          border-bottom: 2px dashed use-color('primary');
+        }
       }
     }
 
@@ -300,6 +334,10 @@
         & > td {
           background-color: rgba(251, 251, 251, 1);
         }
+      }
+
+      &.#{$table}__row--draggable {
+        cursor: move;
       }
 
       & > .#{$table}__col--highlight {

@@ -143,6 +143,8 @@ const getDateRows = ({ originDate, range, type, weekOffset, min, max, renderDate
   const startTimeByCurrentPanel = getTime(firstDayWeek, _date.year(), _date.month() + 1)
   const dayCount = _date.daysInMonth()
   const lastMonthDayCount = moment(_date).subtract(1, 'months').daysInMonth()
+  const weekMethod = weekOffset ? 'isoWeek' : 'week'
+
   let count = 0
   for (let i = 0; i < 6; i++) {
     const row = rows[i]
@@ -215,8 +217,8 @@ const getDateRows = ({ originDate, range, type, weekOffset, min, max, renderDate
         col.weekType = col.type
         if (originDate) {
           const _d = _.cloneDeep(originDate)
-          const wFirst = moment(_d).startOf('week')
-          const wLast = moment(_d).endOf('week')
+          const wFirst = moment(_d).startOf(weekMethod)
+          const wLast = moment(_d).endOf(weekMethod)
           if (currentTime.isSame(wFirst, 'day') || currentTime.isSame(wLast, 'day')) {
             col.type = 'selected'
             continue

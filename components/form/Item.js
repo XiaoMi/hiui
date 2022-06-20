@@ -34,6 +34,7 @@ const FormItem = (props) => {
     children,
     label,
     required,
+    rules: rulesProp,
     className,
     showColon: shouldItemShowColon,
     style,
@@ -45,9 +46,9 @@ const FormItem = (props) => {
     sort,
     uuid,
     column,
-    row
+    row,
+    realField
   } = props
-
   const {
     showColon: shouldFormShowColon,
     initialValues = {},
@@ -59,7 +60,7 @@ const FormItem = (props) => {
   // 初始化FormItem的内容
   const [value, setValue] = useState(_propsValue)
   const [error, setError] = useState('')
-  const eventInfo = useRef()
+  const eventInfo = useRef(null)
   const getItemfield = useCallback(() => {
     let _propsField = propsField
     if (_type === 'list' && name) {
@@ -71,13 +72,23 @@ const FormItem = (props) => {
   const [field, setField] = useState(getItemfield())
   const [validating, setValidating] = useState(false)
 
+  const childrenRef = useRef()
+  childrenRef.current = children
+
   useEffect(() => {
-    const { eventName, e, args, componentProps } = eventInfo.current || {}
-    const _children = children || {}
-    const _props = componentProps || _children.props
-    eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
-    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
-    eventInfo.current = {}
+    const onChangeInfo = eventInfo.current
+
+    if (onChangeInfo) {
+      const { e, args, componentProps } = onChangeInfo
+      const _children = childrenRef.current
+      const _props = componentProps || (_children && _children.props)
+
+      if (_props && _props.onChange) {
+        _props.onChange(e, ...args)
+      }
+    }
+
+    eventInfo.current = null
   }, [value])
 
   useEffect(() => {
@@ -91,12 +102,18 @@ const FormItem = (props) => {
     }
   }, [_propsValue, field])
 
+  useEffect(() => {
+    updateField()
+  }, [rulesProp, required])
+
   // 更新
   const updateField = (_value, triggerType) => {
-    const childrenFiled = {
-      value: _value,
-      ...updateFieldInfoToReducer()
+    const childrenFiled = updateFieldInfoToReducer()
+
+    if (typeof _value !== 'undefined') {
+      childrenFiled.value = _value
     }
+
     const { field } = childrenFiled
     if (field) {
       const _fields = _.cloneDeep(_Immutable.current.currentStateFields())
@@ -174,12 +191,18 @@ const FormItem = (props) => {
         }
         return true
       }
-      const rules = getRules()
-
-      const validator = new AsyncValidator({
-        [field]: rules
+      // Bug of `async-validator`
+      const rules = getRules().map((item) => {
+        if (!!currentValue || currentValue === 0) {
+          item.type = item.type || 'any'
+        }
+        return item
       })
-      const model = { [field]: currentValue }
+      const _field = realField || field
+      const validator = new AsyncValidator({
+        [_field]: rules
+      })
+      const model = { [_field]: currentValue }
       validator.validate(
         model,
         {
@@ -194,10 +217,11 @@ const FormItem = (props) => {
         }
       )
     },
-    [props]
+    [props, getRules, getFilteredRule]
   )
 
   const updateFieldInfoToReducer = () => {
+    const _realField = _type === 'list' ? field : realField || field
     return {
       field,
       rules: getRules(),
@@ -213,7 +237,8 @@ const FormItem = (props) => {
       column,
       row,
       name,
-      updateField
+      updateField,
+      realField: _realField
     }
   }
 
@@ -259,17 +284,38 @@ const FormItem = (props) => {
     const beObject = Object.prototype.toString.call(e) === '[object Object]'
     beObject && Object.prototype.toString.call(e.persist) === '[object Function]' && e.persist()
     const displayName = component && component.type && component.type.displayName
-    let value =
+    let nextValue =
       beObject && e.target && Object.prototype.hasOwnProperty.call(e.target, valuePropName)
         ? e.target[valuePropName]
         : e
     if (displayName === 'Counter') {
-      value = args[0]
+      nextValue = args[0] || 0
     }
-    eventInfo.current = { eventName, e, args, componentProps, value }
-    setValue(value)
-    handleField(eventName, value)
+
+    if (eventName === 'onChange') {
+      eventInfo.current = {
+        eventName,
+        e,
+        args,
+        componentProps,
+        value: nextValue
+      }
+
+      handleField(eventName, nextValue)
+      setValue(nextValue)
+    } else if (eventName === 'onBlur') {
+      handleField(eventName, eventInfo.current ? eventInfo.current.value : value === undefined ? nextValue : value)
+
+      // 处理 onBlur 事件
+      const _children = childrenRef.current
+      const _props = componentProps || (_children && _children.props)
+
+      if (_props && _props.onBlur) {
+        _props.onBlur(e, ...args)
+      }
+    }
   }
+
   useEffect(() => {
     return () => {
       _type !== 'list' &&
@@ -279,6 +325,7 @@ const FormItem = (props) => {
         })
     }
   }, [])
+
   // jsx渲染方式
   const renderChildren = () => {
     let _value = value
@@ -288,17 +335,34 @@ const FormItem = (props) => {
     const isExist = _fields.some((item) => {
       return item.field === _field
     })
+    const displayName = !!children && children.type && children.type.displayName
+    if (displayName === 'Counter' && _value === undefined) {
+      _value = 0
+    }
     if (_field && !isExist) {
-      _value = initialValues && initialValues[field] ? initialValues[_field] : _value
+      // 初始化值
+      if (initialValues) {
+        // TODO： 如果 field 是数组，无法完成嵌套对象初始化值，感觉这块实现没想清楚，暂时维护现状，对用户不建议使用数组模式
+
+        // 这里逻辑判断 field，但是最终操作的是 _field，暂时不调整，暂不清楚是否存在破坏性更新
+        if (typeof initialValues[field] !== 'undefined') {
+          _value = initialValues[_field]
+        } else if (_type === 'SchemaForm' && typeof initialValues[realField] !== 'undefined') {
+          _value = initialValues[realField]
+        }
+      }
+
       if (_type === 'list' && listItemValue) {
         _value = Object.keys(listItemValue).includes(name) ? listItemValue[name] : listItemValue
       }
+      const updateFieldInfoToReducerData = updateFieldInfoToReducer()
       _Immutable.current.setState({
         type: FILEDS_INIT,
         payload: {
           value: _value,
-          ...updateFieldInfoToReducer(),
-          field: _field
+          ...updateFieldInfoToReducerData,
+          field: _field,
+          realField: _type === 'list' ? _field : updateFieldInfoToReducerData.realField
         }
       })
       updateField(_value)
@@ -332,6 +396,7 @@ const FormItem = (props) => {
       return null
     }
     const propChild = children ? children.props : {}
+
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
@@ -356,6 +421,7 @@ const FormItem = (props) => {
   obj['hi-form-item--required'] = isRequired() || required
   const _labelWidth = labelWidth()
   const contentWidth = formProps.labelPlacement === 'top' ? '100%' : `calc(100% - ${_labelWidth}px)`
+  const alignItems = getItemPosition(contentPosition)
   return (
     <div className={classNames('hi-form-item', className, obj)} style={style} key={field}>
       {label || label === '' ? (
@@ -367,7 +433,7 @@ const FormItem = (props) => {
         <span className="hi-form-item__span" style={{ width: _labelWidth }} key={field + 'label'} />
       )}
       <div className={'hi-form-item' + '__content'} key={field + '__content'} style={{ width: contentWidth }}>
-        <div className={'hi-form-item' + '__children'} style={{ alignItems: getItemPosition(contentPosition) }}>
+        <div className={'hi-form-item' + '__children'} style={{ alignItems }}>
           {renderChildren()}
         </div>
         <div

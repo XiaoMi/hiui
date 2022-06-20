@@ -1,11 +1,6 @@
-import { CSSProperties } from "react"
+import React from "react"
 
-type DataItem = {
-  content: string
-  id: string | number
-  disabled?: boolean
-}
-type NodeData = {
+export type TabsItem = {
   tabTitle: string | JSX.Element
   tabDesc: string | JSX.Element
   tabId: string | number
@@ -14,7 +9,7 @@ type NodeData = {
   animation: boolean
   newIndex?: number
 }
-interface Props {
+export interface TabsProps {
   type?: 'desc' | 'card' | 'button' | 'editable' | 'line'
   placement?: 'vertical' | 'horizontal'
   defaultActiveId?: string | number
@@ -22,30 +17,30 @@ interface Props {
   max?: number
   canScroll?: boolean
   draggable?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
-  onTabClick?: (tabKey: string | number, event: MouseEvent) => void
+  onTabClick?: (tabKey: string | number, event: React.MouseEvent) => void
   onEdit?: (action: 'add' | 'delete', index: number, tabKey: string | number) => void
-  onDragStart?: (dragNode: NodeData) => void
-  onDropEnd?: (dragNode: NodeData, dropNode: NodeData) => void
-  onDrop?: (dragNode: NodeData, dropNode: NodeData) => void
+  onDragStart?: (dragNode: TabsItem) => void
+  onDropEnd?: (dragNode: TabsItem, dropNode: TabsItem) => void
+  onDrop?: (dragNode: TabsItem, dropNode: TabsItem) => void
   onAdd?: () => void
-  onDelete?: (deleteNode: NodeData, index: number) => void
-  onBeforeDelete?: (deleteNode: NodeData) => void
+  onDelete?: (deleteNode: TabsItem, index: number) => void
+  onBeforeDelete?: (deleteNode: TabsItem) => void
 }
-interface PaneProps {
+export interface TabsPaneProps {
   tabTitle: string | JSX.Element
   tabDesc?: string | JSX.Element
   tabId: string | number
   closeable?: boolean
   disabled?: boolean
   animation?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
 }
-declare class Pane extends React.Component<PaneProps, any> {
+declare class Pane extends React.Component<TabsPaneProps, any> {
 }
-declare class Tabs extends React.Component<Props, any> {
+declare class Tabs extends React.Component<TabsProps, any> {
   static Pane = Pane
 }
 export default Tabs

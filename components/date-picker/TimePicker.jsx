@@ -87,12 +87,12 @@ const TimePicker = ({
     let returnDateStr = ''
     if (type.includes('range')) {
       returnDate = {
-        start: _dates[0].toDate(),
-        end: _dates[1].toDate()
+        start: _dates[0] ? _dates[0].toDate() : null,
+        end: _dates[1] ? _dates[1].toDate() : null
       }
       returnDateStr = {
-        start: _dates[0].format(iFormat),
-        end: _dates[1].format(iFormat)
+        start: _dates[0] ? _dates[0].format(iFormat) : '',
+        end: _dates[1] ? _dates[1].format(iFormat) : ''
       }
     } else {
       returnDate = _dates[0].toDate()
@@ -101,6 +101,7 @@ const TimePicker = ({
     cacheDate.current = _dates
     onChange(returnDate, returnDateStr)
   }
+
   const onTimeChange = (date, cIndex) => {
     const oData = _.cloneDeep(outDate)
     oData[cIndex] = date

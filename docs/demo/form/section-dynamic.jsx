@@ -16,15 +16,15 @@ import SelectTree from '../../../components/select-tree'
 import Grid from '../../../components/grid'
 
 const prefix = 'form-dynamic'
-const desc = ['根据数据控制某个表单的显示隐藏']
-const leftOptions = ['表单联动', '表单查询']
+const desc = ['根据数据控制某个表单的显示隐藏或校验规则']
+const leftOptions = ['表单联动', '表单查询', '受控 Rules']
 
 const code = [
   {
     opt: ['表单联动'],
     code: `import React from 'react'
     import { Form, Grid, Button, Input, Select, Counter, Cascader, Radio, Checkbox, Switch, DatePicker, Rate, Upload  } from '@hi-ui/hiui'\n
-    class Demo extends React.Component {  
+    class Demo extends React.Component {
       constructor(props){
         super(props)
         this.state = {
@@ -131,15 +131,15 @@ const code = [
         const FormSubmit = Form.Submit
         const FormReset = Form.Reset
         const {initialValues, singleList, radiolist, checkboxList, cascaderList, formData} = this.state
-    
+
         const {controlCounter=[],checkbox} = formData
-    
+
         const Row = Grid.Row
         const Col = Grid.Col
         return (
-          <Form 
-            labelWidth='140' 
-            labelPlacement='right' 
+          <Form
+            labelWidth='140'
+            labelPlacement='right'
             ref={this.form}
             initialValues={initialValues}
             onValuesChange ={(changedValues,allValues) => {
@@ -173,16 +173,16 @@ const code = [
                 }}
               />
             </FormItem>
-    
-            { controlCounter[0] === 'show' && 
+
+            { controlCounter[0] === 'show' &&
               <FormItem label='Counter' field="counter" required={true}>
-                <Counter step='1'  min='-10' max='10' />  
+                <Counter step='1'  min='-10' max='10' />
               </FormItem>
             }
-            
-            <FormItem 
-              label='Checkbox' 
-              field="checkbox" 
+
+            <FormItem
+              label='Checkbox'
+              field="checkbox"
               rules={{
                 trigger:'onChange',
                 type: 'array',
@@ -190,7 +190,7 @@ const code = [
               }}>
                <Checkbox.Group data={checkboxList} onChange={(data) => console.log("Checkbox data",data)}/>
             </FormItem>
-            
+
             {
               checkbox.includes('DatePicker') && <FormItem label='DatePicker' field="datePicker" required={true}>
                 <DatePicker
@@ -219,11 +219,11 @@ const code = [
                 />
               </FormItem>
             }
-           
+
             <FormItem label='Switch' field="switch">
                 <Switch content={['ON', 'OFF']} onChange={(val) => console.log('change Switch',val)}/>
             </FormItem>
-    
+
             <FormItem label="Rate" field='rate'>
               <Rate  />
             </FormItem>
@@ -251,20 +251,20 @@ const code = [
                 ]}
               />
             </FormItem>
-            
+
             <FormItem>
-             <FormSubmit type='primary' 
+             <FormSubmit type='primary'
               onClick={(values,errors)=>{
                 console.log('Get form value:',values,errors)}
               }>
                 提交
               </FormSubmit>
-    
-              <FormReset type='line' 
+
+              <FormReset type='line'
                 onClick={()=>{console.log('reset form')}} >
                 重置
               </FormReset>
-    
+
               <Button type="primary" appearance="link" onClick={()=>{
                   console.log('填充表单')
                   this.form.current.setFieldsValue({
@@ -302,7 +302,7 @@ const code = [
       }
       renderField () {
         const {filesCount} =this.state
-    
+
         const formItems = [];
         for (let i = 0; i < filesCount; i++) {
           formItems.push(
@@ -321,20 +321,20 @@ const code = [
               </Form.Item>
           );
         }
-    
+
         return formItems
       }
-      
+
       render (){
         const FormItem = Form.Item
         const FormSubmit = Form.Submit
         const {filesCount} = this.state
         return (
           <div style={{width:'880px'}}>
-            <Form 
+            <Form
               labelWidth='80'
-              placement='horizontal' 
-              labelPlacement='right' 
+              placement='horizontal'
+              labelPlacement='right'
               ref={this.form}>
               {
                 this.renderField()
@@ -355,7 +355,7 @@ const code = [
                   console.log('重置表单')
                 })
              }}
-             
+
             >
             重置
             </Button>
@@ -372,6 +372,95 @@ const code = [
         )
       }
     }`
+  },
+  {
+    opt: ['受控 Rules'],
+    code: `import React from 'react'
+import { Form, Radio, Input  } from '@hi-ui/hiui'\n
+class Demo extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      initialValues:{
+        radio: 'Required',
+        price: ''
+      },
+      formData: {
+        radio: 'Required',
+        price: ''
+      },
+      radioList: [{
+        content: 'Required',
+        id: 'Required'
+      },{
+        content: 'UnRequired',
+        id: 'UnRequired'
+      }],
+    }
+    this.form = React.createRef()
+  }
+  render () {
+    const FormItem = Form.Item
+    const FormSubmit = Form.Submit
+    const FormReset = Form.Reset
+    const {initialValues, radioList, formData } = this.state
+
+    const Row = Grid.Row
+    const Col = Grid.Col
+
+    return (
+      <Form
+        labelWidth='140'
+        labelPlacement='right'
+        ref={this.form}
+        initialValues={initialValues}
+        onValuesChange ={(changedValues,allValues) => {
+          console.log('changedValues,allValues',changedValues,allValues)
+          this.setState({
+            formData: allValues,
+          })
+        }}
+      >
+        <FormItem label='表单名称' >
+          受控 Rules
+        </FormItem>
+
+        <FormItem
+          label='Radio'
+          field="radio"
+          rules={{
+            trigger:'onChange',
+            type: 'string',
+            required:true,
+          }}>
+            <Radio.Group data={radioList} onChange={(data) => console.log("Radio data",data)}/>
+        </FormItem>
+
+        <FormItem
+          label="price"
+          field="price"
+          rules={{required: formData.radio === 'Required', trigger: 'onChange', type: 'string', message: '请输入单价'}}
+        >
+          <Input placeholder='请输入' append={'元'}/>
+        </FormItem>
+
+        <FormItem>
+          <FormSubmit type='primary'
+            onClick={(values,errors)=>{
+            console.log('Get form value:',values,errors)}
+          }>
+            提交
+          </FormSubmit>
+
+          <FormReset type='line'
+            onClick={()=>{console.log('reset form')}} >
+            重置
+          </FormReset>
+        </FormItem>
+      </Form>
+    )
+  }
+}`
   }
 ]
 

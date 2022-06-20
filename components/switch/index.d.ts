@@ -1,11 +1,13 @@
-interface Props {
+import React from "react"
+
+export interface SwitchProps {
   content?: string[] | JSX.Element[]
   checked?: boolean
   defaultChecked?: boolean
   disabled?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   onChange?: (checked: boolean) => void
 }
-declare const Switch: React.ComponentType<Props>
+declare const Switch: React.ComponentType<SwitchProps>
 export default Switch

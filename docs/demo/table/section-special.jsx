@@ -104,7 +104,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} bordered/>
+        return <Table columns={this.columns}  data={this.data} bordered/>
       }
     }`,
     opt: ['全边框']
@@ -171,7 +171,6 @@ const code = [
                 b: 'b-1-1',
                 c: 'c-1-1',
                 d: 'd-1-1',
-                isLeaf: true,
                 key: row.key + '1-1'
               }
               ])
@@ -313,12 +312,12 @@ class Demo extends React.Component {
     ]
   }
   render() {
-    return <Table 
-      columns={this.columns} 
+    return <Table
+      columns={this.columns}
       data={this.data}
       onExpand={(expanded, row) => {
         console.log(expanded, row)
-      }} 
+      }}
       fixedToColumn={'name'}
       rowExpandable={(rowData)=>{
         return rowData.key !== 2
@@ -326,13 +325,13 @@ class Demo extends React.Component {
        expandRowKeys={[1]}
       expandedRender={(rowData, index) => {
         return (
-              <div style={{paddingLeft:50}}>
-                <div>商品名称：{rowData.name}</div>
-                <div>供应商：小米科技有限公司</div>
-                <div>供货日期：2020-08-11</div>
-              </div>
-              )
-      }} 
+          <div style={{paddingLeft:50}}>
+            <div>商品名称：{rowData.name}</div>
+            <div>供应商：小米科技有限公司</div>
+            <div>供货日期：2020-08-11</div>
+          </div>
+        )
+      }}
     />
   }
 }`,
@@ -422,13 +421,13 @@ class Demo extends React.Component {
     ]
   }
   render() {
-    return <Table 
-      columns={this.columns} 
+    return <Table
+      columns={this.columns}
       data={this.data}
 
       onExpand={(expanded, row) => {
         console.log(expanded, row)
-      }} 
+      }}
       expandedRender={(rowData, index) => {
         const {name} = rowData
         return new Promise((resolve, reject)=>{
@@ -436,7 +435,7 @@ class Demo extends React.Component {
           const url = 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/list?keyword=1'
           fetch(url)
               .then((response)=> {
-                // 成功调用 reslove 
+                // 成功调用 reslove
                 if(response.status === 200) {
                   resolve(
                     <div style={{paddingLeft:50}}>
@@ -448,10 +447,10 @@ class Demo extends React.Component {
                 } else {
                   reject('获取数据失败')
                 }
-                
+
               })
         })
-      }} 
+      }}
     />
   }
 }`,
@@ -628,11 +627,12 @@ class Demo extends React.Component {
         this.data = data
       }
       render() {
-        return <Table 
+        return <Table
         columns={this.columns}
         fixedToColumn={{left:'number', right: 'gender'}}
-        data={this.data} 
+        data={this.data}
         stickyTop={63}
+        setting
         sticky
         rowSelection={{
           selectedRowKeys: this.state.selectedRowKeys,
@@ -733,9 +733,9 @@ class Demo extends React.Component {
         this.data = data
       }
       render() {
-        return <Table 
+        return <Table
         columns={this.columns}
-        data={this.data} 
+        data={this.data}
         rowSelection={{
           selectedRowKeys: this.state.selectedRowKeys,
           onChange: selectedRowKeys => {
@@ -945,6 +945,7 @@ class Demo extends React.Component {
             title: 'Name',
             dataKey: 'name',
             render: (text, row, index) => {
+              // 自定义列单元格合并
               if (index < 4) {
                 return <span>{text}</span>
               }
@@ -961,7 +962,27 @@ class Demo extends React.Component {
             title: 'Age',
             dataKey: 'age',
             key: 2,
-            render: this.renderContent
+            render: (value, row, index) => {
+              const obj = {
+                children: value,
+                props: {}
+              }
+
+              if (index === 4) {
+                obj.props.colSpan = 0
+              }
+
+              // 自定义行单元格合并
+              if (index === 1) {
+                obj.props.rowSpan = 2
+              }
+              // These two are merged into above cell
+              if (index === 2) {
+                obj.props.rowSpan = 0
+              }
+
+              return obj
+            }
           },
           {
             title: 'Home phone',

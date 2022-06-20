@@ -1,4 +1,6 @@
-interface Props {
+import React from 'react'
+
+export interface InputProps {
   type?: 'text' | 'textarea' | 'id' | 'tel' | 'card' | 'amount' | 'email'
   value?: string | number
   defaultValue?: string | number
@@ -7,10 +9,11 @@ interface Props {
   disabled?: boolean
   clearable?: boolean
   placeholder?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   bordered?: boolean
   maxLength?: number
+  autoFocus?: boolean
   ref?: string | ((instance: HTMLInputElement | null) => void) | React.RefObject<HTMLInputElement> | null | undefined
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
@@ -20,5 +23,5 @@ interface Props {
   onInput?: (e: React.FormEvent<HTMLInputElement>) => void
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
-declare const Input: React.ComponentType<Props>
+declare const Input: React.ComponentType<InputProps>
 export default Input

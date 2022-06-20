@@ -2,10 +2,20 @@ import React, { useRef, useState, useEffect, useContext } from 'react'
 import moment from 'moment'
 import DPContext from '../context'
 import { useFormat } from '../hooks'
+import { normalizeWeekOffset } from '../utils'
 const Input = ({ date, onChange, onFocus, dir, placeholder }) => {
-  const { type, format, disabled, showTime, hourStep, minuteStep, secondStep, inputReadOnly, locale } = useContext(
-    DPContext
-  )
+  const {
+    type,
+    format,
+    disabled,
+    showTime,
+    hourStep,
+    minuteStep,
+    secondStep,
+    inputReadOnly,
+    weekOffset,
+    locale
+  } = useContext(DPContext)
   const [iFormat] = useFormat({
     type,
     showTime,
@@ -18,11 +28,13 @@ const Input = ({ date, onChange, onFocus, dir, placeholder }) => {
   useEffect(() => {
     let vals = date && moment(date).format(iFormat)
     if (type.includes('week') && date) {
-      const y = moment(date).weekYear()
-      const _date = moment(date).year(y)
-      vals = moment(_date).format(iFormat)
-      if (locale === 'zh-CN' && typeof format === 'undefined') {
-        vals = y + '-W' + moment(_date).week()
+      if (typeof format === 'undefined') {
+        const clone = normalizeWeekOffset(date, weekOffset)
+        vals = clone.weekYear() + '-W' + clone.week()
+      } else {
+        const y = moment(date).weekYear()
+        const _date = moment(date).year(y)
+        vals = moment(_date).format(iFormat)
       }
     }
     setValue(vals)

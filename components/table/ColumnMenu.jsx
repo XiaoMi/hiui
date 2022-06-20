@@ -11,8 +11,8 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
   useClickOutside(popperMenu, () => setShowPopper(false), menuRef)
   const {
     activeSorterColumn,
-    setActiveSorterColumn,
     activeSorterType,
+    setActiveSorterColumn,
     setActiveSorterType,
     highlightColumns,
     setHighlightColumns,

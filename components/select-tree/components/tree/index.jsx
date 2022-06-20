@@ -23,7 +23,11 @@ const Tree = ({
   isRemoteLoadData,
   localeDatas,
   activeId,
-  emptyContent
+  emptyContent,
+  searchMode,
+  searchValue,
+  filterOption,
+  fieldNames
 }) => {
   return (
     <TreeContext.Provider
@@ -41,14 +45,17 @@ const Tree = ({
         onExpandEvent: onExpand,
         loadDataOnExpand,
         isRemoteLoadData,
-        activeId
+        activeId,
+        searchMode,
+        searchValue,
+        filterOption
       }}
     >
       <div className={`${PREFIX}`}>
         {nodeDataState === 'empty' && (
           <span className="hi-select-tree--empty">{emptyContent || localeDatas.selectTree.emptyContent}</span>
         )}
-        {nodeDataState === 'normal' && <TreeNode data={getRootNodes(data)} flttenData={data} />}
+        {nodeDataState === 'normal' && <TreeNode fieldNames={fieldNames} data={getRootNodes(data)} flttenData={data} />}
       </div>
     </TreeContext.Provider>
   )

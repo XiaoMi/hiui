@@ -1,14 +1,76 @@
 # 更新日志
+
+# 3.8.0-rc
+
+- 新增 `Table` 组件 `hiddenColKeys` 和 `onHiddenColKeysChange` 受控控制列显隐  [#1994](https://github.com/XiaoMi/hiui/issues/1994)
+- 新增 `Input` 组件支持 placeholder 受控动态更新  [#1982](https://github.com/XiaoMi/hiui/issues/1982)
+- 新增 `Table` 组件支持 checkAll 复选框右侧自定义操作按钮  [#2007](https://github.com/XiaoMi/hiui/issues/2007)
+- 修复 `Select` 组件高亮词搜索存在正则注入  [#1972](https://github.com/XiaoMi/hiui/issues/1972)
+- 修复 `Table` 组件 resizable 调节列宽功能失效  [#1970](https://github.com/XiaoMi/hiui/issues/1970)
+- 修复 `Input` 组件的 placeholder 没法动态更新  [#1970](https://github.com/XiaoMi/hiui/issues/1982)
+- 优化 `Dropdown` 组件 props 中的 data 消除副作用 [#1991](https://github.com/XiaoMi/hiui/issues/1991)
+- 修复 `TimePicker` 组件使用 minusStep 当点击 clear 后会再次自动回显值  [#1986](https://github.com/XiaoMi/hiui/issues/1986)
+- 修复 `Table` 组件 window 系统 `draggable=false` 禁用失效  [#1993](https://github.com/XiaoMi/hiui/issues/1993)
+- 修复 `Popper` 组件 Popper DOM 节点位置移动时未同步进行位置计算  [#2011](https://github.com/XiaoMi/hiui/issues/2011)
+
+# 3.8.0
+
+- 新增 所有组件 props TS 类型定义的导出  [#1933](https://github.com/XiaoMi/hiui/issues/1933)
+- 新增 `Modal` confirmLoading 控制确定按钮的 loading 状态 [#1866](https://github.com/XiaoMi/hiui/issues/1866)
+- 新增 `Cascader` onOpen 下拉菜单打开、onClose 下拉菜单关闭回调方法，优化动态加载数据功能 [#1854](https://github.com/XiaoMi/hiui/issues/1854)
+- 新增 `Table` 组件 align 属性接受 center 属性 [#1835](https://github.com/XiaoMi/hiui/issues/1835)
+- 新增 `Table` 组件 拖拽功能 [#1851](https://github.com/XiaoMi/hiui/issues/1851)
+- 新增 `Table` 组件 自定义列筛选 [#1850](https://github.com/XiaoMi/hiui/issues/1850)
+- 新增 `Table` 树形组件 onExpand 事件 [#1939](https://github.com/XiaoMi/hiui/issues/1939)
+- 新增 `Select` 组件 renderExtraFooter 自定义下拉菜单底部渲染函数 [#1864](https://github.com/XiaoMi/hiui/issues/1864)
+- 新增 `Select` 组件 onBlur 事件 [#1901](https://github.com/XiaoMi/hiui/issues/1901)
+- 新增 `SelectTree` 组件 className 设置 [#1921](https://github.com/XiaoMi/hiui/issues/1921)
+- 新增 `Tree` 组件指定节点设置 selectable [#1893](https://github.com/XiaoMi/hiui/issues/1893)
+- 新增 `DatePicker` 组件中对时间选择器的禁选功能 [#1917](https://github.com/XiaoMi/hiui/issues/1917)
+- 新增 `SelectTree` 组件节点支持 disabled 禁用状态 [#1870](https://github.com/XiaoMi/hiui/issues/1870)
+- 新增 `SelectTree` 组件节点支持 fieldNames 属性 [#1879](https://github.com/XiaoMi/hiui/issues/1879)
+- 优化 `DatePicker` 组件在 `Table` 组件中受控形态下无法选中问题 [#1844](https://github.com/XiaoMi/hiui/issues/1844)
+- 优化 `Carousel` 组件内容宽度根据容器改变自适应 [#1834](https://github.com/XiaoMi/hiui/issues/1834)
+- 优化 `Select` 组件多选模式标签顺序与value顺序一致化 [#1898](https://github.com/XiaoMi/hiui/issues/1898)
+- 优化 `Charts` 组件文档中对 echarts 版本约束 [#1896](https://github.com/XiaoMi/hiui/issues/1896)
+- 优化 `Tabs` 组件滚动方向交互控制 [#1928](https://github.com/XiaoMi/hiui/issues/1928)
+- 优化 `Message` 组件文本溢出折行处理 [#1936](https://github.com/XiaoMi/hiui/issues/1936)
+- 修复 `Cascader` 组件 异步加载在受控形态下，无法选中数据 [#1875](https://github.com/XiaoMi/hiui/issues/1875)
+- 修复 `Form` 组件对 Counter 组件默认值为 0 校验异常问题 [#1842](https://github.com/XiaoMi/hiui/issues/1842)
+- 修复 `Preview` 组件，图片打开失败时，页面一直处在加载状态 [#1816](https://github.com/XiaoMi/hiui/issues/1816)
+- 修复 `HiRequest` 在 type='download'时 不能正确解析 filename 问题 [#1820](https://github.com/XiaoMi/hiui/issues/1820)
+- 修复 `SelectTree` searchMode 为 filter 时，搜索后勾选，SelectTree 已选节点被清空 [#1791](https://github.com/XiaoMi/hiui/issues/#1791)
+- 修复 `Select` data 属性发生改变，选中值未更新问题 [#1823](https://github.com/XiaoMi/hiui/issues/1823)
+- 修复 `Popper` 基础弹层组件弹出位置未能及时更新问题 [#1857](https://github.com/XiaoMi/hiui/issues/1857)
+- 修复 `Form` 组件中使用 schemaFrom 时，schema 更新未生效问题 [#1862](https://github.com/XiaoMi/hiui/issues/1862)
+- 修复 `Form` 组件中使用 List 组件，输出值格式异常 [#1872](https://github.com/XiaoMi/hiui/issues/1872)
+- 修复 `Form` 组件 onBlur 触发无效的 onChange，导致 value 更新失效 [#1910](https://github.com/XiaoMi/hiui/issues/1910)
+- 修复 `Form` 组件中 SchemaForm 重渲染导致表单控件无法输入 [#1908](https://github.com/XiaoMi/hiui/issues/1908)
+- 修复 `Form` 组件中对 rules 的动态更新校验 [#1935](https://github.com/XiaoMi/hiui/issues/1935)
+- 修复 `Select` 组件异步搜索模式下，清空搜索内容未触发搜索问题 [#1883](https://github.com/XiaoMi/hiui/issues/1883)
+- 修复 `Table` 组件子节点 isLeaf 属性为 false 时，显示展开 icon [#1887](https://github.com/XiaoMi/hiui/issues/1887)
+- 修复 `Table` 组件列更新时，setting 列未跟随更新问题 [#1885](https://github.com/XiaoMi/hiui/issues/1885)
+- 修复 `Alert` 组件 type 属性值文档描述错误 [#1877](https://github.com/XiaoMi/hiui/issues/1877)
+- 修复 `Transfer` 组件中搜索输入框交互样式异常 [#1895](https://github.com/XiaoMi/hiui/issues/1895)
+- 修复 `DatePicker` 组件在 Form 校验失败时边框爆红提示未正常显示 [#1897](https://github.com/XiaoMi/hiui/issues/1897)
+- 修复 `Input` 组件中输入手机号在11位时再尝试输入，总会多出一位 [#1919](https://github.com/XiaoMi/hiui/issues/1919)
+- 修复 `Badge` 组件 offset 属性设置状态点的位置偏移异常 [#1931](https://github.com/XiaoMi/hiui/issues/1931)
+- 修复 `Carousel` 组件左侧切换按钮点击失效 [#1942](https://github.com/XiaoMi/hiui/issues/1942)
+
 # 3.7.0
-- 新增 `Message` 组件 onClick、onClose方法[#1727](https://github.com/XiaoMi/hiui/issues/1727)
-- 新增 `From` 组件 setListItemFieldsValue 方法, 设置表单中From.List的指定项的值[#1760](https://github.com/XiaoMi/hiui/issues/1760)
+
+- 新增 `Collapse` 组件 extra 属性作为标题额外元素扩展[#1831](https://github.com/XiaoMi/hiui/issues/1831)
+- 新增 `Message` 组件 onClick、onClose 方法[#1727](https://github.com/XiaoMi/hiui/issues/1727)
+- 新增 `From` 组件 setListItemFieldsValue 方法, 设置表单中 From.List 的指定项的值[#1760](https://github.com/XiaoMi/hiui/issues/1760)
 - 新增 `Table` 组件 onLoadChildren 方法, 树形表格下异步加载子数据 [#1725](https://github.com/XiaoMi/hiui/issues/1725)
 - 新增 `Badge` 组件 offset 属性设置状态点的位置偏移 [#1786](https://github.com/XiaoMi/hiui/issues/1786)
+- 新增 `Slider` 组件 showRangeLabel 属性设置是否显示范围值 [#1783](https://github.com/XiaoMi/hiui/issues/1783)
 - 优化 `Table` 组件树形表格，允许控制指定节点的展开收起 [#1784](https://github.com/XiaoMi/hiui/issues/1784)
 - 优化 `Grid` 组件接受原生属性 [#1609](https://github.com/XiaoMi/hiui/issues/1609)
 - 优化 `Select` onChang 回调方法中，获取全部选项详细内容 [#1726](https://github.com/XiaoMi/hiui/issues/1726)
 - 优化 `Form` 组件允许 FormItem 中的表单类组件设置 value [#1741](https://github.com/XiaoMi/hiui/issues/1741)
 - 优化 `Table` 组件 showColHighlight 属性，修改内部触发逻辑 [#1759](https://github.com/XiaoMi/hiui/issues/1759)
+- 优化 `Table` 组件 render 自定义渲染函数，可以获取列的位置 [#1808](https://github.com/XiaoMi/hiui/issues/1808)
 - 优化 `Tree` 组件文字较多折行时，遮盖问题 [#1768](https://github.com/XiaoMi/hiui/issues/1768)
 - 修复 `Table` 组件表头吸顶问题 [#1789](https://github.com/XiaoMi/hiui/issues/1789)
 - 修复 `Tree` 编辑形态，不能输入空格问题 [#1768](https://github.com/XiaoMi/hiui/issues/1768)
@@ -19,12 +81,20 @@
 - 修复 `Table` 组件 批量选择形态中，在 data 为空数组时，表头全选项会默认勾选问题 [#1749](https://github.com/XiaoMi/hiui/issues/1749)
 - 修复 `Table` 组件 批量选择形态中，表格禁用行，全选时会被勾选问题 [#1752](https://github.com/XiaoMi/hiui/issues/1752)
 - 修复 `Tree` 组件 editable 受控状态下，编辑菜单显示问题 [#1761](https://github.com/XiaoMi/hiui/issues/1761)
-- 修复 `DataePicker` 组件 yearrange、monthrange 无法通过 min、max 限制时间区间问题 [#1780](https://github.com/XiaoMi/hiui/issues/1780)
+- 修复 `Tree` LegacyTree 组件 draggable 为 true 时，节点展开且无法选中节点问题 [#1781](https://github.com/XiaoMi/hiui/issues/1781)
+- 修复 `Slider` 组件 max、min 受控问题，Modal 中不能拖拽 [#1783](https://github.com/XiaoMi/hiui/issues/1783)
+- 修复 `DatePicker` 组件 yearrange、monthrange 无法通过 min、max 限制时间区间问题 [#1780](https://github.com/XiaoMi/hiui/issues/1780)
+- 修复 `Form` 组件值校验问题 [#1802](https://github.com/XiaoMi/hiui/issues/1802)
+- 修复 `Tree` 自定义右侧菜单参数错误问题 [#1812](https://github.com/XiaoMi/hiui/issues/1812)
+- 修复 `Tree` 在 onBeforeSave 返回 false 后依然可以新增子节点问题 [#1813](https://github.com/XiaoMi/hiui/issues/1813)
 
 # 3.6.1
+
 - 修复部分组件 'regeneratorRuntime is not defined' 问题 [#1719](https://github.com/XiaoMi/hiui/issues/1719)
-- 修复 `Slider` max 和min 受控问题 [#1703](https://github.com/XiaoMi/hiui/issues/1703)
+- 修复 `Slider` max 和 min 受控问题 [#1703](https://github.com/XiaoMi/hiui/issues/1703)
+
 # 3.6.0
+
 - 新增 `Table` 组件 rowExpandable 方法，对内嵌式表格中左侧箭头进行自定义[#1679](https://github.com/XiaoMi/hiui/issues/1679)
 - 新增 `Form` 组件新增 clearValidates 方法，用于清除表单校验 [#1691](https://github.com/XiaoMi/hiui/issues/1691)
 - 新增 `Form` 组件 getFieldsError、getFieldsValue 方法，用于静默获取表单状态 [#1680](https://github.com/XiaoMi/hiui/issues/1680)
@@ -35,15 +105,15 @@
 - 修复 `Modal` 组件 closeable 属性无效问题 [#1645](https://github.com/XiaoMi/hiui/issues/1645)
 - 修复 `Form` 组件 setFieldsValue 方式调用显示异常问题 [#1642](https://github.com/XiaoMi/hiui/issues/1642)
 - 修复 `Form` 组件中包裹多个 List 组件，值未展示问题 [#1649](https://github.com/XiaoMi/hiui/issues/1649)
-- 修复 `Table` 组件 data值为带正负符号的数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
-- 修复 `Tabs` 组件 panes 数据源异步变更，导致Tabs.Pane重渲染时，底部高亮线偏移的问题 [#1651](https://github.com/XiaoMi/hiui/issues/1651)
+- 修复 `Table` 组件 data 值为带正负符号的数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
+- 修复 `Tabs` 组件 panes 数据源异步变更，导致 Tabs.Pane 重渲染时，底部高亮线偏移的问题 [#1651](https://github.com/XiaoMi/hiui/issues/1651)
 - 修复 `DatePicker` 组件 type 为 timeperiod 在受控时，选择完成时间后该组件内容显示为空 [#1653](https://github.com/XiaoMi/hiui/issues/1653)
 - 修复 `Select` 组件在分组形态下，搜索功能无效 [#1655](https://github.com/XiaoMi/hiui/issues/1655)
 - 修复 `DatePicker` type 为 daterange 时，且 showTime 为 true 选择时间显示异常 [#1640](https://github.com/XiaoMi/hiui/issues/1640)
 - 修复 `Cascader` id 为 Number 类型时导致节点重复添加问题[#1648](https://github.com/XiaoMi/hiui/issues/1648)
 - 修复 `Tabs` 组件 onDelete、onAdd 等方法获取数据操作异常问题[#1676](https://github.com/XiaoMi/hiui/issues/1676)
 - 修复 `DatePicker` maxDate 属性设置日期后，月份禁用错误 [#1690](https://github.com/XiaoMi/hiui/issues/1690)
-- 修复 `Upload` 在 type 为 drag 时，通过拖动文件上传，data数据不可更新[#1693](https://github.com/XiaoMi/hiui/issues/1693)
+- 修复 `Upload` 在 type 为 drag 时，通过拖动文件上传，data 数据不可更新[#1693](https://github.com/XiaoMi/hiui/issues/1693)
 - 修复 `DatePicker` 在 type 为 daterange 时, 时间区间选择同一天无效问题[#1688](https://github.com/XiaoMi/hiui/issues/1688)
 
 ## 3.5.0
@@ -54,17 +124,17 @@
 - 新增 `Form` SchemaForm 中 component 属性接受 ReactNode，SchemaForm 新增 updateSchema 更新函数 [#1612](https://github.com/XiaoMi/hiui/issues/1612)
 - 新增 `DatePicker` onSelect 选择日期的回调函数 [#1592](https://github.com/XiaoMi/hiui/issues/1592)
 - 新增 `Transfer` 组件 render 自定义菜单渲染函数 [#1575](https://github.com/XiaoMi/hiui/issues/1575)
-- 优化 `Select` 组件异步类型时，searchable 属性可控制筛选框的显示隐藏  [#1577](https://github.com/XiaoMi/hiui/issues/1577)
-- 优化 `DatePicker` type 为 week 形态时显示内容  [#1587](https://github.com/XiaoMi/hiui/issues/1587)
-- 修复 `DatePicker` type 为 week 或者 weekrange 时 输入相应格式日期解析错误问题  [#1579](https://github.com/XiaoMi/hiui/issues/1579)
+- 优化 `Select` 组件异步类型时，searchable 属性可控制筛选框的显示隐藏 [#1577](https://github.com/XiaoMi/hiui/issues/1577)
+- 优化 `DatePicker` type 为 week 形态时显示内容 [#1587](https://github.com/XiaoMi/hiui/issues/1587)
+- 修复 `DatePicker` type 为 week 或者 weekrange 时 输入相应格式日期解析错误问题 [#1579](https://github.com/XiaoMi/hiui/issues/1579)
 - 修复 `Form` 触发 onValuesChange 数据更新出现旧值问题 [#1618](https://github.com/XiaoMi/hiui/issues/1618)
-- 修复 `DatePicker` type 为 timeperiod 时，设置 timeInterval 分钟显示不正确问题  [#1604](https://github.com/XiaoMi/hiui/issues/1604)
+- 修复 `DatePicker` type 为 timeperiod 时，设置 timeInterval 分钟显示不正确问题 [#1604](https://github.com/XiaoMi/hiui/issues/1604)
 - 修复 `Preview` 图片预览组件，滚轮放大缩小错误 [#1573](https://github.com/XiaoMi/hiui/issues/1573)
 - 修复 `TimePicker` 时间范围选择，为空时无法选择打开弹窗时的当前值 [#1530](https://github.com/XiaoMi/hiui/issues/1530)
-- 修复 `Collapse`  onChange 属性未传入控制台报错问题 [#1580](https://github.com/XiaoMi/hiui/issues/1580)
+- 修复 `Collapse` onChange 属性未传入控制台报错问题 [#1580](https://github.com/XiaoMi/hiui/issues/1580)
 - 修复 `Select` 组件在异步多选时，关闭弹层下拉选项内容丢失问题 [#1578](https://github.com/XiaoMi/hiui/issues/1578)
-- 修复 `Table` 组件 data值为数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
-  
+- 修复 `Table` 组件 data 值为数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
+
 ## 3.4.0
 
 - 优化组件弹出层自动计算合适的左右位置 [#1494](https://github.com/XiaoMi/hiui/issues/1494)
@@ -77,12 +147,12 @@
 - 修复 `Select` 组件分组形态全选以及受控问题 [#1501](https://github.com/XiaoMi/hiui/issues/1501)
 - 修复 `Select` 异步数据请求返回结果顺序异常 [#1543](https://github.com/XiaoMi/hiui/issues/1543)
 - 修复 `Tabs` 组件垂直方向样式显示异常问题 [#1493](https://github.com/XiaoMi/hiui/issues/1493)
-- 修复 `Form` DatePicker、SelectTree 在 Form.Item 中点击清空Icon 无效问题 [#1524](https://github.com/XiaoMi/hiui/issues/1524)
+- 修复 `Form` DatePicker、SelectTree 在 Form.Item 中点击清空 Icon 无效问题 [#1524](https://github.com/XiaoMi/hiui/issues/1524)
 - 修复 `DatePicker` minDate、maxDate、disabledDate 在非 date 类型下不生效问题 [#1547](https://github.com/XiaoMi/hiui/issues/1547)
 - 优化 `Checkbox` 样式相关内容 [#1482](https://github.com/XiaoMi/hiui/issues/1482)
 - 优化 `SelectTree` 异步受控数据返显问题 [#1510](https://github.com/XiaoMi/hiui/issues/1510)
 - 优化 `Select SelectTree` 计数根据窗口自动调整 [#1527](https://github.com/XiaoMi/hiui/issues/1527)
-- 优化 `Drawer` 组件支持className属性 [#1536](https://github.com/XiaoMi/hiui/issues/1536)
+- 优化 `Drawer` 组件支持 className 属性 [#1536](https://github.com/XiaoMi/hiui/issues/1536)
 
 ## 3.3.0
 
@@ -109,7 +179,7 @@
 - 修复 `Loading` children 不存在时，设置 visible 为 false 无效的问题 [#1461](https://github.com/XiaoMi/hiui/issues/1461)
 - 优化 `Tabs` 组件弹出层样式[#1437](https://github.com/XiaoMi/hiui/issues/1437)
 - 优化 `DatePicker` 类型为 week 时输入框显示内容以及周起始方式 [#1475](https://github.com/XiaoMi/hiui/issues/1475)
-- 优化 `Progress` width、height 属性支持传入String类型 [#1480](https://github.com/XiaoMi/hiui/issues/1480)
+- 优化 `Progress` width、height 属性支持传入 String 类型 [#1480](https://github.com/XiaoMi/hiui/issues/1480)
 
 ## 3.2.0
 
@@ -258,4 +328,3 @@
 ## 1.x
 
 [更新日志汇总](https://github.com/XiaoMi/hiui/blob/stable/1.x/CHANGELOG.md)
-                

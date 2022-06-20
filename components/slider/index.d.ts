@@ -1,12 +1,15 @@
-interface Props {
+import React from "react"
+
+export interface SliderProps {
   type?: 'primary' | 'danger' | 'success' | 'warning'
   defaultValue?: number
   value?: number
   min?: number
   max?: number
-  style?: CSSProperties
+  style?: React.CSSProperties
   className?: string
   disabled?: boolean
+  showRangeLabel?: boolean
   tipFormatter?: (value: number) => JSX.Element
   marks?: {
     [prop: number]: any
@@ -15,5 +18,5 @@ interface Props {
   vertical?: boolean
   onChange?: (value: number) => void
 }
-declare const Slider: React.ComponentType<Props>
+declare const Slider: React.ComponentType<SliderProps>
 export default Slider

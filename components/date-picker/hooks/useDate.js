@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import moment from 'moment'
 import { parseValue } from '../utils'
 
-const useDate = ({ value, defaultValue, cacheDate, type, format, locale }) => {
+const useDate = ({ value, defaultValue, cacheDate, type, format, weekOffset, locale }) => {
   const [outDate, setOutDate] = useState([])
   const changeOutDate = (dates) => {
     const _datas = [
@@ -12,7 +12,7 @@ const useDate = ({ value, defaultValue, cacheDate, type, format, locale }) => {
     setOutDate(_datas)
   }
   useEffect(() => {
-    const d = parseValue(value || defaultValue, type, format, locale)
+    const d = parseValue(value || defaultValue, type, format, weekOffset, locale)
     setOutDate(d)
     cacheDate.current = d
   }, [value, type])

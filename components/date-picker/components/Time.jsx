@@ -14,7 +14,8 @@ const Time = ({ date, onChange, timeRangePanelType, startDate, currentDate }) =>
     hourStep = 1,
     minuteStep = 1,
     secondStep = 1,
-    type: PropsType
+    type: PropsType,
+    showTime
   } = useContext(DPContext)
   const isShowHMS = () => {
     return {
@@ -28,7 +29,7 @@ const Time = ({ date, onChange, timeRangePanelType, startDate, currentDate }) =>
   // 设置Date的选中状态
   const setDisableTime = (type, i, disabledTime = []) => {
     let isDisabled = disabledTime.includes(i)
-    if (PropsType === 'timerange' || PropsType === 'time' || PropsType === 'default') {
+    if (PropsType === 'timerange' || PropsType === 'time' || PropsType === 'default' || showTime) {
       if (timeRangePanelType === 'right') {
         const { hour, minute, second } = deconstructDate(startDate)
         const { hour: endHour, minute: endMinute } = date ? deconstructDate(date) : deconstructDate(new Date())
@@ -128,6 +129,10 @@ const Time = ({ date, onChange, timeRangePanelType, startDate, currentDate }) =>
   }
   const selectedEvent = useCallback(
     (type, value, arrow, target) => {
+      // 避免空值时 点开 select 自动更新 input
+      // 这里的 `scroll` 是 TimeList 内部暴露的自定义事件，需要规避处理
+      if (target === 'scroll' && !currentDate) return
+
       const cDate = moment(date)
       const disabledList = _getDsiabledList()[type]
       if (disabledList.includes(value) && arrow) {

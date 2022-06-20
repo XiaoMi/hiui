@@ -25,25 +25,35 @@ const Cell = ({
     loadChildren,
     hoverColIndex,
     setHoverColIndex,
-    showColHighlight
+    showColHighlight,
+    cellRender
   } = useContext(TableContext)
 
   const [loading, setLoading] = useState(false)
+
   // 处理自定义 render 或者合并单元格情况
-  const cellContent = column.render
-    ? column.render(allRowData[column.dataKey], allRowData, rowIndex)
-    : allRowData[column.dataKey]
+  let cellContent = allRowData[column.dataKey]
+
+  if (column.render) {
+    cellContent = column.render(cellContent, allRowData, rowIndex, column.dataKey)
+  } else if (cellRender) {
+    cellContent = cellRender(cellContent)
+  }
+
   const isMergeCell = cellContent && typeof cellContent === 'object' && !cellContent.$$typeof
   if (isMergeCell && (cellContent.props.colSpan === 0 || cellContent.props.rowSpan === 0)) {
     return null
   }
   const { rightStickyWidth, leftStickyWidth, dataKey } = column
   const isSticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
+  const defaultTextAlign = column.align ? column.align : 'left'
+  const textAlign = alignRightColumns.includes(dataKey) ? 'right' : defaultTextAlign
+
   return (
     <td
       key={dataKey}
       style={{
-        textAlign: alignRightColumns.includes(dataKey) ? 'right' : 'left',
+        textAlign,
         right: rightStickyWidth + 'px',
         left: leftStickyWidth + 'px'
       }}
@@ -64,7 +74,7 @@ const Cell = ({
       {loading && <IconLoading />}
       {columnIndex === 0 &&
         !loading &&
-        ((allRowData.children && allRowData.children.length > 0) || (onLoadChildren && allRowData.isLeaf) ? (
+        ((allRowData.children && allRowData.children.length > 0) || (onLoadChildren && !allRowData.isLeaf) ? (
           <Icon
             style={{ marginRight: 4, cursor: 'pointer' }}
             name={expandedTree ? 'caret-down' : 'caret-right'}
@@ -78,7 +88,9 @@ const Cell = ({
                   setLoading(true)
                   await data
                     .then((res) => {
-                      loadChildren.current = { parentKey: allRowData.key, data: res }
+                      if (Array.isArray(res)) {
+                        loadChildren.current = { parentKey: allRowData.key, data: res }
+                      }
                       setLoading(false)
                     })
                     .catch(() => {
@@ -92,10 +104,10 @@ const Cell = ({
               if (_expandedTreeRows.includes(allRowData.key)) {
                 const idx = _expandedTreeRows.findIndex((row) => row === allRowData.key)
                 _expandedTreeRows.splice(idx, 1)
-                setExpandedTreeRows(_expandedTreeRows)
+                setExpandedTreeRows(_expandedTreeRows, false, allRowData)
               } else {
                 _expandedTreeRows.push(allRowData.key)
-                setExpandedTreeRows(_expandedTreeRows)
+                setExpandedTreeRows(_expandedTreeRows, true, allRowData)
               }
             }}
           />

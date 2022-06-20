@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import BaseTree from './BaseTree'
 import Input from '../input'
 import Button from '../button'
@@ -76,7 +76,7 @@ const Tree = (props) => {
   useEffect(() => {
     updateCacheData(data)
   }, [data])
-
+  const contextMenuFun = useRef()
   const [menuVisible, setMenuVisible] = useState(null)
   const [modalVisible, setModalVisible] = useState(null)
 
@@ -255,7 +255,7 @@ const Tree = (props) => {
   const addSiblingNode = useCallback(
     (node) => {
       const dataCache = _.cloneDeep(cacheData)
-      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add' }
+      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add', parent: node.parent, parentId: node.parentId }
       _addSibNode(node, dataCache, addNode)
       setEditingNodes(editingNodes.concat(addNode))
       updateCacheData(dataCache)
@@ -281,7 +281,7 @@ const Tree = (props) => {
   const addChildNode = useCallback(
     (node) => {
       const dataCache = _.cloneDeep(cacheData)
-      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add' }
+      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add', parent: node, parentId: node.id }
       _addChildNode(node, dataCache, addNode)
       setEditingNodes(editingNodes.concat(addNode))
       updateCacheData(dataCache)
@@ -333,6 +333,8 @@ const Tree = (props) => {
         if (result === true) {
           updateCacheData(dataCache)
           onSave(nodeEdited, dataCache)
+        } else {
+          cancelAddNode(enode)
         }
       } else {
         updateCacheData(dataCache)
@@ -372,6 +374,9 @@ const Tree = (props) => {
     },
     [cacheData, _deleteNode]
   )
+  useEffect(() => {
+    contextMenuFun.current = { editNode, addChildNode, addSiblingNode, deleteNode }
+  }, [editNode, addChildNode, addSiblingNode, deleteNode])
 
   const menuRender = useCallback(
     (node) => {
@@ -381,9 +386,15 @@ const Tree = (props) => {
         { title: localMap.addNode, type: 'addSiblingNode' },
         { title: localMap.del, type: 'deleteNode' }
       ]
-      if (contextMenu) {
+
+      if (Array.isArray(contextMenu)) {
+        menu = contextMenu
+      } else if (typeof contextMenu === 'function') {
         menu = contextMenu(node)
       }
+
+      if (!(Array.isArray(menu) && menu.length > 0)) return null
+
       return (
         <ul className={`${PREFIX}__menu theme__${theme}`}>
           {menu.map((m, index) => (
@@ -393,7 +404,7 @@ const Tree = (props) => {
               onClick={(e) => {
                 e.stopPropagation()
                 if (m.onClick) {
-                  m.onClick(node)
+                  m.onClick(node, contextMenuFun.current)
                 } else {
                   if (m.type === 'editNode') {
                     editNode(node)

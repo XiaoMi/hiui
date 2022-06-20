@@ -1,14 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useCallback } from 'react'
 import Cell from './Cell'
 import TableContext from './context'
 import classNames from 'classnames'
-import _ from 'lodash'
 import Checkbox from '../checkbox'
 import Loading from '../loading'
 import Icon from '../icon'
-import { flatTreeData, setDepth } from './util'
+import { cloneArray, flatTreeData, setDepth } from './util'
 import IconLoading from './LoadingIcon'
 import Expandcol from './Expandcol'
+
 const Row = ({
   rowData,
   allRowData,
@@ -26,6 +26,10 @@ const Row = ({
   innerRef,
   rowHeight,
   isTree,
+  dragStatus,
+  setDragStatus,
+  dragRowKey,
+  setDragRowKey,
   expanded: propsExpanded
 }) => {
   const [expanded, setExpanded] = useState(propsExpanded || false)
@@ -33,6 +37,7 @@ const Row = ({
     setExpanded(propsExpanded)
   }, [propsExpanded])
   const {
+    checkboxColWidth,
     errorRowKeys,
     rowSelection,
     highlightedRowKeys,
@@ -43,46 +48,119 @@ const Row = ({
     prefix,
     rowExpandable,
     onExpand,
-    disabledData
+    disabledData,
+    draggable,
+    onDragStart,
+    dargInfo,
+    onRow,
+    highlightRowOnDoubleClick
   } = useContext(TableContext)
-
-  const _columns = _.cloneDeep(columns)
+  const _columns = cloneArray(columns)
   const depthArray = []
   setDepth(_columns, 0, depthArray)
   const rowColumns = flatTreeData(_columns).filter((col) => col.isLast)
   const isSticky = rowColumns.some((item) => {
-    return typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
+    return typeof item.leftStickyWidth !== 'undefined'
   })
   const checkboxConfig = rowSelection && rowSelection.getCheckboxConfig && rowSelection.getCheckboxConfig(allRowData)
   const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false
   checkboxDisabled && disabledData.current.push(allRowData.key)
   const rowExpand = rowExpandable && rowExpandable(rowData)
+  const [dropHightLineStatus, setDropHightLineStatus] = useState(null)
+  const rowKey = allRowData.key
+
+  const onDragStartCallback = useCallback(
+    (e) => {
+      if (!draggable) return
+
+      const clientY = e.clientY
+      dargInfo.current = {
+        startClientY: clientY,
+        dragKey: rowKey,
+        level: level,
+        rowData: allRowData
+      }
+      onDragStart && onDragStart(allRowData)
+      setDragStatus(true)
+      setDragRowKey(rowKey)
+    },
+    [allRowData, dragStatus, dragRowKey, onDragStart, draggable]
+  )
+
+  const onDragEnter = useCallback(
+    (e) => {
+      if (!draggable) return
+
+      const { startClientY, dragKey } = dargInfo.current
+      const clienY = e.clientY
+      dargInfo.current = {
+        ...dargInfo.current,
+        dropKey: rowKey,
+        dropClientY: clienY,
+        dropRowData: allRowData
+      }
+      dragKey !== rowKey && setDropHightLineStatus(clienY < startClientY ? 'top' : 'bottom')
+    },
+    [rowKey, dropHightLineStatus, draggable]
+  )
+
+  const onRowProps = onRow(isAvgRow || isSumRow ? null : rowData, index)
   return [
     <tr
       style={isFixed && rowHeight ? { height: rowHeight } : {}}
       ref={innerRef}
-      id={allRowData.key}
-      className={classNames(`${prefix}__row`, {
-        [`${prefix}__row--error`]: errorRowKeys.includes(rowData.key),
-        [`${prefix}__row--highlight`]: hoverRow === rowData.key || highlightedRowKeys.includes(rowData.key),
-        [`${prefix}__row--total`]: isSumRow,
-        [`${prefix}__row--avg`]: isAvgRow
-      })}
-      key="row"
+      id={rowKey}
+      draggable={draggable}
+      {...onRowProps}
+      onMouseMove={() => {
+        setDragRowKey(null)
+        setDragStatus(false)
+      }}
+      onDragStart={onDragStartCallback}
+      onDragEnd={() => {
+        if (!draggable) return
+        dargInfo.current = {}
+        setDropHightLineStatus(null)
+      }}
+      onDragEnter={onDragEnter}
+      onDragOver={(e) => {
+        if (!draggable) return
+        e.preventDefault()
+      }}
+      onDragLeave={() => {
+        if (!draggable) return
+        setDropHightLineStatus(null)
+      }}
       onDoubleClick={(e) => {
+        if (onRowProps && onRowProps.onDoubleClick) {
+          onRowProps.onDoubleClick(e)
+        }
+        if (highlightRowOnDoubleClick === false) {
+          return
+        }
         if (highlightedRowKeys.includes(rowData.key)) {
           setHighlightRows(highlightedRowKeys.filter((r) => r !== rowData.key))
         } else {
           setHighlightRows(highlightedRowKeys.concat(rowData.key))
         }
       }}
-      // 可以删除改滑动方法
-      // onMouseEnter={(e) => setHoverRow(rowData.key)}
-      // onMouseLeave={(e) => setHoverRow(null)}
+      className={classNames(`${prefix}__row`, {
+        [`${prefix}__row--error`]: errorRowKeys.includes(rowData.key),
+        [`${prefix}__row--highlight`]: hoverRow === rowData.key || highlightedRowKeys.includes(rowData.key),
+        [`${prefix}__row--total`]: isSumRow,
+        [`${prefix}__row--draggable`]: draggable,
+        [`${prefix}__row--draging`]: draggable && dragRowKey === rowKey,
+        [`${prefix}__row--draggable__border--top`]:
+          draggable && typeof dargInfo.current.dropKey !== 'undefined' && dropHightLineStatus === 'top',
+        [`${prefix}__row--draggable__border--bottom`]:
+          draggable && typeof dargInfo.current.dropKey !== 'undefined' && dropHightLineStatus === 'bottom',
+        [`${prefix}__row--avg`]: isAvgRow
+      })}
+      key="row"
     >
       {rowSelection && isFixed !== 'right' && !isSumRow && !isAvgRow && (
         <td
-          style={{ width: 50 }}
+          style={{ width: checkboxColWidth }}
           className={classNames({
             [`${prefix}__col--sticky`]: isSticky
           })}
@@ -93,11 +171,16 @@ const Row = ({
             onChange={(e) => {
               const { selectedRowKeys = [], onChange } = rowSelection
               const _selectedRowKeys = [...selectedRowKeys]
+
               if (_selectedRowKeys.includes(rowData.key)) {
-                onChange(_selectedRowKeys.filter((key) => key !== rowData.key))
+                onChange(
+                  _selectedRowKeys.filter((key) => key !== rowData.key),
+                  rowData,
+                  false
+                )
               } else {
                 _selectedRowKeys.push(rowData.key)
-                onChange(_selectedRowKeys)
+                onChange(_selectedRowKeys, rowData, true)
               }
             }}
           />
@@ -158,11 +241,11 @@ const Row = ({
     </tr>,
     // 可展开的内嵌部分
     expandedRender && expanded && (
-      <tr key="expanded-row" className={`${prefix}--expanded`} style={{ background: 'rgba(251,251,251,1)' }}>
+      <tr key="expanded-row" className={`${prefix}--expanded`} style={{ background: 'rgba(251, 251, 251, 1)' }}>
         {/* 多选占位 */}
         {rowSelection && <td />}
         {/* 可展开内嵌显示 */}
-        <td colSpan={columns.length + 1} style={{ color: '#666666' }}>
+        <td colSpan={columns.length + 1} style={{ color: '#666' }}>
           <Expandcol rowData={rowData} index={index} expandedRender={expandedRender} setExpanded={setExpanded} />
           {expanded === 'loading' && <Loading size="small" />}
         </td>

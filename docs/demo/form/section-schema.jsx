@@ -160,6 +160,193 @@ const code = [
     }`
   },
   {
+    opt: ['基础用法2'],
+    code: `import React from 'react'
+    import { Form,Counter} from '@hi-ui/hiui'\n
+    class Demo extends React.Component {  
+      constructor(props){
+        super(props)
+        this.defaultSchema = [
+          {
+            label: '输入框1',
+            field: 'inputField',
+            rules: [
+              {
+                required: true,
+                min: 5,
+                max: 16,
+                message: '输入框1',
+                trigger: 'onBlur',
+                type: 'array'
+              },
+            ],
+            component: 'Input',
+            componentProps: {
+              placeholder: 'schema',
+              clearable: true,
+              style: { width: 300 },
+            },
+          },
+          {
+            label: '下拉框1',
+            field: 'selectField',
+            component: 'Select',
+            rules: [{ required: true, message: '下拉框1', trigger: 'onBlur' }],
+            componentProps: {
+              placeholder: 'schema',
+              style: { width: 300 },
+              data: [
+                { title: '电视', id: '3', disabled: true },
+                { title: '手机', id: '2' },
+                { title: '笔记本', id: '4', disabled: true },
+                { title: '生活周边', id: '5' },
+                { title: '办公', id: '6' },
+              ],
+            },
+          },
+        ]
+        this.state = {
+          schemas:this.defaultSchema,
+          type: 1
+        }
+        this.formRef6 = React.createRef()
+      }
+      addSchema() {
+        const copySchema = [...this.defaultSchema]
+        copySchema.push({
+          label: '输入框2',
+          field: 'inputField2',
+          rules: [
+            {
+              required: true,
+              min: 5,
+              max: 16,
+              message: '输入框2',
+              trigger: 'onBlur',
+            },
+          ],
+          component: 'Input',
+          componentProps: {
+            placeholder: 'schema',
+            clearable: true,
+            style: { width: 300 },
+          },
+        })
+        return copySchema
+      }
+      subSchema() {
+        const copySchema = [...this.defaultSchema]
+        copySchema.push({
+          label: '输入框2',
+          field: 'inputField2',
+          rules: [
+            {
+              required: true,
+              min: 5,
+              max: 16,
+              message: '输入框2',
+              trigger: 'onBlur',
+            },
+          ],
+          component: 'Input',
+          componentProps: {
+            placeholder: 'schema',
+            clearable: true,
+            style: { width: 300 },
+          },
+        })
+        copySchema.splice(0, 1, {
+          label: '输入框3',
+          field: 'inputField3',
+          rules: [
+            {
+              required: true,
+              min: 5,
+              max: 16,
+              message: '输入框3',
+              trigger: 'onBlur',
+            },
+          ],
+          component: 'Input',
+          componentProps: {
+            placeholder: 'schema',
+            clearable: true,
+            style: { width: 300 },
+          },
+        })
+        return copySchema
+      }
+      btnClick(idx) {
+        console.log('this.formRef6', this.formRef6)
+        this.formRef6.current.clearValidates()
+        let nSc = []
+        switch (idx) {
+          case 2:
+            nSc = this.addSchema()
+            break
+          case 3:
+            nSc = this.subSchema()
+            break
+          default:
+            nSc = this.defaultSchema
+            break
+        }
+        console.log('nSc', nSc)
+        this.setState({
+          schemas: nSc,
+          type: idx
+        })
+      }
+      render () {
+        const {schemas, type} = this.state
+        const SchemaForm = Form.SchemaForm
+        
+        return (
+          <div>
+              <Button
+                type={type === 1 ? 'primary' : 'default'}
+                onClick={this.btnClick.bind(this,1)}
+              >
+                t1
+              </Button>
+              <Button
+                type={type === 2 ? 'primary' : 'default'}
+                onClick={this.btnClick.bind(this, 2)}
+              >
+                t2
+              </Button>
+              <Button
+                type={type === 3 ? 'primary' : 'default'}
+                onClick={this.btnClick.bind(this, 3)}
+              >
+                t3
+              </Button>
+            {console.log('schemas', schemas)}
+            <SchemaForm
+              ref={this.formRef6}
+              schema={schemas}
+              labelWidth='100'
+              labelPlacement='right'
+              submit={{
+                type: 'primary',
+                children: '提交',
+                onClick: (value, errors) => {
+                  console.log('value,errors', value, errors)
+                },
+              }}
+            ></SchemaForm>
+            <Button onClick={()=>{
+              console.log(this.formRef6)
+              this.formRef6.current.validate((value, errors) => {
+                console.log('value,errors', value, errors)
+              })
+            }}>sdfsd</Button>
+          </div>
+        )
+      }
+    }`
+  },
+  {
     opt: ['动态表单'],
     code: `import React from 'react'
 

@@ -20,20 +20,9 @@ const Slider = memo(
     tipFormatter,
     type = 'primary',
     marks = {},
-    theme
+    theme,
+    showRangeLabel = false
   }) => {
-    const getValue = useCallback((value) => {
-      if (value === undefined) {
-        return value
-      }
-      if (value > (initMax || 100)) {
-        value = initMax || 100
-      } else if (value < (initMin || 0)) {
-        value = initMin || 0
-      }
-      return value
-    }, [])
-    const [value, setValue] = useState(initValue !== undefined ? getValue(initValue) : getValue(defaultValue))
     // 是否可拖动
     const [canMove, setCanMove] = useState(false)
 
@@ -47,12 +36,26 @@ const Slider = memo(
     const [firstTime, setFirstTime] = useState(0)
     const [lastTime, setLastTime] = useState(0)
     const [isMove, setIsMove] = useState(false)
-    const [max, setMax] = useState(initMax)
-    const [min, setMin] = useState(initMin)
+    const [max, setMax] = useState(initMax || 100)
+    const [min, setMin] = useState(initMin || 0)
     const [isInitPage, setIsInitPage] = useState(true)
     const sliderRef = useRef()
     const tooltipRef = useRef()
-
+    const getValue = useCallback(
+      (value) => {
+        if (value === undefined) {
+          return value
+        }
+        if (value > max) {
+          value = max
+        } else if (value < min) {
+          value = min
+        }
+        return value
+      },
+      [max, min]
+    )
+    const [value, setValue] = useState(initValue !== undefined ? getValue(initValue) : getValue(defaultValue))
     useClickOutside((e) => {
       setShowTooltip(false)
     }, document.querySelector(`#${prefixCls}`))
@@ -67,11 +70,11 @@ const Slider = memo(
     }, [])
 
     useEffect(() => {
-      setMax(initMax)
+      setMax(initMax || 100)
     }, [initMax])
 
     useEffect(() => {
-      setMin(initMin)
+      setMin(initMin || 0)
     }, [initMin])
 
     // value 改变更新长度和位置
@@ -91,10 +94,10 @@ const Slider = memo(
 
     useEffect(() => {
       // 每一份步长对应在父元素的百分比
-      setPositionStep((step / ((max || 100) - (min || 0))) * 100)
+      setPositionStep((step / (max - min)) * 100)
       // 设置初始位置
-      setStartPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
-    }, [])
+      setStartPosition(((value - min) / (max - min)) * 100)
+    }, [max, min])
 
     // <- -> 键盘事件
     const onKeyDown = useCallback(
@@ -103,32 +106,32 @@ const Slider = memo(
         if (e.keyCode === 36) {
           e.preventDefault()
           setStartPosition(0)
-          setValue(min || 0)
-          onChange(min || 0)
+          setValue(min)
+          onChange(min)
         }
         if (e.keyCode === 35) {
           e.preventDefault()
           setStartPosition(100)
-          setValue(max || 100)
-          onChange(max || 100)
+          setValue(max)
+          onChange(max)
         }
         // 方向键
         if ([37, 38, 39, 40].includes(e.keyCode)) {
           e.preventDefault()
           let _value = e.keyCode === 37 || e.keyCode === 38 ? value - step : value + step
-          if (_value < (min || 0)) {
-            _value = min || 0
-          } else if (_value > (max || 100)) {
-            _value = max || 100
+          if (_value < min) {
+            _value = min
+          } else if (_value > max) {
+            _value = max
           }
-          setStartPosition(((_value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
+          setStartPosition(((_value - min) / (max - min)) * 100)
           if (initValue === undefined) {
             setValue(_value)
           }
           onChange(_value)
         }
       },
-      [value]
+      [value, max, min]
     )
 
     useEffect(() => {
@@ -185,11 +188,11 @@ const Slider = memo(
             setStartPosition(position)
           }
 
-          changeValue = (min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100)
-          if (changeValue < (min || 0)) {
-            changeValue = min || 0
-          } else if (changeValue > (max || 100)) {
-            changeValue = max || 100
+          changeValue = min + Math.round(((max - min) * position) / 100)
+          if (changeValue < min) {
+            changeValue = min
+          } else if (changeValue > max) {
+            changeValue = max
           }
 
           if (initValue === undefined) {
@@ -199,7 +202,7 @@ const Slider = memo(
           onChange(changeValue)
         }
       },
-      [canMove, positionStep, startPosition]
+      [canMove, positionStep, startPosition, max, min]
     )
     const onMouseUp = useCallback(
       (e) => {
@@ -216,20 +219,20 @@ const Slider = memo(
         return
       }
       if (canMove) {
-        window.onmouseup = onMouseUp
-        window.onmousemove = onMouseMove
+        document.body.onmouseup = onMouseUp
+        document.body.onmousemove = onMouseMove
       } else {
-        window.onmouseup = null
-        window.onmousemove = null
+        document.body.onmouseup = null
+        document.body.onmousemove = null
       }
     }, [canMove, disabled, onMouseUp, onMouseMove])
 
     // 获取 track 宽度
     const getTrackWidth = useCallback(
       (value) => {
-        return ((value - (min || 0)) / ((max || 100) - (min || 0))) * 100
+        return ((value - min) / (max - min)) * 100
       },
-      [value]
+      [value, max, min]
     )
 
     // 鼠标落下
@@ -288,31 +291,32 @@ const Slider = memo(
           diff = Math.round((((e.clientX - x) / sliderWidth) * 100) / positionStep) * positionStep
           position = e.clientX <= left ? 0 : newRightPosition + diff
         }
-
         if (position <= 0) {
           position = 0
         } else if (position >= 100) {
           position = 100
         }
-
-        const value = (min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100)
+        const value = min + Math.round(((max - min) * position) / 100)
         if (initValue === undefined) {
           setValue(value)
         }
         setStartPosition(position)
         onChange(value)
       },
-      [positionStep, newRightPosition, vertical, disabled]
+      [positionStep, newRightPosition, vertical, disabled, max, min]
     )
     // 点击marks上的点
-    const onMarksClick = useCallback((e, value) => {
-      e.stopPropagation()
-      if (initValue === undefined) {
-        setValue(value)
-        setStartPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
-      }
-      onChange(value)
-    }, [])
+    const onMarksClick = useCallback(
+      (e, value) => {
+        e.stopPropagation()
+        if (initValue === undefined) {
+          setValue(value)
+          setStartPosition(((value - min) / (max - min)) * 100)
+        }
+        onChange(value)
+      },
+      [max, min]
+    )
     const sliderClasses = classNames(prefixCls, `theme__${theme}`, {
       [`${prefixCls}--disabled`]: disabled,
       [`${prefixCls}--vertical`]: vertical,
@@ -389,35 +393,40 @@ const Slider = memo(
           {Object.keys(marks).map((item, index) => (
             <span
               className={classNames(`${prefixCls}__step-dot`, {
-                [`${prefixCls}__step-dotDisabled`]: value <= ((item - (min || 0)) / ((max || 100) - (min || 0))) * 100
+                [`${prefixCls}__step-dotDisabled`]: value <= ((item - min) / (max - min)) * 100
               })}
               key={index}
               style={{
-                [!vertical ? 'left' : 'bottom']: ((item - (min || 0)) / ((max || 100) - (min || 0))) * 100 + '%'
+                [!vertical ? 'left' : 'bottom']: ((item - min) / (max - min)) * 100 + '%'
               }}
-              onClick={(e) => onMarksClick(e, ((item - (min || 0)) / ((max || 100) - (min || 0))) * 100)}
+              onClick={(e) => onMarksClick(e, ((item - min) / (max - min)) * 100)}
             />
           ))}
         </div>
-        {((min && max) || Object.entries(marks).length !== 0) && (
+        {(showRangeLabel || Object.entries(marks).length !== 0) && (
           <div className={`${prefixCls}__stepText`}>
-            {min && <span className={`${prefixCls}__min ${prefixCls}__stepText-dot`}>{min}</span>}
-            {max && <span className={`${prefixCls}__max ${prefixCls}__stepText-dot`}>{max}</span>}
-            {Object.entries(marks).map(([key, item], index) => (
-              <span
-                className={`${prefixCls}__stepText-dot`}
-                key={index}
-                style={{
-                  [!vertical ? 'left' : 'bottom']: ((key - (min || 0)) / ((max || 100) - (min || 0))) * 100 + '%',
-                  transform: !vertical ? 'translateX(-50%)' : 'translateY(50%)'
-                }}
-                onClick={(e) => {
-                  onMarksClick(e, ((key - (min || 0)) / ((max || 100) - (min || 0))) * 100)
-                }}
-              >
-                {item}
-              </span>
-            ))}
+            {Object.keys(marks).length ? (
+              Object.entries(marks).map(([key, item], index) => (
+                <span
+                  className={`${prefixCls}__stepText-dot`}
+                  key={index}
+                  style={{
+                    [!vertical ? 'left' : 'bottom']: ((key - min) / (max - min)) * 100 + '%',
+                    transform: !vertical ? 'translateX(-50%)' : 'translateY(50%)'
+                  }}
+                  onClick={(e) => {
+                    onMarksClick(e, ((key - min) / (max - min)) * 100)
+                  }}
+                >
+                  {item}
+                </span>
+              ))
+            ) : (
+              <>
+                {min !== undefined && <span className={`${prefixCls}__min ${prefixCls}__stepText-dot`}>{min}</span>}
+                {max !== undefined && <span className={`${prefixCls}__max ${prefixCls}__stepText-dot`}>{max}</span>}
+              </>
+            )}
           </div>
         )}
       </div>

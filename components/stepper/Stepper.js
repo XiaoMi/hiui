@@ -22,16 +22,24 @@ import PropTypes from 'prop-types'
  */
 class Stepper extends React.Component {
   renderNode(arg, info) {
-    const { itemLayout, current } = this.props
+    const { itemLayout, current, onChange } = this.props
     const _c = classnames(
       'hi-stepper__item',
+      { 'hi-stepper__item--can-click': onChange },
       arg === 'h' && itemLayout === 'vertical' && 'hi-stepper__item--up',
       info.key <= +current && 'hi-stepper__item--active',
       info.key < +current && 'hi-stepper__item--done'
     )
     return (
       <li className={_c} key={info.key}>
-        <div className="hi-stepper__item-content">
+        <div
+          className="hi-stepper__item-content"
+          onClick={() => {
+            if (onChange) {
+              onChange(info.key)
+            }
+          }}
+        >
           <span className="hi-stepper__icon">
             {info.icon ? (
               typeof info.icon === 'string' ? (

@@ -75,6 +75,7 @@ const TimeList = ({ type, datas, value, disabledList, onSelect, hourStep, minute
   }
   const scrollEvent = (e) => {
     e.persist()
+    e.stopPropagation()
     clearTimeout(timeRef.current)
     const st = e.target.scrollTop
     topValue1.current = st
