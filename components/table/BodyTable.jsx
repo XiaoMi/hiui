@@ -201,8 +201,8 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
                   [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
                 })}
                 style={{
-                  width: resizable ? realColumnsWidth[index] : width,
-                  minWidth: resizable ? realColumnsWidth[index] : width
+                  width: resizable ? realColumnsWidth[index]|| width : width,
+                  minWidth: resizable ? realColumnsWidth[index]|| width : width
                 }}
               />
             )
