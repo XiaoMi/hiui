@@ -275,7 +275,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
         <table style={{ width: '100%' }} ref={headerInner}>
           <colgroup>
             {columnsgroup.map((c, index) => {
-              const width = resizable ? realColumnsWidth[index]||c.width : c.width
+              const width = resizable ? realColumnsWidth[index] || c.width : c.width
               return (
                 <col
                   key={index}
