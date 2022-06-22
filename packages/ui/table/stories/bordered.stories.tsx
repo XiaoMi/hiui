@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 带边框
+ */
 export const Bordered = () => {
   const [column] = React.useState([
     {

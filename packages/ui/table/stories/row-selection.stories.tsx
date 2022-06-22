@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 行选中
+ */
 export const RowSelection = () => {
   const [columns] = React.useState([
     {
@@ -127,7 +130,7 @@ export const RowSelection = () => {
     pageSize: 5,
   })
 
-  const [selectedRowKeys, setSelectedRowKeys] = React.useState([])
+  const [selectedRowKeys, setSelectedRowKeys] = React.useState<any>([])
 
   return (
     <>

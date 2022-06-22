@@ -1,6 +1,9 @@
 import React from 'react'
 import Table, { TableColumnItem } from '../src'
 
+/**
+ * @title 表头分组
+ */
 export const GroupHeader = () => {
   const [columns] = React.useState<TableColumnItem[]>([
     {
@@ -146,7 +149,7 @@ export const GroupHeader = () => {
   ])
 
   const [data] = React.useState(() => {
-    const data = []
+    const data: any[] = []
     for (let i = 0; i < 6; i++) {
       const item = {
         key: i + 1,

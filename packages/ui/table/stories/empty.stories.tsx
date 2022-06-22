@@ -2,6 +2,9 @@ import React from 'react'
 import Table from '../src'
 import EmptyState from '@hi-ui/empty-state'
 
+/**
+ * @title 空状态
+ */
 export const Empty = () => {
   return (
     <>

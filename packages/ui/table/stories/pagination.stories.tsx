@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 表格分页
+ */
 export const Pagination = () => {
   const [columns] = React.useState([
     {

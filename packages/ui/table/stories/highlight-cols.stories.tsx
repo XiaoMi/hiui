@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 列高亮
+ */
 export const HighlightCols = () => {
   const [column] = React.useState([
     {

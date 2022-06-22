@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title hover 列高亮
+ */
 export const Highlight = () => {
   return (
     <>

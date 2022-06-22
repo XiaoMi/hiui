@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 可调节列宽
+ */
 export const Resizable = () => {
   return (
     <>

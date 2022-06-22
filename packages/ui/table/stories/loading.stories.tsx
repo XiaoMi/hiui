@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 加载态
+ */
 export const Loading = () => {
   return (
     <>

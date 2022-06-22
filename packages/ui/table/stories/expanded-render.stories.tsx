@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 内嵌面板
+ */
 export const ExpandedRender = () => {
   return (
     <>

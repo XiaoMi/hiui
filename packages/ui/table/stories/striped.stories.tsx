@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 斑马纹
+ */
 export const Striped = () => {
   return (
     <>

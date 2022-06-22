@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 数据排序
+ */
 export const DataSorter = () => {
   const [columns] = React.useState([
     {

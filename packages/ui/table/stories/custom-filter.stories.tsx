@@ -4,6 +4,9 @@ import Table from '../src'
 import Input from '@hi-ui/input'
 import Button from '@hi-ui/button'
 
+/**
+ * @title 自定义过滤
+ */
 export const CustomFilter = () => {
   const [columns] = React.useState([
     {

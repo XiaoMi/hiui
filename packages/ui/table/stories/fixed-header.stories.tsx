@@ -1,6 +1,9 @@
 import React from 'react'
 import Table, { TableColumnItem } from '../src'
 
+/**
+ * @title 固定表头
+ */
 export const FixedHeader = () => {
   const [columns] = React.useState<TableColumnItem[]>([
     {
@@ -135,7 +138,7 @@ export const FixedHeader = () => {
   ])
 
   const [data] = React.useState(() => {
-    const data = []
+    const data: any[] = []
     for (let i = 0; i < 6; i++) {
       const item = {
         key: i + 1,

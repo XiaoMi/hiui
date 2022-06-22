@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 异步展开渲染
+ */
 export const AsyncExpandedRender = () => {
   return (
     <>

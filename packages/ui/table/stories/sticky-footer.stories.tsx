@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 表脚底部
+ */
 export const StickyFooter = () => {
   const [columns] = React.useState([
     {

@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 合并单元格
+ */
 export const MergedCell = () => {
   return (
     <>

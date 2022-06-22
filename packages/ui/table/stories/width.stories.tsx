@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 自定义列宽
+ */
 export const Width = () => {
   const [column] = React.useState([
     {

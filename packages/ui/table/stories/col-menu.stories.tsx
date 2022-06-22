@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 列筛选
+ */
 export const ColMenu = () => {
   const [columns] = React.useState([
     {

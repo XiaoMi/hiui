@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 自定义列控制
+ */
 export const Setting = () => {
   const [dataSource] = React.useState([
     {

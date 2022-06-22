@@ -1,6 +1,9 @@
 import React from 'react'
 import Table, { TableColumnItem } from '../src'
 
+/**
+ * @title 统计行
+ */
 export const Calc = () => {
   const [columns] = React.useState<TableColumnItem[]>([
     {
@@ -88,7 +91,7 @@ export const Calc = () => {
 
   return (
     <>
-      <h1>Basic for Table</h1>
+      <h1>Calc for Table</h1>
       <div className="table-calc__wrap" style={{ width: 800, background: '#eee' }}>
         <Table columns={columns} data={data} fixedToColumn={{ right: 'stock' }} />
       </div>

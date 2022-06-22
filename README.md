@@ -89,3 +89,9 @@ yarn lerna run test --scope=@hi-ui/date-picker
 ### utils
 
 > packages/utils
+
+## 文档生成
+
+```sh
+yarn lerna run test --scope=@hi-ui/hi-docs
+```

@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 列冻结
+ */
 export const Frozen = () => {
   return (
     <>

@@ -1,8 +1,11 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 字段别名
+ */
 export const FieldKey = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = React.useState([])
+  const [selectedRowKeys, setSelectedRowKeys] = React.useState<any>([])
   console.log('selectedRowKeys', selectedRowKeys)
 
   return (

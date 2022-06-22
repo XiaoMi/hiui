@@ -1,6 +1,9 @@
 import React from 'react'
 import Table from '../src'
 
+/**
+ * @title 树形表格
+ */
 export const TableTree = () => {
   return (
     <>
