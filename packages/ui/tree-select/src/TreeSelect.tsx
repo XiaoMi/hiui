@@ -279,7 +279,8 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
   }
 )
 
-export interface TreeSelectProps extends Omit<PickerProps, 'data' | 'onChange' | 'trigger'> {
+export interface TreeSelectProps
+  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable'> {
   /**
    * 展示数据
    */

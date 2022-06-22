@@ -331,7 +331,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
 )
 
 export interface CheckTreeSelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'value' | 'trigger'> {
+  extends Omit<PickerProps, 'data' | 'onChange' | 'value' | 'trigger' | 'scrollable'> {
   /**
    * 展示数据
    */

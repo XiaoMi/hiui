@@ -266,7 +266,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
   }
 )
 
-export interface CheckCascaderProps extends Omit<PickerProps, 'trigger'> {
+export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrollable'> {
   /**
    * 设置选择项数据源
    */

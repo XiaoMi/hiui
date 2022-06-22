@@ -355,7 +355,9 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
   }
 )
 
-export interface CheckSelectProps extends Omit<PickerProps, 'trigger'>, UseCheckSelectProps {
+export interface CheckSelectProps
+  extends Omit<PickerProps, 'trigger' | 'scrollable'>,
+    UseCheckSelectProps {
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
    * @private

@@ -162,3 +162,6 @@ export { default as Select } from '@hi-ui/select'
 
 // export * from '@hi-ui/space'
 // export { default as Space } from '@hi-ui/space'
+
+export * from '@hi-ui/number-input'
+export { default as NumberInput } from '@hi-ui/number-input'

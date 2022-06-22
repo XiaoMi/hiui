@@ -234,7 +234,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
 })
 
 export interface CascaderProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger'>,
+  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable'>,
     UseCascaderProps {
   /**
    * 将 check 子项拍平展示。暂不对外暴露

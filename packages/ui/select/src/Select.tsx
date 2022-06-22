@@ -250,7 +250,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
 )
 
 export interface SelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger'>,
+  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable'>,
     UseSelectProps {
   /**
    * 选项数据
