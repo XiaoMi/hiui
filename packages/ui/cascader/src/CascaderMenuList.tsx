@@ -60,11 +60,12 @@ export const CascaderMenu = ({
       {menu.map((option) => {
         const eventOption = getItemEventData(option, getItemRequiredProps(option))
 
-        const { selected, loading } = eventOption
+        const { selected, loading, active } = eventOption
         const disabled = disabledContext || option.disabled
 
         const optionCls = cx(
           `${prefixCls}-option`,
+          active && `${prefixCls}-option--active`,
           loading && `${prefixCls}-option--loading`,
           disabled && `${prefixCls}-option--disabled`,
           selected && `${prefixCls}-option--selected`

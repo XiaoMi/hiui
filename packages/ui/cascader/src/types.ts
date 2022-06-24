@@ -59,6 +59,7 @@ export interface CascaderItemRequiredProps {
   selected: boolean
   loading: boolean
   focused: boolean
+  active: boolean
 }
 
 export interface CascaderItemEventData extends FlattedCascaderDataItem, CascaderItemRequiredProps {}

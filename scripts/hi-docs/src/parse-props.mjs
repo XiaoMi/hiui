@@ -136,63 +136,72 @@ const isEnumType = (type) =>
 
 const isBooleanType = (type) => type.name === 'boolean' || type.raw === 'boolean'
 
+const isPrivate = (val) =>
+  val.description &&
+  (val.description.includes('暂不对外暴露') || val.description.includes('@private'))
+
 const tableRenderer = (doc) => {
   log('Table Renderer: ', doc.displayName)
 
   return [
-    tableAstBuilder(Object.values(doc.props), [
-      {
-        title: '参数',
-        render: (val) =>
-          val.required ? [text(val.name), text(' '), emphasis(text(`(${'required'})`))] : val.name,
-      },
-      {
-        title: '说明',
-        render: (val) => val.description,
-      },
-      {
-        title: '类型',
-        render: (val) => (val.type ? (val.type.raw ? val.type.raw : val.type.name) : '-'),
-        // render: (val) => (val.type ? (isEnumType(val.type) ? val.type.raw : val.type.name) : '-'),
-      },
-      {
-        title: '可选值',
-        render: (val) => {
-          if (!val.type) return '-'
-          if (isEnumType(val.type)) return val.type.value.map((e) => e.value).join(' | ')
-          if (isBooleanType(val.type)) return 'true | false'
-          return '-'
+    tableAstBuilder(
+      Object.values(doc.props).filter((prop) => !isPrivate(prop)),
+      [
+        {
+          title: '参数',
+          render: (val) =>
+            val.required
+              ? [text(val.name), text(' '), emphasis(text(`(${'required'})`))]
+              : val.name,
         },
-      },
-      {
-        title: '默认值',
-        render: (val) => {
-          if (val.defaultValue) {
-            // 移除类型定义
-            if (
-              typeof val.defaultValue.value === 'string' &&
-              val.defaultValue.value.endsWith(' as []')
-            ) {
-              return val.defaultValue.value.slice(0, -6)
-            }
-
-            // 纯字符串类型
-            if (
-              typeof val.defaultValue.value === 'string' &&
-              // JSX
-              !val.defaultValue.value.startsWith('<') &&
-              // Function
-              !val.defaultValue.value.startsWith('(')
-            ) {
-              return `"${val.defaultValue.value}"`
-            }
-
-            return val.defaultValue.value
-          }
-          return '-'
+        {
+          title: '说明',
+          render: (val) => val.description,
         },
-      },
-    ]),
+        {
+          title: '类型',
+          render: (val) => (val.type ? (val.type.raw ? val.type.raw : val.type.name) : '-'),
+          // render: (val) => (val.type ? (isEnumType(val.type) ? val.type.raw : val.type.name) : '-'),
+        },
+        {
+          title: '可选值',
+          render: (val) => {
+            if (!val.type) return '-'
+            if (isEnumType(val.type)) return val.type.value.map((e) => e.value).join(' | ')
+            if (isBooleanType(val.type)) return 'true | false'
+            return '-'
+          },
+        },
+        {
+          title: '默认值',
+          render: (val) => {
+            if (val.defaultValue) {
+              // 移除类型定义
+              if (
+                typeof val.defaultValue.value === 'string' &&
+                val.defaultValue.value.endsWith(' as []')
+              ) {
+                return val.defaultValue.value.slice(0, -6)
+              }
+
+              // 纯字符串类型
+              if (
+                typeof val.defaultValue.value === 'string' &&
+                // JSX
+                !val.defaultValue.value.startsWith('<') &&
+                // Function
+                !val.defaultValue.value.startsWith('(')
+              ) {
+                return `"${val.defaultValue.value}"`
+              }
+
+              return val.defaultValue.value
+            }
+            return '-'
+          },
+        },
+      ]
+    ),
   ]
 }
 

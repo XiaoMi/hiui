@@ -9,30 +9,37 @@ import { PictureUpload } from './PictureUpload'
 import { AvatarUpload } from './AvatarUpload'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
+const NOOP_ARRAY = [] as []
 
 /**
  * TODO: What is Upload
  */
 export const Upload = forwardRef<HTMLDivElement | null, UploadProps>(
-  ({ prefixCls = UPLOAD_PREFIX, role = 'upload', type, className, ...rest }, ref) => {
+  (
+    {
+      prefixCls = UPLOAD_PREFIX,
+      role = 'upload',
+      type = 'default',
+      data = NOOP_ARRAY,
+      className,
+      ...rest
+    },
+    ref
+  ) => {
     const cls = cx(prefixCls, className)
-    if (type === 'drag') {
-      return <DragUpload ref={ref} className={cls} {...rest} />
-    }
 
-    if (type === 'pictureCard') {
-      return <PictureListUpload ref={ref} className={cls} {...rest} />
+    switch (type) {
+      case 'drag':
+        return <DragUpload ref={ref} className={cls} data={data} {...rest} />
+      case 'pictureCard':
+        return <PictureListUpload ref={ref} className={cls} data={data} {...rest} />
+      case 'photo':
+        return <PictureUpload ref={ref} className={cls} data={data} {...rest} />
+      case 'avatar':
+        return <AvatarUpload ref={ref} className={cls} data={data} {...rest} />
+      default:
+        return <NormalUpload ref={ref} className={cls} data={data} {...rest} />
     }
-
-    if (type === 'photo') {
-      return <PictureUpload ref={ref} className={cls} {...rest} />
-    }
-
-    if (type === 'avatar') {
-      return <AvatarUpload ref={ref} className={cls} {...rest} />
-    }
-
-    return <NormalUpload ref={ref} className={cls} {...rest} />
   }
 )
 

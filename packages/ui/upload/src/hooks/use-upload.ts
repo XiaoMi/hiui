@@ -233,6 +233,7 @@ const useUpload = ({
       beforeUpload,
       customUpload,
       maxSize,
+      maxCount,
     ]
   )
 

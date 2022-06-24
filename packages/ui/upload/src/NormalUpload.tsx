@@ -42,6 +42,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onChange,
       beforeUpload,
       customUpload,
+      actionRender,
       ...rest
     },
     ref
@@ -96,6 +97,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             onDelete={deleteFile}
             onDownload={onDownload}
             prefixCls={prefixCls}
+            actionRender={actionRender}
           />
         )}
       </div>

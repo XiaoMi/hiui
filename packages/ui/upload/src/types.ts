@@ -32,6 +32,7 @@ export interface UploadFileList {
   onDelete: (file: UploadFileItem, index: any) => void
   onDownload: UploadProps['onDownload']
   showPic?: boolean
+  actionRender?: (props: ActionRenderProps) => React.ReactNode
 }
 
 export interface UploadRequestOption {
@@ -156,4 +157,13 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    * 点击已上传的文件时的回调
    */
   onDownload?: (file: UploadFileItem) => void
+  /**
+   * 操作区自定义渲染，暂仅在 type="default" 下有效
+   */
+  actionRender?: (props: ActionRenderProps) => React.ReactNode
+}
+
+export interface ActionRenderProps {
+  file: UploadFileItem
+  index: number
 }

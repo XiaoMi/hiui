@@ -7,6 +7,7 @@ export * from './picture-card.stories'
 export * from './photo.stories'
 export * from './avatar.stories'
 export * from './custom-upload.stories'
+export * from './action-render.stories'
 
 export default {
   title: 'Data Input/Upload',

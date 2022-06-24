@@ -104,13 +104,14 @@ export const useCascader = ({
   const getItemRequiredProps = useCallback(
     ({ id, depth }: FlattedCascaderDataItem): CascaderItemRequiredProps => {
       return {
+        active: value[depth] === id,
         selected: flatted ? selectedId === id : selectedIds[depth] === id,
         loading: isLoadingId(id),
         // TODO: 表示聚焦状态，添加快捷键时可以一起处理
         focused: false,
       }
     },
-    [flatted, selectedId, selectedIds, isLoadingId]
+    [flatted, selectedId, selectedIds, isLoadingId, value]
   )
 
   const reset = useCallback(() => {

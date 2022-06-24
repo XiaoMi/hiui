@@ -2,7 +2,7 @@ import React from 'react'
 import Cascader from '../src'
 
 /**
- * @title
+ * @title 禁用状态
  * @desc 暂不可操作的状态
  */
 export const Disabled = () => {

@@ -36,7 +36,7 @@ const fileTypeMap = {
  * TODO: What is Upload
  */
 export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
-  ({ prefixCls = UPLOAD_PREFIX, onDownload, onDelete, fileList, showPic }, ref) => {
+  ({ prefixCls = UPLOAD_PREFIX, onDownload, onDelete, fileList, showPic, actionRender }, ref) => {
     const handleItemKeydown = useCallback(
       (e: React.KeyboardEvent<HTMLLIElement>, file: UploadFileItem, index: number) => {
         // ENTER
@@ -53,6 +53,23 @@ export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
       },
       [onDelete]
     )
+
+    const renderAction = (file: UploadFileItem, index: number) => {
+      // 如果 actionRender 返回 `true`，则使用默认 title
+      const action = actionRender ? actionRender({ file, index }) : true
+
+      return action === true ? (
+        <span className={`${prefixCls}__del-btn`}>
+          {file.uploadState === 'loading' ? (
+            <CloseOutlined onClick={() => onDelete(file, index)} />
+          ) : (
+            <DeleteOutlined onClick={() => onDelete(file, index)} />
+          )}
+        </span>
+      ) : (
+        action
+      )
+    }
 
     return (
       <ul className={`${prefixCls}__list`} ref={ref}>
@@ -96,13 +113,7 @@ export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
                 >
                   {file.name}
                 </a>
-                <span className={`${prefixCls}__del-btn`}>
-                  {file.uploadState === 'loading' ? (
-                    <CloseOutlined onClick={() => onDelete(file, index)} />
-                  ) : (
-                    <DeleteOutlined onClick={() => onDelete(file, index)} />
-                  )}
-                </span>
+                {renderAction(file, index)}
               </div>
               {file.uploadState === 'loading' && (
                 <div className={`${prefixCls}__upstatus`}>
