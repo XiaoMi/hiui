@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/pop-confirm",
-  "version": "4.0.0-beta.29",
+  "version": "4.0.0-beta.30",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,7 +43,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^4.0.0-beta.14",
+    "@hi-ui/button": "^4.0.0-beta.15",
     "@hi-ui/classname": "^4.0.0-beta.0",
     "@hi-ui/core": "^4.0.0-beta.9",
     "@hi-ui/core-css": "^4.0.0-beta.5",
