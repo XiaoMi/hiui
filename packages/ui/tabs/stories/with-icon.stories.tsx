@@ -20,7 +20,16 @@ export const WithIcon = () => {
               </span>
             }
           >
-            Content of Tab Panel 1
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              Content of Tab Panel 1
+            </div>
           </TabPane>
           <TabPane
             tabId="2"
@@ -32,7 +41,16 @@ export const WithIcon = () => {
             }
             disabled
           >
-            Content of Tab Panel 2
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              Content of Tab Panel 2
+            </div>
           </TabPane>
           <TabPane
             tabId="3"
@@ -43,7 +61,16 @@ export const WithIcon = () => {
               </span>
             }
           >
-            Content of Tab Panel 3
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              Content of Tab Panel 3
+            </div>
           </TabPane>
         </Tabs>
       </div>

@@ -26,10 +26,13 @@ export const CustomIcon = () => {
     <>
       <h1>CustomIcon</h1>
       <div className="stepper-custom-icon__wrap">
-        <Stepper itemLayout="vertical" data={data} current={1} type="dot" onChange={console.log} />
-        <br />
-        <br />
-        <Stepper data={data} current={2} itemLayout="vertical" />
+        <Stepper
+          data={data}
+          current={2}
+          itemLayout="vertical"
+          // type="dot"
+          onChange={console.log}
+        />
       </div>
     </>
   )

@@ -14,7 +14,18 @@ export const Scroll = () => {
         return {
           id: num,
           title: `Tab ${num}`,
-          content: `Content of Tab Panel ${num}`,
+          content: (
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              {`Content of Tab Panel ${num}`}
+            </div>
+          ),
         }
       })
   })

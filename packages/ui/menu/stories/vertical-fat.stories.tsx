@@ -11,7 +11,7 @@ export const VerticalFat = () => {
       <h1>垂直胖菜单</h1>
       <div
         className="menu-vertical-fat__wrap"
-        style={{ background: '#ccc', padding: 20, minWidth: 600 }}
+        style={{ background: '#f5f7fa', padding: 20, minWidth: 600 }}
       >
         <Menu
           placement="vertical"

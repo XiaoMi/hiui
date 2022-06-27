@@ -33,17 +33,6 @@ export const Icon = () => {
           <span style={{ marginLeft: 4 }}>删除文件</span>
         </span>
       ),
-      split: true,
-    },
-    {
-      id: 3,
-      title: '菜单四',
-    },
-    {
-      id: 6,
-      title: '小米商城',
-      href: 'https://www.mi.com',
-      disabled: true,
     },
   ])
 

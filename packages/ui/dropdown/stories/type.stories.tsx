@@ -28,17 +28,10 @@ export const Type = () => {
     {
       id: 4,
       title: '菜单五',
-      split: true,
     },
     {
       id: 5,
       title: '菜单六',
-    },
-    {
-      id: 6,
-      title: '小米商城',
-      href: 'https://www.mi.com',
-      disabled: true,
     },
   ])
 

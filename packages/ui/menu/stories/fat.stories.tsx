@@ -11,7 +11,7 @@ export const HorizontalFat = () => {
       <h1>水平胖菜单</h1>
       <div
         className="menu-horizontal-fat__wrap"
-        style={{ background: '#ccc', padding: 20, minWidth: 600 }}
+        style={{ background: '#f5f7fa', padding: 20, minWidth: 600 }}
       >
         <Menu
           placement="horizontal"
@@ -99,7 +99,7 @@ export const HorizontalFat = () => {
               ],
             },
             {
-              title: '超长超长超长字符超长超长超长字符',
+              title: '数码产品',
               id: 4,
             },
             {
@@ -108,7 +108,7 @@ export const HorizontalFat = () => {
             },
             {
               title: '智能生活',
-              id: 5,
+              id: 6,
             },
           ]}
         />

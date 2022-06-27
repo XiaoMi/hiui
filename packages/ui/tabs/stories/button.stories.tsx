@@ -12,24 +12,78 @@ export const Button = () => {
       <div className="tabs-basic__wrap">
         <Tabs type="button" placement="vertical" style={{ marginBottom: 40 }}>
           <TabPane tabId="1" tabTitle="Tab 1">
-            Content of Tab Panel 1
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              Content of Tab Panel 1
+            </div>
           </TabPane>
           <TabPane tabId="2" tabTitle="Tab 2" disabled>
-            Content of Tab Panel 2
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              Content of Tab Panel 2
+            </div>
           </TabPane>
           <TabPane tabId="3" tabTitle="Tab 3">
-            Content of Tab Panel 3
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              Content of Tab Panel 3
+            </div>
           </TabPane>
         </Tabs>
         <Tabs type="button" placement="horizontal" draggable>
           <TabPane tabId="1" tabTitle="Tab 1">
-            Content of Tab Panel 1
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              Content of Tab Panel 1
+            </div>
           </TabPane>
           <TabPane tabId="2" tabTitle="Tab 2" disabled>
-            Content of Tab Panel 2
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              Content of Tab Panel 2
+            </div>
           </TabPane>
           <TabPane tabId="3" tabTitle="Tab 3">
-            Content of Tab Panel 3
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              Content of Tab Panel 3
+            </div>
           </TabPane>
         </Tabs>
       </div>

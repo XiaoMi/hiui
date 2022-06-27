@@ -3,6 +3,7 @@ import Dropdown from '../src'
 
 export * from './basic.stories'
 export * from './disabled.stories'
+export * from './group.stories'
 export * from './trigger.stories'
 export * from './multi-menu.stories'
 export * from './placement.stories'

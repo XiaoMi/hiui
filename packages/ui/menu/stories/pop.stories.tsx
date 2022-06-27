@@ -9,7 +9,7 @@ export const Pop = () => {
   return (
     <>
       <h1>Pop</h1>
-      <div className="menu-pop__wrap" style={{ background: '#ccc', padding: 20, minWidth: 600 }}>
+      <div className="menu-pop__wrap" style={{ background: '#f5f7fa', padding: 20, minWidth: 600 }}>
         <Menu
           expandedType="pop"
           data={[

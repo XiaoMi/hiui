@@ -98,9 +98,8 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
             <Button
               className={cx(`${prefixCls}__icon`, `${prefixCls}__icon-btn-wrap`)}
               {...getTriggerProps()}
-            >
-              <DownOutlined />
-            </Button>
+              icon={<DownOutlined />}
+            ></Button>
           </ButtonGroup>
         )
       }

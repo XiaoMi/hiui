@@ -2,10 +2,10 @@ import React from 'react'
 import Dropdown from '../src'
 
 /**
- * @title 基础用法
- * @desc 将一组同类的动作收起成为菜单，由一个操作入口展示使用
+ * @title 分组
+ * @desc 通过分隔线将选项进行分组划分
  */
-export const Basic = () => {
+export const Group = () => {
   const [list] = React.useState([
     {
       id: 0,
@@ -28,12 +28,23 @@ export const Basic = () => {
       id: 4,
       title: '菜单五',
     },
+    {
+      id: 5,
+      title: '菜单六',
+      split: true,
+    },
+    {
+      id: 6,
+      title: '小米商城',
+      href: 'https://www.mi.com',
+      disabled: true,
+    },
   ])
 
   return (
     <>
-      <h1>Basic</h1>
-      <div className="dropdown-basic__wrap">
+      <h1>Group</h1>
+      <div className="dropdown-group__wrap">
         <Dropdown data={list} title="鼠标悬停" onClick={console.log} />
       </div>
     </>

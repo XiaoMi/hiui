@@ -12,17 +12,44 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <Button onClick={() => setActiveTab('2')}>更新面板</Button>
       <div className="tabs-basic__wrap">
-        <Tabs activeId={activeTab} onChange={setActiveTab}>
+        <Button onClick={() => setActiveTab('2')}>更新面板</Button>
+        <Tabs style={{ marginTop: 16 }} activeId={activeTab} onChange={setActiveTab}>
           <TabPane tabId="1" tabTitle="Tab 1">
-            Content of Tab Panel 1
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              Content of Tab Panel 1
+            </div>
           </TabPane>
           <TabPane tabId="2" tabTitle="Tab 2" disabled>
-            Content of Tab Panel 2
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              Content of Tab Panel 2
+            </div>
           </TabPane>
           <TabPane tabId="3" tabTitle="Tab 3">
-            Content of Tab Panel 3
+            <div
+              style={{
+                backgroundColor: '#f5f7fa',
+                textAlign: 'center',
+                padding: 32,
+                color: '#1f2733',
+              }}
+            >
+              Content of Tab Panel 3
+            </div>
           </TabPane>
         </Tabs>
       </div>

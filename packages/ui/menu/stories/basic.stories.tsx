@@ -1,13 +1,6 @@
 import React from 'react'
 import Menu from '../src'
-import {
-  // HomeOutlined,
-  UserOutlined,
-  SunOutlined,
-  PadOutlined,
-  ManOutlined,
-  LockOutlined,
-} from '@hi-ui/icons'
+import { AppStoreOutlined, UserOutlined, SunOutlined, PadOutlined } from '@hi-ui/icons'
 
 /**
  * @title 基础用法
@@ -17,7 +10,10 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="menu-basic__wrap" style={{ background: '#ccc', padding: 20, minWidth: 600 }}>
+      <div
+        className="menu-basic__wrap"
+        style={{ background: '#f5f7fa', padding: 20, minWidth: 600 }}
+      >
         <Menu
           showCollapse
           defaultExpandedIds={[3]}
@@ -25,7 +21,7 @@ export const Basic = () => {
             {
               title: '首页',
               id: 1,
-              // icon: <HomeOutlined />,
+              icon: <AppStoreOutlined />,
             },
             {
               title: '小米MIX',
@@ -40,7 +36,6 @@ export const Basic = () => {
                 {
                   title: '小米',
                   id: 666,
-                  icon: <LockOutlined />,
                   children: [
                     {
                       title: '小米9',
@@ -54,7 +49,6 @@ export const Basic = () => {
                     {
                       title: '小米7',
                       id: 'xiaomi7',
-                      icon: <ManOutlined />,
                     },
                     {
                       title: '小米6',

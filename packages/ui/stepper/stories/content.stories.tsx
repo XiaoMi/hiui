@@ -26,7 +26,7 @@ export const Content = () => {
     <>
       <h1>Content</h1>
       <div className="stepper-content__wrap">
-        <Stepper itemLayout="vertical" data={data} current={2} onChange={console.log} />
+        <Stepper data={data} current={2} onChange={console.log} />
       </div>
     </>
   )

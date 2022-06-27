@@ -29,7 +29,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
     }
   }
 
-  &--card {
+  &--type-card {
     .#{$prefix}__content {
       background-color: use-color-static('white');
     }
@@ -48,12 +48,13 @@ $prefix: '#{$component-prefix}-tabs' !default;
         background-color: use-color('gray', 200);
         margin: 0;
         padding: use-spacing(4) use-spacing(10);
-        border-radius: use-border-radius('normal') use-border-radius('normal') 0 0;
+        border-radius: 0;
         transition: all 0.3s;
 
         &--active {
           color: use-color-mode('primary');
           background-color: use-color-static('white');
+          border-radius: use-border-radius('normal') 0 0 use-border-radius('normal');
         }
       }
     }
@@ -166,6 +167,26 @@ $prefix: '#{$component-prefix}-tabs' !default;
       flex-direction: column;
       // height: 100%;
 
+      &.#{$prefix}__list--desc {
+        .#{$prefix}__list--scroll {
+          row-gap: use-spacing(6);
+        }
+      }
+
+      &.#{$prefix}__list--card {
+        .#{$prefix}__item {
+          &--active {
+            border-radius: use-border-radius('normal') 0 0  use-border-radius('normal');
+          }
+        }
+      }
+
+      &.#{$prefix}__list--button {
+        .#{$prefix}__list--scroll {
+          row-gap: use-spacing(2);
+        }
+      }
+
       .#{$prefix}__list--inner {
         width: auto;
         display: block;
@@ -208,12 +229,13 @@ $prefix: '#{$component-prefix}-tabs' !default;
           margin: 0;
           padding: use-spacing(4) use-spacing(10);
           background-color: use-color('gray', 200);
-          border-radius: use-border-radius('normal') 0 0  use-border-radius('normal');
+          border-radius: 0;
           transition: all 0.3s;
 
           &--active {
             color: use-color-mode('primary');
             background-color: use-color-static('white');
+            border-radius: use-border-radius('normal') 0 0  use-border-radius('normal');
           }
         }
       }
