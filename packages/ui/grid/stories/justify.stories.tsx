@@ -19,7 +19,7 @@ export const Justify = () => {
   return (
     <>
       <h1>Justify</h1>
-      <div className="grid-justify" style={{ width: 764 }}>
+      <div className="grid-justify" style={{ minWidth: '660px' }}>
         <Row justify="center" gutter={true}>
           <Col span={6}>
             <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>col-6</div>

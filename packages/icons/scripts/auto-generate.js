@@ -1,8 +1,19 @@
 const Path = require('path')
 const Fs = require('fs')
+const { groupBy } = require('lodash')
 
 const Config = {
   reserveFillColorType: ['colorful'],
+  nameMappings: {
+    alert: '提示',
+    common: '通用',
+    direction: '方向',
+    edit: '编辑',
+    file: '文件',
+    filled: '面型',
+    outlined: '线型',
+    colorful: '多色型',
+  },
 }
 
 const getAllSvgComponentFileInfo = () => {
@@ -46,21 +57,21 @@ const disposeSvgSourceFile = (file, info) => {
     return source.replace(/<\?xml.*?\?>/g, '').trim()
   }
   const removeDoctypeDeclaration = (source) => {
-    return source.replace(/<\!DOCTYPE.*?>/g, '').trim()
+    return source.replace(/<!DOCTYPE.*?>/g, '').trim()
   }
 
   const removeSvgClass = (source) => {
-    return source.replace(/(?<=<svg.*?)class=\".*?\"(?=.*?>)/g, '')
+    return source.replace(/(?<=<svg.*?)class=".*?"(?=.*?>)/g, '')
   }
 
   const removeSvgSize = (source) => {
     return source
-      .replace(/(?<=<svg.*?)width=\".*?\"(?=.*?>)/g, '')
-      .replace(/(?<=<svg.*?)height=\".*?\"(?=.*?>)/g, '')
+      .replace(/(?<=<svg.*?)width=".*?"(?=.*?>)/g, '')
+      .replace(/(?<=<svg.*?)height=".*?"(?=.*?>)/g, '')
   }
 
   const removePathFill = (source) => {
-    return source.replace(/(?<=<.*?)fill=\".*?\"(?=.*?>)/g, '')
+    return source.replace(/(?<=<.*?)fill=".*?"(?=.*?>)/g, '')
   }
 
   const insertReactProps = (source) => {
@@ -79,7 +90,7 @@ const disposeSvgSourceFile = (file, info) => {
 }
 
 const transformToUpperCamelCase = (name) => {
-  const words = String(name).split(/\-/g)
+  const words = String(name).split(/-/g)
   return words.map((item) => item[0].toUpperCase() + item.slice(1)).join('')
 }
 
@@ -111,7 +122,9 @@ if (__DEV__) {
 }
 
 const generateIconGroupData = (componentInfo) => {
-  const targetDataFile = Path.join(__dirname, '../stories/group.ts')
+  const targetDataFile = Path.join(__dirname, '../stories/basic.stories.tsx')
+  const targetContent = Fs.readFileSync(targetDataFile, { encoding: 'utf8' })
+
   const collector = new Map()
   const allNeedImportComponents = []
   const types = new Set()
@@ -133,27 +146,25 @@ const generateIconGroupData = (componentInfo) => {
 
   const belongs = Array.from(collector.keys())
   const getDataString = ({ type, componentName, name }) =>
-    `\n{type:'${type}',component:${componentName}, name:'${name}', tagName:'${componentName}' }`
-  const content = `
-  export interface IconDescription{
-    type:${Array.from(types)
-      .map((type) => `'${type}'`)
-      .join('|')},
-    component:FunctionComponent,
-    name:string,
-    tagName:string
-  }
-  export interface IconGroupInfo{
-    ${belongs.map((belong) => `${belong}: IconDescription[]`).join('\n')}
-  }
-  export const ComponentGroup:IconGroupInfo = {
-    ${belongs
-      .map((belong) => `${belong}: [${collector.get(belong).map(getDataString).join(',')}]`)
-      .join(',\n')}
-  }`
-  const allImportStatement = `import { FunctionComponent } from 'react'
-  import {${allNeedImportComponents.join(',')}} from '../'`
-  Fs.writeFileSync(targetDataFile, allImportStatement + content)
+    `\n{ component: Icons.${componentName}, tagName:'${componentName}' }`
+
+  const injectContent = `${belongs
+    .map((belong) => {
+      const groups = groupBy(collector.get(belong), 'type')
+
+      return `{ id: '${belong}', title: '${Config.nameMappings[belong] || belong}', children: [
+          ${Object.keys(groups)
+            .map((type) => {
+              return `{ id: '${type}', title: '${Config.nameMappings[type]}', children: [
+                ${groups[type].map(getDataString).join(',\n')}
+              ]}`
+            })
+            .join(',\n')}
+          ]}`
+    })
+    .join(',\n')}`
+
+  Fs.writeFileSync(targetDataFile, targetContent.replace('/** Inject Icons */', injectContent))
 }
 
 const componentFileInfo = getAllSvgComponentFileInfo()
@@ -215,8 +226,7 @@ Fs.writeFileSync(Path.join(__dirname, '../src/index.ts'), indexTsContent)
 // export { IconSummation }
 // `
 
-const iconSummationTsContent = `
-${componentFileInfo
+const iconSummationTsContent = `${componentFileInfo
   .map(({ withTypeName, generateFileRelativePath }) => {
     return `export { ${transformToUpperCamelCase(
       withTypeName

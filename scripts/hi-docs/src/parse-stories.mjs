@@ -1,6 +1,10 @@
 import Path from 'path'
 import globAsync from 'fast-glob'
-import { outputPath, readFileAsync, writeFileAsync } from './utils/index.mjs'
+import {
+  // outputPath,
+  readFileAsync,
+  // writeFileAsync
+} from './utils/index.mjs'
 
 export async function parseStories(componentPaths) {
   const componentInfo = await Promise.all(
@@ -17,20 +21,18 @@ async function getComponentStories({ dir: baseURL, name: componentName, title })
   const storiesBaseURL = Path.join(baseURL, 'stories')
 
   // 读取
-  let storyFiles = await findComponentStoryFiles(storiesBaseURL)
-  // 处理顺序
-  const indexFiles = storyFiles.filter((filepath) => filepath.includes('index.stories'))
-  const storiesGroup = await getStoriesGroupByComponent(
-    indexFiles,
-    storiesBaseURL,
-    componentName,
-    title
-  )
+  const storyFiles = await findComponentStoryFiles(storiesBaseURL)
 
-  console.log(storiesGroup)
+  // 分组
+  // const storiesGroup = await getStoriesGroupByComponent(
+  //   ['index.stories.tsx'],
+  //   storiesBaseURL,
+  //   componentName,
+  //   title
+  // )
+  // console.log(storiesGroup)
   // await writeFileAsync(outputPath + 'group-config.js', JSON.stringify(storiesGroup))
 
-  storyFiles = storyFiles.filter((filepath) => !filepath.includes('index.stories'))
   // 处理替换
   const stories = await getStoriesByComponent(storyFiles, storiesBaseURL, componentName)
   // 返回
@@ -42,26 +44,41 @@ async function findComponentStoryFiles(baseUrl) {
     cwd: baseUrl,
   })
 
-  return tsFiles
+  const indexFilePath = tsFiles.find((filepath) => filepath.includes('index.stories'))
+  // 处理顺序
+  if (indexFilePath) {
+    const indexContent = await readFileAsync(indexFilePath, baseUrl)
+    const contents = indexContent
+      .split('\n')
+      .filter((row) => row.startsWith(`export * from`))
+      .map((row) => {
+        const storyPath = /'\.\/(.*\.stories)'/.exec(row)
+        return storyPath[1]
+      })
+
+    return contents.map((name) => tsFiles.find((file) => file.startsWith(name)))
+  }
+
+  return tsFiles.filter((filepath) => !filepath.includes('index.stories'))
 }
 
-async function getStoriesGroupByComponent(storyFiles, basePath, componentName, title) {
-  return Promise.all(
-    storyFiles.map(async (filepath, index) => {
-      const content = await readFileAsync(filepath, basePath)
-      const result = /title:\s'(.+)\/.+',/.exec(content)
-      let group = ''
-      if (result && result[1]) {
-        group = result[1]
-      }
-      return {
-        name: componentName,
-        title,
-        group,
-      }
-    })
-  )
-}
+// async function getStoriesGroupByComponent(storyFiles, basePath, componentName, title) {
+//   return Promise.all(
+//     storyFiles.map(async (filepath, index) => {
+//       const content = await readFileAsync(filepath, basePath)
+//       const result = /title:\s'(.+)\/.+',/.exec(content)
+//       let group = ''
+//       if (result && result[1]) {
+//         group = result[1]
+//       }
+//       return {
+//         name: componentName,
+//         title,
+//         group,
+//       }
+//     })
+//   )
+// }
 
 async function getStoriesByComponent(storyFiles, basePath, componentName) {
   return Promise.all(

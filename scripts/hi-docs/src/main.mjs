@@ -6,7 +6,7 @@ import { parseReadMe } from './parse-readme.mjs'
 import { parseStories } from './parse-stories.mjs'
 import { log, outputPath, rootDir } from './utils/index.mjs'
 
-const sourcePath = Path.join(rootDir, 'packages/ui')
+const sourcePath = Path.join(rootDir, 'packages')
 
 export async function main() {
   const componentPaths = await findUI(sourcePath)

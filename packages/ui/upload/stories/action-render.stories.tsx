@@ -34,6 +34,9 @@ export const ActionRender = () => {
             console.log('upload callback', file, fileList, response)
             // if(response&&response.status !== 200) return false // 返回 false 则该文件会从列表里删除
           }}
+          actionRender={({ file, index }) => {
+            return <span>{file.uploadState === 'loading' ? '加载中' : '删除'}</span>
+          }}
         />
       </div>
     </>

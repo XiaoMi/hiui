@@ -83,7 +83,7 @@ async function writeDocs(info, markdown) {
 
   await Promise.all([
     // 写入markdown
-    writeFileAsync(Path.join(outputPath, `./docs/${info.name}.mdx`), markdown),
+    writeFileAsync(Path.join(outputPath, `./components/${info.name}.mdx`), markdown),
     // 写入 stories
     ...info.stories.map(async (story) => {
       await writeFileAsync(

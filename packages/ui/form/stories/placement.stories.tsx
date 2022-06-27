@@ -28,10 +28,8 @@ export const Placement = () => {
           <FormItem label="密码" labelWidth="58" field="password" valueType="string">
             <Input type="password" placeholder={'请输入'} />
           </FormItem>
-          <FormItem field={null} valueType={null}>
-            <>
-              <Button>提交</Button>
-            </>
+          <FormItem>
+            <Button>提交</Button>
           </FormItem>
         </Form>
       </div>

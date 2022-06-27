@@ -21,7 +21,7 @@ const helpfulPrivatePkgs = [
 const othersPrivatePkgs = ['icon-button', 'locale-context', 'picker', 'tag-input', 'toast']
 
 async function findComponentPkgFiles(baseURL) {
-  const tsFiles = await globAsync('*/package.@(json)', {
+  const tsFiles = await globAsync('**/*/hi-docs.config.@(mdx)', {
     cwd: baseURL,
     ignore: ['**/node_modules/**'],
   })
@@ -32,12 +32,13 @@ async function findComponentPkgFiles(baseURL) {
         return v.startsWith(privateName + '/')
       })
   )
-  // return tsFiles.filter((v) => v.includes('form'))
+  // return tsFiles.filter((v) => ['form', 'select'].some((n) => v.includes(n)))
 }
 
 function getComponentInfo(componentPkgFiles, baseURL) {
   return componentPkgFiles.map((pkgFile) => {
-    const componentName = pkgFile.split('/')[0]
+    const pkgPaths = pkgFile.split('/')
+    const componentName = pkgPaths[pkgPaths.length - 2]
     const pkgFilepath = Path.join(baseURL, pkgFile)
 
     // @Meta Component
