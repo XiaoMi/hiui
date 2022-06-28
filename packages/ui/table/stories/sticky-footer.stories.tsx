@@ -134,7 +134,7 @@ export const StickyFooter = () => {
   return (
     <>
       <h1>StickyFooter for Table</h1>
-      <div className="table-sticky-footer__wrap" style={{ width: 800 }}>
+      <div className="table-sticky-footer__wrap" style={{ minWidth: 660 }}>
         <Table
           stickyFooter
           maxHeight={200}

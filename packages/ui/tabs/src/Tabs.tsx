@@ -11,7 +11,7 @@ const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
 
 /**
- * TODO: What is Tabs
+ * Tabs 标签页
  */
 export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
   (
@@ -77,7 +77,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
         <TabList
           prefixCls={prefixCls}
           data={tabList}
-          activeId={activeId}
+          activeId={activeTabId}
           onChange={setActiveTabId}
           onTabClick={onTabClick}
           direction={placement}

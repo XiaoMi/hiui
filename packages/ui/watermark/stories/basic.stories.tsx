@@ -8,10 +8,13 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="watermark-basic__wrap" style={{ height: 402, width: '100vw' }}>
+      <div
+        className="watermark-basic__wrap"
+        style={{ height: 402, minWidth: 660, position: 'relative', zIndex: 0 }}
+      >
         <Watermark
-          content={['HIUI', '做中台，就用 HIUI']}
-          logo="https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05"
+          content={['HiUI', '做中台，就用 HiUI']}
+          logo="https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png"
         ></Watermark>
       </div>
     </>

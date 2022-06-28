@@ -15,14 +15,16 @@ export const Pagination = () => {
               title: '下单量-指标',
               description: '下单量在交易环节中整体用户下单的数量',
               extra: '最新使用：2019.12.23 下午07:07',
-              avatar: 'http://infra.mioffice.cn/hiui/static/img/logo.png',
+              avatar:
+                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
               action: '编辑',
             },
             {
               title: '下单量-指标',
               description: '下单量在交易环节中整体用户下单的数量',
               extra: '最新使用：2019.12.23 下午07:07',
-              avatar: 'http://infra.mioffice.cn/hiui/static/img/logo.png',
+              avatar:
+                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
               action: '编辑',
             },
           ]}
@@ -42,14 +44,16 @@ export const Pagination = () => {
               title: '下单量-指标',
               description: '下单量在交易环节中整体用户下单的数量',
               extra: '最新使用：2019.12.23 下午07:07',
-              avatar: 'http://infra.mioffice.cn/hiui/static/img/logo.png',
+              avatar:
+                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
               action: '编辑',
             },
             {
               title: '下单量-指标',
               description: '下单量在交易环节中整体用户下单的数量',
               extra: '最新使用：2019.12.23 下午07:07',
-              avatar: 'http://infra.mioffice.cn/hiui/static/img/logo.png',
+              avatar:
+                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
               action: '编辑',
             },
           ]}
@@ -69,14 +73,16 @@ export const Pagination = () => {
               title: '下单量-指标',
               description: '下单量在交易环节中整体用户下单的数量',
               extra: '最新使用：2019.12.23 下午07:07',
-              avatar: 'http://infra.mioffice.cn/hiui/static/img/logo.png',
+              avatar:
+                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
               action: '编辑',
             },
             {
               title: '下单量-指标',
               description: '下单量在交易环节中整体用户下单的数量',
               extra: '最新使用：2019.12.23 下午07:07',
-              avatar: 'http://infra.mioffice.cn/hiui/static/img/logo.png',
+              avatar:
+                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
               action: '编辑',
             },
           ]}

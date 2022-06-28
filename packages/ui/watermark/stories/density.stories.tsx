@@ -3,16 +3,20 @@ import Watermark from '../src'
 
 /**
  * @title 自定义疏密度
+ * @desc 通过 density 设置水印的疏密度
  */
 export const Density = () => {
   return (
     <>
       <h1>Density</h1>
-      <div className="watermark-density__wrap" style={{ height: 402, width: '100vw' }}>
+      <div
+        className="watermark-density__wrap"
+        style={{ height: 402, minWidth: 660, position: 'relative', zIndex: 0 }}
+      >
         <Watermark
           density="low"
-          content={['HIUI', '做中台，就用 HIUI']}
-          logo="https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05"
+          content={['HiUI', '做中台，就用 HiUI']}
+          logo="https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png"
         ></Watermark>
       </div>
     </>

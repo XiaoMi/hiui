@@ -8,7 +8,7 @@ export const Striped = () => {
   return (
     <>
       <h1>Striped for Table</h1>
-      <div className="table-striped__wrap" style={{ width: 800 }}>
+      <div className="table-striped__wrap" style={{ minWidth: 660 }}>
         <Table
           striped
           columns={[

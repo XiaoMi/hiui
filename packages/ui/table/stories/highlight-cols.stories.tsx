@@ -9,12 +9,12 @@ export const HighlightCols = () => {
     {
       title: '商品名',
       dataKey: 'name',
-      width: 150,
+      width: 120,
     },
     {
       title: '品类',
       dataKey: 'type',
-      width: 150,
+      width: 80,
     },
     {
       title: '规格',
@@ -230,7 +230,7 @@ export const HighlightCols = () => {
   return (
     <>
       <h1>HighlightCols for Table</h1>
-      <div className="table-highlight-cols__wrap" style={{ width: 800, background: '#eee' }}>
+      <div className="table-highlight-cols__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Table columns={column} data={data} highlightedColKeys={['name']} striped />
       </div>
     </>

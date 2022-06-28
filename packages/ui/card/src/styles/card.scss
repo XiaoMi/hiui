@@ -43,6 +43,8 @@ $prefix: '#{$component-prefix}-card' !default;
   // 解决 img 底部空白问题
   > img {
     display: block;
+    margin: 0;
+    padding: 0;
     width: 100%;
     border-radius: use-border-radius('lg') use-border-radius('lg') 0 0;
   }

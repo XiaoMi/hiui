@@ -60,17 +60,18 @@ export const CustomTitle = () => {
       >
         <div>
           {/* 自定义 title 的前缀 icon */}
-          <span className="custom-left-icon" style={{ marginRight: 12 }}>
+          {/* <span className="custom-left-icon" style={{ marginRight: 12 }}>
             😄
-          </span>
+          </span> */}
           <span>{node.title}</span>
+          <span>{`（${node.id}）`}</span>
         </div>
         {/* 自定义 title 的后缀 icon */}
-        <div>
+        {/* <div>
           {Array.isArray(node.children) && node.children.length > 0 ? null : (
             <span className="custom-right-icon">❤</span>
           )}
-        </div>
+        </div> */}
       </div>
     )
   }

@@ -20,12 +20,12 @@ export const Placement = () => {
                   trigger="hover"
                   placement="top-start"
                 >
-                  <Button>top-start</Button>
+                  <Button style={{ width: 100 }}>top-start</Button>
                 </Tooltip>
               </td>
               <td>
                 <Tooltip title="我是内容我是内容我是内容我是内容" trigger="hover" placement="top">
-                  <Button>top</Button>
+                  <Button style={{ width: 100 }}>top</Button>
                 </Tooltip>
               </td>
               <td>
@@ -34,7 +34,7 @@ export const Placement = () => {
                   trigger="hover"
                   placement="top-end"
                 >
-                  <Button>top-end</Button>
+                  <Button style={{ width: 100 }}>top-end</Button>
                 </Tooltip>
               </td>
               <td></td>
@@ -46,7 +46,7 @@ export const Placement = () => {
                   trigger="hover"
                   placement="left-start"
                 >
-                  <Button>left-start</Button>
+                  <Button style={{ width: 100 }}>left-start</Button>
                 </Tooltip>
               </td>
               <td></td>
@@ -58,14 +58,14 @@ export const Placement = () => {
                   trigger="hover"
                   placement="right-start"
                 >
-                  <Button>right-start</Button>
+                  <Button style={{ width: 100 }}>right-start</Button>
                 </Tooltip>
               </td>
             </tr>
             <tr>
               <td>
                 <Tooltip title="我是内容我是内容我是内容我是内容" trigger="hover" placement="left">
-                  <Button>left</Button>
+                  <Button style={{ width: 100 }}>left</Button>
                 </Tooltip>
               </td>
               <td></td>
@@ -73,7 +73,7 @@ export const Placement = () => {
               <td></td>
               <td>
                 <Tooltip title="我是内容我是内容我是内容我是内容" trigger="hover" placement="right">
-                  <Button>right</Button>
+                  <Button style={{ width: 100 }}>right</Button>
                 </Tooltip>
               </td>
             </tr>
@@ -84,7 +84,7 @@ export const Placement = () => {
                   trigger="hover"
                   placement="left-end"
                 >
-                  <Button>left-end</Button>
+                  <Button style={{ width: 100 }}>left-end</Button>
                 </Tooltip>
               </td>
               <td></td>
@@ -96,7 +96,7 @@ export const Placement = () => {
                   trigger="hover"
                   placement="right-end"
                 >
-                  <Button>right-end</Button>
+                  <Button style={{ width: 100 }}>right-end</Button>
                 </Tooltip>
               </td>
             </tr>
@@ -108,7 +108,7 @@ export const Placement = () => {
                   trigger="hover"
                   placement="bottom-start"
                 >
-                  <Button>bottom-start</Button>
+                  <Button style={{ width: 100 }}>bottom-start</Button>
                 </Tooltip>
               </td>
               <td>
@@ -117,7 +117,7 @@ export const Placement = () => {
                   trigger="hover"
                   placement="bottom"
                 >
-                  <Button>bottom</Button>
+                  <Button style={{ width: 100 }}>bottom</Button>
                 </Tooltip>
               </td>
               <td>
@@ -126,7 +126,7 @@ export const Placement = () => {
                   trigger="hover"
                   placement="bottom-end"
                 >
-                  <Button>bottom-end</Button>
+                  <Button style={{ width: 100 }}>bottom-end</Button>
                 </Tooltip>
               </td>
               <td></td>

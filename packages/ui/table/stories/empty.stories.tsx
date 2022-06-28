@@ -9,7 +9,7 @@ export const Empty = () => {
   return (
     <>
       <h1>Empty for Table</h1>
-      <div className="table-empty__wrap" style={{ width: 800, background: '#eee' }}>
+      <div className="table-empty__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Table
           columns={[
             {

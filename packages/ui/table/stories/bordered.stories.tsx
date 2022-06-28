@@ -9,12 +9,12 @@ export const Bordered = () => {
     {
       title: '商品名',
       dataKey: 'name',
-      width: 150,
+      width: 120,
     },
     {
       title: '品类',
       dataKey: 'type',
-      width: 150,
+      width: 80,
     },
     {
       title: '规格',
@@ -230,7 +230,7 @@ export const Bordered = () => {
   return (
     <>
       <h1>Bordered for Table</h1>
-      <div className="table-bordered__wrap" style={{ width: 800, background: '#eee' }}>
+      <div className="table-bordered__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Table bordered columns={column} data={data} />
       </div>
     </>

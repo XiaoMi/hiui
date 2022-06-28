@@ -11,7 +11,7 @@ export const FieldKey = () => {
   return (
     <>
       <h1>FieldKey for Table</h1>
-      <div className="table-field-key__wrap" style={{ width: 800, background: '#eee' }}>
+      <div className="table-field-key__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Table
           fixedToColumn={{ left: 'type' }}
           fieldKey="name"
@@ -27,6 +27,7 @@ export const FieldKey = () => {
             {
               title: '品类',
               dataKey: 'type',
+              width: 80,
             },
             {
               title: '规格',

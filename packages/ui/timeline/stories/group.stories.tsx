@@ -10,6 +10,7 @@ export const Group = () => {
       <h1>Group</h1>
       <div className="timeline-group__wrap">
         <Timeline
+          style={{ width: 440 }}
           data={[
             {
               groupTitle: '上午',

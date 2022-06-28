@@ -9,17 +9,17 @@ export const Calc = () => {
     {
       title: '商品名',
       dataKey: 'name',
-      width: 150,
+      width: 120,
     },
     {
       title: '品类',
       dataKey: 'type',
-      width: 150,
+      width: 80,
     },
     {
       title: '规格',
       dataKey: 'size',
-      width: 150,
+      width: 180,
     },
     {
       title: '单价',
@@ -32,13 +32,13 @@ export const Calc = () => {
     {
       title: '门店',
       dataKey: 'address',
-      width: 150,
+      width: 180,
     },
     {
       title: '库存',
       dataKey: 'stock',
       align: 'right',
-      width: 150,
+      width: 100,
     },
   ])
   const [data] = React.useState([
@@ -92,7 +92,7 @@ export const Calc = () => {
   return (
     <>
       <h1>Calc for Table</h1>
-      <div className="table-calc__wrap" style={{ width: 800, background: '#eee' }}>
+      <div className="table-calc__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Table columns={columns} data={data} fixedToColumn={{ right: 'stock' }} />
       </div>
     </>

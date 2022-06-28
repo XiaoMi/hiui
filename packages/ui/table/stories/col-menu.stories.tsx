@@ -9,14 +9,14 @@ export const ColMenu = () => {
     {
       title: 'Name',
       dataKey: 'name',
-      width: 180,
+      width: 120,
       key: 1,
     },
     {
       title: 'Age',
       dataKey: 'age',
       key: 2,
-      width: 180,
+      width: 80,
       sorter(pre, next) {
         return pre.age - next.age
       },
@@ -124,7 +124,7 @@ export const ColMenu = () => {
     },
     {
       title: 'Address',
-      width: 180,
+      width: 240,
       dataKey: 'address',
       key: 17,
     },
@@ -235,7 +235,7 @@ export const ColMenu = () => {
   return (
     <>
       <h1>ColMenu for Table</h1>
-      <div className="table-col-menu__wrap" style={{ width: 800, background: '#eee' }}>
+      <div className="table-col-menu__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Table columns={columns} data={data} showColMenu />
       </div>
     </>

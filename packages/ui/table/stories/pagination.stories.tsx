@@ -9,10 +9,12 @@ export const Pagination = () => {
     {
       title: '商品名',
       dataKey: 'name',
+      width: 120,
     },
     {
       title: '品类',
       dataKey: 'type',
+      width: 80,
     },
     {
       title: '规格',
@@ -136,7 +138,7 @@ export const Pagination = () => {
   return (
     <>
       <h1>Pagination for Table</h1>
-      <div className="table-pagination__wrap" style={{ width: 800 }}>
+      <div className="table-pagination__wrap" style={{ minWidth: 660 }}>
         <Table
           pagination={{
             showTotal: true,

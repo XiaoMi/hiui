@@ -8,7 +8,7 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic for Table</h1>
-      <div className="table-basic__wrap" style={{ width: 800, background: '#eee' }}>
+      <div className="table-basic__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Table
           columns={[
             {

@@ -4,7 +4,7 @@ import Button from '@hi-ui/button'
 
 /**
  * @title 自定义触发器
- * @desc 请确保 子元素能接受对应的 onMouseEnter、onMouseLeave、onFocus、onClick 事件
+ * @desc 请确保子元素能接受对应的 onMouseEnter、onMouseLeave、onFocus、onClick 事件
  */
 export const Trigger = () => {
   return (

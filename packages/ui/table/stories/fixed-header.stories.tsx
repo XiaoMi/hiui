@@ -101,12 +101,12 @@ export const FixedHeader = () => {
         {
           title: 'Address',
           dataKey: 'companyAddress',
-          width: 100,
+          width: 200,
         },
         {
           title: 'Name',
           dataKey: 'companyName',
-          width: 100,
+          width: 150,
         },
       ],
     },
@@ -146,7 +146,7 @@ export const FixedHeader = () => {
         street: 'Lake Park',
         building: 'C',
         number: 2035,
-        name: 'John Brown',
+        name: 'Flcwl',
         companyAddress: 'Lake Street 42',
         companyName: 'SoftLake Co',
         gender: 'M',
@@ -165,7 +165,7 @@ export const FixedHeader = () => {
   return (
     <>
       <h1>FixedHeader for Table</h1>
-      <div className="table-fixed-header__wrap" style={{ width: 800 }}>
+      <div className="table-fixed-header__wrap" style={{ minWidth: 660 }}>
         <Table
           rowSelection={{}}
           maxHeight={400}

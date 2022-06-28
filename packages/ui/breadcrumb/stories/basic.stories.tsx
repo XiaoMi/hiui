@@ -31,13 +31,6 @@ export const Basic = () => {
             console.log('get item: ', item)
           }}
         />
-        <Breadcrumb
-          data={data}
-          size="sm"
-          onClick={(evt, item) => {
-            console.log('get item: ', item)
-          }}
-        />
       </div>
     </>
   )

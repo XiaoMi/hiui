@@ -8,13 +8,14 @@ export const MergedCell = () => {
   return (
     <>
       <h1>MergedCell for Table</h1>
-      <div className="table-merged-cell__wrap" style={{ width: 800 }}>
+      <div className="table-merged-cell__wrap" style={{ minWidth: 660 }}>
         <Table
           striped
           columns={[
             {
               title: 'Name',
               dataKey: 'name',
+              width: 150,
               render: (text, row, index) => {
                 return {
                   children: <span>{text}</span>,
@@ -28,6 +29,7 @@ export const MergedCell = () => {
             {
               title: 'Age',
               dataKey: 'age',
+              width: 150,
               render: (value, row, index) => {
                 return {
                   children: value,

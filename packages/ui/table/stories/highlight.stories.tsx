@@ -8,7 +8,7 @@ export const Highlight = () => {
   return (
     <>
       <h1>Highlight for Table</h1>
-      <div className="table-highlight__wrap" style={{ width: 800 }}>
+      <div className="table-highlight__wrap" style={{ minWidth: 660 }}>
         <Table
           showColHighlight
           showRowHighlight={false}

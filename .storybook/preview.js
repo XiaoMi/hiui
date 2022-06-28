@@ -71,7 +71,8 @@ export const decorators = [
         border: '1px solid rgb(230, 231, 232)',
         borderRadius: 2,
         padding: 36,
-        minWidth: 360
+        minWidth: 360,
+        maxWidth: 800
       }}
       >
         <Story {...context} />

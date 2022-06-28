@@ -7,11 +7,11 @@ import Button from '@hi-ui/button'
  * @desc 用于信息描述、辅助信息等
  */
 export const Basic = () => {
-  const title = <span>Popover Title</span>
+  const title = <span>文字提示</span>
   const content = (
     <div>
-      <div>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</div>
-      <div>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</div>
+      <div>此处展示 Popover 具体内容</div>
+      <div>具体内容可以自行渲染</div>
     </div>
   )
 
@@ -19,7 +19,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="popover-basic__wrap">
-        <Popover title={title} content={content} trigger="hover">
+        <Popover title={title} content={content} trigger="click">
           <Button>trigger</Button>
         </Popover>
       </div>

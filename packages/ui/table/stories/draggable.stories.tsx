@@ -8,7 +8,7 @@ export const Draggable = () => {
   return (
     <>
       <h1>Draggable for Table</h1>
-      <div className="table-draggable__wrap" style={{ width: 800 }}>
+      <div className="table-draggable__wrap" style={{ minWidth: 660 }}>
         <Table
           draggable
           columns={[

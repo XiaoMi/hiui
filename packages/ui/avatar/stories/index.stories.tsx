@@ -2,6 +2,7 @@ import React from 'react'
 import Avatar from '../src'
 
 export * from './basic.stories'
+export * from './content.stories'
 export * from './shape.stories'
 export * from './size.stories'
 export * from './custom-size.stories'

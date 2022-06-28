@@ -65,6 +65,9 @@ $prefix: '#{$component-prefix}-list' !default;
         height: 100%;
         width: 100%;
         object-fit: contain;
+        display: inline-block;
+        margin: 0;
+        padding: 0;
       }
     }
 

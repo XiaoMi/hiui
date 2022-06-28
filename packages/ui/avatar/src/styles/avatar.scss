@@ -13,9 +13,14 @@ $prefix: '#{$component-prefix}-avatar' !default;
   font-size: use-text-size('xl');
   overflow: hidden;
   flex-shrink: 0;
+  box-sizing: border-box;
 
   &--empty {
     background-color: use-color-mode('primary', 100);
+  }
+
+  &--bordered {
+    border: 1px solid use-color-static('white');
   }
 
   &__content {
@@ -28,15 +33,21 @@ $prefix: '#{$component-prefix}-avatar' !default;
 
     // 确定层级，避免污染
     & > img {
+      display: inline-block;
       width: 100%;
       height: 100%;
+      margin: 0;
+      padding: 0;
       object-fit: cover;
     }
   }
 
   &__image {
+    display: inline-block;
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
     object-fit: cover;
   }
 

@@ -9,26 +9,32 @@ export const RowSelection = () => {
     {
       title: '商品名',
       dataKey: 'name',
+      width: 120,
     },
     {
       title: '品类',
       dataKey: 'type',
+      width: 80,
     },
     {
       title: '规格',
       dataKey: 'size',
+      width: 150,
     },
     {
       title: '单价',
       dataKey: 'price',
+      width: 150,
     },
     {
       title: '门店',
       dataKey: 'address',
+      width: 240,
     },
     {
       title: '库存',
       dataKey: 'stock',
+      width: 150,
     },
   ])
   const [dataSource] = React.useState([
@@ -135,7 +141,7 @@ export const RowSelection = () => {
   return (
     <>
       <h1>RowSelection for Table</h1>
-      <div className="table-row-selection__wrap" style={{ width: 800 }}>
+      <div className="table-row-selection__wrap" style={{ minWidth: 660 }}>
         <Table
           fixedToColumn={{ left: 'type' }}
           rowSelection={{

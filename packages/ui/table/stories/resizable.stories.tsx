@@ -8,7 +8,7 @@ export const Resizable = () => {
   return (
     <>
       <h1>Resizable for Table</h1>
-      <div className="table-resizable__wrap" style={{ width: 800 }}>
+      <div className="table-resizable__wrap" style={{ minWidth: 660 }}>
         <Table
           fixedToColumn={{ left: 'type', right: 'address' }}
           resizable
@@ -16,12 +16,12 @@ export const Resizable = () => {
             {
               title: '商品名',
               dataKey: 'name',
-              width: 150,
+              width: 120,
             },
             {
               title: '品类',
               dataKey: 'type',
-              width: 150,
+              width: 80,
             },
             {
               title: '规格',

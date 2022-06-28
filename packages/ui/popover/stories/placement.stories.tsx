@@ -13,11 +13,10 @@ export const Placement = () => {
     setPlacement(newPlacement)
   }
 
-  const title = <span>Popover Title</span>
+  const title = <span>文字提示</span>
   const content = (
     <div>
-      <div>Placement：</div>
-      <div>{placement}</div>
+      <div>当前展示方位：{placement}</div>
     </div>
   )
 
@@ -31,17 +30,23 @@ export const Placement = () => {
               <td></td>
               <td>
                 <Popover placement={placement} title={title} content={content} trigger="click">
-                  <Button onClick={handleClick('top-start')}>topStart</Button>
+                  <Button style={{ width: 100 }} onClick={handleClick('top-start')}>
+                    topStart
+                  </Button>
                 </Popover>
               </td>
               <td>
                 <Popover placement={placement} title={title} content={content} trigger="click">
-                  <Button onClick={handleClick('top')}>top</Button>
+                  <Button style={{ width: 100 }} onClick={handleClick('top')}>
+                    top
+                  </Button>
                 </Popover>
               </td>
               <td>
                 <Popover placement={placement} title={title} content={content} trigger="click">
-                  <Button onClick={handleClick('top-end')}>topEnd</Button>
+                  <Button style={{ width: 100 }} onClick={handleClick('top-end')}>
+                    topEnd
+                  </Button>
                 </Popover>
               </td>
               <td></td>
@@ -49,7 +54,9 @@ export const Placement = () => {
             <tr>
               <td>
                 <Popover placement={placement} title={title} content={content} trigger="click">
-                  <Button onClick={handleClick('left-start')}>leftStart</Button>
+                  <Button style={{ width: 100 }} onClick={handleClick('left-start')}>
+                    leftStart
+                  </Button>
                 </Popover>
               </td>
               <td></td>
@@ -57,29 +64,18 @@ export const Placement = () => {
               <td></td>
               <td>
                 <Popover placement={placement} title={title} content={content} trigger="click">
-                  <Button onClick={handleClick('right-start')}>rightStart</Button>
-                </Popover>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <Popover placement={placement} title={title} content={content} trigger="click">
-                  <Button onClick={handleClick('left')}>left</Button>
-                </Popover>
-              </td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>
-                <Popover placement={placement} title={title} content={content} trigger="click">
-                  <Button onClick={handleClick('right')}>right</Button>
+                  <Button style={{ width: 100 }} onClick={handleClick('right-start')}>
+                    rightStart
+                  </Button>
                 </Popover>
               </td>
             </tr>
             <tr>
               <td>
                 <Popover placement={placement} title={title} content={content} trigger="click">
-                  <Button onClick={handleClick('left-end')}>leftEnd</Button>
+                  <Button style={{ width: 100 }} onClick={handleClick('left')}>
+                    left
+                  </Button>
                 </Popover>
               </td>
               <td></td>
@@ -87,7 +83,28 @@ export const Placement = () => {
               <td></td>
               <td>
                 <Popover placement={placement} title={title} content={content} trigger="click">
-                  <Button onClick={handleClick('right-end')}>rightEnd</Button>
+                  <Button style={{ width: 100 }} onClick={handleClick('right')}>
+                    right
+                  </Button>
+                </Popover>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <Popover placement={placement} title={title} content={content} trigger="click">
+                  <Button style={{ width: 100 }} onClick={handleClick('left-end')}>
+                    leftEnd
+                  </Button>
+                </Popover>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <Popover placement={placement} title={title} content={content} trigger="click">
+                  <Button style={{ width: 100 }} onClick={handleClick('right-end')}>
+                    rightEnd
+                  </Button>
                 </Popover>
               </td>
             </tr>
@@ -95,17 +112,23 @@ export const Placement = () => {
               <td></td>
               <td>
                 <Popover placement={placement} title={title} content={content} trigger="click">
-                  <Button onClick={handleClick('bottom-start')}>bottomStart</Button>
+                  <Button style={{ width: 100 }} onClick={handleClick('bottom-start')}>
+                    bottomStart
+                  </Button>
                 </Popover>
               </td>
               <td>
                 <Popover placement={placement} title={title} content={content} trigger="click">
-                  <Button onClick={handleClick('bottom')}>bottom</Button>
+                  <Button style={{ width: 100 }} onClick={handleClick('bottom')}>
+                    bottom
+                  </Button>
                 </Popover>
               </td>
               <td>
                 <Popover placement={placement} title={title} content={content} trigger="click">
-                  <Button onClick={handleClick('bottom-end')}>bottomEnd</Button>
+                  <Button style={{ width: 100 }} onClick={handleClick('bottom-end')}>
+                    bottomEnd
+                  </Button>
                 </Popover>
               </td>
               <td></td>

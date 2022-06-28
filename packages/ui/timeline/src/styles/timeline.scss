@@ -126,6 +126,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
               .#{$prefix}-item__title {
                 color: use-color('gray', 700);
                 font-size: use-text-size('normal');
+                font-weight: use-text-weight('medium');
                 line-height: use-text-lineheight('normal');
                 margin-bottom: 2px;
               }
@@ -279,6 +280,11 @@ $prefix: '#{$component-prefix}-timeline' !default;
             margin-bottom: use-spacing(2);
             color: use-color('gray', 600);
             position: relative;
+            padding-top: use-spacing(12);
+
+            &.#{$prefix}-group-title--first {
+              padding-top: 0;
+            }
 
             .#{$prefix}-item__line {
               position: absolute;

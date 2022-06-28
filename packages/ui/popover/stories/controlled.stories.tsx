@@ -12,11 +12,11 @@ export const Controlled = () => {
 
   const contentClick = (
     <div>
-      <div>This is click content</div>
-      <span
+      <div>此处展示 Popover click 触发后的内容</div>
+      <div
         style={{
           color: '#4285f4',
-          fontSize: '12px',
+          fontSize: '14px',
           cursor: 'pointer',
           marginTop: '10px',
         }}
@@ -24,8 +24,8 @@ export const Controlled = () => {
           setClickVisible(false)
         }}
       >
-        Close
-      </span>
+        点击关闭
+      </div>
     </div>
   )
 
@@ -34,21 +34,16 @@ export const Controlled = () => {
       <h1>Controlled</h1>
       <div className="popover-controlled__wrap">
         <Popover
-          title={<span>Popover Title</span>}
+          title={<span>文字提示</span>}
           content={
             <div>
-              <p>This is hover content.</p>
+              <div>此处展示 Popover hover 触发后的内容</div>
             </div>
           }
-          style={{ margin: '10px 10px' }}
           visible={hoverVisible}
         >
           <span>
-            <Popover
-              visible={clickVisible}
-              title={<span>Popover Title</span>}
-              content={contentClick}
-            >
+            <Popover visible={clickVisible} title={<span>文字提示</span>} content={contentClick}>
               <Button
                 onMouseEnter={() => {
                   setHoverVisible(true)

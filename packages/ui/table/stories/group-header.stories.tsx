@@ -101,12 +101,12 @@ export const GroupHeader = () => {
         {
           title: 'Address',
           dataKey: 'companyAddress',
-          width: 100,
+          width: 200,
         },
         {
           title: 'Name',
           dataKey: 'companyName',
-          width: 100,
+          width: 150,
         },
       ],
     },
@@ -157,7 +157,7 @@ export const GroupHeader = () => {
         street: 'Lake Park',
         building: 'C',
         number: 2035,
-        name: 'John Brown',
+        name: 'Flcwl',
         companyAddress: 'Lake Street 42',
         companyName: 'SoftLake Co',
         gender: 'M',

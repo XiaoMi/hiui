@@ -233,7 +233,7 @@ export const Setting = () => {
   return (
     <>
       <h1>Setting for Table</h1>
-      <div className="table-setting__wrap" style={{ width: 800 }}>
+      <div className="table-setting__wrap" style={{ minWidth: 660 }}>
         <Table
           hiddenColKeys={hiddenColKeys}
           onHiddenColKeysChange={setHiddenColKeys}

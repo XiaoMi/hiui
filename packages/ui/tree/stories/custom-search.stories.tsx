@@ -5,6 +5,7 @@ import Button from '@hi-ui/button'
 
 /**
  * @title 自定义搜索 UI
+ * @desc 通过 useTreeSearchProps 复用搜索逻辑，搜索 UI 交互展示完全自定义
  */
 export const CustomSearch = () => {
   const [data] = React.useState([

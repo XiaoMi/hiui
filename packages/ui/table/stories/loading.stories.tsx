@@ -8,7 +8,7 @@ export const Loading = () => {
   return (
     <>
       <h1>Loading for Table</h1>
-      <div className="table-loading__wrap" style={{ width: 800 }}>
+      <div className="table-loading__wrap" style={{ minWidth: 660 }}>
         <Table
           loading
           columns={[
@@ -86,13 +86,6 @@ export const Loading = () => {
             },
           ]}
         />
-        <div style={{ height: 800 }}>
-          模拟 Table 底部内容
-          <br />
-          模拟 Table 底部内容
-          <br />
-          模拟 Table 底部内容
-        </div>
       </div>
     </>
   )

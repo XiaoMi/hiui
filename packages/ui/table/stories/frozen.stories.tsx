@@ -8,7 +8,7 @@ export const Frozen = () => {
   return (
     <>
       <h1>Frozen for Table</h1>
-      <div className="table-frozen__wrap" style={{ width: 800 }}>
+      <div className="table-frozen__wrap" style={{ minWidth: 660 }}>
         <p>使用列冻结必须指定 column 每项 width</p>
         <Table
           fixedToColumn={{ left: 'type', right: 'address' }}

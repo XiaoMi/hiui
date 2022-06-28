@@ -11,6 +11,7 @@ export const Basic = () => {
       <h1>Basic</h1>
       <div className="timeline-basic__wrap">
         <Timeline
+          style={{ width: 440 }}
           data={[
             {
               title: '管理层例会',

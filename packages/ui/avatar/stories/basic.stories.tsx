@@ -1,30 +1,19 @@
 import React from 'react'
 import Avatar from '../src'
-import { EditOutlined, PlusOutlined } from '@hi-ui/icons'
 
 /**
  * @title 基础用法
+ * @desc 提供基础的默认头像
  */
 export const Basic = () => {
   return (
     <>
       <h1>Avatar</h1>
-      <div className="avatar-basic__wrap">
-        <Avatar />
-        <Avatar initials="M" />
-        <Avatar icon={<PlusOutlined />} />
-
-        <Avatar>
-          <EditOutlined />
-        </Avatar>
-        <Avatar initials="HiUI" />
-        <Avatar src="https://avatars.githubusercontent.com/u/810438?v=4" initials="P" />
-        <Avatar>
-          <img
-            alt="avatar"
-            src="//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
-          />
-        </Avatar>
+      <div
+        className="avatar-basic__wrap"
+        style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center' }}
+      >
+        <Avatar bordered />
       </div>
     </>
   )

@@ -22,6 +22,7 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
       src,
       size = 'md',
       shape = 'circle',
+      bordered = false,
       initials,
       name,
       icon,
@@ -77,6 +78,7 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
       prefixCls,
       !shouldUseSpecialSize && `${prefixCls}--size-${size}`,
       `${prefixCls}--shape-${shape}`,
+      `${prefixCls}--bordered`,
       className
     )
 
@@ -137,10 +139,10 @@ export interface AvatarProps extends HiBaseHTMLProps<'div'> {
    * 针对 img 加载失败回调
    */
   onError?: React.ReactEventHandler<HTMLImageElement>
-  // label?: React.ReactNode
-  // content?: React.ReactNode
-  // gap?: number
-  // direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse'
+  /**
+   * 是否带边框
+   */
+  bordered?: boolean
 }
 
 if (__DEV__) {

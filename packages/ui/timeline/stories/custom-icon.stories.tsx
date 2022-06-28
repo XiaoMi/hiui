@@ -12,6 +12,7 @@ export const CustomIcon = () => {
       <h1>CustomIcon</h1>
       <div className="timeline-custom-icon__wrap">
         <Timeline
+          style={{ width: 440 }}
           data={[
             {
               title: '管理层例会',

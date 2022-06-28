@@ -3,6 +3,7 @@ import SvgIcon from '../src'
 
 /**
  * @title 基础用法
+ * @desc 作为 svg 容器快速绘制生成简单的 SvgIcon
  */
 export const Basic = () => {
   return (

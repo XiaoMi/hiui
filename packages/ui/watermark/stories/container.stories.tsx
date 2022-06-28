@@ -4,34 +4,40 @@ import { Button } from '@hi-ui/button'
 
 /**
  * @title 指定容器
+ * @desc 指定要挂载水印的容器位置
  */
 export const Container = () => {
-  const containerState = useState(null)
+  const [mounted, setMounted] = useState<any>(false)
 
   return (
     <>
       <h1>Container</h1>
-      <div
-        style={{
-          height: 402,
-          width: '100vw',
-          textAlign: 'center',
-        }}
-        ref={containerState[1]}
-        className="watermark-container__wrap"
-      >
-        <Button type="primary" onClick={console.log}>
-          测试交互
+      <div className="watermark-container__wrap" style={{ height: 402, minWidth: 660 }}>
+        <Button
+          type="primary"
+          onClick={() => {
+            setMounted(!mounted)
+          }}
+        >
+          {mounted ? '取消挂载水印到全局' : '挂载水印到全局'}
         </Button>
       </div>
-      <Watermark
-        density="low"
-        style={{ position: 'fixed', pointerEvents: 'none' }}
-        content={['HIUI', '做中台，就用 HIUI']}
-        logo="https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05"
-        container={containerState[0]?.ownerDocument?.body ?? undefined}
-        allowCopy={true}
-      />
+      {mounted ? (
+        <Watermark
+          style={{
+            pointerEvents: 'none',
+            position: 'fixed',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+          }}
+          content={['HiUI', '做中台，就用 HiUI']}
+          logo="https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png"
+          container={document.body}
+          allowCopy={true}
+        />
+      ) : null}
     </>
   )
 }

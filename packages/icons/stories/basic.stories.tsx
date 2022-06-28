@@ -712,7 +712,7 @@ export const Basic = () => {
           padding: '24px 0',
           margin: '12px',
           marginLeft: '0px',
-          background: '#eee',
+          background: '#f2f4f7',
           borderRadius: '8px',
         }}
       >
@@ -725,14 +725,18 @@ export const Basic = () => {
   return (
     <>
       <h1>Icons</h1>
-      <div className="icons-basic__wrap">
+      <div className="icons-basic__wrap" style={{ marginTop: -24 }}>
         {iconGroups.map((groupItem) => {
           return (
             <React.Fragment key={groupItem.id}>
-              <h2>{groupItem.title}</h2>
+              <div style={{ lineHeight: '24px', fontSize: '20px', margin: '24px 0 16px' }}>
+                {groupItem.title}
+              </div>
               {groupItem.children.map((typeItem) => (
                 <React.Fragment key={typeItem.id}>
-                  <h3>{typeItem.title}</h3>
+                  <div style={{ lineHeight: '22px', fontSize: '16px', marginBottom: 8 }}>
+                    {typeItem.title}
+                  </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                     {typeItem.children.map(renderIcon)}
                   </div>

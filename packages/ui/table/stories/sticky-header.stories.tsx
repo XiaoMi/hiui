@@ -101,12 +101,12 @@ export const StickyHeader = () => {
         {
           title: 'Address',
           dataKey: 'companyAddress',
-          width: 100,
+          width: 200,
         },
         {
           title: 'Name',
           dataKey: 'companyName',
-          width: 100,
+          width: 150,
         },
       ],
     },
@@ -146,7 +146,7 @@ export const StickyHeader = () => {
         street: 'Lake Park',
         building: 'C',
         number: 2035,
-        name: 'John Brown',
+        name: 'Flcwl',
         companyAddress: 'Lake Street 42',
         companyName: 'SoftLake Co',
         gender: 'M',
@@ -167,7 +167,7 @@ export const StickyHeader = () => {
       <h1>StickyHeader for Table</h1>
       <div
         className="table-sticky-header__wrap"
-        style={{ width: 800, maxHeight: 1000, overflow: 'scroll' }}
+        style={{ minWidth: 660, maxHeight: 800, overflow: 'scroll' }}
       >
         <Table
           sticky
@@ -183,7 +183,7 @@ export const StickyHeader = () => {
           columns={columns}
           data={data}
         />
-        <div style={{ height: 800 }}>模拟外层滚动</div>
+        <div style={{ height: 600, paddingTop: 48, textAlign: 'center' }}>模拟外层滚动</div>
       </div>
     </>
   )

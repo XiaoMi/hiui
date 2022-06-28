@@ -12,7 +12,7 @@ export const CustomFilter = () => {
     {
       title: 'Name',
       dataKey: 'name',
-      width: 180,
+      width: 120,
       key: 1,
       filterDropdownClassName: 'table-customefilter',
       filterIcon: <SearchOutlined />,
@@ -49,7 +49,7 @@ export const CustomFilter = () => {
       title: 'Age',
       dataKey: 'age',
       key: 2,
-      width: 180,
+      width: 80,
       sorter(pre, next) {
         return pre.age - next.age
       },
@@ -157,7 +157,7 @@ export const CustomFilter = () => {
     },
     {
       title: 'Address',
-      width: 180,
+      width: 240,
       dataKey: 'address',
       key: 17,
     },
@@ -283,7 +283,7 @@ export const CustomFilter = () => {
   return (
     <>
       <h1>CustomFilter for Table</h1>
-      <div className="table-custom-filter__wrap" style={{ width: 800, background: '#eee' }}>
+      <div className="table-custom-filter__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Table columns={columns} data={data} />
       </div>
     </>
