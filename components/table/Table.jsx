@@ -68,6 +68,7 @@ const Table = ({
   setCacheHiddenColKeys,
   hiddenColKeys,
   setHiddenColKeys,
+  disabledResizableColKeys,
   scrollWidth,
   theme,
   draggable,
@@ -80,6 +81,17 @@ const Table = ({
   emptyContent = localeDatas.table.emptyContent,
   highlightRowOnDoubleClick = true
 }) => {
+  const isResizableColKey = useCallback(
+    (colKey) => {
+      return (
+        resizable &&
+        colKey &&
+        (!Array.isArray(disabledResizableColKeys) || disabledResizableColKeys.indexOf(colKey) === -1)
+      )
+    },
+    [resizable, disabledResizableColKeys]
+  )
+
   const dargInfo = useRef({ dragKey: null })
   const [data, setData] = useState(propsData)
 
@@ -307,6 +319,7 @@ const Table = ({
         errorRowKeys,
         bordered: _bordered,
         resizable,
+        isResizableColKey,
         rowSelection,
         highlightedRowKeys: _highlightRows,
         setHighlightRows,

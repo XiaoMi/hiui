@@ -31,7 +31,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
     prefix,
     realColumnsWidth,
     setRealColumnsWidth,
-    resizable,
+    isResizableColKey,
     setting,
     onHeaderRow,
     sticky,
@@ -228,6 +228,9 @@ const HeaderTable = ({ rightFixedIndex }) => {
               </th>
             )
           }
+
+          const resizable = isResizableColKey(c.dataKey)
+
           return resizable && idx !== cols.length - 1 ? (
             <Resizable
               key={idx}
@@ -275,6 +278,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
         <table style={{ width: '100%' }} ref={headerInner}>
           <colgroup>
             {columnsgroup.map((c, index) => {
+              const resizable = isResizableColKey(c.dataKey)
               const width = resizable ? realColumnsWidth[index] : c.width
               return (
                 <col

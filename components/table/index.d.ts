@@ -92,6 +92,7 @@ export interface TableProps {
   striped?: boolean
   setting?: boolean
   resizable?: boolean
+  disabledResizableColKeys?: string[]
   standard?: boolean
   emptyContent?: string | JSX.Element
   onHeaderRow?: HeaderRowFunc

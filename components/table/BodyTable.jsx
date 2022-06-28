@@ -21,7 +21,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     syncScrollLeft,
     firstRowRef,
     realColumnsWidth,
-    resizable,
+    isResizableColKey,
     prefix,
     hoverColIndex,
     setHoverColIndex,
@@ -194,6 +194,8 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
         <colgroup>
           {columnsgroup.map((c, index) => {
             const width = c === 'checkbox' ? checkboxColWidth : c.width
+            const resizable = isResizableColKey(c.dataKey)
+
             return (
               <col
                 key={index}
