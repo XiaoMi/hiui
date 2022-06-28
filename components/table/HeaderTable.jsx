@@ -279,7 +279,8 @@ const HeaderTable = ({ rightFixedIndex }) => {
           <colgroup>
             {columnsgroup.map((c, index) => {
               const resizable = isResizableColKey(c.dataKey)
-              const width = resizable ? realColumnsWidth[index] : c.width
+              const width = resizable ? realColumnsWidth[index] || c.width : c.width
+
               return (
                 <col
                   key={index}
