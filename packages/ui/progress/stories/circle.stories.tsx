@@ -10,8 +10,8 @@ export const Circle = () => {
   return (
     <>
       <h1>环形用法</h1>
-      <div className="progress-circle__wrap">
-        <CircleProgress content="成功" percent={80} />
+      <div className="progress-circle__wrap" style={{ display: 'flex', flexWrap: 'wrap', gap: 48 }}>
+        <CircleProgress percent={75} />
 
         <CircleProgress
           type="success"
@@ -30,7 +30,6 @@ export const Circle = () => {
           content={<ExclamationOutlined style={{ fontSize: '20px' }} />}
           percent={20}
         />
-        <CircleProgress percent={75} />
       </div>
     </>
   )

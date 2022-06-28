@@ -19,18 +19,26 @@ export const Container = () => {
         ref={setContainer}
         className="modal-container__wrap"
         style={{
-          width: 640,
+          width: '100%',
+          minWidth: 660,
           height: 420,
-          background: '#ecdecd',
-          boxShadow: '1px 2px 8px #ccc',
+          background: '#f5f7fa',
+          boxShadow: '1px 2px 8px #ddd',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
 
-          // need add
+          // Need add for it
           position: 'relative',
           overflow: 'hidden',
+          zIndex: 0,
         }}
       >
-        <Button onClick={() => setVisible(!visible)}>open</Button>
+        <Button type="primary" onClick={() => setVisible(!visible)}>
+          open
+        </Button>
         <Modal
+          title="提示"
           style={{ position: 'absolute' }}
           visible={visible}
           closeable={false}

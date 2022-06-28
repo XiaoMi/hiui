@@ -2,6 +2,7 @@ import React from 'react'
 import Drawer from '../src'
 
 export * from './basic.stories'
+export * from './header.stories'
 export * from './mask.stories'
 export * from './container.stories'
 export * from './nested.stories'

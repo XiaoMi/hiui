@@ -11,7 +11,7 @@ export const customIcon = () => {
     <>
       <h1>customIcon</h1>
       <div className="pop-confirm-custom-icon__wrap">
-        <PopConfirm title="Are U ok ?" icon={<AssetMonitorFilled />}>
+        <PopConfirm title="Are you OK ?" icon={<AssetMonitorFilled />}>
           <Button>Trigger</Button>
         </PopConfirm>
       </div>

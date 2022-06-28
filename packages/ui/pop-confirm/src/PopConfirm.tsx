@@ -70,7 +70,7 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
                           key="1"
                           className={`${prefixCls}__btn-cancel`}
                           type="default"
-                          size="sm"
+                          size="md"
                           onClick={onCancel}
                         >
                           {cancelText}
@@ -81,7 +81,7 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
                           key="2"
                           className={`${prefixCls}__btn-confirm`}
                           type="primary"
-                          size="sm"
+                          size="md"
                           onClick={onConfirm}
                         >
                           {confirmText}

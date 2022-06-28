@@ -18,6 +18,7 @@ export const AutoClose = () => {
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <span>这个 Toast 将不会自动被关闭哦 </span>
                   <Button
+                    style={{ marginLeft: 24 }}
                     type="primary"
                     appearance="link"
                     onClick={() => {

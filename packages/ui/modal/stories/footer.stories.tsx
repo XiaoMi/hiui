@@ -16,6 +16,7 @@ export const Footer = () => {
       <div className="modal-footer__wrap">
         <Button onClick={() => setVisible(!visible)}>open</Button>
         <Modal
+          title="提示"
           visible={visible}
           closeable={false}
           onCancel={() => setVisible(false)}

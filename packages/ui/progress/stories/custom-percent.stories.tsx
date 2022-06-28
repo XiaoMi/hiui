@@ -12,18 +12,22 @@ export const CustomPercent = () => {
   return (
     <>
       <h1>条形进度条</h1>
-      <div className="progress-custom-percent__wrap">
+      <div
+        className="progress-custom-percent__wrap"
+        style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 48 }}
+      >
         <Progress percent={percent} size="lg" />
-        <br />
-        <Counter
-          value={percent}
-          step={10}
-          min={0}
-          max={100}
-          onChange={(percent) => {
-            setPercent(percent)
-          }}
-        />
+        <div>
+          <Counter
+            value={percent}
+            step={10}
+            min={0}
+            max={100}
+            onChange={(percent) => {
+              setPercent(percent)
+            }}
+          />
+        </div>
       </div>
     </>
   )

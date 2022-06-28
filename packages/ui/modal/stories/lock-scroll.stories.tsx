@@ -32,7 +32,13 @@ export const LockScroll = () => {
           模拟滚动区域
         </div>
 
-        <Modal visible={visible} closeable={false} onCancel={() => setVisible(false)}>
+        <Modal
+          title="提示"
+          visible={visible}
+          lockScroll={false}
+          closeable={false}
+          onCancel={() => setVisible(false)}
+        >
           代码如写诗
           <br />
           <br />

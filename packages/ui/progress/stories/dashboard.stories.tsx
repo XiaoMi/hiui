@@ -10,7 +10,10 @@ export const Dashboard = () => {
   return (
     <>
       <h1>Dashboard</h1>
-      <div className="progress-dashboard__wrap">
+      <div
+        className="progress-dashboard__wrap"
+        style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 48 }}
+      >
         <DashboardProgress content="成功" percent={80} />
 
         <DashboardProgress

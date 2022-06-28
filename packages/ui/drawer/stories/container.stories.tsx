@@ -8,7 +8,7 @@ import Button from '@hi-ui/button'
  */
 export const Container = () => {
   const [visible, setVisible] = React.useState(false)
-  const [container, setContainer] = React.useState(null)
+  const [container, setContainer] = React.useState<any>(null)
   return (
     <>
       <h1>Container</h1>
@@ -16,25 +16,33 @@ export const Container = () => {
         ref={setContainer}
         className="drawer-container__wrap"
         style={{
-          width: 640,
+          width: '100%',
+          minWidth: 660,
           height: 420,
-          background: '#ecdecd',
-          boxShadow: '1px 2px 8px #ccc',
+          background: '#f5f7fa',
+          boxShadow: '1px 2px 8px #ddd',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
 
-          // need add
+          // Need add for it
           position: 'relative',
           overflow: 'hidden',
+          zIndex: 0,
         }}
       >
-        <Button onClick={() => setVisible(!visible)}>open</Button>
+        <Button type="primary" onClick={() => setVisible(!visible)}>
+          open
+        </Button>
         <Drawer
+          title="抽屉标题"
           style={{ position: 'absolute' }}
           container={container}
           visible={visible}
           closeable={false}
           onClose={() => setVisible(false)}
         >
-          Drawer content
+          我是一段文字，也可以是表单、表格、步骤条等等
         </Drawer>
       </div>
     </>

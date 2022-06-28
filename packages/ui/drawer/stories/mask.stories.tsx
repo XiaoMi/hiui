@@ -14,7 +14,7 @@ export const Mask = () => {
       <div className="drawer-mask__wrap">
         <Button onClick={() => setVisible(!visible)}>open</Button>
         <Drawer
-          title="Drawer Header Title"
+          title="抽屉标题"
           visible={visible}
           showMask={false}
           onClose={() => setVisible(false)}
@@ -29,45 +29,45 @@ export const Mask = () => {
             </div>
           }
         >
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
         </Drawer>
       </div>
     </>

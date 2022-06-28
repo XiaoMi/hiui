@@ -14,11 +14,24 @@ export const Nested = () => {
       <h1>Nested</h1>
       <div className="Drawer-nested__wrap">
         <Button onClick={() => setVisible(!visible)}>open</Button>
-        <Drawer width={754} visible={visible} closeable={false} onClose={() => setVisible(false)}>
-          <div>Drawer content</div>
-          <Button onClick={() => setNestVisible(!nestVisible)}>Nested</Button>
-          <Drawer visible={nestVisible} closeable={false} onClose={() => setNestVisible(false)}>
-            NestDrawer content
+        <Drawer
+          title="抽屉标题"
+          width={754}
+          visible={visible}
+          closeable={false}
+          onClose={() => setVisible(false)}
+        >
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <Button style={{ marginTop: 20 }} onClick={() => setNestVisible(!nestVisible)}>
+            Nested
+          </Button>
+          <Drawer
+            title="抽屉标题"
+            visible={nestVisible}
+            closeable={false}
+            onClose={() => setNestVisible(false)}
+          >
+            Nest我是一段文字，也可以是表单、表格、步骤条等等
           </Drawer>
         </Drawer>
       </div>

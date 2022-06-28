@@ -18,7 +18,12 @@ export const Extra = () => {
           title={
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>我是大标题</div>
-              <EditOutlined style={{ paddingRight: 12 }} />
+              <Button
+                icon={<EditOutlined />}
+                appearance="link"
+                size="sm"
+                style={{ marginRight: 8, flexShrink: 0 }}
+              />
             </div>
           }
           visible={visible}
@@ -34,45 +39,45 @@ export const Extra = () => {
             </div>
           }
         >
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
         </Drawer>
       </div>
     </>

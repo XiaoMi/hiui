@@ -21,6 +21,7 @@ export const Placement = () => {
               <td></td>
               <td>
                 <Button
+                  style={{ width: 100 }}
                   onClick={() => {
                     setPlacement('top')
                     setVisible(true)
@@ -42,6 +43,7 @@ export const Placement = () => {
             <tr>
               <td>
                 <Button
+                  style={{ width: 100 }}
                   onClick={() => {
                     setPlacement('left')
                     setVisible(true)
@@ -55,6 +57,7 @@ export const Placement = () => {
               <td></td>
               <td>
                 <Button
+                  style={{ width: 100 }}
                   onClick={() => {
                     setPlacement('right')
                     setVisible(true)
@@ -76,6 +79,7 @@ export const Placement = () => {
               <td></td>
               <td>
                 <Button
+                  style={{ width: 100 }}
                   onClick={() => {
                     setPlacement('bottom')
                     setVisible(true)
@@ -91,7 +95,7 @@ export const Placement = () => {
         </table>
 
         <Drawer
-          title="Drawer Header Title"
+          title="抽屉标题"
           visible={visible}
           placement={placement}
           onClose={() => setVisible(false)}
@@ -106,45 +110,45 @@ export const Placement = () => {
             </div>
           }
         >
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
-          <div>Drawer content</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
+          <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
         </Drawer>
       </div>
     </>
