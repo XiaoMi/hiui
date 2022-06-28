@@ -1,6 +1,5 @@
 import React, { useRef, useContext, useState, useEffect, useLayoutEffect } from 'react'
 import { Resizable } from 'react-resizable'
-import _ from 'lodash'
 import classnames from 'classnames'
 
 import TableContext from './context'
@@ -8,10 +7,11 @@ import ColumnMenu from './ColumnMenu'
 import SettingMenu from './SettingMenu'
 import Checkbox from '../checkbox'
 import AdvanceHeader from './AdvanceHeader'
-import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth } from './util'
+import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth, cloneArray } from './util'
 
 const HeaderTable = ({ rightFixedIndex }) => {
   const {
+    checkboxColWidth,
     rowSelection,
     data: propsData,
     columns,
@@ -31,15 +31,15 @@ const HeaderTable = ({ rightFixedIndex }) => {
     prefix,
     realColumnsWidth,
     setRealColumnsWidth,
-    resizable,
+    isResizableColKey,
     setting,
     onHeaderRow,
     sticky,
     disabledData
   } = useContext(TableContext)
-  const [data, setDate] = useState(_.cloneDeep(propsData))
+  const [data, setDate] = useState(cloneArray(propsData))
   useEffect(() => {
-    setDate(_.cloneDeep(propsData))
+    setDate(cloneArray(propsData))
   }, [propsData])
   const [isAllChecked, setIsAllChecked] = useState(false)
   const [groupedColumns, setGroupedColumns] = useState([])
@@ -67,18 +67,15 @@ const HeaderTable = ({ rightFixedIndex }) => {
     // 判断是否全选
     if (rowSelection) {
       const { selectedRowKeys = [] } = rowSelection
-      const flattedData = flatTreeData(_.cloneDeep(data))
-      const _isAllChecked =
-        flattedData
-          .filter((data) => !disabledData.current.includes(data.key))
-          .every((d) => selectedRowKeys.includes(d.key)) && flattedData.length !== 0
+      const flattedData = flatTreeData(cloneArray(data)).filter((data) => !disabledData.current.includes(data.key))
+      const _isAllChecked = flattedData.every((d) => selectedRowKeys.includes(d.key)) && flattedData.length !== 0
       setIsAllChecked(_isAllChecked)
     }
   }, [data, rowSelection])
 
   // 处理列的深度
   useEffect(() => {
-    const _columns = _.cloneDeep(columns)
+    const _columns = cloneArray(columns)
     const depthArray = []
     setDepth(_columns, 0, depthArray)
     const maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
@@ -135,13 +132,17 @@ const HeaderTable = ({ rightFixedIndex }) => {
 
   const hasSorterColumn = columnsgroup.filter((col) => col.sorter).map((sorterCol) => sorterCol.dataKey)
 
+  // 自定义 checkboxAll 侧边 icon
+  const checkboxFilterIcon =
+    (rowSelection && rowSelection.checkAllOptions && rowSelection.checkAllOptions.filterIcon) || null
+
   // ******************** 行渲染 ***********************
   const renderBaseRow = (cols, index, isSticky) => {
     const _colums = [rowSelection && index === 0 && 'checkbox', expandedRender && index === 0 && 'expandedButton']
       .concat(cols)
       .filter((column) => !!column)
     const isStickyCol = _colums.some((item) => {
-      return typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
+      return typeof item.leftStickyWidth !== 'undefined'
     })
     return (
       <tr key={index}>
@@ -155,7 +156,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
                 className={classnames({ 'hi-table__col--sticky': isStickyCol })}
                 style={{
                   boxSizing: 'border-box',
-                  width: 50,
+                  width: checkboxColWidth,
                   height: 'auto',
                   backgroundColor: '#fbfbfb'
                 }}
@@ -165,16 +166,15 @@ const HeaderTable = ({ rightFixedIndex }) => {
                   indeterminate={!isAllChecked && rowSelection.selectedRowKeys.length > 0}
                   onChange={(e) => {
                     if (rowSelection.onChange) {
-                      rowSelection.onChange(
-                        isAllChecked
-                          ? []
-                          : flatTreeData(_.cloneDeep(data))
-                              .filter((data) => !disabledData.current.includes(data.key))
-                              .map((d) => d.key)
+                      const targetItems = flatTreeData(cloneArray(data)).filter(
+                        (data) => !disabledData.current.includes(data.key)
                       )
+                      const selectedIds = isAllChecked ? [] : targetItems.map((item) => item.key)
+                      rowSelection.onChange(selectedIds, targetItems, !isAllChecked)
                     }
                   }}
                 />
+                {checkboxFilterIcon}
               </th>
             )
           } else if (c === 'expandedButton') {
@@ -199,7 +199,8 @@ const HeaderTable = ({ rightFixedIndex }) => {
 
             const isRowActive = highlightedColKeys.includes(dataKey) || highlightColumns.includes(dataKey)
             const isColActive = showColHighlight && hoverColIndex === dataKey
-            const defatultTextAlign = align || 'left'
+            const textAlign = alignRightColumns.includes(dataKey) ? 'right' : align || 'left'
+
             cell = (
               <th
                 key={idx}
@@ -211,7 +212,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
                 style={{
                   height: 'auto',
                   boxSizing: 'border-box',
-                  textAlign: alignRightColumns.includes(dataKey) ? 'right' : defatultTextAlign,
+                  textAlign,
                   background: isRowActive || isColActive ? '#F4F4F4' : '#fbfbfb',
                   right: rightStickyWidth + 'px',
                   left: leftStickyWidth + 'px'
@@ -227,6 +228,9 @@ const HeaderTable = ({ rightFixedIndex }) => {
               </th>
             )
           }
+
+          const resizable = isResizableColKey(c.dataKey)
+
           return resizable && idx !== cols.length - 1 ? (
             <Resizable
               key={idx}
@@ -274,12 +278,14 @@ const HeaderTable = ({ rightFixedIndex }) => {
         <table style={{ width: '100%' }} ref={headerInner}>
           <colgroup>
             {columnsgroup.map((c, index) => {
-              const width = resizable ? realColumnsWidth[index] : c.width
+              const resizable = isResizableColKey(c.dataKey)
+              const width = resizable ? realColumnsWidth[index] || c.width : c.width
+
               return (
                 <col
                   key={index}
                   style={{
-                    width: c === 'checkbox' ? 50 : width,
+                    width: c === 'checkbox' ? checkboxColWidth : width,
                     minWidth: width
                   }}
                 />

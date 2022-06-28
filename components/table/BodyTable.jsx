@@ -4,10 +4,11 @@ import classNames from 'classnames'
 import Row from './Row'
 import TableContext from './context'
 import _ from 'lodash'
-import { flatTreeData, setDepth, checkNeedTotalOrEvg, getTotalOrEvgRowData } from './util'
+import { flatTreeData, setDepth, checkNeedTotalOrEvg, getTotalOrEvgRowData, cloneArray } from './util'
 
 const BodyTable = ({ fatherRef, emptyContent }) => {
   const {
+    checkboxColWidth,
     bordered,
     data = [],
     columns,
@@ -20,7 +21,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     syncScrollLeft,
     firstRowRef,
     realColumnsWidth,
-    resizable,
+    isResizableColKey,
     prefix,
     hoverColIndex,
     setHoverColIndex,
@@ -40,7 +41,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   const [dragRowKey, setDragRowKey] = useState(null)
 
   // **************** 获取colgroup
-  const _columns = _.cloneDeep(columns)
+  const _columns = cloneArray(columns)
   const depthArray = []
   setDepth(_columns, 0, depthArray)
   const columnsgroup = [rowSelection && 'checkbox', expandedRender && 'expandedButton']
@@ -192,7 +193,9 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       <table ref={tableRef}>
         <colgroup>
           {columnsgroup.map((c, index) => {
-            const width = c === 'checkbox' ? 50 : c.width
+            const width = c === 'checkbox' ? checkboxColWidth : c.width
+            const resizable = isResizableColKey(c.dataKey)
+
             return (
               <col
                 key={index}
@@ -200,8 +203,8 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
                   [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
                 })}
                 style={{
-                  width: resizable ? realColumnsWidth[index] : width,
-                  minWidth: resizable ? realColumnsWidth[index] : width
+                  width: resizable ? realColumnsWidth[index]|| width : width,
+                  minWidth: resizable ? realColumnsWidth[index]|| width : width
                 }}
               />
             )

@@ -9,6 +9,7 @@ import Provider from '../../../context'
 import HiRequest from '../../../hi-request/index'
 import { resetSelectedItems, transKeys, uniqBy } from '../../../select/utils'
 import './style'
+import { cloneArray } from '../../util'
 
 const InternalSelect = (props) => {
   const {
@@ -58,7 +59,7 @@ const InternalSelect = (props) => {
 
   // value 有可能是0的情况
   const [selectedItems, setSelectedItems] = useState(
-    resetSelectedItems(value === undefined ? defaultValue : value, _.cloneDeep(data), transKeys(fieldNames, 'id'))
+    resetSelectedItems(value === undefined ? defaultValue : value, cloneArray(data), transKeys(fieldNames, 'id'))
   )
 
   const [dropdownShow, setDropdownShow] = useState(false)
@@ -82,7 +83,7 @@ const InternalSelect = (props) => {
     resetFocusedIndex()
   }, [])
   useEffect(() => {
-    historyData.current = _.cloneDeep(data)
+    historyData.current = cloneArray(data)
   }, [data])
   useEffect(() => {
     if (dropdownItems && dropdownItems.length) {
@@ -118,7 +119,7 @@ const InternalSelect = (props) => {
   }, [value, cacheSelectItem])
 
   useEffect(() => {
-    const _data = _.cloneDeep(data)
+    const _data = cloneArray(data)
     const selectedItems = resetSelectedItems(
       value === undefined ? defaultValue : value,
       historyData.current,
@@ -165,7 +166,7 @@ const InternalSelect = (props) => {
     (item, index) => {
       if (!item || item[transKeys(fieldNames, 'disabled')]) return
 
-      let _selectedItems = _.cloneDeep(selectedItems)
+      let _selectedItems = cloneArray(selectedItems)
       if (type === 'multiple') {
         // 获取元素索引
         const itemIndex = _selectedItems.findIndex((sItem) => {
@@ -432,6 +433,11 @@ const InternalSelect = (props) => {
       ...options
     }).then(
       (response) => {
+        if (!response) {
+          setLoading(false)
+          return
+        }
+
         const { message = 'normal' } = response
         if (message !== CANCEL_STATE) {
           setLoading(false)

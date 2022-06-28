@@ -39,7 +39,6 @@ $drawer: 'hi-drawer' !default;
     top: 0;
     position: fixed;
     border-radius: 2px;
-    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
     transform: translateX(100%);
     transition: transform 0.3s;
 
@@ -55,6 +54,7 @@ $drawer: 'hi-drawer' !default;
 
     &--visible {
       transform: none;
+      box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
     }
   }
 

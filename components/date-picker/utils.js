@@ -225,16 +225,18 @@ export const getInRangeDate = (momentstartDate, momentendDate, max, min) => {
  * @param {String} type 类型
  * @param {String} format 日期格式
  */
-export const parseValue = (value, type, format, locale = 'zh-CN') => {
+export const parseValue = (value, type, format, weekOffset, locale = 'zh-CN') => {
   if (!value) return [null]
   const _format = FORMATS(locale)[type]
   const _value = moment(value, _format)
   const isValid = moment(_value).isValid()
   if (value && typeof value === 'object' && (type.includes('range') || type === 'timeperiod')) {
     if (type === 'weekrange') {
+      const weekMethod = weekOffset ? 'isoWeek' : 'week'
+
       return [
-        value.start ? moment(value.start, _format).startOf('week') : null,
-        value.end ? moment(value.end, _format).endOf('week') : null
+        value.start ? moment(value.start, _format).startOf(weekMethod) : null,
+        value.end ? moment(value.end, _format).endOf(weekMethod) : null
       ]
     }
     return [
@@ -243,4 +245,11 @@ export const parseValue = (value, type, format, locale = 'zh-CN') => {
     ]
   }
   return [isValid ? _value : null]
+}
+
+// fix: 周计算 52 53 周偏差
+export const normalizeWeekOffset = (date, weekOffset) => {
+  const clone = date.clone()
+  clone.locale(weekOffset === 1 ? 'zh-CN' : 'en-US')
+  return clone
 }

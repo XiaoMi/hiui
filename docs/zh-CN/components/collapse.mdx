@@ -10,19 +10,19 @@
 
 ## 基础用法
 
-import DemoBasic from '../../demo/collapse/section-basic.jsx'
+import DemoBasic from "../../demo/collapse/section-basic.jsx";
 
 <DemoBasic />
 
 ## 箭头位置
 
-import DemoArrowPlacement from '../../demo/collapse/section-arrowPlacement.jsx'
+import DemoArrowPlacement from "../../demo/collapse/section-arrowPlacement.jsx";
 
 <DemoArrowPlacement />
 
 ## 手风琴模式
 
-import DemoAccordion from '../../demo/collapse/section-accordion.jsx'
+import DemoAccordion from "../../demo/collapse/section-accordion.jsx";
 
 <DemoAccordion />
 
@@ -37,15 +37,19 @@ import DemoAccordion from '../../demo/collapse/section-accordion.jsx'
 | activeId        | 指定展开的面板                                 | string \| string[] | -                 | -      |
 | arrowPlacement  | 箭头所在位置                                   | string             | 'left' \| 'right' | 'left' |
 | showArrow       | 是否显示展开箭头                               | boolean            | true \| false     | true   |
+| className       | 自定义类名                                     | string             | -                 | -      |
+| style           | 自定义样式                                     | object             | -                 | -      |
 
 ### Collapse.Panel
 
-| 参数     | 说明         | 类型                | 可选值        | 默认值 |
-| -------- | ------------ | ------------------- | ------------- | ------ |
-| id       | 面板唯一标识 | string              | -             | -      |
-| title    | 面板标题     | string \| ReactNode | -             | -      |
-| disabled | 是否禁用面板 | boolean             | true \| false | false  |
-| extra    | 添加额外的元素 | ReactNode          |      -       |   -   |
+| 参数      | 说明           | 类型                | 可选值        | 默认值 |
+| --------- | -------------- | ------------------- | ------------- | ------ |
+| id        | 面板唯一标识   | string              | -             | -      |
+| title     | 面板标题       | string \| ReactNode | -             | -      |
+| disabled  | 是否禁用面板   | boolean             | true \| false | false  |
+| extra     | 添加额外的元素 | ReactNode           | -             | -      |
+| className | 自定义类名     | string              | -             | -      |
+| style     | 自定义样式     | object              | -             | -      |
 
 ## Events
 

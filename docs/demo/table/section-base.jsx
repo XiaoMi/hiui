@@ -82,7 +82,7 @@ const code = [
             width: 150
 
           },
-         
+
           {
             title: '规格',
             dataKey: 'size',
@@ -107,7 +107,7 @@ const code = [
             width: 150
 
           },
-         
+
           {
             title: '规格',
             dataKey: 'size',
@@ -182,8 +182,27 @@ const code = [
           }
         ]
       }
+      onRow(record, index) {
+        return {
+          onClick: (event) => {
+            console.log(record, index, event)
+          },
+          onDoubleClick: (event) => {
+            console.log(record, index, event)
+          },
+          onContextMenu: (event) => {
+            console.log(record, index, event)
+          },
+          onMouseEnter: (event) => {
+            console.log(record, index, event)
+          },
+          onMouseLeave: (event) => {
+            console.log(record, index, event)
+          }
+        }
+      }
       render() {
-        return <Table columns={this.columns} resizable fixedToColumn={{left:'type', right: 'address'}} data={this.data}/>
+        return <Table columns={this.columns} resizable onRow={this.onRow} fixedToColumn={{left:'type', right: 'address'}} data={this.data}/>
       }
     }`,
     opt: ['基础']
@@ -357,9 +376,9 @@ const code = [
         ]
       }
       render() {
-        return <Table 
-          columns={this.columns} 
-          data={this.data} 
+        return <Table
+          columns={this.columns}
+          data={this.data}
           draggable
           onDragStart={(...arg)=>{
             console.log('开始拖拽', ...arg)

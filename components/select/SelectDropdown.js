@@ -163,28 +163,29 @@ const SelectDropdown = ({
     [onClickOption, fieldNames]
   )
   // 高亮关键字
-  const hightlightKeyword = useCallback(
+  const highlightKeyword = useCallback(
     (text = '', uniqueKey) => {
-      let _keyword = searchbarValue
-      _keyword = searchbarValue.includes('[') ? _keyword.replace(/\[/gi, '\\[') : _keyword
-      _keyword = searchbarValue.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
-      _keyword = searchbarValue.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
+      if (!searchbarValue) return text
 
-      const parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
-      return searchbarValue.length > 0 ? (
+      const parts = text.split(searchbarValue)
+      const lastIndexOfParts = parts.length - 1
+
+      return (
         <p key={uniqueKey}>
-          {parts.map((part, i) =>
-            part === searchbarValue ? (
-              <span key={i} className={'hi-select__dropdown--item__name-hightlight'}>
-                {part}
-              </span>
-            ) : (
-              part
-            )
-          )}
+          {parts.reduce((acc, part, index) => {
+            acc.push(part)
+
+            if (lastIndexOfParts !== index) {
+              acc.push(
+                <span key={index} className={'hi-select__dropdown--item__name-hightlight'}>
+                  {searchbarValue}
+                </span>
+              )
+            }
+
+            return acc
+          }, [])}
         </p>
-      ) : (
-        text
       )
     },
     [searchbarValue]
@@ -215,7 +216,7 @@ const SelectDropdown = ({
             <div className="hi-select__dropdown--item__name" style={style}>
               {isByRemoteSearch
                 ? item[transKeys(fieldNames, 'title')]
-                : hightlightKeyword(item[transKeys(fieldNames, 'title')], item[transKeys(fieldNames, 'id')])}
+                : highlightKeyword(item[transKeys(fieldNames, 'title')], item[transKeys(fieldNames, 'id')])}
             </div>
           </Checkbox>
         )}
@@ -223,7 +224,7 @@ const SelectDropdown = ({
           <div className="hi-select__dropdown--item__name" style={style}>
             {isByRemoteSearch
               ? item[transKeys(fieldNames, 'title')]
-              : hightlightKeyword(item[transKeys(fieldNames, 'title')], item[transKeys(fieldNames, 'id')])}
+              : highlightKeyword(item[transKeys(fieldNames, 'title')], item[transKeys(fieldNames, 'id')])}
           </div>
         )}
       </React.Fragment>

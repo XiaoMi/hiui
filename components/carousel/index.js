@@ -146,7 +146,7 @@ class Carousel extends Component {
         {showPages && (
           <div className="hi-carousel__pages">
             <span>
-              {active} / {len}
+              {active + 1} / {len}
             </span>
           </div>
         )}

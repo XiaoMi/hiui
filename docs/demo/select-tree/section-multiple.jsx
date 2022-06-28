@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import SelectTree from '../../../components/select-tree'
 const prefix = 'tree-select-multiple'
-const rightOptions = ['基础', '默认值', '数据回显', '默认展开', '数据转换']
+const rightOptions = ['基础', '默认值', '禁用', '数据回显', '数据转换']
 const desc = '展示从多个收起的备选项中选出的一个选项'
 const defaultStr = `constructor () {
   super()
@@ -109,6 +109,27 @@ class Demo extends React.Component {
       }
     }`,
     opt: ['默认值']
+  },
+  {
+    code: `import React from 'react'
+    import SelectTree from '@hi-ui/hiui/es/select-tree'\n
+    class Demo extends React.Component {
+      ${defaultStr}
+
+      render () {
+        const { singleList } = this.state
+        return (
+          <SelectTree
+            type='multiple'
+            clearable
+            disabled
+            data={singleList}
+            defaultValue={[{id: '1-0'}]}
+          />
+        )
+      }
+    }`,
+    opt: ['禁用']
   },
   {
     code: `import React from 'react'

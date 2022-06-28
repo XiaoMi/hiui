@@ -103,10 +103,10 @@ class Collapse extends Component {
   }
 
   render() {
-    const { prefixCls, type } = this.props
-    const classnames = classNames(prefixCls, type && `${prefixCls}__${type}`)
+    const { prefixCls, type, className, style } = this.props
+    const classnames = classNames(prefixCls, type && `${prefixCls}__${type}`, className)
     return (
-      <div className={classnames} ref={this.panelContainer}>
+      <div className={classnames} ref={this.panelContainer} style={style}>
         {this.renderPanels()}
       </div>
     )

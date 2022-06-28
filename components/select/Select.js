@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, forwardRef, useCallback } from 'react'
 import classNames from 'classnames'
-import _, { isArray } from 'lodash'
+import _, { isArray, isNil } from 'lodash'
 
 import Popper from '../popper'
 import SelectInput from './SelectInput'
@@ -374,17 +374,23 @@ const InternalSelect = (props) => {
 
   const remoteSearch = useCallback(
     (keyword) => {
-      const _dataSource = typeof dataSource === 'function' ? dataSource(keyword) : dataSource
-      if (Array.isArray(_dataSource)) {
-        setDropdownItems(_dataSource)
+      const resultMayBePromise = typeof dataSource === 'function' ? dataSource(keyword) : dataSource
+
+      if (isNil(resultMayBePromise)) return
+
+      if (Array.isArray(resultMayBePromise)) {
+        setDropdownItems(resultMayBePromise)
         return
       }
-      // 处理promise函数
-      if (_dataSource.toString() === '[object Promise]') {
+
+      if (resultMayBePromise.toString() === '[object Promise]') {
         setLoading(true)
-        _dataSource.then(
+        resultMayBePromise.then(
           (res) => {
             setLoading(false)
+
+            if (isNil(res)) return
+
             setDropdownItems(Array.isArray(res) ? res : [])
           },
           () => {
@@ -394,11 +400,13 @@ const InternalSelect = (props) => {
         )
         return
       }
-      // 调用接口
-      HiRequestSearch(_dataSource, keyword)
+
+      // 传入对象, 调用接口
+      HiRequestSearch(resultMayBePromise, keyword)
     },
     [dataSource, keyword]
   )
+
   const HiRequestSearch = useCallback((_dataSource, keyword) => {
     const {
       url,
@@ -442,6 +450,11 @@ const InternalSelect = (props) => {
       ...options
     }).then(
       (response) => {
+        if (!response) {
+          setLoading(false)
+          return
+        }
+
         const { message = 'normal' } = response
         if (message !== CANCEL_STATE) {
           setLoading(false)

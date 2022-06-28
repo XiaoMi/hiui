@@ -255,7 +255,7 @@ const Tree = (props) => {
   const addSiblingNode = useCallback(
     (node) => {
       const dataCache = _.cloneDeep(cacheData)
-      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add' }
+      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add', parent: node.parent, parentId: node.parentId }
       _addSibNode(node, dataCache, addNode)
       setEditingNodes(editingNodes.concat(addNode))
       updateCacheData(dataCache)
@@ -281,7 +281,7 @@ const Tree = (props) => {
   const addChildNode = useCallback(
     (node) => {
       const dataCache = _.cloneDeep(cacheData)
-      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add' }
+      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add', parent: node, parentId: node.id }
       _addChildNode(node, dataCache, addNode)
       setEditingNodes(editingNodes.concat(addNode))
       updateCacheData(dataCache)
@@ -386,9 +386,14 @@ const Tree = (props) => {
         { title: localMap.addNode, type: 'addSiblingNode' },
         { title: localMap.del, type: 'deleteNode' }
       ]
-      if (contextMenu) {
+
+      if (Array.isArray(contextMenu)) {
+        menu = contextMenu
+      } else if (typeof contextMenu === 'function') {
         menu = contextMenu(node)
       }
+
+      if (!(Array.isArray(menu) && menu.length > 0)) return null
 
       return (
         <ul className={`${PREFIX}__menu theme__${theme}`}>

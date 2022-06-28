@@ -20,7 +20,7 @@ export const transformValues = (allvalue, fields) => {
   // 根据sort进行数据排列
   const sortfields = _.sortBy(fields, ['sort'])
   sortfields.forEach((filedItem) => {
-    const { realField, propsField, _type, listname } = filedItem
+    const { realField, field, propsField, _type, listname } = filedItem
     if (_type === 'list') {
       if (propsField !== realField) {
         listNestValues[listname] = listNestValues[listname] || {}
@@ -40,13 +40,22 @@ export const transformValues = (allvalue, fields) => {
         tranformValues[listname] = [allvalue[realField]]
       }
     } else {
+      let readField = realField
+
+      // bugfix: https://github.com/XiaoMi/hiui/issues/2077
+      if (_type === 'SchemaForm' && field) {
+        if (Object.keys(allvalue).includes(field)) {
+          readField = field
+        }
+      }
+
       if (Array.isArray(propsField)) {
         const chainKeys = propsField.reduceRight((pre, next) => {
           return { [next]: pre }
-        }, allvalue[realField])
+        }, allvalue[readField])
         tranformValues = _.merge(tranformValues, chainKeys)
       } else {
-        tranformValues = _.merge(tranformValues, { [realField]: allvalue[realField] })
+        tranformValues = _.merge(tranformValues, { [realField]: allvalue[readField] })
       }
     }
   })

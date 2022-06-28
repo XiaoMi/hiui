@@ -13,6 +13,7 @@ export interface ProgressProps {
   height?: string | number
   style?: React.CSSProperties
   className?: string
+  percent?: number
 }
 declare const Progress: React.ComponentType<ProgressProps>
 export default Progress

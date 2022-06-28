@@ -1,22 +1,30 @@
 import React from "react"
-export interface ModalProps {
+
+interface ModalBaseProps {
+  className?: string
   title?: string | JSX.Element
+  cancelText?: string
+  confirmText?: string
+  onConfirm?: (e: React.MouseEvent) => void
+  onCancel?: (e: React.MouseEvent) => void
+}
+
+export interface ModalProps extends ModalBaseProps {
   visible?: boolean
   closeable?: boolean
   maskClosable?: boolean
-  cancelText?: string
-  confirmText?: string
   size?: 'default' | 'large'
   style?: React.CSSProperties
   footer?: JSX.Element | null
-  onCancel?: (e: React.MouseEvent) => void
-  onConfirm?: (e: React.MouseEvent) => void
   style?: React.CSSProperties
-  className?: string
   confirmLoading?: boolean
+  modalContentRef?: React.Ref<HTMLDivElement | null>
 }
 
-export interface ModalOptions extends ModalProps {}
+export interface ModalOptions extends ModalBaseProps {
+  content?: string | JSX.Element
+  type?: 'default' | 'success' | 'error' | 'warning' | 'info'
+}
 
 const confirmFun: (options: ModalOptions) => void
 

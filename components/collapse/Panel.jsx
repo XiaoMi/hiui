@@ -4,6 +4,8 @@ import Icon from '../icon'
 import _ from 'lodash'
 
 const Panel = ({
+  className,
+  style,
   key,
   arrow,
   header,
@@ -18,10 +20,14 @@ const Panel = ({
   idx: panelIndex
 }) => {
   const _panels = React.Children.toArray(panels)
-  const classnames = classNames('collapse-item', {
-    'collapse-item--show': isActive,
-    'collapse-item--disabled': disabled
-  })
+  const classnames = classNames(
+    'collapse-item',
+    {
+      'collapse-item--show': isActive,
+      'collapse-item--disabled': disabled
+    },
+    className
+  )
   const onKeyDown = useCallback(
     (e) => {
       if ([13, 32].includes(e.keyCode)) {
@@ -83,7 +89,7 @@ const Panel = ({
     [panels, panelContainer, panelIndex]
   )
   return (
-    <div className={classnames}>
+    <div className={classnames} style={style}>
       <div
         className="collapse-item__head"
         onClick={() => onClickPanel(key)}

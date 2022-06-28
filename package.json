@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "3.8.0",
+  "version": "3.9.0",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -54,6 +54,9 @@
   },
   "dependencies": {
     "@hi-ui/core-css": "^2.0.1",
+    "@hi-ui/tree-utils": "^4.0.0-alpha.3",
+    "@hi-ui/use-latest": "~4.0.0-alpha.2",
+    "@hi-ui/use-uncontrolled-state": "~4.0.0-alpha.5",
     "async-validator": "^3.3.0",
     "axios": "^0.21.1",
     "classnames": "^2.2.5",

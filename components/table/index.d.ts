@@ -6,7 +6,7 @@ export type TableColumnItem = {
   title: string | JSX.Element
   dataKey: string
   align?: 'left' | 'right' | 'center'
-  sorter?: () => boolean
+  sorter?: (a: any, b: any) => number
   avg?: boolean
   total?: boolean
   width?: number
@@ -18,7 +18,7 @@ export type TableColumnItem = {
   filterDropdownWidth?: number
   filterDropdownClassName?: string
   onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, ColumnItem: ColumnItem) => void
-  render?: (text: string, record: object, index: number, dataKey: string) => JSX.Element
+  render?: (text: any, record: object, index: number, dataKey: string) => JSX.Element
 }
 
 export type TableDataSource = {
@@ -38,9 +38,17 @@ export type TableFixedOption = {
   left?: string
   right?: string
 }
+
+export type TableCheckAllOptions = {
+  filterIcon?: React.ReactNode
+}
+
 export type TableRowSelection = {
-  selectedRowKeys?: string[] | number[]
-  onChange?: (selectedRowKeys: string | number) => void
+  selectedRowKeys?: React.ReactText[]
+  getCheckboxConfig?: (rowData: object) => object
+  onChange?: (selectedRowKeys: React.ReactText[], targetRow?: object | object[], shouldChecked?: boolean) => void
+  checkboxColWidth?: number
+  checkAllOptions?: TableCheckAllOptions
 }
 
 export type TableHeaderRowReturn = {
@@ -53,6 +61,8 @@ export type TableHeaderRowReturn = {
 
 export type HeaderRowFunc = (colums: TableColumnItem[], index: number) => TableHeaderRowReturn
 
+export type RowFunc = () => TableHeaderRowReturn
+
 export interface TableProps {
   size?: 'small' | 'large' | 'default' | 'mini'
   fieldKey?: string
@@ -62,8 +72,9 @@ export interface TableProps {
   sticky?: boolean
   draggable?: boolean
   stickyTop?: number
-  expandRowKeys?: number[]
-  highlightedColKeys?: string[] | number[]
+  fixedColumnTrigger?: 'auto' | 'always'
+  expandRowKeys?: React.ReactText[]
+  highlightedColKeys?: string[]
   expandedRender?: (record: object, index: number) => JSX.Element | Promise
   onLoadChildren?: (record: object) => object[] | Promise
   onExpand?: (expanded: boolean, rowData: object) => void
@@ -72,8 +83,8 @@ export interface TableProps {
   scrollWidth?: number
   fixedToColumn?: string | TableFixedOption
   pagination?: PaginationProps
-  errorRowKeys?: string[] | number[]
-  highlightedRowKeys?: string[] | number[]
+  errorRowKeys?: React.ReactText[]
+  highlightedRowKeys?: React.ReactText[]
   rowSelection?: TableRowSelection
   dataSource?: (current: number) => TableDataSource
   showColMenu?: boolean
@@ -81,9 +92,11 @@ export interface TableProps {
   striped?: boolean
   setting?: boolean
   resizable?: boolean
+  disabledResizableColKeys?: string[]
   standard?: boolean
   emptyContent?: string | JSX.Element
   onHeaderRow?: HeaderRowFunc
+  onRow?: RowFunc
   columns: TableColumnItem[]
   data: object[]
   style?: React.CSSProperties
@@ -92,6 +105,11 @@ export interface TableProps {
   onDragStart?: (rowData: object) => void
   onDrop?: (dragRowData: object, dropRowData: object, data: object, level: Level) => boolean | Promise
   onDropEnd?: (dragRowData: object, dropRowData: object, data: object) => void
+  hiddenColKeys?: string[]
+  onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
+  cellRender?: (text: any) => React.ReactNode
+  highlightRowOnDoubleClick?: boolean
 }
+
 declare const Table: React.ComponentType<TableProps>
 export default Table
