@@ -23,7 +23,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="select-basic__wrap">
-        <Select clearable={false} style={{ width: 200 }} data={data} />
+        <Select style={{ width: 240 }} clearable={false} data={data} />
       </div>
     </>
   )

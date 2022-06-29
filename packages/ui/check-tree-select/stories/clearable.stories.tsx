@@ -90,6 +90,7 @@ export const Clearable = () => {
       <h1>Clearable</h1>
       <div className="tree-select-clearable__wrap">
         <CheckTreeSelect
+          style={{ width: 240 }}
           clearable
           data={data}
           onChange={(checkedIds, options) => {

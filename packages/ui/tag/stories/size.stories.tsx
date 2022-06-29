@@ -9,7 +9,7 @@ export const Size = () => {
     <>
       <h1>Tag Size</h1>
       <div>
-        <div style={{ fontSize: 16, fontWeight: 500, margin: '20px 0 8px 0' }}>sm</div>
+        <h2>sm</h2>
         <div style={{ display: 'flex', gap: 8 }}>
           <Tag size="sm" type="warning" appearance="filled">
             待审批
@@ -27,7 +27,7 @@ export const Size = () => {
             待审批
           </Tag>
         </div>
-        <div style={{ fontSize: 16, fontWeight: 500, margin: '20px 0 8px 0' }}>md</div>
+        <h2>md</h2>
         <div style={{ display: 'flex', gap: 8 }}>
           <Tag size="md" type="warning" appearance="filled">
             待审批
@@ -45,7 +45,7 @@ export const Size = () => {
             待审批
           </Tag>
         </div>
-        <div style={{ fontSize: 16, fontWeight: 500, margin: '20px 0 8px 0' }}>lg</div>
+        <h2>lg</h2>
         <div style={{ display: 'flex', gap: 8 }}>
           <Tag size="lg" type="warning" appearance="filled">
             待审批

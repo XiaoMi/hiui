@@ -94,6 +94,7 @@ export const FieldNames = () => {
       <h1>FieldNames</h1>
       <div className="cascader-field-names__wrap">
         <Cascader
+          style={{ width: 240 }}
           fieldNames={{
             id: 'value',
             title: 'label',

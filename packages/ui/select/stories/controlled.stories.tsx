@@ -19,7 +19,7 @@ export const Controlled = () => {
       <h1>Controlled</h1>
       <div className="select-controlled__wrap">
         <Select
-          style={{ width: 200 }}
+          style={{ width: 240 }}
           clearable={false}
           data={data}
           value={value}

@@ -90,7 +90,12 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="check-tree-select-basic__wrap">
-        <CheckTreeSelect data={data} checkedMode="PARENT" onChange={console.log} />
+        <CheckTreeSelect
+          style={{ width: 240 }}
+          data={data}
+          checkedMode="PARENT"
+          onChange={console.log}
+        />
       </div>
     </>
   )

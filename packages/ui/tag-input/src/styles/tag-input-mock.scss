@@ -86,6 +86,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     box-sizing: border-box;
     white-space: nowrap;
     overflow: hidden;
+    height: 100%;
   }
 
   &__tag--total {

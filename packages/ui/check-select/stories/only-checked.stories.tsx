@@ -22,6 +22,7 @@ export const OnlyChecked = () => {
       <h1>OnlyChecked</h1>
       <div className="check-select-only-checked__wrap">
         <CheckSelect
+          style={{ width: 240 }}
           placeholder="请选择"
           searchable
           clearable

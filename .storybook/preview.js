@@ -72,7 +72,7 @@ export const decorators = [
         borderRadius: 2,
         padding: 36,
         minWidth: 360,
-        maxWidth: 800
+        maxWidth: '100%'
       }}
       >
         <Story {...context} />

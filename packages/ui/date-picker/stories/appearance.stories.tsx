@@ -12,12 +12,14 @@ export const Appearance = () => {
       <div className="date-picker-appearance__wrap">
         <h2>Line</h2>
         <DatePicker
+          style={{ width: 240 }}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
         />
         <h2>filled</h2>
         <DatePicker
+          style={{ width: 240 }}
           appearance={'filled'}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
@@ -29,13 +31,6 @@ export const Appearance = () => {
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
-        />
-        <DatePicker
-          appearance={'unset'}
-          onChange={(date, dateStr) => {
-            console.log('onChange', date, dateStr)
-          }}
-          type={'daterange'}
         />
       </div>
     </>

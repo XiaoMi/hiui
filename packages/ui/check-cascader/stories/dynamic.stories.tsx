@@ -68,6 +68,7 @@ export const Dynamic = () => {
         ></Alert>
         <br />
         <CheckCascader
+          style={{ width: 240 }}
           data={treeData}
           onLoadChildren={loadChildren}
           defaultValue={[[1]]}

@@ -16,29 +16,14 @@ export const Mark = () => {
     <>
       <h1>Mark</h1>
       <div className="slider-mark__wrap">
-        <div>
-          <Slider
-            style={{ width: 300 }}
-            marks={marks}
-            step={9}
-            onChange={(value) => {
-              console.log(value)
-            }}
-          ></Slider>
-        </div>
-        <br />
-        <br />
-        <div>
-          <Slider
-            vertical
-            style={{ height: 300 }}
-            marks={marks}
-            step={9}
-            onChange={(value) => {
-              console.log(value)
-            }}
-          ></Slider>
-        </div>
+        <Slider
+          style={{ width: 300 }}
+          marks={marks}
+          step={9}
+          onChange={(value) => {
+            console.log(value)
+          }}
+        />
       </div>
     </>
   )

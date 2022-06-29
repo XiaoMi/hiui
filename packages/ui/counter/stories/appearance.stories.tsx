@@ -10,18 +10,17 @@ export const Appearance = () => {
     <>
       <h1>Appearance</h1>
       <div>
-        <h2>outline</h2>
-        <Counter appearance={'line'} />
-        <br />
-        <br />
-        <Counter appearance={'line'} max={2} min={0} defaultValue={5} />
-      </div>
-      <div>
-        <h2>filled</h2>
-        <Counter appearance={'filled'} />
-        <br />
-        <br />
-        <Counter appearance={'filled'} max={2} min={0} defaultValue={5} />
+        <h2>Line 线性</h2>
+        <div style={{ display: 'flex', gap: 12, flexDirection: 'column' }}>
+          <Counter appearance={'line'} />
+          <Counter appearance={'line'} max={2} min={0} defaultValue={5} />
+        </div>
+
+        <h2>Filled 面性</h2>
+        <div style={{ display: 'flex', gap: 12, flexDirection: 'column' }}>
+          <Counter appearance={'filled'} />
+          <Counter appearance={'filled'} max={2} min={0} defaultValue={5} />
+        </div>
       </div>
     </>
   )

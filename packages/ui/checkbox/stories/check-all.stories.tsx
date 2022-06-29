@@ -29,7 +29,10 @@ export const CheckAll = () => {
   return (
     <>
       <h1>全选操作</h1>
-      <div className="checkbox-check-all__wrap">
+      <div
+        className="checkbox-check-all__wrap"
+        style={{ display: 'flex', gap: 12, flexDirection: 'column' }}
+      >
         <Checkbox
           indeterminate={selectedList.length > 0 && selectedList.length < 4}
           checked={selectedList.length === 4}
@@ -41,7 +44,6 @@ export const CheckAll = () => {
         >
           全选
         </Checkbox>
-        <p />
         <Checkbox.Group
           data={data}
           value={selectedList}

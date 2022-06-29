@@ -18,7 +18,7 @@ export const Uncontrolled = () => {
       <h1>Uncontrolled</h1>
       <div className="select-uncontrolled__wrap">
         <CheckSelect
-          style={{ width: 200 }}
+          style={{ width: 240 }}
           data={data}
           defaultValue={['3']}
           onChange={(selectedId) => {

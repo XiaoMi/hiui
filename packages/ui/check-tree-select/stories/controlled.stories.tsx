@@ -91,6 +91,7 @@ export const Controlled = () => {
       <h1>Controlled</h1>
       <div className="check-tree-select-controlled__wrap">
         <CheckTreeSelect
+          style={{ width: 240 }}
           data={data}
           clearable
           checkedMode="PARENT"

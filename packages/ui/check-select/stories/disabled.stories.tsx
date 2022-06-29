@@ -17,7 +17,14 @@ export const Disabled = () => {
     <>
       <h1>Disabled</h1>
       <div className="check-select-basic__wrap">
-        <CheckSelect placeholder="请选择" searchable disabled data={data} value={['2']} />
+        <CheckSelect
+          style={{ width: 240 }}
+          placeholder="请选择"
+          searchable
+          disabled
+          data={data}
+          value={['2']}
+        />
       </div>
     </>
   )

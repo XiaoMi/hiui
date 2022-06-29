@@ -17,7 +17,7 @@ export const Clearable = () => {
     <>
       <h1>Clearable</h1>
       <div className="select-clearable__wrap">
-        <CheckSelect clearable style={{ width: 200 }} data={data} onChange={console.log} />
+        <CheckSelect style={{ width: 240 }} clearable data={data} onChange={console.log} />
       </div>
     </>
   )

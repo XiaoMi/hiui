@@ -9,16 +9,24 @@ export const Status = () => {
     <>
       <h1>状态</h1>
       <div className="switch-basic__wrap">
-        <p>默认</p>
-        <Switch defaultChecked />
-        <p>受控开启</p>
-        <Switch checked />
-        <p>受控关闭</p>
+        <h2>默认</h2>
+        <div>
+          <Switch defaultChecked />
+        </div>
+
+        <h2>受控开启</h2>
+        <div>
+          <Switch checked />
+        </div>
+
+        <h2>受控关闭</h2>
         <Switch checked={false} />
-        <p>禁用</p>
-        <Switch disabled checked />
-        <br />
-        <Switch disabled checked={false} />
+
+        <h2>禁用</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <Switch disabled checked />
+          <Switch disabled checked={false} />
+        </div>
       </div>
     </>
   )

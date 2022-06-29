@@ -35,6 +35,7 @@ export const VirtualList = () => {
       <h1>virtualList</h1>
       <div className="check-tree-select-virtual-list__wrap">
         <CheckTreeSelect
+          style={{ width: 240 }}
           data={data}
           checkedMode="PARENT"
           onChange={console.log}

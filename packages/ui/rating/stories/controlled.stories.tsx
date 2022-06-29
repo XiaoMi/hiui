@@ -5,12 +5,13 @@ import Rating from '../src'
  * @title 受控
  */
 export const Controlled = () => {
-  const [value] = React.useState(1)
+  const [value, setValue] = React.useState(1)
   return (
     <>
       <h1>Controlled</h1>
       <div className="rating-controlled__wrap">
-        <Rating value={value} />
+        <div>当前打分：{value} 分</div>
+        <Rating style={{ marginTop: 8 }} value={value} onChange={setValue} />
       </div>
     </>
   )

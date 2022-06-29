@@ -126,6 +126,8 @@ export const Appearance = () => {
             value={value}
             clearable
             appearance="unset"
+            // 取消下拉框匹配 input 触发器的宽度
+            overlay={{ matchWidth: false }}
             onChange={(value, selectItems) => {
               console.log('TreeSelect onChange: ', value, selectItems)
               setValue(value)

@@ -61,6 +61,7 @@ export const HoverExpand = () => {
       <h1>HoverExpand</h1>
       <div className="cascader-hover-expand__wrap">
         <Cascader
+          style={{ width: 240 }}
           searchable
           clearable
           expandTrigger="hover"

@@ -61,6 +61,7 @@ export const DisplayRender = () => {
       <h1>DisplayRender</h1>
       <div className="cascader-display-render__wrap">
         <Cascader
+          style={{ width: 240 }}
           placeholder="请选择品类"
           defaultValue={['手机', '红米', '红米4']}
           data={data}

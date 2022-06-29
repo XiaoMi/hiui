@@ -30,7 +30,7 @@ export const Custom = () => {
             onValuesChange={(_, allValues) => {
               setPaginationProps(allValues)
             }}
-            style={{ display: 'flex', columnGap: 12, flexWrap: 'wrap' }}
+            style={{ display: 'flex', columnGap: 36, flexWrap: 'wrap' }}
           >
             <Form.Item label="ShowTotal" field="showTotal" valuePropName="checked">
               <Switch />
@@ -43,6 +43,7 @@ export const Custom = () => {
             </Form.Item>
             <Form.Item label="PageSize" field="pageSize">
               <Select
+                clearable={false}
                 data={[
                   { id: 10, title: '10' },
                   { id: 20, title: '20' },

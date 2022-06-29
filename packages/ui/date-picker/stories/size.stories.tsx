@@ -11,6 +11,7 @@ export const Size = () => {
       <div className="date-picker-size__wrap">
         <h2>sm</h2>
         <DatePicker
+          style={{ width: 240 }}
           size={'sm'}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
@@ -18,6 +19,7 @@ export const Size = () => {
         />
         <h2>md</h2>
         <DatePicker
+          style={{ width: 240 }}
           size={'md'}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
@@ -25,6 +27,7 @@ export const Size = () => {
         />
         <h2>lg</h2>
         <DatePicker
+          style={{ width: 240 }}
           size={'lg'}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)

@@ -127,6 +127,7 @@ export const SelectChange = () => {
       <h1>SelectChange</h1>
       <div className="cascader-select-change__wrap">
         <Cascader
+          style={{ width: 240 }}
           placeholder="请选择品类"
           changeOnSelect
           expandTrigger="hover"

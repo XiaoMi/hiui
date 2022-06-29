@@ -36,80 +36,50 @@ export const Range = () => {
             return false
           }}
         />
-        <DatePicker
-          type="daterange"
-          style={{ width: 480 }}
-          onSelect={console.log}
-          altCalendarPreset="zh-CN"
-          dateMarkPreset="zh-CN"
-          format="YYYY-MM-DD"
-          onChange={(date, dateStr) => {
-            console.log('onChange', date, dateStr)
-          }}
-        />
+
         <h2>年份</h2>
         <DatePicker
+          style={{ width: 480 }}
           type="yearrange"
           defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
         />
-        <DatePicker
-          type="yearrange"
-          altCalendarPreset="zh-CN"
-          dateMarkPreset="zh-CN"
-          defaultValue={[new Date(), new Date()]}
-          onChange={(date, dateStr) => {
-            console.log('onChange', date, dateStr)
-          }}
-        />
+
         <h2>月份</h2>
         <DatePicker
+          style={{ width: 480 }}
           type="monthrange"
           defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
         />
-        <DatePicker
-          type="monthrange"
-          altCalendarPreset="zh-CN"
-          dateMarkPreset="zh-CN"
-          defaultValue={[new Date(), new Date()]}
-          onChange={(date, dateStr) => {
-            console.log('onChange', date, dateStr)
-          }}
-        />
+
         <h2>周</h2>
         <DatePicker
+          style={{ width: 480 }}
           type="weekrange"
           defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
         />
-        <DatePicker
-          type="weekrange"
-          altCalendarPreset="zh-CN"
-          dateMarkPreset="zh-CN"
-          defaultValue={[new Date(), new Date()]}
-          onChange={(date, dateStr) => {
-            console.log('onChange', date, dateStr)
-          }}
-        />
+
         <h2>日期时间范围</h2>
         <DatePicker
+          style={{ width: 420 }}
           type="daterange"
           showTime
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
-          size={'md'}
-          appearance={'unset'}
         />
+
         <h2>时间段快速选择</h2>
         <DatePicker
+          style={{ width: 372 }}
           type="timeperiod"
           onSelect={console.log}
           timeInterval={30}
@@ -117,8 +87,10 @@ export const Range = () => {
             console.log('onChange', date, dateStr)
           }}
         />
+
         <h2>动态限制日期范围</h2>
         <DatePicker
+          style={{ width: 480 }}
           type="daterange"
           disabledDate={(val) => {
             if (dynamicSelectedValue) {

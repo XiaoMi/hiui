@@ -29,7 +29,7 @@ export const Controlled = () => {
         <br />
         <br />
         <CheckSelect
-          style={{ width: 200 }}
+          style={{ width: 240 }}
           clearable={false}
           data={data}
           value={value}

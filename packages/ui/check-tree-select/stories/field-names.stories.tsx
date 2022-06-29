@@ -91,6 +91,7 @@ export const FieldNames = () => {
       <h1>FieldNames</h1>
       <div className="check-tree-select-field-names__wrap">
         <CheckTreeSelect
+          style={{ width: 240 }}
           data={data}
           fieldNames={{ title: 'content' }}
           onChange={(checkedIds, options) => {

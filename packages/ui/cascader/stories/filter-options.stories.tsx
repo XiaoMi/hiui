@@ -4,6 +4,7 @@ import pinyinMatch from 'pinyin-match'
 
 /**
  * @title 自定义搜索筛选规则
+ * @desc 通过 filterOption 可自定义搜索条件的算法
  */
 export const FilterOptions = () => {
   const [data] = React.useState([
@@ -67,8 +68,8 @@ export const FilterOptions = () => {
       <h1>FilterOptions</h1>
       <div className="select-filter-options__wrap">
         <Cascader
+          style={{ width: 240 }}
           clearable={false}
-          style={{ width: 200 }}
           data={data}
           searchPlaceholder="拼音检索"
           filterOption={filterOptionMemo}

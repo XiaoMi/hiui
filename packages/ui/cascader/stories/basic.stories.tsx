@@ -60,8 +60,9 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="cascader-basic__wrap" style={{ width: 240 }}>
+      <div className="cascader-basic__wrap">
         <Cascader
+          style={{ width: 240 }}
           clearable
           placeholder="请选择品类"
           defaultValue={['手机', '红米', '红米4']}

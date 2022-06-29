@@ -29,6 +29,7 @@ export const Search = () => {
       <h1>Search</h1>
       <div className="check-select-search__wrap">
         <CheckSelect
+          style={{ width: 240 }}
           searchable
           data={data}
           placeholder="请选择品类"

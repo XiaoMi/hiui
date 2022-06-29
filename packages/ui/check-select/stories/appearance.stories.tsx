@@ -20,8 +20,9 @@ export const Appearance = () => {
       <h1>Appearance</h1>
       <div className="tree-select-appearance__wrap">
         <div>
-          <h2>filled</h2>
+          <h4>filled</h4>
           <CheckSelect
+            style={{ width: 240 }}
             data={data}
             value={value}
             clearable
@@ -34,8 +35,9 @@ export const Appearance = () => {
         </div>
 
         <div>
-          <h2>outline</h2>
+          <h4>outline</h4>
           <CheckSelect
+            style={{ width: 240 }}
             data={data}
             value={value}
             clearable
@@ -48,7 +50,7 @@ export const Appearance = () => {
         </div>
 
         <div>
-          <h2>unset</h2>
+          <h4>unset</h4>
           <CheckSelect
             data={data}
             value={value}

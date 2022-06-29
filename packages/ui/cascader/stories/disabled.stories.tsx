@@ -158,17 +158,22 @@ export const Disabled = () => {
     <>
       <h1>Disabled</h1>
       <div className="cascader-disabled__wrap">
+        <h2>整体禁用</h2>
         <Cascader
+          style={{ width: 240 }}
           placeholder="请选择品类"
           disabled
           searchPlaceholder="请输入搜索内容"
           data={data}
         />
-      </div>
 
-      <h1>Disabled Item</h1>
-      <div className="cascader-disabled__wrap">
-        <Cascader placeholder="请选择品类" searchPlaceholder="请输入搜索内容" data={data} />
+        <h2>禁用某个选项</h2>
+        <Cascader
+          style={{ width: 240 }}
+          placeholder="请选择品类"
+          searchPlaceholder="请输入搜索内容"
+          data={data}
+        />
       </div>
     </>
   )

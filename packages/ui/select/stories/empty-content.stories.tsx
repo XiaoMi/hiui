@@ -11,7 +11,7 @@ export const EmptyContent = () => {
     <>
       <h1>EmptyContent</h1>
       <div className="select-empty-content__wrap">
-        <Select style={{ width: 200 }} data={data} emptyContent="暂无选项" />
+        <Select style={{ width: 240 }} data={data} emptyContent="暂无选项" />
       </div>
     </>
   )

@@ -9,7 +9,7 @@ export const Appearance = () => {
   return (
     <>
       <h1>Tag Appearance</h1>
-      <div style={{ fontSize: 16, fontWeight: 500, margin: '20px 0 8px 0' }}>Filled 面性</div>
+      <h2>Filled 面性</h2>
       <div style={{ display: 'flex', gap: 8 }}>
         <Tag type="warning" appearance="filled">
           待审批
@@ -27,7 +27,7 @@ export const Appearance = () => {
           待审批
         </Tag>
       </div>
-      <div style={{ fontSize: 16, fontWeight: 500, margin: '20px 0 8px 0' }}>line 线性</div>
+      <h2>line 线性</h2>
       <div style={{ display: 'flex', gap: '8px' }}>
         <Tag type="warning" appearance={'line'}>
           待审批
@@ -45,7 +45,7 @@ export const Appearance = () => {
           待审批
         </Tag>
       </div>
-      <div style={{ fontSize: 16, fontWeight: 500, margin: '20px 0 8px 0' }}>solid 实心</div>
+      <h2>solid 实心</h2>
       <div style={{ display: 'flex', gap: 8 }}>
         <Tag type="warning" appearance="solid">
           待审批

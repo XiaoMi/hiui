@@ -18,6 +18,7 @@ $prefix: '#{$component-prefix}-switch' !default;
   vertical-align: middle;
   flex: none;
   flex-shrink: 0;
+  width: fit-content;
 
   &:not(.#{$prefix}--disabled) {
     background: use-color-mode('primary');

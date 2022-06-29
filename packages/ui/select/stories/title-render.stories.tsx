@@ -19,8 +19,8 @@ export const TitleRender = () => {
       <h1>TitleRender</h1>
       <div className="select-TitleRender__wrap">
         <Select
+          style={{ width: 240 }}
           clearable={false}
-          style={{ width: 200 }}
           data={data}
           render={(item) => {
             console.log(item)

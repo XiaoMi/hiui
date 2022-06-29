@@ -5,21 +5,19 @@ import Input from '../src'
  * @title 受控
  */
 export const Controlled = () => {
-  const [value, setValue] = React.useState('Controlled')
+  const [value, setValue] = React.useState('我是输入文本')
 
   return (
     <>
       <h1>Controlled for Input</h1>
       <div className="input-controlled__wrap">
-        <span>{value}</span>
+        <div style={{ fontSize: 14 }}>输入值：{value}</div>
         <Input
+          style={{ marginTop: 8 }}
           placeholder="请输入"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-        ></Input>
-        <br />
-        <br />
-        <Input placeholder="请输入" defaultValue="defaultValue"></Input>
+        />
       </div>
     </>
   )

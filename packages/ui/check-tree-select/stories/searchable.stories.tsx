@@ -111,8 +111,11 @@ export const Searchable = () => {
     <>
       <h1>Searchable</h1>
       <div className="tree-select-searchable__wrap">
-        <h2>highlight</h2>
+        <div style={{ fontSize: 16, fontWeight: 500, margin: '20px 0 10px 0' }}>
+          highlight 仅高亮
+        </div>
         <CheckTreeSelect
+          style={{ width: 240 }}
           data={data}
           searchable
           searchMode="highlight"
@@ -121,8 +124,12 @@ export const Searchable = () => {
           }}
         />
 
-        <h2>filter</h2>
+        <div style={{ fontSize: 16, fontWeight: 500, margin: '20px 0 10px 0' }}>
+          filter 高亮并且过滤无关节点
+        </div>
+
         <CheckTreeSelect
+          style={{ width: 240 }}
           data={data}
           searchable
           searchMode="filter"
@@ -131,8 +138,11 @@ export const Searchable = () => {
           }}
         />
 
-        <h2>custom filter</h2>
+        <div style={{ fontSize: 16, fontWeight: 500, margin: '20px 0 10px 0' }}>
+          filterOption 自定义搜索策略
+        </div>
         <CheckTreeSelect
+          style={{ width: 240 }}
           data={data}
           searchable
           filterOption={filterOptionMemo}

@@ -18,8 +18,8 @@ export const DisplayRender = () => {
       <h1>DisplayRender</h1>
       <div className="select-display-render__wrap">
         <Select
+          style={{ width: 240 }}
           clearable={false}
-          style={{ width: 200 }}
           data={data}
           displayRender={(item) => {
             console.log(item)

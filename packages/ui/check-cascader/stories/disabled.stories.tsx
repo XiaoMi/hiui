@@ -167,9 +167,10 @@ export const Disabled = () => {
 
   return (
     <>
-      <h1>Disabled</h1>
+      <h2>整体禁用</h2>
       <div className="cascader-disabled__wrap">
         <CheckCascader
+          style={{ width: 240 }}
           placeholder="请选择品类"
           disabled
           searchPlaceholder="请输入搜索内容"
@@ -177,9 +178,10 @@ export const Disabled = () => {
         />
       </div>
 
-      <h1>Disabled Item</h1>
+      <h2>禁用某个选项</h2>
       <div className="cascader-disabled__wrap">
         <CheckCascader
+          style={{ width: 240 }}
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
           data={data}

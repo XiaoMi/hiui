@@ -61,8 +61,9 @@ export const Visible = () => {
   return (
     <>
       <h1>Visible</h1>
-      <div className="cascader-visible__wrap" style={{ width: 240 }}>
+      <div className="cascader-visible__wrap">
         <Cascader
+          style={{ width: 240 }}
           visible={visible}
           onOpen={() => setVisible(true)}
           overlay={{ onOutsideClick: () => setVisible(false) }}

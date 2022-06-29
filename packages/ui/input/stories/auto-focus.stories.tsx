@@ -1,28 +1,15 @@
 import React from 'react'
 import Input from '../src'
-import Button from '@hi-ui/button'
 
 /**
  * @title 自动聚焦
  */
 export const AutoFocus = () => {
-  const inputRef = React.useRef(null)
-
   return (
     <>
       <h1>AutoFocus for Input</h1>
       <div className="input-auto-focus__wrap">
         <Input autoFocus placeholder="请输入"></Input>
-        <br />
-        <br />
-        <Button
-          onClick={() => {
-            inputRef.current?.focus()
-          }}
-        >
-          手动聚焦
-        </Button>
-        <Input style={{ marginTop: 8 }} ref={inputRef} placeholder="请输入"></Input>
       </div>
     </>
   )

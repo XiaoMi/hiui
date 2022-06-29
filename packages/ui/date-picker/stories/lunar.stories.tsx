@@ -14,6 +14,7 @@ export const Lunar = () => {
       <div className="lunar__wrap">
         <h2>预置农历</h2>
         <DatePicker
+          style={{ width: 338 }}
           altCalendarPreset="zh-CN"
           dateMarkPreset="zh-CN"
           onChange={(date, dateStr) => {
@@ -22,6 +23,7 @@ export const Lunar = () => {
         />
         <h2>自定义日期信息</h2>
         <DatePicker
+          style={{ width: 338 }}
           value={customValue}
           altCalendar={[
             {

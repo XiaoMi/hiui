@@ -30,6 +30,7 @@ export const DataSource = () => {
       <h1>DataSource</h1>
       <div className="cascader-DataSource__wrap">
         <CheckSelect
+          style={{ width: 240 }}
           // placeholder="请选择品类"
           // searchPlaceholder="请输入搜索内容"
           data={data}

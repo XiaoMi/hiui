@@ -67,7 +67,12 @@ export const Dynamic = () => {
           }
         ></Alert>
         <br />
-        <Cascader data={treeData} onLoadChildren={loadChildren} onChange={console.log}></Cascader>
+        <Cascader
+          style={{ width: 240 }}
+          data={treeData}
+          onLoadChildren={loadChildren}
+          onChange={console.log}
+        ></Cascader>
       </div>
     </>
   )

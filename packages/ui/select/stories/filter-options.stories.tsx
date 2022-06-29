@@ -3,7 +3,7 @@ import Select from '../src'
 
 /**
  * @title 自定义筛选
- * @desc 可自定义搜索条件的算法
+ * @desc 通过 filterOption 可自定义搜索条件的算法
  */
 export const FilterOptions = () => {
   const [data] = React.useState([
@@ -24,8 +24,8 @@ export const FilterOptions = () => {
       <h1>FilterOptions</h1>
       <div className="select-filter-options__wrap">
         <Select
+          style={{ width: 240 }}
           clearable={false}
-          style={{ width: 200 }}
           data={data}
           searchPlaceholder="搜索：id >= keyword"
           filterOption={filterOptionMemo}

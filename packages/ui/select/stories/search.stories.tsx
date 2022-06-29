@@ -28,6 +28,7 @@ export const Search = () => {
       <h1>Search</h1>
       <div className="cascader-search__wrap">
         <Select
+          style={{ width: 240 }}
           searchable
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"

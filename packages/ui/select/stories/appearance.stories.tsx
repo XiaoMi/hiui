@@ -22,6 +22,7 @@ export const Appearance = () => {
         <div>
           <h2>filled</h2>
           <Select
+            style={{ width: 240 }}
             data={data}
             value={value}
             clearable
@@ -36,6 +37,7 @@ export const Appearance = () => {
         <div>
           <h2>outline</h2>
           <Select
+            style={{ width: 240 }}
             data={data}
             value={value}
             clearable
@@ -54,6 +56,7 @@ export const Appearance = () => {
             value={value}
             clearable
             appearance="unset"
+            optionWidth={260}
             onChange={(value, targetItem) => {
               console.log('Select onChange: ', value, targetItem)
               setValue(value)

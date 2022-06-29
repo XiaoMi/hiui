@@ -9,7 +9,7 @@ export const Shape = () => {
     <>
       <h1>Tag Shape</h1>
       <div>
-        <div style={{ fontSize: 16, fontWeight: 500, margin: '20px 0 8px 0' }}>square 方型</div>
+        <h2>square 方型</h2>
 
         <div style={{ display: 'flex', gap: 8 }}>
           <Tag shape="square" type="warning" appearance="filled">
@@ -64,7 +64,7 @@ export const Shape = () => {
             待审批
           </Tag>
         </div>
-        <div style={{ fontSize: 16, fontWeight: 500, margin: '20px 0 8px 0' }}>round 圆润型</div>
+        <h2>round 圆润型</h2>
         <div style={{ display: 'flex', gap: 8 }}>
           <Tag shape="round" type="warning" appearance="filled">
             待审批

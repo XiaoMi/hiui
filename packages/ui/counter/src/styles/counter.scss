@@ -13,6 +13,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   color: use-color('gray', 700);
   font-size: use-text-size('normal');
   z-index: use-zindex('normal');
+  width: fit-content;
 
   $this: &;
 

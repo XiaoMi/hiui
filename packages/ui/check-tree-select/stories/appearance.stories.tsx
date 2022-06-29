@@ -94,6 +94,7 @@ export const Appearance = () => {
         <div>
           <h2>filled</h2>
           <CheckTreeSelect
+            style={{ width: 240 }}
             data={data}
             value={value}
             clearable
@@ -108,6 +109,7 @@ export const Appearance = () => {
         <div>
           <h2>outline</h2>
           <CheckTreeSelect
+            style={{ width: 240 }}
             data={data}
             value={value}
             clearable
@@ -126,6 +128,8 @@ export const Appearance = () => {
             value={value}
             clearable
             appearance="unset"
+            // 取消下拉框匹配 input 触发器的宽度
+            overlay={{ matchWidth: false }}
             onChange={(value, options) => {
               console.log('CheckTreeSelect onChange: ', value, options)
               setValue(value)

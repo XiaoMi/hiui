@@ -12,6 +12,7 @@ $prefix: '#{$component-prefix}-slider' !default;
   line-height: use-text-lineheight('normal');
   list-style: none;
   position: relative;
+  z-index: use-zindex('normal');
   // 属于自定义空间，不属于designToken规范
   height: 12px;
   margin: 10px 6px;

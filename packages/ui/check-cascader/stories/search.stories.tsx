@@ -233,6 +233,7 @@ export const Search = () => {
       <h1>Search</h1>
       <div className="cascader-search__wrap">
         <CheckCascader
+          style={{ width: 240 }}
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
           data={dataOnlyLeafCheckable}

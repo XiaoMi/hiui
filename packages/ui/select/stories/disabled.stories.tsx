@@ -18,7 +18,7 @@ export const Disabled = () => {
     <>
       <h1>Disabled</h1>
       <div className="select-disabled__wrap">
-        <Select disabled style={{ width: 200 }} data={data} />
+        <Select style={{ width: 240 }} disabled data={data} />
       </div>
     </>
   )

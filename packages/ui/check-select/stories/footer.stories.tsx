@@ -22,8 +22,8 @@ export const Footer = () => {
       <h1>Footer</h1>
       <div className="check-select-footer__wrap">
         <CheckSelect
+          style={{ width: 240 }}
           clearable={false}
-          style={{ width: 200 }}
           data={data}
           renderExtraFooter={() => {
             return (

@@ -90,6 +90,7 @@ export const DefaultExpandAll = () => {
       <h1>DefaultExpandAll</h1>
       <div className="tree-select-default-expand-all__wrap">
         <CheckTreeSelect
+          style={{ width: 240 }}
           data={data}
           defaultExpandAll
           onChange={(checkedIds, options) => {

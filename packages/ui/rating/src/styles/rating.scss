@@ -15,8 +15,8 @@ $prefix: '#{$component-prefix}-rating' !default;
   height: 24px;
   line-height: 24px;
   font-size: 24px;
-  color: #ff8e26;
-  fill: #ff8e26;
+  color: use-color('yellow', 500);
+  fill: use-color('yellow', 500);
 
   &--disabled {
     .#{$prefix}__star {
@@ -42,8 +42,9 @@ $prefix: '#{$component-prefix}-rating' !default;
     cursor: pointer;
     position: relative;
     display: inline-block;
-    transition: 0.3s ease;
+    transition: transform use-motion-duration('normal') use-motion-bezier('normal');
     margin: 0;
+    padding: 0;
     height: 100%;
 
     &:active,
@@ -109,6 +110,7 @@ $prefix: '#{$component-prefix}-rating' !default;
     margin-left: use-spacing(7);
     display: inline-block;
     height: 24px;
-    line-height: 24px;
+    line-height: use-text-lineheight('normal');
+    font-size: use-text-size('normal');
   }
 }

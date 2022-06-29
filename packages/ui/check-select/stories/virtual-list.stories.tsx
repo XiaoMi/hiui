@@ -6,7 +6,7 @@ import CheckSelect from '../src'
  */
 export const VirtualList = () => {
   const [data] = React.useState(() => {
-    const data = []
+    const data: any[] = []
     for (let i = 0; i < 5000; i++) {
       const value = `${i.toString(36)}-${i}`
       data.push({
@@ -26,6 +26,7 @@ export const VirtualList = () => {
       <h1>VirtualList</h1>
       <div className="check-select-search__wrap">
         <CheckSelect
+          style={{ width: 240 }}
           data={data}
           searchable
           height={300}

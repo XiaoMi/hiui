@@ -13,16 +13,17 @@ export const Controlled = () => {
       <h1>Controlled</h1>
       <div className="radio-controlled__wrap">
         <Button onClick={() => setChecked((prev) => !prev)}>Toggle</Button>
-        <br />
-        <Radio
-          checked={checked}
-          onChange={(evt) => {
-            console.log('onChange', evt)
-            setChecked(evt.target.checked)
-          }}
-        >
-          Radio
-        </Radio>
+        <div style={{ marginTop: 10 }}>
+          <Radio
+            checked={checked}
+            onChange={(evt) => {
+              console.log('onChange', evt)
+              setChecked(evt.target.checked)
+            }}
+          >
+            Radio
+          </Radio>
+        </div>
       </div>
     </>
   )

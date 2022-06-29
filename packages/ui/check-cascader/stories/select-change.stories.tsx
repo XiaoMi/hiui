@@ -3,6 +3,7 @@ import CheckCascader from '../src'
 
 /**
  * @title 选择即改变
+ * @desc 选中选项即可完成勾选，配合 hover 展开使用
  */
 export const SelectChange = () => {
   const [dataOnlyLeafCheckable] = React.useState(() => {
@@ -151,8 +152,10 @@ export const SelectChange = () => {
       <h1>SelectChange</h1>
       <div className="cascader-select-change__wrap">
         <CheckCascader
+          style={{ width: 240 }}
           placeholder="请选择品类"
           changeOnSelect
+          expandTrigger="hover"
           searchPlaceholder="请输入搜索内容"
           data={dataOnlyLeafCheckable}
         />

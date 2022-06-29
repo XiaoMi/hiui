@@ -112,7 +112,7 @@ export const Flatted = () => {
     <>
       <h1>Flatted</h1>
       <div className="cascader-flatted__wrap">
-        <CheckCascader type="flatted" data={dataOnlyLeafCheckable} />
+        <CheckCascader style={{ width: 240 }} type="flatted" data={dataOnlyLeafCheckable} />
       </div>
     </>
   )

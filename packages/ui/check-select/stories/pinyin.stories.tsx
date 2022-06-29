@@ -26,8 +26,8 @@ export const Pinyin = () => {
       <h1>Pinyin</h1>
       <div className="select-pinyin__wrap">
         <CheckSelect
+          style={{ width: 240 }}
           clearable={false}
-          style={{ width: 200 }}
           data={data}
           filterOption={filterOptionMemo}
         />

@@ -59,8 +59,9 @@ export const TitleRender = () => {
   return (
     <>
       <h1>TitleRender</h1>
-      <div className="cascader-basic__wrap" style={{ width: 240 }}>
+      <div className="cascader-basic__wrap">
         <Cascader
+          style={{ width: 240 }}
           searchable={true}
           clearable
           placeholder="请选择品类"

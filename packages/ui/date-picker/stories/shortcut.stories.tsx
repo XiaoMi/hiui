@@ -12,6 +12,7 @@ export const Shortcut = () => {
       <div className="shortcut__wrap">
         <h2>内置</h2>
         <DatePicker
+          style={{ width: 565 }}
           type="daterange"
           shortcuts={['近一周', '近一月', '近三月', '近一年']}
           onChange={(date, dateStr) => {
@@ -20,6 +21,7 @@ export const Shortcut = () => {
         />
         <h2>自定义选择范围</h2>
         <DatePicker
+          style={{ width: 565 }}
           type="daterange"
           shortcuts={[
             {

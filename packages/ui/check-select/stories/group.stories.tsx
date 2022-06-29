@@ -36,9 +36,9 @@ export const Group = () => {
       <h1>Group</h1>
       <div className="select-Group__wrap">
         <CheckSelect
+          style={{ width: 240 }}
           data={data}
           placeholder="请选择"
-          style={{ width: 200 }}
           value={value}
           onChange={(selectedId) => {
             setValue(selectedId)

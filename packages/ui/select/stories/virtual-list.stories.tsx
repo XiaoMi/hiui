@@ -21,7 +21,7 @@ export const VirtualList = () => {
     <>
       <h1>VirtualList</h1>
       <div className="select-display-render__wrap">
-        <Select clearable={false} style={{ width: 200 }} data={data} height={260} />
+        <Select style={{ width: 240 }} clearable={false} data={data} height={260} />
       </div>
     </>
   )

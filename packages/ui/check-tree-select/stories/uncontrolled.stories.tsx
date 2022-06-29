@@ -89,7 +89,12 @@ export const Uncontrolled = () => {
     <>
       <h1>Uncontrolled</h1>
       <div className="check-tree-select-uncontrolled__wrap">
-        <CheckTreeSelect clearable defaultValue={['1-0']} data={data}></CheckTreeSelect>
+        <CheckTreeSelect
+          style={{ width: 240 }}
+          clearable
+          defaultValue={['1-0']}
+          data={data}
+        ></CheckTreeSelect>
       </div>
     </>
   )

@@ -20,8 +20,8 @@ export const Tip = () => {
       <h1>Tip</h1>
       <div className="check-select-tip__wrap">
         <CheckSelect
+          style={{ width: 240 }}
           clearable={false}
-          style={{ width: 200 }}
           data={data}
           render={(item) => {
             console.log(item)

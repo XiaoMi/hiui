@@ -376,7 +376,7 @@ function MockTag({
         }
       }}
     >
-      <div style={{ display: 'inline-block' }}>
+      <div style={{ display: 'inline-block', verticalAlign: 'middle' }}>
         <span
           className={`${prefixCls}__tag`}
           style={hidden ? hiddenStyle : { maxWidth }}
