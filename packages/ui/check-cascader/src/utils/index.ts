@@ -10,7 +10,7 @@ import {
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import {
   CheckCascaderDataItemRequiredProps,
-  CheckCascadeItemEventData,
+  CheckCascaderItemEventData,
   CheckCascaderDataItem,
   FlattedCheckCascaderDataItem,
 } from '../types'
@@ -101,7 +101,7 @@ export const getActiveMenuIds = (
 export function getCascaderItemEventData(
   node: FlattedCheckCascaderDataItem,
   requiredProps: CheckCascaderDataItemRequiredProps
-): CheckCascadeItemEventData {
+): CheckCascaderItemEventData {
   return {
     ...node,
     ...requiredProps,

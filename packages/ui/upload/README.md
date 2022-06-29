@@ -35,7 +35,7 @@
 | beforeUpload    | 上传文件前的钩子，返回 true 继续上传，其他终止上传                                                                                                 | (files: File[], fileList: File[]) => boolean | -                                                 | () => true                                |
 | customUpload    | 自定义上传，此时不会再触发 onChange，所有上传逻辑转移到该函数                                                                                      | (files: Files[]) => void                     | -                                                 | -                                         |
 | loading         | 文件上传按钮是否 loading，为 true 时按钮不可点击。仅在 type='default' 时有效                                                                       | boolean                                      | true \| false                                     | false                                     |
-| photoSize       | 设置上传按钮大小,仅在 type === 'photo' 时有效                                                                                                      | string                                       | 'small' \| 'default' \| 'large'                   | 'default'                                 |
+| photoSize       | 设置上传按钮大小,仅在 type === 'photo' 时有效                                                                                                      | string                                       | 'sm' \| 'md' \| 'lg'                              | 'md'                                      |
 
 ## Events
 

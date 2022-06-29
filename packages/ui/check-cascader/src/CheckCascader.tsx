@@ -7,7 +7,7 @@ import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import {
   CheckCascaderDataItem,
   CheckCascaderExpandTriggerEnum,
-  CheckCascadeItemEventData,
+  CheckCascaderItemEventData,
   FlattedCheckCascaderDataItem,
 } from './types'
 import { useCache } from '@hi-ui/use-cache'
@@ -287,7 +287,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 选项被点击时的回调。暂不对外暴露
    * @private
    */
-  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascadeItemEventData) => void
+  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderItemEventData) => void
   /**
    * 次级菜单的展开方式
    */
@@ -315,7 +315,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
   /**
    * 自定义渲染节点的 title 内容
    */
-  render?: (item: CheckCascadeItemEventData) => React.ReactNode
+  render?: (item: CheckCascaderItemEventData) => React.ReactNode
   /**
    * 自定义选择后触发器所展示的内容
    */
@@ -341,7 +341,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 异步请求更新数据
    */
   onLoadChildren?: (
-    item: CheckCascadeItemEventData,
+    item: CheckCascaderItemEventData,
     idPaths: React.ReactText[]
   ) => Promise<CheckCascaderDataItem[] | void> | void
   /**

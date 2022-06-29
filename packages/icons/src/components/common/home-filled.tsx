@@ -7,11 +7,12 @@ import { IconProps } from '../../@types/props'
 const _prefix = getPrefixCls('icon-home-filled')
 
 export const HomeFilled = forwardRef<SVGSVGElement | null, IconProps>(
-  ({ prefixCls = _prefix, className, children, ...rest }, ref) => {
+  ({ prefixCls = _prefix, className, children, size, style: styleProp, ...rest }, ref) => {
     const cls = cx(prefixCls, className)
+    const style = { fontSize: size, ...styleProp }
 
     return (
-      <svg className={cls} ref={ref} role="icon" {...rest}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"><path d="M576.128 143.786667l277.333333 160.576A128 128 0 0 1 917.333333 415.125333V789.333333a128 128 0 0 1-128 128H234.666667a128 128 0 0 1-128-128V415.146667a128 128 0 0 1 63.872-110.784l277.333333-160.576a128 128 0 0 1 128.256 0zM512 597.333333a42.666667 42.666667 0 0 0-42.666667 42.666667v192h85.333334v-192a42.666667 42.666667 0 0 0-42.666667-42.666667z" p-id="15191"></path></svg>
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"><path d="M576.128 143.786667l277.333333 160.576A128 128 0 0 1 917.333333 415.125333V789.333333a128 128 0 0 1-128 128H234.666667a128 128 0 0 1-128-128V415.146667a128 128 0 0 1 63.872-110.784l277.333333-160.576a128 128 0 0 1 128.256 0zM512 597.333333a42.666667 42.666667 0 0 0-42.666667 42.666667v192h85.333334v-192a42.666667 42.666667 0 0 0-42.666667-42.666667z" p-id="15191"></path></svg>
     )
   }
 )

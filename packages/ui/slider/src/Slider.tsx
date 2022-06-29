@@ -133,6 +133,10 @@ export interface SliderProps extends HiBaseHTMLProps<'div'>, UseSliderProps {
    * 刻度标记，key 的类型必须为 number，且取值在闭区间 [min, max] 内
    */
   marks?: Record<number, any>
+  /**
+   * 自定义颜色
+   */
+  color?: string
 }
 
 if (__DEV__) {

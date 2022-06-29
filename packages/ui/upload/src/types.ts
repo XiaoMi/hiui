@@ -48,6 +48,10 @@ export interface UploadRequestOption {
   timeout?: number
 }
 
+export type UploadPhotoSizeEnum = 'sm' | 'md' | 'lg'
+
+export type UploadTypeEnum = 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
+
 export interface UploadProps extends HiBaseHTMLProps<'div'> {
   /**
    * 上传组件类型
@@ -124,7 +128,7 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置上传按钮大小,仅在 type === 'photo' 时有效
    */
-  photoSize?: 'small' | 'default' | 'large'
+  photoSize?: UploadPhotoSizeEnum
   /**
    * 预览透传 props
    */

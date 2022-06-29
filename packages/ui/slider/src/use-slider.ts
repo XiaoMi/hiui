@@ -457,18 +457,17 @@ export interface UseSliderProps {
    */
   vertical?: boolean
   /**
-   * 开启反转。暂不对外暴露
-   * @private
+   * 开启反转
    */
   reversed?: boolean
-  /**
-   * 当 Slider 的值发生改变时触发，value 为变化后的值
-   */
-  onChange?: (value: number) => void
   /**
    * 自定义颜色
    */
   color?: string
+  /**
+   * 当 Slider 的值发生改变时触发，value 为变化后的值
+   */
+  onChange?: (value: number) => void
 }
 
 export type UseSliderReturn = ReturnType<typeof useSlider>

@@ -42,12 +42,27 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onChange,
       beforeUpload,
       customUpload,
-      photoSize = 'default',
+      photoSize: photoSizeProp = 'md',
       preview,
       ...rest
     },
     ref
   ) => {
+    const photoSize = useMemo(() => {
+      switch (photoSizeProp) {
+        case 'sm':
+        // @ts-ignore deprecated
+        case 'small':
+          return 'sm'
+        case 'lg':
+        // @ts-ignore deprecated
+        case 'large':
+          return 'lg'
+        default:
+          return 'md'
+      }
+    }, [photoSizeProp])
+
     const i18n = useLocaleContext()
 
     const uploadSuccessText = i18n.get('upload.uploadSuccess')
@@ -93,10 +108,10 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     const precentNum = useMemo(() => {
       let num = 1.4
       switch (photoSize) {
-        case 'small':
+        case 'sm':
           num = 0.8
           break
-        case 'large':
+        case 'lg':
           num = 2
           break
         default:

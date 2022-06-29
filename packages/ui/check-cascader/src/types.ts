@@ -64,7 +64,7 @@ export interface CheckCascaderDataItemRequiredProps {
   // focused: boolean
 }
 
-export interface CheckCascadeItemEventData
+export interface CheckCascaderItemEventData
   extends FlattedCheckCascaderDataItem,
     CheckCascaderDataItemRequiredProps {}
 

@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import {
   CheckCascaderExpandTriggerEnum,
-  CheckCascadeItemEventData,
+  CheckCascaderItemEventData,
   FlattedCheckCascaderDataItem,
   CheckCascaderDataItem,
   CheckCascaderDataItemRequiredProps,
@@ -173,7 +173,7 @@ export interface CascaderMenusProps {
   /**
    * 选项被点击时的回调
    */
-  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascadeItemEventData) => void
+  onSelect?: (selectedId: React.ReactText, selectedOption: CheckCascaderItemEventData) => void
   /**
    * 次级菜单的展开方式
    */
@@ -189,7 +189,7 @@ export interface CascaderMenusProps {
   /**
    * 自定义渲染节点的 title 内容
    */
-  titleRender?: (item: CheckCascadeItemEventData) => React.ReactNode
+  titleRender?: (item: CheckCascaderItemEventData) => React.ReactNode
   /**
    * 多选数据交互时回填、回显模式
    * PARENT: 当所有子节点被选中时将只保留父节点
@@ -210,7 +210,7 @@ export interface CascaderMenusProps {
    * 点击异步加载子项
    */
   onLoadChildren?: (
-    item: CheckCascadeItemEventData,
+    item: CheckCascaderItemEventData,
     idPaths: React.ReactText[]
   ) => Promise<CheckCascaderDataItem[] | void> | void
 }

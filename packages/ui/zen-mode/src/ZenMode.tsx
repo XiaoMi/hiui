@@ -57,57 +57,55 @@ export const ZenMode: React.FC<ZenModeProps> = ({
     }
   }, [visible])
 
-  return visible ? (
-    createPortal(
-      <div
-        className={cls}
-        onScroll={(evt) => {
-          evt.preventDefault()
-          if (!hide) {
-            setToolbarHide(true)
-          }
-
-          rest.onScroll?.(evt)
-        }}
-        {...rest}
-      >
+  return visible
+    ? createPortal(
         <div
-          className={cx(`${prefixCls}__toolbar`, { [`${prefixCls}__toolbar--hide`]: hide })}
-          onMouseEnter={(e) => {
-            e.preventDefault()
-            if (hide) {
-              setToolbarHide(false)
-            }
-          }}
-          onMouseLeave={(e) => {
-            e.preventDefault()
+          className={cls}
+          onScroll={(evt) => {
+            evt.preventDefault()
             if (!hide) {
               setToolbarHide(true)
             }
+
+            rest.onScroll?.(evt)
           }}
+          {...rest}
         >
-          {showBack && (
-            <span onClick={onBack} className={`${prefixCls}__back-btn`}>
-              <LeftOutlined />
-              {backContent}
-            </span>
-          )}
-          <div className={`${prefixCls}__toolbar-opt`}>{toolbar}</div>
-        </div>
-        <div
-          className={cx(`${prefixCls}__content`, { [`${prefixCls}__content--hide`]: hide })}
-          style={{
-            zoom,
-          }}
-        >
-          {children}
-        </div>
-      </div>,
-      defaultContainer.current
-    )
-  ) : (
-    <div className={`${prefixCls}__wrapper`}>{children}</div>
-  )
+          <div
+            className={cx(`${prefixCls}__toolbar`, { [`${prefixCls}__toolbar--hide`]: hide })}
+            onMouseEnter={(e) => {
+              e.preventDefault()
+              if (hide) {
+                setToolbarHide(false)
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.preventDefault()
+              if (!hide) {
+                setToolbarHide(true)
+              }
+            }}
+          >
+            {showBack && (
+              <span onClick={onBack} className={`${prefixCls}__back-btn`}>
+                <LeftOutlined />
+                {backContent}
+              </span>
+            )}
+            <div className={`${prefixCls}__toolbar-opt`}>{toolbar}</div>
+          </div>
+          <div
+            className={cx(`${prefixCls}__content`, { [`${prefixCls}__content--hide`]: hide })}
+            style={{
+              zoom,
+            }}
+          >
+            {children}
+          </div>
+        </div>,
+        defaultContainer.current
+      )
+    : (children as React.ReactElement)
 }
 
 export interface ZenModeProps extends HiBaseHTMLProps<'div'> {

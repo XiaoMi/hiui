@@ -5,7 +5,7 @@ import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { CloseCircleFilled } from '@hi-ui/icons'
 import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import { useInput } from './use-input'
-import { InputAppearanceEnum } from './types'
+import { InputAppearanceEnum, InputTypeEnum } from './types'
 
 const _prefix = getPrefixCls('input')
 
@@ -207,9 +207,9 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
    */
   defaultValue?: string
   /**
-   * 设置输入框类型，支持原生 input 的 type 属性所有值
+   * 设置输入框类型
    */
-  type?: 'text' | 'id' | 'tel' | 'card' | 'amount' | 'email' | string
+  type?: InputTypeEnum
   /**
    * 输入最大长度
    */

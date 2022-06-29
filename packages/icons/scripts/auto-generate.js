@@ -75,7 +75,10 @@ const disposeSvgSourceFile = (file, info) => {
   }
 
   const insertReactProps = (source) => {
-    return source.replace(/<svg/g, '<svg className={cls} ref={ref} role="icon" {...rest} ')
+    return source.replace(
+      /<svg/g,
+      '<svg className={cls} ref={ref} role="icon" style={style} {...rest} '
+    )
   }
 
   const pureSvg = removeDoctypeDeclaration(removeXmlDeclaration(file))
@@ -106,8 +109,9 @@ import { IconProps } from '../../@types/props'
 const _prefix = getPrefixCls('icon-${name}')
 
 export const ${componentName} = forwardRef<SVGSVGElement | null, IconProps>(
-  ({ prefixCls = _prefix, className, children, ...rest }, ref) => {
+  ({ prefixCls = _prefix, className, children, size, style: styleProp, ...rest }, ref) => {
     const cls = cx(prefixCls, className)
+    const style = { fontSize: size, ...styleProp }
 
     return (
       ${svg}

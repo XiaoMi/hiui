@@ -18,7 +18,11 @@ export const Disabled = () => {
     <>
       <h1>Disabled</h1>
       <div className="select-disabled__wrap">
-        <Select style={{ width: 240 }} disabled data={data} />
+        <h2>整体禁用</h2>
+        <Select style={{ width: 240 }} disabled data={data} defaultValue="2" />
+
+        <h2>整体禁用</h2>
+        <Select style={{ width: 240 }} data={data} defaultValue="2" />
       </div>
     </>
   )

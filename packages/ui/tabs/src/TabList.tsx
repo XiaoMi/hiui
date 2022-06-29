@@ -27,7 +27,9 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       onChange,
       onTabClick,
       prefixCls = _prefix,
-      direction = 'horizontal',
+      // @ts-ignore deprecated
+      direction: directionProp,
+      placement = 'horizontal',
       editable,
       onAdd,
       onDelete,
@@ -42,6 +44,8 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     },
     ref
   ) => {
+    const direction = placement ?? directionProp ?? 'horizontal'
+
     const [activeTabId, setActiveTabId] = useUncontrolledState(
       () => {
         if (isUndef(defaultActiveId)) {
@@ -276,9 +280,9 @@ export interface TabListProps
    */
   data: TabPaneProps[]
   /**
-   * 是否可编辑
+   * 展示布局方向
    */
-  direction?: 'horizontal' | 'vertical'
+  placement?: 'horizontal' | 'vertical'
   /**
    * `activeId` 改变的回调
    */

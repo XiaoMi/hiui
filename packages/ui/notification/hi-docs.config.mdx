@@ -16,19 +16,19 @@
 
 ## Methods
 
-### notification.open({ type, title, content, closesable, confirmText, onConfirm, size, duration })
+### notification.open({ type, title, content, duration, action, closeable, autoClose, onClose })
 
 > 新开一个 notification 实例
 
 | 参数               | 说明                    | 类型         | 可选值                                      | 默认值 |
 | ------------------ | ----------------------- | ------------ | ------------------------------------------- | ------ |
+| type               | 通知框类型              | string       | "info" \| "success" \| "error" \| "warning" | "info" |
 | title _(required)_ | 通知框标题              | ReactNode    | -                                           | -      |
 | content            | 通知框内容              | ReactNode    | -                                           | -      |
-| type               | 通知框类型              | string       | "info" \| "success" \| "error" \| "warning" | "info" |
 | duration           | 自动关闭时间，单位为 ms | number       | -                                           | 5000   |
-| autoClose          | 是否开启自动关闭        | boolean      | true \| false                               | true   |
-| closable           | 开启点击关闭            | boolean      | true \| false                               | true   |
 | action             | 操作配置                | ReactNode    | -                                           | -      |
+| closeable          | 开启点击关闭            | boolean      | true \| false                               | true   |
+| autoClose          | 是否开启自动关闭        | boolean      | true \| false                               | true   |
 | onClose            | 关闭时触发的回调函数    | (() => void) | -                                           | -      |
 
 ### notification.close(key)

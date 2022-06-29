@@ -44,7 +44,6 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onChange,
       beforeUpload,
       customUpload,
-      photoSize = 'small',
       avatarOptions = {},
       preview,
       ...rest

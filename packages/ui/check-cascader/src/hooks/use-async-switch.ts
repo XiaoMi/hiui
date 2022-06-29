@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { CheckCascaderDataItem, CheckCascadeItemEventData } from '../types'
+import { CheckCascaderDataItem, CheckCascaderItemEventData } from '../types'
 import { addChildrenById, cloneTree, getTopDownAncestors } from '@hi-ui/tree-utils'
 
 export const useAsyncSwitch = (
   setCascaderData: React.Dispatch<React.SetStateAction<CheckCascaderDataItem[]>>,
-  onExpand?: (selectedOption: CheckCascadeItemEventData) => void,
+  onExpand?: (selectedOption: CheckCascaderItemEventData) => void,
   onLoadChildren?: (
-    item: CheckCascadeItemEventData,
+    item: CheckCascaderItemEventData,
     idPaths: React.ReactText[]
   ) => Promise<CheckCascaderDataItem[] | void> | void
 ) => {
@@ -15,7 +15,7 @@ export const useAsyncSwitch = (
 
   // 加载节点
   const loadChildren = useCallback(
-    async (node: CheckCascadeItemEventData) => {
+    async (node: CheckCascaderItemEventData) => {
       if (!onLoadChildren) return
       const childrenNodes = await onLoadChildren(
         node,
@@ -36,7 +36,7 @@ export const useAsyncSwitch = (
   const onExpandLatest = useLatestCallback(onExpand)
 
   const onNodeSwitch = useCallback(
-    async (node: CheckCascadeItemEventData) => {
+    async (node: CheckCascaderItemEventData) => {
       const { id, children, isLeaf } = node
 
       onExpandLatest(node)

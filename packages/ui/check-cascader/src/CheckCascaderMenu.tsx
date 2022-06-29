@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import {
   FlattedCheckCascaderDataItem,
-  CheckCascadeItemEventData,
+  CheckCascaderItemEventData,
   CheckCascaderDataItemRequiredProps,
   CheckCascaderDataItem,
 } from './types'
@@ -34,7 +34,7 @@ export const CheckCascaderMenu = ({
   } = useCheckCascaderContext()
 
   const renderTitle = useCallback(
-    (option: CheckCascadeItemEventData) => {
+    (option: CheckCascaderItemEventData) => {
       // 如果 titleRender 返回 `true`，则使用默认 title
       const title = titleRender ? titleRender(option) : true
 
@@ -168,7 +168,7 @@ const renderSuffix = (
   node: FlattedCheckCascaderDataItem,
   loading: boolean,
   onLoadChildren?: (
-    item: CheckCascadeItemEventData,
+    item: CheckCascaderItemEventData,
     idPaths: React.ReactText[]
   ) => Promise<CheckCascaderDataItem[] | void> | void
 ) => {
