@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/dropdown",
-  "version": "4.0.0-beta.24",
+  "version": "4.0.0-beta.25",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -43,13 +43,13 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^4.0.0-beta.15",
+    "@hi-ui/button": "^4.0.0-beta.16",
     "@hi-ui/classname": "^4.0.0-beta.0",
     "@hi-ui/core": "^4.0.0-beta.9",
     "@hi-ui/core-css": "^4.0.0-beta.5",
     "@hi-ui/dom-utils": "^4.0.0-beta.6",
     "@hi-ui/env": "^4.0.0-beta.1",
-    "@hi-ui/icons": "^4.0.0-beta.11",
+    "@hi-ui/icons": "^4.0.0-beta.12",
     "@hi-ui/popper": "^4.0.0-beta.19",
     "@hi-ui/react-utils": "^4.0.0-beta.6",
     "@hi-ui/type-assertion": "^4.0.0-beta.5",
