@@ -82,6 +82,7 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
 
         {showJumper ? (
           <>
+            {/* @ts-ignore */}
             <Input {...getInputProps()} appearance="filled" />
             {showTotal ? <span className={`${prefixCls}__total`}>{`/ ${maxPage}`}</span> : null}
           </>
