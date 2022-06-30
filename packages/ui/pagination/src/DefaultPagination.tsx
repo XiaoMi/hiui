@@ -38,6 +38,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
       showJumper,
       showPagers = true,
       type = 'default',
+      autoHide = false,
       ...rest
     },
     ref
@@ -151,6 +152,12 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
     }, [current, maxPage, max, onClick, prefixCls])
 
     const disabled = maxPage === 0
+
+    // 优化数据在第一页且数据一页内时，不展示 pagination 配置项
+    const hiddenPagination =
+      autoHide && current === 1 && typeof total === 'number' && total <= pageSize
+
+    if (hiddenPagination) return null
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>

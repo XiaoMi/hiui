@@ -27,6 +27,7 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
       pageSize = 10,
       showTotal = true,
       showJumper = true,
+      autoHide = false,
       size = 'md',
       ...rest
     },
@@ -71,6 +72,11 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
       onChange: proxyTrySetCurrent,
       focusOnStep: false,
     })
+
+    // 优化数据在第一页且数据一页内时，不展示 pagination 配置项
+    const hiddenPagination = autoHide && current === 1 && maxPage === 1
+
+    if (hiddenPagination) return null
 
     return (
       <div ref={ref} role={role} {...rootProps}>
@@ -128,6 +134,10 @@ export interface ShrinkPaginationProps extends HiBaseHTMLProps<'div'> {
    * 设置尺寸
    */
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * 	只有一页时是否隐藏分页器
+   */
+  autoHide?: boolean
 }
 
 if (__DEV__) {
