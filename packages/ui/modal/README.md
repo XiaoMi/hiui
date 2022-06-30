@@ -52,8 +52,6 @@
 
 | 参数                | 变更类型   | 变更内容         | 解决的问题 |
 | ------------------- | ---------- | ---------------- | ---------- |
-| portalClassName     | feature    |                  |            |
-| overlayClassName    | feature    |                  |            |
 | size                | update     | 枚举值改变       |            |
 | closeIcon           | feature    |                  |            |
 | timeout             | feature    |                  |            |

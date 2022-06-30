@@ -33,19 +33,17 @@
 
 ## CHANGELOG
 
-| 参数             | 变更类型   | 变更内容         | 解决的问题 |
-| ---------------- | ---------- | ---------------- | ---------- |
-| preload          | feature    |                  |            |
-| unmountOnClose   | feature    |                  |            |
-| portalClassName  | feature    |                  |            |
-| overlayClassName | feature    |                  |            |
-| onClose          | update     | 去除  event 参数 |            |
-| closeOnEsc       | feature    |                  |            |
-| onEscKeyDown     | feature    |                  |            |
-| closeIcon        | feature    |                  |            |
-| lockScroll       | feature    |                  |            |
-| timeout          | feature    |                  |            |
-| disabledPortal   | feature    |                  |            |
-| container        | feature    |                  |            |
-| onExited         | feature    |                  |            |
-| maskClosable     | deprecated |                  |            |
+| 参数           | 变更类型   | 变更内容         | 解决的问题 |
+| -------------- | ---------- | ---------------- | ---------- |
+| preload        | feature    |                  |            |
+| unmountOnClose | feature    |                  |            |
+| onClose        | update     | 去除  event 参数 |            |
+| closeOnEsc     | feature    |                  |            |
+| onEscKeyDown   | feature    |                  |            |
+| closeIcon      | feature    |                  |            |
+| lockScroll     | feature    |                  |            |
+| timeout        | feature    |                  |            |
+| disabledPortal | feature    |                  |            |
+| container      | feature    |                  |            |
+| onExited       | feature    |                  |            |
+| maskClosable   | deprecated |                  |            |

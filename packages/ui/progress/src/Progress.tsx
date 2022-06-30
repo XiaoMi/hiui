@@ -144,8 +144,7 @@ export interface ProgressProps extends HiBaseHTMLProps<'div'> {
    */
   strokeWidth?: number
   /**
-   * 进度条缓冲区百分比值。暂不对外暴露
-   * @private
+   * 进度条缓冲区百分比值
    */
   bufferPercent?: number
 }

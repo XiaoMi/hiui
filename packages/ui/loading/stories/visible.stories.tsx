@@ -23,9 +23,9 @@ export const Visible = () => {
               width: 500,
               height: 300,
               boxSizing: 'border-box',
-              background: '#ccc',
+              background: '#f5f7fa',
               padding: 20,
-              border: '20px solid #000',
+              border: '20px solid #5f6a7a',
             }}
           />
         </Loading>

@@ -153,7 +153,8 @@ export interface LoadingProps extends HiBaseHTMLProps<'div'> {
    * @private
    */
   disabledPortal?: boolean
-  /** 。暂不对外暴露
+  /**
+   * 内部 ref引用，暂不对外暴露
    * @private
    */
   innerRef?: React.Ref<{ close: () => void }>

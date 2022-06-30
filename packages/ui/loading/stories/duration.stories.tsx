@@ -1,11 +1,12 @@
 import React from 'react'
 import Loading from '../src'
+import Button from '@hi-ui/button'
 
 /**
  * @title API调用
  */
 export const Duration = () => {
-  const loadingIdRef = React.useRef(null)
+  const loadingIdRef = React.useRef<any>(null)
 
   React.useEffect(() => {
     return () => {
@@ -17,13 +18,13 @@ export const Duration = () => {
     <>
       <h1>Loading</h1>
       <div className="loading-duration__wrap">
-        <button
+        <Button
           onClick={() => {
             loadingIdRef.current = Loading.open(undefined, { duration: 3000 })
           }}
         >
           Awake by API
-        </button>
+        </Button>
       </div>
     </>
   )
