@@ -1,6 +1,7 @@
 // markdown样式
 @import './typo.scss';
 @import '../../components/style/icon/index.scss';
+@import './patch.scss';
 
 #app {
   .layout__body {
@@ -86,4 +87,6 @@
   .layout--classic.layout--white .header {
     border-color: #e7e7e7;
   }
+
+  @include patch-v4();
 }
