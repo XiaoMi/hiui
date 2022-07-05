@@ -250,4 +250,17 @@
     border-radius: 6px;
     border: 1px solid var(--color-gray-20);
   }
+
+  .hi-table__container table th {
+    background-color: #f5f7fa !important;
+  }
+
+  .hi-table table thead > tr > th {
+    font-weight: 500;
+    color: #1f2733;
+  }
+
+  .hi-table--striped table tr:nth-child(2n) {
+    background-color: #f5f7fa;
+  }
 }
