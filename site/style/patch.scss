@@ -37,14 +37,14 @@
   $color-palette-brandblue-900: #001d61;
   // 中性色
   $color-palette-gray-50: #f5f7fa;
-  $color-palette-gray-100:#f2f4f7;
-  $color-palette-gray-200:#ebedf0;
-  $color-palette-gray-300:#dfe2e8;
-  $color-palette-gray-400:#c9ced6;
-  $color-palette-gray-500:#929aa6;
-  $color-palette-gray-600:#5f6a7a;
-  $color-palette-gray-700:#1f2733;
-  $color-palette-gray-800:#1f2937;
+  $color-palette-gray-100: #f2f4f7;
+  $color-palette-gray-200: #ebedf0;
+  $color-palette-gray-300: #dfe2e8;
+  $color-palette-gray-400: #c9ced6;
+  $color-palette-gray-500: #929aa6;
+  $color-palette-gray-600: #5f6a7a;
+  $color-palette-gray-700: #1f2733;
+  $color-palette-gray-800: #1f2937;
   $color-palette-gray-900: #111827;
   // 主色
   $color-palette-primary-normal: #237ffa;
@@ -118,5 +118,28 @@
 
   .hi-btn {
     border-radius: $border-radius-normal;
+  }
+
+  .hi-pagination__item > span {
+    border-radius: 4px;
+    background-color: #f2f4f7;
+    border: 1px solid #f2f4f7;
+  }
+
+  .hi-pagination__item--active:not(.hi-pagination__item--disabled) > span {
+    background-color: var(--color-primary);
+
+    &:hover {
+      background-color: var(--color-primary-60);
+    }
+  }
+
+  .hi-pagination__item:not(.hi-pagination__item--disabled):not(.hi-pagination__item--active) > span:hover {
+    background-color: var(--color-primary-20);
+    transition: background-color 0.3s;
+  }
+
+  .hi-pagination__item--disabled > span {
+    color: var(--color-gray-50);
   }
 }
