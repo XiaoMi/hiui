@@ -153,4 +153,32 @@
   .hi-modal__footer--divided {
     border-top: none;
   }
+
+  .hi-drawer__wrapper {
+    border-radius: none;
+  }
+
+  .hi-drawer__footer {
+    border-top: none;
+  }
+
+  .hi-drawer__header {
+    font-weight: 500;
+    color: #1f2733;
+  }
+
+  .hi-notification__container .hi-notification--primary,
+  .hi-notification__container .hi-notification--success,
+  .hi-notification__container .hi-notification--warning,
+  .hi-notification__container .hi-notification--danger {
+    box-shadow: rgba(0, 29, 97, 0.12) 0 4px 16px;
+    border: none;
+    background-color: #fff;
+    border-radius: 6px;
+
+    .hi-notification__title {
+      color: #1f2733;
+      font-weight: 500;
+    }
+  }
 }
