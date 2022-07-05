@@ -191,4 +191,16 @@
     box-shadow: rgba(0, 29, 97, 0.12) 0 4px 16px;
     border-radius: 6px;
   }
+
+  .hi-alert--primary,
+  .hi-alert--success,
+  .hi-alert--warning,
+  .hi-alert--danger {
+    border: none;
+    border-radius: 6px;
+  }
+
+  .hi-tag.hi-tag--square {
+    border-radius: 4px;
+  }
 }
