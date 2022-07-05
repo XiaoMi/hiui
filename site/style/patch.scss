@@ -131,15 +131,26 @@
 
     &:hover {
       background-color: var(--color-primary-60);
+      border-color: var(--color-primary-60);
+      transition: all 0.3s;
     }
   }
 
   .hi-pagination__item:not(.hi-pagination__item--disabled):not(.hi-pagination__item--active) > span:hover {
     background-color: var(--color-primary-20);
-    transition: background-color 0.3s;
+    border-color: var(--color-primary-20);
+    transition: all 0.3s;
   }
 
   .hi-pagination__item--disabled > span {
     color: var(--color-gray-50);
+  }
+
+  .hi-modal__wrapper {
+    border-radius: 6px;
+  }
+
+  .hi-modal__footer--divided {
+    border-top: none;
   }
 }
