@@ -203,4 +203,21 @@
   .hi-tag.hi-tag--square {
     border-radius: 4px;
   }
+
+  .hi-tree .tree-node__title .title__text--selected {
+    background: var(--color-primary-20) !important;
+    border-radius: 4px;
+    transition: all 0.3s;
+
+    &:hover {
+      background: var(--color-primary-20) !important;
+    }
+  }
+
+  .hi-tree .tree-node__title:not(.tree-node__title--disabled) .title__text:hover {
+    background: #f2f4f7;
+    color: var(--color-gray-80);
+    border-radius: 4px;
+    transition: all 0.3s;
+  }
 }
