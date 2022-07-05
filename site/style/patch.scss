@@ -181,4 +181,14 @@
       font-weight: 500;
     }
   }
+
+  .hi-message__container .hi-message--primary,
+  .hi-message__container .hi-message--success,
+  .hi-message__container .hi-message--warning,
+  .hi-message__container .hi-message--danger {
+    background-color: #fff;
+    border: none;
+    box-shadow: rgba(0, 29, 97, 0.12) 0 4px 16px;
+    border-radius: 6px;
+  }
 }
