@@ -225,4 +225,29 @@
     font-weight: 600;
     color: #1f2733;
   }
+
+  .hi-tooltip-base {
+    border-radius: 4px;
+    background-color: #1f2733;
+
+    &::after {
+      background-color: #1f2733;
+    }
+  }
+
+  .hi-popover-base {
+    border-radius: 6px;
+
+    .hi-popover__title {
+      border-bottom: none;
+      font-weight: 500;
+      font-size: 16px;
+      color: #1f2733;
+    }
+  }
+
+  .hi-card {
+    border-radius: 6px;
+    border: 1px solid var(--color-gray-20);
+  }
 }
