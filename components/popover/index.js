@@ -12,7 +12,7 @@ export default class Popover extends Component {
   }
   static propTypes = {
     placement: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
-    trigger: PropTypes.oneOf(['click', 'focus', 'hover', 'right-click']),
+    trigger: PropTypes.oneOf(['click', 'focus', 'hover', 'contextmenu']),
     title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     content: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     width: PropTypes.string
@@ -112,7 +112,7 @@ export default class Popover extends Component {
         this.delayHidePopper(e)
         clearTimeout(this.delayShowPopperTimer)
       })
-    } else if (trigger === 'right-click') {
+    } else if (trigger === 'contextmenu') {
       referenceRef.addEventListener('contextmenu', (e) => {
         e.preventDefault()
         this.state.showPopper ? this.hidePopper() : this.showPopper()

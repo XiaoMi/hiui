@@ -4,7 +4,7 @@ export interface PopoverProps {
   title?: string | JSX.Element
   content: string | JSX.Element
   placement?: 'top' | 'right' | 'bottom' | 'left'
-  trigger?: 'click' | 'focus' | 'hover' | 'right-click'
+  trigger?: 'click' | 'focus' | 'hover' | 'contextmenu'
   visible?: boolean
   style?: React.CSSProperties
   className?: string
