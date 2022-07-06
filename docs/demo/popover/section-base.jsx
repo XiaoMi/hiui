@@ -32,6 +32,9 @@ class Demo extends React.Component {
         <Popover title={title} content={content} style={{margin: '10px 10px'}} placement="left" trigger="click">
           <Button type="danger">Popover Left</Button>
         </Popover>
+        <Popover title={title} content={content} style={{margin: '10px 10px'}} placement="bottom" trigger="contextmenu">
+          <Button>contextmenu触发</Button>
+        </Popover>
       </div>
     )
   }

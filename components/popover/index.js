@@ -12,7 +12,7 @@ export default class Popover extends Component {
   }
   static propTypes = {
     placement: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
-    trigger: PropTypes.oneOf(['click', 'focus', 'hover']),
+    trigger: PropTypes.oneOf(['click', 'focus', 'hover', 'contextmenu']),
     title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     content: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     width: PropTypes.string
@@ -111,6 +111,18 @@ export default class Popover extends Component {
       referenceRef.addEventListener('mouseleave', (e) => {
         this.delayHidePopper(e)
         clearTimeout(this.delayShowPopperTimer)
+      })
+    } else if (trigger === 'contextmenu') {
+      referenceRef.addEventListener('contextmenu', (e) => {
+        e.preventDefault()
+        this.state.showPopper ? this.hidePopper() : this.showPopper()
+      })
+
+      document.addEventListener('click', (e) => {
+        this.eventTarget = e.target
+        if (this.isInPopover()) return
+
+        this.hidePopper()
       })
     } 
   }
