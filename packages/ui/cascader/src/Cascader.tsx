@@ -7,7 +7,7 @@ import { useCascader, UseCascaderProps } from './use-cascader'
 import { MockInput } from '@hi-ui/input'
 import type { PopperOverlayProps } from '@hi-ui/popper'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
-import { checkCanLoadChildren, flattenTreeData, getItemEventData } from './utils'
+import { flattenTreeData, getItemEventData } from './utils'
 import { CascaderProvider } from './context'
 import { CascaderExpandTriggerEnum, FlattedCascaderDataItem, CascaderItemEventData } from './types'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
@@ -108,9 +108,10 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     data: cascaderData,
     flattedData: flattedData,
     enabled: searchableProp,
-    exclude: (option: FlattedCascaderDataItem) => {
-      return checkCanLoadChildren(option, onLoadChildren)
-    },
+    exclude: (node: any) => node.disabled,
+    // exclude: (option: FlattedCascaderDataItem) => {
+    //   return checkCanLoadChildren(option, onLoadChildren)
+    // },
   })
 
   const {

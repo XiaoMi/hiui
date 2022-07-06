@@ -112,8 +112,6 @@ export class WatermarkGenerator {
   drawLogo = (ctx: CanvasRenderingContext2D, logo: string, cb: Function) => {
     this.destroyImageEvent()
     const img = new Image()
-    img.crossOrigin = 'anonymous'
-    img.referrerPolicy = 'no-referrer'
     img.src = logo
     img.onload = () => {
       ctx.globalAlpha = 0.2

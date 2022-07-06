@@ -60,7 +60,42 @@ export const FilterOptions = () => {
 
   // 注意 filterOption 是影响搜索渲染的，是完全受控的，useCallback 包裹可以减少无效的重渲染，提升性能
   const filterOptionMemo = React.useCallback((keyword: string, item: any) => {
-    return !!pinyinMatch.match(item.title as string, keyword)
+    if (item.children) return false
+    const match = (node: any) =>
+      typeof node.title === 'string' && !!pinyinMatch.match(node.title as string, keyword)
+
+    const matchUp = (node: any) => {
+      let found = match(node)
+      let { parent } = node
+
+      if (parent && !found) {
+        const ancestors = [] as any[]
+        while (parent) {
+          ancestors.push(parent)
+          parent = parent.parent
+        }
+
+        found = ancestors.some((item: any) => match(item))
+        console.log(ancestors, found)
+      }
+
+      return found
+    }
+
+    const matchDown = (node: any) => {
+      let found = match(node)
+      const { children } = node
+
+      if (children && !found) {
+        found = children.some((item: any) => matchDown(item))
+      }
+
+      return found
+    }
+
+    const result = matchUp(item) || matchDown(item)
+
+    return result
   }, [])
 
   return (

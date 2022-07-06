@@ -31,6 +31,7 @@ export const Container = () => {
             right: 0,
             bottom: 0,
             left: 0,
+            zIndex: 2048,
           }}
           content={['HiUI', '做中台，就用 HiUI']}
           logo="https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png"

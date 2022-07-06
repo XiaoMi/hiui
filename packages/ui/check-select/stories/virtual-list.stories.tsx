@@ -29,7 +29,7 @@ export const VirtualList = () => {
           style={{ width: 240 }}
           data={data}
           searchable
-          height={300}
+          height={260}
           defaultValue={data.map((v) => v.id)}
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
