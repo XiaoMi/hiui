@@ -58,7 +58,7 @@
     // danger
     --color-danger: #{$color-palette-danger-normal};
     --color-danger-20: #fee9e5;
-    --color-danger-30: #5f5554;
+    --color-danger-30: #ffd1c9;
     --color-danger-40: #ffb6ad;
     --color-danger-50: #ff7a75;
     --color-danger-60: #d94146;
@@ -115,6 +115,15 @@
     background-color: #f2f4f7;
     border: 1px solid #f2f4f7;
     color: var(--color-black);
+  }
+
+  .hi-btn--type--default:not(.hi-btn--disabled):hover,
+  .hi-btn--type--info:not(.hi-btn--disabled):hover {
+    border-color: #f2f4f7;
+  }
+
+  .hi-btn--type--default:not(.hi-btn--disabled):focus {
+    box-shadow: 0 0 0 2px #ebedf0;
   }
 
   .hi-btn {
@@ -209,5 +218,297 @@
 
   .hi-select__dropdown--item:hover {
     background-color: #f2f4f7;
+  }
+
+  // checkbox
+  .hi-checkbox input:focus + .hi-checkbox__input {
+    box-shadow: 0 0 0 2px #bde2ff;
+  }
+
+  // radio
+  .hi-radio__input::after {
+    background: #fff;
+    width: 14px;
+    height: 14px;
+    transform: scale(0);
+  }
+
+  .hi-radio__input {
+    position: relative;
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hi-radio__input--checked {
+    border-color: #237ffa;
+    background: #237ffa;
+  }
+
+  .hi-radio__input--checked::after {
+    transform: scale(0.3);
+    background-color: #fff;
+  }
+
+  .hi-radio input:focus + .hi-radio__input {
+    box-shadow: 0 0 2px #bde2ff;
+  }
+
+  // SelectTree
+  .hi-selecttree__input {
+    border-radius: 4px;
+  }
+
+  .hi-selecttree__popper {
+    border-radius: 4px;
+    box-shadow: 0 8px 16px 6px rgba(31, 39, 51, 0.1);
+  }
+
+  // cascader
+  .hi-cascader__input-container {
+    border-radius: 4px;
+  }
+
+  .hi-cascader__popper {
+    border-radius: 4px;
+    box-shadow: 0 8px 16px 6px rgba(31, 39, 51, 0.1);
+  }
+
+  .hi-cascader-menu.theme__hiui-blue .hi-cascader-menu__item:hover {
+    background-color: #f2f4f7;
+  }
+
+  .hi-cascader-menu__item.hi-cascader-menu__item-active:not(.hi-cascader-menu__item-focus):hover {
+    background-color: #f2f4f7 !important;
+  }
+
+  .hi-cascader-menu__item {
+    margin: 4px 0;
+  }
+
+  // counter
+  .hi-counter-minus {
+    color: #1f2733;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+
+  .hi-counter-plus {
+    color: #1f2733;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  // Slider
+  .hi-slider .hi-slider__handle:focus {
+    box-shadow: 0 0 0 4px rgba(#4284f5, 0.2);
+  }
+
+  // Dropdown
+  .hi-dropdown__popper {
+    border-radius: 4px;
+  }
+
+  .hi-dropdown__menu-item:not(.hi-dropdown__menu-item--disabled):hover {
+    background-color: #f2f4f7;
+  }
+
+  // Menu
+  .hi-menu--vertical .hi-menu__title:hover {
+    background-color: #f2f4f7;
+  }
+
+  .hi-menu--vertical .hi-menu-item--active:not(.hi-submenu) {
+    background-color: var(--color-primary-20);
+  }
+
+  .hi-menu-fat .hi-menu-item:hover {
+    background-color: #f2f4f7;
+    border-radius: 4px;
+  }
+
+  .hi-submenu__popper--fat .hi-submenu__items {
+    margin-left: 12px;
+  }
+
+  .hi-submenu__popper {
+    border-radius: 4px;
+  }
+
+  // Transfer
+  .hi-transfer__container {
+    border-radius: 4px;
+  }
+
+  .hi-transfer__item:hover {
+    background: #f2f4f7;
+  }
+
+  .hi-transfer__operation .hi-btn {
+    border-radius: 9999px;
+    background-color: #e2f3fe;
+    color: #237ffa;
+  }
+
+  .hi-transfer__operation .hi-btn--disabled {
+    opacity: 0.7;
+  }
+
+  .hi-transfer__operation .hi-btn--type--default.hi-btn--disabled {
+    background-color: #f2f4f7;
+    border: 1px solid #f2f4f7;
+    color: #c9ced6;
+  }
+
+  .hi-transfer__operation .hi-btn--type--primary:not(.hi-btn--disabled):hover {
+    background-color: #e2f3fe;
+    color: #237ffa;
+  }
+
+  // DatePicker
+  .hi-datepicker__picker {
+    border-radius: 4px;
+
+    input {
+      border-radius: 4px;
+    }
+  }
+
+  .hi-datepicker__popper {
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .hi-datepicker__panel {
+    border-radius: 4px;
+  }
+
+  .hi-datepicker__cell-text {
+    border-radius: 9999px;
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+  }
+
+  .hi-datepicker__cell-text:hover {
+    background-color: #f2f4f7;
+  }
+
+  .hi-datepicker__cell--selected .hi-datepicker__cell-text {
+    background-color: #e2f3fe;
+    color: #237ffa;
+  }
+
+  .hi-datepicker__cell--today .hi-datepicker__cell-text {
+    border-color: transparent;
+  }
+
+  .hi-datepicker__cell--today {
+    position: relative;
+
+    &::after {
+      content: '';
+      background: var(--hi-v4-color-primary-500, var(--hi-v4-color-brandblue-500, #237ffa));
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-40%);
+      position: absolute;
+    }
+  }
+
+  .hi-datepicker__cell--large .hi-datepicker__cell-text {
+    border-radius: 8px;
+  }
+
+  .hi-datepicker__cell--selected .hi-datepicker__lunar {
+    color: #96ceff;
+  }
+
+  .hi-datepicker__shortcuts-item {
+    display: inline-block;
+    margin: 10px 8px;
+    padding: 0 16px;
+    line-height: 24px;
+    transition: all 0.3s;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #929aa6;
+  }
+
+  .hi-datepicker__shortcuts-item:hover {
+    background-color: #f2f4f7;
+  }
+
+  .hi-datepicker__shortcuts {
+    min-width: 84px;
+    width: auto;
+  }
+
+  .hi-datepicker__period-item:hover {
+    background-color: #f2f4f7;
+  }
+
+  .hi-datepicker__calender--month .hi-datepicker__cell-text {
+    width: 70px;
+  }
+
+  .hi-datepicker__calender--year .hi-datepicker__cell-text {
+    width: 70px;
+  }
+
+  .hi-datepicker__panel--time .hi-timepicker__item:hover:not(.hi-timepicker__item--current):not(.hi-timepikcer__item--empty):not(.hi-timepicker__item--disabled) {
+    background-color: #f2f4f7;
+    border-radius: 9999px;
+  }
+
+  .hi-datepicker__row--currentweek .hi-datepicker__cell::before {
+    background-color: #f2f4f7;
+  }
+
+  // TimePicker
+  .hi-timepicker__item:hover:not(.hi-timepicker__item--current):not(.hi-timepikcer__item--empty):not(.hi-timepicker__item--disabled) {
+    background-color: #f2f4f7;
+    border-radius: 4px;
+  }
+
+  .hi-timepicker__popper {
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  // Upload
+  .hi-upload__item {
+    background-color: #f2f4f7;
+    border-radius: 4px;
+    box-sizing: border-box;
+    height: 40px;
+    margin-top: 8px;
+    padding: 0 12px;
+  }
+
+  .hi-upload--picture-card .hi-upload__list .hi-upload__item {
+    border-radius: 4px;
+  }
+
+  .hi-upload--drag {
+    border-radius: 4px;
+    border: 2px dashed #dfe2e8;
+  }
+
+  .hi-upload--avatar .hi-upload__item,
+  .hi-upload--photo .hi-upload__item {
+    border-radius: 4px;
+  }
+
+  .hi-upload__item .icon-delete {
+    color: #5f6a7a;
   }
 }
