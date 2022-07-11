@@ -64,7 +64,7 @@ class Demo extends React.Component {
       placeholder='请选择'
       dataSource={keyword => {
         return ({
-          type: 'GET',
+          method: 'GET',
           url: 'https://mife-gallery.test.mi.com/hiui/stores',
           params:{id: keyword},
           transformResponse: (res) => {
@@ -123,7 +123,7 @@ class Demo extends React.Component {
       data={data}
       dataSource={keyword => {
         return ({
-          type: 'GET',
+          method: 'GET',
           url: 'https://mife-gallery.test.mi.com/hiui/stores',
           params:{id: keyword},
           transformResponse: (res) => {
