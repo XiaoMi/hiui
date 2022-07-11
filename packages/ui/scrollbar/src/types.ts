@@ -2,6 +2,7 @@ import PerfectScrollbar from 'perfect-scrollbar'
 
 export interface ScrollbarRef {
   ps?: PerfectScrollbar
+  container?: HTMLDivElement
 }
 
 export type ScrollbarAxes = 'both' | 'x' | 'y' | 'none'
@@ -57,7 +58,7 @@ Object.keys(ScrollbarPsToEventMatch).forEach(ps => {
 })
 
 export type ScrollbarEventProps = {
-  [key in ScrollbarPsToEventMatch]?: () => void
+  [key in ScrollbarPsToEventMatch]?: (e: CustomEvent) => void
 }
 
 export type ScrollbarPosition =

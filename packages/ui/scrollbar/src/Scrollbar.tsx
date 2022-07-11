@@ -83,8 +83,9 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
       ref,
       () => ({
         ps,
+        container: container || undefined,
       }),
-      [ps]
+      [ps, container]
     )
 
     const { eventProps, injectProps } = useMemo(() => {
@@ -112,9 +113,8 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
     useEffect(() => {
       if (container) {
         Object.keys(ScrollbarEventToPsMap).forEach((event) => {
-          container.addEventListener((ScrollbarEventToPsMap as any)[event], () => {
-            const listener = (eventPropsRef.current as any)[event]
-            listener && listener()
+          container.addEventListener((ScrollbarEventToPsMap as any)[event], (e) => {
+            ;(eventPropsRef.current as any)[event]?.(e)
           })
         })
       }
@@ -138,7 +138,6 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         <div
           className={`${prefixCls}__wrapper`}
           ref={(e) => {
-            console.error(e)
             if (e) {
               setWrapper(e)
             }
@@ -155,12 +154,12 @@ type ExtendsProps = ScrollbarEventProps & HiBaseHTMLProps<'div'>
 
 export interface ScrollbarProps extends ExtendsProps {
   /**
-   * 容器 position
+   * 容器 css position
    * @default 'relative'
    */
   position?: ScrollbarPosition
   /**
-   * 展示轴
+   * 开启功能的轴
    * @default 'both'
    */
   axes?: ScrollbarAxes
