@@ -48,6 +48,7 @@
     "@hi-ui/core": "^4.0.0-beta.9",
     "@hi-ui/env": "^4.0.0-beta.1",
     "@hi-ui/func-utils": "^4.0.0-beta.13",
+    "@hi-ui/highlighter": "^4.0.0-beta.11",
     "@hi-ui/icons": "^4.0.0-beta.14",
     "@hi-ui/input": "^4.0.0-beta.21",
     "@hi-ui/locale-context": "^4.0.0-beta.19",

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, forwardRef, useCallback } from 'react'
 import { CSSTransition } from 'react-transition-group'
-import { times } from '@hi-ui/times'
+import { times } from '@hi-ui/array-utils'
 import { TreeNode } from './TreeNode'
 import { TreeNodeType, MotionTreeNodeData, TreeNodeRequiredProps } from './types'
 import { __DEV__ } from '@hi-ui/env'

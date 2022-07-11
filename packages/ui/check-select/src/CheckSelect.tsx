@@ -18,14 +18,12 @@ import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import VirtualList, { useCheckInVirtual } from '@hi-ui/virtual-list'
 import { Picker, PickerProps } from '@hi-ui/picker'
 
-import { uniqBy } from '@hi-ui/array-utils'
+import { times, uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'
-import { times } from '@hi-ui/times'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { useLocaleContext } from '@hi-ui/locale-context'
-
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -33,6 +31,7 @@ import {
   useTreeCustomSearch,
 } from '@hi-ui/use-search-mode'
 import { flattenData } from './hooks'
+import { getAllCheckedStatus, isCheckableOption, isOption } from './utils'
 
 const _role = 'check-select'
 const _prefix = getPrefixCls(_role)
@@ -176,49 +175,35 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     const dropdownItems = filterItems || showData
     const activeExpandable = showOnlyShowChecked && !!filterItems && menuVisible
 
-    const [allChecked, indeterminate] = useMemo(() => {
-      const dropdownIds = dropdownItems
-        .filter((item: any) => !('groupTitle' in item))
-        .map(({ id }: any) => id)
-      const dropdownIdsSet = new Set(dropdownIds)
-
-      let hasValue = false
-
-      value.forEach((id) => {
-        if (dropdownIdsSet.has(id)) {
-          hasValue = true
-          dropdownIdsSet.delete(id)
-        }
-      })
-
-      return [hasValue && dropdownIdsSet.size === 0, hasValue && dropdownIdsSet.size > 0]
+    const [showAllChecked, showIndeterminate] = useMemo(() => {
+      return getAllCheckedStatus(dropdownItems, value, isOption)
     }, [dropdownItems, value])
 
     const valueLatestRef = useLatestRef(value)
-    const toggleCheckAll = useCallback(
-      (showChecked: boolean) => {
-        const value = valueLatestRef.current
-        // 当前页的数据选项
-        const items = dropdownItems.filter((item: any) => !('groupTitle' in item))
-        const targetIds: any[] = items.map(({ id }: any) => id)
-        const allData: any[] = uniqBy(items.concat(mergedData), 'id')
+    const toggleCheckAll = useCallback(() => {
+      const value = valueLatestRef.current
+      const [currentAllChecked] = getAllCheckedStatus(dropdownItems, value, isCheckableOption)
+      const shouldChecked = !currentAllChecked
 
-        if (showChecked) {
-          const nextCheckedIds = Array.from(new Set(value.concat(targetIds)))
-          const changedIds = nextCheckedIds.filter((id) => !value.includes(id))
-          const changedItems = allData.filter(({ id }) => changedIds.includes(id))
+      // 当前页的数据选项
+      const items = dropdownItems.filter(isCheckableOption)
+      const targetIds: any[] = items.map(({ id }: any) => id)
+      const allData: any[] = uniqBy(items.concat(mergedData), 'id')
 
-          tryChangeValue(nextCheckedIds, changedItems, showChecked)
-        } else {
-          const nextCheckedIds = value.filter((id) => !targetIds.includes(id))
-          const changedIds = value.filter((id) => !nextCheckedIds.includes(id))
-          const changedItems = allData.filter(({ id }) => changedIds.includes(id)) // items
+      if (shouldChecked) {
+        const nextCheckedIds = Array.from(new Set(value.concat(targetIds)))
+        const changedIds = nextCheckedIds.filter((id) => !value.includes(id))
+        const changedItems = allData.filter(({ id }) => changedIds.includes(id))
 
-          tryChangeValue(nextCheckedIds, changedItems, showChecked)
-        }
-      },
-      [dropdownItems, mergedData, valueLatestRef, tryChangeValue]
-    )
+        tryChangeValue(nextCheckedIds, changedItems, shouldChecked)
+      } else {
+        const nextCheckedIds = value.filter((id) => !targetIds.includes(id))
+        const changedIds = value.filter((id) => !nextCheckedIds.includes(id))
+        const changedItems = allData.filter(({ id }) => changedIds.includes(id)) // items
+
+        tryChangeValue(nextCheckedIds, changedItems, shouldChecked)
+      }
+    }, [dropdownItems, mergedData, valueLatestRef, tryChangeValue])
 
     const renderDefaultFooter = () => {
       const extra = renderExtraFooter ? renderExtraFooter() : null
@@ -226,11 +211,9 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
         return (
           <>
             <Checkbox
-              indeterminate={indeterminate}
-              checked={allChecked}
-              onChange={(evt) => {
-                toggleCheckAll(evt.target.checked)
-              }}
+              indeterminate={showIndeterminate}
+              checked={showAllChecked}
+              onChange={toggleCheckAll}
             >
               {i18n.get('checkSelect.checkAll')}
             </Checkbox>
@@ -439,7 +422,7 @@ export interface CheckSelectProps
    */
   onClose?: () => void
   /**
-   * 是否开启全选功能
+   * 是否开启全选功能，需要对数据全量操作。异步数据场景暂不支持，可自行渲染弹层底部实现
    */
   showCheckAll?: boolean
   /**

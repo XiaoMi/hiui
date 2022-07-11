@@ -107,3 +107,35 @@ export function getItemEventData(
     ...requiredProps,
   }
 }
+
+export const getFilteredMenuList = (menuList: FlattedCascaderDataItem[][], searchedData: any[]) => {
+  const result = [] as any[]
+
+  searchedData.forEach((item) => {
+    while (item && item.depth >= 0) {
+      const depth = item.depth
+      let depthResult = result[depth] as Map<React.ReactText, any>
+
+      if (!depthResult) {
+        depthResult = new Map()
+        result[depth] = depthResult
+      }
+
+      depthResult.set(item.id, item)
+      item = item.parent
+    }
+  })
+
+  return menuList.map((depthItems, depth) => {
+    const depthSavedMp = result[depth]
+    if (!depthSavedMp) return depthItems
+
+    return depthItems.filter((item: any) => {
+      const depthSavedMp = result[item.depth]
+
+      if (!depthSavedMp) return true
+      if (depthSavedMp.has(item.id)) return true
+      return false
+    })
+  })
+}

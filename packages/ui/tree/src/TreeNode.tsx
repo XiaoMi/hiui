@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { times } from '@hi-ui/times'
+import { times } from '@hi-ui/array-utils'
 import Checkbox from '@hi-ui/checkbox'
 import {
   defaultLoadingIcon,

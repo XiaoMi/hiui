@@ -23,13 +23,13 @@ export const Search = () => {
         },
         {
           id: 'up-1-1',
-          title: '1-1',
+          title: 'up-1-1',
         },
       ],
     },
     {
       id: '0',
-      title: '0',
+      title: 'up-0',
       children: [
         {
           id: '0-0',
@@ -205,12 +205,24 @@ export const Search = () => {
     <>
       <h1>Search</h1>
       <div className="cascader-search__wrap">
+        <h2>展示搜索结果：拍平模式（默认）</h2>
         <Cascader
           style={{ width: 240 }}
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
           data={data}
           searchable
+          onChange={console.log}
+        />
+
+        <h2>展示搜索结果：级联模式</h2>
+        <Cascader
+          style={{ width: 240 }}
+          placeholder="请选择品类"
+          searchPlaceholder="请输入搜索内容"
+          data={data}
+          searchable
+          flattedSearchResult={false}
           onChange={console.log}
         />
       </div>

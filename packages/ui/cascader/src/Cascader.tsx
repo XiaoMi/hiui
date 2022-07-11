@@ -7,7 +7,7 @@ import { useCascader, UseCascaderProps } from './use-cascader'
 import { MockInput } from '@hi-ui/input'
 import type { PopperOverlayProps } from '@hi-ui/popper'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
-import { flattenTreeData, getItemEventData } from './utils'
+import { flattenTreeData, getItemEventData, getFilteredMenuList } from './utils'
 import { CascaderProvider } from './context'
 import { CascaderExpandTriggerEnum, FlattedCascaderDataItem, CascaderItemEventData } from './types'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
@@ -19,6 +19,7 @@ import { useCache } from '@hi-ui/use-cache'
 import { useLocaleContext } from '@hi-ui/locale-context'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { CascaderMenuList } from './CascaderMenuList'
+import Highlighter from '@hi-ui/highlighter'
 
 const _prefix = getPrefixCls('cascader')
 
@@ -49,6 +50,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     render: titleRender,
     overlayClassName,
     data = NOOP_ARRAY,
+    flattedSearchResult = true,
     visible,
     onOpen,
     onClose,
@@ -57,8 +59,6 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
   const i18n = useLocaleContext()
 
   const placeholder = isUndef(placeholderProp) ? i18n.get('cascader.placeholder') : placeholderProp
-
-  const flatted = type === 'flatted'
 
   const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
     visible,
@@ -86,7 +86,9 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     const highlight = !!searchValue && searchMode === 'upMatch'
 
     if (highlight) {
-      return renderHighlightTitle(searchValue, node, titleRender)
+      return flattedSearchResult
+        ? renderHighlightTitles(searchValue, node, titleRender)
+        : renderHighlightTitle(searchValue, node, titleRender)
     }
 
     return isFunction(titleRender) ? titleRender(node) : true
@@ -150,12 +152,15 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     return <span className="title__text">{mergedTitle}</span>
   }
 
+  const shouldUseSearch = !!searchValue
+  // 搜索的结果列表也采用 flatted 模式进行展示
+  const flatted = shouldUseSearch ? flattedSearchResult : type === 'flatted'
+
   const { rootProps, ...context } = useCascader({
     ...rest,
     disabled,
     fieldNames,
-    // 搜索的结果列表也采用 flatted 模式进行展示
-    flatted: flatted || !!searchValue,
+    flatted,
     onSelect,
     onLoadChildren,
     data,
@@ -167,13 +172,16 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
 
   const { value, tryChangeValue, reset, menuList, getItemRequiredProps } = context
 
-  const shouldUseSearch = !!searchValue
   const showData = useMemo(() => {
     if (shouldUseSearch) {
+      if (!flattedSearchResult) {
+        return getFilteredMenuList(menuList, stateInSearch.data)
+      }
       return isArrayNonEmpty(stateInSearch.data) ? [stateInSearch.data] : []
     }
+
     return menuList
-  }, [shouldUseSearch, stateInSearch.data, menuList])
+  }, [shouldUseSearch, flattedSearchResult, stateInSearch.data, menuList])
 
   useEffect(() => {
     // 关闭展示后，重置展开要高亮的选项
@@ -291,6 +299,10 @@ export interface CascaderProps
    * 设置展现形式
    */
   appearance?: HiBaseAppearanceEnum
+  /**
+   * 搜索结果拍平展示
+   */
+  flattedSearchResult?: boolean
 }
 
 if (__DEV__) {
@@ -298,6 +310,22 @@ if (__DEV__) {
 }
 
 const renderHighlightTitle = (
+  keyword: string,
+  option: CascaderItemEventData,
+  titleRender?: (item: CascaderItemEventData, keyword?: string) => React.ReactNode
+) => {
+  // 如果 titleRender 返回 `true`，则使用默认 title
+  const title = titleRender ? titleRender(option, keyword) : true
+  if (title !== true) return title
+
+  return (
+    <Highlighter key={option.id} keyword={keyword}>
+      {option.title}
+    </Highlighter>
+  )
+}
+
+const renderHighlightTitles = (
   keyword: string,
   option: CascaderItemEventData,
   titleRender?: (item: CascaderItemEventData, keyword?: string) => React.ReactNode
