@@ -71,7 +71,7 @@ export interface CalendarMarkPreset {
 
 export type DatePickerValueV3 = Date | string | number | DateRange | undefined | null
 
-export type DatePickerValue = Date | string | number
+export type DatePickerValue = Date | string | number | null
 
 export type DatePickerOnChangeDate = Date | Date[] | null
 export type DatePickerOnChangeDateString = string | string[] | null
