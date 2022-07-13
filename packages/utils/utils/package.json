@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/utils",
-  "version": "4.0.0-beta.15",
+  "version": "4.0.0-beta.16",
   "description": "The root-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -51,7 +51,7 @@
     "@hi-ui/func-utils": "^4.0.0-beta.13",
     "@hi-ui/react-utils": "^4.0.0-beta.6",
     "@hi-ui/request": "^4.0.0-beta.7",
-    "@hi-ui/tree-utils": "^4.0.0-beta.5",
+    "@hi-ui/tree-utils": "^4.0.0-beta.6",
     "@hi-ui/type-assertion": "^4.0.0-beta.5"
   },
   "devDependencies": {
