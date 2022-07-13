@@ -196,18 +196,15 @@ export interface UseTooltipProps extends PopperOverlayProps {
    */
   trigger?: TooltipTriggerActionEnum[] | TooltipTriggerActionEnum
   /**
-   * 开启禁用。暂不对外暴露
-   * @private
+   * 开启禁用
    */
   disabled?: boolean
   /**
-   * 鼠标移入展示延时，单位：毫秒。暂不对外暴露
-   * @private
+   * 鼠标移入展示延时，单位：毫秒
    */
   mouseEnterDelay?: number
   /**
-   * 鼠标移出后隐藏延时，单位：毫秒。暂不对外暴露
-   * @private
+   * 鼠标移出后隐藏延时，单位：毫秒
    */
   mouseLeaveDelay?: number
 }

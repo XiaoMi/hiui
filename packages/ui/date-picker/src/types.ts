@@ -27,7 +27,7 @@ export interface CalendarDataItem {
 }
 
 export interface CalendarItemV3 {
-  date: Date | string | number
+  date: Date | string | number | null
   text: string
   /**
    * @default false

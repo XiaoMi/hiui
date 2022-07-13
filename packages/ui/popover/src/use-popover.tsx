@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { PopoverTriggerActionEnum } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { omitPopperOverlayProps, PopperOverlayProps } from '@hi-ui/popper'
@@ -7,6 +7,8 @@ import { mergeRefs, withDefaultProps } from '@hi-ui/react-utils'
 import { useUID } from '@hi-ui/use-id'
 import { useUnmountEffect } from '@hi-ui/use-unmount-effect'
 import { normalizeArray } from '@hi-ui/array-utils'
+import { useTimeout } from '@hi-ui/use-timeout'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
 // TODO: 和 Tooltip 复用
 export const usePopover = ({
@@ -14,18 +16,12 @@ export const usePopover = ({
   onOpen,
   onClose,
   trigger: triggerProp = 'click',
+  mouseEnterDelay = 100,
+  mouseLeaveDelay = 100,
   ...restProps
 }: UsePopoverProps) => {
   // TODO: 移除 popper，使用 hook 重写
   const [popper, rest] = omitPopperOverlayProps(restProps) as any
-
-  const openTimerRef = React.useRef<number>()
-  const closeTimerRef = React.useRef<number>()
-
-  const clearToggleTimer = React.useCallback(() => {
-    window.clearTimeout(openTimerRef.current)
-    window.clearTimeout(closeTimerRef.current)
-  }, [])
 
   const [visible, visibleAction] = useUncontrolledToggle({
     defaultVisible: false,
@@ -36,6 +32,20 @@ export const usePopover = ({
       onClose?.()
     },
   })
+
+  const { start: startOpenTimer, clear: clearOpenTimer } = useTimeout(() => {
+    visibleAction.on()
+  }, mouseEnterDelay)
+
+  const { start: startCloseTimer, clear: clearCloseTimer } = useTimeout(() => {
+    if (hoveringRef.current) return
+    visibleAction.off()
+  }, mouseLeaveDelay)
+
+  const clearToggleTimer = useCallback(() => {
+    clearOpenTimer()
+    clearCloseTimer()
+  }, [clearOpenTimer, clearCloseTimer])
 
   useUnmountEffect(clearToggleTimer)
 
@@ -49,23 +59,17 @@ export const usePopover = ({
 
   const popoverId = useUID('popover')
 
-  const handlePopoverLeave = React.useCallback(() => {
+  const handlePopoverLeave = useLatestCallback(() => {
     hoveringRef.current = false
-    clearTimeout(openTimerRef.current)
+    clearOpenTimer()
+    startCloseTimer()
+  })
 
-    closeTimerRef.current = window.setTimeout(() => {
-      if (hoveringRef.current) return
-      visibleAction.off()
-    }, 100)
-  }, [visibleAction])
-
-  const handlePopoverEnter = React.useCallback(() => {
+  const handlePopoverEnter = useLatestCallback(() => {
     hoveringRef.current = true
 
-    openTimerRef.current = window.setTimeout(() => {
-      visibleAction.on()
-    }, 100)
-  }, [visibleAction])
+    startOpenTimer()
+  })
 
   const getOverlayProps = React.useCallback(
     (props = {}, ref = null) => {
@@ -169,6 +173,14 @@ export interface UsePopoverProps extends PopperOverlayProps {
    * 	气泡卡片触发方式
    */
   trigger?: PopoverTriggerActionEnum[] | PopoverTriggerActionEnum
+  /**
+   * 鼠标移入展示延时，单位：毫秒
+   */
+  mouseEnterDelay?: number
+  /**
+   * 鼠标移出后隐藏延时，单位：毫秒
+   */
+  mouseLeaveDelay?: number
 }
 
 export type UsePopoverReturn = ReturnType<typeof usePopover>

@@ -26,7 +26,7 @@ const holiday = {
   PRCLunar: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCLunar.json?',
   IndiaHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/IndiaHoliday.json?',
 }
-export const deconstructDate = (original: Date | string | number) => {
+export const deconstructDate = (original: Date | string | number | null) => {
   const date = moment(original)
 
   return {

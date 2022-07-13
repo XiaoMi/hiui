@@ -8,7 +8,7 @@ import React, {
   useMemo,
 } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { __DEV__ } from '@hi-ui/env'
+import { __DEV__, invariant } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useTooltip, UseTooltipProps } from './use-tooltip'
 import { CSSTransition } from 'react-transition-group'
@@ -107,7 +107,7 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
           )
         } else {
           if (__DEV__) {
-            console.warn('WARNING (Tooltip): The children should be an React.Element.')
+            invariant(false, 'The children should be an React.Element.')
           }
         }
       }

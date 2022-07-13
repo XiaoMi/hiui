@@ -39,8 +39,8 @@ export const Badge = forwardRef<HTMLSpanElement | null, BadgeProps>(
       }
 
       if (Array.isArray(offset)) {
-        invariant(typeof offset[0] === 'number', 'The offset[0] prop should be number array.')
-        invariant(typeof offset[1] === 'number', 'The offset[1] prop should be number array.')
+        invariant(typeof offset[0] === 'number', 'The offset[0] prop should be number type.')
+        invariant(typeof offset[1] === 'number', 'The offset[1] prop should be number type.')
 
         style.marginTop = offset[1]
         style.marginRight = -offset[0]
