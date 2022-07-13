@@ -108,7 +108,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const valueAdapter = useCallback((original?: DatePickerValueV3 | DatePickerValueV3[]) => {
       if (!original) {
-        return undefined
+        return original
       } else {
         if (Array.isArray(original)) {
           return {
