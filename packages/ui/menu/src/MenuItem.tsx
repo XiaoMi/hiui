@@ -5,10 +5,11 @@ import { DownOutlined, UpOutlined, RightOutlined } from '@hi-ui/icons'
 import MenuContext from './context'
 import Popper from '@hi-ui/popper'
 import { Expander } from './Expander'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
 import { times } from '@hi-ui/array-utils'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { MenuDataItem } from './types'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -24,6 +25,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
       level = 1,
       children,
       parentIds,
+      render,
       ...rest
     },
     ref
@@ -97,7 +99,9 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               : null}
 
             {icon ? <span className={`${prefixCls}-item__icon`}>{icon}</span> : null}
-            <span className={`${prefixCls}-item__content`}>{title}</span>
+            <span className={`${prefixCls}-item__content`}>
+              {isFunction(render) ? render({ id, icon, title }) : title}
+            </span>
             {/* 垂直菜单-纵向展开 */}
             {hasChildren &&
               !mini &&
@@ -383,6 +387,7 @@ export interface MenuItemProps extends Omit<HiBaseHTMLProps<'li'>, 'id'> {
   children?: MenuItemProps[]
   level?: number
   parentIds?: React.ReactText[]
+  render?: (node: MenuDataItem) => React.ReactNode
 }
 
 if (__DEV__) {

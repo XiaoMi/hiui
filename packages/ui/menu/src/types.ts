@@ -22,3 +22,14 @@ export interface MenuDataItem {
    */
   children?: MenuDataItem[]
 }
+
+export interface MenuFooterRenderProps {
+  /**
+   * 当前菜单收起状态
+   */
+  collapsed?: boolean
+  /**
+   * 当前菜单收缩控制器节点
+   */
+  collapseNode?: React.ReactNode
+}

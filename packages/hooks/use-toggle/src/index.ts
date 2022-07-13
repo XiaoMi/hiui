@@ -40,6 +40,7 @@ interface UseUncontrolledToggleProps {
   defaultVisible?: boolean | (() => boolean)
   disabled?: boolean
   visible?: boolean
+  onToggle?: (visible: boolean) => void
   onClose?: () => void
   onOpen?: () => void
   isEqual?: (prev: boolean, next: boolean) => boolean
@@ -53,12 +54,14 @@ export function useUncontrolledToggle({
   visible: visibleProp,
   onClose,
   onOpen,
+  onToggle,
   isEqual,
   disabled = false,
 }: UseUncontrolledToggleProps) {
   const onVisibleChange = useLatestCallback((nextVisible: boolean) => {
     const callback = nextVisible ? onOpen : onClose
     callback?.()
+    onToggle?.(nextVisible)
   })
 
   const [bool, setBool] = useUncontrolledState(

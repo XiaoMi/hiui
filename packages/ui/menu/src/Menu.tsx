@@ -7,8 +7,11 @@ import MenuContext from './context'
 import { getAncestorIds } from './util'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { MenuDataItem } from './types'
+import { MenuDataItem, MenuFooterRenderProps } from './types'
 import Tooltip from '@hi-ui/tooltip'
+import { useUncontrolledToggle } from '@hi-ui/use-toggle'
+import { getTreeNodesWithChildren } from '@hi-ui/tree-utils'
+import { isFunction } from '@hi-ui/type-assertion'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -30,12 +33,17 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       // 仅对垂直模式有效
       expandedType = 'collapse',
       showAllSubMenus = false,
+      defaultExpandedAll = false,
       defaultExpandedIds = DEFAULT_EXPANDED_IDS,
       expandedIds: expandedIdsProp,
       onExpand,
       defaultActiveId = '',
       activeId: activeIdProp,
       onClickSubMenu,
+      collapsed,
+      defaultCollapsed = false,
+      onCollapse,
+      footerRender,
       onClick,
       ...rest
     },
@@ -50,7 +58,11 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     }, [activeId, data])
 
     const [expandedIds, updateExpandedIds] = useUncontrolledState(
-      defaultExpandedIds,
+      () => {
+        return defaultExpandedAll
+          ? getTreeNodesWithChildren(data).map((node) => node.id)
+          : defaultExpandedIds
+      },
       expandedIdsProp,
       onExpand
     )
@@ -86,18 +98,39 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       updateExpandedIds([])
     }, [updateExpandedIds])
 
-    const [mini, setMini] = useState(false)
-    const cls = cx(prefixCls, className, `${prefixCls}--${placement}`, {
-      [`${prefixCls}--mini`]: mini,
-      [`${prefixCls}--popup`]: expandedType === 'pop' || showAllSubMenus || mini,
+    const [mini, miniToggleAction] = useUncontrolledToggle({
+      defaultVisible: defaultCollapsed,
+      visible: collapsed,
+      onToggle: onCollapse,
     })
 
-    const onToggle = useCallback(() => {
-      setMini(!mini)
-      closeAllPopper()
-    }, [mini, closeAllPopper])
+    const isVertical = placement === 'vertical'
+    const canToggle = isVertical && showCollapse
+    const showMini = isVertical && mini
 
-    const canToggle = placement === 'vertical' && showCollapse
+    const renderFooter = () => {
+      const collapseNode = canToggle ? (
+        <div className={cx(`${prefixCls}__toggle`)} onClick={miniToggleAction.not}>
+          {mini ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        </div>
+      ) : null
+
+      return (
+        <>
+          {isFunction(footerRender)
+            ? footerRender({ collapsed: showMini, collapseNode })
+            : collapseNode}
+        </>
+      )
+    }
+
+    const cls = cx(
+      prefixCls,
+      className,
+      `${prefixCls}--${placement}`,
+      mini && `${prefixCls}--mini`,
+      (expandedType === 'pop' || showAllSubMenus || mini) && `${prefixCls}--popup`
+    )
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
@@ -118,20 +151,17 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
         >
           <ul className={cx(`${prefixCls}__wrapper`)}>
             {data.map((item) => {
-              return canToggle && mini ? (
+              return showMini ? (
                 <Tooltip title={item.title} key={item.id} placement="right">
-                  <MenuItem {...item} level={1} />
+                  <MenuItem {...item} level={1} render={renderMenuItemMini} />
                 </Tooltip>
               ) : (
                 <MenuItem {...item} key={item.id} level={1} />
               )
             })}
           </ul>
-          {canToggle ? (
-            <div className={cx(`${prefixCls}__toggle`)} onClick={onToggle}>
-              {mini ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            </div>
-          ) : null}
+
+          <div className={`${prefixCls}__footer`}>{renderFooter()}</div>
         </MenuContext.Provider>
       </div>
     )
@@ -160,6 +190,10 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
    */
   collapsed?: boolean
   /**
+   * 默认是否收起子菜单，菜单垂直展示时有效
+   */
+  defaultCollapsed?: boolean
+  /**
    * 是否显示收缩开关，菜单垂直展示时有效
    */
   showCollapse?: boolean
@@ -180,11 +214,15 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
    */
   expandedType?: 'collapse' | 'pop'
   /**
-   * 默认展开菜单项 ids 列表
+   * 首次渲染默认展开所有菜单项，为非受控模式
+   */
+  defaultExpandedAll?: boolean
+  /**
+   * 首次渲染默认展开菜单项 ids 列表，为非受控模式
    */
   defaultExpandedIds?: React.ReactText[]
   /**
-   * 展开菜单项 ids 列表
+   * 展开菜单项 ids 列表，开启受控
    */
   expandedIds?: React.ReactText[]
   /**
@@ -203,8 +241,27 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
    * 点击收缩开关时的回调
    */
   onCollapse?: (collapsed: boolean) => void
+  /**
+   * 底部渲染器
+   */
+  footerRender?: (props: MenuFooterRenderProps) => React.ReactNode
 }
 
 if (__DEV__) {
   Menu.displayName = 'Menu'
+}
+
+/**
+ * Mini 模式下渲染 item
+ */
+const renderMenuItemMini = (menu: MenuDataItem) => {
+  if (typeof menu.icon !== 'undefined') {
+    return menu.icon
+  }
+
+  if (typeof menu.title === 'string') {
+    return menu.title.substring(0, 1)
+  }
+
+  return menu.title
 }

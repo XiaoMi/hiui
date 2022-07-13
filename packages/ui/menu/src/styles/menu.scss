@@ -258,6 +258,7 @@ $prefix: '#{$component-prefix}-menu' !default;
       border-radius: use-border-radius('normal');
       color: use-color('gray', 500);
       height: 40px;
+      flex-shrink: 0;
 
       // @animation
       transition-duration: use-motion-duration('normal');

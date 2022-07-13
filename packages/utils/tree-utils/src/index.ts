@@ -691,3 +691,18 @@ export const getTreeAncestors = <T extends BaseTreeNodeData>(tree: T[]) => {
 
   return ancestors
 }
+
+/**
+ * 基于树结构，获取所有存在子级的节点，返回节点的列表数组
+ */
+export const getTreeNodesWithChildren = <T extends BaseTreeNodeData>(tree: T[]) => {
+  const nodes = [] as T[]
+
+  visitTree(tree, (node) => {
+    if (Array.isArray(node.children)) {
+      nodes.push(node)
+    }
+  })
+
+  return nodes
+}
