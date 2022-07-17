@@ -245,7 +245,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
                 </Tooltip>
               ) : (
                 <MenuItem
-                  hidden={index >= tagMaxCount}
+                  hidden={!showVertical && index >= tagMaxCount}
                   {...item}
                   key={item.id}
                   level={1}
