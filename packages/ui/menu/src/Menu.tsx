@@ -43,7 +43,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       // 仅对垂直模式有效
       expandedType = 'collapse',
       showAllSubMenus = false,
-      defaultExpandedAll = false,
+      defaultExpandAll = false,
       defaultExpandedIds = DEFAULT_EXPANDED_IDS,
       expandedIds: expandedIdsProp,
       onExpand,
@@ -69,7 +69,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     const [expandedIds, updateExpandedIds] = useUncontrolledState(
       () => {
-        return defaultExpandedAll
+        return defaultExpandAll
           ? getTreeNodesWithChildren(data).map((node) => node.id)
           : defaultExpandedIds
       },
@@ -316,7 +316,7 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
   /**
    * 首次渲染默认展开所有菜单项，为非受控模式
    */
-  defaultExpandedAll?: boolean
+  defaultExpandAll?: boolean
   /**
    * 首次渲染默认展开菜单项 ids 列表，为非受控模式
    */

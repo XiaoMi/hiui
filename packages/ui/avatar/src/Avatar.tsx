@@ -78,7 +78,7 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
       prefixCls,
       !shouldUseSpecialSize && `${prefixCls}--size-${size}`,
       `${prefixCls}--shape-${shape}`,
-      `${prefixCls}--bordered`,
+      bordered && `${prefixCls}--bordered`,
       className
     )
 

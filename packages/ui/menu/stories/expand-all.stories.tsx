@@ -16,7 +16,7 @@ export const DefaultExpandAll = () => {
       >
         <Menu
           showCollapse
-          defaultExpandedAll
+          defaultExpandAll
           data={[
             {
               title: '首页',
