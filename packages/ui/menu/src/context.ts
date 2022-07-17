@@ -1,4 +1,5 @@
 import React, { createContext } from 'react'
+import { MenuDataItem } from './types'
 
 const MenuContext = createContext<{
   placement?: 'vertical' | 'horizontal'
@@ -8,7 +9,7 @@ const MenuContext = createContext<{
   expandedIds?: React.ReactText[]
   activeId?: React.ReactText
   activeParents?: React.ReactText[]
-  clickMenu?: (id: React.ReactText) => void
+  clickMenu?: (id: React.ReactText, raw: MenuDataItem) => void
   clickSubMenu?: (id: React.ReactText) => void
   closePopper?: (id: React.ReactText) => void
   closeAllPopper?: () => void

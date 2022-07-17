@@ -152,7 +152,8 @@ $prefix: '#{$component-prefix}-menu' !default;
 
   &--horizontal {
     width: 100%;
-    overflow-x: auto;
+    // overflow-x: auto;
+    overflow: hidden;
 
     .#{$prefix}__wrapper {
       display: flex;
@@ -162,7 +163,7 @@ $prefix: '#{$component-prefix}-menu' !default;
     }
 
     .#{$prefix}-item {
-      margin: 0 use-spacing(10);
+      padding: 0 use-spacing(10);
       display: flex;
       justify-content: center;
       align-items: center;

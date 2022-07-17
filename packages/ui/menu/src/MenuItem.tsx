@@ -13,6 +13,13 @@ import { MenuDataItem } from './types'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
+const hiddenStyle: React.CSSProperties = {
+  position: 'absolute',
+  opacity: 0,
+  order: 9999,
+  visibility: 'hidden',
+}
+
 export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
   (
     {
@@ -25,7 +32,9 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
       level = 1,
       children,
       parentIds,
+      hidden = false,
       render,
+      raw,
       ...rest
     },
     ref
@@ -67,6 +76,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             },
             className
           )}
+          style={hidden ? hiddenStyle : undefined}
           {...rest}
         >
           <div
@@ -83,7 +93,8 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                 }
               } else {
                 if (clickMenu) {
-                  clickMenu(id)
+                  // @ts-ignore
+                  clickMenu(id, raw)
                 }
                 if (
                   closeAllPopper &&
@@ -146,7 +157,13 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             <Expander visible={!!expandedIds?.includes(id)}>
               <ul className={`${prefixCls}-submenu`}>
                 {children!.map((child) => (
-                  <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+                  <MenuItem
+                    {...child}
+                    key={child.id}
+                    level={level + 1}
+                    parentIds={_parentIds}
+                    raw={child}
+                  />
                 ))}
               </ul>
             </Expander>
@@ -264,7 +281,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                           <div
                             onClick={() => {
                               if (clickMenu) {
-                                clickMenu(item.id)
+                                clickMenu(item.id, item)
                               }
                               if (closePopper) {
                                 closePopper(id)
@@ -355,7 +372,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                             })}
                             onClick={() => {
                               if (clickMenu) {
-                                clickMenu(item.id)
+                                clickMenu(item.id, item)
                               }
                               if (closePopper) {
                                 closePopper(id)
@@ -384,10 +401,11 @@ export interface MenuItemProps extends Omit<HiBaseHTMLProps<'li'>, 'id'> {
   title: React.ReactNode
   icon?: React.ReactNode
   disabled?: boolean
-  children?: MenuItemProps[]
+  children?: MenuDataItem[]
   level?: number
   parentIds?: React.ReactText[]
   render?: (node: MenuDataItem) => React.ReactNode
+  raw?: MenuDataItem
 }
 
 if (__DEV__) {

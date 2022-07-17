@@ -1,4 +1,11 @@
-import React, { forwardRef, useCallback, useState, useEffect } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
@@ -11,12 +18,15 @@ import { MenuDataItem, MenuFooterRenderProps } from './types'
 import Tooltip from '@hi-ui/tooltip'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { getTreeNodesWithChildren } from '@hi-ui/tree-utils'
-import { isFunction } from '@hi-ui/type-assertion'
+import { isFunction, isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { useResizeObserver } from '@hi-ui/use-resize-observer'
+import { useMergeRefs } from '@hi-ui/use-merge-refs'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
 const DEFAULT_EXPANDED_IDS = [] as []
 const NOOP_ARRAY = [] as []
+const MIN_WIDTH = 56
 
 /**
  * TODO: What is Menu
@@ -68,8 +78,8 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     )
 
     const clickMenu = useCallback(
-      (id: React.ReactText) => {
-        updateActiveId(id)
+      (id: React.ReactText, raw: MenuDataItem) => {
+        updateActiveId(id, raw)
       },
       [updateActiveId]
     )
@@ -104,9 +114,87 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       onToggle: onCollapse,
     })
 
-    const isVertical = placement === 'vertical'
-    const canToggle = isVertical && showCollapse
-    const showMini = isVertical && mini
+    const showVertical = placement === 'vertical'
+    const canToggle = showVertical && showCollapse
+    const showMini = showVertical && mini
+
+    const [containerElement, setContainerElement] = useState<HTMLDivElement | null>(null)
+    const [containerWidth = 0, setContainerWidth] = useState<number>()
+
+    useResizeObserver({
+      element: containerElement,
+      disabled: showVertical,
+      getSize: (element) => {
+        const itemRect = element.getBoundingClientRect()
+        return itemRect.width
+      },
+      onResize: (el, width) => {
+        setContainerWidth(width)
+      },
+    })
+
+    const [tagMaxCount, setTagMaxCount] = useState(0)
+
+    const mergedTagList = useMemo(() => {
+      if (showVertical) return data
+      if (containerWidth < MIN_WIDTH) return data
+      return data.slice(0, Math.min(data.length, containerWidth / MIN_WIDTH))
+    }, [showVertical, data, containerWidth])
+
+    const restTagList = useMemo(() => {
+      if (tagMaxCount > 0) return data.slice(tagMaxCount)
+      return []
+    }, [data, tagMaxCount])
+
+    const getTagWidth = useCallback(
+      (index: number) => {
+        if (!containerElement) return MIN_WIDTH
+        const elements = containerElement.getElementsByClassName('hi-v4-menu-item')
+        const element = elements && elements[index]
+        if (!element) return MIN_WIDTH
+        return element.getBoundingClientRect().width
+      },
+      [containerElement]
+    )
+
+    useLayoutEffect(() => {
+      if (showVertical) return
+
+      let tagMaxCount = 0
+
+      if (isArrayNonEmpty(mergedTagList)) {
+        const len = mergedTagList.length
+        const lastIndex = len - 1
+
+        let totalWidth = 72 // 更多
+
+        for (let i = 0; i < len; ++i) {
+          const currentTagWidth = getTagWidth(i)
+
+          if (currentTagWidth === undefined) {
+            break
+          }
+
+          totalWidth += currentTagWidth
+
+          if (
+            (lastIndex === 0 && totalWidth <= containerWidth) ||
+            (i === lastIndex - 1 && totalWidth + getTagWidth(lastIndex) <= containerWidth)
+          ) {
+            tagMaxCount = lastIndex
+            break
+          } else if (totalWidth > containerWidth) {
+            tagMaxCount = i - 1
+            break
+          }
+        }
+      } else {
+        tagMaxCount = 0
+      }
+
+      // 保底要展示 1 个
+      setTagMaxCount(isArrayNonEmpty(mergedTagList) && tagMaxCount < 1 ? 1 : tagMaxCount + 1)
+    }, [showVertical, getTagWidth, containerWidth, mergedTagList])
 
     const renderFooter = () => {
       const collapseNode = canToggle ? (
@@ -133,7 +221,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     )
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
+      <div ref={useMergeRefs(ref, setContainerElement)} role={role} className={cls} {...rest}>
         <MenuContext.Provider
           value={{
             placement,
@@ -150,15 +238,27 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
           }}
         >
           <ul className={cx(`${prefixCls}__wrapper`)}>
-            {data.map((item) => {
+            {mergedTagList.map((item, index) => {
               return showMini ? (
                 <Tooltip title={item.title} key={item.id} placement="right">
-                  <MenuItem {...item} level={1} render={renderMenuItemMini} />
+                  <MenuItem {...item} level={1} render={renderMenuItemMini} raw={item} />
                 </Tooltip>
               ) : (
-                <MenuItem {...item} key={item.id} level={1} />
+                <MenuItem
+                  hidden={index >= tagMaxCount}
+                  {...item}
+                  key={item.id}
+                  level={1}
+                  raw={item}
+                />
               )
             })}
+            <MenuItem
+              hidden={showVertical || restTagList.length === 0}
+              id="hi-v4-menu-more"
+              title="更多"
+              children={restTagList}
+            />
           </ul>
 
           <div className={`${prefixCls}__footer`}>{renderFooter()}</div>
@@ -232,7 +332,7 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
   /**
    * 点击菜单选项时的回调
    */
-  onClick?: (menuId: React.ReactText) => void
+  onClick?: (menuId: React.ReactText, menuItem: MenuDataItem) => void
   /**
    * 点击父菜单项时的回调
    */

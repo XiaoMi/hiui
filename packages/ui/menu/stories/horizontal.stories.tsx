@@ -23,6 +23,7 @@ export const Horizontal = () => {
       >
         <Menu
           placement="horizontal"
+          onClick={console.log}
           data={[
             {
               title: '电视',
@@ -114,6 +115,26 @@ export const Horizontal = () => {
             {
               title: '数码产品',
               id: 4,
+              icon: <PadOutlined />,
+            },
+            {
+              title: '一级导航1',
+              id: 5,
+              icon: <PadOutlined />,
+            },
+            {
+              title: '一级导航2',
+              id: 6,
+              icon: <PadOutlined />,
+            },
+            {
+              title: '一级导航3',
+              id: 7,
+              icon: <PadOutlined />,
+            },
+            {
+              title: '一级导航4',
+              id: 8,
               icon: <PadOutlined />,
             },
           ]}
