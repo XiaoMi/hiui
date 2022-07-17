@@ -9,6 +9,8 @@
       "packages/hooks/*",
       "packages/core/*",
       "packages/icons/*",
+      "packages/motions/*",
+      "packages/patches/*",
       "packages/*",
       "scripts/*",
       "docs/*",

@@ -7,6 +7,8 @@
     "packages/hooks/*",
     "packages/utils/*",
     "packages/icons/*",
+    "packages/motions/*",
+    "packages/patches/*",
     "packages/*",
     "scripts/*",
     "docs/*",
