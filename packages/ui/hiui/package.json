@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.0.0-beta.89",
+  "version": "4.0.0-beta.90",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -68,7 +68,7 @@
     "@hi-ui/list": "^4.0.0-beta.49",
     "@hi-ui/loading": "^4.0.0-beta.26",
     "@hi-ui/locale-context": "^4.0.0-beta.20",
-    "@hi-ui/menu": "^4.0.0-beta.29",
+    "@hi-ui/menu": "^4.0.0-beta.30",
     "@hi-ui/message": "^4.0.0-beta.19",
     "@hi-ui/modal": "^4.0.0-beta.37",
     "@hi-ui/notification": "^4.0.0-beta.20",
