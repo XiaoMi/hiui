@@ -69,7 +69,7 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="carousel-basic__wrap" style={{ width: '760px', height: '320px' }}>
+      <div className="carousel-basic__wrap" style={{ minWidth: '660px', height: '320px' }}>
         <Carousel>{generateContent()}</Carousel>
       </div>
     </>

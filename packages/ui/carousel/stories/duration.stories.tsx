@@ -70,11 +70,11 @@ export const Duration = () => {
     <>
       <h1>Duration</h1>
       <h2>0ms(default)(disabled)</h2>
-      <div style={{ width: '760px', height: '320px' }}>
+      <div style={{ minWidth: '660px', height: '320px' }}>
         <Carousel>{generateContent()}</Carousel>
       </div>
       <h2>5000ms</h2>
-      <div style={{ width: '760px', height: '320px' }}>
+      <div style={{ minWidth: '660px', height: '320px' }}>
         <Carousel duration={5000}>{generateContent()}</Carousel>
       </div>
     </>

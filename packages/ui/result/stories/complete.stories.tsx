@@ -1,17 +1,18 @@
 import React from 'react'
-import Result, { IconNetError } from '../src'
+import Result, { ResultIconServerError } from '../src'
 import Button from '@hi-ui/button'
 
 /**
  * @title 带按钮
+ * @desc 通过 `children` 配置补充的操作或建议提示
  */
 export const Complete = () => {
   return (
     <>
       <h1>完整功能</h1>
-      <div className="result-basic__wrap" style={{ width: '760px' }}>
+      <div className="result-basic__wrap">
         <Result
-          image={<IconNetError />}
+          image={<ResultIconServerError />}
           title="网络连接失败"
           content="这是对网络连接失败的说明文案"
         >

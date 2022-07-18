@@ -70,15 +70,15 @@ export const ArrowSize = () => {
     <>
       <h1>arrow size</h1>
       <h2>lg(large)</h2>
-      <div style={{ width: '760px', height: '320px' }}>
+      <div style={{ minWidth: '660px', height: '320px' }}>
         <Carousel arrowSize={'lg'}>{generateContent()}</Carousel>
       </div>
       <h2>md(middle)</h2>
-      <div style={{ width: '760px', height: '320px' }}>
+      <div style={{ minWidth: '660px', height: '320px' }}>
         <Carousel arrowSize={'md'}>{generateContent()}</Carousel>
       </div>
       <h2>sm(small)</h2>
-      <div style={{ width: '760px', height: '320px' }}>
+      <div style={{ minWidth: '660px', height: '320px' }}>
         <Carousel arrowSize={'sm'}>{generateContent()}</Carousel>
       </div>
     </>

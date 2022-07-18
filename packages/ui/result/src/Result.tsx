@@ -2,19 +2,20 @@ import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
-import { CheckCircleFilled, CloseCircleFilled, ExclamationCircleFilled } from '@hi-ui/icons'
 import { isNullish, isUndefined } from '@hi-ui/type-assertion'
 import { ResultImageSizeEnum, ResultTypeEnum } from './types'
+import { ResultIconInfo, ResultIconSuccess, ResultIconWarning, ResultIconError } from './icons'
 
 const RESULT_PREFIX = getPrefixCls('result')
 
-const ImageSizeMap = {
-  [HiBaseSizeEnum.SM]: { width: '64px', height: '64px' },
-  [HiBaseSizeEnum.MD]: { width: '88px', height: '88px' },
-  [HiBaseSizeEnum.LG]: { width: '114px', height: '114px' },
+const DEFAULT_ICON_MAP = {
+  [ResultTypeEnum.INFO]: ResultIconInfo,
+  [ResultTypeEnum.SUCCESS]: ResultIconSuccess,
+  [ResultTypeEnum.WARNING]: ResultIconWarning,
+  [ResultTypeEnum.ERROR]: ResultIconError,
 }
 
-const ImageContainerSizeMap = {
+const IMAGE_CONTAINER_STYLE_MAP = {
   [HiBaseSizeEnum.SM]: { width: '100px', height: '100px' },
   [HiBaseSizeEnum.MD]: { width: '140px', height: '140px' },
   [HiBaseSizeEnum.LG]: { width: '180px', height: '180px' },
@@ -42,30 +43,20 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
     const cls = cx(prefixCls, className)
 
     const renderImage = () => {
-      const IconMap = {
-        [ResultTypeEnum.info]: (
-          <ExclamationCircleFilled style={{ ...ImageSizeMap[imageSize], color: '#237ffa' }} />
-        ),
-        [ResultTypeEnum.success]: (
-          <CheckCircleFilled style={{ ...ImageSizeMap[imageSize], color: '#14ca64' }} />
-        ),
-        [ResultTypeEnum.warn]: (
-          <ExclamationCircleFilled style={{ ...ImageSizeMap[imageSize], color: '#fab007' }} />
-        ),
-        [ResultTypeEnum.error]: (
-          <CloseCircleFilled style={{ ...ImageSizeMap[imageSize], color: '#ff5959' }} />
-        ),
-      }
+      const DefaultImage = DEFAULT_ICON_MAP[type]
 
       // image和type至少有一个是正确的
-      if (isNullish(image) && isUndefined(IconMap[type])) {
+      if (isNullish(image) && isUndefined(DefaultImage)) {
         invariant(false, 'The image or type ensure that at least one is correct.')
         return
       }
 
       return (
-        <div style={ImageContainerSizeMap[imageSize]} className={`${prefixCls}__image-container`}>
-          {image || IconMap[type]}
+        <div
+          style={IMAGE_CONTAINER_STYLE_MAP[imageSize]}
+          className={`${prefixCls}__image-container`}
+        >
+          {image ?? <DefaultImage />}
         </div>
       )
     }
@@ -91,15 +82,15 @@ export interface ResultProps extends HiBaseHTMLProps<'div'> {
    */
   imageSize?: ResultImageSizeEnum
   /**
-   * 组件类型
+   * 结果类型，默认有通知、成功、错误、警告四种
    */
   type?: ResultTypeEnum
   /**
-   * 标题
+   * 提示标题
    */
   title: React.ReactNode
   /**
-   * 内容
+   * 提示内容
    */
   content?: React.ReactNode
 }
@@ -107,5 +98,3 @@ export interface ResultProps extends HiBaseHTMLProps<'div'> {
 if (__DEV__) {
   Result.displayName = 'Result'
 }
-
-export * from './icons/index'

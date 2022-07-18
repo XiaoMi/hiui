@@ -70,23 +70,23 @@ export const dotPlacement = () => {
     <>
       <h1>dot position</h1>
       <h2>bottom(default)</h2>
-      <div style={{ width: '760px', height: '320px' }}>
+      <div style={{ minWidth: '660px', height: '320px' }}>
         <Carousel>{generateContent()}</Carousel>
       </div>
       <h2>left</h2>
-      <div style={{ width: '760px', height: '320px' }}>
+      <div style={{ minWidth: '660px', height: '320px' }}>
         <Carousel dotPlacement={'left'}>{generateContent()}</Carousel>
       </div>
       <h2>top</h2>
-      <div style={{ width: '760px', height: '320px' }}>
+      <div style={{ minWidth: '660px', height: '320px' }}>
         <Carousel dotPlacement={'top'}>{generateContent()}</Carousel>
       </div>
       <h2>right</h2>
-      <div style={{ width: '760px', height: '320px' }}>
+      <div style={{ minWidth: '660px', height: '320px' }}>
         <Carousel dotPlacement={'right'}>{generateContent()}</Carousel>
       </div>
       <h2>outer</h2>
-      <div style={{ width: '760px', height: '320px' }}>
+      <div style={{ minWidth: '660px', height: '320px' }}>
         <Carousel dotPlacement={'outer'}>{generateContent()}</Carousel>
       </div>
     </>

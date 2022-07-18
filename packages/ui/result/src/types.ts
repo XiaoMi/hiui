@@ -2,10 +2,10 @@ import { ValueOf } from 'packages/core/core/lib/types'
 import { HiBaseSizeEnum } from '@hi-ui/core'
 
 export const ResultTypeEnum = {
-  info: 'info',
-  success: 'success',
-  warn: 'warning',
-  error: 'error',
+  INFO: 'info',
+  SUCCESS: 'success',
+  WARNING: 'warning',
+  ERROR: 'error',
 } as const
 
 // 对外暴露同名联合类型

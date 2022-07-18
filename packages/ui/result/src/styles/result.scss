@@ -13,14 +13,14 @@ $prefix: '#{$component-prefix}-result' !default;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: use-spacing(8);
+    margin-bottom: use-spacing(1);
   }
 
   &__title {
-    font-size: use-text-size('normal');
+    font-size: use-text-size('xl');
     font-weight: use-text-weight('medium');
     color: use-color('gray', 700);
-    line-height: use-text-lineheight('normal');
+    line-height: use-text-lineheight('xxl');
   }
 
   &__content {
@@ -28,13 +28,12 @@ $prefix: '#{$component-prefix}-result' !default;
     font-weight: use-text-weight('normal');
     color: use-color('gray', 600);
     line-height: use-text-lineheight('normal');
-    margin-top: use-spacing(2);
+    margin-top: use-spacing(1);
   }
 
   &__children {
     width: 100%;
     text-align: center;
-    margin-top: use-spacing(12);
+    margin-top: use-spacing(6);
   }
-
 }
