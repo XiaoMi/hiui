@@ -5,6 +5,7 @@ import Button from '@hi-ui/button'
 
 /**
  * @title 对齐方式
+ * @desc 自定义元素之间的对齐方式，默认是居中
  */
 export const Align = () => {
   return (
@@ -16,36 +17,27 @@ export const Align = () => {
             <Avatar
               src="https://avatars.githubusercontent.com/u/810438?v=4"
               initials="P"
-              size="xl"
+              size="lg"
             />
-            <span>HiUI</span>
+            <span>start</span>
             <Button type="primary">button</Button>
           </Space>
           <Space align="center" size="md" style={{ border: '1px solid #f1f1f1', padding: 10 }}>
             <Avatar
               src="https://avatars.githubusercontent.com/u/810438?v=4"
               initials="P"
-              size="xl"
+              size="lg"
             />
-            <span>HiUI</span>
+            <span>center</span>
             <Button type="primary">button</Button>
           </Space>
           <Space align="flex-end" size="md" style={{ border: '1px solid #f1f1f1', padding: 10 }}>
             <Avatar
               src="https://avatars.githubusercontent.com/u/810438?v=4"
               initials="P"
-              size="xl"
+              size="lg"
             />
-            <span>HiUI</span>
-            <Button type="primary">button</Button>
-          </Space>
-          <Space align="baseline" size="md" style={{ border: '1px solid #f1f1f1', padding: 10 }}>
-            <Avatar
-              src="https://avatars.githubusercontent.com/u/810438?v=4"
-              initials="P"
-              size="xl"
-            />
-            <span>HiUI</span>
+            <span>end</span>
             <Button type="primary">button</Button>
           </Space>
         </Space>

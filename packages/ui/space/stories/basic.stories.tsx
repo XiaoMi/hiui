@@ -4,6 +4,7 @@ import Button from '@hi-ui/button'
 
 /**
  * @title 基础用法
+ * @desc 包裹目标元素们并使它们产生间距
  */
 export const Basic = () => {
   return (
@@ -11,9 +12,10 @@ export const Basic = () => {
       <h1>基本使用</h1>
       <div className="space-basic__wrap">
         <Space>
-          <Button>Button1</Button>
-          <Button type="primary">Button2</Button>
-          <Button type="danger">Button3</Button>
+          <Button type="primary">Button1</Button>
+          <Button>Button2</Button>
+          <Button>Button3</Button>
+          <Button>Button4</Button>
         </Space>
       </div>
     </>

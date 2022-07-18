@@ -1,7 +1,7 @@
-import React, { forwardRef, Children, Fragment } from 'react'
+import React, { forwardRef, Children, Fragment, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { invariant, __DEV__ } from '@hi-ui/env'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 import { isNullish } from '@hi-ui/type-assertion'
 
 import { handleTransformGap } from './utils'
@@ -21,20 +21,33 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
       inline = true,
       align = 'center',
       direction = 'row',
-      size = HiBaseSizeEnum.SM,
-      wrap = false,
+      size = 'sm',
+      wrap = true,
       style,
       className,
+      separator,
       split,
       children,
       ...rest
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const separatorMemo = useMemo(() => {
+      if (!isNullish(split)) {
+        if (isNullish(separator)) {
+          return split
+        }
+
+        invariant(false, 'Please use `separator` prop instead of `split` in Result.')
+      }
+
+      return separator
+    }, [split, separator])
 
     const childCount = Children.count(children)
     const formatGap = handleTransformGap(size)
+
+    const cls = cx(prefixCls, className)
 
     return (
       <div
@@ -52,11 +65,11 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
         {...rest}
       >
         {Children.map(children, (child, index) => {
-          const showSplit = !isNullish(split) && childCount > index + 1
+          const showSplit = !isNullish(separatorMemo) && childCount > index + 1
           return (
             <Fragment key={index}>
               <div className={`${cls}__item`}>{child}</div>
-              {showSplit && split}
+              {showSplit && separatorMemo}
             </Fragment>
           )
         })}
@@ -68,31 +81,30 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
 export interface SpaceProps extends HiBaseHTMLProps<'div'> {
   /**
    * 是否 inline-flex
-   * @default false
    */
   inline?: boolean
   /**
    * 当前轴垂直方向布局，alignItems
-   * @default center
    */
   align?: SpaceAlignEnum
   /**
    * flex轴方向
-   * @default row
    */
   direction?: SpaceDirectionEnum
   /**
-   * 间距大小，推荐使用枚举，如不符合需求可以设置具体数值
-   * @default 'sm'
+   * 间距大小，推荐使用内置枚举尺寸，也可以设置具体数值
    */
   size?: SpaceSizeEnum
   /**
    * space-item 之间插入 dom 结构
    */
+  separator?: React.ReactNode
+  /**
+   * @deprecated 请使用 `separator` prop 替代
+   */
   split?: React.ReactNode
   /**
-   * 是否换行
-   * @default false
+   * 是否自动换行
    */
   wrap?: boolean
 }
