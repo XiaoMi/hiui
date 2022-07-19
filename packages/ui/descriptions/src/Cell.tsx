@@ -5,7 +5,8 @@ import { isNullish } from '@hi-ui/type-assertion'
 export const Cell: React.FC<CellProps> = ({
   itemPrefixCls,
   component,
-  span,
+  colSpan,
+  rowSpan,
   className,
   style,
   bordered,
@@ -30,7 +31,8 @@ export const Cell: React.FC<CellProps> = ({
           className
         )}
         style={compareStyle}
-        colSpan={span}
+        colSpan={colSpan}
+        rowSpan={rowSpan}
       >
         {!isNullish(label) && <span>{label}</span>}
         {!isNullish(content) && <span>{content}</span>}
@@ -39,7 +41,7 @@ export const Cell: React.FC<CellProps> = ({
   }
 
   return (
-    <Component className={cx(`${itemPrefixCls}-item`, className)} style={style} colSpan={span}>
+    <Component className={cx(`${itemPrefixCls}-item`, className)} style={style} colSpan={colSpan}>
       <div className={`${itemPrefixCls}-item__container`}>
         {!isNullish(label) && (
           <span className={cx(`${itemPrefixCls}-item__label`)} style={{ width: labelWidth }}>
@@ -56,7 +58,8 @@ export const Cell: React.FC<CellProps> = ({
 
 export interface CellProps {
   itemPrefixCls: string
-  span: number
+  colSpan?: number
+  rowSpan?: number
   className?: string
   component: string
   style?: React.CSSProperties

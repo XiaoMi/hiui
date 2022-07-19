@@ -60,7 +60,7 @@ interface CellConfig {
 
 function renderCols(
   items: React.ReactElement<DescriptionsItemProps>[],
-  { prefixCls, bordered, labelPlacement, rootLabelWidth }: RowProps,
+  { prefixCls, bordered, labelPlacement: labelPlacementContext, rootLabelWidth }: RowProps,
   { component, type, showLabel, showContent }: CellConfig
 ) {
   return items.map(
@@ -73,7 +73,9 @@ function renderCols(
           className,
           style,
           labelWidth,
-          span = 1,
+          labelPlacement = labelPlacementContext,
+          colSpan = 1,
+          rowSpan,
         },
         key,
       },
@@ -85,7 +87,8 @@ function renderCols(
             key={`${type}-${key || index}`}
             className={className}
             style={style}
-            span={span}
+            colSpan={colSpan}
+            rowSpan={rowSpan}
             component={component}
             itemPrefixCls={itemPrefixCls}
             bordered={bordered}
@@ -95,12 +98,14 @@ function renderCols(
           />
         )
       }
+
       return [
         <Cell
           key={`label-${key || index}`}
           className={className}
           style={{ textAlign: labelPlacement, ...style }}
-          span={1}
+          colSpan={1}
+          rowSpan={rowSpan}
           component={component[0]}
           itemPrefixCls={itemPrefixCls}
           bordered={bordered}
@@ -111,7 +116,8 @@ function renderCols(
           key={`content-${key || index}`}
           className={className}
           style={style}
-          span={span * 2 - 1}
+          colSpan={colSpan * 2 - 1}
+          rowSpan={rowSpan}
           component={component[1]}
           itemPrefixCls={itemPrefixCls}
           bordered={bordered}

@@ -7,6 +7,6 @@ export * from './size.stories'
 export * from './custom.stories'
 
 export default {
-  title: 'FeedBack/Result (Alpha 暂不推荐业务项目中使用)',
+  title: 'FeedBack/Result',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

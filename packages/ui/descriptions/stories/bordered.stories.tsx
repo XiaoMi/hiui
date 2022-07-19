@@ -2,7 +2,8 @@ import React from 'react'
 import Descriptions from '../src'
 
 /**
- * @title table布局
+ * @title 带边框的
+ * @desc 设置 `appearance` 控制描述列表组件的展现形态
  */
 export const Bordered = () => {
   return (
@@ -14,7 +15,7 @@ export const Bordered = () => {
           <Descriptions.Item label="Phone">15311969622</Descriptions.Item>
           <Descriptions.Item label="Address">北京天安门</Descriptions.Item>
           <Descriptions.Item label="Money1">100000000</Descriptions.Item>
-          <Descriptions.Item label="Money2" span={2}>
+          <Descriptions.Item label="Money2" colSpan={2}>
             100000022220
           </Descriptions.Item>
           <Descriptions.Item label="Money3">

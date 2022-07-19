@@ -8,6 +8,6 @@ export * from './auto-size.stories'
 export * from './split.stories'
 
 export default {
-  title: 'Basic/Space (Alpha 暂不推荐业务项目中使用)',
+  title: 'Basic/Space',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

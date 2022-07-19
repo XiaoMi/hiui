@@ -2,7 +2,8 @@ import React from 'react'
 import Descriptions from '../src'
 
 /**
- * @title 垂直列表
+ * @title 上下布局
+ * @desc 支持 label 和 content 上下布局形式进行展示
  */
 export const Vertical = () => {
   return (

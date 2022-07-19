@@ -3,6 +3,7 @@ import Descriptions from '../src'
 
 /**
  * @title 基础用法
+ * @desc Descriptions 结合 Descriptions.Item 完成描述列表的动态配置
  */
 export const Basic = () => {
   return (

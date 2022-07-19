@@ -9,6 +9,6 @@ export * from './vertical-border.stories'
 export * from './label-width.stories'
 
 export default {
-  title: 'Data Display/Descriptions (Alpha 暂不推荐业务项目中使用)',
+  title: 'Data Display/Descriptions',
   decorators: [(story: Function) => <div style={{ width: '900px' }}>{story()}</div>],
 }

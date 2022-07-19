@@ -3,6 +3,7 @@ import Descriptions from '../src'
 
 /**
  * @title 固定label宽度
+ * @desc 根据实际请款配置label宽度，一个页面中label宽度应该保持一致
  */
 export const LabelWidth = () => {
   return (
@@ -16,7 +17,7 @@ export const LabelWidth = () => {
           <Descriptions.Item label="Phone">15311969622</Descriptions.Item>
           <Descriptions.Item label="Address">北京天安门</Descriptions.Item>
           <Descriptions.Item label="Money1">100000000</Descriptions.Item>
-          <Descriptions.Item label="Money2" span={2}>
+          <Descriptions.Item label="Money2" colSpan={2}>
             100000022220
           </Descriptions.Item>
           <Descriptions.Item label="Money3">
@@ -25,13 +26,13 @@ export const LabelWidth = () => {
           <Descriptions.Item label="Money4">1000000222201133</Descriptions.Item>
         </Descriptions>
         <Descriptions labelPlacement="right">
-          <Descriptions.Item label="名字label很长很长" labelWidth="100px">
+          <Descriptions.Item label="label名称很长很长" labelWidth="100px" labelPlacement="left">
             张三
           </Descriptions.Item>
           <Descriptions.Item label="Phone">15311969622</Descriptions.Item>
           <Descriptions.Item label="Address">北京天安门</Descriptions.Item>
           <Descriptions.Item label="Money1">100000000</Descriptions.Item>
-          <Descriptions.Item label="Money2" span={2}>
+          <Descriptions.Item label="Money2" colSpan={2}>
             100000022220
           </Descriptions.Item>
           <Descriptions.Item label="Money3">
