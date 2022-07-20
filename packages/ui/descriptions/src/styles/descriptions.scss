@@ -48,6 +48,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
     &__label {
       color: use-color('gray', 500);
       margin-inline-end: use-spacing(6);
+      flex-shrink: 0;
     }
 
     &__content {

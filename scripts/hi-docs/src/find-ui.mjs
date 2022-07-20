@@ -10,14 +10,7 @@ export async function findUI(baseURL) {
 }
 
 // TODO: 迁移至 hi-docs 配置项（考虑是否通用化）
-const helpfulPrivatePkgs = [
-  'popper',
-  'file-select',
-  'portal',
-  'spinner',
-  'highlighter',
-  'virtual-list',
-]
+const helpfulPrivatePkgs = ['popper', 'file-select', 'portal', 'spinner', 'virtual-list']
 const othersPrivatePkgs = ['icon-button', 'locale-context', 'picker', 'tag-input', 'toast']
 
 async function findComponentPkgFiles(baseURL) {
