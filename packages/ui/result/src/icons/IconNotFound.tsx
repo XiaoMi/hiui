@@ -1,7 +1,7 @@
 import React from 'react'
 
 const IconNotFound = () => (
-  <svg width="240px" height="240px" viewBox="0 0 240 240" version="1.1">
+  <svg width="100%" height="100%" viewBox="0 0 240 240" version="1.1">
     <g stroke="none">
       <g transform="translate(16.000000, 20.800000)">
         <path

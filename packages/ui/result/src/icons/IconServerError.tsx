@@ -1,7 +1,7 @@
 import React from 'react'
 
 const IconServerError = () => (
-  <svg width="240px" height="240px" viewBox="0 0 240 240" version="1.1">
+  <svg width="100%" height="100%" viewBox="0 0 240 240" version="1.1">
     <g stroke="none">
       <g transform="translate(9.000000, 21.000000)">
         <g transform="translate(0.325934, 0.000000)">

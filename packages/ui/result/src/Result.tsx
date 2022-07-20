@@ -4,15 +4,15 @@ import { __DEV__, invariant } from '@hi-ui/env'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { isNullish, isUndefined } from '@hi-ui/type-assertion'
 import { ResultImageSizeEnum, ResultTypeEnum } from './types'
-import { ResultIconInfo, ResultIconSuccess, ResultIconWarning, ResultIconError } from './icons'
+import { ResultImageInfo, ResultImageSuccess, ResultImageWarning, ResultImageError } from './icons'
 
 const RESULT_PREFIX = getPrefixCls('result')
 
 const DEFAULT_ICON_MAP = {
-  [ResultTypeEnum.INFO]: ResultIconInfo,
-  [ResultTypeEnum.SUCCESS]: ResultIconSuccess,
-  [ResultTypeEnum.WARNING]: ResultIconWarning,
-  [ResultTypeEnum.ERROR]: ResultIconError,
+  [ResultTypeEnum.INFO]: ResultImageInfo,
+  [ResultTypeEnum.SUCCESS]: ResultImageSuccess,
+  [ResultTypeEnum.WARNING]: ResultImageWarning,
+  [ResultTypeEnum.ERROR]: ResultImageError,
 }
 
 const IMAGE_CONTAINER_STYLE_MAP = {

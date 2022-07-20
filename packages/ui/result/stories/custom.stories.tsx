@@ -1,10 +1,10 @@
 import React from 'react'
 import Result, {
-  ResultIconClientError,
-  ResultIconNetError,
-  ResultIconForbidden,
-  ResultIconNotFound,
-  ResultIconServerError,
+  ResultImageClientError,
+  ResultImageNetError,
+  ResultImageForbidden,
+  ResultImageNotFound,
+  ResultImageServerError,
 } from '../src'
 import Button from '@hi-ui/button'
 
@@ -15,10 +15,10 @@ import Button from '@hi-ui/button'
 export const Custom = () => {
   return (
     <>
-      <h1>自定义图标</h1>
+      <h1>自定义指示器</h1>
       <div className="result-basic__wrap">
         <Result
-          image={<ResultIconClientError />}
+          image={<ResultImageClientError />}
           title="页面发送错误"
           content="这是对页面错误的说明文案"
           children={[
@@ -29,7 +29,7 @@ export const Custom = () => {
           ]}
         />
         <Result
-          image={<ResultIconNetError />}
+          image={<ResultImageNetError />}
           title="网络连接失败"
           content="这是对网络连接失败的说明文案"
           children={[
@@ -40,7 +40,7 @@ export const Custom = () => {
           ]}
         />
         <Result
-          image={<ResultIconForbidden />}
+          image={<ResultImageForbidden />}
           title="暂无权限"
           content="这是对暂无权限的说明文案"
           children={[
@@ -51,13 +51,13 @@ export const Custom = () => {
           ]}
         />
         <Result
-          image={<ResultIconNotFound />}
+          image={<ResultImageNotFound />}
           title="404"
           content="抱歉，请求资源不存在！"
           children={<Button type="primary">返回首页</Button>}
         />
         <Result
-          image={<ResultIconServerError />}
+          image={<ResultImageServerError />}
           title="500"
           content="抱歉，服务器开小差了！"
           children={<Button type="primary">刷新</Button>}

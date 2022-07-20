@@ -1,15 +1,15 @@
 // basic
-export * from './ResultIconInfo'
-export * from './ResultIconSuccess'
-export * from './ResultIconWarning'
-export * from './ResultIconError'
+export * from './ResultImageInfo'
+export * from './ResultImageSuccess'
+export * from './ResultImageWarning'
+export * from './ResultImageError'
 
 // advance
-export * from './ResultIconClientError'
-export * from './ResultIconServerError'
-export * from './ResultIconForbidden'
-export * from './ResultIconNetError'
-export * from './ResultIconNotFound'
+export * from './ResultImageClientError'
+export * from './ResultImageServerError'
+export * from './ResultImageForbidden'
+export * from './ResultImageNetError'
+export * from './ResultImageNotFound'
 
 // legacy from alpha
 export { default as IconSucceed } from './IconSucceed'
