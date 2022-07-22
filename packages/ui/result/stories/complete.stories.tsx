@@ -35,7 +35,9 @@ export const Complete = () => {
                 textAlign: 'left',
               }}
             >
-              {'请尝试：\n\n1. 检查您的电脑网络是否正常\n2. 关闭 Wi-Fi 重新链接'}
+              <div>请尝试：</div>
+              <div>1. 检查您的电脑网络是否正常</div>
+              <div>2. 关闭 Wi-Fi 重新链接</div>
             </div>
           </div>
         </Result>
