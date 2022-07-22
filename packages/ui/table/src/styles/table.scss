@@ -1,0 +1,575 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-table' !default;
+
+.#{$prefix} {
+  box-sizing: border-box;
+  font-size: 14px;
+  position: relative;
+
+  table {
+    width: 100%;
+    text-align: left;
+    background-color: use-color-static('white');
+    border-radius: 2px 2px 0 0;
+    border-spacing: 0;
+    border-collapse: separate;
+    display: table;
+    table-layout: fixed;
+  }
+
+  &__wrapper {
+    position: relative;
+    z-index: 0;
+  }
+
+  // 内嵌面板
+  &__switcher {
+    &.#{$component-prefix}-icon-button {
+      color: use-color('gray', 500);
+    }
+
+    &--expanded {
+      &.#{$component-prefix}-icon-button {
+        color: use-color-mode('primary', 400);
+      }
+    }
+  }
+
+  &--size {
+    &-md {
+      table {
+        tbody {
+          & > tr > td {
+            padding: use-spacing(7);
+          }
+        }
+
+        thead {
+          & > tr > th {
+            padding: use-spacing(7);
+          }
+        }
+      }
+    }
+
+    &-sm {
+      table {
+        tbody {
+          & > tr > td {
+            padding: use-spacing(5);
+          }
+        }
+
+        thead {
+          & > tr > th {
+            padding: use-spacing(5);
+          }
+        }
+      }
+    }
+
+    &-lg {
+      table {
+        tbody {
+          & > tr > td {
+            padding: use-spacing(9);
+          }
+        }
+
+        thead {
+          & > tr > th {
+            padding: use-spacing(9);
+          }
+        }
+      }
+    }
+  }
+
+  &--bordered {
+    table {
+      thead {
+        & > tr > th {
+          border-right: use-border-size('normal') use-color('gray', 200);
+        }
+      }
+
+      td {
+        border-right: use-border-size('normal') use-color('gray', 200);
+      }
+    }
+
+    .#{$prefix}-header {
+      border-top: use-border-size('normal') use-color('gray', 200);
+      border-left: use-border-size('normal') use-color('gray', 200);
+    }
+
+    .#{$prefix}-body {
+      border-left: use-border-size('normal') use-color('gray', 200);
+    }
+  }
+
+  // 嵌到式table，将会导致样式污染
+  // &--striped {
+  // tr:not(:hover):nth-child(2n) {
+  //   td {
+  //     background-color: use-color('gray', 50);
+  //   }
+  // }
+  // }
+
+  &--sticky {
+    position: sticky;
+    top: 0;
+  }
+
+  &-header {
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    &__resizable {
+      position: relative;
+      background-clip: padding-box;
+
+      &-handle {
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        bottom: 0;
+        right: 0;
+        cursor: col-resize;
+        z-index: 1;
+
+        &:hover {
+          background-color: use-color-mode('primary');
+        }
+      }
+    }
+
+    &-cell {
+      background-color: use-color('gray', 50);
+
+      $this: &;
+
+      &#{$this}__col--highlight,
+      &#{$this}__col--hovered-highlight,
+      &#{$this}__col--active {
+        background-color: use-color('gray', 100);
+
+        &[data-sticky] {
+          background-color: use-color('gray', 100);
+        }
+      }
+    }
+  }
+
+  &-row {
+    // 表示开启行hover高亮
+    &--hover {
+      &:hover {
+        & > .#{$prefix}-cell {
+          background-color: use-color-mode('primary', 50);
+        }
+      }
+    }
+
+    &--striped {
+      & > .#{$prefix}-cell {
+        background-color: use-color('gray', 50);
+      }
+    }
+
+    &--expanded {
+      & > .#{$prefix}-cell {
+        color: use-color('gray', 800);
+      }
+    }
+
+    &--error {
+      & > .#{$prefix}-cell {
+        color: use-color-mode('danger');
+      }
+    }
+
+    &--highlight {
+      & > .#{$prefix}-cell {
+        background-color: use-color-mode('primary', 50);
+      }
+    }
+
+    &--dragging {
+      & > .#{$prefix}-cell {
+        background-color: use-color-mode('primary', 50);
+      }
+    }
+
+    &--drag-top {
+      // TODO: 使用伪类，避免位置抖动
+      & > .#{$prefix}-cell {
+        border-top: 2px dashed use-color-mode('primary');
+      }
+    }
+
+    &--drag-bottom {
+      & > .#{$prefix}-cell {
+        border-bottom: 2px dashed use-color-mode('primary');
+      }
+    }
+
+    &--avg,
+    &--total {
+      & > .#{$prefix}-cell {
+        background-color: use-color('gray', 50);
+      }
+
+      &:hover {
+        & > .#{$prefix}-cell {
+          background-color: use-color('gray', 50);
+        }
+      }
+    }
+  }
+
+  // 利用 table colgroup 控制列
+  &-header-col,
+  &-col {
+    .#{$prefix}-header & {
+      background-color: use-color('gray', 50);
+    }
+
+    &[data-hover-highlight] {
+      .#{$prefix}-body & {
+        background-color: use-color-mode('primary', 50);
+      }
+
+      .#{$prefix}-header & {
+        background-color: use-color('gray', 100);
+      }
+    }
+  }
+}
+
+.#{$prefix}-body {
+  position: relative;
+  overflow: auto;
+}
+
+.#{$prefix}-header-cell {
+  color: use-color('gray', 700);
+  font-size: use-text-size('normal');
+  font-weight: use-text-weight('medium');
+  line-height: use-text-lineheight('sm');
+  padding: use-spacing(7) use-spacing(8);
+  border-bottom: use-border-size('normal') use-color('gray', 300);
+
+  &.#{$prefix}__embed-col,
+  &.#{$prefix}__selection-col {
+    padding: use-spacing(7) use-spacing(5);
+  }
+}
+
+// 单元格
+.#{$prefix}-cell {
+  word-break: break-word;
+  border-bottom: use-border-size('normal') use-color('gray', 300);
+  font-size: use-text-size('normal');
+  font-weight: use-text-weight('normal');
+  color: use-color('gray', 700);
+  line-height: use-text-lineheight('sm');
+  padding: use-spacing(7) use-spacing(8);
+  background-color: use-color-static('white');
+
+  &__indent {
+    display: inline-block;
+    width: 14px;
+    height: 100%;
+    margin-right: use-spacing(1);
+  }
+
+  // 树形展开
+  &__switcher {
+    &.#{$component-prefix}-icon-button {
+      margin-right: use-spacing(1);
+      color: use-color('gray', 500);
+    }
+  }
+
+  &.#{$prefix}__embed-col,
+  &.#{$prefix}__selection-col {
+    padding: use-spacing(7) use-spacing(5);
+  }
+
+  &.#{$prefix}-cell__col--highlight {
+    background-color: use-color-mode('primary', 50);
+  }
+
+  &.#{$prefix}-cell__col--hovered-highlight {
+    background-color: use-color-mode('primary', 50);
+  }
+}
+
+// 冻结列 阴影
+.#{$prefix}-freeze-shadow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 20;
+  pointer-events: none;
+  overflow: hidden;
+  height: 100%;
+  width: 200px;
+
+  &--left {
+    margin-right: 10px;
+    left: 0;
+    box-shadow: 6px 0 6px -4px rgba(0, 0, 0, 0.15);
+  }
+
+  &--right {
+    margin-left: 10px;
+    right: 0;
+    box-shadow: -6px 0 6px -4px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.#{$prefix}-header-filter {
+  &-dropdown {
+    &__trigger {
+      &.#{$component-prefix}-icon-button {
+        margin-left: 4px;
+      }
+    }
+
+    &__content {
+      width: 124px;
+      padding: use-spacing(6) use-spacing(4);
+      font-weight: use-text-weight('normal');
+    }
+
+    &__item {
+      margin-top: use-spacing(4);
+      padding: use-spacing(3) use-spacing(4);
+      border-radius: use-border-radius('normal');
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      color: use-color('gray', 700);
+      font-size: use-text-size('normal');
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:hover {
+        background-color: use-color('gray', 50);
+      }
+
+      &--active {
+        background-color: use-color-mode('primary', 50);
+
+        &:hover {
+          background-color: use-color-mode('primary', 50);
+        }
+      }
+    }
+  }
+
+  &-sorter {
+    display: inline-flex;
+    flex-direction: column;
+    height: 20px;
+    margin-top: 2px;
+    margin-left: 6px;
+
+    &__icon {
+      display: inline-block;
+      height: 8px;
+      cursor: pointer;
+      overflow: hidden;
+      // font-size: 16px;
+      font-weight: use-text-weight('normal');
+      color: use-color('gray', 500);
+
+      svg {
+        position: relative;
+        top: -5px;
+      }
+
+      &--active {
+        color: use-color-mode('primary');
+      }
+    }
+  }
+
+  &-custom {
+    &__trigger {
+      margin-left: 6px;
+      color: use-color('gray', 500);
+      cursor: pointer;
+    }
+
+    &__content {
+      padding: 12px 8px;
+    }
+  }
+}
+
+.#{$prefix}-embed-row {
+  position: relative;
+  z-index: 0;
+
+  & > td {
+    background-color: use-color('gray', 200);
+    padding: use-spacing(10);
+  }
+}
+
+.#{$prefix}-setting {
+  position: absolute;
+  height: 100%;
+  z-index: 11;
+  box-sizing: border-box;
+  right: 0;
+  display: flex;
+  align-items: center;
+  border-left: use-border-size('normal') use-color('gray', 300);
+  border-bottom: none;
+  border-top: none;
+  color: use-color('gray', 500);
+  cursor: pointer;
+  font-size: use-text-size('sm');
+  width: 18px;
+  background: use-color('gray', 50);
+
+  &__btn-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+
+.#{$prefix}-setting-item {
+  position: relative;
+  padding-top: use-spacing(1);
+  padding-bottom: use-spacing(1);
+  box-sizing: border-box;
+
+  $this: &;
+
+  &__wrap {
+    user-select: none;
+    cursor: move;
+
+    @include flex(space-between);
+
+    padding: use-spacing(3) use-spacing(4);
+    line-height: use-text-lineheight('sm');
+    // border: use-border-size('normal') use-color-static('transparent');
+    border-radius: use-border-radius('normal');
+
+    &:hover {
+      background-color: use-color-mode('primary', 50);
+    }
+
+    #{$this}--dragging & {
+      opacity: 0.6;
+    }
+  }
+
+  // 拖拽指示器-小圆球
+  &::before {
+    position: absolute;
+    left: 0;
+    z-index: 9999;
+    display: none;
+    box-sizing: border-box;
+    width: 8px;
+    height: 8px;
+    content: '';
+    background-color: use-color-static('white');
+    border: 1px solid use-color-mode('primary');
+    border-radius: 100%;
+  }
+
+  // 拖拽指示器-线条
+  &::after {
+    position: absolute;
+    content: '';
+    // TODO: zIndex 全局约定设置
+    z-index: 9998;
+    display: block;
+    box-sizing: border-box;
+    border-bottom-width: 0;
+    border-bottom-style: solid;
+    border-bottom-color: use-color-mode('primary');
+    left: 0;
+    width: 100%;
+  }
+
+  &::before,
+  &::after {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  &--direction {
+    &-before {
+      &::before {
+        display: block;
+        top: -0.5px;
+        transform: translateY(-4px);
+      }
+
+      &::after {
+        top: -0.5px;
+        border-bottom-width: 1px;
+      }
+    }
+
+    &-after {
+      &::before {
+        display: block;
+        bottom: 0.5px;
+        transform: translateY(4px);
+      }
+
+      &::after {
+        bottom: 0.5px;
+        border-bottom-width: 1px;
+      }
+    }
+  }
+}
+
+.#{$prefix}-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 8px;
+  padding: use-spacing(6) 0;
+  background-color: use-color-static('white');
+
+  &--placement-left {
+    justify-content: flex-start;
+  }
+
+  &--placement-right {
+    justify-content: flex-end;
+  }
+
+  &--placement-middle {
+    justify-content: center;
+  }
+}
+
+.#{$prefix}-empty-content {
+  td {
+    text-align: center;
+    padding: use-spacing(12) 0;
+
+    .#{$prefix}--bordered & {
+      border-bottom: use-border-size('normal') use-color('gray', 300);
+    }
+  }
+}

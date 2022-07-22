@@ -1,0 +1,18 @@
+@import '../common/index.scss';
+
+[class*='#{$component-prefix}-'],
+[class*='#{$component-prefix}-'] *,
+[class*='#{$component-prefix}-'] ::after,
+[class*='#{$component-prefix}-'] ::before {
+  box-sizing: border-box;
+}
+
+[class*='#{$component-prefix}-']:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
+
+// TODO: not works
+[class*='#{$component-prefix}-'][hidden] {
+  display: none;
+}

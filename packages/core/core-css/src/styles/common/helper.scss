@@ -1,0 +1,32 @@
+@use 'sass:map';
+
+// 从map对象中安全的获取对应值
+// 如果没有寻找到对应key，则抛出错误信息
+//
+// @param {Map<String,Any>} $data-map - 数据
+// @param {String} $data-key - 需要使用的key
+// @return {Any} - 对应key的值
+// @ref https://sass-lang.com/documentation/modules/map#get
+@function map-safe-get($data-map, $data-key) {
+  $result: map-get($map: $data-map, $key: $data-key);
+
+  @if ($result == null) {
+    $valid-keys-string: '[';
+
+    @each $key, $value in $data-map {
+      $valid-keys-string: $valid-keys-string + $key + ' ';
+    }
+
+    $valid-keys-string: $valid-keys-string + ']';
+
+    @debug '[WARNING] Use key: ' + $data-key +' is not valid, it should be in range: '+ $valid-keys-string;
+  }
+
+  @return $result;
+}
+
+// 换算标准，相对于默认根元素 fontSize，即 16px 计算
+// 采用 rem/em，为了实现较为灵活自动的响应式
+@function p($size) {
+  @return ($size / 16) + rem;
+}

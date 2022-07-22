@@ -1,0 +1,43 @@
+@import '../common/index.scss';
+@import '../tokens/index.scss';
+
+/// 获取 border 对应 css 变量名
+/// @access private
+@function get-border-css-name-var($key) {
+  $var-name: 'border-' + $key;
+
+  @return with-prefix-var($var-name);
+}
+
+/// 获取 border 对应 css 变量值
+/// @access private
+@function use-border-size-var($key) {
+  $var-name: get-border-css-name-var('size-' + $key);
+  $var-value: get-border-size($key);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+/// 获取 border radius 对应 css 变量值
+/// @access private
+@function use-border-radius-var($key) {
+  $var-name: get-border-css-name-var('radius-' + $key);
+  $var-value: get-border-radius($key);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+/// 设置 border size 值
+@function use-border-size($key) {
+  @return use-border-size-var($key);
+}
+
+/// 设置 border radius 值
+@function use-border-radius($key) {
+  // normal 表示通用默认。这里统一收敛，可根据规范调整
+  @if ($key == 'normal') {
+    $key: 'md';
+  }
+
+  @return use-border-radius-var($key);
+}

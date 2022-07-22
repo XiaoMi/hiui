@@ -1,0 +1,14 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-collapse' !default;
+
+.#{$prefix} {
+  @include box-reset;
+
+  background-color: use-color-static('white');
+  border-radius: use-border-radius('lg');
+
+  &--bordered {
+    border: use-border-size('normal') use-color('gray', 200);
+  }
+}

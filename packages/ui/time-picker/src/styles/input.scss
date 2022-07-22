@@ -1,0 +1,104 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$input-prefix: '#{$component-prefix}-time-picker__input' !default;
+$interact-area: '#{$input-prefix}__interact-area' !default;
+$wrapper: '#{$input-prefix}__wrapper' !default;
+
+.#{$input-prefix} {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  color: use-color('gray', 700);
+
+  &--disabled {
+    color: use-color('gray', 400);
+  }
+
+  &--not-valid {
+    color: use-color-mode('danger');
+  }
+
+  &--range {
+    .#{$interact-area} {
+      text-align: left;
+    }
+  }
+
+  &--fit-content {
+    .#{$input-prefix} {
+      &__wrapper {
+        width: fit-content;
+      }
+    }
+  }
+
+  &--size-sm {
+    line-height: use-height-size(6);
+    font-size: use-text-size('sm');
+
+    .#{$wrapper} {
+      height: use-height-size(6);
+    }
+  }
+
+  &--size-md {
+    line-height: use-height-size(8);
+    font-size: use-text-size('normal');
+
+    .#{$wrapper} {
+      height: use-height-size(8);
+    }
+  }
+
+  &--size-lg {
+    line-height: use-height-size(10);
+    font-size: use-text-size('lg');
+
+    .#{$wrapper} {
+      height: use-height-size(10);
+    }
+  }
+
+  &__wrapper {
+    width: 208px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 0;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 12px;
+  }
+
+  &__shadow-text {
+    display: inline-block;
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+    color: transparent;
+  }
+
+  &__interact-area {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 12px;
+    color: inherit;
+    border: none;
+    outline: none;
+    height: 100%;
+    font-size: inherit;
+    background: transparent;
+    font-weight: inherit;
+    font-family: inherit;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    &:disabled {
+      background: transparent;
+    }
+
+    &::placeholder {
+      color: use-color('gray', 500);
+    }
+  }
+}

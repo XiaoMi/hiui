@@ -1,0 +1,68 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-badge' !default;
+
+.#{$prefix} {
+  $dotSize: 10px;
+  $bubbleSize: 20px;
+  $borderSize: 2px;
+
+  @include component-reset;
+
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+
+  &__value {
+    transform: translateX(50%);
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    top: calc(#{-(($bubbleSize + $borderSize * 2) / 2)});
+    min-width: $bubbleSize - 12px;
+    height: $bubbleSize;
+    line-height: $bubbleSize;
+    padding: 0 use-spacing(3);
+    color: use-color-static('white');
+    font-size: use-text-size('sm');
+    letter-spacing: 0;
+    text-align: center;
+    border: use-border-size('semibold') use-color-static('white');
+    background-color: use-color-mode('danger');
+    border-radius: use-border-radius('full');
+    box-sizing: content-box;
+  }
+
+  &__dot {
+    position: absolute;
+    z-index: 1;
+    top: calc(#{-(($dotSize + $borderSize * 2) / 2)});
+    right: calc(#{-(($dotSize + $borderSize * 2) / 2)});
+    width: $dotSize;
+    height: $dotSize;
+    background-color: use-color-mode('danger');
+    border: use-border-size('semibold') use-color-static('white');
+    border-radius: use-border-radius('full');
+    box-sizing: content-box;
+  }
+
+  &__custom {
+    transform: translate(50%, -50%);
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+  }
+
+  &--independent {
+    .#{$prefix}__dot,
+    .#{$prefix}__value,
+    .#{$prefix}__custom {
+      position: relative;
+      top: auto;
+      right: auto;
+      transform: none;
+      display: block;
+    }
+  }
+}

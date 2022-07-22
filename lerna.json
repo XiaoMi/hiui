@@ -1,0 +1,34 @@
+{
+  "version": "independent",
+  "useWorkspaces": true,
+  "packages": [
+    "packages/ui/*",
+    "packages/core/*",
+    "packages/hooks/*",
+    "packages/utils/*",
+    "packages/icons/*",
+    "packages/motions/*",
+    "packages/patches/*",
+    "packages/*",
+    "scripts/*",
+    "docs/*",
+    "plugins/*",
+    "website/*",
+    "examples/*"
+  ],
+  "stream": true,
+  "npmClient": "yarn",
+  "registry": "https://registry.npmjs.org/",
+  "bootstrap": {
+    "npmClientArgs": ["--no-package-lock"]
+  },
+  "command": {
+    "run": {
+      "npmClient": "yarn"
+    },
+    "publish": {
+      "allowBranch": "next/4.0",
+      "message": "chore(release): publish %v"
+    }
+  }
+}

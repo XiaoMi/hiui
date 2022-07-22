@@ -1,0 +1,73 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-search' !default;
+
+.#{$prefix} {
+  &__dropdown {
+    box-sizing: border-box;
+    padding: use-spacing(4);
+    font-size: use-text-size('normal');
+    // 填充没有选项时 loading 展示空间
+    min-height: 48px;
+
+    &--highlight {
+      color: use-color-mode('primary');
+    }
+
+    &-subitem {
+      margin-bottom: use-spacing(4);
+      min-height: use-height-size(8);
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      padding: use-spacing(2) use-spacing(6) use-spacing(2) use-spacing(12);
+      color: use-color('gray', 700);
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &--focus {
+        background-color: use-color('gray', 100);
+      }
+
+      &:hover {
+        background-color: use-color('gray', 100);
+      }
+    }
+
+    &-group {
+      min-height: use-height-size(8);
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      padding: use-spacing(2) use-spacing(6);
+      color: use-color('gray', 500);
+      margin-bottom: use-spacing(4);
+    }
+
+    &-item {
+      &:not(.#{$prefix}__dropdown-group) {
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+
+        margin-bottom: use-spacing(4);
+        box-sizing: border-box;
+        min-height: use-height-size(8);
+        display: flex;
+        align-items: center;
+        padding: use-spacing(2) use-spacing(6);
+        color: use-color('gray', 700);
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:hover {
+          background-color: use-color('gray', 100);
+        }
+      }
+
+      &--focus {
+        background-color: use-color('gray', 100);
+      }
+    }
+  }
+}

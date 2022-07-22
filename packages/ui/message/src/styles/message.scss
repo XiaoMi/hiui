@@ -1,0 +1,118 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-message' !default;
+
+.#{$prefix} {
+  box-sizing: border-box;
+  width: auto;
+  padding: use-spacing(5) use-spacing(10);
+  margin: use-spacing(5);
+  border-radius: use-border-radius('lg');
+  pointer-events: auto;
+  box-shadow: use-shadow('normal');
+  display: flex;
+  align-items: center;
+  font-size: use-text-size('normal');
+  line-height: use-text-lineheight('normal');
+  background-color: use-color-static('white');
+  color: use-color('gray', 700);
+
+  &--type {
+    &-info {
+      // background-color: use-color-mode('primary', 100);
+      // color: use-color-mode('primary', 400);
+
+      svg {
+        color: use-color-mode('primary');
+      }
+    }
+
+    &-success {
+      // background-color: use-color-mode('success', 100);
+      // color: use-color-mode('success', 400);
+
+      svg {
+        color: use-color-mode('success');
+      }
+    }
+
+    &-error {
+      // background-color: use-color-mode('danger', 100);
+      // color: use-color-mode('danger', 400);
+
+      svg {
+        color: use-color-mode('danger');
+      }
+    }
+
+    &-warning {
+      // background-color: use-color-mode('warning', 100);
+      // color: use-color-mode('warning', 400);
+
+      svg {
+        color: use-color-mode('warning');
+      }
+    }
+  }
+
+  $transition-duration: use-motion-duration('slow');
+  $transition-height-delay: use-motion-duration('normal');
+  $transition-height-duration:  use-motion-duration('normal');
+
+  &-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+
+    // animation
+    transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration  $transition-height-delay;
+    transition-timing-function: use-motion-bezier('normal');
+    opacity: 1;
+    transform: translateY(-100%);
+    transform-origin: 50% 50% 0;
+    will-change: transform;
+  }
+
+  &--motion {
+    &-enter {
+      transform: translateY(-100%);
+    }
+
+    &-enter-active {
+      transform: translateY(0%);
+    }
+
+    &-enter-done {
+      transform: translateY(0%);
+    }
+
+    &-exit {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+
+    &-exit-active {
+      transform: translateY(0%) scale(0.84, 0.84);
+      opacity: 0;
+    }
+
+    &-exit-done {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+
+  svg {
+    margin-inline-end: use-spacing(4);
+    font-size: use-text-size('lg');
+  }
+}
+
+.#{$prefix}-manager {
+  &--placement-top {
+    padding-top: use-spacing(16);
+  }
+}

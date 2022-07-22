@@ -1,0 +1,130 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-card' !default;
+
+.#{$prefix} {
+  border-radius: use-border-radius('lg');
+  box-sizing: border-box;
+  background: use-color-static('white');
+  width: 100%;
+  overflow: hidden;
+
+  &#{&}--no-header {
+    .#{$prefix}__body {
+      padding-top: use-spacing(10);
+    }
+  }
+
+  &--size {
+    &-sm {
+      .#{$prefix} {
+        &__header {
+          padding: use-spacing(7) use-spacing(10);
+          font-size: use-text-size('normal');
+          line-height: use-text-lineheight('sm');
+        }
+
+        &__title {
+          line-height: use-text-lineheight('sm');
+          font-size: use-text-size('normal');
+        }
+
+        &__extra {
+          font-size: use-text-size('sm');
+        }
+
+        &__subhead {
+          font-size: use-text-size('sm');
+        }
+      }
+    }
+  }
+
+  // 解决 img 底部空白问题
+  > img {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border-radius: use-border-radius('lg') use-border-radius('lg') 0 0;
+  }
+
+  &__header {
+    padding: use-spacing(8) use-spacing(10);
+    line-height: use-text-lineheight('lg');
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    &--divider {
+      border-bottom: 1px solid use-color('gray', 200);
+      margin-bottom: use-spacing(8);
+    }
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__subhead {
+    margin-top: use-spacing(2);
+    font-size: use-text-size('normal');
+    font-weight: use-text-weight('normal');
+    line-height: use-text-lineheight('sm');
+    color: use-color('gray', 500);
+  }
+
+  &__cover {
+    overflow: hidden;
+  }
+
+  &__body {
+    padding: 0 use-spacing(10) use-spacing(10) use-spacing(10);
+    font-size: use-text-size('normal');
+    color: use-color('gray', 600);
+    position: relative;
+    overflow-wrap: break-word;
+  }
+
+  &__loading {
+    .#{$prefix} & {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+  }
+
+  &__title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex: 1;
+    color: use-color('gray', 700);
+    font-size: use-text-size('lg');
+    font-weight: use-text-weight('semibold');
+  }
+
+  &__extra {
+    font-size: use-text-size('normal');
+    color: use-color('gray', 500);
+    font-weight: use-text-weight('normal');
+  }
+
+  &--bordered {
+    border: 1px solid use-color('gray', 200);
+  }
+
+  &--hoverable {
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: 0 4px 8px 0 rgba(31, 39, 51, 0.1);
+    }
+  }
+}

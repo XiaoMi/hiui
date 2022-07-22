@@ -1,0 +1,412 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
+
+.#{$tag-input-mock-prefix} {
+  @include input-reset();
+
+  $input-shadow: 0 0 0 2px use-color-mode('primary', 100);
+  $input-error-shadow: 0 0 0 2px use-color-mode('danger', 100);
+
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  transition-property: all;
+  transition-duration: use-motion-duration('normal');
+  transition-timing-function: use-motion-bezier('normal');
+  width: 100%;
+  height: auto;
+  z-index: auto;
+  font-size: inherit;
+  line-height: inherit;
+  color: use-color('gray', 700);
+  border: use-border-size('normal') use-color-static('transparent');
+  background-color: use-color-static('white');
+
+  $this: &;
+
+  &:not(#{$this}--disabled):hover {
+    z-index: calc(#{use-zindex('absolute')} + 1);
+  }
+
+  &:not(#{$this}--disabled).focused {
+    z-index: calc(#{use-zindex('absolute')} + 1);
+  }
+
+  &#{$this}--disabled {
+    cursor: not-allowed;
+  }
+
+  &--wrap {
+    .#{$tag-input-mock-prefix}__value {
+      height: auto;
+    }
+
+    .#{$tag-input-mock-prefix}__tags {
+      white-space: normal;
+    }
+  }
+
+  &__suffix {
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    color: use-color-static('black');
+    font-size: use-text-size('lg');
+    padding: 0;
+    text-align: center;
+  }
+
+  &__clear {
+    display: inline-flex;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    font-size: use-text-size('normal');
+    color: use-color('gray', 500);
+    text-align: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition-property: all;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
+
+    &:hover {
+      color: use-color-static('black');
+    }
+  }
+
+  &__tags {
+    position: relative;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  &__tag--total {
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: middle;
+    user-select: none;
+    cursor: inherit;
+    margin-left: use-spacing(4);
+    margin-right: use-spacing(3);
+    padding: 0 use-spacing(4);
+    font-size: use-text-size('sm');
+    border-radius: use-border-radius('normal');
+    line-height: use-text-lineheight('sm');
+    // 默认使用灰，开启使用蓝
+    background-color: use-color('gray', 100);
+    color: use-color('gray', 700);
+    transition-property: background-color, color;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
+
+    .#{$tag-input-mock-prefix}--expandable & {
+      background-color: use-color-mode('primary', 50);
+      color: use-color-mode('primary');
+    }
+
+    &.#{$tag-input-mock-prefix}__tag--active {
+      .#{$tag-input-mock-prefix}--expandable & {
+        background-color: use-color-mode('primary');
+        color: use-color-static('white');
+      }
+    }
+  }
+
+  &__suffix,
+  &__placeholder {
+    color: use-color('gray', 400);
+  }
+
+  &__tag,
+  &__placeholder {
+    // 控制上下间距
+    margin-top: use-spacing(1);
+    margin-bottom: use-spacing(1);
+  }
+
+  &__tag {
+    max-width: 100%;
+    margin-right: use-spacing(2);
+    box-sizing: border-box;
+    padding: 0 use-spacing(4);
+    vertical-align: middle;
+    font-size: use-text-size('sm');
+    color: use-color('gray', 700);
+    user-select: none;
+    background-color: use-color('gray', 100);
+    border-radius: use-border-radius('normal');
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: none;
+    line-height: inherit;
+
+    &-content {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+
+    &-closed {
+      margin-left: use-spacing(2);
+      font-size: use-text-size('sm');
+      box-sizing: border-box;
+      color: use-color('gray', 500);
+      cursor: pointer;
+
+      &:hover {
+        color: use-color-mode('primary');
+      }
+
+      #{$this}--disabled & {
+        cursor: not-allowed;
+        color: use-color('gray', 400);
+
+        &:hover {
+          color: use-color('gray', 400);
+        }
+      }
+    }
+  }
+
+  // 减去左或右边框 1px
+  $input-padding-width: calc(#{use-spacing(6)} - 1px);
+
+  &--size {
+    &-sm {
+      height: use-height-size(6);
+      font-size: use-text-size('sm');
+      line-height: use-text-lineheight('sm');
+      border-radius: use-border-radius('normal');
+      padding: 0 $input-padding-width;
+
+      .#{$tag-input-mock-prefix}__tag,
+      .#{$tag-input-mock-prefix}__placeholder {
+        // 控制上下间距
+        margin-top: 1px;
+        margin-bottom: 1px;
+      }
+    }
+
+    &-md {
+      height: use-height-size(8);
+      font-size: use-text-size('normal');
+      line-height: use-text-lineheight('normal');
+      border-radius: use-border-radius('normal');
+      padding: 2px $input-padding-width;
+    }
+
+    &-lg {
+      height: use-height-size(10);
+      font-size: use-text-size('lg');
+      line-height: use-text-lineheight('lg');
+      border-radius: use-border-radius('normal');
+      padding: 5px $input-padding-width;
+    }
+  }
+
+  &--appearance {
+    &-line {
+      border-color: use-color('gray', 300);
+
+      &:not(.#{$tag-input-mock-prefix}--disabled):hover {
+        border-color: use-color-mode('primary');
+      }
+
+      &:not(.#{$tag-input-mock-prefix}--disabled).focused {
+        box-shadow: $input-shadow;
+        border-color: use-color-mode('primary');
+      }
+
+      &:not(.#{$tag-input-mock-prefix}--disabled).invalid {
+        border-color: use-color-mode('error');
+
+        &.hover {
+          border-color: use-color-mode('error');
+        }
+
+        &.focused {
+          box-shadow: $input-error-shadow;
+        }
+      }
+    }
+
+    &-unset {
+      width: auto;
+      justify-content: flex-start;
+      // padding-left: 0;
+      // padding-right: 0;
+      // border-radius: 0;
+      border-color: transparent;
+
+      &:not(.#{$tag-input-mock-prefix}--disabled):hover {
+        background-color: use-color('gray', 100);
+
+        .#{$tag-input-mock-prefix}__tag {
+          background-color: use-color-static('white');
+        }
+
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color-static('white');
+        }
+
+        &.#{$tag-input-mock-prefix}--expandable {
+          .#{$tag-input-mock-prefix}__tag--total {
+            background-color: use-color-mode('primary', 50);
+            color: use-color-mode('primary');
+          }
+        }
+      }
+
+      &:not(.#{$tag-input-mock-prefix}--disabled).focused {
+        box-shadow: $input-shadow;
+        background-color: use-color-static('white');
+        border-color: use-color-mode('primary');
+
+        .#{$tag-input-mock-prefix}__tag {
+          background-color: use-color('gray', 100);
+        }
+
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color('gray', 100);
+        }
+
+        &.#{$tag-input-mock-prefix}--expandable {
+          .#{$tag-input-mock-prefix}__tag--total {
+            background-color: use-color-mode('primary', 50);
+            color: use-color-mode('primary');
+          }
+        }
+      }
+
+      &:not(.#{$tag-input-mock-prefix}--disabled).invalid {
+        border-color: use-color-mode('error');
+
+        &.hover {
+          border-color: use-color-mode('error');
+        }
+
+        &.focused {
+          box-shadow: $input-error-shadow;
+        }
+      }
+    }
+
+    &-filled {
+      background-color: use-color('gray', 100);
+
+      .#{$tag-input-mock-prefix}__tag {
+        background-color: use-color-static('white');
+      }
+
+      .#{$tag-input-mock-prefix}__tag--total {
+        background-color: use-color-static('white');
+      }
+
+      &.#{$tag-input-mock-prefix}--expandable {
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color-mode('primary', 50);
+          color: use-color-mode('primary');
+        }
+      }
+
+      &:not(.#{$tag-input-mock-prefix}--disabled):hover {
+        background-color: use-color-static('white');
+        border-color: use-color-mode('primary');
+
+        .#{$tag-input-mock-prefix}__tag {
+          background-color: use-color('gray', 100);
+        }
+
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color('gray', 100);
+        }
+
+        &.#{$tag-input-mock-prefix}--expandable {
+          .#{$tag-input-mock-prefix}__tag--total {
+            background-color: use-color-mode('primary', 50);
+            color: use-color-mode('primary');
+          }
+        }
+      }
+
+      &:not(.#{$tag-input-mock-prefix}--disabled).focused {
+        box-shadow: $input-shadow;
+        border-color: use-color-mode('primary');
+        background-color: use-color-static('white');
+
+        .#{$tag-input-mock-prefix}__tag {
+          background-color: use-color('gray', 100);
+        }
+
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color('gray', 100);
+        }
+
+        &.#{$tag-input-mock-prefix}--expandable {
+          .#{$tag-input-mock-prefix}__tag--total {
+            background-color: use-color-mode('primary', 50);
+            color: use-color-mode('primary');
+          }
+        }
+      }
+
+      &:not(.#{$tag-input-mock-prefix}--disabled).invalid {
+        border-color: use-color-mode('error');
+
+        &.hover {
+          border-color: use-color-mode('error');
+        }
+
+        &.focused {
+          box-shadow: $input-error-shadow;
+        }
+      }
+    }
+
+    &-line,
+    &-filled {
+      &.#{$tag-input-mock-prefix}--disabled {
+        background-color: use-color('gray', 100);
+        color: use-color('gray', 400);
+
+        .#{$tag-input-mock-prefix}__tag {
+          background-color: use-color-static('white');
+          color: use-color('gray', 400);
+
+          &--total {
+            background-color: use-color-static('white');
+            color: use-color('gray', 400);
+          }
+        }
+      }
+    }
+
+    &-unset {
+      &.#{$tag-input-mock-prefix}--disabled {
+        color: use-color('gray', 400);
+
+        .#{$tag-input-mock-prefix}__tag {
+          background-color: use-color('gray', 100);
+          color: use-color('gray', 400);
+
+          &--total {
+            background-color: use-color('gray', 100);
+            color: use-color('gray', 400);
+          }
+        }
+      }
+    }
+  }
+}

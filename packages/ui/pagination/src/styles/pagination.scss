@@ -1,0 +1,158 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-pagination' !default;
+
+.#{$prefix},
+.#{$prefix}-mini {
+  display: flex;
+  font-size: use-text-size('normal');
+  align-items: center;
+  color: use-color('gray', 600);
+  user-select: none;
+
+  &__total {
+    margin-right: use-spacing(4);
+  }
+
+  &__option {
+    width: 114px !important;
+    margin: 0 0 0 use-spacing(4) !important;
+  }
+
+  &__jumper {
+    display: flex;
+    align-items: center;
+    margin-left: use-spacing(4);
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  &__item {
+    display: inline-block;
+    margin-left: use-spacing(4);
+    min-width: use-height-size(8);
+    border: none;
+    box-sizing: border-box;
+    height: use-height-size(8);
+    line-height: use-height-size(8);
+    text-align: center;
+    cursor: pointer;
+    outline: 0;
+    border-radius: use-border-radius('normal');
+    vertical-align: middle;
+    background: use-color('gray', 100);
+    transition: all 0.3s;
+    color: use-color('gray', 600);
+
+    &:hover:not(#{&}--break) {
+      color: use-color-mode('primary');
+      background-color: use-color-mode('primary', 50);
+    }
+
+    &:focus:not(#{&}--break) {
+      color: use-color-mode('primary');
+      box-shadow: 0 0 0 2px use-color-mode('primary', 100);
+    }
+
+    &--active {
+      color: use-color-static('white') !important;
+      background-color: use-color-mode('primary');
+      border-color: use-color-mode('primary');
+
+      &:hover {
+        color: use-color-static('white') !important;
+        background-color: use-color-mode('primary', 600) !important;
+        border-color: use-color-mode('primary', 600) !important;
+      }
+    }
+
+    &--break {
+      border: none;
+      cursor: default;
+      background-color: unset !important;
+    }
+  }
+
+  &__btn {
+    display: inline-block;
+    min-width: use-height-size(8);
+    height: use-height-size(8);
+    outline: 0;
+
+    &--disabled {
+      & > button {
+        cursor: not-allowed !important;
+        color: use-color('gray', 400) !important;
+      }
+    }
+
+    &:last-of-type {
+      margin-left: use-spacing(4);
+    }
+
+    vertical-align: middle;
+
+    & > button {
+      width: 100%;
+      height: 100%;
+      color: use-color('gray', 600);
+      background: use-color('gray', 100);
+      border: none;
+      border-radius: use-border-radius('normal');
+      outline: 0;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    &:not(#{&}--disabled) > button {
+      &:hover {
+        color: use-color-mode('primary');
+        background-color: use-color-mode('primary', 50);
+      }
+
+      &:focus {
+        color: use-color-mode('primary');
+        box-shadow: 0 0 0 2px use-color-mode('primary', 100);
+      }
+    }
+  }
+}
+
+$input-pagination-prefix: '#{$component-prefix}-pagination-mini' !default;
+
+.#{$input-pagination-prefix} {
+  color: use-color('gray', 600);
+  position: relative;
+  display: inline-flex;
+  height: auto;
+  min-height: 24px;
+  box-sizing: border-box;
+  font-size: use-text-size('normal');
+  outline: none;
+
+  $this: &;
+
+  &--focused {
+    // #{$this}__input {
+    //   border: 1px solid use-color-mode('primary');
+    // }
+  }
+
+  &__input {
+    &.#{$component-prefix}-input {
+      flex: 1 1 auto;
+      width: 48px;
+      margin-inline-start: use-spacing(4);
+    }
+  }
+
+  &__total {
+    margin-inline-start: use-spacing(4);
+    margin-inline-end: use-spacing(4);
+  }
+}

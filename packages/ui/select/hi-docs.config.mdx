@@ -1,0 +1,76 @@
+# Select 选择器
+
+选择器是一种接收数据的容器，为用户提供选择一部分数据的能力。
+
+## 何时使用
+
+需要从大量的离散型数据中选择一部分时使用
+
+备选项数量 5 个以上时
+
+不需要将全部备选项都展示给用户时
+
+## 使用示例
+
+<!-- Inject Stories -->
+
+## Props
+
+<!-- Inject Props -->
+
+## Type
+
+### SelectMergedItem
+
+> SelectDataItem | SelectGroupDataItem
+
+#### SelectDataItem
+
+| 参数     | 说明              | 类型      | 可选值        | 默认值 |
+| -------- | ----------------- | --------- | ------------- | ------ |
+| id       | 选择项值，唯一 id | ReactText | -             | -      |
+| title    | 选项标题          | ReactNode | -             | -      |
+| disabled | 是否禁用该选项    | boolean   | true \| false | false  |
+
+#### SelectGroupDataItem
+
+| 参数       | 说明           | 类型             | 可选值 | 默认值 |
+| ---------- | -------------- | ---------------- | ------ | ------ |
+| groupId    | 选项组唯一 id  | ReactText        | -      | -      |
+| groupTitle | 选项组标题     | ReactNode        | -      | -      |
+| children   | 分组下选项列表 | SelectDataItem[] | -      | -      |
+
+### SelectItemEventData
+
+> 继承自 SelectDataItem
+
+| 参数   | 说明                           | 类型                | 可选值 | 默认值 |
+| ------ | ------------------------------ | ------------------- | ------ | ------ |
+| raw    | 关联用户传入的原始数据对象     | SelectDataItem      | -      | -      |
+| depth  | 该节点的层级，从 0（顶层）开始 | number              | -      | -      |
+| parent | 该节点的组信息                 | SelectGroupDataItem | -      | -      |
+
+### PopperOverlayProps
+
+| 参数           | 说明                               | 类型                | 可选值                                                                                                                                                                                                     | 默认值         |
+| -------------- | ---------------------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| className      | 弹层类名                           | string              | -                                                                                                                                                                                                          | -              |
+| matchWidth     | 自动计算匹配吸附元素的宽度与其一致 | boolean             | true \| false                                                                                                                                                                                              | true           |
+| placement      | 相对吸附元素的位置                 | PopperPlacementEnum | "top" \| "bottom" \| "right" \| "left" \| "top-start" \| "top-end" \| "bottom-start" \| "bottom-end" \| "right-start" \| "right-end" \| "left-start" \| "left-end" \| "auto" \| "auto-start" \| "auto-end" | "bottom-start" |
+| container      | 指定 portal 的容器                 | HTMLElement         | -                                                                                                                                                                                                          | -              |
+| disabledPortal | 禁用 portal                        | boolean             | true \| false                                                                                                                                                                                              | false          |
+| arrow          | 是否展示箭头                       | boolean             | true \| false                                                                                                                                                                                              | false          |
+
+### UseDataSource
+
+| 参数              | 说明                               | 类型                             | 可选值                                             | 默认值        |
+| ----------------- | ---------------------------------- | -------------------------------- | -------------------------------------------------- | ------------- |
+| url               | 请求的 url                         | string                           | -                                                  | -             |
+| method            | 请求方法                           | string                           | get \| post                                        | get           |
+| data              | post 请求时请求体参数              | object                           | -                                                  | -             |
+| params            | url 查询参数                       | object                           | -                                                  | -             |
+| headers           | 请求头                             | object                           | -                                                  | -             |
+| withCredentials   | 上传请求时是否携带 cookie          | boolean                          | true \| false                                      | false         |
+| transformResponse | 成功时的回调，用于对数据进行预处理 | (response: object) => DataItem[] | -                                                  | -             |
+| onError           | 请求发生异常的回调方法             | (error: object) => void          | -                                                  | -             |
+| mode              | 请求模式                           | string                           | 'same-origin' \| 'cors' \| 'no-cors' \| 'navigate' | 'same-origin' |

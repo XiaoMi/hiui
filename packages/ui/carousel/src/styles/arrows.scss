@@ -1,0 +1,79 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$arrows-class: '#{$component-prefix}-carousel__arrows-button' !default;
+
+.#{$arrows-class}{
+
+  $large-diff: 24px;
+  $middle-diff: 16px;
+  $small-diff: 12px;
+
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: use-color-static('white');
+  overflow: hidden;
+  cursor: pointer;
+
+  &::before{
+    content: '';
+    position: absolute;
+    background: use-color('gray',700);
+    opacity: 0.35;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: -1;
+  }
+
+  &:hover{
+    &::before{
+      background: use-color('gray',900);
+      opacity: 0.7;
+    }
+  }
+
+  &--lg{
+    width: 40px;
+    height: 40px;
+    font-size: 28px;
+
+    &.#{$arrows-class}--left{
+      left: $large-diff;
+    }
+    &.#{$arrows-class}--right{
+      right: $large-diff;
+    }
+  }
+
+  &--md{
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+
+    &.#{$arrows-class}--left{
+      left: $middle-diff;
+    }
+    &.#{$arrows-class}--right{
+      right: $middle-diff;
+    }
+  }
+
+  &--sm{
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+
+    &.#{$arrows-class}--left{
+      left: $small-diff;
+    }
+    &.#{$arrows-class}--right{
+      right: $small-diff;
+    }
+  }
+}

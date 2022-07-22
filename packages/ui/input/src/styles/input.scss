@@ -1,0 +1,464 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-input' !default;
+
+.#{$prefix} {
+  $input-shadow: 0 0 0 2px use-color-mode('primary', 100);
+  $input-error-shadow: 0 0 0 2px use-color-mode('danger', 100);
+
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+
+  &__outer {
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
+  // 原生 input
+  &__text {
+    @include input-reset;
+
+    // basic
+    flex: 1;
+    display: inline-block;
+    box-sizing: border-box;
+    transition-property: all;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
+    width: 100%;
+    font-size: inherit;
+    line-height: inherit;
+    color: use-color('gray', 700);
+
+    &::placeholder {
+      color: use-color('gray', 400);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  &__inner {
+    position: relative;
+    display: inline-flex;
+    height: auto;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: inherit;
+    border: use-border-size('normal') use-color-static('transparent');
+    background-color: use-color-static('white');
+    transition-property: all;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
+    outline: none;
+    z-index: auto;
+
+    &:not(.#{$prefix}__inner--disabled):hover {
+      z-index: calc(#{use-zindex('absolute')} + 1);
+    }
+
+    &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
+      z-index: calc(#{use-zindex('absolute')} + 1);
+    }
+  }
+
+  // clear icon
+  &__clear {
+    display: inline-flex;
+    align-items: center;
+    height: auto;
+    text-align: center;
+    font-size: use-text-size('normal');
+    color: use-color('gray', 500);
+    flex-shrink: 0;
+    cursor: pointer;
+    transition-property: all;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
+    visibility: hidden;
+    opacity: 0;
+
+    &:hover {
+      color: use-color('gray', 700);
+    }
+
+    &.#{$prefix}__clear--active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    // 和用户传入 suffix 保持间隔
+    .#{$prefix}__inner--suffix & {
+      margin-inline-end: use-spacing(2);
+    }
+  }
+
+  &__prefix,
+  &__suffix {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: use-color('gray', 700);
+    font-size: inherit;
+    text-align: center;
+  }
+
+  // 减去左或右边框 1px
+  $input-padding-width: calc(#{use-spacing(6)} - 1px);
+
+  &__prefix {
+    padding-left: $input-padding-width;
+  }
+
+  &__suffix {
+    // 减去右边框 1px
+    padding-right: $input-padding-width;
+  }
+
+  &__prepend,
+  &__append {
+    position: relative;
+    color: use-color('gray', 700);
+    background-color: use-color('gray', 50);
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    font-size: inherit;
+    text-align: center;
+    padding: 0 $input-padding-width;
+    border: use-border-size('normal') use-color-static('transparent');
+    white-space: nowrap;
+    transition-property: all;
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
+    // 处理 input 和 pend 边界框出现
+    z-index: use-zindex('absolute');
+  }
+
+  &__prepend {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-right: -1px;
+  }
+
+  &__append {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: -1px;
+  }
+
+  &--size {
+    &-sm {
+      height: use-height-size(6);
+      font-size: use-text-size('sm');
+      line-height: use-text-lineheight('sm');
+
+      .#{$prefix}__text {
+        padding: 1px $input-padding-width;
+      }
+
+      .#{$prefix}__inner,
+      .#{$prefix}__prepend,
+      .#{$prefix}__append {
+        border-radius: use-border-radius('normal');
+      }
+
+      .#{$prefix}__prepend {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .#{$prefix}__append {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+
+    &-md {
+      height: use-height-size(8);
+      font-size: use-text-size('normal');
+      line-height: use-text-lineheight('normal');
+
+      .#{$prefix}__text {
+        padding: 4px $input-padding-width;
+      }
+
+      .#{$prefix}__inner,
+      .#{$prefix}__prepend,
+      .#{$prefix}__append {
+        border-radius: use-border-radius('normal');
+      }
+
+      .#{$prefix}__prepend {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .#{$prefix}__append {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+
+    &-lg {
+      height: use-height-size(10);
+      font-size: use-text-size('lg');
+      line-height: use-text-lineheight('lg');
+
+      .#{$prefix}__text {
+        padding: 7px $input-padding-width;
+      }
+
+      .#{$prefix}__inner,
+      .#{$prefix}__prepend,
+      .#{$prefix}__append {
+        border-radius: use-border-radius('normal');
+      }
+
+      .#{$prefix}__prepend {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .#{$prefix}__append {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+
+  &--appearance {
+    &-line {
+      .#{$prefix}__inner {
+        border-color: use-color('gray', 300);
+
+        &:not(.#{$prefix}__inner--disabled):hover {
+          border-color: use-color-mode('primary');
+        }
+
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
+          box-shadow: $input-shadow;
+          border-color: use-color-mode('primary');
+        }
+
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
+          border-color: use-color-mode('error');
+
+          &:hover {
+            border-color: use-color-mode('error');
+          }
+
+          &.#{$prefix}__inner--focused {
+            box-shadow: $input-error-shadow;
+          }
+        }
+      }
+
+      .#{$prefix}__prepend,
+      .#{$prefix}__append {
+        border-color: use-color('gray', 300);
+      }
+    }
+
+    &-unset {
+      .#{$prefix}__text {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      &.#{$prefix}__outer--prepend,
+      .#{$prefix}__inner--prefix {
+        .#{$prefix}__text {
+          padding-left: $input-padding-width;
+        }
+      }
+
+      &.#{$prefix}__outer--append,
+      .#{$prefix}__inner--suffix {
+        .#{$prefix}__text {
+          padding-right: $input-padding-width;
+        }
+      }
+
+      .#{$prefix}__inner {
+        border-radius: 0;
+      }
+    }
+
+    &-filled {
+      .#{$prefix}__inner {
+        background-color: use-color('gray', 100);
+
+        &:not(.#{$prefix}__inner--disabled):hover {
+          background-color: use-color-static('white');
+          border-color: use-color-mode('primary');
+        }
+
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
+          box-shadow: $input-shadow;
+          border-color: use-color-mode('primary');
+          background-color: use-color-static('white');
+        }
+
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
+          border-color: use-color-mode('error');
+
+          &:hover {
+            border-color: use-color-mode('error');
+          }
+
+          &.#{$prefix}__inner--focused {
+            box-shadow: $input-error-shadow;
+          }
+        }
+      }
+    }
+
+    &-underline {
+      .#{$prefix}__text {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      &.#{$prefix}__outer--prepend,
+      .#{$prefix}__inner--prefix {
+        .#{$prefix}__text {
+          padding-left: $input-padding-width;
+        }
+      }
+
+      &.#{$prefix}__outer--append,
+      .#{$prefix}__inner--suffix {
+        .#{$prefix}__text {
+          padding-right: $input-padding-width;
+        }
+      }
+
+      .#{$prefix}__inner {
+        border-radius: 0;
+
+        &::after {
+          content: '';
+          box-sizing: border-box;
+          display: block;
+          position: absolute;
+          bottom: 0;
+          // 两边透明边框各负 1px
+          left: -1px;
+          right: -1px;
+          border-bottom: 1px solid use-color('gray', 300);
+          transition: all 0.3s;
+        }
+
+        &:not(.#{$prefix}__inner--disabled):hover {
+          &::after {
+            border-bottom-color: use-color-mode('primary');
+          }
+        }
+
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
+          &::after {
+            border-bottom-color: use-color-mode('primary');
+          }
+        }
+
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
+          &::after {
+            border-bottom-color: use-color-mode('error');
+          }
+
+          &.hover {
+            &::after {
+              border-bottom-color: use-color-mode('error');
+            }
+          }
+        }
+      }
+    }
+
+    &-line,
+    &-filled {
+      .#{$prefix}__inner {
+        &.#{$prefix}__inner--disabled {
+          color: use-color('gray', 400);
+          background-color: use-color('gray', 200);
+
+          .#{$prefix}__text {
+            color: use-color('gray', 400);
+          }
+        }
+      }
+    }
+
+    &-unset,
+    &-underline {
+      .#{$prefix}__inner {
+        &.#{$prefix}__inner--disabled {
+          color: use-color('gray', 400);
+          background-color: transparent;
+
+          .#{$prefix}__text {
+            color: use-color('gray', 400);
+          }
+        }
+      }
+    }
+  }
+
+  // 移除连接处圆角
+  &__outer--prepend {
+    .#{$prefix}__inner {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &-unset {
+      .#{$prefix}__prepend {
+        border: none;
+        padding: 0;
+
+        // .hi-input__prepend .hi-btn, .hi-input__prepend .hi-select__input, .hi-input_m__prepend .hi-btn, .hi-input_m__prepend .hi-select__input
+        &  .#{$component-prefix}-mock-input {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        &  .#{$component-prefix}-button {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+      }
+    }
+  }
+
+  &__outer--append {
+    .#{$prefix}__inner {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &-unset {
+      .#{$prefix}__append {
+        border: none;
+        padding: 0;
+
+        &  .#{$component-prefix}-mock-input {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+
+        &  .#{$component-prefix}-button {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-popover' !default;
+
+.#{$prefix} {
+  @include text-reset();
+
+  background: use-color-static('white');
+  padding: use-spacing(10);
+  border-radius: use-border-radius('lg');
+
+  &__title {
+    box-sizing: border-box;
+    padding-bottom: use-spacing(8);
+    color: use-color('gray', 700);
+    font-size: use-text-size('lg');
+    font-weight: use-text-weight('medium');
+    line-height: use-text-lineheight('lg');
+  }
+
+  &__content {
+    box-sizing: border-box;
+    color: use-color('gray', 600);
+    line-height: use-text-lineheight('sm');
+    font-size: use-text-size('normal');
+    font-weight: use-text-weight('medium');
+  }
+}

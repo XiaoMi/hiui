@@ -1,0 +1,49 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-empty-state' !default;
+$image-container: '#{$prefix}__image' !default;
+
+.#{$prefix} {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &--size-sm {
+    .#{$image-container} {
+      height: 72px;
+    }
+  }
+
+  &--size-md {
+    .#{$image-container} {
+      height: 88px;
+    }
+  }
+
+  &--size-lg {
+    .#{$image-container} {
+      height: 96px;
+    }
+  }
+
+  &__image {
+    img {
+      object-fit: cover;
+      height: 100%;
+      margin: auto;
+    }
+  }
+
+  &__title {
+    margin-top: 8px;
+    display: block;
+    color: use-color('gray', 500);
+    font-size: use-text-size('normal');
+    line-height: use-text-lineheight('sm');
+  }
+
+  &__slot {
+    margin-top: 10px;
+  }
+}

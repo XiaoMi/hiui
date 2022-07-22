@@ -1,0 +1,116 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-rating' !default;
+
+.#{$prefix} {
+  vertical-align: middle;
+  list-style: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  gap: 6px;
+  width: fit-content;
+  align-items: center;
+  height: 24px;
+  line-height: 24px;
+  font-size: 24px;
+  color: use-color('yellow', 500);
+  fill: use-color('yellow', 500);
+
+  &--disabled {
+    .#{$prefix}__star {
+      cursor: not-allowed;
+
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+
+  &--readonly {
+    .#{$prefix}__star {
+      cursor: auto;
+
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+
+  &__star {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    transition: transform use-motion-duration('normal') use-motion-bezier('normal');
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+    &:active,
+    &:hover {
+      transform: scale(1.2);
+    }
+
+    &__half {
+      display: inline-block;
+      z-index: 1;
+      height: 100%;
+
+      &.grayscale {
+        filter: grayscale(100%);
+      }
+
+      &--left,
+      &--right {
+        height: 100%;
+      }
+
+      // 覆盖层
+      &--left {
+        width: 50%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        overflow: hidden;
+      }
+
+      &--bottom,
+      &--top {
+        width: 100%;
+      }
+
+      // 覆盖层
+      &--top {
+        height: 50%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        overflow: hidden;
+      }
+    }
+  }
+
+  &__icon {
+    display: inline-block;
+    font-size: inherit;
+    width: 1em;
+    height: 1em;
+
+    svg {
+      font-size: inherit;
+      width: 1em;
+      height: 1em;
+    }
+  }
+
+  &__desc {
+    margin-left: use-spacing(7);
+    display: inline-block;
+    height: 24px;
+    line-height: use-text-lineheight('normal');
+    font-size: use-text-size('normal');
+  }
+}

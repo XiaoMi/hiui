@@ -1,0 +1,332 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-stepper' !default;
+
+.#{$prefix} {
+  display: flex;
+  font-size: use-text-size('normal');
+  overflow: auto;
+
+  &-item {
+    overflow: hidden;
+
+    // 状态
+    &-status {
+      &__step {
+        width: use-height-size(6);
+        height: use-height-size(6);
+        text-align: center;
+        line-height: use-height-size(6);
+        border-radius: use-border-radius('full');
+        color: use-color-static('white');
+        // color: use-color('gray', 500);
+        background-color: use-color('gray', 200);
+        flex-shrink: 0;
+      }
+
+      &__dot {
+        background-color: use-color('gray', 200);
+        width: 8px;
+        height: 8px;
+        // 24 * 24 size
+        margin: 8px;
+        border-radius: use-border-radius('full');
+        flex-shrink: 0;
+      }
+
+      &__icon {
+        color: use-color('gray', 200);
+        font-size: 24px;
+        line-height: 24px;
+      }
+    }
+
+    // 提示文案
+    &-tip {
+      &__title {
+        color: use-color('gray', 500);
+        line-height: 24px;
+      }
+
+      &__content {
+        @include ellipsis(2);
+
+        text-align: center;
+        font-size: use-text-size('sm');
+        color: use-color('gray', 500);
+        padding: 0;
+      }
+    }
+
+    &.#{$prefix}-item--done {
+      .#{$prefix}-item {
+        &-status {
+          &__step {
+            background-color: use-color-mode('primary', 50);
+            color: use-color-mode('primary');
+          }
+
+          &__dot {
+            background-color: use-color-mode('primary');
+          }
+
+          &__icon {
+            color: use-color-mode('primary');
+          }
+        }
+
+        &-tip {
+          &__title {
+            color: use-color('gray', 700);
+          }
+        }
+      }
+    }
+
+    &.#{$prefix}-item--active {
+      .#{$prefix}-item {
+        &-status {
+          &__step {
+            background-color: use-color-mode('primary');
+            color: use-color-static('white');
+          }
+
+          &__dot {
+            background-color: use-color-mode('primary');
+          }
+
+          &__icon {
+            color: use-color-mode('primary');
+            opacity: 1;
+          }
+        }
+
+        &-tip {
+          &__title {
+            color: use-color-mode('primary');
+            font-weight: use-text-weight('medium');
+          }
+
+          &__content {
+            color: use-color('gray', 700);
+          }
+        }
+      }
+    }
+  }
+
+  &--placement {
+    &-vertical {
+      flex-direction: column;
+
+      $line-spacing: use-spacing(6);
+
+      .#{$prefix}-item {
+        position: relative;
+        display: flex;
+        flex: 1;
+        padding-bottom: $line-spacing;
+        min-height: 80px;
+
+        // 线条
+        &::after {
+          content: '';
+          position: absolute;
+          top: calc(#{use-height-size(6)} + #{$line-spacing});
+          left: 11px;
+          width: 1px;
+          height: calc(100% - #{use-height-size(6)} - #{$line-spacing} * 2);
+          background-color: use-color('gray', 200);
+        }
+
+        // 尾部无线
+        &:last-of-type {
+          flex: none;
+          padding-bottom: 0;
+          min-height: 24px;
+
+          &::after {
+            content: none;
+          }
+        }
+
+        // 完成态
+        &.#{$prefix}-item--done {
+          &::after {
+            background-color: use-color-mode('primary');
+          }
+        }
+
+        // 激活态
+        &.#{$prefix}-item--active {
+          .#{$prefix}-item {
+            &__dot {
+              background-color: use-color-mode('primary');
+            }
+
+            &__icon {
+              color: use-color-mode('primary');
+            }
+          }
+        }
+
+        &-tip {
+          margin-inline-start: use-spacing(4);
+
+          &__content {
+            text-align: left;
+            margin-top: use-spacing(3);
+          }
+        }
+      }
+    }
+
+    &-horizontal {
+      .#{$prefix}-item {
+        &--horizontal {
+          display: flex;
+          position: relative;
+          flex-direction: row;
+          align-items: flex-start;
+          min-width: 20%;
+          flex: 1;
+          // 保持和线的间距
+          padding-inline-start: use-spacing(6);
+
+          &:first-of-type {
+            padding-inline-start: 0;
+          }
+
+          &:last-of-type {
+            flex: none;
+
+            .#{$prefix}-item-tip {
+              &__title {
+                padding-inline-end: 0;
+              }
+            }
+          }
+
+          .#{$prefix}-item {
+            &-tip {
+              display: inline-block;
+              margin-bottom: 0;
+              z-index: 1;
+              max-width: 100%;
+              min-width: 1px;
+              width: 100%;
+
+              &__content {
+                text-align: left;
+                margin-top: use-spacing(3);
+                // 写死，否则 flex 下最后一项内容过长会撑满，挤压其他元素空间
+                max-width: 160px;
+              }
+
+              &__title {
+                position: relative;
+                display: inline-block;
+                padding-inline-end: use-spacing(6);
+                box-sizing: content-box;
+
+                & > div {
+                  @include ellipsis();
+
+                  vertical-align: middle;
+                  max-width: 126px;
+                }
+              }
+            }
+
+            &-status {
+              &__step,
+              &__icon {
+                margin-inline-end: use-spacing(4);
+              }
+            }
+          }
+
+          // 水平线，相对 title 元素
+          &:not(:last-of-type) {
+            .#{$prefix}-item-tip__title::after {
+              content: '';
+              position: absolute;
+              left: 100%;
+              width: 9999px;
+              height: 1px;
+              top: 50%;
+              transform: translateY(-50%);
+            }
+          }
+
+          .#{$prefix}-item-tip__title::after {
+            background-color: use-color('gray', 200);
+          }
+
+          &.#{$prefix}-item--done {
+            .#{$prefix}-item-tip__title::after {
+              background-color: use-color-mode('primary');
+            }
+          }
+        }
+
+        &--vertical {
+          display: flex;
+          position: relative;
+          align-items: center;
+          flex: 1;
+          min-width: 1px;
+          flex-direction: column;
+
+          .#{$prefix}-item {
+            &-tip {
+              &__title {
+                text-align: center;
+                margin-top: use-spacing(6);
+              }
+
+              &__content {
+                text-align: center;
+                margin-top: use-spacing(3);
+              }
+            }
+
+            &-status {
+              height: use-height-size(6);
+              width: use-height-size(6);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              z-index: 1;
+            }
+          }
+
+          // 水平线，相对 item 元素
+          &:not(:first-of-type)::before,
+          &:not(:last-of-type)::after {
+            content: '';
+            position: absolute;
+            top: use-spacing(6);
+            width: calc(50% - #{use-spacing(4)} - #{use-height-size(6)} / 2);
+            height: 1px;
+            background-color: use-color('gray', 200);
+          }
+
+          &:not(:first-of-type)::before {
+            left: 0;
+          }
+
+          &:not(:last-of-type)::after {
+            right: 0;
+          }
+
+          &.#{$prefix}-item--active::before,
+          &.#{$prefix}-item--done::before,
+          &.#{$prefix}-item--done::after {
+            background-color: use-color-mode('primary');
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-highlighter' !default;
+
+.#{$prefix} {
+  &--matched {
+    color: use-color-mode('primary');
+  }
+}

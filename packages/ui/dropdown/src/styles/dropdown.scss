@@ -1,0 +1,76 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-dropdown' !default;
+
+.#{$prefix} {
+  display: inline-block;
+}
+
+.#{$prefix}-menu {
+  @include list-reset();
+
+  background-color: use-color-static('white');
+  border-radius: use-border-radius('normal');
+  font-size: use-text-size('normal');
+  padding: use-spacing(4);
+  color: use-color('gray', 700);
+  // max-height: 260px;
+  // 影响计算，如果要支持需要换种方案，不利用内嵌的特性。
+  // 而是手动计算每个下拉面板的非outside区域元素然后拦截防菜单操作时关闭收起
+  // overflow-y: scroll;
+
+  $menu-width: var(with-prefix-var('dropdown-menu-width'), 180px);
+
+  width: $menu-width;
+}
+
+.#{$prefix}-menu-item {
+  @include list-item-reset();
+
+  margin: 0;
+  box-sizing: border-box;
+  overflow: visible;
+  padding: use-spacing(2) 0;
+
+  &__link {
+    color: use-color('gray', 700);
+    width: 100%;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+
+  &__arrow {
+    transform: rotate(-90deg);
+  }
+
+  $this: &;
+
+  &__trigger {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: use-border-radius('normal');
+    padding: use-spacing(4) use-spacing(6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:hover {
+      background-color: use-color('gray', 100);
+    }
+  }
+
+  &--active > &__trigger {
+    background-color: use-color('gray', 100);
+  }
+}
+
+.#{$prefix}-divider {
+  @include list-item-reset();
+
+  background-color: use-color('gray', 200);
+  width: 100%;
+  height: 1px;
+  margin: use-spacing(4) 0;
+}

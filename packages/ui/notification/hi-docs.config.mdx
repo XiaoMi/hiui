@@ -1,0 +1,44 @@
+# Notification 通知
+
+系统发布通知、公布、公告等类型的全局信息
+
+## 何时使用
+
+系统级推送
+
+用于通知、通告、公告、广播等场景
+
+## 使用示例
+
+<!-- Inject Stories -->
+
+## Props
+
+## Methods
+
+### notification.open({ type, title, content, duration, action, closeable, autoClose, onClose })
+
+> 新开一个 notification 实例
+
+| 参数               | 说明                    | 类型         | 可选值                                      | 默认值 |
+| ------------------ | ----------------------- | ------------ | ------------------------------------------- | ------ |
+| type               | 通知框类型              | string       | "info" \| "success" \| "error" \| "warning" | "info" |
+| title _(required)_ | 通知框标题              | ReactNode    | -                                           | -      |
+| content            | 通知框内容              | ReactNode    | -                                           | -      |
+| duration           | 自动关闭时间，单位为 ms | number       | -                                           | 5000   |
+| action             | 操作配置                | ReactNode    | -                                           | -      |
+| closeable          | 开启点击关闭            | boolean      | true \| false                               | true   |
+| autoClose          | 是否开启自动关闭        | boolean      | true \| false                               | true   |
+| onClose            | 关闭时触发的回调函数    | (() => void) | -                                           | -      |
+
+### notification.close(key)
+
+> 关闭指定 message 弹层实例
+
+| 参数 | 说明                                      | 类型   | 可选值 | 默认值 |
+| ---- | ----------------------------------------- | ------ | ------ | ------ |
+| key  | open 方法返回的 notification 实例唯一标识 | string | -      | -      |
+
+### notification.closeAll()
+
+> 关闭所有 notification 弹层实例

@@ -1,0 +1,261 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-counter' !default;
+$content-class: '#{$prefix}__content' !default;
+$minus-class: '#{$prefix}__minus' !default;
+$plus-class: '#{$prefix}__plus' !default;
+$input-class: '#{$prefix}__input' !default;
+$input-wrapper-class: '#{$prefix}__input-wrapper' !default;
+
+.#{$prefix} {
+  position: relative;
+  display: inline-block;
+  color: use-color('gray', 700);
+  font-size: use-text-size('normal');
+  z-index: use-zindex('normal');
+  width: fit-content;
+
+  $this: &;
+
+  &__content {
+    display: flex;
+    box-sizing: border-box;
+    border-radius: use-border-radius('normal');
+    height: 100%;
+    // @animation
+    transition-property: border, background-color;
+    transition-duration: use-motion-duration('fast');
+    transition-timing-function: use-motion-bezier('normal');
+  }
+
+  &--appearance-line {
+    .#{$content-class} {
+      border: use-border-size('normal') use-color('gray', 300);
+    }
+
+    &#{$this}--focused {
+      .#{$content-class} {
+        border-color: use-color-mode('primary');
+      }
+
+      &::before {
+        background-color: use-color-mode('primary', 50);
+      }
+
+      &#{$this}--invalid,
+      &#{$this}--out-of-bounds {
+        .#{$content-class} {
+          border-color: use-color-mode('danger');
+        }
+
+        &::before {
+          background-color: use-color-mode('danger', 50);
+        }
+      }
+    }
+
+    &::before {
+      position: absolute;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      content: '';
+      border-radius: use-border-radius('lg');
+      z-index: -1;
+    }
+
+    .#{$input-class} {
+      border: use-border-size('normal') use-color('gray', 300);
+      border-top: none;
+      border-bottom: none;
+
+      &:disabled {
+        background-color: use-color('gray', 50);
+      }
+    }
+
+    .#{$minus-class},
+    .#{$plus-class} {
+      background-color: use-color-static('white');
+      color: use-color('gray', 700);
+
+      &:hover {
+        background-color: use-color('gray', 50);
+      }
+
+      &:active {
+        background-color: use-color('gray', 200);
+      }
+
+      &.disabled {
+        background-color: use-color('gray', 50);
+        color: use-color('gray', 300);
+      }
+    }
+  }
+
+  &--appearance-filled {
+    &#{$this}--focused {
+      .#{$input-class} {
+        background-color: use-color-static('white');
+        border: use-border-size('normal') use-color-mode('primary');
+        border-radius: use-border-radius('sm');
+      }
+
+      .#{$input-wrapper-class} {
+        &::before {
+          background-color: use-color-mode('primary', 50);
+        }
+      }
+
+      &#{$this}--invalid,
+      &#{$this}--out-of-bounds {
+        .#{$input-class} {
+          border-color: use-color-mode('danger');
+        }
+
+        .#{$input-wrapper-class} {
+          &::before {
+            background-color: use-color-mode('danger', 50);
+          }
+        }
+      }
+    }
+
+    .#{$input-wrapper-class} {
+      position: relative;
+      z-index: use-zindex('normal');
+
+      &::before {
+        position: absolute;
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        content: '';
+        border-radius: use-border-radius('normal');
+        z-index: -1;
+      }
+    }
+
+    .#{$input-class} {
+      border: use-border-size('normal') use-color-static('white');
+      border-top: none;
+      border-bottom: none;
+      background-color: use-color('gray', 100);
+    }
+
+    .#{$minus-class},
+    .#{$plus-class} {
+      background-color: use-color('gray', 100);
+      color: use-color('gray', 700);
+
+      &:hover {
+        background-color: use-color('gray', 200);
+      }
+
+      &.disabled {
+        background-color: use-color('gray', 100);
+        color: use-color('gray', 300);
+      }
+    }
+  }
+
+  &__minus,
+  &__plus {
+    appearance: none;
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    user-select: none;
+    font: inherit;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    font-weight: bold;
+    cursor: pointer;
+    // @animation
+    transition-property: background-color, color;
+    transition-duration: use-motion-duration('fast');
+    transition-timing-function: use-motion-bezier('normal');
+
+    &.disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  .#{$minus-class} {
+    border-radius: use-border-radius('normal') 0 0 use-border-radius('normal');
+  }
+
+  .#{$plus-class} {
+    border-radius: 0 use-border-radius('normal')  use-border-radius('normal') 0;
+  }
+
+  &__input-wrapper {
+    //height: 32px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    height: 100%;
+    //width: 2 * 32px;
+    padding: 0 6px;
+    color: inherit;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    text-align: center;
+    // @animation
+    transition-property: background-color, color;
+    transition-duration: use-motion-duration('fast');
+    transition-timing-function: use-motion-bezier('normal');
+
+    &:disabled {
+      color: use-color('gray', 400);
+    }
+  }
+
+  &--size-sm {
+    height: 24px;
+
+    .#{$minus-class}, .#{$plus-class} {
+      width: 24px;
+    }
+
+    .#{$input-class} {
+      width: 50px;
+    }
+  }
+
+  &--size-md {
+    height: 32px;
+
+    .#{$minus-class}, .#{$plus-class} {
+      width: 32px;
+    }
+
+    .#{$input-class} {
+      width: 58px;
+    }
+  }
+
+  &--size-lg {
+    height: 40px;
+
+    .#{$minus-class}, .#{$plus-class} {
+      width: 40px;
+    }
+
+    .#{$input-class} {
+      width: 66px;
+    }
+  }
+}

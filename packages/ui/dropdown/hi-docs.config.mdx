@@ -1,0 +1,41 @@
+# Dropdown 下拉菜单
+
+用来将菜单收起在下拉面板中，使用中唤起面板，有效节省空间
+
+## 何时使用
+
+有二级以上的菜单且展示空间有限
+
+当一组平级的动作要展示时，将其收入一个入口，可让页面信息更整洁
+
+## 使用示例
+
+<!-- Inject Stories -->
+
+## Props
+
+<!-- Inject Props -->
+
+## Type
+
+### DropdownDataItem
+
+| 参数     | 说明                                          | 类型      | 可选值                                          | 默认值 |
+| -------- | --------------------------------------------- | --------- | ----------------------------------------------- | ------ |
+| title    | 标题的内容                                    | ReactNode | -                                               | -      |
+| id       | 唯一标识 id                                   | ReactText | -                                               | -      |
+| disabled | 是否禁用                                      | boolean   | true \| false                                   | false  |
+| href     | 点击跳转的路径                                | string    | -                                               | -      |
+| target   | 同 a 标签的 target 属性，仅在设置 href 后有效 | string    | ︎'\_self' \| '\_blank' \| '\_parent' \| '\_top' | -      |
+| split    | 是否在其底部建立分隔线                        | boolean   | ︎true \| false                                  | false  |
+
+### PopperOverlayProps
+
+| 参数           | 说明                               | 类型                | 可选值                                                                                                                                                                                                     | 默认值         |
+| -------------- | ---------------------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| className      | 弹层类名                           | string              | -                                                                                                                                                                                                          | -              |
+| matchWidth     | 自动计算匹配吸附元素的宽度与其一致 | boolean             | true \| false                                                                                                                                                                                              | false          |
+| placement      | 相对吸附元素的位置                 | PopperPlacementEnum | "top" \| "bottom" \| "right" \| "left" \| "top-start" \| "top-end" \| "bottom-start" \| "bottom-end" \| "right-start" \| "right-end" \| "left-start" \| "left-end" \| "auto" \| "auto-start" \| "auto-end" | "bottom-start" |
+| container      | 指定 portal 的容器                 | HTMLElement         | -                                                                                                                                                                                                          | -              |
+| disabledPortal | 禁用 portal                        | boolean             | true \| false                                                                                                                                                                                              | false          |
+| arrow          | 是否展示箭头                       | boolean             | true \| false                                                                                                                                                                                              | false          |
