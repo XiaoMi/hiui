@@ -1,0 +1,90 @@
+@import '../common/index.scss';
+@import '../tokens/index.scss';
+
+/// 获取 text 对应 css 变量名
+/// @access private
+@function get-text-css-name-var($key) {
+  $var-name: 'text-' + $key;
+
+  @return with-prefix-var($var-name);
+}
+
+/// 获取 text family 对应 css 变量值
+/// @access private
+@function use-text-family-var($key) {
+  $var-name: get-text-css-name-var('family-' + $key);
+  $var-value: get-text-family($key);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+/// 获取 text weight 对应 css 变量值
+/// @access private
+@function use-text-weight-var($key) {
+  $var-name: get-text-css-name-var('weight-' + $key);
+  $var-value: get-text-weight($key);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+/// 获取 text lineheight 对应 css 变量值
+/// @access private
+@function use-text-lineheight-var($key) {
+  $var-name: get-text-css-name-var('lineheight-' + $key);
+  $var-value: get-text-lineheight($key);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+/// 获取 text spacing 对应 css 变量值
+/// @access private
+@function use-text-spacing-var($key) {
+  $var-name: get-text-css-name-var('spacing-' + $key);
+  $var-value: get-text-spacing($key);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+/// 获取 text size 对应 css 变量值
+/// @access private
+@function use-text-size-var($key) {
+  $var-name: get-text-css-name-var('size-' + $key);
+  $var-value: get-text-size($key);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+/// 设置 text family 对应 css 变量值
+@function use-text-family($type) {
+  @return use-text-family-var($type);
+}
+
+/// 设置 text weight 对应 css 变量值
+@function use-text-weight($weight) {
+  @return use-text-weight-var($weight);
+}
+
+/// 设置 text lineheight 对应 css 变量值
+@function use-text-lineheight($key) {
+  // normal 表示通用默认。这里统一收敛，可根据规范调整
+  @if ($key == 'normal') {
+    $key: 'md';
+  }
+
+  @return use-text-lineheight-var($key);
+}
+
+/// 设置 text spacing 对应 css 变量值
+@function use-text-spacing($key) {
+  @return use-text-spacing-var($key);
+}
+
+/// 设置 text size 对应 css 变量值
+@function use-text-size($key) {
+  // normal 表示通用默认。这里统一收敛，可根据规范调整
+  @if ($key == 'normal') {
+    $key: 'md';
+  }
+
+  @return use-text-size-var($key);
+}

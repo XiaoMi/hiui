@@ -1,0 +1,68 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-breadcrumb' !default;
+
+.#{$prefix} {
+  font-size: use-text-size('normal');
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+
+  &--md {
+    line-height: use-height-size(8);
+    font-size: use-text-size('normal');
+  }
+
+  &--sm {
+    line-height: use-height-size(6);
+    font-size: use-text-size('sm');
+  }
+
+  li {
+    margin: 0;
+    list-style: none;
+  }
+
+  &__content {
+    transition: all 0.3s;
+    color: use-color('gray', 500);
+  }
+
+  a {
+    &.#{$prefix}__content {
+      cursor: pointer;
+      text-decoration: none;
+
+      &:hover {
+        color: use-color-mode('primary');
+      }
+    }
+  }
+
+  &__separator {
+    margin: 0 use-spacing(4);
+    padding: 0 use-spacing(2);
+    color: use-color('gray', 300);
+  }
+
+  &__item {
+    display: inline-block;
+    color: use-color('gray', 500);
+  }
+
+  &__item:last-child {
+    .#{$prefix}__content {
+      cursor: text;
+      color: use-color('gray', 700);
+    }
+
+    .#{$prefix}__separator {
+      display: none;
+    }
+  }
+
+  &__icon {
+    margin-inline-end: use-spacing(2);
+    font-size: use-text-size('lg');
+  }
+}

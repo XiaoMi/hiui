@@ -1,0 +1,28 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-spinner' !default;
+
+.#{$prefix} {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  cursor: default;
+  color: use-color-mode('primary');
+
+  svg.#{$prefix}__icon {
+    @keyframes #{$component-prefix}-rotate {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    width: 0.8rem;
+    height: 0.8rem;
+    stroke: none;
+    fill: currentColor;
+    animation-name: #{$component-prefix}-rotate;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+  }
+}

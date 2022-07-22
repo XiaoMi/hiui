@@ -1,0 +1,33 @@
+# Tooltip 文字提示
+
+常用的文字提示组件
+
+## 何时使用
+
+词汇注释，生僻专业词汇，动作描述
+
+图标代表的含义
+
+## 使用示例
+
+<!-- Inject Stories -->
+
+## Props
+
+<!-- Inject Props -->
+
+## Methods
+
+### Tooltip.open(target, { title, placement, key })
+
+| 参数   | 说明                                | 类型        | 可选值 | 默认值 |
+| ------ | ----------------------------------- | ----------- | ------ | ------ |
+| target | 要显示 Tooltip 的元素               | HTMLElement | -      | -      |
+| title  | 提示文字内容                        | string      | -      | -      |
+| key    | 标识 Tooltip 的唯一 key，仅用于关闭 | string      | -      | -      |
+
+### Tooltip.close(key)
+
+| 参数 | 说明                                 | 类型   | 可选值 | 默认值 |
+| ---- | ------------------------------------ | ------ | ------ | ------ |
+| key  | open 方法返回的 Tooltip 实例唯一标识 | string | -      | -      |

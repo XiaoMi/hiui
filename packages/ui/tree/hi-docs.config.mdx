@@ -1,0 +1,72 @@
+# Tree 树形控件
+
+具备展示多层级数据结构特征的组件
+
+## 何时使用
+
+多层级数据结构
+
+需要明确的展示层级结构
+
+对多层级结构节点进行操作
+
+## 使用示例
+
+<!-- Inject Stories -->
+
+## Props
+
+<!-- Inject Props -->
+
+## Type
+
+### TreeDataItem
+
+| 参数     | 说明           | 类型           | 可选值        | 默认值 |
+| -------- | -------------- | -------------- | ------------- | ------ |
+| id       | 树节点唯一 id  | ReactText      | -             | -      |
+| title    | 树节点标题     | ReactNode      | -             | -      |
+| disabled | 是否禁用节点   | boolean        | true \| false | false  |
+| children | 该节点的子节点 | TreeDataItem[] | -             | -      |
+| isLeaf   | 是否为叶子节点 | boolean        | true \| false | -      |
+
+### TreeNodeEventData
+
+| 参数     | 说明                           | 类型                | 可选值 | 默认值 |
+| -------- | ------------------------------ | ------------------- | ------ | ------ |
+| children | 下一级树节点列表               | TreeNodeEventData[] | -      | -      |
+| raw      | 关联用户传入的原始数据对象     | TreeDataItem        | -      | -      |
+| depth    | 该节点的层级，从 0（顶层）开始 | number              | -      | -      |
+| parent   | 该节点的父节点                 | TreeNodeEventData   | -      | -      |
+
+### TreeLevelStatus
+
+| 参数   | 说明               | 类型   | 可选值 | 默认值 |
+| ------ | ------------------ | ------ | ------ | ------ |
+| before | 拖拽前在树中的层级 | number | -      | -      |
+| after  | 拖拽后在树中的层级 | number | -      | -      |
+
+### TreeDataStatus
+
+| 参数   | 说明                   | 类型           | 可选值 | 默认值 |
+| ------ | ---------------------- | -------------- | ------ | ------ |
+| before | 更新前整个树的数据结构 | TreeDataItem[] | -      | -      |
+| after  | 更新后整个树的数据结构 | TreeDataItem[] | -      | -      |
+
+### TreeMenuActionOption
+
+| 参数    | 说明               | 类型                                                        | 可选值                                                                                                                  | 默认值 |
+| ------- | ------------------ | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------ |
+| type    | 菜单执行的功能     | string                                                      | editNode: 编辑当前节点 <br/> addChildNode: 添加子节点 <br/> addSiblingNode: 添加同级节点 <br/> deleteNode: 删除当前节点 | -      |
+| title   | 菜单标题           | ReactNode                                                   | -                                                                                                                       | -      |
+| onClick | 点击菜单项时的回调 | ( item: TreeNodeEventData, action: TreeEditActions) => void | -                                                                                                                       | -      |
+
+### TreeEditActions
+
+| 参数           | 说明                 | 类型       | 可选值 | 默认值 |
+| -------------- | -------------------- | ---------- | ------ | ------ |
+| editNode       | 执行编辑节点操作     | () => void | -      | -      |
+| addChildNode   | 执行添加子节点操作   | () => void | -      | -      |
+| addSiblingNode | 执行添加兄弟节点操作 | () => void | -      | -      |
+| deleteNode     | 执行删除节点操作     | () => void | -      | -      |
+| closeMenu      | 执行关闭菜单操作     | () => void | -      | -      |

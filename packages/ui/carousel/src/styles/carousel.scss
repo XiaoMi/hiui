@@ -1,0 +1,60 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-carousel' !default;
+$wrapper-class: '#{$prefix}__wrapper' !default;
+
+.#{$prefix} {
+  width: 100%;
+  height: 100%;
+
+  &__wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: use-border-radius('lg');
+    overflow: hidden;
+    // 创建层级作用域，避免内部层级泄漏
+    z-index: use-zindex('normal');
+  }
+
+  &--dot-outer {
+    .#{$wrapper-class} {
+      height: calc(100% - 32px);
+    }
+  }
+
+  &__content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: use-zindex('normal');
+    display: flex;
+    align-items: center;
+    transition: 300ms ease-in-out all;
+  }
+
+  &__item-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  &__page-number {
+    position: absolute;
+    right: 12px;
+    bottom: 16px;
+    color: use-color-static('white');
+    font-size: use-text-size('sm');
+    line-height: 22px;
+    border-radius: 12px;
+    transform: translateY(50%);
+    padding: 0 12px;
+    background: use-color('gray', 800);
+    opacity: 0.6;
+    user-select: none;
+  }
+}

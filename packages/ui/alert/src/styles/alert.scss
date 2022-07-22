@@ -1,0 +1,70 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-alert' !default;
+
+.#{$prefix} {
+  $alert-icon-size: 20px;
+
+  position: relative;
+  padding: use-spacing(6) use-spacing(10);
+  border-radius: use-border-radius('lg');
+  font-size: use-text-size('normal');
+  color: use-color('gray', 600);
+  line-height: use-text-lineheight('sm');
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+
+  &.#{$prefix}--with-content {
+    padding: use-spacing(10);
+
+    .#{$prefix}__title {
+      font-size: use-text-size('lg');
+      font-weight: use-text-weight('medium');
+      margin-bottom: use-spacing(4);
+    }
+
+    .#{$prefix}__icon {
+      font-size: $alert-icon-size;
+      margin-inline-end: use-spacing(6);
+    }
+  }
+
+  &__icon {
+    font-size: use-text-size('lg');
+    margin-inline-end: use-spacing(4);
+    flex-shrink: 0;
+  }
+
+  &__message {
+    flex: 1;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: use-text-size('normal');
+    color: use-color('gray', 700);
+    // line-height: use-text-lineheight('sm');
+  }
+
+  &__close {
+    .#{$prefix} & {
+      line-height: inherit;
+      height: use-text-lineheight('sm');
+      margin-inline-start: use-spacing(4);
+    }
+  }
+
+  $color-list: ('primary', 'warning', 'success', 'danger');
+
+  @each $key in $color-list {
+    &--type-#{$key} {
+      background-color: use-color-mode(#{$key}, 50);
+
+      .#{$prefix}__icon {
+        color: use-color-mode(#{$key});
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-icon' !default;
+
+svg[class^=#{$prefix}] {
+  font-size: inherit;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  stroke: currentColor;
+  display: inline-block;
+  // 用于和任意文本内容排版时，垂直对齐
+  vertical-align: -0.15em;
+  // 关闭 flex 缩放
+  flex-shrink: 0;
+}

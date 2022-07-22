@@ -1,0 +1,53 @@
+# Cascader 级联选择
+
+一种接收数据的容器，为用户提供选择一部分数据的能力
+
+## 何时使用
+
+需要从大量的离散型数据中选择一部分时使用
+
+备选项数量 5 个以上时
+
+不需要将全部备选项都展示给用户时
+
+## 使用示例
+
+<!-- Inject Stories -->
+
+## Props
+
+<!-- Inject Props -->
+
+## Type
+
+### CascaderDataItem
+
+| 参数     | 说明                                                                  | 类型               | 可选值        | 默认值 |
+| -------- | --------------------------------------------------------------------- | ------------------ | ------------- | ------ |
+| id       | 选择项值，唯一 id                                                     | ReactText          | -             | -      |
+| title    | 选项标题                                                              | ReactNode          | -             | -      |
+| children | 下一级选项列表                                                        | CascaderDataItem[] | -             | -      |
+| disabled | 是否禁用该节点（将禁用级联点击，展开，如果开启 checkbox，也将被禁用） | boolean            | true \| false | false  |
+| isLeaf   | 是否为叶子节点，当 children 为空数组也表示为叶子结点                  | boolean            | true \| false | -      |
+
+### CascaderItemEventData
+
+> 继承自 CascaderDataItem
+
+| 参数     | 说明                           | 类型                    | 可选值 | 默认值 |
+| -------- | ------------------------------ | ----------------------- | ------ | ------ |
+| children | 下一级选项列表                 | CascaderItemEventData[] | -      | -      |
+| raw      | 关联用户传入的原始数据对象     | CascaderDataItem        | -      | -      |
+| depth    | 该节点的层级，从 0（顶层）开始 | number                  | -      | -      |
+| parent   | 该节点的父节点                 | CascaderItemEventData   | -      | -      |
+
+### PopperOverlayProps
+
+| 参数           | 说明                               | 类型                | 可选值                                                                                                                                                                                                     | 默认值         |
+| -------------- | ---------------------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| className      | 弹层类名                           | string              | -                                                                                                                                                                                                          | -              |
+| matchWidth     | 自动计算匹配吸附元素的宽度与其一致 | boolean             | true \| false                                                                                                                                                                                              | false          |
+| placement      | 相对吸附元素的位置                 | PopperPlacementEnum | "top" \| "bottom" \| "right" \| "left" \| "top-start" \| "top-end" \| "bottom-start" \| "bottom-end" \| "right-start" \| "right-end" \| "left-start" \| "left-end" \| "auto" \| "auto-start" \| "auto-end" | "bottom-start" |
+| container      | 指定 portal 的容器                 | HTMLElement         | -                                                                                                                                                                                                          | -              |
+| disabledPortal | 禁用 portal                        | boolean             | true \| false                                                                                                                                                                                              | false          |
+| arrow          | 是否展示箭头                       | boolean             | true \| false                                                                                                                                                                                              | false          |

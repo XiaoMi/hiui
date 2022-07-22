@@ -1,0 +1,36 @@
+# List 列表
+
+通用列表
+
+## 何时使用
+
+最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面。
+
+## 使用示例
+
+<!-- Inject Stories -->
+
+## Props
+
+<!-- Inject Props -->
+
+## Type
+
+### ListDataItem
+
+| 参数            | 说明                   | 类型                    | 可选值                        | 默认值   |
+| --------------- | ---------------------- | ----------------------- | ----------------------------- | -------- |
+| title           | 列表元素的标题         | ReactNode               | -                             | -        |
+| description     | 列表元素的描述内容     | ReactNode               | -                             | -        |
+| extra           | 额外内容               | ReactNode               | -                             | -        |
+| avatar          | 左侧图片资源地址       | string                  | -                             | -        |
+| action          | 右侧操作项             | ReactNode               | -                             | -        |
+| actionPlacement | 右侧操作项垂直对齐位置 | ListActionPlacementEnum | "top" \| "center" \| "bottom" | "center" |
+
+### PaginationProps
+
+> 继承 Pagination 组件的 Props
+
+| 参数      | 说明               | 类型                        | 可选值                       | 默认值  |
+| --------- | ------------------ | --------------------------- | ---------------------------- | ------- |
+| placement | 指定分页显示的位置 | ListPaginationPlacementEnum | 'left' \| 'middle' \|'right' | 'right' |

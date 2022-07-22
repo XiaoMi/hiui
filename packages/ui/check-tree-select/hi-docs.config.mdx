@@ -1,0 +1,49 @@
+# CheckTreeSelect 组件中文名
+
+组件中文介绍
+
+## 何时使用
+
+组件使用场景中文介绍
+
+## 使用示例
+
+<!-- Inject Stories -->
+
+## Props
+
+<!-- Inject Props -->
+
+## Type
+
+### CheckTreeSelectDataItem
+
+| 参数     | 说明                                                 | 类型                      | 可选值        | 默认值 |
+| -------- | ---------------------------------------------------- | ------------------------- | ------------- | ------ |
+| id       | 节点唯一 id                                          | ReactText                 | -             | -      |
+| title    | 节点标题                                             | ReactNode                 | -             | -      |
+| children | 子级数据列表                                         | CheckTreeSelectDataItem[] | -             | -      |
+| disabled | 是否禁用该节点                                       | boolean                   | true \| false | false  |
+| isLeaf   | 是否为叶子节点，当 children 为空数组也表示为叶子结点 | boolean                   | true \| false | -      |
+
+### CheckTreeSelectItemEventData
+
+> 继承自 CheckTreeSelectDataItem
+
+| 参数     | 说明                           | 类型                           | 可选值 | 默认值 |
+| -------- | ------------------------------ | ------------------------------ | ------ | ------ |
+| children | 该节点的子节点列表             | CheckTreeSelectItemEventData[] | -      | -      |
+| raw      | 关联用户传入的原始数据对象     | CheckTreeSelectDataItem        | -      | -      |
+| depth    | 该节点的层级，从 0（顶层）开始 | number                         | -      | -      |
+| parent   | 该节点的父节点                 | CheckTreeSelectGroupDataItem   | -      | -      |
+
+### PopperOverlayProps
+
+| 参数           | 说明                               | 类型                | 可选值                                                                                                                                                                                                     | 默认值         |
+| -------------- | ---------------------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| className      | 弹层类名                           | string              | -                                                                                                                                                                                                          | -              |
+| matchWidth     | 自动计算匹配吸附元素的宽度与其一致 | boolean             | true \| false                                                                                                                                                                                              | true           |
+| placement      | 相对吸附元素的位置                 | PopperPlacementEnum | "top" \| "bottom" \| "right" \| "left" \| "top-start" \| "top-end" \| "bottom-start" \| "bottom-end" \| "right-start" \| "right-end" \| "left-start" \| "left-end" \| "auto" \| "auto-start" \| "auto-end" | "bottom-start" |
+| container      | 指定 portal 的容器                 | HTMLElement         | -                                                                                                                                                                                                          | -              |
+| disabledPortal | 禁用 portal                        | boolean             | true \| false                                                                                                                                                                                              | false          |
+| arrow          | 是否展示箭头                       | boolean             | true \| false                                                                                                                                                                                              | false          |

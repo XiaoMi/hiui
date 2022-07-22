@@ -1,0 +1,34 @@
+// 统一类名前缀
+$component-prefix: 'hi-v4' !default;
+
+// 给文本附加上版本号后缀
+// eg: with-version('button'); // 'hi-v4-button'
+@function with-prefix($name) {
+  @return #{$component-prefix}-#{$name};
+}
+
+// 给文本附加上版本号后缀
+// eg: with-version('color-white'); // '--hi-v4-color-white'
+@function with-prefix-var($name) {
+  @return --#{$component-prefix}-#{$name};
+}
+
+/// Use Custom CSS variable
+/// @access public
+// eg: use-var('color', #fff); // `var(--hi-v4-color, #fff)`
+@function use-var($property, $value) {
+  $var-name: $property;
+  $var-value: $value;
+
+  @return var(with-prefix-var($var-name), #{$var-value});
+}
+
+// /// Use Custom CSS variable
+// /// @access public
+// // eg: use-var('button', 'color', #fff); // `var(--hi-v4-button-color, #fff)`
+// @function use-component-var($component-name, $property, $value) {
+//   $var-name: $component-name + '-' + $property;
+//   $var-value: $value;
+
+//   @return var(with-prefix-var($var-name), #{$var-value});
+// }

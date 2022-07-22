@@ -1,0 +1,28 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-tree' !default;
+
+.#{$prefix} {
+  &-searcher {
+    position: relative;
+    color: use-color('gray', 700);
+    margin-bottom: use-spacing(4);
+    box-sizing: border-box;
+
+    &--empty {
+      box-sizing: border-box;
+      display: inline-block;
+      color: use-color('gray', 500);
+      font-size: use-text-size('normal');
+      line-height: use-text-lineheight('normal');
+      font-weight: use-text-weight('normal');
+      padding: use-spacing(6) use-spacing(2) 0;
+    }
+  }
+
+  .#{$prefix}__title-text {
+    &--matched {
+      color: use-color-mode('primary');
+    }
+  }
+}

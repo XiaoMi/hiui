@@ -1,0 +1,70 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-select' !default;
+
+.#{$prefix}-option {
+  // padding: 0 use-spacing(4);
+  margin-top: use-spacing(2);
+  margin-bottom: use-spacing(2);
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: use-border-radius('normal');
+  cursor: pointer;
+  font-size: use-text-size('normal');
+  font-weight: use-text-weight('normal');
+  color: use-color('gray', 700);
+  line-height: use-text-lineheight('sm');
+
+  &__indent {
+    display: inline-block;
+    width: 16px;
+    height: 100%;
+  }
+
+  &__title {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: use-spacing(3);
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    line-height: inherit;
+  }
+
+  &:not(.#{$prefix}-option--selected):not(.#{$prefix}-option--focused):not(.#{$prefix}-option--disabled):hover {
+    background-color: use-color('gray', 100);
+  }
+
+  &--selected {
+    background-color: use-color-mode('primary', 50);
+    color: use-color-mode('primary');
+  }
+
+  &--focused {
+    background-color: use-color('gray', 100);
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    color: use-color('gray', 500);
+  }
+}
+
+.#{$prefix}-option-group {
+  display: inline-block;
+  margin-top: use-spacing(6);
+  margin-bottom: use-spacing(2);
+  padding: use-spacing(3) 0 use-spacing(3) use-spacing(3);
+  font-size: use-text-size('normal');
+  font-weight: use-text-weight('normal');
+  color: use-color('gray', 500);
+  line-height: use-text-lineheight('sm');
+
+  &:first-child {
+    margin-top: use-spacing(2);
+  }
+}

@@ -1,0 +1,206 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefixCls: #{$component-prefix}-loading !default;
+
+.#{$prefixCls} {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: use-color-static('primary');
+  position: relative;
+  z-index: use-zindex('absolute');
+
+  &__mask {
+    @include component-reset;
+    @include flex;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: use-zindex('back');
+    background: rgba(#fff, 0.64);
+    transition: 0.3s ease;
+
+    .#{$prefixCls}--motion-enter & {
+      opacity: 0;
+    }
+
+    .#{$prefixCls}--motion-enter-active & {
+      opacity: 1;
+    }
+
+    .#{$prefixCls}--motion-exit & {
+      opacity: 0;
+    }
+  }
+
+  &__wrapper {
+    position: relative;
+    width: auto;
+    height: auto;
+  }
+
+  &__icon {
+    position: relative;
+
+    div {
+      border-radius: 50%;
+      display: inline-block;
+      position: absolute;
+
+      @keyframes #{$component-prefix}-left-dot {
+        0% {
+          transform: translateX(0);
+          z-index: 1;
+        }
+
+        25% {
+          transform: translateX(100%) scale(1.5);
+          z-index: 1;
+        }
+
+        50% {
+          transform: translateX(200%);
+          z-index: 0;
+        }
+
+        75% {
+          transform: translateX(100%) scale(0.5);
+          z-index: 0;
+        }
+
+        100% {
+          transform: translateX(0);
+          z-index: 1;
+        }
+      }
+
+      @keyframes #{$component-prefix}-right-dot {
+        0% {
+          transform: translateX(0);
+          z-index: 0;
+        }
+
+        25% {
+          transform: translateX(-100%) scale(0.5);
+          z-index: 0;
+        }
+
+        50% {
+          transform: translateX(-200%);
+          z-index: 1;
+        }
+
+        75% {
+          transform: translateX(-100%) scale(1.5);
+          z-index: 1;
+        }
+
+        100% {
+          transform: translateX(0%);
+          z-index: 0;
+        }
+      }
+
+      &:first-child {
+        background: #f63;
+        left: 0;
+        transform: translateX(0);
+        animation: #{$component-prefix}-left-dot 1.5s linear infinite;
+      }
+
+      &:last-child {
+        background: use-color-mode('primary');
+        right: 0;
+        transform: translateX(0);
+        animation: #{$component-prefix}-right-dot 1.5s linear infinite;
+      }
+    }
+  }
+
+  &__content {
+    margin-top: 6px;
+    animation: #{$component-prefix}-flash 1.6s linear infinite;
+    color: #f63;
+  }
+
+  &--size {
+    &-sm {
+      .#{$prefixCls}__icon {
+        width: 24px;
+        height: 12px;
+
+        div {
+          height: 8px;
+          width: 8px;
+        }
+      }
+    }
+
+    &-md {
+      .#{$prefixCls}__icon {
+        width: 36px;
+        height: 18px;
+
+        div {
+          height: 12px;
+          width: 12px;
+        }
+      }
+    }
+
+    &-lg {
+      .#{$prefixCls}__icon {
+        width: 48px;
+        height: 24px;
+
+        div {
+          height: 16px;
+          width: 16px;
+        }
+      }
+    }
+  }
+
+  &--full {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: use-zindex('top');
+  }
+
+  &--part {
+    @include full-fill;
+
+    z-index: use-zindex('absolute');
+  }
+}
+
+@keyframes #{$component-prefix}-rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes #{$component-prefix}-flash {
+  0% {
+    opacity: 0.1;
+  }
+
+  55% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
+}

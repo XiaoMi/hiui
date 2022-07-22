@@ -1,0 +1,30 @@
+@import '../common/index.scss';
+
+// 基础层级关系
+$zindex-base-map: (
+  back: -1,
+  auto: 'auto',
+  normal: 0,
+  absolute: 1,
+  // Header
+  sticky: 800,
+  drawer: 1000,
+  modal: 1000,
+  // drawer\modal\Preview\ZenMode
+  dialog: 1000,
+  // message\notification
+  toast: 1010,
+  // popover\popConfirm
+  popper: 1030,
+  // select\picker
+  overlay: 1050,
+  tooltip: 1060,
+  watermark: 1100,
+  // global loading
+  top: 9999,
+) !default;
+
+/// 获取层及对应 z-index
+@function get-zindex($c) {
+  @return map-safe-get($zindex-base-map, $c);
+}

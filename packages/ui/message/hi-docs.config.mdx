@@ -1,0 +1,41 @@
+# Message 消息
+
+轻量级的页面操作反馈提示
+
+## 何时使用
+
+由用户在界面交互过程中发生的全局性操作提示
+
+即时反馈当前操作的结果
+
+## 使用示例
+
+<!-- Inject Stories -->
+
+## Props
+
+## Methods
+
+### message.open({ type, title, duration })
+
+> 新开一个 message 实例
+
+| 参数               | 说明                    | 类型                                        | 可选值                                      | 默认值 |
+| ------------------ | ----------------------- | ------------------------------------------- | ------------------------------------------- | ------ |
+| onClose            | 关闭时触发的回调函数    | (() => void)                                | -                                           | -      |
+| title _(required)_ | 通知框标题              | ReactNode                                   | -                                           | -      |
+| type               | 通知框类型              | "info" \| "success" \| "error" \| "warning" | "info" \| "success" \| "error" \| "warning" | "info" |
+| duration           | 自动关闭时间，单位为 ms | number                                      | -                                           | 5000   |
+| autoClose          | 是否开启自动关闭        | boolean                                     | true \| false                               | true   |
+
+### message.close(key)
+
+> 关闭指定 message 弹层实例
+
+| 参数 | 说明                                 | 类型   | 可选值 | 默认值 |
+| ---- | ------------------------------------ | ------ | ------ | ------ |
+| key  | open 方法返回的 message 实例唯一标识 | string | -      | -      |
+
+### message.closeAll()
+
+> 关闭所有 message 弹层实例

@@ -1,0 +1,99 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-avatar' !default;
+
+.#{$prefix} {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  text-align: center;
+  background-color: use-color-mode('primary');
+  color: use-color-static('white');
+  font-size: use-text-size('xl');
+  overflow: hidden;
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+  &--empty {
+    background-color: use-color-mode('primary', 100);
+  }
+
+  &--bordered {
+    border: 1px solid use-color-static('white');
+  }
+
+  &__content {
+    text-align: inherit;
+    background-color: use-color-static('transparent');
+    color: inherit;
+    overflow: hidden;
+    font-size: inherit;
+    height: 100%;
+
+    // 确定层级，避免污染
+    & > img {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      object-fit: cover;
+    }
+  }
+
+  &__image {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    object-fit: cover;
+  }
+
+  &--shape {
+    &-circle {
+      border-radius: use-border-radius('full');
+    }
+
+    &-square {
+      border-radius: use-border-radius('normal');
+    }
+  }
+
+  &--size {
+    &-md {
+      width: use-height-size(10);
+      height: use-height-size(10);
+      line-height: use-height-size(10);
+    }
+
+    &-sm {
+      width: use-height-size(8);
+      height: use-height-size(8);
+      line-height: use-height-size(8);
+      font-size: use-text-size('lg');
+    }
+
+    &-xs {
+      width: use-height-size(6);
+      height: use-height-size(6);
+      line-height: use-height-size(6);
+      font-size: use-text-size('normal');
+    }
+
+    &-lg {
+      width: use-height-size(12);
+      height: use-height-size(12);
+      line-height: use-height-size(12);
+      font-size: use-text-size('xxl');
+    }
+
+    &-xl {
+      width: use-height-size(16);
+      height: use-height-size(16);
+      line-height: use-height-size(16);
+      font-size: use-text-size('xxl');
+    }
+  }
+}

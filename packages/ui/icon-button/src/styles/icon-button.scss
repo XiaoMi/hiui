@@ -1,0 +1,65 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$icon-button-prefix: '#{$component-prefix}-icon-button' !default;
+
+.#{$icon-button-prefix} {
+  @include button-reset;
+
+  font-size: use-text-size('lg');
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
+  transition: all use-motion-bezier('normal');
+  position: relative;
+  flex-shrink: 0;
+  z-index: use-zindex('absolute');
+  color: use-color('gray', 600);
+
+  &--virtual-area {
+    &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      right: calc(-1 * #{use-spacing(2)});
+      top: calc(-1 * #{use-spacing(2)});
+      bottom: calc(-1 * #{use-spacing(2)});
+      left: calc(-1 * #{use-spacing(2)});
+      background: use-color-static('transparent');
+    }
+  }
+
+  &--effect {
+    &::before {
+      content: '';
+      position: absolute;
+      display: block;
+      right: calc(-1 * #{use-spacing(1)});
+      top: calc(-1 * #{use-spacing(1)});
+      bottom: calc(-1 * #{use-spacing(1)});
+      left: calc(-1 * #{use-spacing(1)});
+      z-index: -1;
+      background-color: transparent;
+      transition: background-color use-motion-duration('normal');
+      border-radius: use-border-radius('full');
+    }
+
+    &:hover,
+    &:focus {
+      &::before {
+        background-color: use-color('gray', 100);
+      }
+    }
+  }
+
+  &--active {
+    color: use-color-mode('primary');
+  }
+
+  &--disabled {
+    &.#{$icon-button-prefix} {
+      color: use-color('gray', 400);
+    }
+  }
+}

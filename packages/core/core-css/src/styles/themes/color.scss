@@ -1,0 +1,113 @@
+@import '../common/index.scss';
+@import '../tokens/index.scss';
+
+/// 获取颜色对应css变量名
+/// @param {String} $color - 对应颜色
+/// @param  {100|200|300|400|500|600|700|800} $gradation - 色阶值，可为空
+/// @group name
+/// @access private
+@function get-color-css-name-var($color, $gradation: '') {
+  $var-name: 'color-' + $color;
+  $var-name-suffix: '';
+
+  @if $gradation != '' {
+    $var-name-suffix: '-' + $gradation;
+  }
+
+  @return with-prefix-var($var-name + $var-name-suffix);
+}
+
+/// 生成 css 变量及其默认值
+/// @access private
+@function use-color-var($scheme, $gradation) {
+  $var-name: get-color-css-name-var($scheme, $gradation);
+  $var-value: get-color($scheme, $gradation);
+  // $var-value: #fff;
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+// 强调色
+@function use-color-mode($scheme, $gradation: 500) {
+  $color-system-map: (
+    // TODO: 无法做到动态，所以这个方案不太行，实现主题支持黑夜白天模式
+    // TODO: 需要给每个组件颜色都定义变量（表示具体实质，而不是颜色语义化值）
+    // 用于自动切换
+    'primary': (
+      // 值改成 var 引用，再引用真实色 var 引用
+      // 'primary': use-var('primary-500', use-color-var('brandblue', 500)),
+      900: use-var('color-primary-900', use-color-var('brandblue', 900)),
+      800: use-var('color-primary-800', use-color-var('brandblue', 800)),
+      700: use-var('color-primary-700', use-color-var('brandblue', 700)),
+      600: use-var('color-primary-600', use-color-var('brandblue', 600)),
+      500: use-var('color-primary-500', use-color-var('brandblue', 500)),
+      400: use-var('color-primary-400', use-color-var('brandblue', 400)),
+      300: use-var('color-primary-300', use-color-var('brandblue', 300)),
+      200: use-var('color-primary-200', use-color-var('brandblue', 200)),
+      100: use-var('color-primary-100', use-color-var('brandblue', 100)),
+      50: use-var('color-primary-50', use-color-var('brandblue', 50)),
+    ),
+    'danger': (
+      900: use-var('color-danger-900', use-color-var('red', 900)),
+      800: use-var('color-danger-800', use-color-var('red', 800)),
+      700: use-var('color-danger-700', use-color-var('red', 700)),
+      600: use-var('color-danger-600', use-color-var('red', 600)),
+      500: use-var('color-danger-500', use-color-var('red', 500)),
+      400: use-var('color-danger-400', use-color-var('red', 400)),
+      300: use-var('color-danger-300', use-color-var('red', 300)),
+      200: use-var('color-danger-200', use-color-var('red', 200)),
+      100: use-var('color-danger-100', use-color-var('red', 100)),
+      50: use-var('color-danger-50', use-color-var('red', 50)),
+    ),
+    'error': (
+      // 同 danger，这里只是为了编写代码时 foreach 之类的用法可能更方便
+      900: use-var('color-danger-900', use-color-var('red', 900)),
+      800: use-var('color-danger-800', use-color-var('red', 800)),
+      700: use-var('color-danger-700', use-color-var('red', 700)),
+      600: use-var('color-danger-600', use-color-var('red', 600)),
+      500: use-var('color-danger-500', use-color-var('red', 500)),
+      400: use-var('color-danger-400', use-color-var('red', 400)),
+      300: use-var('color-danger-300', use-color-var('red', 300)),
+      200: use-var('color-danger-200', use-color-var('red', 200)),
+      100: use-var('color-danger-100', use-color-var('red', 100)),
+      50: use-var('color-danger-50', use-color-var('red', 50)),
+    ),
+    'warning': (
+      900: use-var('color-warning-900', use-color-var('yellow', 900)),
+      800: use-var('color-warning-800', use-color-var('yellow', 800)),
+      700: use-var('color-warning-700', use-color-var('yellow', 700)),
+      600: use-var('color-warning-600', use-color-var('yellow', 600)),
+      500: use-var('color-warning-500', use-color-var('yellow', 500)),
+      400: use-var('color-warning-400', use-color-var('yellow', 400)),
+      300: use-var('color-warning-300', use-color-var('yellow', 300)),
+      200: use-var('color-warning-200', use-color-var('yellow', 200)),
+      100: use-var('color-warning-100', use-color-var('yellow', 100)),
+      50: use-var('color-warning-50', use-color-var('yellow', 50)),
+    ),
+    'success': (
+      900: use-var('color-success-900', use-color-var('green', 900)),
+      800: use-var('color-success-800', use-color-var('green', 800)),
+      700: use-var('color-success-700', use-color-var('green', 700)),
+      600: use-var('color-success-600', use-color-var('green', 600)),
+      500: use-var('color-success-500', use-color-var('green', 500)),
+      400: use-var('color-success-400', use-color-var('green', 400)),
+      300: use-var('color-success-300', use-color-var('green', 300)),
+      200: use-var('color-success-200', use-color-var('green', 200)),
+      100: use-var('color-success-100', use-color-var('green', 100)),
+      50: use-var('color-success-50', use-color-var('green', 50)),
+    ),
+  );
+
+  @return map-safe-get(
+    map-safe-get($color-system-map, $scheme),
+    $gradation,
+  );
+}
+
+@function use-color($scheme, $gradation) {
+  @return use-color-var($scheme, $gradation);
+}
+
+@function use-color-static($key) {
+  @return use-color-var('static', $key);
+}

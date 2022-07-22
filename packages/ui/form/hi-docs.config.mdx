@@ -1,0 +1,58 @@
+# Form 表单
+
+用来收集数据的组件集合
+
+## 何时使用
+
+当系统需要收集、录入时
+
+常见于调查问卷、登录、新建/编辑、设置等场景
+
+## 使用示例
+
+<!-- Inject Stories -->
+
+## Props
+
+<!-- Inject Props -->
+
+## Type
+
+### FormFieldPath
+
+> (string | number)[] | string | number
+
+### FormHelpers
+
+| 名称               | 说明                                                                                      | 类型                                                                                               |
+| ------------------ | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| reset              | 重置整个表单的验证,对应 Form.Reset 中的 API，如果不指定 nextState，则重置为 initialValues | (nextState?: { values?: any, errors?: any }) => Promise<void>                                      |
+| validate           | 对整个表单进行校验, 对应 Form.Submit 中的 API                                             | () => Promise<Record<string, any>>                                                                 |
+| validateField      | 对指定表单字段进行校验                                                                    | (fields: FormFieldPath) => Promise<any>                                                            |
+| setFieldValue      | 设置某个表单字段的值，在更新表单数据的的时候，使用该方法                                  | (field: FormFieldPath, value: any) => void                                                         |
+| setFieldsValue     | 设置多个表单的值，在异步获取的数据回显的时候，使用该方法                                  | (field: Record<string, any> \| ((prevValues: Record<string, any>) => Record<string, any>)) => void |
+| getFieldValue      | 获取一个字段名对应的 Value，返回为对应 Field 值                                           | (field: FormFieldPath) => any                                                                      |
+| getFieldsValue     | 获取所有字段名对应的 Values 返回为字典映射数据结构                                        | () => Record<string, any>                                                                          |
+| getFieldError      | 获取一组字段名对应的 errorMessage，返回为对应 field 错误信息                              | (field: FormFieldPath) => any                                                                      |
+| getFieldsError     | 获取所有字段名对应的错误信息，返回为字典映射数据结构                                      | () => Record<string, any>                                                                          |
+| clearValidates     | 移除所有表单项的校验结果                                                                  | () => void                                                                                         |
+| clearFieldValidate | 移除表单项的校验结果，传入待移除的表单项的 field 属性组成的数组                           | (fields: FormFieldPath) => void                                                                    |
+
+### FormRuleModel
+
+> [更多规则](https://github.com/yiminghe/async-validator)
+
+| 名称           | 说明                                                                                                                        | 类型                          |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| enum           | 是否匹配枚举中的值                                                                                                          | any[]                         |
+| len            | string 类型时为字符串长度；number 类型时为确定数字； array 类型时为数组长度                                                 | number                        |
+| max            | 必须设置 `type`：string 类型为字符串最大长度；number 类型时为最大值；array 类型时为数组最大长度                             | number                        |
+| message        | 错误信息                                                                                                                    | string                        |
+| min            | 必须设置 `type`：string 类型为字符串最小长度；number 类型时为最小值；array 类型时为数组最小长度                             | number                        |
+| pattern        | 正则表达式匹配                                                                                                              | RegExp                        |
+| required       | 是否为必选字段                                                                                                              | boolean                       |
+| transform      | 将字段值转换成目标值后进行校验                                                                                              | (value) => any                |
+| type           | 类型，常见有 `string` \|`number` \|`boolean` \| `email`。更多请参考[此处](https://github.com/yiminghe/async-validator#type) | string                        |
+| validator      | 自定义校验                                                                                                                  | (rule,value,callback) => void |
+| asyncValidator | 自定义异步校验                                                                                                              | (rule,value,callback) => void | Promise |
+| whitespace     | 如果字段仅包含空格则校验不通过                                                                                              | boolean                       |

@@ -1,0 +1,47 @@
+// MIFE dotfiles
+
+{
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "eslint.validate": [
+    "typescript",
+    "typescriptreact",
+    "javascript",
+    "javascriptreact"
+  ],
+  "stylelint.useLocal": true,
+  "stylelint.autoFixOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.tslint": true,
+    "source.fixAll.stylelint": true,
+    "source.organizeImports": false
+  },
+  "cSpell.words": [
+    "autoload",
+    "brandblue",
+    "docgen",
+    "dotfiles",
+    "lineheight",
+    "linehight",
+    "MIFE",
+    "PASTELBLUE",
+    "selectchange",
+    "semibold",
+    "SKYBLUE",
+    "Viewbox",
+    "yahei",
+    "zindex"
+  ]
+}

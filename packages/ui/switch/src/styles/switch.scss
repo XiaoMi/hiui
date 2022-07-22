@@ -1,0 +1,83 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-switch' !default;
+
+.#{$prefix} {
+  &:not(.#{$prefix}--disabled):focus {
+    outline: 0;
+    z-index: 1;
+    box-shadow: 0 0 0 2px use-color-mode('primary', 200);
+  }
+
+  display: inline-flex;
+  min-width: 40px;
+  height: use-height-size(6);
+  border-radius: use-border-radius('full');
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+  flex: none;
+  flex-shrink: 0;
+  width: fit-content;
+
+  &:not(.#{$prefix}--disabled) {
+    background: use-color-mode('primary');
+  }
+
+  &--closed:not(.#{$prefix}--disabled) {
+    background: use-color('gray', 300);
+  }
+
+  &--open.#{$prefix}--disabled {
+    background: use-color-mode('primary', 50);
+  }
+
+  &--closed.#{$prefix}--disabled {
+    background: use-color('gray', 100);
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+  }
+
+  &::after {
+    content: '';
+    width: use-height-size(4);
+    height: use-height-size(4);
+    background: use-color-static('white');
+    position: absolute;
+    border-radius: use-border-radius('full');
+    top: calc((#{use-height-size(6)} - #{use-height-size(4)}) / 2);
+
+    // @animation
+    left: calc(100% - #{use-height-size(4)} - #{use-spacing(2)});
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
+    transition-property: all;
+    will-change: left;
+  }
+
+  &__text {
+    color: use-color-static('white');
+    font-size: use-text-size('sm');
+    line-height: use-height-size(6);
+    user-select: none;
+
+    // @animation
+    margin: 0 use-spacing(11) 0 use-spacing(4);
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
+    transition-property: all;
+    will-change: margin;
+  }
+
+  &--closed {
+    &::after {
+      left: use-spacing(2);
+    }
+
+    .#{$prefix}__text {
+      margin: 0 use-spacing(4) 0 use-spacing(11);
+    }
+  }
+}

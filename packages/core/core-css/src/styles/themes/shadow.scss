@@ -1,0 +1,29 @@
+@import '../common/index.scss';
+@import '../tokens/index.scss';
+
+/// 获取 shadow 对应 css 变量名
+/// @access private
+@function get-shadow-css-name-var($key) {
+  $var-name: 'shadow-' + $key;
+
+  @return with-prefix-var($var-name);
+}
+
+/// 获取 shadow duration 对应 css 变量值
+/// @access private
+@function get-shadow-var($key) {
+  $var-name: get-shadow-css-name-var($key);
+  $var-value: get-shadow($key);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+/// 设置 shadow duration 值
+@function use-shadow($key) {
+  // normal 表示通用默认。这里统一收敛，可根据规范调整
+  @if ($key == 'normal') {
+    $key: 'md';
+  }
+
+  @return get-shadow-var($key);
+}

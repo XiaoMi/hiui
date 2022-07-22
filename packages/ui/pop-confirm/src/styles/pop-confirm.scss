@@ -1,0 +1,35 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-pop-confirm' !default;
+
+.#{$prefix} {
+  @include text-reset;
+
+  position: relative;
+  background: use-color-static('white');
+  white-space: nowrap;
+  border-radius: use-border-radius('lg');
+  padding: use-spacing(10);
+  display: flex;
+  flex-direction: column;
+
+  &__content {
+    display: flex;
+    align-items: center;
+
+    &-icon {
+      margin-right: use-spacing(4);
+      color: use-color-mode('warning');
+      font-size: use-text-size('xxl');
+    }
+
+    &-title {
+      color: use-color('gray', 700);
+    }
+  }
+
+  &__footer {
+    margin-top: use-spacing(10);
+    text-align: right;
+  }
+}

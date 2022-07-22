@@ -1,0 +1,192 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+@import './flat.scss';
+@import './link.scss';
+@import './line.scss';
+@import './unset.scss';
+
+$prefix: '#{$component-prefix}-button' !default;
+
+// 通用能力，配置项无关
+
+.#{$prefix} {
+  & + & {
+    margin-inline-start: use-spacing(6);
+  }
+
+  background-color: transparent;
+  position: relative; // Used by button :focus radio-style etc.
+  display: inline-block;
+  box-sizing: border-box;
+  appearance: none;
+  margin: 0;
+  border: 1px solid transparent;
+  font-weight: use-text-weight('normal');
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  touch-action: manipulation; // 禁用非标准手势
+  &:not(#{&}--loading) {
+    cursor: pointer;
+  }
+
+  transition: background-color use-motion-duration('normal') use-motion-bezier('normal'), border-color use-motion-duration('normal') use-motion-bezier('normal'), box-shadow use-motion-duration('fast') use-motion-bezier('normal'), color use-motion-duration('normal') use-motion-bezier('normal');
+
+  //聚焦通用
+  &:focus {
+    outline: 0;
+    z-index: 1; // Display box-shadow in front
+  }
+
+  // 形状通用
+  &--shape-square {
+    border-radius: use-border-radius('normal');
+  }
+
+  &--shape-round {
+    border-radius: use-border-radius('full');
+  }
+
+  // 禁用通用
+  &--disabled,
+  &[disabled]:not(&--loading) {
+    cursor: not-allowed;
+  }
+
+  // 尺寸通用
+  &--size-sm {
+    font-size: use-text-size('sm');
+    line-height: use-text-lineheight('sm');
+
+    .#{$prefix}__icon {
+      // 定制大小，非 token
+      font-size: 14px;
+    }
+
+    &:not(.#{$prefix}--icon-only) {
+      .#{$prefix}__icon {
+        margin-inline-end: use-spacing(2);
+      }
+    }
+    &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
+      .#{$prefix}__icon {
+        margin-inline-end: use-spacing(2);
+      }
+    }
+  }
+
+  &--size-md {
+    font-size: use-text-size('normal');
+    line-height: use-text-lineheight('normal');
+
+    .#{$prefix}__icon {
+      // 定制大小，非 token
+      font-size: 16px;
+    }
+
+    &:not(.#{$prefix}--icon-only) {
+      .#{$prefix}__icon {
+        margin-inline-end: use-spacing(3);
+      }
+    }
+    &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
+      .#{$prefix}__icon {
+        margin-inline-end: use-spacing(3);
+      }
+    }
+  }
+
+  &--size-lg {
+    font-size: use-text-size('lg');
+    line-height: use-text-lineheight('lg');
+
+    .#{$prefix}__icon {
+      // 定制大小，非 token
+      font-size: 20px;
+    }
+
+    &:not(.#{$prefix}--icon-only) {
+      .#{$prefix}__icon {
+        margin-inline-end: use-spacing(4);
+      }
+    }
+    &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
+      .#{$prefix}__icon {
+        margin-inline-end: use-spacing(4);
+      }
+    }
+  }
+
+  &--size-xl {
+    font-size: use-text-size('xl');
+    line-height: use-text-lineheight('xl');
+
+    .#{$prefix}__icon {
+      // 定制大小，非 token
+      font-size: 24px;
+    }
+
+    &:not(.#{$prefix}--icon-only) {
+      .#{$prefix}__icon:not(.#{$prefix}--icon-only) {
+        margin-inline-end: use-spacing(6);
+      }
+    }
+    &.#{$prefix}--loading {
+      .#{$prefix}__icon:not(.#{$prefix}--icon-only) {
+        margin-inline-end: use-spacing(6);
+      }
+    }
+  }
+
+  //loading
+  &--loading {
+    position: relative;
+
+    .#{$prefix}__icon {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      stroke: none;
+      cursor: default;
+      fill: currentColor;
+
+      svg {
+        @keyframes rotate {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        animation: rotate 1s linear infinite;
+      }
+    }
+  }
+
+  @include render-filled-button();
+  @include render-line-button();
+  @include render-link-button();
+  @include render-unset-button();
+
+  &-group {
+    display: inline-block;
+    .#{$prefix} {
+      &:first-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      &:not(:first-child):not(:last-child) {
+        border-radius: 0;
+      }
+
+      &:not(:first-child) {
+        margin-left: 1px;
+      }
+
+      &:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+}

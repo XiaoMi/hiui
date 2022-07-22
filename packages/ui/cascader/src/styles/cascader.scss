@@ -1,0 +1,198 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-cascader' !default;
+
+.#{$prefix} {
+  &__popper {
+    .#{$component-prefix}-picker {
+      &__body {
+        padding-left: 0;
+        padding-right: 0;
+        overflow-y: hidden;
+      }
+
+      &__loading,
+      &__empty {
+        padding: use-spacing(5) use-spacing(8);
+      }
+    }
+  }
+}
+
+.#{$prefix}-panel {
+  white-space: nowrap;
+  box-sizing: border-box;
+  font-size: use-text-size('normal');
+  color: use-color('gray', 700);
+}
+
+.#{$prefix}-search {
+  box-sizing: border-box;
+  // padding: 10px;
+  padding: 0 10px 10px;
+  position: relative;
+
+  .#{$component-prefix}-input__prefix {
+    font-size: 16px;
+    padding-left: 0;
+  }
+
+  &__empty {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #999;
+    line-height: 20px;
+  }
+}
+
+.#{$prefix}-menu-list {
+  display: flex;
+  box-sizing: border-box;
+  overflow-x: auto;
+
+  &--flatted {
+    .#{$prefix}-menu {
+      flex-basis: 100%;
+    }
+  }
+}
+
+.#{$prefix}-menu {
+  @include component-reset;
+
+  list-style: none;
+  width: auto;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  display: inline-block;
+  min-width: 140px;
+  max-height: 260px;
+  overflow: auto;
+  padding: 4px 8px;
+  border-right: use-border-size('normal') use-color('gray', 200);
+
+  &:last-of-type {
+    border: none;
+  }
+
+  $this: &;
+
+  &-item {
+    width: 100%;
+    padding: use-spacing(2) 0;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+  }
+
+  &-option {
+    padding: 0 use-spacing(4);
+    box-sizing: border-box;
+    height: 32px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: space-between;
+    border-radius: use-border-radius('normal');
+
+    &:hover {
+      background-color: use-color('gray', 100);
+    }
+
+    &#{&}--selected {
+      background-color: use-color-mode('primary', 50);
+      color: use-color-mode('primary');
+
+      .#{$prefix}-menu-switcher {
+        color: use-color-mode('primary');
+      }
+    }
+
+    &--focused {
+      background-color: use-color-mode('primary', 50);
+    }
+
+    &--checked {
+      font-weight: 700;
+    }
+
+    &#{&}--disabled {
+      cursor: not-allowed;
+      color: use-color('gray', 500);
+      background: transparent;
+
+      .#{$prefix}-menu-switcher {
+        color: use-color('gray', 400);
+      }
+    }
+  }
+
+  .title__text {
+    flex: 1;
+
+    &--cols {
+      display: block;
+      width: 100%;
+
+      @include component-reset;
+
+      list-style: none;
+    }
+
+    &--col {
+      display: inline-block;
+
+      &::after {
+        content: '\00a0/\00a0';
+      }
+
+      &:last-child {
+        &::after {
+          content: none;
+        }
+      }
+    }
+
+    &--matched {
+      color: use-color-mode('primary');
+    }
+  }
+
+  &-switcher {
+    flex-shrink: 0;
+    font-size: 16px;
+    color: use-color('gray', 500);
+
+    &--loading {
+      color: use-color-mode('primary');
+    }
+
+    &--arrow {
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+.#{$prefix}__icon--loading {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke: none;
+  cursor: default;
+  fill: currentColor;
+
+  svg {
+    @keyframes rotate {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    animation-name: hi-rotate;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+}

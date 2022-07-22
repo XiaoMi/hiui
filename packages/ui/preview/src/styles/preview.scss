@@ -1,0 +1,154 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-preview' !default;
+
+.#{$prefix} {
+  z-index: use-zindex('dialog');
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+
+  &__mask--transition {
+    &-enter {
+      opacity: 0;
+    }
+
+    &-enter-active {
+      opacity: 0.3;
+      transition: opacity 0.3s;
+    }
+
+    &-enter-done {
+      opacity: 0.3;
+      transition: opacity 0.3s;
+    }
+
+    &-exit {
+      opacity: 0.3;
+    }
+
+    &-exit-active {
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    &-exit-done {
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+  }
+
+  &__mask {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: use-color('gray', 700);
+  }
+
+  &__header {
+    position: absolute;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: use-color-static('white');
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 2;
+  }
+
+  &__container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    text-align: center;
+
+    // 该伪类用于让图片在容器中垂直居中
+    &::before {
+      content: '';
+      width: 0;
+      height: 100%;
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+
+  &__toolbar {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: use-color-static('white');
+    padding: 0 32px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    border-radius: 28px;
+
+    svg {
+      margin: 0 12px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+
+  &__close-btn {
+    position: absolute;
+    right: 10px;
+    top: 6px;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  &__left-btn {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    margin-top: -18px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: use-color-static('white');
+  }
+
+  &__right-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    margin-top: -18px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: use-color-static('white');
+  }
+
+  &__image {
+    max-width: 100%;
+    max-height: 100%;
+    vertical-align: middle;
+    transform: scale(1);
+    cursor: grab;
+    transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+    user-select: none;
+    pointer-events: auto;
+    display: inline-block;
+  }
+}

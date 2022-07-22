@@ -1,0 +1,24 @@
+@import '../common/index.scss';
+@import '../tokens/index.scss';
+
+/// 获取 spacing 对应 css 变量名
+/// @access private
+@function get-spacing-css-name-var($key) {
+  $var-name: 'spacing-' + $key;
+
+  @return with-prefix-var($var-name);
+}
+
+/// 获取 spacing 对应 css 变量值
+/// @access private
+@function use-spacing-var($key) {
+  $var-name: get-spacing-css-name-var($key);
+  $var-value: get-spacing($key);
+
+  @return var(#{$var-name}, #{$var-value});
+}
+
+/// 设置 spacing 值
+@function use-spacing($key) {
+  @return use-spacing-var($key);
+}

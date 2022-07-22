@@ -1,0 +1,268 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-transfer' !default;
+
+.#{$prefix} {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  color: use-color('gray', 700);
+
+  &--type {
+    &-single {
+      .#{$prefix}-operation-arrow {
+        font-size: 20px;
+        color: use-color('gray', 500);
+      }
+    }
+  }
+}
+
+.#{$prefix}-panel {
+  position: relative;
+  width: 240px;
+  min-width: 180px;
+  background-color: use-color-statc('white');
+  border: 1px solid use-color('gray', 300);
+  border-radius: use-border-radius('normal');
+  overflow: hidden;
+  font-size: use-text-size('normal');
+
+  &__mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 2;
+    background: hsla(0, 0%, 96%, 0.7);
+    cursor: not-allowed;
+  }
+
+  &__list {
+    @include component-reset;
+
+    list-style: none;
+    padding: use-spacing(2) 0;
+
+    &-scroller {
+      height: 312px;
+      overflow: overlay;
+    }
+  }
+
+  &__search {
+    padding: use-spacing(4) use-spacing(4) use-spacing(2);
+
+    .#{$component-prefix}-input__prefix {
+      padding-left: use-spacing(4);
+    }
+
+    .#{$component-prefix}-input {
+      font-size: use-text-size('normal');
+    }
+  }
+
+  &__empty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: use-color('gray', 500);
+  }
+
+  &__limit {
+    word-wrap: break-word;
+    line-height: 2;
+    color: use-color('gray', 700);
+    font-size: use-text-size('normal');
+    display: flex;
+    align-items: start;
+    box-sizing: border-box;
+    padding: 4px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: use-color-static('white');
+
+    &-icon {
+      &[class^='#{$component-prefix}-icon'] {
+        margin-inline-end: 8px;
+        color: rgb(212, 161, 69);
+        font-size: 16px;
+        height: 28px;
+      }
+    }
+  }
+
+  &__check-all {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    &--left {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+
+    &--right {
+      font-size: use-text-size('sm');
+      color: use-color('gray', 500);
+      font-weight: use-text-weight('normal');
+    }
+
+    &-box {
+      margin-inline-end: use-spacing(4);
+    }
+  }
+
+  &__header,
+  &__footer {
+    box-sizing: border-box;
+    height: 40px;
+    padding: 0 use-spacing(8);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: use-text-size('normal');
+  }
+
+  &__header {
+    border-bottom: 1px solid use-color('gray', 300);
+    background: use-color('gray', 100);
+    font-weight: use-text-weight('medium');
+  }
+
+  &__footer {
+    border-top: 1px solid use-color('gray', 300);
+    width: 100%;
+    display: inline-flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+}
+
+.#{$prefix}-item {
+  box-sizing: border-box;
+  position: relative;
+  margin: use-spacing(4);
+
+  &__title,
+  .#{$component-prefix}-checkbox {
+    width: 100%;
+    min-height: 32px;
+    padding: 0 use-spacing(4);
+    line-height: 32px;
+  }
+
+  &__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__wrap {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    line-height: 22px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: use-border-radius('normal');
+
+    &:hover {
+      background-color: use-color('gray', 100);
+    }
+
+    // 拖拽指示器-小圆球
+    &::before {
+      position: absolute;
+      left: 0;
+      z-index: 9999;
+      display: none;
+      box-sizing: border-box;
+      width: 8px;
+      height: 8px;
+      content: '';
+      background-color: use-color-static('white');
+      border: 1px solid use-color-mode('primary');
+      border-radius: 100%;
+    }
+
+    // 拖拽指示器-线条
+    &::after {
+      position: absolute;
+      content: '';
+      // TODO: zIndex 全局约定设置
+      z-index: 9998;
+      display: block;
+      box-sizing: border-box;
+      border-bottom-width: 0;
+      border-bottom-style: solid;
+      border-bottom-color: use-color-mode('primary');
+      left: 0;
+      width: 100%;
+    }
+  }
+
+  $this: &;
+
+  &--disabled {
+    #{$this}__wrap {
+      color: use-color('gray', 400);
+      cursor: not-allowed;
+    }
+  }
+
+  &--drag-before {
+    #{$this}__wrap {
+      &::before {
+        display: block;
+        top: 0;
+        transform: translateY(-3px);
+      }
+
+      &::after {
+        top: 0;
+        border-bottom-width: 1px;
+      }
+    }
+  }
+
+  &--drag-after {
+    #{$this}__wrap {
+      &::before {
+        display: block;
+        bottom: 0;
+        transform: translateY(3px);
+      }
+
+      &::after {
+        bottom: 0;
+        border-bottom-width: 1px;
+      }
+    }
+  }
+}
+
+.#{$prefix}-operation {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex-basis: 56px;
+
+  .#{$component-prefix}-button {
+    margin-top: -4px;
+    font-size: use-text-size('lg');
+  }
+
+  .#{$component-prefix}-button + .#{$component-prefix}-button {
+    margin-top: use-spacing(12);
+    margin-left: 0;
+  }
+}

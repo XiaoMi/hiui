@@ -1,0 +1,263 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-tree' !default;
+
+.#{$prefix} {
+  @include component-reset;
+  @include list-reset;
+
+  list-style-type: none;
+
+  // 单独树存在不设置左右间距
+  // padding: 0 use-spacing(4);
+
+  // 控制折叠收起动画
+  &-motion-node {
+    overflow-y: hidden;
+    transition: all 0.3s;
+    // transition-property: all;
+    // transition-duration: use-motion-duration('normal');
+    // transition-timing-function: use-motion-bezier('slow');
+  }
+}
+
+.#{$prefix}-node {
+  @include list-item-reset;
+
+  position: relative;
+  color: use-color('gray', 700);
+  cursor: pointer;
+  // 节点间隔控制
+  padding: use-spacing(2) 0;
+
+  &__indent,
+  &__checkbox,
+  &__switcher {
+    margin: 0 use-spacing(1);
+  }
+
+  // 用于节点选中涂色
+  &__wrap {
+    display: flex;
+    align-items: center;
+    justify-items: stretch;
+    border-radius: use-border-radius('normal');
+    padding: 0 use-spacing(3);
+    outline: 0;
+    transition: all 0.3s;
+    // transition-property: all;
+    // transition-duration: use-motion-duration('normal');
+    // transition-timing-function: use-motion-bezier('slow');
+
+    &:hover {
+      background-color: use-color('gray', 100);
+    }
+
+    &.dragging {
+      // cursor: move;
+      opacity: 0.7;
+    }
+  }
+
+  &__indent {
+    display: inline-block;
+    width: use-spacing(8);
+    height: 100%;
+  }
+
+  &__switcher {
+    height: 100%;
+
+    &--loading {
+      color: use-color-mode('primary');
+    }
+  }
+
+  &__title {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    min-height: use-height-size(8);
+    line-height: use-text-lineheight('lg');
+    font-size: use-text-size('normal');
+    cursor: inherit;
+    color: inherit;
+    background-color: transparent;
+    padding: 0 use-spacing(1);
+
+    // 拖拽指示器-小圆球
+    &::before {
+      position: absolute;
+      left: 0;
+      z-index: 9999;
+      display: none;
+      box-sizing: border-box;
+      width: 8px;
+      height: 8px;
+      content: '';
+      background-color: use-color-static('white');
+      border: 1px solid use-color-mode('primary');
+      border-radius: 100%;
+    }
+
+    // 拖拽指示器-线条
+    &::after {
+      position: absolute;
+      content: '';
+      // TODO: zIndex 全局约定设置
+      z-index: 9998;
+      display: block;
+      box-sizing: border-box;
+      border-bottom-width: 0;
+      border-bottom-style: solid;
+      border-bottom-color: use-color-mode('primary');
+      left: 0;
+      width: 100%;
+    }
+  }
+
+  $this: &;
+
+  // 线性连接展示
+  &--linear {
+    position: relative;
+
+    #{$this}__indent {
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: calc(100% + 8px);
+        background-color: #eee;
+        left: 8px;
+        top: -8px;
+      }
+
+      &--tail {
+        &::before {
+          content: '';
+        }
+      }
+    }
+  }
+
+  &--focused {
+    #{$this}__wrap {
+      // background-color: use-color-mode('primary', 50);
+      background-color: use-color('gray', 100);
+    }
+
+    #{$this}__title {
+      color: use-color('gray', 700);
+    }
+  }
+
+  // TODO: 约定好组件的修饰词和元素书写顺序
+  &--selected {
+    #{$this}__wrap {
+      background-color: use-color-mode('primary', 50);
+    }
+
+    #{$this}__title {
+      color: use-color-mode('primary');
+    }
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    color: use-color('gray', 400);
+
+    #{$this}__wrap {
+      background-color: use-color-static('white');
+
+      &:hover {
+        background-color: use-color-static('white');
+      }
+    }
+
+    &#{$this}--selected {
+      color: use-color('gray', 400);
+
+      #{$this}__wrap {
+        background-color: use-color-mode('primary', 50);
+
+        #{$this}__title {
+          color: use-color('gray', 500);
+        }
+
+        &:hover {
+          background-color: use-color-mode('primary', 50);
+        }
+      }
+    }
+
+    &#{$this}--focused {
+      #{$this}__title {
+        color: use-color('gray', 500);
+      }
+    }
+
+    #{$this}__switcher:not(#{$this}__switcher--noop) {
+      color: use-color('gray', 600);
+    }
+  }
+
+  &--drag-before {
+    #{$this}__title {
+      &::before {
+        display: block;
+        top: 0;
+        transform: translateY(-3px);
+      }
+
+      &::after {
+        top: 0;
+        border-bottom-width: 1px;
+      }
+    }
+  }
+
+  &--drag-inside {
+    #{$this}__title {
+      // background-color: use-color-mode('primary');
+      background-color: use-color-mode('primary', 50);
+      color: use-color-mode('primary');
+      border-radius: use-border-radius('normal');
+    }
+  }
+
+  &--drag-after {
+    #{$this}__title {
+      &::before {
+        display: block;
+        bottom: 0;
+        transform: translateY(3px);
+      }
+
+      &::after {
+        bottom: 0;
+        border-bottom-width: 1px;
+      }
+    }
+  }
+}
+
+// TODO: 迁移
+.hi-v4-tree--icon-loading {
+  animation-name: hi-rotate;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes hi-rotate {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

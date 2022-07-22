@@ -1,19 +1,18 @@
 # MIFE dotfiles
 
 # Output files
-dist/
+lib/
 es/
 
 # Editor generate files
 .idea/
 .settings/
-.vscode/
 .tmp/
 
-test/coverage/
+packages/*/test/coverage/
 # Dev dependencies and cache files
+packages/*/node_modules/
 node_modules/
-
 # Misc files
 *~
 ~*
@@ -24,3 +23,13 @@ Thumbs.db
 .Spotlight-V100
 .Trashes
 .eslintrc.json
+package-lock.json
+lerna-debug.log
+yarn-error.log
+
+.turbo
+build/**
+dist/**
+.next/**
+
+storybook-static
