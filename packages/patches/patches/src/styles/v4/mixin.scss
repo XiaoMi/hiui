@@ -1,5 +1,5 @@
 // 样式覆盖性，可放置根className下设定优先级
-@mixin patch-v4 () {
+@mixin patch-v4-ui () {
   $border-size-normal: '2px solid' !default;
   $border-radius-normal: '4px' !default;
   $height-size-normal: '32px' !default;
@@ -764,5 +764,352 @@
 
   .hi-table__setting-btn {
     background-color: #f5f7fa;
+  }
+}
+
+@mixin patch-v4-layout-ui () {
+  $border-size-normal: '2px solid' !default;
+  $border-radius-normal: '4px' !default;
+  $height-size-normal: '32px' !default;
+  // 间距
+  $spacer: 2px !default;
+  $spacer-size-1: $spacer * 1 !default;
+  $spacer-size-2: $spacer * 2 !default;
+  $spacer-size-3: $spacer * 3 !default;
+  $spacer-size-4: $spacer * 4 !default;
+  $spacer-size-5: $spacer * 5 !default;
+  $spacer-size-6: $spacer * 6 !default;
+  $spacer-size-7: $spacer * 7 !default;
+  $spacer-size-8: $spacer * 8 !default;
+  $spacer-size-9: $spacer * 9 !default;
+  $spacer-size-10: $spacer * 10 !default;
+  $spacer-size-11: $spacer * 11 !default;
+  $spacer-size-12: $spacer * 12 !default;
+  $spacer-size-13: $spacer * 13 !default;
+  $spacer-size-14: $spacer * 14 !default;
+  $spacer-size-15: $spacer * 15 !default;
+  $spacer-size-16: $spacer * 16 !default;
+  $spacer-size-17: $spacer * 17 !default;
+  $spacer-size-18: $spacer * 18 !default;
+  $spacer-size-19: $spacer * 19 !default;
+  $spacer-size-20: $spacer * 20 !default;
+  // 配色
+  $color-palette-brandblue-50: #e2f3fe !default;
+  $color-palette-brandblue-100: #bde2ff !default;
+  $color-palette-brandblue-200: #96ceff !default;
+  $color-palette-brandblue-300: #70b8ff !default;
+  $color-palette-brandblue-400: #4a9eff !default;
+  $color-palette-brandblue-500: #237ffa !default;
+  $color-palette-brandblue-600: #1360d4 !default;
+  $color-palette-brandblue-700: #0744ad !default;
+  $color-palette-brandblue-800: #002d87 !default;
+  $color-palette-brandblue-900: #001d61 !default;
+  // 中性色
+  $color-palette-gray-50: #f5f7fa !default;
+  $color-palette-gray-100:#f2f4f7 !default;
+  $color-palette-gray-200:#ebedf0 !default;
+  $color-palette-gray-300:#dfe2e8 !default;
+  $color-palette-gray-400:#c9ced6 !default;
+  $color-palette-gray-500:#929aa6 !default;
+  $color-palette-gray-600:#5f6a7a !default;
+  $color-palette-gray-700:#1f2733 !default;
+  $color-palette-gray-800:#1f2937 !default;
+  $color-palette-gray-900: #111827 !default;
+  // 主色
+  $color-palette-primary-normal: #237ffa !default;
+  $color-palette-success-normal: #14ca64 !default;
+  $color-palette-warning-normal: #fab007 !default;
+  $color-palette-danger-normal: #ff5959 !default;
+
+  :root {
+    --color-danger: #ff5959;
+    --color-danger-20: #fee9e5;
+    --color-danger-30: #ffd1c9;
+    --color-danger-40: #ffb6ad;
+    --color-danger-50: #ff7a75;
+    --color-danger-60: #d94146;
+    --color-black: #1f2733;
+    --color-white: #fff;
+    --color-gray-80: #5f6a7a;
+    --color-gray-70: #929aa6;
+    --color-gray-50: #c9ced6;
+    --color-gray-30: #dfe2e8;
+    --color-gray-20: #ebedf0;
+    --color-gray-10: #f5f7fa;
+    --color-success: #14ca64;
+    --color-success-20: #e5feeb;
+    --color-success-30: #b3f2c6;
+    --color-success-40: #8bf0ad;
+    --color-success-50: #38d677;
+    --color-success-60: #08a351;
+    --color-warning: #fab007;
+    --color-warning-20: #fefae0;
+    --color-warning-30: #fef2b4;
+    --color-warning-40: #fee789;
+    --color-warning-50: #fec833;
+    --color-warning-60: #d99100;
+    --color-primary: #237ffa;
+    --color-primary-10: #e2f3fe;
+    --color-primary-20: #e2f3fe;
+    --color-primary-30: #bde2ff;
+    --color-primary-40: #96ceff;
+    --color-primary-50: #70b8ff;
+    --color-primary-60: #1360d4;
+    --color-primary-70: #0744ad;
+    --color-primary-80: #002d87;
+    --color-primary-90: #001d61;
+  }
+
+  .hi-logo--horizontal {
+    height: 56px;
+  }
+
+  .hi-theme--classic {
+    height: calc(100vh - 56px);
+    margin-top: 56px;
+  }
+
+  .hi-logo img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .hi-theme__content {
+    background: #f5f7fa;
+    padding: 24px 20px 12px;
+  }
+
+  .theme-nav-bar_tag {
+    border-radius: 4px;
+  }
+
+  .mini-sider__menu {
+    padding: 8px 0;
+
+    .mini-sider__menu-item {
+      padding: 0 8px;
+      box-sizing: border-box;
+
+      .menu-item__title {
+        padding: 0 8px;
+        border-radius: 4px;
+
+        &:hover {
+          background-color: #f2f4f7;
+          color: inherit;
+        }
+      }
+    }
+  }
+
+  .hi-theme--classic .hi-theme__sider .sider__menu .menu__leaf-title--active {
+    background: #e2f3fe;
+  }
+
+  .hi-theme--classic .hi-theme__sider .sider__menu .menu__leaf-title--active::after {
+    content: unset;
+  }
+
+  .hi-theme__sider {
+    .sider__menu {
+      padding: 0 0 8px;
+
+      &-item {
+        // item 空白空隙
+        margin-top: 8px;
+      }
+
+      // 默认态
+      .menu__title {
+        padding-right: 4px;
+        height: 40px;
+        border-radius: 4px;
+
+        &:hover {
+          color: inherit;
+          background: #f2f4f7;
+        }
+
+        &__text {
+          display: inline-flex;
+          gap: 6px;
+          align-items: center;
+        }
+      }
+
+      // 激活路径
+      .menu__title--active {
+        color: #237ffa;
+
+        &:hover {
+          color: #237ffa;
+        }
+      }
+
+      // 激活叶子项
+      .menu__leaf-title--active {
+        color: #237ffa;
+        background: #e2f3fe;
+
+        &:hover {
+          color: #237ffa;
+          background: #e2f3fe;
+        }
+      }
+    }
+
+    .sider__toggle {
+      transition: color 0.3s;
+      left: 8px;
+    }
+
+    .sider__menu > div > .sider__menu-item {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+
+    &.hi-theme__sider--mini {
+      .sider__menu > div > .sider__menu-item {
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+    }
+
+    &.hi-theme__sider--light {
+      .sider__menu {
+        .menu__leaf-title--active {
+          background: #e2f3fe;
+
+          &:hover {
+            background: #e2f3fe;
+          }
+        }
+      }
+    }
+
+    &.hi-theme__sider--dark {
+      background: #1f2733 !important;
+      box-shadow: 2px 0 6px rgba(#1f2733, 0.1);
+      color: #dfe2e8;
+
+      .sider__footer {
+        background: #1f2733;
+      }
+
+      .sider__menu {
+        // 默认态
+        .menu__title {
+          &:hover {
+            color: inherit;
+            background: rgba(#237ffa, 0.1);
+          }
+        }
+
+        // 激活路径
+        .menu__title--active {
+          color: #237ffa;
+
+          &:hover {
+            color: #237ffa;
+          }
+        }
+
+        // 激活叶子项
+        .menu__leaf-title--active {
+          color: #237ffa;
+          background: rgba(#237ffa, 0.1);
+
+          &:hover {
+            color: #237ffa;
+            background: rgba(#237ffa, 0.1);
+          }
+        }
+      }
+    }
+  }
+
+  .hi-theme__sider--mini {
+    width: 56px;
+
+    .hi-logo {
+      width: 56px;
+    }
+
+    .sider__footer .sider__login {
+      justify-content: center;
+
+      &::before {
+        left: 12px;
+      }
+    }
+  }
+
+  .hi-theme__header {
+    height: 56px;
+    line-height: 56px;
+
+    .hi-logo--horizontal {
+      height: 56px;
+    }
+
+    svg.hi-theme-icon {
+      width: 20px;
+      height: 20px;
+      vertical-align: -4px !important;
+    }
+
+    .hi-logo img {
+      width: 24px;
+      height: 24px;
+    }
+
+    &.hi-theme__header--dark {
+      background: #1f2733 !important;
+      box-shadow: 2px 0 6px rgba(#1f2733, 0.1);
+      color: #dfe2e8;
+
+      .hi-theme__toolbar {
+        color: #dfe2e8;
+      }
+
+      .hi-logo__title {
+        color: #dfe2e8;
+      }
+
+      .login__wrapper {
+        color: #dfe2e8;
+      }
+
+      .main-menu-item {
+        a {
+          color: #dfe2e8;
+        }
+      }
+
+      .active-main-menu {
+        background-color: transparent;
+        position: relative;
+
+        &::after {
+          content: '';
+          height: 2px;
+          width: 100%;
+          background: #237ffa;
+          bottom: 0;
+          position: absolute;
+        }
+      }
+    }
+  }
+
+  .sider-drawer {
+    .hi-logo--horizontal {
+      height: 56px;
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+    }
   }
 }
