@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tree-utils",
-  "version": "4.0.0-beta.6",
+  "version": "4.0.0",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",

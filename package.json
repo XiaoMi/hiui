@@ -25,6 +25,7 @@
     "bootstrap": "lerna bootstrap",
     "prepublish:pkg": "yarn run build",
     "publish:pkg": "lerna publish --dist-tag feature",
+    "changeset": "changeset",
     "release": "changeset publish",
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",

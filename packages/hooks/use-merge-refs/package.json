@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-merge-refs",
-  "version": "4.0.0-beta.5",
+  "version": "4.0.0",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
