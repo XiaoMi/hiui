@@ -1,10 +1,9 @@
 ---
 name: Bug report
 about: 提交错误报告来帮助我们改进
-title: ''
+title: ""
 labels: bug
-assignees: ''
-
+assignees: ""
 ---
 
 **Bug 描述**
@@ -12,6 +11,7 @@ assignees: ''
 
 **参考**
 重现步骤：
+
 1. 使用 xx 组件
 2. 点击 '....'
 3. 触发 '....'
@@ -23,11 +23,11 @@ assignees: ''
 **截屏**
 如果方便的话可以提供一个截屏描述你的问题。
 
-
 **可重现环境：**
- - 系统： [比如 macOS]
- - 浏览器： [比如 chrome, safari]
- - HIUI 的版本： [比如 1.3.6]
+
+- 系统： [比如 macOS]
+- 浏览器： [比如 chrome, safari]
+- HiUI 的版本： [比如 1.3.6]
 
 **附加内容**
 关于此问题的其它信息。

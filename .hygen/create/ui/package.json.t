@@ -6,7 +6,7 @@ to: <%= h.uiDir(`${name}/package.json`) %>
   "version": "4.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
-  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "author": "HiUI <mi-hiui@xiaomi.com>",
   "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/<%= name %>#readme",
   "license": "MIT",
   "directories": {

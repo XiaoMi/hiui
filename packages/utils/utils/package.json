@@ -3,7 +3,7 @@
   "version": "4.0.0-beta.16",
   "description": "The root-package for @hi-ui/utils.",
   "keywords": [],
-  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "author": "HiUI <mi-hiui@xiaomi.com>",
   "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/utils/utils#readme",
   "license": "MIT",
   "directories": {
