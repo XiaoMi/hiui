@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 import { isNullish, isUndefined } from '@hi-ui/type-assertion'
 import { ResultImageSizeEnum, ResultTypeEnum } from './types'
 import { ResultImageInfo, ResultImageSuccess, ResultImageWarning, ResultImageError } from './icons'
@@ -16,9 +16,9 @@ const DEFAULT_ICON_MAP = {
 }
 
 const IMAGE_CONTAINER_STYLE_MAP = {
-  [HiBaseSizeEnum.SM]: { width: '100px', height: '100px' },
-  [HiBaseSizeEnum.MD]: { width: '140px', height: '140px' },
-  [HiBaseSizeEnum.LG]: { width: '180px', height: '180px' },
+  sm: { width: '100px', height: '100px' },
+  md: { width: '140px', height: '140px' },
+  lg: { width: '180px', height: '180px' },
 }
 
 /**

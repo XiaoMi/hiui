@@ -69,3 +69,7 @@ export const HiBaseSizeEnum = {
 // 对外暴露同名联合类型
 // eslint-disable-next-line no-redeclare
 export type HiBaseSizeEnum = ValueOf<typeof HiBaseSizeEnum>
+
+// 将 core 设为 peer，保证环境一致性：插件依赖和用户使用 provider 引用宿主环境统一安装的npm包
+export { useLocaleContext, LocaleProvider } from '@hi-ui/locale-context'
+export type { UseLocaleContext, LocaleProviderProps } from '@hi-ui/locale-context'

@@ -45,12 +45,9 @@
   "dependencies": {
     "@hi-ui/button": "^4.0.0-beta.17",
     "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/core": "^4.0.0-beta.10",
-    "@hi-ui/core-css": "^4.0.0-beta.6",
     "@hi-ui/env": "^4.0.0-beta.1",
     "@hi-ui/file-select": "^4.0.0-beta.11",
     "@hi-ui/icons": "^4.0.0-beta.15",
-    "@hi-ui/locale-context": "^4.0.0-beta.20",
     "@hi-ui/modal": "^4.0.0-beta.37",
     "@hi-ui/preview": "^4.0.0-beta.21",
     "@hi-ui/use-id": "^4.0.0-beta.6",
@@ -58,10 +55,13 @@
     "uuid": "^8.3.2"
   },
   "peerDependencies": {
+    "@hi-ui/core": ">=4.0.0",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
+    "@hi-ui/core-css": "^4.0.0-beta.6",
+    "@hi-ui/core": "^4.0.0-beta.10",
     "@hi-ui/hi-build": "^4.0.0-beta.5",
     "@types/uuid": "^8.3.3",
     "react": "^17.0.1",

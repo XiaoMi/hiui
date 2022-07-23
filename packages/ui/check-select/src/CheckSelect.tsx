@@ -23,7 +23,7 @@ import { Highlighter } from '@hi-ui/highlighter'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import { callAllFuncs } from '@hi-ui/func-utils'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/core'
 import {
   useAsyncSearch,
   useFilterSearch,

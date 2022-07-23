@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useRef } from 'react'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
-import { ValueOf } from '@hi-ui/core'
 import { isFunction } from '@hi-ui/type-assertion'
+
+type ValueOf<T> = T[keyof T]
 
 export const useDrop = ({
   draggable,

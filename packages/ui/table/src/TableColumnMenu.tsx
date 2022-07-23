@@ -13,7 +13,7 @@ import Popper from '@hi-ui/popper'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { useTableContext } from './context'
 import { FlattedTableColumnItemData } from './types'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/core'
 
 const _prefix = getPrefixCls('table-column-menu')
 

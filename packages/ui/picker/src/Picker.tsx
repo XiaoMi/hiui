@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, useLocaleContext } from '@hi-ui/core'
 import Input from '@hi-ui/input'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { PopperOverlayProps, Popper } from '@hi-ui/popper'
@@ -9,7 +9,7 @@ import { SearchOutlined } from '@hi-ui/icons'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import Loading from '@hi-ui/loading'
-import { useLocaleContext } from '@hi-ui/locale-context'
+
 import { isUndef } from '@hi-ui/type-assertion'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 

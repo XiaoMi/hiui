@@ -1,6 +1,6 @@
 import React, { useEffect, forwardRef, useCallback, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { CSSTransition } from 'react-transition-group'
 import { Portal } from '@hi-ui/portal'
@@ -17,7 +17,7 @@ import {
 import Button from '@hi-ui/button'
 import { useModal, UseModalProps } from './use-modal'
 import { ModalType, ModalTypeEnum } from './types'
-import { useLocaleContext } from '@hi-ui/locale-context'
+
 import { isUndef } from '@hi-ui/type-assertion'
 
 const _role = 'modal'
@@ -195,7 +195,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   }
 )
 
-export type ModalSizeEnum = HiBaseSizeEnum
+export type ModalSizeEnum = HiBaseSizeEnum | undefined
 
 export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
   /**

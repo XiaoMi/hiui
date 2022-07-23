@@ -3,8 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useFormContext } from './context'
 import { isNumeric } from '@hi-ui/type-assertion'
-import { HiBaseHTMLProps } from '@hi-ui/core'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
 
 const _role = 'form-label'
 const _prefix = getPrefixCls(_role)

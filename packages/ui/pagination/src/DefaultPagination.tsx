@@ -5,12 +5,11 @@ import { PagerButton } from './PagerButton'
 import { Pager } from './Pager'
 import { calculatePage } from './util'
 import { PageOption } from './PageOption'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext, HiBaseHTMLProps } from '@hi-ui/core'
 import { PageJumper } from './PageJumper'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isFunction } from '@hi-ui/type-assertion'
-import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)

@@ -44,10 +44,13 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "peerDependencies": {
+    "@hi-ui/core": ">=4.0.0",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
+    "@hi-ui/core-css": "^4.0.0-beta.6",
+    "@hi-ui/core": "^4.0.0-beta.10",
     "@hi-ui/hi-build": "^4.0.0-beta.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

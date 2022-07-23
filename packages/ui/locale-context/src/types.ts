@@ -1,5 +1,3 @@
-import { ValueOf } from '@hi-ui/core'
-
 export interface LocaleLanguage {
   table: Record<string, any>
   tree: Record<string, any>
@@ -26,6 +24,8 @@ export const LocaleEnum = {
   ZH_HK: 'zh-HK',
   ZH_TW: 'zh-TW',
 } as const
+
+type ValueOf<T> = T[keyof T]
 
 // 对外暴露同名联合类型
 // eslint-disable-next-line no-redeclare

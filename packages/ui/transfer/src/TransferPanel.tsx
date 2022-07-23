@@ -8,7 +8,7 @@ import { TransferItem } from './TransferItem'
 import Checkbox from '@hi-ui/checkbox'
 import { SearchOutlined, InfoCircleOutlined } from '@hi-ui/icons'
 import { ShrinkPagination } from '@hi-ui/pagination'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/core'
 
 const _role = 'transfer-panel'
 const _prefix = getPrefixCls(_role)
