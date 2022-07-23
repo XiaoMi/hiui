@@ -21,12 +21,15 @@ import { getTreeNodesWithChildren } from '@hi-ui/tree-utils'
 import { isFunction, isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { useResizeObserver } from '@hi-ui/use-resize-observer'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
+import { uuid } from '@hi-ui/use-id'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
 const DEFAULT_EXPANDED_IDS = [] as []
 const NOOP_ARRAY = [] as []
 const MIN_WIDTH = 56
+
+const MENU_MORE_ID = `MENU_MORE_${uuid()}`
 
 /**
  * TODO: What is Menu
@@ -253,12 +256,9 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
                 />
               )
             })}
-            <MenuItem
-              hidden={showVertical || restTagList.length === 0}
-              id="hi-v4-menu-more"
-              title="更多"
-              children={restTagList}
-            />
+            {showVertical || restTagList.length === 0 ? null : (
+              <MenuItem key={MENU_MORE_ID} id={MENU_MORE_ID} title="更多" children={restTagList} />
+            )}
           </ul>
 
           <div className={`${prefixCls}__footer`}>{renderFooter()}</div>
