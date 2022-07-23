@@ -3,7 +3,7 @@
   "version": "4.0.0-beta.69",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
-  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "author": "HiUI <mi-hiui@xiaomi.com>",
   "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/table#readme",
   "license": "MIT",
   "directories": {
@@ -47,7 +47,6 @@
     "@hi-ui/button": "^4.0.0-beta.17",
     "@hi-ui/checkbox": "^4.0.0-beta.16",
     "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/core-css": "^4.0.0-beta.6",
     "@hi-ui/dom-utils": "^4.0.0-beta.6",
     "@hi-ui/drawer": "^4.0.0-beta.39",
     "@hi-ui/empty-state": "^4.0.0-beta.26",
@@ -56,7 +55,6 @@
     "@hi-ui/icon-button": "^4.0.0-beta.12",
     "@hi-ui/icons": "^4.0.0-beta.15",
     "@hi-ui/loading": "^4.0.0-beta.26",
-    "@hi-ui/locale-context": "^4.0.0-beta.20",
     "@hi-ui/object-utils": "^4.0.0-beta.12",
     "@hi-ui/pagination": "^4.0.0-beta.47",
     "@hi-ui/popper": "^4.0.0-beta.20",
@@ -78,10 +76,13 @@
     "react-resizable": "^3.0.4"
   },
   "peerDependencies": {
+    "@hi-ui/core": ">=4.0.0",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
+    "@hi-ui/core-css": "^4.0.0-beta.6",
+    "@hi-ui/core": "^4.0.0-beta.10",
     "@hi-ui/hi-build": "^4.0.0-beta.5",
     "@types/react-resizable": "^1.7.4",
     "react": "^17.0.1",

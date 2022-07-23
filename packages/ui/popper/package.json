@@ -3,7 +3,7 @@
   "version": "4.0.0-beta.20",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
-  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "author": "HiUI <mi-hiui@xiaomi.com>",
   "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/popper#readme",
   "license": "MIT",
   "directories": {
@@ -44,8 +44,6 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/core": "^4.0.0-beta.10",
-    "@hi-ui/core-css": "^4.0.0-beta.6",
     "@hi-ui/dom-utils": "^4.0.0-beta.6",
     "@hi-ui/env": "^4.0.0-beta.1",
     "@hi-ui/portal": "^4.0.0-beta.13",
@@ -59,10 +57,13 @@
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {
+    "@hi-ui/core": ">=4.0.0",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
+    "@hi-ui/core-css": "^4.0.0-beta.6",
+    "@hi-ui/core": "^4.0.0-beta.10",
     "@hi-ui/hi-build": "^4.0.0-beta.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

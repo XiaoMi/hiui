@@ -3,7 +3,7 @@
   "version": "4.0.0-beta.36",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
-  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "author": "HiUI <mi-hiui@xiaomi.com>",
   "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/search#readme",
   "license": "MIT",
   "directories": {
@@ -45,8 +45,6 @@
   "dependencies": {
     "@hi-ui/button": "^4.0.0-beta.17",
     "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/core": "^4.0.0-beta.10",
-    "@hi-ui/core-css": "^4.0.0-beta.6",
     "@hi-ui/env": "^4.0.0-beta.1",
     "@hi-ui/func-utils": "^4.0.0-beta.13",
     "@hi-ui/highlighter": "^4.0.0-beta.12",
@@ -59,10 +57,13 @@
     "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.5"
   },
   "peerDependencies": {
+    "@hi-ui/core": ">=4.0.0",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
+    "@hi-ui/core-css": "^4.0.0-beta.6",
+    "@hi-ui/core": "^4.0.0-beta.10",
     "@hi-ui/hi-build": "^4.0.0-beta.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

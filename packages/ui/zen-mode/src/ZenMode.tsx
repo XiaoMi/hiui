@@ -3,8 +3,7 @@ import { createPortal } from 'react-dom'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { LeftOutlined } from '@hi-ui/icons'
-import { useLocaleContext } from '@hi-ui/locale-context'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useLocaleContext, HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'zen-mode'
 const _prefix = getPrefixCls(_role)

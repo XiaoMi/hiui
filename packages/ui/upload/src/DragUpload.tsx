@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { UploadProps } from './types'
 import { FileSelect } from '@hi-ui/file-select'
 import useUpload from './hooks/use-upload'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/core'
 import { CloudUploadOutlined } from '@hi-ui/icons'
 import { FileList } from './FileList'
 

@@ -8,7 +8,6 @@ import { withPerformance } from "storybook-addon-performance";
 // import { Meta, ArgsTable, Source, Story, Canvas } from '@storybook/addon-docs/blocks'
 // import { Title, Subtitle, Description, Primary, ArgsTable, Stories, PRIMARY_STORY } from '@storybook/addon-docs/blocks'
 // import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live'
-import LocaleProvider from '@hi-ui/locale-context'
 import HiUIProvider from '@hi-ui/provider'
 
 // import Popper from '../packages/ui/popper/src/index.js'
@@ -56,9 +55,7 @@ export const decorators = [
 
     return (
       <HiUIProvider accentColor={accentColor} locale={locale} theme={theme}>
-        {/* <LocaleProvider locale={locale}> */}
-          <Story {...context} />
-        {/* </LocaleProvider> */}
+        <Story {...context} />
       </HiUIProvider>
     );
   },

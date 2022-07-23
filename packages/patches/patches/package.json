@@ -3,7 +3,7 @@
   "version": "4.0.0-beta.1",
   "description": "A patch-package for @hi-ui/hiui V4.",
   "keywords": [],
-  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "author": "HiUI <mi-hiui@xiaomi.com>",
   "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/patches/patches#readme",
   "license": "MIT",
   "directories": {

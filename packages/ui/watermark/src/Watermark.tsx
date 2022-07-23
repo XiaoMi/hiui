@@ -3,9 +3,9 @@ import Portal from '@hi-ui/portal'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { WatermarkGenerator } from './utils'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
-import { useLocaleContext } from '@hi-ui/locale-context'
+
 import { isUndef } from '@hi-ui/type-assertion'
 
 const _role = 'watermark'

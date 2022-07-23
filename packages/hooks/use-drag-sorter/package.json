@@ -3,7 +3,7 @@
   "version": "4.0.0-beta.10",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
-  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "author": "HiUI <mi-hiui@xiaomi.com>",
   "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/use-drag-sorter#readme",
   "license": "MIT",
   "directories": {
@@ -50,7 +50,6 @@
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/core": "^4.0.0-beta.10",
     "@hi-ui/type-assertion": "^4.0.0-beta.5",
     "@hi-ui/use-latest": "^4.0.0-beta.5"
   }

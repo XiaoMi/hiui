@@ -11,7 +11,7 @@ import {
   CloseCircleOutlined,
 } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/core'
 import { Preview } from '@hi-ui/preview'
 import { Modal } from '@hi-ui/modal'
 import Cropper from 'react-cropper'

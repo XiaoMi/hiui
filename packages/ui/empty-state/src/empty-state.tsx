@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext, HiBaseHTMLProps } from '@hi-ui/core'
 import { isUndef } from '@hi-ui/type-assertion'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+
 import { IMAGE_NO_DATA } from './icons'
 import { EmptyStateSizeEnum } from './types'
 
@@ -21,7 +21,7 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
       title: titleProp,
       imageStyle,
       imageClassName,
-      size = HiBaseSizeEnum.MD,
+      size = 'md',
       ...rest
     },
     ref

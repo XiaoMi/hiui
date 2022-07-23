@@ -3,7 +3,7 @@
   "version": "4.0.0-beta.35",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
-  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "author": "HiUI <mi-hiui@xiaomi.com>",
   "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/form#readme",
   "license": "MIT",
   "directories": {
@@ -46,21 +46,22 @@
     "@hi-ui/array-utils": "^4.0.0-beta.8",
     "@hi-ui/button": "^4.0.0-beta.17",
     "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/core-css": "^4.0.0-beta.6",
     "@hi-ui/dom-utils": "^4.0.0-beta.6",
     "@hi-ui/env": "^4.0.0-beta.1",
     "@hi-ui/func-utils": "^4.0.0-beta.13",
-    "@hi-ui/locale-context": "^4.0.0-beta.20",
     "@hi-ui/object-utils": "^4.0.0-beta.12",
     "@hi-ui/type-assertion": "^4.0.0-beta.5",
     "@hi-ui/use-latest": "^4.0.0-beta.5",
     "async-validator": "^4.0.7"
   },
   "peerDependencies": {
+    "@hi-ui/core": ">=4.0.0",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
+    "@hi-ui/core-css": "^4.0.0-beta.6",
+    "@hi-ui/core": "^4.0.0-beta.10",
     "@hi-ui/hi-build": "^4.0.0-beta.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

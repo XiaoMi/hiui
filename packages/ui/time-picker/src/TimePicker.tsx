@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
 import {
   TimePickerStep,
   TimePickerType,
@@ -20,7 +20,6 @@ import { useFilter } from './hooks/useFilter'
 import { Button } from '@hi-ui/button'
 import { getNowString } from './utils/getNowString'
 import DayJs from 'dayjs'
-import { useLocaleContext } from '@hi-ui/locale-context'
 
 const _role = 'time-picker'
 export const timePickerPrefix = getPrefixCls(_role)
