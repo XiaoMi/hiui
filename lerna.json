@@ -27,8 +27,13 @@
       "npmClient": "yarn"
     },
     "publish": {
-      "allowBranch": "next/4.0",
+      "allowBranch": "feature/changeset",
       "message": "chore(release): publish %v"
     }
-  }
+  },
+  "ignoreChanges": [
+    "**/__tests__/**",
+    "**/*.md",
+    "**/*.mdx"
+  ]
 }

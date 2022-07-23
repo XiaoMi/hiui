@@ -1,6 +1,5 @@
 {
   "name": "hiui",
-  "version": "4.0.0-beta.0",
   "private": true,
   "workspaces": {
     "packages": [
@@ -26,6 +25,7 @@
     "bootstrap": "lerna bootstrap",
     "prepublish:pkg": "yarn run build",
     "publish:pkg": "lerna publish --dist-tag feature",
+    "release": "changeset publish",
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",
     "build": "lerna run build --no-private --sort",
@@ -69,7 +69,7 @@
   "dependencies": {
     "@babel/plugin-external-helpers": "^7.12.13",
     "@babel/plugin-transform-runtime": "^7.13.15",
-    "@hi-ui/hiui": "^3.4.1-rc.2",
+    "@changesets/cli": "^2.24.0",
     "@storybook/preset-scss": "^1.0.3",
     "cross-env": "^7.0.3",
     "hygen": "^6.1.0",

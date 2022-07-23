@@ -1,0 +1,37 @@
+name: publish-to-npm
+
+on:
+  push:
+    branches:
+      - feature/changeset
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: 14.17.x
+
+      - name: Install
+        run: yarn && yarn bootstrap
+
+      - name: Build
+        run: yarn build
+
+      - name: Publish
+        id: changesets
+        uses: changesets/action@master
+        with:
+          publish: yarn release
+          commit: "chore(release): release new version"
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
