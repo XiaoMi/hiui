@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/patches",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A patch-package for @hi-ui/hiui V4.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
