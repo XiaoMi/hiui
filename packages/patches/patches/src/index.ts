@@ -1,1 +1,1 @@
-import './styles/v3-to-v4/index.scss'
+import './styles/v4/index.scss'

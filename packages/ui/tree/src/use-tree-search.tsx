@@ -8,7 +8,7 @@ import { flattenTreeData } from './utils'
 import { TreeProps, Tree, treePrefix } from './Tree'
 import { SearchOutlined } from '@hi-ui/icons'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/core'
 import { isUndef } from '@hi-ui/type-assertion'
 
 import './styles/searchable-tree.scss'

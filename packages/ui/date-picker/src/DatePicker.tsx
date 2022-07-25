@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } 
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { clone as cloneDeep } from '@hi-ui/object-utils'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/core'
 import moment from 'moment'
 import { useDate } from './hooks/useData'
 import useFormat from './hooks/useFormat'

@@ -1,9 +1,9 @@
 {
   "name": "@hi-ui/use-check-state",
-  "version": "4.0.0-beta.5",
+  "version": "4.0.0",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
-  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "author": "HiUI <mi-hiui@xiaomi.com>",
   "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/use-check-state#readme",
   "license": "MIT",
   "directories": {
@@ -46,7 +46,7 @@
     "react": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-beta.5",
+    "@hi-ui/hi-build": "^4.0.0",
     "react": "^17.0.1"
   }
 }

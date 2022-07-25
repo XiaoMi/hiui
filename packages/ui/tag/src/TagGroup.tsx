@@ -4,8 +4,8 @@ import { PlusOutlined } from '@hi-ui/icons'
 import { Tag, TagProps } from './Tag'
 import { invariant, __DEV__ } from '@hi-ui/env'
 import { Button } from '@hi-ui/button'
-import { HiBaseHTMLProps } from '@hi-ui/core'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+
 import { isUndef } from '@hi-ui/type-assertion'
 
 const _role = 'tag-group'

@@ -3,7 +3,7 @@ import moment from 'moment'
 import { DAY_MILLISECONDS } from '../utils/constants'
 import { DatePickerTypeEnum, DisabledDate } from '../types'
 import { getBelongWeekBoundary } from '../utils/week'
-import { UseLocaleContext } from '@hi-ui/locale-context'
+import { UseLocaleContext } from '@hi-ui/core'
 
 const getYearOrMonthRows = ({
   originDate,

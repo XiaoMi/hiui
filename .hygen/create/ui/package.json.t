@@ -3,10 +3,10 @@ to: <%= h.uiDir(`${name}/package.json`) %>
 ---
 {
   "name": "@hi-ui/<%= name %>",
-  "version": "4.0.0-beta.0",
+  "version": "4.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
-  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "author": "HiUI <mi-hiui@xiaomi.com>",
   "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/<%= name %>#readme",
   "license": "MIT",
   "directories": {
@@ -46,17 +46,18 @@ to: <%= h.uiDir(`${name}/package.json`) %>
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/core": "^4.0.0-beta.0",
-    "@hi-ui/core-css": "^4.0.0-beta.0",
-    "@hi-ui/env": "^4.0.0-beta.0"
+    "@hi-ui/classname": "^4.0.0",
+    "@hi-ui/env": "^4.0.0"
   },
   "peerDependencies": {
+    "@hi-ui/core": ">=4.0.0",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-beta.1",
+    "@hi-ui/core": "^4.0.0",
+    "@hi-ui/core-css": "^4.0.0",
+    "@hi-ui/hi-build": "^4.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

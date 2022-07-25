@@ -12,8 +12,8 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { MockInput } from '@hi-ui/input'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
-import { HiBaseAppearanceEnum } from '@hi-ui/core'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { HiBaseAppearanceEnum, useLocaleContext } from '@hi-ui/core'
+
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import {

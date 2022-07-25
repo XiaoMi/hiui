@@ -1,12 +1,12 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
 import { usePopConfirm, UsePopConfirmProps } from './use-pop-confirm'
 import Button from '@hi-ui/button'
 import Popper from '@hi-ui/popper'
 import { defaultTipIcon } from './icons'
-import { useLocaleContext } from '@hi-ui/locale-context'
+
 import { isUndef } from '@hi-ui/type-assertion'
 
 const POP_CONFIRM_PREFIX = getPrefixCls('pop-confirm')

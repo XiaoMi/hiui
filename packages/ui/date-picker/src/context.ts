@@ -1,7 +1,7 @@
 import React from 'react'
 import { CalendarItemV3, DatePickerProps, DatePickerValueV3 } from './types'
 import moment from 'moment'
-import type { UseLocaleContext } from '@hi-ui/locale-context'
+import type { UseLocaleContext } from '@hi-ui/core'
 
 const DPContext = React.createContext<DPContextData>({} as DPContextData)
 

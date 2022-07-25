@@ -2,13 +2,13 @@ import { HiBaseSizeEnum } from '@hi-ui/core'
 import { invariant } from '@hi-ui/env'
 import { SpaceSizeEnum } from '../types'
 
-const SizeValueEnum = {
-  [HiBaseSizeEnum.SM]: 8,
-  [HiBaseSizeEnum.MD]: 16,
-  [HiBaseSizeEnum.LG]: 24,
+const sizeValueMap = {
+  sm: 8,
+  md: 16,
+  lg: 24,
 }
 
-const SIZE_ENUM_LIST = [HiBaseSizeEnum.SM, HiBaseSizeEnum.MD, HiBaseSizeEnum.LG]
+const SIZE_ENUM_LIST = Object.keys(sizeValueMap)
 
 /**
  *
@@ -17,7 +17,7 @@ const SIZE_ENUM_LIST = [HiBaseSizeEnum.SM, HiBaseSizeEnum.MD, HiBaseSizeEnum.LG]
  */
 export const handleTransformGap = (gap: SpaceSizeEnum) => {
   if (SIZE_ENUM_LIST.includes(gap as HiBaseSizeEnum)) {
-    const activeSize = SizeValueEnum[gap as HiBaseSizeEnum]
+    const activeSize = sizeValueMap[gap as HiBaseSizeEnum]
     return activeSize
   }
 

@@ -1,9 +1,9 @@
 {
   "name": "@hi-ui/react-utils",
-  "version": "4.0.0-beta.6",
+  "version": "4.0.0",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
-  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "author": "HiUI <mi-hiui@xiaomi.com>",
   "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/utils/react-utils#readme",
   "license": "MIT",
   "directories": {
@@ -46,11 +46,11 @@
     "react": ">=16.8.6"
   },
   "dependencies": {
-    "@hi-ui/env": "^4.0.0-beta.1",
-    "@hi-ui/type-assertion": "^4.0.0-beta.5"
+    "@hi-ui/env": "^4.0.0",
+    "@hi-ui/type-assertion": "^4.0.0"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-beta.5",
+    "@hi-ui/hi-build": "^4.0.0",
     "react": "^17.0.1"
   }
 }

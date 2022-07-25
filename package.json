@@ -1,6 +1,5 @@
 {
   "name": "hiui",
-  "version": "4.0.0-beta.0",
   "private": true,
   "workspaces": {
     "packages": [
@@ -25,7 +24,7 @@
     "postinstall": "patch-package",
     "bootstrap": "lerna bootstrap",
     "prepublish:pkg": "yarn run build",
-    "publish:pkg": "lerna publish --dist-tag feature",
+    "publish:pkg": "lerna publish",
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",
     "build": "lerna run build --no-private --sort",
@@ -35,6 +34,7 @@
     "eslint": "eslint --fix ./packages/**/*.tsx",
     "precommit": "lint-staged",
     "test": "jest",
+    "deploy": "gh-pages -t -d dist-github --git \"$(which git)\"",
     "pregenerate-docs": "yarn lerna run auto-generate --scope=@hi-ui/icons",
     "generate-docs": "yarn lerna run generate-docs --scope=@hi-ui/hi-docs"
   },
@@ -72,6 +72,7 @@
     "@hi-ui/hiui": "^3.4.1-rc.2",
     "@storybook/preset-scss": "^1.0.3",
     "cross-env": "^7.0.3",
+    "gh-pages": "^4.0.0",
     "hygen": "^6.1.0",
     "jest": "^27.0.6",
     "lodash": "^4.17.21",

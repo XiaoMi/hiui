@@ -6,7 +6,7 @@ import { FileSelect } from '@hi-ui/file-select'
 import { Button } from '@hi-ui/button'
 import { UploadOutlined } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/core'
 import { FileList } from './FileList'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')

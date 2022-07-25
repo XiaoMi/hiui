@@ -24,8 +24,8 @@ import { flattenTreeData } from './utils'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
-import { HiBaseAppearanceEnum } from '@hi-ui/core'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { HiBaseAppearanceEnum, useLocaleContext } from '@hi-ui/core'
+
 import { callAllFuncs } from '@hi-ui/func-utils'
 
 const _prefix = getPrefixCls('check-cascader')

@@ -1,97 +1,55 @@
-# hiui-v4
+<div align="center">
+
+[![HiUI Logo](https://raw.githubusercontent.com/XiaoMi/hiui/master/site/static/img/logo.png)](https://xiaomi.github.io/hiui/)
+
+<h1 align="center">HiUI</h1>
+
+[![JavaScript Style Guide](https://camo.githubusercontent.com/58fbab8bb63d069c1e4fb3fa37c2899c38ffcd18/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f64655f7374796c652d7374616e646172642d627269676874677265656e2e737667)](https://github.com/standard/standard)
+
+</div>
 
 ---
 
-## 开发流程
+HiUI 是一个面向中后台系统的前端组件库，可以帮助开发人员快速实现交互一致、界面美观的界面开发。
 
-### 安装依赖
+## 特性
 
-```sh
-yarn
+- 精于中后台产品的交互与视觉设计
+- 全面的流程、数据展示模板，从业务中来，模板、组件覆盖大多数中后台系统需求
+- 数据结构分离的单组件设计，无需学习，升级方便，开箱即用
+
+## 安装
+
+现在从 `npm` 安装并引入 `HiUI`。
+
+### 全量安装
+
+```bash
+npm config set registry https://registry.npmjs.org
+
+npm install @hi-ui/core @hi-ui/hiui
 ```
 
-### lerna bootstrap
+### 按需安装
 
-```sh
-yarn bootstrap
+```bash
+npm config set registry https://registry.npmjs.org
+
+npm install @hi-ui/core @hi-ui/组件名
 ```
 
-### 预编译
+> 注意：组件名请全部小写，并使用中横线连接。
 
-```sh
-yarn build
-```
+## 使用
 
-### 开始开发
+组件使用详见[官方文档](https://xiaomi.github.io/hiui/docs/quick-start)。
 
-```sh
-yarn storybook
-```
+## 贡献
 
-## 发布
+HiUI 贡献详见[贡献指南](https://github.com/XiaoMi/hiui/blob/master/CONTRIBUTING.md)。
 
-```sh
-yarn run publish:pkg
-```
+## License
 
-### 创建模板
+MIT
 
-1. 创建组件
-
-> 注意采用小写中划线命名规范
-
-```sh
-yarn create:pkg ui `component-name`
-```
-
-2. 创建通用工具函数
-
-> 注意采用小写中划线命名规范
-
-```sh
-yarn create:pkg util `util-name`
-```
-
-3. 创建自定义 hooks
-
-> 注意采用小写中划线命名规范
-
-```sh
-yarn create:pkg hook `hook-name`
-```
-
----
-
-## lerna 常用命令集
-
-1. 给指定包添加依赖包
-
-```sh
-yarn lerna add @hi-ui/button --scope=@hi-ui/date-picker
-```
-
-2. 对指定包执行 build 等命令
-
-```sh
-yarn lerna run build --scope=@hi-ui/date-picker
-
-yarn lerna run test --scope=@hi-ui/date-picker
-```
-
----
-
-## 通用方法
-
-### hooks
-
-> packages/hooks
-
-### utils
-
-> packages/utils
-
-## 文档生成
-
-```sh
-yarn lerna run test --scope=@hi-ui/hi-docs
-```
+-- EOF --

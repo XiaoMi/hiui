@@ -82,11 +82,11 @@ export * from '@hi-ui/loading'
 export { default as Loading } from '@hi-ui/loading'
 
 /**
- * @deprecated
+ * @deprecated Please use the `Provider` instead of it.
  */
 export * from '@hi-ui/locale-context'
 /**
- * @deprecated
+ * @deprecated Please use the `Provider` instead of it.
  */
 export { default as LocaleContext } from '@hi-ui/locale-context'
 

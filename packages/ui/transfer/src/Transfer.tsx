@@ -8,8 +8,7 @@ import { TransferDataItem } from './types'
 import { TransferProvider } from './context'
 import { useCheck } from '@hi-ui/use-check'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps } from '@hi-ui/core'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
 
 const _role = 'transfer'
 const _prefix = getPrefixCls(_role)

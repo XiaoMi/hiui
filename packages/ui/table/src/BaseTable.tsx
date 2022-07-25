@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
 import { IconButton } from '@hi-ui/icon-button'
 import { PlusSquareOutlined, MinusSquareOutlined } from '@hi-ui/icons'
 import { isFunction } from '@hi-ui/type-assertion'
@@ -13,7 +13,6 @@ import { TableProvider } from './context'
 import { checkNeedTotalOrEvg, getTotalOrEvgRowData, uuid } from './utils'
 import { useTable, UseTableProps } from './use-table'
 import { useEmbedExpand, UseEmbedExpandProps } from './hooks/use-embed-expand'
-import { useLocaleContext } from '@hi-ui/locale-context'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')

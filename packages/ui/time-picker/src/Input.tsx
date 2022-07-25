@@ -16,7 +16,7 @@ import {
 import { cx } from '@hi-ui/classname'
 import { valueChecker } from './utils/valueChecker'
 import { disposeInputValue } from './utils/disposeInputValue'
-import { useLocaleContext } from '@hi-ui/locale-context'
+import { useLocaleContext } from '@hi-ui/core'
 
 type ExtendType = Required<TimePickerFilter> & Required<TimePickerStep>
 

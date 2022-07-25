@@ -6,7 +6,7 @@ import {
   DirectionLeftOutlined,
 } from '@hi-ui/icons'
 import moment, { DurationInputArg1 } from 'moment'
-import { UseLocaleContext } from '@hi-ui/locale-context'
+import { UseLocaleContext } from '@hi-ui/core'
 
 const getHeaderCenterContent = (
   i18n: UseLocaleContext,
