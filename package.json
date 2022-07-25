@@ -1,6 +1,5 @@
 {
   "name": "hiui",
-  "version": "4.0.0-beta.0",
   "private": true,
   "workspaces": {
     "packages": [
@@ -25,7 +24,7 @@
     "postinstall": "patch-package",
     "bootstrap": "lerna bootstrap",
     "prepublish:pkg": "yarn run build",
-    "publish:pkg": "lerna publish --dist-tag feature",
+    "publish:pkg": "lerna publish",
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",
     "build": "lerna run build --no-private --sort",

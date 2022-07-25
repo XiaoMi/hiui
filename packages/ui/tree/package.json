@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tree",
-  "version": "4.0.0-beta.43",
+  "version": "4.0.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -43,24 +43,24 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/array-utils": "^4.0.0-beta.8",
-    "@hi-ui/checkbox": "^4.0.0-beta.16",
-    "@hi-ui/classname": "^4.0.0-beta.0",
-    "@hi-ui/env": "^4.0.0-beta.1",
-    "@hi-ui/icons": "^4.0.0-beta.15",
-    "@hi-ui/input": "^4.0.0-beta.23",
-    "@hi-ui/popper": "^4.0.0-beta.20",
-    "@hi-ui/times": "^4.0.0-beta.6",
-    "@hi-ui/tree-utils": "^4.0.0-beta.6",
-    "@hi-ui/type-assertion": "^4.0.0-beta.5",
-    "@hi-ui/use-check": "^4.0.0-beta.6",
-    "@hi-ui/use-data-source": "^4.0.0-beta.6",
-    "@hi-ui/use-latest": "^4.0.0-beta.5",
-    "@hi-ui/use-merge-refs": "^4.0.0-beta.5",
-    "@hi-ui/use-outside-click": "^4.0.0-beta.5",
-    "@hi-ui/use-toggle": "^4.0.0-beta.6",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0-beta.5",
-    "@hi-ui/virtual-list": "^4.0.0-beta.1",
+    "@hi-ui/array-utils": "^4.0.0",
+    "@hi-ui/checkbox": "^4.0.0",
+    "@hi-ui/classname": "^4.0.0",
+    "@hi-ui/env": "^4.0.0",
+    "@hi-ui/icons": "^4.0.0",
+    "@hi-ui/input": "^4.0.0",
+    "@hi-ui/popper": "^4.0.0",
+    "@hi-ui/times": "^4.0.0",
+    "@hi-ui/tree-utils": "^4.0.0",
+    "@hi-ui/type-assertion": "^4.0.0",
+    "@hi-ui/use-check": "^4.0.0",
+    "@hi-ui/use-data-source": "^4.0.0",
+    "@hi-ui/use-latest": "^4.0.0",
+    "@hi-ui/use-merge-refs": "^4.0.0",
+    "@hi-ui/use-outside-click": "^4.0.0",
+    "@hi-ui/use-toggle": "^4.0.0",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0",
+    "@hi-ui/virtual-list": "^4.0.0",
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {
@@ -69,9 +69,9 @@
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core-css": "^4.0.0-beta.6",
-    "@hi-ui/core": "^4.0.0-beta.10",
-    "@hi-ui/hi-build": "^4.0.0-beta.5",
+    "@hi-ui/core": "^4.0.0",
+    "@hi-ui/core-css": "^4.0.0",
+    "@hi-ui/hi-build": "^4.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

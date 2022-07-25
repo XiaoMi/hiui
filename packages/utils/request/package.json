@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/request",
-  "version": "4.0.0-beta.7",
+  "version": "4.0.0",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -43,7 +43,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-beta.5"
+    "@hi-ui/hi-build": "^4.0.0"
   },
   "dependencies": {
     "axios": "^0.21.1"
