@@ -37,7 +37,6 @@
     "prebuild": "yarn clean",
     "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
     "build:cjs": "hi-build ./src/index.ts --format cjs -d ./lib/cjs",
-    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
     "build:copy": "copyfiles -u 2 src/styles/**/*.scss src/styles/**/**/*.scss src/styles/**/**/**/*.scss src/styles/*.scss lib",
     "build": "concurrently yarn:build:*"
   },
