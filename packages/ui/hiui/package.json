@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -93,7 +93,7 @@
     "@hi-ui/switch": "^4.0.0",
     "@hi-ui/table": "^4.0.0",
     "@hi-ui/tabs": "^4.0.0",
-    "@hi-ui/tag": "^4.0.0",
+    "@hi-ui/tag": "^4.0.1",
     "@hi-ui/textarea": "^4.0.0",
     "@hi-ui/time-picker": "^4.0.0",
     "@hi-ui/timeline": "^4.0.0",
