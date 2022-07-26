@@ -218,6 +218,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         onOpen={menuVisibleAction.on}
         onClose={menuVisibleAction.off}
         searchable={searchable}
+        scrollable={false}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
           <MockInput
