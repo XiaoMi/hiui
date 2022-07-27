@@ -19,7 +19,7 @@ export const Offset = () => {
   return (
     <>
       <h1>Offset</h1>
-      <div className="grid-offset__wrap" style={{ minWidth: '660px' }}>
+      <div className="grid-offset__wrap" >
         <Row gutter={true}>
           <Col span={8}>
             <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>col-8</div>
