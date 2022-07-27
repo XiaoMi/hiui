@@ -22,7 +22,11 @@
     ".": {
       "require": "./lib/cjs/index.js",
       "default": "./lib/esm/index.js"
-    }
+    },
+    "./lib/v4/index.scss": "./lib/v4/index.scss",
+    "./lib/v4/mixin.scss": "./lib/v4/mixin.scss",
+    "./lib/v4/ui.scss": "./lib/v4/ui.scss",
+    "./lib/v4/layout-ui.scss": "./lib/v4/layout-ui.scss"
   },
   "publishConfig": {
     "access": "public"
