@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/table",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -44,11 +44,11 @@
   },
   "dependencies": {
     "@hi-ui/array-utils": "^4.0.0",
-    "@hi-ui/button": "^4.0.0",
+    "@hi-ui/button": "^4.0.1",
     "@hi-ui/checkbox": "^4.0.0",
     "@hi-ui/classname": "^4.0.0",
     "@hi-ui/dom-utils": "^4.0.0",
-    "@hi-ui/drawer": "^4.0.0",
+    "@hi-ui/drawer": "^4.0.1",
     "@hi-ui/empty-state": "^4.0.0",
     "@hi-ui/env": "^4.0.0",
     "@hi-ui/func-utils": "^4.0.0",
