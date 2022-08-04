@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tag",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -43,7 +43,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^4.0.0",
+    "@hi-ui/button": "^4.0.1",
     "@hi-ui/classname": "^4.0.0",
     "@hi-ui/env": "^4.0.0",
     "@hi-ui/icons": "^4.0.0",
