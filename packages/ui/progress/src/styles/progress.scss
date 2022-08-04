@@ -92,6 +92,7 @@ $progress-color-map: (
     font-size: use-text-size('normal');
     margin-left: use-spacing(10);
     color: use-color('gray', 700);
+    white-space: nowrap;
   }
 
   &__buffer,
