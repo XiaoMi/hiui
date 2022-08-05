@@ -1,6 +1,7 @@
+import { HiBaseDataItem } from '@hi-ui/core'
 import React from 'react'
 
-export interface TreeSelectDataItem {
+export interface TreeSelectDataItem extends HiBaseDataItem {
   /**
    * 节点唯一 id
    */
