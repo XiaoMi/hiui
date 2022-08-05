@@ -1,0 +1,143 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-input-group' !default;
+
+.#{$prefix} {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  z-index: 0;
+
+  & > *:not(:last-child) {
+    margin-right: -1px;
+  }
+
+  @mixin first-input() {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  @mixin middle-input() {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  @mixin last-input() {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  & > *,
+  & > .hi-v4-button,
+  & > .hi-v4-number-input {
+    &:not(:first-child):not(:last-child) {
+      @include middle-input();
+    }
+
+    &:first-child {
+      @include first-input();
+    }
+
+    &:last-child {
+      @include last-input();
+    }
+  }
+
+  & > .hi-v4-picker {
+    &:not(:first-child):not(:last-child) {
+      .hi-v4-mock-input,
+      .hi-v4-tag-input-mock {
+        @include middle-input();
+      }
+    }
+
+    &:first-child {
+      .hi-v4-mock-input,
+      .hi-v4-tag-input-mock {
+        @include first-input();
+      }
+    }
+
+    &:last-child {
+      .hi-v4-mock-input,
+      .hi-v4-tag-input-mock {
+        @include last-input();
+      }
+    }
+  }
+
+  & > .hi-v4-input {
+    &:not(:first-child):not(:last-child) {
+      .hi-v4-input__inner {
+        @include middle-input();
+      }
+    }
+
+    &:first-child {
+      .hi-v4-input__inner {
+        @include first-input();
+      }
+    }
+
+    &:last-child {
+      .hi-v4-input__inner {
+        @include last-input();
+      }
+    }
+  }
+
+  & > .hi-v4-date-picker {
+    &:not(:first-child):not(:last-child) {
+      @include middle-input();
+
+      .hi-v4-date-picker__picker {
+        @include middle-input();
+      }
+    }
+
+    &:first-child {
+      @include first-input();
+
+      .hi-v4-date-picker__picker {
+        @include first-input();
+      }
+    }
+
+    &:last-child {
+      @include first-input();
+
+      .hi-v4-date-picker__picker {
+        @include last-input();
+      }
+    }
+  }
+
+  & > .hi-v4-time-picker {
+    &:not(:first-child):not(:last-child) {
+      @include middle-input();
+
+      .hi-v4-time-picker__input-wrapper {
+        @include middle-input();
+      }
+    }
+
+    &:first-child {
+      @include first-input();
+
+      .hi-v4-time-picker__input-wrapper {
+        @include first-input();
+      }
+    }
+
+    &:last-child {
+      @include first-input();
+
+      .hi-v4-time-picker__input-wrapper {
+        @include last-input();
+      }
+    }
+  }
+}

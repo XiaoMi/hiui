@@ -44,11 +44,12 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     color: use-color('gray', 400);
   }
 
-  // &__placeholder {
-  //   // 控制上下间距
-  //   margin-top: use-spacing(1);
-  //   margin-bottom: use-spacing(1);
-  // }
+  &__placeholder {
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   // clear icon
   &__clear {

@@ -98,7 +98,7 @@ $wrapper: '#{$input-prefix}__wrapper' !default;
     }
 
     &::placeholder {
-      color: use-color('gray', 500);
+      color: use-color('gray', 400);
     }
   }
 }
