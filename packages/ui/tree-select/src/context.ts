@@ -1,8 +1,6 @@
 import { createContext, useContext } from 'react'
 
-import { UseTreeSelectReturn } from './use-tree-select'
-
-const TreeSelectContext = createContext<Omit<UseTreeSelectReturn, 'rootProps'> | null>(null)
+const TreeSelectContext = createContext<any | null>(null)
 
 export const TreeSelectProvider = TreeSelectContext.Provider
 
