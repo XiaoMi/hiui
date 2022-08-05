@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/select",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -47,7 +47,7 @@
     "@hi-ui/classname": "^4.0.0",
     "@hi-ui/env": "^4.0.0",
     "@hi-ui/func-utils": "^4.0.0",
-    "@hi-ui/highlighter": "^4.0.0",
+    "@hi-ui/highlighter": "^4.0.1",
     "@hi-ui/icons": "^4.0.0",
     "@hi-ui/input": "^4.0.0",
     "@hi-ui/picker": "^4.0.0",
@@ -59,7 +59,7 @@
     "@hi-ui/use-children": "^4.0.0",
     "@hi-ui/use-data-source": "^4.0.0",
     "@hi-ui/use-latest": "^4.0.0",
-    "@hi-ui/use-search-mode": "^4.0.0",
+    "@hi-ui/use-search-mode": "^4.0.1",
     "@hi-ui/use-toggle": "^4.0.0",
     "@hi-ui/use-uncontrolled-state": "^4.0.0",
     "@hi-ui/virtual-list": "^4.0.0"
