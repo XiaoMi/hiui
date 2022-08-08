@@ -19,7 +19,7 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="grid-basic__wrap" style={{ minWidth: '660px' }}>
+      <div className="grid-basic__wrap">
         <Row>
           <Col span={24}>
             <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>col-24</div>

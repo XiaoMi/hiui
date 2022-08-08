@@ -19,7 +19,7 @@ export const Nested = () => {
   return (
     <>
       <h1>Nested</h1>
-      <div className="grid-nested__wrap" style={{ minWidth: '660px' }}>
+      <div className="grid-nested__wrap" >
         <Row gutter={true}>
           <Col span={16}>
             <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>

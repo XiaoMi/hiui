@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { UseDataSource, useDataSource } from '@hi-ui/use-data-source'
 import { invariant } from '@hi-ui/env'
@@ -176,8 +176,10 @@ export const useFilterSearch = ({
   data,
   flattedData,
   exclude,
+  fieldNames,
 }: any) => {
   const excludeLatestRef = useLatestRef(exclude)
+  const getKeyFields = useMemo(() => genKeyFields(fieldNames), [fieldNames])
 
   const onSearch = useCallback(
     (keyword: string, dispatch: any) => {
@@ -189,7 +191,8 @@ export const useFilterSearch = ({
       const showData = getSearchedData(
         cloneTree(data),
         matchedNodes.map((v) => v.id),
-        filteredNodeIds
+        filteredNodeIds,
+        getKeyFields
       )
 
       dispatch({
@@ -198,7 +201,7 @@ export const useFilterSearch = ({
         expandedIds: filteredNodeIds,
       })
     },
-    [data, flattedData, excludeLatestRef]
+    [data, flattedData, excludeLatestRef, getKeyFields]
   )
 
   return { name: searchMode, enabled, run: onSearch }
@@ -266,15 +269,19 @@ const getFilteredIds = (matchedNodes: any[]) => {
 const getSearchedData = (
   treeData: any[],
   matchedIds: React.ReactText[],
-  filteredIds: React.ReactText[]
+  filteredIds: React.ReactText[],
+  getKeyFields: (node: any, key: string) => any
 ) => {
   for (let i = 0; i < treeData.length; ++i) {
     const node = treeData[i]
-    if (matchedIds.includes(node.id)) {
+    const id = getKeyFields(node, 'id')
+
+    if (matchedIds.includes(id)) {
       // do nothing
-    } else if (filteredIds.includes(node.id)) {
-      if (node.children) {
-        getSearchedData(node.children, matchedIds, filteredIds)
+    } else if (filteredIds.includes(id)) {
+      const children = getKeyFields(node, 'children')
+      if (children) {
+        getSearchedData(children, matchedIds, filteredIds, getKeyFields)
       }
     } else {
       treeData.splice(i, 1)
@@ -350,4 +357,11 @@ export const matchStrategy = (content: unknown, keyword: string, ignoreCase = tr
   }
 
   return content.indexOf(keyword)
+}
+
+/**
+ * 转换对象
+ */
+const genKeyFields = (fieldNames: any) => (node: any, key: string) => {
+  return fieldNames ? node[fieldNames[key] || key] : node[key]
 }

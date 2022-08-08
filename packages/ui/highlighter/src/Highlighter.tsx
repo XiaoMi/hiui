@@ -9,7 +9,7 @@ const HIGHLIGHTER_PREFIX = getPrefixCls('highlighter')
  * 高亮文本内容
  */
 export const Highlighter = forwardRef<HTMLSpanElement | null, HighlighterProps>(
-  ({ prefixCls = HIGHLIGHTER_PREFIX, className, keyword, children, ...rest }, ref) => {
+  ({ prefixCls = HIGHLIGHTER_PREFIX, className, keyword, children = null, ...rest }, ref) => {
     if (!keyword) return children!
     if (typeof children !== 'string') return children as any
 

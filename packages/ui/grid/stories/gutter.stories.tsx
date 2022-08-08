@@ -19,7 +19,7 @@ export const Gutter = () => {
   return (
     <>
       <h1>Gutter</h1>
-      <div className="grid-gutter__wrap" style={{ minWidth: '660px' }}>
+      <div className="grid-gutter__wrap" >
         <Row gutter={true}>
           <Col span={6}>
             <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>
