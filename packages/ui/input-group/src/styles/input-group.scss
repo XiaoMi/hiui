@@ -8,6 +8,7 @@ $prefix: '#{$component-prefix}-input-group' !default;
   position: relative;
   width: 100%;
   z-index: 0;
+  vertical-align: middle;
 
   & > *:not(:last-child) {
     margin-right: -1px;
@@ -107,7 +108,7 @@ $prefix: '#{$component-prefix}-input-group' !default;
     }
 
     &:last-child {
-      @include first-input();
+      @include last-input();
 
       .hi-v4-date-picker__picker {
         @include last-input();
@@ -133,7 +134,7 @@ $prefix: '#{$component-prefix}-input-group' !default;
     }
 
     &:last-child {
-      @include first-input();
+      @include last-input();
 
       .hi-v4-time-picker__input-wrapper {
         @include last-input();
