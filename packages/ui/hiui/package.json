@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -79,7 +79,7 @@
     "@hi-ui/pop-confirm": "^4.0.1",
     "@hi-ui/popover": "^4.0.0",
     "@hi-ui/preview": "^4.0.0",
-    "@hi-ui/progress": "^4.0.1",
+    "@hi-ui/progress": "^4.0.2",
     "@hi-ui/provider": "^4.0.1",
     "@hi-ui/radio": "^4.0.0",
     "@hi-ui/rating": "^4.0.0",
