@@ -9,6 +9,10 @@ import Button from '@hi-ui/button'
 import InputGroup from '../src'
 import TimePicker from '@hi-ui/time-picker'
 
+/**
+ * @title 不同组合形式
+ * @desc 根据不同场景组合不同类型的表单控件
+ */
 export const Group = () => {
   return (
     <>
