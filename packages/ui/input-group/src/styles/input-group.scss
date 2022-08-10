@@ -32,8 +32,8 @@ $prefix: '#{$component-prefix}-input-group' !default;
   }
 
   & > *,
-  & > .hi-v4-button,
-  & > .hi-v4-number-input {
+  & > .#{$component-prefix}-button,
+  & > .#{$component-prefix}-number-input {
     &:not(:first-child):not(:last-child) {
       @include middle-input();
     }
@@ -47,54 +47,54 @@ $prefix: '#{$component-prefix}-input-group' !default;
     }
   }
 
-  & > .hi-v4-picker {
+  & > .#{$component-prefix}-picker {
     &:not(:first-child):not(:last-child) {
-      .hi-v4-mock-input,
-      .hi-v4-tag-input-mock {
+      .#{$component-prefix}-mock-input,
+      .#{$component-prefix}-tag-input-mock {
         @include middle-input();
       }
     }
 
     &:first-child {
-      .hi-v4-mock-input,
-      .hi-v4-tag-input-mock {
+      .#{$component-prefix}-mock-input,
+      .#{$component-prefix}-tag-input-mock {
         @include first-input();
       }
     }
 
     &:last-child {
-      .hi-v4-mock-input,
-      .hi-v4-tag-input-mock {
+      .#{$component-prefix}-mock-input,
+      .#{$component-prefix}-tag-input-mock {
         @include last-input();
       }
     }
   }
 
-  & > .hi-v4-input {
+  & > .#{$component-prefix}-input {
     &:not(:first-child):not(:last-child) {
-      .hi-v4-input__inner {
+      .#{$component-prefix}-input__inner {
         @include middle-input();
       }
     }
 
     &:first-child {
-      .hi-v4-input__inner {
+      .#{$component-prefix}-input__inner {
         @include first-input();
       }
     }
 
     &:last-child {
-      .hi-v4-input__inner {
+      .#{$component-prefix}-input__inner {
         @include last-input();
       }
     }
   }
 
-  & > .hi-v4-date-picker {
+  & > .#{$component-prefix}-date-picker {
     &:not(:first-child):not(:last-child) {
       @include middle-input();
 
-      .hi-v4-date-picker__picker {
+      .#{$component-prefix}-date-picker__picker {
         @include middle-input();
       }
     }
@@ -102,7 +102,7 @@ $prefix: '#{$component-prefix}-input-group' !default;
     &:first-child {
       @include first-input();
 
-      .hi-v4-date-picker__picker {
+      .#{$component-prefix}-date-picker__picker {
         @include first-input();
       }
     }
@@ -110,17 +110,17 @@ $prefix: '#{$component-prefix}-input-group' !default;
     &:last-child {
       @include last-input();
 
-      .hi-v4-date-picker__picker {
+      .#{$component-prefix}-date-picker__picker {
         @include last-input();
       }
     }
   }
 
-  & > .hi-v4-time-picker {
+  & > .#{$component-prefix}-time-picker {
     &:not(:first-child):not(:last-child) {
       @include middle-input();
 
-      .hi-v4-time-picker__input-wrapper {
+      .#{$component-prefix}-time-picker__input-wrapper {
         @include middle-input();
       }
     }
@@ -128,7 +128,7 @@ $prefix: '#{$component-prefix}-input-group' !default;
     &:first-child {
       @include first-input();
 
-      .hi-v4-time-picker__input-wrapper {
+      .#{$component-prefix}-time-picker__input-wrapper {
         @include first-input();
       }
     }
@@ -136,7 +136,7 @@ $prefix: '#{$component-prefix}-input-group' !default;
     &:last-child {
       @include last-input();
 
-      .hi-v4-time-picker__input-wrapper {
+      .#{$component-prefix}-time-picker__input-wrapper {
         @include last-input();
       }
     }
