@@ -7,7 +7,6 @@ import DatePicker from '@hi-ui/date-picker'
 import Button from '@hi-ui/button'
 
 import InputGroup from '../src'
-import TimePicker from '@hi-ui/time-picker'
 
 /**
  * @title 不同组合形式
@@ -128,8 +127,8 @@ export const Group = () => {
         </InputGroup>
 
         <InputGroup>
+          <DatePicker type="daterange" placeholder={['开始时间', '结束时间']} />
           <Input style={{ width: '36%' }} placeholder="请输入" />
-          <TimePicker type="range" placeholder={['开始时间', '结束时间']} />
         </InputGroup>
       </div>
     </>
