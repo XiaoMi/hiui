@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-deep-equal-deps",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -46,6 +46,6 @@
     "react": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0"
+    "@hi-ui/hi-build": "^4.0.1"
   }
 }
