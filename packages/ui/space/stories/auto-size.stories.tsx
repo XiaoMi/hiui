@@ -22,7 +22,7 @@ export const AutoSize = () => {
           <Switch checked={checked} onChange={(checked) => setChecked(checked)} />
 
           <div>间距调整</div>
-          <Counter autoFocus value={size} min={0} onChange={(v) => setSize(v)} />
+          <Counter value={size} min={0} onChange={(v) => setSize(v)} />
 
           <Space size={nextSize}>
             <Button>HiUI Button</Button>
