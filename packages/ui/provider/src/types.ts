@@ -41,24 +41,30 @@ export const DesignSystemAccentColorEnum = {
 export type DesignSystemAccentColorEnum = ValueOf<typeof DesignSystemAccentColorEnum>
 
 export interface DesignSystemProps {
-  color?: Record<string, DesignSystemColorProps>
-  spacing?: Record<string, DesignSystemSpacingProps>
-  zindex?: Record<string, DesignSystemZindexProps>
-  shadow?: Record<string, DesignSystemShadowProps>
-  height?: Record<string, DesignSystemHeightSizeProps>
+  color?: {
+    primary?: DesignSystemColorProps
+    success?: DesignSystemColorProps
+    warning?: DesignSystemColorProps
+    danger?: DesignSystemColorProps
+    gray?: DesignSystemColorProps
+  }
+  spacing?: DesignSystemSpacingProps
+  zindex?: DesignSystemZindexProps
+  shadow?: DesignSystemShadowProps
+  height?: DesignSystemHeightProps
   border?: {
-    size?: Record<string, DesignSystemBorderSizeProps>
-    radius?: Record<string, DesignSystemBorderRadiusProps>
+    size?: DesignSystemBorderSizeProps
+    radius?: DesignSystemBorderRadiusProps
   }
   motion?: {
-    duration?: Record<string, DesignSystemMotionDurationProps>
-    bezier?: Record<string, DesignSystemMotionBezierProps>
+    duration?: DesignSystemMotionDurationProps
+    bezier?: DesignSystemMotionBezierProps
   }
   text?: {
-    size?: Record<string, DesignSystemTextSizeProps>
-    weight?: Record<string, DesignSystemTextWeightProps>
-    spacing?: Record<string, DesignSystemTextSpacingProps>
-    lineheight?: Record<string, DesignSystemTextLineheightProps>
+    size?: DesignSystemTextSizeProps
+    weight?: DesignSystemTextWeightProps
+    spacing?: DesignSystemTextSpacingProps
+    lineheight?: DesignSystemTextLineheightProps
   }
 }
 
@@ -139,7 +145,7 @@ export interface DesignSystemBorderRadiusProps {
   full?: CSS.Property.BorderRadius
 }
 
-export interface DesignSystemHeightSizeProps {
+export interface DesignSystemHeightProps {
   1: CSS.Property.Height
   2: CSS.Property.Height
   3: CSS.Property.Height
