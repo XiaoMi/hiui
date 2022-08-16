@@ -4,8 +4,10 @@ $prefix: '#{$component-prefix}-space' !default;
 
 .#{$prefix} {
   display: inline-flex;
+}
 
-  &__item {
+.#{$prefix}--column-block {
+  .#{$prefix}__item {
     width: 100%;
   }
 }

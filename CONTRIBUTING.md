@@ -141,5 +141,5 @@ yarn run publish:pkg
 ### 文档生成
 
 ```sh
-yarn lerna run test --scope=@hi-ui/hi-docs
+yarn run generate-docs
 ```
