@@ -53,7 +53,7 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
       <div
         ref={ref}
         role={role}
-        className={cx(cls, { [`${cls}--column-block`]: !inline && direction === 'column' })}
+        className={cx(cls, { [`${prefixCls}--column-block`]: !inline && direction === 'column' })}
         style={{
           display: inline ? 'inline-flex' : 'flex',
           flexWrap: wrap ? 'wrap' : 'nowrap',

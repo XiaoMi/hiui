@@ -7,7 +7,7 @@ $prefix: '#{$component-prefix}-space' !default;
 }
 
 .#{$prefix}--column-block {
-  .#{$prefix}__item {
+  > .#{$prefix}__item {
     width: 100%;
   }
 }
