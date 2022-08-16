@@ -45,9 +45,7 @@ export const Children = () => {
             flex: 1,
           }}
         >
-          <h2 id="容器化部署" style={{ marginTop: 0 }}>
-            容器化部署
-          </h2>
+          <h2 id="容器化部署">容器化部署</h2>
           {scrollAreaNode}
           <h2 id="主要优点">主要优点</h2>
           {scrollAreaNode}

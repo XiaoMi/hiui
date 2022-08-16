@@ -124,9 +124,9 @@ export const useAnchor = ({
     [containerMemo, getOffsetById]
   )
 
-  const isActiveAnchorId = (id: string) => {
-    return currentActiveAnchorId === id
-  }
+  const isActiveAnchorId = useCallback((id: string) => currentActiveAnchorId === id, [
+    currentActiveAnchorId,
+  ])
 
   return {
     rootProps: rest,

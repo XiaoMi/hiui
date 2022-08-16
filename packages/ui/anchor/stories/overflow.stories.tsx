@@ -43,9 +43,7 @@ export const Overflow = () => {
             flex: 1,
           }}
         >
-          <h2 id="test-overflow-h1-1" style={{ marginTop: 0 }}>
-            一级目录1号
-          </h2>
+          <h2 id="test-overflow-h1-1">一级目录1号</h2>
           {scrollAreaNode}
           <h2 id="test-overflow-h1-2">一级目录2号</h2>
           {scrollAreaNode}

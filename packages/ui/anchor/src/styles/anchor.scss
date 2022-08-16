@@ -6,22 +6,23 @@ $prefix: '#{$component-prefix}-anchor' !default;
   box-sizing: border-box;
   position: relative;
 
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    display: block;
-    width: 2px;
-    height: 100%;
-    background-color: use-color('gray', 200);
-  }
-
   &__list {
     @include list-reset();
 
+    position: relative;
     padding-left: use-spacing(2);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      display: block;
+      width: 2px;
+      height: 100%;
+      background-color: use-color('gray', 200);
+    }
   }
 }
 

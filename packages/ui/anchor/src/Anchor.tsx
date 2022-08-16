@@ -19,6 +19,7 @@ export const Anchor = forwardRef<HTMLDivElement | null, AnchorProps>(
     return (
       <AnchorProvider value={context}>
         <div ref={ref} role={role} className={cls} {...rootProps}>
+          <div className={`${prefixCls}__ink`}></div>
           <ul className={`${prefixCls}__list`}>{children}</ul>
         </div>
       </AnchorProvider>
