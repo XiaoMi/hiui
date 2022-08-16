@@ -532,6 +532,7 @@ export const useTable = ({
 
   return {
     rootProps,
+    scrollWidth,
     activeSorterColumn,
     setActiveSorterColumn,
     activeSorterType,
