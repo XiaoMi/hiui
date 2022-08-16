@@ -27,11 +27,11 @@ export const Offset = () => {
       <h1>Offset</h1>
       <div className="anchor-offset__wrap" style={{ display: 'flex', minWidth: 660 }}>
         <Anchor style={{ width: 148 }} container={containerElement} offset={-20}>
-          <AnchorItem href="#容器化部署" title="容器化部署"></AnchorItem>
-          <AnchorItem href="#主要优点" title="主要优点" offset={-100}></AnchorItem>
-          <AnchorItem href="#部署前准备" title="部署前准备"></AnchorItem>
-          <AnchorItem href="#发布模拟" title="发布模拟"></AnchorItem>
-          <AnchorItem href="#其它部署方式" title="其它部署方式"></AnchorItem>
+          <AnchorItem href="#test-offset-h1-1" title="容器化部署"></AnchorItem>
+          <AnchorItem href="#test-offset-h1-2" title="主要优点" offset={-100}></AnchorItem>
+          <AnchorItem href="#test-offset-h1-3" title="部署前准备"></AnchorItem>
+          <AnchorItem href="#test-offset-h1-4" title="发布模拟"></AnchorItem>
+          <AnchorItem href="#test-offset-h1-5" title="其它部署方式"></AnchorItem>
         </Anchor>
         <div
           ref={setContainerElement}
@@ -43,15 +43,15 @@ export const Offset = () => {
             flex: 1,
           }}
         >
-          <h2 id="容器化部署">容器化部署</h2>
+          <h2 id="test-offset-h1-1">容器化部署</h2>
           {scrollAreaNode}
-          <h2 id="主要优点">主要优点</h2>
+          <h2 id="test-offset-h1-2">主要优点</h2>
           {scrollAreaNode}
-          <h2 id="部署前准备">部署前准备</h2>
+          <h2 id="test-offset-h1-3">部署前准备</h2>
           {scrollAreaNode}
-          <h2 id="发布模拟">发布模拟</h2>
+          <h2 id="test-offset-h1-4">发布模拟</h2>
           {scrollAreaNode}
-          <h2 id="其它部署方式">其它部署方式</h2>
+          <h2 id="test-offset-h1-5">其它部署方式</h2>
           {scrollAreaNode}
         </div>
       </div>

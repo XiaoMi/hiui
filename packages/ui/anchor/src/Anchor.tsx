@@ -13,14 +13,15 @@ const ANCHOR_PREFIX = getPrefixCls('anchor')
 export const Anchor = forwardRef<HTMLDivElement | null, AnchorProps>(
   ({ prefixCls = ANCHOR_PREFIX, role = 'anchor', className, children, ...rest }, ref) => {
     const { rootProps, ...context } = useAnchor(rest)
+    const { getAnchorInkProps } = context
 
     const cls = cx(prefixCls, className)
 
     return (
       <AnchorProvider value={context}>
         <div ref={ref} role={role} className={cls} {...rootProps}>
-          <div className={`${prefixCls}__ink`}></div>
           <ul className={`${prefixCls}__list`}>{children}</ul>
+          <div className={`${prefixCls}-ink`} {...getAnchorInkProps()}></div>
         </div>
       </AnchorProvider>
     )
@@ -51,13 +52,13 @@ export const AnchorItem = forwardRef<HTMLLIElement | null, AnchorItemProps>(
     },
     ref
   ) => {
-    const { rootProps, getAnchorItemProps, showActive } = useAnchorItem(rest)
+    const { rootProps, getAnchorLinkProps, showActive } = useAnchorItem(rest)
 
     const cls = cx(prefixCls, className, showActive && `${prefixCls}--active`)
 
     return (
       <li ref={ref} role={role} className={cls} {...rootProps}>
-        <a className={`${prefixCls}__link`} {...getAnchorItemProps()}>
+        <a className={`${prefixCls}__link`} {...getAnchorLinkProps()}>
           {title}
         </a>
         {children}

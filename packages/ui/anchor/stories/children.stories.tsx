@@ -27,13 +27,13 @@ export const Children = () => {
       <h1>Children</h1>
       <div className="anchor-children__wrap" style={{ display: 'flex', minWidth: 660 }}>
         <Anchor style={{ width: 148 }} container={containerElement} offset={-20}>
-          <AnchorItem href="#容器化部署" title="容器化部署"></AnchorItem>
-          <AnchorItem href="#主要优点" title="主要优点"></AnchorItem>
-          <AnchorItem href="#部署前准备" title="部署前准备">
-            <AnchorItem href="#申请部署空间" title="申请部署空间"></AnchorItem>
-            <AnchorItem href="#CI变量配置" title="CI变量配置"></AnchorItem>
+          <AnchorItem href="#test-children-h1-1" title="容器化部署"></AnchorItem>
+          <AnchorItem href="#test-children-h1-2" title="主要优点"></AnchorItem>
+          <AnchorItem href="#test-children-h1-3" title="部署前准备">
+            <AnchorItem href="#test-children-h1-4" title="申请部署空间"></AnchorItem>
+            <AnchorItem href="#test-children-h1-5" title="CI变量配置"></AnchorItem>
           </AnchorItem>
-          <AnchorItem href="#发布模拟" title="发布模拟"></AnchorItem>
+          <AnchorItem href="#test-children-h1-6" title="发布模拟"></AnchorItem>
         </Anchor>
         <div
           ref={setContainerElement}
@@ -45,17 +45,17 @@ export const Children = () => {
             flex: 1,
           }}
         >
-          <h2 id="容器化部署">容器化部署</h2>
+          <h2 id="test-children-h1-1">容器化部署</h2>
           {scrollAreaNode}
-          <h2 id="主要优点">主要优点</h2>
+          <h2 id="test-children-h1-2">主要优点</h2>
           {scrollAreaNode}
-          <h2 id="部署前准备">部署前准备</h2>
+          <h2 id="test-children-h1-3">部署前准备</h2>
           {scrollAreaNode}
-          <h3 id="申请部署空间">申请部署空间</h3>
+          <h3 id="test-children-h1-4">申请部署空间</h3>
           {scrollAreaNode}
-          <h3 id="CI变量配置">CI变量配置</h3>
+          <h3 id="test-children-h1-5">CI变量配置</h3>
           <div style={{ height: 300 }}></div>
-          <h2 id="发布模拟">发布模拟</h2>
+          <h2 id="test-children-h1-6">发布模拟</h2>
           {scrollAreaNode}
         </div>
       </div>

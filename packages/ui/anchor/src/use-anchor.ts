@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { isBrowser } from '@hi-ui/env'
 import { isFunction } from '@hi-ui/type-assertion'
 import { mockDefaultHandlers, setAttrStatus } from '@hi-ui/dom-utils'
+import { mergeRefs } from '@hi-ui/react-utils'
 import {
   trimElementId,
   getOffsetTop,
@@ -18,6 +19,7 @@ const TARGET_BOUND = 3
 
 export const useAnchor = ({
   offset: offsetProp = 0,
+  inkHeight = 12,
   container,
   onChange,
   ...rest
@@ -30,7 +32,7 @@ export const useAnchor = ({
     keys: getAllAnchorItemIds,
     register: registerAnchorId,
     unregister: unregisterAnchorId,
-  } = useRegistry<number | undefined>()
+  } = useRegistry<{ offset?: number; element?: HTMLElement }>()
 
   const containerMemo = useMemo(() => {
     if (!isBrowser) return null
@@ -48,7 +50,7 @@ export const useAnchor = ({
 
   const getOffsetById = useCallback(
     (anchorHref: string) => {
-      const offset = getAnchorItemById(anchorHref) ?? offsetProp
+      const offset = getAnchorItemById(anchorHref)?.offset ?? offsetProp
       return offset
     },
     [getAnchorItemById, offsetProp]
@@ -73,7 +75,6 @@ export const useAnchor = ({
       const offset = getOffsetById(linkHref)
 
       if (offsetTop + offset > TARGET_BOUND) continue
-      // console.log('offsetTop', offsetTop, offset)
 
       if (maxOffsetTop < offsetTop) {
         maxOffsetTop = offsetTop
@@ -91,7 +92,6 @@ export const useAnchor = ({
     const handleScroll = () => {
       const activeAnchorItem = getActiveAnchorItem()
       setCurrentActiveAnchorId(activeAnchorItem)
-      // const currentScrollTop = getScrollTop(null)
     }
 
     handleScroll()
@@ -112,6 +112,7 @@ export const useAnchor = ({
       if (!targetId) return
 
       const targetElement = document.getElementById(targetId)
+
       if (!targetElement) return
 
       const offsetTop = getOffsetTop(targetElement, containerMemo)
@@ -128,8 +129,30 @@ export const useAnchor = ({
     currentActiveAnchorId,
   ])
 
+  const getAnchorInkProps = useCallback(() => {
+    let style: React.CSSProperties | undefined
+
+    const item = getAnchorItemById(currentActiveAnchorId)
+    const activeElement = item && item.element
+
+    if (activeElement) {
+      const inkPadding = 6
+      const inkHeight = activeElement.clientHeight - (inkPadding << 1)
+      const inkTop = activeElement.offsetTop + inkPadding
+
+      style = {
+        position: 'absolute',
+        height: `${inkHeight}px`,
+        top: `${inkTop}px`,
+      }
+    }
+
+    return { style }
+  }, [currentActiveAnchorId, getAnchorItemById])
+
   return {
     rootProps: rest,
+    getAnchorInkProps,
     scrollToAnchorItem,
     isActiveAnchorId,
     registerAnchorId,
@@ -150,6 +173,10 @@ export interface UseAnchorProps {
    * 锚点切换时触发
    */
   onChange?: (id: string) => void
+  /**
+   * 设置锚点指示器高度
+   */
+  inkHeight?: number
 }
 
 export type UseAnchorReturn = ReturnType<typeof useAnchor>
@@ -162,25 +189,31 @@ export const useAnchorItem = ({ href = '', offset, ...rest }: UseAnchorItemProps
     unregisterAnchorId,
   } = useAnchorContext()
 
-  // 注入当前 field 及其验证规则到 Form
+  const [anchorItemElement, setAnchorItemElement] = useState<HTMLAnchorElement | null>(null)
+
+  // 注入当前 href 及元素到 Anchor
   useEffect(() => {
     if (!isValidAnchorId(href)) return
+    if (!anchorItemElement) return
 
-    registerAnchorId(href, offset)
+    registerAnchorId(href, {
+      offset,
+      element: anchorItemElement,
+    })
 
     return () => {
       if (!isValidAnchorId(href)) return
 
       unregisterAnchorId(href)
     }
-  }, [registerAnchorId, unregisterAnchorId, href, offset])
+  }, [registerAnchorId, unregisterAnchorId, href, offset, anchorItemElement])
 
   const showActive = isActiveAnchorId(href)
 
-  const getAnchorItemProps = useCallback(
+  const getAnchorLinkProps = useCallback(
     (props = {}, ref = null) => {
       return {
-        ref,
+        ref: mergeRefs(setAnchorItemElement, ref),
         ...props,
         href,
         'data-active': setAttrStatus(showActive),
@@ -195,7 +228,7 @@ export const useAnchorItem = ({ href = '', offset, ...rest }: UseAnchorItemProps
 
   return {
     rootProps: rest,
-    getAnchorItemProps,
+    getAnchorLinkProps,
     showActive,
   }
 }

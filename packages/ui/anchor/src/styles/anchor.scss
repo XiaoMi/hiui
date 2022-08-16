@@ -24,6 +24,14 @@ $prefix: '#{$component-prefix}-anchor' !default;
       background-color: use-color('gray', 200);
     }
   }
+
+  &-ink {
+    left: 0;
+    width: 2px;
+    height: 12px;
+    display: block;
+    background-color: use-color-mode('primary');
+  }
 }
 
 $item-prefix: '#{$prefix}-item' !default;
@@ -67,17 +75,6 @@ $item-prefix: '#{$prefix}-item' !default;
     > .#{$item-prefix}__link {
       color: use-color('gray', 700);
       font-weight: use-text-weight('medium');
-
-      &::before {
-        content: '';
-        position: absolute;
-        left: calc(-2px - #{use-spacing(1)});
-        width: 2px;
-        top: 6px;
-        bottom: 6px;
-        display: block;
-        background-color: use-color-mode('primary');
-      }
     }
   }
 }
