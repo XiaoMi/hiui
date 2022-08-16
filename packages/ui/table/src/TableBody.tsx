@@ -28,6 +28,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       onTableBodyScroll,
       maxHeight,
       canScroll,
+      scrollWidth,
       hasAvgColumn,
       avgRow,
       hasSumColumn,
@@ -69,7 +70,10 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
           overflowX: canScroll ? 'scroll' : undefined,
         }}
       >
-        <table ref={bodyTableRef} style={{ width: '100%' }}>
+        <table
+          ref={bodyTableRef}
+          style={{ width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%' }}
+        >
           <colgroup>
             {leafColumns.map((col: any, idx) => {
               return (
