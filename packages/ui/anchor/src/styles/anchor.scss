@@ -31,10 +31,14 @@ $item-prefix: '#{$prefix}-item' !default;
   @include list-item-reset();
 
   width: 100%;
-  position: relative;
+
+  & > & {
+    padding-left: 12px;
+  }
 
   &__link {
     @include link-reset();
+    @include ellipsis();
 
     cursor: pointer;
     display: block;
@@ -51,6 +55,7 @@ $item-prefix: '#{$prefix}-item' !default;
     transition-property: background-color;
     transition-duration: use-motion-duration('fast');
     transition-timing-function: use-motion-bezier('normal');
+    position: relative;
 
     &:hover {
       background-color: use-color('gray', 50);
@@ -58,20 +63,20 @@ $item-prefix: '#{$prefix}-item' !default;
   }
 
   &--active {
-    &::before {
-      content: '';
-      position: absolute;
-      left: calc(-2px - #{use-spacing(1)});
-      width: 2px;
-      top: 6px;
-      bottom: 6px;
-      display: block;
-      background-color: use-color-mode('primary');
-    }
-
     > .#{$item-prefix}__link {
       color: use-color('gray', 700);
       font-weight: use-text-weight('medium');
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: calc(-2px - #{use-spacing(1)});
+        width: 2px;
+        top: 6px;
+        bottom: 6px;
+        display: block;
+        background-color: use-color-mode('primary');
+      }
     }
   }
 }

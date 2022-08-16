@@ -1,80 +1,64 @@
 import React from 'react'
-import Anchor from '../src'
+import Anchor, { AnchorItem } from '../src'
 
+/**
+ * @title 多级树形锚点
+ * @desc 作为 `AnchorItem` 的子节点传入，扩展树形锚点的层级
+ */
 export const Children = () => {
   const [containerElement, setContainerElement] = React.useState<HTMLDivElement | null>(null)
-  console.log('containerElement', containerElement)
+
+  const scrollAreaNode = (
+    <div
+      style={{
+        backgroundColor: '#f5f7fa',
+        textAlign: 'center',
+        height: '400px',
+        lineHeight: '400px',
+        color: '#1f2733',
+      }}
+    >
+      Scroll Area
+    </div>
+  )
 
   return (
     <>
-      <h1>Basic</h1>
-      <div className="anchor-basic__wrap">
-        <Anchor
-          container={containerElement}
-          offset={-20}
-          data={[
-            {
-              id: '前端资源容器化部署',
-              title: '前端资源容器化部署',
-            },
-            {
-              id: '主要优点',
-              title: '主要优点',
-            },
-            {
-              id: '部署前准备',
-              title: '部署前准备',
-              children: [
-                {
-                  id: '申请部署空间',
-                  title: '申请部署空间',
-                },
-                {
-                  id: 'CI 变量配置',
-                  title: 'CI 变量配置',
-                },
-              ],
-            },
-            {
-              id: '发布模拟',
-              title: '发布模拟',
-            },
-            {
-              id: '其它部署方式',
-              title: '其它部署方式',
-              children: [
-                {
-                  id: 'CDN发布',
-                  title: 'CDN发布',
-                },
-                {
-                  id: '后端服务托管',
-                  title: '后端服务托管',
-                },
-              ],
-            },
-          ]}
-        ></Anchor>
+      <h1>Children</h1>
+      <div className="anchor-children__wrap" style={{ display: 'flex', minWidth: 660 }}>
+        <Anchor style={{ width: 148 }} container={containerElement} offset={-20}>
+          <AnchorItem href="#容器化部署" title="容器化部署"></AnchorItem>
+          <AnchorItem href="#主要优点" title="主要优点"></AnchorItem>
+          <AnchorItem href="#部署前准备" title="部署前准备">
+            <AnchorItem href="#申请部署空间" title="申请部署空间"></AnchorItem>
+            <AnchorItem href="#CI变量配置" title="CI变量配置"></AnchorItem>
+          </AnchorItem>
+          <AnchorItem href="#发布模拟" title="发布模拟"></AnchorItem>
+        </Anchor>
         <div
           ref={setContainerElement}
-          style={{ overflow: 'scroll', maxHeight: 600, border: '1px solid #ccc' }}
+          style={{
+            overflow: 'scroll',
+            maxHeight: 320,
+            border: '1px solid #f5f7fa',
+            padding: '0 24px',
+            flex: 1,
+          }}
         >
-          <h2 id="主要优点" style={{ boxSizing: 'border-box', borderTop: '1px solid #ccc' }}>
-            主要优点
+          <h2 id="容器化部署" style={{ marginTop: 0 }}>
+            容器化部署
           </h2>
-          <div style={{ height: 800 }}></div>
-          <h2 id="部署前准备" style={{ boxSizing: 'border-box', borderTop: '1px solid #ccc' }}>
-            部署前准备
-          </h2>
-          <div style={{ height: 800 }}></div>
-          <h2 id="发布模拟" style={{ boxSizing: 'border-box', borderTop: '1px solid #ccc' }}>
-            发布模拟
-          </h2>
-          <div style={{ height: 800 }}></div>
-          <h2 id="其它部署方式" style={{ boxSizing: 'border-box', borderTop: '1px solid #ccc' }}>
-            其它部署方式
-          </h2>
-          <div style={{ height: 800 }}></div>
+          {scrollAreaNode}
+          <h2 id="主要优点">主要优点</h2>
+          {scrollAreaNode}
+          <h2 id="部署前准备">部署前准备</h2>
+          {scrollAreaNode}
+          <h3 id="申请部署空间">申请部署空间</h3>
+          {scrollAreaNode}
+          <h3 id="CI变量配置">CI变量配置</h3>
+          <div style={{ height: 300 }}></div>
+          <h2 id="发布模拟">发布模拟</h2>
+          {scrollAreaNode}
         </div>
       </div>
     </>

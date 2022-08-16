@@ -70,6 +70,11 @@ export interface AnchorItemProps extends HiBaseHTMLProps<'li'>, UseAnchorItemPro
    * 锚点项标题内容
    */
   title?: React.ReactNode
+
+  /**
+   * 下一级锚点节点列表，可传入 `AnchorItem`
+   */
+  children?: React.ReactNode
 }
 
 if (__DEV__) {
