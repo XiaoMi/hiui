@@ -10,11 +10,11 @@ export const Basic = () => {
       <h1>Basic</h1>
       <div className="anchor-basic__wrap">
         <Anchor container={containerElement} offset={-20}>
-          <AnchorItem href="#前端资源容器化部署">前端资源容器化部署</AnchorItem>
-          <AnchorItem href="#主要优点">主要优点</AnchorItem>
-          <AnchorItem href="#部署前准备">部署前准备</AnchorItem>
-          <AnchorItem href="#发布模拟">发布模拟</AnchorItem>
-          <AnchorItem href="#其它部署方式">其它部署方式</AnchorItem>
+          <AnchorItem href="#前端资源容器化部署" title="前端资源容器化部署"></AnchorItem>
+          <AnchorItem href="#主要优点" title="主要优点"></AnchorItem>
+          <AnchorItem href="#部署前准备" title="部署前准备"></AnchorItem>
+          <AnchorItem href="#发布模拟" title="发布模拟"></AnchorItem>
+          <AnchorItem href="#其它部署方式" title="其它部署方式"></AnchorItem>
         </Anchor>
         <div
           ref={setContainerElement}

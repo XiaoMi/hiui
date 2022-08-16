@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { isBrowser } from '@hi-ui/env'
 import { isFunction } from '@hi-ui/type-assertion'
-import { mockDefaultHandlers } from '@hi-ui/dom-utils'
+import { mockDefaultHandlers, setAttrStatus } from '@hi-ui/dom-utils'
 import {
   trimElementId,
   getOffsetTop,
@@ -12,6 +12,9 @@ import {
 } from './utils'
 import { useAnchorContext } from './context'
 import { useRegistry } from './hooks'
+
+// 锚点边界扩充距离，保证计算锚点位置更精确
+const TARGET_BOUND = 3
 
 export const useAnchor = ({
   offset: offsetProp = 0,
@@ -69,7 +72,7 @@ export const useAnchor = ({
       const offsetTop = getOffsetTop(targetElement, containerMemo)
       const offset = getOffsetById(linkHref)
 
-      if (offsetTop + offset > 0) continue
+      if (offsetTop + offset > TARGET_BOUND) continue
       // console.log('offsetTop', offsetTop, offset)
 
       if (maxOffsetTop < offsetTop) {
@@ -77,8 +80,6 @@ export const useAnchor = ({
         activeAnchorItem = item
       }
     }
-
-    console.log('activeAnchorItem', activeAnchorItem)
 
     return (activeAnchorItem && activeAnchorItem) || ''
   }, [containerMemo, getAllAnchorItemIds, getOffsetById])
@@ -101,11 +102,6 @@ export const useAnchor = ({
     }
   }, [getActiveAnchorItem, containerMemo])
 
-  console.log('currentActiveAnchorId', currentActiveAnchorId)
-
-  // 初始计算滚动高亮
-  // 点击切换滚动
-  // 根据滚动高亮
   const scrollToAnchorItem = useCallback(
     (anchorHref: string | undefined) => {
       if (!anchorHref) return
@@ -121,7 +117,7 @@ export const useAnchor = ({
       const offsetTop = getOffsetTop(targetElement, containerMemo)
       const offset = getOffsetById(anchorHref)
 
-      const targetScrollTop = scrollTop + offsetTop + offset
+      const targetScrollTop = scrollTop + offsetTop + offset + TARGET_BOUND
 
       containerMemo.scrollTo(getScrollLeft(containerMemo), targetScrollTop)
     },
@@ -179,14 +175,28 @@ export const useAnchorItem = ({ href = '', offset, ...rest }: UseAnchorItemProps
     }
   }, [registerAnchorId, unregisterAnchorId, href, offset])
 
+  const showActive = isActiveAnchorId(href)
+
+  const getAnchorItemProps = useCallback(
+    (props = {}, ref = null) => {
+      return {
+        ref,
+        ...props,
+        href,
+        'data-active': setAttrStatus(showActive),
+        onClick: mockDefaultHandlers((props as any).onClick, (evt: React.MouseEvent) => {
+          evt.preventDefault()
+          scrollToAnchorItem(href)
+        }),
+      }
+    },
+    [showActive, href, scrollToAnchorItem]
+  )
+
   return {
-    ...rest,
-    href,
-    'data-active': isActiveAnchorId(href),
-    onClick: mockDefaultHandlers((rest as any).onClick, (evt: React.MouseEvent) => {
-      evt.preventDefault()
-      scrollToAnchorItem(href)
-    }),
+    rootProps: rest,
+    getAnchorItemProps,
+    showActive,
   }
 }
 
