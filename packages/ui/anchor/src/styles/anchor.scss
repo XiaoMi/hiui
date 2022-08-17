@@ -42,7 +42,7 @@ $item-prefix: '#{$prefix}-item' !default;
   width: 100%;
 
   & > & {
-    padding-left: 12px;
+    padding-left: use-spacing(6);
   }
 
   &__link {

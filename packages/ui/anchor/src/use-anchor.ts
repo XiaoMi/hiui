@@ -1,3 +1,4 @@
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { isBrowser } from '@hi-ui/env'
 import { isFunction } from '@hi-ui/type-assertion'
@@ -19,13 +20,16 @@ const TARGET_BOUND = 3
 
 export const useAnchor = ({
   offset: offsetProp = 0,
-  inkHeight = 12,
   container,
   onChange,
   ...rest
 }: UseAnchorProps) => {
   // 根据页面滚动内容所在位置，得到激活的锚点 id
-  const [currentActiveAnchorId, setCurrentActiveAnchorId] = React.useState('')
+  const [currentActiveAnchorId, setCurrentActiveAnchorId] = useUncontrolledState<string>(
+    '',
+    undefined,
+    onChange
+  )
 
   const {
     get: getAnchorItemById,
@@ -172,11 +176,7 @@ export interface UseAnchorProps {
   /**
    * 锚点切换时触发
    */
-  onChange?: (id: string) => void
-  /**
-   * 设置锚点指示器高度
-   */
-  inkHeight?: number
+  onChange?: (href: string) => void
 }
 
 export type UseAnchorReturn = ReturnType<typeof useAnchor>

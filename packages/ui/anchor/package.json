@@ -44,7 +44,12 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0",
-    "@hi-ui/env": "^4.0.0"
+    "@hi-ui/dom-utils": "^4.0.0",
+    "@hi-ui/env": "^4.0.0",
+    "@hi-ui/react-utils": "^4.0.0",
+    "@hi-ui/type-assertion": "^4.0.0",
+    "@hi-ui/use-registry": "^4.0.0-beta.0",
+    "@hi-ui/use-uncontrolled-state": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.0",
