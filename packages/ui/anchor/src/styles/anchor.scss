@@ -1,0 +1,80 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-anchor' !default;
+
+.#{$prefix} {
+  box-sizing: border-box;
+  position: relative;
+
+  &__list {
+    @include list-reset();
+
+    position: relative;
+    padding-left: use-spacing(2);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      display: block;
+      width: 2px;
+      height: 100%;
+      background-color: use-color('gray', 200);
+    }
+  }
+
+  &-ink {
+    left: 0;
+    width: 2px;
+    height: 12px;
+    display: block;
+    background-color: use-color-mode('primary');
+  }
+}
+
+$item-prefix: '#{$prefix}-item' !default;
+
+.#{$item-prefix} {
+  @include list-item-reset();
+
+  width: 100%;
+
+  & > & {
+    padding-left: use-spacing(6);
+  }
+
+  &__link {
+    @include link-reset();
+    @include ellipsis();
+
+    cursor: pointer;
+    display: block;
+    box-sizing: border-box;
+    height: use-height-size(6);
+    padding: use-spacing(1) use-spacing(4);
+    border-radius: use-border-radius('normal');
+    font-size: use-text-size('sm');
+    line-height: use-text-lineheight('sm');
+    font-weight: use-text-weight('normal');
+    color: use-color('gray', 600);
+    background-color: use-color-static('transparent');
+    // @animation
+    transition-property: background-color;
+    transition-duration: use-motion-duration('fast');
+    transition-timing-function: use-motion-bezier('normal');
+    position: relative;
+
+    &:hover {
+      background-color: use-color('gray', 50);
+    }
+  }
+
+  &--active {
+    > .#{$item-prefix}__link {
+      color: use-color('gray', 700);
+      font-weight: use-text-weight('medium');
+    }
+  }
+}
