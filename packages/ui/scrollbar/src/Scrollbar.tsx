@@ -35,15 +35,15 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
       [`${prefixCls}--only-scroll-visible`]: !keepVisible && onlyScrollVisible,
     })
     const [ps, setPs] = useState<PerfectScrollbar | undefined>(undefined)
-    const [container, setContainer] = useState<HTMLDivElement | null>(null)
-    const [wrapper, setWrapper] = useState<HTMLDivElement | null>(null)
+    const [containerElement, setContainer] = useState<HTMLDivElement | null>(null)
+    const [wrapperElement, setWrapperElement] = useState<HTMLDivElement | null>(null)
     const eventPropsRef = useRef<ScrollbarEventProps>({})
 
     useEffect(() => {
-      if (container) {
-        setPs(new PerfectScrollbar(container))
+      if (containerElement) {
+        setPs(new PerfectScrollbar(containerElement))
       }
-    }, [container])
+    }, [containerElement])
 
     // 轴定制
     useEffect(() => {
@@ -65,27 +65,27 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
 
     // 监听容器以及内容尺寸
     useEffect(() => {
-      if (ps && wrapper && container) {
+      if (ps && wrapperElement && containerElement) {
         const observer = new ResizeObserver((entries) => {
           ps.update()
         })
 
-        observer.observe(container)
-        observer.observe(wrapper)
+        observer.observe(containerElement)
+        observer.observe(wrapperElement)
 
         return () => {
           observer.disconnect()
         }
       }
-    }, [ps, wrapper, container])
+    }, [ps, wrapperElement, containerElement])
 
     useImperativeHandle(
       ref,
       () => ({
         ps,
-        container: container || undefined,
+        containerElement: containerElement || undefined,
       }),
-      [ps, container]
+      [ps, containerElement]
     )
 
     const { eventProps, injectProps } = useMemo(() => {
@@ -111,38 +111,24 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
 
     // 注册监听事件
     useEffect(() => {
-      if (container) {
+      if (containerElement) {
         Object.keys(ScrollbarEventToPsMap).forEach((event) => {
-          container.addEventListener((ScrollbarEventToPsMap as any)[event], (e) => {
+          containerElement.addEventListener((ScrollbarEventToPsMap as any)[event], (e) => {
             ;(eventPropsRef.current as any)[event]?.(e)
           })
         })
       }
-    }, [container])
+    }, [containerElement])
 
     return (
       <div
-        ref={(e) => {
-          if (e) {
-            setContainer(e)
-          }
-        }}
+        ref={setContainer}
         role={role}
         className={cls}
-        style={{
-          ...(style || {}),
-          position,
-        }}
+        style={{ ...style, position }}
         {...injectProps}
       >
-        <div
-          className={`${prefixCls}__wrapper`}
-          ref={(e) => {
-            if (e) {
-              setWrapper(e)
-            }
-          }}
-        >
+        <div className={`${prefixCls}__wrapper`} ref={setWrapperElement}>
           {children}
         </div>
       </div>
@@ -150,9 +136,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
   }
 )
 
-type ExtendsProps = ScrollbarEventProps & HiBaseHTMLProps<'div'>
-
-export interface ScrollbarProps extends ExtendsProps {
+export interface ScrollbarProps extends HiBaseHTMLProps<'div'>, ScrollbarEventProps {
   /**
    * 容器 css position
    * @default 'relative'
