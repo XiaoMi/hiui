@@ -2,8 +2,8 @@ import React, { useMemo } from 'react'
 import Scrollbar from '../src'
 
 /**
- * @title 轴使能配置
- * @desc 默认x、y都使能
+ * @title 使能坐标轴
+ * @desc 默认 `x`、`y` 都可滚动
  */
 export const Axes = () => {
   const scrollContent = useMemo(() => {
@@ -21,19 +21,19 @@ export const Axes = () => {
     <>
       <h1>使能坐标轴</h1>
       <h2>both(default)</h2>
-      <div className="scrollbar-basic__wrap" style={{ height: 320, marginBottom: 64 }}>
+      <div className="scrollbar-axes__wrap" style={{ height: 320, marginBottom: 64 }}>
         <Scrollbar>{scrollContent}</Scrollbar>
       </div>
       <h2>x</h2>
-      <div className="scrollbar-basic__wrap" style={{ height: 320, marginBottom: 64 }}>
+      <div className="scrollbar-axes__wrap" style={{ height: 320, marginBottom: 64 }}>
         <Scrollbar axes={'x'}>{scrollContent}</Scrollbar>
       </div>
       <h2>y</h2>
-      <div className="scrollbar-basic__wrap" style={{ height: 320, marginBottom: 64 }}>
+      <div className="scrollbar-axes__wrap" style={{ height: 320, marginBottom: 64 }}>
         <Scrollbar axes={'y'}>{scrollContent}</Scrollbar>
       </div>
       <h2>none</h2>
-      <div className="scrollbar-basic__wrap" style={{ height: 320, marginBottom: 64 }}>
+      <div className="scrollbar-axes__wrap" style={{ height: 320, marginBottom: 64 }}>
         <Scrollbar axes={'none'}>{scrollContent}</Scrollbar>
       </div>
     </>

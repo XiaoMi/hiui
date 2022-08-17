@@ -45,6 +45,7 @@
   "dependencies": {
     "@hi-ui/classname": "^4.0.1",
     "@hi-ui/env": "^4.0.1",
+    "@hi-ui/use-merge-refs": "^4.0.1",
     "perfect-scrollbar": "^1.5.5"
   },
   "peerDependencies": {

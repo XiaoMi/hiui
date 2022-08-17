@@ -12,31 +12,19 @@
 
 ## Props
 
-| 参数                | 说明                                  | 类型      | 可选值                                                                                                                                    | 默认值        |
-| ----------------- | ----------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| position          | 容器 css position                     | string  | "-moz-initial" \| "inherit" \| "initial" \| "revert" \| "unset" \| "-webkit-sticky" \| "absolute" \| "fixed" \| "relative" \| "sticky" | 'relative' |
-| axes              | 开启功能的轴                              | string  | "both" \| "x" \| "y" \| "none"                                                                                                         | 'both'     |
-| keepVisible       | 轴一直保持可视状态(优先级高于`onlyScrollVisible`) | boolean | -                                                                                                                                      | false      |
-| onlyScrollVisible | 只有滚动的时候才会展示滚动条                      | boolean | -                                                                                                                                      | false      |
-
-## Events
-
-| 名称            | 说明      | 类型                       | 参数      | 返回值 |
-| ------------- | ------- | ------------------------ | ------- | --- |
-| onScrollY     | y轴滚动    | (e: CustomEvent) => void | e: 事件对象 | -   |
-| onScrollX     | x轴滚动    | (e: CustomEvent) => void | e: 事件对象 | -   |
-| onScrollUp    | 向上滚动    | (e: CustomEvent) => void | e: 事件对象 | -   |
-| onScrollDown  | 向下滚动    | (e: CustomEvent) => void | e: 事件对象 | -   |
-| onScrollLeft  | 向左滚动    | (e: CustomEvent) => void | e: 事件对象 | -   |
-| onScrollRight | 向右滚动    | (e: CustomEvent) => void | e: 事件对象 | -   |
-| onYReachStart | y轴抵达最开始 | (e: CustomEvent) => void | e: 事件对象 | -   |
-| onYReachEnd   | y轴抵达最后  | (e: CustomEvent) => void | e: 事件对象 | -   |
-| onXReachStart | x轴抵达最开始 | (e: CustomEvent) => void | e: 事件对象 | -   |
-| onXReachEnd   | x轴抵达最后  | (e: CustomEvent) => void | e: 事件对象 | -   |
-
-## Ref
-
-| 参数        | 说明                                                         | 类型                            |
-| --------- | ---------------------------------------------------------- | ----------------------------- |
-| ps        | 三方库[perfect-scrollbar](https://perfectscrollbar.com/) 实例对象 | PerfectScrollbar \| undefined |
-| container | 容器dom实例                                                    | HTMLDiveElement \| undefined  |
+| 参数              | 说明                                              | 类型                     | 可选值                                                                                                                                 | 默认值     |
+| ----------------- | ------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| position          | 容器 css position                                 | string                   | "-moz-initial" \| "inherit" \| "initial" \| "revert" \| "unset" \| "-webkit-sticky" \| "absolute" \| "fixed" \| "relative" \| "sticky" | 'relative' |
+| axes              | 开启功能的轴                                      | string                   | "both" \| "x" \| "y" \| "none"                                                                                                         | 'both'     |
+| keepVisible       | 轴一直保持可视状态(优先级高于`onlyScrollVisible`) | boolean                  | -                                                                                                                                      | false      |
+| onlyScrollVisible | 只有滚动的时候才会展示滚动条                      | boolean                  | -                                                                                                                                      | false      |
+| onScrollY         | y 轴滚动                                          | (e: CustomEvent) => void | -                                                                                                                                      | -          |
+| onScrollX         | x 轴滚动                                          | (e: CustomEvent) => void | -                                                                                                                                      | -          |
+| onScrollUp        | 向上滚动                                          | (e: CustomEvent) => void | -                                                                                                                                      | -          |
+| onScrollDown      | 向下滚动                                          | (e: CustomEvent) => void | -                                                                                                                                      | -          |
+| onScrollLeft      | 向左滚动                                          | (e: CustomEvent) => void | -                                                                                                                                      | -          |
+| onScrollRight     | 向右滚动                                          | (e: CustomEvent) => void | -                                                                                                                                      | -          |
+| onYReachStart     | y 轴抵达最开始                                    | (e: CustomEvent) => void | -                                                                                                                                      | -          |
+| onYReachEnd       | y 轴抵达最后                                      | (e: CustomEvent) => void | -                                                                                                                                      | -          |
+| onXReachStart     | x 轴抵达最开始                                    | (e: CustomEvent) => void | -                                                                                                                                      | -          |
+| onXReachEnd       | x 轴抵达最后                                      | (e: CustomEvent) => void | -                                                                                                                                      | -          |

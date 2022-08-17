@@ -2,19 +2,19 @@ import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, use
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import PerfectScrollbar from 'perfect-scrollbar'
-import 'perfect-scrollbar/css/perfect-scrollbar.css'
 import {
-  ScrollbarAxes,
+  ScrollbarAxesEnum,
   ScrollbarEventProps,
-  ScrollbarEventToPsMap,
-  ScrollbarPosition,
-  ScrollbarRef,
+  ScrollbarPositionEnum,
+  ScrollbarHelpers,
 } from './types'
+import { ScrollbarEventToPsMap } from './utils'
 
 const SCROLLBAR_PREFIX = getPrefixCls('scrollbar')
 
-export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
+export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
   (
     {
       prefixCls = SCROLLBAR_PREFIX,
@@ -26,6 +26,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
       className,
       children,
       style,
+      innerRef,
       ...rest
     },
     ref
@@ -80,9 +81,9 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
     }, [ps, wrapperElement, containerElement])
 
     useImperativeHandle(
-      ref,
+      innerRef,
       () => ({
-        ps,
+        instance: ps,
         containerElement: containerElement || undefined,
       }),
       [ps, containerElement]
@@ -122,7 +123,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
 
     return (
       <div
-        ref={setContainer}
+        ref={useMergeRefs(setContainer, ref)}
         role={role}
         className={cls}
         style={{ ...style, position }}
@@ -138,15 +139,20 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
 
 export interface ScrollbarProps extends HiBaseHTMLProps<'div'>, ScrollbarEventProps {
   /**
+   * 内部提供辅助方法。暂不对外暴露
+   * @private
+   */
+  innerRef?: React.Ref<ScrollbarHelpers>
+  /**
    * 容器 css position
    * @default 'relative'
    */
-  position?: ScrollbarPosition
+  position?: ScrollbarPositionEnum
   /**
-   * 开启功能的轴
+   * 开启滚动的轴
    * @default 'both'
    */
-  axes?: ScrollbarAxes
+  axes?: ScrollbarAxesEnum
   /**
    * 轴一直保持可视状态(优先级高于`onlyScrollVisible`)
    * @default false

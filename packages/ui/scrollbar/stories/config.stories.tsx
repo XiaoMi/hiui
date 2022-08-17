@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import Scrollbar from '../src'
 
 /**
- * @title 配置
+ * @title 展示配置
  * @desc 可配置轴展示行为
  */
 export const Config = () => {
@@ -19,13 +19,13 @@ export const Config = () => {
 
   return (
     <>
-      <h1>配置项</h1>
+      <h1>展示配置</h1>
       <h2>keepVisible</h2>
-      <div className="scrollbar-basic__wrap" style={{ height: 320, marginBottom: 64 }}>
+      <div className="scrollbar-config__wrap" style={{ height: 320, marginBottom: 64 }}>
         <Scrollbar keepVisible>{scrollContent}</Scrollbar>
       </div>
       <h2>onlyScrollVisible</h2>
-      <div className="scrollbar-basic__wrap" style={{ height: 320, marginBottom: 64 }}>
+      <div className="scrollbar-config__wrap" style={{ height: 320, marginBottom: 64 }}>
         <Scrollbar onlyScrollVisible>{scrollContent}</Scrollbar>
       </div>
     </>

@@ -2,8 +2,8 @@ import React, { useMemo } from 'react'
 import Scrollbar from '../src'
 
 /**
- * @title 事件响应
- * @desc 组件提供了一系列自定义事件
+ * @title 滚动事件
+ * @desc 可以使用内置提供的一系列自定义滚动事件
  */
 export const Event = () => {
   const scrollContent = useMemo(() => {
@@ -19,11 +19,11 @@ export const Event = () => {
 
   return (
     <>
-      <h1>自定义事件</h1>
+      <h1>滚动事件</h1>
       <h2>x、y滚动事件</h2>
       <div className="scrollbar-basic__wrap" style={{ height: 320, marginBottom: 64 }}>
         <Scrollbar
-          onScrollX={() => console.log('scroll x')}
+          onScrollX={(e) => console.log('scroll x')}
           onScrollY={() => console.log('scroll y')}
         >
           {scrollContent}

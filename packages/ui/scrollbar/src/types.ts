@@ -1,67 +1,64 @@
-import PerfectScrollbar from 'perfect-scrollbar'
+import type PerfectScrollbar from 'perfect-scrollbar'
 
-export interface ScrollbarRef {
-  ps?: PerfectScrollbar
+export type ScrollbarInstance = PerfectScrollbar
+
+export interface ScrollbarHelpers {
+  /**
+   * 三方库[perfect-scrollbar](https://perfectscrollbar.com/) 实例对象
+   */
+  instance?: ScrollbarInstance
+  /**
+   * 容器dom实例
+   */
   container?: HTMLDivElement
 }
 
-export type ScrollbarAxes = 'both' | 'x' | 'y' | 'none'
-
-export enum ScrollbarPsToEventMatch {
-  /**
-   * This event fires when the y-axis is scrolled in either direction
-   */
-  'ps-scroll-y' = 'onScrollY',
-  /**
-   * This event fires when the x-axis is scrolled in either direction.
-   */
-  'ps-scroll-x' = 'onScrollX',
-  /**
-   * This event fires when scrolling upwards.
-   */
-  'ps-scroll-up' = 'onScrollUp',
-  /**
-   * This event fires when scrolling downwards.
-   */
-  'ps-scroll-down' = 'onScrollDown',
-  /**
-   * This event fires when scrolling to the left.
-   */
-  'ps-scroll-left' = 'onScrollLeft',
-  /**
-   * This event fires when scrolling to the right.
-   */
-  'ps-scroll-right' = 'onScrollRight',
-  /**
-   * This event fires when scrolling reaches the start of the y-axis.
-   */
-  'ps-y-reach-start' = 'onYReachStart',
-  /**
-   * This event fires when scrolling reaches the end of the y-axis (useful for infinite scroll).
-   */
-  'ps-y-reach-end' = 'onYReachEnd',
-  /**
-   * This event fires when scrolling reaches the start of the x-axis.
-   */
-  'ps-x-reach-start' = 'onXReachStart',
-  /**
-   * This event fires when scrolling reaches the end of the x-axis.
-   */
-  'ps-x-reach-end' = 'onXReachEnd',
-}
-
-export const ScrollbarEventToPsMap = {} as any
-
-Object.keys(ScrollbarPsToEventMatch).forEach(ps => {
-  const event = (ScrollbarPsToEventMatch as any)[ps]
-  ScrollbarEventToPsMap[event] = ps
-})
+export type ScrollbarAxesEnum = 'both' | 'x' | 'y' | 'none'
 
 export type ScrollbarEventProps = {
-  [key in ScrollbarPsToEventMatch]?: (e: CustomEvent) => void
+  /**
+   * y轴滚动
+   */
+  onScrollY?: (e: Event) => void
+  /**
+   * x轴滚动
+   */
+  onScrollX?: (e: Event) => void
+  /**
+   * 向上滚动
+   */
+  onScrollUp?: (e: Event) => void
+  /**
+   * 向下滚动
+   */
+  onScrollDown?: (e: Event) => void
+  /**
+   * 向左滚动
+   */
+  onScrollLeft?: (e: Event) => void
+  /**
+   * 向右滚动
+   */
+  onScrollRight?: (e: Event) => void
+  /**
+   * y轴抵达最开始
+   */
+  onYReachStart?: (e: Event) => void
+  /**
+   * y轴抵达最后
+   */
+  onYReachEnd?: (e: Event) => void
+  /**
+   * x轴抵达最开始
+   */
+  onXReachStart?: (e: Event) => void
+  /**
+   * x轴抵达最后
+   */
+  onXReachEnd?: (e: Event) => void
 }
 
-export type ScrollbarPosition =
+export type ScrollbarPositionEnum =
   | '-moz-initial'
   | 'inherit'
   | 'initial'
