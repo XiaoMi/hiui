@@ -1,18 +1,18 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { isBrowser } from '@hi-ui/env'
 import { isFunction } from '@hi-ui/type-assertion'
-import { mockDefaultHandlers, setAttrStatus } from '@hi-ui/dom-utils'
-import { mergeRefs } from '@hi-ui/react-utils'
 import {
-  trimElementId,
+  mockDefaultHandlers,
+  setAttrStatus,
   getOffsetTop,
   getScrollLeft,
   getScrollTop,
-  addEventListener,
-  isValidAnchorId,
-} from './utils'
+  addDOMEvent,
+} from '@hi-ui/dom-utils'
+import { mergeRefs } from '@hi-ui/react-utils'
+import { useRegistry } from '@hi-ui/use-registry'
+import { trimElementId, isValidAnchorId } from './utils'
 import { useAnchorContext } from './context'
-import { useRegistry } from './hooks'
 
 // 锚点边界扩充距离，保证计算锚点位置更精确
 const TARGET_BOUND = 3
@@ -95,7 +95,7 @@ export const useAnchor = ({
     }
 
     handleScroll()
-    const cancelEvent = addEventListener(containerMemo, 'scroll', handleScroll, false)
+    const cancelEvent = addDOMEvent(containerMemo, 'scroll', handleScroll, false)
 
     return () => {
       cancelEvent.remove()
