@@ -89,7 +89,7 @@ export const useAnchor = ({
     return (activeAnchorItem && activeAnchorItem) || ''
   }, [containerMemo, getAllAnchorItemIds, getOffsetById])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isBrowser) return
     if (!containerMemo) return
 
