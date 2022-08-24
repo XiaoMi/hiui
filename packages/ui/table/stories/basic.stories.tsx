@@ -88,6 +88,28 @@ export const Basic = () => {
               key: 5,
             },
           ]}
+          onLoadChildren={(item) => {
+            console.log('item', item)
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                const children = [
+                  {
+                    id: item.id,
+                    name: 'a',
+                    type: 'b',
+                    size: '6G+64G',
+                    price: '3299.00',
+                    address: '华润五彩城店',
+                    stock: '29,000',
+                    key: 6,
+                  },
+                ]
+                // item.raw.children = children
+                // resolve([item])
+                resolve(children)
+              }, 200)
+            })
+          }}
         />
       </div>
     </>
