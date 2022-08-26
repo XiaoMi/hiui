@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/throttle-by-raf",
-  "version": "4.0.0-beta.0",
+  "version": "4.0.0",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -46,6 +46,6 @@
     "@hi-ui/hi-build": "^4.0.0-beta.0"
   },
   "dependencies": {
-    "@hi-ui/raf": "^4.0.0-beta.0"
+    "@hi-ui/raf": "^4.0.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/time-picker",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -44,11 +44,11 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^4.0.2",
+    "@hi-ui/button": "^4.0.3",
     "@hi-ui/classname": "^4.0.1",
     "@hi-ui/env": "^4.0.1",
-    "@hi-ui/icons": "^4.0.1",
-    "@hi-ui/popper": "^4.0.1",
+    "@hi-ui/icons": "^4.0.2",
+    "@hi-ui/popper": "^4.0.2",
     "@hi-ui/use-uncontrolled-state": "^4.0.1",
     "dayjs": "^1.10.7"
   },
@@ -58,7 +58,7 @@
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^4.0.1",
+    "@hi-ui/core": "^4.0.2",
     "@hi-ui/core-css": "^4.0.1",
     "@hi-ui/hi-build": "^4.0.1",
     "react": "^17.0.1",

@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-scroll",
-  "version": "4.0.0-beta.0",
+  "version": "4.0.0",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -50,8 +50,8 @@
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/dom-utils": "^4.0.1",
-    "@hi-ui/throttle-by-raf": "^4.0.0-beta.0",
+    "@hi-ui/dom-utils": "^4.0.2",
+    "@hi-ui/throttle-by-raf": "^4.0.0",
     "@hi-ui/use-latest": "^4.0.1"
   }
 }
