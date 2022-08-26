@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@hi-ui/alert": "^4.0.3",
+    "@hi-ui/anchor": "^4.0.2",
     "@hi-ui/avatar": "^4.0.3",
     "@hi-ui/back-top": "^4.0.1",
     "@hi-ui/badge": "^4.0.3",
@@ -68,6 +69,7 @@
     "@hi-ui/grid": "^4.0.4",
     "@hi-ui/highlighter": "^4.0.4",
     "@hi-ui/input": "^4.0.3",
+    "@hi-ui/input-group": "^4.0.2",
     "@hi-ui/list": "^4.0.4",
     "@hi-ui/loading": "^4.0.3",
     "@hi-ui/menu": "^4.0.3",
@@ -85,6 +87,7 @@
     "@hi-ui/radio": "^4.0.3",
     "@hi-ui/rating": "^4.0.3",
     "@hi-ui/result": "^4.0.3",
+    "@hi-ui/scrollbar": "^4.0.0",
     "@hi-ui/search": "^4.0.5",
     "@hi-ui/select": "^4.0.4",
     "@hi-ui/slider": "^4.0.3",
