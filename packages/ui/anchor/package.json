@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/anchor",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -44,11 +44,11 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.0",
-    "@hi-ui/dom-utils": "^4.0.3",
+    "@hi-ui/dom-utils": "^4.0.4",
     "@hi-ui/env": "^4.0.0",
     "@hi-ui/react-utils": "^4.0.0",
     "@hi-ui/type-assertion": "^4.0.0",
-    "@hi-ui/use-registry": "^4.0.1",
+    "@hi-ui/use-registry": "^4.0.2",
     "@hi-ui/use-uncontrolled-state": "^4.0.0"
   },
   "peerDependencies": {
@@ -57,7 +57,7 @@
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^4.0.3",
+    "@hi-ui/core": "^4.0.4",
     "@hi-ui/core-css": "^4.0.0",
     "@hi-ui/hi-build": "^4.0.0",
     "react": "^17.0.1",
