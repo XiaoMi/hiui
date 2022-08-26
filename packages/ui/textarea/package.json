@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/textarea",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,7 +45,7 @@
   "dependencies": {
     "@hi-ui/classname": "^4.0.1",
     "@hi-ui/env": "^4.0.1",
-    "@hi-ui/input": "^4.0.2",
+    "@hi-ui/input": "^4.0.3",
     "@hi-ui/use-latest": "^4.0.1",
     "@hi-ui/use-merge-refs": "^4.0.1",
     "react-resize-detector": "^7.0.0"
@@ -56,7 +56,7 @@
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^4.0.2",
+    "@hi-ui/core": "^4.0.3",
     "@hi-ui/core-css": "^4.0.1",
     "@hi-ui/hi-build": "^4.0.1",
     "react": "^17.0.1",
