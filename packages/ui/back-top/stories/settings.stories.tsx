@@ -9,7 +9,6 @@ import BackTop from '../src'
  * @desc 设置按钮形状、主题、滚动时间、滚动到多高时显示
  */
 export const Settings = () => {
-  const [type, setType] = useState<any>('white')
   const [shape, setShape] = useState<any>('circle')
   const [duration, setDuration] = useState<any>(400)
   const [visibleHeight, setVisibleHeight] = useState<any>(400)
@@ -19,18 +18,6 @@ export const Settings = () => {
       <h1>设置按钮形状、主题、滚动时间、滚动到多高时显示</h1>
       <div className="back-top-basic__wrap">
         <Space style={{ marginBottom: 20 }}>
-          <span>类型</span>
-          <Select
-            style={{ width: 110, marginRight: 20 }}
-            clearable={false}
-            value={type}
-            onChange={setType}
-            data={[
-              { id: 'white', title: '白色' },
-              { id: 'black', title: '黑色' },
-              { id: 'blue', title: '蓝色' },
-            ]}
-          />
           <span>形状</span>
           <Select
             style={{ width: 110, marginRight: 20 }}
@@ -57,12 +44,11 @@ export const Settings = () => {
         </Space>
         <div style={{ position: 'relative', height: 400 }}>
           <BackTop
-            type={type}
             shape={shape}
             duration={duration}
             visibleHeight={visibleHeight}
             style={{ position: 'absolute' }}
-            target={() => document.getElementById('back-top_setting') as HTMLElement}
+            container={() => document.getElementById('back-top_setting') as HTMLElement}
           />
           <div
             id="back-top_setting"

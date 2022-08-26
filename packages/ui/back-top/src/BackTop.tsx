@@ -1,10 +1,10 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import TWEEN from '@tweenjs/tween.js'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { isBrowser, __DEV__ } from '@hi-ui/env'
+import { isFunction } from '@hi-ui/type-assertion'
+import { HiBaseHTMLProps } from '@hi-ui/core'
 import { ArrowUpOutlined } from '@hi-ui/icons'
-import Tooltip, { TooltipProps } from '@hi-ui/tooltip'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useDidMount } from '@hi-ui/use-did-mount'
 import { useScroll } from '@hi-ui/use-scroll'
@@ -21,22 +21,32 @@ export const BackTop = forwardRef<HTMLDivElement | null, BackTopProps>(
       role = 'back-top',
       className,
       children,
-      type = 'white',
       shape = 'circle',
       visibleHeight = 400,
       duration = 400,
-      target = () => window,
+      container,
       onClick,
-      tooltipProps,
       ...rest
     },
     ref
   ) => {
-    const i18n = useLocaleContext()
+    const [target, setTarget] = useState<HTMLElement | Window | null>(null)
 
-    const [targetDom, setTargetDom] = useState<HTMLElement | Window>(window)
+    const { top } = useScroll(target)
 
-    const { top } = useScroll(targetDom)
+    const getTarget = () => {
+      if (!isBrowser) return null
+
+      if (container === undefined) {
+        return window
+      }
+
+      if (isFunction(container)) {
+        return container()
+      }
+
+      return container
+    }
 
     const visibleMemo = useMemo(() => {
       return top >= visibleHeight
@@ -45,8 +55,8 @@ export const BackTop = forwardRef<HTMLDivElement | null, BackTopProps>(
     const cls = cx(prefixCls, visibleMemo && `${prefixCls}--visible`, className)
     const contentCls = cx(
       `${prefixCls}__content`,
+      `${prefixCls}__content--type-white`,
       `${prefixCls}__content--shape-${shape}`,
-      `${prefixCls}__content--type-${type}`,
       className
     )
 
@@ -55,10 +65,10 @@ export const BackTop = forwardRef<HTMLDivElement | null, BackTopProps>(
         .to({ top: 0 }, duration)
         .easing(TWEEN.Easing.Quadratic.Out)
         .onUpdate((data) => {
-          targetDom.scrollTo(data)
+          target?.scrollTo(data)
         })
         .start()
-    }, [duration, targetDom, top])
+    }, [duration, target, top])
 
     const handleClick = useLatestCallback(() => {
       scrollToTop()
@@ -67,7 +77,7 @@ export const BackTop = forwardRef<HTMLDivElement | null, BackTopProps>(
 
     useDidMount(() => {
       // 设置 target 真实dom节点
-      setTargetDom(target?.())
+      setTarget(getTarget())
 
       // 初始化 TWEEN 动画循环
       function animate(time?: number) {
@@ -80,11 +90,9 @@ export const BackTop = forwardRef<HTMLDivElement | null, BackTopProps>(
     return (
       <div ref={ref} role={role} className={cls} onClick={handleClick} {...rest}>
         {children || (
-          <Tooltip title={i18n.get('backTop.backToTop')} placement="left" {...tooltipProps}>
-            <div className={contentCls}>
-              <ArrowUpOutlined />
-            </div>
-          </Tooltip>
+          <div className={contentCls}>
+            <ArrowUpOutlined />
+          </div>
         )}
       </div>
     )
@@ -92,10 +100,6 @@ export const BackTop = forwardRef<HTMLDivElement | null, BackTopProps>(
 )
 
 export interface BackTopProps extends HiBaseHTMLProps<'div'> {
-  /**
-   * 设置类型
-   */
-  type?: 'blue' | 'black' | 'white'
   /**
    * 设置形状
    */
@@ -111,15 +115,11 @@ export interface BackTopProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置需要监听其滚动事件的元素，值为一个返回对应 DOM 元素的函数
    */
-  target?: () => HTMLElement | Window
+  container?: HTMLElement | null | (() => HTMLElement | null)
   /**
    * 点击回到顶部时的回调函数
    */
   onClick?: () => void
-  /**
-   * 设置 Tooltip 组件参数，可参见 Tooltip 组件参数使用说明
-   */
-  tooltipProps?: Partial<TooltipProps>
 }
 
 if (__DEV__) {

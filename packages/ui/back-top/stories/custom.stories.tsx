@@ -1,4 +1,5 @@
 import React from 'react'
+import Tooltip from '@hi-ui/tooltip'
 import { ToTopOutlined } from '@hi-ui/icons'
 
 import BackTop from '../src'
@@ -13,24 +14,27 @@ export const Custom = () => {
       <h1>自定义按钮位置和内容</h1>
       <div className="back-top-basic__wrap">
         <div style={{ position: 'relative', height: 400 }}>
-          <BackTop
-            style={{ position: 'absolute', right: 50, bottom: 112 }}
-            target={() => document.getElementById('back-top_custom') as HTMLElement}
-          >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                background: 'burlywood',
-              }}
+          <Tooltip title="回到顶部" placement="left">
+            <BackTop
+              style={{ position: 'absolute', right: 50, bottom: 112 }}
+              container={() => document.getElementById('back-top_custom') as HTMLElement}
             >
-              <ToTopOutlined />
-            </div>
-          </BackTop>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  color: '#fff',
+                  background: '#237ffa',
+                }}
+              >
+                <ToTopOutlined />
+              </div>
+            </BackTop>
+          </Tooltip>
           <div
             id="back-top_custom"
             style={{ position: 'relative', height: 400, overflowY: 'scroll' }}

@@ -7,7 +7,7 @@ $prefix: "#{$component-prefix}-back-top" !default;
   position: fixed;
   right: use-spacing(16);
   bottom: use-spacing(16);
-  z-index: use-zindex("modal");
+  z-index: use-zindex("sticky");
   display: none;
   cursor: pointer;
 
@@ -19,6 +19,7 @@ $prefix: "#{$component-prefix}-back-top" !default;
     box-sizing: border-box;
     width: use-height-size(10);
     height: use-height-size(10);
+    box-shadow: use-shadow('lg');
     overflow: hidden;
 
     display: flex;
@@ -26,10 +27,6 @@ $prefix: "#{$component-prefix}-back-top" !default;
     align-items: center;
     vertical-align: middle;
     flex-shrink: 0;
-
-    width: use-height-size(10);
-    height: use-height-size(10);
-    box-shadow: 0 12px 24px 8px rgba(31, 39, 51, 0.1);
 
     transition: background-color use-motion-duration("normal")
       use-motion-bezier("normal"),

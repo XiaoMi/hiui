@@ -58,7 +58,7 @@ export const Compose = () => {
           <BackTop
             shape="circle"
             style={{ position: 'absolute' }}
-            target={() => document.getElementById('back-top_compose') as HTMLElement}
+            container={() => document.getElementById('back-top_compose') as HTMLElement}
           />
           <div
             id="back-top_compose"

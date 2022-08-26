@@ -5,7 +5,6 @@ export * from './basic.stories'
 export * from './settings.stories'
 export * from './custom.stories'
 export * from './compose.stories'
-export * from './tooltip.stories'
 
 export default {
   title: 'Others/BackTop',

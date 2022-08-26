@@ -13,7 +13,7 @@ export const Basic = () => {
         <div style={{ position: 'relative', height: 400 }}>
           <BackTop
             style={{ position: 'absolute' }}
-            target={() => document.getElementById('back-top_target') as HTMLElement}
+            container={() => document.getElementById('back-top_target') as HTMLElement}
           />
           <div
             id="back-top_target"
