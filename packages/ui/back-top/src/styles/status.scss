@@ -1,0 +1,46 @@
+@import "~@hi-ui/core-css/lib/index.scss";
+
+// 默认态
+$background-map: (
+  "blue": use-color("brandblue", 500),
+  "black": use-color("gray", 600),
+  "white": use-color-static("white"),
+) !default;
+
+$color-map: (
+  "blue": use-color-static("white"),
+  "black": use-color-static("white"),
+  "white": use-color("gray", 600),
+) !default;
+
+// hover 态
+$hover-background-map: (
+  "blue": use-color("brandblue", 600),
+  "black": use-color("gray", 700),
+  "white": use-color-static("white"),
+) !default;
+
+$hover-color-map: (
+  "blue": use-color-static("white"),
+  "black": use-color-mode("primary"),
+  "white": use-color-mode("primary"),
+) !default;
+
+@mixin render-status() {
+  & {
+    $color-list: ("blue", "black", "white");
+
+    @each $key in $color-list {
+      $prefix: & !default;
+      &--type-#{$key} {
+        background-color: map-get($background-map, $key);
+        color: map-get($color-map, $key);
+
+        &:hover {
+          background-color: map-get($hover-background-map, $key);
+          color: map-get($hover-color-map, $key);
+        }
+      }
+    }
+  }
+}

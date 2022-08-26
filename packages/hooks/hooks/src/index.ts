@@ -30,3 +30,5 @@ export * from '@hi-ui/use-unmount-effect'
 
 export * from '@hi-ui/use-id'
 export * from '@hi-ui/use-update-effect'
+
+export * from '@hi-ui/use-scroll'

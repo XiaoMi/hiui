@@ -180,4 +180,7 @@ export default {
   tag: {
     add: 'Add',
   },
+  backTop: {
+    backToTop: 'Back to the top',
+  },
 }

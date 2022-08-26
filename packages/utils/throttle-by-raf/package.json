@@ -1,10 +1,10 @@
 {
-  "name": "@hi-ui/utils",
-  "version": "4.0.1",
-  "description": "The root-package for @hi-ui/utils.",
+  "name": "@hi-ui/throttle-by-raf",
+  "version": "4.0.0-beta.0",
+  "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/utils/utils#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/utils/throttle-by-raf#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -31,7 +31,7 @@
     "url": "git+https://github.com/XiaoMi/hiui.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1",
+    "test": "jest",
     "clean": "rimraf lib",
     "prebuild": "yarn clean",
     "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
@@ -42,21 +42,10 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
-  "dependencies": {
-    "@hi-ui/array-utils": "^4.0.1",
-    "@hi-ui/classname": "^4.0.1",
-    "@hi-ui/container": "^4.0.1",
-    "@hi-ui/dom-utils": "^4.0.1",
-    "@hi-ui/env": "^4.0.1",
-    "@hi-ui/func-utils": "^4.0.1",
-    "@hi-ui/raf": "^4.0.0-beta.0",
-    "@hi-ui/react-utils": "^4.0.1",
-    "@hi-ui/request": "^4.0.1",
-    "@hi-ui/throttle-by-raf": "^4.0.0-beta.0",
-    "@hi-ui/tree-utils": "^4.0.1",
-    "@hi-ui/type-assertion": "^4.0.1"
-  },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.1"
+    "@hi-ui/hi-build": "^4.0.0-beta.0"
+  },
+  "dependencies": {
+    "@hi-ui/raf": "^4.0.0-beta.0"
   }
 }
