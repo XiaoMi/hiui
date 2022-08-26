@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/icons",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -53,7 +53,7 @@
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^4.0.3",
+    "@hi-ui/core": "^4.0.4",
     "@hi-ui/core-css": "^4.0.1",
     "@hi-ui/hi-build": "^4.0.1",
     "react": "^17.0.1",
