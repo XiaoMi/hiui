@@ -45,10 +45,5 @@ $prefix: "#{$component-prefix}-back-top" !default;
     }
 
     @include render-status();
-
-    > svg {
-      width: use-height-size(5);
-      height: use-height-size(5);
-    }
   }
 }

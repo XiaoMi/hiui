@@ -17,7 +17,7 @@ export const Custom = () => {
           <Tooltip title="回到顶部" placement="left">
             <BackTop
               style={{ position: 'absolute', right: 50, bottom: 112 }}
-              container={() => document.getElementById('back-top_custom') as HTMLElement}
+              container={() => document.getElementById('back-top_custom')}
             >
               <div
                 style={{
@@ -39,16 +39,11 @@ export const Custom = () => {
             id="back-top_custom"
             style={{ position: 'relative', height: 400, overflowY: 'scroll' }}
           >
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容1</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容2</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容3</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容4</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容5</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容6</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容7</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容8</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容9</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容10</div>
+            {Array.from({ length: 10 }, (_, index) => (
+              <div key={index} style={{ padding: 30, background: '#f2f3f7' }}>
+                页面内容{index}
+              </div>
+            ))}
           </div>
         </div>
       </div>
