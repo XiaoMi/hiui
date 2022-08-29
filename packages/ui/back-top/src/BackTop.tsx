@@ -91,12 +91,7 @@ export const BackTop = forwardRef<HTMLDivElement | null, BackTopProps>(
       <div ref={ref} role={role} className={cls} onClick={handleClick} {...rest}>
         {children || (
           <div className={contentCls}>
-            <ArrowUpOutlined
-              style={{
-                width: 'var(--hi-v4-height-5, 20px)',
-                height: 'var(--hi-v4-height-5, 20px)',
-              }}
-            />
+            <ArrowUpOutlined />
           </div>
         )}
       </div>

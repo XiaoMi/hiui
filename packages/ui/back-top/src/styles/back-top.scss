@@ -45,5 +45,10 @@ $prefix: "#{$component-prefix}-back-top" !default;
     }
 
     @include render-status();
+
+    > svg[class^=hi-v4-icon] {
+      width: use-height-size(5);
+      height: use-height-size(5);
+    }
   }
 }
