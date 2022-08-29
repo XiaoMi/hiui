@@ -13,22 +13,17 @@ export const Basic = () => {
         <div style={{ position: 'relative', height: 400 }}>
           <BackTop
             style={{ position: 'absolute' }}
-            container={() => document.getElementById('back-top_target') as HTMLElement}
+            container={() => document.getElementById('back-top_target')}
           />
           <div
             id="back-top_target"
             style={{ position: 'relative', height: 400, overflowY: 'scroll' }}
           >
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容1</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容2</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容3</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容4</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容5</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容6</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容7</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容8</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容9</div>
-            <div style={{ padding: 30, background: '#f3f2f9' }}>页面内容10</div>
+            {Array.from({ length: 10 }, (_, index) => (
+              <div key={index} style={{ padding: 30, background: '#f2f3f7' }}>
+                页面内容{index}
+              </div>
+            ))}
           </div>
         </div>
       </div>
