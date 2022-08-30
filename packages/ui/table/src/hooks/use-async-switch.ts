@@ -19,7 +19,8 @@ export const useAsyncSwitch = (
       if (Array.isArray(childrenNodes)) {
         setCascaderData((prev) => {
           const nextTreeData = cloneTree(prev)
-          addChildrenById(nextTreeData, node.id, childrenNodes)
+          addChildrenById(nextTreeData, node.id, childrenNodes, 'key')
+
           return nextTreeData
         })
       }
