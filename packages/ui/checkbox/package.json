@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/checkbox",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -47,7 +47,7 @@
     "@hi-ui/env": "^4.0.1",
     "@hi-ui/react-utils": "^4.0.1",
     "@hi-ui/type-assertion": "^4.0.1",
-    "@hi-ui/use-check": "^4.0.1",
+    "@hi-ui/use-check": "^4.0.2",
     "@hi-ui/use-latest": "^4.0.1",
     "@hi-ui/use-uncontrolled-state": "^4.0.1"
   },

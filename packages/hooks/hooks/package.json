@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hooks",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -52,7 +52,7 @@
   "dependencies": {
     "@hi-ui/use-async-data": "^4.0.1",
     "@hi-ui/use-cache": "^4.0.1",
-    "@hi-ui/use-check": "^4.0.1",
+    "@hi-ui/use-check": "^4.0.2",
     "@hi-ui/use-check-state": "^4.0.1",
     "@hi-ui/use-children": "^4.0.1",
     "@hi-ui/use-data-source": "^4.0.1",
@@ -67,7 +67,7 @@
     "@hi-ui/use-outside-click": "^4.0.1",
     "@hi-ui/use-scroll": "^4.0.2",
     "@hi-ui/use-scroll-lock": "^4.0.1",
-    "@hi-ui/use-search-mode": "^4.0.5",
+    "@hi-ui/use-search-mode": "^4.0.6",
     "@hi-ui/use-timeout": "^4.0.1",
     "@hi-ui/use-toggle": "^4.0.1",
     "@hi-ui/use-uncontrolled-state": "^4.0.1",
