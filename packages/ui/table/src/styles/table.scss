@@ -420,9 +420,17 @@ $prefix: '#{$component-prefix}-table' !default;
   position: relative;
   z-index: 0;
 
-  & > td {
-    background-color: use-color('gray', 200);
+  &__wrapper {
+    box-sizing: border-box;
+    position: sticky;
+    left: 0;
     padding: use-spacing(10);
+    overflow: hidden;
+    background-color: use-color('gray', 200);
+  }
+
+  & > td {
+    padding: 0;
   }
 }
 

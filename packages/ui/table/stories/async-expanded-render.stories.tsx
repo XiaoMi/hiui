@@ -9,12 +9,12 @@ export const AsyncExpandedRender = () => {
     {
       title: '商品名',
       dataKey: 'name',
-      width: 120,
+      width: 150,
     },
     {
       title: '品类',
       dataKey: 'type',
-      width: 80,
+      width: 150,
     },
     {
       title: '规格',

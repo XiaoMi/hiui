@@ -21,6 +21,7 @@ export const TableEmbedRow = ({
     getEmbedPanelById,
     isEmbedLoadingId,
     onEmbedSwitch,
+    scrollBodyElementRef,
   } = useTableContext()
 
   const loading = isEmbedLoadingId(rowData.id)
@@ -38,7 +39,12 @@ export const TableEmbedRow = ({
       <td colSpan={colSpan}>
         {/* 乐观渲染：内嵌面板内容 */}
         <Loading size="sm" visible={loading} part>
-          {getEmbedPanelById(rowData.id)}
+          <div
+            className={`${prefixCls}__wrapper`}
+            style={{ width: scrollBodyElementRef.current?.clientWidth }}
+          >
+            {getEmbedPanelById(rowData.id)}
+          </div>
         </Loading>
       </td>
     </tr>
