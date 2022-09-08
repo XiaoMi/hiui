@@ -118,6 +118,10 @@ export interface UsePopConfirmProps {
    */
   onConfirm?: () => void
   /**
+   * 设置基于 reference 元素的间隙偏移量
+   */
+  gutterGap?: number
+  /**
    * 是否开启禁用。暂不对外暴露
    * @private
    */
