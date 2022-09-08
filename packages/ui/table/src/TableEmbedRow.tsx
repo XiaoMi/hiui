@@ -39,12 +39,7 @@ export const TableEmbedRow = ({
       <td colSpan={colSpan}>
         {/* 乐观渲染：内嵌面板内容 */}
         <Loading size="sm" visible={loading} part>
-          <div
-            className={`${prefixCls}__wrapper`}
-            style={{ width: scrollBodyElementRef.current?.clientWidth }}
-          >
-            {getEmbedPanelById(rowData.id)}
-          </div>
+          {getEmbedPanelById(rowData.id)}
         </Loading>
       </td>
     </tr>
