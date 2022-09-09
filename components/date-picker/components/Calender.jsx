@@ -150,6 +150,7 @@ const Calender = ({ view = 'date', originDate, onPick, range, mouseMove, panelPo
         altCalendarPresetData,
         dateMarkPresetData
       })
+
       return (
         <React.Fragment>
           {fullTimeInfo.nodeMark}
@@ -161,7 +162,8 @@ const Calender = ({ view = 'date', originDate, onPick, range, mouseMove, panelPo
               value={cell.value}
               className={`hi-datepicker__lunar ${fullTimeInfo.highlight ? 'hi-datepicker__lunar--highlight' : ''}`}
             >
-              {fullTimeInfo.text}
+              {/* 如果是节气，使用 fullTimeInfo.name */}
+              {fullTimeInfo.name || fullTimeInfo.text}
             </span>
           ) : null}
         </React.Fragment>

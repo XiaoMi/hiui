@@ -9,6 +9,7 @@ es/
 .settings/
 .vscode/
 .tmp/
+.history/
 
 test/coverage/
 # Dev dependencies and cache files
