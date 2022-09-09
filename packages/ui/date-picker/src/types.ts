@@ -49,7 +49,10 @@ export interface FormatCalendarItem {
    * 节点标记
    */
   nodeMark?: React.ReactNode
-
+  /**
+   * 节气名称
+   */
+  name?: string
   FullText?: string
 }
 
