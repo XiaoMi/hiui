@@ -6,6 +6,7 @@ export * from './arrow.stories'
 export * from './trigger.stories'
 export * from './placement.stories'
 export * from './controlled.stories'
+export * from './gutter-gap.stories'
 
 export default {
   title: 'Data Display/Popover',
