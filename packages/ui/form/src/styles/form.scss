@@ -56,15 +56,15 @@ $prefix: '#{$component-prefix}-form' !default;
     min-height: use-height-size(8);
     line-height: use-height-size(8);
 
-    .#{$prefix}-label--placement-left & {
+    .#{$prefix}-label--placement-left > & {
       text-align: left;
     }
 
-    .#{$prefix}-label--placement-right & {
+    .#{$prefix}-label--placement-right > & {
       text-align: right;
     }
 
-    .#{$prefix}-label--placement-top & {
+    .#{$prefix}-label--placement-top > & {
       height: 22px;
       min-height: 22px;
       line-height: 22px;
@@ -72,7 +72,7 @@ $prefix: '#{$component-prefix}-form' !default;
       margin-bottom: use-spacing(4);
     }
 
-    .#{$prefix}-label--required & {
+    .#{$prefix}-label--required > & {
       &::before {
         margin-right: use-spacing(2);
         content: '*';
