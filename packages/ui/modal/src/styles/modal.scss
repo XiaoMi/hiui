@@ -82,17 +82,14 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
 
     .#{$prefix}--size-sm & {
       width: 400px;
-      max-height: 600px;
     }
 
     .#{$prefix}--size-md & {
       width: 520px;
-      max-height: 600px;
     }
 
     .#{$prefix}--size-lg & {
       width: 720px;
-      max-height: 600px;
     }
 
     .#{$prefix}--motion-enter & {

@@ -31,6 +31,7 @@ const modalIconMap = {
   [ModalType.WARNING]: <ExclamationCircleFilled />,
   [ModalType.INFO]: <InfoCircleFilled />,
 }
+const defaultMaxHeight = 600
 
 /**
  * TODO: What is Modal
@@ -135,7 +136,11 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
             {showMask ? <div className={`${prefixCls}__overlay`} /> : null}
             <div
               className={`${prefixCls}__wrapper`}
-              style={{ width, height }}
+              style={{
+                width,
+                height,
+                maxHeight: height && height > defaultMaxHeight ? height : defaultMaxHeight,
+              }}
               {...getModalWrapperProps()}
             >
               {hasHeader ? (
