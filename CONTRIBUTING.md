@@ -17,7 +17,7 @@
 
 ### 特性分支
 
-> 特性版本分支，用于当前最新版本特性的开发管理，bugfix 和 feature 都会率先合并到此分支，同时会定期 PR 到 master 完成正式版本的发布。
+> 特性版本分支，用于当前最新版本特性的开发管理，bugfix 和 feature 都会率先合并到此分支，同时会定期 PR 到 master 完成归档。
 
 - develop
 
@@ -90,7 +90,7 @@ yarn storybook
 yarn create:pkg ui `component-name`
 ```
 
-2. 创建通用工具函数
+- 创建通用工具函数
 
 > 注意采用小写中划线命名规范
 
@@ -98,7 +98,7 @@ yarn create:pkg ui `component-name`
 yarn create:pkg util `util-name`
 ```
 
-3. 创建自定义 hooks
+- 创建自定义 hooks
 
 > 注意采用小写中划线命名规范
 
@@ -132,14 +132,25 @@ yarn lerna run build --scope=@hi-ui/date-picker
 yarn lerna run test --scope=@hi-ui/date-picker
 ```
 
-- 发布
-
-```sh
-yarn run publish:pkg
-```
-
 ### 文档生成
 
 ```sh
 yarn run generate-docs
 ```
+
+## 发布流程
+1. 保证所有修改的分支已合并到 develop 分支
+2. 切换到 release 分支，然后 rebase develop 分支
+3. 打包组件，执行命令：
+```sh
+yarn run build
+```
+4. 执行下面命令进行发布：
+```sh
+# 步骤1：
+yarn run version
+
+# 步骤2：
+yarn run publish
+```
+5. 发布完成后 lerna 会在 release 分支生成版本更新的 commit，需要走一次 PR 将修改合并到 develop 分支

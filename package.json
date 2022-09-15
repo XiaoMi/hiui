@@ -25,6 +25,8 @@
     "bootstrap": "lerna bootstrap",
     "prepublish:pkg": "yarn run build",
     "publish:pkg": "lerna publish",
+    "version": "lerna version --include-merged-tags",
+    "publish": "lerna publish from-git",
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",
     "build": "lerna run build --no-private --sort",
