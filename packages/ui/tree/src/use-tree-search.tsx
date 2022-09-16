@@ -146,11 +146,11 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
   }
 
   const filterTree = useCallback(
-    (keyword: string) => {
+    (keyword: string, matchKey?: string[]) => {
       setSearchValue(keyword)
 
       // 匹配到搜索的节点，将这些节点进行展开显示，其它均隐藏
-      const matchedNodes = getMatchedNodes(flattedData, keyword)
+      const matchedNodes = getMatchedNodes(flattedData, keyword, matchKey)
       const filteredNodeIds = getFilteredIds(matchedNodes)
 
       setMatchedIds(matchedNodes.map((v) => v.id))
@@ -253,10 +253,19 @@ const getSearchedData = (
 
 const getMatchedNodes = (
   flattedData: FlattedTreeNodeData[],
-  searchValue: string
+  searchValue: string,
+  matchKey?: string[]
 ): FlattedTreeNodeData[] => {
   if (!searchValue) return []
-  return flattedData.filter((node) => (node.title as string)?.includes?.(searchValue))
+  return flattedData.filter((node) => {
+    if (matchKey) {
+      return !!matchKey.find((item) =>
+        (node[item as keyof FlattedTreeNodeData] as string)?.includes?.(searchValue)
+      )
+    } else {
+      return (node.title as string)?.includes?.(searchValue)
+    }
+  })
 }
 
 const getFilteredIds = (matchedNodes: FlattedTreeNodeData[]) => {
