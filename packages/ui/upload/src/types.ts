@@ -62,6 +62,10 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    */
   accept?: string
   /**
+   * 上传按钮icon，仅在 type === 'default' 的时候有效
+   */
+  icon?: React.ReactNode
+  /**
    * 上传按钮文案，仅在 type === 'default' 的时候有效
    */
   content?: React.ReactNode
