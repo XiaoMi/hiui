@@ -47,6 +47,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       closeable = true,
       timeout = 300,
       type,
+      onEntered,
       onExited: onExitedProp,
       title,
       cancelText: cancelTextProp,
@@ -128,6 +129,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
           in={transitionVisible}
           timeout={timeout}
           appear
+          onEntered={onEntered}
           onExited={onExited}
           mountOnEnter={!preload}
           unmountOnExit={unmountOnClose}
@@ -300,6 +302,11 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
    * @private
    */
   onExited?: () => void
+  /**
+   * 打开动画显示时回调。暂不对外暴露
+   * @private
+   */
+  onEntered?: () => void
   /**
    * 确认框类型
    */
