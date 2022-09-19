@@ -189,9 +189,17 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               }}
             >
               <ul className={`${prefixCls}-popmenu`}>
-                {children!.map((child) => (
-                  <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
-                ))}
+                {children!.map((child) => {
+                  return (
+                    <MenuItem
+                      {...child}
+                      key={child.id}
+                      level={level + 1}
+                      parentIds={_parentIds}
+                      raw={child}
+                    />
+                  )
+                })}
               </ul>
             </Popper>
           ) : (
@@ -209,7 +217,13 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             >
               <ul className={`${prefixCls}-popmenu`}>
                 {children!.map((child) => (
-                  <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+                  <MenuItem
+                    {...child}
+                    key={child.id}
+                    level={level + 1}
+                    parentIds={_parentIds}
+                    raw={child}
+                  />
                 ))}
               </ul>
             </Popper>
@@ -233,7 +247,13 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             >
               <ul className={`${prefixCls}-popmenu`}>
                 {children!.map((child) => (
-                  <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+                  <MenuItem
+                    {...child}
+                    key={child.id}
+                    level={level + 1}
+                    parentIds={_parentIds}
+                    raw={child}
+                  />
                 ))}
               </ul>
             </Popper>
@@ -252,7 +272,13 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             >
               <ul className={`${prefixCls}-popmenu`}>
                 {children!.map((child) => (
-                  <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+                  <MenuItem
+                    {...child}
+                    key={child.id}
+                    level={level + 1}
+                    parentIds={_parentIds}
+                    raw={child}
+                  />
                 ))}
               </ul>
             </Popper>
@@ -321,7 +347,13 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             >
               <ul className={`${prefixCls}-popmenu`}>
                 {children!.map((child) => (
-                  <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+                  <MenuItem
+                    {...child}
+                    key={child.id}
+                    level={level + 1}
+                    parentIds={_parentIds}
+                    raw={child}
+                  />
                 ))}
               </ul>
             </Popper>
@@ -340,7 +372,13 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             >
               <ul className={`${prefixCls}-popmenu`}>
                 {children!.map((child) => (
-                  <MenuItem {...child} key={child.id} level={level + 1} parentIds={_parentIds} />
+                  <MenuItem
+                    {...child}
+                    key={child.id}
+                    level={level + 1}
+                    parentIds={_parentIds}
+                    raw={child}
+                  />
                 ))}
               </ul>
             </Popper>
