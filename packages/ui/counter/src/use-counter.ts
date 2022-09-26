@@ -254,9 +254,7 @@ export const useCounter = ({
       'aria-valuenow': value,
       'aria-valuemin': minProp,
       'aria-valuemax': maxProp,
-      // 如果 value 变量不是数字，去掉 inputValue 非数字字符，并且将 inputValue 绑定到 value 属性（此时 react input 组件会刷新，从而也就无法输入中文）
-      // 如果 value 变量是数字，则直接将 value 变量绑定到 value 属性，由于 onChange 里面改变的是该 value 的值，此时 react 内部不会刷新 input，可以解决修改任意位置的值时光标都会定位到末尾的问题
-      value: isNaN(value) ? String(inputValue).replace(/\D/g, '') : value,
+      value: String(value).replace(/[^0-9.]/g, ''),
       tabIndex,
       autoFocus: autoFocus,
       disabled: disabled,
@@ -271,7 +269,6 @@ export const useCounter = ({
     minProp,
     maxProp,
     value,
-    inputValue,
     tabIndex,
     autoFocus,
     disabled,
