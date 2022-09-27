@@ -1,7 +1,8 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, ReactNode } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import Loading, { LoadingProps } from '@hi-ui/loading'
 
 const SPINNER_PREFIX = getPrefixCls('spinner')
 
@@ -10,13 +11,25 @@ const SPINNER_PREFIX = getPrefixCls('spinner')
  */
 export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
   (
-    { prefixCls = SPINNER_PREFIX, role = 'spinner', className, children, size = 14, ...rest },
+    {
+      prefixCls = SPINNER_PREFIX,
+      role = 'spinner',
+      className,
+      style,
+      children,
+      visible = true,
+      delay = -1,
+      size = 14,
+      icon,
+      content,
+      loading,
+    },
     ref
   ) => {
     const cls = cx(prefixCls, className)
 
-    return (
-      <i ref={ref} className={cls} {...rest} style={{ fontSize: size, ...rest.style }}>
+    const spinComponent = (
+      <i ref={ref} role={role} className={cls} style={{ fontSize: size, ...style }}>
         <svg
           className={`${prefixCls}__icon`}
           viewBox="0 0 18 18"
@@ -35,11 +48,48 @@ export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
         </svg>
       </i>
     )
+
+    return children ? (
+      <Loading
+        visible={visible}
+        icon={icon || spinComponent}
+        content={content}
+        delay={delay}
+        {...loading}
+      >
+        {children}
+      </Loading>
+    ) : (
+      spinComponent
+    )
   }
 )
 
 export interface SpinnerProps extends HiBaseHTMLProps<'i'> {
-  size?: string
+  /**
+   * 显示隐藏
+   */
+  visible?: boolean
+  /**
+   * 延迟显示加载效果的时长（可用于防止闪烁）
+   */
+  delay?: number
+  /**
+   * 自定义尺寸
+   */
+  size?: number
+  /**
+   * 自定义显示icon
+   */
+  icon?: ReactNode
+  /**
+   * 自定义显示内容
+   */
+  content?: string | ReactNode
+  /**
+   * 设置 Loading 组件参数（当 Spinner 包裹有 children 时，底层会调用 Loading 组件）
+   */
+  loading?: Omit<LoadingProps, 'size'>
 }
 
 if (__DEV__) {
