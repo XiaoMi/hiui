@@ -1,8 +1,7 @@
-import React, { forwardRef, ReactNode } from 'react'
+import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import Loading, { LoadingProps } from '@hi-ui/loading'
 
 const SPINNER_PREFIX = getPrefixCls('spinner')
 
@@ -10,25 +9,10 @@ const SPINNER_PREFIX = getPrefixCls('spinner')
  * TODO: What is Spinner
  */
 export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
-  (
-    {
-      prefixCls = SPINNER_PREFIX,
-      role = 'spinner',
-      className,
-      style,
-      children,
-      visible = true,
-      delay = -1,
-      size = 14,
-      icon,
-      content,
-      loading,
-    },
-    ref
-  ) => {
+  ({ prefixCls = SPINNER_PREFIX, role = 'spinner', className, style, size = 14 }, ref) => {
     const cls = cx(prefixCls, className)
 
-    const spinComponent = (
+    return (
       <i ref={ref} role={role} className={cls} style={{ fontSize: size, ...style }}>
         <svg
           className={`${prefixCls}__icon`}
@@ -48,48 +32,14 @@ export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
         </svg>
       </i>
     )
-
-    return children ? (
-      <Loading
-        visible={visible}
-        icon={icon || spinComponent}
-        content={content}
-        delay={delay}
-        {...loading}
-      >
-        {children}
-      </Loading>
-    ) : (
-      spinComponent
-    )
   }
 )
 
 export interface SpinnerProps extends HiBaseHTMLProps<'i'> {
   /**
-   * 显示隐藏
-   */
-  visible?: boolean
-  /**
-   * 延迟显示加载效果的时长（可用于防止闪烁）
-   */
-  delay?: number
-  /**
    * 自定义尺寸
    */
   size?: number
-  /**
-   * 自定义显示icon
-   */
-  icon?: ReactNode
-  /**
-   * 自定义显示内容
-   */
-  content?: string | ReactNode
-  /**
-   * 设置 Loading 组件参数（当 Spinner 包裹有 children 时，底层会调用 Loading 组件）
-   */
-  loading?: Omit<LoadingProps, 'size'>
 }
 
 if (__DEV__) {

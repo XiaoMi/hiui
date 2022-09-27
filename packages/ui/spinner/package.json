@@ -44,8 +44,7 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^4.0.1",
-    "@hi-ui/env": "^4.0.1",
-    "@hi-ui/loading": "^4.0.4"
+    "@hi-ui/env": "^4.0.1"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.0",

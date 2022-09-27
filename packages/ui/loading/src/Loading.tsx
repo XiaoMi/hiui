@@ -26,7 +26,7 @@ export const Loading = forwardRef<null, LoadingProps>(
       disabledPortal = false,
       innerRef,
       timeout = 300,
-      icon,
+      indicator,
       ...restProps
     },
     ref
@@ -55,7 +55,7 @@ export const Loading = forwardRef<null, LoadingProps>(
         <div ref={ref} role={role} className={cls} {...restProps}>
           <div className={`${prefixCls}__mask`} />
           <div className={`${prefixCls}__icon-wrapper`}>
-            {icon || (
+            {indicator || (
               <div className={`${prefixCls}__icon`}>
                 <div />
                 <div />
@@ -133,9 +133,9 @@ export interface LoadingProps extends HiBaseHTMLProps<'div'> {
    */
   part?: boolean
   /**
-   * 自定义加载icon
+   * 自定义加载指示符
    */
-  icon?: string | ReactNode
+  indicator?: ReactNode
 }
 
 if (__DEV__) {

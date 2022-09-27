@@ -1,18 +1,19 @@
 import React from 'react'
-import Spinner from '../src'
+import Spinner from '@hi-ui/spinner'
+import Loading from '../src'
 
 /**
- * @title 局部容器加载
+ * @title 设置加载指示符
  */
-export const Children = () => {
+export const Indicator = () => {
   return (
     <>
-      <h1>Children</h1>
+      <h1>Indicator</h1>
       <div
-        className="spinner-children__wrap"
+        className="loading-basic__wrap"
         style={{ position: 'relative', width: 500, height: 300 }}
       >
-        <Spinner>
+        <Loading indicator={<Spinner size={30} />}>
           <div
             style={{
               width: 500,
@@ -23,7 +24,7 @@ export const Children = () => {
               border: '20px solid #5f6a7a',
             }}
           />
-        </Spinner>
+        </Loading>
       </div>
     </>
   )
