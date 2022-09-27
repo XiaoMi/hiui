@@ -254,7 +254,7 @@ export const useCounter = ({
       'aria-valuenow': value,
       'aria-valuemin': minProp,
       'aria-valuemax': maxProp,
-      value: String(value).replace(/[^0-9.]/g, ''),
+      value: inputValue as string,
       tabIndex,
       autoFocus: autoFocus,
       disabled: disabled,
@@ -266,16 +266,17 @@ export const useCounter = ({
     }
   }, [
     prefixCls,
+    value,
     minProp,
     maxProp,
-    value,
+    inputValue,
     tabIndex,
     autoFocus,
     disabled,
     onInputChange,
+    onInputFocus,
     onInputBlur,
     onInputKeyDown,
-    onInputFocus,
     onInputWheel,
   ])
 
