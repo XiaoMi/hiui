@@ -68,13 +68,17 @@ export const useCounter = ({
 
   const inputNumericRef = useRef<number>(value)
 
+  // useEffect(() => {
+  //   setInputValue(value)
+  // }, [value])
+
   useEffect(() => {
-    setInputValue(value)
-  }, [value])
+    tryChangeValue(value)
+  }, [tryChangeValue, value])
 
   // 如果是数值类型，则立即进行修改原始值，保证输入错误也能显示最接近的正确值
-  if (isNumeric(inputValue)) {
-    inputNumericRef.current = Number(inputValue)
+  if (isNumeric(value)) {
+    inputNumericRef.current = Number(value)
   }
 
   const getCurrentValue = useCallback(() => {
@@ -254,7 +258,7 @@ export const useCounter = ({
       'aria-valuenow': value,
       'aria-valuemin': minProp,
       'aria-valuemax': maxProp,
-      value: String(value).replace(/[^0-9.]/g, ''),
+      value,
       tabIndex,
       autoFocus: autoFocus,
       disabled: disabled,
