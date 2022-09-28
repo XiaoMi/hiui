@@ -151,7 +151,8 @@ export { default as Slider } from '@hi-ui/slider'
 export * from '@hi-ui/space'
 export { default as Space } from '@hi-ui/space'
 
-// export * from '@hi-ui/spinner'
+export * from '@hi-ui/spinner'
+export { default as Spinner } from '@hi-ui/spinner'
 
 export * from '@hi-ui/stepper'
 export { default as Stepper } from '@hi-ui/stepper'

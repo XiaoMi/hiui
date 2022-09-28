@@ -1,18 +1,10 @@
-import React, {
-  useState,
-  useEffect,
-  useImperativeHandle,
-  useCallback,
-  forwardRef,
-  useRef,
-} from 'react'
-import { debounce } from '@hi-ui/func-utils'
-import type { DebounceReturn } from '@hi-ui/func-utils'
+import React, { useImperativeHandle, forwardRef, ReactNode } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { Portal } from '@hi-ui/portal'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { useLoading } from './use-loading'
 
 const _role = 'loading'
 export const _prefix = getPrefixCls('loading')
@@ -34,47 +26,12 @@ export const Loading = forwardRef<null, LoadingProps>(
       disabledPortal = false,
       innerRef,
       timeout = 300,
+      indicator,
       ...restProps
     },
     ref
   ) => {
-    const [internalVisible, setInternalVisible] = useState(false)
-
-    // Real trigger loading update
-    const updateLoadingStatus = useCallback(() => {
-      if (internalVisible === visible) return
-      setInternalVisible(visible)
-    }, [internalVisible, visible])
-
-    const prevDebouncedUpdateRef = useRef<null | DebounceReturn>(null)
-
-    const cancelWaitingLoading = () => {
-      prevDebouncedUpdateRef.current?.cancel()
-    }
-
-    const shouldDelay = visible && delay >= 0
-
-    const debouncedLoadingUpdater = useCallback(() => {
-      cancelWaitingLoading()
-
-      if (shouldDelay) {
-        const debouncedUpdateLoading = debounce(updateLoadingStatus, delay)
-        prevDebouncedUpdateRef.current = debouncedUpdateLoading
-
-        debouncedUpdateLoading()
-      } else {
-        updateLoadingStatus()
-        prevDebouncedUpdateRef.current = null
-      }
-    }, [delay, shouldDelay, updateLoadingStatus])
-
-    useEffect(() => {
-      debouncedLoadingUpdater()
-
-      return () => {
-        cancelWaitingLoading()
-      }
-    }, [debouncedLoadingUpdater])
+    const { internalVisible, setInternalVisible } = useLoading({ visible, delay })
 
     useImperativeHandle(innerRef, () => ({
       close: () => setInternalVisible(false),
@@ -98,10 +55,12 @@ export const Loading = forwardRef<null, LoadingProps>(
         <div ref={ref} role={role} className={cls} {...restProps}>
           <div className={`${prefixCls}__mask`} />
           <div className={`${prefixCls}__icon-wrapper`}>
-            <div className={`${prefixCls}__icon`}>
-              <div />
-              <div />
-            </div>
+            {indicator || (
+              <div className={`${prefixCls}__icon`}>
+                <div />
+                <div />
+              </div>
+            )}
           </div>
           {content ? <span className={`${prefixCls}__content`}>{content}</span> : null}
         </div>
@@ -173,6 +132,10 @@ export interface LoadingProps extends HiBaseHTMLProps<'div'> {
    * @private
    */
   part?: boolean
+  /**
+   * 自定义加载指示符
+   */
+  indicator?: ReactNode
 }
 
 if (__DEV__) {

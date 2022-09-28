@@ -39,7 +39,10 @@ export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
 )
 
 export interface SpinnerProps extends HiBaseHTMLProps<'i'> {
-  size?: string
+  /**
+   * 自定义尺寸
+   */
+  size?: number
 }
 
 if (__DEV__) {

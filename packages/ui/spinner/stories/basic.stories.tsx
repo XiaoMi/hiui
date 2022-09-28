@@ -9,7 +9,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="spinner-basic__wrap">
-        <Spinner></Spinner>
+        <Spinner />
       </div>
     </>
   )
