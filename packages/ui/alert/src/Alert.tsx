@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useEffect } from 'react'
+import React, { forwardRef, useState, useEffect, ReactNode } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
@@ -35,6 +35,7 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
       // duration小于 0，表示不开启自动关闭
       duration = -1,
       onClose,
+      extra,
       ...rest
     },
     ref
@@ -71,7 +72,10 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
       <div ref={ref} role={role} className={cls} {...rest}>
         {showIcon && suffixIcon ? <span className={`${prefixCls}__icon`}>{suffixIcon}</span> : null}
         <div className={`${prefixCls}__message`}>
-          <div className={`${prefixCls}__title`}>{title}</div>
+          <div className={`${prefixCls}__title`}>
+            <div className={`${prefixCls}__title__text`}>{title}</div>
+            {extra && <div className={`${prefixCls}__title__extra`}>{extra}</div>}
+          </div>
           {content ? <div className={`${prefixCls}__content`}>{content}</div> : null}
         </div>
         {closeable && closeIcon ? (
@@ -117,6 +121,10 @@ export interface AlertProps extends HiBaseHTMLProps<'div'> {
    * @version 4.0.0
    */
   showIcon?: boolean
+  /**
+   * 标题右侧的扩展内容
+   */
+  extra?: ReactNode
 }
 
 if (__DEV__) {
