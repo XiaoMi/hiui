@@ -1,0 +1,24 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-image' !default;
+
+.#{$prefix} {
+  position: relative;
+  display: inline-block;
+
+  &--preview {
+    cursor: pointer;
+  }
+
+  &-img {
+    vertical-align: middle;
+  }
+
+  &-placeholder {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+}
