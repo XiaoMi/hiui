@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useEffect, useCallback, useRef } from 'react'
 import { plus, minus } from 'number-precision'
 import { cx } from '@hi-ui/classname'
 import { invariant } from '@hi-ui/env'
@@ -35,8 +35,6 @@ export const useCounter = ({
 
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange, Object.is)
 
-  const [inputValue, setInputValue] = useState<React.ReactText>(value)
-
   const valueRef = useLatestRef(value)
 
   const proxyTryChangeValue = useCallback(
@@ -52,9 +50,6 @@ export const useCounter = ({
       }
 
       tryChangeValue(nextValue)
-      if (syncInput) {
-        setInputValue(nextValue)
-      }
     },
     [disabled, max, min, tryChangeValue]
   )
@@ -68,13 +63,10 @@ export const useCounter = ({
 
   const inputNumericRef = useRef<number>(value)
 
-  useEffect(() => {
-    setInputValue(value)
-  }, [value])
-
   // 如果是数值类型，则立即进行修改原始值，保证输入错误也能显示最接近的正确值
-  if (isNumeric(inputValue)) {
-    inputNumericRef.current = Number(inputValue)
+  // 最终 input 显示的值是基于 inputNumericRef.current
+  if (isNumeric(value)) {
+    inputNumericRef.current = Number(value)
   }
 
   const getCurrentValue = useCallback(() => {
@@ -254,7 +246,7 @@ export const useCounter = ({
       'aria-valuenow': value,
       'aria-valuemin': minProp,
       'aria-valuemax': maxProp,
-      value: inputValue as string,
+      value,
       tabIndex,
       autoFocus: autoFocus,
       disabled: disabled,
@@ -269,7 +261,6 @@ export const useCounter = ({
     minProp,
     maxProp,
     value,
-    inputValue,
     tabIndex,
     autoFocus,
     disabled,
