@@ -220,3 +220,6 @@ export { default as Anchor } from '@hi-ui/anchor'
 
 export * from '@hi-ui/back-top'
 export { default as BackTop } from '@hi-ui/back-top'
+
+export * from '@hi-ui/image'
+export { default as Image } from '@hi-ui/image'

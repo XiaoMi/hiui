@@ -68,6 +68,7 @@
     "@hi-ui/form": "^4.0.6",
     "@hi-ui/grid": "^4.0.5",
     "@hi-ui/highlighter": "^4.0.5",
+    "@hi-ui/image": "^4.0.0-alpha.0",
     "@hi-ui/input": "^4.0.4",
     "@hi-ui/input-group": "^4.0.3",
     "@hi-ui/list": "^4.0.6",
