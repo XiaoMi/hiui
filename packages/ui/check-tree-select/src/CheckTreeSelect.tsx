@@ -85,6 +85,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       virtual,
       itemHeight,
       height,
+      inputStyle,
       ...rest
     },
     ref
@@ -299,6 +300,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             data={mergedData}
             // @ts-ignore
             invalid={invalid}
+            style={inputStyle}
             // onExpand={() => {
             //   // setViewSelected(true)
             //   menuVisibleAction.on()
@@ -462,6 +464,10 @@ export interface CheckTreeSelectProps
    * 	设置 `true` 开启虚拟滚动
    */
   virtual?: boolean
+  /**
+   * input 显示框的样式
+   */
+  inputStyle?: React.CSSProperties
 }
 
 if (__DEV__) {
