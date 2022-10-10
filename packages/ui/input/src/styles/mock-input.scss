@@ -163,6 +163,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     &-unset {
       &.#{$mock-input-prefix} {
         width: auto;
+        max-width: 100%;
         justify-content: flex-start;
         border-color: transparent;
 

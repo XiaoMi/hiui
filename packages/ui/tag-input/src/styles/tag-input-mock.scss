@@ -248,6 +248,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
     &-unset {
       width: auto;
+      max-width: 100%;
       justify-content: flex-start;
       // padding-left: 0;
       // padding-right: 0;

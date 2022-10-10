@@ -72,7 +72,6 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       renderExtraFooter,
       onSearch: onSearchProp,
       fieldNames = DEFAULT_FIELD_NAMES,
-      inputStyle,
       ...rest
     },
     ref
@@ -314,7 +313,6 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 
                 expandedViewRef.current = 'onlyChecked'
               }}
-              style={inputStyle}
             />
           }
         >
@@ -431,10 +429,6 @@ export interface CheckSelectProps
    * 是否开启查看仅已选功能
    */
   showOnlyShowChecked?: boolean
-  /**
-   * input 显示框的样式
-   */
-  inputStyle?: React.CSSProperties
 }
 
 // @ts-ignore

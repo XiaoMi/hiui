@@ -68,7 +68,6 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       visible,
       onOpen,
       onClose,
-      inputStyle,
       ...rest
     },
     ref
@@ -236,7 +235,6 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             onChange={proxyOnChange}
             data={flattedData}
             invalid={invalid}
-            style={inputStyle}
             // onExpand={() => {
             //   // setViewSelected(true)
             //   menuVisibleAction.on()
@@ -365,10 +363,6 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * SEPARATE：父子完全独立受控
    */
   checkedMode?: 'PARENT' | 'CHILD' | 'ALL' | 'SEPARATE'
-  /**
-   * input 显示框的样式
-   */
-  inputStyle?: React.CSSProperties
 }
 
 if (__DEV__) {
