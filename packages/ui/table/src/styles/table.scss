@@ -133,6 +133,7 @@ $prefix: '#{$component-prefix}-table' !default;
       background-clip: padding-box;
 
       &-handle {
+        box-sizing: content-box;
         position: absolute;
         width: 2px;
         height: 100%;
