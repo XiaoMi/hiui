@@ -1,4 +1,11 @@
-import React, { forwardRef, useCallback, useState, useMemo, useLayoutEffect } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useState,
+  useMemo,
+  useLayoutEffect,
+  useEffect,
+} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -122,6 +129,18 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       // 保底要展示 1 个
       setTagMaxCount(isArrayNonEmpty(mergedTagList) && tagMaxCount < 1 ? 1 : tagMaxCount)
     }, [tagsWidth, suffixWidth, getTagWidth, containerWidth, mergedTagList, suffix])
+
+    // mergedTagList 更新后同步更新 tagsWidth
+    useEffect(() => {
+      const updatedTagsWidth: { [key: string]: number } = {}
+
+      mergedTagList.forEach((item) => {
+        const { id } = item
+        updatedTagsWidth[id] = tagsWidth[id] ?? 0
+      })
+
+      setTagsWidth(updatedTagsWidth)
+    }, [mergedTagList])
 
     const onClearLatest = useLatestCallback(onClear)
     const handleClear = useCallback(
