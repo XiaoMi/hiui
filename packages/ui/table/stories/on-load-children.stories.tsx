@@ -81,7 +81,7 @@ export const OnLoadChildren = () => {
       size: '6G+64G 幻彩蓝',
       price: '699.00',
       address: '双安店',
-      stock: '12,000',
+      stock: '13,000',
       key: 5,
     },
   ])
@@ -93,6 +93,7 @@ export const OnLoadChildren = () => {
         <Table
           columns={columns}
           data={data}
+          fieldKey="stock"
           onLoadChildren={(item) => {
             const { depth } = item
             console.log('item', item)
@@ -109,7 +110,7 @@ export const OnLoadChildren = () => {
                       size: '6G+64G',
                       price: '3299.00',
                       address: '华润五彩城店',
-                      stock: '29,000',
+                      stock: '100',
                       key: new Date().getTime(),
                     },
                     {
@@ -118,7 +119,7 @@ export const OnLoadChildren = () => {
                       size: '6G+64G',
                       price: '3299.00',
                       address: '华润五彩城店',
-                      stock: '29,000',
+                      stock: '200',
                       key: new Date().getTime() + 1,
                     },
                   ]

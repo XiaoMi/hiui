@@ -119,11 +119,12 @@ export const useTable = ({
   )
 
   // 异步展开子树
-  const [isLoadingTreeNodeId, onTreeNodeSwitch] = useAsyncSwitch(
-    setCacheData,
-    onExpandTreeRowsChange,
-    onLoadChildren
-  )
+  const [isLoadingTreeNodeId, onTreeNodeSwitch] = useAsyncSwitch({
+    setCascaderData: setCacheData,
+    onExpand: onExpandTreeRowsChange,
+    onLoadChildren,
+    fieldKey,
+  })
 
   // ************************ 拖拽 ************************ //
 
