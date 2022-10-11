@@ -13,7 +13,7 @@ export const Size = () => {
         <Space size={20}>
           <Spinner size={12} />
           <Spinner size={24} />
-          <Spinner size={36} />
+          <Spinner size="lg" />
         </Space>
       </div>
     </>

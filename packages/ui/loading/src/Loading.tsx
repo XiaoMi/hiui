@@ -4,6 +4,8 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { Portal } from '@hi-ui/portal'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import Spinner from '@hi-ui/spinner'
 import { useLoading } from './use-loading'
 
 const _role = 'loading'
@@ -27,6 +29,7 @@ export const Loading = forwardRef<null, LoadingProps>(
       innerRef,
       timeout = 300,
       indicator,
+      type = 'default',
       ...restProps
     },
     ref
@@ -45,6 +48,26 @@ export const Loading = forwardRef<null, LoadingProps>(
       full && `${prefixCls}--full`
     )
 
+    const defaultIconComponent = (
+      <div className={`${prefixCls}__icon`}>
+        <div />
+        <div />
+      </div>
+    )
+
+    const getIndicator = useLatestCallback(() => {
+      if (indicator) {
+        return indicator
+      }
+
+      switch (type) {
+        case 'spin':
+          return <Spinner size={size} />
+        default:
+          return defaultIconComponent
+      }
+    })
+
     const loadingComponent = (
       <CSSTransition
         classNames={`${prefixCls}--motion`}
@@ -54,14 +77,7 @@ export const Loading = forwardRef<null, LoadingProps>(
       >
         <div ref={ref} role={role} className={cls} {...restProps}>
           <div className={`${prefixCls}__mask`} />
-          <div className={`${prefixCls}__icon-wrapper`}>
-            {indicator || (
-              <div className={`${prefixCls}__icon`}>
-                <div />
-                <div />
-              </div>
-            )}
-          </div>
+          <div className={`${prefixCls}__icon-wrapper`}>{getIndicator()}</div>
           {content ? <span className={`${prefixCls}__content`}>{content}</span> : null}
         </div>
       </CSSTransition>
@@ -134,8 +150,13 @@ export interface LoadingProps extends HiBaseHTMLProps<'div'> {
   part?: boolean
   /**
    * 自定义加载指示符
+   * @private
    */
   indicator?: ReactNode
+  /**
+   * loading 效果类型
+   */
+  type?: 'default' | 'spin'
 }
 
 if (__DEV__) {

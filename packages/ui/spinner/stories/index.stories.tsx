@@ -5,7 +5,7 @@ export * from './basic.stories'
 export * from './size.stories'
 
 export default {
-  title: 'FeedBack/Spinner',
+  title: 'Private（暂不对外）/Spinner',
   component: Spinner,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

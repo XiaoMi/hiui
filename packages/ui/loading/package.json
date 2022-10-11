@@ -48,8 +48,10 @@
     "@hi-ui/env": "^4.0.1",
     "@hi-ui/func-utils": "^4.0.1",
     "@hi-ui/portal": "^4.0.4",
+    "@hi-ui/spinner": "^4.0.4",
     "@hi-ui/type-assertion": "^4.0.1",
     "@hi-ui/use-id": "^4.0.1",
+    "@hi-ui/use-latest": "^4.0.1",
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {

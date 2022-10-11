@@ -9,6 +9,20 @@ $prefix: "#{$component-prefix}-spinner" !default;
   cursor: default;
   color: use-color-mode("primary");
 
+  &--size {
+    &-sm {
+      font-size: use-height-size(4);
+    }
+
+    &-md {
+      font-size: use-height-size(6);
+    }
+
+    &-lg {
+      font-size: use-height-size(9);
+    }
+  }
+
   svg.#{$prefix}__icon {
     @keyframes #{$component-prefix}-rotate {
       to {

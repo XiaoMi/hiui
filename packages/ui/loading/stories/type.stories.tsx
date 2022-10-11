@@ -1,19 +1,18 @@
 import React from 'react'
-import Spinner from '@hi-ui/spinner'
 import Loading from '../src'
 
 /**
- * @title 设置加载指示符
+ * @title 设置加载指示符类型
  */
-export const Indicator = () => {
+export const Type = () => {
   return (
     <>
-      <h1>Indicator</h1>
+      <h1>Type</h1>
       <div
         className="loading-basic__wrap"
         style={{ position: 'relative', width: 500, height: 300 }}
       >
-        <Loading indicator={<Spinner size={30} />}>
+        <Loading type="spin">
           <div
             style={{
               width: 500,
