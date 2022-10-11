@@ -97,6 +97,10 @@ $prefix: '#{$component-prefix}-textarea' !default;
     }
 
     &-unset {
+      &::placeholder {
+        color: use-color('gray', 500);
+      }
+
       .#{$prefix} {
         padding-left: 0;
         padding-right: 0;

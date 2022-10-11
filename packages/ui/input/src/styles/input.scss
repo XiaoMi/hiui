@@ -38,6 +38,10 @@ $prefix: '#{$component-prefix}-input' !default;
 
     &::placeholder {
       color: use-color('gray', 400);
+
+      .#{$prefix}--appearance-unset & {
+        color: use-color('gray', 500);
+      }
     }
 
     &:disabled {

@@ -42,6 +42,10 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   &__suffix,
   &__placeholder {
     color: use-color('gray', 400);
+
+    .#{$mock-input-prefix}--appearance-unset & {
+      color: use-color('gray', 500);
+    }
   }
 
   &__placeholder {
