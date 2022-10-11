@@ -20,7 +20,7 @@ export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
         ref={ref}
         className={cls}
         {...rest}
-        style={{ ...rest.style, ...(typeof size === 'number' ? { fontSize: size } : {}) }}
+        style={{ ...(typeof size === 'number' ? { fontSize: size } : {}), ...rest.style }}
       >
         <svg
           className={`${prefixCls}__icon`}
