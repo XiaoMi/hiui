@@ -29,7 +29,7 @@ export const Loading = forwardRef<null, LoadingProps>(
       innerRef,
       timeout = 300,
       indicator,
-      type = 'default',
+      type = 'dot',
       ...restProps
     },
     ref
@@ -156,7 +156,7 @@ export interface LoadingProps extends HiBaseHTMLProps<'div'> {
   /**
    * loading 效果类型
    */
-  type?: 'default' | 'spin'
+  type?: 'dot' | 'spin'
 }
 
 if (__DEV__) {
