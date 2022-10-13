@@ -40,7 +40,10 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
       const fieldMD5 = stringify(field as FormFieldPath)
 
       const validater = new Validater({ [fieldMD5]: fieldRules })
-      return validater.validate({ [fieldMD5]: value }, { firstFields: true })
+      return validater.validate(
+        { [fieldMD5]: isNaN(value as number) ? value : Number(value) },
+        { firstFields: true }
+      )
     },
     [fieldRules, field]
   )
