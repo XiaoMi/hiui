@@ -43,13 +43,11 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
       return validater.validate(
         {
           [fieldMD5]:
-            valueType === 'number'
-              ? isNaN(value as number)
-                ? value
-                : value !== ''
-                ? Number(value)
-                : value
-              : value,
+            valueType !== 'number' || value === ''
+              ? value
+              : isNaN(value as number)
+              ? value
+              : Number(value),
         },
         { firstFields: true }
       )
