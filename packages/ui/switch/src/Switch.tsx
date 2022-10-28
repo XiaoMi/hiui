@@ -11,13 +11,13 @@ const _prefix = getPrefixCls('switch')
  * TODO: What is Switch
  * TODO：
  * 1. loading 态
- * 2. 添加 size 支持
  */
 export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
   (
     {
       prefixCls = _prefix,
       className,
+      size = 'md',
       onChange,
       content,
       checked: checkedProp,
@@ -52,7 +52,8 @@ export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
       prefixCls,
       className,
       `${prefixCls}--${checked ? 'open' : 'closed'}`,
-      disabled && `${prefixCls}--disabled`
+      disabled && `${prefixCls}--disabled`,
+      size && `${prefixCls}--size-${size}`
     )
 
     return (
@@ -74,6 +75,10 @@ export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
 )
 
 export interface SwitchProps extends HiBaseHTMLProps<'span'> {
+  /**
+   * 开关大小
+   */
+  size?: 'sm' | 'md' | 'lg'
   /**
    * 是否禁用
    */

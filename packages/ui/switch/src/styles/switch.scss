@@ -10,8 +10,6 @@ $prefix: '#{$component-prefix}-switch' !default;
   }
 
   display: inline-flex;
-  min-width: 40px;
-  height: use-height-size(6);
   border-radius: use-border-radius('full');
   cursor: pointer;
   position: relative;
@@ -25,7 +23,7 @@ $prefix: '#{$component-prefix}-switch' !default;
   }
 
   &--closed:not(.#{$prefix}--disabled) {
-    background: use-color('gray', 300);
+    background: use-color('gray', 400);
   }
 
   &--open.#{$prefix}--disabled {
@@ -42,15 +40,12 @@ $prefix: '#{$component-prefix}-switch' !default;
 
   &::after {
     content: '';
-    width: use-height-size(4);
-    height: use-height-size(4);
     background: use-color-static('white');
     position: absolute;
     border-radius: use-border-radius('full');
     top: calc((#{use-height-size(6)} - #{use-height-size(4)}) / 2);
 
     // @animation
-    left: calc(100% - #{use-height-size(4)} - #{use-spacing(2)});
     transition-duration: use-motion-duration('normal');
     transition-timing-function: use-motion-bezier('normal');
     transition-property: all;
@@ -59,12 +54,9 @@ $prefix: '#{$component-prefix}-switch' !default;
 
   &__text {
     color: use-color-static('white');
-    font-size: use-text-size('sm');
-    line-height: use-height-size(6);
     user-select: none;
 
     // @animation
-    margin: 0 use-spacing(11) 0 use-spacing(4);
     transition-duration: use-motion-duration('normal');
     transition-timing-function: use-motion-bezier('normal');
     transition-property: all;
@@ -75,9 +67,94 @@ $prefix: '#{$component-prefix}-switch' !default;
     &::after {
       left: use-spacing(2);
     }
+  }
+
+  &--size-sm {
+    min-width: use-height-size(8);
+    height: use-height-size(4);
+
+    &::after {
+      width: use-height-size(2);
+      height: use-height-size(2);
+    }
+
+    &.#{$prefix}--open {
+      &::after {
+        left: calc(100% - #{use-height-size(2)} - #{use-spacing(2)});
+      }
+
+      .#{$prefix}__text {
+        margin: 0 use-spacing(7) 0 use-spacing(3);
+      }
+    }
+
+    &.#{$prefix}--closed {
+      .#{$prefix}__text {
+        margin: 0 use-spacing(3) 0 use-spacing(7);
+      }
+    }
 
     .#{$prefix}__text {
-      margin: 0 use-spacing(4) 0 use-spacing(11);
+      font-size: use-text-size('sm');
+      line-height: use-height-size(4);
+      margin: 0 use-spacing(7) 0 use-spacing(4);
+    }
+  }
+
+  &--size-md {
+    min-width: use-height-size(9);
+    height: use-height-size(5);
+
+    &::after {
+      width: use-height-size(3);
+      height: use-height-size(3);
+    }
+
+    &.#{$prefix}--open {
+      &::after {
+        left: calc(100% - #{use-height-size(3)} - #{use-spacing(2)});
+      }
+    }
+
+    &.#{$prefix}--closed {
+      .#{$prefix}__text {
+        margin: 0 use-spacing(4) 0 use-spacing(9);
+      }
+    }
+
+    .#{$prefix}__text {
+      font-size: use-text-size('sm');
+      line-height: use-height-size(5);
+      margin: 0 use-spacing(9) 0 use-spacing(4);
+    }
+  }
+
+  &--size-lg {
+    min-width: use-height-size(10);
+    height: use-height-size(6);
+
+    &::after {
+      width: use-height-size(4);
+      height: use-height-size(4);
+
+    }
+
+    &.#{$prefix}--open {
+      &::after {
+        left: calc(100% - #{use-height-size(4)} - #{use-spacing(2)});
+      }
+    }
+
+    &.#{$prefix}--closed {
+      .#{$prefix}__text {
+        margin: 0 use-spacing(4) 0 use-spacing(11);
+      }
+    }
+
+    .#{$prefix}__text {
+      font-size: use-text-size('md');
+      line-height: use-height-size(6);
+      margin: 0 use-spacing(11) 0 use-spacing(4);
     }
   }
 }
