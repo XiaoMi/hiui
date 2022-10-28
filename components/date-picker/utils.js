@@ -227,7 +227,7 @@ export const getInRangeDate = (momentstartDate, momentendDate, max, min) => {
  */
 export const parseValue = (value, type, format, weekOffset, locale = 'zh-CN') => {
   if (!value) return [null]
-  const _format = FORMATS(locale)[type]
+  const _format = format ?? FORMATS(locale)[type]
   const _value = moment(value, _format)
   const isValid = moment(_value).isValid()
   if (value && typeof value === 'object' && (type.includes('range') || type === 'timeperiod')) {
