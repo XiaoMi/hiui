@@ -133,15 +133,17 @@ $prefix: '#{$component-prefix}-table' !default;
       background-clip: padding-box;
 
       &-handle {
+        box-sizing: content-box;
         position: absolute;
         width: 2px;
         height: 100%;
         bottom: 0;
         right: 0;
+        border-left: 2px solid use-color('gray', 50);
         cursor: col-resize;
         z-index: 1;
 
-        &:hover {
+        .#{$prefix}-header__resizable:hover & {
           background-color: use-color-mode('primary');
         }
       }

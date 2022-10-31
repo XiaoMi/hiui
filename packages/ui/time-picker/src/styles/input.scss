@@ -1,5 +1,6 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
+$prefix: '#{$component-prefix}-time-picker' !default;
 $input-prefix: '#{$component-prefix}-time-picker__input' !default;
 $interact-area: '#{$input-prefix}__interact-area' !default;
 $wrapper: '#{$input-prefix}__wrapper' !default;
@@ -98,7 +99,11 @@ $wrapper: '#{$input-prefix}__wrapper' !default;
     }
 
     &::placeholder {
-      color: use-color('gray', 500);
+      color: use-color('gray', 400);
+
+      .#{$prefix}--appearance-unset & {
+        color: use-color('gray', 500);
+      }
     }
   }
 }

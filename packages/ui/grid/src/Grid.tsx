@@ -1,13 +1,14 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls, getPrefixStyleVar } from '@hi-ui/classname'
-import { __DEV__ } from '@hi-ui/env'
+import { invariant, __DEV__ } from '@hi-ui/env'
 import { useGridContext, GridProvider } from './context'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { isNumeric } from '@hi-ui/type-assertion'
-import { GridJustifyEnum } from './types'
+import { isNumeric, isObject, isString } from '@hi-ui/type-assertion'
+import { GridJustifyEnum, GridResponsiveSize } from './types'
 
 const rowPrefix = getPrefixCls('grid-row')
 const gutterNameVar = getPrefixStyleVar('grid-row-gutter')
+const columnsNameVar = getPrefixStyleVar('grid-row-columns')
 const gapNameVar = getPrefixStyleVar('grid-row-gap')
 
 // Row 与 Row 默认间距
@@ -50,17 +51,28 @@ export const Row = forwardRef<HTMLDivElement | null, RowProps>(
       return 0
     }, [gutterProp])
 
+    const justifyContentStyle = calcResponsiveGrid({
+      name: 'row-justify',
+      value: justifyContent,
+      defaultValue: 'flex-start',
+      allowSet: isString,
+      setValue(value) {
+        return value
+      },
+    })
+
     const style = Object.assign(
       justifyContent
         ? {
+            ...styleProp,
             display: 'flex',
-            justifyContent,
+            ...justifyContentStyle,
           }
-        : {},
-      styleProp,
+        : { ...styleProp },
       {
         [gutterNameVar]: `${gutter}px`,
         [gapNameVar]: `${rowGap}px`,
+        [columnsNameVar]: `${columns}`,
       }
     )
 
@@ -82,14 +94,13 @@ export interface RowProps extends HiBaseHTMLProps<'div'> {
   /**
    * 里面的元素排布方式
    */
-  justify?: GridJustifyEnum
+  justify?: GridJustifyEnum | GridResponsiveSize<GridJustifyEnum>
   /**
    * Row 里面元素之间是否有外边距，建议使用偶数
    */
   gutter?: boolean | number
   /**
-   * 设置栅格列总数，一般是 24 或者 48。暂不对外暴露
-   * @private
+   * 设置栅格列总数，一般是 12 或者 24 或者 48
    */
   columns?: number
   /**
@@ -103,8 +114,15 @@ if (__DEV__) {
 }
 
 const colPrefix = getPrefixCls('grid-col')
-const spanNameVar = getPrefixStyleVar('grid-col-span')
-const offsetNameVar = getPrefixStyleVar('grid-col-offset')
+// const spanNameVar = getPrefixStyleVar('grid-col-span')
+// const offsetNameVar = getPrefixStyleVar('grid-col-offset')
+
+const getGridStyleVar = (prop: string, size?: string) => {
+  if (size) {
+    return getPrefixStyleVar('grid-' + prop + '-' + size)
+  }
+  return getPrefixStyleVar('grid-' + prop)
+}
 
 /**
  * TODO: What is Grid Col
@@ -119,29 +137,71 @@ export const Col = forwardRef<HTMLDivElement | null, ColProps>(
       span: spanProp,
       offset: offsetProp = 0,
       justify: justifyContent,
+      order,
       ...rest
     },
     ref
   ) => {
     const { columns = 24 } = useGridContext()
 
-    // 需要 warning 不合法
-    const span = isNumeric(spanProp) && spanProp >= 0 && spanProp <= columns ? spanProp : null
-    const offset = isNumeric(offsetProp) && offsetProp >= 0 && offsetProp < columns ? offsetProp : 0
+    const spanStyle = calcResponsiveGrid({
+      name: 'col-span',
+      value: spanProp,
+      noneCallback: (style) => {
+        style.flexBasis = 'auto'
+        style.maxWidth = '100%'
+      },
+      allowSet: isNumeric,
+      setValue(value) {
+        return setGridSpan(value, 0, columns, 'offset')
+      },
+    })
+
+    const offsetStyle = calcResponsiveGrid({
+      name: 'col-offset',
+      value: offsetProp,
+      defaultValue: 0,
+      allowSet: isNumeric,
+      setValue(value) {
+        return setGridSpan(value, 0, columns, 'offset')
+      },
+    })
+
+    const orderStyle = calcResponsiveGrid({
+      name: 'col-order',
+      value: order,
+      defaultValue: 0,
+      allowSet: isNumeric,
+      setValue(value) {
+        return Number(value)
+      },
+    })
+
+    const justifyContentStyle = calcResponsiveGrid({
+      name: 'col-justify',
+      value: justifyContent,
+      defaultValue: 'flex-start',
+      allowSet: isString,
+      setValue(value) {
+        return value
+      },
+    })
 
     const style = Object.assign(
       justifyContent
         ? {
             ...styleProp,
             display: 'flex',
-            justifyContent,
+            ...justifyContentStyle,
           }
-        : {},
-      styleProp,
-      {
-        [spanNameVar]: span === null ? 'unset' : `calc(${span} / ${columns} * 100%)`,
-        [offsetNameVar]: `calc(${offset} / ${columns} * 100%)`,
-      }
+        : { ...styleProp },
+      spanStyle,
+      offsetStyle,
+      orderStyle
+      // {
+      // [spanNameVar]: span === null ? 'unset' : `calc(${span} / ${columns} * 100%)`,
+      // [offsetNameVar]: `calc(${offset} / ${columns} * 100%)`,
+      // }
     )
 
     const cls = cx(prefixCls, className)
@@ -158,17 +218,88 @@ export interface ColProps extends HiBaseHTMLProps<'div'> {
   /**
    *  Col 元素占多少个栅格
    */
-  span?: number
+  span?: number | GridResponsiveSize<number>
   /**
    *  Col 元素偏移多少个栅格
    */
-  offset?: number
+  offset?: number | GridResponsiveSize<number>
   /**
    * 里面的元素排布方式
    */
-  justify?: GridJustifyEnum
+  justify?: GridJustifyEnum | GridResponsiveSize<GridJustifyEnum>
+  /**
+   * Col项重排序，数值越大，越在后面展示
+   */
+  order?: number | GridResponsiveSize<number>
 }
 
 if (__DEV__) {
   Col.displayName = 'Col'
+}
+
+const setGridSpan = (value: number | string, min: number, max: number, propName: string) => {
+  let nextValue = Number(value)
+
+  if (__DEV__) {
+    invariant(
+      nextValue >= min && nextValue <= max,
+      `Please set ${propName} in the range [${min}, ${max}] When using Grid component.`
+    )
+  }
+
+  if (nextValue < 0) nextValue = 0
+  if (nextValue > max) nextValue = max
+
+  return nextValue
+}
+
+const GRID_SIZE_ARRAY = ['xs', 'sm', 'md', 'lg', 'xl']
+
+function calcResponsiveGrid({
+  value,
+  defaultValue,
+  allowSet,
+  setValue,
+  name,
+  noneCallback,
+}: {
+  value: any
+  defaultValue?: React.ReactText
+  name: string
+  allowSet: (value: any) => boolean
+  setValue: (value: any) => any
+  noneCallback?: (style: React.CSSProperties) => void
+}) {
+  const style: React.CSSProperties = {}
+
+  if (isObject(value)) {
+    let prevSpan: number | undefined
+
+    GRID_SIZE_ARRAY.forEach((key) => {
+      const varName = getGridStyleVar(name, key)
+      // @ts-ignore
+      const sizeValue = value[key]
+
+      // @ts-ignore
+      style[varName] = allowSet(sizeValue) ? setValue(sizeValue) : prevSpan
+      // @ts-ignore
+      prevSpan = style[varName]
+    })
+  } else {
+    if (allowSet(value)) {
+      value = setValue(value)
+    } else {
+      if (noneCallback) {
+        noneCallback(style)
+      } else if (typeof defaultValue !== 'undefined') {
+        value = defaultValue
+      }
+    }
+
+    const varName = getGridStyleVar(name)
+    // @ts-ignore
+    style[varName] = value
+  }
+
+  return style
 }

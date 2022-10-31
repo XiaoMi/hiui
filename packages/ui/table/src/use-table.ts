@@ -119,11 +119,12 @@ export const useTable = ({
   )
 
   // 异步展开子树
-  const [isLoadingTreeNodeId, onTreeNodeSwitch] = useAsyncSwitch(
-    setCacheData,
-    onExpandTreeRowsChange,
-    onLoadChildren
-  )
+  const [isLoadingTreeNodeId, onTreeNodeSwitch] = useAsyncSwitch({
+    setCascaderData: setCacheData,
+    onExpand: onExpandTreeRowsChange,
+    onLoadChildren,
+    fieldKey,
+  })
 
   // ************************ 拖拽 ************************ //
 
@@ -250,6 +251,16 @@ export const useTable = ({
         nextColumns,
         scrollWidth ? scrollWidth / lastColumns.length : 100
       )
+
+      if (colWidths) {
+        // colWidths 记录的是最新的列宽，当它有值时，重置一下列宽，否则会导致冻结列动态调整宽度后定位不准
+        nextColumns = nextColumns.map((item, index) => {
+          return {
+            ...item,
+            width: colWidths[index],
+          }
+        })
+      }
     }
 
     let leftColumns = [] as any[]
@@ -532,6 +543,7 @@ export const useTable = ({
 
   return {
     rootProps,
+    scrollWidth,
     activeSorterColumn,
     setActiveSorterColumn,
     activeSorterType,

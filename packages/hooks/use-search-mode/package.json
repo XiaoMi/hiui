@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-search-mode",
-  "version": "4.0.0",
+  "version": "4.0.6",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -46,16 +46,16 @@
     "react": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0",
+    "@hi-ui/hi-build": "^4.0.1",
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/dom-utils": "^4.0.0",
-    "@hi-ui/env": "^4.0.0",
-    "@hi-ui/loading": "^4.0.0",
-    "@hi-ui/tree-utils": "^4.0.0",
-    "@hi-ui/type-assertion": "^4.0.0",
-    "@hi-ui/use-data-source": "^4.0.0",
-    "@hi-ui/use-latest": "^4.0.0"
+    "@hi-ui/dom-utils": "^4.0.4",
+    "@hi-ui/env": "^4.0.1",
+    "@hi-ui/loading": "^4.0.4",
+    "@hi-ui/tree-utils": "^4.0.2",
+    "@hi-ui/type-assertion": "^4.0.1",
+    "@hi-ui/use-data-source": "^4.0.1",
+    "@hi-ui/use-latest": "^4.0.1"
   }
 }

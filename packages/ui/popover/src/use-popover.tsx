@@ -181,6 +181,10 @@ export interface UsePopoverProps extends PopperOverlayProps {
    * 鼠标移出后隐藏延时，单位：毫秒
    */
   mouseLeaveDelay?: number
+  /**
+   * 设置基于 reference 元素的间隙偏移量
+   */
+  gutterGap?: number
 }
 
 export type UsePopoverReturn = ReturnType<typeof usePopover>

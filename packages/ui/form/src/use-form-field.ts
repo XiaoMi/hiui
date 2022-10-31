@@ -23,7 +23,7 @@ export const useFiledRules = <Values = any>(props: UseFormFieldProps<Values>) =>
 }
 
 export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => {
-  const { field } = props
+  const { field, valueType } = props
 
   const { getFieldProps, registerField, unregisterField } = useFormContext()
 
@@ -40,9 +40,19 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
       const fieldMD5 = stringify(field as FormFieldPath)
 
       const validater = new Validater({ [fieldMD5]: fieldRules })
-      return validater.validate({ [fieldMD5]: value }, { firstFields: true })
+      return validater.validate(
+        {
+          [fieldMD5]:
+            valueType !== 'number' || value === ''
+              ? value
+              : isNaN(value as number)
+              ? value
+              : Number(value),
+        },
+        { firstFields: true }
+      )
     },
-    [fieldRules, field]
+    [fieldRules, field, valueType]
   )
 
   // 注入当前 field 及其验证规则到 Form

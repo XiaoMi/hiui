@@ -208,8 +208,12 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       padding: 0;
       margin: 0;
 
-      &::-webkit-input-placeholder {
+      &::placeholder {
         color: use-color('gray', 400);
+
+        .#{$prefix}__picker--appearance-unset & {
+          color: use-color('gray', 500);
+        }
       }
 
       &--disabled {

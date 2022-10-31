@@ -10,7 +10,7 @@ $prefix: '#{$component-prefix}-card' !default;
   overflow: hidden;
 
   &#{&}--no-header {
-    .#{$prefix}__body {
+    > .#{$prefix}__body {
       padding-top: use-spacing(10);
     }
   }

@@ -4,11 +4,17 @@ import { TableRowEventData } from '../types'
 import { addChildrenById, cloneTree } from '@hi-ui/tree-utils'
 import { useCheckState } from '@hi-ui/use-check-state'
 
-export const useAsyncSwitch = (
-  setCascaderData: React.Dispatch<React.SetStateAction<any[]>>,
-  onExpand?: (selectedOption: TableRowEventData, onlyExpand: boolean) => void,
+export const useAsyncSwitch = ({
+  setCascaderData,
+  onExpand,
+  onLoadChildren,
+  fieldKey = 'key',
+}: {
+  setCascaderData: React.Dispatch<React.SetStateAction<any[]>>
+  onExpand?: (selectedOption: TableRowEventData, onlyExpand: boolean) => void
   onLoadChildren?: (item: TableRowEventData) => Promise<any[] | void> | void
-) => {
+  fieldKey?: string
+}) => {
   const onLoadChildrenLatest = useLatestCallback(onLoadChildren)
 
   // 加载节点
@@ -19,12 +25,13 @@ export const useAsyncSwitch = (
       if (Array.isArray(childrenNodes)) {
         setCascaderData((prev) => {
           const nextTreeData = cloneTree(prev)
-          addChildrenById(nextTreeData, node.id, childrenNodes)
+          addChildrenById(nextTreeData, node.id, childrenNodes, fieldKey)
+
           return nextTreeData
         })
       }
     },
-    [onLoadChildrenLatest, setCascaderData]
+    [fieldKey, onLoadChildrenLatest, setCascaderData]
   )
 
   const { state: loadingIds, add: addLoadingIds, remove: removeLoadingIds } = useCheckState<

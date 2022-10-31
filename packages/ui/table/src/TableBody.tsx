@@ -28,6 +28,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       onTableBodyScroll,
       maxHeight,
       canScroll,
+      scrollWidth,
       hasAvgColumn,
       avgRow,
       hasSumColumn,
@@ -69,7 +70,10 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
           overflowX: canScroll ? 'scroll' : undefined,
         }}
       >
-        <table ref={bodyTableRef} style={{ width: '100%' }}>
+        <table
+          ref={bodyTableRef}
+          style={{ width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%' }}
+        >
           <colgroup>
             {leafColumns.map((col: any, idx) => {
               return (
@@ -117,6 +121,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                 className: `${prefixCls}-empty-content`,
                 colSpan: columns.length,
                 emptyContent,
+                scrollBodyWidth: scrollBodyElementRef.current?.clientWidth,
               })
             )}
           </tbody>
@@ -148,14 +153,27 @@ const renderEmptyContent = ({
   className,
   colSpan,
   emptyContent,
+  scrollBodyWidth,
 }: {
   colSpan?: number
   className?: string
   emptyContent: React.ReactNode
+  scrollBodyWidth?: number
 }) => {
   return (
     <tr className={className}>
-      <td colSpan={colSpan}>{emptyContent || <EmptyState />}</td>
+      <td colSpan={colSpan}>
+        <div
+          style={{
+            position: 'sticky',
+            left: 0,
+            width: scrollBodyWidth ?? '100%',
+            overflow: 'hidden',
+          }}
+        >
+          {emptyContent || <EmptyState />}
+        </div>
+      </td>
     </tr>
   )
 }

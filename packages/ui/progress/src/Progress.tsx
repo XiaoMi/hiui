@@ -34,8 +34,8 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
     const [barElement, setBarElement] = useState<HTMLSpanElement | null>(null)
     const [contentElement, setContentElement] = useState<HTMLSpanElement | null>(null)
 
-    const rate = percent / 100 > 1 ? 1 : percent / 100
-    const bufferRate = bufferPercent / 100 > 1 ? 1 : bufferPercent / 100
+    const rate = percent > 100 ? 100 : Number(percent)
+    const bufferRate = bufferPercent > 100 ? 100 : Number(bufferPercent)
 
     const cls = cx(
       prefixCls,
@@ -47,7 +47,7 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
     const showInfo = showInfoProp === undefined ? !indeterminate : showInfoProp
 
     if (showInfo && content === undefined) {
-      content = `${rate * 100}%`
+      content = `${rate}%`
     }
 
     return (
@@ -56,16 +56,16 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
           className={cx(`${prefixCls}__inner`, { [`${prefixCls}__inner--active`]: active })}
           style={{ height: strokeWidth }}
         >
-          {!!bufferRate && (
+          {bufferRate > 0 ? (
             <span
-              style={{ width: `${bufferRate * 100}%` }}
+              style={{ width: `${bufferRate}%` }}
               className={`${prefixCls}__buffer`}
               aria-label="buffer"
             />
-          )}
+          ) : null}
           <span
             ref={setBarElement}
-            style={{ width: indeterminate ? undefined : `${rate * 100}%` }}
+            style={{ width: indeterminate ? undefined : `${rate}%` }}
             className={cx(`${prefixCls}__value`, `${prefixCls}__value--${type}`)}
             aria-label="value"
           >

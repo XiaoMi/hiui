@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo, MouseEvent, useState, useEffect, useRef } from 'react'
+import React, { forwardRef, useMemo, useState, useEffect, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { CloseOutlined } from '@hi-ui/icons'
 import { __DEV__, invariant } from '@hi-ui/env'
@@ -29,7 +29,6 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       appearance = 'filled',
       size = 'md',
       shape = 'square',
-      onClick,
       closeable = false,
       editable = false,
       onDelete,
@@ -37,6 +36,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       autoEditable = false,
       maxWidth,
       render = DEFAULT_RENDER,
+      ...rest
     },
     ref
   ) => {
@@ -138,7 +138,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
 
     return (
       <WrapperComponent {...(componentProps as any)}>
-        <div ref={ref} role={role} className={rootClassName} style={rootStyle} onClick={onClick}>
+        <div ref={ref} role={role} className={rootClassName} style={rootStyle} {...rest}>
           <div className={`${prefixCls}__content-wrapper`}>
             <div className={`${prefixCls}__content`} ref={contentRef}>
               {isInEdit ? editValueCache : render(children as React.ReactText)}
@@ -215,10 +215,6 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    * @default e => e
    */
   render?: (children?: React.ReactText) => React.ReactNode
-  /**
-   * 点击标签内容时的回调
-   */
-  onClick?: (event: MouseEvent<HTMLDivElement>) => void
   /**
    * 是否展示可关闭按钮
    * @default false

@@ -53,7 +53,7 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
       <div
         ref={ref}
         role={role}
-        className={cls}
+        className={cx(cls, { [`${prefixCls}--column-block`]: !inline && direction === 'column' })}
         style={{
           display: inline ? 'inline-flex' : 'flex',
           flexWrap: wrap ? 'wrap' : 'nowrap',
@@ -68,7 +68,7 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
           const showSplit = !isNullish(separatorMemo) && childCount > index + 1
           return (
             <Fragment key={index}>
-              <div className={`${cls}__item`}>{child}</div>
+              <div className={`${prefixCls}__item`}>{child}</div>
               {showSplit && separatorMemo}
             </Fragment>
           )

@@ -219,6 +219,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         disabled={disabled}
         onClose={menuVisibleAction.off}
         searchable={searchable}
+        scrollable={false}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
           <TagInputMock

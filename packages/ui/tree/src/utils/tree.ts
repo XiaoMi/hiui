@@ -19,6 +19,7 @@ export const flattenTreeData = (treeData: TreeDataItem[], fieldNames: any = EMPT
 
   return baseFlattenTree({
     tree: treeData,
+    childrenFieldName: (node) => getKeyFields(node, 'children'),
     transform: (node: any) => {
       const raw = node.raw
 

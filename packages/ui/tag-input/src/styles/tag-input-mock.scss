@@ -124,6 +124,10 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   &__suffix,
   &__placeholder {
     color: use-color('gray', 400);
+
+    .#{$tag-input-mock-prefix}--appearance-unset & {
+      color: use-color('gray', 500);
+    }
   }
 
   &__tag,
@@ -244,6 +248,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
     &-unset {
       width: auto;
+      max-width: 100%;
       justify-content: flex-start;
       // padding-left: 0;
       // padding-right: 0;
