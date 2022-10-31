@@ -8,14 +8,8 @@
       "packages/hooks/*",
       "packages/core/*",
       "packages/icons/*",
-      "packages/motions/*",
       "packages/patches/*",
-      "packages/*",
-      "scripts/*",
-      "docs/*",
-      "plugins/*",
-      "website/*",
-      "examples/*"
+      "scripts/*"
     ]
   },
   "scripts": {
@@ -27,13 +21,16 @@
     "publish:pkg": "lerna publish",
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",
-    "build": "lerna run build --no-private --sort",
+    "build": "turbo run build",
     "storybook": "start-storybook --no-manager-cache false -p 6006",
     "build-storybook": "build-storybook",
     "fix": "standard --fix && stylelint --config .stylelintrc 'components/**/*.scss' --fix",
     "eslint": "eslint --fix ./packages/**/*.tsx",
     "precommit": "lint-staged",
     "test": "jest",
+    "cs": "changeset",
+    "v": "changeset version",
+    "publish": "changeset publish --registry=https://registry.npmjs.org/",
     "deploy": "gh-pages -t -d dist-github --git \"$(which git)\"",
     "pregenerate-docs": "yarn lerna run auto-generate --scope=@hi-ui/icons",
     "generate-docs": "yarn lerna run generate-docs --scope=@hi-ui/hi-docs"
@@ -41,6 +38,8 @@
   "devDependencies": {
     "@babel/cli": "^7.13.16",
     "@babel/preset-typescript": "~7.12.7",
+    "@changesets/changelog-github": "^0.4.7",
+    "@changesets/cli": "^2.25.0",
     "@storybook/addon-actions": "^6.3.12",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",
@@ -63,13 +62,12 @@
     "style-loader": "^2.0.0",
     "styled-components": "^5.2.1",
     "ts-jest": "^27.0.4",
-    "turbo": "^1.1.5",
+    "turbo": "^1.5.6",
     "typescript": "^4.3.5"
   },
   "dependencies": {
     "@babel/plugin-external-helpers": "^7.12.13",
     "@babel/plugin-transform-runtime": "^7.13.15",
-    "@hi-ui/hiui": "^3.4.1-rc.2",
     "@storybook/preset-scss": "^1.0.3",
     "cross-env": "^7.0.3",
     "gh-pages": "^4.0.0",
