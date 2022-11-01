@@ -9,7 +9,7 @@
       "packages/core/*",
       "packages/icons/*",
       "packages/patches/*",
-      "scripts/*"
+      "scripts/hi-docs"
     ]
   },
   "scripts": {
@@ -32,14 +32,15 @@
     "v": "changeset version",
     "publish": "changeset publish --registry=https://registry.npmjs.org/",
     "deploy": "gh-pages -t -d dist-github --git \"$(which git)\"",
-    "pregenerate-docs": "yarn lerna run auto-generate --scope=@hi-ui/icons",
-    "generate-docs": "yarn lerna run generate-docs --scope=@hi-ui/hi-docs"
+    "pregenerate-docs": "yarn turbo run auto-generate --filter @hi-ui/icons",
+    "generate-docs": "yarn turbo run generate-docs --filter @hi-ui/hi-docs"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
     "@babel/preset-typescript": "~7.12.7",
     "@changesets/changelog-github": "^0.4.7",
     "@changesets/cli": "^2.25.0",
+    "@hi-ui/hi-build": "^4.0.1",
     "@storybook/addon-actions": "^6.3.12",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",

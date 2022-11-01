@@ -8,6 +8,12 @@
     },
     "clean": {
       "cache": false
+    },
+    "auto-generate": {
+      "cache": false
+    },
+    "generate-docs": {
+      "cache": false
     }
   }
 }

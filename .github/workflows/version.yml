@@ -37,18 +37,17 @@ jobs:
       - name: Install dependencies
         run: |
           yarn
-          yarn run build
 
-      # - name: Update Version
-      #   run: yarn run v
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update Version
+        run: yarn run v
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Create Pull Request
-      #   uses: peter-evans/create-pull-request@v4
-      #   with:
-      #     commit-message: Generate version and changelog
-      #     title: Release
-      #     body: Update the version and changelog of the package
-      #     branch: release/${{ steps.date.outputs.today }}
-      #     base: master
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: Generate version and changelog
+          title: Release
+          body: Update the version and changelog of the package
+          branch: release/${{ steps.date.outputs.today }}
+          base: master
