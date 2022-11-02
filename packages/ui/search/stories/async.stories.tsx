@@ -17,8 +17,8 @@ export const Async = () => {
           placeholder="搜索关键字"
           loading={loading}
           data={data}
-          onSearch={(keyword) => {
-            console.log('onSearch', keyword)
+          onSearch={(keyword, item) => {
+            console.log('onSearch', keyword, item)
           }}
           onChange={(value) => {
             if (!value) {

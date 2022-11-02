@@ -54,11 +54,14 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
       Object.is
     )
 
-    const onSearch = useLatestCallback((nextValue: any) => {
-      if (typeof nextValue !== 'string') {
-        nextValue = value
+    const onSearch = useLatestCallback((nextItem?: SearchDataItem) => {
+      let { title } = nextItem ?? {}
+
+      if (typeof title !== 'string') {
+        title = value
       }
-      onSearchProp?.(nextValue)
+
+      onSearchProp?.(title, nextItem)
     })
 
     const closeDropdown = useCallback(() => {
@@ -166,21 +169,21 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
       if (evt.keyCode === 13) {
         evt.preventDefault()
 
-        let nextValue = '' as React.ReactText
+        let nextItem = {} as SearchDataItem
         if (focusIndex !== null && isArrayNonEmpty(data)) {
           const focusItem = data[focusIndex]
 
           if (subFocusIndex !== null && isArrayNonEmpty(focusItem.children)) {
-            nextValue = focusItem.children[subFocusIndex].title
+            nextItem = focusItem.children[subFocusIndex]
           } else {
-            nextValue = focusItem.title
+            nextItem = focusItem
           }
         } else {
-          nextValue = value
+          nextItem.title = value
         }
 
-        onSearch(nextValue)
-        tryChangeValue(nextValue)
+        onSearch(nextItem)
+        tryChangeValue(nextItem.title)
         closeDropdown()
       }
     }
@@ -212,7 +215,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
               <Button
                 type="primary"
                 disabled={disabled}
-                onClick={onSearch}
+                onClick={() => onSearch()}
                 size={size}
                 icon={<SearchOutlined />}
               />
@@ -240,7 +243,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
             subFocusIndex={subFocusIndex}
             keyword={value}
             onSelect={(item) => {
-              onSearch(item.title)
+              onSearch(item)
               tryChangeValue(item.title)
               targetElRef.current?.focus()
               closeDropdown()
@@ -268,7 +271,7 @@ export interface SearchProps extends Omit<InputProps, 'onChange' | 'appearance'>
   /**
    * 点击搜索图标、清除图标，点击下拉选项，或聚焦按下回车键时的回调
    */
-  onSearch?: (value: string) => void
+  onSearch?: (value: string, dataItem?: SearchDataItem) => void
   /**
    * 下拉根元素的类名称
    */
