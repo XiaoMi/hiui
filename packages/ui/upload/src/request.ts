@@ -1,4 +1,4 @@
-import { UploadRequestOption } from './types'
+import { UploadRequestOption, UploadRequestReturn } from './types'
 
 function formatBody(xhr: XMLHttpRequest) {
   const text = xhr.responseText || xhr.response
@@ -13,7 +13,7 @@ function formatBody(xhr: XMLHttpRequest) {
   }
 }
 
-export default function upload(option: UploadRequestOption) {
+export default function upload(option: UploadRequestOption): UploadRequestReturn {
   const xhr = new window.XMLHttpRequest()
 
   if (option.onProgress && xhr.upload) {

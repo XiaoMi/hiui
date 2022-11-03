@@ -44,6 +44,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       actionRender,
+      customRequest,
       ...rest
     },
     ref
@@ -67,6 +68,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onRemove,
       beforeUpload,
       customUpload,
+      customRequest,
     })
 
     return (

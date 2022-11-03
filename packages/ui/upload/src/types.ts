@@ -48,6 +48,10 @@ export interface UploadRequestOption {
   timeout?: number
 }
 
+export interface UploadRequestReturn {
+  abort?: () => void
+}
+
 export type UploadPhotoSizeEnum = 'sm' | 'md' | 'lg'
 
 export type UploadTypeEnum = 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
@@ -169,6 +173,7 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    * 操作区自定义渲染，暂仅在 type="default" 下有效
    */
   actionRender?: (props: ActionRenderProps) => React.ReactNode
+  customRequest?: (option: UploadRequestOption) => UploadRequestReturn | void
 }
 
 export interface ActionRenderProps {
