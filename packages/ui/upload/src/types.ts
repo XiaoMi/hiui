@@ -46,10 +46,7 @@ export interface UploadRequestOption {
   action: string
   headers?: Record<string, string>
   timeout?: number
-}
-
-export interface UploadRequestReturn {
-  abort?: () => void
+  method?: 'POST' | 'PUT'
 }
 
 export type UploadPhotoSizeEnum = 'sm' | 'md' | 'lg'
@@ -101,6 +98,10 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    * 是否禁用
    */
   disabled?: boolean
+  /**
+   * 设置上传的请求类型
+   */
+  method?: UploadRequestOption['method']
   /**
    * 设置上传的请求头部
    */
@@ -173,7 +174,6 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    * 操作区自定义渲染，暂仅在 type="default" 下有效
    */
   actionRender?: (props: ActionRenderProps) => React.ReactNode
-  customRequest?: (option: UploadRequestOption) => UploadRequestReturn | void
 }
 
 export interface ActionRenderProps {

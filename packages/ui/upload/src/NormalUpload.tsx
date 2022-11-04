@@ -44,7 +44,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       actionRender,
-      customRequest,
+      method,
       ...rest
     },
     ref
@@ -55,7 +55,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
 
     const cls = cx(prefixCls, className)
 
-    const [_fileList, uploadFiles, deleteFile] = useUpload({
+    const [_fileList, deleteFile] = useUpload({
       fileList,
       defaultFileList,
       onChange,
@@ -68,14 +68,26 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onRemove,
       beforeUpload,
       customUpload,
-      customRequest,
+      method,
     })
+
+    const uploadFiles = async (files) => {
+      console.log('-files', files)
+      await 1
+      console.log('-files2', files)
+      // debugger
+    }
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
         <FileSelect
           style={{ display: 'inline-block' }}
-          onSelect={uploadFiles}
+          onSelect={async (files) => {
+            console.log('-files1', files)
+            await 1
+            console.log('-files2', files)
+            // debugger
+          }}
           multiple={multiple}
           disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
           accept={accept}

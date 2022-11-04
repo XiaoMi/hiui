@@ -46,7 +46,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       customUpload,
       avatarOptions = {},
       preview,
-      customRequest,
+      method,
       ...rest
     },
     ref
@@ -70,7 +70,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onRemove,
       beforeUpload,
       customUpload,
-      customRequest,
+      method,
     })
 
     const { aspectRatio = 0, dragMode = 'move' } = avatarOptions

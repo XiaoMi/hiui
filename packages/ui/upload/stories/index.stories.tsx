@@ -8,7 +8,6 @@ export * from './photo.stories'
 export * from './avatar.stories'
 export * from './custom-upload.stories'
 export * from './action-render.stories'
-export * from './custom-request.stories'
 
 export default {
   title: 'Data Input/Upload',

@@ -20,7 +20,7 @@ const useUpload = ({
   beforeUpload,
   customUpload,
   maxCount,
-  customRequest,
+  method = 'POST',
 }: UploadProps): [
   UploadFileItem[],
   (files: HTMLInputElement['files']) => Promise<void>,
@@ -188,16 +188,6 @@ const useUpload = ({
                 fr.readAsDataURL(file as any)
               }
               _files.push(file)
-              const option = {
-                file,
-                name,
-                withCredentials,
-                headers,
-                data,
-                onSuccess,
-                onError: onError,
-                onProgress: onProgress,
-              }
               if (uploadAction) {
                 let _uploadAction =
                   typeof uploadAction === 'string' ? uploadAction : uploadAction(file as any)
@@ -211,16 +201,18 @@ const useUpload = ({
                     })
                 }
                 const action = request({
-                  ...option,
+                  file,
                   action: _uploadAction as string,
+                  name,
+                  withCredentials,
+                  headers,
+                  data,
+                  method,
+                  onSuccess,
+                  onError: onError,
+                  onProgress: onProgress,
                 })
                 file.abort = action.abort
-              } else if (customRequest) {
-                const action = customRequest({
-                  ...option,
-                  action: '',
-                })
-                file.abort = action?.abort
               }
             }
           }
@@ -235,15 +227,15 @@ const useUpload = ({
       maxCount,
       beforeUpload,
       maxSize,
+      uploadAction,
       name,
       withCredentials,
       headers,
       data,
+      method,
       onSuccess,
       onError,
       onProgress,
-      uploadAction,
-      customRequest,
     ]
   )
 
