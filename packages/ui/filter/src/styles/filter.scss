@@ -44,6 +44,8 @@ $prefix: '#{$component-prefix}-filter' !default;
   &__value {
     @include list-item-reset;
 
+    display: flex;
+    align-items: center;
     font-size: use-text-size('normal');
     color: use-color('gray', 700);
     margin-inline-end: use-spacing(20);
@@ -75,6 +77,22 @@ $prefix: '#{$component-prefix}-filter' !default;
           height: 2px;
           background-color: use-color-mode('primary');
         }
+      }
+
+      &.#{$prefix}-item__value--appearance-filled {
+        .#{$prefix}-item__value__text {
+          line-height: use-height-size(8);
+          border-radius: use-border-radius('md');
+          background-color: use-color-mode('primary', 50)
+        }
+      }
+    }
+
+    &--appearance-filled {
+      margin-inline-end: use-spacing(18);
+
+      .#{$prefix}-item__value__text {
+        padding:  0 use-spacing(3);
       }
     }
 

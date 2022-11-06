@@ -20,6 +20,7 @@ export const FilterItem = forwardRef<HTMLDivElement | null, FilterProps>(
       prefixCls = FILTER_ITEM_PREFIX,
       className,
       children,
+      appearance = 'link',
       label,
       labelWidth = 80,
       showUnderline = false,
@@ -65,14 +66,18 @@ export const FilterItem = forwardRef<HTMLDivElement | null, FilterProps>(
 
             const cls = cx(
               `${prefixCls}__value`,
+              `${prefixCls}__value--appearance-${appearance}`,
               checked && `${prefixCls}__value--active`,
-              checked && showUnderline && `${prefixCls}__value--active-underline`,
+              checked &&
+                showUnderline &&
+                appearance === 'link' &&
+                `${prefixCls}__value--active-underline`,
               option.disabled && `${prefixCls}__value--disabled`
             )
 
             return (
               <li key={option.id} className={cls} onClick={() => onItemSelect(option)}>
-                {option.title}
+                <div className={`${prefixCls}__value__text`}>{option.title}</div>
               </li>
             )
           })}
@@ -83,6 +88,10 @@ export const FilterItem = forwardRef<HTMLDivElement | null, FilterProps>(
 )
 
 export interface FilterProps extends HiBaseHTMLProps<'div'> {
+  /**
+   * 筛选表头选择时形状
+   */
+  appearance?: 'link' | 'filled'
   /**
    * 筛选标题
    */
