@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import request from '../request'
-import { getFileType } from '../utils'
+import { getFileItems, getFileType } from '../utils'
 import { uuid } from '@hi-ui/use-id'
 
 // import Modal from '../../modal'
@@ -69,7 +69,7 @@ const useUpload = ({
       const newFileList = [...fileListRef.current]
       file.uploadState = 'success'
       delete file.abort
-      const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
+      const idx = fileListRef.current.findIndex((item) => item.fielId === file.fielId)
       const result: boolean | Promise<boolean> | undefined | void =
         onChange && onChange(file, newFileList, body)
       // 处理如果onChange return false 的时候需要删除该文件
@@ -102,7 +102,7 @@ const useUpload = ({
     (file: UploadFileItem, event: ProgressEvent<EventTarget>, percent: number) => {
       const newFileList = [...fileListRef.current]
       file.progressNumber = percent
-      const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
+      const idx = fileListRef.current.findIndex((item) => item.fielId === file.fielId)
       newFileList.splice(idx, 1, file)
       fileListRef.current = newFileList
       updateFileList(fileListRef.current)
@@ -114,7 +114,7 @@ const useUpload = ({
     (file: UploadFileItem, event: ProgressEvent<EventTarget>, body?: Object | undefined) => {
       const newFileList = [...fileListRef.current]
       file.uploadState = 'error'
-      const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
+      const idx = fileListRef.current.findIndex((item) => item.fielId === file.fielId)
       const result = onChange && onChange(file, newFileList, body as any)
 
       // 处理如果onChange return false 的时候需要删除该文件
@@ -153,15 +153,17 @@ const useUpload = ({
         if (files) {
           // 最多上传限制数量
           const length = typeof maxCount === 'number' ? maxCount : files.length
+          const items = getFileItems(files)
 
           for (let i = 0; i < length; i++) {
+            const fileItem = items[i]
             if (beforeUpload) {
-              const result = beforeUpload(files[i], fileListRef.current)
+              const result = beforeUpload(fileItem, fileListRef.current)
               if (result === false) {
                 continue
               }
             }
-            if (maxSize && files[i].size > maxSize * 1024) {
+            if (maxSize && fileItem.size > maxSize * 1024) {
               // Modal.confirm({
               //   title: localMap.modalTitle,
               //   content: localMap.modalTiptxt,
@@ -171,10 +173,10 @@ const useUpload = ({
 
               continue
             }
-            const file: UploadFileItem = Object.assign(files[i], {
+            const file: UploadFileItem = Object.assign(fileItem, {
               fielId: uuid(),
               uploadState: 'loading' as 'loading',
-              fileType: getFileType(files[i]),
+              fileType: getFileType(fileItem),
             })
 
             if (file) {
@@ -188,6 +190,7 @@ const useUpload = ({
                 fr.readAsDataURL(file as any)
               }
               _files.push(file)
+              fileListRef.current.unshift(file)
               if (uploadAction) {
                 let _uploadAction =
                   typeof uploadAction === 'string' ? uploadAction : uploadAction(file as any)
@@ -217,9 +220,6 @@ const useUpload = ({
             }
           }
         }
-
-        fileListRef.current = _files.reverse().concat(fileListRef.current)
-        updateFileList(fileListRef.current)
       }
     },
     [

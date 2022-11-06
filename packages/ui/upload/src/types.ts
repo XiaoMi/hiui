@@ -5,7 +5,7 @@ export interface UploadFileItem extends Partial<File> {
   /**
    * 上传文件 id
    */
-  fileId?: string
+  fielId?: string
   /**
    * 文件类型
    */
