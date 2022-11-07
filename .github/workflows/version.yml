@@ -1,0 +1,53 @@
+name: Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Please select the type to publish
+        required: true
+        type: choice
+        options:
+          - alpha
+          - beta
+          - rc
+          - latest
+        default: 'latest'
+
+jobs:
+  update_version:
+    name: Update Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y-%m-%d')"
+
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js 14.17.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.17.x
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: |
+          yarn
+
+      - name: Update Version
+        run: yarn run v
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: Generate version and changelog
+          title: Release
+          body: Update the version and changelog of the package
+          branch: release/${{ steps.date.outputs.today }}
+          base: master
