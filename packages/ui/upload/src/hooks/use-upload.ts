@@ -69,7 +69,7 @@ const useUpload = ({
       const newFileList = [...fileListRef.current]
       file.uploadState = 'success'
       delete file.abort
-      const idx = fileListRef.current.findIndex((item) => item.fielId === file.fielId)
+      const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
       const result: boolean | Promise<boolean> | undefined | void =
         onChange && onChange(file, newFileList, body)
       // 处理如果onChange return false 的时候需要删除该文件
@@ -102,7 +102,7 @@ const useUpload = ({
     (file: UploadFileItem, event: ProgressEvent<EventTarget>, percent: number) => {
       const newFileList = [...fileListRef.current]
       file.progressNumber = percent
-      const idx = fileListRef.current.findIndex((item) => item.fielId === file.fielId)
+      const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
       newFileList.splice(idx, 1, file)
       fileListRef.current = newFileList
       updateFileList(fileListRef.current)
@@ -114,7 +114,7 @@ const useUpload = ({
     (file: UploadFileItem, event: ProgressEvent<EventTarget>, body?: Object | undefined) => {
       const newFileList = [...fileListRef.current]
       file.uploadState = 'error'
-      const idx = fileListRef.current.findIndex((item) => item.fielId === file.fielId)
+      const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
       const result = onChange && onChange(file, newFileList, body as any)
 
       // 处理如果onChange return false 的时候需要删除该文件
@@ -174,7 +174,7 @@ const useUpload = ({
               continue
             }
             const file: UploadFileItem = Object.assign(fileItem, {
-              fielId: uuid(),
+              fileId: uuid(),
               uploadState: 'loading' as 'loading',
               fileType: getFileType(fileItem),
             })
