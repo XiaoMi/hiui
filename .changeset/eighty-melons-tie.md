@@ -1,6 +1,5 @@
 ---
-"@hi-ui/collapse": patch
-"@hi-ui/hiui": patch
+"@hi-ui/collapse": minor
 ---
 
 增加 size api
