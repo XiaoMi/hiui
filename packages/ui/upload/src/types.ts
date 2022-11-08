@@ -46,6 +46,7 @@ export interface UploadRequestOption {
   action: string
   headers?: Record<string, string>
   timeout?: number
+  method?: 'POST' | 'PUT'
 }
 
 export type UploadPhotoSizeEnum = 'sm' | 'md' | 'lg'
@@ -97,6 +98,10 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    * 是否禁用
    */
   disabled?: boolean
+  /**
+   * 设置上传的请求类型
+   */
+  method?: UploadRequestOption['method']
   /**
    * 设置上传的请求头部
    */

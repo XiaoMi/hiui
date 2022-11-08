@@ -44,6 +44,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       customUpload,
       photoSize: photoSizeProp = 'md',
       preview,
+      method,
       ...rest
     },
     ref
@@ -82,6 +83,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onRemove,
       beforeUpload,
       customUpload,
+      method,
     })
 
     const uploadRef = useRef<HTMLLIElement>(null)
