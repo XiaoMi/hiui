@@ -1,8 +1,9 @@
-import { SearchOutlined } from '@hi-ui/icons'
+import { SearchOutlined, FilterOutlined } from '@hi-ui/icons'
 import React from 'react'
 import Table from '../src'
 import Input from '@hi-ui/input'
 import Button from '@hi-ui/button'
+import CheckSelect from '@hi-ui/check-select'
 
 /**
  * @title 自定义过滤
@@ -55,7 +56,25 @@ export const CustomFilter = () => {
       },
     },
     {
-      title: 'Home phone',
+      title: (
+        <div>
+          Home phone&nbsp;
+          <CheckSelect
+            style={{ width: 'auto' }}
+            optionWidth={200}
+            customRender={<FilterOutlined />}
+            searchable
+            data={[
+              { id: '0571-22098909', title: '0571-22098909' },
+              { id: '0575-22098909', title: '0575-22098909' },
+            ]}
+            onChange={(value) => {
+              console.log('value', value)
+              customFilterData(value, 'tel')
+            }}
+          />
+        </div>
+      ),
       colSpan: 2,
       width: 180,
       dataKey: 'tel',
@@ -268,13 +287,14 @@ export const CustomFilter = () => {
   const [data, setData] = React.useState(initialData.current)
 
   const customFilterData = (keyword, label) => {
-    if (keyword) {
-      setData((prev) => {
-        return prev.filter((item) => {
-          console.log('customFilterData', item)
-          return item[label].includes(keyword)
+    if (keyword.length > 0) {
+      setData(
+        initialData.current.filter((item) => {
+          return typeof keyword === 'string'
+            ? item[label].includes(keyword)
+            : keyword.includes(item[label])
         })
-      })
+      )
     } else {
       setData(initialData.current)
     }
