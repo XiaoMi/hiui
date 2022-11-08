@@ -48,8 +48,6 @@ export const CustomRender = () => {
           data={data}
           onChange={console.log}
           customRender={(value) => {
-            console.log('v', value)
-            // return <div>f</div>
             return (
               <Space>
                 <Button>点击选择</Button>
