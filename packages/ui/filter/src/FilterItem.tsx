@@ -49,7 +49,7 @@ export const FilterItem = forwardRef<HTMLDivElement | null, FilterProps>(
       role: 'radiogroup',
       ...rest,
     }
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, `${prefixCls}--appearance-${appearance}`, className)
 
     return (
       <div ref={ref} className={cls} {...rootProps}>
@@ -66,7 +66,6 @@ export const FilterItem = forwardRef<HTMLDivElement | null, FilterProps>(
 
             const cls = cx(
               `${prefixCls}__value`,
-              `${prefixCls}__value--appearance-${appearance}`,
               checked && `${prefixCls}__value--active`,
               checked &&
                 showUnderline &&

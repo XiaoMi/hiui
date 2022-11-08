@@ -71,7 +71,26 @@ export const Appearance = () => {
     <>
       <h1>Appearance</h1>
       <div className="filter-appearance__wrap">
-        <h2>设置选中形状为 filled</h2>
+        <h2>link</h2>
+        <Filter
+          label={['渠道']}
+          appearance="link"
+          defaultValue={[1]}
+          data={dataStore}
+          onChange={(value) => {
+            console.log('value', value)
+          }}
+        />
+        <Filter
+          label={['颜色']}
+          appearance="link"
+          defaultValue={[1]}
+          data={dataColor}
+          onChange={(value) => {
+            console.log('value', value)
+          }}
+        />
+        <h2>filled</h2>
         <Filter
           label={['渠道']}
           appearance="filled"
