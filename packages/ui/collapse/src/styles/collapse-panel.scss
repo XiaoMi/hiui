@@ -34,10 +34,17 @@ $icon-class: #{$panel-prefix}__icon !default;
   &__head {
     display: flex;
     align-items: center;
-    padding: use-spacing(7) use-spacing(10);
     color: use-color('gray', 700);
     font-weight: use-text-weight('semibold');
     cursor: pointer;
+
+    .#{$component-prefix}-collapse--size-md & {
+      padding: use-spacing(7) use-spacing(10);
+    }
+
+    .#{$component-prefix}-collapse--size-lg & {
+      padding: use-spacing(8) use-spacing(10);
+    }
 
     &:focus {
       outline: none;
@@ -48,13 +55,22 @@ $icon-class: #{$panel-prefix}__icon !default;
     flex: 1;
     display: flex;
     align-items: center;
-    font-size: use-text-size('normal');
     justify-content: space-between;
+
+    .#{$component-prefix}-collapse--size-md & {
+      font-size: use-text-size('normal');
+    }
+
+    .#{$component-prefix}-collapse--size-lg & {
+      font-size: use-text-size('lg');
+      line-height: use-text-lineheight('lg');
+    }
   }
 
   .#{$icon-class} {
     font-size: use-text-size('lg');
     color: use-color('gray', 600);
+    line-height: 1em;
 
     // @animation
     transition-property: transform;

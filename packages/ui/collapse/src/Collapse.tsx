@@ -29,11 +29,17 @@ export const Collapse = forwardRef<HTMLDivElement | null, CollapseProps>(
       showArrow = true,
       bordered = true,
       arrowRender,
+      size = 'md',
       ...rest
     },
     ref
   ) => {
-    const cls = cx(prefixCls, bordered && `${prefixCls}--bordered`, className)
+    const cls = cx(
+      prefixCls,
+      `${prefixCls}--size-${size}`,
+      bordered && `${prefixCls}--bordered`,
+      className
+    )
 
     // 兼容受控与非受控
     const [useActiveIds, tryChange] = useUncontrolledState(defaultActiveId, activeId, onChange)
@@ -122,6 +128,10 @@ export interface CollapseProps extends HiBaseHTMLProps<'div'> {
    * 箭头渲染
    */
   arrowRender?: (active: boolean) => React.ReactNode
+  /**
+   * 设置头部大小
+   */
+  size?: 'md' | 'lg'
 }
 
 if (__DEV__) {
