@@ -2658,20 +2658,6 @@
     rollup-plugin-postcss "^4.0.2"
     rollup-plugin-terser "^7.0.2"
 
-"@hi-ui/hi-docs@^4.0.1":
-  version "4.0.1"
-  resolved "https://registry.npmmirror.com/@hi-ui/hi-docs/-/hi-docs-4.0.1.tgz#656903ff952ce526a029c681e77d152db0e1050b"
-  integrity sha512-fdylgS2gZHxEPbqNN9eNTHEYOvzmBK4oE0DRh4bvYGk0MVqdvpKXGzCZMeNHzVuqCvz+gIuwGexalSqM3+3Wcg==
-  dependencies:
-    fast-glob "^3.2.11"
-    fs-extra "^10.0.1"
-    mdast-builder "^1.1.1"
-    react-docgen-typescript "^2.2.2"
-    remark-gfm "^3.0.1"
-    remark-stringify "^10.0.2"
-    string-width "^5.1.2"
-    unified "^10.1.2"
-
 "@hi-ui/icons@^4.0.4":
   version "4.0.4"
   resolved "https://registry.npmmirror.com/@hi-ui/icons/-/icons-4.0.4.tgz#9535d8a2c6b19f5a9971e6e36b050aab5248230c"
