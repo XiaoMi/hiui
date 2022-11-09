@@ -132,12 +132,20 @@ const Table = ({
   const [freezeColumn, setFreezeColumn] = useState(null)
   const [hoverRow, setHoverRow] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [serverTableConfig, setServerTableConfig] = useState({ data: [], columns: [...propsColumns] })
+  const [serverTableConfig, setServerTableConfig] = useState({
+    data: [],
+    columns: [...propsColumns]
+  })
   const [eachRowHeight, setEachRowHeight] = useState({})
   const [hoverColIndex, setHoverColIndex] = useState(null)
   const loadChildren = useRef(null)
-  const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
-
+  const [realColumnsWidth, setRealColumnsWidth] = useState(() => {
+    const _columns = columns.map((c) => c.width || 'auto')
+    if (rowSelection) {
+      _columns.unshift(rowSelection.checkboxColWidth || 50)
+    }
+    return _columns
+  })
   const [expandedTreeRows, _setExpandedTreeRows] = useState([])
 
   const setExpandedTreeRows = useCallback(
@@ -150,14 +158,20 @@ const Table = ({
   )
 
   // 固定列的宽度
-  const [fixedColumnsWidth, setFixedColumnsWidth] = useState({ left: 0, right: 0 })
+  const [fixedColumnsWidth, setFixedColumnsWidth] = useState({
+    left: 0,
+    right: 0
+  })
   // 获取左右侧固定列的信息
   const [realLeftFixedColumns, setRealLeftFixedColumns] = useState([])
   const [realRightFixedColumns, setRealRightFixedColumns] = useState([])
   // 拉平后的数据
   const [flattedColumns, setFlattedColumns] = useState([])
   // scrollLeft
-  const [scrollSize, setScrollSize] = useState({ scrollLeft: 0, scrollRight: 1 })
+  const [scrollSize, setScrollSize] = useState({
+    scrollLeft: 0,
+    scrollRight: 1
+  })
   const firstRowRef = useRef(null)
   // 处理拉平数据
   useEffect(() => {
