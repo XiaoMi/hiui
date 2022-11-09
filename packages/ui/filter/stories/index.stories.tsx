@@ -5,6 +5,7 @@ export * from './basic.stories'
 export * from './cascade.stories'
 export * from './controlled.stories'
 export * from './underlined.stories'
+export * from './appearance.stories'
 
 export default {
   title: 'Data Input/Filter',

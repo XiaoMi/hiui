@@ -17,6 +17,7 @@ export const Filter = forwardRef<HTMLDivElement | null, FilterProps>(
       role = 'menu',
       className,
       children,
+      appearance = 'link',
       showUnderline = false,
       labelWidth,
       ...rest
@@ -39,6 +40,7 @@ export const Filter = forwardRef<HTMLDivElement | null, FilterProps>(
               data={menu.data}
               labelWidth={labelWidth}
               onChange={(_, targetItem) => onItemSelect(targetItem, menu.depth)}
+              appearance={appearance}
               showUnderline={showUnderline}
             />
           )
@@ -49,6 +51,10 @@ export const Filter = forwardRef<HTMLDivElement | null, FilterProps>(
 )
 
 export interface FilterProps extends HiBaseHTMLProps<'div'>, UseFilterProps {
+  /**
+   * 筛选表头选择时形状
+   */
+  appearance?: 'link' | 'filled'
   /**
    * 是否显示下划线
    */
