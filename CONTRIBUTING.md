@@ -134,4 +134,7 @@ yarn run generate-docs
 
 ### 发布流程
 基于 GitHub Action 自动完成 CI/CD <br>
-参考：https://xiaomi.f.mioffice.cn/docs/dock4IiQrCkhRNtwcvv5CHD1C7b#MTZcdg
+1. 修改版本号和 changelog   
+   操作：Actions -> Version -> Run workflow
+2. 自动构建和发版  
+   第1步操作完后会自动生成一个发版的 Pull Request，项目 owner 合并后会自动执行 Release 任务，进行代码构建和发布到 npm
