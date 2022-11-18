@@ -66,6 +66,12 @@ const RangePanel = () => {
   useEffect(() => {
     setCalRenderDates(parseRenderDates(outDate, type))
   }, [outDate, type])
+
+  // 更新视图类型
+  useEffect(() => {
+    setViews([getView(type), getView(type)])
+  }, [type])
+
   /**
    * Header 部分点击事件
    */
