@@ -204,6 +204,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           oData[1] = temp
         }
         changeOutDate(oData)
+        callback(oData)
       }
     }
 
