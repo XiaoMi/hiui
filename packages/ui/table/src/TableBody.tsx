@@ -121,7 +121,13 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                 className: `${prefixCls}-empty-content`,
                 colSpan: columns.length,
                 emptyContent,
-                scrollBodyWidth: scrollBodyElementRef.current?.clientWidth,
+                ...(scrollBodyElementRef.current
+                  ? {
+                      scrollBodyWidth: window
+                        .getComputedStyle(scrollBodyElementRef.current)
+                        .getPropertyValue('width'),
+                    }
+                  : {}),
               })
             )}
           </tbody>
@@ -158,7 +164,7 @@ const renderEmptyContent = ({
   colSpan?: number
   className?: string
   emptyContent: React.ReactNode
-  scrollBodyWidth?: number
+  scrollBodyWidth?: number | string
 }) => {
   return (
     <tr className={className}>

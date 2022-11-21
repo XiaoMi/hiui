@@ -1,6 +1,7 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-table' !default;
+$emptyContent: '#{$component-prefix}-table-empty-content' !default;
 
 .#{$prefix} {
   box-sizing: border-box;
@@ -40,7 +41,7 @@ $prefix: '#{$component-prefix}-table' !default;
     &-md {
       table {
         tbody {
-          & > tr > td {
+          & > tr:not(.#{$emptyContent}) > td {
             padding: use-spacing(7);
           }
         }
@@ -56,7 +57,7 @@ $prefix: '#{$component-prefix}-table' !default;
     &-sm {
       table {
         tbody {
-          & > tr > td {
+          & > tr:not(.#{$emptyContent}) > td {
             padding: use-spacing(5);
           }
         }
@@ -72,7 +73,7 @@ $prefix: '#{$component-prefix}-table' !default;
     &-lg {
       table {
         tbody {
-          & > tr > td {
+          & > tr:not(.#{$emptyContent}) > td {
             padding: use-spacing(9);
           }
         }
@@ -565,7 +566,7 @@ $prefix: '#{$component-prefix}-table' !default;
   }
 }
 
-.#{$prefix}-empty-content {
+.#{$emptyContent} {
   td {
     text-align: center;
     padding: use-spacing(12) 0;
