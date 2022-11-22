@@ -7,6 +7,7 @@ import { EmptyState } from '@hi-ui/empty-state'
 import { TableRow } from './TableRow'
 import { TableRowRequiredProps } from './types'
 import { useTableContext } from './context'
+import VirtualList from 'rc-virtual-list'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -33,6 +34,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       avgRow,
       hasSumColumn,
       sumRow,
+      colWidths,
       virtual,
     } = useTableContext()
 
@@ -55,6 +57,9 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
     // 是否使用虚拟滚动
     const showVirtual = virtual && isArrayNonEmpty(transitionData)
     if (showVirtual) {
+      // TODO： avg和summay row的逻辑
+      let rowWidth = 0
+      colWidths.forEach((width) => (rowWidth += width))
       return (
         <div
           ref={scrollBodyElementRef}
@@ -76,37 +81,29 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
           <div
             ref={measureRowElementRef}
             className="virtual-measure-width-holder"
-            style={{ height: 1, background: 'blue' }}
+            style={{ height: 1, background: 'transparent' }}
           ></div>
-          {transitionData.map((row, index) => {
-            return (
-              <TableRow
-                // key={depth + index}
-                key={row.id}
-                // @ts-ignore
-                rowIndex={index}
-                rowData={row}
-                // expandedTree={isExpandTreeRows(row.id)}
-                {...getRequiredProps(row.id)}
-              />
-            )
-          })}
-          {hasSumColumn ? (
-            <TableRow
-              key={sumRow.id}
-              rowIndex={transitionData.length}
-              rowData={sumRow as any}
-              isSumRow
+          <div style={{ width: rowWidth }}>
+            <VirtualList
+              data={transitionData}
+              height={300}
+              itemHeight={56}
+              itemKey="id"
+              children={(row, index) => {
+                return (
+                  <TableRow
+                    // key={depth + index}
+                    key={row.id}
+                    // @ts-ignore
+                    rowIndex={index}
+                    rowData={row}
+                    // expandedTree={isExpandTreeRows(row.id)}
+                    {...getRequiredProps(row.id)}
+                  />
+                )
+              }}
             />
-          ) : null}
-          {hasAvgColumn ? (
-            <TableRow
-              key={avgRow.id}
-              rowIndex={transitionData.length + 1}
-              rowData={avgRow as any}
-              isAvgRow
-            />
-          ) : null}
+          </div>
         </div>
       )
     }

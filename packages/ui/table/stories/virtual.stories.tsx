@@ -6,25 +6,25 @@ import Table from '../src'
  */
 export const Virtual = () => {
   const MockData: any = []
-  for (let index = 0; index < 10; index++) {
+  for (let index = 0; index < 1000; index++) {
     MockData.push({
       name: '小米-' + index,
       type: '手机',
       size: '6G+64G 幻彩蓝',
       price: '3299.00',
-      price1: '3299.00',
+      operation: '查看',
     })
   }
   const [column] = React.useState([
     {
       title: '商品名',
       dataKey: 'name',
-      width: 120,
+      width: 300,
     },
     {
       title: '品类',
       dataKey: 'type',
-      width: 80,
+      width: 200,
     },
     {
       title: '规格',
@@ -41,13 +41,18 @@ export const Virtual = () => {
       dataKey: 'size',
       width: 150,
     },
+    {
+      title: '操作',
+      dataKey: 'operation',
+      width: 150,
+    },
   ])
   const [data] = React.useState(MockData)
 
   return (
     <>
       <h1>Width for Table</h1>
-      <div className="table-width__wrap" style={{ minWidth: 660, background: '#fff' }}>
+      <div className="table-width__wrap" style={{ width: 800, background: '#fff' }}>
         <Table fieldKey="name" columns={column} data={data} virtual={true} />
       </div>
     </>
