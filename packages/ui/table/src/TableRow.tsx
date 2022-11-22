@@ -50,6 +50,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       onDrop: onDropContext,
       dragRowRef,
       onRow,
+      virtual,
     } = useTableContext()
 
     const { raw: rowData, id: rowId } = rowDataProp
@@ -199,6 +200,29 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       ? onRow(isSumRow || isAvgRow ? null : rowData, rowIndex)
       : EMBED_ON_ROW_PROPS
 
+    if (virtual) {
+      return (
+        <>
+          <div ref={ref} className={cls} key="row" {...rowExtraProps}>
+            {/* 表格列数据 */}
+            {flattedColumnsWithoutChildren.map((column, idx) => {
+              return (
+                <TableCell
+                  key={idx}
+                  column={column}
+                  isSwitcherCol={firstColumn ? firstColumn.id === column.id : false}
+                  rowData={rowDataProp}
+                  rowIndex={rowIndex}
+                  colIndex={idx}
+                  expandedTree={expandedTree}
+                />
+              )
+            })}
+          </div>
+        </>
+      )
+    }
+
     return (
       <>
         <tr
@@ -228,6 +252,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
                 isSwitcherCol={firstColumn ? firstColumn.id === column.id : false}
                 rowData={rowDataProp}
                 rowIndex={rowIndex}
+                colIndex={idx}
                 expandedTree={expandedTree}
               />
             )

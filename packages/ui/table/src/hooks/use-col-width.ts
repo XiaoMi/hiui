@@ -7,16 +7,20 @@ export const useColWidth = ({
   resizable,
   data,
   columns,
+  virtual,
 }: {
   resizable: boolean
   data: TableRowRecord[]
   columns: TableColumnItem[]
+  virtual: boolean
 }) => {
   const measureRowElementRef = useRef<HTMLTableRowElement>(null)
 
   const [colWidths, setColWidths] = React.useState(() => {
     return getGroupItemWidth(columns)
   })
+
+  console.error({ useColWidth: 1, colWidths })
 
   useUpdateEffect(() => {
     setColWidths(getGroupItemWidth(columns))
@@ -31,13 +35,35 @@ export const useColWidth = ({
 
     if (measureRowElement) {
       const resizeObserver = new ResizeObserver(() => {
-        if (measureRowElement.childNodes) {
-          const _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node) => {
-            return (node as HTMLElement).getBoundingClientRect().width || 0
+        if (virtual) {
+          const containerWidth = measureRowElement.clientWidth
+          let totalWidth: number = 0
+          /** 虚拟滚动，需要根据collist的虚拟宽度来计算宽度 */
+          columns.forEach((columnItem: TableColumnItem) => {
+            totalWidth += columnItem.width || 200
           })
+          if (totalWidth < containerWidth) {
+            setColWidths(
+              columns.map((columnItem: TableColumnItem) => {
+                return ((columnItem.width || 200) * containerWidth) / totalWidth
+              })
+            )
+          } else {
+            setColWidths(
+              columns.map((columnItem: TableColumnItem) => {
+                return columnItem.width || 200
+              })
+            )
+          }
+        } else {
+          if (measureRowElement.childNodes) {
+            const _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node) => {
+              return (node as HTMLElement).getBoundingClientRect().width || 0
+            })
 
-          if (_realColumnsWidth.some((width) => width && width > 0)) {
-            setColWidths(_realColumnsWidth)
+            if (_realColumnsWidth.some((width) => width && width > 0)) {
+              setColWidths(_realColumnsWidth)
+            }
           }
         }
       })

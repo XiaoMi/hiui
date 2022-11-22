@@ -6,7 +6,7 @@ import Table from '../src'
  */
 export const Virtual = () => {
   const MockData: any = []
-  for (let index = 0; index < 100; index++) {
+  for (let index = 0; index < 10; index++) {
     MockData.push({
       name: '小米-' + index,
       type: '手机',

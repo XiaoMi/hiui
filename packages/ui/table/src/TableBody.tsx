@@ -33,6 +33,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       avgRow,
       hasSumColumn,
       sumRow,
+      virtual,
     } = useTableContext()
 
     const cls = cx(`${prefixCls}-body`)
@@ -50,6 +51,65 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
         }
       }
     )
+
+    // 是否使用虚拟滚动
+    const showVirtual = virtual && isArrayNonEmpty(transitionData)
+    if (showVirtual) {
+      return (
+        <div
+          ref={scrollBodyElementRef}
+          className={cls}
+          onScroll={onTableBodyScroll}
+          style={{
+            maxHeight: maxHeight !== undefined ? maxHeight : undefined,
+            // maxHeight 小于 table 实际高度才出现纵向滚动条
+            overflowY:
+              maxHeight !== undefined &&
+              bodyTableRef.current &&
+              bodyTableRef.current.clientHeight > maxHeight
+                ? 'scroll'
+                : undefined,
+            // 表格宽度大于div宽度才出现横向滚动条
+            overflowX: canScroll ? 'scroll' : undefined,
+          }}
+        >
+          <div
+            ref={measureRowElementRef}
+            className="virtual-measure-width-holder"
+            style={{ height: 1, background: 'blue' }}
+          ></div>
+          {transitionData.map((row, index) => {
+            return (
+              <TableRow
+                // key={depth + index}
+                key={row.id}
+                // @ts-ignore
+                rowIndex={index}
+                rowData={row}
+                // expandedTree={isExpandTreeRows(row.id)}
+                {...getRequiredProps(row.id)}
+              />
+            )
+          })}
+          {hasSumColumn ? (
+            <TableRow
+              key={sumRow.id}
+              rowIndex={transitionData.length}
+              rowData={sumRow as any}
+              isSumRow
+            />
+          ) : null}
+          {hasAvgColumn ? (
+            <TableRow
+              key={avgRow.id}
+              rowIndex={transitionData.length + 1}
+              rowData={avgRow as any}
+              isAvgRow
+            />
+          ) : null}
+        </div>
+      )
+    }
 
     // 外层增加 div 作为滚动容器
     return (
