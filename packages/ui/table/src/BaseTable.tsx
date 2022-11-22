@@ -49,6 +49,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       stickyFooterBottom = 0,
       fixedColumnTrigger = 'auto',
       emptyContent,
+      virtual,
       ...rest
     },
     ref
@@ -152,7 +153,12 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       }
     })
 
-    const providedValue = useTable({ ...rest, columns: mergedColumns, data })
+    const providedValue = useTable({
+      ...rest,
+      columns: mergedColumns,
+      data,
+      virtual,
+    })
 
     const {
       rootProps,
@@ -198,6 +204,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               hasAvgColumn,
               sumRow,
               hasSumColumn,
+              virtual,
             }}
           >
             <div {...getTableHeaderProps()}>

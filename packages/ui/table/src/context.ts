@@ -13,6 +13,7 @@ const TableContext = createContext<
         hasSumColumn: boolean
         onRow?: (rowData: Record<string, any> | null, index: number) => TableOnRowReturn
         striped: boolean
+        virtual?: boolean
       })
   | null
 >(null)

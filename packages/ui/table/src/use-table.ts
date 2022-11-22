@@ -74,6 +74,7 @@ export const useTable = ({
   rowSelection,
   cellRender,
   fieldKey = 'key',
+  virtual,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -176,6 +177,7 @@ export const useTable = ({
     data,
     columns,
     resizable,
+    virtual: !!virtual,
   })
 
   // ************************ 列冻结 ************************ //
@@ -706,6 +708,16 @@ export interface UseTableProps {
    *  是否能够动态控制列宽
    */
   resizable?: boolean
+  /**
+   * 是否支持虚拟滚动，
+   * TODO：
+   * -可展开的内嵌面板
+   * -支持拖拽排序
+   * -支持列拖拽
+   * -Row：onDoubleClick
+   * -Cell: colspan，rowspan
+   */
+  virtual?: boolean
   /**
    *  加载中状态
    */
