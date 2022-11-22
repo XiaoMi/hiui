@@ -126,6 +126,9 @@ $prefix: '#{$component-prefix}-table' !default;
   &--virtual {
     width: 100%;
     overflow: hidden;
+    .hi-v4-table-cell {
+      box-sizing: border-box;
+    }
   }
 
   &-header {
