@@ -6,7 +6,7 @@ import Table from '../src'
  */
 export const Virtual = () => {
   const MockData: any = []
-  for (let index = 0; index < 1000; index++) {
+  for (let index = 0; index < 10000; index++) {
     MockData.push({
       name: '小米-' + index,
       type: '手机',
@@ -53,7 +53,13 @@ export const Virtual = () => {
     <>
       <h1>Width for Table</h1>
       <div className="table-width__wrap" style={{ width: 800, background: '#fff' }}>
-        <Table fieldKey="name" columns={column} data={data} virtual={true} />
+        <Table
+          fieldKey="name"
+          columns={column}
+          data={data}
+          virtual={true}
+          fixedToColumn={{ right: 'operation' }}
+        />
       </div>
     </>
   )

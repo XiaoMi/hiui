@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -54,17 +54,22 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       }
     )
 
+    const [scrollLeft, setScrollLeft] = useState(0)
     // 是否使用虚拟滚动
     const showVirtual = virtual && isArrayNonEmpty(transitionData)
     if (showVirtual) {
       // TODO： avg和summay row的逻辑
       let rowWidth = 0
       colWidths.forEach((width) => (rowWidth += width))
+      const onVirtualContainerScroll = (evt: any) => {
+        setScrollLeft(scrollBodyElementRef?.current?.scrollLeft || 0)
+        onTableBodyScroll(evt)
+      }
       return (
         <div
           ref={scrollBodyElementRef}
           className={cls}
-          onScroll={onTableBodyScroll}
+          onScroll={onVirtualContainerScroll}
           style={{
             maxHeight: maxHeight !== undefined ? maxHeight : undefined,
             // maxHeight 小于 table 实际高度才出现纵向滚动条
@@ -83,23 +88,26 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             className="virtual-measure-width-holder"
             style={{ height: 1, background: 'transparent' }}
           ></div>
-          <div style={{ width: rowWidth }}>
+          <div ref={bodyTableRef} style={{ height: 1, background: 'blue', width: rowWidth }}></div>
+          <div style={{ width: '100%', position: 'sticky', left: 0 }}>
             <VirtualList
               data={transitionData}
               height={300}
-              itemHeight={56}
+              itemHeight={50}
               itemKey="id"
               children={(row, index) => {
                 return (
-                  <TableRow
-                    // key={depth + index}
-                    key={row.id}
-                    // @ts-ignore
-                    rowIndex={index}
-                    rowData={row}
-                    // expandedTree={isExpandTreeRows(row.id)}
-                    {...getRequiredProps(row.id)}
-                  />
+                  <div style={{ position: 'relative', left: -scrollLeft }}>
+                    <TableRow
+                      // key={depth + index}
+                      key={row.id}
+                      // @ts-ignore
+                      rowIndex={index}
+                      rowData={row}
+                      // expandedTree={isExpandTreeRows(row.id)}
+                      {...getRequiredProps(row.id)}
+                    />
+                  </div>
                 )
               }}
             />
