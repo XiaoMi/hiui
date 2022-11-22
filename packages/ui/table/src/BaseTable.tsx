@@ -183,7 +183,8 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       className,
       hasBorder && `${prefixCls}--bordered`,
       striped && `${prefixCls}--striped`,
-      size && `${prefixCls}--size-${size}`
+      size && `${prefixCls}--size-${size}`,
+      virtual && `${prefixCls}--virtual`
     )
 
     return (

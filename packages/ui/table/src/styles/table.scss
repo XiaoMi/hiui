@@ -123,6 +123,11 @@ $prefix: '#{$component-prefix}-table' !default;
     top: 0;
   }
 
+  &--virtual {
+    width: 100%;
+    overflow: hidden;
+  }
+
   &-header {
     position: relative;
     box-sizing: border-box;
@@ -230,6 +235,9 @@ $prefix: '#{$component-prefix}-table' !default;
           background-color: use-color('gray', 50);
         }
       }
+    }
+    &--virtual {
+      display: flex;
     }
   }
 

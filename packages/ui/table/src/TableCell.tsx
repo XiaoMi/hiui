@@ -50,7 +50,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       isTree,
       cellRender,
       isLoadingTreeNodeId,
-      getColgroupProps,
+      colWidths,
       virtual,
     } = useTableContext()
 
@@ -104,15 +104,18 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
     )
 
     if (virtual) {
+      const width = colWidths[colIndex]
+      const colProps = getStickyColProps(column)
       return (
         <div
           ref={ref}
           key={dataKey}
           className={cls}
-          {...getStickyColProps(column)}
+          {...colProps}
           // 按需绑定函数，避免频繁调用 setState 特别消耗性能
           onMouseEnter={showColHighlight ? () => onHoveredColChange(column, true) : undefined}
           onMouseLeave={showColHighlight ? () => onHoveredColChange(column, false) : undefined}
+          style={{ ...colProps.style, width: width }}
         >
           {/* 渲染树形表格缩进 */}
           {isSwitcherCol && depth > 0 ? renderIndent({ depth, prefixCls }) : null}

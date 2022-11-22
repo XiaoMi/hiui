@@ -50,6 +50,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       onDrop: onDropContext,
       dragRowRef,
       onRow,
+      colWidths,
       virtual,
     } = useTableContext()
 
@@ -189,7 +190,8 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       draggable && dragging && `${prefixCls}-row--dragging`,
       draggable && dragDirection && `${prefixCls}-row--drag-${dragDirection}`,
       isSumRow && `${prefixCls}-row--total`,
-      isAvgRow && `${prefixCls}-row--avg`
+      isAvgRow && `${prefixCls}-row--avg`,
+      virtual && `${prefixCls}-row--virtual`
     )
 
     const firstColumn = flattedColumnsWithoutChildren.find((item) => {
@@ -201,9 +203,17 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       : EMBED_ON_ROW_PROPS
 
     if (virtual) {
+      let rowWidth = 0
+      colWidths.forEach((width) => (rowWidth += width))
       return (
         <>
-          <div ref={ref} className={cls} key="row" {...rowExtraProps}>
+          <div
+            ref={ref}
+            className={cls}
+            key="row"
+            {...rowExtraProps}
+            style={{ ...rowExtraProps.style, width: rowWidth }}
+          >
             {/* 表格列数据 */}
             {flattedColumnsWithoutChildren.map((column, idx) => {
               return (
