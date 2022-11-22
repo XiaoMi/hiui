@@ -65,6 +65,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
         setScrollLeft(scrollBodyElementRef?.current?.scrollLeft || 0)
         onTableBodyScroll(evt)
       }
+      const vMaxHeight = maxHeight || 300
       return (
         <div
           ref={scrollBodyElementRef}
@@ -88,12 +89,15 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             className="virtual-measure-width-holder"
             style={{ height: 1, background: 'transparent' }}
           ></div>
-          <div ref={bodyTableRef} style={{ height: 1, background: 'blue', width: rowWidth }}></div>
+          <div
+            ref={bodyTableRef}
+            style={{ height: 1, background: 'transparent', width: rowWidth }}
+          ></div>
           <div style={{ width: '100%', position: 'sticky', left: 0 }}>
             <VirtualList
               data={transitionData}
-              height={300}
-              itemHeight={50}
+              height={vMaxHeight}
+              itemHeight={10}
               itemKey="id"
               children={(row, index) => {
                 return (

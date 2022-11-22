@@ -212,6 +212,12 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
             className={cls}
             key="row"
             {...rowExtraProps}
+            onDoubleClick={(evt) => {
+              if (rowExtraProps.onDoubleClick) {
+                rowExtraProps.onDoubleClick(evt)
+              }
+              onHighlightedRowChange(rowDataProp, !highlighted)
+            }}
             style={{ ...rowExtraProps.style, width: rowWidth }}
           >
             {/* 表格列数据 */}

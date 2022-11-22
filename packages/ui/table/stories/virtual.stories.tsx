@@ -10,7 +10,9 @@ export const Virtual = () => {
     MockData.push({
       name: '小米-' + index,
       type: '手机',
-      size: '6G+64G 幻彩蓝',
+      size:
+        '6G+64G 幻彩蓝' +
+        (index % 10 === 0 ? 'f地方对了时间放的书法大师到了撒娇发了多少解封了的' : ''),
       price: '3299.00',
       operation: '查看',
     })

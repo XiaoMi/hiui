@@ -36,22 +36,24 @@ export const useColWidth = ({
     if (measureRowElement) {
       const resizeObserver = new ResizeObserver(() => {
         if (virtual) {
+          /** 虚拟滚动时，内容宽度不能用以前table自动渲染的方式获取，需要手动计算 */
+          const columnDefaultWidth = 200
           const containerWidth = measureRowElement.clientWidth
           let totalWidth: number = 0
           /** 虚拟滚动，需要根据collist的虚拟宽度来计算宽度 */
           columns.forEach((columnItem: TableColumnItem) => {
-            totalWidth += columnItem.width || 200
+            totalWidth += columnItem.width || columnDefaultWidth
           })
           if (totalWidth < containerWidth) {
             setColWidths(
               columns.map((columnItem: TableColumnItem) => {
-                return ((columnItem.width || 200) * containerWidth) / totalWidth
+                return ((columnItem.width || columnDefaultWidth) * containerWidth) / totalWidth
               })
             )
           } else {
             setColWidths(
               columns.map((columnItem: TableColumnItem) => {
-                return columnItem.width || 200
+                return columnItem.width || columnDefaultWidth
               })
             )
           }
