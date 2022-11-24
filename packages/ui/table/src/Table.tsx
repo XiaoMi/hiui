@@ -49,7 +49,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     {
       prefixCls = _prefix,
       standard = false,
-      loading = false,
+      loading: loadingProp = false,
       dataSource,
       pagination: paginationProp,
       uniqueId,
@@ -105,7 +105,15 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     /**
      * 数据分页
      */
-    const { mergedData, currentPage, trySetCurrentPage } = useTablePagination({
+    const {
+      loading,
+      mergedData,
+      currentPage,
+      trySetCurrentPage,
+      pageSize,
+      trySetPageSize,
+    } = useTablePagination({
+      loadingProp,
       pagination,
       data,
       dataSource,
@@ -309,18 +317,21 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 setCacheHiddenColKeys={setCacheHiddenColKeys}
               />
             ) : null,
-            footer: hiddenPagination ? null : (
-              <Pagination
-                className={cx(
-                  `${prefixCls}-pagination`,
-                  pagination.placement &&
-                    `${prefixCls}-pagination--placement-${pagination.placement}`
-                )}
-                {...pagination}
-                current={currentPage}
-                onChange={trySetCurrentPage}
-              />
-            ),
+            footer:
+              dataSource || !hiddenPagination ? (
+                <Pagination
+                  className={cx(
+                    `${prefixCls}-pagination`,
+                    pagination.placement &&
+                      `${prefixCls}-pagination--placement-${pagination.placement}`
+                  )}
+                  {...pagination}
+                  current={currentPage}
+                  onChange={trySetCurrentPage}
+                  pageSize={pageSize}
+                  onPageSizeChange={trySetPageSize}
+                />
+              ) : null,
             ...extra,
           }}
         />
@@ -365,7 +376,7 @@ export interface TableProps extends BaseTableProps {
   /**
    *  异步数据源，分页切换时加载数据
    */
-  dataSource?: (current: number) => TableDataSource
+  dataSource?: (current: number, pageSize?: number) => TableDataSource
 }
 
 if (__DEV__) {

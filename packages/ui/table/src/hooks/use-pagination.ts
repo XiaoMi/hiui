@@ -5,12 +5,14 @@ import axios from 'axios'
 
 export const useTablePagination = ({
   pagination,
+  loadingProp,
   data: dataProp,
   dataSource,
 }: {
+  loadingProp?: boolean
   data: object[]
   pagination: PaginationProps
-  dataSource?: (current: number) => any
+  dataSource?: (current: number, pageSize?: number) => any
 }) => {
   const [currentPage, trySetCurrentPage] = useUncontrolledState(
     1,
@@ -18,19 +20,42 @@ export const useTablePagination = ({
     pagination.onChange
   )
 
+  const [pageSize, trySetPageSize] = useUncontrolledState(
+    10,
+    pagination.pageSize,
+    pagination.onPageSizeChange
+  )
+
+  const [internalLoading, setInternalLoading] = React.useState<boolean>(false)
+  const loading = dataSource ? internalLoading : loadingProp
+
   const [remoteTableData, setRemoteTableData] = React.useState<object[]>([])
   const mergedData = dataSource ? remoteTableData : dataProp
 
   // 内置远程数据配置 table，包括 data，pagination
   React.useEffect(() => {
     if (dataSource) {
-      const requestConfig = dataSource(currentPage)
+      const requestConfig = dataSource(currentPage, pageSize)
 
-      axios(requestConfig).then((res) => {
-        setRemoteTableData(res.data)
-      })
+      setInternalLoading(true)
+
+      axios(requestConfig)
+        .then((res) => {
+          setRemoteTableData(res.data)
+        })
+        .finally(() => {
+          setInternalLoading(false)
+        })
     }
-  }, [dataSource, currentPage])
+  }, [currentPage, pageSize])
 
-  return { mergedData, pagination, currentPage, trySetCurrentPage }
+  return {
+    mergedData,
+    pagination,
+    currentPage,
+    trySetCurrentPage,
+    pageSize,
+    trySetPageSize,
+    loading,
+  }
 }
