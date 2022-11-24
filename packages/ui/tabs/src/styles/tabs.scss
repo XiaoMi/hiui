@@ -150,6 +150,14 @@ $prefix: '#{$component-prefix}-tabs' !default;
       transition-duration: use-motion-duration('slow');
       transition-timing-function: use-motion-bezier('normal');
       will-change: transform;
+
+      .#{$prefix}__list--placement-vertical > .#{$prefix}__list--inner > & {
+        flex-direction: column;
+      }
+    }
+
+    &--placement-vertical {
+      display: inline-flex;
     }
   }
 

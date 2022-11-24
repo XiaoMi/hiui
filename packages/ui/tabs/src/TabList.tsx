@@ -173,7 +173,12 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     return (
       <div
         style={style}
-        className={cx(`${prefixCls}__list`, { [`${prefixCls}__list--${type}`]: type }, className)}
+        className={cx(
+          `${prefixCls}__list`,
+          `${prefixCls}__list--placement-${direction}`,
+          { [`${prefixCls}__list--${type}`]: type },
+          className
+        )}
         ref={ref}
         {...rest}
       >
