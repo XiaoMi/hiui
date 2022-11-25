@@ -193,7 +193,12 @@ export type TableDataSource = {
   error?: (err: object) => void
   type?: 'GET' | 'POST'
   withCredentials?: boolean
-  transformResponse?: (response: object) => object[]
+  transformResponse?: (
+    response: object
+  ) => {
+    list: object[]
+    total: number
+  }
 }
 
 export interface TablePaginationProps extends PaginationProps {
