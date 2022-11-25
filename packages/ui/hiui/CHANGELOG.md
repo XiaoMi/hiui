@@ -1,5 +1,17 @@
 # @hi-ui/hiui
 
+## 4.1.12
+
+### Patch Changes
+
+- [#2326](https://github.com/XiaoMi/hiui/pull/2326) [`8f89a1cd9`](https://github.com/XiaoMi/hiui/commit/8f89a1cd9f00e768dbf2d3f25207414698a20ac3) Thanks [@zyprepare](https://github.com/zyprepare)! - DatePicker 修复问题:设置 type="weekrange" 时，选择后没有触发 onChange
+
+- [#2324](https://github.com/XiaoMi/hiui/pull/2324) [`d736da9c8`](https://github.com/XiaoMi/hiui/commit/d736da9c8932760053a1cac4c1b727b6cfab036c) Thanks [@zyprepare](https://github.com/zyprepare)! - Tabs 修复单独使用 TabList 时,设置 placement="vertical" 不生效问题
+
+- Updated dependencies [[`8f89a1cd9`](https://github.com/XiaoMi/hiui/commit/8f89a1cd9f00e768dbf2d3f25207414698a20ac3), [`d736da9c8`](https://github.com/XiaoMi/hiui/commit/d736da9c8932760053a1cac4c1b727b6cfab036c)]:
+  - @hi-ui/date-picker@4.0.12
+  - @hi-ui/tabs@4.0.5
+
 ## 4.1.11
 
 ### Patch Changes

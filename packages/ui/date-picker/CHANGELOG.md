@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 4.0.12
+
+### Patch Changes
+
+- [#2326](https://github.com/XiaoMi/hiui/pull/2326) [`8f89a1cd9`](https://github.com/XiaoMi/hiui/commit/8f89a1cd9f00e768dbf2d3f25207414698a20ac3) Thanks [@zyprepare](https://github.com/zyprepare)! - 修复问题:设置 type="weekrange" 时，选择后没有触发 onChange
+
 ## 4.0.11
 
 ### Patch Changes
