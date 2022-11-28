@@ -33,26 +33,51 @@ const Time = ({ date, onChange, timeRangePanelType, startDate, currentDate }) =>
       if (timeRangePanelType === 'right') {
         const { hour, minute, second } = deconstructDate(startDate)
         const { hour: endHour, minute: endMinute } = date ? deconstructDate(date) : deconstructDate(new Date())
+        const dateDiff = moment(date).diff(moment(startDate), 'days')
+        const hourDiff = moment(date).diff(moment(startDate), 'hour')
+        const minuteDiff = moment(date).diff(moment(startDate), 'minutes')
 
-        isDisabled = type === 'hour' && hour > i
-        if (type === 'minute') {
-          if (endHour === hour) {
-            isDisabled = minute > i
-          }
-          if (endHour < hour) {
-            isDisabled = true
-          }
+        // 不在同一天
+        if (dateDiff !== 0) {
+          isDisabled = dateDiff < 0
         }
-
-        if (type === 'second') {
-          if (endHour === hour) {
-            isDisabled = endMinute === minute && second > i
-            if (endMinute < minute) {
-              isDisabled = true
+        // 在同一天，则比较小时
+        else {
+          if (type === 'hour') {
+            isDisabled = hour > i
+          } else {
+            // 不在同一小时
+            if (hourDiff !== 0) {
+              isDisabled = hourDiff < 0
             }
-          }
-          if (endHour < hour) {
-            isDisabled = true
+            // 在同一小时，则比较分钟
+            else {
+              if (type === 'minute') {
+                if (endHour === hour) {
+                  isDisabled = minute > i
+                }
+                if (endHour < hour) {
+                  isDisabled = true
+                }
+              } else {
+                // 不在同一分
+                if (minuteDiff !== 0) {
+                  isDisabled = minuteDiff < 0
+                }
+                // 在同一分钟，则比较秒
+                else {
+                  if (endHour === hour) {
+                    isDisabled = endMinute === minute && second > i
+                    if (endMinute < minute) {
+                      isDisabled = true
+                    }
+                  }
+                  if (endHour < hour) {
+                    isDisabled = true
+                  }
+                }
+              }
+            }
           }
         }
       }

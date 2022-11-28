@@ -98,7 +98,16 @@ const BasePicker = ({
   const inputChangeEvent = (val, dir) => {
     if (val.isValid()) {
       const oData = _.cloneDeep(outDate)
-      oData[dir] = val
+
+      // 如果是范围的修改，则校准下时间范围的值
+      if (outDate.length === 2) {
+        if ((dir === 0 && moment(val) < moment(outDate[1])) || (dir === 1 && moment(val) > moment(outDate[0]))) {
+          oData[dir] = val
+        }
+      } else {
+        oData[dir] = val
+      }
+
       changeOutDate(oData)
     }
   }

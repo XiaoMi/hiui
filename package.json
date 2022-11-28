@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "3.9.4-beta.0",
+  "version": "3.9.4",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -48,6 +48,9 @@
     "es/lib/*",
     "es/_util/*"
   ],
+  "engines": {
+    "node": "~11.0.0"
+  },
   "peerDependencies": {
     "react": ">=16.13.0",
     "react-dom": ">=16.13.0"
