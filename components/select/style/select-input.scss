@@ -109,25 +109,21 @@
     }
 
     input::-webkit-input-placeholder {
-      font-weight: 300;
       color: use-color('gray-50');
     }
 
     input::-moz-placeholder {
       /* Mozilla Firefox 19+ */
-      font-weight: 300;
       color: use-color('gray-50');
     }
 
     input:-moz-placeholder {
       /* Mozilla Firefox 4 to 18 */
-      font-weight: 300;
       color: use-color('gray-50');
     }
 
     input:-ms-input-placeholder {
       /* Internet Explorer 10-11 */
-      font-weight: 300;
       color: use-color('gray-50');
     }
 
