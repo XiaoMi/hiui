@@ -146,8 +146,8 @@ export const RowSelection = () => {
           fixedToColumn={{ left: 'type' }}
           rowSelection={{
             selectedRowKeys,
-            onChange: (keys, target, shouldChecked) => {
-              console.log(keys, target, shouldChecked)
+            onChange: (keys, target, shouldChecked, rows) => {
+              console.log(keys, target, shouldChecked, rows)
 
               setSelectedRowKeys(keys)
             },
