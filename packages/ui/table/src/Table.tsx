@@ -51,7 +51,6 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       standard = false,
       loading: loadingProp = false,
       dataSource,
-      updateDataStatus,
       pagination: paginationProp,
       uniqueId,
       columns: columnsProp,
@@ -119,7 +118,6 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       pagination,
       data,
       dataSource,
-      updateDataStatus,
     })
 
     // 可能是从 dataSource 中拿到的 total 值，在此更新该值
@@ -386,11 +384,6 @@ export interface TableProps extends BaseTableProps {
    *  异步数据源，分页切换时加载数据
    */
   dataSource?: (current: number, pageSize?: number) => TableDataSource
-  /**
-   *  更新数据状态，更新该值后表格会从第一页重新加载数据
-   *  注：设置了 dataSource 后才会生效
-   */
-  updateDataStatus?: ComponentState
 }
 
 if (__DEV__) {

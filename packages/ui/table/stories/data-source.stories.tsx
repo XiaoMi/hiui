@@ -13,44 +13,47 @@ export const DataSource = () => {
     { title: 'Title', dataKey: 'title' },
   ])
 
-  const [updateVal, setUpdateVal] = React.useState(0)
+  const [searchVal, setSearchVal] = React.useState(0)
 
-  const handleDataSource = React.useCallback((current, pageSize) => {
-    return {
-      url: 'https://mife-gallery.test.mi.com/hiui/stores',
-      params: {
-        page: current,
-        pageSize: pageSize,
-      },
-      transformResponse: (res) => {
-        const data = JSON.parse(res).data
+  const handleDataSource = React.useCallback(
+    (current, pageSize) => {
+      return {
+        url: 'https://mife-gallery.test.mi.com/hiui/stores',
+        params: {
+          page: current,
+          pageSize: pageSize,
+          // searchParams: searchVal,
+        },
+        transformResponse: (res) => {
+          const data = JSON.parse(res).data
 
-        return {
-          list: data.map((item, i) => {
-            return {
-              key: i,
-              title: item.title + current,
-              id: item.id,
-            }
-          }),
-          total: 28,
-        }
-      },
-    }
-  }, [])
+          return {
+            list: data.map((item, i) => {
+              return {
+                key: i,
+                title: item.title + current,
+                id: item.id,
+              }
+            }),
+            total: 28,
+          }
+        },
+      }
+    },
+    [searchVal]
+  )
 
   return (
     <>
       <h1>DataSource for Table</h1>
       <div className="table-data-source__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Space align="center" style={{ marginBottom: '1em' }}>
-          <Button onClick={() => setUpdateVal(updateVal + 1)}>点击更新 updateDataStatus</Button>
+          <Button onClick={() => setSearchVal(searchVal + 1)}>模拟更新查询参数</Button>
           <small>更新后表格会从第一页开始重新加载数据</small>
         </Space>
         <Table
           columns={columns}
           dataSource={handleDataSource}
-          updateDataStatus={updateVal}
           // @ts-ignore
           // pagination={{
           //   showTotal: true,

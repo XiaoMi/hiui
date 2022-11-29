@@ -1,4 +1,4 @@
-import React, { ComponentState } from 'react'
+import React from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { PaginationProps } from '@hi-ui/pagination'
@@ -9,13 +9,11 @@ export const useTablePagination = ({
   loadingProp,
   data: dataProp,
   dataSource,
-  updateDataStatus,
 }: {
   loadingProp?: boolean
   data: object[]
   pagination: PaginationProps
   dataSource?: (current: number, pageSize?: number) => any
-  updateDataStatus?: ComponentState
 }) => {
   const [currentPage, trySetCurrentPage] = useUncontrolledState(
     1,
@@ -62,15 +60,14 @@ export const useTablePagination = ({
 
   React.useEffect(() => {
     getData()
-  }, [currentPage, dataSource, getData, pageSize])
+  }, [currentPage, getData, pageSize])
 
-  // updateDataStatus 修改后更新数据，并重置当前页到第一页
   React.useEffect(() => {
     if (dataSource) {
       // 如果已经在第一页则直接刷新数据，否则重置到第一页
       currentPage === 1 ? getData() : trySetCurrentPage(1)
     }
-  }, [dataSource, getData, trySetCurrentPage, updateDataStatus])
+  }, [dataSource, getData, trySetCurrentPage])
 
   return {
     mergedData,
