@@ -251,7 +251,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           searchable={searchable}
           scrollable={!inVirtual}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
-          loading={loading}
+          loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderDefaultFooter()}
           trigger={
             customRender ? (

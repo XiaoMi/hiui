@@ -281,7 +281,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         // data={mergedData}
         searchable={searchable}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
-        loading={loading}
+        loading={rest.loading !== undefined ? rest.loading : loading}
         trigger={
           <TagInputMock
             // ref={targetElementRef}
