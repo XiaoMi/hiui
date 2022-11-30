@@ -194,7 +194,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           onClose={menuVisibleAction.off}
           searchable={searchable}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
-          loading={loading}
+          loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           scrollable={!inVirtual}
           trigger={

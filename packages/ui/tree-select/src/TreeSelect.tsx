@@ -241,7 +241,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         // data={mergedData}
         searchable={searchable}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
-        loading={loading}
+        loading={rest.loading !== undefined ? rest.loading : loading}
         trigger={
           <MockInput
             // disabled={disabled}
