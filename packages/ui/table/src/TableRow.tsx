@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useTableContext } from './context'
@@ -50,6 +50,8 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       onDrop: onDropContext,
       dragRowRef,
       onRow,
+      colWidths,
+      virtual,
     } = useTableContext()
 
     const { raw: rowData, id: rowId } = rowDataProp
@@ -188,7 +190,8 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       draggable && dragging && `${prefixCls}-row--dragging`,
       draggable && dragDirection && `${prefixCls}-row--drag-${dragDirection}`,
       isSumRow && `${prefixCls}-row--total`,
-      isAvgRow && `${prefixCls}-row--avg`
+      isAvgRow && `${prefixCls}-row--avg`,
+      virtual && `${prefixCls}-row--virtual`
     )
 
     const firstColumn = flattedColumnsWithoutChildren.find((item) => {
@@ -198,6 +201,47 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
     const rowExtraProps = isFunction(onRow)
       ? onRow(isSumRow || isAvgRow ? null : rowData, rowIndex)
       : EMBED_ON_ROW_PROPS
+
+    const rowWidth = useMemo(() => {
+      let tmpWidth = 0
+      colWidths.forEach((width) => (tmpWidth += width))
+      return tmpWidth
+    }, [colWidths])
+
+    if (virtual) {
+      return (
+        <>
+          <div
+            ref={ref}
+            className={cls}
+            key="row"
+            {...rowExtraProps}
+            onDoubleClick={(evt) => {
+              if (rowExtraProps.onDoubleClick) {
+                rowExtraProps.onDoubleClick(evt)
+              }
+              onHighlightedRowChange(rowDataProp, !highlighted)
+            }}
+            style={{ ...rowExtraProps.style, width: rowWidth }}
+          >
+            {/* 表格列数据 */}
+            {flattedColumnsWithoutChildren.map((column, idx) => {
+              return (
+                <TableCell
+                  key={idx}
+                  column={column}
+                  isSwitcherCol={firstColumn ? firstColumn.id === column.id : false}
+                  rowData={rowDataProp}
+                  rowIndex={rowIndex}
+                  colIndex={idx}
+                  expandedTree={expandedTree}
+                />
+              )
+            })}
+          </div>
+        </>
+      )
+    }
 
     return (
       <>
@@ -228,6 +272,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
                 isSwitcherCol={firstColumn ? firstColumn.id === column.id : false}
                 rowData={rowDataProp}
                 rowIndex={rowIndex}
+                colIndex={idx}
                 expandedTree={expandedTree}
               />
             )

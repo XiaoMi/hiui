@@ -124,6 +124,15 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
     top: 0;
   }
 
+  &--virtual {
+    width: 100%;
+    overflow: hidden;
+
+    .hi-v4-table-cell {
+      box-sizing: border-box;
+    }
+  }
+
   &-header {
     position: relative;
     box-sizing: border-box;
@@ -231,6 +240,9 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
           background-color: use-color('gray', 50);
         }
       }
+    }
+    &--virtual {
+      display: flex;
     }
   }
 

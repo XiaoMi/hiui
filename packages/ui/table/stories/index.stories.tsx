@@ -32,6 +32,7 @@ export * from './data-source.stories'
 export * from './setting.stories'
 export * from './loading.stories'
 export * from './empty.stories'
+export * from './virtual.stories'
 
 export default {
   title: 'Data Display/Table',

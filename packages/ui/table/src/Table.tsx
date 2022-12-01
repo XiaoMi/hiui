@@ -62,6 +62,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       fieldKey = 'key',
       extra,
       data = DEFAULT_DATA,
+      virtual,
       ...rest
     },
     ref
@@ -308,6 +309,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           columns={mergedColumns}
           data={mergedData}
           fieldKey={fieldKey}
+          virtual={virtual}
           extra={{
             header: setting ? (
               <TableSettingMenu
