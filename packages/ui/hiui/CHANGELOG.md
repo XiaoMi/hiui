@@ -1,5 +1,34 @@
 # @hi-ui/hiui
 
+## 4.1.14-beta.0
+
+### Patch Changes
+
+- Table 增加虚拟滚动功能
+- f74da3dc8: Table 组件增加 dataSource 功能
+- 更新 Loading Spinner 组件依赖
+- 094ff4861: 更新 Table 组件依赖
+- Updated dependencies [094ff4861]
+- Updated dependencies
+- Updated dependencies [f74da3dc8]
+- Updated dependencies
+- Updated dependencies
+  - @hi-ui/table@4.1.0-beta.0
+  - @hi-ui/spinner@4.0.5-beta.0
+  - @hi-ui/loading@4.1.0-beta.0
+  - @hi-ui/cascader@4.0.10-beta.0
+  - @hi-ui/check-cascader@4.0.10-beta.0
+  - @hi-ui/card@4.0.6-beta.0
+  - @hi-ui/picker@4.0.7-beta.0
+  - @hi-ui/search@4.0.9-beta.0
+  - @hi-ui/check-select@4.1.2-beta.0
+  - @hi-ui/check-tree-select@4.0.11-beta.0
+  - @hi-ui/select@4.0.10-beta.0
+  - @hi-ui/tree-select@4.0.11-beta.0
+  - @hi-ui/pagination@4.0.9-beta.0
+  - @hi-ui/list@4.0.9-beta.0
+  - @hi-ui/transfer@4.0.10-beta.0
+
 ## 4.1.13
 
 ### Patch Changes
