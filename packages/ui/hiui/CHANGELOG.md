@@ -1,5 +1,20 @@
 # @hi-ui/hiui
 
+## 4.1.13
+
+### Patch Changes
+
+- [#2334](https://github.com/XiaoMi/hiui/pull/2334) [`c9e6f4ad6`](https://github.com/XiaoMi/hiui/commit/c9e6f4ad6c1050b86bee5db681214d39830305c7) Thanks [@zyprepare](https://github.com/zyprepare)! - Select CheckSelect CheckTreeSelect TreeSelect 修复问题:设置 loading 无效果
+
+- [#2336](https://github.com/XiaoMi/hiui/pull/2336) [`bb2de106e`](https://github.com/XiaoMi/hiui/commit/bb2de106ee471f47a6f7223b6297e707f42d0278) Thanks [@zyprepare](https://github.com/zyprepare)! - FormList 对外暴露内部 add remove 等方法
+
+- Updated dependencies [[`c9e6f4ad6`](https://github.com/XiaoMi/hiui/commit/c9e6f4ad6c1050b86bee5db681214d39830305c7), [`bb2de106e`](https://github.com/XiaoMi/hiui/commit/bb2de106ee471f47a6f7223b6297e707f42d0278)]:
+  - @hi-ui/check-select@4.1.1
+  - @hi-ui/check-tree-select@4.0.10
+  - @hi-ui/select@4.0.9
+  - @hi-ui/tree-select@4.0.10
+  - @hi-ui/form@4.1.0
+
 ## 4.1.12
 
 ### Patch Changes
