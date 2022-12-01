@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/card",
-  "version": "4.0.5",
+  "version": "4.0.6-beta.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,7 +45,7 @@
   "dependencies": {
     "@hi-ui/classname": "^4.0.1",
     "@hi-ui/env": "^4.0.1",
-    "@hi-ui/loading": "^4.0.4",
+    "@hi-ui/loading": "^4.1.0-beta.0",
     "@hi-ui/type-assertion": "^4.0.1"
   },
   "peerDependencies": {
