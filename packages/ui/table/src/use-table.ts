@@ -177,7 +177,7 @@ export const useTable = ({
     data,
     columns,
     resizable,
-    virtual: !!virtual,
+    virtual: virtual,
   })
 
   // ************************ 列冻结 ************************ //

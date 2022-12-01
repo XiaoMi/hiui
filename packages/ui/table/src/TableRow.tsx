@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useTableContext } from './context'
@@ -202,9 +202,13 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       ? onRow(isSumRow || isAvgRow ? null : rowData, rowIndex)
       : EMBED_ON_ROW_PROPS
 
+    const rowWidth = useMemo(() => {
+      let tmpWidth = 0
+      colWidths.forEach((width) => (tmpWidth += width))
+      return tmpWidth
+    }, [colWidths])
+
     if (virtual) {
-      let rowWidth = 0
-      colWidths.forEach((width) => (rowWidth += width))
       return (
         <>
           <div

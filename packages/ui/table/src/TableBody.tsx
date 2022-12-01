@@ -1,4 +1,5 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef, useCallback, useMemo, useState } from 'react'
+import VirtualList from 'rc-virtual-list'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -7,7 +8,6 @@ import { EmptyState } from '@hi-ui/empty-state'
 import { TableRow } from './TableRow'
 import { TableRowRequiredProps } from './types'
 import { useTableContext } from './context'
-import VirtualList from 'rc-virtual-list'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -57,14 +57,21 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
     const [scrollLeft, setScrollLeft] = useState(0)
     // 是否使用虚拟滚动
     const showVirtual = virtual && isArrayNonEmpty(transitionData)
-    if (showVirtual) {
-      // TODO： avg和summay row的逻辑
-      let rowWidth = 0
-      colWidths.forEach((width) => (rowWidth += width))
-      const onVirtualContainerScroll = (evt: any) => {
+    const rowWidth = useMemo(() => {
+      let tmpWidth = 0
+      colWidths.forEach((width) => (tmpWidth += width))
+      return tmpWidth
+    }, [colWidths])
+
+    const onVirtualContainerScroll = useCallback(
+      (evt: any) => {
         setScrollLeft(scrollBodyElementRef?.current?.scrollLeft || 0)
         onTableBodyScroll(evt)
-      }
+      },
+      [scrollBodyElementRef, onTableBodyScroll]
+    )
+    if (showVirtual) {
+      // TODO： avg和summay row的逻辑
       const vMaxHeight = maxHeight || 300
       return (
         <div
@@ -84,11 +91,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             overflowX: canScroll ? 'scroll' : undefined,
           }}
         >
-          <div
-            ref={measureRowElementRef}
-            className="virtual-measure-width-holder"
-            style={{ height: 1, background: 'transparent' }}
-          ></div>
+          <div ref={measureRowElementRef} style={{ height: 1, background: 'transparent' }}></div>
           <div
             ref={bodyTableRef}
             style={{ height: 1, background: 'transparent', width: rowWidth }}

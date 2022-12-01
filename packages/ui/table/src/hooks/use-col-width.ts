@@ -12,7 +12,7 @@ export const useColWidth = ({
   resizable: boolean
   data: TableRowRecord[]
   columns: TableColumnItem[]
-  virtual: boolean
+  virtual?: boolean
 }) => {
   const measureRowElementRef = useRef<HTMLTableRowElement>(null)
 
@@ -45,12 +45,14 @@ export const useColWidth = ({
             totalWidth += columnItem.width || columnDefaultWidth
           })
           if (totalWidth < containerWidth) {
+            // 容器宽度大于设置的宽度总和时，col宽度等比分分配占满容器。
             setColWidths(
               columns.map((columnItem: TableColumnItem) => {
                 return ((columnItem.width || columnDefaultWidth) * containerWidth) / totalWidth
               })
             )
           } else {
+            // 容器宽度小于设置的宽度总和时，col宽度等于设置/默认宽度。
             setColWidths(
               columns.map((columnItem: TableColumnItem) => {
                 return columnItem.width || columnDefaultWidth
