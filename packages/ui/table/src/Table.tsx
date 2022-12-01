@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment, useCallback, useMemo } from 'react'
+import React, { ComponentState, forwardRef, Fragment, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
 import Pagination from '@hi-ui/pagination'
@@ -49,7 +49,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     {
       prefixCls = _prefix,
       standard = false,
-      loading = false,
+      loading: loadingProp = false,
       dataSource,
       pagination: paginationProp,
       uniqueId,
@@ -100,16 +100,31 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       onHiddenColKeysChange,
     })
 
-    const pagination = withDefaultProps(paginationProp, DEFAULT_PAGINATION)
+    let pagination = withDefaultProps(paginationProp, DEFAULT_PAGINATION)
 
     /**
      * 数据分页
      */
-    const { mergedData, currentPage, trySetCurrentPage } = useTablePagination({
+    const {
+      loading,
+      mergedData,
+      currentPage,
+      trySetCurrentPage,
+      pageSize,
+      trySetPageSize,
+      total,
+    } = useTablePagination({
+      loadingProp,
       pagination,
       data,
       dataSource,
     })
+
+    // 可能是从 dataSource 中拿到的 total 值，在此更新该值
+    pagination = {
+      ...pagination,
+      total,
+    }
 
     // 优化数据在第一页且数据一页内时，不展示 pagination 配置项
     const hiddenPagination =
@@ -309,18 +324,21 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 setCacheHiddenColKeys={setCacheHiddenColKeys}
               />
             ) : null,
-            footer: hiddenPagination ? null : (
-              <Pagination
-                className={cx(
-                  `${prefixCls}-pagination`,
-                  pagination.placement &&
-                    `${prefixCls}-pagination--placement-${pagination.placement}`
-                )}
-                {...pagination}
-                current={currentPage}
-                onChange={trySetCurrentPage}
-              />
-            ),
+            footer:
+              dataSource || !hiddenPagination ? (
+                <Pagination
+                  className={cx(
+                    `${prefixCls}-pagination`,
+                    pagination.placement &&
+                      `${prefixCls}-pagination--placement-${pagination.placement}`
+                  )}
+                  {...pagination}
+                  current={currentPage}
+                  onChange={trySetCurrentPage}
+                  pageSize={pageSize}
+                  onPageSizeChange={trySetPageSize}
+                />
+              ) : null,
             ...extra,
           }}
         />
@@ -365,7 +383,7 @@ export interface TableProps extends BaseTableProps {
   /**
    *  异步数据源，分页切换时加载数据
    */
-  dataSource?: (current: number) => TableDataSource
+  dataSource?: (current: number, pageSize?: number) => TableDataSource
 }
 
 if (__DEV__) {

@@ -189,11 +189,17 @@ export type TableDataSource = {
   autoDelayTime?: number
   headers?: object
   data?: object
+  params?: object
   success?: (response: object) => any
   error?: (err: object) => void
   type?: 'GET' | 'POST'
   withCredentials?: boolean
-  transformResponse?: (response: object) => object[]
+  transformResponse?: (
+    response: object
+  ) => {
+    list: object[]
+    total: number
+  }
 }
 
 export interface TablePaginationProps extends PaginationProps {
