@@ -1,5 +1,22 @@
 # @hi-ui/table
 
+## 4.1.0-beta.0
+
+### Minor Changes
+
+- 094ff4861: rowSelection onChange 回调增加已选数据集合参数
+- 增加虚拟滚动功能
+- f74da3dc8: 增加 dataSource 功能
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @hi-ui/spinner@4.0.5-beta.0
+  - @hi-ui/loading@4.1.0-beta.0
+  - @hi-ui/select@4.0.10-beta.0
+  - @hi-ui/pagination@4.0.9-beta.0
+
 ## 4.0.13
 
 ### Patch Changes

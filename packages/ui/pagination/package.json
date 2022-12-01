@@ -48,7 +48,7 @@
     "@hi-ui/env": "^4.0.1",
     "@hi-ui/icons": "^4.0.4",
     "@hi-ui/input": "^4.0.6",
-    "@hi-ui/select": "^4.0.8",
+    "@hi-ui/select": "^4.0.10-beta.0",
     "@hi-ui/type-assertion": "^4.0.1",
     "@hi-ui/use-latest": "^4.0.1",
     "@hi-ui/use-uncontrolled-state": "^4.0.1"
