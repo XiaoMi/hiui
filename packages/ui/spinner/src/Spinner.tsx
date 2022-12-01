@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 
 const SPINNER_PREFIX = getPrefixCls('spinner')
 
@@ -13,10 +13,15 @@ export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
     { prefixCls = SPINNER_PREFIX, role = 'spinner', className, children, size = 14, ...rest },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, typeof size === 'string' && prefixCls + `--size-${size}`)
 
     return (
-      <i ref={ref} className={cls} {...rest} style={{ fontSize: size, ...rest.style }}>
+      <i
+        ref={ref}
+        className={cls}
+        {...rest}
+        style={{ ...(typeof size === 'number' ? { fontSize: size } : {}), ...rest.style }}
+      >
         <svg
           className={`${prefixCls}__icon`}
           viewBox="0 0 18 18"
@@ -39,7 +44,10 @@ export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
 )
 
 export interface SpinnerProps extends HiBaseHTMLProps<'i'> {
-  size?: string
+  /**
+   * 自定义尺寸
+   */
+  size?: number | HiBaseSizeEnum
 }
 
 if (__DEV__) {

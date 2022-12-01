@@ -1,13 +1,27 @@
-@import '~@hi-ui/core-css/lib/index.scss';
+@import "~@hi-ui/core-css/lib/index.scss";
 
-$prefix: '#{$component-prefix}-spinner' !default;
+$prefix: "#{$component-prefix}-spinner" !default;
 
 .#{$prefix} {
   width: 1em;
   height: 1em;
   display: inline-block;
   cursor: default;
-  color: use-color-mode('primary');
+  color: use-color-mode("primary");
+
+  &--size {
+    &-sm {
+      font-size: use-height-size(4);
+    }
+
+    &-md {
+      font-size: use-height-size(6);
+    }
+
+    &-lg {
+      font-size: use-height-size(9);
+    }
+  }
 
   svg.#{$prefix}__icon {
     @keyframes #{$component-prefix}-rotate {
@@ -16,8 +30,8 @@ $prefix: '#{$component-prefix}-spinner' !default;
       }
     }
 
-    width: 0.8rem;
-    height: 0.8rem;
+    width: 1em;
+    height: 1em;
     stroke: none;
     fill: currentColor;
     animation-name: #{$component-prefix}-rotate;

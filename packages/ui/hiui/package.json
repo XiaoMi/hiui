@@ -92,6 +92,7 @@
     "@hi-ui/select": "^4.0.8",
     "@hi-ui/slider": "^4.0.5",
     "@hi-ui/space": "^4.0.6",
+    "@hi-ui/spinner": "^4.0.4",
     "@hi-ui/stepper": "^4.0.4",
     "@hi-ui/svg-icon": "^4.0.4",
     "@hi-ui/switch": "^4.0.6",
