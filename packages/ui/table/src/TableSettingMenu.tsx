@@ -32,6 +32,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
       setHiddenColKeys,
       cacheHiddenColKeys,
       setCacheHiddenColKeys,
+      onSetColKeysChange,
     },
     ref
   ) => {
@@ -71,7 +72,9 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
     const onConfirm = () => {
       // 触发 table 更新列显隐及排序
       setHiddenColKeys(cacheHiddenColKeys)
-      setSortColKeys(cacheSortedCols.map((col) => col.dataKey!))
+      const newSortKeys = cacheSortedCols.map((col) => col.dataKey!)
+      setSortColKeys(newSortKeys)
+      onSetColKeysChange && onSetColKeysChange(newSortKeys, cacheHiddenColKeys)
       menuVisibleAction.off()
     }
 
@@ -129,6 +132,7 @@ export interface TableColumnMenuProps
     UseColSorterReturn,
     Omit<UseColHiddenReturn, 'visibleCols'> {
   prefixCls?: string
+  onSetColKeysChange?: (sortedColKeys: string[], hiddenColKeys: string[]) => void
 }
 
 if (__DEV__) {

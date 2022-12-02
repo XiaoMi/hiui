@@ -123,7 +123,18 @@ export const Setting = () => {
       key: 5,
     },
   ])
-  const [hiddenColKeys, setHiddenColKeys] = React.useState(['type', 'price'])
+  const cacheKey = '_hiuiTableSetStoreKey_'
+  const initStoreInfo: any = localStorage.getItem(cacheKey)
+    ? JSON.parse(localStorage.getItem(cacheKey))
+    : {}
+  const [hiddenColKeys, setHiddenColKeys] = React.useState(initStoreInfo.hiddenColKeys)
+  const [sortedColKeys, setSortedColKeys] = React.useState(initStoreInfo.sortedColKeys)
+  const onSetColKeysChange = (sortedColKeys: string[], hiddenColKeys: string[]) => {
+    console.error('onColKeysChange', { sortedColKeys, hiddenColKeys })
+    setHiddenColKeys(hiddenColKeys)
+    setSortedColKeys(sortedColKeys)
+    localStorage.setItem(cacheKey, JSON.stringify({ hiddenColKeys, sortedColKeys }))
+  }
   const columnsMemo = React.useMemo(() => {
     return [
       {
@@ -236,7 +247,8 @@ export const Setting = () => {
       <div className="table-setting__wrap" style={{ minWidth: 660 }}>
         <Table
           hiddenColKeys={hiddenColKeys}
-          onHiddenColKeysChange={setHiddenColKeys}
+          sortedColKeys={sortedColKeys}
+          onSetColKeysChange={onSetColKeysChange}
           columns={columnsMemo}
           data={dataSource}
           setting

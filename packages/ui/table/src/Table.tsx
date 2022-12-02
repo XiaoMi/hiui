@@ -22,6 +22,7 @@ import { isNullish } from '@hi-ui/type-assertion'
 import { cloneTree, flattenTree } from '@hi-ui/tree-utils'
 import { BaseTable, BaseTableProps } from './BaseTable'
 import { uuid } from './utils'
+import { useColSet } from './hooks/use-col-set'
 
 const _prefix = getPrefixCls('table')
 
@@ -54,10 +55,11 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       pagination: paginationProp,
       uniqueId,
       columns: columnsProp,
-      hiddenColKeys: hiddenColKeysProp,
+      hiddenColKeys: hiddenColKeysPropBeforeVerify,
       onHiddenColKeysChange,
-      sortedColKeys: sortedColKeysProp,
+      sortedColKeys: sortedColKeysPropBeforeVerify,
       onSortedColKeysChange,
+      onSetColKeysChange,
       rowSelection,
       fieldKey = 'key',
       extra,
@@ -73,6 +75,12 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     const { setting = false, ...baseTableProps } = tableProps
 
     // ************************ 高级功能 ************************ //
+    // ***根据列字段合并sortedColKeysProp,和hiddenColKeys
+    const { sortedColKeys: sortedColKeysProp, hiddenColKeys: hiddenColKeysProp } = useColSet({
+      columns: columnsProp,
+      sortedColKeys: sortedColKeysPropBeforeVerify,
+      hiddenColKeys: hiddenColKeysPropBeforeVerify,
+    })
 
     /**
      * 列排序
@@ -324,6 +332,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 setHiddenColKeys={setHiddenColKeys}
                 cacheHiddenColKeys={cacheHiddenColKeys}
                 setCacheHiddenColKeys={setCacheHiddenColKeys}
+                onSetColKeysChange={onSetColKeysChange}
               />
             ) : null,
             footer:
@@ -378,6 +387,12 @@ export interface TableProps extends BaseTableProps {
    *  列排序设置时回调
    */
   onSortedColKeysChange?: (sortedColKeys: string[]) => void
+
+  /**
+   *  列设置时回调
+   */
+  onSetColKeysChange?: (sortedColKeys: string[], hiddenColKeys: string[]) => void
+
   /**
    *  表格分页配置项
    */
