@@ -1,5 +1,13 @@
 # @hi-ui/hiui
 
+## 4.1.14-beta.1
+
+### Patch Changes
+
+- Table 优化 setting 设置
+- Updated dependencies
+  - @hi-ui/table@4.1.0-beta.1
+
 ## 4.1.14-beta.0
 
 ### Patch Changes
