@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 4.1.0-beta.2
+
+### Patch Changes
+
+- ec96a225e: 优化 setting 设置
+
 ## 4.1.0-beta.1
 
 ### Patch Changes
