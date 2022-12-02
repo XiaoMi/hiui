@@ -1,7 +1,7 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@2.2.0/schema.json",
   "changelog": [
-    "@changesets/changelog-github",
+    "@changesets/changelog-git",
     { "repo": "XiaoMi/hiui" }
   ],
   "commit": false,
