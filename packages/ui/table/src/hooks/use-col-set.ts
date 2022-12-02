@@ -12,7 +12,7 @@ export const useColSet = ({
   hiddenColKeys: hiddenColKeysProp,
 }: TableProps) => {
   const isColumnsEqual: boolean = useMemo(() => {
-    console.error({ sortedColKeysProp, columns })
+    // 判断columns和之前的是不是一样的，如果之前columns对不上，那么认为设置数据无效。
     if (!sortedColKeysProp) {
       return true
     }
@@ -36,7 +36,6 @@ export const useColSet = ({
     return true
   }, [columns, sortedColKeysProp])
 
-  console.error({ isColumnsEqual })
   return {
     sortedColKeys: isColumnsEqual ? sortedColKeysProp : undefined,
     hiddenColKeys: isColumnsEqual ? hiddenColKeysProp : undefined,
