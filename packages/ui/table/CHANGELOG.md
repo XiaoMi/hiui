@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 4.1.0-beta.1
+
+### Patch Changes
+
+- 优化 setting 设置
+
 ## 4.1.0-beta.0
 
 ### Minor Changes
