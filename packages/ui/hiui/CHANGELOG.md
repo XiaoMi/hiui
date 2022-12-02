@@ -1,5 +1,13 @@
 # @hi-ui/hiui
 
+## 4.1.14-beta.2
+
+### Patch Changes
+
+- ec96a225e: Table 优化 setting 设置
+- Updated dependencies [ec96a225e]
+  - @hi-ui/table@4.1.0-beta.2
+
 ## 4.1.14-beta.1
 
 ### Patch Changes
