@@ -38,7 +38,7 @@ export const Render = () => {
             field="testInput2"
             valueType="string"
             label="密码"
-            contentPosition="center"
+            contentPosition="bottom"
             render={(props) => {
               return (
                 <div>

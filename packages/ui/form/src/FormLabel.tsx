@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef, ReactNode, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useFormContext } from './context'
@@ -34,6 +34,7 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     showColon = showColonContext,
     contentPosition = contentPositionContext,
     labelPlacement = labelPlacementContext,
+    formMessage,
     ...rest
   } = props
 
@@ -55,12 +56,12 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
   // 指定子元素位置
   const contentPositionMemo = useMemo(() => {
     switch (contentPosition) {
-      case 'center':
-        return 'center'
+      case 'top':
+        return 'flex-start'
       case 'bottom':
         return 'flex-end'
       default:
-        return 'flex-start'
+        return 'center'
     }
   }, [contentPosition])
 
@@ -75,21 +76,24 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     // validating && `${prefixCls}--validating`
   )
 
-  const style = { ...styleProp, alignItems: contentPositionMemo }
+  const style = { ...styleProp }
 
   return (
     <div ref={ref} role={role} className={cls} style={style} {...rest}>
-      {label ? (
-        <label className={`${prefixCls}__text`} style={{ width: labelWidth }}>
-          {label}
-          {colon}
-        </label>
-      ) : (
-        <span className={`${prefixCls}__indent`} style={{ width: labelWidth }} />
-      )}
-      <div className={`${prefixCls}__control`} style={{ width: controlWidth }}>
-        {children}
+      <div className={`${prefixCls}__content`} style={{ alignItems: contentPositionMemo }}>
+        {label ? (
+          <label className={`${prefixCls}__content__text`} style={{ width: labelWidth }}>
+            {label}
+            {colon}
+          </label>
+        ) : (
+          <span className={`${prefixCls}__content__indent`} style={{ width: labelWidth }} />
+        )}
+        <div className={`${prefixCls}__content__control`} style={{ width: controlWidth }}>
+          {children}
+        </div>
       </div>
+      <div style={{ paddingLeft: labelWidth }}>{formMessage}</div>
     </div>
   )
 })
@@ -119,6 +123,10 @@ export interface FormLabelProps extends HiBaseHTMLProps<'div'> {
    * 在 vertical 放置时，label 相对表单控件垂直对齐的方式，优先级低于 Form
    */
   contentPosition?: 'top' | 'center' | 'bottom'
+  /**
+   * 提示信息
+   */
+  formMessage?: ReactNode
 }
 
 if (__DEV__) {
