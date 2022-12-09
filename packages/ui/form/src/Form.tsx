@@ -26,7 +26,7 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
       labelWidth,
       labelPlacement = 'right',
       placement = 'vertical',
-      contentPosition = 'center',
+      contentPosition = 'top',
       showRequiredOnValidateRequired = false,
       showColon = true,
       ...rest

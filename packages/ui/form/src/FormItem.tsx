@@ -38,19 +38,21 @@ export const FormItem: React.FC<FormItemProps> = ({
 
   return (
     <FormLabel {...rest} required={showRequired} className={cx(`${prefixCls}-item`, className)}>
-      <FormField
-        field={field}
-        valueType={valueType}
-        rules={rules}
-        valuePropName={valuePropName}
-        valueChangeFuncPropName={valueChangeFuncPropName}
-        valueDispatchTransform={valueDispatchTransform}
-        valueConnectTransform={valueConnectTransform}
-        validateTrigger={validateTrigger}
-        render={render}
-      >
-        {children}
-      </FormField>
+      <div className={`${prefixCls}-item__control-wrapper`}>
+        <FormField
+          field={field}
+          valueType={valueType}
+          rules={rules}
+          valuePropName={valuePropName}
+          valueChangeFuncPropName={valueChangeFuncPropName}
+          valueDispatchTransform={valueDispatchTransform}
+          valueConnectTransform={valueConnectTransform}
+          validateTrigger={validateTrigger}
+          render={render}
+        >
+          {children}
+        </FormField>
+      </div>
       {/* @ts-ignore */}
       <FormMessage field={field} className={`${prefixCls}-item__message`} />
     </FormLabel>

@@ -40,7 +40,6 @@ $prefix: '#{$component-prefix}-form' !default;
   font-size: use-text-size('normal');
   box-sizing: border-box;
   margin-right: 0;
-  margin-bottom: use-spacing(12);
 
   &__text,
   &__indent {
@@ -124,7 +123,9 @@ $prefix: '#{$component-prefix}-form' !default;
 .#{$prefix}-item {
   position: relative;
 
-  &__message {
-    position: absolute;
+  &__control-wrapper {
+    display: flex;
+    align-items: center;
+    min-height: use-height-size(8);
   }
 }

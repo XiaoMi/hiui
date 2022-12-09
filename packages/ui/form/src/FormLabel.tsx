@@ -55,12 +55,12 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
   // 指定子元素位置
   const contentPositionMemo = useMemo(() => {
     switch (contentPosition) {
-      case 'top':
-        return 'flex-start'
+      case 'center':
+        return 'center'
       case 'bottom':
         return 'flex-end'
       default:
-        return 'center'
+        return 'flex-start'
     }
   }, [contentPosition])
 
