@@ -3,7 +3,7 @@ import Upload from '../src'
 
 /**
  * @title 上传前的处理
- * @desc uploadAction 接收一个函数，返回一个 Promise<string>
+ * @desc uploadAction 接收一个函数，返回一个 Promise
  */
 export const AsyncUploadAction = () => {
   return (

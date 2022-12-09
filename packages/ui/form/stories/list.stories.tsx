@@ -61,6 +61,7 @@ export const List = () => {
                           field={['testList', index, 'username']}
                           valueType="string"
                           label={`材料名称${index + 1}`}
+                          required
                           rules={[
                             {
                               required: true,
