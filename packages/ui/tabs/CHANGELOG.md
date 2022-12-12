@@ -1,5 +1,11 @@
 # @hi-ui/tabs
 
+## 4.0.6
+
+### Patch Changes
+
+- [#2345](https://github.com/XiaoMi/hiui/pull/2345) [`5c1fb516f`](https://github.com/XiaoMi/hiui/commit/5c1fb516f94b6282dcb54907cbcf32cca4e46dbc) Thanks [@zyprepare](https://github.com/zyprepare)! - 修复问题: TabPane 设置 disabled 不生效
+
 ## 4.0.5
 
 ### Patch Changes
