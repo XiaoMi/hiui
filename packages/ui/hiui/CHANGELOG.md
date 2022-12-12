@@ -1,5 +1,20 @@
 # @hi-ui/hiui
 
+## 4.1.14
+
+### Patch Changes
+
+- [#2345](https://github.com/XiaoMi/hiui/pull/2345) [`5c1fb516f`](https://github.com/XiaoMi/hiui/commit/5c1fb516f94b6282dcb54907cbcf32cca4e46dbc) Thanks [@zyprepare](https://github.com/zyprepare)! - Tabs 修复问题: TabPane 设置 disabled 不生效
+
+- [#2347](https://github.com/XiaoMi/hiui/pull/2347) [`1dd3fa9ce`](https://github.com/XiaoMi/hiui/commit/1dd3fa9cee0c408ead0849b9fab3e451bcf3e1f7) Thanks [@zyprepare](https://github.com/zyprepare)! - Form 修复体验问题: 错误提示过长时样式错乱
+
+- [#2351](https://github.com/XiaoMi/hiui/pull/2351) [`d39a3d341`](https://github.com/XiaoMi/hiui/commit/d39a3d34117f7a1d18f4d4ad4046749563dcdd37) Thanks [@zyprepare](https://github.com/zyprepare)! - Tree 增加功能: 自定义搜索中 useTreeSearchProps 中的 filterTree 中的 keyword 支持数组
+
+- Updated dependencies [[`5c1fb516f`](https://github.com/XiaoMi/hiui/commit/5c1fb516f94b6282dcb54907cbcf32cca4e46dbc), [`d39a3d341`](https://github.com/XiaoMi/hiui/commit/d39a3d34117f7a1d18f4d4ad4046749563dcdd37), [`1dd3fa9ce`](https://github.com/XiaoMi/hiui/commit/1dd3fa9cee0c408ead0849b9fab3e451bcf3e1f7)]:
+  - @hi-ui/tabs@4.0.6
+  - @hi-ui/tree@4.1.0
+  - @hi-ui/form@4.1.1
+
 ## 4.1.13
 
 ### Patch Changes

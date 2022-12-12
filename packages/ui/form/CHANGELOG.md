@@ -1,5 +1,11 @@
 # @hi-ui/form
 
+## 4.1.1
+
+### Patch Changes
+
+- [#2347](https://github.com/XiaoMi/hiui/pull/2347) [`1dd3fa9ce`](https://github.com/XiaoMi/hiui/commit/1dd3fa9cee0c408ead0849b9fab3e451bcf3e1f7) Thanks [@zyprepare](https://github.com/zyprepare)! - 修复体验问题: 错误提示过长时样式错乱
+
 ## 4.1.0
 
 ### Minor Changes
