@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { __DEV__ } from '@hi-ui/env'
-import { LocaleProvider, LocaleProviderProps, LocaleExtendsFunc } from '@hi-ui/locale-context'
+import { LocaleProvider, LocaleProviderProps } from '@hi-ui/core'
 import { DesignSystemAccentColorEnum, DesignSystemProps } from './types'
 import { createSystem, extendsTheme } from './theme'
 import { getAccentColorTheme } from './accent-color'
@@ -10,7 +10,7 @@ const PREFIX = 'hi-v4'
 /**
  * TODO: What is Provider
  */
-export const Provider: React.FC<ProviderProps> & { extends: LocaleExtendsFunc } = ({
+export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc } = ({
   children,
   locale,
   languages,
@@ -58,3 +58,5 @@ if (__DEV__) {
 }
 
 Provider.extends = LocaleProvider.extends
+
+type ProviderExtendsFunc = typeof LocaleProvider.extends

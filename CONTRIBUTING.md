@@ -15,12 +15,6 @@
 - stable/2.x
 - stable/1.x
 
-### 特性分支
-
-> 特性版本分支，用于当前最新版本特性的开发管理，bugfix 和 feature 都会率先合并到此分支，同时会定期 PR 到 master 完成正式版本的发布。
-
-- develop
-
 ## Bug & feature
 
 > 我们使用 [Github issues](https://github.com/XiaoMi/hiui/issues) 来追踪 bug 和 feature。
@@ -60,12 +54,6 @@ git checkout -b <BRANCH_NAME>
 yarn
 ```
 
-- lerna 启动
-
-```sh
-yarn bootstrap
-```
-
 - 预编译
 
 ```sh
@@ -76,6 +64,12 @@ yarn build
 
 ```sh
 yarn storybook
+```
+
+- 生成变更记录文件（有组件代码修改时，需要记录变更）
+
+```sh
+yarn cs
 ```
 
 ## 辅助工具
@@ -90,7 +84,7 @@ yarn storybook
 yarn create:pkg ui `component-name`
 ```
 
-2. 创建通用工具函数
+- 创建通用工具函数
 
 > 注意采用小写中划线命名规范
 
@@ -98,7 +92,7 @@ yarn create:pkg ui `component-name`
 yarn create:pkg util `util-name`
 ```
 
-3. 创建自定义 hooks
+- 创建自定义 hooks
 
 > 注意采用小写中划线命名规范
 
@@ -121,25 +115,26 @@ yarn create:pkg hook `hook-name`
 - 给指定包添加依赖包
 
 ```sh
-yarn lerna add @hi-ui/button --scope=@hi-ui/date-picker
+yarn workspace add @hi-ui/date-picker add @hi-ui/button
 ```
 
 - 对指定包执行 npm scripts 相关命令
 
 ```sh
-yarn lerna run build --scope=@hi-ui/date-picker
+yarn turbo run build --filter @hi-ui/date-picker
 
-yarn lerna run test --scope=@hi-ui/date-picker
-```
-
-- 发布
-
-```sh
-yarn run publish:pkg
+yarn turbo run test --filter @hi-ui/date-picker
 ```
 
 ### 文档生成
 
 ```sh
-yarn lerna run test --scope=@hi-ui/hi-docs
+yarn run generate-docs
 ```
+
+### 发布流程
+基于 GitHub Action 自动完成 CI/CD <br>
+1. 修改版本号和 changelog   
+   操作：Actions -> Version -> Run workflow
+2. 自动构建和发版  
+   第1步操作完后会自动生成一个发版的 Pull Request，项目 owner 合并后会自动执行 Release 任务，进行代码构建和发布到 npm

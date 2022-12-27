@@ -66,7 +66,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
         border-radius: use-border-radius('normal');
         transition: all 0.3s;
 
-        &:not(.#{$prefix}__item--active):hover {
+        &:not(:where(.#{$prefix}__item--active, .#{$prefix}__item--disabled)):hover {
           background-color: use-color('gray', 200);
           color: use-color('gray', 500);
         }
@@ -101,7 +101,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
         border-radius: use-border-radius('normal');
         transition: all 0.3s;
 
-        &:not(.#{$prefix}__item--active):hover {
+        &:not(:where(.#{$prefix}__item--active, .#{$prefix}__item--disabled)):hover {
           background-color: use-color('gray', 200);
           color: use-color('gray', 500);
         }
@@ -150,6 +150,14 @@ $prefix: '#{$component-prefix}-tabs' !default;
       transition-duration: use-motion-duration('slow');
       transition-timing-function: use-motion-bezier('normal');
       will-change: transform;
+
+      .#{$prefix}__list--placement-vertical > .#{$prefix}__list--inner > & {
+        flex-direction: column;
+      }
+    }
+
+    &--placement-vertical {
+      display: inline-flex;
     }
   }
 
@@ -247,7 +255,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
           border-radius: use-border-radius('normal');
           transition: all 0.3s;
 
-          &:not(.#{$prefix}__item--active):hover {
+          &:not(:where(.#{$prefix}__item--active, .#{$prefix}__item--disabled)):hover {
             background-color: use-color('gray', 200);
             color: use-color('gray', 500);
           }
@@ -281,7 +289,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
           transition: all 0.3s;
           background: use-color('gray', 50);
 
-          &:not(.#{$prefix}__item--active):hover {
+          &:not(:where(.#{$prefix}__item--active, .#{$prefix}__item--disabled)):hover {
             background-color: use-color('gray', 200);
             color: use-color('gray', 500);
           }
@@ -342,8 +350,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
       border-right: 1px dashed use-color-mode('primary');
     }
 
-    &--disabled {
-      color: use-color('gray', 500) !important;
+    &--disabled, &--disabled .#{$prefix}__close-btn {
+      color: use-color('gray', 400);
       cursor: not-allowed;
     }
 

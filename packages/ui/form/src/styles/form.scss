@@ -36,69 +36,62 @@ $prefix: '#{$component-prefix}-form' !default;
 }
 
 .#{$prefix}-label {
-  display: flex;
   font-size: use-text-size('normal');
   box-sizing: border-box;
   margin-right: 0;
-  margin-bottom: use-spacing(12);
-
-  &__text,
-  &__indent {
-    flex-shrink: 0;
-    box-sizing: border-box;
-    vertical-align: top;
-    color: use-color('gray', 800);
-    overflow-wrap: break-word;
-  }
-
-  &__text {
-    padding-right: use-spacing(6);
-    min-height: use-height-size(8);
-    line-height: use-height-size(8);
-
-    .#{$prefix}-label--placement-left & {
-      text-align: left;
-    }
-
-    .#{$prefix}-label--placement-right & {
-      text-align: right;
-    }
-
-    .#{$prefix}-label--placement-top & {
-      height: 22px;
-      min-height: 22px;
-      line-height: 22px;
-      padding-right: 0;
-      margin-bottom: use-spacing(4);
-    }
-
-    .#{$prefix}-label--required & {
-      &::before {
-        margin-right: use-spacing(2);
-        content: '*';
-        color: use-color-mode('error');
-      }
-    }
-  }
-
-  &--placement-top {
-    text-align: left;
-    flex-direction: column;
-    margin-bottom: use-spacing(12);
-    padding-right: 0;
-  }
 
   &__content {
-    flex: 1;
-    position: relative;
-    vertical-align: top;
-    min-height: use-height-size(8);
-    flex-shrink: 0;
-  }
+    display: flex;
 
-  &__control {
-    // 适应容器 flex 宽度，不被内部撑开
-    min-width: 1px;
+    .#{$prefix}-label--placement-top > & {
+      text-align: left;
+      flex-direction: column;
+      padding-right: 0;
+    }
+
+    &__text,
+    &__indent {
+      flex-shrink: 0;
+      box-sizing: border-box;
+      vertical-align: top;
+      color: use-color('gray', 800);
+      overflow-wrap: break-word;
+    }
+
+    &__text {
+      padding-right: use-spacing(6);
+      min-height: use-height-size(8);
+      line-height: use-height-size(8);
+
+      .#{$prefix}-label--placement-left > .#{$prefix}-label__content > & {
+        text-align: left;
+      }
+
+      .#{$prefix}-label--placement-right > .#{$prefix}-label__content > & {
+        text-align: right;
+      }
+
+      .#{$prefix}-label--placement-top > .#{$prefix}-label__content > & {
+        height: 22px;
+        min-height: 22px;
+        line-height: 22px;
+        padding-right: 0;
+        margin-bottom: use-spacing(4);
+      }
+
+      .#{$prefix}-label--required > .#{$prefix}-label__content > & {
+        &::before {
+          margin-right: use-spacing(2);
+          content: '*';
+          color: use-color-mode('error');
+        }
+      }
+    }
+
+    &__control {
+      // 适应容器 flex 宽度，不被内部撑开
+      min-width: 1px;
+    }
   }
 }
 
@@ -123,8 +116,4 @@ $prefix: '#{$component-prefix}-form' !default;
 
 .#{$prefix}-item {
   position: relative;
-
-  &__message {
-    position: absolute;
-  }
 }

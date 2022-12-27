@@ -34,3 +34,18 @@ export const getFileType = (file: File) => {
   }
   return fileType
 }
+
+export const getFileItems = (fileList: FileList | null) => {
+  if (!fileList) {
+    return []
+  }
+
+  const itemArr = []
+  const len = fileList.length
+
+  for (let i = 0; i < len; i++) {
+    itemArr[i] = fileList[i]
+  }
+
+  return itemArr
+}

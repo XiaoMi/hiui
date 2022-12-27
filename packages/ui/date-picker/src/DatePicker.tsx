@@ -4,6 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { clone as cloneDeep } from '@hi-ui/object-utils'
 import { useLocaleContext } from '@hi-ui/core'
 import moment from 'moment'
+import 'moment/locale/zh-cn'
 import { useDate } from './hooks/useData'
 import useFormat from './hooks/useFormat'
 import useAltData from './hooks/useAltData'
@@ -203,6 +204,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           oData[1] = temp
         }
         changeOutDate(oData)
+        callback(oData)
       }
     }
 
@@ -214,11 +216,18 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         const _dates = cloneDeep(dates)
         let returnDate = {} as any
         let returnDateStr = '' as any
-        if (type.includes('week')) {
+
+        if (type.includes('range') || type === 'timeperiod') {
           returnDate = {
             start: _dates[0]?.toDate(),
             end: _dates[1]?.toDate(),
           }
+          returnDateStr = {
+            start: _dates[0]?.format(realFormat),
+            end: _dates[1]?.format(realFormat),
+          }
+          compareNumber = 2
+        } else if (type.includes('week')) {
           const getWeekString = (disposeDate: moment.Moment | null) => {
             if (disposeDate) {
               return format
@@ -231,22 +240,17 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
               return ''
             }
           }
+
+          returnDate = {
+            start: _dates[0]?.toDate(),
+            end: _dates[1]?.toDate(),
+          }
           returnDateStr = type.includes('range')
             ? {
                 start: getWeekString(_dates[0]),
                 end: getWeekString(_dates[1]),
               }
             : getWeekString(_dates[0])
-        } else if (type.includes('range') || type === 'timeperiod') {
-          returnDate = {
-            start: _dates[0]?.toDate(),
-            end: _dates[1]?.toDate(),
-          }
-          returnDateStr = {
-            start: _dates[0]?.format(realFormat),
-            end: _dates[1]?.format(realFormat),
-          }
-          compareNumber = 2
         } else {
           returnDate = _dates[0]?.toDate()
           returnDateStr = _dates[0]?.format(realFormat)

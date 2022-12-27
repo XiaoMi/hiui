@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import request from '../request'
-import { getFileType } from '../utils'
+import { getFileItems, getFileType } from '../utils'
 import { uuid } from '@hi-ui/use-id'
 
 // import Modal from '../../modal'
@@ -20,6 +20,7 @@ const useUpload = ({
   beforeUpload,
   customUpload,
   maxCount,
+  method = 'POST',
 }: UploadProps): [
   UploadFileItem[],
   (files: HTMLInputElement['files']) => Promise<void>,
@@ -152,15 +153,17 @@ const useUpload = ({
         if (files) {
           // 最多上传限制数量
           const length = typeof maxCount === 'number' ? maxCount : files.length
+          const items = getFileItems(files)
 
           for (let i = 0; i < length; i++) {
+            const fileItem = items[i]
             if (beforeUpload) {
-              const result = beforeUpload(files[i], fileListRef.current)
+              const result = beforeUpload(fileItem, fileListRef.current)
               if (result === false) {
                 continue
               }
             }
-            if (maxSize && files[i].size > maxSize * 1024) {
+            if (maxSize && fileItem.size > maxSize * 1024) {
               // Modal.confirm({
               //   title: localMap.modalTitle,
               //   content: localMap.modalTiptxt,
@@ -170,10 +173,10 @@ const useUpload = ({
 
               continue
             }
-            const file: UploadFileItem = Object.assign(files[i], {
-              fielId: uuid(),
+            const file: UploadFileItem = Object.assign(fileItem, {
+              fileId: uuid(),
               uploadState: 'loading' as 'loading',
-              fileType: getFileType(files[i]),
+              fileType: getFileType(fileItem),
             })
 
             if (file) {
@@ -187,6 +190,7 @@ const useUpload = ({
                 fr.readAsDataURL(file as any)
               }
               _files.push(file)
+              fileListRef.current.unshift(file)
               if (uploadAction) {
                 let _uploadAction =
                   typeof uploadAction === 'string' ? uploadAction : uploadAction(file as any)
@@ -206,7 +210,7 @@ const useUpload = ({
                   withCredentials,
                   headers,
                   data,
-
+                  method,
                   onSuccess,
                   onError: onError,
                   onProgress: onProgress,
@@ -216,24 +220,22 @@ const useUpload = ({
             }
           }
         }
-
-        fileListRef.current = _files.reverse().concat(fileListRef.current)
-        updateFileList(fileListRef.current)
       }
     },
     [
-      onSuccess,
-      onProgress,
-      onError,
+      customUpload,
+      maxCount,
+      beforeUpload,
+      maxSize,
       uploadAction,
       name,
       withCredentials,
       headers,
       data,
-      beforeUpload,
-      customUpload,
-      maxSize,
-      maxCount,
+      method,
+      onSuccess,
+      onError,
+      onProgress,
     ]
   )
 

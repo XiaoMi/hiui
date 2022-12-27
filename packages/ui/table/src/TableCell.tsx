@@ -28,6 +28,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       column,
       rowData,
       rowIndex,
+      colIndex,
       isSwitcherCol = false,
       expandedTree = false,
       // icons
@@ -49,6 +50,8 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       isTree,
       cellRender,
       isLoadingTreeNodeId,
+      colWidths,
+      virtual,
     } = useTableContext()
 
     const { id: dataKey, leftStickyWidth, rightStickyWidth, render: rawRender, raw } = column
@@ -100,6 +103,42 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       isHoveredHighlightCol(dataKey) && `${prefixCls}__col--hovered-highlight`
     )
 
+    if (virtual) {
+      const width = colWidths[colIndex]
+      const colProps = getStickyColProps(column)
+      return (
+        <div
+          ref={ref}
+          key={dataKey}
+          className={cls}
+          {...colProps}
+          // 按需绑定函数，避免频繁调用 setState 特别消耗性能
+          onMouseEnter={showColHighlight ? () => onHoveredColChange(column, true) : undefined}
+          onMouseLeave={showColHighlight ? () => onHoveredColChange(column, false) : undefined}
+          style={{ ...colProps.style, width: width }}
+        >
+          {/* 渲染树形表格缩进 */}
+          {isSwitcherCol && depth > 0 ? renderIndent({ depth, prefixCls }) : null}
+          {/* 渲染树形表格切换器 */}
+          {isSwitcherCol
+            ? renderSwitcher({
+                prefixCls,
+                node: rowData,
+                loading,
+                expanded: expandedTree,
+                expandedIcon,
+                collapsedIcon,
+                leafIcon,
+                onLoadChildren,
+                isTree,
+                onNodeExpand: (shouldExpanded) => onTreeNodeSwitch(rowData, shouldExpanded),
+              })
+            : null}
+          {cellContent.children}
+        </div>
+      )
+    }
+
     return (
       <td
         ref={ref}
@@ -148,6 +187,10 @@ export interface TableCellProps extends HiBaseHTMLProps<'td'> {
    * 表格行数据下标
    */
   rowIndex: number
+  /**
+   * 表格行数据下标
+   */
+  colIndex: number
   /**
    * 是否展开树表格行
    */

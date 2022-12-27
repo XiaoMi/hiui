@@ -432,18 +432,19 @@ export const addChildNodeById = <T extends BaseTreeNodeData>(
 export const addChildrenById = <T extends BaseTreeNode>(
   treeData: T[],
   targetId: React.ReactText,
-  children: T[]
+  children: T[],
+  key?: string
 ) => {
   const { length } = treeData
   for (let i = 0; i < length; ++i) {
     const node = treeData[i]
 
-    if (targetId === node.id) {
+    if (targetId === node[key ?? 'id']) {
       node.children = children
     }
 
     if (node.children) {
-      addChildrenById(node.children, targetId, children)
+      addChildrenById(node.children, targetId, children, key)
     }
   }
 }

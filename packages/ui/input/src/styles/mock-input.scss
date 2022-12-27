@@ -42,13 +42,18 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   &__suffix,
   &__placeholder {
     color: use-color('gray', 400);
+
+    .#{$mock-input-prefix}--appearance-unset & {
+      color: use-color('gray', 500);
+    }
   }
 
-  // &__placeholder {
-  //   // 控制上下间距
-  //   margin-top: use-spacing(1);
-  //   margin-bottom: use-spacing(1);
-  // }
+  &__placeholder {
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   // clear icon
   &__clear {
@@ -162,6 +167,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     &-unset {
       &.#{$mock-input-prefix} {
         width: auto;
+        max-width: 100%;
         justify-content: flex-start;
         border-color: transparent;
 

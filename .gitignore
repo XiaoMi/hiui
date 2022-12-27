@@ -8,6 +8,7 @@ es/
 .idea/
 .settings/
 .tmp/
+.history/
 
 packages/*/test/coverage/
 # Dev dependencies and cache files
@@ -30,6 +31,7 @@ yarn-error.log
 .turbo
 build/**
 dist/**
+dist-github/**
 .next/**
 
 storybook-static

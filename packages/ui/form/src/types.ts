@@ -131,6 +131,29 @@ export interface FormHelpers<T = any> {
   clearFieldValidate: (fields: FormFieldPath) => void
 }
 
+export interface FormListHelper {
+  /**
+   * 动态添加表单
+   */
+  add: (value: any) => void
+  /**
+   * 动态删除表单
+   */
+  remove: (index: number) => void
+  /**
+   * 在 index 之前插入
+   */
+  insertBefore: (index: number, value: any) => void
+  /**
+   * 置换表单值
+   */
+  swap: (aIndex: number, bIndex: number) => void
+  /**
+   * 移动表单值
+   */
+  move: (fromIndex: number, toIndex: number) => void
+}
+
 export type FormFieldPath = (string | number)[] | string | number
 
 export type FormErrorMessage = string

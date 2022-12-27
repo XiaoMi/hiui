@@ -22,14 +22,17 @@ export * from './fixed-header.stories'
 export * from './sticky-header.stories'
 export * from './sticky-footer.stories'
 export * from './table-tree.stories'
+export * from './on-load-children.stories'
 export * from './expanded-render.stories'
 export * from './async-expanded-render.stories'
 export * from './row-selection.stories'
 export * from './merged-cell.stories'
 export * from './pagination.stories'
+export * from './data-source.stories'
 export * from './setting.stories'
 export * from './loading.stories'
 export * from './empty.stories'
+export * from './virtual.stories'
 
 export default {
   title: 'Data Display/Table',

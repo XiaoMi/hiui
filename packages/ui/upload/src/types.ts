@@ -46,6 +46,7 @@ export interface UploadRequestOption {
   action: string
   headers?: Record<string, string>
   timeout?: number
+  method?: 'POST' | 'PUT'
 }
 
 export type UploadPhotoSizeEnum = 'sm' | 'md' | 'lg'
@@ -61,6 +62,10 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    * 接收上传的文件类型， 用逗号隔开的 MIME 类型列表，参考 [MDN-MIME 类型](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_Types)
    */
   accept?: string
+  /**
+   * 上传按钮icon，仅在 type === 'default' 的时候有效
+   */
+  icon?: React.ReactNode
   /**
    * 上传按钮文案，仅在 type === 'default' 的时候有效
    */
@@ -93,6 +98,10 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    * 是否禁用
    */
   disabled?: boolean
+  /**
+   * 设置上传的请求类型
+   */
+  method?: UploadRequestOption['method']
   /**
    * 设置上传的请求头部
    */

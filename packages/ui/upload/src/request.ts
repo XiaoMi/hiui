@@ -48,7 +48,7 @@ export default function upload(option: UploadRequestOption) {
     option.onSuccess(option.file, formatBody(xhr))
   }
 
-  xhr.open('POST', option.action, true)
+  xhr.open(option.method ?? 'POST', option.action, true)
 
   const { timeout } = option
 

@@ -152,6 +152,7 @@ export * from '@hi-ui/space'
 export { default as Space } from '@hi-ui/space'
 
 // export * from '@hi-ui/spinner'
+// export { default as Spinner } from '@hi-ui/spinner'
 
 export * from '@hi-ui/stepper'
 export { default as Stepper } from '@hi-ui/stepper'
@@ -208,3 +209,15 @@ export * from '@hi-ui/zen-mode'
 export { default as ZenMode } from '@hi-ui/zen-mode'
 
 // export * from '@hi-ui/skeleton'
+
+export * from '@hi-ui/scrollbar'
+export { default as Scrollbar } from '@hi-ui/scrollbar'
+
+export * from '@hi-ui/input-group'
+export { default as InputGroup } from '@hi-ui/input-group'
+
+export * from '@hi-ui/anchor'
+export { default as Anchor } from '@hi-ui/anchor'
+
+export * from '@hi-ui/back-top'
+export { default as BackTop } from '@hi-ui/back-top'

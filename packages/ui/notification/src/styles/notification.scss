@@ -40,10 +40,10 @@ $prefix: '#{$component-prefix}-notification' !default;
     display: flex;
     align-items: center;
     margin-right: use-spacing(6);
+    font-size: use-text-size('xxl');
 
     svg {
       flex-shrink: 0;
-      font-size: use-text-size('xxl');
     }
   }
 

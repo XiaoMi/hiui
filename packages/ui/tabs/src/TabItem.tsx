@@ -46,12 +46,13 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
         style={style}
         className={cx(`${prefixCls}__item`, className, {
           [`${prefixCls}__item--active`]: active,
+          [`${prefixCls}__item--disabled`]: disabled,
           [`${prefixCls}__item--${direction}`]: direction,
         })}
         ref={ref}
         draggable={draggable}
         tabIndex={disabled ? 0 : -1}
-        onClick={_onClick}
+        onClick={disabled ? undefined : _onClick}
         onDragStart={(e) => {
           e.stopPropagation()
           e.dataTransfer.setData('tab', JSON.stringify({ tabId, tabTitle }))

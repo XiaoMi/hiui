@@ -5,3 +5,9 @@ $prefix: '#{$component-prefix}-space' !default;
 .#{$prefix} {
   display: inline-flex;
 }
+
+.#{$prefix}--column-block {
+  > .#{$prefix}__item {
+    width: 100%;
+  }
+}

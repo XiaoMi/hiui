@@ -40,7 +40,7 @@ export type TableRowSelection = {
    */
   checkboxColWidth?: number
   /**
-   * 选中的行（受控
+   * 选中的行 ids（受控）
    */
   selectedRowKeys?: React.ReactText[]
   /**
@@ -53,7 +53,8 @@ export type TableRowSelection = {
   onChange?: (
     selectedRowKeys: React.ReactText[],
     targetRow?: object | object[],
-    shouldChecked?: boolean
+    shouldChecked?: boolean,
+    selectedRows?: object[]
   ) => void
   /**
    * 全选配置集合
@@ -188,11 +189,17 @@ export type TableDataSource = {
   autoDelayTime?: number
   headers?: object
   data?: object
+  params?: object
   success?: (response: object) => any
   error?: (err: object) => void
   type?: 'GET' | 'POST'
   withCredentials?: boolean
-  transformResponse?: (response: object) => object[]
+  transformResponse?: (
+    response: object
+  ) => {
+    list: object[]
+    total: number
+  }
 }
 
 export interface TablePaginationProps extends PaginationProps {

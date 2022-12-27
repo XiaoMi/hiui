@@ -192,6 +192,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       enabled: searchModeProp === 'filter',
       data,
       flattedData,
+      fieldNames,
     })
     const highlightSearchStrategy = useHighlightSearch({
       data,
@@ -280,7 +281,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         // data={mergedData}
         searchable={searchable}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
-        loading={loading}
+        loading={rest.loading !== undefined ? rest.loading : loading}
         trigger={
           <TagInputMock
             // ref={targetElementRef}
@@ -315,7 +316,6 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             checkedMode={checkedMode === 'SEPARATE' ? 'SEPARATE' : 'ALL'}
             checkedIds={parsedCheckedIds}
             onCheck={onCheck}
-            // TODO: 支持 fieldNames
             // @ts-ignore
             onLoadChildren={onLoadChildren}
             fieldNames={fieldNames}

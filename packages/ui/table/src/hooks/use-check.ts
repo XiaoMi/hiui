@@ -30,12 +30,39 @@ export const useTableCheck = ({
     rowSelection?.onChange
   )
 
+  // 已选中的行数据集合
+  const checkedRowDataItemsRef = React.useRef<Record<string, any>[]>([])
+  const checkedRowDataItems = checkedRowDataItemsRef.current
+
   // TODO: 暂时不支持正反选
-  const [onCheckedRowKeysChange, isCheckedRowKey] = useCheck({
+  const [handleCheckedRowKeysChange, isCheckedRowKey] = useCheck({
     checkedIds: checkedRowKeys,
-    onCheck: trySetCheckedRowKeys as any,
+    onCheck(checkedRowKeys: any, rowItem: Record<string, any>, checked: boolean) {
+      trySetCheckedRowKeys(checkedRowKeys, rowItem, checked, checkedRowDataItemsRef.current)
+    },
     idFieldName: fieldKey,
   })
+
+  // 选中项变化会触发该函数
+  const onCheckedRowKeysChange = React.useCallback(
+    (rowItem: Record<string, any>, checked: boolean) => {
+      // 记录选中的行数据集合
+      const nextCheckedDataItems = checkedRowDataItems
+
+      if (checked) {
+        if (!nextCheckedDataItems.find((item) => item[fieldKey] === rowItem[fieldKey])) {
+          checkedRowDataItemsRef.current = nextCheckedDataItems.concat(rowItem)
+        }
+      } else {
+        checkedRowDataItemsRef.current = nextCheckedDataItems.filter(
+          (item) => item[fieldKey] !== rowItem[fieldKey]
+        )
+      }
+
+      handleCheckedRowKeysChange(rowItem, checked)
+    },
+    [checkedRowDataItems, fieldKey, handleCheckedRowKeysChange]
+  )
 
   // 判断是否全选
   const [checkedAll, semiChecked] = React.useMemo(() => {

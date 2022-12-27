@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/patches",
-  "version": "4.0.1",
+  "version": "4.0.7",
   "description": "A patch-package for @hi-ui/hiui V4.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -22,7 +22,11 @@
     ".": {
       "require": "./lib/cjs/index.js",
       "default": "./lib/esm/index.js"
-    }
+    },
+    "./lib/v4/index.scss": "./lib/v4/index.scss",
+    "./lib/v4/mixin.scss": "./lib/v4/mixin.scss",
+    "./lib/v4/ui.scss": "./lib/v4/ui.scss",
+    "./lib/v4/layout-ui.scss": "./lib/v4/layout-ui.scss"
   },
   "publishConfig": {
     "access": "public"
@@ -37,7 +41,6 @@
     "prebuild": "yarn clean",
     "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
     "build:cjs": "hi-build ./src/index.ts --format cjs -d ./lib/cjs",
-    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
     "build:copy": "copyfiles -u 2 src/styles/**/*.scss src/styles/**/**/*.scss src/styles/**/**/**/*.scss src/styles/*.scss lib",
     "build": "concurrently yarn:build:*"
   },

@@ -9,7 +9,7 @@ export const Basic = () => {
     <>
       <h1>状态</h1>
       <div className="switch-basic__wrap">
-        <Switch defaultChecked={false} />
+        <Switch defaultChecked />
       </div>
     </>
   )

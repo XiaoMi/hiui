@@ -22,6 +22,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       className,
       children,
       maxCount,
+      icon,
       content,
       disabled,
       multiple,
@@ -43,6 +44,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       actionRender,
+      method,
       ...rest
     },
     ref
@@ -66,6 +68,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onRemove,
       beforeUpload,
       customUpload,
+      method,
     })
 
     return (
@@ -82,7 +85,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
               type="secondary"
               disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
               loading={loading}
-              icon={<UploadOutlined />}
+              icon={icon ?? <UploadOutlined />}
             >
               {content || buttonText}
             </Button>

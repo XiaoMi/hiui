@@ -22,9 +22,11 @@ import { CalendarColInfo } from '../hooks/useCalenderData'
 import { getBelongWeekBoundary } from './week'
 
 const holiday = {
-  PRCHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?',
-  PRCLunar: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCLunar.json?',
-  IndiaHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/IndiaHoliday.json?',
+  PRCHoliday:
+    'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?' + new Date().getFullYear(),
+  PRCLunar: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCLunar.json?' + new Date().getFullYear(),
+  IndiaHoliday:
+    'https://cdn.cnbj1.fds.api.mi-img.com/hiui/IndiaHoliday.json?' + new Date().getFullYear(),
 }
 export const deconstructDate = (original: Date | string | number | null) => {
   const date = moment(original)

@@ -37,7 +37,13 @@ export const FormItem: React.FC<FormItemProps> = ({
   }, [required, showRequiredOnValidateRequired, fieldRules])
 
   return (
-    <FormLabel {...rest} required={showRequired} className={cx(`${prefixCls}-item`, className)}>
+    <FormLabel
+      {...rest}
+      required={showRequired}
+      // @ts-ignore
+      formMessage={<FormMessage field={field} className={`${prefixCls}-item__message`} />}
+      className={cx(`${prefixCls}-item`, className)}
+    >
       <FormField
         field={field}
         valueType={valueType}
@@ -51,8 +57,6 @@ export const FormItem: React.FC<FormItemProps> = ({
       >
         {children}
       </FormField>
-      {/* @ts-ignore */}
-      <FormMessage field={field} className={`${prefixCls}-item__message`} />
     </FormLabel>
   )
 }

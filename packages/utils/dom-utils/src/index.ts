@@ -56,50 +56,6 @@ export const stopEvent = (evt?: React.SyntheticEvent) => {
   evt?.stopPropagation()
 }
 
-// /**
-//  * 获取用于承载组件的容器，将挂载在 body 下面
-//  *
-//  * @param selector 以 `.` 开头的选择器类
-//  * @returns 容器元素
-//  */
-// export const getContainer = (selector: string, options: any = {}) => {
-//   let { tagName = 'div', doc = document, parent } = options
-
-//   let rootElm = doc.querySelector(selector)
-
-//   if (rootElm) return rootElm
-
-//   rootElm = doc.createElement(tagName)
-
-//   if (!rootElm) {
-//     invariant(false, 'The tagName is not a valid html element.')
-//     rootElm = doc.createElement('div')
-//   }
-
-//   rootElm.className = selector.slice(1)
-
-//   if (!parent) {
-//     parent = doc.body
-//   }
-
-//   parent.appendChild(rootElm)
-
-//   return rootElm
-// }
-
-// /**
-//  * 从 DOM 中移除指定的承载容器
-//  *
-//  * @param selector 以 `.` 开头的选择器类
-//  */
-// export const removeContainer = (selector: string, doc = document) => {
-//   const rootElm = doc.querySelector(selector)
-
-//   if (rootElm && rootElm.parentNode) {
-//     rootElm.parentNode.removeChild(rootElm)
-//   }
-// }
-
 export const replaceChildren = (parentNode: HTMLElement, addedNodes: Element | Text) => {
   while (parentNode.lastChild) {
     parentNode.removeChild(parentNode.lastChild)
@@ -149,4 +105,80 @@ export const replaceStyle = (dataKey: string, css: string, dataValue = '') => {
   }
 
   return styleElement
+}
+
+/**
+ * Add DOM Event listeners easily
+ */
+export const addDOMEvent = (
+  target: HTMLElement | Window,
+  eventType: string,
+  callback: (evt: Event) => void,
+  option: boolean | object
+) => {
+  target.addEventListener?.(eventType, callback, option)
+
+  return {
+    remove: () => {
+      target.removeEventListener?.(eventType, callback, option)
+    },
+  }
+}
+
+/**
+ * 获取滚动到左侧的距离
+ */
+export const getScrollLeft = (el?: Window | Element | null | undefined) => {
+  if (!isBrowser) return 0
+  if (el === undefined) {
+    el = window
+  }
+
+  if (!el) return 0
+
+  return (
+    (el === window
+      ? Math.ceil(window.pageXOffset || window.scrollX)
+      : (el as Element).scrollLeft) || 0
+  )
+}
+
+/**
+ * 获取滚动到顶部的距离
+ */
+export const getScrollTop = (el?: Window | Element | null | undefined) => {
+  if (!isBrowser) return 0
+  if (el === undefined) {
+    el = window
+  }
+
+  if (!el) return 0
+
+  return (
+    (el === window ? Math.ceil(window.pageYOffset || window.scrollY) : (el as Element).scrollTop) ||
+    0
+  )
+}
+
+/**
+ * 获取 DOM 元素到顶部的 offsetTop
+ */
+export const getOffsetTop = (
+  element: HTMLElement,
+  container: HTMLElement | Window | null | undefined
+): number => {
+  if (!element.getClientRects().length) return 0
+
+  const rect = element.getBoundingClientRect()
+
+  if (rect.width || rect.height) {
+    if (!container || container === window) {
+      container = element.ownerDocument!.documentElement!
+      return rect.top - container.clientTop
+    }
+
+    return rect.top - (container as HTMLElement).getBoundingClientRect().top
+  }
+
+  return rect.top
 }

@@ -74,6 +74,7 @@ export const useTable = ({
   rowSelection,
   cellRender,
   fieldKey = 'key',
+  virtual,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -119,11 +120,12 @@ export const useTable = ({
   )
 
   // 异步展开子树
-  const [isLoadingTreeNodeId, onTreeNodeSwitch] = useAsyncSwitch(
-    setCacheData,
-    onExpandTreeRowsChange,
-    onLoadChildren
-  )
+  const [isLoadingTreeNodeId, onTreeNodeSwitch] = useAsyncSwitch({
+    setCascaderData: setCacheData,
+    onExpand: onExpandTreeRowsChange,
+    onLoadChildren,
+    fieldKey,
+  })
 
   // ************************ 拖拽 ************************ //
 
@@ -175,6 +177,7 @@ export const useTable = ({
     data,
     columns,
     resizable,
+    virtual: virtual,
   })
 
   // ************************ 列冻结 ************************ //
@@ -250,6 +253,16 @@ export const useTable = ({
         nextColumns,
         scrollWidth ? scrollWidth / lastColumns.length : 100
       )
+
+      if (colWidths) {
+        // colWidths 记录的是最新的列宽，当它有值时，重置一下列宽，否则会导致冻结列动态调整宽度后定位不准
+        nextColumns = nextColumns.map((item, index) => {
+          return {
+            ...item,
+            width: colWidths[index],
+          }
+        })
+      }
     }
 
     let leftColumns = [] as any[]
@@ -532,6 +545,7 @@ export const useTable = ({
 
   return {
     rootProps,
+    scrollWidth,
     activeSorterColumn,
     setActiveSorterColumn,
     activeSorterType,
@@ -694,6 +708,19 @@ export interface UseTableProps {
    *  是否能够动态控制列宽
    */
   resizable?: boolean
+  /**
+   * 是否支持虚拟滚动，
+   * 列宽：column设置的width或200作为宽度，内容区填充不满时，宽度等比分配。
+   * 滚动区域高度：使用maxHeight或300作为虚拟列表高度区域
+   * TODO：
+   * -可展开的内嵌面板
+   * -支持拖拽排序
+   * -支持列拖拽
+   * -Row：onDoubleClick
+   * -Cell: colspan，rowspan
+   * -统计：平局行，总数行
+   */
+  virtual?: boolean
   /**
    *  加载中状态
    */

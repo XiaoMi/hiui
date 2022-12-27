@@ -4,6 +4,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { useCheck as useCheckDefault } from '@hi-ui/use-check'
 import { CheckSelectDataItem, CheckSelectItemEventData, CheckSelectMergedItem } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
+import { useCache } from '@hi-ui/use-cache'
 import { useFlattenData, useData } from './hooks'
 
 const NOOP_ARRAY = [] as []
@@ -21,7 +22,8 @@ export const useCheckSelect = ({
   ...rest
 }: UseCheckSelectProps) => {
   const data = useData({ data: dataProp, children })
-  const flattedData = useFlattenData({ data, fieldNames })
+  const [cacheData, setCacheData] = useCache<any[]>(data)
+  const flattedData = useFlattenData({ data: cacheData, fieldNames })
   const flattedDataRef = useLatestRef(flattedData)
 
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChangeProp)
@@ -31,6 +33,25 @@ export const useCheckSelect = ({
   const usedItemsRef = useRef<any[]>([])
   // 扁平化的选中数据，可能包括异步临时选中缓存数据
   const [checkedItems, setCheckedItems] = useState<CheckSelectItemEventData[]>([])
+
+  /**
+   * 更新缓存的 data 数据
+   * 兼容在搜索异步加载结果的场景时，将选中的项加入到 cacheData 数据中，这样再次打开下拉框时可以显示之前选中的值
+   */
+  const updateCacheData = useCallback(
+    (nextCheckedItems: any[]) => {
+      const newData = [...cacheData]
+
+      nextCheckedItems.forEach((item) => {
+        if (!flattedData.find((dataItem) => dataItem.id === item.id)) {
+          newData.push('raw' in item ? item.raw : item)
+        }
+      })
+
+      setCacheData(newData)
+    },
+    [cacheData, flattedData, setCacheData]
+  )
 
   const proxyTryChangeValue = useCallback(
     (
@@ -63,8 +84,11 @@ export const useCheckSelect = ({
         changedItems.map((item) => ('raw' in item ? item.raw : item)),
         nextCheckedItems.map((item) => ('raw' in item ? item.raw : item))
       )
+
+      // 每次更新 value 时，同步更新下 cacheData
+      updateCacheData(nextCheckedItems)
     },
-    [tryChangeValue, onSelectLatest, flattedDataRef, usedItemsRef]
+    [flattedDataRef, tryChangeValue, updateCacheData, onSelectLatest]
   )
 
   const [onOptionCheck, isCheckedId] = useCheckDefault({

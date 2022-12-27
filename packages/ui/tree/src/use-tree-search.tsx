@@ -105,7 +105,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     defaultExpandAll
   )
 
-  const [searchValue, setSearchValue] = useState('')
+  const [searchValue, setSearchValue] = useState<string | string[]>('')
   const [matchedIds, setMatchedIds] = useState<React.ReactText[]>([])
   const [filteredIds, setFilteredIds] = useState<React.ReactText[]>([])
 
@@ -146,11 +146,15 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
   }
 
   const filterTree = useCallback(
-    (keyword: string) => {
+    (keyword: string | string[], matchKey?: string[]) => {
       setSearchValue(keyword)
 
       // 匹配到搜索的节点，将这些节点进行展开显示，其它均隐藏
-      const matchedNodes = getMatchedNodes(flattedData, keyword)
+      const matchedNodes = getMatchedNodes(
+        flattedData,
+        typeof keyword === 'string' ? [keyword] : keyword,
+        matchKey
+      )
       const filteredNodeIds = getFilteredIds(matchedNodes)
 
       setMatchedIds(matchedNodes.map((v) => v.id))
@@ -173,7 +177,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
   )
 
   const searchInputProps = {
-    value: searchValue,
+    value: Array.isArray(searchValue) ? searchValue.join(',') : searchValue,
     onChange: handleChange,
   }
 
@@ -204,26 +208,45 @@ export interface SearchableTreeProps extends TreeProps {
  */
 const renderTitleWithHighlight = (
   node: TreeNodeEventData,
-  searchValue: string,
+  searchValue: string | string[],
   prefixCls: string
 ) => {
-  if (typeof node.title !== 'string') {
+  const { title } = node
+
+  if (typeof title !== 'string') {
     return
   }
 
-  const index = node.title.indexOf(searchValue)
-  if (index === -1) return node.title
+  const values = Array.isArray(searchValue) ? searchValue : [searchValue]
+  // 记录关键字对应的索引
+  const valuesIndex = []
 
-  const beforeStr = node.title.substr(0, index)
-  const afterStr = node.title.substr(index + searchValue?.length)
+  for (let i = 0, l = values.length; i < l; i++) {
+    const index = title.indexOf(values[i])
+    if (index !== -1) valuesIndex.push(index)
+  }
 
-  return (
-    <span>
-      {beforeStr}
-      <span className={`${prefixCls}__title-text--matched`}>{searchValue}</span>
-      {afterStr}
-    </span>
-  )
+  // 没有匹配到直接返回原始内容
+  if (valuesIndex.length === 0) {
+    return title
+  }
+  // 对匹配到的内容增加高亮样式
+  else {
+    let startIndex = 0
+
+    return valuesIndex.map((index, key) => {
+      const beforeStr = title.substring(startIndex, index)
+      startIndex = index + 1
+
+      return (
+        <span key={key}>
+          {beforeStr}
+          <span className={`${prefixCls}__title-text--matched`}>{title.charAt(index)}</span>
+          {key === valuesIndex.length - 1 && title.length > index && title.substr(startIndex)}
+        </span>
+      )
+    })
+  }
 }
 
 /**
@@ -253,10 +276,17 @@ const getSearchedData = (
 
 const getMatchedNodes = (
   flattedData: FlattedTreeNodeData[],
-  searchValue: string
+  searchValue: string[],
+  matchKey: string[] = ['title']
 ): FlattedTreeNodeData[] => {
   if (!searchValue) return []
-  return flattedData.filter((node) => (node.title as string)?.includes?.(searchValue))
+  return flattedData.filter((node) => {
+    return !!matchKey.find((item) =>
+      searchValue.some((value) =>
+        (node[item as keyof FlattedTreeNodeData] as string)?.includes?.(value)
+      )
+    )
+  })
 }
 
 const getFilteredIds = (matchedNodes: FlattedTreeNodeData[]) => {

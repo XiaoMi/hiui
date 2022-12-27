@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment, useCallback, useMemo } from 'react'
+import React, { ComponentState, forwardRef, Fragment, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
 import Pagination from '@hi-ui/pagination'
@@ -22,6 +22,7 @@ import { isNullish } from '@hi-ui/type-assertion'
 import { cloneTree, flattenTree } from '@hi-ui/tree-utils'
 import { BaseTable, BaseTableProps } from './BaseTable'
 import { uuid } from './utils'
+import { useColSet } from './hooks/use-col-set'
 
 const _prefix = getPrefixCls('table')
 
@@ -49,19 +50,21 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     {
       prefixCls = _prefix,
       standard = false,
-      loading = false,
+      loading: loadingProp = false,
       dataSource,
       pagination: paginationProp,
       uniqueId,
       columns: columnsProp,
-      hiddenColKeys: hiddenColKeysProp,
+      hiddenColKeys: hiddenColKeysPropBeforeVerify,
       onHiddenColKeysChange,
-      sortedColKeys: sortedColKeysProp,
+      sortedColKeys: sortedColKeysPropBeforeVerify,
       onSortedColKeysChange,
+      onSetColKeysChange,
       rowSelection,
       fieldKey = 'key',
       extra,
       data = DEFAULT_DATA,
+      virtual,
       ...rest
     },
     ref
@@ -72,6 +75,12 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     const { setting = false, ...baseTableProps } = tableProps
 
     // ************************ 高级功能 ************************ //
+    // ***根据列字段合并sortedColKeysProp,和hiddenColKeys
+    const { sortedColKeys: sortedColKeysProp, hiddenColKeys: hiddenColKeysProp } = useColSet({
+      columns: columnsProp,
+      sortedColKeys: sortedColKeysPropBeforeVerify,
+      hiddenColKeys: hiddenColKeysPropBeforeVerify,
+    })
 
     /**
      * 列排序
@@ -100,16 +109,31 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       onHiddenColKeysChange,
     })
 
-    const pagination = withDefaultProps(paginationProp, DEFAULT_PAGINATION)
+    let pagination = withDefaultProps(paginationProp, DEFAULT_PAGINATION)
 
     /**
      * 数据分页
      */
-    const { mergedData, currentPage, trySetCurrentPage } = useTablePagination({
+    const {
+      loading,
+      mergedData,
+      currentPage,
+      trySetCurrentPage,
+      pageSize,
+      trySetPageSize,
+      total,
+    } = useTablePagination({
+      loadingProp,
       pagination,
       data,
       dataSource,
     })
+
+    // 可能是从 dataSource 中拿到的 total 值，在此更新该值
+    pagination = {
+      ...pagination,
+      total,
+    }
 
     // 优化数据在第一页且数据一页内时，不展示 pagination 配置项
     const hiddenPagination =
@@ -293,6 +317,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           columns={mergedColumns}
           data={mergedData}
           fieldKey={fieldKey}
+          virtual={virtual}
           extra={{
             header: setting ? (
               <TableSettingMenu
@@ -307,20 +332,24 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 setHiddenColKeys={setHiddenColKeys}
                 cacheHiddenColKeys={cacheHiddenColKeys}
                 setCacheHiddenColKeys={setCacheHiddenColKeys}
+                onSetColKeysChange={onSetColKeysChange}
               />
             ) : null,
-            footer: hiddenPagination ? null : (
-              <Pagination
-                className={cx(
-                  `${prefixCls}-pagination`,
-                  pagination.placement &&
-                    `${prefixCls}-pagination--placement-${pagination.placement}`
-                )}
-                {...pagination}
-                current={currentPage}
-                onChange={trySetCurrentPage}
-              />
-            ),
+            footer:
+              dataSource || !hiddenPagination ? (
+                <Pagination
+                  className={cx(
+                    `${prefixCls}-pagination`,
+                    pagination.placement &&
+                      `${prefixCls}-pagination--placement-${pagination.placement}`
+                  )}
+                  {...pagination}
+                  current={currentPage}
+                  onChange={trySetCurrentPage}
+                  pageSize={pageSize}
+                  onPageSizeChange={trySetPageSize}
+                />
+              ) : null,
             ...extra,
           }}
         />
@@ -358,6 +387,12 @@ export interface TableProps extends BaseTableProps {
    *  列排序设置时回调
    */
   onSortedColKeysChange?: (sortedColKeys: string[]) => void
+
+  /**
+   *  列设置时回调
+   */
+  onSetColKeysChange?: (sortedColKeys: string[], hiddenColKeys: string[]) => void
+
   /**
    *  表格分页配置项
    */
@@ -365,7 +400,7 @@ export interface TableProps extends BaseTableProps {
   /**
    *  异步数据源，分页切换时加载数据
    */
-  dataSource?: (current: number) => TableDataSource
+  dataSource?: (current: number, pageSize?: number) => TableDataSource
 }
 
 if (__DEV__) {

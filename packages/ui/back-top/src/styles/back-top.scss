@@ -1,0 +1,54 @@
+@import "~@hi-ui/core-css/lib/index.scss";
+@import "./status.scss";
+
+$prefix: "#{$component-prefix}-back-top" !default;
+
+.#{$prefix} {
+  position: fixed;
+  right: use-spacing(16);
+  bottom: use-spacing(16);
+  z-index: use-zindex("sticky");
+  display: none;
+  cursor: pointer;
+
+  &--visible {
+    display: block;
+  }
+
+  &__content {
+    box-sizing: border-box;
+    width: use-height-size(10);
+    height: use-height-size(10);
+    box-shadow: use-shadow('lg');
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    flex-shrink: 0;
+
+    transition: background-color use-motion-duration("normal")
+      use-motion-bezier("normal"),
+    border-color use-motion-duration("normal") use-motion-bezier("normal"),
+    box-shadow use-motion-duration("fast") use-motion-bezier("normal"),
+    color use-motion-duration("normal") use-motion-bezier("normal");
+
+    &--shape {
+      &-circle {
+        border-radius: use-border-radius("full");
+      }
+
+      &-square {
+        border-radius: use-border-radius("normal");
+      }
+    }
+
+    @include render-status();
+
+    > svg[class^=hi-v4-icon] {
+      width: use-height-size(5);
+      height: use-height-size(5);
+    }
+  }
+}

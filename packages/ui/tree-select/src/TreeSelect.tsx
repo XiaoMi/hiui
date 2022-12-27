@@ -161,6 +161,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       enabled: searchModeProp === 'filter',
       data,
       flattedData,
+      fieldNames,
     })
     const highlightSearchStrategy = useHighlightSearch({
       data,
@@ -240,7 +241,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         // data={mergedData}
         searchable={searchable}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
-        loading={loading}
+        loading={rest.loading !== undefined ? rest.loading : loading}
         trigger={
           <MockInput
             // disabled={disabled}
@@ -264,8 +265,8 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
             selectable
             selectedId={value}
             onSelect={onSelect}
+            fieldNames={fieldNames}
             // onLoadChildren 缓存数据
-            // TODO: 支持 fieldNames
             // @ts-ignore
             onLoadChildren={onLoadChildren}
             virtual={virtual}
@@ -348,11 +349,8 @@ export interface TreeSelectProps
    */
   onLoadChildren?: (node: TreeNodeEventData) => void | Promise<TreeSelectDataItem[] | void>
   /**
-   * 从远端获取数据，初始时是否自动加载
-   */
-  autoload?: boolean
-  /**
-   * 异步加载数据
+   * 异步加载数据。暂不对外暴露
+   * @private
    */
   dataSource?: UseDataSource<TreeSelectDataItem[]>
   /**

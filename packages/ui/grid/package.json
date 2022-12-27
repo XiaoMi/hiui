@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/grid",
-  "version": "4.0.0",
+  "version": "4.0.5",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -43,9 +43,9 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.0",
-    "@hi-ui/env": "^4.0.0",
-    "@hi-ui/type-assertion": "^4.0.0"
+    "@hi-ui/classname": "^4.0.1",
+    "@hi-ui/env": "^4.0.1",
+    "@hi-ui/type-assertion": "^4.0.1"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.0",
@@ -53,9 +53,9 @@
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^4.0.0",
-    "@hi-ui/core-css": "^4.0.0",
-    "@hi-ui/hi-build": "^4.0.0",
+    "@hi-ui/core": "^4.0.4",
+    "@hi-ui/core-css": "^4.0.1",
+    "@hi-ui/hi-build": "^4.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

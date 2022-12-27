@@ -1,6 +1,7 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-table' !default;
+$emptyContent: '#{$component-prefix}-table-empty-content' !default;
 
 .#{$prefix} {
   box-sizing: border-box;
@@ -40,7 +41,7 @@ $prefix: '#{$component-prefix}-table' !default;
     &-md {
       table {
         tbody {
-          & > tr > td {
+          & > tr:not(.#{$emptyContent}) > td {
             padding: use-spacing(7);
           }
         }
@@ -56,7 +57,7 @@ $prefix: '#{$component-prefix}-table' !default;
     &-sm {
       table {
         tbody {
-          & > tr > td {
+          & > tr:not(.#{$emptyContent}) > td {
             padding: use-spacing(5);
           }
         }
@@ -72,7 +73,7 @@ $prefix: '#{$component-prefix}-table' !default;
     &-lg {
       table {
         tbody {
-          & > tr > td {
+          & > tr:not(.#{$emptyContent}) > td {
             padding: use-spacing(9);
           }
         }
@@ -123,6 +124,15 @@ $prefix: '#{$component-prefix}-table' !default;
     top: 0;
   }
 
+  &--virtual {
+    width: 100%;
+    overflow: hidden;
+
+    .hi-v4-table-cell {
+      box-sizing: border-box;
+    }
+  }
+
   &-header {
     position: relative;
     box-sizing: border-box;
@@ -133,15 +143,17 @@ $prefix: '#{$component-prefix}-table' !default;
       background-clip: padding-box;
 
       &-handle {
+        box-sizing: content-box;
         position: absolute;
         width: 2px;
         height: 100%;
         bottom: 0;
         right: 0;
+        border-left: 2px solid use-color('gray', 50);
         cursor: col-resize;
         z-index: 1;
 
-        &:hover {
+        .#{$prefix}-header__resizable:hover & {
           background-color: use-color-mode('primary');
         }
       }
@@ -228,6 +240,9 @@ $prefix: '#{$component-prefix}-table' !default;
           background-color: use-color('gray', 50);
         }
       }
+    }
+    &--virtual {
+      display: flex;
     }
   }
 
@@ -563,7 +578,7 @@ $prefix: '#{$component-prefix}-table' !default;
   }
 }
 
-.#{$prefix}-empty-content {
+.#{$emptyContent} {
   td {
     text-align: center;
     padding: use-spacing(12) 0;

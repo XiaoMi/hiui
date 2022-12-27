@@ -1,0 +1,144 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-input-group' !default;
+
+.#{$prefix} {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  z-index: 0;
+  vertical-align: middle;
+
+  & > *:not(:last-child) {
+    margin-right: -1px;
+  }
+
+  @mixin first-input() {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  @mixin middle-input() {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  @mixin last-input() {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  & > *,
+  & > .#{$component-prefix}-button,
+  & > .#{$component-prefix}-number-input {
+    &:not(:first-child):not(:last-child) {
+      @include middle-input();
+    }
+
+    &:first-child {
+      @include first-input();
+    }
+
+    &:last-child {
+      @include last-input();
+    }
+  }
+
+  & > .#{$component-prefix}-picker {
+    &:not(:first-child):not(:last-child) {
+      .#{$component-prefix}-mock-input,
+      .#{$component-prefix}-tag-input-mock {
+        @include middle-input();
+      }
+    }
+
+    &:first-child {
+      .#{$component-prefix}-mock-input,
+      .#{$component-prefix}-tag-input-mock {
+        @include first-input();
+      }
+    }
+
+    &:last-child {
+      .#{$component-prefix}-mock-input,
+      .#{$component-prefix}-tag-input-mock {
+        @include last-input();
+      }
+    }
+  }
+
+  & > .#{$component-prefix}-input {
+    &:not(:first-child):not(:last-child) {
+      .#{$component-prefix}-input__inner {
+        @include middle-input();
+      }
+    }
+
+    &:first-child {
+      .#{$component-prefix}-input__inner {
+        @include first-input();
+      }
+    }
+
+    &:last-child {
+      .#{$component-prefix}-input__inner {
+        @include last-input();
+      }
+    }
+  }
+
+  & > .#{$component-prefix}-date-picker {
+    &:not(:first-child):not(:last-child) {
+      @include middle-input();
+
+      .#{$component-prefix}-date-picker__picker {
+        @include middle-input();
+      }
+    }
+
+    &:first-child {
+      @include first-input();
+
+      .#{$component-prefix}-date-picker__picker {
+        @include first-input();
+      }
+    }
+
+    &:last-child {
+      @include last-input();
+
+      .#{$component-prefix}-date-picker__picker {
+        @include last-input();
+      }
+    }
+  }
+
+  & > .#{$component-prefix}-time-picker {
+    &:not(:first-child):not(:last-child) {
+      @include middle-input();
+
+      .#{$component-prefix}-time-picker__input-wrapper {
+        @include middle-input();
+      }
+    }
+
+    &:first-child {
+      @include first-input();
+
+      .#{$component-prefix}-time-picker__input-wrapper {
+        @include first-input();
+      }
+    }
+
+    &:last-child {
+      @include last-input();
+
+      .#{$component-prefix}-time-picker__input-wrapper {
+        @include last-input();
+      }
+    }
+  }
+}

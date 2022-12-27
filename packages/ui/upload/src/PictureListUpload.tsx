@@ -41,6 +41,7 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onChange,
       beforeUpload,
       customUpload,
+      method,
       ...rest
     },
     ref
@@ -64,6 +65,7 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onRemove,
       beforeUpload,
       customUpload,
+      method,
     })
 
     return (

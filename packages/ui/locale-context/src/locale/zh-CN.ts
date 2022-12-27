@@ -195,4 +195,7 @@ export default {
   tag: {
     add: '添加',
   },
+  backTop: {
+    backToTop: '回到顶部',
+  },
 }

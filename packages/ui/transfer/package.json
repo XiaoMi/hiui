@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/transfer",
-  "version": "4.0.0",
+  "version": "4.0.9",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -43,16 +43,16 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^4.0.0",
-    "@hi-ui/checkbox": "^4.0.0",
-    "@hi-ui/classname": "^4.0.0",
-    "@hi-ui/env": "^4.0.0",
-    "@hi-ui/icons": "^4.0.0",
-    "@hi-ui/input": "^4.0.0",
-    "@hi-ui/pagination": "^4.0.0",
-    "@hi-ui/type-assertion": "^4.0.0",
-    "@hi-ui/use-check": "^4.0.0",
-    "@hi-ui/use-uncontrolled-state": "^4.0.0"
+    "@hi-ui/button": "^4.0.5",
+    "@hi-ui/checkbox": "^4.0.5",
+    "@hi-ui/classname": "^4.0.1",
+    "@hi-ui/env": "^4.0.1",
+    "@hi-ui/icons": "^4.0.4",
+    "@hi-ui/input": "^4.0.6",
+    "@hi-ui/pagination": "^4.0.8",
+    "@hi-ui/type-assertion": "^4.0.1",
+    "@hi-ui/use-check": "^4.0.2",
+    "@hi-ui/use-uncontrolled-state": "^4.0.1"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.0",
@@ -60,9 +60,9 @@
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^4.0.0",
-    "@hi-ui/core-css": "^4.0.0",
-    "@hi-ui/hi-build": "^4.0.0",
+    "@hi-ui/core": "^4.0.4",
+    "@hi-ui/core-css": "^4.0.1",
+    "@hi-ui/hi-build": "^4.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

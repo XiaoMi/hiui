@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+
+jobs:
+  if_merged:
+    if: startsWith(github.head_ref, 'release/') && github.event.pull_request.merged == true
+    name: Publish packages
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    steps:
+      - name: Test
+        run: echo $HOME ${{ github.ref }} ${{ github.head_ref }} ${{ github.event.pull_request.merged }}
+
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js 14.17.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.17.x
+          cache: 'yarn'
+
+      - name: Setup npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+
+      - name: Install dependencies
+        run: |
+          yarn
+
+      - name: Build packages
+        run: |
+          yarn run build
+
+      - name: Publish
+        run: yarn run publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Push Tags
+        run: |
+          git push origin master --follow-tags
