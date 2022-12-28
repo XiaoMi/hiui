@@ -75,13 +75,21 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
 }
 
 export interface EllipsisTooltipProps extends HiBaseHTMLProps<'div'>, Omit<TooltipProps, 'title'> {
-  // 子文本内容
+  /**
+   * 子文本内容
+   */
   children: string
-  // 超出行数展示省略号
+  /**
+   * 超出行数展示省略号
+   */
   numberOfLines?: number
-  // 最大文字展示
+  /**
+   * 最大文字展示
+   */
   maxTextCount?: number
-  // tooltip信息
+  /**
+   * tooltip信息
+   */
   title?: string
 }
 
