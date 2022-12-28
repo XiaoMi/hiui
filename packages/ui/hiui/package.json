@@ -63,6 +63,7 @@
     "@hi-ui/descriptions": "^4.0.4",
     "@hi-ui/drawer": "^4.0.7",
     "@hi-ui/dropdown": "^4.0.5",
+    "@hi-ui/ellipsis-tooltip": "^4.0.0-alpha.0",
     "@hi-ui/empty-state": "^4.0.4",
     "@hi-ui/filter": "^4.1.0",
     "@hi-ui/form": "^4.1.1",
