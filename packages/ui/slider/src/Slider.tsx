@@ -26,6 +26,7 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
       tipFormatter,
       showRangeLabel = false,
       marks: marksProp,
+      disabledPortal = true,
       ...rest
     },
     ref
@@ -65,16 +66,16 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
       <div role={role} className={cls} {...rootProps} ref={useMergeRefs(rootProps.ref, ref)}>
         <div className={`${prefixCls}__rail`} {...getRailProps()} />
         <div className={`${prefixCls}__track`} {...getTrackProps()} />
-        <div className={`${prefixCls}__handle`} {...getHandleProps()}>
-          <Tooltip
-            visible={tooltipVisible}
-            title={
-              <div style={{ textAlign: 'center' }}>
-                {isFunction(tipFormatter) ? tipFormatter(value) : value}
-              </div>
-            }
-            disabledPortal
-          >
+        <Tooltip
+          visible={tooltipVisible}
+          title={
+            <div style={{ textAlign: 'center' }}>
+              {isFunction(tipFormatter) ? tipFormatter(value) : value}
+            </div>
+          }
+          disabledPortal={disabledPortal}
+        >
+          <div className={`${prefixCls}__handle`} {...getHandleProps()}>
             <span
               style={{
                 position: 'absolute',
@@ -84,8 +85,8 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
                 bottom: 0,
               }}
             />
-          </Tooltip>
-        </div>
+          </div>
+        </Tooltip>
         <div className={`${prefixCls}__marks`}>
           {marksMemo.map((mark, idx) => {
             return <span key={idx} className={`${prefixCls}__mark`} {...getMarkProps(mark)} />
@@ -137,6 +138,10 @@ export interface SliderProps extends HiBaseHTMLProps<'div'>, UseSliderProps {
    * 自定义颜色
    */
   color?: string
+  /**
+   * 提示内容是否禁用 portal
+   */
+  disabledPortal?: boolean
 }
 
 if (__DEV__) {
