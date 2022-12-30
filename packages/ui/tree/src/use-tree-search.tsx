@@ -152,7 +152,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
       // 匹配到搜索的节点，将这些节点进行展开显示，其它均隐藏
       const matchedNodes = getMatchedNodes(
         flattedData,
-        typeof keyword === 'string' ? [keyword] : keyword,
+        typeof keyword === 'string' ? (keyword === '' ? [] : [keyword]) : keyword,
         matchKey
       )
       const filteredNodeIds = getFilteredIds(matchedNodes)
@@ -279,7 +279,7 @@ const getMatchedNodes = (
   searchValue: string[],
   matchKey: string[] = ['title']
 ): FlattedTreeNodeData[] => {
-  if (!searchValue) return []
+  if (!searchValue || searchValue.length === 0) return []
   return flattedData.filter((node) => {
     return !!matchKey.find((item) =>
       searchValue.some((value) =>
