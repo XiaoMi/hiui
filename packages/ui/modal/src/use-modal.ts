@@ -27,7 +27,8 @@ export const useModal = ({
   const [modalElement, setModalElement] = useState<HTMLDivElement | null>(null)
   const modalElementRef = useLatestRef(modalElement)
   const modalElementWrapperRef = useRef<HTMLDivElement | null>(null)
-
+  // 鼠标按下时的事件对象
+  const mouseDownElementRef = useRef<HTMLElement | null>(null)
   const returnFocusedElementRef = useRef<HTMLElement | null>(null)
 
   // 多任务以栈维护，可以控制显隐时序（后显先隐）
@@ -74,6 +75,10 @@ export const useModal = ({
     (evt: React.MouseEvent<HTMLDivElement>) => {
       // @ts-ignore
       if (modalElementWrapperRef.current?.contains(evt.target)) return
+
+      // 当鼠标按下时的事件对象和当前点击对象不相等时，直接返回不处理
+      // 例如：当鼠标在内容区域按下后滑动到外部，然后松开鼠标，此时就出现了这2个点击事件不同的情况
+      if (evt.target !== mouseDownElementRef.current) return
 
       if (maskClosable) {
         if (!stackManager.isTop(modalElementRef)) return
@@ -159,6 +164,11 @@ export const useModal = ({
         ref: mergeRefs(setModalElement, ref),
         tabIndex: -1,
         style,
+        onMouseDown: mockDefaultHandlers(props.onMouseDown, (evt: React.MouseEvent) => {
+          // @ts-ignore
+          mouseDownElementRef.current = evt.target
+          evt.stopPropagation()
+        }),
         onKeyDown: mockDefaultHandlers(props.onKeyDown, trapTabKey),
         onClick: mockDefaultHandlers(props.onClick, maskClosable ? handleClickOverlay : undefined),
       }
