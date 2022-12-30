@@ -73,7 +73,6 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
                 {isFunction(tipFormatter) ? tipFormatter(value) : value}
               </div>
             }
-            disabledPortal
           >
             <span
               style={{
