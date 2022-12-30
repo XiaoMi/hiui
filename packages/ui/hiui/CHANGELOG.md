@@ -1,5 +1,22 @@
 # @hi-ui/hiui
 
+## 4.1.15
+
+### Patch Changes
+
+- [#2363](https://github.com/XiaoMi/hiui/pull/2363) [`d4f104643`](https://github.com/XiaoMi/hiui/commit/d4f1046435637f2d92ec9f0e94baf7aa4ec37f1a) Thanks [@zyprepare](https://github.com/zyprepare)! - Modal 体验问题: 鼠标选中内容滑动到外部，松开后模态框会关闭
+
+- [#2354](https://github.com/XiaoMi/hiui/pull/2354) [`badd273af`](https://github.com/XiaoMi/hiui/commit/badd273afb4a45ffa4d69ee81eef2e83603e025d) Thanks [@zyprepare](https://github.com/zyprepare)! - Tree 修复问题: 自定义搜索中 useTreeSearchProps 中的 filterTree 中的 keyword 是数组时，结果没有高亮展示
+
+- [#2359](https://github.com/XiaoMi/hiui/pull/2359) [`1d467606f`](https://github.com/XiaoMi/hiui/commit/1d467606f8d1e9d6beb977a57b77971d65294317) Thanks [@zyprepare](https://github.com/zyprepare)! - Tree 修复问题: 自定义搜索中，当传入空字符串时，搜索会展开全部节点
+
+- [#2361](https://github.com/XiaoMi/hiui/pull/2361) [`768a30597`](https://github.com/XiaoMi/hiui/commit/768a305979dddd345bd26b45adfe2971123ce013) Thanks [@zyprepare](https://github.com/zyprepare)! - Slider 修复问题: 滑块外部容器设置 overflow: 'hidden' 时,滑块的提示内容显示受限
+
+- Updated dependencies [[`768a30597`](https://github.com/XiaoMi/hiui/commit/768a305979dddd345bd26b45adfe2971123ce013), [`d4f104643`](https://github.com/XiaoMi/hiui/commit/d4f1046435637f2d92ec9f0e94baf7aa4ec37f1a), [`badd273af`](https://github.com/XiaoMi/hiui/commit/badd273afb4a45ffa4d69ee81eef2e83603e025d), [`1d467606f`](https://github.com/XiaoMi/hiui/commit/1d467606f8d1e9d6beb977a57b77971d65294317)]:
+  - @hi-ui/slider@4.0.6
+  - @hi-ui/modal@4.0.8
+  - @hi-ui/tree@4.1.1
+
 ## 4.1.14
 
 ### Patch Changes
