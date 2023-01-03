@@ -47,8 +47,7 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
       } else {
         // 单行超出
         const rect = contentRef.current?.getBoundingClientRect()
-        // @ts-ignore
-        const parentRect = contentRef.current?.parentNode?.getBoundingClientRect()
+        const parentRect = (contentRef.current?.parentNode as HTMLElement)?.getBoundingClientRect()
         setDisableTooltip(+rect?.width <= parentRect.width)
       }
     }
