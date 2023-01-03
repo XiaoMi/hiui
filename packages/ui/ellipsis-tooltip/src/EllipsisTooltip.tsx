@@ -1,5 +1,6 @@
 import React, { FC, useRef, useState, useEffect, useCallback } from 'react'
-import { cx, getPrefixCls, HiBaseHTMLProps } from '@hi-ui/classname'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Tooltip, { TooltipProps } from '@hi-ui/tooltip'
 
@@ -46,7 +47,7 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
       } else {
         // 单行超出
         const rect = contentRef.current?.getBoundingClientRect()
-        const parentRect = contentRef.current?.parentNode?.getBoundingClientRect()
+        const parentRect = (contentRef.current?.parentNode as HTMLElement)?.getBoundingClientRect()
         setDisableTooltip(+rect?.width <= parentRect.width)
       }
     }
