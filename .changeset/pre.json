@@ -121,7 +121,8 @@
     "@hi-ui/tree-utils": "4.0.2",
     "@hi-ui/type-assertion": "4.0.1",
     "@hi-ui/utils": "4.0.5",
-    "@hi-ui/hi-docs": "4.0.1"
+    "@hi-ui/hi-docs": "4.0.1",
+    "@hi-ui/ellipsis-tooltip": "4.0.0-alpha.0"
   },
   "changesets": [
     "curvy-bobcats-look",
@@ -134,6 +135,7 @@
     "lazy-humans-draw",
     "popular-plants-film",
     "shaggy-falcons-peel",
+    "warm-poets-shake",
     "yellow-rings-turn"
   ]
 }
