@@ -10,6 +10,7 @@ const Config = {
     direction: '方向',
     edit: '编辑',
     file: '文件',
+    data: '数据',
     filled: '面型',
     outlined: '线型',
     colorful: '多色型',
