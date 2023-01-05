@@ -7,7 +7,7 @@
       "packages/utils/*",
       "packages/hooks/*",
       "packages/core/*",
-      "packages/icons/*",
+      "packages/icons",
       "packages/patches/*",
       "scripts/hi-docs"
     ]
