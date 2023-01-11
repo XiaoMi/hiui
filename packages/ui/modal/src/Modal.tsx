@@ -54,7 +54,8 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       confirmText: confirmTextProp,
       confirmLoading,
       footer,
-      onCancel: onCloseProp,
+      onClose,
+      onCancel,
       onConfirm,
       container,
       closeIcon = defaultCloseIcon,
@@ -79,7 +80,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     const [transitionVisible, transitionVisibleAction] = useToggle(false)
     const [transitionExited, transitionExitedAction] = useToggle(true)
 
-    const onRequestCloseLatest = useLatestCallback(() => onCloseProp?.())
+    const onRequestCloseLatest = useLatestCallback(() => onCancel?.())
 
     const { rootProps, getModalProps, getModalWrapperProps } = useModal({
       ...rest,
@@ -160,9 +161,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                       {title}
                     </div>
                   ) : null}
-                  {closeable ? (
-                    <IconButton effect icon={closeIcon} onClick={onRequestCloseLatest} />
-                  ) : null}
+                  {closeable ? <IconButton effect icon={closeIcon} onClick={onClose} /> : null}
                 </header>
               ) : null}
               <main className={`${prefixCls}__body`}>{children}</main>
