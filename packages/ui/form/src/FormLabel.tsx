@@ -93,7 +93,7 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
           {children}
         </div>
       </div>
-      <div style={{ paddingLeft: labelWidth }}>{formMessage}</div>
+      <div style={{ paddingLeft: `calc(100% - ${controlWidth})` }}>{formMessage}</div>
     </div>
   )
 })
