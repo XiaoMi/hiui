@@ -25,7 +25,18 @@ export const LabelPlacement = () => {
               labelWidth="100"
               labelPlacement="left"
             >
-              <FormItem required={true} label="编码" field="productCode" valueType="string">
+              <FormItem
+                required={true}
+                rules={[
+                  {
+                    required: true,
+                    message: '请选择区域',
+                  },
+                ]}
+                label="编码"
+                field="productCode"
+                valueType="string"
+              >
                 <Input placeholder="请输入" />
               </FormItem>
               <FormItem required={true} label="产品名称" field="productName" valueType="string">
@@ -55,7 +66,18 @@ export const LabelPlacement = () => {
               labelWidth="100"
               labelPlacement="right"
             >
-              <FormItem required={true} label="编码" field="productCode" valueType="string">
+              <FormItem
+                required={true}
+                rules={[
+                  {
+                    required: true,
+                    message: '请选择区域',
+                  },
+                ]}
+                label="编码"
+                field="productCode"
+                valueType="string"
+              >
                 <Input placeholder="请输入" />
               </FormItem>
               <FormItem required={true} label="产品名称" field="productName" valueType="string">
@@ -85,7 +107,18 @@ export const LabelPlacement = () => {
               labelWidth="100"
               labelPlacement="top"
             >
-              <FormItem required={true} label="编码" field="productCode" valueType="string">
+              <FormItem
+                required={true}
+                rules={[
+                  {
+                    required: true,
+                    message: '请选择区域',
+                  },
+                ]}
+                label="编码"
+                field="productCode"
+                valueType="string"
+              >
                 <Input placeholder="请输入" />
               </FormItem>
               <FormItem required={true} label="产品名称" field="productName" valueType="string">
