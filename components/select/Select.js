@@ -433,6 +433,7 @@ const InternalSelect = (props) => {
       url,
       method,
       data: data,
+      headers,
       cancelToken: new CancelToken((c) => {
         cancel = c
       }),
