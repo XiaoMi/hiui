@@ -39,11 +39,6 @@ export const Virtual = () => {
       width: 150,
     },
     {
-      title: '规格',
-      dataKey: 'size',
-      width: 150,
-    },
-    {
       title: '操作',
       dataKey: 'operation',
       width: 150,

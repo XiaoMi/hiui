@@ -20,8 +20,6 @@ export const useColWidth = ({
     return getGroupItemWidth(columns)
   })
 
-  console.error({ useColWidth: 1, colWidths })
-
   useUpdateEffect(() => {
     setColWidths(getGroupItemWidth(columns))
   }, [columns])
