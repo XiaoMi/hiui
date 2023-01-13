@@ -3,7 +3,7 @@ import Descriptions from '../src'
 
 /**
  * @title 固定label宽度
- * @desc 根据实际请款配置label宽度，一个页面中label宽度应该保持一致
+ * @desc 根据实际情况配置label宽度，一个页面中label宽度应该保持一致
  */
 export const LabelWidth = () => {
   return (

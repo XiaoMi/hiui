@@ -208,6 +208,13 @@ export const useAnchorItem = ({ href = '', offset, ...rest }: UseAnchorItemProps
     }
   }, [registerAnchorId, unregisterAnchorId, href, offset, anchorItemElement])
 
+  // 首次进入页面时定位到对应的锚点位置
+  useEffect(() => {
+    const hash = window.location.hash
+
+    !!hash && scrollToAnchorItem(hash)
+  }, [scrollToAnchorItem])
+
   const showActive = isActiveAnchorId(href)
 
   const getAnchorLinkProps = useCallback(
