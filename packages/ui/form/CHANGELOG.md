@@ -1,5 +1,11 @@
 # @hi-ui/form
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2374](https://github.com/XiaoMi/hiui/pull/2374) [`4e7308002`](https://github.com/XiaoMi/hiui/commit/4e7308002165b63b43491cfcfd0bc0586666cb85) Thanks [@zyprepare](https://github.com/zyprepare)! - 在 labelPlacement="top" 下，formMessage 显示异常
+
 ## 4.1.1
 
 ### Patch Changes

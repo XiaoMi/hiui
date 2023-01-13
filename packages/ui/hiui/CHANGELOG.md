@@ -1,5 +1,20 @@
 # @hi-ui/hiui
 
+## 4.1.16
+
+### Patch Changes
+
+- [#2379](https://github.com/XiaoMi/hiui/pull/2379) [`3d1914615`](https://github.com/XiaoMi/hiui/commit/3d1914615ab041ac4b8a35200386a4a56add3070) Thanks [@zyprepare](https://github.com/zyprepare)! - Anchor 首次进入页面，没有跳转到指定的锚点位置
+
+- [#2376](https://github.com/XiaoMi/hiui/pull/2376) [`783172359`](https://github.com/XiaoMi/hiui/commit/78317235998b09e080961e25104d84dcea943a28) Thanks [@zyprepare](https://github.com/zyprepare)! - Modal onClose 设置后，点击关闭按钮没有触发回调
+
+- [#2374](https://github.com/XiaoMi/hiui/pull/2374) [`4e7308002`](https://github.com/XiaoMi/hiui/commit/4e7308002165b63b43491cfcfd0bc0586666cb85) Thanks [@zyprepare](https://github.com/zyprepare)! - Form 在 labelPlacement="top" 下，formMessage 显示异常
+
+- Updated dependencies [[`4e7308002`](https://github.com/XiaoMi/hiui/commit/4e7308002165b63b43491cfcfd0bc0586666cb85), [`783172359`](https://github.com/XiaoMi/hiui/commit/78317235998b09e080961e25104d84dcea943a28), [`3d1914615`](https://github.com/XiaoMi/hiui/commit/3d1914615ab041ac4b8a35200386a4a56add3070)]:
+  - @hi-ui/form@4.1.2
+  - @hi-ui/modal@4.0.9
+  - @hi-ui/anchor@4.0.4
+
 ## 4.1.15
 
 ### Patch Changes
