@@ -215,7 +215,7 @@ export interface UseModalProps {
    */
   container?: HTMLElement | null
   /**
-   * 关闭时回调
+   * 关闭时回调（设置该项后，如果要实现点击蒙层关闭，还需要设置 onCancel）
    */
   onClose?: () => void
   /**

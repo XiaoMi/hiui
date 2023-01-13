@@ -161,7 +161,9 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                       {title}
                     </div>
                   ) : null}
-                  {closeable ? <IconButton effect icon={closeIcon} onClick={onClose} /> : null}
+                  {closeable ? (
+                    <IconButton effect icon={closeIcon} onClick={onClose ?? onRequestCloseLatest} />
+                  ) : null}
                 </header>
               ) : null}
               <main className={`${prefixCls}__body`}>{children}</main>
