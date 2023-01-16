@@ -89,8 +89,7 @@ export const useColWidth = ({
       }
     }
     // 测量元素在内容列为空时会是空，切换会使测量元素变化，导致后续的resize时间无法响应,此处测量元素变化时需要重新绑定
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [measureRowElementRef.current])
+  }, [measureRowElementRef.current, virtual])
 
   const [headerTableElement, setHeaderTableElement] = React.useState<HTMLTableElement | null>(null)
 
