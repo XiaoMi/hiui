@@ -55,6 +55,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       onClickSubMenu,
       collapsed,
       defaultCollapsed = false,
+      overlayClassName,
       onCollapse,
       footerRender,
       onClick,
@@ -238,6 +239,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
             activeParents,
             activeId: activeId,
             expandedIds: expandedIds,
+            overlayClassName,
           }}
         >
           <ul className={cx(`${prefixCls}__wrapper`)}>
