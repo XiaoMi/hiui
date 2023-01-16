@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { FlattedTableColumnItemData, TableColumnItem, TableRowRecord } from '../types'
 import { getGroupItemWidth } from '../utils'
 import { useUpdateEffect } from '@hi-ui/use-update-effect'
@@ -21,7 +21,39 @@ export const useColWidth = ({
   })
 
   useUpdateEffect(() => {
-    setColWidths(getGroupItemWidth(columns))
+    if (virtual) {
+      // 虚拟滚动的计算需要根据容器来做分配，不能使用没有witdh默认设置为0的方式来做表格平均分配
+      setColWidths(getVirtualWidths())
+    } else {
+      setColWidths(getGroupItemWidth(columns))
+    }
+  }, [columns, virtual])
+
+  const getVirtualWidths = useCallback(() => {
+    const measureRowElement = measureRowElementRef.current
+    if (!measureRowElement) {
+      return getGroupItemWidth(columns)
+    }
+
+    /** 虚拟滚动时，内容宽度不能用以前table自动渲染的方式获取，需要手动计算 */
+    const columnDefaultWidth = 200
+    const containerWidth = measureRowElement.clientWidth
+    let totalWidth: number = 0
+    /** 虚拟滚动，需要根据collist的虚拟宽度来计算宽度 */
+    columns.forEach((columnItem: TableColumnItem) => {
+      totalWidth += columnItem.width || columnDefaultWidth
+    })
+    if (totalWidth < containerWidth) {
+      // 容器宽度大于设置的宽度总和时，col宽度等比分分配占满容器。
+      return columns.map((columnItem: TableColumnItem) => {
+        return ((columnItem.width || columnDefaultWidth) * containerWidth) / totalWidth
+      })
+    } else {
+      // 容器宽度小于设置的宽度总和时，col宽度等于设置/默认宽度。
+      return columns.map((columnItem: TableColumnItem) => {
+        return columnItem.width || columnDefaultWidth
+      })
+    }
   }, [columns])
 
   /**
@@ -34,29 +66,7 @@ export const useColWidth = ({
     if (measureRowElement) {
       const resizeObserver = new ResizeObserver(() => {
         if (virtual) {
-          /** 虚拟滚动时，内容宽度不能用以前table自动渲染的方式获取，需要手动计算 */
-          const columnDefaultWidth = 200
-          const containerWidth = measureRowElement.clientWidth
-          let totalWidth: number = 0
-          /** 虚拟滚动，需要根据collist的虚拟宽度来计算宽度 */
-          columns.forEach((columnItem: TableColumnItem) => {
-            totalWidth += columnItem.width || columnDefaultWidth
-          })
-          if (totalWidth < containerWidth) {
-            // 容器宽度大于设置的宽度总和时，col宽度等比分分配占满容器。
-            setColWidths(
-              columns.map((columnItem: TableColumnItem) => {
-                return ((columnItem.width || columnDefaultWidth) * containerWidth) / totalWidth
-              })
-            )
-          } else {
-            // 容器宽度小于设置的宽度总和时，col宽度等于设置/默认宽度。
-            setColWidths(
-              columns.map((columnItem: TableColumnItem) => {
-                return columnItem.width || columnDefaultWidth
-              })
-            )
-          }
+          setColWidths(getVirtualWidths())
         } else {
           if (measureRowElement.childNodes) {
             const _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node) => {
@@ -78,7 +88,9 @@ export const useColWidth = ({
         resizeObserver.disconnect()
       }
     }
-  }, [])
+    // 测量元素在内容列为空时会是空，切换会使测量元素变化，导致后续的resize时间无法响应,此处测量元素变化时需要重新绑定
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [measureRowElementRef.current])
 
   const [headerTableElement, setHeaderTableElement] = React.useState<HTMLTableElement | null>(null)
 
