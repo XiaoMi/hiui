@@ -9,6 +9,7 @@ const MenuContext = createContext<{
   expandedIds?: React.ReactText[]
   activeId?: React.ReactText
   activeParents?: React.ReactText[]
+  overlayClassName?: string
   clickMenu?: (id: React.ReactText, raw: MenuDataItem) => void
   clickSubMenu?: (id: React.ReactText) => void
   closePopper?: (id: React.ReactText) => void
