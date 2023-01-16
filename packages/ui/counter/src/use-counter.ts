@@ -28,6 +28,7 @@ export const useCounter = ({
   size = 'md',
   appearance = 'line',
   invalid = false,
+  blurFormatFunc,
   ...rest
 }: UseCounterProps) => {
   const min = minProp ?? Number.MIN_SAFE_INTEGER
@@ -194,13 +195,16 @@ export const useCounter = ({
         return
       }
 
-      const currentValue = getCurrentValue()
+      let currentValue = getCurrentValue()
+      if (blurFormatFunc) {
+        currentValue = blurFormatFunc(currentValue)
+      }
       proxyTryChangeValue(currentValue, true)
 
       focusedAction.off()
       onBlurLatest(evt)
     },
-    [getCurrentValue, proxyTryChangeValue, onBlurLatest, focusedAction]
+    [getCurrentValue, proxyTryChangeValue, onBlurLatest, focusedAction, blurFormatFunc]
   )
 
   const onWheeLatest = useLatestCallback(onWheel)

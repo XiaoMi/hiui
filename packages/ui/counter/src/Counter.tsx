@@ -100,6 +100,10 @@ export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
    * 开启滑轮改值
    */
   changeOnWheel?: boolean
+  /**
+   * 失焦时候出发的格式化逻辑
+   */
+  blurFormatFunc?: (val: number) => number
 }
 
 if (__DEV__) {

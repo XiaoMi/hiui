@@ -8,6 +8,7 @@ export * from './controlled.stories'
 export * from './step.stories'
 export * from './Wheel.stories'
 export * from './invalid.stories'
+export * from './format.stories'
 
 export default {
   title: 'Data Input/NumberInput',
