@@ -1,6 +1,8 @@
 import React from 'react'
 
 export * from './basic.stories'
+export * from './config.stories'
+export * from './ellipsis.stories'
 export * from './bordered.stories'
 export * from './label-placement.stories'
 export * from './col.stories'
