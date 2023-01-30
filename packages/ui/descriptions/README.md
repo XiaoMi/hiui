@@ -39,4 +39,4 @@ const Descriptions = require('@hi-ui/descriptions');
 #### Extra Props
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ---- | ---- | ---- | ------ | ------ |
-| content | 内容标题对应的值 | ReactNode | ReactText | - | - |
+| content | 内容标题对应的值 | ReactNode \| ReactText | - | - |
