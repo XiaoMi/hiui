@@ -20,15 +20,6 @@ export const useColWidth = ({
     return getGroupItemWidth(columns)
   })
 
-  useUpdateEffect(() => {
-    if (virtual) {
-      // 虚拟滚动的计算需要根据容器来做分配，不能使用没有witdh默认设置为0的方式来做表格平均分配
-      setColWidths(getVirtualWidths())
-    } else {
-      setColWidths(getGroupItemWidth(columns))
-    }
-  }, [columns, virtual])
-
   const getVirtualWidths = useCallback(() => {
     const measureRowElement = measureRowElementRef.current
     if (!measureRowElement) {
@@ -55,6 +46,15 @@ export const useColWidth = ({
       })
     }
   }, [columns])
+
+  useUpdateEffect(() => {
+    if (virtual) {
+      // 虚拟滚动的计算需要根据容器来做分配，不能使用没有witdh默认设置为0的方式来做表格平均分配
+      setColWidths(getVirtualWidths())
+    } else {
+      setColWidths(getGroupItemWidth(columns))
+    }
+  }, [columns, getVirtualWidths, virtual])
 
   /**
    * 根据实际内容区（table 的第一行）渲染，再次精确收集并设置每列宽度
