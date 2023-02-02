@@ -122,10 +122,12 @@
     "@hi-ui/type-assertion": "4.0.1",
     "@hi-ui/utils": "4.0.5",
     "@hi-ui/hi-docs": "4.0.1",
-    "@hi-ui/ellipsis-tooltip": "4.0.0-alpha.0"
+    "@hi-ui/ellipsis-tooltip": "4.0.0-alpha.0",
+    "@hi-ui/icons": "4.0.5"
   },
   "changesets": [
     "curvy-bobcats-look",
+    "dull-cows-appear",
     "eighty-plums-look",
     "eighty-tips-sneeze",
     "empty-llamas-sip",
@@ -135,6 +137,7 @@
     "lazy-humans-draw",
     "popular-plants-film",
     "shaggy-falcons-peel",
+    "short-camels-sniff",
     "warm-poets-shake",
     "yellow-rings-turn"
   ]
