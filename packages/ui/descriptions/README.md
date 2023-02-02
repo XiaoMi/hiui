@@ -33,10 +33,10 @@ const Descriptions = require('@hi-ui/descriptions');
 | labelPlacement | label 对齐方式 | `left` \| `right` \| undefined | - | 1 |
 
 ### IDataItem
-参数继承自 `Descriptions.Item`，另外增加 `content` 字段，替代 `children`的值。
+参数继承自 `Descriptions.Item`，另外增加 `value` 字段，替代 `children`的值。
 具体可参考示例
 
 #### Extra Props
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ---- | ---- | ---- | ------ | ------ |
-| content | 内容标题对应的值 | ReactNode \| ReactText | - | - |
+| value | 内容标题对应的值 | ReactNode \| ReactText | - | - |

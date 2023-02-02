@@ -107,7 +107,7 @@ if (__DEV__) {
 function computeItems(data?: DescriptionsItemProps[]) {
   return data?.map(({ children, ...otherItem }, index) => (
     <DescriptionsItem {...otherItem} key={index}>
-      {otherItem.content}
+      {otherItem.value}
     </DescriptionsItem>
   ))
 }

@@ -11,29 +11,29 @@ export const Ellipsis = () => {
     {
       // 超出宽度限制才会展示，没有超出不展示
       label: <EllipsisTooltip>满江红</EllipsisTooltip>,
-      content: '怒发冲冠',
+      value: '怒发冲冠',
     },
     {
       label: <EllipsisTooltip>靖康耻，犹未雪。</EllipsisTooltip>,
       labelWidth: 100,
-      content: '臣子恨，何时灭。臣子恨，何时灭。',
+      value: '臣子恨，何时灭。臣子恨，何时灭。',
     },
     {
       label: '驾长车',
-      content: '踏破贺兰山缺',
+      value: '踏破贺兰山缺',
     },
     {
       label: '壮志饥餐胡虏肉',
-      content: '笑谈渴饮匈奴血',
+      value: '笑谈渴饮匈奴血',
     },
     {
       label: '待从头',
       labelWidth: 100,
-      content: <EllipsisTooltip>收拾旧山河，收拾旧山河，收拾旧山河，收拾旧山河</EllipsisTooltip>,
+      value: <EllipsisTooltip>收拾旧山河，收拾旧山河，收拾旧山河，收拾旧山河</EllipsisTooltip>,
     },
     {
       label: '朝天阙',
-      content: '结束',
+      value: '结束',
     },
   ]
 

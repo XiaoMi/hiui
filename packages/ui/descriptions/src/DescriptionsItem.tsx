@@ -33,5 +33,5 @@ export interface DescriptionsItemProps extends HiBaseHTMLProps<'div'> {
   /**
    * 每一项的内容
    */
-  content?: React.ReactNode
+  value?: React.ReactNode
 }

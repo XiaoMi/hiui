@@ -9,27 +9,27 @@ export const Config = () => {
   const data = [
     {
       label: '满江红',
-      content: '怒发冲冠',
+      value: '怒发冲冠',
     },
     {
       label: '靖康耻，犹未雪',
-      content: '臣子恨，何时灭',
+      value: '臣子恨，何时灭',
     },
     {
       label: '驾长车',
-      content: '踏破贺兰山缺',
+      value: '踏破贺兰山缺',
     },
     {
       label: '壮志饥餐胡虏肉',
-      content: '笑谈渴饮匈奴血',
+      value: '笑谈渴饮匈奴血',
     },
     {
       label: '待从头',
-      content: '收拾旧山河',
+      value: '收拾旧山河',
     },
     {
       label: '朝天阙',
-      content: '结束',
+      value: '结束',
     },
   ]
 
