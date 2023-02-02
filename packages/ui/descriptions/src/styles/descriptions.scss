@@ -53,6 +53,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
 
     &__content {
       color: use-color('gray', 700);
+      overflow-x: auto;
     }
   }
 

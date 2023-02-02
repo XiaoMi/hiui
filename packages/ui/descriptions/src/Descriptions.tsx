@@ -9,6 +9,7 @@ import {
   DescriptionsLabelPlacementEnum,
   DescriptionsPlacementEnum,
 } from './types'
+import { DescriptionsItem, DescriptionsItemProps } from './DescriptionsItem'
 
 const DESCRIPTIONS_PREFIX = getPrefixCls('descriptions')
 
@@ -22,6 +23,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       role = 'descriptions',
       className,
       children,
+      data,
       column = 3,
       placement = 'horizontal',
       appearance = 'unset',
@@ -35,7 +37,9 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
     const vertical = placement === 'vertical'
     const bordered = appearance === 'table' || noBackground
 
-    const rows = computeRows(children, column)
+    // 如果配置了data，则使用配置模式渲染，否则取 children
+    const computeChildren = data ? computeItems(data) : children
+    const rows = computeRows(computeChildren, column)
 
     const cls = cx(
       prefixCls,
@@ -83,6 +87,10 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
    */
   column?: number
   /**
+   * 提供JS配置化的方式渲染单元模块
+   */
+  data?: DescriptionsItemProps[]
+  /**
    * label对齐方式
    */
   labelPlacement?: DescriptionsLabelPlacementEnum
@@ -94,6 +102,14 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
 
 if (__DEV__) {
   Descriptions.displayName = 'Descriptions'
+}
+
+function computeItems(data?: DescriptionsItemProps[]) {
+  return data?.map(({ children, ...otherItem }, index) => (
+    <DescriptionsItem {...otherItem} key={index}>
+      {otherItem.value}
+    </DescriptionsItem>
+  ))
 }
 
 function computeRows(children: React.ReactNode, column: number) {

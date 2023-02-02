@@ -30,4 +30,8 @@ export interface DescriptionsItemProps extends HiBaseHTMLProps<'div'> {
    * label 对齐方式
    */
   labelPlacement?: DescriptionsLabelPlacementEnum
+  /**
+   * 每一项的内容
+   */
+  value?: React.ReactNode
 }
