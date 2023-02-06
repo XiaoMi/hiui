@@ -40,6 +40,7 @@ export const CustomSearch = () => {
     searchable: true,
     searchPlaceholder: '搜索',
     data,
+    // checkable: true,
   })
 
   return (
@@ -62,7 +63,7 @@ export const CustomSearch = () => {
         <div style={{ fontSize: 14, color: '#5f6a7a' }}>
           我是提示：{isEmpty ? '暂时匹配不到相关岗位信息' : '无'}
         </div>
-        <Tree {...treeProps} />
+        <Tree {...treeProps} onCheck={console.log} />
       </div>
     </>
   )
