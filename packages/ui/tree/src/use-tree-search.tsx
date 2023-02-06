@@ -138,6 +138,8 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     prefixCls,
     fieldNames,
     data: isEmpty || !inSearch ? data : showData,
+    // Fix bug: https://github.com/XiaoMi/hiui/issues/2391
+    ...(nativeTreeProps.checkable ? { flattedData } : null),
     expandedIds: expandedIds,
     onExpand: tryToggleExpandedIds,
     render: proxyTitleRender,
