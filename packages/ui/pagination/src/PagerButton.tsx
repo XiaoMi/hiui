@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { LeftOutlined, RightOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
@@ -10,45 +10,45 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is PagerButton
  */
-export const PagerButton: React.FC<PagerButtonProps> = ({
-  prefixCls = _prefix,
-  onChange,
-  type = 'prev',
-  current = 1,
-  disabled = false,
-  onClick,
-}) => {
-  const handleChange = useCallback(() => {
-    if (onChange && !disabled) {
-      onChange(type === 'prev' ? current - 1 : current + 1)
-    }
-  }, [current, onChange, type, disabled])
-
-  const handleKeyPress = useCallback(
-    (evt) => {
-      if (evt.key === 'Enter' && !disabled) {
-        evt.preventDefault()
-        handleChange()
+export const PagerButton = forwardRef<HTMLButtonElement | null, PagerButtonProps>(
+  (
+    { prefixCls = _prefix, onChange, type = 'prev', current = 1, disabled = false, onClick },
+    ref
+  ) => {
+    const handleChange = useCallback(() => {
+      if (onChange && !disabled) {
+        onChange(type === 'prev' ? current - 1 : current + 1)
       }
-    },
-    [handleChange, disabled]
-  )
+    }, [current, onChange, type, disabled])
 
-  const cls = cx(`${prefixCls}__btn`, disabled && `${prefixCls}__btn--disabled`)
+    const handleKeyPress = useCallback(
+      (evt) => {
+        if (evt.key === 'Enter' && !disabled) {
+          evt.preventDefault()
+          handleChange()
+        }
+      },
+      [handleChange, disabled]
+    )
 
-  return (
-    <li
-      className={cls}
-      onClick={(evt) => {
-        handleChange()
-        onClick?.(evt)
-      }}
-      onKeyPress={handleKeyPress}
-    >
-      <button disabled={disabled}>{type === 'prev' ? <LeftOutlined /> : <RightOutlined />}</button>
-    </li>
-  )
-}
+    const cls = cx(`${prefixCls}__btn`, disabled && `${prefixCls}__btn--disabled`)
+
+    return (
+      <li
+        className={cls}
+        onClick={(evt) => {
+          handleChange()
+          onClick?.(evt)
+        }}
+        onKeyPress={handleKeyPress}
+      >
+        <button ref={ref} disabled={disabled}>
+          {type === 'prev' ? <LeftOutlined /> : <RightOutlined />}
+        </button>
+      </li>
+    )
+  }
+)
 
 export interface PagerButtonProps extends HiBaseHTMLProps<'li'> {
   /**
