@@ -46,7 +46,8 @@
     "@hi-ui/classname": "^4.0.1",
     "@hi-ui/env": "^4.0.1",
     "@hi-ui/func-utils": "^4.0.1",
-    "@hi-ui/object-utils": "^4.0.1"
+    "@hi-ui/object-utils": "^4.0.1",
+    "@hi-ui/type-assertion": "^4.0.1"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
