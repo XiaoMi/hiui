@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useRef, useCallback } from 'react'
+import React, { forwardRef, useState, useRef, useCallback, useEffect } from 'react'
 import { TabPaneProps } from './TabPane'
 import { __DEV__ } from '@hi-ui/env'
 import { TabItem } from './TabItem'
@@ -103,6 +103,8 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
         if (innerElement) {
           const innerSize = getClientSize(innerElement)
           resizeScroll(scrollSize, innerSize)
+          // 每次滚动容器大小改变后，需要同步更新滚动位置
+          initScrollPosition()
         }
       },
     })
@@ -140,35 +142,47 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       [data, getTabPos]
     )
 
-    const syncScrollPosition = (tabId: React.ReactText) => {
-      if (!innerElement) return
-      if (!scrollElement) return
+    const syncScrollPosition = useCallback(
+      (tabId: React.ReactText) => {
+        if (!innerElement) return
+        if (!scrollElement) return
 
-      const scrollSize = getClientSize(scrollElement)
-      const innerSize = getClientSize(innerElement)
-      const offsetValue = getTabOffset(tabId)
+        const scrollSize = getClientSize(scrollElement)
+        const innerSize = getClientSize(innerElement)
+        const offsetValue = getTabOffset(tabId)
 
-      // 左边或上半部内容展示不全
-      const currentOffset = -translatePos
-      if (offsetValue < currentOffset) {
-        setTranslatePos(-offsetValue)
-      } else {
-        // 右边或下半部内容展示不全
-        const nextTabId = getNextTabId(data, tabId)
-        const nextOffsetValue = nextTabId !== null ? getTabOffset(nextTabId) : scrollSize
-        const currentOffset = -translatePos + innerSize
+        // 左边或上半部内容展示不全
+        const currentOffset = -translatePos
+        if (offsetValue < currentOffset) {
+          setTranslatePos(-offsetValue)
+        } else {
+          // 右边或下半部内容展示不全
+          const nextTabId = getNextTabId(data, tabId)
+          const nextOffsetValue = nextTabId !== null ? getTabOffset(nextTabId) : scrollSize
+          const currentOffset = -translatePos + innerSize
 
-        if (nextOffsetValue > currentOffset) {
-          setTranslatePos(translatePos - (nextOffsetValue - currentOffset))
+          if (nextOffsetValue > currentOffset) {
+            setTranslatePos(translatePos - (nextOffsetValue - currentOffset))
+          }
         }
-      }
-    }
+      },
+      [data, getClientSize, getTabOffset, innerElement, scrollElement, translatePos]
+    )
+
+    const initScrollPosition = useCallback(() => {
+      activeId && syncScrollPosition(activeId)
+    }, [activeId, syncScrollPosition])
 
     const onClickTab = useLatestCallback((tabId: React.ReactText, event: React.MouseEvent) => {
       onTabClick?.(tabId, event)
       setActiveTabId(tabId)
       syncScrollPosition(tabId)
     })
+
+    useEffect(() => {
+      // activeId 受控模式下改变后，同步更新滚动位置
+      activeId && syncScrollPosition(activeId)
+    }, [activeId, syncScrollPosition])
 
     return (
       <div
