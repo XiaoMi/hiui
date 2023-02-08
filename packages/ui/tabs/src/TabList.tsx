@@ -182,7 +182,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     useEffect(() => {
       // activeId 受控模式下改变后，同步更新滚动位置
       activeId && syncScrollPosition(activeId)
-    }, [activeId, setActiveTabId, syncScrollPosition])
+    }, [activeId, syncScrollPosition])
 
     return (
       <div
