@@ -40,6 +40,7 @@ interface TreeContext {
   leafIcon?: React.ReactNode
   onContextMenu?: (event: React.MouseEvent, node: TreeNodeEventData) => void
   checkOnSelect: boolean
+  expandOnClick?: boolean
 }
 
 const treeContext = createContext<TreeContext | null>(null)

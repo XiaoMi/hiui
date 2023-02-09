@@ -12,6 +12,7 @@ export * from './search.stories'
 export * from './custom-search.stories'
 export * from './custom-title.stories'
 export * from './custom-icon.stories'
+export * from './expand-on-click.stories'
 
 export default {
   title: 'Data Display/Tree',
