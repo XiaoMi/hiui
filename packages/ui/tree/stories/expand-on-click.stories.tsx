@@ -2,15 +2,15 @@ import React from 'react'
 import Tree from '../src'
 
 /**
- * @title 点击节点时展开其子节点
+ * @title 选中节点时展开其子节点
  */
-export const ExpandOnClick = () => {
+export const ExpandOnSelect = () => {
   return (
     <>
-      <h1>ExpandOnClick for Tree</h1>
+      <h1>ExpandOnSelect for Tree</h1>
       <div className="tree-expand-on-click__wrap">
         <Tree
-          expandOnClick
+          expandOnSelect
           onSelect={console.log}
           data={[
             {

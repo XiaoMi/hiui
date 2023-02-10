@@ -61,7 +61,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     collapsedIcon: collapseIconContext,
     expandedIcon: expandIconContext,
     leafIcon: leafIconContext,
-    expandOnClick,
+    expandOnSelect,
   } = useTreeContext()
 
   const collapsedIcon = collapseIconContext || collapseIconProp
@@ -267,7 +267,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
           if (checkOnSelect) {
             onCheck?.(eventNodeRef.current, !checked)
           }
-          if (expandOnClick) {
+          if (expandOnSelect) {
             onNodeExpand(evt)
           }
         }}

@@ -83,7 +83,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       flattedData: flattedDataProp,
       fieldNames,
       checkedMode = 'ALL',
-      expandOnClick,
+      expandOnSelect,
       ...rest
     },
     ref
@@ -181,7 +181,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         leafIcon,
         titleRender,
         onContextMenu,
-        expandOnClick,
+        expandOnSelect,
       }),
       [
         onNodeSelect,
@@ -203,7 +203,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         leafIcon,
         titleRender,
         onContextMenu,
-        expandOnClick,
+        expandOnSelect,
       ]
     )
 
@@ -449,7 +449,7 @@ export interface TreeProps {
   /**
    * 是否点击节点时展开其子节点
    */
-  expandOnClick?: boolean
+  expandOnSelect?: boolean
 }
 
 if (__DEV__) {
