@@ -1,5 +1,24 @@
 # @hi-ui/hiui
 
+## 4.1.18
+
+### Patch Changes
+
+- [#2394](https://github.com/XiaoMi/hiui/pull/2394) [`a9a5558ac`](https://github.com/XiaoMi/hiui/commit/a9a5558ac2a17efb213e07a8ee0d3612b43df2a2) Thanks [@zyprepare](https://github.com/zyprepare)! - Pagination 代码优化: 给 PagerButton 组件提供 ref 属性
+
+- [#2392](https://github.com/XiaoMi/hiui/pull/2392) [`5092a901d`](https://github.com/XiaoMi/hiui/commit/5092a901def14bf4a37411d6d4207cd13809d029) Thanks [@zyprepare](https://github.com/zyprepare)! - Tree 修复问题: 自定义搜索在 checkable 模式下勾选逻辑有误
+
+- [#2396](https://github.com/XiaoMi/hiui/pull/2396) [`544858c34`](https://github.com/XiaoMi/hiui/commit/544858c342e043f3a60a0368c76c9411a634eb3f) Thanks [@zyprepare](https://github.com/zyprepare)! - Tabs 修复问题: activeId 受控模式下,后面的较深的 tab 无法自动显示到前面
+
+- [#2389](https://github.com/XiaoMi/hiui/pull/2389) [`d6c7feaf8`](https://github.com/XiaoMi/hiui/commit/d6c7feaf840f8db858f8d2534e86c16a598674b7) Thanks [@chownchen](https://github.com/chownchen)! - Descriptions Component add data api
+
+- Updated dependencies [[`0f1420d36`](https://github.com/XiaoMi/hiui/commit/0f1420d36bc6bc73b8994eb9dd277b26b930451f), [`544858c34`](https://github.com/XiaoMi/hiui/commit/544858c342e043f3a60a0368c76c9411a634eb3f), [`a7d47168b`](https://github.com/XiaoMi/hiui/commit/a7d47168b519cacfd7b34edf6ba239c5b0b92284), [`5092a901d`](https://github.com/XiaoMi/hiui/commit/5092a901def14bf4a37411d6d4207cd13809d029), [`a9a5558ac`](https://github.com/XiaoMi/hiui/commit/a9a5558ac2a17efb213e07a8ee0d3612b43df2a2)]:
+  - @hi-ui/descriptions@4.1.0
+  - @hi-ui/tabs@4.0.7
+  - @hi-ui/core@4.0.5
+  - @hi-ui/tree@4.1.2
+  - @hi-ui/pagination@4.0.9
+
 ## 4.1.17
 
 ### Patch Changes

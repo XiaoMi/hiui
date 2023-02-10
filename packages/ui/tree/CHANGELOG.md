@@ -1,5 +1,14 @@
 # @hi-ui/tree
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2392](https://github.com/XiaoMi/hiui/pull/2392) [`5092a901d`](https://github.com/XiaoMi/hiui/commit/5092a901def14bf4a37411d6d4207cd13809d029) Thanks [@zyprepare](https://github.com/zyprepare)! - 修复问题: 自定义搜索在 checkable 模式下勾选逻辑有误
+
+- Updated dependencies [[`a7d47168b`](https://github.com/XiaoMi/hiui/commit/a7d47168b519cacfd7b34edf6ba239c5b0b92284)]:
+  - @hi-ui/core@4.0.5
+
 ## 4.1.1
 
 ### Patch Changes
