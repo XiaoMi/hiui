@@ -334,6 +334,8 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   }
 
   &__calendar-wrap {
+    box-sizing: border-box;
+    width: 240px; // https://github.com/XiaoMi/hiui/issues/2400
     padding: 8px;
   }
 
