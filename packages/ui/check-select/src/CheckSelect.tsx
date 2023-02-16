@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo, useRef, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCheckSelect, UseCheckSelectProps } from './use-check-select'
@@ -15,7 +15,7 @@ import { useLatestRef } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
 import { TagInputMock } from '@hi-ui/tag-input'
 import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
-import VirtualList, { useCheckInVirtual } from '@hi-ui/virtual-list'
+import VirtualList, { ListRef, useCheckInVirtual } from '@hi-ui/virtual-list'
 import { Picker, PickerProps } from '@hi-ui/picker'
 
 import { times, uniqBy } from '@hi-ui/array-utils'
@@ -238,6 +238,15 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
+    const listRef = useRef<ListRef>(null)
+
+    useEffect(() => {
+      // 每次打开时触发一次滚动条显示
+      if (menuVisible) {
+        listRef.current?.scrollTo(undefined)
+      }
+    }, [menuVisible])
+
     return (
       <CheckSelectProvider value={context}>
         <Picker
@@ -326,7 +335,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           }
         >
           {isArrayNonEmpty(dropdownItems) ? (
-            <VirtualList itemKey="id" fullHeight={false} {...virtualListProps}>
+            <VirtualList ref={listRef} itemKey="id" fullHeight={false} {...virtualListProps}>
               {(node: any) => {
                 /* 反向 map，搜索删选数据时会对数据进行处理 */
                 return 'groupTitle' in node ? (

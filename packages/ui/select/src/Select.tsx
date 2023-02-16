@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { MockInput } from '@hi-ui/input'
@@ -9,6 +9,7 @@ import { SelectProvider } from './context'
 import { FlattedSelectDataItem, SelectItemEventData, SelectMergedItem } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import VirtualList, { useCheckInVirtual } from '@hi-ui/virtual-list'
+import type { ListRef } from 'rc-virtual-list'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { Picker, PickerProps } from '@hi-ui/picker'
 import { Highlighter } from '@hi-ui/highlighter'
@@ -182,6 +183,15 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     }
     const { inVirtual } = useCheckInVirtual(virtualListProps)
 
+    const listRef = useRef<ListRef>(null)
+
+    useEffect(() => {
+      // 每次打开时触发一次滚动条显示
+      if (menuVisible) {
+        listRef.current?.scrollTo(undefined)
+      }
+    }, [menuVisible])
+
     return (
       <SelectProvider value={context}>
         <Picker
@@ -221,7 +231,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           }
         >
           {isArrayNonEmpty(showData) ? (
-            <VirtualList itemKey="id" fullHeight={false} {...virtualListProps}>
+            <VirtualList ref={listRef} itemKey="id" fullHeight={false} {...virtualListProps}>
               {(node: any) => {
                 /* 反向 map，搜索删选数据时会对数据进行处理 */
                 return 'groupTitle' in node ? (
