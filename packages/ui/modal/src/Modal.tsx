@@ -142,7 +142,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
               style={{
                 width,
                 height,
-                maxHeight: height && height > defaultMaxHeight ? height : defaultMaxHeight,
+                ...(!height ? { maxHeight: defaultMaxHeight } : null),
               }}
               {...getModalWrapperProps()}
             >
