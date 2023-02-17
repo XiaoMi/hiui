@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tabs",
-  "version": "4.0.8",
+  "version": "4.0.7",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -46,7 +46,7 @@
     "@hi-ui/classname": "^4.0.1",
     "@hi-ui/env": "^4.0.1",
     "@hi-ui/icon-button": "^4.0.4",
-    "@hi-ui/icons": "^4.0.6",
+    "@hi-ui/icons": "^4.0.4",
     "@hi-ui/react-utils": "^4.0.1",
     "@hi-ui/type-assertion": "^4.0.1",
     "@hi-ui/use-latest": "^4.0.1",
