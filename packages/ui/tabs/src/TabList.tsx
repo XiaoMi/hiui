@@ -104,7 +104,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
           const innerSize = getClientSize(innerElement)
           resizeScroll(scrollSize, innerSize)
           // 每次滚动容器大小改变后，需要同步更新滚动位置
-          initScrollPosition()
+          initScrollPosition(activeId)
         }
       },
     })
@@ -169,9 +169,9 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       [data, getClientSize, getTabOffset, innerElement, scrollElement, translatePos]
     )
 
-    const initScrollPosition = useCallback(() => {
-      activeId && syncScrollPosition(activeId)
-    }, [activeId, syncScrollPosition])
+    const initScrollPosition = useLatestCallback((tabId?: React.ReactText) => {
+      tabId && syncScrollPosition(tabId)
+    })
 
     const onClickTab = useLatestCallback((tabId: React.ReactText, event: React.MouseEvent) => {
       onTabClick?.(tabId, event)
@@ -181,8 +181,8 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
 
     useEffect(() => {
       // activeId 受控模式下改变后，同步更新滚动位置
-      activeId && syncScrollPosition(activeId)
-    }, [activeId, syncScrollPosition])
+      initScrollPosition(activeId)
+    }, [activeId, initScrollPosition])
 
     return (
       <div
