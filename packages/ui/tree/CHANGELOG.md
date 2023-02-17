@@ -1,5 +1,16 @@
 # @hi-ui/tree
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2398](https://github.com/XiaoMi/hiui/pull/2398) [`f1c00217a`](https://github.com/XiaoMi/hiui/commit/f1c00217a720777685a563d56d545099b7a83eec) Thanks [@zyprepare](https://github.com/zyprepare)! - 增加 expandOnClick api
+
+### Patch Changes
+
+- Updated dependencies [[`6d53795e0`](https://github.com/XiaoMi/hiui/commit/6d53795e03c51af16282a75015b0b2a0845b0054)]:
+  - @hi-ui/icons@4.0.6
+
 ## 4.1.2
 
 ### Patch Changes
