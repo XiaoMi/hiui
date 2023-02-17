@@ -1,5 +1,14 @@
 # @hi-ui/date-picker
 
+## 4.0.13
+
+### Patch Changes
+
+- [#2411](https://github.com/XiaoMi/hiui/pull/2411) [`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117) Thanks [@zyprepare](https://github.com/zyprepare)! - 修复问题: 日期选择中,选择月份后会有一个闪动的界面
+
+- Updated dependencies [[`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117)]:
+  - @hi-ui/icons@4.0.6
+
 ## 4.0.12
 
 ### Patch Changes

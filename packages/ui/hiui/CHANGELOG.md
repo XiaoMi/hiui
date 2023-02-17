@@ -1,5 +1,27 @@
 # @hi-ui/hiui
 
+## 4.1.19
+
+### Patch Changes
+
+- [#2411](https://github.com/XiaoMi/hiui/pull/2411) [`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117) Thanks [@zyprepare](https://github.com/zyprepare)! - Tabs 问题修复: 在 tab 过多滚动场景下，如果选中的 tab 在最左侧，点击右箭头时无效果
+
+- [#2411](https://github.com/XiaoMi/hiui/pull/2411) [`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117) Thanks [@zyprepare](https://github.com/zyprepare)! - Select CheckSelect 体验优化: 大数据列表中,打开下拉列表时有一次滚动条提示
+
+- [#2411](https://github.com/XiaoMi/hiui/pull/2411) [`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117) Thanks [@zyprepare](https://github.com/zyprepare)! - Tree 增加 expandOnClick api
+
+- [#2411](https://github.com/XiaoMi/hiui/pull/2411) [`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117) Thanks [@zyprepare](https://github.com/zyprepare)! - DatePicker 修复问题: 日期选择中,选择月份后会有一个闪动的界面
+
+- [#2411](https://github.com/XiaoMi/hiui/pull/2411) [`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117) Thanks [@zyprepare](https://github.com/zyprepare)! - Modal 修复问题: 设置 height 为表达式时,组件中会有 max-height 限制导致无效
+
+- Updated dependencies [[`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117), [`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117), [`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117), [`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117), [`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117)]:
+  - @hi-ui/tree@4.2.0
+  - @hi-ui/tabs@4.0.8
+  - @hi-ui/modal@4.0.10
+  - @hi-ui/check-select@4.1.2
+  - @hi-ui/select@4.0.10
+  - @hi-ui/date-picker@4.0.13
+
 ## 4.1.18
 
 ### Patch Changes
