@@ -188,7 +188,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     useEffect(() => {
       // 每次打开时触发一次滚动条显示
       if (menuVisible) {
-        listRef.current?.scrollTo(undefined)
+        listRef.current?.scrollTo(undefined as any)
       }
     }, [menuVisible])
 
