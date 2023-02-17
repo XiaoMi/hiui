@@ -1,5 +1,14 @@
 # @hi-ui/modal
 
+## 4.0.10
+
+### Patch Changes
+
+- [#2403](https://github.com/XiaoMi/hiui/pull/2403) [`701281f98`](https://github.com/XiaoMi/hiui/commit/701281f98b04a0fe90e9c6cdd0c49872b852b594) Thanks [@zyprepare](https://github.com/zyprepare)! - 修复问题: 设置 height 为表达式时,组件中会有 max-height 限制导致无效
+
+- Updated dependencies [[`6d53795e0`](https://github.com/XiaoMi/hiui/commit/6d53795e03c51af16282a75015b0b2a0845b0054)]:
+  - @hi-ui/icons@4.0.6
+
 ## 4.0.9
 
 ### Patch Changes
