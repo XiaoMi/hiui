@@ -1,5 +1,14 @@
 # @hi-ui/tabs
 
+## 4.0.8
+
+### Patch Changes
+
+- [#2411](https://github.com/XiaoMi/hiui/pull/2411) [`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117) Thanks [@zyprepare](https://github.com/zyprepare)! - 问题修复: 在 tab 过多滚动场景下，如果选中的 tab 在最左侧，点击右箭头时无效果
+
+- Updated dependencies [[`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117)]:
+  - @hi-ui/icons@4.0.6
+
 ## 4.0.7
 
 ### Patch Changes

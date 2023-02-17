@@ -1,5 +1,11 @@
 # @hi-ui/icons
 
+## 4.0.6
+
+### Patch Changes
+
+- [#2411](https://github.com/XiaoMi/hiui/pull/2411) [`f7d1257ad`](https://github.com/XiaoMi/hiui/commit/f7d1257ad2006fd40cabb2d16f1fde77677f3117) Thanks [@zyprepare](https://github.com/zyprepare)! - 补充 edit 类型图标展示
+
 ## 4.0.5
 
 ### Patch Changes
