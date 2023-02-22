@@ -105,7 +105,7 @@ if (__DEV__) {
 }
 
 function computeItems(data?: DescriptionsItemProps[]) {
-  return data?.map(({ children, ...otherItem }, index) => (
+  return data?.filter(Boolean)?.map(({ children, ...otherItem }, index) => (
     <DescriptionsItem {...otherItem} key={index}>
       {otherItem.value}
     </DescriptionsItem>
@@ -115,7 +115,7 @@ function computeItems(data?: DescriptionsItemProps[]) {
 function computeRows(children: React.ReactNode, column: number) {
   if (!Array.isArray(children)) return []
 
-  const childrenNodes = toArray(children)
+  const childrenNodes = toArray(children).filter(Boolean)
 
   const rows: React.ReactElement[][] = []
 
@@ -137,7 +137,7 @@ function computeRows(children: React.ReactNode, column: number) {
       colSpan = 1
     }
 
-    if (index === children.length - 1) {
+    if (index === childrenNodes.length - 1) {
       rowItems.push(computeFilledItem(node, undefined, rowRestCol))
       rows.push(rowItems)
       return
