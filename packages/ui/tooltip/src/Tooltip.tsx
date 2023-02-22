@@ -16,6 +16,7 @@ import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { Portal } from '@hi-ui/portal'
 import { isElement, isString } from '@hi-ui/type-assertion'
 import { useLatestCallback } from '@hi-ui/use-latest'
+import { TooltipHelpers } from './types'
 
 export const _prefix = getPrefixCls('tooltip')
 
@@ -56,7 +57,10 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
     // 用于 api 式完全非受控隐藏
     const [internalVisible, setInternalVisible] = useState<boolean | undefined>(undefined)
 
-    useImperativeHandle(innerRef, () => ({ close: () => setInternalVisible(false) }))
+    useImperativeHandle(innerRef, () => ({
+      close: () => setInternalVisible(false),
+      update: updatePopper,
+    }))
 
     const [transitionExisted, setTransitionExisted] = useState(!transitionVisible)
 
@@ -79,6 +83,7 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       getPopperProps,
       getTooltipProps,
       getArrowProps,
+      updatePopper,
     } = useTooltip({
       ...rest,
       visible: !transitionExisted,
@@ -173,7 +178,7 @@ export interface TooltipProps extends HiBaseHTMLProps<'div'>, UseTooltipProps {
    *。暂不对外暴露
    * @private
    */
-  innerRef?: React.Ref<{ close: () => void }>
+  innerRef?: React.Ref<TooltipHelpers>
   /**
    * 指定 portal 的容器。暂不对外暴露
    * @private

@@ -1,10 +1,10 @@
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef, useMemo, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useSlider, UseSliderProps } from './use-slider'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
-import { Tooltip } from '@hi-ui/tooltip'
+import { Tooltip, TooltipHelpers } from '@hi-ui/tooltip'
 import { isFunction, isObject } from '@hi-ui/type-assertion'
 
 const SLIDER_PREFIX = getPrefixCls('slider')
@@ -30,6 +30,8 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
     },
     ref
   ) => {
+    const tooltipRef = useRef<TooltipHelpers>(null)
+
     const {
       value,
       min,
@@ -43,7 +45,7 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
       getHandleProps,
       getMarkProps,
       getMarkLabelProps,
-    } = useSlider(rest)
+    } = useSlider(rest, tooltipRef.current)
 
     const cls = cx(
       prefixCls,
@@ -67,6 +69,7 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
         <div className={`${prefixCls}__track`} {...getTrackProps()} />
         <div className={`${prefixCls}__handle`} {...getHandleProps()}>
           <Tooltip
+            innerRef={tooltipRef}
             visible={tooltipVisible}
             title={
               <div style={{ textAlign: 'center' }}>

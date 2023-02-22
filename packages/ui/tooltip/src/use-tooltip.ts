@@ -100,7 +100,9 @@ export const useTooltip = ({
     }
   }, [visible, popper, visibleAction, triggerElement])
 
-  const { shouldRenderPopper, getArrowProps, getPopperProps } = usePopper(usePopperProps)
+  const { shouldRenderPopper, getArrowProps, getPopperProps, update: updatePopper } = usePopper(
+    usePopperProps
+  )
 
   const tooltipId = useUID('popover')
 
@@ -174,6 +176,7 @@ export const useTooltip = ({
     getTriggerProps,
     getPopperProps,
     getArrowProps,
+    updatePopper,
     shouldRenderPopper,
   }
 }
