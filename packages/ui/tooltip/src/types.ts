@@ -11,3 +11,8 @@ export const TooltipTriggerActionEnum = {
 
 // eslint-disable-next-line no-redeclare
 export type TooltipTriggerActionEnum = ValueOf<typeof TooltipTriggerActionEnum> | undefined
+
+export interface TooltipHelpers {
+  close: () => void
+  update: () => void
+}

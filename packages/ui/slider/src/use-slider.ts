@@ -5,20 +5,24 @@ import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { useToggle } from '@hi-ui/use-toggle'
 import { getPrefixStyleVar } from '@hi-ui/classname'
 import { setAttrStatus } from '@hi-ui/dom-utils'
+import { TooltipHelpers } from '@hi-ui/tooltip'
 
-export const useSlider = ({
-  value: valueProp,
-  onChange,
-  defaultValue = 0,
-  min: minProp = 0,
-  max: maxProp = 100,
-  step = 1,
-  vertical = false,
-  disabled = false,
-  reversed = false,
-  color,
-  ...rest
-}: UseSliderProps) => {
+export const useSlider = (
+  {
+    value: valueProp,
+    onChange,
+    defaultValue = 0,
+    min: minProp = 0,
+    max: maxProp = 100,
+    step = 1,
+    vertical = false,
+    disabled = false,
+    reversed = false,
+    color,
+    ...rest
+  }: UseSliderProps,
+  tooltip: TooltipHelpers | null
+) => {
   /**
    * 边界优化
    */
@@ -194,9 +198,11 @@ export const useSlider = ({
     (evt) => {
       if (inMoving) {
         setValueByDrag(evt)
+        // 拖动过程中实时更新 tooltip 显示位置
+        tooltip?.update()
       }
     },
-    [inMoving, setValueByDrag]
+    [inMoving, setValueByDrag, tooltip]
   )
 
   /**
