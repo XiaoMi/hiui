@@ -49,3 +49,18 @@ export const getFileItems = (fileList: FileList | null) => {
 
   return itemArr
 }
+
+/**
+ * 通过 filename 获取图片格式
+ * @param filename
+ * @returns
+ */
+export const getImageTypeByFilename = (filename: string) => {
+  let type = filename.substring(filename.lastIndexOf('.') + 1)
+
+  if (!type) type = 'png'
+
+  if (type === 'jpg') type = 'jpeg'
+
+  return `image/${type}`
+}
