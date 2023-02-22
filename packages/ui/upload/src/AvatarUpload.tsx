@@ -15,6 +15,7 @@ import { useLocaleContext } from '@hi-ui/core'
 import { Preview } from '@hi-ui/preview'
 import { Modal } from '@hi-ui/modal'
 import Cropper from 'react-cropper'
+import { getImageTypeByFilename } from './utils'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 
@@ -137,7 +138,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
           if (typeof canvas === 'undefined') {
             return
           }
-          const dataUrl = canvas.toDataURL()
+          const dataUrl = canvas.toDataURL(getImageTypeByFilename(filename))
           const file: UploadFileItem = base2blob(dataUrl, filename)
           file.url = dataUrl
           file.fileType = 'img'
@@ -176,7 +177,9 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
 
       []
     )
+
     const file = _fileList[0]
+
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
         <ul className={`${prefixCls}__list`}>
