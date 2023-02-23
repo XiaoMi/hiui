@@ -253,3 +253,13 @@ export const normalizeWeekOffset = (date, weekOffset) => {
   clone.locale(weekOffset === 1 ? 'zh-CN' : 'en-US')
   return clone
 }
+
+export const convertMonth = (month) => {
+  if (typeof Number(month) !== 'number') {
+    return '01'
+  }
+
+  const _month = month + 1
+
+  return _month < 10 ? '0' + _month : _month
+}
