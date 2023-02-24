@@ -52,8 +52,8 @@ export { default as Drawer } from '@hi-ui/drawer'
 export * from '@hi-ui/dropdown'
 export { default as Dropdown } from '@hi-ui/dropdown'
 
-// export * from '@hi-ui/ellipsis-tooltip'
-// export { default as EllipsisTooltip } from '@hi-ui/ellipsis-tooltip'
+export * from '@hi-ui/ellipsis-tooltip'
+export { default as EllipsisTooltip } from '@hi-ui/ellipsis-tooltip'
 
 export * from '@hi-ui/empty-state'
 export { default as EmptyState } from '@hi-ui/empty-state'
