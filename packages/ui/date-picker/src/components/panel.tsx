@@ -133,6 +133,8 @@ const Panel = (props: PanelProps) => {
     const _innerDates = genNewDates(calRenderDates, date)
     if (type.includes('range') && _innerDates[0] >= _innerDates[1]) return
     setCalRenderDates(_innerDates)
+    // 左右切换年或月时触发 onSelect 回调
+    onSelect(date.toDate(), true)
   }
 
   return (
