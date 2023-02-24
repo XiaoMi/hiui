@@ -1,5 +1,11 @@
 # @hi-ui/upload
 
+## 4.1.1
+
+### Patch Changes
+
+- [#2419](https://github.com/XiaoMi/hiui/pull/2419) [`2a752a458`](https://github.com/XiaoMi/hiui/commit/2a752a458300331acefa250d20fd8c0785e6683b) Thanks [@zyprepare](https://github.com/zyprepare)! - 问题修复: type="avatar" 模式下,图片裁剪后的格式默认都变成了 png
+
 ## 4.1.0
 
 ### Minor Changes

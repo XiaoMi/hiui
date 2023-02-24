@@ -1,5 +1,11 @@
 # @hi-ui/descriptions
 
+## 4.1.1
+
+### Patch Changes
+
+- [#2416](https://github.com/XiaoMi/hiui/pull/2416) [`f8488d3c3`](https://github.com/XiaoMi/hiui/commit/f8488d3c3235d8bf2fc38e0ca3bfaed75bd0ce09) Thanks [@chownchen](https://github.com/chownchen)! - handle fix null data item crash
+
 ## 4.1.0
 
 ### Minor Changes

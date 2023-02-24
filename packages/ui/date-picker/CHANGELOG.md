@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 4.0.14
+
+### Patch Changes
+
+- [#2423](https://github.com/XiaoMi/hiui/pull/2423) [`2916a5578`](https://github.com/XiaoMi/hiui/commit/2916a557818fe232978562c1f3d4ce6dbb991218) Thanks [@zyprepare](https://github.com/zyprepare)! - 交互优化: 日期选择中,左右切换年或月时触发 onSelect 回调
+
 ## 4.0.13
 
 ### Patch Changes
