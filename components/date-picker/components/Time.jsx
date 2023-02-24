@@ -2,7 +2,7 @@ import React, { useContext, useCallback } from 'react'
 import TimeList from './TimeList'
 import DPContext from '../context'
 import moment from 'moment'
-import { deconstructDate } from '../utils'
+import { deconstructDate, convertMonth } from '../utils'
 
 const Time = ({ date, onChange, timeRangePanelType, startDate, currentDate }) => {
   const {
@@ -29,56 +29,31 @@ const Time = ({ date, onChange, timeRangePanelType, startDate, currentDate }) =>
   // 设置Date的选中状态
   const setDisableTime = (type, i, disabledTime = []) => {
     let isDisabled = disabledTime.includes(i)
+
     if (PropsType === 'timerange' || PropsType === 'time' || PropsType === 'default' || showTime) {
       if (timeRangePanelType === 'right') {
-        const { hour, minute, second } = deconstructDate(startDate)
-        const { hour: endHour, minute: endMinute } = date ? deconstructDate(date) : deconstructDate(new Date())
-        const dateDiff = moment(date).diff(moment(startDate), 'days')
-        const hourDiff = moment(date).diff(moment(startDate), 'hour')
-        const minuteDiff = moment(date).diff(moment(startDate), 'minutes')
+        const { year, month, date: sDate, hour, minute, second } = deconstructDate(startDate)
+        const {
+          year: endYear,
+          month: endMonth,
+          date: endDate,
+          hour: endHour,
+          minute: endMinute,
+          second: endSecond
+        } = date ? deconstructDate(date) : deconstructDate(new Date())
+        const start = new Date(`${year}-${convertMonth(month)}-${sDate} ${hour}:${minute}:${second}`)
 
-        // 不在同一天
-        if (dateDiff !== 0) {
-          isDisabled = dateDiff < 0
+        if (type === 'hour') {
+          isDisabled =
+            start > new Date(`${endYear}-${convertMonth(endMonth)}-${endDate} ${i}:${endMinute}:${endSecond}`)
         }
-        // 在同一天，则比较小时
-        else {
-          if (type === 'hour') {
-            isDisabled = hour > i
-          } else {
-            // 不在同一小时
-            if (hourDiff !== 0) {
-              isDisabled = hourDiff < 0
-            }
-            // 在同一小时，则比较分钟
-            else {
-              if (type === 'minute') {
-                if (endHour === hour) {
-                  isDisabled = minute > i
-                }
-                if (endHour < hour) {
-                  isDisabled = true
-                }
-              } else {
-                // 不在同一分
-                if (minuteDiff !== 0) {
-                  isDisabled = minuteDiff < 0
-                }
-                // 在同一分钟，则比较秒
-                else {
-                  if (endHour === hour) {
-                    isDisabled = endMinute === minute && second > i
-                    if (endMinute < minute) {
-                      isDisabled = true
-                    }
-                  }
-                  if (endHour < hour) {
-                    isDisabled = true
-                  }
-                }
-              }
-            }
-          }
+
+        if (type === 'minute') {
+          isDisabled = start > new Date(`${endYear}-${convertMonth(endMonth)}-${endDate} ${endHour}:${i}:${endSecond}`)
+        }
+
+        if (type === 'second') {
+          isDisabled = start > new Date(`${endYear}-${convertMonth(endMonth)}-${endDate} ${endHour}:${endMinute}:${i}`)
         }
       }
 
