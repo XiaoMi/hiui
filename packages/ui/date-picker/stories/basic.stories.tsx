@@ -17,6 +17,7 @@ export const Basic = () => {
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
+          onSelect={console.log}
         />
 
         <h2>带默认值</h2>
