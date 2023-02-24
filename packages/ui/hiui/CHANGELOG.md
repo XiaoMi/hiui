@@ -1,5 +1,22 @@
 # @hi-ui/hiui
 
+## 4.1.20
+
+### Patch Changes
+
+- [#2423](https://github.com/XiaoMi/hiui/pull/2423) [`2916a5578`](https://github.com/XiaoMi/hiui/commit/2916a557818fe232978562c1f3d4ce6dbb991218) Thanks [@zyprepare](https://github.com/zyprepare)! - DatePicker 交互优化: 日期选择中,左右切换年或月时触发 onSelect 回调
+
+- [#2417](https://github.com/XiaoMi/hiui/pull/2417) [`14f0e2d53`](https://github.com/XiaoMi/hiui/commit/14f0e2d5313cf1575f6e6378659e5406f8045529) Thanks [@zyprepare](https://github.com/zyprepare)! - Tooltip Slider 修复问题: 鼠标拖动过程中 tooltip 没有跟随显示
+
+- [#2419](https://github.com/XiaoMi/hiui/pull/2419) [`2a752a458`](https://github.com/XiaoMi/hiui/commit/2a752a458300331acefa250d20fd8c0785e6683b) Thanks [@zyprepare](https://github.com/zyprepare)! - Upload 问题修复: type="avatar" 模式下,图片裁剪后的格式默认都变成了 png
+
+- Updated dependencies [[`2916a5578`](https://github.com/XiaoMi/hiui/commit/2916a557818fe232978562c1f3d4ce6dbb991218), [`2a752a458`](https://github.com/XiaoMi/hiui/commit/2a752a458300331acefa250d20fd8c0785e6683b), [`f8488d3c3`](https://github.com/XiaoMi/hiui/commit/f8488d3c3235d8bf2fc38e0ca3bfaed75bd0ce09), [`14f0e2d53`](https://github.com/XiaoMi/hiui/commit/14f0e2d5313cf1575f6e6378659e5406f8045529)]:
+  - @hi-ui/date-picker@4.0.14
+  - @hi-ui/upload@4.1.1
+  - @hi-ui/descriptions@4.1.1
+  - @hi-ui/slider@4.0.7
+  - @hi-ui/tooltip@4.0.6
+
 ## 4.1.19
 
 ### Patch Changes
