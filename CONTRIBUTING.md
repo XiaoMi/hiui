@@ -115,7 +115,7 @@ yarn create:pkg hook `hook-name`
 - 给指定包添加依赖包
 
 ```sh
-yarn workspace add @hi-ui/date-picker add @hi-ui/button
+yarn workspace @hi-ui/hiui add @hi-ui/button
 ```
 
 - 对指定包执行 npm scripts 相关命令
