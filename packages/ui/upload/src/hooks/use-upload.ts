@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { useLocaleContext } from '@hi-ui/core'
+import { uuid } from '@hi-ui/use-id'
+import message from '@hi-ui/message'
 import request from '../request'
 import { getFileItems, getFileType } from '../utils'
-import { uuid } from '@hi-ui/use-id'
-
-// import Modal from '../../modal'
 import { UploadProps, UploadFileItem } from '../types'
 
 const useUpload = ({
@@ -26,6 +26,10 @@ const useUpload = ({
   (files: HTMLInputElement['files']) => Promise<void>,
   (file: UploadFileItem, index: any) => void
 ] => {
+  const i18n = useLocaleContext()
+
+  const messageText = i18n.get('upload.modalTiptxt')
+
   const [_fileList, updateFileList] = useState(fileList || defaultFileList || [])
   const fileListRef = useRef(fileList || defaultFileList || [])
 
@@ -164,12 +168,10 @@ const useUpload = ({
               }
             }
             if (maxSize && fileItem.size > maxSize * 1024) {
-              // Modal.confirm({
-              //   title: localMap.modalTitle,
-              //   content: localMap.modalTiptxt,
-              //   cancelText: null,
-              //   confirmText: localMap.modalBtn,
-              // })
+              message.open({
+                type: 'error',
+                title: messageText,
+              })
 
               continue
             }
