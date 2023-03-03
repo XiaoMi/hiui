@@ -213,8 +213,8 @@ $prefix: '#{$component-prefix}-input' !default;
 
     &-lg {
       height: use-height-size(10);
-      font-size: use-text-size('md');
-      line-height: use-text-lineheight('md');
+      font-size: use-text-size('lg');
+      line-height: use-text-lineheight('lg');
 
       .#{$prefix}__text {
         padding: 7px $input-padding-width;
