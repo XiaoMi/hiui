@@ -1,5 +1,11 @@
 # @hi-ui/upload
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2429](https://github.com/XiaoMi/hiui/pull/2429) [`72e2adbbd`](https://github.com/XiaoMi/hiui/commit/72e2adbbd78911c14fa541492efb55873662657c) Thanks [@zyprepare](https://github.com/zyprepare)! - 修复问题: maxSize 设置后，上传图片超出大小时无效果
+
 ## 4.1.1
 
 ### Patch Changes

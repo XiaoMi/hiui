@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 4.0.15
+
+### Patch Changes
+
+- [#2431](https://github.com/XiaoMi/hiui/pull/2431) [`93489d394`](https://github.com/XiaoMi/hiui/commit/93489d394264189b783dde21169e6a3d458e9d6e) Thanks [@zyprepare](https://github.com/zyprepare)! - 样式优化: 日历面板显示界面过小
+
 ## 4.0.14
 
 ### Patch Changes

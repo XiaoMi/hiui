@@ -1,5 +1,17 @@
 # @hi-ui/hiui
 
+## 4.1.21
+
+### Patch Changes
+
+- [#2429](https://github.com/XiaoMi/hiui/pull/2429) [`72e2adbbd`](https://github.com/XiaoMi/hiui/commit/72e2adbbd78911c14fa541492efb55873662657c) Thanks [@zyprepare](https://github.com/zyprepare)! - Upload 修复问题: maxSize 设置后，上传图片超出大小时无效果
+
+- [#2431](https://github.com/XiaoMi/hiui/pull/2431) [`93489d394`](https://github.com/XiaoMi/hiui/commit/93489d394264189b783dde21169e6a3d458e9d6e) Thanks [@zyprepare](https://github.com/zyprepare)! - DatePicker 样式优化: 日历面板显示界面过小
+
+- Updated dependencies [[`72e2adbbd`](https://github.com/XiaoMi/hiui/commit/72e2adbbd78911c14fa541492efb55873662657c), [`93489d394`](https://github.com/XiaoMi/hiui/commit/93489d394264189b783dde21169e6a3d458e9d6e)]:
+  - @hi-ui/upload@4.1.2
+  - @hi-ui/date-picker@4.0.15
+
 ## 4.1.20
 
 ### Patch Changes
