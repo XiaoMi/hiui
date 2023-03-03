@@ -266,7 +266,7 @@ const Calendar = ({
     <div
       className={cx(
         `${prefixCls}__calendar-wrap`,
-        `${prefixCls}__calendar-wrap--${isLarge ? 'large' : 'normal'}`
+        `${prefixCls}__calendar-wrap--${isLarge ? 'lg' : 'md'}`
       )}
     >
       <CSSTransition in={holidayFullNameShow} timeout={300} classNames={`${prefixCls}__indiaHoli`}>

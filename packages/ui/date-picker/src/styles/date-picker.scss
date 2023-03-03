@@ -337,11 +337,11 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     box-sizing: border-box;
     padding: 8px;
 
-    &--normal {
+    &--md {
       width: 240px; // https://github.com/XiaoMi/hiui/issues/2400
     }
 
-    &--large {
+    &--lg {
       width: 338px; // https://github.com/XiaoMi/hiui/issues/2428
     }
   }
