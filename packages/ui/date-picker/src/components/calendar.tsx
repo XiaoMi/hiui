@@ -263,7 +263,12 @@ const Calendar = ({
   }
 
   return (
-    <div className={`${prefixCls}__calendar-wrap`}>
+    <div
+      className={cx(
+        `${prefixCls}__calendar-wrap`,
+        `${prefixCls}__calendar-wrap--${isLarge ? 'large' : 'normal'}`
+      )}
+    >
       <CSSTransition in={holidayFullNameShow} timeout={300} classNames={`${prefixCls}__indiaHoli`}>
         <div className={`${prefixCls}__indiaHoli`}>
           <div className={`${prefixCls}__indiaHoli-text`}>{holidayFullName}</div>
