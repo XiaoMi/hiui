@@ -1,5 +1,14 @@
 # @hi-ui/hiui
 
+## 4.1.22
+
+### Patch Changes
+
+- [#2435](https://github.com/XiaoMi/hiui/pull/2435) [`92d03cf74`](https://github.com/XiaoMi/hiui/commit/92d03cf7464ab19e08a912deb41984aa0d71340c) Thanks [@chownchen](https://github.com/chownchen)! - EllipsisTooltip: api and docs update
+
+- Updated dependencies [[`c3e490027`](https://github.com/XiaoMi/hiui/commit/c3e49002752965c90fdf73f9be26d85b9252be19)]:
+  - @hi-ui/ellipsis-tooltip@4.1.0
+
 ## 4.1.21
 
 ### Patch Changes

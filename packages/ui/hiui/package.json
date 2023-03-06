@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.1.21",
+  "version": "4.1.22",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -63,7 +63,7 @@
     "@hi-ui/descriptions": "^4.1.1",
     "@hi-ui/drawer": "^4.0.7",
     "@hi-ui/dropdown": "^4.0.5",
-    "@hi-ui/ellipsis-tooltip": "^4.0.0",
+    "@hi-ui/ellipsis-tooltip": "^4.1.0",
     "@hi-ui/empty-state": "^4.0.4",
     "@hi-ui/filter": "^4.1.0",
     "@hi-ui/form": "^4.1.2",
