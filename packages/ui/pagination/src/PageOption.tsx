@@ -2,6 +2,7 @@ import React from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { Select } from '@hi-ui/select'
 import { __DEV__ } from '@hi-ui/env'
+import { PopperOverlayProps } from '@hi-ui/popper'
 
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
@@ -14,6 +15,7 @@ export const PageOption: React.FC<PageOptionProps> = ({
   pageSizeOptions,
   onPageSizeChange,
   pageSize,
+  overlayProps,
 }) => {
   const cls = cx(`${prefixCls}__option`)
 
@@ -25,6 +27,7 @@ export const PageOption: React.FC<PageOptionProps> = ({
       data={pageSizeOptions}
       value={pageSize}
       clearable={false}
+      overlay={overlayProps}
       onChange={onPageSizeChange as (value: React.ReactText) => void}
     />
   )
@@ -51,6 +54,10 @@ export interface PageOptionProps {
    * 	每页条数
    */
   pageSize: number
+  /**
+   * PopperOverlayProps
+   */
+  overlayProps?: PopperOverlayProps
 }
 
 if (__DEV__) {
