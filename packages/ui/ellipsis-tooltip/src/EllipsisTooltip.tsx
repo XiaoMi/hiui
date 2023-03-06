@@ -75,11 +75,7 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
   )
 }
 
-export interface EllipsisTooltipProps extends HiBaseHTMLProps<'div'>, Omit<TooltipProps, 'title'> {
-  /**
-   * 子文本内容
-   */
-  children: string
+export interface EllipsisTooltipProps extends HiBaseHTMLProps<'div'> {
   /**
    * 超出行数展示省略号
    */
