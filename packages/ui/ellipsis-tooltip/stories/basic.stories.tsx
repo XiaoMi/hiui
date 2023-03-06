@@ -9,14 +9,11 @@ export const Basic = () => {
     <>
       <h1>基本使用</h1>
       <div className="ellipsis-tooltip-basic__wrap" style={{ width: 400 }}>
-        <EllipsisTooltip>学而时习之</EllipsisTooltip>
-        <div>-----------------------------------------</div>
+        <h4>没有超出</h4>
+        <EllipsisTooltip>没有超出限制时，不会出现提示</EllipsisTooltip>
+        <h4>超出宽度限制</h4>
         <EllipsisTooltip>
-          学而时习之，不亦说乎?有朋自远方来，不亦乐乎?人不知而不愠，不亦君子乎？
-        </EllipsisTooltip>
-        <div>-----------------------------------------</div>
-        <EllipsisTooltip numberOfLines={2}>
-          【译】孔子说：“学习并且不断温习，不也很愉快吗?远方来了朋友，不也很快乐吗?人家不了解我，我也不怨恨，不也是君子吗?”
+          学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？
         </EllipsisTooltip>
       </div>
     </>
