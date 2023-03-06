@@ -1,5 +1,11 @@
 # @hi-ui/ellipsis-tooltip
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2435](https://github.com/XiaoMi/hiui/pull/2435) [`c3e490027`](https://github.com/XiaoMi/hiui/commit/c3e49002752965c90fdf73f9be26d85b9252be19) Thanks [@chownchen](https://github.com/chownchen)! - api and docs update
+
 ## 4.0.0
 
 ### Patch Changes
