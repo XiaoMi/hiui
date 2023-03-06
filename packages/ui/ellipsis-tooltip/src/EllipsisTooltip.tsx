@@ -79,7 +79,7 @@ export interface EllipsisTooltipProps extends HiBaseHTMLProps<'div'> {
   /**
    * 子文本，待处理文本内容
    */
-   children: string
+  children: string
   /**
    * 超出行数展示省略号
    */
