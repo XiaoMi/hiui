@@ -9,7 +9,7 @@ export const withTooltipApi = () => {
   const handleClose = () => console.log('close tooltip')
   return (
     <>
-      <h1>超出文字个数限制</h1>
+      <h1>结合 tooltip 组件api 使用</h1>
       <div className="ellipsis-tooltip-multiple__wrap" style={{ width: 400 }}>
         <EllipsisTooltip
           maxTextCount={40}
