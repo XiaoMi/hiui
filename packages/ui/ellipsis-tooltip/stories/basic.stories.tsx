@@ -7,8 +7,8 @@ import EllipsisTooltip from '../src'
 export const Basic = () => {
   return (
     <>
-      <h1>基本使用</h1>
-      <div className="ellipsis-tooltip-basic__wrap" style={{ width: 400 }}>
+      <h1>基本使用 </h1>
+      <div className="ellipsis-tooltip-basic__wrap" style={{ width: 400, margin: '0 auto' }}>
         <h4>没有超出</h4>
         <EllipsisTooltip>没有超出限制时，不会出现提示</EllipsisTooltip>
         <h4>超出宽度限制</h4>
