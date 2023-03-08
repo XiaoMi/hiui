@@ -78,10 +78,6 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
 
 export interface EllipsisTooltipProps extends HiBaseHTMLProps<'div'> {
   /**
-   * 子文本内容
-   */
-  children: string
-  /**
    * 超出行数展示省略号
    */
   numberOfLines?: number
