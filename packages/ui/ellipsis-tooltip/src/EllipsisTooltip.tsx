@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState, useEffect, useCallback } from 'react'
+import React, { FC, useRef, useState, useEffect, useCallback, ReactNode } from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -20,6 +20,7 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
   prefixCls = ELLIPSIS_TOOLTIP_PREFIX,
   role = 'ellipsis-tooltip',
   className,
+  title,
   children,
   numberOfLines = 1,
   maxTextCount = 0,
@@ -63,7 +64,7 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
   }, [children, maxTextCount, handleCheckEllipsis])
 
   return (
-    <Tooltip title={children} disabled={disableTooltip} {...tooltipProps}>
+    <Tooltip title={title || children} disabled={disableTooltip} {...tooltipProps}>
       <div
         role={role}
         className={cls}
@@ -87,7 +88,7 @@ export interface EllipsisTooltipProps extends HiBaseHTMLProps<'div'> {
   /**
    * tooltip信息
    */
-  title?: string
+  title?: string | ReactNode
   /**
    * tooltip 属性收敛
    */
