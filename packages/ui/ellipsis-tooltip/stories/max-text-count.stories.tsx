@@ -2,13 +2,13 @@ import React from 'react'
 import EllipsisTooltip from '../src'
 
 /**
- * @title 最大文字个数
+ * @title 超出字数省略
  */
 export const MaxTextCount = () => {
   return (
     <>
-      <h1>超出字符个数限制</h1>
-      <div className="ellipsis-tooltip-multiple__wrap" style={{ width: 400 }}>
+      <h1>超出字数省略</h1>
+      <div className="ellipsis-tooltip-multiple__wrap" style={{ width: 400, margin: '0 auto' }}>
         <h4>没有超出</h4>
         <EllipsisTooltip maxTextCount={20}>学而时习之</EllipsisTooltip>
         <h4>文字超出 20 个字符时</h4>
