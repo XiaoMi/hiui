@@ -1,4 +1,3 @@
-import { ReactNode } from 'react'
 import { TooltipProps } from '@hi-ui/tooltip'
 
 export interface EllipsisTooltipDataItem {
@@ -11,11 +10,7 @@ export interface EllipsisTooltipDataItem {
    */
   maxTextCount?: number
   /**
-   * tooltip信息
-   */
-  title?: string | ReactNode
-  /**
    * tooltip 属性收敛
    */
-  tooltipProps?: Omit<TooltipProps, 'title'>
+  tooltipProps?: TooltipProps
 }
