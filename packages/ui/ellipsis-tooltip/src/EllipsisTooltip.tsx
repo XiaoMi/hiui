@@ -23,7 +23,9 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
   children,
   numberOfLines = 1,
   maxTextCount = 0,
-  tooltipProps = {},
+  tooltipProps = {
+    title: children,
+  },
 }) => {
   const cls = cx(prefixCls, className, {
     // maxTextCount 没有设置时，才做单行隐藏
@@ -63,7 +65,7 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
   }, [children, maxTextCount, handleCheckEllipsis])
 
   return (
-    <Tooltip title={children} disabled={disableTooltip} {...tooltipProps}>
+    <Tooltip disabled={disableTooltip} {...tooltipProps}>
       <div
         role={role}
         className={cls}
@@ -89,13 +91,9 @@ export interface EllipsisTooltipProps extends HiBaseHTMLProps<'div'> {
    */
   maxTextCount?: number
   /**
-   * tooltip信息
-   */
-  title?: string
-  /**
    * tooltip 属性收敛
    */
-  tooltipProps?: Omit<TooltipProps, 'title'>
+  tooltipProps?: TooltipProps
 }
 
 if (__DEV__) {
