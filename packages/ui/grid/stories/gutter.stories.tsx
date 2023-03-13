@@ -12,14 +12,14 @@ export const Gutter = () => {
     width: '100%',
     padding: '16px 0',
     textAlign: 'center',
-    opacity: '0.8',
+    opacity: '1',
     color: '#fff',
   }
 
   return (
     <>
       <h1>Gutter</h1>
-      <div className="grid-gutter__wrap" >
+      <div className="grid-gutter__wrap">
         <Row gutter={true}>
           <Col span={6}>
             <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>

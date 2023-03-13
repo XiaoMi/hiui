@@ -12,14 +12,14 @@ export const Nested = () => {
     width: '100%',
     padding: '16px 0',
     textAlign: 'center',
-    opacity: '0.8',
+    opacity: '1',
     color: '#fff',
   }
 
   return (
     <>
       <h1>Nested</h1>
-      <div className="grid-nested__wrap" >
+      <div className="grid-nested__wrap">
         <Row gutter={true}>
           <Col span={16}>
             <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>

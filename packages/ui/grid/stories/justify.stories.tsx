@@ -12,14 +12,14 @@ export const Justify = () => {
     width: '100%',
     padding: '16px 0',
     textAlign: 'center',
-    opacity: '0.8',
+    opacity: '1',
     color: '#fff',
   }
 
   return (
     <>
       <h1>Justify</h1>
-      <div className="grid-justify" >
+      <div className="grid-justify">
         <Row justify="center" gutter={true}>
           <Col span={6}>
             <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>col-6</div>
