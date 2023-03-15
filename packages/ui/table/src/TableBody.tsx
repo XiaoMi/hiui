@@ -20,7 +20,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
     const {
       columns,
       leafColumns,
-      measureRowElementRef,
+      setMeasureRowElement,
       isExpandTreeRows,
       transitionData,
       getColgroupProps,
@@ -91,7 +91,12 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             overflowX: canScroll ? 'scroll' : undefined,
           }}
         >
-          <div ref={measureRowElementRef} style={{ height: 1, background: 'transparent' }}></div>
+          <div
+            ref={(domElement) => {
+              setMeasureRowElement(domElement)
+            }}
+            style={{ height: 1, background: 'transparent' }}
+          ></div>
           <div
             ref={bodyTableRef}
             style={{ height: 1, background: 'transparent', width: rowWidth }}
@@ -159,7 +164,11 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                 {transitionData.map((row, index) => {
                   return (
                     <TableRow
-                      ref={index === 0 ? measureRowElementRef : null}
+                      ref={(dom) => {
+                        if (index === 0) {
+                          setMeasureRowElement(dom)
+                        }
+                      }}
                       // key={depth + index}
                       key={row.id}
                       // @ts-ignore
