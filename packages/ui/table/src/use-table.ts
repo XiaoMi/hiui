@@ -173,7 +173,7 @@ export const useTable = ({
 
   // ************************ 列宽 resizable ************************ //
 
-  const { measureRowElementRef, getColgroupProps, onColumnResizable, colWidths } = useColWidth({
+  const { setMeasureRowElement, getColgroupProps, onColumnResizable, colWidths } = useColWidth({
     data,
     columns,
     resizable,
@@ -566,7 +566,7 @@ export const useTable = ({
     // 行多选
     rowSelection,
     cacheData,
-    measureRowElementRef,
+    setMeasureRowElement,
     leafColumns,
     // ui
     // 有表头分组那么也要 bordered

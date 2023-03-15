@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback } from 'react'
 import { FlattedTableColumnItemData, TableColumnItem, TableRowRecord } from '../types'
 import { getGroupItemWidth } from '../utils'
 import { useUpdateEffect } from '@hi-ui/use-update-effect'
@@ -14,14 +14,12 @@ export const useColWidth = ({
   columns: TableColumnItem[]
   virtual?: boolean
 }) => {
-  const measureRowElementRef = useRef<HTMLTableRowElement>(null)
-
+  const [measureRowElement, setMeasureRowElement] = React.useState<Element | null>(null)
   const [colWidths, setColWidths] = React.useState(() => {
     return getGroupItemWidth(columns)
   })
 
   const getVirtualWidths = useCallback(() => {
-    const measureRowElement = measureRowElementRef.current
     if (!measureRowElement) {
       return getGroupItemWidth(columns)
     }
@@ -45,7 +43,7 @@ export const useColWidth = ({
         return columnItem.width || columnDefaultWidth
       })
     }
-  }, [columns])
+  }, [measureRowElement, columns])
 
   useUpdateEffect(() => {
     if (virtual) {
@@ -61,7 +59,6 @@ export const useColWidth = ({
    */
   React.useEffect(() => {
     let resizeObserver: ResizeObserver
-    const measureRowElement = measureRowElementRef.current
 
     if (measureRowElement) {
       const resizeObserver = new ResizeObserver(() => {
@@ -89,7 +86,7 @@ export const useColWidth = ({
       }
     }
     // 测量元素在内容列为空时会是空，切换会使测量元素变化，导致后续的resize时间无法响应,此处测量元素变化时需要重新绑定
-  }, [measureRowElementRef.current, virtual])
+  }, [measureRowElement, virtual])
 
   const [headerTableElement, setHeaderTableElement] = React.useState<HTMLTableElement | null>(null)
 
@@ -160,7 +157,8 @@ export const useColWidth = ({
   )
 
   return {
-    measureRowElementRef,
+    measureRowElement,
+    setMeasureRowElement,
     onColumnResizable,
     getColgroupProps,
     setHeaderTableElement,
