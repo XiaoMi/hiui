@@ -47,6 +47,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       onChange,
       onFocus,
       onBlur,
+      onKeyDown,
       trimValueOnBlur,
       onClear,
       type,
@@ -84,6 +85,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
 
     const { tryChangeValue, focused, value, getInputProps } = useInput({
       clearElementRef,
+      inputElementRef,
       name,
       autoFocus,
       disabled,
@@ -95,6 +97,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       onChange: proxyOnChange,
       onFocus,
       onBlur,
+      onKeyDown,
       trimValueOnBlur,
       type,
     })
