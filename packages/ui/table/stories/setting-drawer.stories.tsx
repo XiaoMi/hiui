@@ -124,7 +124,6 @@ export const SettingDrawer = () => {
       key: 5,
     },
   ])
-
   const columnsMemo = React.useMemo(() => {
     return [
       {

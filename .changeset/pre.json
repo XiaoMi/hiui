@@ -127,7 +127,6 @@
   },
   "changesets": [
     "curvy-bobcats-look",
-    "dull-cows-appear",
     "eighty-plums-look",
     "eighty-tips-sneeze",
     "empty-llamas-sip",
@@ -135,9 +134,10 @@
     "gold-icons-hammer",
     "happy-fishes-appear",
     "lazy-humans-draw",
+    "light-garlics-check",
+    "moody-students-build",
     "popular-plants-film",
     "shaggy-falcons-peel",
-    "short-camels-sniff",
     "warm-poets-shake",
     "yellow-rings-turn"
   ]

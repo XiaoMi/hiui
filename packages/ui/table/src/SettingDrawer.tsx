@@ -83,7 +83,6 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
     })
 
     const [visible, setVisible] = useUncontrolledState<boolean>(false, visibleProp, onClose)
-
     const resetLatest = useLatestCallback(() => {
       setCacheHiddenColKeys(hiddenColKeys)
       setCacheSortedCols(sortedCols)
