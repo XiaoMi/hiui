@@ -1,5 +1,12 @@
 # @hi-ui/hiui
 
+## 4.1.23-beta.0
+
+### Patch Changes
+
+- Updated dependencies [960cb3bc8]
+  - @hi-ui/ellipsis-tooltip@4.1.1-beta.0
+
 ## 4.1.22
 
 ### Patch Changes

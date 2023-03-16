@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 4.1.0-beta.3
+
+### Patch Changes
+
+- 优化大数据表格
+
 ## 4.1.0-beta.2
 
 ### Patch Changes

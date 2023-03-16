@@ -1,5 +1,11 @@
 # @hi-ui/ellipsis-tooltip
 
+## 4.1.1-beta.0
+
+### Patch Changes
+
+- 960cb3bc8: add title api
+
 ## 4.1.0
 
 ### Minor Changes
