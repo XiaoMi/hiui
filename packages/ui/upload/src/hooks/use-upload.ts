@@ -21,6 +21,7 @@ const useUpload = ({
   customUpload,
   maxCount,
   method = 'POST',
+  accept,
 }: UploadProps): [
   UploadFileItem[],
   (files: HTMLInputElement['files']) => Promise<void>,
@@ -155,9 +156,9 @@ const useUpload = ({
       } else {
         const _files: UploadFileItem[] = []
         if (files) {
+          const items = getFileItems(files, accept)
           // 最多上传限制数量
-          const length = typeof maxCount === 'number' ? maxCount : files.length
-          const items = getFileItems(files)
+          const length = typeof maxCount === 'number' ? maxCount : items.length
 
           for (let i = 0; i < length; i++) {
             const fileItem = items[i]
@@ -227,8 +228,10 @@ const useUpload = ({
     [
       customUpload,
       maxCount,
+      accept,
       beforeUpload,
       maxSize,
+      messageText,
       uploadAction,
       name,
       withCredentials,
