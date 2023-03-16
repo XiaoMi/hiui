@@ -215,7 +215,7 @@ export interface UseInputProps {
    */
   clearElementRef?: any
   /**
-   * ref
+   * 输入框 ref
    */
   inputElementRef?: any
 }
