@@ -35,7 +35,13 @@ export const getFileType = (file: File) => {
   return fileType
 }
 
-export const getFileItems = (fileList: FileList | null) => {
+/**
+ * 获取处理后的文件列表
+ * @param fileList 原始文件列表
+ * @param accept 文件类型
+ * @returns
+ */
+export const getFileItems = (fileList: FileList | null, accept?: string) => {
   if (!fileList) {
     return []
   }
@@ -44,7 +50,11 @@ export const getFileItems = (fileList: FileList | null) => {
   const len = fileList.length
 
   for (let i = 0; i < len; i++) {
-    itemArr[i] = fileList[i]
+    const item = fileList[i]
+
+    if (!accept || (accept && accept.replace(/\s/g, '').split(',').includes(item.type))) {
+      itemArr[i] = item
+    }
   }
 
   return itemArr
