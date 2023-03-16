@@ -12,7 +12,7 @@ export const Basic = () => {
     width: '100%',
     padding: '16px 0',
     textAlign: 'center',
-    opacity: '0.8',
+    opacity: '1',
     color: '#fff',
   }
 

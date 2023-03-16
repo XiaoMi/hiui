@@ -20,7 +20,7 @@ export const Basic = () => {
       <div className="preview-basic__wrap">
         <Preview
           title={`pic_${showIndex}.png`}
-          src={images[showIndex + 1]}
+          src={images[showIndex]}
           visible={showIndex !== -1}
           onClose={() => {
             setShowIndex(-1)
