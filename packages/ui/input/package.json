@@ -46,6 +46,7 @@
     "@hi-ui/classname": "^4.0.1",
     "@hi-ui/dom-utils": "^4.0.4",
     "@hi-ui/env": "^4.0.1",
+    "@hi-ui/func-utils": "^4.0.1",
     "@hi-ui/icons": "^4.0.4",
     "@hi-ui/use-latest": "^4.0.1",
     "@hi-ui/use-merge-refs": "^4.0.1",
