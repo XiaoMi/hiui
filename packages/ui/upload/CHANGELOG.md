@@ -1,5 +1,11 @@
 # @hi-ui/upload
 
+## 4.1.3
+
+### Patch Changes
+
+- [#2443](https://github.com/XiaoMi/hiui/pull/2443) [`0a69cdf32`](https://github.com/XiaoMi/hiui/commit/0a69cdf32c305a35286947b55d1ec05159358ba0) Thanks [@zyprepare](https://github.com/zyprepare)! - hotfix: type="drag" 模式下，限制文件类型无效
+
 ## 4.1.2
 
 ### Patch Changes
