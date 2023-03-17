@@ -110,7 +110,10 @@ export const useTextarea = ({
 }
 
 export interface UseTextareaProps
-  extends Omit<UseInputProps, 'onChange' | 'type' | 'clearElementRef' | 'onFocus' | 'onBlur'> {
+  extends Omit<
+    UseInputProps,
+    'onChange' | 'type' | 'clearElementRef' | 'onFocus' | 'onBlur' | 'onKeyDown'
+  > {
   /**
    * 自适应内容高度
    */
