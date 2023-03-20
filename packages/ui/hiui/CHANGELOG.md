@@ -1,5 +1,21 @@
 # @hi-ui/hiui
 
+## 4.1.23
+
+### Patch Changes
+
+- [#2440](https://github.com/XiaoMi/hiui/pull/2440) [`45f1ddd4d`](https://github.com/XiaoMi/hiui/commit/45f1ddd4de49c84f09b0074bcacdcb587a5d1535) Thanks [@zyprepare](https://github.com/zyprepare)! - Input fix: 输入框值格式化时光标跑到最后
+
+- [#2444](https://github.com/XiaoMi/hiui/pull/2444) [`89147b131`](https://github.com/XiaoMi/hiui/commit/89147b131183b344cf1355d2d1062786c4be030e) Thanks [@zyprepare](https://github.com/zyprepare)! - Textarea fix: 修复类型问题
+
+- [#2443](https://github.com/XiaoMi/hiui/pull/2443) [`0a69cdf32`](https://github.com/XiaoMi/hiui/commit/0a69cdf32c305a35286947b55d1ec05159358ba0) Thanks [@zyprepare](https://github.com/zyprepare)! - Upload hotfix: type="drag" 模式下，限制文件类型无效
+
+- Updated dependencies [[`45f1ddd4d`](https://github.com/XiaoMi/hiui/commit/45f1ddd4de49c84f09b0074bcacdcb587a5d1535), [`89147b131`](https://github.com/XiaoMi/hiui/commit/89147b131183b344cf1355d2d1062786c4be030e), [`960cb3bc8`](https://github.com/XiaoMi/hiui/commit/960cb3bc89a37a2d8b9882bc6551b75f2119fb82), [`0a69cdf32`](https://github.com/XiaoMi/hiui/commit/0a69cdf32c305a35286947b55d1ec05159358ba0)]:
+  - @hi-ui/input@4.0.7
+  - @hi-ui/textarea@4.0.7
+  - @hi-ui/ellipsis-tooltip@4.1.1
+  - @hi-ui/upload@4.1.3
+
 ## 4.1.22
 
 ### Patch Changes
