@@ -1,5 +1,17 @@
 # @hi-ui/hiui
 
+## 4.1.24
+
+### Patch Changes
+
+- [#2448](https://github.com/XiaoMi/hiui/pull/2448) [`573a26adf`](https://github.com/XiaoMi/hiui/commit/573a26adf945654f4301e38044131616982c7b2e) Thanks [@zyprepare](https://github.com/zyprepare)! - Input fix: value 设置 null 时报错
+
+- [#2447](https://github.com/XiaoMi/hiui/pull/2447) [`ce53a9319`](https://github.com/XiaoMi/hiui/commit/ce53a93191a0c71cd9d07deff13e3a4cdef2bb46) Thanks [@zyprepare](https://github.com/zyprepare)! - Tooltip fix: 背景色增加 80% 透明度
+
+- Updated dependencies [[`ce53a9319`](https://github.com/XiaoMi/hiui/commit/ce53a93191a0c71cd9d07deff13e3a4cdef2bb46), [`573a26adf`](https://github.com/XiaoMi/hiui/commit/573a26adf945654f4301e38044131616982c7b2e)]:
+  - @hi-ui/tooltip@4.0.7
+  - @hi-ui/input@4.0.8
+
 ## 4.1.23
 
 ### Patch Changes

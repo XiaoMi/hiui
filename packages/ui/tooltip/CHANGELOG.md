@@ -1,5 +1,11 @@
 # @hi-ui/tooltip
 
+## 4.0.7
+
+### Patch Changes
+
+- [#2447](https://github.com/XiaoMi/hiui/pull/2447) [`ce53a9319`](https://github.com/XiaoMi/hiui/commit/ce53a93191a0c71cd9d07deff13e3a4cdef2bb46) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 背景色增加 80% 透明度
+
 ## 4.0.6
 
 ### Patch Changes
