@@ -19,9 +19,9 @@
 
 /// 生成 css 变量及其默认值
 /// @access private
-@function use-color-var($scheme, $gradation) {
+@function use-color-var($scheme, $gradation, $alpha: '') {
   $var-name: get-color-css-name-var($scheme, $gradation);
-  $var-value: get-color($scheme, $gradation);
+  $var-value: get-color($scheme, $gradation, $alpha);
   // $var-value: #fff;
 
   @return var(#{$var-name}, #{$var-value});
@@ -104,10 +104,10 @@
   );
 }
 
-@function use-color($scheme, $gradation) {
-  @return use-color-var($scheme, $gradation);
+@function use-color($scheme, $gradation, $alpha: '') {
+  @return use-color-var($scheme, $gradation, $alpha);
 }
 
-@function use-color-static($key) {
-  @return use-color-var('static', $key);
+@function use-color-static($key, $alpha: '') {
+  @return use-color-var('static', $key, $alpha);
 }

@@ -154,9 +154,17 @@ $color-palette-base-map: (
   ),
 ) !default;
 
-@function get-color($scheme, $gradation) {
-  @return map-safe-get(
+@function get-color($scheme, $gradation, $alpha: '') {
+  $color: map-safe-get(
     map-safe-get($color-palette-base-map, $scheme),
     $gradation,
   );
+
+  @if $alpha != '' {
+    @return rgba($color, $alpha);
+  }
+
+  @else {
+    @return $color;
+  }
 }

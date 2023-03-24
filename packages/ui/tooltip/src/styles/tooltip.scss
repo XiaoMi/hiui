@@ -3,8 +3,8 @@
 $prefix: '#{$component-prefix}-tooltip' !default;
 
 .#{$prefix} {
-  $content-color: use-color('gray', 700);
-  $arrow-color: use-color('gray', 700);
+  $content-color: use-color('gray', 700, 0.8);
+  $arrow-color: use-color('gray', 700, 0.8);
   $font-color: use-color-static('white');
 
   box-sizing: border-box;
@@ -102,7 +102,7 @@ $prefix: '#{$component-prefix}-tooltip' !default;
   &__popper {
     &[data-popper-placement^=top] {
       .#{$prefix}__arrow {
-        bottom: 0;
+        bottom: -1px;
 
         &::before {
           left: 0;
@@ -122,6 +122,8 @@ $prefix: '#{$component-prefix}-tooltip' !default;
 
     &[data-popper-placement^=bottom] {
       .#{$prefix}__arrow {
+        top: -1px;
+
         &::before {
           left: 0;
           transform: translateX(-6px);
@@ -140,7 +142,7 @@ $prefix: '#{$component-prefix}-tooltip' !default;
 
     &[data-popper-placement^=left] {
       .#{$prefix}__arrow {
-        right: 0;
+        right: -1px;
 
         &::before {
           top: 0;
@@ -160,6 +162,8 @@ $prefix: '#{$component-prefix}-tooltip' !default;
 
     &[data-popper-placement^=right] {
       .#{$prefix}__arrow {
+        left: -1px;
+
         &::before {
           top: 0;
           transform: translateY(-50%);
