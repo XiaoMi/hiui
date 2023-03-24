@@ -1,4 +1,5 @@
 import React, { MutableRefObject, useCallback, useRef, useState } from 'react'
+import { isNullish } from '@hi-ui/type-assertion'
 
 const defaultSeparator = ' '
 
@@ -19,6 +20,10 @@ export const useInputCursor = ({
 
   const handleChange = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      if (isNullish(value)) {
+        return
+      }
+
       const val = evt.target.value
 
       // 处理后的字符串
@@ -56,7 +61,7 @@ export const useInputCursor = ({
         }
       }
     },
-    [formatter, inputElementRef, separator, value.length]
+    [formatter, inputElementRef, separator, value]
   )
 
   return {
