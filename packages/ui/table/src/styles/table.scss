@@ -395,7 +395,7 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
     display: inline-flex;
     flex-direction: column;
     height: 20px;
-    margin-top: 2px;
+    vertical-align: middle;
     margin-left: 6px;
 
     &__icon {
