@@ -58,9 +58,9 @@ export const CustomFilter = () => {
     {
       title: (
         <div>
-          Home phone&nbsp;
+          Home phone
           <CheckSelect
-            style={{ width: 'auto' }}
+            style={{ width: 'auto', marginLeft: 2 }}
             optionWidth={200}
             customRender={<FilterOutlined />}
             searchable
