@@ -1,5 +1,6 @@
 import React from 'react'
-import Table from '../src'
+import Button from '@hi-ui/button'
+import Table, { SettingMenuHelper } from '../src'
 
 /**
  * @title 自定义列控制
@@ -241,9 +242,14 @@ export const Setting = () => {
     ]
   }, [])
 
+  const settingMenuRef = React.useRef<SettingMenuHelper>(null)
+
   return (
     <>
       <h1>Setting for Table</h1>
+      <div style={{ marginBottom: '1em' }}>
+        <Button onClick={() => settingMenuRef.current?.open()}>打开 setting 设置面板</Button>
+      </div>
       <div className="table-setting__wrap" style={{ minWidth: 660 }}>
         <Table
           hiddenColKeys={hiddenColKeys}
@@ -253,6 +259,7 @@ export const Setting = () => {
           columns={columnsMemo}
           data={dataSource}
           setting
+          settingMenuRef={settingMenuRef}
         />
       </div>
     </>

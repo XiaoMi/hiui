@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef } from 'react'
+import React, { forwardRef, useEffect, useRef, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UseTableProps } from './use-table'
@@ -14,6 +14,7 @@ import { UseColHiddenReturn } from './hooks/use-col-hidden'
 import { Drawer } from '@hi-ui/drawer'
 import { Button } from '@hi-ui/button'
 import { Checkbox } from '@hi-ui/checkbox'
+import { SettingMenuHelper } from './types'
 
 const _prefix = getPrefixCls('table-setting')
 
@@ -23,6 +24,7 @@ const _prefix = getPrefixCls('table-setting')
 export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMenuProps>(
   (
     {
+      innerRef,
       prefixCls = _prefix,
       sortedCols,
       setSortColKeys,
@@ -79,6 +81,13 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
       menuVisibleAction.off()
     }
 
+    useImperativeHandle(innerRef, () => {
+      return {
+        open: menuVisibleAction.on,
+        close: menuVisibleAction.off,
+      }
+    })
+
     const cls = cx(prefixCls)
 
     return (
@@ -133,6 +142,7 @@ export interface TableColumnMenuProps
   extends UseTableProps,
     UseColSorterReturn,
     Omit<UseColHiddenReturn, 'visibleCols'> {
+  innerRef?: React.Ref<SettingMenuHelper>
   prefixCls?: string
   checkDisabledColKeys?: string[]
   onSetColKeysChange?: (sortedColKeys: string[], hiddenColKeys: string[]) => void

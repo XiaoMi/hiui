@@ -9,6 +9,7 @@ import {
   TableRowSelection,
   FlattedTableRowData,
   TableDataSource,
+  SettingMenuHelper,
 } from './types'
 import { useColHidden } from './hooks/use-col-hidden'
 import { useColSorter } from './hooks/use-col-sorter'
@@ -66,6 +67,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       extra,
       data = DEFAULT_DATA,
       virtual,
+      settingMenuRef,
       ...rest
     },
     ref
@@ -322,6 +324,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           extra={{
             header: setting ? (
               <TableSettingMenu
+                innerRef={settingMenuRef}
                 prefixCls={`${prefixCls}-setting`}
                 // sort
                 sortedCols={sortedCols}
@@ -405,6 +408,10 @@ export interface TableProps extends BaseTableProps {
    *  异步数据源，分页切换时加载数据
    */
   dataSource?: (current: number, pageSize?: number) => TableDataSource
+  /**
+   * 列设置面板 ref
+   */
+  settingMenuRef?: React.Ref<SettingMenuHelper>
 }
 
 if (__DEV__) {

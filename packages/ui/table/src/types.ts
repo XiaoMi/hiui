@@ -291,3 +291,8 @@ export interface TableRowRequiredProps {
 }
 
 export type TableRowRecord = Record<string, any>
+
+export interface SettingMenuHelper {
+  open: () => void
+  close: () => void
+}
