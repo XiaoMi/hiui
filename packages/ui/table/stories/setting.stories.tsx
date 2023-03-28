@@ -130,7 +130,7 @@ export const Setting = () => {
   const [hiddenColKeys, setHiddenColKeys] = React.useState(initStoreInfo.hiddenColKeys)
   const [sortedColKeys, setSortedColKeys] = React.useState(initStoreInfo.sortedColKeys)
   const onSetColKeysChange = (sortedColKeys: string[], hiddenColKeys: string[]) => {
-    console.error('onColKeysChange', { sortedColKeys, hiddenColKeys })
+    console.log('onColKeysChange', { sortedColKeys, hiddenColKeys })
     setHiddenColKeys(hiddenColKeys)
     setSortedColKeys(sortedColKeys)
     localStorage.setItem(cacheKey, JSON.stringify({ hiddenColKeys, sortedColKeys }))
@@ -141,6 +141,7 @@ export const Setting = () => {
         title: '商品名',
         dataKey: 'name',
         width: 150,
+        disabled: true,
       },
       {
         title: '品类',
@@ -156,6 +157,7 @@ export const Setting = () => {
         title: '单价',
         dataKey: 'price',
         width: 150,
+        disabled: true,
       },
       {
         title: '规格1',

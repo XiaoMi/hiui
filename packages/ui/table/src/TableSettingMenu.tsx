@@ -147,7 +147,7 @@ function TableSettingMenuItem({
   dropProps,
   index,
 }: any) {
-  const { dataKey, title } = column
+  const { dataKey, title, disabled } = column
   const { dragging, direction, getDragTriggerProps, getDropTriggerProps } = useDrag({
     ...dropProps,
     item: column,
@@ -168,6 +168,7 @@ function TableSettingMenuItem({
     >
       <div className={`${prefixCls}-item__wrap`}>
         <Checkbox
+          disabled={disabled}
           checked={!cacheHiddenColKeys.includes(dataKey)}
           onChange={(evt) => {
             const shouldChecked = evt.target.checked

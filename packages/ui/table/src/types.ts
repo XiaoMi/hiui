@@ -121,6 +121,10 @@ export type TableColumnItem = {
    */
   align?: TableColumnItemAlignEnum
   /**
+   * 列设置中 disabled 的状态
+   */
+  disabled?: boolean
+  /**
    * 列排序函数
    */
   sorter?: (a: any, b: any) => number
