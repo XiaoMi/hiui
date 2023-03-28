@@ -130,7 +130,7 @@ export const Setting = () => {
   const [hiddenColKeys, setHiddenColKeys] = React.useState(initStoreInfo.hiddenColKeys)
   const [sortedColKeys, setSortedColKeys] = React.useState(initStoreInfo.sortedColKeys)
   const onSetColKeysChange = (sortedColKeys: string[], hiddenColKeys: string[]) => {
-    console.error('onColKeysChange', { sortedColKeys, hiddenColKeys })
+    console.log('onColKeysChange', { sortedColKeys, hiddenColKeys })
     setHiddenColKeys(hiddenColKeys)
     setSortedColKeys(sortedColKeys)
     localStorage.setItem(cacheKey, JSON.stringify({ hiddenColKeys, sortedColKeys }))
@@ -249,6 +249,7 @@ export const Setting = () => {
           hiddenColKeys={hiddenColKeys}
           sortedColKeys={sortedColKeys}
           onSetColKeysChange={onSetColKeysChange}
+          checkDisabledColKeys={['name', 'type']}
           columns={columnsMemo}
           data={dataSource}
           setting
