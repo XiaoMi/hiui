@@ -1,4 +1,4 @@
-import React, { ComponentState, forwardRef, Fragment, useCallback, useMemo } from 'react'
+import React, { forwardRef, Fragment, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
 import Pagination from '@hi-ui/pagination'
@@ -59,6 +59,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       onHiddenColKeysChange,
       sortedColKeys: sortedColKeysPropBeforeVerify,
       onSortedColKeysChange,
+      checkDisabledColKeys,
       onSetColKeysChange,
       rowSelection,
       fieldKey = 'key',
@@ -332,6 +333,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 setHiddenColKeys={setHiddenColKeys}
                 cacheHiddenColKeys={cacheHiddenColKeys}
                 setCacheHiddenColKeys={setCacheHiddenColKeys}
+                checkDisabledColKeys={checkDisabledColKeys}
                 onSetColKeysChange={onSetColKeysChange}
               />
             ) : null,
@@ -387,12 +389,14 @@ export interface TableProps extends BaseTableProps {
    *  列排序设置时回调
    */
   onSortedColKeysChange?: (sortedColKeys: string[]) => void
-
+  /**
+   * checkbox 被禁用的列
+   */
+  checkDisabledColKeys?: string[]
   /**
    *  列设置时回调
    */
   onSetColKeysChange?: (sortedColKeys: string[], hiddenColKeys: string[]) => void
-
   /**
    *  表格分页配置项
    */

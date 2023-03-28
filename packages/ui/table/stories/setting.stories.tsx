@@ -141,7 +141,6 @@ export const Setting = () => {
         title: '商品名',
         dataKey: 'name',
         width: 150,
-        disabled: true,
       },
       {
         title: '品类',
@@ -157,7 +156,6 @@ export const Setting = () => {
         title: '单价',
         dataKey: 'price',
         width: 150,
-        disabled: true,
       },
       {
         title: '规格1',
@@ -251,6 +249,7 @@ export const Setting = () => {
           hiddenColKeys={hiddenColKeys}
           sortedColKeys={sortedColKeys}
           onSetColKeysChange={onSetColKeysChange}
+          checkDisabledColKeys={['name', 'type']}
           columns={columnsMemo}
           data={dataSource}
           setting
