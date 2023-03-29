@@ -2,4 +2,4 @@
 "@hi-ui/table": minor
 ---
 
-feat: data 增加 disabled 配置,用于是否禁用列设置操作
+feat: 增加 checkDisabledColKeys api,用于设置禁止选择的列

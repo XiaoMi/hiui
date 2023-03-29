@@ -9,10 +9,7 @@ import {
   TableRowSelection,
   FlattedTableRowData,
   TableDataSource,
-  SettingMenuHelper,
 } from './types'
-import { useColHidden } from './hooks/use-col-hidden'
-import { useColSorter } from './hooks/use-col-sorter'
 import { useTablePagination } from './hooks/use-pagination'
 import { withDefaultProps } from '@hi-ui/react-utils'
 import { TableSettingMenu } from './TableSettingMenu'
@@ -23,7 +20,6 @@ import { isNullish } from '@hi-ui/type-assertion'
 import { cloneTree, flattenTree } from '@hi-ui/tree-utils'
 import { BaseTable, BaseTableProps } from './BaseTable'
 import { uuid } from './utils'
-import { useColSet } from './hooks/use-col-set'
 
 const _prefix = getPrefixCls('table')
 
@@ -67,7 +63,6 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       extra,
       data = DEFAULT_DATA,
       virtual,
-      settingMenuRef,
       ...rest
     },
     ref
@@ -77,40 +72,11 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     const tableProps = withDefaultProps(rest, standard ? STANDARD_PRESET : undefined)
     const { setting = false, ...baseTableProps } = tableProps
 
-    // ************************ 高级功能 ************************ //
-    // ***根据列字段合并sortedColKeysProp,和hiddenColKeys
-    const { sortedColKeys: sortedColKeysProp, hiddenColKeys: hiddenColKeysProp } = useColSet({
-      columns: columnsProp,
-      sortedColKeys: sortedColKeysPropBeforeVerify,
-      hiddenColKeys: hiddenColKeysPropBeforeVerify,
-    })
-
-    /**
-     * 列排序
-     */
-    const { sortedCols, setSortColKeys, cacheSortedCols, setCacheSortedCols } = useColSorter({
-      uniqueId,
-      columns: columnsProp,
-      sortedColKeys: sortedColKeysProp,
-      onSortedColKeysChange,
-    })
-
-    /**
-     * 列隐藏
-     */
-    const {
-      visibleCols,
-      hiddenColKeys,
-      setHiddenColKeys,
-      cacheHiddenColKeys,
-      setCacheHiddenColKeys,
-    } = useColHidden({
-      uniqueId,
-      // 基于排序的 columns，隐藏的也能排序
-      columns: sortedCols,
-      hiddenColKeys: hiddenColKeysProp,
-      onHiddenColKeysChange,
-    })
+    const visibleCols = useMemo(() => {
+      return (columnsProp ?? []).filter(
+        (col) => !(hiddenColKeysPropBeforeVerify ?? []).includes(col.dataKey!)
+      )
+    }, [columnsProp, hiddenColKeysPropBeforeVerify])
 
     let pagination = withDefaultProps(paginationProp, DEFAULT_PAGINATION)
 
@@ -324,20 +290,15 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           extra={{
             header: setting ? (
               <TableSettingMenu
-                innerRef={settingMenuRef}
                 prefixCls={`${prefixCls}-setting`}
-                // sort
-                sortedCols={sortedCols}
-                setSortColKeys={setSortColKeys}
-                cacheSortedCols={cacheSortedCols}
-                setCacheSortedCols={setCacheSortedCols}
-                // hidden
-                hiddenColKeys={hiddenColKeys}
-                setHiddenColKeys={setHiddenColKeys}
-                cacheHiddenColKeys={cacheHiddenColKeys}
-                setCacheHiddenColKeys={setCacheHiddenColKeys}
-                checkDisabledColKeys={checkDisabledColKeys}
+                uniqueId={uniqueId}
+                columns={columnsProp}
+                hiddenColKeys={hiddenColKeysPropBeforeVerify}
+                onHiddenColKeysChange={onHiddenColKeysChange}
+                sortedColKeys={sortedColKeysPropBeforeVerify}
+                onSortedColKeysChange={onSortedColKeysChange}
                 onSetColKeysChange={onSetColKeysChange}
+                checkDisabledColKeys={checkDisabledColKeys}
               />
             ) : null,
             footer:
@@ -408,10 +369,6 @@ export interface TableProps extends BaseTableProps {
    *  异步数据源，分页切换时加载数据
    */
   dataSource?: (current: number, pageSize?: number) => TableDataSource
-  /**
-   * 列设置面板 ref
-   */
-  settingMenuRef?: React.Ref<SettingMenuHelper>
 }
 
 if (__DEV__) {

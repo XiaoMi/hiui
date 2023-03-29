@@ -1,10 +1,11 @@
 import React from 'react'
-import Table from '../src'
+import Button from '@hi-ui/button'
+import Table, { TableSettingMenuDrawer } from '../src'
 
 /**
  * @title 自定义列控制
  */
-export const Setting = () => {
+export const CustomSetting = () => {
   const [dataSource] = React.useState([
     {
       name: '小米9',
@@ -241,18 +242,25 @@ export const Setting = () => {
     ]
   }, [])
 
+  const [visible, setVisible] = React.useState<boolean>(false)
+
   return (
     <>
-      <h1>Setting for Table</h1>
-      <div className="table-setting__wrap" style={{ minWidth: 660 }}>
-        <Table
+      <h1>Custom Setting for Table</h1>
+      <div className="table-custom-setting__wrap" style={{ minWidth: 660 }}>
+        <div style={{ marginBottom: '1em' }}>
+          <Button onClick={() => setVisible(true)}>打开 setting 面板</Button>
+        </div>
+        {/* 注意：如果使用了 TableSettingMenuDrawer 组件，Table 组件中还是需要传 hiddenColKeys 参数 */}
+        <Table hiddenColKeys={hiddenColKeys} columns={columnsMemo} data={dataSource} />
+        <TableSettingMenuDrawer
+          visible={visible}
+          onClose={() => setVisible(false)}
           hiddenColKeys={hiddenColKeys}
           sortedColKeys={sortedColKeys}
           onSetColKeysChange={onSetColKeysChange}
           checkDisabledColKeys={['name', 'type']}
           columns={columnsMemo}
-          data={dataSource}
-          setting
         />
       </div>
     </>
