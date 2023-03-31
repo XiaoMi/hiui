@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.1.24",
+  "version": "4.1.25-beta.0",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -63,11 +63,7 @@
     "@hi-ui/descriptions": "^4.1.1",
     "@hi-ui/drawer": "^4.0.7",
     "@hi-ui/dropdown": "^4.0.5",
-<<<<<<< HEAD
     "@hi-ui/ellipsis-tooltip": "^4.1.1",
-=======
-    "@hi-ui/ellipsis-tooltip": "^4.1.1-beta.0",
->>>>>>> 9f946800a (chore: prerelease)
     "@hi-ui/empty-state": "^4.0.4",
     "@hi-ui/filter": "^4.1.0",
     "@hi-ui/form": "^4.1.2",
@@ -101,7 +97,7 @@
     "@hi-ui/stepper": "^4.0.4",
     "@hi-ui/svg-icon": "^4.0.4",
     "@hi-ui/switch": "^4.0.6",
-    "@hi-ui/table": "^4.0.13",
+    "@hi-ui/table": "^4.1.0-beta.4",
     "@hi-ui/tabs": "^4.0.8",
     "@hi-ui/tag": "^4.0.7",
     "@hi-ui/textarea": "^4.0.7",

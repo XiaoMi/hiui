@@ -1,5 +1,15 @@
 # @hi-ui/hiui
 
+## 4.1.25-beta.0
+
+### Patch Changes
+
+- 0bed8c060: Table feat: data 增加 disabled 配置,用于是否禁用列设置操作
+- 32a738272: Table fix: 数据排序样式不对
+- Updated dependencies [32a738272]
+- Updated dependencies [0bed8c060]
+  - @hi-ui/table@4.1.0-beta.4
+
 ## 4.1.24
 
 ### Patch Changes
