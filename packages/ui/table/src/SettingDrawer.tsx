@@ -15,7 +15,6 @@ import { Checkbox } from '@hi-ui/checkbox'
 import { useColSet } from './hooks/use-col-set'
 import { TableColumnItem } from './types'
 
-// const _prefix = getPrefixCls('table-setting')
 const _prefix = getPrefixCls('table-setting')
 
 /**
@@ -41,26 +40,21 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
   ) => {
     const i18n = useLocaleContext()
 
-    // ************************ 高级功能 ************************ //
-    // ***根据列字段合并sortedColKeysProp,和hiddenColKeys
+    // 根据列字段合并 sortedColKeys、hiddenColKeys
     const { sortedColKeys: sortedColKeysProp, hiddenColKeys: hiddenColKeysProp } = useColSet({
       columns: columnsProp,
       sortedColKeys: sortedColKeysPropBeforeVerify,
       hiddenColKeys: hiddenColKeysPropBeforeVerify,
     })
 
-    /**
-     * 列排序
-     */
+    // 列排序
     const { sortedCols, setSortColKeys, cacheSortedCols, setCacheSortedCols } = useColSorter({
       columns: columnsProp,
       sortedColKeys: sortedColKeysProp,
       onSortedColKeysChange,
     })
 
-    /**
-     * 列隐藏
-     */
+    // 列隐藏
     const {
       hiddenColKeys,
       setHiddenColKeys,
@@ -113,7 +107,9 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
       // 触发 table 更新列显隐及排序
       setHiddenColKeys(cacheHiddenColKeys)
       setSortColKeys(newSortKeys)
+
       onSetColKeysChange?.(newSortKeys, cacheHiddenColKeys, visibleCols)
+
       setVisible(false)
     }
 
@@ -121,6 +117,7 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
 
     return (
       <Drawer
+        ref={ref}
         className={`${cls}`}
         title={i18n.get('table.fieldExplorer')}
         visible={visible}
