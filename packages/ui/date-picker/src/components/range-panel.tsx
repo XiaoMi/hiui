@@ -182,6 +182,7 @@ const RangePanel = () => {
       return
     }
     setCalRenderDates(_innerDates)
+    onSelect(date as any, !calendarClickIsEnd.current)
   }
   const onTimePeriodPick = useCallback(
     (ts1: string, ts2: string) => {
