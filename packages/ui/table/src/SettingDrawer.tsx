@@ -15,7 +15,7 @@ import { Checkbox } from '@hi-ui/checkbox'
 import { useColSet } from './hooks/use-col-set'
 import { TableColumnItem } from './types'
 
-const _prefix = getPrefixCls('table-setting')
+const _prefix = getPrefixCls('setting')
 
 /**
  * 设置抽屉
@@ -113,12 +113,12 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
       setVisible(false)
     }
 
-    const cls = cx(`${prefixCls}__drawer`, className)
+    const cls = cx(`${prefixCls}-drawer`, className)
 
     return (
       <Drawer
         ref={ref}
-        className={`${cls}`}
+        className={cls}
         title={i18n.get('table.fieldExplorer')}
         visible={visible}
         onClose={() => onClose?.()}

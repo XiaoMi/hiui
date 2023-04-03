@@ -1,0 +1,104 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$settingPrefix: '#{$component-prefix}-setting' !default;
+
+.#{$settingPrefix}-drawer {
+  .#{$settingPrefix}__btn-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+
+.#{$settingPrefix}-item {
+  position: relative;
+  padding-top: use-spacing(1);
+  padding-bottom: use-spacing(1);
+  box-sizing: border-box;
+
+  $this: &;
+
+  &__wrap {
+    user-select: none;
+    cursor: move;
+
+    @include flex(space-between);
+
+    padding: use-spacing(3) use-spacing(4);
+    line-height: use-text-lineheight('sm');
+    // border: use-border-size('normal') use-color-static('transparent');
+    border-radius: use-border-radius('normal');
+
+    &:hover {
+      background-color: use-color-mode('primary', 50);
+    }
+
+    #{$this}--dragging & {
+      opacity: 0.6;
+    }
+  }
+
+  // 拖拽指示器-小圆球
+  &::before {
+    position: absolute;
+    left: 0;
+    z-index: 9999;
+    display: none;
+    box-sizing: border-box;
+    width: 8px;
+    height: 8px;
+    content: '';
+    background-color: use-color-static('white');
+    border: 1px solid use-color-mode('primary');
+    border-radius: 100%;
+  }
+
+  // 拖拽指示器-线条
+  &::after {
+    position: absolute;
+    content: '';
+    // TODO: zIndex 全局约定设置
+    z-index: 9998;
+    display: block;
+    box-sizing: border-box;
+    border-bottom-width: 0;
+    border-bottom-style: solid;
+    border-bottom-color: use-color-mode('primary');
+    left: 0;
+    width: 100%;
+  }
+
+  &::before,
+  &::after {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  &--direction {
+    &-before {
+      &::before {
+        display: block;
+        top: -0.5px;
+        transform: translateY(-4px);
+      }
+
+      &::after {
+        top: -0.5px;
+        border-bottom-width: 1px;
+      }
+    }
+
+    &-after {
+      &::before {
+        display: block;
+        bottom: 0.5px;
+        transform: translateY(4px);
+      }
+
+      &::after {
+        bottom: 0.5px;
+        border-bottom-width: 1px;
+      }
+    }
+  }
+}
