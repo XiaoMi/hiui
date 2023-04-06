@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 4.0.16-beta.0
+
+### Patch Changes
+
+- 8198be5ac: fix: 范围选择中，需要在切换年份或月份时触发 onSelect
+
 ## 4.0.15
 
 ### Patch Changes

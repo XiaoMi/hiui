@@ -1,5 +1,19 @@
 # @hi-ui/hiui
 
+## 4.2.0-beta.1
+
+### Minor Changes
+
+- c15aaa645: Table feat: add SettingDrawer component
+
+### Patch Changes
+
+- 8198be5ac: DatePicker fix: 范围选择中，需要在切换年份或月份时触发 onSelect
+- Updated dependencies [8198be5ac]
+- Updated dependencies [c15aaa645]
+  - @hi-ui/date-picker@4.0.16-beta.0
+  - @hi-ui/table@4.1.0-beta.5
+
 ## 4.1.25-beta.0
 
 ### Patch Changes

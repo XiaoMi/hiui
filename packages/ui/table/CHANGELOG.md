@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 4.1.0-beta.5
+
+### Minor Changes
+
+- c15aaa645: feat: add SettingDrawer component
+
 ## 4.1.0-beta.4
 
 ### Minor Changes
