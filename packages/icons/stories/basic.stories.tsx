@@ -22,7 +22,7 @@ export const Basic = () => {
 
               { component: Icons.CloseCircleFilled, tagName: 'CloseCircleFilled' },
 
-              { component: Icons.CloseSquareFilled, tagName: 'CloseSquareFilled' },
+              { component: Icons.MinusSquareFilled, tagName: 'MinusSquareFilled' },
 
               { component: Icons.ExclamationCircleFilled, tagName: 'ExclamationCircleFilled' },
 
