@@ -1,5 +1,14 @@
 # @hi-ui/date-picker
 
+## 4.0.16
+
+### Patch Changes
+
+- [#2458](https://github.com/XiaoMi/hiui/pull/2458) [`8198be5ac`](https://github.com/XiaoMi/hiui/commit/8198be5ac3f0b1b86d14c4bb68a535157da4d2b1) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 范围选择中，需要在切换年份或月份时触发 onSelect
+
+- Updated dependencies [[`8f4ed78aa`](https://github.com/XiaoMi/hiui/commit/8f4ed78aad42002124e2ecaf8fd6845157b4c720)]:
+  - @hi-ui/icons@4.0.7
+
 ## 4.0.15
 
 ### Patch Changes

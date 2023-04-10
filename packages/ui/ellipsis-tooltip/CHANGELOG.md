@@ -1,5 +1,11 @@
 # @hi-ui/ellipsis-tooltip
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2459](https://github.com/XiaoMi/hiui/pull/2459) [`957f35be5`](https://github.com/XiaoMi/hiui/commit/957f35be51204b0dbdd48942ca66d0bb99ce50d6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: type error
+
 ## 4.1.1
 
 ### Patch Changes
