@@ -1,5 +1,11 @@
 # @hi-ui/icons
 
+## 4.0.7
+
+### Patch Changes
+
+- [#2460](https://github.com/XiaoMi/hiui/pull/2460) [`8f4ed78aa`](https://github.com/XiaoMi/hiui/commit/8f4ed78aad42002124e2ecaf8fd6845157b4c720) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 图标命名错误
+
 ## 4.0.6
 
 ### Patch Changes
