@@ -229,6 +229,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
               appearance="link"
               type="primary"
               onClick={() => {
+                onCacheChange([getNowString(format)])
                 onChange([getNowString(format)])
                 showPopperRef.current = false
                 setShowPopper(false)
@@ -240,17 +241,18 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
         </div>
       )
     }, [
-      confirmText,
-      nowText,
       prefixCls,
       isInputValid,
+      confirmText,
       type,
-      format,
+      isInSingleValueFormat,
+      nowText,
+      validChecker,
       cacheValue,
       value,
       onChange,
-      validChecker,
-      isInSingleValueFormat,
+      onCacheChange,
+      format,
     ])
 
     return (
