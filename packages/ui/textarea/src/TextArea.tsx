@@ -23,6 +23,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
       className,
       size = 'md',
       appearance = 'line',
+      suspend,
       invalid = false,
       name,
       autoFocus,
@@ -84,10 +85,15 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
 
     const textareaNode = (
       <div
-        className={cx(`${prefixCls}-wrapper`, showCount && `${prefixCls}-wrapper--show-count`)}
+        className={cx(
+          `${prefixCls}-wrapper`,
+          showCount && `${prefixCls}-wrapper--show-count`,
+          suspend && `${prefixCls}-wrapper--suspend`
+        )}
         data-count={dataCount}
       >
         <textarea {...getTextareaProps(rest, ref)} className={cls} />
+        {suspend ? <span className={`${prefixCls}__suspend`}>{suspend}</span> : null}
       </div>
     )
 
@@ -104,6 +110,10 @@ export interface TextAreaProps extends HiBaseHTMLFieldProps<'textarea'>, UseText
    * 设置输入框尺寸
    */
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * 输入框浮层内容
+   */
+  suspend?: React.ReactNode
   /**
    * 设置展现形式
    * 其中 `underline` 内部使用，不对外提供支持（风格去线型化：由线性过渡到面性）
