@@ -1,13 +1,18 @@
-import React, { useEffect, useCallback, useRef } from 'react'
+import React, { useEffect, useCallback, useRef, useState, useMemo } from 'react'
 import { plus, minus } from 'number-precision'
 import { cx } from '@hi-ui/classname'
 import { invariant } from '@hi-ui/env'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
 import { useToggle } from '@hi-ui/use-toggle'
 import { isNumeric } from '@hi-ui/type-assertion'
 import { CounterProps } from './Counter'
 
+/**
+ * 核心逻辑：
+ * 1. 输入时不做数字处理，并且用 inputNumericRef.current 保存数字类型的值
+ * 2. 失焦时拿 inputNumericRef.current 值做展示
+ * 3. 有 formatter 时，处理逻辑是将输入时（inputValue）和失焦时（formattedValue）的值分开保存，并且在不同时机拿对应值去展示，另外给 onChange 回调的值是 parser 处理后的值（parsedValue）
+ */
 export const useCounter = ({
   prefixCls,
   className,
@@ -28,14 +33,26 @@ export const useCounter = ({
   size = 'md',
   appearance = 'line',
   invalid = false,
+  formatter,
+  parser,
   ...rest
 }: UseCounterProps) => {
   const min = minProp ?? Number.MIN_SAFE_INTEGER
   const max = maxProp ?? Number.MAX_SAFE_INTEGER
 
-  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange, Object.is)
+  const _value = valueProp ?? defaultValue
+  // 输入时使用该值
+  const [inputValue, tryChangeInputValue] = useState(_value)
+  // 失焦时使用该值
+  const [formattedValue, setFormattedValue] = useState(formatter ? formatter(_value) : _value)
+  // onChange 回调中返回该值
+  const parsedValue = (parser ? parser(formattedValue) : formattedValue) as number
+  // 是否是受控的格式化操作
+  const isControlledFormat = useMemo(() => {
+    return valueProp !== undefined && formatter
+  }, [formatter, valueProp])
 
-  const valueRef = useLatestRef(value)
+  const valueRef = useLatestRef(inputValue)
 
   const proxyTryChangeValue = useCallback(
     (nextValue: number, syncInput: boolean) => {
@@ -49,24 +66,30 @@ export const useCounter = ({
         nextValue = min
       }
 
-      tryChangeValue(nextValue)
+      if (isControlledFormat) {
+        setFormattedValue(formatter!(nextValue))
+      } else {
+        tryChangeInputValue((formatter ? formatter(nextValue) : nextValue) as number)
+      }
+
+      onChange?.(parser ? parser(nextValue) : nextValue)
     },
-    [disabled, max, min, tryChangeValue]
+    [disabled, formatter, isControlledFormat, max, min, onChange, parser]
   )
 
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const reachMax = value >= max
-  const reachMin = value <= min
+  const reachMax = parsedValue >= max
+  const reachMin = parsedValue <= min
   const disabledMinus = disabled || reachMin
   const disabledPlus = disabled || reachMax
 
-  const inputNumericRef = useRef<number>(value)
+  const inputNumericRef = useRef<number>(parsedValue)
 
   // 如果是数值类型，则立即进行修改原始值，保证输入错误也能显示最接近的正确值
   // 最终 input 显示的值是基于 inputNumericRef.current
-  if (isNumeric(value)) {
-    inputNumericRef.current = Number(value)
+  if (isNumeric(parsedValue)) {
+    inputNumericRef.current = Number(parsedValue)
   }
 
   const getCurrentValue = useCallback(() => {
@@ -118,6 +141,20 @@ export const useCounter = ({
   const onBlurLatest = useLatestCallback(onBlur)
 
   useEffect(() => {
+    // 输入时更新格式化后的值，方便失焦时拿来展示
+    setFormattedValue(formatter ? formatter(inputValue) : inputValue)
+  }, [formatter, inputValue])
+
+  useEffect(() => {
+    // 处理外部传入的受控值
+    if (isControlledFormat) {
+      setFormattedValue(formatter ? formatter(valueProp!) : valueProp!)
+    } else {
+      valueProp && tryChangeInputValue(valueProp)
+    }
+  }, [formatter, isControlledFormat, valueProp])
+
+  useEffect(() => {
     if (autoFocus && !disabled) {
       focusedAction.on()
     }
@@ -137,12 +174,13 @@ export const useCounter = ({
     (evt: React.MouseEvent) => {
       if (focusOnStep) {
         evt.preventDefault()
-        focusedAction.on()
+        evt.stopPropagation()
+        !formatter && focusedAction.on()
       }
 
       onMinus()
     },
-    [onMinus, focusedAction, focusOnStep]
+    [focusOnStep, focusedAction, formatter, onMinus]
   )
 
   const handlePlusButtonTouch = useCallback(
@@ -150,31 +188,37 @@ export const useCounter = ({
       if (focusOnStep) {
         evt.preventDefault()
         evt.stopPropagation()
-        focusedAction.on()
+        !formatter && focusedAction.on()
       }
 
       onPlus()
     },
-    [onPlus, focusedAction, focusOnStep]
+    [focusOnStep, focusedAction, formatter, onPlus]
   )
 
   const onInputChange = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
       if (disabled) return
 
+      focusedAction.on()
       const { value } = evt.target
 
-      tryChangeValue(value as any)
+      tryChangeInputValue(value as any)
     },
-    [disabled, tryChangeValue]
+    [disabled, focusedAction]
   )
 
   const onInputFocus = useCallback(
     (evt) => {
       focusedAction.on()
       onFocusLatest(evt)
+
+      if (formatter) {
+        // focus 时需要拿到最新的可用值格式化后进行展示
+        tryChangeInputValue(formatter(inputNumericRef.current) as number)
+      }
     },
-    [onFocusLatest, focusedAction]
+    [focusedAction, formatter, onFocusLatest]
   )
 
   const plusButtonElementRef = useRef<HTMLButtonElement | null>(null)
@@ -184,23 +228,27 @@ export const useCounter = ({
     (evt) => {
       const relatedTarget = evt.relatedTarget
 
-      // 拦截加减按钮点击，阻止其触发 input 失焦
-      if (
-        inputRef.current &&
-        ((plusButtonElementRef.current && plusButtonElementRef.current === relatedTarget) ||
-          (minusButtonElementRef.current && minusButtonElementRef.current === relatedTarget))
-      ) {
-        inputRef.current.focus()
-        return
+      focusedAction.off()
+
+      if (!formatter) {
+        // 拦截加减按钮点击，阻止其触发 input 失焦
+        if (
+          inputRef.current &&
+          ((plusButtonElementRef.current && plusButtonElementRef.current === relatedTarget) ||
+            (minusButtonElementRef.current && minusButtonElementRef.current === relatedTarget))
+        ) {
+          inputRef.current.focus()
+          focusedAction.on()
+          return
+        }
       }
 
       const currentValue = getCurrentValue()
       proxyTryChangeValue(currentValue, true)
 
-      focusedAction.off()
       onBlurLatest(evt)
     },
-    [getCurrentValue, proxyTryChangeValue, onBlurLatest, focusedAction]
+    [focusedAction, formatter, getCurrentValue, onBlurLatest, proxyTryChangeValue]
   )
 
   const onWheeLatest = useLatestCallback(onWheel)
@@ -228,8 +276,8 @@ export const useCounter = ({
     `${prefixCls}--appearance-${appearance}`,
     focused && `${prefixCls}--focused`,
     disabled && `${prefixCls}--disabled`,
-    (invalid || !isNumeric(value)) && `${prefixCls}--invalid`,
-    isOutOfRange(value, min, max) && `${prefixCls}--out-of-bounds`
+    (invalid || !isNumeric(parsedValue)) && `${prefixCls}--invalid`,
+    isOutOfRange(parsedValue, min, max) && `${prefixCls}--out-of-bounds`
   )
 
   const rootProps = {
@@ -243,10 +291,11 @@ export const useCounter = ({
       className: `${prefixCls}__input`,
       type: 'text',
       role: 'spinbutton',
-      'aria-valuenow': value,
+      'aria-valuenow': parsedValue,
       'aria-valuemin': minProp,
       'aria-valuemax': maxProp,
-      value,
+      // 有格式化处理且失焦时显示 formattedValue 值，否则显示 inputValue 值
+      value: formatter && !focused ? formattedValue : inputValue,
       tabIndex,
       autoFocus: autoFocus,
       disabled: disabled,
@@ -257,18 +306,22 @@ export const useCounter = ({
       onWheel: onInputWheel,
     }
   }, [
-    prefixCls,
-    minProp,
-    maxProp,
-    value,
-    tabIndex,
     autoFocus,
     disabled,
-    onInputChange,
+    focused,
+    formattedValue,
+    formatter,
+    maxProp,
+    minProp,
     onInputBlur,
-    onInputKeyDown,
+    onInputChange,
     onInputFocus,
+    onInputKeyDown,
     onInputWheel,
+    parsedValue,
+    prefixCls,
+    tabIndex,
+    inputValue,
   ])
 
   const getMinusButtonProps = useCallback(() => {
