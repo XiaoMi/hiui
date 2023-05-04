@@ -100,6 +100,14 @@ export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
    * 开启滑轮改值
    */
   changeOnWheel?: boolean
+  /**
+   * 指定输入框展示值的格式
+   */
+  formatter?: (value: string | number) => string | number
+  /**
+   * 指定从 formatter 里转换回数字的方式，和 formatter 搭配使用
+   */
+  parser?: (value: string | number) => number
 }
 
 if (__DEV__) {
