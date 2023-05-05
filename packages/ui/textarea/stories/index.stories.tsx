@@ -4,7 +4,7 @@ import TextArea from '@hi-ui/textarea'
 export * from './basic.stories'
 export * from './auto-size.stories'
 export * from './show-count.stories'
-export * from './suspend.stories'
+export * from './header.stories'
 
 export default {
   title: 'Data Input/Textarea',

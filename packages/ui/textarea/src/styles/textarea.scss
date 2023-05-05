@@ -7,55 +7,73 @@ $prefix: "#{$component-prefix}-textarea" !default;
   $input-shadow: 0 0 0 2px use-color-mode("primary", 100);
   $input-error-shadow: 0 0 0 2px use-color-mode("danger", 100);
 
-  @include input-reset;
-
-  display: block;
-  resize: vertical;
-  overflow: auto;
   position: relative;
+  display: inline-block;
+  box-sizing: border-box;
   width: 100%;
-  z-index: auto;
-  word-break: break-all;
 
-  // UI
-  border: use-border-size("normal") use-color-static("transparent");
-  background-color: use-color-static("white");
-  transition-property: color, border-color, background-color, box-shadow;
-  transition-duration: use-motion-duration("normal");
-  transition-timing-function: use-motion-bezier("normal");
-  color: use-color("gray", 700);
+  &__text {
+    @include input-reset;
 
-  &::placeholder {
-    color: use-color("gray", 400);
+    // basic
+    flex: 1;
+    display: block;
+    box-sizing: border-box;
+    transition-property: all;
+    transition-duration: use-motion-duration("normal");
+    transition-timing-function: use-motion-bezier("normal");
+    width: 100%;
+    font-size: inherit;
+    line-height: inherit;
+    color: use-color("gray", 700);
+    resize: vertical;
+    overflow: auto;
+    z-index: auto;
+    word-break: break-all;
+
+    &::placeholder {
+      color: use-color("gray", 400);
+
+      .#{$prefix}--appearance-unset & {
+        color: use-color("gray", 500);
+      }
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 
-  &:disabled {
-    cursor: not-allowed;
+  &__inner {
+    position: relative;
+    height: auto;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: inherit;
+    border: use-border-size("normal") use-color-static("transparent");
+    background-color: use-color-static("white");
+    transition-property: all;
+    transition-duration: use-motion-duration("normal");
+    transition-timing-function: use-motion-bezier("normal");
+    outline: none;
+    z-index: auto;
+
+    &:not(.#{$prefix}__inner--disabled):hover {
+      z-index: calc(#{use-zindex("absolute")} + 1);
+    }
+
+    &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
+      z-index: calc(#{use-zindex("absolute")} + 1);
+    }
   }
 
-  &:not(.#{$prefix}--disabled):hover {
-    z-index: calc(#{use-zindex("absolute")} + 1);
-  }
-
-  &:not(.#{$prefix}--disabled).#{$prefix}--focused {
-    z-index: calc(#{use-zindex("absolute")} + 1);
-  }
-
-  &__suspend {
-    display: inline-flex;
+  &__header {
+    display: flex;
     align-items: center;
     flex-shrink: 0;
     color: use-color("gray", 700);
     font-size: inherit;
     text-align: center;
-    // 设置绝对定位展示在textarea内部
-    position: absolute;
-    top: 0;
-    right: 1px;
-    z-index: calc(#{use-zindex("absolute")} + 1);
-    padding: 4px $input-padding-width;
-    height: 100%;
-    box-sizing: border-box;
   }
 
   &--size {
@@ -64,8 +82,18 @@ $prefix: "#{$component-prefix}-textarea" !default;
       height: auto;
       font-size: use-text-size("sm");
       line-height: use-text-lineheight("sm");
-      padding: 1px $input-padding-width;
-      border-radius: use-border-radius("normal");
+
+      .#{$prefix}__text {
+        padding: 1px $input-padding-width;
+      }
+
+      .#{$prefix}__header {
+        padding: 1px $input-padding-width 0;
+      }
+
+      .#{$prefix}__inner {
+        border-radius: use-border-radius("normal");
+      }
     }
 
     &-md {
@@ -73,8 +101,18 @@ $prefix: "#{$component-prefix}-textarea" !default;
       // height: use-height-size(8);
       font-size: use-text-size("normal");
       line-height: use-text-lineheight("normal");
-      padding: 4px $input-padding-width;
-      border-radius: use-border-radius("normal");
+
+      .#{$prefix}__text {
+        padding: 4px $input-padding-width;
+      }
+
+      .#{$prefix}__header {
+        padding: 4px $input-padding-width 0;
+      }
+
+      .#{$prefix}__inner {
+        border-radius: use-border-radius("normal");
+      }
     }
 
     &-lg {
@@ -82,129 +120,170 @@ $prefix: "#{$component-prefix}-textarea" !default;
       height: auto;
       font-size: use-text-size("lg");
       line-height: use-text-lineheight("lg");
-      padding: 7px $input-padding-width;
-      border-radius: use-border-radius("normal");
+
+      .#{$prefix}__text {
+        padding: 7px $input-padding-width;
+      }
+
+      .#{$prefix}__header {
+        padding: 7px $input-padding-width 0;
+      }
+
+      .#{$prefix}__inner {
+        border-radius: use-border-radius("normal");
+      }
     }
   }
 
   &--appearance {
     &-line {
-      border-color: use-color("gray", 300);
+      .#{$prefix}__inner {
+        border-color: use-color("gray", 300);
 
-      &:not(.#{$prefix}--disabled):hover {
-        border-color: use-color-mode("primary");
-      }
-
-      &:not(.#{$prefix}--disabled).#{$prefix}--focused {
-        box-shadow: $input-shadow;
-        border-color: use-color-mode("primary");
-      }
-
-      &:not(.#{$prefix}--disabled).#{$prefix}--invalid {
-        border-color: use-color-mode("error");
-
-        &.hover {
-          border-color: use-color-mode("error");
+        &:not(.#{$prefix}__inner--disabled):hover {
+          border-color: use-color-mode("primary");
         }
 
-        &.#{$prefix}--focused {
-          box-shadow: $input-error-shadow;
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
+          box-shadow: $input-shadow;
+          border-color: use-color-mode("primary");
+        }
+
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
+          border-color: use-color-mode("error");
+
+          &:hover {
+            border-color: use-color-mode("error");
+          }
+
+          &.#{$prefix}__inner--focused {
+            box-shadow: $input-error-shadow;
+          }
         }
       }
     }
 
     &-unset {
-      &::placeholder {
-        color: use-color("gray", 500);
-      }
-
-      &:not(.#{$prefix}--disabled):hover {
-        background-color: use-color("gray", 100);
-      }
-
-      .#{$prefix} {
+      .#{$prefix}__text {
         padding-left: 0;
         padding-right: 0;
+
+        &::placeholder {
+          color: use-color("gray", 500);
+        }
+      }
+
+      .#{$prefix}__inner {
+        border-radius: 0;
+      }
+
+      &:not(.#{$prefix}__inner--disabled) .#{$prefix}__inner:hover {
+        background-color: use-color("gray", 100);
       }
     }
 
     &-filled {
-      background-color: use-color("gray", 100);
+      .#{$prefix}__inner {
+        background-color: use-color("gray", 100);
 
-      &:not(.#{$prefix}--disabled):hover {
-        background-color: use-color-static("white");
-        border-color: use-color-mode("primary");
-      }
-
-      &:not(.#{$prefix}--disabled).#{$prefix}--focused {
-        box-shadow: $input-shadow;
-        border-color: use-color-mode("primary");
-        background-color: use-color-static("white");
-      }
-
-      &:not(.#{$prefix}--disabled).#{$prefix}--invalid {
-        border-color: use-color-mode("error");
-
-        &.hover {
-          border-color: use-color-mode("error");
+        &:not(.#{$prefix}__inner--disabled):hover {
+          background-color: use-color-static("white");
+          border-color: use-color-mode("primary");
         }
 
-        &.#{$prefix}--focused {
-          box-shadow: $input-error-shadow;
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
+          box-shadow: $input-shadow;
+          border-color: use-color-mode("primary");
+          background-color: use-color-static("white");
+        }
+
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
+          border-color: use-color-mode("error");
+
+          &:hover {
+            border-color: use-color-mode("error");
+          }
+
+          &.#{$prefix}__inner--focused {
+            box-shadow: $input-error-shadow;
+          }
         }
       }
     }
 
     &-underline {
-      padding-left: 0;
-      padding-right: 0;
-      border-radius: 0;
-
-      &::after {
-        content: "";
-        box-sizing: border-box;
-        display: block;
-        position: absolute;
-        bottom: 0;
-        // 两边透明边框各负 1px
-        left: -1px;
-        right: -1px;
-        border-bottom: 1px solid use-color("gray", 300);
-        transition: all 0.3s;
+      .#{$prefix}__text {
+        padding-left: 0;
+        padding-right: 0;
       }
 
-      &:not(.#{$prefix}--disabled):hover {
-        &::after {
-          border-bottom-color: use-color-mode("primary");
-        }
-      }
+      .#{$prefix}__inner {
+        border-radius: 0;
 
-      &:not(.#{$prefix}--disabled).#{$prefix}--focused {
         &::after {
-          border-bottom-color: use-color-mode("primary");
+          content: "";
+          box-sizing: border-box;
+          display: block;
+          position: absolute;
+          bottom: 0;
+          // 两边透明边框各负 1px
+          left: -1px;
+          right: -1px;
+          border-bottom: 1px solid use-color("gray", 300);
+          transition: all 0.3s;
         }
-      }
 
-      &:not(.#{$prefix}--disabled).#{$prefix}--invalid {
-        &::after {
-          border-bottom-color: use-color-mode("error");
+        &:not(.#{$prefix}__inner--disabled):hover {
+          &::after {
+            border-bottom-color: use-color-mode("primary");
+          }
         }
 
-        &.hover {
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
+          &::after {
+            border-bottom-color: use-color-mode("primary");
+          }
+        }
+
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
           &::after {
             border-bottom-color: use-color-mode("error");
+          }
+
+          &.hover {
+            &::after {
+              border-bottom-color: use-color-mode("error");
+            }
           }
         }
       }
     }
 
     &-line,
+    &-filled {
+      .#{$prefix}__inner {
+        &.#{$prefix}__inner--disabled {
+          color: use-color("gray", 400);
+          background-color: use-color("gray", 200);
+
+          .#{$prefix}__text {
+            color: use-color("gray", 400);
+          }
+        }
+      }
+    }
+
     &-unset,
-    &-filled,
     &-underline {
-      &.#{$prefix}--disabled {
-        color: use-color("gray", 400);
-        background-color: use-color("gray", 200);
+      .#{$prefix}__inner {
+        &.#{$prefix}__inner--disabled {
+          color: use-color("gray", 400);
+          background-color: transparent;
+
+          .#{$prefix}__text {
+            color: use-color("gray", 400);
+          }
+        }
       }
     }
   }
@@ -215,7 +294,7 @@ $prefix: "#{$component-prefix}-textarea" !default;
     &--show-count {
       position: relative;
 
-      > .#{$prefix} {
+      .#{$prefix}__text {
         padding-bottom: use-spacing(10);
       }
 
@@ -233,10 +312,6 @@ $prefix: "#{$component-prefix}-textarea" !default;
         bottom: use-spacing(1);
         z-index: calc(#{use-zindex("absolute")} + 1);
       }
-    }
-
-    &--suspend {
-      position: relative;
     }
   }
 }
