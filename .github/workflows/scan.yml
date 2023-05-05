@@ -22,7 +22,7 @@ jobs:
           -Dsonar.organization=hiui
           -Dsonar.projectKey=hiui-components
           -Dsonar.sources=.
-          -Dsonar.test.exclusions=**/*.stories.tsx,**/*.test.tsx,**/*.spec.tsx
+          -Dsonar.exclusions=**/*.stories.tsx,**/*.test.tsx,**/*.spec.tsx,scripts/**
           -Dsonar.verbose=true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
