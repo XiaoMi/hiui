@@ -23,6 +23,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
       className,
       size = 'md',
       appearance = 'line',
+      header,
       invalid = false,
       name,
       autoFocus,
@@ -74,20 +75,26 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
     const cls = cx(
       prefixCls,
       className,
-      disabled && `${prefixCls}--disabled`,
-      readOnly && `${prefixCls}--readonly`,
-      focused && `${prefixCls}--focused`,
-      invalid && `${prefixCls}--invalid`,
+      `${prefixCls}--size-${size}`,
       `${prefixCls}--appearance-${appearance}`,
-      `${prefixCls}--size-${size}`
+      `${prefixCls}-wrapper`,
+      showCount && `${prefixCls}-wrapper--show-count`
     )
 
     const textareaNode = (
-      <div
-        className={cx(`${prefixCls}-wrapper`, showCount && `${prefixCls}-wrapper--show-count`)}
-        data-count={dataCount}
-      >
-        <textarea {...getTextareaProps(rest, ref)} className={cls} />
+      <div className={cls} data-count={dataCount}>
+        <div
+          className={cx(
+            `${prefixCls}__inner`,
+            focused && `${prefixCls}__inner--focused`,
+            disabled && `${prefixCls}__inner--disabled`,
+            readOnly && `${prefixCls}__inner--readonly`,
+            invalid && `${prefixCls}__inner--invalid`
+          )}
+        >
+          {header ? <div className={`${prefixCls}__header`}>{header}</div> : null}
+          <textarea {...getTextareaProps(rest, ref)} className={`${prefixCls}__text`} />
+        </div>
       </div>
     )
 
@@ -104,6 +111,10 @@ export interface TextAreaProps extends HiBaseHTMLFieldProps<'textarea'>, UseText
    * 设置输入框尺寸
    */
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * 输入框顶部内容
+   */
+  header?: React.ReactNode
   /**
    * 设置展现形式
    * 其中 `underline` 内部使用，不对外提供支持（风格去线型化：由线性过渡到面性）
