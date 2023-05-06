@@ -50,7 +50,7 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
   }, [flattedColumns])
 
   const [mergedColumns, groupedColumns, leafColumns] = React.useMemo(() => {
-    const nextColumns = [].concat(
+    const nextColumns: FlattedTableColumnItemData[] = [].concat(
       // @ts-ignore
       // flattedColumns.filter((col) => isLeaf(col)) as FlattedTableColumnItemData[]
       flattedColumns
