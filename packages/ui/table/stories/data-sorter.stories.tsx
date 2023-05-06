@@ -18,7 +18,7 @@ export const DataSorter = () => {
       key: 2,
       width: 80,
       sorter(pre, next) {
-        return pre.age - next.age
+        return pre.raw.age - next.raw.age
       },
     },
     {
