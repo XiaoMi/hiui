@@ -15,12 +15,8 @@ export const Header = () => {
           placeholder="请输入"
           header={
             <>
-              <CopyFilled
-                style={{ alignSelf: 'flex-start', marginRight: 5, fontSize: 16, color: '#5f6a7a' }}
-              />
-              <ExpressionOutlined
-                style={{ alignSelf: 'flex-start', fontSize: 16, color: '#5f6a7a' }}
-              />
+              <CopyFilled style={{ marginRight: 5, fontSize: 16, color: '#5f6a7a' }} />
+              <ExpressionOutlined style={{ fontSize: 16, color: '#5f6a7a' }} />
             </>
           }
         ></TextArea>

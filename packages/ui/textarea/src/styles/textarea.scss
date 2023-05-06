@@ -26,10 +26,14 @@ $prefix: "#{$component-prefix}-textarea" !default;
     font-size: inherit;
     line-height: inherit;
     color: use-color("gray", 700);
-    resize: vertical;
+    resize: none;
     overflow: auto;
     z-index: auto;
     word-break: break-all;
+
+    &:hover {
+      resize: vertical;
+    }
 
     &::placeholder {
       color: use-color("gray", 400);
@@ -173,10 +177,6 @@ $prefix: "#{$component-prefix}-textarea" !default;
         }
       }
 
-      .#{$prefix}__inner {
-        border-radius: 0;
-      }
-
       &:not(.#{$prefix}__inner--disabled) .#{$prefix}__inner:hover {
         background-color: use-color("gray", 100);
       }
@@ -218,8 +218,6 @@ $prefix: "#{$component-prefix}-textarea" !default;
       }
 
       .#{$prefix}__inner {
-        border-radius: 0;
-
         &::after {
           content: "";
           box-sizing: border-box;
