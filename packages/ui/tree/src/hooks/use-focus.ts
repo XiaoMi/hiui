@@ -57,7 +57,7 @@ export const useFocus = (
   const onKeyDown = (evt: React.KeyboardEvent<HTMLUListElement>) => {
     evt.stopPropagation()
 
-    if (transitionData.length < 0) return
+    if (transitionData.length === 0) return
 
     const focusedIndex = getFocusedNodeIndex(focusedId)
 
@@ -94,7 +94,7 @@ export const useFocus = (
         evt.preventDefault()
 
         if (eventNode.expanded) {
-          onSwitch(eventNode, false)
+          onSwitch(eventNode, false).catch(console.error)
         } else {
           if (!isTreeRoot(focusNode.parent)) {
             setFocusedId(focusNode.parent.id)
@@ -120,7 +120,7 @@ export const useFocus = (
         const eventNode = getTreeNodeEventData(focusNode, getTreeNodeRequiredProps(focusNode.id))
 
         if (!eventNode.expanded) {
-          onSwitch(eventNode, true)
+          onSwitch(eventNode, true).catch(console.error)
         } else {
           if (focusNode.children && focusNode.children.length > 0) {
             setFocusedId(focusNode.children[0].id)

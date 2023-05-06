@@ -268,7 +268,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
             onCheck?.(eventNodeRef.current, !checked)
           }
           if (expandOnSelect) {
-            onNodeExpand(evt)
+            onNodeExpand(evt).catch(console.error)
           }
         }}
       >
@@ -432,7 +432,7 @@ const renderSwitcher = (
   expandedIcon: React.ReactNode,
   collapsedIcon: React.ReactNode,
   leafIcon: React.ReactNode,
-  onNodeExpand: (evt: React.MouseEvent) => void,
+  onNodeExpand: (evt: React.MouseEvent) => Promise<void>,
   onLoadChildren?: (node: TreeNodeEventData) => void | Promise<any>
 ) => {
   if (loading) {

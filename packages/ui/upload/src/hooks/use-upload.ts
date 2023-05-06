@@ -57,12 +57,14 @@ const useUpload = ({
           fileListRef.current = newFileList
           updateFileList(fileListRef.current)
         } else if (result && typeof result.then === 'function') {
-          result.then((res) => {
-            if (res === true) {
-              fileListRef.current = newFileList
-              updateFileList(fileListRef.current)
-            }
-          })
+          result
+            .then((res) => {
+              if (res === true) {
+                fileListRef.current = newFileList
+                updateFileList(fileListRef.current)
+              }
+            })
+            .catch(console.error)
         }
       }
     },
@@ -87,14 +89,16 @@ const useUpload = ({
       if (fileList) {
         return false
       } else if (result && typeof (result as Promise<boolean>).then === 'function') {
-        ;(result as Promise<boolean>).then((re) => {
-          if (re === false) {
-            return false
-          } else {
-            fileListRef.current = newFileList
-            updateFileList(fileListRef.current)
-          }
-        })
+        ;(result as Promise<boolean>)
+          .then((re) => {
+            if (re === false) {
+              return false
+            } else {
+              fileListRef.current = newFileList
+              updateFileList(fileListRef.current)
+            }
+          })
+          .catch(console.error)
       } else {
         fileListRef.current = newFileList
         updateFileList(fileListRef.current)
@@ -133,14 +137,16 @@ const useUpload = ({
       if (fileList) {
         return false
       } else if (result && typeof (result as Promise<boolean>).then === 'function') {
-        ;(result as Promise<boolean>).then((re) => {
-          if (re === false) {
-            return false
-          } else {
-            fileListRef.current = newFileList
-            updateFileList(fileListRef.current)
-          }
-        })
+        ;(result as Promise<boolean>)
+          .then((re) => {
+            if (re === false) {
+              return false
+            } else {
+              fileListRef.current = newFileList
+              updateFileList(fileListRef.current)
+            }
+          })
+          .catch(console.error)
       } else {
         fileListRef.current = newFileList
         updateFileList(fileListRef.current)

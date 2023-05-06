@@ -27,6 +27,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       bodyTableRef,
       scrollBodyElementRef,
       onTableBodyScroll,
+      onTableBodyScrollMock,
       maxHeight,
       canScroll,
       scrollWidth,
@@ -78,6 +79,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
           ref={scrollBodyElementRef}
           className={cls}
           onScroll={onVirtualContainerScroll}
+          onWheel={onTableBodyScrollMock}
           style={{
             maxHeight: maxHeight !== undefined ? maxHeight : undefined,
             // maxHeight 小于 table 实际高度才出现纵向滚动条
