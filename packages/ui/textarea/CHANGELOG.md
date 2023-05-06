@@ -1,5 +1,11 @@
 # @hi-ui/textarea
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2468](https://github.com/XiaoMi/hiui/pull/2468) [`229dd4e4a`](https://github.com/XiaoMi/hiui/commit/229dd4e4ad428db09e577d95a8b80bd2216cefd1) Thanks [@safga](https://github.com/safga)! - feat: 增加 header api
+
 ## 4.0.7
 
 ### Patch Changes

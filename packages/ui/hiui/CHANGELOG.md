@@ -1,5 +1,42 @@
 # @hi-ui/hiui
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2474](https://github.com/XiaoMi/hiui/pull/2474) [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1) Thanks [@zyprepare](https://github.com/zyprepare)! - Table feat: add SettingDrawer component
+
+### Patch Changes
+
+- [#2473](https://github.com/XiaoMi/hiui/pull/2473) [`3d5f9ba15`](https://github.com/XiaoMi/hiui/commit/3d5f9ba15868ccdc385cdcdc8a3bbe2e55542b39) Thanks [@zyprepare](https://github.com/zyprepare)! - Anchor Table Tree Upload fix: 修复 sonarcloud 扫描的 Bugs
+
+- [#2468](https://github.com/XiaoMi/hiui/pull/2468) [`229dd4e4a`](https://github.com/XiaoMi/hiui/commit/229dd4e4ad428db09e577d95a8b80bd2216cefd1) Thanks [@safga](https://github.com/safga)! - Textarea feat: 增加 header api
+
+- [#2474](https://github.com/XiaoMi/hiui/pull/2474) [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1) Thanks [@zyprepare](https://github.com/zyprepare)! - Table feat: 增加 dataSource 功能
+
+- [#2474](https://github.com/XiaoMi/hiui/pull/2474) [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1) Thanks [@zyprepare](https://github.com/zyprepare)! - Table feat: 列设置增加 checkDisabledColKeys api,用于禁用列选择操作
+
+- [#2469](https://github.com/XiaoMi/hiui/pull/2469) [`f94904da3`](https://github.com/XiaoMi/hiui/commit/f94904da38243a2ac00cb4b25e3128708770d5ab) Thanks [@zyprepare](https://github.com/zyprepare)! - Counter NumberInput feat: 增加 formatter 和 parser api
+
+- [#2474](https://github.com/XiaoMi/hiui/pull/2474) [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1) Thanks [@zyprepare](https://github.com/zyprepare)! - Loading fix: 更新 Loading Spinner 组件依赖
+
+- [#2465](https://github.com/XiaoMi/hiui/pull/2465) [`eec7e12c0`](https://github.com/XiaoMi/hiui/commit/eec7e12c0b10bf8a0d6ecf39674f5b847f96fbff) Thanks [@zyprepare](https://github.com/zyprepare)! - TimePicker fix: 修复 format="HH:mm" 模式下,选择此刻不生效问题
+
+- [#2474](https://github.com/XiaoMi/hiui/pull/2474) [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1) Thanks [@zyprepare](https://github.com/zyprepare)! - Table fix: 更新 Table 组件依赖
+
+- [#2474](https://github.com/XiaoMi/hiui/pull/2474) [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1) Thanks [@zyprepare](https://github.com/zyprepare)! - Table fix: 数据排序样式不对
+
+- Updated dependencies [[`eec7e12c0`](https://github.com/XiaoMi/hiui/commit/eec7e12c0b10bf8a0d6ecf39674f5b847f96fbff), [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1), [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1), [`f94904da3`](https://github.com/XiaoMi/hiui/commit/f94904da38243a2ac00cb4b25e3128708770d5ab), [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1), [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1), [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1), [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1), [`3d5f9ba15`](https://github.com/XiaoMi/hiui/commit/3d5f9ba15868ccdc385cdcdc8a3bbe2e55542b39), [`229dd4e4a`](https://github.com/XiaoMi/hiui/commit/229dd4e4ad428db09e577d95a8b80bd2216cefd1), [`e95268aa4`](https://github.com/XiaoMi/hiui/commit/e95268aa4af48edaaa9f6afcf5a262342a550cd1)]:
+  - @hi-ui/time-picker@4.0.9
+  - @hi-ui/table@4.1.0
+  - @hi-ui/counter@4.1.0
+  - @hi-ui/number-input@4.1.0
+  - @hi-ui/anchor@4.0.5
+  - @hi-ui/tree@4.2.1
+  - @hi-ui/upload@4.1.4
+  - @hi-ui/textarea@4.1.0
+  - @hi-ui/loading@4.1.0
+
 ## 4.1.25
 
 ### Patch Changes
