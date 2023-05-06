@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/table",
-  "version": "4.0.13",
+  "version": "4.1.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -54,7 +54,7 @@
     "@hi-ui/func-utils": "^4.0.1",
     "@hi-ui/icon-button": "^4.0.4",
     "@hi-ui/icons": "^4.0.4",
-    "@hi-ui/loading": "^4.0.4",
+    "@hi-ui/loading": "^4.1.0",
     "@hi-ui/object-utils": "^4.0.1",
     "@hi-ui/pagination": "^4.0.8",
     "@hi-ui/popper": "^4.0.4",
