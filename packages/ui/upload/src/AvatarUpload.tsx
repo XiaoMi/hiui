@@ -142,7 +142,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
           const file: UploadFileItem = base2blob(dataUrl, filename)
           file.url = dataUrl
           file.fileType = 'img'
-          uploadFiles([file] as any)
+          uploadFiles([file] as any).catch(console.error)
           setCropperVisible(false)
         }
       },

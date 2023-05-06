@@ -251,13 +251,13 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
       menuVisibleAction.off()
     },
     deleteNode: () => {
-      try {
-        onDelete(node).then(() => {
+      onDelete(node)
+        .then(() => {
           menuVisibleAction.off()
         })
-      } catch (error) {
-        menuVisibleAction.off()
-      }
+        .catch(() => {
+          menuVisibleAction.off()
+        })
     },
     addChildNode: () => {
       menuVisibleAction.off()
@@ -371,17 +371,17 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
   const saveEdit = () => {
     if (!inputValue) return
 
-    try {
-      onSave?.({ ...node, title: inputValue }).then(() => {
+    onSave?.({ ...node, title: inputValue })
+      .then(() => {
         editingAction.off()
         // 在编辑或创建节点成功，需要 focus 该节点
         focusTree()
       })
-    } catch (error) {
-      editingAction.off()
-      // 在编辑或创建节点成功，需要 focus 该节点
-      focusTree()
-    }
+      .catch(() => {
+        editingAction.off()
+        // 在编辑或创建节点成功，需要 focus 该节点
+        focusTree()
+      })
   }
 
   const onKeydown = (evt: React.KeyboardEvent<HTMLInputElement>) => {

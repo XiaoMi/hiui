@@ -110,13 +110,15 @@ export const useTreeDrop = (
             dropNode: eventTargetNode,
           })
         } else if (result && typeof result.then === 'function') {
-          result.then(() => {
-            setTreeData(nextTreeData)
-            onDropEnd?.({
-              dragNode: eventSourceNode,
-              dropNode: eventTargetNode,
+          result
+            .then(() => {
+              setTreeData(nextTreeData)
+              onDropEnd?.({
+                dragNode: eventSourceNode,
+                dropNode: eventTargetNode,
+              })
             })
-          })
+            .catch(console.error)
         }
       } else {
         setTreeData(nextTreeData)

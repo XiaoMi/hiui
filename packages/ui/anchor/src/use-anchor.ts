@@ -86,7 +86,7 @@ export const useAnchor = ({
       }
     }
 
-    return (activeAnchorItem && activeAnchorItem) || ''
+    return activeAnchorItem || ''
   }, [containerMemo, getAllAnchorItemIds, getOffsetById])
 
   useEffect(() => {

@@ -91,7 +91,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
         e.preventDefault()
         e.stopPropagation()
         if (!nonInteractive) {
-          uploadFiles(e.dataTransfer.files)
+          uploadFiles(e.dataTransfer.files).catch(console.error)
         }
         setDragging(false)
       },
