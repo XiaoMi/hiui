@@ -49,7 +49,7 @@ export const Virtual = () => {
   return (
     <>
       <h1>Width for Table</h1>
-      <div className="table-width__wrap" style={{ width: 800, background: '#fff' }}>
+      <div className="table-width__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Table
           fieldKey="name"
           columns={column}

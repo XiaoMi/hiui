@@ -1,4 +1,6 @@
 import React from 'react'
+import Tooltip from '@hi-ui/tooltip'
+import { ArrowUpOutlined } from '@hi-ui/icons'
 import BackTop from '../src'
 
 /**
@@ -27,7 +29,24 @@ export const Basic = () => {
           </div>
         </div>
       </div>
-      <BackTop />
+      <BackTop>
+        <Tooltip title="回到顶部" placement="left" disabledPortal={true}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 40,
+              height: 40,
+              borderRadius: '50%',
+              color: '#fff',
+              background: '#237ffa',
+            }}
+          >
+            <ArrowUpOutlined />
+          </div>
+        </Tooltip>
+      </BackTop>
     </>
   )
 }

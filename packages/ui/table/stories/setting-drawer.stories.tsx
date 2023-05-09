@@ -1,11 +1,11 @@
 import React from 'react'
 import Button from '@hi-ui/button'
-import Table, { SettingDrawer as TableSettingDrawer } from '../src'
+import Table, { SettingDrawer } from '../src'
 
 /**
  * @title 设置抽屉
  */
-export const SettingDrawer = () => {
+export const TableSettingDrawer = () => {
   const [dataSource] = React.useState([
     {
       name: '小米9',
@@ -253,7 +253,7 @@ export const SettingDrawer = () => {
           <Button onClick={() => setVisible(true)}>打开 setting 抽屉</Button>
         </div>
         <Table columns={columns} data={dataSource} />
-        <TableSettingDrawer
+        <SettingDrawer
           visible={visible}
           onClose={() => setVisible(false)}
           drawerProps={{ width: 400, title: '字段设置' }}
