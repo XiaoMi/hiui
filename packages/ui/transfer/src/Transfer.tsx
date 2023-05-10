@@ -43,6 +43,7 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       emptyContent,
       render: titleRender,
       draggable = false,
+      leftListRender,
       onChange,
       onDragStart,
       onDragLeave,
@@ -293,6 +294,7 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
             isCheckedIds={isSourceCheckedIds}
             overflowed={isOverflowed}
             draggable={false}
+            listRender={leftListRender}
             onItemClick={(item) => {
               onItemClick(item, 'right')
             }}
@@ -439,6 +441,13 @@ export interface TransferProps
    * 开启分页
    */
   pagination?: boolean | { pageSize?: number }
+  /**
+   * 左边列表自定义渲染
+   */
+  leftListRender?: (props: {
+    checkedIds: React.ReactText[]
+    onCheck: (checkedIds: React.ReactText[]) => void
+  }) => React.ReactNode
 }
 
 if (__DEV__) {
