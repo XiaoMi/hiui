@@ -35,20 +35,23 @@ export const TreeTransfer = () => {
         data={transferDataSource}
         targetIds={targetIds}
         type="multiple"
-        showCheckAll={false}
+        showCheckAll={true}
         leftListRender={({ checkedIds, onCheck }) => {
           const ids = [...checkedIds, ...targetIds]
           return (
-            <Tree
-              checkable
-              defaultExpandAll
-              checkedIds={ids}
-              data={generateTree(data, targetIds)}
-              checkedMode="SEPARATE"
-              onCheck={(checkedIds) => {
-                onCheck(checkedIds.filter((item) => !targetIds.includes(item)))
-              }}
-            />
+            <div style={{ padding: '0 8px' }}>
+              <Tree
+                checkable
+                defaultExpandAll
+                checkedIds={ids}
+                data={generateTree(data, targetIds)}
+                checkedMode="SEPARATE"
+                onCheck={(checkedIds) => {
+                  console.log(checkedIds)
+                  onCheck(checkedIds.filter((item) => !targetIds.includes(item)))
+                }}
+              />
+            </div>
           )
         }}
       />

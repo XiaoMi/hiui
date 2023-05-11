@@ -19,7 +19,7 @@ export const isOption = (item: any) => {
 
 export const getAllCheckedStatus = (
   dropdownItems: any[],
-  values: React.ReactText[],
+  values: React.ReactText[] = [],
   filterFunc: (item: any) => boolean
 ) => {
   const dropdownIds = dropdownItems.filter(filterFunc).map(({ id }: any) => id)

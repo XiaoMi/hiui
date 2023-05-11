@@ -166,7 +166,7 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
                 <span>{limitContent}</span>
               </div>
             ) : null}
-            {showData.length > 0 ? (
+            {showData.length > 0 || customize ? (
               listRender?.({
                 checkedIds,
                 onCheck: setCheckedIds,
