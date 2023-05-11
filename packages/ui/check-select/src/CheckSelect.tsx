@@ -241,11 +241,11 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     const listRef = useRef<ListRef>(null)
 
     useEffect(() => {
-      // 每次打开时触发一次滚动条显示
-      if (menuVisible) {
+      // 每次打开或数据改变时触发一次滚动条显示
+      if (menuVisible && isArrayNonEmpty(showData)) {
         listRef.current?.scrollTo(undefined as any)
       }
-    }, [menuVisible])
+    }, [menuVisible, showData])
 
     return (
       <CheckSelectProvider value={context}>
