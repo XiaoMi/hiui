@@ -218,6 +218,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
       &--disabled {
         cursor: not-allowed;
+        color: use-color('gray', 400);
       }
     }
   }
