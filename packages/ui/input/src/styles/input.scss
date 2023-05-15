@@ -294,6 +294,10 @@ $prefix: '#{$component-prefix}-input' !default;
       .#{$prefix}__inner {
         border-radius: 0;
       }
+
+      &:not(.#{$prefix}__inner--disabled) .#{$prefix}__inner:hover {
+        background-color: use-color("gray", 100);
+      }
     }
 
     &-filled {
