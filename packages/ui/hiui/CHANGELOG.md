@@ -1,5 +1,22 @@
 # @hi-ui/hiui
 
+## 4.2.1
+
+### Patch Changes
+
+- [#2484](https://github.com/XiaoMi/hiui/pull/2484) [`6980d058f`](https://github.com/XiaoMi/hiui/commit/6980d058f165b309695d10248d7511bd05bee457) Thanks [@zyprepare](https://github.com/zyprepare)! - Input DatePicker fix: 样式优化
+
+- [#2481](https://github.com/XiaoMi/hiui/pull/2481) [`0d4cfe83d`](https://github.com/XiaoMi/hiui/commit/0d4cfe83d017e596bb52c8aa74072e4c0c03fc18) Thanks [@zyprepare](https://github.com/zyprepare)! - DatePicker fix: 修复时间选择格式化问题
+
+- [#2482](https://github.com/XiaoMi/hiui/pull/2482) [`3301a290f`](https://github.com/XiaoMi/hiui/commit/3301a290fa9bd8b8717e24ef69ed832aa392b11e) Thanks [@zyprepare](https://github.com/zyprepare)! - Select CheckSelect fix: 数据改变后显示一次滚动条
+
+- Updated dependencies [[`6980d058f`](https://github.com/XiaoMi/hiui/commit/6980d058f165b309695d10248d7511bd05bee457), [`0d4cfe83d`](https://github.com/XiaoMi/hiui/commit/0d4cfe83d017e596bb52c8aa74072e4c0c03fc18), [`3301a290f`](https://github.com/XiaoMi/hiui/commit/3301a290fa9bd8b8717e24ef69ed832aa392b11e), [`6980d058f`](https://github.com/XiaoMi/hiui/commit/6980d058f165b309695d10248d7511bd05bee457)]:
+  - @hi-ui/date-picker@4.0.17
+  - @hi-ui/input@4.0.9
+  - @hi-ui/check-select@4.1.3
+  - @hi-ui/select@4.0.11
+  - @hi-ui/spinner@4.0.5
+
 ## 4.2.0
 
 ### Minor Changes

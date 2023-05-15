@@ -1,5 +1,13 @@
 # @hi-ui/date-picker
 
+## 4.0.17
+
+### Patch Changes
+
+- [#2484](https://github.com/XiaoMi/hiui/pull/2484) [`6980d058f`](https://github.com/XiaoMi/hiui/commit/6980d058f165b309695d10248d7511bd05bee457) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 样式优化
+
+- [#2481](https://github.com/XiaoMi/hiui/pull/2481) [`0d4cfe83d`](https://github.com/XiaoMi/hiui/commit/0d4cfe83d017e596bb52c8aa74072e4c0c03fc18) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复时间选择格式化问题
+
 ## 4.0.16
 
 ### Patch Changes
