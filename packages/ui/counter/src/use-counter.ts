@@ -40,7 +40,8 @@ export const useCounter = ({
   const min = minProp ?? Number.MIN_SAFE_INTEGER
   const max = maxProp ?? Number.MAX_SAFE_INTEGER
 
-  const _value = valueProp ?? defaultValue
+  const _value = valueProp === null ? valueProp : valueProp ?? defaultValue
+  // const _value = valueProp ?? defaultValue
   // 输入时使用该值
   const [inputValue, tryChangeInputValue] = useState(_value)
   // 失焦时使用该值
@@ -55,15 +56,17 @@ export const useCounter = ({
   const valueRef = useLatestRef(inputValue)
 
   const proxyTryChangeValue = useCallback(
-    (nextValue: number, syncInput: boolean) => {
+    (nextValue: number | null, syncInput: boolean) => {
       if (disabled) return
 
-      invariant(min <= max, 'The max must large than min.')
+      if (nextValue !== null) {
+        invariant(min <= max, 'The max must large than min.')
 
-      if (nextValue > max) {
-        nextValue = max
-      } else if (nextValue < min) {
-        nextValue = min
+        if (nextValue > max) {
+          nextValue = max
+        } else if (nextValue < min) {
+          nextValue = min
+        }
       }
 
       if (isControlledFormat) {
@@ -94,7 +97,7 @@ export const useCounter = ({
 
   const getCurrentValue = useCallback(() => {
     if (typeof inputNumericRef.current !== 'number') {
-      inputNumericRef.current = valueRef.current
+      inputNumericRef.current = valueRef.current ?? 0
     }
     return inputNumericRef.current
   }, [valueRef])
@@ -150,7 +153,7 @@ export const useCounter = ({
     if (isControlledFormat) {
       setFormattedValue(formatter ? formatter(valueProp!) : valueProp!)
     } else {
-      valueProp && tryChangeInputValue(valueProp)
+      valueProp !== undefined && tryChangeInputValue(valueProp)
     }
   }, [formatter, isControlledFormat, valueProp])
 
@@ -243,7 +246,7 @@ export const useCounter = ({
         }
       }
 
-      const currentValue = getCurrentValue()
+      const currentValue = inputRef.current?.value.length === 0 ? null : getCurrentValue()
       proxyTryChangeValue(currentValue, true)
 
       onBlurLatest(evt)
@@ -286,6 +289,9 @@ export const useCounter = ({
   }
 
   const getInputProps = useCallback(() => {
+    // 有格式化处理且失焦时显示 formattedValue 值，否则显示 inputValue 值
+    const _value = formatter && !focused ? formattedValue : inputValue
+
     return {
       ref: inputRef,
       className: `${prefixCls}__input`,
@@ -294,8 +300,7 @@ export const useCounter = ({
       'aria-valuenow': parsedValue,
       'aria-valuemin': minProp,
       'aria-valuemax': maxProp,
-      // 有格式化处理且失焦时显示 formattedValue 值，否则显示 inputValue 值
-      value: formatter && !focused ? formattedValue : inputValue,
+      value: _value === null ? '' : _value,
       tabIndex,
       autoFocus: autoFocus,
       disabled: disabled,
