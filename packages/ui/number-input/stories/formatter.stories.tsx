@@ -48,7 +48,7 @@ export const Formatter = () => {
     return result
   }
 
-  const [value, setValue] = React.useState(1234)
+  const [value, setValue] = React.useState<number | null>(1234)
 
   return (
     <>
@@ -75,9 +75,11 @@ export const Formatter = () => {
         />
         <h2>小数点精度展示</h2>
         <NumberInput
-          defaultValue={1234}
-          min={1}
-          formatter={(value) => formatNumberPrecision(Number(value), 2, 'cut')}
+          defaultValue={null}
+          // formatter={(value) => formatNumberPrecision(Number(value), 2, 'cut')}
+          formatter={(value) => {
+            return !value ? null : formatNumberPrecision(Number(value), 2, 'cut')
+          }}
           onChange={(v) => console.log('onChange', v)}
         />
         <h2>小数点精度展示 受控</h2>

@@ -6,7 +6,7 @@ import Button from '@hi-ui/button'
  * @title 受控
  */
 export const Controlled = () => {
-  const [current, setCurrent] = React.useState(1)
+  const [current, setCurrent] = React.useState<number | null>(1)
   return (
     <>
       <h1>Controlled</h1>

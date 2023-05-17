@@ -58,11 +58,11 @@ export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 设置当前值
    */
-  value?: number
+  value?: number | null
   /**
    * 设置默认值
    */
-  defaultValue?: number
+  defaultValue?: number | null
   /**
    * 每次改变值的大小
    */
@@ -87,7 +87,7 @@ export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 值改变时的回调
    */
-  onChange?: (value: number) => void
+  onChange?: (value: number | null) => void
   /**
    * 设置展现形式
    */
@@ -103,11 +103,11 @@ export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 指定输入框展示值的格式
    */
-  formatter?: (value: string | number) => string | number
+  formatter?: (value: string | number | null) => string | number
   /**
    * 指定从 formatter 里转换回数字的方式，和 formatter 搭配使用
    */
-  parser?: (value: string | number) => number
+  parser?: (value: string | number | null) => number
 }
 
 if (__DEV__) {
