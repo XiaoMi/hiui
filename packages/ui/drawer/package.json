@@ -54,7 +54,7 @@
     "@hi-ui/use-merge-refs": "^4.0.1",
     "@hi-ui/use-scroll-lock": "^4.0.1",
     "@hi-ui/use-toggle": "^4.0.1",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "4.4.2"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.0",
