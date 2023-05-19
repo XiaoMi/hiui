@@ -1,5 +1,23 @@
 # @hi-ui/hiui
 
+## 4.2.2
+
+### Patch Changes
+
+- [#2487](https://github.com/XiaoMi/hiui/pull/2487) [`0916ef068`](https://github.com/XiaoMi/hiui/commit/0916ef06817f96c6353be6a7783ee9d05d7da9e0) Thanks [@zyprepare](https://github.com/zyprepare)! - Drawer fix: 修复入场动画问题
+
+- [#2492](https://github.com/XiaoMi/hiui/pull/2492) [`2601da9d1`](https://github.com/XiaoMi/hiui/commit/2601da9d1046ce829ead08b0838be353e64240f3) Thanks [@zyprepare](https://github.com/zyprepare)! - Pagination fix: 兼容 useCounter 中 onChange 类型
+
+- [#2489](https://github.com/XiaoMi/hiui/pull/2489) [`19e230fb8`](https://github.com/XiaoMi/hiui/commit/19e230fb85803a651b3a5574ee551fc9712f00be) Thanks [@zyprepare](https://github.com/zyprepare)! - Counter fix: 增加了对 null 值的处理,当值设置为 null 时输入框显示为空
+
+- [#2491](https://github.com/XiaoMi/hiui/pull/2491) [`80262b227`](https://github.com/XiaoMi/hiui/commit/80262b227cbab0799007fd931c93c2848204b48c) Thanks [@safga](https://github.com/safga)! - Dropdown fix: 增加 dataItem 设置 disable 后样式
+
+- Updated dependencies [[`2601da9d1`](https://github.com/XiaoMi/hiui/commit/2601da9d1046ce829ead08b0838be353e64240f3), [`19e230fb8`](https://github.com/XiaoMi/hiui/commit/19e230fb85803a651b3a5574ee551fc9712f00be), [`0916ef068`](https://github.com/XiaoMi/hiui/commit/0916ef06817f96c6353be6a7783ee9d05d7da9e0), [`80262b227`](https://github.com/XiaoMi/hiui/commit/80262b227cbab0799007fd931c93c2848204b48c)]:
+  - @hi-ui/pagination@4.0.10
+  - @hi-ui/counter@4.1.1
+  - @hi-ui/drawer@4.0.8
+  - @hi-ui/dropdown@4.0.6
+
 ## 4.2.1
 
 ### Patch Changes
