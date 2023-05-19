@@ -1,5 +1,14 @@
 # @hi-ui/pagination
 
+## 4.0.10
+
+### Patch Changes
+
+- [#2492](https://github.com/XiaoMi/hiui/pull/2492) [`2601da9d1`](https://github.com/XiaoMi/hiui/commit/2601da9d1046ce829ead08b0838be353e64240f3) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 兼容 useCounter 中 onChange 类型
+
+- Updated dependencies [[`19e230fb8`](https://github.com/XiaoMi/hiui/commit/19e230fb85803a651b3a5574ee551fc9712f00be)]:
+  - @hi-ui/counter@4.1.1
+
 ## 4.0.9
 
 ### Patch Changes
