@@ -64,6 +64,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
             value={item.id}
             menu={menu}
             onClick={() => {
+              if (item.disabled) return
               onClick?.(item.id)
               if (!isArray(item.children)) {
                 menuVisibleAction.off()
@@ -256,7 +257,12 @@ const DropdownMenuItem = forwardRef<HTMLLIElement | null, DropdownMenuItemProps>
       parents: parentsProp,
     })
 
-    const cls = cx(prefixCls, className, menuVisible && `${prefixCls}--active`)
+    const cls = cx(
+      prefixCls,
+      className,
+      menuVisible && `${prefixCls}--active`,
+      disabled && `${prefixCls}--disabled`
+    )
     const shouldUseLink = href && !disabled
 
     return (
