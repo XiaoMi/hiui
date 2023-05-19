@@ -38,8 +38,8 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
     const currentRef = useLatestRef(current)
 
     const proxyTrySetCurrent = useCallback(
-      (nextCurrent: number) => {
-        if (currentRef.current === nextCurrent) return
+      (nextCurrent: number | null) => {
+        if (!nextCurrent || currentRef.current === nextCurrent) return
         trySetCurrent?.(nextCurrent, current, calculateCurrentPageSize(current, total, pageSize))
       },
       [current, total, pageSize, trySetCurrent, currentRef]
