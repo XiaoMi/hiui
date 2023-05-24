@@ -34,6 +34,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       container,
       closeIcon = defaultCloseIcon,
       width,
+      height,
       preload = false,
       unmountOnClose = false,
       visible = false,
@@ -76,6 +77,8 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     }, [onExitedLatest, transitionExitedAction])
 
     const hasHeader = !!title || closeable
+    const bodyWidth = isNumeric(width) ? width + 'px' : width
+    const bodyHeight = isNumeric(height) ? height + 'px' : height
 
     const cls = cx(prefixCls, className, `${prefixCls}--placement-${placement}`)
 
@@ -90,14 +93,27 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
           mountOnEnter={!preload}
           unmountOnExit={unmountOnClose}
         >
-          <div className={cls} {...getModalProps(rootProps, ref)}>
+          <div
+            className={cls}
+            {...getModalProps(rootProps, ref)}
+            {...(!showMask &&
+              visible && {
+                style:
+                  placement === 'left' || placement === 'right'
+                    ? {
+                        [`${getPrefixStyleVar('drawer-body-width')}`]: bodyWidth ?? '404px',
+                      }
+                    : {
+                        [`${getPrefixStyleVar('drawer-body-height')}`]: bodyHeight ?? '404px',
+                      },
+              })}
+          >
             {showMask ? <div className={`${prefixCls}__overlay`} /> : null}
             <div
               className={`${prefixCls}__wrapper`}
               style={{
-                [`${getPrefixStyleVar('drawer-body-width')}`]: isNumeric(width)
-                  ? width + 'px'
-                  : width,
+                [`${getPrefixStyleVar('drawer-body-width')}`]: bodyWidth,
+                [`${getPrefixStyleVar('drawer-body-height')}`]: bodyHeight,
               }}
               {...getModalWrapperProps(drawerConfig)}
             >
