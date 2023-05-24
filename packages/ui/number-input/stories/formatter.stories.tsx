@@ -65,7 +65,7 @@ export const Formatter = () => {
         <h2>千分位展示 受控</h2>
         <NumberInput
           value={value}
-          min={1}
+          min={0}
           formatter={(value) => currency.format(value + '')}
           parser={(value) => Number(currency.pure(value + ''))}
           onChange={(v) => {
@@ -76,16 +76,13 @@ export const Formatter = () => {
         <h2>小数点精度展示</h2>
         <NumberInput
           defaultValue={null}
-          // formatter={(value) => formatNumberPrecision(Number(value), 2, 'cut')}
-          formatter={(value) => {
-            return !value ? null : formatNumberPrecision(Number(value), 2, 'cut')
-          }}
+          formatter={(value) => formatNumberPrecision(Number(value), 2, 'cut')}
           onChange={(v) => console.log('onChange', v)}
         />
         <h2>小数点精度展示 受控</h2>
         <NumberInput
           value={value}
-          min={1}
+          min={0}
           formatter={(value) => formatNumberPrecision(Number(value), 2, 'round')}
           onChange={(v) => {
             console.log('onChange', v)

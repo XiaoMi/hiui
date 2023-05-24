@@ -40,14 +40,15 @@ export const useCounter = ({
   const min = minProp ?? Number.MIN_SAFE_INTEGER
   const max = maxProp ?? Number.MAX_SAFE_INTEGER
 
-  const _value = valueProp === null ? valueProp : valueProp ?? defaultValue
-  // const _value = valueProp ?? defaultValue
+  const _value = valueProp === null ? null : valueProp ?? defaultValue
   // 输入时使用该值
   const [inputValue, tryChangeInputValue] = useState(_value)
   // 失焦时使用该值
-  const [formattedValue, setFormattedValue] = useState(formatter ? formatter(_value) : _value)
+  const [formattedValue, setFormattedValue] = useState(
+    formatter && _value ? formatter(_value) : _value
+  )
   // onChange 回调中返回该值
-  const parsedValue = (parser ? parser(formattedValue) : formattedValue) as number
+  const parsedValue = (parser && formattedValue ? parser(formattedValue) : formattedValue) as number
   // 是否是受控的格式化操作
   const isControlledFormat = useMemo(() => {
     return valueProp !== undefined && formatter
@@ -59,14 +60,22 @@ export const useCounter = ({
     (nextValue: number | null, syncInput: boolean) => {
       if (disabled) return
 
-      if (nextValue !== null) {
-        invariant(min <= max, 'The max must large than min.')
-
-        if (nextValue > max) {
-          nextValue = max
-        } else if (nextValue < min) {
-          nextValue = min
+      if (nextValue === null) {
+        if (isControlledFormat) {
+          setFormattedValue(null)
+        } else {
+          tryChangeInputValue(null)
         }
+        onChange?.(null)
+        return
+      }
+
+      invariant(min <= max, 'The max must large than min.')
+
+      if (nextValue > max) {
+        nextValue = max
+      } else if (nextValue < min) {
+        nextValue = min
       }
 
       if (isControlledFormat) {
@@ -145,12 +154,12 @@ export const useCounter = ({
 
   useEffect(() => {
     // 输入时更新格式化后的值，方便失焦时拿来展示
-    setFormattedValue(formatter ? formatter(inputValue) : inputValue)
+    setFormattedValue(formatter && inputValue ? formatter(inputValue) : inputValue)
   }, [formatter, inputValue])
 
   useEffect(() => {
     // 处理外部传入的受控值
-    if (isControlledFormat) {
+    if (isControlledFormat && valueProp !== null) {
       setFormattedValue(formatter ? formatter(valueProp!) : valueProp!)
     } else {
       valueProp !== undefined && tryChangeInputValue(valueProp)
@@ -218,10 +227,12 @@ export const useCounter = ({
 
       if (formatter) {
         // focus 时需要拿到最新的可用值格式化后进行展示
-        tryChangeInputValue(formatter(inputNumericRef.current) as number)
+        tryChangeInputValue(
+          inputValue !== null ? (formatter(inputNumericRef.current) as number) : null
+        )
       }
     },
-    [focusedAction, formatter, onFocusLatest]
+    [focusedAction, formatter, inputValue, onFocusLatest]
   )
 
   const plusButtonElementRef = useRef<HTMLButtonElement | null>(null)
