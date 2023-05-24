@@ -7,7 +7,6 @@ $prefix: '#{$component-prefix}-drawer' !default;
   width: 0;
   height: 0;
   z-index: use-zindex('drawer');
-  overflow: hidden;
 
   &--placement-left {
     left: 0;
@@ -42,8 +41,8 @@ $prefix: '#{$component-prefix}-drawer' !default;
   &--motion-enter-done,
   &--motion-exit,
   &--motion-exit-active {
-    width: 100%;
-    height: 100%;
+    width: var(--hi-v4-drawer-body-width, 100%);
+    height: var(--hi-v4-drawer-body-height, 100%);
   }
 
   &__wrapper {
