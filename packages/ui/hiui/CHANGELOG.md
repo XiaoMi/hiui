@@ -1,5 +1,18 @@
 # @hi-ui/hiui
 
+## 4.2.3
+
+### Patch Changes
+
+- [#2498](https://github.com/XiaoMi/hiui/pull/2498) [`7f542e88e`](https://github.com/XiaoMi/hiui/commit/7f542e88ef0f519093d3c356359404c1c557774d) Thanks [@zyprepare](https://github.com/zyprepare)! - Counter NumberInput fix: 修复 formatter 场景下值为 null 和 0 时的异常问题
+
+- [#2495](https://github.com/XiaoMi/hiui/pull/2495) [`84e6089ba`](https://github.com/XiaoMi/hiui/commit/84e6089baf216d5192136379c7b0925c57c01d8a) Thanks [@zyprepare](https://github.com/zyprepare)! - Drawer fix: 修复 showMask 设为 false 后依然有蒙层存在
+
+- Updated dependencies [[`84e6089ba`](https://github.com/XiaoMi/hiui/commit/84e6089baf216d5192136379c7b0925c57c01d8a), [`7f542e88e`](https://github.com/XiaoMi/hiui/commit/7f542e88ef0f519093d3c356359404c1c557774d)]:
+  - @hi-ui/drawer@4.0.9
+  - @hi-ui/counter@4.1.2
+  - @hi-ui/number-input@4.1.1
+
 ## 4.2.2
 
 ### Patch Changes
