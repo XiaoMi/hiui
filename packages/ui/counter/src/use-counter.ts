@@ -161,6 +161,7 @@ export const useCounter = ({
     // 处理外部传入的受控值
     if (isControlledFormat && valueProp !== null) {
       setFormattedValue(formatter ? formatter(valueProp!) : valueProp!)
+      tryChangeInputValue(valueProp!)
     } else {
       valueProp !== undefined && tryChangeInputValue(valueProp)
     }
