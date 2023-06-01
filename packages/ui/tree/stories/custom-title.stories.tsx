@@ -1,4 +1,5 @@
 import React from 'react'
+import { ExcelColorful } from '@hi-ui/icons'
 import Tree, { TreeDataItem } from '../src'
 
 /**
@@ -63,6 +64,7 @@ export const CustomTitle = () => {
           {/* <span className="custom-left-icon" style={{ marginRight: 12 }}>
             😄
           </span> */}
+          <ExcelColorful style={{ marginRight: 2 }} />
           <span>{node.title}</span>
           <span>{`（${node.id}）`}</span>
         </div>

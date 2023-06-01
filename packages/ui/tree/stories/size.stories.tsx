@@ -11,7 +11,9 @@ export const Size = () => {
       <div className="tree-size__wrap">
         <div>
           <div>
-            <h3>lg 默认</h3>
+            <h3>
+              lg <small>默认</small>
+            </h3>
             <Tree
               expandOnSelect
               data={[
