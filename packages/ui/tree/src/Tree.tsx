@@ -1,4 +1,5 @@
 import React, { forwardRef, useMemo, useRef } from 'react'
+import { HiBaseSizeEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
@@ -84,6 +85,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       fieldNames,
       checkedMode = 'ALL',
       expandOnSelect,
+      size = 'lg',
       ...rest
     },
     ref
@@ -215,7 +217,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       return Math.ceil(height / itemHeight) + 1
     }, [virtual, height, itemHeight])
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
 
     return (
       <TreeProvider value={providedValue}>
@@ -450,6 +452,10 @@ export interface TreeProps {
    * 是否点击节点时展开其子节点
    */
   expandOnSelect?: boolean
+  /**
+   * 设置大小
+   */
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {

@@ -30,6 +30,14 @@ $prefix: '#{$component-prefix}-tree' !default;
   // 节点间隔控制
   padding: use-spacing(2) 0;
 
+  .#{$prefix}--size-md & {
+    padding: use-spacing(1) 0;
+  }
+
+  .#{$prefix}--size-sm & {
+    padding: use-spacing(0) 0;
+  }
+
   &__indent,
   &__checkbox,
   &__switcher {
@@ -63,6 +71,14 @@ $prefix: '#{$component-prefix}-tree' !default;
     display: inline-block;
     width: use-spacing(8);
     height: 100%;
+
+    .#{$prefix}--size-md & {
+      width: use-spacing(6);
+    }
+
+    .#{$prefix}--size-sm & {
+      width: use-spacing(4);
+    }
   }
 
   &__switcher {
@@ -85,6 +101,16 @@ $prefix: '#{$component-prefix}-tree' !default;
     color: inherit;
     background-color: transparent;
     padding: 0 use-spacing(1);
+
+    .#{$prefix}--size-md & {
+      min-height: use-height-size(7);
+      line-height: use-text-lineheight('md');
+    }
+
+    .#{$prefix}--size-sm & {
+      min-height: use-height-size(6);
+      line-height: use-text-lineheight('sm');
+    }
 
     // 拖拽指示器-小圆球
     &::before {
