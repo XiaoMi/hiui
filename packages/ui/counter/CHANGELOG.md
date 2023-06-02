@@ -1,5 +1,11 @@
 # @hi-ui/counter
 
+## 4.1.3
+
+### Patch Changes
+
+- [#2506](https://github.com/XiaoMi/hiui/pull/2506) [`acf21fe33`](https://github.com/XiaoMi/hiui/commit/acf21fe33446840efd729f344727870cf895663f) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 formatter 模式下,光标聚焦时值被清空问题
+
 ## 4.1.2
 
 ### Patch Changes
