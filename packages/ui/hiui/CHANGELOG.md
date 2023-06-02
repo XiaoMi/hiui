@@ -1,5 +1,18 @@
 # @hi-ui/hiui
 
+## 4.2.4
+
+### Patch Changes
+
+- [#2506](https://github.com/XiaoMi/hiui/pull/2506) [`acf21fe33`](https://github.com/XiaoMi/hiui/commit/acf21fe33446840efd729f344727870cf895663f) Thanks [@zyprepare](https://github.com/zyprepare)! - Counter NumberInput fix: 修复 formatter 模式下,光标聚焦时值被清空问题
+
+- [#2505](https://github.com/XiaoMi/hiui/pull/2505) [`76c377aab`](https://github.com/XiaoMi/hiui/commit/76c377aabec97a8c27f5c6100dd18ce0ffd9b0f6) Thanks [@zyprepare](https://github.com/zyprepare)! - Tree feat: add size api
+
+- Updated dependencies [[`76c377aab`](https://github.com/XiaoMi/hiui/commit/76c377aabec97a8c27f5c6100dd18ce0ffd9b0f6), [`acf21fe33`](https://github.com/XiaoMi/hiui/commit/acf21fe33446840efd729f344727870cf895663f)]:
+  - @hi-ui/tree@4.3.0
+  - @hi-ui/counter@4.1.3
+  - @hi-ui/number-input@4.1.2
+
 ## 4.2.3
 
 ### Patch Changes

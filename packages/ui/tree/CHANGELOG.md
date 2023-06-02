@@ -1,5 +1,11 @@
 # @hi-ui/tree
 
+## 4.3.0
+
+### Minor Changes
+
+- [#2505](https://github.com/XiaoMi/hiui/pull/2505) [`76c377aab`](https://github.com/XiaoMi/hiui/commit/76c377aabec97a8c27f5c6100dd18ce0ffd9b0f6) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add size api
+
 ## 4.2.1
 
 ### Patch Changes
