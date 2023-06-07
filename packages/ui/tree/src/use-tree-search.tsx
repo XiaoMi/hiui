@@ -220,34 +220,36 @@ const renderTitleWithHighlight = (
   }
 
   const values = Array.isArray(searchValue) ? searchValue : [searchValue]
-  // 记录关键字对应的索引
-  const valuesIndex = []
+  const titleContent = []
+  // 记录已经匹配到的关键字的位置
+  let valueIndex = 0
+  // 记录剩余的字符串
+  let subTitle = title
 
+  // 处理多个关键字的情况
   for (let i = 0, l = values.length; i < l; i++) {
-    const index = title.indexOf(values[i])
-    if (index !== -1) valuesIndex.push(index)
-  }
+    const index = subTitle.indexOf(values[i])
 
-  // 没有匹配到直接返回原始内容
-  if (valuesIndex.length === 0) {
-    return title
-  }
-  // 对匹配到的内容增加高亮样式
-  else {
-    let startIndex = 0
-
-    return valuesIndex.map((index, key) => {
-      const beforeStr = title.substring(startIndex, index)
-      startIndex = index + 1
-
-      return (
-        <span key={key}>
-          {beforeStr}
-          <span className={`${prefixCls}__title-text--matched`}>{title.charAt(index)}</span>
-          {key === valuesIndex.length - 1 && title.length > index && title.substr(startIndex)}
+    if (index !== -1) {
+      titleContent.push(title.substring(valueIndex, index))
+      titleContent.push(
+        <span className={`${prefixCls}__title-text--matched`}>
+          {title.substring(index, index + values[i].length)}
         </span>
       )
-    })
+      valueIndex = index + values[i].length
+      subTitle = title.substr(valueIndex)
+    }
+  }
+
+  if (subTitle.length > 0) {
+    titleContent.push(subTitle)
+  }
+
+  if (titleContent.length > 0) {
+    return titleContent
+  } else {
+    return title
   }
 }
 
