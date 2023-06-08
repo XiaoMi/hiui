@@ -63,7 +63,7 @@ export const CustomSearch = () => {
         <Button
           style={{ margin: '12px 0' }}
           onClick={() => {
-            customFilterTree(searchValue)((node) =>
+            customFilterTree(searchValue, (node) =>
               !searchValue ? false : (node.raw.title as string).indexOf(searchValue) > -1
             )
           }}

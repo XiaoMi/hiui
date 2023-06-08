@@ -175,15 +175,13 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
    * 自定义搜索匹配规则
    */
   const customFilterTree = useCallback(
-    (keyword: string | string[]) => {
+    (keyword: string | string[], customFilter: (flattedData: FlattedTreeNodeData) => boolean) => {
       setSearchValue(keyword)
 
-      return (customFilter: (flattedData: FlattedTreeNodeData) => boolean) => {
-        // 匹配到搜索的节点，将这些节点进行展开显示，其它均隐藏
-        const matchedNodes = flattedData.filter(customFilter)
+      // 匹配到搜索的节点，将这些节点进行展开显示，其它均隐藏
+      const matchedNodes = flattedData.filter(customFilter)
 
-        handleMatchedNodes(matchedNodes)
-      }
+      handleMatchedNodes(matchedNodes)
     },
     [flattedData, handleMatchedNodes]
   )
