@@ -147,6 +147,14 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     draggable: inSearch ? !inSearch : draggable,
   }
 
+  const handleMatchedNodes = useLatestCallback((matchedNodes: FlattedTreeNodeData[]) => {
+    const filteredNodeIds = getFilteredIds(matchedNodes)
+
+    setMatchedIds(matchedNodes.map((v) => v.id))
+    setFilteredIds(filteredNodeIds)
+    tryToggleExpandedIds(filteredNodeIds)
+  })
+
   const filterTree = useCallback(
     (keyword: string | string[], matchKey?: string[]) => {
       setSearchValue(keyword)
@@ -157,13 +165,27 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
         typeof keyword === 'string' ? (keyword === '' ? [] : [keyword]) : keyword,
         matchKey
       )
-      const filteredNodeIds = getFilteredIds(matchedNodes)
 
-      setMatchedIds(matchedNodes.map((v) => v.id))
-      setFilteredIds(filteredNodeIds)
-      tryToggleExpandedIds(filteredNodeIds)
+      handleMatchedNodes(matchedNodes)
     },
-    [flattedData, tryToggleExpandedIds]
+    [flattedData, handleMatchedNodes]
+  )
+
+  /**
+   * 自定义搜索匹配规则
+   */
+  const customFilterTree = useCallback(
+    (keyword: string | string[]) => {
+      setSearchValue(keyword)
+
+      return (customFilter: (flattedData: FlattedTreeNodeData) => boolean) => {
+        // 匹配到搜索的节点，将这些节点进行展开显示，其它均隐藏
+        const matchedNodes = flattedData.filter(customFilter)
+
+        handleMatchedNodes(matchedNodes)
+      }
+    },
+    [flattedData, handleMatchedNodes]
   )
 
   const onSearchLatest = useLatestCallback(onSearch)
@@ -183,7 +205,7 @@ export const useTreeSearchProps = <T extends SearchableTreeProps>(props: T) => {
     onChange: handleChange,
   }
 
-  return { treeProps, searchInputProps, isEmpty, filterTree }
+  return { treeProps, searchInputProps, isEmpty, filterTree, customFilterTree }
 }
 
 export interface SearchableTreeProps extends TreeProps {
