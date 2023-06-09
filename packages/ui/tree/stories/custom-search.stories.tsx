@@ -36,7 +36,7 @@ export const CustomSearch = () => {
   ])
 
   const [searchValue, setSearchValue] = React.useState('')
-  const { filterTree, isEmpty, treeProps } = useTreeSearchProps({
+  const { filterTree, customFilterTree, isEmpty, treeProps } = useTreeSearchProps({
     searchable: true,
     searchPlaceholder: '搜索',
     data,
@@ -53,12 +53,22 @@ export const CustomSearch = () => {
           placeholder="请输入要查询的岗位"
         />
         <Button
-          style={{ margin: '12px 0' }}
+          style={{ margin: '12px 12px 12px 0' }}
           onClick={() => {
             filterTree(searchValue)
           }}
         >
           点击搜索岗位
+        </Button>
+        <Button
+          style={{ margin: '12px 0' }}
+          onClick={() => {
+            customFilterTree(searchValue, (node) =>
+              !searchValue ? false : (node.raw.title as string).indexOf(searchValue) > -1
+            )
+          }}
+        >
+          点击搜索岗位（自定义匹配逻辑）
         </Button>
         <div style={{ fontSize: 14, color: '#5f6a7a' }}>
           我是提示：{isEmpty ? '暂时匹配不到相关岗位信息' : '无'}
