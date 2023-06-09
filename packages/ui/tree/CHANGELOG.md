@@ -1,5 +1,15 @@
 # @hi-ui/tree
 
+## 4.4.0
+
+### Minor Changes
+
+- [#2512](https://github.com/XiaoMi/hiui/pull/2512) [`d6c310ee8`](https://github.com/XiaoMi/hiui/commit/d6c310ee8d88fa9e7a03d4e298e93a72a63d474b) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: useTreeSearchProps 增加 customFilterTree api
+
+### Patch Changes
+
+- [#2510](https://github.com/XiaoMi/hiui/pull/2510) [`fde24c34b`](https://github.com/XiaoMi/hiui/commit/fde24c34bee2adb19800410f6d46d7c78902fada) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复高亮显示问题
+
 ## 4.3.0
 
 ### Minor Changes
