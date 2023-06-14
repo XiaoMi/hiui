@@ -19,6 +19,7 @@ import { TagInputMock } from '@hi-ui/tag-input'
 import { UpOutlined, DownOutlined } from '@hi-ui/icons'
 import { useLocaleContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
+import Checkbox from '@hi-ui/checkbox'
 // import { UseDataSource } from '@hi-ui/use-data-source'
 import {
   useAsyncSearch,
@@ -85,6 +86,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       virtual,
       itemHeight,
       height,
+      showCheckAll,
       ...rest
     },
     ref
@@ -252,6 +254,82 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       return uniqBy(nextData, 'id')
     }, [checkedNodes, flattedData])
 
+    const getAllCheckedStatus = (flattedData: any[], values: React.ReactText[]) => {
+      const treeIds = flattedData.map(({ id }: any) => id)
+      const treeIdsSet = new Set(treeIds)
+      let hasValue = false
+
+      values.forEach((id) => {
+        if (treeIdsSet.has(id)) {
+          hasValue = true
+          treeIdsSet.delete(id)
+        }
+      })
+
+      return [
+        hasValue && treeIdsSet.size === 0,
+        hasValue && treeIdsSet.size > 0,
+        // 该值用来判断剩余未选中的节点是否都是 disabled 的
+        // 如果为 true 则表示可选值都已选中
+        treeIdsSet.size === flattedData.filter((item) => item.disabled).length,
+      ]
+    }
+
+    const toggleCheckAll = useCallback(() => {
+      const [currentAllChecked, , hasCheckedAll] = getAllCheckedStatus(
+        flattedData,
+        parsedCheckedIds
+      )
+      const shouldChecked = !currentAllChecked
+
+      // 全选操作
+      if (!currentAllChecked && !hasCheckedAll) {
+        tryChangeValue(
+          flattedData
+            .filter((item) => {
+              if (!item.disabled) {
+                // 根据 checkedMode 类型过滤出已选项，保证全选操作下 onChange 回调的值是符合 checkedMode 的规则
+                if (checkedMode === 'CHILD') {
+                  return !item.children
+                }
+                if (checkedMode === 'PARENT') {
+                  return item.depth === 0
+                }
+                return true
+              }
+
+              return false
+            })
+            .map(({ id }: any) => id),
+          null,
+          shouldChecked,
+          []
+        )
+      } else {
+        tryChangeValue([], null, shouldChecked, [])
+      }
+    }, [checkedMode, flattedData, parsedCheckedIds, tryChangeValue])
+
+    const [showAllChecked, showIndeterminate] = useMemo(() => {
+      return getAllCheckedStatus(flattedData, parsedCheckedIds)
+    }, [flattedData, parsedCheckedIds])
+
+    const renderDefaultFooter = () => {
+      if (showCheckAll) {
+        return (
+          <>
+            <Checkbox
+              indeterminate={showIndeterminate}
+              checked={showAllChecked}
+              onChange={toggleCheckAll}
+            >
+              {i18n.get('checkSelect.checkAll')}
+            </Checkbox>
+          </>
+        )
+      }
+    }
+
     const cls = cx(prefixCls, className)
 
     // 过滤掉未选中的数据
@@ -281,6 +359,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         // data={mergedData}
         searchable={searchable}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        footer={renderDefaultFooter()}
         loading={rest.loading !== undefined ? rest.loading : loading}
         trigger={
           <TagInputMock
@@ -462,6 +541,10 @@ export interface CheckTreeSelectProps
    * 	设置 `true` 开启虚拟滚动
    */
   virtual?: boolean
+  /**
+   * 是否开启全选功能，需要对数据全量操作。异步数据场景暂不支持，可自行渲染弹层底部实现
+   */
+  showCheckAll?: boolean
 }
 
 if (__DEV__) {
