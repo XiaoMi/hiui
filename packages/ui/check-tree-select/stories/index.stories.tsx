@@ -9,6 +9,7 @@ export * from './clearable.stories'
 export * from './searchable.stories'
 // export * from './field-names.stories'
 export * from './default-expand-all.stories'
+export * from './check-all.stories'
 // export * from './async.stories'
 export * from './virtual-list.stories'
 
