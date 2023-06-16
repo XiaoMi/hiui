@@ -14186,11 +14186,10 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.npm.taobao.org/pinkie/download/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
 
-pinyin-match@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/pinyin-match/-/pinyin-match-1.2.2.tgz#24a60a5bce89fb2903f33f37492782d3f8e34eeb"
-  dependencies:
-    rollup "^2.44.0"
+pinyin-pro@^3.15.1:
+  version "3.15.1"
+  resolved "https://registry.npmmirror.com/pinyin-pro/-/pinyin-pro-3.15.1.tgz#2bf8a286fee3153e165b62b038ec1b2830ad5b32"
+  integrity sha512-xG5gR/HkwEt39mLCAOTVlI6loYwmXvmx4iX6npBJ43GnyGu6EOjY/ukJBivvYObPKocwQ+4dc05cGOkk2hPdjw==
 
 pirates@^4.0.0, pirates@^4.0.1:
   version "4.0.1"
@@ -16370,12 +16369,6 @@ rollup-pluginutils@^2.8.2:
   resolved "https://registry.npm.taobao.org/rollup-pluginutils/download/rollup-pluginutils-2.8.2.tgz#72f2af0748b592364dbd3389e600e5a9444a351e"
   dependencies:
     estree-walker "^0.6.1"
-
-rollup@^2.44.0:
-  version "2.62.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.62.0.tgz#9e640b419fc5b9e0241844f6d55258bd79986ecc"
-  optionalDependencies:
-    fsevents "~2.3.2"
 
 rollup@^2.70.1:
   version "2.75.6"

@@ -1,6 +1,6 @@
 import React from 'react'
 import Cascader from '../src'
-import pinyinMatch from 'pinyin-match'
+import { match } from 'pinyin-pro'
 
 /**
  * @title 自定义搜索筛选规则
@@ -61,11 +61,11 @@ export const FilterOptions = () => {
   // 注意 filterOption 是影响搜索渲染的，是完全受控的，useCallback 包裹可以减少无效的重渲染，提升性能
   const filterOptionMemo = React.useCallback((keyword: string, item: any) => {
     if (item.children) return false
-    const match = (node: any) =>
-      typeof node.title === 'string' && !!pinyinMatch.match(node.title as string, keyword)
+    const _match = (node: any) =>
+      typeof node.title === 'string' && !!match(node.title as string, keyword)
 
     const matchUp = (node: any) => {
-      let found = match(node)
+      let found = _match(node)
       let { parent } = node
 
       if (parent && !found) {
@@ -75,7 +75,7 @@ export const FilterOptions = () => {
           parent = parent.parent
         }
 
-        found = ancestors.some((item: any) => match(item))
+        found = ancestors.some((item: any) => _match(item))
         console.log(ancestors, found)
       }
 
@@ -83,7 +83,7 @@ export const FilterOptions = () => {
     }
 
     const matchDown = (node: any) => {
-      let found = match(node)
+      let found = _match(node)
       const { children } = node
 
       if (children && !found) {
