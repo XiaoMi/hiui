@@ -1,5 +1,14 @@
 # @hi-ui/hiui
 
+## 4.2.6
+
+### Patch Changes
+
+- [#2516](https://github.com/XiaoMi/hiui/pull/2516) [`49aa47c02`](https://github.com/XiaoMi/hiui/commit/49aa47c02f7b4fc858f2ca9b55974853dfdbd59d) Thanks [@zyprepare](https://github.com/zyprepare)! - CheckTreeSelect feat: 增加 showCheckAll API
+
+- Updated dependencies [[`49aa47c02`](https://github.com/XiaoMi/hiui/commit/49aa47c02f7b4fc858f2ca9b55974853dfdbd59d)]:
+  - @hi-ui/check-tree-select@4.1.0
+
 ## 4.2.5
 
 ### Patch Changes
