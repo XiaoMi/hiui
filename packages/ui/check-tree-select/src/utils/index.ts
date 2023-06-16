@@ -158,3 +158,24 @@ function fillCheck(
 
   return Array.from(checkedIdsSet)
 }
+
+export const getAllCheckedStatus = (flattedData: any[], values: React.ReactText[]) => {
+  const treeIds = flattedData.map(({ id }: any) => id)
+  const treeIdsSet = new Set(treeIds)
+  let hasValue = false
+
+  values.forEach((id) => {
+    if (treeIdsSet.has(id)) {
+      hasValue = true
+      treeIdsSet.delete(id)
+    }
+  })
+
+  return [
+    hasValue && treeIdsSet.size === 0,
+    hasValue && treeIdsSet.size > 0,
+    // 该值用来判断剩余未选中的节点是否都是 disabled 的
+    // 如果为 true 则表示可选值都已选中
+    treeIdsSet.size === flattedData.filter((item) => item.disabled).length,
+  ]
+}

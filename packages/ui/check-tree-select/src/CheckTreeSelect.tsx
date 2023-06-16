@@ -29,6 +29,7 @@ import {
   useTreeCustomSearch,
 } from '@hi-ui/use-search-mode'
 import { useCheck } from './hooks/use-check'
+import { getAllCheckedStatus } from './utils'
 
 const TREE_SELECT_PREFIX = getPrefixCls('check-tree-select')
 const DEFAULT_DATA = [] as []
@@ -253,27 +254,6 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       const nextData = checkedNodes.concat(flattedData as any[])
       return uniqBy(nextData, 'id')
     }, [checkedNodes, flattedData])
-
-    const getAllCheckedStatus = (flattedData: any[], values: React.ReactText[]) => {
-      const treeIds = flattedData.map(({ id }: any) => id)
-      const treeIdsSet = new Set(treeIds)
-      let hasValue = false
-
-      values.forEach((id) => {
-        if (treeIdsSet.has(id)) {
-          hasValue = true
-          treeIdsSet.delete(id)
-        }
-      })
-
-      return [
-        hasValue && treeIdsSet.size === 0,
-        hasValue && treeIdsSet.size > 0,
-        // 该值用来判断剩余未选中的节点是否都是 disabled 的
-        // 如果为 true 则表示可选值都已选中
-        treeIdsSet.size === flattedData.filter((item) => item.disabled).length,
-      ]
-    }
 
     const toggleCheckAll = useCallback(() => {
       const [currentAllChecked, , hasCheckedAll] = getAllCheckedStatus(
