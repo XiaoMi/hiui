@@ -36,7 +36,6 @@
   },
   "homepage": "https://github.com/XiaoMi/hiui#readme",
   "dependencies": {
-    "inject-head-style": "^1.0.0",
     "style-inject": "^0.3.0"
   }
 }

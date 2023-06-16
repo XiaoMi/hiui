@@ -1,7 +1,7 @@
 import React from 'react'
 import CheckSelect from '../src'
 
-import pinyinMatch from 'pinyin-match'
+import { match } from 'pinyin-pro'
 
 /**
  * @title 拼音搜索
@@ -18,7 +18,7 @@ export const Pinyin = () => {
 
   // 注意 filterOption 是影响搜索渲染的，是完全受控的，useCallback 包裹可以减少无效的重渲染，提升性能
   const filterOptionMemo = React.useCallback((keyword: string, item: any) => {
-    return !!pinyinMatch.match(item.title as string, keyword)
+    return !!match(item.title as string, keyword)
   }, [])
 
   return (
