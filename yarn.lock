@@ -10523,11 +10523,6 @@ init-package-json@^2.0.2:
     validate-npm-package-license "^3.0.4"
     validate-npm-package-name "^3.0.0"
 
-inject-head-style@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/inject-head-style/-/inject-head-style-1.0.0.tgz#159f843900d3f473fb691c67fce52b5d088f5f68"
-  integrity sha512-J6eyVFIiY3SgvguiUx/XXBZWTIxMryhiSosH2fan5+FhfA4LlNJkybUcYsINInM+zvsBmcrIHVWJxvi4lvjwqA==
-
 inline-style-parser@0.1.1:
   version "0.1.1"
   resolved "https://registry.npm.taobao.org/inline-style-parser/download/inline-style-parser-0.1.1.tgz#ec8a3b429274e9c0a1f1c4ffa9453a7fef72cea1"

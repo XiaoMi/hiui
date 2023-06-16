@@ -43,7 +43,7 @@ const getBanner = (pkg) => {
 // https://github.com/rollup/plugins/tree/master/packages/babel#babelhelpers
 const getExternals = (pkg) => {
   /** @type {(string | RegExp)[]} */
-  return [/tslib|@babel|inject-head-style/]
+  return [/tslib|@babel|style-inject/]
     .concat(Object.keys(pkg.peerDependencies || {}))
     .concat(Object.keys(pkg.dependencies || {}))
 }
@@ -151,9 +151,9 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
           // Extract styleInject as a external module
          inject: !cssExtract ? (variableName) => {
            if (isESM) {
-            return `;import __styleInject__ from 'inject-head-style';__styleInject__(${variableName});`
+            return `;import __styleInject__ from 'style-inject';__styleInject__(${variableName});`
            }
-           return `;var __styleInject__=require('inject-head-style').default;__styleInject__(${variableName});`
+           return `;var __styleInject__=require('style-inject').default;__styleInject__(${variableName});`
          } : false,
           extract: cssExtract,
           modules: cssModules,
