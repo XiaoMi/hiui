@@ -12,7 +12,7 @@ const _role = 'watermark'
 export const watermarkPrefix = getPrefixCls(_role)
 
 /**
- * TODO: What is Watermark
+ * 水印
  */
 export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((props, ref) => {
   const {

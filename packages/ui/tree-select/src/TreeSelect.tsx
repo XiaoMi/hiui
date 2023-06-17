@@ -31,7 +31,7 @@ const DEFAULT_FIELD_NAMES = {} as any
 const DEFAULT_EXPANDED_IDS = [] as []
 
 /**
- * TODO: What is TreeSelect
+ * 树形选择器
  */
 export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
   (

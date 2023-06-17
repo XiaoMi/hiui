@@ -11,9 +11,6 @@ import { FileList } from './FileList'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 
-/**
- * TODO: What is Upload
- */
 export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
   (
     {

@@ -20,9 +20,6 @@ const _role = 'tag-input-mock'
 const _prefix = getPrefixCls(_role)
 const NOOP_ARRAY = [] as []
 
-/**
- * TODO: What is TagInputMock
- */
 export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>(
   (
     {

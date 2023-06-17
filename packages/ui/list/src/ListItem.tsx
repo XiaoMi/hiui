@@ -6,9 +6,6 @@ import { ListDataItem } from './types'
 
 const LIST_PREFIX = getPrefixCls('list')
 
-/**
- * TODO: What is List
- */
 export const ListItem: React.FC<ListItemProps> = ({
   prefixCls = LIST_PREFIX,
   className,

@@ -13,9 +13,6 @@ export { PopperJS }
 
 const _prefix = getPrefixCls('popper')
 
-/**
- * TODO: What is Popper
- */
 export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
   (
     {

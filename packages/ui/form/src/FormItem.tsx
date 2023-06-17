@@ -7,9 +7,6 @@ import { FormField } from './FormField'
 import { useFormContext } from './context'
 import { cx } from '@hi-ui/classname'
 
-/**
- * TODO: What is FormItem
- */
 export const FormItem: React.FC<FormItemProps> = ({
   className,
   children,

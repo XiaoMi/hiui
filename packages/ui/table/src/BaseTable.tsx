@@ -21,9 +21,6 @@ export const EMBED_DATA_KEY = `TABLE_EMBED_DATA_KEY_${uuid()}`
 const DEFAULT_COLUMNS = [] as []
 const DEFAULT_DATA = [] as []
 
-/**
- * TODO: What is BaseTable
- */
 export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
   (
     {

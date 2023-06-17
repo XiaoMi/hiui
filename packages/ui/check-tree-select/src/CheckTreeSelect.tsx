@@ -38,7 +38,7 @@ const DEFAULT_FIELD_NAMES = {} as any
 const DEFAULT_EXPANDED_IDS = [] as []
 
 /**
- * TODO: What is CheckTreeSelect
+ * 多项树形选择器
  */
 export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelectProps>(
   (

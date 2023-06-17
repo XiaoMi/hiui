@@ -16,9 +16,6 @@ const _prefix = getPrefixCls(_role)
 
 const calculatePageCount = (total: number, pageSize: number) => Math.ceil(total / pageSize)
 
-/**
- * TODO: What is Pagination
- */
 export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationProps>(
   (
     {

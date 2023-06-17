@@ -7,9 +7,6 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
 
-/**
- * TODO: What is PagerButton
- */
 export const PagerButton = forwardRef<HTMLButtonElement | null, PagerButtonProps>(
   (
     { prefixCls = _prefix, onChange, type = 'prev', current = 1, disabled = false, onClick },

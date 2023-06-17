@@ -11,7 +11,7 @@ import { Radio } from './Radio'
 const RADIO_GROUP_PREFIX = getPrefixCls('radio-group')
 
 /**
- * TODO: What is RadioGroup
+ * 单选组合器
  */
 export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
   (

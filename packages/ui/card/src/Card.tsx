@@ -9,7 +9,7 @@ const _role = 'card'
 const _prefix = getPrefixCls(_role)
 
 /**
- * TODO: What is Card
+ * 卡片
  */
 export const Card = forwardRef<HTMLDivElement | null, CardProps>(
   (

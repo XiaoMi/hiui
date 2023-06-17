@@ -11,9 +11,6 @@ const FILTER_ITEM_PREFIX = getPrefixCls('filter-item')
 const NOOP_ARRAY = [] as []
 const allowSelect = (item: FilterDataItem) => !item.disabled
 
-/**
- * TODO: What is FilterItem
- */
 export const FilterItem = forwardRef<HTMLDivElement | null, FilterProps>(
   (
     {

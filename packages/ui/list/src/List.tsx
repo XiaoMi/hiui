@@ -9,7 +9,7 @@ import { ListDataItem, ListPaginationPlacementEnum } from './types'
 const LIST_PREFIX = getPrefixCls('list')
 
 /**
- * TODO: What is List
+ * 列表
  */
 type Position = 'flex-start' | 'flex-end' | 'center'
 const getPagePosition = (

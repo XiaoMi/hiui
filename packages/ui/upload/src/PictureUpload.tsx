@@ -16,9 +16,6 @@ import { Preview } from '@hi-ui/preview'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 
-/**
- * TODO: What is Upload
- */
 export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
   (
     {

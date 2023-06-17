@@ -16,8 +16,6 @@ const _prefix = getPrefixCls('alert')
  *
  * 作用于页面的内容区域的提示，非触发类信息
  *
- * TODO:
- *  1. 添加关闭动效
  */
 export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
   (

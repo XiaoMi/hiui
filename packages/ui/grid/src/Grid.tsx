@@ -17,7 +17,7 @@ const DEFAULT_ROW_GAP = 16
 const DEFAULT_GUTTER_GAP = 16
 
 /**
- * TODO: What is Grid Row
+ * 栅格
  */
 export const Row = forwardRef<HTMLDivElement | null, RowProps>(
   (
@@ -124,9 +124,6 @@ const getGridStyleVar = (prop: string, size?: string) => {
   return getPrefixStyleVar('grid-' + prop)
 }
 
-/**
- * TODO: What is Grid Col
- */
 export const Col = forwardRef<HTMLDivElement | null, ColProps>(
   (
     {

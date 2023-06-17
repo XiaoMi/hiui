@@ -8,9 +8,6 @@ import Checkbox from '@hi-ui/checkbox'
 const _role = 'transfer-item'
 const _prefix = getPrefixCls(_role)
 
-/**
- * TODO: What is TransferItem
- */
 export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
   (
     {

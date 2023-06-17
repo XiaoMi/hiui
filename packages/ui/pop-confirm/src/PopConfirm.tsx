@@ -12,7 +12,7 @@ import { isUndef } from '@hi-ui/type-assertion'
 const POP_CONFIRM_PREFIX = getPrefixCls('pop-confirm')
 
 /**
- * TODO: What is PopConfirm
+ * 气泡确认框
  */
 export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
   (

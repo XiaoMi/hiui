@@ -2,9 +2,6 @@ import React, { useCallback, useState } from 'react'
 import { Input } from '@hi-ui/input'
 import { __DEV__ } from '@hi-ui/env'
 
-/**
- * TODO: What is PageOption
- */
 export const PageJumper: React.FC<PageJumperProps> = ({ pageText, prefixCls, onJump, maxJump }) => {
   const [jumpPage, setJumpPage] = useState<string>('')
   const onJumperChange = useCallback((e) => {

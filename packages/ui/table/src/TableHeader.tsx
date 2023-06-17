@@ -9,9 +9,6 @@ import { useCheckState } from '@hi-ui/use-check-state'
 
 const _prefix = getPrefixCls('table-header')
 
-/**
- * TODO: What is TableHeader
- */
 export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
   ({ prefixCls = _prefix, className }, ref) => {
     const {

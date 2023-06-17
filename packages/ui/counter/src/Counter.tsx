@@ -11,11 +11,6 @@ const _prefix = getPrefixCls(_role)
 
 /**
  * 数字加减器
- *
- * TODO:
- * 1. 修复完全受控时值变化 bug
- * 2. 优化 useCounter 代码，合理复用 pagination
- * 3. 支持 inputNumber 组件
  */
 export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
   ({ prefixCls = _prefix, role = _role, ...rest }, ref) => {

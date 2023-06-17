@@ -11,9 +11,6 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _prefix = getPrefixCls('pagination-mini')
 
-/**
- * TODO: What is ShrinkPagination
- */
 export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginationProps>(
   (
     {

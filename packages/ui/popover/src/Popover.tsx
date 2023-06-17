@@ -10,7 +10,7 @@ const _role = 'popover'
 const _prefix = getPrefixCls(_role)
 
 /**
- * TODO: What is Popover
+ * 气泡卡片
  */
 export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
   (

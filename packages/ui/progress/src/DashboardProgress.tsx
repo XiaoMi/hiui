@@ -18,9 +18,6 @@ const strokeWidthMap = {
   lg: 8,
 }
 
-/**
- * TODO: What is Progress
- */
 export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProgressProps>(
   (
     {

@@ -32,9 +32,6 @@ const fileTypeMap = {
   default: <QuestionColorful />,
 } as Record<string, any>
 
-/**
- * TODO: What is Upload
- */
 export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
   ({ prefixCls = UPLOAD_PREFIX, onDownload, onDelete, fileList, showPic, actionRender }, ref) => {
     const handleItemKeydown = useCallback(

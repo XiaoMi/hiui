@@ -16,7 +16,7 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 const PICKER_PREFIX = getPrefixCls('picker')
 
 /**
- * TODO: What is Picker
+ * 选择器
  */
 export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
   (

@@ -6,7 +6,7 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 const SVG_ICON_PREFIX = getPrefixCls('svg-icon')
 
 /**
- * TODO: What is SvgIcon
+ * SVG 图标
  */
 export const SvgIcon = forwardRef<SVGSVGElement | null, SvgIconProps>(
   (

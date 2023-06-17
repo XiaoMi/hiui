@@ -3,9 +3,6 @@ import { __DEV__ } from '@hi-ui/env'
 import { useFormField, UseFormFieldProps } from './use-form-field'
 import { isFunction } from '@hi-ui/type-assertion'
 
-/**
- * TODO: What is FormField
- */
 export const FormField: React.FC<FormFieldProps> = (props) => {
   const fieldProps = useFormField(props)
 

@@ -5,9 +5,6 @@ import { __DEV__ } from '@hi-ui/env'
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
 
-/**
- * TODO: What is Pager
- */
 export const Pager: React.FC<PagerProps> = ({
   prefixCls = _prefix,
   onClick,

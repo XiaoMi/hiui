@@ -14,7 +14,7 @@ import { DescriptionsItem, DescriptionsItemProps } from './DescriptionsItem'
 const DESCRIPTIONS_PREFIX = getPrefixCls('descriptions')
 
 /**
- * TODO: What is Descriptions
+ * 描述列表组件
  */
 export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>(
   (

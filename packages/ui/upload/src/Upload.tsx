@@ -12,7 +12,7 @@ const UPLOAD_PREFIX = getPrefixCls('upload')
 const NOOP_ARRAY = [] as []
 
 /**
- * TODO: What is Upload
+ * 上传
  */
 export const Upload = forwardRef<HTMLDivElement | null, UploadProps>(
   (

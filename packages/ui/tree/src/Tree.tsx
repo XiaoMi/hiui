@@ -33,7 +33,7 @@ export const treePrefix = getPrefixCls(_role)
 const NOOP_ARRAY = [] as []
 
 /**
- * TODO: What is Tree
+ * 树形控件
  */
 export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
   (

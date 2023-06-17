@@ -8,9 +8,7 @@ import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 const _prefix = getPrefixCls('switch')
 
 /**
- * TODO: What is Switch
- * TODO：
- * 1. loading 态
+ * 开关
  */
 export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
   (

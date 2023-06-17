@@ -17,7 +17,7 @@ const DEFAULT_VALUE = [] as []
 const NOOP_ARRAY = [] as []
 
 /**
- * TODO: What is CheckboxGroup
+ * 复选框组合器
  */
 export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProps>(
   (

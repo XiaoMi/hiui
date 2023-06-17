@@ -6,7 +6,7 @@ const _role = 'file-select'
 const _prefix = getPrefixCls(_role)
 
 /**
- * TODO: What is FileSelect
+ * 文件选择器
  */
 export const FileSelect = forwardRef<HTMLDivElement | null, FileSelectProps>(
   (

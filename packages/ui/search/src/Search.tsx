@@ -16,7 +16,7 @@ const SEARCH_PREFIX = getPrefixCls('search')
 const NOOP_ARRAY = [] as []
 
 /**
- * TODO: What is Search
+ * 搜索
  */
 export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
   (

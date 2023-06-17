@@ -11,13 +11,6 @@ const _prefix = getPrefixCls('input')
 
 /**
  * 输入框
- *
- * @TODO:
- * 1. size api 确认
- * 2. 修改类名结构
- * 3. 支持带数字展示
- * 4. InputGroup 模式支持
- * 5. 手动聚焦支持额外配置
  */
 export const Input = forwardRef<HTMLInputElement | null, InputProps>(
   (

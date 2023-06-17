@@ -17,9 +17,6 @@ const strokeWidthMap = {
   lg: 8,
 }
 
-/**
- * TODO: What is CircleProgress
- */
 export const CircleProgress = forwardRef<HTMLDivElement | null, CircleProgressProps>(
   (
     {

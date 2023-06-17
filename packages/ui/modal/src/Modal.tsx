@@ -34,7 +34,7 @@ const modalIconMap = {
 const defaultMaxHeight = 600
 
 /**
- * TODO: What is Modal
+ * 模态框
  */
 export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   (

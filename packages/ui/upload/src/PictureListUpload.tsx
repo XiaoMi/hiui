@@ -10,9 +10,6 @@ import { useLocaleContext } from '@hi-ui/core'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 
-/**
- * TODO: What is Upload
- */
 export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
   (
     {

@@ -12,9 +12,6 @@ import { useTableContext } from './context'
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
 
-/**
- * TODO: What is TableBody
- */
 export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
   ({ prefixCls = _prefix, emptyContent }, ref) => {
     const {

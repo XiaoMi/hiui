@@ -23,7 +23,7 @@ const notificationIconMap: any = {
 }
 
 /**
- * TODO: What is Notification
+ * 通知
  */
 export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>(
   (

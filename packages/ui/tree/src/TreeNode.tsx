@@ -19,9 +19,6 @@ import { getNodeSiblings } from '@hi-ui/tree-utils'
 const _role = 'tree-node'
 const treePrefix = getPrefixCls(_role)
 
-/**
- * TODO: What is TreeNode
- */
 export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, ref) => {
   const {
     prefixCls = treePrefix,

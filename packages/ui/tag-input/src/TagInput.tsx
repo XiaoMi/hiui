@@ -15,7 +15,7 @@ const _prefix = getPrefixCls(_role)
 const NOOP_ARRAY = [] as []
 
 /**
- * TODO: What is TagInput
+ * 标签输入框
  */
 export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
   (
