@@ -7,9 +7,6 @@ import Button, { ButtonProps } from '@hi-ui/button'
 const _role = 'form-submit'
 const _prefix = getPrefixCls(_role)
 
-/**
- * TODO: What is FormSubmit
- */
 export const FormSubmit = forwardRef<HTMLButtonElement | HTMLAnchorElement | null, FormSubmitProps>(
   (
     { prefixCls = _prefix, role = _role, className, children, type = 'primary', onClick, ...rest },

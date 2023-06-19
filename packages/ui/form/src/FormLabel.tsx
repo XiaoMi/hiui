@@ -8,9 +8,6 @@ import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
 const _role = 'form-label'
 const _prefix = getPrefixCls(_role)
 
-/**
- * TODO: What is FormLabel
- */
 export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((props, ref) => {
   const i18n = useLocaleContext()
 

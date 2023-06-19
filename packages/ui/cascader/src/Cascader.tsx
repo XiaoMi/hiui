@@ -26,7 +26,7 @@ const _prefix = getPrefixCls('cascader')
 const NOOP_ARRAY = [] as []
 
 /**
- * TODO: What is Cascader
+ * 级联选择器
  * Trigger + MenuList + Search
  */
 export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props, ref) => {
@@ -103,7 +103,6 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
 
   // ************************** 异步搜索 ************************* //
 
-  // TODO: 支持对 Item 传入 状态
   const customSearchStrategy = useTreeCustomSearch({ data: flattedData, filterOption })
 
   const upMatchSearchStrategy = useTreeUpMatchSearch({

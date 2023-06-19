@@ -8,7 +8,7 @@ import { AnchorProvider } from './context'
 const ANCHOR_PREFIX = getPrefixCls('anchor')
 
 /**
- * TODO: What is Anchor
+ * 锚点
  */
 export const Anchor = forwardRef<HTMLDivElement | null, AnchorProps>(
   ({ prefixCls = ANCHOR_PREFIX, role = 'anchor', className, children, ...rest }, ref) => {
@@ -36,9 +36,6 @@ if (__DEV__) {
 
 const ANCHOR_ITEM_PREFIX = getPrefixCls('anchor-item')
 
-/**
- * TODO: What is AnchorItem
- */
 export const AnchorItem = forwardRef<HTMLLIElement | null, AnchorItemProps>(
   (
     {

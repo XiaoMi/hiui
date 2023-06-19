@@ -18,9 +18,6 @@ const allowCheck = (item: any) => !item.disabled
 
 /**
  * 穿梭框
- * TODO:
- * 1. titleRender 支持 checkbox 自定义渲染
- * 2. 单选逻辑复用多选，从数据层隔离，而非交互层
  */
 export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
   (

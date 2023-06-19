@@ -21,7 +21,7 @@ import { TooltipHelpers } from './types'
 export const _prefix = getPrefixCls('tooltip')
 
 /**
- * TODO: What is Tooltip
+ * 文字提示
  */
 export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
   (

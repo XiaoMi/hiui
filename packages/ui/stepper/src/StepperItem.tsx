@@ -9,9 +9,6 @@ import { StepperDataItem } from './types'
 const _role = 'stepper-item'
 const _prefix = getPrefixCls(_role)
 
-/**
- * TODO: What is Stepper
- */
 export const StepperItem = forwardRef<HTMLDivElement | null, StepperItemProps>(
   (
     {

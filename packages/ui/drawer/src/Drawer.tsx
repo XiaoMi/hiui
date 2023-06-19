@@ -17,7 +17,7 @@ const DRAWER_PREFIX = getPrefixCls('drawer')
 const defaultCloseIcon = <CloseOutlined />
 
 /**
- * TODO: What is Drawer
+ * 抽屉
  */
 export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
   (

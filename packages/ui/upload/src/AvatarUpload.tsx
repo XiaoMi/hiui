@@ -19,9 +19,6 @@ import { getImageTypeByFilename } from './utils'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 
-/**
- * TODO: What is Upload
- */
 export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
   (
     {

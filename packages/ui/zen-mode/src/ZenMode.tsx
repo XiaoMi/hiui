@@ -11,7 +11,7 @@ const _prefix = getPrefixCls(_role)
 const NOOP_ARRAY = [] as []
 const NOOP_FUNC = () => {}
 /**
- * TODO: What is ZenMode
+ * 禅模式
  */
 const getDefaultContainer = () => {
   const defaultContainer = document.createElement('div')

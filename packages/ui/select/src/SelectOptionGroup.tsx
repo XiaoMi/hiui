@@ -5,9 +5,6 @@ import { __DEV__ } from '@hi-ui/env'
 
 const optionGroupPrefix = getPrefixCls('select-option-group')
 
-/**
- * TODO: What is SelectOptionGroup
- */
 export const SelectOptionGroup = forwardRef<HTMLDivElement | null, SelectOptionGroupProps>(
   ({ prefixCls = optionGroupPrefix, className, children, label, onClick, ...rest }, ref) => {
     const cls = cx(prefixCls, className)

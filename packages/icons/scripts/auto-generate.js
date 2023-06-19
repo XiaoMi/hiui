@@ -131,8 +131,8 @@ const generateIconGroupData = (componentInfo) => {
   const targetContent = Fs.readFileSync(targetDataFile, { encoding: 'utf8' })
 
   const collector = new Map()
-  const allNeedImportComponents = []
-  const types = new Set()
+  // const allNeedImportComponents = []
+  // const types = new Set()
 
   componentInfo.forEach(({ withTypeName, belong, type }) => {
     if (!collector.has(belong)) {
@@ -140,13 +140,13 @@ const generateIconGroupData = (componentInfo) => {
     }
 
     const componentName = transformToUpperCamelCase(withTypeName)
-    allNeedImportComponents.push(componentName)
+    // allNeedImportComponents.push(componentName)
     collector.get(belong).push({
       componentName,
       type: type,
       name: withTypeName,
     })
-    types.add(type)
+    // types.add(type)
   })
 
   const belongs = Array.from(collector.keys())

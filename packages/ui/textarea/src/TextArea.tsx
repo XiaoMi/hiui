@@ -9,12 +9,7 @@ import { useTextarea, UseTextareaProps } from './use-textarea'
 const _prefix = getPrefixCls('textarea')
 
 /**
- * 动态文本域输入框
- *
- *  @TODO:
- * 1. 支持带数字展示
- * 3. 支持清空按钮
- * 5. 手动聚焦支持额外配置
+ * 文本输入框
  */
 export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
   (

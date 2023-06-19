@@ -6,8 +6,6 @@ const _role = 'icon-button'
 const treePrefix = getPrefixCls(_role)
 
 /**
- * TODO: What is IconButton
- *
  * TODO: 移送到 button，拆分出一个子组件，专门用于把 icon 当按钮的场景
  * 1. 但是和单独icon的 Button 不一样，这个IconButton要求尺寸上是svg的尺寸，
  * 而不是 Button的大尺寸，并且带有点击区域放大的功能

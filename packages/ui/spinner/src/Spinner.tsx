@@ -6,7 +6,7 @@ import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 const SPINNER_PREFIX = getPrefixCls('spinner')
 
 /**
- * TODO: What is Spinner
+ * 加载器
  */
 export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
   (

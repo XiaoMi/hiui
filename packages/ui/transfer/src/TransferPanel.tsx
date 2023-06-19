@@ -13,9 +13,6 @@ import { useLocaleContext } from '@hi-ui/core'
 const _role = 'transfer-panel'
 const _prefix = getPrefixCls(_role)
 
-/**
- * TODO: What is TransferPanel
- */
 export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProps>(
   (
     {

@@ -32,7 +32,7 @@ const _prefix = getPrefixCls('check-cascader')
 const NOOP_ARRAY = [] as []
 
 /**
- * TODO: What is CheckCascader
+ * 多项级联选择器
  */
 export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProps>(
   (

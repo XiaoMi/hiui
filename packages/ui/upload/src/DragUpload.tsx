@@ -10,9 +10,6 @@ import { FileList } from './FileList'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
 
-/**
- * TODO: What is Upload
- */
 export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
   (
     {

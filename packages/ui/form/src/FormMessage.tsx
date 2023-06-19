@@ -6,9 +6,6 @@ import { useFormContext } from './context'
 const _role = 'form-message'
 const _prefix = getPrefixCls(_role)
 
-/**
- * TODO: What is FormMessage
- */
 export const FormMessage = forwardRef<HTMLSpanElement | null, FormMessageProps>(
   ({ prefixCls = _prefix, role = _role, className, children, field, ...rest }, ref) => {
     const { getFieldError } = useFormContext()

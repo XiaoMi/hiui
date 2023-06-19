@@ -10,11 +10,7 @@ import { isFunction, isObject } from '@hi-ui/type-assertion'
 const SLIDER_PREFIX = getPrefixCls('slider')
 
 /**
- * TODO: What is Slider
- * TODO:
- * 1. 计算偏移 bug
- * 2. 支持 reversed
- * 2. 添加 RangeSlider 新组件
+ * 滑块
  */
 export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
   (

@@ -13,7 +13,7 @@ const _prefix = getPrefixCls(_role)
 export const FORM_REGISTER_TABLE: Record<string, FormRuleModel> = {}
 
 /**
- * TODO: What is Form
+ * 表单
  */
 export const Form = forwardRef<HTMLFormElement | null, FormProps>(
   (

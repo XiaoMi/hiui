@@ -2,9 +2,6 @@ import React from 'react'
 import { __DEV__ } from '@hi-ui/env'
 import { usePortal, useContainerPortal } from './use-portal'
 
-/**
- * TODO: What is Portal
- */
 export const Portal = (props: PortalProps) => {
   const { className, disabled, container, children } = props
 

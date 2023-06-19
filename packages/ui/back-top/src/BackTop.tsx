@@ -12,7 +12,7 @@ import { useScroll } from '@hi-ui/use-scroll'
 const BACK_TOP_PREFIX = getPrefixCls('back-top')
 
 /**
- * TODO: What is BackTop
+ * 回到顶部
  */
 export const BackTop = forwardRef<HTMLDivElement | null, BackTopProps>(
   (

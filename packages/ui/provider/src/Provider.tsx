@@ -7,9 +7,6 @@ import { getAccentColorTheme } from './accent-color'
 
 const PREFIX = 'hi-v4'
 
-/**
- * TODO: What is Provider
- */
 export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc } = ({
   children,
   locale,

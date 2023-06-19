@@ -6,7 +6,7 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 const INPUT_GROUP_PREFIX = getPrefixCls('input-group')
 
 /**
- * TODO: What is InputGroup
+ * 输入框组合器
  */
 export const InputGroup = forwardRef<HTMLDivElement | null, InputGroupProps>(
   (

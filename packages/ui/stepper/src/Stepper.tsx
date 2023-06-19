@@ -12,7 +12,7 @@ const _prefix = getPrefixCls('stepper')
 const NOOP_ARRAY = [] as []
 
 /**
- * TODO: What is Stepper
+ * 步骤条
  */
 export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
   (

@@ -9,9 +9,6 @@ const DEFAULT_LOCALE = 'zh-CN'
 // 自定义语言包注册表
 const USER_LANGUAGES_TABLES = {} as Record<string, LocaleLanguage>
 
-/**
- * TODO: What is LocaleContext
- */
 export const LocaleProvider: React.FC<LocaleProviderProps> & { extends: LocaleExtendsFunc } = ({
   children,
   locale = DEFAULT_LOCALE,

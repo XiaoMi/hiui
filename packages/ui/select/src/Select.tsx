@@ -31,12 +31,7 @@ const _role = 'select'
 const _prefix = getPrefixCls(_role)
 
 /**
- * TODO: What is Select
- * TODO:
- * 1. 异步搜索的结果拍平展示
- * 2. 点击清空时元数据处理
- * 3. 快捷键状态focus支持
- *
+ * 选择器
  */
 export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
   (

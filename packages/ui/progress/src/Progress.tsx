@@ -7,7 +7,7 @@ import { ProgressSizeEnum, ProgressTypeEnum, ProgressPlacementEnum } from './typ
 const PROGRESS_PREFIX = getPrefixCls('progress')
 
 /**
- * TODO: What is Progress
+ * 进度条
  */
 export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
   (

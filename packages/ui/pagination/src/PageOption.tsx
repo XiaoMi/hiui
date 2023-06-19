@@ -6,9 +6,6 @@ import { __DEV__ } from '@hi-ui/env'
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
 
-/**
- * TODO: What is PageOption
- */
 export const PageOption: React.FC<PageOptionProps> = ({
   prefixCls = _prefix,
   pageSizeOptions,

@@ -8,9 +8,6 @@ import { FormFieldPath, FormListChildrenAction, FormListHelper, FormState } from
 
 const fieldListSymbol = Symbol('field-list')
 
-/**
- * TODO: What is FormList
- */
 export const FormList = forwardRef<HTMLDivElement | null, FormListProps>(
   ({ children, name: nameProp, innerRef }, ref) => {
     const { values, setFormState } = useFormContext()

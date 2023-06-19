@@ -10,7 +10,7 @@ import { callAllFuncs } from '@hi-ui/func-utils'
 const RADIO_PREFIX = getPrefixCls('radio')
 
 /**
- * TODO: What is Radio
+ * 单选
  */
 export const Radio = forwardRef<HTMLLabelElement | null, RadioProps>(
   ({ prefixCls = RADIO_PREFIX, role = 'radio', className, children, ...rest }, ref) => {

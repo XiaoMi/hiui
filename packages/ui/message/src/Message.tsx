@@ -21,7 +21,7 @@ const messageIconMap: any = {
 }
 
 /**
- * TODO: What is Message
+ * 消息
  */
 export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
   (

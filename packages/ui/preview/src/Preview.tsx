@@ -19,7 +19,7 @@ import {
 const PREVIEW_PREFIX = getPrefixCls('preview')
 
 /**
- * TODO: What is Preview
+ * 图片预览
  */
 
 const defaultTransform = {

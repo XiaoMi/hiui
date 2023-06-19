@@ -16,11 +16,6 @@ const DEFAULT_DATA = [] as []
 
 /**
  * 下拉菜单
- *
- * TODO:
- * 1. 支持自定义icon
- * 2. 支持 titleRender
- * 3. 支持 onClick 阻止默认行为关闭
  */
 export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
   (
@@ -176,9 +171,6 @@ if (__DEV__) {
 
 const dropdownMenuPrefix = getPrefixCls('dropdown-menu')
 
-/**
- * TODO: What is DropdownMenu
- */
 const DropdownMenu = forwardRef<HTMLUListElement | null, DropdownMenuProps>(
   (
     {
@@ -227,9 +219,6 @@ if (__DEV__) {
 
 const dropdownMenuItemPrefix = getPrefixCls('dropdown-menu-item')
 
-/**
- * TODO: What is DropdownMenuItem
- */
 const DropdownMenuItem = forwardRef<HTMLLIElement | null, DropdownMenuItemProps>(
   (
     {

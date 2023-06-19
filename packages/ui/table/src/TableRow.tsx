@@ -16,9 +16,6 @@ const _prefix = getPrefixCls(_role)
 
 const EMBED_ON_ROW_PROPS = {} as any
 
-/**
- * TODO: What is TableRow
- */
 export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
   (
     {

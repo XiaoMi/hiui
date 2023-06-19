@@ -7,7 +7,7 @@ const _role = 'button'
 const _prefix = getPrefixCls(_role)
 
 /**
- * TODO: What is Button
+ * 按钮
  */
 export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   (
@@ -121,7 +121,6 @@ if (__DEV__) {
   Button.displayName = 'Button'
 }
 
-// TODO: 提取
 function IconLoading({ className = '', size = '0.8em' }) {
   return (
     <i className={cx(className)}>

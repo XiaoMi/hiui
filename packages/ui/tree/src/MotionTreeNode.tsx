@@ -6,9 +6,6 @@ import { TreeNodeType, MotionTreeNodeData, TreeNodeRequiredProps } from './types
 import { __DEV__ } from '@hi-ui/env'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 
-/**
- * TODO: What is MotionTreeNode
- */
 export const MotionTreeNode = forwardRef<HTMLDivElement | null, MotionTreeNodeProps>(
   ({ prefixCls, data, onMotionEnd, overscanCount, getTreeNodeRequiredProps }, ref) => {
     const { children: childrenNodes, type } = data

@@ -39,7 +39,7 @@ const _prefix = getPrefixCls(_role)
 const DEFAULT_FIELD_NAMES = {} as any
 
 /**
- * TODO: What is CheckSelect
+ * 多项选择器
  */
 export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
   (
@@ -461,9 +461,6 @@ if (__DEV__) {
 
 const optionPrefix = getPrefixCls('check-select-option')
 
-/**
- * TODO: What is CheckSelectOption
- */
 export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOptionProps>(
   (
     {
@@ -544,9 +541,6 @@ if (__DEV__) {
 
 const optionGroupPrefix = getPrefixCls('select-option-group')
 
-/**
- * TODO: What is CheckSelectOptionGroup
- */
 export const CheckSelectOptionGroup = forwardRef<
   HTMLDivElement | null,
   CheckSelectOptionGroupProps
