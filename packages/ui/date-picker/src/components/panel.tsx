@@ -68,7 +68,7 @@ const Panel = (props: PanelProps) => {
           [
             type === 'year'
               ? moment(date.year().toString())
-              : moment(`${date.year().toString()}-${date.month() + 1}`),
+              : moment(`${date.year().toString()}-${date.month() < 9 ? 0 : ''}${date.month() + 1}`),
           ],
           false
         )
