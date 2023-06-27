@@ -21,7 +21,8 @@ const Search = ({
   localeDatas,
   overlayClassName,
   append,
-  theme
+  theme,
+  ...rest
 }) => {
   const [dropdownShow, setDropdownShow] = useState(false)
   const searchInputContainer = useRef(null)
@@ -157,6 +158,7 @@ const Search = ({
     <div className={prefixCls} style={style}>
       <div className={`${prefixCls}_input`}>
         <Input
+          {...rest}
           ref={searchInputContainer}
           type="text"
           value={inputVal}
