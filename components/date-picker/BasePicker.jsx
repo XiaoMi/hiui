@@ -109,6 +109,7 @@ const BasePicker = ({
       }
 
       changeOutDate(oData)
+      callback(oData)
     }
   }
 
