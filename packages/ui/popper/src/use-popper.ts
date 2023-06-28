@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo, useLayoutEffect, useCallback } from 'react'
+import React, { useRef, useState, useMemo, useLayoutEffect, useCallback, useEffect } from 'react'
 import * as PopperJS from '@popperjs/core'
 import { createPopper } from '@popperjs/core'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
@@ -160,6 +160,15 @@ export const usePopper = ({
       instanceRef.current = null
     }
   }, [nonInteractive, attachElement, popperElement, popperOptionsRef])
+
+  useEffect(() => {
+    if (attachElement) {
+      const ro = new ResizeObserver(() => {
+        instanceRef.current?.update()
+      })
+      ro.observe(attachElement as Element)
+    }
+  }, [attachElement])
 
   const onCloseLatest = useLatestCallback(() => {
     if (nonInteractive) return
