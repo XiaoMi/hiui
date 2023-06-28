@@ -1,5 +1,14 @@
 # @hi-ui/hiui
 
+## 4.2.7
+
+### Patch Changes
+
+- [#2523](https://github.com/XiaoMi/hiui/pull/2523) [`765c4e770`](https://github.com/XiaoMi/hiui/commit/765c4e770626006de15352c49e7c3b8af255c0ca) Thanks [@zyprepare](https://github.com/zyprepare)! - DatePicker fix: 修复 Safari 中月份选择时回调数据错误问题
+
+- Updated dependencies [[`765c4e770`](https://github.com/XiaoMi/hiui/commit/765c4e770626006de15352c49e7c3b8af255c0ca)]:
+  - @hi-ui/date-picker@4.0.18
+
 ## 4.2.6
 
 ### Patch Changes
