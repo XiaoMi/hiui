@@ -1,5 +1,11 @@
 # @hi-ui/icons
 
+## 4.0.8
+
+### Patch Changes
+
+- 更新 icon
+
 ## 4.0.7
 
 ### Patch Changes
