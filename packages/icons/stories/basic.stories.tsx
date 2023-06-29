@@ -206,7 +206,11 @@ export const Basic = () => {
 
               { component: Icons.SettingFilled, tagName: 'SettingFilled' },
 
+              { component: Icons.ShieldFilled, tagName: 'ShieldFilled' },
+
               { component: Icons.ShoppingFilled, tagName: 'ShoppingFilled' },
+
+              { component: Icons.ShoppingCartFilled, tagName: 'ShoppingCartFilled' },
 
               { component: Icons.SkinFilled, tagName: 'SkinFilled' },
 
@@ -243,6 +247,8 @@ export const Basic = () => {
               { component: Icons.UserFilled, tagName: 'UserFilled' },
 
               { component: Icons.VideoCameraFilled, tagName: 'VideoCameraFilled' },
+
+              { component: Icons.VoiceFilled, tagName: 'VoiceFilled' },
 
               { component: Icons.WebpageFilled, tagName: 'WebpageFilled' },
             ],
@@ -293,6 +299,8 @@ export const Basic = () => {
               { component: Icons.CameraOutlined, tagName: 'CameraOutlined' },
 
               { component: Icons.ChatOutlined, tagName: 'ChatOutlined' },
+
+              { component: Icons.ChatForwardingOutlined, tagName: 'ChatForwardingOutlined' },
 
               { component: Icons.ClockOutlined, tagName: 'ClockOutlined' },
 
@@ -365,7 +373,11 @@ export const Basic = () => {
 
               { component: Icons.FolderOpenOutlined, tagName: 'FolderOpenOutlined' },
 
+              { component: Icons.FreezeOutlined, tagName: 'FreezeOutlined' },
+
               { component: Icons.GlobalOutlined, tagName: 'GlobalOutlined' },
+
+              { component: Icons.HangUpOutlined, tagName: 'HangUpOutlined' },
 
               { component: Icons.HeartOutlined, tagName: 'HeartOutlined' },
 
@@ -441,9 +453,13 @@ export const Basic = () => {
 
               { component: Icons.ShareOutlined, tagName: 'ShareOutlined' },
 
+              { component: Icons.ShieldOutlined, tagName: 'ShieldOutlined' },
+
               { component: Icons.ShopOutlined, tagName: 'ShopOutlined' },
 
               { component: Icons.ShoppingOutlined, tagName: 'ShoppingOutlined' },
+
+              { component: Icons.ShoppingCartOutlined, tagName: 'ShoppingCartOutlined' },
 
               { component: Icons.ShowCodeOutlined, tagName: 'ShowCodeOutlined' },
 
@@ -458,6 +474,8 @@ export const Basic = () => {
               { component: Icons.StudentOutlined, tagName: 'StudentOutlined' },
 
               { component: Icons.SunOutlined, tagName: 'SunOutlined' },
+
+              { component: Icons.SwitchOutlined, tagName: 'SwitchOutlined' },
 
               { component: Icons.SynchronizeOutlined, tagName: 'SynchronizeOutlined' },
 
@@ -494,6 +512,10 @@ export const Basic = () => {
               { component: Icons.UsersOutlined, tagName: 'UsersOutlined' },
 
               { component: Icons.VideoCameraOutlined, tagName: 'VideoCameraOutlined' },
+
+              { component: Icons.VipOutlined, tagName: 'VipOutlined' },
+
+              { component: Icons.VoiceOutlined, tagName: 'VoiceOutlined' },
 
               { component: Icons.WebpageOutlined, tagName: 'WebpageOutlined' },
 
