@@ -15,7 +15,7 @@ import { baseFlattenTree } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
-import { TagInputMock } from '@hi-ui/tag-input'
+import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { UpOutlined, DownOutlined } from '@hi-ui/icons'
 import { useLocaleContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
@@ -88,6 +88,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       itemHeight,
       height,
       showCheckAll,
+      tagInputProps,
       ...rest
     },
     ref
@@ -343,6 +344,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         loading={rest.loading !== undefined ? rest.loading : loading}
         trigger={
           <TagInputMock
+            {...tagInputProps}
             // ref={targetElementRef}
             // onClick={openMenu}
             // disabled={disabled}
@@ -525,6 +527,10 @@ export interface CheckTreeSelectProps
    * 是否开启全选功能，需要对数据全量操作。异步数据场景暂不支持，可自行渲染弹层底部实现
    */
   showCheckAll?: boolean
+  /**
+   * TagInput 参数设置
+   */
+  tagInputProps?: TagInputMockProps
 }
 
 if (__DEV__) {
