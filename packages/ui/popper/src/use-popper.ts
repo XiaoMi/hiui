@@ -162,11 +162,17 @@ export const usePopper = ({
   }, [nonInteractive, attachElement, popperElement, popperOptionsRef])
 
   useEffect(() => {
+    let resizeObserver: ResizeObserver
+
     if (attachElement) {
-      const ro = new ResizeObserver(() => {
+      resizeObserver = new ResizeObserver(() => {
         instanceRef.current?.update()
       })
-      ro.observe(attachElement as Element)
+      resizeObserver.observe(attachElement as Element)
+    }
+
+    return () => {
+      resizeObserver?.disconnect()
     }
   }, [attachElement])
 
