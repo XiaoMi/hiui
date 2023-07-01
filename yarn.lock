@@ -2658,10 +2658,10 @@
     rollup-plugin-postcss "^4.0.2"
     rollup-plugin-terser "^7.0.2"
 
-"@hi-ui/hi-build@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.npmmirror.com/@hi-ui/hi-build/-/hi-build-4.0.2.tgz#94abb57f45fb1a2646b4898301876719ca10d488"
-  integrity sha512-4AvQtLAVIvCTxG+eI7453k/bajVSWeqBrc0y+MLJMFwHPbp1QAW1nSj6vbpsm/R4DF8zJIlQMX1XM6WyhXLEXw==
+"@hi-ui/hi-build@^4.0.3":
+  version "4.0.3"
+  resolved "https://registry.npmmirror.com/@hi-ui/hi-build/-/hi-build-4.0.3.tgz#e86ae76234a764e4263d8379cb4fddd5213a3cd3"
+  integrity sha512-V1iX5lbGKX0OMUQQRLxviO0voWI1AojhWu+wuD73QR8cEYuDL/nKE9+PMFQU+Pni6IuwwgihZW6cn7JgjuO4rA==
   dependencies:
     "@babel/core" "^7.17.8"
     "@babel/plugin-transform-runtime" "^7.17.0"
