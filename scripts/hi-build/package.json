@@ -65,6 +65,6 @@
     "typescript": "^4.6.2"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.3"
+
   }
 }

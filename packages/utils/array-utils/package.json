@@ -43,7 +43,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.1"
+
   },
   "dependencies": {
     "@hi-ui/type-assertion": "^4.0.1"

@@ -2624,10 +2624,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@hi-ui/hi-build@^4", "@hi-ui/hi-build@^4.0.0", "@hi-ui/hi-build@^4.0.0-beta.0", "@hi-ui/hi-build@^4.0.1":
-  version "4.0.3"
-  resolved "https://registry.npmmirror.com/@hi-ui/hi-build/-/hi-build-4.0.3.tgz#e86ae76234a764e4263d8379cb4fddd5213a3cd3"
-  integrity sha512-V1iX5lbGKX0OMUQQRLxviO0voWI1AojhWu+wuD73QR8cEYuDL/nKE9+PMFQU+Pni6IuwwgihZW6cn7JgjuO4rA==
+"@hi-ui/hi-build@^4.0.4":
+  version "4.0.4"
+  resolved "https://registry.npmmirror.com/@hi-ui/hi-build/-/hi-build-4.0.4.tgz#70d096d2e85ac78dd08748dfd7ec68a2d68e77ff"
+  integrity sha512-G327dM5oUy29/sQb7VwZixyIfR6Jz8SMGtTU20LSDTPCjBIWynG76lmT9bY4f6rfj32GwPj90AZ9HdD/nYpuCA==
   dependencies:
     "@babel/core" "^7.17.8"
     "@babel/plugin-transform-runtime" "^7.17.0"
