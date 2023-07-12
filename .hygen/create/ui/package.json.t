@@ -57,7 +57,7 @@ to: <%= h.uiDir(`${name}/package.json`) %>
   "devDependencies": {
     "@hi-ui/core": "^4.0.0",
     "@hi-ui/core-css": "^4.0.0",
-    "@hi-ui/hi-build": "^4.0.0",
+
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

@@ -49,7 +49,6 @@ to: <%= h.hooksDir(`${name}/package.json`) %>
     "react": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/hi-build": "^4.0.0-beta.0",
     "react": "^17.0.1"
   }
 }

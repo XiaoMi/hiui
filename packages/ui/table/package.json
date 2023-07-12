@@ -83,7 +83,7 @@
   "devDependencies": {
     "@hi-ui/core": "^4.0.4",
     "@hi-ui/core-css": "^4.0.1",
-    "@hi-ui/hi-build": "^4.0.1",
+
     "@types/react-resizable": "^1.7.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
