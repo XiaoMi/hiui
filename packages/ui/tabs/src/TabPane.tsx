@@ -1,7 +1,10 @@
 import React from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { filterProps } from '@hi-ui/react-utils'
+import { cx, getPrefixCls } from '@hi-ui/classname'
 
+const _role = 'tabs-tab-pane'
+const _prefix = getPrefixCls(_role)
 const omitProps = ['tabId', 'tabTitle', 'disabled', 'tabDesc', 'closeable']
 
 export const TabPane: React.FC<TabPaneProps> = ({
@@ -9,12 +12,35 @@ export const TabPane: React.FC<TabPaneProps> = ({
   className,
   style,
   active,
+  unmountOnInactive = true,
   ...rest
 }) => {
   const htmlProps = filterProps(rest, omitProps)
+  const [isLoaded, setIsLoaded] = React.useState(false)
+
+  const childrenContentMemo = React.useMemo(() => {
+    if (!unmountOnInactive) {
+      if (active && !isLoaded) {
+        setIsLoaded(true)
+      }
+
+      if (isLoaded) {
+        return children
+      }
+    } else if (active) {
+      return children
+    }
+
+    return null
+  }, [active, children, isLoaded, unmountOnInactive])
+
   return (
-    <div style={style} className={className} {...htmlProps}>
-      {active ? children : null}
+    <div
+      style={style}
+      className={cx(className, !unmountOnInactive && !active && `${_prefix}--hide`)}
+      {...htmlProps}
+    >
+      {childrenContentMemo}
     </div>
   )
 }
@@ -44,4 +70,8 @@ export interface TabPaneProps extends HiBaseHTMLProps<'div'> {
    * 标签是否激活
    */
   active?: boolean
+  /**
+   * 标签内容不活跃时是否卸载
+   */
+  unmountOnInactive?: boolean
 }

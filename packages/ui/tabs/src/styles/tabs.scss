@@ -368,4 +368,10 @@ $prefix: '#{$component-prefix}-tabs' !default;
     padding-top: use-spacing(8);
     box-sizing: border-box;
   }
+
+  &-tab-pane {
+    &--hide {
+      display: none;
+    }
+  }
 }
