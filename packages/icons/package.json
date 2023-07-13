@@ -23,6 +23,7 @@
       "default": "./lib/esm/index.js"
     }
   },
+  "sideEffects": ["*.scss", "*.scss.js", "./lib/*/index.js"],
   "publishConfig": {
     "access": "public"
   },
