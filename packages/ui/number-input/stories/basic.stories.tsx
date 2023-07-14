@@ -14,6 +14,7 @@ export const Basic = () => {
           autoFocus
           defaultValue={5}
           min={1}
+          placeholder="请输入数字"
           onChange={(v) => console.log('onChange', v)}
         />
       </div>

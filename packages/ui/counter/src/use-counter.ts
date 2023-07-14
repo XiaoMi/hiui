@@ -35,6 +35,7 @@ export const useCounter = ({
   invalid = false,
   formatter,
   parser,
+  placeholder,
   ...rest
 }: UseCounterProps) => {
   const min = minProp ?? Number.MIN_SAFE_INTEGER
@@ -316,6 +317,7 @@ export const useCounter = ({
       tabIndex,
       autoFocus: autoFocus,
       disabled: disabled,
+      placeholder: placeholder,
       onChange: onInputChange,
       onFocus: onInputFocus,
       onBlur: onInputBlur,
@@ -323,22 +325,23 @@ export const useCounter = ({
       onWheel: onInputWheel,
     }
   }, [
-    autoFocus,
-    disabled,
+    formatter,
     focused,
     formattedValue,
-    formatter,
-    maxProp,
+    inputValue,
+    prefixCls,
+    parsedValue,
     minProp,
-    onInputBlur,
+    maxProp,
+    tabIndex,
+    autoFocus,
+    disabled,
+    placeholder,
     onInputChange,
     onInputFocus,
+    onInputBlur,
     onInputKeyDown,
     onInputWheel,
-    parsedValue,
-    prefixCls,
-    tabIndex,
-    inputValue,
   ])
 
   const getMinusButtonProps = useCallback(() => {
