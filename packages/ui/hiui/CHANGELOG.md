@@ -1,5 +1,21 @@
 # @hi-ui/hiui
 
+## 4.2.8
+
+### Patch Changes
+
+- [#2534](https://github.com/XiaoMi/hiui/pull/2534) [`9fec6fc1f`](https://github.com/XiaoMi/hiui/commit/9fec6fc1f647a274f4d2bbd139e2b01401a1a54f) Thanks [@safga](https://github.com/safga)! - Textarea fix: 修复 resize 调整高度和 disabled 样式问题
+
+- [#2538](https://github.com/XiaoMi/hiui/pull/2538) [`ec2c785cf`](https://github.com/XiaoMi/hiui/commit/ec2c785cf4cc3b87b901f1ea0a436c0e3b035a52) Thanks [@zyprepare](https://github.com/zyprepare)! - Counter NumberInput feat: 支持 placeholder
+
+- [#2536](https://github.com/XiaoMi/hiui/pull/2536) [`e8443a2f8`](https://github.com/XiaoMi/hiui/commit/e8443a2f871ad19faa7bbf1df2ad3f52ab245019) Thanks [@zyprepare](https://github.com/zyprepare)! - Tabs feat: 增加 unmountOnInactive API
+
+- Updated dependencies [[`9fec6fc1f`](https://github.com/XiaoMi/hiui/commit/9fec6fc1f647a274f4d2bbd139e2b01401a1a54f), [`e8443a2f8`](https://github.com/XiaoMi/hiui/commit/e8443a2f871ad19faa7bbf1df2ad3f52ab245019), [`ec2c785cf`](https://github.com/XiaoMi/hiui/commit/ec2c785cf4cc3b87b901f1ea0a436c0e3b035a52)]:
+  - @hi-ui/textarea@4.1.1
+  - @hi-ui/tabs@4.1.0
+  - @hi-ui/counter@4.1.4
+  - @hi-ui/number-input@4.1.3
+
 ## 4.2.7
 
 ### Patch Changes

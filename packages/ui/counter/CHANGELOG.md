@@ -1,5 +1,14 @@
 # @hi-ui/counter
 
+## 4.1.4
+
+### Patch Changes
+
+- [#2538](https://github.com/XiaoMi/hiui/pull/2538) [`ec2c785cf`](https://github.com/XiaoMi/hiui/commit/ec2c785cf4cc3b87b901f1ea0a436c0e3b035a52) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 支持 placeholder
+
+- Updated dependencies [[`3aa4b9465`](https://github.com/XiaoMi/hiui/commit/3aa4b9465bf1d9e1710a427b8c5dbfec2e8af281)]:
+  - @hi-ui/icons@4.0.11
+
 ## 4.1.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/icons
 
+## 4.0.11
+
+### Patch Changes
+
+- [#2535](https://github.com/XiaoMi/hiui/pull/2535) [`3aa4b9465`](https://github.com/XiaoMi/hiui/commit/3aa4b9465bf1d9e1710a427b8c5dbfec2e8af281) Thanks [@zyprepare](https://github.com/zyprepare)! - perf: package.json add sideEffects
+
 ## 4.0.8
 
 ### Patch Changes
