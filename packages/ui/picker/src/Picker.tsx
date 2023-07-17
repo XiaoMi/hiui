@@ -28,6 +28,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       disabled = false,
       clearable = false,
       searchable = false,
+      keyword: keywordProp,
       scrollable = true,
       visible,
       onOpen,
@@ -47,6 +48,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       trigger,
       footer,
       onOverlayScroll,
+      clearKeywordOnClosed = true,
       ...rest
     },
     ref
@@ -67,7 +69,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
     const [searchValue, setSearchValue] = useUncontrolledState(
       '' as string,
-      undefined,
+      keywordProp,
       onSearch,
       Object.is
     )
@@ -124,8 +126,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     const hideMenu = useCallback(() => {
       if (disabled) return
       menuVisibleAction.off()
-      resetSearch()
-    }, [disabled, menuVisibleAction, resetSearch])
+      clearKeywordOnClosed && resetSearch()
+    }, [clearKeywordOnClosed, disabled, menuVisibleAction, resetSearch])
 
     const onEscClose = useCallback(
       (evt: React.KeyboardEvent) => {
@@ -256,6 +258,10 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    */
   searchable?: boolean
   /**
+   * 搜索关键字，searchable 为 true 时有效
+   */
+  keyword?: string
+  /**
    * 搜索时触发回调
    */
   onSearch?: (keyword: string) => void
@@ -304,6 +310,10 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 开启内容区域可滚动
    */
   scrollable?: boolean
+  /**
+   * 关闭时是否清空搜索关键字，默认为 true
+   */
+  clearKeywordOnClosed?: boolean
 }
 
 if (__DEV__) {

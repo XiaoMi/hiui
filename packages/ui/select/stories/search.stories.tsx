@@ -26,7 +26,7 @@ export const Search = () => {
   return (
     <>
       <h1>Search</h1>
-      <div className="cascader-search__wrap">
+      <div className="select-search__wrap">
         <Select
           style={{ width: 240 }}
           searchable

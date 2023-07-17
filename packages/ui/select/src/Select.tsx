@@ -53,6 +53,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       virtual = true,
       // search
       searchable: searchableProp,
+      keyword: keywordProp,
       dataSource,
       filterOption,
       // popper
@@ -66,6 +67,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       fieldNames,
       onSelect: onSelectProp,
       onSearch: onSearchProp,
+      clearKeywordOnClosed = true,
       ...rest
     },
     ref
@@ -117,6 +119,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       keyword: searchValue,
     } = useSearchMode({
       searchable: searchableProp,
+      keyword: keywordProp,
       strategies: [dataSourceStrategy, customSearchStrategy, filterSearchStrategy],
     })
 
@@ -198,10 +201,12 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
           searchable={searchable}
+          keyword={keywordProp}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           scrollable={!inVirtual}
+          clearKeywordOnClosed={clearKeywordOnClosed}
           trigger={
             <MockInput
               clearable={clearable}
@@ -307,6 +312,10 @@ export interface SelectProps
    */
   searchable?: boolean
   /**
+   * 搜索关键字，searchable 为 true 时有效
+   */
+  keyword?: string
+  /**
    * 自定义搜索过滤器，仅在 searchable 为 true 时有效
    * 第一个参数为输入的关键字，
    * 第二个为数据项，返回值为 true 时将出现在结果项
@@ -320,6 +329,10 @@ export interface SelectProps
    * 搜索时触发
    */
   onSearch?: (keyword: string) => void
+  /**
+   * 关闭时是否清空搜索关键字，默认为 true
+   */
+  clearKeywordOnClosed?: boolean
 }
 
 ;(Select as any).HiName = 'Select'
