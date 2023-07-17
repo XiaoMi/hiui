@@ -63,6 +63,8 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     const imgRef = useRef<HTMLImageElement>(null)
     const previewRef = useRef<HTMLDivElement>(null)
 
+    const isMultiple = Array.isArray(src) && src.length > 1
+
     // 重置图片
     const resetTransform = useCallback(() => {
       updateImgTransform(defaultTransform)
@@ -221,6 +223,20 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                       }
                     }}
                   />
+                  {isMultiple && (
+                    <>
+                      <LeftOutlined
+                        onClick={() => {
+                          setActive(active - 1 < 0 ? src.length - 1 : active - 1)
+                        }}
+                      />
+                      <RightOutlined
+                        onClick={() => {
+                          setActive(active + 1 >= src.length ? 0 : active + 1)
+                        }}
+                      />
+                    </>
+                  )}
                   <RotateLeftOutlined
                     onClick={() => {
                       handleRotate('left')
@@ -233,7 +249,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   />
                 </div>
 
-                {Array.isArray(src) && (
+                {isMultiple && (
                   <>
                     <div
                       className={`${prefixCls}__left-btn`}
