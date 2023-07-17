@@ -1,5 +1,11 @@
 # @hi-ui/textarea
 
+## 4.1.1
+
+### Patch Changes
+
+- [#2534](https://github.com/XiaoMi/hiui/pull/2534) [`9fec6fc1f`](https://github.com/XiaoMi/hiui/commit/9fec6fc1f647a274f4d2bbd139e2b01401a1a54f) Thanks [@safga](https://github.com/safga)! - fix: 修复 resize 调整高度和 disabled 样式问题
+
 ## 4.1.0
 
 ### Minor Changes

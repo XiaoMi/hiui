@@ -1,5 +1,16 @@
 # @hi-ui/tabs
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2536](https://github.com/XiaoMi/hiui/pull/2536) [`e8443a2f8`](https://github.com/XiaoMi/hiui/commit/e8443a2f871ad19faa7bbf1df2ad3f52ab245019) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 unmountOnInactive API
+
+### Patch Changes
+
+- Updated dependencies [[`3aa4b9465`](https://github.com/XiaoMi/hiui/commit/3aa4b9465bf1d9e1710a427b8c5dbfec2e8af281)]:
+  - @hi-ui/icons@4.0.11
+
 ## 4.0.8
 
 ### Patch Changes
