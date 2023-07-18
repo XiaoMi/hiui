@@ -38,7 +38,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
     const bordered = appearance === 'table' || noBackground
 
     // 如果配置了data，则使用配置模式渲染，否则取 children
-    const computeChildren = data ? computeItems(data) : children
+    const computeChildren = data ? computeItems(data) : React.Children.toArray(children)
     const rows = computeRows(computeChildren, column)
 
     const cls = cx(
