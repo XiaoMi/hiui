@@ -202,7 +202,15 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     const renderFooter = () => {
       const collapseNode = canToggle ? (
-        <div className={cx(`${prefixCls}__toggle`)} onClick={miniToggleAction.not}>
+        <div
+          className={cx(`${prefixCls}__toggle`)}
+          onClick={() => {
+            miniToggleAction.not()
+
+            // 关闭所有展开的子菜单，防止切换到 mini 模式后，子菜单还是展开的
+            updateExpandedIds([])
+          }}
+        >
           {mini ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         </div>
       ) : null
@@ -357,9 +365,9 @@ if (__DEV__) {
  * Mini 模式下渲染 item
  */
 const renderMenuItemMini = (menu: MenuDataItem) => {
-  if (typeof menu.icon !== 'undefined') {
-    return menu.icon
-  }
+  // if (typeof menu.icon !== 'undefined') {
+  //   return menu.icon
+  // }
 
   if (typeof menu.title === 'string') {
     return menu.title.substring(0, 1)
