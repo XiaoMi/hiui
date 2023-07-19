@@ -1,24 +1,24 @@
-@import '~@hi-ui/core-css/lib/index.scss';
+@import "~@hi-ui/core-css/lib/index.scss";
 
-$panel-prefix: '#{$component-prefix}-collapse-panel' !default;
+$panel-prefix: "#{$component-prefix}-collapse-panel" !default;
 $icon-class: #{$panel-prefix}__icon !default;
 
 .#{$panel-prefix} {
-  font-size: use-text-size('normal');
+  font-size: use-text-size("normal");
   position: relative;
   z-index: 0;
   // border-bottom: use-border-size('normal') use-color-static('transparent');
 
   &::after {
-    content: '';
+    content: "";
     display: block;
     margin: 1px 20px;
     box-sizing: border-box;
-    border-bottom: 1px solid use-color('gray', 200);
+    border-bottom: 1px solid use-color("gray", 200);
   }
 
   &:last-of-type {
-    border-radius: 0 0 use-border-radius('lg') use-border-radius('lg');
+    border-radius: 0 0 use-border-radius("lg") use-border-radius("lg");
     overflow: hidden;
 
     &::after {
@@ -27,15 +27,15 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &:first-of-type {
-    border-radius: use-border-radius('lg') use-border-radius('lg') 0 0;
+    border-radius: use-border-radius("lg") use-border-radius("lg") 0 0;
     overflow: hidden;
   }
 
   &__head {
     display: flex;
     align-items: center;
-    color: use-color('gray', 700);
-    font-weight: use-text-weight('semibold');
+    color: use-color("gray", 700);
+    font-weight: use-text-weight("semibold");
     cursor: pointer;
 
     .#{$component-prefix}-collapse--size-md & {
@@ -58,24 +58,24 @@ $icon-class: #{$panel-prefix}__icon !default;
     justify-content: space-between;
 
     .#{$component-prefix}-collapse--size-md & {
-      font-size: use-text-size('normal');
+      font-size: use-text-size("normal");
     }
 
     .#{$component-prefix}-collapse--size-lg & {
-      font-size: use-text-size('lg');
-      line-height: use-text-lineheight('lg');
+      font-size: use-text-size("lg");
+      line-height: use-text-lineheight("lg");
     }
   }
 
   .#{$icon-class} {
-    font-size: use-text-size('lg');
-    color: use-color('gray', 600);
+    font-size: use-text-size("lg");
+    color: use-color("gray", 600);
     line-height: 1em;
 
     // @animation
     transition-property: transform;
-    transition-duration: use-motion-duration('normal');
-    transition-timing-function: use-motion-bezier('normal');
+    transition-duration: use-motion-duration("normal");
+    transition-timing-function: use-motion-bezier("normal");
     will-change: transform;
 
     &--left {
@@ -84,36 +84,38 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__extra {
-    color: use-color('gray', 600);
+    color: use-color("gray", 600);
   }
 
   &__content-wrapper {
-
     // @animation
     overflow: hidden;
     transition-property: height;
-    transition-duration: use-motion-duration('normal');
-    transition-timing-function: use-motion-bezier('normal');
+    transition-duration: use-motion-duration("normal");
+    transition-timing-function: use-motion-bezier("normal");
     transform-origin: top;
     will-change: height;
   }
 
   &__content {
     padding: 0 use-spacing(10) use-spacing(10);
-    color: use-color('gray', 700);
+    color: use-color("gray", 700);
   }
 
   &--show {
     &::after {
-      background-color: use-color-static('transparent');
+      background-color: use-color-static("transparent");
     }
-    .#{$icon-class} {
-      &--left {
-        transform: rotate(90deg);
-      }
 
-      &--right {
-        transform: rotate(180deg);
+    > .#{$panel-prefix}__head {
+      .#{$icon-class} {
+        &--left {
+          transform: rotate(90deg);
+        }
+
+        &--right {
+          transform: rotate(180deg);
+        }
       }
     }
   }
@@ -121,7 +123,7 @@ $icon-class: #{$panel-prefix}__icon !default;
   &--disabled {
     .#{$panel-prefix}__head {
       cursor: not-allowed;
-      color: use-color('gray', 300);
+      color: use-color("gray", 300);
     }
   }
 }
