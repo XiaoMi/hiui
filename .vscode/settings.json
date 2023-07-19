@@ -19,8 +19,13 @@
     "javascript",
     "javascriptreact"
   ],
-  "stylelint.useLocal": true,
-  "stylelint.autoFixOnSave": true,
+  "stylelint.validate": [
+    "css",
+    "less",
+    "postcss",
+    "scss",
+    "sass"
+  ],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
