@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/picker",
-  "version": "4.0.6",
+  "version": "4.1.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -63,7 +63,6 @@
   "devDependencies": {
     "@hi-ui/core": "^4.0.4",
     "@hi-ui/core-css": "^4.0.1",
-
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

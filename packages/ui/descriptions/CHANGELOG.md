@@ -1,5 +1,11 @@
 # @hi-ui/descriptions
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2550](https://github.com/XiaoMi/hiui/pull/2550) [`521ad72ed`](https://github.com/XiaoMi/hiui/commit/521ad72ed7eda1104e240320e0f9898fcfc4255b) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复只有一条数据时显示问题
+
 ## 4.1.1
 
 ### Patch Changes
