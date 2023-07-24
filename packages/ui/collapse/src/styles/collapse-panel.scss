@@ -88,7 +88,6 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__content-wrapper {
-
     // @animation
     overflow: hidden;
     transition-property: height;
@@ -107,13 +106,16 @@ $icon-class: #{$panel-prefix}__icon !default;
     &::after {
       background-color: use-color-static('transparent');
     }
-    .#{$icon-class} {
-      &--left {
-        transform: rotate(90deg);
-      }
 
-      &--right {
-        transform: rotate(180deg);
+    > .#{$panel-prefix}__head {
+      .#{$icon-class} {
+        &--left {
+          transform: rotate(90deg);
+        }
+
+        &--right {
+          transform: rotate(180deg);
+        }
       }
     }
   }
