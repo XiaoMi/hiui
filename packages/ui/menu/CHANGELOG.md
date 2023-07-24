@@ -1,5 +1,11 @@
 # @hi-ui/menu
 
+## 4.0.9
+
+### Patch Changes
+
+- [#2545](https://github.com/XiaoMi/hiui/pull/2545) [`a2f9f569a`](https://github.com/XiaoMi/hiui/commit/a2f9f569aefad8d4956db021510163ed8993887c) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 体验优化
+
 ## 4.0.8
 
 ### Patch Changes

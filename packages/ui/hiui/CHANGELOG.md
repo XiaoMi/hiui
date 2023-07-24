@@ -1,5 +1,25 @@
 # @hi-ui/hiui
 
+## 4.2.9
+
+### Patch Changes
+
+- [#2547](https://github.com/XiaoMi/hiui/pull/2547) [`e5040e00d`](https://github.com/XiaoMi/hiui/commit/e5040e00d71b8cb77cdaa91c8bc1c00aa94732d5) Thanks [@zyprepare](https://github.com/zyprepare)! - Collapse fix: 修复嵌套折叠面板样式问题
+
+- [#2542](https://github.com/XiaoMi/hiui/pull/2542) [`4b40f173a`](https://github.com/XiaoMi/hiui/commit/4b40f173a3c6125958392185c48756a07b1adb2f) Thanks [@zyprepare](https://github.com/zyprepare)! - Select feat: 增加 keyword API
+  useSearchMode: 增加 keyword API
+
+- [#2550](https://github.com/XiaoMi/hiui/pull/2550) [`521ad72ed`](https://github.com/XiaoMi/hiui/commit/521ad72ed7eda1104e240320e0f9898fcfc4255b) Thanks [@zyprepare](https://github.com/zyprepare)! - Descriptions fix: 修复只有一条数据时显示问题
+
+- [#2545](https://github.com/XiaoMi/hiui/pull/2545) [`a2f9f569a`](https://github.com/XiaoMi/hiui/commit/a2f9f569aefad8d4956db021510163ed8993887c) Thanks [@zyprepare](https://github.com/zyprepare)! - Menu fix: 体验优化
+
+- Updated dependencies [[`521ad72ed`](https://github.com/XiaoMi/hiui/commit/521ad72ed7eda1104e240320e0f9898fcfc4255b), [`4b40f173a`](https://github.com/XiaoMi/hiui/commit/4b40f173a3c6125958392185c48756a07b1adb2f), [`e5040e00d`](https://github.com/XiaoMi/hiui/commit/e5040e00d71b8cb77cdaa91c8bc1c00aa94732d5), [`a2f9f569a`](https://github.com/XiaoMi/hiui/commit/a2f9f569aefad8d4956db021510163ed8993887c)]:
+  - @hi-ui/descriptions@4.1.2
+  - @hi-ui/picker@4.1.0
+  - @hi-ui/select@4.1.0
+  - @hi-ui/collapse@4.1.1
+  - @hi-ui/menu@4.0.9
+
 ## 4.2.8
 
 ### Patch Changes
