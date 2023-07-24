@@ -67,7 +67,8 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       fieldNames,
       onSelect: onSelectProp,
       onSearch: onSearchProp,
-      clearKeywordOnClosed = true,
+      // 传入了 keyword 时，关闭弹窗时不清空 keyword
+      clearKeywordOnClosed = keywordProp === undefined,
       ...rest
     },
     ref
@@ -331,6 +332,7 @@ export interface SelectProps
   onSearch?: (keyword: string) => void
   /**
    * 关闭时是否清空搜索关键字，默认为 true
+   * @private
    */
   clearKeywordOnClosed?: boolean
 }

@@ -47,7 +47,6 @@ export const SearchControlled = () => {
             setKeyword(value)
             console.log('onSearch', value)
           }}
-          clearKeywordOnClosed={false}
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
           data={data}
