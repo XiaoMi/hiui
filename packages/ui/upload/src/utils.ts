@@ -48,12 +48,18 @@ export const getFileItems = (fileList: FileList | null, accept?: string) => {
 
   const itemArr = []
   const len = fileList.length
+  const acceptArr = accept ? accept.replace(/\s/g, '').split(',') : []
 
   for (let i = 0; i < len; i++) {
     const item = fileList[i]
+    const { type, name } = item
 
-    if (!accept || (accept && accept.replace(/\s/g, '').split(',').includes(item.type))) {
-      itemArr[i] = item
+    if (
+      acceptArr.length === 0 ||
+      acceptArr.includes(type) ||
+      acceptArr.includes(name.substring(name.lastIndexOf('.')))
+    ) {
+      itemArr.push(item)
     }
   }
 
