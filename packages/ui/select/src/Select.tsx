@@ -67,8 +67,6 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       fieldNames,
       onSelect: onSelectProp,
       onSearch: onSearchProp,
-      // 传入了 keyword 时，关闭弹窗时不清空 keyword
-      clearKeywordOnClosed = keywordProp === undefined,
       ...rest
     },
     ref
@@ -207,7 +205,6 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           scrollable={!inVirtual}
-          clearKeywordOnClosed={clearKeywordOnClosed}
           trigger={
             <MockInput
               clearable={clearable}
@@ -330,11 +327,6 @@ export interface SelectProps
    * 搜索时触发
    */
   onSearch?: (keyword: string) => void
-  /**
-   * 关闭时是否清空搜索关键字，默认为 true
-   * @private
-   */
-  clearKeywordOnClosed?: boolean
 }
 
 ;(Select as any).HiName = 'Select'

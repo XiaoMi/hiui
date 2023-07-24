@@ -48,7 +48,6 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       trigger,
       footer,
       onOverlayScroll,
-      clearKeywordOnClosed = true,
       ...rest
     },
     ref
@@ -76,6 +75,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
     // const inSearch = searchable && !!searchValue
     // const isEmpty = inSearch && showEmpty
+    const resetSearchOnClosed = keywordProp === undefined
 
     const onSearchLatest = useLatestCallback(onSearch)
 
@@ -126,8 +126,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     const hideMenu = useCallback(() => {
       if (disabled) return
       menuVisibleAction.off()
-      clearKeywordOnClosed && resetSearch()
-    }, [clearKeywordOnClosed, disabled, menuVisibleAction, resetSearch])
+      resetSearchOnClosed && resetSearch()
+    }, [resetSearchOnClosed, disabled, menuVisibleAction, resetSearch])
 
     const onEscClose = useCallback(
       (evt: React.KeyboardEvent) => {
@@ -310,10 +310,6 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 开启内容区域可滚动
    */
   scrollable?: boolean
-  /**
-   * 关闭时是否清空搜索关键字，默认为 true
-   */
-  clearKeywordOnClosed?: boolean
 }
 
 if (__DEV__) {
