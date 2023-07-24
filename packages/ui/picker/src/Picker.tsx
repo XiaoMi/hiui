@@ -28,6 +28,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       disabled = false,
       clearable = false,
       searchable = false,
+      keyword: keywordProp,
       scrollable = true,
       visible,
       onOpen,
@@ -67,13 +68,14 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
     const [searchValue, setSearchValue] = useUncontrolledState(
       '' as string,
-      undefined,
+      keywordProp,
       onSearch,
       Object.is
     )
 
     // const inSearch = searchable && !!searchValue
     // const isEmpty = inSearch && showEmpty
+    const resetSearchOnClosed = keywordProp === undefined
 
     const onSearchLatest = useLatestCallback(onSearch)
 
@@ -124,8 +126,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     const hideMenu = useCallback(() => {
       if (disabled) return
       menuVisibleAction.off()
-      resetSearch()
-    }, [disabled, menuVisibleAction, resetSearch])
+      resetSearchOnClosed && resetSearch()
+    }, [resetSearchOnClosed, disabled, menuVisibleAction, resetSearch])
 
     const onEscClose = useCallback(
       (evt: React.KeyboardEvent) => {
@@ -255,6 +257,10 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 是否可搜索
    */
   searchable?: boolean
+  /**
+   * 搜索关键字，searchable 为 true 时有效
+   */
+  keyword?: string
   /**
    * 搜索时触发回调
    */

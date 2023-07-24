@@ -53,6 +53,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       virtual = true,
       // search
       searchable: searchableProp,
+      keyword: keywordProp,
       dataSource,
       filterOption,
       // popper
@@ -117,6 +118,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       keyword: searchValue,
     } = useSearchMode({
       searchable: searchableProp,
+      keyword: keywordProp,
       strategies: [dataSourceStrategy, customSearchStrategy, filterSearchStrategy],
     })
 
@@ -198,6 +200,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
           searchable={searchable}
+          keyword={keywordProp}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
@@ -306,6 +309,10 @@ export interface SelectProps
    * 是否可搜索（仅在 title 为字符串时支持）
    */
   searchable?: boolean
+  /**
+   * 搜索关键字，searchable 为 true 时有效
+   */
+  keyword?: string
   /**
    * 自定义搜索过滤器，仅在 searchable 为 true 时有效
    * 第一个参数为输入的关键字，

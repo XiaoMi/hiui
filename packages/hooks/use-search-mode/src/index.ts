@@ -4,6 +4,7 @@ import { UseDataSource, useDataSource } from '@hi-ui/use-data-source'
 import { invariant } from '@hi-ui/env'
 import { filterTree, getNodeAncestors, cloneTree } from '@hi-ui/tree-utils'
 import { useLatestRef } from '@hi-ui/use-latest'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
 const initialStateInSearch = () => ({
   matched: false,
@@ -14,8 +15,12 @@ const initialStateInSearch = () => ({
 /**
  * TODO: What is useSearchMode
  */
-export const useSearchMode = ({ searchable: searchableProp, strategies }: UseSearchModeProps) => {
-  const [keyword, setKeyword] = useState('')
+export const useSearchMode = ({
+  searchable: searchableProp,
+  strategies,
+  keyword: keywordProp,
+}: UseSearchModeProps) => {
+  const [keyword, setKeyword] = useUncontrolledState('', keywordProp)
 
   // 搜索时的临时节点数据
   const [stateInSearch, setStateInSearch] = useState<any>(initialStateInSearch)
@@ -51,7 +56,7 @@ export const useSearchMode = ({ searchable: searchableProp, strategies }: UseSea
       setKeyword(keyword)
       runSearch(keyword)
     },
-    [searchable, runSearch]
+    [searchable, setKeyword, runSearch]
   )
 
   const keywordLatestRef = useLatestRef(keyword)
@@ -92,6 +97,10 @@ export interface UseSearchModeProps<T = any> {
    * 开启检索
    */
   searchable?: boolean
+  /**
+   * 搜索关键字，searchable 为 true 时有效
+   */
+  keyword?: string
   /**
    * 异步加载数据
    */

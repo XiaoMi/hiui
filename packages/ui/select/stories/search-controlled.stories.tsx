@@ -2,9 +2,12 @@ import React from 'react'
 import Select from '../src'
 
 /**
- * @title 带搜索
+ * @title 搜索关键字受控
+ * @desc searchable 为 true 时生效
  */
-export const Search = () => {
+export const SearchControlled = () => {
+  const [keyword, setKeyword] = React.useState('1')
+
   const [data] = React.useState([
     {
       id: 'up-1',
@@ -22,14 +25,28 @@ export const Search = () => {
       id: '2',
       title: '2',
     },
+    {
+      id: '11',
+      title: '11',
+    },
+    {
+      id: '12',
+      title: '12',
+    },
   ])
+
   return (
     <>
-      <h1>Search</h1>
-      <div className="select-search__wrap">
+      <h1>Search Controlled</h1>
+      <div className="select-search-controlled__wrap">
         <Select
           style={{ width: 240 }}
           searchable
+          keyword={keyword}
+          onSearch={(value) => {
+            setKeyword(value)
+            console.log('onSearch', value)
+          }}
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
           data={data}
