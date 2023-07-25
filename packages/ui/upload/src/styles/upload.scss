@@ -30,6 +30,9 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &__del-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: use-color('gray', 600);
     cursor: pointer;
     width: 20px;
