@@ -69,6 +69,7 @@ $prefix: '#{$component-prefix}-preview' !default;
     right: 0;
     left: 0;
     text-align: center;
+    outline: none;
 
     // 该伪类用于让图片在容器中垂直居中
     &::before {

@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useState, useEffect, useRef } from 'react'
+import React, { forwardRef, useCallback, useState, useEffect, useRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { Portal } from '@hi-ui/portal'
@@ -63,6 +63,8 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     const imgRef = useRef<HTMLImageElement>(null)
     const previewRef = useRef<HTMLDivElement>(null)
 
+    const isMultiple = useMemo(() => Array.isArray(src) && src.length > 1, [src])
+
     // 重置图片
     const resetTransform = useCallback(() => {
       updateImgTransform(defaultTransform)
@@ -72,10 +74,11 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       // 每次打开预览，重置图片样式
       if (visible) {
         resetTransform()
+        previewRef.current?.focus()
       }
     }, [visible, resetTransform, active])
 
-    const handleClose = useLatestCallback((evt: React.MouseEvent) => {
+    const handleClose = useLatestCallback((evt: React.MouseEvent | React.KeyboardEvent) => {
       evt.stopPropagation()
       onClose?.()
     })
@@ -158,6 +161,34 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       [imgTransform]
     )
 
+    const selectPrev = useCallback(() => {
+      setActive(active - 1 < 0 ? src.length - 1 : active - 1)
+    }, [active, setActive, src])
+
+    const selectNext = useCallback(() => {
+      setActive(active + 1 >= src.length ? 0 : active + 1)
+    }, [active, setActive, src])
+
+    // 键盘事件
+    const handleKeyDown = useCallback(
+      (e: React.KeyboardEvent) => {
+        if (isMultiple) {
+          if (e.key === 'ArrowLeft') {
+            selectPrev()
+          } else if (e.key === 'ArrowRight') {
+            selectNext()
+          }
+        }
+
+        if (e.key === 'Escape') {
+          handleClose(e)
+        }
+
+        e.stopPropagation()
+      },
+      [handleClose, isMultiple, selectNext, selectPrev]
+    )
+
     return (
       <Portal>
         <div ref={ref} role={role} className={cls} style={{ ...style, display: 'none' }}>
@@ -193,6 +224,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                 onWheel={handleWheel}
                 ref={previewRef}
                 onMouseMove={onMoving}
+                onKeyDown={handleKeyDown}
               >
                 <img
                   ref={imgRef}
@@ -233,12 +265,12 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   />
                 </div>
 
-                {Array.isArray(src) && (
+                {isMultiple && (
                   <>
                     <div
                       className={`${prefixCls}__left-btn`}
                       onClick={() => {
-                        setActive(active - 1 < 0 ? src.length - 1 : active - 1)
+                        selectPrev()
                       }}
                     >
                       <LeftOutlined />
@@ -246,7 +278,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                     <div
                       className={`${prefixCls}__right-btn`}
                       onClick={() => {
-                        setActive(active + 1 >= src.length ? 0 : active + 1)
+                        selectNext()
                       }}
                     >
                       <RightOutlined />
