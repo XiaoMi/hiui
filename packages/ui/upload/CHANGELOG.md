@@ -1,5 +1,14 @@
 # @hi-ui/upload
 
+## 4.1.5
+
+### Patch Changes
+
+- [#2552](https://github.com/XiaoMi/hiui/pull/2552) [`5c376ecee`](https://github.com/XiaoMi/hiui/commit/5c376eceefb006643aab2a918c7535c23f5e9449) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: accept 支持设置 .文件类型 这种格式
+
+- Updated dependencies [[`6d48d2f0b`](https://github.com/XiaoMi/hiui/commit/6d48d2f0b2c1258a1fe978cee8ef20a3443e4b66)]:
+  - @hi-ui/preview@4.0.5
+
 ## 4.1.4
 
 ### Patch Changes

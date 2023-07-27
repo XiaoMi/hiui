@@ -1,5 +1,16 @@
 # @hi-ui/table
 
+## 4.1.1
+
+### Patch Changes
+
+- [#2557](https://github.com/XiaoMi/hiui/pull/2557) [`ef7aae038`](https://github.com/XiaoMi/hiui/commit/ef7aae038362d3a7700611737c474c29d1ba07b4) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: maxHeight 支持表达式
+
+- [#2558](https://github.com/XiaoMi/hiui/pull/2558) [`bdd913d71`](https://github.com/XiaoMi/hiui/commit/bdd913d7173de64952437014ab9ffd1947ed506c) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加树形结构排序
+
+- Updated dependencies [[`bdd913d71`](https://github.com/XiaoMi/hiui/commit/bdd913d7173de64952437014ab9ffd1947ed506c)]:
+  - @hi-ui/tree-utils@4.1.0
+
 ## 4.1.0
 
 ### Minor Changes
