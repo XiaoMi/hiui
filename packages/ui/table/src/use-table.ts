@@ -534,10 +534,7 @@ export const useTable = ({
       const sorter = columns.filter((d) => d.dataKey === activeSorterColumn)[0]?.sorter
 
       if (sorter) {
-        _data =
-          activeSorterType === 'ascend'
-            ? [..._data].sort(sorter)
-            : [..._data].sort(sorter).reverse()
+        activeSorterType === 'ascend' ? _data.sort(sorter) : _data.sort(sorter).reverse()
 
         // 平铺的树形结构排序
         if (_data.some((d) => d.depth !== 0)) {
