@@ -724,9 +724,7 @@ export const flattedTreeSort = <T extends BaseFlattedTreeNodeData<any> & { showC
     const { depth, parent } = item
 
     if (depth !== 0) {
-      const len2 = flattedNode.length
-
-      for (let j = 0; j < len2; j++) {
+      for (let j = 0; j < len; j++) {
         if (parent?.id === flattedNode[j].id) {
           if (!flattedNode[j].showChildren) {
             flattedNode[j].showChildren = []
