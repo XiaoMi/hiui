@@ -1,5 +1,22 @@
 # @hi-ui/hiui
 
+## 4.2.10
+
+### Patch Changes
+
+- [#2557](https://github.com/XiaoMi/hiui/pull/2557) [`ef7aae038`](https://github.com/XiaoMi/hiui/commit/ef7aae038362d3a7700611737c474c29d1ba07b4) Thanks [@zyprepare](https://github.com/zyprepare)! - Table feat: maxHeight 支持表达式
+
+- [#2558](https://github.com/XiaoMi/hiui/pull/2558) [`bdd913d71`](https://github.com/XiaoMi/hiui/commit/bdd913d7173de64952437014ab9ffd1947ed506c) Thanks [@zyprepare](https://github.com/zyprepare)! - Table feat: 增加树形结构排序
+
+- [#2553](https://github.com/XiaoMi/hiui/pull/2553) [`6d48d2f0b`](https://github.com/XiaoMi/hiui/commit/6d48d2f0b2c1258a1fe978cee8ef20a3443e4b66) Thanks [@zyprepare](https://github.com/zyprepare)! - Preview feat: 支持键盘左右切换图片
+
+- [#2552](https://github.com/XiaoMi/hiui/pull/2552) [`5c376ecee`](https://github.com/XiaoMi/hiui/commit/5c376eceefb006643aab2a918c7535c23f5e9449) Thanks [@zyprepare](https://github.com/zyprepare)! - Upload fix: accept 支持设置 .文件类型 这种格式
+
+- Updated dependencies [[`5c376ecee`](https://github.com/XiaoMi/hiui/commit/5c376eceefb006643aab2a918c7535c23f5e9449), [`ef7aae038`](https://github.com/XiaoMi/hiui/commit/ef7aae038362d3a7700611737c474c29d1ba07b4), [`bdd913d71`](https://github.com/XiaoMi/hiui/commit/bdd913d7173de64952437014ab9ffd1947ed506c), [`6d48d2f0b`](https://github.com/XiaoMi/hiui/commit/6d48d2f0b2c1258a1fe978cee8ef20a3443e4b66)]:
+  - @hi-ui/upload@4.1.5
+  - @hi-ui/table@4.1.1
+  - @hi-ui/preview@4.0.5
+
 ## 4.2.9
 
 ### Patch Changes
