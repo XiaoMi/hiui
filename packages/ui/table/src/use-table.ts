@@ -667,7 +667,7 @@ export interface UseTableProps {
   /**
    *  表格最大高度，当穿过该高度时，展示滚动条且表头固定
    */
-  maxHeight?: number
+  maxHeight?: number | string
   /**
    *  表格列冻结默认设置，为 string 时仅支持从左侧冻结至某一列
    */
