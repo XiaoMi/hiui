@@ -5,6 +5,7 @@ import {
   getLeafChildren,
   // getNodeAncestors,
   getNodeRootParent,
+  flattedTreeSort,
   // getNodeRootParent,
 } from '@hi-ui/tree-utils'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -15,6 +16,7 @@ import {
   TableRowEventData,
   TableRowSelection,
   FlattedTableColumnItemData,
+  FlattedTableRowData,
 } from './types'
 import { PaginationProps } from '@hi-ui/pagination'
 import { useColWidth } from './hooks/use-col-width'
@@ -526,17 +528,18 @@ export const useTable = ({
   //* *************** 根据排序列处理数据 ************** *//
 
   const showData = useMemo(() => {
-    let _data = transitionData.concat()
+    let _data: FlattedTableRowData[] = cloneTree(transitionData)
 
     if (activeSorterColumn) {
-      const sorter =
-        columns.filter((d) => d.dataKey === activeSorterColumn)[0] &&
-        columns.filter((d) => d.dataKey === activeSorterColumn)[0].sorter
+      const sorter = columns.filter((d) => d.dataKey === activeSorterColumn)[0]?.sorter
+
       if (sorter) {
-        _data =
-          activeSorterType === 'ascend'
-            ? [..._data].sort(sorter)
-            : [..._data].sort(sorter).reverse()
+        activeSorterType === 'ascend' ? _data.sort(sorter) : _data.sort(sorter).reverse()
+
+        // 平铺的树形结构排序
+        if (_data.some((d) => d.depth !== 0)) {
+          _data = flattedTreeSort(_data)
+        }
       }
     }
 

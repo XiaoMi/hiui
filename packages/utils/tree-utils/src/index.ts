@@ -707,3 +707,52 @@ export const getTreeNodesWithChildren = <T extends BaseTreeNodeData>(tree: T[]) 
 
   return nodes
 }
+
+/**
+ * 对平铺的树结构按照树形结构进行排序
+ * 因为 children 字段可能参与了其他逻辑处理，为不影响其他逻辑，增加一个 showChildren 字段，用于存放需要显示的子节点，并且按照 showChildren 转换成树结构
+ * @param flattedNode
+ * @returns
+ */
+export const flattedTreeSort = <T extends BaseFlattedTreeNodeData<any> & { showChildren?: T[] }>(
+  flattedNode: T[]
+) => {
+  const len = flattedNode.length
+
+  for (let i = 0; i < len; i++) {
+    const item = flattedNode[i]
+    const { depth, parent } = item
+
+    if (depth !== 0) {
+      for (let j = 0; j < len; j++) {
+        if (parent?.id === flattedNode[j].id) {
+          if (!flattedNode[j].showChildren) {
+            flattedNode[j].showChildren = []
+          }
+
+          !flattedNode[j].showChildren?.some((d) => d.id === item.id) &&
+            flattedNode[j].showChildren?.push(item)
+
+          break
+        }
+      }
+    }
+  }
+
+  const parentNodes = flattedNode.filter((d) => d.depth === 0)
+  const flattedNodes: T[] = []
+
+  const flattenNodes = (nodes: T[]) => {
+    nodes.forEach((d) => {
+      flattedNodes.push(d)
+
+      if (d.showChildren) {
+        flattenNodes(d.showChildren)
+      }
+    })
+  }
+
+  flattenNodes(parentNodes)
+
+  return flattedNodes
+}
