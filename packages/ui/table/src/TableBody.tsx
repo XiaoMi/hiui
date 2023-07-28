@@ -70,7 +70,14 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
     )
     if (showVirtual) {
       // TODO： avg和summay row的逻辑
-      const vMaxHeight = maxHeight || 300
+
+      const realHeight = scrollBodyElementRef.current?.getBoundingClientRect().height
+      const vMaxHeight = maxHeight
+        ? !isNaN(Number(String(maxHeight).replace(/px/, '')))
+          ? Number(maxHeight)
+          : realHeight
+        : 300
+
       return (
         <div
           ref={scrollBodyElementRef}
@@ -79,13 +86,13 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
           onWheel={onTableBodyScrollMock}
           style={{
             maxHeight: maxHeight !== undefined ? maxHeight : undefined,
-            // maxHeight 小于 table 实际高度才出现纵向滚动条
-            overflowY:
-              maxHeight !== undefined &&
-              bodyTableRef.current &&
-              bodyTableRef.current.clientHeight > maxHeight
-                ? 'scroll'
-                : undefined,
+            // // maxHeight 小于 table 实际高度才出现纵向滚动条
+            // overflowY:
+            //   maxHeight !== undefined &&
+            //   bodyTableRef.current &&
+            //   bodyTableRef.current.clientHeight > maxHeight
+            //     ? 'scroll'
+            //     : undefined,
             // 表格宽度大于div宽度才出现横向滚动条
             overflowX: canScroll ? 'scroll' : undefined,
           }}
@@ -135,13 +142,13 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
         onScroll={onTableBodyScroll}
         style={{
           maxHeight: maxHeight !== undefined ? maxHeight : undefined,
-          // maxHeight 小于 table 实际高度才出现纵向滚动条
-          overflowY:
-            maxHeight !== undefined &&
-            bodyTableRef.current &&
-            bodyTableRef.current.clientHeight > maxHeight
-              ? 'scroll'
-              : undefined,
+          // // maxHeight 小于 table 实际高度才出现纵向滚动条
+          // overflowY:
+          //   maxHeight !== undefined &&
+          //   bodyTableRef.current &&
+          //   bodyTableRef.current.clientHeight > maxHeight
+          //     ? 'scroll'
+          //     : undefined,
           // 表格宽度大于div宽度才出现横向滚动条
           overflowX: canScroll ? 'scroll' : undefined,
         }}

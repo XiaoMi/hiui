@@ -528,7 +528,7 @@ export const useTable = ({
   //* *************** 根据排序列处理数据 ************** *//
 
   const showData = useMemo(() => {
-    let _data: FlattedTableRowData[] = cloneTree(transitionData)
+    let _data = cloneTree(transitionData)
 
     if (activeSorterColumn) {
       const sorter = columns.filter((d) => d.dataKey === activeSorterColumn)[0]?.sorter
@@ -538,7 +538,7 @@ export const useTable = ({
 
         // 平铺的树形结构排序
         if (_data.some((d) => d.depth !== 0)) {
-          _data = flattedTreeSort(_data)
+          _data = flattedTreeSort(_data as any)
         }
       }
     }
