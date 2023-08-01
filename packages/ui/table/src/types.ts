@@ -242,11 +242,15 @@ export interface FlattedTableRowData extends TableRowData {
   /**
    * 该节点的父节点
    */
-  parent?: FlattedTableRowData
+  parent?: FlattedTableRowDataWithChildren
   /**
    * 节点所在列表数据中的下标
    */
   pos?: number
+}
+
+export interface FlattedTableRowDataWithChildren extends FlattedTableRowData {
+  children: FlattedTableRowData[]
 }
 
 export interface FlattedTableColumnItemData extends TableColumnItem {
