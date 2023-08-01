@@ -447,7 +447,7 @@ export const Basic = () => {
 
               { component: Icons.ResetOutlined, tagName: 'ResetOutlined' },
 
-              { component: Icons.ReviewOutlined, tagName: 'ReviewOutlined' },
+              { component: Icons.SealOutlined, tagName: 'SealOutlined' },
 
               { component: Icons.RmbOutlined, tagName: 'RmbOutlined' },
 
