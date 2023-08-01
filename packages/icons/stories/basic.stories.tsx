@@ -387,7 +387,7 @@ export const Basic = () => {
 
               { component: Icons.HeartOutlined, tagName: 'HeartOutlined' },
 
-              { component: Icons.Heart2Outlined, tagName: 'Heart2Outlined' },
+              { component: Icons.HeartSimpleOutlined, tagName: 'HeartSimpleOutlined' },
 
               { component: Icons.HomeOutlined, tagName: 'HomeOutlined' },
 
