@@ -538,7 +538,7 @@ export const useTable = ({
 
         // 平铺的树形结构排序
         if (_data.some((d) => d.depth !== 0)) {
-          _data = flattedTreeSort(_data as any)
+          _data = flattedTreeSort<FlattedTableRowData>(_data)
         }
       }
     }
