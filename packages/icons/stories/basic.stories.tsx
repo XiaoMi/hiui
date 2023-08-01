@@ -269,6 +269,8 @@ export const Basic = () => {
 
               { component: Icons.AssetMonitorOutlined, tagName: 'AssetMonitorOutlined' },
 
+              { component: Icons.AssociateOutlined, tagName: 'AssociateOutlined' },
+
               { component: Icons.AudioOutlined, tagName: 'AudioOutlined' },
 
               { component: Icons.BankCardOutlined, tagName: 'BankCardOutlined' },
@@ -311,6 +313,10 @@ export const Basic = () => {
               { component: Icons.CloudDownloadOutlined, tagName: 'CloudDownloadOutlined' },
 
               { component: Icons.CloudUploadOutlined, tagName: 'CloudUploadOutlined' },
+
+              { component: Icons.CompassOutlined, tagName: 'CompassOutlined' },
+
+              { component: Icons.CustomerServiceOutlined, tagName: 'CustomerServiceOutlined' },
 
               { component: Icons.CollectionOutlined, tagName: 'CollectionOutlined' },
 
@@ -381,6 +387,8 @@ export const Basic = () => {
 
               { component: Icons.HeartOutlined, tagName: 'HeartOutlined' },
 
+              { component: Icons.HeartSimpleOutlined, tagName: 'HeartSimpleOutlined' },
+
               { component: Icons.HomeOutlined, tagName: 'HomeOutlined' },
 
               { component: Icons.ImportOutlined, tagName: 'ImportOutlined' },
@@ -438,6 +446,8 @@ export const Basic = () => {
               { component: Icons.RelationOutlined, tagName: 'RelationOutlined' },
 
               { component: Icons.ResetOutlined, tagName: 'ResetOutlined' },
+
+              { component: Icons.SealOutlined, tagName: 'SealOutlined' },
 
               { component: Icons.RmbOutlined, tagName: 'RmbOutlined' },
 
