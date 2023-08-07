@@ -8,8 +8,8 @@ export const VirtualList = () => {
   const [data] = React.useState(() => {
     // 模拟 10^4 个数据量
     function dig(path = '0', level) {
-      const list = []
-      for (let i = 0; i < 10; i += 1) {
+      const list: any = []
+      for (let i = 0; i < 5; i += 1) {
         const id = `${path}-${i}`
         const treeNode = {
           title: id,

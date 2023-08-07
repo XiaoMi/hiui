@@ -68,6 +68,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       visible,
       onOpen,
       onClose,
+      tagInputProps,
       ...rest
     },
     ref
@@ -223,6 +224,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
           <TagInputMock
+            {...tagInputProps}
             clearable={clearable}
             placeholder={placeholder}
             // @ts-ignore
@@ -363,6 +365,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * SEPARATE：父子完全独立受控
    */
   checkedMode?: 'PARENT' | 'CHILD' | 'ALL' | 'SEPARATE'
+  /**
+   * TagInput 参数设置
+   */
+  tagInputProps?: TagInputMockProps
 }
 
 if (__DEV__) {
