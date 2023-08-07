@@ -36,12 +36,15 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
       targetSortType,
       onItemClick,
       draggable = false,
+      listRender,
       ...rest
     },
     ref
   ) => {
     const i18n = useLocaleContext()
     const limitContent = i18n.get('transfer.limit')
+
+    const customize = !!listRender
 
     const { searchable, pageSize, showCheckAll } = useTransferContext()
 
@@ -108,6 +111,7 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
     }, [current, cacheData, pageSize])
 
     const showHeader = showCheckAll || title
+    const showPagination = !customize && pageSize
 
     const cls = cx(prefixCls, className)
 
@@ -159,27 +163,32 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
                 <span>{limitContent}</span>
               </div>
             ) : null}
-            {showData.length > 0 ? (
-              <ul className={`${prefixCls}__list`}>
-                {showData.map((item) => {
-                  return (
-                    <TransferItem
-                      key={item.id}
-                      data={item}
-                      onCheck={onCheck}
-                      checked={isCheckedIds(item.id)}
-                      draggable={draggable}
-                      onClick={onItemClick}
-                    />
-                  )
-                })}
-              </ul>
+            {showData.length > 0 || customize ? (
+              listRender?.({
+                checkedIds,
+                onCheck: setCheckedIds,
+              }) ?? (
+                <ul className={`${prefixCls}__list`}>
+                  {showData.map((item) => {
+                    return (
+                      <TransferItem
+                        key={item.id}
+                        data={item}
+                        onCheck={onCheck}
+                        checked={isCheckedIds(item.id)}
+                        draggable={draggable}
+                        onClick={onItemClick}
+                      />
+                    )
+                  })}
+                </ul>
+              )
             ) : (
               <div className={`${prefixCls}__empty`}>{emptyContent}</div>
             )}
           </div>
         </div>
-        {pageSize ? (
+        {showPagination ? (
           <div className={`${prefixCls}__footer`}>
             <ShrinkPagination
               size="sm"
@@ -270,6 +279,10 @@ export interface TransferPanelProps {
   onCheck: (targetItem: TransferDataItem, shouldChecked: boolean) => void
   isCheckedIds: (id: React.ReactText) => boolean
   onItemClick: (item: TransferDataItem) => void
+  listRender?: (props: {
+    checkedIds: React.ReactText[]
+    onCheck: (checkedIds: React.ReactText[]) => void
+  }) => React.ReactNode
 }
 
 if (__DEV__) {

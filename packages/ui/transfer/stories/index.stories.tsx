@@ -11,6 +11,7 @@ export * from './searchable.stories'
 export * from './pagination.stories'
 export * from './draggable.stories'
 export * from './render.stories'
+export * from './tree.stories'
 
 export default {
   title: 'Data Input/Transfer',
