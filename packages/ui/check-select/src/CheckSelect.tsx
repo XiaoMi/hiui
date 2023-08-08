@@ -11,13 +11,13 @@ import {
   CheckSelectItemEventData,
   CheckSelectMergedItem,
 } from './types'
-import { useLatestRef } from '@hi-ui/use-latest'
+import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
 import { TagInputMock } from '@hi-ui/tag-input'
 import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import VirtualList, { ListRef, useCheckInVirtual } from '@hi-ui/virtual-list'
 import { Picker, PickerProps } from '@hi-ui/picker'
-
+import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { times, uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -73,6 +73,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       onSearch: onSearchProp,
       fieldNames = DEFAULT_FIELD_NAMES,
       customRender,
+      onKeyDown: onKeyDownProp,
       ...rest
     },
     ref
@@ -111,7 +112,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       onSelect: onSelectProp,
     })
 
-    const { value, tryChangeValue, flattedData, checkedItems } = context
+    const { value, tryChangeValue, flattedData, checkedItems, onSelect, isCheckedId } = context
     // ************************** 搜索 ************************* //
 
     const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({
@@ -206,6 +207,29 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       }
     }, [dropdownItems, mergedData, valueLatestRef, tryChangeValue])
 
+    // ************************** 回车选中处理 ************************* //
+
+    const defaultIndex = showData.findIndex((item: CheckSelectDataItem) => !item.disabled)
+
+    const [focusedIndex, setFocusedIndex] = useState<number>(defaultIndex)
+
+    const handleKeyDown = useLatestCallback((evt: React.KeyboardEvent) => {
+      const { key } = evt
+
+      if (key === 'Enter') {
+        const focusedItem = showData[focusedIndex]
+
+        if (focusedItem) {
+          onSelect(focusedItem, !isCheckedId(focusedItem.id))
+        }
+      }
+    })
+
+    // 更新 focused 索引
+    useEffect(() => {
+      setFocusedIndex(defaultIndex)
+    }, [defaultIndex, menuVisible])
+
     const renderDefaultFooter = () => {
       const extra = renderExtraFooter ? renderExtraFooter() : null
       if (showCheckAll) {
@@ -257,6 +281,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           disabled={disabled}
           onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
+          onKeyDown={mockDefaultHandlers(handleKeyDown, onKeyDownProp)}
           searchable={searchable}
           scrollable={!inVirtual}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
@@ -336,7 +361,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
         >
           {isArrayNonEmpty(dropdownItems) ? (
             <VirtualList ref={listRef} itemKey="id" fullHeight={false} {...virtualListProps}>
-              {(node: any) => {
+              {(node: any, index) => {
                 /* 反向 map，搜索删选数据时会对数据进行处理 */
                 return 'groupTitle' in node ? (
                   <CheckSelectOptionGroup label={node.groupTitle} />
@@ -345,6 +370,10 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
                     option={node}
                     depth={node.depth}
                     titleRender={proxyTitleRender}
+                    onMouseEnter={() => {
+                      !node.disabled && setFocusedIndex(index)
+                    }}
+                    focused={focusedIndex === index}
                   />
                 )
               }}
@@ -471,6 +500,7 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
       onClick,
       titleRender,
       depth,
+      focused,
       ...rest
     },
     ref
@@ -491,7 +521,8 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
       prefixCls,
       className,
       checked && `${prefixCls}--checked`,
-      disabled && `${prefixCls}--disabled`
+      disabled && `${prefixCls}--disabled`,
+      focused && `${prefixCls}--focused`
     )
 
     const handleOptionCheck = useCallback(

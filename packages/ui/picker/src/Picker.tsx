@@ -98,14 +98,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       return {
         value: searchValue,
         onChange: handleChange,
-        onKeyDown: (evt: any) => {
-          if (evt.keyCode === 13) {
-            evt.preventDefault()
-            onSearchLatest(searchValue)
-          }
-        },
       }
-    }, [searchValue, handleChange, onSearchLatest])
+    }, [searchValue, handleChange])
 
     // *********************** 弹窗管理 ********************** //
 
