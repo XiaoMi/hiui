@@ -19,6 +19,7 @@ export const SelectOption = forwardRef<HTMLDivElement | null, SelectOptionProps>
       depth,
       onClick,
       titleRender,
+      focused,
       ...rest
     },
     ref
@@ -37,7 +38,8 @@ export const SelectOption = forwardRef<HTMLDivElement | null, SelectOptionProps>
       prefixCls,
       className,
       selected && `${prefixCls}--selected`,
-      disabled && `${prefixCls}--disabled`
+      disabled && `${prefixCls}--disabled`,
+      focused && `${prefixCls}--focused`
     )
 
     return (

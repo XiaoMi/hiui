@@ -6,7 +6,12 @@ import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { useSelect, UseSelectProps } from './use-select'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { SelectProvider } from './context'
-import { FlattedSelectDataItem, SelectItemEventData, SelectMergedItem } from './types'
+import {
+  FlattedSelectDataItem,
+  SelectDataItem,
+  SelectItemEventData,
+  SelectMergedItem,
+} from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import VirtualList, { useCheckInVirtual } from '@hi-ui/virtual-list'
 import type { ListRef } from 'rc-virtual-list'
@@ -26,6 +31,7 @@ import { SelectOptionGroup } from './SelectOptionGroup'
 import { uniqBy } from '@hi-ui/array-utils'
 import { HiBaseAppearanceEnum, useLocaleContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
+import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 
 const _role = 'select'
 const _prefix = getPrefixCls(_role)
@@ -67,6 +73,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       fieldNames,
       onSelect: onSelectProp,
       onSearch: onSearchProp,
+      onKeyDown: onKeyDownProp,
       ...rest
     },
     ref
@@ -94,7 +101,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     const flattedData = useFlattenData({ data, fieldNames })
 
     const { rootProps, ...context } = useSelect({ ...rest, onSelect })
-    const { value, tryChangeValue, getSelectItemEventData } = context
+    const { value, tryChangeValue, getSelectItemEventData, onSelect: handleSelect } = context
 
     // 临时缓存选中异步数据
     const [selectedItems, setSelectedItems] = useState<FlattedSelectDataItem[]>([])
@@ -170,6 +177,30 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       return nextData.filter((item) => !('groupTitle' in item))
     }, [selectedItems, flattedData])
 
+    // ************************** 回车选中处理 ************************* //
+
+    const defaultIndex = showData.findIndex((item: SelectDataItem) => !item.disabled)
+
+    const [focusedIndex, setFocusedIndex] = useState<number>(defaultIndex)
+
+    const handleKeyDown = useLatestCallback((evt: React.KeyboardEvent) => {
+      const { key } = evt
+
+      if (key === 'Enter') {
+        const item = showData[focusedIndex]
+
+        if (item) {
+          handleSelect(item)
+        }
+      }
+    })
+
+    // 更新 focused 索引
+    useEffect(() => {
+      const index = showData.findIndex((item: SelectDataItem) => item.id === value)
+      setFocusedIndex(index !== -1 ? index : defaultIndex)
+    }, [showData, value, menuVisible, defaultIndex])
+
     const cls = cx(prefixCls, className)
 
     const virtualListProps = {
@@ -197,6 +228,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           {...rootProps}
           visible={menuVisible}
           disabled={disabled}
+          onKeyDown={mockDefaultHandlers(handleKeyDown, onKeyDownProp)}
           onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
           searchable={searchable}
@@ -230,7 +262,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
         >
           {isArrayNonEmpty(showData) ? (
             <VirtualList ref={listRef} itemKey="id" fullHeight={false} {...virtualListProps}>
-              {(node: any) => {
+              {(node: any, index) => {
                 /* 反向 map，搜索删选数据时会对数据进行处理 */
                 return 'groupTitle' in node ? (
                   <SelectOptionGroup
@@ -241,6 +273,10 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                 ) : (
                   <SelectOption
                     prefixCls={`${prefixCls}-option`}
+                    onMouseEnter={() => {
+                      !node.disabled && setFocusedIndex(index)
+                    }}
+                    focused={focusedIndex === index}
                     option={node}
                     depth={node.depth}
                     titleRender={proxyTitleRender}
