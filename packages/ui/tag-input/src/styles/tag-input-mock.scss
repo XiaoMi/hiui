@@ -41,6 +41,8 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   }
 
   &--wrap {
+    height: auto;
+
     .#{$tag-input-mock-prefix}__value {
       height: auto;
     }
@@ -189,7 +191,10 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
   &--size {
     &-sm {
-      height: use-height-size(6);
+      &:not(.#{$tag-input-mock-prefix}--wrap) {
+        height: use-height-size(6);
+      }
+
       font-size: use-text-size('sm');
       line-height: use-text-lineheight('sm');
       border-radius: use-border-radius('normal');
@@ -204,7 +209,10 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     }
 
     &-md {
-      height: use-height-size(8);
+      &:not(.#{$tag-input-mock-prefix}--wrap) {
+        height: use-height-size(8);
+      }
+
       font-size: use-text-size('normal');
       line-height: use-text-lineheight('normal');
       border-radius: use-border-radius('normal');
@@ -212,7 +220,10 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     }
 
     &-lg {
-      height: use-height-size(10);
+      &:not(.#{$tag-input-mock-prefix}--wrap) {
+        height: use-height-size(10);
+      }
+
       font-size: use-text-size('lg');
       line-height: use-text-lineheight('lg');
       border-radius: use-border-radius('normal');

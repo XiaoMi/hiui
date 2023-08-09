@@ -13,7 +13,7 @@ import {
 } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
-import { TagInputMock } from '@hi-ui/tag-input'
+import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import VirtualList, { ListRef, useCheckInVirtual } from '@hi-ui/virtual-list'
 import { Picker, PickerProps } from '@hi-ui/picker'
@@ -73,6 +73,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       onSearch: onSearchProp,
       fieldNames = DEFAULT_FIELD_NAMES,
       customRender,
+      tagInputProps,
       onKeyDown: onKeyDownProp,
       ...rest
     },
@@ -296,6 +297,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
               )
             ) : (
               <TagInputMock
+                {...tagInputProps}
                 clearable={clearable}
                 placeholder={placeholder}
                 // @ts-ignore
@@ -480,6 +482,10 @@ export interface CheckSelectProps
    * 自定义渲染选中的内容
    */
   customRender?: React.ReactNode | ((option: CheckSelectItemEventData[]) => React.ReactNode)
+  /**
+   * TagInput 参数设置
+   */
+  tagInputProps?: TagInputMockProps
 }
 
 // @ts-ignore

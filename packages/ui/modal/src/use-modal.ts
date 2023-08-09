@@ -63,11 +63,12 @@ export const useModal = ({
 
   useEffect(() => {
     if (visible) {
-      returnFocusedElementRef.current = document.activeElement as HTMLElement
+      if (document.activeElement !== modalElement)
+        returnFocusedElementRef.current = document.activeElement as HTMLElement
     } else {
       onExitedLatest()
     }
-  }, [visible, onExitedLatest])
+  }, [visible, onExitedLatest, modalElement])
 
   const onRequestCloseLatest = useLatestCallback(onCloseProp)
 
