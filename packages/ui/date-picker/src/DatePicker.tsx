@@ -72,6 +72,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       size = 'md',
       overlay,
       invalid = false,
+      onClose,
       ...otherProps
     },
     ref
@@ -296,6 +297,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const onPopperClose = useCallback(() => {
       resetStatus()
+
       if (!isInDateRangeTimeMode) {
         const outDateValue = outDate[0]
         const isValid = moment(outDateValue).isValid()
@@ -310,7 +312,9 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       else {
         changeOutDate(cacheDate.current!.map((item) => item && item.clone()))
       }
-    }, [outDate, callback, min, max, resetStatus, changeOutDate, isInDateRangeTimeMode])
+
+      onClose?.()
+    }, [resetStatus, outDate, isInDateRangeTimeMode, onClose, max, min, callback, changeOutDate])
 
     const onClear = () => {
       resetStatus()
