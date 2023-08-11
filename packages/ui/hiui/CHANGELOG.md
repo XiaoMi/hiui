@@ -1,5 +1,28 @@
 # @hi-ui/hiui
 
+## 4.2.11
+
+### Patch Changes
+
+- [#2568](https://github.com/XiaoMi/hiui/pull/2568) [`07188e0d3`](https://github.com/XiaoMi/hiui/commit/07188e0d3106d5ed7b1da4e4fe60e0868481b33f) Thanks [@zyprepare](https://github.com/zyprepare)! - DatePicker feat: 增加 onClose API
+
+- [#2567](https://github.com/XiaoMi/hiui/pull/2567) [`bd5940eba`](https://github.com/XiaoMi/hiui/commit/bd5940eba7d7a80aa676f37bb804ea27544864d2) Thanks [@zyprepare](https://github.com/zyprepare)! - Select CheckSelect feat: 支持回车选中值
+
+- [#2531](https://github.com/XiaoMi/hiui/pull/2531) [`0a9d90ac5`](https://github.com/XiaoMi/hiui/commit/0a9d90ac53bdf66aa2b83b698b58d2cdeb98d912) Thanks [@zyprepare](https://github.com/zyprepare)! - - CheckSelect CheckCascader CheckTreeSelect feat: 增加 tagInputProps API,支持显示内容高度自适应
+
+  - Popper TagInput fix: 优化 wrap 模式下代码
+
+- [#2564](https://github.com/XiaoMi/hiui/pull/2564) [`eda80aaf9`](https://github.com/XiaoMi/hiui/commit/eda80aaf97bb536ff91321e36deccb3c195eb310) Thanks [@zyprepare](https://github.com/zyprepare)! - Modal fix: 修复键盘操作中按钮失焦问题
+
+- Updated dependencies [[`bd5940eba`](https://github.com/XiaoMi/hiui/commit/bd5940eba7d7a80aa676f37bb804ea27544864d2), [`0a9d90ac5`](https://github.com/XiaoMi/hiui/commit/0a9d90ac53bdf66aa2b83b698b58d2cdeb98d912), [`07188e0d3`](https://github.com/XiaoMi/hiui/commit/07188e0d3106d5ed7b1da4e4fe60e0868481b33f), [`eda80aaf9`](https://github.com/XiaoMi/hiui/commit/eda80aaf97bb536ff91321e36deccb3c195eb310)]:
+  - @hi-ui/check-select@4.2.0
+  - @hi-ui/picker@4.1.1
+  - @hi-ui/select@4.1.1
+  - @hi-ui/check-cascader@4.1.0
+  - @hi-ui/check-tree-select@4.2.0
+  - @hi-ui/date-picker@4.1.0
+  - @hi-ui/modal@4.0.11
+
 ## 4.2.10
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @hi-ui/date-picker
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2568](https://github.com/XiaoMi/hiui/pull/2568) [`07188e0d3`](https://github.com/XiaoMi/hiui/commit/07188e0d3106d5ed7b1da4e4fe60e0868481b33f) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 onClose API
+
+### Patch Changes
+
+- Updated dependencies [[`0a9d90ac5`](https://github.com/XiaoMi/hiui/commit/0a9d90ac53bdf66aa2b83b698b58d2cdeb98d912)]:
+  - @hi-ui/popper@4.0.5
+
 ## 4.0.18
 
 ### Patch Changes
