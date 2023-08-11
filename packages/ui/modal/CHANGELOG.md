@@ -1,5 +1,11 @@
 # @hi-ui/modal
 
+## 4.0.11
+
+### Patch Changes
+
+- [#2564](https://github.com/XiaoMi/hiui/pull/2564) [`eda80aaf9`](https://github.com/XiaoMi/hiui/commit/eda80aaf97bb536ff91321e36deccb3c195eb310) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复键盘操作中按钮失焦问题
+
 ## 4.0.10
 
 ### Patch Changes
