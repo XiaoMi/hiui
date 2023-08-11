@@ -12,7 +12,7 @@ import {
 } from './types'
 import { useCache } from '@hi-ui/use-cache'
 import { Picker, PickerProps } from '@hi-ui/picker'
-import { TagInputMock } from '@hi-ui/tag-input'
+import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { CheckCascaderMenuList } from './CheckCascaderMenuList'
 import {
   matchStrategy,
