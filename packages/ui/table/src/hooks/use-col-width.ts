@@ -14,12 +14,13 @@ export const useColWidth = ({
   columns: TableColumnItem[]
   virtual?: boolean
 }) => {
-  const [measureRowElement, setMeasureRowElement] = React.useState<Element | null>(null)
+  const measureRowElementRef = React.useRef<Element | null>(null)
   const [colWidths, setColWidths] = React.useState(() => {
     return getGroupItemWidth(columns)
   })
 
   const getVirtualWidths = useCallback(() => {
+    const measureRowElement = measureRowElementRef.current
     if (!measureRowElement) {
       return getGroupItemWidth(columns)
     }
@@ -32,6 +33,7 @@ export const useColWidth = ({
     columns.forEach((columnItem: TableColumnItem) => {
       totalWidth += columnItem.width || columnDefaultWidth
     })
+
     if (totalWidth < containerWidth) {
       // 容器宽度大于设置的宽度总和时，col宽度等比分分配占满容器。
       return columns.map((columnItem: TableColumnItem) => {
@@ -43,22 +45,26 @@ export const useColWidth = ({
         return columnItem.width || columnDefaultWidth
       })
     }
-  }, [measureRowElement, columns])
+  }, [columns])
 
   useUpdateEffect(() => {
     if (virtual) {
       // 虚拟滚动的计算需要根据容器来做分配，不能使用没有witdh默认设置为0的方式来做表格平均分配
       setColWidths(getVirtualWidths())
-    } else {
-      setColWidths(getGroupItemWidth(columns))
     }
-  }, [columns, getVirtualWidths, virtual])
+  }, [getVirtualWidths, virtual])
+
+  useUpdateEffect(() => {
+    setColWidths(getGroupItemWidth(columns))
+  }, [columns])
 
   /**
    * 根据实际内容区（table 的第一行）渲染，再次精确收集并设置每列宽度
    */
   React.useEffect(() => {
     let resizeObserver: ResizeObserver
+
+    const measureRowElement = measureRowElementRef.current
 
     if (measureRowElement) {
       const resizeObserver = new ResizeObserver(() => {
@@ -86,7 +92,7 @@ export const useColWidth = ({
       }
     }
     // 测量元素在内容列为空时会是空，切换会使测量元素变化，导致后续的resize时间无法响应,此处测量元素变化时需要重新绑定
-  }, [measureRowElement, virtual])
+  }, [getVirtualWidths, virtual])
 
   const [headerTableElement, setHeaderTableElement] = React.useState<HTMLTableElement | null>(null)
 
@@ -157,8 +163,7 @@ export const useColWidth = ({
   )
 
   return {
-    measureRowElement,
-    setMeasureRowElement,
+    measureRowElementRef,
     onColumnResizable,
     getColgroupProps,
     setHeaderTableElement,

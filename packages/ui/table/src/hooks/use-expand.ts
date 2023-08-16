@@ -60,7 +60,13 @@ export const useExpand = (
 
   const trySetTransitionData = useCallback(
     (data: FlattedTableRowData[], expandedIds: React.ReactText[]) => {
-      const nextData = flattenTreeDataWithExpand(data, expandedIds)
+      let nextData = data
+
+      // 当有 children 时，在构造新的数据，防止重复刷新组件
+      if (data.some((item) => !!item.children && item.children.length > 0)) {
+        nextData = flattenTreeDataWithExpand(data, expandedIds)
+      }
+
       setTransitionData(nextData)
     },
     []

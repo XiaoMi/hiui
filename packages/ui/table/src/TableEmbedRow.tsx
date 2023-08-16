@@ -21,7 +21,6 @@ export const TableEmbedRow = ({
     getEmbedPanelById,
     isEmbedLoadingId,
     onEmbedSwitch,
-    scrollBodyElementRef,
   } = useTableContext()
 
   const loading = isEmbedLoadingId(rowData.id)

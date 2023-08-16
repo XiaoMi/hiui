@@ -175,7 +175,7 @@ export const useTable = ({
 
   // ************************ 列宽 resizable ************************ //
 
-  const { setMeasureRowElement, getColgroupProps, onColumnResizable, colWidths } = useColWidth({
+  const { measureRowElementRef, getColgroupProps, onColumnResizable, colWidths } = useColWidth({
     data,
     columns,
     resizable,
@@ -364,17 +364,19 @@ export const useTable = ({
   const [scrollSize, setScrollSize] = useState({ scrollLeft: 0, scrollRight: 1 })
 
   useEffect(() => {
-    // 计算冻结列的宽度
-    // mutationObserver
-    const tableWidth = bodyTableRef.current?.getBoundingClientRect?.().width ?? 0
-    const tableBodyWidth = scrollBodyElementRef.current?.getBoundingClientRect?.().width ?? 0
-    const scrollRight = tableWidth - tableBodyWidth
-    // const scrollLeft = 0
+    if (leftFrozenColKeys.length > 0 || rightFrozenColKeys.length > 0) {
+      // 计算冻结列的宽度
+      // mutationObserver
+      const tableWidth = bodyTableRef.current?.getBoundingClientRect?.().width ?? 0
+      const tableBodyWidth = scrollBodyElementRef.current?.getBoundingClientRect?.().width ?? 0
+      const scrollRight = tableWidth - tableBodyWidth
+      // const scrollLeft = 0
 
-    setScrollSize((prev) => ({
-      scrollLeft: prev.scrollLeft,
-      scrollRight,
-    }))
+      setScrollSize((prev) => ({
+        scrollLeft: prev.scrollLeft,
+        scrollRight,
+      }))
+    }
   }, [leftFrozenColKeys, rightFrozenColKeys])
 
   // const canScroll = scrollSize.scrollRight > 0
@@ -528,7 +530,7 @@ export const useTable = ({
   //* *************** 根据排序列处理数据 ************** *//
 
   const showData = useMemo(() => {
-    let _data = cloneTree(transitionData)
+    let _data = [...transitionData]
 
     if (activeSorterColumn) {
       const sorter = columns.filter((d) => d.dataKey === activeSorterColumn)[0]?.sorter
@@ -547,6 +549,7 @@ export const useTable = ({
   }, [activeSorterColumn, activeSorterType, transitionData, columns])
 
   return {
+    measureRowElementRef,
     rootProps,
     scrollWidth,
     activeSorterColumn,
@@ -569,7 +572,6 @@ export const useTable = ({
     // 行多选
     rowSelection,
     cacheData,
-    setMeasureRowElement,
     leafColumns,
     // ui
     // 有表头分组那么也要 bordered
