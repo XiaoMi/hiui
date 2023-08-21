@@ -1,0 +1,29 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-resize-box' !default;
+
+.#{$prefix} {
+  display: flex;
+  box-sizing: border-box;
+  user-select: auto;
+
+  &-pane {
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  &-separator {
+    position: relative;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: use-text-size('sm');
+    color: use-color('gray', 600);
+    background-color: use-color('gray', 300);
+  }
+}

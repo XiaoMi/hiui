@@ -335,6 +335,8 @@ export const Basic = () => {
 
               { component: Icons.DownloadOutlined, tagName: 'DownloadOutlined' },
 
+              { component: Icons.DragDotOutlined, tagName: 'DragDotOutlined' },
+
               { component: Icons.EndDateOutlined, tagName: 'EndDateOutlined' },
 
               { component: Icons.ExportOutlined, tagName: 'ExportOutlined' },
