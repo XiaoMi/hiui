@@ -14,6 +14,8 @@ export const ResizeBoxPane = forwardRef<HTMLDivElement | null, ResizeBoxPaneProp
       children,
       defaultWidth,
       minWidth,
+      onResizeStart,
+      onResizeEnd,
       onResize,
       ...rest
     },
@@ -33,6 +35,8 @@ export interface ResizeBoxPaneProps extends HiBaseHTMLProps<'div'> {
   defaultWidth?: number
   width?: number
   minWidth?: number
+  onResizeStart?: () => void
+  onResizeEnd?: () => void
   onResize?: (width: number) => void
 }
 

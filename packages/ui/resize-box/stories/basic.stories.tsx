@@ -11,10 +11,30 @@ export const Basic = () => {
       <div className="resize-box-basic__wrap">
         <ResizeBox style={{ width: 600, height: 400, border: '1px solid #ddd' }}>
           <ResizeBoxPane defaultWidth={300} onResize={console.log}>
-            <div style={{ width: '100%', padding: '5px', overflow: 'auto' }}>left content</div>
+            <div
+              style={{
+                width: '100%',
+                overflow: 'auto',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              left content
+            </div>
           </ResizeBoxPane>
           <ResizeBoxPane>
-            <div style={{ width: '100%', padding: '5px' }}>right content</div>
+            <div
+              style={{
+                width: '100%',
+                overflow: 'auto',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              right content
+            </div>
           </ResizeBoxPane>
         </ResizeBox>
       </div>

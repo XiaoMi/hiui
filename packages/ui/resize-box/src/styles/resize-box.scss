@@ -15,15 +15,24 @@ $prefix: '#{$component-prefix}-resize-box' !default;
 
   &-separator {
     position: relative;
-    width: 6px;
     height: 100%;
+    padding: 0 2px;
     cursor: col-resize;
     flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: use-text-size('sm');
-    color: use-color('gray', 600);
-    background-color: use-color('gray', 300);
+
+    &-content {
+      width: 2px;
+      height: 100%;
+      background-color: use-color('gray', 300);
+    }
+
+    &:hover {
+      .#{$prefix}-separator-content {
+        background-color: use-color('brandblue', 300);
+      }
+    }
   }
 }

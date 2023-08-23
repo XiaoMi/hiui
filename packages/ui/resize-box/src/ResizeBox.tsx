@@ -17,8 +17,8 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
   ) => {
     const cls = cx(prefixCls, className)
 
-    const innerRef = React.useRef<Element | null>(null)
-    const mergedRef = useMergeRefs(ref, innerRef)
+    const containerRef = React.useRef<Element | null>(null)
+    const mergedRef = useMergeRefs(ref, containerRef)
 
     const [colWidths, tryChangeColWidths] = useUncontrolledState<number[]>([])
     const minColWidthsRef = React.useRef<number[]>([])
@@ -29,7 +29,7 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
      * 如果有设置最小宽度，则使用最小宽度，否则使用默认宽度的一半
      */
     const calcPaneWidth = React.useCallback(() => {
-      const container = innerRef.current
+      const container = containerRef.current
       const containerWidth = container?.getBoundingClientRect().width ?? 0
       const minColWidths: number[] = []
       let defaultColWidths: number[] = []
@@ -94,7 +94,7 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
           }
 
           const { type, props } = child
-          const { style, onResize, ...rest } = props
+          const { style, onResizeStart, onResizeEnd, onResize, ...rest } = props
 
           if (type !== ResizeBoxPane) {
             console.error('ResizeBox children must be ResizeBoxPane')
@@ -109,8 +109,13 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
                 handle={separator ?? <Separator />}
                 height={0}
                 width={colWidths[index] ?? 0}
-                onResize={(evt, options) => {
-                  const { width: resizedWidth } = options.size
+                onResizeStart={onResizeStart}
+                onResizeStop={onResizeEnd}
+                onResize={(evt, data) => {
+                  evt.stopPropagation()
+                  evt.preventDefault()
+
+                  const { width: resizedWidth } = data.size
 
                   tryChangeColWidths((prev) => {
                     const nextColWidths = [...prev]
@@ -160,8 +165,20 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
       )
     }, [children, colWidths, prefixCls, separator, tryChangeColWidths])
 
-    React.useEffect(() => {
-      calcPaneWidth()
+    React.useLayoutEffect(() => {
+      if (containerRef.current) {
+        calcPaneWidth()
+
+        const resizeObserver = new ResizeObserver(() => {
+          calcPaneWidth()
+        })
+
+        resizeObserver.observe(containerRef.current)
+
+        return () => {
+          resizeObserver.disconnect()
+        }
+      }
     }, [calcPaneWidth])
 
     return (
