@@ -6,12 +6,22 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { ResizeBoxPane, ResizeBoxPaneProps } from './ResizeBoxPane'
-import { Separator } from './Separator'
+import { Separator, SeparatorProps } from './Separator'
 
 const RESIZE_BOX_PREFIX = getPrefixCls('resize-box')
 
 export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
-  ({ prefixCls = RESIZE_BOX_PREFIX, role = 'resize-box', className, children, ...rest }, ref) => {
+  (
+    {
+      prefixCls = RESIZE_BOX_PREFIX,
+      role = 'resize-box',
+      className,
+      children,
+      separatorProps,
+      ...rest
+    },
+    ref
+  ) => {
     const cls = cx(prefixCls, className)
 
     const containerRef = React.useRef<Element | null>(null)
@@ -20,8 +30,6 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
     const [colWidths, tryChangeColWidths] = useUncontrolledState<number[]>([])
     const minColWidthsRef = React.useRef<number[]>([])
 
-    const startXRef = React.useRef<number>(0)
-    const movingXRef = React.useRef<number>(0)
     const draggableRef = React.useRef<boolean>(true)
 
     /**
@@ -107,12 +115,10 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
               <Resizable
                 className={`${prefixCls}__resizable`}
                 draggableOpts={{ enableUserSelectHack: false }}
-                handle={<Separator />}
+                handle={<Separator {...separatorProps} />}
                 height={0}
                 width={colWidths[index] ?? 0}
-                onResizeStart={(evt) => {
-                  // 记录开始拖拽时的鼠标位置
-                  startXRef.current = (evt as React.MouseEvent).clientX
+                onResizeStart={() => {
                   draggableRef.current = true
                   onResizeStart?.()
                 }}
@@ -125,16 +131,11 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
 
                   const { width: resizedWidth } = data.size
 
-                  // 记录拖拽时的鼠标位置
-                  movingXRef.current = mouseEvent.clientX
-
                   // 向左或向右拖动到最小宽度时禁止拖拽
                   if (
-                    (movingXRef.current - startXRef.current < 0 &&
-                      resizedWidth < minColWidthsRef.current[index]) ||
-                    (movingXRef.current - startXRef.current > 0 &&
-                      colWidths[index] + colWidths[index + 1] - resizedWidth <
-                        minColWidthsRef.current[index + 1])
+                    resizedWidth < minColWidthsRef.current[index] ||
+                    colWidths[index] + colWidths[index + 1] - resizedWidth <
+                      minColWidthsRef.current[index + 1]
                   ) {
                     draggableRef.current = false
                   }
@@ -187,7 +188,7 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
           }
         }
       )
-    }, [children, colWidths, prefixCls, tryChangeColWidths])
+    }, [children, colWidths, prefixCls, separatorProps, tryChangeColWidths])
 
     React.useLayoutEffect(() => {
       if (containerRef.current) {
@@ -213,7 +214,9 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
   }
 )
 
-export interface ResizeBoxProps extends HiBaseHTMLProps<'div'> {}
+export interface ResizeBoxProps extends HiBaseHTMLProps<'div'> {
+  separatorProps?: SeparatorProps
+}
 
 if (__DEV__) {
   ResizeBox.displayName = 'ResizeBox'
