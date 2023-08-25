@@ -1,0 +1,38 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-resize-box' !default;
+
+.#{$prefix} {
+  display: flex;
+  box-sizing: border-box;
+  user-select: auto;
+
+  &-pane {
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  &-separator {
+    position: relative;
+    height: 100%;
+    padding: 0 2px;
+    cursor: col-resize;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-content {
+      width: 2px;
+      height: 100%;
+      background-color: use-color('gray', 300);
+    }
+
+    &:hover {
+      .#{$prefix}-separator-content {
+        background-color: use-color('brandblue', 300);
+      }
+    }
+  }
+}
