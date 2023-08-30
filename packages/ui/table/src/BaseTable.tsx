@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
@@ -13,6 +13,9 @@ import { TableProvider } from './context'
 import { checkNeedTotalOrEvg, getTotalOrEvgRowData, uuid } from './utils'
 import { useTable, UseTableProps } from './use-table'
 import { useEmbedExpand, UseEmbedExpandProps } from './hooks/use-embed-expand'
+import { TheadContent } from './TheadContent'
+import { ColGroupContent } from './ColGroupContent'
+import { TbodyContent } from './TbodyContent'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
@@ -31,13 +34,11 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       data = DEFAULT_DATA,
       striped = false,
       bordered: borderedProp,
-      // 内嵌面板
       rowExpandable,
       defaultExpandedEmbedRowKeys,
       expandedEmbedRowKeys,
       onEmbedExpand,
       expandedRender,
-      // 其它
       size,
       extra,
       onRow,
@@ -47,12 +48,12 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       fixedColumnTrigger = 'auto',
       emptyContent,
       virtual,
+      needDoubleTable,
       ...rest
     },
     ref
   ) => {
     // ********************** 内嵌式面板 *********************** //
-
     const {
       embedExpandable,
       onEmbedSwitch,
@@ -117,38 +118,52 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
     const i18n = useLocaleContext()
 
-    // 确保包含 avg 属性，且值为数字类型的字符串
-    const avgRow = { id: 'avg', raw: { key: 'avg' } }
-    let hasAvgColumn = false
+    const { avgRow, hasAvgColumn } = useMemo(() => {
+      // 确保包含 avg 属性，且值为数字类型的字符串
+      const avgRow = { id: 'avg', raw: { key: 'avg' } }
+      let hasAvgColumn = false
 
-    columns.forEach((column, index) => {
-      if (index === 0) {
-        // @ts-ignore
-        avgRow.raw[column.dataKey] = i18n.get('table.average')
-      }
-      if (checkNeedTotalOrEvg(data, column, 'avg')) {
-        hasAvgColumn = true
-        // @ts-ignore
-        avgRow.raw[column.dataKey] = getTotalOrEvgRowData(data, column, true)
-      }
-    })
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          // @ts-ignore
+          avgRow.raw[column.dataKey] = i18n.get('table.average')
+        }
+        if (checkNeedTotalOrEvg(data, column, 'avg')) {
+          hasAvgColumn = true
+          // @ts-ignore
+          avgRow.raw[column.dataKey] = getTotalOrEvgRowData(data, column, true)
+        }
+      })
 
-    // 确保包含total属性，且值为数字类型的字符串
-    const sumRow = { id: 'sum', raw: { key: 'sum' } }
-    let hasSumColumn = false
+      return {
+        avgRow,
+        hasAvgColumn,
+      }
+    }, [columns, data, i18n])
 
-    columns.forEach((column, index) => {
-      if (index === 0) {
-        // @ts-ignore
-        sumRow.raw[column.dataKey] = i18n.get('table.total')
+    const { sumRow, hasSumColumn } = useMemo(() => {
+      // 确保包含total属性，且值为数字类型的字符串
+      const sumRow = { id: 'sum', raw: { key: 'sum' } }
+      let hasSumColumn = false
+
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          // @ts-ignore
+          sumRow.raw[column.dataKey] = i18n.get('table.total')
+        }
+        if (checkNeedTotalOrEvg(data, column, 'total')) {
+          hasSumColumn = true
+          // 获取当前数据最大小数点个数，并设置最后总和值小数点
+          // @ts-ignore
+          sumRow.raw[column.dataKey] = getTotalOrEvgRowData(data, column, false)
+        }
+      })
+
+      return {
+        sumRow,
+        hasSumColumn,
       }
-      if (checkNeedTotalOrEvg(data, column, 'total')) {
-        hasSumColumn = true
-        // 获取当前数据最大小数点个数，并设置最后总和值小数点
-        // @ts-ignore
-        sumRow.raw[column.dataKey] = getTotalOrEvgRowData(data, column, false)
-      }
-    })
+    }, [columns, data, i18n])
 
     const providedValue = useTable({
       ...rest,
@@ -166,6 +181,11 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       rightFixedColumnsWidth,
       scrollSize,
       getTableHeaderProps,
+      scrollBodyElementRef,
+      onTableBodyScroll,
+      canScroll,
+      bodyTableRef,
+      scrollWidth,
     } = providedValue
 
     const hasBorder = borderedProp ?? bordered
@@ -174,6 +194,80 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     const extraFooter = extra && extra.footer
 
     const alwaysFixedColumn = fixedColumnTrigger === 'always'
+
+    const renderTable = () => {
+      return needDoubleTable ? (
+        <>
+          {/* 双表格 */}
+          <div {...getTableHeaderProps()}>
+            <TableHeader />
+
+            {/* 不跟随内部 header 横向滚动，固定到右侧 */}
+            {extraHeader ? (
+              <div style={{ position: 'absolute', right: 0, zIndex: 11, bottom: 0, top: 0 }}>
+                {extraHeader}
+              </div>
+            ) : null}
+          </div>
+
+          <TableBody emptyContent={emptyContent} />
+        </>
+      ) : (
+        <div
+          ref={scrollBodyElementRef}
+          className={`${prefixCls}-content`}
+          onScroll={onTableBodyScroll}
+          style={{
+            // 表格宽度大于div宽度才出现横向滚动条
+            overflowX: canScroll ? 'scroll' : undefined,
+          }}
+        >
+          <table
+            ref={bodyTableRef}
+            style={{ width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%' }}
+          >
+            <ColGroupContent />
+            <TheadContent />
+            <TbodyContent emptyContent={emptyContent} />
+          </table>
+        </div>
+      )
+    }
+
+    const renderFreezeShadow = () => {
+      return (
+        <>
+          {(alwaysFixedColumn || scrollSize.scrollLeft > 0) && leftFrozenColKeys.length > 0 ? (
+            <div
+              className={`${prefixCls}-freeze-shadow  ${prefixCls}-freeze-shadow--left`}
+              style={{ width: leftFixedColumnsWidth + 'px' }}
+            />
+          ) : null}
+          {(alwaysFixedColumn || scrollSize.scrollRight > 0) && rightFrozenColKeys.length > 0 ? (
+            <div
+              className={`${prefixCls}-freeze-shadow ${prefixCls}-freeze-shadow--right`}
+              style={{ width: rightFixedColumnsWidth + 'px' }}
+            />
+          ) : null}
+        </>
+      )
+    }
+
+    const tableFooter = (
+      <div
+        className={`${prefixCls}-footer`}
+        style={
+          stickyFooter
+            ? {
+                position: 'sticky',
+                bottom: stickyFooterBottom,
+              }
+            : undefined
+        }
+      >
+        {extraFooter}
+      </div>
+    )
 
     const cls = cx(
       prefixCls,
@@ -205,50 +299,12 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               virtual,
             }}
           >
-            <div {...getTableHeaderProps()}>
-              <TableHeader prefixCls={`${prefixCls}-header`} />
-
-              {/* 不跟随内部 header 横向滚动，固定到右侧 */}
-              {extraHeader ? (
-                <div style={{ position: 'absolute', right: 0, zIndex: 11, bottom: 0, top: 0 }}>
-                  {extraHeader}
-                </div>
-              ) : null}
-            </div>
-
-            <TableBody prefixCls={prefixCls} emptyContent={emptyContent} />
+            {renderTable()}
           </TableProvider>
 
-          {/* 左冻结列内侧阴影效果 */}
-          {(alwaysFixedColumn || scrollSize.scrollLeft > 0) && leftFrozenColKeys.length > 0 ? (
-            <div
-              className={`${prefixCls}-freeze-shadow  ${prefixCls}-freeze-shadow--left`}
-              style={{ width: leftFixedColumnsWidth + 'px' }}
-            />
-          ) : null}
-
-          {/* 右冻结列内侧阴影效果 */}
-          {(alwaysFixedColumn || scrollSize.scrollRight > 0) && rightFrozenColKeys.length > 0 ? (
-            <div
-              className={`${prefixCls}-freeze-shadow ${prefixCls}-freeze-shadow--right`}
-              style={{ width: rightFixedColumnsWidth + 'px' }}
-            />
-          ) : null}
+          {renderFreezeShadow()}
         </div>
-        <div
-          className={`${prefixCls}-footer`}
-          style={
-            stickyFooter
-              ? {
-                  position: 'sticky',
-                  bottom: stickyFooterBottom,
-                  // boxShadow: '0 5px 15px 0 rgba(0, 0, 0, 0.1)'
-                }
-              : undefined
-          }
-        >
-          {extraFooter}
-        </div>
+        {tableFooter}
       </div>
     )
   }
@@ -295,6 +351,10 @@ export interface BaseTableProps
    * 自定义冻结列触发展示行为
    */
   fixedColumnTrigger?: 'auto' | 'always'
+  /**
+   * 是否需要使用双表格
+   */
+  needDoubleTable?: boolean
 }
 
 if (__DEV__) {
