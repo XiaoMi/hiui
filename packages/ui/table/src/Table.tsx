@@ -26,6 +26,12 @@ import { useColSet } from './hooks/use-col-set'
 
 const _prefix = getPrefixCls('table')
 
+/**
+ * 需要使用双表格的场景对应的 API
+ * 这些场景下的功能无法通过单表格实现，故而设计成双表格，即表头和表体分别用一个 table 实现
+ */
+const DOUBLE_TABLE_SCENE = ['maxHeight', 'sticky', 'stickyTop', 'setting', 'virtual'] as const
+
 const STANDARD_PRESET = {
   striped: true,
   bordered: true,
@@ -65,13 +71,16 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       fieldKey = 'key',
       extra,
       data = DEFAULT_DATA,
-      virtual,
       ...rest
     },
     ref
   ) => {
-    // ************************ 预置标准模式 ************************ //
+    // 是否需要双表格
+    const needDoubleTable = DOUBLE_TABLE_SCENE.some((prop) => !!rest[prop])
 
+    const virtual = rest.virtual
+
+    // ************************ 预置标准模式 ************************ //
     const tableProps = withDefaultProps(rest, standard ? STANDARD_PRESET : undefined)
     const { setting = false, ...baseTableProps } = tableProps
 
@@ -319,6 +328,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           data={mergedData}
           fieldKey={fieldKey}
           virtual={virtual}
+          needDoubleTable={needDoubleTable}
           extra={{
             header: setting ? (
               <TableSettingMenu

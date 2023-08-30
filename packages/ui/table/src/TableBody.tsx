@@ -4,10 +4,11 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
-import { EmptyState } from '@hi-ui/empty-state'
 import { TableRow } from './TableRow'
 import { TableRowRequiredProps } from './types'
 import { useTableContext } from './context'
+import { ColGroupContent } from './ColGroupContent'
+import { TbodyContent, renderEmptyContent } from './TbodyContent'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -16,10 +17,8 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
   ({ prefixCls = _prefix, emptyContent }, ref) => {
     const {
       columns,
-      leafColumns,
       isExpandTreeRows,
       transitionData,
-      getColgroupProps,
       bodyTableRef,
       scrollBodyElementRef,
       onTableBodyScroll,
@@ -27,10 +26,6 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       maxHeight,
       canScroll,
       scrollWidth,
-      hasAvgColumn,
-      avgRow,
-      hasSumColumn,
-      sumRow,
       colWidths,
       virtual,
       measureRowElementRef,
@@ -152,63 +147,8 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
           ref={bodyTableRef}
           style={{ width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%' }}
         >
-          <colgroup>
-            {leafColumns.map((col: any, idx) => {
-              return (
-                <col key={idx} className={`${prefixCls}-col`} {...getColgroupProps(col, idx)} />
-              )
-            })}
-          </colgroup>
-          <tbody>
-            {isArrayNonEmpty(transitionData) ? (
-              <>
-                {transitionData.map((row, index) => {
-                  return (
-                    <TableRow
-                      ref={index === 0 ? measureRowElementRef : null}
-                      // key={depth + index}
-                      key={row.id}
-                      // @ts-ignore
-                      rowIndex={index}
-                      rowData={row}
-                      // expandedTree={isExpandTreeRows(row.id)}
-                      {...getRequiredProps(row.id)}
-                    />
-                  )
-                })}
-                {hasSumColumn ? (
-                  <TableRow
-                    key={sumRow.id}
-                    rowIndex={transitionData.length}
-                    rowData={sumRow as any}
-                    isSumRow
-                  />
-                ) : null}
-                {hasAvgColumn ? (
-                  <TableRow
-                    key={avgRow.id}
-                    rowIndex={transitionData.length + 1}
-                    rowData={avgRow as any}
-                    isAvgRow
-                  />
-                ) : null}
-              </>
-            ) : (
-              // 空状态，colSpan 占满表格整行
-              renderEmptyContent({
-                className: `${prefixCls}-empty-content`,
-                colSpan: columns.length,
-                emptyContent,
-                ...(scrollBodyElementRef.current
-                  ? {
-                      scrollBodyWidth: window
-                        .getComputedStyle(scrollBodyElementRef.current)
-                        .getPropertyValue('width'),
-                    }
-                  : {}),
-              })
-            )}
-          </tbody>
+          <ColGroupContent />
+          <TbodyContent />
         </table>
       </div>
     )
@@ -228,36 +168,4 @@ export interface TableBodyProps {
 
 if (__DEV__) {
   TableBody.displayName = 'TableBody'
-}
-
-/**
- * 负责空状态渲染
- */
-const renderEmptyContent = ({
-  className,
-  colSpan,
-  emptyContent,
-  scrollBodyWidth,
-}: {
-  colSpan?: number
-  className?: string
-  emptyContent: React.ReactNode
-  scrollBodyWidth?: number | string
-}) => {
-  return (
-    <tr className={className}>
-      <td colSpan={colSpan}>
-        <div
-          style={{
-            position: 'sticky',
-            left: 0,
-            width: scrollBodyWidth ?? '100%',
-            overflow: 'hidden',
-          }}
-        >
-          {emptyContent || <EmptyState />}
-        </div>
-      </td>
-    </tr>
-  )
 }

@@ -222,6 +222,14 @@ export const useTable = ({
     leftFixedColumnsWidth,
     rightFixedColumnsWidth,
   } = React.useMemo(() => {
+    if (!leftFreezeColumn && !rightFreezeColumn) {
+      return {
+        leftFrozenColKeys: [],
+        rightFrozenColKeys: [],
+        columns: mergedColumns2,
+      }
+    }
+
     const leftFrozenColKey = leftFreezeColumn
     const rightFrozenKey = rightFreezeColumn
 
@@ -467,14 +475,16 @@ export const useTable = ({
     return mergedColumns1.filter((col) => !isArrayNonEmpty(col.children))
   }, [mergedColumns1])
 
-  const groupedColumns = mergedColumns1.reduce((acc, cur) => {
-    const depth = cur.depth
-    if (!acc[depth]) {
-      acc[depth] = []
-    }
-    acc[depth].push(cur)
-    return acc
-  }, [] as FlattedTableColumnItemData[][])
+  const groupedColumns = React.useMemo(() => {
+    return mergedColumns1.reduce((acc, cur) => {
+      const depth = cur.depth
+      if (!acc[depth]) {
+        acc[depth] = []
+      }
+      acc[depth].push(cur)
+      return acc
+    }, [] as FlattedTableColumnItemData[][])
+  }, [mergedColumns1])
 
   const getStickyColProps = useLatestCallback((column) => {
     const { rightStickyWidth, leftStickyWidth, align } = column
