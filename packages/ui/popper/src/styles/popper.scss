@@ -130,7 +130,103 @@ $prefix: '#{$component-prefix}-popper' !default;
     box-sizing: border-box;
   }
 
-  &--motion {
+  &--motion-scaleX {
+    &-enter {
+      .#{$prefix}__container {
+        opacity: 0;
+        transform: scale(0, 1);
+      }
+    }
+
+    &-enter-active {
+      .#{$prefix}__container {
+        opacity: 1;
+        transform: scale(1, 1);
+      }
+    }
+
+    &-enter-done {
+      .#{$prefix}__container {
+        opacity: 1;
+        transform: scale(1, 1);
+      }
+    }
+
+    &-exit {
+      .#{$prefix}__container {
+        opacity: 1;
+        transform: scale(1, 1) translateX(100%);
+      }
+    }
+
+    &-exit-active {
+      .#{$prefix}__container {
+        opacity: 0;
+        transform: scale(0, 1);
+      }
+    }
+
+    &-exit-done {
+      // 即使保留dom，但是需要 hidden 不可点击
+      visibility: hidden;
+
+      .#{$prefix}__container {
+        opacity: 0;
+        transform: scale(0, 1);
+        transition-property: none;
+      }
+    }
+  }
+
+  &--motion-scaleY {
+    &-enter {
+      .#{$prefix}__container {
+        opacity: 0;
+        transform: scale(1, 0);
+      }
+    }
+
+    &-enter-active {
+      .#{$prefix}__container {
+        opacity: 1;
+        transform: scale(1, 1);
+      }
+    }
+
+    &-enter-done {
+      .#{$prefix}__container {
+        opacity: 1;
+        transform: scale(1, 1);
+      }
+    }
+
+    &-exit {
+      .#{$prefix}__container {
+        opacity: 1;
+        transform: scale(1, 1) translateX(100%);
+      }
+    }
+
+    &-exit-active {
+      .#{$prefix}__container {
+        opacity: 0;
+        transform: scale(1, 0);
+      }
+    }
+
+    &-exit-done {
+      // 即使保留dom，但是需要 hidden 不可点击
+      visibility: hidden;
+
+      .#{$prefix}__container {
+        opacity: 0;
+        transform: scale(1, 0);
+        transition-property: none;
+      }
+    }
+  }
+
+  &--motion-scale {
     &-enter {
       .#{$prefix}__container {
         opacity: 0;

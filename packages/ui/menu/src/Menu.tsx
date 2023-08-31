@@ -58,6 +58,8 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       overlayClassName,
       onCollapse,
       footerRender,
+      render,
+      extraHeader,
       onClick,
       ...rest
     },
@@ -234,6 +236,8 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     return (
       <div ref={useMergeRefs(ref, setContainerElement)} role={role} className={cls} {...rest}>
+        {extraHeader}
+
         <MenuContext.Provider
           value={{
             placement,
@@ -260,6 +264,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
                 <MenuItem
                   hidden={!showVertical && index >= tagMaxCount}
                   {...item}
+                  render={render}
                   key={item.id}
                   level={1}
                   raw={item}
@@ -355,6 +360,14 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
    * 底部渲染器
    */
   footerRender?: (props: MenuFooterRenderProps) => React.ReactNode
+  /**
+   * 自定义渲染菜单项
+   */
+  render?: (menuItem: MenuDataItem) => React.ReactNode
+  /**
+   * 额外的头部内容
+   */
+  extraHeader?: React.ReactNode
 }
 
 if (__DEV__) {
@@ -365,10 +378,6 @@ if (__DEV__) {
  * Mini 模式下渲染 item
  */
 const renderMenuItemMini = (menu: MenuDataItem) => {
-  // if (typeof menu.icon !== 'undefined') {
-  //   return menu.icon
-  // }
-
   if (typeof menu.title === 'string') {
     return menu.title.substring(0, 1)
   }

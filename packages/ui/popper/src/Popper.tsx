@@ -50,6 +50,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       onExited,
       // portal
       container,
+      animationType = 'scale',
       disabledPortal = false,
       ...rest
     },
@@ -116,7 +117,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
     return (
       <Portal container={container} disabled={disabledPortal}>
         <CSSTransition
-          classNames={`${prefixCls}--motion`}
+          classNames={`${prefixCls}--motion-${animationType}`}
           in={transitionVisible}
           appear
           // @DesignToken
@@ -181,6 +182,10 @@ export interface PopperProps extends HiBaseHTMLProps<'div'>, UsePopperProps {
    * 指定 portal 的容器
    */
   container?: (() => HTMLElement | null) | HTMLElement | null
+  /**
+   * 动画类型
+   */
+  animationType?: 'scale' | 'scaleX' | 'scaleY'
 }
 
 if (__DEV__) {
