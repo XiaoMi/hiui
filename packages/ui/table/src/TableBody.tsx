@@ -17,7 +17,6 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
     const {
       columns,
       leafColumns,
-      setMeasureRowElement,
       isExpandTreeRows,
       transitionData,
       getColgroupProps,
@@ -34,6 +33,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       sumRow,
       colWidths,
       virtual,
+      measureRowElementRef,
     } = useTableContext()
 
     const cls = cx(`${prefixCls}-body`)
@@ -53,8 +53,6 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
     )
 
     const [scrollLeft, setScrollLeft] = useState(0)
-    // 是否使用虚拟滚动
-    const showVirtual = virtual && isArrayNonEmpty(transitionData)
     const rowWidth = useMemo(() => {
       let tmpWidth = 0
       colWidths.forEach((width) => (tmpWidth += width))
@@ -68,7 +66,8 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       },
       [scrollBodyElementRef, onTableBodyScroll]
     )
-    if (showVirtual) {
+
+    if (virtual) {
       // TODO： avg和summay row的逻辑
 
       const realHeight = scrollBodyElementRef.current?.getBoundingClientRect().height
@@ -90,39 +89,49 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             overflowX: canScroll ? 'scroll' : undefined,
           }}
         >
-          <div
-            ref={(domElement) => {
-              setMeasureRowElement(domElement)
-            }}
-            style={{ height: 1, background: 'transparent' }}
-          ></div>
+          <div ref={measureRowElementRef} style={{ height: 1, background: 'transparent' }}></div>
           <div
             ref={bodyTableRef}
             style={{ height: 1, background: 'transparent', width: rowWidth }}
           ></div>
-          <div style={{ width: '100%', position: 'sticky', left: 0 }}>
-            <VirtualList
-              data={transitionData}
-              height={vMaxHeight}
-              itemHeight={10}
-              itemKey="id"
-              children={(row, index) => {
-                return (
-                  <div style={{ position: 'relative', left: -scrollLeft }}>
-                    <TableRow
-                      // key={depth + index}
-                      key={row.id}
-                      // @ts-ignore
-                      rowIndex={index}
-                      rowData={row}
-                      // expandedTree={isExpandTreeRows(row.id)}
-                      {...getRequiredProps(row.id)}
-                    />
-                  </div>
-                )
-              }}
-            />
-          </div>
+          {isArrayNonEmpty(transitionData) ? (
+            <div style={{ width: '100%', position: 'sticky', left: 0 }}>
+              <VirtualList
+                data={transitionData}
+                height={vMaxHeight}
+                itemHeight={10}
+                itemKey="id"
+                children={(row, index) => {
+                  return (
+                    <div style={{ position: 'relative', left: -scrollLeft }}>
+                      <TableRow
+                        // key={depth + index}
+                        key={row.id}
+                        // @ts-ignore
+                        rowIndex={index}
+                        rowData={row}
+                        // expandedTree={isExpandTreeRows(row.id)}
+                        {...getRequiredProps(row.id)}
+                      />
+                    </div>
+                  )
+                }}
+              />
+            </div>
+          ) : (
+            renderEmptyContent({
+              className: `${prefixCls}-empty-content`,
+              colSpan: columns.length,
+              emptyContent,
+              ...(scrollBodyElementRef.current
+                ? {
+                    scrollBodyWidth: window
+                      .getComputedStyle(scrollBodyElementRef.current)
+                      .getPropertyValue('width'),
+                  }
+                : {}),
+            })
+          )}
         </div>
       )
     }
@@ -156,11 +165,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                 {transitionData.map((row, index) => {
                   return (
                     <TableRow
-                      ref={(dom) => {
-                        if (index === 0) {
-                          setMeasureRowElement(dom)
-                        }
-                      }}
+                      ref={index === 0 ? measureRowElementRef : null}
                       // key={depth + index}
                       key={row.id}
                       // @ts-ignore
