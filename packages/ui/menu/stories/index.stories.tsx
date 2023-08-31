@@ -9,6 +9,7 @@ export * from './fat.stories'
 export * from './vertical-fat.stories'
 export * from './expand-all.stories'
 export * from './footer-render.stories'
+export * from './render.stories'
 
 export default {
   title: 'Navigation/Menu',

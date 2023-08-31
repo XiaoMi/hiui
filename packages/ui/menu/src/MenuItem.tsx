@@ -164,6 +164,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                     level={level + 1}
                     parentIds={_parentIds}
                     raw={child}
+                    render={render}
                   />
                 ))}
               </ul>
@@ -199,6 +200,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                       level={level + 1}
                       parentIds={_parentIds}
                       raw={child}
+                      render={render}
                     />
                   )
                 })}
@@ -226,6 +228,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                     level={level + 1}
                     parentIds={_parentIds}
                     raw={child}
+                    render={render}
                   />
                 ))}
               </ul>
@@ -257,6 +260,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                     level={level + 1}
                     parentIds={_parentIds}
                     raw={child}
+                    render={render}
                   />
                 ))}
               </ul>
@@ -283,6 +287,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                     level={level + 1}
                     parentIds={_parentIds}
                     raw={child}
+                    render={render}
                   />
                 ))}
               </ul>
@@ -360,6 +365,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                     level={level + 1}
                     parentIds={_parentIds}
                     raw={child}
+                    render={render}
                   />
                 ))}
               </ul>
@@ -386,6 +392,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                     level={level + 1}
                     parentIds={_parentIds}
                     raw={child}
+                    render={render}
                   />
                 ))}
               </ul>
