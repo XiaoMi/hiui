@@ -139,8 +139,8 @@ export { default as Radio } from '@hi-ui/radio'
 export * from '@hi-ui/rating'
 export { default as Rating } from '@hi-ui/rating'
 
-export * from '@hi-ui/resize-box'
-export { default as ResizeBox } from '@hi-ui/resize-box'
+// export * from '@hi-ui/resize-box'
+// export { default as ResizeBox } from '@hi-ui/resize-box'
 
 export * from '@hi-ui/result'
 export { default as Result } from '@hi-ui/result'
