@@ -127,7 +127,7 @@ $prefix: '#{$component-prefix}-menu' !default;
       color: use-color('gray', 500);
       margin-inline-end: use-spacing(4);
 
-      svg[class^=hi-v4-icon] {
+      svg[class^='hi-v4-icon'] {
         font-size: use-text-size('lg');
       }
     }
@@ -274,17 +274,11 @@ $prefix: '#{$component-prefix}-menu' !default;
     .#{$prefix}-item {
       &__inner {
         box-sizing: border-box;
-        height: 40px;
         display: flex;
         align-items: center;
-        margin-bottom: use-spacing(4);
         padding: 0 use-spacing(4) 0 use-spacing(6);
         border-radius: use-border-radius('normal');
         transition: all 0.3s;
-
-        // &--mini {
-        //   justify-content: center;
-        // }
 
         &--active {
           color: use-color-mode('primary');
@@ -314,6 +308,33 @@ $prefix: '#{$component-prefix}-menu' !default;
         text-overflow: ellipsis;
         white-space: nowrap;
         text-indent: 0.5px;
+      }
+    }
+  }
+
+  &--size-lg {
+    .#{$prefix}-item {
+      &__inner {
+        height: use-height-size(10);
+        margin-bottom: use-spacing(4);
+      }
+    }
+  }
+
+  &--size-md {
+    .#{$prefix}-item {
+      &__inner {
+        height: use-height-size(9);
+        margin-bottom: use-spacing(2);
+      }
+    }
+  }
+
+  &--size-sm {
+    .#{$prefix}-item {
+      &__inner {
+        height: use-height-size(8);
+        margin-bottom: use-spacing(1);
       }
     }
   }

@@ -2,14 +2,14 @@ import React, { useRef, useContext, forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { DownOutlined, UpOutlined, RightOutlined } from '@hi-ui/icons'
-import MenuContext from './context'
 import Popper from '@hi-ui/popper'
-import { Expander } from './Expander'
 import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
 import { times } from '@hi-ui/array-utils'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { MenuDataItem } from './types'
+import MenuContext from './context'
+import { Expander } from './Expander'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -35,6 +35,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
       hidden = false,
       render,
       raw,
+      size = 'lg',
       ...rest
     },
     ref
@@ -165,6 +166,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                     parentIds={_parentIds}
                     raw={child}
                     render={render}
+                    size={size}
                   />
                 ))}
               </ul>
@@ -191,7 +193,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                 }
               }}
             >
-              <ul className={`${prefixCls}-popmenu`}>
+              <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
                 {children!.map((child) => {
                   return (
                     <MenuItem
@@ -201,6 +203,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                       parentIds={_parentIds}
                       raw={child}
                       render={render}
+                      size={size}
                     />
                   )
                 })}
@@ -220,7 +223,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                 }
               }}
             >
-              <ul className={`${prefixCls}-popmenu`}>
+              <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
                 {children!.map((child) => (
                   <MenuItem
                     {...child}
@@ -229,6 +232,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                     parentIds={_parentIds}
                     raw={child}
                     render={render}
+                    size={size}
                   />
                 ))}
               </ul>
@@ -252,7 +256,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                 }
               }}
             >
-              <ul className={`${prefixCls}-popmenu`}>
+              <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
                 {children!.map((child) => (
                   <MenuItem
                     {...child}
@@ -261,6 +265,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                     parentIds={_parentIds}
                     raw={child}
                     render={render}
+                    size={size}
                   />
                 ))}
               </ul>
@@ -279,7 +284,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                 }
               }}
             >
-              <ul className={`${prefixCls}-popmenu`}>
+              <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
                 {children!.map((child) => (
                   <MenuItem
                     {...child}
@@ -288,6 +293,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                     parentIds={_parentIds}
                     raw={child}
                     render={render}
+                    size={size}
                   />
                 ))}
               </ul>
@@ -357,7 +363,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                 }
               }}
             >
-              <ul className={`${prefixCls}-popmenu`}>
+              <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
                 {children!.map((child) => (
                   <MenuItem
                     {...child}
@@ -366,6 +372,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                     parentIds={_parentIds}
                     raw={child}
                     render={render}
+                    size={size}
                   />
                 ))}
               </ul>
@@ -384,7 +391,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                 }
               }}
             >
-              <ul className={`${prefixCls}-popmenu`}>
+              <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
                 {children!.map((child) => (
                   <MenuItem
                     {...child}
@@ -393,6 +400,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                     parentIds={_parentIds}
                     raw={child}
                     render={render}
+                    size={size}
                   />
                 ))}
               </ul>
@@ -460,6 +468,7 @@ export interface MenuItemProps extends Omit<HiBaseHTMLProps<'li'>, 'id'> {
   parentIds?: React.ReactText[]
   render?: (node: MenuDataItem) => React.ReactNode
   raw?: MenuDataItem
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {

@@ -9,12 +9,8 @@ import React, {
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
-import { MenuItem } from './MenuItem'
-import MenuContext from './context'
-import { getAncestorIds } from './util'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps } from '@hi-ui/core'
-import { MenuDataItem, MenuFooterRenderProps } from './types'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import Tooltip from '@hi-ui/tooltip'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { getTreeNodesWithChildren } from '@hi-ui/tree-utils'
@@ -22,6 +18,10 @@ import { isFunction, isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { useResizeObserver } from '@hi-ui/use-resize-observer'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { uuid } from '@hi-ui/use-id'
+import { MenuDataItem, MenuFooterRenderProps } from './types'
+import { MenuItem } from './MenuItem'
+import MenuContext from './context'
+import { getAncestorIds } from './util'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -61,6 +61,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       render,
       extraHeader,
       onClick,
+      size = 'lg',
       ...rest
     },
     ref
@@ -230,6 +231,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       prefixCls,
       className,
       `${prefixCls}--${placement}`,
+      `${prefixCls}--size-${size}`,
       mini && `${prefixCls}--mini`,
       (expandedType === 'pop' || showAllSubMenus || mini) && `${prefixCls}--popup`
     )
@@ -258,7 +260,13 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
             {mergedTagList.map((item, index) => {
               return showMini ? (
                 <Tooltip title={item.title} key={item.id} placement="right">
-                  <MenuItem {...item} level={1} render={renderMenuItemMini} raw={item} />
+                  <MenuItem
+                    {...item}
+                    level={1}
+                    render={renderMenuItemMini}
+                    raw={item}
+                    size={size}
+                  />
                 </Tooltip>
               ) : (
                 <MenuItem
@@ -268,6 +276,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
                   key={item.id}
                   level={1}
                   raw={item}
+                  size={size}
                 />
               )
             })}
@@ -368,6 +377,10 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
    * 额外的头部内容
    */
   extraHeader?: React.ReactNode
+  /**
+   * 设置菜单项的尺寸
+   */
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {
