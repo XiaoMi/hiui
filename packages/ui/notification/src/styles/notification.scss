@@ -12,7 +12,6 @@ $prefix: '#{$component-prefix}-notification' !default;
   position: relative;
   box-sizing: border-box;
   width: 360px;
-  padding: use-spacing(10);
   margin: use-spacing(8);
   border-radius: use-border-radius('lg');
   pointer-events: auto;
@@ -20,6 +19,18 @@ $prefix: '#{$component-prefix}-notification' !default;
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
   background-color: use-color-static('white');
+
+  &--size-lg {
+    padding: use-spacing(10);
+  }
+
+  &--size-md {
+    padding: use-spacing(8);
+  }
+
+  &--size-sm {
+    padding: use-spacing(6);
+  }
 
   &__header {
     display: flex;
@@ -30,20 +41,45 @@ $prefix: '#{$component-prefix}-notification' !default;
   }
 
   &__content {
-    margin-top: use-spacing(4);
-    padding: 0 use-spacing(7) 0 use-spacing(18);
     word-break: break-word;
     color: use-color('gray', 600);
+
+    .#{$prefix}--size-lg & {
+      margin-top: use-spacing(4);
+      padding: 0 0 0 use-spacing(16);
+    }
+
+    .#{$prefix}--size-md & {
+      margin-top: use-spacing(3);
+      padding: 0 0 0 use-spacing(15);
+    }
+
+    .#{$prefix}--size-sm & {
+      margin-top: use-spacing(2);
+      padding: 0 0 0 use-spacing(14);
+    }
   }
 
   &__icon {
     display: flex;
     align-items: center;
-    margin-right: use-spacing(6);
-    font-size: use-text-size('xxl');
+
+    .#{$prefix}--size-lg & {
+      margin-right: use-spacing(6);
+    }
+
+    .#{$prefix}--size-md & {
+      margin-right: use-spacing(5);
+    }
+
+    .#{$prefix}--size-sm & {
+      margin-right: use-spacing(4);
+    }
 
     svg {
       flex-shrink: 0;
+      width: use-height-size(5);
+      height: use-height-size(5);
     }
   }
 
@@ -127,13 +163,38 @@ $prefix: '#{$component-prefix}-notification' !default;
 
   &__close {
     position: absolute;
-    top: use-spacing(10);
-    right: use-spacing(10);
+    line-height: 0;
+
+    .#{$prefix}--size-lg & {
+      top: use-spacing(10);
+      right: use-spacing(10);
+    }
+
+    .#{$prefix}--size-md & {
+      top: use-spacing(8);
+      right: use-spacing(8);
+    }
+
+    .#{$prefix}--size-sm & {
+      top: use-spacing(6);
+      right: use-spacing(6);
+    }
   }
 
   &__footer {
     display: flex;
     justify-content: flex-end;
-    margin-top: use-spacing(10);
+
+    .#{$prefix}--size-lg & {
+      margin-top: use-spacing(10);
+    }
+
+    .#{$prefix}--size-md & {
+      margin-top: use-spacing(8);
+    }
+
+    .#{$prefix}--size-sm & {
+      margin-top: use-spacing(6);
+    }
   }
 }

@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
 import { IconButton } from '@hi-ui/icon-button'
 import {
@@ -41,6 +41,7 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
       type = 'info',
       action,
       destroy,
+      size = 'lg',
       onClose,
       ...rest
     },
@@ -87,7 +88,7 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
       })
     }, [])
 
-    const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`)
+    const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`, `${prefixCls}--size-${size}`)
 
     return (
       <CSSTransition
@@ -111,12 +112,9 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
             {content ? <div className={`${prefixCls}__content`}>{content}</div> : null}
             {action ? <div className={`${prefixCls}__footer`}>{action}</div> : null}
             {closable ? (
-              <IconButton
-                className={`${prefixCls}__close`}
-                effect
-                icon={<CloseOutlined />}
-                onClick={requestClose}
-              />
+              <div className={`${prefixCls}__close`}>
+                <IconButton effect icon={<CloseOutlined />} onClick={requestClose} />
+              </div>
             ) : null}
           </div>
         </div>
@@ -172,6 +170,10 @@ export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>
    * 操作配置
    */
   action?: React.ReactNode
+  /**
+   * 通知框尺寸
+   */
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {
