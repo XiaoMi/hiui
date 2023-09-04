@@ -1,5 +1,16 @@
 # @hi-ui/table
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2572](https://github.com/XiaoMi/hiui/pull/2572) [`eee5e6d16`](https://github.com/XiaoMi/hiui/commit/eee5e6d1658685a6119b5aa40038c572145b3b4e) Thanks [@zyprepare](https://github.com/zyprepare)! - perf: 表格性能优化
+
+- Updated dependencies [[`937052db3`](https://github.com/XiaoMi/hiui/commit/937052db36ecfa50fef53df13d159bee0d08fa41), [`ccb1eec12`](https://github.com/XiaoMi/hiui/commit/ccb1eec122a33466536b365d443f175d1e16dc86), [`eee5e6d16`](https://github.com/XiaoMi/hiui/commit/eee5e6d1658685a6119b5aa40038c572145b3b4e)]:
+  - @hi-ui/icons@4.0.14
+  - @hi-ui/popper@4.1.0
+  - @hi-ui/tree-utils@4.1.1
+
 ## 4.1.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/icons
 
+## 4.0.14
+
+### Patch Changes
+
+- [#2573](https://github.com/XiaoMi/hiui/pull/2573) [`937052db3`](https://github.com/XiaoMi/hiui/commit/937052db36ecfa50fef53df13d159bee0d08fa41) Thanks [@zyprepare](https://github.com/zyprepare)! - 增加 DragDot 图标
+
 ## 4.0.11
 
 ### Patch Changes

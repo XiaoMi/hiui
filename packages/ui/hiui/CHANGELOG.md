@@ -1,5 +1,22 @@
 # @hi-ui/hiui
 
+## 4.2.12
+
+### Patch Changes
+
+- [#2577](https://github.com/XiaoMi/hiui/pull/2577) [`2f094567e`](https://github.com/XiaoMi/hiui/commit/2f094567e678235e75ff5c443dce1ee09c3bd115) Thanks [@zyprepare](https://github.com/zyprepare)! - Menu feat: 增加 size API
+
+- [#2578](https://github.com/XiaoMi/hiui/pull/2578) [`2df756409`](https://github.com/XiaoMi/hiui/commit/2df75640961d51f269df60e4dde1ee5c8751430d) Thanks [@zyprepare](https://github.com/zyprepare)! - Notification feat: 增加 size API
+
+- [#2577](https://github.com/XiaoMi/hiui/pull/2577) [`2f094567e`](https://github.com/XiaoMi/hiui/commit/2f094567e678235e75ff5c443dce1ee09c3bd115) Thanks [@zyprepare](https://github.com/zyprepare)! - Menu feat: 增加 render 和 extraHeader API
+
+- [#2572](https://github.com/XiaoMi/hiui/pull/2572) [`eee5e6d16`](https://github.com/XiaoMi/hiui/commit/eee5e6d1658685a6119b5aa40038c572145b3b4e) Thanks [@zyprepare](https://github.com/zyprepare)! - Table perf: 表格性能优化
+
+- Updated dependencies [[`2df756409`](https://github.com/XiaoMi/hiui/commit/2df75640961d51f269df60e4dde1ee5c8751430d), [`eee5e6d16`](https://github.com/XiaoMi/hiui/commit/eee5e6d1658685a6119b5aa40038c572145b3b4e), [`ccb1eec12`](https://github.com/XiaoMi/hiui/commit/ccb1eec122a33466536b365d443f175d1e16dc86), [`2f094567e`](https://github.com/XiaoMi/hiui/commit/2f094567e678235e75ff5c443dce1ee09c3bd115)]:
+  - @hi-ui/notification@4.1.0
+  - @hi-ui/table@4.1.2
+  - @hi-ui/menu@4.1.0
+
 ## 4.2.11
 
 ### Patch Changes
