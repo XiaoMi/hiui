@@ -14,7 +14,7 @@ export const useColWidth = ({
   columns: TableColumnItem[]
   virtual?: boolean
 }) => {
-  const measureRowElementRef = React.useRef<Element | null>(null)
+  const measureRowElementRef = React.useRef<HTMLTableRowElement | null>(null)
   const [colWidths, setColWidths] = React.useState(() => {
     return getGroupItemWidth(columns)
   })
