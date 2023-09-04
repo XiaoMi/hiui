@@ -1,5 +1,20 @@
 # @hi-ui/menu
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2576](https://github.com/XiaoMi/hiui/pull/2576) [`ccb1eec12`](https://github.com/XiaoMi/hiui/commit/ccb1eec122a33466536b365d443f175d1e16dc86) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 render 和 extraHeader API
+
+- [#2577](https://github.com/XiaoMi/hiui/pull/2577) [`2f094567e`](https://github.com/XiaoMi/hiui/commit/2f094567e678235e75ff5c443dce1ee09c3bd115) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 size API
+
+### Patch Changes
+
+- Updated dependencies [[`937052db3`](https://github.com/XiaoMi/hiui/commit/937052db36ecfa50fef53df13d159bee0d08fa41), [`ccb1eec12`](https://github.com/XiaoMi/hiui/commit/ccb1eec122a33466536b365d443f175d1e16dc86), [`eee5e6d16`](https://github.com/XiaoMi/hiui/commit/eee5e6d1658685a6119b5aa40038c572145b3b4e)]:
+  - @hi-ui/icons@4.0.14
+  - @hi-ui/popper@4.1.0
+  - @hi-ui/tree-utils@4.1.1
+
 ## 4.0.9
 
 ### Patch Changes

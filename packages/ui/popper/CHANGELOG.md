@@ -1,5 +1,11 @@
 # @hi-ui/popper
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2576](https://github.com/XiaoMi/hiui/pull/2576) [`ccb1eec12`](https://github.com/XiaoMi/hiui/commit/ccb1eec122a33466536b365d443f175d1e16dc86) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 animationType API
+
 ## 4.0.5
 
 ### Patch Changes
