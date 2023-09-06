@@ -21,26 +21,32 @@ $prefix: '#{$component-prefix}-tree' !default;
       width: 38px;
     }
 
-    .#{$prefix}-action-btn {
-      position: relative;
-      color: use-color('gray', 800);
+    .#{$prefix}-action-wrap {
       transition: opacity 0.3s;
       opacity: 0;
       visibility: hidden;
 
-      &:hover {
-        color: use-color-mode('primary');
-      }
-
       &--visible {
         visibility: visible;
         opacity: 1;
+
+        .#{$prefix}-action-btn {
+          color: use-color-mode('primary');
+        }
+      }
+    }
+
+    .#{$prefix}-action-btn {
+      position: relative;
+      color: use-color('gray', 800);
+
+      &:hover {
         color: use-color-mode('primary');
       }
     }
 
     .#{$prefix}-node:hover {
-      .#{$prefix}-action-btn {
+      .#{$prefix}-action-wrap {
         visibility: visible;
         opacity: 1;
       }

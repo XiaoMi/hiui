@@ -1,6 +1,14 @@
 import React, { useState, useCallback, useMemo, useRef, forwardRef } from 'react'
 import { __DEV__ } from '@hi-ui/env'
 import { cx } from '@hi-ui/classname'
+import { useOutsideClick } from '@hi-ui/use-outside-click'
+import { useMergeRefs } from '@hi-ui/use-merge-refs'
+import { useToggle, UseToggleAction } from '@hi-ui/use-toggle'
+import { useLatestRef } from '@hi-ui/use-latest'
+import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
+import Input from '@hi-ui/input'
+import Popper from '@hi-ui/popper'
+import { CheckOutlined, CloseOutlined } from '@hi-ui/icons'
 import { TreeProps, Tree, treePrefix } from './Tree'
 import {
   FlattedTreeNodeData,
@@ -9,20 +17,12 @@ import {
   TreeDataStatus,
   TreeMenuActionOption,
   TreeNodeEventData,
+  TreeEditActions,
 } from './types'
 import { useEdit, useCache, useExpandProps } from './hooks'
 import { flattenTreeData } from './utils'
-import Input from '@hi-ui/input'
-import { useOutsideClick } from '@hi-ui/use-outside-click'
-import { useMergeRefs } from '@hi-ui/use-merge-refs'
-import { useToggle, UseToggleAction } from '@hi-ui/use-toggle'
-import { useLatestRef } from '@hi-ui/use-latest'
-import Popper from '@hi-ui/popper'
-import { CheckOutlined, CloseOutlined } from '@hi-ui/icons'
-// import Button from '@hi-ui/button'
 import { IconButton } from './IconButton'
 import { defaultActionIcon } from './icons'
-import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
 
 import './styles/editable-tree.scss'
 
@@ -73,6 +73,7 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
     menuOptions,
     editPlaceholder: placeholder,
     fieldNames,
+    actionRender,
     ...nativeTreeProps
   } = props
   const [treeData, setTreeData] = useCache(data)
@@ -118,6 +119,7 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
         expandedIds={expandedIds}
         focusTree={focusTree}
         onExpand={tryToggleExpandedIds}
+        actionRender={actionRender}
       />
     )
   }
@@ -185,10 +187,14 @@ export interface EditableTreeProps extends TreeProps {
    * 输入框占位符
    */
   editPlaceholder?: string
+  /**
+   * 自定义可编辑树操作项
+   */
+  actionRender?: (node: FlattedTreeNodeData, editActions: TreeEditActions) => React.ReactNode
 }
 
 const EditableTreeNodeTitle = (props: EditableTreeNodeTitleProps) => {
-  const { prefixCls, node, title } = props
+  const { prefixCls, node, title, actionRender } = props
 
   // 如果是添加节点，则进入节点编辑临时态
   const [editing, editingAction] = useToggle(() => node.raw.type === TreeNodeType.ADD || false)
@@ -200,7 +206,7 @@ const EditableTreeNodeTitle = (props: EditableTreeNodeTitleProps) => {
   return (
     <div className={`${prefixCls}__title`}>
       <span className={`${prefixCls}__title-text`}>{title || node.title}</span>
-      <EditableNodeMenu {...props} editingAction={editingAction} />
+      <EditableNodeMenu {...props} editingAction={editingAction} actionRender={actionRender} />
     </div>
   )
 }
@@ -219,6 +225,7 @@ interface EditableTreeNodeTitleProps {
   placeholder?: string
   menuOptions?: TreeMenuActionOption[] | ((node: FlattedTreeNodeData) => TreeMenuActionOption[])
   focusTree: () => void
+  actionRender?: (node: FlattedTreeNodeData, editActions: TreeEditActions) => React.ReactNode | null
 }
 
 const EditableNodeMenu = (props: EditableNodeMenuProps) => {
@@ -232,6 +239,7 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
     expandedIds,
     onExpand,
     menuOptions: menuOptionsProp,
+    actionRender,
   } = props
 
   const [menuVisible, menuVisibleAction] = useToggle(false)
@@ -269,6 +277,9 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
       menuVisibleAction.off()
       addSiblingNode(node)
     },
+    openMenu: () => {
+      menuVisibleAction.on()
+    },
     closeMenu: () => {
       menuVisibleAction.off()
     },
@@ -297,44 +308,54 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
   if (!isArrayNonEmpty(menuOptions)) return null
 
   return (
-    <>
-      <IconButton
-        tabIndex={-1}
-        className={cx(`${prefixCls}-action-btn`, menuVisible && `${prefixCls}-action-btn--visible`)}
-        // ref={useMergeRefs(setTargetElRef, setTargetEl)}
-        ref={setTargetElRef}
-        icon={defaultActionIcon}
-        onClick={(evt) => {
-          // 阻止冒泡，避免触发节点选中
-          evt.stopPropagation()
-          menuVisibleAction.not()
-        }}
-      />
-      <Popper
-        crossGap={8}
-        className={`${prefixCls}__popper`}
-        placement="bottom-end"
-        visible={!!menuOptions && menuVisible}
-        onClose={menuVisibleAction.off}
-        attachEl={targetElRef}
-      >
-        <ul className={`${prefixCls}-action`}>
-          {menuOptions.map((option, idx) => (
-            <li
-              key={idx}
-              className={`${prefixCls}-action__item`}
-              onClick={(evt) => {
-                // 阻止冒泡，避免触发节点选中
-                evt.stopPropagation()
-                handleMenuClick(node, option)
-              }}
-            >
-              {option.title}
-            </li>
-          ))}
-        </ul>
-      </Popper>
-    </>
+    <div
+      className={cx(`${prefixCls}-action-wrap`, menuVisible && `${prefixCls}-action-wrap--visible`)}
+      onClick={(evt) => {
+        // 阻止冒泡，避免触发节点选中
+        evt.stopPropagation()
+      }}
+    >
+      {isFunction(actionRender) ? (
+        actionRender(node, menuActionsRef.current)
+      ) : (
+        <>
+          <IconButton
+            tabIndex={-1}
+            className={cx(`${prefixCls}-action-btn`)}
+            // ref={useMergeRefs(setTargetElRef, setTargetEl)}
+            ref={setTargetElRef}
+            icon={defaultActionIcon}
+            onClick={() => {
+              menuVisibleAction.not()
+            }}
+          />
+          <Popper
+            crossGap={8}
+            className={`${prefixCls}__popper`}
+            placement="bottom-end"
+            visible={!!menuOptions && menuVisible}
+            onClose={menuVisibleAction.off}
+            attachEl={targetElRef}
+          >
+            <ul className={`${prefixCls}-action`}>
+              {menuOptions.map((option, idx) => (
+                <li
+                  key={idx}
+                  className={`${prefixCls}-action__item`}
+                  onClick={(evt) => {
+                    // 阻止冒泡，避免触发节点选中
+                    evt.stopPropagation()
+                    handleMenuClick(node, option)
+                  }}
+                >
+                  {option.title}
+                </li>
+              ))}
+            </ul>
+          </Popper>
+        </>
+      )}
+    </div>
   )
 }
 
