@@ -14,9 +14,9 @@ export interface ListDataItem {
    */
   extra?: React.ReactNode
   /**
-   * 左侧图片资源地址
+   * 左侧图片
    */
-  avatar?: string
+  avatar?: React.ReactNode
   /**
    * 右侧操作项
    */

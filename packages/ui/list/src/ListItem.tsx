@@ -20,7 +20,7 @@ export const ListItem: React.FC<ListItemProps> = ({
     <div className={cx(`${prefixCls}-item`, className)}>
       {avatar && (
         <div className={`${prefixCls}-item__avatar`} key="avatar">
-          <img src={avatar} />
+          {typeof avatar === 'string' ? <img src={avatar} /> : avatar}
         </div>
       )}
       <div className={`${prefixCls}-item__content`}>
