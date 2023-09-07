@@ -6,7 +6,6 @@ $prefix: '#{$component-prefix}-alert' !default;
   $alert-icon-size: 20px;
 
   position: relative;
-  padding: use-spacing(6) use-spacing(10);
   border-radius: use-border-radius('lg');
   font-size: use-text-size('normal');
   color: use-color('gray', 600);
@@ -17,24 +16,79 @@ $prefix: '#{$component-prefix}-alert' !default;
   box-sizing: border-box;
 
   &.#{$prefix}--with-content {
-    padding: use-spacing(10);
-
     .#{$prefix}__title {
       font-size: use-text-size('lg');
-      font-weight: use-text-weight('medium');
-      margin-bottom: use-spacing(4);
+      font-weight: use-text-weight('semibold');
     }
 
     .#{$prefix}__icon {
       font-size: $alert-icon-size;
-      margin-inline-end: use-spacing(6);
+    }
+  }
+
+  &--size-lg {
+    padding: use-spacing(6) use-spacing(8);
+
+    &.#{$prefix}--with-content {
+      padding: use-spacing(10);
+
+      .#{$prefix}__title {
+        margin-bottom: use-spacing(4);
+      }
+
+      .#{$prefix}__icon {
+        margin-inline-end: use-spacing(6);
+      }
+    }
+  }
+
+  &--size-md {
+    padding: use-spacing(5) use-spacing(6);
+
+    &.#{$prefix}--with-content {
+      padding: use-spacing(8);
+
+      .#{$prefix}__title {
+        margin-bottom: use-spacing(3);
+      }
+
+      .#{$prefix}__icon {
+        margin-inline-end: use-spacing(5);
+      }
+    }
+  }
+
+  &--size-sm {
+    padding: use-spacing(4);
+
+    &.#{$prefix}--with-content {
+      padding: use-spacing(6);
+
+      .#{$prefix}__title {
+        margin-bottom: use-spacing(3);
+      }
+
+      .#{$prefix}__icon {
+        margin-inline-end: use-spacing(4);
+      }
     }
   }
 
   &__icon {
     font-size: use-text-size('lg');
-    margin-inline-end: use-spacing(4);
     flex-shrink: 0;
+
+    .#{$prefix}--size-lg & {
+      margin-inline-end: use-spacing(5);
+    }
+
+    .#{$prefix}--size-md & {
+      margin-inline-end: use-spacing(4);
+    }
+
+    .#{$prefix}--size-sm & {
+      margin-inline-end: use-spacing(3);
+    }
   }
 
   &__message {

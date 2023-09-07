@@ -3,14 +3,23 @@ import Alert from '../src'
 import Button from '@hi-ui/button'
 
 /**
- * @title 带内容
- * @desc 反馈给用户的信息较多，需要用户阅读更详细
+ * @title 基础用法
+ * @desc 根据用户的操作进行页面级或模块、区块级的提示
  */
-export const Content = () => {
+export const Size = () => {
   return (
     <>
-      <h1>带内容</h1>
-      <div className="alert-basic__wrap">
+      <h1>Size</h1>
+      <div className="alert-size__wrap">
+        <h2>lg</h2>
+        <Alert
+          type="primary"
+          title="信息提示的文案"
+          onClose={() => {
+            console.log('alert关闭回调')
+          }}
+        />
+        <br />
         <Alert
           type="primary"
           title="信息提示的文案"
@@ -26,14 +35,24 @@ export const Content = () => {
             console.log('alert关闭回调')
           }}
         />
+        <h2>md</h2>
+        <Alert
+          type="primary"
+          size={'md'}
+          title="信息提示的文案"
+          onClose={() => {
+            console.log('alert关闭回调')
+          }}
+        />
         <br />
         <Alert
-          type="success"
-          title="成功提示的文案"
+          type="primary"
+          size={'md'}
+          title="信息提示的文案"
           content={
             <span style={{ display: 'flex', justifyContent: 'space-between', marginRight: -24 }}>
               <span>文字说明文字说明文字说明</span>
-              <Button type="success" appearance="link">
+              <Button type="secondary" appearance="link">
                 操作按钮
               </Button>
             </span>
@@ -42,30 +61,26 @@ export const Content = () => {
             console.log('alert关闭回调')
           }}
         />
-        <br />
+        <h2>sm</h2>
         <Alert
-          type="danger"
-          title="错误提示的文案"
-          content={
-            <span style={{ display: 'flex', justifyContent: 'space-between', marginRight: -24 }}>
-              <span>文字说明文字说明文字说明</span>
-              <Button type="danger" appearance="link">
-                操作按钮
-              </Button>
-            </span>
-          }
+          type="primary"
+          size={'sm'}
+          title="信息提示的文案"
           onClose={() => {
             console.log('alert关闭回调')
           }}
         />
         <br />
         <Alert
-          type="warning"
-          title="警示提示的文案"
+          type="primary"
+          size={'sm'}
+          title="信息提示的文案"
           content={
             <span style={{ display: 'flex', justifyContent: 'space-between', marginRight: -24 }}>
               <span>文字说明文字说明文字说明</span>
-              <Button appearance="link">操作按钮</Button>
+              <Button type="secondary" appearance="link">
+                操作按钮
+              </Button>
             </span>
           }
           onClose={() => {
