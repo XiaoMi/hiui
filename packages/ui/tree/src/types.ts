@@ -146,6 +146,10 @@ export type TreeEditActions = {
    */
   deleteNode: () => void
   /**
+   * 执行打开菜单操作
+   */
+  openMenu: () => void
+  /**
    * 执行关闭菜单操作
    */
   closeMenu: () => void
