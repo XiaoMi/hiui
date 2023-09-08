@@ -1,5 +1,11 @@
 # @hi-ui/tree
 
+## 4.5.0
+
+### Minor Changes
+
+- [#2582](https://github.com/XiaoMi/hiui/pull/2582) [`8205d3394`](https://github.com/XiaoMi/hiui/commit/8205d33946b744192ff55cb5e8d35bb0f772c876) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 actionRender API
+
 ## 4.4.0
 
 ### Minor Changes

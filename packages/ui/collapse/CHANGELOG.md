@@ -1,5 +1,11 @@
 # @hi-ui/collapse
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2585](https://github.com/XiaoMi/hiui/pull/2585) [`c817f38ec`](https://github.com/XiaoMi/hiui/commit/c817f38ec6e526c8ea5c644154fd1a020b800305) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 完善 size API,增加 sm 尺寸
+
 ## 4.1.1
 
 ### Patch Changes

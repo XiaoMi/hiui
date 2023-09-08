@@ -1,5 +1,23 @@
 # @hi-ui/hiui
 
+## 4.2.13
+
+### Patch Changes
+
+- [#2585](https://github.com/XiaoMi/hiui/pull/2585) [`c817f38ec`](https://github.com/XiaoMi/hiui/commit/c817f38ec6e526c8ea5c644154fd1a020b800305) Thanks [@zyprepare](https://github.com/zyprepare)! - Collapse feat: 完善 size API,增加 sm 尺寸
+
+- [#2584](https://github.com/XiaoMi/hiui/pull/2584) [`4dc2094d4`](https://github.com/XiaoMi/hiui/commit/4dc2094d43cc39ab2cdeb0c10b62866d83f8ad05) Thanks [@zyprepare](https://github.com/zyprepare)! - Alert feat: add size api
+
+- [#2582](https://github.com/XiaoMi/hiui/pull/2582) [`8205d3394`](https://github.com/XiaoMi/hiui/commit/8205d33946b744192ff55cb5e8d35bb0f772c876) Thanks [@zyprepare](https://github.com/zyprepare)! - Tree feat: 增加 actionRender API
+
+- [#2583](https://github.com/XiaoMi/hiui/pull/2583) [`2d1e50c5e`](https://github.com/XiaoMi/hiui/commit/2d1e50c5e8c4b93de2dcc53f259651247e42448d) Thanks [@zyprepare](https://github.com/zyprepare)! - List feat: avatar 支持传入 ReactNode
+
+- Updated dependencies [[`8205d3394`](https://github.com/XiaoMi/hiui/commit/8205d33946b744192ff55cb5e8d35bb0f772c876), [`4dc2094d4`](https://github.com/XiaoMi/hiui/commit/4dc2094d43cc39ab2cdeb0c10b62866d83f8ad05), [`2d1e50c5e`](https://github.com/XiaoMi/hiui/commit/2d1e50c5e8c4b93de2dcc53f259651247e42448d), [`c817f38ec`](https://github.com/XiaoMi/hiui/commit/c817f38ec6e526c8ea5c644154fd1a020b800305)]:
+  - @hi-ui/tree@4.5.0
+  - @hi-ui/alert@4.1.0
+  - @hi-ui/list@4.0.9
+  - @hi-ui/collapse@4.1.2
+
 ## 4.2.12
 
 ### Patch Changes
