@@ -1,7 +1,7 @@
 import React, { forwardRef, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 
 import { AlertTypeEnum } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -32,6 +32,7 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
       closeIcon = defaultCloseIcon,
       // duration小于 0，表示不开启自动关闭
       duration = -1,
+      size = 'lg',
       onClose,
       ...rest
     },
@@ -62,7 +63,8 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
       prefixCls,
       className,
       suffixIcon && `${prefixCls}--type-${type}`,
-      content && `${prefixCls}--with-content`
+      content && `${prefixCls}--with-content`,
+      size && `${prefixCls}--size-${size}`
     )
 
     return internalVisible ? (
@@ -115,6 +117,10 @@ export interface AlertProps extends HiBaseHTMLProps<'div'> {
    * @version 4.0.0
    */
   showIcon?: boolean
+  /**
+   * 设置尺寸
+   */
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {
