@@ -70,17 +70,18 @@ export const useColWidth = ({
       const resizeObserver = new ResizeObserver(() => {
         if (virtual) {
           setColWidths(getVirtualWidths())
-        } else {
-          if (measureRowElement.childNodes) {
-            const _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node) => {
-              return (node as HTMLElement).getBoundingClientRect().width || 0
-            })
-
-            if (_realColumnsWidth.some((width) => width && width > 0)) {
-              setColWidths(_realColumnsWidth)
-            }
-          }
         }
+        // else {
+        //   if (measureRowElement.childNodes) {
+        //     const _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node) => {
+        //       return (node as HTMLElement).getBoundingClientRect().width || 0
+        //     })
+
+        //     if (_realColumnsWidth.some((width) => width && width > 0)) {
+        //       setColWidths(_realColumnsWidth)
+        //     }
+        //   }
+        // }
       })
 
       resizeObserver.observe(measureRowElement)
