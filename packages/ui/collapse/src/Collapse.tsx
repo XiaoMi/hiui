@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { CollapseProvider, CollapseContext } from './context'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 
 const _role = 'collapse'
 const _prefix = getPrefixCls(_role)
@@ -131,7 +131,7 @@ export interface CollapseProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置头部大小
    */
-  size?: 'md' | 'lg'
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {

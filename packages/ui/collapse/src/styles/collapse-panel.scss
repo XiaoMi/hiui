@@ -12,9 +12,20 @@ $icon-class: #{$panel-prefix}__icon !default;
   &::after {
     content: '';
     display: block;
-    margin: 1px 20px;
     box-sizing: border-box;
     border-bottom: 1px solid use-color('gray', 200);
+
+    .#{$component-prefix}-collapse--size-sm & {
+      margin: 1px use-spacing(6);
+    }
+
+    .#{$component-prefix}-collapse--size-md & {
+      margin: 1px use-spacing(8);
+    }
+
+    .#{$component-prefix}-collapse--size-lg & {
+      margin: 1px use-spacing(10);
+    }
   }
 
   &:last-of-type {
@@ -35,15 +46,21 @@ $icon-class: #{$panel-prefix}__icon !default;
     display: flex;
     align-items: center;
     color: use-color('gray', 700);
-    font-weight: use-text-weight('semibold');
     cursor: pointer;
 
+    .#{$component-prefix}-collapse--size-sm & {
+      padding: use-spacing(5) use-spacing(6);
+      font-weight: use-text-weight('medium');
+    }
+
     .#{$component-prefix}-collapse--size-md & {
-      padding: use-spacing(7) use-spacing(10);
+      padding: use-spacing(7) use-spacing(8);
+      font-weight: use-text-weight('medium');
     }
 
     .#{$component-prefix}-collapse--size-lg & {
       padding: use-spacing(8) use-spacing(10);
+      font-weight: use-text-weight('semibold');
     }
 
     &:focus {
@@ -98,8 +115,19 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__content {
-    padding: 0 use-spacing(10) use-spacing(10);
     color: use-color('gray', 700);
+
+    .#{$component-prefix}-collapse--size-sm & {
+      padding: 0 use-spacing(6) use-spacing(6);
+    }
+
+    .#{$component-prefix}-collapse--size-md & {
+      padding: 0 use-spacing(8) use-spacing(8);
+    }
+
+    .#{$component-prefix}-collapse--size-lg & {
+      padding: 0 use-spacing(10) use-spacing(10);
+    }
   }
 
   &--show {
