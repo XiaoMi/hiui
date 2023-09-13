@@ -101,7 +101,7 @@ function replaceStory(content, componentName) {
   content = content.replace('../src', `@hi-ui/${componentName.toLowerCase()}`)
   // `export const Avatar = () => {}`
   // 转化为：`export default () => {}`
-  content = content.replace(/export\sconst\s\w+\s=/, `export default`)
+  // content = content.replace(/export\sconst\s\w+\s=/, `export default`)
 
   return content
 }
