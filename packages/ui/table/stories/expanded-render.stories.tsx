@@ -93,7 +93,7 @@ export const ExpandedRender = () => {
         <Table
           fixedToColumn={{ left: 'type' }}
           columns={columns}
-          expandedRender={(row, index) => {
+          expandedRender={() => {
             return (
               <div style={{ backgroundColor: '#fff', padding: 24, textAlign: 'center' }}>
                 此处是自定义展开渲染内容

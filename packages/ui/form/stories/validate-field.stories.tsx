@@ -1,4 +1,3 @@
-/* eslint-disable node/no-callback-literal */
 import React from 'react'
 import Form, { FormHelpers } from '../src'
 import Input from '@hi-ui/input'
@@ -70,9 +69,9 @@ export const ValidateField = () => {
                   const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
 
                   if (!value) {
-                    callback('请输入手机号')
+                    callback(new Error('请输入手机号'))
                   } else if (!telReg.test(value)) {
-                    callback('请输入正确的手机号')
+                    callback(new Error('请输入正确的手机号'))
                   } else {
                     callback()
                   }
@@ -94,9 +93,9 @@ export const ValidateField = () => {
                     validator: (rule, value, callback) => {
                       const telReg = /^[0-9]{6}$/
                       if (!value) {
-                        callback('请输入手机号')
+                        callback(new Error('请输入手机号'))
                       } else if (!telReg.test(value)) {
-                        callback('请输入正确的验证码')
+                        callback(new Error('请输入正确的验证码'))
                       } else {
                         callback()
                       }
@@ -135,9 +134,9 @@ export const ValidateField = () => {
                 validator: (rule, value, callback) => {
                   const telReg = /^(?![^a-zA-Z]+$)(?!\D+$).{8,16}$/
                   if (!value) {
-                    callback('请输入密码')
+                    callback(new Error('请输入密码'))
                   } else if (!telReg.test(value)) {
-                    callback('请输入包括数字和字母、长度8到16位的密码组合')
+                    callback(new Error('请输入包括数字和字母、长度8到16位的密码组合'))
                   } else {
                     callback()
                   }
@@ -159,7 +158,7 @@ export const ValidateField = () => {
                   console.log(value, formData.password)
 
                   if (value !== formData.password) {
-                    callback('两次密码不同')
+                    callback(new Error('两次密码不同'))
                   } else {
                     callback()
                   }

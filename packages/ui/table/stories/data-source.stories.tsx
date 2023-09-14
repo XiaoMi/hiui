@@ -21,7 +21,7 @@ export const DataSource = () => {
         url: 'https://mife-gallery.test.mi.com/hiui/stores',
         params: {
           page: current,
-          pageSize: pageSize,
+          pageSize,
           // searchParams: searchVal,
         },
         transformResponse: (res) => {
