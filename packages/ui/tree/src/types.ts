@@ -135,8 +135,10 @@ export type TreeEditActions = {
   editNode: () => void
   /**
    * 执行添加子节点操作
+   *
+   * @param position 0 表示插入到孩子节点之前，1 表示之后
    */
-  addChildNode: () => void
+  addChildNode: (position?: 0 | 1) => void
   /**
    * 执行添加兄弟节点操作
    */
