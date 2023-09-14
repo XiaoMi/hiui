@@ -219,7 +219,7 @@ interface EditableTreeNodeTitleProps {
   onCancel: (node: FlattedTreeNodeData) => void
   onSave: (savedNode: FlattedTreeNodeData) => Promise<void>
   onDelete: (deletedNode: FlattedTreeNodeData) => Promise<void>
-  addChildNode: (node: FlattedTreeNodeData) => void
+  addChildNode: (node: FlattedTreeNodeData, position?: 0 | 1) => void
   addSiblingNode: (node: FlattedTreeNodeData) => void
   onExpand: (ids: React.ReactText[]) => void
   placeholder?: string
@@ -267,9 +267,9 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
           menuVisibleAction.off()
         })
     },
-    addChildNode: () => {
+    addChildNode: (position: 0 | 1 = 0) => {
       menuVisibleAction.off()
-      addChildNode(node)
+      addChildNode(node, position)
       // 展开子节点列表
       onExpand(expandedIds.concat(node.id))
     },
@@ -305,8 +305,6 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
     return menuOptions
   }, [menuOptionsProp, node])
 
-  if (!isArrayNonEmpty(menuOptions)) return null
-
   return (
     <div
       className={cx(`${prefixCls}-action-wrap`, menuVisible && `${prefixCls}-action-wrap--visible`)}
@@ -317,7 +315,7 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
     >
       {isFunction(actionRender) ? (
         actionRender(node, menuActionsRef.current)
-      ) : (
+      ) : !isArrayNonEmpty(menuOptions) ? null : (
         <>
           <IconButton
             tabIndex={-1}

@@ -35,11 +35,11 @@ export const useEdit = (
   )
 
   const addChildNode = useCallback(
-    (node: FlattedTreeNodeData) => {
+    (node: FlattedTreeNodeData, position: 0 | 1 = 0) => {
       setTreeData((prev) => {
         const nextTreeData = cloneTree(prev)
         const nodeToAdd = genTreeNode()
-        addChildNodeById(nextTreeData, node.id, nodeToAdd, 0)
+        addChildNodeById(nextTreeData, node.id, nodeToAdd, position)
         return nextTreeData
       })
     },

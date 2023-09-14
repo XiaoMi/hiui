@@ -25,7 +25,7 @@ export const ActionRender = () => {
 
             return id === 11 ? (
               <Space>
-                <PlusOutlined onClick={() => editActions.addChildNode()} />
+                <PlusOutlined onClick={() => editActions.addChildNode(1)} />
                 <DuplicateOutlined onClick={() => editActions.addSiblingNode()} />
                 <EditOutlined onClick={() => editActions.editNode()} />
                 <PopConfirm
@@ -38,42 +38,6 @@ export const ActionRender = () => {
               </Space>
             ) : null
           }}
-          menuOptions={[
-            {
-              type: 'addChildNode',
-              title: '新建子节点',
-            },
-            {
-              type: 'addSiblingNode',
-              title: '新建兄弟节点',
-            },
-            {
-              // type: 'deleteNode',
-              title: '删除当前菜单',
-              onClick(node, action) {
-                action.closeMenu()
-
-                Modal.confirm({
-                  title: '提示',
-                  content: '确定删除吗？',
-                  onConfirm: () => {
-                    action.deleteNode()
-                  },
-                })
-              },
-            },
-            {
-              type: 'editNode',
-              title: '编辑当前菜单',
-            },
-            {
-              title: 'Hello，自定义的菜单',
-              onClick(node, action) {
-                console.log(node)
-                action.closeMenu()
-              },
-            },
-          ]}
           data={[
             {
               id: 1,
