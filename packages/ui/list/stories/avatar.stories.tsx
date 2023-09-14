@@ -1,15 +1,15 @@
 import React from 'react'
 import List from '../src'
-import AvatarComp from '@hi-ui/avatar'
+import Avatar from '@hi-ui/avatar'
 
 /**
  * @title 自定义头像
  */
-export const Avatar = () => {
+export const CustomAvatar = () => {
   return (
     <>
-      <h1>Avatar</h1>
-      <div className="list-avatar__wrap">
+      <h1>CustomAvatar</h1>
+      <div className="list-custom-avatar__wrap">
         <List
           data={[
             {
@@ -32,12 +32,10 @@ export const Avatar = () => {
           render={(dataItem) => {
             console.log('dataItem', dataItem)
 
-            const { avatar, ...rest } = dataItem
-
             return (
               <List.Item
-                {...rest}
-                avatar={<AvatarComp size={'lg'} shape={'square'} src={avatar as string} />}
+                {...dataItem}
+                avatar={<Avatar size={'lg'} shape={'square'} src={dataItem.avatar as string} />}
               />
             )
           }}
