@@ -1,5 +1,14 @@
 # @hi-ui/hiui
 
+## 4.2.14
+
+### Patch Changes
+
+- [#2588](https://github.com/XiaoMi/hiui/pull/2588) [`7c6994e5a`](https://github.com/XiaoMi/hiui/commit/7c6994e5a87b5384be0c6dbec11f3d2a68be67cb) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 支持在孩子节点前面或后面添加节点
+
+- Updated dependencies [[`7c6994e5a`](https://github.com/XiaoMi/hiui/commit/7c6994e5a87b5384be0c6dbec11f3d2a68be67cb)]:
+  - @hi-ui/tree@4.5.1
+
 ## 4.2.13
 
 ### Patch Changes
