@@ -1,7 +1,7 @@
 import React, { cloneElement, forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { PopperOverlayProps, Popper, PopperProps } from '@hi-ui/popper'
 import { DropDownProvider, useDropDownContext } from './context'
 import { useDropdown, UseDropdownProps } from './use-dropdown'
@@ -30,6 +30,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
       onClick,
       onButtonClick,
       overlayClassName,
+      size = 'lg',
       ...rest
     },
     ref
@@ -43,7 +44,9 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
     const dig = (treeData: DropdownDataItem[]) => {
       return treeData.map((item: any) => {
         const menu = isArrayNonEmpty(item.children) ? (
-          <DropdownMenu overlay={{ gutterGap: 16 }}>{dig(item.children)}</DropdownMenu>
+          <DropdownMenu overlay={{ gutterGap: 16 }} size={size}>
+            {dig(item.children)}
+          </DropdownMenu>
         ) : null
 
         if (item.split) {
@@ -110,7 +113,13 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
 
           {isArrayNonEmpty(data) ? (
             <DropdownMenu
-              {...getMenuProps({ overlay: { disabledPortal: false, className: overlayClassName } })}
+              {...getMenuProps({
+                overlay: {
+                  disabledPortal: false,
+                  className: overlayClassName,
+                },
+              })}
+              size={size}
             >
               {dig(data)}
             </DropdownMenu>
@@ -163,6 +172,10 @@ export interface DropdownProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, 
    * 自定义控制 下拉 popper 行为
    */
   overlay?: PopperOverlayProps
+  /**
+   * 设置大小
+   */
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {
@@ -180,11 +193,12 @@ const DropdownMenu = forwardRef<HTMLUListElement | null, DropdownMenuProps>(
       parents,
       className,
       children,
+      size = 'lg',
       ...rest
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
 
     return (
       <Popper {...(overlay as PopperProps)}>
@@ -211,6 +225,10 @@ interface DropdownMenuProps extends HiBaseHTMLProps<'ul'> {
    * 祖先吸附元素DOM引用数组
    */
   parents?: React.RefObject<HTMLElement>[]
+  /**
+   * 设置大小
+   */
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {
