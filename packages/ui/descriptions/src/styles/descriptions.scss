@@ -19,6 +19,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
     > th,
     > td {
       box-sizing: border-box;
+      padding: 0;
       font-weight: use-text-weight('normal');
     }
 
@@ -59,9 +60,18 @@ $prefix: '#{$component-prefix}-descriptions' !default;
 
   &--placement {
     &-horizontal {
-      .#{$prefix}-row > th,
-      .#{$prefix}-row > td {
-        padding-bottom: use-spacing(6);
+      &.#{$prefix}--size-md {
+        .#{$prefix}-row > th,
+        .#{$prefix}-row > td {
+          padding-bottom: use-spacing(6);
+        }
+      }
+
+      &.#{$prefix}--size-sm {
+        .#{$prefix}-row > th,
+        .#{$prefix}-row > td {
+          padding-bottom: use-spacing(2);
+        }
       }
     }
 
