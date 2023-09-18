@@ -1,4 +1,3 @@
-/* eslint-disable node/no-callback-literal */
 import React from 'react'
 import Form, { FormHelpers } from '../src'
 import Button from '@hi-ui/button'
@@ -201,7 +200,7 @@ export const Cascade = () => {
               }}
               onRemove={(file, fileList, index) => {
                 console.log('remove callback', file, fileList, index)
-                return new Promise((resolve, reject) => resolve(true))
+                return new Promise((resolve) => resolve(true))
               }}
               name={'files[]'}
               defaultFileList={[

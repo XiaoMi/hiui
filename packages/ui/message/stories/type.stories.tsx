@@ -11,7 +11,7 @@ export const Type = () => {
     return () => {
       message.open({
         title: '问君能有几多愁，恰似一江春水向东流',
-        type: type,
+        type,
       })
     }
   }

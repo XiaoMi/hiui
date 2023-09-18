@@ -1,4 +1,3 @@
-/* eslint-disable node/no-callback-literal */
 import React from 'react'
 import Form, { FormHelpers } from '../src'
 import Input from '@hi-ui/input'
@@ -37,9 +36,9 @@ export const GetValues = () => {
                 validator: (rule, value, callback) => {
                   const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
                   if (!value) {
-                    callback('请输入手机号')
+                    callback(new Error('请输入手机号'))
                   } else if (!telReg.test(value)) {
-                    callback('请输入正确的手机号')
+                    callback(new Error('请输入正确的手机号'))
                   } else {
                     callback()
                   }

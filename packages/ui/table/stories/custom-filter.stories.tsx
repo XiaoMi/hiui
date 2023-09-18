@@ -9,6 +9,123 @@ import CheckSelect from '@hi-ui/check-select'
  * @title 自定义过滤
  */
 export const CustomFilter = () => {
+  const initialData = React.useRef([
+    {
+      key: '1',
+      name: 'John Brown',
+      age: 32,
+      tel: '0571-22098909',
+      tel1: '0571-22098909',
+      tel2: '0571-22098909',
+      tel3: '0571-22098909',
+      tel4: '0571-22098909',
+      tel5: '0571-22098909',
+      tel6: '0571-22098909',
+      tel7: '0571-22098909',
+      tel8: '0571-22098909',
+      tel9: '0571-22098909',
+      tel10: '0571-22098909',
+      tel11: '0571-22098909',
+      tel12: '0571-22098909',
+      phone: 18889898989,
+      address: 'New York No. 1 Lake Park',
+    },
+    {
+      key: '2',
+      name: 'Jim Green',
+      phone: 18889898888,
+      tel: '0571-22098909',
+      tel1: '0571-22098909',
+      tel2: '0571-22098909',
+      tel3: '0571-22098909',
+      tel4: '0571-22098909',
+      tel5: '0571-22098909',
+      tel6: '0571-22098909',
+      tel7: '0571-22098909',
+      tel8: '0571-22098909',
+      tel9: '0571-22098909',
+      tel10: '0571-22098909',
+      tel11: '0571-22098909',
+      tel12: '0571-22098909',
+      age: 42,
+      address: 'London No. 1 Lake Park',
+    },
+    {
+      key: '3',
+      name: 'Joe Black',
+      age: 32,
+      tel1: '0571-22098909',
+      tel2: '0571-22098909',
+      tel3: '0571-22098909',
+      tel4: '0571-22098909',
+      tel5: '0571-22098909',
+      tel6: '0571-22098909',
+      tel: '0575-22098909',
+      tel7: '0571-22098909',
+      tel8: '0571-22098909',
+      tel9: '0571-22098909',
+      tel10: '0571-22098909',
+      tel11: '0571-22098909',
+      tel12: '0571-22098909',
+      phone: 18900010002,
+      address: 'Sidney No. 1 Lake Park',
+    },
+    {
+      key: '4',
+      name: 'Jim Red',
+      age: 18,
+      tel1: '0571-22098909',
+      tel2: '0571-22098909',
+      tel3: '0571-22098909',
+      tel4: '0571-22098909',
+      tel5: '0571-22098909',
+      tel6: '0571-22098909',
+      tel: '0575-22098909',
+      tel7: '0571-22098909',
+      tel8: '0571-22098909',
+      tel9: '0571-22098909',
+      tel10: '0571-22098909',
+      tel11: '0571-22098909',
+      tel12: '0571-22098909',
+      phone: 18900010002,
+      address: 'London No. 2 Lake Park',
+    },
+    {
+      key: '5',
+      name: 'Jake White',
+      age: 18,
+      tel1: '0571-22098909',
+      tel2: '0571-22098909',
+      tel3: '0571-22098909',
+      tel4: '0571-22098909',
+      tel5: '0571-22098909',
+      tel6: '0571-22098909',
+      tel: '0575-22098909',
+      tel7: '0571-22098909',
+      tel8: '0571-22098909',
+      tel9: '0571-22098909',
+      tel10: '0571-22098909',
+      tel11: '0571-22098909',
+      tel12: '0571-22098909',
+      phone: 18900010002,
+      address: 'Dublin No. 2 Lake Park',
+    },
+  ])
+  const [data, setData] = React.useState(initialData.current)
+  const customFilterData = (keyword, label) => {
+    if (keyword.length > 0) {
+      setData(
+        initialData.current.filter((item) => {
+          return typeof keyword === 'string'
+            ? item[label].includes(keyword)
+            : keyword.includes(item[label])
+        })
+      )
+    } else {
+      setData(initialData.current)
+    }
+  }
+
   const [columns] = React.useState([
     {
       title: 'Name',
@@ -17,7 +134,7 @@ export const CustomFilter = () => {
       key: 1,
       filterDropdownClassName: 'table-customefilter',
       filterIcon: <SearchOutlined />,
-      filterDropdown({ columnData, setFilterDropdownVisible }) {
+      filterDropdown({ setFilterDropdownVisible }) {
         let keyword = ''
         return (
           <div>
@@ -181,124 +298,6 @@ export const CustomFilter = () => {
       key: 17,
     },
   ])
-
-  const initialData = React.useRef([
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      tel: '0571-22098909',
-      tel1: '0571-22098909',
-      tel2: '0571-22098909',
-      tel3: '0571-22098909',
-      tel4: '0571-22098909',
-      tel5: '0571-22098909',
-      tel6: '0571-22098909',
-      tel7: '0571-22098909',
-      tel8: '0571-22098909',
-      tel9: '0571-22098909',
-      tel10: '0571-22098909',
-      tel11: '0571-22098909',
-      tel12: '0571-22098909',
-      phone: 18889898989,
-      address: 'New York No. 1 Lake Park',
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      phone: 18889898888,
-      tel: '0571-22098909',
-      tel1: '0571-22098909',
-      tel2: '0571-22098909',
-      tel3: '0571-22098909',
-      tel4: '0571-22098909',
-      tel5: '0571-22098909',
-      tel6: '0571-22098909',
-      tel7: '0571-22098909',
-      tel8: '0571-22098909',
-      tel9: '0571-22098909',
-      tel10: '0571-22098909',
-      tel11: '0571-22098909',
-      tel12: '0571-22098909',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      tel1: '0571-22098909',
-      tel2: '0571-22098909',
-      tel3: '0571-22098909',
-      tel4: '0571-22098909',
-      tel5: '0571-22098909',
-      tel6: '0571-22098909',
-      tel: '0575-22098909',
-      tel7: '0571-22098909',
-      tel8: '0571-22098909',
-      tel9: '0571-22098909',
-      tel10: '0571-22098909',
-      tel11: '0571-22098909',
-      tel12: '0571-22098909',
-      phone: 18900010002,
-      address: 'Sidney No. 1 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'Jim Red',
-      age: 18,
-      tel1: '0571-22098909',
-      tel2: '0571-22098909',
-      tel3: '0571-22098909',
-      tel4: '0571-22098909',
-      tel5: '0571-22098909',
-      tel6: '0571-22098909',
-      tel: '0575-22098909',
-      tel7: '0571-22098909',
-      tel8: '0571-22098909',
-      tel9: '0571-22098909',
-      tel10: '0571-22098909',
-      tel11: '0571-22098909',
-      tel12: '0571-22098909',
-      phone: 18900010002,
-      address: 'London No. 2 Lake Park',
-    },
-    {
-      key: '5',
-      name: 'Jake White',
-      age: 18,
-      tel1: '0571-22098909',
-      tel2: '0571-22098909',
-      tel3: '0571-22098909',
-      tel4: '0571-22098909',
-      tel5: '0571-22098909',
-      tel6: '0571-22098909',
-      tel: '0575-22098909',
-      tel7: '0571-22098909',
-      tel8: '0571-22098909',
-      tel9: '0571-22098909',
-      tel10: '0571-22098909',
-      tel11: '0571-22098909',
-      tel12: '0571-22098909',
-      phone: 18900010002,
-      address: 'Dublin No. 2 Lake Park',
-    },
-  ])
-  const [data, setData] = React.useState(initialData.current)
-
-  const customFilterData = (keyword, label) => {
-    if (keyword.length > 0) {
-      setData(
-        initialData.current.filter((item) => {
-          return typeof keyword === 'string'
-            ? item[label].includes(keyword)
-            : keyword.includes(item[label])
-        })
-      )
-    } else {
-      setData(initialData.current)
-    }
-  }
 
   return (
     <>

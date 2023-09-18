@@ -86,13 +86,10 @@ export const Validate = () => {
         validator: (rule, value, cb) => {
           const count = +value
           if (isNaN(count)) {
-            // eslint-disable-next-line node/no-callback-literal
-            cb('请输入数字')
+            cb(new Error('请输入数字'))
           } else if (count <= 0) {
-            // eslint-disable-next-line node/no-callback-literal
-            cb('必须是正数')
+            cb(new Error('必须是正数'))
           } else {
-            // eslint-disable-next-line node/no-callback-literal
             cb()
           }
         },
@@ -155,7 +152,7 @@ export const Validate = () => {
           <FormItem label="品类" field="category" valueType="string">
             <Cascader
               onChange={(id) => {
-                console.log('change')
+                console.log('change', id)
               }}
               data={cascaderOptions}
               style={{ width: '100%' }}

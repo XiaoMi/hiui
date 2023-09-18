@@ -23,7 +23,7 @@ export const Event = () => {
       <h2>x、y滚动事件</h2>
       <div className="scrollbar-basic__wrap" style={{ height: 320, marginBottom: 64 }}>
         <Scrollbar
-          onScrollX={(e) => console.log('scroll x')}
+          onScrollX={() => console.log('scroll x')}
           onScrollY={() => console.log('scroll y')}
         >
           {scrollContent}

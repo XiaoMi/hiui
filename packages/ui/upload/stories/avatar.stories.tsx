@@ -20,7 +20,7 @@ export const Avatar = () => {
           }}
           onRemove={(file, fileList, index) => {
             console.log('remove callback', file, fileList, index)
-            return new Promise((resolve, reject) => resolve(true))
+            return new Promise((resolve) => resolve(true))
           }}
           name="uploadAvatar"
         />
