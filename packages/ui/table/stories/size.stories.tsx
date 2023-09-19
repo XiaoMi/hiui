@@ -231,13 +231,13 @@ export const Size = () => {
     <>
       <h1>Size for Table</h1>
       <div className="table-size__wrap" style={{ minWidth: 660, background: '#fff' }}>
-        <Table bordered columns={column} data={data} size="sm" />
+        <Table bordered columns={column} data={data} size="sm" rowSelection={{}} />
         <br />
         <br />
-        <Table bordered columns={column} data={data} size="md" />
+        <Table bordered columns={column} data={data} size="md" rowSelection={{}} />
         <br />
         <br />
-        <Table bordered columns={column} data={data} size="lg" />
+        <Table bordered columns={column} data={data} size="lg" rowSelection={{}} />
       </div>
     </>
   )
