@@ -29,6 +29,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       appearance = 'unset',
       labelPlacement = 'left',
       labelWidth,
+      size = 'md',
       ...rest
     },
     ref
@@ -46,6 +47,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       appearance && `${prefixCls}--appearance-${appearance}`,
       placement && `${prefixCls}--placement-${placement}`,
       labelPlacement && `${prefixCls}--label-placement-${labelPlacement}`,
+      `${prefixCls}--size-${size}`,
       className
     )
 
@@ -98,6 +100,10 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
    * label宽度
    */
   labelWidth?: React.ReactText
+  /**
+   * 设置大小
+   */
+  size?: 'md' | 'sm'
 }
 
 if (__DEV__) {
