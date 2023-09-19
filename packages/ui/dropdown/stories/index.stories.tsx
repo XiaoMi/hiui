@@ -10,6 +10,7 @@ export * from './placement.stories'
 export * from './type.stories'
 export * from './trigger-button.stories'
 export * from './icon.stories'
+export * from './size.stories'
 
 export default {
   title: 'Navigation/Dropdown',
