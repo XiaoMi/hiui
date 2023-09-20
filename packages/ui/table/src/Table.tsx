@@ -180,9 +180,8 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     const checkboxColWidth = React.useMemo(() => {
       return rowSelection && typeof rowSelection.checkboxColWidth === 'number'
         ? rowSelection.checkboxColWidth
-        : // 适配不同尺寸，默认常规尺寸
-          { sm: 36, md: 44, lg: 52 }[rest.size ?? 'md']
-    }, [rest.size, rowSelection])
+        : 38
+    }, [rowSelection])
 
     // 预处理 column 支持 多选渲染
     const {

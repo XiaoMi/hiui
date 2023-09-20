@@ -45,7 +45,7 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
             padding: use-spacing(7);
 
             &.#{$prefix}__selection-col {
-              padding: use-spacing(7);
+              padding: use-spacing(7) use-spacing(5);
             }
           }
         }
@@ -55,7 +55,7 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
             padding: use-spacing(7);
 
             &.#{$prefix}__selection-col {
-              padding: use-spacing(7);
+              padding: use-spacing(7) use-spacing(5);
             }
           }
         }
@@ -93,7 +93,7 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
             padding: use-spacing(9);
 
             &.#{$prefix}__selection-col {
-              padding: use-spacing(9);
+              padding: use-spacing(9) use-spacing(5);
             }
           }
         }
@@ -103,7 +103,7 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
             padding: use-spacing(9);
 
             &.#{$prefix}__selection-col {
-              padding: use-spacing(9);
+              padding: use-spacing(9) use-spacing(5);
             }
           }
         }
