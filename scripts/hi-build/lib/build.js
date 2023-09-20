@@ -149,12 +149,12 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
           ],
           extensions: ['.scss', '.css'],
           // Extract styleInject as a external module
-         inject: !cssExtract ? (variableName) => {
-           if (isESM) {
-            return `;import __styleInject__ from 'style-inject';__styleInject__(${variableName});`
-           }
-           return `;var __styleInject__=require('style-inject').default;__styleInject__(${variableName});`
-         } : false,
+          inject: !cssExtract ? (variableName) => {
+            if (isESM) {
+              return `;import __styleInject__ from 'style-inject';__styleInject__(${variableName});`
+            }
+            return `;var __styleInject__=require('style-inject').default;__styleInject__(${variableName});`
+          } : false,
           extract: cssExtract,
           modules: cssModules,
         }),
