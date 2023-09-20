@@ -3,6 +3,7 @@ import CheckCascader from '../src'
 
 export * from './basic.stories'
 export * from './tag-input-wrap.stories'
+export * from './size.stories'
 export * from './disabled.stories'
 export * from './search.stories'
 export * from './select-change.stories'
