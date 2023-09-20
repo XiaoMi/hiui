@@ -8,7 +8,7 @@ $cell-class: '#{$prefix}__cell' !default;
 $calendar-large-indicator-size: 40px !default;
 $calendar-large-indicator-border-radius: 8px !default;
 $calendar-large-diff: 6px !default;
-$calendar-large-background-border-radius: $calendar-large-indicator-border-radius + $calendar-large-diff/2 !default;
+$calendar-large-background-border-radius: $calendar-large-indicator-border-radius + $calendar-large-diff*0.5 !default;
 
 .#{$prefix} {
   position: relative;
@@ -555,14 +555,14 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
       &:first-child {
         .#{$cell-class}-week-indicator {
-          margin-left: $calendar-large-diff/2;
+          margin-left: $calendar-large-diff*0.5;
           border-radius: $calendar-large-indicator-border-radius 0 0 $calendar-large-indicator-border-radius;
         }
       }
 
       &:last-child {
         .#{$cell-class}-week-indicator {
-          margin-left: -$calendar-large-diff/2;
+          margin-left: -$calendar-large-diff*0.5;
           border-radius: 0 $calendar-large-indicator-border-radius $calendar-large-indicator-border-radius 0;
         }
       }

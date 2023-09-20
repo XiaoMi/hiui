@@ -72,7 +72,7 @@
     "@hi-ui/use-toggle": "^4.0.1",
     "@hi-ui/use-uncontrolled-state": "^4.0.1",
     "@hi-ui/use-update-effect": "^4.0.1",
-    "axios": "^0.24.0",
+    "axios": "^1.5.0",
     "react-resizable": "^3.0.4"
   },
   "peerDependencies": {

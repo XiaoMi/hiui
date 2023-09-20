@@ -1,5 +1,5 @@
 @import '~@hi-ui/core-css/lib/index.scss';
-@import '~perfect-scrollbar/css/perfect-scrollbar.css';
+@import '~perfect-scrollbar/css/perfect-scrollbar';
 
 $prefix: '#{$component-prefix}-scrollbar' !default;
 
@@ -46,7 +46,7 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
     & > .ps__rail-y,
     .ps__thumb-y {
       width: $thumb-size;
-      border-radius: $thumb-size/2;
+      border-radius: $thumb-size*0.5;
       right: 0;
       transition: $transition;
     }
@@ -68,7 +68,7 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
     & > .ps__rail-x,
     .ps__thumb-x {
       height: $thumb-size;
-      border-radius: $thumb-size/2;
+      border-radius: $thumb-size*0.5;
       bottom: 0;
       transition: $transition;
     }
