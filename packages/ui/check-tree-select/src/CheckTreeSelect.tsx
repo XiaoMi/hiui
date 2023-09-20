@@ -17,7 +17,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { UpOutlined, DownOutlined } from '@hi-ui/icons'
-import { useLocaleContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import Checkbox from '@hi-ui/checkbox'
 // import { UseDataSource } from '@hi-ui/use-data-source'
@@ -89,6 +89,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       height,
       showCheckAll,
       tagInputProps,
+      size = 'md',
       ...rest
     },
     ref
@@ -345,6 +346,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         trigger={
           <TagInputMock
             {...tagInputProps}
+            size={size}
             // ref={targetElementRef}
             // onClick={openMenu}
             // disabled={disabled}
@@ -531,6 +533,10 @@ export interface CheckTreeSelectProps
    * TagInput 参数设置
    */
   tagInputProps?: TagInputMockProps
+  /**
+   * 设置尺寸
+   */
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {
