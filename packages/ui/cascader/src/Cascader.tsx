@@ -1,5 +1,5 @@
 import React, { forwardRef, useState, useMemo, useEffect } from 'react'
-import type { HiBaseAppearanceEnum } from '@hi-ui/core'
+import type { HiBaseAppearanceEnum, HiBaseSizeEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -52,6 +52,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     data = NOOP_ARRAY,
     flattedSearchResult = true,
     visible,
+    size = 'md',
     onOpen,
     onClose,
     ...rest
@@ -221,6 +222,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
           <MockInput
+            size={size}
             clearable={clearable}
             placeholder={placeholder}
             displayRender={displayRender as any}
@@ -303,6 +305,10 @@ export interface CascaderProps
    * 搜索结果拍平展示
    */
   flattedSearchResult?: boolean
+  /**
+   * 设置尺寸
+   */
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {

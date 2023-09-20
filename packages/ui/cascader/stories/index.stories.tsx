@@ -2,6 +2,7 @@ import React from 'react'
 import Cascader from '../src'
 
 export * from './basic.stories'
+export * from './size.stories'
 export * from './disabled.stories'
 export * from './search.stories'
 export * from './filter-options.stories'
