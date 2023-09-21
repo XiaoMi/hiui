@@ -86,7 +86,6 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
   &-item {
     width: 100%;
-    padding: use-spacing(2) 0;
     position: relative;
     cursor: pointer;
     display: flex;
