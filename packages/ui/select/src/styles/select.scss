@@ -3,9 +3,6 @@
 $prefix: '#{$component-prefix}-select' !default;
 
 .#{$prefix}-option {
-  // padding: 0 use-spacing(4);
-  margin-top: use-spacing(2);
-  margin-bottom: use-spacing(2);
   box-sizing: border-box;
   width: 100%;
   display: flex;
