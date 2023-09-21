@@ -263,6 +263,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       >
         {isArrayNonEmpty(treeProps.data) ? (
           <Tree
+            size={'md'}
             className={`${prefixCls}__tree`}
             selectable
             selectedId={value}
