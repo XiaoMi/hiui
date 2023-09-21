@@ -372,6 +372,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         {isArrayNonEmpty(treeProps.data) ? (
           // 只做渲染，不做逻辑处理（比如搜索过滤后，check操作的是对过滤后的data操作，这是不符合预期的）
           <Tree
+            size={'md'}
             className={`${prefixCls}__tree`}
             selectable={false}
             checkable
