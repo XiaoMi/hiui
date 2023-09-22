@@ -23,7 +23,7 @@ import {
 import { flattenTreeData } from './utils'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
 import { HiBaseAppearanceEnum, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 
 import { callAllFuncs } from '@hi-ui/func-utils'
@@ -70,6 +70,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       onClose,
       tagInputProps,
       size = 'md',
+      renderExtraFooter,
+      dropdownColumnRender,
       ...rest
     },
     ref
@@ -222,6 +224,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         onClose={menuVisibleAction.off}
         searchable={searchable}
         scrollable={false}
+        footer={isFunction(renderExtraFooter) && renderExtraFooter()}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
           <TagInputMock
@@ -264,6 +267,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             data={cascaderData}
             onChangeData={setCascaderData}
             checkedMode={checkedMode}
+            dropdownColumnRender={dropdownColumnRender}
           />
         ) : null}
       </Picker>
@@ -375,6 +379,14 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 设置尺寸
    */
   size?: HiBaseSizeEnum
+  /**
+   * 自定义下拉菜单底部渲染
+   */
+  renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单每列渲染
+   */
+  dropdownColumnRender?: (menu: React.ReactElement, level: number) => React.ReactNode
 }
 
 if (__DEV__) {

@@ -7,21 +7,26 @@ import { checkCanLoadChildren, getItemEventData } from './utils'
 import { useCascaderContext } from './context'
 import { CascaderDataItem, FlattedCascaderDataItem, CascaderItemEventData } from './types'
 import { getTopDownAncestors } from '@hi-ui/tree-utils'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
 
 const menuListPrefix = getPrefixCls('cascader-menu-list')
 
 export const CascaderMenuList = forwardRef<HTMLDivElement | null, CascaderMenuListProps>(
   ({ prefixCls = menuListPrefix, className, ...rest }, ref) => {
-    const { flatted, menuList } = useCascaderContext()
+    const { flatted, menuList, dropdownColumnRender } = useCascaderContext()
 
     const cls = cx(prefixCls, className, flatted && `${prefixCls}--flatted`)
 
     return (
       <div ref={ref} className={cls} {...rest}>
         {menuList.map((menu, menuIndex) => {
-          // @ts-ignore
-          return isArrayNonEmpty(menu) ? <CascaderMenu key={menuIndex} data={menu} /> : null
+          return isArrayNonEmpty(menu) ? (
+            isFunction(dropdownColumnRender) ? (
+              dropdownColumnRender(<CascaderMenu key={menuIndex} data={menu} />, menuIndex)
+            ) : (
+              <CascaderMenu key={menuIndex} data={menu} />
+            )
+          ) : null
         })}
       </div>
     )
@@ -40,6 +45,7 @@ export const CascaderMenu = ({
   prefixCls = menuPrefix,
   role = 'menu',
   className,
+  style,
   data: menu,
 }: CascaderMenuProps) => {
   const {
@@ -56,7 +62,7 @@ export const CascaderMenu = ({
   const cls = cx(prefixCls, className)
 
   return (
-    <ul className={cls} role={role}>
+    <ul className={cls} style={style} role={role}>
       {menu.map((option) => {
         const eventOption = getItemEventData(option, getItemRequiredProps(option))
 
