@@ -10,6 +10,8 @@ export * from './hover-expand.stories'
 export * from './dynamic.stories'
 export * from './display-render.stories'
 export * from './title-render.stories'
+export * from './footer.stories'
+export * from './dropdown-column-render.stories'
 export * from './field-names.stories'
 export * from './visible.stories'
 

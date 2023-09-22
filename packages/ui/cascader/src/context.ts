@@ -7,6 +7,7 @@ const cascaderContext = createContext<
   | (Omit<UseCascaderReturn, 'rootProps'> & {
       expandTrigger: CascaderExpandTriggerEnum
       titleRender: (item: CascaderItemEventData) => React.ReactNode
+      dropdownColumnRender?: (menu: React.ReactElement, level: number) => React.ReactNode
     })
   | null
 >(null)
