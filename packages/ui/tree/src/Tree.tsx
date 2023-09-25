@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo, useRef } from 'react'
+import React, { forwardRef, useMemo, useRef, useImperativeHandle } from 'react'
 import { HiBaseSizeEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -20,9 +20,10 @@ import {
   TreeNodeRequiredProps,
   TreeNodeEventData,
   FlattedTreeNodeData,
+  TreeHelper,
 } from './types'
 import { TreeProvider } from './context'
-import VirtualList from '@hi-ui/virtual-list'
+import VirtualList, { ListRef } from '@hi-ui/virtual-list'
 import { MotionTreeNode } from './MotionTreeNode'
 import { TreeNode } from './TreeNode'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -86,6 +87,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       checkedMode = 'ALL',
       expandOnSelect,
       size = 'lg',
+      innerRef,
       ...rest
     },
     ref
@@ -217,6 +219,12 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       return Math.ceil(height / itemHeight) + 1
     }, [virtual, height, itemHeight])
 
+    const listRef = useRef<ListRef>(null)
+
+    useImperativeHandle(innerRef, () => ({
+      scrollTo: listRef.current?.scrollTo,
+    }))
+
     const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
 
     return (
@@ -231,6 +239,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
           {...rest}
         >
           <VirtualList
+            ref={listRef}
             itemKey="id"
             fullHeight={false}
             height={height}
@@ -456,6 +465,10 @@ export interface TreeProps {
    * 设置大小
    */
   size?: HiBaseSizeEnum
+  /**
+   * 提供辅助方法的内部引用
+   */
+  innerRef?: React.Ref<TreeHelper>
 }
 
 if (__DEV__) {
