@@ -55,6 +55,8 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     size = 'md',
     onOpen,
     onClose,
+    renderExtraFooter,
+    dropdownColumnRender,
     ...rest
   } = props
   const i18n = useLocaleContext()
@@ -204,7 +206,13 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
 
   return (
     <CascaderProvider
-      value={{ ...context, expandTrigger, titleRender: proxyTitleRender, menuList: showData }}
+      value={{
+        ...context,
+        expandTrigger,
+        titleRender: proxyTitleRender,
+        menuList: showData,
+        dropdownColumnRender,
+      }}
     >
       <Picker
         ref={ref}
@@ -219,6 +227,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         onClose={menuVisibleAction.off}
         searchable={searchable}
         scrollable={false}
+        footer={isFunction(renderExtraFooter) && renderExtraFooter()}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
           <MockInput
@@ -305,6 +314,14 @@ export interface CascaderProps
    * 搜索结果拍平展示
    */
   flattedSearchResult?: boolean
+  /**
+   * 自定义下拉菜单底部渲染
+   */
+  renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单每列渲染
+   */
+  dropdownColumnRender?: (menu: React.ReactElement, level: number) => React.ReactNode
   /**
    * 设置尺寸
    */
