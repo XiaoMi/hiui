@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/scrollbar",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
@@ -55,8 +55,7 @@
   },
   "devDependencies": {
     "@hi-ui/core": "^4.0.4",
-    "@hi-ui/core-css": "^4.0.1",
-
+    "@hi-ui/core-css": "^4.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

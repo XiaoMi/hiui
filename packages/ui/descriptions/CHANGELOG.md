@@ -1,5 +1,11 @@
 # @hi-ui/descriptions
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2591](https://github.com/XiaoMi/hiui/pull/2591) [`fcbfd8026`](https://github.com/XiaoMi/hiui/commit/fcbfd80268b81d75cb63d5381ffba506b67e22a6) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add size api
+
 ## 4.1.2
 
 ### Patch Changes

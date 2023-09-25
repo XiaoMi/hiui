@@ -1,5 +1,16 @@
 # @hi-ui/check-tree-select
 
+## 4.3.0
+
+### Minor Changes
+
+- [#2604](https://github.com/XiaoMi/hiui/pull/2604) [`2dd977a5c`](https://github.com/XiaoMi/hiui/commit/2dd977a5c0db411e07aa5c4ea50ef04f37ebf8d2) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add size api
+
+### Patch Changes
+
+- Updated dependencies [[`534bfd298`](https://github.com/XiaoMi/hiui/commit/534bfd29852003af2209c3a64e5f1b2b1d37c19e)]:
+  - @hi-ui/tree@4.5.2
+
 ## 4.2.0
 
 ### Minor Changes

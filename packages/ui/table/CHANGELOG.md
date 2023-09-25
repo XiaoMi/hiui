@@ -1,5 +1,18 @@
 # @hi-ui/table
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2597](https://github.com/XiaoMi/hiui/pull/2597) [`0ddf24960`](https://github.com/XiaoMi/hiui/commit/0ddf24960194fdd15653e34e0a6cef54b1586748) Thanks [@zyprepare](https://github.com/zyprepare)! - chore: axios 升级为 1.5.0
+
+### Patch Changes
+
+- [#2608](https://github.com/XiaoMi/hiui/pull/2608) [`fb9b1281d`](https://github.com/XiaoMi/hiui/commit/fb9b1281d99ba0d21b5cb32c87b5e671272c1c8e) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复紧凑模式下多选项间距问题
+
+- Updated dependencies [[`b3b36813a`](https://github.com/XiaoMi/hiui/commit/b3b36813a6968c5c96c39d1100935372e3aa5b4d)]:
+  - @hi-ui/select@4.2.0
+
 ## 4.1.2
 
 ### Patch Changes

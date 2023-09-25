@@ -1,5 +1,11 @@
 # @hi-ui/check-select
 
+## 4.3.0
+
+### Minor Changes
+
+- [#2600](https://github.com/XiaoMi/hiui/pull/2600) [`03ecca72b`](https://github.com/XiaoMi/hiui/commit/03ecca72bac72a1b042e96599b68c3317f0c3236) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add size api
+
 ## 4.2.0
 
 ### Minor Changes

@@ -1,5 +1,52 @@
 # @hi-ui/hiui
 
+## 4.3.0
+
+### Minor Changes
+
+- [#2597](https://github.com/XiaoMi/hiui/pull/2597) [`0ddf24960`](https://github.com/XiaoMi/hiui/commit/0ddf24960194fdd15653e34e0a6cef54b1586748) Thanks [@zyprepare](https://github.com/zyprepare)! - chore: 将 node-sas 升级为 sass
+
+### Patch Changes
+
+- [#2599](https://github.com/XiaoMi/hiui/pull/2599) [`b3b36813a`](https://github.com/XiaoMi/hiui/commit/b3b36813a6968c5c96c39d1100935372e3aa5b4d) Thanks [@zyprepare](https://github.com/zyprepare)! - Select feat: add size api
+
+- [#2602](https://github.com/XiaoMi/hiui/pull/2602) [`ad0d14abd`](https://github.com/XiaoMi/hiui/commit/ad0d14abdaf3ab2d5b79d649e7886ee90d1c941a) Thanks [@zyprepare](https://github.com/zyprepare)! - CheckCascader feat: add size api
+
+- [#2592](https://github.com/XiaoMi/hiui/pull/2592) [`4a903b331`](https://github.com/XiaoMi/hiui/commit/4a903b33146db140a2c8edd6951385ad9a6fcdde) Thanks [@zyprepare](https://github.com/zyprepare)! - Dropdown feat: add size api
+
+- [#2605](https://github.com/XiaoMi/hiui/pull/2605) [`90ea1ea81`](https://github.com/XiaoMi/hiui/commit/90ea1ea810573f730ebbc4c48272dd6181099933) Thanks [@zyprepare](https://github.com/zyprepare)! - Cascader feat: 增加 renderExtraFooter 和 dropdownColumnRender api
+
+- [#2600](https://github.com/XiaoMi/hiui/pull/2600) [`03ecca72b`](https://github.com/XiaoMi/hiui/commit/03ecca72bac72a1b042e96599b68c3317f0c3236) Thanks [@zyprepare](https://github.com/zyprepare)! - CheckSelect feat: add size api
+
+- [#2606](https://github.com/XiaoMi/hiui/pull/2606) [`9be456ec0`](https://github.com/XiaoMi/hiui/commit/9be456ec092031eab5ab6097f8276cde0bd4721d) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 renderExtraFooter 和 dropdownColumnRender api
+
+- [#2591](https://github.com/XiaoMi/hiui/pull/2591) [`fcbfd8026`](https://github.com/XiaoMi/hiui/commit/fcbfd80268b81d75cb63d5381ffba506b67e22a6) Thanks [@zyprepare](https://github.com/zyprepare)! - Descriptions feat: add size api
+
+- [#2608](https://github.com/XiaoMi/hiui/pull/2608) [`fb9b1281d`](https://github.com/XiaoMi/hiui/commit/fb9b1281d99ba0d21b5cb32c87b5e671272c1c8e) Thanks [@zyprepare](https://github.com/zyprepare)! - Table fix: 修复紧凑模式下多选项间距问题
+
+- [#2601](https://github.com/XiaoMi/hiui/pull/2601) [`80cc037a1`](https://github.com/XiaoMi/hiui/commit/80cc037a15381a5f3466a7ea79565e10f05ca129) Thanks [@zyprepare](https://github.com/zyprepare)! - Cascader feat: add size api
+
+- [#2607](https://github.com/XiaoMi/hiui/pull/2607) [`534bfd298`](https://github.com/XiaoMi/hiui/commit/534bfd29852003af2209c3a64e5f1b2b1d37c19e) Thanks [@zyprepare](https://github.com/zyprepare)! - Tree fix: 修复 onExpand 回调参数只返回了第一个问题
+
+- [#2603](https://github.com/XiaoMi/hiui/pull/2603) [`556049d76`](https://github.com/XiaoMi/hiui/commit/556049d76d54489abececebddec47d93388e5116) Thanks [@zyprepare](https://github.com/zyprepare)! - TreeSelect feat: add size api
+
+- [#2604](https://github.com/XiaoMi/hiui/pull/2604) [`2dd977a5c`](https://github.com/XiaoMi/hiui/commit/2dd977a5c0db411e07aa5c4ea50ef04f37ebf8d2) Thanks [@zyprepare](https://github.com/zyprepare)! - CheckTreeSelect feat: add size api
+
+- Updated dependencies [[`9be456ec0`](https://github.com/XiaoMi/hiui/commit/9be456ec092031eab5ab6097f8276cde0bd4721d), [`b3b36813a`](https://github.com/XiaoMi/hiui/commit/b3b36813a6968c5c96c39d1100935372e3aa5b4d), [`534bfd298`](https://github.com/XiaoMi/hiui/commit/534bfd29852003af2209c3a64e5f1b2b1d37c19e), [`fcbfd8026`](https://github.com/XiaoMi/hiui/commit/fcbfd80268b81d75cb63d5381ffba506b67e22a6), [`03ecca72b`](https://github.com/XiaoMi/hiui/commit/03ecca72bac72a1b042e96599b68c3317f0c3236), [`ad0d14abd`](https://github.com/XiaoMi/hiui/commit/ad0d14abdaf3ab2d5b79d649e7886ee90d1c941a), [`556049d76`](https://github.com/XiaoMi/hiui/commit/556049d76d54489abececebddec47d93388e5116), [`80cc037a1`](https://github.com/XiaoMi/hiui/commit/80cc037a15381a5f3466a7ea79565e10f05ca129), [`2dd977a5c`](https://github.com/XiaoMi/hiui/commit/2dd977a5c0db411e07aa5c4ea50ef04f37ebf8d2), [`fb9b1281d`](https://github.com/XiaoMi/hiui/commit/fb9b1281d99ba0d21b5cb32c87b5e671272c1c8e), [`0ddf24960`](https://github.com/XiaoMi/hiui/commit/0ddf24960194fdd15653e34e0a6cef54b1586748), [`0ddf24960`](https://github.com/XiaoMi/hiui/commit/0ddf24960194fdd15653e34e0a6cef54b1586748), [`4a903b331`](https://github.com/XiaoMi/hiui/commit/4a903b33146db140a2c8edd6951385ad9a6fcdde), [`90ea1ea81`](https://github.com/XiaoMi/hiui/commit/90ea1ea810573f730ebbc4c48272dd6181099933)]:
+  - @hi-ui/check-cascader@4.2.0
+  - @hi-ui/select@4.2.0
+  - @hi-ui/tree@4.5.2
+  - @hi-ui/descriptions@4.2.0
+  - @hi-ui/check-select@4.3.0
+  - @hi-ui/tree-select@4.1.0
+  - @hi-ui/cascader@4.1.0
+  - @hi-ui/check-tree-select@4.3.0
+  - @hi-ui/table@4.2.0
+  - @hi-ui/badge@4.0.5
+  - @hi-ui/scrollbar@4.0.2
+  - @hi-ui/date-picker@4.2.0
+  - @hi-ui/dropdown@4.1.0
+
 ## 4.2.14
 
 ### Patch Changes
