@@ -10,6 +10,8 @@ export * from './select-change.stories'
 // export * from './nowrap.stories'
 export * from './dynamic.stories'
 export * from './display-render.stories'
+export * from './footer.stories'
+export * from './dropdown-column-render.stories'
 // export * from './flatted.stories'
 
 export default {

@@ -13,7 +13,7 @@ import { CheckCascaderMenu } from './CheckCascaderMenu'
 import { CheckCascaderProvider } from './context'
 import { getActiveMenus, getFlattedMenus, getActiveMenuIds } from './utils'
 import { useCheck, useSelect, useAsyncSwitch } from './hooks'
-// import { fFindNodesByIds } from '@hi-ui/tree-utils'
+import { isFunction } from '@hi-ui/type-assertion'
 
 const _role = 'check-cascader-menus'
 const _prefix = getPrefixCls(_role)
@@ -40,6 +40,7 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
       onChange,
       onSelect,
       titleRender,
+      dropdownColumnRender,
       flatted,
       checkedMode = 'ALL',
       ...rest
@@ -91,11 +92,11 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
         disabled,
       }),
       [
-        changeOnSelect,
         expandTrigger,
         onOptionCheck,
         onItemExpand,
         flatted,
+        changeOnSelect,
         titleRender,
         onLoadChildren,
         disabled,
@@ -115,13 +116,18 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
       <CheckCascaderProvider value={providedValue}>
         <div ref={ref} role={role} className={cls} {...rest}>
           {menus.map((menu, menuIndex) => {
-            return menu.length > 0 ? (
+            const menuContent = (
               <CheckCascaderMenu
                 key={menuIndex}
                 data={menu}
                 getCascaderItemRequiredProps={getCascaderItemRequiredProps}
               />
-            ) : null
+            )
+            return menu.length > 0
+              ? isFunction(dropdownColumnRender)
+                ? dropdownColumnRender(menuContent, menuIndex)
+                : menuContent
+              : null
           })}
         </div>
       </CheckCascaderProvider>
@@ -190,6 +196,10 @@ export interface CascaderMenusProps {
    * 自定义渲染节点的 title 内容
    */
   titleRender?: (item: CheckCascaderItemEventData) => React.ReactNode
+  /**
+   * 自定义下拉菜单每列渲染
+   */
+  dropdownColumnRender?: (menu: React.ReactElement, level: number) => React.ReactNode
   /**
    * 多选数据交互时回填、回显模式
    * PARENT: 当所有子节点被选中时将只保留父节点

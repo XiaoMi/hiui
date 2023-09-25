@@ -19,6 +19,7 @@ export const CheckCascaderMenu = ({
   prefixCls = _prefix,
   role = _role,
   className,
+  style,
   data: menu,
   getCascaderItemRequiredProps,
 }: CheckCascaderMenuProps) => {
@@ -65,7 +66,7 @@ export const CheckCascaderMenu = ({
   const cls = cx(prefixCls, className, isCheckableMenu && `${prefixCls}--checkable`)
 
   return (
-    <ul className={cls} role={role}>
+    <ul className={cls} style={style} role={role}>
       {menu.map((option) => {
         const eventOption = getCascaderItemEventData(option, getCascaderItemRequiredProps(option))
         const { selected, checked, loading, semiChecked } = eventOption
