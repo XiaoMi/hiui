@@ -81,7 +81,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
 
   &-item {
     width: 100%;
-    padding: use-spacing(2) 0;
+    padding: use-spacing(1) 0;
     position: relative;
     cursor: pointer;
     display: flex;
@@ -90,7 +90,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
   &-option {
     padding: 0 use-spacing(4);
     box-sizing: border-box;
-    height: 32px;
+    height: use-height-size(7);
     width: 100%;
     display: flex;
     align-items: center;

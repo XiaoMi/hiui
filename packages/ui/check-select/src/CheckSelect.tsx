@@ -74,6 +74,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       fieldNames = DEFAULT_FIELD_NAMES,
       customRender,
       tagInputProps,
+      size = 'md',
       onKeyDown: onKeyDownProp,
       ...rest
     },
@@ -298,6 +299,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
             ) : (
               <TagInputMock
                 {...tagInputProps}
+                size={size}
                 clearable={clearable}
                 placeholder={placeholder}
                 // @ts-ignore

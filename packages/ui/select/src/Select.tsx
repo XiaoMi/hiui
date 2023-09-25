@@ -29,7 +29,7 @@ import { useData, useFlattenData } from './hooks'
 import { SelectOption } from './SelectOption'
 import { SelectOptionGroup } from './SelectOptionGroup'
 import { uniqBy } from '@hi-ui/array-utils'
-import { HiBaseAppearanceEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseAppearanceEnum, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 
@@ -71,6 +71,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       render: titleRender,
       data: dataProp,
       fieldNames,
+      size = 'md',
       onSelect: onSelectProp,
       onSearch: onSearchProp,
       onKeyDown: onKeyDownProp,
@@ -254,6 +255,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
               onChange={(value, item) => {
                 tryChangeValue(value, item.raw)
               }}
+              size={size}
               data={mergedData}
               invalid={invalid}
               appearance={appearance}
@@ -363,6 +365,10 @@ export interface SelectProps
    * 搜索时触发
    */
   onSearch?: (keyword: string) => void
+  /**
+   * 设置大小
+   */
+  size?: HiBaseSizeEnum
 }
 
 ;(Select as any).HiName = 'Select'

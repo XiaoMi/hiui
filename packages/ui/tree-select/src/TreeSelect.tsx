@@ -12,7 +12,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { MockInput } from '@hi-ui/input'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
-import { HiBaseAppearanceEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseAppearanceEnum, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -74,6 +74,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       virtual,
       itemHeight,
       height,
+      size = 'md',
       ...rest
     },
     ref
@@ -245,6 +246,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         trigger={
           <MockInput
             // disabled={disabled}
+            size={size}
             clearable={clearable}
             placeholder={placeholder}
             displayRender={displayRenderProp}
@@ -261,6 +263,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       >
         {isArrayNonEmpty(treeProps.data) ? (
           <Tree
+            size={'md'}
             className={`${prefixCls}__tree`}
             selectable
             selectedId={value}
@@ -393,6 +396,10 @@ export interface TreeSelectProps
    * 	设置 `true` 开启虚拟滚动
    */
   virtual?: boolean
+  /**
+   * 设置尺寸
+   */
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {
