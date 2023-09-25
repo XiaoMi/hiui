@@ -1,5 +1,11 @@
 # @hi-ui/select
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2599](https://github.com/XiaoMi/hiui/pull/2599) [`b3b36813a`](https://github.com/XiaoMi/hiui/commit/b3b36813a6968c5c96c39d1100935372e3aa5b4d) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add size api
+
 ## 4.1.1
 
 ### Patch Changes

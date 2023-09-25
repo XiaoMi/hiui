@@ -1,5 +1,11 @@
 # @hi-ui/tree
 
+## 4.5.2
+
+### Patch Changes
+
+- [#2607](https://github.com/XiaoMi/hiui/pull/2607) [`534bfd298`](https://github.com/XiaoMi/hiui/commit/534bfd29852003af2209c3a64e5f1b2b1d37c19e) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 onExpand 回调参数只返回了第一个问题
+
 ## 4.5.1
 
 ### Patch Changes

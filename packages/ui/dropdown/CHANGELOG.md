@@ -1,5 +1,11 @@
 # @hi-ui/dropdown
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2592](https://github.com/XiaoMi/hiui/pull/2592) [`4a903b331`](https://github.com/XiaoMi/hiui/commit/4a903b33146db140a2c8edd6951385ad9a6fcdde) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add size api
+
 ## 4.0.6
 
 ### Patch Changes
