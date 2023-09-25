@@ -43,12 +43,20 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
         tbody {
           & > tr:not(.#{$emptyContent}) > td {
             padding: use-spacing(7);
+
+            &.#{$prefix}__selection-col {
+              padding: use-spacing(7) use-spacing(5);
+            }
           }
         }
 
         thead {
           & > tr > th {
             padding: use-spacing(7);
+
+            &.#{$prefix}__selection-col {
+              padding: use-spacing(7) use-spacing(5);
+            }
           }
         }
       }
@@ -59,12 +67,20 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
         tbody {
           & > tr:not(.#{$emptyContent}) > td {
             padding: use-spacing(5);
+
+            &.#{$prefix}__selection-col {
+              padding: use-spacing(5);
+            }
           }
         }
 
         thead {
           & > tr > th {
             padding: use-spacing(5);
+
+            &.#{$prefix}__selection-col {
+              padding: use-spacing(5);
+            }
           }
         }
       }
@@ -75,12 +91,20 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
         tbody {
           & > tr:not(.#{$emptyContent}) > td {
             padding: use-spacing(9);
+
+            &.#{$prefix}__selection-col {
+              padding: use-spacing(9) use-spacing(5);
+            }
           }
         }
 
         thead {
           & > tr > th {
             padding: use-spacing(9);
+
+            &.#{$prefix}__selection-col {
+              padding: use-spacing(9) use-spacing(5);
+            }
           }
         }
       }
@@ -161,6 +185,17 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
 
     &-cell {
       background-color: use-color('gray', 50);
+      color: use-color('gray', 700);
+      font-size: use-text-size('normal');
+      font-weight: use-text-weight('medium');
+      line-height: use-text-lineheight('sm');
+      padding: use-spacing(7) use-spacing(8);
+      border-bottom: use-border-size('normal') use-color('gray', 300);
+
+      &.#{$prefix}__embed-col,
+      &.#{$prefix}__selection-col {
+        padding: use-spacing(7) use-spacing(5);
+      }
 
       $this: &;
 
@@ -241,6 +276,7 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
         }
       }
     }
+
     &--virtual {
       display: flex;
     }
@@ -268,20 +304,6 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
 .#{$prefix}-body {
   position: relative;
   overflow: auto;
-}
-
-.#{$prefix}-header-cell {
-  color: use-color('gray', 700);
-  font-size: use-text-size('normal');
-  font-weight: use-text-weight('medium');
-  line-height: use-text-lineheight('sm');
-  padding: use-spacing(7) use-spacing(8);
-  border-bottom: use-border-size('normal') use-color('gray', 300);
-
-  &.#{$prefix}__embed-col,
-  &.#{$prefix}__selection-col {
-    padding: use-spacing(7) use-spacing(5);
-  }
 }
 
 // 单元格

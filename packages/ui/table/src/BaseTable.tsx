@@ -38,7 +38,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       onEmbedExpand,
       expandedRender,
       // 其它
-      size,
+      size = 'md',
       extra,
       onRow,
       onHeaderRow,
