@@ -136,7 +136,7 @@ export const useExpand = (
         trySetTransitionData(newTransitionData)
       }
 
-      tryToggleExpandedIds(Array.from(expandedNodeIdSet))
+      tryToggleExpandedIds(Array.from(expandedNodeIdSet), expandedNode, shouldExpanded)
     },
     [tryToggleExpandedIds, flattedData, trySetTransitionData, dequeue]
   )
