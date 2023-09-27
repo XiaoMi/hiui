@@ -6,9 +6,9 @@ import Select from '../src'
  */
 export const Size = () => {
   const [data] = React.useState([
-    { title: '电视', id: '3', disabled: true },
+    { title: '电视', id: '3', disabled: false },
     { title: '手机', id: '2' },
-    { title: '笔记本', id: '4', disabled: true },
+    { title: '笔记本', id: '4', disabled: false },
     {
       title: '生活周边超长文案展示超长文案展示',
       id: '5',

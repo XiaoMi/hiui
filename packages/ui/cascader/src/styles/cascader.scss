@@ -70,7 +70,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
   min-width: 140px;
   max-height: 260px;
   overflow: auto;
-  padding: 4px 8px;
+  padding: 0 use-spacing(4);
   border-right: use-border-size('normal') use-color('gray', 200);
 
   &:last-of-type {
@@ -81,16 +81,16 @@ $prefix: '#{$component-prefix}-cascader' !default;
 
   &-item {
     width: 100%;
-    padding: use-spacing(1) 0;
+    // padding: use-spacing(1) 0;
     position: relative;
     cursor: pointer;
     display: flex;
   }
 
   &-option {
-    padding: 0 use-spacing(4);
+    padding: use-spacing(1) use-spacing(3);
     box-sizing: border-box;
-    height: use-height-size(7);
+    height: use-height-size(8);
     width: 100%;
     display: flex;
     align-items: center;

@@ -220,7 +220,6 @@ export const Size = () => {
         <Dropdown
           size="lg"
           data={list}
-          width={120}
           title="左键单击"
           trigger={'click'}
           onClick={console.log}
@@ -229,7 +228,6 @@ export const Size = () => {
         <Dropdown
           size="md"
           data={list}
-          width={120}
           title="左键单击"
           trigger={'click'}
           onClick={console.log}
@@ -238,7 +236,6 @@ export const Size = () => {
         <Dropdown
           size="sm"
           data={list}
-          width={120}
           title="左键单击"
           trigger={'click'}
           onClick={console.log}

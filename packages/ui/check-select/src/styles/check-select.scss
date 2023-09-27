@@ -4,8 +4,6 @@ $prefix: '#{$component-prefix}-check-select' !default;
 
 .#{$prefix} {
   &-option {
-    margin-top: use-spacing(1);
-    margin-bottom: use-spacing(1);
     box-sizing: border-box;
     width: 100%;
     display: flex;
@@ -25,10 +23,11 @@ $prefix: '#{$component-prefix}-check-select' !default;
     }
 
     &__title {
-      display: inline-block;
+      display: flex;
+      align-items: center;
       box-sizing: border-box;
       width: 100%;
-      padding: use-spacing(2) use-spacing(3);
+      padding: use-spacing(3) use-spacing(3);
       font-size: inherit;
       text-size-adjust: none;
       font-weight: inherit;

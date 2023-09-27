@@ -8,9 +8,9 @@ import Checkbox from '@hi-ui/checkbox'
  */
 export const Tip = () => {
   const [data] = React.useState([
-    { title: '电视', id: '3', disabled: true },
+    { title: '电视', id: '3', disabled: false },
     { title: '手机', id: '2' },
-    { title: '笔记本', id: '4', disabled: true },
+    { title: '笔记本', id: '4', disabled: false },
     { title: '生活周边超级长文案展示生活周边超级长文案展示', id: '5' },
     { title: '办公', id: '6' },
   ])
@@ -32,7 +32,6 @@ export const Tip = () => {
                   disabled={item.disabled}
                   style={{
                     width: '100%',
-                    display: 'inline-block',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',

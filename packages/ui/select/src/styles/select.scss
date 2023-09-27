@@ -3,8 +3,8 @@
 $prefix: '#{$component-prefix}-select' !default;
 
 .#{$prefix}-option {
-  margin-top: use-spacing(1);
-  margin-bottom: use-spacing(1);
+  // margin-top: use-spacing(1);
+  // margin-bottom: use-spacing(1);
   box-sizing: border-box;
   width: 100%;
   display: flex;
@@ -27,7 +27,7 @@ $prefix: '#{$component-prefix}-select' !default;
     display: inline-block;
     box-sizing: border-box;
     width: 100%;
-    padding: use-spacing(2);
+    padding: use-spacing(3);
     font-size: inherit;
     font-weight: inherit;
     color: inherit;
@@ -43,7 +43,7 @@ $prefix: '#{$component-prefix}-select' !default;
     color: use-color-mode('primary');
   }
 
-  &--focused {
+  &--focused:not(.#{$prefix}-option--selected) {
     background-color: use-color('gray', 100);
   }
 

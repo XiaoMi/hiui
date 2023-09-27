@@ -30,7 +30,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
       onClick,
       onButtonClick,
       overlayClassName,
-      size = 'lg',
+      size = 'md',
       ...rest
     },
     ref
