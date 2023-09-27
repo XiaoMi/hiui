@@ -73,6 +73,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       overlay,
       invalid = false,
       onClose,
+      cellRender,
       ...otherProps
     },
     ref
@@ -414,6 +415,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           showPanel,
           isInDateRangeTimeMode,
           size,
+          cellRender,
         }}
       >
         <div className={cx(prefixCls, className)} {...otherProps}>

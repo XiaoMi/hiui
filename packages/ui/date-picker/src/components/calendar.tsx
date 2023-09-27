@@ -39,6 +39,7 @@ const Calendar = ({
     altCalendarPresetData,
     dateMarkPresetData,
     prefixCls,
+    cellRender,
   } = useContext(DPContext)
 
   // const largeCell = !!(altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset)
@@ -91,6 +92,7 @@ const Calendar = ({
     td.rangeStart && _class.push(`${prefixCls}__cell--range-start`)
     td.rangeEnd && _class.push(`${prefixCls}__cell--range-end`)
     isInWeekMode && _class.push(`${prefixCls}__cell--week-mode-select`)
+    td.weekNum && _class.push(`${prefixCls}__cell--weekNum`)
 
     return _class.join(' ')
   }
@@ -99,10 +101,15 @@ const Calendar = ({
     setCalenderCls(cx(`${prefixCls}__calendar`, `${prefixCls}__calendar--${view}`))
   }, [prefixCls, view])
 
-  const getWeeks = () => {
+  const getWeeks = (type: string) => {
     const week: string[] = i18n.get('datePicker.week') as any
     // 根据偏移做数组移位，展示顶部星期文案
-    return week.slice(weekOffset).concat(week.slice(0, weekOffset))
+    const _week = week.slice(weekOffset).concat(week.slice(0, weekOffset))
+
+    // 如果是周选择类型，第一个th增加一个空白标题
+    if (type === 'week' || type === 'weekrange') _week.unshift('')
+
+    return _week
   }
 
   const onTableClick = (e: React.MouseEvent<HTMLTableElement, MouseEvent>) => {
@@ -117,6 +124,12 @@ const Calendar = ({
     const _date = moment(renderDate) as any
     const cellType = td.getAttribute('type')
     const cellWeekType = td.getAttribute('weektype')
+
+    // 如果点击的是周数，则直接拿到该周的周一日期返回
+    if (cellType === 'week') {
+      onPick(moment().isoWeek(clickVal))
+      return false
+    }
 
     if (type !== 'weekrange' || isBelongFullOurOfRange) {
       if (cellType === 'prev' || cellWeekType === 'prev') {
@@ -266,7 +279,8 @@ const Calendar = ({
     <div
       className={cx(
         `${prefixCls}__calendar-wrap`,
-        `${prefixCls}__calendar-wrap--${isLarge ? 'lg' : 'md'}`
+        `${prefixCls}__calendar-wrap--${isLarge ? 'lg' : 'md'}`,
+        `${prefixCls}__calendar-wrap--type-${type}`
       )}
     >
       <CSSTransition in={holidayFullNameShow} timeout={300} classNames={`${prefixCls}__indiaHoli`}>
@@ -278,7 +292,7 @@ const Calendar = ({
         {(view.includes('date') || view.includes('week')) && (
           <thead>
             <tr>
-              {getWeeks().map((item: React.ReactNode, index: number) => {
+              {getWeeks(type).map((item: React.ReactNode, index: number) => {
                 return <th key={index}>{item}</th>
               })}
             </tr>
@@ -302,6 +316,12 @@ const Calendar = ({
                 })}
               >
                 {row.map((cell, _index) => {
+                  const cellValue = cell.weekNum
+                    ? cell.weekNum
+                    : parseInt(String(cell.text || cell.value)) < 10
+                    ? '0' + (cell.text || cell.value)
+                    : cell.text || cell.value
+
                   return (
                     <td
                       key={_index}
@@ -336,9 +356,7 @@ const Calendar = ({
                           // @ts-ignore
                           belong-full-out-of-range={isBelongFullOutOfRange}
                         >
-                          {parseInt(String(cell.text || cell.value)) < 10
-                            ? '0' + (cell.text || cell.value)
-                            : cell.text || cell.value}
+                          {cellRender ? cellRender(cell) : cellValue}
                         </span>
                         {renderAltCalendar(cell, isBelongFullOutOfRange)}
                       </div>

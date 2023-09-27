@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 import { DAY_MILLISECONDS } from '../utils/constants'
 import { DatePickerTypeEnum, DisabledDate } from '../types'
-import { getBelongWeekBoundary } from '../utils/week'
+import { getBelongWeek, getBelongWeekBoundary } from '../utils/week'
 import { UseLocaleContext } from '@hi-ui/core'
 
 const getYearOrMonthRows = ({
@@ -338,6 +338,39 @@ const getDateRows = ({
       }
     }
   }
+
+  // 如果是周类型，则计算出每一行的周数并放入每行数组第一个
+  if (type === 'week' || type === 'weekrange') {
+    const year = _date.year()
+    const month = _date.month() + 1
+
+    for (let i = 0, len = rows.length; i < len; i++) {
+      const item = rows[i][0]
+      const { type, value } = item
+      let _year = year
+      let _month = type === 'prev' ? month - 1 : type === 'next' ? month + 1 : month
+
+      if (_month > 12) {
+        _year = _year + 1
+        _month = 1
+      }
+
+      if (_month < 1) {
+        _year = _year - 1
+        _month = 12
+      }
+
+      const weekStartDate = getBelongWeekBoundary(moment(`${_year}-${_month}-${value}`), weekOffset)
+
+      rows[i].unshift({
+        ...item,
+        weekNum: getBelongWeek(weekStartDate, weekOffset),
+        weekStartDate,
+        renderDate: _date,
+      })
+    }
+  }
+
   return rows
 }
 
@@ -356,6 +389,9 @@ export interface CalendarColInfo {
   value: number
   weekType: CalendarRowType
   text: string | number
+  weekNum?: number
+  weekStartDate?: Moment
+  renderDate?: Moment
 }
 export type CalendarRowInfo = CalendarColInfo[] & {
   weekNum: number

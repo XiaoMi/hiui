@@ -2,6 +2,7 @@ import React from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { PopperOverlayProps } from '@hi-ui/popper'
 import { TimePickerPanelType } from '@hi-ui/time-picker'
+import { CalendarColInfo } from './hooks/useCalenderData'
 
 export type CalendarViewEnum = 'date' | 'year' | 'month'
 
@@ -256,4 +257,8 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 面板关闭时回调
    */
   onClose?: () => void
+  /**
+   * 自定义单元格内容
+   */
+  cellRender?: (colInfo: CalendarColInfo) => React.ReactNode
 }
