@@ -1,5 +1,25 @@
 # @hi-ui/hiui
 
+## 4.3.1
+
+### Patch Changes
+
+- [#2614](https://github.com/XiaoMi/hiui/pull/2614) [`db9fca55f`](https://github.com/XiaoMi/hiui/commit/db9fca55fc4aabd22fa795b1b4ceabab4e985e58) Thanks [@zyprepare](https://github.com/zyprepare)! - DatePicker feat: add cellRender api
+
+- [#2612](https://github.com/XiaoMi/hiui/pull/2612) [`832360b54`](https://github.com/XiaoMi/hiui/commit/832360b54231983148858b12707087c6b6fbac87) Thanks [@zyprepare](https://github.com/zyprepare)! - Select CheckSelect Cascader CheckCascader Upload Dropdown fix: 修改下拉菜单高度为 32px
+
+- [#2613](https://github.com/XiaoMi/hiui/pull/2613) [`e1da14cec`](https://github.com/XiaoMi/hiui/commit/e1da14cec6c320c21f43b92ba6fa318299906a14) Thanks [@zyprepare](https://github.com/zyprepare)! - Tree feat: 增加 TreeHelper,支持 scrollTo 方法
+
+- Updated dependencies [[`832360b54`](https://github.com/XiaoMi/hiui/commit/832360b54231983148858b12707087c6b6fbac87), [`e1da14cec`](https://github.com/XiaoMi/hiui/commit/e1da14cec6c320c21f43b92ba6fa318299906a14), [`db9fca55f`](https://github.com/XiaoMi/hiui/commit/db9fca55fc4aabd22fa795b1b4ceabab4e985e58)]:
+  - @hi-ui/cascader@4.1.1
+  - @hi-ui/check-cascader@4.2.1
+  - @hi-ui/check-select@4.3.1
+  - @hi-ui/dropdown@4.1.1
+  - @hi-ui/select@4.2.1
+  - @hi-ui/upload@4.1.6
+  - @hi-ui/tree@4.5.3
+  - @hi-ui/date-picker@4.3.0
+
 ## 4.3.0
 
 ### Minor Changes

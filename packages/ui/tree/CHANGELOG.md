@@ -1,5 +1,11 @@
 # @hi-ui/tree
 
+## 4.5.3
+
+### Patch Changes
+
+- [#2613](https://github.com/XiaoMi/hiui/pull/2613) [`e1da14cec`](https://github.com/XiaoMi/hiui/commit/e1da14cec6c320c21f43b92ba6fa318299906a14) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 TreeHelper,支持 scrollTo 方法
+
 ## 4.5.2
 
 ### Patch Changes
