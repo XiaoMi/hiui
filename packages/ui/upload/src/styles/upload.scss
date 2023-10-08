@@ -72,7 +72,7 @@ $prefix: '#{$component-prefix}-upload' !default;
     display: flex;
     border-radius: use-border-radius('normal');
     padding: use-spacing(4);
-    margin-top: use-spacing(4);
+    margin-top: use-spacing(3);
     box-sizing: border-box;
     align-items: center;
     overflow: hidden;
