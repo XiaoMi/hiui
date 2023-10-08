@@ -340,6 +340,10 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &--md {
       width: 240px; // https://github.com/XiaoMi/hiui/issues/2400
+
+      &.#{$prefix}__calendar-wrap--type-week, &.#{$prefix}__calendar-wrap--type-weekrange {
+        width: 280px;
+      }
     }
 
     &--lg {
@@ -385,6 +389,11 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     position: relative;
     z-index: 0;
     padding: 0;
+
+    &--weekNum {
+      width: 40px;
+      color: use-color('gray', 400);
+    }
 
     &-text,
     &-week-indicator {
