@@ -156,3 +156,20 @@ export type TreeEditActions = {
    */
   closeMenu: () => void
 }
+
+export type ScrollAlign = 'top' | 'bottom' | 'auto'
+export type ScrollConfig =
+  | {
+      index: number
+      align?: ScrollAlign
+      offset?: number
+    }
+  | {
+      key: React.Key
+      align?: ScrollAlign
+      offset?: number
+    }
+
+export interface TreeHelper {
+  scrollTo?: (arg: number | ScrollConfig) => void
+}
