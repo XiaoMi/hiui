@@ -45,7 +45,7 @@ export const SelectChange = () => {
         {
           id: '0-2',
           title: '0-2',
-          disabled: true,
+          disabled: false,
           children: [
             {
               id: '0-2-0',

@@ -65,14 +65,14 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &__item {
-    height: 40px;
+    height: 32px;
     cursor: default;
     color: use-color('gray', 800);
     background: use-color('gray', 50);
     display: flex;
     border-radius: use-border-radius('normal');
-    padding: use-spacing(6);
-    margin-top: use-spacing(4);
+    padding: use-spacing(4);
+    margin-top: use-spacing(3);
     box-sizing: border-box;
     align-items: center;
     overflow: hidden;
@@ -124,6 +124,7 @@ $prefix: '#{$component-prefix}-upload' !default;
     align-items: center;
     padding-left: 8px;
     overflow: hidden;
+    font-size: use-text-size('normal');
   }
 
   &__upstatus {

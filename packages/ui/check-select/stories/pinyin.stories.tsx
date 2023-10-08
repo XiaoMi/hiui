@@ -9,9 +9,9 @@ import { match } from 'pinyin-pro'
  */
 export const Pinyin = () => {
   const [data] = React.useState([
-    { title: '电视', id: '3', disabled: true },
+    { title: '电视', id: '3', disabled: false },
     { title: '手机', id: '2' },
-    { title: '笔记本', id: '4', disabled: true },
+    { title: '笔记本', id: '4', disabled: false },
     { title: '生活周边', id: '5' },
     { title: '办公', id: '6' },
   ])
