@@ -1,5 +1,11 @@
 # @hi-ui/upload
 
+## 4.1.6
+
+### Patch Changes
+
+- [#2612](https://github.com/XiaoMi/hiui/pull/2612) [`832360b54`](https://github.com/XiaoMi/hiui/commit/832360b54231983148858b12707087c6b6fbac87) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修改下拉菜单高度为 32px
+
 ## 4.1.5
 
 ### Patch Changes
