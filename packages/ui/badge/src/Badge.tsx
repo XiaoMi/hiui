@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo, isValidElement, cloneElement } from 'react'
+import React, {forwardRef, useMemo, isValidElement, cloneElement, ReactNode} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
@@ -7,6 +7,11 @@ import { BadgeTypeEnum } from './types'
 
 const _prefix = getPrefixCls('badge')
 
+// 支持字符串和 number hover 显示，其他过滤
+const getShowContent = (content: ReactNode)=>{
+  if (!['number','string'].includes(typeof content)) return ""
+  return `${content}`
+}
 /**
  * 红点 / 徽标
  *
@@ -78,13 +83,13 @@ export const Badge = forwardRef<HTMLSpanElement | null, BadgeProps>(
         })
       }
 
-      return <span className={`${prefixCls}__value`} style={badgeStyle} title={content as string} children={count} />
+      return <span className={`${prefixCls}__value`} style={badgeStyle} title={getShowContent(content)} children={count} />
     }, [type, prefixCls, badgeStyle, count])
 
     const cls = cx(prefixCls, className, isNullish(children) && `${prefixCls}--independent`)
 
     return (
-      <span ref={ref} className={cls} style={style}  {...rest}>
+      <span ref={ref} className={cls} style={style} {...rest}>
         {children}
         {visible ? badgeNode : null}
       </span>
