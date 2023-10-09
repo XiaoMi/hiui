@@ -78,13 +78,13 @@ export const Badge = forwardRef<HTMLSpanElement | null, BadgeProps>(
         })
       }
 
-      return <span className={`${prefixCls}__value`} style={badgeStyle} children={count} />
+      return <span className={`${prefixCls}__value`} style={badgeStyle} title={content as string} children={count} />
     }, [type, prefixCls, badgeStyle, count])
 
     const cls = cx(prefixCls, className, isNullish(children) && `${prefixCls}--independent`)
 
     return (
-      <span ref={ref} className={cls} style={style} title={content as string} {...rest}>
+      <span ref={ref} className={cls} style={style}  {...rest}>
         {children}
         {visible ? badgeNode : null}
       </span>
