@@ -1,4 +1,4 @@
-import React, {forwardRef, useMemo, isValidElement, cloneElement, ReactNode} from 'react'
+import React, { forwardRef, useMemo, isValidElement, cloneElement, ReactNode } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
@@ -8,8 +8,8 @@ import { BadgeTypeEnum } from './types'
 const _prefix = getPrefixCls('badge')
 
 // 支持字符串和 number hover 显示，其他过滤
-const getShowContent = (content: ReactNode)=>{
-  if (!['number','string'].includes(typeof content)) return ""
+const getShowContent = (content: ReactNode) => {
+  if (!['number', 'string'].includes(typeof content)) return ""
   return `${content}`
 }
 /**
