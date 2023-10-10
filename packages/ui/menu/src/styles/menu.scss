@@ -1,6 +1,12 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-menu' !default;
+$disabled-color: var(--hi-v4-color-gray-400, #c9ced6) !default;
+
+@mixin menu-item-disabled() {
+  color: $disabled-color;
+  cursor: not-allowed;
+}
 
 .#{$prefix}-fat-menu {
   background-color: use-color-static('white');
@@ -40,6 +46,10 @@ $prefix: '#{$component-prefix}-menu' !default;
 
     &:not(.#{$prefix}-item--active):hover {
       background-color: use-color('gray', 100);
+    }
+
+    &--disabled {
+      @include menu-item-disabled;
     }
   }
 
@@ -92,6 +102,10 @@ $prefix: '#{$component-prefix}-menu' !default;
       &:not(.#{$prefix}-item__inner--active):hover {
         background-color: use-color('gray', 100);
       }
+
+      &--disabled {
+        @include menu-item-disabled;
+      }
     }
 
     &__content {
@@ -142,6 +156,10 @@ $prefix: '#{$component-prefix}-menu' !default;
       width: 24px;
       height: 100%;
       flex-shrink: 0;
+    }
+
+    &--disabled {
+      @include menu-item-disabled;
     }
   }
 
@@ -219,6 +237,18 @@ $prefix: '#{$component-prefix}-menu' !default;
         flex: 1;
         white-space: nowrap;
         max-width: none;
+      }
+
+      &--disabled {
+        @include menu-item-disabled;
+
+        .#{$prefix}-item__inner.#{$prefix}-item__inner {
+          border-bottom: 0;
+
+          .#{$prefix}-item__content {
+            color: $disabled-color;
+          }
+        }
       }
     }
   }
@@ -308,6 +338,11 @@ $prefix: '#{$component-prefix}-menu' !default;
         text-overflow: ellipsis;
         white-space: nowrap;
         text-indent: 0.5px;
+      }
+
+      &--disabled {
+        color: var(--hi-v4-color-gray-400, #c9ced6);
+        cursor: not-allowed;
       }
     }
   }

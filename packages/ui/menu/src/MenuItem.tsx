@@ -90,11 +90,11 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             })}
             onClick={() => {
               if (isArrayNonEmpty(children)) {
-                if (clickSubMenu) {
+                if (!disabled && clickSubMenu) {
                   clickSubMenu(id)
                 }
               } else {
-                if (clickMenu) {
+                if (!disabled && clickMenu) {
                   // @ts-ignore
                   clickMenu(id, raw)
                 }
@@ -121,7 +121,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               placement === 'vertical' &&
               expandedType === 'collapse' &&
               !showAllSubMenus &&
-              (expandedIds?.includes(id) ? (
+              (!disabled && expandedIds?.includes(id) ? (
                 <Arrow prefixCls={`${prefixCls}-item`} direction="up" />
               ) : (
                 <Arrow prefixCls={`${prefixCls}-item`} direction="down" />
@@ -144,7 +144,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             {hasChildren &&
               placement === 'horizontal' &&
               level === 1 &&
-              (expandedIds?.includes(id) ? (
+              (!disabled && expandedIds?.includes(id) ? (
                 <Arrow prefixCls={`${prefixCls}-item`} direction="up" />
               ) : (
                 <Arrow prefixCls={`${prefixCls}-item`} direction="down" />
@@ -156,7 +156,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
           !mini &&
           !showAllSubMenus &&
           expandedType === 'collapse' ? (
-            <Expander visible={!!expandedIds?.includes(id)}>
+            <Expander visible={!disabled && !!expandedIds?.includes(id)}>
               <ul className={`${prefixCls}-submenu`}>
                 {children!.map((child) => (
                   <MenuItem
@@ -323,15 +323,14 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                         {child.children.map((item) => (
                           <div
                             onClick={() => {
-                              if (clickMenu) {
-                                clickMenu(item.id, item)
-                              }
-                              if (closePopper) {
-                                closePopper(id)
+                              if(!item.disabled) {
+                                clickMenu && clickMenu(item.id, item)
+                                closePopper && closePopper(id)
                               }
                             }}
                             className={cx(`${prefixCls}-item`, {
                               [`${prefixCls}-item--active`]: activeId === item.id,
+                              [`${prefixCls}-item--disabled`]: item.disabled
                             })}
                             key={item.id}
                           >
@@ -431,13 +430,12 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                           <div
                             className={cx(`${prefixCls}-item`, {
                               [`${prefixCls}-item--active`]: activeId === item.id,
+                              [`${prefixCls}-item--disabled`]: item.disabled
                             })}
                             onClick={() => {
-                              if (clickMenu) {
-                                clickMenu(item.id, item)
-                              }
-                              if (closePopper) {
-                                closePopper(id)
+                              if(!item.disabled) {
+                                clickMenu && clickMenu(item.id, item)
+                                closePopper && closePopper(id)
                               }
                             }}
                             key={item.id}
