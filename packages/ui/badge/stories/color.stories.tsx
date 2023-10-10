@@ -18,7 +18,6 @@ export const Color = () => {
     'magenta',
     '#2db7f5',
     '#108ee9',
-    '#2db7f5',
   ]
 
   return (
