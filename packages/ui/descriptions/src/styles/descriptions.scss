@@ -91,6 +91,20 @@ $prefix: '#{$component-prefix}-descriptions' !default;
       border: use-border-size('normal') use-color('gray', 200);
       background-color: use-color-static('white');
 
+      &.#{$prefix}--size-md {
+        .#{$prefix}-row > th,
+        .#{$prefix}-row > td {
+          padding: use-spacing(7);
+        }
+      }
+
+      &.#{$prefix}--size-sm {
+        .#{$prefix}-row > th,
+        .#{$prefix}-row > td {
+          padding: use-spacing(5);
+        }
+      }
+
       > table {
         table-layout: auto;
         border-collapse: collapse;
