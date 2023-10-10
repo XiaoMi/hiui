@@ -341,8 +341,7 @@ $disabled-color: var(--hi-v4-color-gray-400, #c9ced6) !default;
       }
 
       &--disabled {
-        color: var(--hi-v4-color-gray-400, #c9ced6);
-        cursor: not-allowed;
+        @include menu-item-disabled;
       }
     }
   }
