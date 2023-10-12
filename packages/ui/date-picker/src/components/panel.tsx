@@ -92,10 +92,12 @@ const Panel = (props: PanelProps) => {
       }
       setView(_view)
       const _innerDates = genNewDates(calRenderDates, date)
+
       if (view === 'date') {
         onPick(_innerDates, showTime)
         return
       }
+
       setCalRenderDates(_innerDates)
     },
     [calRenderDates, onPick, onSelect, showTime, type, view, weekOffset]

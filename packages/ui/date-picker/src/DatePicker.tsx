@@ -74,6 +74,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       invalid = false,
       onClose,
       cellRender,
+      strideSelectMode = 'auto',
       ...otherProps
     },
     ref
@@ -169,20 +170,20 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       valueAdapter,
       uncontrolledValue,
     ])
-
     const [outDate, changeOutDate] = useDate({
       value,
       type,
       defaultValue,
       cacheDate,
-      format,
+      format: typeof format === 'function' ? undefined : format,
       weekOffset: safeWeekOffset,
       locale,
+      strideSelectMode,
     })
     const realFormat = useFormat({
       type,
       showTime,
-      format,
+      format: typeof format === 'function' ? undefined : format,
       locale,
     })
 
@@ -416,6 +417,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           isInDateRangeTimeMode,
           size,
           cellRender,
+          strideSelectMode,
         }}
       >
         <div className={cx(prefixCls, className)} {...otherProps}>

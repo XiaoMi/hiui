@@ -339,6 +339,7 @@ const getDateRows = ({
     }
   }
 
+  // 新增功能：周选择显示周数
   // 如果是周类型，则计算出每一行的周数并放入每行数组第一个
   if (type === 'week' || type === 'weekrange') {
     const year = _date.year()

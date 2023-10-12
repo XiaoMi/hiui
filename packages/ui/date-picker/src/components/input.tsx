@@ -36,8 +36,10 @@ const Input = ({
 
   const cacheValues = useRef<string | null>(null)
   const [value, setValue] = useState<string | null>('')
+
   useEffect(() => {
     let vals = date && moment(date).format(realFormat)
+
     if (type.includes('week') && date) {
       // const _date = moment(date).year(y)
       // vals = moment(_date).format(realFormat)
@@ -51,19 +53,30 @@ const Input = ({
           week: getBelongWeek(date, weekOffset),
         })
       } else {
-        const y = moment(date).weekYear()
-        const _date = moment(date).year(y)
-        vals = moment(_date).format(realFormat)
+        if (typeof format === 'function') {
+          vals = format(date)
+        } else {
+          const y = moment(date).weekYear()
+          const _date = moment(date).year(y)
+
+          vals = moment(_date).format(realFormat)
+        }
       }
     }
+
     setValue(vals)
+
     cacheValues.current = vals
   }, [date, weekOffset, i18n, type, format, realFormat, locale])
+
   const inputChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
+
     setValue(val)
+
     if (val && val.trim().length === realFormat.length) {
       const nVal = moment(val)
+
       if (nVal.isValid()) {
         onChange(nVal, dir)
       } else {
@@ -71,6 +84,7 @@ const Input = ({
       }
     }
   }
+
   return (
     <div className={`${prefixCls}__picker__input-container`}>
       <input
