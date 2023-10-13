@@ -1,5 +1,11 @@
 # @hi-ui/tree
 
+## 4.5.4
+
+### Patch Changes
+
+- [#2623](https://github.com/XiaoMi/hiui/pull/2623) [`dcbb300ad`](https://github.com/XiaoMi/hiui/commit/dcbb300ad8b27787001b600d1323f3fe66f86b40) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复编辑状态下键盘无法移动光标问题
+
 ## 4.5.3
 
 ### Patch Changes
