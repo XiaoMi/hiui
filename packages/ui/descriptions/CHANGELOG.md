@@ -1,5 +1,11 @@
 # @hi-ui/descriptions
 
+## 4.2.1
+
+### Patch Changes
+
+- [#2624](https://github.com/XiaoMi/hiui/pull/2624) [`b8d4d79b4`](https://github.com/XiaoMi/hiui/commit/b8d4d79b4316ccae5753b97fbd16b1e5183d6fe6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复带边框模式下 size 设置无效问题
+
 ## 4.2.0
 
 ### Minor Changes

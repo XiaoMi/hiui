@@ -1,5 +1,17 @@
 # @hi-ui/hiui
 
+## 4.3.2
+
+### Patch Changes
+
+- [#2623](https://github.com/XiaoMi/hiui/pull/2623) [`dcbb300ad`](https://github.com/XiaoMi/hiui/commit/dcbb300ad8b27787001b600d1323f3fe66f86b40) Thanks [@zyprepare](https://github.com/zyprepare)! - Tree fix: 修复编辑状态下键盘无法移动光标问题
+
+- [#2624](https://github.com/XiaoMi/hiui/pull/2624) [`b8d4d79b4`](https://github.com/XiaoMi/hiui/commit/b8d4d79b4316ccae5753b97fbd16b1e5183d6fe6) Thanks [@zyprepare](https://github.com/zyprepare)! - Descriptions fix: 修复带边框模式下 size 设置无效问题
+
+- Updated dependencies [[`b8d4d79b4`](https://github.com/XiaoMi/hiui/commit/b8d4d79b4316ccae5753b97fbd16b1e5183d6fe6), [`dcbb300ad`](https://github.com/XiaoMi/hiui/commit/dcbb300ad8b27787001b600d1323f3fe66f86b40)]:
+  - @hi-ui/descriptions@4.2.1
+  - @hi-ui/tree@4.5.4
+
 ## 4.3.1
 
 ### Patch Changes
