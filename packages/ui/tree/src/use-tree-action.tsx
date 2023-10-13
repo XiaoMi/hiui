@@ -404,9 +404,10 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
   }
 
   const onKeydown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    evt.stopPropagation()
+
     if (evt.keyCode === 13) {
       evt.preventDefault()
-      evt.stopPropagation()
 
       saveEdit()
     }
