@@ -90,14 +90,9 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             })}
             onClick={() => {
               if (isArrayNonEmpty(children)) {
-                if (!disabled && clickSubMenu) {
-                  clickSubMenu(id)
-                }
+                !disabled && clickSubMenu?.(id)
               } else {
-                if (!disabled && clickMenu) {
-                  // @ts-ignore
-                  clickMenu(id, raw)
-                }
+                !disabled && clickMenu?.(id, raw as MenuDataItem)
                 if (
                   closeAllPopper &&
                   !(placement === 'vertical' && expandedType === 'collapse' && mini === false)
@@ -188,9 +183,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               gutterGap={16}
               className={overlayClassName}
               onClose={() => {
-                if (closePopper) {
-                  closePopper(id)
-                }
+                closePopper?.(id)
               }}
             >
               <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
@@ -218,9 +211,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               disabledPortal
               className={overlayClassName}
               onClose={() => {
-                if (closePopper) {
-                  closePopper(id)
-                }
+                closePopper?.(id)
               }}
             >
               <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
@@ -251,9 +242,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               gutterGap={16}
               className={overlayClassName}
               onClose={() => {
-                if (closePopper) {
-                  closePopper(id)
-                }
+                closePopper?.(id)
               }}
             >
               <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
@@ -279,9 +268,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               gutterGap={16}
               className={overlayClassName}
               onClose={() => {
-                if (closePopper) {
-                  closePopper(id)
-                }
+                closePopper?.(id)
               }}
             >
               <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
@@ -308,9 +295,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             gutterGap={16}
             className={overlayClassName}
             onClose={() => {
-              if (closePopper) {
-                closePopper(id)
-              }
+              closePopper?.(id)
             }}
           >
             <div className={`${prefixCls}-fat-menu`}>
@@ -323,10 +308,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                         {child.children.map((item) => (
                           <div
                             onClick={() => {
-                              if(!item.disabled) {
-                                clickMenu && clickMenu(item.id, item)
-                                closePopper && closePopper(id)
-                              }
+                              !item.disabled && (clickMenu?.(item.id, item), closePopper?.(id))
                             }}
                             className={cx(`${prefixCls}-item`, {
                               [`${prefixCls}-item--active`]: activeId === item.id,
@@ -357,9 +339,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               gutterGap={level === 1 ? 8 : 16}
               className={overlayClassName}
               onClose={() => {
-                if (closePopper) {
-                  closePopper(id)
-                }
+                closePopper?.(id)
               }}
             >
               <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
@@ -385,9 +365,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               gutterGap={level === 1 ? 8 : 16}
               className={overlayClassName}
               onClose={() => {
-                if (closePopper) {
-                  closePopper(id)
-                }
+                closePopper?.(id)
               }}
             >
               <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
@@ -414,9 +392,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             gutterGap={8}
             className={overlayClassName}
             onClose={() => {
-              if (closePopper) {
-                closePopper(id)
-              }
+              closePopper?.(id)
             }}
           >
             <div className={`${prefixCls}-fat-menu`}>
@@ -433,10 +409,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                               [`${prefixCls}-item--disabled`]: item.disabled
                             })}
                             onClick={() => {
-                              if(!item.disabled) {
-                                clickMenu && clickMenu(item.id, item)
-                                closePopper && closePopper(id)
-                              }
+                              !item.disabled && (clickMenu?.(item.id, item),closePopper?.(id))
                             }}
                             key={item.id}
                           >
