@@ -241,13 +241,13 @@ $disabled-color: var(--hi-v4-color-gray-400, #c9ced6) !default;
 
       &--disabled {
         @include menu-item-disabled;
-
-        .#{$prefix}-item__inner.#{$prefix}-item__inner {
-          border-bottom: 0;
-
-          .#{$prefix}-item__content {
-            color: $disabled-color;
+        &:hover{
+          .#{$prefix}-item__inner {
+            border-color:var(--hi-v4-color-static-white, #fff) ;
           }
+        }
+        .#{$prefix}-item__content {
+          color: $disabled-color;
         }
       }
     }
