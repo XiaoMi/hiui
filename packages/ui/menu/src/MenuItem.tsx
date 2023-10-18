@@ -308,7 +308,10 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                         {child.children.map((item) => (
                           <div
                             onClick={() => {
-                              !item.disabled && (clickMenu?.(item.id, item), closePopper?.(id))
+                              if (!item.disabled) {
+                                clickMenu?.(item.id, item)
+                                closePopper?.(id)
+                              }
                             }}
                             className={cx(`${prefixCls}-item`, {
                               [`${prefixCls}-item--active`]: activeId === item.id,
@@ -409,7 +412,10 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                               [`${prefixCls}-item--disabled`]: item.disabled
                             })}
                             onClick={() => {
-                              !item.disabled && (clickMenu?.(item.id, item),closePopper?.(id))
+                              if (!item.disabled) {
+                                clickMenu?.(item.id, item)
+                                closePopper?.(id)
+                              }
                             }}
                             key={item.id}
                           >
@@ -447,7 +453,7 @@ if (__DEV__) {
 }
 
 const Arrow = ({ prefixCls, direction }: any) => {
-  let icon = null
+  let icon
   switch (direction) {
     case 'up':
       icon = <UpOutlined />

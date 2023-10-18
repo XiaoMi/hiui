@@ -1,7 +1,7 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-menu' !default;
-$disabled-color: var(--hi-v4-color-gray-400, #c9ced6) !default;
+$disabled-color: use-color('gray', 400) !default;
 
 @mixin menu-item-disabled() {
   color: $disabled-color;
@@ -243,7 +243,7 @@ $disabled-color: var(--hi-v4-color-gray-400, #c9ced6) !default;
         @include menu-item-disabled;
         &:hover{
           .#{$prefix}-item__inner {
-            border-color:var(--hi-v4-color-static-white, #fff) ;
+            border-color:use-color-static('white') ;
           }
         }
         .#{$prefix}-item__content {
