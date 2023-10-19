@@ -3,4 +3,4 @@
 ---
 
 Menu fix: 修复 disabled 不生效问题
-Badge 支持字符串和数字 hover 显示完全
+Badge 支持字符串和数字 hover 时显示完整内容
