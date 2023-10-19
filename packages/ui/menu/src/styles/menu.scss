@@ -241,11 +241,13 @@ $disabled-color: use-color('gray', 400) !default;
 
       &--disabled {
         @include menu-item-disabled;
-        &:hover{
+
+        &:hover {
           .#{$prefix}-item__inner {
-            border-color:use-color-static('white') ;
+            border-color: use-color-static('white');
           }
         }
+
         .#{$prefix}-item__content {
           color: $disabled-color;
         }
