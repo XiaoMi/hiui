@@ -5,6 +5,7 @@ import { invariant } from '@hi-ui/env'
 import { filterTree, getNodeAncestors, cloneTree } from '@hi-ui/tree-utils'
 import { useLatestRef } from '@hi-ui/use-latest'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { debounce } from '@hi-ui/func-utils'
 
 const initialStateInSearch = () => ({
   matched: false,
@@ -16,10 +17,10 @@ const initialStateInSearch = () => ({
  * TODO: What is useSearchMode
  */
 export const useSearchMode = ({
-  searchable: searchableProp,
-  strategies,
-  keyword: keywordProp,
-}: UseSearchModeProps) => {
+                                searchable: searchableProp,
+                                strategies,
+                                keyword: keywordProp,
+                              }: UseSearchModeProps) => {
   const [keyword, setKeyword] = useUncontrolledState('', keywordProp)
 
   // 搜索时的临时节点数据
@@ -58,7 +59,9 @@ export const useSearchMode = ({
     },
     [searchable, setKeyword, runSearch]
   )
-
+  const isAsyncMode = searchMode === 'dataSource'
+  // 只有异步搜索需要防抖，正常不需要
+  const debounceOnSearch = isAsyncMode ? debounce(onSearch) : onSearch
   const keywordLatestRef = useLatestRef(keyword)
 
   // 外部数据或策略改变时，重新触发搜索
@@ -73,7 +76,7 @@ export const useSearchMode = ({
     searchable,
     searchMode,
     keyword,
-    onSearch,
+    onSearch: debounceOnSearch,
     inSearch,
     isEmpty,
     state: stateInSearch,
@@ -180,13 +183,13 @@ export const useHighlightSearch = ({ data, flattedData, searchMode }: any) => {
 }
 
 export const useFilterSearch = ({
-  enabled,
-  searchMode = 'filter',
-  data,
-  flattedData,
-  exclude,
-  fieldNames,
-}: any) => {
+                                  enabled,
+                                  searchMode = 'filter',
+                                  data,
+                                  flattedData,
+                                  exclude,
+                                  fieldNames,
+                                }: any) => {
   const excludeLatestRef = useLatestRef(exclude)
   const getKeyFields = useMemo(() => genKeyFields(fieldNames), [fieldNames])
 
