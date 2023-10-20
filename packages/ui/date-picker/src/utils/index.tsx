@@ -294,22 +294,31 @@ export const parseValue = (
   value: DatePickerValueV3,
   type: DatePickerTypeEnum,
   weekOffset: number,
-  format?: string
+  format?: string,
+  strideSelectMode?: 'auto' | 'fixed'
 ) => {
   if (!value) return [null]
+
   // 暂时无法理解为何此处自行获取了 type
   // const _format = getLocaleTypeFormatMap(locale)[type]
   // const _value = moment(value as any, _format)
-  const _value = moment(value as any, format)
+  const _value = moment(value as any, typeof format === 'string' ? format : undefined)
   const isValid = moment(_value).isValid()
+
   if (value && typeof value === 'object' && (type.includes('range') || type === 'timeperiod')) {
     const rangeValue = value as DateRange
+
     if (type === 'weekrange') {
+      if (strideSelectMode === 'fixed') {
+        return [moment(rangeValue.start), moment(rangeValue.end)]
+      }
+
       return [
         rangeValue.start ? getBelongWeekBoundary(moment(rangeValue.start), weekOffset) : null,
         rangeValue.end ? getBelongWeekBoundary(moment(rangeValue.end), weekOffset, false) : null,
       ]
     }
+
     return [
       rangeValue.start && moment(rangeValue.start).isValid()
         ? moment(rangeValue.start, format)
@@ -317,5 +326,6 @@ export const parseValue = (
       rangeValue.end && moment(rangeValue.end).isValid() ? moment(rangeValue.end, format) : null,
     ]
   }
+
   return [isValid ? _value : null]
 }

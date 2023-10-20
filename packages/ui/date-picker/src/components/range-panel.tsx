@@ -36,6 +36,7 @@ const RangePanel = () => {
     showPanel,
     prefixCls,
     disabledDate,
+    strideSelectMode,
   } = useContext(DPContext)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
@@ -51,6 +52,7 @@ const RangePanel = () => {
 
   useEffect(() => {
     const _outDate = cloneDeep(outDate)
+
     setRange({
       start: _outDate[0],
       end: _outDate[1],
@@ -95,11 +97,44 @@ const RangePanel = () => {
         newRange.end = newRange.start
         newRange.start = date
       }
+
       // 此处是明显的语法错误，故而注释修改
       // onSelect(date, calendarClickIsEnd)
       onSelect(date as any, !calendarClickIsEnd.current)
+
       if (type === 'weekrange') {
-        onPick([newRange.start!.startOf('week'), newRange.end!.endOf('week')], showTime)
+        // 固定模式下，即使跨月选择了日期，仍然显示当前月的日期选择面板
+        if (strideSelectMode === 'fixed') {
+          const { start, end } = newRange
+          // 开始周周一日期
+          const startOfWeek = start.clone()!.startOf('week')
+          // 结束周周日日期
+          const endOfWeek = end!.clone()!.endOf('week')
+          // 当月最后一天
+          const endOfMonth = end!.clone().endOf('month')
+          // 重新计算出的开始日期，逻辑：（开始周日期不能是上个月的日期）
+          // 如果当前日期是当月第一天，则返回当前日期，否则
+          // 如果当前日期小于当前周周一，则返回当月第一天，否则返回当前周周一
+          const rangeStart =
+            start.date() === 1
+              ? start
+              : startOfWeek.date() > start.date()
+              ? start.clone().startOf('month')
+              : startOfWeek
+          // 重新计算出的结束日期，逻辑：（结束周日期不能是下个月的日期）
+          // 如果当前日期是当月最后一天，则返回当前日期，否则
+          // 如果当前日期大于当前周周日，则返回当月最后一天，否则返回当前周周日
+          const rangeEnd =
+            end?.date() === endOfMonth.date()
+              ? end
+              : end!.date() > endOfWeek.date()
+              ? endOfMonth
+              : endOfWeek
+
+          onPick([rangeStart, rangeEnd], showTime)
+        } else {
+          onPick([newRange.start!.startOf('week'), newRange.end!.endOf('week')], showTime)
+        }
       } else {
         onPick([newRange.start, newRange.end], showTime)
       }

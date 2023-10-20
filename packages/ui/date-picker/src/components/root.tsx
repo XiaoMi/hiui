@@ -43,6 +43,7 @@ const Root = ({
     min,
     max,
     size,
+    strideSelectMode,
   } = useContext(DPContext)
   const [inputData, setInputData] = useState(outDate)
 
@@ -52,9 +53,21 @@ const Root = ({
     placeholder,
     i18n,
   })
+
   useEffect(() => {
-    setInputData(value ? parseValue(value, type, weekOffset, format) : outDate)
-  }, [value, format, type, outDate, weekOffset])
+    setInputData(
+      value
+        ? parseValue(
+            value,
+            type,
+            weekOffset,
+            typeof format === 'string' ? format : undefined,
+            strideSelectMode
+          )
+        : outDate
+    )
+  }, [value, format, type, outDate, weekOffset, strideSelectMode])
+
   const onPickerClickEvent = (index: number) => {
     if (disabled) return
     onTrigger(index)
