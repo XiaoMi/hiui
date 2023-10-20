@@ -10,6 +10,8 @@ import { useToggle } from '@hi-ui/use-toggle'
 import { isNumeric } from '@hi-ui/type-assertion'
 import { CloseOutlined } from '@hi-ui/icons'
 import { IconButton } from '@hi-ui/icon-button'
+import { mergeRefs } from '@hi-ui/react-utils'
+import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { DrawerPlacementEnum } from './types'
 
 const DRAWER_PREFIX = getPrefixCls('drawer')
@@ -42,6 +44,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       showMask = true,
       placement = 'right',
       drawerConfig,
+      onOutsideClick,
       ...rest
     },
     ref
@@ -70,6 +73,11 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       }
     }, [visible, transitionVisibleAction, transitionExitedAction])
 
+    const modalProps = getModalProps(rootProps, ref)
+    const innerRef = React.useRef<HTMLDivElement | null>(null)
+
+    useOutsideClick(innerRef, onOutsideClick)
+
     const onExitedLatest = useLatestCallback(onExitedProp)
     const onExited = useCallback(() => {
       transitionExitedAction.on()
@@ -95,7 +103,10 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
         >
           <div
             className={cls}
-            {...getModalProps(rootProps, ref)}
+            {...{
+              ...modalProps,
+              ref: mergeRefs(modalProps.ref, innerRef),
+            }}
             {...(!showMask &&
               visible && {
                 style:
@@ -180,6 +191,10 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
    * 是否展示右上角关闭按钮
    */
   closeable?: boolean
+  /**
+   * 外界元素点击数触发
+   */
+  onOutsideClick?: (evt: Event) => void
   /**
    * 自定义关闭时 icon。暂不对外暴露
    * @private
