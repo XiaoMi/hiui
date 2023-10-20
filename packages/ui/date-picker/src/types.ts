@@ -3,6 +3,7 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 import { PopperOverlayProps } from '@hi-ui/popper'
 import { TimePickerPanelType } from '@hi-ui/time-picker'
 import { CalendarColInfo } from './hooks/useCalenderData'
+import { Moment } from 'moment'
 
 export type CalendarViewEnum = 'date' | 'year' | 'month'
 
@@ -157,7 +158,7 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
   /**
    * 展示的日期格式，配置参考 [moment.js](http://momentjs.cn/docs/#/displaying/format/)
    */
-  format?: string
+  format?: string | ((date: Moment) => string)
   /**
    * 快捷面板
    */
@@ -265,4 +266,11 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 自定义渲染页脚
    */
   footerRender?: (...actionContents: React.ReactElement[]) => React.ReactNode
+  /**
+   * 跨月选择模式
+   * 'auto' 自动切换模式，跨月选择时自动切换到跨月的日期选择面板；
+   * 'fixed' 固定模式，不自动切换（仅周范围选择下生效）
+   * @default 'auto'
+   */
+  strideSelectMode?: 'auto' | 'fixed'
 }

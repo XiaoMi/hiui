@@ -84,7 +84,7 @@ const Calendar = ({
         _class.push(`${prefixCls}__cell--out`)
         break
       default:
-        _class.push(`${prefixCls}__cell--${td.type}`)
+        !td.weekNum && _class.push(`${prefixCls}__cell--${td.type}`)
         break
     }
 
@@ -120,24 +120,21 @@ const Calendar = ({
     if (!['SPAN', 'DIV'].includes(td.nodeName) || td.getAttribute('type') === 'disabled') {
       return false
     }
+
     const clickVal = parseInt(value)
     const _date = moment(renderDate) as any
     const cellType = td.getAttribute('type')
     const cellWeekType = td.getAttribute('weektype')
 
-    // 如果点击的是周数，则直接拿到该周的周一日期返回
-    if (cellType === 'week') {
-      onPick(moment().isoWeek(clickVal))
-      return false
-    }
-
     if (type !== 'weekrange' || isBelongFullOurOfRange) {
       if (cellType === 'prev' || cellWeekType === 'prev') {
         _date.subtract(1, 'months')
       }
+
       if (cellType === 'next' || cellWeekType === 'next') {
         _date.add(1, 'months')
       }
+
       _date[view](clickVal)
     } else {
       // 点击的上个月的部分，鼠标还在本月的panel上，则视作，鼠标正在本月第一天
