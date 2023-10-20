@@ -74,6 +74,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       invalid = false,
       onClose,
       cellRender,
+      footerRender,
       ...otherProps
     },
     ref
@@ -86,6 +87,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     const cacheDate = useRef<(moment.Moment | null)[]>([])
     const [inputFocus, setInputFocus] = useState(false)
     const [type, setType] = useState<DatePickerTypeEnum>(propType)
+
     useEffect(() => {
       moment.locale(locale === 'en-US' ? 'en' : 'zh-CN')
       // V4: 不使用 weekOffset 判断国际化语言
@@ -93,6 +95,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       //   moment.locale(weekOffset === 0 ? 'en' : 'zh-CN')
       // }
     }, [locale, weekOffset])
+
     useEffect(() => {
       setType(propType)
     }, [propType])
@@ -354,6 +357,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           />
         )
       }
+
       return (
         <div className={popperCls}>
           {type.includes('range') || type === 'timeperiod' ? (
@@ -416,6 +420,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           isInDateRangeTimeMode,
           size,
           cellRender,
+          footerRender,
         }}
       >
         <div className={cx(prefixCls, className)} {...otherProps}>

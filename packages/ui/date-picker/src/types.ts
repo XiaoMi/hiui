@@ -261,4 +261,8 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 自定义单元格内容
    */
   cellRender?: (colInfo: CalendarColInfo) => React.ReactNode
+  /**
+   * 自定义渲染页脚
+   */
+  footerRender?: (...actionContents: React.ReactElement[]) => React.ReactNode
 }
