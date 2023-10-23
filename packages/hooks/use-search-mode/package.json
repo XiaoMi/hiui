@@ -51,6 +51,7 @@
   "dependencies": {
     "@hi-ui/dom-utils": "^4.0.4",
     "@hi-ui/env": "^4.0.1",
+    "@hi-ui/func-utils": "^4.0.1",
     "@hi-ui/loading": "^4.0.4",
     "@hi-ui/tree-utils": "^4.0.2",
     "@hi-ui/type-assertion": "^4.0.1",
