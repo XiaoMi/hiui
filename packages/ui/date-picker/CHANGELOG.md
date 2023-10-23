@@ -1,5 +1,13 @@
 # @hi-ui/date-picker
 
+## 4.4.0
+
+### Minor Changes
+
+- [#2631](https://github.com/XiaoMi/hiui/pull/2631) [`48a16f4bb`](https://github.com/XiaoMi/hiui/commit/48a16f4bbff22ba966608a6e3d040043b82e17cb) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 strideSelectMode API & format 支持函数
+
+- [#2634](https://github.com/XiaoMi/hiui/pull/2634) [`ddb8d0c8b`](https://github.com/XiaoMi/hiui/commit/ddb8d0c8b8140f4984b17cf92ac58aed5e8b4ca4) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add footerRender api
+
 ## 4.3.0
 
 ### Minor Changes

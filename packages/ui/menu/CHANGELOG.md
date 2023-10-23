@@ -1,5 +1,11 @@
 # @hi-ui/menu
 
+## 4.1.1
+
+### Patch Changes
+
+- [#2620](https://github.com/XiaoMi/hiui/pull/2620) [`863bcde00`](https://github.com/XiaoMi/hiui/commit/863bcde0033f8bb4c9866e6f975e52726e4a5825) Thanks [@aqiusen](https://github.com/aqiusen)! - fix: 修复 disabled 不生效问题
+
 ## 4.1.0
 
 ### Minor Changes
