@@ -17,10 +17,10 @@ const initialStateInSearch = () => ({
  * TODO: What is useSearchMode
  */
 export const useSearchMode = ({
-                                searchable: searchableProp,
-                                strategies,
-                                keyword: keywordProp,
-                              }: UseSearchModeProps) => {
+  searchable: searchableProp,
+  strategies,
+  keyword: keywordProp,
+}: UseSearchModeProps) => {
   const [keyword, setKeyword] = useUncontrolledState('', keywordProp)
 
   // 搜索时的临时节点数据
@@ -183,13 +183,13 @@ export const useHighlightSearch = ({ data, flattedData, searchMode }: any) => {
 }
 
 export const useFilterSearch = ({
-                                  enabled,
-                                  searchMode = 'filter',
-                                  data,
-                                  flattedData,
-                                  exclude,
-                                  fieldNames,
-                                }: any) => {
+  enabled,
+  searchMode = 'filter',
+  data,
+  flattedData,
+  exclude,
+  fieldNames,
+}: any) => {
   const excludeLatestRef = useLatestRef(exclude)
   const getKeyFields = useMemo(() => genKeyFields(fieldNames), [fieldNames])
 
