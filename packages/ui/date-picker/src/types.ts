@@ -263,6 +263,10 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    */
   cellRender?: (colInfo: CalendarColInfo) => React.ReactNode
   /**
+   * 自定义渲染页脚
+   */
+  footerRender?: (...actionContents: React.ReactElement[]) => React.ReactNode
+  /**
    * 跨月选择模式
    * 'auto' 自动切换模式，跨月选择时自动切换到跨月的日期选择面板；
    * 'fixed' 固定模式，不自动切换（仅周范围选择下生效）

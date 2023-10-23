@@ -13,7 +13,7 @@ interface DateRangeTimePanelProps {
 
 // 选择日期范围，并且希望选择时间
 export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
-  const { outDate, onPick, disabledDate, prefixCls } = useContext(DPContext)
+  const { outDate, onPick, disabledDate, prefixCls, footerRender } = useContext(DPContext)
   const { nowIndex, onChangeNowIndex } = props
 
   const [range, setRange] = useState<CalenderSelectedRange>({
@@ -92,6 +92,16 @@ export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
     return nowIndex === 0 ? !range.start : !range.end
   }, [nowIndex, range])
 
+  const footer = useMemo(() => {
+    const sureActionContent = (
+      <HiButton type="primary" disabled={isConfirmButtonDisabled} onClick={onConfirmButtonClick}>
+        确认
+      </HiButton>
+    )
+
+    return typeof footerRender === 'function' ? footerRender(sureActionContent) : sureActionContent
+  }, [footerRender, isConfirmButtonDisabled, onConfirmButtonClick])
+
   return (
     <React.Fragment>
       <Panel
@@ -100,11 +110,7 @@ export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
         outDate={panelData}
         range={range}
       />
-      <div className={`${prefixCls}__date-range-time-bottom`}>
-        <HiButton type="primary" disabled={isConfirmButtonDisabled} onClick={onConfirmButtonClick}>
-          确认
-        </HiButton>
-      </div>
+      <div className={`${prefixCls}__date-range-time-bottom`}>{footer}</div>
     </React.Fragment>
   )
 }
