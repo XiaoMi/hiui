@@ -1,5 +1,11 @@
 # @hi-ui/drawer
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2632](https://github.com/XiaoMi/hiui/pull/2632) [`b9aef7fe6`](https://github.com/XiaoMi/hiui/commit/b9aef7fe63ef3c8bee50145c565d9892a8554127) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add onOutsideClick api
+
 ## 4.0.9
 
 ### Patch Changes

@@ -1,5 +1,24 @@
 # @hi-ui/hiui
 
+## 4.3.3
+
+### Patch Changes
+
+- [#2631](https://github.com/XiaoMi/hiui/pull/2631) [`48a16f4bb`](https://github.com/XiaoMi/hiui/commit/48a16f4bbff22ba966608a6e3d040043b82e17cb) Thanks [@zyprepare](https://github.com/zyprepare)! - DatePicker feat: 增加 strideSelectMode API & format 支持函数
+
+- [#2632](https://github.com/XiaoMi/hiui/pull/2632) [`b9aef7fe6`](https://github.com/XiaoMi/hiui/commit/b9aef7fe63ef3c8bee50145c565d9892a8554127) Thanks [@zyprepare](https://github.com/zyprepare)! - Drawer feat: add onOutsideClick api
+
+- [#2620](https://github.com/XiaoMi/hiui/pull/2620) [`863bcde00`](https://github.com/XiaoMi/hiui/commit/863bcde0033f8bb4c9866e6f975e52726e4a5825) Thanks [@aqiusen](https://github.com/aqiusen)! - Menu fix: 修复 disabled 不生效问题
+  Badge 支持字符串和数字 hover 时显示完整内容
+
+- [#2634](https://github.com/XiaoMi/hiui/pull/2634) [`ddb8d0c8b`](https://github.com/XiaoMi/hiui/commit/ddb8d0c8b8140f4984b17cf92ac58aed5e8b4ca4) Thanks [@zyprepare](https://github.com/zyprepare)! - DatePicker feat: add footerRender api
+
+- Updated dependencies [[`48a16f4bb`](https://github.com/XiaoMi/hiui/commit/48a16f4bbff22ba966608a6e3d040043b82e17cb), [`ddb8d0c8b`](https://github.com/XiaoMi/hiui/commit/ddb8d0c8b8140f4984b17cf92ac58aed5e8b4ca4), [`863bcde00`](https://github.com/XiaoMi/hiui/commit/863bcde0033f8bb4c9866e6f975e52726e4a5825), [`b9aef7fe6`](https://github.com/XiaoMi/hiui/commit/b9aef7fe63ef3c8bee50145c565d9892a8554127), [`863bcde00`](https://github.com/XiaoMi/hiui/commit/863bcde0033f8bb4c9866e6f975e52726e4a5825)]:
+  - @hi-ui/date-picker@4.4.0
+  - @hi-ui/badge@4.0.6
+  - @hi-ui/drawer@4.1.0
+  - @hi-ui/menu@4.1.1
+
 ## 4.3.2
 
 ### Patch Changes

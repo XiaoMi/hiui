@@ -1,5 +1,11 @@
 # @hi-ui/badge
 
+## 4.0.6
+
+### Patch Changes
+
+- [#2620](https://github.com/XiaoMi/hiui/pull/2620) [`863bcde00`](https://github.com/XiaoMi/hiui/commit/863bcde0033f8bb4c9866e6f975e52726e4a5825) Thanks [@aqiusen](https://github.com/aqiusen)! - Badge 支持字符串和数字 hover 时显示完整内容
+
 ## 4.0.5
 
 ### Patch Changes
