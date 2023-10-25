@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { withDefaultProps, mergeRefs } from '@hi-ui/react-utils'
-import { omitPopperOverlayProps } from '@hi-ui/popper'
+import { PopperOverlayProps, omitPopperOverlayProps } from '@hi-ui/popper'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 
 export const usePopConfirm = ({
@@ -86,7 +86,7 @@ export const usePopConfirm = ({
   }
 }
 
-export interface UsePopConfirmProps {
+export interface UsePopConfirmProps extends PopperOverlayProps {
   /**
    *  是否显示确认框
    */

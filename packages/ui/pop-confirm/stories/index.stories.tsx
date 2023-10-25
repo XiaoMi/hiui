@@ -5,6 +5,7 @@ export * from './basic.stories'
 export * from './custom-icon.stories'
 export * from './async.stories'
 export * from './gutter-gap.stories'
+export * from './placement.stories'
 
 export default {
   title: 'FeedBack/PopConfirm',

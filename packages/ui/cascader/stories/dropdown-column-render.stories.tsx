@@ -114,7 +114,7 @@ export const DropdownColumnRender = () => {
                 >
                   header
                 </header>
-                {React.cloneElement(menu, { style: { height: 198 } })}
+                {React.cloneElement(menu, { style: { height: 186 } })}
                 <footer
                   style={{
                     lineHeight: '20px',
