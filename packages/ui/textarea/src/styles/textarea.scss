@@ -1,11 +1,11 @@
-@import "~@hi-ui/core-css/lib/index.scss";
+@import '~@hi-ui/core-css/lib/index.scss';
 
-$prefix: "#{$component-prefix}-textarea" !default;
+$prefix: '#{$component-prefix}-textarea' !default;
 
 .#{$prefix} {
   $input-padding-width: calc(#{use-spacing(6)} - 1px);
-  $input-shadow: 0 0 0 2px use-color-mode("primary", 100);
-  $input-error-shadow: 0 0 0 2px use-color-mode("danger", 100);
+  $input-shadow: 0 0 0 2px use-color-mode('primary', 100);
+  $input-error-shadow: 0 0 0 2px use-color-mode('danger', 100);
 
   position: relative;
   display: inline-block;
@@ -20,22 +20,22 @@ $prefix: "#{$component-prefix}-textarea" !default;
     display: block;
     box-sizing: border-box;
     transition-property: all;
-    transition-duration: use-motion-duration("normal");
-    transition-timing-function: use-motion-bezier("normal");
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
     width: 100%;
     font-size: inherit;
     line-height: inherit;
-    color: use-color("gray", 700);
+    color: use-color('gray', 700);
     resize: vertical;
     overflow: auto;
     z-index: auto;
     word-break: break-all;
 
     &::placeholder {
-      color: use-color("gray", 400);
+      color: use-color('gray', 400);
 
       .#{$prefix}--appearance-unset & {
-        color: use-color("gray", 500);
+        color: use-color('gray', 500);
       }
     }
 
@@ -50,20 +50,20 @@ $prefix: "#{$component-prefix}-textarea" !default;
     width: 100%;
     box-sizing: border-box;
     font-size: inherit;
-    border: use-border-size("normal") use-color-static("transparent");
-    background-color: use-color-static("white");
+    border: use-border-size('normal') use-color-static('transparent');
+    background-color: use-color-static('white');
     transition-property: all;
-    transition-duration: use-motion-duration("normal");
-    transition-timing-function: use-motion-bezier("normal");
+    transition-duration: use-motion-duration('normal');
+    transition-timing-function: use-motion-bezier('normal');
     outline: none;
     z-index: auto;
 
     &:not(.#{$prefix}__inner--disabled):hover {
-      z-index: calc(#{use-zindex("absolute")} + 1);
+      z-index: calc(#{use-zindex('absolute')} + 1);
     }
 
     &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
-      z-index: calc(#{use-zindex("absolute")} + 1);
+      z-index: calc(#{use-zindex('absolute')} + 1);
     }
   }
 
@@ -71,7 +71,7 @@ $prefix: "#{$component-prefix}-textarea" !default;
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    color: use-color("gray", 700);
+    color: use-color('gray', 700);
     font-size: inherit;
     text-align: center;
   }
@@ -80,8 +80,8 @@ $prefix: "#{$component-prefix}-textarea" !default;
     &-sm {
       // height: use-height-size(6);
       height: auto;
-      font-size: use-text-size("sm");
-      line-height: use-text-lineheight("sm");
+      font-size: use-text-size('sm');
+      line-height: use-text-lineheight('sm');
 
       .#{$prefix}__text {
         padding: 1px $input-padding-width;
@@ -92,15 +92,15 @@ $prefix: "#{$component-prefix}-textarea" !default;
       }
 
       .#{$prefix}__inner {
-        border-radius: use-border-radius("normal");
+        border-radius: use-border-radius('normal');
       }
     }
 
     &-md {
       height: auto;
       // height: use-height-size(8);
-      font-size: use-text-size("normal");
-      line-height: use-text-lineheight("normal");
+      font-size: use-text-size('normal');
+      line-height: use-text-lineheight('normal');
 
       .#{$prefix}__text {
         padding: 4px $input-padding-width;
@@ -111,15 +111,15 @@ $prefix: "#{$component-prefix}-textarea" !default;
       }
 
       .#{$prefix}__inner {
-        border-radius: use-border-radius("normal");
+        border-radius: use-border-radius('normal');
       }
     }
 
     &-lg {
       // height: use-height-size(10);
       height: auto;
-      font-size: use-text-size("lg");
-      line-height: use-text-lineheight("lg");
+      font-size: use-text-size('lg');
+      line-height: use-text-lineheight('lg');
 
       .#{$prefix}__text {
         padding: 7px $input-padding-width;
@@ -130,7 +130,7 @@ $prefix: "#{$component-prefix}-textarea" !default;
       }
 
       .#{$prefix}__inner {
-        border-radius: use-border-radius("normal");
+        border-radius: use-border-radius('normal');
       }
     }
   }
@@ -138,22 +138,22 @@ $prefix: "#{$component-prefix}-textarea" !default;
   &--appearance {
     &-line {
       .#{$prefix}__inner {
-        border-color: use-color("gray", 300);
+        border-color: use-color('gray', 300);
 
         &:not(.#{$prefix}__inner--disabled):hover {
-          border-color: use-color-mode("primary");
+          border-color: use-color-mode('primary');
         }
 
         &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
           box-shadow: $input-shadow;
-          border-color: use-color-mode("primary");
+          border-color: use-color-mode('primary');
         }
 
         &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
-          border-color: use-color-mode("error");
+          border-color: use-color-mode('error');
 
           &:hover {
-            border-color: use-color-mode("error");
+            border-color: use-color-mode('error');
           }
 
           &.#{$prefix}__inner--focused {
@@ -169,35 +169,35 @@ $prefix: "#{$component-prefix}-textarea" !default;
         padding-right: 0;
 
         &::placeholder {
-          color: use-color("gray", 500);
+          color: use-color('gray', 500);
         }
       }
 
       &:not(.#{$prefix}__inner--disabled) .#{$prefix}__inner:hover {
-        background-color: use-color("gray", 100);
+        background-color: use-color('gray', 100);
       }
     }
 
     &-filled {
       .#{$prefix}__inner {
-        background-color: use-color("gray", 100);
+        background-color: use-color('gray', 100);
 
         &:not(.#{$prefix}__inner--disabled):hover {
-          background-color: use-color-static("white");
-          border-color: use-color-mode("primary");
+          background-color: use-color-static('white');
+          border-color: use-color-mode('primary');
         }
 
         &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
           box-shadow: $input-shadow;
-          border-color: use-color-mode("primary");
-          background-color: use-color-static("white");
+          border-color: use-color-mode('primary');
+          background-color: use-color-static('white');
         }
 
         &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
-          border-color: use-color-mode("error");
+          border-color: use-color-mode('error');
 
           &:hover {
-            border-color: use-color-mode("error");
+            border-color: use-color-mode('error');
           }
 
           &.#{$prefix}__inner--focused {
@@ -215,7 +215,7 @@ $prefix: "#{$component-prefix}-textarea" !default;
 
       .#{$prefix}__inner {
         &::after {
-          content: "";
+          content: '';
           box-sizing: border-box;
           display: block;
           position: absolute;
@@ -223,30 +223,30 @@ $prefix: "#{$component-prefix}-textarea" !default;
           // 两边透明边框各负 1px
           left: -1px;
           right: -1px;
-          border-bottom: 1px solid use-color("gray", 300);
+          border-bottom: 1px solid use-color('gray', 300);
           transition: all 0.3s;
         }
 
         &:not(.#{$prefix}__inner--disabled):hover {
           &::after {
-            border-bottom-color: use-color-mode("primary");
+            border-bottom-color: use-color-mode('primary');
           }
         }
 
         &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
           &::after {
-            border-bottom-color: use-color-mode("primary");
+            border-bottom-color: use-color-mode('primary');
           }
         }
 
         &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
           &::after {
-            border-bottom-color: use-color-mode("error");
+            border-bottom-color: use-color-mode('error');
           }
 
           &.hover {
             &::after {
-              border-bottom-color: use-color-mode("error");
+              border-bottom-color: use-color-mode('error');
             }
           }
         }
@@ -257,12 +257,12 @@ $prefix: "#{$component-prefix}-textarea" !default;
     &-filled {
       .#{$prefix}__inner {
         &.#{$prefix}__inner--disabled {
-          color: use-color("gray", 400);
-          -webkit-text-fill-color: use-color("gray", 400);
-          background-color: use-color("gray", 200);
+          color: use-color('gray', 400);
+          -webkit-text-fill-color: use-color('gray', 400);
+          background-color: use-color('gray', 100);
 
           .#{$prefix}__text {
-            color: use-color("gray", 400);
+            color: use-color('gray', 400);
           }
         }
       }
@@ -272,12 +272,12 @@ $prefix: "#{$component-prefix}-textarea" !default;
     &-underline {
       .#{$prefix}__inner {
         &.#{$prefix}__inner--disabled {
-          color: use-color("gray", 400);
-          -webkit-text-fill-color: use-color("gray", 400);
+          color: use-color('gray', 400);
+          -webkit-text-fill-color: use-color('gray', 400);
           background-color: transparent;
 
           .#{$prefix}__text {
-            color: use-color("gray", 400);
+            color: use-color('gray', 400);
           }
         }
       }
@@ -296,17 +296,17 @@ $prefix: "#{$component-prefix}-textarea" !default;
 
       &[data-count]::after {
         content: attr(data-count);
-        color: use-color("gray", 500);
-        font-size: use-text-size("sm");
-        font-weight: use-font-weight("normal");
-        line-height: use-text-lineheight("sm");
+        color: use-color('gray', 500);
+        font-size: use-text-size('sm');
+        font-weight: use-font-weight('normal');
+        line-height: use-text-lineheight('sm');
         white-space: nowrap;
         pointer-events: none;
         float: right;
         position: absolute;
         right: use-spacing(5);
         bottom: use-spacing(1);
-        z-index: calc(#{use-zindex("absolute")} + 1);
+        z-index: calc(#{use-zindex('absolute')} + 1);
       }
     }
   }
