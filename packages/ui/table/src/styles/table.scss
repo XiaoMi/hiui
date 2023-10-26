@@ -301,7 +301,7 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
   }
 }
 
-.#{$prefix}-body {
+.#{$prefix}-body, .#{$prefix}-content {
   position: relative;
   overflow: auto;
 }
