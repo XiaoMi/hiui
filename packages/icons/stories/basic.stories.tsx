@@ -118,6 +118,8 @@ export const Basic = () => {
 
               { component: Icons.CameraFilled, tagName: 'CameraFilled' },
 
+              { component: Icons.CarFilled, tagName: 'CarFilled' },
+
               { component: Icons.CertificateFilled, tagName: 'CertificateFilled' },
 
               { component: Icons.ChatFilled, tagName: 'ChatFilled' },
@@ -204,6 +206,8 @@ export const Basic = () => {
 
               { component: Icons.SadFilled, tagName: 'SadFilled' },
 
+              { component: Icons.SendOutFilled, tagName: 'SendOutFilled' },
+
               { component: Icons.SettingFilled, tagName: 'SettingFilled' },
 
               { component: Icons.ShieldFilled, tagName: 'ShieldFilled' },
@@ -225,6 +229,8 @@ export const Basic = () => {
               { component: Icons.SunFilled, tagName: 'SunFilled' },
 
               { component: Icons.TagFilled, tagName: 'TagFilled' },
+
+              { component: Icons.TalkFilled, tagName: 'TalkFilled' },
 
               { component: Icons.TaskFilled, tagName: 'TaskFilled' },
 
@@ -319,6 +325,8 @@ export const Basic = () => {
               { component: Icons.CustomerServiceOutlined, tagName: 'CustomerServiceOutlined' },
 
               { component: Icons.CollectionOutlined, tagName: 'CollectionOutlined' },
+
+              { component: Icons.DataExportOutlined, tagName: 'DataExportOutlined' },
 
               { component: Icons.DataMonitorOutlined, tagName: 'DataMonitorOutlined' },
 
@@ -453,6 +461,8 @@ export const Basic = () => {
 
               { component: Icons.RmbOutlined, tagName: 'RmbOutlined' },
 
+              { component: Icons.RobotOutlined, tagName: 'RobotOutlined' },
+
               { component: Icons.SadOutlined, tagName: 'SadOutlined' },
 
               { component: Icons.ScanOutlined, tagName: 'ScanOutlined' },
@@ -493,9 +503,13 @@ export const Basic = () => {
 
               { component: Icons.TagOutlined, tagName: 'TagOutlined' },
 
+              { component: Icons.TalkOutlined, tagName: 'TalkOutlined' },
+
               { component: Icons.TaskOutlined, tagName: 'TaskOutlined' },
 
               { component: Icons.TemplateOutlined, tagName: 'TemplateOutlined' },
+
+              { component: Icons.TextExtractionOutlined, tagName: 'TextExtractionOutlined' },
 
               { component: Icons.TimeOutlined, tagName: 'TimeOutlined' },
 
