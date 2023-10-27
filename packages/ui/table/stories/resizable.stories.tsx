@@ -1,5 +1,6 @@
 import React from 'react'
 import Table from '../src'
+import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
 
 /**
  * @title 可调节列宽
@@ -17,6 +18,9 @@ export const Resizable = () => {
               title: '商品名',
               dataKey: 'name',
               width: 120,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '品类',
@@ -27,83 +31,131 @@ export const Resizable = () => {
               title: '规格',
               dataKey: 'size',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '单价',
               dataKey: 'price',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '规格',
               dataKey: 'size',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '单价',
               dataKey: 'price',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '规格',
               dataKey: 'size',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '单价',
               dataKey: 'price',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '规格',
               dataKey: 'size',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '单价',
               dataKey: 'price',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '规格',
               dataKey: 'size',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '单价',
               dataKey: 'price',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
 
             {
               title: '规格',
               dataKey: 'size',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '单价',
               dataKey: 'price',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '规格',
               dataKey: 'size',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '单价',
               dataKey: 'price',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
 
             {
               title: '规格',
               dataKey: 'size',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '单价',
               dataKey: 'price',
               width: 150,
+              render(text) {
+                return <EllipsisTooltip>{text}</EllipsisTooltip>
+              },
             },
             {
               title: '门店',

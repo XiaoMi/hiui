@@ -95,39 +95,46 @@ export const useColWidth = ({
     // 测量元素在内容列为空时会是空，切换会使测量元素变化，导致后续的resize时间无法响应,此处测量元素变化时需要重新绑定
   }, [getVirtualWidths, virtual])
 
-  const [headerTableElement, setHeaderTableElement] = React.useState<HTMLTableElement | null>(null)
+  const [headerTableElement, setHeaderTableElement] = React.useState<HTMLTableRowElement | null>(
+    null
+  )
 
   /**
    *  控制列最小可调整宽度
    */
   const minColWidth = React.useMemo(() => {
-    if (
-      headerTableElement &&
-      headerTableElement.childNodes &&
-      headerTableElement.childNodes[1].childNodes[0]
-    ) {
-      const _minColWidth = Array.from(
-        headerTableElement.childNodes[1].childNodes[0].childNodes
-      ).map((th) => {
-        // @ts-ignore
-        return th.childNodes[0].className === 'hi-table__header__title'
-          ? // @ts-ignore
-            th.childNodes[0].offsetWidth
-          : 0
+    if (resizable && headerTableElement) {
+      const resizableHandlerWidth = 4
+      const _minColWidth = Array.from(headerTableElement.childNodes).map((th) => {
+        const thPaddingLeft = parseFloat(
+          window.getComputedStyle(th as Element).getPropertyValue('padding-left')
+        )
+        const childNodes = Array.from(th.childNodes)
+
+        return (
+          childNodes
+            .map((child) => (child as HTMLElement).offsetWidth)
+            .reduce((prev, next) => {
+              return prev + next
+            }) +
+          thPaddingLeft * 2 +
+          resizableHandlerWidth
+        )
       })
 
       return _minColWidth
     }
+
     return Array(columns.length).fill(0)
-  }, [columns, headerTableElement])
+  }, [columns.length, headerTableElement, resizable])
 
   /**
    * 列宽拖拽 resize，只处理拖拽线两边的列宽度
    */
   const onColumnResizable = React.useCallback(
     (_, { size }, index: number) => {
-      const minWidth = minColWidth[index] + 31
-      const anotherMinWidth = minColWidth[index + 1] + 31
+      const minWidth = minColWidth[index]
+      const anotherMinWidth = minColWidth[index + 1]
       let nextWidth = size.width > minWidth ? size.width : minWidth
 
       setColWidths((prev) => {

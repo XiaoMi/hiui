@@ -175,7 +175,13 @@ export const useTable = ({
 
   // ************************ 列宽 resizable ************************ //
 
-  const { measureRowElementRef, getColgroupProps, onColumnResizable, colWidths } = useColWidth({
+  const {
+    measureRowElementRef,
+    getColgroupProps,
+    onColumnResizable,
+    colWidths,
+    setHeaderTableElement,
+  } = useColWidth({
     data,
     columns,
     resizable,
@@ -635,6 +641,7 @@ export const useTable = ({
     cellRender,
     showColMenu,
     onLoadChildren,
+    setHeaderTableElement,
   }
 }
 
