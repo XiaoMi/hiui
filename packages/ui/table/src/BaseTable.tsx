@@ -187,6 +187,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       canScroll,
       bodyTableRef,
       scrollWidth,
+      footerRender,
     } = providedValue
 
     const hasBorder = borderedProp ?? bordered
@@ -266,7 +267,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
             : undefined
         }
       >
-        {extraFooter}
+        {isFunction(footerRender) ? footerRender(<>{extraFooter}</>) : extraFooter}
       </div>
     )
 
