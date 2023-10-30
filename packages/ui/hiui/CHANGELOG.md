@@ -1,5 +1,25 @@
 # @hi-ui/hiui
 
+## 4.3.4
+
+### Patch Changes
+
+- [#2648](https://github.com/XiaoMi/hiui/pull/2648) [`54387a81e`](https://github.com/XiaoMi/hiui/commit/54387a81e1c6add77e791af8d849a6518077afd5) Thanks [@zyprepare](https://github.com/zyprepare)! - Table perf: 优化 resizable 模式下可调整的最小宽度
+
+- [#2642](https://github.com/XiaoMi/hiui/pull/2642) [`74d8c5148`](https://github.com/XiaoMi/hiui/commit/74d8c51489ae7a88c90b1426e9da118125579b97) Thanks [@zyprepare](https://github.com/zyprepare)! - Table perf: 将之前的双表格结构优化成单表格,冻结列和表头吸顶等场景依然采用双表格结构
+
+- [#2644](https://github.com/XiaoMi/hiui/pull/2644) [`6858d339a`](https://github.com/XiaoMi/hiui/commit/6858d339adc2671520956641ca15b1ad311e942a) Thanks [@zyprepare](https://github.com/zyprepare)! - Textarea fix: 修复禁用状态背景色问题
+
+- [#2647](https://github.com/XiaoMi/hiui/pull/2647) [`8767c9470`](https://github.com/XiaoMi/hiui/commit/8767c94702fdc697207001f639508907e20fc6a5) Thanks [@zyprepare](https://github.com/zyprepare)! - Table feat: add footerRender api
+
+- [#2633](https://github.com/XiaoMi/hiui/pull/2633) [`45cbe7bd9`](https://github.com/XiaoMi/hiui/commit/45cbe7bd9ddeaadfc8ff520a2448a0dade6be51c) Thanks [@aqiusen](https://github.com/aqiusen)! - CheckSelect Select dataSource 下搜索框增加防抖操作
+
+- Updated dependencies [[`6858d339a`](https://github.com/XiaoMi/hiui/commit/6858d339adc2671520956641ca15b1ad311e942a), [`4f7c8c906`](https://github.com/XiaoMi/hiui/commit/4f7c8c9063d9b72068a2db5fa614eed130aafd0f), [`74d8c5148`](https://github.com/XiaoMi/hiui/commit/74d8c51489ae7a88c90b1426e9da118125579b97), [`54387a81e`](https://github.com/XiaoMi/hiui/commit/54387a81e1c6add77e791af8d849a6518077afd5), [`8767c9470`](https://github.com/XiaoMi/hiui/commit/8767c94702fdc697207001f639508907e20fc6a5), [`4f7c8c906`](https://github.com/XiaoMi/hiui/commit/4f7c8c9063d9b72068a2db5fa614eed130aafd0f)]:
+  - @hi-ui/textarea@4.1.2
+  - @hi-ui/check-select@4.3.2
+  - @hi-ui/table@4.3.0
+  - @hi-ui/select@4.2.2
+
 ## 4.3.3
 
 ### Patch Changes
