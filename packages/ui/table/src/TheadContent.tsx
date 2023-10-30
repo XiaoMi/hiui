@@ -21,6 +21,7 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
       onColumnResizable,
       getStickyColProps,
       showColMenu,
+      setHeaderTableElement,
     } = useTableContext()
 
     const activeColumnKeysAction = useCheckState()
@@ -30,10 +31,16 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
         {/* 渲染列 */}
         {groupedColumns.map((cols, colsIndex) => {
           return (
-            <tr key={colsIndex}>
+            <tr key={colsIndex} ref={setHeaderTableElement}>
               {cols.map((col, colIndex) => {
                 const { dataKey, title, raw } = col || {}
-                const titleContent = isFunction(title) ? title(col) : title
+                let titleContent = isFunction(title) ? title(col) : title
+
+                titleContent = resizable ? (
+                  <span className={`${prefixCls}-header__title`}>{titleContent}</span>
+                ) : (
+                  titleContent
+                )
 
                 const cell = (
                   <th

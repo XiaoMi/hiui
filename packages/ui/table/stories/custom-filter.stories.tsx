@@ -4,6 +4,7 @@ import Table from '../src'
 import Input from '@hi-ui/input'
 import Button from '@hi-ui/button'
 import CheckSelect from '@hi-ui/check-select'
+import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
 
 /**
  * @title 自定义过滤
@@ -162,6 +163,9 @@ export const CustomFilter = () => {
           </div>
         )
       },
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
     },
     {
       title: 'Age',
@@ -174,7 +178,7 @@ export const CustomFilter = () => {
     },
     {
       title: (
-        <div>
+        <div style={{ display: 'inline-flex', alignItems: 'center' }}>
           Home phone
           <CheckSelect
             style={{ width: 'auto', marginLeft: 2 }}
@@ -194,6 +198,9 @@ export const CustomFilter = () => {
       ),
       colSpan: 2,
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       dataKey: 'tel',
       key: 3,
     },
@@ -201,18 +208,27 @@ export const CustomFilter = () => {
       title: 'Home phone1',
       dataKey: 'tel1',
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       key: 4,
     },
     {
       title: 'Home phone2',
       colSpan: 2,
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       dataKey: 'tel2',
       key: 5,
     },
     {
       title: 'Home phone3',
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       colSpan: 2,
       dataKey: 'tel3',
       key: 6,
@@ -220,6 +236,9 @@ export const CustomFilter = () => {
     {
       title: 'Home phone4',
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       colSpan: 2,
       dataKey: 'tel4',
       key: 7,
@@ -227,6 +246,9 @@ export const CustomFilter = () => {
     {
       title: 'Home phone5',
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       colSpan: 2,
       dataKey: 'tel5',
       key: 8,
@@ -234,6 +256,9 @@ export const CustomFilter = () => {
     {
       title: 'Home phone6',
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       colSpan: 2,
       dataKey: 'tel6',
       key: 9,
@@ -241,6 +266,9 @@ export const CustomFilter = () => {
     {
       title: 'Home phone7',
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       colSpan: 2,
       dataKey: 'tel7',
       key: 10,
@@ -248,6 +276,9 @@ export const CustomFilter = () => {
     {
       title: 'Home phone8',
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       colSpan: 2,
       dataKey: 'tel8',
       key: 11,
@@ -255,6 +286,9 @@ export const CustomFilter = () => {
     {
       title: 'Home phone9',
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       colSpan: 2,
       dataKey: 'tel9',
       key: 12,
@@ -262,6 +296,9 @@ export const CustomFilter = () => {
     {
       title: 'Home phone10',
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       colSpan: 2,
       dataKey: 'tel10',
       key: 13,
@@ -269,6 +306,9 @@ export const CustomFilter = () => {
     {
       title: 'Home phone11',
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       colSpan: 2,
       dataKey: 'tel11',
       key: 14,
@@ -277,15 +317,20 @@ export const CustomFilter = () => {
     {
       title: 'Home phone12',
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       colSpan: 2,
       dataKey: 'tel12',
       key: 15,
     },
-
     {
       title: 'Phone',
       dataKey: 'phone',
       width: 180,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       key: 16,
       sorter(pre, next) {
         return pre.phone - next.phone
@@ -294,6 +339,9 @@ export const CustomFilter = () => {
     {
       title: 'Address',
       width: 240,
+      render(text) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
       dataKey: 'address',
       key: 17,
     },
