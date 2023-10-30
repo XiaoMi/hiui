@@ -1,5 +1,14 @@
 # @hi-ui/select
 
+## 4.2.2
+
+### Patch Changes
+
+- [#2633](https://github.com/XiaoMi/hiui/pull/2633) [`4f7c8c906`](https://github.com/XiaoMi/hiui/commit/4f7c8c9063d9b72068a2db5fa614eed130aafd0f) Thanks [@aqiusen](https://github.com/aqiusen)! - Select dataSource 下搜索框增加防抖操作
+
+- Updated dependencies [[`45cbe7bd9`](https://github.com/XiaoMi/hiui/commit/45cbe7bd9ddeaadfc8ff520a2448a0dade6be51c)]:
+  - @hi-ui/use-search-mode@4.1.1
+
 ## 4.2.1
 
 ### Patch Changes

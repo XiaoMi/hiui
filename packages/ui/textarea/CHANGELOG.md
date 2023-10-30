@@ -1,5 +1,11 @@
 # @hi-ui/textarea
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2644](https://github.com/XiaoMi/hiui/pull/2644) [`6858d339a`](https://github.com/XiaoMi/hiui/commit/6858d339adc2671520956641ca15b1ad311e942a) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复禁用状态背景色问题
+
 ## 4.1.1
 
 ### Patch Changes
