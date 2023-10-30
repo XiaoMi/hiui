@@ -75,6 +75,7 @@ export const useTable = ({
   showColMenu,
   rowSelection,
   cellRender,
+  footerRender,
   fieldKey = 'key',
   virtual,
   ...rootProps
@@ -633,6 +634,7 @@ export const useTable = ({
     onColumnResizable,
     isTree: isTreeView,
     cellRender,
+    footerRender,
     showColMenu,
     onLoadChildren,
   }
@@ -805,6 +807,10 @@ export interface UseTableProps {
    * 点击异步加载子项
    */
   onLoadChildren?: (item: TableRowEventData) => Promise<any[] | void> | void
+  /**
+   * 自定义渲染页脚
+   */
+  footerRender?: (...nodes: React.ReactElement[]) => React.ReactNode
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>
