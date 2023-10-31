@@ -3,7 +3,8 @@ import VirtualList from 'rc-virtual-list'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isObject } from '@hi-ui/type-assertion'
+import Scrollbar from '@hi-ui/scrollbar'
 import { TableRow } from './TableRow'
 import { TableRowRequiredProps } from './types'
 import { useTableContext } from './context'
@@ -29,6 +30,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       colWidths,
       virtual,
       measureRowElementRef,
+      scrollbar,
     } = useTableContext()
 
     const cls = cx(`${prefixCls}-body`)
@@ -131,26 +133,32 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       )
     }
 
-    // 外层增加 div 作为滚动容器
-    return (
-      <div
-        ref={scrollBodyElementRef}
-        className={cls}
-        onScroll={onTableBodyScroll}
-        style={{
-          maxHeight: maxHeight !== undefined ? maxHeight : undefined,
-          // 表格宽度大于div宽度才出现横向滚动条
-          overflowX: canScroll ? 'scroll' : undefined,
-        }}
+    const bodyContent = (
+      <table
+        ref={bodyTableRef}
+        style={{ width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%' }}
       >
-        <table
-          ref={bodyTableRef}
-          style={{ width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%' }}
-        >
-          <ColGroupContent />
-          <TbodyContent />
-        </table>
-      </div>
+        <ColGroupContent />
+        <TbodyContent />
+      </table>
+    )
+
+    const scrollBodyProps = {
+      ref: scrollBodyElementRef,
+      className: cls,
+      onScroll: onTableBodyScroll,
+      style: {
+        maxHeight: maxHeight !== undefined ? maxHeight : undefined,
+      },
+    }
+
+    // 外层增加 div 作为滚动容器
+    return !scrollbar ? (
+      <div {...scrollBodyProps}>{bodyContent}</div>
+    ) : (
+      <Scrollbar {...scrollBodyProps} {...(isObject(scrollbar) ? scrollbar : null)}>
+        {bodyContent}
+      </Scrollbar>
     )
   }
 )
