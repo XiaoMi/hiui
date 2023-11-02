@@ -1,5 +1,16 @@
 # @hi-ui/table
 
+## 4.3.1
+
+### Patch Changes
+
+- [#2654](https://github.com/XiaoMi/hiui/pull/2654) [`dc002a32a`](https://github.com/XiaoMi/hiui/commit/dc002a32a2c6f538b0df37c63d34f603647d9b70) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 scrollbar 参数,用于在 Windows 环境下优化滚动条样式
+
+- Updated dependencies [[`b477d91db`](https://github.com/XiaoMi/hiui/commit/b477d91db15bbc92c8712a9a771af5b332779315)]:
+  - @hi-ui/button@4.0.6
+  - @hi-ui/icon-button@4.0.5
+  - @hi-ui/pagination@4.0.11
+
 ## 4.3.0
 
 ### Minor Changes
