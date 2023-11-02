@@ -148,7 +148,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       className: cls,
       onScroll: onTableBodyScroll,
       style: {
-        maxHeight: maxHeight !== undefined ? maxHeight : undefined,
+        maxHeight,
       },
     }
 
