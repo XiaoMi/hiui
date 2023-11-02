@@ -1,3 +1,4 @@
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   cloneTree,
   // fFindNestedChildNodesByIndex,
@@ -8,8 +9,20 @@ import {
   flattedTreeSort,
   // getNodeRootParent,
 } from '@hi-ui/tree-utils'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { isArrayNonEmpty, isNullish } from '@hi-ui/type-assertion'
+import { useCheck, useSelect } from '@hi-ui/use-check'
+import { invariant } from '@hi-ui/env'
+import { setAttrStatus } from '@hi-ui/dom-utils'
+import { useCache } from '@hi-ui/use-cache'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import { PaginationProps } from '@hi-ui/pagination'
+import { ScrollbarProps } from '@hi-ui/scrollbar'
+import { parseFixedColumns, setColumnsDefaultWidth } from './utils'
+import { useAsyncSwitch, useExpand } from './hooks'
+import { useColWidth } from './hooks/use-col-width'
+import { useColumns } from './hooks/use-colgroup'
+import { useTableDrag } from './hooks/use-drag'
 import {
   TableColumnItem,
   TableFrozenColumnOptions,
@@ -18,18 +31,6 @@ import {
   FlattedTableColumnItemData,
   FlattedTableRowData,
 } from './types'
-import { PaginationProps } from '@hi-ui/pagination'
-import { useColWidth } from './hooks/use-col-width'
-import { parseFixedColumns, setColumnsDefaultWidth } from './utils'
-import { isArrayNonEmpty, isNullish } from '@hi-ui/type-assertion'
-import { useCheck, useSelect } from '@hi-ui/use-check'
-import { invariant } from '@hi-ui/env'
-import { useAsyncSwitch, useExpand } from './hooks'
-import { useColumns } from './hooks/use-colgroup'
-import { setAttrStatus } from '@hi-ui/dom-utils'
-import { useCache } from '@hi-ui/use-cache'
-import { useTableDrag } from './hooks/use-drag'
-import { useLatestCallback } from '@hi-ui/use-latest'
 
 const DEFAULT_COLUMNS = [] as []
 const DEFAULT_DATA = [] as []
@@ -78,6 +79,7 @@ export const useTable = ({
   footerRender,
   fieldKey = 'key',
   virtual,
+  scrollbar,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -644,6 +646,7 @@ export const useTable = ({
     showColMenu,
     onLoadChildren,
     setHeaderTableElement,
+    scrollbar,
   }
 }
 
@@ -818,6 +821,10 @@ export interface UseTableProps {
    * 自定义渲染页脚
    */
   footerRender?: (...nodes: React.ReactElement[]) => React.ReactNode
+  /**
+   * 配置滚动条，滚动条样式使用HiUI自带的滚动条风格
+   */
+  scrollbar?: boolean | ScrollbarProps
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>
