@@ -31,7 +31,7 @@ export const Draggable = () => {
               Content of Tab Panel 1
             </div>
           </TabPane>
-          <TabPane tabId="2" tabTitle="Tab 2" disabled>
+          <TabPane tabId="2" tabTitle="Tab 2">
             <div
               style={{
                 backgroundColor: '#f5f7fa',
