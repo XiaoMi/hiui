@@ -47,9 +47,10 @@ $prefix: '#{$component-prefix}-tabs' !default;
       .#{$prefix}__item {
         background-color: use-color('gray', 200);
         margin: 0;
-        padding: use-spacing(4) use-spacing(10);
+        padding: use-spacing(5) use-spacing(8);
         border-radius: 0;
         transition: all 0.3s;
+        line-height: use-text-lineheight('sm');
 
         &--active {
           color: use-color-mode('primary');
@@ -61,28 +62,58 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &--button {
       .#{$prefix}__item {
+        position: relative;
         margin: use-spacing(2) use-spacing(2) use-spacing(2) 0;
-        padding: use-spacing(2) use-spacing(10);
+        padding: use-spacing(2) use-spacing(6);
         border-radius: use-border-radius('normal');
         transition: all 0.3s;
 
-        &:not(:where(.#{$prefix}__item--active, .#{$prefix}__item--disabled)):hover {
-          background-color: use-color('gray', 200);
-          color: use-color('gray', 500);
+        &:not(:where(.#{$prefix}__item--active, .#{$prefix}__item--disabled)) {
+          &:hover {
+            background-color: use-color('gray', 200);
+            color: use-color('gray', 500);
+
+            &::after {
+              display: none;
+            }
+
+            + .#{$prefix}__item::after {
+              display: none;
+            }
+          }
+
+          &::after {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: use-height-size(4);
+            background-color: use-color('gray', 300);
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+
+          &:first-child::after {
+            display: none;
+          }
         }
 
         &--active {
           color: use-color-mode('primary');
           background-color: use-color-mode('primary', 50);
+
+          + .#{$prefix}__item::after {
+            display: none;
+          }
         }
       }
     }
 
     &--desc {
-      padding: 0 use-spacing(10);
       .#{$prefix}-item {
         &__title {
           color: use-color('gray', 700);
+          line-height: use-text-lineheight('sm');
         }
 
         &__desc {
@@ -91,13 +122,14 @@ $prefix: '#{$component-prefix}-tabs' !default;
           line-height: use-text-lineheight('sm');
         }
       }
+
       .#{$prefix}__item {
         background: use-color('gray', 50);
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin: use-spacing(10)  use-spacing(6) use-spacing(10) 0;
-        padding: use-spacing(8) use-spacing(10);
+        margin: 0 use-spacing(6) 0 0;
+        padding: use-spacing(8);
         border-radius: use-border-radius('normal');
         transition: all 0.3s;
 
@@ -176,101 +208,10 @@ $prefix: '#{$component-prefix}-tabs' !default;
       // height: 100%;
 
       &.#{$prefix}__list--desc {
-        .#{$prefix}__list--scroll {
-          row-gap: use-spacing(6);
-        }
-      }
-
-      &.#{$prefix}__list--card {
-        .#{$prefix}__item {
-          &--active {
-            border-radius: use-border-radius('normal') 0 0  use-border-radius('normal');
-          }
-        }
-      }
-
-      &.#{$prefix}__list--button {
-        .#{$prefix}__list--scroll {
-          row-gap: use-spacing(2);
-        }
-      }
-
-      .#{$prefix}__list--inner {
-        width: auto;
-        display: block;
-        position: relative;
-      }
-
-      .#{$prefix}__list--scroll {
-        flex-direction: column;
-        position: relative;
-      }
-
-      .#{$prefix}__item {
-        line-height: use-text-lineheight('lg');
-        padding: use-spacing(4) use-spacing(10);
-        margin: 0;
-        transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
-
-        &--prev {
-          border-top: 1px dashed use-color-mode('primary');
-          border-left: none;
-        }
-
-        &--next {
-          border-bottom: 1px dashed use-color-mode('primary');
-          border-right: none;
-        }
-      }
-
-      .#{$prefix}__ink {
-        position: absolute;
-        left: 0;
-        bottom: auto;
-        width: 2px;
-        background-color: use-color-mode('primary');
-        transition: top 0.2s cubic-bezier(0.34, 0.69, 0.1, 1), height 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
-      }
-
-      .#{$prefix}__list--card {
-        .#{$prefix}__item {
-          margin: 0;
-          padding: use-spacing(4) use-spacing(10);
-          background-color: use-color('gray', 200);
-          border-radius: 0;
-          transition: all 0.3s;
-
-          &--active {
-            color: use-color-mode('primary');
-            background-color: use-color-static('white');
-            border-radius: use-border-radius('normal') 0 0  use-border-radius('normal');
-          }
-        }
-      }
-
-      .#{$prefix}__list--button {
-        .#{$prefix}__item {
-          margin: 0 0 use-spacing(2) 0;
-          padding: use-spacing(2) use-spacing(10);
-          border-radius: use-border-radius('normal');
-          transition: all 0.3s;
-
-          &:not(:where(.#{$prefix}__item--active, .#{$prefix}__item--disabled)):hover {
-            background-color: use-color('gray', 200);
-            color: use-color('gray', 500);
-          }
-
-          &--active {
-            color: use-color-mode('primary');
-            background-color: use-color-mode('primary', 50);
-          }
-        }
-      }
-
-      .#{$prefix}__list--desc {
         .#{$prefix}-item {
           &__title {
             color: use-color('gray', 700);
+            line-height: use-text-lineheight('sm');
           }
 
           &__desc {
@@ -279,12 +220,12 @@ $prefix: '#{$component-prefix}-tabs' !default;
             line-height: use-text-lineheight('sm');
           }
         }
+
         .#{$prefix}__item {
           display: flex;
           flex-direction: column;
           align-items: center;
-          margin: 0 0 use-spacing(6) 0;
-          padding: use-spacing(8) use-spacing(10);
+          padding: use-spacing(8);
           border-radius: use-border-radius('normal');
           transition: all 0.3s;
           background: use-color('gray', 50);
@@ -308,6 +249,91 @@ $prefix: '#{$component-prefix}-tabs' !default;
             }
           }
         }
+
+        .#{$prefix}__list--scroll {
+          row-gap: use-spacing(6);
+        }
+      }
+
+      &.#{$prefix}__list--card {
+        .#{$prefix}__item {
+          margin: 0;
+          padding: use-spacing(5) use-spacing(8);
+          background-color: use-color('gray', 200);
+          border-radius: 0;
+          transition: all 0.3s;
+          line-height: use-text-lineheight('sm');
+
+          &--active {
+            color: use-color-mode('primary');
+            background-color: use-color-static('white');
+            border-radius: use-border-radius('normal') 0 0  use-border-radius('normal');
+          }
+        }
+      }
+
+      &.#{$prefix}__list--button {
+        .#{$prefix}__item {
+          margin: 0 0 use-spacing(2) 0;
+          padding: use-spacing(2) use-spacing(6);
+          border-radius: use-border-radius('normal');
+          transition: all 0.3s;
+
+          &:not(:where(.#{$prefix}__item--active, .#{$prefix}__item--disabled)):hover {
+            background-color: use-color('gray', 200);
+            color: use-color('gray', 500);
+          }
+
+          &--active {
+            color: use-color-mode('primary');
+            background-color: use-color-mode('primary', 50);
+          }
+        }
+
+        .#{$prefix}__list--scroll {
+          row-gap: use-spacing(2);
+        }
+      }
+
+      .#{$prefix}__list--inner {
+        width: auto;
+        display: block;
+        position: relative;
+      }
+
+      .#{$prefix}__list--scroll {
+        flex-direction: column;
+        position: relative;
+      }
+
+      .#{$prefix}__item {
+        line-height: use-text-lineheight('lg');
+        padding: use-spacing(4) use-spacing(10);
+        margin: 0;
+        transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
+
+        &::after {
+          display: none;
+        }
+
+        &--prev {
+          border-top: 1px dashed use-color-mode('primary');
+          border-left: none;
+        }
+
+        &--next {
+          border-bottom: 1px dashed use-color-mode('primary');
+          border-right: none;
+        }
+      }
+
+      .#{$prefix}__ink {
+        position: absolute;
+        left: 0;
+        bottom: auto;
+        width: 2px;
+        background-color: use-color-mode('primary');
+        transition: top 0.2s cubic-bezier(0.34, 0.69, 0.1, 1), height 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
       }
     }
   }

@@ -1,25 +1,20 @@
 import React from 'react'
 import { Tabs, TabPane } from '../src'
-import { MailSendOutlined, FireOutlined, StarOutlined } from '@hi-ui/icons'
+import Button from '@hi-ui/button'
 
 /**
- * @title 带图标
+ * @title 禁用状态
  */
-export const WithIcon = () => {
+export const Disabled = () => {
+  const [activeTab, setActiveTab] = React.useState<React.ReactText>('1')
+
   return (
     <>
-      <h1>带图标</h1>
-      <div className="tabs-basic__wrap">
-        <Tabs>
-          <TabPane
-            tabId="1"
-            tabTitle={
-              <span>
-                <MailSendOutlined style={{ marginRight: 4 }} />
-                目标
-              </span>
-            }
-          >
+      <h1>Disabled</h1>
+      <div className="tabs-disabled__wrap">
+        <Button onClick={() => setActiveTab('2')}>更新面板</Button>
+        <Tabs style={{ marginTop: 16 }} activeId={activeTab} onChange={setActiveTab}>
+          <TabPane tabId="1" tabTitle="Tab 1">
             <div
               style={{
                 backgroundColor: '#f5f7fa',
@@ -31,15 +26,7 @@ export const WithIcon = () => {
               Content of Tab Panel 1
             </div>
           </TabPane>
-          <TabPane
-            tabId="2"
-            tabTitle={
-              <span>
-                <FireOutlined style={{ marginRight: 4 }} />
-                结果
-              </span>
-            }
-          >
+          <TabPane tabId="2" tabTitle="Tab 2" disabled>
             <div
               style={{
                 backgroundColor: '#f5f7fa',
@@ -51,15 +38,7 @@ export const WithIcon = () => {
               Content of Tab Panel 2
             </div>
           </TabPane>
-          <TabPane
-            tabId="3"
-            tabTitle={
-              <span>
-                <StarOutlined style={{ marginRight: 4 }} />
-                复盘
-              </span>
-            }
-          >
+          <TabPane tabId="3" tabTitle="Tab 3">
             <div
               style={{
                 backgroundColor: '#f5f7fa',

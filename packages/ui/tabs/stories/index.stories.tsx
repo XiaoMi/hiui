@@ -3,6 +3,7 @@ import Tabs from '../src'
 
 export * from './basic.stories'
 export * from './vertical.stories'
+export * from './disabled.stories'
 export * from './editable.stories'
 export * from './scroll.stories'
 // export * from './draggable.stories'
