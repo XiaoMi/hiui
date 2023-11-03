@@ -1,5 +1,40 @@
 # @hi-ui/hiui
 
+## 4.3.5
+
+### Patch Changes
+
+- [#2654](https://github.com/XiaoMi/hiui/pull/2654) [`dc002a32a`](https://github.com/XiaoMi/hiui/commit/dc002a32a2c6f538b0df37c63d34f603647d9b70) Thanks [@zyprepare](https://github.com/zyprepare)! - Table feat: 增加 scrollbar 参数,用于在 Windows 环境下优化滚动条样式
+
+- [#2652](https://github.com/XiaoMi/hiui/pull/2652) [`d4f74c723`](https://github.com/XiaoMi/hiui/commit/d4f74c723d7fb619320dac5cdb4444480a3b7880) Thanks [@zyprepare](https://github.com/zyprepare)! - Tabs chore: 胶囊样式下标签之间增加竖线展示
+
+- [#2653](https://github.com/XiaoMi/hiui/pull/2653) [`b477d91db`](https://github.com/XiaoMi/hiui/commit/b477d91db15bbc92c8712a9a771af5b332779315) Thanks [@zyprepare](https://github.com/zyprepare)! - chore: 更新组件使用到的 G40 颜色值
+
+- [#2643](https://github.com/XiaoMi/hiui/pull/2643) [`7742c022a`](https://github.com/XiaoMi/hiui/commit/7742c022a55f3908684d21e6e7d7bf07e3de1f5e) Thanks [@zyprepare](https://github.com/zyprepare)! - PopConfirm feat: add placement api (透传 Popper 参数)
+
+- Updated dependencies [[`d4f74c723`](https://github.com/XiaoMi/hiui/commit/d4f74c723d7fb619320dac5cdb4444480a3b7880), [`b477d91db`](https://github.com/XiaoMi/hiui/commit/b477d91db15bbc92c8712a9a771af5b332779315), [`7742c022a`](https://github.com/XiaoMi/hiui/commit/7742c022a55f3908684d21e6e7d7bf07e3de1f5e), [`dc002a32a`](https://github.com/XiaoMi/hiui/commit/dc002a32a2c6f538b0df37c63d34f603647d9b70)]:
+  - @hi-ui/tabs@4.1.1
+  - @hi-ui/button@4.0.6
+  - @hi-ui/cascader@4.1.2
+  - @hi-ui/check-cascader@4.2.2
+  - @hi-ui/counter@4.1.5
+  - @hi-ui/date-picker@4.4.1
+  - @hi-ui/filter@4.1.1
+  - @hi-ui/input@4.0.10
+  - @hi-ui/menu@4.1.2
+  - @hi-ui/number-input@4.1.4
+  - @hi-ui/pagination@4.0.11
+  - @hi-ui/radio@4.0.5
+  - @hi-ui/scrollbar@4.0.3
+  - @hi-ui/switch@4.0.7
+  - @hi-ui/tag@4.0.8
+  - @hi-ui/textarea@4.1.3
+  - @hi-ui/time-picker@4.0.10
+  - @hi-ui/transfer@4.0.10
+  - @hi-ui/tree@4.5.5
+  - @hi-ui/pop-confirm@4.1.0
+  - @hi-ui/table@4.3.1
+
 ## 4.3.4
 
 ### Patch Changes

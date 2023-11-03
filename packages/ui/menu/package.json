@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/menu",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -66,7 +66,7 @@
   },
   "devDependencies": {
     "@hi-ui/core": "^4.0.4",
-    "@hi-ui/core-css": "^4.0.1",
+    "@hi-ui/core-css": "^4.1.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

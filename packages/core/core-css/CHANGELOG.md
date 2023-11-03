@@ -1,5 +1,11 @@
 # @hi-ui/core-css
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2653](https://github.com/XiaoMi/hiui/pull/2653) [`cdb393bae`](https://github.com/XiaoMi/hiui/commit/cdb393bae218c645a808543956e4932435c321b9) Thanks [@zyprepare](https://github.com/zyprepare)! - chore: 修改 G40 色值为#b5bcc7
+
 ## 4.1.1
 
 ### Patch Changes
