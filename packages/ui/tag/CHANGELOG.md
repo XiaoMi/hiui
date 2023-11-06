@@ -1,5 +1,11 @@
 # @hi-ui/tag
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2658](https://github.com/XiaoMi/hiui/pull/2658) [`1dd9b9e32`](https://github.com/XiaoMi/hiui/commit/1dd9b9e3298966ecf9ebd913f23deb7e088bce4a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add editorRender api
+
 ## 4.0.8
 
 ### Patch Changes

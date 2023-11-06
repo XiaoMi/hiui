@@ -1,5 +1,17 @@
 # @hi-ui/hiui
 
+## 4.3.6
+
+### Patch Changes
+
+- [#2658](https://github.com/XiaoMi/hiui/pull/2658) [`1dd9b9e32`](https://github.com/XiaoMi/hiui/commit/1dd9b9e3298966ecf9ebd913f23deb7e088bce4a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(tag): add editorRender api
+
+- [#2659](https://github.com/XiaoMi/hiui/pull/2659) [`b78487cd7`](https://github.com/XiaoMi/hiui/commit/b78487cd725532000f81876e1826f1918c37b23a) Thanks [@zyprepare](https://github.com/zyprepare)! - Menu fix: 修复 mini 模式下子菜单内容展示不全问题
+
+- Updated dependencies [[`1dd9b9e32`](https://github.com/XiaoMi/hiui/commit/1dd9b9e3298966ecf9ebd913f23deb7e088bce4a), [`b78487cd7`](https://github.com/XiaoMi/hiui/commit/b78487cd725532000f81876e1826f1918c37b23a)]:
+  - @hi-ui/tag@4.1.0
+  - @hi-ui/menu@4.1.3
+
 ## 4.3.5
 
 ### Patch Changes
