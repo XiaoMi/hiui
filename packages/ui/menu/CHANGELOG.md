@@ -1,5 +1,11 @@
 # @hi-ui/menu
 
+## 4.1.3
+
+### Patch Changes
+
+- [#2659](https://github.com/XiaoMi/hiui/pull/2659) [`b78487cd7`](https://github.com/XiaoMi/hiui/commit/b78487cd725532000f81876e1826f1918c37b23a) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 mini 模式下子菜单内容展示不全问题
+
 ## 4.1.2
 
 ### Patch Changes
