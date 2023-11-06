@@ -227,6 +227,18 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       )
     }
 
+    const renderItem = useCallback(
+      (menuItem: MenuDataItem, level?: number) => {
+        // 显示缩略内容
+        if (showMini && level === 1) {
+          return renderMenuItemMini(menuItem)
+        }
+
+        return isFunction(render) ? render(menuItem, level) : menuItem.title
+      },
+      [render, showMini]
+    )
+
     const cls = cx(
       prefixCls,
       className,
@@ -260,19 +272,13 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
             {mergedTagList.map((item, index) => {
               return showMini ? (
                 <Tooltip title={item.title} key={item.id} placement="right">
-                  <MenuItem
-                    {...item}
-                    level={1}
-                    render={renderMenuItemMini}
-                    raw={item}
-                    size={size}
-                  />
+                  <MenuItem {...item} level={1} render={renderItem} raw={item} size={size} />
                 </Tooltip>
               ) : (
                 <MenuItem
                   hidden={!showVertical && index >= tagMaxCount}
                   {...item}
-                  render={render}
+                  render={renderItem}
                   key={item.id}
                   level={1}
                   raw={item}
@@ -372,7 +378,7 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
   /**
    * 自定义渲染菜单项
    */
-  render?: (menuItem: MenuDataItem) => React.ReactNode
+  render?: (menuItem: MenuDataItem, level?: number) => React.ReactNode
   /**
    * 额外的头部内容
    */
