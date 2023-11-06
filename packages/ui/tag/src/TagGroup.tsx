@@ -27,6 +27,8 @@ export const TagGroup = forwardRef<HTMLDivElement | null, TagGroupProps>(
       onDelete,
       onEdit,
       addButton,
+      render,
+      editorRender,
       ...rest
     },
     ref
@@ -76,10 +78,11 @@ export const TagGroup = forwardRef<HTMLDivElement | null, TagGroupProps>(
               itemOnEdit && itemOnEdit(e)
               onEdit && onEdit(e, { ...item }, index)
             }}
+            render={render}
           />
         )
       })
-    }, [data, editable, maxWidth, onDelete, onEdit, prefixCls])
+    }, [data, editable, maxWidth, onDelete, onEdit, prefixCls, render])
 
     const addNewButton = useMemo(() => {
       return (
@@ -99,17 +102,20 @@ export const TagGroup = forwardRef<HTMLDivElement | null, TagGroupProps>(
       <div ref={ref} role={role} className={rootClassName} style={style} {...rest}>
         {displayTags}
         {editable && !isInAdding && addNewButton}
-        {isInAdding && (
-          <Tag
-            autoEditable
-            editable
-            onEdit={(e) => {
-              onAdd?.(e, data.length)
-              setIsInAdding(false)
-            }}
-            className={`${prefixCls}__item`}
-          />
-        )}
+        {isInAdding &&
+          (editorRender ? (
+            editorRender(() => setIsInAdding(false))
+          ) : (
+            <Tag
+              autoEditable
+              editable
+              onEdit={(e) => {
+                onAdd?.(e, data.length)
+                setIsInAdding(false)
+              }}
+              className={`${prefixCls}__item`}
+            />
+          ))}
       </div>
     )
   }
@@ -151,6 +157,16 @@ export interface TagGroupProps extends HiBaseHTMLProps<'div'> {
    * @private
    */
   addButton?: React.ReactNode
+  /**
+   * 内容渲染器
+   * @param children 子代对象
+   * @default e => e
+   */
+  render?: (children?: React.ReactText) => React.ReactNode
+  /**
+   * 自定义编辑器渲染
+   */
+  editorRender?: (updated: () => void) => React.ReactNode
 }
 
 export interface TagGroupDataItem

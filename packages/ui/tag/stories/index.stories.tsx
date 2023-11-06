@@ -11,6 +11,7 @@ export * from './colors.stories'
 export * from './custom-color.stories'
 export * from './max-width.stories'
 export * from './tag-group.stories'
+export * from './editor-render.stories'
 
 export default {
   title: 'FeedBack/Tag',
