@@ -108,7 +108,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
 
             {icon ? <span className={`${prefixCls}-item__icon`}>{icon}</span> : null}
             <span className={`${prefixCls}-item__content`}>
-              {isFunction(render) ? render({ id, icon, title }) : title}
+              {isFunction(render) ? render({ id, icon, title }, level) : title}
             </span>
             {/* 垂直菜单-纵向展开 */}
             {hasChildren &&
@@ -315,7 +315,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                             }}
                             className={cx(`${prefixCls}-item`, {
                               [`${prefixCls}-item--active`]: activeId === item.id,
-                              [`${prefixCls}-item--disabled`]: item.disabled
+                              [`${prefixCls}-item--disabled`]: item.disabled,
                             })}
                             key={item.id}
                           >
@@ -409,7 +409,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                           <div
                             className={cx(`${prefixCls}-item`, {
                               [`${prefixCls}-item--active`]: activeId === item.id,
-                              [`${prefixCls}-item--disabled`]: item.disabled
+                              [`${prefixCls}-item--disabled`]: item.disabled,
                             })}
                             onClick={() => {
                               if (!item.disabled) {
@@ -443,7 +443,7 @@ export interface MenuItemProps extends Omit<HiBaseHTMLProps<'li'>, 'id'> {
   children?: MenuDataItem[]
   level?: number
   parentIds?: React.ReactText[]
-  render?: (node: MenuDataItem) => React.ReactNode
+  render?: (node: MenuDataItem, level?: number) => React.ReactNode
   raw?: MenuDataItem
   size?: HiBaseSizeEnum
 }
