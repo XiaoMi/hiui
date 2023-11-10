@@ -175,6 +175,15 @@ $label-class: '#{$prefix}__label' !default;
       align-items: center;
     }
 
+    &.#{$prefix}-group--auto-width {
+      display: flex;
+
+      .#{$prefix}--type-button {
+        flex: 1;
+        justify-content: center;
+      }
+    }
+
     .#{$prefix}--type-button {
       &::after {
         content: '';
