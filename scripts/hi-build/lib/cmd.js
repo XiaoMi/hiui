@@ -38,6 +38,7 @@ const cmd = (callback) => {
     .option('--source-maps', 'Generate source map', false)
     .option('--css-extract', 'Turns on Extract css', false)
     .option('--css-modules', 'Turns on css-modules', false)
+    .option('--analysis', 'Visualize and analyze your Rollup bundle', false)
     .description('Build once and exit')
     .action(action)
 

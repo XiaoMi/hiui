@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hi-build",
-  "version": "4.0.4",
+  "version": "4.1.0",
   "description": "Now I’m the model of a modern major general / The venerated Virginian veteran whose men are all / Lining up, to put me up on a pedestal / Writin’ letters to relatives / Embellishin’ my elegance and eloquence / But the elephant is in the room / The truth is in ya face when ya hear the British cannons go / BOOM",
   "keywords": [],
   "author": "Flcwl <flcwl@vip.qq.com>",
@@ -54,17 +54,16 @@
     "postcss-nested": "^5.0.6",
     "postcss-preset-env": "^7.4.3",
     "postcss-simple-vars": "^6.0.3",
-    "rollup": "^2.70.1",
+    "rollup": "3.29.4",
     "rollup-plugin-dts": "^4.2.0",
     "rollup-plugin-extensions": "^0.1.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-visualizer": "^5.9.2"
   },
   "peerDependencies": {
     "typescript": "^4.6.2"
   },
-  "devDependencies": {
-
-  }
+  "devDependencies": {}
 }
