@@ -25,7 +25,10 @@
 | onConfirm   | 确认事件触发时的回调 | () => void | -                                                        | -         |
 | onCancel    | 取消事件触发时的回调 | () => void | -                                                        | -         |
 | title       | 确认弹窗的标题       | string     | -                                                        | string    |
-| content     | 确认弹窗的内容       | string     | -                                                        | -         |
+| content     | 确认弹窗的内容       | ReactNode     | -                                                        | -         |
 | type        | confirm 的类型       | string     | 'default' \| 'success' \| 'error' \| 'warning' \| 'info' | 'default' |
 | cancelText  | 取消按钮文案         | string     | -                                                        | '取消'    |
 | confirmText | 确认按钮文案         | string     | -                                                        | '确定'    |
+| showHeaderDivider | 展示 header 与内容的分割线   | boolean     | -                                          |    -    |
+| closeOnEsc | 开启 Esc 快捷键关闭   | boolean     | -                                                       |   true    |
+| maskClosable | 开启点击蒙层时关闭   | boolean     | -                                                       |   true    |
