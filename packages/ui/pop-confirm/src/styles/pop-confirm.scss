@@ -18,14 +18,21 @@ $prefix: '#{$component-prefix}-pop-confirm' !default;
     align-items: center;
 
     &-icon {
-      margin-right: use-spacing(4);
+      margin-right: use-spacing(5);
       color: use-color-mode('warning');
-      font-size: use-text-size('xxl');
+      font-size: use-text-size('xl');
     }
 
     &-title {
       color: use-color('gray', 700);
+      font-weight: use-text-weight('semibold');
     }
+  }
+
+  &__body {
+    margin: use-spacing(5) 0 0 use-spacing(14);
+    white-space: normal;
+    color: use-color('gray', 600);
   }
 
   &__footer {
