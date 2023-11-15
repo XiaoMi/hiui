@@ -16,6 +16,7 @@ const postcssFlexBugfix = require('postcss-flexbugs-fixes')
 const cssnano = require('cssnano')
 const autoprefixer = require('autoprefixer')
 const json = require('@rollup/plugin-json')
+const { visualizer } = require('rollup-plugin-visualizer')
 // const injectCSSImport =  require('./plugins/inject-css-import')
 const cleanSCSS  =require('./plugins/clean-scss')
 
@@ -95,6 +96,7 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
     cssModules = false,
     preserved = true,
     compress = false,
+    analysis = false,
   } = options
 
   const formats = formatOptions.split(',')
@@ -161,7 +163,8 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
         cleanSCSS(),
         // !cssExtract && injectCSSImport(),
         compress && terser(),
-        json()
+        json(),
+        ...(analysis ? [visualizer()] : [])
       ].filter(Boolean),
     }
 
