@@ -22,6 +22,7 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
       data,
       type = RadioGroupTypeEnum.DEFAULT,
       placement = RadioGroupPlacementEnum.HORIZONTAL,
+      autoWidth = false,
       ...rest
     },
     ref
@@ -63,6 +64,7 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
       prefixCls,
       className,
       `${prefixCls}--placement-${placement}`,
+      autoWidth && type === RadioGroupTypeEnum.BUTTON && `${prefixCls}--auto-width`,
       `${prefixCls}--type-${type}`,
       hasData && `${prefixCls}--data-wrap`
     )
@@ -90,6 +92,11 @@ export interface RadioGroupProps extends HiBaseHTMLFieldProps<'div'>, UseRadioGr
    * 设置水平或垂直展示
    */
   placement?: RadioGroupPlacementEnum
+  /**
+   * 宽度是否自适应
+   * @default false
+   */
+  autoWidth?: boolean
 }
 
 if (__DEV__) {
