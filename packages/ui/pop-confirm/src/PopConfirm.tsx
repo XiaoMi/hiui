@@ -22,6 +22,7 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
       className,
       children,
       title,
+      content,
       icon = defaultTipIcon,
       cancelText: cancelTextProp,
       confirmText: confirmTextProp,
@@ -60,6 +61,8 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
               {icon ? <span className={`${prefixCls}__content-icon`}>{icon}</span> : null}
               <div className={`${prefixCls}__content-title`}>{title}</div>
             </section>
+
+            {content ? <div className={`${prefixCls}__body`}>{content}</div> : null}
 
             {hasFooter ? (
               <footer className={`${prefixCls}__footer`}>
@@ -103,6 +106,10 @@ export interface PopConfirmProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, 
    * 确认框标题
    */
   title: React.ReactNode
+  /**
+   * 确认框内容
+   */
+  content: React.ReactNode
   /**
    * 取消按钮文案
    */
