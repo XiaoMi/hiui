@@ -1,5 +1,11 @@
 # @hi-ui/modal
 
+## 4.0.12
+
+### Patch Changes
+
+- [#2669](https://github.com/XiaoMi/hiui/pull/2669) [`d8e7308f5`](https://github.com/XiaoMi/hiui/commit/d8e7308f5ab898795a284141d618a1253d218d9d) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 补充 api 调用中的参数类型声明
+
 ## 4.0.11
 
 ### Patch Changes
