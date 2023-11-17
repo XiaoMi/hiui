@@ -61,6 +61,9 @@ export interface ModalApiProps
     | 'type'
     | 'closeable'
     | 'showMask'
+    | 'showHeaderDivider'
+    | 'closeOnEsc'
+    | 'maskClosable'
   > {
   /**
    * 	confirm 的内容

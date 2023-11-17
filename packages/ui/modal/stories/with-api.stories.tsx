@@ -34,6 +34,8 @@ export const WithAPI = () => {
               content: '执行该操作后将无法撤销，是否确定继续？',
               cancelText: null,
               confirmText: '确定',
+              closeOnEsc: false,
+              maskClosable: false,
             })
           }
         >
