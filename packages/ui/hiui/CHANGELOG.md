@@ -1,5 +1,20 @@
 # @hi-ui/hiui
 
+## 4.3.7
+
+### Patch Changes
+
+- [#2669](https://github.com/XiaoMi/hiui/pull/2669) [`d8e7308f5`](https://github.com/XiaoMi/hiui/commit/d8e7308f5ab898795a284141d618a1253d218d9d) Thanks [@zyprepare](https://github.com/zyprepare)! - Modal fix: 补充 api 调用中的参数类型声明
+
+- [#2667](https://github.com/XiaoMi/hiui/pull/2667) [`3e2e9c389`](https://github.com/XiaoMi/hiui/commit/3e2e9c389c15908b6dc70ad224253d8287273eea) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(pop-confirm): add content api
+
+- [#2663](https://github.com/XiaoMi/hiui/pull/2663) [`9a46f8e0f`](https://github.com/XiaoMi/hiui/commit/9a46f8e0ff52bd76728b17e11dcedd0ce3953be1) Thanks [@zyprepare](https://github.com/zyprepare)! - Radio feat: add autoWidth api
+
+- Updated dependencies [[`d8e7308f5`](https://github.com/XiaoMi/hiui/commit/d8e7308f5ab898795a284141d618a1253d218d9d), [`9a46f8e0f`](https://github.com/XiaoMi/hiui/commit/9a46f8e0ff52bd76728b17e11dcedd0ce3953be1), [`3e2e9c389`](https://github.com/XiaoMi/hiui/commit/3e2e9c389c15908b6dc70ad224253d8287273eea)]:
+  - @hi-ui/modal@4.0.12
+  - @hi-ui/radio@4.1.0
+  - @hi-ui/pop-confirm@4.2.0
+
 ## 4.3.6
 
 ### Patch Changes

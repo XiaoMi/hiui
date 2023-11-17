@@ -1,5 +1,11 @@
 # @hi-ui/pop-confirm
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2667](https://github.com/XiaoMi/hiui/pull/2667) [`3e2e9c389`](https://github.com/XiaoMi/hiui/commit/3e2e9c389c15908b6dc70ad224253d8287273eea) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add content api
+
 ## 4.1.0
 
 ### Minor Changes
