@@ -1,5 +1,16 @@
 # @hi-ui/zen-mode
 
+## 4.0.6
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/icons@4.0.17
+  - @hi-ui/classname@4.0.3
+
 ## 4.0.5
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @hi-ui/use-check
 
+## 4.0.4
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/use-latest@4.0.3
+  - @hi-ui/use-uncontrolled-state@4.0.3
+  - @hi-ui/tree-utils@4.1.3
+
 ## 4.0.3
 
 ### Patch Changes

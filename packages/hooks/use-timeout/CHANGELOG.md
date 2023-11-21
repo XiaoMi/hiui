@@ -1,5 +1,13 @@
 # @hi-ui/use-timeout
 
+## 4.0.3
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/use-latest@4.0.3
+
 ## 4.0.2
 
 ### Patch Changes

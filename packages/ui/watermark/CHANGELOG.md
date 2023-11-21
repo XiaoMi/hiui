@@ -1,5 +1,19 @@
 # @hi-ui/watermark
 
+## 4.0.6
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/use-merge-refs@4.0.3
+  - @hi-ui/portal@4.0.6
+  - @hi-ui/classname@4.0.3
+  - @hi-ui/react-utils@4.0.3
+  - @hi-ui/type-assertion@4.0.3
+
 ## 4.0.5
 
 ### Patch Changes

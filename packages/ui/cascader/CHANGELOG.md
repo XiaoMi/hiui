@@ -1,5 +1,31 @@
 # @hi-ui/cascader
 
+## 4.1.4
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/use-check-state@4.0.3
+  - @hi-ui/use-data-source@4.0.3
+  - @hi-ui/use-latest@4.0.3
+  - @hi-ui/use-search-mode@4.1.3
+  - @hi-ui/use-toggle@4.0.3
+  - @hi-ui/use-uncontrolled-state@4.0.3
+  - @hi-ui/icons@4.0.17
+  - @hi-ui/highlighter@4.0.7
+  - @hi-ui/input@4.0.12
+  - @hi-ui/picker@4.1.3
+  - @hi-ui/popper@4.1.2
+  - @hi-ui/spinner@4.0.7
+  - @hi-ui/array-utils@4.0.3
+  - @hi-ui/classname@4.0.3
+  - @hi-ui/func-utils@4.0.3
+  - @hi-ui/tree-utils@4.1.3
+  - @hi-ui/type-assertion@4.0.3
+
 ## 4.1.3
 
 ### Patch Changes

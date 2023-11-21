@@ -1,5 +1,19 @@
 # @hi-ui/rating
 
+## 4.0.7
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/use-did-mount@4.0.3
+  - @hi-ui/use-merge-refs@4.0.3
+  - @hi-ui/use-uncontrolled-state@4.0.3
+  - @hi-ui/tooltip@4.0.9
+  - @hi-ui/classname@4.0.3
+
 ## 4.0.6
 
 ### Patch Changes

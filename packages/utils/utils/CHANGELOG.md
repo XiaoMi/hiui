@@ -1,5 +1,24 @@
 # @hi-ui/utils
 
+## 4.0.7
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/array-utils@4.0.3
+  - @hi-ui/classname@4.0.3
+  - @hi-ui/container@4.0.3
+  - @hi-ui/dom-utils@4.0.6
+  - @hi-ui/func-utils@4.0.3
+  - @hi-ui/raf@4.0.4
+  - @hi-ui/react-utils@4.0.3
+  - @hi-ui/request@4.1.2
+  - @hi-ui/throttle-by-raf@4.0.4
+  - @hi-ui/tree-utils@4.1.3
+  - @hi-ui/type-assertion@4.0.3
+
 ## 4.0.6
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @hi-ui/core
 
+## 4.0.7
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/core-css@4.1.4
+  - @hi-ui/locale-context@4.0.7
+
 ## 4.0.6
 
 ### Patch Changes

@@ -1,5 +1,35 @@
 # @hi-ui/hooks
 
+## 4.0.8
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/use-async-data@4.0.3
+  - @hi-ui/use-cache@4.0.3
+  - @hi-ui/use-check@4.0.4
+  - @hi-ui/use-check-state@4.0.3
+  - @hi-ui/use-children@4.0.3
+  - @hi-ui/use-data-source@4.0.3
+  - @hi-ui/use-deep-equal-deps@4.0.3
+  - @hi-ui/use-did-mount@4.0.3
+  - @hi-ui/use-drag-sorter@4.0.3
+  - @hi-ui/use-force-update@4.0.3
+  - @hi-ui/use-id@4.0.3
+  - @hi-ui/use-latest@4.0.3
+  - @hi-ui/use-lazy-render@4.0.3
+  - @hi-ui/use-merge-refs@4.0.3
+  - @hi-ui/use-outside-click@4.0.3
+  - @hi-ui/use-scroll@4.0.4
+  - @hi-ui/use-scroll-lock@4.0.3
+  - @hi-ui/use-search-mode@4.1.3
+  - @hi-ui/use-timeout@4.0.3
+  - @hi-ui/use-toggle@4.0.3
+  - @hi-ui/use-uncontrolled-state@4.0.3
+  - @hi-ui/use-unmount-effect@4.0.3
+  - @hi-ui/use-update-effect@4.0.3
+
 ## 4.0.7
 
 ### Patch Changes

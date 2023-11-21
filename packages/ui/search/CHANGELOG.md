@@ -1,5 +1,25 @@
 # @hi-ui/search
 
+## 4.0.10
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/use-latest@4.0.3
+  - @hi-ui/use-uncontrolled-state@4.0.3
+  - @hi-ui/icons@4.0.17
+  - @hi-ui/button@4.0.8
+  - @hi-ui/highlighter@4.0.7
+  - @hi-ui/input@4.0.12
+  - @hi-ui/loading@4.1.2
+  - @hi-ui/popper@4.1.2
+  - @hi-ui/classname@4.0.3
+  - @hi-ui/func-utils@4.0.3
+  - @hi-ui/type-assertion@4.0.3
+
 ## 4.0.9
 
 ### Patch Changes

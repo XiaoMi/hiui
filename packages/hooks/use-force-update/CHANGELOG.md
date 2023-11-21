@@ -1,5 +1,13 @@
 # @hi-ui/use-force-update
 
+## 4.0.3
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/use-unmount-effect@4.0.3
+
 ## 4.0.2
 
 ### Patch Changes

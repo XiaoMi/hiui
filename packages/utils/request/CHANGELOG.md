@@ -1,5 +1,11 @@
 # @hi-ui/request
 
+## 4.1.2
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+
 ## 4.1.1
 
 ### Patch Changes

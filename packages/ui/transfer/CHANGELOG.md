@@ -1,5 +1,23 @@
 # @hi-ui/transfer
 
+## 4.0.12
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/use-check@4.0.4
+  - @hi-ui/use-uncontrolled-state@4.0.3
+  - @hi-ui/icons@4.0.17
+  - @hi-ui/button@4.0.8
+  - @hi-ui/checkbox@4.0.7
+  - @hi-ui/input@4.0.12
+  - @hi-ui/pagination@4.0.13
+  - @hi-ui/classname@4.0.3
+  - @hi-ui/type-assertion@4.0.3
+
 ## 4.0.11
 
 ### Patch Changes

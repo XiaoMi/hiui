@@ -1,5 +1,18 @@
 # @hi-ui/textarea
 
+## 4.1.5
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/use-latest@4.0.3
+  - @hi-ui/use-merge-refs@4.0.3
+  - @hi-ui/input@4.0.12
+  - @hi-ui/classname@4.0.3
+
 ## 4.1.4
 
 ### Patch Changes

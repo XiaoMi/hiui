@@ -1,5 +1,13 @@
 # @hi-ui/throttle-by-raf
 
+## 4.0.4
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/raf@4.0.4
+
 ## 4.0.3
 
 ### Patch Changes

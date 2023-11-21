@@ -1,5 +1,20 @@
 # @hi-ui/use-search-mode
 
+## 4.1.3
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/use-data-source@4.0.3
+  - @hi-ui/use-latest@4.0.3
+  - @hi-ui/loading@4.1.2
+  - @hi-ui/dom-utils@4.0.6
+  - @hi-ui/func-utils@4.0.3
+  - @hi-ui/tree-utils@4.1.3
+  - @hi-ui/type-assertion@4.0.3
+
 ## 4.1.2
 
 ### Patch Changes

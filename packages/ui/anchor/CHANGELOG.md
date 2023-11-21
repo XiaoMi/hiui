@@ -1,5 +1,20 @@
 # @hi-ui/anchor
 
+## 4.0.7
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/use-registry@4.0.4
+  - @hi-ui/use-uncontrolled-state@4.0.3
+  - @hi-ui/classname@4.0.3
+  - @hi-ui/dom-utils@4.0.6
+  - @hi-ui/react-utils@4.0.3
+  - @hi-ui/type-assertion@4.0.3
+
 ## 4.0.6
 
 ### Patch Changes

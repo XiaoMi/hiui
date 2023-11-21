@@ -1,5 +1,16 @@
 # @hi-ui/ellipsis-tooltip
 
+## 4.1.4
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/tooltip@4.0.9
+  - @hi-ui/classname@4.0.3
+
 ## 4.1.3
 
 ### Patch Changes

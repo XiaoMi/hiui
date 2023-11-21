@@ -1,5 +1,25 @@
 # @hi-ui/popover
 
+## 4.0.7
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/use-id@4.0.3
+  - @hi-ui/use-latest@4.0.3
+  - @hi-ui/use-timeout@4.0.3
+  - @hi-ui/use-toggle@4.0.3
+  - @hi-ui/use-unmount-effect@4.0.3
+  - @hi-ui/popper@4.1.2
+  - @hi-ui/array-utils@4.0.3
+  - @hi-ui/classname@4.0.3
+  - @hi-ui/dom-utils@4.0.6
+  - @hi-ui/react-utils@4.0.3
+  - @hi-ui/type-assertion@4.0.3
+
 ## 4.0.6
 
 ### Patch Changes

@@ -1,5 +1,22 @@
 # @hi-ui/tabs
 
+## 4.1.3
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/use-latest@4.0.3
+  - @hi-ui/use-uncontrolled-state@4.0.3
+  - @hi-ui/use-unmount-effect@4.0.3
+  - @hi-ui/icons@4.0.17
+  - @hi-ui/icon-button@4.0.7
+  - @hi-ui/classname@4.0.3
+  - @hi-ui/react-utils@4.0.3
+  - @hi-ui/type-assertion@4.0.3
+
 ## 4.1.2
 
 ### Patch Changes
