@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/dom-utils",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -46,10 +46,9 @@
     "react": ">=16.8.6"
   },
   "devDependencies": {
-
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/env": "^4.0.1"
+    "@hi-ui/env": "^4.0.2"
   }
 }

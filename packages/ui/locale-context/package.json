@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/locale-context",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -43,18 +43,17 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.1",
-    "@hi-ui/env": "^4.0.1",
-    "@hi-ui/func-utils": "^4.0.1",
-    "@hi-ui/object-utils": "^4.0.1",
-    "@hi-ui/type-assertion": "^4.0.1"
+    "@hi-ui/classname": "^4.0.2",
+    "@hi-ui/env": "^4.0.2",
+    "@hi-ui/func-utils": "^4.0.2",
+    "@hi-ui/object-utils": "^4.0.2",
+    "@hi-ui/type-assertion": "^4.0.2"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
