@@ -18,7 +18,7 @@ const autoprefixer = require('autoprefixer')
 const json = require('@rollup/plugin-json')
 const { visualizer } = require('rollup-plugin-visualizer')
 // const injectCSSImport =  require('./plugins/inject-css-import')
-const cleanSCSS  =require('./plugins/clean-scss')
+const cleanSCSS  = require('./plugins/clean-scss')
 
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
 
@@ -44,7 +44,7 @@ const getBanner = (pkg) => {
 // https://github.com/rollup/plugins/tree/master/packages/babel#babelhelpers
 const getExternals = (pkg) => {
   /** @type {(string | RegExp)[]} */
-  return [/tslib|@babel|style-inject/]
+  return [/tslib|@babel|style-inject|inject-head-style/]
     .concat(Object.keys(pkg.peerDependencies || {}))
     .concat(Object.keys(pkg.dependencies || {}))
 }
@@ -108,6 +108,8 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
     const inputOptions = {
       input,
       external,
+      makeAbsoluteExternalsRelative: true,
+	    preserveEntrySignatures: 'strict',
       treeshake: {
         propertyReadSideEffects: false,
       },
@@ -192,6 +194,12 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
           ],
         }),
       ],
+      esModule: true,
+      generatedCode: {
+        reservedNamesAsProps: false
+      },
+      interop: 'compat',
+      systemNullSetters: false
     }
 
     if (preserved) {
