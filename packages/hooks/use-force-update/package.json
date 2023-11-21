@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-force-update",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -46,10 +46,9 @@
     "react": ">=16.8.6"
   },
   "devDependencies": {
-
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/use-unmount-effect": "^4.0.1"
+    "@hi-ui/use-unmount-effect": "^4.0.2"
   }
 }

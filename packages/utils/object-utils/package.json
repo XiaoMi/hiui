@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/object-utils",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -42,11 +42,9 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
-  "devDependencies": {
-
-  },
+  "devDependencies": {},
   "dependencies": {
-    "@hi-ui/array-utils": "^4.0.1",
-    "@hi-ui/type-assertion": "^4.0.1"
+    "@hi-ui/array-utils": "^4.0.2",
+    "@hi-ui/type-assertion": "^4.0.2"
   }
 }

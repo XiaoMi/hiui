@@ -1,5 +1,85 @@
 # @hi-ui/hiui
 
+## 4.4.0
+
+### Minor Changes
+
+- [#2672](https://github.com/XiaoMi/hiui/pull/2672) [`1ebe27830`](https://github.com/XiaoMi/hiui/commit/1ebe2783098b3a8cd980bd10076d67635463800e) Thanks [@zyprepare](https://github.com/zyprepare)! - build: 升级到 rollup3,重新构建发布组件,4.4.0
+
+### Patch Changes
+
+- [#2671](https://github.com/XiaoMi/hiui/pull/2671) [`6d7909444`](https://github.com/XiaoMi/hiui/commit/6d790944418f36689b34805f858a1268530864b9) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复组件参数类型错误
+
+- Updated dependencies [[`1ebe27830`](https://github.com/XiaoMi/hiui/commit/1ebe2783098b3a8cd980bd10076d67635463800e), [`6d7909444`](https://github.com/XiaoMi/hiui/commit/6d790944418f36689b34805f858a1268530864b9)]:
+  - @hi-ui/core@4.0.6
+  - @hi-ui/alert@4.1.1
+  - @hi-ui/anchor@4.0.6
+  - @hi-ui/avatar@4.0.5
+  - @hi-ui/back-top@4.0.5
+  - @hi-ui/badge@4.0.7
+  - @hi-ui/breadcrumb@4.0.5
+  - @hi-ui/button@4.0.7
+  - @hi-ui/card@4.0.6
+  - @hi-ui/carousel@4.0.5
+  - @hi-ui/cascader@4.1.3
+  - @hi-ui/check-cascader@4.2.3
+  - @hi-ui/check-select@4.3.3
+  - @hi-ui/check-tree-select@4.3.1
+  - @hi-ui/checkbox@4.0.6
+  - @hi-ui/collapse@4.1.3
+  - @hi-ui/counter@4.1.6
+  - @hi-ui/date-picker@4.4.2
+  - @hi-ui/descriptions@4.2.2
+  - @hi-ui/drawer@4.1.1
+  - @hi-ui/dropdown@4.1.2
+  - @hi-ui/ellipsis-tooltip@4.1.3
+  - @hi-ui/empty-state@4.0.5
+  - @hi-ui/filter@4.1.2
+  - @hi-ui/form@4.1.3
+  - @hi-ui/grid@4.0.6
+  - @hi-ui/highlighter@4.0.6
+  - @hi-ui/input@4.0.11
+  - @hi-ui/input-group@4.0.4
+  - @hi-ui/list@4.0.10
+  - @hi-ui/loading@4.1.1
+  - @hi-ui/menu@4.1.4
+  - @hi-ui/message@4.0.5
+  - @hi-ui/modal@4.0.13
+  - @hi-ui/notification@4.1.1
+  - @hi-ui/number-input@4.1.5
+  - @hi-ui/pagination@4.0.12
+  - @hi-ui/picker@4.1.2
+  - @hi-ui/pop-confirm@4.2.1
+  - @hi-ui/popover@4.0.6
+  - @hi-ui/preview@4.0.6
+  - @hi-ui/progress@4.0.7
+  - @hi-ui/provider@4.0.6
+  - @hi-ui/radio@4.1.1
+  - @hi-ui/rating@4.0.6
+  - @hi-ui/result@4.0.5
+  - @hi-ui/scrollbar@4.0.4
+  - @hi-ui/search@4.0.9
+  - @hi-ui/select@4.2.3
+  - @hi-ui/slider@4.0.8
+  - @hi-ui/space@4.0.7
+  - @hi-ui/spinner@4.0.6
+  - @hi-ui/stepper@4.0.5
+  - @hi-ui/svg-icon@4.0.5
+  - @hi-ui/switch@4.0.8
+  - @hi-ui/table@4.3.2
+  - @hi-ui/tabs@4.1.2
+  - @hi-ui/tag@4.1.1
+  - @hi-ui/textarea@4.1.4
+  - @hi-ui/time-picker@4.0.11
+  - @hi-ui/timeline@4.0.5
+  - @hi-ui/tooltip@4.0.8
+  - @hi-ui/transfer@4.0.11
+  - @hi-ui/tree@4.5.6
+  - @hi-ui/tree-select@4.1.1
+  - @hi-ui/upload@4.1.7
+  - @hi-ui/watermark@4.0.5
+  - @hi-ui/zen-mode@4.0.5
+
 ## 4.3.7
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-outside-click",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,10 +45,8 @@
   "peerDependencies": {
     "react": ">=16.8.6"
   },
-  "devDependencies": {
-
-  },
+  "devDependencies": {},
   "dependencies": {
-    "@hi-ui/use-latest": "^4.0.1"
+    "@hi-ui/use-latest": "^4.0.2"
   }
 }

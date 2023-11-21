@@ -1,5 +1,45 @@
 # @hi-ui/table
 
+## 4.3.2
+
+### Patch Changes
+
+- [#2672](https://github.com/XiaoMi/hiui/pull/2672) [`1ebe27830`](https://github.com/XiaoMi/hiui/commit/1ebe2783098b3a8cd980bd10076d67635463800e) Thanks [@zyprepare](https://github.com/zyprepare)! - build: 升级到 rollup3,重新构建发布组件
+
+- [#2671](https://github.com/XiaoMi/hiui/pull/2671) [`6d7909444`](https://github.com/XiaoMi/hiui/commit/6d790944418f36689b34805f858a1268530864b9) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复组件参数类型错误
+
+- Updated dependencies [[`1ebe27830`](https://github.com/XiaoMi/hiui/commit/1ebe2783098b3a8cd980bd10076d67635463800e)]:
+  - @hi-ui/core@4.0.6
+  - @hi-ui/use-cache@4.0.2
+  - @hi-ui/use-check@4.0.3
+  - @hi-ui/use-check-state@4.0.2
+  - @hi-ui/use-drag-sorter@4.0.2
+  - @hi-ui/use-latest@4.0.2
+  - @hi-ui/use-toggle@4.0.2
+  - @hi-ui/use-uncontrolled-state@4.0.2
+  - @hi-ui/use-update-effect@4.0.2
+  - @hi-ui/icons@4.0.16
+  - @hi-ui/button@4.0.7
+  - @hi-ui/checkbox@4.0.6
+  - @hi-ui/drawer@4.1.1
+  - @hi-ui/empty-state@4.0.5
+  - @hi-ui/icon-button@4.0.6
+  - @hi-ui/loading@4.1.1
+  - @hi-ui/pagination@4.0.12
+  - @hi-ui/popper@4.1.1
+  - @hi-ui/select@4.2.3
+  - @hi-ui/spinner@4.0.6
+  - @hi-ui/array-utils@4.0.2
+  - @hi-ui/classname@4.0.2
+  - @hi-ui/dom-utils@4.0.5
+  - @hi-ui/env@4.0.2
+  - @hi-ui/func-utils@4.0.2
+  - @hi-ui/object-utils@4.0.2
+  - @hi-ui/react-utils@4.0.2
+  - @hi-ui/times@4.0.2
+  - @hi-ui/tree-utils@4.1.2
+  - @hi-ui/type-assertion@4.0.2
+
 ## 4.3.1
 
 ### Patch Changes
