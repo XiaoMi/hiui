@@ -109,7 +109,7 @@ export interface PopConfirmProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, 
   /**
    * 确认框内容
    */
-  content: React.ReactNode
+  content?: React.ReactNode
   /**
    * 取消按钮文案
    */

@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 import { IconButton } from '@hi-ui/icon-button'
 import { PlusSquareOutlined, MinusSquareOutlined } from '@hi-ui/icons'
 import { isFunction } from '@hi-ui/type-assertion'
@@ -340,7 +340,7 @@ export interface BaseTableProps
   /**
    *  配置表格尺寸
    */
-  size?: string
+  size?: HiBaseSizeEnum
   /**
    * 底部吸底
    */
