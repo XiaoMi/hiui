@@ -1,5 +1,21 @@
 # @hi-ui/upload
 
+## 4.1.9
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+  - @hi-ui/use-id@4.0.4
+  - @hi-ui/icons@4.0.18
+  - @hi-ui/button@4.0.9
+  - @hi-ui/file-select@4.0.7
+  - @hi-ui/modal@4.0.15
+  - @hi-ui/preview@4.0.8
+  - @hi-ui/classname@4.0.4
+  - @hi-ui/env@4.0.4
+
 ## 4.1.8
 
 ### Patch Changes

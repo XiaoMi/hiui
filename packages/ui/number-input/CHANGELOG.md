@@ -1,5 +1,17 @@
 # @hi-ui/number-input
 
+## 4.1.7
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+  - @hi-ui/icons@4.0.18
+  - @hi-ui/counter@4.1.8
+  - @hi-ui/classname@4.0.4
+  - @hi-ui/env@4.0.4
+
 ## 4.1.6
 
 ### Patch Changes

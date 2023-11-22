@@ -1,5 +1,22 @@
 # @hi-ui/input
 
+## 4.0.13
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+  - @hi-ui/use-latest@4.0.4
+  - @hi-ui/use-merge-refs@4.0.4
+  - @hi-ui/use-uncontrolled-state@4.0.4
+  - @hi-ui/icons@4.0.18
+  - @hi-ui/classname@4.0.4
+  - @hi-ui/dom-utils@4.0.7
+  - @hi-ui/env@4.0.4
+  - @hi-ui/func-utils@4.0.4
+  - @hi-ui/type-assertion@4.0.4
+
 ## 4.0.12
 
 ### Patch Changes

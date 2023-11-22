@@ -1,5 +1,13 @@
 # @hi-ui/use-outside-click
 
+## 4.0.4
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/use-latest@4.0.4
+
 ## 4.0.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/patches
 
+## 4.0.10
+
+### Patch Changes
+
+- build: rollup2 构建
+
 ## 4.0.9
 
 ### Patch Changes

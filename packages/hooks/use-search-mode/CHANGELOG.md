@@ -1,5 +1,20 @@
 # @hi-ui/use-search-mode
 
+## 4.1.4
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/use-data-source@4.0.4
+  - @hi-ui/use-latest@4.0.4
+  - @hi-ui/loading@4.1.3
+  - @hi-ui/dom-utils@4.0.7
+  - @hi-ui/env@4.0.4
+  - @hi-ui/func-utils@4.0.4
+  - @hi-ui/tree-utils@4.1.4
+  - @hi-ui/type-assertion@4.0.4
+
 ## 4.1.3
 
 ### Patch Changes

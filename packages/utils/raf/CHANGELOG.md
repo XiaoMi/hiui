@@ -1,5 +1,11 @@
 # @hi-ui/raf
 
+## 4.0.5
+
+### Patch Changes
+
+- build: rollup2 构建
+
 ## 4.0.4
 
 ### Patch Changes

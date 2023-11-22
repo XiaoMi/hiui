@@ -1,5 +1,11 @@
 # @hi-ui/tree-utils
 
+## 4.1.4
+
+### Patch Changes
+
+- build: rollup2 构建
+
 ## 4.1.3
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @hi-ui/use-resize-observer
 
+## 4.0.4
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/use-latest@4.0.4
+  - @hi-ui/use-unmount-effect@4.0.4
+
 ## 4.0.3
 
 ### Patch Changes

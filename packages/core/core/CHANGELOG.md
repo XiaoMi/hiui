@@ -1,5 +1,14 @@
 # @hi-ui/core
 
+## 4.0.8
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core-css@4.1.5
+  - @hi-ui/locale-context@4.0.8
+
 ## 4.0.7
 
 ### Patch Changes

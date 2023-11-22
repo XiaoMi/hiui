@@ -1,5 +1,20 @@
 # @hi-ui/back-top
 
+## 4.0.7
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+  - @hi-ui/use-did-mount@4.0.4
+  - @hi-ui/use-latest@4.0.4
+  - @hi-ui/use-scroll@4.0.5
+  - @hi-ui/icons@4.0.18
+  - @hi-ui/tooltip@4.0.10
+  - @hi-ui/classname@4.0.4
+  - @hi-ui/env@4.0.4
+
 ## 4.0.6
 
 ### Patch Changes

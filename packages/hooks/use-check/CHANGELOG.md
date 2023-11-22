@@ -1,5 +1,15 @@
 # @hi-ui/use-check
 
+## 4.0.5
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/use-latest@4.0.4
+  - @hi-ui/use-uncontrolled-state@4.0.4
+  - @hi-ui/tree-utils@4.1.4
+
 ## 4.0.4
 
 ### Patch Changes

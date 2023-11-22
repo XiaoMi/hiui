@@ -1,5 +1,11 @@
 # @hi-ui/core-css
 
+## 4.1.5
+
+### Patch Changes
+
+- build: rollup2 构建
+
 ## 4.1.4
 
 ### Patch Changes

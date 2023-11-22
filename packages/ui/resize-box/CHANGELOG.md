@@ -1,5 +1,17 @@
 # @hi-ui/resize-box
 
+## 4.0.2
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+  - @hi-ui/use-merge-refs@4.0.4
+  - @hi-ui/use-uncontrolled-state@4.0.4
+  - @hi-ui/classname@4.0.4
+  - @hi-ui/env@4.0.4
+
 ## 4.0.1
 
 ### Patch Changes

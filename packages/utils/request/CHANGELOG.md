@@ -1,5 +1,11 @@
 # @hi-ui/request
 
+## 4.1.3
+
+### Patch Changes
+
+- build: rollup2 构建
+
 ## 4.1.2
 
 ### Patch Changes

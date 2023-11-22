@@ -1,5 +1,19 @@
 # @hi-ui/time-picker
 
+## 4.0.13
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+  - @hi-ui/use-uncontrolled-state@4.0.4
+  - @hi-ui/icons@4.0.18
+  - @hi-ui/button@4.0.9
+  - @hi-ui/popper@4.1.3
+  - @hi-ui/classname@4.0.4
+  - @hi-ui/env@4.0.4
+
 ## 4.0.12
 
 ### Patch Changes

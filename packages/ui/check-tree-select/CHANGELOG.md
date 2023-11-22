@@ -1,5 +1,31 @@
 # @hi-ui/check-tree-select
 
+## 4.3.3
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+  - @hi-ui/use-check@4.0.5
+  - @hi-ui/use-data-source@4.0.4
+  - @hi-ui/use-search-mode@4.1.4
+  - @hi-ui/use-toggle@4.0.4
+  - @hi-ui/use-uncontrolled-state@4.0.4
+  - @hi-ui/icons@4.0.18
+  - @hi-ui/checkbox@4.0.8
+  - @hi-ui/highlighter@4.0.8
+  - @hi-ui/picker@4.1.4
+  - @hi-ui/popper@4.1.3
+  - @hi-ui/tag-input@4.0.10
+  - @hi-ui/tree@4.5.8
+  - @hi-ui/array-utils@4.0.4
+  - @hi-ui/classname@4.0.4
+  - @hi-ui/env@4.0.4
+  - @hi-ui/func-utils@4.0.4
+  - @hi-ui/tree-utils@4.1.4
+  - @hi-ui/type-assertion@4.0.4
+
 ## 4.3.2
 
 ### Patch Changes

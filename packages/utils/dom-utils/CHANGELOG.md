@@ -1,5 +1,13 @@
 # @hi-ui/dom-utils
 
+## 4.0.7
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/env@4.0.4
+
 ## 4.0.6
 
 ### Patch Changes

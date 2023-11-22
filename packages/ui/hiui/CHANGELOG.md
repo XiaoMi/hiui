@@ -1,5 +1,80 @@
 # @hi-ui/hiui
 
+## 4.4.2
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+  - @hi-ui/alert@4.1.3
+  - @hi-ui/anchor@4.0.8
+  - @hi-ui/avatar@4.0.7
+  - @hi-ui/back-top@4.0.7
+  - @hi-ui/badge@4.0.9
+  - @hi-ui/breadcrumb@4.0.7
+  - @hi-ui/button@4.0.9
+  - @hi-ui/card@4.0.8
+  - @hi-ui/carousel@4.0.7
+  - @hi-ui/cascader@4.1.5
+  - @hi-ui/check-cascader@4.2.5
+  - @hi-ui/check-select@4.3.5
+  - @hi-ui/check-tree-select@4.3.3
+  - @hi-ui/checkbox@4.0.8
+  - @hi-ui/collapse@4.1.5
+  - @hi-ui/counter@4.1.8
+  - @hi-ui/date-picker@4.4.4
+  - @hi-ui/descriptions@4.2.4
+  - @hi-ui/drawer@4.1.3
+  - @hi-ui/dropdown@4.1.4
+  - @hi-ui/ellipsis-tooltip@4.1.5
+  - @hi-ui/empty-state@4.0.7
+  - @hi-ui/filter@4.1.4
+  - @hi-ui/form@4.1.5
+  - @hi-ui/grid@4.0.8
+  - @hi-ui/highlighter@4.0.8
+  - @hi-ui/input@4.0.13
+  - @hi-ui/input-group@4.0.6
+  - @hi-ui/list@4.0.12
+  - @hi-ui/loading@4.1.3
+  - @hi-ui/menu@4.1.6
+  - @hi-ui/message@4.0.7
+  - @hi-ui/modal@4.0.15
+  - @hi-ui/notification@4.1.3
+  - @hi-ui/number-input@4.1.7
+  - @hi-ui/pagination@4.0.14
+  - @hi-ui/picker@4.1.4
+  - @hi-ui/pop-confirm@4.2.3
+  - @hi-ui/popover@4.0.8
+  - @hi-ui/preview@4.0.8
+  - @hi-ui/progress@4.0.9
+  - @hi-ui/provider@4.0.8
+  - @hi-ui/radio@4.1.3
+  - @hi-ui/rating@4.0.8
+  - @hi-ui/result@4.0.7
+  - @hi-ui/scrollbar@4.0.6
+  - @hi-ui/search@4.0.11
+  - @hi-ui/select@4.2.5
+  - @hi-ui/slider@4.0.10
+  - @hi-ui/space@4.0.9
+  - @hi-ui/spinner@4.0.8
+  - @hi-ui/stepper@4.0.7
+  - @hi-ui/svg-icon@4.0.7
+  - @hi-ui/switch@4.0.10
+  - @hi-ui/table@4.3.4
+  - @hi-ui/tabs@4.1.4
+  - @hi-ui/tag@4.1.3
+  - @hi-ui/textarea@4.1.6
+  - @hi-ui/time-picker@4.0.13
+  - @hi-ui/timeline@4.0.7
+  - @hi-ui/tooltip@4.0.10
+  - @hi-ui/transfer@4.0.13
+  - @hi-ui/tree@4.5.8
+  - @hi-ui/tree-select@4.1.3
+  - @hi-ui/upload@4.1.9
+  - @hi-ui/watermark@4.0.7
+  - @hi-ui/zen-mode@4.0.7
+
 ## 4.4.1
 
 ### Patch Changes
