@@ -1,5 +1,33 @@
 # @hi-ui/radio
 
+## 4.1.3
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+  - @hi-ui/use-uncontrolled-state@4.0.4
+  - @hi-ui/classname@4.0.4
+  - @hi-ui/dom-utils@4.0.7
+  - @hi-ui/env@4.0.4
+  - @hi-ui/func-utils@4.0.4
+  - @hi-ui/type-assertion@4.0.4
+
+## 4.1.2
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/use-uncontrolled-state@4.0.3
+  - @hi-ui/classname@4.0.3
+  - @hi-ui/dom-utils@4.0.6
+  - @hi-ui/func-utils@4.0.3
+  - @hi-ui/type-assertion@4.0.3
+
 ## 4.1.1
 
 ### Patch Changes

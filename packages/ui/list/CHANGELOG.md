@@ -1,5 +1,29 @@
 # @hi-ui/list
 
+## 4.0.12
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+  - @hi-ui/empty-state@4.0.7
+  - @hi-ui/pagination@4.0.14
+  - @hi-ui/classname@4.0.4
+  - @hi-ui/env@4.0.4
+
+## 4.0.11
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/empty-state@4.0.6
+  - @hi-ui/pagination@4.0.13
+  - @hi-ui/classname@4.0.3
+
 ## 4.0.10
 
 ### Patch Changes

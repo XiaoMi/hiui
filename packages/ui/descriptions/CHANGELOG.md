@@ -1,5 +1,27 @@
 # @hi-ui/descriptions
 
+## 4.2.4
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+  - @hi-ui/classname@4.0.4
+  - @hi-ui/env@4.0.4
+  - @hi-ui/type-assertion@4.0.4
+
+## 4.2.3
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/classname@4.0.3
+  - @hi-ui/type-assertion@4.0.3
+
 ## 4.2.2
 
 ### Patch Changes

@@ -1,5 +1,49 @@
 # @hi-ui/menu
 
+## 4.1.6
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+  - @hi-ui/use-id@4.0.4
+  - @hi-ui/use-merge-refs@4.0.4
+  - @hi-ui/use-resize-observer@4.0.4
+  - @hi-ui/use-toggle@4.0.4
+  - @hi-ui/use-uncontrolled-state@4.0.4
+  - @hi-ui/icons@4.0.18
+  - @hi-ui/popper@4.1.3
+  - @hi-ui/tooltip@4.0.10
+  - @hi-ui/array-utils@4.0.4
+  - @hi-ui/classname@4.0.4
+  - @hi-ui/env@4.0.4
+  - @hi-ui/times@4.0.4
+  - @hi-ui/tree-utils@4.1.4
+  - @hi-ui/type-assertion@4.0.4
+
+## 4.1.5
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/env@4.0.3
+  - @hi-ui/core@4.0.7
+  - @hi-ui/use-id@4.0.3
+  - @hi-ui/use-merge-refs@4.0.3
+  - @hi-ui/use-resize-observer@4.0.3
+  - @hi-ui/use-toggle@4.0.3
+  - @hi-ui/use-uncontrolled-state@4.0.3
+  - @hi-ui/icons@4.0.17
+  - @hi-ui/popper@4.1.2
+  - @hi-ui/tooltip@4.0.9
+  - @hi-ui/array-utils@4.0.3
+  - @hi-ui/classname@4.0.3
+  - @hi-ui/times@4.0.3
+  - @hi-ui/tree-utils@4.1.3
+  - @hi-ui/type-assertion@4.0.3
+
 ## 4.1.4
 
 ### Patch Changes

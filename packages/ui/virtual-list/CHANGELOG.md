@@ -1,5 +1,21 @@
 # @hi-ui/virtual-list
 
+## 4.0.7
+
+### Patch Changes
+
+- build: rollup2 构建
+- Updated dependencies
+  - @hi-ui/core@4.0.8
+
+## 4.0.6
+
+### Patch Changes
+
+- fix: 修复 rollup3 打包 cjs 模块问题
+- Updated dependencies
+  - @hi-ui/core@4.0.7
+
 ## 4.0.5
 
 ### Patch Changes
