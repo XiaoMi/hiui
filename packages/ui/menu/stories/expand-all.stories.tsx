@@ -39,7 +39,6 @@ export const DefaultExpandAll = () => {
                     {
                       title: '小米8',
                       id: 'xiaomi8',
-                      disabled: true,
                     },
                     {
                       title: '小米7',
@@ -53,7 +52,6 @@ export const DefaultExpandAll = () => {
                 },
                 {
                   title: '小米note',
-                  disabled: true,
                   id: 'xiaominote',
 
                   children: [

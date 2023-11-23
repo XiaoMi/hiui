@@ -82,7 +82,6 @@ $disabled-color: use-color('gray', 400) !default;
       height: 40px;
       display: flex;
       align-items: center;
-      margin-bottom: use-spacing(4);
       padding: 0 use-spacing(4) 0 use-spacing(6);
       border-radius: use-border-radius('normal');
 
@@ -267,6 +266,14 @@ $disabled-color: use-color('gray', 400) !default;
     .#{$prefix}__wrapper {
       flex: 1;
       overflow: auto;
+
+      > .#{$prefix}-item {
+        &:last-child {
+          .#{$prefix}-item__inner {
+            margin-bottom: 0;
+          }
+        }
+      }
     }
 
     &.#{$prefix}--mini {
@@ -283,14 +290,15 @@ $disabled-color: use-color('gray', 400) !default;
     }
 
     .#{$prefix}__toggle {
-      width: 40px;
+      width: use-height-size(10);
+      height: use-height-size(10);
+      margin-top: use-spacing(4);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: use-border-radius('normal');
       color: use-color('gray', 500);
-      height: 40px;
       flex-shrink: 0;
 
       // @animation
@@ -346,31 +354,31 @@ $disabled-color: use-color('gray', 400) !default;
         @include menu-item-disabled;
       }
     }
-  }
 
-  &--size-lg {
-    .#{$prefix}-item {
-      &__inner {
-        height: use-height-size(10);
-        margin-bottom: use-spacing(4);
+    &.#{$prefix}--size-lg {
+      .#{$prefix}-item {
+        &__inner {
+          height: use-height-size(10);
+          margin-bottom: use-spacing(4);
+        }
       }
     }
-  }
 
-  &--size-md {
-    .#{$prefix}-item {
-      &__inner {
-        height: use-height-size(9);
-        margin-bottom: use-spacing(2);
+    &.#{$prefix}--size-md {
+      .#{$prefix}-item {
+        &__inner {
+          height: use-height-size(9);
+          margin-bottom: use-spacing(2);
+        }
       }
     }
-  }
 
-  &--size-sm {
-    .#{$prefix}-item {
-      &__inner {
-        height: use-height-size(8);
-        margin-bottom: use-spacing(1);
+    &.#{$prefix}--size-sm {
+      .#{$prefix}-item {
+        &__inner {
+          height: use-height-size(8);
+          margin-bottom: use-spacing(1);
+        }
       }
     }
   }
