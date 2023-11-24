@@ -18,6 +18,7 @@ export type PopperOverlayProps = Pick<
   | 'disabledPortal'
   | 'arrow'
   | 'onOutsideClick'
+  | 'closeOnOutsideClick'
 >
 
 const omitProps = [
