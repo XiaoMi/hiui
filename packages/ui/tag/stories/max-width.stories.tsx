@@ -14,7 +14,8 @@ export const MaxWidth = () => {
       <h1>Tag MaxWidth</h1>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         <Tag maxWidth={240}>max 240px (placeholder1 placeholder2 placeholder3 placeholder4)</Tag>
-        <Tag maxWidth={240} closeable>
+        {/* Tooltip 禁用 portal */}
+        <Tag maxWidth={240} closeable tooltipProps={{ disabledPortal: true }}>
           max 240px (placeholder1 placeholder2 placeholder3 placeholder4)
         </Tag>
         <Tag maxWidth={180} editable onEdit={setMaxEditableValue}>
