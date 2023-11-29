@@ -7,6 +7,7 @@ export * from './trigger.stories'
 export * from './placement.stories'
 export * from './controlled.stories'
 export * from './gutter-gap.stories'
+export * from './content.stories'
 export * from './with-api.stories'
 
 export default {

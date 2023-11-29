@@ -1,4 +1,4 @@
-import React, { createRef, createElement } from 'react'
+import { createRef, createElement } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import * as Container from '@hi-ui/container'
 import { uuid } from '@hi-ui/use-id'
@@ -7,54 +7,68 @@ import { prefix as popoverPrefix, Popover, PopoverProps } from './Popover'
 
 const prefixCls = popoverPrefix
 const selector = `.${prefixCls}-wrapper`
-const toastManagerRef = createRef<any>()
 
-const open = (target: HTMLElement, { onOpen, onClose, ...rest }: PopoverApiProps) => {
-  const selectorId = `${selector}__${uuid()}`
-  let container: any = Container.getContainer(selectorId)
-  console.log('target', target)
+const tooltipInstanceCache: {
+  [key: string]: () => void
+} = {}
+
+const open = (target: HTMLElement, { key, onClose, disabledPortal, ...rest }: PopoverApiProps) => {
+  if (!key) {
+    key = uuid()
+  }
+
+  let container: any = Container.getContainer(
+    `${selector}__${key}`,
+    undefined,
+    (disabledPortal ? target.parentNode : undefined) as Element
+  )
+
+  const popoverRef = createRef<any>()
 
   const ClonedPopover = createElement(Popover, {
     ...rest,
-    // visible: true,
-    innerRef: toastManagerRef,
+    innerRef: popoverRef,
     container,
     attachEl: target,
     closeOnOutsideClick: false,
     shouldWrapChildren: true,
-    // children: attachEl,
-    onOpen: () => {
-      onOpen?.()
-    },
-    onClose: () => {
-      console.log('close', toastManagerRef.current)
-
-      onClose?.()
-
-      setTimeout(() => {
-        if (container) {
-          unmountComponentAtNode(container as Element)
-          container = null
-        }
+    placement: 'bottom-end',
+    onExited: () => {
+      // 卸载
+      if (container) {
+        unmountComponentAtNode(container)
         Container.removeContainer(selector)
-      }, 300)
+      }
+      container = undefined
     },
   })
 
   requestAnimationFrame(() => {
     render(ClonedPopover, container)
-    toastManagerRef.current.open()
+    popoverRef.current.open()
   })
+
+  const close = () => {
+    popoverRef.current?.close()
+  }
+
+  if (key) {
+    tooltipInstanceCache[key] = close
+  }
+
+  return key
 }
 
-const close = () => {
-  console.log('close.')
+const close = (key: string) => {
+  if (typeof tooltipInstanceCache[key] === 'function') {
+    tooltipInstanceCache[key]()
+  }
 
-  toastManagerRef.current.close()
+  delete tooltipInstanceCache[key]
 }
 
 export interface PopoverApiProps extends PopoverProps {}
 
-export function withModal(instance: typeof Popover) {
+export function withPopover(instance: typeof Popover) {
   return Object.assign(instance, { open, close })
 }

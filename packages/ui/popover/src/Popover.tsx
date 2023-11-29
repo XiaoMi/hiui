@@ -30,17 +30,22 @@ export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
       shouldWrapChildren = false,
       autoWrapChildren = true,
       wrapTagName = 'span',
+      showTitleDivider = false,
       ...rest
     },
     ref
   ) => {
-    const { rootProps, getTriggerProps, getPopperProps, getOverlayProps } = usePopover(rest)
-    const popperProps = getPopperProps()
-    console.log('popperProps', popperProps)
+    const {
+      rootProps,
+      getTriggerProps,
+      getPopperProps,
+      getOverlayProps,
+      visibleAction,
+    } = usePopover(rest)
 
     useImperativeHandle(innerRef, () => ({
-      open: () => popperProps.onOpen(),
-      close: () => popperProps.onClose(),
+      open: visibleAction.on,
+      close: visibleAction.off,
     }))
 
     const triggerMemo = useMemo(() => {
@@ -72,17 +77,16 @@ export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
           }
         }
       }
-      console.log('trigger', trigger)
 
       return trigger
     }, [children, getTriggerProps, autoWrapChildren, shouldWrapChildren, wrapTagName])
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, showTitleDivider && `${prefixCls}--divided`, className)
 
     return (
       <>
-        {/* {triggerMemo} */}
-        <Popper {...popperProps} autoFocus={false}>
+        {triggerMemo}
+        <Popper {...getPopperProps()} {...getOverlayProps()} autoFocus={false}>
           <div ref={ref} className={cls} {...rootProps}>
             {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
             <div className={`${prefixCls}__content`}>{content}</div>
@@ -115,7 +119,14 @@ export interface PopoverProps extends HiBaseHTMLProps<'div'>, UsePopoverProps {
    * 指定包裹 children 的标签
    */
   wrapTagName?: React.ElementType<any>
+  /**
+   * 吸附的元素
+   */
   attachEl?: HTMLElement
+  /**
+   * 显示标题分割线
+   */
+  showTitleDivider?: boolean
 }
 
 if (__DEV__) {
