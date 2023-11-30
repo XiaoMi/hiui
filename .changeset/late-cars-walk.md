@@ -2,4 +2,4 @@
 "@hi-ui/popper": patch
 ---
 
-chore: PopperOverlayProps 类型增加 closeOnOutsideClick
+chore: 扩充 PopperOverlayProps 参数, 'closeOnOutsideClick' | 'onExited' | 'crossGap' | 'arrow' | 'disabledPortal' | 'zIndex'
