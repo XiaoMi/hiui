@@ -14,6 +14,8 @@ export const Content = () => {
 
   const [visible, setVisible] = React.useState<boolean>(false)
   const [loading, setLoading] = React.useState<boolean>(false)
+  const popoverVisibleRef = React.useRef<boolean>(false)
+  const [popoverVisible, setPopoverVisible] = React.useState<boolean>(false)
 
   const title = (
     <div
@@ -25,7 +27,14 @@ export const Content = () => {
       }}
     >
       <span>文字标题</span>
-      <IconButton effect icon={<CloseOutlined />} onClick={() => setVisible(false)} />
+      <IconButton
+        effect
+        icon={<CloseOutlined />}
+        onClick={() => {
+          setVisible(false)
+          popoverVisibleRef.current = false
+        }}
+      />
     </div>
   )
 
@@ -61,7 +70,14 @@ export const Content = () => {
         </Form>
       </div>
       <div style={{ textAlign: 'right' }}>
-        <Button onClick={() => setVisible(false)}>取消</Button>
+        <Button
+          onClick={() => {
+            setVisible(false)
+            popoverVisibleRef.current = false
+          }}
+        >
+          取消
+        </Button>
         <Button
           type="primary"
           loading={loading}
@@ -70,6 +86,7 @@ export const Content = () => {
             setTimeout(() => {
               setLoading(false)
               setVisible(false)
+              popoverVisibleRef.current = false
             }, 1000)
           }}
         >
@@ -94,7 +111,19 @@ export const Content = () => {
           showTitleDivider
           disabledPortal
         >
-          <Button onClick={() => setVisible(true)}>trigger</Button>
+          <Button
+            onClick={() => {
+              if (!popoverVisibleRef.current) {
+                setVisible(true)
+                popoverVisibleRef.current = true
+              } else {
+                setVisible(false)
+                popoverVisibleRef.current = false
+              }
+            }}
+          >
+            trigger
+          </Button>
         </Popover>
       </div>
     </>
