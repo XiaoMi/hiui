@@ -102,6 +102,7 @@ export const WithApi = () => {
               placement: 'bottom-start',
               showTitleDivider: true,
               disabledPortal: true,
+              zIndex: 99,
             })
           }}
         >
@@ -118,6 +119,7 @@ export const WithApi = () => {
               placement: 'bottom-start',
               showTitleDivider: true,
               disabledPortal: true,
+              zIndex: 99,
             })
           }}
         >

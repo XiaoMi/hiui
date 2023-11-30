@@ -8,17 +8,18 @@ import { prefix as popoverPrefix, Popover, PopoverProps } from './Popover'
 const prefixCls = popoverPrefix
 const selector = `.${prefixCls}-wrapper`
 
-const tooltipInstanceCache: {
+const popoverInstanceCache: {
   [key: string]: () => void
 } = {}
 
-const open = (target: HTMLElement, { key, onClose, disabledPortal, ...rest }: PopoverApiProps) => {
+const open = (target: HTMLElement, { key, disabledPortal, ...rest }: PopoverApiProps) => {
   if (!key) {
     key = uuid()
   }
 
+  const selectId = `${selector}__${key}`
   let container: any = Container.getContainer(
-    `${selector}__${key}`,
+    selectId,
     undefined,
     (disabledPortal ? target.parentNode : undefined) as Element
   )
@@ -26,21 +27,20 @@ const open = (target: HTMLElement, { key, onClose, disabledPortal, ...rest }: Po
   const popoverRef = createRef<any>()
 
   const ClonedPopover = createElement(Popover, {
-    ...rest,
     innerRef: popoverRef,
     container,
     attachEl: target,
     closeOnOutsideClick: false,
     shouldWrapChildren: true,
-    placement: 'bottom-end',
     onExited: () => {
       // 卸载
       if (container) {
         unmountComponentAtNode(container)
-        Container.removeContainer(selector)
+        Container.removeContainer(selectId)
       }
       container = undefined
     },
+    ...rest,
   })
 
   requestAnimationFrame(() => {
@@ -53,18 +53,18 @@ const open = (target: HTMLElement, { key, onClose, disabledPortal, ...rest }: Po
   }
 
   if (key) {
-    tooltipInstanceCache[key] = close
+    popoverInstanceCache[key] = close
   }
 
   return key
 }
 
 const close = (key: string) => {
-  if (typeof tooltipInstanceCache[key] === 'function') {
-    tooltipInstanceCache[key]()
+  if (typeof popoverInstanceCache[key] === 'function') {
+    popoverInstanceCache[key]()
   }
 
-  delete tooltipInstanceCache[key]
+  delete popoverInstanceCache[key]
 }
 
 export interface PopoverApiProps extends PopoverProps {}
