@@ -15,7 +15,6 @@ export const Content = () => {
   const [visible, setVisible] = React.useState<boolean>(false)
   const [loading, setLoading] = React.useState<boolean>(false)
   const popoverVisibleRef = React.useRef<boolean>(false)
-  const [popoverVisible, setPopoverVisible] = React.useState<boolean>(false)
 
   const title = (
     <div
