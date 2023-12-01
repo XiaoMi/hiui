@@ -3,6 +3,7 @@ import Rating from '../src'
 
 export * from './basic.stories'
 export * from './controlled.stories'
+export * from './size.stories'
 export * from './character.stories'
 export * from './half.stories'
 export * from './clearable.stories'
