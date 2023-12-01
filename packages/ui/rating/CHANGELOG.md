@@ -1,5 +1,11 @@
 # @hi-ui/rating
 
+## 4.0.9
+
+### Patch Changes
+
+- [#2685](https://github.com/XiaoMi/hiui/pull/2685) [`b38f209f7`](https://github.com/XiaoMi/hiui/commit/b38f209f7cbf46d7e23f1d368b064543fbaa43f2) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 svg 尺寸问题
+
 ## 4.0.8
 
 ### Patch Changes

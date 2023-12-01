@@ -1,5 +1,15 @@
 # @hi-ui/check-tree-select
 
+## 4.3.4
+
+### Patch Changes
+
+- [#2682](https://github.com/XiaoMi/hiui/pull/2682) [`41765fbed`](https://github.com/XiaoMi/hiui/commit/41765fbed0b3b9c8a574a0d7358b2d3f876162c5) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 下拉框盒模型设置为 content-box
+
+- Updated dependencies [[`ba6e0265d`](https://github.com/XiaoMi/hiui/commit/ba6e0265da07964423d3a684dd068dcf50865dbc), [`41765fbed`](https://github.com/XiaoMi/hiui/commit/41765fbed0b3b9c8a574a0d7358b2d3f876162c5)]:
+  - @hi-ui/popper@4.1.4
+  - @hi-ui/picker@4.1.5
+
 ## 4.3.3
 
 ### Patch Changes

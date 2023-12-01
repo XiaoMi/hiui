@@ -1,5 +1,16 @@
 # @hi-ui/popover
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2684](https://github.com/XiaoMi/hiui/pull/2684) [`ba6e0265d`](https://github.com/XiaoMi/hiui/commit/ba6e0265da07964423d3a684dd068dcf50865dbc) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 1.增加 showTitleDivider api,设置后会是另外一种更紧凑的具有分割线的标题布局;2.增加以 API 的方式调用组件的能力
+
+### Patch Changes
+
+- Updated dependencies [[`ba6e0265d`](https://github.com/XiaoMi/hiui/commit/ba6e0265da07964423d3a684dd068dcf50865dbc)]:
+  - @hi-ui/popper@4.1.4
+
 ## 4.0.8
 
 ### Patch Changes

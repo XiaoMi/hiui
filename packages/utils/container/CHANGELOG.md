@@ -1,5 +1,11 @@
 # @hi-ui/container
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2684](https://github.com/XiaoMi/hiui/pull/2684) [`ba6e0265d`](https://github.com/XiaoMi/hiui/commit/ba6e0265da07964423d3a684dd068dcf50865dbc) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: getContainer 方法增加 customWrapper 参数,用于自定义容器节点
+
 ## 4.0.4
 
 ### Patch Changes

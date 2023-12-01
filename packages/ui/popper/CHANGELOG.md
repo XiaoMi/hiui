@@ -1,5 +1,11 @@
 # @hi-ui/popper
 
+## 4.1.4
+
+### Patch Changes
+
+- [#2684](https://github.com/XiaoMi/hiui/pull/2684) [`ba6e0265d`](https://github.com/XiaoMi/hiui/commit/ba6e0265da07964423d3a684dd068dcf50865dbc) Thanks [@zyprepare](https://github.com/zyprepare)! - chore: 扩充 PopperOverlayProps 参数, 'closeOnOutsideClick' | 'onExited' | 'crossGap' | 'arrow' | 'disabledPortal' | 'zIndex'
+
 ## 4.1.3
 
 ### Patch Changes
