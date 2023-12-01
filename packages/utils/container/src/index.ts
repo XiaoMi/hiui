@@ -4,14 +4,17 @@
  * @param selector 以 `.` 开头的选择器类
  * @returns 容器元素
  */
-export const getContainer = (selector: string, doc = document) => {
+export const getContainer = (selector: string, doc = document, customWrapper?: Element) => {
   let rootElm = doc.querySelector(selector)
 
   if (rootElm) return rootElm
 
   rootElm = doc.createElement('div')
   rootElm.className = selector.slice(1)
-  doc.body.appendChild(rootElm)
+
+  const wrapper = customWrapper ?? doc.body
+  wrapper.appendChild(rootElm)
+
   return rootElm
 }
 

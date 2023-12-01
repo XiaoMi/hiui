@@ -9,13 +9,24 @@ $prefix: '#{$component-prefix}-popover' !default;
   padding: use-spacing(10);
   border-radius: use-border-radius('lg');
 
+  &--divided {
+    padding-top: use-spacing(7);
+  }
+
   &__title {
     box-sizing: border-box;
-    padding-bottom: use-spacing(8);
+    margin-bottom: use-spacing(8);
     color: use-color('gray', 700);
     font-size: use-text-size('lg');
     font-weight: use-text-weight('medium');
     line-height: use-text-lineheight('lg');
+
+    .#{$prefix}--divided > & {
+      padding-bottom: use-spacing(7);
+      font-size: use-text-size('normal');
+      line-height: use-text-lineheight('normal');
+      border-bottom: use-border-size('normal') use-color('gray', 200);
+    }
   }
 
   &__content {

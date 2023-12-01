@@ -18,6 +18,7 @@ export const usePopover = ({
   trigger: triggerProp = 'click',
   mouseEnterDelay = 100,
   mouseLeaveDelay = 100,
+  attachEl,
   ...restProps
 }: UsePopoverProps) => {
   // TODO: 移除 popper，使用 hook 重写
@@ -148,12 +149,12 @@ export const usePopover = ({
     return {
       ...popperProps,
       visible,
-      attachEl: triggerEl,
+      attachEl: attachEl ?? triggerEl,
       onClose: visibleAction.off,
     }
-  }, [visible, popper, visibleAction, triggerEl])
+  }, [popper, visible, attachEl, triggerEl, visibleAction.off])
 
-  return { rootProps: rest, getOverlayProps, getTriggerProps, getPopperProps }
+  return { rootProps: rest, getOverlayProps, getTriggerProps, getPopperProps, visibleAction }
 }
 
 export interface UsePopoverProps extends PopperOverlayProps {
@@ -185,6 +186,10 @@ export interface UsePopoverProps extends PopperOverlayProps {
    * 设置基于 reference 元素的间隙偏移量
    */
   gutterGap?: number
+  /**
+   * 吸附的元素
+   */
+  attachEl?: HTMLElement
 }
 
 export type UsePopoverReturn = ReturnType<typeof usePopover>

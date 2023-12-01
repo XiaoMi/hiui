@@ -1,4 +1,10 @@
-import React, { cloneElement, isValidElement, forwardRef, useMemo } from 'react'
+import React, {
+  cloneElement,
+  isValidElement,
+  forwardRef,
+  useMemo,
+  useImperativeHandle,
+} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
@@ -7,7 +13,7 @@ import { usePopover, UsePopoverProps } from './use-popover'
 import { isString } from '@hi-ui/type-assertion'
 
 const _role = 'popover'
-const _prefix = getPrefixCls(_role)
+export const prefix = getPrefixCls(_role)
 
 /**
  * 气泡卡片
@@ -15,7 +21,8 @@ const _prefix = getPrefixCls(_role)
 export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls = prefix,
+      innerRef,
       className,
       children,
       title,
@@ -23,11 +30,23 @@ export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
       shouldWrapChildren = false,
       autoWrapChildren = true,
       wrapTagName = 'span',
+      showTitleDivider = false,
       ...rest
     },
     ref
   ) => {
-    const { rootProps, getTriggerProps, getPopperProps, getOverlayProps } = usePopover(rest)
+    const {
+      rootProps,
+      getTriggerProps,
+      getPopperProps,
+      getOverlayProps,
+      visibleAction,
+    } = usePopover(rest)
+
+    useImperativeHandle(innerRef, () => ({
+      open: visibleAction.on,
+      close: visibleAction.off,
+    }))
 
     const triggerMemo = useMemo(() => {
       let trigger: React.ReactElement | null | undefined
@@ -62,7 +81,7 @@ export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
       return trigger
     }, [children, getTriggerProps, autoWrapChildren, shouldWrapChildren, wrapTagName])
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, showTitleDivider && `${prefixCls}--divided`, className)
 
     return (
       <>
@@ -79,6 +98,7 @@ export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
 )
 
 export interface PopoverProps extends HiBaseHTMLProps<'div'>, UsePopoverProps {
+  innerRef?: React.Ref<{ open: () => void; close: () => void }>
   /**
    * 气泡卡片标题
    */
@@ -99,6 +119,14 @@ export interface PopoverProps extends HiBaseHTMLProps<'div'>, UsePopoverProps {
    * 指定包裹 children 的标签
    */
   wrapTagName?: React.ElementType<any>
+  /**
+   * 吸附的元素
+   */
+  attachEl?: HTMLElement
+  /**
+   * 显示标题分割线
+   */
+  showTitleDivider?: boolean
 }
 
 if (__DEV__) {
