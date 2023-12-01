@@ -26,7 +26,7 @@ export const FooterRender = () => {
                 }}
               >
                 {collapseNode}
-                {collapsed ? null : <div style={{ paddingRight: 10 }}>我是谁</div>}
+                {collapsed ? null : <div style={{ margin: '8px 8px 0 0' }}>我是谁</div>}
               </div>
             )
           }}
@@ -52,7 +52,6 @@ export const FooterRender = () => {
                     {
                       title: '小米8',
                       id: 'xiaomi8',
-                      disabled: true,
                     },
                     {
                       title: '小米7',
@@ -66,7 +65,6 @@ export const FooterRender = () => {
                 },
                 {
                   title: '小米note',
-                  disabled: true,
                   id: 'xiaominote',
                   children: [
                     {

@@ -44,7 +44,6 @@ export const Size = () => {
                 },
                 {
                   title: '小米note',
-                  disabled: true,
                   id: 'xiaominote',
                   children: [
                     {
@@ -108,7 +107,6 @@ export const Size = () => {
                 },
                 {
                   title: '小米note',
-                  disabled: true,
                   id: 'xiaominote',
                   children: [
                     {
@@ -172,7 +170,6 @@ export const Size = () => {
                 },
                 {
                   title: '小米note',
-                  disabled: true,
                   id: 'xiaominote',
                   children: [
                     {
