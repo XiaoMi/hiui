@@ -65,6 +65,7 @@ $prefix: '#{$component-prefix}-picker' !default;
   // }
 
   &__body {
+    box-sizing: content-box;
     max-height: 260px;
     overflow-y: auto;
     padding: use-spacing(4) use-spacing(4);
