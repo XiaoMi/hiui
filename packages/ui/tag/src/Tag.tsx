@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo, useState, useEffect, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { CloseOutlined } from '@hi-ui/icons'
 import { __DEV__, invariant } from '@hi-ui/env'
-import { Tooltip } from '@hi-ui/tooltip'
+import { Tooltip, TooltipProps } from '@hi-ui/tooltip'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const _role = 'tag'
@@ -36,6 +36,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       autoEditable = false,
       maxWidth,
       render = DEFAULT_RENDER,
+      tooltipProps,
       ...rest
     },
     ref
@@ -116,6 +117,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
           ? {
               component: Tooltip,
               componentProps: {
+                ...tooltipProps,
                 title: render(children as React.ReactText),
                 trigger: 'hover',
               },
@@ -124,7 +126,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
               component: React.Fragment,
               componentProps: {},
             },
-      [isShowPopover, children, isInEdit, render]
+      [isShowPopover, isInEdit, tooltipProps, render, children]
     )
 
     if (__DEV__) {
@@ -244,6 +246,11 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    * @default 0 代表不限制宽度
    */
   maxWidth?: number
+  /**
+   * Tooltip 组件参数设置
+   * @private
+   */
+  tooltipProps?: Omit<TooltipProps, 'title'>
 }
 
 if (__DEV__) {
