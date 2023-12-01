@@ -1,5 +1,11 @@
 # @hi-ui/tag
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2683](https://github.com/XiaoMi/hiui/pull/2683) [`faa5d6e9b`](https://github.com/XiaoMi/hiui/commit/faa5d6e9b28278d0e53ff9c2c00b63909a39c8c0) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 tooltipProps 参数
+
 ## 4.1.3
 
 ### Patch Changes

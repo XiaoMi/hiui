@@ -1,5 +1,14 @@
 # @hi-ui/menu
 
+## 4.1.7
+
+### Patch Changes
+
+- [#2681](https://github.com/XiaoMi/hiui/pull/2681) [`7f8cfcce4`](https://github.com/XiaoMi/hiui/commit/7f8cfcce4080c977e84a7da627ab4d2f95f44113) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复样式问题,去掉最后一个菜单下边距
+
+- Updated dependencies [[`ba6e0265d`](https://github.com/XiaoMi/hiui/commit/ba6e0265da07964423d3a684dd068dcf50865dbc)]:
+  - @hi-ui/popper@4.1.4
+
 ## 4.1.6
 
 ### Patch Changes

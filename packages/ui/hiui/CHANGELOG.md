@@ -1,5 +1,30 @@
 # @hi-ui/hiui
 
+## 4.4.3
+
+### Patch Changes
+
+- [#2684](https://github.com/XiaoMi/hiui/pull/2684) [`ba6e0265d`](https://github.com/XiaoMi/hiui/commit/ba6e0265da07964423d3a684dd068dcf50865dbc) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(popover): 1.气泡卡片支持 API 的方式调用;2.气泡卡片增加分割线标题
+
+- [#2683](https://github.com/XiaoMi/hiui/pull/2683) [`faa5d6e9b`](https://github.com/XiaoMi/hiui/commit/faa5d6e9b28278d0e53ff9c2c00b63909a39c8c0) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(tag): 增加 tooltipProps 参数
+
+- [#2682](https://github.com/XiaoMi/hiui/pull/2682) [`41765fbed`](https://github.com/XiaoMi/hiui/commit/41765fbed0b3b9c8a574a0d7358b2d3f876162c5) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(picker): 下拉框盒模型设置为 content-box
+
+- [#2685](https://github.com/XiaoMi/hiui/pull/2685) [`b38f209f7`](https://github.com/XiaoMi/hiui/commit/b38f209f7cbf46d7e23f1d368b064543fbaa43f2) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(rating): 修复 svg 尺寸问题
+
+- [#2681](https://github.com/XiaoMi/hiui/pull/2681) [`7f8cfcce4`](https://github.com/XiaoMi/hiui/commit/7f8cfcce4080c977e84a7da627ab4d2f95f44113) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(menu): 修复样式问题,去掉最后一个菜单下边距
+
+- Updated dependencies [[`7f8cfcce4`](https://github.com/XiaoMi/hiui/commit/7f8cfcce4080c977e84a7da627ab4d2f95f44113), [`faa5d6e9b`](https://github.com/XiaoMi/hiui/commit/faa5d6e9b28278d0e53ff9c2c00b63909a39c8c0), [`41765fbed`](https://github.com/XiaoMi/hiui/commit/41765fbed0b3b9c8a574a0d7358b2d3f876162c5), [`ba6e0265d`](https://github.com/XiaoMi/hiui/commit/ba6e0265da07964423d3a684dd068dcf50865dbc), [`b38f209f7`](https://github.com/XiaoMi/hiui/commit/b38f209f7cbf46d7e23f1d368b064543fbaa43f2)]:
+  - @hi-ui/menu@4.1.7
+  - @hi-ui/tag@4.2.0
+  - @hi-ui/picker@4.1.5
+  - @hi-ui/check-select@4.3.6
+  - @hi-ui/check-tree-select@4.3.4
+  - @hi-ui/select@4.2.6
+  - @hi-ui/tree-select@4.1.4
+  - @hi-ui/popover@4.1.0
+  - @hi-ui/rating@4.0.9
+
 ## 4.4.2
 
 ### Patch Changes
