@@ -347,7 +347,13 @@ export const Scrollbar = () => {
     <>
       <h1>Scrollbar for Table</h1>
       <div className="table-scrollbar__wrap" style={{ minWidth: 660, background: '#fff' }}>
-        <Table columns={column} data={data} maxHeight={300} scrollbar={{ keepVisible: true }} />
+        <Table
+          fixedToColumn={{ left: 'type', right: 'address' }}
+          columns={column}
+          data={data}
+          maxHeight={300}
+          scrollbar={{ keepVisible: true, zIndex: 9 }}
+        />
       </div>
     </>
   )

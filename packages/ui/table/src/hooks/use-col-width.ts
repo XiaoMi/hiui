@@ -15,6 +15,8 @@ export const useColWidth = ({
   virtual?: boolean
 }) => {
   const measureRowElementRef = React.useRef<HTMLTableRowElement | null>(null)
+  // 是否重新设置过表格每列宽度
+  const hasResetWidths = React.useRef<boolean>(false)
   const [colWidths, setColWidths] = React.useState(() => {
     return getGroupItemWidth(columns)
   })
@@ -49,7 +51,7 @@ export const useColWidth = ({
 
   useUpdateEffect(() => {
     if (virtual) {
-      // 虚拟滚动的计算需要根据容器来做分配，不能使用没有witdh默认设置为0的方式来做表格平均分配
+      // 虚拟滚动的计算需要根据容器来做分配，不能使用没有width默认设置为0的方式来做表格平均分配
       setColWidths(getVirtualWidths())
     }
   }, [getVirtualWidths, virtual])
@@ -70,18 +72,47 @@ export const useColWidth = ({
       const resizeObserver = new ResizeObserver(() => {
         if (virtual) {
           setColWidths(getVirtualWidths())
-        }
-        // else {
-        //   if (measureRowElement.childNodes) {
-        //     const _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node) => {
-        //       return (node as HTMLElement).getBoundingClientRect().width || 0
-        //     })
+        } else {
+          // 当第一行有内容时并且没有重新设置列宽时，在去设置列宽
+          // todo 临时方案：hasResetWidths.current 作用是防止某些浏览器下，下面逻辑死循环
+          if (measureRowElement?.childNodes && hasResetWidths.current === false) {
+            hasResetWidths.current = true
 
-        //     if (_realColumnsWidth.some((width) => width && width > 0)) {
-        //       setColWidths(_realColumnsWidth)
-        //     }
-        //   }
-        // }
+            // 超出的宽度，真实的表格宽度超出的每列总和的宽度
+            let exceedWidth = 0
+
+            const _realColumnsWidth = Array.from(measureRowElement.childNodes).map(
+              (node, index) => {
+                const realWidth = (node as HTMLElement).getBoundingClientRect().width || 0
+                const { width, fixed } = columns[index] ?? {}
+
+                // 如果该列设置了 fixed 并且真实宽度大于设置的 width 则设置为 width
+                if (fixed && width && width < realWidth) {
+                  exceedWidth += realWidth - width
+                  return width
+                }
+
+                return realWidth
+              }
+            )
+
+            // 如果有多余的宽度，则将多余的宽度平分到没有设置 maxWidth 的列上
+            if (exceedWidth > 0) {
+              const noFixedColumns = columns.filter((item) => !item.fixed)
+
+              _realColumnsWidth.map((item, index) => {
+                if (!columns[index].fixed) {
+                  return item + Math.floor(exceedWidth / noFixedColumns.length)
+                }
+                return item
+              })
+            }
+
+            if (_realColumnsWidth.some((width) => width && width > 0)) {
+              setColWidths(_realColumnsWidth)
+            }
+          }
+        }
       })
 
       resizeObserver.observe(measureRowElement)
@@ -93,7 +124,7 @@ export const useColWidth = ({
       }
     }
     // 测量元素在内容列为空时会是空，切换会使测量元素变化，导致后续的resize时间无法响应,此处测量元素变化时需要重新绑定
-  }, [getVirtualWidths, virtual])
+  }, [columns, getVirtualWidths, virtual])
 
   const [headerTableElement, setHeaderTableElement] = React.useState<HTMLTableRowElement | null>(
     null

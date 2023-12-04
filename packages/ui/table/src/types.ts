@@ -117,6 +117,10 @@ export type TableColumnItem = {
    */
   width?: number
   /**
+   * 是否固定列宽，使用场景：设置 width 后，当所有列宽总和小于表格宽度时，多的宽度会分摊到每一列上，设置 fixed 后该列不会参与多余宽度均分。
+   */
+  fixed?: boolean
+  /**
    * 列对齐方式
    */
   align?: TableColumnItemAlignEnum
