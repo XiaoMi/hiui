@@ -26,6 +26,7 @@ export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
       className,
       children,
       style,
+      zIndex,
       innerRef,
       ...rest
     },
@@ -43,8 +44,11 @@ export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
     useEffect(() => {
       if (containerElement) {
         setPs(new PerfectScrollbar(containerElement))
+
+        // 动态设置滚动条 z-index
+        zIndex && containerElement.style.setProperty('--scrollbar-zIndex', String(zIndex))
       }
-    }, [containerElement])
+    }, [containerElement, zIndex])
 
     // 轴定制
     useEffect(() => {
@@ -148,6 +152,11 @@ export interface ScrollbarProps extends HiBaseHTMLProps<'div'>, ScrollbarEventPr
    * @default 'relative'
    */
   position?: ScrollbarPositionEnum
+  /**
+   * 设置滚动条 z-index
+   * @default 'auto'
+   */
+  zIndex?: number | string
   /**
    * 开启滚动的轴
    * @default 'both'
