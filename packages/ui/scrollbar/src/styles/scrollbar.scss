@@ -4,6 +4,8 @@
 $prefix: '#{$component-prefix}-scrollbar' !default;
 
 .#{$prefix} {
+  --scrollbar-zIndex: 'auto';
+
   overflow: hidden;
   width: 100%;
   height: 100%;
@@ -93,5 +95,10 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
     &:not(.ps--scrolling-x) > .ps__rail-x:not(:hover):not(:focus) {
       opacity: 0;
     }
+  }
+
+  > .ps__thumb-y,
+  > .ps__thumb-x {
+    z-index: var(--scrollbar-zIndex);
   }
 }
