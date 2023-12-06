@@ -15,6 +15,9 @@ export const RowClassName = () => {
           background: #e5feeb;
         }
         .table-row--price-warning .hi-v4-table-cell {
+          background: #fefae0;
+        }
+        .hi-v4-table-row .table-cell--stock-danger {
           background: #fee9e5;
         }
       `)
@@ -29,10 +32,16 @@ export const RowClassName = () => {
         <Table
           rowClassName={(record, index) => {
             const { price } = record.raw
-            if (price > 3000) {
+            if (price > 2000) {
               return 'table-row--price-warning'
             }
             return 'table-row--price-normal'
+          }}
+          cellClassName={(record, column, index) => {
+            if (column.raw.dataKey === 'stock' && record.raw.stock <= 10000) {
+              return 'table-cell--stock-danger'
+            }
+            return ''
           }}
           columns={[
             {
@@ -71,7 +80,7 @@ export const RowClassName = () => {
               size: '6G+64G',
               price: '3299.00',
               address: '华润五彩城店',
-              stock: '29,000',
+              stock: '29000',
               key: 1,
             },
             {
@@ -80,7 +89,7 @@ export const RowClassName = () => {
               size: '6G+64G 幻彩蓝',
               price: '1999.00',
               address: '清河店',
-              stock: '10,000',
+              stock: '10000',
               key: 2,
             },
             {
@@ -89,7 +98,7 @@ export const RowClassName = () => {
               size: '6G+64G 幻彩蓝',
               price: '2599.00',
               address: '双安店',
-              stock: '12,000',
+              stock: '12000',
               key: 3,
             },
             {
@@ -98,7 +107,7 @@ export const RowClassName = () => {
               size: '6G+64G 幻彩蓝',
               price: '999.00',
               address: '华润五彩城店',
-              stock: '140,000',
+              stock: '140000',
               key: 4,
             },
             {
@@ -107,7 +116,7 @@ export const RowClassName = () => {
               size: '6G+64G 幻彩蓝',
               price: '699.00',
               address: '双安店',
-              stock: '12,000',
+              stock: '12000',
               key: 5,
             },
           ]}

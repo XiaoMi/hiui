@@ -81,6 +81,7 @@ export const useTable = ({
   virtual,
   scrollbar,
   rowClassName,
+  cellClassName,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -649,6 +650,7 @@ export const useTable = ({
     setHeaderTableElement,
     scrollbar,
     rowClassName,
+    cellClassName,
   }
 }
 
@@ -828,9 +830,17 @@ export interface UseTableProps {
    */
   scrollbar?: boolean | ScrollbarProps
   /**
-   * 设置每行类名
+   * 设置行类名
    */
   rowClassName?: (record: Record<string, any>, index: number) => string
+  /**
+   * 设置单元格类名
+   */
+  cellClassName?: (
+    record: Record<string, any>,
+    column: Record<string, any>,
+    index: number
+  ) => string
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>
