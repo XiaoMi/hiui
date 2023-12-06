@@ -20,6 +20,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
   (
     {
       prefixCls = _prefix,
+      className,
       rowData: rowDataProp,
       rowIndex,
       expandedTree,
@@ -188,7 +189,8 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       draggable && dragDirection && `${prefixCls}-row--drag-${dragDirection}`,
       isSumRow && `${prefixCls}-row--total`,
       isAvgRow && `${prefixCls}-row--avg`,
-      virtual && `${prefixCls}-row--virtual`
+      virtual && `${prefixCls}-row--virtual`,
+      className
     )
 
     const firstColumn = flattedColumnsWithoutChildren.find((item) => {
@@ -290,6 +292,10 @@ export interface TableRowProps {
    * 组件默认的选择器类
    */
   prefixCls?: string
+  /**
+   * 样式类名
+   */
+  className?: string
   /**
    * 是否为总计行
    */

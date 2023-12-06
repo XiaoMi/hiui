@@ -80,6 +80,7 @@ export const useTable = ({
   fieldKey = 'key',
   virtual,
   scrollbar,
+  rowClassName,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -647,6 +648,7 @@ export const useTable = ({
     onLoadChildren,
     setHeaderTableElement,
     scrollbar,
+    rowClassName,
   }
 }
 
@@ -825,6 +827,10 @@ export interface UseTableProps {
    * 配置滚动条，滚动条样式使用HiUI自带的滚动条风格
    */
   scrollbar?: boolean | ScrollbarProps
+  /**
+   * 设置每行类名
+   */
+  rowClassName?: (record: Record<string, any>, index: number) => string
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>

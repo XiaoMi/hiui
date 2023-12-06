@@ -16,6 +16,7 @@ export const Scrollbar = () => {
       title: '品类',
       dataKey: 'type',
       width: 80,
+      fixed: true,
     },
     {
       title: '规格',
@@ -103,6 +104,7 @@ export const Scrollbar = () => {
       title: '门店',
       dataKey: 'address',
       width: 150,
+      fixed: true,
     },
     {
       title: '库存',

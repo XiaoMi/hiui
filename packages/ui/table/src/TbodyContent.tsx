@@ -23,6 +23,7 @@ export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>
       hasSumColumn,
       sumRow,
       measureRowElementRef,
+      rowClassName,
     } = useTableContext()
 
     const getRequiredProps = useLatestCallback(
@@ -50,6 +51,7 @@ export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>
                   ref={index === 0 ? measureRowElementRef : null}
                   // key={depth + index}
                   key={row.id}
+                  className={rowClassName?.(row, index)}
                   // @ts-ignore
                   rowIndex={index}
                   rowData={row}
