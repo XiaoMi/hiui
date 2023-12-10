@@ -87,6 +87,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               [`${prefixCls}-item__inner--active`]: activeId === id,
               [`${prefixCls}-item__inner--active-p`]: activeParents?.includes(id),
               [`${prefixCls}-item__inner--expanded`]: expandedIds?.includes(id),
+              [`${prefixCls}-item__inner--hasIcon`]: icon,
             })}
             onClick={() => {
               if (isArrayNonEmpty(children)) {

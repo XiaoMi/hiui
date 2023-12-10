@@ -11,6 +11,7 @@ export * from './expand-all.stories'
 export * from './footer-render.stories'
 export * from './render.stories'
 export * from './size.stories'
+export * from './sidebar.stories'
 
 export default {
   title: 'Navigation/Menu',
