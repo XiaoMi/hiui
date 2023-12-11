@@ -24,31 +24,27 @@ export const SidebarMenu = () => {
       icon: <AppStoreOutlined />,
       children: [
         {
-          title: '菜单1',
+          title: '新品发布',
           id: '1-1',
           icon: <AppStoreOutlined />,
           children: [
             {
-              title: '子菜单1',
+              title: '新品发布',
               id: '1-1-1',
-            },
-            {
-              title: '子菜单2',
-              id: '1-1-2',
             },
           ],
         },
         {
-          title: '菜单2',
+          title: '在线反馈',
           id: '1-2',
           icon: <AppStoreOutlined />,
           children: [
             {
-              title: '子菜单1',
+              title: '在线反馈',
               id: '1-2-1',
             },
             {
-              title: '子菜单2',
+              title: '在线人员处理',
               id: '1-2-2',
             },
           ],
@@ -61,17 +57,21 @@ export const SidebarMenu = () => {
       icon: <UserOutlined />,
       children: [
         {
-          title: '菜单1',
+          title: '小米Mix',
           id: '2-1',
           icon: <AppStoreOutlined />,
           children: [
             {
-              title: '子菜单1',
+              title: '小米Mix1',
               id: '2-1-1',
             },
             {
-              title: '子菜单2',
+              title: '小米Mix2',
               id: '2-1-2',
+            },
+            {
+              title: '小米Mix3',
+              id: '2-1-3',
             },
           ],
         },

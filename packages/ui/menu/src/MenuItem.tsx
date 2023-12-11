@@ -109,7 +109,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
 
             {icon ? <span className={`${prefixCls}-item__icon`}>{icon}</span> : null}
             <span className={`${prefixCls}-item__content`}>
-              {isFunction(render) ? render({ id, icon, title }, level) : title}
+              {isFunction(render) ? render({ ...raw, id, icon, title }, level) : title}
             </span>
             {/* 垂直菜单-纵向展开 */}
             {hasChildren &&
