@@ -32,32 +32,22 @@ export const getAncestorIds = (
 export const filterTreeData = (
   treeData: MenuDataItem[],
   searchKey: string,
-  activeId: string | number,
-  level: number = 1
+  activeId: string | number
 ) => {
   if (searchKey === '') {
     return []
   }
 
-  const activeParents = getAncestorIds(activeId, treeData)
   const clonedData = cloneTree(treeData)
+  const activeParents = getAncestorIds(activeId, treeData)
   const sidebarActiveId = activeParents[activeParents.length - 1] ?? activeId
 
   // 获取当前选中的树节点
-  const currentTree = clonedData.find((d) => d.id === sidebarActiveId)
+  const currentTree = clonedData?.find((d) => d.id === sidebarActiveId)?.children ?? []
 
-  if (!currentTree) {
-    return []
-  }
-
-  const result = filterTree(currentTree?.children ?? [], (d) => {
-    return d.title.includes(searchKey)
-  })
-
-  if (level === 1) {
-    currentTree.children = result
-    return clonedData
-  } else {
-    return result
-  }
+  return (
+    filterTree(currentTree, (d) => {
+      return d.title.includes && d.title.includes(searchKey)
+    }) ?? []
+  )
 }

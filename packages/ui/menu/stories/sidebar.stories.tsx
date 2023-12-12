@@ -11,8 +11,7 @@ import {
 } from '@hi-ui/icons'
 
 /**
- * @title 基础用法
- * @desc 当导航的菜单项和层级较多时适用，可收起
+ * @title 侧边栏风格的菜单
  */
 export const SidebarMenu = () => {
   const [activeId, setActiveId] = React.useState<React.ReactText>('xiaomi1')
@@ -172,7 +171,7 @@ export const SidebarMenu = () => {
   ])
 
   const showData = React.useMemo(() => {
-    return (filterTreeData(data, searchKey, activeId, 2) ?? []) as SearchDataItem[]
+    return (filterTreeData(data, searchKey, activeId) ?? []) as SearchDataItem[]
   }, [activeId, data, searchKey])
 
   return (
@@ -196,12 +195,12 @@ export const SidebarMenu = () => {
                   prefix={<SearchOutlined />}
                   append={null}
                   placeholder="搜素"
+                  value={searchKey}
                   data={showData}
                   onInput={(e) => {
-                    // @ts-ignore
-                    setSearchKey(e.target.value)
+                    setSearchKey((e.target as HTMLInputElement).value)
                   }}
-                  onChange={setSearchKey}
+                  onSearch={(key, item) => console.log({ key, item })}
                 />
               </div>
             }

@@ -1,12 +1,4 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useState,
-  useEffect,
-  useMemo,
-  useLayoutEffect,
-  useRef,
-} from 'react'
+import React, { forwardRef, useCallback, useState, useEffect, useMemo, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { RightOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
@@ -14,7 +6,7 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { isFunction } from '@hi-ui/type-assertion'
-import { MenuDataItem, MenuFooterRenderProps } from './types'
+import { MenuDataItem } from './types'
 import { getAncestorIds } from './util'
 import { Menu } from './Menu'
 
@@ -37,11 +29,9 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
       onExpand,
       defaultActiveId = '',
       activeId: activeIdProp,
-      onClickSubMenu,
       collapsed,
       defaultCollapsed = false,
       onCollapse,
-      footerRender,
       render,
       extraHeader,
       onClick,
@@ -52,7 +42,7 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
   ) => {
     const [activeId, updateActiveId] = useUncontrolledState(defaultActiveId, activeIdProp, onClick)
     const [activeParents, updateActiveParents] = useState(() => getAncestorIds(activeId, data))
-    // 用于更新菜单
+    // 用于更新Menu组件
     const [menuKey, setMenuKey] = useState<number>(0)
     const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -70,11 +60,6 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
       const newActiveParents = getAncestorIds(activeId, data) ?? ''
       updateActiveParents(newActiveParents)
     }, [activeId, data, updateActiveId])
-
-    useLayoutEffect(() => {
-      menuWidth !== undefined &&
-        wrapperRef.current?.style.setProperty('--sidebar-menu-width', String(menuWidth))
-    }, [menuWidth])
 
     const menuDataMemo = useMemo(() => {
       const menuData = data.find((item) => item.id === sidebarActiveId)?.children ?? []
@@ -116,7 +101,7 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
 
     return (
       <div className={cls} ref={wrapperRef}>
-        <div className={`${prefixCls}`} ref={ref} role={role}>
+        <div className={cx(`${prefixCls}`, className)} ref={ref} role={role}>
           <ul className={`${prefixCls}-list`}>
             {data.map((item) => {
               return (
@@ -131,7 +116,10 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
             })}
           </ul>
         </div>
-        <div className={cx(`${prefixCls}-menu-wrapper`)}>
+        <div
+          className={cx(`${prefixCls}-menu-wrapper`)}
+          style={{ width: showMenu ? menuWidth : undefined }}
+        >
           <Menu
             key={menuKey}
             activeId={activeId}
@@ -191,17 +179,9 @@ export interface SidebarProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
    */
   onClick?: (menuId: React.ReactText, menuItem: MenuDataItem) => void
   /**
-   * 点击父菜单项时的回调
-   */
-  onClickSubMenu?: (subMenuId: React.ReactText, expandedIds: React.ReactText[]) => void
-  /**
    * 点击收缩开关时的回调
    */
   onCollapse?: (collapsed: boolean) => void
-  /**
-   * 底部渲染器
-   */
-  footerRender?: (props: MenuFooterRenderProps) => React.ReactNode
   /**
    * 自定义渲染菜单项
    */

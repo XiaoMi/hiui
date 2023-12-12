@@ -25,8 +25,8 @@ export const Data = () => {
                 title: '智能生活',
               },
             ]}
-            onSearch={(keyword) => {
-              console.log('Input Value', keyword)
+            onSearch={(keyword, item) => {
+              console.log('Input Value', keyword, item)
             }}
           />
         </div>

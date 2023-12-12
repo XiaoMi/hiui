@@ -4,8 +4,6 @@ $prefix: '#{$component-prefix}-menu' !default;
 $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
 
 .#{$sidebar-prefix}-wrapper {
-  --sidebar-menu-width: 180px;
-
   position: relative;
   display: flex;
   width: fit-content;
@@ -25,7 +23,6 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
 
   &--showMenu {
     .#{$sidebar-prefix}-menu-wrapper {
-      width: var(--sidebar-menu-width);
       border-right: 1px solid use-color('gray', 300);
     }
 

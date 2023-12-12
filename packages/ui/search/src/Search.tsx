@@ -54,11 +54,11 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
       Object.is
     )
 
-    const onSearch = useLatestCallback((nextValue: any) => {
+    const onSearch = useLatestCallback((nextValue: any, item?: SearchDataItem) => {
       if (typeof nextValue !== 'string') {
         nextValue = value
       }
-      onSearchProp?.(nextValue)
+      onSearchProp?.(nextValue, item)
     })
 
     const closeDropdown = useCallback(() => {
@@ -240,7 +240,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
             subFocusIndex={subFocusIndex}
             keyword={value}
             onSelect={(item) => {
-              onSearch(item.title)
+              onSearch(item.title, item)
               tryChangeValue(item.title)
               targetElRef.current?.focus()
               closeDropdown()
@@ -268,7 +268,7 @@ export interface SearchProps extends Omit<InputProps, 'onChange' | 'appearance'>
   /**
    * 点击搜索图标、清除图标，点击下拉选项，或聚焦按下回车键时的回调
    */
-  onSearch?: (value: string) => void
+  onSearch?: (value: string, item?: SearchDataItem) => void
   /**
    * 下拉根元素的类名称
    */

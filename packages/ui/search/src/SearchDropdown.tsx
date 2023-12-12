@@ -34,7 +34,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({
       <Loading visible={loading}>
         <div className={`${prefixCls}__dropdown`}>
           {data.map((item, index) => {
-            const isGroup = !!item.children
+            const isGroup = !!item.children && item.children.length > 0
 
             return (
               <Fragment key={item.id}>
