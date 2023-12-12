@@ -36,7 +36,6 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
       render,
       raw,
       size = 'lg',
-      ...rest
     },
     ref
   ) => {
@@ -79,7 +78,6 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             className
           )}
           style={hidden ? hiddenStyle : undefined}
-          {...rest}
         >
           <div
             className={cx(`${prefixCls}-item__inner`, {
