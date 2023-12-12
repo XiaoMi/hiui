@@ -36,7 +36,6 @@ $image-container: '#{$prefix}__image' !default;
   }
 
   &__title {
-    margin-top: 8px;
     display: block;
     color: use-color('gray', 500);
     font-size: use-text-size('normal');
