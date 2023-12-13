@@ -3,3 +3,5 @@
 ---
 
 feat: add fixed and rowClassName api
+feat: SettingDrawer 增加 extraHeader extraFooter itemRender api
+fix: 修复边框模式下样式问题

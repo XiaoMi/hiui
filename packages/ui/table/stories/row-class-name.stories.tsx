@@ -2,7 +2,8 @@ import React from 'react'
 import Table from '../src'
 
 /**
- * @title 设置表格行类名
+ * @title 设置表格行和单元格类名
+ * @desc 用于自定义行和单元格的个性化样式
  */
 export const RowClassName = () => {
   // 实际使用中可以直接将样式写在样式文件中，不必这样动态创建style标签，此处只是做示例展示

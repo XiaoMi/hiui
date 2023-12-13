@@ -1,11 +1,15 @@
 import React from 'react'
 import Button from '@hi-ui/button'
-import Table, { SettingDrawer } from '../src'
+import Search from '@hi-ui/search'
+import Checkbox from '@hi-ui/checkbox'
+import { SearchOutlined } from '@hi-ui/icons'
+import Highlighter from '@hi-ui/highlighter'
+import Table, { SettingDrawer, TableColumnItem } from '../src'
 
 /**
- * @title 设置抽屉
+ * @title 设置抽屉-自定义内容
  */
-export const TableSettingDrawer = () => {
+export const TableSettingDrawerCustom = () => {
   const [dataSource] = React.useState([
     {
       name: '小米9',
@@ -26,6 +30,7 @@ export const TableSettingDrawer = () => {
       price6: '3299.00',
       size7: '6G+64G 幻彩蓝',
       price7: '3299.00',
+
       address: '华润五彩城店',
       stock: '29,000',
       key: 1,
@@ -123,45 +128,51 @@ export const TableSettingDrawer = () => {
       key: 5,
     },
   ])
-
-  const columnsMemo = React.useMemo(() => {
-    return [
-      {
-        title: '商品名',
-        dataKey: 'name',
-        width: 150,
-      },
-      {
-        title: '品类',
-        dataKey: 'type',
-        width: 150,
-      },
-      {
-        title: '规格',
-        dataKey: 'size',
-        width: 150,
-      },
-      {
-        title: '单价',
-        dataKey: 'price',
-        width: 150,
-      },
-      {
-        title: '门店',
-        dataKey: 'address',
-        width: 150,
-      },
-      {
-        title: '库存',
-        dataKey: 'stock',
-        width: 150,
-      },
-    ]
-  }, [])
-
-  const [columns, setColumns] = React.useState(columnsMemo)
+  const [originColumns] = React.useState<TableColumnItem[]>([
+    {
+      title: '商品名',
+      dataKey: 'name',
+      width: 150,
+    },
+    {
+      title: '品类',
+      dataKey: 'type',
+      width: 150,
+    },
+    {
+      title: '规格',
+      dataKey: 'size',
+      width: 150,
+    },
+    {
+      title: '单价',
+      dataKey: 'price',
+      width: 150,
+    },
+    {
+      title: '门店',
+      dataKey: 'address',
+      width: 150,
+    },
+    {
+      title: '库存',
+      dataKey: 'stock',
+      width: 150,
+    },
+  ])
+  const [columns, setColumns] = React.useState<TableColumnItem[]>(originColumns)
+  const [disabledColumns] = React.useState<string[]>(['name', 'type'])
+  const [searchKey, setSearchKey] = React.useState<string>('')
   const [hiddenColKeys, setHiddenColKeys] = React.useState<string[]>(['price'])
+  // 用于存放临时操作后的数据，重置时会将该数据更新到 hiddenColKeys
+  const [cacheHiddenColKeys, setCacheHiddenColKeys] = React.useState<string[]>(hiddenColKeys)
   const [sortedColKeys, setSortColKeys] = React.useState<string[]>()
+  const [visible, setVisible] = React.useState<boolean>(false)
+
+  const settingColumnsMemo = React.useMemo(() => {
+    return [...originColumns]
+    // searchKey 作为依赖项，目的是搜索结果改变时重新渲染设置项，让关键字高亮
+  }, [originColumns, searchKey])
 
   const onSetColKeysChange = (sortedColKeys: string[], hiddenColKeys: string[], newColumns) => {
     console.log('onColKeysChange', { sortedColKeys, hiddenColKeys, newColumns })
@@ -171,12 +182,10 @@ export const TableSettingDrawer = () => {
     setColumns(newColumns)
   }
 
-  const [visible, setVisible] = React.useState<boolean>(false)
-
   return (
     <>
-      <h1>Setting Drawer for Table</h1>
-      <div className="table-setting-drawer__wrap" style={{ minWidth: 660 }}>
+      <h1>Setting Drawer Custom for Table</h1>
+      <div className="table-setting-drawer-custom__wrap" style={{ minWidth: 660 }}>
         <div style={{ marginBottom: '1em' }}>
           <Button onClick={() => setVisible(true)}>列设置抽屉</Button>
         </div>
@@ -185,11 +194,60 @@ export const TableSettingDrawer = () => {
           visible={visible}
           onClose={() => setVisible(false)}
           drawerProps={{ width: 400, title: '表格字段设置' }}
-          columns={columnsMemo}
-          checkDisabledColKeys={['name', 'type']}
+          columns={settingColumnsMemo}
+          checkDisabledColKeys={disabledColumns}
           hiddenColKeys={hiddenColKeys}
           sortedColKeys={sortedColKeys}
           onSetColKeysChange={onSetColKeysChange}
+          cacheHiddenColKeys={cacheHiddenColKeys}
+          onCacheHiddenColKeysChange={setCacheHiddenColKeys}
+          itemRender={(item) => {
+            return <Highlighter keyword={searchKey}>{item.title}</Highlighter>
+          }}
+          extraHeader={
+            <div style={{ marginBottom: 16 }}>
+              <Search
+                prefix={<SearchOutlined />}
+                append={null}
+                placeholder="搜素"
+                onInput={(e) => {
+                  const searchKey = (e.target as HTMLInputElement).value
+                  setSearchKey(searchKey)
+                }}
+                onSearch={(key, item) => console.log({ key, item })}
+              />
+            </div>
+          }
+          extraFooter={
+            <div>
+              <Checkbox
+                indeterminate={
+                  cacheHiddenColKeys.length > 0 &&
+                  cacheHiddenColKeys.length < settingColumnsMemo.length
+                }
+                checked={cacheHiddenColKeys.length === 0}
+                onChange={(e) => {
+                  const checked = e.target.checked
+                  if (checked) {
+                    setCacheHiddenColKeys([])
+                  } else {
+                    setCacheHiddenColKeys(
+                      settingColumnsMemo
+                        .filter(
+                          (d1) =>
+                            !disabledColumns.some((d2) => {
+                              return d2 === d1.dataKey
+                            })
+                        )
+                        .map((d) => d.dataKey ?? '')
+                    )
+                  }
+                }}
+              >
+                全选
+              </Checkbox>
+            </div>
+          }
         />
       </div>
     </>

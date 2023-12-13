@@ -6,14 +6,15 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
 import { runIfFunc } from '@hi-ui/func-utils'
 import { useDrag, useDrop } from '@hi-ui/use-drag-sorter'
+import { isFunction } from '@hi-ui/type-assertion'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { useColSorter } from './hooks/use-col-sorter'
-import { useColHidden } from './hooks/use-col-hidden'
 import { Drawer, DrawerProps } from '@hi-ui/drawer'
 import { Button } from '@hi-ui/button'
 import { Checkbox } from '@hi-ui/checkbox'
 import { useColSet } from './hooks/use-col-set'
 import { TableColumnItem } from './types'
+import { useColSorter } from './hooks/use-col-sorter'
+import { useColHidden } from './hooks/use-col-hidden'
 
 const _prefix = getPrefixCls('setting')
 
@@ -33,12 +34,23 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
       sortedColKeys: sortedColKeysPropBeforeVerify,
       onSortedColKeysChange,
       onSetColKeysChange,
+      cacheHiddenColKeys: cacheHiddenColKeysProp,
+      onCacheHiddenColKeysChange,
       checkDisabledColKeys = [],
+      extraHeader,
+      extraFooter,
+      itemRender,
       drawerProps,
     },
     ref
   ) => {
     const i18n = useLocaleContext()
+
+    const [cacheHiddenColKeys, setCacheHiddenColKeys] = useUncontrolledState<string[]>(
+      hiddenColKeysPropBeforeVerify ?? [],
+      cacheHiddenColKeysProp,
+      onCacheHiddenColKeysChange
+    )
 
     // 根据列字段合并 sortedColKeys、hiddenColKeys
     const { sortedColKeys: sortedColKeysProp, hiddenColKeys: hiddenColKeysProp } = useColSet({
@@ -55,12 +67,7 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
     })
 
     // 列隐藏
-    const {
-      hiddenColKeys,
-      setHiddenColKeys,
-      cacheHiddenColKeys,
-      setCacheHiddenColKeys,
-    } = useColHidden({
+    const { hiddenColKeys, setHiddenColKeys } = useColHidden({
       // 基于排序的 columns，隐藏的也能排序
       columns: sortedCols,
       hiddenColKeys: hiddenColKeysProp,
@@ -124,23 +131,20 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
         onClose={() => onClose?.()}
         width={304}
         footer={
-          <div className={`${prefixCls}__btn-group`}>
-            <Button key={0} className={`${prefixCls}__btn-cancel`} onClick={resetLatest}>
-              {i18n.get('table.reset')}
-            </Button>
-            <Button
-              key={1}
-              className={`${prefixCls}__btn-confirm`}
-              onClick={onConfirm}
-              type="primary"
-            >
-              {i18n.get('table.confirm')}
-            </Button>
+          <div className={`${prefixCls}-footer`}>
+            <div className={`${prefixCls}-footer__extra`}>{extraFooter}</div>
+            <div className={`${prefixCls}-footer__action`}>
+              <Button onClick={resetLatest}>{i18n.get('table.reset')}</Button>
+              <Button onClick={onConfirm} type="primary">
+                {i18n.get('table.confirm')}
+              </Button>
+            </div>
           </div>
         }
         {...drawerProps}
       >
         <div className={`${prefixCls}__content`}>
+          {extraHeader}
           {cacheSortedCols.map((col: any, index: number) => {
             return (
               <SettingItem
@@ -148,6 +152,7 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
                 prefixCls={prefixCls}
                 column={col}
                 index={index}
+                render={itemRender}
                 dropProps={dropProps}
                 cacheHiddenColKeys={cacheHiddenColKeys}
                 setCacheHiddenColKeys={setCacheHiddenColKeys}
@@ -176,6 +181,11 @@ export interface SettingDrawerProps extends HiBaseHTMLProps<'div'> {
   onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
   sortedColKeys?: string[]
   onSortedColKeysChange?: (sortedColKeys: string[]) => void
+  cacheHiddenColKeys?: string[]
+  onCacheHiddenColKeysChange?: (hiddenColKeys: string[]) => void
+  extraHeader?: React.ReactNode
+  extraFooter?: React.ReactNode
+  itemRender?: (item: TableColumnItem) => React.ReactNode
   drawerProps?: Omit<DrawerProps, 'className'>
 }
 
@@ -191,6 +201,7 @@ function SettingItem({
   dropProps,
   index,
   checkDisabled,
+  render,
 }: any) {
   const { dataKey, title } = column
   const { dragging, direction, getDragTriggerProps, getDropTriggerProps } = useDrag({
@@ -224,7 +235,7 @@ function SettingItem({
             setCacheHiddenColKeys(nextCacheHiddenColKeys)
           }}
         >
-          <span>{runIfFunc(title)}</span>
+          <span>{isFunction(render) ? render(column) : runIfFunc(title)}</span>
         </Checkbox>
         <MoveOutlined />
       </div>
