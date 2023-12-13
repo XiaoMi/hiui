@@ -114,23 +114,35 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
   &--bordered {
     table {
       thead {
-        & > tr > th {
+        & > tr > th:not(:last-child) {
           border-right: use-border-size('normal') use-color('gray', 200);
         }
       }
 
-      td {
-        border-right: use-border-size('normal') use-color('gray', 200);
+      tr {
+        &:last-child {
+          td {
+            border-bottom: none;
+          }
+        }
+
+        td:not(:last-child) {
+          border-right: use-border-size('normal') use-color('gray', 200);
+        }
       }
     }
 
-    .#{$prefix}-header {
-      border-top: use-border-size('normal') use-color('gray', 200);
+    .#{$prefix}-header, .#{$prefix}-body, .#{$prefix}-content {
       border-left: use-border-size('normal') use-color('gray', 200);
+      border-right: use-border-size('normal') use-color('gray', 200);
     }
 
-    .#{$prefix}-body {
-      border-left: use-border-size('normal') use-color('gray', 200);
+    .#{$prefix}-header, .#{$prefix}-content {
+      border-top: use-border-size('normal') use-color('gray', 200);
+    }
+
+    .#{$prefix}-body, .#{$prefix}-content {
+      border-bottom: use-border-size('normal') use-color('gray', 200);
     }
   }
 
