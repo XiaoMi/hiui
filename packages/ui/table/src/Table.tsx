@@ -285,6 +285,8 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
         const selectionColumn: TableColumnItem = {
           dataKey: SELECTION_DATA_KEY,
           width: checkboxColWidth,
+          // selectionColumn 宽度固定，防止自动被拉伸
+          fixed: true,
           className: `${prefixCls}__selection-col`,
           title: renderSelectionTitleCell,
           // @ts-ignore
