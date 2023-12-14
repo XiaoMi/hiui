@@ -22,15 +22,19 @@ $settingPrefix: '#{$component-prefix}-setting' !default;
 
   $this: &;
 
+  &:not(&--drag-disabled) {
+    #{$this}__wrap {
+      cursor: move;
+    }
+  }
+
   &__wrap {
     user-select: none;
-    cursor: move;
 
     @include flex(space-between);
 
     padding: use-spacing(3) use-spacing(4);
     line-height: use-text-lineheight('sm');
-    // border: use-border-size('normal') use-color-static('transparent');
     border-radius: use-border-radius('normal');
 
     &:hover {

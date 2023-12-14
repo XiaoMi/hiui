@@ -195,6 +195,8 @@ export const TableSettingDrawerCustom = () => {
           onClose={() => setVisible(false)}
           drawerProps={{ width: 400, title: '表格字段设置' }}
           columns={settingColumnsMemo}
+          // 禁用拖拽的列
+          dragDisabledColKeys={settingColumnsMemo.map((d) => d.dataKey!)}
           checkDisabledColKeys={disabledColumns}
           hiddenColKeys={hiddenColKeys}
           sortedColKeys={sortedColKeys}

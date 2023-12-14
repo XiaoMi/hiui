@@ -36,7 +36,8 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
       onSetColKeysChange,
       cacheHiddenColKeys: cacheHiddenColKeysProp,
       onCacheHiddenColKeysChange,
-      checkDisabledColKeys = [],
+      checkDisabledColKeys,
+      dragDisabledColKeys,
       extraHeader,
       extraFooter,
       itemRender,
@@ -156,7 +157,8 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
                 dropProps={dropProps}
                 cacheHiddenColKeys={cacheHiddenColKeys}
                 setCacheHiddenColKeys={setCacheHiddenColKeys}
-                checkDisabled={checkDisabledColKeys.includes(col.dataKey)}
+                checkDisabled={checkDisabledColKeys?.includes(col.dataKey)}
+                dragDisabled={dragDisabledColKeys?.includes(col.dataKey)}
               />
             )
           })}
@@ -172,6 +174,7 @@ export interface SettingDrawerProps extends HiBaseHTMLProps<'div'> {
   columns?: TableColumnItem[]
   onClose?: () => void
   checkDisabledColKeys?: string[]
+  dragDisabledColKeys?: string[]
   onSetColKeysChange?: (
     sortedColKeys: string[],
     hiddenColKeys: string[],
@@ -201,11 +204,14 @@ function SettingItem({
   dropProps,
   index,
   checkDisabled,
+  dragDisabled,
   render,
 }: any) {
   const { dataKey, title } = column
+
   const { dragging, direction, getDragTriggerProps, getDropTriggerProps } = useDrag({
     ...dropProps,
+    draggable: !dragDisabled,
     item: column,
     index,
     idFieldName: 'dataKey',
@@ -217,6 +223,7 @@ function SettingItem({
       className={cx(
         `${prefixCls}-item`,
         dragging && `${prefixCls}-item--dragging`,
+        dragDisabled && `${prefixCls}-item--drag-disabled`,
         direction && `${prefixCls}-item--direction-${direction}`
       )}
       {...getDragTriggerProps()}
@@ -237,7 +244,7 @@ function SettingItem({
         >
           <span>{isFunction(render) ? render(column) : runIfFunc(title)}</span>
         </Checkbox>
-        <MoveOutlined />
+        {!dragDisabled && <MoveOutlined />}
       </div>
     </div>
   )
