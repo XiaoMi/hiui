@@ -189,6 +189,10 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
         cursor: col-resize;
         z-index: 1;
 
+        .#{$prefix}__selection-col > & {
+          display: none;
+        }
+
         .#{$prefix}-header__resizable:hover & {
           background-color: use-color-mode('primary');
         }
