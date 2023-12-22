@@ -163,7 +163,11 @@ export const TableSettingDrawer = () => {
   const [hiddenColKeys, setHiddenColKeys] = React.useState<string[]>(['price'])
   const [sortedColKeys, setSortColKeys] = React.useState<string[]>()
 
-  const onSetColKeysChange = (sortedColKeys: string[], hiddenColKeys: string[], newColumns) => {
+  const onSetColKeysChange = (
+    sortedColKeys: string[],
+    hiddenColKeys: string[],
+    newColumns: any[]
+  ) => {
     console.log('onColKeysChange', { sortedColKeys, hiddenColKeys, newColumns })
 
     setSortColKeys(sortedColKeys)

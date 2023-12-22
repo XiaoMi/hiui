@@ -98,7 +98,11 @@ export const useColWidth = ({
   }, [getVirtualWidths, virtual])
 
   useUpdateEffect(() => {
-    setColWidths(getWidths(measureRowElementRef.current))
+    setColWidths((prev) => {
+      return measureRowElementRef.current?.childNodes.length === prev.length
+        ? getWidths(measureRowElementRef.current)
+        : getGroupItemWidth(columns)
+    })
   }, [columns])
 
   /**
