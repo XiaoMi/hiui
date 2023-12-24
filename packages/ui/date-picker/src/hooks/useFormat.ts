@@ -17,7 +17,7 @@ const useFormat = (config: UseFormatConfig) => {
   const { type, showTime, format, locale = 'zh-CN' } = config
 
   return useMemo(() => {
-    let realFormat = format || getLocaleTypeFormatMap(locale)[type]
+    let realFormat = format || getLocaleTypeFormatMap(locale)[type] || ''
     if (showTime && !/[H|h|m|s]/.test(realFormat)) {
       realFormat += ' HH:mm:ss'
     }

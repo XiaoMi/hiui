@@ -18,6 +18,16 @@ export const YearMonthWeek = () => {
             console.log('onChange', date, dateStr)
           }}
         />
+
+        <h2>季度</h2>
+        <DatePicker
+          style={{ width: 238 }}
+          type="quarter"
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
+
         <h2>月份</h2>
         <DatePicker
           style={{ width: 238 }}

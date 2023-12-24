@@ -229,8 +229,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             end: _dates[1]?.toDate(),
           }
           returnDateStr = {
-            start: _dates[0]?.format(realFormat),
-            end: _dates[1]?.format(realFormat),
+            start: _dates[0]?.format(realFormat).toLocaleUpperCase(),
+            end: _dates[1]?.format(realFormat).toLocaleUpperCase(),
           }
           compareNumber = 2
         } else if (type.includes('week')) {
@@ -259,7 +259,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             : getWeekString(_dates[0])
         } else {
           returnDate = _dates[0]?.toDate()
-          returnDateStr = _dates[0]?.format(realFormat)
+          returnDateStr = _dates[0]?.format(realFormat).toLocaleUpperCase()
         }
 
         // 只有发生了改变，才会去通知外部

@@ -5,7 +5,7 @@ import { TimePickerPanelType } from '@hi-ui/time-picker'
 import { CalendarColInfo } from './hooks/useCalenderData'
 import { Moment } from 'moment'
 
-export type CalendarViewEnum = 'date' | 'year' | 'month'
+export type CalendarViewEnum = 'date' | 'year' | 'month' | 'quarter'
 
 export interface DateRange {
   start: Date | string | number | undefined | null
@@ -93,10 +93,12 @@ export type DatePickerTypeEnum =
   | 'year'
   | 'month'
   | 'week'
+  | 'quarter'
   | 'weekrange'
   | 'timeperiod'
   | 'yearrange'
   | 'monthrange'
+  | 'quarterrange'
 
 export type DatePickerAltCalendarPresetEnum = 'zh-CN' | 'id-ID'
 

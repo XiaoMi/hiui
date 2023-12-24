@@ -135,6 +135,10 @@ const Calendar = ({
         _date.add(1, 'months')
       }
 
+      if (type.includes('quarter')) {
+        _date.quarter(clickVal)
+      }
+
       _date[view](clickVal)
     } else {
       // 点击的上个月的部分，鼠标还在本月的panel上，则视作，鼠标正在本月第一天
@@ -213,7 +217,7 @@ const Calendar = ({
     }, 2000) as any
   }
   const renderAltCalendar = (cell: CalendarColInfo, isBelongFullOutOfRange: string) => {
-    if (view.includes('year') || view.includes('month')) return
+    if (view.includes('year') || view.includes('month') || view.includes('quarter')) return
     if (
       Object.keys(altCalendarPresetData).length > 0 ||
       Object.keys(dateMarkPresetData).length > 0 ||

@@ -20,7 +20,7 @@ const getHeaderCenterContent = (
   if (view === 'year') {
     return year - 4 + '~' + (year + 7)
   }
-  if (view === 'month') {
+  if (view === 'month' || view === 'quarter') {
     return year
   }
 
@@ -71,7 +71,7 @@ const Header = ({
           >
             <DirectionLeftOutlined />
           </span>
-          {view !== 'year' && view !== 'month' && (
+          {view !== 'year' && view !== 'month' && view !== 'quarter' && (
             <span
               className={`${prefixCls}__header-icon`}
               onClick={() => headerChangeDateEvent('months', -1)}
@@ -91,7 +91,7 @@ const Header = ({
       </span>
       {
         <div className={`${prefixCls}__header-btns`}>
-          {view !== 'year' && view !== 'month' && (
+          {view !== 'year' && view !== 'month' && view !== 'quarter' && (
             <span
               onClick={() => headerChangeDateEvent('months', 1)}
               className={`${prefixCls}__header-icon`}

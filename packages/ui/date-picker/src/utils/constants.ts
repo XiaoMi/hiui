@@ -15,6 +15,8 @@ export const GranularityMap: {
   weekrange: 'date',
   month: 'month',
   monthrange: 'month',
+  quarter: 'quarter',
+  quarterrange: 'quarter',
   timeperiod: 'second',
 }
 /**
@@ -26,6 +28,7 @@ export const getLocaleTypeFormatMap = (locale: string) => {
     ? {
         date: 'YYYY-MM-DD',
         month: 'YYYY-MM',
+        quarter: 'YYYY-qQ',
         year: 'YYYY',
         time: 'HH:mm:ss',
         timerange: 'HH:mm:ss',
@@ -34,6 +37,7 @@ export const getLocaleTypeFormatMap = (locale: string) => {
         weekrange: 'YYYY-WW',
         timeperiod: 'YYYY-MM-DD HH:mm:ss',
         monthrange: 'YYYY-MM',
+        quarterrange: 'YYYY-qQ',
         yearrange: 'YYYY',
       }
     : {
@@ -47,6 +51,7 @@ export const getLocaleTypeFormatMap = (locale: string) => {
         weekrange: 'wo/YYYY',
         timeperiod: 'MM/DD/YYYY HH:mm:ss',
         monthrange: 'MM/YYYY',
+        quarterrange: 'qQ/YYYY',
         yearrange: 'YYYY',
       }
 }
@@ -54,6 +59,7 @@ export const getLocaleTypeFormatMap = (locale: string) => {
 export const INPUTTYPES = {
   date: 'normal',
   month: 'normal',
+  quarter: 'normal',
   year: 'normal',
   time: 'normal',
   timerange: 'range',
@@ -62,5 +68,6 @@ export const INPUTTYPES = {
   weekrange: 'range',
   timeperiod: 'range',
   monthrange: 'range',
+  quarterrange: 'range',
   yearrange: 'range',
 }

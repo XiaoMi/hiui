@@ -45,7 +45,7 @@ export const deconstructDate = (original: Date | string | number | null) => {
  * @param {String} type
  */
 export const getView = (type: DatePickerTypeEnum) => {
-  return (type.includes('year') || type.includes('month')
+  return (type.includes('year') || type.includes('month') || type.includes('quarter')
     ? type.split('range')[0]
     : 'date') as CalendarViewEnum
 }
@@ -69,6 +69,7 @@ export const genNewDates = (currentDates: moment.Moment[], newDate: moment.Momen
  */
 export const parseRenderDates = (dates: (moment.Moment | null)[], type: DatePickerTypeEnum) => {
   let [leftDate, rightDate] = cloneDeep(dates)
+
   const getRightDate = () => {
     if (type === 'yearrange') {
       if (!rightDate) {
@@ -89,7 +90,7 @@ export const parseRenderDates = (dates: (moment.Moment | null)[], type: DatePick
 
       return moment(leftDate).add(12 * crossingPanelNumber, 'year')
     }
-    if (type === 'monthrange') {
+    if (type === 'monthrange' || type === 'quarterrange') {
       return moment(leftDate).add(1, 'year')
     }
     if (!rightDate || leftDate?.isSame(rightDate, 'month')) {
