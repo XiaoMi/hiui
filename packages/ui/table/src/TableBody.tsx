@@ -84,12 +84,16 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             maxHeight: maxHeight !== undefined ? maxHeight : undefined,
             // 表格宽度大于div宽度才出现横向滚动条
             overflowX: canScroll ? 'scroll' : undefined,
+            overflowY: 'hidden',
           }}
         >
-          <div ref={measureRowElementRef} style={{ height: 1, background: 'transparent' }}></div>
+          <div
+            ref={measureRowElementRef}
+            style={{ height: 1, marginTop: -1, background: 'transparent' }}
+          ></div>
           <div
             ref={bodyTableRef}
-            style={{ height: 1, background: 'transparent', width: rowWidth }}
+            style={{ height: 1, marginTop: -1, background: 'transparent', width: rowWidth }}
           ></div>
           {isArrayNonEmpty(transitionData) ? (
             <div style={{ width: '100%', position: 'sticky', left: 0 }}>
