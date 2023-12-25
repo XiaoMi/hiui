@@ -345,6 +345,7 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
     &.#{$component-prefix}-icon-button {
       margin-right: use-spacing(1);
       color: use-color('gray', 500);
+      vertical-align: middle;
     }
   }
 
