@@ -132,6 +132,24 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
       }
     }
 
+    &.#{$prefix}--virtual {
+      .#{$prefix}-row {
+        .#{$prefix}-cell {
+          border-right: use-border-size('normal') use-color('gray', 200);
+        }
+      }
+
+      .#{$prefix}-virtual-row {
+        &:last-child {
+          .#{$prefix}-row {
+            .#{$prefix}-cell {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+
     .#{$prefix}-header, .#{$prefix}-body, .#{$prefix}-content {
       border-left: use-border-size('normal') use-color('gray', 200);
       border-right: use-border-size('normal') use-color('gray', 200);

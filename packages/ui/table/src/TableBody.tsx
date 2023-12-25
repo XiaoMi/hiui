@@ -100,7 +100,10 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                 itemKey="id"
                 children={(row, index) => {
                   return (
-                    <div style={{ position: 'relative', left: -scrollLeft }}>
+                    <div
+                      className={`${prefixCls}-virtual-row`}
+                      style={{ position: 'relative', left: -scrollLeft }}
+                    >
                       <TableRow
                         // key={depth + index}
                         key={row.id}
