@@ -39,72 +39,66 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
 
   &--size {
     &-md {
-      table {
-        tbody {
-          & > tr:not(.#{$emptyContent}) > td {
-            padding: use-spacing(7);
+      .#{$prefix}-header {
+        &-cell {
+          padding: use-spacing(7);
 
-            &.#{$prefix}__selection-col {
-              padding: use-spacing(7) use-spacing(5);
-            }
+          &.#{$prefix}__selection-col {
+            padding: use-spacing(7) use-spacing(5);
           }
         }
+      }
 
-        thead {
-          & > tr > th {
-            padding: use-spacing(7);
+      .#{$prefix}-row:not(.#{$emptyContent}) {
+        .#{$prefix}-cell {
+          padding: use-spacing(7);
 
-            &.#{$prefix}__selection-col {
-              padding: use-spacing(7) use-spacing(5);
-            }
+          &.#{$prefix}__selection-col {
+            padding: use-spacing(7) use-spacing(5);
           }
         }
       }
     }
 
     &-sm {
-      table {
-        tbody {
-          & > tr:not(.#{$emptyContent}) > td {
-            padding: use-spacing(5);
+      .#{$prefix}-header {
+        &-cell {
+          padding: use-spacing(5);
 
-            &.#{$prefix}__selection-col {
-              padding: use-spacing(5);
-            }
+          &.#{$prefix}__selection-col {
+            padding: use-spacing(5);
           }
         }
+      }
 
-        thead {
-          & > tr > th {
+      .#{$prefix}-row:not(.#{$emptyContent}) {
+        .#{$prefix}-cell {
+          padding: use-spacing(5);
+
+          &.#{$prefix}__selection-col {
             padding: use-spacing(5);
-
-            &.#{$prefix}__selection-col {
-              padding: use-spacing(5);
-            }
           }
         }
       }
     }
 
     &-lg {
-      table {
-        tbody {
-          & > tr:not(.#{$emptyContent}) > td {
-            padding: use-spacing(9);
+      .#{$prefix}-header {
+        &-cell {
+          padding: use-spacing(9);
 
-            &.#{$prefix}__selection-col {
-              padding: use-spacing(9) use-spacing(5);
-            }
+          &.#{$prefix}__selection-col {
+            padding: use-spacing(9) use-spacing(5);
           }
         }
+      }
 
-        thead {
-          & > tr > th {
-            padding: use-spacing(9);
+      .#{$prefix}-row:not(.#{$emptyContent}) {
+        .#{$prefix}-cell {
+          padding: use-spacing(9);
 
-            &.#{$prefix}__selection-col {
-              padding: use-spacing(9) use-spacing(5);
-            }
+          &.#{$prefix}__selection-col {
+            padding: use-spacing(9) use-spacing(5);
           }
         }
       }
@@ -353,6 +347,7 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
 
   &__indent {
     display: inline-block;
+    vertical-align: middle;
     width: 14px;
     height: 100%;
     margin-right: use-spacing(1);

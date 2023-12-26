@@ -100,6 +100,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
               <VirtualList
                 data={transitionData}
                 height={vMaxHeight}
+                fullHeight={false}
                 itemHeight={10}
                 itemKey="id"
                 children={(row, index) => {
