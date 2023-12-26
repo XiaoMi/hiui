@@ -10,3 +10,4 @@ fix(table): 修复resize模式下多选时宽度被重置问题
 fix(table): 修复树形表格节点图标没有对齐问题
 fix(table): 修复虚拟表格边框样式问题
 fix(table): 修复虚拟表格下双滚动条问题
+fix(table): 修复虚拟表格下size和maxHeight失效问题
