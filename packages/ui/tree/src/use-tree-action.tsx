@@ -431,6 +431,9 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
         value={inputValue}
         onChange={handleChange}
         onKeyDown={onKeydown}
+        // hotfix: https://github.com/XiaoMi/hiui/issues/2697
+        draggable
+        onDragStart={(evt) => evt.preventDefault()}
       />
       <span className={`${prefixCls}__action`}>
         <IconButton
