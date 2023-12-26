@@ -238,6 +238,10 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    */
   onChange?: (date: Date | Date[] | null, dateStr: string | string[] | null) => void
   /**
+   * 日期面板改变时的回调函数
+   */
+  onPanelChange?: (data: Date) => void
+  /**
    * 不同 UI 外观
    * @default 'line'
    */

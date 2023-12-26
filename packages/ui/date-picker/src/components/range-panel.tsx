@@ -27,6 +27,7 @@ const RangePanel = () => {
     theme,
     locale,
     onSelect,
+    onPanelChange,
     hourStep,
     minuteStep,
     secondStep,
@@ -220,7 +221,7 @@ const RangePanel = () => {
       return
     }
     setCalRenderDates(_innerDates)
-    onSelect(date as any, !calendarClickIsEnd.current)
+    onPanelChange?.(date.toDate())
   }
   const onTimePeriodPick = useCallback(
     (ts1: string, ts2: string) => {

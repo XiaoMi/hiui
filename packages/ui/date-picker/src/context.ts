@@ -60,5 +60,6 @@ export interface DPContextData extends ExtendsType {
   value: DatePickerValueV3
   // 内部现在暂时使用 v3 的数据格式
   altCalendar?: CalendarItemV3[]
+  onPanelChange?: (data: Date) => void
 }
 export default DPContext
