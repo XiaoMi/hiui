@@ -2,13 +2,13 @@ import React from 'react'
 import DatePicker from '../src'
 
 /**
- * @title 年份 / 月份 / 周
- * @desc 以年份 / 月份 / 周为展示粒度
+ * @title 年份 / 季度 / 月份 / 周
+ * @desc 以年份 / 季度 / 月份 / 周为展示粒度
  */
 export const YearMonthWeek = () => {
   return (
     <>
-      <h1>年份 / 月份 / 周</h1>
+      <h1>年份 / 季度 / 月份 / 周</h1>
       <div className="date-picker-ymw__wrap">
         <h2>年份</h2>
         <DatePicker

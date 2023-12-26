@@ -4,7 +4,7 @@ import DayJs from 'dayjs'
 
 /**
  * @title 范围
- * @desc 以天、周、月、年等粒度展示一个时间的范围
+ * @desc 以天、周、月、季度、年等粒度展示一个时间的范围
  */
 export const Range = () => {
   const [dynamicSelectedValue, setDynamicSelectedValue] = useState<any>('')
