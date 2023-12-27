@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef } from 'react'
+import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { MoveOutlined } from '@hi-ui/icons'
@@ -34,24 +34,18 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
       sortedColKeys: sortedColKeysPropBeforeVerify,
       onSortedColKeysChange,
       onSetColKeysChange,
-      cacheHiddenColKeys: cacheHiddenColKeysProp,
-      onCacheHiddenColKeysChange,
       checkDisabledColKeys,
       dragDisabledColKeys,
       extraHeader,
-      extraFooter,
       itemRender,
       drawerProps,
+      showCheckAll,
     },
     ref
   ) => {
     const i18n = useLocaleContext()
 
-    const [cacheHiddenColKeys, setCacheHiddenColKeys] = useUncontrolledState<string[]>(
-      hiddenColKeysPropBeforeVerify ?? [],
-      cacheHiddenColKeysProp,
-      onCacheHiddenColKeysChange
-    )
+    const [cacheHiddenColKeys, setCacheHiddenColKeys] = useState<string[]>([])
 
     // 根据列字段合并 sortedColKeys、hiddenColKeys
     const { sortedColKeys: sortedColKeysProp, hiddenColKeys: hiddenColKeysProp } = useColSet({
@@ -121,6 +115,34 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
       setVisible(false)
     }
 
+    const CheckAllContent = (
+      <Checkbox
+        indeterminate={
+          cacheHiddenColKeys.length > 0 && cacheHiddenColKeys.length < columnsProp.length
+        }
+        checked={cacheHiddenColKeys.length === 0}
+        onChange={(e) => {
+          const checked = e.target.checked
+          if (checked) {
+            setCacheHiddenColKeys([])
+          } else {
+            setCacheHiddenColKeys(
+              columnsProp
+                .filter(
+                  (d1) =>
+                    !checkDisabledColKeys?.some((d2) => {
+                      return d2 === d1.dataKey
+                    })
+                )
+                .map((d) => d.dataKey ?? '')
+            )
+          }
+        }}
+      >
+        {i18n.get('checkSelect.checkAll')}
+      </Checkbox>
+    )
+
     const cls = cx(`${prefixCls}-drawer`, className)
 
     return (
@@ -133,7 +155,7 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
         width={304}
         footer={
           <div className={`${prefixCls}-footer`}>
-            <div className={`${prefixCls}-footer__extra`}>{extraFooter}</div>
+            <div className={`${prefixCls}-footer__extra`}>{showCheckAll && CheckAllContent}</div>
             <div className={`${prefixCls}-footer__action`}>
               <Button onClick={resetLatest}>{i18n.get('table.reset')}</Button>
               <Button onClick={onConfirm} type="primary">
@@ -184,12 +206,10 @@ export interface SettingDrawerProps extends HiBaseHTMLProps<'div'> {
   onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
   sortedColKeys?: string[]
   onSortedColKeysChange?: (sortedColKeys: string[]) => void
-  cacheHiddenColKeys?: string[]
-  onCacheHiddenColKeysChange?: (hiddenColKeys: string[]) => void
   extraHeader?: React.ReactNode
-  extraFooter?: React.ReactNode
   itemRender?: (item: TableColumnItem) => React.ReactNode
   drawerProps?: Omit<DrawerProps, 'className'>
+  showCheckAll?: boolean
 }
 
 if (__DEV__) {
