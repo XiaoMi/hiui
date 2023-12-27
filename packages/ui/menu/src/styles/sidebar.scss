@@ -9,7 +9,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
   width: fit-content;
   height: 100%;
 
-  &:not(.#{$sidebar-prefix}-wrapper-showMenuArrow) {
+  &:not(&-showMenuArrow) {
     .#{$sidebar-prefix}-menu-wrapper {
       .#{$prefix} {
         &-item {
@@ -29,6 +29,21 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
     .#{$sidebar-prefix}-toggle {
       svg[class^=hi-v4-icon] {
         transform: rotate(180deg);
+      }
+    }
+  }
+
+  &:not(&--collapsible) {
+    .#{$sidebar-prefix}-menu-wrapper {
+      .#{$prefix} {
+        &-item {
+          &__inner {
+            &--expanded:hover {
+              background-color: transparent;
+              cursor: default;
+            }
+          }
+        }
       }
     }
   }
@@ -107,6 +122,14 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
         height: use-height-size(8);
         margin-bottom: 0;
         padding: 0 use-spacing(4);
+
+        &--hasIcon + div {
+          .#{$prefix}-submenu {
+            .#{$prefix}-item__indent {
+              width: 20px;
+            }
+          }
+        }
       }
 
       &__icon {
@@ -115,11 +138,11 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
       }
 
       &__indent {
-        width: 20px;
+        width: 14px;
       }
 
       &__content {
-        font-weight: use-text-weight('medium');
+        font-weight: 550;
       }
 
       &__inner--active-p {
@@ -169,4 +192,8 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
   cursor: pointer;
   color: use-color('gray', 600);
   background-color: #fff;
+
+  svg[class^=hi-v4-icon] {
+    margin-left: -4px;
+  }
 }

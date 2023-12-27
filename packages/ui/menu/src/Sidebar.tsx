@@ -44,7 +44,7 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
       onClick,
       showMenuArrow = false,
       menuWidth = 180,
-      menuCollapsible = false,
+      collapsible = true,
     },
     ref
   ) => {
@@ -90,9 +90,9 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
     const updateExpandedIds = useCallback(
       (expandIds: ReactText[]) => {
         // 可折叠模式下才能改变 expandIds
-        menuCollapsible && setExpandIds(expandIds)
+        collapsible && setExpandIds(expandIds)
       },
-      [menuCollapsible]
+      [collapsible]
     )
 
     const clickSidebar = useCallback(
@@ -115,7 +115,8 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
     const cls = cx(
       `${prefixCls}-wrapper`,
       showMenu && `${prefixCls}-wrapper--showMenu`,
-      showMenuArrow && `${prefixCls}-wrapper--showMenuArrow`
+      showMenuArrow && `${prefixCls}-wrapper--showMenuArrow`,
+      collapsible && `${prefixCls}-wrapper--collapsible`
     )
 
     return (
@@ -218,7 +219,7 @@ export interface SidebarProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
   /**
    * 菜单可折叠
    */
-  menuCollapsible?: boolean
+  collapsible?: boolean
 }
 
 if (__DEV__) {

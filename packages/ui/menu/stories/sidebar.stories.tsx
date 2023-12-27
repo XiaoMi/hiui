@@ -167,6 +167,7 @@ export const SidebarMenu = () => {
           <Sidebar
             activeId={activeId}
             onClick={setActiveId}
+            collapsible={false}
             data={data}
             render={(data, level) => {
               return data.title
