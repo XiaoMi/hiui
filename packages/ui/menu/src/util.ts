@@ -1,4 +1,4 @@
-import { filterTree, cloneTree } from '@hi-ui/tree-utils'
+import { filterTree, cloneTree, getTreeNodesWithChildren } from '@hi-ui/tree-utils'
 import { MenuDataItem } from './types'
 
 // 寻找某一节点的父节点
@@ -27,6 +27,10 @@ export const getAncestorIds = (
     getAncestorIds(getParentId(id, data), data, arr)
   }
   return arr
+}
+
+export const getIdsWithChildren = (treeData: MenuDataItem[]) => {
+  return getTreeNodesWithChildren(treeData).map((item) => item.id)
 }
 
 export const filterTreeData = (

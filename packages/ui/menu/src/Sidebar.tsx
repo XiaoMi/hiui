@@ -1,4 +1,12 @@
-import React, { forwardRef, useCallback, useState, useEffect, useMemo, useRef } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  ReactText,
+} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { RightOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
@@ -7,10 +15,11 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { isFunction } from '@hi-ui/type-assertion'
 import { MenuDataItem } from './types'
-import { getAncestorIds } from './util'
+import { getAncestorIds, getIdsWithChildren } from './util'
 import { Menu } from './Menu'
 
-const SIDEBAR_PREFIX = getPrefixCls('sidebar')
+const _role = 'sidebar'
+const SIDEBAR_PREFIX = getPrefixCls(_role)
 
 const NOOP_ARRAY = [] as []
 
@@ -21,12 +30,10 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
   (
     {
       prefixCls = SIDEBAR_PREFIX,
-      role = 'sidebar',
+      role = _role,
       className,
       data = NOOP_ARRAY,
       showCollapse = true,
-      defaultExpandAll = false,
-      onExpand,
       defaultActiveId = '',
       activeId: activeIdProp,
       collapsed,
@@ -37,11 +44,13 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
       onClick,
       showMenuArrow = false,
       menuWidth = 180,
+      menuCollapsible = false,
     },
     ref
   ) => {
     const [activeId, updateActiveId] = useUncontrolledState(defaultActiveId, activeIdProp, onClick)
     const [activeParents, updateActiveParents] = useState(() => getAncestorIds(activeId, data))
+    const [expandIds, setExpandIds] = React.useState<ReactText[]>([])
     // 用于更新Menu组件
     const [menuKey, setMenuKey] = useState<number>(0)
     const wrapperRef = useRef<HTMLDivElement>(null)
@@ -72,9 +81,19 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
     }, [sidebarActiveId, data, menuToggleAction])
 
     useEffect(() => {
-      // 每次菜单数据变化时重新渲染下菜单，否则defaultExpandAll不生效
+      // 每次菜单数据变化时重新渲染下菜单
       setMenuKey(menuKey + 1)
+
+      setExpandIds(getIdsWithChildren(menuDataMemo))
     }, [menuDataMemo])
+
+    const updateExpandedIds = useCallback(
+      (expandIds: ReactText[]) => {
+        // 可折叠模式下才能改变 expandIds
+        menuCollapsible && setExpandIds(expandIds)
+      },
+      [menuCollapsible]
+    )
 
     const clickSidebar = useCallback(
       (id: React.ReactText, raw: MenuDataItem) => {
@@ -124,7 +143,8 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
             key={menuKey}
             activeId={activeId}
             data={menuDataMemo}
-            defaultExpandAll
+            expandedIds={expandIds}
+            onExpand={updateExpandedIds}
             onClick={clickMenu}
             style={{ width: menuWidth }}
             extraHeader={extraHeader}
@@ -163,17 +183,13 @@ export interface SidebarProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
    */
   defaultExpandAll?: boolean
   /**
-   * 默认是否收起子菜单，菜单垂直展示时有效
+   * 默认是否收起菜单
    */
   defaultCollapsed?: boolean
   /**
-   * 是否收起子菜单，菜单垂直展示时有效
+   * 是否收起菜单
    */
   collapsed?: boolean
-  /**
-   * 展开菜单时回调
-   */
-  onExpand?: (expandedIds: React.ReactText[]) => void
   /**
    * 点击菜单选项时的回调
    */
@@ -199,6 +215,10 @@ export interface SidebarProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
    * 设置菜单宽度
    */
   menuWidth?: number | string
+  /**
+   * 菜单可折叠
+   */
+  menuCollapsible?: boolean
 }
 
 if (__DEV__) {
