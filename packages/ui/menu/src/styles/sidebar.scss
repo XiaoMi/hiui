@@ -107,14 +107,6 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
         height: use-height-size(8);
         margin-bottom: 0;
         padding: 0 use-spacing(4);
-
-        &--hasIcon + div {
-          .#{$prefix}-submenu {
-            .#{$prefix}-item__indent {
-              display: block;
-            }
-          }
-        }
       }
 
       &__icon {
@@ -144,10 +136,6 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
         .#{$prefix}-item__content {
           font-size: use-text-size('sm');
           font-weight: use-text-weight('normal');
-        }
-
-        .#{$prefix}-item__indent {
-          display: none;
         }
       }
     }

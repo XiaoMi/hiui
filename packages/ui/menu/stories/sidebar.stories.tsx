@@ -25,7 +25,6 @@ export const SidebarMenu = () => {
         {
           title: '新品发布',
           id: '1-1',
-          icon: <AppStoreOutlined />,
           children: [
             {
               title: '新品发布',
@@ -36,7 +35,6 @@ export const SidebarMenu = () => {
         {
           title: '在线反馈',
           id: '1-2',
-          icon: <AppStoreOutlined />,
           children: [
             {
               title: '在线反馈',
@@ -99,14 +97,6 @@ export const SidebarMenu = () => {
               title: '小米3',
               id: 'xiaomi3',
             },
-            {
-              title: '小米4',
-              id: 'xiaomi4',
-            },
-            {
-              title: '小米5',
-              id: 'xiaomi5',
-            },
           ],
         },
         {
@@ -144,14 +134,6 @@ export const SidebarMenu = () => {
             {
               title: '小米 note5',
               id: 'xiaomi note5',
-            },
-            {
-              title: '小米 note4',
-              id: 'xiaomi note4',
-            },
-            {
-              title: '小米 note3',
-              id: 'xiaomi note3',
             },
           ],
         },
