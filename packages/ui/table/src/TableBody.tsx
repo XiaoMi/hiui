@@ -98,6 +98,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
           {isArrayNonEmpty(transitionData) ? (
             <div style={{ width: '100%', position: 'sticky', left: 0 }}>
               <VirtualList
+                prefixCls={`${cls}--virtual`}
                 data={transitionData}
                 height={vMaxHeight}
                 fullHeight={false}

@@ -334,6 +334,13 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
   overflow: auto;
 }
 
+.#{$prefix}-body--virtual {
+  &-holder {
+    // 禁用虚拟列表的滚动条
+    overflow: hidden;
+  }
+}
+
 // 单元格
 .#{$prefix}-cell {
   word-break: break-word;
