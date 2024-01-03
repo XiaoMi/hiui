@@ -103,6 +103,8 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
     onDelete
   )
 
+  const [editing, setEditing] = React.useState<boolean>(false)
+
   const renderTitleWithEditable = (node: FlattedTreeNodeData, title?: React.ReactNode) => {
     return (
       <EditableTreeNodeTitle
@@ -120,6 +122,7 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
         focusTree={focusTree}
         onExpand={tryToggleExpandedIds}
         actionRender={actionRender}
+        onEditStatusChange={setEditing}
       />
     )
   }
@@ -138,6 +141,8 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
 
   const treeProps = {
     ...nativeTreeProps,
+    // hotfix: https://github.com/XiaoMi/hiui/issues/2697
+    draggable: editing ? false : nativeTreeProps.draggable,
     fieldNames,
     render: proxyTitleRender,
     data: editable ? treeData : data,
@@ -194,10 +199,14 @@ export interface EditableTreeProps extends TreeProps {
 }
 
 const EditableTreeNodeTitle = (props: EditableTreeNodeTitleProps) => {
-  const { prefixCls, node, title, actionRender } = props
+  const { prefixCls, node, title, actionRender, onEditStatusChange } = props
 
   // 如果是添加节点，则进入节点编辑临时态
   const [editing, editingAction] = useToggle(() => node.raw.type === TreeNodeType.ADD || false)
+
+  React.useEffect(() => {
+    onEditStatusChange?.(editing)
+  }, [editing, onEditStatusChange])
 
   if (editing) {
     return <EditableNodeInput {...props} editingAction={editingAction} />
@@ -226,6 +235,7 @@ interface EditableTreeNodeTitleProps {
   menuOptions?: TreeMenuActionOption[] | ((node: FlattedTreeNodeData) => TreeMenuActionOption[])
   focusTree: () => void
   actionRender?: (node: FlattedTreeNodeData, editActions: TreeEditActions) => React.ReactNode | null
+  onEditStatusChange?: (editing: boolean) => void
 }
 
 const EditableNodeMenu = (props: EditableNodeMenuProps) => {
@@ -431,9 +441,6 @@ const EditableNodeInput = (props: EditableNodeInputProps) => {
         value={inputValue}
         onChange={handleChange}
         onKeyDown={onKeydown}
-        // hotfix: https://github.com/XiaoMi/hiui/issues/2697
-        draggable
-        onDragStart={(evt) => evt.preventDefault()}
       />
       <span className={`${prefixCls}__action`}>
         <IconButton
