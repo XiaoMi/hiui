@@ -27,6 +27,18 @@ $image-container: '#{$prefix}__image' !default;
     }
   }
 
+  &--size-xl {
+    .#{$image-container} {
+      height: 120px;
+    }
+  }
+
+  &--size-xxl {
+    .#{$image-container} {
+      height: 160px;
+    }
+  }
+
   &__image {
     img {
       object-fit: cover;
