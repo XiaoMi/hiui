@@ -24,10 +24,10 @@ export const useColWidth = ({
   const getWidths = useCallback(
     (measureRowElement: HTMLTableRowElement | null) => {
       if (measureRowElement && measureRowElement.childNodes) {
-        // 超出的宽度，真实的表格宽度超出的每列总和的宽度
+        // 超出的宽度，即每列真实的宽度超出设置的宽度的总和
         let exceedWidth = 0
 
-        const _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node, index) => {
+        let _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node, index) => {
           const realWidth = (node as HTMLElement).getBoundingClientRect().width || 0
           const { width, fixed } = columns[index] ?? {}
 
@@ -40,11 +40,11 @@ export const useColWidth = ({
           return realWidth
         })
 
-        // 如果有多余的宽度，则将多余的宽度平分到没有设置 maxWidth 的列上
+        // 如果有多余的宽度，则将多余的宽度平分到没有设置 fixed 的列上
         if (exceedWidth > 0) {
           const noFixedColumns = columns.filter((item) => !item.fixed)
 
-          _realColumnsWidth.map((item, index) => {
+          _realColumnsWidth = _realColumnsWidth.map((item, index) => {
             if (!columns[index].fixed) {
               return item + Math.floor(exceedWidth / noFixedColumns.length)
             }
@@ -100,8 +100,10 @@ export const useColWidth = ({
   useUpdateEffect(() => {
     setColWidths((prev) => {
       return measureRowElementRef.current?.childNodes.length === prev.length
-        ? getWidths(measureRowElementRef.current)
-        : getGroupItemWidth(columns)
+        ? // 走更新逻辑
+          getWidths(measureRowElementRef.current)
+        : // 当列数变化时重新走初始化逻辑
+          getGroupItemWidth(columns)
     })
   }, [columns])
 
@@ -119,7 +121,7 @@ export const useColWidth = ({
           setColWidths(getVirtualWidths())
         } else {
           // 当第一行有内容时并且没有重新设置列宽时，在去设置列宽
-          // todo 临时方案：hasResetWidths.current 作用是防止某些浏览器下，下面逻辑死循环
+          // Warning hasResetWidths.current 作用是防止某些浏览器下，下面逻辑死循环
           if (measureRowElement?.childNodes && hasResetWidths.current === false) {
             hasResetWidths.current = true
             setColWidths(getWidths(measureRowElement))
