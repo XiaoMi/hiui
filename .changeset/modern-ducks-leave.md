@@ -1,5 +1,5 @@
 ---
-"@hi-ui/hiui": patch
+"@hi-ui/hiui": minor
 ---
 
 fix(tree-utils): 修复 filterTreeNode 问题
