@@ -48,6 +48,7 @@
     "@hi-ui/env": "^4.0.4",
     "@hi-ui/file-select": "^4.0.7",
     "@hi-ui/icons": "^4.0.18",
+    "@hi-ui/message": "^4.0.7",
     "@hi-ui/modal": "^4.0.15",
     "@hi-ui/preview": "^4.0.8",
     "@hi-ui/use-id": "^4.0.4",
