@@ -1,5 +1,16 @@
 # @hi-ui/menu
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2700](https://github.com/XiaoMi/hiui/pull/2700) [`cfc37dc37`](https://github.com/XiaoMi/hiui/commit/cfc37dc37c83ce737d88262644c07ca23cde0731) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 Sidebar 组件
+
+### Patch Changes
+
+- Updated dependencies [[`cfc37dc37`](https://github.com/XiaoMi/hiui/commit/cfc37dc37c83ce737d88262644c07ca23cde0731)]:
+  - @hi-ui/tree-utils@4.1.5
+
 ## 4.1.7
 
 ### Patch Changes

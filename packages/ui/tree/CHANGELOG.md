@@ -1,5 +1,14 @@
 # @hi-ui/tree
 
+## 4.5.9
+
+### Patch Changes
+
+- [#2702](https://github.com/XiaoMi/hiui/pull/2702) [`3caa7e556`](https://github.com/XiaoMi/hiui/commit/3caa7e5566d378a54721f4685834a2f8f671d38e) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复可拖拽模式下编辑框内容无法选中问题
+
+- Updated dependencies [[`cfc37dc37`](https://github.com/XiaoMi/hiui/commit/cfc37dc37c83ce737d88262644c07ca23cde0731)]:
+  - @hi-ui/tree-utils@4.1.5
+
 ## 4.5.8
 
 ### Patch Changes

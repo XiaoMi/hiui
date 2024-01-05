@@ -1,5 +1,11 @@
 # @hi-ui/locale-context
 
+## 4.0.9
+
+### Patch Changes
+
+- [#2704](https://github.com/XiaoMi/hiui/pull/2704) [`51267eb24`](https://github.com/XiaoMi/hiui/commit/51267eb2408ee50970e2d354eaa554a34df00878) Thanks [@zyprepare](https://github.com/zyprepare)! - chore: 补充日期语言包
+
 ## 4.0.8
 
 ### Patch Changes
