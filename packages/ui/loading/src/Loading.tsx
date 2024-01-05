@@ -30,6 +30,8 @@ export const Loading = forwardRef<null, LoadingProps>(
       timeout = 300,
       indicator,
       type = 'dot',
+      wrapperClassName,
+      wrapperStyle,
       ...restProps
     },
     ref
@@ -88,7 +90,7 @@ export const Loading = forwardRef<null, LoadingProps>(
         {children ? (
           // 可以测量 children margin，实现按内容位置偏移，排除 margin 影响
           // 暂时不考虑，如果有需要，完全可以把 margin 设置到加到父节点
-          <div className={`${prefixCls}__wrapper`}>
+          <div className={cx(`${prefixCls}__wrapper`, wrapperClassName)} style={wrapperStyle}>
             {children}
             {loadingComponent}
           </div>
@@ -157,6 +159,14 @@ export interface LoadingProps extends HiBaseHTMLProps<'div'> {
    * loading 效果类型
    */
   type?: 'dot' | 'spin'
+  /**
+   * 设置包裹器类名
+   */
+  wrapperClassName?: string
+  /**
+   * 设置包裹器样式
+   */
+  wrapperStyle?: React.CSSProperties
 }
 
 if (__DEV__) {
