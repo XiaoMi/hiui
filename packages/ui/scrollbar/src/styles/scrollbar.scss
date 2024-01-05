@@ -97,8 +97,8 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
     }
   }
 
-  > .ps__thumb-y,
-  > .ps__thumb-x {
+  > .ps__rail-y,
+  > .ps__rail-x {
     z-index: var(--scrollbar-zIndex);
   }
 }

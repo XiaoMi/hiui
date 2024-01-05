@@ -22,6 +22,7 @@ export const Frozen = () => {
               title: '品类',
               dataKey: 'type',
               width: 150,
+              fixed: true,
             },
             {
               title: '规格',
@@ -108,6 +109,7 @@ export const Frozen = () => {
               title: '门店',
               dataKey: 'address',
               width: 150,
+              fixed: true,
             },
             {
               title: '库存',

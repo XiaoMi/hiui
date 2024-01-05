@@ -39,72 +39,66 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
 
   &--size {
     &-md {
-      table {
-        tbody {
-          & > tr:not(.#{$emptyContent}) > td {
-            padding: use-spacing(7);
+      .#{$prefix}-header {
+        &-cell {
+          padding: use-spacing(7);
 
-            &.#{$prefix}__selection-col {
-              padding: use-spacing(7) use-spacing(5);
-            }
+          &.#{$prefix}__selection-col {
+            padding: use-spacing(7) use-spacing(5);
           }
         }
+      }
 
-        thead {
-          & > tr > th {
-            padding: use-spacing(7);
+      .#{$prefix}-row:not(.#{$emptyContent}) {
+        .#{$prefix}-cell {
+          padding: use-spacing(7);
 
-            &.#{$prefix}__selection-col {
-              padding: use-spacing(7) use-spacing(5);
-            }
+          &.#{$prefix}__selection-col {
+            padding: use-spacing(7) use-spacing(5);
           }
         }
       }
     }
 
     &-sm {
-      table {
-        tbody {
-          & > tr:not(.#{$emptyContent}) > td {
-            padding: use-spacing(5);
+      .#{$prefix}-header {
+        &-cell {
+          padding: use-spacing(5);
 
-            &.#{$prefix}__selection-col {
-              padding: use-spacing(5);
-            }
+          &.#{$prefix}__selection-col {
+            padding: use-spacing(5);
           }
         }
+      }
 
-        thead {
-          & > tr > th {
+      .#{$prefix}-row:not(.#{$emptyContent}) {
+        .#{$prefix}-cell {
+          padding: use-spacing(5);
+
+          &.#{$prefix}__selection-col {
             padding: use-spacing(5);
-
-            &.#{$prefix}__selection-col {
-              padding: use-spacing(5);
-            }
           }
         }
       }
     }
 
     &-lg {
-      table {
-        tbody {
-          & > tr:not(.#{$emptyContent}) > td {
-            padding: use-spacing(9);
+      .#{$prefix}-header {
+        &-cell {
+          padding: use-spacing(9);
 
-            &.#{$prefix}__selection-col {
-              padding: use-spacing(9) use-spacing(5);
-            }
+          &.#{$prefix}__selection-col {
+            padding: use-spacing(9) use-spacing(5);
           }
         }
+      }
 
-        thead {
-          & > tr > th {
-            padding: use-spacing(9);
+      .#{$prefix}-row:not(.#{$emptyContent}) {
+        .#{$prefix}-cell {
+          padding: use-spacing(9);
 
-            &.#{$prefix}__selection-col {
-              padding: use-spacing(9) use-spacing(5);
-            }
+          &.#{$prefix}__selection-col {
+            padding: use-spacing(9) use-spacing(5);
           }
         }
       }
@@ -114,23 +108,53 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
   &--bordered {
     table {
       thead {
-        & > tr > th {
+        & > tr > th:not(:last-child) {
           border-right: use-border-size('normal') use-color('gray', 200);
         }
       }
 
-      td {
-        border-right: use-border-size('normal') use-color('gray', 200);
+      tr {
+        &:last-child {
+          td {
+            border-bottom: none;
+          }
+        }
+
+        td:not(:last-child) {
+          border-right: use-border-size('normal') use-color('gray', 200);
+        }
       }
     }
 
-    .#{$prefix}-header {
-      border-top: use-border-size('normal') use-color('gray', 200);
-      border-left: use-border-size('normal') use-color('gray', 200);
+    &.#{$prefix}--virtual {
+      .#{$prefix}-row {
+        .#{$prefix}-cell {
+          border-right: use-border-size('normal') use-color('gray', 200);
+        }
+      }
+
+      .#{$prefix}-virtual-row {
+        &:last-child {
+          .#{$prefix}-row {
+            .#{$prefix}-cell {
+              border-bottom: none;
+            }
+          }
+        }
+      }
     }
 
-    .#{$prefix}-body {
+    .#{$prefix}-header, .#{$prefix}-body, .#{$prefix}-content {
       border-left: use-border-size('normal') use-color('gray', 200);
+      border-right: use-border-size('normal') use-color('gray', 200);
+    }
+
+    .#{$prefix}-header, .#{$prefix}-content {
+      border-top: use-border-size('normal') use-color('gray', 200);
+    }
+
+    .#{$prefix}-body, .#{$prefix}-content {
+      border-bottom: use-border-size('normal') use-color('gray', 200);
     }
   }
 
@@ -176,6 +200,10 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
         border-left: 2px solid use-color('gray', 50);
         cursor: col-resize;
         z-index: 1;
+
+        .#{$prefix}__selection-col > & {
+          display: none;
+        }
 
         .#{$prefix}-header__resizable:hover & {
           background-color: use-color-mode('primary');
@@ -306,6 +334,13 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
   overflow: auto;
 }
 
+.#{$prefix}-body--virtual {
+  &-holder {
+    // 禁用虚拟列表的滚动条
+    overflow: hidden;
+  }
+}
+
 // 单元格
 .#{$prefix}-cell {
   word-break: break-word;
@@ -319,6 +354,7 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
 
   &__indent {
     display: inline-block;
+    vertical-align: middle;
     width: 14px;
     height: 100%;
     margin-right: use-spacing(1);
@@ -329,6 +365,7 @@ $emptyContent: '#{$component-prefix}-table-empty-content' !default;
     &.#{$component-prefix}-icon-button {
       margin-right: use-spacing(1);
       color: use-color('gray', 500);
+      vertical-align: middle;
     }
   }
 

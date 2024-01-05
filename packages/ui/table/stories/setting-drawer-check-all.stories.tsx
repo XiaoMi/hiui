@@ -3,9 +3,9 @@ import Button from '@hi-ui/button'
 import Table, { SettingDrawer } from '../src'
 
 /**
- * @title 设置抽屉
+ * @title 设置抽屉-全选
  */
-export const TableSettingDrawer = () => {
+export const SettingDrawerCheckAll = () => {
   const [dataSource] = React.useState([
     {
       name: '小米9',
@@ -179,14 +179,15 @@ export const TableSettingDrawer = () => {
 
   return (
     <>
-      <h1>Setting Drawer for Table</h1>
-      <div className="table-setting-drawer__wrap" style={{ minWidth: 660 }}>
+      <h1>Check All for Table Setting Drawer</h1>
+      <div className="table-setting-drawer-check-all__wrap" style={{ minWidth: 660 }}>
         <div style={{ marginBottom: '1em' }}>
           <Button onClick={() => setVisible(true)}>列设置抽屉</Button>
         </div>
         <Table columns={columns} data={dataSource} />
         <SettingDrawer
           visible={visible}
+          showCheckAll
           onClose={() => setVisible(false)}
           drawerProps={{ width: 400, title: '表格字段设置' }}
           columns={columnsMemo}

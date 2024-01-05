@@ -20,6 +20,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
   (
     {
       prefixCls = _prefix,
+      className,
       rowData: rowDataProp,
       rowIndex,
       expandedTree,
@@ -49,6 +50,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       onRow,
       colWidths,
       virtual,
+      cellClassName,
     } = useTableContext()
 
     const { raw: rowData, id: rowId } = rowDataProp
@@ -188,7 +190,8 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       draggable && dragDirection && `${prefixCls}-row--drag-${dragDirection}`,
       isSumRow && `${prefixCls}-row--total`,
       isAvgRow && `${prefixCls}-row--avg`,
-      virtual && `${prefixCls}-row--virtual`
+      virtual && `${prefixCls}-row--virtual`,
+      className
     )
 
     const firstColumn = flattedColumnsWithoutChildren.find((item) => {
@@ -265,6 +268,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
             return (
               <TableCell
                 key={idx}
+                className={cellClassName?.(rowDataProp, column, idx)}
                 column={column}
                 isSwitcherCol={firstColumn ? firstColumn.id === column.id : false}
                 rowData={rowDataProp}
@@ -290,6 +294,10 @@ export interface TableRowProps {
    * 组件默认的选择器类
    */
   prefixCls?: string
+  /**
+   * 样式类名
+   */
+  className?: string
   /**
    * 是否为总计行
    */
