@@ -5,7 +5,7 @@ import { TimePickerPanelType } from '@hi-ui/time-picker'
 import { CalendarColInfo } from './hooks/useCalenderData'
 import { Moment } from 'moment'
 
-export type CalendarViewEnum = 'date' | 'year' | 'month'
+export type CalendarViewEnum = 'date' | 'year' | 'month' | 'quarter'
 
 export interface DateRange {
   start: Date | string | number | undefined | null
@@ -93,10 +93,12 @@ export type DatePickerTypeEnum =
   | 'year'
   | 'month'
   | 'week'
+  | 'quarter'
   | 'weekrange'
   | 'timeperiod'
   | 'yearrange'
   | 'monthrange'
+  | 'quarterrange'
 
 export type DatePickerAltCalendarPresetEnum = 'zh-CN' | 'id-ID'
 
@@ -235,6 +237,10 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 选择后的回调，(date: 选中的日期，dateStr: 选中的日期字符串) => void
    */
   onChange?: (date: Date | Date[] | null, dateStr: string | string[] | null) => void
+  /**
+   * 日期面板改变时的回调函数
+   */
+  onPanelChange?: (data: Date) => void
   /**
    * 不同 UI 外观
    * @default 'line'

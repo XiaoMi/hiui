@@ -40,6 +40,63 @@ const getYearOrMonthRows = ({
     formatRange.end = temp
   }
 
+  if (type.includes('quarter')) {
+    const quarterColData: CalendarColInfo[] = []
+    for (let i = 0; i < 4; i++) {
+      const value = i + 1
+      const col = {
+        type: 'normal',
+        text: `Q${i + 1}`,
+        range: false,
+        value,
+      } as CalendarColInfo
+
+      if (current.year() === renderDate?.year() && originDate?.quarter() === value) {
+        col.type = 'selected'
+      }
+
+      if (current.year() === renderDate?.year() && current.quarter() === value) {
+        col.type = 'today'
+      }
+
+      if (disabledDate?.(_date.quarter(value).toDate(), 'quarter')) {
+        col.type = 'disabled'
+      }
+
+      const currentYM = (_date as any)[view](value)
+
+      if (
+        range?.start &&
+        range?.end &&
+        (currentYM.isBetween(formatRange.start, formatRange.end) ||
+          currentYM.isBetween(formatRange.end, formatRange.start))
+      ) {
+        col.range = true
+      }
+      if (formatRange?.start && currentYM.isSame(formatRange.start, view)) {
+        col.type = 'selected'
+        col.range = false
+        col.rangeStart = true
+        // 当前，存在开始，结束不存在，范围选择现在只选择了一个值，视作，开始结束为同一个
+        if (!formatRange.end) {
+          col.rangeEnd = true
+        }
+      }
+      if (formatRange?.end && currentYM.isSame(formatRange.end, view)) {
+        col.type = 'selected'
+        col.range = false
+        col.rangeEnd = true
+        // 当前，存在结束，开始不存在，范围选择现在只选择了一个值，视作，开始结束为同一个
+        if (!formatRange.start) {
+          col.rangeEnd = true
+        }
+      }
+
+      quarterColData.push(col)
+    }
+    return [quarterColData] as CalendarRowInfo[]
+  }
+
   const monthText = i18n.get('datePicker.month')
 
   for (let i = 0; i < 4; i++) {
@@ -188,6 +245,7 @@ const getYearOrMonthRows = ({
       }
     }
   }
+
   return trs
 }
 const getTime = (week: number, y: number, m: number) => {
@@ -422,9 +480,10 @@ const useDate = ({
   range?: CalenderSelectedRange
 }) => {
   const [rows, setRows] = useState<CalendarRowInfo[]>([])
+
   useEffect(() => {
     const _rows =
-      view.includes('month') || view.includes('year')
+      view.includes('month') || view.includes('year') || view.includes('quarter')
         ? getYearOrMonthRows({
             originDate,
             renderDate,
@@ -446,6 +505,7 @@ const useDate = ({
             renderDate,
             disabledDate,
           })
+
     setRows(_rows)
   }, [renderDate, view, range, type, disabledDate, i18n, max, min, weekOffset, originDate])
 

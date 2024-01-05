@@ -27,6 +27,7 @@ const RangePanel = () => {
     theme,
     locale,
     onSelect,
+    onPanelChange,
     hourStep,
     minuteStep,
     secondStep,
@@ -173,6 +174,9 @@ const RangePanel = () => {
     if (views[uIndex] === 'year' && !type.includes('year')) {
       _views[uIndex] = 'month'
     }
+    if (views[uIndex] === 'quarter' && !type.includes('quarter')) {
+      _views[uIndex] = 'quarter'
+    }
     setViews(_views)
   }
 
@@ -217,7 +221,7 @@ const RangePanel = () => {
       return
     }
     setCalRenderDates(_innerDates)
-    onSelect(date as any, !calendarClickIsEnd.current)
+    onPanelChange?.(date.toDate())
   }
   const onTimePeriodPick = useCallback(
     (ts1: string, ts2: string) => {

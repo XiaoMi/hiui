@@ -378,6 +378,14 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
         }
       }
     }
+
+    &--quarter {
+      .#{$prefix}__cell {
+        &-text {
+          width: 52px;
+        }
+      }
+    }
   }
 
   &__cell {

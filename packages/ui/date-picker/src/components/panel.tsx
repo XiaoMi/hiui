@@ -30,6 +30,7 @@ const Panel = (props: PanelProps) => {
     weekOffset,
     locale,
     onSelect,
+    onPanelChange,
     hourStep,
     minuteStep,
     secondStep,
@@ -74,6 +75,12 @@ const Panel = (props: PanelProps) => {
         )
         return
       }
+
+      if (type === 'quarter') {
+        onPick([date], false)
+        return
+      }
+
       if (type === 'week' && view === 'date') {
         // week picker
         // 根据偏移判断当前使用的周格式
@@ -86,6 +93,9 @@ const Panel = (props: PanelProps) => {
       let _view = view
       if (view === 'year') {
         _view = 'month'
+      }
+      if (view === 'quarter') {
+        _view = 'quarter'
       }
       if (view === 'month') {
         _view = 'date'
@@ -135,8 +145,7 @@ const Panel = (props: PanelProps) => {
     const _innerDates = genNewDates(calRenderDates, date)
     if (type.includes('range') && _innerDates[0] >= _innerDates[1]) return
     setCalRenderDates(_innerDates)
-    // 左右切换年或月时触发 onSelect 回调
-    onSelect(date.toDate(), true)
+    onPanelChange?.(date.toDate())
   }
 
   return (

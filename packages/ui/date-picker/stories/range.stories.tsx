@@ -4,7 +4,7 @@ import DayJs from 'dayjs'
 
 /**
  * @title 范围
- * @desc 以天、周、月、年等粒度展示一个时间的范围
+ * @desc 以天、周、月、季度、年等粒度展示一个时间的范围
  */
 export const Range = () => {
   const [dynamicSelectedValue, setDynamicSelectedValue] = useState<any>('')
@@ -41,6 +41,16 @@ export const Range = () => {
         <DatePicker
           style={{ width: 480 }}
           type="yearrange"
+          defaultValue={[new Date(), new Date()]}
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
+
+        <h2>季度</h2>
+        <DatePicker
+          style={{ width: 480 }}
+          type="quarterrange"
           defaultValue={[new Date(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)

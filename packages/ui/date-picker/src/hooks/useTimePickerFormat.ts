@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { TimePickerFormat } from '@hi-ui/time-picker'
 
 export const useTimePickerFormat = (original: string) => {
-  const timeFormat = original.split(' ')[1] ?? ''
+  const timeFormat = original?.split(' ')[1] ?? ''
 
   return useMemo(() => {
     let result = ''

@@ -64,6 +64,10 @@ const Input = ({
       }
     }
 
+    if (type.includes('quarter') && vals) {
+      vals = vals?.toLocaleUpperCase()
+    }
+
     setValue(vals)
 
     cacheValues.current = vals
