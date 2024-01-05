@@ -1,5 +1,48 @@
 # @hi-ui/hiui
 
+## 4.5.0
+
+### Minor Changes
+
+- [#2700](https://github.com/XiaoMi/hiui/pull/2700) [`cfc37dc37`](https://github.com/XiaoMi/hiui/commit/cfc37dc37c83ce737d88262644c07ca23cde0731) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(tree-utils): 修复 filterTreeNode 问题
+  feat(menu): 增加 Sidebar 组件
+
+### Patch Changes
+
+- [#2699](https://github.com/XiaoMi/hiui/pull/2699) [`6c5d9c7ed`](https://github.com/XiaoMi/hiui/commit/6c5d9c7ed21eaebc26638ba6ee54eb3bfe918af4) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): add fixed and rowClassName api
+  feat(table): SettingDrawer 增加 extraHeader extraFooter itemRender api
+  feat(table): SettingDrawer 支持配置列是否禁止拖拽
+  fix(table): 修复 resize 模式下多选时宽度被重置问题
+
+- [#2702](https://github.com/XiaoMi/hiui/pull/2702) [`3caa7e556`](https://github.com/XiaoMi/hiui/commit/3caa7e5566d378a54721f4685834a2f8f671d38e) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(tree): 修复编辑框内容无法选中问题
+
+- [#2693](https://github.com/XiaoMi/hiui/pull/2693) [`ffd47b89a`](https://github.com/XiaoMi/hiui/commit/ffd47b89a5d7da54ea717fa827123e9c3b2b6d0f) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(empty-state): 增加一组多彩的图标
+
+- [#2700](https://github.com/XiaoMi/hiui/pull/2700) [`b3dc89430`](https://github.com/XiaoMi/hiui/commit/b3dc89430502c85888501001ea192038530a3d6a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(search): onSearch 回调参数返回 item 对象
+
+- [#2688](https://github.com/XiaoMi/hiui/pull/2688) [`2fa5ee5b6`](https://github.com/XiaoMi/hiui/commit/2fa5ee5b6ecc7f95a5224fd91ccfcd263b41d932) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(scrollbar): add zIndex api
+
+- [#2703](https://github.com/XiaoMi/hiui/pull/2703) [`4ec059bad`](https://github.com/XiaoMi/hiui/commit/4ec059badc67f3facc98288f3e7a67f51938e40f) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(loading): add wrapperClassName and wrapperStyle apis
+
+- [#2705](https://github.com/XiaoMi/hiui/pull/2705) [`ec6de99c3`](https://github.com/XiaoMi/hiui/commit/ec6de99c3369d693df4d1c57564800f127446e23) Thanks [@zyprepare](https://github.com/zyprepare)! - perf(upload): 代码优化,降低打包体积
+
+- [#2704](https://github.com/XiaoMi/hiui/pull/2704) [`51267eb24`](https://github.com/XiaoMi/hiui/commit/51267eb2408ee50970e2d354eaa554a34df00878) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): 支持季度选择
+  feat(date-picker): add onPanelChange api
+  chore(locale-context): 补充日期语言包
+
+- [#2701](https://github.com/XiaoMi/hiui/pull/2701) [`9cf8e079f`](https://github.com/XiaoMi/hiui/commit/9cf8e079fd3f342d851d7abfecc1c0447c3ac40b) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(empty-state): 增加 xl 和 xxl 尺寸
+
+- Updated dependencies [[`4ec059bad`](https://github.com/XiaoMi/hiui/commit/4ec059badc67f3facc98288f3e7a67f51938e40f), [`ffd47b89a`](https://github.com/XiaoMi/hiui/commit/ffd47b89a5d7da54ea717fa827123e9c3b2b6d0f), [`ec6de99c3`](https://github.com/XiaoMi/hiui/commit/ec6de99c3369d693df4d1c57564800f127446e23), [`2fa5ee5b6`](https://github.com/XiaoMi/hiui/commit/2fa5ee5b6ecc7f95a5224fd91ccfcd263b41d932), [`6c5d9c7ed`](https://github.com/XiaoMi/hiui/commit/6c5d9c7ed21eaebc26638ba6ee54eb3bfe918af4), [`3caa7e556`](https://github.com/XiaoMi/hiui/commit/3caa7e5566d378a54721f4685834a2f8f671d38e), [`b3dc89430`](https://github.com/XiaoMi/hiui/commit/b3dc89430502c85888501001ea192038530a3d6a), [`9cf8e079f`](https://github.com/XiaoMi/hiui/commit/9cf8e079fd3f342d851d7abfecc1c0447c3ac40b), [`51267eb24`](https://github.com/XiaoMi/hiui/commit/51267eb2408ee50970e2d354eaa554a34df00878), [`cfc37dc37`](https://github.com/XiaoMi/hiui/commit/cfc37dc37c83ce737d88262644c07ca23cde0731)]:
+  - @hi-ui/loading@4.2.0
+  - @hi-ui/empty-state@4.1.0
+  - @hi-ui/upload@4.2.0
+  - @hi-ui/scrollbar@4.1.0
+  - @hi-ui/table@4.4.0
+  - @hi-ui/tree@4.5.9
+  - @hi-ui/search@4.0.12
+  - @hi-ui/date-picker@4.5.0
+  - @hi-ui/menu@4.2.0
+
 ## 4.4.3
 
 ### Patch Changes

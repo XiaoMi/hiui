@@ -1,5 +1,11 @@
 # @hi-ui/scrollbar
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2688](https://github.com/XiaoMi/hiui/pull/2688) [`2fa5ee5b6`](https://github.com/XiaoMi/hiui/commit/2fa5ee5b6ecc7f95a5224fd91ccfcd263b41d932) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add zIndex api
+
 ## 4.0.6
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/loading
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2703](https://github.com/XiaoMi/hiui/pull/2703) [`4ec059bad`](https://github.com/XiaoMi/hiui/commit/4ec059badc67f3facc98288f3e7a67f51938e40f) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add wrapperClassName and wrapperStyle apis
+
 ## 4.1.3
 
 ### Patch Changes

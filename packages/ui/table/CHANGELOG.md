@@ -1,5 +1,27 @@
 # @hi-ui/table
 
+## 4.4.0
+
+### Minor Changes
+
+- [#2699](https://github.com/XiaoMi/hiui/pull/2699) [`6c5d9c7ed`](https://github.com/XiaoMi/hiui/commit/6c5d9c7ed21eaebc26638ba6ee54eb3bfe918af4) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add fixed and rowClassName api
+  feat: SettingDrawer 增加 extraHeader showCheckAll itemRender api
+  fix: 修复边框模式下样式问题
+  feat: SettingDrawer 支持配置列是否禁止拖拽
+  fix: 修复 resize 模式下多选时宽度被重置问题
+  fix: 修复树形表格节点图标没有对齐问题
+  fix: 修复虚拟表格边框样式问题
+  fix: 修复虚拟表格下双滚动条问题
+  fix: 修复虚拟表格下 size 和 maxHeight 失效问题
+
+### Patch Changes
+
+- Updated dependencies [[`4ec059bad`](https://github.com/XiaoMi/hiui/commit/4ec059badc67f3facc98288f3e7a67f51938e40f), [`ffd47b89a`](https://github.com/XiaoMi/hiui/commit/ffd47b89a5d7da54ea717fa827123e9c3b2b6d0f), [`cfc37dc37`](https://github.com/XiaoMi/hiui/commit/cfc37dc37c83ce737d88262644c07ca23cde0731), [`2fa5ee5b6`](https://github.com/XiaoMi/hiui/commit/2fa5ee5b6ecc7f95a5224fd91ccfcd263b41d932), [`9cf8e079f`](https://github.com/XiaoMi/hiui/commit/9cf8e079fd3f342d851d7abfecc1c0447c3ac40b)]:
+  - @hi-ui/loading@4.2.0
+  - @hi-ui/empty-state@4.1.0
+  - @hi-ui/tree-utils@4.1.5
+  - @hi-ui/scrollbar@4.1.0
+
 ## 4.3.4
 
 ### Patch Changes

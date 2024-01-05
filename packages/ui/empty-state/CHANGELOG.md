@@ -1,5 +1,13 @@
 # @hi-ui/empty-state
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2693](https://github.com/XiaoMi/hiui/pull/2693) [`ffd47b89a`](https://github.com/XiaoMi/hiui/commit/ffd47b89a5d7da54ea717fa827123e9c3b2b6d0f) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加一组多彩的图标
+
+- [#2701](https://github.com/XiaoMi/hiui/pull/2701) [`9cf8e079f`](https://github.com/XiaoMi/hiui/commit/9cf8e079fd3f342d851d7abfecc1c0447c3ac40b) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 增加 xl 和 xxl 尺寸
+
 ## 4.0.7
 
 ### Patch Changes

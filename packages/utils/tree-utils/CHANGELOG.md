@@ -1,5 +1,11 @@
 # @hi-ui/tree-utils
 
+## 4.1.5
+
+### Patch Changes
+
+- [#2700](https://github.com/XiaoMi/hiui/pull/2700) [`cfc37dc37`](https://github.com/XiaoMi/hiui/commit/cfc37dc37c83ce737d88262644c07ca23cde0731) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 filterTreeNode 问题
+
 ## 4.1.4
 
 ### Patch Changes

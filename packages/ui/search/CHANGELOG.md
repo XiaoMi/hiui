@@ -1,5 +1,14 @@
 # @hi-ui/search
 
+## 4.0.12
+
+### Patch Changes
+
+- [#2700](https://github.com/XiaoMi/hiui/pull/2700) [`b3dc89430`](https://github.com/XiaoMi/hiui/commit/b3dc89430502c85888501001ea192038530a3d6a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: onSearch 回调参数返回 item 对象
+
+- Updated dependencies [[`4ec059bad`](https://github.com/XiaoMi/hiui/commit/4ec059badc67f3facc98288f3e7a67f51938e40f)]:
+  - @hi-ui/loading@4.2.0
+
 ## 4.0.11
 
 ### Patch Changes

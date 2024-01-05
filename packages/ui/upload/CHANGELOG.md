@@ -1,5 +1,12 @@
 # @hi-ui/upload
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2705](https://github.com/XiaoMi/hiui/pull/2705) [`ec6de99c3`](https://github.com/XiaoMi/hiui/commit/ec6de99c3369d693df4d1c57564800f127446e23) Thanks [@zyprepare](https://github.com/zyprepare)! - perf: 依赖项中增加 @hi-ui/message，否则打包时会将多余代码打进去
+  feat: 暴露出单个不同类型的上传组件，支持按需引入，对 Tree Shaking 友好
+
 ## 4.1.9
 
 ### Patch Changes

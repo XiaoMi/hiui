@@ -1,5 +1,12 @@
 # @hi-ui/date-picker
 
+## 4.5.0
+
+### Minor Changes
+
+- [#2704](https://github.com/XiaoMi/hiui/pull/2704) [`51267eb24`](https://github.com/XiaoMi/hiui/commit/51267eb2408ee50970e2d354eaa554a34df00878) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 支持季度选择
+  feat: add onPanelChange api
+
 ## 4.4.4
 
 ### Patch Changes
