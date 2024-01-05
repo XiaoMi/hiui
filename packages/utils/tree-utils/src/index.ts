@@ -651,21 +651,21 @@ export const filterTreeNode = <T extends BaseTreeNodeData>(
   node: T,
   filterFunc: (...arg: any[]) => boolean
 ) => {
-  if (!filterFunc(node)) return false
-
   const dig = (node: BaseTreeNodeData) => {
-    if (node.children) {
-      node.children = node.children.filter((child) => {
+    if (node.children && node.children?.length > 0) {
+      node.children = node.children.filter(function (child) {
         if (!filterFunc(child)) return false
-
         dig(child)
         return true
       })
+
+      return node.children.length > 0
+    } else {
+      return filterFunc(node)
     }
   }
 
-  dig(node)
-  return true
+  return dig(node)
 }
 
 /**

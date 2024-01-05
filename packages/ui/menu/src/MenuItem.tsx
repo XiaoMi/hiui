@@ -36,7 +36,6 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
       render,
       raw,
       size = 'lg',
-      ...rest
     },
     ref
   ) => {
@@ -79,7 +78,6 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
             className
           )}
           style={hidden ? hiddenStyle : undefined}
-          {...rest}
         >
           <div
             className={cx(`${prefixCls}-item__inner`, {
@@ -87,6 +85,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               [`${prefixCls}-item__inner--active`]: activeId === id,
               [`${prefixCls}-item__inner--active-p`]: activeParents?.includes(id),
               [`${prefixCls}-item__inner--expanded`]: expandedIds?.includes(id),
+              [`${prefixCls}-item__inner--hasIcon`]: icon,
             })}
             onClick={() => {
               if (isArrayNonEmpty(children)) {
@@ -108,7 +107,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
 
             {icon ? <span className={`${prefixCls}-item__icon`}>{icon}</span> : null}
             <span className={`${prefixCls}-item__content`}>
-              {isFunction(render) ? render({ id, icon, title }, level) : title}
+              {isFunction(render) ? render({ ...raw, id, icon, title }, level) : title}
             </span>
             {/* 垂直菜单-纵向展开 */}
             {hasChildren &&

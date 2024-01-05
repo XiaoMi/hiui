@@ -1,3 +1,6 @@
+import { filterTree, cloneTree, getTreeNodesWithChildren } from '@hi-ui/tree-utils'
+import { MenuDataItem } from './types'
+
 // 寻找某一节点的父节点
 export const getParentId = (id: string | number, data: Record<string, any>[]): string | number => {
   let parentId = '' as string | number
@@ -24,4 +27,31 @@ export const getAncestorIds = (
     getAncestorIds(getParentId(id, data), data, arr)
   }
   return arr
+}
+
+export const getIdsWithChildren = (treeData: MenuDataItem[]) => {
+  return getTreeNodesWithChildren(treeData).map((item) => item.id)
+}
+
+export const filterTreeData = (
+  treeData: MenuDataItem[],
+  searchKey: string,
+  activeId: string | number
+) => {
+  if (searchKey === '') {
+    return []
+  }
+
+  const clonedData = cloneTree(treeData)
+  const activeParents = getAncestorIds(activeId, treeData)
+  const sidebarActiveId = activeParents[activeParents.length - 1] ?? activeId
+
+  // 获取当前选中的树节点
+  const currentTree = clonedData?.find((d) => d.id === sidebarActiveId)?.children ?? []
+
+  return (
+    filterTree(currentTree, (d) => {
+      return d.title.includes && d.title.includes(searchKey)
+    }) ?? []
+  )
 }
