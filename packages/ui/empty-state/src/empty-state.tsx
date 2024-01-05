@@ -60,7 +60,7 @@ export interface EmptyStateProps extends HiBaseHTMLProps<'div'> {
   /**
    * 图标尺寸
    */
-  size?: EmptyStateSizeEnum
+  size?: EmptyStateSizeEnum | 'xl' | 'xxl'
   /**
    * 指示器的样式。暂不对外暴露
    * @private
