@@ -17,6 +17,7 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
       role = 'resize-box',
       className,
       children,
+      collapsible,
       separatorProps,
       ...rest
     },
@@ -29,6 +30,7 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
 
     const [colWidths, tryChangeColWidths] = useUncontrolledState<number[]>([])
     const minColWidthsRef = React.useRef<number[]>([])
+    const oldColWidthsRef = React.useRef<number[]>([])
 
     const draggableRef = React.useRef<boolean>(true)
 
@@ -115,7 +117,25 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
               <Resizable
                 className={`${prefixCls}__resizable`}
                 draggableOpts={{ enableUserSelectHack: false }}
-                handle={<Separator {...separatorProps} />}
+                handle={
+                  <Separator
+                    {...{ ...separatorProps, collapsible }}
+                    collapsed={colWidths[index] === 0}
+                    onToggle={() => {
+                      tryChangeColWidths((prev) => {
+                        const nextColWidths = [...prev]
+                        const currentPaneWidth = nextColWidths[index]
+                        if (currentPaneWidth !== 0) {
+                          nextColWidths[index] = 0
+                          oldColWidthsRef.current[index] = currentPaneWidth
+                        } else {
+                          nextColWidths[index] = oldColWidthsRef.current[index]
+                        }
+                        return nextColWidths
+                      })
+                    }}
+                  />
+                }
                 height={0}
                 width={colWidths[index] ?? 0}
                 onResizeStart={() => {
@@ -216,6 +236,10 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
 
 export interface ResizeBoxProps extends HiBaseHTMLProps<'div'> {
   separatorProps?: SeparatorProps
+  /**
+   * 可折叠
+   */
+  collapsible?: boolean
 }
 
 if (__DEV__) {

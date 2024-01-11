@@ -10,7 +10,6 @@ $prefix: '#{$component-prefix}-resize-box' !default;
   &-pane {
     display: flex;
     justify-content: space-between;
-    overflow: hidden;
   }
 
   &-separator {
@@ -32,6 +31,44 @@ $prefix: '#{$component-prefix}-resize-box' !default;
     &:hover {
       .#{$prefix}-separator-content {
         background-color: use-color('brandblue', 300);
+      }
+
+      .#{$prefix}-separator-toggle {
+        width: 10px;
+      }
+    }
+
+    &--collapsed {
+      width: 0;
+      cursor: default;
+
+      .#{$prefix}-separator-toggle {
+        svg[class^=hi-v4-icon] {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    &-toggle {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 12px;
+      height: 60px;
+      right: -9px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-start-end-radius: 16px 8px;
+      border-end-end-radius: 16px 8px;
+      border: 1px solid use-color('gray', 300);
+      border-left: none;
+      cursor: pointer;
+      color: use-color('gray', 600);
+      background-color: #fff;
+
+      svg[class^=hi-v4-icon] {
+        margin-left: -4px;
       }
     }
   }
