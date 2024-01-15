@@ -8,14 +8,30 @@ $prefix: '#{$component-prefix}-resize-box' !default;
   user-select: auto;
 
   &-pane {
+    flex-grow: 0;
+    flex-shrink: 0;
     display: flex;
     justify-content: space-between;
+
+    &--collapsed {
+      .#{$prefix}-separator-content {
+        width: 0;
+        border: none;
+      }
+
+      .#{$prefix}-toggle {
+        right: -13px;
+
+        svg[class^=hi-v4-icon] {
+          transform: rotate(180deg);
+        }
+      }
+    }
   }
 
   &-separator {
     position: relative;
     height: 100%;
-    padding: 0 2px;
     cursor: col-resize;
     flex-shrink: 0;
     display: flex;
@@ -23,17 +39,18 @@ $prefix: '#{$component-prefix}-resize-box' !default;
     align-items: center;
 
     &-content {
-      width: 2px;
+      box-sizing: border-box;
+      width: 6px;
       height: 100%;
-      background-color: use-color('gray', 300);
+      border-right: 2px solid use-color('gray', 300);
     }
 
     &:hover {
       .#{$prefix}-separator-content {
-        background-color: use-color('brandblue', 300);
+        border-right-color: use-color('brandblue', 300);
       }
 
-      .#{$prefix}-separator-toggle {
+      + .#{$prefix}-toggle {
         width: 10px;
       }
     }
@@ -41,35 +58,29 @@ $prefix: '#{$component-prefix}-resize-box' !default;
     &--collapsed {
       width: 0;
       cursor: default;
-
-      .#{$prefix}-separator-toggle {
-        svg[class^=hi-v4-icon] {
-          transform: rotate(180deg);
-        }
-      }
     }
+  }
 
-    &-toggle {
-      position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 12px;
-      height: 60px;
-      right: -9px;
-      top: 50%;
-      transform: translateY(-50%);
-      border-start-end-radius: 16px 8px;
-      border-end-end-radius: 16px 8px;
-      border: 1px solid use-color('gray', 300);
-      border-left: none;
-      cursor: pointer;
-      color: use-color('gray', 600);
-      background-color: #fff;
+  &-toggle {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px;
+    height: 60px;
+    right: -11px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-start-end-radius: 16px 8px;
+    border-end-end-radius: 16px 8px;
+    border: 1px solid use-color('gray', 300);
+    border-left: none;
+    cursor: pointer;
+    color: use-color('gray', 600);
+    background-color: #fff;
 
-      svg[class^=hi-v4-icon] {
-        margin-left: -4px;
-      }
+    svg[class^=hi-v4-icon] {
+      margin-left: -4px;
     }
   }
 }
