@@ -1,7 +1,7 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-table' !default;
-$emptyContent: '#{$component-prefix}-table-empty-content' !default;
+$emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
 .#{$prefix} {
   box-sizing: border-box;
