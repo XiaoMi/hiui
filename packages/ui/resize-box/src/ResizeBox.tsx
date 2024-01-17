@@ -5,6 +5,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { LeftOutlined } from '@hi-ui/icons'
 import { ResizeBoxPane, ResizeBoxPaneProps } from './ResizeBoxPane'
 import { Separator, SeparatorProps } from './Separator'
 
@@ -29,6 +30,7 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
 
     const [colWidths, tryChangeColWidths] = useUncontrolledState<number[]>([])
     const minColWidthsRef = React.useRef<number[]>([])
+    const oldColWidthsRef = React.useRef<number[]>([])
 
     const draggableRef = React.useRef<boolean>(true)
 
@@ -103,7 +105,16 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
           }
 
           const { type, props } = child
-          const { style, onResizeStart, onResizeEnd, onResize, ...rest } = props
+          const {
+            collapsible,
+            style,
+            onResizeStart,
+            onResizeEnd,
+            onResize,
+            onCollapse,
+            collapsed: collapsedProp,
+            ...rest
+          } = props
 
           if (type !== ResizeBoxPane) {
             console.error('ResizeBox children must be ResizeBoxPane')
@@ -111,11 +122,46 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
           }
 
           if (index !== children?.length - 1) {
+            const collapsed = collapsedProp ?? colWidths[index] === 0
+
             return (
               <Resizable
                 className={`${prefixCls}__resizable`}
                 draggableOpts={{ enableUserSelectHack: false }}
-                handle={<Separator {...separatorProps} />}
+                handle={
+                  <div style={{ position: 'relative' }}>
+                    <Separator {...separatorProps} />
+                    {collapsible && (
+                      <div
+                        className={cx(`${prefixCls}-toggle`)}
+                        onClick={() => {
+                          // 可折叠受控
+                          if (collapsedProp !== undefined) {
+                            const currentPaneWidth = colWidths[index]
+                            if (currentPaneWidth !== 0) {
+                              oldColWidthsRef.current[index] = currentPaneWidth
+                            }
+                            onCollapse?.(!collapsed)
+                          } else {
+                            tryChangeColWidths((prev) => {
+                              const nextColWidths = [...prev]
+                              const currentPaneWidth = nextColWidths[index]
+                              if (currentPaneWidth !== 0) {
+                                nextColWidths[index] = 0
+                                oldColWidthsRef.current[index] = currentPaneWidth
+                              } else {
+                                nextColWidths[index] = oldColWidthsRef.current[index]
+                              }
+                              return nextColWidths
+                            })
+                          }
+                        }}
+                      >
+                        <LeftOutlined />
+                      </div>
+                    )}
+                  </div>
+                }
                 height={0}
                 width={colWidths[index] ?? 0}
                 onResizeStart={() => {
@@ -170,9 +216,14 @@ export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
               >
                 {React.cloneElement(child, {
                   ...rest,
+                  collapsed,
                   style: {
                     ...style,
-                    width: colWidths[index],
+                    width: collapsedProp
+                      ? collapsed
+                        ? 0
+                        : oldColWidthsRef.current[index]
+                      : colWidths[index],
                   },
                 })}
               </Resizable>

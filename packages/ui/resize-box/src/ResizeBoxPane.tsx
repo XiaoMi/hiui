@@ -14,6 +14,9 @@ export const ResizeBoxPane = forwardRef<HTMLDivElement | null, ResizeBoxPaneProp
       children,
       defaultWidth,
       minWidth,
+      collapsible,
+      collapsed,
+      onCollapse,
       onResizeStart,
       onResizeEnd,
       onResize,
@@ -21,7 +24,7 @@ export const ResizeBoxPane = forwardRef<HTMLDivElement | null, ResizeBoxPaneProp
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, collapsed && `${prefixCls}--collapsed`)
 
     return (
       <div ref={ref} role={role} className={cls} style={{ width: defaultWidth }} {...rest}>
@@ -35,6 +38,9 @@ export interface ResizeBoxPaneProps extends HiBaseHTMLProps<'div'> {
   defaultWidth?: number
   width?: number
   minWidth?: number
+  collapsible?: boolean
+  collapsed?: boolean
+  onCollapse?: (collapsed: boolean) => void
   onResizeStart?: () => void
   onResizeEnd?: () => void
   onResize?: (width: number) => void
