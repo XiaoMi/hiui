@@ -1,5 +1,14 @@
 # @hi-ui/table
 
+## 4.4.1
+
+### Patch Changes
+
+- [#2722](https://github.com/XiaoMi/hiui/pull/2722) [`a25261a88`](https://github.com/XiaoMi/hiui/commit/a25261a884f9b3470924c29564b3c4758ebab6cf) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复空状态下横向滚动条问题
+
+- Updated dependencies [[`a25261a88`](https://github.com/XiaoMi/hiui/commit/a25261a884f9b3470924c29564b3c4758ebab6cf)]:
+  - @hi-ui/checkbox@4.0.9
+
 ## 4.4.0
 
 ### Minor Changes

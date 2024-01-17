@@ -1,5 +1,11 @@
 # @hi-ui/modal
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2722](https://github.com/XiaoMi/hiui/pull/2722) [`a25261a88`](https://github.com/XiaoMi/hiui/commit/a25261a884f9b3470924c29564b3c4758ebab6cf) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: api 增加 close 方法和 key 参数
+
 ## 4.0.15
 
 ### Patch Changes
