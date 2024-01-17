@@ -1,20 +1,5 @@
 # @hi-ui/hiui
 
-## 4.5.1
-
-### Patch Changes
-
-- [#2711](https://github.com/XiaoMi/hiui/pull/2711) [`1a061e458`](https://github.com/XiaoMi/hiui/commit/1a061e4588b19ba5ed3f8e97ef8c608e6832c1c3) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(modal): api 增加 close 方法和 key 参数
-
-- [#2719](https://github.com/XiaoMi/hiui/pull/2719) [`97c8267ff`](https://github.com/XiaoMi/hiui/commit/97c8267ff8143ce75e5273d8918251c3f1120560) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(checkbox): 修复组合下 null 传值问题
-
-- [#2720](https://github.com/XiaoMi/hiui/pull/2720) [`872663b99`](https://github.com/XiaoMi/hiui/commit/872663b99c1190ab8d47a1764d658918547ebd33) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复空状态下横向滚动条问题
-
-- Updated dependencies [[`1a061e458`](https://github.com/XiaoMi/hiui/commit/1a061e4588b19ba5ed3f8e97ef8c608e6832c1c3), [`872663b99`](https://github.com/XiaoMi/hiui/commit/872663b99c1190ab8d47a1764d658918547ebd33), [`97c8267ff`](https://github.com/XiaoMi/hiui/commit/97c8267ff8143ce75e5273d8918251c3f1120560)]:
-  - @hi-ui/modal@4.1.0
-  - @hi-ui/table@4.4.1
-  - @hi-ui/checkbox@4.0.9
-
 ## 4.5.0
 
 ### Minor Changes
