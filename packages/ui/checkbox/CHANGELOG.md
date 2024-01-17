@@ -1,5 +1,11 @@
 # @hi-ui/checkbox
 
+## 4.0.9
+
+### Patch Changes
+
+- [#2719](https://github.com/XiaoMi/hiui/pull/2719) [`97c8267ff`](https://github.com/XiaoMi/hiui/commit/97c8267ff8143ce75e5273d8918251c3f1120560) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复组合下 null 传值问题
+
 ## 4.0.8
 
 ### Patch Changes
