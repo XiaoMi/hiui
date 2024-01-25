@@ -33,6 +33,7 @@ export interface UploadFileList {
   onDownload: UploadProps['onDownload']
   showPic?: boolean
   actionRender?: (props: ActionRenderProps) => React.ReactNode
+  disabled?: boolean
 }
 
 export interface UploadRequestOption {

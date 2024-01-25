@@ -65,6 +65,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       customUpload,
       method,
       accept,
+      disabled,
     })
 
     const nonInteractive = disabled || (!!maxCount && _fileList.length >= maxCount)
@@ -150,6 +151,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             onDelete={deleteFile}
             onDownload={onDownload}
             prefixCls={prefixCls}
+            disabled={disabled}
           />
         )}
       </div>

@@ -3,10 +3,6 @@
 $prefix: '#{$component-prefix}-upload' !default;
 
 .#{$prefix} {
-  &--disabled {
-    cursor: not-allowed;
-  }
-
   &__tips {
     font-size: use-text-size('sm');
     color: use-color('gray', 500);
@@ -213,7 +209,7 @@ $prefix: '#{$component-prefix}-upload' !default;
       .drag-upload__title {
         font-size: use-text-size('normal');
 
-        [class^=hi-v4-icon] {
+        [class^='hi-v4-icon'] {
           font-size: use-text-size('lg');
           margin-right: use-spacing(4);
         }
@@ -242,11 +238,12 @@ $prefix: '#{$component-prefix}-upload' !default;
   &--avatar,
   &--photo {
     &.#{$prefix}--disabled {
-      .photo-upload {
+      .#{$prefix}__item--upload {
         cursor: not-allowed;
 
         &,
-        &:hover {
+        &:hover,
+        &:focus {
           border-color: use-color('gray', 300);
         }
       }
