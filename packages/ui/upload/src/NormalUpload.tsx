@@ -66,6 +66,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       method,
+      disabled,
     })
 
     return (
@@ -98,6 +99,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             onDownload={onDownload}
             prefixCls={prefixCls}
             actionRender={actionRender}
+            disabled={disabled}
           />
         )}
       </div>

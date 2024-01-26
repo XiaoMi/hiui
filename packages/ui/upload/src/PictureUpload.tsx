@@ -65,7 +65,12 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
 
     const uploadSuccessText = i18n.get('upload.uploadSuccess')
 
-    const cls = cx(prefixCls, `${prefixCls}--photo`, className)
+    const cls = cx(
+      prefixCls,
+      `${prefixCls}--photo`,
+      disabled && `${prefixCls}--disabled`,
+      className
+    )
 
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
@@ -81,6 +86,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       method,
+      disabled,
     })
 
     const uploadRef = useRef<HTMLLIElement>(null)
@@ -188,45 +194,48 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                   className={cx(`${prefixCls}__item`, `${prefixCls}__item--${photoSize}`, {
                     [`${prefixCls}__item--error`]: file.uploadState === 'error',
                   })}
+                  onClick={() => previewImage(index)}
                   onKeyDown={(e) => handleItemKeydown(e, file, index)}
                 >
                   <img src={file.url} className={`${prefixCls}__thumb`} />
-                  {file.uploadState !== 'error' ? (
-                    <div className={`${prefixCls}__mask`}>
-                      <div className={`${prefixCls}__action-group`}>
-                        <span className={`${prefixCls}__action-btn`}>
-                          <EyeOutlined
-                            onClick={() => {
-                              previewImage(index)
-                            }}
-                          />
+                  {!disabled ? (
+                    file.uploadState !== 'error' ? (
+                      <div className={`${prefixCls}__mask`}>
+                        <div className={`${prefixCls}__action-group`}>
+                          <span className={`${prefixCls}__action-btn`}>
+                            <EyeOutlined
+                              onClick={() => {
+                                previewImage(index)
+                              }}
+                            />
+                          </span>
+                          <span className={`${prefixCls}__action-btn`}>
+                            <DeleteOutlined
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                deleteFile(file, index)
+                              }}
+                            />
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className={`${prefixCls}__percent`}>
+                        <span className={`${prefixCls}__error-btn`}>
+                          <ExclamationCircleOutlined />
                         </span>
-                        <span className={`${prefixCls}__action-btn`}>
-                          <DeleteOutlined
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              deleteFile(file, index)
-                            }}
-                          />
+                        <span
+                          className={cx(`${prefixCls}__delete-btn`)}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            deleteFile(file, index)
+                          }}
+                        >
+                          <CloseCircleOutlined />
                         </span>
                       </div>
-                    </div>
-                  ) : (
-                    <div className={`${prefixCls}__percent`}>
-                      <span className={`${prefixCls}__error-btn`}>
-                        <ExclamationCircleOutlined />
-                      </span>
-                      <span
-                        className={cx(`${prefixCls}__delete-btn`)}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          deleteFile(file, index)
-                        }}
-                      >
-                        <CloseCircleOutlined />
-                      </span>
-                    </div>
-                  )}
+                    )
+                  ) : null}
                 </li>
               )
             }
@@ -250,9 +259,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                   onKeyDown={handleUploadKeydown}
                   ref={uploadRef}
                 >
-                  <label style={{ display: 'block', cursor: 'pointer' }}>
-                    <PlusOutlined />
-                  </label>
+                  <PlusOutlined />
                 </li>
               ) : (
                 children

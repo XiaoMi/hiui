@@ -94,6 +94,7 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             onDownload={onDownload}
             showPic
             prefixCls={prefixCls}
+            disabled={disabled}
           />
         )}
       </div>

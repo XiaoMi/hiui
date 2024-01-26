@@ -22,6 +22,7 @@ const useUpload = ({
   maxCount,
   method = 'POST',
   accept,
+  disabled,
 }: UploadProps): [
   UploadFileItem[],
   (files: HTMLInputElement['files']) => Promise<void>,
@@ -43,6 +44,9 @@ const useUpload = ({
 
   const deleteFile = useCallback(
     (file: UploadFileItem, index) => {
+      if (disabled) {
+        return
+      }
       if (file.abort) {
         file.abort()
       }

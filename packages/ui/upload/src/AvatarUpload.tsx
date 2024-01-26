@@ -53,7 +53,12 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
 
     const uploadSuccessText = i18n.get('upload.uploadSuccess')
 
-    const cls = cx(prefixCls, `${prefixCls}--avatar`, className)
+    const cls = cx(
+      prefixCls,
+      `${prefixCls}--avatar`,
+      disabled && `${prefixCls}--disabled`,
+      className
+    )
 
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
@@ -69,6 +74,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       method,
+      disabled,
     })
 
     const { aspectRatio = 0, dragMode = 'move' } = avatarOptions
@@ -210,42 +216,44 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                 }}
               >
                 <img src={file.url} className={`${prefixCls}__thumb`} />
-                {file.uploadState !== 'error' ? (
-                  <div className={`${prefixCls}__mask`}>
-                    <div className={`${prefixCls}__action-group`}>
-                      <span className={`${prefixCls}__action-btn`}>
-                        <EyeOutlined
-                          onClick={() => {
-                            previewImage(file.url || '')
-                          }}
-                        />
+                {!disabled ? (
+                  file.uploadState !== 'error' ? (
+                    <div className={`${prefixCls}__mask`}>
+                      <div className={`${prefixCls}__action-group`}>
+                        <span className={`${prefixCls}__action-btn`}>
+                          <EyeOutlined
+                            onClick={() => {
+                              previewImage(file.url || '')
+                            }}
+                          />
+                        </span>
+                        <span className={`${prefixCls}__action-btn`}>
+                          <DeleteOutlined
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              deleteFile(file, 0)
+                            }}
+                          />
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className={`${prefixCls}__percent`}>
+                      <span className={`${prefixCls}__error-btn`}>
+                        <ExclamationCircleOutlined />
                       </span>
-                      <span className={`${prefixCls}__action-btn`}>
-                        <DeleteOutlined
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            deleteFile(file, 0)
-                          }}
-                        />
+                      <span
+                        className={cx(`${prefixCls}__delete-btn`)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          deleteFile(file, 0)
+                        }}
+                      >
+                        <CloseCircleOutlined />
                       </span>
                     </div>
-                  </div>
-                ) : (
-                  <div className={`${prefixCls}__percent`}>
-                    <span className={`${prefixCls}__error-btn`}>
-                      <ExclamationCircleOutlined />
-                    </span>
-                    <span
-                      className={cx(`${prefixCls}__delete-btn`)}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        deleteFile(file, 0)
-                      }}
-                    >
-                      <CloseCircleOutlined />
-                    </span>
-                  </div>
-                )}
+                  )
+                ) : null}
               </li>
             ))}
           {!file && (
@@ -258,7 +266,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             >
               {children === undefined ? (
                 <li
-                  className={`${prefixCls}__item ${prefixCls}__item--upload`}
+                  className={cx(`${prefixCls}__item`, `${prefixCls}__item--upload`)}
                   ref={uploadRef}
                   tabIndex={0}
                   onKeyDown={handleUploadKeydown}
