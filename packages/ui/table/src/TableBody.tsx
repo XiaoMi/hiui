@@ -148,7 +148,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
         style={{ width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%' }}
       >
         <ColGroupContent />
-        <TbodyContent />
+        <TbodyContent emptyContent={emptyContent} />
       </table>
     )
 
