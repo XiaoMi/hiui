@@ -31,6 +31,7 @@ import {
   FlattedTableColumnItemData,
   FlattedTableRowData,
 } from './types'
+import { SELECTION_DATA_KEY } from './Table'
 
 const DEFAULT_COLUMNS = [] as []
 const DEFAULT_DATA = [] as []
@@ -209,7 +210,10 @@ export const useTable = ({
     onFixedToColumn
   )
 
-  const leftFreezeColumn = fixedToColumn.left
+  const leftFreezeColumn = columns.some((item) => item.dataKey === fixedToColumn.left)
+    ? fixedToColumn.left
+    : SELECTION_DATA_KEY
+
   const rightFreezeColumn = fixedToColumn.right
 
   const setLeftFreezeColumn = useCallback(
