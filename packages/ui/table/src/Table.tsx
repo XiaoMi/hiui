@@ -36,7 +36,7 @@ const STANDARD_PRESET = {
   striped: true,
   bordered: true,
   sticky: true,
-  setting: true,
+  setting: {},
   showColMenu: true,
 }
 
@@ -347,6 +347,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
                 setCacheHiddenColKeys={setCacheHiddenColKeys}
                 checkDisabledColKeys={checkDisabledColKeys}
                 onSetColKeysChange={onSetColKeysChange}
+                trigger={typeof setting === 'object' ? setting?.trigger : undefined}
               />
             ) : null,
             footer:

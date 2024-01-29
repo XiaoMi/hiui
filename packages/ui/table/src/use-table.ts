@@ -738,7 +738,7 @@ export interface UseTableProps {
   /**
    *  是否集成控制面板功能
    */
-  setting?: boolean
+  setting?: boolean | { trigger?: React.ReactNode }
   /**
    *  是否能够动态控制列宽
    */
