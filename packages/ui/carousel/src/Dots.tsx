@@ -8,7 +8,7 @@ interface DotsProps {
   prefixCls: string
   activeIndex: number
   count: number
-  onClick: (index: number) => void
+  onClick: (index: number, evt: React.MouseEvent) => void
   inAnimation: boolean
 }
 
@@ -37,9 +37,9 @@ export const Dots = (props: DotsProps) => {
             `${componentPrefixCls}__item`,
             counter === activeIndex && `${componentPrefixCls}__item--active`
           )}
-          onClick={() => {
+          onClick={(evt: React.MouseEvent) => {
             if (!inAnimation && activeIndex !== counter) {
-              onClick(counter)
+              onClick(counter, evt)
             }
           }}
         />

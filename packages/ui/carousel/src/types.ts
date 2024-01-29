@@ -1,3 +1,4 @@
+import React from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 
 export type CarouselArrowSizeEnum = 'lg' | 'md' | 'sm'
@@ -46,4 +47,8 @@ export interface CarouselProps extends HiBaseHTMLProps<'div'> {
    * @default 'bottom'
    */
   dotPlacement?: CarouselDotPlacementEnum
+  /**
+   * index 变化时的回调函数
+   */
+  onIndexChange?: (index: number, evt: React.MouseEvent) => void
 }

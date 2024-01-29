@@ -21,6 +21,7 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
     dotType = 'slider',
     showDots = true,
     showPages = false,
+    onIndexChange,
     ...rest
   } = props
   const cls = cx(prefixCls, className, dotPlacement === 'outer' && `${prefixCls}--dot-outer`)
@@ -137,7 +138,7 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
   }, [activeIndex, childCount, duration, isInHoverComponent, toIndex])
 
   const arrowOnClick = useCallback(
-    (next: boolean) => {
+    (next: boolean, evt: React.MouseEvent) => {
       let targetIndex = next ? activeIndex + 1 : activeIndex - 1
       if (targetIndex === childCount) {
         targetIndex = 0
@@ -145,15 +146,17 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
         targetIndex = childCount - 1
       }
       toIndex(targetIndex, next)
+      onIndexChange?.(targetIndex, evt)
     },
-    [activeIndex, childCount, toIndex]
+    [activeIndex, childCount, onIndexChange, toIndex]
   )
 
   const dotsOnClick = useCallback(
-    (target: number) => {
+    (target: number, evt: React.MouseEvent) => {
       toIndex(target, target > activeIndex)
+      onIndexChange?.(target, evt)
     },
-    [activeIndex, toIndex]
+    [activeIndex, onIndexChange, toIndex]
   )
 
   return (
