@@ -81,7 +81,6 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
           onScroll={onVirtualContainerScroll}
           onWheel={onTableBodyScrollMock}
           style={{
-            maxHeight: maxHeight !== undefined ? maxHeight : undefined,
             // 表格宽度大于div宽度才出现横向滚动条
             overflowX: canScroll ? 'scroll' : undefined,
             overflowY: 'hidden',
