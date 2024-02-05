@@ -153,20 +153,22 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
 
     const scrollBodyProps = {
       ref: scrollBodyElementRef,
-      className: cls,
       onScroll: onTableBodyScroll,
       style: {
         maxHeight,
       },
     }
 
-    // 外层增加 div 作为滚动容器
     return !scrollbar ? (
-      <div {...scrollBodyProps}>{bodyContent}</div>
-    ) : (
-      <Scrollbar {...scrollBodyProps} {...(isObject(scrollbar) ? scrollbar : null)}>
+      <div className={cls} {...scrollBodyProps}>
         {bodyContent}
-      </Scrollbar>
+      </div>
+    ) : (
+      <div className={cls}>
+        <Scrollbar {...scrollBodyProps} {...(isObject(scrollbar) ? scrollbar : null)}>
+          {bodyContent}
+        </Scrollbar>
+      </div>
     )
   }
 )
