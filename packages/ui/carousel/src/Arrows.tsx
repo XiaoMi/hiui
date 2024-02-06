@@ -5,7 +5,7 @@ import { cx } from '@hi-ui/classname'
 
 interface ArrowsProps {
   size: CarouselArrowSizeEnum
-  onClick: (next: boolean) => void
+  onClick: (next: boolean, evt: React.MouseEvent) => void
   prefixCls: string
   inAnimation: boolean
 }
@@ -22,9 +22,9 @@ export const Arrows = (props: ArrowsProps) => {
     <React.Fragment>
       <div
         className={cx(buttonCls, `${prefixCls}__arrows-button--left`)}
-        onClick={() => {
+        onClick={(evt) => {
           if (!inAnimation) {
-            onClick(false)
+            onClick(false, evt)
           }
         }}
       >
@@ -32,9 +32,9 @@ export const Arrows = (props: ArrowsProps) => {
       </div>
       <div
         className={cx(buttonCls, `${prefixCls}__arrows-button--right`)}
-        onClick={() => {
+        onClick={(evt) => {
           if (!inAnimation) {
-            onClick(true)
+            onClick(true, evt)
           }
         }}
       >
