@@ -36,11 +36,20 @@ export const useTablePagination = ({
   const [remoteTableData, setRemoteTableData] = React.useState<object[]>([])
   const mergedData = dataSource ? remoteTableData : dataProp
 
+  // 是否是加载中状态，防止重复调用请求
+  const isLoadingRef = React.useRef(false)
+
   /**
    * 当设置 dataSource 后，则自动获取数据
    */
   const getData = useLatestCallback(() => {
     if (dataSource) {
+      if (isLoadingRef.current) {
+        return
+      }
+
+      isLoadingRef.current = true
+
       const requestConfig = dataSource(currentPage, pageSize)
 
       setInternalLoading(true)
@@ -54,20 +63,21 @@ export const useTablePagination = ({
         })
         .finally(() => {
           setInternalLoading(false)
+          isLoadingRef.current = false
         })
     }
   })
 
   React.useEffect(() => {
     getData()
-  }, [currentPage, getData, pageSize])
+  }, [currentPage, getData])
 
   React.useEffect(() => {
     if (dataSource) {
       // 如果已经在第一页则直接刷新数据，否则重置到第一页
       currentPage === 1 ? getData() : trySetCurrentPage(1)
     }
-  }, [dataSource, getData, trySetCurrentPage])
+  }, [dataSource, getData, trySetCurrentPage, pageSize])
 
   return {
     mergedData,
