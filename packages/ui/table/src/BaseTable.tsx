@@ -4,7 +4,8 @@ import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 import { IconButton } from '@hi-ui/icon-button'
 import { PlusSquareOutlined, MinusSquareOutlined } from '@hi-ui/icons'
-import { isFunction } from '@hi-ui/type-assertion'
+import Scrollbar from '@hi-ui/scrollbar'
+import { isFunction, isObject } from '@hi-ui/type-assertion'
 import { TableBody } from './TableBody'
 import { TableHeader } from './TableHeader'
 import { defaultLoadingIcon } from './icons'
@@ -188,6 +189,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       bodyTableRef,
       scrollWidth,
       footerRender,
+      scrollbar,
     } = providedValue
 
     const hasBorder = borderedProp ?? bordered
@@ -198,23 +200,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     const alwaysFixedColumn = fixedColumnTrigger === 'always'
 
     const renderTable = () => {
-      return needDoubleTable ? (
-        <>
-          {/* 双表格 */}
-          <div {...getTableHeaderProps()}>
-            <TableHeader />
-
-            {/* 不跟随内部 header 横向滚动，固定到右侧 */}
-            {extraHeader ? (
-              <div style={{ position: 'absolute', right: 0, zIndex: 11, bottom: 0, top: 0 }}>
-                {extraHeader}
-              </div>
-            ) : null}
-          </div>
-
-          <TableBody emptyContent={emptyContent} />
-        </>
-      ) : (
+      const singleTableContent = (
         <div
           ref={scrollBodyElementRef}
           className={`${prefixCls}-content`}
@@ -233,6 +219,31 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
             <TbodyContent emptyContent={emptyContent} />
           </table>
         </div>
+      )
+
+      const doubleTableContent = (
+        <>
+          <div {...getTableHeaderProps()}>
+            <TableHeader />
+
+            {/* 不跟随内部 header 横向滚动，固定到右侧 */}
+            {extraHeader ? (
+              <div style={{ position: 'absolute', right: 0, zIndex: 11, bottom: 0, top: 0 }}>
+                {extraHeader}
+              </div>
+            ) : null}
+          </div>
+
+          <TableBody emptyContent={emptyContent} />
+        </>
+      )
+
+      return needDoubleTable ? (
+        doubleTableContent
+      ) : !scrollbar ? (
+        singleTableContent
+      ) : (
+        <Scrollbar {...(isObject(scrollbar) ? scrollbar : null)}>{singleTableContent}</Scrollbar>
       )
     }
 

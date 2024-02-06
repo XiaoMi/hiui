@@ -34,6 +34,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
       setCacheHiddenColKeys,
       onSetColKeysChange,
       checkDisabledColKeys = [],
+      trigger,
     },
     ref
   ) => {
@@ -83,7 +84,11 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
 
     return (
       <div ref={ref} className={cls}>
-        <IconButton icon={<EllipsisVerticalOutlined />} onClick={menuVisibleAction.not} />
+        {trigger ? (
+          <div className={`${prefixCls}__trigger`}>{trigger}</div>
+        ) : (
+          <IconButton icon={<EllipsisVerticalOutlined />} onClick={menuVisibleAction.not} />
+        )}
 
         <Drawer
           className={`${prefixCls}__drawer`}
@@ -136,6 +141,7 @@ export interface TableColumnMenuProps
   prefixCls?: string
   checkDisabledColKeys?: string[]
   onSetColKeysChange?: (sortedColKeys: string[], hiddenColKeys: string[]) => void
+  trigger?: React.ReactNode
 }
 
 if (__DEV__) {

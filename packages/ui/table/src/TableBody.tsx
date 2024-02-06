@@ -81,7 +81,6 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
           onScroll={onVirtualContainerScroll}
           onWheel={onTableBodyScrollMock}
           style={{
-            maxHeight: maxHeight !== undefined ? maxHeight : undefined,
             // 表格宽度大于div宽度才出现横向滚动条
             overflowX: canScroll ? 'scroll' : undefined,
             overflowY: 'hidden',
@@ -154,20 +153,22 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
 
     const scrollBodyProps = {
       ref: scrollBodyElementRef,
-      className: cls,
       onScroll: onTableBodyScroll,
       style: {
         maxHeight,
       },
     }
 
-    // 外层增加 div 作为滚动容器
     return !scrollbar ? (
-      <div {...scrollBodyProps}>{bodyContent}</div>
-    ) : (
-      <Scrollbar {...scrollBodyProps} {...(isObject(scrollbar) ? scrollbar : null)}>
+      <div className={cls} {...scrollBodyProps}>
         {bodyContent}
-      </Scrollbar>
+      </div>
+    ) : (
+      <div className={cls}>
+        <Scrollbar {...scrollBodyProps} {...(isObject(scrollbar) ? scrollbar : null)}>
+          {bodyContent}
+        </Scrollbar>
+      </div>
     )
   }
 )
