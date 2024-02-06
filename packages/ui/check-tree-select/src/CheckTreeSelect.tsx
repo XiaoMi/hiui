@@ -90,6 +90,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       showCheckAll,
       tagInputProps,
       size = 'md',
+      customRender,
       ...rest
     },
     ref
@@ -344,29 +345,37 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         footer={renderDefaultFooter()}
         loading={rest.loading !== undefined ? rest.loading : loading}
         trigger={
-          <TagInputMock
-            {...tagInputProps}
-            size={size}
-            // ref={targetElementRef}
-            // onClick={openMenu}
-            // disabled={disabled}
-            clearable={clearable}
-            placeholder={placeholder}
-            // @ts-ignore
-            displayRender={displayRender}
-            suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
-            focused={menuVisible}
-            appearance={appearance}
-            value={value}
-            onChange={onValueChange}
-            data={mergedData}
-            // @ts-ignore
-            invalid={invalid}
-            // onExpand={() => {
-            //   // setViewSelected(true)
-            //   menuVisibleAction.on()
-            // }}
-          />
+          customRender ? (
+            typeof customRender === 'function' ? (
+              customRender(checkedNodes)
+            ) : (
+              customRender
+            )
+          ) : (
+            <TagInputMock
+              {...tagInputProps}
+              size={size}
+              // ref={targetElementRef}
+              // onClick={openMenu}
+              // disabled={disabled}
+              clearable={clearable}
+              placeholder={placeholder}
+              // @ts-ignore
+              displayRender={displayRender}
+              suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+              focused={menuVisible}
+              appearance={appearance}
+              value={value}
+              onChange={onValueChange}
+              data={mergedData}
+              // @ts-ignore
+              invalid={invalid}
+              // onExpand={() => {
+              //   // setViewSelected(true)
+              //   menuVisibleAction.on()
+              // }}
+            />
+          )
         }
       >
         {isArrayNonEmpty(treeProps.data) ? (
@@ -538,6 +547,10 @@ export interface CheckTreeSelectProps
    * 设置尺寸
    */
   size?: HiBaseSizeEnum
+  /**
+   * 自定义触发器
+   */
+  customRender?: React.ReactNode | ((option: CheckTreeSelectDataItem[]) => React.ReactNode)
 }
 
 if (__DEV__) {
