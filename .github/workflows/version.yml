@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Get current date
         id: date
-        run: echo "today=$(date+'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        run: echo "today=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
       - name: Checkout Repo
         uses: actions/checkout@v4
