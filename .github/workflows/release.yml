@@ -20,12 +20,12 @@ jobs:
         run: echo $HOME ${{ github.ref }} ${{ github.head_ref }} ${{ github.event.pull_request.merged }}
 
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
       - name: Setup Node.js 14.21.x
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: 14.21.x
           cache: 'yarn'
@@ -35,6 +35,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          yarn config set strict-ssl false
           yarn
 
       - name: Build packages
@@ -44,6 +45,7 @@ jobs:
       - name: Publish
         run: |
           yarn run publish
+          git checkout -- .npmrc
           git push origin --follow-tags
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
