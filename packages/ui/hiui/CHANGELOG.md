@@ -1,5 +1,31 @@
 # @hi-ui/hiui
 
+## 4.5.2
+
+### Patch Changes
+
+- [#2736](https://github.com/XiaoMi/hiui/pull/2736) [`753794e04`](https://github.com/XiaoMi/hiui/commit/753794e0446fa92eede24773b846eee02429eecb) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(carousel): add onIndexChange api
+
+- [#2726](https://github.com/XiaoMi/hiui/pull/2726) [`459c7940c`](https://github.com/XiaoMi/hiui/commit/459c7940cc94b124e182754474424e13de9f120a) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复双表格结构下，无法设置空状态内容问题
+
+- [#2737](https://github.com/XiaoMi/hiui/pull/2737) [`78bc495f2`](https://github.com/XiaoMi/hiui/commit/78bc495f233c205a5daddd987e8006e6ce21f7d5) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(check-tree-select): add customRender api
+
+- [#2735](https://github.com/XiaoMi/hiui/pull/2735) [`b971c0b06`](https://github.com/XiaoMi/hiui/commit/b971c0b06b1c64dd72c79c23068c4fed684d97c3) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复同时设置 bordered 和 scrollbar 后滚动异常问题
+
+- [#2735](https://github.com/XiaoMi/hiui/pull/2735) [`528314e46`](https://github.com/XiaoMi/hiui/commit/528314e46173dd18cc0140e60e763cb84b52fa2c) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复设置 dataSource 组件首次会执行 2 次请求问题
+
+- [#2727](https://github.com/XiaoMi/hiui/pull/2727) [`26203110e`](https://github.com/XiaoMi/hiui/commit/26203110e48496b9d5a3725ff51f84f73e9633f3) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(upload): 修复 disabled 不生效问题
+
+- [#2735](https://github.com/XiaoMi/hiui/pull/2735) [`6ac546d3e`](https://github.com/XiaoMi/hiui/commit/6ac546d3e9c1b863fb30941dd365220fa138258a) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复虚拟表格设置 maxHeight 底部内容被遮挡问题
+
+- [#2735](https://github.com/XiaoMi/hiui/pull/2735) [`81863f522`](https://github.com/XiaoMi/hiui/commit/81863f52200213ae7740f496c4fe8d73f607b66c) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): setting 增加 trigger 配置
+
+- Updated dependencies [[`753794e04`](https://github.com/XiaoMi/hiui/commit/753794e0446fa92eede24773b846eee02429eecb), [`459c7940c`](https://github.com/XiaoMi/hiui/commit/459c7940cc94b124e182754474424e13de9f120a), [`6ac546d3e`](https://github.com/XiaoMi/hiui/commit/6ac546d3e9c1b863fb30941dd365220fa138258a), [`b971c0b06`](https://github.com/XiaoMi/hiui/commit/b971c0b06b1c64dd72c79c23068c4fed684d97c3), [`a2b9df50b`](https://github.com/XiaoMi/hiui/commit/a2b9df50b454ae033a5dd0e5f6165ab2f6de07a5), [`a2b9df50b`](https://github.com/XiaoMi/hiui/commit/a2b9df50b454ae033a5dd0e5f6165ab2f6de07a5), [`81863f522`](https://github.com/XiaoMi/hiui/commit/81863f52200213ae7740f496c4fe8d73f607b66c), [`26203110e`](https://github.com/XiaoMi/hiui/commit/26203110e48496b9d5a3725ff51f84f73e9633f3), [`528314e46`](https://github.com/XiaoMi/hiui/commit/528314e46173dd18cc0140e60e763cb84b52fa2c), [`78bc495f2`](https://github.com/XiaoMi/hiui/commit/78bc495f233c205a5daddd987e8006e6ce21f7d5)]:
+  - @hi-ui/carousel@4.1.0
+  - @hi-ui/table@4.5.0
+  - @hi-ui/upload@4.2.1
+  - @hi-ui/check-tree-select@4.4.0
+
 ## 4.5.1
 
 ### Patch Changes

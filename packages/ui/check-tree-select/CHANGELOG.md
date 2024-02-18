@@ -1,5 +1,11 @@
 # @hi-ui/check-tree-select
 
+## 4.4.0
+
+### Minor Changes
+
+- [#2737](https://github.com/XiaoMi/hiui/pull/2737) [`78bc495f2`](https://github.com/XiaoMi/hiui/commit/78bc495f233c205a5daddd987e8006e6ce21f7d5) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add customRender api
+
 ## 4.3.4
 
 ### Patch Changes

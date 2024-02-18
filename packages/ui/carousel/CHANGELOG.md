@@ -1,5 +1,11 @@
 # @hi-ui/carousel
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2736](https://github.com/XiaoMi/hiui/pull/2736) [`753794e04`](https://github.com/XiaoMi/hiui/commit/753794e0446fa92eede24773b846eee02429eecb) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add onIndexChange api
+
 ## 4.0.7
 
 ### Patch Changes

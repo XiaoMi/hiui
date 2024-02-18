@@ -1,5 +1,25 @@
 # @hi-ui/table
 
+## 4.5.0
+
+### Minor Changes
+
+- [#2735](https://github.com/XiaoMi/hiui/pull/2735) [`a2b9df50b`](https://github.com/XiaoMi/hiui/commit/a2b9df50b454ae033a5dd0e5f6165ab2f6de07a5) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 设置 rowSelection 后默认冻结该列
+
+- [#2735](https://github.com/XiaoMi/hiui/pull/2735) [`81863f522`](https://github.com/XiaoMi/hiui/commit/81863f52200213ae7740f496c4fe8d73f607b66c) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: setting 增加 trigger 配置
+
+### Patch Changes
+
+- [#2726](https://github.com/XiaoMi/hiui/pull/2726) [`459c7940c`](https://github.com/XiaoMi/hiui/commit/459c7940cc94b124e182754474424e13de9f120a) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复双表格结构下，无法设置空状态内容问题
+
+- [#2735](https://github.com/XiaoMi/hiui/pull/2735) [`6ac546d3e`](https://github.com/XiaoMi/hiui/commit/6ac546d3e9c1b863fb30941dd365220fa138258a) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复虚拟表格设置 maxHeight 底部内容被遮挡问题
+
+- [#2735](https://github.com/XiaoMi/hiui/pull/2735) [`b971c0b06`](https://github.com/XiaoMi/hiui/commit/b971c0b06b1c64dd72c79c23068c4fed684d97c3) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复同时设置 bordered 和 scrollbar 后滚动异常问题
+
+- [#2735](https://github.com/XiaoMi/hiui/pull/2735) [`a2b9df50b`](https://github.com/XiaoMi/hiui/commit/a2b9df50b454ae033a5dd0e5f6165ab2f6de07a5) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): 设置 rowSelection 后默认冻结该列
+
+- [#2735](https://github.com/XiaoMi/hiui/pull/2735) [`528314e46`](https://github.com/XiaoMi/hiui/commit/528314e46173dd18cc0140e60e763cb84b52fa2c) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复设置 dataSource 组件首次会执行 2 次请求问题
+
 ## 4.4.1
 
 ### Patch Changes
