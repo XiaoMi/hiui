@@ -36,6 +36,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          yarn config set enableStrictSsl false
           yarn
 
       - name: Update Version
