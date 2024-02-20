@@ -20,6 +20,7 @@ export * from './pinyin.stories'
 export * from './virtual-list.stories'
 export * from './empty-content.stories'
 export * from './tip.stories'
+export * from './addon.stories'
 
 export default {
   title: 'Data Input/Select',

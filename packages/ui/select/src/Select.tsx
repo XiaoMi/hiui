@@ -72,6 +72,8 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       data: dataProp,
       fieldNames,
       size = 'md',
+      prefix,
+      suffix,
       onSelect: onSelectProp,
       onSearch: onSearchProp,
       onKeyDown: onKeyDownProp,
@@ -249,7 +251,9 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                     }
                   : undefined
               }
+              prefix={prefix}
               suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+              secondarySuffix={suffix}
               focused={menuVisible}
               value={value}
               onChange={(value, item) => {
@@ -369,6 +373,14 @@ export interface SelectProps
    * 设置大小
    */
   size?: HiBaseSizeEnum
+  /**
+   * 选择框前置内容
+   */
+  prefix?: React.ReactNode
+  /**
+   * 选择框后置内容
+   */
+  suffix?: React.ReactNode
 }
 
 ;(Select as any).HiName = 'Select'

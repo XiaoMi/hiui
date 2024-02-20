@@ -34,7 +34,9 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
       appearance = 'line',
       clearableTrigger = 'hover',
       displayRender,
+      prefix,
       suffix,
+      secondarySuffix,
       onMouseOver,
       onMouseLeave,
       ...rest
@@ -114,11 +116,15 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
         }}
         {...rest}
       >
+        {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
         {hasValue ? (
           <span className={`${prefixCls}__value`}>{displayValue}</span>
         ) : (
           <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
         )}
+        {secondarySuffix ? (
+          <span className={`${prefixCls}__secondary-suffix`}>{secondarySuffix}</span>
+        ) : null}
         {suffix || showClearableIcon ? (
           <span className={`${prefixCls}__suffix`}>
             {showClearableIcon ? (
@@ -187,9 +193,17 @@ export type MockInputProps = HiBaseHTMLFieldProps<
      */
     placeholder?: string
     /**
+     * 输入框前置内容
+     */
+    prefix?: React.ReactNode
+    /**
      * 输入框后置内容
      */
     suffix?: React.ReactNode
+    /**
+     * 输入框次要后置内容
+     */
+    secondarySuffix?: React.ReactNode
     /**
      * 点击 Input 时触发回调
      */
