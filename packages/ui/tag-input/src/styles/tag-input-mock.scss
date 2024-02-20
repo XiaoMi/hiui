@@ -11,7 +11,6 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   position: relative;
   overflow: hidden;
   display: inline-flex;
-  justify-content: space-between;
   align-items: center;
   flex: 1;
   transition-property: all;
@@ -52,7 +51,9 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     }
   }
 
-  &__suffix {
+  &__prefix,
+  &__suffix,
+  &__secondary-suffix {
     display: inline-flex;
     align-items: center;
     box-sizing: border-box;
@@ -121,6 +122,15 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
         color: use-color-static('white');
       }
     }
+  }
+
+  &__prefix {
+    margin-right: use-spacing(4);
+  }
+
+  &__tags,
+  &__placeholder {
+    flex: 1;
   }
 
   &__suffix,

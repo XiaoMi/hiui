@@ -75,6 +75,8 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       customRender,
       tagInputProps,
       size = 'md',
+      prefix,
+      suffix,
       onKeyDown: onKeyDownProp,
       ...rest
     },
@@ -304,7 +306,9 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
                 placeholder={placeholder}
                 // @ts-ignore
                 displayRender={displayRender}
+                prefix={prefix}
                 suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+                secondarySuffix={suffix}
                 focused={menuVisible}
                 appearance={appearance}
                 value={value}
@@ -457,9 +461,13 @@ export interface CheckSelectProps
    */
   renderExtraFooter?: () => React.ReactNode
   /**
-   * 自定义 input 后缀 icon
+   * 选择框前置内容
    */
-  suffixIcon?: React.ReactNode
+  prefix?: React.ReactNode
+  /**
+   * 选择框后置内容
+   */
+  suffix?: React.ReactNode
   /**
    * 自定义清除 tags 的 icon
    */
