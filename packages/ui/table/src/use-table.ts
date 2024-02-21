@@ -8,6 +8,7 @@ import {
   getNodeRootParent,
   flattedTreeSort,
   // getNodeRootParent,
+  findNodeById,
 } from '@hi-ui/tree-utils'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { isArrayNonEmpty, isNullish } from '@hi-ui/type-assertion'
@@ -210,7 +211,9 @@ export const useTable = ({
     onFixedToColumn
   )
 
-  const leftFreezeColumn = columns.some((item) => item.dataKey === fixedToColumn.left)
+  const leftFreezeColumn = findNodeById(columns, fixedToColumn.left || '', {
+    idFieldName: 'dataKey',
+  })
     ? fixedToColumn.left
     : SELECTION_DATA_KEY
 
@@ -282,9 +285,26 @@ export const useTable = ({
       if (colWidths) {
         // colWidths 记录的是最新的列宽，当它有值时，重置一下列宽，否则会导致冻结列动态调整宽度后定位不准
         nextColumns = nextColumns.map((item, index) => {
+          const { width, children } = item
+          let parentWidth = 0
+
+          // 计算父节点宽度
+          const dig = (children?: FlattedTableColumnItemData[], index = 0) => {
+            children?.forEach((child, childIndex) => {
+              if (child.children) {
+                dig(child.children, childIndex)
+              } else {
+                parentWidth += colWidths[index + childIndex]
+              }
+            })
+          }
+
+          dig(children, index)
+
           return {
             ...item,
-            width: colWidths[index],
+            // 如果是表头分组中的父节点则 width 设置为所有子节点的宽度总和，否则直接拿 colWidths 中的宽度
+            width: children ? parentWidth || width : colWidths[index],
           }
         })
       }

@@ -128,13 +128,15 @@ export const parseFixedColumns = (
         columns,
         children,
         key,
-        index === 0 ? 0 : _parentStickyWidth
+        idx === 0 ? _parentStickyWidth : 0
       )
 
       item.children[idx] = child
+      children[idx] = child
       columns[child.index] = child
     })
   }
+
   return item
 }
 
