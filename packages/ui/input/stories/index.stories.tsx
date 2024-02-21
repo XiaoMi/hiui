@@ -14,7 +14,7 @@ export * from './auto-focus.stories'
 export * from './focus.stories'
 export * from './trim.stories'
 export * from './type.stories'
-export * from './format.stories'
+// export * from './format.stories'
 export * from './with-tooltip.stories'
 // export * from './mock.stories'
 
