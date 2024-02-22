@@ -299,7 +299,7 @@ export const findNodeById = <T extends BaseTreeNode>(
     }
 
     if (node[childrenFieldName]) {
-      const foundNode = findNodeById(node[childrenFieldName], targetId)
+      const foundNode = findNodeById(node[childrenFieldName], targetId, options)
 
       if (foundNode) {
         return foundNode as T
