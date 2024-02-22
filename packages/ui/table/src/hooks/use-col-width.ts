@@ -144,10 +144,51 @@ export const useColWidth = ({
     null
   )
 
+  // 控制列最小可调整宽度
+  const [minColWidth, setMinColWidth] = React.useState<number[]>([])
+
+  // 当列变化时同步更新 minColWidth
+  React.useEffect(() => {
+    let resizeObserver: ResizeObserver
+
+    if (headerTableElement) {
+      resizeObserver = new ResizeObserver(() => {
+        const resizableHandlerWidth = 4
+        const _minColWidth = Array.from(headerTableElement.childNodes).map((th) => {
+          const thPaddingLeft = parseFloat(
+            window.getComputedStyle(th as Element).getPropertyValue('padding-left')
+          )
+          const childNodes = Array.from(th.childNodes)
+
+          return (
+            childNodes
+              .map((child) => (child as HTMLElement).offsetWidth)
+              .reduce((prev, next) => {
+                return prev + next
+              }) +
+            thPaddingLeft * 2 +
+            resizableHandlerWidth
+          )
+        })
+
+        setMinColWidth(_minColWidth)
+      })
+      resizeObserver.observe(headerTableElement!)
+    } else {
+      setMinColWidth(Array(columns.length).fill(0))
+    }
+
+    return () => {
+      if (resizeObserver) {
+        resizeObserver.disconnect()
+      }
+    }
+  }, [columns.length, headerTableElement, resizable])
+
   /**
    *  控制列最小可调整宽度
    */
-  const minColWidth = React.useMemo(() => {
+  const minColWidthMemo = React.useMemo(() => {
     if (resizable && headerTableElement) {
       const resizableHandlerWidth = 4
       const _minColWidth = Array.from(headerTableElement.childNodes).map((th) => {
