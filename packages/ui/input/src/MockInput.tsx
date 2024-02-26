@@ -4,6 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CloseCircleFilled } from '@hi-ui/icons'
 import type { HiBaseAppearanceEnum, HiBaseDataItem, HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { isArray } from '@hi-ui/type-assertion'
 
 const _role = 'mock-input'
 const _prefix = getPrefixCls(_role)
@@ -35,8 +36,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
       clearableTrigger = 'hover',
       displayRender,
       prefix,
-      suffix,
-      secondarySuffix,
+      suffix: suffixProp,
       onMouseOver,
       onMouseLeave,
       ...rest
@@ -84,6 +84,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
     )
 
     const hasValue = !!displayValue
+    const suffix = isArray(suffixProp) ? suffixProp : [suffixProp]
 
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清除
     const showClearableIcon = useMemo(() => {
@@ -122,10 +123,8 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
         ) : (
           <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
         )}
-        {secondarySuffix ? (
-          <span className={`${prefixCls}__secondary-suffix`}>{secondarySuffix}</span>
-        ) : null}
-        {suffix || showClearableIcon ? (
+        {suffix[1] ? <span className={`${prefixCls}__secondary-suffix`}>{suffix[1]}</span> : null}
+        {suffix[0] || showClearableIcon ? (
           <span className={`${prefixCls}__suffix`}>
             {showClearableIcon ? (
               <span
@@ -137,7 +136,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
                 <CloseCircleFilled />
               </span>
             ) : (
-              suffix
+              suffix[0]
             )}
           </span>
         ) : null}
@@ -199,11 +198,7 @@ export type MockInputProps = HiBaseHTMLFieldProps<
     /**
      * 输入框后置内容
      */
-    suffix?: React.ReactNode
-    /**
-     * 输入框次要后置内容
-     */
-    secondarySuffix?: React.ReactNode
+    suffix?: React.ReactNode | React.ReactNode[]
     /**
      * 点击 Input 时触发回调
      */

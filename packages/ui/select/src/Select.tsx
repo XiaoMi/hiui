@@ -252,8 +252,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                   : undefined
               }
               prefix={prefix}
-              suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
-              secondarySuffix={suffix}
+              suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               value={value}
               onChange={(value, item) => {
