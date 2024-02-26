@@ -307,8 +307,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
                 // @ts-ignore
                 displayRender={displayRender}
                 prefix={prefix}
-                suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
-                secondarySuffix={suffix}
+                suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
                 focused={menuVisible}
                 appearance={appearance}
                 value={value}

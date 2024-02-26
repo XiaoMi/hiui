@@ -13,7 +13,7 @@ import { CloseCircleFilled, CloseOutlined } from '@hi-ui/icons'
 import { TagInputOption } from './types'
 import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isFunction, isArray } from '@hi-ui/type-assertion'
 import ResizeDetector from 'react-resize-detector'
 
 const _role = 'tag-input-mock'
@@ -42,8 +42,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       expandable = false,
       activeExpandable = false,
       prefix,
-      suffix,
-      secondarySuffix,
+      suffix: suffixProp,
       // tag 最小宽度
       tagWidth = 20,
       displayRender,
@@ -91,6 +90,10 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
     // TODO: 设置第一个 tagWidth 超出省略，预防无展示
     // const [tagMaxWidth, setTagMaxWidth] = useState(0)
     const [tagMaxCount, setTagMaxCount] = useState(0)
+
+    const suffix = useMemo(() => {
+      return isArray(suffixProp) ? suffixProp : [suffixProp]
+    }, [suffixProp])
 
     useLayoutEffect(() => {
       let tagMaxCount = 0
@@ -230,9 +233,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
             <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
           )}
 
-          {secondarySuffix ? (
-            <span className={`${prefixCls}__secondary-suffix`}>{secondarySuffix}</span>
-          ) : null}
+          {suffix[1] ? <span className={`${prefixCls}__secondary-suffix`}>{suffix[1]}</span> : null}
 
           <ResizeDetector
             skipOnMount={false}
@@ -243,7 +244,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
             }}
           >
             {/* suffix 后缀区域渲染 */}
-            {!!suffix || (showClearableIcon && hover) || showTagCount ? (
+            {!!suffix[0] || (showClearableIcon && hover) || showTagCount ? (
               <span className={`${prefixCls}__suffix`}>
                 {showTagCount ? (
                   <span
@@ -266,7 +267,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
                     <CloseCircleFilled />
                   </span>
                 ) : (
-                  suffix
+                  suffix[0]
                 )}
               </span>
             ) : null}
@@ -318,11 +319,7 @@ export interface TagInputMockProps
   /**
    * 选择框后置内容
    */
-  suffix?: React.ReactNode
-  /**
-   * 选择框次要后置内容
-   */
-  secondarySuffix?: React.ReactNode
+  suffix?: React.ReactNode | React.ReactNode[]
   /**
    * tag 列表数据源
    */
