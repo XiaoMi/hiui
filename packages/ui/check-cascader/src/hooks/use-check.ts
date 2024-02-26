@@ -32,6 +32,8 @@ export const useCheck = (
 
   // 入口数据处理
   const parsedCheckedIds = parseCheckDataDirty(checkedMode, checkedIds, flattedData, allowCheck)
+  // 合并 checkedIds，防止部分模式(PARENT和CHILD)在搜索场景下 id 丢失 (https://github.com/XiaoMi/hiui/issues/2750)
+  const mergedCheckedIds = Array.from(new Set([...parsedCheckedIds, ...checkedIds]))
 
   const cascaded = checkedMode !== 'SEPARATE'
 
@@ -39,7 +41,7 @@ export const useCheck = (
     cascaded,
     disabled,
     flattedData,
-    checkedIds: parsedCheckedIds,
+    checkedIds: mergedCheckedIds,
     onCheck: (checkedIds, checkedNode, shouldChecked, semiCheckedIds) => {
       // 出口数据处理
       const processedIds = processCheckedIds(checkedMode, checkedIds, flattedData, allowCheck)
