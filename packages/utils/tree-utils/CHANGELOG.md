@@ -1,5 +1,11 @@
 # @hi-ui/tree-utils
 
+## 4.1.6
+
+### Patch Changes
+
+- [#2748](https://github.com/XiaoMi/hiui/pull/2748) [`ca008e4ae`](https://github.com/XiaoMi/hiui/commit/ca008e4ae9753bc1f11efcdcbf09121d1ef07b56) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复表头分组超过 2 列时冻结列交互异常问题
+
 ## 4.1.5
 
 ### Patch Changes

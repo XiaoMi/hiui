@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 4.6.0
+
+### Minor Changes
+
+- [#2751](https://github.com/XiaoMi/hiui/pull/2751) [`2ef3db5b5`](https://github.com/XiaoMi/hiui/commit/2ef3db5b5cd3ba4a2c076b877de1d20bdc846e3d) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add onOpen api
+
 ## 4.5.0
 
 ### Minor Changes

@@ -1,5 +1,16 @@
 # @hi-ui/check-cascader
 
+## 4.2.6
+
+### Patch Changes
+
+- [#2752](https://github.com/XiaoMi/hiui/pull/2752) [`8cc7d032a`](https://github.com/XiaoMi/hiui/commit/8cc7d032aff1aa62099e71e2e1a3ca3a9a226e30) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 PARENT 和 CHILD 模式在搜索场景下 id 丢失问题
+
+- Updated dependencies [[`a9b9c93fc`](https://github.com/XiaoMi/hiui/commit/a9b9c93fc3a3fea60d14052a5afeef9daf7efa1b), [`b3a13135c`](https://github.com/XiaoMi/hiui/commit/b3a13135c77e75291d5864ff7fcf63ddb2ff46b8), [`ca008e4ae`](https://github.com/XiaoMi/hiui/commit/ca008e4ae9753bc1f11efcdcbf09121d1ef07b56)]:
+  - @hi-ui/input@4.1.0
+  - @hi-ui/tag-input@4.1.0
+  - @hi-ui/tree-utils@4.1.6
+
 ## 4.2.5
 
 ### Patch Changes
