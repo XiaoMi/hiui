@@ -73,6 +73,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       size = 'md',
       overlay,
       invalid = false,
+      onOpen,
       onClose,
       cellRender,
       footerRender,
@@ -444,6 +445,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           <Popper
             {...(overlay || {})}
             visible={showPanel}
+            onEntered={onOpen}
             onClose={onPopperClose}
             attachEl={attachEl}
             unmountOnClose={false}

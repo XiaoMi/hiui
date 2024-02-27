@@ -261,6 +261,10 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    */
   invalid?: boolean
   /**
+   * 面板打开时回调
+   */
+  onOpen?: () => void
+  /**
    * 面板关闭时回调
    */
   onClose?: () => void
