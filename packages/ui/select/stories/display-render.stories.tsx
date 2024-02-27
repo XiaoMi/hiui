@@ -24,10 +24,10 @@ export const DisplayRender = () => {
           displayRender={(item) => {
             console.log(item)
             return (
-              <React.Fragment>
-                <span style={{ float: 'left' }}>{item.title}</span>
+              <span style={{ float: 'left' }}>
+                {item.title}
                 <span style={{ float: 'right', color: '#999', fontSize: 14 }}>({item.id})</span>
-              </React.Fragment>
+              </span>
             )
           }}
         />

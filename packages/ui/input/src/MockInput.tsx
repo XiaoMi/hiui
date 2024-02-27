@@ -4,6 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CloseCircleFilled } from '@hi-ui/icons'
 import type { HiBaseAppearanceEnum, HiBaseDataItem, HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { isArray } from '@hi-ui/type-assertion'
 
 const _role = 'mock-input'
 const _prefix = getPrefixCls(_role)
@@ -34,7 +35,8 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
       appearance = 'line',
       clearableTrigger = 'hover',
       displayRender,
-      suffix,
+      prefix,
+      suffix: suffixProp,
       onMouseOver,
       onMouseLeave,
       ...rest
@@ -82,6 +84,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
     )
 
     const hasValue = !!displayValue
+    const suffix = isArray(suffixProp) ? suffixProp : [suffixProp]
 
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清除
     const showClearableIcon = useMemo(() => {
@@ -114,12 +117,14 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
         }}
         {...rest}
       >
+        {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
         {hasValue ? (
           <span className={`${prefixCls}__value`}>{displayValue}</span>
         ) : (
           <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
         )}
-        {suffix || showClearableIcon ? (
+        {suffix[1] ? <span className={`${prefixCls}__secondary-suffix`}>{suffix[1]}</span> : null}
+        {suffix[0] || showClearableIcon ? (
           <span className={`${prefixCls}__suffix`}>
             {showClearableIcon ? (
               <span
@@ -131,7 +136,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
                 <CloseCircleFilled />
               </span>
             ) : (
-              suffix
+              suffix[0]
             )}
           </span>
         ) : null}
@@ -187,9 +192,13 @@ export type MockInputProps = HiBaseHTMLFieldProps<
      */
     placeholder?: string
     /**
+     * 输入框前置内容
+     */
+    prefix?: React.ReactNode
+    /**
      * 输入框后置内容
      */
-    suffix?: React.ReactNode
+    suffix?: React.ReactNode | React.ReactNode[]
     /**
      * 点击 Input 时触发回调
      */

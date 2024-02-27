@@ -13,7 +13,6 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   overflow: hidden;
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
   flex: 1;
   transition-property: all;
   transition-duration: use-motion-duration('normal');
@@ -46,6 +45,11 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     .#{$mock-input-prefix}--appearance-unset & {
       color: use-color('gray', 500);
     }
+  }
+
+  &__placeholder,
+  &__value {
+    flex: 1;
   }
 
   &__placeholder {
@@ -82,14 +86,23 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     }
   }
 
-  &__suffix {
+  &__prefix,
+  &__suffix,
+  &__secondary-suffix {
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
     color: use-color('gray', 400);
     font-size: use-text-size('lg');
-    padding-left: use-spacing(4);
     text-align: center;
+  }
+
+  &__prefix {
+    margin-right: use-spacing(4);
+  }
+
+  &__suffix {
+    padding-left: use-spacing(4);
   }
 
   &__value {
