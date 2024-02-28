@@ -1,5 +1,11 @@
 # @hi-ui/input
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2745](https://github.com/XiaoMi/hiui/pull/2745) [`a9b9c93fc`](https://github.com/XiaoMi/hiui/commit/a9b9c93fc3a3fea60d14052a5afeef9daf7efa1b) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add prefix api
+
 ## 4.0.13
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/upload
 
+## 4.2.1
+
+### Patch Changes
+
+- [#2727](https://github.com/XiaoMi/hiui/pull/2727) [`26203110e`](https://github.com/XiaoMi/hiui/commit/26203110e48496b9d5a3725ff51f84f73e9633f3) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 disabled 不生效问题
+
 ## 4.2.0
 
 ### Minor Changes

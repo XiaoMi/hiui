@@ -1,5 +1,17 @@
 # @hi-ui/check-tree-select
 
+## 4.4.0
+
+### Minor Changes
+
+- [#2737](https://github.com/XiaoMi/hiui/pull/2737) [`78bc495f2`](https://github.com/XiaoMi/hiui/commit/78bc495f233c205a5daddd987e8006e6ce21f7d5) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add customRender api
+
+### Patch Changes
+
+- Updated dependencies [[`b3a13135c`](https://github.com/XiaoMi/hiui/commit/b3a13135c77e75291d5864ff7fcf63ddb2ff46b8), [`ca008e4ae`](https://github.com/XiaoMi/hiui/commit/ca008e4ae9753bc1f11efcdcbf09121d1ef07b56)]:
+  - @hi-ui/tag-input@4.1.0
+  - @hi-ui/tree-utils@4.1.6
+
 ## 4.3.4
 
 ### Patch Changes
