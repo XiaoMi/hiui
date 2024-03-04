@@ -56,17 +56,19 @@ const Root = ({
 
   useEffect(() => {
     setInputData(
-      value
-        ? parseValue(
-            value,
-            type,
-            weekOffset,
-            typeof format === 'string' ? format : undefined,
-            strideSelectMode
-          )
-        : outDate
+      parseValue(
+        value,
+        type,
+        weekOffset,
+        typeof format === 'string' ? format : undefined,
+        strideSelectMode
+      )
     )
-  }, [value, format, type, outDate, weekOffset, strideSelectMode])
+  }, [value, format, type, weekOffset, strideSelectMode])
+
+  useEffect(() => {
+    setInputData(outDate)
+  }, [outDate])
 
   const onPickerClickEvent = (index: number) => {
     if (disabled) return
