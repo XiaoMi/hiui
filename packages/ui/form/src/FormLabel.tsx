@@ -46,7 +46,9 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
 
     return {
       labelWidth,
-      controlWidth: `calc(100% - ${labelWidth}px)`,
+      controlWidth: isNumeric(labelWidth)
+        ? `calc(100% - ${labelWidth}px)`
+        : `calc(100% - ${labelWidth})`,
     }
   }, [labelPlacement, labelWidthProp])
 
