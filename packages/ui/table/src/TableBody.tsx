@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useMemo, useState } from 'react'
 import VirtualList from 'rc-virtual-list'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -31,6 +31,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       virtual,
       measureRowElementRef,
       scrollbar,
+      scrollLeft,
     } = useTableContext()
 
     const cls = cx(`${prefixCls}-body`)
@@ -49,20 +50,11 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       }
     )
 
-    const [scrollLeft, setScrollLeft] = useState(0)
     const rowWidth = useMemo(() => {
       let tmpWidth = 0
       colWidths.forEach((width) => (tmpWidth += width))
       return tmpWidth
     }, [colWidths])
-
-    const onVirtualContainerScroll = useCallback(
-      (evt: any) => {
-        setScrollLeft(scrollBodyElementRef?.current?.scrollLeft || 0)
-        onTableBodyScroll(evt)
-      },
-      [scrollBodyElementRef, onTableBodyScroll]
-    )
 
     if (virtual) {
       // TODO： avg和summay row的逻辑
@@ -78,7 +70,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
         <div
           ref={scrollBodyElementRef}
           className={cls}
-          onScroll={onVirtualContainerScroll}
+          onScroll={onTableBodyScroll}
           onWheel={onTableBodyScrollMock}
           style={{
             // 表格宽度大于div宽度才出现横向滚动条
@@ -92,7 +84,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
           ></div>
           <div
             ref={bodyTableRef}
-            style={{ height: 1, marginTop: -1, background: 'transparent', width: rowWidth }}
+            style={{ height: 2, marginTop: -1, background: 'transparent', width: rowWidth }}
           ></div>
           {isArrayNonEmpty(transitionData) ? (
             <div style={{ width: '100%', position: 'sticky', left: 0 }}>
