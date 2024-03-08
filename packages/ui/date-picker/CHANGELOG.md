@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 4.6.1
+
+### Patch Changes
+
+- [#2762](https://github.com/XiaoMi/hiui/pull/2762) [`240d02ecc`](https://github.com/XiaoMi/hiui/commit/240d02ecc7e8974dec6c42303212795f63bfb8b9) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复受控模式下设置 showTime 后 Input 框没有实时显示选择的值问题
+
 ## 4.6.0
 
 ### Minor Changes

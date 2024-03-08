@@ -1,5 +1,11 @@
 # @hi-ui/form
 
+## 4.1.6
+
+### Patch Changes
+
+- [#2761](https://github.com/XiaoMi/hiui/pull/2761) [`7fc7e2c1a`](https://github.com/XiaoMi/hiui/commit/7fc7e2c1a8c0daa6df77bf01864c262a14df3cc6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复横向表单错误提示样式问题
+
 ## 4.1.5
 
 ### Patch Changes

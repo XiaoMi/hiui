@@ -1,5 +1,13 @@
 # @hi-ui/table
 
+## 4.5.1
+
+### Patch Changes
+
+- [#2760](https://github.com/XiaoMi/hiui/pull/2760) [`68afb78ed`](https://github.com/XiaoMi/hiui/commit/68afb78ed1fb8e42bc8eec68cfa5f1787ee052b0) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 Safari 中设置 virtual 后只能表头滚动问题
+
+- [#2759](https://github.com/XiaoMi/hiui/pull/2759) [`7437ca3b0`](https://github.com/XiaoMi/hiui/commit/7437ca3b07ce1fb66fe9fa3572b45c2928e64a73) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 SettingDrawer 列更新问题
+
 ## 4.5.0
 
 ### Minor Changes

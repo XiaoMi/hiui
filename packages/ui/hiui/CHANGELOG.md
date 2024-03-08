@@ -1,5 +1,22 @@
 # @hi-ui/hiui
 
+## 4.5.3
+
+### Patch Changes
+
+- [#2759](https://github.com/XiaoMi/hiui/pull/2759) [`7437ca3b0`](https://github.com/XiaoMi/hiui/commit/7437ca3b07ce1fb66fe9fa3572b45c2928e64a73) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复 SettingDrawer 列更新问题
+
+- [#2762](https://github.com/XiaoMi/hiui/pull/2762) [`240d02ecc`](https://github.com/XiaoMi/hiui/commit/240d02ecc7e8974dec6c42303212795f63bfb8b9) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker): 修复受控模式下设置 showTime 后 Input 框没有实时显示选择的值问题
+
+- [#2761](https://github.com/XiaoMi/hiui/pull/2761) [`7fc7e2c1a`](https://github.com/XiaoMi/hiui/commit/7fc7e2c1a8c0daa6df77bf01864c262a14df3cc6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(form): 修复横向表单错误提示样式问题
+
+- [#2760](https://github.com/XiaoMi/hiui/pull/2760) [`68afb78ed`](https://github.com/XiaoMi/hiui/commit/68afb78ed1fb8e42bc8eec68cfa5f1787ee052b0) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复 Safari 中设置 virtual 后只能表头滚动问题
+
+- Updated dependencies [[`7fc7e2c1a`](https://github.com/XiaoMi/hiui/commit/7fc7e2c1a8c0daa6df77bf01864c262a14df3cc6), [`68afb78ed`](https://github.com/XiaoMi/hiui/commit/68afb78ed1fb8e42bc8eec68cfa5f1787ee052b0), [`7437ca3b0`](https://github.com/XiaoMi/hiui/commit/7437ca3b07ce1fb66fe9fa3572b45c2928e64a73), [`240d02ecc`](https://github.com/XiaoMi/hiui/commit/240d02ecc7e8974dec6c42303212795f63bfb8b9)]:
+  - @hi-ui/form@4.1.6
+  - @hi-ui/table@4.5.1
+  - @hi-ui/date-picker@4.6.1
+
 ## 4.5.2
 
 ### Patch Changes
