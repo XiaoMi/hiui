@@ -53,14 +53,32 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
     }
   }, [numberOfLines])
 
-  useEffect(() => {
+  const update = useCallback(() => {
     // 当文字字数超出有配置时，单独处理
     if (maxTextCount > 0 && maxTextCount < children?.length) {
       setDisableTooltip(false)
     } else {
       handleCheckEllipsis()
     }
-  }, [children, maxTextCount, handleCheckEllipsis])
+  }, [children?.length, handleCheckEllipsis, maxTextCount])
+
+  useEffect(() => {
+    update()
+
+    const observer = new ResizeObserver(() => {
+      // fix: https://github.com/XiaoMi/hiui/issues/2764
+      // 在有动画(300ms)的的组件中使用该组件会导致计算有误，此处做兼容处理
+      setTimeout(() => {
+        update()
+      }, 300)
+    })
+
+    contentRef.current && observer.observe(contentRef.current)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [update])
 
   return (
     <Tooltip disabled={disableTooltip} {...{ title: children, ...tooltipProps }}>
