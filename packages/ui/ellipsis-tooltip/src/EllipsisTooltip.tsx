@@ -67,6 +67,7 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
 
     const observer = new ResizeObserver(() => {
       // fix: https://github.com/XiaoMi/hiui/issues/2764
+      // 在有动画(300ms)的的组件中使用该组件会导致计算有误，此处做兼容处理
       setTimeout(() => {
         update()
       }, 300)
