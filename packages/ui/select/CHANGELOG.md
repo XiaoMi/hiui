@@ -1,5 +1,11 @@
 # @hi-ui/select
 
+## 4.4.0
+
+### Minor Changes
+
+- [#2768](https://github.com/XiaoMi/hiui/pull/2768) [`32b4c01c3`](https://github.com/XiaoMi/hiui/commit/32b4c01c303607a9169f0ce1ceb3a88f85d75b6c) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add customRender api
+
 ## 4.3.0
 
 ### Minor Changes

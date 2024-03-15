@@ -1,5 +1,17 @@
 # @hi-ui/hiui
 
+## 4.5.4
+
+### Patch Changes
+
+- [#2768](https://github.com/XiaoMi/hiui/pull/2768) [`32b4c01c3`](https://github.com/XiaoMi/hiui/commit/32b4c01c303607a9169f0ce1ceb3a88f85d75b6c) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(select): add customRender api
+
+- [#2767](https://github.com/XiaoMi/hiui/pull/2767) [`bf65f0061`](https://github.com/XiaoMi/hiui/commit/bf65f006190766d09a27b5d81703a8ed88d79205) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(ellipsis-tooltip): 修复在下拉框中使用无效果问题
+
+- Updated dependencies [[`32b4c01c3`](https://github.com/XiaoMi/hiui/commit/32b4c01c303607a9169f0ce1ceb3a88f85d75b6c), [`bf65f0061`](https://github.com/XiaoMi/hiui/commit/bf65f006190766d09a27b5d81703a8ed88d79205)]:
+  - @hi-ui/select@4.4.0
+  - @hi-ui/ellipsis-tooltip@4.1.6
+
 ## 4.5.3
 
 ### Patch Changes
