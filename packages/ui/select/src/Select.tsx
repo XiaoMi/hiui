@@ -77,6 +77,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       onSelect: onSelectProp,
       onSearch: onSearchProp,
       onKeyDown: onKeyDownProp,
+      customRender,
       ...rest
     },
     ref
@@ -241,28 +242,36 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           footer={renderExtraFooter ? renderExtraFooter() : null}
           scrollable={!inVirtual}
           trigger={
-            <MockInput
-              clearable={clearable}
-              placeholder={placeholder}
-              displayRender={
-                displayRenderProp
-                  ? (item: any) => {
-                      return displayRenderProp(getSelectItemEventData(item))
-                    }
-                  : undefined
-              }
-              prefix={prefix}
-              suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
-              focused={menuVisible}
-              value={value}
-              onChange={(value, item) => {
-                tryChangeValue(value, item.raw)
-              }}
-              size={size}
-              data={mergedData}
-              invalid={invalid}
-              appearance={appearance}
-            />
+            customRender ? (
+              typeof customRender === 'function' ? (
+                customRender(showData.find((d: SelectDataItem) => d.id === value))
+              ) : (
+                customRender
+              )
+            ) : (
+              <MockInput
+                clearable={clearable}
+                placeholder={placeholder}
+                displayRender={
+                  displayRenderProp
+                    ? (item: any) => {
+                        return displayRenderProp(getSelectItemEventData(item))
+                      }
+                    : undefined
+                }
+                prefix={prefix}
+                suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
+                focused={menuVisible}
+                value={value}
+                onChange={(value, item) => {
+                  tryChangeValue(value, item.raw)
+                }}
+                size={size}
+                data={mergedData}
+                invalid={invalid}
+                appearance={appearance}
+              />
+            )
           }
         >
           {isArrayNonEmpty(showData) ? (
@@ -380,6 +389,10 @@ export interface SelectProps
    * 选择框后置内容
    */
   suffix?: React.ReactNode
+  /**
+   * 自定义触发器
+   */
+  customRender?: React.ReactNode | ((option: SelectItemEventData) => React.ReactNode)
 }
 
 ;(Select as any).HiName = 'Select'

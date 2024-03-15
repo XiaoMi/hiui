@@ -21,6 +21,7 @@ export * from './virtual-list.stories'
 export * from './empty-content.stories'
 export * from './tip.stories'
 export * from './addon.stories'
+export * from './custom-render.stories'
 
 export default {
   title: 'Data Input/Select',
