@@ -1,5 +1,11 @@
 # @hi-ui/ellipsis-tooltip
 
+## 4.1.6
+
+### Patch Changes
+
+- [#2767](https://github.com/XiaoMi/hiui/pull/2767) [`bf65f0061`](https://github.com/XiaoMi/hiui/commit/bf65f006190766d09a27b5d81703a8ed88d79205) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复在下拉框中使用无效果问题
+
 ## 4.1.5
 
 ### Patch Changes
