@@ -78,6 +78,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       prefix,
       suffix,
       onKeyDown: onKeyDownProp,
+      keyword: keywordProp,
       ...rest
     },
     ref
@@ -139,6 +140,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       keyword: searchValue,
     } = useSearchMode({
       searchable: searchableProp,
+      keyword: keywordProp,
       strategies: [dataSourceStrategy, customSearchStrategy, filterSearchStrategy],
     })
 
@@ -286,6 +288,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
           onKeyDown={mockDefaultHandlers(handleKeyDown, onKeyDownProp)}
+          keyword={keywordProp}
           searchable={searchable}
           scrollable={!inVirtual}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
