@@ -73,7 +73,7 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
       }, 300)
     })
 
-    contentRef.current && observer.observe(contentRef.current)
+    contentRef.current?.parentNode && observer.observe(contentRef.current.parentNode as Element)
 
     return () => {
       observer.disconnect()
