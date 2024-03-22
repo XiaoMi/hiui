@@ -1,5 +1,11 @@
 # @hi-ui/ellipsis-tooltip
 
+## 4.1.7
+
+### Patch Changes
+
+- [#2772](https://github.com/XiaoMi/hiui/pull/2772) [`bd08ec23f`](https://github.com/XiaoMi/hiui/commit/bd08ec23ff0b3ba6c8c4e26c7655d0770397aa90) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复在 Table 中 resizable 模式下不显示气泡问题
+
 ## 4.1.6
 
 ### Patch Changes

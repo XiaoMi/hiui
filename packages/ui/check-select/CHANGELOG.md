@@ -1,5 +1,11 @@
 # @hi-ui/check-select
 
+## 4.4.1
+
+### Patch Changes
+
+- [#2771](https://github.com/XiaoMi/hiui/pull/2771) [`eee27bd5f`](https://github.com/XiaoMi/hiui/commit/eee27bd5f81a89169c1c2dc993b9100731cafcbd) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 keyword 受控时搜索结果有误的问题
+
 ## 4.4.0
 
 ### Minor Changes
