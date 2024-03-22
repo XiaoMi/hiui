@@ -1,5 +1,17 @@
 # @hi-ui/hiui
 
+## 4.5.5
+
+### Patch Changes
+
+- [#2771](https://github.com/XiaoMi/hiui/pull/2771) [`eee27bd5f`](https://github.com/XiaoMi/hiui/commit/eee27bd5f81a89169c1c2dc993b9100731cafcbd) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(check-select): 修复 keyword 受控时搜索结果有误的问题
+
+- [#2772](https://github.com/XiaoMi/hiui/pull/2772) [`bd08ec23f`](https://github.com/XiaoMi/hiui/commit/bd08ec23ff0b3ba6c8c4e26c7655d0770397aa90) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(ellipsis-tooltip): 修复在 Table 中 resizable 模式下不显示气泡问题
+
+- Updated dependencies [[`bd08ec23f`](https://github.com/XiaoMi/hiui/commit/bd08ec23ff0b3ba6c8c4e26c7655d0770397aa90), [`eee27bd5f`](https://github.com/XiaoMi/hiui/commit/eee27bd5f81a89169c1c2dc993b9100731cafcbd)]:
+  - @hi-ui/ellipsis-tooltip@4.1.7
+  - @hi-ui/check-select@4.4.1
+
 ## 4.5.4
 
 ### Patch Changes
