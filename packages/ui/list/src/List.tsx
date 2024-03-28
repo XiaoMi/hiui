@@ -79,6 +79,8 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
               return renderListItem(item, index)
             })}
           </ul>
+        ) : typeof emptyContent === 'function' ? (
+          emptyContent()
         ) : (
           <EmptyState title={emptyContent} style={{ margin: 16 }} />
         )}
@@ -123,7 +125,7 @@ export interface ListProps extends HiBaseHTMLProps<'div'> {
   /**
    * 数据为空时的展示内容
    */
-  emptyContent?: React.ReactNode
+  emptyContent?: React.ReactNode | (() => React.ReactNode)
 }
 
 if (__DEV__) {
