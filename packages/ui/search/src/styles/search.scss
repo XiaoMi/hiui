@@ -15,7 +15,6 @@ $prefix: '#{$component-prefix}-search' !default;
     }
 
     &-subitem {
-      margin-bottom: use-spacing(4);
       min-height: use-height-size(8);
       box-sizing: border-box;
       display: flex;
@@ -41,7 +40,10 @@ $prefix: '#{$component-prefix}-search' !default;
       align-items: center;
       padding: use-spacing(2) use-spacing(6);
       color: use-color('gray', 500);
-      margin-bottom: use-spacing(4);
+    }
+
+    &-subgroup {
+      padding-left: use-spacing(6);
     }
 
     &-item {
@@ -50,7 +52,6 @@ $prefix: '#{$component-prefix}-search' !default;
           margin-bottom: 0;
         }
 
-        margin-bottom: use-spacing(4);
         box-sizing: border-box;
         min-height: use-height-size(8);
         display: flex;

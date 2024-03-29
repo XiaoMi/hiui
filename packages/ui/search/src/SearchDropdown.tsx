@@ -29,52 +29,72 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({
     return title
   })
 
+  const renderItem = useLatestCallback((data: SearchDataItem[]) => {
+    return data.map((item, index) => {
+      const isGroup = !!item.children && item.children.length > 0
+
+      return (
+        <Fragment key={item.id}>
+          <div
+            className={cx(
+              `${prefixCls}__dropdown-item`,
+              isGroup && `${prefixCls}__dropdown-group`,
+              focusIndex === index && !isGroup && `${prefixCls}__dropdown-item--focus`
+            )}
+            onClick={() => {
+              if (!isGroup) {
+                onSelect(item)
+              }
+            }}
+          >
+            {/* groupTitle 不参与高亮检索 */}
+            {isGroup ? item.title : highlightKeyword(item.title as string)}
+          </div>
+          {isArrayNonEmpty(item.children)
+            ? item.children.map((subItem, idx) => {
+                if (!subItem.children) {
+                  return (
+                    <div
+                      key={subItem.id}
+                      className={cx(
+                        `${prefixCls}__dropdown-subitem`,
+                        subFocusIndex === idx &&
+                          focusIndex === index &&
+                          `${prefixCls}__dropdown-subitem--focus`
+                      )}
+                      onClick={() => {
+                        onSelect(subItem)
+                      }}
+                    >
+                      {highlightKeyword(subItem.title as string)}
+                    </div>
+                  )
+                }
+
+                const subData = [
+                  {
+                    id: subItem.id,
+                    title: subItem.title,
+                    children: subItem.children,
+                  },
+                ]
+
+                return (
+                  <div key={subItem.id} className={`${prefixCls}__dropdown-subgroup`}>
+                    {renderItem(subData)}
+                  </div>
+                )
+              })
+            : null}
+        </Fragment>
+      )
+    })
+  })
+
   return (
     <Popper {...popper}>
       <Loading visible={loading}>
-        <div className={`${prefixCls}__dropdown`}>
-          {data.map((item, index) => {
-            const isGroup = !!item.children && item.children.length > 0
-
-            return (
-              <Fragment key={item.id}>
-                <div
-                  className={cx(
-                    `${prefixCls}__dropdown-item`,
-                    isGroup && `${prefixCls}__dropdown-group`,
-                    focusIndex === index && !isGroup && `${prefixCls}__dropdown-item--focus`
-                  )}
-                  onClick={() => {
-                    if (!isGroup) {
-                      onSelect(item)
-                    }
-                  }}
-                >
-                  {/* groupTitle 不参与高亮检索 */}
-                  {isGroup ? item.title : highlightKeyword(item.title as string)}
-                </div>
-                {isArrayNonEmpty(item.children)
-                  ? item.children.map((subItem, idx) => (
-                      <div
-                        key={subItem.id}
-                        className={cx(
-                          `${prefixCls}__dropdown-subitem`,
-                          subFocusIndex === idx &&
-                            focusIndex === index &&
-                            `${prefixCls}__dropdown-subitem--focus`
-                        )}
-                        onClick={() => {
-                          onSelect(subItem)
-                        }}
-                      >
-                        {highlightKeyword(subItem.title as string)}
-                      </div>
-                    ))
-                  : null}
-              </Fragment>
-            )
-          })}
-        </div>
+        <div className={`${prefixCls}__dropdown`}>{renderItem(data)}</div>
       </Loading>
     </Popper>
   )
