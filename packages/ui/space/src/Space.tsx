@@ -68,8 +68,8 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
           const showSplit = !isNullish(separatorMemo) && childCount > index + 1
           return (
             <Fragment key={index}>
-              <div className={`${prefixCls}__item`}>{child}</div>
-              {showSplit && separatorMemo}
+              {child && <div className={`${prefixCls}__item`}>{child}</div>}
+              {child && showSplit && separatorMemo}
             </Fragment>
           )
         })}
