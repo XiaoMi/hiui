@@ -1,5 +1,11 @@
 # @hi-ui/list
 
+## 4.0.13
+
+### Patch Changes
+
+- [#2779](https://github.com/XiaoMi/hiui/pull/2779) [`ba68eddbc`](https://github.com/XiaoMi/hiui/commit/ba68eddbc167be2eee90d1151bd1970128c60845) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: emptyContent 只能修改文字无法修改图标
+
 ## 4.0.12
 
 ### Patch Changes

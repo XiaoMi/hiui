@@ -1,5 +1,11 @@
 # @hi-ui/space
 
+## 4.0.10
+
+### Patch Changes
+
+- [#2778](https://github.com/XiaoMi/hiui/pull/2778) [`14b7c4bd1`](https://github.com/XiaoMi/hiui/commit/14b7c4bd1a523391915b3967d0b8a57be8f6fa0b) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 处理子节点为 null 情况
+
 ## 4.0.9
 
 ### Patch Changes

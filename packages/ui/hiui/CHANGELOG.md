@@ -1,5 +1,20 @@
 # @hi-ui/hiui
 
+## 4.5.6
+
+### Patch Changes
+
+- [#2778](https://github.com/XiaoMi/hiui/pull/2778) [`14b7c4bd1`](https://github.com/XiaoMi/hiui/commit/14b7c4bd1a523391915b3967d0b8a57be8f6fa0b) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(space): 处理子节点为 null 情况
+
+- [#2779](https://github.com/XiaoMi/hiui/pull/2779) [`ba68eddbc`](https://github.com/XiaoMi/hiui/commit/ba68eddbc167be2eee90d1151bd1970128c60845) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(list): emptyContent 只能修改文字无法修改图标
+
+- [#2780](https://github.com/XiaoMi/hiui/pull/2780) [`9572afccb`](https://github.com/XiaoMi/hiui/commit/9572afccba9310945782d55d9a75df0fbbe6914e) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(search): 修复分组不支持 2 级以上数据的问题
+
+- Updated dependencies [[`ba68eddbc`](https://github.com/XiaoMi/hiui/commit/ba68eddbc167be2eee90d1151bd1970128c60845), [`14b7c4bd1`](https://github.com/XiaoMi/hiui/commit/14b7c4bd1a523391915b3967d0b8a57be8f6fa0b), [`9572afccb`](https://github.com/XiaoMi/hiui/commit/9572afccba9310945782d55d9a75df0fbbe6914e)]:
+  - @hi-ui/list@4.0.13
+  - @hi-ui/space@4.0.10
+  - @hi-ui/search@4.0.13
+
 ## 4.5.5
 
 ### Patch Changes
