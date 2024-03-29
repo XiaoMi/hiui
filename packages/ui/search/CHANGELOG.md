@@ -1,5 +1,11 @@
 # @hi-ui/search
 
+## 4.0.13
+
+### Patch Changes
+
+- [#2780](https://github.com/XiaoMi/hiui/pull/2780) [`9572afccb`](https://github.com/XiaoMi/hiui/commit/9572afccba9310945782d55d9a75df0fbbe6914e) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复分组不支持 2 级以上数据的问题
+
 ## 4.0.12
 
 ### Patch Changes
