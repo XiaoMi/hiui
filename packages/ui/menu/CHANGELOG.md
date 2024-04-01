@@ -1,5 +1,13 @@
 # @hi-ui/menu
 
+## 4.2.1
+
+### Patch Changes
+
+- [#2783](https://github.com/XiaoMi/hiui/pull/2783) [`8aefc82be`](https://github.com/XiaoMi/hiui/commit/8aefc82bebd44e8c983974d8b10aa0074169cea1) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(menu): 美化 Windows 中 sidebar 风格菜单滚动条样式
+
+- [#2783](https://github.com/XiaoMi/hiui/pull/2783) [`8aefc82be`](https://github.com/XiaoMi/hiui/commit/8aefc82bebd44e8c983974d8b10aa0074169cea1) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 美化 Windows 中 sidebar 风格菜单滚动条样式
+
 ## 4.2.0
 
 ### Minor Changes
