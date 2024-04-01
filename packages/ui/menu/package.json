@@ -48,6 +48,7 @@
     "@hi-ui/env": "^4.0.4",
     "@hi-ui/icons": "^4.0.18",
     "@hi-ui/popper": "^4.1.4",
+    "@hi-ui/scrollbar": "^4.1.0",
     "@hi-ui/times": "^4.0.4",
     "@hi-ui/tooltip": "^4.0.10",
     "@hi-ui/tree-utils": "^4.1.5",
