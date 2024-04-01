@@ -53,7 +53,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
   box-sizing: border-box;
   width: 64px;
   height: 100%;
-  padding: use-spacing(4) use-spacing(3);
+  padding: use-spacing(4) 0;
   overflow: auto;
   border-right: 1px solid use-color('gray', 300);
   background-color: #fff;
@@ -65,7 +65,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
   &-item {
     @include list-item-reset;
 
-    margin-top: use-spacing(6);
+    margin: use-spacing(6) use-spacing(2) 0;
     padding: use-spacing(3) use-spacing(1);
     width: 52px;
     overflow: hidden;
@@ -176,13 +176,14 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
 }
 
 .#{$sidebar-prefix}-toggle {
+  box-sizing: border-box;
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 12px;
   height: 60px;
-  right: -12px;
+  right: -11px;
   top: 50%;
   transform: translateY(-50%);
   border-start-end-radius: 16px 8px;

@@ -14,6 +14,7 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { isFunction } from '@hi-ui/type-assertion'
+import Scrollbar from '@hi-ui/scrollbar'
 import { MenuDataItem } from './types'
 import { getAncestorIds, getIdsWithChildren } from './util'
 import { Menu } from './Menu'
@@ -98,11 +99,18 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
     const clickSidebar = useCallback(
       (id: React.ReactText, raw: MenuDataItem) => {
         if (sidebarActiveId === id) {
+          const menuData = data.find((item) => item.id === sidebarActiveId)?.children ?? []
+
+          if (menuData.length > 0) {
+            !showMenu ? menuToggleAction.on() : menuToggleAction.off()
+          }
+
           return
         }
+
         updateActiveId(id, raw)
       },
-      [sidebarActiveId, updateActiveId]
+      [data, menuToggleAction, showMenu, sidebarActiveId, updateActiveId]
     )
 
     const clickMenu = useCallback(
@@ -122,35 +130,39 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
     return (
       <div className={cls} ref={wrapperRef}>
         <div className={cx(`${prefixCls}`, className)} ref={ref} role={role}>
-          <ul className={`${prefixCls}-list`}>
-            {data.map((item) => {
-              return (
-                <SidebarItem
-                  {...item}
-                  className={item.id === sidebarActiveId ? `${prefixCls}-item--active` : ''}
-                  render={() => render?.(item, 0)}
-                  key={item.id}
-                  onClick={() => clickSidebar(item.id, item)}
-                />
-              )
-            })}
-          </ul>
+          <Scrollbar onlyScrollVisible axes="y">
+            <ul className={`${prefixCls}-list`}>
+              {data.map((item) => {
+                return (
+                  <SidebarItem
+                    {...item}
+                    className={item.id === sidebarActiveId ? `${prefixCls}-item--active` : ''}
+                    render={() => render?.(item, 0)}
+                    key={item.id}
+                    onClick={() => clickSidebar(item.id, item)}
+                  />
+                )
+              })}
+            </ul>
+          </Scrollbar>
         </div>
         <div
           className={cx(`${prefixCls}-menu-wrapper`)}
           style={{ width: showMenu ? menuWidth : undefined }}
         >
-          <Menu
-            key={menuKey}
-            activeId={activeId}
-            data={menuDataMemo}
-            expandedIds={expandIds}
-            onExpand={updateExpandedIds}
-            onClick={clickMenu}
-            style={{ width: menuWidth }}
-            extraHeader={extraHeader}
-            render={render}
-          />
+          <Scrollbar onlyScrollVisible axes="y">
+            <Menu
+              key={menuKey}
+              activeId={activeId}
+              data={menuDataMemo}
+              expandedIds={expandIds}
+              onExpand={updateExpandedIds}
+              onClick={clickMenu}
+              style={{ width: menuWidth }}
+              extraHeader={extraHeader}
+              render={render}
+            />
+          </Scrollbar>
         </div>
         {menuDataMemo.length > 0 && showCollapse && (
           <div className={`${prefixCls}-toggle`} onClick={menuToggleAction.not}>
