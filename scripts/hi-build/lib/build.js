@@ -155,9 +155,9 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
           // Extract styleInject as a external module
           inject: !cssExtract ? (variableName) => {
             if (isESM) {
-              return `;import __styleInject__ from 'style-inject';__styleInject__(${variableName});`
+              return `;import __styleInject__ from '@hi-ui/style-inject';__styleInject__(${variableName});`
             }
-            return `;var __styleInject__=require('style-inject').default;__styleInject__(${variableName});`
+            return `;var __styleInject__=require('@hi-ui/style-inject').default;__styleInject__(${variableName});`
           } : false,
           extract: cssExtract,
           modules: cssModules,

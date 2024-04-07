@@ -2715,6 +2715,11 @@
     rollup-plugin-terser "^7.0.2"
     rollup-plugin-visualizer "^5.9.2"
 
+"@hi-ui/style-inject@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/@hi-ui/style-inject/-/style-inject-4.0.0.tgz#62e3ecff2654e5149cd310db8ba8fbe078020bd3"
+  integrity sha512-f/WDX/a10y08gYY9UaSwX0V0CbLDxlzf/6UrwD8fZIyIPdlyrR3Jld8X18vz5zywxPTpOPwBQLf9PYZ9YdFMPA==
+
 "@humanwhocodes/config-array@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.5.0.tgz#1407967d4c6eecd7388f83acf1eaf4d0c6e58ef9"
@@ -10600,11 +10605,6 @@ init-package-json@^2.0.2:
     semver "^7.3.5"
     validate-npm-package-license "^3.0.4"
     validate-npm-package-name "^3.0.0"
-
-inject-head-style@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmmirror.com/inject-head-style/-/inject-head-style-1.0.0.tgz#159f843900d3f473fb691c67fce52b5d088f5f68"
-  integrity sha512-J6eyVFIiY3SgvguiUx/XXBZWTIxMryhiSosH2fan5+FhfA4LlNJkybUcYsINInM+zvsBmcrIHVWJxvi4lvjwqA==
 
 inline-style-parser@0.1.1:
   version "0.1.1"
