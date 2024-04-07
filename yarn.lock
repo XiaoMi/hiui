@@ -2680,10 +2680,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@hi-ui/hi-build@4.1.1":
-  version "4.1.1"
-  resolved "https://registry.npmmirror.com/@hi-ui/hi-build/-/hi-build-4.1.1.tgz#1b586ca597c358ebb9c974433e488f02b61ef7bf"
-  integrity sha512-cXMJVsdhTjZizcSvH8fl9w2M5zUdBFUO/cEobzUTK2aKY4ia+ZVQ8OPSKbR5vbYn2d+j/7YwdXVg9novdnu9uw==
+"@hi-ui/hi-build@4.1.2":
+  version "4.1.2"
+  resolved "https://registry.npmjs.org/@hi-ui/hi-build/-/hi-build-4.1.2.tgz#0125cac22a7b53a92146a405fe0eb3c33da08a0e"
+  integrity sha512-el7cyqRt6CRUAe6X/RzWImAppdDJtnIIzlxol1Oc1AwIXrwPfYzSjtVsibE5IeuATRhlhzEVswem9hngqn5jJQ==
   dependencies:
     "@babel/core" "^7.17.8"
     "@babel/plugin-transform-runtime" "^7.17.0"
