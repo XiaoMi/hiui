@@ -1,5 +1,12 @@
 # @hi-ui/object-utils
 
+## 4.0.5-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [1a00f9fc4]
+  - @hi-ui/array-utils@4.0.5-alpha.0
+
 ## 4.0.4
 
 ### Patch Changes

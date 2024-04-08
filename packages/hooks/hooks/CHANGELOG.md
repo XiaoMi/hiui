@@ -1,5 +1,13 @@
 # @hi-ui/hooks
 
+## 4.0.10-alpha.0
+
+### Patch Changes
+
+- @hi-ui/use-scroll-lock@4.0.5-alpha.0
+- @hi-ui/use-search-mode@4.1.5-alpha.0
+- @hi-ui/use-scroll@4.0.6-alpha.0
+
 ## 4.0.9
 
 ### Patch Changes

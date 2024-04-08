@@ -1,5 +1,18 @@
 # @hi-ui/utils
 
+## 4.0.9-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [1a00f9fc4]
+  - @hi-ui/env@4.0.5-alpha.0
+  - @hi-ui/array-utils@4.0.5-alpha.0
+  - @hi-ui/classname@4.0.5-alpha.0
+  - @hi-ui/container@4.1.1-alpha.0
+  - @hi-ui/dom-utils@4.0.8-alpha.0
+  - @hi-ui/react-utils@4.0.5-alpha.0
+  - @hi-ui/func-utils@4.0.5-alpha.0
+
 ## 4.0.8
 
 ### Patch Changes

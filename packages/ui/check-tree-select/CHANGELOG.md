@@ -1,5 +1,25 @@
 # @hi-ui/check-tree-select
 
+## 4.4.1-alpha.0
+
+### Patch Changes
+
+- 1a00f9fc4: build: style-inject(node 环境下有问题) 替换为 @hi-ui/style-inject
+- Updated dependencies [1a00f9fc4]
+  - @hi-ui/env@4.0.5-alpha.0
+  - @hi-ui/icons@4.0.19-alpha.0
+  - @hi-ui/checkbox@4.0.10-alpha.0
+  - @hi-ui/highlighter@4.0.9-alpha.0
+  - @hi-ui/picker@4.1.6-alpha.0
+  - @hi-ui/popper@4.1.5-alpha.0
+  - @hi-ui/tag-input@4.1.1-alpha.0
+  - @hi-ui/tree@4.5.10-alpha.0
+  - @hi-ui/array-utils@4.0.5-alpha.0
+  - @hi-ui/classname@4.0.5-alpha.0
+  - @hi-ui/use-search-mode@4.1.5-alpha.0
+  - @hi-ui/core@4.0.9-alpha.0
+  - @hi-ui/func-utils@4.0.5-alpha.0
+
 ## 4.4.0
 
 ### Minor Changes

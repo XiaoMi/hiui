@@ -1,5 +1,12 @@
 # @hi-ui/use-scroll-lock
 
+## 4.0.5-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [1a00f9fc4]
+  - @hi-ui/env@4.0.5-alpha.0
+
 ## 4.0.4
 
 ### Patch Changes

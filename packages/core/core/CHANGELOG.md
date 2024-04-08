@@ -1,5 +1,12 @@
 # @hi-ui/core
 
+## 4.0.9-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [1a00f9fc4]
+  - @hi-ui/locale-context@4.0.10-alpha.0
+
 ## 4.0.8
 
 ### Patch Changes

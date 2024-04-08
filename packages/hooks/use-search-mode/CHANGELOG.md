@@ -1,5 +1,15 @@
 # @hi-ui/use-search-mode
 
+## 4.1.5-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [1a00f9fc4]
+  - @hi-ui/env@4.0.5-alpha.0
+  - @hi-ui/loading@4.2.1-alpha.0
+  - @hi-ui/dom-utils@4.0.8-alpha.0
+  - @hi-ui/func-utils@4.0.5-alpha.0
+
 ## 4.1.4
 
 ### Patch Changes

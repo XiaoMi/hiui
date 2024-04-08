@@ -1,5 +1,19 @@
 # @hi-ui/pagination
 
+## 4.0.15-alpha.0
+
+### Patch Changes
+
+- 1a00f9fc4: build: style-inject(node 环境下有问题) 替换为 @hi-ui/style-inject
+- Updated dependencies [1a00f9fc4]
+  - @hi-ui/env@4.0.5-alpha.0
+  - @hi-ui/icons@4.0.19-alpha.0
+  - @hi-ui/counter@4.1.9-alpha.0
+  - @hi-ui/input@4.1.1-alpha.0
+  - @hi-ui/select@4.4.1-alpha.0
+  - @hi-ui/classname@4.0.5-alpha.0
+  - @hi-ui/core@4.0.9-alpha.0
+
 ## 4.0.14
 
 ### Patch Changes

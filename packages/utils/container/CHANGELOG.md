@@ -1,5 +1,11 @@
 # @hi-ui/container
 
+## 4.1.1-alpha.0
+
+### Patch Changes
+
+- 1a00f9fc4: build: style-inject(node 环境下有问题) 替换为 @hi-ui/style-inject
+
 ## 4.1.0
 
 ### Minor Changes

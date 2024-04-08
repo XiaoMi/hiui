@@ -1,5 +1,15 @@
 # @hi-ui/badge
 
+## 4.0.10-alpha.0
+
+### Patch Changes
+
+- 1a00f9fc4: build: style-inject(node 环境下有问题) 替换为 @hi-ui/style-inject
+- Updated dependencies [1a00f9fc4]
+  - @hi-ui/env@4.0.5-alpha.0
+  - @hi-ui/classname@4.0.5-alpha.0
+  - @hi-ui/core@4.0.9-alpha.0
+
 ## 4.0.9
 
 ### Patch Changes

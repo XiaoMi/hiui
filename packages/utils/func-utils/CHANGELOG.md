@@ -1,5 +1,11 @@
 # @hi-ui/func-utils
 
+## 4.0.5-alpha.0
+
+### Patch Changes
+
+- @hi-ui/object-utils@4.0.5-alpha.0
+
 ## 4.0.4
 
 ### Patch Changes

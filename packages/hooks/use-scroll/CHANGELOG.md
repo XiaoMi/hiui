@@ -1,5 +1,11 @@
 # @hi-ui/use-scroll
 
+## 4.0.6-alpha.0
+
+### Patch Changes
+
+- @hi-ui/dom-utils@4.0.8-alpha.0
+
 ## 4.0.5
 
 ### Patch Changes

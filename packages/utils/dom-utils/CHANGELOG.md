@@ -1,5 +1,12 @@
 # @hi-ui/dom-utils
 
+## 4.0.8-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [1a00f9fc4]
+  - @hi-ui/env@4.0.5-alpha.0
+
 ## 4.0.7
 
 ### Patch Changes

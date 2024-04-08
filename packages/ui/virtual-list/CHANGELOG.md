@@ -1,5 +1,12 @@
 # @hi-ui/virtual-list
 
+## 4.0.8-alpha.0
+
+### Patch Changes
+
+- 1a00f9fc4: build: style-inject(node 环境下有问题) 替换为 @hi-ui/style-inject
+  - @hi-ui/core@4.0.9-alpha.0
+
 ## 4.0.7
 
 ### Patch Changes
