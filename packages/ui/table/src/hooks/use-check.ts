@@ -1,5 +1,5 @@
 import { useCheck } from '@hi-ui/use-check'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { FlattedTableRowData, TableRowSelection } from '../types'
 
@@ -30,6 +30,12 @@ export const useTableCheck = ({
     rowSelection?.onChange
   )
 
+  useEffect(() => {
+    checkedRowDataItemsRef.current = checkedRowDataItemsRef.current.filter(({ key }) =>
+      checkedRowKeys?.includes(key)
+    )
+  }, [checkedRowKeys])
+
   // 已选中的行数据集合
   const checkedRowDataItemsRef = React.useRef<Record<string, any>[]>([])
   const checkedRowDataItems = checkedRowDataItemsRef.current
@@ -47,7 +53,9 @@ export const useTableCheck = ({
   const onCheckedRowKeysChange = React.useCallback(
     (rowItem: Record<string, any>, checked: boolean) => {
       // 记录选中的行数据集合
-      const nextCheckedDataItems = checkedRowDataItems
+      const nextCheckedDataItems = checkedRowDataItems.filter(({ key }) =>
+        checkedRowKeys.includes(key)
+      )
 
       if (checked) {
         if (!nextCheckedDataItems.find((item) => item[fieldKey] === rowItem[fieldKey])) {
@@ -61,7 +69,7 @@ export const useTableCheck = ({
 
       handleCheckedRowKeysChange(rowItem, checked)
     },
-    [checkedRowDataItems, fieldKey, handleCheckedRowKeysChange]
+    [checkedRowDataItems, checkedRowKeys, fieldKey, handleCheckedRowKeysChange]
   )
 
   // 判断是否全选
@@ -101,14 +109,24 @@ export const useTableCheck = ({
     const checkedRowKeysSet = new Set(checkedRowKeys)
 
     if (checkedAll) {
+      checkedRowDataItemsRef.current = checkedRowDataItemsRef.current.filter(
+        ({ key }) => !checkedRowKeysSet.has(key)
+      )
+
       // 移除当前页所有行 ids
       trySetCheckedRowKeys(
         (prev) => prev.filter((id) => !checkedRowKeysSet.has(id)),
         targetRowItems,
-        false
+        false,
+        checkedRowDataItemsRef.current
       )
+
       return
     }
+
+    checkedRowDataItemsRef.current = targetRowItems.concat(
+      checkedRowDataItemsRef.current.filter((item) => !checkedRowKeysSet.has(item.key))
+    )
 
     trySetCheckedRowKeys(
       // 添加当前页所有行 ids
@@ -117,7 +135,8 @@ export const useTableCheck = ({
         return Array.from(checkedRowKeysSet)
       },
       targetRowItems,
-      true
+      true,
+      checkedRowDataItemsRef.current
     )
   }, [trySetCheckedRowKeys, flattedData, checkRowIsDisabledCheckbox, checkedAll])
 
