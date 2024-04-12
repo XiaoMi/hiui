@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/notification",
-  "version": "4.1.3",
+  "version": "4.1.4",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -43,12 +43,12 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.4",
-    "@hi-ui/env": "^4.0.4",
-    "@hi-ui/icon-button": "^4.0.8",
-    "@hi-ui/icons": "^4.0.18",
+    "@hi-ui/classname": "^4.0.5",
+    "@hi-ui/env": "^4.0.5",
+    "@hi-ui/icon-button": "^4.0.9",
+    "@hi-ui/icons": "^4.0.19",
     "@hi-ui/react-utils": "^4.0.4",
-    "@hi-ui/toast": "^4.0.7",
+    "@hi-ui/toast": "^4.0.8",
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {

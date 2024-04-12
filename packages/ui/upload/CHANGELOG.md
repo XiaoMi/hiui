@@ -1,5 +1,21 @@
 # @hi-ui/upload
 
+## 4.2.2
+
+### Patch Changes
+
+- [#2791](https://github.com/XiaoMi/hiui/pull/2791) [`1a00f9fc4`](https://github.com/XiaoMi/hiui/commit/1a00f9fc4a44619059d7852e846b54fedbd56715) Thanks [@zyprepare](https://github.com/zyprepare)! - build: style-inject(node 环境下有问题) 替换为 @hi-ui/style-inject
+
+- Updated dependencies [[`1a00f9fc4`](https://github.com/XiaoMi/hiui/commit/1a00f9fc4a44619059d7852e846b54fedbd56715)]:
+  - @hi-ui/env@4.0.5
+  - @hi-ui/icons@4.0.19
+  - @hi-ui/button@4.0.10
+  - @hi-ui/file-select@4.0.8
+  - @hi-ui/message@4.0.8
+  - @hi-ui/modal@4.1.1
+  - @hi-ui/preview@4.0.9
+  - @hi-ui/classname@4.0.5
+
 ## 4.2.1
 
 ### Patch Changes

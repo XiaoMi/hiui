@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/space",
-  "version": "4.0.10",
+  "version": "4.0.11",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -43,8 +43,8 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.4",
-    "@hi-ui/env": "^4.0.4",
+    "@hi-ui/classname": "^4.0.5",
+    "@hi-ui/env": "^4.0.5",
     "@hi-ui/type-assertion": "^4.0.4"
   },
   "peerDependencies": {
