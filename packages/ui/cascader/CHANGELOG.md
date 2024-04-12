@@ -1,5 +1,22 @@
 # @hi-ui/cascader
 
+## 4.1.6
+
+### Patch Changes
+
+- [#2791](https://github.com/XiaoMi/hiui/pull/2791) [`1a00f9fc4`](https://github.com/XiaoMi/hiui/commit/1a00f9fc4a44619059d7852e846b54fedbd56715) Thanks [@zyprepare](https://github.com/zyprepare)! - build: style-inject(node 环境下有问题) 替换为 @hi-ui/style-inject
+
+- Updated dependencies [[`1a00f9fc4`](https://github.com/XiaoMi/hiui/commit/1a00f9fc4a44619059d7852e846b54fedbd56715)]:
+  - @hi-ui/env@4.0.5
+  - @hi-ui/icons@4.0.19
+  - @hi-ui/highlighter@4.0.9
+  - @hi-ui/input@4.1.1
+  - @hi-ui/picker@4.1.6
+  - @hi-ui/popper@4.1.5
+  - @hi-ui/spinner@4.0.9
+  - @hi-ui/array-utils@4.0.5
+  - @hi-ui/classname@4.0.5
+
 ## 4.1.5
 
 ### Patch Changes
