@@ -61,6 +61,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       visible,
       onOpen,
       onClose,
+      onClear,
       // picker
       appearance,
       invalid,
@@ -316,6 +317,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
                 value={value}
                 // @ts-ignore
                 onChange={tryChangeValue}
+                onClear={onClear}
                 data={mergedData}
                 invalid={invalid}
                 onClick={(evt) => {
