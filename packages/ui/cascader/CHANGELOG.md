@@ -1,5 +1,11 @@
 # @hi-ui/cascader
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2805](https://github.com/XiaoMi/hiui/pull/2805) [`9146d5ef2`](https://github.com/XiaoMi/hiui/commit/9146d5ef207201a6ff8f42fb3ca66e7929335c1a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add closeOnSelect api
+
 ## 4.1.6
 
 ### Patch Changes
