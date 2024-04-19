@@ -13,6 +13,7 @@ export const Cell: React.FC<CellProps> = ({
   label,
   content,
   labelWidth,
+  cellColumnGap,
 }) => {
   const Component: any = component
 
@@ -42,7 +43,7 @@ export const Cell: React.FC<CellProps> = ({
 
   return (
     <Component className={cx(`${itemPrefixCls}-item`, className)} style={style} colSpan={colSpan}>
-      <div className={`${itemPrefixCls}-item__container`}>
+      <div className={`${itemPrefixCls}-item__container`} style={{ paddingRight: cellColumnGap }}>
         {!isNullish(label) && (
           <span className={cx(`${itemPrefixCls}-item__label`)} style={{ width: labelWidth }}>
             {label}
@@ -67,4 +68,5 @@ export interface CellProps {
   label?: React.ReactNode
   content?: React.ReactNode
   labelWidth?: React.ReactText
+  cellColumnGap?: React.ReactText
 }
