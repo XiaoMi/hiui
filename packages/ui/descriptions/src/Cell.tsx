@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { cx } from '@hi-ui/classname'
+import { cx, getPrefixStyleVar } from '@hi-ui/classname'
 import { isNullish } from '@hi-ui/type-assertion'
 
 export const Cell: React.FC<CellProps> = ({
@@ -43,7 +43,13 @@ export const Cell: React.FC<CellProps> = ({
 
   return (
     <Component className={cx(`${itemPrefixCls}-item`, className)} style={style} colSpan={colSpan}>
-      <div className={`${itemPrefixCls}-item__container`} style={{ paddingRight: cellColumnGap }}>
+      <div
+        className={`${itemPrefixCls}-item__container`}
+        style={{
+          [`${getPrefixStyleVar('container-padding-right')}`]:
+            typeof cellColumnGap === 'number' ? cellColumnGap + 'px' : cellColumnGap,
+        }}
+      >
         {!isNullish(label) && (
           <span className={cx(`${itemPrefixCls}-item__label`)} style={{ width: labelWidth }}>
             {label}
