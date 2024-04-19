@@ -59,88 +59,88 @@ export const GroupHeader = () => {
       dataKey: 'name3',
       width: 100,
     },
-    {
-      title: 'Name4',
-      dataKey: 'name4',
-      width: 100,
-    },
-    {
-      title: 'Name5',
-      dataKey: 'name5',
-      width: 100,
-    },
-    {
-      title: 'Name6',
-      dataKey: 'name6',
-      width: 100,
-    },
-    {
-      title: 'Name7',
-      dataKey: 'name7',
-      width: 100,
-    },
-    {
-      title: 'Name8',
-      dataKey: 'name8',
-      width: 100,
-    },
-    {
-      title: 'Name9',
-      dataKey: 'name9',
-      width: 100,
-    },
-    {
-      title: 'Name10',
-      dataKey: 'name10',
-      width: 100,
-    },
-    {
-      title: 'Company',
-      dataKey: 'company',
-      children: [
-        {
-          title: 'Address',
-          dataKey: 'companyAddress',
-          width: 200,
-        },
-        {
-          title: 'Name',
-          dataKey: 'companyName',
-          width: 150,
-        },
-      ],
-    },
-    {
-      title: 'Name11',
-      dataKey: 'name11',
-      width: 100,
-    },
-    {
-      title: 'Name12',
-      dataKey: 'name12',
-      width: 100,
-    },
-    {
-      title: 'Name13',
-      dataKey: 'name13',
-      width: 100,
-    },
-    {
-      title: 'Name14',
-      dataKey: 'name14',
-      children: [
-        {
-          title: 'Address14',
-          dataKey: 'address14',
-          width: 100,
-        },
-        {
-          title: 'Company14',
-          dataKey: 'company14',
-          width: 100,
-        },
-      ],
-    },
+    // {
+    //   title: 'Name4',
+    //   dataKey: 'name4',
+    //   width: 100,
+    // },
+    // {
+    //   title: 'Name5',
+    //   dataKey: 'name5',
+    //   width: 100,
+    // },
+    // {
+    //   title: 'Name6',
+    //   dataKey: 'name6',
+    //   width: 100,
+    // },
+    // {
+    //   title: 'Name7',
+    //   dataKey: 'name7',
+    //   width: 100,
+    // },
+    // {
+    //   title: 'Name8',
+    //   dataKey: 'name8',
+    //   width: 100,
+    // },
+    // {
+    //   title: 'Name9',
+    //   dataKey: 'name9',
+    //   width: 100,
+    // },
+    // {
+    //   title: 'Name10',
+    //   dataKey: 'name10',
+    //   width: 100,
+    // },
+    // {
+    //   title: 'Company',
+    //   dataKey: 'company',
+    //   children: [
+    //     {
+    //       title: 'Address',
+    //       dataKey: 'companyAddress',
+    //       width: 200,
+    //     },
+    //     {
+    //       title: 'Name',
+    //       dataKey: 'companyName',
+    //       width: 150,
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: 'Name11',
+    //   dataKey: 'name11',
+    //   width: 100,
+    // },
+    // {
+    //   title: 'Name12',
+    //   dataKey: 'name12',
+    //   width: 100,
+    // },
+    // {
+    //   title: 'Name13',
+    //   dataKey: 'name13',
+    //   width: 100,
+    // },
+    // {
+    //   title: 'Name14',
+    //   dataKey: 'name14',
+    //   children: [
+    //     {
+    //       title: 'Address14',
+    //       dataKey: 'address14',
+    //       width: 100,
+    //     },
+    //     {
+    //       title: 'Company14',
+    //       dataKey: 'company14',
+    //       width: 100,
+    //     },
+    //   ],
+    // },
     {
       title: 'Gender',
       dataKey: 'gender',
@@ -190,6 +190,7 @@ export const GroupHeader = () => {
           }}
           columns={columns}
           data={data}
+          resizable
         />
       </div>
     </>

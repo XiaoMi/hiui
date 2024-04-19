@@ -282,6 +282,8 @@ export const useTable = ({
         scrollWidth ? scrollWidth / lastColumns.length : 100
       )
 
+      // console.log('colWidths', colWidths)
+
       if (colWidths) {
         // colWidths 记录的是最新的列宽，当它有值时，重置一下列宽，否则会导致冻结列动态调整宽度后定位不准
         nextColumns = nextColumns.map((item, index) => {

@@ -45,7 +45,7 @@ export const useColWidth = ({
           const noFixedColumns = columns.filter((item) => !item.fixed)
 
           _realColumnsWidth = _realColumnsWidth.map((item, index) => {
-            if (!columns[index].fixed) {
+            if (!columns[index]?.fixed) {
               return item + Math.floor(exceedWidth / noFixedColumns.length)
             }
             return item
@@ -154,7 +154,29 @@ export const useColWidth = ({
     if (headerTableElement) {
       resizeObserver = new ResizeObserver(() => {
         const resizableHandlerWidth = 4
-        const _minColWidth = Array.from(headerTableElement.childNodes).map((th) => {
+        const theadNode = headerTableElement.parentNode
+        const arr = new Array(9)
+        let i = 0
+
+        Array.from(theadNode?.childNodes).forEach((trNode) => {
+          i = i === 0 ? 0 : arr.findIndex((d) => !d)
+          Array.from(trNode.childNodes).forEach((thNode) => {
+            const colspan = Number(thNode.getAttribute('colspan') || '1')
+            console.log('[[', colspan, thNode)
+            if (colspan === 1) {
+              arr[i] = thNode
+              i++
+            }
+            if (colspan > 1) {
+              arr[i] = 0
+              i = i + colspan
+            }
+          })
+        })
+
+        console.log('arr', arr)
+
+        const _minColWidth = arr.map((th) => {
           const thPaddingLeft = parseFloat(
             window.getComputedStyle(th as Element).getPropertyValue('padding-left')
           )
@@ -213,6 +235,7 @@ export const useColWidth = ({
 
     return Array(columns.length).fill(0)
   }, [columns.length, headerTableElement, resizable])
+  console.log('minColWidth', minColWidth)
 
   /**
    * 列宽拖拽 resize，只处理拖拽线两边的列宽度
@@ -226,6 +249,7 @@ export const useColWidth = ({
       setColWidths((prev) => {
         const nextColWidths = [...prev]
         let anotherWidth = nextColWidths[index + 1]! + nextColWidths[index]! - nextWidth
+        console.log('update', index, anotherWidth, anotherMinWidth)
 
         if (anotherWidth <= anotherMinWidth) {
           anotherWidth = anotherMinWidth

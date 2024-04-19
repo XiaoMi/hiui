@@ -25,11 +25,16 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
     } = useTableContext()
 
     const activeColumnKeysAction = useCheckState()
+    console.log('groupedColumns', groupedColumns)
+    const indexRef = React.useRef(0)
+    const tempRef = React.useRef([])
+    console.log('tempRef', tempRef)
 
     return (
       <thead {...rest}>
         {/* 渲染列 */}
         {groupedColumns.map((cols, colsIndex) => {
+          indexRef.current = colsIndex === 0 ? 0 : tempRef.current.findIndex((d) => !d)
           return (
             <tr key={colsIndex} ref={setHeaderTableElement}>
               {cols.map((col, colIndex) => {
@@ -71,6 +76,14 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                   </th>
                 )
 
+                if (col?.children?.length > 0) {
+                  tempRef.current[indexRef.current] = 0
+                  indexRef.current = indexRef.current + (col?.children?.length ?? 0) + 2
+                } else {
+                  tempRef.current[indexRef.current] = 1
+                  indexRef.current++
+                }
+
                 return resizable && colIndex !== colWidths.length - 1 ? (
                   <Resizable
                     key={colIndex}
@@ -79,9 +92,11 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                     handle={<span className={`${prefixCls}__resizable-handle`} />}
                     height={0}
                     width={colWidths[colIndex] as number}
-                    onResize={(evt, options) => {
-                      onColumnResizable(evt, options, colIndex)
-                    }}
+                    onResize={((index) => {
+                      return (evt, options) => {
+                        !col?.children && onColumnResizable(evt, options, index)
+                      }
+                    })(indexRef.current - 1)}
                   >
                     {cell}
                   </Resizable>
