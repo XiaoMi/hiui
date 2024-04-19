@@ -179,6 +179,11 @@ export interface UseCascaderProps {
    */
   changeOnSelect?: boolean
   /**
+   * 是否启用选择即关闭（用于 changeOnSelect 模式下控制父节点点击交互）
+   * @default true
+   */
+  closeOnSelect?: boolean
+  /**
    * 将选项拍平展示，不支持 `onLoadChildren` 异步加载交互。暂不对外暴露
    * @private
    */
