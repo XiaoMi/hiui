@@ -57,6 +57,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     onClose,
     renderExtraFooter,
     dropdownColumnRender,
+    closeOnSelect = true,
     ...rest
   } = props
   const i18n = useLocaleContext()
@@ -79,8 +80,12 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
   ) => {
     onSelectProp?.(value, item, itemPaths)
     setSelectedItem(item)
-    // 关闭弹窗
-    menuVisibleAction.off()
+
+    // 选中子节点时一定关闭弹窗，或者点击父节点并且 closeOnSelect 为 true 时也可以关闭弹窗
+    if (!item.children || (item.children.length > 0 && closeOnSelect)) {
+      // 关闭弹窗
+      menuVisibleAction.off()
+    }
   }
 
   // 拦截 titleRender，自定义高亮展示
