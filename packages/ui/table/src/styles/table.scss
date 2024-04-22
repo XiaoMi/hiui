@@ -113,7 +113,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
         }
 
         & > tr:has(+ tr) {
-          th {
+          th:not(.#{$prefix}-header-cell--group-last-column) {
             border-right: use-border-size('normal') use-color('gray', 200);
           }
         }
