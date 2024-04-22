@@ -1,5 +1,11 @@
 # @hi-ui/check-select
 
+## 4.4.3
+
+### Patch Changes
+
+- [#2795](https://github.com/XiaoMi/hiui/pull/2795) [`234687ee0`](https://github.com/XiaoMi/hiui/commit/234687ee0ea4de16faaf771ea6a599bc43971249) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复 onClear 设置后没触发问题
+
 ## 4.4.2
 
 ### Patch Changes

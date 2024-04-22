@@ -1,5 +1,17 @@
 # @hi-ui/hiui
 
+## 4.5.8
+
+### Patch Changes
+
+- [#2805](https://github.com/XiaoMi/hiui/pull/2805) [`9146d5ef2`](https://github.com/XiaoMi/hiui/commit/9146d5ef207201a6ff8f42fb3ca66e7929335c1a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(cascader): add closeOnSelect api
+
+- [#2795](https://github.com/XiaoMi/hiui/pull/2795) [`234687ee0`](https://github.com/XiaoMi/hiui/commit/234687ee0ea4de16faaf771ea6a599bc43971249) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix(check-select): 修复 onClear 设置后没触发问题
+
+- Updated dependencies [[`9146d5ef2`](https://github.com/XiaoMi/hiui/commit/9146d5ef207201a6ff8f42fb3ca66e7929335c1a), [`234687ee0`](https://github.com/XiaoMi/hiui/commit/234687ee0ea4de16faaf771ea6a599bc43971249)]:
+  - @hi-ui/cascader@4.2.0
+  - @hi-ui/check-select@4.4.3
+
 ## 4.5.7
 
 ### Patch Changes
