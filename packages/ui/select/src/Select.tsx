@@ -186,11 +186,12 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     const defaultIndex = showData.findIndex((item: SelectDataItem) => !item.disabled)
 
     const [focusedIndex, setFocusedIndex] = useState<number>(defaultIndex)
+    const [isComposing, setIsComposing] = useState<boolean>(false)
 
     const handleKeyDown = useLatestCallback((evt: React.KeyboardEvent) => {
       const { key } = evt
 
-      if (key === 'Enter') {
+      if (key === 'Enter' && !isComposing) {
         const item = showData[focusedIndex]
 
         if (item) {
@@ -235,6 +236,12 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           onKeyDown={mockDefaultHandlers(handleKeyDown, onKeyDownProp)}
           onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
+          onCompositionStart={() => {
+            setIsComposing(true)
+          }}
+          onCompositionEnd={() => {
+            setIsComposing(false)
+          }}
           searchable={searchable}
           keyword={keywordProp}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
