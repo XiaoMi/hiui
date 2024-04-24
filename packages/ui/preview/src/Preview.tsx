@@ -2,6 +2,7 @@ import React, { forwardRef, useCallback, useState, useEffect, useRef, useMemo } 
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { Portal } from '@hi-ui/portal'
+import { Watermark, WatermarkProps } from '@hi-ui/watermark'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { HiBaseHTMLProps } from '@hi-ui/core'
@@ -43,6 +44,8 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       onError,
       onClose,
       src,
+      previewWatermarkProps,
+      ifAllowDownload = false,
     },
     ref
   ) => {
@@ -64,6 +67,27 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     const previewRef = useRef<HTMLDivElement>(null)
 
     const isMultiple = useMemo(() => Array.isArray(src) && src.length > 1, [src])
+
+    // 图片加水印
+    const [waterMarkElement, setWaterMarkElement] = useState<HTMLDivElement | undefined>(undefined)
+    useEffect(() => {
+      if (visible) {
+        setWaterMarkElement(document.querySelector(`.${prefixCls}__box`) as HTMLDivElement)
+      }
+    }, [visible])
+
+    // 图片是否允许下载
+    useEffect(() => {
+      const handleContextMenu = (evt: MouseEvent) => {
+        evt.preventDefault()
+      }
+      if (imgRef.current && !ifAllowDownload && visible) {
+        imgRef.current.addEventListener('contextmenu', handleContextMenu)
+      }
+      return () => {
+        imgRef.current?.removeEventListener('contextmenu', handleContextMenu)
+      }
+    }, [imgRef, visible, ifAllowDownload])
 
     // 重置图片
     const resetTransform = useCallback(() => {
@@ -226,20 +250,29 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                 onMouseMove={onMoving}
                 onKeyDown={handleKeyDown}
               >
-                <img
-                  ref={imgRef}
-                  onLoad={() => {
-                    setIsLoaded(true)
-                  }}
-                  onError={onError}
-                  onMouseDown={onMoveStart}
-                  onMouseUp={onMoveEnd}
-                  src={Array.isArray(src) ? src[active] : src}
-                  className={`${prefixCls}__image`}
+                <div
+                  className={`${prefixCls}__box`}
                   style={{
+                    display: 'inline-block',
                     transform: `scale(${imgTransform.scale}, ${imgTransform.scale}) translate(${imgTransform.translateX}px,${imgTransform.translateY}px) rotate(${imgTransform.rotate}deg)`,
+                    zIndex: 1,
                   }}
-                />
+                >
+                  <img
+                    ref={imgRef}
+                    onLoad={() => {
+                      setIsLoaded(true)
+                    }}
+                    onError={onError}
+                    onMouseDown={onMoveStart}
+                    onMouseUp={onMoveEnd}
+                    src={Array.isArray(src) ? src[active] : src}
+                    className={`${prefixCls}__image`}
+                    // style={{
+                    //   transform: `scale(${imgTransform.scale}, ${imgTransform.scale}) translate(${imgTransform.translateX}px,${imgTransform.translateY}px) rotate(${imgTransform.rotate}deg)`,
+                    // }}
+                  />
+                </div>
                 <div className={`${prefixCls}__toolbar`}>
                   <ZoomInOutlined
                     onClick={() => {
@@ -286,6 +319,20 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   </>
                 )}
               </div>
+              <Watermark
+                content={['HiUI', '做中台，就用 HiUI']}
+                style={{
+                  pointerEvents: 'none',
+                  position: 'fixed',
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  left: 0,
+                  zIndex: 2048,
+                }}
+                {...previewWatermarkProps}
+                container={waterMarkElement}
+              />
             </>
           )}
         </div>
@@ -315,6 +362,14 @@ export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
    * 当前预览图片索引
    */
   defaultCurrent?: number
+  /**
+   * 设置图片水印
+   */
+  previewWatermarkProps?: Omit<WatermarkProps, 'container'>
+  /**
+   * 是否允许右键下载图片
+   */
+  ifAllowDownload?: boolean
   /**
    * 加载错误回调
    */
