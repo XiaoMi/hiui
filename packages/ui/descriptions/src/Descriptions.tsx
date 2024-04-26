@@ -29,6 +29,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       appearance = 'unset',
       labelPlacement = 'left',
       labelWidth,
+      columnGap,
       size = 'md',
       ...rest
     },
@@ -66,6 +67,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
                 noBackground={noBackground}
                 labelPlacement={labelPlacement}
                 rootLabelWidth={labelWidth}
+                cellColumnGap={columnGap}
               />
             ))}
           </tbody>
@@ -100,6 +102,11 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
    * label宽度
    */
   labelWidth?: React.ReactText
+  /**
+   * 单元格列间距
+   * 注：在无边框场景下生效
+   */
+  columnGap?: React.ReactText
   /**
    * 设置大小
    */

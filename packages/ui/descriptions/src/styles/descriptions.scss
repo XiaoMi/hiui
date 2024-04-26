@@ -36,6 +36,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
     &__container {
       box-sizing: border-box;
       display: flex;
+      padding-right: var(--hi-v4-container-padding-right, 0);
     }
 
     &__label,
