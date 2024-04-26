@@ -1,5 +1,11 @@
 # @hi-ui/form
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2818](https://github.com/XiaoMi/hiui/pull/2818) [`39d555903`](https://github.com/XiaoMi/hiui/commit/39d555903c81207d5d2bf34a2a5d1942152dcee0) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: add showValidateMessage api
+
 ## 4.1.7
 
 ### Patch Changes
