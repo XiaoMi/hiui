@@ -1,5 +1,20 @@
 # @hi-ui/hiui
 
+## 4.5.9
+
+### Patch Changes
+
+- [#2817](https://github.com/XiaoMi/hiui/pull/2817) [`c32ae3dd9`](https://github.com/XiaoMi/hiui/commit/c32ae3dd9b5a89840270649fc397d474e9e1de4b) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复表头分组单元格边框显示问题
+
+- [#2812](https://github.com/XiaoMi/hiui/pull/2812) [`fbaf242b0`](https://github.com/XiaoMi/hiui/commit/fbaf242b0e36729787ee576e7e3ab05ed4115cf4) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(descriptions): 新增自定义列间距功能
+
+- [#2818](https://github.com/XiaoMi/hiui/pull/2818) [`39d555903`](https://github.com/XiaoMi/hiui/commit/39d555903c81207d5d2bf34a2a5d1942152dcee0) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(form): add showValidateMessage api
+
+- Updated dependencies [[`fbaf242b0`](https://github.com/XiaoMi/hiui/commit/fbaf242b0e36729787ee576e7e3ab05ed4115cf4), [`c32ae3dd9`](https://github.com/XiaoMi/hiui/commit/c32ae3dd9b5a89840270649fc397d474e9e1de4b), [`39d555903`](https://github.com/XiaoMi/hiui/commit/39d555903c81207d5d2bf34a2a5d1942152dcee0)]:
+  - @hi-ui/descriptions@4.3.0
+  - @hi-ui/table@4.5.3
+  - @hi-ui/form@4.2.0
+
 ## 4.5.8
 
 ### Patch Changes
