@@ -29,6 +29,7 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
       contentPosition = 'center',
       showRequiredOnValidateRequired = false,
       showColon = true,
+      showValidateMessage = true,
       ...rest
     },
     ref
@@ -61,17 +62,19 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
         showColon,
         contentPosition,
         showRequiredOnValidateRequired,
+        showValidateMessage,
         ...formContext,
         prefixCls,
       }
     }, [
       labelWidth,
-      formContext,
       labelPlacement,
       showColon,
-      prefixCls,
       contentPosition,
       showRequiredOnValidateRequired,
+      showValidateMessage,
+      formContext,
+      prefixCls,
     ])
 
     const cls = cx(prefixCls, className, placement && `${prefixCls}--placement-${placement}`)
@@ -118,6 +121,11 @@ export interface FormProps<Values = Record<string, any>>
    * FormItem 开启 filed 的 required 校验时，展示红色星号
    */
   showRequiredOnValidateRequired?: boolean
+  /**
+   * 是否显示校验提示
+   * @default true
+   */
+  showValidateMessage?: boolean
 }
 
 if (__DEV__) {

@@ -51,7 +51,7 @@ export const GetValues = () => {
           <FormItem required={true} label="姓名" field="name" valueType="string">
             <Input placeholder="请输入" style={{ width: 200 }} />
           </FormItem>
-          <FormItem valueType={null} field={null}>
+          <FormItem valueType={null} field={null} showValidateMessage={false}>
             <Button
               type="primary"
               onClick={() => {
