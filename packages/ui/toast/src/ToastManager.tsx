@@ -89,7 +89,7 @@ export class ToastManager extends Component<ToastManagerProps, ToastManagerState
     return {
       // @DesignToken zIndex: `toast`
       zIndex: 1010,
-      position: 'fixed',
+      position: 'absolute',
       pointerEvents: 'none',
       transform,
       top,
