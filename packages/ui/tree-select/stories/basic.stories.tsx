@@ -1,6 +1,5 @@
 import React from 'react'
 import TreeSelect from '../src'
-import { AppStoreOutlined, InfoCircleOutlined } from '@hi-ui/icons'
 
 /**
  * @title 基础用法
@@ -93,8 +92,6 @@ export const Basic = () => {
       <div className="tree-select-basic__wrap">
         <TreeSelect
           data={data}
-          prefix={<AppStoreOutlined style={{ color: '#333' }} />}
-          suffix={<InfoCircleOutlined style={{ color: '#333' }} />}
           onChange={(checkedIds, selectItem) => {
             console.log('TreeSelect onChange: ', checkedIds, selectItem)
           }}
