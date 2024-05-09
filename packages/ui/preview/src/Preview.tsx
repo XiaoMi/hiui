@@ -44,8 +44,8 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       onError,
       onClose,
       src,
-      previewWatermarkProps,
-      ifAllowDownload = true,
+      watermarkProps,
+      disableDownload = false,
     },
     ref
   ) => {
@@ -69,10 +69,13 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     const isMultiple = useMemo(() => Array.isArray(src) && src.length > 1, [src])
 
     // 图片加水印
-    const [waterMarkElement, setWaterMarkElement] = useState<HTMLDivElement | undefined>(undefined)
+    const waterMarkRef = useRef<HTMLDivElement | undefined>(undefined)
+
     useEffect(() => {
       if (visible) {
-        setWaterMarkElement(document.querySelector(`.${prefixCls}__box`) as HTMLDivElement)
+        waterMarkRef.current = document.querySelector(
+          `.${prefixCls}__img-wrapper`
+        ) as HTMLDivElement
       }
     }, [visible])
 
@@ -81,13 +84,10 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       const handleContextMenu = (evt: MouseEvent) => {
         evt.preventDefault()
       }
-      if (imgRef.current && !ifAllowDownload && visible) {
-        imgRef.current.addEventListener('contextmenu', handleContextMenu)
+      if (imgRef.current && disableDownload && visible) {
+        imgRef.current.oncontextmenu = handleContextMenu
       }
-      return () => {
-        imgRef.current?.removeEventListener('contextmenu', handleContextMenu)
-      }
-    }, [imgRef, visible, ifAllowDownload])
+    }, [imgRef, visible, disableDownload])
 
     // 重置图片
     const resetTransform = useCallback(() => {
@@ -251,7 +251,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                 onKeyDown={handleKeyDown}
               >
                 <div
-                  className={`${prefixCls}__box`}
+                  className={`${prefixCls}__img-wrapper`}
                   style={{
                     display: 'inline-block',
                     transform: `scale(${imgTransform.scale}, ${imgTransform.scale}) translate(${imgTransform.translateX}px,${imgTransform.translateY}px) rotate(${imgTransform.rotate}deg)`,
@@ -268,9 +268,6 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                     onMouseUp={onMoveEnd}
                     src={Array.isArray(src) ? src[active] : src}
                     className={`${prefixCls}__image`}
-                    // style={{
-                    //   transform: `scale(${imgTransform.scale}, ${imgTransform.scale}) translate(${imgTransform.translateX}px,${imgTransform.translateY}px) rotate(${imgTransform.rotate}deg)`,
-                    // }}
                   />
                 </div>
                 <div className={`${prefixCls}__toolbar`}>
@@ -319,7 +316,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   </>
                 )}
               </div>
-              <Watermark {...previewWatermarkProps} container={waterMarkElement} />
+              <Watermark {...watermarkProps} container={waterMarkRef.current} />
             </>
           )}
         </div>
@@ -352,11 +349,11 @@ export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
   /**
    * 设置图片水印
    */
-  previewWatermarkProps?: Omit<WatermarkProps, 'container'>
+  watermarkProps?: Omit<WatermarkProps, 'container'>
   /**
-   * 是否允许右键下载图片
+   * 是否禁止右键下载图片
    */
-  ifAllowDownload?: boolean
+  disableDownload?: boolean
   /**
    * 加载错误回调
    */

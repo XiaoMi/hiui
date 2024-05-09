@@ -25,7 +25,7 @@ export const Watermark = () => {
           onClose={() => {
             setShowIndex(-1)
           }}
-          previewWatermarkProps={{
+          watermarkProps={{
             content: ['HiUI', '做中台，就用 HiUI'],
             style: {
               pointerEvents: 'none',

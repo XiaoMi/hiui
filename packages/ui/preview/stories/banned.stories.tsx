@@ -22,7 +22,7 @@ export const Banned = () => {
           title={`pic_${showIndex}.png`}
           src={images[showIndex]}
           visible={showIndex !== -1}
-          ifAllowDownload={false}
+          disableDownload={true}
           onClose={() => {
             setShowIndex(-1)
           }}
