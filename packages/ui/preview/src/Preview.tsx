@@ -45,7 +45,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       onClose,
       src,
       previewWatermarkProps,
-      ifAllowDownload = false,
+      ifAllowDownload = true,
     },
     ref
   ) => {
@@ -319,20 +319,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   </>
                 )}
               </div>
-              <Watermark
-                content={['HiUI', '做中台，就用 HiUI']}
-                style={{
-                  pointerEvents: 'none',
-                  position: 'fixed',
-                  top: 0,
-                  right: 0,
-                  bottom: 0,
-                  left: 0,
-                  zIndex: 2048,
-                }}
-                {...previewWatermarkProps}
-                container={waterMarkElement}
-              />
+              <Watermark {...previewWatermarkProps} container={waterMarkElement} />
             </>
           )}
         </div>
