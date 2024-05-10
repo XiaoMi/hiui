@@ -3,6 +3,8 @@ import Preview from '../src'
 
 export * from './basic.stories'
 export * from './multiple.stories'
+export * from './watermark.stories'
+export * from './banned.stories'
 
 export default {
   title: 'Data Display/Preview',

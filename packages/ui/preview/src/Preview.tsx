@@ -2,6 +2,7 @@ import React, { forwardRef, useCallback, useState, useEffect, useRef, useMemo } 
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { Portal } from '@hi-ui/portal'
+import { Watermark, WatermarkProps } from '@hi-ui/watermark'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { HiBaseHTMLProps } from '@hi-ui/core'
@@ -43,6 +44,8 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       onError,
       onClose,
       src,
+      watermarkProps,
+      disabledDownload = false,
     },
     ref
   ) => {
@@ -64,6 +67,13 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     const previewRef = useRef<HTMLDivElement>(null)
 
     const isMultiple = useMemo(() => Array.isArray(src) && src.length > 1, [src])
+
+    // 图片加水印
+    const [watermarkContainerRef, setWatermarkContainerRef] = useState<HTMLDivElement | null>(null)
+
+    const handleContextMenu = useLatestCallback((evt: React.MouseEvent) => {
+      evt.preventDefault()
+    })
 
     // 重置图片
     const resetTransform = useCallback(() => {
@@ -226,20 +236,28 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                 onMouseMove={onMoving}
                 onKeyDown={handleKeyDown}
               >
-                <img
-                  ref={imgRef}
-                  onLoad={() => {
-                    setIsLoaded(true)
+                <div
+                  className={`${prefixCls}__img-wrapper`}
+                  ref={(e) => {
+                    setWatermarkContainerRef(e)
                   }}
-                  onError={onError}
-                  onMouseDown={onMoveStart}
-                  onMouseUp={onMoveEnd}
-                  src={Array.isArray(src) ? src[active] : src}
-                  className={`${prefixCls}__image`}
                   style={{
                     transform: `scale(${imgTransform.scale}, ${imgTransform.scale}) translate(${imgTransform.translateX}px,${imgTransform.translateY}px) rotate(${imgTransform.rotate}deg)`,
                   }}
-                />
+                >
+                  <img
+                    ref={imgRef}
+                    onLoad={() => {
+                      setIsLoaded(true)
+                    }}
+                    onError={onError}
+                    onMouseDown={onMoveStart}
+                    onMouseUp={onMoveEnd}
+                    onContextMenu={disabledDownload ? handleContextMenu : undefined}
+                    src={Array.isArray(src) ? src[active] : src}
+                    className={`${prefixCls}__image`}
+                  />
+                </div>
                 <div className={`${prefixCls}__toolbar`}>
                   <ZoomInOutlined
                     onClick={() => {
@@ -286,6 +304,9 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   </>
                 )}
               </div>
+              {watermarkProps && (
+                <Watermark {...watermarkProps} container={watermarkContainerRef} />
+              )}
             </>
           )}
         </div>
@@ -315,6 +336,14 @@ export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
    * 当前预览图片索引
    */
   defaultCurrent?: number
+  /**
+   * 设置图片水印
+   */
+  watermarkProps?: Omit<WatermarkProps, 'container'>
+  /**
+   * 是否禁止右键下载图片
+   */
+  disabledDownload?: boolean
   /**
    * 加载错误回调
    */
