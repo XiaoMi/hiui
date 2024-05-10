@@ -25,6 +25,7 @@ export const Watermark = () => {
           onClose={() => {
             setShowIndex(-1)
           }}
+          disabledPortal={false}
           watermarkProps={{
             content: ['HiUI', '做中台，就用 HiUI'],
             style: {
