@@ -46,7 +46,6 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       src,
       watermarkProps,
       disabledDownload = false,
-      disabledPortal = true,
     },
     ref
   ) => {
@@ -305,7 +304,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   </>
                 )}
               </div>
-              {!disabledPortal && (
+              {watermarkProps && (
                 <Watermark {...watermarkProps} container={watermarkContainerRef} />
               )}
             </>
@@ -337,10 +336,6 @@ export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
    * 当前预览图片索引
    */
   defaultCurrent?: number
-  /**
-   * 禁止挂载水印
-   */
-  disabledPortal?: boolean
   /**
    * 设置图片水印
    */
