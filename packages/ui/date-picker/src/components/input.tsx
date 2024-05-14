@@ -68,6 +68,10 @@ const Input = ({
       vals = vals?.toLocaleUpperCase()
     }
 
+    if (typeof format === 'function' && date) {
+      vals = format(date)
+    }
+
     setValue(vals)
 
     cacheValues.current = vals
