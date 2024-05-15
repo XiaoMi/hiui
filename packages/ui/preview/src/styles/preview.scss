@@ -152,4 +152,8 @@ $prefix: '#{$component-prefix}-preview' !default;
     pointer-events: auto;
     display: inline-block;
   }
+
+  &__img-wrapper {
+    display: inline-block;
+  }
 }

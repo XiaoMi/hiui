@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 4.5.3
+
+### Patch Changes
+
+- [#2817](https://github.com/XiaoMi/hiui/pull/2817) [`c32ae3dd9`](https://github.com/XiaoMi/hiui/commit/c32ae3dd9b5a89840270649fc397d474e9e1de4b) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复表头分组单元格边框显示问题
+
 ## 4.5.2
 
 ### Patch Changes

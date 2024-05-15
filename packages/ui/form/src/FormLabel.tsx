@@ -16,6 +16,7 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     labelPlacement: labelPlacementContext,
     showColon: showColonContext,
     contentPosition: contentPositionContext,
+    showValidateMessage: showValidateMessageContext,
   } = useFormContext()
 
   const {
@@ -32,6 +33,7 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     contentPosition = contentPositionContext,
     labelPlacement = labelPlacementContext,
     formMessage,
+    showValidateMessage: showValidateMessageProp = showValidateMessageContext,
     ...rest
   } = props
 
@@ -92,7 +94,9 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
           {children}
         </div>
       </div>
-      <div style={{ paddingLeft: `calc(100% - ${controlWidth})` }}>{formMessage}</div>
+      {showValidateMessageProp && (
+        <div style={{ paddingLeft: `calc(100% - ${controlWidth})` }}>{formMessage}</div>
+      )}
     </div>
   )
 })
@@ -126,6 +130,10 @@ export interface FormLabelProps extends HiBaseHTMLProps<'div'> {
    * 提示信息
    */
   formMessage?: ReactNode
+  /**
+   * 是否显示校验提示。优先级高于 Form 设置的 showValidateMessage
+   */
+  showValidateMessage?: boolean
 }
 
 if (__DEV__) {

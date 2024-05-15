@@ -45,7 +45,7 @@ export const useColWidth = ({
           const noFixedColumns = columns.filter((item) => !item.fixed)
 
           _realColumnsWidth = _realColumnsWidth.map((item, index) => {
-            if (!columns[index].fixed) {
+            if (!columns[index]?.fixed) {
               return item + Math.floor(exceedWidth / noFixedColumns.length)
             }
             return item

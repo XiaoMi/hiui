@@ -8,6 +8,7 @@ export interface FormContextProps extends UseFormReturn {
   contentPosition: 'top' | 'center' | 'bottom'
   showColon: boolean
   showRequiredOnValidateRequired: boolean
+  showValidateMessage: boolean
   prefixCls: string
 }
 

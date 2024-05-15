@@ -111,6 +111,18 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
         & > tr > th:not(:last-child) {
           border-right: use-border-size('normal') use-color('gray', 200);
         }
+
+        & > tr:has(+ tr) {
+          th:not(.#{$prefix}-header-cell--group-last-column) {
+            border-right: use-border-size('normal') use-color('gray', 200);
+          }
+        }
+
+        & > tr + tr:last-child {
+          th {
+            border-right: use-border-size('normal') use-color('gray', 200);
+          }
+        }
       }
 
       tr {
