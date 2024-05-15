@@ -23,17 +23,17 @@ export const usePopConfirm = ({
     defaultVisible: false,
     visible: visibleProp,
     onOpen,
-    onClose: () => {
-      onClose?.()
-      onCancelProp?.()
-    },
+    onClose,
   })
 
+  const onCancelLatest = useLatestCallback(onCancelProp)
+
   const onCancel = useCallback(() => {
+    onCancelLatest()
     if (closeOnCancel) {
       visibleAction.off()
     }
-  }, [closeOnCancel, visibleAction])
+  }, [closeOnCancel, visibleAction, onCancelLatest])
 
   const onConfirmLatest = useLatestCallback(onConfirmProp)
 

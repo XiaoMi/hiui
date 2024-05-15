@@ -5,6 +5,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { isFunction } from '@hi-ui/type-assertion'
 import { useCheckState } from '@hi-ui/use-check-state'
+import { getNodeAncestors } from '@hi-ui/tree-utils'
 import { useTableContext } from './context'
 import { renderFilter } from './TableAdvancedFilter'
 
@@ -42,6 +43,19 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                   titleContent
                 )
 
+                // 是否是表头分组最后一列单元格
+                let groupLastColumn = false
+                if (groupedColumns.length > 1 && colIndex === cols.length - 1) {
+                  const nodeAncestors = getNodeAncestors(col)
+                  if (
+                    colsIndex === 0 ||
+                    nodeAncestors?.[nodeAncestors.length - 1]?.id ===
+                      groupedColumns[0][groupedColumns[0].length - 1].id
+                  ) {
+                    groupLastColumn = true
+                  }
+                }
+
                 const cell = (
                   <th
                     key={dataKey}
@@ -52,7 +66,8 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                       isHighlightedCol(dataKey!) && `${prefixCls}-cell__col--highlight`,
                       isHoveredHighlightCol(dataKey!) &&
                         `${prefixCls}-cell__col--hovered-highlight`,
-                      activeColumnKeysAction.has(dataKey!) && `${prefixCls}-cell__col--active`
+                      activeColumnKeysAction.has(dataKey!) && `${prefixCls}-cell__col--active`,
+                      groupLastColumn && `${prefixCls}-cell--group-last-column`
                     )}
                     // @ts-ignore
                     colSpan={col.colSpan}

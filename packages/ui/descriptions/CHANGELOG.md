@@ -1,5 +1,11 @@
 # @hi-ui/descriptions
 
+## 4.3.0
+
+### Minor Changes
+
+- [#2812](https://github.com/XiaoMi/hiui/pull/2812) [`fbaf242b0`](https://github.com/XiaoMi/hiui/commit/fbaf242b0e36729787ee576e7e3ab05ed4115cf4) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 新增自定义列间距功能
+
 ## 4.2.5
 
 ### Patch Changes

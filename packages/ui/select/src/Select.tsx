@@ -188,9 +188,9 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     const [focusedIndex, setFocusedIndex] = useState<number>(defaultIndex)
 
     const handleKeyDown = useLatestCallback((evt: React.KeyboardEvent) => {
-      const { key } = evt
+      const { keyCode } = evt
 
-      if (key === 'Enter') {
+      if (keyCode === 13) {
         const item = showData[focusedIndex]
 
         if (item) {
