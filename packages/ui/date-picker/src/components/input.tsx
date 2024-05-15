@@ -40,6 +40,15 @@ const Input = ({
   useEffect(() => {
     let vals = date && moment(date).format(realFormat)
 
+    if (typeof format === 'function' && date) {
+      vals = format(date)
+
+      setValue(vals)
+      cacheValues.current = vals
+
+      return
+    }
+
     if (type.includes('week') && date) {
       // const _date = moment(date).year(y)
       // vals = moment(_date).format(realFormat)
@@ -66,10 +75,6 @@ const Input = ({
 
     if (type.includes('quarter') && vals) {
       vals = vals?.toLocaleUpperCase()
-    }
-
-    if (typeof format === 'function' && date) {
-      vals = format(date)
     }
 
     setValue(vals)
