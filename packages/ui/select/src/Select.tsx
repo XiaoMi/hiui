@@ -142,7 +142,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
         }
 
         // 本地搜索执行默认高亮规则
-        const highlight = inSearch && searchMode === 'filter'
+        const highlight = inSearch && (searchMode === 'filter' || searchMode === 'dataSource')
 
         const ret = highlight ? <Highlighter keyword={searchValue}>{node.title}</Highlighter> : true
 
