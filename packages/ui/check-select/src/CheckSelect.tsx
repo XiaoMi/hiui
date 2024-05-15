@@ -154,7 +154,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
         }
 
         // 本地搜索执行默认高亮规则
-        const highlight = !!searchValue && searchMode === 'filter'
+        const highlight = !!searchValue && (searchMode === 'filter' || searchMode === 'dataSource')
 
         const ret = highlight ? (
           <Checkbox checked={node.checked} disabled={node.disabled}>
