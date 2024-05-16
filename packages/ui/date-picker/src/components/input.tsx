@@ -39,8 +39,8 @@ const Input = ({
 
   useEffect(() => {
     if (typeof format === 'function' && date) {
-      setValue(format(date))
       cacheValues.current = format(date)
+      setValue(cacheValues.current)
       return
     }
 
