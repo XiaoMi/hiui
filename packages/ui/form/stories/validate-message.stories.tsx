@@ -16,7 +16,12 @@ export const ValidateMessage = () => {
       <h1>ValidateMessage</h1>
       <div className="form-validate-message__wrap" style={{ width: 900 }}>
         <Card>
-          <Form placement="horizontal" labelPlacement="right" showValidateMessage={false}>
+          <Form
+            initialValues={{}}
+            placement="horizontal"
+            labelPlacement="right"
+            showValidateMessage={false}
+          >
             <FormItem label="商品ID" labelWidth="100" valueType="string">
               <Input placeholder={'请输入'} />
             </FormItem>

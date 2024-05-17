@@ -53,7 +53,6 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
 
     const [active, setActive] = useUncontrolledState(defaultCurrent || 0, current, onPreviewChange)
 
-    const [isLoaded, setIsLoaded] = useState(false)
     const [isMoving, setIsMoving] = useState(false)
     const [imgTransform, updateImgTransform] = useState(defaultTransform)
     const movingPosition = useRef({
@@ -69,7 +68,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     const isMultiple = useMemo(() => Array.isArray(src) && src.length > 1, [src])
 
     // 图片加水印
-    const [watermarkContainerRef, setWatermarkContainerRef] = useState<HTMLDivElement | null>(null)
+    const [watermarkContainer, setWatermarkContainer] = useState<HTMLDivElement | null>(null)
 
     const handleContextMenu = useLatestCallback((evt: React.MouseEvent) => {
       evt.preventDefault()
@@ -239,7 +238,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                 <div
                   className={`${prefixCls}__img-wrapper`}
                   ref={(e) => {
-                    setWatermarkContainerRef(e)
+                    setWatermarkContainer(e)
                   }}
                   style={{
                     transform: `scale(${imgTransform.scale}, ${imgTransform.scale}) translate(${imgTransform.translateX}px,${imgTransform.translateY}px) rotate(${imgTransform.rotate}deg)`,
@@ -247,9 +246,6 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                 >
                   <img
                     ref={imgRef}
-                    onLoad={() => {
-                      setIsLoaded(true)
-                    }}
                     onError={onError}
                     onMouseDown={onMoveStart}
                     onMouseUp={onMoveEnd}
@@ -304,8 +300,8 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   </>
                 )}
               </div>
-              {watermarkProps && (
-                <Watermark {...watermarkProps} container={watermarkContainerRef} />
+              {watermarkProps && watermarkContainer && (
+                <Watermark {...watermarkProps} container={watermarkContainer} />
               )}
             </>
           )}
