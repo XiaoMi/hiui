@@ -38,6 +38,12 @@ const Input = ({
   const [value, setValue] = useState<string | null>('')
 
   useEffect(() => {
+    if (typeof format === 'function' && date) {
+      cacheValues.current = format(date)
+      setValue(cacheValues.current)
+      return
+    }
+
     let vals = date && moment(date).format(realFormat)
 
     if (type.includes('week') && date) {
