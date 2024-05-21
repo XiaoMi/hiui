@@ -136,7 +136,7 @@ export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'title'> {
   /**
    * 指定 portal 的容器
    */
-  container?: Element | undefined
+  container?: Element | null
   /**
    * 执行销毁，内部使用，勿覆盖。暂不对外暴露
    * @private
