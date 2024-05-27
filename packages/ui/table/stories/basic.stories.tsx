@@ -20,7 +20,7 @@ export const Basic = () => {
               },
             },
             {
-              title: '品类',
+              title: '',
               dataKey: 'type',
             },
             {
