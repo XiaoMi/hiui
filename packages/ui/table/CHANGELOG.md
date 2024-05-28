@@ -1,5 +1,17 @@
 # @hi-ui/table
 
+## 4.5.4
+
+### Patch Changes
+
+- [#2839](https://github.com/XiaoMi/hiui/pull/2839) [`e8498f36e`](https://github.com/XiaoMi/hiui/commit/e8498f36efe4dd42e0ef26c2e4c60298e2ce0147) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 columns 中将 title 设置为空字符串报错
+
+- [#2840](https://github.com/XiaoMi/hiui/pull/2840) [`c2afbaf33`](https://github.com/XiaoMi/hiui/commit/c2afbaf337dc933aa3858187e0010255ee2b82d5) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复同时设置 fieldKey 和 rowSelection 时 onChange 回调参数异常问题
+
+- Updated dependencies [[`3afbf239e`](https://github.com/XiaoMi/hiui/commit/3afbf239e816ede48d6a85cbd99b6b099b8c8eb3), [`613c15a41`](https://github.com/XiaoMi/hiui/commit/613c15a41d783b86d86ccfb1dccd4da897e5ba9c), [`5d531802b`](https://github.com/XiaoMi/hiui/commit/5d531802ba9b142d448a2de2a7a8315722be0af8)]:
+  - @hi-ui/env@4.0.7
+  - @hi-ui/select@4.4.2
+
 ## 4.5.3
 
 ### Patch Changes
