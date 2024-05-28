@@ -165,7 +165,7 @@ export const useColWidth = ({
               .map((child) => (child as HTMLElement).offsetWidth)
               .reduce((prev, next) => {
                 return prev + next
-              }) +
+              }, 0) +
             thPaddingLeft * 2 +
             resizableHandlerWidth
           )
