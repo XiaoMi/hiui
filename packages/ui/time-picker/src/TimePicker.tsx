@@ -32,7 +32,7 @@ const getValueMatchString = (
   value?: TimePickerValue[] | TimePickerValue,
   format: TimePickerFormat = 'HH:mm:ss'
 ) => {
-  if (!value) {
+  if (value === undefined || value === null) {
     return undefined
   }
   const result = Array.isArray(value) ? value : [value]
