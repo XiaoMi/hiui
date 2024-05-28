@@ -31,10 +31,10 @@ export const useTableCheck = ({
   )
 
   useEffect(() => {
-    checkedRowDataItemsRef.current = checkedRowDataItemsRef.current.filter(({ key }) =>
-      checkedRowKeys?.includes(key)
+    checkedRowDataItemsRef.current = checkedRowDataItemsRef.current.filter((item) =>
+      checkedRowKeys?.includes(item[fieldKey])
     )
-  }, [checkedRowKeys])
+  }, [checkedRowKeys, fieldKey])
 
   // 已选中的行数据集合
   const checkedRowDataItemsRef = React.useRef<Record<string, any>[]>([])
@@ -53,8 +53,8 @@ export const useTableCheck = ({
   const onCheckedRowKeysChange = React.useCallback(
     (rowItem: Record<string, any>, checked: boolean) => {
       // 记录选中的行数据集合
-      const nextCheckedDataItems = checkedRowDataItems.filter(({ key }) =>
-        checkedRowKeys.includes(key)
+      const nextCheckedDataItems = checkedRowDataItems.filter((item) =>
+        checkedRowKeys.includes(item[fieldKey])
       )
 
       if (checked) {
@@ -110,7 +110,7 @@ export const useTableCheck = ({
 
     if (checkedAll) {
       checkedRowDataItemsRef.current = checkedRowDataItemsRef.current.filter(
-        ({ key }) => !checkedRowKeysSet.has(key)
+        (item) => !checkedRowKeysSet.has(item[fieldKey])
       )
 
       // 移除当前页所有行 ids
@@ -125,7 +125,7 @@ export const useTableCheck = ({
     }
 
     checkedRowDataItemsRef.current = targetRowItems.concat(
-      checkedRowDataItemsRef.current.filter((item) => !checkedRowKeysSet.has(item.key))
+      checkedRowDataItemsRef.current.filter((item) => !checkedRowKeysSet.has(item[fieldKey]))
     )
 
     trySetCheckedRowKeys(
