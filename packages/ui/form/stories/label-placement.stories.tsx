@@ -35,7 +35,7 @@ export const LabelPlacement = () => {
                 <FormSubmit
                   type="primary"
                   onClick={() => {
-                    console.log('Get form value:', formRef.current.getFieldsValue())
+                    console.log('Get form value:', formRef.current?.getFieldsValue())
                   }}
                 >
                   提交
@@ -65,7 +65,7 @@ export const LabelPlacement = () => {
                 <FormSubmit
                   type="primary"
                   onClick={() => {
-                    console.log('Get form value:', formRef.current.getFieldsValue())
+                    console.log('Get form value:', formRef.current?.getFieldsValue())
                   }}
                 >
                   提交
@@ -88,14 +88,19 @@ export const LabelPlacement = () => {
               <FormItem required={true} label="编码" field="productCode" valueType="string">
                 <Input placeholder="请输入" />
               </FormItem>
-              <FormItem required={true} label="产品名称" field="productName" valueType="string">
+              <FormItem
+                required={true}
+                label="产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称"
+                field="productName"
+                valueType="string"
+              >
                 <Input placeholder="请输入" />
               </FormItem>
               <FormItem label="" field="productName" valueType="string">
                 <FormSubmit
                   type="primary"
                   onClick={() => {
-                    console.log('Get form value:', formRef.current.getFieldsValue())
+                    console.log('Get form value:', formRef.current?.getFieldsValue())
                   }}
                 >
                   提交

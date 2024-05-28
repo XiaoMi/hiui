@@ -72,7 +72,6 @@ $prefix: '#{$component-prefix}-form' !default;
       }
 
       .#{$prefix}-label--placement-top > .#{$prefix}-label__content > & {
-        height: 22px;
         min-height: 22px;
         line-height: 22px;
         padding-right: 0;
