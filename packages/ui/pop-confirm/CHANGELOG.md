@@ -1,5 +1,14 @@
 # @hi-ui/pop-confirm
 
+## 4.2.5
+
+### Patch Changes
+
+- [#2813](https://github.com/XiaoMi/hiui/pull/2813) [`084600ea6`](https://github.com/XiaoMi/hiui/commit/084600ea6e4fdec7efde79a3cc90d8ef45ca602f) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复点击按钮会触发 onCancel 问题
+
+- Updated dependencies [[`3afbf239e`](https://github.com/XiaoMi/hiui/commit/3afbf239e816ede48d6a85cbd99b6b099b8c8eb3)]:
+  - @hi-ui/env@4.0.7
+
 ## 4.2.4
 
 ### Patch Changes

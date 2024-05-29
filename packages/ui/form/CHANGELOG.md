@@ -1,5 +1,14 @@
 # @hi-ui/form
 
+## 4.2.1
+
+### Patch Changes
+
+- [#2842](https://github.com/XiaoMi/hiui/pull/2842) [`3dc8c1556`](https://github.com/XiaoMi/hiui/commit/3dc8c155674bb8d702187cc4a33e684d22f04bf6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复标签顶对齐时样式问题
+
+- Updated dependencies [[`3afbf239e`](https://github.com/XiaoMi/hiui/commit/3afbf239e816ede48d6a85cbd99b6b099b8c8eb3)]:
+  - @hi-ui/env@4.0.7
+
 ## 4.2.0
 
 ### Minor Changes

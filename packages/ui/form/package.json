@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/form",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -47,7 +47,7 @@
     "@hi-ui/button": "^4.0.10",
     "@hi-ui/classname": "^4.0.5",
     "@hi-ui/dom-utils": "^4.0.7",
-    "@hi-ui/env": "^4.0.5",
+    "@hi-ui/env": "^4.0.7",
     "@hi-ui/func-utils": "^4.0.4",
     "@hi-ui/object-utils": "^4.0.4",
     "@hi-ui/type-assertion": "^4.0.4",

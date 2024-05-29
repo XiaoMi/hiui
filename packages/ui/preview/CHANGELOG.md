@@ -1,5 +1,16 @@
 # @hi-ui/preview
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2815](https://github.com/XiaoMi/hiui/pull/2815) [`9103ff92e`](https://github.com/XiaoMi/hiui/commit/9103ff92e490105df57e0369ed6512a10e1818de) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持配置图片水印以及禁止右键下载图片
+
+### Patch Changes
+
+- Updated dependencies [[`3afbf239e`](https://github.com/XiaoMi/hiui/commit/3afbf239e816ede48d6a85cbd99b6b099b8c8eb3)]:
+  - @hi-ui/env@4.0.7
+
 ## 4.0.9
 
 ### Patch Changes

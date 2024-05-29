@@ -1,5 +1,14 @@
 # @hi-ui/check-select
 
+## 4.4.4
+
+### Patch Changes
+
+- [#2828](https://github.com/XiaoMi/hiui/pull/2828) [`b8679ce3e`](https://github.com/XiaoMi/hiui/commit/b8679ce3e7fab435fd126901e6e8b23268bcf712) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复异步搜索中，搜索结果中关键字没有高亮显示问题
+
+- Updated dependencies [[`3afbf239e`](https://github.com/XiaoMi/hiui/commit/3afbf239e816ede48d6a85cbd99b6b099b8c8eb3)]:
+  - @hi-ui/env@4.0.7
+
 ## 4.4.3
 
 ### Patch Changes

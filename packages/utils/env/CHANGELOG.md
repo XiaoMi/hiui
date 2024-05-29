@@ -1,5 +1,11 @@
 # @hi-ui/env
 
+## 4.0.7
+
+### Patch Changes
+
+- [#2829](https://github.com/XiaoMi/hiui/pull/2829) [`3afbf239e`](https://github.com/XiaoMi/hiui/commit/3afbf239e816ede48d6a85cbd99b6b099b8c8eb3) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 添加依赖兼容之前组件
+
 ## 4.0.5
 
 ### Patch Changes
