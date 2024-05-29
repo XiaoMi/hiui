@@ -1,5 +1,16 @@
 # @hi-ui/select
 
+## 4.4.2
+
+### Patch Changes
+
+- [#2814](https://github.com/XiaoMi/hiui/pull/2814) [`613c15a41`](https://github.com/XiaoMi/hiui/commit/613c15a41d783b86d86ccfb1dccd4da897e5ba9c) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复搜索时在中文输入法下按回车键弹窗会关闭的问题
+
+- [#2828](https://github.com/XiaoMi/hiui/pull/2828) [`5d531802b`](https://github.com/XiaoMi/hiui/commit/5d531802ba9b142d448a2de2a7a8315722be0af8) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复 select 异步搜索中，搜索结果关键字没有高亮显示
+
+- Updated dependencies [[`3afbf239e`](https://github.com/XiaoMi/hiui/commit/3afbf239e816ede48d6a85cbd99b6b099b8c8eb3)]:
+  - @hi-ui/env@4.0.7
+
 ## 4.4.1
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @hi-ui/date-picker
 
+## 4.6.3
+
+### Patch Changes
+
+- [#2827](https://github.com/XiaoMi/hiui/pull/2827) [`9809ce813`](https://github.com/XiaoMi/hiui/commit/9809ce8132600cb7a3e8bb8537909bb3c3c9551b) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复 format 传入函数，只有在 type='weekrange'情况下生效
+
+- Updated dependencies [[`3afbf239e`](https://github.com/XiaoMi/hiui/commit/3afbf239e816ede48d6a85cbd99b6b099b8c8eb3), [`494ebd982`](https://github.com/XiaoMi/hiui/commit/494ebd982d50a1bc57697effd8365adfa2d37132)]:
+  - @hi-ui/env@4.0.7
+  - @hi-ui/time-picker@4.0.15
+
 ## 4.6.2
 
 ### Patch Changes

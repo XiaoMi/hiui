@@ -1,5 +1,14 @@
 # @hi-ui/time-picker
 
+## 4.0.15
+
+### Patch Changes
+
+- [#2841](https://github.com/XiaoMi/hiui/pull/2841) [`494ebd982`](https://github.com/XiaoMi/hiui/commit/494ebd982d50a1bc57697effd8365adfa2d37132) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复设置空字符串无效问题
+
+- Updated dependencies [[`3afbf239e`](https://github.com/XiaoMi/hiui/commit/3afbf239e816ede48d6a85cbd99b6b099b8c8eb3)]:
+  - @hi-ui/env@4.0.7
+
 ## 4.0.14
 
 ### Patch Changes
