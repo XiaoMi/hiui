@@ -60,12 +60,12 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       // TODO： avg和summay row的逻辑
 
       const realHeight = scrollBodyElementRef.current?.getBoundingClientRect().height
+      const maxHeightNumStr = String(maxHeight).replace(/px$/, '')
       const vMaxHeight = maxHeight
-        ? !isNaN(Number(String(maxHeight).replace(/px/, '')))
-          ? Number(maxHeight)
+        ? !isNaN(Number(maxHeightNumStr))
+          ? Number(maxHeightNumStr)
           : realHeight
         : 300
-
       return (
         <div
           ref={scrollBodyElementRef}
@@ -87,7 +87,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             style={{ height: 2, marginTop: -1, background: 'transparent', width: rowWidth }}
           ></div>
           {isArrayNonEmpty(transitionData) ? (
-            <div style={{ width: '100%', position: 'sticky', left: 0, maxHeight: maxHeight }}>
+            <div style={{ width: '100%', position: 'sticky', left: 0, maxHeight: maxHeight, overflow: 'auto' }}>
               <VirtualList
                 prefixCls={`${cls}--virtual`}
                 data={transitionData}
