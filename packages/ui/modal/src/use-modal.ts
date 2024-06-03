@@ -158,6 +158,9 @@ export const useModal = ({
         style.display = 'none'
       }
 
+      if (Object.prototype.hasOwnProperty.call(props, 'zIndex')) {
+        style.zIndex = props.zIndex
+      }
       return {
         role: 'dialog',
         'aria-modal': true,
