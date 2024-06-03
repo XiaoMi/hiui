@@ -168,6 +168,10 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
    */
   height?: number
   /**
+   * 自定义css展示层级
+   */
+  zIndex?: number
+  /**
    * 开启预加载渲染，用于性能优化，优先级小于 `unmountOnClose`
    */
   preload?: boolean
