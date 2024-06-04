@@ -19,6 +19,7 @@ $prefix: '#{$component-prefix}-notification' !default;
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
   background-color: use-color-static('white');
+  z-index: var(--hi-v4-z-index, 1000);
 
   &--size-lg {
     padding: use-spacing(10);

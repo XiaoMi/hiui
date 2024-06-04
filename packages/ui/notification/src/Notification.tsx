@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
-import { cx, getPrefixCls } from '@hi-ui/classname'
+import { cx, getPrefixCls, getPrefixStyleVar } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
@@ -40,6 +40,7 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
       closable = true,
       type = 'info',
       action,
+      zIndex,
       destroy,
       size = 'lg',
       onClose,
@@ -104,7 +105,13 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
         }}
       >
         <div ref={motionElRef} className={`${prefixCls}-container`}>
-          <div ref={ref} role={role} className={cls} {...rest}>
+          <div
+            ref={ref}
+            role={role}
+            className={cls}
+            {...rest}
+            style={{ [`${getPrefixStyleVar('z-index')}`]: zIndex }}
+          >
             <div className={`${prefixCls}__header`}>
               <span className={`${prefixCls}__icon`}> {notificationIconMap[type]}</span>
               <span className={`${prefixCls}__title`}>{title}</span>
@@ -144,6 +151,10 @@ export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>
    * 通知框类型
    */
   type?: 'info' | 'success' | 'error' | 'warning'
+  /**
+   * 自定义css展示层级
+   */
+  zIndex?: number
   /**
    * 自动关闭时间，单位为 ms
    */
