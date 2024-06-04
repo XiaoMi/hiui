@@ -16,6 +16,7 @@ $prefix: '#{$component-prefix}-message' !default;
   line-height: use-text-lineheight('normal');
   background-color: use-color-static('white');
   color: use-color('gray', 700);
+  z-index: var(--hi-v4-z-index, 1000);
 
   &--type {
     &-info {

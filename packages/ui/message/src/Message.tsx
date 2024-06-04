@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
-import { cx, getPrefixCls } from '@hi-ui/classname'
+import { cx, getPrefixCls, getPrefixStyleVar } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
@@ -35,6 +35,7 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
       duration = 5000,
       autoClose = true,
       type = 'info',
+      zIndex,
       destroy,
       onClose,
       ...rest
@@ -98,7 +99,13 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
         }}
       >
         <div ref={motionElRef} className={`${prefixCls}-container`}>
-          <div ref={ref} role={role} className={cls} {...rest}>
+          <div
+            ref={ref}
+            role={role}
+            className={cls}
+            {...rest}
+            style={{ [`${getPrefixStyleVar('z-index')}`]: zIndex }}
+          >
             {messageIconMap[type]}
             {title}
           </div>
@@ -121,6 +128,10 @@ export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'title'> {
    * 通知框标题
    */
   title: React.ReactNode
+  /**
+   * 自定义css展示层级
+   */
+  zIndex?: number
   /**
    * 通知框类型
    */
