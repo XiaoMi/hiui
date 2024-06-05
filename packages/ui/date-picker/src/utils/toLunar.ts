@@ -179,11 +179,11 @@ const Lunar = {
     if (year < this.MIN_YEAR || year > this.MAX_YEAR) {
       return emptyData
     }
-    // 1891年2月9日前不返回农历数据x
+    // 1891年2月9日前不返回农历数据
     if (year === this.MIN_YEAR && (month === 1 || (month === 2 && day < 9))) {
       return emptyData
     }
-    let yearData = this.lunarInfo[year - this.MIN_YEAR]
+    const yearData = this.lunarInfo[year - this.MIN_YEAR]
     return this.lunarByBetween(year, this.betweenSolarDays(year, month, day, yearData[1], yearData[2]))
   },
 
