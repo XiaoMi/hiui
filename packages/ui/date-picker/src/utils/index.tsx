@@ -198,13 +198,14 @@ export const getFullTime = ({
 }) => {
   if (cell.type === 'disabled') return false
   const newDate = moment(renderDate)
-  newDate.date(cell.value)
+  // 先设置月份，防止赋值出月中不存在日期
   if (cell.type === 'prev') {
     newDate.subtract(1, 'months')
   }
   if (cell.type === 'next') {
     newDate.add(1, 'months')
   }
+  newDate.date(cell.value)
   const _year = newDate.year()
   const _month = newDate.month() + 1
   const _value = cell.value
