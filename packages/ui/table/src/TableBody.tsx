@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { forwardRef, useMemo, useRef } from 'react'
 import VirtualList from 'rc-virtual-list'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -15,7 +15,7 @@ const _role = 'table'
 const _prefix = getPrefixCls(_role)
 
 export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
-  ({ prefixCls = _prefix, emptyContent }, ref) => {
+  ({ prefixCls = _prefix, emptyContent }) => {
     const {
       columns,
       isExpandTreeRows,
@@ -33,7 +33,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       scrollbar,
       scrollLeft,
     } = useTableContext()
-
+    const virtualListRef = useRef(null)
     const cls = cx(`${prefixCls}-body`)
 
     const getRequiredProps = useLatestCallback(
@@ -58,8 +58,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
 
     if (virtual) {
       // TODO： avg和summay row的逻辑
-
-      const realHeight = scrollBodyElementRef.current?.getBoundingClientRect().height
+      const realHeight = (virtualListRef.current as (HTMLTableElement | null))?.getBoundingClientRect().height
       const maxHeightNumStr = String(maxHeight).replace(/px$/, '')
       const vMaxHeight = maxHeight
         ? !isNaN(Number(maxHeightNumStr))
@@ -87,7 +86,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             style={{ height: 2, marginTop: -1, background: 'transparent', width: rowWidth }}
           ></div>
           {isArrayNonEmpty(transitionData) ? (
-            <div style={{ width: '100%', position: 'sticky', left: 0, maxHeight: maxHeight, overflow: 'auto' }}>
+            <div ref={virtualListRef} style={{ width: '100%', position: 'sticky', left: 0, maxHeight}}>
               <VirtualList
                 prefixCls={`${cls}--virtual`}
                 data={transitionData}
