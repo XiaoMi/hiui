@@ -50,7 +50,7 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Package.json info
+      - name: Read Version
         id: package
         uses: rexdefuror/read-package-json@v1.0.5
         with:
@@ -65,7 +65,7 @@ jobs:
           changelog-path: ./packages/ui/hiui/CHANGELOG.md
           version: ${{ env.PACKAGE_VERSION }}
 
-      - name: Create/update release
+      - name: Create Release Log
         uses: ncipollo/release-action@v1
         with:
           # This pulls from the "Get Changelog Entry" step above, referencing it's ID to get its outputs object.
