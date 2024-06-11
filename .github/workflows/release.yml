@@ -70,7 +70,7 @@ jobs:
         with:
           # This pulls from the "Get Changelog Entry" step above, referencing it's ID to get its outputs object.
           # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          tag: ${{ env.PACKAGE_VERSION }}
+          tag: "@hi-ui/hiui@${{ env.PACKAGE_VERSION }}"
           name: ${{ env.PACKAGE_VERSION }}
           body: ${{ steps.changelog.outputs.version-changelog }}
           allowUpdates: true
