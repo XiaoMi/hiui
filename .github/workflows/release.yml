@@ -49,3 +49,29 @@ jobs:
           git push origin --follow-tags
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Read Version
+        id: package
+        uses: rexdefuror/read-package-json@v1.0.5
+        with:
+          file: package.json
+          path: ./packages/ui/hiui
+
+
+      - name: Read ChangeLog
+        id: changelog
+        uses: BinPar/read-conventional-commit-changelog@v2.0.2
+        with:
+          changelog-path: ./packages/ui/hiui/CHANGELOG.md
+          version: ${{ env.PACKAGE_VERSION }}
+
+      - name: Create Release Log
+        uses: ncipollo/release-action@v1
+        with:
+          # This pulls from the "Get Changelog Entry" step above, referencing it's ID to get its outputs object.
+          # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          tag: "@hi-ui/hiui@${{ env.PACKAGE_VERSION }}"
+          name: ${{ env.PACKAGE_VERSION }}
+          body: ${{ steps.changelog.outputs.version-changelog }}
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
