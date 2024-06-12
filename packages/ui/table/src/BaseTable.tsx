@@ -127,7 +127,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       let hasAvgColumn = false
 
       columns.forEach((column, index) => {
-        // select 模式下，第一个是checkbox，需要移到第二个赋值
+        // 行选中模式下，index=0是checkbox列，index=1才是第一列 ; fix issue: https://github.com/XiaoMi/hiui/issues/2863
         if (index === 0 || (index === 1 && columns[0].dataKey === SELECTION_DATA_KEY)) {
           // @ts-ignore
           avgRow.raw[column.dataKey] = i18n.get('table.average')
