@@ -174,10 +174,16 @@ const Lunar = {
   },
   // 转换农历
   toLunar: function (year: number, month: number, day: number) {
-    let yearData = this.lunarInfo[year - this.MIN_YEAR]
-    if (year === this.MIN_YEAR && month <= 2 && day <= 9) {
-      return [1891, 1, 1, '辛卯', '兔', '正月', '初一']
+    const emptyData = [this.MIN_YEAR, month, day, '', '', '', '']
+    // 超出数据外时间直接返回空农历数据
+    if (year < this.MIN_YEAR || year > this.MAX_YEAR) {
+      return emptyData
     }
+    // 1891年2月9日前不返回农历数据
+    if (year === this.MIN_YEAR && (month === 1 || (month === 2 && day < 9))) {
+      return emptyData
+    }
+    const yearData = this.lunarInfo[year - this.MIN_YEAR]
     return this.lunarByBetween(year, this.betweenSolarDays(year, month, day, yearData[1], yearData[2]))
   },
 
