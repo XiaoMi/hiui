@@ -453,10 +453,9 @@ export interface TreeProps {
    */
   flattedData?: FlattedTreeNodeData[]
   /**
-   * 暂不对外暴露
-   * @private
+   * 设置 data 中 id, title, disabled, children 对应的 key
    */
-  fieldNames?: object
+  fieldNames?: Record<string, string>
   /**
    * 是否点击节点时展开其子节点
    */
