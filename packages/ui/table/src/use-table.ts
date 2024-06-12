@@ -656,6 +656,7 @@ export const useTable = ({
     draggable,
     highlightColumns: [] as any,
     dragRowRef,
+    onDragStart,
     onDrop,
     groupedColumns,
     // 子树展开

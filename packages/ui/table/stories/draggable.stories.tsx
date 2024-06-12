@@ -11,6 +11,11 @@ export const Draggable = () => {
       <div className="table-draggable__wrap" style={{ minWidth: 660 }}>
         <Table
           draggable
+          onDragStart={(e) => console.log('onDragStart', e)}
+          onDrop={(e) => {
+            console.log('onDrop', e)
+            return true
+          }}
           columns={[
             {
               title: '商品名',
