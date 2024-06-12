@@ -55,3 +55,36 @@ export const filterTreeData = (
     }) ?? []
   )
 }
+
+export const transformTreeData = (
+  data: MenuDataItem[],
+  fieldNames: Record<string, string> | undefined
+) => {
+  /**
+   * 转换对象
+   */
+  const getKeyFields = (node: any, key: any) => {
+    if (fieldNames) {
+      return node[(fieldNames as any)[key] || key]
+    }
+    return node[key]
+  }
+
+  /**
+   * 递归处理树形数组
+   */
+  const traverseNode = (node: MenuDataItem): MenuDataItem => {
+    const newNode: MenuDataItem = { ...node }
+    newNode.id = getKeyFields(newNode, 'id')
+    newNode.title = getKeyFields(newNode, 'title')
+    newNode.icon = getKeyFields(newNode, 'icon')
+    newNode.disabled = getKeyFields(newNode, 'disabled') ?? false
+    newNode.children = getKeyFields(newNode, 'children')
+    if (newNode.children) {
+      newNode.children = newNode.children.map(traverseNode)
+    }
+    return newNode
+  }
+
+  return data.map(traverseNode)
+}
