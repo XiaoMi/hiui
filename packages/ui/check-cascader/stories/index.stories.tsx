@@ -13,6 +13,7 @@ export * from './display-render.stories'
 export * from './footer.stories'
 export * from './dropdown-column-render.stories'
 // export * from './flatted.stories'
+export * from './addon.stories'
 
 export default {
   title: 'Data Input/CheckCascader',
