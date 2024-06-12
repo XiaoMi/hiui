@@ -21,7 +21,7 @@ import { uuid } from '@hi-ui/use-id'
 import { MenuDataItem, MenuFooterRenderProps } from './types'
 import { MenuItem } from './MenuItem'
 import MenuContext from './context'
-import { getAncestorIds } from './util'
+import { getAncestorIds, transformTreeData } from './util'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -41,6 +41,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       role = 'menu',
       className,
       data = NOOP_ARRAY,
+      fieldNames,
       placement = 'vertical',
       showCollapse = false,
       // 仅对垂直模式有效
@@ -69,6 +70,10 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const [activeId, updateActiveId] = useUncontrolledState(defaultActiveId, activeIdProp, onClick)
 
     const [activeParents, updateActiveParents] = useState(() => getAncestorIds(activeId, data))
+
+    data = useMemo(() => {
+      return transformTreeData(data, fieldNames)
+    }, [data, fieldNames])
 
     useEffect(() => {
       updateActiveParents(getAncestorIds(activeId, data))
@@ -303,6 +308,10 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
    * 菜单项数据列表
    */
   data: MenuDataItem[]
+  /**
+   * 设置 data 中 id, title, disabled, children 对应的 key
+   */
+  fieldNames?: Record<string, string>
   /**
    * 默认激活的菜单项 id
    */
