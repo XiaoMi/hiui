@@ -91,6 +91,8 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       tagInputProps,
       size = 'md',
       customRender,
+      prefix,
+      suffix,
       ...rest
     },
     ref
@@ -362,7 +364,8 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
               placeholder={placeholder}
               // @ts-ignore
               displayRender={displayRender}
-              suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+              prefix={prefix}
+              suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               appearance={appearance}
               value={value}
@@ -551,6 +554,14 @@ export interface CheckTreeSelectProps
    * 自定义触发器
    */
   customRender?: React.ReactNode | ((option: CheckTreeSelectDataItem[]) => React.ReactNode)
+  /**
+   * 选择框前置内容
+   */
+  prefix?: React.ReactNode
+  /**
+   * 选择框后置内容
+   */
+  suffix?: React.ReactNode
 }
 
 if (__DEV__) {
