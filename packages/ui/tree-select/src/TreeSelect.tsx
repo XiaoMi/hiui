@@ -75,6 +75,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       itemHeight,
       height,
       size = 'md',
+      customRender,
       ...rest
     },
     ref
@@ -244,21 +245,29 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         loading={rest.loading !== undefined ? rest.loading : loading}
         trigger={
-          <MockInput
-            // disabled={disabled}
-            size={size}
-            clearable={clearable}
-            placeholder={placeholder}
-            displayRender={displayRenderProp}
-            suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
-            focused={menuVisible}
-            value={value}
-            onChange={tryChangeValue}
-            data={mergedData}
-            // @ts-ignore
-            invalid={invalid}
-            appearance={appearance}
-          />
+          customRender ? (
+            typeof customRender === 'function' ? (
+              customRender(selectedItem as TreeNodeEventData)
+            ) : (
+              customRender
+            )
+          ) : (
+            <MockInput
+              // disabled={disabled}
+              size={size}
+              clearable={clearable}
+              placeholder={placeholder}
+              displayRender={displayRenderProp}
+              suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+              focused={menuVisible}
+              value={value}
+              onChange={tryChangeValue}
+              data={mergedData}
+              // @ts-ignore
+              invalid={invalid}
+              appearance={appearance}
+            />
+          )
         }
       >
         {isArrayNonEmpty(treeProps.data) ? (
@@ -400,6 +409,10 @@ export interface TreeSelectProps
    * 设置尺寸
    */
   size?: HiBaseSizeEnum
+  /**
+   * 自定义触发器
+   */
+  customRender?: React.ReactNode | ((option: TreeNodeEventData) => React.ReactNode)
 }
 
 if (__DEV__) {
