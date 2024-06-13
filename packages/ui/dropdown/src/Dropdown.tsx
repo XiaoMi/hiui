@@ -151,42 +151,6 @@ export interface DropdownProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, 
    */
   fieldNames?: Record<string, string>
   /**
-   * 下拉菜单触发方式
-   */
-  trigger?: 'click' | 'hover' | 'contextmenu'
-  /**
-   * 下拉面板是否可见
-   */
-  visible?: boolean
-  /**
-   * 下拉面板是否禁用
-   */
-  disabled?: boolean
-  /**
-   * 下拉面板是否可滚动
-   */
-  scrollable?: boolean
-  /**
-   * 下拉面板是否显示滚动条
-   */
-  showScroll?: boolean
-  /**
-   * 下拉面板是否显示滚动条
-   */
-  showScrollX?: boolean
-  /**
-   * 下拉面板是否显示滚动条
-   */
-  showScrollY?: boolean
-  /**
-   * 下拉面板是否显示滚动条
-   */
-  showScrollBoth?: boolean
-  /**
-   * 下拉面板是否显示滚动条
-   */
-  showScrollThumb?: boolean
-  /**
    * 设置下拉面板宽度
    */
   width?: number
