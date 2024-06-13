@@ -1,4 +1,4 @@
-import React, { cloneElement, forwardRef } from 'react'
+import React, { cloneElement, forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
@@ -9,6 +9,7 @@ import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
 import Button, { ButtonGroup } from '@hi-ui/button'
 import { DownOutlined } from '@hi-ui/icons'
 import { DropdownDataItem } from './types'
+import { transformData } from './utils'
 
 const _role = 'dropdown'
 const _prefix = getPrefixCls(_role)
@@ -25,6 +26,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
       className,
       children: triggerButton,
       data = DEFAULT_DATA,
+      fieldNames,
       title,
       type = 'text',
       onClick,
@@ -35,6 +37,11 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
     },
     ref
   ) => {
+    data = useMemo(() => {
+      if (data) return transformData(data, fieldNames)
+      else return data
+    }, [data, fieldNames])
+
     const { rootProps, ...providedValue } = useDropdown(rest)
 
     const { getMenuProps, getTriggerProps, disabled, menuVisibleAction } = providedValue
@@ -139,6 +146,46 @@ export interface DropdownProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, 
    * 下拉菜单数据项
    */
   data?: DropdownDataItem[]
+  /**
+   * 设置data 中id, title, href, target, disabled, split 等属性对应的 key
+   */
+  fieldNames?: Record<string, string>
+  /**
+   * 下拉菜单触发方式
+   */
+  trigger?: 'click' | 'hover' | 'contextmenu'
+  /**
+   * 下拉面板是否可见
+   */
+  visible?: boolean
+  /**
+   * 下拉面板是否禁用
+   */
+  disabled?: boolean
+  /**
+   * 下拉面板是否可滚动
+   */
+  scrollable?: boolean
+  /**
+   * 下拉面板是否显示滚动条
+   */
+  showScroll?: boolean
+  /**
+   * 下拉面板是否显示滚动条
+   */
+  showScrollX?: boolean
+  /**
+   * 下拉面板是否显示滚动条
+   */
+  showScrollY?: boolean
+  /**
+   * 下拉面板是否显示滚动条
+   */
+  showScrollBoth?: boolean
+  /**
+   * 下拉面板是否显示滚动条
+   */
+  showScrollThumb?: boolean
   /**
    * 设置下拉面板宽度
    */
