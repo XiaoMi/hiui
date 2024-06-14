@@ -1,5 +1,11 @@
 # @hi-ui/pagination
 
+## 4.0.16
+
+### Patch Changes
+
+- [#2870](https://github.com/XiaoMi/hiui/pull/2870) [`5508758ec`](https://github.com/XiaoMi/hiui/commit/5508758ec2fe241d635949828065111c9a465ef8) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 每页显示条数选择器改为基于父元素定位
+
 ## 4.0.15
 
 ### Patch Changes
