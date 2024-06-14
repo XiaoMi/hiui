@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useCallback, useRef } from 'react'
+import React, { forwardRef, useState, useCallback, useRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { Input, InputProps } from '@hi-ui/input'
@@ -11,6 +11,7 @@ import { SearchDataItem } from './types'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import type { PopperOverlayProps } from '@hi-ui/popper'
 import { SearchDropdown } from './SearchDropdown'
+import { transformData } from './util'
 
 const SEARCH_PREFIX = getPrefixCls('search')
 const NOOP_ARRAY = [] as []
@@ -32,6 +33,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
       onChange,
       onSearch: onSearchProp,
       data = NOOP_ARRAY,
+      fieldNames,
       overlayClassName,
       // input
       onFocus,
@@ -41,6 +43,11 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
     },
     ref
   ) => {
+    data = useMemo(() => {
+      if (data) return transformData(data, fieldNames)
+      else return data
+    }, [data, fieldNames])
+
     const [visible, setVisible] = useState<boolean>(false)
     const targetElRef = useRef<HTMLDivElement | null>(null)
 
@@ -277,6 +284,10 @@ export interface SearchProps extends Omit<InputProps, 'onChange' | 'appearance'>
    * 搜索结果的数据
    */
   data?: SearchDataItem[]
+  /**
+   * 设置 data 中 id, title, children 对应的 key
+   */
+  fieldNames?: Record<string, string>
   /**
    * 自定义控制 popper 行为
    */
