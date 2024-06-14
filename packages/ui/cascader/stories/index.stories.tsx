@@ -16,6 +16,7 @@ export * from './footer.stories'
 export * from './dropdown-column-render.stories'
 export * from './field-names.stories'
 export * from './visible.stories'
+export * from './/custom-render.stories'
 
 export default {
   title: 'Data Input/Cascader',

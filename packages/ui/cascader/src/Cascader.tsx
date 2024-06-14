@@ -58,6 +58,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     renderExtraFooter,
     dropdownColumnRender,
     closeOnSelect = true,
+    customRender,
     ...rest
   } = props
   const i18n = useLocaleContext()
@@ -235,21 +236,29 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         footer={isFunction(renderExtraFooter) && renderExtraFooter()}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
-          <MockInput
-            size={size}
-            clearable={clearable}
-            placeholder={placeholder}
-            displayRender={displayRender as any}
-            suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
-            focused={menuVisible}
-            value={value[value.length - 1]}
-            onChange={() => {
-              tryChangeValue([])
-            }}
-            data={mergedData}
-            invalid={invalid}
-            appearance={appearance}
-          />
+          customRender ? (
+            typeof customRender === 'function' ? (
+              customRender(value)
+            ) : (
+              customRender
+            )
+          ) : (
+            <MockInput
+              size={size}
+              clearable={clearable}
+              placeholder={placeholder}
+              displayRender={displayRender as any}
+              suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+              focused={menuVisible}
+              value={value[value.length - 1]}
+              onChange={() => {
+                tryChangeValue([])
+              }}
+              data={mergedData}
+              invalid={invalid}
+              appearance={appearance}
+            />
+          )
         }
       >
         {isArrayNonEmpty(showData) ? <CascaderMenuList /> : null}
@@ -331,6 +340,10 @@ export interface CascaderProps
    * 设置尺寸
    */
   size?: HiBaseSizeEnum
+  /**
+   * 自定义触发器
+   */
+  customRender?: (string | number)[]
 }
 
 if (__DEV__) {
