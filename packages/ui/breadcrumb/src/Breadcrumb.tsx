@@ -1,8 +1,9 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { BreadcrumbDataItem, BreadcrumbSizeEnum } from './types'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { transformData } from './util'
 
 const _role = 'breadcrumb'
 const _prefix = getPrefixCls(_role)
@@ -17,6 +18,7 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
       role = _role,
       className,
       data,
+      fieldNames,
       separator = '/',
       onClick,
       size = 'md',
@@ -25,6 +27,11 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
     ref
   ) => {
     const cls = cx(prefixCls, `${prefixCls}--${size}`, className)
+
+    data = useMemo((): BreadcrumbDataItem[] | undefined => {
+      if (data) return transformData(data, fieldNames)
+      return data
+    }, [data, fieldNames])
 
     return (
       <ul ref={ref} role={role} className={cls} {...rest}>
@@ -79,6 +86,10 @@ export interface BreadcrumbProps extends Omit<HiBaseHTMLProps<'ul'>, 'onClick'> 
    * 面包屑数据项
    */
   data?: BreadcrumbDataItem[]
+  /**
+   * 设置 data 中 title, href, target, icon  对应的 key
+   */
+  fieldNames?: Record<string, string>
   /**
    * 面包屑尺寸
    */
