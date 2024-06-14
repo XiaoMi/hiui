@@ -23,6 +23,9 @@ export const PageOption: React.FC<PageOptionProps> = ({
       value={pageSize}
       clearable={false}
       onChange={onPageSizeChange as (value: React.ReactText) => void}
+      overlay={{
+        disabledPortal: true,
+      }}
     />
   )
 }
