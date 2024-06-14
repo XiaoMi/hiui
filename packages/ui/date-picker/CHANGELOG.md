@@ -1,5 +1,13 @@
 # @hi-ui/date-picker
 
+## 4.6.4
+
+### Patch Changes
+
+- [#2854](https://github.com/XiaoMi/hiui/pull/2854) [`3585fd8fe`](https://github.com/XiaoMi/hiui/commit/3585fd8fe0797972277681caf153fdeb9dfe37c0) Thanks [@maoguoping](https://github.com/maoguoping)! - fix(date-picker): 修复预置农历下切换 1891 年以前组件报错问题 (#2611)
+
+- [#2860](https://github.com/XiaoMi/hiui/pull/2860) [`b4945c38b`](https://github.com/XiaoMi/hiui/commit/b4945c38bdc98631b9d262b9a8e4e4319678bc71) Thanks [@maoguoping](https://github.com/maoguoping)! - fix(date-picker): 修复 datepicker 显示农历时 2 月中 1 月农历显示错误问题(#2853)
+
 ## 4.6.3
 
 ### Patch Changes
