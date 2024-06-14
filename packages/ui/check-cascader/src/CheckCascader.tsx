@@ -72,6 +72,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       size = 'md',
       renderExtraFooter,
       dropdownColumnRender,
+      customRender,
       ...rest
     },
     ref
@@ -227,26 +228,34 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         footer={isFunction(renderExtraFooter) && renderExtraFooter()}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
-          <TagInputMock
-            {...tagInputProps}
-            size={size}
-            clearable={clearable}
-            placeholder={placeholder}
-            // @ts-ignore
-            displayRender={displayRender}
-            suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
-            focused={menuVisible}
-            appearance={appearance}
-            value={value}
-            // @ts-ignore
-            onChange={proxyOnChange}
-            data={flattedData}
-            invalid={invalid}
-            // onExpand={() => {
-            //   // setViewSelected(true)
-            //   menuVisibleAction.on()
-            // }}
-          />
+          customRender ? (
+            typeof customRender === 'function' ? (
+              customRender(_value)
+            ) : (
+              customRender
+            )
+          ) : (
+            <TagInputMock
+              {...tagInputProps}
+              size={size}
+              clearable={clearable}
+              placeholder={placeholder}
+              // @ts-ignore
+              displayRender={displayRender}
+              suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+              focused={menuVisible}
+              appearance={appearance}
+              value={value}
+              // @ts-ignore
+              onChange={proxyOnChange}
+              data={flattedData}
+              invalid={invalid}
+              // onExpand={() => {
+              //   // setViewSelected(true)
+              //   menuVisibleAction.on()
+              // }}
+            />
+          )
         }
       >
         {isArrayNonEmpty(selectProps.data) ? (
@@ -387,6 +396,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 自定义下拉菜单每列渲染
    */
   dropdownColumnRender?: (menu: React.ReactElement, level: number) => React.ReactNode
+  /**
+   * 自定义触发器
+   */
+  customRender?: (string | number)[]
 }
 
 if (__DEV__) {
