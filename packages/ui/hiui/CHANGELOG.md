@@ -1,5 +1,26 @@
 # @hi-ui/hiui
 
+## 4.5.11
+
+### Patch Changes
+
+- [#2859](https://github.com/XiaoMi/hiui/pull/2859) [`a8d3a1f26`](https://github.com/XiaoMi/hiui/commit/a8d3a1f2687709b986fc54408cb6c69b9eb56318) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复 onDragStart 事件不触发问题
+
+- [#2870](https://github.com/XiaoMi/hiui/pull/2870) [`5508758ec`](https://github.com/XiaoMi/hiui/commit/5508758ec2fe241d635949828065111c9a465ef8) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(pagination): 每页显示条数选择器改为基于父元素定位
+
+- [#2847](https://github.com/XiaoMi/hiui/pull/2847) [`1d048306f`](https://github.com/XiaoMi/hiui/commit/1d048306f431e58169ebc4b31cf0b6c7b8ea6ed6) Thanks [@aqiusen](https://github.com/aqiusen)! - fix(table): 修复虚拟列表 maxHeight 无法支持字符串问题
+
+- [#2860](https://github.com/XiaoMi/hiui/pull/2860) [`b4945c38b`](https://github.com/XiaoMi/hiui/commit/b4945c38bdc98631b9d262b9a8e4e4319678bc71) Thanks [@maoguoping](https://github.com/maoguoping)! - fix(date-picker): 修复 datepicker 显示农历时 2 月中 1 月农历显示错误问题
+
+- [#2867](https://github.com/XiaoMi/hiui/pull/2867) [`eec624313`](https://github.com/XiaoMi/hiui/commit/eec624313de88943869f592dd06248455bddedbc) Thanks [@aqiusen](https://github.com/aqiusen)! - fix(table): 修复统计行中选中模式下显示异常问题(#2863)
+
+- [#2854](https://github.com/XiaoMi/hiui/pull/2854) [`3585fd8fe`](https://github.com/XiaoMi/hiui/commit/3585fd8fe0797972277681caf153fdeb9dfe37c0) Thanks [@maoguoping](https://github.com/maoguoping)! - fix(date-picker): 修复预置农历下切换 1891 年以前组件报错问题 (#2611)
+
+- Updated dependencies [[`eec624313`](https://github.com/XiaoMi/hiui/commit/eec624313de88943869f592dd06248455bddedbc), [`a8d3a1f26`](https://github.com/XiaoMi/hiui/commit/a8d3a1f2687709b986fc54408cb6c69b9eb56318), [`3585fd8fe`](https://github.com/XiaoMi/hiui/commit/3585fd8fe0797972277681caf153fdeb9dfe37c0), [`5508758ec`](https://github.com/XiaoMi/hiui/commit/5508758ec2fe241d635949828065111c9a465ef8), [`0e67d2263`](https://github.com/XiaoMi/hiui/commit/0e67d2263c7e1bf9213e1a2f74300ee201f3a52e), [`b4945c38b`](https://github.com/XiaoMi/hiui/commit/b4945c38bdc98631b9d262b9a8e4e4319678bc71)]:
+  - @hi-ui/table@4.5.5
+  - @hi-ui/date-picker@4.6.4
+  - @hi-ui/pagination@4.0.16
+
 ## 4.5.10
 
 ### Patch Changes
