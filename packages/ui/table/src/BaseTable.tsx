@@ -17,6 +17,7 @@ import { useEmbedExpand, UseEmbedExpandProps } from './hooks/use-embed-expand'
 import { TheadContent } from './TheadContent'
 import { ColGroupContent } from './ColGroupContent'
 import { TbodyContent } from './TbodyContent'
+import { SELECTION_DATA_KEY } from './Table';
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
@@ -126,7 +127,8 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       let hasAvgColumn = false
 
       columns.forEach((column, index) => {
-        if (index === 0) {
+        // 行选中模式下，index=0是checkbox列，index=1才是第一列 ; fix issue: https://github.com/XiaoMi/hiui/issues/2863
+        if (index === 0 || (index === 1 && columns[0].dataKey === SELECTION_DATA_KEY)) {
           // @ts-ignore
           avgRow.raw[column.dataKey] = i18n.get('table.average')
         }
@@ -149,7 +151,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       let hasSumColumn = false
 
       columns.forEach((column, index) => {
-        if (index === 0) {
+        if (index === 0  || (index === 1 && columns[0].dataKey === SELECTION_DATA_KEY)) {
           // @ts-ignore
           sumRow.raw[column.dataKey] = i18n.get('table.total')
         }
