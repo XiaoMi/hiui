@@ -2,4 +2,4 @@
 "@hi-ui/hiui": patch
 ---
 
-chore: 生成变更记录文件
+feat(date-picker): 新增前缀后缀内容扩展
