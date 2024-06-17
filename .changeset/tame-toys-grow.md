@@ -2,4 +2,4 @@
 "@hi-ui/hiui": patch
 ---
 
-chore: 生成变更记录文件
+feat(cascader): 新增自定义触发器
