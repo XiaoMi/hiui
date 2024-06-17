@@ -12,7 +12,7 @@ export const CustomRender = () => {
   return (
     <>
       <h1>CustomRender-Basic</h1>
-      <div className="time-picker-basic__wrap">
+      <div className="time-picker-custom-render__wrap">
         <TimePicker
           placeholder={['请选择时间']}
           value={basicValue}
@@ -26,7 +26,7 @@ export const CustomRender = () => {
         />
       </div>
       <h1>CustomRender-Range</h1>
-      <div className="time-picker-range__wrap">
+      <div className="time-picker-range-custom-render__wrap">
         <TimePicker
           value={rangeValue}
           placeholder={['请选择开始时间', '请选择结束时间']}
