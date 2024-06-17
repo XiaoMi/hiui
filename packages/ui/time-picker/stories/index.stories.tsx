@@ -8,6 +8,7 @@ export * from './disabled.stories'
 export * from './range.stories'
 export * from './format.stories'
 export * from './custom-disabled.stories'
+export * from './custom-renser.stories'
 
 export default {
   title: 'Data Input/TimePicker',

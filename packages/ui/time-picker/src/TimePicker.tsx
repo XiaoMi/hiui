@@ -65,6 +65,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       overlay,
       size = 'md',
       invalid = false,
+      customRender,
     },
     ref
   ) => {
@@ -257,49 +258,62 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
 
     return (
       <div ref={ref} role={role} className={cls}>
-        <div ref={setAttachEl} className={`${prefixCls}__input-wrapper`}>
-          <Input
-            size={size}
-            isFitContent={appearance === 'unset'}
-            ref={inputRef}
-            onValidChange={setIsInputValid}
-            disabled={inputReadonly || disabled}
-            type={type}
-            placeholders={placeholder}
-            prefix={prefixCls}
-            format={format}
-            hourStep={hourStep}
-            secondStep={secondStep}
-            minuteStep={minuteStep}
-            disabledHours={disabledHours}
-            disabledMinutes={disabledMinutes}
-            disabledSeconds={disabledSeconds}
-            value={cacheValue}
-            onChange={onCacheChange}
-            onFocus={() => {
+        {customRender ? (
+          <div
+            ref={setAttachEl}
+            onClick={() => {
               showPopperRef.current = true
               setShowPopper(true)
             }}
-          />
-          <div
-            className={`${prefixCls}__function-button`}
-            onClick={() => {
-              showPopperRef.current = !showPopperRef.current
-              setShowPopper((pre) => !pre)
-            }}
           >
-            {showPopper ? (
-              <CloseCircleFilled
-                className={`${prefixCls}__close-button`}
-                onClick={() => {
-                  onCacheChange(type === 'single' ? [''] : ['', ''])
-                }}
-              />
-            ) : (
-              <TimeOutlined />
-            )}
+            {typeof customRender === 'function' ? customRender(cacheValue) : customRender}
           </div>
-        </div>
+        ) : (
+          <div ref={setAttachEl} className={`${prefixCls}__input-wrapper`}>
+            <Input
+              size={size}
+              isFitContent={appearance === 'unset'}
+              ref={inputRef}
+              onValidChange={setIsInputValid}
+              disabled={inputReadonly || disabled}
+              type={type}
+              placeholders={placeholder}
+              prefix={prefixCls}
+              format={format}
+              hourStep={hourStep}
+              secondStep={secondStep}
+              minuteStep={minuteStep}
+              disabledHours={disabledHours}
+              disabledMinutes={disabledMinutes}
+              disabledSeconds={disabledSeconds}
+              value={cacheValue}
+              onChange={onCacheChange}
+              onFocus={() => {
+                showPopperRef.current = true
+                setShowPopper(true)
+              }}
+            />
+            <div
+              className={`${prefixCls}__function-button`}
+              onClick={() => {
+                showPopperRef.current = !showPopperRef.current
+                setShowPopper((pre) => !pre)
+              }}
+            >
+              {showPopper ? (
+                <CloseCircleFilled
+                  className={`${prefixCls}__close-button`}
+                  onClick={() => {
+                    onCacheChange(type === 'single' ? [''] : ['', ''])
+                  }}
+                />
+              ) : (
+                <TimeOutlined />
+              )}
+            </div>
+          </div>
+        )}
+
         <Popper
           {...(overlay || {})}
           unmountOnClose={false}
@@ -409,6 +423,10 @@ export interface TimePickerProps extends ExtendType {
    * @default false
    */
   invalid?: boolean
+  /**
+   * 自定义触发器
+   */
+  customRender?: React.ReactNode | ((option: string[]) => React.ReactNode)
 }
 
 if (__DEV__) {
