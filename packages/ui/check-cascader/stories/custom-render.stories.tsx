@@ -77,7 +77,7 @@ export const CusotmRender = () => {
   return (
     <>
       <h1>CusotmRender</h1>
-      <div className="cascader-basic__wrap">
+      <div className="check-cascader-custom-render__wrap">
         <CheckCascader
           style={{ width: 240 }}
           searchable={false}
