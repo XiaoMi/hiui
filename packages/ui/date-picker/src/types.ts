@@ -283,4 +283,8 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * @default 'auto'
    */
   strideSelectMode?: 'auto' | 'fixed'
+  /**
+   * 选择框前置内容
+   */
+  prefix?: React.ReactNode
 }
