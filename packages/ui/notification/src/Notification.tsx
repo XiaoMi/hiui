@@ -159,7 +159,7 @@ export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>
   /**
    * 指定portal的容器
    */
-  container?: Element | null
+  container?: HTMLElement | null
   /**
    * 内部使用，勿覆盖。暂不对外暴露
    * @private
