@@ -65,6 +65,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       overlay,
       size = 'md',
       invalid = false,
+      prefix,
     },
     ref
   ) => {
@@ -258,6 +259,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     return (
       <div ref={ref} role={role} className={cls}>
         <div ref={setAttachEl} className={`${prefixCls}__input-wrapper`}>
+          <div style={{ marginLeft: '5px' }}>{prefix}</div>
           <Input
             size={size}
             isFitContent={appearance === 'unset'}
@@ -409,6 +411,10 @@ export interface TimePickerProps extends ExtendType {
    * @default false
    */
   invalid?: boolean
+  /**
+   * 选择框前置内容
+   */
+  prefix?: React.ReactNode
 }
 
 if (__DEV__) {
