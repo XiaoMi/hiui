@@ -186,7 +186,7 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
   /**
    * 指定 portal 的容器
    */
-  container?: HTMLElement
+  container?: HTMLElement | null
   /**
    * 设置唤起的方向
    */
