@@ -1,31 +1,34 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { createMessage } from '../src'
 import Button from '@hi-ui/button'
 
 /**
- * @title message属性自定义
+ * @title message 属性自定义
  *
  */
 
 export const Custom = () => {
   const [container, setContainer] = useState<HTMLElement | null>(null)
-  const message = createMessage({
-    container: container,
-    zIndex: 1000,
-  })
-
+  const message = useMemo(
+    () =>
+      createMessage({
+        container,
+        zIndex: 1000,
+      }),
+    [container]
+  )
   return (
     <>
       <h1>Custom</h1>
-      <div className="message-container__wrap">
+      <div className="message-custom__wrap">
         <div
           ref={(e) => {
             setContainer(e)
           }}
           id="ddd"
           style={{
-            width: 400,
-            height: 300,
+            width: 700,
+            height: 400,
             background: 'rgb(245, 247, 250)',
             zIndex: 1500,
             // Need add it
