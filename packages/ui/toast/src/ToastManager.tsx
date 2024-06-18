@@ -69,9 +69,9 @@ export class ToastManager extends Component<ToastManagerProps, ToastManagerState
   }
 
   private getStyle = (
-    placement: ToastPlacement,
-    container: HTMLElement | undefined,
-    zIndex: number | undefined
+    placement: ToastPlacement = 'top',
+    container?: HTMLElement,
+    zIndex?: number
   ): React.CSSProperties => {
     let top: string | undefined
     let bottom: string | undefined
@@ -107,12 +107,10 @@ export class ToastManager extends Component<ToastManagerProps, ToastManagerState
     const { queue } = this.state
     const { prefixCls, placement, component: As, render, container, zIndex } = this.props
 
-    console.log(this.props)
-
     return (
       <div
         className={cx(`${prefixCls}-manager`, `${prefixCls}-manager--placement-${placement}`)}
-        style={this.getStyle(placement!, container, zIndex)}
+        style={this.getStyle(placement, container, zIndex)}
       >
         {queue.map((notice) => {
           if (As) return <As {...notice} />
@@ -150,9 +148,9 @@ export interface ToastManagerProps {
   /**
    * 指定 portal 的容器
    */
-  container?: HTMLElement | undefined
+  container?: HTMLElement
   /**
    * 自定义css展示层级
    */
-  zIndex?: number | undefined
+  zIndex?: number
 }

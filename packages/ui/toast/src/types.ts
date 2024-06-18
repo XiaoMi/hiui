@@ -15,14 +15,6 @@ export interface ToastEventOptions {
    * toast 默认展示 title
    */
   title?: React.ReactNode
-  /**
-   * 指定 portal 的容器
-   */
-  container?: HTMLElement | undefined
-  /**
-   * 指定 css 展示层级
-   */
-  zIndex?: number
 }
 
 export interface ToastOptions extends ToastEventOptions {

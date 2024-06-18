@@ -6,7 +6,7 @@ import { ToastEventOptions } from './types'
 import { withDefaultProps } from '@hi-ui/react-utils'
 import { uuid } from '@hi-ui/use-id'
 
-export class ToastAPI<T extends ToastEventOptions> {
+export class ToastAPI<T = ToastEventOptions> {
   static defaultOptions = {
     prefixCls: _prefix,
   }
@@ -31,7 +31,7 @@ export class ToastAPI<T extends ToastEventOptions> {
     return `.${this.options.prefixCls}__portal__${this.id}`
   }
 
-  initManager(container: HTMLElement | undefined) {
+  initManager(container?: HTMLElement) {
     this.container = Container.getContainer(this.selector, document, container)
     this.toastManager = React.createRef<ToastManager>()
     render(<ToastManager {...this.options} ref={this.toastManager} />, this.container)

@@ -5,8 +5,7 @@ export * from './basic.stories'
 export * from './type.stories'
 export * from './close.stories'
 export * from './auto-close.stories'
-export * from './container.stories'
-export * from './z-index.stories'
+export * from './custom.stories'
 
 export default {
   title: 'FeedBack/Message',

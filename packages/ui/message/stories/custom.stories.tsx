@@ -3,19 +3,20 @@ import { createMessage } from '../src'
 import Button from '@hi-ui/button'
 
 /**
- * @title 局部容器挂载
+ * @title message属性自定义
  *
  */
 
-export const Container = () => {
+export const Custom = () => {
   const [container, setContainer] = useState<HTMLElement | null>(null)
-  const messageWithContainer = createMessage({
+  const message = createMessage({
     container: container,
+    zIndex: 1000,
   })
 
   return (
     <>
-      <h1>Container</h1>
+      <h1>Custom</h1>
       <div className="message-container__wrap">
         <div
           ref={(e) => {
@@ -26,7 +27,7 @@ export const Container = () => {
             width: 800,
             height: 600,
             background: 'red',
-
+            zIndex: 1500,
             // Need add it
             position: 'relative',
             overflow: 'hidden',
@@ -34,7 +35,7 @@ export const Container = () => {
         ></div>
         <Button
           onClick={() => {
-            messageWithContainer.open({
+            message.open({
               title: '欢迎使用 HiUI 组件库',
               type: 'success',
               autoClose: false,
