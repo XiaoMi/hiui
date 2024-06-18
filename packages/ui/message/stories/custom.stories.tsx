@@ -24,9 +24,9 @@ export const Custom = () => {
           }}
           id="ddd"
           style={{
-            width: 800,
-            height: 600,
-            background: 'red',
+            width: 400,
+            height: 300,
+            background: 'rgb(245, 247, 250)',
             zIndex: 1500,
             // Need add it
             position: 'relative',
@@ -38,7 +38,6 @@ export const Custom = () => {
             message.open({
               title: '欢迎使用 HiUI 组件库',
               type: 'success',
-              autoClose: false,
             })
           }}
         >
