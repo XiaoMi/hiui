@@ -259,7 +259,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     return (
       <div ref={ref} role={role} className={cls}>
         <div ref={setAttachEl} className={`${prefixCls}__input-wrapper`}>
-          <div style={{ marginLeft: '5px' }}>{prefix}</div>
+          {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
           <Input
             size={size}
             isFitContent={appearance === 'unset'}

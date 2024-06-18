@@ -16,6 +16,15 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     align-items: center;
   }
 
+  &__prefix {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: use-color('gray', 700);
+    font-size: inherit;
+    text-align: center;
+  }
+
   &--appearance-line {
     position: relative;
     z-index: 0;
