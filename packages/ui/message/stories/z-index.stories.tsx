@@ -1,43 +1,39 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { createMessage } from '../src'
 import Button from '@hi-ui/button'
 
 /**
- * @title 局部容器挂载
+ * @title 自定义css展示层级
  *
  */
 
-export const Container = () => {
-  const [container, setContainer] = useState<HTMLElement | null>(null)
-  const messageWithContainer = createMessage({
-    container: container,
+export const ZIndex = () => {
+  const messageWithZIndex = createMessage({
+    zIndex: 2000,
   })
 
   return (
     <>
-      <h1>Container</h1>
+      <h1>zIndex</h1>
       <div className="message-container__wrap">
         <div
-          ref={(e) => {
-            setContainer(e)
-          }}
           id="ddd"
           style={{
-            width: 800,
-            height: 600,
+            top: 0,
+            width: 1000,
+            height: 200,
             background: 'red',
 
             // Need add it
-            position: 'relative',
-            overflow: 'hidden',
+            zIndex: 1500,
+            position: 'fixed',
           }}
         ></div>
         <Button
           onClick={() => {
-            messageWithContainer.open({
+            messageWithZIndex.open({
               title: '欢迎使用 HiUI 组件库',
               type: 'success',
-              autoClose: false,
             })
           }}
         >

@@ -18,7 +18,11 @@ export interface ToastEventOptions {
   /**
    * 指定 portal 的容器
    */
-  container?: Element | undefined
+  container?: HTMLElement | undefined
+  /**
+   * 指定 css 展示层级
+   */
+  zIndex?: number
 }
 
 export interface ToastOptions extends ToastEventOptions {
