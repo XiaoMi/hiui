@@ -138,7 +138,7 @@ const Root = ({
   return (
     <div className={_cls} ref={setAttachEl}>
       <div className={`${prefixCls}__picker__wrapper`}>
-        {prefix ? <div style={{ marginLeft: '5px' }}>{prefix}</div> : ''}
+        {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
         <div
           className={cx(
             `${prefixCls}__input-selector`,
