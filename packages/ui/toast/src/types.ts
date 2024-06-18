@@ -15,10 +15,6 @@ export interface ToastEventOptions {
    * toast 默认展示 title
    */
   title?: React.ReactNode
-  /**
-   * 指定portal挂载的容器
-   */
-  container?: Element | undefined
 }
 
 export interface ToastOptions extends ToastEventOptions {
