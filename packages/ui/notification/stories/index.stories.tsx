@@ -7,8 +7,7 @@ export * from './title.stories'
 export * from './auto-close.stories'
 export * from './action.stories'
 export * from './size.stories'
-export * from './container.stories'
-export * from './z-index.stories'
+export * from './custom.stories'
 
 export default {
   title: 'FeedBack/Notification',
