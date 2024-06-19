@@ -18,6 +18,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
   &__prefix {
     display: inline-flex;
+    margin-left: use-spacing(3);
     align-items: center;
     flex-shrink: 0;
     color: use-color('gray', 700);
