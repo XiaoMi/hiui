@@ -22,7 +22,7 @@ export class ToastAPI<T = ToastEventOptions> {
     // Ensure that Toast is a singleton.
     this.id = uuid()
 
-    this.initManager(this.options.container)
+    this.initManager()
   }
 
   static create(options: ToastAPIOptions) {
@@ -33,8 +33,8 @@ export class ToastAPI<T = ToastEventOptions> {
     return `.${this.options.prefixCls}__portal__${this.id}`
   }
 
-  initManager(container?: HTMLElement) {
-    this.container = Container.getContainer(this.selector, document, container)
+  initManager() {
+    this.container = Container.getContainer(this.selector)
     this.toastManager = React.createRef<ToastManager>()
 
     render(<ToastManager {...this.options} ref={this.toastManager} />, this.container)
@@ -42,7 +42,7 @@ export class ToastAPI<T = ToastEventOptions> {
 
   open = (props: T) => {
     if (!this.container) {
-      this.initManager(this.options.container)
+      this.initManager()
     }
     return this.toastManager.current?.open(props)
   }

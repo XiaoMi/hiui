@@ -2,4 +2,4 @@
 "@hi-ui/hiui": patch
 ---
 
-feat(notification): 支持指定 portal 挂载
+feat(notification): 支持自定义 notification 配置
