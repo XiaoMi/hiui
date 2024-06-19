@@ -71,7 +71,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
 
   &__prefix {
     display: inline-flex;
-    margin-left: 5px;
+    margin-left: use-spacing(3);
     align-items: center;
     flex-shrink: 0;
     color: use-color('gray', 700);
