@@ -78,6 +78,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       cellRender,
       footerRender,
       strideSelectMode = 'auto',
+      customRender,
       ...otherProps
     },
     ref
@@ -441,6 +442,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             setAttachEl={setAttachEl}
             dateRangeTimePanelNow={dateRangeTimePanelNow}
             invalid={invalid}
+            customRender={customRender}
           />
           <Popper
             {...(overlay || {})}

@@ -15,6 +15,7 @@ const Root = ({
   setAttachEl,
   dateRangeTimePanelNow,
   invalid,
+  customRender,
 }: {
   onTrigger: (index: number) => void
   onClear: () => void
@@ -23,6 +24,7 @@ const Root = ({
   inputChangeEvent: InputChangeEvent
   dateRangeTimePanelNow: number
   invalid: boolean
+  customRender?: React.ReactNode | ((option: string[]) => React.ReactNode)
 }) => {
   const {
     i18n,
@@ -133,7 +135,28 @@ const Root = ({
     (invalid || !isValueValid) && `${prefixCls}__picker--invalid`
   )
 
-  return (
+  const dataValue = []
+  if (inputData[0]) {
+    dataValue.push(inputData[0].format('YYYY-MM-DD'))
+  }
+  if (inputData[1]) {
+    dataValue.push(inputData[1].format('YYYY-MM-DD'))
+  }
+
+  return customRender ? (
+    <div
+      ref={setAttachEl}
+      onClick={() => {
+        if (renderRange) {
+          onPickerClickEvent(1)
+        } else {
+          onPickerClickEvent(0)
+        }
+      }}
+    >
+      {typeof customRender === 'function' ? customRender(dataValue) : customRender}
+    </div>
+  ) : (
     <div className={_cls} ref={setAttachEl}>
       <div className={`${prefixCls}__picker__wrapper`}>
         <div
