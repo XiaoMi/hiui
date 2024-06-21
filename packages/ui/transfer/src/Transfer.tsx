@@ -9,6 +9,7 @@ import { TransferProvider } from './context'
 import { useCheck } from '@hi-ui/use-check'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { transformData } from './utils'
 
 const _role = 'transfer'
 const _prefix = getPrefixCls(_role)
@@ -32,6 +33,7 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       targetSortType = 'default',
       pagination = false,
       data = NOOP_ARRAY,
+      fieldNames,
       defaultTargetIds = NOOP_ARRAY,
       targetIds: targetIdsProp,
       targetLimit,
@@ -55,6 +57,11 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       targetIdsProp,
       onChange
     )
+
+    data = useMemo(() => {
+      if(data) return transformData(data, fieldNames)
+      else return data
+    }, [data,fieldNames])
 
     const pageSize = useMemo(() => {
       if (pagination === true) return 10
@@ -376,6 +383,10 @@ export interface TransferProps
    * 穿梭框数据源
    */
   data: TransferDataItem[]
+  /**
+   * 设置data中各项值对应的key
+   **/
+  fieldNames?: Record<string, string>
   /**
    * 最大可穿梭上限
    */
