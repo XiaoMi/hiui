@@ -1,10 +1,11 @@
-import React, { forwardRef, useCallback } from 'react'
+import React, { forwardRef, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { PaginationProps, Pagination } from '@hi-ui/pagination'
 import { EmptyState } from '@hi-ui/empty-state'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { ListDataItem, ListPaginationPlacementEnum } from './types'
+import { transformData } from './utils'
 
 const LIST_PREFIX = getPrefixCls('list')
 
@@ -50,6 +51,9 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
     },
     ref
   ) => {
+
+    data = useMemo((): ListDataItem[] => transformData(data), [data])
+
     const cls = cx(prefixCls, className, {
       [`${prefixCls}--bordered`]: bordered,
       [`${prefixCls}--with-pagination`]: pagination,
@@ -106,6 +110,10 @@ export interface ListProps extends HiBaseHTMLProps<'div'> {
    * 列表展示的数据
    */
   data: ListDataItem[]
+  /**
+   * 设置data中的每一项对应的key
+   */
+  fieldNames?: Record<string, string>
   /**
    * 自定义渲染列表项
    */
