@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { isArray } from '@hi-ui/type-assertion'
 import { FilterDataItem } from './types'
+import { transformTreeData } from './utils'
 
 const DEFAULT_DATA = [] as []
 const DEFAULT_VALUE = [] as []
@@ -12,9 +13,11 @@ export const useFilter = ({
   data: dataProp = DEFAULT_DATA,
   defaultValue = DEFAULT_VALUE,
   value: valueProp,
+  fieldNames,
   onChange,
   ...rest
 }: UseFilterProps) => {
+  dataProp = useMemo(() => transformTreeData(dataProp, fieldNames), [dataProp, fieldNames])
   // 选中的级联路径 id 列表
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
@@ -93,6 +96,10 @@ export interface UseFilterProps {
    * 筛选选项数据
    */
   data?: FilterDataItem[]
+  /**
+   * 设置 data 中 id, title, disabled, children 对应的 key
+   */
+  fieldNames?: Record<string, string>
   /**
    * 默认选中项的值
    */
