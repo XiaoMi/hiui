@@ -46,13 +46,14 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
       render,
       bordered = true,
       data,
+      fieldNames,
       emptyContent,
       ...rest
     },
     ref
   ) => {
 
-    data = useMemo((): ListDataItem[] => transformData(data), [data])
+    data = useMemo((): ListDataItem[] => transformData(data,fieldNames), [data,fieldNames])
 
     const cls = cx(prefixCls, className, {
       [`${prefixCls}--bordered`]: bordered,
