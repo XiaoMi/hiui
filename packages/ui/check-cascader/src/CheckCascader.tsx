@@ -24,7 +24,7 @@ import { flattenTreeData } from './utils'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
-import { HiBaseAppearanceEnum, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseAppearanceEnum, HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 
 import { callAllFuncs } from '@hi-ui/func-utils'
 
@@ -302,7 +302,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
   /**
    * 设置 data 中字段对应的 key
    */
-  fieldNames?: Record<string, string>
+  fieldNames?: HiBaseFieldNames
   /**
    * 设置当前多选值
    */
