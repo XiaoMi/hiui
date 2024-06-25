@@ -1,6 +1,7 @@
+import { HiBaseFieldNames } from '@hi-ui/core'
 import { FilterDataItem } from './types'
 
-export const transformTreeData = (data: FilterDataItem[] , fieldNames?: Record<string, string>) : FilterDataItem[] => {
+export const transformTreeData = (data: FilterDataItem[] , fieldNames?: HiBaseFieldNames) : FilterDataItem[] => {
   const getKeyFields = (node: any, key: any) => {
     if(fieldNames ){
       return node[(fieldNames as any)[key] || key]

@@ -3,6 +3,7 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { isArray } from '@hi-ui/type-assertion'
 import { FilterDataItem } from './types'
 import { transformTreeData } from './utils'
+import { HiBaseFieldNames } from '@hi-ui/core'
 
 const DEFAULT_DATA = [] as []
 const DEFAULT_VALUE = [] as []
@@ -99,7 +100,7 @@ export interface UseFilterProps {
   /**
    * 设置 data 中 id, title, disabled, children 对应的 key
    */
-  fieldNames?: Record<string, string>
+  fieldNames?: HiBaseFieldNames
   /**
    * 默认选中项的值
    */
