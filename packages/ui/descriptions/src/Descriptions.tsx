@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps } from '@hi-ui/core'
 import { cloneElement, toArray, transformData } from './util'
 import { Row } from './Row'
 import {
@@ -102,7 +102,7 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置 data 中label, value, labelWidth, labelPlacement 对应的 key
    */
-  fieldNames?: Record<string, string>
+  fieldNames?: HiBaseFieldNames
   /**
    * label对齐方式
    */

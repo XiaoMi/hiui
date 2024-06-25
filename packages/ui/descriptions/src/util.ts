@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { DescriptionsItemProps } from './DescriptionsItem'
+import { HiBaseFieldNames } from '@hi-ui/core'
 
 type AnyObject = Record<any, any>
 
@@ -21,7 +22,7 @@ export function toArray(children: React.ReactNode) {
 
 export const transformData = (
   data: DescriptionsItemProps[],
-  fieldNames: Record<string, string> | undefined
+  fieldNames?: HiBaseFieldNames
 ) => {
   /**
    * 转换对象
