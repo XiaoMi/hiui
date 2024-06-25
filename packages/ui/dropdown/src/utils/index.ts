@@ -1,5 +1,6 @@
 import { isArray } from '@hi-ui/type-assertion'
 import { DropdownTriggerActionEnum, DropdownDataItem } from '../types'
+import { HiBaseFieldNames } from '@hi-ui/core'
 
 /**
  * 抹平 trigger 结构为数组
@@ -13,7 +14,7 @@ export const normalizeTrigger = (
 
 export const transformData = (
   data: DropdownDataItem[],
-  fieldNames: Record<string, string> | undefined
+  fieldNames?: HiBaseFieldNames
 ): DropdownDataItem[] => {
   /**
    * 转换对象

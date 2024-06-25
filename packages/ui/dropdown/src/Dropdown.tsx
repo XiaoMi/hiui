@@ -1,7 +1,7 @@
 import React, { cloneElement, forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { PopperOverlayProps, Popper, PopperProps } from '@hi-ui/popper'
 import { DropDownProvider, useDropDownContext } from './context'
 import { useDropdown, UseDropdownProps } from './use-dropdown'
@@ -149,7 +149,7 @@ export interface DropdownProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, 
   /**
    * 设置data 中id, title, href, target, disabled, split 等属性对应的 key
    */
-  fieldNames?: Record<string, string>
+  fieldNames?: HiBaseFieldNames
   /**
    * 设置下拉面板宽度
    */
