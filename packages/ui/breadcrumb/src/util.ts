@@ -1,8 +1,9 @@
+import { HiBaseFieldNames } from '@hi-ui/core'
 import { BreadcrumbDataItem } from './types'
 
 export const transformData = (
   data: BreadcrumbDataItem[],
-  fieldNames: Record<string, string> | undefined
+  fieldNames?: HiBaseFieldNames
 ): BreadcrumbDataItem[] => {
   /**
    * 转换对象
