@@ -1,8 +1,9 @@
+import { HiBaseFieldNames } from "@hi-ui/core"
 import { ListDataItem } from "./types"
 
 export const  transformData = (
   data: ListDataItem[],
-  fieldNames: Record<string, string> | undefined = undefined
+  fieldNames?: HiBaseFieldNames
   ) : ListDataItem[] => {
 
     const getKeyFields = (node: any, key: any)=> {

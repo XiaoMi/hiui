@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { PaginationProps, Pagination } from '@hi-ui/pagination'
 import { EmptyState } from '@hi-ui/empty-state'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps } from '@hi-ui/core'
 import { ListDataItem, ListPaginationPlacementEnum } from './types'
 import { transformData } from './utils'
 
@@ -114,7 +114,7 @@ export interface ListProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置data中的每一项对应的key
    */
-  fieldNames?: Record<string, string>
+  fieldNames?: HiBaseFieldNames
   /**
    * 自定义渲染列表项
    */
