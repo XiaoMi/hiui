@@ -1,5 +1,6 @@
 import { filterTree, cloneTree, getTreeNodesWithChildren } from '@hi-ui/tree-utils'
 import { MenuDataItem } from './types'
+import { HiBaseFieldNames } from '@hi-ui/core'
 
 // 寻找某一节点的父节点
 export const getParentId = (id: string | number, data: Record<string, any>[]): string | number => {
@@ -58,7 +59,7 @@ export const filterTreeData = (
 
 export const transformTreeData = (
   data: MenuDataItem[],
-  fieldNames: Record<string, string> | undefined
+  fieldNames?: HiBaseFieldNames,
 ) => {
   /**
    * 转换对象
