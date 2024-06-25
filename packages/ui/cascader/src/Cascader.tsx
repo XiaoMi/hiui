@@ -238,7 +238,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         trigger={
           customRender ? (
             typeof customRender === 'function' ? (
-              customRender(value)
+              customRender(selectedItem)
             ) : (
               customRender
             )
@@ -343,7 +343,7 @@ export interface CascaderProps
   /**
    * 自定义触发器
    */
-  customRender?: React.ReactNode | ((option: (number | string)[]) => React.ReactNode)
+  customRender?: React.ReactNode | ((selectedItem: CascaderItemEventData | null) => React.ReactNode)
 }
 
 if (__DEV__) {

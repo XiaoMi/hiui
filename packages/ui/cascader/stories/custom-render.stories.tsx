@@ -66,12 +66,11 @@ export const CustomRender = () => {
           clearable
           placeholder="请选择品类"
           data={data}
-          defaultValue={['手机', '红米', '红米4']}
           onChange={(...args) => {
             console.log('onChange', ...args)
           }}
           customRender={(data) => {
-            return <Input value={data.join('-')} readOnly placeholder="请选择" />
+            return <Input value={!data ? '' : data.title + ''} placeholder="请选择" />
           }}
         ></Cascader>
       </div>
