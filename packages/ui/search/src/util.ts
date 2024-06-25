@@ -1,8 +1,9 @@
+import { HiBaseFieldNames } from '@hi-ui/core'
 import { SearchDataItem } from './types'
 
 export const transformData = (
   data: SearchDataItem[],
-  fieldNames: Record<string, string> | undefined
+  fieldNames?: HiBaseFieldNames
 ): SearchDataItem[] => {
   /**
    * 转换对象

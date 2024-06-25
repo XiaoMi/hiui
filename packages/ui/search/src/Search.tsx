@@ -12,6 +12,7 @@ import { callAllFuncs } from '@hi-ui/func-utils'
 import type { PopperOverlayProps } from '@hi-ui/popper'
 import { SearchDropdown } from './SearchDropdown'
 import { transformData } from './util'
+import { HiBaseFieldNames } from '@hi-ui/core'
 
 const SEARCH_PREFIX = getPrefixCls('search')
 const NOOP_ARRAY = [] as []
@@ -287,7 +288,7 @@ export interface SearchProps extends Omit<InputProps, 'onChange' | 'appearance'>
   /**
    * 设置 data 中 id, title, children 对应的 key
    */
-  fieldNames?: Record<string, string>
+  fieldNames?: HiBaseFieldNames
   /**
    * 自定义控制 popper 行为
    */
