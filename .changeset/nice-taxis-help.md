@@ -1,5 +1,4 @@
 ---
-"@hi-ui/check-cascader": patch
 "@hi-ui/hiui": patch
 ---
 
