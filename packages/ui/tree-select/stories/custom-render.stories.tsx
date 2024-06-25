@@ -95,7 +95,7 @@ export const CustomRender = () => {
             console.log('TreeSelect onChange: ', checkedIds, selectItem)
           }}
           customRender={(data) => {
-            return <Input value={data.join('-')} readOnly placeholder="请选择" />
+            return <Input value={!data ? '' : data.title + ''} placeholder="请选择" />
           }}
         />
       </div>
