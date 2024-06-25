@@ -1,4 +1,4 @@
-import React, { ReactText, forwardRef, useCallback, useMemo } from 'react'
+import React, { forwardRef, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -208,6 +208,19 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
+    let selectedItems: FlattedCheckCascaderDataItem[] = []
+    const selectedArr = value.map((selected) => {
+      return flattedData.filter((item) => {
+        if (item.id === selected) {
+          return item
+        }
+        return null
+      })
+    })
+    if (selectedArr[0]) {
+      selectedItems = selectedArr.map((item) => item[0])
+    }
+
     return (
       <Picker
         ref={ref}
@@ -230,7 +243,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         trigger={
           customRender ? (
             typeof customRender === 'function' ? (
-              customRender(_value)
+              customRender(selectedItems)
             ) : (
               customRender
             )
@@ -399,7 +412,9 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
   /**
    * 自定义触发器
    */
-  customRender?: React.ReactNode | ((option: ReactText[][]) => React.ReactNode)
+  customRender?:
+    | React.ReactNode
+    | ((selectItems: FlattedCheckCascaderDataItem[]) => React.ReactNode)
 }
 
 if (__DEV__) {

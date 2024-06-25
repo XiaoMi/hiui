@@ -87,10 +87,11 @@ export const CusotmRender = () => {
           data={dataOnlyLeafCheckable}
           onChange={console.log}
           customRender={(data) => {
-            const newData = data.map((item) => {
-              return item.join('-')
-            })
-            return <Input value={newData.join('，')} readOnly placeholder="请选择" />
+            let value = []
+            if (data) {
+              value = data.map((item) => item.title)
+            }
+            return <Input value={!value ? '' : value} placeholder="请选择" />
           }}
         ></CheckCascader>
       </div>
