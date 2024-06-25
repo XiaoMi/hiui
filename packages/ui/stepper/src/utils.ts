@@ -1,7 +1,8 @@
+import { HiBaseFieldNames } from "@hi-ui/core";
 import { StepperDataItem } from "./types";
 
 
-export const transformData = (data: StepperDataItem[], fieldNames?: Record<string, string>): StepperDataItem[] => {
+export const transformData = (data: StepperDataItem[], fieldNames?: HiBaseFieldNames): StepperDataItem[] => {
 
   const getKeyFields = (node: any, key: any) => {
     if(fieldNames){

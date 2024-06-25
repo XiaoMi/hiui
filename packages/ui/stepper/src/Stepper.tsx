@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps } from '@hi-ui/core'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { StepperDataItem } from './types'
 import { StepperItem } from './StepperItem'
@@ -73,7 +73,7 @@ export interface StepperProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置data 中的每一项对应的key
    */
-  fieldNames?: Record<string, string>
+  fieldNames?: HiBaseFieldNames
   /**
    * 当前步骤位置索引，从 1 开始计数
    */
