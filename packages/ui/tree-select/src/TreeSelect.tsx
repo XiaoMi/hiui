@@ -229,25 +229,6 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
 
     const cls = cx(prefixCls, className)
 
-    const selectedSet = new Set()
-    const selectedValue = (selectedItem: TreeSelectDataItem | null) => {
-      if (selectedItem) {
-        if (selectedItem.parent.depth >= 0) {
-          selectedValue(selectedItem.parent)
-          selectedSet.add(selectedItem.parent)
-        }
-      }
-      selectedSet.add(selectedItem)
-      const selected = Array.from(selectedSet).map((item: any) => {
-        if (item) {
-          return item.title
-        }
-        return item
-      })
-
-      return selected
-    }
-
     return (
       <Picker
         ref={ref}
@@ -266,7 +247,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         trigger={
           customRender ? (
             typeof customRender === 'function' ? (
-              customRender(selectedValue(selectedItem))
+              customRender(selectedItem)
             ) : (
               customRender
             )
@@ -431,7 +412,7 @@ export interface TreeSelectProps
   /**
    * 自定义触发器
    */
-  customRender?: React.ReactNode | ((selectedItem: string[]) => React.ReactNode)
+  customRender?: React.ReactNode | ((selectedItem: TreeSelectDataItem | null) => React.ReactNode)
 }
 
 if (__DEV__) {
