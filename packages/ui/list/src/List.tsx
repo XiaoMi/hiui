@@ -52,8 +52,10 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
     },
     ref
   ) => {
-
-    data = useMemo((): ListDataItem[] => transformData(data,fieldNames), [data,fieldNames])
+    const transformedData = useMemo((): ListDataItem[] => transformData(data, fieldNames), [
+      data,
+      fieldNames,
+    ])
 
     const cls = cx(prefixCls, className, {
       [`${prefixCls}--bordered`]: bordered,
@@ -78,9 +80,9 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        {data && data.length > 0 ? (
+        {transformedData && transformedData.length > 0 ? (
           <ul className={cx(`${prefixCls}__wrapper`)}>
-            {data.map((item, index) => {
+            {transformedData.map((item, index) => {
               return renderListItem(item, index)
             })}
           </ul>
