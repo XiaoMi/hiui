@@ -18,7 +18,7 @@ export const useFilter = ({
   onChange,
   ...rest
 }: UseFilterProps) => {
-  dataProp = useMemo(() => transformTreeData(dataProp, fieldNames), [dataProp, fieldNames])
+  const transformedData = useMemo(() => transformTreeData(dataProp, fieldNames), [dataProp, fieldNames])
   // 选中的级联路径 id 列表
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
@@ -26,7 +26,7 @@ export const useFilter = ({
    * 根据级联路径生成面板数据
    */
   const menusData = useMemo(() => {
-    let lastMenu = dataProp
+    let lastMenu = transformedData
     const menus = [lastMenu]
 
     const menuPathLength = value.length
@@ -45,7 +45,7 @@ export const useFilter = ({
     }
 
     return menus
-  }, [dataProp, value])
+  }, [transformedData, value])
 
   const menusWithLabel = useMemo(() => {
     return labels.map((label, depth) => {
