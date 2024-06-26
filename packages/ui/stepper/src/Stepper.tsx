@@ -32,7 +32,10 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
     },
     ref
   ) => {
-    data = useMemo((): StepperDataItem[] => transformData(data, fieldNames), [data, fieldNames])
+    const transformedData = useMemo((): StepperDataItem[] => transformData(data, fieldNames), [
+      data,
+      fieldNames,
+    ])
     const [current, trySetCurrent] = useUncontrolledState(0, currentProp, onChange)
 
     const cls = cx(
@@ -44,7 +47,7 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        {data.map((item, index) => {
+        {transformedData.map((item, index) => {
           const step = index + 1
 
           return (
