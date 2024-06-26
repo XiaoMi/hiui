@@ -1,5 +1,6 @@
-import { HiBaseFieldNameKeys, HiBaseFieldNames } from "@hi-ui/core"
-import { FilterDataItem } from "./types"
+import { HiBaseFieldNameKeys, HiBaseFieldNames } from '@hi-ui/core'
+import { FilterDataItem } from './types'
+import React from 'react'
 
 export const transformTreeData = (
   data: FilterDataItem[],
@@ -15,14 +16,15 @@ export const transformTreeData = (
   const traverseNode = (node: FilterDataItem): FilterDataItem => {
     const newNode: FilterDataItem = { ...node }
 
-    newNode.id = getKeyFields(newNode, "id") as React.ReactText
-    newNode.title = getKeyFields(newNode, "title") as React.ReactText
-    newNode.disabled = (getKeyFields(newNode, "disabled") ?? false) as boolean
-    newNode.children = getKeyFields(newNode, "children") as FilterDataItem[]
+    newNode.id = getKeyFields(newNode, 'id') as React.ReactText
+    newNode.title = getKeyFields(newNode, 'title') as React.ReactText
+    newNode.disabled = (getKeyFields(newNode, 'disabled') ?? false) as boolean
+    newNode.children = getKeyFields(newNode, 'children') as FilterDataItem[]
 
     if (newNode.children) {
       newNode.children = newNode.children.map(traverseNode)
     }
+
     return newNode
   }
 
