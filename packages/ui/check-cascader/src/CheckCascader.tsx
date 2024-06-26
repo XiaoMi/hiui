@@ -208,18 +208,11 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
-    let selectedItems: FlattedCheckCascaderDataItem[] = []
-    const selectedArr = value.map((selected) => {
-      return flattedData.filter((item) => {
-        if (item.id === selected) {
-          return item
-        }
-        return null
+    const selectedItems = useMemo(() => {
+      return value.map((selectedId) => {
+        return flattedData.find((item) => item.id === selectedId)
       })
-    })
-    if (selectedArr[0]) {
-      selectedItems = selectedArr.map((item) => item[0])
-    }
+    }, [value, flattedData])
 
     return (
       <Picker
@@ -414,7 +407,7 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    */
   customRender?:
     | React.ReactNode
-    | ((selectItems: FlattedCheckCascaderDataItem[]) => React.ReactNode)
+    | ((selectItems: (FlattedCheckCascaderDataItem | undefined)[]) => React.ReactNode)
 }
 
 if (__DEV__) {
