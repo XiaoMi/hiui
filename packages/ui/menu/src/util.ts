@@ -1,6 +1,7 @@
 import { filterTree, cloneTree, getTreeNodesWithChildren } from '@hi-ui/tree-utils'
 import { MenuDataItem } from './types'
-import { HiBaseFieldNames } from '@hi-ui/core'
+import { HiBaseFieldNameKeys, HiBaseFieldNames } from '@hi-ui/core'
+import React from 'react'
 
 // 寻找某一节点的父节点
 export const getParentId = (id: string | number, data: Record<string, any>[]): string | number => {
@@ -57,16 +58,13 @@ export const filterTreeData = (
   )
 }
 
-export const transformTreeData = (
-  data: MenuDataItem[],
-  fieldNames?: HiBaseFieldNames,
-) => {
+export const transformTreeData = (data: MenuDataItem[], fieldNames?: HiBaseFieldNames) => {
   /**
    * 转换对象
    */
-  const getKeyFields = (node: any, key: any) => {
+  const getKeyFields = (node: MenuDataItem, key: HiBaseFieldNameKeys) => {
     if (fieldNames) {
-      return node[(fieldNames as any)[key] || key]
+      return node[(fieldNames[key] || key) as keyof MenuDataItem]
     }
     return node[key]
   }
@@ -74,18 +72,18 @@ export const transformTreeData = (
   /**
    * 递归处理树形数组
    */
-  const traverseNode = (node: MenuDataItem): MenuDataItem => {
+  const traverseTreeNode = (node: MenuDataItem): MenuDataItem => {
     const newNode: MenuDataItem = { ...node }
-    newNode.id = getKeyFields(newNode, 'id')
+    newNode.id = getKeyFields(newNode, 'id') as React.ReactText
     newNode.title = getKeyFields(newNode, 'title')
-    newNode.icon = getKeyFields(newNode, 'icon')
-    newNode.disabled = getKeyFields(newNode, 'disabled') ?? false
-    newNode.children = getKeyFields(newNode, 'children')
+    newNode.icon = getKeyFields(newNode, 'icon' as HiBaseFieldNameKeys)
+    newNode.disabled = (getKeyFields(newNode, 'disabled') ?? false) as boolean
+    newNode.children = getKeyFields(newNode, 'children') as MenuDataItem[]
     if (newNode.children) {
-      newNode.children = newNode.children.map(traverseNode)
+      newNode.children = newNode.children.map(traverseTreeNode)
     }
     return newNode
   }
 
-  return data.map(traverseNode)
+  return data.map(traverseTreeNode)
 }

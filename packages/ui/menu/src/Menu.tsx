@@ -71,18 +71,18 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     const [activeParents, updateActiveParents] = useState(() => getAncestorIds(activeId, data))
 
-    data = useMemo(() => {
+    const transformedData = useMemo(() => {
       return transformTreeData(data, fieldNames)
     }, [data, fieldNames])
 
     useEffect(() => {
-      updateActiveParents(getAncestorIds(activeId, data))
-    }, [activeId, data])
+      updateActiveParents(getAncestorIds(activeId, transformedData))
+    }, [activeId, transformedData])
 
     const [expandedIds, updateExpandedIds] = useUncontrolledState(
       () => {
         return defaultExpandAll
-          ? getTreeNodesWithChildren(data).map((node) => node.id)
+          ? getTreeNodesWithChildren(transformedData).map((node) => node.id)
           : defaultExpandedIds
       },
       expandedIdsProp,
@@ -148,15 +148,15 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const [tagMaxCount, setTagMaxCount] = useState(0)
 
     const mergedTagList = useMemo(() => {
-      if (showVertical) return data
-      if (containerWidth < MIN_WIDTH) return data
-      return data.slice(0, Math.min(data.length, containerWidth / MIN_WIDTH))
-    }, [showVertical, data, containerWidth])
+      if (showVertical) return transformedData
+      if (containerWidth < MIN_WIDTH) return transformedData
+      return transformedData.slice(0, Math.min(transformedData.length, containerWidth / MIN_WIDTH))
+    }, [showVertical, transformedData, containerWidth])
 
     const restTagList = useMemo(() => {
-      if (tagMaxCount > 0) return data.slice(tagMaxCount)
+      if (tagMaxCount > 0) return transformedData.slice(tagMaxCount)
       return []
-    }, [data, tagMaxCount])
+    }, [transformedData, tagMaxCount])
 
     const getTagWidth = useCallback(
       (index: number) => {
