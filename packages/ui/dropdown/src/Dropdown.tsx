@@ -37,7 +37,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
     },
     ref
   ) => {
-    data = useMemo(() => {
+    const transformedData = useMemo(() => {
       if (data) return transformData(data, fieldNames)
       else return data
     }, [data, fieldNames])
@@ -118,7 +118,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
         <div ref={ref} role={role} className={cls} {...rootProps}>
           {renderButton()}
 
-          {isArrayNonEmpty(data) ? (
+          {isArrayNonEmpty(transformedData) ? (
             <DropdownMenu
               {...getMenuProps({
                 overlay: {
@@ -128,7 +128,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
               })}
               size={size}
             >
-              {dig(data)}
+              {dig(transformedData)}
             </DropdownMenu>
           ) : null}
         </div>

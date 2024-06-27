@@ -1,7 +1,7 @@
 import { isArray } from '@hi-ui/type-assertion'
 import { DropdownTriggerActionEnum, DropdownDataItem } from '../types'
-import { HiBaseFieldNames } from '@hi-ui/core'
-
+import { HiBaseFieldNameKeys, HiBaseFieldNames } from '@hi-ui/core'
+import React from 'react'
 /**
  * 抹平 trigger 结构为数组
  *
@@ -19,21 +19,25 @@ export const transformData = (
   /**
    * 转换对象
    */
-  const getKeyFields = (node: any, key: any) => {
+  const getKeyFields = (node: DropdownDataItem, key: HiBaseFieldNameKeys) => {
     if (fieldNames) {
-      return node[(fieldNames as any)[key] || key]
+      return node[(fieldNames[key] || key) as keyof DropdownDataItem]
     }
-    return node[key]
+    return node[key as keyof DropdownDataItem]
   }
 
   const traverseNode = (node: DropdownDataItem): DropdownDataItem => {
     const newNode: DropdownDataItem = { ...node }
-    newNode.id = getKeyFields(newNode, 'id')
+    newNode.id = getKeyFields(newNode, 'id') as React.ReactText
     newNode.title = getKeyFields(newNode, 'title')
-    newNode.href = getKeyFields(newNode, 'href')
-    newNode.disabled = getKeyFields(newNode, 'disabled') ?? false
-    newNode.split = getKeyFields(newNode, 'split') ?? false
-    newNode.target = getKeyFields(newNode, 'target')
+    newNode.href = getKeyFields(newNode, 'href' as HiBaseFieldNameKeys) as string
+    newNode.disabled = (getKeyFields(newNode, 'disabled') ?? false) as boolean
+    newNode.split = (getKeyFields(newNode, 'split' as HiBaseFieldNameKeys) ?? false) as boolean
+    newNode.target = getKeyFields(newNode, 'target' as HiBaseFieldNameKeys) as
+      | '_self'
+      | '_blank'
+      | '_parent'
+      | '_top'
 
     return newNode
   }
