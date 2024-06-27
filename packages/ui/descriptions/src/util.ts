@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { DescriptionsItemProps } from './DescriptionsItem'
-import { HiBaseFieldNames } from '@hi-ui/core'
+import { HiBaseFieldNameKeys, HiBaseFieldNames } from '@hi-ui/core'
 
 type AnyObject = Record<any, any>
 
@@ -20,26 +20,25 @@ export function toArray(children: React.ReactNode) {
   return res
 }
 
-export const transformData = (
-  data: DescriptionsItemProps[],
-  fieldNames?: HiBaseFieldNames
-) => {
+export const transformData = (data: DescriptionsItemProps[], fieldNames?: HiBaseFieldNames) => {
   /**
    * 转换对象
    */
-  const getKeyFields = (node: any, key: any) => {
+  const getKeyFields = (node: DescriptionsItemProps, key: HiBaseFieldNameKeys) => {
     if (fieldNames) {
-      return node[(fieldNames as any)[key] || key]
+      return node[(fieldNames[key] || key) as keyof DescriptionsItemProps]
     }
-    return node[key]
+    return node[key as keyof DescriptionsItemProps]
   }
 
   const traverseNode = (node: DescriptionsItemProps): DescriptionsItemProps => {
     const newNode: DescriptionsItemProps = { ...node }
-    newNode.label = getKeyFields(newNode, 'label')
-    newNode.value = getKeyFields(newNode, 'value')
-    newNode.labelWidth = getKeyFields(newNode, 'labelWidth')
-    newNode.labelPlacement = getKeyFields(newNode, 'labelPlacement')
+
+    newNode.label = getKeyFields(newNode, 'label' as HiBaseFieldNameKeys)
+    newNode.value = getKeyFields(newNode, 'value' as HiBaseFieldNameKeys)
+    newNode.labelWidth = getKeyFields(newNode, 'labelWidth' as HiBaseFieldNameKeys)
+    newNode.labelPlacement = getKeyFields(newNode, 'labelPlacement' as HiBaseFieldNameKeys)
+
     return newNode
   }
 

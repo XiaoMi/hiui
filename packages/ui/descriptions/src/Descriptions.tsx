@@ -40,12 +40,14 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
     const vertical = placement === 'vertical'
     const bordered = appearance === 'table' || noBackground
 
-    data = useMemo(() => {
+    const transformedData = useMemo(() => {
       if (data) return transformData(data, fieldNames)
       else return data
     }, [data, fieldNames])
     // 如果配置了data，则使用配置模式渲染，否则取 children
-    const computeChildren = data ? computeItems(data) : React.Children.toArray(children)
+    const computeChildren = transformedData
+      ? computeItems(transformedData)
+      : React.Children.toArray(children)
     const rows = computeRows(computeChildren, column)
 
     const cls = cx(
