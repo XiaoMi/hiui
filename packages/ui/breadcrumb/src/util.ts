@@ -1,5 +1,6 @@
-import { HiBaseFieldNames } from '@hi-ui/core'
-import { BreadcrumbDataItem } from './types'
+import { HiBaseFieldNameKeys, HiBaseFieldNames } from '@hi-ui/core'
+import { BreadcrumbDataItem, BreadcrumbDataItemTargetEnum } from './types'
+import React from 'react'
 
 export const transformData = (
   data: BreadcrumbDataItem[],
@@ -8,22 +9,26 @@ export const transformData = (
   /**
    * 转换对象
    */
-  const getKeyFields = (node: any, key: any) => {
+  const getKeyFields = (node: BreadcrumbDataItem, key: HiBaseFieldNameKeys) => {
     if (fieldNames) {
-      return node[(fieldNames as any)[key] || key]
+      return node[(fieldNames[key] || key) as keyof BreadcrumbDataItem]
     }
-    return node[key]
+    return node[key as keyof BreadcrumbDataItem]
   }
 
-  const traverseTreeNode = (node: BreadcrumbDataItem): BreadcrumbDataItem => {
+  const traverseNode = (node: BreadcrumbDataItem): BreadcrumbDataItem => {
     const newNode: BreadcrumbDataItem = { ...node }
 
     newNode.title = getKeyFields(newNode, 'title')
-    newNode.href = getKeyFields(newNode, 'href')
-    newNode.icon = getKeyFields(newNode, 'icon')
-    newNode.target = getKeyFields(newNode, 'target')
+    newNode.href = getKeyFields(newNode, 'href' as HiBaseFieldNameKeys) as string
+    newNode.icon = getKeyFields(newNode, 'icon' as HiBaseFieldNameKeys) as React.ReactNode
+    newNode.target = getKeyFields(
+      newNode,
+      'target' as HiBaseFieldNameKeys
+    ) as BreadcrumbDataItemTargetEnum
+
     return newNode
   }
 
-  return data.map(traverseTreeNode)
+  return data.map(traverseNode)
 }

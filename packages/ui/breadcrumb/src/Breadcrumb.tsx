@@ -28,16 +28,16 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
   ) => {
     const cls = cx(prefixCls, `${prefixCls}--${size}`, className)
 
-    data = useMemo((): BreadcrumbDataItem[] | undefined => {
+    const transformedData = useMemo((): BreadcrumbDataItem[] | undefined => {
       if (data) return transformData(data, fieldNames)
       return data
     }, [data, fieldNames])
 
     return (
       <ul ref={ref} role={role} className={cls} {...rest}>
-        {data?.map((item, index) => (
+        {transformedData?.map((item, index) => (
           <li key={index} className={`${prefixCls}__item`}>
-            {item.href && index !== data.length - 1 ? (
+            {item.href && index !== transformedData.length - 1 ? (
               <a
                 href={item.href}
                 target={item.target}
@@ -47,7 +47,7 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
                   }
                 }}
                 className={cx(`${prefixCls}__content`, {
-                  [`${prefixCls}__content--active`]: index === data.length - 1,
+                  [`${prefixCls}__content--active`]: index === transformedData.length - 1,
                 })}
               >
                 {item.icon}
@@ -56,7 +56,7 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
             ) : (
               <span
                 className={cx(`${prefixCls}__content`, {
-                  [`${prefixCls}__content--active`]: index === data.length - 1,
+                  [`${prefixCls}__content--active`]: index === transformedData.length - 1,
                 })}
                 onClick={(e) => {
                   if (onClick) {
