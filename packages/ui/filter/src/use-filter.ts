@@ -2,6 +2,8 @@ import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { isArray } from '@hi-ui/type-assertion'
 import { FilterDataItem } from './types'
+import { transformTreeData } from './utils'
+import { HiBaseFieldNames } from '@hi-ui/core'
 
 const DEFAULT_DATA = [] as []
 const DEFAULT_VALUE = [] as []
@@ -12,9 +14,11 @@ export const useFilter = ({
   data: dataProp = DEFAULT_DATA,
   defaultValue = DEFAULT_VALUE,
   value: valueProp,
+  fieldNames,
   onChange,
   ...rest
 }: UseFilterProps) => {
+  const transformedData = useMemo(() => transformTreeData(dataProp, fieldNames), [dataProp, fieldNames])
   // 选中的级联路径 id 列表
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
@@ -22,7 +26,7 @@ export const useFilter = ({
    * 根据级联路径生成面板数据
    */
   const menusData = useMemo(() => {
-    let lastMenu = dataProp
+    let lastMenu = transformedData
     const menus = [lastMenu]
 
     const menuPathLength = value.length
@@ -41,7 +45,7 @@ export const useFilter = ({
     }
 
     return menus
-  }, [dataProp, value])
+  }, [transformedData, value])
 
   const menusWithLabel = useMemo(() => {
     return labels.map((label, depth) => {
@@ -93,6 +97,10 @@ export interface UseFilterProps {
    * 筛选选项数据
    */
   data?: FilterDataItem[]
+  /**
+   * 设置 data 中 id, title, disabled, children 对应的 key
+   */
+  fieldNames?: HiBaseFieldNames
   /**
    * 默认选中项的值
    */
