@@ -267,6 +267,10 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
    */
   height?: React.ReactText
   /**
+   * 自定义css展示层级
+   */
+  zIndex?: number
+  /**
    * 是否显示蒙层
    */
   showMask?: boolean
