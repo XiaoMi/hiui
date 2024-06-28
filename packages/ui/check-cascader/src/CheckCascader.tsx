@@ -24,7 +24,12 @@ import { flattenTreeData } from './utils'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
-import { HiBaseAppearanceEnum, HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import {
+  HiBaseAppearanceEnum,
+  HiBaseFieldNames,
+  HiBaseSizeEnum,
+  useLocaleContext,
+} from '@hi-ui/core'
 
 import { callAllFuncs } from '@hi-ui/func-utils'
 
@@ -70,6 +75,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       onClose,
       tagInputProps,
       size = 'md',
+      prefix,
+      suffix,
       renderExtraFooter,
       dropdownColumnRender,
       customRender,
@@ -252,7 +259,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
               placeholder={placeholder}
               // @ts-ignore
               displayRender={displayRender}
-              suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+              prefix={prefix}
+              suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               appearance={appearance}
               value={value}
@@ -402,6 +410,14 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 设置尺寸
    */
   size?: HiBaseSizeEnum
+  /**
+   * 选择框前置内容
+   */
+  prefix?: React.ReactNode
+  /**
+   * 选择框后置内容
+   */
+  suffix?: React.ReactNode
   /**
    * 自定义下拉菜单底部渲染
    */
