@@ -44,10 +44,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
     },
     ref
   ) => {
-    const transformedData = useMemo(() => {
-      if (data) return transformData(data, fieldNames)
-      else return data
-    }, [data, fieldNames])
+    const transformedData = useMemo(() => transformData(data, fieldNames), [data, fieldNames])
 
     const [visible, setVisible] = useState<boolean>(false)
     const targetElRef = useRef<HTMLDivElement | null>(null)
