@@ -17,4 +17,8 @@ export interface MessageAPIOptions extends ToastAPIOptions {}
 
 export interface MessageOptions extends Omit<MessageProps, 'destroy' | 'visible'> {}
 
-export const message = new MessageAPI({ component: MessageComponent })
+export const createMessage = (options?: Omit<MessageAPIOptions, 'component'>) => {
+  return new MessageAPI({ component: MessageComponent, ...options })
+}
+
+export const message = createMessage({})
