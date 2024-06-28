@@ -37,10 +37,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
     },
     ref
   ) => {
-    const transformedData = useMemo(() => {
-      if (data) return transformData(data, fieldNames)
-      else return data
-    }, [data, fieldNames])
+    const transformedData = useMemo(() => transformData(data, fieldNames), [data, fieldNames])
 
     const { rootProps, ...providedValue } = useDropdown(rest)
 
