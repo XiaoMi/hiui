@@ -77,6 +77,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       size = 'md',
       prefix,
       suffix,
+      customRender,
       ...rest
     },
     ref
@@ -246,22 +247,30 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         loading={rest.loading !== undefined ? rest.loading : loading}
         trigger={
-          <MockInput
-            // disabled={disabled}
-            size={size}
-            clearable={clearable}
-            placeholder={placeholder}
-            displayRender={displayRenderProp}
-            prefix={prefix}
-            suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
-            focused={menuVisible}
-            value={value}
-            onChange={tryChangeValue}
-            data={mergedData}
-            // @ts-ignore
-            invalid={invalid}
-            appearance={appearance}
-          />
+          customRender ? (
+            typeof customRender === 'function' ? (
+              customRender(selectedItem)
+            ) : (
+              customRender
+            )
+          ) : (
+            <MockInput
+              // disabled={disabled}
+              size={size}
+              clearable={clearable}
+              placeholder={placeholder}
+              displayRender={displayRenderProp}
+              prefix={prefix}
+              suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
+              focused={menuVisible}
+              value={value}
+              onChange={tryChangeValue}
+              data={mergedData}
+              // @ts-ignore
+              invalid={invalid}
+              appearance={appearance}
+            />
+          )
         }
       >
         {isArrayNonEmpty(treeProps.data) ? (
@@ -411,6 +420,10 @@ export interface TreeSelectProps
    * 选择框后置内容
    */
   suffix?: React.ReactNode
+  /**
+   * 自定义触发器
+   */
+  customRender?: React.ReactNode | ((selectedItem: TreeSelectDataItem | null) => React.ReactNode)
 }
 
 if (__DEV__) {
