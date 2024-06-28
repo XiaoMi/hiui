@@ -53,6 +53,8 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     flattedSearchResult = true,
     visible,
     size = 'md',
+    prefix,
+    suffix,
     onOpen,
     onClose,
     renderExtraFooter,
@@ -248,7 +250,8 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
               clearable={clearable}
               placeholder={placeholder}
               displayRender={displayRender as any}
-              suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+              prefix={prefix}
+              suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               value={value[value.length - 1]}
               onChange={() => {
@@ -344,6 +347,14 @@ export interface CascaderProps
    * 自定义触发器
    */
   customRender?: React.ReactNode | ((selectedItem: CascaderItemEventData | null) => React.ReactNode)
+  /*
+   * 选择框前置内容
+   */
+  prefix?: React.ReactNode
+  /**
+   * 选择框后置内容
+   */
+  suffix?: React.ReactNode
 }
 
 if (__DEV__) {

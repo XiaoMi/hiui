@@ -70,6 +70,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       onClose,
       tagInputProps,
       size = 'md',
+      prefix,
+      suffix,
       renderExtraFooter,
       dropdownColumnRender,
       fieldNames,
@@ -238,7 +240,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             placeholder={placeholder}
             // @ts-ignore
             displayRender={displayRender}
-            suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+            prefix={prefix}
+            suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
             focused={menuVisible}
             appearance={appearance}
             value={value}
@@ -387,6 +390,14 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 设置尺寸
    */
   size?: HiBaseSizeEnum
+  /**
+   * 选择框前置内容
+   */
+  prefix?: React.ReactNode
+  /**
+   * 选择框后置内容
+   */
+  suffix?: React.ReactNode
   /**
    * 自定义下拉菜单底部渲染
    */
