@@ -234,6 +234,16 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     overflow: hidden;
   }
 
+  &__prefix {
+    display: inline-flex;
+    margin-left: use-spacing(6);
+    align-items: center;
+    flex-shrink: 0;
+    color: use-color('gray', 700);
+    font-size: inherit;
+    text-align: center;
+  }
+
   &__input-selector {
     display: flex;
     border-radius: use-border-radius('normal');
