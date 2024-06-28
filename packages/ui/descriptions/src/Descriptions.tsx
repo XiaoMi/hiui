@@ -13,6 +13,8 @@ import { DescriptionsItem, DescriptionsItemProps } from './DescriptionsItem'
 
 const DESCRIPTIONS_PREFIX = getPrefixCls('descriptions')
 
+const DEFAULT_DATA = [] as []
+
 /**
  * 描述列表组件
  */
@@ -23,7 +25,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       role = 'descriptions',
       className,
       children,
-      data,
+      data = DEFAULT_DATA,
       fieldNames,
       column = 3,
       placement = 'horizontal',
@@ -40,10 +42,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
     const vertical = placement === 'vertical'
     const bordered = appearance === 'table' || noBackground
 
-    const transformedData = useMemo(() => {
-      if (data) return transformData(data, fieldNames)
-      else return data
-    }, [data, fieldNames])
+    const transformedData = useMemo(() => transformData(data, fieldNames), [data, fieldNames])
     // 如果配置了data，则使用配置模式渲染，否则取 children
     const computeChildren = transformedData
       ? computeItems(transformedData)
