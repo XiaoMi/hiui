@@ -112,19 +112,19 @@ const Calendar = ({
     return _week
   }
 
-  const onTableClick = (e: React.MouseEvent<HTMLTableElement, MouseEvent>) => {
-    const td = e.target as HTMLTableElement
-    const value = td.getAttribute('value') as string
-    const isBelongFullOurOfRange = td.getAttribute('belong-full-out-of-range') === 'true'
-
-    if (!['SPAN', 'DIV'].includes(td.nodeName) || td.getAttribute('type') === 'disabled') {
-      return false
-    }
-
-    const clickVal = parseInt(value)
+  const getDateByValue = ({
+    value,
+    cellType,
+    cellWeekType,
+    isBelongFullOurOfRange,
+  }: {
+    value: string | number
+    cellType: string
+    cellWeekType: string
+    isBelongFullOurOfRange: boolean
+  }) => {
     const _date = moment(renderDate) as any
-    const cellType = td.getAttribute('type')
-    const cellWeekType = td.getAttribute('weektype')
+    const _value = typeof value === 'string' ? parseInt(value) : value
 
     if (type !== 'weekrange' || isBelongFullOurOfRange) {
       if (cellType === 'prev' || cellWeekType === 'prev') {
@@ -136,10 +136,10 @@ const Calendar = ({
       }
 
       if (type.includes('quarter')) {
-        _date.quarter(clickVal)
+        _date.quarter(_value)
       }
 
-      _date[view](clickVal)
+      _date[view](_value)
     } else {
       // 点击的上个月的部分，鼠标还在本月的panel上，则视作，鼠标正在本月第一天
       if (cellType === 'prev') {
@@ -149,11 +149,33 @@ const Calendar = ({
       else if (cellType === 'next') {
         _date.set('date', _date.endOf('month').date())
       } else {
-        _date[view](clickVal)
+        _date[view](_value)
       }
     }
 
-    onPick(_date)
+    return _date
+  }
+
+  const onTableClick = (e: React.MouseEvent<HTMLTableElement, MouseEvent>) => {
+    const td = e.target as HTMLTableElement
+    const value = td.getAttribute('value') as string
+    const isBelongFullOurOfRange = td.getAttribute('belong-full-out-of-range') === 'true'
+
+    if (!['SPAN', 'DIV'].includes(td.nodeName) || td.getAttribute('type') === 'disabled') {
+      return false
+    }
+
+    const cellType = td.getAttribute('type')!
+    const cellWeekType = td.getAttribute('weektype')!
+
+    const parsedDate = getDateByValue({
+      value,
+      cellType,
+      cellWeekType,
+      isBelongFullOurOfRange,
+    })
+
+    onPick(parsedDate)
   }
 
   const onTableMouseMove = (e: React.MouseEvent<HTMLTableElement, MouseEvent>) => {
@@ -357,7 +379,17 @@ const Calendar = ({
                           // @ts-ignore
                           belong-full-out-of-range={isBelongFullOutOfRange}
                         >
-                          {cellRender ? cellRender(cell) : cellValue}
+                          {cellRender
+                            ? cellRender(
+                                cell,
+                                getDateByValue({
+                                  value: cellValue,
+                                  cellType: cell.type,
+                                  cellWeekType: cell.weekType,
+                                  isBelongFullOurOfRange: isBelongFullOutOfRange === 'true',
+                                })
+                              )
+                            : cellValue}
                         </span>
                         {renderAltCalendar(cell, isBelongFullOutOfRange)}
                       </div>
