@@ -13,7 +13,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
   $input-error-shadow: 0 0 0 2px use-color-mode('danger', 100);
 
   position: relative;
-  display: inline-block;
+  display: inline-flex;
   width: 100%;
   color: use-color('gray', 700);
   font-size: use-text-size('normal');
@@ -57,6 +57,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
   &__input {
     @include input-reset();
 
+    flex: 1;
     width: 100%;
     height: 100%;
     color: inherit;
@@ -68,10 +69,17 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     }
   }
 
+  &__prefix {
+    display: inline-flex;
+    margin-left: use-spacing(6);
+    align-items: center;
+    flex-shrink: 0;
+    color: use-color('gray', 700);
+    font-size: inherit;
+    text-align: center;
+  }
+
   &__suffix {
-    position: absolute;
-    top: 0;
-    right: 0;
     box-sizing: border-box;
     height: 100%;
 
