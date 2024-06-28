@@ -60,6 +60,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     renderExtraFooter,
     dropdownColumnRender,
     closeOnSelect = true,
+    customRender,
     ...rest
   } = props
   const i18n = useLocaleContext()
@@ -237,22 +238,30 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         footer={isFunction(renderExtraFooter) && renderExtraFooter()}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
-          <MockInput
-            size={size}
-            clearable={clearable}
-            placeholder={placeholder}
-            displayRender={displayRender as any}
-            prefix={prefix}
-            suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
-            focused={menuVisible}
-            value={value[value.length - 1]}
-            onChange={() => {
-              tryChangeValue([])
-            }}
-            data={mergedData}
-            invalid={invalid}
-            appearance={appearance}
-          />
+          customRender ? (
+            typeof customRender === 'function' ? (
+              customRender(selectedItem)
+            ) : (
+              customRender
+            )
+          ) : (
+            <MockInput
+              size={size}
+              clearable={clearable}
+              placeholder={placeholder}
+              displayRender={displayRender as any}
+              prefix={prefix}
+              suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
+              focused={menuVisible}
+              value={value[value.length - 1]}
+              onChange={() => {
+                tryChangeValue([])
+              }}
+              data={mergedData}
+              invalid={invalid}
+              appearance={appearance}
+            />
+          )
         }
       >
         {isArrayNonEmpty(showData) ? <CascaderMenuList /> : null}
@@ -342,6 +351,10 @@ export interface CascaderProps
    * 选择框后置内容
    */
   suffix?: React.ReactNode
+  /**
+   * 自定义触发器
+   */
+  customRender?: React.ReactNode | ((selectedItem: CascaderItemEventData | null) => React.ReactNode)
 }
 
 if (__DEV__) {
