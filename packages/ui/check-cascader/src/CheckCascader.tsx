@@ -24,7 +24,7 @@ import { flattenTreeData } from './utils'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
-import { HiBaseAppearanceEnum, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseAppearanceEnum, HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 
 import { callAllFuncs } from '@hi-ui/func-utils'
 
@@ -72,6 +72,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       size = 'md',
       renderExtraFooter,
       dropdownColumnRender,
+      fieldNames,
       ...rest
     },
     ref
@@ -93,7 +94,10 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const [cascaderData, setCascaderData] = useCache(data)
 
-    const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
+    const flattedData = useMemo(() => flattenTreeData(cascaderData, fieldNames), [
+      cascaderData,
+      fieldNames,
+    ])
 
     const [_value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
     // 内部实现使用尾部 id
@@ -280,6 +284,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 设置选择项数据源
    */
   data: CheckCascaderDataItem[]
+  /**
+   * 设置 data 中字段对应的 key
+   */
+  fieldNames?: HiBaseFieldNames
   /**
    * 设置当前多选值
    */
