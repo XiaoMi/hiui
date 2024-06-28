@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useCallback, useRef } from 'react'
+import React, { forwardRef, useState, useCallback, useRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { Input, InputProps } from '@hi-ui/input'
@@ -11,6 +11,8 @@ import { SearchDataItem } from './types'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import type { PopperOverlayProps } from '@hi-ui/popper'
 import { SearchDropdown } from './SearchDropdown'
+import { transformData } from './util'
+import { HiBaseFieldNames } from '@hi-ui/core'
 
 const SEARCH_PREFIX = getPrefixCls('search')
 const NOOP_ARRAY = [] as []
@@ -32,6 +34,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
       onChange,
       onSearch: onSearchProp,
       data = NOOP_ARRAY,
+      fieldNames,
       overlayClassName,
       // input
       onFocus,
@@ -41,6 +44,8 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
     },
     ref
   ) => {
+    const transformedData = useMemo(() => transformData(data, fieldNames), [data, fieldNames])
+
     const [visible, setVisible] = useState<boolean>(false)
     const targetElRef = useRef<HTMLDivElement | null>(null)
 
@@ -73,17 +78,17 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
 
       if (direction === 'up') {
         if (focusIndex === null) {
-          newFocusIndex = data.length - 1
-          const focusItem = data[newFocusIndex]
+          newFocusIndex = transformedData.length - 1
+          const focusItem = transformedData[newFocusIndex]
           if (focusItem && isArrayNonEmpty(focusItem.children)) {
             newSubFocusIndex = focusItem.children.length - 1
           }
         } else {
-          const focusItem = data[focusIndex]
+          const focusItem = transformedData[focusIndex]
           if (focusItem && isArrayNonEmpty(focusItem.children)) {
             if (subFocusIndex === 0) {
-              newFocusIndex = focusIndex === 0 ? data.length - 1 : focusIndex - 1
-              const nextFocusItem = data[newFocusIndex]
+              newFocusIndex = focusIndex === 0 ? transformedData.length - 1 : focusIndex - 1
+              const nextFocusItem = transformedData[newFocusIndex]
               if (nextFocusItem && isArrayNonEmpty(nextFocusItem.children)) {
                 newSubFocusIndex = nextFocusItem.children.length - 1
               }
@@ -92,8 +97,8 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
               newSubFocusIndex = subFocusIndex !== null ? subFocusIndex - 1 : 0
             }
           } else {
-            newFocusIndex = focusIndex === 0 ? data.length - 1 : focusIndex - 1
-            const nextFocusItem = data[newFocusIndex]
+            newFocusIndex = focusIndex === 0 ? transformedData.length - 1 : focusIndex - 1
+            const nextFocusItem = transformedData[newFocusIndex]
 
             if (nextFocusItem && isArrayNonEmpty(nextFocusItem.children)) {
               newSubFocusIndex = nextFocusItem.children.length - 1
@@ -104,7 +109,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
         // 不存在 focusIndex
         if (focusIndex === null) {
           newFocusIndex = 0
-          const nextFocusItem = data[newFocusIndex]
+          const nextFocusItem = transformedData[newFocusIndex]
 
           if (nextFocusItem && isArrayNonEmpty(nextFocusItem.children)) {
             newSubFocusIndex = 0
@@ -112,12 +117,12 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
         } else {
           // 存在 focusIndex
           // 当前focus 项没有子项
-          const focusItem = data[focusIndex]
+          const focusItem = transformedData[focusIndex]
           if (focusItem && isArrayNonEmpty(focusItem.children)) {
             // 当前focus 有子项
             if (subFocusIndex === focusItem.children.length - 1) {
-              newFocusIndex = focusIndex === data.length - 1 ? 0 : focusIndex + 1
-              const nextFocusItem = data[newFocusIndex]
+              newFocusIndex = focusIndex === transformedData.length - 1 ? 0 : focusIndex + 1
+              const nextFocusItem = transformedData[newFocusIndex]
 
               if (nextFocusItem && isArrayNonEmpty(nextFocusItem.children)) {
                 newSubFocusIndex = 0
@@ -127,8 +132,8 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
               newSubFocusIndex = subFocusIndex !== null ? subFocusIndex + 1 : 0
             }
           } else {
-            newFocusIndex = focusIndex === data.length - 1 ? 0 : focusIndex + 1
-            const nextFocusItem = data[newFocusIndex]
+            newFocusIndex = focusIndex === transformedData.length - 1 ? 0 : focusIndex + 1
+            const nextFocusItem = transformedData[newFocusIndex]
 
             if (nextFocusItem && isArrayNonEmpty(nextFocusItem.children)) {
               newSubFocusIndex = 0
@@ -167,8 +172,8 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
         evt.preventDefault()
 
         let nextValue = '' as React.ReactText
-        if (focusIndex !== null && isArrayNonEmpty(data)) {
-          const focusItem = data[focusIndex]
+        if (focusIndex !== null && isArrayNonEmpty(transformedData)) {
+          const focusItem = transformedData[focusIndex]
 
           if (subFocusIndex !== null && isArrayNonEmpty(focusItem.children)) {
             nextValue = focusItem.children[subFocusIndex].title
@@ -222,7 +227,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
           }
           {...rest}
         />
-        {loading || isArrayNonEmpty(data) ? (
+        {loading || isArrayNonEmpty(transformedData) ? (
           <SearchDropdown
             prefixCls={prefixCls}
             popper={{
@@ -235,7 +240,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
               className: overlayClassName,
             }}
             loading={loading}
-            data={data}
+            data={transformedData}
             focusIndex={focusIndex}
             subFocusIndex={subFocusIndex}
             keyword={value}
@@ -277,6 +282,10 @@ export interface SearchProps extends Omit<InputProps, 'onChange' | 'appearance'>
    * 搜索结果的数据
    */
   data?: SearchDataItem[]
+  /**
+   * 设置 data 中 id, title, children 对应的 key
+   */
+  fieldNames?: HiBaseFieldNames
   /**
    * 自定义控制 popper 行为
    */
