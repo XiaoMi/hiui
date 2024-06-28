@@ -8,7 +8,8 @@ import { TransferDataItem } from './types'
 import { TransferProvider } from './context'
 import { useCheck } from '@hi-ui/use-check'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { transformData } from './utils'
 
 const _role = 'transfer'
 const _prefix = getPrefixCls(_role)
@@ -32,6 +33,7 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       targetSortType = 'default',
       pagination = false,
       data = NOOP_ARRAY,
+      fieldNames,
       defaultTargetIds = NOOP_ARRAY,
       targetIds: targetIdsProp,
       targetLimit,
@@ -56,6 +58,8 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       onChange
     )
 
+    const transformedData = useMemo(() => transformData(data, fieldNames), [data, fieldNames])
+
     const pageSize = useMemo(() => {
       if (pagination === true) return 10
       if (typeof pagination === 'object' && 'pageSize' in pagination) {
@@ -79,7 +83,10 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       allowCheck,
     })
 
-    const [sourceList, targetList] = useMemo(() => splitData(data, targetIds), [data, targetIds])
+    const [sourceList, targetList] = useMemo(() => splitData(transformedData, targetIds), [
+      transformedData,
+      targetIds,
+    ])
 
     const isOverflowed = useMemo(() => {
       if (targetLimit === undefined) return false
@@ -112,11 +119,11 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
           setTargetCheckedIds([])
         }
 
-        const moveData = data.filter((item) => checkedIds.indexOf(item.id) !== -1)
+        const moveData = transformedData.filter((item) => checkedIds.indexOf(item.id) !== -1)
         tryChangeTargetIds(nextTargetIds, direction, moveData)
       },
       [
-        data,
+        transformedData,
         tryChangeTargetIds,
         setSourceCheckedIds,
         setTargetCheckedIds,
@@ -376,6 +383,10 @@ export interface TransferProps
    * 穿梭框数据源
    */
   data: TransferDataItem[]
+  /**
+   * 设置data中各项值对应的key
+   **/
+  fieldNames?: HiBaseFieldNames
   /**
    * 最大可穿梭上限
    */
