@@ -5,6 +5,7 @@ import { HiBaseFieldNames, HiBaseHTMLProps } from '@hi-ui/core'
 import { cloneElement, toArray, transformData } from './util'
 import { Row } from './Row'
 import {
+  ContentPosition,
   DescriptionsAppearanceEnum,
   DescriptionsLabelPlacementEnum,
   DescriptionsPlacementEnum,
@@ -34,6 +35,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       labelWidth,
       columnGap,
       size = 'md',
+      contentPosition = 'top',
       ...rest
     },
     ref
@@ -74,6 +76,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
                 labelPlacement={labelPlacement}
                 rootLabelWidth={labelWidth}
                 cellColumnGap={columnGap}
+                contentPosition={contentPosition}
               />
             ))}
           </tbody>
@@ -121,6 +124,10 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
    * 设置大小
    */
   size?: 'md' | 'sm'
+  /**
+   * 在 horizontal 放置时，标签相对内容垂直对齐的方式
+   */
+  contentPosition?: ContentPosition
 }
 
 if (__DEV__) {
