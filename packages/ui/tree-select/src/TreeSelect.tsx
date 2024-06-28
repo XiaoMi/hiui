@@ -78,7 +78,6 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       customRender,
       prefix,
       suffix,
-      customRender,
       ...rest
     },
     ref
@@ -425,10 +424,6 @@ export interface TreeSelectProps
    * 选择框后置内容
    */
   suffix?: React.ReactNode
-  /*
-   * 自定义触发器
-   */
-  customRender?: React.ReactNode | ((selectedItem: TreeSelectDataItem | null) => React.ReactNode)
 }
 
 if (__DEV__) {
