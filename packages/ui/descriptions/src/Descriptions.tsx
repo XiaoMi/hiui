@@ -1,8 +1,8 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
-import { cloneElement, toArray } from './util'
+import { HiBaseFieldNames, HiBaseHTMLProps } from '@hi-ui/core'
+import { cloneElement, toArray, transformData } from './util'
 import { Row } from './Row'
 import {
   DescriptionsAppearanceEnum,
@@ -12,6 +12,8 @@ import {
 import { DescriptionsItem, DescriptionsItemProps } from './DescriptionsItem'
 
 const DESCRIPTIONS_PREFIX = getPrefixCls('descriptions')
+
+const DEFAULT_DATA = [] as []
 
 /**
  * 描述列表组件
@@ -23,7 +25,8 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       role = 'descriptions',
       className,
       children,
-      data,
+      data = DEFAULT_DATA,
+      fieldNames,
       column = 3,
       placement = 'horizontal',
       appearance = 'unset',
@@ -39,8 +42,11 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
     const vertical = placement === 'vertical'
     const bordered = appearance === 'table' || noBackground
 
+    const transformedData = useMemo(() => transformData(data, fieldNames), [data, fieldNames])
     // 如果配置了data，则使用配置模式渲染，否则取 children
-    const computeChildren = data ? computeItems(data) : React.Children.toArray(children)
+    const computeChildren = transformedData
+      ? computeItems(transformedData)
+      : React.Children.toArray(children)
     const rows = computeRows(computeChildren, column)
 
     const cls = cx(
@@ -94,6 +100,10 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
    * 提供JS配置化的方式渲染单元模块
    */
   data?: DescriptionsItemProps[]
+  /**
+   * 设置 data 中label, value, labelWidth, labelPlacement 对应的 key
+   */
+  fieldNames?: HiBaseFieldNames
   /**
    * label对齐方式
    */
