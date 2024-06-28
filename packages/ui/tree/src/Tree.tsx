@@ -1,5 +1,5 @@
 import React, { forwardRef, useMemo, useRef, useImperativeHandle } from 'react'
-import { HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseSizeEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
@@ -453,10 +453,9 @@ export interface TreeProps {
    */
   flattedData?: FlattedTreeNodeData[]
   /**
-   * 暂不对外暴露
-   * @private
+   * 设置 data 中 id, title, disabled, children 对应的 key
    */
-  fieldNames?: object
+  fieldNames?: HiBaseFieldNames
   /**
    * 是否点击节点时展开其子节点
    */
