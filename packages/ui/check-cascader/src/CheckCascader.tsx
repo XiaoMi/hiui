@@ -1,4 +1,4 @@
-import React, { ReactText, forwardRef, useCallback, useMemo } from 'react'
+import React, { forwardRef, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -81,7 +81,6 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       dropdownColumnRender,
       customRender,
       fieldNames,
-      customRender,
       ...rest
     },
     ref
