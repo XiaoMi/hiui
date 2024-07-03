@@ -180,13 +180,11 @@ export interface TooltipProps extends HiBaseHTMLProps<'div'>, UseTooltipProps {
    */
   innerRef?: React.Ref<TooltipHelpers>
   /**
-   * 指定 portal 的容器。暂不对外暴露
-   * @private
+   * 指定 portal 的容器
    */
   container?: HTMLElement
   /**
-   * 禁用 portal。暂不对外暴露
-   * @private
+   * 禁用 portal
    */
   disabledPortal?: boolean
 }
