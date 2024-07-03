@@ -284,8 +284,7 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
    */
   showFooterDivider?: boolean
   /**
-   * 禁用 portal。暂不对外暴露
-   * @private
+   * 禁用 portal
    */
   disabledPortal?: boolean
   /**

@@ -210,8 +210,7 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
    */
   timeout?: number
   /**
-   * 禁用 portal。暂不对外暴露
-   * @private
+   * 禁用 portal
    */
   disabledPortal?: boolean
   /**
