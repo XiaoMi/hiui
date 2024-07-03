@@ -11,7 +11,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="Tooltip-basic__wrap">
-        <Tooltip disabledPortal title="Tooltip Title" trigger="hover">
+        <Tooltip title="Tooltip Title" trigger="hover">
           <Button>trigger</Button>
         </Tooltip>
       </div>

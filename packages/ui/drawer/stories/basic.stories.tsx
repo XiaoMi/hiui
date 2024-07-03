@@ -16,7 +16,6 @@ export const Basic = () => {
         <Drawer
           title="抽屉标题"
           visible={visible}
-          disabledPortal
           onClose={() => setVisible(false)}
           footer={
             <div style={{ textAlign: 'right' }}>
