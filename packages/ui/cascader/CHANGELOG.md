@@ -1,5 +1,13 @@
 # @hi-ui/cascader
 
+## 4.3.0
+
+### Minor Changes
+
+- [#2921](https://github.com/XiaoMi/hiui/pull/2921) [`c6d9225c5`](https://github.com/XiaoMi/hiui/commit/c6d9225c5f09484344159e31af93f7ae147566bb) Thanks [@yang-x20](https://github.com/yang-x20)! - feat: 新增自定义触发器
+
+- [#2824](https://github.com/XiaoMi/hiui/pull/2824) [`912c60b7b`](https://github.com/XiaoMi/hiui/commit/912c60b7b0f19a8386ec1de30fe6440e3963f288) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持前置后置内容
+
 ## 4.2.0
 
 ### Minor Changes

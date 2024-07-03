@@ -1,5 +1,84 @@
 # @hi-ui/hiui
 
+## 4.6.0
+
+### Minor Changes
+
+- [#2926](https://github.com/XiaoMi/hiui/pull/2926) [`f1dbab0`](https://github.com/XiaoMi/hiui/commit/f1dbab0341d36fb63d1c123bf970b40caebd1a94) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(hiui): 升级到 hiui@4.6.0
+
+### Patch Changes
+
+- [#2912](https://github.com/XiaoMi/hiui/pull/2912) [`280dfc9b1`](https://github.com/XiaoMi/hiui/commit/280dfc9b1f4bf5f34b6ccb6eb8b072d5776f1402) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(list): 支持配置字段别名
+
+- [#2907](https://github.com/XiaoMi/hiui/pull/2907) [`8d3e4a986`](https://github.com/XiaoMi/hiui/commit/8d3e4a986c6527f14410ff45d710fe6e89f51023) Thanks [@yang-x20](https://github.com/yang-x20)! - feat(number-input): 新增前缀后缀内容扩展
+
+- [#2820](https://github.com/XiaoMi/hiui/pull/2820) [`7550aff2e`](https://github.com/XiaoMi/hiui/commit/7550aff2ef526c0009f37d79b249875e5b756275) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(message): 支持指定 portal 挂载
+
+- [#2880](https://github.com/XiaoMi/hiui/pull/2880) [`1b46f791f`](https://github.com/XiaoMi/hiui/commit/1b46f791f99c20a946250c2921f3362304e86371) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(menu): 新增支持配置字段别名
+
+- [#2849](https://github.com/XiaoMi/hiui/pull/2849) [`85307a41b`](https://github.com/XiaoMi/hiui/commit/85307a41bfbb573310f1f4747b979aea5e91474d) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(modal): 新增自定义 zIndex 功能
+
+- [#2895](https://github.com/XiaoMi/hiui/pull/2895) [`7fd686eda`](https://github.com/XiaoMi/hiui/commit/7fd686eda634d9d7ab813dc772963f29784b51c6) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(search): 支持配置字段别名
+
+- [#2824](https://github.com/XiaoMi/hiui/pull/2824) [`912c60b7b`](https://github.com/XiaoMi/hiui/commit/912c60b7b0f19a8386ec1de30fe6440e3963f288) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(cascader): 支持前置后置内容
+
+- [#2905](https://github.com/XiaoMi/hiui/pull/2905) [`7ac6a76b4`](https://github.com/XiaoMi/hiui/commit/7ac6a76b46a4999bbc19935e82794a9279600c5a) Thanks [@yang-x20](https://github.com/yang-x20)! - feat(date-picker): 新增前缀后缀内容扩展
+
+- [#2889](https://github.com/XiaoMi/hiui/pull/2889) [`dce209cd0`](https://github.com/XiaoMi/hiui/commit/dce209cd0ec0ac7ba405373923eb656d75842085) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(dropdown): 支持配置字段别名
+
+- [#2920](https://github.com/XiaoMi/hiui/pull/2920) [`ec38ee1a6`](https://github.com/XiaoMi/hiui/commit/ec38ee1a62f1716106ecd4617840295c1f22ed5b) Thanks [@yang-x20](https://github.com/yang-x20)! - feat(check-cascader): 新增自定义触发器
+
+- [#2824](https://github.com/XiaoMi/hiui/pull/2824) [`912c60b7b`](https://github.com/XiaoMi/hiui/commit/912c60b7b0f19a8386ec1de30fe6440e3963f288) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(check-cascader): 支持前置后置内容
+
+- [#2913](https://github.com/XiaoMi/hiui/pull/2913) [`ce9517d8d`](https://github.com/XiaoMi/hiui/commit/ce9517d8d82bb31b8500be3a89880d7b7abea148) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(transfer): 支持配置字段别名
+
+- [#2882](https://github.com/XiaoMi/hiui/pull/2882) [`760114484`](https://github.com/XiaoMi/hiui/commit/760114484bb7a2c681c2de9972a5deb1267b6bbc) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(descriptions): 新增支持配置字段别名
+
+- [#2868](https://github.com/XiaoMi/hiui/pull/2868) [`95f2e843d`](https://github.com/XiaoMi/hiui/commit/95f2e843d154d5767c08d7a04a86d61804d71396) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(check-cascader): 新增支持配置字段别名
+
+- [#2893](https://github.com/XiaoMi/hiui/pull/2893) [`2e56e30af`](https://github.com/XiaoMi/hiui/commit/2e56e30af6ed37b16afc6993ccc9a94d6e255e78) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(search): 支持配置字段别名
+
+- [#2922](https://github.com/XiaoMi/hiui/pull/2922) [`362111208`](https://github.com/XiaoMi/hiui/commit/3621112089fdefe5d6add59b5da48d6bcb72602e) Thanks [@yang-x20](https://github.com/yang-x20)! - feat(tree-select): 新增自定义触发器
+
+- [#2823](https://github.com/XiaoMi/hiui/pull/2823) [`d2b333b6c`](https://github.com/XiaoMi/hiui/commit/d2b333b6ce737757df20149f12d5780fa19f573c) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(tree-select): 新增支持前置后置内容
+
+- [#2878](https://github.com/XiaoMi/hiui/pull/2878) [`179fd7fef`](https://github.com/XiaoMi/hiui/commit/179fd7fef9d906ecec2c5f02de01b7fa16721c79) Thanks [@yang-x20](https://github.com/yang-x20)! - feat(check-tree-select): 新增前置后置内容扩展功能
+
+- [#2904](https://github.com/XiaoMi/hiui/pull/2904) [`cfc6c971d`](https://github.com/XiaoMi/hiui/commit/cfc6c971d6b54ec93a87c72eb9a7a29fbfb68739) Thanks [@yang-x20](https://github.com/yang-x20)! - feat(time-picker): 新增前缀后缀内容扩展
+
+- [#2921](https://github.com/XiaoMi/hiui/pull/2921) [`c6d9225c5`](https://github.com/XiaoMi/hiui/commit/c6d9225c5f09484344159e31af93f7ae147566bb) Thanks [@yang-x20](https://github.com/yang-x20)! - feat(cascader): 新增自定义触发器
+
+- [#2916](https://github.com/XiaoMi/hiui/pull/2916) [`2d8fd922e`](https://github.com/XiaoMi/hiui/commit/2d8fd922e1818e625d93288c313fde05ae5759b0) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(stepper): 支持配置字段别名
+
+- [#2832](https://github.com/XiaoMi/hiui/pull/2832) [`e37e7616b`](https://github.com/XiaoMi/hiui/commit/e37e7616b541fec3940ec00dac0764f09234f7e3) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(notification): 支持自定义 notification 配置
+
+- [#2851](https://github.com/XiaoMi/hiui/pull/2851) [`088f06557`](https://github.com/XiaoMi/hiui/commit/088f06557863c2814b51d00f91a10750b5b70dc6) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(drawer): 支持自定义 zIndex 功能
+
+- [#2917](https://github.com/XiaoMi/hiui/pull/2917) [`9b2dc02ae`](https://github.com/XiaoMi/hiui/commit/9b2dc02aeaf3979d01145e3d5a279a03d75b4223) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(filter): 支持配置字段别名
+
+- Updated dependencies [[`1b46f791f`](https://github.com/XiaoMi/hiui/commit/1b46f791f99c20a946250c2921f3362304e86371), [`ce9517d8d`](https://github.com/XiaoMi/hiui/commit/ce9517d8d82bb31b8500be3a89880d7b7abea148), [`7ac6a76b4`](https://github.com/XiaoMi/hiui/commit/7ac6a76b46a4999bbc19935e82794a9279600c5a), [`a227f4b5b`](https://github.com/XiaoMi/hiui/commit/a227f4b5b677ccbb41e196f2ea1cdd511dd6d6e7), [`95f2e843d`](https://github.com/XiaoMi/hiui/commit/95f2e843d154d5767c08d7a04a86d61804d71396), [`c6d9225c5`](https://github.com/XiaoMi/hiui/commit/c6d9225c5f09484344159e31af93f7ae147566bb), [`d2b333b6c`](https://github.com/XiaoMi/hiui/commit/d2b333b6ce737757df20149f12d5780fa19f573c), [`7550aff2e`](https://github.com/XiaoMi/hiui/commit/7550aff2ef526c0009f37d79b249875e5b756275), [`362111208`](https://github.com/XiaoMi/hiui/commit/3621112089fdefe5d6add59b5da48d6bcb72602e), [`912c60b7b`](https://github.com/XiaoMi/hiui/commit/912c60b7b0f19a8386ec1de30fe6440e3963f288), [`9b2dc02ae`](https://github.com/XiaoMi/hiui/commit/9b2dc02aeaf3979d01145e3d5a279a03d75b4223), [`cfc6c971d`](https://github.com/XiaoMi/hiui/commit/cfc6c971d6b54ec93a87c72eb9a7a29fbfb68739), [`2d8fd922e`](https://github.com/XiaoMi/hiui/commit/2d8fd922e1818e625d93288c313fde05ae5759b0), [`280dfc9b1`](https://github.com/XiaoMi/hiui/commit/280dfc9b1f4bf5f34b6ccb6eb8b072d5776f1402), [`8d3e4a986`](https://github.com/XiaoMi/hiui/commit/8d3e4a986c6527f14410ff45d710fe6e89f51023), [`2e56e30af`](https://github.com/XiaoMi/hiui/commit/2e56e30af6ed37b16afc6993ccc9a94d6e255e78), [`e37e7616b`](https://github.com/XiaoMi/hiui/commit/e37e7616b541fec3940ec00dac0764f09234f7e3), [`7fd686eda`](https://github.com/XiaoMi/hiui/commit/7fd686eda634d9d7ab813dc772963f29784b51c6), [`088f06557`](https://github.com/XiaoMi/hiui/commit/088f06557863c2814b51d00f91a10750b5b70dc6), [`912c60b7b`](https://github.com/XiaoMi/hiui/commit/912c60b7b0f19a8386ec1de30fe6440e3963f288), [`179fd7fef`](https://github.com/XiaoMi/hiui/commit/179fd7fef9d906ecec2c5f02de01b7fa16721c79), [`760114484`](https://github.com/XiaoMi/hiui/commit/760114484bb7a2c681c2de9972a5deb1267b6bbc), [`85307a41b`](https://github.com/XiaoMi/hiui/commit/85307a41bfbb573310f1f4747b979aea5e91474d), [`ec38ee1a6`](https://github.com/XiaoMi/hiui/commit/ec38ee1a62f1716106ecd4617840295c1f22ed5b), [`dce209cd0`](https://github.com/XiaoMi/hiui/commit/dce209cd0ec0ac7ba405373923eb656d75842085)]:
+  - @hi-ui/menu@4.3.0
+  - @hi-ui/transfer@4.1.0
+  - @hi-ui/date-picker@4.7.0
+  - @hi-ui/preview@4.1.1
+  - @hi-ui/check-cascader@4.3.0
+  - @hi-ui/cascader@4.3.0
+  - @hi-ui/tree-select@4.2.0
+  - @hi-ui/message@4.1.0
+  - @hi-ui/filter@4.2.0
+  - @hi-ui/time-picker@4.1.0
+  - @hi-ui/stepper@4.1.0
+  - @hi-ui/list@4.1.0
+  - @hi-ui/number-input@4.2.0
+  - @hi-ui/search@4.1.0
+  - @hi-ui/notification@4.2.0
+  - @hi-ui/breadcrumb@4.1.0
+  - @hi-ui/drawer@4.2.0
+  - @hi-ui/check-tree-select@4.5.0
+  - @hi-ui/descriptions@4.4.0
+  - @hi-ui/modal@4.2.0
+  - @hi-ui/dropdown@4.2.0
+
 ## 4.5.11
 
 ### Patch Changes

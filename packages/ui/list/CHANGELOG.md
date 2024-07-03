@@ -1,5 +1,11 @@
 # @hi-ui/list
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2912](https://github.com/XiaoMi/hiui/pull/2912) [`280dfc9b1`](https://github.com/XiaoMi/hiui/commit/280dfc9b1f4bf5f34b6ccb6eb8b072d5776f1402) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持配置字段别名
+
 ## 4.0.14
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/stepper
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2916](https://github.com/XiaoMi/hiui/pull/2916) [`2d8fd922e`](https://github.com/XiaoMi/hiui/commit/2d8fd922e1818e625d93288c313fde05ae5759b0) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持配置字段别名
+
 ## 4.0.8
 
 ### Patch Changes

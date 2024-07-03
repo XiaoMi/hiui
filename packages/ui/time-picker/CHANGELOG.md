@@ -1,5 +1,11 @@
 # @hi-ui/time-picker
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2904](https://github.com/XiaoMi/hiui/pull/2904) [`cfc6c971d`](https://github.com/XiaoMi/hiui/commit/cfc6c971d6b54ec93a87c72eb9a7a29fbfb68739) Thanks [@yang-x20](https://github.com/yang-x20)! - feat: 新增前缀后缀内容扩展
+
 ## 4.0.15
 
 ### Patch Changes

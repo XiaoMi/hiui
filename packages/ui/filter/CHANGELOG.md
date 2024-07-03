@@ -1,5 +1,11 @@
 # @hi-ui/filter
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2917](https://github.com/XiaoMi/hiui/pull/2917) [`9b2dc02ae`](https://github.com/XiaoMi/hiui/commit/9b2dc02aeaf3979d01145e3d5a279a03d75b4223) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持配置字段别名
+
 ## 4.1.5
 
 ### Patch Changes

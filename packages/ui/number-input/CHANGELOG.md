@@ -1,5 +1,11 @@
 # @hi-ui/number-input
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2907](https://github.com/XiaoMi/hiui/pull/2907) [`8d3e4a986`](https://github.com/XiaoMi/hiui/commit/8d3e4a986c6527f14410ff45d710fe6e89f51023) Thanks [@yang-x20](https://github.com/yang-x20)! - feat: 新增前缀后缀内容扩展
+
 ## 4.1.8
 
 ### Patch Changes
