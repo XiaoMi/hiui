@@ -1,5 +1,11 @@
 # @hi-ui/preview
 
+## 4.1.1
+
+### Patch Changes
+
+- [#2924](https://github.com/XiaoMi/hiui/pull/2924) [`a227f4b`](https://github.com/XiaoMi/hiui/commit/a227f4b5b677ccbb41e196f2ea1cdd511dd6d6e7) Thanks [@zyprepare](https://github.com/zyprepare)! - chore: 添加 @hi-ui/watermark 依赖
+
 ## 4.1.0
 
 ### Minor Changes

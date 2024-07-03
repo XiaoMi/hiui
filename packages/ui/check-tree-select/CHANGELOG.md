@@ -1,5 +1,11 @@
 # @hi-ui/check-tree-select
 
+## 4.5.0
+
+### Minor Changes
+
+- [#2878](https://github.com/XiaoMi/hiui/pull/2878) [`179fd7fef`](https://github.com/XiaoMi/hiui/commit/179fd7fef9d906ecec2c5f02de01b7fa16721c79) Thanks [@yang-x20](https://github.com/yang-x20)! - feat: 新增前置后置内容扩展功能
+
 ## 4.4.1
 
 ### Patch Changes

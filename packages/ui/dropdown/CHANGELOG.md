@@ -1,5 +1,11 @@
 # @hi-ui/dropdown
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2889](https://github.com/XiaoMi/hiui/pull/2889) [`dce209cd0`](https://github.com/XiaoMi/hiui/commit/dce209cd0ec0ac7ba405373923eb656d75842085) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持配置字段别名
+
 ## 4.1.5
 
 ### Patch Changes
