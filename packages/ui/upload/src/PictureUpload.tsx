@@ -78,6 +78,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onChange,
       uploadAction,
       maxSize,
+      maxCount,
       name,
       withCredentials,
       headers,
