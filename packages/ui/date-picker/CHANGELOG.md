@@ -1,5 +1,16 @@
 # @hi-ui/date-picker
 
+## 4.7.0
+
+### Minor Changes
+
+- [#2905](https://github.com/XiaoMi/hiui/pull/2905) [`7ac6a76b4`](https://github.com/XiaoMi/hiui/commit/7ac6a76b46a4999bbc19935e82794a9279600c5a) Thanks [@yang-x20](https://github.com/yang-x20)! - feat: 新增前缀后缀内容扩展
+
+### Patch Changes
+
+- Updated dependencies [[`cfc6c971d`](https://github.com/XiaoMi/hiui/commit/cfc6c971d6b54ec93a87c72eb9a7a29fbfb68739)]:
+  - @hi-ui/time-picker@4.1.0
+
 ## 4.6.4
 
 ### Patch Changes

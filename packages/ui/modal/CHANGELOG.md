@@ -1,5 +1,11 @@
 # @hi-ui/modal
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2849](https://github.com/XiaoMi/hiui/pull/2849) [`85307a41b`](https://github.com/XiaoMi/hiui/commit/85307a41bfbb573310f1f4747b979aea5e91474d) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 新增自定义 zIndex 功能
+
 ## 4.1.1
 
 ### Patch Changes

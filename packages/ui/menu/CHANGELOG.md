@@ -1,5 +1,11 @@
 # @hi-ui/menu
 
+## 4.3.0
+
+### Minor Changes
+
+- [#2880](https://github.com/XiaoMi/hiui/pull/2880) [`1b46f791f`](https://github.com/XiaoMi/hiui/commit/1b46f791f99c20a946250c2921f3362304e86371) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 新增支持配置字段别名
+
 ## 4.2.2
 
 ### Patch Changes

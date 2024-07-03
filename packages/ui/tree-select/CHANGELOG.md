@@ -1,5 +1,13 @@
 # @hi-ui/tree-select
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2823](https://github.com/XiaoMi/hiui/pull/2823) [`d2b333b6c`](https://github.com/XiaoMi/hiui/commit/d2b333b6ce737757df20149f12d5780fa19f573c) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 新增支持前置后置内容
+
+- [#2922](https://github.com/XiaoMi/hiui/pull/2922) [`362111208`](https://github.com/XiaoMi/hiui/commit/3621112089fdefe5d6add59b5da48d6bcb72602e) Thanks [@yang-x20](https://github.com/yang-x20)! - feat: 新增自定义触发器
+
 ## 4.1.5
 
 ### Patch Changes

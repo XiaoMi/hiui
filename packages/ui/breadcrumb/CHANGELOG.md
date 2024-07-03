@@ -1,5 +1,11 @@
 # @hi-ui/breadcrumb
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2895](https://github.com/XiaoMi/hiui/pull/2895) [`7fd686eda`](https://github.com/XiaoMi/hiui/commit/7fd686eda634d9d7ab813dc772963f29784b51c6) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持配置字段别名
+
 ## 4.0.8
 
 ### Patch Changes

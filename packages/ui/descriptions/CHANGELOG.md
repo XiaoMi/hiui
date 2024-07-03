@@ -1,5 +1,11 @@
 # @hi-ui/descriptions
 
+## 4.4.0
+
+### Minor Changes
+
+- [#2882](https://github.com/XiaoMi/hiui/pull/2882) [`760114484`](https://github.com/XiaoMi/hiui/commit/760114484bb7a2c681c2de9972a5deb1267b6bbc) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 新增支持配置字段别名
+
 ## 4.3.0
 
 ### Minor Changes
