@@ -3,7 +3,7 @@ import CheckTreeSelect from '../src'
 import { AppStoreOutlined, InfoCircleOutlined } from '@hi-ui/icons'
 
 /**
- * @title 前置后置内容扩展
+ * @title 前后内置元素
  */
 export const Addon = () => {
   const [data] = React.useState([

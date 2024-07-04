@@ -86,9 +86,9 @@ export const CusotmRender = () => {
           data={dataOnlyLeafCheckable}
           onChange={console.log}
           customRender={(data) => {
-            let value = []
+            let value = ''
             if (data) {
-              value = data.map((item) => item.title)
+              value = data?.map((item) => item?.title).join(',')
             }
             return <Input value={!value ? '' : value} placeholder="请选择" />
           }}
