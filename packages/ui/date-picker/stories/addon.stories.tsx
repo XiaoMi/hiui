@@ -3,7 +3,7 @@ import DatePicker from '../src'
 import { AppStoreOutlined } from '@hi-ui/icons'
 
 /**
- * @title 前置后置内容扩展
+ * @title 前内置元素
  */
 export const Addon = () => {
   return (
