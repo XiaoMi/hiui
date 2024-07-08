@@ -29,6 +29,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
       pageSize: pageSizeProp,
       max = 2,
       total,
+      onJump,
       onPageSizeChange,
       showTotal,
       showJumper,
@@ -191,7 +192,10 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
           <PageJumper
             prefixCls={prefixCls}
             pageText={[gotoText, pageText]}
-            onJump={proxyTrySetCurrent}
+            onJump={(page) => {
+              proxyTrySetCurrent(page)
+              onJump && onJump(page)
+            }}
             maxJump={calculatePageCount(total, pageSize)}
           />
         ) : null}
