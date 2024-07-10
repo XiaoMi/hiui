@@ -16,6 +16,8 @@ export async function mergeDocs(components) {
       // 元信息合并
       let markdown = info.readme
       markdown = mergePropsIntoReadme(markdown, info.props)
+      const markdownMd = mergeStoriesCodeIntoReadme(info.name, markdown, info.stories)
+      await writeReadmeAsync(info, markdownMd)
       markdown = transformJSX(markdown)
       markdown = mergeStoriesIntoReadme(info.name, markdown, info.stories)
       // 写入
@@ -68,6 +70,13 @@ function mergePropsIntoReadme(readmeMarkdown, props) {
   return readmeMarkdown.replace('<!-- Inject Props -->', propsMarkdown)
 }
 
+function mergeStoriesCodeIntoReadme(name, readmeMarkdown, stories) {
+  // console.log('mergeStories~~~~', info.name, info.stories)
+
+  const storiesMarkdown = storiesReadmeRender(name, stories)
+  return readmeMarkdown.replace('<!-- Inject Stories -->', storiesMarkdown)
+}
+
 // 转成 CodeBlock 支持的 mdx 语法格式，避免识别为 JSX
 const transformJSX = (str) => {
   return str
@@ -77,7 +86,7 @@ const transformJSX = (str) => {
 }
 
 async function writeDocs(info, markdown) {
-  await cleanCreateDir(outputPath)
+  // await cleanCreateDir(outputPath)
 
   // const dist = Path.join(outputPath, info.name)
 
@@ -96,9 +105,27 @@ async function writeDocs(info, markdown) {
   ])
 }
 
+async function writeReadmeAsync(info, markdown) {
+  await cleanCreateDir(outputPath)
+  await Promise.all([
+    // 写入markdown
+    // writeFileAsync(Path.join(outputPath, `./readme/${info.name}.md`), markdown),
+    writeFileAsync(Path.join(outputPath, 'hi-readme', `${info.name}.md`), markdown),
+  ])
+}
+
 function storiesRender(name, stories) {
   const markdownConfig = stories.reduce((acc, storyInfo) => {
     const storyBlock = getStoryBlock(name, storyInfo)
+    return acc.concat(storyBlock)
+  }, [])
+
+  return markdownRender(markdownConfig)
+}
+
+function storiesReadmeRender(name, stories) {
+  const markdownConfig = stories.reduce((acc, storyInfo) => {
+    const storyBlock = getReadmeStoryBlock(name, storyInfo)
     return acc.concat(storyBlock)
   }, [])
 
@@ -115,6 +142,16 @@ function getStoryBlock(name, story) {
   title="${story.title}"
   description="${story.description}"
 />`),
+  ].filter(Boolean)
+}
+
+function getReadmeStoryBlock(name, story) {
+  const storyBlock = '\n```tsx\n' + story.content + '\n```\n'
+  return [
+    // CodeBlock mdx
+    heading(3, text(story.title)),
+    story.description ? text(story.description) : false,
+    html(storyBlock),
   ].filter(Boolean)
 }
 
