@@ -110,6 +110,16 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
       return null
     }
 
+    console.log(
+      'menuProps',
+      getMenuProps({
+        overlay: {
+          disabledPortal: false,
+          className: overlayClassName,
+        },
+      })
+    )
+
     return (
       <DropDownProvider value={providedValue}>
         <div ref={ref} role={role} className={cls} {...rootProps}>
@@ -207,7 +217,7 @@ const DropdownMenu = forwardRef<HTMLUListElement | null, DropdownMenuProps>(
     ref
   ) => {
     const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
-
+    console.log(overlay)
     return (
       <Popper {...(overlay as PopperProps)}>
         <ul ref={ref} className={cls} {...rest}>
