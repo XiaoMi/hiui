@@ -207,6 +207,7 @@ const DropdownMenu = forwardRef<HTMLUListElement | null, DropdownMenuProps>(
     ref
   ) => {
     const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
+
     return (
       <Popper {...(overlay as PopperProps)}>
         <ul ref={ref} className={cls} {...rest}>
