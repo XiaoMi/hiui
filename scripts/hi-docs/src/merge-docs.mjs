@@ -110,7 +110,7 @@ async function writeReadmeAsync(info, markdown) {
   await Promise.all([
     // 写入markdown
     // writeFileAsync(Path.join(outputPath, `./readme/${info.name}.md`), markdown),
-    writeFileAsync(Path.join(outputPath, 'hi-readme', `${info.name}.md`), markdown),
+    writeFileAsync(Path.join(outputPath, 'readme', `${info.name}.md`), markdown),
   ])
 }
 
