@@ -23,6 +23,10 @@ export const writeFileAsync = async (path, content) => {
   await FS.writeFile(path, content)
 }
 
+export const appendFileAsync = async (path, name, content) => {
+  if (name !== 'hiui') await FS.appendFile(path, content)
+}
+
 export const readFileAsync = async (path, basePath) => {
   if (basePath) {
     path = Path.join(basePath, path)

@@ -1,6 +1,12 @@
 import Path from 'path'
 import { heading, html, text } from 'mdast-builder'
-import { markdownRender, outputPath, writeFileAsync, cleanCreateDir } from './utils/index.mjs'
+import {
+  markdownRender,
+  outputPath,
+  writeFileAsync,
+  appendFileAsync,
+  cleanCreateDir,
+} from './utils/index.mjs'
 
 export async function mergeDocs(components) {
   // const pkgs = components
@@ -18,6 +24,7 @@ export async function mergeDocs(components) {
       markdown = mergePropsIntoReadme(markdown, info.props)
       const markdownMd = mergeStoriesCodeIntoReadme(info.name, markdown, info.stories)
       await writeReadmeAsync(info, markdownMd)
+      await appendReadmeAsync(info, markdownMd)
       markdown = transformJSX(markdown)
       markdown = mergeStoriesIntoReadme(info.name, markdown, info.stories)
       // 写入
@@ -112,6 +119,11 @@ async function writeReadmeAsync(info, markdown) {
     // writeFileAsync(Path.join(outputPath, `./readme/${info.name}.md`), markdown),
     writeFileAsync(Path.join(outputPath, 'readme', `${info.name}.md`), markdown),
   ])
+}
+
+async function appendReadmeAsync(info, markdown) {
+  markdown = '\n\n###@###\n\n' + markdown
+  await Promise.all([appendFileAsync(Path.join(outputPath, 'hiui.md'), info.name, markdown)])
 }
 
 function storiesRender(name, stories) {
