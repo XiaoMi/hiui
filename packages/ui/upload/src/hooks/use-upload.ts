@@ -168,7 +168,8 @@ const useUpload = ({
         if (files) {
           const items = getFileItems(files, accept)
           // 最多上传限制数量
-          const length = typeof maxCount === 'number' ? maxCount : items.length
+          const length =
+            typeof maxCount === 'number' && items.length > maxCount ? maxCount : items.length
 
           for (let i = 0; i < length; i++) {
             const fileItem = items[i]
