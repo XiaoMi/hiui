@@ -17,35 +17,39 @@ export const TabInk: React.FC<TabInkProps> = ({
     if (!activeItemElement) return
 
     const computedStyle = getComputedStyle(activeItemElement)
-    const itemRect = activeItemElement.getBoundingClientRect()
-    const offset = getTabOffset(activeTabId)
+    // const itemRect = activeItemElement.getBoundingClientRect()
+    // const offset = getTabOffset(activeTabId)
 
     let _style: React.CSSProperties
 
     if (!showHorizontal) {
       const paddingTop = parseFloat(computedStyle.getPropertyValue('padding-top'))
       const paddingBottom = parseFloat(computedStyle.getPropertyValue('padding-bottom'))
+      const offset = activeItemElement.offsetTop
+      const height = activeItemElement.offsetHeight
 
       _style = {
         // 2px 保证尽量和文字顶部对齐，减少文本行高的影响
         top: offset + paddingTop + 2 + 'px',
-        height: `${itemRect.height - paddingTop - paddingBottom - 4}px`,
+        height: `${height - paddingTop - paddingBottom - 4}px`,
         left: '',
         width: '',
       }
     } else {
       const paddingLeft = parseFloat(computedStyle.getPropertyValue('padding-left'))
       const paddingRight = parseFloat(computedStyle.getPropertyValue('padding-right'))
+      const offset = activeItemElement.offsetLeft
+      const width = activeItemElement.offsetWidth
 
       _style = {
         left: offset + paddingLeft + 'px',
-        width: `${itemRect.width - paddingRight - paddingLeft}px`,
+        width: `${width - paddingRight - paddingLeft}px`,
         top: '',
         height: '',
       }
     }
     Object.assign(inkRef.current.style, _style)
-  }, [activeItemElement, activeTabId, getTabOffset, showHorizontal])
+  }, [activeItemElement, showHorizontal])
 
   useEffect(() => {
     setTabLnkPositionStyle()
