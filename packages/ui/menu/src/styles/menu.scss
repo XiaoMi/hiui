@@ -267,13 +267,13 @@ $disabled-color: use-color('gray', 400) !default;
       flex: 1;
       overflow: auto;
 
-      > .#{$prefix}-item {
-        &:last-child {
-          .#{$prefix}-item__inner {
-            margin-bottom: 0;
-          }
-        }
-      }
+      // > .#{$prefix}-item {
+      //   &:last-child {
+      //     .#{$prefix}-item__inner {
+      //       margin-bottom: 0;
+      //     }
+      //   }
+      // }
     }
 
     &.#{$prefix}--mini {
@@ -287,12 +287,23 @@ $disabled-color: use-color('gray', 400) !default;
           background-color: use-color('gray', 100);
         }
       }
+      &:not(.#{$prefix}--mini) {
+        .#{$prefix}__wrapper {
+          > .#{$prefix}-item {
+            &:last-child {
+              .#{$prefix}-item__inner {
+                margin-bottom: 0;
+              }
+            }
+          }
+        }
+      }
     }
 
     .#{$prefix}__toggle {
       width: use-height-size(10);
       height: use-height-size(10);
-      margin-top: use-spacing(4);
+      // margin-top: use-spacing(4);
       cursor: pointer;
       display: flex;
       align-items: center;
