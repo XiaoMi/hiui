@@ -92,6 +92,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
 
       const { id } = eventNodeRef.current
 
+      evt.dataTransfer.clearData()
       evt.stopPropagation()
 
       setIsDragging(true)
@@ -108,7 +109,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     (evt: React.DragEvent) => {
       evt.preventDefault()
       evt.stopPropagation()
-      evt.dataTransfer.clearData()
+      // evt.dataTransfer.clearData()
       dragNodeRef.current = null
       setDirection(null)
       setIsDragging(false)
