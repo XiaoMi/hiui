@@ -5,6 +5,7 @@ import { HiBaseFieldNames, HiBaseHTMLProps } from '@hi-ui/core'
 import { cloneElement, toArray, transformData } from './util'
 import { Row } from './Row'
 import {
+  ContentPosition,
   DescriptionsAppearanceEnum,
   DescriptionsLabelPlacementEnum,
   DescriptionsPlacementEnum,
@@ -12,8 +13,6 @@ import {
 import { DescriptionsItem, DescriptionsItemProps } from './DescriptionsItem'
 
 const DESCRIPTIONS_PREFIX = getPrefixCls('descriptions')
-
-const DEFAULT_DATA = [] as []
 
 /**
  * 描述列表组件
@@ -25,7 +24,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       role = 'descriptions',
       className,
       children,
-      data = DEFAULT_DATA,
+      data,
       fieldNames,
       column = 3,
       placement = 'horizontal',
@@ -34,6 +33,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       labelWidth,
       columnGap,
       size = 'md',
+      contentPosition = 'top',
       ...rest
     },
     ref
@@ -42,7 +42,10 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
     const vertical = placement === 'vertical'
     const bordered = appearance === 'table' || noBackground
 
-    const transformedData = useMemo(() => transformData(data, fieldNames), [data, fieldNames])
+    const transformedData = useMemo(() => {
+      if (data) return transformData(data, fieldNames)
+      return data
+    }, [data, fieldNames])
     // 如果配置了data，则使用配置模式渲染，否则取 children
     const computeChildren = transformedData
       ? computeItems(transformedData)
@@ -74,6 +77,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
                 labelPlacement={labelPlacement}
                 rootLabelWidth={labelWidth}
                 cellColumnGap={columnGap}
+                contentPosition={contentPosition}
               />
             ))}
           </tbody>
@@ -121,6 +125,10 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
    * 设置大小
    */
   size?: 'md' | 'sm'
+  /**
+   * 在 horizontal 放置时，标签相对内容垂直对齐的方式
+   */
+  contentPosition?: ContentPosition
 }
 
 if (__DEV__) {
