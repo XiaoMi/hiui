@@ -116,8 +116,12 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
         // 获取目标元素的位置
         const targetElement = itemsRef.current[tabId]
         if (targetElement) {
-          const rect = targetElement!.getBoundingClientRect()
-          target = showHorizontal ? rect.left : rect.top
+          // issue: https://github.com/XiaoMi/hiui/issues/2937
+          // 当设置transform缩放后，getBoundingClientRect 获取的值不准确，所以这里使用offsetLeft和offsetTop
+          // const rect = targetElement!.getBoundingClientRect()
+          const rectLeft = targetElement!.offsetLeft
+          const rectTop = targetElement!.offsetTop
+          target = showHorizontal ? rectLeft : rectTop
         }
         return target
       },
