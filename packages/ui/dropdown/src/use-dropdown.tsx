@@ -134,6 +134,7 @@ export const useDropdown = (props: UseDropdownProps) => {
       overlay: {
         ...overlay,
         ...props.overlay,
+        className: props.overlay.className ?? overlay?.className,
         closeOnOutsideClick: true,
         visible: menuVisible,
         attachEl: triggerElementRef.current,
