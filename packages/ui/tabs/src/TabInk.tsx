@@ -17,15 +17,16 @@ export const TabInk: React.FC<TabInkProps> = ({
     if (!activeItemElement) return
 
     const computedStyle = getComputedStyle(activeItemElement)
+    // issue: https://github.com/XiaoMi/hiui/issues/2937
+    // 当设置transform缩放后，getBoundingClientRect 获取的值不准确，所以这里使用offset
     // const itemRect = activeItemElement.getBoundingClientRect()
-    // const offset = getTabOffset(activeTabId)
+    const offset = getTabOffset(activeTabId)
 
     let _style: React.CSSProperties
 
     if (!showHorizontal) {
       const paddingTop = parseFloat(computedStyle.getPropertyValue('padding-top'))
       const paddingBottom = parseFloat(computedStyle.getPropertyValue('padding-bottom'))
-      const offset = activeItemElement.offsetTop
       const height = activeItemElement.offsetHeight
 
       _style = {
@@ -38,7 +39,6 @@ export const TabInk: React.FC<TabInkProps> = ({
     } else {
       const paddingLeft = parseFloat(computedStyle.getPropertyValue('padding-left'))
       const paddingRight = parseFloat(computedStyle.getPropertyValue('padding-right'))
-      const offset = activeItemElement.offsetLeft
       const width = activeItemElement.offsetWidth
 
       _style = {
@@ -49,7 +49,7 @@ export const TabInk: React.FC<TabInkProps> = ({
       }
     }
     Object.assign(inkRef.current.style, _style)
-  }, [activeItemElement, showHorizontal])
+  }, [activeItemElement, getTabOffset, activeTabId, showHorizontal])
 
   useEffect(() => {
     setTabLnkPositionStyle()
