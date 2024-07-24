@@ -38,8 +38,24 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
 
       // TODO: rules 处理成 Async Validate 的指定结构
       const fieldMD5 = stringify(field as FormFieldPath)
-
-      const validater = new Validater({ [fieldMD5]: fieldRules })
+      const modifiedFieldRules = fieldRules.map((rule) => {
+        // 重写 rule 的 validator 函数，正则匹配 validatorRule 中的 field 和 fullField，消除 field 和 fullField 中的双引号
+        // issue：https://github.com/XiaoMi/hiui/issues/2931
+        if (rule.validator) {
+          return {
+            ...rule,
+            validator: (validatorRule: any, value: any, cb: any) => {
+              const field = validatorRule.field.replace(/"/g, '')
+              const fullField = validatorRule.fullField.replace(/"/g, '')
+              rule.validator({ ...validatorRule, field, fullField }, value, cb)
+            },
+          }
+        } else
+          return {
+            ...rule,
+          }
+      })
+      const validater = new Validater({ [fieldMD5]: modifiedFieldRules })
       return validater.validate(
         {
           [fieldMD5]:
