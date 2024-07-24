@@ -194,7 +194,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
             pageText={[gotoText, pageText]}
             onJump={(page) => {
               proxyTrySetCurrent(page)
-              onJump && onJump(page)
+              onJump?.(page)
             }}
             maxJump={calculatePageCount(total, pageSize)}
           />
