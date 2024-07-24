@@ -92,6 +92,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
 
       const { id } = eventNodeRef.current
 
+      // 清空数据，下面会重新设置
       evt.dataTransfer.clearData()
       evt.stopPropagation()
 
@@ -109,6 +110,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     (evt: React.DragEvent) => {
       evt.preventDefault()
       evt.stopPropagation()
+      // issue: https://github.com/XiaoMi/hiui/issues/2941
+      // 在firefox中拖拽结束后，清除数据会报错，Modifications are not allowed for this document，所以这里注释掉
       // evt.dataTransfer.clearData()
       dragNodeRef.current = null
       setDirection(null)
