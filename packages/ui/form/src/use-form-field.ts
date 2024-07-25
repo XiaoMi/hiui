@@ -2,7 +2,14 @@ import { useEffect, useCallback, useMemo } from 'react'
 import { FormFieldPath, FormRuleModel, FormRuleType } from './types'
 import { useFormContext } from './context'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
-import Validater, { Rules } from 'async-validator'
+import Validater, {
+  InternalRuleItem,
+  Rules,
+  RuleItem,
+  ValidateOption,
+  Values as ValidateValues,
+  Value,
+} from 'async-validator'
 import { normalizeArray } from '@hi-ui/array-utils'
 import { isValidField, stringify } from './utils'
 
@@ -27,7 +34,7 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
 
   const { getFieldProps, registerField, unregisterField } = useFormContext()
 
-  const fieldRules: Rules[] = useFiledRules(props)
+  const fieldRules: RuleItem[] = useFiledRules(props)
 
   // 当前 field 的唯一校验器
   const fieldValidate = useCallback(
@@ -44,10 +51,22 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
         if (rule.validator) {
           return {
             ...rule,
-            validator: (validatorRule: any, value: any, cb: any) => {
+            validator: (
+              validatorRule: any,
+              value: Value,
+              callback: (error?: string | Error) => void,
+              source: ValidateValues,
+              options: ValidateOption
+            ) => {
               const field = validatorRule.field.replace(/"/g, '')
               const fullField = validatorRule.fullField.replace(/"/g, '')
-              rule.validator({ ...validatorRule, field, fullField }, value, cb)
+              rule.validator!(
+                { ...validatorRule, field, fullField } as InternalRuleItem,
+                value,
+                callback,
+                source,
+                options
+              )
             },
           }
         } else
