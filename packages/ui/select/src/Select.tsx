@@ -236,7 +236,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
           searchable={searchable}
-          keyword={keywordProp}
+          keyword={searchValue}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
@@ -265,6 +265,10 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                 value={value}
                 onChange={(value, item) => {
                   tryChangeValue(value, item.raw)
+                  // 非受控模式下清空下拉框
+                  if (value === '') {
+                    onSearch(value)
+                  }
                 }}
                 size={size}
                 data={mergedData}
