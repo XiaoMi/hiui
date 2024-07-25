@@ -1,5 +1,11 @@
 # @hi-ui/descriptions
 
+## 4.5.0
+
+### Minor Changes
+
+- [#2947](https://github.com/XiaoMi/hiui/pull/2947) [`e65de3140`](https://github.com/XiaoMi/hiui/commit/e65de31402d4ebd1aabcfbffa0e768d6cc2f6dc3) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: Add contentPosition api
+
 ## 4.4.0
 
 ### Minor Changes

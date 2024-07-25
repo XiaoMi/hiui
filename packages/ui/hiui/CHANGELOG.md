@@ -1,5 +1,40 @@
 # @hi-ui/hiui
 
+## 4.6.1
+
+### Patch Changes
+
+- [#2934](https://github.com/XiaoMi/hiui/pull/2934) [`cafc0a56b`](https://github.com/XiaoMi/hiui/commit/cafc0a56b2630ab145fceeea4838b7914bbd8da1) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix(dropdown): 修复 overlay={{className: 'xx'}} 不生效问题
+
+- [#2940](https://github.com/XiaoMi/hiui/pull/2940) [`516e30c25`](https://github.com/XiaoMi/hiui/commit/516e30c25e1c24a992a7efdd04d5de9897c53fe9) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix(tabs): 修复 activeId 为一个不存在的值或空值，下划线显示不对的问题
+
+- [#2834](https://github.com/XiaoMi/hiui/pull/2834) [`969abb849`](https://github.com/XiaoMi/hiui/commit/969abb8497e3c674c66827bd9057581c53e5f621) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): cellRender 增加 date 参数
+
+- [#2944](https://github.com/XiaoMi/hiui/pull/2944) [`629731e5b`](https://github.com/XiaoMi/hiui/commit/629731e5b3c5f98e70599ae06eb88609336d3467) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix(menu): 修复最后一个菜单项的子节点没有间距的问题
+
+- [#2943](https://github.com/XiaoMi/hiui/pull/2943) [`f496866a2`](https://github.com/XiaoMi/hiui/commit/f496866a26a492ea65c0b7dc3bc9324a71c7158b) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix(tree): 修复 Firefox 中组件拖拽报错问题
+
+- [#2933](https://github.com/XiaoMi/hiui/pull/2933) [`369cdf935`](https://github.com/XiaoMi/hiui/commit/369cdf935fb4e3a81478dcbd8e199c1a7cac1875) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix(form): 修复 validator 回调中第一个参数带有多余的引号
+
+- [#2936](https://github.com/XiaoMi/hiui/pull/2936) [`5fa1190b9`](https://github.com/XiaoMi/hiui/commit/5fa1190b9d1aa5766b4270fd0240f0baffaa5e1a) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(upload): 修复设置 maxCount 后上传时报错问题
+
+- [#2930](https://github.com/XiaoMi/hiui/pull/2930) [`c238c5d76`](https://github.com/XiaoMi/hiui/commit/c238c5d766add7f1253871030ab0d99f4e4e3df0) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix(pagination): 修复 onJump 事件不触发的问题
+
+- [#2947](https://github.com/XiaoMi/hiui/pull/2947) [`e65de3140`](https://github.com/XiaoMi/hiui/commit/e65de31402d4ebd1aabcfbffa0e768d6cc2f6dc3) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(descriptions): Add contentPosition api
+
+- [#2938](https://github.com/XiaoMi/hiui/pull/2938) [`3d070cda4`](https://github.com/XiaoMi/hiui/commit/3d070cda4317f5705ae34271a35390f4c43468fc) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix(tabs): 修复设置缩放后下划线显示不正常问题
+
+- Updated dependencies [[`5fa1190b9`](https://github.com/XiaoMi/hiui/commit/5fa1190b9d1aa5766b4270fd0240f0baffaa5e1a), [`f496866a2`](https://github.com/XiaoMi/hiui/commit/f496866a26a492ea65c0b7dc3bc9324a71c7158b), [`369cdf935`](https://github.com/XiaoMi/hiui/commit/369cdf935fb4e3a81478dcbd8e199c1a7cac1875), [`629731e5b`](https://github.com/XiaoMi/hiui/commit/629731e5b3c5f98e70599ae06eb88609336d3467), [`e65de3140`](https://github.com/XiaoMi/hiui/commit/e65de31402d4ebd1aabcfbffa0e768d6cc2f6dc3), [`969abb849`](https://github.com/XiaoMi/hiui/commit/969abb8497e3c674c66827bd9057581c53e5f621), [`cafc0a56b`](https://github.com/XiaoMi/hiui/commit/cafc0a56b2630ab145fceeea4838b7914bbd8da1), [`c238c5d76`](https://github.com/XiaoMi/hiui/commit/c238c5d766add7f1253871030ab0d99f4e4e3df0), [`516e30c25`](https://github.com/XiaoMi/hiui/commit/516e30c25e1c24a992a7efdd04d5de9897c53fe9), [`3d070cda4`](https://github.com/XiaoMi/hiui/commit/3d070cda4317f5705ae34271a35390f4c43468fc)]:
+  - @hi-ui/upload@4.2.3
+  - @hi-ui/tree@4.5.11
+  - @hi-ui/form@4.2.2
+  - @hi-ui/menu@4.3.1
+  - @hi-ui/descriptions@4.5.0
+  - @hi-ui/date-picker@4.8.0
+  - @hi-ui/dropdown@4.2.1
+  - @hi-ui/pagination@4.0.17
+  - @hi-ui/tabs@4.1.6
+
 ## 4.6.0
 
 ### Minor Changes

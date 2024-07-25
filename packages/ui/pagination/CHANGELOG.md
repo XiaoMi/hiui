@@ -1,5 +1,11 @@
 # @hi-ui/pagination
 
+## 4.0.17
+
+### Patch Changes
+
+- [#2930](https://github.com/XiaoMi/hiui/pull/2930) [`c238c5d76`](https://github.com/XiaoMi/hiui/commit/c238c5d766add7f1253871030ab0d99f4e4e3df0) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复 onJump 事件不触发的问题
+
 ## 4.0.16
 
 ### Patch Changes

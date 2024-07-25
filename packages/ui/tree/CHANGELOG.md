@@ -1,5 +1,11 @@
 # @hi-ui/tree
 
+## 4.5.11
+
+### Patch Changes
+
+- [#2943](https://github.com/XiaoMi/hiui/pull/2943) [`f496866a2`](https://github.com/XiaoMi/hiui/commit/f496866a26a492ea65c0b7dc3bc9324a71c7158b) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复 Firefox 中组件拖拽报错问题
+
 ## 4.5.10
 
 ### Patch Changes

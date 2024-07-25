@@ -1,5 +1,11 @@
 # @hi-ui/dropdown
 
+## 4.2.1
+
+### Patch Changes
+
+- [#2934](https://github.com/XiaoMi/hiui/pull/2934) [`cafc0a56b`](https://github.com/XiaoMi/hiui/commit/cafc0a56b2630ab145fceeea4838b7914bbd8da1) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复 overlay={{className: 'xx'}} 不生效问题
+
 ## 4.2.0
 
 ### Minor Changes
