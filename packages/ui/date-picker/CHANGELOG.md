@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 4.8.0
+
+### Minor Changes
+
+- [#2834](https://github.com/XiaoMi/hiui/pull/2834) [`969abb849`](https://github.com/XiaoMi/hiui/commit/969abb8497e3c674c66827bd9057581c53e5f621) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: cellRender 增加 date 参数
+
 ## 4.7.0
 
 ### Minor Changes

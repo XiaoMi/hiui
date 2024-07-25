@@ -1,5 +1,11 @@
 # @hi-ui/form
 
+## 4.2.2
+
+### Patch Changes
+
+- [#2933](https://github.com/XiaoMi/hiui/pull/2933) [`369cdf935`](https://github.com/XiaoMi/hiui/commit/369cdf935fb4e3a81478dcbd8e199c1a7cac1875) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复 validator 回调中第一个参数带有多余的引号
+
 ## 4.2.1
 
 ### Patch Changes

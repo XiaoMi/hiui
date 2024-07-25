@@ -1,5 +1,13 @@
 # @hi-ui/tabs
 
+## 4.1.6
+
+### Patch Changes
+
+- [#2940](https://github.com/XiaoMi/hiui/pull/2940) [`516e30c25`](https://github.com/XiaoMi/hiui/commit/516e30c25e1c24a992a7efdd04d5de9897c53fe9) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复 activeId 为一个不存在的值或空值，下划线显示不对的问题
+
+- [#2938](https://github.com/XiaoMi/hiui/pull/2938) [`3d070cda4`](https://github.com/XiaoMi/hiui/commit/3d070cda4317f5705ae34271a35390f4c43468fc) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复设置缩放后下划线显示不正常问题
+
 ## 4.1.5
 
 ### Patch Changes
