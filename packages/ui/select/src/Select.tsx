@@ -77,6 +77,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       onSelect: onSelectProp,
       onSearch: onSearchProp,
       onKeyDown: onKeyDownProp,
+      onClear: onClearProp,
       customRender,
       ...rest
     },
@@ -236,11 +237,12 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           onOpen={menuVisibleAction.on}
           onClose={menuVisibleAction.off}
           searchable={searchable}
-          keyword={searchValue}
+          keyword={keywordProp}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           scrollable={!inVirtual}
+          searchValue={searchValue}
           trigger={
             customRender ? (
               typeof customRender === 'function' ? (
@@ -268,6 +270,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                   // 非受控模式下清空下拉框
                   if (value === '') {
                     onSearch(value)
+                    onClearProp?.()
                   }
                 }}
                 size={size}
@@ -381,6 +384,10 @@ export interface SelectProps
    * 搜索时触发
    */
   onSearch?: (keyword: string) => void
+  /**
+   * 点击关闭按钮时触发
+   */
+  onClear?: () => void
   /**
    * 设置大小
    */

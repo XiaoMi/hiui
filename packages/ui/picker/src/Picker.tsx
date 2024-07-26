@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLFieldProps, useLocaleContext } from '@hi-ui/core'
@@ -48,6 +48,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       trigger,
       footer,
       onOverlayScroll,
+      searchValue: searchValueProp,
       ...rest
     },
     ref
@@ -72,7 +73,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       onSearch,
       Object.is
     )
-
+    console.log('searchValue', searchValue, 'searchValueProp', searchValueProp)
     // const inSearch = searchable && !!searchValue
     // const isEmpty = inSearch && showEmpty
     const resetSearchOnClosed = keywordProp === undefined
@@ -140,6 +141,12 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     const [searchInputElement, setSearchInputElement] = useState<HTMLInputElement | null>(null)
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
+
+    useEffect(() => {
+      if (searchValueProp === '') {
+        resetSearch()
+      }
+    }, [searchValueProp])
 
     return (
       <div
@@ -304,6 +311,10 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 开启内容区域可滚动
    */
   scrollable?: boolean
+  /**
+   * 搜索框内容，非关键字
+   */
+  searchValue?: string
 }
 
 if (__DEV__) {
