@@ -73,7 +73,6 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       onSearch,
       Object.is
     )
-    console.log('searchValue', searchValue, 'searchValueProp', searchValueProp)
     // const inSearch = searchable && !!searchValue
     // const isEmpty = inSearch && showEmpty
     const resetSearchOnClosed = keywordProp === undefined
