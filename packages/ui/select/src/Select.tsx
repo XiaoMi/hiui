@@ -32,6 +32,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { HiBaseAppearanceEnum, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
+import { mergeRefs } from '@hi-ui/react-utils'
 
 const _role = 'select'
 const _prefix = getPrefixCls(_role)
@@ -84,7 +85,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     ref
   ) => {
     const i18n = useLocaleContext()
-
+    const innerRef = useRef<HTMLDivElement>()
     const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
@@ -228,7 +229,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     return (
       <SelectProvider value={context}>
         <Picker
-          ref={ref}
+          ref={mergeRefs(ref, innerRef)}
           className={cls}
           {...rootProps}
           visible={menuVisible}
@@ -242,7 +243,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           scrollable={!inVirtual}
-          searchValue={searchValue}
+          innerRef={innerRef}
           trigger={
             customRender ? (
               typeof customRender === 'function' ? (
@@ -269,7 +270,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                   tryChangeValue(value, item.raw)
                   // 非受控模式下清空下拉框
                   if (value === '') {
-                    onSearch(value)
+                    innerRef.current?.resetSearch()
                     onClearProp?.()
                   }
                 }}
