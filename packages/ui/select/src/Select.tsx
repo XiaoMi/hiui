@@ -16,7 +16,7 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import VirtualList, { useCheckInVirtual } from '@hi-ui/virtual-list'
 import type { ListRef } from 'rc-virtual-list'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
-import { Picker, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerProps, PickerHelper } from '@hi-ui/picker'
 import { Highlighter } from '@hi-ui/highlighter'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import {
@@ -32,7 +32,6 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { HiBaseAppearanceEnum, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
-import { mergeRefs } from '@hi-ui/react-utils'
 
 const _role = 'select'
 const _prefix = getPrefixCls(_role)
@@ -85,7 +84,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     ref
   ) => {
     const i18n = useLocaleContext()
-    const innerRef = useRef<HTMLDivElement>()
+    const innerRef = useRef<PickerHelper>()
     const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
@@ -229,7 +228,8 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     return (
       <SelectProvider value={context}>
         <Picker
-          ref={mergeRefs(ref, innerRef)}
+          ref={ref}
+          innerRef={innerRef}
           className={cls}
           {...rootProps}
           visible={menuVisible}
@@ -243,7 +243,6 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           scrollable={!inVirtual}
-          innerRef={innerRef}
           trigger={
             customRender ? (
               typeof customRender === 'function' ? (

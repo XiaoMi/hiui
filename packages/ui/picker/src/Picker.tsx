@@ -228,6 +228,10 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
   }
 )
 
+export interface PickerHelper {
+  resetSearch: () => void
+}
+
 export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 是否禁用
@@ -313,7 +317,7 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 提供辅助方法的内部引用
    */
-  innerRef?: React.Ref<HTMLDivElement>
+  innerRef?: React.Ref<PickerHelper>
 }
 
 if (__DEV__) {
