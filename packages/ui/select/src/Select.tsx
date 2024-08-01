@@ -16,7 +16,7 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import VirtualList, { useCheckInVirtual } from '@hi-ui/virtual-list'
 import type { ListRef } from 'rc-virtual-list'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
-import { Picker, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerProps, PickerHelper } from '@hi-ui/picker'
 import { Highlighter } from '@hi-ui/highlighter'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import {
@@ -77,13 +77,14 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       onSelect: onSelectProp,
       onSearch: onSearchProp,
       onKeyDown: onKeyDownProp,
+      onClear: onClearProp,
       customRender,
       ...rest
     },
     ref
   ) => {
     const i18n = useLocaleContext()
-
+    const innerRef = useRef<PickerHelper>()
     const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
@@ -228,6 +229,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       <SelectProvider value={context}>
         <Picker
           ref={ref}
+          innerRef={innerRef}
           className={cls}
           {...rootProps}
           visible={menuVisible}
@@ -265,6 +267,11 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                 value={value}
                 onChange={(value, item) => {
                   tryChangeValue(value, item.raw)
+                  // 非受控模式下清空下拉框
+                  if (value === '') {
+                    innerRef.current?.resetSearch()
+                    onClearProp?.()
+                  }
                 }}
                 size={size}
                 data={mergedData}
@@ -377,6 +384,10 @@ export interface SelectProps
    * 搜索时触发
    */
   onSearch?: (keyword: string) => void
+  /**
+   * 点击关闭按钮时触发
+   */
+  onClear?: () => void
   /**
    * 设置大小
    */
