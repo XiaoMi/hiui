@@ -1,5 +1,20 @@
 # @hi-ui/hiui
 
+## 4.6.2
+
+### Patch Changes
+
+- [#2954](https://github.com/XiaoMi/hiui/pull/2954) [`8e4eedb`](https://github.com/XiaoMi/hiui/commit/8e4eedb1bb08ef07258adec3ebdb303fbb100311) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(input): MockInput 没有匹配到值时默认展示 value 值
+
+- [#2954](https://github.com/XiaoMi/hiui/pull/2954) [`8e4eedb`](https://github.com/XiaoMi/hiui/commit/8e4eedb1bb08ef07258adec3ebdb303fbb100311) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(notification): 调整通知组件过度样式触发滚动条
+
+- [#2948](https://github.com/XiaoMi/hiui/pull/2948) [`4d82491c6`](https://github.com/XiaoMi/hiui/commit/4d82491c6024c194111eb2a261367174b0cb24cc) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(select): 新增带搜索情况下，点击叉号按钮时下拉框同时清空
+
+- Updated dependencies [[`9e91b9075`](https://github.com/XiaoMi/hiui/commit/9e91b90752a7638930de7d86c73f67049c376342), [`4d82491c6`](https://github.com/XiaoMi/hiui/commit/4d82491c6024c194111eb2a261367174b0cb24cc), [`8e4eedb`](https://github.com/XiaoMi/hiui/commit/8e4eedb1bb08ef07258adec3ebdb303fbb100311)]:
+  - @hi-ui/notification@4.2.1
+  - @hi-ui/select@4.5.0
+  - @hi-ui/input@4.2.0
+
 ## 4.6.1
 
 ### Patch Changes

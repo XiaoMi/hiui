@@ -1,5 +1,16 @@
 # @hi-ui/select
 
+## 4.5.0
+
+### Minor Changes
+
+- [#2948](https://github.com/XiaoMi/hiui/pull/2948) [`4d82491c6`](https://github.com/XiaoMi/hiui/commit/4d82491c6024c194111eb2a261367174b0cb24cc) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 新增带搜索情况下，点击叉号按钮时下拉框同时清空
+
+### Patch Changes
+
+- Updated dependencies [[`8e4eedb`](https://github.com/XiaoMi/hiui/commit/8e4eedb1bb08ef07258adec3ebdb303fbb100311)]:
+  - @hi-ui/input@4.2.0
+
 ## 4.4.2
 
 ### Patch Changes
