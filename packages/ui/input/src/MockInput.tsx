@@ -48,7 +48,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
     const displayItem = useMemo(() => {
       if (value === '') return null
 
-      const displayItem = data.find((item) => item.id === value)
+      const displayItem = data.find((item) => item.id === value) || { id: value, title: value }
 
       return displayItem || null
     }, [value, data])
