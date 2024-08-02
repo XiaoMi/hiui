@@ -84,7 +84,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     ref
   ) => {
     const i18n = useLocaleContext()
-    const innerRef = useRef<PickerHelper>()
+    const innerRef = useRef<PickerHelper>(null)
     const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
