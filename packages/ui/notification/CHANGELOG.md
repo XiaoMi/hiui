@@ -1,5 +1,11 @@
 # @hi-ui/notification
 
+## 4.2.1
+
+### Patch Changes
+
+- [#2804](https://github.com/XiaoMi/hiui/pull/2804) [`9e91b9075`](https://github.com/XiaoMi/hiui/commit/9e91b90752a7638930de7d86c73f67049c376342) Thanks [@wangjue666](https://github.com/wangjue666)! - fix: 调整通知组件过度样式触发滚动条
+
 ## 4.2.0
 
 ### Minor Changes

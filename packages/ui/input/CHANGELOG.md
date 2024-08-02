@@ -1,5 +1,11 @@
 # @hi-ui/input
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2954](https://github.com/XiaoMi/hiui/pull/2954) [`8e4eedb`](https://github.com/XiaoMi/hiui/commit/8e4eedb1bb08ef07258adec3ebdb303fbb100311) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: MockInput 没有匹配到值时默认展示 value 值
+
 ## 4.1.1
 
 ### Patch Changes
