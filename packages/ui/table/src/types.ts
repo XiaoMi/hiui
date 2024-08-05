@@ -35,6 +35,7 @@ export type TableCheckAllOptions = {
 }
 
 export type TableRowSelection = {
+  type?: 'checkbox' | 'radio'
   /**
    * 设置选中列列宽
    */

@@ -1,8 +1,10 @@
 import React from 'react'
+import { RadioGroup } from '@hi-ui/radio'
 import Table from '../src'
 
 /**
  * @title 行选中
+ * @desc 通过 rowSelection.type 属性来设置单选或多选，默认为 <code>checkbox</code>
  */
 export const RowSelection = () => {
   const [columns] = React.useState([
@@ -137,14 +139,35 @@ export const RowSelection = () => {
   })
 
   const [selectedRowKeys, setSelectedRowKeys] = React.useState<any>([])
+  const [type, setType] = React.useState<'checkbox' | 'radio'>('checkbox')
+
+  React.useEffect(() => {
+    if (type === 'radio' && selectedRowKeys.length > 1) {
+      setSelectedRowKeys([selectedRowKeys[0]])
+    }
+  }, [selectedRowKeys, type])
 
   return (
     <>
       <h1>RowSelection for Table</h1>
       <div className="table-row-selection__wrap" style={{ minWidth: 660 }}>
+        <RadioGroup
+          defaultValue={'checkbox'}
+          type={'button'}
+          data={[
+            { title: '多选', id: 'checkbox' },
+            { title: '单选', id: 'radio' },
+          ]}
+          onChange={(value) => {
+            console.log('onChange', value)
+            setType(value as 'checkbox' | 'radio')
+          }}
+          style={{ marginBottom: 16 }}
+        />
         <Table
           fixedToColumn={{ left: 'type' }}
           rowSelection={{
+            type,
             selectedRowKeys,
             onChange: (keys, target, shouldChecked, rows) => {
               console.log(keys, target, shouldChecked, rows)
