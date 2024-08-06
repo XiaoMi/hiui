@@ -3,8 +3,9 @@ import { render } from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './style/index'
+import Provider from '../context'
 
-export default class Popper extends Component {
+class Popper extends Component {
   container = undefined
   popperHeight = undefined
 
@@ -189,3 +190,5 @@ export default class Popper extends Component {
     return null
   }
 }
+
+export default Provider(Popper)

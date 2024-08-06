@@ -305,14 +305,14 @@ class Pagination extends Component {
   }
 
   renderNormal () { // 标准分页
-    const { prefixCls, showTotal, total } = this.props
+    const { prefixCls, showTotal, total, localeDatas } = this.props
 
     return (
       <React.Fragment>
         {
           showTotal &&
           <div className={`${prefixCls}__total ${prefixCls}__text`}>
-            共<span className={`${prefixCls}__span`}>{total}</span>条
+            <span className={`${prefixCls}__span`}>{localeDatas.pagination.total(total)}</span>
           </div>
         }
         {this.renderPageSizes()}

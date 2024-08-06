@@ -49,7 +49,8 @@ module.exports = {
   },
   select: {
     placeholder: '请选择',
-    noFoundTip: '无匹配数据'
+    noFoundTip: '无匹配数据',
+    checkAll: '全选'
   },
   upload: {
     buttonText: '本地上传',
@@ -78,5 +79,9 @@ module.exports = {
   },
   form: {
     colon: '：'
+  },
+  table: {
+    checkAll: '多选',
+    expand: '展开'
   }
 }

@@ -46,8 +46,8 @@ class Select extends Component {
     clearable: true,
     value: '',
     autoload: false,
-    placeholder: '请选择',
-    noFoundTip: '无内容',
+    placeholder: '',
+    noFoundTip: '',
     showCheckAll: false,
     open: true,
     onClick: () => {},
@@ -480,15 +480,16 @@ class Select extends Component {
       clearable,
       style,
       children,
-      noFoundTip,
       optionWidth,
       dropdownRender,
       multipleMode,
       onClick,
       onBlur,
-      onFocus
+      onFocus,
+      locale
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
+    const noFoundTip = this.localeDatasProps('noFoundTip')
     const {
       selectedItems,
       dropdownItems,
@@ -554,6 +555,8 @@ class Select extends Component {
             dropdownItems={dropdownItems}
             selectedItems={selectedItems}
             dropdownRender={dropdownRender}
+            // Popper 包裹的组件需要手动传入 locale
+            locale={locale}
             onClickOption={this.onClickOption.bind(this)}
           />
         </Popper>

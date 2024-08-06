@@ -48,7 +48,8 @@ module.exports = {
   },
   select: {
     placeholder: 'Please select',
-    noFoundTip: 'Not found'
+    noFoundTip: 'Not found',
+    checkAll: 'Check all'
   },
   upload: {
     buttonText: 'Upload',
@@ -77,5 +78,9 @@ module.exports = {
   },
   form: {
     colon: ':'
+  },
+  table: {
+    checkAll: 'Check All',
+    expand: 'Expand'
   }
 }
