@@ -13,6 +13,7 @@ import '../icon/style'
 import {setKey, scrollTop, getStyle, getPosition, offset} from './tool'
 import request from 'axios'
 import qs from 'qs'
+import Provider from '../context'
 
 class Table extends Component {
   static propTypes = {
@@ -437,7 +438,7 @@ class Table extends Component {
     // 多选配置
     // noinspection JSAnnotator
 
-    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX, header = null, footer = null} = this.props
+    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX, header = null, footer = null, localeDatas} = this.props
     // noinspection JSAnnotator
     let {scroll, columnMenu, serverPagination} = this.state
     let content
@@ -524,10 +525,10 @@ class Table extends Component {
                           {
                             (function () {
                               if (item.type === 'select') {
-                                return '多选'
+                                return localeDatas.table.checkAll
                               }
                               if (item.type === 'expand') {
-                                return '展开'
+                                return localeDatas.table.expand
                               }
                               if (typeof item.title === 'function') {
                                 return item.title()
@@ -1027,4 +1028,4 @@ Table.config = {
   host: ''
 }
 
-export default Table
+export default Provider(Table)

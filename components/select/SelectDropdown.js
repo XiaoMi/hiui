@@ -4,8 +4,9 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import Checkbox from '../checkbox'
 import Loading from '../loading'
+import Provider from '../context'
 
-export default class SelectDropdown extends Component {
+class SelectDropdown extends Component {
   onClickOption (e, item, index) {
     e && e.stopPropagation()
     if (item.disabled) {
@@ -59,7 +60,8 @@ export default class SelectDropdown extends Component {
       optionWidth,
       showCheckAll,
       checkAll,
-      dropdownRender
+      dropdownRender,
+      localeDatas
     } = this.props
     let matched = 0
     const style = optionWidth && {
@@ -110,10 +112,12 @@ export default class SelectDropdown extends Component {
         )}
         {mode === 'multiple' && showCheckAll && (
           <div className='hi-select__dropdown-check-all' onClick={checkAll}>
-            全选
+            {localeDatas.select.checkAll}
           </div>
         )}
       </div>
     )
   }
 }
+
+export default Provider(SelectDropdown)
