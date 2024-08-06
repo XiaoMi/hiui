@@ -55,6 +55,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     onCheck,
     showLine,
     titleRender,
+    iconRender,
     collapsedIcon: collapseIconContext,
     expandedIcon: expandIconContext,
     leafIcon: leafIconContext,
@@ -284,7 +285,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
           collapsedIcon,
           leafIcon,
           onNodeExpand,
-          onLoadChildren
+          onLoadChildren,
+          iconRender
         )}
 
         {renderCheckbox(
@@ -434,8 +436,19 @@ const renderSwitcher = (
   collapsedIcon: React.ReactNode,
   leafIcon: React.ReactNode,
   onNodeExpand: (evt: React.MouseEvent) => Promise<void>,
-  onLoadChildren?: (node: TreeNodeEventData) => void | Promise<any>
+  onLoadChildren?: (node: TreeNodeEventData) => void | Promise<any>,
+  iconRender?: (node: TreeNodeEventData) => React.ReactNode
 ) => {
+  if (iconRender) {
+    return (
+      <IconButton
+        tabIndex={-1}
+        className={cx(`${prefixCls}__switcher`, `${prefixCls}__switcher--noop`)}
+        icon={iconRender(node)}
+      />
+    )
+  }
+
   if (loading) {
     return (
       <IconButton

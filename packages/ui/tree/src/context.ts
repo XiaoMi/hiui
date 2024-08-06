@@ -33,6 +33,7 @@ interface TreeContext {
   checkable?: boolean
   onCheck?: (checkedNode: TreeNodeEventData, shouldChecked: boolean) => void
   titleRender?: (node: TreeNodeEventData) => React.ReactNode
+  iconRender?: (node: TreeNodeEventData) => React.ReactNode
   onFocus?: (node: TreeNodeEventData) => void
   showLine?: boolean
   collapsedIcon?: React.ReactNode

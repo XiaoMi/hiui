@@ -81,6 +81,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       // others
       showLine = false,
       render: titleRender,
+      iconRender,
       onContextMenu,
       flattedData: flattedDataProp,
       fieldNames,
@@ -184,6 +185,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         expandedIcon,
         leafIcon,
         titleRender,
+        iconRender,
         onContextMenu,
         expandOnSelect,
       }),
@@ -206,6 +208,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         expandedIcon,
         leafIcon,
         titleRender,
+        iconRender,
         onContextMenu,
         expandOnSelect,
       ]
@@ -435,6 +438,10 @@ export interface TreeProps {
    * 自定义渲染节点的 title 内容
    */
   render?: (node: TreeNodeEventData) => React.ReactNode
+  /**
+   * 自定义渲染节点的 icon
+   */
+  iconRender?: (node: TreeNodeEventData) => React.ReactNode
   /**
    * 自定义节点右键菜单
    */
