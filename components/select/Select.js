@@ -438,7 +438,7 @@ class Select extends Component {
       dropdownItems = res.data
     }
     if (Array.isArray(dropdownItems)) {
-      const reviceSelectedItems = this.props.type === 'multiple' ? this.props.dataSource && this.state.selectedItems || [] : this.state.cacheSelectedItems 
+      const reviceSelectedItems = this.props.type === 'multiple' ? this.props.dataSource && this.state.selectedItems || [] : this.state.cacheSelectedItems
       const selectedItems = this.resetSelectedItems(
         this.props.value,
         dropdownItems,
@@ -462,7 +462,7 @@ class Select extends Component {
       () => this.resetFocusedIndex()
     )
 
-    if (dataSource) { 
+    if (dataSource) {
       if(!(keyword && keyword.length >= this.state.queryLength)){
         this.setState({
         cacheSelectedItems: this.state.selectedItems
@@ -642,6 +642,7 @@ class Select extends Component {
         >
           {<SelectDropdown
             noFoundTip={emptyContent}
+            // Popper 包裹的组件需要手动传入 localeData
             localeMap={localeDatas.select || {} }
             mode={type}
             searchPlaceholder={searchPlaceholder}
@@ -668,7 +669,7 @@ class Select extends Component {
             selectedItems={selectedItems}
             dropdownRender={render}
             onClickOption={this.onClickOption.bind(this)}
-            /> 
+            />
           }
         </Popper>
       </div>

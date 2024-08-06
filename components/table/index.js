@@ -427,7 +427,7 @@ class Table extends Component {
     // 多选配置
     // noinspection JSAnnotator
 
-    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX, header = null, footer = null, theme} = this.props
+    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX, header = null, footer = null, theme, localeDatas} = this.props
     // noinspection JSAnnotator
     let {scroll, columnMenu, serverPagination} = this.state
     let content
@@ -507,10 +507,10 @@ class Table extends Component {
                           {
                             (function () {
                               if (item.type === 'select') {
-                                return '多选'
+                                return localeDatas.table.checkAll
                               }
                               if (item.type === 'expand') {
-                                return '展开'
+                                return localeDatas.table.expand
                               }
                               if (typeof item.title === 'function') {
                                 return item.title()
