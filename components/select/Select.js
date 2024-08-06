@@ -555,6 +555,7 @@ class Select extends Component {
             dropdownItems={dropdownItems}
             selectedItems={selectedItems}
             dropdownRender={dropdownRender}
+            // Popper 包裹的组件需要手动传入 locale
             locale={locale}
             onClickOption={this.onClickOption.bind(this)}
           />
