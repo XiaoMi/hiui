@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "2.15.10",
+  "version": "2.15.11",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -169,5 +169,8 @@
       "stylelint --config .stylelintrc  --fix",
       "git add"
     ]
+  },
+  "engines": {
+    "node": "11.15.x"
   }
 }
