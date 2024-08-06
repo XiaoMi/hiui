@@ -111,6 +111,8 @@ export default {
     freeze: '冻结',
     hide: '隐藏',
     meanValue: '均值',
-    emptyText: '暂无数据'
+    emptyText: '暂无数据',
+    checkAll: '多选',
+    expand: '展开'
   }
 }

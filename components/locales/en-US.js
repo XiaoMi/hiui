@@ -136,6 +136,8 @@ export default {
     freeze: 'freeze',
     hide: 'hide',
     meanValue: 'mean value',
-    emptyText: 'No Data'
+    emptyText: 'No Data',
+    checkAll: 'Check All',
+    expand: 'Expand'
   }
 }

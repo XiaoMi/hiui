@@ -109,6 +109,8 @@ export default {
     freeze: '凍結',
     hide: '隱藏',
     meanValue: '均值',
-    emptyText: '暫無數據'
+    emptyText: '暫無數據',
+    checkAll: '多選',
+    expand: '展開'
   }
 }
