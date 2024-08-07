@@ -112,7 +112,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       onClose,
     })
 
-    const [filterItems, setFilterItems] = useState<any[] | null>(null)
+    const [filterItems, setFilterItems] = useState<CheckTreeSelectDataItem[] | null>(null)
     const expandedViewRef = useRef<'normal' | 'onlyChecked'>('normal')
     const activeExpandable = showOnlyShowChecked && !!filterItems && menuVisible
 

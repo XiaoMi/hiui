@@ -2,7 +2,7 @@ import React from 'react'
 import CheckTreeSelect from '../src'
 
 /**
- * @title 仅过滤已选用法
+ * @title 查看已选
  */
 export const OnlyChecked = () => {
   const [data] = React.useState([
