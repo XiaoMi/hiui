@@ -14,7 +14,7 @@ export const flattenTreeData = (treeData: TreeDataItem[], fieldNames: any = EMPT
    * 转换对象
    */
   const getKeyFields = (node: any, key: string) => {
-    return node[fieldNames[key] || key]
+    return node[fieldNames[key] || key] ?? node[key]
   }
 
   return baseFlattenTree({
