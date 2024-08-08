@@ -493,6 +493,8 @@ export const Basic = () => {
 
               { component: Icons.StartDateOutlined, tagName: 'StartDateOutlined' },
 
+              { component: Icons.StockroomOutlined, tagName: 'StockroomOutlined' },
+
               { component: Icons.StudentOutlined, tagName: 'StudentOutlined' },
 
               { component: Icons.SunOutlined, tagName: 'SunOutlined' },
@@ -536,6 +538,8 @@ export const Basic = () => {
               { component: Icons.UserAddOutlined, tagName: 'UserAddOutlined' },
 
               { component: Icons.UsersOutlined, tagName: 'UsersOutlined' },
+
+              { component: Icons.VacantOutlined, tagName: 'VacantOutlined' },
 
               { component: Icons.VideoCameraOutlined, tagName: 'VideoCameraOutlined' },
 
