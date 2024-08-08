@@ -15,7 +15,8 @@ export const useFlattenData = ({ data = NOOP_ARRAY, fieldNames = DEFAULT_FIELD_N
 
 export const flattenData = ({ data = NOOP_ARRAY, fieldNames = DEFAULT_FIELD_NAMES }: any) => {
   // 转换对象
-  const getKeyFields = (node: any, key: HiBaseFieldNameKeys) => node[fieldNames[key] || key]
+  const getKeyFields = (node: any, key: HiBaseFieldNameKeys) =>
+    node[fieldNames[key] || key] ?? node[key]
 
   return baseFlattenTree({
     tree: data,

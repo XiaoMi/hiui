@@ -8,7 +8,7 @@ export const transformTreeData = (
 ): FilterDataItem[] => {
   const getKeyFields = (node: FilterDataItem, key: HiBaseFieldNameKeys) => {
     if (fieldNames) {
-      return node[(fieldNames[key] || key) as keyof FilterDataItem]
+      return node[(fieldNames[key] || key) as keyof FilterDataItem] ?? node[key]
     }
     return node[key]
   }

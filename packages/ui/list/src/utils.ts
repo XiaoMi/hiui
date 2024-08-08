@@ -7,7 +7,7 @@ export const transformData = (
 ): ListDataItem[] => {
   const getKeyFields = (node: ListDataItem, key: HiBaseFieldNameKeys) => {
     if (fieldNames) {
-      return node[(fieldNames[key] || key) as keyof ListDataItem]
+      return node[(fieldNames[key] || key) as keyof ListDataItem] ?? node[key as keyof ListDataItem]
     }
     return node[key as keyof ListDataItem]
   }

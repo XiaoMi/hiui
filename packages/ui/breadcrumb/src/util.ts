@@ -11,7 +11,10 @@ export const transformData = (
    */
   const getKeyFields = (node: BreadcrumbDataItem, key: HiBaseFieldNameKeys) => {
     if (fieldNames) {
-      return node[(fieldNames[key] || key) as keyof BreadcrumbDataItem]
+      return (
+        node[(fieldNames[key] || key) as keyof BreadcrumbDataItem] ??
+        node[key as keyof BreadcrumbDataItem]
+      )
     }
     return node[key as keyof BreadcrumbDataItem]
   }

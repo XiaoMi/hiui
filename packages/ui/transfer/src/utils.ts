@@ -8,7 +8,10 @@ export const transformData = (
 ): TransferDataItem[] => {
   const getKeyFields = (node: TransferDataItem, key: HiBaseFieldNameKeys) => {
     if (fieldNames) {
-      return node[(fieldNames[key] || key) as keyof TransferDataItem]
+      return (
+        node[(fieldNames[key] || key) as keyof TransferDataItem] ??
+        node[key as keyof TransferDataItem]
+      )
     }
     return node[key as keyof TransferDataItem]
   }

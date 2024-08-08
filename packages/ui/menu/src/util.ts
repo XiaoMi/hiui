@@ -64,7 +64,7 @@ export const transformTreeData = (data: MenuDataItem[], fieldNames?: HiBaseField
    */
   const getKeyFields = (node: MenuDataItem, key: HiBaseFieldNameKeys) => {
     if (fieldNames) {
-      return node[(fieldNames[key] || key) as keyof MenuDataItem]
+      return node[(fieldNames[key] || key) as keyof MenuDataItem] ?? node[key]
     }
     return node[key]
   }

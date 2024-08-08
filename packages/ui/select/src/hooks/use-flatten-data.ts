@@ -6,7 +6,7 @@ const DEFAULT_FIELD_NAMES = {} as any
 
 export const useFlattenData = ({ data = NOOP_ARRAY, fieldNames = DEFAULT_FIELD_NAMES }: any) => {
   const flattedData = useMemo(() => {
-    const getKeyFields = (node: any, key: string) => node[fieldNames[key] || key]
+    const getKeyFields = (node: any, key: string) => node[fieldNames[key] || key] ?? node[key]
 
     return baseFlattenTree({
       tree: data,

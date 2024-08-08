@@ -26,7 +26,10 @@ export const transformData = (data: DescriptionsItemProps[], fieldNames?: HiBase
    */
   const getKeyFields = (node: DescriptionsItemProps, key: HiBaseFieldNameKeys) => {
     if (fieldNames) {
-      return node[(fieldNames[key] || key) as keyof DescriptionsItemProps]
+      return (
+        node[(fieldNames[key] || key) as keyof DescriptionsItemProps] ??
+        node[key as keyof DescriptionsItemProps]
+      )
     }
     return node[key as keyof DescriptionsItemProps]
   }

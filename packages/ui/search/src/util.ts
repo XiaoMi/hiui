@@ -11,7 +11,9 @@ export const transformData = (
    */
   const getKeyFields = (node: SearchDataItem, key: HiBaseFieldNameKeys) => {
     if (fieldNames) {
-      return node[(fieldNames[key] || key) as keyof SearchDataItem]
+      return (
+        node[(fieldNames[key] || key) as keyof SearchDataItem] ?? node[key as keyof SearchDataItem]
+      )
     }
     return node[key as keyof SearchDataItem]
   }

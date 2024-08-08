@@ -8,7 +8,10 @@ export const transformData = (
 ): StepperDataItem[] => {
   const getKeyFields = (node: StepperDataItem, key: HiBaseFieldNameKeys) => {
     if (fieldNames) {
-      return node[(fieldNames[key] || key) as keyof StepperDataItem]
+      return (
+        node[(fieldNames[key] || key) as keyof StepperDataItem] ??
+        node[key as keyof StepperDataItem]
+      )
     }
     return node[key as keyof StepperDataItem]
   }
