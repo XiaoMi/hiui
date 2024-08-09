@@ -17,6 +17,7 @@ import { withDefaultProps } from '@hi-ui/react-utils'
 import { TableSettingMenu } from './TableSettingMenu'
 import Loading from '@hi-ui/loading'
 import Checkbox from '@hi-ui/checkbox'
+import Radio from '@hi-ui/radio'
 import { useTableCheck } from './hooks/use-check'
 import { isNullish } from '@hi-ui/type-assertion'
 import { cloneTree, flattenTree } from '@hi-ui/tree-utils'
@@ -199,30 +200,45 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       tryCheckAllRow,
       isCheckedRowKey,
       onCheckedRowKeysChange,
+      onRadioCheckedRowKeysChange,
       checkRowIsDisabledCheckbox,
     } = useTableCheck({ rowSelection, flattedData, fieldKey })
 
     // 表格列多选操作区
     const getSelectionColumn = React.useCallback(
       (rowSelection: TableRowSelection) => {
+        const { type = 'checkbox' } = rowSelection
+
         const renderCell = (_: any, rowItem: any, rowIndex: number) => {
           const rowKey = getRowKeyField(rowItem)
           const checked = isCheckedRowKey(rowKey)
           const disabledCheckbox = checkRowIsDisabledCheckbox(rowItem)
 
           return {
-            node: (
-              <Checkbox
-                checked={isCheckedRowKey(rowKey)}
-                disabled={disabledCheckbox}
-                onChange={(evt) => {
-                  onCheckedRowKeysChange(rowItem, evt.target.checked)
-                }}
-                onClick={(evt) => {
-                  evt.stopPropagation()
-                }}
-              />
-            ),
+            node:
+              type === 'checkbox' ? (
+                <Checkbox
+                  checked={checked}
+                  disabled={disabledCheckbox}
+                  onChange={(evt) => {
+                    onCheckedRowKeysChange(rowItem, evt.target.checked)
+                  }}
+                  onClick={(evt) => {
+                    evt.stopPropagation()
+                  }}
+                />
+              ) : (
+                <Radio
+                  checked={checked}
+                  disabled={disabledCheckbox}
+                  onChange={(evt) => {
+                    onRadioCheckedRowKeysChange(rowItem, evt.target.checked)
+                  }}
+                  onClick={(evt) => {
+                    evt.stopPropagation()
+                  }}
+                />
+              ),
             checked,
           }
         }
@@ -288,22 +304,23 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           // selectionColumn 宽度固定，防止自动被拉伸
           fixed: true,
           className: `${prefixCls}__selection-col`,
-          title: renderSelectionTitleCell,
+          title: type === 'checkbox' ? renderSelectionTitleCell : undefined,
           // @ts-ignore
           render: renderSelectionCell,
         }
         return selectionColumn
       },
       [
+        checkboxColWidth,
+        prefixCls,
         getRowKeyField,
+        isCheckedRowKey,
+        checkRowIsDisabledCheckbox,
+        onCheckedRowKeysChange,
+        onRadioCheckedRowKeysChange,
         checkedAll,
         semiChecked,
         tryCheckAllRow,
-        checkboxColWidth,
-        isCheckedRowKey,
-        onCheckedRowKeysChange,
-        checkRowIsDisabledCheckbox,
-        prefixCls,
       ]
     )
 
