@@ -30,7 +30,7 @@ export const flattenTreeData = (
    */
   const getKeyFields = (node: any, key: any) => {
     if (fieldNames) {
-      return node[(fieldNames as any)[key] || key]
+      return node[(fieldNames as any)[key] || key] ?? node[key]
     }
     return node[key]
   }

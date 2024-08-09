@@ -100,7 +100,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
      */
     const getKeyFields = useCallback(
       (node: any, key: string) => {
-        return node[fieldNames[key] || key]
+        return node[fieldNames[key] || key] ?? node[key]
       },
       [fieldNames]
     )

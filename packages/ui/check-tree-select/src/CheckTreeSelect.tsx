@@ -115,7 +115,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
      */
     const getKeyFields = useCallback(
       (node: any, key: string) => {
-        return node[fieldNames[key] || key]
+        return node[fieldNames[key] || key] ?? node[key]
       },
       [fieldNames]
     )
@@ -132,12 +132,11 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
           flattedNode.title = getKeyFields(raw, 'title')
           flattedNode.disabled = getKeyFields(raw, 'disabled') ?? false
           flattedNode.isLeaf = getKeyFields(raw, 'isLeaf') ?? false
-
           return flattedNode
         },
       }) as FlattedCheckTreeSelectDataItem[]
     }, [data, getKeyFields])
-
+    console.log('flattenedData', flattedData)
     // TODO: 抽离展开hook
     // TODO: onLoadChildren 和 defaultExpandAll 共存时
     const [expandedIds, tryChangeExpandedIds] = useUncontrolledState(
