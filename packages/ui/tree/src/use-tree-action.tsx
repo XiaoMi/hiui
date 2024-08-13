@@ -100,7 +100,8 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
     onBeforeSave,
     onBeforeDelete,
     onSave,
-    onDelete
+    onDelete,
+    fieldNames
   )
 
   const [editing, setEditing] = React.useState<boolean>(false)
