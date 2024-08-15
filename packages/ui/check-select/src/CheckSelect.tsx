@@ -73,7 +73,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       renderExtraFooter,
       onSearch: onSearchProp,
       fieldNames = DEFAULT_FIELD_NAMES,
-      disableEnterEvent = false,
+      checkedOnEntered = true,
       customRender,
       tagInputProps,
       size = 'md',
@@ -224,7 +224,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     const handleKeyDown = useLatestCallback((evt: React.KeyboardEvent) => {
       const { key } = evt
 
-      if (key === 'Enter' && !disableEnterEvent) {
+      if (key === 'Enter' && checkedOnEntered) {
         const focusedItem = showData[focusedIndex]
 
         if (focusedItem) {
@@ -494,9 +494,9 @@ export interface CheckSelectProps
    */
   showOnlyShowChecked?: boolean
   /**
-   * 是否禁止回车键默认选中功能
+   * 按Enter键是否选中当前项
    */
-  disableEnterEvent?: boolean
+  checkedOnEntered?: boolean
   /**
    * 自定义渲染选中的内容
    */
