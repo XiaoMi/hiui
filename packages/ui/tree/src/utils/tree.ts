@@ -3,6 +3,11 @@ import { baseFlattenTree } from '@hi-ui/tree-utils'
 import { TreeDataItem, FlattedTreeNodeData } from '../types'
 
 const EMPTY_FIELD_NAMES = {} as any
+
+export const getKey = (fieldNames: any, key: string): string => {
+  return fieldNames[key] || key
+}
+
 /**
  * 扁平化树数据结构，基于前序遍历
  *
