@@ -1,5 +1,25 @@
 # @hi-ui/hiui
 
+## 4.6.3
+
+### Patch Changes
+
+- [#2970](https://github.com/XiaoMi/hiui/pull/2970) [`657d180`](https://github.com/XiaoMi/hiui/commit/657d1802ac424e2498f9036047cc74a34659d5d6) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(check-select): 支持按 Enter 键是否选中当前项功能，checkedOnEntered 默认为 true
+
+- [#2968](https://github.com/XiaoMi/hiui/pull/2968) [`6ed4e8eeb`](https://github.com/XiaoMi/hiui/commit/6ed4e8eeb1edb97ed23aa3d5366f993575a6df57) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): 行选中增加单选
+
+- [#2952](https://github.com/XiaoMi/hiui/pull/2952) [`f7137e3db`](https://github.com/XiaoMi/hiui/commit/f7137e3dbff8a3a2735f9e7d8a09fc942c8a8a86) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(check-tree-select): 新增支持过滤已选择项
+
+- [#2964](https://github.com/XiaoMi/hiui/pull/2964) [`7bdd549d0`](https://github.com/XiaoMi/hiui/commit/7bdd549d0fcb6a6b903742333e352e184723aa3b) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat(tree): 新增 icon 支持自定义渲染函数
+
+- [#2966](https://github.com/XiaoMi/hiui/pull/2966) [`bc306526c`](https://github.com/XiaoMi/hiui/commit/bc306526c948cb2b1ecd73b63e903d941c78dd9a) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix(tree): 修复组件指定 fieldNames={{ title: 'name' }} 后，menuOptions 里 type 为 editNode 时会出现改不了节点的情况
+
+- Updated dependencies [[`bc306526c`](https://github.com/XiaoMi/hiui/commit/bc306526c948cb2b1ecd73b63e903d941c78dd9a), [`f7137e3db`](https://github.com/XiaoMi/hiui/commit/f7137e3dbff8a3a2735f9e7d8a09fc942c8a8a86), [`7bdd549d0`](https://github.com/XiaoMi/hiui/commit/7bdd549d0fcb6a6b903742333e352e184723aa3b), [`6ed4e8eeb`](https://github.com/XiaoMi/hiui/commit/6ed4e8eeb1edb97ed23aa3d5366f993575a6df57), [`657d180`](https://github.com/XiaoMi/hiui/commit/657d1802ac424e2498f9036047cc74a34659d5d6)]:
+  - @hi-ui/tree@4.6.0
+  - @hi-ui/check-tree-select@4.6.0
+  - @hi-ui/table@4.6.0
+  - @hi-ui/check-select@4.5.0
+
 ## 4.6.2
 
 ### Patch Changes
