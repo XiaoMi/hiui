@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 4.6.0
+
+### Minor Changes
+
+- [#2968](https://github.com/XiaoMi/hiui/pull/2968) [`6ed4e8eeb`](https://github.com/XiaoMi/hiui/commit/6ed4e8eeb1edb97ed23aa3d5366f993575a6df57) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 行选中增加单选
+
 ## 4.5.5
 
 ### Patch Changes
