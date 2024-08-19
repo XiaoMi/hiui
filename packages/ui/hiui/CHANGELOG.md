@@ -1,5 +1,11 @@
 # @hi-ui/hiui
 
+## 4.6.4
+
+### Patch Changes
+
+- [#2972](https://github.com/XiaoMi/hiui/pull/2972) [`83c9dd9`](https://github.com/XiaoMi/hiui/commit/83c9dd9f393e0f9355985eb213347b07b119b1a6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(env): 去掉 inject-head-style 依赖
+
 ## 4.6.3
 
 ### Patch Changes
