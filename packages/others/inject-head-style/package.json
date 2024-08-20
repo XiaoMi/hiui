@@ -7,16 +7,6 @@
   ],
   "author": "flcwl",
   "license": "MIT",
-  "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "predeploy": "npm run build && cd example && npm run build",
-    "deploy": "gh-pages -d ./example/dist",
-    "release": "np --no-yarn --no-tests --no-cleanup"
-  },
   "directories": {
     "dist": "dist"
   },
@@ -41,11 +31,6 @@
     "Android >= 4.4",
     "iOS >= 9"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
   "prettier": {
     "printWidth": 80,
     "semi": true,
