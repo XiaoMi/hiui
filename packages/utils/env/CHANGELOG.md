@@ -1,5 +1,11 @@
 # @hi-ui/env
 
+## 4.0.9
+
+### Patch Changes
+
+- [#2974](https://github.com/XiaoMi/hiui/pull/2974) [`414aaf512`](https://github.com/XiaoMi/hiui/commit/414aaf5120f323bb2d2ba4eddd5d531ac5dbea26) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 增加符合开源合规的 inject-head-style 依赖
+
 ## 4.0.8
 
 ### Patch Changes
