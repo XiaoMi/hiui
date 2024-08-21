@@ -84,6 +84,8 @@ export const useTable = ({
   scrollbar,
   rowClassName,
   cellClassName,
+  onLeftFreeze,
+  onHighlightedCol,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -676,6 +678,8 @@ export const useTable = ({
     scrollbar,
     rowClassName,
     cellClassName,
+    onLeftFreeze,
+    onHighlightedCol,
   }
 }
 
@@ -866,6 +870,18 @@ export interface UseTableProps {
     column: Record<string, any>,
     index: number
   ) => string
+  /**
+   * 设置左冻结回调
+   */
+  onLeftFreeze?: (dataKey: string, column: TableColumnItem) => void
+  /**
+   * 设置列高亮回调
+   */
+  onHighlightedCol?: (
+    active: boolean,
+    column: TableColumnItem,
+    highlightedColKeys: string[]
+  ) => void
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>

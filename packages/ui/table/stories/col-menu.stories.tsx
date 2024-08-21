@@ -20,6 +20,9 @@ export const ColMenu = () => {
       sorter(pre, next) {
         return pre.raw.age - next.raw.age
       },
+      sorterCallback(sorterType, column) {
+        console.log(sorterType, column)
+      },
     },
     {
       title: 'Home phone',
@@ -232,11 +235,25 @@ export const ColMenu = () => {
     },
   ])
 
+  const onLeftFreeze = (leftFreeze, column) => {
+    console.log(leftFreeze, column)
+  }
+
+  const onHighlightedCol = (highlightedCol, column, highlightedColKeys) => {
+    console.log(highlightedCol, column, highlightedColKeys)
+  }
+
   return (
     <>
       <h1>ColMenu for Table</h1>
       <div className="table-col-menu__wrap" style={{ minWidth: 660, background: '#fff' }}>
-        <Table columns={columns} data={data} showColMenu />
+        <Table
+          columns={columns}
+          data={data}
+          showColMenu
+          onLeftFreeze={onLeftFreeze}
+          onHighlightedCol={onHighlightedCol}
+        />
       </div>
     </>
   )

@@ -20,6 +20,9 @@ export const DataSorter = () => {
       sorter(pre, next) {
         return pre.raw.age - next.raw.age
       },
+      sorterCallback(sorterType, sorterColumn) {
+        console.log(sorterType, sorterColumn)
+      },
     },
     {
       title: 'Home phone',

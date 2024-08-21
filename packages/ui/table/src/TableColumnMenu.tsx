@@ -33,6 +33,9 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
       setLeftFreezeColumn,
       isHighlightedCol,
       onHighlightedColChange,
+      highlightedColKeys,
+      onLeftFreeze,
+      onHighlightedCol,
     } = useTableContext()
 
     const { id: dataKey, raw: columnRaw } = column
@@ -73,9 +76,11 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
                   if (shouldActive) {
                     setActiveSorterType('ascend')
                     setActiveSorterColumn(dataKey)
+                    columnRaw.sorterCallback?.('ascend', columnRaw)
                   } else {
                     setActiveSorterType(null)
                     setActiveSorterColumn(null)
+                    columnRaw.sorterCallback?.(null, columnRaw)
                   }
 
                   menuVisibleAction.off()
@@ -93,9 +98,11 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
                   if (shouldActive) {
                     setActiveSorterType('descend')
                     setActiveSorterColumn(dataKey)
+                    columnRaw.sorterCallback?.('descend', columnRaw)
                   } else {
                     setActiveSorterType(null)
                     setActiveSorterColumn(null)
+                    columnRaw.sorterCallback?.(null, columnRaw)
                   }
 
                   menuVisibleAction.off()
@@ -110,7 +117,10 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
               icon={<ColumnHeightOutlined />}
               onSwitch={(shouldActive) => {
                 onHighlightedColChange(column, shouldActive)
-
+                const latestHighlightedColKeys = shouldActive
+                  ? [...highlightedColKeys, column.raw.dataKey || ''].filter(Boolean)
+                  : [...highlightedColKeys.filter((keys: string) => keys !== column.raw.dataKey)]
+                onHighlightedCol?.(shouldActive, column, latestHighlightedColKeys)
                 menuVisibleAction.off()
               }}
             />
@@ -123,8 +133,10 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
               onSwitch={(shouldActive) => {
                 if (shouldActive) {
                   setLeftFreezeColumn(dataKey)
+                  onLeftFreeze?.(dataKey, columnRaw)
                 } else {
                   setLeftFreezeColumn('')
+                  onLeftFreeze?.('', columnRaw)
                 }
 
                 menuVisibleAction.off()
