@@ -21,6 +21,7 @@ import { PaginationProps } from '@hi-ui/pagination'
 import { ScrollbarProps } from '@hi-ui/scrollbar'
 import { parseFixedColumns, setColumnsDefaultWidth } from './utils'
 import { useAsyncSwitch, useExpand } from './hooks'
+import { useChange, Ipagination, ISorter, IExtra } from './hooks/use-change'
 import { useColWidth } from './hooks/use-col-width'
 import { useColumns } from './hooks/use-colgroup'
 import { useTableDrag } from './hooks/use-drag'
@@ -84,8 +85,10 @@ export const useTable = ({
   scrollbar,
   rowClassName,
   cellClassName,
-  onLeftFreeze,
+  onChange,
   onHighlightedCol,
+  current,
+  pageSize,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -595,6 +598,17 @@ export const useTable = ({
     return _data
   }, [activeSorterColumn, activeSorterType, transitionData, columns])
 
+  useChange({
+    activeSorterColumn,
+    activeSorterType,
+    current,
+    pageSize,
+    columns,
+    showData,
+    data,
+    transitionData,
+    onChange,
+  })
   return {
     measureRowElementRef,
     rootProps,
@@ -678,7 +692,6 @@ export const useTable = ({
     scrollbar,
     rowClassName,
     cellClassName,
-    onLeftFreeze,
     onHighlightedCol,
   }
 }
@@ -871,17 +884,21 @@ export interface UseTableProps {
     index: number
   ) => string
   /**
-   * 设置左冻结回调
+   * 设置排序及翻页回调
    */
-  onLeftFreeze?: (dataKey: string, column: TableColumnItem) => void
+  onChange?: (pagination: Ipagination, sorter: ISorter, extra: IExtra) => void
   /**
    * 设置列高亮回调
    */
   onHighlightedCol?: (
-    active: boolean,
-    column: TableColumnItem,
+    changedColInfo: {
+      active: boolean
+      column: TableColumnItem
+    },
     highlightedColKeys: string[]
   ) => void
+  current?: number
+  pageSize?: number
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>

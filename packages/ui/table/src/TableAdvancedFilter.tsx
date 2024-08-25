@@ -73,11 +73,9 @@ export const SorterMenu = ({ prefixCls, column }: any) => {
           if (activeSorterType === 'ascend' && activeSorterColumn === columnKey) {
             setActiveSorterType(null)
             setActiveSorterColumn(null)
-            column.raw.sorterCallback?.(null, column.raw)
           } else {
             setActiveSorterType('ascend')
             setActiveSorterColumn(columnKey)
-            column.raw.sorterCallback?.('ascend', column.raw)
           }
         }}
       >
@@ -92,11 +90,9 @@ export const SorterMenu = ({ prefixCls, column }: any) => {
           if (activeSorterType === 'descend' && activeSorterColumn === columnKey) {
             setActiveSorterType(null)
             setActiveSorterColumn(null)
-            column.raw.sorterCallback?.(null, column.raw)
           } else {
             setActiveSorterType('descend')
             setActiveSorterColumn(columnKey)
-            column.raw.sorterCallback?.('descend', column.raw)
           }
         }}
       >

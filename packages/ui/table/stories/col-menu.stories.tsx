@@ -20,9 +20,6 @@ export const ColMenu = () => {
       sorter(pre, next) {
         return pre.raw.age - next.raw.age
       },
-      sorterCallback(sorterType, column) {
-        console.log(sorterType, column)
-      },
     },
     {
       title: 'Home phone',
@@ -233,15 +230,41 @@ export const ColMenu = () => {
       phone: 18900010002,
       address: 'Dublin No. 2 Lake Park',
     },
+    {
+      key: '6',
+      name: 'Jake White2',
+      age: 22,
+      tel1: '0571-22098909',
+      tel2: '0571-22098909',
+      tel3: '0571-22098909',
+      tel4: '0571-22098909',
+      tel5: '0571-22098909',
+      tel6: '0571-22098909',
+      tel: '0575-22098909',
+      tel7: '0571-22098909',
+      tel8: '0571-22098909',
+      tel9: '0571-22098909',
+      tel10: '0571-22098909',
+      tel11: '0571-22098909',
+      tel12: '0571-22098909',
+      phone: 18900010002,
+      address: 'Dublin No. 2 Lake Park',
+    },
   ])
 
-  const onLeftFreeze = (leftFreeze, column) => {
-    console.log(leftFreeze, column)
+  const onHighlightedCol = (changedColInfo, highlightedColKeys) => {
+    console.log(changedColInfo, highlightedColKeys)
   }
 
-  const onHighlightedCol = (highlightedCol, column, highlightedColKeys) => {
-    console.log(highlightedCol, column, highlightedColKeys)
+  const onChange = (pagination, sorter, extra) => {
+    console.log(pagination, sorter, extra)
   }
+
+  const [paginationState, setPaginationState] = React.useState({
+    current: 1,
+    data: data.slice(0, 5),
+    pageSize: 5,
+  })
 
   return (
     <>
@@ -249,10 +272,30 @@ export const ColMenu = () => {
       <div className="table-col-menu__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Table
           columns={columns}
-          data={data}
+          data={paginationState.data}
           showColMenu
-          onLeftFreeze={onLeftFreeze}
           onHighlightedCol={onHighlightedCol}
+          onChange={onChange}
+          pagination={{
+            showTotal: true,
+            pageSize: paginationState.pageSize,
+            pageSizeOptions: [5, 10, 20],
+            onPageSizeChange: (pageSize) => {
+              setPaginationState((prev) => ({
+                ...prev,
+                pageSize,
+              }))
+            },
+            total: data.length,
+            current: paginationState.current,
+            onChange: (page, pre, size = 5) => {
+              setPaginationState((prev) => ({
+                ...prev,
+                current: page,
+                data: data.slice(size * (page - 1), size * page),
+              }))
+            },
+          }}
         />
       </div>
     </>
