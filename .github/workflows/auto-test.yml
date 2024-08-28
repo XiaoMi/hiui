@@ -23,6 +23,12 @@ jobs:
           yarn config set strict-ssl false
           yarn
 
-      - name: Run
+      # - name: Run
+      #   run: |
+      #     yarn storybook
+
+      - name: Test
         run: |
-          yarn storybook
+          cd hi-test
+          yarn playwright test
+
