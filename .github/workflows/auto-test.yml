@@ -22,6 +22,7 @@ jobs:
         run: |
           cd hi-test
           yarn install
+          yarn playwright install
       # - name: Cache dependencies
       # - name: Install dependencies
       #   run: |
