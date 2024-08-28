@@ -35,6 +35,11 @@ jobs:
           node-version: 14.21.x
           cache: 'yarn'
 
+      - name: Start
+        run: |
+          yarn storybook
+
+
       - name: Test
         run: |
           yarn run auto-test
