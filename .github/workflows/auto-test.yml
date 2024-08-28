@@ -12,10 +12,10 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Setup Node.js 14.21.x
+      - name: Setup Node.js 18.20.x
         uses: actions/setup-node@v4
         with:
-          node-version: 14.21.x
+          node-version: 18.20.x
           cache: 'yarn'
 
       - name: Install dependencies
@@ -28,7 +28,11 @@ jobs:
       #     yarn config set strict-ssl false
       #     yarn
 
-
+      - name: Setup Node.js 14.21.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 14.21.x
+          cache: 'yarn'
 
       - name: Test
         run: |
