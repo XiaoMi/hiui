@@ -29,7 +29,5 @@ jobs:
 
       - name: Test
         run: |
-          cd hi-test
-          echo ${{ process.cwd() }}
-          yarn playwright test
+        yarn run auto-test
 

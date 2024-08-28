@@ -33,7 +33,8 @@
     "publish": "changeset publish --registry=https://registry.npmjs.org/",
     "deploy": "gh-pages -t -d dist-github --git \"$(which git)\"",
     "pregenerate-docs": "yarn turbo run auto-generate --filter @hi-ui/icons",
-    "generate-docs": "yarn turbo run generate-docs --filter @hi-ui/hi-docs"
+    "generate-docs": "yarn turbo run generate-docs --filter @hi-ui/hi-docs",
+    "auto-test": "cd ./hi-test && yarn playwright test"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
