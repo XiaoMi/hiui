@@ -89,7 +89,7 @@ const RangePanel = () => {
     [type]
   )
 
-  const setRanges = (date: moment.Moment) => {
+  const setRanges = (date: moment.Moment, panelIndex: number = 0) => {
     const newRange = { ...range }
 
     if (newRange.start && (range.selecting || !calendarClickIsEnd.current)) {
@@ -101,7 +101,7 @@ const RangePanel = () => {
 
       // 此处是明显的语法错误，故而注释修改
       // onSelect(date, calendarClickIsEnd)
-      onSelect(date as any, !calendarClickIsEnd.current)
+      onSelect(date as any, !calendarClickIsEnd.current, panelIndex)
 
       if (type === 'weekrange') {
         // 固定模式下，即使跨月选择了日期，仍然显示当前月的日期选择面板
@@ -143,7 +143,7 @@ const RangePanel = () => {
       newRange.selecting = true
       newRange.start = date
       newRange.end = null
-      onSelect(date as any, false)
+      onSelect(date as any, false, panelIndex)
     }
     setRange(newRange)
   }
@@ -157,12 +157,12 @@ const RangePanel = () => {
 
     if (type === 'timeperiod' && views[uIndex] === 'date') {
       onPick([date, moment(date).hour(date.hour() + timeInterval / 60)], true)
-      onSelect(date as any, true)
+      onSelect(date as any, true, uIndex)
       return
     }
     // V4修改：type === 'weekrange' -> views[uIndex] === 'date' （修正，周模式下，无法使用年份月份快捷切换面板BUG）
     if (type.includes(views[uIndex]) || (type === 'weekrange' && views[uIndex] === 'date')) {
-      setRanges(date)
+      setRanges(date, uIndex)
     } else {
       const _innerDates = genNewDates(calRenderDates, date, uIndex)
       setCalRenderDates(_innerDates)

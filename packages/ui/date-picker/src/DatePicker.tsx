@@ -105,8 +105,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     }, [propType])
 
     const propsOnSelect = useCallback(
-      (data: moment.Moment, isCompleted: boolean) => {
-        propsOnSelectOriginal && propsOnSelectOriginal(moment(data).toDate(), isCompleted)
+      (data: moment.Moment, isCompleted: boolean, panelIndex?: number) => {
+        propsOnSelectOriginal?.(moment(data).toDate(), isCompleted, panelIndex)
       },
       [propsOnSelectOriginal]
     )
