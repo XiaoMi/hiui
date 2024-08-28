@@ -18,10 +18,10 @@ jobs:
           node-version: 14.21.x
           cache: 'yarn'
 
-      - name: Install dependencies
-        run: |
-          yarn config set strict-ssl false
-          yarn
+      # - name: Install dependencies
+      #   run: |
+      #     yarn config set strict-ssl false
+      #     yarn
 
       # - name: Run
       #   run: |
