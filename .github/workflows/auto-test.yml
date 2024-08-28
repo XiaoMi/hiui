@@ -37,8 +37,7 @@ jobs:
 
       - name: Start
         run: |
-          cd ../
-          yarn storybook
+          cd ../ && yarn storybook
 
 
       - name: Test
