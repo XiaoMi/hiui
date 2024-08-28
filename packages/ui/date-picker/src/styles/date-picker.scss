@@ -708,7 +708,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
   }
 
-  &__footer {
+  &__footer-old {
     height: 48px;
     border-top: 1px solid use-color('gray', 100);
     box-sizing: border-box;
@@ -719,7 +719,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     font-size: 14px;
     width: 100%;
 
-    &:not(.#{$prefix}__footer--disable):hover {
+    &:not(.#{$prefix}__footer-old--disable):hover {
       color: use-color-mode('primary');
     }
 
@@ -866,7 +866,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
   }
 
-  &__date-range-time-bottom {
+  &__footer {
     display: flex;
     justify-content: space-between;
     padding: 6px 8px;

@@ -11,15 +11,18 @@ import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
 import { getBelongWeekRange } from '../utils/week'
 import { CalenderSelectedRange } from '../hooks/useCalenderData'
+import { Footer } from './footer'
 
 interface PanelProps {
   onPick: DPContextData['onPick']
   outDate: (moment.Moment | null)[]
   disabledDate: DPContextData['disabledDate']
   range?: CalenderSelectedRange
+  needConfirm?: boolean
+  onConfirm?: DPContextData['onConfirm']
 }
 const Panel = (props: PanelProps) => {
-  const { onPick, outDate, range, disabledDate } = props
+  const { onPick: onPickProp, outDate, range, disabledDate, needConfirm, onConfirm } = props
   const {
     // outDate,
     type,
@@ -59,6 +62,13 @@ const Panel = (props: PanelProps) => {
       : moment().set('hour', 0).set('minute', 0).set('second', 0)
     setCalRenderDates([rDate])
   }, [outDate])
+
+  const onPick = useCallback(
+    (dates: (moment.Moment | null)[], isShowPanel?: boolean) => {
+      onPickProp(dates, needConfirm ? true : isShowPanel)
+    },
+    [needConfirm, onPickProp]
+  )
 
   const onCalenderPick = useCallback(
     (date: moment.Moment) => {
@@ -116,7 +126,7 @@ const Panel = (props: PanelProps) => {
   const panelCls = cx(
     `${prefixCls}__panel`,
     `theme__${theme}`,
-    showTime && `${prefixCls}__panel--time ${prefixCls}__panel--noshadow`
+    (showTime || needConfirm) && `${prefixCls}__panel--time ${prefixCls}__panel--noshadow`
   )
 
   const timePickerFormat = useTimePickerFormat(realFormat)
@@ -149,56 +159,67 @@ const Panel = (props: PanelProps) => {
   }
 
   return (
-    <div className={panelCls}>
-      <div className={`${prefixCls}__panel--left`}>
-        {calRenderDates[0] && (
-          <React.Fragment>
-            <Header
-              renderDate={calRenderDates[0]}
-              // 疑问：尚未找到这个 props
-              // renderDates={calRenderDates}
-              changeView={() => setView('year')}
-              onArrowEvent={onArrowEvent}
-              i18n={i18n}
-              view={view}
-              panelPosition={0}
-              // 疑问：尚未找到这个 props
-              // type={type}
-              locale={locale}
-              prefixCls={prefixCls}
-            />
-            <Calendar
-              renderDate={calRenderDates[0]}
-              originDate={outDate[0]}
-              onPick={onCalenderPick}
-              view={view}
-              disabledDate={disabledDate}
-              range={range}
-              // panelPosition="left"
-            />
-          </React.Fragment>
+    <>
+      <div className={panelCls}>
+        <div className={`${prefixCls}__panel--left`}>
+          {calRenderDates[0] && (
+            <React.Fragment>
+              <Header
+                renderDate={calRenderDates[0]}
+                // 疑问：尚未找到这个 props
+                // renderDates={calRenderDates}
+                changeView={() => setView('year')}
+                onArrowEvent={onArrowEvent}
+                i18n={i18n}
+                view={view}
+                panelPosition={0}
+                // 疑问：尚未找到这个 props
+                // type={type}
+                locale={locale}
+                prefixCls={prefixCls}
+              />
+              <Calendar
+                renderDate={calRenderDates[0]}
+                originDate={outDate[0]}
+                onPick={onCalenderPick}
+                view={view}
+                disabledDate={disabledDate}
+                range={range}
+                // panelPosition="left"
+              />
+            </React.Fragment>
+          )}
+        </div>
+        {showTime && (
+          <div className={`${prefixCls}__panel__time-container`}>
+            <div className={`${prefixCls}__panel__time-header`}>{timePickerData[0]}</div>
+            <div className={`${prefixCls}__panel__time-content`}>
+              <TimePickerPopContent
+                onChange={onTimeChange}
+                value={timePickerData}
+                hourStep={hourStep}
+                minuteStep={minuteStep}
+                secondStep={secondStep}
+                type="single"
+                format={timePickerFormat}
+                disabledHours={disabledHours}
+                disabledMinutes={disabledMinutes}
+                disabledSeconds={disabledSeconds}
+              />
+            </div>
+          </div>
         )}
       </div>
-      {showTime && (
-        <div className={`${prefixCls}__panel__time-container`}>
-          <div className={`${prefixCls}__panel__time-header`}>{timePickerData[0]}</div>
-          <div className={`${prefixCls}__panel__time-content`}>
-            <TimePickerPopContent
-              onChange={onTimeChange}
-              value={timePickerData}
-              hourStep={hourStep}
-              minuteStep={minuteStep}
-              secondStep={secondStep}
-              type="single"
-              format={timePickerFormat}
-              disabledHours={disabledHours}
-              disabledMinutes={disabledMinutes}
-              disabledSeconds={disabledSeconds}
-            />
-          </div>
-        </div>
+      {needConfirm && (
+        <Footer
+          disabled={!outDate[0]}
+          onConfirmButtonClick={() => {
+            onPickProp(calRenderDates, false)
+            onConfirm?.(calRenderDates[0].toDate())
+          }}
+        />
       )}
-    </div>
+    </>
   )
 }
 
