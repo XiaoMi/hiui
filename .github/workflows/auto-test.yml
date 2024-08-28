@@ -30,6 +30,6 @@ jobs:
       - name: Test
         run: |
           cd hi-test
-          echo process.cwd()
+          echo ${{ process.cwd() }}
           yarn playwright test
 
