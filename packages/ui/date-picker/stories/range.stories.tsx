@@ -45,6 +45,7 @@ export const Range = () => {
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
+          onSelect={console.log}
         />
 
         <h2>季度</h2>
@@ -55,6 +56,7 @@ export const Range = () => {
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
+          onSelect={console.log}
         />
 
         <h2>月份</h2>
@@ -65,6 +67,7 @@ export const Range = () => {
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
+          onSelect={console.log}
         />
 
         <h2>周</h2>
@@ -75,6 +78,7 @@ export const Range = () => {
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
+          onSelect={console.log}
         />
 
         <h2>日期时间范围</h2>
@@ -85,6 +89,7 @@ export const Range = () => {
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
+          onSelect={console.log}
         />
 
         <h2>时间段快速选择</h2>
