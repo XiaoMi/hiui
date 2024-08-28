@@ -1,0 +1,28 @@
+name: auto-test
+
+on:
+  push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js 14.21.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 14.21.x
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: |
+          yarn config set strict-ssl false
+          yarn
+
+      - name: Run
+        run: |
+          yarn storybook
