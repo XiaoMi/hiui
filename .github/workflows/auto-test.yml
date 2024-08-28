@@ -37,7 +37,7 @@ jobs:
 
       - name: Start
         run: |
-          ls
+          yarn install
           yarn storybook
 
 
