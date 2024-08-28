@@ -8,5 +8,7 @@
     "@types/node": "^22.5.0"
 
   },
-  "scripts": {}
+  "scripts": {
+    "prestart": "cd ../ && yarn storybook"
+  }
 }
