@@ -29,5 +29,5 @@ jobs:
 
       - name: Test
         run: |
-        yarn run auto-test
+          yarn run auto-test
 
