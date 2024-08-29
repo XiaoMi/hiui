@@ -31,7 +31,29 @@ export const CustomRender = () => {
           }}
           defaultValue={[new Date(), new Date()]}
           customRender={(data) => {
-            return <Input value={`${data[0]}  ~  ${data[1]}`} readOnly placeholder="请选择" />
+            const date1 = new Date(data[0])
+            const date2 = new Date(data[1])
+            const year1 = date1.getFullYear()
+            const year2 = date2.getFullYear()
+            const month1 = (date1.getMonth() + 1).toString().padStart(2, '0')
+            const month2 = (date2.getMonth() + 1).toString().padStart(2, '0')
+            const day1 = date1.getDate().toString().padStart(2, '0')
+            const day2 = date2.getDate().toString().padStart(2, '0')
+            const hours1 = date1.getHours().toString().padStart(2, '0')
+            const hours2 = date2.getHours().toString().padStart(2, '0')
+            const minutes1 = date1.getMinutes().toString().padStart(2, '0')
+            const minutes2 = date2.getMinutes().toString().padStart(2, '0')
+            const seconds1 = date1.getSeconds().toString().padStart(2, '0')
+            const seconds2 = date2.getSeconds().toString().padStart(2, '0')
+            const formattedDateTime1 = `${year1}-${month1}-${day1} ${hours1}:${minutes1}:${seconds1}`
+            const formattedDateTime2 = `${year2}-${month2}-${day2} ${hours2}:${minutes2}:${seconds2}`
+            return (
+              <Input
+                value={`${formattedDateTime1}  ~  ${formattedDateTime2}`}
+                readOnly
+                placeholder="请选择"
+              />
+            )
           }}
         />
       </div>

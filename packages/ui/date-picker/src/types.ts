@@ -286,5 +286,5 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
   /**
    * 自定义触发器
    */
-  customRender?: React.ReactNode | ((option: (string | undefined)[]) => React.ReactNode)
+  customRender?: React.ReactNode | ((option: (Date | undefined)[]) => React.ReactNode)
 }

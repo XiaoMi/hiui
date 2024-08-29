@@ -24,7 +24,7 @@ const Root = ({
   inputChangeEvent: InputChangeEvent
   dateRangeTimePanelNow: number
   invalid: boolean
-  customRender?: React.ReactNode | ((option: (string | undefined)[]) => React.ReactNode)
+  customRender?: React.ReactNode | ((option: (Date | undefined)[]) => React.ReactNode)
 }) => {
   const {
     i18n,
@@ -147,7 +147,7 @@ const Root = ({
       }}
     >
       {typeof customRender === 'function'
-        ? customRender(inputData.map((item) => item?.format('YYYY-MM-DD')))
+        ? customRender(inputData.map((item) => item?.toDate()))
         : customRender}
     </div>
   ) : (
