@@ -19,10 +19,19 @@ interface PanelProps {
   disabledDate: DPContextData['disabledDate']
   range?: CalenderSelectedRange
   needConfirm?: boolean
-  onConfirm?: DPContextData['onConfirm']
+  onConfirm?: (date: Date) => void
+  panelIndex?: number
 }
 const Panel = (props: PanelProps) => {
-  const { onPick: onPickProp, outDate, range, disabledDate, needConfirm, onConfirm } = props
+  const {
+    onPick: onPickProp,
+    outDate,
+    range,
+    disabledDate,
+    needConfirm,
+    onConfirm,
+    panelIndex = 0,
+  } = props
   const {
     // outDate,
     type,
@@ -72,7 +81,7 @@ const Panel = (props: PanelProps) => {
 
   const onCalenderPick = useCallback(
     (date: moment.Moment) => {
-      onSelect(date as any, true)
+      onSelect(date as any, true, panelIndex)
       if (type === 'year' || (type === 'month' && view === 'month')) {
         // year || month picker
         onPick(

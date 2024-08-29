@@ -99,6 +99,7 @@ export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
         disabledDate={panelDisabledDate}
         outDate={panelData}
         range={range}
+        panelIndex={nowIndex}
       />
       <Footer disabled={isConfirmButtonDisabled} onConfirmButtonClick={onConfirmButtonClick} />
     </React.Fragment>
