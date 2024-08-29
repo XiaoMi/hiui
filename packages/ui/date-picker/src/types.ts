@@ -287,4 +287,13 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 选择框前置内容
    */
   prefix?: React.ReactNode
+  /**
+   * 是否需要确认按钮，为 <code>false</code> 时失去焦点即代表选择。日期时间范围选择默认为 <code>true</code>
+   * @default false
+   */
+  needConfirm?: boolean
+  /**
+   * 点击确认按钮的回调
+   */
+  onConfirm?: (date: Date) => void
 }

@@ -1,11 +1,10 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { useLocaleContext } from '@hi-ui/core'
-import HiButton from '@hi-ui/button'
 import DPContext, { DPContextData } from '../context'
 import Panel from './panel'
 import { CalenderSelectedRange } from '../hooks/useCalenderData'
 import moment from 'moment'
 import { CalendarViewEnum } from '../types'
+import { Footer } from './footer'
 
 interface DateRangeTimePanelProps {
   nowIndex: number
@@ -14,8 +13,7 @@ interface DateRangeTimePanelProps {
 
 // 选择日期范围，并且希望选择时间
 export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
-  const i18n = useLocaleContext()
-  const { outDate, onPick, disabledDate, prefixCls, footerRender } = useContext(DPContext)
+  const { outDate, onPick, disabledDate } = useContext(DPContext)
   const { nowIndex, onChangeNowIndex } = props
 
   const [range, setRange] = useState<CalenderSelectedRange>({
@@ -94,16 +92,6 @@ export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
     return nowIndex === 0 ? !range.start : !range.end
   }, [nowIndex, range])
 
-  const footer = useMemo(() => {
-    const sureActionContent = (
-      <HiButton type="primary" disabled={isConfirmButtonDisabled} onClick={onConfirmButtonClick}>
-        {i18n.get('datePicker.ok')}
-      </HiButton>
-    )
-
-    return typeof footerRender === 'function' ? footerRender(sureActionContent) : sureActionContent
-  }, [footerRender, i18n, isConfirmButtonDisabled, onConfirmButtonClick])
-
   return (
     <React.Fragment>
       <Panel
@@ -112,7 +100,7 @@ export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
         outDate={panelData}
         range={range}
       />
-      <div className={`${prefixCls}__date-range-time-bottom`}>{footer}</div>
+      <Footer disabled={isConfirmButtonDisabled} onConfirmButtonClick={onConfirmButtonClick} />
     </React.Fragment>
   )
 }
