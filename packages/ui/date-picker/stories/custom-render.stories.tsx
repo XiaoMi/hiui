@@ -18,7 +18,7 @@ export const CustomRender = () => {
           }}
           onSelect={console.log}
           customRender={(data) => {
-            return <Input value={data} readOnly placeholder="请选择" />
+            return <Input value={data[0]} readOnly placeholder="请选择" />
           }}
         />
         <h2>日期时间范围</h2>

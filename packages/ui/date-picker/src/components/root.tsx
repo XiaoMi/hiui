@@ -24,7 +24,7 @@ const Root = ({
   inputChangeEvent: InputChangeEvent
   dateRangeTimePanelNow: number
   invalid: boolean
-  customRender?: React.ReactNode | ((option: string[]) => React.ReactNode)
+  customRender?: React.ReactNode | ((option: (string | undefined)[]) => React.ReactNode)
 }) => {
   const {
     i18n,
@@ -135,14 +135,6 @@ const Root = ({
     (invalid || !isValueValid) && `${prefixCls}__picker--invalid`
   )
 
-  const dataValue = []
-  if (inputData[0]) {
-    dataValue.push(inputData[0].format('YYYY-MM-DD'))
-  }
-  if (inputData[1]) {
-    dataValue.push(inputData[1].format('YYYY-MM-DD'))
-  }
-
   return customRender ? (
     <div
       ref={setAttachEl}
@@ -154,7 +146,9 @@ const Root = ({
         }
       }}
     >
-      {typeof customRender === 'function' ? customRender(dataValue) : customRender}
+      {typeof customRender === 'function'
+        ? customRender(inputData.map((item) => item?.format('YYYY-MM-DD')))
+        : customRender}
     </div>
   ) : (
     <div className={_cls} ref={setAttachEl}>
