@@ -40,10 +40,6 @@ jobs:
           yarn config set strict-ssl false
           yarn
 
-      - name: Start
-        run: |
-          yarn storybook
-
 
       - name: Test
         run: |
