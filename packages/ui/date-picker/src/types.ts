@@ -104,7 +104,11 @@ export type DatePickerAltCalendarPresetEnum = 'zh-CN' | 'id-ID'
 
 export type DateMarkRender = (currentDate: number, today: number) => React.ReactNode
 
-export type DisabledDate = (currentDate: Date, view: CalendarViewEnum) => boolean
+export type DisabledDate = (
+  currentDate: Date,
+  view: CalendarViewEnum,
+  panelIndex?: number
+) => boolean
 
 export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placeholder'> {
   /**
@@ -141,7 +145,7 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 不可选择的日期(返回true为不可选)
    * @default () => false
    */
-  disabledDate?: (currentDate: Date, view: CalendarViewEnum) => boolean
+  disabledDate?: (currentDate: Date, view: CalendarViewEnum, panelIndex?: number) => boolean
   /**
    * 是否可以清空
    * @default true

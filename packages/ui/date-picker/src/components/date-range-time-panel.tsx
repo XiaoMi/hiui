@@ -49,7 +49,7 @@ export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
 
   const panelDisabledDate = useCallback(
     (date: Date, disposeView: CalendarViewEnum) => {
-      if (disabledDate(date, disposeView)) {
+      if (disabledDate(date, disposeView, nowIndex)) {
         return true
       } else {
         // 当正在操作开始，并且结束存在时，限制开始范围
