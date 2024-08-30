@@ -1,5 +1,17 @@
 # @hi-ui/menu
 
+## 4.3.1
+
+### Patch Changes
+
+- [#2944](https://github.com/XiaoMi/hiui/pull/2944) [`629731e5b`](https://github.com/XiaoMi/hiui/commit/629731e5b3c5f98e70599ae06eb88609336d3467) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复最后一个菜单项的子节点没有间距的问题
+
+## 4.3.0
+
+### Minor Changes
+
+- [#2880](https://github.com/XiaoMi/hiui/pull/2880) [`1b46f791f`](https://github.com/XiaoMi/hiui/commit/1b46f791f99c20a946250c2921f3362304e86371) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 新增支持配置字段别名
+
 ## 4.2.2
 
 ### Patch Changes

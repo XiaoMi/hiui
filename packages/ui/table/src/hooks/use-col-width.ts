@@ -98,13 +98,16 @@ export const useColWidth = ({
   }, [getVirtualWidths, virtual])
 
   useUpdateEffect(() => {
-    setColWidths((prev) => {
-      return measureRowElementRef.current?.childNodes.length === prev.length
-        ? // 走更新逻辑
-          getWidths(measureRowElementRef.current)
-        : // 当列数变化时重新走初始化逻辑
-          getGroupItemWidth(columns)
-    })
+    setColWidths(getGroupItemWidth(columns))
+    // setColWidths((prev) => {
+    //   // resizable 模式下通过 measureRowElementRef.current 去更新列宽，防止拖拽后宽度被重置
+    //   // 例如同时设置了 resizable 和 rowSelection，当拖拽某列宽度后再选中某行时，该列宽度会被重置
+    //   return resizable && measureRowElementRef.current?.childNodes.length === prev.length
+    //     ? // 走更新逻辑
+    //       getWidths(measureRowElementRef.current)
+    //     : // 当列数变化时重新走初始化逻辑
+    //       getGroupItemWidth(columns)
+    // })
   }, [columns])
 
   /**

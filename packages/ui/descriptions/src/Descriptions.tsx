@@ -1,10 +1,11 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
-import { cloneElement, toArray } from './util'
+import { HiBaseFieldNames, HiBaseHTMLProps } from '@hi-ui/core'
+import { cloneElement, toArray, transformData } from './util'
 import { Row } from './Row'
 import {
+  ContentPosition,
   DescriptionsAppearanceEnum,
   DescriptionsLabelPlacementEnum,
   DescriptionsPlacementEnum,
@@ -24,6 +25,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       className,
       children,
       data,
+      fieldNames,
       column = 3,
       placement = 'horizontal',
       appearance = 'unset',
@@ -31,6 +33,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       labelWidth,
       columnGap,
       size = 'md',
+      contentPosition = 'top',
       ...rest
     },
     ref
@@ -39,8 +42,14 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
     const vertical = placement === 'vertical'
     const bordered = appearance === 'table' || noBackground
 
+    const transformedData = useMemo(() => {
+      if (data) return transformData(data, fieldNames)
+      return data
+    }, [data, fieldNames])
     // 如果配置了data，则使用配置模式渲染，否则取 children
-    const computeChildren = data ? computeItems(data) : React.Children.toArray(children)
+    const computeChildren = transformedData
+      ? computeItems(transformedData)
+      : React.Children.toArray(children)
     const rows = computeRows(computeChildren, column)
 
     const cls = cx(
@@ -68,6 +77,7 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
                 labelPlacement={labelPlacement}
                 rootLabelWidth={labelWidth}
                 cellColumnGap={columnGap}
+                contentPosition={contentPosition}
               />
             ))}
           </tbody>
@@ -95,6 +105,10 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
    */
   data?: DescriptionsItemProps[]
   /**
+   * 设置 data 中label, value, labelWidth, labelPlacement 对应的 key
+   */
+  fieldNames?: HiBaseFieldNames
+  /**
    * label对齐方式
    */
   labelPlacement?: DescriptionsLabelPlacementEnum
@@ -111,6 +125,10 @@ export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
    * 设置大小
    */
   size?: 'md' | 'sm'
+  /**
+   * 在 horizontal 放置时，标签相对内容垂直对齐的方式
+   */
+  contentPosition?: ContentPosition
 }
 
 if (__DEV__) {

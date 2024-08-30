@@ -384,10 +384,11 @@ const RangePanel = () => {
             ))}
         </div>
       </div>
+      {/* 目前不会执行到该逻辑 */}
       {type === 'daterange' && showTime && (
         <div
-          className={`${prefixCls}__footer ${
-            !isDisableFooter ? `${prefixCls}__footer--disable` : ''
+          className={`${prefixCls}-old ${
+            !isDisableFooter ? `${prefixCls}__footer-old--disable` : ''
           }`}
           onClick={() => {
             isDisableFooter && setShowRangeMask(true)

@@ -1,5 +1,22 @@
 # @hi-ui/notification
 
+## 4.2.1
+
+### Patch Changes
+
+- [#2804](https://github.com/XiaoMi/hiui/pull/2804) [`9e91b9075`](https://github.com/XiaoMi/hiui/commit/9e91b90752a7638930de7d86c73f67049c376342) Thanks [@wangjue666](https://github.com/wangjue666)! - fix: 调整通知组件过度样式触发滚动条
+
+## 4.2.0
+
+### Minor Changes
+
+- [#2832](https://github.com/XiaoMi/hiui/pull/2832) [`e37e7616b`](https://github.com/XiaoMi/hiui/commit/e37e7616b541fec3940ec00dac0764f09234f7e3) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持自定义 notification 配置
+
+### Patch Changes
+
+- Updated dependencies [[`7550aff2e`](https://github.com/XiaoMi/hiui/commit/7550aff2ef526c0009f37d79b249875e5b756275)]:
+  - @hi-ui/toast@4.1.0
+
 ## 4.1.4
 
 ### Patch Changes

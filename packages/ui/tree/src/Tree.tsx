@@ -1,5 +1,5 @@
 import React, { forwardRef, useMemo, useRef, useImperativeHandle } from 'react'
-import { HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseSizeEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
@@ -81,6 +81,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       // others
       showLine = false,
       render: titleRender,
+      iconRender,
       onContextMenu,
       flattedData: flattedDataProp,
       fieldNames,
@@ -184,6 +185,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         expandedIcon,
         leafIcon,
         titleRender,
+        iconRender,
         onContextMenu,
         expandOnSelect,
       }),
@@ -206,6 +208,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         expandedIcon,
         leafIcon,
         titleRender,
+        iconRender,
         onContextMenu,
         expandOnSelect,
       ]
@@ -436,6 +439,10 @@ export interface TreeProps {
    */
   render?: (node: TreeNodeEventData) => React.ReactNode
   /**
+   * 自定义渲染节点的 icon
+   */
+  iconRender?: (node: TreeNodeEventData) => React.ReactNode
+  /**
    * 自定义节点右键菜单
    */
   onContextMenu?: (event: React.MouseEvent, node: TreeNodeEventData) => void
@@ -453,10 +460,9 @@ export interface TreeProps {
    */
   flattedData?: FlattedTreeNodeData[]
   /**
-   * 暂不对外暴露
-   * @private
+   * 设置 data 中 id, title, disabled, children 对应的 key
    */
-  fieldNames?: object
+  fieldNames?: HiBaseFieldNames
   /**
    * 是否点击节点时展开其子节点
    */

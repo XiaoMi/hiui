@@ -12,6 +12,8 @@ export * from './lunar.stories'
 export * from './size.stories'
 export * from './footer-render.stories'
 export * from './custom-render.stories'
+export * from './addon.stories'
+export * from './need-confirm.stories'
 
 export default {
   title: 'Data Input/DatePicker',

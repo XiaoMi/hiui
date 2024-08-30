@@ -271,7 +271,7 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
   /**
    * 自定义单元格内容
    */
-  cellRender?: (colInfo: CalendarColInfo) => React.ReactNode
+  cellRender?: (colInfo: CalendarColInfo, date: Moment) => React.ReactNode
   /**
    * 自定义渲染页脚
    */
@@ -287,4 +287,16 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 自定义触发器
    */
   customRender?: React.ReactNode | ((option: (Date | undefined)[]) => React.ReactNode)
+   * 选择框前置内容
+   */
+  prefix?: React.ReactNode
+  /**
+   * 是否需要确认按钮，为 <code>false</code> 时失去焦点即代表选择。日期时间范围选择默认为 <code>true</code>
+   * @default false
+   */
+  needConfirm?: boolean
+  /**
+   * 点击确认按钮的回调
+   */
+  onConfirm?: (date: Date) => void
 }

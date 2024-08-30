@@ -58,6 +58,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       onChange,
       uploadAction,
       maxSize,
+      maxCount,
       name,
       withCredentials,
       headers,

@@ -16,6 +16,7 @@ const Root = ({
   dateRangeTimePanelNow,
   invalid,
   customRender,
+  prefix,
 }: {
   onTrigger: (index: number) => void
   onClear: () => void
@@ -25,6 +26,7 @@ const Root = ({
   dateRangeTimePanelNow: number
   invalid: boolean
   customRender?: React.ReactNode | ((option: (Date | undefined)[]) => React.ReactNode)
+  prefix: React.ReactNode
 }) => {
   const {
     i18n,
@@ -153,6 +155,7 @@ const Root = ({
   ) : (
     <div className={_cls} ref={setAttachEl}>
       <div className={`${prefixCls}__picker__wrapper`}>
+        {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
         <div
           className={cx(
             `${prefixCls}__input-selector`,

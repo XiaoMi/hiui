@@ -4,6 +4,7 @@ $prefix: '#{$component-prefix}-notification' !default;
 
 .#{$prefix}-manager {
   margin-top: 6px;
+  overflow-x: hidden;
   overflow-y: auto;
   bottom: 0;
 }

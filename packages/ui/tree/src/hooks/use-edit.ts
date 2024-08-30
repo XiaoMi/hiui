@@ -3,6 +3,8 @@ import { TreeDataItem, FlattedTreeNodeData, TreeNodeType, TreeDataStatus } from 
 import { cloneTree } from '@hi-ui/tree-utils'
 import { addChildNodeById, deleteNodeById, insertNodeById, uuid } from '../utils'
 import { useLatestRef } from '@hi-ui/use-latest'
+import { HiBaseFieldNames } from 'packages/core/core/lib/types'
+import { getKey } from '../utils/tree'
 
 const genTreeNode = () => ({ id: uuid(), title: '', type: 'add' } as FlattedTreeNodeData)
 
@@ -20,7 +22,8 @@ export const useEdit = (
     level: number
   ) => boolean | Promise<boolean>,
   onSave?: (savedNode: FlattedTreeNodeData, data: TreeDataItem[]) => void,
-  onDelete?: (deletedNode: FlattedTreeNodeData, data: TreeDataItem[]) => void
+  onDelete?: (deletedNode: FlattedTreeNodeData, data: TreeDataItem[]) => void,
+  fieldNames?: HiBaseFieldNames
 ) => {
   const addSiblingNode = useCallback(
     (node: FlattedTreeNodeData) => {
@@ -101,7 +104,7 @@ export const useEdit = (
       }
 
       const nextTreeData = cloneTree(treeData)
-      _saveEdit(targetNode, nextTreeData)
+      _saveEdit(targetNode, nextTreeData, fieldNames)
 
       if (onBeforeSaveRef.current) {
         const result = await onBeforeSaveRef.current(
@@ -131,16 +134,23 @@ export const useEdit = (
 }
 
 // 修改指定的 id 的 node 内容
-const _saveEdit = (targetNode: TreeDataItem, treeData: TreeDataItem[]) => {
+const _saveEdit = (
+  targetNode: TreeDataItem,
+  treeData: TreeDataItem[],
+  fieldNames?: HiBaseFieldNames
+) => {
   const { id, title } = targetNode
-
   treeData.forEach((node) => {
-    if (node.id === id) {
-      node.title = title
+    if (
+      // @ts-ignore
+      node[getKey(fieldNames, 'id')] === id
+    ) {
+      // @ts-ignore
+      node[getKey(fieldNames, 'title')] = title
       delete node.type
     } else {
       if (node.children) {
-        _saveEdit(targetNode, node.children)
+        _saveEdit(targetNode, node.children, fieldNames)
       }
     }
   })

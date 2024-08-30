@@ -10606,10 +10606,10 @@ init-package-json@^2.0.2:
     validate-npm-package-license "^3.0.4"
     validate-npm-package-name "^3.0.0"
 
-inject-head-style@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmmirror.com/inject-head-style/-/inject-head-style-1.0.0.tgz#159f843900d3f473fb691c67fce52b5d088f5f68"
-  integrity sha512-J6eyVFIiY3SgvguiUx/XXBZWTIxMryhiSosH2fan5+FhfA4LlNJkybUcYsINInM+zvsBmcrIHVWJxvi4lvjwqA==
+inject-head-style@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmmirror.com/inject-head-style/-/inject-head-style-1.0.1.tgz#0e5abc59402226564928030d69ca156a214f1d3f"
+  integrity sha512-8fe59tVwRfphDbWB+5WealP4Sr4AttQaAkgM3IEFswDDFM4yesDb12XtRyYsgLuZw0HwfT9B+fA5vUopZx26YQ==
 
 inline-style-parser@0.1.1:
   version "0.1.1"

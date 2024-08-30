@@ -12,6 +12,8 @@ export * from './dynamic.stories'
 export * from './display-render.stories'
 export * from './footer.stories'
 export * from './dropdown-column-render.stories'
+export * from './addon.stories'
+export * from './custom-render.stories'
 // export * from './flatted.stories'
 
 export default {

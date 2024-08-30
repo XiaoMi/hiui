@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { cx, getPrefixStyleVar } from '@hi-ui/classname'
 import { isNullish } from '@hi-ui/type-assertion'
+import { ContentPosition } from './types'
 
 export const Cell: React.FC<CellProps> = ({
   itemPrefixCls,
@@ -14,6 +15,7 @@ export const Cell: React.FC<CellProps> = ({
   content,
   labelWidth,
   cellColumnGap,
+  contentPosition: contentPositionProp = 'top',
 }) => {
   const Component: any = component
 
@@ -41,6 +43,13 @@ export const Cell: React.FC<CellProps> = ({
     )
   }
 
+  const contentPosition = {
+    top: 'start',
+    center: 'center',
+    bottom: 'end',
+  }[contentPositionProp]
+  console.log('contentPosition', contentPosition)
+
   return (
     <Component className={cx(`${itemPrefixCls}-item`, className)} style={style} colSpan={colSpan}>
       <div
@@ -48,6 +57,7 @@ export const Cell: React.FC<CellProps> = ({
         style={{
           [`${getPrefixStyleVar('container-padding-right')}`]:
             typeof cellColumnGap === 'number' ? cellColumnGap + 'px' : cellColumnGap,
+          [`${getPrefixStyleVar('container-align-items')}`]: contentPosition,
         }}
       >
         {!isNullish(label) && (
@@ -75,4 +85,5 @@ export interface CellProps {
   content?: React.ReactNode
   labelWidth?: React.ReactText
   cellColumnGap?: React.ReactText
+  contentPosition?: ContentPosition
 }

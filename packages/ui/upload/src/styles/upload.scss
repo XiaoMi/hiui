@@ -159,7 +159,7 @@ $prefix: '#{$component-prefix}-upload' !default;
     width: 100%;
     background: use-color('gray', 50);
     // min-height: 172px;
-    height: 88px;
+    // height: 88px;
     box-sizing: border-box;
     border: 2px dashed use-color('gray', 300);
     transition: border-color 0.3s;

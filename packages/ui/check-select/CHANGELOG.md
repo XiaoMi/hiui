@@ -1,5 +1,11 @@
 # @hi-ui/check-select
 
+## 4.5.0
+
+### Minor Changes
+
+- [#2970](https://github.com/XiaoMi/hiui/pull/2970) [`657d180`](https://github.com/XiaoMi/hiui/commit/657d1802ac424e2498f9036047cc74a34659d5d6) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持按 Enter 键是否选中当前项功能，checkedOnEntered 默认为 true
+
 ## 4.4.4
 
 ### Patch Changes

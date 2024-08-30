@@ -10,7 +10,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import Tooltip from '@hi-ui/tooltip'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { getTreeNodesWithChildren } from '@hi-ui/tree-utils'
@@ -21,7 +21,7 @@ import { uuid } from '@hi-ui/use-id'
 import { MenuDataItem, MenuFooterRenderProps } from './types'
 import { MenuItem } from './MenuItem'
 import MenuContext from './context'
-import { getAncestorIds } from './util'
+import { getAncestorIds, transformTreeData } from './util'
 
 const MENU_PREFIX = getPrefixCls('menu')
 
@@ -41,6 +41,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       role = 'menu',
       className,
       data = NOOP_ARRAY,
+      fieldNames,
       placement = 'vertical',
       showCollapse = false,
       // 仅对垂直模式有效
@@ -70,14 +71,18 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     const [activeParents, updateActiveParents] = useState(() => getAncestorIds(activeId, data))
 
+    const transformedData = useMemo(() => {
+      return transformTreeData(data, fieldNames)
+    }, [data, fieldNames])
+
     useEffect(() => {
-      updateActiveParents(getAncestorIds(activeId, data))
-    }, [activeId, data])
+      updateActiveParents(getAncestorIds(activeId, transformedData))
+    }, [activeId, transformedData])
 
     const [expandedIds, updateExpandedIds] = useUncontrolledState(
       () => {
         return defaultExpandAll
-          ? getTreeNodesWithChildren(data).map((node) => node.id)
+          ? getTreeNodesWithChildren(transformedData).map((node) => node.id)
           : defaultExpandedIds
       },
       expandedIdsProp,
@@ -143,15 +148,15 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const [tagMaxCount, setTagMaxCount] = useState(0)
 
     const mergedTagList = useMemo(() => {
-      if (showVertical) return data
-      if (containerWidth < MIN_WIDTH) return data
-      return data.slice(0, Math.min(data.length, containerWidth / MIN_WIDTH))
-    }, [showVertical, data, containerWidth])
+      if (showVertical) return transformedData
+      if (containerWidth < MIN_WIDTH) return transformedData
+      return transformedData.slice(0, Math.min(transformedData.length, containerWidth / MIN_WIDTH))
+    }, [showVertical, transformedData, containerWidth])
 
     const restTagList = useMemo(() => {
-      if (tagMaxCount > 0) return data.slice(tagMaxCount)
+      if (tagMaxCount > 0) return transformedData.slice(tagMaxCount)
       return []
-    }, [data, tagMaxCount])
+    }, [transformedData, tagMaxCount])
 
     const getTagWidth = useCallback(
       (index: number) => {
@@ -303,6 +308,10 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
    * 菜单项数据列表
    */
   data: MenuDataItem[]
+  /**
+   * 设置 data 中 id, title, disabled, children 对应的 key
+   */
+  fieldNames?: HiBaseFieldNames
   /**
    * 默认激活的菜单项 id
    */

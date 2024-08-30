@@ -1,5 +1,21 @@
 # @hi-ui/tree
 
+## 4.6.0
+
+### Minor Changes
+
+- [#2964](https://github.com/XiaoMi/hiui/pull/2964) [`7bdd549d0`](https://github.com/XiaoMi/hiui/commit/7bdd549d0fcb6a6b903742333e352e184723aa3b) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 新增 icon 支持自定义渲染函数
+
+### Patch Changes
+
+- [#2966](https://github.com/XiaoMi/hiui/pull/2966) [`bc306526c`](https://github.com/XiaoMi/hiui/commit/bc306526c948cb2b1ecd73b63e903d941c78dd9a) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复组件指定 fieldNames={{ title: 'name' }} 后，menuOptions 里 type 为 editNode 时会出现改不了节点的情况
+
+## 4.5.11
+
+### Patch Changes
+
+- [#2943](https://github.com/XiaoMi/hiui/pull/2943) [`f496866a2`](https://github.com/XiaoMi/hiui/commit/f496866a26a492ea65c0b7dc3bc9324a71c7158b) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - fix: 修复 Firefox 中组件拖拽报错问题
+
 ## 4.5.10
 
 ### Patch Changes

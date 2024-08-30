@@ -10,8 +10,8 @@ const _prefix = getPrefixCls('number-input')
 /**
  * 数字输入框
  */
-export const NumberInput = forwardRef<HTMLDivElement | null, CounterProps>(
-  ({ prefixCls = _prefix, role = _role, ...rest }, ref) => {
+export const NumberInput = forwardRef<HTMLDivElement | null, NumberInputProps>(
+  ({ prefixCls = _prefix, role = _role, prefix, ...rest }, ref) => {
     const { rootProps, getInputProps, getMinusButtonProps, getPlusButtonProps } = useCounter({
       prefixCls,
       role,
@@ -20,6 +20,7 @@ export const NumberInput = forwardRef<HTMLDivElement | null, CounterProps>(
 
     return (
       <div ref={ref} {...rootProps}>
+        {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
         <input {...getInputProps()} />
         <div className={`${prefixCls}__suffix`}>
           <button {...getPlusButtonProps()}>
@@ -34,7 +35,9 @@ export const NumberInput = forwardRef<HTMLDivElement | null, CounterProps>(
   }
 )
 
-export interface NumberInputProps extends CounterProps {}
+export interface NumberInputProps extends CounterProps {
+  prefix?: React.ReactNode
+}
 
 if (__DEV__) {
   NumberInput.displayName = 'NumberInput'

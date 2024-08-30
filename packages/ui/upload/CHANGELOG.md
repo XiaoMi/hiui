@@ -1,5 +1,11 @@
 # @hi-ui/upload
 
+## 4.2.3
+
+### Patch Changes
+
+- [#2936](https://github.com/XiaoMi/hiui/pull/2936) [`5fa1190b9`](https://github.com/XiaoMi/hiui/commit/5fa1190b9d1aa5766b4270fd0240f0baffaa5e1a) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(upload): 修复设置 maxCount 后上传时报错问题
+
 ## 4.2.2
 
 ### Patch Changes

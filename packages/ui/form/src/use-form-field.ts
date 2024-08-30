@@ -2,7 +2,14 @@ import { useEffect, useCallback, useMemo } from 'react'
 import { FormFieldPath, FormRuleModel, FormRuleType } from './types'
 import { useFormContext } from './context'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
-import Validater, { Rules } from 'async-validator'
+import Validater, {
+  InternalRuleItem,
+  Rules,
+  RuleItem,
+  ValidateOption,
+  Values as ValidateValues,
+  Value,
+} from 'async-validator'
 import { normalizeArray } from '@hi-ui/array-utils'
 import { isValidField, stringify } from './utils'
 
@@ -27,7 +34,7 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
 
   const { getFieldProps, registerField, unregisterField } = useFormContext()
 
-  const fieldRules: Rules[] = useFiledRules(props)
+  const fieldRules: RuleItem[] = useFiledRules(props)
 
   // 当前 field 的唯一校验器
   const fieldValidate = useCallback(
@@ -38,8 +45,36 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
 
       // TODO: rules 处理成 Async Validate 的指定结构
       const fieldMD5 = stringify(field as FormFieldPath)
-
-      const validater = new Validater({ [fieldMD5]: fieldRules })
+      const modifiedFieldRules = fieldRules.map((rule) => {
+        // 重写 rule 的 validator 函数，正则匹配 validatorRule 中的 field 和 fullField，消除 field 和 fullField 中的双引号
+        // issue：https://github.com/XiaoMi/hiui/issues/2931
+        if (rule.validator) {
+          return {
+            ...rule,
+            validator: (
+              validatorRule: any,
+              value: Value,
+              callback: (error?: string | Error) => void,
+              source: ValidateValues,
+              options: ValidateOption
+            ) => {
+              const field = validatorRule.field.replace(/"/g, '')
+              const fullField = validatorRule.fullField.replace(/"/g, '')
+              rule.validator!(
+                { ...validatorRule, field, fullField } as InternalRuleItem,
+                value,
+                callback,
+                source,
+                options
+              )
+            },
+          }
+        } else
+          return {
+            ...rule,
+          }
+      })
+      const validater = new Validater({ [fieldMD5]: modifiedFieldRules })
       return validater.validate(
         {
           [fieldMD5]:

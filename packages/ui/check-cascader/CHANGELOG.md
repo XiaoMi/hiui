@@ -1,5 +1,15 @@
 # @hi-ui/check-cascader
 
+## 4.3.0
+
+### Minor Changes
+
+- [#2868](https://github.com/XiaoMi/hiui/pull/2868) [`95f2e843d`](https://github.com/XiaoMi/hiui/commit/95f2e843d154d5767c08d7a04a86d61804d71396) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 新增支持配置字段别名
+
+- [#2824](https://github.com/XiaoMi/hiui/pull/2824) [`912c60b7b`](https://github.com/XiaoMi/hiui/commit/912c60b7b0f19a8386ec1de30fe6440e3963f288) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持前置后置内容
+
+- [#2920](https://github.com/XiaoMi/hiui/pull/2920) [`ec38ee1a6`](https://github.com/XiaoMi/hiui/commit/ec38ee1a62f1716106ecd4617840295c1f22ed5b) Thanks [@yang-x20](https://github.com/yang-x20)! - feat: 新增自定义触发器
+
 ## 4.2.7
 
 ### Patch Changes

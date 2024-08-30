@@ -1,5 +1,16 @@
 # @hi-ui/drawer
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2851](https://github.com/XiaoMi/hiui/pull/2851) [`088f06557`](https://github.com/XiaoMi/hiui/commit/088f06557863c2814b51d00f91a10750b5b70dc6) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持自定义 zIndex 功能
+
+### Patch Changes
+
+- Updated dependencies [[`85307a41b`](https://github.com/XiaoMi/hiui/commit/85307a41bfbb573310f1f4747b979aea5e91474d)]:
+  - @hi-ui/modal@4.2.0
+
 ## 4.1.4
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/transfer
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2913](https://github.com/XiaoMi/hiui/pull/2913) [`ce9517d8d`](https://github.com/XiaoMi/hiui/commit/ce9517d8d82bb31b8500be3a89880d7b7abea148) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持配置字段别名
+
 ## 4.0.14
 
 ### Patch Changes

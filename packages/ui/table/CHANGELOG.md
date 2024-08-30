@@ -1,5 +1,24 @@
 # @hi-ui/table
 
+## 4.6.0
+
+### Minor Changes
+
+- [#2968](https://github.com/XiaoMi/hiui/pull/2968) [`6ed4e8eeb`](https://github.com/XiaoMi/hiui/commit/6ed4e8eeb1edb97ed23aa3d5366f993575a6df57) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 行选中增加单选
+
+## 4.5.5
+
+### Patch Changes
+
+- [#2867](https://github.com/XiaoMi/hiui/pull/2867) [`eec624313`](https://github.com/XiaoMi/hiui/commit/eec624313de88943869f592dd06248455bddedbc) Thanks [@aqiusen](https://github.com/aqiusen)! - 修复统计行中选中模式下显示异常问题(#2863)
+
+- [#2859](https://github.com/XiaoMi/hiui/pull/2859) [`a8d3a1f26`](https://github.com/XiaoMi/hiui/commit/a8d3a1f2687709b986fc54408cb6c69b9eb56318) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 onDragStart 事件不触发问题
+
+- [#2847](https://github.com/XiaoMi/hiui/pull/2847) [`0e67d2263`](https://github.com/XiaoMi/hiui/commit/0e67d2263c7e1bf9213e1a2f74300ee201f3a52e) Thanks [@aqiusen](https://github.com/aqiusen)! - fix(table): 修复虚拟列表 maxHeight 无法支持字符串问题
+
+- Updated dependencies [[`5508758ec`](https://github.com/XiaoMi/hiui/commit/5508758ec2fe241d635949828065111c9a465ef8)]:
+  - @hi-ui/pagination@4.0.16
+
 ## 4.5.4
 
 ### Patch Changes

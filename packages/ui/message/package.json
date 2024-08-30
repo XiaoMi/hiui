@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/message",
-  "version": "4.0.8",
+  "version": "4.1.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -47,7 +47,7 @@
     "@hi-ui/env": "^4.0.5",
     "@hi-ui/icons": "^4.0.19",
     "@hi-ui/react-utils": "^4.0.4",
-    "@hi-ui/toast": "^4.0.8",
+    "@hi-ui/toast": "^4.1.0",
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {

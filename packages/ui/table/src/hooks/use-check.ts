@@ -72,6 +72,20 @@ export const useTableCheck = ({
     [checkedRowDataItems, checkedRowKeys, fieldKey, handleCheckedRowKeysChange]
   )
 
+  const onRadioCheckedRowKeysChange = React.useCallback(
+    (rowItem: Record<string, any>, checked: boolean) => {
+      checkedRowDataItemsRef.current = [rowItem]
+
+      trySetCheckedRowKeys(
+        checkedRowDataItemsRef.current?.map((item) => item[fieldKey]),
+        rowItem,
+        checked,
+        checkedRowDataItemsRef.current
+      )
+    },
+    [fieldKey, trySetCheckedRowKeys]
+  )
+
   // 判断是否全选
   const [checkedAll, semiChecked] = React.useMemo(() => {
     if (rowSelection) {
@@ -138,13 +152,14 @@ export const useTableCheck = ({
       true,
       checkedRowDataItemsRef.current
     )
-  }, [trySetCheckedRowKeys, flattedData, checkRowIsDisabledCheckbox, checkedAll])
+  }, [flattedData, checkedAll, trySetCheckedRowKeys, checkRowIsDisabledCheckbox, fieldKey])
 
   return {
     tryCheckAllRow,
     checkedAll,
     semiChecked,
     onCheckedRowKeysChange,
+    onRadioCheckedRowKeysChange,
     isCheckedRowKey,
     checkedRowKeys,
     trySetCheckedRowKeys,

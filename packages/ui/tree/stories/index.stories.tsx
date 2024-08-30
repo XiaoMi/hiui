@@ -16,6 +16,7 @@ export * from './custom-icon.stories'
 export * from './expand-on-click.stories'
 export * from './size.stories'
 export * from './scroll-to.stories'
+export * from './icon-render.stories'
 
 export default {
   title: 'Data Display/Tree',

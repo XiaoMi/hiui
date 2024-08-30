@@ -1,5 +1,22 @@
 # @hi-ui/check-tree-select
 
+## 4.6.0
+
+### Minor Changes
+
+- [#2952](https://github.com/XiaoMi/hiui/pull/2952) [`f7137e3db`](https://github.com/XiaoMi/hiui/commit/f7137e3dbff8a3a2735f9e7d8a09fc942c8a8a86) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 新增支持过滤已选择项
+
+### Patch Changes
+
+- Updated dependencies [[`bc306526c`](https://github.com/XiaoMi/hiui/commit/bc306526c948cb2b1ecd73b63e903d941c78dd9a), [`7bdd549d0`](https://github.com/XiaoMi/hiui/commit/7bdd549d0fcb6a6b903742333e352e184723aa3b)]:
+  - @hi-ui/tree@4.6.0
+
+## 4.5.0
+
+### Minor Changes
+
+- [#2878](https://github.com/XiaoMi/hiui/pull/2878) [`179fd7fef`](https://github.com/XiaoMi/hiui/commit/179fd7fef9d906ecec2c5f02de01b7fa16721c79) Thanks [@yang-x20](https://github.com/yang-x20)! - feat: 新增前置后置内容扩展功能
+
 ## 4.4.1
 
 ### Patch Changes

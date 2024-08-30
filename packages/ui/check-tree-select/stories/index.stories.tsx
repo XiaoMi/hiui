@@ -15,6 +15,8 @@ export * from './check-all.stories'
 // export * from './async.stories'
 export * from './virtual-list.stories'
 export * from './custom-render.stories'
+export * from './addon.stories'
+export * from './only-checked.stories'
 
 export default {
   title: 'Data Input/CheckTreeSelect',

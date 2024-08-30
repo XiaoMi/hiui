@@ -24,7 +24,12 @@ import { flattenTreeData } from './utils'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
-import { HiBaseAppearanceEnum, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import {
+  HiBaseAppearanceEnum,
+  HiBaseFieldNames,
+  HiBaseSizeEnum,
+  useLocaleContext,
+} from '@hi-ui/core'
 
 import { callAllFuncs } from '@hi-ui/func-utils'
 
@@ -70,8 +75,12 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       onClose,
       tagInputProps,
       size = 'md',
+      prefix,
+      suffix,
       renderExtraFooter,
       dropdownColumnRender,
+      customRender,
+      fieldNames,
       ...rest
     },
     ref
@@ -93,7 +102,10 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const [cascaderData, setCascaderData] = useCache(data)
 
-    const flattedData = useMemo(() => flattenTreeData(cascaderData), [cascaderData])
+    const flattedData = useMemo(() => flattenTreeData(cascaderData, fieldNames), [
+      cascaderData,
+      fieldNames,
+    ])
 
     const [_value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
     // 内部实现使用尾部 id
@@ -207,6 +219,12 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
+    const selectedItems = useMemo(() => {
+      return value.map((selectedId) => {
+        return flattedData.find((item) => item.id === selectedId)
+      })
+    }, [value, flattedData])
+
     return (
       <Picker
         ref={ref}
@@ -227,26 +245,35 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         footer={isFunction(renderExtraFooter) && renderExtraFooter()}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
-          <TagInputMock
-            {...tagInputProps}
-            size={size}
-            clearable={clearable}
-            placeholder={placeholder}
-            // @ts-ignore
-            displayRender={displayRender}
-            suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
-            focused={menuVisible}
-            appearance={appearance}
-            value={value}
-            // @ts-ignore
-            onChange={proxyOnChange}
-            data={flattedData}
-            invalid={invalid}
-            // onExpand={() => {
-            //   // setViewSelected(true)
-            //   menuVisibleAction.on()
-            // }}
-          />
+          customRender ? (
+            typeof customRender === 'function' ? (
+              customRender(selectedItems)
+            ) : (
+              customRender
+            )
+          ) : (
+            <TagInputMock
+              {...tagInputProps}
+              size={size}
+              clearable={clearable}
+              placeholder={placeholder}
+              // @ts-ignore
+              displayRender={displayRender}
+              prefix={prefix}
+              suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
+              focused={menuVisible}
+              appearance={appearance}
+              value={value}
+              // @ts-ignore
+              onChange={proxyOnChange}
+              data={flattedData}
+              invalid={invalid}
+              // onExpand={() => {
+              //   // setViewSelected(true)
+              //   menuVisibleAction.on()
+              // }}
+            />
+          )
         }
       >
         {isArrayNonEmpty(selectProps.data) ? (
@@ -280,6 +307,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 设置选择项数据源
    */
   data: CheckCascaderDataItem[]
+  /**
+   * 设置 data 中字段对应的 key
+   */
+  fieldNames?: HiBaseFieldNames
   /**
    * 设置当前多选值
    */
@@ -380,6 +411,14 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    */
   size?: HiBaseSizeEnum
   /**
+   * 选择框前置内容
+   */
+  prefix?: React.ReactNode
+  /**
+   * 选择框后置内容
+   */
+  suffix?: React.ReactNode
+  /**
    * 自定义下拉菜单底部渲染
    */
   renderExtraFooter?: () => React.ReactNode
@@ -387,6 +426,12 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 自定义下拉菜单每列渲染
    */
   dropdownColumnRender?: (menu: React.ReactElement, level: number) => React.ReactNode
+  /**
+   * 自定义触发器
+   */
+  customRender?:
+    | React.ReactNode
+    | ((selectItems: (FlattedCheckCascaderDataItem | undefined)[]) => React.ReactNode)
 }
 
 if (__DEV__) {

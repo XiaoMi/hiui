@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo } from 'react'
+import React, { forwardRef, useCallback, useMemo, useState, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import {
@@ -11,7 +11,7 @@ import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Picker, PickerProps } from '@hi-ui/picker'
-import { baseFlattenTree } from '@hi-ui/tree-utils'
+import { baseFlattenTree, filterTree } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
@@ -30,6 +30,7 @@ import {
 } from '@hi-ui/use-search-mode'
 import { useCheck } from './hooks/use-check'
 import { getAllCheckedStatus } from './utils'
+import { BaseTreeNodeData } from 'packages/utils/tree-utils/lib/types/types'
 
 const TREE_SELECT_PREFIX = getPrefixCls('check-tree-select')
 const DEFAULT_DATA = [] as []
@@ -88,9 +89,12 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       itemHeight,
       height,
       showCheckAll,
+      showOnlyShowChecked = false,
       tagInputProps,
       size = 'md',
       customRender,
+      prefix,
+      suffix,
       ...rest
     },
     ref
@@ -107,6 +111,10 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       onOpen,
       onClose,
     })
+
+    const [filterItems, setFilterItems] = useState<CheckTreeSelectDataItem[] | null>(null)
+    const expandedViewRef = useRef<'normal' | 'onlyChecked'>('normal')
+    const activeExpandable = showOnlyShowChecked && !!filterItems && menuVisible
 
     /**
      * 转换对象
@@ -242,9 +250,9 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     )
 
     const shouldUseSearch = !!searchValue && !hasError
-
+    const showData = shouldUseSearch ? stateInSearch.data : data
     const treeProps = {
-      data: shouldUseSearch ? stateInSearch.data : data,
+      data: filterItems ?? showData,
       expandedIds: shouldUseSearch ? stateInSearch.expandedIds : expandedIds,
       onExpand: shouldUseSearch
         ? (ids: any) => setStateInSearch((prev: any) => ({ ...prev, expandedIds: ids }))
@@ -362,7 +370,8 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
               placeholder={placeholder}
               // @ts-ignore
               displayRender={displayRender}
-              suffix={menuVisible ? <UpOutlined /> : <DownOutlined />}
+              prefix={prefix}
+              suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               appearance={appearance}
               value={value}
@@ -374,6 +383,63 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
               //   // setViewSelected(true)
               //   menuVisibleAction.on()
               // }}
+              onClick={(evt) => {
+                if (!showOnlyShowChecked) return
+
+                evt.preventDefault()
+                if (filterItems) {
+                  setFilterItems(null)
+                }
+
+                if (menuVisible) {
+                  if (expandedViewRef.current === 'normal') {
+                    menuVisibleAction.off()
+                  }
+                } else {
+                  menuVisibleAction.on()
+                }
+
+                expandedViewRef.current = 'normal'
+              }}
+              expandable={showOnlyShowChecked}
+              activeExpandable={activeExpandable}
+              onExpand={(evt) => {
+                if (!showOnlyShowChecked) return
+
+                // 阻止冒泡触发外层 onClick
+                evt.preventDefault()
+                evt.stopPropagation()
+
+                // 选中数据
+                setFilterItems(() => {
+                  const filterFunc = (node: BaseTreeNodeData): boolean => {
+                    if (parsedCheckedIds.includes(node.id)) {
+                      return true
+                    }
+
+                    if (node.children && node.children?.length > 0) {
+                      return node.children.some((child) => filterFunc(child))
+                    }
+
+                    return false
+                  }
+                  // filterTree 过滤树结构，将不包含value中的节点分支过滤掉
+                  // 返回过滤后的树结构
+                  const treeData = filterTree(data as BaseTreeNodeData[], filterFunc)
+
+                  return treeData
+                })
+                // 展开/关闭操作
+                if (menuVisible) {
+                  if (expandedViewRef.current !== 'normal') {
+                    menuVisibleAction.off()
+                  }
+                } else {
+                  menuVisibleAction.on()
+                }
+
+                expandedViewRef.current = 'onlyChecked'
+              }}
             />
           )
         }
@@ -540,6 +606,10 @@ export interface CheckTreeSelectProps
    */
   showCheckAll?: boolean
   /**
+   * 是否开启查看仅已选功能
+   */
+  showOnlyShowChecked?: boolean
+  /**
    * TagInput 参数设置
    */
   tagInputProps?: TagInputMockProps
@@ -551,6 +621,14 @@ export interface CheckTreeSelectProps
    * 自定义触发器
    */
   customRender?: React.ReactNode | ((option: CheckTreeSelectDataItem[]) => React.ReactNode)
+  /**
+   * 选择框前置内容
+   */
+  prefix?: React.ReactNode
+  /**
+   * 选择框后置内容
+   */
+  suffix?: React.ReactNode
 }
 
 if (__DEV__) {

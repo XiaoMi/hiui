@@ -79,11 +79,15 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       footerRender,
       strideSelectMode = 'auto',
       customRender,
+      prefix,
+      needConfirm: needConfirmProp = false,
+      onConfirm,
       ...otherProps
     },
     ref
   ) => {
-    const i18n = useLocaleContext()
+    const i18n = useLocaleConte
+    xt()
     const locale = i18n.locale
 
     const [dateRangeTimePanelNow, setDateRangeTimePanelNow] = useState(0)
@@ -91,6 +95,14 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     const cacheDate = useRef<(moment.Moment | null)[]>([])
     const [inputFocus, setInputFocus] = useState(false)
     const [type, setType] = useState<DatePickerTypeEnum>(propType)
+
+    const needConfirm = useMemo(() => {
+      // 如果是日期时间范围选择，则默认返回 true
+      if (type === 'daterange' && showTime) {
+        return true
+      }
+      return needConfirmProp
+    }, [needConfirmProp, showTime, type])
 
     useEffect(() => {
       moment.locale(locale === 'en-US' ? 'en' : 'zh-CN')
@@ -301,12 +313,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       setInputFocus(false)
     }, [])
 
-    const isInDateRangeTimeMode = useMemo(() => type === 'daterange' && showTime, [type, showTime])
-
     const onPopperClose = useCallback(() => {
       resetStatus()
 
-      if (!isInDateRangeTimeMode) {
+      if (!needConfirm) {
         const outDateValue = outDate[0]
         const isValid = moment(outDateValue).isValid()
         // @ts-ignore
@@ -322,7 +332,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       }
 
       onClose?.()
-    }, [resetStatus, outDate, isInDateRangeTimeMode, onClose, max, min, callback, changeOutDate])
+    }, [callback, changeOutDate, max, min, needConfirm, onClose, outDate, resetStatus])
 
     const onClear = () => {
       resetStatus()
@@ -349,7 +359,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       type === 'timeperiod' && `${prefixCls}__popper--timeperiod`,
       shortcuts && `${prefixCls}__popper--shortcuts`
     )
+
     const [attachEl, setAttachEl] = useState<HTMLElement | null>(null)
+
+    const isInDateRangeTimeMode = useMemo(() => type === 'daterange' && showTime, [type, showTime])
 
     const popContent = useMemo(() => {
       // 日期时间范围选择器特殊处理
@@ -367,7 +380,13 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           {type.includes('range') || type === 'timeperiod' ? (
             <RangePanel />
           ) : (
-            <Panel onPick={onPick} outDate={outDate} disabledDate={disabledDate} />
+            <Panel
+              onPick={onPick}
+              outDate={outDate}
+              disabledDate={disabledDate}
+              needConfirm={needConfirm}
+              onConfirm={onConfirm}
+            />
           )}
         </div>
       )
@@ -378,6 +397,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       onPick,
       outDate,
       disabledDate,
+      needConfirm,
+      onConfirm,
       dateRangeTimePanelNow,
     ])
 
@@ -443,6 +464,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             dateRangeTimePanelNow={dateRangeTimePanelNow}
             invalid={invalid}
             customRender={customRender}
+            prefix={prefix}
           />
           <Popper
             {...(overlay || {})}

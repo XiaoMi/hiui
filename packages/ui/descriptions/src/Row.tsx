@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { DescriptionsItemProps } from './DescriptionsItem'
 import { Cell } from './Cell'
+import { ContentPosition } from './types'
 
 export const Row: React.FC<RowProps> = (props) => {
   const { prefixCls, vertical, row, index, bordered, noBackground } = props
@@ -50,6 +51,7 @@ export interface RowProps {
   labelPlacement?: 'left' | 'center' | 'right'
   rootLabelWidth?: React.ReactText
   cellColumnGap?: React.ReactText
+  contentPosition?: ContentPosition
 }
 
 interface CellConfig {
@@ -67,6 +69,7 @@ function renderCols(
     labelPlacement: labelPlacementContext,
     rootLabelWidth,
     cellColumnGap,
+    contentPosition,
   }: RowProps,
   { component, type, showLabel, showContent }: CellConfig
 ) {
@@ -103,6 +106,7 @@ function renderCols(
             content={showContent ? children : null}
             labelWidth={labelWidth ?? rootLabelWidth}
             cellColumnGap={index === items.length - 1 ? 0 : cellColumnGap}
+            contentPosition={contentPosition}
           />
         )
       }
@@ -119,6 +123,7 @@ function renderCols(
           bordered={bordered}
           label={label}
           labelWidth={labelWidth ?? rootLabelWidth}
+          contentPosition={contentPosition}
         />,
         <Cell
           key={`content-${key || index}`}
@@ -130,6 +135,7 @@ function renderCols(
           itemPrefixCls={itemPrefixCls}
           bordered={bordered}
           content={children}
+          contentPosition={contentPosition}
         />,
       ]
     }

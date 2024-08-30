@@ -1,5 +1,11 @@
 # @hi-ui/toast
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2820](https://github.com/XiaoMi/hiui/pull/2820) [`7550aff2e`](https://github.com/XiaoMi/hiui/commit/7550aff2ef526c0009f37d79b249875e5b756275) Thanks [@xiamiao1121](https://github.com/xiamiao1121)! - feat: 支持指定 portal 挂载
+
 ## 4.0.8
 
 ### Patch Changes
