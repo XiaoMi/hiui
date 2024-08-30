@@ -78,6 +78,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       cellRender,
       footerRender,
       strideSelectMode = 'auto',
+      customRender,
       prefix,
       needConfirm: needConfirmProp = false,
       onConfirm,
@@ -85,7 +86,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     },
     ref
   ) => {
-    const i18n = useLocaleContext()
+    const i18n = useLocaleConte
+    xt()
     const locale = i18n.locale
 
     const [dateRangeTimePanelNow, setDateRangeTimePanelNow] = useState(0)
@@ -461,6 +463,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             setAttachEl={setAttachEl}
             dateRangeTimePanelNow={dateRangeTimePanelNow}
             invalid={invalid}
+            customRender={customRender}
             prefix={prefix}
           />
           <Popper
