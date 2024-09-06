@@ -104,7 +104,11 @@ export type DatePickerAltCalendarPresetEnum = 'zh-CN' | 'id-ID'
 
 export type DateMarkRender = (currentDate: number, today: number) => React.ReactNode
 
-export type DisabledDate = (currentDate: Date, view: CalendarViewEnum) => boolean
+export type DisabledDate = (
+  currentDate: Date,
+  view: CalendarViewEnum,
+  panelIndex?: number
+) => boolean
 
 export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placeholder'> {
   /**
@@ -141,7 +145,7 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 不可选择的日期(返回true为不可选)
    * @default () => false
    */
-  disabledDate?: (currentDate: Date, view: CalendarViewEnum) => boolean
+  disabledDate?: (currentDate: Date, view: CalendarViewEnum, panelIndex?: number) => boolean
   /**
    * 是否可以清空
    * @default true
@@ -230,9 +234,9 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
     | ((selectedHour: number, selectedMinute: number, panel: TimePickerPanelType) => number[])
     | number[]
   /**
-   * 选择日期的回调函数，(data: 选中的 moment 日期对象, sCompleted: 是否选择完成，仅在范围选择下有效) => void
+   * 选择日期的回调函数，(data: 选中的 moment 日期对象, isCompleted: 是否选择完成，仅在范围选择下有效，panelIndex: 当前操作面板索引) => void
    */
-  onSelect?: (data: Date, isCompleted: boolean) => void
+  onSelect?: (data: Date, isCompleted: boolean, panelIndex?: number) => void
   /**
    * 选择后的回调，(date: 选中的日期，dateStr: 选中的日期字符串) => void
    */
