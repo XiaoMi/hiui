@@ -33,6 +33,7 @@ import {
   FlattedTableRowData,
 } from './types'
 import { SELECTION_DATA_KEY } from './Table'
+import { ResizeCallbackData } from 'react-resizable'
 
 const DEFAULT_COLUMNS = [] as []
 const DEFAULT_DATA = [] as []
@@ -84,6 +85,7 @@ export const useTable = ({
   scrollbar,
   rowClassName,
   cellClassName,
+  onResize,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -193,6 +195,7 @@ export const useTable = ({
     columns,
     resizable,
     virtual: virtual,
+    onResize,
   })
 
   // ************************ 列冻结 ************************ //
@@ -866,6 +869,15 @@ export interface UseTableProps {
     column: Record<string, any>,
     index: number
   ) => string
+  /**
+   * resizable 模式下，设置列宽变化时触发的回调
+   */
+  onResize?: (
+    e: React.SyntheticEvent,
+    data: ResizeCallbackData,
+    index: number,
+    columnsWidth: number[]
+  ) => void
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>

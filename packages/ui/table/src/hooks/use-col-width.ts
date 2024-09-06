@@ -2,17 +2,25 @@ import React, { useCallback } from 'react'
 import { FlattedTableColumnItemData, TableColumnItem, TableRowRecord } from '../types'
 import { getGroupItemWidth } from '../utils'
 import { useUpdateEffect } from '@hi-ui/use-update-effect'
+import { ResizeCallbackData } from 'react-resizable'
 
 export const useColWidth = ({
   resizable,
   data,
   columns,
   virtual,
+  onResize,
 }: {
   resizable: boolean
   data: TableRowRecord[]
   columns: TableColumnItem[]
   virtual?: boolean
+  onResize?: (
+    e: React.SyntheticEvent,
+    data: ResizeCallbackData,
+    index: number,
+    columnsWidth: number[]
+  ) => void
 }) => {
   const measureRowElementRef = React.useRef<HTMLTableRowElement | null>(null)
   // 是否重新设置过表格每列宽度
@@ -221,7 +229,7 @@ export const useColWidth = ({
    * 列宽拖拽 resize，只处理拖拽线两边的列宽度
    */
   const onColumnResizable = React.useCallback(
-    (_, { size }, index: number) => {
+    (evt, { size }, index: number) => {
       const minWidth = minColWidth[index]
       const anotherMinWidth = minColWidth[index + 1]
       let nextWidth = size.width > minWidth ? size.width : minWidth
@@ -237,10 +245,13 @@ export const useColWidth = ({
 
         nextColWidths[index] = nextWidth
         nextColWidths[index + 1] = anotherWidth
+
+        onResize?.(evt, size, index, nextColWidths)
+
         return nextColWidths
       })
     },
-    [minColWidth]
+    [minColWidth, onResize]
   )
 
   const getColgroupProps = React.useCallback(

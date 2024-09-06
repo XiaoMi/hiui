@@ -13,6 +13,9 @@ export const Resizable = () => {
         <Table
           fixedToColumn={{ left: 'type', right: 'address' }}
           resizable
+          onResize={(e, data, index, columnsWidth) => {
+            console.log('onResize', e, data, index, columnsWidth)
+          }}
           columns={[
             {
               title: '商品名',
