@@ -86,8 +86,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     },
     ref
   ) => {
-    const i18n = useLocaleConte
-    xt()
+    const i18n = useLocaleContext()
     const locale = i18n.locale
 
     const [dateRangeTimePanelNow, setDateRangeTimePanelNow] = useState(0)
