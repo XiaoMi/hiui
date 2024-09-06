@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.6.4",
+  "version": "4.6.5",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -59,7 +59,7 @@
     "@hi-ui/checkbox": "^4.0.10",
     "@hi-ui/collapse": "^4.1.6",
     "@hi-ui/counter": "^4.1.9",
-    "@hi-ui/date-picker": "^4.8.0",
+    "@hi-ui/date-picker": "^4.9.0",
     "@hi-ui/descriptions": "^4.5.0",
     "@hi-ui/drawer": "^4.2.0",
     "@hi-ui/dropdown": "^4.2.1",
