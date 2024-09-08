@@ -2,25 +2,17 @@ import React, { useCallback } from 'react'
 import { FlattedTableColumnItemData, TableColumnItem, TableRowRecord } from '../types'
 import { getGroupItemWidth } from '../utils'
 import { useUpdateEffect } from '@hi-ui/use-update-effect'
-import { ResizeCallbackData } from 'react-resizable'
 
 export const useColWidth = ({
   resizable,
   data,
   columns,
   virtual,
-  onResize,
 }: {
   resizable: boolean
   data: TableRowRecord[]
   columns: TableColumnItem[]
   virtual?: boolean
-  onResize?: (
-    e: React.SyntheticEvent,
-    data: ResizeCallbackData,
-    index: number,
-    columnsWidth: number[]
-  ) => void
 }) => {
   const measureRowElementRef = React.useRef<HTMLTableRowElement | null>(null)
   // 是否重新设置过表格每列宽度
@@ -245,13 +237,10 @@ export const useColWidth = ({
 
         nextColWidths[index] = nextWidth
         nextColWidths[index + 1] = anotherWidth
-
-        onResize?.(evt, size, index, nextColWidths)
-
         return nextColWidths
       })
     },
-    [minColWidth, onResize]
+    [minColWidth]
   )
 
   const getColgroupProps = React.useCallback(
