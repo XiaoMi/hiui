@@ -1,8 +1,9 @@
-import { createContext, useContext } from 'react'
+import { createContext, SyntheticEvent, useContext } from 'react'
 import { UseEmbedExpandReturn } from './hooks/use-embed-expand'
 
 import { UseTableReturn } from './use-table'
 import { TableOnRowReturn } from './types'
+import { ResizeCallbackData } from 'react-resizable'
 
 const TableContext = createContext<
   | (Omit<UseTableReturn, 'rootProps'> &
@@ -14,6 +15,12 @@ const TableContext = createContext<
         onRow?: (rowData: Record<string, any> | null, index: number) => TableOnRowReturn
         striped: boolean
         virtual?: boolean
+        onResizeStop?: (
+          evt: SyntheticEvent,
+          size: ResizeCallbackData['size'],
+          index: number,
+          columnsWidth: number[]
+        ) => void
       })
   | null
 >(null)
