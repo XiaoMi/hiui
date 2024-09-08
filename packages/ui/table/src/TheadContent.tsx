@@ -23,6 +23,7 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
       getStickyColProps,
       showColMenu,
       setHeaderTableElement,
+      onResizeStop,
     } = useTableContext()
 
     const activeColumnKeysAction = useCheckState()
@@ -96,6 +97,9 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                     width={colWidths[colIndex] as number}
                     onResize={(evt, options) => {
                       onColumnResizable(evt, options, colIndex)
+                    }}
+                    onResizeStop={(evt, options) => {
+                      onResizeStop?.(evt, options?.size, colIndex, colWidths)
                     }}
                   >
                     {cell}

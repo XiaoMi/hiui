@@ -2,4 +2,4 @@
 "@hi-ui/hiui": patch
 ---
 
-feat(table): Add onResize api
+feat(table): Add onResizeStop api

@@ -2,4 +2,4 @@
 "@hi-ui/table": minor
 ---
 
-feat: Add onResize api
+feat: Add onResizeStop api
