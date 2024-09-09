@@ -107,6 +107,8 @@ export const Searchable = () => {
     return matchUp(item)
   }, [])
 
+  const [keyword, setKeyword] = React.useState('小米')
+
   return (
     <>
       <h1>Searchable</h1>
@@ -132,6 +134,8 @@ export const Searchable = () => {
           style={{ width: 240 }}
           data={data}
           searchable
+          keyword={keyword}
+          onSearch={setKeyword}
           searchMode="filter"
           onChange={(checkedIds, options) => {
             console.log('CheckTreeSelect onChange: ', checkedIds, options)
