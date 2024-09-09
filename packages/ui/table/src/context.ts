@@ -20,7 +20,7 @@ const TableContext = createContext<
               onVisibleChange?: (
                 visibleList: any[],
                 fullList: any[],
-                virtualInfo: {
+                virtualInfo?: {
                   start: number
                   end: number
                   scrollTop: number

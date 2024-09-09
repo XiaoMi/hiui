@@ -782,7 +782,7 @@ export interface UseTableProps {
         onVisibleChange?: (
           visibleList: any[],
           fullList: any[],
-          virtualInfo: {
+          virtualInfo?: {
             start: number
             end: number
             scrollTop: number
