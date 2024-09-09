@@ -14,7 +14,20 @@ const TableContext = createContext<
         hasSumColumn: boolean
         onRow?: (rowData: Record<string, any> | null, index: number) => TableOnRowReturn
         striped: boolean
-        virtual?: boolean
+        virtual?:
+          | boolean
+          | {
+              onVisibleChange?: (
+                visibleList: any[],
+                fullList: any[],
+                virtualInfo: {
+                  start: number
+                  end: number
+                  scrollTop: number
+                  heights: number[]
+                }
+              ) => void
+            }
         onResizeStop?: (
           evt: SyntheticEvent,
           size: ResizeCallbackData['size'],

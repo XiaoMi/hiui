@@ -58,7 +58,8 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
 
     if (virtual) {
       // TODO： avg和summay row的逻辑
-      const realHeight = (virtualListRef.current as (HTMLTableElement | null))?.getBoundingClientRect().height
+      const realHeight = (virtualListRef.current as HTMLTableElement | null)?.getBoundingClientRect()
+        .height
       const maxHeightNumStr = String(maxHeight).replace(/px$/, '')
       const vMaxHeight = maxHeight
         ? !isNaN(Number(maxHeightNumStr))
@@ -86,7 +87,10 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
             style={{ height: 2, marginTop: -1, background: 'transparent', width: rowWidth }}
           ></div>
           {isArrayNonEmpty(transitionData) ? (
-            <div ref={virtualListRef} style={{ width: '100%', position: 'sticky', left: 0, maxHeight}}>
+            <div
+              ref={virtualListRef}
+              style={{ width: '100%', position: 'sticky', left: 0, maxHeight }}
+            >
               <VirtualList
                 prefixCls={`${cls}--virtual`}
                 data={transitionData}
@@ -94,6 +98,11 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                 fullHeight={false}
                 itemHeight={10}
                 itemKey="id"
+                onVisibleChange={(...args) => {
+                  isObject(virtual) &&
+                    typeof virtual?.onVisibleChange === 'function' &&
+                    virtual?.onVisibleChange(...args)
+                }}
                 children={(row, index) => {
                   return (
                     <div

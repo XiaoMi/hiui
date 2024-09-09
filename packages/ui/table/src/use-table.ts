@@ -192,7 +192,7 @@ export const useTable = ({
     data,
     columns,
     resizable,
-    virtual: virtual,
+    virtual: !!virtual,
   })
 
   // ************************ 列冻结 ************************ //
@@ -776,7 +776,20 @@ export interface UseTableProps {
    * -Cell: colspan，rowspan
    * -统计：平局行，总数行
    */
-  virtual?: boolean
+  virtual?:
+    | boolean
+    | {
+        onVisibleChange?: (
+          visibleList: any[],
+          fullList: any[],
+          virtualInfo: {
+            start: number
+            end: number
+            scrollTop: number
+            heights: number[]
+          }
+        ) => void
+      }
   /**
    *  加载中状态
    */
