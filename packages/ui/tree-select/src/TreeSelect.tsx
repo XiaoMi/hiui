@@ -60,6 +60,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       onLoadChildren,
       render: titleRender,
       filterOption,
+      keyword: keywordProp,
       onSearch: onSearchProp,
       // ********* popper ********* //
       // optionWidth,
@@ -182,6 +183,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       keyword: searchValue,
     } = useSearchMode({
       searchable: searchableProp,
+      keyword: keywordProp,
       strategies: [
         dataSourceStrategy,
         customSearchStrategy,
@@ -244,6 +246,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         // onChange={tryChangeValue}
         // data={mergedData}
         searchable={searchable}
+        keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         loading={rest.loading !== undefined ? rest.loading : loading}
         trigger={

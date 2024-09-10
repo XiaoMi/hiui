@@ -72,6 +72,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       onLoadChildren,
       render: titleRender,
       filterOption,
+      keyword: keywordProp,
       onSearch: onSearchProp,
       // emptyContent,
       // ********* popper ********* //
@@ -95,7 +96,6 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       customRender,
       prefix,
       suffix,
-      keyword: keywordProp,
       ...rest
     },
     ref

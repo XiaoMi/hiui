@@ -46,6 +46,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     invalid,
     filterOption,
     searchable: searchableProp,
+    keyword: keywordProp,
     onSearch: onSearchProp,
     render: titleRender,
     overlayClassName,
@@ -134,6 +135,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     keyword: searchValue,
   } = useSearchMode({
     searchable: searchableProp,
+    keyword: keywordProp,
     strategies: [customSearchStrategy, upMatchSearchStrategy],
   })
 
@@ -236,6 +238,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         searchable={searchable}
         scrollable={false}
         footer={isFunction(renderExtraFooter) && renderExtraFooter()}
+        keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
           customRender ? (
