@@ -29,6 +29,7 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
       children,
       data,
       flattedData,
+      originalFlattedData,
       onChangeData,
       value: valueProp,
       defaultValue = NOOP_ARRAY,
@@ -59,7 +60,7 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
     const [onOptionCheck, isCheckedId, isSemiCheckedId] = useCheck(
       checkedMode,
       disabled,
-      flattedData,
+      originalFlattedData,
       defaultValue,
       valueProp,
       ({ checkedIds, semiCheckedIds }, target, shouldChecked) => {
@@ -164,6 +165,11 @@ export interface CascaderMenusProps {
    * 设置选择项数据源
    */
   flattedData: FlattedCheckCascaderDataItem[]
+  /**
+   * 未被过滤的选择项数据源，Hotfix：https://github.com/XiaoMi/hiui/issues/2992
+   * @private
+   */
+  originalFlattedData: FlattedCheckCascaderDataItem[]
   /**
    * 设置当前多选值
    */

@@ -291,6 +291,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             flatted={flatted || !!searchValue}
             // @ts-ignore
             flattedData={selectProps.data}
+            originalFlattedData={flattedData}
             data={cascaderData}
             onChangeData={setCascaderData}
             checkedMode={checkedMode}
