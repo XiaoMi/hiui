@@ -122,11 +122,12 @@ export const processCheckedIds = (
   allowCheck: (node: any) => boolean
 ) => {
   const keySet = new Set(checkedIds)
+  const flattenDataMap = new Map(flattenData.map((node: any) => [node.id, node]))
 
   switch (type) {
     case 'CHILD':
       return checkedIds.filter((id) => {
-        const node = fFindNodeById(flattenData, id)
+        const node = flattenDataMap.get(id) as any
 
         if (node) {
           const { children } = node
@@ -144,7 +145,8 @@ export const processCheckedIds = (
 
     case 'PARENT':
       return checkedIds.filter((id) => {
-        const node = fFindNodeById(flattenData, id) as any
+        const node = flattenDataMap.get(id) as any
+
         if (node) {
           // 向上递归遍历是否被勾选
           const ancestors = getNodeAncestors(node)
