@@ -72,6 +72,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       onLoadChildren,
       render: titleRender,
       filterOption,
+      keyword: keywordProp,
       onSearch: onSearchProp,
       // emptyContent,
       // ********* popper ********* //
@@ -223,6 +224,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       keyword: searchValue,
     } = useSearchMode({
       searchable: searchableProp,
+      keyword: keywordProp,
       strategies: [
         dataSourceStrategy,
         customSearchStrategy,
@@ -349,6 +351,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         // onChange={tryChangeValue}
         // data={mergedData}
         searchable={searchable}
+        keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         footer={renderDefaultFooter()}
         loading={rest.loading !== undefined ? rest.loading : loading}
