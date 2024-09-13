@@ -193,6 +193,14 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       position: relative;
       background-clip: padding-box;
 
+      &:hover {
+        background-color: use-color('gray', 200);
+
+        .#{$prefix}-header__resizable-handle {
+          border-left-color: use-color('gray', 200);
+        }
+      }
+
       &-handle {
         box-sizing: content-box;
         position: absolute;
@@ -208,8 +216,9 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
           display: none;
         }
 
-        .#{$prefix}-header__resizable:hover & {
+        &:hover {
           background-color: use-color-mode('primary');
+          border-left-color: use-color('gray', 200);
         }
       }
     }
