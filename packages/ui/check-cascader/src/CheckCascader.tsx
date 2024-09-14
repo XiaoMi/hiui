@@ -103,10 +103,12 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const [cascaderData, setCascaderData] = useCache(data)
 
-    const flattedData = useMemo(() => flattenTreeData(cascaderData, fieldNames), [
-      cascaderData,
-      fieldNames,
-    ])
+    const [flattedData, flattedDataMap] = useMemo(() => {
+      const flattedData = flattenTreeData(cascaderData, fieldNames)
+      const flattedDataMap = new Map(flattedData.map((node: any, index) => [node.id, node]))
+
+      return [flattedData, flattedDataMap]
+    }, [cascaderData, fieldNames])
 
     const [_value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
     // 内部实现使用尾部 id
@@ -114,10 +116,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const proxyOnChange = useLatestCallback(
       (value: React.ReactText[], item: any, shouldChecked: boolean) => {
-        const flattedItems = flattedData
-
         const itemsPaths = value.map((lastId) => {
-          const item = flattedItems.find((item) => item.id === lastId)
+          const item = flattedDataMap.get(lastId)
           if (item) {
             return getTopDownAncestors(item).map(({ id }) => id)
           }
@@ -223,9 +223,9 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const selectedItems = useMemo(() => {
       return value.map((selectedId) => {
-        return flattedData.find((item) => item.id === selectedId)
+        return flattedDataMap.get(selectedId)
       })
-    }, [value, flattedData])
+    }, [flattedDataMap, value])
 
     return (
       <Picker
