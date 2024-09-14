@@ -30,11 +30,16 @@ export const useCheck = (
   // 搜索时临时选中缓存数据
   const [checkedNodes, setCheckedNodes] = useState<FlattedCheckTreeSelectDataItem[]>([])
 
+  const flattedDataMap = useMemo(() => new Map(flattedData.map((item) => [item.id, item])), [
+    flattedData,
+  ])
+
   const [checkedIds, trySetCheckedIds] = useUncontrolledState(
     defaultCheckedIds,
     checkedIdsProp,
     (checkedIds, checkedNode, checked, semiCheckedIds) => {
-      const nextCheckedNodes = flattedData.filter((item) => checkedIds.includes(item.id))
+      const checkedIdsSet = new Set(checkedIds)
+      const nextCheckedNodes = flattedData.filter((item) => checkedIdsSet.has(item.id))
       setCheckedNodes(nextCheckedNodes)
 
       onCheck?.(checkedIds, {
@@ -69,12 +74,12 @@ export const useCheck = (
   const proxyOnNodeCheck = useCallback(
     (target: FlattedCheckTreeSelectDataItem, shouldChecked: boolean) => {
       // 保证 target 来源于原数据自身，而不是tree内部
-      const targetNode = flattedData.find((item) => item.id === target.id)
+      const targetNode = flattedDataMap.get(target.id)
       if (targetNode) {
         onNodeCheck(targetNode, shouldChecked)
       }
     },
-    [onNodeCheck, flattedData]
+    [flattedDataMap, onNodeCheck]
   )
 
   return [checkedIds, trySetCheckedIds, proxyOnNodeCheck, checkedNodes, parsedCheckedIds] as const
