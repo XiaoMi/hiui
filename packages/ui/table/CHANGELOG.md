@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 4.6.1
+
+### Patch Changes
+
+- [#2997](https://github.com/XiaoMi/hiui/pull/2997) [`0b7182591`](https://github.com/XiaoMi/hiui/commit/0b71825914510dedf25d64489f7ba2cdcf69917d) Thanks [@zyprepare](https://github.com/zyprepare)! - style: 优化 resizable 模式下列 hover 时样式
+
 ## 4.6.0
 
 ### Minor Changes
