@@ -27,8 +27,9 @@ export const useCheck = (
     defaultCheckedIds,
     checkedIdsProp,
     (checkedIds, checkedNode, checked, semiCheckedIds) => {
+      const checkedIdsSet = new Set(checkedIds)
       const nextCheckedNodes = flattedData
-        .filter((item) => checkedIds.includes(item.id))
+        .filter((item) => checkedIdsSet.has(item.id))
         .map((item) => item.raw)
 
       onCheck?.(checkedIds, {

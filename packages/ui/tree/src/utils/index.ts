@@ -37,17 +37,22 @@ export const processCheckedIds = (
   flattenData: any
 ) => {
   const keySet = new Set(checkedIds)
+  const flattedDataMap = new Map(flattenData.map((node: any) => [node.id, node]))
 
   switch (type) {
     case 'CHILD':
       return checkedIds.filter((id) => {
-        const node = fFindNodeById(flattenData, id)
+        const node = flattedDataMap.get(id) as any
 
         if (node) {
           const { children } = node
 
           if (isArrayNonEmpty(children)) {
-            if (children.filter((node) => !node.disabled).every((node) => keySet.has(node.id))) {
+            if (
+              children
+                .filter((node: any) => !node.disabled)
+                .every((node: any) => keySet.has(node.id))
+            ) {
               return false
             }
           }
@@ -59,7 +64,8 @@ export const processCheckedIds = (
 
     case 'PARENT':
       return checkedIds.filter((id) => {
-        const node = fFindNodeById(flattenData, id)
+        const node = flattedDataMap.get(id) as any
+
         if (node) {
           // 向上递归遍历是否被勾选
           const ancestors = getNodeAncestors(node)

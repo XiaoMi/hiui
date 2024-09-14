@@ -1,5 +1,5 @@
 import React from 'react'
-import { fFindNodeById, findNestedChildren, getNodeAncestors } from '@hi-ui/tree-utils'
+import { findNestedChildren, getNodeAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 
 /**
@@ -16,11 +16,12 @@ export const processCheckedIds = (
   allowCheck: (node: any) => boolean
 ) => {
   const keySet = new Set(checkedIds)
+  const flattedDataMap = new Map(flattenData.map((item: any) => [item.id, item]))
 
   switch (type) {
     case 'CHILD':
       return checkedIds.filter((id) => {
-        const node = fFindNodeById(flattenData, id)
+        const node = flattedDataMap.get(id) as any
 
         if (node) {
           const { children } = node
@@ -38,7 +39,8 @@ export const processCheckedIds = (
 
     case 'PARENT':
       return checkedIds.filter((id) => {
-        const node = fFindNodeById(flattenData, id) as any
+        const node = flattedDataMap.get(id) as any
+
         if (node) {
           // 向上递归遍历是否被勾选
           const ancestors = getNodeAncestors(node)
