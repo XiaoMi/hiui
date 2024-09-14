@@ -1,5 +1,20 @@
 # @hi-ui/check-cascader
 
+## 4.3.1
+
+### Patch Changes
+
+- [#2993](https://github.com/XiaoMi/hiui/pull/2993) [`102d01a6b`](https://github.com/XiaoMi/hiui/commit/102d01a6bbae65e452a861060f6ac13d44b6d06c) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 优化搜索算法
+
+- [#2993](https://github.com/XiaoMi/hiui/pull/2993) [`102d01a6b`](https://github.com/XiaoMi/hiui/commit/102d01a6bbae65e452a861060f6ac13d44b6d06c) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 checkedMode="PARENT"模式下搜索后子节点无法选中问题
+
+- [#3001](https://github.com/XiaoMi/hiui/pull/3001) [`872c903`](https://github.com/XiaoMi/hiui/commit/872c903af99f2a00c95de134d344a3cb53deab45) Thanks [@zyprepare](https://github.com/zyprepare)! - perf: 优化大数据下勾选根节点时卡顿
+
+- [#2994](https://github.com/XiaoMi/hiui/pull/2994) [`4d6b26507`](https://github.com/XiaoMi/hiui/commit/4d6b26507479030686d5da65e1bec8b353b80bfa) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 keyword 设置后数据没有过滤的问题
+
+- Updated dependencies [[`908d6cd96`](https://github.com/XiaoMi/hiui/commit/908d6cd9657551203917230d9a91de45e65354c2)]:
+  - @hi-ui/tag-input@4.1.2
+
 ## 4.3.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @hi-ui/tag-input
 
+## 4.1.2
+
+### Patch Changes
+
+- [#3000](https://github.com/XiaoMi/hiui/pull/3000) [`908d6cd96`](https://github.com/XiaoMi/hiui/commit/908d6cd9657551203917230d9a91de45e65354c2) Thanks [@zyprepare](https://github.com/zyprepare)! - perf: 优化大数据下勾选卡顿
+
 ## 4.1.1
 
 ### Patch Changes

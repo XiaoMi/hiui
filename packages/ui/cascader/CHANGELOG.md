@@ -1,5 +1,11 @@
 # @hi-ui/cascader
 
+## 4.3.1
+
+### Patch Changes
+
+- [#2994](https://github.com/XiaoMi/hiui/pull/2994) [`4d6b26507`](https://github.com/XiaoMi/hiui/commit/4d6b26507479030686d5da65e1bec8b353b80bfa) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 keyword 设置后数据没有过滤的问题
+
 ## 4.3.0
 
 ### Minor Changes

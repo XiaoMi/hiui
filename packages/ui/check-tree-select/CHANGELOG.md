@@ -1,5 +1,17 @@
 # @hi-ui/check-tree-select
 
+## 4.6.1
+
+### Patch Changes
+
+- [#3000](https://github.com/XiaoMi/hiui/pull/3000) [`908d6cd96`](https://github.com/XiaoMi/hiui/commit/908d6cd9657551203917230d9a91de45e65354c2) Thanks [@zyprepare](https://github.com/zyprepare)! - perf: 优化大数据下勾选卡顿
+
+- [#2994](https://github.com/XiaoMi/hiui/pull/2994) [`4d6b26507`](https://github.com/XiaoMi/hiui/commit/4d6b26507479030686d5da65e1bec8b353b80bfa) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 keyword 设置后数据没有过滤的问题
+
+- Updated dependencies [[`908d6cd96`](https://github.com/XiaoMi/hiui/commit/908d6cd9657551203917230d9a91de45e65354c2)]:
+  - @hi-ui/tag-input@4.1.2
+  - @hi-ui/tree@4.6.1
+
 ## 4.6.0
 
 ### Minor Changes
