@@ -20,6 +20,7 @@ export const useSearchMode = ({
   searchable: searchableProp,
   strategies,
   keyword: keywordProp,
+  searchOnInit,
 }: UseSearchModeProps) => {
   const [keyword, setKeyword] = useUncontrolledState('', keywordProp)
 
@@ -43,11 +44,11 @@ export const useSearchMode = ({
   const runSearch = useCallback(
     (keyword: string) => {
       if (!searchable) return
-      if (keyword && runSearchStrategy) {
+      if ((keyword || searchOnInit) && runSearchStrategy) {
         runSearchStrategy(keyword, setStateInSearch)
       }
     },
-    [searchable, runSearchStrategy]
+    [searchable, searchOnInit, runSearchStrategy]
   )
 
   const onSearch = useCallback(
@@ -108,6 +109,10 @@ export interface UseSearchModeProps<T = any> {
    * 异步加载数据
    */
   dataSource?: UseDataSource<T>
+  /**
+   * 初始化时执行一次搜索，仅在 dataSource 不为空时有效
+   */
+  searchOnInit?: boolean
   //  DataSourceFun | TreeSelectDataSource | Promise<TreeSelectDataItem[]>
   strategies: any[]
 }

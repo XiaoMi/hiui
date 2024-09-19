@@ -67,6 +67,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       invalid,
       // search
       dataSource,
+      searchOnInit,
       filterOption,
       searchable: searchableProp,
       render: titleRender,
@@ -144,6 +145,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       searchable: searchableProp,
       keyword: keywordProp,
       strategies: [dataSourceStrategy, customSearchStrategy, filterSearchStrategy],
+      searchOnInit,
     })
 
     // 拦截 titleRender，自定义高亮展示
@@ -461,6 +463,10 @@ export interface CheckSelectProps
    * 异步加载数据
    */
   dataSource?: UseDataSource<CheckSelectMergedItem[]>
+  /**
+   * 初始化时执行一次搜索，仅在 dataSource 不为空时有效
+   */
+  searchOnInit?: boolean
   /**
    * 自定义下拉菜单底部渲染
    */
