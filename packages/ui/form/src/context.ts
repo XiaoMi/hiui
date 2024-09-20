@@ -1,6 +1,7 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, MutableRefObject, useContext } from 'react'
 
 import { UseFormReturn } from './use-form'
+import { FormFieldPath } from './types'
 
 export interface FormContextProps extends UseFormReturn {
   labelWidth: React.ReactText
@@ -10,6 +11,7 @@ export interface FormContextProps extends UseFormReturn {
   showRequiredOnValidateRequired: boolean
   showValidateMessage: boolean
   prefixCls: string
+  formItemsRef: MutableRefObject<Map<FormFieldPath, HTMLDivElement | null>>
 }
 
 const formContext = createContext<Omit<FormContextProps, 'rootProps'> | null>(null)

@@ -1,5 +1,8 @@
 import { stringify, parse, isValidField, mergeValues } from './utils'
 import React, { useCallback, useMemo, useReducer, useRef } from 'react'
+import scrollIntoView, {
+  StandardBehaviorOptions as ScrollOptions,
+} from 'scroll-into-view-if-needed'
 import {
   FormAction,
   FormState,
@@ -35,6 +38,7 @@ export const useForm = <Values = Record<string, any>>({
   rules = EMPTY_RULES,
   validateAfterTouched = false,
   validateTrigger: validateTriggerProp = DEFAULT_VALIDATE_TRIGGER,
+  scrollToFirstError,
   ...rest
 }: UseFormProps<Values>) => {
   /**
@@ -43,6 +47,9 @@ export const useForm = <Values = Record<string, any>>({
   const validateTrigger = isArray(validateTriggerProp) ? validateTriggerProp : [validateTriggerProp]
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const validateTriggersMemo = useMemo(() => validateTrigger, validateTrigger)
+
+  const formItemsMp = useMemo(() => new Map(), [])
+  const formItemsRef = useRef(formItemsMp)
 
   /**
    * 收集 Field 的校验器注册表
@@ -68,6 +75,21 @@ export const useForm = <Values = Record<string, any>>({
   // const getFieldNames = useCallback(() => Object.keys(formStateRef.current.values as any), [
   //   formStateRef,
   // ])
+
+  const getFormItemNode = useCallback((fieldName: FormFieldPath) => {
+    return formItemsRef.current.get(fieldName.toString())
+  }, [])
+
+  const scrollToNode = useCallback(
+    (fieldName: FormFieldPath, options: ScrollOptions = {}) => {
+      scrollIntoView(getFormItemNode(fieldName), {
+        scrollMode: 'if-needed',
+        block: 'nearest',
+        ...options,
+      })
+    },
+    [getFormItemNode]
+  )
 
   const getFieldValue = useCallback(
     (fieldName: FormFieldPath) => getNested(formStateRef.current.values, fieldName),
@@ -151,6 +173,8 @@ export const useForm = <Values = Record<string, any>>({
     const fieldNames = getRegisteredKeys()
     formDispatch({ type: 'SET_VALIDATING', payload: true })
 
+    let firstError = false
+
     return Promise.all(
       fieldNames.map((fieldName) => {
         const value = getFieldValue(fieldName)
@@ -162,6 +186,11 @@ export const useForm = <Values = Record<string, any>>({
 
         // catch 错误，保证检验所有表单项
         return fieldValidation.validate(value).catch((error) => {
+          if (scrollToFirstError && !firstError) {
+            firstError = true
+            scrollToNode(fieldName, scrollToFirstError)
+          }
+
           // 第一个出错，即退出校验
           if (lazyValidate) {
             throw error
@@ -229,7 +258,14 @@ export const useForm = <Values = Record<string, any>>({
 
         return combinedError
       })
-  }, [getRegisteredKeys, getFieldValue, getValidation, lazyValidate])
+  }, [
+    getFieldValue,
+    getRegisteredKeys,
+    getValidation,
+    lazyValidate,
+    scrollToFirstError,
+    scrollToNode,
+  ])
 
   /**
    * 控件值更新策略
@@ -568,6 +604,7 @@ export const useForm = <Values = Record<string, any>>({
     getFieldsValue,
     setFieldsValue,
     getFieldsError,
+    formItemsRef,
   }
 }
 
@@ -615,6 +652,10 @@ export interface UseFormProps<T = Record<string, any>> {
    * 重置时回调
    */
   onReset?: (values: T) => void | Promise<any>
+  /**
+   * 提交失败自动滚动到第一个错误字段
+   */
+  scrollToFirstError?: boolean | Options
 }
 
 export type UseFormReturn = ReturnType<typeof useForm>
