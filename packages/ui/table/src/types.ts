@@ -129,10 +129,6 @@ export type TableColumnItem = {
    */
   sorter?: (a: any, b: any) => number
   /**
-   * 列排序回调函数
-   */
-  sorterCallback?: (sorterType: string | null, column: TableColumnItem) => void
-  /**
    * 该列是否支持平均值
    */
   avg?: boolean
