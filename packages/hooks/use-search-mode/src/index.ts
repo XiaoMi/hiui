@@ -70,7 +70,7 @@ export const useSearchMode = ({
     runSearch(keywordLatestRef.current)
   }, [keywordLatestRef, runSearch])
 
-  const inSearch = !!keyword
+  const inSearch = !!keyword || searchOnInit
   const isEmpty = inSearch && stateInSearch.data.length === 0
 
   return {
