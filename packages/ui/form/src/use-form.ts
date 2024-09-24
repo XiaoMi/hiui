@@ -188,7 +188,10 @@ export const useForm = <Values = Record<string, any>>({
         return fieldValidation.validate(value).catch((error) => {
           if (scrollToFirstError && !firstError) {
             firstError = true
-            scrollToNode(fieldName, scrollToFirstError)
+            scrollToNode(
+              fieldName,
+              typeof scrollToFirstError === 'object' ? scrollToFirstError : {}
+            )
           }
 
           // 第一个出错，即退出校验
@@ -655,7 +658,7 @@ export interface UseFormProps<T = Record<string, any>> {
   /**
    * 提交失败自动滚动到第一个错误字段
    */
-  scrollToFirstError?: boolean | Options
+  scrollToFirstError?: boolean | ScrollOptions
 }
 
 export type UseFormReturn = ReturnType<typeof useForm>
