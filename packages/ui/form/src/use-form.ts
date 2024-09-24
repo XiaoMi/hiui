@@ -656,7 +656,7 @@ export interface UseFormProps<T = Record<string, any>> {
    */
   onReset?: (values: T) => void | Promise<any>
   /**
-   * 提交失败自动滚动到第一个错误字段
+   * 提交失败自动滚动到第一个错误字段，配置参考：https://github.com/scroll-into-view/scroll-into-view-if-needed?tab=readme-ov-file#options
    */
   scrollToFirstError?: boolean | ScrollOptions
 }
