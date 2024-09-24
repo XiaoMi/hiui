@@ -331,8 +331,6 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           fieldKey={fieldKey}
           virtual={virtual}
           needDoubleTable={needDoubleTable}
-          current={currentPage}
-          pageSize={pageSize}
           extra={{
             header: setting ? (
               <TableSettingMenu

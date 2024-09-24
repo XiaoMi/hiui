@@ -230,26 +230,6 @@ export const ColMenu = () => {
       phone: 18900010002,
       address: 'Dublin No. 2 Lake Park',
     },
-    {
-      key: '6',
-      name: 'Jake White2',
-      age: 22,
-      tel1: '0571-22098909',
-      tel2: '0571-22098909',
-      tel3: '0571-22098909',
-      tel4: '0571-22098909',
-      tel5: '0571-22098909',
-      tel6: '0571-22098909',
-      tel: '0575-22098909',
-      tel7: '0571-22098909',
-      tel8: '0571-22098909',
-      tel9: '0571-22098909',
-      tel10: '0571-22098909',
-      tel11: '0571-22098909',
-      tel12: '0571-22098909',
-      phone: 18900010002,
-      address: 'Dublin No. 2 Lake Park',
-    },
   ])
 
   const onHighlightedCol = (changedColInfo, highlightedColKeys) => {
@@ -260,42 +240,16 @@ export const ColMenu = () => {
     console.log(pagination, sorter, extra)
   }
 
-  const [paginationState, setPaginationState] = React.useState({
-    current: 1,
-    data: data.slice(0, 5),
-    pageSize: 5,
-  })
-
   return (
     <>
       <h1>ColMenu for Table</h1>
       <div className="table-col-menu__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Table
           columns={columns}
-          data={paginationState.data}
+          data={data}
           showColMenu
           onHighlightedCol={onHighlightedCol}
           onChange={onChange}
-          pagination={{
-            showTotal: true,
-            pageSize: paginationState.pageSize,
-            pageSizeOptions: [5, 10, 20],
-            onPageSizeChange: (pageSize) => {
-              setPaginationState((prev) => ({
-                ...prev,
-                pageSize,
-              }))
-            },
-            total: data.length,
-            current: paginationState.current,
-            onChange: (page, pre, size = 5) => {
-              setPaginationState((prev) => ({
-                ...prev,
-                current: page,
-                data: data.slice(size * (page - 1), size * page),
-              }))
-            },
-          }}
         />
       </div>
     </>
