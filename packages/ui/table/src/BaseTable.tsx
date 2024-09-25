@@ -197,6 +197,8 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     } = providedValue
 
     const hasBorder = borderedProp ?? bordered
+    const hasScrollToLeft = scrollSize.scrollLeft === 0
+    const hasLeftFixedColumns = leftFrozenColKeys.length > 0
 
     const extraHeader = extra && extra.header
     const extraFooter = extra && extra.footer
@@ -290,6 +292,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       prefixCls,
       className,
       hasBorder && `${prefixCls}--bordered`,
+      (hasScrollToLeft || hasLeftFixedColumns) && `${prefixCls}--bordered-left-none`,
       striped && `${prefixCls}--striped`,
       size && `${prefixCls}--size-${size}`,
       virtual && `${prefixCls}--virtual`

@@ -106,54 +106,42 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   }
 
   &--bordered {
-    table {
-      thead {
-        & > tr > th:not(:last-child) {
-          border-right: use-border-size('normal') use-color('gray', 200);
-        }
+    > .#{$prefix}__wrapper {
+      border: use-border-size('normal') use-color('gray', 200);
 
-        & > tr:has(+ tr) {
-          th:not(.#{$prefix}-header-cell--group-last-column) {
-            border-right: use-border-size('normal') use-color('gray', 200);
-          }
-        }
-
-        & > tr + tr:last-child {
-          th {
-            border-right: use-border-size('normal') use-color('gray', 200);
-          }
-        }
+      .#{$prefix}-header-cell, .#{$prefix}-cell {
+        border-left: use-border-size('normal') use-color('gray', 200);
       }
 
-      tr {
+      .#{$prefix}-row {
         &:last-child {
-          td {
+          .#{$prefix}-cell {
             border-bottom: none;
           }
         }
-
-        td:not(:last-child) {
-          border-right: use-border-size('normal') use-color('gray', 200);
-        }
       }
     }
 
-    .#{$prefix}__wrapper {
-      border: use-border-size('normal') use-color('gray', 200);
+    &.#{$prefix}--bordered-left-none {
+      > .#{$prefix}__wrapper {
+        border-left: none;
+      }
     }
 
     &.#{$prefix}--virtual {
-      .#{$prefix}-row {
-        .#{$prefix}-cell:not(:last-child) {
-          border-right: use-border-size('normal') use-color('gray', 200);
+      > .#{$prefix}__wrapper {
+        .#{$prefix}-row {
+          .#{$prefix}-cell {
+            border-bottom: use-border-size('normal') use-color('gray', 200);
+          }
         }
-      }
 
-      .#{$prefix}-virtual-row {
-        &:last-child {
-          .#{$prefix}-row {
-            .#{$prefix}-cell {
-              border-bottom: none;
+        .#{$prefix}-virtual-row {
+          &:last-child {
+            .#{$prefix}-row {
+              .#{$prefix}-cell {
+                border-bottom: none;
+              }
             }
           }
         }
