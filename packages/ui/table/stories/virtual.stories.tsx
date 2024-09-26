@@ -55,6 +55,11 @@ export const Virtual = () => {
           columns={column}
           data={data}
           virtual={true}
+          // virtual={{
+          //   onVisibleChange(...args) {
+          //     console.log('onVisibleChange', ...args)
+          //   },
+          // }}
           fixedToColumn={{ right: 'operation' }}
         />
       </div>

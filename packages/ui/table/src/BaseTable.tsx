@@ -17,7 +17,8 @@ import { useEmbedExpand, UseEmbedExpandProps } from './hooks/use-embed-expand'
 import { TheadContent } from './TheadContent'
 import { ColGroupContent } from './ColGroupContent'
 import { TbodyContent } from './TbodyContent'
-import { SELECTION_DATA_KEY } from './Table';
+import { SELECTION_DATA_KEY } from './Table'
+import { ResizeCallbackData } from 'react-resizable'
 
 const _role = 'table'
 const _prefix = getPrefixCls('table')
@@ -52,6 +53,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       emptyContent,
       virtual,
       needDoubleTable,
+      onResizeStop,
       ...rest
     },
     ref
@@ -151,7 +153,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       let hasSumColumn = false
 
       columns.forEach((column, index) => {
-        if (index === 0  || (index === 1 && columns[0].dataKey === SELECTION_DATA_KEY)) {
+        if (index === 0 || (index === 1 && columns[0].dataKey === SELECTION_DATA_KEY)) {
           // @ts-ignore
           sumRow.raw[column.dataKey] = i18n.get('table.total')
         }
@@ -312,6 +314,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               sumRow,
               hasSumColumn,
               virtual,
+              onResizeStop,
             }}
           >
             {renderTable()}
@@ -368,8 +371,18 @@ export interface BaseTableProps
   fixedColumnTrigger?: 'auto' | 'always'
   /**
    * 是否需要使用双表格
+   * @private
    */
   needDoubleTable?: boolean
+  /**
+   * resizable 模式下，列宽变化后触发的回调
+   */
+  onResizeStop?: (
+    evt: React.SyntheticEvent,
+    size: ResizeCallbackData['size'],
+    index: number,
+    columnsWidth: number[]
+  ) => void
 }
 
 if (__DEV__) {

@@ -221,7 +221,7 @@ export const useColWidth = ({
    * 列宽拖拽 resize，只处理拖拽线两边的列宽度
    */
   const onColumnResizable = React.useCallback(
-    (_, { size }, index: number) => {
+    (evt, { size }, index: number) => {
       const minWidth = minColWidth[index]
       const anotherMinWidth = minColWidth[index + 1]
       let nextWidth = size.width > minWidth ? size.width : minWidth
