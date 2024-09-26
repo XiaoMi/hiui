@@ -71,6 +71,7 @@ export const Range = () => {
         />
 
         <h2>周</h2>
+        {/* 如果遇到周范围选择选值问题，尝试手动引入 import 'moment/locale/zh-cn' */}
         <DatePicker
           style={{ width: 480 }}
           type="weekrange"

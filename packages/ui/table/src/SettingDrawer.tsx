@@ -192,23 +192,65 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
 
 export interface SettingDrawerProps extends HiBaseHTMLProps<'div'> {
   prefixCls?: string
+  /**
+   * 是否显示抽屉
+   */
   visible?: boolean
+  /**
+   * 表格列配置
+   */
   columns?: TableColumnItem[]
+  /**
+   * 关闭回调
+   */
   onClose?: () => void
+  /**
+   * 禁止选择的列
+   */
   checkDisabledColKeys?: string[]
+  /**
+   * 禁止拖拽的列
+   */
   dragDisabledColKeys?: string[]
+  /**
+   * 确认设置回调
+   */
   onSetColKeysChange?: (
     sortedColKeys: string[],
     hiddenColKeys: string[],
     visibleCols: TableColumnItem[]
   ) => void
+  /**
+   * 隐藏列
+   */
   hiddenColKeys?: string[]
+  /**
+   * 列隐藏回调
+   */
   onHiddenColKeysChange?: (hiddenColKeys: string[]) => void
+  /**
+   * 排序列
+   */
   sortedColKeys?: string[]
+  /**
+   * 列排序回调
+   */
   onSortedColKeysChange?: (sortedColKeys: string[]) => void
+  /**
+   * 自定义扩展头部内容
+   */
   extraHeader?: React.ReactNode
+  /**
+   * 自定义字段渲染
+   */
   itemRender?: (item: TableColumnItem) => React.ReactNode
+  /**
+   * Drawer 组件配置
+   */
   drawerProps?: Omit<DrawerProps, 'className'>
+  /**
+   * 显示全选
+   */
   showCheckAll?: boolean
 }
 
