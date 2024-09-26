@@ -1,5 +1,11 @@
 # @hi-ui/form
 
+## 4.3.0
+
+### Minor Changes
+
+- [#3006](https://github.com/XiaoMi/hiui/pull/3006) [`4540c217a`](https://github.com/XiaoMi/hiui/commit/4540c217ade6749c38ee58cefcfe94322889b929) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: Add scrollToFirstError api
+
 ## 4.2.2
 
 ### Patch Changes

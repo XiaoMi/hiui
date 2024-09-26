@@ -1,5 +1,17 @@
 # @hi-ui/table
 
+## 4.7.0
+
+### Minor Changes
+
+- [#3008](https://github.com/XiaoMi/hiui/pull/3008) [`e9aadf1fb`](https://github.com/XiaoMi/hiui/commit/e9aadf1fba8896af3bf4ccaa747283ea96be6b81) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: virtual 模式增加 onVisibleChange api
+
+- [#3008](https://github.com/XiaoMi/hiui/pull/3008) [`e9aadf1fb`](https://github.com/XiaoMi/hiui/commit/e9aadf1fba8896af3bf4ccaa747283ea96be6b81) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: Add onResizeStop api
+
+### Patch Changes
+
+- [#3007](https://github.com/XiaoMi/hiui/pull/3007) [`9b9a44826`](https://github.com/XiaoMi/hiui/commit/9b9a448262f9a6c89af78db008bc16430f495aff) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复合并单元格边框样式问题
+
 ## 4.6.1
 
 ### Patch Changes
