@@ -1,5 +1,15 @@
 # @hi-ui/date-picker
 
+## 4.9.0
+
+### Minor Changes
+
+- [#3010](https://github.com/XiaoMi/hiui/pull/3010) [`b809ca9`](https://github.com/XiaoMi/hiui/commit/b809ca9bd59e5e2455b13fefe32d8307c8ab1d4a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 新增自定义触发器
+
+- [#3010](https://github.com/XiaoMi/hiui/pull/3010) [`b809ca9`](https://github.com/XiaoMi/hiui/commit/b809ca9bd59e5e2455b13fefe32d8307c8ab1d4a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: Add needConfirm and onConfirm api
+
+- [#3010](https://github.com/XiaoMi/hiui/pull/3010) [`b809ca9`](https://github.com/XiaoMi/hiui/commit/b809ca9bd59e5e2455b13fefe32d8307c8ab1d4a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: onSelect 回调中增加 panelIndex 参数
+
 ## 4.8.0
 
 ### Minor Changes

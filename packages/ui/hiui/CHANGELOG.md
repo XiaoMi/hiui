@@ -1,5 +1,32 @@
 # @hi-ui/hiui
 
+## 4.7.0
+
+### Minor Changes
+
+- [#3010](https://github.com/XiaoMi/hiui/pull/3010) [`b809ca9`](https://github.com/XiaoMi/hiui/commit/b809ca9bd59e5e2455b13fefe32d8307c8ab1d4a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: hiui 更新到 4.7.0
+
+### Patch Changes
+
+- [#3007](https://github.com/XiaoMi/hiui/pull/3007) [`9b9a44826`](https://github.com/XiaoMi/hiui/commit/9b9a448262f9a6c89af78db008bc16430f495aff) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复合并单元格边框样式问题
+
+- [#3010](https://github.com/XiaoMi/hiui/pull/3010) [`b809ca9`](https://github.com/XiaoMi/hiui/commit/b809ca9bd59e5e2455b13fefe32d8307c8ab1d4a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): onSelect 回调中增加 panelIndex 参数
+
+- [#3008](https://github.com/XiaoMi/hiui/pull/3008) [`e9aadf1fb`](https://github.com/XiaoMi/hiui/commit/e9aadf1fba8896af3bf4ccaa747283ea96be6b81) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): Add onResizeStop api
+
+- [#3010](https://github.com/XiaoMi/hiui/pull/3010) [`b809ca9`](https://github.com/XiaoMi/hiui/commit/b809ca9bd59e5e2455b13fefe32d8307c8ab1d4a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): 新增自定义触发器
+
+- [#3006](https://github.com/XiaoMi/hiui/pull/3006) [`4540c217a`](https://github.com/XiaoMi/hiui/commit/4540c217ade6749c38ee58cefcfe94322889b929) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(form): Add scrollToFirstError api
+
+- [#3008](https://github.com/XiaoMi/hiui/pull/3008) [`e9aadf1fb`](https://github.com/XiaoMi/hiui/commit/e9aadf1fba8896af3bf4ccaa747283ea96be6b81) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): virtual 模式增加 onVisibleChange api
+
+- [#3010](https://github.com/XiaoMi/hiui/pull/3010) [`b809ca9`](https://github.com/XiaoMi/hiui/commit/b809ca9bd59e5e2455b13fefe32d8307c8ab1d4a) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): Add needConfirm and onConfirm api
+
+- Updated dependencies [[`e9aadf1fb`](https://github.com/XiaoMi/hiui/commit/e9aadf1fba8896af3bf4ccaa747283ea96be6b81), [`b809ca9`](https://github.com/XiaoMi/hiui/commit/b809ca9bd59e5e2455b13fefe32d8307c8ab1d4a), [`e9aadf1fb`](https://github.com/XiaoMi/hiui/commit/e9aadf1fba8896af3bf4ccaa747283ea96be6b81), [`b809ca9`](https://github.com/XiaoMi/hiui/commit/b809ca9bd59e5e2455b13fefe32d8307c8ab1d4a), [`4540c217a`](https://github.com/XiaoMi/hiui/commit/4540c217ade6749c38ee58cefcfe94322889b929), [`b809ca9`](https://github.com/XiaoMi/hiui/commit/b809ca9bd59e5e2455b13fefe32d8307c8ab1d4a), [`9b9a44826`](https://github.com/XiaoMi/hiui/commit/9b9a448262f9a6c89af78db008bc16430f495aff)]:
+  - @hi-ui/table@4.7.0
+  - @hi-ui/date-picker@4.9.0
+  - @hi-ui/form@4.3.0
+
 ## 4.6.5
 
 ### Patch Changes
