@@ -52,7 +52,8 @@
     "@hi-ui/object-utils": "^4.0.4",
     "@hi-ui/type-assertion": "^4.0.4",
     "@hi-ui/use-latest": "^4.0.4",
-    "async-validator": "^4.0.7"
+    "async-validator": "^4.0.7",
+    "scroll-into-view-if-needed": "^3.1.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.8",

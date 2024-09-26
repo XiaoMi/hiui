@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { __DEV__ } from '@hi-ui/env'
 import { useFiledRules, UseFormFieldProps } from './use-form-field'
 import { FormLabel, FormLabelProps } from './FormLabel'
@@ -21,7 +21,7 @@ export const FormItem: React.FC<FormItemProps> = ({
   render,
   ...rest
 }) => {
-  const { prefixCls, showRequiredOnValidateRequired } = useFormContext()
+  const { prefixCls, showRequiredOnValidateRequired, formItemsRef } = useFormContext()
 
   const fieldRules = useFiledRules({ field, rules, valueType })
   const { required } = rest
@@ -36,6 +36,9 @@ export const FormItem: React.FC<FormItemProps> = ({
   return (
     <FormLabel
       {...rest}
+      ref={(ref) => {
+        field && formItemsRef.current.set(field.toString(), ref)
+      }}
       required={showRequired}
       // @ts-ignore
       formMessage={<FormMessage field={field} className={`${prefixCls}-item__message`} />}
