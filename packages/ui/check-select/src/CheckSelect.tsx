@@ -486,7 +486,7 @@ export interface CheckSelectProps
    */
   onClose?: () => void
   /**
-   * 是否开启全选功能，需要对数据全量操作。异步数据场景暂不支持，可自行渲染弹层底部实现
+   * 是否开启全选功能
    */
   showCheckAll?: boolean
   /**
