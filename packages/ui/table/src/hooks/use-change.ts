@@ -1,16 +1,20 @@
 import { useEffect, useRef } from 'react'
 import { TableColumnItem, FlattedTableRowData } from '../types'
+
 export interface Sorter {
   order: string | null
   column: TableColumnItem
 }
+
 export interface Action {
   sorter?: Sorter
 }
+
 export interface Extra {
   action: keyof Action
   currentDataSource: object[]
 }
+
 export interface UseChangeProps {
   activeSorterColumn: string | null
   activeSorterType: string | null
