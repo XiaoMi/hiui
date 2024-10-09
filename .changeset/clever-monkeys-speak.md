@@ -1,5 +1,5 @@
 ---
-"@hi-ui/hiui": patch
+"@hi-ui/hiui": minor
 ---
 
 feat(select): Add searchOnInit api
