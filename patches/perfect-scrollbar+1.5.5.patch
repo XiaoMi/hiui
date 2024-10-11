@@ -1,0 +1,53 @@
+diff --git a/node_modules/perfect-scrollbar/dist/perfect-scrollbar.esm.js b/node_modules/perfect-scrollbar/dist/perfect-scrollbar.esm.js
+index 4215b17..119e0da 100644
+--- a/node_modules/perfect-scrollbar/dist/perfect-scrollbar.esm.js
++++ b/node_modules/perfect-scrollbar/dist/perfect-scrollbar.esm.js
+@@ -418,6 +418,16 @@ function getThumbSize(i, thumbSize) {
+   return thumbSize;
+ }
+ 
++function getElementBottomToScreenBottomDistance(element, i) {
++  var rect = element.getBoundingClientRect();
++  var elementTop = rect.top;
++  var elementHeight = element.offsetHeight || element.clientHeight;
++  var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
++  viewportHeight -= (i.settings && i.settings.heightFromBottom) || 0;
++  var distance = viewportHeight - (elementTop + elementHeight);
++  return distance;
++}
++
+ function updateCss(element, i) {
+   var xRailOffset = { width: i.railXWidth };
+   var roundedScrollTop = Math.floor(element.scrollTop);
+@@ -431,10 +441,23 @@ function updateCss(element, i) {
+   } else {
+     xRailOffset.left = element.scrollLeft;
+   }
++  var bottomToScreenBottomDistance = 0
++  if(i.settings.isBottomToScreenBottom){
++    bottomToScreenBottomDistance = getElementBottomToScreenBottomDistance(
++      element,
++      i
++    );
++  }
+   if (i.isScrollbarXUsingBottom) {
+     xRailOffset.bottom = i.scrollbarXBottom - roundedScrollTop;
++    if (bottomToScreenBottomDistance < 0) {
++      xRailOffset.bottom -= bottomToScreenBottomDistance;
++    }
+   } else {
+     xRailOffset.top = i.scrollbarXTop + roundedScrollTop;
++    if (bottomToScreenBottomDistance < 0) {
++      xRailOffset.top += bottomToScreenBottomDistance;
++    }
+   }
+   set(i.scrollbarXRail, xRailOffset);
+ 
+@@ -1263,6 +1286,7 @@ var PerfectScrollbar = function PerfectScrollbar(element, userSettings) {
+   this.lastScrollTop = Math.floor(element.scrollTop); // for onScroll only
+   this.lastScrollLeft = element.scrollLeft; // for onScroll only
+   this.event.bind(this.element, 'scroll', function (e) { return this$1.onScroll(e); });
++  this.event.bind(this.element, "mouseenter", function (e) { return this$1.update(e); });
+   updateGeometry(this);
+ };
+ 

@@ -354,7 +354,11 @@ export const Scrollbar = () => {
           columns={column}
           data={data}
           maxHeight={300}
-          scrollbar={{ keepVisible: true, zIndex: 9 }}
+          scrollbar={{
+            keepVisible: true,
+            zIndex: 9,
+            settings: { isBottomToScreenBottom: true, heightFromBottom: 20 },
+          }}
         />
       </div>
     </>
