@@ -5,7 +5,7 @@ import { TreeDataItem, FlattedTreeNodeData } from '../types'
 const EMPTY_FIELD_NAMES = {} as any
 
 export const getKey = (fieldNames: any, key: string): string => {
-  return fieldNames[key] || key
+  return fieldNames?.[key] || key
 }
 
 /**
