@@ -35,6 +35,7 @@ export const DataSource = () => {
           // searchPlaceholder="请输入搜索内容"
           data={data}
           onChange={console.log}
+          // searchOnInit
           dataSource={(keyword) => {
             console.log('DataSource', keyword)
             const url =

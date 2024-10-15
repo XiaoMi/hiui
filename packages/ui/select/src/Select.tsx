@@ -61,6 +61,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       searchable: searchableProp,
       keyword: keywordProp,
       dataSource,
+      searchOnInit,
       filterOption,
       // popper
       visible,
@@ -132,6 +133,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       searchable: searchableProp,
       keyword: keywordProp,
       strategies: [dataSourceStrategy, customSearchStrategy, filterSearchStrategy],
+      searchOnInit,
     })
 
     // 拦截 titleRender，自定义高亮展示
@@ -380,6 +382,10 @@ export interface SelectProps
    * 异步加载数据
    */
   dataSource?: UseDataSource<SelectMergedItem[]>
+  /**
+   * 初始化时执行一次搜索，仅在 dataSource 不为空时有效
+   */
+  searchOnInit?: boolean
   /**
    * 搜索时触发
    */
