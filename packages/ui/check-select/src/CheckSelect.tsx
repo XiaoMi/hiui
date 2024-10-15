@@ -172,7 +172,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       [titleRender, searchValue, searchMode]
     )
 
-    const shouldUseSearch = !!searchValue && !hasError
+    const shouldUseSearch = (!!searchValue || searchOnInit) && !hasError
     const showData = useMemo(() => {
       return shouldUseSearch ? stateInSearch.data : flattedData
     }, [shouldUseSearch, flattedData, stateInSearch.data])
