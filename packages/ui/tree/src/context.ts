@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react'
-import { TreeNodeEventData, TreeNodeDragDirection } from './types'
+import { TreeNodeEventData, TreeNodeDragDirection, TreeDataItem } from './types'
 
 interface TreeContext {
   selectable?: boolean
@@ -8,7 +8,11 @@ interface TreeContext {
   draggable?: boolean
   dragNodeRef: React.MutableRefObject<TreeNodeEventData | null>
   onDragStart?: (evt: React.DragEvent, options: { dragNode: TreeNodeEventData }) => void
-  onDragEnd?: (evt: React.DragEvent, options: { dragNode: TreeNodeEventData }) => void
+  onDragEnd?: (
+    evt: React.DragEvent,
+    options: { dragNode: TreeNodeEventData },
+    data: TreeDataItem[]
+  ) => void
   onDrop?: (
     evt: React.DragEvent,
     dragId: React.ReactText,
@@ -42,6 +46,7 @@ interface TreeContext {
   onContextMenu?: (event: React.MouseEvent, node: TreeNodeEventData) => void
   checkOnSelect: boolean
   expandOnSelect?: boolean
+  treeData: TreeDataItem[]
 }
 
 const treeContext = createContext<TreeContext | null>(null)

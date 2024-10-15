@@ -188,6 +188,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         iconRender,
         onContextMenu,
         expandOnSelect,
+        treeData,
       }),
       [
         onNodeSelect,
@@ -211,6 +212,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         iconRender,
         onContextMenu,
         expandOnSelect,
+        treeData,
       ]
     )
 
@@ -342,7 +344,11 @@ export interface TreeProps {
   /**
    * 节点结束拖拽时触发
    */
-  onDragEnd?: (evt: React.DragEvent, options: { dragNode: TreeNodeEventData }) => void
+  onDragEnd?: (
+    evt: React.DragEvent,
+    options: { dragNode: TreeNodeEventData },
+    treeData: TreeDataItem[]
+  ) => void
   /**
    * 节点放开时触发，返回 true 表示允许更新拖拽后数据
    */

@@ -60,6 +60,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     expandedIcon: expandIconContext,
     leafIcon: leafIconContext,
     expandOnSelect,
+    treeData,
   } = useTreeContext()
 
   const collapsedIcon = collapseIconContext || collapseIconProp
@@ -118,9 +119,9 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
       setDirection(null)
       setIsDragging(false)
 
-      onDragEndContextLatest(evt, { dragNode: eventNodeRef.current })
+      onDragEndContextLatest(evt, { dragNode: eventNodeRef.current }, treeData)
     },
-    [onDragEndContextLatest, eventNodeRef, dragNodeRef]
+    [dragNodeRef, onDragEndContextLatest, eventNodeRef, treeData]
   )
 
   const onDragLeaveContextLatest = useLatestCallback(onDragLeaveContext)
