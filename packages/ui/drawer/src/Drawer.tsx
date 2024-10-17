@@ -162,11 +162,11 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
   /**
    * 自定义抽屉宽度，仅在 placement="left" | "right" 有效
    */
-  width?: number
+  width?: number | string
   /**
    * 自定义抽屉高度，仅在 placement="bottom" | "top" 有效
    */
-  height?: number
+  height?: number | string
   /**
    * 自定义css展示层级
    */
