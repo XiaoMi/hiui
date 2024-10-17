@@ -21,6 +21,10 @@ export const formatId = (val: string) => {
 }
 
 export const pureId = (val: string) => {
+  if (/\d{6}\s\d{4}\s\d{4}\s\d{3}X/g.test(val)) {
+    return val
+  }
+
   const tmp = val.replace(/[^\d|.]/g, '')
   return tmp.slice(0, 18)
 }
