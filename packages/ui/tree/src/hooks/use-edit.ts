@@ -89,7 +89,7 @@ export const useEdit = (
         onDeleteRef.current?.(node, nextTreeData)
       }
     },
-    [treeData, setTreeData]
+    [treeData, onBeforeDeleteRef, setTreeData, onDeleteRef]
   )
 
   const onBeforeSaveRef = useLatestRef(onBeforeSave)
@@ -127,7 +127,7 @@ export const useEdit = (
         onSaveRef.current?.(targetNode, nextTreeData)
       }
     },
-    [treeData, setTreeData]
+    [treeData, fieldNames, onBeforeSaveRef, setTreeData, onSaveRef]
   )
 
   return [saveEdit, cancelAddNode, deleteNode, addChildNode, addSiblingNode] as const
