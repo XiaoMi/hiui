@@ -232,11 +232,25 @@ export const ColMenu = () => {
     },
   ])
 
+  const onHighlightedCol = (changedColInfo, highlightedColKeys) => {
+    console.log(changedColInfo, highlightedColKeys)
+  }
+
+  const onChange = (pagination, sorter, extra) => {
+    console.log(pagination, sorter, extra)
+  }
+
   return (
     <>
       <h1>ColMenu for Table</h1>
       <div className="table-col-menu__wrap" style={{ minWidth: 660, background: '#fff' }}>
-        <Table columns={columns} data={data} showColMenu />
+        <Table
+          columns={columns}
+          data={data}
+          showColMenu
+          onHighlightedCol={onHighlightedCol}
+          onChange={onChange}
+        />
       </div>
     </>
   )
