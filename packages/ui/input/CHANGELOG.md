@@ -1,5 +1,12 @@
 # @hi-ui/input
 
+## 4.2.1
+
+### Patch Changes
+
+- [#3024](https://github.com/XiaoMi/hiui/pull/3024) [`4baa3bda2`](https://github.com/XiaoMi/hiui/commit/4baa3bda267233c45d15717bc8765587901447b3) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(input): 修复 type="X" 时最后一位无法输入 X 的问题 (#3023)
+  chore(input): type 类型中增加 number 类型
+
 ## 4.2.0
 
 ### Minor Changes

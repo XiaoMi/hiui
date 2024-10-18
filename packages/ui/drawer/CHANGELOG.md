@@ -1,5 +1,11 @@
 # @hi-ui/drawer
 
+## 4.2.1
+
+### Patch Changes
+
+- [#3016](https://github.com/XiaoMi/hiui/pull/3016) [`5784cffd0`](https://github.com/XiaoMi/hiui/commit/5784cffd0cc8e913fb3f95082249d50975e7f8bb) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(drawer): 修复 width 和 height 类型不支持字符串问题 (#3013)
+
 ## 4.2.0
 
 ### Minor Changes

@@ -1,5 +1,24 @@
 # @hi-ui/hiui
 
+## 4.7.1
+
+### Patch Changes
+
+- [#3016](https://github.com/XiaoMi/hiui/pull/3016) [`5784cffd0`](https://github.com/XiaoMi/hiui/commit/5784cffd0cc8e913fb3f95082249d50975e7f8bb) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(drawer): 修复 width 和 height 类型不支持字符串问题 (#3013)
+
+- [#3024](https://github.com/XiaoMi/hiui/pull/3024) [`4baa3bda2`](https://github.com/XiaoMi/hiui/commit/4baa3bda267233c45d15717bc8765587901447b3) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(input): 修复 type="X" 时最后一位无法输入 X 的问题 (#3023)
+  chore(input): type 类型中增加 number 类型
+
+- [#3018](https://github.com/XiaoMi/hiui/pull/3018) [`1e382ae8e`](https://github.com/XiaoMi/hiui/commit/1e382ae8efb72f763a29a338c7a9734525d92ea6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(tree): 修复编辑模式下保存无效问题 (#3017)
+  fix(tree): 修复拖拽和编辑模式下保存时异常问题 (#3022)
+
+- [#3026](https://github.com/XiaoMi/hiui/pull/3026) [`cd40615`](https://github.com/XiaoMi/hiui/commit/cd406152a536123c08409a1195a2a3e7b688483a) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(tree): 选项禁用时触发键盘事件报错(#3025)
+
+- Updated dependencies [[`5784cffd0`](https://github.com/XiaoMi/hiui/commit/5784cffd0cc8e913fb3f95082249d50975e7f8bb), [`4baa3bda2`](https://github.com/XiaoMi/hiui/commit/4baa3bda267233c45d15717bc8765587901447b3), [`1e382ae8e`](https://github.com/XiaoMi/hiui/commit/1e382ae8efb72f763a29a338c7a9734525d92ea6), [`cd40615`](https://github.com/XiaoMi/hiui/commit/cd406152a536123c08409a1195a2a3e7b688483a)]:
+  - @hi-ui/drawer@4.2.1
+  - @hi-ui/input@4.2.1
+  - @hi-ui/tree@4.6.2
+
 ## 4.7.0
 
 ### Minor Changes
