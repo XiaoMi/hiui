@@ -86,7 +86,7 @@ export const useFocus = (
     }
 
     const focusNode = transitionData[focusedIndex]
-    const eventNode = getTreeNodeEventData(focusNode, getTreeNodeRequiredProps(focusNode.id))
+    const eventNode = getTreeNodeEventData(focusNode, getTreeNodeRequiredProps(focusNode?.id))
 
     switch (evt.keyCode) {
       // Left: 选中界面上一层节点，如果展开，则收起
