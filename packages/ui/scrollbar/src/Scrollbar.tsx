@@ -28,6 +28,7 @@ export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
       style,
       zIndex,
       innerRef,
+      settings,
       ...rest
     },
     ref
@@ -43,7 +44,7 @@ export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
 
     useEffect(() => {
       if (containerElement) {
-        setPs(new PerfectScrollbar(containerElement))
+        setPs(new PerfectScrollbar(containerElement, settings))
 
         // 动态设置滚动条 z-index
         zIndex && containerElement.style.setProperty('--scrollbar-zIndex', String(zIndex))
@@ -89,6 +90,9 @@ export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
       () => ({
         instance: ps,
         containerElement: containerElement || undefined,
+        updata: () => {
+          ps?.update()
+        },
       }),
       [ps, containerElement]
     )
@@ -172,6 +176,11 @@ export interface ScrollbarProps extends HiBaseHTMLProps<'div'>, ScrollbarEventPr
    * @default false
    */
   onlyScrollVisible?: boolean
+  /**
+   * 原生滚动条配置
+   * @default {}
+   */
+  settings: Record<string, string | number | boolean>
 }
 
 if (__DEV__) {

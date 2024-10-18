@@ -11,6 +11,10 @@ export interface ScrollbarHelpers {
    * 容器dom实例
    */
   container?: HTMLDivElement
+  /**
+   * 更新滚动条
+   */
+  updata?: () => void
 }
 
 export type ScrollbarAxesEnum = 'both' | 'x' | 'y' | 'none'
