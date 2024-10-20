@@ -4,10 +4,12 @@
 
 <h1 align="center">HiUI</h1>
 
-[![JavaScript Style Guide](https://camo.githubusercontent.com/58fbab8bb63d069c1e4fb3fa37c2899c38ffcd18/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f64655f7374796c652d7374616e646172642d627269676874677265656e2e737667)](https://github.com/standard/standard)
+![JavaScript Style Guide](https://avatars.githubusercontent.com/u/29208316?s=48&v=4)
 
 </div>
 
+---
+|简体中文|[ENGLISH](README.EN.md)|
 ---
 
 HiUI 是一个面向中后台系统的前端组件库，可以帮助开发人员快速实现交互一致、界面美观的界面开发。
