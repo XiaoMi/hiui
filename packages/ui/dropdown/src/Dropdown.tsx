@@ -270,6 +270,7 @@ const DropdownMenuItem = forwardRef<HTMLLIElement | null, DropdownMenuItemProps>
       ...rest,
       trigger: triggerMethods,
       parents: parentsProp,
+      disabled,
     })
 
     const cls = cx(
