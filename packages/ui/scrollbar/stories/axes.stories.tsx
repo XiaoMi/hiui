@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import Scrollbar from '../src'
 
 /**
- * @title 使能坐标轴
+ * @title 使用坐标轴
  * @desc 默认 `x`、`y` 都可滚动
  */
 export const Axes = () => {
@@ -19,7 +19,7 @@ export const Axes = () => {
 
   return (
     <>
-      <h1>使能坐标轴</h1>
+      <h1>使用坐标轴</h1>
       <h2>both(default)</h2>
       <div className="scrollbar-axes__wrap" style={{ height: 320, marginBottom: 64 }}>
         <Scrollbar>{scrollContent}</Scrollbar>

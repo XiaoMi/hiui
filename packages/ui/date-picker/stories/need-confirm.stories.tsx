@@ -20,6 +20,7 @@ export const NeedConfirm = () => {
         />
         <h2>日期时间选择</h2>
         <DatePicker
+          style={{ width: 240 }}
           defaultValue={new Date()}
           showTime
           needConfirm

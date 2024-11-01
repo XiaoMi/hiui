@@ -11,9 +11,9 @@ import { IconButton } from '@hi-ui/icon-button'
  */
 export const WithApi = () => {
   const FormItem = Form.Item
-  const key1 = 'key1'
+  const key = 'my_key'
 
-  const Title = ({ title }) => {
+  const Title = ({ title }: { title: string }) => {
     return (
       <div
         style={{
@@ -24,7 +24,7 @@ export const WithApi = () => {
         }}
       >
         <span>{title}</span>
-        <IconButton effect icon={<CloseOutlined />} onClick={() => Popover.close(key1)} />
+        <IconButton effect icon={<CloseOutlined />} onClick={() => Popover.close(key)} />
       </div>
     )
   }
@@ -64,7 +64,7 @@ export const WithApi = () => {
           </Form>
         </div>
         <div style={{ display: 'flex' }}>
-          <Button style={{ flex: 1 }} onClick={() => Popover.close(key1)}>
+          <Button style={{ flex: 1 }} onClick={() => Popover.close(key)}>
             取消
           </Button>
           <Button
@@ -75,7 +75,7 @@ export const WithApi = () => {
               setLoading(true)
               setTimeout(() => {
                 setLoading(false)
-                Popover.close(key1)
+                Popover.close(key)
               }, 1000)
             }}
           >
@@ -94,7 +94,7 @@ export const WithApi = () => {
         <Button
           onClick={(e) => {
             Popover.open(e.target as HTMLElement, {
-              key: key1,
+              key: key,
               title: <Title title="文字标题" />,
               content: <Content />,
               arrow: false,
@@ -111,7 +111,7 @@ export const WithApi = () => {
         <Button
           onClick={(e) => {
             Popover.open(e.target as HTMLElement, {
-              key: key1,
+              key: key,
               title: <Title title="文字标题 2" />,
               content: <Content />,
               arrow: false,

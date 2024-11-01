@@ -3,7 +3,8 @@ import Popover from '../src'
 import Button from '@hi-ui/button'
 
 /**
- * @title 设置基于依附元素的间隙偏移量
+ * @title 设置间隙偏移量
+ * @desc 设置基于依附元素的间隙偏移量
  */
 export const GutterGap = () => {
   const title = <span>文字提示</span>
