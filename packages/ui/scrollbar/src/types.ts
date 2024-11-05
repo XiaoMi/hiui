@@ -75,7 +75,7 @@ export type ScrollbarPositionEnum =
   | 'sticky'
 
 /**
- * 更多配置请参考：https://perfectscrollbar.com/
+ * 更多配置请参考：https://github.com/mdbootstrap/perfect-scrollbar/blob/main/types/perfect-scrollbar.d.ts
  */
 export type Settings = PerfectScrollbar.Options & {
   /**
