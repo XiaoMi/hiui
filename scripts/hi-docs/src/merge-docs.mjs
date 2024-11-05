@@ -126,7 +126,7 @@ async function appendReadmeAsync(info, markdown) {
     '\n\n###@###\n\n' +
     markdown
       .replace(/ {2,}|\n\s*\/\*\*[\s\S]*?\*\/|\n\s*<h1>.*?<\/h1>/g, ' ')
-      .replace('## Props', `###@###\n\n# ${info.title}\n\n## Props`)
+      // .replace('## Props', `###@###\n\n# ${info.title}\n\n## Props`)
       .replace(/## 何时使用[\s\S]*?## 使用示例/g, '## 使用示例')
   await Promise.all([appendFileAsync(Path.join(outputPath, 'hiui.md'), info.name, markdown)])
 }
