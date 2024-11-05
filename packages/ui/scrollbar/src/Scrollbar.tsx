@@ -9,6 +9,7 @@ import {
   ScrollbarEventProps,
   ScrollbarPositionEnum,
   ScrollbarHelpers,
+  Settings,
 } from './types'
 import { ScrollbarEventToPsMap } from './utils'
 
@@ -28,7 +29,7 @@ export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
       style,
       zIndex,
       innerRef,
-      settings,
+      settings = {},
       ...rest
     },
     ref
@@ -177,10 +178,10 @@ export interface ScrollbarProps extends HiBaseHTMLProps<'div'>, ScrollbarEventPr
    */
   onlyScrollVisible?: boolean
   /**
-   * 原生滚动条配置
+   * 滚动条配置
    * @default {}
    */
-  settings: Record<string, string | number | boolean>
+  settings: Settings
 }
 
 if (__DEV__) {

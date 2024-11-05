@@ -73,3 +73,17 @@ export type ScrollbarPositionEnum =
   | 'fixed'
   | 'relative'
   | 'sticky'
+
+/**
+ * 更多配置请参考：https://perfectscrollbar.com/
+ */
+export type Settings = PerfectScrollbar.Options & {
+  /**
+   * 开启滚动条吸底
+   */
+  isBottomToScreenBottom?: boolean
+  /**
+   * 滚动条吸底距离
+   */
+  heightFromBottom?: number
+}

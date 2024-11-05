@@ -2,8 +2,8 @@ import React, { useRef, useEffect } from 'react'
 import Scrollbar from '../src'
 
 /**
- * @title 使能坐标轴
- * @desc 默认 `x`、`y` 都可滚动
+ * @title 滚动条固定到屏幕底部
+ * @desc 默认不开启
  */
 export const Fixed = () => {
   const innerRef = useRef<any>()
