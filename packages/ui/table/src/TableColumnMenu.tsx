@@ -33,6 +33,8 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
       setLeftFreezeColumn,
       isHighlightedCol,
       onHighlightedColChange,
+      highlightedColKeys,
+      onHighlightedCol,
     } = useTableContext()
 
     const { id: dataKey, raw: columnRaw } = column
@@ -111,6 +113,13 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
               onSwitch={(shouldActive) => {
                 onHighlightedColChange(column, shouldActive)
 
+                const latestHighlightedColKeys = shouldActive
+                  ? [...highlightedColKeys, column.raw.dataKey || ''].filter(Boolean)
+                  : [...highlightedColKeys.filter((keys: string) => keys !== column.raw.dataKey)]
+                onHighlightedCol?.(
+                  { active: shouldActive, column: column.raw },
+                  latestHighlightedColKeys
+                )
                 menuVisibleAction.off()
               }}
             />

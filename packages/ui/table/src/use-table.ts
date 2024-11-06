@@ -21,6 +21,7 @@ import { PaginationProps } from '@hi-ui/pagination'
 import { ScrollbarProps } from '@hi-ui/scrollbar'
 import { parseFixedColumns, setColumnsDefaultWidth } from './utils'
 import { useAsyncSwitch, useExpand } from './hooks'
+import { useChange, Action, Extra } from './hooks/use-change'
 import { useColWidth } from './hooks/use-col-width'
 import { useColumns } from './hooks/use-colgroup'
 import { useTableDrag } from './hooks/use-drag'
@@ -84,6 +85,8 @@ export const useTable = ({
   scrollbar,
   rowClassName,
   cellClassName,
+  onChange,
+  onHighlightedCol,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -593,6 +596,13 @@ export const useTable = ({
     return _data
   }, [activeSorterColumn, activeSorterType, transitionData, columns])
 
+  useChange({
+    activeSorterColumn,
+    activeSorterType,
+    columns,
+    showData,
+    onChange,
+  })
   return {
     measureRowElementRef,
     rootProps,
@@ -676,6 +686,7 @@ export const useTable = ({
     scrollbar,
     rowClassName,
     cellClassName,
+    onHighlightedCol,
   }
 }
 
@@ -879,6 +890,20 @@ export interface UseTableProps {
     column: Record<string, any>,
     index: number
   ) => string
+  /**
+   * 设置排序变化回调
+   */
+  onChange?: (action: Action, extra: Extra) => void
+  /**
+   * 设置列高亮回调
+   */
+  onHighlightedCol?: (
+    changedColInfo: {
+      active: boolean
+      column: TableColumnItem
+    },
+    highlightedColKeys: string[]
+  ) => void
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>
