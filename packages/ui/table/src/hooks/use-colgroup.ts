@@ -32,6 +32,7 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
         title: raw.title,
         align: raw.align ?? 'left',
         render: raw.render,
+        colSpan: raw.colSpan,
       }
     })
 
@@ -62,7 +63,7 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
     flattedColumns.forEach((column: any) => {
       if (isLeaf(column)) {
         column.rowSpan = maxColumnDepth - column.depth + 1
-        column.colSpan = 1
+        column.colSpan = column.colSpan ?? 1
       } else {
         column.rowSpan = 1
         column.colSpan = getLeafChildren(column).length

@@ -17,13 +17,12 @@ export const ColMenu = () => {
       dataKey: 'age',
       key: 2,
       width: 80,
-      sorter(pre, next) {
+      sorter(pre: any, next: any) {
         return pre.raw.age - next.raw.age
       },
     },
     {
       title: 'Home phone',
-      colSpan: 2,
       width: 180,
       dataKey: 'tel',
       key: 3,
@@ -36,7 +35,6 @@ export const ColMenu = () => {
     },
     {
       title: 'Home phone2',
-      colSpan: 2,
       width: 180,
       dataKey: 'tel2',
       key: 5,
@@ -44,63 +42,54 @@ export const ColMenu = () => {
     {
       title: 'Home phone3',
       width: 180,
-      colSpan: 2,
       dataKey: 'tel3',
       key: 6,
     },
     {
       title: 'Home phone4',
       width: 180,
-      colSpan: 2,
       dataKey: 'tel4',
       key: 7,
     },
     {
       title: 'Home phone5',
       width: 180,
-      colSpan: 2,
       dataKey: 'tel5',
       key: 8,
     },
     {
       title: 'Home phone6',
       width: 180,
-      colSpan: 2,
       dataKey: 'tel6',
       key: 9,
     },
     {
       title: 'Home phone7',
       width: 180,
-      colSpan: 2,
       dataKey: 'tel7',
       key: 10,
     },
     {
       title: 'Home phone8',
       width: 180,
-      colSpan: 2,
       dataKey: 'tel8',
       key: 11,
     },
     {
       title: 'Home phone9',
       width: 180,
-      colSpan: 2,
       dataKey: 'tel9',
       key: 12,
     },
     {
       title: 'Home phone10',
       width: 180,
-      colSpan: 2,
       dataKey: 'tel10',
       key: 13,
     },
     {
       title: 'Home phone11',
       width: 180,
-      colSpan: 2,
       dataKey: 'tel11',
       key: 14,
     },
@@ -108,7 +97,6 @@ export const ColMenu = () => {
     {
       title: 'Home phone12',
       width: 180,
-      colSpan: 2,
       dataKey: 'tel12',
       key: 15,
     },
@@ -118,7 +106,7 @@ export const ColMenu = () => {
       dataKey: 'phone',
       width: 180,
       key: 16,
-      sorter(pre, next) {
+      sorter(pre: any, next: any) {
         return pre.phone - next.phone
       },
     },
@@ -232,14 +220,6 @@ export const ColMenu = () => {
     },
   ])
 
-  const onHighlightedCol = (changedColInfo, highlightedColKeys) => {
-    console.log(changedColInfo, highlightedColKeys)
-  }
-
-  const onChange = (pagination, sorter, extra) => {
-    console.log(pagination, sorter, extra)
-  }
-
   return (
     <>
       <h1>ColMenu for Table</h1>
@@ -248,8 +228,12 @@ export const ColMenu = () => {
           columns={columns}
           data={data}
           showColMenu
-          onHighlightedCol={onHighlightedCol}
-          onChange={onChange}
+          onHighlightedCol={(changedColInfo, highlightedColKeys) => {
+            console.log(changedColInfo, highlightedColKeys)
+          }}
+          onChange={(sorter, extra) => {
+            console.log(sorter, extra)
+          }}
         />
       </div>
     </>

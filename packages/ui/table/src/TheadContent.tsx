@@ -57,10 +57,17 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                   }
                 }
 
+                const stickyColProps = getStickyColProps(col)
+
                 const cell = (
                   <th
                     key={dataKey}
-                    {...getStickyColProps(col)}
+                    {...stickyColProps}
+                    style={{
+                      ...stickyColProps.style,
+                      // 表头合并场景下，被合并的表头需要隐藏
+                      display: col?.colSpan === 0 ? 'none' : undefined,
+                    }}
                     className={cx(
                       `${prefixCls}-cell`,
                       raw.className,
@@ -87,6 +94,9 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                   </th>
                 )
 
+                // 当有表头列合并时，将当前列的索引设置为最后一个被合并的列的索引，这样在拖拽时，UI 和交互才更符合直觉
+                const index = col.colSpan && col.colSpan > 1 ? colIndex + col.colSpan - 1 : colIndex
+
                 return resizable && colIndex !== colWidths.length - 1 ? (
                   <Resizable
                     key={colIndex}
@@ -94,12 +104,12 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                     draggableOpts={{ enableUserSelectHack: false }}
                     handle={<span className={`${prefixCls}__resizable-handle`} />}
                     height={0}
-                    width={colWidths[colIndex] as number}
+                    width={colWidths[index] as number}
                     onResize={(evt, options) => {
-                      onColumnResizable(evt, options, colIndex)
+                      onColumnResizable(evt, options, index)
                     }}
                     onResizeStop={(evt, options) => {
-                      onResizeStop?.(evt, options?.size, colIndex, colWidths)
+                      onResizeStop?.(evt, options?.size, index, colWidths)
                     }}
                   >
                     {cell}
