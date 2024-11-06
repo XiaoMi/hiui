@@ -11,6 +11,10 @@ export interface ScrollbarHelpers {
    * 容器dom实例
    */
   container?: HTMLDivElement
+  /**
+   * 更新滚动条
+   */
+  updata?: () => void
 }
 
 export type ScrollbarAxesEnum = 'both' | 'x' | 'y' | 'none'
@@ -69,3 +73,17 @@ export type ScrollbarPositionEnum =
   | 'fixed'
   | 'relative'
   | 'sticky'
+
+/**
+ * 更多配置请参考：https://github.com/mdbootstrap/perfect-scrollbar/blob/main/types/perfect-scrollbar.d.ts
+ */
+export type Settings = PerfectScrollbar.Options & {
+  /**
+   * 开启滚动条吸底
+   */
+  isBottomToScreenBottom?: boolean
+  /**
+   * 滚动条吸底距离
+   */
+  heightFromBottom?: number
+}
