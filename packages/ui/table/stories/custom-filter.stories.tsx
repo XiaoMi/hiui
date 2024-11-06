@@ -196,7 +196,6 @@ export const CustomFilter = () => {
           />
         </div>
       ),
-      colSpan: 2,
       width: 180,
       render(text) {
         return <EllipsisTooltip>{text}</EllipsisTooltip>
@@ -215,7 +214,6 @@ export const CustomFilter = () => {
     },
     {
       title: 'Home phone2',
-      colSpan: 2,
       width: 180,
       render(text) {
         return <EllipsisTooltip>{text}</EllipsisTooltip>
@@ -229,7 +227,6 @@ export const CustomFilter = () => {
       render(text) {
         return <EllipsisTooltip>{text}</EllipsisTooltip>
       },
-      colSpan: 2,
       dataKey: 'tel3',
       key: 6,
     },
@@ -239,7 +236,6 @@ export const CustomFilter = () => {
       render(text) {
         return <EllipsisTooltip>{text}</EllipsisTooltip>
       },
-      colSpan: 2,
       dataKey: 'tel4',
       key: 7,
     },
@@ -249,7 +245,6 @@ export const CustomFilter = () => {
       render(text) {
         return <EllipsisTooltip>{text}</EllipsisTooltip>
       },
-      colSpan: 2,
       dataKey: 'tel5',
       key: 8,
     },
@@ -259,7 +254,6 @@ export const CustomFilter = () => {
       render(text) {
         return <EllipsisTooltip>{text}</EllipsisTooltip>
       },
-      colSpan: 2,
       dataKey: 'tel6',
       key: 9,
     },
@@ -269,7 +263,6 @@ export const CustomFilter = () => {
       render(text) {
         return <EllipsisTooltip>{text}</EllipsisTooltip>
       },
-      colSpan: 2,
       dataKey: 'tel7',
       key: 10,
     },
@@ -279,7 +272,6 @@ export const CustomFilter = () => {
       render(text) {
         return <EllipsisTooltip>{text}</EllipsisTooltip>
       },
-      colSpan: 2,
       dataKey: 'tel8',
       key: 11,
     },
@@ -289,7 +281,6 @@ export const CustomFilter = () => {
       render(text) {
         return <EllipsisTooltip>{text}</EllipsisTooltip>
       },
-      colSpan: 2,
       dataKey: 'tel9',
       key: 12,
     },
@@ -299,7 +290,6 @@ export const CustomFilter = () => {
       render(text) {
         return <EllipsisTooltip>{text}</EllipsisTooltip>
       },
-      colSpan: 2,
       dataKey: 'tel10',
       key: 13,
     },
@@ -309,7 +299,6 @@ export const CustomFilter = () => {
       render(text) {
         return <EllipsisTooltip>{text}</EllipsisTooltip>
       },
-      colSpan: 2,
       dataKey: 'tel11',
       key: 14,
     },
@@ -320,7 +309,6 @@ export const CustomFilter = () => {
       render(text) {
         return <EllipsisTooltip>{text}</EllipsisTooltip>
       },
-      colSpan: 2,
       dataKey: 'tel12',
       key: 15,
     },

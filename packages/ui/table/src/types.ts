@@ -142,6 +142,10 @@ export type TableColumnItem = {
    */
   children?: TableColumnItem[]
   /**
+   * 表头列合并，设置为 0 时，不渲染
+   */
+  colSpan?: number
+  /**
    * 控制单元格自定义渲染
    */
   render?: (
