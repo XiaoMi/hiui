@@ -34,6 +34,7 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
       sortedColKeys: sortedColKeysPropBeforeVerify,
       onSortedColKeysChange,
       onSetColKeysChange,
+      onReset,
       checkDisabledColKeys,
       dragDisabledColKeys,
       extraHeader,
@@ -89,6 +90,8 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
     const resetLatest = useLatestCallback(() => {
       setCacheHiddenColKeys(hiddenColKeys)
       setCacheSortedCols(sortedCols)
+
+      onReset?.()
     })
 
     // 当 visible 由 false 变为 true 时触发
@@ -220,6 +223,10 @@ export interface SettingDrawerProps extends HiBaseHTMLProps<'div'> {
     hiddenColKeys: string[],
     visibleCols: TableColumnItem[]
   ) => void
+  /**
+   * 重置按钮点击时回调
+   */
+  onReset?: () => void
   /**
    * 隐藏列
    */
