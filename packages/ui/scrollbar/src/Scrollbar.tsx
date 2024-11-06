@@ -181,7 +181,7 @@ export interface ScrollbarProps extends HiBaseHTMLProps<'div'>, ScrollbarEventPr
    * 滚动条配置
    * @default {}
    */
-  settings: Settings
+  settings?: Settings
 }
 
 if (__DEV__) {
