@@ -14,7 +14,7 @@ export interface ScrollbarHelpers {
   /**
    * 更新滚动条
    */
-  updata?: () => void
+  update?: () => void
 }
 
 export type ScrollbarAxesEnum = 'both' | 'x' | 'y' | 'none'
@@ -79,11 +79,11 @@ export type ScrollbarPositionEnum =
  */
 export type Settings = PerfectScrollbar.Options & {
   /**
-   * 开启滚动条吸底
+   * 开启横向滚动条吸底
    */
-  isBottomToScreenBottom?: boolean
+  scrollbarXStickToBottom?: boolean
   /**
-   * 滚动条吸底距离
+   * 横向滚动条吸底间隙
    */
-  heightFromBottom?: number
+  scrollbarXStickToBottomGap?: number
 }

@@ -91,7 +91,7 @@ export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
       () => ({
         instance: ps,
         containerElement: containerElement || undefined,
-        updata: () => {
+        update: () => {
           ps?.update()
         },
       }),

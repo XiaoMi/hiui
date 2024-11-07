@@ -354,11 +354,21 @@ export const Scrollbar = () => {
           columns={column}
           data={data}
           maxHeight={300}
-          scrollbar={{
-            keepVisible: true,
-            zIndex: 9,
-            settings: { isBottomToScreenBottom: true, heightFromBottom: 20 },
-          }}
+          scrollbar={
+            // 根据需要进行以下配置
+            {
+              // 保持滚动条始终可见
+              keepVisible: true,
+              // 设置滚动条的 z-index 值
+              zIndex: 9,
+              settings: {
+                // 垂直滑动时，让横向滚动条一直显示在容器底部
+                scrollbarXStickToBottom: true,
+                // 横向滚动条距离底部的距离
+                scrollbarXStickToBottomGap: 20,
+              },
+            }
+          }
         />
       </div>
     </>

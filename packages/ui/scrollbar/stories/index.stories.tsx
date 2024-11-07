@@ -5,7 +5,7 @@ export * from './basic.stories'
 export * from './axes.stories'
 export * from './config.stories'
 export * from './event.stories'
-export * from './fixed.stories'
+export * from './sticky.stories'
 
 export default {
   title: 'Others/Scrollbar',
