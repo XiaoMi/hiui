@@ -3,8 +3,7 @@ import Alert from '../src'
 import Button from '@hi-ui/button'
 
 /**
- * @title 基础用法
- * @desc 根据用户的操作进行页面级或模块、区块级的提示
+ * @title 不同尺寸
  */
 export const Size = () => {
   return (

@@ -23,7 +23,7 @@ export async function mergeDocs(components) {
       let markdown = info.readme
       markdown = mergePropsIntoReadme(markdown, info.props)
       const markdownMd = mergeStoriesCodeIntoReadme(info.name, markdown, info.stories)
-      await writeReadmeAsync(info, markdownMd)
+      // await writeReadmeAsync(info, markdownMd)
       await appendReadmeAsync(info, markdownMd)
       markdown = transformJSX(markdown)
       markdown = mergeStoriesIntoReadme(info.name, markdown, info.stories)
@@ -122,7 +122,12 @@ async function writeReadmeAsync(info, markdown) {
 }
 
 async function appendReadmeAsync(info, markdown) {
-  markdown = '\n\n###@###\n\n' + markdown
+  markdown =
+    '\n\n###@###\n\n' +
+    markdown
+      .replace(/ {2,}|\n\s*\/\*\*[\s\S]*?\*\/|\n\s*<h1>.*?<\/h1>/g, ' ')
+      // .replace('## Props', `###@###\n\n# ${info.title}\n\n## Props`)
+      .replace(/## 何时使用[\s\S]*?## 使用示例/g, '## 使用示例')
   await Promise.all([appendFileAsync(Path.join(outputPath, 'hiui.md'), info.name, markdown)])
 }
 

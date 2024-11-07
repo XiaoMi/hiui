@@ -91,7 +91,7 @@ export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
       () => ({
         instance: ps,
         containerElement: containerElement || undefined,
-        updata: () => {
+        update: () => {
           ps?.update()
         },
       }),
@@ -181,7 +181,7 @@ export interface ScrollbarProps extends HiBaseHTMLProps<'div'>, ScrollbarEventPr
    * 滚动条配置
    * @default {}
    */
-  settings: Settings
+  settings?: Settings
 }
 
 if (__DEV__) {

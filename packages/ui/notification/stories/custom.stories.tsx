@@ -12,7 +12,7 @@ export const Custom = () => {
   const notification = useMemo(
     () =>
       createNotification({
-        container: container,
+        container,
         zIndex: 2000,
       }),
     [container]
