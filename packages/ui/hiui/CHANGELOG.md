@@ -1,5 +1,31 @@
 # @hi-ui/hiui
 
+## 4.8.0
+
+### Minor Changes
+
+- [#3015](https://github.com/XiaoMi/hiui/pull/3015) [`b2d784b23`](https://github.com/XiaoMi/hiui/commit/b2d784b23682e70cbc7b09e3396f51fda02e2223) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(select): Add searchOnInit api
+  feat(check-select): Add searchOnInit api
+
+- [#3033](https://github.com/XiaoMi/hiui/pull/3033) [`17158fa6e`](https://github.com/XiaoMi/hiui/commit/17158fa6e286a560aeb9fd65d68856c2e7a00736) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): 支持表头列合并 (#3032)
+
+- [#3034](https://github.com/XiaoMi/hiui/pull/3034) [`83be3c14b`](https://github.com/XiaoMi/hiui/commit/83be3c14b9e8cd3e73ec477895a47b925439a3a5) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): SettingDrawer 增加 onReset api (#3021)
+
+### Patch Changes
+
+- [#3020](https://github.com/XiaoMi/hiui/pull/3020) [`241447e14`](https://github.com/XiaoMi/hiui/commit/241447e148f4544c6a08623d60d977e286ec9d64) Thanks [@fcppddl](https://github.com/fcppddl)! - feat(scrollbar): 滚动条固定在屏幕底部 (#3019)
+
+- [#3031](https://github.com/XiaoMi/hiui/pull/3031) [`c93f20d42`](https://github.com/XiaoMi/hiui/commit/c93f20d42096e38c10a99e1e333f3a9d9c00cdbe) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(dropdown): 修复父节点设置 disabled 后依然可以点击的问题 (#3030)
+
+- [#2978](https://github.com/XiaoMi/hiui/pull/2978) [`f807f7dda`](https://github.com/XiaoMi/hiui/commit/f807f7ddae07184a0584e16d017a3d9f5785d4b8) Thanks [@fcppddl](https://github.com/fcppddl)! - feat(table): 将表格中的交互统一加上回调事件
+
+- Updated dependencies [[`241447e14`](https://github.com/XiaoMi/hiui/commit/241447e148f4544c6a08623d60d977e286ec9d64), [`17158fa6e`](https://github.com/XiaoMi/hiui/commit/17158fa6e286a560aeb9fd65d68856c2e7a00736), [`f807f7dda`](https://github.com/XiaoMi/hiui/commit/f807f7ddae07184a0584e16d017a3d9f5785d4b8), [`83be3c14b`](https://github.com/XiaoMi/hiui/commit/83be3c14b9e8cd3e73ec477895a47b925439a3a5), [`c93f20d42`](https://github.com/XiaoMi/hiui/commit/c93f20d42096e38c10a99e1e333f3a9d9c00cdbe), [`b2d784b23`](https://github.com/XiaoMi/hiui/commit/b2d784b23682e70cbc7b09e3396f51fda02e2223)]:
+  - @hi-ui/scrollbar@4.1.2
+  - @hi-ui/table@4.8.0
+  - @hi-ui/dropdown@4.2.2
+  - @hi-ui/check-select@4.6.0
+  - @hi-ui/select@4.6.0
+
 ## 4.7.1
 
 ### Patch Changes

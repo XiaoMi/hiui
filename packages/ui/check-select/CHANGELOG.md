@@ -1,5 +1,16 @@
 # @hi-ui/check-select
 
+## 4.6.0
+
+### Minor Changes
+
+- [#3015](https://github.com/XiaoMi/hiui/pull/3015) [`b2d784b23`](https://github.com/XiaoMi/hiui/commit/b2d784b23682e70cbc7b09e3396f51fda02e2223) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: Add searchOnInit api
+
+### Patch Changes
+
+- Updated dependencies [[`b2d784b23`](https://github.com/XiaoMi/hiui/commit/b2d784b23682e70cbc7b09e3396f51fda02e2223)]:
+  - @hi-ui/use-search-mode@4.2.0
+
 ## 4.5.0
 
 ### Minor Changes

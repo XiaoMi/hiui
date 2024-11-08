@@ -1,5 +1,11 @@
 # @hi-ui/dropdown
 
+## 4.2.2
+
+### Patch Changes
+
+- [#3031](https://github.com/XiaoMi/hiui/pull/3031) [`c93f20d42`](https://github.com/XiaoMi/hiui/commit/c93f20d42096e38c10a99e1e333f3a9d9c00cdbe) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(dropdown): 修复父节点设置 disabled 后依然可以点击的问题 (#3030)
+
 ## 4.2.1
 
 ### Patch Changes

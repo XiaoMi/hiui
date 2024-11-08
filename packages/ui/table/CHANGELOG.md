@@ -1,5 +1,21 @@
 # @hi-ui/table
 
+## 4.8.0
+
+### Minor Changes
+
+- [#3033](https://github.com/XiaoMi/hiui/pull/3033) [`17158fa6e`](https://github.com/XiaoMi/hiui/commit/17158fa6e286a560aeb9fd65d68856c2e7a00736) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): 支持表头列合并 (#3032)
+
+- [#2978](https://github.com/XiaoMi/hiui/pull/2978) [`f807f7dda`](https://github.com/XiaoMi/hiui/commit/f807f7ddae07184a0584e16d017a3d9f5785d4b8) Thanks [@fcppddl](https://github.com/fcppddl)! - feat: 将表格中的交互统一加上回调事件
+
+- [#3034](https://github.com/XiaoMi/hiui/pull/3034) [`83be3c14b`](https://github.com/XiaoMi/hiui/commit/83be3c14b9e8cd3e73ec477895a47b925439a3a5) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): SettingDrawer 增加 onReset api (#3021)
+
+### Patch Changes
+
+- Updated dependencies [[`241447e14`](https://github.com/XiaoMi/hiui/commit/241447e148f4544c6a08623d60d977e286ec9d64), [`b2d784b23`](https://github.com/XiaoMi/hiui/commit/b2d784b23682e70cbc7b09e3396f51fda02e2223)]:
+  - @hi-ui/scrollbar@4.1.2
+  - @hi-ui/select@4.6.0
+
 ## 4.7.0
 
 ### Minor Changes

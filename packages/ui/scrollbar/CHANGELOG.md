@@ -1,5 +1,11 @@
 # @hi-ui/scrollbar
 
+## 4.1.2
+
+### Patch Changes
+
+- [#3020](https://github.com/XiaoMi/hiui/pull/3020) [`241447e14`](https://github.com/XiaoMi/hiui/commit/241447e148f4544c6a08623d60d977e286ec9d64) Thanks [@fcppddl](https://github.com/fcppddl)! - feat(scrollbar): 滚动条固定在屏幕底部 (#3019)
+
 ## 4.1.1
 
 ### Patch Changes
