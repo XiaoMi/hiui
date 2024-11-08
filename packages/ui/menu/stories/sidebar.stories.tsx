@@ -11,7 +11,7 @@ import {
 } from '@hi-ui/icons'
 
 /**
- * @title 侧边栏风格的菜单
+ * @title 侧边栏风格菜单
  */
 export const SidebarMenu = () => {
   const [activeId, setActiveId] = React.useState<React.ReactText>('xiaomi1')

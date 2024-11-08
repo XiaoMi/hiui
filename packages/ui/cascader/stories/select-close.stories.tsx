@@ -2,7 +2,7 @@ import React from 'react'
 import Cascader from '../src'
 
 /**
- * @title 控制选择时是否关闭弹窗
+ * @title 选择后是否关闭弹窗
  * @desc 用于 changeOnSelect 模式下控制点击父节点时是否关闭弹窗
  */
 export const SelectClose = () => {

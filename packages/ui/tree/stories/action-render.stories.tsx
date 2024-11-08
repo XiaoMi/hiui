@@ -5,8 +5,8 @@ import PopConfirm from '@hi-ui/pop-confirm'
 import { PlusOutlined, DuplicateOutlined, EditOutlined, DeleteOutlined } from '@hi-ui/icons'
 
 /**
- * @title 自定义可编辑树操作项
- * @desc 用于操作菜单放在外面的场景
+ * @title 自定义编辑项
+ * @desc 用于编辑树操作菜单显示在外面的场景
  */
 export const ActionRender = () => {
   const ActionTree = useTreeAction(Tree)
