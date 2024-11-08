@@ -42,7 +42,7 @@ cd hiui
 git checkout -b <BRANCH_NAME>
 ```
 
-> 分支名建议是 hotfix/#<IssueId> 或者 feature/#<IssueId>
+> 分支名建议是 hotfix/组件名/IssueId 或者 feature/组件名/IssueId
 
 ## 开发流程
 
@@ -66,7 +66,7 @@ yarn build
 yarn storybook
 ```
 
-- 生成变更记录文件（有组件代码修改时，需要记录变更）
+- 生成变更记录文件（有组件代码修改时，需要记录变更，用于组件版本号变更和生成日志）
 
 ```sh
 yarn cs
@@ -134,7 +134,7 @@ yarn run generate-docs
 
 ### 发布流程
 基于 GitHub Action 自动完成 CI/CD <br>
-1. 修改版本号和 changelog   
+1. 修改版本号和 Changelog   
    操作：Actions -> Version -> Run workflow
 2. 自动构建和发版  
-   第1步操作完后会自动生成一个发版的 Pull Request，项目 owner 合并后会自动执行 Release 任务，进行代码构建和发布到 npm
+   第1步操作完后会自动生成一个发版的 Pull Request，项目 Owner 合并后会自动执行 Release 任务，进行代码构建和发布到 npm
