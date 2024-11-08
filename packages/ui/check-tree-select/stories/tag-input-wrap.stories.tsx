@@ -2,7 +2,7 @@ import React from 'react'
 import CheckTreeSelect from '../src'
 
 /**
- * @title 换行展示选中内容
+ * @title 展示全部已选项
  * @desc 设置后，选中内容超出宽度时会换行展示
  */
 export const TagInputWrap = () => {
@@ -88,7 +88,7 @@ export const TagInputWrap = () => {
 
   return (
     <>
-      <h1>换行展示选中内容</h1>
+      <h1>展示全部已选项</h1>
       <div className="check-tree-select-tag-input-wrap__wrap">
         <CheckTreeSelect
           style={{ width: 240 }}

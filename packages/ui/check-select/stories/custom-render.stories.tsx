@@ -5,7 +5,7 @@ import Space from '@hi-ui/space'
 import CheckSelect from '../src'
 
 /**
- * @title 自定义选中内容渲染
+ * @title 自定义触发器
  */
 export const CustomRender = () => {
   const [data] = React.useState([

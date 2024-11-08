@@ -1,6 +1,6 @@
 ---
-"@hi-ui/scrollbar": patch
-"@hi-ui/hiui": patch
+"@hi-ui/scrollbar": minor
+"@hi-ui/hiui": minor
 ---
 
-feat(scrollbar): 滚动条固定在屏幕底部 (#3019)
+feat(scrollbar): 支持滚动条吸底 (#3019)

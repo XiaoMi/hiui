@@ -2,7 +2,7 @@ import React from 'react'
 import Tree from '../src'
 
 /**
- * @title 选中节点时展开其子节点
+ * @title 选中时展开子节点
  */
 export const ExpandOnSelect = () => {
   return (
