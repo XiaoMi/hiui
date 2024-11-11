@@ -145,6 +145,11 @@ export const Pagination = () => {
             showJumper: true,
             pageSize: paginationState.pageSize,
             pageSizeOptions: [5, 10, 20],
+            pageSizeOptionsOverlay: {
+              // 该参数用来配置分页器下拉框的挂载容器，默认是 body，设置为 true 时，会自动寻找最近的元素作为父节点
+              // 在浏览器原生的全屏模式中，需要将此值设成 true，否则无法正常显示，若无需在全屏状态下使用，则不需要做任何处理
+              disabledPortal: true,
+            },
             onPageSizeChange: (pageSize) => {
               setPaginationState((prev) => ({
                 ...prev,
