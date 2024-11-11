@@ -10,6 +10,7 @@ import { PageJumper } from './PageJumper'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isFunction } from '@hi-ui/type-assertion'
+import { PopperOverlayProps } from '@hi-ui/popper'
 
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
@@ -36,6 +37,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
       showPagers = true,
       type = 'default',
       autoHide = false,
+      pageSizeOptionsOverlay,
       ...rest
     },
     ref
@@ -185,6 +187,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
           <PageOption
             pageSize={pageSize}
             pageSizeOptions={_pageSizeOptions as { id: number; title: string }[]}
+            pageSizeOptionsOverlay={pageSizeOptionsOverlay}
             onPageSizeChange={trySetPageSize}
           />
         ) : null}
@@ -252,7 +255,10 @@ export interface PaginationProps extends HiBaseHTMLProps<'div'> {
    * 	指定每页可以显示多少条
    */
   pageSizeOptions?: number[]
-
+  /**
+   *  下拉框选择项浮层配置
+   */
+  pageSizeOptionsOverlay?: PopperOverlayProps
   /**
    * 	快速跳转时触发
    */

@@ -2,6 +2,7 @@ import React from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { Select } from '@hi-ui/select'
 import { __DEV__ } from '@hi-ui/env'
+import { PopperOverlayProps } from '@hi-ui/popper'
 
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
@@ -9,6 +10,7 @@ const _prefix = getPrefixCls(_role)
 export const PageOption: React.FC<PageOptionProps> = ({
   prefixCls = _prefix,
   pageSizeOptions,
+  pageSizeOptionsOverlay,
   onPageSizeChange,
   pageSize,
 }) => {
@@ -23,9 +25,7 @@ export const PageOption: React.FC<PageOptionProps> = ({
       value={pageSize}
       clearable={false}
       onChange={onPageSizeChange as (value: React.ReactText) => void}
-      overlay={{
-        disabledPortal: true,
-      }}
+      overlay={pageSizeOptionsOverlay}
     />
   )
 }
@@ -47,6 +47,10 @@ export interface PageOptionProps {
    * 指定每页可以显示多少条
    */
   pageSizeOptions: { id: React.ReactText; title: string }[]
+  /**
+   *  下拉框选择项浮层配置
+   */
+  pageSizeOptionsOverlay?: PopperOverlayProps
   /**
    * 	每页条数
    */
