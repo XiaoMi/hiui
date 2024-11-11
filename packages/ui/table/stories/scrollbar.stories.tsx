@@ -363,9 +363,9 @@ export const Scrollbar = () => {
               zIndex: 9,
               settings: {
                 // 垂直滑动时，让横向滚动条一直显示在容器底部
-                scrollbarXStickToBottom: true,
+                // scrollbarXStickToBottom: true,
                 // 横向滚动条距离底部的距离
-                scrollbarXStickToBottomGap: 20,
+                // scrollbarXStickToBottomGap: 20,
               },
             }
           }
