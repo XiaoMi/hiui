@@ -1,5 +1,11 @@
 # @hi-ui/pagination
 
+## 4.1.0
+
+### Minor Changes
+
+- [#3041](https://github.com/XiaoMi/hiui/pull/3041) [`8aa606943`](https://github.com/XiaoMi/hiui/commit/8aa606943589b600a9ef63961498c12d0f6037cb) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(pagination): Add pageSizeOptionsOverlay api (#3040)
+
 ## 4.0.17
 
 ### Patch Changes
