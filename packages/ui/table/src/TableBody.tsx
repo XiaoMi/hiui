@@ -1,5 +1,5 @@
-import React, { forwardRef, useMemo, useRef } from 'react'
-import VirtualList from 'rc-virtual-list'
+import React, { forwardRef, useMemo, useRef, useImperativeHandle } from 'react'
+import VirtualList, { ListRef } from 'rc-virtual-list'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -32,8 +32,11 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       measureRowElementRef,
       scrollbar,
       scrollLeft,
+      innerRef,
     } = useTableContext()
     const virtualListRef = useRef(null)
+    const listRef = useRef<ListRef>(null)
+
     const cls = cx(`${prefixCls}-body`)
 
     const getRequiredProps = useLatestCallback(
@@ -55,6 +58,10 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       colWidths.forEach((width) => (tmpWidth += width))
       return tmpWidth
     }, [colWidths])
+
+    useImperativeHandle(innerRef, () => ({
+      scrollTo: listRef.current?.scrollTo,
+    }))
 
     if (virtual) {
       // TODO： avg和summay row的逻辑
@@ -92,6 +99,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
               style={{ width: '100%', position: 'sticky', left: 0, maxHeight }}
             >
               <VirtualList
+                ref={listRef}
                 prefixCls={`${cls}--virtual`}
                 data={transitionData}
                 height={vMaxHeight}

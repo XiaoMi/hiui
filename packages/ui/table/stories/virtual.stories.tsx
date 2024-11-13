@@ -1,6 +1,6 @@
 import React from 'react'
-import Table from '../src'
-
+import Table, { TableHelper } from '../src'
+import Button from '@hi-ui/button'
 /**
  * @title 虚拟列表
  */
@@ -45,16 +45,26 @@ export const Virtual = () => {
     },
   ])
   const [data] = React.useState(MockData)
+  const tableRef = React.useRef<TableHelper>(null)
 
   return (
     <>
       <h1>Virtual for Table</h1>
+      <Button
+        onClick={() => {
+          // key 为节点 id
+          tableRef.current?.scrollTo?.({ key: '小米-1000', align: 'top' })
+        }}
+      >
+        scroll to key: 小米-1000
+      </Button>
       <div className="table-virtual__wrap" style={{ minWidth: 660, background: '#fff' }}>
         <Table
           fieldKey="name"
           columns={column}
           data={data}
           virtual={true}
+          innerRef={tableRef}
           // virtual={{
           //   onVisibleChange(...args) {
           //     console.log('onVisibleChange', ...args)
