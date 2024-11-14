@@ -220,15 +220,11 @@ export const DataSorter = () => {
     },
   ])
 
-  const onChange = (pagination, sorter, extra) => {
-    console.log(pagination, sorter, extra)
-  }
-
   return (
     <>
       <h1>DataSorter for Table</h1>
       <div className="table-data-sorter__wrap" style={{ minWidth: 660, background: '#fff' }}>
-        <Table columns={columns} data={data} onChange={onChange} />
+        <Table columns={columns} data={data} onChange={console.log} />
       </div>
     </>
   )
