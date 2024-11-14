@@ -53,6 +53,7 @@ export const useTable = ({
   onFixedToColumn,
   scrollWidth,
   resizable = false,
+  tableWidthAdjustOnResize = false,
   // highlight
   errorRowKeys = DEFAULT_ERROR_ROW_KEYS,
   highlightedColKeys: highlightedColKeysProp,
@@ -195,6 +196,7 @@ export const useTable = ({
     data,
     columns,
     resizable,
+    tableWidthAdjustOnResize,
     virtual: !!virtual,
   })
 
@@ -775,6 +777,11 @@ export interface UseTableProps {
    *  是否能够动态控制列宽
    */
   resizable?: boolean
+  /**
+   *  调整列宽时是否改变表格宽度，在 resizable 模式下生效
+   *  @private
+   */
+  tableWidthAdjustOnResize?: boolean
   /**
    * 是否支持虚拟滚动，
    * 列宽：column设置的width或200作为宽度，内容区填充不满时，宽度等比分配。

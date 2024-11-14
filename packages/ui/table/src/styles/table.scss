@@ -196,7 +196,9 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
         height: 100%;
         bottom: 0;
         right: 0;
+        margin-right: -2px;
         border-left: 2px solid use-color('gray', 50);
+        border-right: 2px solid use-color('gray', 50);
         cursor: col-resize;
         z-index: 1;
 
