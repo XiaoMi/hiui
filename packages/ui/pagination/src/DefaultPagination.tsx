@@ -38,6 +38,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
       type = 'default',
       autoHide = false,
       pageSizeOptionsOverlay,
+      size = 'md',
       ...rest
     },
     ref
@@ -189,6 +190,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
             pageSizeOptions={_pageSizeOptions as { id: number; title: string }[]}
             pageSizeOptionsOverlay={pageSizeOptionsOverlay}
             onPageSizeChange={trySetPageSize}
+            size={size}
           />
         ) : null}
         {showJumper ? (
@@ -200,6 +202,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
               onJump?.(page)
             }}
             maxJump={calculatePageCount(total, pageSize)}
+            size={size}
           />
         ) : null}
       </div>
@@ -271,6 +274,10 @@ export interface PaginationProps extends HiBaseHTMLProps<'div'> {
    * 	每页显示条数改变的回调函数
    */
   onPageSizeChange?: (pageSize: number, current: number) => void
+  /**
+   * 设置尺寸
+   */
+  size?: 'sm' | 'md'
 }
 
 if (__DEV__) {

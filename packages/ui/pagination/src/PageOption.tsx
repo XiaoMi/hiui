@@ -13,6 +13,7 @@ export const PageOption: React.FC<PageOptionProps> = ({
   pageSizeOptionsOverlay,
   onPageSizeChange,
   pageSize,
+  size = 'md',
 }) => {
   const cls = cx(`${prefixCls}__option`)
 
@@ -24,6 +25,7 @@ export const PageOption: React.FC<PageOptionProps> = ({
       data={pageSizeOptions}
       value={pageSize}
       clearable={false}
+      size={size}
       onChange={onPageSizeChange as (value: React.ReactText) => void}
       overlay={pageSizeOptionsOverlay}
     />
@@ -55,6 +57,10 @@ export interface PageOptionProps {
    * 	每页条数
    */
   pageSize: number
+  /**
+   * 设置尺寸
+   */
+  size?: 'sm' | 'md'
 }
 
 if (__DEV__) {
