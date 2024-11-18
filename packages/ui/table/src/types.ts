@@ -1,7 +1,6 @@
 import React from 'react'
 import { PaginationProps } from '@hi-ui/pagination'
 import { PopperOverlayProps } from '@hi-ui/popper'
-import { TreeHelper } from '@hi-ui/tree'
 
 export type TableColumnItemAlignEnum = 'left' | 'right' | 'center'
 
@@ -306,4 +305,20 @@ export interface TableRowRequiredProps {
 
 export type TableRowRecord = Record<string, any>
 
-export type TableHelper = TreeHelper
+export type ScrollAlign = 'top' | 'bottom' | 'auto'
+
+export type ScrollConfig =
+  | {
+      index: number
+      align?: ScrollAlign
+      offset?: number
+    }
+  | {
+      key: React.Key
+      align?: ScrollAlign
+      offset?: number
+    }
+
+export interface TableHelper {
+  scrollTo?: (arg: number | ScrollConfig) => void
+}
