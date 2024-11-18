@@ -1,6 +1,6 @@
 ---
-"@hi-ui/pagination": patch
-"@hi-ui/hiui": patch
+"@hi-ui/pagination": minor
+"@hi-ui/hiui": minor
 ---
 
 feat(pagination): 设置尺寸(#3047)

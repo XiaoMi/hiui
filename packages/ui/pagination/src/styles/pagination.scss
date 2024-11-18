@@ -5,7 +5,6 @@ $prefix: '#{$component-prefix}-pagination' !default;
 .#{$prefix},
 .#{$prefix}-mini {
   display: flex;
-  // font-size: use-text-size("normal");
   align-items: center;
   color: use-color('gray', 600);
   user-select: none;
@@ -153,7 +152,6 @@ $input-pagination-prefix: '#{$component-prefix}-pagination-mini' !default;
   height: auto;
   min-height: 24px;
   box-sizing: border-box;
-  // font-size: use-text-size("normal");
   outline: none;
 
   $this: &;
