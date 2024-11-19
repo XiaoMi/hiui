@@ -32,6 +32,7 @@ import {
   TableRowSelection,
   FlattedTableColumnItemData,
   FlattedTableRowData,
+  TableHelper,
 } from './types'
 import { SELECTION_DATA_KEY } from './Table'
 
@@ -87,6 +88,7 @@ export const useTable = ({
   cellClassName,
   onChange,
   onHighlightedCol,
+  innerRef,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -701,6 +703,7 @@ export const useTable = ({
     rowClassName,
     cellClassName,
     onHighlightedCol,
+    innerRef,
   }
 }
 
@@ -918,6 +921,10 @@ export interface UseTableProps {
     },
     highlightedColKeys: string[]
   ) => void
+  /**
+   * 提供辅助方法的内部引用
+   */
+  innerRef?: React.Ref<TableHelper>
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>

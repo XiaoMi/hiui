@@ -304,3 +304,21 @@ export interface TableRowRequiredProps {
 }
 
 export type TableRowRecord = Record<string, any>
+
+export type ScrollAlign = 'top' | 'bottom' | 'auto'
+
+export type ScrollConfig =
+  | {
+      index: number
+      align?: ScrollAlign
+      offset?: number
+    }
+  | {
+      key: React.Key
+      align?: ScrollAlign
+      offset?: number
+    }
+
+export interface TableHelper {
+  scrollTo?: (arg: number | ScrollConfig) => void
+}
