@@ -19,6 +19,7 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
       colWidths,
       isHoveredHighlightCol,
       isHighlightedCol,
+      onHoveredResizableHandlerColChange,
       onColumnResizable,
       getStickyColProps,
       showColMenu,
@@ -102,7 +103,17 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                     key={colIndex}
                     className={`${prefixCls}__resizable`}
                     draggableOpts={{ enableUserSelectHack: false }}
-                    handle={<span className={`${prefixCls}__resizable-handle`} />}
+                    handle={
+                      <span
+                        className={`${prefixCls}__resizable-handle`}
+                        onMouseEnter={() => {
+                          onHoveredResizableHandlerColChange(col, true)
+                        }}
+                        onMouseLeave={() => {
+                          onHoveredResizableHandlerColChange(col, false)
+                        }}
+                      />
+                    }
                     height={0}
                     width={colWidths[index] as number}
                     onResize={(evt, options) => {

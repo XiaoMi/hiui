@@ -42,6 +42,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       isHighlightedCol,
       onLoadChildren,
       isHoveredHighlightCol,
+      isHoveredResizableHandlerCol,
       showColHighlight,
       onHoveredColChange,
       onTreeNodeSwitch,
@@ -100,7 +101,8 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       raw.className,
       canScroll && sticky && `${prefixCls}__col--sticky`,
       isHighlightedCol(dataKey) && `${prefixCls}__col--highlight`,
-      isHoveredHighlightCol(dataKey) && `${prefixCls}__col--hovered-highlight`
+      isHoveredHighlightCol(dataKey) && `${prefixCls}__col--hovered-highlight`,
+      isHoveredResizableHandlerCol(dataKey) && `${prefixCls}__col--hovered-resizable-handler`
     )
 
     if (virtual) {
