@@ -381,20 +381,6 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &.#{$prefix}-cell__col--hovered-highlight {
     background-color: use-color-mode('primary', 50);
   }
-
-  &.#{$prefix}-cell__col--hovered-resizable-handler {
-    position: relative;
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: -1px;
-      right: 0;
-      width: 2px;
-      height: calc(100% + 1px);
-      background-color: use-color-mode('primary');
-    }
-  }
 }
 
 // 冻结列 阴影
