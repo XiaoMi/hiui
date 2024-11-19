@@ -3,4 +3,4 @@
 "@hi-ui/hiui": minor
 ---
 
-feat(pagination): 设置尺寸(#3047)
+feat(pagination): add size api(#3047)
