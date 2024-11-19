@@ -68,6 +68,7 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
       max: maxPage,
       onChange: proxyTrySetCurrent,
       focusOnStep: false,
+      size,
     })
 
     // 优化数据在第一页且数据一页内时，不展示 pagination 配置项
@@ -86,7 +87,7 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
         {showJumper ? (
           <>
             {/* @ts-ignore */}
-            <Input {...getInputProps()} appearance="filled" />
+            <Input {...getInputProps()} appearance="filled" size={size} />
             {showTotal ? <span className={`${prefixCls}__total`}>{`/ ${maxPage}`}</span> : null}
           </>
         ) : null}
@@ -130,7 +131,7 @@ export interface ShrinkPaginationProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置尺寸
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md'
   /**
    * 	只有一页时是否隐藏分页器
    */

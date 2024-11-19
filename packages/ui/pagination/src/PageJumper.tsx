@@ -2,7 +2,13 @@ import React, { useCallback, useState } from 'react'
 import { Input } from '@hi-ui/input'
 import { __DEV__ } from '@hi-ui/env'
 
-export const PageJumper: React.FC<PageJumperProps> = ({ pageText, prefixCls, onJump, maxJump }) => {
+export const PageJumper: React.FC<PageJumperProps> = ({
+  pageText,
+  prefixCls,
+  onJump,
+  maxJump,
+  size = 'md',
+}) => {
   const [jumpPage, setJumpPage] = useState<string>('')
   const onJumperChange = useCallback((e) => {
     setJumpPage(e.target.value)
@@ -41,6 +47,7 @@ export const PageJumper: React.FC<PageJumperProps> = ({ pageText, prefixCls, onJ
           }
         }}
         onChange={onJumperChange}
+        size={size}
       />
       {pageText[1]}
     </div>
@@ -55,6 +62,10 @@ export interface PageJumperProps {
   prefixCls?: string
   onJump: (page: number) => void
   maxJump: number
+  /**
+   * 设置尺寸
+   */
+  size?: 'sm' | 'md'
 }
 
 if (__DEV__) {

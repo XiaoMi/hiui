@@ -14,15 +14,16 @@ export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
       type = 'default',
       className,
       children,
+      size = 'md',
       ...rest
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
     if (type === 'default') {
-      return <DefaultPagination ref={ref} className={cls} {...rest} />
+      return <DefaultPagination ref={ref} className={cls} size={size} {...rest} />
     }
-    return <ShrinkPagination ref={ref} className={cls} {...rest} />
+    return <ShrinkPagination ref={ref} className={cls} size={size} {...rest} />
   }
 )
 
