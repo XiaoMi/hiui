@@ -183,6 +183,18 @@ export const useTable = ({
     onSelect: setHoveredColKey,
   })
 
+  /**
+   * 在 resizable 模式下，当鼠标 hover 到 resizable handler 上，记录当前的 colKey
+   */
+  const [hoveredResizableHandlerColKey, setHoveredResizableHandlerColKey] = useState<
+    React.ReactText
+  >('')
+  const [onHoveredResizableHandlerColChange, isHoveredResizableHandlerCol] = useSelect({
+    disabled: !resizable,
+    selectedId: hoveredResizableHandlerColKey,
+    onSelect: setHoveredResizableHandlerColKey,
+  })
+
   // ************************ 列宽 resizable ************************ //
 
   const {
@@ -662,6 +674,8 @@ export const useTable = ({
     showColHighlight,
     isHoveredHighlightCol,
     onHoveredColChange,
+    isHoveredResizableHandlerCol,
+    onHoveredResizableHandlerColChange,
     // 行拖拽
     draggable,
     highlightColumns: [] as any,
