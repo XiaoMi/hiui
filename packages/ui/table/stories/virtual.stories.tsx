@@ -50,15 +50,17 @@ export const Virtual = () => {
   return (
     <>
       <h1>Virtual for Table</h1>
-      <Button
-        onClick={() => {
-          // key 为节点 id
-          tableRef.current?.scrollTo?.({ key: '小米-1000', align: 'top' })
-        }}
-      >
-        scroll to key: 小米-1000
-      </Button>
       <div className="table-virtual__wrap" style={{ minWidth: 660, background: '#fff' }}>
+        <div style={{ marginBottom: '1em' }}>
+          <Button
+            onClick={() => {
+              // key 为节点 id
+              tableRef.current?.scrollTo?.({ key: '小米-1000', align: 'top' })
+            }}
+          >
+            scroll to key: 小米-1000
+          </Button>
+        </div>
         <Table
           fieldKey="name"
           columns={column}
