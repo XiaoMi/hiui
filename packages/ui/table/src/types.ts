@@ -305,20 +305,20 @@ export interface TableRowRequiredProps {
 
 export type TableRowRecord = Record<string, any>
 
-export type ScrollAlign = 'top' | 'bottom' | 'auto'
+export type TableVirtualScrollAlign = 'top' | 'bottom' | 'auto'
 
-export type ScrollConfig =
+export type TableVirtualScrollConfig =
   | {
       index: number
-      align?: ScrollAlign
+      align?: TableVirtualScrollAlign
       offset?: number
     }
   | {
       key: React.Key
-      align?: ScrollAlign
+      align?: TableVirtualScrollAlign
       offset?: number
     }
 
 export interface TableHelper {
-  scrollTo?: (arg: number | ScrollConfig) => void
+  scrollTo?: (arg: number | TableVirtualScrollConfig) => void
 }
