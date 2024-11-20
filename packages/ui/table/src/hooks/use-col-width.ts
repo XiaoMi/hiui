@@ -5,11 +5,13 @@ import { useUpdateEffect } from '@hi-ui/use-update-effect'
 
 export const useColWidth = ({
   resizable,
+  tableWidthAdjustOnResize,
   data,
   columns,
   virtual,
 }: {
   resizable: boolean
+  tableWidthAdjustOnResize: boolean
   data: TableRowRecord[]
   columns: TableColumnItem[]
   virtual?: boolean
@@ -119,7 +121,7 @@ export const useColWidth = ({
     const measureRowElement = measureRowElementRef.current
 
     if (measureRowElement) {
-      const resizeObserver = new ResizeObserver(() => {
+      resizeObserver = new ResizeObserver(() => {
         if (virtual) {
           setColWidths(getVirtualWidths())
         } else {
@@ -136,9 +138,7 @@ export const useColWidth = ({
     }
 
     return () => {
-      if (resizeObserver) {
-        resizeObserver.disconnect()
-      }
+      resizeObserver?.disconnect()
     }
     // 测量元素在内容列为空时会是空，切换会使测量元素变化，导致后续的resize时间无法响应,此处测量元素变化时需要重新绑定
   }, [columns, getVirtualWidths, getWidths, virtual])
@@ -182,9 +182,7 @@ export const useColWidth = ({
     }
 
     return () => {
-      if (resizeObserver) {
-        resizeObserver.disconnect()
-      }
+      resizeObserver?.disconnect()
     }
   }, [columns.length, headerTableElement, resizable])
 
@@ -228,6 +226,12 @@ export const useColWidth = ({
 
       setColWidths((prev) => {
         const nextColWidths = [...prev]
+
+        if (tableWidthAdjustOnResize) {
+          nextColWidths[index] = nextWidth
+          return nextColWidths
+        }
+
         let anotherWidth = nextColWidths[index + 1]! + nextColWidths[index]! - nextWidth
 
         if (anotherWidth <= anotherMinWidth) {
@@ -240,7 +244,7 @@ export const useColWidth = ({
         return nextColWidths
       })
     },
-    [minColWidth]
+    [minColWidth, tableWidthAdjustOnResize]
   )
 
   const getColgroupProps = React.useCallback(

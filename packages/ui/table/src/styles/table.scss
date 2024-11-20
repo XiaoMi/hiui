@@ -186,6 +186,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
         .#{$prefix}-header__resizable-handle {
           border-left-color: use-color('gray', 200);
+          border-right-color: use-color('gray', 200);
         }
       }
 
@@ -196,7 +197,9 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
         height: 100%;
         bottom: 0;
         right: 0;
-        border-left: 2px solid use-color('gray', 50);
+        margin-right: -2px;
+        border-left: 2px solid transparent;
+        border-right: 2px solid transparent;
         cursor: col-resize;
         z-index: 1;
 
@@ -207,6 +210,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
         &:hover {
           background-color: use-color-mode('primary');
           border-left-color: use-color('gray', 200);
+          border-right-color: use-color('gray', 200);
         }
       }
     }

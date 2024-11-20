@@ -345,6 +345,19 @@ export const Scrollbar = () => {
     },
   ])
 
+  const scrollbarInnerRef = React.useRef<any>(null)
+  const update = () => scrollbarInnerRef.current?.update?.()
+
+  // 在外部滚动时更新 Scrollbar 滚动条的位置
+  // 该处理是针对 scrollbarXStickToBottom 参数为 true 的情况，让滚动条始终保持在底部，详见 Scrollbar 组件文档
+  React.useEffect(() => {
+    document.addEventListener('scroll', update)
+
+    return () => {
+      document.removeEventListener('scroll', update)
+    }
+  }, [])
+
   return (
     <>
       <h1>Scrollbar for Table</h1>
@@ -359,13 +372,14 @@ export const Scrollbar = () => {
             {
               // 保持滚动条始终可见
               keepVisible: true,
+              innerRef: scrollbarInnerRef,
               // 设置滚动条的 z-index 值
               zIndex: 9,
               settings: {
                 // 垂直滑动时，让横向滚动条一直显示在容器底部
-                // scrollbarXStickToBottom: true,
+                scrollbarXStickToBottom: true,
                 // 横向滚动条距离底部的距离
-                // scrollbarXStickToBottomGap: 20,
+                scrollbarXStickToBottomGap: 20,
               },
             }
           }
