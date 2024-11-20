@@ -186,6 +186,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
         .#{$prefix}-header__resizable-handle {
           border-left-color: use-color('gray', 200);
+          border-right-color: use-color('gray', 200);
         }
       }
 
@@ -197,8 +198,8 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
         bottom: 0;
         right: 0;
         margin-right: -2px;
-        border-left: 2px solid use-color('gray', 50);
-        border-right: 2px solid use-color('gray', 50);
+        border-left: 2px solid transparent;
+        border-right: 2px solid transparent;
         cursor: col-resize;
         z-index: 1;
 
