@@ -210,6 +210,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
         &:hover {
           background-color: use-color-mode('primary');
           border-left-color: use-color('gray', 200);
+          border-right-color: use-color('gray', 200);
         }
       }
     }
