@@ -1,5 +1,18 @@
 # @hi-ui/table
 
+## 4.9.0
+
+### Minor Changes
+
+- [#3052](https://github.com/XiaoMi/hiui/pull/3052) [`a3ef6ac6e`](https://github.com/XiaoMi/hiui/commit/a3ef6ac6e3361c8bd1a0e3c12d7e4204dcbbf5f6) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): add tableWidthAdjustOnResize api (#3046)
+
+- [#3045](https://github.com/XiaoMi/hiui/pull/3045) [`26a081f0a`](https://github.com/XiaoMi/hiui/commit/26a081f0a51efb1d2b8f69720d28818e04b3b24a) Thanks [@fcppddl](https://github.com/fcppddl)! - feat(table): 虚拟列表下，支持设置滚动位置(#3044)
+
+### Patch Changes
+
+- Updated dependencies [[`cc8c3a263`](https://github.com/XiaoMi/hiui/commit/cc8c3a263357069626c0ed9e2f2d50a3f24615af)]:
+  - @hi-ui/pagination@4.2.0
+
 ## 4.8.0
 
 ### Minor Changes

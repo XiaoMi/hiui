@@ -1,5 +1,11 @@
 # @hi-ui/pagination
 
+## 4.2.0
+
+### Minor Changes
+
+- [#3048](https://github.com/XiaoMi/hiui/pull/3048) [`cc8c3a263`](https://github.com/XiaoMi/hiui/commit/cc8c3a263357069626c0ed9e2f2d50a3f24615af) Thanks [@fcppddl](https://github.com/fcppddl)! - feat(pagination): add size api(#3047)
+
 ## 4.1.0
 
 ### Minor Changes
