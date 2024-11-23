@@ -38,6 +38,7 @@ const RangePanel = () => {
     prefixCls,
     disabledDate,
     strideSelectMode,
+    rangeRef,
   } = useContext(DPContext)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
@@ -70,6 +71,10 @@ const RangePanel = () => {
     setCalRenderDates(parseRenderDates(outDate, type))
   }, [outDate, type])
 
+  useEffect(() => {
+    rangeRef.current = range
+  }, [range, rangeRef])
+
   // 更新视图类型
   useEffect(() => {
     setViews([getView(type), getView(type)])
@@ -92,7 +97,7 @@ const RangePanel = () => {
   const setRanges = (date: moment.Moment, panelIndex: number = 0) => {
     const newRange = { ...range }
 
-    if (newRange.start && (range.selecting || !calendarClickIsEnd.current)) {
+    if (newRange.start && range.selecting) {
       if (date.isSameOrBefore(newRange.start)) {
         newRange.selecting = false
         newRange.end = newRange.start
@@ -101,7 +106,7 @@ const RangePanel = () => {
 
       // 此处是明显的语法错误，故而注释修改
       // onSelect(date, calendarClickIsEnd)
-      onSelect(date as any, !calendarClickIsEnd.current, panelIndex)
+      onSelect(date as any, true, panelIndex)
 
       if (type === 'weekrange') {
         // 固定模式下，即使跨月选择了日期，仍然显示当前月的日期选择面板
@@ -142,7 +147,7 @@ const RangePanel = () => {
     } else {
       newRange.selecting = true
       newRange.start = date
-      newRange.end = null
+      newRange.end = newRange.end ? newRange.end : null
       onSelect(date as any, false, panelIndex)
     }
     setRange(newRange)
@@ -185,6 +190,21 @@ const RangePanel = () => {
       ...range,
       end: date,
     })
+  }
+
+  const onMouseLeave = () => {
+    if (type.includes('range') && outDate[1] && range.selecting) {
+      setRange((range) => {
+        const newRange = { ...range }
+        newRange.end = outDate[1]
+        if (newRange.end?.isBefore(newRange.start)) {
+          const temp = newRange.start
+          newRange.start = newRange.end
+          newRange.end = temp
+        }
+        return newRange
+      })
+    }
   }
 
   const onTimeChange = (date: string[]) => {
@@ -309,7 +329,7 @@ const RangePanel = () => {
 
   return (
     <React.Fragment>
-      <div className={panelCls}>
+      <div className={panelCls} onMouseLeave={onMouseLeave}>
         {renderShortcut()}
         <div className={`${prefixCls}__panel--left`}>
           {calRenderDates[0] && (
