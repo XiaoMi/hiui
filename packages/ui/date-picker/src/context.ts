@@ -2,6 +2,7 @@ import React from 'react'
 import { CalendarItemV3, DatePickerProps, DatePickerValueV3 } from './types'
 import moment from 'moment'
 import type { UseLocaleContext } from '@hi-ui/core'
+import { CalenderSelectedRange } from './hooks/useCalenderData'
 
 const DPContext = React.createContext<DPContextData>({} as DPContextData)
 
@@ -61,5 +62,6 @@ export interface DPContextData extends ExtendsType {
   // 内部现在暂时使用 v3 的数据格式
   altCalendar?: CalendarItemV3[]
   onPanelChange?: (data: Date) => void
+  rangeRef: React.MutableRefObject<CalenderSelectedRange | null>
 }
 export default DPContext

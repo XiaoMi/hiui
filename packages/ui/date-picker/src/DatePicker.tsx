@@ -26,6 +26,7 @@ import {
 import { getBelongWeek, getBelongWeekYear } from './utils/week'
 import { DateRangeTimePanel } from './components/date-range-time-panel'
 import { GranularityMap } from './utils/constants'
+import { CalenderSelectedRange } from './hooks/useCalenderData'
 
 const DATE_PICKER_PREFIX = getPrefixCls('date-picker')
 
@@ -94,6 +95,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     const cacheDate = useRef<(moment.Moment | null)[]>([])
     const [inputFocus, setInputFocus] = useState(false)
     const [type, setType] = useState<DatePickerTypeEnum>(propType)
+    const rangeRef = useRef<CalenderSelectedRange | null>(null)
 
     const needConfirm = useMemo(() => {
       // 如果是日期时间范围选择，则默认返回 true
@@ -318,12 +320,22 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       if (!needConfirm) {
         const outDateValue = outDate[0]
         const isValid = moment(outDateValue).isValid()
+        const start = rangeRef.current?.start
+        const end = rangeRef.current?.end
+        let newDate
+        if (!!start && !!end) {
+          newDate = [start, end]
+        } else {
+          newDate = outDate
+        }
+
         // @ts-ignore
-        const { startDate, endDate } = isValid && getInRangeDate(outDate[0], outDate[1], max, min)
+        const { startDate, endDate } = isValid && getInRangeDate(newDate[0], newDate[1], max, min)
         const _outDate = isValid ? [moment(startDate), moment(endDate)] : [null]
         callback(_outDate, true)
 
         changeOutDate(_outDate)
+        rangeRef.current = null
       }
       // 日期时间范围选择模式，弹窗关闭，重新刷入缓存，视作取消
       else {
@@ -447,6 +459,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           cellRender,
           footerRender,
           strideSelectMode,
+          rangeRef,
         }}
       >
         <div className={cx(prefixCls, className)} {...otherProps}>
