@@ -71,10 +71,6 @@ const RangePanel = () => {
     setCalRenderDates(parseRenderDates(outDate, type))
   }, [outDate, type])
 
-  useEffect(() => {
-    rangeRef.current = range
-  }, [range, rangeRef])
-
   // 更新视图类型
   useEffect(() => {
     setViews([getView(type), getView(type)])
@@ -193,7 +189,13 @@ const RangePanel = () => {
   }
 
   const onMouseLeave = () => {
-    if (type.includes('range') && outDate[1] && range.selecting) {
+    // todo: 结束的日期如果被禁用，则不设置end，更优方法是获取第一个可用的日期
+    if (
+      type.includes('range') &&
+      outDate?.[1] &&
+      range.selecting &&
+      !disabledDate?.(outDate[1].toDate(), views[0])
+    ) {
       setRange((range) => {
         const newRange = { ...range }
         newRange.end = outDate[1]
@@ -202,6 +204,7 @@ const RangePanel = () => {
           newRange.start = newRange.end
           newRange.end = temp
         }
+        rangeRef.current = newRange
         return newRange
       })
     }

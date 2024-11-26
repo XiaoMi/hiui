@@ -95,7 +95,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     const cacheDate = useRef<(moment.Moment | null)[]>([])
     const [inputFocus, setInputFocus] = useState(false)
     const [type, setType] = useState<DatePickerTypeEnum>(propType)
-    const rangeRef = useRef<CalenderSelectedRange>(null)
+    const rangeRef = useRef<CalenderSelectedRange | null>(null)
 
     const needConfirm = useMemo(() => {
       // 如果是日期时间范围选择，则默认返回 true
@@ -323,8 +323,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         const start = rangeRef.current?.start
         const end = rangeRef.current?.end
         let newDate
-        // 动态禁用会出问题
-        if (!!start && !!end && disabledDate === DEFAULT_DISABLED_DATE) {
+        if (!!start && !!end) {
           newDate = [start, end]
         } else {
           newDate = outDate
@@ -336,6 +335,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         callback(_outDate, true)
 
         changeOutDate(_outDate)
+        rangeRef.current = null
       }
       // 日期时间范围选择模式，弹窗关闭，重新刷入缓存，视作取消
       else {
