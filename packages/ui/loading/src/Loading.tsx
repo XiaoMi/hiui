@@ -152,7 +152,6 @@ export interface LoadingProps extends HiBaseHTMLProps<'div'> {
   part?: boolean
   /**
    * 自定义加载指示符
-   * @private
    */
   indicator?: ReactNode
   /**
