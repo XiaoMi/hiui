@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react'
 import { __DEV__ } from '@hi-ui/env'
-import { LocaleProvider, LocaleProviderProps } from '@hi-ui/core'
+import {
+  LocaleProvider,
+  LocaleProviderProps,
+  ContainerProvider,
+  ContainerProviderProps,
+} from '@hi-ui/core'
 import { DesignSystemAccentColorEnum, DesignSystemProps } from './types'
 import { createSystem, extendsTheme } from './theme'
 import { getAccentColorTheme } from './accent-color'
@@ -13,6 +18,7 @@ export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc 
   languages,
   accentColor,
   theme,
+  container,
 }) => {
   /**
    * global css var config
@@ -31,13 +37,18 @@ export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc 
   }, [accentColor, theme])
 
   return (
-    <LocaleProvider locale={locale} languages={languages}>
-      {children}
-    </LocaleProvider>
+    <ContainerProvider container={container}>
+      <LocaleProvider locale={locale} languages={languages}>
+        {children}
+      </LocaleProvider>
+    </ContainerProvider>
   )
 }
 
-export interface ProviderProps extends LocaleProviderProps, ThemeProviderProps {}
+export interface ProviderProps
+  extends LocaleProviderProps,
+    ContainerProviderProps,
+    ThemeProviderProps {}
 
 interface ThemeProviderProps {
   /**
