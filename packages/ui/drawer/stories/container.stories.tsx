@@ -1,7 +1,6 @@
 import React from 'react'
 import Drawer from '../src'
 import Button from '@hi-ui/button'
-import Provider from '@hi-ui/provider'
 
 /**
  * @title 局部容器抽屉
@@ -32,21 +31,19 @@ export const Container = () => {
           zIndex: 0,
         }}
       >
-        <Provider container={document.body}>
-          <Button type="primary" onClick={() => setVisible(!visible)}>
-            open
-          </Button>
-          <Drawer
-            title="抽屉标题"
-            style={{ position: 'absolute' }}
-            container={container}
-            visible={visible}
-            closeable={false}
-            onClose={() => setVisible(false)}
-          >
-            我是一段文字，也可以是表单、表格、步骤条等等
-          </Drawer>
-        </Provider>
+        <Button type="primary" onClick={() => setVisible(!visible)}>
+          open
+        </Button>
+        <Drawer
+          title="抽屉标题"
+          style={{ position: 'absolute' }}
+          container={container}
+          visible={visible}
+          closeable={false}
+          onClose={() => setVisible(false)}
+        >
+          我是一段文字，也可以是表单、表格、步骤条等等
+        </Drawer>
       </div>
     </>
   )
