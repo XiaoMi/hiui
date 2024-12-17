@@ -9,4 +9,4 @@
 "@hi-ui/provider": minor
 ---
 
-feat(container-context): add container package (#3060)
+feat(portal-context): Provider 增加 portal 参数，支持配置全局 container (#3060 )
