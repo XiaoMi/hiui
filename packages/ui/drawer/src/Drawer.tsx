@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect } from 'react'
 import { cx, getPrefixCls, getPrefixStyleVar } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useContainerContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, usePortalContext } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
 import { Portal } from '@hi-ui/portal'
 import { useModal, UseModalProps } from '@hi-ui/modal'
@@ -51,7 +51,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
   ) => {
     const [transitionVisible, transitionVisibleAction] = useToggle(false)
     const [transitionExited, transitionExitedAction] = useToggle(true)
-    const globalContainer = useContainerContext()
+    const globalContainer = usePortalContext()?.container
     const container = containerProp ?? globalContainer
 
     const { rootProps, getModalProps, getModalWrapperProps } = useModal({

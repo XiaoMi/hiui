@@ -5,7 +5,7 @@ import { Portal } from '@hi-ui/portal'
 import { Watermark, WatermarkProps } from '@hi-ui/watermark'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps, useContainerContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, usePortalContext } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import {
   ZoomInOutlined,
@@ -53,7 +53,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
   ) => {
     const cls = cx(prefixCls, className)
 
-    const globalContainer = useContainerContext()
+    const globalContainer = usePortalContext()?.container
     const container = containerProp ?? globalContainer
 
     const [active, setActive] = useUncontrolledState(defaultCurrent || 0, current, onPreviewChange)

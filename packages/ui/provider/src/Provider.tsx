@@ -3,8 +3,8 @@ import { __DEV__ } from '@hi-ui/env'
 import {
   LocaleProvider,
   LocaleProviderProps,
-  ContainerProvider,
-  ContainerProviderProps,
+  PortalProvider,
+  PortalProviderProps,
 } from '@hi-ui/core'
 import { DesignSystemAccentColorEnum, DesignSystemProps } from './types'
 import { createSystem, extendsTheme } from './theme'
@@ -18,7 +18,7 @@ export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc 
   languages,
   accentColor,
   theme,
-  container,
+  portal,
 }) => {
   /**
    * global css var config
@@ -37,17 +37,17 @@ export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc 
   }, [accentColor, theme])
 
   return (
-    <ContainerProvider container={container}>
+    <PortalProvider portal={portal}>
       <LocaleProvider locale={locale} languages={languages}>
         {children}
       </LocaleProvider>
-    </ContainerProvider>
+    </PortalProvider>
   )
 }
 
 export interface ProviderProps
   extends LocaleProviderProps,
-    ContainerProviderProps,
+    PortalProviderProps,
     ThemeProviderProps {}
 
 interface ThemeProviderProps {

@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { Portal } from '@hi-ui/portal'
-import { HiBaseHTMLProps, HiBaseSizeEnum, useContainerContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, usePortalContext } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import Spinner from '@hi-ui/spinner'
 import { useLoading } from './use-loading'
@@ -38,7 +38,7 @@ export const Loading = forwardRef<null, LoadingProps>(
   ) => {
     const { internalVisible, setInternalVisible } = useLoading({ visible, delay })
 
-    const globalContainer = useContainerContext()
+    const globalContainer = usePortalContext()?.container
     const container = containerProp ?? globalContainer
 
     useImperativeHandle(innerRef, () => ({

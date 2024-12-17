@@ -1,6 +1,6 @@
 import React, { useEffect, forwardRef, useCallback, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext, useContainerContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext, usePortalContext } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { CSSTransition } from 'react-transition-group'
 import { Portal } from '@hi-ui/portal'
@@ -74,7 +74,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   ) => {
     const i18n = useLocaleContext()
 
-    const globalContainer = useContainerContext()
+    const globalContainer = usePortalContext()?.container
     const container = containerProp ?? globalContainer
 
     const cancelText = isUndef(cancelTextProp) ? i18n.get('modal.cancelText') : cancelTextProp

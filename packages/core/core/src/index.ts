@@ -74,5 +74,5 @@ export type HiBaseSizeEnum = ValueOf<typeof HiBaseSizeEnum>
 export { useLocaleContext, LocaleProvider } from '@hi-ui/locale-context'
 export type { UseLocaleContext, LocaleProviderProps } from '@hi-ui/locale-context'
 
-export { useContainerContext, ContainerProvider } from '@hi-ui/container-context'
-export type { UseContainerContext, ContainerProviderProps } from '@hi-ui/container-context'
+export { usePortalContext, PortalProvider } from '@hi-ui/portal-context'
+export type { UsePortalContext, PortalProviderProps } from '@hi-ui/portal-context'

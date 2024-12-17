@@ -1,12 +1,12 @@
 ---
-"@hi-ui/core": patch
-"@hi-ui/container-context": patch
-"@hi-ui/drawer": patch
-"@hi-ui/hiui": patch
-"@hi-ui/loading": patch
-"@hi-ui/modal": patch
-"@hi-ui/preview": patch
-"@hi-ui/provider": patch
+"@hi-ui/core": minor
+"@hi-ui/container-context": minor
+"@hi-ui/drawer": minor
+"@hi-ui/hiui": minor
+"@hi-ui/loading": minor
+"@hi-ui/modal": minor
+"@hi-ui/preview": minor
+"@hi-ui/provider": minor
 ---
 
 feat(container-context): add container package (#3060)
