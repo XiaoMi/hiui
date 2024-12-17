@@ -5,7 +5,7 @@ import { Portal } from '@hi-ui/portal'
 import { Watermark, WatermarkProps } from '@hi-ui/watermark'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, usePortalContext } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import {
   ZoomInOutlined,
@@ -46,10 +46,15 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       src,
       watermarkProps,
       disabledDownload = false,
+      container: containerProp,
+      disabledPortal = false,
     },
     ref
   ) => {
     const cls = cx(prefixCls, className)
+
+    const globalContainer = usePortalContext()?.container
+    const container = containerProp ?? globalContainer
 
     const [active, setActive] = useUncontrolledState(defaultCurrent || 0, current, onPreviewChange)
 
@@ -199,7 +204,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     )
 
     return (
-      <Portal>
+      <Portal container={container} disabled={disabledPortal}>
         <div ref={ref} role={role} className={cls} style={{ ...style, display: 'none' }}>
           <CSSTransition
             classNames={`${prefixCls}__mask--transition`}
@@ -352,6 +357,14 @@ export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
    * 当前预览图片索引(受控)
    */
   onPreviewChange?: (current: number) => void
+  /**
+   * 指定 portal 的容器
+   */
+  container?: HTMLElement | null
+  /**
+   * 是否禁用 portal
+   */
+  disabledPortal?: boolean
 }
 
 if (__DEV__) {
