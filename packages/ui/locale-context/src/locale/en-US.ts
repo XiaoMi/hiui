@@ -58,7 +58,7 @@ export default {
     simple: ['The', 'page', '', 'pages', 'items'],
     item: '',
     itemPerPage: 'page',
-    goto: 'Goto',
+    goto: 'Go to',
     page: '',
   },
   cascader: {
