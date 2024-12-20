@@ -42,7 +42,9 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@hi-ui/env": "^4.0.9"
+  },
   "peerDependencies": {
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
