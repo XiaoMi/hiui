@@ -1,6 +1,6 @@
 ---
-"@hi-ui/core": minor
-"@hi-ui/container-context": minor
+"@hi-ui/core": patch
+"@hi-ui/portal-context": minor
 "@hi-ui/drawer": minor
 "@hi-ui/hiui": minor
 "@hi-ui/loading": minor
