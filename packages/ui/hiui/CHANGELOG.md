@@ -1,5 +1,11 @@
 # @hi-ui/hiui
 
+## 4.10.1
+
+### Patch Changes
+
+- [#3070](https://github.com/XiaoMi/hiui/pull/3070) [`e3ce5be`](https://github.com/XiaoMi/hiui/commit/e3ce5be69208fa6fcd3ea9e1c8b7badb2744e055) Thanks [@zyprepare](https://github.com/zyprepare)! - chore(hiui): add portal-context package
+
 ## 4.10.0
 
 ### Minor Changes
