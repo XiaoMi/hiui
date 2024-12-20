@@ -1,5 +1,15 @@
 # @hi-ui/picker
 
+## 4.1.7
+
+### Patch Changes
+
+- [#3064](https://github.com/XiaoMi/hiui/pull/3064) [`4d359ad4c`](https://github.com/XiaoMi/hiui/commit/4d359ad4ceffea6bdc9c3cea3958e6b15134ab88) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(picker): 对外暴露 resetSearch 方法
+
+- Updated dependencies [[`d1d008665`](https://github.com/XiaoMi/hiui/commit/d1d008665affad31204c0720b5861d6085b58dde)]:
+  - @hi-ui/core@4.0.9
+  - @hi-ui/loading@4.3.0
+
 ## 4.1.6
 
 ### Patch Changes

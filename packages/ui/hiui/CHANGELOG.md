@@ -1,5 +1,27 @@
 # @hi-ui/hiui
 
+## 4.10.0
+
+### Minor Changes
+
+- [#3061](https://github.com/XiaoMi/hiui/pull/3061) [`d1d008665`](https://github.com/XiaoMi/hiui/commit/d1d008665affad31204c0720b5861d6085b58dde) Thanks [@fcppddl](https://github.com/fcppddl)! - feat(portal-context): Provider 增加 portal 参数，支持配置全局 container (#3060)
+
+### Patch Changes
+
+- [#3063](https://github.com/XiaoMi/hiui/pull/3063) [`33b94abaa`](https://github.com/XiaoMi/hiui/commit/33b94abaa6f8eb432a09c87a0a0a30f400699cdc) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(locale-context): 修改英文前往(#3062)
+
+- [#3056](https://github.com/XiaoMi/hiui/pull/3056) [`1adc5386c`](https://github.com/XiaoMi/hiui/commit/1adc5386ccf8f5a13afe9d163194c74088ace42e) Thanks [@fcppddl](https://github.com/fcppddl)! - perf(date-picker): 范围选择交互优化 (#3055)
+
+- Updated dependencies [[`d1d008665`](https://github.com/XiaoMi/hiui/commit/d1d008665affad31204c0720b5861d6085b58dde), [`4d359ad4c`](https://github.com/XiaoMi/hiui/commit/4d359ad4ceffea6bdc9c3cea3958e6b15134ab88), [`1adc5386c`](https://github.com/XiaoMi/hiui/commit/1adc5386ccf8f5a13afe9d163194c74088ace42e)]:
+  - @hi-ui/core@4.0.9
+  - @hi-ui/drawer@4.3.0
+  - @hi-ui/loading@4.3.0
+  - @hi-ui/modal@4.3.0
+  - @hi-ui/preview@4.2.0
+  - @hi-ui/provider@4.1.0
+  - @hi-ui/picker@4.1.7
+  - @hi-ui/date-picker@4.9.1
+
 ## 4.9.0
 
 ### Minor Changes
