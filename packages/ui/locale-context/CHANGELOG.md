@@ -1,11 +1,5 @@
 # @hi-ui/locale-context
 
-## 4.0.11
-
-### Patch Changes
-
-- [#3063](https://github.com/XiaoMi/hiui/pull/3063) [`33b94abaa`](https://github.com/XiaoMi/hiui/commit/33b94abaa6f8eb432a09c87a0a0a30f400699cdc) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(locale-context): 修改英文前往(#3062)
-
 ## 4.0.10
 
 ### Patch Changes

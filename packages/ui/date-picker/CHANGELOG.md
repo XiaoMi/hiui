@@ -1,14 +1,5 @@
 # @hi-ui/date-picker
 
-## 4.9.1
-
-### Patch Changes
-
-- [#3056](https://github.com/XiaoMi/hiui/pull/3056) [`1adc5386c`](https://github.com/XiaoMi/hiui/commit/1adc5386ccf8f5a13afe9d163194c74088ace42e) Thanks [@fcppddl](https://github.com/fcppddl)! - perf(date-picker): 范围选择交互优化 (#3055)
-
-- Updated dependencies [[`d1d008665`](https://github.com/XiaoMi/hiui/commit/d1d008665affad31204c0720b5861d6085b58dde)]:
-  - @hi-ui/core@4.0.9
-
 ## 4.9.0
 
 ### Minor Changes
