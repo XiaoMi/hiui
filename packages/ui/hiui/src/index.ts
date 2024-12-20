@@ -93,6 +93,9 @@ export * from '@hi-ui/locale-context'
  */
 export { default as LocaleContext } from '@hi-ui/locale-context'
 
+export * from '@hi-ui/portal-context'
+export { default as PortalContext } from '@hi-ui/portal-context'
+
 export * from '@hi-ui/menu'
 export { default as Menu } from '@hi-ui/menu'
 
