@@ -1,5 +1,15 @@
 # @hi-ui/core
 
+## 4.0.9
+
+### Patch Changes
+
+- [#3068](https://github.com/XiaoMi/hiui/pull/3068) [`69f8f07`](https://github.com/XiaoMi/hiui/commit/69f8f07006b4aeeea554de424389aeb93e0f1770) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(portal-context): Provider 增加 portal 参数，支持配置全局 container (#3060)
+
+- Updated dependencies [[`69f8f07`](https://github.com/XiaoMi/hiui/commit/69f8f07006b4aeeea554de424389aeb93e0f1770), [`69f8f07`](https://github.com/XiaoMi/hiui/commit/69f8f07006b4aeeea554de424389aeb93e0f1770)]:
+  - @hi-ui/locale-context@4.0.11
+  - @hi-ui/portal-context@4.0.0
+
 ## 4.0.8
 
 ### Patch Changes
