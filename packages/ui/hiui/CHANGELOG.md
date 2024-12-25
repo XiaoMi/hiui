@@ -1,5 +1,11 @@
 # @hi-ui/hiui
 
+## 4.10.2
+
+### Patch Changes
+
+- [#3072](https://github.com/XiaoMi/hiui/pull/3072) [`5e426c9`](https://github.com/XiaoMi/hiui/commit/5e426c9f9d0e6ab9aa8d166c29ac8fb2fd95a414) Thanks [@zyprepare](https://github.com/zyprepare)! - chore(locale-context): 对外暴露类型定义
+
 ## 4.10.1
 
 ### Patch Changes
