@@ -7,10 +7,6 @@ import Space from '@hi-ui/space'
 import { createMessage } from '@hi-ui/message'
 import { createNotification } from '@hi-ui/notification'
 
-// 声明为全局变量
-let message = createMessage()
-let notification = createNotification()
-
 /**
  * @title 设置 portal
  * @desc 通过 Provider 设置 portal，可以将 Drawer、Modal 等组件的弹出层渲染在特定的 DOM 节点下
@@ -20,12 +16,14 @@ export const Portal = () => {
   const [modalVisible, setModalVisible] = React.useState(false)
   const [container, setContainer] = React.useState<HTMLElement | null>(null)
 
-  React.useEffect(() => {
-    if (!container) return
+  const message = React.useMemo(() => {
+    if (!container) return createMessage()
+    return createMessage({ container })
+  }, [container])
 
-    // message 和 notification 可通过这种方式挂载到指定容器上
-    message = createMessage({ container })
-    notification = createNotification({ container })
+  const notification = React.useMemo(() => {
+    if (!container) return createNotification()
+    return createNotification({ container })
   }, [container])
 
   return (
@@ -67,7 +65,6 @@ export const Portal = () => {
           </Space>
           {/* 必须设置一个拥有定位的父元素，组件显示在该元素内 */}
           <div
-            id="custom-container"
             ref={setContainer}
             className="drawer-container__wrap"
             style={{
