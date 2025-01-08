@@ -3,6 +3,7 @@ import Highlighter from '../src'
 
 export * from './basic.stories'
 export * from './rule.stories'
+export * from './style.stories'
 
 export default {
   title: 'Private（暂不对外）/Highlighter',

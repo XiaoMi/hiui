@@ -2,7 +2,7 @@ import React from 'react'
 import Highlighter from '../src'
 
 /**
- * @title 不区分大小写
+ * @title 自定义匹配规则
  */
 export const Rule = () => {
   return (
