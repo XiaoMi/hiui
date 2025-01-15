@@ -94,4 +94,4 @@ const generateDataJson = async (yearList) => {
 }
 
 // 生成 2015-今年 共 length 个年头的数据
-generateDataJson(Array.from({ length: 9 }, (v, k) => k + 2015))
+generateDataJson(Array.from({ length: 11 }, (v, k) => k + 2015))
