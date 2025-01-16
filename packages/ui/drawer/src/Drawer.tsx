@@ -114,9 +114,11 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
                 style:
                   placement === 'left' || placement === 'right'
                     ? {
+                        ...modalProps.style,
                         [`${getPrefixStyleVar('drawer-body-width')}`]: bodyWidth ?? '404px',
                       }
                     : {
+                        ...modalProps.style,
                         [`${getPrefixStyleVar('drawer-body-height')}`]: bodyHeight ?? '404px',
                       },
               })}
