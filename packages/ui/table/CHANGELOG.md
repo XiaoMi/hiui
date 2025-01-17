@@ -1,5 +1,14 @@
 # @hi-ui/table
 
+## 4.9.1
+
+### Patch Changes
+
+- [#3083](https://github.com/XiaoMi/hiui/pull/3083) [`28dfa39`](https://github.com/XiaoMi/hiui/commit/28dfa390a9870432b597cc01107f25090651e689) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复空状态下设置边框左边框不显示问题 (#3082)
+
+- Updated dependencies [[`a8a4a7ecf`](https://github.com/XiaoMi/hiui/commit/a8a4a7ecf9fe056a9a16d03641b297bb01b17970)]:
+  - @hi-ui/drawer@4.3.1
+
 ## 4.9.0
 
 ### Minor Changes
