@@ -292,7 +292,9 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       prefixCls,
       className,
       hasBorder && `${prefixCls}--bordered`,
-      (hasScrollToLeft || hasLeftFixedColumns) && `${prefixCls}--bordered-left-none`,
+      (hasScrollToLeft || hasLeftFixedColumns) &&
+        data.length > 0 &&
+        `${prefixCls}--bordered-left-none`,
       striped && `${prefixCls}--striped`,
       size && `${prefixCls}--size-${size}`,
       virtual && `${prefixCls}--virtual`
