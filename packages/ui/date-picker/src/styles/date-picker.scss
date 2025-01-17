@@ -251,6 +251,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     height: calc(100% - 4px);
     padding: 0 8px;
     margin: 0 4px;
+    overflow: hidden;
 
     &--date-time-range {
       &:hover {
