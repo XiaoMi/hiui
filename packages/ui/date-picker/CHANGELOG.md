@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 4.9.2
+
+### Patch Changes
+
+- [#3078](https://github.com/XiaoMi/hiui/pull/3078) [`30f90d924`](https://github.com/XiaoMi/hiui/commit/30f90d92475b8edb4e2c6762d70958d24ea8459e) Thanks [@fcppddl](https://github.com/fcppddl)! - perf(date-picker): 图标固定在右边 (#3077)
+
 ## 4.9.1
 
 ### Patch Changes

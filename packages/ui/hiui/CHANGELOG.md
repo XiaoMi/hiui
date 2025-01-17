@@ -1,5 +1,20 @@
 # @hi-ui/hiui
 
+## 4.10.3
+
+### Patch Changes
+
+- [#3081](https://github.com/XiaoMi/hiui/pull/3081) [`a8a4a7ecf`](https://github.com/XiaoMi/hiui/commit/a8a4a7ecf9fe056a9a16d03641b297bb01b17970) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(drawer): 修复局部显示中设置 showMask={false} 后显示异常问题 (#3080)
+
+- [#3078](https://github.com/XiaoMi/hiui/pull/3078) [`30f90d924`](https://github.com/XiaoMi/hiui/commit/30f90d92475b8edb4e2c6762d70958d24ea8459e) Thanks [@fcppddl](https://github.com/fcppddl)! - perf(date-picker): 图标固定在右边 (#3077)
+
+- [#3083](https://github.com/XiaoMi/hiui/pull/3083) [`28dfa39`](https://github.com/XiaoMi/hiui/commit/28dfa390a9870432b597cc01107f25090651e689) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复空状态下设置边框左边框不显示问题 (#3082)
+
+- Updated dependencies [[`a8a4a7ecf`](https://github.com/XiaoMi/hiui/commit/a8a4a7ecf9fe056a9a16d03641b297bb01b17970), [`30f90d924`](https://github.com/XiaoMi/hiui/commit/30f90d92475b8edb4e2c6762d70958d24ea8459e), [`28dfa39`](https://github.com/XiaoMi/hiui/commit/28dfa390a9870432b597cc01107f25090651e689)]:
+  - @hi-ui/drawer@4.3.1
+  - @hi-ui/date-picker@4.9.2
+  - @hi-ui/table@4.9.1
+
 ## 4.10.2
 
 ### Patch Changes

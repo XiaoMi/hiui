@@ -1,5 +1,11 @@
 # @hi-ui/drawer
 
+## 4.3.1
+
+### Patch Changes
+
+- [#3081](https://github.com/XiaoMi/hiui/pull/3081) [`a8a4a7ecf`](https://github.com/XiaoMi/hiui/commit/a8a4a7ecf9fe056a9a16d03641b297bb01b17970) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(drawer): 修复局部显示中设置 showMask={false} 后显示异常问题 (#3080)
+
 ## 4.3.0
 
 ### Minor Changes
