@@ -1,5 +1,14 @@
 # @hi-ui/hiui
 
+## 4.10.4
+
+### Patch Changes
+
+- [#3086](https://github.com/XiaoMi/hiui/pull/3086) [`1596605`](https://github.com/XiaoMi/hiui/commit/159660554b4c26aa2d2bbc36d0c14f69584e6389) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复表头分组下设置列排序无效问题 (#3085)
+
+- Updated dependencies [[`1596605`](https://github.com/XiaoMi/hiui/commit/159660554b4c26aa2d2bbc36d0c14f69584e6389)]:
+  - @hi-ui/table@4.9.2
+
 ## 4.10.3
 
 ### Patch Changes
