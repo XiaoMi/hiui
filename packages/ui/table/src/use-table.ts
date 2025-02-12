@@ -585,7 +585,21 @@ export const useTable = ({
     let _data = [...transitionData]
 
     if (activeSorterColumn) {
-      const sorter = columns.filter((d) => d.dataKey === activeSorterColumn)[0]?.sorter
+      let sortedColumn = {} as TableColumnItem
+      const findColumn = (columns: TableColumnItem[]) => {
+        columns.forEach((item) => {
+          if (item.dataKey === activeSorterColumn) {
+            sortedColumn = item
+            return
+          }
+          if (item.children) {
+            findColumn(item.children)
+          }
+        })
+      }
+      findColumn(columns)
+
+      const sorter = sortedColumn?.sorter
 
       if (sorter) {
         activeSorterType === 'ascend' ? _data.sort(sorter) : _data.sort(sorter).reverse()
