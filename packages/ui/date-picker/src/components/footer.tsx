@@ -10,7 +10,7 @@ interface FooterProps {
 
 export const Footer: FC<FooterProps> = ({ disabled, onConfirmButtonClick }) => {
   const i18n = useLocaleContext()
-  const { prefixCls, footerRender, size, outDate } = useContext(DPContext)
+  const { prefixCls, footerRender, size, onPick } = useContext(DPContext)
 
   const footer = useMemo(() => {
     const sureActionContent = (
@@ -20,9 +20,9 @@ export const Footer: FC<FooterProps> = ({ disabled, onConfirmButtonClick }) => {
     )
 
     return typeof footerRender === 'function'
-      ? footerRender(sureActionContent, outDate)
+      ? footerRender(sureActionContent, onPick)
       : sureActionContent
-  }, [disabled, footerRender, i18n, onConfirmButtonClick, size, outDate])
+  }, [disabled, footerRender, i18n, onConfirmButtonClick, size, onPick])
 
   return <div className={`${prefixCls}__footer`}>{footer}</div>
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import DatePicker from '../src'
 import Button from '@hi-ui/button'
+import moment from 'moment'
 
 /**
  * @title 自定义渲染页脚
@@ -17,9 +18,7 @@ export const FooterRender = () => {
             console.log('onChange', date, dateStr)
           }}
           onSelect={console.log}
-          footerRender={(action, date) => {
-            console.log(action, date)
-
+          footerRender={(action, onPick) => {
             return (
               <div
                 style={{
@@ -29,8 +28,12 @@ export const FooterRender = () => {
                   width: '100%',
                 }}
               >
-                <Button type="secondary" appearance="link">
-                  自定义操作
+                <Button
+                  type="secondary"
+                  appearance="link"
+                  onClick={() => onPick([moment()], false)}
+                >
+                  今天
                 </Button>
               </div>
             )
