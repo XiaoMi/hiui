@@ -45,6 +45,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       onClear,
       type,
       containerRef,
+      waitCompositionEnd,
       ...rest
     },
     ref
@@ -93,6 +94,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       onKeyDown,
       trimValueOnBlur,
       type,
+      waitCompositionEnd,
     })
 
     const focus = useCallback(() => {
@@ -265,6 +267,10 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
    * @private
    */
   containerRef?: React.Ref<HTMLDivElement>
+  /**
+   * 是否等待文本段落组成完成
+   */
+  waitCompositionEnd?: boolean
 }
 
 if (__DEV__) {
