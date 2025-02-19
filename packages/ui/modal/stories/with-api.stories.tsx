@@ -73,6 +73,28 @@ export const WithAPI = () => {
         >
           打开普通提示
         </Button>
+
+        <Button
+          type="secondary"
+          onClick={() =>
+            Modal.confirm({
+              type: 'info',
+              title: '普通',
+              content:
+                '这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述',
+              cancelText: null,
+              confirmText: '确定',
+              onConfirm: async () => {
+                await new Promise((resolve) => setTimeout(resolve, 1000))
+              },
+              // onConfirm: () => {
+              //   console.log('onConfirm')
+              // },
+            })
+          }
+        >
+          异步确认关闭
+        </Button>
       </div>
     </>
   )
