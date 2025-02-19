@@ -104,6 +104,8 @@ export interface TableColumnItemRenderReturn {
   }
 }
 
+export type TableColumnSortOrder = 'ascend' | 'descend' | null
+
 export type TableColumnItem = {
   /**
    * 列标题
@@ -125,6 +127,14 @@ export type TableColumnItem = {
    * 列对齐方式
    */
   align?: TableColumnItemAlignEnum
+  /**
+   * 排序顺序
+   */
+  sortOrder?: TableColumnSortOrder
+  /**
+   * 默认排序顺序
+   */
+  defaultSortOrder?: TableColumnSortOrder
   /**
    * 列排序函数
    */

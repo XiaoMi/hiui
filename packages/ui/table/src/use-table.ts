@@ -19,7 +19,12 @@ import { useCache } from '@hi-ui/use-cache'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { PaginationProps } from '@hi-ui/pagination'
 import { ScrollbarProps } from '@hi-ui/scrollbar'
-import { parseFixedColumns, setColumnsDefaultWidth } from './utils'
+import {
+  getColumnByDataKey,
+  getColumnByDefaultSortOrder,
+  parseFixedColumns,
+  setColumnsDefaultWidth,
+} from './utils'
 import { useAsyncSwitch, useExpand } from './hooks'
 import { useChange, Action, Extra } from './hooks/use-change'
 import { useColWidth } from './hooks/use-col-width'
@@ -576,8 +581,20 @@ export const useTable = ({
       : false
   }, [data, onLoadChildren])
 
-  const [activeSorterColumn, setActiveSorterColumn] = useState<string | null>(null)
-  const [activeSorterType, setActiveSorterType] = useState<string | null>(null)
+  const sortOrderColumn = useMemo(() => {
+    return getColumnByDefaultSortOrder(columns)
+  }, [columns])
+  const [activeSorterColumn, setActiveSorterColumn] = useState<string | null>(
+    sortOrderColumn?.dataKey ?? null
+  )
+  const [activeSorterType, setActiveSorterType] = useState<string | null>(
+    sortOrderColumn?.defaultSortOrder ?? sortOrderColumn?.sortOrder ?? null
+  )
+
+  useEffect(() => {
+    setActiveSorterColumn(sortOrderColumn?.dataKey ?? null)
+    setActiveSorterType(sortOrderColumn?.defaultSortOrder ?? sortOrderColumn?.sortOrder ?? null)
+  }, [sortOrderColumn])
 
   //* *************** 根据排序列处理数据 ************** *//
 
@@ -585,20 +602,7 @@ export const useTable = ({
     let _data = [...transitionData]
 
     if (activeSorterColumn) {
-      let sortedColumn = {} as TableColumnItem
-      const findColumn = (columns: TableColumnItem[]) => {
-        columns.forEach((item) => {
-          if (item.dataKey === activeSorterColumn) {
-            sortedColumn = item
-            return
-          }
-          if (item.children) {
-            findColumn(item.children)
-          }
-        })
-      }
-      findColumn(columns)
-
+      const sortedColumn = getColumnByDataKey(columns, activeSorterColumn)
       const sorter = sortedColumn?.sorter
 
       if (sorter) {
@@ -621,6 +625,7 @@ export const useTable = ({
     showData,
     onChange,
   })
+
   return {
     measureRowElementRef,
     rootProps,
