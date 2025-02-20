@@ -13,6 +13,7 @@ import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import TimePeriodPanel from './time-period-panel'
 import { CalenderSelectedRange } from '../hooks/useCalenderData'
 import { CalendarViewEnum } from '../types'
+import { Footer } from './footer'
 
 const RangePanel = () => {
   const {
@@ -39,6 +40,7 @@ const RangePanel = () => {
     disabledDate,
     strideSelectMode,
     rangeRef,
+    footerRender,
   } = useContext(DPContext)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
@@ -324,7 +326,7 @@ const RangePanel = () => {
     `theme__${theme}`,
     type.includes('range') && `${prefixCls}__panel--range`,
     type === 'timeperiod' && `${prefixCls}__panel--timeperiod`,
-    (showTime || type === 'timeperiod') && `${prefixCls}__panel--noshadow`
+    (showTime || type === 'timeperiod' || footerRender) && `${prefixCls}__panel--noshadow`
   )
 
   const timePickerFormat = useTimePickerFormat(realFormat)
@@ -444,6 +446,7 @@ const RangePanel = () => {
           />
         </React.Fragment>
       )}
+      {footerRender && <Footer />}
     </React.Fragment>
   )
 }

@@ -279,7 +279,10 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
   /**
    * 自定义渲染页脚
    */
-  footerRender?: (...actionContents: React.ReactElement[]) => React.ReactNode
+  footerRender?: (
+    actionContents: React.ReactElement,
+    onPick: (dates: (Moment | null)[], isShowPanel?: boolean) => void
+  ) => React.ReactNode
   /**
    * 跨月选择模式
    * 'auto' 自动切换模式，跨月选择时自动切换到跨月的日期选择面板；
