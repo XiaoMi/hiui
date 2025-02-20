@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { setAttrStatus } from '@hi-ui/dom-utils'
@@ -27,9 +27,15 @@ export const useInput = ({
   type = 'text',
   clearElementRef,
   inputElementRef,
+  waitCompositionEnd,
 }: UseInputProps) => {
   // Object.is 避免 trimValueOnBlur 和 点击 clearIcon 触发 2 次相同的 onCHange
   const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange, Object.is)
+
+  // 用于存储中文输入法下输入未完成时的值
+  const [tempValue, setTempValue] = useState('')
+  // 是否正在输入中文
+  const isComposingRef = useRef(false)
 
   const { handleChange: formatHandleChange, handleOnKeyDown, position } = useInputCursor({
     inputElementRef,
@@ -48,6 +54,15 @@ export const useInput = ({
       evt.persist()
 
       const nextValue = evt.target.value
+
+      // 如果正在输入中文中，则更新临时要显示的值，并返回
+      if (waitCompositionEnd && isComposingRef.current) {
+        setTempValue(nextValue)
+        return
+      }
+      // 中文输入完成后才触发 onChange 并清空临时值
+      setTempValue('')
+
       let valueTrue = pure(nextValue, type)
 
       // 防溢出，保证 onChange 拿到的是值是最新的 formatted value
@@ -65,7 +80,22 @@ export const useInput = ({
 
       needResetCursorPosition && formatHandleChange(event)
     },
-    [formatHandleChange, needResetCursorPosition, tryChangeValue, type]
+    [formatHandleChange, needResetCursorPosition, tryChangeValue, type, waitCompositionEnd]
+  )
+
+  const handleCompositionStart = useCallback(() => {
+    if (!waitCompositionEnd) return
+    isComposingRef.current = true
+  }, [waitCompositionEnd])
+
+  const handleCompositionEnd = useCallback(
+    (event) => {
+      if (!waitCompositionEnd) return
+      isComposingRef.current = false
+      setTempValue('')
+      handleChange(event)
+    },
+    [handleChange, waitCompositionEnd]
   )
 
   const [focused, setFocused] = useState(autoFocus)
@@ -118,16 +148,19 @@ export const useInput = ({
 
     return {
       ...nativeInputProps,
-      value: format(value, type),
+      value: tempValue || format(value, type),
       type: nativeType,
       onChange: handleChange,
       onFocus: handleFocus,
       onBlur: handleBlur,
       onKeyDown: needResetCursorPosition ? callAllFuncs(handleOnKeyDown, onKeyDown) : onKeyDown,
+      onCompositionStart: handleCompositionStart,
+      onCompositionEnd: handleCompositionEnd,
     }
   }, [
     type,
     nativeInputProps,
+    tempValue,
     value,
     handleChange,
     handleFocus,
@@ -135,6 +168,8 @@ export const useInput = ({
     needResetCursorPosition,
     handleOnKeyDown,
     onKeyDown,
+    handleCompositionStart,
+    handleCompositionEnd,
   ])
 
   useEffect(() => {
@@ -218,6 +253,10 @@ export interface UseInputProps {
    * 输入框 ref
    */
   inputElementRef?: any
+  /**
+   * 是否等待文本段落组成完成
+   */
+  waitCompositionEnd?: boolean
 }
 
 export type useInputReturn = ReturnType<typeof useInput>
