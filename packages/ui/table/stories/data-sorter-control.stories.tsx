@@ -1,11 +1,15 @@
 import React from 'react'
-import Table from '../src'
+import Button from '@hi-ui/button'
+import Space from '@hi-ui/space'
+import Table, { TableColumnSortOrder } from '../src'
 
 /**
- * @title 数据排序
+ * @title 受控的数据排序
  */
-export const DataSorter = () => {
-  const [columns] = React.useState([
+export const DataSorterControl = () => {
+  const [sortOrder, setSortOrder] = React.useState<TableColumnSortOrder>(null)
+
+  const columns = [
     {
       title: 'Name',
       dataKey: 'name',
@@ -17,7 +21,7 @@ export const DataSorter = () => {
       dataKey: 'age',
       key: 2,
       width: 80,
-      // defaultSortOrder: 'descend' as const,
+      sortOrder,
       sorter(pre, next) {
         return pre.raw.age - next.raw.age
       },
@@ -117,7 +121,7 @@ export const DataSorter = () => {
       dataKey: 'address',
       key: 17,
     },
-  ])
+  ]
   const [data] = React.useState([
     {
       key: '1',
@@ -223,9 +227,22 @@ export const DataSorter = () => {
 
   return (
     <>
-      <h1>DataSorter for Table</h1>
-      <div className="table-data-sorter__wrap" style={{ minWidth: 660, background: '#fff' }}>
-        <Table columns={columns} data={data} onChange={console.log} />
+      <h1>Controlled DataSorter for Table</h1>
+      <div
+        className="table-data-sorter-control__wrap"
+        style={{ minWidth: 660, background: '#fff' }}
+      >
+        <Space>
+          <Button onClick={() => setSortOrder('descend')}>Sort age</Button>
+          <Table
+            columns={columns}
+            data={data}
+            onChange={(action, extra) => {
+              console.log('action', action, extra)
+              setSortOrder((action.sorter?.order ?? null) as TableColumnSortOrder)
+            }}
+          />
+        </Space>
       </div>
     </>
   )
