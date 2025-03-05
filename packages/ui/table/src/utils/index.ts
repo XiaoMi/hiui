@@ -223,3 +223,38 @@ export const getTotalOrEvgRowData = (_data: any[], c: any, isAvg: boolean) => {
 
   return maxPointCount > 0 ? columnSumData.toFixed(maxPointCount) : columnSumData
 }
+
+/**
+ * 获取指定列
+ */
+export const getColumnByDataKey = (
+  columns: TableColumnItem[],
+  dataKey: string
+): TableColumnItem => {
+  for (const column of columns) {
+    if (column.dataKey === dataKey) {
+      return column
+    }
+    if (column.children) {
+      return getColumnByDataKey(column.children, dataKey)
+    }
+  }
+
+  return {} as TableColumnItem
+}
+
+/**
+ * 获取默认排序的列
+ */
+export const getColumnByDefaultSortOrder = (columns: TableColumnItem[]): TableColumnItem => {
+  for (const column of columns) {
+    if (column.defaultSortOrder || column.sortOrder) {
+      return column
+    }
+    if (column.children) {
+      return getColumnByDefaultSortOrder(column.children)
+    }
+  }
+
+  return {} as TableColumnItem
+}

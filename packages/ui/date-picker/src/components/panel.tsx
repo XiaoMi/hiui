@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react'
+import React, { useEffect, useState, useContext, useCallback, useMemo } from 'react'
 import { cx } from '@hi-ui/classname'
 import Header from './header'
 import Calendar from './calendar'
@@ -52,6 +52,7 @@ const Panel = (props: PanelProps) => {
     disabledSeconds,
     prefixCls,
     showPanel,
+    footerRender,
   } = useContext(DPContext)
   const [view, setView] = useState(getView(type))
 
@@ -132,10 +133,14 @@ const Panel = (props: PanelProps) => {
     [calRenderDates, onPick, onSelect, showTime, type, view, weekOffset]
   )
 
+  const needFooter = useMemo(() => {
+    return needConfirm || (type !== 'daterange' && footerRender)
+  }, [footerRender, needConfirm, type])
+
   const panelCls = cx(
     `${prefixCls}__panel`,
     `theme__${theme}`,
-    (showTime || needConfirm) && `${prefixCls}__panel--time ${prefixCls}__panel--noshadow`
+    (showTime || needFooter) && `${prefixCls}__panel--time ${prefixCls}__panel--noshadow`
   )
 
   const timePickerFormat = useTimePickerFormat(realFormat)
@@ -219,7 +224,7 @@ const Panel = (props: PanelProps) => {
           </div>
         )}
       </div>
-      {needConfirm && (
+      {needFooter && (
         <Footer
           disabled={!outDate[0]}
           onConfirmButtonClick={() => {

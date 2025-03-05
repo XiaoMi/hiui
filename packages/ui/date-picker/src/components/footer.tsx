@@ -5,12 +5,12 @@ import DPContext from '../context'
 
 interface FooterProps {
   disabled?: boolean
-  onConfirmButtonClick: () => void
+  onConfirmButtonClick?: () => void
 }
 
 export const Footer: FC<FooterProps> = ({ disabled, onConfirmButtonClick }) => {
   const i18n = useLocaleContext()
-  const { prefixCls, footerRender, size } = useContext(DPContext)
+  const { prefixCls, footerRender, size, onPick } = useContext(DPContext)
 
   const footer = useMemo(() => {
     const sureActionContent = (
@@ -19,8 +19,10 @@ export const Footer: FC<FooterProps> = ({ disabled, onConfirmButtonClick }) => {
       </HiButton>
     )
 
-    return typeof footerRender === 'function' ? footerRender(sureActionContent) : sureActionContent
-  }, [disabled, footerRender, i18n, onConfirmButtonClick, size])
+    return typeof footerRender === 'function'
+      ? footerRender(sureActionContent, onPick)
+      : sureActionContent
+  }, [disabled, footerRender, i18n, onConfirmButtonClick, size, onPick])
 
   return <div className={`${prefixCls}__footer`}>{footer}</div>
 }
