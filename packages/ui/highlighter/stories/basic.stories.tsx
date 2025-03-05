@@ -9,7 +9,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="highlighter-basic__wrap">
-        <Highlighter keyword="高亮">我想要高亮的文案是：高亮</Highlighter>
+        <Highlighter keyword="高亮" >我想要高亮的文案是：高亮 </Highlighter>
       </div>
     </>
   )
