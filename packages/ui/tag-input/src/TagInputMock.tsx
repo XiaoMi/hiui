@@ -390,8 +390,11 @@ function MockTag({
   maxWidth,
   hidden = false,
 }: any) {
-  const title = isFunction(displayRender) ? displayRender(option) : true
   const closeable = !option.disabled
+
+  const title = useMemo(() => {
+    return isFunction(displayRender) ? displayRender(option) : option.title
+  }, [displayRender, option])
 
   return (
     <ResizeDetector
@@ -411,9 +414,7 @@ function MockTag({
           style={hidden ? hiddenStyle : { maxWidth }}
           key={option.id}
         >
-          <span className={`${prefixCls}__tag-content`}>
-            {title === true ? option.title : title}
-          </span>
+          <span className={`${prefixCls}__tag-content`}>{title}</span>
           {closeable ? (
             <span
               className={`${prefixCls}__tag-closed`}
