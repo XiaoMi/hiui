@@ -9,7 +9,7 @@ const HIGHLIGHTER_PREFIX = getPrefixCls('highlighter')
  * 高亮文本内容
  */
 export const Highlighter = forwardRef<HTMLSpanElement | null, HighlighterProps>(
-  ({ prefixCls = HIGHLIGHTER_PREFIX, className, keyword, children = null, ...rest }, ref) => {
+  ({ prefixCls = HIGHLIGHTER_PREFIX, className, keyword, children = null, color, style = {}, ...rest }, ref) => {
     if (!keyword) return children!
     if (typeof children !== 'string') return children as any
 
@@ -29,7 +29,7 @@ export const Highlighter = forwardRef<HTMLSpanElement | null, HighlighterProps>(
         {parts.reduce((acc, part, index) => {
           acc.push(part)
           acc.push(
-            <span key={index} className={`${prefixCls}--matched`}>
+            <span key={index} className={`${prefixCls}--matched`} style={{ color: color, ...style }}>
               {keyword}
             </span>
           )
@@ -45,7 +45,15 @@ export interface HighlighterProps extends HiBaseHTMLProps<'span'> {
   /**
    * 匹配高亮关键词
    */
-  keyword?: string
+  keyword?: string,
+  /**
+   * 高亮颜色
+   */
+  color?: string,
+  /**
+   * 高亮样式
+   */
+  style?: React.CSSProperties
 }
 
 if (__DEV__) {
