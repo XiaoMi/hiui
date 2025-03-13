@@ -25,12 +25,6 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
   maxTextCount = 0,
   tooltipProps,
 }) => {
-  const cls = cx(prefixCls, className, {
-    // maxTextCount 没有设置时，才做单行隐藏
-    [`${prefixCls}--single`]: maxTextCount === 0 && (!numberOfLines || numberOfLines <= 1),
-    [`${prefixCls}--multiple`]: numberOfLines > 1,
-  })
-
   const [disableTooltip, setDisableTooltip] = useState(true)
   const contentRef = useRef<HTMLDivElement | null>(null)
 
@@ -79,6 +73,17 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
       observer.disconnect()
     }
   }, [update])
+
+  const cls = cx(
+    prefixCls,
+    className,
+    {
+      // maxTextCount 没有设置时，才做单行隐藏
+      [`${prefixCls}--single`]: maxTextCount === 0 && (!numberOfLines || numberOfLines <= 1),
+      [`${prefixCls}--multiple`]: numberOfLines > 1,
+    },
+    `${prefixCls}--${disableTooltip ? 'disabled' : 'available'}`
+  )
 
   return (
     <Tooltip disabled={disableTooltip} {...{ title: children, ...tooltipProps }}>
