@@ -36,6 +36,8 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
       targetSortType,
       onItemClick,
       draggable = false,
+      keyword,
+      onSearch,
       ...rest
     },
     ref
@@ -45,7 +47,7 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
 
     const { searchable, pageSize, showCheckAll } = useTransferContext()
 
-    const [searchValue, setSearchValue] = useState('')
+    const [searchValue, setSearchValue] = useState(keyword || '')
 
     const [cacheData, setCacheData] = useState(data)
 
@@ -68,11 +70,19 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
 
     const [current, setCurrent] = useState(1)
 
-    const handleSearch = useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
-      const searchValue = evt.target.value
-      setCurrent(1)
-      setSearchValue(searchValue)
-    }, [])
+    const handleSearch = useCallback(
+      (evt: React.ChangeEvent<HTMLInputElement>) => {
+        const searchValue = evt.target.value
+        setCurrent(1)
+        setSearchValue(searchValue)
+        onSearch?.(searchValue)
+      },
+      [onSearch]
+    )
+
+    useEffect(() => {
+      setSearchValue(keyword || '')
+    }, [keyword])
 
     const canCheckedItems = useMemo(() => cacheData.filter((item) => !item.disabled), [cacheData])
 
@@ -225,6 +235,14 @@ export interface TransferPanelProps {
    * 是否可筛选
    */
   searchable?: boolean
+  /**
+   * 搜索关键词
+   */
+  keyword?: string
+  /**
+   * 搜索回调
+   */
+  onSearch?: (keyword: string) => void
   /**
    * 是否禁用
    */

@@ -36,6 +36,7 @@ export const Searchable = () => {
           onChange={(ids) => setTargetIds(ids)}
           emptyContent={['暂无数据']}
           searchable
+          onSearch={(direction, keyword) => console.log('onSearch', direction, keyword)}
         />
       </div>
     </>

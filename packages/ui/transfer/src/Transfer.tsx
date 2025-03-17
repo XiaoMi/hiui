@@ -29,6 +29,8 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       disabled = false,
       showCheckAll = false,
       searchable = false,
+      keyword,
+      onSearch,
       type = 'single',
       targetSortType = 'default',
       pagination = false,
@@ -260,19 +262,19 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       }),
       [
         disabled,
-        showCheckAll,
-        searchable,
-        emptyContent,
-        type,
-        targetSortType,
-        targetIds,
-        targetLimit,
-        titleRender,
-        pageSize,
         dropItem,
-        onDragStart,
+        emptyContent,
         onDragLeave,
         onDragOver,
+        onDragStart,
+        pageSize,
+        searchable,
+        showCheckAll,
+        targetIds,
+        targetLimit,
+        targetSortType,
+        titleRender,
+        type,
       ]
     )
 
@@ -299,6 +301,10 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
             draggable={false}
             onItemClick={(item) => {
               onItemClick(item, 'right')
+            }}
+            keyword={keyword?.left}
+            onSearch={(keyword) => {
+              onSearch?.(keyword, 'left')
             }}
           />
           <div className={`${prefixCls}-operation`}>
@@ -338,6 +344,10 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
             onItemClick={(item) => {
               onItemClick(item, 'left')
             }}
+            keyword={keyword?.right}
+            onSearch={(keyword) => {
+              onSearch?.(keyword, 'right')
+            }}
           />
         </div>
       </TransferProvider>
@@ -359,6 +369,17 @@ export interface TransferProps
    * 是否可筛选
    */
   searchable?: boolean
+  /**
+   * 搜索关键词
+   */
+  keyword?: {
+    left?: string
+    right?: string
+  }
+  /**
+   * 搜索回调
+   */
+  onSearch?: (keyword: string, direction: 'left' | 'right') => void
   /**
    * 是否开启拖拽
    */

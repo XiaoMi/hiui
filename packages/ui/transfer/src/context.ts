@@ -4,6 +4,11 @@ import { TransferDataItem } from './types'
 interface TransferContext {
   showCheckAll: boolean
   searchable: boolean
+  keyword: {
+    left?: string
+    right?: string
+  }
+  onSearch: (keyword: string, direction: 'left' | 'right') => void
   pageSize?: number
   disabled: any
   type: any

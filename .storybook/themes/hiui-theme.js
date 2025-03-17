@@ -32,7 +32,7 @@ export default create({
   // inputBorderRadius: 4,
 
   base: 'light',
-  brandTitle: 'HiUI V4.Beta',
+  brandTitle: 'HiUI V4',
   brandUrl: 'https://xiaomi.f.mioffice.cn/docs/dock4ZNCYoXJk7DHR8F6bS4rbhe#WBeI9x',
   brandImage: '',
 })
