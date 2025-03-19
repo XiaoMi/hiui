@@ -1,6 +1,5 @@
 import React from 'react'
 import Button from '@hi-ui/button'
-import Space from '@hi-ui/space'
 import Table, { TableColumnSortOrder } from '../src'
 
 /**
@@ -232,17 +231,17 @@ export const DataSorterControl = () => {
         className="table-data-sorter-control__wrap"
         style={{ minWidth: 660, background: '#fff' }}
       >
-        <Space>
-          <Button onClick={() => setSortOrder('descend')}>Sort age</Button>
-          <Table
-            columns={columns}
-            data={data}
-            onChange={(action, extra) => {
-              console.log('action', action, extra)
-              setSortOrder((action.sorter?.order ?? null) as TableColumnSortOrder)
-            }}
-          />
-        </Space>
+        <Button onClick={() => setSortOrder('descend')} style={{ marginBottom: 10 }}>
+          Sort age
+        </Button>
+        <Table
+          columns={columns}
+          data={data}
+          onChange={(action, extra) => {
+            console.log('action', action, extra)
+            setSortOrder((action.sorter?.order ?? null) as TableColumnSortOrder)
+          }}
+        />
       </div>
     </>
   )

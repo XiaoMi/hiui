@@ -85,7 +85,7 @@ export const WithAPI = () => {
               cancelText: null,
               confirmText: '确定',
               onConfirm: async () => {
-                await new Promise((resolve) => setTimeout(resolve, 1000))
+                return new Promise((resolve) => setTimeout(resolve, 1000))
               },
               // onConfirm: () => {
               //   console.log('onConfirm')
