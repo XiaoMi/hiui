@@ -1,5 +1,14 @@
 # @hi-ui/hiui
 
+## 4.11.1
+
+### Patch Changes
+
+- [#3109](https://github.com/XiaoMi/hiui/pull/3109) [`8dc162d`](https://github.com/XiaoMi/hiui/commit/8dc162d6e7ef7a174f946b8ccdbecdd0f4731338) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(highlighter): 修复作为子组件使用时匹配问题
+
+- Updated dependencies [[`8dc162d`](https://github.com/XiaoMi/hiui/commit/8dc162d6e7ef7a174f946b8ccdbecdd0f4731338)]:
+  - @hi-ui/highlighter@4.1.1
+
 ## 4.11.0
 
 ### Minor Changes
