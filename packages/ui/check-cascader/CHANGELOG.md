@@ -1,5 +1,15 @@
 # @hi-ui/check-cascader
 
+## 4.3.2
+
+### Patch Changes
+
+- [#3096](https://github.com/XiaoMi/hiui/pull/3096) [`3aff5eee7`](https://github.com/XiaoMi/hiui/commit/3aff5eee7ab4e1734fa2800d5154e8ebe24bbe00) Thanks [@zyprepare](https://github.com/zyprepare)! - perf(tag-input): 优化 wrap 模式下设置 displayRender 卡顿问题 (#3094)
+
+- Updated dependencies [[`3aff5eee7`](https://github.com/XiaoMi/hiui/commit/3aff5eee7ab4e1734fa2800d5154e8ebe24bbe00), [`bf2179191`](https://github.com/XiaoMi/hiui/commit/bf21791917f96c0b33b6a74539650bc56aba1d99)]:
+  - @hi-ui/tag-input@4.1.3
+  - @hi-ui/input@4.3.0
+
 ## 4.3.1
 
 ### Patch Changes

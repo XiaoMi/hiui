@@ -1,5 +1,13 @@
 # @hi-ui/highlighter
 
+## 4.1.0
+
+### Minor Changes
+
+- [#3102](https://github.com/XiaoMi/hiui/pull/3102) [`414c96a86`](https://github.com/XiaoMi/hiui/commit/414c96a86c6311c5b103733749092108cad03760) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(highlighter): keyword 参数支持传入正则表达式 (#3075)
+
+- [#3103](https://github.com/XiaoMi/hiui/pull/3103) [`13b169670`](https://github.com/XiaoMi/hiui/commit/13b16967026f8389cc66315d376ef77029f4ba2b) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(highlighter): 支持设置高亮样式 (#3076)
+
 ## 4.0.9
 
 ### Patch Changes

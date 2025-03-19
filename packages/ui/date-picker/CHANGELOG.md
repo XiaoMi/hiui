@@ -1,5 +1,16 @@
 # @hi-ui/date-picker
 
+## 4.10.0
+
+### Minor Changes
+
+- [#3089](https://github.com/XiaoMi/hiui/pull/3089) [`9898157c4`](https://github.com/XiaoMi/hiui/commit/9898157c4d19a4492313f78d94440c4468b1f1a6) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): 完善 footerRender 功能，footerRender 增加 onPick 回调，方便用户快速设置时间 (#3088)
+
+### Patch Changes
+
+- Updated dependencies [[`e9bcdb9`](https://github.com/XiaoMi/hiui/commit/e9bcdb9fbfdb8085a57b76a30bc9d8fd3ca8b923)]:
+  - @hi-ui/time-picker@4.1.1
+
 ## 4.9.2
 
 ### Patch Changes

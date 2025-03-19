@@ -1,5 +1,16 @@
 # @hi-ui/transfer
 
+## 4.2.0
+
+### Minor Changes
+
+- [#3104](https://github.com/XiaoMi/hiui/pull/3104) [`7252f3024`](https://github.com/XiaoMi/hiui/commit/7252f3024aea4eada8fe26723909dfe21254ead8) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(transfer): Add keyword and onSearch api (#3099)
+
+### Patch Changes
+
+- Updated dependencies [[`bf2179191`](https://github.com/XiaoMi/hiui/commit/bf21791917f96c0b33b6a74539650bc56aba1d99)]:
+  - @hi-ui/input@4.3.0
+
 ## 4.1.0
 
 ### Minor Changes

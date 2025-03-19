@@ -1,5 +1,11 @@
 # @hi-ui/tag-input
 
+## 4.1.3
+
+### Patch Changes
+
+- [#3096](https://github.com/XiaoMi/hiui/pull/3096) [`3aff5eee7`](https://github.com/XiaoMi/hiui/commit/3aff5eee7ab4e1734fa2800d5154e8ebe24bbe00) Thanks [@zyprepare](https://github.com/zyprepare)! - perf(tag-input): 优化 wrap 模式下设置 displayRender 卡顿问题 (#3094)
+
 ## 4.1.2
 
 ### Patch Changes

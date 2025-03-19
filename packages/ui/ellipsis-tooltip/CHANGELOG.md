@@ -1,5 +1,11 @@
 # @hi-ui/ellipsis-tooltip
 
+## 4.2.0
+
+### Minor Changes
+
+- [#3098](https://github.com/XiaoMi/hiui/pull/3098) [`5ff292557`](https://github.com/XiaoMi/hiui/commit/5ff292557be9b69b6f954717165818d7e9c25c45) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(ellipsis-tooltip): 支持标记 Tooltip 可用状态 (#3097)
+
 ## 4.1.8
 
 ### Patch Changes
