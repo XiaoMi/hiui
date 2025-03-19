@@ -295,6 +295,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
                 className={`${prefixCls}__close-button`}
                 onClick={() => {
                   onCacheChange(type === 'single' ? [''] : ['', ''])
+                  onChange(['', ''])
                 }}
               />
             ) : (
