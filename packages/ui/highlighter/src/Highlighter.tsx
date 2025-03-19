@@ -68,11 +68,11 @@ export interface HighlighterProps extends HiBaseHTMLProps<'span'> {
    */
   keyword?: string | RegExp
   /**
-   * 高光类名
+   * 高亮类名
    */
   highlightClassName?: string
   /**
-   * 高光样式
+   * 高亮样式
    */
   highlightStyle?: React.CSSProperties
 }
