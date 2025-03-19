@@ -1,5 +1,11 @@
 # @hi-ui/input
 
+## 4.3.0
+
+### Minor Changes
+
+- [#3092](https://github.com/XiaoMi/hiui/pull/3092) [`bf2179191`](https://github.com/XiaoMi/hiui/commit/bf21791917f96c0b33b6a74539650bc56aba1d99) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(input): add awaitCompositionEnd api (#3090)
+
 ## 4.2.1
 
 ### Patch Changes

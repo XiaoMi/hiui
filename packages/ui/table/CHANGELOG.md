@@ -1,5 +1,15 @@
 # @hi-ui/table
 
+## 4.10.0
+
+### Minor Changes
+
+- [#3093](https://github.com/XiaoMi/hiui/pull/3093) [`8192dc3c0`](https://github.com/XiaoMi/hiui/commit/8192dc3c06a5299165fcad1a05f291b994384e3f) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): 列排序支持设置默认排序顺序和受控模式 (#3091)
+
+### Patch Changes
+
+- [#3105](https://github.com/XiaoMi/hiui/pull/3105) [`af5207873`](https://github.com/XiaoMi/hiui/commit/af5207873a2e1187a95b00d2c5f64658eb210086) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复虚拟表格下自定义行和单元格样式无效问题 (#3100)
+
 ## 4.9.2
 
 ### Patch Changes

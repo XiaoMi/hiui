@@ -1,5 +1,15 @@
 # @hi-ui/check-tree-select
 
+## 4.6.2
+
+### Patch Changes
+
+- [#3096](https://github.com/XiaoMi/hiui/pull/3096) [`3aff5eee7`](https://github.com/XiaoMi/hiui/commit/3aff5eee7ab4e1734fa2800d5154e8ebe24bbe00) Thanks [@zyprepare](https://github.com/zyprepare)! - perf(tag-input): 优化 wrap 模式下设置 displayRender 卡顿问题 (#3094)
+
+- Updated dependencies [[`3aff5eee7`](https://github.com/XiaoMi/hiui/commit/3aff5eee7ab4e1734fa2800d5154e8ebe24bbe00), [`414c96a86`](https://github.com/XiaoMi/hiui/commit/414c96a86c6311c5b103733749092108cad03760), [`13b169670`](https://github.com/XiaoMi/hiui/commit/13b16967026f8389cc66315d376ef77029f4ba2b)]:
+  - @hi-ui/tag-input@4.1.3
+  - @hi-ui/highlighter@4.1.0
+
 ## 4.6.1
 
 ### Patch Changes

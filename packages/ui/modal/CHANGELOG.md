@@ -1,5 +1,11 @@
 # @hi-ui/modal
 
+## 4.4.0
+
+### Minor Changes
+
+- [#3101](https://github.com/XiaoMi/hiui/pull/3101) [`8bba9316b`](https://github.com/XiaoMi/hiui/commit/8bba9316baa01df2192bfd4ed5d3c7b3c93c0b87) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(modal): 以 api 方式调用时支持异步关闭弹窗 (#3012)
+
 ## 4.3.0
 
 ### Minor Changes

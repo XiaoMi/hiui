@@ -1,5 +1,11 @@
 # @hi-ui/time-picker
 
+## 4.1.1
+
+### Patch Changes
+
+- [#3107](https://github.com/XiaoMi/hiui/pull/3107) [`e9bcdb9`](https://github.com/XiaoMi/hiui/commit/e9bcdb9fbfdb8085a57b76a30bc9d8fd3ca8b923) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(time-picker): 修复点击叉号关闭弹窗时没有触发 onChange 事件问题 (#3106)
+
 ## 4.1.0
 
 ### Minor Changes

@@ -1,5 +1,46 @@
 # @hi-ui/hiui
 
+## 4.11.0
+
+### Minor Changes
+
+- [#3101](https://github.com/XiaoMi/hiui/pull/3101) [`8bba9316b`](https://github.com/XiaoMi/hiui/commit/8bba9316baa01df2192bfd4ed5d3c7b3c93c0b87) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(modal): 以 api 方式调用时支持异步关闭弹窗 (#3012)
+
+- [#3098](https://github.com/XiaoMi/hiui/pull/3098) [`5ff292557`](https://github.com/XiaoMi/hiui/commit/5ff292557be9b69b6f954717165818d7e9c25c45) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(ellipsis-tooltip): 支持标记 Tooltip 可用状态 (#3097)
+
+- [#3102](https://github.com/XiaoMi/hiui/pull/3102) [`414c96a86`](https://github.com/XiaoMi/hiui/commit/414c96a86c6311c5b103733749092108cad03760) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(highlighter): keyword 参数支持传入正则表达式 (#3075)
+
+- [#3089](https://github.com/XiaoMi/hiui/pull/3089) [`9898157c4`](https://github.com/XiaoMi/hiui/commit/9898157c4d19a4492313f78d94440c4468b1f1a6) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): 完善 footerRender 功能，footerRender 增加 onPick 回调，方便用户快速设置时间 (#3088)
+
+- [#3103](https://github.com/XiaoMi/hiui/pull/3103) [`13b169670`](https://github.com/XiaoMi/hiui/commit/13b16967026f8389cc66315d376ef77029f4ba2b) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(highlighter): 支持设置高亮样式 (#3076)
+
+- [#3104](https://github.com/XiaoMi/hiui/pull/3104) [`7252f3024`](https://github.com/XiaoMi/hiui/commit/7252f3024aea4eada8fe26723909dfe21254ead8) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(transfer): Add keyword and onSearch api (#3099)
+
+- [#3093](https://github.com/XiaoMi/hiui/pull/3093) [`8192dc3c0`](https://github.com/XiaoMi/hiui/commit/8192dc3c06a5299165fcad1a05f291b994384e3f) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): 列排序支持设置默认排序顺序和受控模式 (#3091)
+
+- [#3092](https://github.com/XiaoMi/hiui/pull/3092) [`bf2179191`](https://github.com/XiaoMi/hiui/commit/bf21791917f96c0b33b6a74539650bc56aba1d99) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(input): add awaitCompositionEnd api (#3090)
+
+### Patch Changes
+
+- [#3096](https://github.com/XiaoMi/hiui/pull/3096) [`3aff5eee7`](https://github.com/XiaoMi/hiui/commit/3aff5eee7ab4e1734fa2800d5154e8ebe24bbe00) Thanks [@zyprepare](https://github.com/zyprepare)! - perf(tag-input): 优化 wrap 模式下设置 displayRender 卡顿问题 (#3094)
+
+- [#3105](https://github.com/XiaoMi/hiui/pull/3105) [`af5207873`](https://github.com/XiaoMi/hiui/commit/af5207873a2e1187a95b00d2c5f64658eb210086) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复虚拟表格下自定义行和单元格样式无效问题 (#3100)
+
+- [#3107](https://github.com/XiaoMi/hiui/pull/3107) [`e9bcdb9`](https://github.com/XiaoMi/hiui/commit/e9bcdb9fbfdb8085a57b76a30bc9d8fd3ca8b923) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(time-picker): 修复点击叉号关闭弹窗时没有触发 onChange 事件问题 (#3106)
+
+- Updated dependencies [[`3aff5eee7`](https://github.com/XiaoMi/hiui/commit/3aff5eee7ab4e1734fa2800d5154e8ebe24bbe00), [`8bba9316b`](https://github.com/XiaoMi/hiui/commit/8bba9316baa01df2192bfd4ed5d3c7b3c93c0b87), [`5ff292557`](https://github.com/XiaoMi/hiui/commit/5ff292557be9b69b6f954717165818d7e9c25c45), [`414c96a86`](https://github.com/XiaoMi/hiui/commit/414c96a86c6311c5b103733749092108cad03760), [`af5207873`](https://github.com/XiaoMi/hiui/commit/af5207873a2e1187a95b00d2c5f64658eb210086), [`9898157c4`](https://github.com/XiaoMi/hiui/commit/9898157c4d19a4492313f78d94440c4468b1f1a6), [`e9bcdb9`](https://github.com/XiaoMi/hiui/commit/e9bcdb9fbfdb8085a57b76a30bc9d8fd3ca8b923), [`13b169670`](https://github.com/XiaoMi/hiui/commit/13b16967026f8389cc66315d376ef77029f4ba2b), [`7252f3024`](https://github.com/XiaoMi/hiui/commit/7252f3024aea4eada8fe26723909dfe21254ead8), [`8192dc3c0`](https://github.com/XiaoMi/hiui/commit/8192dc3c06a5299165fcad1a05f291b994384e3f), [`bf2179191`](https://github.com/XiaoMi/hiui/commit/bf21791917f96c0b33b6a74539650bc56aba1d99)]:
+  - @hi-ui/check-cascader@4.3.2
+  - @hi-ui/check-select@4.6.1
+  - @hi-ui/check-tree-select@4.6.2
+  - @hi-ui/modal@4.4.0
+  - @hi-ui/ellipsis-tooltip@4.2.0
+  - @hi-ui/highlighter@4.1.0
+  - @hi-ui/table@4.10.0
+  - @hi-ui/date-picker@4.10.0
+  - @hi-ui/time-picker@4.1.1
+  - @hi-ui/transfer@4.2.0
+  - @hi-ui/input@4.3.0
+
 ## 4.10.4
 
 ### Patch Changes
