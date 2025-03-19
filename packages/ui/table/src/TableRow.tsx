@@ -229,6 +229,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
               return (
                 <TableCell
                   key={idx}
+                  className={cellClassName?.(rowDataProp, column, idx)}
                   column={column}
                   isSwitcherCol={firstColumn ? firstColumn.id === column.id : false}
                   rowData={rowDataProp}

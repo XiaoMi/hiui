@@ -33,6 +33,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       scrollbar,
       scrollLeft,
       innerRef,
+      rowClassName,
     } = useTableContext()
     const virtualListRef = useRef(null)
     const listRef = useRef<ListRef>(null)
@@ -123,6 +124,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
                         // @ts-ignore
                         rowIndex={index}
                         rowData={row}
+                        className={rowClassName?.(row, index)}
                         // expandedTree={isExpandTreeRows(row.id)}
                         {...getRequiredProps(row.id)}
                       />
