@@ -22,6 +22,7 @@ export const Highlighter = forwardRef<HTMLSpanElement | null, HighlighterProps>(
     ref
   ) => {
     const startIndex = useRef(0)
+    startIndex.current = 0
 
     if (!keyword) return children!
     if (typeof children !== 'string') return children as any
