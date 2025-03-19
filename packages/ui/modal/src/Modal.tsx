@@ -1,4 +1,4 @@
-import React, { useEffect, forwardRef, useCallback, useImperativeHandle } from 'react'
+import React, { useEffect, forwardRef, useCallback, useImperativeHandle, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext, usePortalContext } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
@@ -52,7 +52,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       title,
       cancelText: cancelTextProp,
       confirmText: confirmTextProp,
-      confirmLoading,
+      confirmLoading: confirmLoadingProp,
       footer,
       onClose,
       onCancel,
@@ -83,6 +83,11 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     const [transitionVisible, transitionVisibleAction] = useToggle(false)
     const [transitionExited, transitionExitedAction] = useToggle(true)
 
+    const [confirmLoading, setConfirmLoading] = useState(confirmLoadingProp)
+    useEffect(() => {
+      setConfirmLoading(confirmLoadingProp)
+    }, [confirmLoadingProp])
+
     const onRequestCloseLatest = useLatestCallback(() => onCancel?.())
 
     const { rootProps, getModalProps, getModalWrapperProps } = useModal({
@@ -112,7 +117,10 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       onExitedLatest()
     }, [onExitedLatest, transitionExitedAction])
 
-    useImperativeHandle(innerRef, () => ({ close: transitionVisibleAction.off }))
+    useImperativeHandle(innerRef, () => ({
+      close: transitionVisibleAction.off,
+      updateConfirmLoading: (loading: boolean) => setConfirmLoading(loading),
+    }))
 
     const hasHeader = !!title || closeable
     const hasConfirm = confirmText !== null

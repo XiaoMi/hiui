@@ -40,8 +40,10 @@ const open = ({ key, onConfirm, onCancel, content, ...rest }: ModalApiProps = {}
 
       container = undefined
     },
-    onConfirm: () => {
-      onConfirm?.()
+    onConfirm: async () => {
+      toastManagerRef.current?.updateConfirmLoading(true)
+      await onConfirm?.()
+      toastManagerRef.current?.updateConfirmLoading(false)
       toastManagerRef.current?.close()
     },
     onCancel: () => {
