@@ -33,6 +33,6 @@ export default create({
 
   base: 'light',
   brandTitle: 'HiUI V4',
-  brandUrl: 'https://xiaomi.f.mioffice.cn/docs/dock4ZNCYoXJk7DHR8F6bS4rbhe#WBeI9x',
+  brandUrl: 'https://xiaomi.github.io/hiui/components/overview/',
   brandImage: '',
 })
