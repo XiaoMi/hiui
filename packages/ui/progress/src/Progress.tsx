@@ -27,6 +27,7 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
       content,
       strokeWidth,
       width,
+      color,
       ...rest
     },
     ref
@@ -65,7 +66,7 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
           ) : null}
           <span
             ref={setBarElement}
-            style={{ width: indeterminate ? undefined : `${rate}%` }}
+            style={{ width: indeterminate ? undefined : `${rate}%`, backgroundColor: color }}
             className={cx(`${prefixCls}__value`, `${prefixCls}__value--${type}`)}
             aria-label="value"
           >

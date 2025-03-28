@@ -31,6 +31,7 @@ export const CircleProgress = forwardRef<HTMLDivElement | null, CircleProgressPr
       style,
       size = 'md',
       width,
+      color,
       ...rest
     },
     ref
@@ -64,7 +65,7 @@ export const CircleProgress = forwardRef<HTMLDivElement | null, CircleProgressPr
             cx={totalRadiusWidth}
             cy={totalRadiusWidth}
             r={radius}
-            style={{ strokeWidth: strokeWidthMap[size] }}
+            style={{ strokeWidth: strokeWidthMap[size], stroke: color }}
             className={`${prefixCls}__circle ${prefixCls}__circle--${type}`}
             strokeDasharray={`${strokeDash} ${strokeDash}`}
             strokeDashoffset={`${strokeDash * ((100 - percent) / 100)}`}

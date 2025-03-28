@@ -33,6 +33,7 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
       showInfo = true,
       style,
       size = 'md',
+      color,
       ...rest
     },
     ref
@@ -58,6 +59,7 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
       transition: 'stroke-dashoffset 0.3s ease 0s, stroke 0.3s ease',
       fill: '#fff',
       strokeWidth: strokeWidthMap[size],
+      stroke: color,
     }
 
     const cls = cx(prefixCls, className)
