@@ -46,7 +46,7 @@ export const CustomRender = () => {
           searchable
           clearable
           data={data}
-          onChange={console.log}
+          defaultValue={['2']}
           customRender={(value) => {
             return (
               <Space>
