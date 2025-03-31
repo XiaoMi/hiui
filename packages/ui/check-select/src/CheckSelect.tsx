@@ -301,7 +301,11 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           trigger={
             customRender ? (
               typeof customRender === 'function' ? (
-                customRender(checkedItems)
+                customRender(
+                  dropdownItems.filter((item: CheckSelectItemEventData) =>
+                    value.includes(item.id ?? '')
+                  )
+                )
               ) : (
                 customRender
               )
