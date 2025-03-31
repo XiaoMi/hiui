@@ -1,5 +1,17 @@
 # @hi-ui/hiui
 
+## 4.11.2
+
+### Patch Changes
+
+- [#3112](https://github.com/XiaoMi/hiui/pull/3112) [`48add23aa`](https://github.com/XiaoMi/hiui/commit/48add23aaee42117a419d26a0bcb29a903ad1e5c) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(progress): 修复 color 设置无效问题 (#3111)
+
+- [#3114](https://github.com/XiaoMi/hiui/pull/3114) [`8ddcda3`](https://github.com/XiaoMi/hiui/commit/8ddcda36864ef1ad6679a413f660cfcc7f55e8a3) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(check-select): 修复 customRender 回调中的 value 值无法显示初始值问题 (#3113)
+
+- Updated dependencies [[`48add23aa`](https://github.com/XiaoMi/hiui/commit/48add23aaee42117a419d26a0bcb29a903ad1e5c), [`8ddcda3`](https://github.com/XiaoMi/hiui/commit/8ddcda36864ef1ad6679a413f660cfcc7f55e8a3)]:
+  - @hi-ui/progress@4.0.11
+  - @hi-ui/check-select@4.6.2
+
 ## 4.11.1
 
 ### Patch Changes

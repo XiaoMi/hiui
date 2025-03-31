@@ -1,5 +1,11 @@
 # @hi-ui/progress
 
+## 4.0.11
+
+### Patch Changes
+
+- [#3112](https://github.com/XiaoMi/hiui/pull/3112) [`48add23aa`](https://github.com/XiaoMi/hiui/commit/48add23aaee42117a419d26a0bcb29a903ad1e5c) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(progress): 修复 color 设置无效问题 (#3111)
+
 ## 4.0.10
 
 ### Patch Changes
