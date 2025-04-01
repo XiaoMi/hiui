@@ -314,12 +314,14 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     box-sizing: border-box;
     align-items: center;
     padding: 0 8px;
+    user-select: text;
 
     &-btns {
       width: 50px;
       display: flex;
       justify-content: space-around;
       color: use-color('gray', 500);
+      user-select: none;
     }
 
     &-icon {
