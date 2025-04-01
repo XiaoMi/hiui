@@ -147,6 +147,10 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
     &--divided {
       border-bottom: use-border-size('normal') use-color('gray', 200);
     }
+
+    .#{$prefix}__close-button {
+      margin-inline-start: auto;
+    }
   }
 
   &__title {
