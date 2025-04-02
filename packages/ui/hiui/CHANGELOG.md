@@ -1,5 +1,20 @@
 # @hi-ui/hiui
 
+## 4.11.3
+
+### Patch Changes
+
+- [#3121](https://github.com/XiaoMi/hiui/pull/3121) [`a6eb8cb`](https://github.com/XiaoMi/hiui/commit/a6eb8cbfda696dfeee147d6adba9805ecb8af5d0) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(form): 更新 FormItemProps 的 children 类型以支持渲染函数，并修复 useForm 中对 formState 的引用问题 (#3120)
+
+- [#3119](https://github.com/XiaoMi/hiui/pull/3119) [`9fac22a3d`](https://github.com/XiaoMi/hiui/commit/9fac22a3d47bc7df2d77fcfb472af9948c60dbdd) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker): 添加头部操作区域用户选择样式以改善交互体验 (#3117)
+
+- [#3118](https://github.com/XiaoMi/hiui/pull/3118) [`6d3bcc266`](https://github.com/XiaoMi/hiui/commit/6d3bcc266d2a8ca1eea4d4a40247709eb3016246) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(modal): 优化 Modal 组件的关闭按钮样式，增加自动边距设置 (#3116)
+
+- Updated dependencies [[`a6eb8cb`](https://github.com/XiaoMi/hiui/commit/a6eb8cbfda696dfeee147d6adba9805ecb8af5d0), [`9fac22a3d`](https://github.com/XiaoMi/hiui/commit/9fac22a3d47bc7df2d77fcfb472af9948c60dbdd), [`6d3bcc266`](https://github.com/XiaoMi/hiui/commit/6d3bcc266d2a8ca1eea4d4a40247709eb3016246)]:
+  - @hi-ui/form@4.3.1
+  - @hi-ui/date-picker@4.10.1
+  - @hi-ui/modal@4.4.1
+
 ## 4.11.2
 
 ### Patch Changes

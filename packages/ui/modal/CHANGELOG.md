@@ -1,5 +1,11 @@
 # @hi-ui/modal
 
+## 4.4.1
+
+### Patch Changes
+
+- [#3118](https://github.com/XiaoMi/hiui/pull/3118) [`6d3bcc266`](https://github.com/XiaoMi/hiui/commit/6d3bcc266d2a8ca1eea4d4a40247709eb3016246) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(modal): 优化 Modal 组件的关闭按钮样式，增加自动边距设置 (#3116)
+
 ## 4.4.0
 
 ### Minor Changes
