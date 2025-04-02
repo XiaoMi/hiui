@@ -65,7 +65,7 @@ export interface FormItemProps extends UseFormFieldProps, FormLabelProps {
   /**
    * 表单控件或其渲染函数
    */
-  children?: React.ReactNode
+  children?: React.ReactNode | ((props: Record<string, any>) => React.ReactNode)
   /**
    * 支持表单控件 render 渲染
    */
