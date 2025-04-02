@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { PopoverTriggerActionEnum } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
-import { omitPopperOverlayProps, PopperOverlayProps } from '@hi-ui/popper'
+import { omitPopperOverlayProps, PopperJS, PopperOverlayProps } from '@hi-ui/popper'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { mergeRefs, withDefaultProps } from '@hi-ui/react-utils'
 import { useUID } from '@hi-ui/use-id'
@@ -190,6 +190,10 @@ export interface UsePopoverProps extends PopperOverlayProps {
    * 吸附的元素
    */
   attachEl?: HTMLElement
+  /**
+   * 自定义 popper.js 的装饰器
+   */
+  modifiers?: ReadonlyArray<PopperJS.Modifier<string, any>>
 }
 
 export type UsePopoverReturn = ReturnType<typeof usePopover>
