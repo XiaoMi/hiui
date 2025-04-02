@@ -433,7 +433,7 @@ export const useForm = <Values = Record<string, any>>({
           let promiseOrUndefined
           try {
             // @ts-ignore
-            promiseOrUndefined = onSubmit?.(formState.values)
+            promiseOrUndefined = onSubmit?.(formStateRef.current.values)
           } catch (error) {
             formDispatch({ type: 'SUBMIT_DONE' })
 
@@ -443,7 +443,7 @@ export const useForm = <Values = Record<string, any>>({
           if (promiseOrUndefined === undefined) {
             formDispatch({ type: 'SUBMIT_DONE' })
             // return combinedErrors
-            return formState.values
+            return formStateRef.current.values
           }
 
           return Promise.resolve(promiseOrUndefined)
@@ -451,7 +451,7 @@ export const useForm = <Values = Record<string, any>>({
               formDispatch({ type: 'SUBMIT_DONE' })
               // return result
               // TODO: 满足promise 如果既给到values 又给到 errors
-              return formState.values
+              return formStateRef.current.values
             })
             .catch((_errors) => {
               formDispatch({ type: 'SUBMIT_DONE' })
@@ -472,7 +472,7 @@ export const useForm = <Values = Record<string, any>>({
         throw error
       }
     )
-  }, [formState, onSubmit, validateAll])
+  }, [formStateRef, onSubmit, validateAll])
 
   const handleSubmit = useCallback(
     (evt?: React.FormEvent<HTMLFormElement>) => {
