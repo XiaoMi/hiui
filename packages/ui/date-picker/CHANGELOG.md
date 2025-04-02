@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 4.10.1
+
+### Patch Changes
+
+- [#3119](https://github.com/XiaoMi/hiui/pull/3119) [`9fac22a3d`](https://github.com/XiaoMi/hiui/commit/9fac22a3d47bc7df2d77fcfb472af9948c60dbdd) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker): 添加头部操作区域用户选择样式以改善交互体验 (#3117)
+
 ## 4.10.0
 
 ### Minor Changes

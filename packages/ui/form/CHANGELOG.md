@@ -1,5 +1,11 @@
 # @hi-ui/form
 
+## 4.3.1
+
+### Patch Changes
+
+- [#3121](https://github.com/XiaoMi/hiui/pull/3121) [`a6eb8cb`](https://github.com/XiaoMi/hiui/commit/a6eb8cbfda696dfeee147d6adba9805ecb8af5d0) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(form): 更新 FormItemProps 的 children 类型以支持渲染函数，并修复 useForm 中对 formState 的引用问题 (#3120)
+
 ## 4.3.0
 
 ### Minor Changes
