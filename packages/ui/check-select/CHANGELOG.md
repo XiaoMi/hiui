@@ -1,5 +1,14 @@
 # @hi-ui/check-select
 
+## 4.6.3
+
+### Patch Changes
+
+- [#3126](https://github.com/XiaoMi/hiui/pull/3126) [`6173495f3`](https://github.com/XiaoMi/hiui/commit/6173495f3a09ed8fce6ebdf1a99a50ffdc394952) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(check-select): 增强 mergedCheckedItems 逻辑以支持自定义渲染函数，并修复 getAllCheckedStatus 函数对非数组值的处理 (#3124)
+
+- Updated dependencies [[`b97a8f8`](https://github.com/XiaoMi/hiui/commit/b97a8f81664b023237791769e0fd62b90956fc90)]:
+  - @hi-ui/popper@4.1.6
+
 ## 4.6.2
 
 ### Patch Changes

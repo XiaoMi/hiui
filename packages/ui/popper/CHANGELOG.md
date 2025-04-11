@@ -1,5 +1,11 @@
 # @hi-ui/popper
 
+## 4.1.6
+
+### Patch Changes
+
+- [#3128](https://github.com/XiaoMi/hiui/pull/3128) [`b97a8f8`](https://github.com/XiaoMi/hiui/commit/b97a8f81664b023237791769e0fd62b90956fc90) Thanks [@zyprepare](https://github.com/zyprepare)! - chore(popper): 暴露 modifiers 参数 (#3127)
+
 ## 4.1.5
 
 ### Patch Changes
