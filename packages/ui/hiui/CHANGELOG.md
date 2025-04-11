@@ -1,5 +1,19 @@
 # @hi-ui/hiui
 
+## 4.11.4
+
+### Patch Changes
+
+- [#3125](https://github.com/XiaoMi/hiui/pull/3125) [`74e236866`](https://github.com/XiaoMi/hiui/commit/74e236866fe8fc0c248e3e656d5a73dbe283e4e3) Thanks [@zyprepare](https://github.com/zyprepare)! - chore(popover): 暴露 modifiers 参数 (#3123)
+
+- [#3126](https://github.com/XiaoMi/hiui/pull/3126) [`6173495f3`](https://github.com/XiaoMi/hiui/commit/6173495f3a09ed8fce6ebdf1a99a50ffdc394952) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(check-select): 增强 mergedCheckedItems 逻辑以支持自定义渲染函数，并修复 getAllCheckedStatus 函数对非数组值的处理 (#3124)
+
+- [#3128](https://github.com/XiaoMi/hiui/pull/3128) [`b97a8f8`](https://github.com/XiaoMi/hiui/commit/b97a8f81664b023237791769e0fd62b90956fc90) Thanks [@zyprepare](https://github.com/zyprepare)! - chore(popper): 暴露 modifiers 参数 (#3127)
+
+- Updated dependencies [[`74e236866`](https://github.com/XiaoMi/hiui/commit/74e236866fe8fc0c248e3e656d5a73dbe283e4e3), [`6173495f3`](https://github.com/XiaoMi/hiui/commit/6173495f3a09ed8fce6ebdf1a99a50ffdc394952)]:
+  - @hi-ui/popover@4.1.2
+  - @hi-ui/check-select@4.6.3
+
 ## 4.11.3
 
 ### Patch Changes

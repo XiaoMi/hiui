@@ -1,5 +1,14 @@
 # @hi-ui/popover
 
+## 4.1.2
+
+### Patch Changes
+
+- [#3125](https://github.com/XiaoMi/hiui/pull/3125) [`74e236866`](https://github.com/XiaoMi/hiui/commit/74e236866fe8fc0c248e3e656d5a73dbe283e4e3) Thanks [@zyprepare](https://github.com/zyprepare)! - chore(popover): 暴露 modifiers 参数 (#3123)
+
+- Updated dependencies [[`b97a8f8`](https://github.com/XiaoMi/hiui/commit/b97a8f81664b023237791769e0fd62b90956fc90)]:
+  - @hi-ui/popper@4.1.6
+
 ## 4.1.1
 
 ### Patch Changes
