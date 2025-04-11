@@ -323,7 +323,7 @@ export interface UsePopperProps {
   /**
    * 自定义 popper.js 的装饰器
    */
-  modifiers?: ReadonlyArray<PopperJS.Modifier<string, any>>
+  modifiers?: ReadonlyArray<Partial<PopperJS.Modifier<string, any>>>
   /**
    * 设置 arrow 的 padding，避免 arrow 处在 popper 边界
    */

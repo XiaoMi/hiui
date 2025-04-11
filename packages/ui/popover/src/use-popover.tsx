@@ -193,7 +193,7 @@ export interface UsePopoverProps extends PopperOverlayProps {
   /**
    * 自定义 popper.js 的装饰器
    */
-  modifiers?: ReadonlyArray<PopperJS.Modifier<string, any>>
+  modifiers?: ReadonlyArray<Partial<PopperJS.Modifier<string, any>>>
 }
 
 export type UsePopoverReturn = ReturnType<typeof usePopover>
