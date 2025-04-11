@@ -183,6 +183,25 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       return uniqBy(nextData, 'id')
     }, [checkedItems, flattedData])
 
+    const mergedCheckedItems = useMemo(() => {
+      if (typeof customRender !== 'function') {
+        return []
+      }
+
+      if (!Array.isArray(value)) {
+        return []
+      }
+
+      return value.map((id) => {
+        return (
+          mergedData.find((item: CheckSelectItemEventData) => item.id === id) || {
+            id,
+            title: id,
+          }
+        )
+      })
+    }, [customRender, mergedData, value])
+
     const [filterItems, setFilterItems] = useState<any[] | null>(null)
     const dropdownItems = filterItems || showData
     const activeExpandable = showOnlyShowChecked && !!filterItems && menuVisible
@@ -301,11 +320,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           trigger={
             customRender ? (
               typeof customRender === 'function' ? (
-                customRender(
-                  dropdownItems.filter((item: CheckSelectItemEventData) =>
-                    value.includes(item.id ?? '')
-                  )
-                )
+                customRender(mergedCheckedItems)
               ) : (
                 customRender
               )

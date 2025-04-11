@@ -22,6 +22,10 @@ export const getAllCheckedStatus = (
   values: React.ReactText[],
   filterFunc: (item: any) => boolean
 ) => {
+  if (!Array.isArray(values)) {
+    return [false, false]
+  }
+
   const dropdownIds = dropdownItems.filter(filterFunc).map(({ id }: any) => id)
   const dropdownIdsSet = new Set(dropdownIds)
 
