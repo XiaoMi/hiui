@@ -307,4 +307,8 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 点击确认按钮的回调
    */
   onConfirm?: (date: Date) => void
+  /**
+   * 是否显示日期选择器
+   */
+  visible?: boolean
 }

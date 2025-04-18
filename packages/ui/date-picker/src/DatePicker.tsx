@@ -83,6 +83,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       prefix,
       needConfirm: needConfirmProp = false,
       onConfirm,
+      visible,
       ...otherProps
     },
     ref
@@ -480,7 +481,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           />
           <Popper
             {...(overlay || {})}
-            visible={showPanel}
+            visible={visible !== undefined ? visible : showPanel}
             onEntered={onOpen}
             onClose={onPopperClose}
             attachEl={attachEl}
