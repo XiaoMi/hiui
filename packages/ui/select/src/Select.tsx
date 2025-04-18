@@ -248,7 +248,9 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           trigger={
             customRender ? (
               typeof customRender === 'function' ? (
-                customRender(showData.find((d: SelectDataItem) => d.id === value))
+                customRender(
+                  mergedData.find((d: SelectDataItem) => d.id === value) as SelectItemEventData
+                )
               ) : (
                 customRender
               )
