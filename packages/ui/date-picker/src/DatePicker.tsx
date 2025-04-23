@@ -304,10 +304,11 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         if (!isShowPanel) {
           setInputFocus(false)
           callback(dates)
+          onClose?.()
         }
         changeOutDate([...dates])
       },
-      [callback, changeOutDate]
+      [callback, changeOutDate, onClose]
     )
 
     const resetStatus = useCallback(() => {
@@ -351,6 +352,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       changeOutDate([])
       // @ts-ignore
       onChange(null, '')
+      onClose?.()
     }
 
     const onSelect = useCallback(
