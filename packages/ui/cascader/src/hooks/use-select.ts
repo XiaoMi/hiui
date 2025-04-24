@@ -15,11 +15,12 @@ export const useSelect = (
     itemPaths: FlattedCascaderDataItem[]
   ) => void,
   changeOnSelect: boolean,
-  onLoadChildren?: (item: CascaderItemEventData, idPaths: React.ReactText[]) => void
+  onLoadChildren?: (item: CascaderItemEventData, idPaths: React.ReactText[]) => void,
+  value?: React.ReactText
 ) => {
   const onSelectLatest = useLatestCallback(onSelect)
 
-  const [selectedId, setSelectedId] = useState<React.ReactText>('')
+  const [selectedId, setSelectedId] = useState<React.ReactText>(value ?? '')
 
   const proxyOnSelect = useCallback(
     (selectedId: React.ReactText, selectOption: CascaderItemEventData) => {
