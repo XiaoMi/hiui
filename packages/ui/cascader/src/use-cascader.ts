@@ -64,7 +64,8 @@ export const useCascader = ({
     disabled,
     onSelect,
     changeOnSelect,
-    onLoadChildren
+    onLoadChildren,
+    value?.[value.length - 1]
   )
 
   // 选中 id 路径
