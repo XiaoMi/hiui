@@ -19,7 +19,9 @@ export const useAsyncData = <T = Record<string, any>[]>({
         const loadDataLatest = loadDataLatestRef.current
         const validateLatest = validateLatestRef.current
 
-        const resultMayBePromise = isFunction(loadDataLatest)
+        const resultMayBePromise: T | Promise<T | void | undefined> | void | undefined = isFunction(
+          loadDataLatest
+        )
           ? loadDataLatest(...args)
           : loadDataLatest
 

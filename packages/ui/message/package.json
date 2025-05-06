@@ -33,11 +33,11 @@
   "scripts": {
     "test": "jest",
     "clean": "rimraf lib",
-    "prebuild": "yarn clean",
+    "prebuild": "pnpm clean",
     "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
     "build:cjs": "hi-build ./src/index.ts --format cjs -d ./lib/cjs",
     "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
-    "build": "concurrently yarn:build:*"
+    "build": "concurrently pnpm:build:*"
   },
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
@@ -48,7 +48,7 @@
     "@hi-ui/icons": "^4.0.19",
     "@hi-ui/react-utils": "^4.0.4",
     "@hi-ui/toast": "^4.1.0",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "4.4.2"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.8",

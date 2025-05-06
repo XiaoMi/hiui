@@ -54,7 +54,7 @@ export type UploadPhotoSizeEnum = 'sm' | 'md' | 'lg'
 
 export type UploadTypeEnum = 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
 
-export interface UploadProps extends HiBaseHTMLProps<'div'> {
+export interface UploadProps extends Omit<HiBaseHTMLProps<'div'>, 'content'> {
   /**
    * 上传组件类型
    */

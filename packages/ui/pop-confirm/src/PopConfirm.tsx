@@ -101,7 +101,9 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
   }
 )
 
-export interface PopConfirmProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UsePopConfirmProps {
+export interface PopConfirmProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'title' | 'content'>,
+    UsePopConfirmProps {
   /**
    * 确认框标题
    */

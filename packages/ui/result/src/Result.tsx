@@ -72,7 +72,7 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
   }
 )
 
-export interface ResultProps extends HiBaseHTMLProps<'div'> {
+export interface ResultProps extends Omit<HiBaseHTMLProps<'div'>, 'content'> {
   /**
    * 自定义图标、图片
    */

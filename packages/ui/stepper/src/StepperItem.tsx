@@ -61,7 +61,9 @@ export const StepperItem = forwardRef<HTMLDivElement | null, StepperItemProps>(
   }
 )
 
-export interface StepperItemProps extends HiBaseHTMLProps<'div'>, StepperDataItem {
+export interface StepperItemProps
+  extends Omit<HiBaseHTMLProps<'div'>, keyof StepperDataItem>,
+    StepperDataItem {
   /**
    * 当前步骤位置索引
    */

@@ -1,26 +1,11 @@
 {
   "name": "hiui",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/ui/*",
-      "packages/utils/*",
-      "packages/hooks/*",
-      "packages/core/*",
-      "packages/icons",
-      "packages/patches/*",
-      "scripts/hi-docs"
-    ]
-  },
   "scripts": {
-    "lerna": "lerna",
-    "clean": "lerna clean",
     "postinstall": "patch-package",
-    "bootstrap": "lerna bootstrap",
-    "prepublish:pkg": "yarn run build",
-    "publish:pkg": "lerna publish",
+    "prepublish:pkg": "pnpm run build",
     "create:pkg": "hygen create",
-    "postcreate:pkg": "yarn bootstrap",
+    "postcreate:pkg": "pnpm install",
     "build": "turbo run build",
     "storybook": "start-storybook --no-manager-cache false -p 6006",
     "build-storybook": "build-storybook",
@@ -32,8 +17,8 @@
     "v": "changeset version",
     "publish": "changeset publish --registry=https://registry.npmjs.org/",
     "deploy": "gh-pages -t -d dist-github --git \"$(which git)\"",
-    "pregenerate-docs": "yarn turbo run auto-generate --filter @hi-ui/icons",
-    "generate-docs": "yarn turbo run generate-docs --filter @hi-ui/hi-docs"
+    "pregenerate-docs": "pnpm turbo run auto-generate --filter @hi-ui/icons",
+    "generate-docs": "pnpm turbo run generate-docs --filter @hi-ui/hi-docs"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
@@ -52,7 +37,6 @@
     "babel-jest": "^22.4.3",
     "concurrently": "^6.1.0",
     "copyfiles": "^2.4.1",
-    "lerna": "^4.0.0",
     "rimraf": "^3.0.2",
     "rollup-plugin-postcss-inject-to-css": "^1.0.2",
     "rucksack-css": "^1.0.2",
@@ -95,9 +79,11 @@
     "@types/lodash": "^4.14.182",
     "@types/node": "~14.14.10",
     "@types/qs": "~6.9.5",
-    "@types/react-dom": "~16.9.10",
+    "@types/react": "^17.0.1",
+    "@types/react-dom": "^17.0.1",
     "@types/react-redux": "~7.1.11",
     "@types/react-router-dom": "~4.3.1",
+    "@types/react-transition-group": "4.4.2",
     "@types/webpack-env": "~1.16.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^6.15.0",
@@ -121,7 +107,8 @@
     "stylelint-scss": "~3.18.0"
   },
   "engines": {
-    "node": ">=12.22.1 <=14.21.3"
+    "node": "^18",
+    "pnpm": "^9"
   },
   "lint-staged": {
     "*.{js,jsx}": [

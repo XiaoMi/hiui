@@ -33,11 +33,11 @@ export const useScrollLock = (ref: React.RefObject<Element>, options: UseScrollL
         top[0]++
       } else {
         // 初始时保存 overflow 设置的样式
-        prevBodyOverflowRef.current = targetMemo.style.overflow
+        prevBodyOverflowRef.current = (targetMemo as HTMLElement).style.overflow
         containerMap.set(targetMemo, [1, prevBodyOverflowRef.current])
       }
 
-      targetMemo.style.overflow = 'hidden'
+      ;(targetMemo as HTMLElement).style.overflow = 'hidden'
     }
 
     // 如果还有modal则不设置恢复，持续锁滚
@@ -52,10 +52,10 @@ export const useScrollLock = (ref: React.RefObject<Element>, options: UseScrollL
             // 如果是最后一个才恢复其值
             if (top[0] < 1) {
               containerMap.delete(targetMemo)
-              targetMemo.style.overflow = prevBodyOverflowRef.current
+              ;(targetMemo as HTMLElement).style.overflow = prevBodyOverflowRef.current
             }
           } else {
-            targetMemo.style.overflow = prevBodyOverflowRef.current
+            ;(targetMemo as HTMLElement).style.overflow = prevBodyOverflowRef.current
           }
 
           prevBodyOverflowRef.current = undefined

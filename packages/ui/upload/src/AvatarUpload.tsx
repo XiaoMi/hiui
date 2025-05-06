@@ -45,6 +45,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       avatarOptions = {},
       preview,
       method,
+      content,
       ...rest
     },
     ref

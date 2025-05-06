@@ -92,7 +92,7 @@ export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((prop
   return container ? <Portal container={container}>{child}</Portal> : child
 })
 
-export interface WatermarkProps extends HiBaseHTMLProps<'div'> {
+export interface WatermarkProps extends Omit<HiBaseHTMLProps<'div'>, 'content'> {
   /**
    * 水印挂载的容器
    */

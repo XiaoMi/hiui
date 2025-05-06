@@ -43,7 +43,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
     const tabList = useMemo(() => {
       const list: TabPaneProps[] = []
       React.Children.map(children, (child) => {
-        if (child) {
+        if (child && React.isValidElement(child)) {
           const { tabTitle, tabId, tabDesc, closeable, disabled } = child.props
           const item = { tabTitle, tabId, tabDesc, closeable, disabled }
 
@@ -94,11 +94,12 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
         />
         <div className={`${_prefix}__content`}>
           {React.Children.map(children, (child) => {
-            return child
-              ? React.cloneElement(child, {
-                  key: child.props.tabId,
-                  className: cx(`${_prefix}-tab-pane`, child.props.className),
-                  active: activeTabId === child.props.tabId,
+            const childElement = child as React.ReactElement
+            return childElement
+              ? React.cloneElement(childElement, {
+                  key: childElement.props.tabId,
+                  className: cx(`${_prefix}-tab-pane`, childElement.props.className),
+                  active: activeTabId === childElement.props.tabId,
                 })
               : null
           })}

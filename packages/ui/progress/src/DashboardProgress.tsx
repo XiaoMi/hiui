@@ -98,7 +98,9 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
   }
 )
 
-export interface DashboardProgressProps extends HiBaseHTMLProps<'div'>, ProgressProps {}
+export interface DashboardProgressProps
+  extends Omit<HiBaseHTMLProps<'div'>, keyof ProgressProps>,
+    ProgressProps {}
 
 if (__DEV__) {
   DashboardProgress.displayName = 'DashboardProgress'
