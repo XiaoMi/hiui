@@ -6,3 +6,4 @@ packages:
   - 'packages/icons'
   - 'packages/patches/*'
   - 'scripts/hi-docs'
+  - 'scripts/hi-build'
