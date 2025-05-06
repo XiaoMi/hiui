@@ -107,7 +107,7 @@ export const Loading = forwardRef<null, LoadingProps>(
 
 export type LoadingSizeEnum = HiBaseSizeEnum | undefined
 
-export interface LoadingProps extends HiBaseHTMLProps<'div'> {
+export interface LoadingProps extends Omit<HiBaseHTMLProps<'div'>, 'content' | 'part'> {
   /**
    * 	自定义加载中状态的文案
    */

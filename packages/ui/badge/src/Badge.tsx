@@ -97,7 +97,7 @@ export const Badge = forwardRef<HTMLSpanElement | null, BadgeProps>(
   }
 )
 
-export interface BadgeProps extends HiBaseHTMLProps<'span'> {
+export interface BadgeProps extends Omit<HiBaseHTMLProps<'span'>, 'content'> {
   /**
    * 气泡显示内容
    */

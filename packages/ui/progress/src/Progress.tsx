@@ -91,7 +91,7 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
   }
 )
 
-export interface ProgressProps extends HiBaseHTMLProps<'div'> {
+export interface ProgressProps extends Omit<HiBaseHTMLProps<'div'>, 'content'> {
   /**
    * 进度条大小
    */

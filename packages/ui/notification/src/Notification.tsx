@@ -123,7 +123,7 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
   }
 )
 
-export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'title'> {
+export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'title' | 'content'> {
   /**
    * 开启可见
    */

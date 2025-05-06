@@ -82,7 +82,7 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
   }
 )
 
-export interface AlertProps extends HiBaseHTMLProps<'div'> {
+export interface AlertProps extends Omit<HiBaseHTMLProps<'div'>, 'content'> {
   /**
    * 	警告提示类型
    */

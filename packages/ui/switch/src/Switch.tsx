@@ -72,7 +72,7 @@ export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
   }
 )
 
-export interface SwitchProps extends HiBaseHTMLProps<'span'> {
+export interface SwitchProps extends Omit<HiBaseHTMLProps<'span'>, 'content'> {
   /**
    * 开关大小
    */
