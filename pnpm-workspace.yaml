@@ -1,0 +1,8 @@
+packages:
+  - 'packages/core/*'
+  - 'packages/ui/*'
+  - 'packages/utils/*'
+  - 'packages/hooks/*'
+  - 'packages/icons'
+  - 'packages/patches/*'
+  - 'scripts/hi-docs'

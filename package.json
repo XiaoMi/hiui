@@ -1,24 +1,9 @@
 {
   "name": "hiui",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/ui/*",
-      "packages/utils/*",
-      "packages/hooks/*",
-      "packages/core/*",
-      "packages/icons",
-      "packages/patches/*",
-      "scripts/hi-docs"
-    ]
-  },
   "scripts": {
-    "lerna": "lerna",
-    "clean": "lerna clean",
     "postinstall": "patch-package",
-    "bootstrap": "lerna bootstrap",
     "prepublish:pkg": "yarn run build",
-    "publish:pkg": "lerna publish",
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",
     "build": "turbo run build",
@@ -52,7 +37,6 @@
     "babel-jest": "^22.4.3",
     "concurrently": "^6.1.0",
     "copyfiles": "^2.4.1",
-    "lerna": "^4.0.0",
     "rimraf": "^3.0.2",
     "rollup-plugin-postcss-inject-to-css": "^1.0.2",
     "rucksack-css": "^1.0.2",
@@ -95,7 +79,8 @@
     "@types/lodash": "^4.14.182",
     "@types/node": "~14.14.10",
     "@types/qs": "~6.9.5",
-    "@types/react-dom": "~16.9.10",
+    "@types/react": "^17.0.1",
+    "@types/react-dom": "^17.0.1",
     "@types/react-redux": "~7.1.11",
     "@types/react-router-dom": "~4.3.1",
     "@types/webpack-env": "~1.16.0",
@@ -121,7 +106,8 @@
     "stylelint-scss": "~3.18.0"
   },
   "engines": {
-    "node": ">=12.22.1 <=14.21.3"
+    "node": "^18",
+    "pnpm": "^9"
   },
   "lint-staged": {
     "*.{js,jsx}": [
