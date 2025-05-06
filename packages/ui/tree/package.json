@@ -61,7 +61,7 @@
     "@hi-ui/use-toggle": "^4.0.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.4",
     "@hi-ui/virtual-list": "^4.0.8",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "4.4.2"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.8",
