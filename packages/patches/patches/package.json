@@ -38,7 +38,7 @@
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
     "clean": "rimraf lib",
-    "prebuild": "yarn clean",
+    "prebuild": "pnpm clean",
     "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
     "build:cjs": "hi-build ./src/index.ts --format cjs -d ./lib/cjs",
     "build:copy": "copyfiles -u 2 src/styles/**/*.scss src/styles/**/**/*.scss src/styles/**/**/**/*.scss src/styles/*.scss lib",

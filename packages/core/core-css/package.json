@@ -34,7 +34,7 @@
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
     "clean": "rimraf lib",
-    "prebuild": "yarn clean",
+    "prebuild": "pnpm clean",
     "build:copy": "copyfiles -u 2 src/styles/**/*.scss src/styles/**/**/*.scss src/styles/**/**/**/*.scss src/styles/*.scss lib",
     "build": "concurrently yarn:build:*"
   },
