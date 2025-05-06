@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "postinstall": "patch-package",
-    "prepublish:pkg": "yarn run build",
+    "prepublish:pkg": "pnpm run build",
     "create:pkg": "hygen create",
-    "postcreate:pkg": "yarn bootstrap",
+    "postcreate:pkg": "pnpm install",
     "build": "turbo run build",
     "storybook": "start-storybook --no-manager-cache false -p 6006",
     "build-storybook": "build-storybook",
@@ -17,8 +17,8 @@
     "v": "changeset version",
     "publish": "changeset publish --registry=https://registry.npmjs.org/",
     "deploy": "gh-pages -t -d dist-github --git \"$(which git)\"",
-    "pregenerate-docs": "yarn turbo run auto-generate --filter @hi-ui/icons",
-    "generate-docs": "yarn turbo run generate-docs --filter @hi-ui/hi-docs"
+    "pregenerate-docs": "pnpm turbo run auto-generate --filter @hi-ui/icons",
+    "generate-docs": "pnpm turbo run generate-docs --filter @hi-ui/hi-docs"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
