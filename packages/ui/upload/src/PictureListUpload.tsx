@@ -39,6 +39,7 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       method,
+      actionRender,
       ...rest
     },
     ref
@@ -96,6 +97,7 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             showPic
             prefixCls={prefixCls}
             disabled={disabled}
+            actionRender={actionRender}
           />
         )}
       </div>
