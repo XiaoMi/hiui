@@ -6,7 +6,7 @@ import { ToastEventOptions } from './types'
 import { withDefaultProps } from '@hi-ui/react-utils'
 import { uuid } from '@hi-ui/use-id'
 
-export class ToastAPI<T = ToastEventOptions> {
+export class ToastAPI<T extends ToastEventOptions = ToastEventOptions> {
   static defaultOptions = {
     prefixCls: _prefix,
   }

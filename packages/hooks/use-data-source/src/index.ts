@@ -85,7 +85,12 @@ export const useDataSource = <T = Record<string, any>[]>({
         const dataSourceLatest = dataSourceLatestRef.current
         const validate = validateLatestRef.current
 
-        const resultMayBePromise = isFunction(dataSourceLatest)
+        const resultMayBePromise:
+          | T
+          | Promise<T | void | undefined>
+          | void
+          | undefined
+          | UseDataSourceAPIOptions<T> = isFunction(dataSourceLatest)
           ? dataSourceLatest(keyword)
           : dataSourceLatest
 

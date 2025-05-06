@@ -42,6 +42,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       photoSize: photoSizeProp = 'md',
       preview,
       method,
+      content,
       ...rest
     },
     ref
@@ -49,10 +50,12 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     const photoSize = useMemo(() => {
       switch (photoSizeProp) {
         case 'sm':
+          return 'sm'
         // @ts-ignore deprecated
         case 'small':
           return 'sm'
         case 'lg':
+          return 'lg'
         // @ts-ignore deprecated
         case 'large':
           return 'lg'

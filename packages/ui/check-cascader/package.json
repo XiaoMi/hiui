@@ -58,6 +58,7 @@
     "@hi-ui/times": "^4.0.4",
     "@hi-ui/tree-utils": "^4.1.6",
     "@hi-ui/type-assertion": "^4.0.4",
+    "@hi-ui/use-cache": "^4.0.4",
     "@hi-ui/use-check": "^4.0.5",
     "@hi-ui/use-data-source": "^4.0.4",
     "@hi-ui/use-latest": "^4.0.4",

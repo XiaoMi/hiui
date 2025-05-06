@@ -55,6 +55,7 @@
     "@hi-ui/spinner": "^4.0.9",
     "@hi-ui/tree-utils": "^4.1.4",
     "@hi-ui/type-assertion": "^4.0.4",
+    "@hi-ui/use-cache": "^4.0.4",
     "@hi-ui/use-check-state": "^4.0.4",
     "@hi-ui/use-data-source": "^4.0.4",
     "@hi-ui/use-latest": "^4.0.4",

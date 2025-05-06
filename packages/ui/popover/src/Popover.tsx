@@ -97,7 +97,7 @@ export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
   }
 )
 
-export interface PopoverProps extends HiBaseHTMLProps<'div'>, UsePopoverProps {
+export interface PopoverProps extends Omit<HiBaseHTMLProps<'div'>, 'content'>, UsePopoverProps {
   innerRef?: React.Ref<{ open: () => void; close: () => void }>
   /**
    * 气泡卡片标题

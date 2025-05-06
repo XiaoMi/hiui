@@ -82,7 +82,9 @@ export const CircleProgress = forwardRef<HTMLDivElement | null, CircleProgressPr
   }
 )
 
-export interface CircleProgressProps extends HiBaseHTMLProps<'div'>, ProgressProps {}
+export interface CircleProgressProps
+  extends Omit<HiBaseHTMLProps<'div'>, keyof ProgressProps>,
+    ProgressProps {}
 
 if (__DEV__) {
   CircleProgress.displayName = 'CircleProgress'
