@@ -1,5 +1,11 @@
 # @hi-ui/upload
 
+## 4.2.4
+
+### Patch Changes
+
+- [#3140](https://github.com/XiaoMi/hiui/pull/3140) [`482c4b6`](https://github.com/XiaoMi/hiui/commit/482c4b63999a8c1f9b24e703f529c28baebffbc0) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(upload): 在 DragUpload 和 PictureListUpload 组件中添加 actionRender 属性以支持自定义操作渲染 (#3139)
+
 ## 4.2.3
 
 ### Patch Changes

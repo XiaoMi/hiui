@@ -1,5 +1,15 @@
 # @hi-ui/date-picker
 
+## 4.11.0
+
+### Minor Changes
+
+- [#3134](https://github.com/XiaoMi/hiui/pull/3134) [`e5ef01298`](https://github.com/XiaoMi/hiui/commit/e5ef012986e7d9e017f9547cdb24480e8fa682ae) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): 添加可选的 visible 属性以控制日期选择器的显示状态 (#3131)
+
+### Patch Changes
+
+- [#3136](https://github.com/XiaoMi/hiui/pull/3136) [`5330d91b7`](https://github.com/XiaoMi/hiui/commit/5330d91b7c4713174857c38078baced790dc0431) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker): 在日期选择器中添加 onClose 回调 (#3133)
+
 ## 4.10.1
 
 ### Patch Changes

@@ -1,5 +1,27 @@
 # @hi-ui/hiui
 
+## 4.12.0
+
+### Minor Changes
+
+- [#3134](https://github.com/XiaoMi/hiui/pull/3134) [`e5ef01298`](https://github.com/XiaoMi/hiui/commit/e5ef012986e7d9e017f9547cdb24480e8fa682ae) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): 添加可选的 visible 属性以控制日期选择器的显示状态 (#3131)
+
+### Patch Changes
+
+- [#3137](https://github.com/XiaoMi/hiui/pull/3137) [`5d2e1424a`](https://github.com/XiaoMi/hiui/commit/5d2e1424ac6f67c4dbdf6d99c6715bd380419288) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(cascader): useSelect 增加 value 参数以支持选中项的初始化状态 (#3135)
+
+- [#3136](https://github.com/XiaoMi/hiui/pull/3136) [`5330d91b7`](https://github.com/XiaoMi/hiui/commit/5330d91b7c4713174857c38078baced790dc0431) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker): 在日期选择器中添加 onClose 回调 (#3133)
+
+- [#3132](https://github.com/XiaoMi/hiui/pull/3132) [`daef8d482`](https://github.com/XiaoMi/hiui/commit/daef8d4823a409f728398e53fec3bbf521cd1471) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(select): 更新 customRender 逻辑以使用 mergedData 查找选中项 (#3130)
+
+- [#3140](https://github.com/XiaoMi/hiui/pull/3140) [`482c4b6`](https://github.com/XiaoMi/hiui/commit/482c4b63999a8c1f9b24e703f529c28baebffbc0) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(upload): 在 DragUpload 和 PictureListUpload 组件中添加 actionRender 属性以支持自定义操作渲染 (#3139)
+
+- Updated dependencies [[`5d2e1424a`](https://github.com/XiaoMi/hiui/commit/5d2e1424ac6f67c4dbdf6d99c6715bd380419288), [`5330d91b7`](https://github.com/XiaoMi/hiui/commit/5330d91b7c4713174857c38078baced790dc0431), [`daef8d482`](https://github.com/XiaoMi/hiui/commit/daef8d4823a409f728398e53fec3bbf521cd1471), [`e5ef01298`](https://github.com/XiaoMi/hiui/commit/e5ef012986e7d9e017f9547cdb24480e8fa682ae), [`482c4b6`](https://github.com/XiaoMi/hiui/commit/482c4b63999a8c1f9b24e703f529c28baebffbc0)]:
+  - @hi-ui/cascader@4.3.2
+  - @hi-ui/date-picker@4.11.0
+  - @hi-ui/select@4.6.1
+  - @hi-ui/upload@4.2.4
+
 ## 4.11.4
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/cascader
 
+## 4.3.2
+
+### Patch Changes
+
+- [#3137](https://github.com/XiaoMi/hiui/pull/3137) [`5d2e1424a`](https://github.com/XiaoMi/hiui/commit/5d2e1424ac6f67c4dbdf6d99c6715bd380419288) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(cascader): useSelect 增加 value 参数以支持选中项的初始化状态 (#3135)
+
 ## 4.3.1
 
 ### Patch Changes
