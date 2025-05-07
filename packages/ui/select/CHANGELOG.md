@@ -1,5 +1,11 @@
 # @hi-ui/select
 
+## 4.6.1
+
+### Patch Changes
+
+- [#3132](https://github.com/XiaoMi/hiui/pull/3132) [`daef8d482`](https://github.com/XiaoMi/hiui/commit/daef8d4823a409f728398e53fec3bbf521cd1471) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(select): 更新 customRender 逻辑以使用 mergedData 查找选中项 (#3130)
+
 ## 4.6.0
 
 ### Minor Changes
