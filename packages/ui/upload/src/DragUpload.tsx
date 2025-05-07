@@ -39,6 +39,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       method,
+      actionRender,
       ...rest
     },
     ref
@@ -152,6 +153,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             onDownload={onDownload}
             prefixCls={prefixCls}
             disabled={disabled}
+            actionRender={actionRender}
           />
         )}
       </div>
