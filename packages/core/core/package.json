@@ -44,8 +44,8 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hi-ui/core-css": "^4.1.5",
-    "@hi-ui/locale-context": "^4.0.11",
-    "@hi-ui/portal-context": "^4.0.0"
+    "@hi-ui/core-css": "workspace:~",
+    "@hi-ui/locale-context": "workspace:~",
+    "@hi-ui/portal-context": "workspace:~"
   }
 }

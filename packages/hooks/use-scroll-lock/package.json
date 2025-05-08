@@ -49,7 +49,7 @@
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/env": "^4.0.4",
-    "@hi-ui/type-assertion": "^4.0.4"
+    "@hi-ui/env": "workspace:~",
+    "@hi-ui/type-assertion": "workspace:~"
   }
 }

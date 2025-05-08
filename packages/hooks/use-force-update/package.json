@@ -49,6 +49,6 @@
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/use-unmount-effect": "^4.0.4"
+    "@hi-ui/use-unmount-effect": "workspace:~"
   }
 }

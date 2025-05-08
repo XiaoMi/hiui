@@ -44,6 +44,6 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hi-ui/type-assertion": "^4.0.4"
+    "@hi-ui/type-assertion": "workspace:~"
   }
 }

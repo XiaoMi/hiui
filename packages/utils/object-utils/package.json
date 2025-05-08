@@ -44,7 +44,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hi-ui/array-utils": "^4.0.4",
-    "@hi-ui/type-assertion": "^4.0.4"
+    "@hi-ui/array-utils": "workspace:~",
+    "@hi-ui/type-assertion": "workspace:~"
   }
 }

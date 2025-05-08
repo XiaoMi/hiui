@@ -55,7 +55,15 @@ export const useTreeAction = (BaseTree: Tree) => {
 export const useTreeEditProps = <T extends EditableTreeProps>(
   props: T,
   ref: React.RefObject<HTMLElement | null>
-) => {
+): {
+  fieldNames: T['fieldNames']
+  render: (node: TreeNodeEventData) => React.ReactNode
+  data: TreeDataItem[]
+  expandedIds: React.ReactText[]
+  onExpand: (ids: React.ReactText[]) => void
+  className: string
+  draggable?: boolean
+} & Omit<TreeProps, keyof EditableTreeProps> => {
   const {
     prefixCls = treePrefix,
     className,

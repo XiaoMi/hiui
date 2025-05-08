@@ -19,7 +19,9 @@ export class NotificationAPI extends ToastAPI<NotificationOptions> {
 
 export interface NotificationAPIOptions extends ToastAPIOptions {}
 
-export interface NotificationOptions extends Omit<NotificationProps, 'destroy' | 'visible'> {}
+export interface NotificationOptions extends Omit<NotificationProps, 'destroy' | 'visible'> {
+  key?: string | number
+}
 
 export const createNotification = (options?: Omit<NotificationAPIOptions, 'component'>) => {
   return new NotificationAPI({ component: NotificationComponent, ...options })

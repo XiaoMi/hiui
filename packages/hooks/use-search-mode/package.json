@@ -49,14 +49,14 @@
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/dom-utils": "^4.0.7",
-    "@hi-ui/env": "^4.0.4",
-    "@hi-ui/func-utils": "^4.0.4",
-    "@hi-ui/loading": "^4.1.3",
-    "@hi-ui/tree-utils": "^4.1.4",
-    "@hi-ui/type-assertion": "^4.0.4",
-    "@hi-ui/use-data-source": "^4.0.4",
-    "@hi-ui/use-latest": "^4.0.4",
-    "@hi-ui/use-uncontrolled-state": "^4.0.4"
+    "@hi-ui/dom-utils": "workspace:~",
+    "@hi-ui/env": "workspace:~",
+    "@hi-ui/func-utils": "workspace:~",
+    "@hi-ui/loading": "workspace:~",
+    "@hi-ui/tree-utils": "workspace:~",
+    "@hi-ui/type-assertion": "workspace:~",
+    "@hi-ui/use-data-source": "workspace:~",
+    "@hi-ui/use-latest": "workspace:~",
+    "@hi-ui/use-uncontrolled-state": "workspace:~"
   }
 }

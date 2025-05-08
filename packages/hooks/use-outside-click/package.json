@@ -47,6 +47,6 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hi-ui/use-latest": "^4.0.4"
+    "@hi-ui/use-latest": "workspace:~"
   }
 }

@@ -50,8 +50,8 @@
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/tree-utils": "^4.1.4",
-    "@hi-ui/use-latest": "^4.0.4",
-    "@hi-ui/use-uncontrolled-state": "^4.0.4"
+    "@hi-ui/tree-utils": "workspace:~",
+    "@hi-ui/use-latest": "workspace:~",
+    "@hi-ui/use-uncontrolled-state": "workspace:~"
   }
 }

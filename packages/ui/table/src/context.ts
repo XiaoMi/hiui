@@ -5,42 +5,41 @@ import { UseTableReturn } from './use-table'
 import { TableOnRowReturn } from './types'
 import { ResizeCallbackData } from 'react-resizable'
 
-const TableContext = createContext<
-  | (Omit<UseTableReturn, 'rootProps'> &
-      UseEmbedExpandReturn & {
-        avgRow: Record<string, any>
-        hasAvgColumn: boolean
-        sumRow: Record<string, any>
-        hasSumColumn: boolean
-        onRow?: (rowData: Record<string, any> | null, index: number) => TableOnRowReturn
-        striped: boolean
-        virtual?:
-          | boolean
-          | {
-              onVisibleChange?: (
-                visibleList: any[],
-                fullList: any[],
-                virtualInfo?: {
-                  start: number
-                  end: number
-                  scrollTop: number
-                  heights: number[]
-                }
-              ) => void
+type TableContextType = Omit<UseTableReturn, 'rootProps'> &
+  UseEmbedExpandReturn & {
+    avgRow: Record<string, any>
+    hasAvgColumn: boolean
+    sumRow: Record<string, any>
+    hasSumColumn: boolean
+    onRow?: (rowData: Record<string, any> | null, index: number) => TableOnRowReturn
+    striped: boolean
+    virtual?:
+      | boolean
+      | {
+          onVisibleChange?: (
+            visibleList: any[],
+            fullList: any[],
+            virtualInfo?: {
+              start: number
+              end: number
+              scrollTop: number
+              heights: number[]
             }
-        onResizeStop?: (
-          evt: SyntheticEvent,
-          size: ResizeCallbackData['size'],
-          index: number,
-          columnsWidth: number[]
-        ) => void
-      })
-  | null
->(null)
+          ) => void
+        }
+    onResizeStop?: (
+      evt: SyntheticEvent,
+      size: ResizeCallbackData['size'],
+      index: number,
+      columnsWidth: number[]
+    ) => void
+  }
+
+const TableContext = createContext<TableContextType | null>(null)
 
 export const TableProvider = TableContext.Provider
 
-export const useTableContext = () => {
+export const useTableContext = (): TableContextType => {
   const context = useContext(TableContext)
 
   if (!context) {

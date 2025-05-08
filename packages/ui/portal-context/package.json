@@ -43,7 +43,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/env": "^4.0.9"
+    "@hi-ui/env": "workspace:~"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

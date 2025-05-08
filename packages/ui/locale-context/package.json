@@ -43,11 +43,11 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.5",
-    "@hi-ui/env": "^4.0.5",
-    "@hi-ui/func-utils": "^4.0.4",
-    "@hi-ui/object-utils": "^4.0.4",
-    "@hi-ui/type-assertion": "^4.0.4"
+    "@hi-ui/classname": "workspace:~",
+    "@hi-ui/env": "workspace:~",
+    "@hi-ui/func-utils": "workspace:~",
+    "@hi-ui/object-utils": "workspace:~",
+    "@hi-ui/type-assertion": "workspace:~"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
