@@ -356,7 +356,7 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &--photo {
-    .#{$prefix}__item--small {
+    .#{$prefix}__item--sm {
       width: 88px;
       height: 88px;
       line-height: 88px;
@@ -367,7 +367,7 @@ $prefix: '#{$component-prefix}-upload' !default;
       }
     }
 
-    .#{$prefix}__item--large {
+    .#{$prefix}__item--lg {
       width: 200px;
       height: 200px;
       line-height: 200px;
