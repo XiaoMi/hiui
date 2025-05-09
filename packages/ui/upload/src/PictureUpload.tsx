@@ -51,13 +51,13 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
         case 'sm':
         // @ts-ignore deprecated
         case 'small':
-          return 'sm'
+          return 'small'
         case 'lg':
         // @ts-ignore deprecated
         case 'large':
-          return 'lg'
+          return 'large'
         default:
-          return 'md'
+          return 'middle'
       }
     }, [photoSizeProp])
 
@@ -114,10 +114,10 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     const precentNum = useMemo(() => {
       let num = 1.4
       switch (photoSize) {
-        case 'sm':
+        case 'small':
           num = 0.8
           break
-        case 'lg':
+        case 'large':
           num = 2
           break
         default:
