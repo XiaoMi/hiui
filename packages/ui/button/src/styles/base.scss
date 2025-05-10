@@ -76,13 +76,20 @@ $group-gap-color-map: (
     }
 
     &:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon {
+      .#{$prefix}__icon--prefix {
         margin-inline-end: use-spacing(2);
       }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(2);
+      }
     }
+
     &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon {
+      .#{$prefix}__icon--prefix {
         margin-inline-end: use-spacing(2);
+      }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(2);
       }
     }
   }
@@ -98,13 +105,20 @@ $group-gap-color-map: (
     }
 
     &:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon {
-        margin-inline-end: use-spacing(3);
+      .#{$prefix}__icon--prefix {
+        margin-inline-end: use-spacing(2);
+      }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(2);
       }
     }
+
     &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon {
-        margin-inline-end: use-spacing(3);
+      .#{$prefix}__icon--prefix {
+        margin-inline-end: use-spacing(2);
+      }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(2);
       }
     }
   }
@@ -120,13 +134,20 @@ $group-gap-color-map: (
     }
 
     &:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon {
+      .#{$prefix}__icon--prefix {
         margin-inline-end: use-spacing(4);
       }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(4);
+      }
     }
+
     &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon {
+      .#{$prefix}__icon--prefix {
         margin-inline-end: use-spacing(4);
+      }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(4);
       }
     }
   }
@@ -141,13 +162,20 @@ $group-gap-color-map: (
     }
 
     &:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon:not(.#{$prefix}--icon-only) {
+      .#{$prefix}__icon--prefix {
         margin-inline-end: use-spacing(6);
       }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(6);
+      }
     }
+
     &.#{$prefix}--loading {
-      .#{$prefix}__icon:not(.#{$prefix}--icon-only) {
+      .#{$prefix}__icon--prefix {
         margin-inline-end: use-spacing(6);
+      }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(6);
       }
     }
   }
