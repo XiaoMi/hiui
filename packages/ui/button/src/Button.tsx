@@ -78,12 +78,11 @@ export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
   /**
    * 设置按钮尺寸
    */
-  size?: 'lg' | 'sm' | 'md' | 'xl'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   /**
    * 设置按钮外观
-   * 其中 `unset` 暂不对外
    */
-  appearance?: 'filled' | 'link' | 'line' | 'unset'
+  appearance?: 'filled' | 'link' | 'line' | 'text'
   /**
    * 设置按钮是否禁用
    */

@@ -1,7 +1,7 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 // 默认态
-$unset-background-map: (
+$text-background-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 50),
   'default': use-color('gray', 100),
@@ -9,7 +9,7 @@ $unset-background-map: (
   'danger': use-color-mode('danger', 50),
 ) !default;
 
-$unset-color-map: (
+$text-color-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 400),
   'default': use-color('gray', 700),
@@ -18,7 +18,7 @@ $unset-color-map: (
 ) !default;
 
 // hover 态
-$unset-hover-background-map: (
+$text-hover-background-map: (
   'primary': use-color-mode('primary', 50),
   'secondary': use-color-mode('primary', 50),
   'default': use-color('gray', 100),
@@ -26,7 +26,7 @@ $unset-hover-background-map: (
   'danger': use-color-mode('danger', 50),
 ) !default;
 
-$unset-hover-color-map: (
+$text-hover-color-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 400),
   'default': use-color('gray', 700),
@@ -35,7 +35,7 @@ $unset-hover-color-map: (
 ) !default;
 
 // active 态
-$unset-active-background-map: (
+$text-active-background-map: (
   'primary': use-color-mode('primary', 100),
   'secondary': use-color-mode('primary', 100),
   'default': use-color('gray', 300),
@@ -43,8 +43,8 @@ $unset-active-background-map: (
   'danger': use-color-mode('danger', 100),
 ) !default;
 
-// $unset-active-color-map: $unset-color-map !default;
-$unset-active-color-map: (
+// $text-active-color-map: $text-color-map !default;
+$text-active-color-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 400),
   'default': use-color('gray', 700),
@@ -53,7 +53,7 @@ $unset-active-color-map: (
 ) !default;
 
 // 禁用态
-$unset-disabled-background-map: (
+$text-disabled-background-map: (
   'primary': use-color-mode('primary', 200),
   'secondary': use-color-mode('primary', 50),
   'default': use-color('gray', 100),
@@ -61,7 +61,7 @@ $unset-disabled-background-map: (
   'danger': use-color-mode('danger', 50),
 ) !default;
 
-$unset-disabled-color-map: (
+$text-disabled-color-map: (
   'primary': use-color-mode('primary', 300),
   'secondary': use-color-mode('primary', 200),
   'default': use-color('gray', 500),
@@ -70,7 +70,7 @@ $unset-disabled-color-map: (
 ) !default;
 
 // focus 态
-$unset-focus-shadow-map: (
+$text-focus-shadow-map: (
   'primary': use-color-mode('primary', 200),
   'secondary': use-color-mode('primary', 100),
   'default': use-color('gray', 200),
@@ -79,7 +79,7 @@ $unset-focus-shadow-map: (
 ) !default;
 
 // 禁用态
-$unset-disabled-color-map: (
+$text-disabled-color-map: (
   'primary': use-color-mode('primary', 300),
   'secondary': use-color-mode('primary', 200),
   'default': use-color('gray', 500),
@@ -88,7 +88,7 @@ $unset-disabled-color-map: (
 ) !default;
 
 // focus 态
-$unset-focus-shadow-map: (
+$text-focus-shadow-map: (
   'primary': use-color-mode('primary', 200),
   'secondary': use-color-mode('primary', 100),
   'default': use-color('gray', 200),
@@ -96,10 +96,10 @@ $unset-focus-shadow-map: (
   'danger': use-color-mode('danger', 200),
 ) !default;
 
-@mixin render-unset-button() {
+@mixin render-text-button() {
   & {
     // 尺寸
-    &--appearance-unset#{&}--size-sm {
+    &--appearance-text#{&}--size-sm {
       height: calc(#{use-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
       padding: 1px 7px;
 
@@ -108,7 +108,7 @@ $unset-focus-shadow-map: (
         padding: 1px 0;
       }
     }
-    &--appearance-unset#{&}--size-md {
+    &--appearance-text#{&}--size-md {
       height: calc(#{use-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
       padding: 4px 11px;
 
@@ -118,7 +118,7 @@ $unset-focus-shadow-map: (
       }
     }
 
-    &--appearance-unset#{&}--size-lg {
+    &--appearance-text#{&}--size-lg {
       height: calc(#{use-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
       padding: 7px 15px;
 
@@ -128,7 +128,7 @@ $unset-focus-shadow-map: (
       }
     }
 
-    &--appearance-unset#{&}--size-xl {
+    &--appearance-text#{&}--size-xl {
       height: calc(#{use-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
       padding: 13px 60px;
 
@@ -142,27 +142,27 @@ $unset-focus-shadow-map: (
 
     @each $key in $color-list {
       $prefix: & !default;
-      &--appearance-unset#{&}--type-#{$key} {
-        color: map-get($unset-color-map, $key);
+      &--appearance-text#{&}--type-#{$key} {
+        color: map-get($text-color-map, $key);
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):hover {
-          background-color: map-get($unset-hover-background-map, $key);
-          border: 1px solid map-get($unset-hover-background-map, $key);
-          color: map-get($unset-hover-color-map, $key);
+          background-color: map-get($text-hover-background-map, $key);
+          border: 1px solid map-get($text-hover-background-map, $key);
+          color: map-get($text-hover-color-map, $key);
         }
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):active {
-          background-color: map-get($unset-active-background-map, $key);
-          border: 1px solid map-get($unset-active-background-map, $key);
-          color: map-get($unset-active-color-map, $key);
+          background-color: map-get($text-active-background-map, $key);
+          border: 1px solid map-get($text-active-background-map, $key);
+          color: map-get($text-active-color-map, $key);
         }
 
-        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
-          box-shadow: 0 0 0 2px map-get($unset-focus-shadow-map, $key);
-        }
+        // &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
+        //   box-shadow: 0 0 0 2px map-get($text-focus-shadow-map, $key);
+        // }
 
         &.#{$prefix}--disabled {
-          color: map-get($unset-disabled-color-map, $key);
+          color: map-get($text-disabled-color-map, $key);
         }
       }
     }

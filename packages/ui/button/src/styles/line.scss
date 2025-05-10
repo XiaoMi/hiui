@@ -2,6 +2,14 @@
 
 // 默认态
 
+$line-border-color-map: (
+  'primary': use-color-mode('primary'),
+  'secondary': use-color-mode('primary', 400),
+  'default': use-color('gray', 300),
+  'success': use-color-mode('success'),
+  'danger': use-color-mode('danger'),
+) !default;
+
 $line-color-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 400),
@@ -12,6 +20,14 @@ $line-color-map: (
 
 // hover 态
 
+$line-hover-border-color-map:(
+  'primary': use-color-mode('primary', 400),
+  'secondary': use-color-mode('primary', 300),
+  'default': use-color('gray', 400),
+  'success': use-color-mode('success', 400),
+  'danger': use-color-mode('danger', 400),
+) !default;
+
 $line-hover-color-map:(
   'primary': use-color-mode('primary', 400),
   'secondary': use-color-mode('primary', 300),
@@ -20,7 +36,23 @@ $line-hover-color-map:(
   'danger': use-color-mode('danger', 400),
 ) !default;
 
+$line-hover-bg-color-map:(
+  'primary': use-color-mode('primary', 100),
+  'secondary': use-color-mode('primary', 50),
+  'default': use-color('gray', 50),
+  'success': use-color-mode('success', 50),
+  'danger': use-color-mode('danger', 50),
+) !default;
+
 // active 态
+
+$line-active-border-color-map: (
+  'primary': use-color-mode('primary', 600),
+  'secondary': use-color-mode('primary'),
+  'default': use-color('gray', 400),
+  'success': use-color-mode('success', 600),
+  'danger': use-color-mode('danger', 600),
+) !default;
 
 $line-active-color-map: (
   'primary': use-color-mode('primary', 600),
@@ -28,6 +60,14 @@ $line-active-color-map: (
   'default': use-color-static('black'),
   'success': use-color-mode('success', 600),
   'danger': use-color-mode('danger', 600),
+) !default;
+
+$line-active-bg-color-map:(
+  'primary': use-color-mode('primary', 200),
+  'secondary': use-color-mode('primary', 100),
+  'default': use-color('gray', 200),
+  'success': use-color-mode('success', 100),
+  'danger': use-color-mode('danger', 100),
 ) !default;
 
 // 禁用态
@@ -38,6 +78,24 @@ $line-disabled-color-map: (
   'default': use-color('gray', 500),
   'success': use-color-mode('success', 300),
   'danger': use-color-mode('danger', 300),
+) !default;
+
+// 加载态
+
+$line-loading-border-color-map: (
+  'primary': use-color-mode('primary', 200),
+  'secondary': use-color-mode('primary', 100),
+  'default': use-color('gray', 300),
+  'success': use-color-mode('success', 200),
+  'danger': use-color-mode('danger', 200),
+) !default;
+
+$line-loading-color-map: (
+  'primary': use-color-mode('primary', 200),
+  'secondary': use-color-mode('primary', 100),
+  'default': use-color('gray', 400),
+  'success': use-color-mode('success', 200),
+  'danger': use-color-mode('danger', 200),
 ) !default;
 
 // focus 态
@@ -52,42 +110,59 @@ $line-focus-shadow-map: (
 @mixin render-line-button() {
   & {
     // 尺寸
-    &--appearance-line#{&}--size-sm {
+    &--appearance-line#{&}--size-xs {
       height: calc(#{use-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
-      padding: 1px 7px;
+      font-size: use-text-size('sm');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(12);
+        padding: 0 use-spacing(4);
+      }
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
-        padding: 1px 0;
       }
     }
+
+    &--appearance-line#{&}--size-sm {
+      height: calc(#{use-text-lineheight('sm')} + #{3px * 2 + 1px * 2});
+      font-size: use-text-size('sm');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(14);
+        padding: 0 use-spacing(4);
+      }
+
+      &.#{$prefix}--icon-only {
+        width: calc(#{use-text-lineheight('sm')} + #{3px * 2 + 1px * 2});
+      }
+    }
+
     &--appearance-line#{&}--size-md {
       height: calc(#{use-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
-      padding: 4px 11px;
+      font-size: use-text-size('normal');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(18);
+        padding: 0 use-spacing(6);
+      }
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
-        padding: 4px 0;
       }
     }
 
     &--appearance-line#{&}--size-lg {
       height: calc(#{use-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
-      padding: 7px 15px;
+      font-size: use-text-size('lg');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(22);
+        padding: 0 use-spacing(8);
+      }
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
-        padding: 7px 0;
-      }
-    }
-
-    &--appearance-line#{&}--size-xl {
-      height: calc(#{use-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
-      padding: 13px 60px;
-
-      &.#{$prefix}--icon-only {
-        width: calc(#{use-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
-        padding: 13px 0;
       }
     }
 
@@ -97,26 +172,33 @@ $line-focus-shadow-map: (
       $prefix: & !default;
       &--appearance-line#{&}--type-#{$key} {
         background-color: use-color-static('white');
-        border: 1px solid map-get($line-color-map, $key);
+        border: 1px solid map-get($line-border-color-map, $key);
         color: map-get($line-color-map, $key);
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):hover {
-          color: map-get($line-hover-color-map, $key);
-          border: 1px solid map-get($line-hover-color-map, $key);
+          background-color: map-get($line-hover-bg-color-map, $key);
+          border: 1px solid map-get($line-hover-border-color-map, $key);
         }
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):active {
-          color: map-get($line-active-color-map, $key);
-          border: 1px solid map-get($line-active-color-map, $key);
+          background-color: map-get($line-active-bg-color-map, $key);
+          border: 1px solid map-get($line-active-border-color-map, $key);
         }
 
-        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
-          box-shadow: 0 0 0 2px map-get($line-focus-shadow-map, $key);
-        }
+        // &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
+        //   box-shadow: 0 0 0 2px map-get($line-focus-shadow-map, $key);
+        // }
 
         &.#{$prefix}--disabled {
-          color: map-get($line-disabled-color-map, $key);
-          border: 1px solid map-get($line-disabled-color-map, $key);
+          // color: map-get($line-disabled-color-map, $key);
+          // border: 1px solid map-get($line-disabled-color-map, $key);
+          color: use-color('gray', 300);
+          border: 1px solid use-color('gray', 300);
+        }
+
+        &.#{$prefix}--loading {
+          color: map-get($line-loading-color-map, $key);
+          border: 1px solid map-get($line-loading-border-color-map, $key);
         }
       }
     }

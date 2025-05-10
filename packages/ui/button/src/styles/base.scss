@@ -6,6 +6,14 @@
 
 $prefix: '#{$component-prefix}-button' !default;
 
+$group-gap-color-map: (
+  'primary': use-color-mode('primary', 300),
+  'secondary': use-color-mode('primary', 300),
+  'default': use-color('gray', 300),
+  'success': use-color-mode('success', 300),
+  'danger': use-color-mode('danger', 300),
+) !default;
+
 // 通用能力，配置项无关
 
 .#{$prefix} {
@@ -15,15 +23,18 @@ $prefix: '#{$component-prefix}-button' !default;
 
   background-color: transparent;
   position: relative; // Used by button :focus radio-style etc.
-  display: inline-block;
+  // display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   appearance: none;
   margin: 0;
   border: 1px solid transparent;
   font-weight: use-text-weight('normal');
-  text-align: center;
+  // text-align: center;
   text-decoration: none;
-  vertical-align: middle;
+  // vertical-align: middle;
   white-space: nowrap;
   touch-action: manipulation; // 禁用非标准手势
   &:not(#{&}--loading) {
@@ -40,7 +51,7 @@ $prefix: '#{$component-prefix}-button' !default;
 
   // 形状通用
   &--shape-square {
-    border-radius: use-border-radius('normal');
+    border-radius: use-border-radius('lg');
   }
 
   &--shape-round {
@@ -168,10 +179,11 @@ $prefix: '#{$component-prefix}-button' !default;
   @include render-filled-button();
   @include render-line-button();
   @include render-link-button();
-  @include render-unset-button();
+  @include render-text-button();
 
   &-group {
-    display: inline-block;
+    display: inline-flex;
+
     .#{$prefix} {
       &:first-child {
         border-top-right-radius: 0;
@@ -183,7 +195,23 @@ $prefix: '#{$component-prefix}-button' !default;
       }
 
       &:not(:first-child) {
-        margin-left: 1px;
+        margin-left: 0;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: -1px;
+          width: 1px;
+          height: 50%;
+        }
+      }
+
+      @each $key, $color in $group-gap-color-map {
+        &--type-#{$key} {
+          &::before {
+            background-color: $color;
+          }
+        }
       }
 
       &:last-child {
