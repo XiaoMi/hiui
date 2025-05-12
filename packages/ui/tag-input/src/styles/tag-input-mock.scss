@@ -207,7 +207,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
       font-size: use-text-size('sm');
       line-height: use-text-lineheight('sm');
-      border-radius: use-border-radius('lg');
+      border-radius: use-border-radius('normal');
       padding: 0 $input-padding-width;
 
       .#{$tag-input-mock-prefix}__tag,
@@ -225,7 +225,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
       font-size: use-text-size('sm');
       line-height: use-text-lineheight('sm');
-      border-radius: use-border-radius('lg');
+      border-radius: use-border-radius('normal');
       padding: 0 $input-padding-width;
 
       .#{$tag-input-mock-prefix}__tag,
@@ -243,7 +243,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
       font-size: use-text-size('normal');
       line-height: use-text-lineheight('normal');
-      border-radius: use-border-radius('lg');
+      border-radius: use-border-radius('normal');
       padding: 2px $input-padding-width;
     }
 
@@ -254,7 +254,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
       font-size: use-text-size('lg');
       line-height: use-text-lineheight('lg');
-      border-radius: use-border-radius('lg');
+      border-radius: use-border-radius('normal');
       padding: 5px $input-padding-width;
     }
   }
