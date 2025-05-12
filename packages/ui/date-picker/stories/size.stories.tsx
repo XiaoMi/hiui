@@ -9,6 +9,14 @@ export const Size = () => {
     <>
       <h1>Size</h1>
       <div className="date-picker-size__wrap">
+        <h2>xs</h2>
+        <DatePicker
+          style={{ width: 240 }}
+          size={'xs'}
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
         <h2>sm</h2>
         <DatePicker
           style={{ width: 240 }}

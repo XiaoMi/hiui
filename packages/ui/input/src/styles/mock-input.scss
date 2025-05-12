@@ -123,7 +123,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         height: use-height-size(6);
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
-        border-radius: use-border-radius('lg');
+        border-radius: use-border-radius('normal');
         padding: 1px $input-padding-width;
       }
     }
@@ -133,7 +133,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         height: use-height-size(7);
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
-        border-radius: use-border-radius('lg');
+        border-radius: use-border-radius('normal');
         padding: 1px $input-padding-width;
       }
     }
@@ -143,7 +143,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         height: use-height-size(8);
         font-size: use-text-size('normal');
         line-height: use-text-lineheight('normal');
-        border-radius: use-border-radius('lg');
+        border-radius: use-border-radius('normal');
         padding: 4px $input-padding-width;
       }
     }
@@ -153,7 +153,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         height: use-height-size(10);
         font-size: use-text-size('lg');
         line-height: use-text-lineheight('lg');
-        border-radius: use-border-radius('lg');
+        border-radius: use-border-radius('normal');
         padding: 7px $input-padding-width;
       }
     }
