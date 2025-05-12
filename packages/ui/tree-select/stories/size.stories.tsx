@@ -89,6 +89,14 @@ export const Size = () => {
     <>
       <h1>Size</h1>
       <div className="tree-select-size__wrap">
+        <h2>xs</h2>
+        <TreeSelect
+          size="xs"
+          data={data}
+          onChange={(checkedIds, selectItem) => {
+            console.log('TreeSelect onChange: ', checkedIds, selectItem)
+          }}
+        />
         <h2>sm</h2>
         <TreeSelect
           size="sm"

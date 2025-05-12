@@ -89,6 +89,14 @@ export const Size = () => {
     <>
       <h1>Size</h1>
       <div className="check-tree-select-size__wrap">
+        <h2>xs</h2>
+        <CheckTreeSelect
+          style={{ width: 240 }}
+          size="xs"
+          data={data}
+          checkedMode="PARENT"
+          onChange={console.log}
+        />
         <h2>sm</h2>
         <CheckTreeSelect
           style={{ width: 240 }}

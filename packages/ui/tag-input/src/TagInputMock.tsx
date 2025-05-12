@@ -11,7 +11,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CloseCircleFilled, CloseOutlined } from '@hi-ui/icons'
 import { TagInputOption } from './types'
-import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isArray } from '@hi-ui/type-assertion'
 import ResizeDetector from 'react-resize-detector'
@@ -347,7 +347,7 @@ export interface TagInputMockProps
   /**
    * 设置输入框尺寸
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: HiBaseSizeEnum
   /**
    * 是否开启换行全展示
    */

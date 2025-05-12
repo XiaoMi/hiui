@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } 
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCheckSelect, UseCheckSelectProps } from './use-check-select'
-import type { HiBaseHTMLProps } from '@hi-ui/core'
+import type { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { CheckSelectProvider, useCheckSelectContext } from './context'
 import {
@@ -451,7 +451,7 @@ export interface CheckSelectProps
   /**
    * 自定义尺寸
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: HiBaseSizeEnum
   /**
    * 自定义渲染节点的 title 内容
    */
