@@ -37,7 +37,6 @@ export const PageJumper: React.FC<PageJumperProps> = ({
     <div className={`${prefixCls}__jumper`}>
       {pageText[0]}
       <Input
-        appearance="filled"
         value={jumpPage}
         style={{ width: 50, margin: '0 8px' }}
         onBlur={_onJump}
@@ -65,7 +64,7 @@ export interface PageJumperProps {
   /**
    * 设置尺寸
    */
-  size?: 'sm' | 'md'
+  size?: 'xs' | 'sm' | 'md'
 }
 
 if (__DEV__) {

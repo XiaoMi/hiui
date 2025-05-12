@@ -87,7 +87,7 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
         {showJumper ? (
           <>
             {/* @ts-ignore */}
-            <Input {...getInputProps()} appearance="filled" size={size} />
+            <Input {...getInputProps()} size={size} />
             {showTotal ? <span className={`${prefixCls}__total`}>{`/ ${maxPage}`}</span> : null}
           </>
         ) : null}
@@ -131,7 +131,7 @@ export interface ShrinkPaginationProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置尺寸
    */
-  size?: 'sm' | 'md'
+  size?: 'xs' | 'sm' | 'md'
   /**
    * 	只有一页时是否隐藏分页器
    */
