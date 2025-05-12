@@ -1,5 +1,5 @@
 import React from 'react'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { PopperOverlayProps } from '@hi-ui/popper'
 import { TimePickerPanelType } from '@hi-ui/time-picker'
 import { CalendarColInfo } from './hooks/useCalenderData'
@@ -258,7 +258,7 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 不同尺寸
    * @default 'md'
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: HiBaseSizeEnum
   /**
    * 自定义控制弹出层 popper
    */

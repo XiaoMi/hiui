@@ -38,10 +38,16 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     border: use-border-size('normal') transparent;
     cursor: pointer;
 
-    &--size-sm {
+    &--size-xs {
       line-height: use-height-size(6);
       font-size: use-text-size('sm');
       height: use-height-size(6);
+    }
+
+    &--size-sm {
+      line-height: use-height-size(7);
+      font-size: use-text-size('sm');
+      height: use-height-size(7);
     }
 
     &--size-md {
