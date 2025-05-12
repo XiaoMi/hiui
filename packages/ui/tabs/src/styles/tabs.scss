@@ -43,7 +43,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
     overflow: hidden;
     align-items: center;
 
-    &--card {
+    &--type-card {
       .#{$prefix}__item {
         background-color: use-color('gray', 200);
         margin: 0;
@@ -60,7 +60,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
       }
     }
 
-    &--button {
+    &--type-button {
       .#{$prefix}__item {
         position: relative;
         margin: use-spacing(2) use-spacing(2) use-spacing(2) 0;
@@ -109,7 +109,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
       }
     }
 
-    &--desc {
+    &--type-desc {
       .#{$prefix}-item {
         &__title {
           color: use-color('gray', 700);
@@ -165,6 +165,31 @@ $prefix: '#{$component-prefix}-tabs' !default;
     //   display: block;
     // }
 
+    &--type-line {
+      &.#{$prefix}__list--size-sm {
+        .#{$prefix}__item {
+          font-size: use-text-size('normal');
+          line-height: use-text-lineheight('normal');
+        }
+      }
+
+      &.#{$prefix}__list--size-md {
+        .#{$prefix}__item {
+          padding: use-spacing(6) use-spacing(10);
+          font-size: use-text-size('normal');
+          line-height: use-text-lineheight('normal');
+        }
+      }
+
+      &.#{$prefix}__list--size-lg {
+        .#{$prefix}__item {
+          padding: use-spacing(9) use-spacing(10);
+          font-size: use-text-size('lg');
+          line-height: use-text-lineheight('lg');
+        }
+      }
+    }
+
     &--inner {
       display: flex;
       flex: 1;
@@ -207,7 +232,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
       flex-direction: column;
       // height: 100%;
 
-      &.#{$prefix}__list--desc {
+      &.#{$prefix}__list--type-desc {
         .#{$prefix}-item {
           &__title {
             color: use-color('gray', 700);
@@ -255,7 +280,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
         }
       }
 
-      &.#{$prefix}__list--card {
+      &.#{$prefix}__list--type-card {
         .#{$prefix}__item {
           margin: 0;
           padding: use-spacing(5) use-spacing(8);
@@ -272,7 +297,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
         }
       }
 
-      &.#{$prefix}__list--button {
+      &.#{$prefix}__list--type-button {
         .#{$prefix}__item {
           margin: 0 0 use-spacing(2) 0;
           padding: use-spacing(2) use-spacing(6);
@@ -343,7 +368,9 @@ $prefix: '#{$component-prefix}-tabs' !default;
     bottom: 0;
     right: auto;
     top: auto;
-    height: 2px;
+    height: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
     background-color: use-color-mode('primary');
     transition: left 0.2s cubic-bezier(0.34, 0.69, 0.1, 1), width 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
   }
