@@ -277,7 +277,7 @@ export interface PaginationProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置尺寸
    */
-  size?: 'sm' | 'md'
+  size?: 'xs' | 'sm' | 'md'
 }
 
 if (__DEV__) {
