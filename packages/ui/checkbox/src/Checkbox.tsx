@@ -10,7 +10,7 @@ const _role = 'checkbox'
 const _prefix = getPrefixCls(_role)
 
 /**
- * 复选
+ * 复选框
  */
 export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
   (
