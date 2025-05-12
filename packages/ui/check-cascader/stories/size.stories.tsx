@@ -77,18 +77,6 @@ export const Size = () => {
     <>
       <h1>Size</h1>
       <div className="cascader-size__wrap">
-        <h2>xs</h2>
-        <CheckCascader
-          style={{ width: 240 }}
-          size="xs"
-          searchable={false}
-          // clearable
-          placeholder="请选择品类"
-          defaultValue={[['手机', '红米', '红米4']]}
-          changeOnSelect
-          data={dataOnlyLeafCheckable}
-          onChange={console.log}
-        ></CheckCascader>
         <h2>sm</h2>
         <CheckCascader
           style={{ width: 240 }}

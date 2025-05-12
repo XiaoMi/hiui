@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { CloseCircleFilled } from '@hi-ui/icons'
-import { HiBaseHTMLFieldProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import { useInput } from './use-input'
 import { InputAppearanceEnum, InputTypeEnum } from './types'
 
@@ -252,7 +252,7 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
   /**
    * 设置尺寸
    */
-  size?: HiBaseSizeEnum
+  size?: 'sm' | 'md' | 'lg'
   /**
    * 值改变时的回调
    */

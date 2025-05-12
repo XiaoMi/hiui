@@ -60,18 +60,6 @@ export const Size = () => {
     <>
       <h1>Size</h1>
       <div className="cascader-size__wrap">
-        <h2>xs</h2>
-        <Cascader
-          style={{ width: 240 }}
-          size="xs"
-          clearable
-          placeholder="请选择品类"
-          defaultValue={['手机', '红米', '红米4']}
-          data={data}
-          onChange={(...args) => {
-            console.log('onChange', ...args)
-          }}
-        ></Cascader>
         <h2>sm</h2>
         <Cascader
           style={{ width: 240 }}

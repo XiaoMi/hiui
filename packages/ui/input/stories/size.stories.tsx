@@ -11,14 +11,6 @@ export const Size = () => {
       <h1>Size for Input</h1>
       <div className="input-size__wrap">
         <Input
-          size="xs"
-          placeholder="xs"
-          prefix={<ExpressionOutlined />}
-          suffix={<AudioOutlined style={{ marginRight: 4 }} />}
-        ></Input>
-        <br />
-        <br />
-        <Input
           size="sm"
           placeholder="sm"
           prefix={<ExpressionOutlined />}

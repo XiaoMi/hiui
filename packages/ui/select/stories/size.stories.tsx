@@ -22,8 +22,6 @@ export const Size = () => {
     <>
       <h1>Size</h1>
       <div className="select-size__wrap">
-        <h2>xs</h2>
-        <Select style={{ width: 240 }} size="xs" clearable={false} data={data} />
         <h2>sm</h2>
         <Select style={{ width: 240 }} size="sm" clearable={false} data={data} />
         <h2>md</h2>
