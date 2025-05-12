@@ -31,11 +31,18 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     const isEmptyChildren = !children || (typeof children === 'string' && !children.trim())
     const isNonInteractive = disabled || loading
 
-    const prepend = loading ? (
+    const prefix = loading ? (
       <IconLoading className={`${prefixCls}__icon`} />
-    ) : icon ? (
-      <span className={`${prefixCls}__icon`}>{icon}</span>
+    ) : icon && (!Array.isArray(icon) || icon[0]) ? (
+      <span className={`${prefixCls}__icon ${prefixCls}__icon--prefix`}>
+        {Array.isArray(icon) ? icon[0] : icon}
+      </span>
     ) : null
+
+    const suffix =
+      Array.isArray(icon) && icon.length > 1 ? (
+        <span className={`${prefixCls}__icon ${prefixCls}__icon--suffix`}>{icon[1]}</span>
+      ) : null
 
     const cls = cx(
       prefixCls,
@@ -58,13 +65,15 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         type="button"
         {...(rest as any)}
       >
-        {prepend}
+        {prefix}
         {children}
+        {suffix}
       </button>
     ) : (
       <a ref={ref} role={role} href={href} className={cls} {...(rest as any)}>
-        {prepend}
+        {prefix}
         {children}
+        {suffix}
       </a>
     )
   }
@@ -78,12 +87,11 @@ export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
   /**
    * 设置按钮尺寸
    */
-  size?: 'lg' | 'sm' | 'md' | 'xl'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   /**
    * 设置按钮外观
-   * 其中 `unset` 暂不对外
    */
-  appearance?: 'filled' | 'link' | 'line' | 'unset'
+  appearance?: 'filled' | 'link' | 'line' | 'text'
   /**
    * 设置按钮是否禁用
    */
@@ -103,7 +111,7 @@ export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
   /**
    * 设置按钮图标
    */
-  icon?: React.ReactNode
+  icon?: React.ReactNode | React.ReactNode[]
   /**
    * 设置按钮形状
    */
