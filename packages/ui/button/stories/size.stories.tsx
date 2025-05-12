@@ -14,7 +14,11 @@ export const Size = () => {
     <>
       <h1>不同尺寸</h1>
       <div className="button-basic__wrap">
-        <div style={{ marginBottom: 24 }}>
+        <div style={{ marginBottom: 24, display: 'flex', alignItems: 'center' }}>
+          <Button type="primary" size="xs">
+            超小号按钮
+          </Button>
+          <Button type="primary" icon={<PlusOutlined />} size="xs" />
           <Button type="primary" size="sm">
             小号按钮
           </Button>
@@ -25,12 +29,12 @@ export const Size = () => {
             大号按钮
           </Button>
           <Button type="primary" icon={<PlusOutlined />} size="lg" />
-          <Button type="primary" size="xl">
-            超大号按钮
-          </Button>
-          <Button type="primary" icon={<PlusOutlined />} size="xl" />
         </div>
-        <div style={{ marginBottom: 24 }}>
+        <div style={{ marginBottom: 24, display: 'flex', alignItems: 'center' }}>
+          <Button type="primary" appearance="line" size="xs">
+            超小号按钮
+          </Button>
+          <Button type="primary" appearance="line" icon={<PlusOutlined />} size="xs" />
           <Button type="primary" appearance="line" size="sm">
             小号按钮
           </Button>
@@ -43,12 +47,12 @@ export const Size = () => {
             大号按钮
           </Button>
           <Button type="primary" appearance="line" icon={<PlusOutlined />} size="lg" />
-          <Button type="primary" appearance="line" size="xl">
-            超大号按钮
-          </Button>
-          <Button type="primary" appearance="line" icon={<PlusOutlined />} size="xl" />
         </div>
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Button type="primary" appearance="link" size="xs">
+            超小号按钮
+          </Button>
+          <Button type="primary" appearance="link" icon={<PlusOutlined />} size="xs" />
           <Button type="primary" appearance="link" size="sm">
             小号按钮
           </Button>
@@ -61,10 +65,6 @@ export const Size = () => {
             大号按钮
           </Button>
           <Button type="primary" appearance="link" icon={<PlusOutlined />} size="lg" />
-          <Button type="primary" appearance="link" size="xl">
-            超大号按钮
-          </Button>
-          <Button type="primary" appearance="link" icon={<PlusOutlined />} size="xl" />
         </div>
       </div>
     </>

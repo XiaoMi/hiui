@@ -40,6 +40,16 @@ $link-disabled-color-map: (
   'danger': use-color-mode('danger', 300),
 ) !default;
 
+// 加载态
+
+$link-loading-color-map: (
+  'primary': use-color-mode('primary', 200),
+  'secondary': use-color-mode('primary', 100),
+  'default': use-color('gray', 400),
+  'success': use-color-mode('success', 200),
+  'danger': use-color-mode('danger', 200),
+) !default;
+
 // focus 态
 $link-focus-shadow-map: (
   'primary': use-color-static('transparent'),
@@ -71,12 +81,17 @@ $link-focus-shadow-map: (
           color: map-get($link-active-color-map, $key);
         }
 
-        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
-          box-shadow: 0 0 0 2px map-get($link-focus-shadow-map, $key);
-        }
+        // &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
+        //   box-shadow: 0 0 0 2px map-get($link-focus-shadow-map, $key);
+        // }
 
         &.#{$prefix}--disabled {
-          color: map-get($link-disabled-color-map, $key);
+          // color: map-get($link-disabled-color-map, $key);
+          color: use-color('gray', 300);
+        }
+
+        &.#{$prefix}--loading {
+          color: map-get($link-loading-color-map, $key);
         }
       }
     }
