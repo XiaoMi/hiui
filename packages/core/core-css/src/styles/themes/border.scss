@@ -36,7 +36,7 @@
 @function use-border-radius($key) {
   // normal 表示通用默认。这里统一收敛，可根据规范调整
   @if ($key == 'normal') {
-    $key: 'md';
+    $key: 'lg';
   }
 
   @return use-border-radius-var($key);
