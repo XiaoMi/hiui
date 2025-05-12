@@ -7,7 +7,6 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     &__input {
       &:focus + .#{$prefix}__icon {
         border-color: $color;
-        box-shadow: 0 0 0 2px use-color-mode('primary', 100);
       }
     }
 
@@ -101,7 +100,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     height: 16px;
     border: 1px solid use-color('gray', 300);
     margin: 0;
-    border-radius: use-border-radius('sm');
+    border-radius: use-border-radius('md');
     transition: 0.3s ease-out;
     line-height: 1;
     flex: none;
