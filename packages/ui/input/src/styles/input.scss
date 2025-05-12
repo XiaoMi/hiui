@@ -159,8 +159,34 @@ $prefix: '#{$component-prefix}-input' !default;
   }
 
   &--size {
-    &-sm {
+    &-xs {
       height: use-height-size(6);
+      font-size: use-text-size('sm');
+      line-height: use-text-lineheight('sm');
+
+      .#{$prefix}__text {
+        padding: 1px $input-padding-width;
+      }
+
+      .#{$prefix}__inner,
+      .#{$prefix}__prepend,
+      .#{$prefix}__append {
+        border-radius: use-border-radius('normal');
+      }
+
+      .#{$prefix}__prepend {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .#{$prefix}__append {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+
+    &-sm {
+      height: use-height-size(7);
       font-size: use-text-size('sm');
       line-height: use-text-lineheight('sm');
 
@@ -296,7 +322,7 @@ $prefix: '#{$component-prefix}-input' !default;
       }
 
       &:not(.#{$prefix}__inner--disabled) .#{$prefix}__inner:hover {
-        background-color: use-color("gray", 100);
+        background-color: use-color('gray', 100);
       }
     }
 
