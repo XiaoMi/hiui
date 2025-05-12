@@ -14,7 +14,7 @@ export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
       type = 'default',
       className,
       children,
-      size = 'md',
+      size = 'sm',
       ...rest
     },
     ref
