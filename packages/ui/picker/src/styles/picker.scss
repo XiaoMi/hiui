@@ -81,13 +81,10 @@ $prefix: '#{$component-prefix}-picker' !default;
 
   &__panel {
     padding: 0;
-    border: 1px solid use-color('gray', 200);
-    border-radius: use-border-radius('lg');
-    overflow: hidden;
   }
 
   &__search {
-    // padding: use-spacing(4) use-spacing(4) 0;
+    padding: use-spacing(4) use-spacing(4) 0;
 
     .#{$component-prefix}-input {
       &__prefix {

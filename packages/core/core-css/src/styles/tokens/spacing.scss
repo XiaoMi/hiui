@@ -21,11 +21,7 @@ $spacers-base-map: (
   17: $spacer * 17,
   18: $spacer * 18,
   19: $spacer * 19,
-  20: $spacer * 20,
-  21: $spacer * 21,
-  22: $spacer * 22,
-  23: $spacer * 23,
-  24: $spacer * 24
+  20: $spacer * 20
 ) !default;
 
 @function get-spacing($size) {

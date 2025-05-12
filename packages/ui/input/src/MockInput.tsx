@@ -222,7 +222,7 @@ export type MockInputProps = HiBaseHTMLFieldProps<
     /**
      * 设置输入框尺寸
      */
-    size?: 'xs' | 'sm' | 'md' | 'lg'
+    size?: 'sm' | 'md' | 'lg'
   }
 >
 
