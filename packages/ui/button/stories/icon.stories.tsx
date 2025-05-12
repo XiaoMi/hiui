@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from '../src'
-import { PlusOutlined } from '@hi-ui/icons'
+import { PlusOutlined, MinusOutlined } from '@hi-ui/icons'
 
 /**
  * @title 带图标
@@ -12,7 +12,7 @@ export const Icon = () => {
       <h1>带图标</h1>
       <div className="button-basic__wrap">
         <div style={{ marginBottom: 24 }}>
-          <Button type="primary" icon={<PlusOutlined />}>
+          <Button type="primary" icon={[<PlusOutlined key="1" />, <MinusOutlined key="2" />]}>
             面性按钮
           </Button>
           <Button type="primary" icon={<PlusOutlined />} />
@@ -20,7 +20,7 @@ export const Icon = () => {
             面性按钮
           </Button>
           <Button type="secondary" icon={<PlusOutlined />} />
-          <Button icon={<PlusOutlined />}>面性按钮</Button>
+          <Button icon={[null, <MinusOutlined key="2" />]}>面性按钮</Button>
           <Button icon={<PlusOutlined />} />
           <Button type="danger" icon={<PlusOutlined />}>
             面性按钮
@@ -32,7 +32,11 @@ export const Icon = () => {
           <Button type="success" icon={<PlusOutlined />} />
         </div>
         <div style={{ marginBottom: 24 }}>
-          <Button type="primary" icon={<PlusOutlined />} appearance="line">
+          <Button
+            type="primary"
+            icon={[<PlusOutlined key="1" />, <MinusOutlined key="2" />]}
+            appearance="line"
+          >
             线性按钮
           </Button>
           <Button type="primary" icon={<PlusOutlined />} appearance="line" />
@@ -40,7 +44,7 @@ export const Icon = () => {
             线性按钮
           </Button>
           <Button type="secondary" icon={<PlusOutlined />} appearance="line" />
-          <Button icon={<PlusOutlined />} appearance="line">
+          <Button icon={[null, <MinusOutlined key="2" />]} appearance="line">
             线性按钮
           </Button>
           <Button icon={<PlusOutlined />} appearance="line" />
@@ -54,7 +58,11 @@ export const Icon = () => {
           <Button type="success" icon={<PlusOutlined />} appearance="line" />
         </div>
         <div>
-          <Button type="primary" icon={<PlusOutlined />} appearance="link">
+          <Button
+            type="primary"
+            icon={[<PlusOutlined key="1" />, <MinusOutlined key="2" />]}
+            appearance="link"
+          >
             链接按钮
           </Button>
           <Button type="primary" icon={<PlusOutlined />} appearance="link" />
@@ -62,7 +70,7 @@ export const Icon = () => {
             链接按钮
           </Button>
           <Button type="secondary" icon={<PlusOutlined />} appearance="link" />
-          <Button icon={<PlusOutlined />} appearance="link">
+          <Button icon={[null, <MinusOutlined key="2" />]} appearance="link">
             链接按钮
           </Button>
           <Button icon={<PlusOutlined />} appearance="link" />
