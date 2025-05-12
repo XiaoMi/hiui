@@ -19,7 +19,6 @@ export const PageOption: React.FC<PageOptionProps> = ({
 
   return (
     <Select
-      appearance="filled"
       className={cls}
       style={{ width: 110 }}
       data={pageSizeOptions}
@@ -60,7 +59,7 @@ export interface PageOptionProps {
   /**
    * 设置尺寸
    */
-  size?: 'sm' | 'md'
+  size?: 'xs' | 'sm' | 'md'
 }
 
 if (__DEV__) {
