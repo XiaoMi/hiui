@@ -61,6 +61,7 @@ export const HiBaseAppearanceEnum = {
 export type HiBaseAppearanceEnum = ValueOf<typeof HiBaseAppearanceEnum>
 
 export const HiBaseSizeEnum = {
+  XS: 'xs',
   SM: 'sm',
   MD: 'md',
   LG: 'lg',

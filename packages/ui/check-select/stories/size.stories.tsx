@@ -24,6 +24,15 @@ export const Size = () => {
     <>
       <h1>Size</h1>
       <div className="check-select-size__wrap">
+        <h2>xs</h2>
+        <CheckSelect
+          style={{ width: 240 }}
+          size="xs"
+          placeholder="请选择"
+          searchable
+          clearable
+          data={data}
+        />
         <h2>sm</h2>
         <CheckSelect
           style={{ width: 240 }}
