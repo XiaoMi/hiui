@@ -39,6 +39,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       onDrop,
       onDragEnd,
       type = 'line',
+      size = 'md',
       extra,
       ...rest
     },
@@ -194,7 +195,8 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
         className={cx(
           `${prefixCls}__list`,
           `${prefixCls}__list--placement-${direction}`,
-          { [`${prefixCls}__list--${type}`]: type },
+          { [`${prefixCls}__list--type-${type}`]: type },
+          { [`${prefixCls}__list--size-${size}`]: size },
           className
         )}
         ref={ref}
@@ -334,6 +336,10 @@ export interface TabListProps
    * 布局类型
    */
   type?: 'desc' | 'card' | 'button' | 'line'
+  /**
+   * 大小
+   */
+  size?: 'sm' | 'md' | 'lg'
   /**
    * 右侧的拓展区域
    */

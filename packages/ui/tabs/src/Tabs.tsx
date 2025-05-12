@@ -35,6 +35,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onDrop,
       style,
       type = 'line',
+      size = 'md',
       extra,
       ...rest
     },
@@ -89,6 +90,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           onDragOver={onDragOver}
           onDrop={onDrop}
           type={type}
+          size={size}
           onDragStart={onDragStart}
           extra={extra}
         />
@@ -139,6 +141,10 @@ export interface TabsProps
    * 布局类型
    */
   type?: 'desc' | 'card' | 'button' | 'line'
+  /**
+   * 大小
+   */
+  size?: 'sm' | 'md' | 'lg'
   /**
    * `activeId` 改变的回调
    */
