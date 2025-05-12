@@ -51,7 +51,7 @@ $group-gap-color-map: (
 
   // 形状通用
   &--shape-square {
-    border-radius: use-border-radius('lg');
+    border-radius: use-border-radius('normal');
   }
 
   &--shape-round {
