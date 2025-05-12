@@ -41,19 +41,36 @@ $filled-active-color-map: $filled-color-map !default;
 
 // 禁用态
 $filled-disabled-background-map: (
-  'primary': use-color-mode('primary', 200),
-  'secondary': use-color-mode('primary', 50),
+  'primary': use-color('gray', 400),
+  'secondary': use-color('gray', 200),
   'default': use-color('gray', 100),
-  'success': use-color-mode('success', 50),
-  'danger': use-color-mode('danger', 50),
+  'success': use-color('gray', 100),
+  'danger': use-color('gray', 100),
 ) !default;
 
 $filled-disabled-color-map: (
   'primary': use-color-static('white'),
-  'secondary': use-color-mode('primary', 300),
+  'secondary': use-color('gray', 400),
   'default': use-color('gray', 400),
-  'success': use-color-mode('success', 300),
-  'danger': use-color-mode('danger', 300),
+  'success': use-color('gray', 400),
+  'danger': use-color('gray', 400),
+) !default;
+
+// 加载态
+$filled-loading-background-map: (
+  'primary': use-color-mode('primary', 300),
+  'secondary': use-color-mode('primary', 50),
+  'default': use-color('gray', 50),
+  'success': use-color-mode('success', 50),
+  'danger': use-color-mode('danger', 50),
+) !default;
+
+$filled-loading-color-map: (
+  'primary': use-color-static('white'),
+  'secondary': use-color-mode('primary', 400),
+  'default': use-color('gray', 400),
+  'success': use-color-mode('success', 400),
+  'danger': use-color-mode('danger', 400),
 ) !default;
 
 // focus 态
@@ -69,42 +86,59 @@ $filled-focus-shadow-map: (
   & {
 
     // 尺寸
-    &--appearance-filled#{&}--size-sm {
+    &--appearance-filled#{&}--size-xs {
       height: calc(#{use-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
-      padding: 1px 7px;
+      font-size: use-text-size('sm');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(12);
+        padding: 0 use-spacing(4);
+      }
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
-        padding: 1px 0;
       }
     }
+
+    &--appearance-filled#{&}--size-sm {
+      height: calc(#{use-text-lineheight('sm')} + #{3px * 2 + 1px * 2});
+      font-size: use-text-size('sm');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(14);
+        padding: 0 use-spacing(4);
+      }
+
+      &.#{$prefix}--icon-only {
+        width: calc(#{use-text-lineheight('sm')} + #{3px * 2 + 1px * 2});
+      }
+    }
+
     &--appearance-filled#{&}--size-md {
       height: calc(#{use-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
-      padding: 4px 11px;
+      font-size: use-text-size('normal');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(18);
+        padding: 0 use-spacing(6);
+      }
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
-        padding: 4px 0;
       }
     }
 
     &--appearance-filled#{&}--size-lg {
       height: calc(#{use-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
-      padding: 7px 15px;
+      font-size: use-text-size('lg');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(22);
+        padding: 0 use-spacing(8);
+      }
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
-        padding: 7px 0;
-      }
-    }
-
-    &--appearance-filled#{&}--size-xl {
-      height: calc(#{use-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
-      padding: 13px 60px;
-
-      &.#{$prefix}--icon-only {
-        width: calc(#{use-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
-        padding: 13px 0;
       }
     }
 
@@ -129,14 +163,20 @@ $filled-focus-shadow-map: (
           color: map-get($filled-active-color-map, $key);
         }
 
-        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
-          box-shadow: 0 0 0 2px map-get($filled-focus-shadow-map, $key);
-        }
+        // &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
+        //   box-shadow: 0 0 0 2px map-get($filled-focus-shadow-map, $key);
+        // }
 
         &.#{$prefix}--disabled {
           background-color: map-get($filled-disabled-background-map, $key);
           border: 1px solid map-get($filled-disabled-background-map, $key);
           color: map-get($filled-disabled-color-map, $key);
+        }
+
+        &.#{$prefix}--loading {
+          background-color: map-get($filled-loading-background-map, $key);
+          border: 1px solid map-get($filled-loading-background-map, $key);
+          color: map-get($filled-loading-color-map, $key);
         }
       }
     }
