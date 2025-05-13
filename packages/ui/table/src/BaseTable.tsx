@@ -297,7 +297,8 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
         `${prefixCls}--bordered-left-none`,
       striped && `${prefixCls}--striped`,
       size && `${prefixCls}--size-${size}`,
-      virtual && `${prefixCls}--virtual`
+      virtual && `${prefixCls}--virtual`,
+      data.length === 0 && `${prefixCls}--empty`
     )
 
     return (
