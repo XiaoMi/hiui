@@ -226,6 +226,14 @@ $prefix: '#{$component-prefix}-drawer' !default;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid use-color('gray', 200);
+
+    .#{$prefix}--size-sm & {
+      padding: use-spacing(7) use-spacing(10);
+    }
+
+    .#{$prefix}--size-md & {
+      padding: use-spacing(9) use-spacing(10);
+    }
   }
 
   &__title {
@@ -236,7 +244,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
     box-sizing: border-box;
     overflow: auto;
     flex: 1;
-    padding: use-spacing(10) use-spacing(10) use-spacing(12) use-spacing(10);
+    padding: use-spacing(5) use-spacing(10) use-spacing(12) use-spacing(10);
     line-height: use-text-lineheight('lg');
   }
 
