@@ -34,7 +34,7 @@ export const EditorRender = () => {
           return (
             <Select
               style={{ display: 'inline-flex', width: 120, margin: '8px 0 0 0' }}
-              size={'sm'}
+              size={'xs'}
               data={selectData}
               onClose={() => updated()}
               onChange={(id, item) => {

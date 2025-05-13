@@ -14,7 +14,7 @@ $tag-group-prefix: '#{$component-prefix}-tag-group' !default;
   }
 
   &__add-new-button {
-    height: use-height-size(8);
+    height: use-height-size(6);
     display: flex;
     align-items: center;
     margin-top: use-spacing(4);
