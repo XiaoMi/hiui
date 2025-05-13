@@ -12,13 +12,13 @@ export const RowClassName = () => {
     const style = document.createElement('style')
     style.appendChild(
       document.createTextNode(`
-        .table-row--price-normal .hi-v4-table-cell {
+        .table-row--price-normal .hi-v5-table-cell {
           background: #e5feeb;
         }
-        .table-row--price-warning .hi-v4-table-cell {
+        .table-row--price-warning .hi-v5-table-cell {
           background: #fefae0;
         }
-        .hi-v4-table-row .table-cell--stock-danger {
+        .hi-v5-table-row .table-cell--stock-danger {
           background: #fee9e5;
         }
       `)

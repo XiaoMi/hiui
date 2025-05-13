@@ -22,6 +22,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &__wrapper {
     position: relative;
     z-index: 0;
+    border-top: use-border-size('normal') use-color('gray', 300);
   }
 
   // 内嵌面板
@@ -37,68 +38,104 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     }
   }
 
-  &--size {
-    &-md {
-      .#{$prefix}-header {
-        &-cell {
-          padding: use-spacing(7);
+  &:not(.#{$prefix}--virtual) {
+    &.#{$prefix}--size {
+      &-sm {
+        .#{$prefix}-header {
+          &-cell {
+            height: use-height-size(9);
+            padding: use-spacing(1) use-spacing(5);
+          }
+        }
 
-          &.#{$prefix}__selection-col {
-            padding: use-spacing(7) use-spacing(5);
+        .#{$prefix}-row:not(.#{$emptyContent}) {
+          .#{$prefix}-cell {
+            height: use-height-size(9);
+            padding: use-spacing(1) use-spacing(5);
           }
         }
       }
 
-      .#{$prefix}-row:not(.#{$emptyContent}) {
-        .#{$prefix}-cell {
-          padding: use-spacing(7);
+      &-md {
+        .#{$prefix}-header {
+          &-cell {
+            height: use-height-size(10);
+            padding: use-spacing(2) use-spacing(6);
+          }
+        }
 
-          &.#{$prefix}__selection-col {
-            padding: use-spacing(7) use-spacing(5);
+        .#{$prefix}-row:not(.#{$emptyContent}) {
+          .#{$prefix}-cell {
+            height: use-height-size(10);
+            padding: use-spacing(2) use-spacing(6);
+          }
+        }
+      }
+
+      &-lg {
+        .#{$prefix}-header {
+          &-cell {
+            height: use-height-size(12);
+            padding: use-spacing(4) use-spacing(7);
+          }
+        }
+
+        .#{$prefix}-row:not(.#{$emptyContent}) {
+          .#{$prefix}-cell {
+            height: use-height-size(12);
+            padding: use-spacing(4) use-spacing(7);
           }
         }
       }
     }
+  }
 
-    &-sm {
-      .#{$prefix}-header {
-        &-cell {
-          padding: use-spacing(5);
+  &--virtual {
+    &.#{$prefix}--size {
+      &-sm {
+        .#{$prefix}-header {
+          &-cell {
+            height: use-height-size(9);
+            padding: use-spacing(1) use-spacing(5);
+          }
+        }
 
-          &.#{$prefix}__selection-col {
-            padding: use-spacing(5);
+        .#{$prefix}-row:not(.#{$emptyContent}) {
+          .#{$prefix}-cell {
+            min-height: use-height-size(9);
+            padding: use-spacing(1) use-spacing(5);
           }
         }
       }
 
-      .#{$prefix}-row:not(.#{$emptyContent}) {
-        .#{$prefix}-cell {
-          padding: use-spacing(5);
-
-          &.#{$prefix}__selection-col {
-            padding: use-spacing(5);
+      &-md {
+        .#{$prefix}-header {
+          &-cell {
+            height: use-height-size(10);
+            padding: use-spacing(2) use-spacing(6);
           }
         }
-      }
-    }
 
-    &-lg {
-      .#{$prefix}-header {
-        &-cell {
-          padding: use-spacing(9);
-
-          &.#{$prefix}__selection-col {
-            padding: use-spacing(9) use-spacing(5);
+        .#{$prefix}-row:not(.#{$emptyContent}) {
+          .#{$prefix}-cell {
+            min-height: use-height-size(10);
+            padding: use-spacing(2) use-spacing(6);
           }
         }
       }
 
-      .#{$prefix}-row:not(.#{$emptyContent}) {
-        .#{$prefix}-cell {
-          padding: use-spacing(9);
+      &-lg {
+        .#{$prefix}-header {
+          &-cell {
+            height: use-height-size(12);
+            padding: use-spacing(4) use-spacing(7);
+          }
+        }
 
-          &.#{$prefix}__selection-col {
-            padding: use-spacing(9) use-spacing(5);
+        .#{$prefix}-row:not(.#{$emptyContent}) {
+          .#{$prefix}-cell {
+            min-height: use-height-size(12);
+            padding: use-spacing(4) use-spacing(7);
           }
         }
       }
@@ -107,7 +144,9 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
   &--bordered {
     > .#{$prefix}__wrapper {
-      border: use-border-size('normal') use-color('gray', 200);
+      border-left: use-border-size('normal') use-color('gray', 200);
+      border-right: use-border-size('normal') use-color('gray', 200);
+      border-bottom: use-border-size('normal') use-color('gray', 200);
 
       .#{$prefix}-header-cell, .#{$prefix}-cell {
         border-left: use-border-size('normal') use-color('gray', 200);
@@ -216,17 +255,22 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     }
 
     &-cell {
-      background-color: use-color('gray', 50);
-      color: use-color('gray', 700);
+      box-sizing: border-box;
+      background-color: use-color-static('white');
+      color: use-color('gray', 500);
       font-size: use-text-size('normal');
       font-weight: use-text-weight('medium');
       line-height: use-text-lineheight('sm');
       padding: use-spacing(7) use-spacing(8);
       border-bottom: use-border-size('normal') use-color('gray', 300);
 
-      &.#{$prefix}__embed-col,
-      &.#{$prefix}__selection-col {
+      &.#{$prefix}__embed-col {
         padding: use-spacing(7) use-spacing(5);
+      }
+
+      &.#{$prefix}__selection-col {
+        padding: 0 !important;
+        text-align: center !important;
       }
 
       $this: &;
@@ -371,6 +415,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
 // 单元格
 .#{$prefix}-cell {
+  box-sizing: border-box;
   word-break: break-word;
   border-bottom: use-border-size('normal') use-color('gray', 300);
   font-size: use-text-size('normal');
@@ -397,9 +442,13 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     }
   }
 
-  &.#{$prefix}__embed-col,
-  &.#{$prefix}__selection-col {
+  &.#{$prefix}__embed-col {
     padding: use-spacing(7) use-spacing(5);
+  }
+
+  &.#{$prefix}__selection-col {
+    padding: 0 !important;
+    text-align: center !important;
   }
 
   &.#{$prefix}-cell__col--highlight {
@@ -665,13 +714,15 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   }
 }
 
-.#{$emptyContent} {
+.#{$prefix}--empty {
+  th {
+    &:first-child {
+      border-left: none !important;
+    }
+  }
+
   td {
     text-align: center;
     padding: use-spacing(12) 0;
-
-    .#{$prefix}--bordered & {
-      border-bottom: use-border-size('normal') use-color('gray', 300);
-    }
   }
 }
