@@ -37,6 +37,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       closeIcon = defaultCloseIcon,
       width,
       height,
+      size = 'md',
       preload = false,
       unmountOnClose = false,
       visible = false,
@@ -90,7 +91,12 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     const bodyWidth = isNumeric(width) ? width + 'px' : width
     const bodyHeight = isNumeric(height) ? height + 'px' : height
 
-    const cls = cx(prefixCls, className, `${prefixCls}--placement-${placement}`)
+    const cls = cx(
+      prefixCls,
+      className,
+      `${prefixCls}--placement-${placement}`,
+      `${prefixCls}--size-${size}`
+    )
 
     return (
       <Portal container={container} disabled={disabledPortal}>
@@ -171,6 +177,10 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
    * 自定义抽屉高度，仅在 placement="bottom" | "top" 有效
    */
   height?: number | string
+  /**
+   * 头部大小
+   */
+  size?: 'sm' | 'md'
   /**
    * 自定义css展示层级
    */
