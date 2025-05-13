@@ -75,12 +75,12 @@ $prefix: '#{$component-prefix}-form' !default;
         min-height: 22px;
         line-height: 22px;
         padding-right: 0;
-        margin-bottom: use-spacing(4);
+        margin-bottom: use-spacing(3);
       }
 
       .#{$prefix}-label--required > .#{$prefix}-label__content > & {
-        &::before {
-          margin-right: use-spacing(2);
+        &::after {
+          margin-left: use-spacing(2);
           content: '*';
           color: use-color-mode('error');
         }
@@ -90,17 +90,20 @@ $prefix: '#{$component-prefix}-form' !default;
     &__control {
       // 适应容器 flex 宽度，不被内部撑开
       min-width: 1px;
+      min-height: use-height-size(8);
+      display: flex;
+      align-items: center;
     }
   }
 }
 
 .#{$prefix}-message {
   display: block;
-  font-size: use-text-size('normal');
-  min-height: 24px;
-  padding: 2px 0;
+  font-size: use-text-size('sm');
+  line-height: use-text-lineheight('sm');
+  min-height: use-height-size(5);
+  padding: use-spacing(1) 0;
   box-sizing: border-box;
-  line-height: 20px;
   transform: translateY(-10%);
   opacity: 0;
   color: use-color-mode('error');
