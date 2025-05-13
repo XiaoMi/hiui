@@ -182,7 +182,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
     const cls = cx(
       `${prefixCls}-row`,
       showRowHighlight && `${prefixCls}-row--hover`,
-      striped && (rowIndex & 1) === 1 && `${prefixCls}-row--striped`,
+      striped && (rowIndex & 1) === 0 && `${prefixCls}-row--striped`,
       hasError && `${prefixCls}-row--error`,
       highlighted && `${prefixCls}-row--highlight`,
       draggable && `${prefixCls}-row--draggable`,
