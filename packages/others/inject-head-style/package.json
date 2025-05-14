@@ -20,7 +20,8 @@
   "exports": {
     ".": {
       "require": "./dist/index.js",
-      "default": "./dist/inject-head-style.esm.js"
+      "default": "./dist/inject-head-style.esm.js",
+      "types": "./lib/types/index.d.ts"
     }
   },
   "engines": {

@@ -39,5 +39,12 @@
     "@hi-ui/style-inject": "^4.0.0",
     "inject-head-style": "^1.0.1",
     "style-inject": "^0.3.0"
+  },
+  "exports": {
+    ".": {
+      "require": "./lib/cjs/index.js",
+      "default": "./lib/esm/index.js",
+      "types": "./lib/types/index.d.ts"
+    }
   }
 }
