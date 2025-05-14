@@ -1,5 +1,11 @@
 # @hi-ui/env
 
+## 5.0.0-canary.0
+
+### Major Changes
+
+- 225ebaa51: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
 ## 4.0.9
 
 ### Patch Changes
