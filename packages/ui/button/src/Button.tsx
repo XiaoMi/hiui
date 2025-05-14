@@ -32,7 +32,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     const isNonInteractive = disabled || loading
 
     const prefix = loading ? (
-      <IconLoading className={`${prefixCls}__icon`} />
+      <IconLoading className={`${prefixCls}__icon ${prefixCls}__icon--prefix`} />
     ) : icon && (!Array.isArray(icon) || icon[0]) ? (
       <span className={`${prefixCls}__icon ${prefixCls}__icon--prefix`}>
         {Array.isArray(icon) ? icon[0] : icon}

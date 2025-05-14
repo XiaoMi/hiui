@@ -23,21 +23,21 @@ $line-color-map: (
 $line-hover-border-color-map:(
   'primary': use-color-mode('primary', 400),
   'secondary': use-color-mode('primary', 300),
-  'default': use-color('gray', 400),
+  'default': use-color('gray', 300),
   'success': use-color-mode('success', 400),
-  'danger': use-color-mode('danger', 400),
+  'danger': use-color-mode('danger'),
 ) !default;
 
 $line-hover-color-map:(
-  'primary': use-color-mode('primary', 400),
+  'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 300),
-  'default': use-color('gray', 600),
+  'default': use-color('gray', 700),
   'success': use-color-mode('success', 400),
-  'danger': use-color-mode('danger', 400),
+  'danger': use-color-mode('danger'),
 ) !default;
 
 $line-hover-bg-color-map:(
-  'primary': use-color-mode('primary', 100),
+  'primary': use-color-mode('primary', 50),
   'secondary': use-color-mode('primary', 50),
   'default': use-color('gray', 50),
   'success': use-color-mode('success', 50),
@@ -47,44 +47,34 @@ $line-hover-bg-color-map:(
 // active 态
 
 $line-active-border-color-map: (
-  'primary': use-color-mode('primary', 600),
+  'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary'),
-  'default': use-color('gray', 400),
+  'default': use-color('gray', 300),
   'success': use-color-mode('success', 600),
-  'danger': use-color-mode('danger', 600),
+  'danger': use-color-mode('danger'),
 ) !default;
 
 $line-active-color-map: (
-  'primary': use-color-mode('primary', 600),
+  'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary'),
-  'default': use-color-static('black'),
+  'default': use-color('gray', 700),
   'success': use-color-mode('success', 600),
-  'danger': use-color-mode('danger', 600),
+  'danger': use-color-mode('danger'),
 ) !default;
 
 $line-active-bg-color-map:(
-  'primary': use-color-mode('primary', 200),
+  'primary': use-color-mode('primary', 100),
   'secondary': use-color-mode('primary', 100),
   'default': use-color('gray', 200),
   'success': use-color-mode('success', 100),
   'danger': use-color-mode('danger', 100),
 ) !default;
 
-// 禁用态
-
-$line-disabled-color-map: (
-  'primary': use-color-mode('primary', 300),
-  'secondary': use-color-mode('primary', 200),
-  'default': use-color('gray', 500),
-  'success': use-color-mode('success', 300),
-  'danger': use-color-mode('danger', 300),
-) !default;
-
 // 加载态
 
 $line-loading-border-color-map: (
-  'primary': use-color-mode('primary', 200),
-  'secondary': use-color-mode('primary', 100),
+  'primary': use-color-mode('primary', 300),
+  'secondary': use-color-mode('primary', 200),
   'default': use-color('gray', 300),
   'success': use-color-mode('success', 200),
   'danger': use-color-mode('danger', 200),
@@ -92,10 +82,28 @@ $line-loading-border-color-map: (
 
 $line-loading-color-map: (
   'primary': use-color-mode('primary', 200),
-  'secondary': use-color-mode('primary', 100),
+  'secondary': use-color-mode('primary', 200),
   'default': use-color('gray', 400),
   'success': use-color-mode('success', 200),
-  'danger': use-color-mode('danger', 200),
+  'danger': use-color-mode('danger', 300),
+) !default;
+
+// 禁用态
+
+$line-disabled-border-color-map: (
+  'primary': use-color('gray', 300),
+  'secondary': use-color('gray', 300),
+  'default': use-color('gray', 300),
+  'success': use-color('gray', 300),
+  'danger': use-color('gray', 300),
+) !default;
+
+$line-disabled-color-map: (
+  'primary': use-color('gray', 400),
+  'secondary': use-color('gray', 400),
+  'default': use-color('gray', 400),
+  'success': use-color('gray', 400),
+  'danger': use-color('gray', 400),
 ) !default;
 
 // focus 态
@@ -190,10 +198,8 @@ $line-focus-shadow-map: (
         // }
 
         &.#{$prefix}--disabled {
-          // color: map-get($line-disabled-color-map, $key);
-          // border: 1px solid map-get($line-disabled-color-map, $key);
-          color: use-color('gray', 300);
-          border: 1px solid use-color('gray', 300);
+          color: map-get($line-disabled-color-map, $key);
+          border: 1px solid map-get($line-disabled-border-color-map, $key);
         }
 
         &.#{$prefix}--loading {

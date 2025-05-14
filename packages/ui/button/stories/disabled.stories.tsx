@@ -55,7 +55,7 @@ export const Disabled = () => {
           </Button>
           <Button type="success" icon={<PlusOutlined />} appearance="line" disabled />
         </div>
-        <div>
+        <div style={{ marginBottom: 24 }}>
           <Button type="primary" icon={<PlusOutlined />} appearance="link" disabled>
             链接按钮
           </Button>
@@ -77,28 +77,28 @@ export const Disabled = () => {
           </Button>
           <Button type="success" icon={<PlusOutlined />} appearance="link" disabled />
         </div>
-        {/* <div>
-          <Button type="primary" icon={<PlusOutlined />} appearance="unset" disabled>
+        <div>
+          <Button type="primary" icon={<PlusOutlined />} appearance="text" disabled>
             无样式按钮
           </Button>
-          <Button type="primary" icon={<PlusOutlined />} appearance="unset" disabled />
-          <Button type="secondary" icon={<PlusOutlined />} appearance="unset" disabled>
+          <Button type="primary" icon={<PlusOutlined />} appearance="text" disabled />
+          <Button type="secondary" icon={<PlusOutlined />} appearance="text" disabled>
             无样式按钮
           </Button>
-          <Button type="secondary" icon={<PlusOutlined />} appearance="unset" disabled />
-          <Button icon={<PlusOutlined />} appearance="unset" disabled>
+          <Button type="secondary" icon={<PlusOutlined />} appearance="text" disabled />
+          <Button icon={<PlusOutlined />} appearance="text" disabled>
             无样式按钮
           </Button>
-          <Button icon={<PlusOutlined />} appearance="unset" disabled />
-          <Button type="danger" icon={<PlusOutlined />} appearance="unset" disabled>
+          <Button icon={<PlusOutlined />} appearance="text" disabled />
+          <Button type="danger" icon={<PlusOutlined />} appearance="text" disabled>
             无样式按钮
           </Button>
-          <Button type="danger" icon={<PlusOutlined />} appearance="unset" disabled />
-          <Button type="success" icon={<PlusOutlined />} appearance="unset" disabled>
+          <Button type="danger" icon={<PlusOutlined />} appearance="text" disabled />
+          <Button type="success" icon={<PlusOutlined />} appearance="text" disabled>
             无样式按钮
           </Button>
-          <Button type="success" icon={<PlusOutlined />} appearance="unset" disabled />
-        </div> */}
+          <Button type="success" icon={<PlusOutlined />} appearance="text" disabled />
+        </div>
       </div>
     </>
   )
