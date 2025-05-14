@@ -37,5 +37,12 @@
   "homepage": "https://github.com/XiaoMi/hiui#readme",
   "dependencies": {
     "classnames": "^2.3.1"
+  },
+  "exports": {
+    ".": {
+      "require": "./lib/cjs/index.js",
+      "default": "./lib/esm/index.js",
+      "types": "./lib/types/index.d.ts"
+    }
   }
 }
