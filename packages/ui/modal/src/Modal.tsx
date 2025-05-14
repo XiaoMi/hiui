@@ -60,8 +60,8 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       container: containerProp,
       closeIcon = defaultCloseIcon,
       showMask = true,
-      showHeaderDivider = true,
-      showFooterDivider = true,
+      showHeaderDivider,
+      showFooterDivider,
       width,
       height,
       preload = false,
@@ -125,7 +125,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     const hasHeader = !!title || closeable
     const hasConfirm = confirmText !== null
     const hasCancel = cancelText !== null
-    const hasFooter = hasConfirm || hasCancel || footer !== null
+    const hasFooter = (hasConfirm || hasCancel) && footer !== null
 
     const cls = cx(
       prefixCls,
@@ -193,7 +193,12 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                   {footer === undefined
                     ? [
                         hasCancel ? (
-                          <Button key="1" type="default" onClick={onRequestCloseLatest}>
+                          <Button
+                            key="1"
+                            type="default"
+                            appearance="line"
+                            onClick={onRequestCloseLatest}
+                          >
                             {cancelText}
                           </Button>
                         ) : null,
