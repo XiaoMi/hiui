@@ -16,13 +16,15 @@ export const Popup = () => {
       <div className="modal-popup__wrap">
         <Button onClick={() => setVisible(!visible)}>open</Button>
         <Modal visible={visible} closeable={false} onCancel={() => setVisible(false)} footer={null}>
-          代码如写诗
-          <br />
-          <br />
-          写诗如代码
-          <br />
-          <br />
-          这是一门艺术
+          <div style={{ padding: '18px 0' }}>
+            代码如写诗
+            <br />
+            <br />
+            写诗如代码
+            <br />
+            <br />
+            这是一门艺术
+          </div>
         </Modal>
       </div>
     </>
