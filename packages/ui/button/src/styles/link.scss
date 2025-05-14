@@ -5,7 +5,7 @@
 $link-color-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 400),
-  'default': use-color('gray', 700),
+  'default': use-color('gray', 600),
   'success': use-color-mode('success'),
   'danger': use-color-mode('danger'),
 ) !default;
@@ -15,7 +15,7 @@ $link-color-map: (
 $link-hover-color-map:(
   'primary': use-color-mode('primary', 400),
   'secondary': use-color-mode('primary', 300),
-  'default': use-color('gray', 600),
+  'default': use-color('gray', 500),
   'success': use-color-mode('success', 400),
   'danger': use-color-mode('danger', 400),
 ) !default;
@@ -25,29 +25,29 @@ $link-hover-color-map:(
 $link-active-color-map: (
   'primary': use-color-mode('primary', 600),
   'secondary': use-color-mode('primary'),
-  'default': use-color-static('black'),
+  'default': use-color('gray', 700),
   'success': use-color-mode('success', 600),
-  'danger': use-color-mode('danger', 600),
-) !default;
-
-// 禁用态
-
-$link-disabled-color-map: (
-  'primary': use-color-mode('primary', 300),
-  'secondary': use-color-mode('primary', 200),
-  'default': use-color('gray', 500),
-  'success': use-color-mode('success', 300),
-  'danger': use-color-mode('danger', 300),
+  'danger': use-color-mode('danger', 500),
 ) !default;
 
 // 加载态
 
 $link-loading-color-map: (
-  'primary': use-color-mode('primary', 200),
-  'secondary': use-color-mode('primary', 100),
+  'primary': use-color-mode('primary', 300),
+  'secondary': use-color-mode('primary', 200),
   'default': use-color('gray', 400),
   'success': use-color-mode('success', 200),
-  'danger': use-color-mode('danger', 200),
+  'danger': use-color-mode('danger', 300),
+) !default;
+
+// 禁用态
+
+$link-disabled-color-map: (
+  'primary': use-color('gray', 400),
+  'secondary': use-color('gray', 400),
+  'default': use-color('gray', 400),
+  'success': use-color('gray', 400),
+  'danger': use-color('gray', 400),
 ) !default;
 
 // focus 态
@@ -86,8 +86,7 @@ $link-focus-shadow-map: (
         // }
 
         &.#{$prefix}--disabled {
-          // color: map-get($link-disabled-color-map, $key);
-          color: use-color('gray', 300);
+          color: map-get($link-disabled-color-map, $key);
         }
 
         &.#{$prefix}--loading {
