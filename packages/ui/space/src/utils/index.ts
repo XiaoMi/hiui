@@ -1,4 +1,3 @@
-import { HiBaseSizeEnum } from '@hi-ui/core'
 import { invariant } from '@hi-ui/env'
 import { SpaceSizeEnum } from '../types'
 
@@ -16,8 +15,8 @@ const SIZE_ENUM_LIST = Object.keys(sizeValueMap)
  * @returns 处理成标准格式flex gap
  */
 export const handleTransformGap = (gap: SpaceSizeEnum) => {
-  if (SIZE_ENUM_LIST.includes(gap as HiBaseSizeEnum)) {
-    const activeSize = sizeValueMap[gap as HiBaseSizeEnum]
+  if (SIZE_ENUM_LIST.includes(gap as string)) {
+    const activeSize = sizeValueMap[gap as keyof typeof sizeValueMap]
     return activeSize
   }
 

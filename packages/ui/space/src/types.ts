@@ -1,6 +1,4 @@
-import type { HiBaseSizeEnum } from '@hi-ui/core'
-
-export type SpaceSizeEnum = HiBaseSizeEnum | number | number[] | undefined
+export type SpaceSizeEnum = 'sm' | 'md' | 'lg' | number | number[] | undefined
 
 export type SpaceAlignEnum = 'flex-start' | 'flex-end' | 'center' | 'baseline'
 
