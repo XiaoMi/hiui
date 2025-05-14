@@ -1,5 +1,28 @@
 # @hi-ui/upload
 
+## 5.0.0-canary.0
+
+### Major Changes
+
+- 225ebaa51: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [f70601635]
+- Updated dependencies [225ebaa51]
+- Updated dependencies [428716024]
+- Updated dependencies [68a36b9ce]
+  - @hi-ui/button@5.0.0-canary.0
+  - @hi-ui/core@5.0.0-canary.0
+  - @hi-ui/use-id@5.0.0-canary.0
+  - @hi-ui/icons@5.0.0-canary.0
+  - @hi-ui/file-select@5.0.0-canary.0
+  - @hi-ui/message@5.0.0-canary.0
+  - @hi-ui/modal@5.0.0-canary.0
+  - @hi-ui/preview@5.0.0-canary.0
+  - @hi-ui/classname@5.0.0-canary.0
+  - @hi-ui/env@5.0.0-canary.0
+
 ## 4.2.4
 
 ### Patch Changes

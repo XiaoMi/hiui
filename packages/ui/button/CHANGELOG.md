@@ -1,5 +1,26 @@
 # @hi-ui/button
 
+## 5.0.0-canary.0
+
+### Major Changes
+
+- 225ebaa51: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- f70601635: <br>
+  - feat(button): 样式更新到 5.0 (5.0)
+  - feat(button): 增加 text 类型 (5.0)
+  - feat(button): 参数 icon 支持数组类型 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [225ebaa51]
+- Updated dependencies [428716024]
+  - @hi-ui/core@5.0.0-canary.0
+  - @hi-ui/classname@5.0.0-canary.0
+  - @hi-ui/env@5.0.0-canary.0
+
 ## 4.0.10
 
 ### Patch Changes

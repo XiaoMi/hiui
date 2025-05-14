@@ -1,5 +1,22 @@
 # @hi-ui/result
 
+## 5.0.0-canary.0
+
+### Major Changes
+
+- 225ebaa51: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- fd14d7b2b: fix: 修改 Space 和 Result 组件 size 类型 (5.0)
+- Updated dependencies [225ebaa51]
+- Updated dependencies [428716024]
+  - @hi-ui/core@5.0.0-canary.0
+  - @hi-ui/icons@5.0.0-canary.0
+  - @hi-ui/classname@5.0.0-canary.0
+  - @hi-ui/env@5.0.0-canary.0
+  - @hi-ui/type-assertion@5.0.0-canary.0
+
 ## 4.0.8
 
 ### Patch Changes
