@@ -1,6 +1,8 @@
 ---
-"@hi-ui/pagination": major
-"@hi-ui/hiui": major
+"@hi-ui/pagination": minor
+"@hi-ui/hiui": minor
 ---
 
-feat(pagination): 新版 Pagination (5.0)
+<br>
+- feat(pagination): 改为线性样式 (5.0)
+- feat(pagination): 增加 xs 尺寸，默认使用 sm 尺寸 (5.0)
