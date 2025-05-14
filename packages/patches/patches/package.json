@@ -21,7 +21,8 @@
   "exports": {
     ".": {
       "require": "./lib/cjs/index.js",
-      "default": "./lib/esm/index.js"
+      "default": "./lib/esm/index.js",
+      "types": "./lib/types/index.d.ts"
     },
     "./lib/v4/index.scss": "./lib/v4/index.scss",
     "./lib/v4/mixin.scss": "./lib/v4/mixin.scss",
