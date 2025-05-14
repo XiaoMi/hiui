@@ -3,7 +3,7 @@
 $prefix: '#{$component-prefix}-modal' !default;
 
 $box-shadow-primary: 0 1px 6px rgba(0, 0, 0, 0.2) !default;
-$modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
+$modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
 
 .#{$prefix} {
   @include flex;
@@ -142,7 +142,7 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
     align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
-    padding: calc(#{use-spacing(8)} - 1px) use-spacing(12);
+    padding: calc(#{use-spacing(9)}) use-spacing(10);
 
     &--divided {
       border-bottom: use-border-size('normal') use-color('gray', 200);
@@ -164,7 +164,7 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
     box-sizing: border-box;
     overflow: auto;
     flex: 1;
-    padding: use-spacing(10) use-spacing(12);
+    padding: 0 use-spacing(10);
     font-size: use-text-size('normal');
     color: use-color('gray', 700);
   }
@@ -218,7 +218,7 @@ $modal-overlay-background-color: rgba(0, 0, 0, 0.45) !default;
 
   &__footer {
     box-sizing: border-box;
-    padding: 0 use-spacing(12) use-spacing(12);
+    padding: use-spacing(10);
     display: flex;
     align-items: center;
     justify-content: flex-end;
