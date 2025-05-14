@@ -1,6 +1,6 @@
 ---
-"@hi-ui/modal": major
-"@hi-ui/hiui": major
+"@hi-ui/modal": patch
+"@hi-ui/hiui": patch
 ---
 
-feat(modal): 新版 Modal (5.0)
+fix(modal): 样式修改 (5.0)
