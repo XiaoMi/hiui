@@ -21,7 +21,8 @@
   "exports": {
     ".": {
       "require": "./lib/cjs/index.js",
-      "default": "./lib/esm/index.js"
+      "default": "./lib/esm/index.js",
+      "types": "./lib/types/index.d.ts"
     }
   },
   "publishConfig": {
