@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/object-utils",
-  "version": "4.0.4",
+  "version": "5.0.0-canary.0",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,7 +45,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hi-ui/array-utils": "^4.0.4",
-    "@hi-ui/type-assertion": "^4.0.4"
+    "@hi-ui/array-utils": "^5.0.0-canary.0",
+    "@hi-ui/type-assertion": "^5.0.0-canary.0"
   }
 }

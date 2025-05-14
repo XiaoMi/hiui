@@ -1,5 +1,11 @@
 # @hi-ui/tree-utils
 
+## 5.0.0-canary.0
+
+### Major Changes
+
+- 225ebaa51: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
 ## 4.1.6
 
 ### Patch Changes

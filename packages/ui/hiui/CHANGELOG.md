@@ -1,5 +1,131 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.0
+
+### Major Changes
+
+- 225ebaa51: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- f70601635: <br>
+  - feat(button): 样式更新到 5.0 (5.0)
+  - feat(button): 增加 text 类型 (5.0)
+  - feat(button): 参数 icon 支持数组类型 (5.0)
+- 428716024: <br>
+  - feat(picker): 下拉选择类组件增加 xs 尺寸 (5.0)
+  - feat(input): 输入框组件增加 xs 尺寸 (5.0)
+- 9d3e4f910: <br>
+  - feat(pagination): 改为线性样式 (5.0)
+  - feat(pagination): 增加 xs 尺寸，默认使用 sm 尺寸 (5.0)
+- e182621e8: <br>
+  - feat(tabs): 增加 size 参数 (5.0)
+  - feat(tabs): 修改标签选中下标样式 (5.0)
+- 8f826800f: - fix(date-picker): 显示框圆角改为 6px (5.0)
+  - feat(date-picker): 增加 xs 尺寸 (5.0)
+
+### Patch Changes
+
+- ddffb4d50: fix(tag): 修复添加保存时抖动问题 (5.0)
+- 192de8767: <br>
+  - fix(checkbox): 修改边框大小为 6px (5.0)
+  - fix(checkbox): 去掉 focus 时的阴影样式 (5.0)
+- 1bdd9a991: <br>
+  - fix(form): 错误提示字号改为 12px (5.0)
+  - fix(form): 必填星号调整为显示在右侧 (5.0)
+  - fix(form): 标题和控件间距改为 6px (5.0)
+  - fix(form): 包裹控件容器设置最小高度 32px (5.0)
+  - fix(form): 默认不显示标题冒号 (5.0)
+- 0608199b4: fix(drawer): 样式修改 (5.0)
+- 4e00fda45: <br>
+  - fix(table): 标题去掉背景，头部加上边框 (5.0)
+  - fix(table): 单元格间距调整 & 设置最小高度 (5.0)
+  - fix(table): 不同尺寸修改 (5.0)
+- 68a36b9ce: fix(modal): 样式修改 (5.0)
+- fd14d7b2b: fix: 修改 Space 和 Result 组件 size 类型 (5.0)
+- Updated dependencies [ddffb4d50]
+- Updated dependencies [f70601635]
+- Updated dependencies [428716024]
+- Updated dependencies [225ebaa51]
+- Updated dependencies [9d3e4f910]
+- Updated dependencies [e182621e8]
+- Updated dependencies [192de8767]
+- Updated dependencies [1bdd9a991]
+- Updated dependencies [8f826800f]
+- Updated dependencies [428716024]
+- Updated dependencies [0608199b4]
+- Updated dependencies [4e00fda45]
+- Updated dependencies [68a36b9ce]
+- Updated dependencies [fd14d7b2b]
+  - @hi-ui/tag@5.0.0-canary.0
+  - @hi-ui/button@5.0.0-canary.0
+  - @hi-ui/cascader@5.0.0-canary.0
+  - @hi-ui/check-cascader@5.0.0-canary.0
+  - @hi-ui/check-select@5.0.0-canary.0
+  - @hi-ui/check-tree-select@5.0.0-canary.0
+  - @hi-ui/input@5.0.0-canary.0
+  - @hi-ui/picker@5.0.0-canary.0
+  - @hi-ui/select@5.0.0-canary.0
+  - @hi-ui/tree-select@5.0.0-canary.0
+  - @hi-ui/core@5.0.0-canary.0
+  - @hi-ui/alert@5.0.0-canary.0
+  - @hi-ui/anchor@5.0.0-canary.0
+  - @hi-ui/avatar@5.0.0-canary.0
+  - @hi-ui/back-top@5.0.0-canary.0
+  - @hi-ui/badge@5.0.0-canary.0
+  - @hi-ui/breadcrumb@5.0.0-canary.0
+  - @hi-ui/card@5.0.0-canary.0
+  - @hi-ui/carousel@5.0.0-canary.0
+  - @hi-ui/checkbox@5.0.0-canary.0
+  - @hi-ui/collapse@5.0.0-canary.0
+  - @hi-ui/counter@5.0.0-canary.0
+  - @hi-ui/date-picker@5.0.0-canary.0
+  - @hi-ui/descriptions@5.0.0-canary.0
+  - @hi-ui/drawer@5.0.0-canary.0
+  - @hi-ui/dropdown@5.0.0-canary.0
+  - @hi-ui/ellipsis-tooltip@5.0.0-canary.0
+  - @hi-ui/empty-state@5.0.0-canary.0
+  - @hi-ui/filter@5.0.0-canary.0
+  - @hi-ui/form@5.0.0-canary.0
+  - @hi-ui/grid@5.0.0-canary.0
+  - @hi-ui/highlighter@5.0.0-canary.0
+  - @hi-ui/input-group@5.0.0-canary.0
+  - @hi-ui/list@5.0.0-canary.0
+  - @hi-ui/loading@5.0.0-canary.0
+  - @hi-ui/menu@5.0.0-canary.0
+  - @hi-ui/message@5.0.0-canary.0
+  - @hi-ui/modal@5.0.0-canary.0
+  - @hi-ui/notification@5.0.0-canary.0
+  - @hi-ui/number-input@5.0.0-canary.0
+  - @hi-ui/pagination@5.0.0-canary.0
+  - @hi-ui/pop-confirm@5.0.0-canary.0
+  - @hi-ui/popover@5.0.0-canary.0
+  - @hi-ui/preview@5.0.0-canary.0
+  - @hi-ui/progress@5.0.0-canary.0
+  - @hi-ui/provider@5.0.0-canary.0
+  - @hi-ui/radio@5.0.0-canary.0
+  - @hi-ui/rating@5.0.0-canary.0
+  - @hi-ui/result@5.0.0-canary.0
+  - @hi-ui/scrollbar@5.0.0-canary.0
+  - @hi-ui/search@5.0.0-canary.0
+  - @hi-ui/slider@5.0.0-canary.0
+  - @hi-ui/space@5.0.0-canary.0
+  - @hi-ui/spinner@5.0.0-canary.0
+  - @hi-ui/stepper@5.0.0-canary.0
+  - @hi-ui/svg-icon@5.0.0-canary.0
+  - @hi-ui/switch@5.0.0-canary.0
+  - @hi-ui/table@5.0.0-canary.0
+  - @hi-ui/tabs@5.0.0-canary.0
+  - @hi-ui/textarea@5.0.0-canary.0
+  - @hi-ui/time-picker@5.0.0-canary.0
+  - @hi-ui/timeline@5.0.0-canary.0
+  - @hi-ui/tooltip@5.0.0-canary.0
+  - @hi-ui/transfer@5.0.0-canary.0
+  - @hi-ui/tree@5.0.0-canary.0
+  - @hi-ui/upload@5.0.0-canary.0
+  - @hi-ui/watermark@5.0.0-canary.0
+  - @hi-ui/zen-mode@5.0.0-canary.0
+
 ## 4.12.0
 
 ### Minor Changes

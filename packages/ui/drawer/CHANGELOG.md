@@ -1,5 +1,30 @@
 # @hi-ui/drawer
 
+## 5.0.0-canary.0
+
+### Major Changes
+
+- 225ebaa51: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- 0608199b4: fix(drawer): 样式修改 (5.0)
+- Updated dependencies [225ebaa51]
+- Updated dependencies [428716024]
+- Updated dependencies [68a36b9ce]
+  - @hi-ui/core@5.0.0-canary.0
+  - @hi-ui/use-latest@5.0.0-canary.0
+  - @hi-ui/use-merge-refs@5.0.0-canary.0
+  - @hi-ui/use-scroll-lock@5.0.0-canary.0
+  - @hi-ui/use-toggle@5.0.0-canary.0
+  - @hi-ui/icons@5.0.0-canary.0
+  - @hi-ui/icon-button@5.0.0-canary.0
+  - @hi-ui/modal@5.0.0-canary.0
+  - @hi-ui/portal@5.0.0-canary.0
+  - @hi-ui/classname@5.0.0-canary.0
+  - @hi-ui/env@5.0.0-canary.0
+  - @hi-ui/type-assertion@5.0.0-canary.0
+
 ## 4.3.1
 
 ### Patch Changes
