@@ -1,6 +1,6 @@
 ---
-"@hi-ui/drawer": major
-"@hi-ui/hiui": major
+"@hi-ui/drawer": patch
+"@hi-ui/hiui": patch
 ---
 
-feat(drawer): 新版 Drawer (5.0)
+fix(drawer): 样式修改 (5.0)
