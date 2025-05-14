@@ -1,5 +1,27 @@
 # @hi-ui/popper
 
+## 5.0.0-canary.0
+
+### Major Changes
+
+- 225ebaa51: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [225ebaa51]
+- Updated dependencies [428716024]
+  - @hi-ui/core@5.0.0-canary.0
+  - @hi-ui/use-latest@5.0.0-canary.0
+  - @hi-ui/use-lazy-render@5.0.0-canary.0
+  - @hi-ui/use-merge-refs@5.0.0-canary.0
+  - @hi-ui/use-outside-click@5.0.0-canary.0
+  - @hi-ui/use-toggle@5.0.0-canary.0
+  - @hi-ui/portal@5.0.0-canary.0
+  - @hi-ui/classname@5.0.0-canary.0
+  - @hi-ui/dom-utils@5.0.0-canary.0
+  - @hi-ui/env@5.0.0-canary.0
+  - @hi-ui/react-utils@5.0.0-canary.0
+
 ## 4.1.6
 
 ### Patch Changes

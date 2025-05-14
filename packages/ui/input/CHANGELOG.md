@@ -1,5 +1,32 @@
 # @hi-ui/input
 
+## 5.0.0-canary.0
+
+### Major Changes
+
+- 225ebaa51: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 428716024: <br>
+  - feat(picker): 下拉选择类组件增加 xs 尺寸 (5.0)
+  - feat(input): 输入框组件增加 xs 尺寸 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [225ebaa51]
+- Updated dependencies [428716024]
+  - @hi-ui/core@5.0.0-canary.0
+  - @hi-ui/use-latest@5.0.0-canary.0
+  - @hi-ui/use-merge-refs@5.0.0-canary.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-canary.0
+  - @hi-ui/icons@5.0.0-canary.0
+  - @hi-ui/classname@5.0.0-canary.0
+  - @hi-ui/dom-utils@5.0.0-canary.0
+  - @hi-ui/env@5.0.0-canary.0
+  - @hi-ui/func-utils@5.0.0-canary.0
+  - @hi-ui/type-assertion@5.0.0-canary.0
+
 ## 4.3.0
 
 ### Minor Changes

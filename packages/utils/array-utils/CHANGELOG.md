@@ -1,5 +1,16 @@
 # @hi-ui/array-utils
 
+## 5.0.0-canary.0
+
+### Major Changes
+
+- 225ebaa51: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [225ebaa51]
+  - @hi-ui/type-assertion@5.0.0-canary.0
+
 ## 4.0.5
 
 ### Patch Changes
