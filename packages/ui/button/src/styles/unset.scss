@@ -1,18 +1,10 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 // 默认态
-$text-background-map: (
-  'primary': use-color-mode('primary'),
-  'secondary': use-color-mode('primary', 50),
-  'default': use-color('gray', 100),
-  'success': use-color-mode('success', 50),
-  'danger': use-color-mode('danger', 50),
-) !default;
-
 $text-color-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 400),
-  'default': use-color('gray', 700),
+  'default': use-color('gray', 600),
   'success': use-color-mode('success'),
   'danger': use-color-mode('danger'),
 ) !default;
@@ -21,7 +13,7 @@ $text-color-map: (
 $text-hover-background-map: (
   'primary': use-color-mode('primary', 50),
   'secondary': use-color-mode('primary', 50),
-  'default': use-color('gray', 100),
+  'default': use-color('gray', 50),
   'success': use-color-mode('success', 50),
   'danger': use-color-mode('danger', 50),
 ) !default;
@@ -29,7 +21,7 @@ $text-hover-background-map: (
 $text-hover-color-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 400),
-  'default': use-color('gray', 700),
+  'default': use-color('gray', 600),
   'success': use-color-mode('success'),
   'danger': use-color-mode('danger'),
 ) !default;
@@ -38,7 +30,7 @@ $text-hover-color-map: (
 $text-active-background-map: (
   'primary': use-color-mode('primary', 100),
   'secondary': use-color-mode('primary', 100),
-  'default': use-color('gray', 300),
+  'default': use-color('gray', 200),
   'success': use-color-mode('success', 100),
   'danger': use-color-mode('danger', 100),
 ) !default;
@@ -47,44 +39,27 @@ $text-active-background-map: (
 $text-active-color-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 400),
-  'default': use-color('gray', 700),
+  'default': use-color('gray', 600),
   'success': use-color-mode('success'),
   'danger': use-color-mode('danger'),
 ) !default;
 
-// 禁用态
-$text-disabled-background-map: (
-  'primary': use-color-mode('primary', 200),
-  'secondary': use-color-mode('primary', 50),
-  'default': use-color('gray', 100),
-  'success': use-color-mode('success', 50),
-  'danger': use-color-mode('danger', 50),
-) !default;
-
-$text-disabled-color-map: (
+// loading 态
+$text-loading-color-map: (
   'primary': use-color-mode('primary', 300),
   'secondary': use-color-mode('primary', 200),
-  'default': use-color('gray', 500),
+  'default': use-color('gray', 400),
   'success': use-color-mode('success', 300),
   'danger': use-color-mode('danger', 300),
 ) !default;
 
-// focus 态
-$text-focus-shadow-map: (
-  'primary': use-color-mode('primary', 200),
-  'secondary': use-color-mode('primary', 100),
-  'default': use-color('gray', 200),
-  'success': use-color-mode('success', 200),
-  'danger': use-color-mode('danger', 200),
-) !default;
-
 // 禁用态
 $text-disabled-color-map: (
-  'primary': use-color-mode('primary', 300),
-  'secondary': use-color-mode('primary', 200),
-  'default': use-color('gray', 500),
-  'success': use-color-mode('success', 300),
-  'danger': use-color-mode('danger', 300),
+  'primary': use-color('gray', 400),
+  'secondary': use-color('gray', 400),
+  'default': use-color('gray', 400),
+  'success': use-color('gray', 400),
+  'danger': use-color('gray', 400),
 ) !default;
 
 // focus 态
@@ -163,6 +138,10 @@ $text-focus-shadow-map: (
 
         &.#{$prefix}--disabled {
           color: map-get($text-disabled-color-map, $key);
+        }
+
+        &.#{$prefix}--loading {
+          color: map-get($text-loading-color-map, $key);
         }
       }
     }
