@@ -249,7 +249,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
   }
 
   &__footer {
-    padding: 0 use-spacing(10) use-spacing(10);
+    padding: use-spacing(8) use-spacing(10);
     flex-shrink: 0;
     position: relative;
 
