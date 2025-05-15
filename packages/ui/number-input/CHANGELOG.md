@@ -1,5 +1,11 @@
 # @hi-ui/number-input
 
+## 4.2.1
+
+### Patch Changes
+
+- [#3160](https://github.com/XiaoMi/hiui/pull/3160) [`3244e5a`](https://github.com/XiaoMi/hiui/commit/3244e5a94d1cfa3d85a65bc8804a21b8b60b80a4) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(number-input): 容器元素增加默认的白色背景
+
 ## 4.2.0
 
 ### Minor Changes

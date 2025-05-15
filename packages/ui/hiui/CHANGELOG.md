@@ -1,5 +1,20 @@
 # @hi-ui/hiui
 
+## 4.12.1
+
+### Patch Changes
+
+- [#3160](https://github.com/XiaoMi/hiui/pull/3160) [`3244e5a`](https://github.com/XiaoMi/hiui/commit/3244e5a94d1cfa3d85a65bc8804a21b8b60b80a4) Thanks [@zyprepare](https://github.com/zyprepare)! - <br>
+
+  - feat(form): 入口新增 FormLabel 组件导出
+  - feat(form): 更新 FormListProps 中 children 渲染函数中 fields 参数的类型
+
+- [#3160](https://github.com/XiaoMi/hiui/pull/3160) [`3244e5a`](https://github.com/XiaoMi/hiui/commit/3244e5a94d1cfa3d85a65bc8804a21b8b60b80a4) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(number-input): 容器元素增加默认的白色背景
+
+- Updated dependencies [[`3244e5a`](https://github.com/XiaoMi/hiui/commit/3244e5a94d1cfa3d85a65bc8804a21b8b60b80a4), [`3244e5a`](https://github.com/XiaoMi/hiui/commit/3244e5a94d1cfa3d85a65bc8804a21b8b60b80a4)]:
+  - @hi-ui/form@4.3.2
+  - @hi-ui/number-input@4.2.1
+
 ## 4.12.0
 
 ### Minor Changes
