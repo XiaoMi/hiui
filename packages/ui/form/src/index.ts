@@ -20,5 +20,6 @@ export * from './FormItem'
 export * from './FormList'
 export * from './FormSubmit'
 export * from './FormReset'
+export * from './FormLabel'
 
 export * from './types'

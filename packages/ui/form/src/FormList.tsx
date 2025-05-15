@@ -122,7 +122,7 @@ export const FormList = forwardRef<HTMLDivElement | null, FormListProps>(
           symbol: fieldListSymbol,
           value: value,
         }
-      })
+      }) as FormListChildField[]
     }, [values, name])
 
     // @ts-ignore
@@ -147,11 +147,27 @@ export const FormList = forwardRef<HTMLDivElement | null, FormListProps>(
   }
 )
 
+export interface FormListChildField {
+  /**
+   * 字段名
+   * - 实际上是元素在数组中的索引
+   */
+  name: string
+  /**
+   * 字段符号
+   */
+  symbol: typeof fieldListSymbol
+  /**
+   * 字段值
+   */
+  value: unknown
+}
+
 export interface FormListProps extends HiBaseHTMLProps<'div'> {
   /**
    * 表单控件渲染函数
    */
-  children?: (fields: any[], action: FormListChildrenAction) => React.ReactElement
+  children?: (fields: FormListChildField[], action: FormListChildrenAction) => React.ReactElement
   /**
    * 列表名称
    */
