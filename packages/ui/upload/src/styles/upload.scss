@@ -1,13 +1,15 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-upload' !default;
+$upload-state-height: 2px !default;
 
 .#{$prefix} {
   &__tips {
-    font-size: use-text-size('sm');
+    display: inline-flex;
+    margin-left: use-spacing(4);
+    line-height: use-text-lineheight('md');
+    font-size: use-text-size('md');
     color: use-color('gray', 500);
-    line-height: use-text-lineheight('sm');
-    margin-top: use-spacing(4);
 
     &--single-line {
       display: block;
@@ -45,59 +47,56 @@ $prefix: '#{$component-prefix}-upload' !default;
 
   &__delete-btn,
   &__error-btn {
-    .#{$prefix} & {
-      // font-size: 40px;
-      // color: use-color('gray', 100);
-      width: 40px;
-      height: 40px;
-      line-height: 40px;
-      flex-shrink: 0;
-      background-color: use-color-mode('error');
-      border-radius: use-border-radius('full');
-      font-size: use-text-size('xxl');
-      color: use-color-static('white');
-      text-align: center;
-    }
+    display: flex;
+    font-size: use-text-size('lg');
+  }
+
+  &__error-btn {
+    color: use-color-mode('error');
+  }
+
+  &___del-btn {
+    color: use-color-static('white');
   }
 
   &__item {
-    height: 32px;
-    cursor: default;
-    color: use-color('gray', 800);
-    background: use-color('gray', 50);
-    display: flex;
-    border-radius: use-border-radius('normal');
-    padding: use-spacing(4);
-    margin-top: use-spacing(3);
-    box-sizing: border-box;
-    align-items: center;
-    overflow: hidden;
     position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    margin-top: use-spacing(4);
+    border: 1px solid use-color('gray', 300);
+    border-radius: use-border-radius('normal');
+    overflow: hidden;
+    cursor: pointer;
 
-    &:focus {
-      background: use-color-mode('primary', 50);
-      outline: 0;
+    &.#{$prefix}__item--status-success:hover {
+      background: use-color('gray', 300);
     }
 
-    a.#{$prefix}__filename {
+    &.#{$prefix}__item--status-error {
+      border-color: use-color-mode('error');
+    }
+
+    .#{$prefix}__filename {
+      margin-right: use-spacing(4);
       text-decoration: none;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
       font-size: use-text-size('normal');
-      cursor: pointer;
-      color: use-color('gray', 800);
+      line-height: use-text-lineheight('normal');
+      color: use-color('gray', 700);
+    }
 
-      &:not(.#{$prefix}__filename--error):hover {
-        color: use-color-mode('primary');
-      }
+    &-icon,
+    &-img {
+      display: inline-flex;
+      height: 100%;
 
-      &--error {
-        color: use-color-mode('error');
-
-        &:not([href]) {
-          color: use-color-mode('error');
-        }
+      svg,
+      img {
+        height: 100%;
       }
     }
 
@@ -112,28 +111,90 @@ $prefix: '#{$component-prefix}-upload' !default;
     }
   }
 
+  &__list--size-xs {
+    .#{$prefix}__item {
+      height: use-height-size(6);
+      padding: 0;
+      align-items: unset;
+      border: unset;
+      border-radius: unset;
+
+      &:hover {
+        background: unset;
+      }
+
+      .#{$prefix}__right-content {
+        height: calc(#{use-height-size(6)} - $upload-state-height);
+      }
+
+      &.#{$prefix}__item--status-success {
+        .#{$prefix}__filename {
+          color: use-color-mode('primary');
+        }
+      }
+
+      &.#{$prefix}__item--status-error {
+        .#{$prefix}__filename,
+        .#{$prefix}__del-btn {
+          color: use-color-mode('error');
+        }
+
+        .#{$prefix}__del-btn {
+          &:hover {
+            background-color: use-color-mode('error', 100);
+          }
+        }
+      }
+
+      &:not(.#{$prefix}__item--status-loading) {
+        .#{$prefix}__right-content {
+          flex: 0 0 auto;
+        }
+      }
+    }
+  }
+
+  &__list--size-md {
+    .#{$prefix}__item {
+      height: use-height-size(8);
+      padding: use-spacing(2) use-spacing(4);
+    }
+  }
+
+  &__list--size-lg {
+    .#{$prefix}__item {
+      height: use-height-size(15);
+      padding: use-spacing(4) use-spacing(6);
+
+      .#{$prefix}__file-size {
+        font-size: use-text-size('sm');
+        line-height: use-text-lineheight('sm');
+        color: use-color('gray', 500);
+      }
+    }
+  }
+
   &__right-content {
     position: relative;
     display: flex;
     flex: 1;
     justify-content: space-between;
     align-items: center;
-    padding-left: 8px;
+    padding-left: use-spacing(2);
     overflow: hidden;
     font-size: use-text-size('normal');
   }
 
   &__upstatus {
     width: 100%;
-    height: 2px;
-    background: use-color('gray', 200);
+    height: $upload-state-height;
     position: absolute;
     bottom: 0;
     left: 0;
 
     &-line {
       display: inline-block;
-      height: 2px;
+      height: $upload-state-height;
       width: 0;
       background: use-color-mode('primary');
       border-radius: 4px 0 0 4px;
@@ -256,8 +317,8 @@ $prefix: '#{$component-prefix}-upload' !default;
     }
 
     .#{$prefix}__item {
-      width: 88px;
-      height: 88px;
+      // width: 88px;
+      // height: 88px;
       display: inline-block;
       position: relative;
       text-align: center;
@@ -289,12 +350,14 @@ $prefix: '#{$component-prefix}-upload' !default;
       }
 
       &--upload {
-        text-align: center;
-        font-size: 28px;
-        color: use-color('gray', 500);
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: use-color('gray', 700);
         border: 1px dashed use-color('gray', 300);
         transition: border-color 0.3s;
-        line-height: 88px;
         margin-inline-end: 0;
 
         &:hover {
@@ -304,6 +367,12 @@ $prefix: '#{$component-prefix}-upload' !default;
         &:focus {
           border-color: use-color-mode('primary');
         }
+      }
+
+      .#{$prefix}__item__upload-text {
+        font-size: use-text-size('sm');
+        line-height: use-text-lineheight('sm');
+        color: use-color('gray', 700);
       }
 
       .#{$prefix}__action-group {
@@ -319,31 +388,26 @@ $prefix: '#{$component-prefix}-upload' !default;
       .#{$prefix}__delete-btn,
       .#{$prefix}__error-btn {
         position: absolute;
-        display: inline-block;
-        transition-property: transform, visibility;
-        transition-duration: use-motion-duration('normal');
-        transition-timing-function: use-motion-bezier('normal');
       }
 
       .#{$prefix}__delete-btn {
-        visibility: hidden;
-        transform: translateY(-200%);
+        transition-property: transform, opacity;
+        transition-duration: use-motion-duration('normal');
+        transition-timing-function: use-motion-bezier('normal');
+        opacity: 0;
       }
 
       .#{$prefix}__error-btn {
         visibility: visible;
-        transform: translateY(0%);
       }
 
       &:hover {
         .#{$prefix}__delete-btn {
-          visibility: visible;
-          transform: translateY(0%);
+          opacity: 1;
         }
 
         .#{$prefix}__error-btn {
           visibility: hidden;
-          transform: translateY(200%);
         }
 
         .#{$prefix}__mask {
@@ -356,45 +420,51 @@ $prefix: '#{$component-prefix}-upload' !default;
   }
 
   &--photo {
-    .#{$prefix}__item--small {
-      width: 88px;
-      height: 88px;
-      line-height: 88px;
-
-      .#{$prefix}__thumb {
-        max-width: 88px;
-        max-height: 88px;
-      }
-    }
-
-    .#{$prefix}__item--large {
-      width: 200px;
-      height: 200px;
-      line-height: 200px;
-
-      .#{$prefix}__thumb {
-        max-width: 200px;
-        max-height: 200px;
-      }
+    .#{$prefix}__thumb {
+      max-width: 100%;
+      max-height: 100%;
     }
   }
 
   &__thumb {
-    max-width: 88px;
-    max-height: 88px;
+    max-width: 100%;
+    max-height: 100%;
   }
 
-  &--avatar {
-    .#{$prefix}__item {
-      width: 88px;
-      height: 88px;
+  &--avatar,
+  &--photo {
+    .#{$prefix}__list {
+      &.#{$prefix}__list--size-sm {
+        .#{$prefix}__item, .#{$prefix}__item--upload {
+          width: use-height-size(14);
+          height: use-height-size(14);
+        }
+      }
+
+      &.#{$prefix}__list--size-md {
+        .#{$prefix}__item, .#{$prefix}__item--upload {
+          width: use-height-size(18);
+          height: use-height-size(18);
+        }
+      }
+
+      &.#{$prefix}__list--size-lg {
+        .#{$prefix}__item, .#{$prefix}__item--upload {
+          width: use-height-size(22);
+          height: use-height-size(22);
+        }
+      }
     }
+
     .#{$prefix}__item--upload {
-      width: 88px;
-      height: 88px;
-      line-height: 88px;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       box-sizing: border-box;
       cursor: pointer;
+      font-size: 20px;
+      color: use-color('gray', 700);
 
       &:focus {
         border-color: use-color-mode('primary');

@@ -15,7 +15,7 @@ import {
   WordColorful,
   QuestionColorful,
 } from '@hi-ui/icons'
-
+import { formatFileSize } from './utils'
 const UPLOAD_PREFIX = getPrefixCls('upload')
 const fileTypeMap = {
   img: <JpgColorful />,
@@ -34,7 +34,16 @@ const fileTypeMap = {
 
 export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
   (
-    { prefixCls = UPLOAD_PREFIX, onDownload, onDelete, fileList, showPic, actionRender, disabled },
+    {
+      prefixCls = UPLOAD_PREFIX,
+      onDownload,
+      onDelete,
+      fileList,
+      showPic,
+      actionRender,
+      disabled,
+      size = 'md',
+    },
     ref
   ) => {
     const handleItemKeydown = useCallback(
@@ -74,58 +83,67 @@ export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
     }
 
     return (
-      <ul className={`${prefixCls}__list`} ref={ref}>
+      <ul className={`${prefixCls}__list ${prefixCls}__list--size-${size}`} ref={ref}>
         {fileList.map((file, index) => {
+          const { name, fileType, uploadState, url, progressNumber, size: fileSize } = file
+
           return (
-            <li
+            <a
               key={index}
-              className={`${prefixCls}__item`}
-              title={file.name}
-              tabIndex={0}
-              onKeyDown={(e) => {
-                handleItemKeydown(e, file, index)
+              tabIndex={-1}
+              target="_blank"
+              rel="noreferrer"
+              href={url}
+              title={name}
+              style={{ textDecoration: 'none' }}
+              onClick={(e) => {
+                if (uploadState !== 'success') {
+                  e.preventDefault()
+                  return
+                }
+
+                if (onDownload) {
+                  e.preventDefault()
+                  onDownload(file)
+                }
               }}
             >
-              {showPic && file.url ? (
-                <div className={`${prefixCls}__item-img`}>
-                  <img src={file.url} />
+              <li
+                className={`${prefixCls}__item ${prefixCls}__item--status-${uploadState}`}
+                title={name}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  handleItemKeydown(e, file, index)
+                }}
+              >
+                {showPic && url ? (
+                  <div className={`${prefixCls}__item-img`}>
+                    <img src={url} />
+                  </div>
+                ) : (
+                  <div className={`${prefixCls}__item-icon`}>
+                    {(fileType && fileTypeMap[fileType]) || fileTypeMap.default}
+                  </div>
+                )}
+                <div className={`${prefixCls}__right-content`}>
+                  <div className={`${prefixCls}__content-wrapper`}>
+                    <div className={`${prefixCls}__filename`}>{name}</div>
+                    {fileSize && size === 'lg' && (
+                      <div className={`${prefixCls}__file-size`}>{formatFileSize(fileSize)}</div>
+                    )}
+                  </div>
+                  {renderAction(file, index)}
                 </div>
-              ) : (
-                <span className={`${prefixCls}__item-icon`}>
-                  {(file.fileType && fileTypeMap[file.fileType]) || fileTypeMap.default}
-                </span>
-              )}
-              <div className={`${prefixCls}__right-content`}>
-                <a
-                  tabIndex={-1}
-                  target="_blank"
-                  rel="noreferrer"
-                  href={file.url}
-                  className={cx(
-                    `${prefixCls}__filename`,
-                    file.uploadState === 'error' && `${prefixCls}__filename--error`
-                  )}
-                  title={file.name}
-                  onClick={(e) => {
-                    if (onDownload) {
-                      e.preventDefault()
-                      onDownload(file)
-                    }
-                  }}
-                >
-                  {file.name}
-                </a>
-                {renderAction(file, index)}
-              </div>
-              {file.uploadState === 'loading' && (
-                <div className={`${prefixCls}__upstatus`}>
-                  <i
-                    className={`${prefixCls}__upstatus-line`}
-                    style={{ width: file.progressNumber + '%' }}
-                  />
-                </div>
-              )}
-            </li>
+                {uploadState === 'loading' && (
+                  <div className={`${prefixCls}__upstatus`}>
+                    <i
+                      className={`${prefixCls}__upstatus-line`}
+                      style={{ width: progressNumber + '%' }}
+                    />
+                  </div>
+                )}
+              </li>
+            </a>
           )
         })}
       </ul>
