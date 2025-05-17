@@ -94,7 +94,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
             [`${prefixCls}--hover-enable`]: editable || closeable,
           }
         ),
-      [prefixCls, className, type, appearance, size, editable, isInEdit, closeable, shape]
+      [prefixCls, className, type, appearance, size, shape, editable, isInEdit, closeable]
     )
 
     useEffect(() => {

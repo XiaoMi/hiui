@@ -171,6 +171,15 @@ export const Validate = () => {
           <FormItem>
             <>
               <Button
+                type="default"
+                appearance="line"
+                onClick={() => {
+                  formRef.current?.reset()
+                }}
+              >
+                重置
+              </Button>
+              <Button
                 type="primary"
                 onClick={() => {
                   console.log(formRef.current?.getFieldsValue())
@@ -186,14 +195,6 @@ export const Validate = () => {
                 }}
               >
                 提交
-              </Button>
-              <Button
-                type="default"
-                onClick={() => {
-                  formRef.current?.reset()
-                }}
-              >
-                重置
               </Button>
               <Button
                 type="danger"
