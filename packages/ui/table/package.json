@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/table",
-  "version": "5.0.0-canary.0",
+  "version": "5.0.0-canary.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,11 +45,11 @@
   },
   "dependencies": {
     "@hi-ui/array-utils": "^5.0.0-canary.0",
-    "@hi-ui/button": "^5.0.0-canary.0",
+    "@hi-ui/button": "^5.0.0-canary.1",
     "@hi-ui/checkbox": "^5.0.0-canary.0",
     "@hi-ui/classname": "^5.0.0-canary.0",
     "@hi-ui/dom-utils": "^5.0.0-canary.0",
-    "@hi-ui/drawer": "^5.0.0-canary.0",
+    "@hi-ui/drawer": "^5.0.0-canary.1",
     "@hi-ui/empty-state": "^5.0.0-canary.0",
     "@hi-ui/env": "^5.0.0-canary.0",
     "@hi-ui/func-utils": "^5.0.0-canary.0",
@@ -57,7 +57,7 @@
     "@hi-ui/icons": "^5.0.0-canary.0",
     "@hi-ui/loading": "^5.0.0-canary.0",
     "@hi-ui/object-utils": "^5.0.0-canary.0",
-    "@hi-ui/pagination": "^5.0.0-canary.0",
+    "@hi-ui/pagination": "^5.0.0-canary.1",
     "@hi-ui/popper": "^5.0.0-canary.0",
     "@hi-ui/react-utils": "^5.0.0-canary.0",
     "@hi-ui/scrollbar": "^5.0.0-canary.0",
@@ -84,7 +84,7 @@
   },
   "devDependencies": {
     "@hi-ui/core": "^5.0.0-canary.0",
-    "@hi-ui/core-css": "^5.0.0-canary.0",
+    "@hi-ui/core-css": "^5.0.0-canary.1",
     "@types/react-resizable": "^1.7.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

@@ -1,5 +1,12 @@
 # @hi-ui/tooltip
 
+## 5.0.0-canary.1
+
+### Patch Changes
+
+- 3903bd4ff: fix: 修复 5.0 UI 问题 (5.0)
+- 3903bd4ff: style(tooltip): 去掉背景色透明度 (5.0)
+
 ## 5.0.0-canary.0
 
 ### Major Changes
