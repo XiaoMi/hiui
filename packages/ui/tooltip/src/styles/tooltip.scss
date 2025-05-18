@@ -3,8 +3,8 @@
 $prefix: '#{$component-prefix}-tooltip' !default;
 
 .#{$prefix} {
-  $content-color: use-color('gray', 800, 0.8);
-  $arrow-color: use-color('gray', 800, 0.8);
+  $content-color: use-color('gray', 800);
+  $arrow-color: use-color('gray', 800);
   $font-color: use-color-static('white');
 
   box-sizing: border-box;
