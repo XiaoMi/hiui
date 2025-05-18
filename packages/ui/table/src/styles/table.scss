@@ -206,7 +206,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     width: 100%;
     overflow: hidden;
 
-    .hi-v4-table-cell {
+    .#{$component-prefix}-table-cell {
       box-sizing: border-box;
     }
   }
