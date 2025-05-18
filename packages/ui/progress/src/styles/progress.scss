@@ -173,7 +173,7 @@ $circle-progress-prefix: '#{$component-prefix}-circle-progress' !default;
 
     @each $key, $value in $progress-color-map {
       &--#{$key} {
-        svg[class^=hi-v4-icon] {
+        svg[class^=#{$component-prefix}-icon] {
           color: $value;
         }
       }
@@ -222,7 +222,7 @@ $dashboard-progress-prefix: '#{$component-prefix}-dashboard-progress' !default;
 
     @each $key, $value in $progress-color-map {
       &--#{$key} {
-        svg[class^=hi-v4-icon] {
+        svg[class^=#{$component-prefix}-icon] {
           color: $value;
         }
       }

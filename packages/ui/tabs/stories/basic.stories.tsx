@@ -8,13 +8,22 @@ import Button from '@hi-ui/button'
  */
 export const Basic = () => {
   const [activeTab, setActiveTab] = React.useState<React.ReactText>('1')
+  const [showDivider, setShowDivider] = React.useState<boolean>(false)
 
   return (
     <>
       <h1>Basic</h1>
       <div className="tabs-basic__wrap">
         <Button onClick={() => setActiveTab('2')}>更新面板</Button>
-        <Tabs style={{ marginTop: 16 }} activeId={activeTab} onChange={setActiveTab}>
+        <Button onClick={() => setShowDivider(!showDivider)}>
+          {showDivider ? '隐藏下划线' : '显示下划线'}
+        </Button>
+        <Tabs
+          style={{ marginTop: 16 }}
+          activeId={activeTab}
+          onChange={setActiveTab}
+          showDivider={showDivider}
+        >
           <TabPane tabId="1" tabTitle="Tab 1">
             <div
               style={{

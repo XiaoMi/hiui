@@ -41,8 +41,8 @@ $prefix: '#{$component-prefix}-drawer' !default;
   &--motion-enter-done,
   &--motion-exit,
   &--motion-exit-active {
-    width: var(--hi-v4-drawer-body-width, 100%);
-    height: var(--hi-v4-drawer-body-height, 100%);
+    width: var(--#{$component-prefix}-drawer-body-width, 100%);
+    height: var(--#{$component-prefix}-drawer-body-height, 100%);
   }
 
   &__wrapper {
@@ -73,7 +73,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
     .#{$prefix}--placement-right & {
       top: 0;
       bottom: 0;
-      width: var(--hi-v4-drawer-body-width, 404px);
+      width: var(--#{$component-prefix}-drawer-body-width, 404px);
       height: 100%;
       max-height: 100%;
     }
@@ -124,7 +124,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
     .#{$prefix}--placement-bottom & {
       left: 0;
       right: 0;
-      height: var(--hi-v4-drawer-body-height, 404px);
+      height: var(--#{$component-prefix}-drawer-body-height, 404px);
       width: 100%;
       max-width: 100%;
     }
@@ -232,7 +232,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
     }
 
     .#{$prefix}--size-md & {
-      padding: use-spacing(9) use-spacing(10);
+      padding: use-spacing(10);
     }
   }
 

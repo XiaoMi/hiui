@@ -27,7 +27,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
     }
 
     .#{$sidebar-prefix}-toggle {
-      svg[class^=hi-v4-icon] {
+      svg[class^=#{$component-prefix}-icon] {
         transform: rotate(180deg);
       }
     }
@@ -96,7 +96,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
       height: 20px;
       color: use-color('gray', 600);
 
-      svg[class^=hi-v4-icon] {
+      svg[class^=#{$component-prefix}-icon] {
         width: 20px;
         height: 20px;
       }
@@ -194,7 +194,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
   color: use-color('gray', 600);
   background-color: #fff;
 
-  svg[class^=hi-v4-icon] {
+  svg[class^=#{$component-prefix}-icon] {
     margin-left: -4px;
   }
 }

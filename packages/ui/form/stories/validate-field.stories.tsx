@@ -171,6 +171,15 @@ export const ValidateField = () => {
 
           <FormItem valueType={null} field={null}>
             <>
+              <FormReset
+                type="default"
+                appearance="line"
+                onClick={() => {
+                  console.log('reset form')
+                }}
+              >
+                重置
+              </FormReset>
               <FormSubmit
                 type="primary"
                 onClick={() => {
@@ -179,14 +188,6 @@ export const ValidateField = () => {
               >
                 提交
               </FormSubmit>
-              <FormReset
-                type="default"
-                onClick={() => {
-                  console.log('reset form')
-                }}
-              >
-                重置
-              </FormReset>
             </>
           </FormItem>
         </Form>

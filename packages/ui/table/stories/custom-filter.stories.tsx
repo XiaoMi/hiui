@@ -146,6 +146,9 @@ export const CustomFilter = () => {
               }}
             />
             <div style={{ marginTop: '8px' }}>
+              <Button onClick={() => setFilterDropdownVisible(false)} appearance="line" size="sm">
+                取消
+              </Button>
               <Button
                 onClick={() => {
                   customFilterData(keyword, 'name')
@@ -155,9 +158,6 @@ export const CustomFilter = () => {
                 size="sm"
               >
                 确定
-              </Button>
-              <Button onClick={() => setFilterDropdownVisible(false)} size="sm">
-                取消
               </Button>
             </div>
           </div>

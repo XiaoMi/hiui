@@ -23,6 +23,7 @@ export const Action = () => {
                 <>
                   <Button
                     type="default"
+                    appearance="line"
                     onClick={() => {
                       if (notificationIdRef.current) {
                         notification.close(notificationIdRef.current)

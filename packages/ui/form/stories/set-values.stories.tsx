@@ -81,6 +81,13 @@ export const SetValues = () => {
           </FormItem>
           <FormItem field={null} valueType={null}>
             <>
+              <FormReset
+                onClick={() => {
+                  console.log('reset form')
+                }}
+              >
+                重置
+              </FormReset>
               <FormSubmit
                 type="primary"
                 onClick={() => {
@@ -89,13 +96,6 @@ export const SetValues = () => {
               >
                 提交
               </FormSubmit>
-              <FormReset
-                onClick={() => {
-                  console.log('reset form')
-                }}
-              >
-                重置
-              </FormReset>
               <Button
                 type="primary"
                 appearance="link"

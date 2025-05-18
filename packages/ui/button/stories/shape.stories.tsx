@@ -15,6 +15,10 @@ export const Shape = () => {
       <h1>不同形状</h1>
       <div className="button-basic__wrap">
         <div style={{ marginBottom: 24 }}>
+          <Button type="primary" size="xs">
+            超小号按钮
+          </Button>
+          <Button type="primary" icon={<PlusOutlined />} size="xs" />
           <Button type="primary" size="sm">
             小号按钮
           </Button>
@@ -25,12 +29,12 @@ export const Shape = () => {
             大号按钮
           </Button>
           <Button type="primary" icon={<PlusOutlined />} size="lg" />
-          <Button type="primary" size="xl">
-            超大号按钮
-          </Button>
-          <Button type="primary" icon={<PlusOutlined />} size="xl" />
         </div>
         <div style={{ marginBottom: 24 }}>
+          <Button type="primary" shape="round" size="xs">
+            超小号按钮
+          </Button>
+          <Button type="primary" shape="round" icon={<PlusOutlined />} size="xs" />
           <Button type="primary" shape="round" size="sm">
             小号按钮
           </Button>
@@ -43,10 +47,6 @@ export const Shape = () => {
             大号按钮
           </Button>
           <Button type="primary" shape="round" icon={<PlusOutlined />} size="lg" />
-          <Button type="primary" shape="round" size="xl">
-            超大号按钮
-          </Button>
-          <Button type="primary" shape="round" icon={<PlusOutlined />} size="xl" />
         </div>
       </div>
     </>
