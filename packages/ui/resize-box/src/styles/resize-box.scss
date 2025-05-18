@@ -22,7 +22,7 @@ $prefix: '#{$component-prefix}-resize-box' !default;
       .#{$prefix}-toggle {
         right: -13px;
 
-        svg[class^=hi-v4-icon] {
+        svg[class^=#{$component-prefix}-icon] {
           transform: rotate(180deg);
         }
       }
@@ -79,7 +79,7 @@ $prefix: '#{$component-prefix}-resize-box' !default;
     color: use-color('gray', 600);
     background-color: #fff;
 
-    svg[class^=hi-v4-icon] {
+    svg[class^=#{$component-prefix}-icon] {
       margin-left: -4px;
     }
   }

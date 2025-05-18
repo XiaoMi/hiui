@@ -570,7 +570,6 @@ export const useTable = ({
     const style: React.CSSProperties = {
       position: sticky ? 'sticky' : 'relative',
       top: sticky ? stickyTop : undefined,
-      boxShadow: maxHeight ? '0px 2px 6px 0px rgba(0,0,0,0.12)' : undefined,
       overflow: 'hidden',
       zIndex: sticky ? 10 : undefined,
     }
@@ -579,7 +578,7 @@ export const useTable = ({
       style,
       'data-sticky': setAttrStatus(sticky),
     }
-  }, [sticky, stickyTop, maxHeight])
+  }, [sticky, stickyTop])
 
   const isTreeView = useMemo(() => {
     return isArrayNonEmpty(data)

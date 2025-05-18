@@ -161,7 +161,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const getTagWidth = useCallback(
       (index: number) => {
         if (!containerElement) return MIN_WIDTH
-        const elements = containerElement.getElementsByClassName('hi-v4-menu-item')
+        const elements = containerElement.getElementsByClassName('hi-v5-menu-item')
         const element = elements && elements[index]
         if (!element) return MIN_WIDTH
         return element.getBoundingClientRect().width
