@@ -1,5 +1,19 @@
 # @hi-ui/tag
 
+## 5.0.0-canary.1
+
+### Minor Changes
+
+- 3903bd4ff: feat(tag): 增加 type 值 (5.0)
+
+### Patch Changes
+
+- 3903bd4ff: fix: 修复 5.0 UI 问题 (5.0)
+- Updated dependencies [3903bd4ff]
+- Updated dependencies [3903bd4ff]
+  - @hi-ui/button@5.0.0-canary.1
+  - @hi-ui/tooltip@5.0.0-canary.1
+
 ## 5.0.0-canary.0
 
 ### Major Changes

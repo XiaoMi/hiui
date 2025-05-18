@@ -1,5 +1,13 @@
 # @hi-ui/tree
 
+## 5.0.0-canary.1
+
+### Patch Changes
+
+- 3903bd4ff: chore: 将代码中 v4 改为 v5 (5.0)
+- Updated dependencies [3903bd4ff]
+  - @hi-ui/input@5.0.0-canary.1
+
 ## 5.0.0-canary.0
 
 ### Major Changes

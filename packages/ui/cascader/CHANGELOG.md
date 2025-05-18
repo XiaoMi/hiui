@@ -1,5 +1,14 @@
 # @hi-ui/cascader
 
+## 5.0.0-canary.1
+
+### Patch Changes
+
+- 3903bd4ff: fix: 修复 5.0 UI 问题 (5.0)
+- Updated dependencies [3903bd4ff]
+  - @hi-ui/input@5.0.0-canary.1
+  - @hi-ui/picker@5.0.0-canary.1
+
 ## 5.0.0-canary.0
 
 ### Major Changes
