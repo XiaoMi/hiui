@@ -40,6 +40,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       onDragEnd,
       type = 'line',
       size = 'md',
+      showDivider,
       extra,
       ...rest
     },
@@ -197,6 +198,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
           `${prefixCls}__list--placement-${direction}`,
           { [`${prefixCls}__list--type-${type}`]: type },
           { [`${prefixCls}__list--size-${size}`]: size },
+          { [`${prefixCls}__list--show-divider`]: showDivider },
           className
         )}
         ref={ref}
@@ -340,6 +342,10 @@ export interface TabListProps
    * 大小
    */
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * 是否显示下划线
+   */
+  showDivider?: boolean
   /**
    * 右侧的拓展区域
    */

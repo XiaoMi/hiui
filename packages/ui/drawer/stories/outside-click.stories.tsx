@@ -67,6 +67,7 @@ export const OutsideClick = () => {
           onOutsideClick={(e) => {
             // console.log('target', e.target)
 
+            console.log('dom', wrapperRef.current?.contains(e.target as Element))
             if (!wrapperRef.current?.contains(e.target as Element)) {
               setVisible(false)
             }
