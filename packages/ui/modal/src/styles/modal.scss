@@ -166,6 +166,7 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
     flex: 1;
     padding: 0 use-spacing(10);
     font-size: use-text-size('normal');
+    line-height: use-text-lineheight('normal');
     color: use-color('gray', 700);
   }
 

@@ -63,7 +63,7 @@ export const decorators = [
     const { direction } = context.globals;
     // TODO: Inject Container placed UI
     return (
-      <div className="hi-v4-box" style={{
+      <div className="hi-v5-box" style={{
         direction,
         border: '1px solid rgb(230, 231, 232)',
         borderRadius: 2,
