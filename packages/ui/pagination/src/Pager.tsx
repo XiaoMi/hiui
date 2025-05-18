@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
+import { EllipsisOutlined } from '@hi-ui/icons'
 
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
@@ -39,7 +40,7 @@ export const Pager: React.FC<PagerProps> = ({
       onKeyPress={handleKeyPress}
       tabIndex={page !== '...' ? 0 : -1}
     >
-      {page}
+      {page === '...' ? <EllipsisOutlined style={{ fontSize: '14px' }} /> : page}
     </li>
   )
 }
