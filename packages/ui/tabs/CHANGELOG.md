@@ -1,5 +1,11 @@
 # @hi-ui/tabs
 
+## 5.0.0-canary.1
+
+### Minor Changes
+
+- 3903bd4ff: feat(tabs): 增加 showDivider 参数 (5.0)
+
 ## 5.0.0-canary.0
 
 ### Major Changes

@@ -1,5 +1,51 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.1
+
+### Minor Changes
+
+- 3903bd4ff: feat(tag): 增加 type 值 (5.0)
+- 3903bd4ff: feat(tabs): 增加 showDivider 参数 (5.0)
+
+### Patch Changes
+
+- 3903bd4ff: chore: 将代码中 v4 改为 v5 (5.0)
+- 3903bd4ff: fix: 修复 5.0 UI 问题 (5.0)
+- 3903bd4ff: style(tooltip): 去掉背景色透明度 (5.0)
+- 3903bd4ff: style(message): 增加边框 (5.0)
+- 3903bd4ff: chore(textarea): 设置最小高度 32px (5.0)
+- Updated dependencies [3903bd4ff]
+- Updated dependencies [3903bd4ff]
+- Updated dependencies [3903bd4ff]
+- Updated dependencies [3903bd4ff]
+- Updated dependencies [3903bd4ff]
+- Updated dependencies [3903bd4ff]
+- Updated dependencies [3903bd4ff]
+  - @hi-ui/back-top@5.0.0-canary.1
+  - @hi-ui/check-cascader@5.0.0-canary.1
+  - @hi-ui/descriptions@5.0.0-canary.1
+  - @hi-ui/grid@5.0.0-canary.1
+  - @hi-ui/menu@5.0.0-canary.1
+  - @hi-ui/progress@5.0.0-canary.1
+  - @hi-ui/provider@5.0.0-canary.1
+  - @hi-ui/table@5.0.0-canary.1
+  - @hi-ui/tree@5.0.0-canary.1
+  - @hi-ui/upload@5.0.0-canary.1
+  - @hi-ui/button@5.0.0-canary.1
+  - @hi-ui/cascader@5.0.0-canary.1
+  - @hi-ui/drawer@5.0.0-canary.1
+  - @hi-ui/form@5.0.0-canary.1
+  - @hi-ui/input@5.0.0-canary.1
+  - @hi-ui/message@5.0.0-canary.1
+  - @hi-ui/modal@5.0.0-canary.1
+  - @hi-ui/notification@5.0.0-canary.1
+  - @hi-ui/pagination@5.0.0-canary.1
+  - @hi-ui/picker@5.0.0-canary.1
+  - @hi-ui/tag@5.0.0-canary.1
+  - @hi-ui/tooltip@5.0.0-canary.1
+  - @hi-ui/tabs@5.0.0-canary.1
+  - @hi-ui/textarea@5.0.0-canary.1
+
 ## 5.0.0-canary.0
 
 ### Major Changes
