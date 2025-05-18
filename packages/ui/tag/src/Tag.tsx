@@ -187,7 +187,17 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    * 类型状态
    * @default 'default'
    */
-  type?: 'primary' | 'success' | 'warning' | 'danger' | 'default'
+  type?:
+    | 'primary'
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'default'
+    | 'orange'
+    | 'ultramarine'
+    | 'skyblue'
+    | 'purple'
+    | 'rosered'
   /**
    * 外观
    * @default 'solid'
