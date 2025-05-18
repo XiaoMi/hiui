@@ -7,10 +7,7 @@ import Button, { ButtonProps } from '@hi-ui/button'
 const FORM_RESET_PREFIX = getPrefixCls('form-reset')
 
 export const FormReset = forwardRef<HTMLButtonElement | null, FormResetProps>(
-  (
-    { prefixCls = FORM_RESET_PREFIX, className, children, type = 'secondary', onClick, ...rest },
-    ref
-  ) => {
+  ({ prefixCls = FORM_RESET_PREFIX, className, children, type, onClick, ...rest }, ref) => {
     const { resetForm } = useFormContext()
 
     const cls = cx(prefixCls, className)
@@ -19,6 +16,7 @@ export const FormReset = forwardRef<HTMLButtonElement | null, FormResetProps>(
         ref={ref}
         className={cls}
         type={type}
+        appearance="line"
         {...rest}
         onClick={() => {
           resetForm()

@@ -94,7 +94,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
             [`${prefixCls}--hover-enable`]: editable || closeable,
           }
         ),
-      [prefixCls, className, type, appearance, size, editable, isInEdit, closeable, shape]
+      [prefixCls, className, type, appearance, size, shape, editable, isInEdit, closeable]
     )
 
     useEffect(() => {
@@ -187,7 +187,17 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    * 类型状态
    * @default 'default'
    */
-  type?: 'primary' | 'success' | 'warning' | 'danger' | 'default'
+  type?:
+    | 'primary'
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'default'
+    | 'orange'
+    | 'ultramarine'
+    | 'skyblue'
+    | 'purple'
+    | 'rosered'
   /**
    * 外观
    * @default 'solid'

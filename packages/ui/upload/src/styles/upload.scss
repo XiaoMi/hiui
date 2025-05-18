@@ -209,7 +209,7 @@ $prefix: '#{$component-prefix}-upload' !default;
       .drag-upload__title {
         font-size: use-text-size('normal');
 
-        [class^='hi-v4-icon'] {
+        [class^='#{$component-prefix}-icon'] {
           font-size: use-text-size('lg');
           margin-right: use-spacing(4);
         }

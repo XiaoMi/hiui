@@ -10,7 +10,7 @@ import { DesignSystemAccentColorEnum, DesignSystemProps } from './types'
 import { createSystem, extendsTheme } from './theme'
 import { getAccentColorTheme } from './accent-color'
 
-const PREFIX = 'hi-v4'
+const PREFIX = 'hi-v5'
 
 export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc } = ({
   children,
