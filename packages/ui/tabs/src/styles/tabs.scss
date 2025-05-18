@@ -218,6 +218,25 @@ $prefix: '#{$component-prefix}-tabs' !default;
     }
   }
 
+  &--placement-horizontal {
+    .#{$prefix}__list {
+      &--show-divider {
+        .#{$prefix}__list--scroll {
+          &::after {
+            content: '';
+            position: absolute;
+            z-index: 0;
+            bottom: 0;
+            left: use-spacing(10);
+            width: calc(100% - #{use-spacing(20)});
+            height: 1px;
+            background-color: use-color('gray', 200);
+          }
+        }
+      }
+    }
+  }
+
   &--placement-vertical {
     display: flex;
 

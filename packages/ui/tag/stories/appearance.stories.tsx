@@ -11,56 +11,101 @@ export const Appearance = () => {
       <h1>Tag Appearance</h1>
       <h2>Filled 面性</h2>
       <div style={{ display: 'flex', gap: 8 }}>
-        <Tag type="warning" appearance="filled">
-          待审批
+        <Tag type="default" appearance="filled">
+          默认色
         </Tag>
         <Tag type="primary" appearance="filled">
-          审批中
+          主题色
         </Tag>
         <Tag type="success" appearance="filled">
-          已通过
+          成功色
+        </Tag>
+        <Tag type="warning" appearance="filled">
+          警告色
         </Tag>
         <Tag type="danger" appearance="filled">
-          已驳回
+          危险色
         </Tag>
-        <Tag type="default" appearance="filled">
-          待审批
+        <Tag type="orange" appearance="filled">
+          橘黄色
+        </Tag>
+        <Tag type="ultramarine" appearance="filled">
+          深蓝色
+        </Tag>
+        <Tag type="skyblue" appearance="filled">
+          天蓝色
+        </Tag>
+        <Tag type="purple" appearance="filled">
+          紫色
+        </Tag>
+        <Tag type="rosered" appearance="filled">
+          玫瑰红
         </Tag>
       </div>
       <h2>line 线性</h2>
       <div style={{ display: 'flex', gap: '8px' }}>
-        <Tag type="warning" appearance={'line'}>
-          待审批
+        <Tag type="default" appearance="line">
+          默认色
         </Tag>
-        <Tag type="primary" appearance={'line'}>
-          审批中
+        <Tag type="primary" appearance="line">
+          主题色
         </Tag>
-        <Tag type="success" appearance={'line'}>
-          已通过
+        <Tag type="success" appearance="line">
+          成功色
         </Tag>
-        <Tag type="danger" appearance={'line'}>
-          已驳回
+        <Tag type="warning" appearance="line">
+          警告色
         </Tag>
-        <Tag type="default" appearance={'line'}>
-          待审批
+        <Tag type="danger" appearance="line">
+          危险色
+        </Tag>
+        <Tag type="orange" appearance="line">
+          橘黄色
+        </Tag>
+        <Tag type="ultramarine" appearance="line">
+          深蓝色
+        </Tag>
+        <Tag type="skyblue" appearance="line">
+          天蓝色
+        </Tag>
+        <Tag type="purple" appearance="line">
+          紫色
+        </Tag>
+        <Tag type="rosered" appearance="line">
+          玫瑰红
         </Tag>
       </div>
       <h2>solid 实心</h2>
       <div style={{ display: 'flex', gap: 8 }}>
-        <Tag type="warning" appearance="solid">
-          待审批
+        <Tag type="default" appearance="solid">
+          默认色
         </Tag>
         <Tag type="primary" appearance="solid">
-          审批中
+          主题色
         </Tag>
         <Tag type="success" appearance="solid">
-          已通过
+          成功色
+        </Tag>
+        <Tag type="warning" appearance="solid">
+          警告色
         </Tag>
         <Tag type="danger" appearance="solid">
-          已驳回
+          危险色
         </Tag>
-        <Tag type="default" appearance="solid">
-          待审批
+        <Tag type="orange" appearance="solid">
+          橘黄色
+        </Tag>
+        <Tag type="ultramarine" appearance="solid">
+          深蓝色
+        </Tag>
+        <Tag type="skyblue" appearance="solid">
+          天蓝色
+        </Tag>
+        <Tag type="purple" appearance="solid">
+          紫色
+        </Tag>
+        <Tag type="rosered" appearance="solid">
+          玫瑰红
         </Tag>
       </div>
     </>

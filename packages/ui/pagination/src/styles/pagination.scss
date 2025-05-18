@@ -14,7 +14,7 @@ $prefix: '#{$component-prefix}-pagination' !default;
   }
 
   &__option {
-    width: 114px !important;
+    // width: 114px !important;
     margin: 0 0 0 use-spacing(4) !important;
   }
 
@@ -25,6 +25,8 @@ $prefix: '#{$component-prefix}-pagination' !default;
   }
 
   &__list {
+    display: flex;
+    align-items: center;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -39,12 +41,9 @@ $prefix: '#{$component-prefix}-pagination' !default;
     min-width: use-height-size(8);
     box-sizing: border-box;
     height: use-height-size(8);
-    line-height: use-height-size(8);
-    text-align: center;
     cursor: pointer;
     outline: 0;
     border-radius: use-border-radius('normal');
-    vertical-align: middle;
     background: use-color('gray', 100);
     transition: all 0.3s;
     color: use-color('gray', 600);
@@ -79,7 +78,9 @@ $prefix: '#{$component-prefix}-pagination' !default;
   }
 
   &__btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: use-height-size(8);
     height: use-height-size(8);
     outline: 0;
@@ -94,8 +95,6 @@ $prefix: '#{$component-prefix}-pagination' !default;
     &:last-of-type {
       margin-left: use-spacing(4);
     }
-
-    vertical-align: middle;
 
     & > button {
       width: 100%;
@@ -124,7 +123,6 @@ $prefix: '#{$component-prefix}-pagination' !default;
 
   &--size-xs {
     font-size: use-text-size('sm');
-    line-height: use-text-lineheight('sm');
 
     .#{$prefix}__btn {
       min-width: use-height-size(6);
@@ -134,13 +132,11 @@ $prefix: '#{$component-prefix}-pagination' !default;
     .#{$prefix}__item {
       min-width: use-height-size(6);
       height: use-height-size(6);
-      line-height: use-height-size(6);
     }
   }
 
   &--size-sm {
     font-size: use-text-size('sm');
-    line-height: use-text-lineheight('sm');
 
     .#{$prefix}__btn {
       min-width: use-height-size(7);
@@ -150,13 +146,11 @@ $prefix: '#{$component-prefix}-pagination' !default;
     .#{$prefix}__item {
       min-width: use-height-size(7);
       height: use-height-size(7);
-      line-height: use-height-size(7);
     }
   }
 
   &--size-md {
     font-size: use-text-size('normal');
-    line-height: use-text-lineheight('normal');
   }
 }
 
@@ -190,5 +184,16 @@ $input-pagination-prefix: '#{$component-prefix}-pagination-mini' !default;
   &__total {
     margin-inline-start: use-spacing(4);
     margin-inline-end: use-spacing(4);
+  }
+}
+
+.#{$prefix} {
+  .#{$component-prefix}-mock-input {
+    padding-left: use-spacing(4) !important;
+    padding-right: use-spacing(4) !important;
+
+    &__suffix {
+      padding-left: use-spacing(2) !important;
+    }
   }
 }

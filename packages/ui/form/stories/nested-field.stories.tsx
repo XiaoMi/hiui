@@ -87,6 +87,13 @@ export const NestedField = () => {
           </FormItem>
           <FormItem valueType={null} field={null}>
             <>
+              <FormReset
+                onClick={() => {
+                  console.log('reset form')
+                }}
+              >
+                重置
+              </FormReset>
               <FormSubmit
                 type="primary"
                 onClick={() => {
@@ -100,13 +107,6 @@ export const NestedField = () => {
               >
                 提交
               </FormSubmit>
-              <FormReset
-                onClick={() => {
-                  console.log('reset form')
-                }}
-              >
-                重置
-              </FormReset>
             </>
           </FormItem>
         </Form>

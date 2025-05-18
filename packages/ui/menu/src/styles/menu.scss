@@ -140,7 +140,7 @@ $disabled-color: use-color('gray', 400) !default;
       color: use-color('gray', 500);
       margin-inline-end: use-spacing(4);
 
-      svg[class^='hi-v4-icon'] {
+      svg[class^='#{$component-prefix}-icon'] {
         font-size: use-text-size('lg');
       }
     }

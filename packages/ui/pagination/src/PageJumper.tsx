@@ -38,7 +38,7 @@ export const PageJumper: React.FC<PageJumperProps> = ({
       {pageText[0]}
       <Input
         value={jumpPage}
-        style={{ width: 50, margin: '0 8px' }}
+        style={{ width: 50, margin: '0 4px' }}
         onBlur={_onJump}
         onKeyDown={(e) => {
           if (e.keyCode === 13) {

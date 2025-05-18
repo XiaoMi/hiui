@@ -18,69 +18,143 @@ $solid-color-map: (
     'hover': use-color-mode('danger', 400)
   ),
   'default': (
-    'normal': use-color('gray', 400),
+    'normal': use-color('gray', 500),
     'hover': use-color('gray', 300)
+  ),
+  'orange': (
+    'normal': use-color('orange', 500),
+    'hover': use-color('orange', 300)
+  ),
+  'ultramarine': (
+    'normal': use-color('ultramarine', 500),
+    'hover': use-color('ultramarine', 300)
+  ),
+  'skyblue': (
+    'normal': use-color('skyblue', 500),
+    'hover': use-color('skyblue', 300)
+  ),
+  'purple': (
+    'normal': use-color('purple', 500),
+    'hover': use-color('purple', 300)
+  ),
+  'rosered': (
+    'normal': use-color('rosered', 500),
+    'hover': use-color('rosered', 300)
   )
 ) !default;
-
 $line-color-map: (
   'primary': (
     'text': use-color-mode('primary'),
-    'border': use-color-mode('primary', 200),
+    'border': use-color-mode('primary'),
     'hover-text': use-color-mode('primary', 400),
     'hover-border': use-color-mode('primary', 100)
   ),
   'warning': (
     'text':use-color-mode('warning'),
-    'border':use-color-mode('warning', 200),
+    'border':use-color-mode('warning'),
     'hover-text':use-color-mode('warning', 400),
     'hover-border':use-color-mode('warning', 100)
   ),
   'success': (
     'text':use-color-mode('success'),
-    'border':use-color-mode('success', 200),
+    'border':use-color-mode('success'),
     'hover-text':use-color-mode('success', 400),
     'hover-border':use-color-mode('success', 100)
   ),
   'danger': (
     'text': use-color-mode('danger'),
-    'border': use-color-mode('danger', 200),
+    'border': use-color-mode('danger'),
     'hover-text': use-color-mode('danger', 400),
     'hover-border': use-color-mode('danger', 100)
   ),
   'default': (
-    'text': use-color('gray', 700),
-    'border': use-color('gray', 300),
+    'text': use-color('gray', 800),
+    'border': use-color('gray', 400),
     'hover-text': use-color('gray', 600),
     'hover-border': use-color('gray', 200)
+  ),
+  'orange': (
+    'text': use-color('orange', 500),
+    'border': use-color('orange', 500),
+    'hover-text': use-color('orange', 600),
+    'hover-border': use-color('orange', 200)
+  ),
+  'ultramarine': (
+    'text': use-color('ultramarine', 500),
+    'border': use-color('ultramarine', 500),
+    'hover-text': use-color('ultramarine', 600),
+    'hover-border': use-color('ultramarine', 200)
+  ),
+  'skyblue': (
+    'text': use-color('skyblue', 500),
+    'border': use-color('skyblue', 500),
+    'hover-text': use-color('skyblue', 600),
+    'hover-border': use-color('skyblue', 200)
+  ),
+  'purple': (
+    'text': use-color('purple', 500),
+    'border': use-color('purple', 500),
+    'hover-text': use-color('purple', 600),
+    'hover-border': use-color('purple', 200)
+  ),
+  'rosered': (
+    'text': use-color('rosered', 500),
+    'border': use-color('rosered', 500),
+    'hover-text': use-color('rosered', 600),
+    'hover-border': use-color('rosered', 200)
   )
 ) !default;
 
 $filled-color-map: (
   'primary': (
-    'color': use-color-mode('primary'),
-    'background':use-color-mode('primary', 50),
+    'color': use-color-mode('primary', 800),
+    'background':use-color-mode('primary', 200),
     'hover-background':use-color-mode('primary', 100)
   ),
   'warning': (
-    'color':use-color-mode('warning'),
-    'background':use-color-mode('warning', 50),
+    'color':use-color-mode('warning', 800),
+    'background':use-color-mode('warning', 100),
     'hover-background':use-color-mode('warning', 100),
   ),
   'success': (
-    'color':use-color-mode('success'),
-    'background':use-color-mode('success', 50),
+    'color':use-color-mode('success', 900),
+    'background':use-color-mode('success', 100),
     'hover-background':use-color-mode('success', 100)
   ),
   'danger': (
-    'color': use-color-mode('danger'),
-    'background': use-color-mode('danger', 50),
+    'color': use-color-mode('danger', 800),
+    'background': use-color-mode('danger', 100),
     'hover-background': use-color-mode('danger', 100)
   ),
   'default': (
     'color': use-color('gray', 700),
     'background': use-color('gray', 100),
     'hover-background': use-color('gray', 200)
+  ),
+  'orange': (
+    'color': use-color('orange', 800),
+    'background': use-color('orange', 100),
+    'hover-background': use-color('orange', 100)
+  ),
+  'ultramarine': (
+    'color': use-color('ultramarine', 800),
+    'background': use-color('ultramarine', 100),
+    'hover-background': use-color('ultramarine', 100)
+  ),
+  'skyblue': (
+    'color': use-color('skyblue', 800),
+    'background': use-color('skyblue', 100),
+    'hover-background': use-color('skyblue', 100)
+  ),
+  'purple': (
+    'color': use-color('purple', 800),
+    'background': use-color('purple', 100),
+    'hover-background': use-color('purple', 100)
+  ),
+  'rosered': (
+    'color': use-color('rosered', 800),
+    'background': use-color('rosered', 100),
+    'hover-background': use-color('rosered', 100)
   )
 ) !default;
 
@@ -152,6 +226,10 @@ $shape-round: '#{$prefix}--shape-round' !default;
     &.#{$shape-round} {
       border-radius: use-border-radius('full');
     }
+
+    .#{$prefix}__content-wrapper {
+      padding: 0 use-spacing(3);
+    }
   }
 
   &--size-md {
@@ -165,6 +243,10 @@ $shape-round: '#{$prefix}--shape-round' !default;
     &.#{$shape-round} {
       border-radius: use-border-radius('full');
     }
+
+    .#{$prefix}__content-wrapper {
+      padding: 0 use-spacing(4);
+    }
   }
 
   &--size-lg {
@@ -177,6 +259,10 @@ $shape-round: '#{$prefix}--shape-round' !default;
 
     &.#{$shape-round} {
       border-radius: use-border-radius('full');
+    }
+
+    .#{$prefix}__content-wrapper {
+      padding: 0 use-spacing(5);
     }
   }
 
@@ -204,19 +290,10 @@ $shape-round: '#{$prefix}--shape-round' !default;
 
   &__content-wrapper {
     position: relative;
-    padding: 0 use-spacing(4);
     height: 100%;
     overflow: hidden;
     display: flex;
     align-items: center;
-  }
-
-  &--appearance-line { /* stylelint-disable-line */
-    .#{$prefix} {
-      &__content-wrapper {
-        padding: 0 calc(#{use-spacing(4)} - 1px);
-      }
-    }
   }
 
   &__content {

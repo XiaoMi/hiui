@@ -69,7 +69,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
   min-width: 140px;
   max-height: 256px;
   overflow: auto;
-  padding: 0 use-spacing(4);
+  padding: 0 use-spacing(3);
   border-right: use-border-size('normal') use-color('gray', 200);
 
   &:last-of-type {
@@ -196,7 +196,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 }
 
 // TODO: 迁移
-.hi-v4-tree--icon-loading {
+.#{$component-prefix}-tree--icon-loading {
   animation-name: hi-rotate;
   animation-duration: 2s;
   animation-iteration-count: infinite;

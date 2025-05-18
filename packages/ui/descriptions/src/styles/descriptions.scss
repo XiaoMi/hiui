@@ -36,8 +36,8 @@ $prefix: '#{$component-prefix}-descriptions' !default;
     &__container {
       box-sizing: border-box;
       display: flex;
-      align-items: var(--hi-v4-container-align-items, normal);
-      padding-right: var(--hi-v4-container-padding-right, 0);
+      align-items: var(--#{$component-prefix}-container-align-items, normal);
+      padding-right: var(--#{$component-prefix}-container-padding-right, 0);
     }
 
     &__label,

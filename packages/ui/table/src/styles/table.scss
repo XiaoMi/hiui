@@ -206,7 +206,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     width: 100%;
     overflow: hidden;
 
-    .hi-v4-table-cell {
+    .#{$component-prefix}-table-cell {
       box-sizing: border-box;
     }
   }
@@ -572,27 +572,25 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   z-index: 0;
 
   & > td {
-    background-color: use-color('gray', 200);
-    padding: use-spacing(10);
+    background-color: use-color('gray', 50);
+    padding: use-spacing(6);
   }
 }
 
 .#{$prefix}-setting {
   position: absolute;
-  height: 100%;
+  height: calc(100% - 2px);
   z-index: 11;
   box-sizing: border-box;
   right: 0;
   display: flex;
   align-items: center;
-  border-left: use-border-size('normal') use-color('gray', 300);
-  border-bottom: none;
-  border-top: none;
+  // border-left: use-border-size('normal') use-color('gray', 300);
   color: use-color('gray', 500);
   cursor: pointer;
   font-size: use-text-size('sm');
   width: 18px;
-  background: use-color('gray', 50);
+  background: use-color-static('white');
 
   &__btn-group {
     display: flex;
