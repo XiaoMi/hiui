@@ -36,6 +36,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       style,
       type = 'line',
       size = 'md',
+      showDivider,
       extra,
       ...rest
     },
@@ -91,6 +92,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           onDrop={onDrop}
           type={type}
           size={size}
+          showDivider={showDivider}
           onDragStart={onDragStart}
           extra={extra}
         />
@@ -145,6 +147,10 @@ export interface TabsProps
    * 大小
    */
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * 是否显示下划线
+   */
+  showDivider?: boolean
   /**
    * `activeId` 改变的回调
    */

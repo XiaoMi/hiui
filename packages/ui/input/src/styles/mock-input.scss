@@ -40,7 +40,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
 
   &__suffix,
   &__placeholder {
-    color: use-color('gray', 400);
+    color: use-color('gray', 500);
 
     .#{$mock-input-prefix}--appearance-unset & {
       color: use-color('gray', 500);
@@ -124,7 +124,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
         border-radius: use-border-radius('normal');
-        padding: 1px $input-padding-width;
+        padding: 1px calc(#{use-spacing(4)} - 1px);
       }
     }
 
@@ -168,10 +168,10 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
           border-color: use-color-mode('primary');
         }
 
-        &:not(.disabled).focused {
-          box-shadow: $input-shadow;
-          border-color: use-color-mode('primary');
-        }
+        // &:not(.disabled).focused {
+        //   box-shadow: $input-shadow;
+        //   border-color: use-color-mode('primary');
+        // }
 
         &:not(.disabled).invalid {
           border-color: use-color-mode('error');
@@ -180,9 +180,9 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
             border-color: use-color-mode('error');
           }
 
-          &.focused {
-            box-shadow: $input-error-shadow;
-          }
+          // &.focused {
+          //   box-shadow: $input-error-shadow;
+          // }
         }
       }
     }
@@ -198,11 +198,11 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
           background-color: use-color('gray', 100);
         }
 
-        &:not(.disabled).focused {
-          box-shadow: $input-shadow;
-          background-color: use-color-static('white');
-          border-color: use-color-mode('primary');
-        }
+        // &:not(.disabled).focused {
+        //   box-shadow: $input-shadow;
+        //   background-color: use-color-static('white');
+        //   border-color: use-color-mode('primary');
+        // }
 
         &:not(.disabled).invalid {
           border-color: use-color-mode('error');
@@ -211,9 +211,9 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
             border-color: use-color-mode('error');
           }
 
-          &.focused {
-            box-shadow: $input-error-shadow;
-          }
+          // &.focused {
+          //   box-shadow: $input-error-shadow;
+          // }
         }
       }
     }
@@ -227,11 +227,11 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
           border-color: use-color-mode('primary');
         }
 
-        &:not(.disabled).focused {
-          box-shadow: $input-shadow;
-          border-color: use-color-mode('primary');
-          background-color: use-color-static('white');
-        }
+        // &:not(.disabled).focused {
+        //   box-shadow: $input-shadow;
+        //   border-color: use-color-mode('primary');
+        //   background-color: use-color-static('white');
+        // }
 
         &:not(.disabled).invalid {
           border-color: use-color-mode('error');
@@ -240,9 +240,9 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
             border-color: use-color-mode('error');
           }
 
-          &.focused {
-            box-shadow: $input-error-shadow;
-          }
+          // &.focused {
+          //   box-shadow: $input-error-shadow;
+          // }
         }
       }
     }
@@ -261,7 +261,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     &-filled {
       &.disabled {
         &.#{$mock-input-prefix} {
-          background-color: use-color('gray', 100);
+          background-color: use-color('gray', 300);
         }
       }
     }

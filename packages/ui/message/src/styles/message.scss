@@ -7,6 +7,7 @@ $prefix: '#{$component-prefix}-message' !default;
   width: auto;
   padding: use-spacing(5) use-spacing(10);
   margin: use-spacing(5);
+  border: use-border-size('normal') use-color('gray', 100);
   border-radius: use-border-radius('lg');
   pointer-events: auto;
   box-shadow: use-shadow('normal');
