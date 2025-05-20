@@ -1,5 +1,5 @@
 import React, { forwardRef, useState, useMemo, useEffect } from 'react'
-import type { HiBaseAppearanceEnum, HiBaseSizeEnum } from '@hi-ui/core'
+import type { HiBaseSizeEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -9,7 +9,12 @@ import type { PopperOverlayProps } from '@hi-ui/popper'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { flattenTreeData, getItemEventData, getFilteredMenuList } from './utils'
 import { CascaderProvider } from './context'
-import { CascaderExpandTriggerEnum, FlattedCascaderDataItem, CascaderItemEventData } from './types'
+import {
+  CascaderExpandTriggerEnum,
+  FlattedCascaderDataItem,
+  CascaderItemEventData,
+  CascaderAppearanceEnum,
+} from './types'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
 import { Picker, PickerProps } from '@hi-ui/picker'
@@ -62,6 +67,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     dropdownColumnRender,
     closeOnSelect = true,
     customRender,
+    label,
     ...rest
   } = props
   const i18n = useLocaleContext()
@@ -249,6 +255,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
             )
           ) : (
             <MockInput
+              style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
               size={size}
               clearable={clearable}
               placeholder={placeholder}
@@ -263,6 +270,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
               data={mergedData}
               invalid={invalid}
               appearance={appearance}
+              label={label}
             />
           )
         }
@@ -329,7 +337,11 @@ export interface CascaderProps
   /**
    * 设置展现形式
    */
-  appearance?: HiBaseAppearanceEnum
+  appearance?: CascaderAppearanceEnum
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 搜索结果拍平展示
    */

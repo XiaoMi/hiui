@@ -2,6 +2,7 @@ import React from 'react'
 import CheckCascader from '../src'
 
 export * from './basic.stories'
+export * from './appearance.stories'
 export * from './tag-input-wrap.stories'
 export * from './size.stories'
 export * from './disabled.stories'
