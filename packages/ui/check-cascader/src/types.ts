@@ -1,5 +1,5 @@
 import React from 'react'
-
+import type { HiBaseAppearanceEnum } from '@hi-ui/core'
 export interface CheckCascaderDataItem {
   /**
    * 树节点唯一 id
@@ -69,3 +69,5 @@ export interface CheckCascaderItemEventData
     CheckCascaderDataItemRequiredProps {}
 
 export type CheckCascaderExpandTriggerEnum = 'click' | 'hover'
+
+export type CheckCascaderAppearanceEnum = HiBaseAppearanceEnum | 'contained' | undefined

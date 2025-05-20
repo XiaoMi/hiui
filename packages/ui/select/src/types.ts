@@ -1,4 +1,5 @@
 import React from 'react'
+import type { HiBaseAppearanceEnum } from '@hi-ui/core'
 
 export interface SelectDataItem {
   /**
@@ -57,3 +58,5 @@ export interface SelectItemRequiredProps {
 }
 
 export interface SelectItemEventData extends FlattedSelectDataItem, SelectItemRequiredProps {}
+
+export type SelectAppearanceEnum = HiBaseAppearanceEnum | 'contained' | undefined
