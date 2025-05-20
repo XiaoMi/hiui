@@ -81,4 +81,4 @@ export interface CheckTreeSelectDataSource<T = any> {
 
 export interface CheckTreeSelectItemEventData extends TreeNodeEventData {}
 
-export type CheckTreeSelectAppearanceEnum = HiBaseAppearanceEnum | undefined
+export type CheckTreeSelectAppearanceEnum = HiBaseAppearanceEnum | 'contained' | undefined

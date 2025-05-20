@@ -421,10 +421,81 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       }
     }
 
+    &-contained {
+      background-color: use-color('gray', 50);
+      border: none;
+
+      &.#{$tag-input-mock-prefix} {
+        width: auto;
+      }
+
+      .#{$tag-input-mock-prefix}__label,
+      .#{$tag-input-mock-prefix}__suffix {
+        color: use-color('gray', 600);
+      }
+
+      .#{$tag-input-mock-prefix}__label,
+      .#{$tag-input-mock-prefix}__value {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .#{$tag-input-mock-prefix}__label {
+        flex-shrink: 0;
+      }
+
+      .#{$tag-input-mock-prefix}__value {
+        text-overflow: ellipsis;
+      }
+
+      .#{$tag-input-mock-prefix}__suffix {
+        padding-left: use-spacing(4);
+      }
+
+      &.#{$tag-input-mock-prefix}--has-value,
+      &:not(.#{$tag-input-mock-prefix}--disabled):hover {
+        background-color: use-color-mode('primary', 50);
+
+        .#{$tag-input-mock-prefix}__label,
+        .#{$tag-input-mock-prefix}__value,
+        .#{$tag-input-mock-prefix}__suffix {
+          color: use-color-mode('primary', 600);
+        }
+
+        .#{$tag-input-mock-prefix}__clear {
+          color: use-color-mode('primary', 600);
+
+          &:hover {
+            color: use-color-mode('primary', 800);
+          }
+        }
+      }
+
+      &.#{$tag-input-mock-prefix}--has-value {
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color-mode('primary', 200);
+          color: use-color-mode('primary', 600);
+
+          &.#{$tag-input-mock-prefix}__tag--active {
+            background-color: use-color-mode('primary', 500);
+            color: use-color-static('white');
+          }
+        }
+      }
+
+      &.#{$tag-input-mock-prefix}--disabled {
+        .#{$tag-input-mock-prefix}__label,
+        .#{$tag-input-mock-prefix}__value,
+        .#{$tag-input-mock-prefix}__suffix {
+          color: use-color('gray', 400);
+        }
+      }
+    }
+
     &-line,
     &-filled {
       &.#{$tag-input-mock-prefix}--disabled {
-        background-color: use-color('gray', 300);
+        background-color: use-color('gray', 50);
         color: use-color('gray', 400);
 
         .#{$tag-input-mock-prefix}__tag {
@@ -435,6 +506,11 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
             background-color: use-color('gray', 100);
             color: use-color('gray', 400);
           }
+        }
+
+        .#{$tag-input-mock-prefix}__placeholder,
+        .#{$tag-input-mock-prefix}__suffix {
+          color: use-color('gray', 400);
         }
       }
     }
@@ -451,6 +527,11 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
             background-color: use-color('gray', 100);
             color: use-color('gray', 400);
           }
+        }
+
+        .#{$tag-input-mock-prefix}__placeholder,
+        .#{$tag-input-mock-prefix}__suffix {
+          color: use-color('gray', 400);
         }
       }
     }

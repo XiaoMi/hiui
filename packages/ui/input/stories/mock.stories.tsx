@@ -11,13 +11,24 @@ export const Mock = () => {
 
         <div>
           <h2>Outline</h2>
-          <MockInput appearance="line" placeholder="请输入" suffix={<DownOutlined />}></MockInput>
-          <br />
-          <br />
+          <MockInput
+            size="xs"
+            appearance="line"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></MockInput>
           <br />
           <br />
           <MockInput
             size="sm"
+            appearance="line"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></MockInput>
+          <br />
+          <br />
+          <MockInput
+            size="md"
             appearance="line"
             clearable
             placeholder="请输入"
@@ -36,60 +47,34 @@ export const Mock = () => {
           />
           <br />
           <br />
+          <MockInput
+            size="lg"
+            appearance="line"
+            focused
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></MockInput>
           <br />
           <br />
           <MockInput
             size="md"
-            appearance="line"
-            focused
-            placeholder="请输入"
-            suffix={<DownOutlined />}
-          ></MockInput>
-          <br />
-          <br />
-          <br />
-          <br />
-          <MockInput
-            size="lg"
-            invalid
-            appearance="line"
-            placeholder="请输入"
-            suffix={<DownOutlined />}
-          ></MockInput>
-          <br />
-          <br />
-          <br />
-          <br />
-          <MockInput
-            size="lg"
-            invalid
-            focused
-            appearance="line"
-            placeholder="请输入"
-            suffix={<DownOutlined />}
-          ></MockInput>
-          <br />
-          <br />
-          <br />
-          <br />
-          <MockInput
-            size="lg"
-            appearance="line"
             disabled
+            appearance="line"
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></MockInput>
-          <br />
-          <br />
           <br />
           <br />
         </div>
 
         <div>
           <h2>Filled</h2>
-          <MockInput appearance="filled" placeholder="请输入" suffix={<DownOutlined />}></MockInput>
-          <br />
-          <br />
+          <MockInput
+            size="xs"
+            appearance="filled"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></MockInput>
           <br />
           <br />
           <MockInput
@@ -112,8 +97,6 @@ export const Mock = () => {
           />
           <br />
           <br />
-          <br />
-          <br />
           <MockInput
             size="md"
             appearance="filled"
@@ -123,57 +106,111 @@ export const Mock = () => {
           ></MockInput>
           <br />
           <br />
-          <br />
-          <br />
           <MockInput
             size="lg"
-            invalid
             appearance="filled"
-            placeholder="请输入"
-            suffix={<DownOutlined />}
-          ></MockInput>
-          <br />
-          <br />
-          <br />
-          <br />
-          <MockInput
-            size="lg"
-            invalid
             focused
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></MockInput>
+          <br />
+          <br />
+          <MockInput
+            size="md"
+            invalid
             appearance="filled"
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></MockInput>
           <br />
           <br />
+          <MockInput size="md" disabled appearance="filled" placeholder="请输入"></MockInput>
+        </div>
+
+        <div>
+          <h2>Unset</h2>
+          <MockInput
+            size="xs"
+            appearance="unset"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></MockInput>
+          <br />
+          <br />
+          <MockInput
+            size="sm"
+            appearance="unset"
+            clearable
+            placeholder="请输入"
+            // defaultValue={1}
+            suffix={<DownOutlined />}
+            data={[
+              {
+                id: 1,
+                title: '标题1',
+              },
+              {
+                id: 2,
+                title: '标题2',
+              },
+            ]}
+          />
+          <br />
+          <br />
+          <MockInput
+            size="md"
+            appearance="unset"
+            focused
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></MockInput>
           <br />
           <br />
           <MockInput
             size="lg"
-            appearance="filled"
-            disabled
+            appearance="unset"
+            focused
             placeholder="请输入"
             suffix={<DownOutlined />}
           ></MockInput>
           <br />
           <br />
+          <MockInput
+            size="md"
+            invalid
+            appearance="unset"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></MockInput>
+          <br />
+          <br />
+          <MockInput
+            size="md"
+            disabled
+            appearance="unset"
+            placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></MockInput>
           <br />
           <br />
         </div>
 
         <div>
-          <h2>Unset</h2>
-          <MockInput appearance="unset" placeholder="请输入" suffix={<DownOutlined />}></MockInput>
-          <br />
-          <br />
+          <h2>Contained</h2>
+          <MockInput
+            size="xs"
+            appearance="contained"
+            label="服务类型"
+            suffix={<DownOutlined />}
+          ></MockInput>
           <br />
           <br />
           <MockInput
             size="sm"
-            appearance="unset"
+            appearance="contained"
             clearable
-            placeholder="请输入"
-            defaultValue={1}
+            label="服务类型"
+            // defaultValue={1}
             suffix={<DownOutlined />}
             data={[
               {
@@ -188,51 +225,41 @@ export const Mock = () => {
           />
           <br />
           <br />
+          <MockInput
+            size="md"
+            appearance="contained"
+            focused
+            label="服务类型"
+            defaultValue={'安装'}
+            suffix={<DownOutlined />}
+          ></MockInput>
+          <br />
+          <br />
+          <MockInput
+            size="lg"
+            appearance="contained"
+            focused
+            label="服务类型"
+            suffix={<DownOutlined />}
+          ></MockInput>
           <br />
           <br />
           <MockInput
             size="md"
-            appearance="unset"
-            focused
-            placeholder="请输入"
-            suffix={<DownOutlined />}
-          ></MockInput>
-          <br />
-          <br />
-          <br />
-          <br />
-          <MockInput
-            size="lg"
             invalid
-            appearance="unset"
-            placeholder="请输入"
+            appearance="contained"
+            label="服务类型"
             suffix={<DownOutlined />}
           ></MockInput>
           <br />
           <br />
-          <br />
-          <br />
           <MockInput
-            size="lg"
-            invalid
-            focused
-            appearance="unset"
-            placeholder="请输入"
-            suffix={<DownOutlined />}
-          ></MockInput>
-          <br />
-          <br />
-          <br />
-          <br />
-          <MockInput
-            size="lg"
-            appearance="unset"
+            size="md"
             disabled
-            placeholder="请输入"
+            appearance="contained"
+            label="服务类型"
             suffix={<DownOutlined />}
           ></MockInput>
-          <br />
-          <br />
           <br />
           <br />
         </div>

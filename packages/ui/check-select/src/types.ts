@@ -57,4 +57,4 @@ export interface CheckSelectItemEventData
   extends FlattedCheckSelectDataItem,
     CheckSelectRequiredProps {}
 
-export type CheckSelectAppearanceEnum = HiBaseAppearanceEnum | undefined
+export type CheckSelectAppearanceEnum = HiBaseAppearanceEnum | 'contained' | undefined
