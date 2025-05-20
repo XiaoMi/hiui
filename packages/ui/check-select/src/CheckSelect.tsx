@@ -82,6 +82,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       suffix,
       onKeyDown: onKeyDownProp,
       keyword: keywordProp,
+      label,
       ...rest
     },
     ref
@@ -334,6 +335,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
               )
             ) : (
               <TagInputMock
+                style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
                 {...tagInputProps}
                 size={size}
                 clearable={clearable}
@@ -344,6 +346,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
                 suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
                 focused={menuVisible}
                 appearance={appearance}
+                label={label}
                 value={value}
                 // @ts-ignore
                 onChange={tryChangeValue}
@@ -476,6 +479,10 @@ export interface CheckSelectProps
    * 设置展现形式
    */
   appearance?: CheckSelectAppearanceEnum
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 节点搜索模式，仅在mode=normal模式下生效
    */
