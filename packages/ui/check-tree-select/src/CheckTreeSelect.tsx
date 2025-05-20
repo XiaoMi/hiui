@@ -97,6 +97,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       customRender,
       prefix,
       suffix,
+      label,
       ...rest
     },
     ref
@@ -386,8 +387,10 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             )
           ) : (
             <TagInputMock
+              style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
               {...tagInputProps}
               size={size}
+              label={label}
               // ref={targetElementRef}
               // onClick={openMenu}
               // disabled={disabled}
@@ -617,6 +620,10 @@ export interface CheckTreeSelectProps
    * 设置展现形式
    */
   appearance?: CheckTreeSelectAppearanceEnum
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
    * @private

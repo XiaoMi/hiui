@@ -38,6 +38,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       readOnly = false,
       size = 'md',
       appearance = 'line',
+      label,
       wrap = false,
       expandable = false,
       activeExpandable = false,
@@ -179,7 +180,8 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       invalid && 'invalid',
       disabled && `${prefixCls}--disabled`,
       wrap && `${prefixCls}--wrap`,
-      expandable && `${prefixCls}--expandable`
+      expandable && `${prefixCls}--expandable`,
+      showTagCount && `${prefixCls}--has-value`
     )
 
     return (
@@ -207,30 +209,46 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
         >
           {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
 
-          {/* tags 列表区域渲染 */}
-          {showTags ? (
-            <span className={`${prefixCls}__tags`}>
-              {mergedTagList.map((option, index) => {
-                return (
-                  <MockTag
-                    hidden={wrap ? false : index > tagMaxCount}
-                    maxWidth={maxTagWidth}
-                    key={option.id}
-                    prefixCls={prefixCls}
-                    disabled={disabled}
-                    option={option}
-                    value={value}
-                    displayRender={displayRender}
-                    tryChangeValue={tryChangeValue}
-                    onTagResize={(id: string, w: number) =>
-                      setTagsWidth((prev) => ({ ...prev, [id]: w }))
-                    }
-                  />
-                )
-              })}
+          {label ? (
+            <span className={`${prefixCls}__label`}>
+              {label}
+              {value?.length > 0 && '：'}
             </span>
+          ) : null}
+
+          {/* tags 列表区域渲染 */}
+          {appearance !== 'contained' ? (
+            showTags ? (
+              <span className={`${prefixCls}__tags`}>
+                {mergedTagList.map((option, index) => {
+                  return (
+                    <MockTag
+                      hidden={wrap ? false : index > tagMaxCount}
+                      maxWidth={maxTagWidth}
+                      key={option.id}
+                      prefixCls={prefixCls}
+                      disabled={disabled}
+                      option={option}
+                      value={value}
+                      displayRender={displayRender}
+                      tryChangeValue={tryChangeValue}
+                      onTagResize={(id: string, w: number) =>
+                        setTagsWidth((prev) => ({ ...prev, [id]: w }))
+                      }
+                    />
+                  )
+                })}
+              </span>
+            ) : (
+              <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
+            )
           ) : (
-            <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
+            <span className={`${prefixCls}__value`}>
+              {data
+                .filter((item) => value.includes(item.id))
+                .map((item) => item.title)
+                .join('、')}
+            </span>
           )}
 
           {suffix[1] ? <span className={`${prefixCls}__secondary-suffix`}>{suffix[1]}</span> : null}
@@ -343,7 +361,11 @@ export interface TagInputMockProps
   /**
    * 设置展现形式
    */
-  appearance?: HiBaseAppearanceEnum
+  appearance?: HiBaseAppearanceEnum | 'contained'
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 设置输入框尺寸
    */

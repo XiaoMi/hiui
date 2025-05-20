@@ -1,4 +1,4 @@
-import { HiBaseDataItem } from '@hi-ui/core'
+import { HiBaseAppearanceEnum, HiBaseDataItem } from '@hi-ui/core'
 import React from 'react'
 
 export interface TreeSelectDataItem extends HiBaseDataItem {
@@ -50,3 +50,5 @@ export interface TreeSelectDataSource<T = any> {
    */
   transformResponse?: (response: object) => T
 }
+
+export type TreeSelectAppearanceEnum = HiBaseAppearanceEnum | 'contained' | undefined
