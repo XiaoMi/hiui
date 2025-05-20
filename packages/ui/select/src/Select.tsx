@@ -11,6 +11,7 @@ import {
   SelectDataItem,
   SelectItemEventData,
   SelectMergedItem,
+  SelectAppearanceEnum,
 } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import VirtualList, { useCheckInVirtual } from '@hi-ui/virtual-list'
@@ -29,7 +30,7 @@ import { useData, useFlattenData } from './hooks'
 import { SelectOption } from './SelectOption'
 import { SelectOptionGroup } from './SelectOptionGroup'
 import { uniqBy } from '@hi-ui/array-utils'
-import { HiBaseAppearanceEnum, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 
@@ -80,6 +81,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       onKeyDown: onKeyDownProp,
       onClear: onClearProp,
       customRender,
+      label,
       ...rest
     },
     ref
@@ -256,6 +258,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
               )
             ) : (
               <MockInput
+                style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
                 clearable={clearable}
                 placeholder={placeholder}
                 displayRender={
@@ -281,6 +284,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                 data={mergedData}
                 invalid={invalid}
                 appearance={appearance}
+                label={label}
               />
             )
           }
@@ -331,7 +335,11 @@ export interface SelectProps
   /**
    * 设置展现形式
    */
-  appearance?: HiBaseAppearanceEnum
+  appearance?: SelectAppearanceEnum
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 触发器输入框占位符
    */

@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { TreeSelectDataItem } from './types'
+import { TreeSelectDataItem, TreeSelectAppearanceEnum } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -12,7 +12,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { MockInput } from '@hi-ui/input'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
-import { HiBaseAppearanceEnum, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -79,6 +79,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       prefix,
       suffix,
       customRender,
+      label,
       ...rest
     },
     ref
@@ -258,6 +259,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
             )
           ) : (
             <MockInput
+              style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
               // disabled={disabled}
               size={size}
               clearable={clearable}
@@ -272,6 +274,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
               // @ts-ignore
               invalid={invalid}
               appearance={appearance}
+              label={label}
             />
           )
         }
@@ -396,7 +399,11 @@ export interface TreeSelectProps
   /**
    * 设置展现形式
    */
-  appearance?: HiBaseAppearanceEnum
+  appearance?: TreeSelectAppearanceEnum
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
    * @private

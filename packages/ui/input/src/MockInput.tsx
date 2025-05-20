@@ -39,6 +39,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
       suffix: suffixProp,
       onMouseOver,
       onMouseLeave,
+      label,
       ...rest
     },
     ref
@@ -96,6 +97,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
       className,
       `${prefixCls}--appearance-${appearance}`,
       `${prefixCls}--size-${size}`,
+      hasValue && `${prefixCls}--has-value`,
       focused && `focused`,
       disabled && 'disabled',
       readOnly && 'readonly',
@@ -118,10 +120,18 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
         {...rest}
       >
         {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
+        {appearance === 'contained' ? (
+          <span className={`${prefixCls}__label`}>
+            {label}
+            {hasValue && '：'}
+          </span>
+        ) : null}
         {hasValue ? (
           <span className={`${prefixCls}__value`}>{displayValue}</span>
         ) : (
-          <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
+          appearance !== 'contained' && (
+            <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
+          )
         )}
         {suffix[1] ? <span className={`${prefixCls}__secondary-suffix`}>{suffix[1]}</span> : null}
         {suffix[0] || showClearableIcon ? (
@@ -218,7 +228,11 @@ export type MockInputProps = HiBaseHTMLFieldProps<
     /**
      * 设置展现形式
      */
-    appearance?: HiBaseAppearanceEnum
+    appearance?: HiBaseAppearanceEnum | 'contained'
+    /**
+     * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+     */
+    label?: React.ReactNode
     /**
      * 设置输入框尺寸
      */
