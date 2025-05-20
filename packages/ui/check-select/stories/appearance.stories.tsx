@@ -63,6 +63,24 @@ export const Appearance = () => {
             }}
           />
         </div>
+
+        <div>
+          <h4>contained</h4>
+          <CheckSelect
+            data={data}
+            value={value}
+            style={{ width: 'auto' }}
+            optionWidth={260}
+            clearable
+            showOnlyShowChecked
+            appearance="contained"
+            label="服务类型"
+            onChange={(value, targetItem) => {
+              console.log('CheckSelect onChange: ', value, targetItem)
+              setValue(value)
+            }}
+          />
+        </div>
       </div>
     </>
   )

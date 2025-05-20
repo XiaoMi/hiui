@@ -134,6 +134,25 @@ export const Appearance = () => {
             }}
           />
         </div>
+
+        <div>
+          <h2>contained</h2>
+          <TreeSelect
+            style={{ width: 'auto' }}
+            optionWidth={200}
+            data={data}
+            value={value}
+            clearable
+            appearance="contained"
+            label="选择品类"
+            // 取消下拉框匹配 input 触发器的宽度
+            overlay={{ matchWidth: false }}
+            onChange={(value, selectItems) => {
+              console.log('TreeSelect onChange: ', value, selectItems)
+              setValue(value)
+            }}
+          />
+        </div>
       </div>
     </>
   )
