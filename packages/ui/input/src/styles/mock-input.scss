@@ -35,7 +35,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   }
 
   &.disabled {
-    cursor: not-allowed;
+    cursor: not-allowed !important;
   }
 
   &__suffix,
@@ -247,21 +247,69 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
       }
     }
 
-    &-line,
-    &-unset,
-    &-filled {
+    &-contained {
+      background-color: use-color('gray', 50);
+      border: none;
+
+      &.#{$mock-input-prefix} {
+        width: auto;
+      }
+
+      .#{$mock-input-prefix}__label,
+      .#{$mock-input-prefix}__suffix {
+        color: use-color('gray', 600);
+      }
+
+      .#{$mock-input-prefix}__label {
+        flex-shrink: 0;
+      }
+
+      &.#{$mock-input-prefix}--has-value,
+      &:not(.disabled):hover {
+        background-color: use-color-mode('primary', 50);
+
+        .#{$mock-input-prefix}__label,
+        .#{$mock-input-prefix}__value,
+        .#{$mock-input-prefix}__suffix {
+          color: use-color-mode('primary', 600);
+        }
+
+        .#{$mock-input-prefix}__clear {
+          color: use-color-mode('primary', 600);
+
+          &:hover {
+            color: use-color-mode('primary', 800);
+          }
+        }
+      }
+
       &.disabled {
-        &.#{$mock-input-prefix} {
+        .#{$mock-input-prefix}__label,
+        .#{$mock-input-prefix}__value,
+        .#{$mock-input-prefix}__suffix {
           color: use-color('gray', 400);
         }
       }
     }
 
     &-line,
+    &-unset,
     &-filled {
       &.disabled {
+        &.#{$mock-input-prefix},
+        .#{$mock-input-prefix}__placeholder,
+        .#{$mock-input-prefix}__suffix {
+          color: use-color('gray', 400);
+        }
+      }
+    }
+
+    &-line,
+    &-filled,
+    &-contained {
+      &.disabled {
         &.#{$mock-input-prefix} {
-          background-color: use-color('gray', 300);
+          background-color: use-color('gray', 50);
         }
       }
     }
