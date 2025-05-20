@@ -136,6 +136,25 @@ export const Appearance = () => {
             }}
           />
         </div>
+
+        <div>
+          <h2>contained</h2>
+          <CheckTreeSelect
+            style={{ width: 'auto' }}
+            data={data}
+            value={value}
+            clearable
+            showOnlyShowChecked
+            appearance="contained"
+            label="选择品类"
+            // 取消下拉框匹配 input 触发器的宽度
+            overlay={{ matchWidth: false }}
+            onChange={(value, options) => {
+              console.log('CheckTreeSelect onChange: ', value, options)
+              setValue(value)
+            }}
+          />
+        </div>
       </div>
     </>
   )
