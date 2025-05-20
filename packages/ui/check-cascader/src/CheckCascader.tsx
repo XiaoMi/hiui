@@ -8,6 +8,7 @@ import {
   CheckCascaderDataItem,
   CheckCascaderExpandTriggerEnum,
   CheckCascaderItemEventData,
+  CheckCascaderAppearanceEnum,
   FlattedCheckCascaderDataItem,
 } from './types'
 import { useCache } from '@hi-ui/use-cache'
@@ -24,12 +25,7 @@ import { flattenTreeData } from './utils'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
-import {
-  HiBaseAppearanceEnum,
-  HiBaseFieldNames,
-  HiBaseSizeEnum,
-  useLocaleContext,
-} from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 
 import { callAllFuncs } from '@hi-ui/func-utils'
 
@@ -83,6 +79,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       dropdownColumnRender,
       customRender,
       fieldNames,
+      label,
       ...rest
     },
     ref
@@ -267,6 +264,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             )
           ) : (
             <TagInputMock
+              style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
               {...tagInputProps}
               size={size}
               clearable={clearable}
@@ -283,6 +281,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
               onChange={proxyOnChange}
               data={flattedData}
               invalid={invalid}
+              label={label}
               // onExpand={() => {
               //   // setViewSelected(true)
               //   menuVisibleAction.on()
@@ -407,7 +406,11 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
   /**
    * 设置展现形式
    */
-  appearance?: HiBaseAppearanceEnum
+  appearance?: CheckCascaderAppearanceEnum
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 自定义搜索过滤器，仅在 searchable 为 true 时有效
    * 第一个参数为输入的关键字，
