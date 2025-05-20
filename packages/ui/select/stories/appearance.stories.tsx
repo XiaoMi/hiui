@@ -6,7 +6,7 @@ import Select from '../src'
  * @desc UI风格包括线性、面性、无UI三种
  */
 export const Appearance = () => {
-  const [value, setValue] = React.useState<React.ReactText>('0')
+  const [value, setValue] = React.useState<React.ReactText>('3')
   const [data] = React.useState([
     { title: '电视', id: '3', disabled: false },
     { title: '手机', id: '2' },
@@ -56,6 +56,22 @@ export const Appearance = () => {
             value={value}
             clearable
             appearance="unset"
+            optionWidth={260}
+            onChange={(value, targetItem) => {
+              console.log('Select onChange: ', value, targetItem)
+              setValue(value)
+            }}
+          />
+        </div>
+
+        <div>
+          <h2>contained</h2>
+          <Select
+            data={data}
+            value={value}
+            clearable
+            appearance="contained"
+            label="服务类型"
             optionWidth={260}
             onChange={(value, targetItem) => {
               console.log('Select onChange: ', value, targetItem)
