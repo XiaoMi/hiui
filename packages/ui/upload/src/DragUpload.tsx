@@ -65,6 +65,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       method,
+      accept,
       disabled,
     })
 
