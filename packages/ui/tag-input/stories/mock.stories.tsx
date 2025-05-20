@@ -63,7 +63,7 @@ export const Mock = () => {
           <br />
           <br />
           <TagInputMock
-            size="sm"
+            size="xs"
             appearance="line"
             clearable
             placeholder="请输入"
@@ -96,7 +96,6 @@ export const Mock = () => {
           <br />
           <TagInputMock
             size="lg"
-            invalid
             appearance="line"
             placeholder="请输入"
             suffix={<DownOutlined />}
@@ -134,7 +133,7 @@ export const Mock = () => {
           <br />
           <br />
           <TagInputMock
-            size="sm"
+            size="xs"
             appearance="filled"
             clearable
             placeholder="请输入"
@@ -167,7 +166,6 @@ export const Mock = () => {
           <br />
           <TagInputMock
             size="lg"
-            invalid
             appearance="filled"
             placeholder="请输入"
             suffix={<DownOutlined />}
@@ -205,7 +203,7 @@ export const Mock = () => {
           <br />
           <br />
           <TagInputMock
-            size="sm"
+            size="xs"
             appearance="unset"
             clearable
             placeholder="请输入"
@@ -238,7 +236,6 @@ export const Mock = () => {
           <br />
           <TagInputMock
             size="lg"
-            invalid
             appearance="unset"
             placeholder="请输入"
             suffix={<DownOutlined />}
@@ -260,6 +257,76 @@ export const Mock = () => {
             appearance="unset"
             disabled
             placeholder="请输入"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+        </div>
+
+        <div>
+          <h2>Contained</h2>
+          <TagInputMock
+            appearance="contained"
+            label="服务类型"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="xs"
+            appearance="contained"
+            clearable
+            label="服务类型"
+            value={value}
+            data={data}
+            suffix={<DownOutlined />}
+          />
+          <br />
+          <br />
+          <TagInputMock
+            size="sm"
+            appearance="contained"
+            focused
+            clearable
+            label="服务类型"
+            value={value}
+            data={data}
+            suffix={<DownOutlined />}
+          />
+          <br />
+          <br />
+          <TagInputMock
+            size="md"
+            appearance="contained"
+            focused
+            label="服务类型"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            appearance="contained"
+            label="服务类型"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            invalid
+            focused
+            appearance="contained"
+            label="服务类型"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            appearance="contained"
+            disabled
+            label="服务类型"
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
