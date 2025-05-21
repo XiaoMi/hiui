@@ -32,6 +32,26 @@ export const Appearance = () => {
             console.log('onChange', date, dateStr)
           }}
         />
+        <h2>contained</h2>
+        <DatePicker
+          style={{ width: 'auto' }}
+          appearance="contained"
+          label="日期"
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
+        <br />
+        <br />
+        <DatePicker
+          style={{ width: 'auto' }}
+          appearance="contained"
+          label="日期"
+          type="daterange"
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
       </div>
     </>
   )

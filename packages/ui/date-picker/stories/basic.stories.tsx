@@ -43,6 +43,7 @@ export const Basic = () => {
         <DatePicker
           style={{ width: 240 }}
           disabled
+          defaultValue={new Date()}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}

@@ -211,7 +211,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
         >
           {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
 
-          {label ? (
+          {appearance === 'contained' && label ? (
             <span className={`${prefixCls}__label`}>
               {label}
               {value?.length > 0 && '：'}

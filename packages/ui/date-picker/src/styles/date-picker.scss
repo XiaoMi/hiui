@@ -26,6 +26,12 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     display: inline-flex;
   }
 
+  &__input {
+    &--connection {
+      padding: 0 use-spacing(6);
+    }
+  }
+
   &__picker {
     width: 100%;
     border-radius: use-border-radius('normal');
@@ -42,24 +48,28 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       line-height: use-height-size(6);
       font-size: use-text-size('sm');
       height: use-height-size(6);
+      padding: use-spacing(2) use-spacing(4);
     }
 
     &--size-sm {
       line-height: use-height-size(7);
       font-size: use-text-size('sm');
       height: use-height-size(7);
+      padding: use-spacing(3) use-spacing(4);
     }
 
     &--size-md {
       line-height: use-height-size(8);
       font-size: use-text-size('normal');
       height: use-height-size(8);
+      padding: use-spacing(3) use-spacing(6);
     }
 
     &--size-lg {
       line-height: use-height-size(10);
       font-size: use-text-size('lg');
       height: use-height-size(10);
+      padding: use-spacing(6) use-spacing(8);
     }
 
     $line: '#{&}--appearance-line';
@@ -92,6 +102,44 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       }
     }
 
+    &.#{$prefix}__picker--appearance-contained {
+      width: auto;
+      background-color: use-color('gray', 50);
+
+      &.#{$prefix}__picker--has-value,
+      &:not(.#{$prefix}__picker--disabled):hover {
+        background-color: use-color-mode('primary', 50);
+
+        .#{$prefix}__picker__label,
+        .#{$prefix}__picker__input,
+        .hi-icon {
+          color: use-color-mode('primary', 600);
+        }
+
+        .hi-icon {
+          color: use-color-mode('primary', 600);
+
+          &:hover {
+            color: use-color-mode('primary', 800);
+          }
+        }
+      }
+
+      &.#{$prefix}__picker--disabled {
+        .#{$prefix}__picker__label {
+          color: use-color('gray', 400);
+        }
+      }
+
+      .#{$prefix}__picker__label {
+        white-space: nowrap;
+      }
+
+      .#{$prefix}__input-selector {
+        align-items: center;
+      }
+    }
+
     &--focus {
       &#{$line},
       &#{$filled},
@@ -104,7 +152,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       }
 
       background: transparent;
-      box-shadow: 0 0 0 2px use-color-mode('primary', 100);
+      // box-shadow: 0 0 0 2px use-color-mode('primary', 100);
     }
 
     &--invalid,
@@ -119,10 +167,10 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &--disabled {
       cursor: not-allowed;
-      background: use-color('gray', 100);
+      background-color: use-color('gray', 50);
 
       &:hover {
-        background: use-color('gray', 100);
+        background-color: use-color('gray', 50);
         border-color: transparent;
       }
     }
@@ -138,8 +186,10 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
         text-align: center;
       }
 
-      &.#{$prefix}__picker--hastime {
-        width: 400px;
+      &:not(.#{$prefix}__picker--appearance-contained) {
+        &.#{$prefix}__picker--hastime {
+          width: 400px;
+        }
       }
     }
 
@@ -160,7 +210,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     .hi-icon {
-      margin-right: 8px;
+      margin-left: use-spacing(6);
       font-size: 16px;
       cursor: pointer;
       display: block;
@@ -237,12 +287,12 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     height: calc(100% - 2px);
     border-radius: use-border-radius('normal');
     color: use-color('gray', 700);
-    overflow: hidden;
+    // overflow: hidden;
   }
 
   &__prefix {
     display: inline-flex;
-    margin-left: use-spacing(6);
+    margin-right: use-spacing(6);
     align-items: center;
     flex-shrink: 0;
     color: use-color('gray', 700);
@@ -254,10 +304,8 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     display: flex;
     border-radius: use-border-radius('normal');
     width: 100%;
-    height: calc(100% - 4px);
-    padding: 0 8px;
-    margin: 0 4px;
-    overflow: hidden;
+    height: 100%;
+    // overflow: hidden;
 
     &--date-time-range {
       &:hover {
