@@ -85,6 +85,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       needConfirm: needConfirmProp = false,
       onConfirm,
       visible,
+      label,
       ...otherProps
     },
     ref
@@ -234,6 +235,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       }
     }
 
+    console.log('realFormat', realFormat)
     const callback = useCallback(
       (dates: (moment.Moment | null)[], emitOnChange = true) => {
         // 在判断数值是否改变时，需要比较的数目（比如日期选择就只需要比较第一个数据即可）
@@ -507,6 +509,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             invalid={invalid}
             customRender={customRender}
             prefix={prefix}
+            label={label}
           />
           <Popper
             {...(overlay || {})}

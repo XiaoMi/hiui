@@ -124,7 +124,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
         {...rest}
       >
         {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
-        {appearance === 'contained' ? (
+        {appearance === 'contained' && label ? (
           <span className={`${prefixCls}__label`}>
             {label}
             {hasValue && '：'}
