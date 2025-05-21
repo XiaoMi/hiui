@@ -1,5 +1,11 @@
 # @hi-ui/input
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- b98def710: chore: 优化 Input 和 TagInput label 显示逻辑 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Minor Changes

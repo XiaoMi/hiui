@@ -1,5 +1,18 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.3
+
+### Minor Changes
+
+- b98def710: feat(date-picker): appearance 参数增加 contained 类型 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [b98def710]
+- Updated dependencies [b98def710]
+  - @hi-ui/date-picker@5.0.0-canary.1
+  - @hi-ui/input@5.0.0-canary.3
+
 ## 5.0.0-canary.2
 
 ### Minor Changes
