@@ -1,5 +1,22 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.2
+
+### Minor Changes
+
+- 6c4bf35af: feat: 下拉选择类组件 appearance 参数增加 contained 类型 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [6c4bf35af]
+  - @hi-ui/cascader@5.0.0-canary.2
+  - @hi-ui/check-cascader@5.0.0-canary.2
+  - @hi-ui/check-select@5.0.0-canary.1
+  - @hi-ui/check-tree-select@5.0.0-canary.1
+  - @hi-ui/input@5.0.0-canary.2
+  - @hi-ui/select@5.0.0-canary.1
+  - @hi-ui/tree-select@5.0.0-canary.1
+
 ## 5.0.0-canary.1
 
 ### Minor Changes
