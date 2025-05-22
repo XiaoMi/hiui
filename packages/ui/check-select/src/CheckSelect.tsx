@@ -16,7 +16,7 @@ import Checkbox from '@hi-ui/checkbox'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import VirtualList, { ListRef, useCheckInVirtual } from '@hi-ui/virtual-list'
-import { Picker, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { times, uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
@@ -32,6 +32,7 @@ import {
 } from '@hi-ui/use-search-mode'
 import { flattenData } from './hooks'
 import { getAllCheckedStatus, isCheckableOption, isOption } from './utils'
+import { uuid } from '@hi-ui/use-id'
 
 const _role = 'check-select'
 const _prefix = getPrefixCls(_role)
@@ -73,6 +74,8 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       render: titleRender,
       renderExtraFooter,
       onSearch: onSearchProp,
+      onItemCreate,
+      creatableInSearch,
       fieldNames = DEFAULT_FIELD_NAMES,
       checkedOnEntered = true,
       customRender,
@@ -96,6 +99,8 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       : placeholderProp
 
     // ************************** Picker ************************* //
+
+    const innerRef = useRef<PickerHelper>(null)
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
       visible,
@@ -247,12 +252,31 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       const { key } = evt
 
       if (key === 'Enter' && checkedOnEntered) {
+        if (creatableInSearch && showData.length === 0) {
+          handleCreate(searchValue)
+          return
+        }
+
         const focusedItem = showData[focusedIndex]
 
         if (focusedItem) {
           onSelect(focusedItem, !isCheckedId(focusedItem.id))
         }
       }
+    })
+
+    const handleCreate = useLatestCallback((keyword: string) => {
+      const id = `${keyword}-${uuid()}`
+      const createdItem = {
+        id,
+        title: keyword,
+      }
+      onSelect(createdItem, true)
+      onItemCreate?.(createdItem)
+
+      // 创建后重置搜索和关闭弹窗
+      innerRef.current?.resetSearch()
+      menuVisibleAction.off()
     })
 
     // 更新 focused 索引
@@ -305,6 +329,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       <CheckSelectProvider value={context}>
         <Picker
           ref={ref}
+          innerRef={innerRef}
           className={cls}
           {...rootProps}
           visible={menuVisible}
@@ -318,6 +343,8 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           onSearch={callAllFuncs(onSearchProp, onSearch)}
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderDefaultFooter()}
+          creatableInSearch={creatableInSearch}
+          onCreate={handleCreate}
           trigger={
             customRender ? (
               typeof customRender === 'function' ? (
@@ -537,6 +564,14 @@ export interface CheckSelectProps
    * TagInput 参数设置
    */
   tagInputProps?: TagInputMockProps
+  /**
+   * 是否开启创建选项
+   */
+  creatableInSearch?: boolean
+  /**
+   * 创建选项时触发
+   */
+  onItemCreate?: (item: CheckSelectMergedItem) => void
 }
 
 // @ts-ignore
