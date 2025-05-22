@@ -95,6 +95,8 @@ export default {
     noFoundTip: '无匹配数据',
     searchPlaceholder: '搜索',
     loadingContent: '数据加载中...',
+    createTitle: '创建选项',
+    createPlaceholder: '搜索或创建选项',
   },
   treeSelect: {
     placeholder: '请选择',
