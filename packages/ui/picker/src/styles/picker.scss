@@ -111,4 +111,32 @@ $prefix: '#{$component-prefix}-picker' !default;
   &__loading {
     justify-content: space-between;
   }
+
+  &__creator {
+    display: flex;
+    align-items: center;
+    padding: use-spacing(3);
+    border-radius: use-border-radius('normal');
+
+    &:hover {
+      background-color: use-color('gray', 100);
+      cursor: pointer;
+    }
+
+    &-title {
+      margin-right: use-spacing(4);
+      font-size: use-text-size('normal');
+      color: use-color('gray', 500);
+      white-space: nowrap;
+    }
+
+    &-value {
+      font-weight: use-text-weight('medium');
+      font-size: use-text-size('normal');
+      color: use-color('gray', 700);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }

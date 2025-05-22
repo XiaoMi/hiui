@@ -48,6 +48,10 @@ export const DataSource = () => {
               .then(function (res) {
                 return res.list
               })
+              .catch((error) => {
+                console.error('DataSource', error)
+                return []
+              })
           }}
         />
       </div>
