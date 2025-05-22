@@ -91,6 +91,8 @@ export default {
     noFoundTip: '無匹配數據',
     searchPlaceholder: '搜索',
     loadingContent: '數據加載中...',
+    createTitle: '創建選項',
+    createPlaceholder: '搜索或創建選項',
   },
   treeSelect: {
     placeholder: '請選擇',
