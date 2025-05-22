@@ -174,6 +174,8 @@ export default {
     noFoundTip: 'Not found',
     searchPlaceholder: 'Please search',
     loadingContent: 'loading data...',
+    createTitle: 'Create option',
+    createPlaceholder: 'Search or create option',
   },
   zenMode: {
     back: 'back',
