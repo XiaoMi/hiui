@@ -30,6 +30,9 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       searchable = false,
       keyword: keywordProp,
       scrollable = true,
+      creatableInSearch = false,
+      createTitle: createTitleProp,
+      onCreate,
       visible,
       onOpen,
       onClose,
@@ -56,7 +59,9 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     const i18n = useLocaleContext()
 
     const searchPlaceholder = isUndef(searchPlaceholderProp)
-      ? i18n.get('picker.searchPlaceholder')
+      ? creatableInSearch
+        ? i18n.get('picker.createPlaceholder')
+        : i18n.get('picker.searchPlaceholder')
       : searchPlaceholderProp
     const loadingContent = isUndef(loadingContentProp)
       ? i18n.get('picker.loadingContent')
@@ -64,6 +69,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     const emptyContent = isUndef(emptyContentProp)
       ? i18n.get('picker.emptyContent')
       : emptyContentProp
+    const createTitle = isUndef(createTitleProp) ? i18n.get('picker.createTitle') : createTitleProp
 
     // *********************** 搜索管理 ********************** //
 
@@ -218,7 +224,14 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
                 </div>
               ) : (
                 children ||
-                (showEmpty ? <span className={`${prefixCls}__empty`}>{emptyContent}</span> : null)
+                (creatableInSearch && searchValue ? (
+                  <div className={`${prefixCls}__creator`} onClick={() => onCreate?.(searchValue)}>
+                    <span className={`${prefixCls}__creator-title`}>{createTitle}</span>
+                    <span className={`${prefixCls}__creator-value`}>{searchValue}</span>
+                  </div>
+                ) : showEmpty ? (
+                  <span className={`${prefixCls}__empty`}>{emptyContent}</span>
+                ) : null)
               )}
             </div>
             {footer ? <div className={`${prefixCls}__footer`}>{footer}</div> : null}
@@ -267,6 +280,18 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    */
   keyword?: string
   /**
+   * 在搜索状态下是否可创建选项
+   */
+  creatableInSearch?: boolean
+  /**
+   * 创建选项时展示的标题
+   */
+  createTitle?: string
+  /**
+   * 创建选项时触发回调
+   */
+  onCreate?: (keyword: string) => void
+  /**
    * 搜索时触发回调
    */
   onSearch?: (keyword: string) => void
@@ -310,6 +335,9 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 下拉列表滚动时的回调
    */
   onOverlayScroll?: () => void
+  /**
+   * 触发器
+   */
   trigger: any
   /**
    * 开启内容区域可滚动

@@ -33,6 +33,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
+import { uuid } from '@hi-ui/use-id'
 
 const _role = 'select'
 const _prefix = getPrefixCls(_role)
@@ -82,6 +83,8 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       onClear: onClearProp,
       customRender,
       label,
+      creatableInSearch,
+      onItemCreate,
       ...rest
     },
     ref
@@ -94,7 +97,10 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       visible,
       disabled,
       onOpen,
-      onClose,
+      onClose: () => {
+        innerRef.current?.resetSearch()
+        onClose?.()
+      },
     })
 
     const onSelect = useLatestCallback((value: React.ReactText, item: SelectItemEventData) => {
@@ -184,7 +190,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       }
 
       return nextData.filter((item) => !('groupTitle' in item))
-    }, [selectedItems, flattedData])
+    }, [flattedData, selectedItems])
 
     // ************************** 回车选中处理 ************************* //
 
@@ -196,12 +202,27 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       const { keyCode } = evt
 
       if (keyCode === 13) {
+        if (creatableInSearch && showData.length === 0) {
+          handleCreate(searchValue)
+          return
+        }
+
         const item = showData[focusedIndex]
 
         if (item) {
           handleSelect(item)
         }
       }
+    })
+
+    const handleCreate = useLatestCallback((keyword: string) => {
+      const id = `${keyword}-${uuid()}`
+      const createdItem = {
+        id,
+        title: keyword,
+      }
+      handleSelect(createdItem)
+      onItemCreate?.(createdItem)
     })
 
     // 更新 focused 索引
@@ -247,6 +268,8 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           scrollable={!inVirtual}
+          creatableInSearch={creatableInSearch}
+          onCreate={handleCreate}
           trigger={
             customRender ? (
               typeof customRender === 'function' ? (
@@ -420,6 +443,10 @@ export interface SelectProps
    * 自定义触发器
    */
   customRender?: React.ReactNode | ((option: SelectItemEventData) => React.ReactNode)
+  /**
+   * 创建选项时触发
+   */
+  onItemCreate?: (item: SelectMergedItem) => void
 }
 
 ;(Select as any).HiName = 'Select'
