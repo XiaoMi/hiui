@@ -1,5 +1,18 @@
 # @hi-ui/select
 
+## 5.0.0-canary.2
+
+### Minor Changes
+
+- d621cf2b7: feat(select): 增加 creatableInSearch、createTitle 参数，支持在搜索无结果时可创建选项 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [2451ab789]
+- Updated dependencies [d621cf2b7]
+  - @hi-ui/popper@5.0.0-canary.1
+  - @hi-ui/picker@5.0.0-canary.2
+
 ## 5.0.0-canary.1
 
 ### Minor Changes

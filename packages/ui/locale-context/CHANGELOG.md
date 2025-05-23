@@ -1,5 +1,11 @@
 # @hi-ui/locale-context
 
+## 5.0.0-canary.1
+
+### Minor Changes
+
+- d621cf2b7: feat(select): 增加 creatableInSearch、createTitle 参数，支持在搜索无结果时可创建选项 (5.0)
+
 ## 5.0.0-canary.0
 
 ### Major Changes

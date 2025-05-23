@@ -1,5 +1,11 @@
 # @hi-ui/popper
 
+## 5.0.0-canary.1
+
+### Major Changes
+
+- 2451ab789: style(dropdown): 下拉框带边框&圆角改为 6px&size 改为只有 md 尺寸 (5.0)
+
 ## 5.0.0-canary.0
 
 ### Major Changes
