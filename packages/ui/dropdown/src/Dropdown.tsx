@@ -235,6 +235,7 @@ interface DropdownMenuProps extends HiBaseHTMLProps<'ul'> {
   parents?: React.RefObject<HTMLElement>[]
   /**
    * 设置大小
+   * @private
    */
   size?: HiBaseSizeEnum
 }
