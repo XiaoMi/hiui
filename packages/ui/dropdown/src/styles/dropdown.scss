@@ -11,6 +11,7 @@ $prefix: '#{$component-prefix}-dropdown' !default;
 
   background-color: use-color-static('white');
   border-radius: use-border-radius('normal');
+  border: use-border-size('normal') use-color('gray', 100);
   font-size: use-text-size('normal');
   padding: use-spacing(4);
   color: use-color('gray', 700);
@@ -55,15 +56,15 @@ $prefix: '#{$component-prefix}-dropdown' !default;
     justify-content: space-between;
 
     .#{$prefix}-menu--size-lg & {
-      padding: use-spacing(5) use-spacing(5);
+      padding: use-spacing(3) use-spacing(4);
     }
 
     .#{$prefix}-menu--size-md & {
-      padding: use-spacing(4) use-spacing(4);
+      padding: use-spacing(3) use-spacing(4);
     }
 
     .#{$prefix}-menu--size-sm & {
-      padding: use-spacing(3) use-spacing(3);
+      padding: use-spacing(3) use-spacing(4);
     }
   }
 
