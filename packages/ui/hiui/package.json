@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "5.0.0-canary.4",
+  "version": "5.0.0-canary.5",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -60,7 +60,7 @@
     "@hi-ui/checkbox": "^5.0.0-canary.0",
     "@hi-ui/collapse": "^5.0.0-canary.0",
     "@hi-ui/counter": "^5.0.0-canary.0",
-    "@hi-ui/date-picker": "^5.0.0-canary.1",
+    "@hi-ui/date-picker": "^5.0.0-canary.2",
     "@hi-ui/descriptions": "^5.0.0-canary.1",
     "@hi-ui/drawer": "^5.0.0-canary.1",
     "@hi-ui/dropdown": "^5.0.0-canary.1",
@@ -108,7 +108,7 @@
     "@hi-ui/transfer": "^5.0.0-canary.0",
     "@hi-ui/tree": "^5.0.0-canary.1",
     "@hi-ui/tree-select": "^5.0.0-canary.1",
-    "@hi-ui/upload": "^5.0.0-canary.1",
+    "@hi-ui/upload": "^5.0.0-canary.2",
     "@hi-ui/watermark": "^5.0.0-canary.0",
     "@hi-ui/zen-mode": "^5.0.0-canary.0"
   },

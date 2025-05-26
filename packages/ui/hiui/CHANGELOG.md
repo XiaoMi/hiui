@@ -1,5 +1,25 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.5
+
+### Minor Changes
+
+- cdc0fe912: feat(upload): 新增上传成功后显示成功 icon (5.0)
+
+### Patch Changes
+
+- bb5b8150d: perf(date-picker): 优化 contained 模式下的点击事件交互&范围选择的交互优化 (5.0)
+- cdc0fe912: <br>
+  - feat(upload): 新版样式 (5.0)
+  - feat(upload): 增加 size 参数 (5.0)
+  - feat(upload): 上传按钮改为线性 (5.0)
+  - feat(upload): 照片墙上传按钮支持配置文案 (5.0)
+- Updated dependencies [bb5b8150d]
+- Updated dependencies [cdc0fe912]
+- Updated dependencies [cdc0fe912]
+  - @hi-ui/date-picker@5.0.0-canary.2
+  - @hi-ui/upload@5.0.0-canary.2
+
 ## 5.0.0-canary.4
 
 ### Major Changes

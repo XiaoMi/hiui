@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- bb5b8150d: perf(date-picker): 优化 contained 模式下的点击事件交互&范围选择的交互优化 (5.0)
+
 ## 5.0.0-canary.1
 
 ### Minor Changes

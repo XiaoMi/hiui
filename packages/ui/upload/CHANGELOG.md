@@ -1,5 +1,19 @@
 # @hi-ui/upload
 
+## 5.0.0-canary.2
+
+### Minor Changes
+
+- cdc0fe912: feat(upload): 新增上传成功后显示成功 icon (5.0)
+
+### Patch Changes
+
+- cdc0fe912: <br>
+  - feat(upload): 新版样式 (5.0)
+  - feat(upload): 增加 size 参数 (5.0)
+  - feat(upload): 上传按钮改为线性 (5.0)
+  - feat(upload): 照片墙上传按钮支持配置文案 (5.0)
+
 ## 5.0.0-canary.1
 
 ### Patch Changes
