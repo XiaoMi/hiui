@@ -50,6 +50,7 @@ const Root = ({
     max,
     size,
     strideSelectMode,
+    setFocusIndex,
   } = useContext(DPContext)
   const [inputData, setInputData] = useState(outDate)
 
@@ -159,7 +160,9 @@ const Root = ({
     <div className={_cls} ref={setAttachEl}>
       <div
         className={`${prefixCls}__picker__wrapper`}
-        {...(appearance === 'contained' ? { onClick: () => onPickerClickEvent(0) } : {})}
+        {...(appearance === 'contained' && !inputData[0]
+          ? { onClick: () => onPickerClickEvent(0) }
+          : {})}
       >
         {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
         {appearance === 'contained' && label && (
@@ -181,12 +184,16 @@ const Root = ({
                   dateRangeTimePanelNow === 0 &&
                   `${prefixCls}__input-selector--active`
               )}
-              onClick={() => onPickerClickEvent(0)}
+              onClick={(evt) => {
+                evt.stopPropagation()
+                onPickerClickEvent(0)
+              }}
             >
               <Input
                 date={inputData[0]}
                 placeholder={placeholders[0]}
                 onChange={inputChangeEvent}
+                onFocus={() => setFocusIndex?.(0)}
                 dir={0}
               />
             </div>
@@ -204,12 +211,16 @@ const Root = ({
                       dateRangeTimePanelNow === 1 &&
                       `${prefixCls}__input-selector--active`
                   )}
-                  onClick={() => onPickerClickEvent(1)}
+                  onClick={(evt) => {
+                    evt.stopPropagation()
+                    onPickerClickEvent(1)
+                  }}
                 >
                   <Input
                     date={inputData[1]}
                     placeholder={placeholders[1]}
                     onChange={inputChangeEvent}
+                    onFocus={() => setFocusIndex?.(1)}
                     dir={1}
                   />
                 </div>

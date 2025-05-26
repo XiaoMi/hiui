@@ -66,5 +66,7 @@ export interface DPContextData extends ExtendsType {
   rangeRef: React.MutableRefObject<CalenderSelectedRange | null>
   utcOffset?: number
   defaultPickerValue?: DatePickerValueV3
+  focusIndex?: 0 | 1
+  setFocusIndex?: React.Dispatch<React.SetStateAction<0 | 1>>
 }
 export default DPContext
