@@ -3,13 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UploadProps, UploadFileItem } from './types'
 import { FileSelect } from '@hi-ui/file-select'
-import {
-  PlusOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-  ExclamationCircleOutlined,
-  CloseCircleOutlined,
-} from '@hi-ui/icons'
+import { PlusOutlined, DeleteOutlined, SearchOutlined, InfoCircleFilled } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
 import { useLocaleContext } from '@hi-ui/core'
 import { Preview } from '@hi-ui/preview'
@@ -45,6 +39,8 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       avatarOptions = {},
       preview,
       method,
+      content,
+      size = 'md',
       ...rest
     },
     ref
@@ -185,7 +181,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <ul className={`${prefixCls}__list`}>
+        <ul className={`${prefixCls}__list ${prefixCls}__list--size-${size}`}>
           {!!file &&
             (file.uploadState === 'loading' ? (
               <li className={`${prefixCls}__item`}>
@@ -221,7 +217,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                     <div className={`${prefixCls}__mask`}>
                       <div className={`${prefixCls}__action-group`}>
                         <span className={`${prefixCls}__action-btn`}>
-                          <EyeOutlined
+                          <SearchOutlined
                             onClick={() => {
                               previewImage(file.url || '')
                             }}
@@ -240,7 +236,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                   ) : (
                     <div className={`${prefixCls}__percent`}>
                       <span className={`${prefixCls}__error-btn`}>
-                        <ExclamationCircleOutlined />
+                        <InfoCircleFilled />
                       </span>
                       <span
                         className={cx(`${prefixCls}__delete-btn`)}
@@ -249,7 +245,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                           deleteFile(file, 0)
                         }}
                       >
-                        <CloseCircleOutlined />
+                        <DeleteOutlined />
                       </span>
                     </div>
                   )
@@ -272,6 +268,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                   onKeyDown={handleUploadKeydown}
                 >
                   <PlusOutlined />
+                  <div className={`${prefixCls}__item__upload-text`}>{content}</div>
                 </li>
               ) : (
                 children

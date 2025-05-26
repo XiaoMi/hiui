@@ -11,7 +11,8 @@ export const SingleImport = () => {
       <h1>SingleImport</h1>
       <div className="upload-single-import__wrap">
         <NormalUpload
-          uploadAction="https://jsonplaceholder.typicode.com/posts/"
+          // uploadAction="https://jsonplaceholder.typicode.com/posts/"
+          uploadAction="https://ae97d8f3-cdda-48e5-98a6-40ffe37a94bc.mock.pstmn.io/upload"
           tips="仅支持 jpg/png 文件，且不超过 500kb"
           accept="image/png,image/jpg"
           headers={{ name: 'mi' }}
