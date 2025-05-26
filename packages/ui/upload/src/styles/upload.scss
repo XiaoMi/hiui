@@ -59,6 +59,37 @@ $upload-state-height: 2px !default;
     color: use-color-static('white');
   }
 
+  &__success-icon {
+    color: use-color-mode('success');
+    animation: showHideAnimation 3s ease-in-out;
+  }
+
+  @keyframes showHideAnimation {
+    0% {
+      opacity: 0;
+    }
+
+    10% {
+      opacity: 0.5;
+    }
+
+    20% {
+      opacity: 1;
+    }
+
+    80% {
+      opacity: 1;
+    }
+
+    90% {
+      opacity: 0.5;
+    }
+
+    100% {
+      opacity: 0;
+    }
+  }
+
   &__item {
     position: relative;
     box-sizing: border-box;
@@ -222,7 +253,7 @@ $upload-state-height: 2px !default;
     // min-height: 172px;
     // height: 88px;
     box-sizing: border-box;
-    border: 2px dashed use-color('gray', 300);
+    border: 1px dashed use-color('gray', 300);
     transition: border-color 0.3s;
     border-radius: use-border-radius('normal');
     cursor: pointer;

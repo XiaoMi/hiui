@@ -2,6 +2,7 @@ import React from 'react'
 import Upload from '../src'
 
 export * from './basic.stories'
+export * from './controlled.stories'
 export * from './single-import.stories'
 export * from './size.stories'
 export * from './draggable.stories'

@@ -13,9 +13,10 @@ export const Avatar = () => {
         <h2>sm</h2>
         <Upload
           type="avatar"
-          size="sm"
+          size="md"
           content="上传"
-          uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
+          // uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
+          uploadAction="https://ae97d8f3-cdda-48e5-98a6-40ffe37a94bc.mock.pstmn.io/upload"
           headers={{ name: 'mi' }}
           data={{ id: 'uid', channel: 'youpin' }}
           onChange={(file, fileList, response) => {

@@ -30,7 +30,8 @@ export const Photo = () => {
           type="photo"
           photoSize="sm"
           content="上传"
-          uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
+          // uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
+          uploadAction="https://ae97d8f3-cdda-48e5-98a6-40ffe37a94bc.mock.pstmn.io/upload"
           onChange={(file, fileList, response) => {
             console.log('upload callback', file, fileList, response)
           }}
@@ -47,7 +48,8 @@ export const Photo = () => {
           type="photo"
           photoSize="md"
           content="上传图片"
-          uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
+          // uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
+          uploadAction="https://ae97d8f3-cdda-48e5-98a6-40ffe37a94bc.mock.pstmn.io/upload"
           onChange={(file, fileList, response) => {
             console.log('upload callback', file, fileList, response)
           }}
@@ -64,7 +66,8 @@ export const Photo = () => {
           type="photo"
           photoSize="lg"
           content="上传图片"
-          uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
+          // uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
+          uploadAction="https://ae97d8f3-cdda-48e5-98a6-40ffe37a94bc.mock.pstmn.io/upload"
           onChange={(file, fileList, response) => {
             console.log('upload callback', file, fileList, response)
           }}

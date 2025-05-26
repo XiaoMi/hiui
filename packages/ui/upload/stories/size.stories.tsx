@@ -9,6 +9,7 @@ export const Size = () => {
   const defaultFileList: UploadFileItem[] = [
     {
       name: 'a.png',
+      fileId: '1',
       fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
       uploadState: 'loading', // 上传状态，可取值success, error
       progressNumber: 50,
@@ -17,6 +18,7 @@ export const Size = () => {
     },
     {
       name: 'b.png',
+      fileId: '2',
       fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
       uploadState: 'success', // 上传状态，可取值success, error
       size: 1435417,
@@ -24,6 +26,7 @@ export const Size = () => {
     },
     {
       name: 'c.png',
+      fileId: '3',
       fileType: 'img',
       uploadState: 'error',
       size: 1435417,
@@ -39,7 +42,8 @@ export const Size = () => {
         <Upload
           type="default"
           size="xs"
-          uploadAction="https://jsonplaceholder.typicode.com/posts/"
+          // uploadAction="https://jsonplaceholder.typicode.com/posts/"
+          uploadAction="https://ae97d8f3-cdda-48e5-98a6-40ffe37a94bc.mock.pstmn.io/upload"
           tips="仅支持 jpg/png 文件，且不超过 500kb"
           accept="image/png,image/jpg"
           headers={{ name: 'mi' }}
@@ -52,7 +56,8 @@ export const Size = () => {
         <Upload
           type="default"
           size="md"
-          uploadAction="https://jsonplaceholder.typicode.com/posts/"
+          // uploadAction="https://jsonplaceholder.typicode.com/posts/"
+          uploadAction="https://ae97d8f3-cdda-48e5-98a6-40ffe37a94bc.mock.pstmn.io/upload"
           tips="仅支持 jpg/png 文件，且不超过 500kb"
           accept="image/png,image/jpg"
           headers={{ name: 'mi' }}
@@ -65,7 +70,8 @@ export const Size = () => {
         <Upload
           type="default"
           size="lg"
-          uploadAction="https://jsonplaceholder.typicode.com/posts/"
+          // uploadAction="https://jsonplaceholder.typicode.com/posts/"
+          uploadAction="https://ae97d8f3-cdda-48e5-98a6-40ffe37a94bc.mock.pstmn.io/upload"
           tips="仅支持 jpg/png 文件，且不超过 500kb"
           accept="image/png,image/jpg"
           headers={{ name: 'mi' }}
