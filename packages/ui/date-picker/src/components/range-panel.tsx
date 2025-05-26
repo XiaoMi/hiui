@@ -41,6 +41,7 @@ const RangePanel = () => {
     strideSelectMode,
     rangeRef,
     footerRender,
+    focusIndex,
   } = useContext(DPContext)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
@@ -170,6 +171,7 @@ const RangePanel = () => {
       const _innerDates = genNewDates(calRenderDates, date, uIndex)
       setCalRenderDates(_innerDates)
     }
+
     const _views = cloneDeep(views)
     if (views[uIndex] === 'month' && !type.includes('month')) {
       _views[uIndex] = 'date'
@@ -180,6 +182,7 @@ const RangePanel = () => {
     if (views[uIndex] === 'year' && type.includes('quarter')) {
       _views[uIndex] = 'quarter'
     }
+
     setViews(_views)
   }
 
@@ -200,13 +203,45 @@ const RangePanel = () => {
     ) {
       setRange((range) => {
         const newRange = { ...range }
-        newRange.end = outDate[1]
-        if (newRange.end?.isBefore(newRange.start)) {
-          const temp = newRange.start
-          newRange.start = newRange.end
-          newRange.end = temp
+        const oldStart = outDate[0]
+        const oldEnd = outDate[1]
+        const newStart = newRange.start
+
+        // 处理只选中一个值关闭弹窗时的范围取值
+        if (focusIndex === 0) {
+          // 当焦点在第一个输入框时
+          if (newStart?.isBefore(oldStart)) {
+            // 如果新选择的日期在原始开始日期之前
+            newRange.start = newStart
+            newRange.end = oldEnd
+          } else if (newStart?.isAfter(oldStart) && newStart?.isBefore(oldEnd)) {
+            // 如果新选择的日期在原始开始和结束日期之间
+            newRange.start = newStart
+            newRange.end = oldEnd
+          } else if (newStart?.isAfter(oldEnd)) {
+            // 如果新选择的日期在原始结束日期之后
+            newRange.start = oldEnd
+            newRange.end = newStart
+          }
+        } else {
+          // 当焦点在第二个输入框时
+          if (newStart?.isBefore(oldEnd) && newStart?.isAfter(oldStart)) {
+            // 如果新选择的日期在原始开始和结束日期之间
+            newRange.start = oldStart
+            newRange.end = newStart
+          } else if (newStart?.isAfter(oldEnd)) {
+            // 如果新选择的日期在原始结束日期之后
+            newRange.start = oldStart
+            newRange.end = newStart
+          } else if (newStart?.isBefore(oldStart)) {
+            // 如果新选择的日期在原始开始日期之前
+            newRange.start = newStart
+            newRange.end = oldStart
+          }
         }
+
         rangeRef.current = newRange
+
         return newRange
       })
     }
