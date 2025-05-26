@@ -72,7 +72,7 @@ const useUpload = ({
         }
       }
     },
-    [onRemove, fileList]
+    [disabled, onRemove, fileList]
   )
 
   const onSuccess = useCallback(
