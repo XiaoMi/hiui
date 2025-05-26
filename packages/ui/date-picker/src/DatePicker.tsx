@@ -97,6 +97,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const cacheDate = useRef<(moment.Moment | null)[]>([])
     const [inputFocus, setInputFocus] = useState(false)
+    const [focusIndex, setFocusIndex] = useState<0 | 1>(0)
     const [type, setType] = useState<DatePickerTypeEnum>(propType)
     const rangeRef = useRef<CalenderSelectedRange | null>(null)
 
@@ -235,7 +236,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       }
     }
 
-    console.log('realFormat', realFormat)
     const callback = useCallback(
       (dates: (moment.Moment | null)[], emitOnChange = true) => {
         // 在判断数值是否改变时，需要比较的数目（比如日期选择就只需要比较第一个数据即可）
@@ -352,6 +352,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         const isValid = moment(outDateValue).isValid()
         const start = rangeRef.current?.start
         const end = rangeRef.current?.end
+
         let newDate
         if (!!start && !!end) {
           newDate = [start, end]
@@ -362,8 +363,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         // @ts-ignore
         const { startDate, endDate } = isValid && getInRangeDate(newDate[0], newDate[1], max, min)
         const _outDate = isValid ? [moment(startDate), moment(endDate)] : [null]
-        callback(_outDate, true)
 
+        callback(_outDate, true)
         changeOutDate(_outDate)
         rangeRef.current = null
       }
@@ -492,6 +493,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           strideSelectMode,
           rangeRef,
           utcOffset,
+          focusIndex,
+          setFocusIndex,
         }}
       >
         <div className={cx(prefixCls, className)} {...otherProps}>
