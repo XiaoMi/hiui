@@ -78,7 +78,7 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
         >
           {children === undefined ? (
             <Button
-              type="secondary"
+              appearance="line"
               disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
               loading={loading}
             >

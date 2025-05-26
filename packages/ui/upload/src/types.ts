@@ -34,6 +34,7 @@ export interface UploadFileList {
   showPic?: boolean
   actionRender?: (props: ActionRenderProps) => React.ReactNode
   disabled?: boolean
+  size?: 'xs' | 'md' | 'lg'
 }
 
 export interface UploadRequestOption {
@@ -59,6 +60,10 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    * 上传组件类型
    */
   type?: 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
+  /**
+   * 上传文件列表大小
+   */
+  size?: 'xs' | 'md' | 'lg'
   /**
    * 接收上传的文件类型， 用逗号隔开的 MIME 类型列表，参考 [MDN-MIME 类型](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_Types)
    */
