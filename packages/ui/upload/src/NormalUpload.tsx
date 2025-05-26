@@ -43,6 +43,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       actionRender,
       method,
       timeout,
+      size = 'md',
       ...rest
     },
     ref
@@ -75,7 +76,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
         <FileSelect
-          style={{ display: 'inline-block' }}
+          style={{ display: 'inline-flex' }}
           onSelect={uploadFiles}
           multiple={multiple}
           disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
@@ -83,7 +84,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
         >
           {children === undefined ? (
             <Button
-              type="secondary"
+              appearance="line"
               disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
               loading={loading}
               icon={icon ?? <UploadOutlined />}
@@ -103,6 +104,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             prefixCls={prefixCls}
             actionRender={actionRender}
             disabled={disabled}
+            size={size}
           />
         )}
       </div>

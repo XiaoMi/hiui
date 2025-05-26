@@ -9,11 +9,13 @@ export const CustomUpload = () => {
   const [fileList, setFileList] = React.useState<UploadFileItem[]>([
     {
       name: 'a.png',
+      fileId: '1',
       fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
       uploadState: 'success', // 上传状态，可取值success, error
     },
     {
       name: 'b.png',
+      fileId: '2',
       fileType: 'img',
       uploadState: 'error',
     },
@@ -27,8 +29,11 @@ export const CustomUpload = () => {
           type="default"
           customUpload={(files) => {
             const nextFileList = fileList.concat({
-              name: files[0].name,
-              fileType: files[0].name.slice(files[0].name.lastIndexOf('.') + 1).toLowerCase(),
+              name: files?.[0]?.name,
+              fileId: '3',
+              fileType: files?.[0]?.name
+                ?.slice(files?.[0]?.name?.lastIndexOf('.') + 1)
+                .toLowerCase(),
               uploadState: 'success',
             })
 
