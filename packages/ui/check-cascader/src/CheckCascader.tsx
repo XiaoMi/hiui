@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -22,7 +22,7 @@ import {
   useTreeUpMatchSearch,
 } from '@hi-ui/use-search-mode'
 import { flattenTreeData } from './utils'
-import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
+import { filterTree, getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
 import { HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
@@ -80,6 +80,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       customRender,
       fieldNames,
       label,
+      showOnlyShowChecked,
       ...rest
     },
     ref
@@ -100,6 +101,10 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       onOpen,
       onClose,
     })
+
+    const [filterItems, setFilterItems] = useState<CheckCascaderDataItem[] | null>(null)
+    const expandedViewRef = useRef<'normal' | 'onlyChecked'>('normal')
+    const activeExpandable = showOnlyShowChecked && !!filterItems && menuVisible
 
     const [cascaderData, setCascaderData] = useCache(data)
 
@@ -215,7 +220,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     const shouldUseSearch = !!searchValue
 
     const selectProps = {
-      data: shouldUseSearch ? stateInSearch.data : flattedData,
+      data: filterItems || (shouldUseSearch ? stateInSearch.data : flattedData),
       titleRender: proxyTitleRender,
     }
 
@@ -286,6 +291,63 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
               //   // setViewSelected(true)
               //   menuVisibleAction.on()
               // }}
+              onClick={(evt) => {
+                if (!showOnlyShowChecked) return
+
+                evt.preventDefault()
+                if (filterItems) {
+                  setFilterItems(null)
+                }
+
+                if (menuVisible) {
+                  if (expandedViewRef.current === 'normal') {
+                    menuVisibleAction.off()
+                  }
+                } else {
+                  menuVisibleAction.on()
+                }
+
+                expandedViewRef.current = 'normal'
+              }}
+              expandable={showOnlyShowChecked}
+              activeExpandable={activeExpandable}
+              onExpand={(evt) => {
+                if (!showOnlyShowChecked) return
+
+                // 阻止冒泡触发外层 onClick
+                evt.preventDefault()
+                evt.stopPropagation()
+
+                // 选中数据
+                setFilterItems(() => {
+                  const filterFunc = (node: CheckCascaderDataItem): boolean => {
+                    if (value.includes(node.id)) {
+                      return true
+                    }
+
+                    if (node.children && node.children?.length > 0) {
+                      return node.children.some((child) => filterFunc(child))
+                    }
+
+                    return false
+                  }
+                  // filterTree 过滤树结构，将不包含value中的节点分支过滤掉
+                  // 返回过滤后的树结构
+                  const treeData = filterTree(data, filterFunc)
+
+                  return flattenTreeData(treeData, fieldNames)
+                })
+                // 展开/关闭操作
+                if (menuVisible) {
+                  if (expandedViewRef.current !== 'normal') {
+                    menuVisibleAction.off()
+                  }
+                } else {
+                  menuVisibleAction.on()
+                }
+
+                expandedViewRef.current = 'onlyChecked'
+              }}
             />
           )
         }
@@ -302,7 +364,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             onSelect={onSelect}
             onLoadChildren={onLoadChildren}
             titleRender={proxyTitleRender}
-            flatted={flatted || !!searchValue}
+            flatted={flatted || !!searchValue || activeExpandable}
             // @ts-ignore
             flattedData={selectProps.data}
             originalFlattedData={flattedData}
@@ -459,6 +521,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
   customRender?:
     | React.ReactNode
     | ((selectItems: (FlattedCheckCascaderDataItem | undefined)[]) => React.ReactNode)
+  /**
+   * 是否只展示选中的选项
+   */
+  showOnlyShowChecked?: boolean
 }
 
 if (__DEV__) {
