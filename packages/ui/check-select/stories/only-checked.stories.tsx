@@ -2,7 +2,8 @@ import React from 'react'
 import CheckSelect from '../src'
 
 /**
- * @title 仅已选过滤
+ * @title 查看已选
+ * @desc 只展示选中的选项
  */
 export const OnlyChecked = () => {
   const [data] = React.useState([
