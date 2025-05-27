@@ -5,6 +5,7 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CloseCircleFilled } from '@hi-ui/icons'
 import type { HiBaseAppearanceEnum, HiBaseDataItem, HiBaseHTMLFieldProps } from '@hi-ui/core'
 import { isArray } from '@hi-ui/type-assertion'
+import { useLatestCallback } from '@hi-ui/use-latest'
 
 const _role = 'mock-input'
 const _prefix = getPrefixCls(_role)
@@ -39,6 +40,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
       suffix: suffixProp,
       onMouseOver,
       onMouseLeave,
+      onClear,
       ...rest
     },
     ref
@@ -63,6 +65,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
       return displayItem.title
     }, [displayItem, displayRender])
 
+    const onClearLatest = useLatestCallback(onClear)
     const handleClear = useCallback(
       (evt) => {
         if (disabled) return
@@ -70,8 +73,9 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
         evt.stopPropagation()
 
         tryChangeValue(NOOP_VALUE, displayItem)
+        onClearLatest?.()
       },
-      [tryChangeValue, disabled, displayItem]
+      [tryChangeValue, disabled, displayItem, onClearLatest]
     )
 
     const [hover, setHover] = useState(false)
@@ -179,6 +183,10 @@ export type MockInputProps = HiBaseHTMLFieldProps<
      * 清除按钮展示的触发形态
      */
     clearableTrigger?: 'always' | 'hover'
+    /**
+     * 点击关闭按钮时触发
+     */
+    onClear?: () => void
     /**
      * 是否禁止使用
      */
