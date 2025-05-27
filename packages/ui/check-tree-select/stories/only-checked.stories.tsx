@@ -3,6 +3,7 @@ import CheckTreeSelect from '../src'
 
 /**
  * @title 查看已选
+ * @desc 只展示选中的选项
  */
 export const OnlyChecked = () => {
   const [data] = React.useState([
