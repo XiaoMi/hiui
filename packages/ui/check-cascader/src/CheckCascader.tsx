@@ -50,6 +50,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       data = NOOP_ARRAY,
       placeholder: placeholderProp,
       clearable,
+      onClear,
       onSelect,
       expandTrigger,
       disabled = false,
@@ -259,6 +260,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
               {...tagInputProps}
               size={size}
               clearable={clearable}
+              onClear={onClear}
               placeholder={placeholder}
               // @ts-ignore
               displayRender={displayRender}
@@ -344,6 +346,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 是否可清空
    */
   clearable?: boolean
+  /**
+   * 点击关闭按钮时触发
+   */
+  onClear?: () => void
   /**
    * 是否禁止使用
    */

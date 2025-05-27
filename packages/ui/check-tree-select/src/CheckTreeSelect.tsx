@@ -81,6 +81,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       // popper,
       // ********* picker ********* //
       clearable,
+      onClear,
       invalid,
       displayRender,
       placeholder: placeholderProp,
@@ -370,6 +371,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
               // onClick={openMenu}
               // disabled={disabled}
               clearable={clearable}
+              onClear={onClear}
               placeholder={placeholder}
               // @ts-ignore
               displayRender={displayRender}
@@ -586,6 +588,10 @@ export interface CheckTreeSelectProps
    * 是否可清空
    */
   clearable?: boolean
+  /**
+   * 点击关闭按钮时触发
+   */
+  onClear?: () => void
   /**
    * 设置展现形式
    */

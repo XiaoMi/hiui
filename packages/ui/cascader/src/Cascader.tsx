@@ -58,6 +58,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     suffix,
     onOpen,
     onClose,
+    onClear,
     renderExtraFooter,
     dropdownColumnRender,
     closeOnSelect = true,
@@ -251,6 +252,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
             <MockInput
               size={size}
               clearable={clearable}
+              onClear={onClear}
               placeholder={placeholder}
               displayRender={displayRender as any}
               prefix={prefix}
@@ -358,6 +360,10 @@ export interface CascaderProps
    * 自定义触发器
    */
   customRender?: React.ReactNode | ((selectedItem: CascaderItemEventData | null) => React.ReactNode)
+  /**
+   * 点击关闭按钮时触发
+   */
+  onClear?: () => void
 }
 
 if (__DEV__) {

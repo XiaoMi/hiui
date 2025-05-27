@@ -68,6 +68,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       // popper,
       // ********* picker ********* //
       clearable,
+      onClear,
       invalid,
       displayRender: displayRenderProp,
       placeholder: placeholderProp,
@@ -261,6 +262,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
               // disabled={disabled}
               size={size}
               clearable={clearable}
+              onClear={onClear}
               placeholder={placeholder}
               displayRender={displayRenderProp}
               prefix={prefix}
@@ -393,6 +395,10 @@ export interface TreeSelectProps
    * 是否可清空
    */
   clearable?: boolean
+  /**
+   * 点击关闭按钮时触发
+   */
+  onClear?: () => void
   /**
    * 设置展现形式
    */
