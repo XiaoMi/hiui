@@ -3,5 +3,9 @@
 $prefix: '#{$component-prefix}-tree-select' !default;
 
 .#{$prefix} {
-
+  &__tree {
+    .#{$component-prefix}-tree-node__wrap {
+      border-radius: use-border-radius('md');
+    }
+  }
 }
