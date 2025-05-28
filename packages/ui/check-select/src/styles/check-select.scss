@@ -9,7 +9,7 @@ $prefix: '#{$component-prefix}-check-select' !default;
     display: flex;
     align-items: center;
     position: relative;
-    border-radius: use-border-radius('normal');
+    border-radius: use-border-radius('md');
     cursor: pointer;
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');

@@ -71,6 +71,16 @@ export const Mock = () => {
             data={data}
             suffix={<DownOutlined />}
           />
+          <TagInputMock
+            size="xs"
+            appearance="line"
+            clearable
+            wrap
+            placeholder="请输入"
+            value={value}
+            data={data}
+            suffix={<DownOutlined />}
+          />
           <br />
           <br />
           <TagInputMock
@@ -81,6 +91,18 @@ export const Mock = () => {
             placeholder="请输入"
             value={value}
             data={data}
+            // wrap
+            suffix={<DownOutlined />}
+          />
+          <TagInputMock
+            size="sm"
+            focused
+            appearance="line"
+            clearable
+            placeholder="请输入"
+            value={value}
+            data={data}
+            wrap
             suffix={<DownOutlined />}
           />
           <br />
@@ -90,6 +112,16 @@ export const Mock = () => {
             appearance="line"
             focused
             placeholder="请输入"
+            value={value}
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <TagInputMock
+            size="md"
+            appearance="line"
+            focused
+            placeholder="请输入"
+            value={value}
+            wrap
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -98,6 +130,15 @@ export const Mock = () => {
             size="lg"
             appearance="line"
             placeholder="请输入"
+            value={value}
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <TagInputMock
+            size="lg"
+            appearance="line"
+            placeholder="请输入"
+            value={value}
+            wrap
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -108,6 +149,7 @@ export const Mock = () => {
             focused
             appearance="line"
             placeholder="请输入"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -117,6 +159,7 @@ export const Mock = () => {
             appearance="line"
             disabled
             placeholder="请输入"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -160,6 +203,7 @@ export const Mock = () => {
             appearance="filled"
             focused
             placeholder="请输入"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -168,6 +212,7 @@ export const Mock = () => {
             size="lg"
             appearance="filled"
             placeholder="请输入"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -178,6 +223,7 @@ export const Mock = () => {
             focused
             appearance="filled"
             placeholder="请输入"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -187,6 +233,7 @@ export const Mock = () => {
             appearance="filled"
             disabled
             placeholder="请输入"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -230,6 +277,7 @@ export const Mock = () => {
             appearance="unset"
             focused
             placeholder="请输入"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -238,6 +286,7 @@ export const Mock = () => {
             size="lg"
             appearance="unset"
             placeholder="请输入"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -248,6 +297,7 @@ export const Mock = () => {
             focused
             appearance="unset"
             placeholder="请输入"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -257,6 +307,7 @@ export const Mock = () => {
             appearance="unset"
             disabled
             placeholder="请输入"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -300,6 +351,7 @@ export const Mock = () => {
             appearance="contained"
             focused
             label="服务类型"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -308,16 +360,7 @@ export const Mock = () => {
             size="lg"
             appearance="contained"
             label="服务类型"
-            suffix={<DownOutlined />}
-          ></TagInputMock>
-          <br />
-          <br />
-          <TagInputMock
-            size="lg"
-            invalid
-            focused
-            appearance="contained"
-            label="服务类型"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
@@ -327,6 +370,7 @@ export const Mock = () => {
             appearance="contained"
             disabled
             label="服务类型"
+            value={value}
             suffix={<DownOutlined />}
           ></TagInputMock>
           <br />
