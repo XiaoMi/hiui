@@ -115,7 +115,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     align-items: center;
     position: relative;
     justify-content: space-between;
-    border-radius: use-border-radius('normal');
+    border-radius: use-border-radius('md');
 
     &:hover {
       background-color: use-color('gray', 100);

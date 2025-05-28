@@ -161,7 +161,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     color: use-color('gray', 700);
     user-select: none;
     background-color: use-color('gray', 100);
-    border-radius: use-border-radius('normal');
+    border-radius: use-border-radius('md');
     position: relative;
     display: flex;
     align-items: center;
@@ -210,13 +210,23 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       font-size: use-text-size('sm');
       line-height: use-text-lineheight('sm');
       border-radius: use-border-radius('normal');
-      padding: 0 calc(#{use-spacing(4)} - 1px);
+      padding: 1px use-spacing(1);
 
       .#{$tag-input-mock-prefix}__tag,
       .#{$tag-input-mock-prefix}__placeholder {
         // 控制上下间距
         margin-top: 1px;
         margin-bottom: 1px;
+      }
+
+      .#{$tag-input-mock-prefix}__label,
+      .#{$tag-input-mock-prefix}__prefix,
+      .#{$tag-input-mock-prefix}__placeholder {
+        margin-left: use-spacing(3);
+      }
+
+      .#{$tag-input-mock-prefix}__prefix + .#{$tag-input-mock-prefix}__placeholder {
+        margin-left: 0;
       }
     }
 
@@ -228,13 +238,23 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       font-size: use-text-size('sm');
       line-height: use-text-lineheight('sm');
       border-radius: use-border-radius('normal');
-      padding: 0 $input-padding-width;
+      padding: 1px use-spacing(2);
 
       .#{$tag-input-mock-prefix}__tag,
       .#{$tag-input-mock-prefix}__placeholder {
         // 控制上下间距
-        margin-top: 1px;
-        margin-bottom: 1px;
+        margin-top: use-spacing(1);
+        margin-bottom: use-spacing(1);
+      }
+
+      .#{$tag-input-mock-prefix}__label,
+      .#{$tag-input-mock-prefix}__prefix,
+      .#{$tag-input-mock-prefix}__placeholder {
+        margin-left: use-spacing(2);
+      }
+
+      .#{$tag-input-mock-prefix}__prefix + .#{$tag-input-mock-prefix}__placeholder {
+        margin-left: 0;
       }
     }
 
@@ -246,7 +266,24 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       font-size: use-text-size('normal');
       line-height: use-text-lineheight('normal');
       border-radius: use-border-radius('normal');
-      padding: 2px $input-padding-width;
+      padding: use-spacing(1) use-spacing(2);
+
+      .#{$tag-input-mock-prefix}__tag,
+      .#{$tag-input-mock-prefix}__placeholder {
+        // 控制上下间距
+        margin-top: use-spacing(1);
+        margin-bottom: use-spacing(1);
+      }
+
+      .#{$tag-input-mock-prefix}__label,
+      .#{$tag-input-mock-prefix}__prefix,
+      .#{$tag-input-mock-prefix}__placeholder {
+        margin-left: use-spacing(4);
+      }
+
+      .#{$tag-input-mock-prefix}__prefix + .#{$tag-input-mock-prefix}__placeholder {
+        margin-left: 0;
+      }
     }
 
     &-lg {
@@ -257,7 +294,24 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       font-size: use-text-size('lg');
       line-height: use-text-lineheight('lg');
       border-radius: use-border-radius('normal');
-      padding: 5px $input-padding-width;
+      padding: calc(#{use-spacing(3)} - 1px) use-spacing(3);
+
+      .#{$tag-input-mock-prefix}__tag,
+      .#{$tag-input-mock-prefix}__placeholder {
+        // 控制上下间距
+        margin-top: use-spacing(1);
+        margin-bottom: use-spacing(1);
+      }
+
+      .#{$tag-input-mock-prefix}__label,
+      .#{$tag-input-mock-prefix}__prefix,
+      .#{$tag-input-mock-prefix}__placeholder {
+        margin-left: use-spacing(5);
+      }
+
+      .#{$tag-input-mock-prefix}__prefix + .#{$tag-input-mock-prefix}__placeholder {
+        margin-left: 0;
+      }
     }
   }
 
@@ -429,9 +483,11 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
         width: auto;
       }
 
-      .#{$tag-input-mock-prefix}__label,
-      .#{$tag-input-mock-prefix}__suffix {
-        color: use-color('gray', 600);
+      &:not(.#{$tag-input-mock-prefix}--disabled) {
+        .#{$tag-input-mock-prefix}__label,
+        .#{$tag-input-mock-prefix}__suffix {
+          color: use-color('gray', 600);
+        }
       }
 
       .#{$tag-input-mock-prefix}__label,
@@ -452,7 +508,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
         padding-left: use-spacing(4);
       }
 
-      &.#{$tag-input-mock-prefix}--has-value,
+      &:not(.#{$tag-input-mock-prefix}--disabled).#{$tag-input-mock-prefix}--has-value,
       &:not(.#{$tag-input-mock-prefix}--disabled):hover {
         background-color: use-color-mode('primary', 50);
 
@@ -471,7 +527,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
         }
       }
 
-      &.#{$tag-input-mock-prefix}--has-value {
+      &:not(.#{$tag-input-mock-prefix}--disabled).#{$tag-input-mock-prefix}--has-value {
         .#{$tag-input-mock-prefix}__tag--total {
           background-color: use-color-mode('primary', 200);
           color: use-color-mode('primary', 600);
@@ -487,6 +543,11 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
         .#{$tag-input-mock-prefix}__label,
         .#{$tag-input-mock-prefix}__value,
         .#{$tag-input-mock-prefix}__suffix {
+          color: use-color('gray', 400);
+        }
+
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color('gray', 100);
           color: use-color('gray', 400);
         }
       }
