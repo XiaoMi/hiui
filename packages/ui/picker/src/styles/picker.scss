@@ -24,29 +24,29 @@ $prefix: '#{$component-prefix}-picker' !default;
     .#{$component-prefix}-mock-input {
       border-color: use-color-mode('primary');
 
-      &__suffix {
-        color: use-color-mode('primary');
-      }
+      // &__suffix {
+      //   color: use-color-mode('primary');
+      // }
 
-      &.invalid {
-        .#{$component-prefix}-mock-input__suffix {
-          color: use-color-mode('error');
-        }
-      }
+      // &.invalid {
+      //   .#{$component-prefix}-mock-input__suffix {
+      //     color: use-color-mode('error');
+      //   }
+      // }
     }
 
     .#{$component-prefix}-tag-input-mock {
       border-color: use-color-mode('primary');
 
-      &__suffix {
-        color: use-color-mode('primary');
-      }
+      // &__suffix {
+      //   color: use-color-mode('primary');
+      // }
 
-      &.invalid {
-        .#{$component-prefix}-tag-input-mock__suffix {
-          color: use-color-mode('error');
-        }
-      }
+      // &.invalid {
+      //   .#{$component-prefix}-tag-input-mock__suffix {
+      //     color: use-color-mode('error');
+      //   }
+      // }
     }
   }
 
@@ -93,6 +93,16 @@ $prefix: '#{$component-prefix}-picker' !default;
       &__prefix {
         padding-left: calc(#{use-spacing(4)} - 1px);
         color: use-color('gray', 700);
+      }
+
+      &--appearance-underline {
+        .#{$component-prefix}-input {
+          &__inner {
+            &:hover::after {
+              border-bottom-color: use-color('gray', 300);
+            }
+          }
+        }
       }
     }
   }

@@ -16,7 +16,7 @@ export * from './trim.stories'
 export * from './type.stories'
 // export * from './format.stories'
 export * from './with-tooltip.stories'
-export * from './mock.stories'
+// export * from './mock.stories'
 
 export default {
   title: 'Data Input/Input',
