@@ -55,7 +55,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
       if (pageSizeOptions) {
         return pageSizeOptions.map((opt) => ({
           id: opt,
-          title: `${opt} ${itemText} / ${itemPerPageText}`,
+          title: `${opt} ${itemText}/${itemPerPageText}`,
         }))
       }
     }, [pageSizeOptions, itemText, itemPerPageText])

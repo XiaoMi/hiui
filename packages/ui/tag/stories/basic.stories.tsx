@@ -15,7 +15,7 @@ export const Basic = () => {
         <Tag type="success">成功色</Tag>
         <Tag type="warning">警告色</Tag>
         <Tag type="danger">危险色</Tag>
-        <Tag type="orange">橘黄色</Tag>
+        <Tag type="yellow">橘黄色</Tag>
         <Tag type="ultramarine">深蓝色</Tag>
         <Tag type="skyblue">天蓝色</Tag>
         <Tag type="purple">紫色</Tag>

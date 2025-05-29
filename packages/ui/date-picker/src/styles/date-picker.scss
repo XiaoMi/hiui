@@ -265,7 +265,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       margin: 0;
 
       &::placeholder {
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
 
         .#{$prefix}__picker--appearance-unset & {
           color: use-color('gray', 500);

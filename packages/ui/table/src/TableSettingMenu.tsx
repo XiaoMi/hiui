@@ -87,7 +87,11 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
         {trigger ? (
           <div className={`${prefixCls}__trigger`}>{trigger}</div>
         ) : (
-          <IconButton icon={<EllipsisVerticalOutlined />} onClick={menuVisibleAction.not} />
+          <Button
+            appearance="text"
+            icon={<EllipsisVerticalOutlined />}
+            onClick={menuVisibleAction.not}
+          />
         )}
 
         <Drawer
