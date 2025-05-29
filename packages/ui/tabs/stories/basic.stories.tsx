@@ -8,7 +8,7 @@ import Button from '@hi-ui/button'
  */
 export const Basic = () => {
   const [activeTab, setActiveTab] = React.useState<React.ReactText>('1')
-  const [showDivider, setShowDivider] = React.useState<boolean>(false)
+  const [showDivider, setShowDivider] = React.useState<boolean>(true)
 
   return (
     <>
