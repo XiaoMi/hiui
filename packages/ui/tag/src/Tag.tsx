@@ -205,7 +205,7 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
     | 'warning'
     | 'danger'
     | 'default'
-    | 'orange'
+    | 'yellow'
     | 'ultramarine'
     | 'skyblue'
     | 'purple'
