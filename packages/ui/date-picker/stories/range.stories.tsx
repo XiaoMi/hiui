@@ -8,6 +8,8 @@ import DayJs from 'dayjs'
  */
 export const Range = () => {
   const [dynamicSelectedValue, setDynamicSelectedValue] = useState<any>('')
+  const [start, setStart] = useState<Date[]>([])
+
   return (
     <>
       <h1>范围</h1>
@@ -126,6 +128,49 @@ export const Range = () => {
           onSelect={(val, isCompleted) => {
             console.log(val, isCompleted)
             setDynamicSelectedValue(isCompleted ? '' : val)
+          }}
+        />
+
+        <h2>动态限制日期时间范围</h2>
+        <DatePicker
+          type="daterange"
+          style={{ width: 480 }}
+          format="YYYY-MM-DD"
+          showTime
+          onChange={(date, dateStr) => {
+            if (!date) {
+              setStart([])
+            }
+          }}
+          onSelect={(val, isCompleted, index = 0) => {
+            console.log('select', val, isCompleted, index)
+            start[index] = val
+            setStart([...start])
+          }}
+          disabledDate={(val, view, index) => {
+            // 如果还没有选择开始日期，不禁用任何日期
+            if (!start[0]) {
+              return false
+            }
+
+            const currentTime = new Date(val).getTime()
+            const startTime = new Date(start[0]).getTime()
+            const sixtyDays = 60 * 24 * 60 * 60 * 1000 // 60天的毫秒数
+
+            // 如果是选择第二个日期
+            if (index === 1) {
+              // 禁用超过开始日期一周范围的日期
+              return currentTime < startTime || currentTime > startTime + sixtyDays
+            }
+
+            // 如果是选择第一个日期且已经选择了结束日期
+            if (index === 0 && start[1]) {
+              const endTime = new Date(start[1]).getTime()
+              // 禁用导致日期范围超过一周的日期
+              return currentTime > endTime || endTime - currentTime > sixtyDays
+            }
+
+            return false
           }}
         />
       </div>
