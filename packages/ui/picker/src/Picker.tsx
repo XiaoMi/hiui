@@ -265,7 +265,7 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 自定义下拉选项宽度
    */
-  optionWidth?: number
+  optionWidth?: React.CSSProperties['width']
   /**
    * 下拉根元素的类名称
    */
