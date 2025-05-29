@@ -26,7 +26,7 @@ export const Appearance = () => {
         <Tag type="danger" appearance="filled">
           危险色
         </Tag>
-        <Tag type="orange" appearance="filled">
+        <Tag type="yellow" appearance="filled">
           橘黄色
         </Tag>
         <Tag type="ultramarine" appearance="filled">
@@ -59,7 +59,7 @@ export const Appearance = () => {
         <Tag type="danger" appearance="line">
           危险色
         </Tag>
-        <Tag type="orange" appearance="line">
+        <Tag type="yellow" appearance="line">
           橘黄色
         </Tag>
         <Tag type="ultramarine" appearance="line">
@@ -92,7 +92,7 @@ export const Appearance = () => {
         <Tag type="danger" appearance="solid">
           危险色
         </Tag>
-        <Tag type="orange" appearance="solid">
+        <Tag type="yellow" appearance="solid">
           橘黄色
         </Tag>
         <Tag type="ultramarine" appearance="solid">
