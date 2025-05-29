@@ -1,20 +1,19 @@
 import React from 'react'
-import CheckTreeSelect from '../src'
+import TreeSelect from '../src'
 
 /**
- * @title 查看已选
- * @desc 只展示选中的选项
+ * @title 禁用
  */
-export const OnlyChecked = () => {
+export const Disabled = () => {
   const [data] = React.useState([
     {
       title: '手机类',
       id: '0',
+      disabled: true,
       children: [
         {
           title: 'Redmi系列',
           id: '0-0',
-          disabled: true,
           children: [
             {
               id: '0-0-1',
@@ -88,14 +87,14 @@ export const OnlyChecked = () => {
 
   return (
     <>
-      <h1>Only Checked</h1>
-      <div className="check-tree-select-only-checked__wrap">
-        <CheckTreeSelect
-          style={{ width: 240 }}
+      <h1>Disabled</h1>
+      <div className="tree-select-disabled__wrap">
+        <TreeSelect
           data={data}
-          checkedMode="PARENT"
-          onChange={console.log}
-          showOnlyShowChecked
+          disabled
+          onChange={(checkedIds, selectItem) => {
+            console.log('TreeSelect onChange: ', checkedIds, selectItem)
+          }}
         />
       </div>
     </>

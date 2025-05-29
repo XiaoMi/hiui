@@ -2,10 +2,9 @@ import React from 'react'
 import CheckTreeSelect from '../src'
 
 /**
- * @title 查看已选
- * @desc 只展示选中的选项
+ * @title 禁用
  */
-export const OnlyChecked = () => {
+export const Disabled = () => {
   const [data] = React.useState([
     {
       title: '手机类',
@@ -88,14 +87,14 @@ export const OnlyChecked = () => {
 
   return (
     <>
-      <h1>Only Checked</h1>
-      <div className="check-tree-select-only-checked__wrap">
+      <h1>Disabled</h1>
+      <div className="check-tree-select-disabled__wrap">
         <CheckTreeSelect
           style={{ width: 240 }}
           data={data}
+          disabled
           checkedMode="PARENT"
           onChange={console.log}
-          showOnlyShowChecked
         />
       </div>
     </>
