@@ -21,9 +21,9 @@ $solid-color-map: (
     'normal': use-color('gray', 500),
     'hover': use-color('gray', 300)
   ),
-  'orange': (
-    'normal': use-color('orange', 500),
-    'hover': use-color('orange', 300)
+  'yellow': (
+    'normal': use-color('yellow', 500),
+    'hover': use-color('yellow', 300)
   ),
   'ultramarine': (
     'normal': use-color('ultramarine', 500),
@@ -73,11 +73,11 @@ $line-color-map: (
     'hover-text': use-color('gray', 600),
     'hover-border': use-color('gray', 200)
   ),
-  'orange': (
-    'text': use-color('orange', 500),
-    'border': use-color('orange', 500),
-    'hover-text': use-color('orange', 600),
-    'hover-border': use-color('orange', 200)
+  'yellow': (
+    'text': use-color('yellow', 500),
+    'border': use-color('yellow', 500),
+    'hover-text': use-color('yellow', 600),
+    'hover-border': use-color('yellow', 200)
   ),
   'ultramarine': (
     'text': use-color('ultramarine', 500),
@@ -131,10 +131,10 @@ $filled-color-map: (
     'background': use-color('gray', 100),
     'hover-background': use-color('gray', 200)
   ),
-  'orange': (
-    'color': use-color('orange', 800),
-    'background': use-color('orange', 100),
-    'hover-background': use-color('orange', 100)
+  'yellow': (
+    'color': use-color('yellow', 800),
+    'background': use-color('yellow', 100),
+    'hover-background': use-color('yellow', 100)
   ),
   'ultramarine': (
     'color': use-color('ultramarine', 800),

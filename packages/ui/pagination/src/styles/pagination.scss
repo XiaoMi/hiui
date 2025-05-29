@@ -127,6 +127,11 @@ $prefix: '#{$component-prefix}-pagination' !default;
     .#{$prefix}__btn {
       min-width: use-height-size(6);
       height: use-height-size(6);
+
+      > button {
+        padding-left: use-spacing(2);
+        padding-right: use-spacing(2);
+      }
     }
 
     .#{$prefix}__item {
