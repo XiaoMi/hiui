@@ -46,7 +46,7 @@ export const Appearance = () => {
         <DatePicker
           style={{ width: 'auto' }}
           appearance="contained"
-          label="日期"
+          label="日期范围"
           type="daterange"
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
