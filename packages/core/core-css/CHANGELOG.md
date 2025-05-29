@@ -1,5 +1,12 @@
 # @hi-ui/core-css
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- 3cb3377dc: style: 修改样式问题 (5.0)
+- 568670ca8: style(core-css): update color token (5.0)
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

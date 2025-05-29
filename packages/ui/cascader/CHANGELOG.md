@@ -1,5 +1,17 @@
 # @hi-ui/cascader
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- df3615e78: <br>
+  - style(tag-input): 间距调整 (5.0)
+  - style(select): 选择类组件选项圆角改为 4px (5.0)
+  - style(picker): 搜索框样式调整 (5.0)
+- Updated dependencies [3cb3377dc]
+- Updated dependencies [df3615e78]
+  - @hi-ui/picker@5.0.0-canary.3
+
 ## 5.0.0-canary.2
 
 ### Minor Changes

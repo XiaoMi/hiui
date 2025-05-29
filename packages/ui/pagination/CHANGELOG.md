@@ -1,5 +1,13 @@
 # @hi-ui/pagination
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- 3cb3377dc: style: 修改样式问题 (5.0)
+- Updated dependencies [df3615e78]
+  - @hi-ui/select@5.0.0-canary.3
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

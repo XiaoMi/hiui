@@ -1,5 +1,35 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.6
+
+### Minor Changes
+
+- c3052130d: feat(check-cascader): add showOnlyShowChecked api (5.0)
+
+### Patch Changes
+
+- 3cb3377dc: style: 修改样式问题 (5.0)
+- df3615e78: <br>
+  - style(tag-input): 间距调整 (5.0)
+  - style(select): 选择类组件选项圆角改为 4px (5.0)
+  - style(picker): 搜索框样式调整 (5.0)
+- Updated dependencies [3cb3377dc]
+- Updated dependencies [c3052130d]
+- Updated dependencies [df3615e78]
+  - @hi-ui/button@5.0.0-canary.2
+  - @hi-ui/date-picker@5.0.0-canary.3
+  - @hi-ui/modal@5.0.0-canary.2
+  - @hi-ui/pagination@5.0.0-canary.2
+  - @hi-ui/picker@5.0.0-canary.3
+  - @hi-ui/table@5.0.0-canary.2
+  - @hi-ui/tag@5.0.0-canary.2
+  - @hi-ui/check-cascader@5.0.0-canary.3
+  - @hi-ui/cascader@5.0.0-canary.3
+  - @hi-ui/check-select@5.0.0-canary.3
+  - @hi-ui/check-tree-select@5.0.0-canary.2
+  - @hi-ui/select@5.0.0-canary.3
+  - @hi-ui/tree-select@5.0.0-canary.2
+
 ## 5.0.0-canary.5
 
 ### Minor Changes
