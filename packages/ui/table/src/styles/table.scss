@@ -22,7 +22,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &__wrapper {
     position: relative;
     z-index: 0;
-    border-top: use-border-size('normal') use-color('gray', 300);
+    border-top: use-border-size('normal') use-color('gray', 200);
   }
 
   // 内嵌面板
@@ -262,7 +262,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       font-weight: use-text-weight('medium');
       line-height: use-text-lineheight('sm');
       padding: use-spacing(7) use-spacing(8);
-      border-bottom: use-border-size('normal') use-color('gray', 300);
+      border-bottom: use-border-size('normal') use-color('gray', 200);
 
       &.#{$prefix}__embed-col {
         padding: use-spacing(7) use-spacing(5);
@@ -393,7 +393,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 .#{$prefix}-cell {
   box-sizing: border-box;
   word-break: break-word;
-  border-bottom: use-border-size('normal') use-color('gray', 300);
+  border-bottom: use-border-size('normal') use-color('gray', 200);
   font-size: use-text-size('normal');
   font-weight: use-text-weight('normal');
   color: use-color('gray', 700);
