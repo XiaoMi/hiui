@@ -60,7 +60,16 @@ export const Custom = () => {
         <Pagination
           {...paginationProps}
           onChange={(cur) => {
-            // updateCurrent(cur)
+            setPaginationProps({
+              ...paginationProps,
+              current: cur,
+            })
+          }}
+          onPageSizeChange={(pageSize) => {
+            setPaginationProps({
+              ...paginationProps,
+              pageSize,
+            })
           }}
         />
       </div>

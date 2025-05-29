@@ -21,6 +21,7 @@ export const PageOption: React.FC<PageOptionProps> = ({
     <Select
       className={cls}
       style={{ width: 'auto' }}
+      optionWidth={'auto'}
       data={pageSizeOptions}
       value={pageSize}
       clearable={false}
