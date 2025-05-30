@@ -31,7 +31,15 @@ const _prefix = getPrefixCls('table')
  * 需要使用双表格的场景对应的 API
  * 这些场景下的功能无法通过单表格实现，故而设计成双表格，即表头和表体分别用一个 table 实现
  */
-const DOUBLE_TABLE_SCENE = ['maxHeight', 'sticky', 'stickyTop', 'setting', 'virtual'] as const
+const DOUBLE_TABLE_SCENE = [
+  'needDoubleTable',
+  'maxHeight',
+  'sticky',
+  'stickyTop',
+  'setting',
+  'virtual',
+  'stretchHeight',
+] as const
 
 const STANDARD_PRESET = {
   striped: true,
