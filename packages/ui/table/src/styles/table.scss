@@ -25,6 +25,33 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     border-top: use-border-size('normal') use-color('gray', 200);
   }
 
+  // 表格高度自动拉伸样式配置
+  &--stretch-height {
+    height: 100%;
+    overflow: hidden;
+
+    .#{$prefix}__wrapper {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .#{$prefix}-body {
+        flex-grow: 1;
+        overflow: auto;
+      }
+    }
+
+    &.#{$prefix}--empty {
+      .#{$prefix}__wrapper {
+        .#{$prefix}-body {
+          table {
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+
   // 内嵌面板
   &__switcher {
     &.#{$component-prefix}-icon-button {
