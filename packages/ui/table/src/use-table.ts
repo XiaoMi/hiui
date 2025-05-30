@@ -75,6 +75,7 @@ export const useTable = ({
   onLoadChildren,
   // 表头吸顶
   maxHeight,
+  stretchHeight,
   sticky,
   stickyTop = 0,
   // drag
@@ -644,6 +645,7 @@ export const useTable = ({
     setActiveSorterType,
     canScroll,
     maxHeight,
+    stretchHeight,
     getTableHeaderProps,
     isErrorRow,
     bodyTableRef,
@@ -767,6 +769,11 @@ export interface UseTableProps {
    *  表格最大高度，当穿过该高度时，展示滚动条且表头固定
    */
   maxHeight?: number | string
+  /**
+   *  表格高度自动拉伸
+   *  Todo: 无法显示分页和Footer
+   */
+  stretchHeight?: boolean
   /**
    *  表格列冻结默认设置，为 string 时仅支持从左侧冻结至某一列
    */
