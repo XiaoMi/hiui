@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 5.0.0-canary.3
+
+### Minor Changes
+
+- 870279eff: feat(table): add stretchHeight api (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes
