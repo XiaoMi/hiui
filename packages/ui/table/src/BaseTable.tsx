@@ -195,6 +195,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       scrollWidth,
       footerRender,
       scrollbar,
+      stretchHeight,
     } = providedValue
 
     const hasBorder = borderedProp ?? bordered
@@ -246,9 +247,11 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
         </div>
       )
 
+      const { style, ...restTableHeaderProps } = getTableHeaderProps()
+
       const doubleTableContent = (
         <>
-          <div {...getTableHeaderProps()}>
+          <div {...restTableHeaderProps} style={{ ...style, overflow: 'unset' }}>
             <TableHeader />
 
             {/* 不跟随内部 header 横向滚动，固定到右侧 */}
@@ -311,7 +314,9 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       striped && `${prefixCls}--striped`,
       size && `${prefixCls}--size-${size}`,
       virtual && `${prefixCls}--virtual`,
-      data.length === 0 && `${prefixCls}--empty`
+      data.length === 0 && `${prefixCls}--empty`,
+      `${prefixCls}--${needDoubleTable ? 'double' : 'single'}`,
+      stretchHeight && `${prefixCls}--stretch-height`
     )
 
     return (
