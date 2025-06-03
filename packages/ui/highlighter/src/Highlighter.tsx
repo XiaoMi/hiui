@@ -5,6 +5,11 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const HIGHLIGHTER_PREFIX = getPrefixCls('highlighter')
 
+const addGlobalFlag = (regex: RegExp) =>{
+  const newFlags = regex.flags.includes('g') ? regex.flags : regex.flags + 'g';
+  return new RegExp(regex.source, newFlags);
+}
+
 /**
  * 高亮文本内容
  */
@@ -29,7 +34,11 @@ export const Highlighter = forwardRef<HTMLSpanElement | null, HighlighterProps>(
 
     // 支持多个匹配高亮
     const parts = children.split(keyword)
-    const matches = children.match(keyword)
+
+    let matches: RegExpMatchArray | null
+    if(keyword instanceof RegExp){
+      matches = children.match(addGlobalFlag(keyword))
+    }
 
     // 未匹配到
     if (parts.length < 2) return children
