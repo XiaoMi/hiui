@@ -330,7 +330,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           setShowPanel(isShowPanel)
         }, 0)
         if (!isShowPanel) {
-          setInputFocus(false)
           callback(dates)
           onClose?.()
         }
@@ -341,7 +340,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const resetStatus = useCallback(() => {
       setShowPanel(false)
-      setInputFocus(false)
     }, [])
 
     const onPopperClose = useCallback(() => {
@@ -497,7 +495,18 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           setFocusIndex,
         }}
       >
-        <div className={cx(prefixCls, className)} {...otherProps}>
+        <div
+          className={cx(prefixCls, className)}
+          {...otherProps}
+          onMouseEnter={() => {
+            if (outDate[0]) {
+              setInputFocus(true)
+            }
+          }}
+          onMouseLeave={() => {
+            setInputFocus(false)
+          }}
+        >
           <Root
             inputChangeEvent={inputChangeEvent}
             onClear={onClear}
@@ -505,7 +514,6 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             onTrigger={(index) => {
               setDateRangeTimePanelNow(index)
               setShowPanel(true)
-              setInputFocus(true)
             }}
             setAttachEl={setAttachEl}
             dateRangeTimePanelNow={dateRangeTimePanelNow}
