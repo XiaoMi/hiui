@@ -166,8 +166,19 @@ $prefix: '#{$component-prefix}-tabs' !default;
     // }
 
     &--type-line {
+      &.#{$prefix}__list--placement-horizontal {
+        .#{$prefix}__item:first-child {
+          padding-left: 0;
+        }
+
+        .#{$prefix}__item:last-child {
+          padding-right: 0;
+        }
+      }
+
       &.#{$prefix}__list--size-sm {
         .#{$prefix}__item {
+          padding: use-spacing(5) 0 use-spacing(5) use-spacing(14);
           font-size: use-text-size('normal');
           line-height: use-text-lineheight('normal');
         }
@@ -175,7 +186,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
       &.#{$prefix}__list--size-md {
         .#{$prefix}__item {
-          padding: use-spacing(6) use-spacing(10);
+          padding: use-spacing(6) 0 use-spacing(6) use-spacing(14);
           font-size: use-text-size('normal');
           line-height: use-text-lineheight('normal');
         }
@@ -183,7 +194,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
       &.#{$prefix}__list--size-lg {
         .#{$prefix}__item {
-          padding: use-spacing(9) use-spacing(10);
+          padding: use-spacing(9) 0 use-spacing(9) use-spacing(14);
           font-size: use-text-size('lg');
           line-height: use-text-lineheight('lg');
         }
@@ -227,8 +238,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
             position: absolute;
             z-index: 0;
             bottom: 0;
-            left: use-spacing(10);
-            width: calc(100% - #{use-spacing(20)});
+            left: 0;
+            width: 100%;
             height: 1px;
             background-color: use-color('gray', 200);
           }
