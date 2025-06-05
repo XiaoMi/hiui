@@ -195,6 +195,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
                 <Input
                   ref={setSearchInputElement}
                   appearance="underline"
+                  size="lg"
                   // TODO: Why not take effect
                   // autoFocus
                   prefix={<SearchOutlined />}
