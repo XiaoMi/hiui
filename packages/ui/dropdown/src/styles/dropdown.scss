@@ -28,9 +28,13 @@ $prefix: '#{$component-prefix}-dropdown' !default;
 .#{$prefix}-menu-item {
   @include list-item-reset();
 
-  margin: 0;
+  margin: 2px 0 0 0;
   box-sizing: border-box;
   overflow: visible;
+
+  &:first-child {
+    margin-top: 0;
+  }
 
   &__link {
     color: use-color('gray', 700);
@@ -50,7 +54,7 @@ $prefix: '#{$component-prefix}-dropdown' !default;
     width: 100%;
     height: 100%;
     cursor: pointer;
-    border-radius: use-border-radius('normal');
+    border-radius: use-border-radius('md');
     display: flex;
     align-items: center;
     justify-content: space-between;
