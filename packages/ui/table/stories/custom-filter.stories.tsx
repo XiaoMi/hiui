@@ -145,7 +145,7 @@ export const CustomFilter = () => {
                 keyword = e.target.value
               }}
             />
-            <div style={{ marginTop: '8px', textAlign: 'right' }}>
+            <div style={{ marginTop: '12px', textAlign: 'right' }}>
               <Button onClick={() => setFilterDropdownVisible(false)} appearance="line" size="sm">
                 取消
               </Button>

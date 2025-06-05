@@ -87,19 +87,27 @@ $prefix: '#{$component-prefix}-picker' !default;
   }
 
   &__search {
-    // padding: use-spacing(4) use-spacing(4) 0;
+    padding: use-spacing(2) 0;
+    border-bottom: 1px solid use-color('gray', 300);
 
     .#{$component-prefix}-input {
+      font-size: use-text-size('normal');
+
       &__prefix {
-        padding-left: calc(#{use-spacing(4)} - 1px);
+        padding-left: use-spacing(8);
+        font-size: use-text-size('lg');
         color: use-color('gray', 700);
       }
 
       &--appearance-underline {
         .#{$component-prefix}-input {
           &__inner {
-            &:hover::after {
-              border-bottom-color: use-color('gray', 300);
+            &::after {
+              border: none;
+            }
+
+            .#{$component-prefix}-input__text {
+              padding-left: use-spacing(4);
             }
           }
         }
