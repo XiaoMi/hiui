@@ -70,8 +70,8 @@ export const Dynamic = () => {
         <CheckCascader
           style={{ width: 240 }}
           data={treeData}
-          // onLoadChildren={loadChildren}
-          // defaultValue={[[1]]}
+          onLoadChildren={loadChildren}
+          defaultValue={[[1]]}
           checkedMode="PARENT"
           onChange={console.log}
         ></CheckCascader>

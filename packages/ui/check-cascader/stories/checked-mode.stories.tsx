@@ -2,7 +2,7 @@ import React from 'react'
 import CheckCascader from '../src'
 
 /**
- * @title 选中项展示模式
+ * @title 回显模式
  * @desc 不同模式下，选中项的内容不一样，默认是 `ALL` 模式，无论父子节点，选中后就会展示。
  */
 export const CheckedMode = () => {
