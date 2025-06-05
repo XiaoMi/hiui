@@ -565,7 +565,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     }
 
     &__content {
-      padding: 12px 8px;
+      padding: use-spacing(6);
     }
   }
 }
