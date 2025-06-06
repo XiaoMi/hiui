@@ -1,5 +1,17 @@
 # @hi-ui/tree-select
 
+## 4.3.0
+
+### Minor Changes
+
+- [#3172](https://github.com/XiaoMi/hiui/pull/3172) [`a883d8e19`](https://github.com/XiaoMi/hiui/commit/a883d8e197446ef0e7cefcc5cc44d21ed1d0807f) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(mock-input): 增加 onClear 参数 (#3171)
+
+### Patch Changes
+
+- Updated dependencies [[`7bf0630`](https://github.com/XiaoMi/hiui/commit/7bf063053a73923af41c33370c31371325206276), [`a883d8e19`](https://github.com/XiaoMi/hiui/commit/a883d8e197446ef0e7cefcc5cc44d21ed1d0807f)]:
+  - @hi-ui/highlighter@4.1.2
+  - @hi-ui/input@4.4.0
+
 ## 4.2.1
 
 ### Patch Changes
