@@ -1,5 +1,11 @@
 # @hi-ui/core-css
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- c3a7005b0: style: 修改 UI 问题 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

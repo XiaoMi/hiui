@@ -1,5 +1,17 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- c3a7005b0: style: 修改 UI 问题 (5.0)
+- Updated dependencies [c3a7005b0]
+  - @hi-ui/date-picker@5.0.0-canary.4
+  - @hi-ui/dropdown@5.0.0-canary.2
+  - @hi-ui/picker@5.0.0-canary.4
+  - @hi-ui/table@5.0.0-canary.4
+  - @hi-ui/tabs@5.0.0-canary.2
+
 ## 5.0.0-canary.7
 
 ### Minor Changes
