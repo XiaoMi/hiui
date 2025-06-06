@@ -1,5 +1,11 @@
 # @hi-ui/highlighter
 
+## 4.1.2
+
+### Patch Changes
+
+- [#3179](https://github.com/XiaoMi/hiui/pull/3179) [`7bf0630`](https://github.com/XiaoMi/hiui/commit/7bf063053a73923af41c33370c31371325206276) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(highlighter): 修复 CheckSelect 搜索模式下搜索(时报错(#3178)
+
 ## 4.1.1
 
 ### Patch Changes

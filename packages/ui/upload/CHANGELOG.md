@@ -1,5 +1,11 @@
 # @hi-ui/upload
 
+## 4.2.5
+
+### Patch Changes
+
+- [#3164](https://github.com/XiaoMi/hiui/pull/3164) [`084cf985c`](https://github.com/XiaoMi/hiui/commit/084cf985c7813c646c0a3df03d32dc9d8752edef) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(upload): 修改 upload 组件支持上传的文件异常(#3163)
+
 ## 4.2.4
 
 ### Patch Changes

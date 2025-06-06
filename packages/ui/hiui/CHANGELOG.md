@@ -1,5 +1,26 @@
 # @hi-ui/hiui
 
+## 4.13.0
+
+### Minor Changes
+
+- [#3172](https://github.com/XiaoMi/hiui/pull/3172) [`a883d8e19`](https://github.com/XiaoMi/hiui/commit/a883d8e197446ef0e7cefcc5cc44d21ed1d0807f) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(mock-input): 增加 onClear 参数 (#3171)
+
+### Patch Changes
+
+- [#3179](https://github.com/XiaoMi/hiui/pull/3179) [`7bf0630`](https://github.com/XiaoMi/hiui/commit/7bf063053a73923af41c33370c31371325206276) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(highlighter): 修复 CheckSelect 搜索模式下搜索(时报错(#3178)
+
+- [#3164](https://github.com/XiaoMi/hiui/pull/3164) [`084cf985c`](https://github.com/XiaoMi/hiui/commit/084cf985c7813c646c0a3df03d32dc9d8752edef) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(upload): 修改 upload 组件支持上传的文件异常(#3163)
+
+- Updated dependencies [[`7bf0630`](https://github.com/XiaoMi/hiui/commit/7bf063053a73923af41c33370c31371325206276), [`084cf985c`](https://github.com/XiaoMi/hiui/commit/084cf985c7813c646c0a3df03d32dc9d8752edef), [`a883d8e19`](https://github.com/XiaoMi/hiui/commit/a883d8e197446ef0e7cefcc5cc44d21ed1d0807f)]:
+  - @hi-ui/highlighter@4.1.2
+  - @hi-ui/upload@4.2.5
+  - @hi-ui/cascader@4.4.0
+  - @hi-ui/check-cascader@4.4.0
+  - @hi-ui/check-tree-select@4.7.0
+  - @hi-ui/input@4.4.0
+  - @hi-ui/tree-select@4.3.0
+
 ## 4.12.1
 
 ### Patch Changes
