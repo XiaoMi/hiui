@@ -26,7 +26,9 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onTabClick,
       editable,
       placement = 'horizontal',
+      onEdit,
       onAdd,
+      onAdded,
       onDelete,
       draggable = false,
       onDragStart,
@@ -37,6 +39,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       type = 'line',
       size = 'md',
       showDivider,
+      maxTabTitleWidth,
       extra,
       ...rest
     },
@@ -84,7 +87,9 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           onTabClick={onTabClick}
           placement={placement}
           editable={editable}
+          onEdit={onEdit}
           onAdd={onAdd}
+          onAdded={onAdded}
           onDelete={onDelete}
           draggable={draggable}
           onDragEnd={onDragEnd}
@@ -95,6 +100,7 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           showDivider={showDivider}
           onDragStart={onDragStart}
           extra={extra}
+          maxTabTitleWidth={maxTabTitleWidth}
         />
         <div className={`${_prefix}__content`}>
           {React.Children.map(children, (child) => {
@@ -152,6 +158,10 @@ export interface TabsProps
    */
   showDivider?: boolean
   /**
+   * 标签最大宽度
+   */
+  maxTabTitleWidth?: number
+  /**
    * `activeId` 改变的回调
    */
   onChange?: (tabId: React.ReactText) => void
@@ -163,15 +173,22 @@ export interface TabsProps
    * 右侧的拓展区域
    */
   extra?: React.ReactNode
-
+  /**
+   * 节点编辑时触发
+   */
+  onEdit?: (value: string, item: TabPaneProps) => boolean | Promise<boolean>
   /**
    * 节点增加时触发
    */
   onAdd?: () => void
   /**
+   * 节点增加完成时触发
+   */
+  onAdded?: (newTab: TabPaneProps) => boolean | Promise<boolean>
+  /**
    * 节点删除时时触发
    */
-  onDelete?: (deletedNode: TabPaneProps, index: number) => void
+  onDelete?: (deletedNode: TabPaneProps, evt: React.MouseEvent) => boolean | Promise<boolean>
   /**
    * 节点开始拖拽时触发
    */

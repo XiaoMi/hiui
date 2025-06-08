@@ -1,8 +1,10 @@
-import React, { forwardRef, useCallback, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { TabPaneProps } from './TabPane'
 import { cx } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { CloseOutlined } from '@hi-ui/icons'
+import { Input } from '@hi-ui/input'
+import { Tooltip } from '@hi-ui/tooltip'
 
 export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
   (
@@ -10,13 +12,15 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
       className,
       style,
       disabled,
-      tabTitle,
+      tabTitle: tabTitleProp,
       tabDesc,
       prefixCls,
       tabId,
       onTabClick,
       active,
       editable,
+      editing: editingProp,
+      onEdit,
       onDelete,
       index,
       onDragStart,
@@ -28,11 +32,24 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
       type = 'line',
       closeable = true,
       direction: layout = 'horizontal',
+      maxTitleWidth,
     },
     ref
   ) => {
     const [dragId, setDragId] = useState<React.ReactText | null>(null)
     const [direction, setDirection] = useState<'prev' | 'next' | null>(null)
+    const [editing, setEditing] = useState(editingProp)
+    const [tabTitle, setTabTitle] = useState(tabTitleProp as string)
+    const titleRef = useRef<HTMLSpanElement>(null)
+
+    useEffect(() => {
+      setEditing(editingProp)
+    }, [editingProp])
+
+    useEffect(() => {
+      setTabTitle(tabTitleProp as string)
+    }, [tabTitleProp])
+
     const _onClick = useCallback(
       (e: React.MouseEvent) => {
         if (onTabClick) {
@@ -41,6 +58,31 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
       },
       [onTabClick, tabId]
     )
+
+    const handleEditDone = useCallback(
+      async (evt: React.FocusEvent<HTMLInputElement>) => {
+        const value = evt.target.value as string
+        let newTitle = value
+
+        if (!value) {
+          newTitle = tabTitleProp as string
+        } else {
+          newTitle = value
+        }
+
+        setEditing(false)
+        setTabTitle(newTitle)
+
+        const result = await onEdit?.(newTitle)
+        if (!result) {
+          setTabTitle(tabTitleProp as string)
+        }
+
+        onTabClick?.(tabId, (evt as unknown) as React.MouseEvent)
+      },
+      [onEdit, onTabClick, tabId, tabTitleProp]
+    )
+
     return (
       <div
         style={style}
@@ -53,6 +95,10 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
         draggable={draggable}
         tabIndex={disabled ? 0 : -1}
         onClick={disabled ? undefined : _onClick}
+        onDoubleClick={(e) => {
+          e.stopPropagation()
+          setEditing(true)
+        }}
         onDragStart={(e) => {
           e.stopPropagation()
           e.dataTransfer.setData('tab', JSON.stringify({ tabId, tabTitle }))
@@ -120,20 +166,51 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
           }
         }}
       >
-        <span className={`${prefixCls}-item__title`}>{tabTitle}</span>
-        {type === 'desc' && <span className={`${prefixCls}-item__desc`}>{tabDesc}</span>}
-        {editable && closeable && (
-          <span
-            className={`${prefixCls}__close-btn`}
-            onClick={(e) => {
-              e.stopPropagation()
-              if (onDelete) {
-                onDelete({ tabId, tabTitle }, index)
-              }
-            }}
-          >
-            <CloseOutlined />
-          </span>
+        {editing ? (
+          <div className={`${prefixCls}__edit-input`}>
+            <Input
+              value={tabTitle}
+              autoFocus
+              onBlur={handleEditDone}
+              onKeyDown={(evt) => {
+                if (evt.key === 'Enter') {
+                  handleEditDone((evt as unknown) as React.FocusEvent<HTMLInputElement>)
+                }
+              }}
+              onChange={(e) => {
+                setTabTitle(e.target.value as string)
+              }}
+            />
+          </div>
+        ) : (
+          <>
+            <Tooltip
+              title={tabTitle}
+              disabled={!maxTitleWidth || (titleRef.current?.offsetWidth ?? 0) < maxTitleWidth}
+            >
+              <span
+                ref={titleRef}
+                className={`${prefixCls}-item__title`}
+                style={{ maxWidth: maxTitleWidth }}
+              >
+                {tabTitle}
+              </span>
+            </Tooltip>
+            {type === 'desc' && <span className={`${prefixCls}-item__desc`}>{tabDesc}</span>}
+            {editable && closeable && (
+              <span
+                className={`${prefixCls}__close-btn`}
+                onClick={(evt) => {
+                  evt.stopPropagation()
+                  if (onDelete) {
+                    onDelete({ tabId, tabTitle }, evt)
+                  }
+                }}
+              >
+                <CloseOutlined />
+              </span>
+            )}
+          </>
         )}
       </div>
     )
@@ -144,11 +221,12 @@ interface TabItemProps
   extends Omit<TabPaneProps, 'itemRef' | 'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop'> {
   active: boolean
   draggable?: boolean
-
+  editing?: boolean
   onTabClick: (key: React.ReactText, event: React.MouseEvent) => void
   prefixCls?: string
   editable?: boolean
-  onDelete?: (deletedNode: TabPaneProps, index: number) => void
+  onEdit?: (value: string) => boolean | Promise<boolean>
+  onDelete?: (deletedNode: TabPaneProps, evt: React.MouseEvent) => void
   index: number
   onDragStart?: (
     e: React.DragEvent<HTMLDivElement>,
@@ -170,6 +248,7 @@ interface TabItemProps
   itemRef: HTMLDivElement | null
   direction: 'horizontal' | 'vertical'
   type: 'desc' | 'line' | 'button' | 'card'
+  maxTitleWidth?: number
 }
 
 if (__DEV__) {

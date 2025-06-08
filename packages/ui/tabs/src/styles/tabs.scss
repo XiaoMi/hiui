@@ -9,6 +9,31 @@ $prefix: '#{$component-prefix}-tabs' !default;
     }
   }
 
+  &__add-input {
+    display: flex;
+    align-items: center;
+    margin-left: use-spacing(14);
+  }
+
+  &__add-btn-wrap {
+    display: flex;
+    align-items: center;
+    margin-left: use-spacing(4);
+
+    .#{$prefix}__add-btn {
+      display: flex;
+      height: 16px;
+      padding-left: use-spacing(4);
+      border-left: 1px solid use-color('gray', 200);
+    }
+  }
+
+  &__add-input,
+  &__edit-input {
+    width: 120px;
+    margin-right: 1px;
+  }
+
   &__up-btn,
   &__down-btn,
   &__left-btn,
@@ -43,6 +68,11 @@ $prefix: '#{$component-prefix}-tabs' !default;
     overflow: hidden;
     align-items: center;
 
+    &.#{$prefix}__list--editable {
+      // width: fit-content;
+      border-bottom: 1px solid use-color('gray', 200);
+    }
+
     &--type-card {
       .#{$prefix}__item {
         background-color: use-color('gray', 200);
@@ -55,7 +85,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
         &--active {
           color: use-color-mode('primary');
           background-color: use-color-static('white');
-          border-radius: use-border-radius('normal') 0 0 use-border-radius('normal');
+          border-radius: use-border-radius('normal') 0 0
+            use-border-radius('normal');
         }
       }
     }
@@ -166,6 +197,48 @@ $prefix: '#{$component-prefix}-tabs' !default;
     // }
 
     &--type-line {
+
+      .#{$prefix}__item {
+        display: flex;
+        align-items: center;
+
+        .#{$prefix}-item__title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+
+      &.#{$prefix}__list--size-sm {
+        .#{$prefix}__item {
+          // padding: calc(#{use-spacing(4)} + 1px) 0 calc(#{use-spacing(4)} + 1px) use-spacing(14);
+          height: use-height-size(10);
+          padding: 0 0 0 use-spacing(14);
+          font-size: use-text-size('normal');
+          line-height: use-text-lineheight('normal');
+        }
+      }
+
+      &.#{$prefix}__list--size-md:not(.#{$prefix}__list--placement-vertical) {
+        .#{$prefix}__item {
+          // padding: calc(#{use-spacing(6)} + 1px) 0 calc(#{use-spacing(6)} + 1px) use-spacing(14);
+          height: use-height-size(12);
+          padding: 0 0 0 use-spacing(14);
+          font-size: use-text-size('normal');
+          line-height: use-text-lineheight('normal');
+        }
+      }
+
+      &.#{$prefix}__list--size-lg {
+        .#{$prefix}__item {
+          // padding: use-spacing(9) 0 use-spacing(9) use-spacing(14);
+          height: use-height-size(15);
+          padding: 0 0 0 use-spacing(14);
+          font-size: use-text-size('lg');
+          line-height: use-text-lineheight('lg');
+        }
+      }
+
       &.#{$prefix}__list--placement-horizontal {
         .#{$prefix}__item:first-child {
           padding-left: 0;
@@ -175,37 +248,20 @@ $prefix: '#{$component-prefix}-tabs' !default;
           padding-right: 0;
         }
       }
-
-      &.#{$prefix}__list--size-sm {
-        .#{$prefix}__item {
-          padding: use-spacing(5) 0 use-spacing(5) use-spacing(14);
-          font-size: use-text-size('normal');
-          line-height: use-text-lineheight('normal');
-        }
-      }
-
-      &.#{$prefix}__list--size-md {
-        .#{$prefix}__item {
-          padding: use-spacing(6) 0 use-spacing(6) use-spacing(14);
-          font-size: use-text-size('normal');
-          line-height: use-text-lineheight('normal');
-        }
-      }
-
-      &.#{$prefix}__list--size-lg {
-        .#{$prefix}__item {
-          padding: use-spacing(9) 0 use-spacing(9) use-spacing(14);
-          font-size: use-text-size('lg');
-          line-height: use-text-lineheight('lg');
-        }
-      }
     }
 
     &--inner {
       display: flex;
-      flex: 1;
       position: relative;
       overflow: hidden;
+
+      .#{$prefix}__list:not(.#{$prefix}__list--editable) > & {
+        flex: 1;
+      }
+
+      .#{$prefix}__list--editable > & {
+        max-width: calc(100% - 33px);
+      }
     }
 
     &--scroll {
@@ -231,20 +287,23 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
   &--placement-horizontal {
     .#{$prefix}__list {
-      &--show-divider {
-        .#{$prefix}__list--scroll {
-          &::after {
-            content: '';
-            position: absolute;
-            z-index: 0;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background-color: use-color('gray', 200);
-          }
-        }
+      &.#{$prefix}__list--show-divider {
+        border-bottom: 1px solid use-color('gray', 200);
       }
+      // &--show-divider {
+      //   .#{$prefix}__list--scroll {
+      //     &::after {
+      //       content: '';
+      //       position: absolute;
+      //       z-index: 0;
+      //       bottom: 0;
+      //       left: 0;
+      //       width: 100%;
+      //       height: 1px;
+      //       background-color: use-color('gray', 200);
+      //     }
+      //   }
+      // }
     }
   }
 
@@ -322,7 +381,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
           &--active {
             color: use-color-mode('primary');
             background-color: use-color-static('white');
-            border-radius: use-border-radius('normal') 0 0  use-border-radius('normal');
+            border-radius: use-border-radius('normal') 0 0
+              use-border-radius('normal');
           }
         }
       }
@@ -388,7 +448,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
         bottom: auto;
         width: 2px;
         background-color: use-color-mode('primary');
-        transition: top 0.2s cubic-bezier(0.34, 0.69, 0.1, 1), height 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
+        transition: top 0.2s cubic-bezier(0.34, 0.69, 0.1, 1),
+          height 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
       }
     }
   }
@@ -402,7 +463,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     background-color: use-color-mode('primary');
-    transition: left 0.2s cubic-bezier(0.34, 0.69, 0.1, 1), width 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
+    transition: left 0.2s cubic-bezier(0.34, 0.69, 0.1, 1),
+      width 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
   }
 
   &__item {
@@ -433,7 +495,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
       border-right: 1px dashed use-color-mode('primary');
     }
 
-    &--disabled, &--disabled .#{$prefix}__close-btn {
+    &--disabled,
+    &--disabled .#{$prefix}__close-btn {
       color: use-color('gray', 400);
       cursor: not-allowed;
     }
