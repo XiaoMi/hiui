@@ -12,6 +12,8 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 import { useResizeObserver } from './hooks'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { getNextTabId } from './utils'
+import { Input } from '@hi-ui/input'
+import { uuid } from '@hi-ui/use-id'
 
 const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
@@ -32,7 +34,9 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       placement = 'horizontal',
       editable,
       onAdd,
+      onAdded,
       onDelete,
+      onEdit,
       draggable,
       onDragStart,
       onDragOver,
@@ -42,6 +46,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       size = 'md',
       showDivider,
       extra,
+      maxTabTitleWidth,
       ...rest
     },
     ref
@@ -159,6 +164,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
 
         // 左边或上半部内容展示不全
         const currentOffset = -translatePos
+
         if (offsetValue < currentOffset) {
           setTranslatePos(-offsetValue)
         } else {
@@ -185,6 +191,63 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       syncScrollPosition(tabId)
     })
 
+    const [adding, setAdding] = useState(false)
+    const [showData, setShowData] = useState(data)
+    const addInputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+      setShowData(data)
+    }, [data])
+
+    const handleAdd = useLatestCallback(() => {
+      onAdd?.()
+      setAdding(true)
+    })
+
+    const handleAddDone = useLatestCallback(async (evt: React.FocusEvent<HTMLInputElement>) => {
+      const newTabTitle = evt.target.value
+
+      if (!newTabTitle) {
+        setAdding(false)
+        return
+      }
+
+      const newTabId = uuid()
+      const newTab = {
+        tabId: newTabId,
+        tabTitle: newTabTitle,
+      }
+
+      const result = await onAdded?.(newTab)
+      if (!result) return
+
+      setActiveTabId(newTabId)
+      setAdding(false)
+    })
+
+    const handleEdit = useLatestCallback(async (value: string, item: TabPaneProps) => {
+      const result = await onEdit?.(value, item)
+      if (!result) return false
+
+      syncScrollPosition(activeTabId)
+      return true
+    })
+
+    const handleDelete = useLatestCallback(
+      async (deletedNode: TabPaneProps, evt: React.MouseEvent) => {
+        const result = await onDelete?.(deletedNode, evt)
+        if (!result) return
+
+        const nextTabId = getNextTabId(
+          data,
+          deletedNode.tabId === activeTabId ? activeTabId : deletedNode.tabId
+        )
+
+        nextTabId && setActiveTabId(nextTabId)
+        nextTabId && syncScrollPosition(nextTabId)
+      }
+    )
+
     useEffect(() => {
       // activeId 受控模式下改变后，同步更新滚动位置
       initScrollPosition(activeId)
@@ -199,6 +262,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
           { [`${prefixCls}__list--type-${type}`]: type },
           { [`${prefixCls}__list--size-${size}`]: size },
           { [`${prefixCls}__list--show-divider`]: showDivider },
+          { [`${prefixCls}__list--editable`]: editable },
           className
         )}
         ref={ref}
@@ -238,7 +302,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 : undefined
             }
           >
-            {data.map((item, index) => (
+            {showData.map((item, index) => (
               <TabItem
                 key={index}
                 {...item}
@@ -250,18 +314,40 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 index={index}
                 active={activeTabId === item.tabId}
                 prefixCls={prefixCls}
+                closeable={
+                  item.closeable !== undefined
+                    ? item.closeable && showData.length > 1
+                    : showData.length > 1
+                }
                 draggable={draggable}
                 onTabClick={onClickTab}
                 editable={editable}
-                onDelete={onDelete}
+                onEdit={async (value) => {
+                  return await handleEdit(value, item)
+                }}
+                onDelete={handleDelete}
                 onDragStart={onDragStart}
                 onDragOver={onDragOver}
                 onDrop={onDrop}
                 onDragEnd={onDragEnd}
                 direction={direction}
+                maxTitleWidth={maxTabTitleWidth}
               />
             ))}
-            {type === 'line' && data.some((item) => item.tabId === activeTabId) ? (
+            {adding ? (
+              <div className={`${prefixCls}__add-input`} ref={addInputRef}>
+                <Input
+                  onBlur={handleAddDone}
+                  autoFocus
+                  onKeyDown={(evt) => {
+                    if (evt.key === 'Enter') {
+                      handleAddDone((evt as unknown) as React.FocusEvent<HTMLInputElement>)
+                    }
+                  }}
+                />
+              </div>
+            ) : null}
+            {type === 'line' && showData.some((item) => item.tabId === activeTabId) ? (
               <TabInk
                 prefixCls={prefixCls}
                 showHorizontal={showHorizontal}
@@ -292,7 +378,11 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
           />
         ) : null}
         {editable ? (
-          <IconButton icon={<PlusOutlined />} className={`${prefixCls}__add-btn`} onClick={onAdd} />
+          <div className={`${prefixCls}__add-btn-wrap`}>
+            <div className={`${prefixCls}__add-btn`}>
+              <IconButton effect icon={<PlusOutlined />} onClick={handleAdd} />
+            </div>
+          </div>
         ) : null}
         {extra}
       </div>
@@ -347,6 +437,10 @@ export interface TabListProps
    */
   showDivider?: boolean
   /**
+   * 标签最大宽度
+   */
+  maxTabTitleWidth?: number
+  /**
    * 右侧的拓展区域
    */
   extra?: React.ReactNode
@@ -355,9 +449,17 @@ export interface TabListProps
    */
   onAdd?: () => void
   /**
+   * 节点增加完成时触发
+   */
+  onAdded?: (newTab: TabPaneProps) => boolean | Promise<boolean>
+  /**
    * 节点删除时时触发
    */
-  onDelete?: (deletedNode: TabPaneProps, index: number) => void
+  onDelete?: (deletedNode: TabPaneProps, evt: React.MouseEvent) => boolean | Promise<boolean>
+  /**
+   * 节点编辑时触发
+   */
+  onEdit?: (value: string, item: TabPaneProps) => boolean | Promise<boolean>
   /**
    * 节点开始拖拽时触发
    */
