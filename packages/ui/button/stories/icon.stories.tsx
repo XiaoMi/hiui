@@ -31,6 +31,7 @@ export const Icon = () => {
           </Button>
           <Button type="success" icon={<PlusOutlined />} />
         </div>
+
         <div style={{ marginBottom: 24 }}>
           <Button
             type="primary"
@@ -57,7 +58,8 @@ export const Icon = () => {
           </Button>
           <Button type="success" icon={<PlusOutlined />} appearance="line" />
         </div>
-        <div>
+
+        <div style={{ marginBottom: 24 }}>
           <Button
             type="primary"
             icon={[<PlusOutlined key="1" />, <MinusOutlined key="2" />]}
@@ -83,28 +85,33 @@ export const Icon = () => {
           </Button>
           <Button type="success" icon={<PlusOutlined />} appearance="link" />
         </div>
-        {/* <div>
-          <Button type="primary" icon={<PlusOutlined />} appearance="unset">
-            链接按钮
+
+        <div>
+          <Button
+            type="primary"
+            icon={[<PlusOutlined key="1" />, <MinusOutlined key="2" />]}
+            appearance="link"
+          >
+            文本按钮
           </Button>
-          <Button type="primary" icon={<PlusOutlined />} appearance="unset" />
-          <Button type="secondary" icon={<PlusOutlined />} appearance="unset">
-            链接按钮
+          <Button type="primary" icon={<PlusOutlined />} appearance="text" />
+          <Button type="secondary" icon={<PlusOutlined />} appearance="text">
+            文本按钮
           </Button>
-          <Button type="secondary" icon={<PlusOutlined />} appearance="unset" />
-          <Button icon={<PlusOutlined />} appearance="unset">
-            链接按钮
+          <Button type="secondary" icon={<PlusOutlined />} appearance="text" />
+          <Button icon={[null, <MinusOutlined key="2" />]} appearance="text">
+            文本按钮
           </Button>
-          <Button icon={<PlusOutlined />} appearance="unset" />
-          <Button type="danger" icon={<PlusOutlined />} appearance="unset">
-            链接按钮
+          <Button icon={<PlusOutlined />} appearance="text" />
+          <Button type="danger" icon={<PlusOutlined />} appearance="text">
+            文本按钮
           </Button>
-          <Button type="danger" icon={<PlusOutlined />} appearance="unset" />
-          <Button type="success" icon={<PlusOutlined />} appearance="unset">
-            链接按钮
+          <Button type="danger" icon={<PlusOutlined />} appearance="text" />
+          <Button type="success" icon={<PlusOutlined />} appearance="text">
+            文本按钮
           </Button>
-          <Button type="success" icon={<PlusOutlined />} appearance="unset" />
-        </div> */}
+          <Button type="success" icon={<PlusOutlined />} appearance="text" />
+        </div>
       </div>
     </>
   )

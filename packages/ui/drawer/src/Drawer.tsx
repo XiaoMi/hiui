@@ -26,6 +26,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     {
       prefixCls = DRAWER_PREFIX,
       className,
+      styles,
       children,
       disabledPortal = false,
       closeable = true,
@@ -139,15 +140,21 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
               {...getModalWrapperProps(drawerConfig)}
             >
               {hasHeader ? (
-                <header className={`${prefixCls}__header`}>
+                <header className={`${prefixCls}__header`} style={styles?.header}>
                   {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
                   {closeable ? (
                     <IconButton effect onClick={onClose} icon={<CloseOutlined />} />
                   ) : null}
                 </header>
               ) : null}
-              <main className={`${prefixCls}__body`}>{children}</main>
-              {footer ? <footer className={`${prefixCls}__footer`}>{footer}</footer> : null}
+              <main className={`${prefixCls}__body`} style={styles?.body}>
+                {children}
+              </main>
+              {footer ? (
+                <footer className={`${prefixCls}__footer`} style={styles?.footer}>
+                  {footer}
+                </footer>
+              ) : null}
             </div>
           </div>
         </CSSTransition>
@@ -165,6 +172,14 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
    * 自定义抽屉底部
    */
   footer?: React.ReactNode
+  /**
+   * 自定义抽屉样式
+   */
+  styles?: {
+    header?: React.CSSProperties
+    body?: React.CSSProperties
+    footer?: React.CSSProperties
+  }
   /**
    * 是否显示蒙层
    */
