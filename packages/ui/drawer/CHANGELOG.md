@@ -1,5 +1,11 @@
 # @hi-ui/drawer
 
+## 5.0.0-canary.2
+
+### Minor Changes
+
+- 6c110e20d: feat(drawer): add styles api (5.0)
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/tabs
 
+## 5.0.0-canary.3
+
+### Minor Changes
+
+- affc96a20: feat(tabs): 支持编辑功能和设置最大标题宽度 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

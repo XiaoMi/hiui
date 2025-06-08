@@ -1,5 +1,19 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.9
+
+### Minor Changes
+
+- 6c110e20d: feat(drawer): add styles api (5.0)
+- affc96a20: feat(tabs): 支持编辑功能和设置最大标题宽度 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [6c110e20d]
+- Updated dependencies [affc96a20]
+  - @hi-ui/drawer@5.0.0-canary.2
+  - @hi-ui/tabs@5.0.0-canary.3
+
 ## 5.0.0-canary.8
 
 ### Patch Changes
