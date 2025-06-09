@@ -225,28 +225,6 @@ $shape-round: '#{$prefix}--shape-round' !default;
     max-width: 100%;
   }
 
-  &__double-click-trigger {
-    position: absolute;
-    z-index: use-zindex('absolute');
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
-    left: 0;
-    top: 0;
-    background: transparent;
-    box-sizing: border-box;
-    border-color: transparent;
-    transition-property: box-shadow;
-    transition-duration: use-motion-duration('fast');
-    transition-timing-function: use-motion-bezier('normal');
-
-    &:hover {
-      @include edit-shadow();
-
-      cursor: pointer;
-    }
-  }
-
   &__input {
     background: transparent;
     border: none;
