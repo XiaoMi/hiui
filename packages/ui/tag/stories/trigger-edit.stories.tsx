@@ -4,8 +4,8 @@ import Button from '@hi-ui/button'
 import { EditFilled } from '@hi-ui/icons'
 
 /**
- * @title 自定义触发编辑模式
- * @desc 通过 render 函数，可以自定义标签的编辑方式
+ * @title 触发编辑
+ * @desc 可在自定义渲染中，去定义如何触发组件的编辑状态
  */
 export const TriggerEdit = () => {
   const [testValue, setTestValue] = React.useState('test-value66')
@@ -20,11 +20,12 @@ export const TriggerEdit = () => {
           onEdit={setTestValue}
           render={(children, triggerEdit) => {
             return (
-              <div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 {children}
                 <Button
                   appearance="link"
                   icon={<EditFilled color="#237FFA" />}
+                  style={{ marginLeft: 4 }}
                   onClick={triggerEdit}
                 ></Button>
               </div>
