@@ -3,17 +3,17 @@
 $prefix: '#{$component-prefix}-switch' !default;
 
 .#{$prefix} {
-  &:not(.#{$prefix}--disabled):focus {
-    outline: 0;
-    z-index: 1;
-    box-shadow: 0 0 0 2px use-color-mode('primary', 200);
-  }
+  // &:not(.#{$prefix}--disabled):focus {
+  //   outline: 0;
+  //   z-index: 1;
+  //   box-shadow: 0 0 0 2px use-color-mode('primary', 200);
+  // }
 
   display: inline-flex;
   border-radius: use-border-radius('full');
   cursor: pointer;
   position: relative;
-  vertical-align: middle;
+  align-items: center;
   flex: none;
   flex-shrink: 0;
   width: fit-content;
@@ -43,7 +43,8 @@ $prefix: '#{$component-prefix}-switch' !default;
     background: use-color-static('white');
     position: absolute;
     border-radius: use-border-radius('full');
-    top: calc((#{use-height-size(6)} - #{use-height-size(4)}) / 2);
+    box-shadow: use-shadow('xs');
+    top: use-spacing(1);
 
     // @animation
     transition-duration: use-motion-duration('normal');
@@ -65,45 +66,13 @@ $prefix: '#{$component-prefix}-switch' !default;
 
   &--closed {
     &::after {
-      left: use-spacing(2);
+      left: use-spacing(1);
     }
   }
 
   &--size-sm {
-    min-width: use-height-size(8);
+    min-width: use-height-size(7);
     height: use-height-size(4);
-
-    &::after {
-      width: use-height-size(2);
-      height: use-height-size(2);
-    }
-
-    &.#{$prefix}--open {
-      &::after {
-        left: calc(100% - #{use-height-size(2)} - #{use-spacing(2)});
-      }
-
-      .#{$prefix}__text {
-        margin: 0 use-spacing(7) 0 use-spacing(3);
-      }
-    }
-
-    &.#{$prefix}--closed {
-      .#{$prefix}__text {
-        margin: 0 use-spacing(3) 0 use-spacing(7);
-      }
-    }
-
-    .#{$prefix}__text {
-      font-size: use-text-size('sm');
-      line-height: use-height-size(4);
-      margin: 0 use-spacing(7) 0 use-spacing(4);
-    }
-  }
-
-  &--size-md {
-    min-width: use-height-size(9);
-    height: use-height-size(5);
 
     &::after {
       width: use-height-size(3);
@@ -112,49 +81,82 @@ $prefix: '#{$component-prefix}-switch' !default;
 
     &.#{$prefix}--open {
       &::after {
-        left: calc(100% - #{use-height-size(3)} - #{use-spacing(2)});
+        left: calc(100% - #{use-height-size(3)} - #{use-spacing(1)});
+      }
+
+      .#{$prefix}__text {
+        margin: 0 use-spacing(8) 0 use-spacing(2);
       }
     }
 
     &.#{$prefix}--closed {
       .#{$prefix}__text {
-        margin: 0 use-spacing(4) 0 use-spacing(9);
+        margin: 0 use-spacing(2) 0 use-spacing(8);
       }
     }
 
     .#{$prefix}__text {
       font-size: use-text-size('sm');
-      line-height: use-height-size(5);
-      margin: 0 use-spacing(9) 0 use-spacing(4);
     }
   }
 
-  &--size-lg {
-    min-width: use-height-size(10);
-    height: use-height-size(6);
+  &--size-md {
+    min-width: use-height-size(8);
+    height: calc(#{use-height-size(4)} + 2px);
 
     &::after {
-      width: use-height-size(4);
-      height: use-height-size(4);
-
+      width: calc(#{use-height-size(3)} + 2px);
+      height: calc(#{use-height-size(3)} + 2px);
     }
 
     &.#{$prefix}--open {
       &::after {
-        left: calc(100% - #{use-height-size(4)} - #{use-spacing(2)});
+        left: calc(100% - #{use-height-size(3)} - 2px - #{use-spacing(1)});
+      }
+
+      .#{$prefix}__text {
+        margin: 0 use-spacing(9) 0 use-spacing(3);
       }
     }
 
     &.#{$prefix}--closed {
       .#{$prefix}__text {
-        margin: 0 use-spacing(4) 0 use-spacing(11);
+        margin: 0 use-spacing(3) 0 use-spacing(9);
+      }
+    }
+
+    .#{$prefix}__text {
+      font-size: use-text-size('sm');
+    }
+  }
+
+  &--size-lg {
+    min-width: use-height-size(10);
+    height: calc(#{use-height-size(5)} + 2px);
+
+    &::after {
+      width: calc(#{use-height-size(4)} + 2px);
+      height: calc(#{use-height-size(4)} + 2px);
+    }
+
+    &.#{$prefix}--open {
+      &::after {
+        left: calc(100% - #{use-height-size(4)} - 2px - #{use-spacing(1)});
+      }
+
+      .#{$prefix}__text {
+        margin: 0 use-spacing(11) 0 use-spacing(3);
+      }
+    }
+
+    &.#{$prefix}--closed {
+      .#{$prefix}__text {
+        margin: 0 use-spacing(3) 0 use-spacing(11);
       }
     }
 
     .#{$prefix}__text {
       font-size: use-text-size('md');
-      line-height: use-height-size(6);
-      margin: 0 use-spacing(11) 0 use-spacing(4);
     }
   }
 }

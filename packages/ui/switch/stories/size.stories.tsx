@@ -11,16 +11,18 @@ export const Size = () => {
       <div className="switch-basic__wrap">
         <h2>sm</h2>
         <div>
-          <Switch size="sm" defaultChecked />
+          <Switch size="sm" defaultChecked content={['开启', '关闭']} />
         </div>
 
         <h2>md</h2>
         <div>
-          <Switch size="md" defaultChecked />
+          <Switch size="md" defaultChecked content={['开启', '关闭']} />
         </div>
 
         <h2>lg</h2>
-        <Switch size="lg" defaultChecked />
+        <div>
+          <Switch size="lg" defaultChecked content={['开启', '关闭']} />
+        </div>
       </div>
     </>
   )
