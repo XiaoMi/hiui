@@ -36,6 +36,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     align-items: center;
     justify-content: center;
     flex: 0 0 auto;
+    height: 50%;
     padding: 0 use-spacing(3);
     font-size: use-text-size('md');
     color: use-color('gray', 500);
@@ -49,10 +50,22 @@ $prefix:  '#{$component-prefix}-number-input' !default;
       color: use-color-mode('primary');
     }
 
+    &:not(.disabled):active {
+      background-color: use-color('gray', 100);
+    }
+
     &.disabled {
       cursor: not-allowed;
       color: use-color('gray', 400);
     }
+  }
+
+  &__plus {
+    border-top-right-radius: use-border-radius('normal');
+  }
+
+  &__minus {
+    border-bottom-right-radius: use-border-radius('normal');
   }
 
   &__input {
@@ -83,8 +96,13 @@ $prefix:  '#{$component-prefix}-number-input' !default;
   &__suffix {
     box-sizing: border-box;
     height: 100%;
+    border-left: use-border-size('normal') use-color('gray', 300);
 
     @include flex(center, center, column, inline-flex);
+
+    .#{$prefix}__plus {
+      border-bottom: use-border-size('normal') use-color('gray', 300);
+    }
   }
 
   &#{$this}--disabled {
@@ -110,7 +128,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
 
   &#{$this}--focused {
     border-color: use-color-mode('primary');
-    box-shadow: $input-shadow;
+    // box-shadow: $input-shadow;
 
     &#{$this}--invalid,
     &#{$this}--out-of-bounds {
