@@ -13,14 +13,13 @@ $prefix: '#{$component-prefix}-stepper' !default;
     // 状态
     &-status {
       &__step {
-        width: use-height-size(6);
-        height: use-height-size(6);
+        width: use-height-size(7);
+        height: use-height-size(7);
         text-align: center;
-        line-height: use-height-size(6);
+        line-height: use-height-size(7);
         border-radius: use-border-radius('full');
-        color: use-color-static('white');
-        // color: use-color('gray', 500);
-        background-color: use-color('gray', 200);
+        color: use-color('gray', 500);
+        background-color: use-color('gray', 100);
         flex-shrink: 0;
       }
 
@@ -45,7 +44,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
     &-tip {
       &__title {
         color: use-color('gray', 500);
-        line-height: 24px;
+        line-height: use-text-lineheight('normal');
       }
 
       &__content {
@@ -53,6 +52,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
         text-align: center;
         font-size: use-text-size('sm');
+        line-height: use-text-lineheight('sm');
         color: use-color('gray', 500);
         padding: 0;
       }
@@ -103,12 +103,8 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
         &-tip {
           &__title {
-            color: use-color-mode('primary');
-            font-weight: use-text-weight('medium');
-          }
-
-          &__content {
             color: use-color('gray', 700);
+            font-weight: use-text-weight('medium');
           }
         }
       }
@@ -136,7 +132,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
           left: 11px;
           width: 1px;
           height: calc(100% - #{use-height-size(6)} - #{$line-spacing} * 2);
-          background-color: use-color('gray', 200);
+          background-color: use-color('gray', 300);
         }
 
         // 尾部无线
@@ -175,7 +171,6 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
           &__content {
             text-align: left;
-            margin-top: use-spacing(3);
           }
         }
       }
@@ -218,7 +213,6 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
               &__content {
                 text-align: left;
-                margin-top: use-spacing(3);
                 // 写死，否则 flex 下最后一项内容过长会撑满，挤压其他元素空间
                 max-width: 160px;
               }
@@ -255,7 +249,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
               width: 9999px;
               height: 1px;
               top: 50%;
-              transform: translateY(-50%);
+              // transform: translateY(-50%);
             }
           }
 
@@ -287,13 +281,12 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
               &__content {
                 text-align: center;
-                margin-top: use-spacing(3);
               }
             }
 
             &-status {
-              height: use-height-size(6);
-              width: use-height-size(6);
+              height: use-height-size(7);
+              width: use-height-size(7);
               display: flex;
               align-items: center;
               justify-content: center;
