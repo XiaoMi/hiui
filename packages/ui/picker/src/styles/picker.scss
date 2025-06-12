@@ -87,14 +87,13 @@ $prefix: '#{$component-prefix}-picker' !default;
   }
 
   &__search {
-    padding: use-spacing(2) 0;
     border-bottom: 1px solid use-color('gray', 300);
 
     .#{$component-prefix}-input {
       font-size: use-text-size('normal');
 
       &__prefix {
-        padding-left: use-spacing(8);
+        padding-left: use-spacing(6);
         font-size: use-text-size('lg');
         color: use-color('gray', 700);
       }
