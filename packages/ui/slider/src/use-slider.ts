@@ -21,7 +21,7 @@ export const useSlider = (
     color,
     ...rest
   }: UseSliderProps,
-  tooltip: TooltipHelpers | null
+  tooltipRef: React.MutableRefObject<TooltipHelpers | null>
 ) => {
   /**
    * 边界优化
@@ -199,10 +199,10 @@ export const useSlider = (
       if (inMoving) {
         setValueByDrag(evt)
         // 拖动过程中实时更新 tooltip 显示位置
-        tooltip?.update()
+        tooltipRef.current?.update()
       }
     },
-    [inMoving, setValueByDrag, tooltip]
+    [inMoving, setValueByDrag, tooltipRef]
   )
 
   /**
