@@ -422,7 +422,7 @@ $prefix: '#{$component-prefix}-input' !default;
       .#{$prefix}__inner {
         &.#{$prefix}__inner--disabled {
           color: use-color('gray', 400);
-          background-color: use-color('gray', 100);
+          background-color: use-color('gray', 50);
 
           .#{$prefix}__text {
             color: use-color('gray', 400);
