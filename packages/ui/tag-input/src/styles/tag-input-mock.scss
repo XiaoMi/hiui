@@ -325,10 +325,9 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
         border-color: use-color-mode('primary');
       }
 
-      // &:not(.#{$tag-input-mock-prefix}--disabled).focused {
-      //   box-shadow: $input-shadow;
-      //   border-color: use-color-mode('primary');
-      // }
+      &:not(.#{$tag-input-mock-prefix}--disabled).focused {
+        border-color: use-color-mode('primary');
+      }
 
       &:not(.#{$tag-input-mock-prefix}--disabled).invalid {
         border-color: use-color-mode('error');
@@ -371,26 +370,25 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
         }
       }
 
-      // &:not(.#{$tag-input-mock-prefix}--disabled).focused {
-      //   box-shadow: $input-shadow;
-      //   background-color: use-color-static('white');
-      //   border-color: use-color-mode('primary');
+      &:not(.#{$tag-input-mock-prefix}--disabled).focused {
+        background-color: use-color-static('white');
+        border-color: use-color-mode('primary');
 
-      //   .#{$tag-input-mock-prefix}__tag {
-      //     background-color: use-color('gray', 100);
-      //   }
+        .#{$tag-input-mock-prefix}__tag {
+          background-color: use-color('gray', 100);
+        }
 
-      //   .#{$tag-input-mock-prefix}__tag--total {
-      //     background-color: use-color('gray', 100);
-      //   }
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color('gray', 100);
+        }
 
-      //   &.#{$tag-input-mock-prefix}--expandable {
-      //     .#{$tag-input-mock-prefix}__tag--total {
-      //       background-color: use-color-mode('primary', 50);
-      //       color: use-color-mode('primary');
-      //     }
-      //   }
-      // }
+        &.#{$tag-input-mock-prefix}--expandable {
+          .#{$tag-input-mock-prefix}__tag--total {
+            background-color: use-color-mode('primary', 50);
+            color: use-color-mode('primary');
+          }
+        }
+      }
 
       &:not(.#{$tag-input-mock-prefix}--disabled).invalid {
         border-color: use-color-mode('error');
@@ -443,26 +441,25 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
         }
       }
 
-      // &:not(.#{$tag-input-mock-prefix}--disabled).focused {
-      //   box-shadow: $input-shadow;
-      //   border-color: use-color-mode('primary');
-      //   background-color: use-color-static('white');
+      &:not(.#{$tag-input-mock-prefix}--disabled).focused {
+        border-color: use-color-mode('primary');
+        background-color: use-color-static('white');
 
-      //   .#{$tag-input-mock-prefix}__tag {
-      //     background-color: use-color('gray', 100);
-      //   }
+        .#{$tag-input-mock-prefix}__tag {
+          background-color: use-color('gray', 100);
+        }
 
-      //   .#{$tag-input-mock-prefix}__tag--total {
-      //     background-color: use-color('gray', 100);
-      //   }
+        .#{$tag-input-mock-prefix}__tag--total {
+          background-color: use-color('gray', 100);
+        }
 
-      //   &.#{$tag-input-mock-prefix}--expandable {
-      //     .#{$tag-input-mock-prefix}__tag--total {
-      //       background-color: use-color-mode('primary', 50);
-      //       color: use-color-mode('primary');
-      //     }
-      //   }
-      // }
+        &.#{$tag-input-mock-prefix}--expandable {
+          .#{$tag-input-mock-prefix}__tag--total {
+            background-color: use-color-mode('primary', 50);
+            color: use-color-mode('primary');
+          }
+        }
+      }
 
       &:not(.#{$tag-input-mock-prefix}--disabled).invalid {
         border-color: use-color-mode('error');

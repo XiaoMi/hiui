@@ -273,10 +273,9 @@ $prefix: '#{$component-prefix}-input' !default;
           border-color: use-color-mode('primary');
         }
 
-        // &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
-        //   box-shadow: $input-shadow;
-        //   border-color: use-color-mode('primary');
-        // }
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
+          border-color: use-color-mode('primary');
+        }
 
         &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
           border-color: use-color-mode('error');
@@ -335,11 +334,10 @@ $prefix: '#{$component-prefix}-input' !default;
           border-color: use-color-mode('primary');
         }
 
-        // &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
-        //   box-shadow: $input-shadow;
-        //   border-color: use-color-mode('primary');
-        //   background-color: use-color-static('white');
-        // }
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
+          border-color: use-color-mode('primary');
+          background-color: use-color-static('white');
+        }
 
         &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
           border-color: use-color-mode('error');
@@ -397,11 +395,11 @@ $prefix: '#{$component-prefix}-input' !default;
           }
         }
 
-        // &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
-        //   &::after {
-        //     border-bottom-color: use-color-mode('primary');
-        //   }
-        // }
+        &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
+          &::after {
+            border-bottom-color: use-color-mode('primary');
+          }
+        }
 
         &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
           &::after {
