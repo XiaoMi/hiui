@@ -61,7 +61,6 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
       border-color: use-color-mode('primary');
     }
 
-    box-shadow: 0 0 0 2px use-color-mode('primary', 100);
     background: transparent;
 
     &:hover {

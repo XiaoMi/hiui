@@ -98,12 +98,12 @@ $prefix: '#{$component-prefix}-form' !default;
 }
 
 .#{$prefix}-message {
+  box-sizing: content-box;
   display: block;
   font-size: use-text-size('sm');
   line-height: use-text-lineheight('sm');
   min-height: use-height-size(5);
-  padding: use-spacing(1) 0;
-  box-sizing: border-box;
+  padding-bottom: use-spacing(2);
   transform: translateY(-10%);
   opacity: 0;
   color: use-color-mode('error');

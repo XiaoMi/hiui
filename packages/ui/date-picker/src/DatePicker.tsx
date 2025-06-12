@@ -335,6 +335,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           setShowPanel(isShowPanel)
         }, 0)
         if (!isShowPanel) {
+          setInputFocus(false)
           callback(dates)
           onClose?.()
         }
@@ -510,7 +511,9 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             }
           }}
           onMouseLeave={() => {
-            setInputFocus(false)
+            if (!showPanel) {
+              setInputFocus(false)
+            }
           }}
         >
           <Root
@@ -520,6 +523,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             onTrigger={(index) => {
               setDateRangeTimePanelNow(index)
               setShowPanel(true)
+              setInputFocus(true)
             }}
             setAttachEl={setAttachEl}
             dateRangeTimePanelNow={dateRangeTimePanelNow}
