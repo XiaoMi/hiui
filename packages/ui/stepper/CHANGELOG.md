@@ -1,5 +1,11 @@
 # @hi-ui/stepper
 
+## 5.0.0-canary.1
+
+### Patch Changes
+
+- 718445ef5: style(stepper): Stepper 组件新版样式 (5.0)
+
 ## 5.0.0-canary.0
 
 ### Major Changes

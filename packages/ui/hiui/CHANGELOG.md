@@ -1,5 +1,28 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- a0bacd772: style(number-input): NumberInput 组件新版样式 (5.0)
+- 0c5923439: style: 修改样式问题 (5.0)
+- 3625bb3cc: style(switch): Switch 组件新版样式 (5.0)
+- 718445ef5: style(stepper): Stepper 组件新版样式 (5.0)
+- Updated dependencies [a0bacd772]
+- Updated dependencies [0c5923439]
+- Updated dependencies [3625bb3cc]
+- Updated dependencies [718445ef5]
+  - @hi-ui/number-input@5.0.0-canary.1
+  - @hi-ui/date-picker@5.0.0-canary.5
+  - @hi-ui/dropdown@5.0.0-canary.3
+  - @hi-ui/form@5.0.0-canary.2
+  - @hi-ui/input@5.0.0-canary.4
+  - @hi-ui/picker@5.0.0-canary.5
+  - @hi-ui/textarea@5.0.0-canary.2
+  - @hi-ui/time-picker@5.0.0-canary.1
+  - @hi-ui/switch@5.0.0-canary.1
+  - @hi-ui/stepper@5.0.0-canary.1
+
 ## 5.0.0-canary.9
 
 ### Minor Changes

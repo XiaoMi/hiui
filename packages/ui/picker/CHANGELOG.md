@@ -1,5 +1,13 @@
 # @hi-ui/picker
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- 0c5923439: style: 修改样式问题 (5.0)
+- Updated dependencies [0c5923439]
+  - @hi-ui/input@5.0.0-canary.4
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

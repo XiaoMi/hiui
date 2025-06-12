@@ -1,5 +1,11 @@
 # @hi-ui/switch
 
+## 5.0.0-canary.1
+
+### Patch Changes
+
+- 3625bb3cc: style(switch): Switch 组件新版样式 (5.0)
+
 ## 5.0.0-canary.0
 
 ### Major Changes

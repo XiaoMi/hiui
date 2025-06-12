@@ -1,5 +1,11 @@
 # @hi-ui/number-input
 
+## 5.0.0-canary.1
+
+### Patch Changes
+
+- a0bacd772: style(number-input): NumberInput 组件新版样式 (5.0)
+
 ## 5.0.0-canary.0
 
 ### Major Changes
