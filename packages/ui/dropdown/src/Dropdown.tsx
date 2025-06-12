@@ -284,7 +284,7 @@ const DropdownMenuItem = forwardRef<HTMLLIElement | null, DropdownMenuItemProps>
 
     return (
       <li ref={ref} className={cls} {...rootProps}>
-        <div className={`${prefixCls}__trigger`} {...getTriggerProps()}>
+        <div className={`${prefixCls}__trigger`} {...(menu ? getTriggerProps() : {})}>
           {shouldUseLink ? (
             <a className={`${prefixCls}__link`} href={href} target={target}>
               {children}
