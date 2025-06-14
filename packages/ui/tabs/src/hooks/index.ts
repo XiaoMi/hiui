@@ -29,7 +29,7 @@ export const useResizeObserver = ({
     let resizeObserver: ResizeObserver
 
     if (element) {
-      const resizeObserver = new ResizeObserver(() => {
+      resizeObserver = new ResizeObserver(() => {
         if (unmountRef.current) return
 
         const getSize = getSizeLatestRef.current
