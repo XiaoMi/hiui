@@ -6,6 +6,7 @@ import { TabList } from './TabList'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { isUndef } from '@hi-ui/type-assertion'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { EditActions } from './TabItem'
 
 const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
@@ -26,7 +27,9 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onTabClick,
       editable,
       placement = 'horizontal',
+      editRender,
       onEdit,
+      onCopy,
       onAdd,
       onAdded,
       onDelete,
@@ -87,7 +90,9 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           onTabClick={onTabClick}
           placement={placement}
           editable={editable}
+          editRender={editRender}
           onEdit={onEdit}
+          onCopy={onCopy}
           onAdd={onAdd}
           onAdded={onAdded}
           onDelete={onDelete}
@@ -119,7 +124,10 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
 )
 
 export interface TabsProps
-  extends Omit<HiBaseHTMLProps<'div'>, 'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop'> {
+  extends Omit<
+    HiBaseHTMLProps<'div'>,
+    'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop' | 'onCopy'
+  > {
   /**
    * 是否可拖拽
    */
@@ -174,9 +182,17 @@ export interface TabsProps
    */
   extra?: React.ReactNode
   /**
+   * 标签编辑渲染
+   */
+  editRender?: (item: TabPaneProps, index: number, actions: EditActions) => React.ReactNode
+  /**
    * 节点编辑时触发
    */
-  onEdit?: (value: string, item: TabPaneProps) => boolean | Promise<boolean>
+  onEdit?: (value: string, item: TabPaneProps) => void | boolean | Promise<boolean>
+  /**
+   * 节点复制时触发
+   */
+  onCopy?: (sourceItem: TabPaneProps, copiedItem: TabPaneProps, newItems: TabPaneProps[]) => void
   /**
    * 节点增加时触发
    */
@@ -184,11 +200,11 @@ export interface TabsProps
   /**
    * 节点增加完成时触发
    */
-  onAdded?: (newTab: TabPaneProps) => boolean | Promise<boolean>
+  onAdded?: (newTab: TabPaneProps) => void | boolean | Promise<boolean>
   /**
    * 节点删除时时触发
    */
-  onDelete?: (deletedNode: TabPaneProps, evt: React.MouseEvent) => boolean | Promise<boolean>
+  onDelete?: (deletedNode: TabPaneProps, evt: React.MouseEvent) => void | boolean | Promise<boolean>
   /**
    * 节点开始拖拽时触发
    */
