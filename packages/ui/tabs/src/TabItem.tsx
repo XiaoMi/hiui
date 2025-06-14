@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { TabPaneProps } from './TabPane'
 import { cx } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -20,7 +20,9 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
       active,
       editable,
       editing: editingProp,
+      editRender,
       onEdit,
+      onCopy,
       onDelete,
       index,
       onDragStart,
@@ -70,18 +72,60 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
           newTitle = value
         }
 
-        setEditing(false)
         setTabTitle(newTitle)
 
         const result = await onEdit?.(newTitle)
-        if (!result) {
-          setTabTitle(tabTitleProp as string)
+        if (result === false) {
+          return
         }
+
+        setEditing(false)
 
         onTabClick?.(tabId, (evt as unknown) as React.MouseEvent)
       },
       [onEdit, onTabClick, tabId, tabTitleProp]
     )
+
+    const renderEditor = useMemo(() => {
+      if (editable) {
+        if (editRender && active) {
+          return editRender({ tabId, tabTitle }, index, {
+            copy: (targetIndex) => onCopy?.(targetIndex),
+            edit: () => setEditing(true),
+            delete: () => onDelete?.({ tabId, tabTitle }, {} as React.MouseEvent),
+          })
+        }
+
+        if (closeable && !editRender) {
+          return (
+            <span
+              className={`${prefixCls}__close-btn`}
+              onClick={(evt) => {
+                evt.stopPropagation()
+                if (onDelete) {
+                  onDelete({ tabId, tabTitle }, evt)
+                }
+              }}
+            >
+              <CloseOutlined />
+            </span>
+          )
+        }
+      }
+
+      return null
+    }, [
+      active,
+      closeable,
+      editRender,
+      editable,
+      index,
+      onCopy,
+      onDelete,
+      prefixCls,
+      tabId,
+      tabTitle,
+    ])
 
     return (
       <div
@@ -197,19 +241,7 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
               </span>
             </Tooltip>
             {type === 'desc' && <span className={`${prefixCls}-item__desc`}>{tabDesc}</span>}
-            {editable && closeable && (
-              <span
-                className={`${prefixCls}__close-btn`}
-                onClick={(evt) => {
-                  evt.stopPropagation()
-                  if (onDelete) {
-                    onDelete({ tabId, tabTitle }, evt)
-                  }
-                }}
-              >
-                <CloseOutlined />
-              </span>
-            )}
+            {renderEditor}
           </>
         )}
       </div>
@@ -217,15 +249,26 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
   }
 )
 
+export type EditActions = {
+  copy: (targetIndex?: number) => void
+  edit: () => void
+  delete: () => void
+}
+
 interface TabItemProps
-  extends Omit<TabPaneProps, 'itemRef' | 'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop'> {
+  extends Omit<
+    TabPaneProps,
+    'itemRef' | 'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop' | 'onCopy' | 'onDelete'
+  > {
   active: boolean
   draggable?: boolean
   editing?: boolean
   onTabClick: (key: React.ReactText, event: React.MouseEvent) => void
   prefixCls?: string
   editable?: boolean
-  onEdit?: (value: string) => boolean | Promise<boolean>
+  editRender?: (item: TabPaneProps, index: number, actions: EditActions) => React.ReactNode
+  onEdit?: (value: string) => void | boolean | Promise<boolean>
+  onCopy?: (targetIndex?: number) => void
   onDelete?: (deletedNode: TabPaneProps, evt: React.MouseEvent) => void
   index: number
   onDragStart?: (

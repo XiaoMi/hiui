@@ -1,7 +1,7 @@
 import React, { forwardRef, useState, useRef, useCallback, useEffect } from 'react'
 import { TabPaneProps } from './TabPane'
 import { __DEV__ } from '@hi-ui/env'
-import { TabItem } from './TabItem'
+import { EditActions, TabItem } from './TabItem'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { TabInk } from './TabInk'
@@ -33,10 +33,12 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       direction: directionProp,
       placement = 'horizontal',
       editable,
+      editRender,
       onAdd,
       onAdded,
       onDelete,
       onEdit,
+      onCopy,
       draggable,
       onDragStart,
       onDragOver,
@@ -219,7 +221,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       }
 
       const result = await onAdded?.(newTab)
-      if (!result) return
+      if (result === false) return
 
       setActiveTabId(newTabId)
       setAdding(false)
@@ -227,7 +229,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
 
     const handleEdit = useLatestCallback(async (value: string, item: TabPaneProps) => {
       const result = await onEdit?.(value, item)
-      if (!result) return false
+      if (result === false) return false
 
       syncScrollPosition(activeTabId)
       return true
@@ -236,7 +238,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     const handleDelete = useLatestCallback(
       async (deletedNode: TabPaneProps, evt: React.MouseEvent) => {
         const result = await onDelete?.(deletedNode, evt)
-        if (!result) return
+        if (result === false) return
 
         const nextTabId = getNextTabId(
           data,
@@ -247,6 +249,24 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
         nextTabId && syncScrollPosition(nextTabId)
       }
     )
+
+    const handleCopy = useLatestCallback((targetIndex?: number) => {
+      const currentTab = showData.find((item) => item.tabId === activeTabId)
+      if (!currentTab) return
+
+      const copiedTab = {
+        tabId: `${currentTab.tabId}-${uuid()}`,
+        tabTitle: currentTab.tabTitle,
+      }
+      const insertIndex = targetIndex ?? showData.length
+      const newItems = [
+        ...showData.slice(0, insertIndex),
+        copiedTab,
+        ...showData.slice(insertIndex),
+      ]
+
+      onCopy?.(currentTab, copiedTab, newItems)
+    })
 
     useEffect(() => {
       // activeId 受控模式下改变后，同步更新滚动位置
@@ -322,6 +342,8 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 draggable={draggable}
                 onTabClick={onClickTab}
                 editable={editable}
+                editRender={editRender}
+                onCopy={handleCopy}
                 onEdit={async (value) => {
                   return await handleEdit(value, item)
                 }}
@@ -391,7 +413,10 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
 )
 
 export interface TabListProps
-  extends Omit<HiBaseHTMLProps<'div'>, 'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop'> {
+  extends Omit<
+    HiBaseHTMLProps<'div'>,
+    'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop' | 'onCopy'
+  > {
   /**
    * tabs 面板数据
    */
@@ -445,21 +470,29 @@ export interface TabListProps
    */
   extra?: React.ReactNode
   /**
+   * 标签编辑渲染
+   */
+  editRender?: (item: TabPaneProps, index: number, actions: EditActions) => React.ReactNode
+  /**
    * 节点增加时触发
    */
   onAdd?: () => void
   /**
    * 节点增加完成时触发
    */
-  onAdded?: (newTab: TabPaneProps) => boolean | Promise<boolean>
+  onAdded?: (newTab: TabPaneProps) => void | boolean | Promise<boolean>
   /**
    * 节点删除时时触发
    */
-  onDelete?: (deletedNode: TabPaneProps, evt: React.MouseEvent) => boolean | Promise<boolean>
+  onDelete?: (deletedNode: TabPaneProps, evt: React.MouseEvent) => void | boolean | Promise<boolean>
   /**
    * 节点编辑时触发
    */
-  onEdit?: (value: string, item: TabPaneProps) => boolean | Promise<boolean>
+  onEdit?: (value: string, item: TabPaneProps) => void | boolean | Promise<boolean>
+  /**
+   * 节点复制时触发
+   */
+  onCopy?: (sourceItem: TabPaneProps, copiedItem: TabPaneProps, newItems: TabPaneProps[]) => void
   /**
    * 节点开始拖拽时触发
    */
