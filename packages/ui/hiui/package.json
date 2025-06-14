@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "5.0.0-canary.10",
+  "version": "5.0.0-canary.11",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -99,7 +99,7 @@
     "@hi-ui/svg-icon": "^5.0.0-canary.0",
     "@hi-ui/switch": "^5.0.0-canary.1",
     "@hi-ui/table": "^5.0.0-canary.4",
-    "@hi-ui/tabs": "^5.0.0-canary.3",
+    "@hi-ui/tabs": "^5.0.0-canary.4",
     "@hi-ui/tag": "^5.0.0-canary.2",
     "@hi-ui/textarea": "^5.0.0-canary.2",
     "@hi-ui/time-picker": "^5.0.0-canary.1",

@@ -1,5 +1,11 @@
 # @hi-ui/tabs
 
+## 5.0.0-canary.4
+
+### Minor Changes
+
+- 2cb0427df: feat(tabs): add editRender api (5.0)
+
 ## 5.0.0-canary.3
 
 ### Minor Changes

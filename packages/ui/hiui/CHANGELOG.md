@@ -1,5 +1,16 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.11
+
+### Minor Changes
+
+- 2cb0427df: feat(tabs): add editRender api (5.0)
+
+### Patch Changes
+
+- Updated dependencies [2cb0427df]
+  - @hi-ui/tabs@5.0.0-canary.4
+
 ## 5.0.0-canary.10
 
 ### Patch Changes
