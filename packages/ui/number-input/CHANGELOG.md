@@ -1,5 +1,11 @@
 # @hi-ui/number-input
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- 49d1c53c4: styles: 修改样式问题 (5.0)
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

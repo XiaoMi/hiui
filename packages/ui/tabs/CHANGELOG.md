@@ -1,5 +1,11 @@
 # @hi-ui/tabs
 
+## 5.0.0-canary.5
+
+### Minor Changes
+
+- 49d1c53c4: feat(tabs): 支持拖拽 (5.0)
+
 ## 5.0.0-canary.4
 
 ### Minor Changes

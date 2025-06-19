@@ -1,5 +1,26 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.12
+
+### Minor Changes
+
+- 49d1c53c4: feat(tabs): 支持拖拽 (5.0)
+- 49d1c53c4: feat(modal): 支持根据滚动位置来控制头尾部边框的显示 (5.0)
+
+### Patch Changes
+
+- 49d1c53c4: styles: 修改样式问题 (5.0)
+- Updated dependencies [49d1c53c4]
+- Updated dependencies [49d1c53c4]
+- Updated dependencies [49d1c53c4]
+  - @hi-ui/message@5.0.0-canary.2
+  - @hi-ui/number-input@5.0.0-canary.2
+  - @hi-ui/picker@5.0.0-canary.6
+  - @hi-ui/stepper@5.0.0-canary.2
+  - @hi-ui/switch@5.0.0-canary.2
+  - @hi-ui/tabs@5.0.0-canary.5
+  - @hi-ui/modal@5.0.0-canary.3
+
 ## 5.0.0-canary.11
 
 ### Minor Changes

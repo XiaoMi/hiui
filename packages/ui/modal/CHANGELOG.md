@@ -1,5 +1,11 @@
 # @hi-ui/modal
 
+## 5.0.0-canary.3
+
+### Minor Changes
+
+- 49d1c53c4: feat(modal): 支持根据滚动位置来控制头尾部边框的显示 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes
