@@ -7,7 +7,6 @@ import Modal from '../src'
  */
 export const Scroll = () => {
   const [visible, setVisible] = React.useState(false)
-  console.log('visible', visible)
 
   return (
     <>
