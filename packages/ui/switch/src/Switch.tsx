@@ -10,7 +10,7 @@ const _prefix = getPrefixCls('switch')
 /**
  * 开关
  */
-export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
+export const Switch = forwardRef<HTMLDivElement | null, SwitchProps>(
   (
     {
       prefixCls = _prefix,
@@ -35,7 +35,7 @@ export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
     }, [disabled, tryChangeChecked])
 
     const handleKeydown = useCallback(
-      (evt: React.KeyboardEvent<HTMLSpanElement>) => {
+      (evt: React.KeyboardEvent<HTMLDivElement>) => {
         if ([13, 32].includes(evt.keyCode)) {
           evt.preventDefault()
           evt.stopPropagation()
@@ -55,7 +55,7 @@ export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
     )
 
     return (
-      <span
+      <div
         ref={ref}
         role="switch"
         className={cls}
@@ -67,12 +67,13 @@ export const Switch = forwardRef<HTMLSpanElement | null, SwitchProps>(
         {Array.isArray(content) && content.length === 2 ? (
           <span className={`${prefixCls}__text`}>{checked ? content[0] : content[1]}</span>
         ) : null}
-      </span>
+        <span className={`${prefixCls}__handle`} />
+      </div>
     )
   }
 )
 
-export interface SwitchProps extends HiBaseHTMLProps<'span'> {
+export interface SwitchProps extends HiBaseHTMLProps<'div'> {
   /**
    * 开关大小
    */
