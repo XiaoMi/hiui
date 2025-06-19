@@ -45,8 +45,8 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     transition-duration: use-motion-duration('normal');
     transition-timing-function: use-motion-bezier('normal');
 
-    &:hover {
-      color: use-color-mode('primary');
+    &:not(.disabled):hover {
+      background-color: use-color('gray', 50);
     }
 
     &:not(.disabled):active {
@@ -127,12 +127,10 @@ $prefix:  '#{$component-prefix}-number-input' !default;
 
   &#{$this}--focused {
     border-color: use-color-mode('primary');
-    // box-shadow: $input-shadow;
 
     &#{$this}--invalid,
     &#{$this}--out-of-bounds {
       border-color: use-color-mode('danger');
-      box-shadow: $input-error-shadow;
     }
   }
 
