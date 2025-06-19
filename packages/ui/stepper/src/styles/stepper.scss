@@ -43,8 +43,9 @@ $prefix: '#{$component-prefix}-stepper' !default;
     // 提示文案
     &-tip {
       &__title {
-        color: use-color('gray', 500);
+        margin-top: 3px;
         line-height: use-text-lineheight('normal');
+        color: use-color('gray', 500);
       }
 
       &__content {
@@ -129,7 +130,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
           content: '';
           position: absolute;
           top: calc(#{use-height-size(6)} + #{$line-spacing});
-          left: 11px;
+          left: 13px;
           width: 1px;
           height: calc(100% - #{use-height-size(6)} - #{$line-spacing} * 2);
           background-color: use-color('gray', 300);
@@ -218,8 +219,8 @@ $prefix: '#{$component-prefix}-stepper' !default;
               }
 
               &__title {
+                display: inline-flex;
                 position: relative;
-                display: inline-block;
                 padding-inline-end: use-spacing(6);
                 box-sizing: content-box;
 
