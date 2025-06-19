@@ -139,10 +139,12 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
         draggable={draggable}
         tabIndex={disabled ? 0 : -1}
         onClick={disabled ? undefined : _onClick}
-        onDoubleClick={(e) => {
-          e.stopPropagation()
-          setEditing(true)
-        }}
+        {...(editable ? {
+          onDoubleClick: (e) => {
+            e.stopPropagation()
+            setEditing(true)
+          }
+        } : {})}
         onDragStart={(e) => {
           e.stopPropagation()
           e.dataTransfer.setData('tab', JSON.stringify({ tabId, tabTitle }))

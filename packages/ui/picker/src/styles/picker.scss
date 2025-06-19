@@ -95,7 +95,7 @@ $prefix: '#{$component-prefix}-picker' !default;
       &__prefix {
         padding-left: use-spacing(6);
         font-size: use-text-size('lg');
-        color: use-color('gray', 700);
+        color: use-color('gray', 500);
       }
 
       &--appearance-underline {
@@ -108,6 +108,11 @@ $prefix: '#{$component-prefix}-picker' !default;
             .#{$component-prefix}-input__text {
               padding-left: use-spacing(4);
             }
+          }
+
+          &__text {
+            width: 0;
+            min-width: 110px;
           }
         }
       }

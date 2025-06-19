@@ -5,7 +5,7 @@ $prefix: '#{$component-prefix}-message' !default;
 .#{$prefix} {
   box-sizing: border-box;
   width: auto;
-  padding: use-spacing(5) use-spacing(10);
+  padding: use-spacing(6) use-spacing(10);
   margin: use-spacing(5);
   border: use-border-size('normal') use-color('gray', 100);
   border-radius: use-border-radius('lg');
