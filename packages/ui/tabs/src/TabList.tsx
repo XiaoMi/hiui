@@ -324,7 +324,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
           >
             {showData.map((item, index) => (
               <TabItem
-                key={index}
+                key={item.tabId}
                 {...item}
                 ref={(node) => {
                   itemsRef.current[`${item.tabId}`] = node
@@ -374,6 +374,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 prefixCls={prefixCls}
                 showHorizontal={showHorizontal}
                 activeItemElement={itemsRef.current[activeTabId]}
+                containerElement={scrollElement}
                 activeTabId={activeTabId}
                 getTabOffset={getTabOffset}
               />

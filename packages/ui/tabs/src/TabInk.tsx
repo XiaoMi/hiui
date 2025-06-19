@@ -9,6 +9,7 @@ export const TabInk: React.FC<TabInkProps> = ({
   activeTabId,
   getTabOffset,
   showHorizontal,
+  containerElement,
 }) => {
   const inkRef = useRef<HTMLDivElement>(null)
 
@@ -64,6 +65,15 @@ export const TabInk: React.FC<TabInkProps> = ({
     onResize: setTabLnkPositionStyle,
   })
 
+  useResizeObserver({
+    element: containerElement,
+    getSize: (element) => {
+      const itemRect = element.getBoundingClientRect()
+      return showHorizontal ? itemRect.width : itemRect.height
+    },
+    onResize: setTabLnkPositionStyle,
+  })
+
   return (
     <div
       className={cx(`${prefixCls}__ink`, {
@@ -78,6 +88,7 @@ interface TabInkProps {
   prefixCls?: string
   disabled?: boolean
   activeItemElement: HTMLElement | null
+  containerElement: HTMLElement | null
   activeTabId: React.ReactText
   getTabOffset: (tabId: React.ReactText) => number
   showHorizontal: boolean
