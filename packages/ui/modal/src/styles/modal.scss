@@ -227,19 +227,7 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
     position: relative;
 
     &--divided {
-      &::before {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        content: '';
-        display: block;
-        width: 100%;
-        margin-top: -32px;
-        height: 32px;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
-        pointer-events: none;
-      }
+      border-top: use-border-size('normal') use-color('gray', 200);
     }
   }
 }

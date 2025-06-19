@@ -116,6 +116,44 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       updateConfirmLoading: (loading: boolean) => setConfirmLoading(loading),
     }))
 
+    const [scrollElement, setScrollElement] = useState<HTMLElement | null>(null)
+    const [scrollState, setScrollState] = useState<{
+      isContentOverflow: boolean
+      isScrollToTop: boolean
+      isScrollToBottom: boolean
+    }>({
+      isContentOverflow: false,
+      isScrollToTop: true,
+      isScrollToBottom: false,
+    })
+
+    const handleScroll = useCallback((evt: React.UIEvent<HTMLDivElement>) => {
+      if (!evt.currentTarget) return
+
+      const { scrollTop, scrollHeight, clientHeight } = evt.currentTarget
+
+      // 判断内容是否超过容器高度
+      const isContentOverflow = scrollHeight > clientHeight
+
+      // 判断是否滚动到顶部
+      const isScrollToTop = scrollTop === 0
+
+      // 判断是否滚动到底部
+      const isScrollToBottom = scrollTop + clientHeight >= scrollHeight - 1 // 减1像素容差
+
+      setScrollState({
+        isContentOverflow,
+        isScrollToTop,
+        isScrollToBottom,
+      })
+    }, [])
+
+    useEffect(() => {
+      if (scrollElement && visible) {
+        handleScroll({ currentTarget: scrollElement } as React.UIEvent<HTMLDivElement>)
+      }
+    }, [handleScroll, visible, scrollElement])
+
     const hasHeader = !!title || closeable
     const hasConfirm = confirmText !== null
     const hasCancel = cancelText !== null
@@ -155,7 +193,9 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                 <header
                   className={cx(
                     `${prefixCls}__header`,
-                    showHeaderDivider && `${prefixCls}__header--divided`
+                    (showHeaderDivider ||
+                      (scrollState.isContentOverflow && !scrollState.isScrollToTop)) &&
+                      `${prefixCls}__header--divided`
                   )}
                 >
                   {title ? (
@@ -176,12 +216,16 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                   ) : null}
                 </header>
               ) : null}
-              <main className={`${prefixCls}__body`}>{children}</main>
+              <main className={`${prefixCls}__body`} ref={setScrollElement} onScroll={handleScroll}>
+                {children}
+              </main>
               {hasFooter ? (
                 <footer
                   className={cx(
                     `${prefixCls}__footer`,
-                    showFooterDivider && `${prefixCls}__footer--divided`
+                    (showFooterDivider ||
+                      (scrollState.isContentOverflow && !scrollState.isScrollToBottom)) &&
+                      `${prefixCls}__footer--divided`
                   )}
                 >
                   {footer === undefined

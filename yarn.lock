@@ -2715,6 +2715,21 @@
     rollup-plugin-terser "^7.0.2"
     rollup-plugin-visualizer "^5.9.2"
 
+"@hi-ui/input@^4.4.0":
+  version "4.4.0"
+  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/@hi-ui/input/-/input-4.4.0.tgz#1b5e24a95dc3f421cc8b125a60082dc2ec62b5ea"
+  integrity sha512-XqBX01+MkQ2M4KkHiDPYWyNL5Easny+EpxEHWwQeUXeESu1k0LMQGTrI+zMmKh0G43dmPNFYt64q4/Fp8a1T9A==
+  dependencies:
+    "@hi-ui/classname" "^4.0.5"
+    "@hi-ui/dom-utils" "^4.0.7"
+    "@hi-ui/env" "^4.0.5"
+    "@hi-ui/func-utils" "^4.0.4"
+    "@hi-ui/icons" "^4.0.19"
+    "@hi-ui/type-assertion" "^4.0.4"
+    "@hi-ui/use-latest" "^4.0.4"
+    "@hi-ui/use-merge-refs" "^4.0.4"
+    "@hi-ui/use-uncontrolled-state" "^4.0.4"
+
 "@hi-ui/style-inject@^4.0.0":
   version "4.0.0"
   resolved "https://registry.npmjs.org/@hi-ui/style-inject/-/style-inject-4.0.0.tgz#62e3ecff2654e5149cd310db8ba8fbe078020bd3"

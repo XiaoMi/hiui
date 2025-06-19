@@ -23,11 +23,11 @@ $prefix: '#{$component-prefix}-switch' !default;
   }
 
   &--closed:not(.#{$prefix}--disabled) {
-    background: use-color('gray', 400);
+    background: use-color('gray', 300);
   }
 
   &--open.#{$prefix}--disabled {
-    background: use-color-mode('primary', 50);
+    background: use-color-mode('primary', 200);
   }
 
   &--closed.#{$prefix}--disabled {
@@ -38,13 +38,12 @@ $prefix: '#{$component-prefix}-switch' !default;
     cursor: not-allowed;
   }
 
-  &::after {
-    content: '';
-    background: use-color-static('white');
+  &__handle {
     position: absolute;
+    top: use-spacing(1);
     border-radius: use-border-radius('full');
     box-shadow: use-shadow('xs');
-    top: use-spacing(1);
+    background: use-color-static('white');
 
     // @animation
     transition-duration: use-motion-duration('normal');
@@ -65,7 +64,7 @@ $prefix: '#{$component-prefix}-switch' !default;
   }
 
   &--closed {
-    &::after {
+    .#{$prefix}__handle {
       left: use-spacing(1);
     }
   }
@@ -74,13 +73,13 @@ $prefix: '#{$component-prefix}-switch' !default;
     min-width: use-height-size(7);
     height: use-height-size(4);
 
-    &::after {
+    .#{$prefix}__handle {
       width: use-height-size(3);
       height: use-height-size(3);
     }
 
     &.#{$prefix}--open {
-      &::after {
+      .#{$prefix}__handle {
         left: calc(100% - #{use-height-size(3)} - #{use-spacing(1)});
       }
 
@@ -104,13 +103,13 @@ $prefix: '#{$component-prefix}-switch' !default;
     min-width: use-height-size(8);
     height: calc(#{use-height-size(4)} + 2px);
 
-    &::after {
+    .#{$prefix}__handle {
       width: calc(#{use-height-size(3)} + 2px);
       height: calc(#{use-height-size(3)} + 2px);
     }
 
     &.#{$prefix}--open {
-      &::after {
+      .#{$prefix}__handle {
         left: calc(100% - #{use-height-size(3)} - 2px - #{use-spacing(1)});
       }
 
@@ -134,13 +133,13 @@ $prefix: '#{$component-prefix}-switch' !default;
     min-width: use-height-size(10);
     height: calc(#{use-height-size(5)} + 2px);
 
-    &::after {
+    .#{$prefix}__handle {
       width: calc(#{use-height-size(4)} + 2px);
       height: calc(#{use-height-size(4)} + 2px);
     }
 
     &.#{$prefix}--open {
-      &::after {
+      .#{$prefix}__handle {
         left: calc(100% - #{use-height-size(4)} - 2px - #{use-spacing(1)});
       }
 
