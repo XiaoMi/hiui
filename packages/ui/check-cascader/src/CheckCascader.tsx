@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo } from 'react'
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -11,7 +11,7 @@ import {
   FlattedCheckCascaderDataItem,
 } from './types'
 import { useCache } from '@hi-ui/use-cache'
-import { Picker, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { CheckCascaderMenuList } from './CheckCascaderMenuList'
 import {
@@ -88,6 +88,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     ref
   ) => {
     const i18n = useLocaleContext()
+
+    const innerRef = useRef<PickerHelper>(null)
 
     const placeholder = isUndef(placeholderProp)
       ? i18n.get('checkCascader.placeholder')
@@ -228,9 +230,17 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       })
     }, [flattedDataMap, value])
 
+    useEffect(() => {
+      // 每次打开或数据改变时触发弹窗重新定位，避免搜索模式下弹窗被遮盖
+      if (menuVisible) {
+        innerRef.current?.update()
+      }
+    }, [menuVisible, selectProps.data])
+
     return (
       <Picker
         ref={ref}
+        innerRef={innerRef}
         className={cls}
         overlayClassName={cx(`${prefixCls}__popper`, overlayClassName)}
         {...rest}

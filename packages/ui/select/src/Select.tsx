@@ -221,9 +221,10 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     const listRef = useRef<ListRef>(null)
 
     useEffect(() => {
-      // 每次打开或数据改变时触发一次滚动条显示
+      // 每次打开或数据改变时触发一次滚动条显示和弹窗重新定位，避免搜索模式下弹窗被遮盖
       if (menuVisible && isArrayNonEmpty(showData)) {
         listRef.current?.scrollTo(undefined as any)
+        innerRef.current?.update()
       }
     }, [menuVisible, showData])
 

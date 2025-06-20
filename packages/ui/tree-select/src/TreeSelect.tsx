@@ -1,11 +1,11 @@
-import React, { forwardRef, useCallback, useMemo, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { TreeSelectDataItem } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { Picker, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
 import { baseFlattenTree } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { uniqBy } from '@hi-ui/array-utils'
@@ -85,6 +85,8 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
     ref
   ) => {
     const i18n = useLocaleContext()
+
+    const innerRef = useRef<PickerHelper>(null)
 
     const placeholder = isUndef(placeholderProp)
       ? i18n.get('treeSelect.placeholder')
@@ -234,9 +236,17 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
 
     const cls = cx(prefixCls, className)
 
+    useEffect(() => {
+      // 每次打开或数据改变时触发一次滚动条显示和弹窗重新定位，避免搜索模式下弹窗被遮盖
+      if (menuVisible) {
+        innerRef.current?.update()
+      }
+    }, [menuVisible, treeProps.expandedIds])
+
     return (
       <Picker
         ref={ref}
+        innerRef={innerRef}
         className={cls}
         {...rest}
         visible={menuVisible}

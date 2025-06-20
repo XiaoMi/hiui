@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useEffect } from 'react'
+import React, { forwardRef, useState, useEffect, useImperativeHandle } from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -72,7 +72,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       }
     }, [transitionVisible, transitionVisibleAction])
 
-    const { popperElement, getPopperProps, getArrowProps } = usePopper({
+    const { popperElement, getPopperProps, getArrowProps, update, forceUpdate } = usePopper({
       attachEl,
       // 关闭时不启用，内部执行销毁
       visible: !transitionExisted,
@@ -113,6 +113,12 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
     })
 
     const cls = cx(prefixCls, className)
+
+    useImperativeHandle(ref, () => ({
+      ...((ref as any)?.current || {}),
+      update,
+      forceUpdate,
+    }))
 
     return (
       <Portal container={container} disabled={disabledPortal}>

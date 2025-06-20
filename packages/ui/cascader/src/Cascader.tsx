@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useMemo, useEffect } from 'react'
+import React, { forwardRef, useState, useMemo, useEffect, useRef } from 'react'
 import type { HiBaseAppearanceEnum, HiBaseSizeEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -12,7 +12,7 @@ import { CascaderProvider } from './context'
 import { CascaderExpandTriggerEnum, FlattedCascaderDataItem, CascaderItemEventData } from './types'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
-import { Picker, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerProps, PickerHelper } from '@hi-ui/picker'
 import { useSearchMode, useTreeCustomSearch, useTreeUpMatchSearch } from '@hi-ui/use-search-mode'
 import { uniqBy } from '@hi-ui/array-utils'
 import { useCache } from '@hi-ui/use-cache'
@@ -66,6 +66,8 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     ...rest
   } = props
   const i18n = useLocaleContext()
+
+  const innerRef = useRef<PickerHelper>(null)
 
   const placeholder = isUndef(placeholderProp) ? i18n.get('cascader.placeholder') : placeholderProp
 
@@ -215,6 +217,13 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
 
   const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
+  useEffect(() => {
+    // 每次打开或数据改变时触发弹窗重新定位，避免搜索模式下弹窗被遮盖
+    if (menuVisible && isArrayNonEmpty(showData)) {
+      innerRef.current?.update()
+    }
+  }, [menuVisible, showData])
+
   return (
     <CascaderProvider
       value={{
@@ -227,6 +236,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     >
       <Picker
         ref={ref}
+        innerRef={innerRef}
         className={cls}
         overlayClassName={cx(`${prefixCls}__popper`, overlayClassName)}
         {...rootProps}
