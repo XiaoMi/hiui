@@ -49,6 +49,12 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
           }
         }
       }
+
+      .#{$component-prefix}-scrollbar {
+        &__wrapper {
+          height: 100%;
+        }
+      }
     }
   }
 
