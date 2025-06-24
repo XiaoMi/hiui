@@ -264,7 +264,11 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         const highlight =
           !!searchValue && (searchMode === 'highlight' || searchMode === 'filter' || dataSource)
 
-        const ret = highlight ? <Highlighter keyword={searchValue}>{node.title}</Highlighter> : true
+        const ret = highlight ? (
+          <Highlighter keyword={new RegExp(searchValue, 'ig')}>{node.title}</Highlighter>
+        ) : (
+          true
+        )
 
         return ret
       },
