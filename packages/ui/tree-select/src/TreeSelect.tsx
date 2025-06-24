@@ -204,7 +204,11 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         // 本地搜索执行默认高亮规则
         const highlight = !!searchValue && (searchMode === 'highlight' || searchMode === 'filter')
 
-        const ret = highlight ? <Highlighter keyword={searchValue}>{node.title}</Highlighter> : true
+        const ret = highlight ? (
+          <Highlighter keyword={new RegExp(searchValue, 'ig')}>{node.title}</Highlighter>
+        ) : (
+          true
+        )
 
         return ret
       },
