@@ -167,7 +167,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 
         const ret = highlight ? (
           <Checkbox checked={node.checked} disabled={node.disabled}>
-            <Highlighter keyword={searchValue}>{node.title}</Highlighter>
+            <Highlighter keyword={new RegExp(searchValue, 'ig')}>{node.title}</Highlighter>
           </Checkbox>
         ) : (
           true
