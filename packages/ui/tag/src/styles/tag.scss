@@ -132,7 +132,7 @@ $filled-color-map: (
     'hover-background': use-color('gray', 200)
   ),
   'yellow': (
-    'color': use-color('yellow', 800),
+    'color': use-color('yellow', 900),
     'background': use-color('yellow', 100),
     'hover-background': use-color('yellow', 100)
   ),
@@ -142,7 +142,7 @@ $filled-color-map: (
     'hover-background': use-color('ultramarine', 100)
   ),
   'skyblue': (
-    'color': use-color('skyblue', 800),
+    'color': use-color('skyblue', 900),
     'background': use-color('skyblue', 100),
     'hover-background': use-color('skyblue', 100)
   ),
@@ -220,7 +220,7 @@ $shape-round: '#{$prefix}--shape-round' !default;
     font-size: use-text-size('sm');
 
     &.#{$shape-square} {
-      border-radius: use-border-radius('sm');
+      border-radius: use-border-radius('md');
     }
 
     &.#{$shape-round} {
@@ -237,7 +237,7 @@ $shape-round: '#{$prefix}--shape-round' !default;
     font-size: use-text-size('sm');
 
     &.#{$shape-square} {
-      border-radius: use-border-radius('normal');
+      border-radius: use-border-radius('md');
     }
 
     &.#{$shape-round} {
@@ -254,7 +254,7 @@ $shape-round: '#{$prefix}--shape-round' !default;
     font-size: use-text-size('normal');
 
     &.#{$shape-square} {
-      border-radius: use-border-radius('normal');
+      border-radius: use-border-radius('md');
     }
 
     &.#{$shape-round} {

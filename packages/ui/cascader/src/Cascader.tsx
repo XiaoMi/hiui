@@ -18,7 +18,12 @@ import {
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
 import { Picker, PickerProps } from '@hi-ui/picker'
-import { useSearchMode, useTreeCustomSearch, useTreeUpMatchSearch } from '@hi-ui/use-search-mode'
+import {
+  matchStrategy,
+  useSearchMode,
+  useTreeCustomSearch,
+  useTreeUpMatchSearch,
+} from '@hi-ui/use-search-mode'
 import { uniqBy } from '@hi-ui/array-utils'
 import { useCache } from '@hi-ui/use-cache'
 import { useLocaleContext } from '@hi-ui/core'
@@ -386,7 +391,7 @@ const renderHighlightTitle = (
   if (title !== true) return title
 
   return (
-    <Highlighter key={option.id} keyword={keyword}>
+    <Highlighter key={option.id} keyword={new RegExp(keyword, 'ig')}>
       {option.title}
     </Highlighter>
   )
@@ -423,18 +428,19 @@ const renderHighlightTitles = (
           if (typeof title !== 'string') return raw
           if (found) return raw
 
-          const index = title.indexOf(keyword)
+          const index = matchStrategy(title, keyword)
           if (index === -1) return raw
 
           found = true
 
           const beforeStr = title.substr(0, index)
+          const matchedStr = title.substr(index, keyword.length)
           const afterStr = title.substr(index + keyword.length)
 
           return (
             <span key={id} className="title__text--col">
               {beforeStr}
-              <span className="title__text--matched">{keyword}</span>
+              <span className="title__text--matched">{matchedStr}</span>
               {afterStr}
             </span>
           )
