@@ -1,5 +1,13 @@
 # @hi-ui/table
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- a89b3b3ae: fix: 修改组件问题 (5.0)
+- Updated dependencies [a89b3b3ae]
+  - @hi-ui/select@5.0.0-canary.4
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

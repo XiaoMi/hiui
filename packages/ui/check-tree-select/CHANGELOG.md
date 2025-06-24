@@ -1,5 +1,11 @@
 # @hi-ui/check-tree-select
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- a89b3b3ae: fix: 修改组件问题 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

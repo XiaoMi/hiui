@@ -1,5 +1,19 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.13
+
+### Patch Changes
+
+- a89b3b3ae: fix: 修改组件问题 (5.0)
+- Updated dependencies [a89b3b3ae]
+  - @hi-ui/cascader@5.0.0-canary.4
+  - @hi-ui/check-select@5.0.0-canary.4
+  - @hi-ui/check-tree-select@5.0.0-canary.3
+  - @hi-ui/select@5.0.0-canary.4
+  - @hi-ui/table@5.0.0-canary.5
+  - @hi-ui/tag@5.0.0-canary.3
+  - @hi-ui/tree-select@5.0.0-canary.3
+
 ## 5.0.0-canary.12
 
 ### Minor Changes
