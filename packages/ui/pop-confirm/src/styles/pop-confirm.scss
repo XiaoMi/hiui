@@ -9,7 +9,7 @@ $prefix: '#{$component-prefix}-pop-confirm' !default;
   background: use-color-static('white');
   white-space: nowrap;
   border-radius: use-border-radius('lg');
-  padding: use-spacing(10);
+  padding: use-spacing(8) use-spacing(10);
   display: flex;
   flex-direction: column;
 
