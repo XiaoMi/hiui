@@ -28,14 +28,14 @@ const PickerIcon = ({
       : 'icon-date'
   )
   const MatchIcon = useMemo(() => {
-    if (focus && clearable) {
+    if (focus && clearable && !disabled) {
       return CloseCircleFilled
     } else if (type.includes('time') || showTime) {
       return TimeOutlined
     } else {
       return CalendarOutlined
     }
-  }, [clearable, focus, showTime, type])
+  }, [clearable, disabled, focus, showTime, type])
 
   return (
     <MatchIcon

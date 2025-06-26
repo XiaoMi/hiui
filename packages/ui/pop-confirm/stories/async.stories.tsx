@@ -14,16 +14,16 @@ export const Async = () => {
       <h1>Async</h1>
       <div className="pop-confirm-async__wrap">
         <PopConfirm
-          title="Are you OK ?"
+          title="Hello! Are you OK?"
           visible={visible}
           footer={[
-            <Button key="1" type="default" size="md" onClick={() => setVisible(false)}>
+            <Button key="1" appearance="line" size="sm" onClick={() => setVisible(false)}>
               取消
             </Button>,
             <Button
               key="2"
               type="primary"
-              size="md"
+              size="sm"
               loading={loading}
               onClick={() => {
                 setLoading(true)

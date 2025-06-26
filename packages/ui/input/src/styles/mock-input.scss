@@ -38,8 +38,8 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     cursor: not-allowed !important;
   }
 
-  &__suffix,
-  &__placeholder {
+  &__suffix {
+    padding-left: use-spacing(4);
     color: use-color('gray', 500);
 
     .#{$mock-input-prefix}--appearance-unset & {
@@ -57,6 +57,11 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: use-color('gray', 400);
+
+    .#{$mock-input-prefix}--appearance-unset & {
+      color: use-color('gray', 400);
+    }
   }
 
   // clear icon
@@ -77,7 +82,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     transition-timing-function: use-motion-bezier('normal');
 
     &:hover {
-      color: use-color-static('black');
+      color: use-color-mode('primary');
     }
 
     &.active {
@@ -99,10 +104,6 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
 
   &__prefix {
     margin-right: use-spacing(4);
-  }
-
-  &__suffix {
-    padding-left: use-spacing(4);
   }
 
   &__value {
@@ -178,10 +179,6 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
           &.hover {
             border-color: use-color-mode('error');
           }
-
-          // &.focused {
-          //   box-shadow: $input-error-shadow;
-          // }
         }
       }
     }
@@ -208,10 +205,6 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
           &.hover {
             border-color: use-color-mode('error');
           }
-
-          // &.focused {
-          //   box-shadow: $input-error-shadow;
-          // }
         }
       }
     }
@@ -236,10 +229,6 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
           &.hover {
             border-color: use-color-mode('error');
           }
-
-          // &.focused {
-          //   box-shadow: $input-error-shadow;
-          // }
         }
       }
     }
