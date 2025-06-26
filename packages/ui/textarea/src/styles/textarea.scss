@@ -36,7 +36,7 @@ $prefix: '#{$component-prefix}-textarea' !default;
       color: use-color('gray', 400);
 
       .#{$prefix}--appearance-unset & {
-        color: use-color('gray', 500);
+        color: use-color('gray', 400);
       }
     }
 

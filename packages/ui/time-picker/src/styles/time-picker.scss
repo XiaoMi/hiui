@@ -35,7 +35,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
       border-color: use-color('gray', 300);
     }
 
-    &:hover {
+    &:not(.#{$prefix}--disabled):hover {
       .#{$input-wrapper-class} {
         border-color: use-color-mode('primary');
       }
@@ -45,13 +45,13 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   &--appearance-filled {
     background: use-color('gray', 100);
 
-    &:hover {
+    &:not(.#{$prefix}--disabled):hover {
       background: use-color('gray', 200);
     }
   }
 
   &--appearance-unset {
-    &:hover {
+    &:not(.#{$prefix}--disabled):hover {
       background: use-color('gray', 100);
     }
   }
@@ -63,7 +63,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
     background: transparent;
 
-    &:hover {
+    &:not(.#{$prefix}--disabled):hover {
       background: transparent;
     }
   }
@@ -112,8 +112,8 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &__close-button {
-    &:hover {
-      color: get-color('gray', 600);
+    &:not(.#{$prefix}--disabled):hover {
+      color: use-color-mode('primary');
     }
   }
 }
