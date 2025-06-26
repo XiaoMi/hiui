@@ -171,7 +171,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
       &:hover {
         background-color: use-color('gray', 50);
-        border-color: transparent;
+        border-color: use-color('gray', 300);
       }
     }
 
@@ -221,6 +221,12 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
         cursor: not-allowed;
         color: use-color('gray', 400);
       }
+
+      &.clear {
+        &:hover {
+          color: use-color-mode('primary');
+        }
+      }
     }
 
     //.icon-close-circle {
@@ -265,10 +271,10 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       margin: 0;
 
       &::placeholder {
-        color: use-color('gray', 500);
+        color: use-color('gray', 400);
 
         .#{$prefix}__picker--appearance-unset & {
-          color: use-color('gray', 500);
+          color: use-color('gray', 400);
         }
       }
 
