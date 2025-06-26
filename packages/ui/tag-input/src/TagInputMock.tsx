@@ -246,9 +246,11 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
             )
           ) : (
             <span className={`${prefixCls}__value`}>
-              {data
-                .filter((item) => value.includes(item.id))
-                .map((item) => item.title)
+              {value
+                .map((id) => {
+                  const option = data.find((d) => d.id === id) ?? { id, title: id }
+                  return option.title
+                })
                 .join('、')}
             </span>
           )}

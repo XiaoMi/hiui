@@ -13,7 +13,7 @@ export const Placement = () => {
     setPlacement(newPlacement)
   }
 
-  const title = <span>文字提示</span>
+  const title = <span>Hello! Are you OK?</span>
 
   return (
     <>

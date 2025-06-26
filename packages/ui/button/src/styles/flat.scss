@@ -105,7 +105,7 @@ $filled-focus-shadow-map: (
       font-size: use-text-size('sm');
 
       &:not(.#{$prefix}--icon-only) {
-        min-width: use-height-size(14);
+        min-width: use-height-size(13);
         padding: 0 use-spacing(4);
       }
 

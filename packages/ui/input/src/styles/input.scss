@@ -37,10 +37,10 @@ $prefix: '#{$component-prefix}-input' !default;
     color: use-color('gray', 700);
 
     &::placeholder {
-      color: use-color('gray', 500);
+      color: use-color('gray', 400);
 
       .#{$prefix}--appearance-unset & {
-        color: use-color('gray', 500);
+        color: use-color('gray', 400);
       }
     }
 
@@ -90,7 +90,7 @@ $prefix: '#{$component-prefix}-input' !default;
     opacity: 0;
 
     &:hover {
-      color: use-color('gray', 700);
+      color: use-color-mode('primary');
     }
 
     &.#{$prefix}__clear--active {
