@@ -341,6 +341,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const resetStatus = useCallback(() => {
       setShowPanel(false)
+      setInputFocus(false)
     }, [])
 
     const onPopperClose = useCallback(() => {
