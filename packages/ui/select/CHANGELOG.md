@@ -1,5 +1,13 @@
 # @hi-ui/select
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- 40f819417: fix: 修复 UI 问题 (5.0)
+- Updated dependencies [40f819417]
+  - @hi-ui/input@5.0.0-canary.5
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

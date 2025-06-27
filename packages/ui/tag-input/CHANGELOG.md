@@ -1,5 +1,11 @@
 # @hi-ui/tag-input
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- 40f819417: fix: 修复 UI 问题 (5.0)
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

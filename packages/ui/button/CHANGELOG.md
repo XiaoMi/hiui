@@ -1,5 +1,11 @@
 # @hi-ui/button
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- 40f819417: fix: 修复 UI 问题 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

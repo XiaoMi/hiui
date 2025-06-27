@@ -1,5 +1,14 @@
 # @hi-ui/check-cascader
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- 40f819417: fix: 修复 UI 问题 (5.0)
+- Updated dependencies [40f819417]
+  - @hi-ui/input@5.0.0-canary.5
+  - @hi-ui/tag-input@5.0.0-canary.6
+
 ## 5.0.0-canary.3
 
 ### Minor Changes

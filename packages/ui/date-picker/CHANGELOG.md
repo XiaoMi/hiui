@@ -1,5 +1,14 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- 40f819417: fix: 修复 UI 问题 (5.0)
+- Updated dependencies [40f819417]
+  - @hi-ui/button@5.0.0-canary.3
+  - @hi-ui/time-picker@5.0.0-canary.2
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

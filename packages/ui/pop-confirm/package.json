@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/pop-confirm",
-  "version": "5.0.0-canary.0",
+  "version": "5.0.0-canary.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -44,7 +44,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^5.0.0-canary.0",
+    "@hi-ui/button": "^5.0.0-canary.3",
     "@hi-ui/classname": "^5.0.0-canary.0",
     "@hi-ui/dom-utils": "^5.0.0-canary.0",
     "@hi-ui/env": "^5.0.0-canary.0",

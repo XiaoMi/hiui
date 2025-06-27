@@ -1,5 +1,23 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.14
+
+### Patch Changes
+
+- 40f819417: fix: 修复 UI 问题 (5.0)
+- Updated dependencies [40f819417]
+  - @hi-ui/button@5.0.0-canary.3
+  - @hi-ui/cascader@5.0.0-canary.5
+  - @hi-ui/check-cascader@5.0.0-canary.4
+  - @hi-ui/check-select@5.0.0-canary.5
+  - @hi-ui/check-tree-select@5.0.0-canary.4
+  - @hi-ui/date-picker@5.0.0-canary.6
+  - @hi-ui/input@5.0.0-canary.5
+  - @hi-ui/pop-confirm@5.0.0-canary.1
+  - @hi-ui/select@5.0.0-canary.5
+  - @hi-ui/time-picker@5.0.0-canary.2
+  - @hi-ui/tree-select@5.0.0-canary.4
+
 ## 5.0.0-canary.13
 
 ### Patch Changes
