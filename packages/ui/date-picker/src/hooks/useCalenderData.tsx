@@ -108,8 +108,6 @@ const getYearOrMonthRows = ({
       col.value = y
       num++
       const currentYM = (_date as any)[view](y)
-      console.log('currentYM', currentYM.format('YYYY-MM-DD'));
-
       if (currentYM.isSame(current, view)) {
         col.type = 'today'
       }
