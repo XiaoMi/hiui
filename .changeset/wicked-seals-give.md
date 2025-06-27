@@ -1,7 +1,7 @@
 ---
 "@hi-ui/button": patch
 "@hi-ui/cascader": patch
-"@hi-ui/cascader-cascader": patch
+"@hi-ui/check-cascader": patch
 "@hi-ui/check-select": patch
 "@hi-ui/check-tree-select": patch
 "@hi-ui/date-picker": patch
