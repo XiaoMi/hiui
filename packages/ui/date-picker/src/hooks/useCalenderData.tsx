@@ -51,12 +51,12 @@ const getYearOrMonthRows = ({
         value,
       } as CalendarColInfo
 
-      if (current.year() === renderDate?.year() && originDate?.quarter() === value) {
-        col.type = 'selected'
-      }
-
       if (current.year() === renderDate?.year() && current.quarter() === value) {
         col.type = 'today'
+      }
+
+      if (originDate?.year() === renderDate?.year() && originDate?.quarter() === value) {
+        col.type = 'selected'
       }
 
       if (disabledDate?.(_date.quarter(value).toDate(), 'quarter')) {
@@ -108,6 +108,8 @@ const getYearOrMonthRows = ({
       col.value = y
       num++
       const currentYM = (_date as any)[view](y)
+      console.log('currentYM', currentYM.format('YYYY-MM-DD'));
+
       if (currentYM.isSame(current, view)) {
         col.type = 'today'
       }
