@@ -96,7 +96,7 @@ const Panel = (props: PanelProps) => {
         return
       }
 
-      if (type === 'quarter') {
+      if (type === 'quarter'  && view === 'quarter') {
         onPick([date], false)
         return
       }
@@ -114,7 +114,7 @@ const Panel = (props: PanelProps) => {
       if (view === 'year') {
         _view = 'month'
       }
-      if (view === 'quarter') {
+      if (view === 'year' && type === 'quarter') {
         _view = 'quarter'
       }
       if (view === 'month') {

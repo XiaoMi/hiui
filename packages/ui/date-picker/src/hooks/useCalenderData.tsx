@@ -40,7 +40,7 @@ const getYearOrMonthRows = ({
     formatRange.end = temp
   }
 
-  if (type.includes('quarter')) {
+  if (type.includes('quarter') && view.includes('quarter')) {
     const quarterColData: CalendarColInfo[] = []
     for (let i = 0; i < 4; i++) {
       const value = i + 1
