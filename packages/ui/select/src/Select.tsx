@@ -293,6 +293,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                   <SelectOptionGroup
                     prefixCls={`${prefixCls}-option-group`}
                     label={node.groupTitle}
+                    depth={node.depth}
                     {...node.raw.rootProps}
                   />
                 ) : (
