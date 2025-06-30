@@ -398,7 +398,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
               {(node: any, index) => {
                 /* 反向 map，搜索删选数据时会对数据进行处理 */
                 return 'groupTitle' in node ? (
-                  <CheckSelectOptionGroup label={node.groupTitle} />
+                  <CheckSelectOptionGroup label={node.groupTitle} depth={node.depth} />
                 ) : (
                   <CheckSelectOption
                     option={node}
@@ -625,17 +625,23 @@ const optionGroupPrefix = getPrefixCls('select-option-group')
 export const CheckSelectOptionGroup = forwardRef<
   HTMLDivElement | null,
   CheckSelectOptionGroupProps
->(({ prefixCls = optionGroupPrefix, className, label, ...rest }, ref) => {
+>(({ prefixCls = optionGroupPrefix, className, label, depth, ...rest }, ref) => {
   const cls = cx(prefixCls, className)
 
   return (
     <div ref={ref} className={cls} {...rest}>
+      {renderIndent(prefixCls, !depth || depth === 0 ? 0 : depth - 1)}
       <span>{label}</span>
     </div>
   )
 })
 
-export interface CheckSelectOptionGroupProps extends HiBaseHTMLProps {}
+export interface CheckSelectOptionGroupProps extends HiBaseHTMLProps {
+  /**
+   * 深度
+   */
+  depth?: number
+}
 
 // @ts-ignore
 CheckSelectOptionGroup.HiName = 'CheckSelectOptionGroup'
