@@ -89,7 +89,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
   ) => {
     const i18n = useLocaleContext()
 
-    const innerRef = useRef<PickerHelper>(null)
+    const pickerInnerRef = useRef<PickerHelper>(null)
 
     const placeholder = isUndef(placeholderProp)
       ? i18n.get('checkCascader.placeholder')
@@ -233,14 +233,14 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     useEffect(() => {
       // 每次打开或数据改变时触发弹窗重新定位，避免搜索模式下弹窗被遮盖
       if (menuVisible) {
-        innerRef.current?.update()
+        pickerInnerRef.current?.update()
       }
     }, [menuVisible, selectProps.data])
 
     return (
       <Picker
         ref={ref}
-        innerRef={innerRef}
+        innerRef={pickerInnerRef}
         className={cls}
         overlayClassName={cx(`${prefixCls}__popper`, overlayClassName)}
         {...rest}

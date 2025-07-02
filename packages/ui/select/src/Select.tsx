@@ -85,7 +85,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     ref
   ) => {
     const i18n = useLocaleContext()
-    const innerRef = useRef<PickerHelper>(null)
+    const pickerInnerRef = useRef<PickerHelper>(null)
     const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
@@ -222,9 +222,11 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
 
     useEffect(() => {
       // 每次打开或数据改变时触发一次滚动条显示和弹窗重新定位，避免搜索模式下弹窗被遮盖
-      if (menuVisible && isArrayNonEmpty(showData)) {
+      if (menuVisible) {
+        pickerInnerRef.current?.update()
+      }
+      if (isArrayNonEmpty(showData)) {
         listRef.current?.scrollTo(undefined as any)
-        innerRef.current?.update()
       }
     }, [menuVisible, showData])
 
@@ -232,7 +234,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       <SelectProvider value={context}>
         <Picker
           ref={ref}
-          innerRef={innerRef}
+          innerRef={pickerInnerRef}
           className={cls}
           {...rootProps}
           visible={menuVisible}
@@ -274,7 +276,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                   tryChangeValue(value, item.raw)
                   // 非受控模式下清空下拉框
                   if (value === '') {
-                    innerRef.current?.resetSearch()
+                    pickerInnerRef.current?.resetSearch()
                     onClearProp?.()
                   }
                 }}

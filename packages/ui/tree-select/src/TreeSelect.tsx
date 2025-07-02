@@ -86,7 +86,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
   ) => {
     const i18n = useLocaleContext()
 
-    const innerRef = useRef<PickerHelper>(null)
+    const pickerInnerRef = useRef<PickerHelper>(null)
 
     const placeholder = isUndef(placeholderProp)
       ? i18n.get('treeSelect.placeholder')
@@ -239,14 +239,14 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
     useEffect(() => {
       // 每次打开或数据改变时触发一次滚动条显示和弹窗重新定位，避免搜索模式下弹窗被遮盖
       if (menuVisible) {
-        innerRef.current?.update()
+        pickerInnerRef.current?.update()
       }
     }, [menuVisible, treeProps.expandedIds])
 
     return (
       <Picker
         ref={ref}
-        innerRef={innerRef}
+        innerRef={pickerInnerRef}
         className={cls}
         {...rest}
         visible={menuVisible}
