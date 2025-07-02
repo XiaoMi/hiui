@@ -16,7 +16,7 @@ import Checkbox from '@hi-ui/checkbox'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import VirtualList, { ListRef, useCheckInVirtual } from '@hi-ui/virtual-list'
-import { Picker, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerProps, PickerHelper } from '@hi-ui/picker'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { times, uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
@@ -95,6 +95,8 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       : placeholderProp
 
     // ************************** Picker ************************* //
+
+    const pickerInnerRef = useRef<PickerHelper>(null)
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
       visible,
@@ -294,9 +296,14 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     const listRef = useRef<ListRef>(null)
 
     useEffect(() => {
-      // 每次打开或数据改变时触发一次滚动条显示
-      if (menuVisible && isArrayNonEmpty(showData)) {
-        listRef.current?.scrollTo(undefined as any)
+      if (menuVisible) {
+        // 数据改变时更新弹窗显示位置，避免弹窗内容被遮挡
+        pickerInnerRef.current?.update()
+
+        // 数据改变时触发一次滚动条显示
+        if (isArrayNonEmpty(showData)) {
+          listRef.current?.scrollTo(undefined as any)
+        }
       }
     }, [menuVisible, showData])
 
@@ -304,6 +311,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       <CheckSelectProvider value={context}>
         <Picker
           ref={ref}
+          innerRef={pickerInnerRef}
           className={cls}
           {...rootProps}
           visible={menuVisible}
