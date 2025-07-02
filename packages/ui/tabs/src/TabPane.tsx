@@ -81,6 +81,7 @@ export interface TabPaneProps extends HiBaseHTMLProps<'div'> {
   unmountOnInactive?: boolean
   /**
    * 标签内容是否预加载
+   * @private
    */
   preload?: boolean
 }
