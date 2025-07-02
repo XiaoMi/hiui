@@ -13,12 +13,17 @@ export const TabPane: React.FC<TabPaneProps> = ({
   style,
   active,
   unmountOnInactive = true,
+  preload,
   ...rest
 }) => {
   const htmlProps = filterProps(rest, omitProps)
   const [isLoaded, setIsLoaded] = React.useState(false)
 
   const childrenContentMemo = React.useMemo(() => {
+    if (preload && !active && !isLoaded) {
+      return children
+    }
+
     if (!unmountOnInactive) {
       if (active && !isLoaded) {
         setIsLoaded(true)
@@ -32,12 +37,12 @@ export const TabPane: React.FC<TabPaneProps> = ({
     }
 
     return null
-  }, [active, children, isLoaded, unmountOnInactive])
+  }, [active, children, isLoaded, unmountOnInactive, preload])
 
   return (
     <div
       style={style}
-      className={cx(className, !unmountOnInactive && !active && `${_prefix}--hide`)}
+      className={cx(className, (!active && (preload || !unmountOnInactive)) && `${_prefix}--hide`)}
       {...htmlProps}
     >
       {childrenContentMemo}
@@ -74,4 +79,8 @@ export interface TabPaneProps extends HiBaseHTMLProps<'div'> {
    * 标签内容不活跃时是否卸载
    */
   unmountOnInactive?: boolean
+  /**
+   * 标签内容是否预加载
+   */
+  preload?: boolean
 }
