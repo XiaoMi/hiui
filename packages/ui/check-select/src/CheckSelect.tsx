@@ -296,9 +296,11 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     const listRef = useRef<ListRef>(null)
 
     useEffect(() => {
-      // 每次打开或数据改变时触发弹窗重新定位，避免搜索模式下弹窗被遮盖
       if (menuVisible) {
+        // 数据改变时更新弹窗显示位置，避免弹窗内容被遮挡
         pickerInnerRef.current?.update()
+
+        // 数据改变时触发一次滚动条显示
         if (isArrayNonEmpty(showData)) {
           listRef.current?.scrollTo(undefined as any)
         }

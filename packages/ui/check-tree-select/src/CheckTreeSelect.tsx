@@ -339,8 +339,8 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     // }, [value, flattedData])
 
     useEffect(() => {
-      // 每次打开或数据改变时触发弹窗重新定位，避免搜索模式下弹窗被遮盖
       if (menuVisible) {
+        // 数据改变时更新弹窗显示位置，避免弹窗内容被遮挡
         pickerInnerRef.current?.update()
       }
     }, [menuVisible, treeProps.expandedIds])
