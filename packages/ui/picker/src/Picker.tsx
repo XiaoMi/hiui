@@ -150,14 +150,10 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
         resetSearchOnClosed && resetSearch()
       },
       update: () => {
-        if (popperRef.current) {
-          popperRef.current.update()
-        }
+        popperRef.current?.update()
       },
       forceUpdate: () => {
-        if (popperRef.current) {
-          popperRef.current.forceUpdate()
-        }
+        popperRef.current?.forceUpdate()
       },
     }))
 
