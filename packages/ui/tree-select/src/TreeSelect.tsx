@@ -237,7 +237,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
     const cls = cx(prefixCls, className)
 
     useEffect(() => {
-      // 每次打开或数据改变时触发一次滚动条显示和弹窗重新定位，避免搜索模式下弹窗被遮盖
+      // 每次打开或数据改变时触发弹窗重新定位，避免搜索模式下弹窗被遮盖
       if (menuVisible) {
         pickerInnerRef.current?.update()
       }

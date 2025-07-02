@@ -224,9 +224,9 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       // 每次打开或数据改变时触发一次滚动条显示和弹窗重新定位，避免搜索模式下弹窗被遮盖
       if (menuVisible) {
         pickerInnerRef.current?.update()
-      }
-      if (isArrayNonEmpty(showData)) {
-        listRef.current?.scrollTo(undefined as any)
+        if (isArrayNonEmpty(showData)) {
+          listRef.current?.scrollTo(undefined as any)
+        }
       }
     }, [menuVisible, showData])
 
