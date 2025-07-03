@@ -1,5 +1,11 @@
 # @hi-ui/tag
 
+## 4.3.0
+
+### Minor Changes
+
+- [#3184](https://github.com/XiaoMi/hiui/pull/3184) [`185c8912a`](https://github.com/XiaoMi/hiui/commit/185c8912a2deca837b96e71a6c99d05a56203bb8) Thanks [@KEH3](https://github.com/KEH3)! - feat(tag): Tag 组件 render 方法增加 triggerEdit 参数用于触发编辑状态 (#3185)
+
 ## 4.2.1
 
 ### Patch Changes

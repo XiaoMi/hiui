@@ -1,5 +1,11 @@
 # @hi-ui/tabs
 
+## 4.2.0
+
+### Minor Changes
+
+- [#3211](https://github.com/XiaoMi/hiui/pull/3211) [`7e21457`](https://github.com/XiaoMi/hiui/commit/7e2145754dcc7a94d0f8219ee720657a0693acc3) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(tabs): 增加 TabPane 组件的 preload 属性以支持内容预加载 (#3210)
+
 ## 4.1.6
 
 ### Patch Changes
