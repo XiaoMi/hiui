@@ -1,5 +1,11 @@
 # @hi-ui/descriptions
 
+## 4.5.1
+
+### Patch Changes
+
+- [#3197](https://github.com/XiaoMi/hiui/pull/3197) [`c31ebeb66`](https://github.com/XiaoMi/hiui/commit/c31ebeb661a437b730509792fbe88bb0cc028883) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(descriptions): 给 Row 和 Cell 组件增加 rest 参数支持，允许传递额外属性至组件 (#3193)
+
 ## 4.5.0
 
 ### Minor Changes

@@ -1,5 +1,16 @@
 # @hi-ui/date-picker
 
+## 4.11.1
+
+### Patch Changes
+
+- [#3202](https://github.com/XiaoMi/hiui/pull/3202) [`0d006f890`](https://github.com/XiaoMi/hiui/commit/0d006f890d8c6d7c6064b8672c9dbc561173c1c0) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(date-picker): DatePicker 组件 type 为 季度下无法选择年份(#3201)
+
+- [`714637dfe`](https://github.com/XiaoMi/hiui/commit/714637dfee0f943ef497b2073e3c4f27dee35ecc) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker): 修复周选择面板周数显示异常问题 (#3209)
+
+- Updated dependencies [[`80a909d2d`](https://github.com/XiaoMi/hiui/commit/80a909d2dae99d68d71f2ec6f4b210080d032ec0)]:
+  - @hi-ui/popper@4.1.7
+
 ## 4.11.0
 
 ### Minor Changes

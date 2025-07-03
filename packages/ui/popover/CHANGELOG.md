@@ -1,5 +1,16 @@
 # @hi-ui/popover
 
+## 4.2.0
+
+### Minor Changes
+
+- [#3206](https://github.com/XiaoMi/hiui/pull/3206) [`a4e208e55`](https://github.com/XiaoMi/hiui/commit/a4e208e556945c322607644dd648d8f30914e639) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(popover): add popperClassName api (#3205)
+
+### Patch Changes
+
+- Updated dependencies [[`80a909d2d`](https://github.com/XiaoMi/hiui/commit/80a909d2dae99d68d71f2ec6f4b210080d032ec0)]:
+  - @hi-ui/popper@4.1.7
+
 ## 4.1.2
 
 ### Patch Changes
