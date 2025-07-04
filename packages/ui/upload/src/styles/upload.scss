@@ -102,7 +102,7 @@ $upload-state-height: 2px !default;
     cursor: pointer;
 
     &.#{$prefix}__item--status-success:hover {
-      background: use-color('gray', 300);
+      background: use-color('gray', 50);
     }
 
     &.#{$prefix}__item--status-error {
@@ -593,11 +593,11 @@ $upload-state-height: 2px !default;
         }
 
         &:hover {
-          background: use-color('gray', 100);
+          background: use-color('gray', 50);
         }
 
         &:focus {
-          background: use-color('gray', 100);
+          background: use-color('gray', 50);
           outline: 0;
         }
 

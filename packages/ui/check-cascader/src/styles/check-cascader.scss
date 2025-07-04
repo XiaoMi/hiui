@@ -118,7 +118,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     border-radius: use-border-radius('md');
 
     &:hover {
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 50);
 
       // checkbox 联动颜色
       .#{$component-prefix}-checkbox__icon {

@@ -16,7 +16,7 @@ $prefix: '#{$component-prefix}-notification' !default;
   margin: use-spacing(8);
   border-radius: use-border-radius('lg');
   pointer-events: auto;
-  box-shadow: 0 4px 16px 0 rgba(0, 29, 97, 0.12);
+  box-shadow: use-shadow('normal');
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
   background-color: use-color-static('white');
@@ -95,7 +95,6 @@ $prefix: '#{$component-prefix}-notification' !default;
     flex-direction: column;
     position: relative;
     max-height: 50vh;
-    overflow: hidden;
     // animation
     transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration $transition-height-delay;
     transition-timing-function: use-motion-bezier('normal');
