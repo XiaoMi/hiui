@@ -58,7 +58,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     // transition-timing-function: use-motion-bezier('slow');
 
     &:hover {
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 50);
     }
 
     &.dragging {

@@ -507,13 +507,13 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &--left {
     margin-right: 10px;
     left: 0;
-    box-shadow: 6px 0 6px -4px rgba(0, 0, 0, 0.15);
+    box-shadow: use-shadow('sm', 'right');
   }
 
   &--right {
     margin-left: 10px;
     right: 0;
-    box-shadow: -6px 0 6px -4px rgba(0, 0, 0, 0.15);
+    box-shadow: use-shadow('sm', 'left');
   }
 }
 

@@ -324,6 +324,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           visible={showPopper && !disabled}
           attachEl={attachEl}
           autoFocus={false}
+          gutterGap={4}
           onClose={() => {
             // 关闭弹窗，视作，抛弃之前的选择行为，复位
             showPopperRef.current = false

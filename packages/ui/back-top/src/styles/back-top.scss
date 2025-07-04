@@ -19,7 +19,7 @@ $prefix: '#{$component-prefix}-back-top' !default;
     box-sizing: border-box;
     width: use-height-size(10);
     height: use-height-size(10);
-    box-shadow: use-shadow('lg');
+    box-shadow: use-shadow('normal');
     overflow: hidden;
     display: flex;
     justify-content: center;
