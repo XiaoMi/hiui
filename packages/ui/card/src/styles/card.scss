@@ -124,7 +124,7 @@ $prefix: '#{$component-prefix}-card' !default;
     transition: box-shadow 0.3s;
 
     &:hover {
-      box-shadow: 0 4px 8px 0 rgba(31, 39, 51, 0.1);
+      box-shadow: use-shadow('normal');
     }
   }
 }
