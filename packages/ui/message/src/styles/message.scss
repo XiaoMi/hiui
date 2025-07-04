@@ -6,7 +6,7 @@ $prefix: '#{$component-prefix}-message' !default;
   box-sizing: border-box;
   width: auto;
   padding: use-spacing(6) use-spacing(10);
-  margin: use-spacing(5);
+  margin: use-spacing(6);
   border: use-border-size('normal') use-color('gray', 100);
   border-radius: use-border-radius('lg');
   pointer-events: auto;
@@ -66,7 +66,6 @@ $prefix: '#{$component-prefix}-message' !default;
     align-items: center;
     flex-direction: column;
     position: relative;
-    overflow: hidden;
 
     // animation
     transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration  $transition-height-delay;
