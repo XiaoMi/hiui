@@ -50,7 +50,7 @@ $item-class: '#{$selector-prefix}__item' !default;
     font-size: 14px;
 
     &:hover {
-      background: use-color('gray', 100);
+      background: use-color('gray', 50);
     }
 
     &#{&}--active {

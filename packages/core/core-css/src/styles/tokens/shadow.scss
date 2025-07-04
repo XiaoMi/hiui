@@ -1,16 +1,31 @@
-$shadow-color-base: rgba(#1a1d26, 0.1) !default;
+$shadow-color-02: rgba(#1a1d26, 0.02) !default;
+$shadow-color-03: rgba(#1a1d26, 0.03) !default;
+$shadow-color-04: rgba(#1a1d26, 0.04) !default;
+$shadow-color-06: rgba(#1a1d26, 0.06) !default;
+$shadow-color-08: rgba(#1a1d26, 0.08) !default;
 
 // 基础阴影
 $shadow-base-map: (
-  'none': 'none',
-  // 阴影颜色设计成绝对值，表示统一标准，无需使用 token
-  'xs': '0 1px 2px 0 #{$shadow-color-base}',
-  'sm': '0 2px 4px 0 #{$shadow-color-base}',
-  // @Normal
-  'md': '0 4px 8px 0 #{$shadow-color-base}',
-  'lg': '0 8px 16px 6px #{$shadow-color-base}',
+  'left': (
+    'none': 'none',
+    'sm': '-2px 0 8px 2px #{$shadow-color-02}, -2px 0 4px 0 #{$shadow-color-02}, -1px 0 2px -2px #{$shadow-color-02}',
+    'md': '-6px 0 18px 6px #{$shadow-color-03}, -4px 0 8px 0 #{$shadow-color-03}, -4px 0 6px -6px #{$shadow-color-04}',
+  ),
+  'right': (
+    'none': 'none',
+    'sm': '2px 0 4px 0 #{$shadow-color-02}, 2px 0 4px 0 #{$shadow-color-02}, 1px 0 2px -2px #{$shadow-color-02}',
+    'md': '6px 0 18px 6px #{$shadow-color-03}, 4px 0 4px 0 #{$shadow-color-03}, 4px 0 6px -6px #{$shadow-color-03}',
+  ),
+  'down': (
+    'none': 'none',
+    'sm': '0 1px 2px -2px #{$shadow-color-02}, 0 2px 4px 0 #{$shadow-color-02}, 0 2px 8px 2px #{$shadow-color-02}',
+    'md': '0 4px 6px -6px #{$shadow-color-04}, 0 4px 8px 0 #{$shadow-color-03}, 0 6px 18px 6px #{$shadow-color-03}',
+    // @Normal
+    'lg': '0 6px 12px -8px #{$shadow-color-06}, 0 4px 8px 0 #{$shadow-color-04}, 0 8px 24px 8px #{$shadow-color-04}',
+    'xl': '0 8px 24px -12px #{$shadow-color-08}, 0 6px 12px 0 #{$shadow-color-04}, 0 10px 36px 12px #{$shadow-color-04}',
+  ),
 ) !default;
 
-@function get-shadow($name) {
-  @return map-safe-get($shadow-base-map, $name);
+@function get-shadow($name, $direction: 'down') {
+  @return map-safe-get(map-safe-get($shadow-base-map, $direction), $name);
 }
