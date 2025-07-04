@@ -99,7 +99,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
     border-radius: use-border-radius('md');
 
     &:hover {
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 50);
     }
 
     &#{&}--selected {
