@@ -35,7 +35,7 @@ $prefix: '#{$component-prefix}-select' !default;
   }
 
   &:not(.#{$prefix}-option--selected):not(.#{$prefix}-option--focused):not(.#{$prefix}-option--disabled):hover {
-    background-color: use-color('gray', 100);
+    background-color: use-color('gray', 50);
   }
 
   &--selected {
@@ -44,7 +44,7 @@ $prefix: '#{$component-prefix}-select' !default;
   }
 
   &--focused:not(.#{$prefix}-option--selected) {
-    background-color: use-color('gray', 100);
+    background-color: use-color('gray', 50);
   }
 
   &--disabled {

@@ -42,7 +42,7 @@ $prefix: '#{$component-prefix}-switch' !default;
     position: absolute;
     top: use-spacing(1);
     border-radius: use-border-radius('full');
-    box-shadow: use-shadow('xs');
+    box-shadow: use-shadow('sm');
     background: use-color-static('white');
 
     // @animation
