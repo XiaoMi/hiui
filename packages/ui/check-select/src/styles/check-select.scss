@@ -42,7 +42,7 @@ $prefix: '#{$component-prefix}-check-select' !default;
     // }
 
     &:hover {
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 50);
     }
 
     &--checked {
@@ -51,7 +51,7 @@ $prefix: '#{$component-prefix}-check-select' !default;
     }
 
     &--focused {
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 50);
     }
 
     &--disabled {
