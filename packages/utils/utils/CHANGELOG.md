@@ -1,5 +1,24 @@
 # @hi-ui/utils
 
+## 5.0.0-canary.1
+
+### Patch Changes
+
+- 4b09e728b: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [4b09e728b]
+  - @hi-ui/array-utils@5.0.0-canary.1
+  - @hi-ui/classname@5.0.0-canary.1
+  - @hi-ui/container@5.0.0-canary.1
+  - @hi-ui/dom-utils@5.0.0-canary.1
+  - @hi-ui/env@5.0.0-canary.1
+  - @hi-ui/func-utils@5.0.0-canary.1
+  - @hi-ui/raf@5.0.0-canary.1
+  - @hi-ui/react-utils@5.0.0-canary.1
+  - @hi-ui/request@5.0.0-canary.1
+  - @hi-ui/throttle-by-raf@5.0.0-canary.1
+  - @hi-ui/tree-utils@5.0.0-canary.1
+  - @hi-ui/type-assertion@5.0.0-canary.1
+
 ## 5.0.0-canary.0
 
 ### Major Changes

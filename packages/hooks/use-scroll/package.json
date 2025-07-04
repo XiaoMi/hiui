@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-scroll",
-  "version": "5.0.0-canary.0",
+  "version": "5.0.0-canary.1",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -50,8 +50,8 @@
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/dom-utils": "^5.0.0-canary.0",
-    "@hi-ui/throttle-by-raf": "^5.0.0-canary.0",
-    "@hi-ui/use-latest": "^5.0.0-canary.0"
+    "@hi-ui/dom-utils": "^5.0.0-canary.1",
+    "@hi-ui/throttle-by-raf": "^5.0.0-canary.1",
+    "@hi-ui/use-latest": "^5.0.0-canary.1"
   }
 }

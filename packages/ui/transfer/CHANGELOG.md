@@ -1,5 +1,23 @@
 # @hi-ui/transfer
 
+## 5.0.0-canary.1
+
+### Patch Changes
+
+- 4b09e728b: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [4b09e728b]
+  - @hi-ui/core@5.0.0-canary.1
+  - @hi-ui/use-check@5.0.0-canary.1
+  - @hi-ui/use-uncontrolled-state@5.0.0-canary.1
+  - @hi-ui/icons@5.0.0-canary.1
+  - @hi-ui/button@5.0.0-canary.4
+  - @hi-ui/checkbox@5.0.0-canary.1
+  - @hi-ui/input@5.0.0-canary.6
+  - @hi-ui/pagination@5.0.0-canary.3
+  - @hi-ui/classname@5.0.0-canary.1
+  - @hi-ui/env@5.0.0-canary.1
+  - @hi-ui/type-assertion@5.0.0-canary.1
+
 ## 5.0.0-canary.0
 
 ### Major Changes

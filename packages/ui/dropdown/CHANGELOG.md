@@ -1,5 +1,25 @@
 # @hi-ui/dropdown
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- 4b09e728b: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [4b09e728b]
+  - @hi-ui/core@5.0.0-canary.1
+  - @hi-ui/use-latest@5.0.0-canary.1
+  - @hi-ui/use-timeout@5.0.0-canary.1
+  - @hi-ui/use-toggle@5.0.0-canary.1
+  - @hi-ui/use-unmount-effect@5.0.0-canary.1
+  - @hi-ui/icons@5.0.0-canary.1
+  - @hi-ui/button@5.0.0-canary.4
+  - @hi-ui/popper@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.1
+  - @hi-ui/dom-utils@5.0.0-canary.1
+  - @hi-ui/env@5.0.0-canary.1
+  - @hi-ui/react-utils@5.0.0-canary.1
+  - @hi-ui/type-assertion@5.0.0-canary.1
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

@@ -1,5 +1,24 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- ba7c324c2: style: 下拉框间距改为 4px (5.0)
+- 4b09e728b: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- ba7c324c2: style: 统一调整选择类组件 hover 时的背景色 (5.0)
+- Updated dependencies [ba7c324c2]
+- Updated dependencies [4b09e728b]
+- Updated dependencies [ba7c324c2]
+  - @hi-ui/time-picker@5.0.0-canary.3
+  - @hi-ui/core@5.0.0-canary.1
+  - @hi-ui/icons@5.0.0-canary.1
+  - @hi-ui/button@5.0.0-canary.4
+  - @hi-ui/popper@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.1
+  - @hi-ui/env@5.0.0-canary.1
+  - @hi-ui/object-utils@5.0.0-canary.1
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @hi-ui/core
 
+## 5.0.0-canary.1
+
+### Patch Changes
+
+- 4b09e728b: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [ba7c324c2]
+- Updated dependencies [ba7c324c2]
+- Updated dependencies [4b09e728b]
+  - @hi-ui/core-css@5.0.0-canary.5
+  - @hi-ui/locale-context@5.0.0-canary.2
+  - @hi-ui/portal-context@5.0.0-canary.1
+
 ## 5.0.0-canary.0
 
 ### Major Changes

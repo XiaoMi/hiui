@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/use-search-mode",
-  "version": "5.0.0-canary.0",
+  "version": "5.0.0-canary.1",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -50,13 +50,13 @@
     "react": "^17.0.1"
   },
   "dependencies": {
-    "@hi-ui/dom-utils": "^5.0.0-canary.0",
-    "@hi-ui/env": "^5.0.0-canary.0",
-    "@hi-ui/func-utils": "^5.0.0-canary.0",
-    "@hi-ui/loading": "^5.0.0-canary.0",
-    "@hi-ui/tree-utils": "^5.0.0-canary.0",
-    "@hi-ui/type-assertion": "^5.0.0-canary.0",
-    "@hi-ui/use-data-source": "^5.0.0-canary.0",
-    "@hi-ui/use-latest": "^5.0.0-canary.0"
+    "@hi-ui/dom-utils": "^5.0.0-canary.1",
+    "@hi-ui/env": "^5.0.0-canary.1",
+    "@hi-ui/func-utils": "^5.0.0-canary.1",
+    "@hi-ui/loading": "^5.0.0-canary.1",
+    "@hi-ui/tree-utils": "^5.0.0-canary.1",
+    "@hi-ui/type-assertion": "^5.0.0-canary.1",
+    "@hi-ui/use-data-source": "^5.0.0-canary.1",
+    "@hi-ui/use-latest": "^5.0.0-canary.1"
   }
 }

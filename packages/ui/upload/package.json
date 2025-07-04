@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/upload",
-  "version": "5.0.0-canary.2",
+  "version": "5.0.0-canary.3",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -44,26 +44,26 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^5.0.0-canary.1",
-    "@hi-ui/classname": "^5.0.0-canary.0",
-    "@hi-ui/env": "^5.0.0-canary.0",
-    "@hi-ui/file-select": "^5.0.0-canary.0",
-    "@hi-ui/icons": "^5.0.0-canary.0",
-    "@hi-ui/message": "^5.0.0-canary.1",
-    "@hi-ui/modal": "^5.0.0-canary.1",
-    "@hi-ui/preview": "^5.0.0-canary.0",
-    "@hi-ui/use-id": "^5.0.0-canary.0",
+    "@hi-ui/button": "^5.0.0-canary.4",
+    "@hi-ui/classname": "^5.0.0-canary.1",
+    "@hi-ui/env": "^5.0.0-canary.1",
+    "@hi-ui/file-select": "^5.0.0-canary.1",
+    "@hi-ui/icons": "^5.0.0-canary.1",
+    "@hi-ui/message": "^5.0.0-canary.3",
+    "@hi-ui/modal": "^5.0.0-canary.4",
+    "@hi-ui/preview": "^5.0.0-canary.1",
+    "@hi-ui/use-id": "^5.0.0-canary.1",
     "react-cropper": "^2.1.8",
     "uuid": "^8.3.2"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=5.0.0-canary.0",
+    "@hi-ui/core": ">=5.0.0-canary.1",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^5.0.0-canary.0",
-    "@hi-ui/core-css": "^5.0.0-canary.1",
+    "@hi-ui/core": "^5.0.0-canary.1",
+    "@hi-ui/core-css": "^5.0.0-canary.5",
     "@types/uuid": "^8.3.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

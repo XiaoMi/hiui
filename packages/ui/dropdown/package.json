@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/dropdown",
-  "version": "5.0.0-canary.3",
+  "version": "5.0.0-canary.4",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -44,27 +44,27 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^5.0.0-canary.0",
-    "@hi-ui/classname": "^5.0.0-canary.0",
-    "@hi-ui/dom-utils": "^5.0.0-canary.0",
-    "@hi-ui/env": "^5.0.0-canary.0",
-    "@hi-ui/icons": "^5.0.0-canary.0",
-    "@hi-ui/popper": "^5.0.0-canary.1",
-    "@hi-ui/react-utils": "^5.0.0-canary.0",
-    "@hi-ui/type-assertion": "^5.0.0-canary.0",
-    "@hi-ui/use-latest": "^5.0.0-canary.0",
-    "@hi-ui/use-timeout": "^5.0.0-canary.0",
-    "@hi-ui/use-toggle": "^5.0.0-canary.0",
-    "@hi-ui/use-unmount-effect": "^5.0.0-canary.0"
+    "@hi-ui/button": "^5.0.0-canary.4",
+    "@hi-ui/classname": "^5.0.0-canary.1",
+    "@hi-ui/dom-utils": "^5.0.0-canary.1",
+    "@hi-ui/env": "^5.0.0-canary.1",
+    "@hi-ui/icons": "^5.0.0-canary.1",
+    "@hi-ui/popper": "^5.0.0-canary.2",
+    "@hi-ui/react-utils": "^5.0.0-canary.1",
+    "@hi-ui/type-assertion": "^5.0.0-canary.1",
+    "@hi-ui/use-latest": "^5.0.0-canary.1",
+    "@hi-ui/use-timeout": "^5.0.0-canary.1",
+    "@hi-ui/use-toggle": "^5.0.0-canary.1",
+    "@hi-ui/use-unmount-effect": "^5.0.0-canary.1"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=5.0.0-canary.0",
+    "@hi-ui/core": ">=5.0.0-canary.1",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^5.0.0-canary.0",
-    "@hi-ui/core-css": "^5.0.0-canary.3",
+    "@hi-ui/core": "^5.0.0-canary.1",
+    "@hi-ui/core-css": "^5.0.0-canary.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

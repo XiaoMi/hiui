@@ -1,5 +1,29 @@
 # @hi-ui/modal
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- 4b09e728b: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [4b09e728b]
+  - @hi-ui/core@5.0.0-canary.1
+  - @hi-ui/use-id@5.0.0-canary.1
+  - @hi-ui/use-latest@5.0.0-canary.1
+  - @hi-ui/use-merge-refs@5.0.0-canary.1
+  - @hi-ui/use-scroll-lock@5.0.0-canary.1
+  - @hi-ui/use-toggle@5.0.0-canary.1
+  - @hi-ui/icons@5.0.0-canary.1
+  - @hi-ui/button@5.0.0-canary.4
+  - @hi-ui/icon-button@5.0.0-canary.1
+  - @hi-ui/portal@5.0.0-canary.1
+  - @hi-ui/classname@5.0.0-canary.1
+  - @hi-ui/container@5.0.0-canary.1
+  - @hi-ui/dom-utils@5.0.0-canary.1
+  - @hi-ui/env@5.0.0-canary.1
+  - @hi-ui/func-utils@5.0.0-canary.1
+  - @hi-ui/react-utils@5.0.0-canary.1
+  - @hi-ui/type-assertion@5.0.0-canary.1
+
 ## 5.0.0-canary.3
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # @hi-ui/core-css
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- ba7c324c2: style: 统一调整组件 shadow (5.0)
+- ba7c324c2: style(core-css): 更新灰色调色板的颜色值 (5.0)
+- 4b09e728b: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

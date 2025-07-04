@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/drawer",
-  "version": "5.0.0-canary.2",
+  "version": "5.0.0-canary.3",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -44,27 +44,27 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^5.0.0-canary.0",
-    "@hi-ui/env": "^5.0.0-canary.0",
-    "@hi-ui/icon-button": "^5.0.0-canary.0",
-    "@hi-ui/icons": "^5.0.0-canary.0",
-    "@hi-ui/modal": "^5.0.0-canary.1",
-    "@hi-ui/portal": "^5.0.0-canary.0",
-    "@hi-ui/type-assertion": "^5.0.0-canary.0",
-    "@hi-ui/use-latest": "^5.0.0-canary.0",
-    "@hi-ui/use-merge-refs": "^5.0.0-canary.0",
-    "@hi-ui/use-scroll-lock": "^5.0.0-canary.0",
-    "@hi-ui/use-toggle": "^5.0.0-canary.0",
+    "@hi-ui/classname": "^5.0.0-canary.1",
+    "@hi-ui/env": "^5.0.0-canary.1",
+    "@hi-ui/icon-button": "^5.0.0-canary.1",
+    "@hi-ui/icons": "^5.0.0-canary.1",
+    "@hi-ui/modal": "^5.0.0-canary.4",
+    "@hi-ui/portal": "^5.0.0-canary.1",
+    "@hi-ui/type-assertion": "^5.0.0-canary.1",
+    "@hi-ui/use-latest": "^5.0.0-canary.1",
+    "@hi-ui/use-merge-refs": "^5.0.0-canary.1",
+    "@hi-ui/use-scroll-lock": "^5.0.0-canary.1",
+    "@hi-ui/use-toggle": "^5.0.0-canary.1",
     "react-transition-group": "4.4.2"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=5.0.0-canary.0",
+    "@hi-ui/core": ">=5.0.0-canary.1",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^5.0.0-canary.0",
-    "@hi-ui/core-css": "^5.0.0-canary.1",
+    "@hi-ui/core": "^5.0.0-canary.1",
+    "@hi-ui/core-css": "^5.0.0-canary.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

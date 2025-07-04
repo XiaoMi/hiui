@@ -1,5 +1,23 @@
 # @hi-ui/pagination
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- 4b09e728b: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [4b09e728b]
+- Updated dependencies [ba7c324c2]
+  - @hi-ui/core@5.0.0-canary.1
+  - @hi-ui/use-latest@5.0.0-canary.1
+  - @hi-ui/use-uncontrolled-state@5.0.0-canary.1
+  - @hi-ui/icons@5.0.0-canary.1
+  - @hi-ui/counter@5.0.0-canary.1
+  - @hi-ui/input@5.0.0-canary.6
+  - @hi-ui/select@5.0.0-canary.6
+  - @hi-ui/classname@5.0.0-canary.1
+  - @hi-ui/env@5.0.0-canary.1
+  - @hi-ui/type-assertion@5.0.0-canary.1
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

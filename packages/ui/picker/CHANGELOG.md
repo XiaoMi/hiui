@@ -1,5 +1,25 @@
 # @hi-ui/picker
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- ba7c324c2: style: 下拉框间距改为 4px (5.0)
+- 4b09e728b: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [4b09e728b]
+  - @hi-ui/core@5.0.0-canary.1
+  - @hi-ui/use-latest@5.0.0-canary.1
+  - @hi-ui/use-toggle@5.0.0-canary.1
+  - @hi-ui/use-uncontrolled-state@5.0.0-canary.1
+  - @hi-ui/icons@5.0.0-canary.1
+  - @hi-ui/input@5.0.0-canary.6
+  - @hi-ui/loading@5.0.0-canary.1
+  - @hi-ui/popper@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.1
+  - @hi-ui/dom-utils@5.0.0-canary.1
+  - @hi-ui/env@5.0.0-canary.1
+  - @hi-ui/type-assertion@5.0.0-canary.1
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

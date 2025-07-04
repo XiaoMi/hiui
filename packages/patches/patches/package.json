@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/patches",
-  "version": "5.0.0-canary.0",
+  "version": "5.0.0-canary.1",
   "description": "A patch-package for @hi-ui/hiui V4.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
