@@ -181,7 +181,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
           ref={popperRef}
           matchWidth={optionWidth === undefined}
           matchWidthStrictly
-          gutterGap={2}
+          gutterGap={4}
           // @DesignToken zIndex: overlay
           zIndex={1050}
           {...overlay}
