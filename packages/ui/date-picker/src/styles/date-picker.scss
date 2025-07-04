@@ -329,7 +329,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     width: 100%;
     // height: 296px;
     background: use-color-static('white');
-    box-shadow: use-shadow('lg');
+    box-shadow: use-shadow('normal');
     display: flex;
 
     //.#{$prefix}__panel--left {

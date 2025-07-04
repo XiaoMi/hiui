@@ -109,7 +109,7 @@ $prefix: '#{$component-prefix}-popper' !default;
     position: relative;
     box-sizing: border-box;
     background-color: use-color-static('white');
-    box-shadow: use-shadow('lg');
+    box-shadow: use-shadow('normal');
     border-radius: use-border-radius('normal');
     // 为了保证 arrow 三角形可以正常展示
     min-width: 36px;
