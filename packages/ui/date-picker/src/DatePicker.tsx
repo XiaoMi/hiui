@@ -503,6 +503,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           <Popper
             {...(overlay || {})}
             visible={visible !== undefined ? visible : showPanel}
+            gutterGap={4}
             onEntered={onOpen}
             onClose={onPopperClose}
             attachEl={attachEl}
