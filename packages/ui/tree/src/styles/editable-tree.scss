@@ -83,7 +83,7 @@ $prefix: '#{$component-prefix}-tree' !default;
         }
 
         &:hover {
-          background-color: use-color('gray', 100);
+          background-color: use-color('gray', 50);
         }
       }
     }
