@@ -275,7 +275,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       onItemCreate?.(createdItem)
 
       // 创建后重置搜索和关闭弹窗
-      innerRef.current?.resetSearch()
+      pickerInnerRef.current?.resetSearch()
       menuVisibleAction.off()
     })
 
