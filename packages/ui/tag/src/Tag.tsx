@@ -47,6 +47,14 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
     const [editValueCache, setEditValueCache] = useState('')
     const [isShowPopover, setIsShowPopover] = useState(false)
 
+    // 触发编辑状态函数
+    const triggerEdit = useMemo(() => {
+      return () => {
+        setEditValueCache(String(children))
+        setIsInEdit(true)
+      }
+    }, [children])
+
     // 根容器样式
     // 如果 color 存在则注入
     const rootStyle = useMemo(() => {
@@ -118,7 +126,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
               component: Tooltip,
               componentProps: {
                 ...tooltipProps,
-                title: render(children as React.ReactText),
+                title: render(children as React.ReactText, triggerEdit),
                 trigger: 'hover',
               },
             }
@@ -126,7 +134,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
               component: React.Fragment,
               componentProps: {},
             },
-      [isShowPopover, isInEdit, tooltipProps, render, children]
+      [isShowPopover, isInEdit, tooltipProps, render, children, triggerEdit]
     )
 
     if (__DEV__) {
@@ -142,8 +150,15 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       <WrapperComponent {...(componentProps as any)}>
         <div ref={ref} role={role} className={rootClassName} style={rootStyle} {...rest}>
           <div className={`${prefixCls}__content-wrapper`}>
-            <div className={`${prefixCls}__content`} ref={contentRef}>
-              {isInEdit ? editValueCache : render(children as React.ReactText)}
+            <div
+              className={`${prefixCls}__content`}
+              ref={contentRef}
+              onDoubleClick={(evt) => {
+                evt.stopPropagation()
+                triggerEdit()
+              }}
+            >
+              {isInEdit ? editValueCache : render(children as React.ReactText, triggerEdit)}
             </div>
             {editable && isInEdit && (
               <input
@@ -161,18 +176,15 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
                 }}
               />
             )}
-            {editable && !isInEdit && (
-              <div
-                className={`${prefixCls}__double-click-trigger`}
-                onDoubleClick={(e) => {
-                  setEditValueCache(String(children))
-                  setIsInEdit(true)
-                }}
-              />
-            )}
           </div>
           {!isInEdit && closeable && (
-            <div className={`${prefixCls}__close-button`} onClick={onDelete}>
+            <div
+              className={`${prefixCls}__close-button`}
+              onClick={(e) => {
+                e.stopPropagation()
+                onDelete?.()
+              }}
+            >
               <CloseOutlined />
             </div>
           )}
@@ -224,9 +236,10 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
   /**
    * 内容渲染器
    * @param children 子代对象
+   * @param triggerEdit 触发编辑函数
    * @default e => e
    */
-  render?: (children?: React.ReactText) => React.ReactNode
+  render?: (children?: React.ReactText, triggerEdit?: () => void) => React.ReactNode
   /**
    * 是否展示可关闭按钮
    * @default false

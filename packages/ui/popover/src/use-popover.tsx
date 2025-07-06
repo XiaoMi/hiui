@@ -19,6 +19,7 @@ export const usePopover = ({
   mouseEnterDelay = 100,
   mouseLeaveDelay = 100,
   attachEl,
+  popperClassName,
   ...restProps
 }: UsePopoverProps) => {
   // TODO: 移除 popper，使用 hook 重写
@@ -151,8 +152,9 @@ export const usePopover = ({
       visible,
       attachEl: attachEl ?? triggerEl,
       onClose: visibleAction.off,
+      className: popperClassName,
     }
-  }, [popper, visible, attachEl, triggerEl, visibleAction.off])
+  }, [popper, visible, attachEl, triggerEl, visibleAction.off, popperClassName])
 
   return { rootProps: rest, getOverlayProps, getTriggerProps, getPopperProps, visibleAction }
 }
@@ -194,6 +196,10 @@ export interface UsePopoverProps extends PopperOverlayProps {
    * 自定义 popper.js 的装饰器
    */
   modifiers?: ReadonlyArray<Partial<PopperJS.Modifier<string, any>>>
+  /**
+   * 自定义 Popper 的 className
+   */
+  popperClassName?: string
 }
 
 export type UsePopoverReturn = ReturnType<typeof usePopover>

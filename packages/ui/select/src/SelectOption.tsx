@@ -62,7 +62,7 @@ if (__DEV__) {
 /**
  * 渲染空白占位
  */
-const renderIndent = (prefixCls: string, depth: number) => {
+export const renderIndent = (prefixCls: string, depth: number) => {
   return times(depth, (index: number) => {
     return (
       <span key={index} style={{ alignSelf: 'stretch' }}>

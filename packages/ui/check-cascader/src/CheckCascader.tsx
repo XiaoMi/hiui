@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo, useRef, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -12,7 +12,7 @@ import {
   FlattedCheckCascaderDataItem,
 } from './types'
 import { useCache } from '@hi-ui/use-cache'
-import { Picker, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { CheckCascaderMenuList } from './CheckCascaderMenuList'
 import {
@@ -46,6 +46,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       data = NOOP_ARRAY,
       placeholder: placeholderProp,
       clearable,
+      onClear,
       onSelect,
       expandTrigger,
       disabled = false,
@@ -85,6 +86,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     ref
   ) => {
     const i18n = useLocaleContext()
+
+    const pickerInnerRef = useRef<PickerHelper>(null)
 
     const placeholder = isUndef(placeholderProp)
       ? i18n.get('checkCascader.placeholder')
@@ -229,9 +232,17 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       })
     }, [flattedDataMap, value])
 
+    useEffect(() => {
+      if (menuVisible) {
+        // 数据改变时更新弹窗显示位置，避免弹窗内容被遮挡
+        pickerInnerRef.current?.update()
+      }
+    }, [menuVisible, selectProps.data])
+
     return (
       <Picker
         ref={ref}
+        innerRef={pickerInnerRef}
         className={cls}
         overlayClassName={cx(`${prefixCls}__popper`, overlayClassName)}
         {...rest}
@@ -262,6 +273,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
               {...tagInputProps}
               size={size}
               clearable={clearable}
+              onClear={onClear}
               placeholder={placeholder}
               // @ts-ignore
               displayRender={displayRender}
@@ -405,6 +417,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 是否可清空
    */
   clearable?: boolean
+  /**
+   * 点击关闭按钮时触发
+   */
+  onClear?: () => void
   /**
    * 是否禁止使用
    */

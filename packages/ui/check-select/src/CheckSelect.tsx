@@ -100,7 +100,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 
     // ************************** Picker ************************* //
 
-    const innerRef = useRef<PickerHelper>(null)
+    const pickerInnerRef = useRef<PickerHelper>(null)
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
       visible,
@@ -275,7 +275,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       onItemCreate?.(createdItem)
 
       // 创建后重置搜索和关闭弹窗
-      innerRef.current?.resetSearch()
+      pickerInnerRef.current?.resetSearch()
       menuVisibleAction.off()
     })
 
@@ -319,9 +319,14 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     const listRef = useRef<ListRef>(null)
 
     useEffect(() => {
-      // 每次打开或数据改变时触发一次滚动条显示
-      if (menuVisible && isArrayNonEmpty(showData)) {
-        listRef.current?.scrollTo(undefined as any)
+      if (menuVisible) {
+        // 数据改变时更新弹窗显示位置，避免弹窗内容被遮挡
+        pickerInnerRef.current?.update()
+
+        // 数据改变时触发一次滚动条显示
+        if (isArrayNonEmpty(showData)) {
+          listRef.current?.scrollTo(undefined as any)
+        }
       }
     }, [menuVisible, showData])
 
@@ -329,7 +334,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       <CheckSelectProvider value={context}>
         <Picker
           ref={ref}
-          innerRef={innerRef}
+          innerRef={pickerInnerRef}
           className={cls}
           {...rootProps}
           visible={menuVisible}
@@ -428,7 +433,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
               {(node: any, index) => {
                 /* 反向 map，搜索删选数据时会对数据进行处理 */
                 return 'groupTitle' in node ? (
-                  <CheckSelectOptionGroup label={node.groupTitle} />
+                  <CheckSelectOptionGroup label={node.groupTitle} depth={node.depth} />
                 ) : (
                   <CheckSelectOption
                     option={node}
@@ -667,17 +672,23 @@ const optionGroupPrefix = getPrefixCls('select-option-group')
 export const CheckSelectOptionGroup = forwardRef<
   HTMLDivElement | null,
   CheckSelectOptionGroupProps
->(({ prefixCls = optionGroupPrefix, className, label, ...rest }, ref) => {
+>(({ prefixCls = optionGroupPrefix, className, label, depth, ...rest }, ref) => {
   const cls = cx(prefixCls, className)
 
   return (
     <div ref={ref} className={cls} {...rest}>
+      {renderIndent(prefixCls, !depth || depth === 0 ? 0 : depth - 1)}
       <span>{label}</span>
     </div>
   )
 })
 
-export interface CheckSelectOptionGroupProps extends HiBaseHTMLProps {}
+export interface CheckSelectOptionGroupProps extends HiBaseHTMLProps {
+  /**
+   * 深度
+   */
+  depth?: number
+}
 
 // @ts-ignore
 CheckSelectOptionGroup.HiName = 'CheckSelectOptionGroup'

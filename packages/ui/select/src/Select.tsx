@@ -90,7 +90,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     ref
   ) => {
     const i18n = useLocaleContext()
-    const innerRef = useRef<PickerHelper>(null)
+    const pickerInnerRef = useRef<PickerHelper>(null)
     const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp
 
     const [menuVisible, menuVisibleAction] = useUncontrolledToggle({
@@ -98,7 +98,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       disabled,
       onOpen,
       onClose: () => {
-        innerRef.current?.resetSearch()
+        pickerInnerRef.current?.resetSearch()
         onClose?.()
       },
     })
@@ -248,9 +248,14 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     const listRef = useRef<ListRef>(null)
 
     useEffect(() => {
-      // 每次打开或数据改变时触发一次滚动条显示
-      if (menuVisible && isArrayNonEmpty(showData)) {
-        listRef.current?.scrollTo(undefined as any)
+      if (menuVisible) {
+        // 数据改变时更新弹窗显示位置，避免弹窗内容被遮挡
+        pickerInnerRef.current?.update()
+
+        // 数据改变时触发一次滚动条显示
+        if (isArrayNonEmpty(showData)) {
+          listRef.current?.scrollTo(undefined as any)
+        }
       }
     }, [menuVisible, showData])
 
@@ -258,7 +263,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       <SelectProvider value={context}>
         <Picker
           ref={ref}
-          innerRef={innerRef}
+          innerRef={pickerInnerRef}
           className={cls}
           {...rootProps}
           visible={menuVisible}
@@ -303,7 +308,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                   tryChangeValue(value, item.raw)
                   // 非受控模式下清空下拉框
                   if (value === '') {
-                    innerRef.current?.resetSearch()
+                    pickerInnerRef.current?.resetSearch()
                     onClearProp?.()
                   }
                 }}
@@ -324,6 +329,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                   <SelectOptionGroup
                     prefixCls={`${prefixCls}-option-group`}
                     label={node.groupTitle}
+                    depth={node.depth}
                     {...node.raw.rootProps}
                   />
                 ) : (

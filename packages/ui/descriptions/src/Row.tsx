@@ -86,6 +86,7 @@ function renderCols(
           labelPlacement = labelPlacementContext,
           colSpan = 1,
           rowSpan,
+          ...rest
         },
         key,
       },
@@ -107,6 +108,7 @@ function renderCols(
             labelWidth={labelWidth ?? rootLabelWidth}
             cellColumnGap={index === items.length - 1 ? 0 : cellColumnGap}
             contentPosition={contentPosition}
+            {...rest}
           />
         )
       }
@@ -124,6 +126,7 @@ function renderCols(
           label={label}
           labelWidth={labelWidth ?? rootLabelWidth}
           contentPosition={contentPosition}
+          {...rest}
         />,
         <Cell
           key={`content-${key || index}`}
@@ -136,6 +139,7 @@ function renderCols(
           bordered={bordered}
           content={children}
           contentPosition={contentPosition}
+          {...rest}
         />,
       ]
     }

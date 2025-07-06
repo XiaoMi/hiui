@@ -58,6 +58,11 @@
   - @hi-ui/classname@5.0.0-canary.0
   - @hi-ui/env@5.0.0-canary.0
   - @hi-ui/type-assertion@5.0.0-canary.0
+## 4.3.2
+
+### Patch Changes
+
+- [#3204](https://github.com/XiaoMi/hiui/pull/3204) [`308cd104a`](https://github.com/XiaoMi/hiui/commit/308cd104a249561b518b85518c3ddb9fa1999c76) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(drawer): 修复 closeIcon 设置无效问题 (3203)
 
 ## 4.3.1
 

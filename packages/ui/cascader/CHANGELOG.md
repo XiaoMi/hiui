@@ -110,6 +110,27 @@
   - @hi-ui/func-utils@5.0.0-canary.0
   - @hi-ui/tree-utils@5.0.0-canary.0
   - @hi-ui/type-assertion@5.0.0-canary.0
+## 4.4.1
+
+### Patch Changes
+
+- [#3196](https://github.com/XiaoMi/hiui/pull/3196) [`80a909d2d`](https://github.com/XiaoMi/hiui/commit/80a909d2dae99d68d71f2ec6f4b210080d032ec0) Thanks [@KEH3](https://github.com/KEH3)! - fix(popper): ref 中增加更新位置方法解决上游组件弹窗被遮挡问题 (#3195)
+
+- Updated dependencies [[`80a909d2d`](https://github.com/XiaoMi/hiui/commit/80a909d2dae99d68d71f2ec6f4b210080d032ec0)]:
+  - @hi-ui/picker@4.1.8
+  - @hi-ui/popper@4.1.7
+
+## 4.4.0
+
+### Minor Changes
+
+- [#3172](https://github.com/XiaoMi/hiui/pull/3172) [`a883d8e19`](https://github.com/XiaoMi/hiui/commit/a883d8e197446ef0e7cefcc5cc44d21ed1d0807f) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(mock-input): 增加 onClear 参数 (#3171)
+
+### Patch Changes
+
+- Updated dependencies [[`7bf0630`](https://github.com/XiaoMi/hiui/commit/7bf063053a73923af41c33370c31371325206276), [`a883d8e19`](https://github.com/XiaoMi/hiui/commit/a883d8e197446ef0e7cefcc5cc44d21ed1d0807f)]:
+  - @hi-ui/highlighter@4.1.2
+  - @hi-ui/input@4.4.0
 
 ## 4.3.2
 

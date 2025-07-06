@@ -45,6 +45,11 @@
   - @hi-ui/dom-utils@5.0.0-canary.0
   - @hi-ui/env@5.0.0-canary.0
   - @hi-ui/react-utils@5.0.0-canary.0
+## 4.1.7
+
+### Patch Changes
+
+- [#3196](https://github.com/XiaoMi/hiui/pull/3196) [`80a909d2d`](https://github.com/XiaoMi/hiui/commit/80a909d2dae99d68d71f2ec6f4b210080d032ec0) Thanks [@KEH3](https://github.com/KEH3)! - fix(popper): ref 中增加更新位置方法解决上游组件弹窗被遮挡问题 (#3195)
 
 ## 4.1.6
 

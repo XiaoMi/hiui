@@ -179,7 +179,7 @@ const RangePanel = () => {
     if (views[uIndex] === 'year' && !type.includes('year')) {
       _views[uIndex] = 'month'
     }
-    if (views[uIndex] === 'quarter' && !type.includes('quarter')) {
+    if (views[uIndex] === 'year' && type.includes('quarter')) {
       _views[uIndex] = 'quarter'
     }
 

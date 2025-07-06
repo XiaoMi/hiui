@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useCallback, useImperativeHandle, useState, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLFieldProps, useLocaleContext } from '@hi-ui/core'
@@ -147,9 +147,19 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
     const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
+    const popperRef = useRef<
+      (HTMLDivElement & { update: () => void; forceUpdate: () => void }) | null
+    >(null)
+
     useImperativeHandle(innerRef, () => ({
       resetSearch: () => {
         resetSearchOnClosed && resetSearch()
+      },
+      update: () => {
+        popperRef.current?.update()
+      },
+      forceUpdate: () => {
+        popperRef.current?.forceUpdate()
       },
     }))
 
@@ -168,6 +178,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
           disabled: disabled,
         })}
         <Popper
+          ref={popperRef}
           matchWidth={optionWidth === undefined}
           matchWidthStrictly
           gutterGap={4}
@@ -244,6 +255,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
 export interface PickerHelper {
   resetSearch: () => void
+  update: () => void
+  forceUpdate: () => void
 }
 
 export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {

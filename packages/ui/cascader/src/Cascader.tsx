@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useMemo, useEffect } from 'react'
+import React, { forwardRef, useState, useMemo, useEffect, useRef } from 'react'
 import type { HiBaseSizeEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -17,7 +17,7 @@ import {
 } from './types'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
-import { Picker, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerProps, PickerHelper } from '@hi-ui/picker'
 import {
   matchStrategy,
   useSearchMode,
@@ -68,6 +68,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     suffix,
     onOpen,
     onClose,
+    onClear,
     renderExtraFooter,
     dropdownColumnRender,
     closeOnSelect = true,
@@ -76,6 +77,8 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     ...rest
   } = props
   const i18n = useLocaleContext()
+
+  const pickerInnerRef = useRef<PickerHelper>(null)
 
   const placeholder = isUndef(placeholderProp) ? i18n.get('cascader.placeholder') : placeholderProp
 
@@ -225,6 +228,13 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
 
   const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
+  useEffect(() => {
+    if (menuVisible) {
+      // 数据改变时更新弹窗显示位置，避免弹窗内容被遮挡
+      pickerInnerRef.current?.update()
+    }
+  }, [menuVisible, showData])
+
   return (
     <CascaderProvider
       value={{
@@ -237,6 +247,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     >
       <Picker
         ref={ref}
+        innerRef={pickerInnerRef}
         className={cls}
         overlayClassName={cx(`${prefixCls}__popper`, overlayClassName)}
         {...rootProps}
@@ -263,6 +274,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
               style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
               size={size}
               clearable={clearable}
+              onClear={onClear}
               placeholder={placeholder}
               displayRender={displayRender as any}
               prefix={prefix}
@@ -375,6 +387,10 @@ export interface CascaderProps
    * 自定义触发器
    */
   customRender?: React.ReactNode | ((selectedItem: CascaderItemEventData | null) => React.ReactNode)
+  /**
+   * 点击关闭按钮时触发
+   */
+  onClear?: () => void
 }
 
 if (__DEV__) {

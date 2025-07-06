@@ -16,6 +16,7 @@ export const Cell: React.FC<CellProps> = ({
   labelWidth,
   cellColumnGap,
   contentPosition: contentPositionProp = 'top',
+  ...rest
 }) => {
   const Component: any = component
 
@@ -36,6 +37,7 @@ export const Cell: React.FC<CellProps> = ({
         style={compareStyle}
         colSpan={colSpan}
         rowSpan={rowSpan}
+        {...rest}
       >
         {!isNullish(label) && <span>{label}</span>}
         {!isNullish(content) && <span>{content}</span>}
@@ -51,7 +53,12 @@ export const Cell: React.FC<CellProps> = ({
   console.log('contentPosition', contentPosition)
 
   return (
-    <Component className={cx(`${itemPrefixCls}-item`, className)} style={style} colSpan={colSpan}>
+    <Component
+      className={cx(`${itemPrefixCls}-item`, className)}
+      style={style}
+      colSpan={colSpan}
+      {...rest}
+    >
       <div
         className={`${itemPrefixCls}-item__container`}
         style={{

@@ -20,6 +20,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
   z-index: use-zindex('normal');
   box-sizing: border-box;
   border-radius: use-border-radius('normal');
+  background-color: use-color-static('white');
 
   // @animation
   transition-property: border, background-color;

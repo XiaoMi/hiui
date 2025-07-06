@@ -46,6 +46,10 @@ export const getFileItems = (fileList: FileList | null, accept?: string) => {
     return []
   }
 
+  if(accept === '*') {
+    return Array.from(fileList)
+  }
+
   const itemArr = []
   const len = fileList.length
   const acceptArr = accept ? accept.replace(/\s/g, '').split(',') : []

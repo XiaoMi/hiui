@@ -40,7 +40,7 @@ const getYearOrMonthRows = ({
     formatRange.end = temp
   }
 
-  if (type.includes('quarter')) {
+  if (type.includes('quarter') && view.includes('quarter')) {
     const quarterColData: CalendarColInfo[] = []
     for (let i = 0; i < 4; i++) {
       const value = i + 1
@@ -51,12 +51,12 @@ const getYearOrMonthRows = ({
         value,
       } as CalendarColInfo
 
-      if (current.year() === renderDate?.year() && originDate?.quarter() === value) {
-        col.type = 'selected'
-      }
-
       if (current.year() === renderDate?.year() && current.quarter() === value) {
         col.type = 'today'
+      }
+
+      if (originDate?.year() === renderDate?.year() && originDate?.quarter() === value) {
+        col.type = 'selected'
       }
 
       if (disabledDate?.(_date.quarter(value).toDate(), 'quarter')) {
@@ -427,6 +427,19 @@ const getDateRows = ({
         weekStartDate,
         renderDate: _date,
       })
+    }
+
+    const firstWeekStartDate = moment(rows[0][0].weekStartDate)
+    const secondWeekStartDate = moment(rows[1][0].weekStartDate)
+    const lastWeekStartDate = moment(rows[rows.length - 1][0].weekStartDate)
+    const secondLastWeekStartDate = moment(rows[rows.length - 2][0].weekStartDate)
+
+    // 周选择面板中的周数显示比较特殊，需要特殊处理
+    if (firstWeekStartDate.isAfter(secondWeekStartDate)) {
+      rows[0][0].weekNum = getBelongWeek(getBelongWeekBoundary(moment(originDate), weekOffset), weekOffset)
+    }
+    if (lastWeekStartDate.isBefore(secondLastWeekStartDate)) {
+      rows[rows.length - 1][0].weekNum = getBelongWeek(getBelongWeekBoundary(moment(originDate), weekOffset), weekOffset)
     }
   }
 

@@ -143,7 +143,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
                 <header className={`${prefixCls}__header`} style={styles?.header}>
                   {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
                   {closeable ? (
-                    <IconButton effect onClick={onClose} icon={<CloseOutlined />} />
+                    <IconButton effect onClick={onClose} icon={closeIcon} />
                   ) : null}
                 </header>
               ) : null}
@@ -229,8 +229,7 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
    */
   onOutsideClick?: (evt: Event) => void
   /**
-   * 自定义关闭时 icon。暂不对外暴露
-   * @private
+   * 自定义关闭按钮
    */
   closeIcon?: React.ReactNode
   /**

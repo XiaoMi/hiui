@@ -475,6 +475,79 @@
   - @hi-ui/upload@5.0.0-canary.0
   - @hi-ui/watermark@5.0.0-canary.0
   - @hi-ui/zen-mode@5.0.0-canary.0
+## 4.14.0
+
+### Minor Changes
+
+- [#3206](https://github.com/XiaoMi/hiui/pull/3206) [`a4e208e55`](https://github.com/XiaoMi/hiui/commit/a4e208e556945c322607644dd648d8f30914e639) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(popover): add popperClassName api (#3205)
+
+- [#3211](https://github.com/XiaoMi/hiui/pull/3211) [`7e21457`](https://github.com/XiaoMi/hiui/commit/7e2145754dcc7a94d0f8219ee720657a0693acc3) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(tabs): 增加 TabPane 组件的 preload 属性以支持内容预加载 (#3210)
+
+### Patch Changes
+
+- [#3197](https://github.com/XiaoMi/hiui/pull/3197) [`c31ebeb66`](https://github.com/XiaoMi/hiui/commit/c31ebeb661a437b730509792fbe88bb0cc028883) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(descriptions): 给 Row 和 Cell 组件增加 rest 参数支持，允许传递额外属性至组件 (#3193)
+
+- [#3190](https://github.com/XiaoMi/hiui/pull/3190) [`2916aa378`](https://github.com/XiaoMi/hiui/commit/2916aa378c068ef5830dee4f702ea5e93d6befe8) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(slider): 修复多个实例时的拖拽问题(#3189)
+
+- [#3204](https://github.com/XiaoMi/hiui/pull/3204) [`308cd104a`](https://github.com/XiaoMi/hiui/commit/308cd104a249561b518b85518c3ddb9fa1999c76) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(drawer): 修复 closeIcon 设置无效问题 (3203)
+
+- [#3208](https://github.com/XiaoMi/hiui/pull/3208) [`36086f4c8`](https://github.com/XiaoMi/hiui/commit/36086f4c8ab11728dd4d0bb34b4d9301c6068452) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(select): 修复多级分组下分组标题左间距不对问题 (#3207)
+
+- [#3202](https://github.com/XiaoMi/hiui/pull/3202) [`0d006f890`](https://github.com/XiaoMi/hiui/commit/0d006f890d8c6d7c6064b8672c9dbc561173c1c0) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(date-picker): DatePicker 组件 type 为 季度下无法选择年份(#3201)
+
+- [`714637dfe`](https://github.com/XiaoMi/hiui/commit/714637dfee0f943ef497b2073e3c4f27dee35ecc) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker): 修复周选择面板周数显示异常问题 (#3209)
+
+- Updated dependencies [[`80a909d2d`](https://github.com/XiaoMi/hiui/commit/80a909d2dae99d68d71f2ec6f4b210080d032ec0), [`c31ebeb66`](https://github.com/XiaoMi/hiui/commit/c31ebeb661a437b730509792fbe88bb0cc028883), [`2916aa378`](https://github.com/XiaoMi/hiui/commit/2916aa378c068ef5830dee4f702ea5e93d6befe8), [`308cd104a`](https://github.com/XiaoMi/hiui/commit/308cd104a249561b518b85518c3ddb9fa1999c76), [`36086f4c8`](https://github.com/XiaoMi/hiui/commit/36086f4c8ab11728dd4d0bb34b4d9301c6068452), [`a4e208e55`](https://github.com/XiaoMi/hiui/commit/a4e208e556945c322607644dd648d8f30914e639), [`0d006f890`](https://github.com/XiaoMi/hiui/commit/0d006f890d8c6d7c6064b8672c9dbc561173c1c0), [`7e21457`](https://github.com/XiaoMi/hiui/commit/7e2145754dcc7a94d0f8219ee720657a0693acc3), [`185c8912a`](https://github.com/XiaoMi/hiui/commit/185c8912a2deca837b96e71a6c99d05a56203bb8), [`714637dfe`](https://github.com/XiaoMi/hiui/commit/714637dfee0f943ef497b2073e3c4f27dee35ecc)]:
+  - @hi-ui/cascader@4.4.1
+  - @hi-ui/check-cascader@4.4.1
+  - @hi-ui/check-select@4.6.4
+  - @hi-ui/check-tree-select@4.7.1
+  - @hi-ui/picker@4.1.8
+  - @hi-ui/select@4.6.2
+  - @hi-ui/tree-select@4.3.1
+  - @hi-ui/descriptions@4.5.1
+  - @hi-ui/slider@4.0.12
+  - @hi-ui/drawer@4.3.2
+  - @hi-ui/popover@4.2.0
+  - @hi-ui/date-picker@4.11.1
+  - @hi-ui/tabs@4.2.0
+  - @hi-ui/tag@4.3.0
+
+## 4.13.0
+
+### Minor Changes
+
+- [#3172](https://github.com/XiaoMi/hiui/pull/3172) [`a883d8e19`](https://github.com/XiaoMi/hiui/commit/a883d8e197446ef0e7cefcc5cc44d21ed1d0807f) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(mock-input): 增加 onClear 参数 (#3171)
+
+### Patch Changes
+
+- [#3179](https://github.com/XiaoMi/hiui/pull/3179) [`7bf0630`](https://github.com/XiaoMi/hiui/commit/7bf063053a73923af41c33370c31371325206276) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(highlighter): 修复 CheckSelect 搜索模式下搜索(时报错(#3178)
+
+- [#3164](https://github.com/XiaoMi/hiui/pull/3164) [`084cf985c`](https://github.com/XiaoMi/hiui/commit/084cf985c7813c646c0a3df03d32dc9d8752edef) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(upload): 修改 upload 组件支持上传的文件异常(#3163)
+
+- Updated dependencies [[`7bf0630`](https://github.com/XiaoMi/hiui/commit/7bf063053a73923af41c33370c31371325206276), [`084cf985c`](https://github.com/XiaoMi/hiui/commit/084cf985c7813c646c0a3df03d32dc9d8752edef), [`a883d8e19`](https://github.com/XiaoMi/hiui/commit/a883d8e197446ef0e7cefcc5cc44d21ed1d0807f)]:
+  - @hi-ui/highlighter@4.1.2
+  - @hi-ui/upload@4.2.5
+  - @hi-ui/cascader@4.4.0
+  - @hi-ui/check-cascader@4.4.0
+  - @hi-ui/check-tree-select@4.7.0
+  - @hi-ui/input@4.4.0
+  - @hi-ui/tree-select@4.3.0
+
+## 4.12.1
+
+### Patch Changes
+
+- [#3160](https://github.com/XiaoMi/hiui/pull/3160) [`3244e5a`](https://github.com/XiaoMi/hiui/commit/3244e5a94d1cfa3d85a65bc8804a21b8b60b80a4) Thanks [@zyprepare](https://github.com/zyprepare)! - <br>
+
+  - feat(form): 入口新增 FormLabel 组件导出
+  - feat(form): 更新 FormListProps 中 children 渲染函数中 fields 参数的类型
+
+- [#3160](https://github.com/XiaoMi/hiui/pull/3160) [`3244e5a`](https://github.com/XiaoMi/hiui/commit/3244e5a94d1cfa3d85a65bc8804a21b8b60b80a4) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(number-input): 容器元素增加默认的白色背景
+
+- Updated dependencies [[`3244e5a`](https://github.com/XiaoMi/hiui/commit/3244e5a94d1cfa3d85a65bc8804a21b8b60b80a4), [`3244e5a`](https://github.com/XiaoMi/hiui/commit/3244e5a94d1cfa3d85a65bc8804a21b8b60b80a4)]:
+  - @hi-ui/form@4.3.2
+  - @hi-ui/number-input@4.2.1
 
 ## 4.12.0
 

@@ -66,4 +66,10 @@ $prefix: '#{$component-prefix}-select' !default;
   &:first-child {
     margin-top: use-spacing(2);
   }
+
+  &__indent {
+    display: inline-block;
+    width: 16px;
+    height: 100%;
+  }
 }

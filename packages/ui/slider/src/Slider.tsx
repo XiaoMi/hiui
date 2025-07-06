@@ -41,7 +41,7 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
       getHandleProps,
       getMarkProps,
       getMarkLabelProps,
-    } = useSlider(rest, tooltipRef.current)
+    } = useSlider(rest, tooltipRef)
 
     const cls = cx(
       prefixCls,

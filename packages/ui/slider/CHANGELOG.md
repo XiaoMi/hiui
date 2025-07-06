@@ -37,6 +37,11 @@
   - @hi-ui/dom-utils@5.0.0-canary.0
   - @hi-ui/env@5.0.0-canary.0
   - @hi-ui/type-assertion@5.0.0-canary.0
+## 4.0.12
+
+### Patch Changes
+
+- [#3190](https://github.com/XiaoMi/hiui/pull/3190) [`2916aa378`](https://github.com/XiaoMi/hiui/commit/2916aa378c068ef5830dee4f702ea5e93d6befe8) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(slider): 修复多个实例时的拖拽问题(#3189)
 
 ## 4.0.11
 

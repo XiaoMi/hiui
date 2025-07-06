@@ -121,6 +121,17 @@
   - @hi-ui/times@5.0.0-canary.0
   - @hi-ui/tree-utils@5.0.0-canary.0
   - @hi-ui/type-assertion@5.0.0-canary.0
+## 4.6.2
+
+### Patch Changes
+
+- [#3196](https://github.com/XiaoMi/hiui/pull/3196) [`80a909d2d`](https://github.com/XiaoMi/hiui/commit/80a909d2dae99d68d71f2ec6f4b210080d032ec0) Thanks [@KEH3](https://github.com/KEH3)! - fix(popper): ref 中增加更新位置方法解决上游组件弹窗被遮挡问题 (#3195)
+
+- [#3208](https://github.com/XiaoMi/hiui/pull/3208) [`36086f4c8`](https://github.com/XiaoMi/hiui/commit/36086f4c8ab11728dd4d0bb34b4d9301c6068452) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(select): 修复多级分组下分组标题左间距不对问题 (#3207)
+
+- Updated dependencies [[`80a909d2d`](https://github.com/XiaoMi/hiui/commit/80a909d2dae99d68d71f2ec6f4b210080d032ec0)]:
+  - @hi-ui/picker@4.1.8
+  - @hi-ui/popper@4.1.7
 
 ## 4.6.1
 

@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo, useState, useRef } from 'react'
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import {
@@ -10,7 +10,7 @@ import {
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { Picker, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
 import { baseFlattenTree, filterTree } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { uniqBy } from '@hi-ui/array-utils'
@@ -81,6 +81,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       // popper,
       // ********* picker ********* //
       clearable,
+      onClear,
       invalid,
       displayRender,
       placeholder: placeholderProp,
@@ -102,6 +103,8 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     ref
   ) => {
     const i18n = useLocaleContext()
+
+    const pickerInnerRef = useRef<PickerHelper>(null)
 
     const placeholder = isUndef(placeholderProp)
       ? i18n.get('checkTreeSelect.placeholder')
@@ -340,9 +343,17 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     //   return flattedData.filter((item) => ids.includes(item.id))
     // }, [value, flattedData])
 
+    useEffect(() => {
+      if (menuVisible) {
+        // 数据改变时更新弹窗显示位置，避免弹窗内容被遮挡
+        pickerInnerRef.current?.update()
+      }
+    }, [menuVisible, treeProps.expandedIds])
+
     return (
       <Picker
         ref={ref}
+        innerRef={pickerInnerRef}
         className={cls}
         {...rest}
         visible={menuVisible}
@@ -377,6 +388,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
               // onClick={openMenu}
               // disabled={disabled}
               clearable={clearable}
+              onClear={onClear}
               placeholder={placeholder}
               // @ts-ignore
               displayRender={displayRender}
@@ -593,6 +605,10 @@ export interface CheckTreeSelectProps
    * 是否可清空
    */
   clearable?: boolean
+  /**
+   * 点击关闭按钮时触发
+   */
+  onClear?: () => void
   /**
    * 设置展现形式
    */
