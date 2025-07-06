@@ -98,7 +98,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       disabled,
       onOpen,
       onClose: () => {
-        innerRef.current?.resetSearch()
+        pickerInnerRef.current?.resetSearch()
         onClose?.()
       },
     })
