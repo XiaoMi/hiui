@@ -1,5 +1,22 @@
 # @hi-ui/input
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/use-latest@5.0.0-canary.2
+  - @hi-ui/use-merge-refs@5.0.0-canary.2
+  - @hi-ui/use-uncontrolled-state@5.0.0-canary.2
+  - @hi-ui/icons@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/dom-utils@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/func-utils@5.0.0-canary.2
+  - @hi-ui/type-assertion@5.0.0-canary.2
+
 ## 5.0.0-canary.6
 
 ### Patch Changes
@@ -73,6 +90,7 @@
   - @hi-ui/env@5.0.0-canary.0
   - @hi-ui/func-utils@5.0.0-canary.0
   - @hi-ui/type-assertion@5.0.0-canary.0
+
 ## 4.4.0
 
 ### Minor Changes

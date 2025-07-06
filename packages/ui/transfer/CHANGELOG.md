@@ -1,5 +1,23 @@
 # @hi-ui/transfer
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/use-check@5.0.0-canary.2
+  - @hi-ui/use-uncontrolled-state@5.0.0-canary.2
+  - @hi-ui/icons@5.0.0-canary.2
+  - @hi-ui/button@5.0.0-canary.5
+  - @hi-ui/checkbox@5.0.0-canary.2
+  - @hi-ui/input@5.0.0-canary.7
+  - @hi-ui/pagination@5.0.0-canary.4
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/type-assertion@5.0.0-canary.2
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

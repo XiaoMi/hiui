@@ -1,5 +1,31 @@
 # @hi-ui/check-tree-select
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/use-check@5.0.0-canary.2
+  - @hi-ui/use-data-source@5.0.0-canary.2
+  - @hi-ui/use-search-mode@5.0.0-canary.2
+  - @hi-ui/use-toggle@5.0.0-canary.2
+  - @hi-ui/use-uncontrolled-state@5.0.0-canary.2
+  - @hi-ui/icons@5.0.0-canary.2
+  - @hi-ui/checkbox@5.0.0-canary.2
+  - @hi-ui/highlighter@5.0.0-canary.2
+  - @hi-ui/picker@5.0.0-canary.8
+  - @hi-ui/popper@5.0.0-canary.3
+  - @hi-ui/tag-input@5.0.0-canary.8
+  - @hi-ui/tree@5.0.0-canary.3
+  - @hi-ui/array-utils@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/func-utils@5.0.0-canary.2
+  - @hi-ui/tree-utils@5.0.0-canary.2
+  - @hi-ui/type-assertion@5.0.0-canary.2
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

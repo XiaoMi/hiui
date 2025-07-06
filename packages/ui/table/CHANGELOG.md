@@ -1,5 +1,43 @@
 # @hi-ui/table
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/use-cache@5.0.0-canary.2
+  - @hi-ui/use-check@5.0.0-canary.2
+  - @hi-ui/use-check-state@5.0.0-canary.2
+  - @hi-ui/use-drag-sorter@5.0.0-canary.2
+  - @hi-ui/use-latest@5.0.0-canary.2
+  - @hi-ui/use-toggle@5.0.0-canary.2
+  - @hi-ui/use-uncontrolled-state@5.0.0-canary.2
+  - @hi-ui/use-update-effect@5.0.0-canary.2
+  - @hi-ui/icons@5.0.0-canary.2
+  - @hi-ui/button@5.0.0-canary.5
+  - @hi-ui/checkbox@5.0.0-canary.2
+  - @hi-ui/drawer@5.0.0-canary.4
+  - @hi-ui/empty-state@5.0.0-canary.2
+  - @hi-ui/icon-button@5.0.0-canary.2
+  - @hi-ui/loading@5.0.0-canary.2
+  - @hi-ui/pagination@5.0.0-canary.4
+  - @hi-ui/popper@5.0.0-canary.3
+  - @hi-ui/scrollbar@5.0.0-canary.2
+  - @hi-ui/select@5.0.0-canary.7
+  - @hi-ui/spinner@5.0.0-canary.2
+  - @hi-ui/array-utils@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/dom-utils@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/func-utils@5.0.0-canary.2
+  - @hi-ui/object-utils@5.0.0-canary.2
+  - @hi-ui/react-utils@5.0.0-canary.2
+  - @hi-ui/times@5.0.0-canary.2
+  - @hi-ui/tree-utils@5.0.0-canary.2
+  - @hi-ui/type-assertion@5.0.0-canary.2
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

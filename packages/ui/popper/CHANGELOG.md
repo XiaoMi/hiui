@@ -1,5 +1,23 @@
 # @hi-ui/popper
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/use-latest@5.0.0-canary.2
+  - @hi-ui/use-lazy-render@5.0.0-canary.2
+  - @hi-ui/use-merge-refs@5.0.0-canary.2
+  - @hi-ui/use-outside-click@5.0.0-canary.2
+  - @hi-ui/use-toggle@5.0.0-canary.2
+  - @hi-ui/portal@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/dom-utils@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/react-utils@5.0.0-canary.2
+
 ## 5.0.0-canary.2
 
 ### Patch Changes
@@ -45,6 +63,7 @@
   - @hi-ui/dom-utils@5.0.0-canary.0
   - @hi-ui/env@5.0.0-canary.0
   - @hi-ui/react-utils@5.0.0-canary.0
+
 ## 4.1.7
 
 ### Patch Changes

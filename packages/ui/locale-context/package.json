@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/locale-context",
-  "version": "5.0.0-canary.2",
+  "version": "5.0.0-canary.3",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -44,11 +44,11 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^5.0.0-canary.1",
-    "@hi-ui/env": "^5.0.0-canary.1",
-    "@hi-ui/func-utils": "^5.0.0-canary.1",
-    "@hi-ui/object-utils": "^5.0.0-canary.1",
-    "@hi-ui/type-assertion": "^5.0.0-canary.1"
+    "@hi-ui/classname": "^5.0.0-canary.2",
+    "@hi-ui/env": "^5.0.0-canary.2",
+    "@hi-ui/func-utils": "^5.0.0-canary.2",
+    "@hi-ui/object-utils": "^5.0.0-canary.2",
+    "@hi-ui/type-assertion": "^5.0.0-canary.2"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

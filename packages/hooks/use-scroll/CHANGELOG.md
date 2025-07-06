@@ -1,5 +1,15 @@
 # @hi-ui/use-scroll
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/use-latest@5.0.0-canary.2
+  - @hi-ui/dom-utils@5.0.0-canary.2
+  - @hi-ui/throttle-by-raf@5.0.0-canary.2
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

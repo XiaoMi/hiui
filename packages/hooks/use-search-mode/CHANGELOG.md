@@ -1,5 +1,20 @@
 # @hi-ui/use-search-mode
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/use-data-source@5.0.0-canary.2
+  - @hi-ui/use-latest@5.0.0-canary.2
+  - @hi-ui/loading@5.0.0-canary.2
+  - @hi-ui/dom-utils@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/func-utils@5.0.0-canary.2
+  - @hi-ui/tree-utils@5.0.0-canary.2
+  - @hi-ui/type-assertion@5.0.0-canary.2
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

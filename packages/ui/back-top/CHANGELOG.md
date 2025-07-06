@@ -1,5 +1,20 @@
 # @hi-ui/back-top
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/use-did-mount@5.0.0-canary.2
+  - @hi-ui/use-latest@5.0.0-canary.2
+  - @hi-ui/use-scroll@5.0.0-canary.2
+  - @hi-ui/icons@5.0.0-canary.2
+  - @hi-ui/tooltip@5.0.0-canary.3
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

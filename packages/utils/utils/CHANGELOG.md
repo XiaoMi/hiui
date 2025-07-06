@@ -1,5 +1,24 @@
 # @hi-ui/utils
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/array-utils@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/container@5.0.0-canary.2
+  - @hi-ui/dom-utils@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/func-utils@5.0.0-canary.2
+  - @hi-ui/raf@5.0.0-canary.2
+  - @hi-ui/react-utils@5.0.0-canary.2
+  - @hi-ui/request@5.0.0-canary.2
+  - @hi-ui/throttle-by-raf@5.0.0-canary.2
+  - @hi-ui/tree-utils@5.0.0-canary.2
+  - @hi-ui/type-assertion@5.0.0-canary.2
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

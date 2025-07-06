@@ -1,5 +1,80 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.16
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/alert@5.0.0-canary.2
+  - @hi-ui/anchor@5.0.0-canary.2
+  - @hi-ui/avatar@5.0.0-canary.2
+  - @hi-ui/back-top@5.0.0-canary.3
+  - @hi-ui/badge@5.0.0-canary.2
+  - @hi-ui/breadcrumb@5.0.0-canary.2
+  - @hi-ui/button@5.0.0-canary.5
+  - @hi-ui/card@5.0.0-canary.2
+  - @hi-ui/carousel@5.0.0-canary.2
+  - @hi-ui/cascader@5.0.0-canary.7
+  - @hi-ui/check-cascader@5.0.0-canary.6
+  - @hi-ui/check-select@5.0.0-canary.7
+  - @hi-ui/check-tree-select@5.0.0-canary.6
+  - @hi-ui/checkbox@5.0.0-canary.2
+  - @hi-ui/collapse@5.0.0-canary.2
+  - @hi-ui/counter@5.0.0-canary.2
+  - @hi-ui/date-picker@5.0.0-canary.8
+  - @hi-ui/descriptions@5.0.0-canary.3
+  - @hi-ui/drawer@5.0.0-canary.4
+  - @hi-ui/dropdown@5.0.0-canary.5
+  - @hi-ui/ellipsis-tooltip@5.0.0-canary.2
+  - @hi-ui/empty-state@5.0.0-canary.2
+  - @hi-ui/filter@5.0.0-canary.2
+  - @hi-ui/form@5.0.0-canary.4
+  - @hi-ui/grid@5.0.0-canary.3
+  - @hi-ui/highlighter@5.0.0-canary.2
+  - @hi-ui/input@5.0.0-canary.7
+  - @hi-ui/input-group@5.0.0-canary.2
+  - @hi-ui/list@5.0.0-canary.2
+  - @hi-ui/loading@5.0.0-canary.2
+  - @hi-ui/menu@5.0.0-canary.3
+  - @hi-ui/message@5.0.0-canary.4
+  - @hi-ui/modal@5.0.0-canary.5
+  - @hi-ui/notification@5.0.0-canary.3
+  - @hi-ui/number-input@5.0.0-canary.4
+  - @hi-ui/pagination@5.0.0-canary.4
+  - @hi-ui/picker@5.0.0-canary.8
+  - @hi-ui/pop-confirm@5.0.0-canary.3
+  - @hi-ui/popover@5.0.0-canary.2
+  - @hi-ui/preview@5.0.0-canary.2
+  - @hi-ui/progress@5.0.0-canary.3
+  - @hi-ui/provider@5.0.0-canary.3
+  - @hi-ui/radio@5.0.0-canary.2
+  - @hi-ui/rating@5.0.0-canary.2
+  - @hi-ui/result@5.0.0-canary.2
+  - @hi-ui/scrollbar@5.0.0-canary.2
+  - @hi-ui/search@5.0.0-canary.2
+  - @hi-ui/select@5.0.0-canary.7
+  - @hi-ui/slider@5.0.0-canary.2
+  - @hi-ui/space@5.0.0-canary.2
+  - @hi-ui/spinner@5.0.0-canary.2
+  - @hi-ui/stepper@5.0.0-canary.4
+  - @hi-ui/svg-icon@5.0.0-canary.2
+  - @hi-ui/switch@5.0.0-canary.4
+  - @hi-ui/table@5.0.0-canary.7
+  - @hi-ui/tabs@5.0.0-canary.7
+  - @hi-ui/tag@5.0.0-canary.5
+  - @hi-ui/textarea@5.0.0-canary.4
+  - @hi-ui/time-picker@5.0.0-canary.4
+  - @hi-ui/timeline@5.0.0-canary.2
+  - @hi-ui/tooltip@5.0.0-canary.3
+  - @hi-ui/transfer@5.0.0-canary.2
+  - @hi-ui/tree@5.0.0-canary.3
+  - @hi-ui/tree-select@5.0.0-canary.6
+  - @hi-ui/upload@5.0.0-canary.4
+  - @hi-ui/watermark@5.0.0-canary.2
+  - @hi-ui/zen-mode@5.0.0-canary.2
+
 ## 5.0.0-canary.15
 
 ### Patch Changes
@@ -475,6 +550,7 @@
   - @hi-ui/upload@5.0.0-canary.0
   - @hi-ui/watermark@5.0.0-canary.0
   - @hi-ui/zen-mode@5.0.0-canary.0
+
 ## 4.14.0
 
 ### Minor Changes

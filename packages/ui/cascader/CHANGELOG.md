@@ -1,5 +1,31 @@
 # @hi-ui/cascader
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/use-check-state@5.0.0-canary.2
+  - @hi-ui/use-data-source@5.0.0-canary.2
+  - @hi-ui/use-latest@5.0.0-canary.2
+  - @hi-ui/use-search-mode@5.0.0-canary.2
+  - @hi-ui/use-toggle@5.0.0-canary.2
+  - @hi-ui/use-uncontrolled-state@5.0.0-canary.2
+  - @hi-ui/icons@5.0.0-canary.2
+  - @hi-ui/highlighter@5.0.0-canary.2
+  - @hi-ui/input@5.0.0-canary.7
+  - @hi-ui/picker@5.0.0-canary.8
+  - @hi-ui/popper@5.0.0-canary.3
+  - @hi-ui/spinner@5.0.0-canary.2
+  - @hi-ui/array-utils@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/func-utils@5.0.0-canary.2
+  - @hi-ui/tree-utils@5.0.0-canary.2
+  - @hi-ui/type-assertion@5.0.0-canary.2
+
 ## 5.0.0-canary.6
 
 ### Patch Changes
@@ -110,6 +136,7 @@
   - @hi-ui/func-utils@5.0.0-canary.0
   - @hi-ui/tree-utils@5.0.0-canary.0
   - @hi-ui/type-assertion@5.0.0-canary.0
+
 ## 4.4.1
 
 ### Patch Changes

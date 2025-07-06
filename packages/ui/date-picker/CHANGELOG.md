@@ -1,5 +1,20 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/icons@5.0.0-canary.2
+  - @hi-ui/button@5.0.0-canary.5
+  - @hi-ui/popper@5.0.0-canary.3
+  - @hi-ui/time-picker@5.0.0-canary.4
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/object-utils@5.0.0-canary.2
+
 ## 5.0.0-canary.7
 
 ### Patch Changes
@@ -86,6 +101,7 @@
   - @hi-ui/classname@5.0.0-canary.0
   - @hi-ui/env@5.0.0-canary.0
   - @hi-ui/object-utils@5.0.0-canary.0
+
 ## 4.11.1
 
 ### Patch Changes

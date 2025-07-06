@@ -1,5 +1,17 @@
 # @hi-ui/provider
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/dom-utils@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/object-utils@5.0.0-canary.2
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

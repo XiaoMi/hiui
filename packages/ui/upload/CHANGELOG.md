@@ -1,5 +1,22 @@
 # @hi-ui/upload
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/use-id@5.0.0-canary.2
+  - @hi-ui/icons@5.0.0-canary.2
+  - @hi-ui/button@5.0.0-canary.5
+  - @hi-ui/file-select@5.0.0-canary.2
+  - @hi-ui/message@5.0.0-canary.4
+  - @hi-ui/modal@5.0.0-canary.5
+  - @hi-ui/preview@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+
 ## 5.0.0-canary.3
 
 ### Patch Changes
@@ -66,6 +83,7 @@
   - @hi-ui/preview@5.0.0-canary.0
   - @hi-ui/classname@5.0.0-canary.0
   - @hi-ui/env@5.0.0-canary.0
+
 ## 4.2.5
 
 ### Patch Changes

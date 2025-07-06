@@ -1,5 +1,14 @@
 # @hi-ui/use-scroll-lock
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/type-assertion@5.0.0-canary.2
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

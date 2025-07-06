@@ -1,5 +1,24 @@
 # @hi-ui/drawer
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/use-latest@5.0.0-canary.2
+  - @hi-ui/use-merge-refs@5.0.0-canary.2
+  - @hi-ui/use-scroll-lock@5.0.0-canary.2
+  - @hi-ui/use-toggle@5.0.0-canary.2
+  - @hi-ui/icons@5.0.0-canary.2
+  - @hi-ui/icon-button@5.0.0-canary.2
+  - @hi-ui/modal@5.0.0-canary.5
+  - @hi-ui/portal@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/type-assertion@5.0.0-canary.2
+
 ## 5.0.0-canary.3
 
 ### Patch Changes
@@ -58,6 +77,7 @@
   - @hi-ui/classname@5.0.0-canary.0
   - @hi-ui/env@5.0.0-canary.0
   - @hi-ui/type-assertion@5.0.0-canary.0
+
 ## 4.3.2
 
 ### Patch Changes

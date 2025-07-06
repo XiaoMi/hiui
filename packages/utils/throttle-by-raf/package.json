@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/throttle-by-raf",
-  "version": "5.0.0-canary.1",
+  "version": "5.0.0-canary.2",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,6 +45,6 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hi-ui/raf": "^5.0.0-canary.1"
+    "@hi-ui/raf": "^5.0.0-canary.2"
   }
 }

@@ -1,5 +1,17 @@
 # @hi-ui/number-input
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/icons@5.0.0-canary.2
+  - @hi-ui/counter@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+
 ## 5.0.0-canary.3
 
 ### Patch Changes
@@ -39,6 +51,7 @@
   - @hi-ui/counter@5.0.0-canary.0
   - @hi-ui/classname@5.0.0-canary.0
   - @hi-ui/env@5.0.0-canary.0
+
 ## 4.2.1
 
 ### Patch Changes

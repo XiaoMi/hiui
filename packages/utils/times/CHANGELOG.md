@@ -1,5 +1,11 @@
 # @hi-ui/times
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

@@ -1,5 +1,35 @@
 # @hi-ui/hooks
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/use-async-data@5.0.0-canary.2
+  - @hi-ui/use-cache@5.0.0-canary.2
+  - @hi-ui/use-check@5.0.0-canary.2
+  - @hi-ui/use-check-state@5.0.0-canary.2
+  - @hi-ui/use-children@5.0.0-canary.2
+  - @hi-ui/use-data-source@5.0.0-canary.2
+  - @hi-ui/use-deep-equal-deps@5.0.0-canary.2
+  - @hi-ui/use-did-mount@5.0.0-canary.2
+  - @hi-ui/use-drag-sorter@5.0.0-canary.2
+  - @hi-ui/use-force-update@5.0.0-canary.2
+  - @hi-ui/use-id@5.0.0-canary.2
+  - @hi-ui/use-latest@5.0.0-canary.2
+  - @hi-ui/use-lazy-render@5.0.0-canary.2
+  - @hi-ui/use-merge-refs@5.0.0-canary.2
+  - @hi-ui/use-outside-click@5.0.0-canary.2
+  - @hi-ui/use-scroll@5.0.0-canary.2
+  - @hi-ui/use-scroll-lock@5.0.0-canary.2
+  - @hi-ui/use-search-mode@5.0.0-canary.2
+  - @hi-ui/use-timeout@5.0.0-canary.2
+  - @hi-ui/use-toggle@5.0.0-canary.2
+  - @hi-ui/use-uncontrolled-state@5.0.0-canary.2
+  - @hi-ui/use-unmount-effect@5.0.0-canary.2
+  - @hi-ui/use-update-effect@5.0.0-canary.2
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

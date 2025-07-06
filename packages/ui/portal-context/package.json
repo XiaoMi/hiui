@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/portal-context",
-  "version": "5.0.0-canary.1",
+  "version": "5.0.0-canary.2",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -44,7 +44,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/env": "^5.0.0-canary.1"
+    "@hi-ui/env": "^5.0.0-canary.2"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

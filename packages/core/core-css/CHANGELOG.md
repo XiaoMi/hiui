@@ -1,5 +1,11 @@
 # @hi-ui/core-css
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

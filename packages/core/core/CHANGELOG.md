@@ -1,5 +1,15 @@
 # @hi-ui/core
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core-css@5.0.0-canary.6
+  - @hi-ui/locale-context@5.0.0-canary.3
+  - @hi-ui/portal-context@5.0.0-canary.2
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

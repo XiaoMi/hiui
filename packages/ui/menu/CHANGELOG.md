@@ -1,5 +1,28 @@
 # @hi-ui/menu
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- chore: rebase master (5.0)
+- Updated dependencies
+  - @hi-ui/core@5.0.0-canary.2
+  - @hi-ui/use-id@5.0.0-canary.2
+  - @hi-ui/use-merge-refs@5.0.0-canary.2
+  - @hi-ui/use-resize-observer@5.0.0-canary.2
+  - @hi-ui/use-toggle@5.0.0-canary.2
+  - @hi-ui/use-uncontrolled-state@5.0.0-canary.2
+  - @hi-ui/icons@5.0.0-canary.2
+  - @hi-ui/popper@5.0.0-canary.3
+  - @hi-ui/scrollbar@5.0.0-canary.2
+  - @hi-ui/tooltip@5.0.0-canary.3
+  - @hi-ui/array-utils@5.0.0-canary.2
+  - @hi-ui/classname@5.0.0-canary.2
+  - @hi-ui/env@5.0.0-canary.2
+  - @hi-ui/times@5.0.0-canary.2
+  - @hi-ui/tree-utils@5.0.0-canary.2
+  - @hi-ui/type-assertion@5.0.0-canary.2
+
 ## 5.0.0-canary.2
 
 ### Patch Changes
