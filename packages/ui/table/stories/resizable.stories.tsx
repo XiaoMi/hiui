@@ -11,8 +11,9 @@ export const Resizable = () => {
       <h1>Resizable for Table</h1>
       <div className="table-resizable__wrap" style={{ minWidth: 660 }}>
         <Table
-          fixedToColumn={{ left: 'type', right: 'address' }}
+          fixedToColumn={{ right: 'stock' }}
           resizable
+          tableWidthAdjustOnResize
           onResizeStop={(e, data, index, columnsWidth) => {
             console.log('onResizeStop', e, data, index, columnsWidth)
           }}
@@ -26,9 +27,11 @@ export const Resizable = () => {
               },
             },
             {
-              title: '品类',
+              title: <EllipsisTooltip>这是个很长的标题</EllipsisTooltip>,
               dataKey: 'type',
               width: 80,
+              // 注：当 title 长度过长时，可设置 minWidth 来保证列头最小宽度
+              minWidth: 60,
             },
             {
               title: '规格',
@@ -168,7 +171,8 @@ export const Resizable = () => {
             {
               title: '库存',
               dataKey: 'stock',
-              width: 150,
+              width: 100,
+              fixed: true,
             },
           ]}
           data={[
