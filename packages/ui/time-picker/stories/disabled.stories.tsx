@@ -9,7 +9,7 @@ export const Disabled = () => {
     <>
       <h1>Disabled</h1>
       <div className="time-picker-disabled__wrap">
-        <TimePicker disabled placeholder={['请选择时间']} />
+        <TimePicker style={{ width: '240px' }} disabled placeholder={['请选择时间']} />
       </div>
     </>
   )

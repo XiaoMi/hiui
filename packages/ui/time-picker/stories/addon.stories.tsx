@@ -13,6 +13,7 @@ export const Addon = () => {
       <h1>Addon</h1>
       <div className="time-picker-addon__wrap">
         <TimePicker
+          style={{ width: '240px' }}
           placeholder={['请选择时间']}
           value={addonValue}
           onChange={(e) => {

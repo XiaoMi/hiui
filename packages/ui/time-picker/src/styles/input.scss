@@ -8,7 +8,7 @@ $wrapper: '#{$input-prefix}__wrapper' !default;
 .#{$input-prefix} {
   display: flex;
   align-items: center;
-  width: fit-content;
+  width: 100%;
   color: use-color('gray', 700);
 
   &--disabled {
@@ -33,41 +33,13 @@ $wrapper: '#{$input-prefix}__wrapper' !default;
     }
   }
 
-  &--size-sm {
-    line-height: use-height-size(6);
-    font-size: use-text-size('sm');
-
-    .#{$wrapper} {
-      height: use-height-size(6);
-    }
-  }
-
-  &--size-md {
-    line-height: use-height-size(8);
-    font-size: use-text-size('normal');
-
-    .#{$wrapper} {
-      height: use-height-size(8);
-    }
-  }
-
-  &--size-lg {
-    line-height: use-height-size(10);
-    font-size: use-text-size('lg');
-
-    .#{$wrapper} {
-      height: use-height-size(10);
-    }
-  }
-
   &__wrapper {
-    width: 208px;
     box-sizing: border-box;
     position: relative;
     z-index: 0;
+    width: 100%;
     height: 30px;
     line-height: 30px;
-    padding: 0 12px;
   }
 
   &__shadow-text {
@@ -81,7 +53,7 @@ $wrapper: '#{$input-prefix}__wrapper' !default;
   &__interact-area {
     box-sizing: border-box;
     width: 100%;
-    padding: 0 12px;
+    padding: 0;
     color: inherit;
     border: none;
     outline: none;
