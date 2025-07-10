@@ -24,6 +24,7 @@ export const Format = () => {
           <React.Fragment key={index}>
             <h2>{item}</h2>
             <TimePicker
+              style={{ width: '240px' }}
               format={item as TimePickerFormat}
               placeholder={['请选择时间']}
               value={values[index]}
