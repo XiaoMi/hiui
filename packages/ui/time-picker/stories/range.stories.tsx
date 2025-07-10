@@ -13,6 +13,7 @@ export const Range = () => {
       <h1>Range</h1>
       <div className="time-picker-range__wrap">
         <TimePicker
+          style={{ width: '240px' }}
           value={rangeValue}
           placeholder={['请选择开始时间', '请选择结束时间']}
           onChange={(value) => {

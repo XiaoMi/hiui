@@ -8,7 +8,7 @@ $item-class: '#{$selector-prefix}__item' !default;
   cursor: pointer;
   position: relative;
   z-index: 0;
-  width: 54px;
+  width: 52px;
   color: get-color('gray', 600);
   display: flex;
   align-items: center;
@@ -20,26 +20,16 @@ $item-class: '#{$selector-prefix}__item' !default;
     }
   }
 
-  &--position-left {
-    .#{$item-class} {
-      border-radius: 4px 0 0 4px;
-    }
+  .#{$item-class} {
+    border-radius: use-border-radius('lg');
+  }
 
-    margin-right: 1px;
+  &--position-left {
+    margin-right: 2px;
   }
 
   &--position-right {
-    .#{$item-class} {
-      border-radius: 0 4px 4px 0;
-    }
-
-    margin-left: 1px;
-  }
-
-  &--position-single {
-    .#{$item-class} {
-      border-radius: 4px;
-    }
+    margin-left: 2px;
   }
 
   &__item {
@@ -83,7 +73,7 @@ $item-class: '#{$selector-prefix}__item' !default;
     scroll-behavior: smooth;
     scrollbar-width: none; /* firefox */
     -ms-overflow-style: none; /* IE 10+ */
-    padding: 100px 0;
+    padding: 0 0 200px 0;
     width: 100%;
     position: relative;
     z-index: 0;

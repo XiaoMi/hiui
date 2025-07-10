@@ -181,7 +181,6 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
       componentClass,
       disabled,
       placeholders,
-      isFitContent,
       format,
       cacheValue,
       validChecker,
