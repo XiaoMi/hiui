@@ -44,7 +44,6 @@ export const Appearance = () => {
         <br />
         <br />
         <DatePicker
-          style={{ width: 'auto' }}
           appearance="contained"
           label="日期范围"
           type="daterange"
