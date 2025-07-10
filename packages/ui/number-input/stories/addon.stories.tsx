@@ -16,6 +16,7 @@ export const Addon = () => {
           placeholder="请输入数字"
           onChange={(v) => console.log('onChange', v)}
           prefix={<AppStoreOutlined />}
+          suffix={'天'}
         />
       </div>
     </>

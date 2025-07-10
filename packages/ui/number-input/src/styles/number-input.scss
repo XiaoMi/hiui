@@ -83,9 +83,9 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     }
   }
 
-  &__prefix {
+  &__prefix,
+  &__suffix {
     display: inline-flex;
-    margin-left: use-spacing(6);
     align-items: center;
     flex-shrink: 0;
     color: use-color('gray', 700);
@@ -93,7 +93,15 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     text-align: center;
   }
 
+  &__prefix {
+    margin-left: use-spacing(6);
+  }
+
   &__suffix {
+    margin-right: use-spacing(6);
+  }
+
+  &__handler {
     box-sizing: border-box;
     height: 100%;
     border-left: use-border-size('normal') use-color('gray', 300);
