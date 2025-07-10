@@ -17,12 +17,26 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
     min-height: 100%;
   }
 
-  $thumb-size: 8px;
+  $thumb-size: 10px;
   $rail-background: use-color('gray', 200);
   $rail-opacity: 0.8;
-  $thumb-background: use-color('gray', 400);
+  $thumb-background: use-color('gray', 700);
   $thumb-active-background: use-color('gray', 500);
   $transition: opacity use-motion-duration('normal') use-motion-bezier('normal'),background-color use-motion-duration('normal') use-motion-bezier('normal');
+
+  .ps__thumb-y,
+  .ps__thumb-x {
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  &--bordered {
+    .ps__thumb-y,
+    .ps__thumb-x {
+      border: 1px solid rgba(#edeff2, 0.5);
+    }
+  }
 
   &--keep-visible.priority {
     & > .ps__rail-y,
@@ -33,6 +47,7 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
     .ps__thumb-y,
     .ps__thumb-x {
       background-color: $thumb-background;
+      opacity: 0.25;
     }
   }
 
@@ -48,7 +63,7 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
     & > .ps__rail-y,
     .ps__thumb-y {
       width: $thumb-size;
-      border-radius: $thumb-size*0.5;
+      border-radius: $thumb-size;
       right: 0;
       transition: $transition;
     }
@@ -57,20 +72,20 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
     & > .ps__rail-y:focus,
     & > .ps__rail-y.ps--clicking {
       width: $thumb-size;
-      background-color: $rail-background;
-      opacity: $rail-opacity;
+      background-color: transparent;
 
       .ps__thumb-y {
         width: $thumb-size;
         right: 0;
-        background-color: $thumb-active-background;
+        background-color: $thumb-background;
+        opacity: 0.6;
       }
     }
 
     & > .ps__rail-x,
     .ps__thumb-x {
       height: $thumb-size;
-      border-radius: $thumb-size*0.5;
+      border-radius: $thumb-size;
       bottom: 0;
       transition: $transition;
     }
@@ -79,13 +94,13 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
     & > .ps__rail-x:focus,
     & > .ps__rail-x.ps--clicking {
       height: $thumb-size;
-      background-color: $rail-background;
-      opacity: $rail-opacity;
+      background-color: transparent;
 
       .ps__thumb-x {
         height: $thumb-size;
         bottom: 0;
-        background-color: $thumb-active-background;
+        background-color: $thumb-background;
+        opacity: 0.6;
       }
     }
   }
