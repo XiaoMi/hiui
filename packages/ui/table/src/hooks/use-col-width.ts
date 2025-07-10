@@ -258,7 +258,6 @@ export const useColWidth = ({
     (column: FlattedTableColumnItemData, index: number) => {
       const width = colWidths[index] || undefined
       const minWidth = minColWidths[index] || undefined
-      // console.log('width', width)
 
       return {
         style: {
