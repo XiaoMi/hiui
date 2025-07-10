@@ -30,6 +30,7 @@ export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
       zIndex,
       innerRef,
       settings = {},
+      bordered,
       ...rest
     },
     ref
@@ -37,6 +38,7 @@ export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
     const cls = cx(prefixCls, className, 'priority', {
       [`${prefixCls}--keep-visible`]: keepVisible,
       [`${prefixCls}--only-scroll-visible`]: !keepVisible && onlyScrollVisible,
+      [`${prefixCls}--bordered`]: bordered,
     })
     const [ps, setPs] = useState<PerfectScrollbar | undefined>(undefined)
     const [containerElement, setContainer] = useState<HTMLDivElement | null>(null)
@@ -182,6 +184,11 @@ export interface ScrollbarProps extends HiBaseHTMLProps<'div'>, ScrollbarEventPr
    * @default {}
    */
   settings?: Settings
+  /**
+   * 是否显示边框
+   * @default false
+   */
+  bordered?: boolean
 }
 
 if (__DEV__) {
