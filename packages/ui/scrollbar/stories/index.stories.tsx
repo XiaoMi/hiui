@@ -4,6 +4,7 @@ import Scrollbar from '../src'
 export * from './basic.stories'
 export * from './axes.stories'
 export * from './config.stories'
+export * from './bordered.stories'
 export * from './event.stories'
 export * from './sticky.stories'
 
