@@ -62,11 +62,14 @@ export const setColumnsDefaultWidth = (columns: any, defaultWidth: any) => {
  * 获取每个 Column 的真实列宽度（排除合并列头）
  * 如果是多级表头，将会递归 children 得到叶子结点层每项的宽度
  */
-export const getGroupItemWidth = (columns: TableColumnItem[]) => {
-  const baseColWidths: number[] = []
+export const getGroupItemWidth = (
+  columns: TableColumnItem[]
+): { colWidths: number[]; minColWidths: number[] } => {
+  const colWidths: number[] = []
+  const minColWidths: number[] = []
 
   const dig = (column: TableColumnItem[]) => {
-    column.forEach(({ children, width }) => {
+    column.forEach(({ children, width, minWidth }) => {
       if (Array.isArray(children)) {
         dig(children)
         return
@@ -74,13 +77,19 @@ export const getGroupItemWidth = (columns: TableColumnItem[]) => {
 
       // 如果没有设置列宽度，css 宽度默认是 `auto`，这里对于非数字 width 均设置为 0
       const colWidth = isNumeric(width) ? Number(width) : 0
-      baseColWidths.push(colWidth)
+      const minColWidth = isNumeric(minWidth) ? Number(minWidth) : 0
+
+      colWidths.push(colWidth < minColWidth ? minColWidth : colWidth)
+      minColWidths.push(minColWidth)
     })
   }
 
   dig(columns)
 
-  return baseColWidths
+  return {
+    colWidths,
+    minColWidths,
+  }
 }
 
 export const getMaskItemsWIdth = (columns: TableColumnItem[]) => {
