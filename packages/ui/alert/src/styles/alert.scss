@@ -9,7 +9,7 @@ $prefix: '#{$component-prefix}-alert' !default;
   border-radius: use-border-radius('lg');
   font-size: use-text-size('normal');
   color: use-color('gray', 600);
-  line-height: use-text-lineheight('sm');
+  line-height: use-text-lineheight('md');
   display: flex;
   align-items: flex-start;
   width: 100%;
