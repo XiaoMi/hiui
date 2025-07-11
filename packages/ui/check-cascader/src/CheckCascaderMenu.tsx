@@ -11,6 +11,7 @@ import Checkbox from '@hi-ui/checkbox'
 import { useCheckCascaderContext } from './context'
 import { getCascaderItemEventData } from './utils'
 import { getNodeAncestorsWithMe } from '@hi-ui/tree-utils'
+import VirtualList from '@hi-ui/virtual-list'
 
 const _role = 'check-cascader-menu'
 const _prefix = getPrefixCls(_role)
@@ -23,6 +24,52 @@ export const CheckCascaderMenu = ({
   data: menu,
   getCascaderItemRequiredProps,
 }: CheckCascaderMenuProps) => {
+  const { virtual } = useCheckCascaderContext()
+
+  const isCheckableMenu = menu.some(({ checkable }) => checkable)
+  const cls = cx(prefixCls, className, isCheckableMenu && `${prefixCls}--checkable`)
+
+  const virtualListProps = {
+    virtual,
+    data: menu,
+    height: 260,
+    itemHeight: 32,
+  }
+
+  return (
+    <ul className={cls} style={style} role={role}>
+      {virtual ? (
+        <VirtualList itemKey={'id'} fullHeight={false} {...virtualListProps}>
+          {(option: any) => (
+            <MenuItem
+              key={option.id}
+              option={option}
+              prefixCls={prefixCls}
+              getCascaderItemRequiredProps={getCascaderItemRequiredProps}
+            />
+          )}
+        </VirtualList>
+      ) : (
+        menu.map((option) => (
+          <MenuItem
+            key={option.id}
+            option={option}
+            prefixCls={prefixCls}
+            getCascaderItemRequiredProps={getCascaderItemRequiredProps}
+          />
+        ))
+      )}
+    </ul>
+  )
+}
+
+const MenuItem = ({
+  option,
+  prefixCls = _prefix,
+  getCascaderItemRequiredProps,
+}: Pick<CheckCascaderMenuProps, 'prefixCls' | 'getCascaderItemRequiredProps'> & {
+  option: FlattedCheckCascaderDataItem
+}) => {
   const {
     flatted = false,
     changeOnSelect = false,
@@ -62,69 +109,58 @@ export const CheckCascaderMenu = ({
     [titleRender, flatted]
   )
 
-  const isCheckableMenu = menu.some(({ checkable }) => checkable)
-  const cls = cx(prefixCls, className, isCheckableMenu && `${prefixCls}--checkable`)
+  const eventOption = getCascaderItemEventData(option, getCascaderItemRequiredProps(option))
+  const { selected, checked, loading, semiChecked } = eventOption
+  const disabled = disabledContext || option.disabled
+
+  const optionCls = cx(
+    `${prefixCls}-option`,
+    option.checkable && checked && `${prefixCls}-option--checked`,
+    // 此处 option.children?.length || !option.checkable 的含义是
+    // 如果存在子节点，则可以展现选择态
+    // 不存在子节点，如不是可勾选item，则可以展现勾选态
+    selected && (option.children?.length || !option.checkable) && `${prefixCls}-option--selected`,
+    loading && `${prefixCls}-option--loading`,
+    disabled && `${prefixCls}-option--disabled`
+  )
 
   return (
-    <ul className={cls} style={style} role={role}>
-      {menu.map((option) => {
-        const eventOption = getCascaderItemEventData(option, getCascaderItemRequiredProps(option))
-        const { selected, checked, loading, semiChecked } = eventOption
-        const disabled = disabledContext || option.disabled
+    <li role="menu-item" className={`${prefixCls}-item`} key={option.id}>
+      <div
+        className={optionCls}
+        onClick={(evt) => {
+          if (disabled) return
 
-        const optionCls = cx(
-          `${prefixCls}-option`,
-          option.checkable && checked && `${prefixCls}-option--checked`,
-          // 此处 option.children?.length || !option.checkable 的含义是
-          // 如果存在子节点，则可以展现选择态
-          // 不存在子节点，如不是可勾选item，则可以展现勾选态
-          selected &&
-            (option.children?.length || !option.checkable) &&
-            `${prefixCls}-option--selected`,
-          loading && `${prefixCls}-option--loading`,
-          disabled && `${prefixCls}-option--disabled`
-        )
-
-        return (
-          <li role="menu-item" className={`${prefixCls}-item`} key={option.id}>
-            <div
-              className={optionCls}
-              onClick={(evt) => {
-                if (disabled) return
-
-                onSelect?.(eventOption)
-                if (changeOnSelect) {
-                  onCheck?.(eventOption, !checked)
-                }
-              }}
-              onMouseEnter={(evt) => {
-                if (expandTrigger === 'hover') {
-                  onSelect?.(eventOption)
-                }
-              }}
-            >
-              {option.checkable ? (
-                <Checkbox
-                  className={`${prefixCls}-checkbox`}
-                  indeterminate={semiChecked}
-                  checked={checked}
-                  disabled={disabled || option.disabledCheckbox}
-                  onClick={(evt) => evt.stopPropagation()}
-                  // 当前是半选时，点击将设置为全选，
-                  // 又因子节点某个选项未选中但是禁用，当前态将一直是半选，那操作将一直是设置全选操作
-                  onChange={(evt) => {
-                    onCheck?.(eventOption, !checked)
-                    onSelect?.(eventOption)
-                  }}
-                />
-              ) : null}
-              {renderTitle(eventOption)}
-              {flatted ? null : renderSuffix(prefixCls, option, loading, onLoadChildren)}
-            </div>
-          </li>
-        )
-      })}
-    </ul>
+          onSelect?.(eventOption)
+          if (changeOnSelect) {
+            onCheck?.(eventOption, !checked)
+          }
+        }}
+        onMouseEnter={(evt) => {
+          if (expandTrigger === 'hover') {
+            onSelect?.(eventOption)
+          }
+        }}
+      >
+        {option.checkable ? (
+          <Checkbox
+            className={`${prefixCls}-checkbox`}
+            indeterminate={semiChecked}
+            checked={checked}
+            disabled={disabled || option.disabledCheckbox}
+            onClick={(evt) => evt.stopPropagation()}
+            // 当前是半选时，点击将设置为全选，
+            // 又因子节点某个选项未选中但是禁用，当前态将一直是半选，那操作将一直是设置全选操作
+            onChange={(evt) => {
+              onCheck?.(eventOption, !checked)
+              onSelect?.(eventOption)
+            }}
+          />
+        ) : null}
+        {renderTitle(eventOption)}
+        {flatted ? null : renderSuffix(prefixCls, option, loading, onLoadChildren)}
+      </div>
+    </li>
   )
 }
 
