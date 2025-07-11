@@ -20,6 +20,9 @@ export const Content = () => {
               <Button type="secondary" appearance="link">
                 操作按钮
               </Button>
+              <Button type="secondary" appearance="link">
+                操作按钮
+              </Button>
             </div>
           }
           onClose={() => {
@@ -33,6 +36,9 @@ export const Content = () => {
           content={
             <div>
               <div style={{ marginBottom: 4 }}>文字说明文字说明文字说明</div>
+              <Button type="secondary" appearance="link">
+                操作按钮
+              </Button>
               <Button type="secondary" appearance="link">
                 操作按钮
               </Button>
@@ -52,6 +58,9 @@ export const Content = () => {
               <Button type="secondary" appearance="link">
                 操作按钮
               </Button>
+              <Button type="secondary" appearance="link">
+                操作按钮
+              </Button>
             </div>
           }
           onClose={() => {
@@ -65,6 +74,9 @@ export const Content = () => {
           content={
             <div>
               <div style={{ marginBottom: 4 }}>文字说明文字说明文字说明</div>
+              <Button type="secondary" appearance="link">
+                操作按钮
+              </Button>
               <Button type="secondary" appearance="link">
                 操作按钮
               </Button>
