@@ -15,12 +15,15 @@ export const Content = () => {
           type="primary"
           title="信息提示的文案"
           content={
-            <span style={{ display: 'flex', justifyContent: 'space-between', marginRight: -24 }}>
-              <span>文字说明文字说明文字说明</span>
+            <div>
+              <div style={{ marginBottom: 4 }}>文字说明文字说明文字说明</div>
               <Button type="secondary" appearance="link">
                 操作按钮
               </Button>
-            </span>
+              <Button type="secondary" appearance="link">
+                操作按钮
+              </Button>
+            </div>
           }
           onClose={() => {
             console.log('alert关闭回调')
@@ -31,12 +34,15 @@ export const Content = () => {
           type="success"
           title="成功提示的文案"
           content={
-            <span style={{ display: 'flex', justifyContent: 'space-between', marginRight: -24 }}>
-              <span>文字说明文字说明文字说明</span>
-              <Button type="success" appearance="link">
+            <div>
+              <div style={{ marginBottom: 4 }}>文字说明文字说明文字说明</div>
+              <Button type="secondary" appearance="link">
                 操作按钮
               </Button>
-            </span>
+              <Button type="secondary" appearance="link">
+                操作按钮
+              </Button>
+            </div>
           }
           onClose={() => {
             console.log('alert关闭回调')
@@ -47,12 +53,15 @@ export const Content = () => {
           type="danger"
           title="错误提示的文案"
           content={
-            <span style={{ display: 'flex', justifyContent: 'space-between', marginRight: -24 }}>
-              <span>文字说明文字说明文字说明</span>
-              <Button type="danger" appearance="link">
+            <div>
+              <div style={{ marginBottom: 4 }}>文字说明文字说明文字说明</div>
+              <Button type="secondary" appearance="link">
                 操作按钮
               </Button>
-            </span>
+              <Button type="secondary" appearance="link">
+                操作按钮
+              </Button>
+            </div>
           }
           onClose={() => {
             console.log('alert关闭回调')
@@ -63,10 +72,15 @@ export const Content = () => {
           type="warning"
           title="警示提示的文案"
           content={
-            <span style={{ display: 'flex', justifyContent: 'space-between', marginRight: -24 }}>
-              <span>文字说明文字说明文字说明</span>
-              <Button appearance="link">操作按钮</Button>
-            </span>
+            <div>
+              <div style={{ marginBottom: 4 }}>文字说明文字说明文字说明</div>
+              <Button type="secondary" appearance="link">
+                操作按钮
+              </Button>
+              <Button type="secondary" appearance="link">
+                操作按钮
+              </Button>
+            </div>
           }
           onClose={() => {
             console.log('alert关闭回调')
