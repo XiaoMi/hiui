@@ -23,12 +23,12 @@ export const Size = () => {
           type="primary"
           title="信息提示的文案"
           content={
-            <span style={{ display: 'flex', justifyContent: 'space-between', marginRight: -24 }}>
-              <span>文字说明文字说明文字说明</span>
+            <div>
+              <div style={{ marginBottom: 4 }}>文字说明文字说明文字说明</div>
               <Button type="secondary" appearance="link">
                 操作按钮
               </Button>
-            </span>
+            </div>
           }
           onClose={() => {
             console.log('alert关闭回调')
@@ -49,12 +49,12 @@ export const Size = () => {
           size={'md'}
           title="信息提示的文案"
           content={
-            <span style={{ display: 'flex', justifyContent: 'space-between', marginRight: -24 }}>
-              <span>文字说明文字说明文字说明</span>
+            <div>
+              <div style={{ marginBottom: 4 }}>文字说明文字说明文字说明</div>
               <Button type="secondary" appearance="link">
                 操作按钮
               </Button>
-            </span>
+            </div>
           }
           onClose={() => {
             console.log('alert关闭回调')
@@ -75,12 +75,12 @@ export const Size = () => {
           size={'sm'}
           title="信息提示的文案"
           content={
-            <span style={{ display: 'flex', justifyContent: 'space-between', marginRight: -24 }}>
-              <span>文字说明文字说明文字说明</span>
+            <div>
+              <div style={{ marginBottom: 4 }}>文字说明文字说明文字说明</div>
               <Button type="secondary" appearance="link">
                 操作按钮
               </Button>
-            </span>
+            </div>
           }
           onClose={() => {
             console.log('alert关闭回调')
