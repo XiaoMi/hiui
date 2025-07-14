@@ -1,12 +1,18 @@
 import React from 'react'
 
-import { InfoCircleFilled, CloseCircleFilled, CheckCircleFilled, CloseOutlined } from '@hi-ui/icons'
+import {
+  InfoCircleFilled,
+  CloseCircleFilled,
+  CheckCircleFilled,
+  CloseOutlined,
+  ExclamationCircleFilled,
+} from '@hi-ui/icons'
 import { AlertTypeEnum } from './types'
 
 export const alertIconMap = {
   [AlertTypeEnum.SUCCESS]: <CheckCircleFilled />,
   [AlertTypeEnum.DANGER]: <CloseCircleFilled />,
-  [AlertTypeEnum.WARNING]: <InfoCircleFilled />,
+  [AlertTypeEnum.WARNING]: <ExclamationCircleFilled />,
   [AlertTypeEnum.PRIMARY]: <InfoCircleFilled />,
 }
 
