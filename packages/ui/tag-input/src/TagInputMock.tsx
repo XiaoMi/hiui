@@ -57,10 +57,18 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
   ) => {
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
+    const dataMap = useMemo(() => {
+      const map: Record<React.ReactText, TagInputOption> = {}
+      data.forEach((item) => {
+        map[item.id] = item
+      })
+      return map
+    }, [data])
+
     const tagList = useMemo(() => {
-      const dataMap = new Map(data.map((item) => [item.id, item]))
-      return value.map((id) => dataMap.get(id) || { id, title: id })
-    }, [value, data])
+      return value.map((id) => dataMap[id] || { id, title: id })
+    }, [value, dataMap])
+
     const tagCount = tagList.length
 
     const [containerWidth = 0, setContainerWidth] = useState<number>()
