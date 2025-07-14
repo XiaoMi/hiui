@@ -5,7 +5,7 @@ $prefix: '#{$component-prefix}-badge' !default;
 .#{$prefix} {
   $dotSize: 10px;
   $bubbleSize: 20px;
-  $borderSize: 2px;
+  $borderSize: 0;
 
   @include component-reset;
 
@@ -14,20 +14,19 @@ $prefix: '#{$component-prefix}-badge' !default;
   line-height: 1;
 
   &__value {
-    transform: translateX(50%);
+    transform: translateX(50%) scale(0.5);
     position: absolute;
     z-index: 1;
     right: 0;
-    top: calc(#{-(($bubbleSize + $borderSize * 2) * 0.5)});
+    top: -$bubbleSize;
     min-width: $bubbleSize - 12px;
     height: $bubbleSize;
     line-height: $bubbleSize;
-    padding: 0 use-spacing(3);
+    padding: use-spacing(5) use-spacing(7);
     color: use-color-static('white');
-    font-size: use-text-size('sm');
+    font-size: 20px;
     letter-spacing: 0;
     text-align: center;
-    border: use-border-size('semibold') use-color-static('white');
     background-color: use-color-mode('danger');
     border-radius: use-border-radius('full');
     box-sizing: content-box;
@@ -41,7 +40,6 @@ $prefix: '#{$component-prefix}-badge' !default;
     width: $dotSize;
     height: $dotSize;
     background-color: use-color-mode('danger');
-    border: use-border-size('semibold') use-color-static('white');
     border-radius: use-border-radius('full');
     box-sizing: content-box;
   }
@@ -63,6 +61,10 @@ $prefix: '#{$component-prefix}-badge' !default;
       right: auto;
       transform: none;
       display: block;
+    }
+
+    .#{$prefix}__value {
+      transform: translateX(0) scale(0.5);
     }
   }
 }
