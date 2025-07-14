@@ -1,5 +1,17 @@
 # @hi-ui/time-picker
 
+## 5.0.0-canary.5
+
+### Minor Changes
+
+- f435959a3: feat(time-picker): appearance 增加 contained 类型，以及最新风格的样式修改 (5.0)
+
+### Patch Changes
+
+- b4cecde83: style: 修改样式 (5.0)
+- Updated dependencies [b4cecde83]
+  - @hi-ui/button@5.0.0-canary.6
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

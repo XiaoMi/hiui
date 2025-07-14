@@ -1,5 +1,11 @@
 # @hi-ui/badge
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- 3efd69f74: style(badge): 调整新版样式 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

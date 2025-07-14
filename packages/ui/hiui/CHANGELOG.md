@@ -1,5 +1,37 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.17
+
+### Minor Changes
+
+- f435959a3: feat(time-picker): appearance 增加 contained 类型，以及最新风格的样式修改 (5.0)
+- 756473045: feat(scrollbar): 增加 bordered 参数，和改造新版样式 (5.0)
+- 7dc2767d1: feat(number-input): add suffix api (5.0)
+- ca7a945fe: feat(table): TableColumnItem 类型增加 minWidth 参数 (#3216)
+
+### Patch Changes
+
+- c00e6fc04: style(alert): 新版样式调整 (5.0)
+- 3efd69f74: style(badge): 调整新版样式 (5.0)
+- b4cecde83: style: 修改样式 (5.0)
+- Updated dependencies [f435959a3]
+- Updated dependencies [756473045]
+- Updated dependencies [c00e6fc04]
+- Updated dependencies [3efd69f74]
+- Updated dependencies [7dc2767d1]
+- Updated dependencies [ca7a945fe]
+- Updated dependencies [cc0a82922]
+- Updated dependencies [b4cecde83]
+  - @hi-ui/time-picker@5.0.0-canary.5
+  - @hi-ui/scrollbar@5.0.0-canary.3
+  - @hi-ui/alert@5.0.0-canary.3
+  - @hi-ui/badge@5.0.0-canary.3
+  - @hi-ui/number-input@5.0.0-canary.5
+  - @hi-ui/table@5.0.0-canary.8
+  - @hi-ui/check-cascader@5.0.0-canary.7
+  - @hi-ui/button@5.0.0-canary.6
+  - @hi-ui/date-picker@5.0.0-canary.9
+
 ## 5.0.0-canary.16
 
 ### Patch Changes

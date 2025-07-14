@@ -1,5 +1,11 @@
 # @hi-ui/number-input
 
+## 5.0.0-canary.5
+
+### Minor Changes
+
+- 7dc2767d1: feat(number-input): add suffix api (5.0)
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

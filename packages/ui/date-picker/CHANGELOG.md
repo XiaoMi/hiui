@@ -1,5 +1,15 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- b4cecde83: style: 修改样式 (5.0)
+- Updated dependencies [f435959a3]
+- Updated dependencies [b4cecde83]
+  - @hi-ui/time-picker@5.0.0-canary.5
+  - @hi-ui/button@5.0.0-canary.6
+
 ## 5.0.0-canary.8
 
 ### Patch Changes

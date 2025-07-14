@@ -1,5 +1,13 @@
 # @hi-ui/check-cascader
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- cc0a82922: perf(cascader): 性能优化 (5.0)
+- Updated dependencies [cc0a82922]
+  - @hi-ui/tag-input@5.0.0-canary.9
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

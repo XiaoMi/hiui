@@ -1,5 +1,18 @@
 # @hi-ui/table
 
+## 5.0.0-canary.8
+
+### Minor Changes
+
+- ca7a945fe: feat(table): TableColumnItem 类型增加 minWidth 参数 (#3216)
+
+### Patch Changes
+
+- Updated dependencies [756473045]
+- Updated dependencies [b4cecde83]
+  - @hi-ui/scrollbar@5.0.0-canary.3
+  - @hi-ui/button@5.0.0-canary.6
+
 ## 5.0.0-canary.7
 
 ### Patch Changes

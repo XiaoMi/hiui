@@ -1,5 +1,12 @@
 # @hi-ui/alert
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- c00e6fc04: style(alert): 新版样式调整 (5.0)
+- b4cecde83: style: 修改样式 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

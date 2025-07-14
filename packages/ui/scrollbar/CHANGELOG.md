@@ -1,5 +1,11 @@
 # @hi-ui/scrollbar
 
+## 5.0.0-canary.3
+
+### Minor Changes
+
+- 756473045: feat(scrollbar): 增加 bordered 参数，和改造新版样式 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes
