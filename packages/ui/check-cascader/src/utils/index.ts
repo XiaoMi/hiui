@@ -121,11 +121,10 @@ export const processCheckedIds = (
   flattenData: any,
   allowCheck: (node: any) => boolean
 ) => {
-  const keySet = new Set(checkedIds)
-  const flattenDataMap = new Map(flattenData.map((node: any) => [node.id, node]))
-
   switch (type) {
-    case 'CHILD':
+    case 'CHILD': {
+      const keySet = new Set(checkedIds)
+      const flattenDataMap = new Map(flattenData.map((node: any) => [node.id, node]))
       return checkedIds.filter((id) => {
         const node = flattenDataMap.get(id) as any
 
@@ -142,8 +141,11 @@ export const processCheckedIds = (
         // 没有孩子节点，保留
         return true
       })
+    }
 
-    case 'PARENT':
+    case 'PARENT': {
+      const keySet = new Set(checkedIds)
+      const flattenDataMap = new Map(flattenData.map((node: any) => [node.id, node]))
       return checkedIds.filter((id) => {
         const node = flattenDataMap.get(id) as any
 
@@ -158,6 +160,7 @@ export const processCheckedIds = (
 
         return true
       })
+    }
   }
 
   return checkedIds
