@@ -20,6 +20,7 @@ import { useFilter } from './hooks/useFilter'
 import { Button } from '@hi-ui/button'
 import { getNowString } from './utils/getNowString'
 import DayJs from 'dayjs'
+import { useMergeRefs } from '@hi-ui/use-merge-refs'
 
 const _role = 'time-picker'
 export const timePickerPrefix = getPrefixCls(_role)
@@ -66,6 +67,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       size = 'md',
       invalid = false,
       prefix,
+      label,
+      ...restProps
     },
     ref
   ) => {
@@ -198,10 +201,14 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     const [showPopper, setShowPopper] = useState(false)
     const showPopperRef = useRef(false)
 
+    const [focus, setFocus] = useState(false)
+
     const cls = cx(prefixCls, className, `${prefixCls}--appearance-${appearance}`, {
       [`${prefixCls}--active`]: showPopper && !disabled,
       [`${prefixCls}--disabled`]: disabled,
       [`${prefixCls}--input-not-valid`]: !isInputValid || invalid,
+      [`${prefixCls}--size-${size}`]: true,
+      [`${prefixCls}--has-value`]: cacheValue[0],
     })
 
     const functionButtons = useMemo(() => {
@@ -210,6 +217,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           <Button
             className={`${prefixCls}__pop-confirm-btn`}
             type={'primary'}
+            size={'sm'}
             disabled={!isInputValid}
             onClick={() => {
               // 合法，才去通知外部
@@ -229,6 +237,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
               className={`${prefixCls}__pop-now-btn`}
               appearance="link"
               type="primary"
+              size="sm"
               onClick={() => {
                 onCacheChange([getNowString(format)])
                 onChange([getNowString(format)])
@@ -257,32 +266,57 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     ])
 
     return (
-      <div ref={ref} role={role} className={cls}>
-        <div ref={setAttachEl} className={`${prefixCls}__input-wrapper`}>
+      <div
+        ref={useMergeRefs(ref, setAttachEl)}
+        role={role}
+        className={cls}
+        {...restProps}
+        onMouseEnter={() => {
+          setFocus(true)
+        }}
+        onMouseLeave={() => {
+          setFocus(false)
+        }}
+      >
+        <div className={`${prefixCls}__input-wrapper`}>
           {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
-          <Input
-            size={size}
-            isFitContent={appearance === 'unset'}
-            ref={inputRef}
-            onValidChange={setIsInputValid}
-            disabled={inputReadonly || disabled}
-            type={type}
-            placeholders={placeholder}
-            prefix={prefixCls}
-            format={format}
-            hourStep={hourStep}
-            secondStep={secondStep}
-            minuteStep={minuteStep}
-            disabledHours={disabledHours}
-            disabledMinutes={disabledMinutes}
-            disabledSeconds={disabledSeconds}
-            value={cacheValue}
-            onChange={onCacheChange}
-            onFocus={() => {
-              showPopperRef.current = true
-              setShowPopper(true)
-            }}
-          />
+          {appearance === 'contained' && label ? (
+            <div
+              className={`${prefixCls}__label`}
+              onClick={() => {
+                showPopperRef.current = !showPopperRef.current
+                setShowPopper((pre) => !pre)
+              }}
+            >
+              {label}
+              {cacheValue[0] && '：'}
+            </div>
+          ) : null}
+          {appearance !== 'contained' || (appearance === 'contained' && cacheValue[0]) ? (
+            <Input
+              size={size}
+              isFitContent={appearance === 'unset'}
+              ref={inputRef}
+              onValidChange={setIsInputValid}
+              disabled={inputReadonly || disabled}
+              type={type}
+              placeholders={placeholder}
+              prefix={prefixCls}
+              format={format}
+              hourStep={hourStep}
+              secondStep={secondStep}
+              minuteStep={minuteStep}
+              disabledHours={disabledHours}
+              disabledMinutes={disabledMinutes}
+              disabledSeconds={disabledSeconds}
+              value={cacheValue}
+              onChange={onCacheChange}
+              onFocus={() => {
+                showPopperRef.current = true
+                setShowPopper(true)
+              }}
+            />
+          ) : null}
           <div
             className={`${prefixCls}__function-button`}
             onClick={() => {
@@ -290,10 +324,11 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
               setShowPopper((pre) => !pre)
             }}
           >
-            {showPopper ? (
+            {showPopper || (focus && cacheValue[0]) ? (
               <CloseCircleFilled
                 className={`${prefixCls}__close-button`}
-                onClick={() => {
+                onClick={(evt) => {
+                  evt.stopPropagation()
                   onCacheChange(type === 'single' ? [''] : ['', ''])
                   onChange(['', ''])
                 }}
@@ -397,12 +432,16 @@ export interface TimePickerProps extends ExtendType {
    * 选择器外观
    * @default 'line'
    */
-  appearance?: 'line' | 'filled' | 'unset'
+  appearance?: 'line' | 'filled' | 'unset' | 'contained'
+  /**
+   * 选择器标签
+   */
+  label?: string
   /**
    * 尺寸
    * @default 'md'
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   /**
    * 值改变事件
    * @param value

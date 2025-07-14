@@ -32,7 +32,7 @@ interface InputProps extends ExtendType {
   // onBlur: () => void
   onValidChange: (isValid: boolean) => void
   isFitContent: boolean
-  size: 'sm' | 'md' | 'lg'
+  size: 'xs' | 'sm' | 'md' | 'lg'
 }
 
 export interface InputRef {
@@ -181,7 +181,6 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
       componentClass,
       disabled,
       placeholders,
-      isFitContent,
       format,
       cacheValue,
       validChecker,

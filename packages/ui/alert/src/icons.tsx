@@ -4,8 +4,8 @@ import {
   InfoCircleFilled,
   CloseCircleFilled,
   CheckCircleFilled,
-  ExclamationCircleFilled,
   CloseOutlined,
+  ExclamationCircleFilled,
 } from '@hi-ui/icons'
 import { AlertTypeEnum } from './types'
 

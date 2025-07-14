@@ -20,7 +20,7 @@ export const useColWidth = ({
   // 是否重新设置过表格每列宽度
   const hasResetWidths = React.useRef<boolean>(false)
   const [colWidths, setColWidths] = React.useState(() => {
-    return getGroupItemWidth(columns)
+    return getGroupItemWidth(columns).colWidths
   })
 
   const getWidths = useCallback(
@@ -31,7 +31,8 @@ export const useColWidth = ({
 
         let _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node, index) => {
           const realWidth = (node as HTMLElement).getBoundingClientRect().width || 0
-          const { width, fixed } = columns[index] ?? {}
+          const { fixed } = columns[index] ?? {}
+          const width = getGroupItemWidth(columns).colWidths[index]
 
           // 如果该列设置了 fixed 并且真实宽度大于设置的 width 则设置为 width
           if (fixed && width && width < realWidth) {
@@ -59,7 +60,7 @@ export const useColWidth = ({
         }
       }
 
-      return getGroupItemWidth(columns)
+      return getGroupItemWidth(columns).colWidths
     },
     [columns]
   )
@@ -67,7 +68,7 @@ export const useColWidth = ({
   const getVirtualWidths = useCallback(() => {
     const measureRowElement = measureRowElementRef.current
     if (!measureRowElement) {
-      return getGroupItemWidth(columns)
+      return getGroupItemWidth(columns).colWidths
     }
 
     /** 虚拟滚动时，内容宽度不能用以前table自动渲染的方式获取，需要手动计算 */
@@ -100,7 +101,7 @@ export const useColWidth = ({
   }, [getVirtualWidths, virtual])
 
   useUpdateEffect(() => {
-    setColWidths(getGroupItemWidth(columns))
+    setColWidths(getGroupItemWidth(columns).colWidths)
     // setColWidths((prev) => {
     //   // resizable 模式下通过 measureRowElementRef.current 去更新列宽，防止拖拽后宽度被重置
     //   // 例如同时设置了 resizable 和 rowSelection，当拖拽某列宽度后再选中某行时，该列宽度会被重置
@@ -148,16 +149,22 @@ export const useColWidth = ({
   )
 
   // 控制列最小可调整宽度
-  const [minColWidth, setMinColWidth] = React.useState<number[]>([])
+  const [minColWidths, setMinColWidths] = React.useState<number[]>([])
 
-  // 当列变化时同步更新 minColWidth
+  // 当列变化时同步更新 minColWidths
   React.useEffect(() => {
     let resizeObserver: ResizeObserver
 
     if (headerTableElement) {
       resizeObserver = new ResizeObserver(() => {
         const resizableHandlerWidth = 4
-        const _minColWidth = Array.from(headerTableElement.childNodes).map((th) => {
+        const calcMinColWidths = Array.from(headerTableElement.childNodes).map((th, index) => {
+          const minColWidth = getGroupItemWidth(columns).minColWidths[index]
+
+          if (minColWidth && minColWidth > 0) {
+            return minColWidth
+          }
+
           const thPaddingLeft = parseFloat(
             window.getComputedStyle(th as Element).getPropertyValue('padding-left')
           )
@@ -174,17 +181,17 @@ export const useColWidth = ({
           )
         })
 
-        setMinColWidth(_minColWidth)
+        setMinColWidths(calcMinColWidths)
       })
       resizeObserver.observe(headerTableElement!)
     } else {
-      setMinColWidth(Array(columns.length).fill(0))
+      setMinColWidths(Array(columns.length).fill(0))
     }
 
     return () => {
       resizeObserver?.disconnect()
     }
-  }, [columns.length, headerTableElement, resizable])
+  }, [columns, columns.length, headerTableElement, resizable])
 
   /**
    *  控制列最小可调整宽度
@@ -220,8 +227,8 @@ export const useColWidth = ({
    */
   const onColumnResizable = React.useCallback(
     (evt, { size }, index: number) => {
-      const minWidth = minColWidth[index]
-      const anotherMinWidth = minColWidth[index + 1]
+      const minWidth = minColWidths[index]
+      const anotherMinWidth = minColWidths[index + 1]
       let nextWidth = size.width > minWidth ? size.width : minWidth
 
       setColWidths((prev) => {
@@ -244,23 +251,23 @@ export const useColWidth = ({
         return nextColWidths
       })
     },
-    [minColWidth, tableWidthAdjustOnResize]
+    [minColWidths, tableWidthAdjustOnResize]
   )
 
   const getColgroupProps = React.useCallback(
     (column: FlattedTableColumnItemData, index: number) => {
       const width = colWidths[index] || undefined
+      const minWidth = minColWidths[index] || undefined
 
       return {
         style: {
           width: width,
-          // TODO（疑惑）: minWidth 所要解决的问题
-          minWidth: width,
+          minWidth: minWidth || width,
         },
         // 'data-hover-highlight': setAttrStatus(isHoveredCol(column.dataKey)),
       }
     },
-    [colWidths]
+    [colWidths, minColWidths]
   )
 
   return {

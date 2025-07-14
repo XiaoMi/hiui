@@ -4,21 +4,21 @@ $prefix: '#{$component-prefix}-time-picker' !default;
 $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
 .#{$prefix} {
-  width: fit-content;
-  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 0 use-spacing(6);
+  border: use-border-size('normal') transparent;
+  border-radius: use-border-radius('lg');
   box-shadow: 0 0 0 2px transparent;
 
   &__input-wrapper {
-    border: use-border-size('normal') use-color-static('transparent');
-    border-radius: use-border-radius('normal');
-    width: fit-content;
+    height: 100%;
     display: flex;
     align-items: center;
   }
 
   &__prefix {
     display: inline-flex;
-    margin-left: use-spacing(6);
+    margin-right: use-spacing(6);
     align-items: center;
     flex-shrink: 0;
     color: use-color('gray', 700);
@@ -29,16 +29,11 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   &--appearance-line {
     position: relative;
     z-index: 0;
-
-    .#{$input-wrapper-class} {
-      background: use-color-static('white');
-      border-color: use-color('gray', 300);
-    }
+    background: use-color-static('white');
+    border-color: use-color('gray', 300);
 
     &:not(.#{$prefix}--disabled):hover {
-      .#{$input-wrapper-class} {
-        border-color: use-color-mode('primary');
-      }
+      border-color: use-color-mode('primary');
     }
   }
 
@@ -56,11 +51,84 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     }
   }
 
-  &--active {
-    .#{$input-wrapper-class} {
-      border-color: use-color-mode('primary');
+  &--appearance-contained {
+    background: use-color('gray', 50);
+
+    .#{$prefix}__label {
+      color: use-color('gray', 600);
+      white-space: nowrap;
+
+      .#{$prefix}--disabled & {
+        color: use-color('gray', 400);
+      }
     }
 
+    &.#{$prefix}--has-value,
+    &:not(.#{$prefix}--disabled):hover {
+      background: use-color-mode('primary', 50);
+
+      .#{$prefix}__label,
+      .#{$prefix}__input-wrapper {
+        color: use-color-mode('primary', 600);
+      }
+
+      .#{$prefix}__function-button {
+        color: use-color-mode('primary', 600);
+
+        &:hover {
+          color: use-color-mode('primary', 800);
+        }
+      }
+
+      .#{$prefix}__input__wrapper {
+        color: use-color-mode('primary', 600);
+      }
+    }
+
+    .#{$prefix}__function-button {
+      color: use-color('gray', 600);
+    }
+  }
+
+  &--appearance-unset,
+  &--appearance-contained {
+    width: fit-content;
+
+    .#{$prefix}__input-wrapper {
+      width: fit-content;
+    }
+  }
+
+  &--size-xs {
+    line-height: use-height-size(6);
+    font-size: use-text-size('sm');
+    height: use-height-size(6);
+    padding: 0 use-spacing(4);
+  }
+
+  &--size-sm {
+    line-height: use-height-size(7);
+    font-size: use-text-size('sm');
+    height: use-height-size(7);
+    padding: 0 use-spacing(4);
+  }
+
+  &--size-md {
+    line-height: use-height-size(8);
+    font-size: use-text-size('normal');
+    height: use-height-size(8);
+    padding: 0 use-spacing(6);
+  }
+
+  &--size-lg {
+    line-height: use-height-size(10);
+    font-size: use-text-size('lg');
+    height: use-height-size(10);
+    padding: 0 use-spacing(8);
+  }
+
+  &--active {
+    border-color: use-color-mode('primary');
     background: transparent;
 
     &:not(.#{$prefix}--disabled):hover {
@@ -79,7 +147,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   &__pop-function-buttons {
     display: flex;
     justify-content: space-between;
-    padding: 6px 8px;
+    padding: 10px 8px;
     border-top: 1px solid use-color('gray', 100);
     align-items: center;
     flex-wrap: wrap;
@@ -93,7 +161,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &__function-button {
-    margin-right: 8px;
+    margin-left: use-spacing(4);
     font-size: 14px;
     cursor: pointer;
     display: flex;
@@ -103,7 +171,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
   &--disabled {
     cursor: not-allowed;
-    background: get-color('gray', 300);
+    background: use-color('gray', 50);
 
     .#{$input-wrapper-class} {
       pointer-events: none;
@@ -115,5 +183,9 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     &:not(.#{$prefix}--disabled):hover {
       color: use-color-mode('primary');
     }
+  }
+
+  &__input__range-separator {
+    padding: 0 use-spacing(6);
   }
 }
