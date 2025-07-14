@@ -237,6 +237,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
               className={`${prefixCls}__pop-now-btn`}
               appearance="link"
               type="primary"
+              size="sm"
               onClick={() => {
                 onCacheChange([getNowString(format)])
                 onChange([getNowString(format)])
