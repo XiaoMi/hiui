@@ -10,11 +10,11 @@ interface FooterProps {
 
 export const Footer: FC<FooterProps> = ({ disabled, onConfirmButtonClick }) => {
   const i18n = useLocaleContext()
-  const { prefixCls, footerRender, size, onPick } = useContext(DPContext)
+  const { prefixCls, footerRender, onPick } = useContext(DPContext)
 
   const footer = useMemo(() => {
     const sureActionContent = (
-      <HiButton type="primary" disabled={disabled} onClick={onConfirmButtonClick} size={size}>
+      <HiButton type="primary" disabled={disabled} onClick={onConfirmButtonClick} size="sm">
         {i18n.get('datePicker.ok')}
       </HiButton>
     )
@@ -22,7 +22,7 @@ export const Footer: FC<FooterProps> = ({ disabled, onConfirmButtonClick }) => {
     return typeof footerRender === 'function'
       ? footerRender(sureActionContent, onPick)
       : sureActionContent
-  }, [disabled, footerRender, i18n, onConfirmButtonClick, size, onPick])
+  }, [disabled, footerRender, i18n, onConfirmButtonClick, onPick])
 
   return <div className={`${prefixCls}__footer`}>{footer}</div>
 }
