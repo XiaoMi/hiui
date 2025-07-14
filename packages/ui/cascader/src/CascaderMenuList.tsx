@@ -9,6 +9,7 @@ import { CascaderDataItem, FlattedCascaderDataItem, CascaderItemEventData } from
 import { getTopDownAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
 import scrollIntoView from 'scroll-into-view-if-needed'
+import VirtualList from '@hi-ui/virtual-list'
 
 const menuListPrefix = getPrefixCls('cascader-menu-list')
 
@@ -49,6 +50,43 @@ export const CascaderMenu = ({
   style,
   data: menu,
 }: CascaderMenuProps) => {
+  const { virtual } = useCascaderContext()
+
+  const cls = cx(prefixCls, className)
+
+  const virtualListProps = {
+    virtual,
+    data: menu,
+    height: 260,
+    itemHeight: 32,
+  }
+
+  return (
+    <ul className={cls} style={style} role={role}>
+      {isArrayNonEmpty(menu) ? (
+        virtual ? (
+          <VirtualList itemKey={'id'} fullHeight={false} {...virtualListProps}>
+            {(option: any) => {
+              return <MenuItem key={option.id} option={option} prefixCls={prefixCls} />
+            }}
+          </VirtualList>
+        ) : (
+          menu.map((option) => {
+            return <MenuItem key={option.id} option={option} prefixCls={prefixCls} />
+          })
+        )
+      ) : null}
+    </ul>
+  )
+}
+
+const MenuItem = forwardRef<
+  HTMLLIElement,
+  {
+    option: FlattedCascaderDataItem
+    prefixCls: string
+  }
+>(({ option, prefixCls }, ref) => {
   const {
     flatted,
     disabled: disabledContext,
@@ -60,82 +98,49 @@ export const CascaderMenu = ({
     getItemRequiredProps,
   } = useCascaderContext()
 
-  const cls = cx(prefixCls, className)
-  const activeNodeRef = useRef<HTMLLIElement>()
-  const [activeNode, setActiveNode] = useState<HTMLLIElement | null>(null)
-  const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const eventOption = getItemEventData(option, getItemRequiredProps(option))
 
-  useEffect(() => {
-    if (activeNode) {
-      timeoutId.current = setTimeout(() => {
-        scrollIntoView(activeNode!, {
-          scrollMode: 'if-needed',
-          block: 'center',
-        })
-      }, 100)
-    }
+  const { selected, loading, active } = eventOption
+  const disabled = disabledContext || option.disabled
 
-    return () => {
-      if (timeoutId.current) {
-        clearTimeout(timeoutId.current)
-      }
-    }
-  }, [activeNode, activeNodeRef])
+  const optionCls = cx(
+    `${prefixCls}-option`,
+    active && `${prefixCls}-option--active`,
+    loading && `${prefixCls}-option--loading`,
+    disabled && `${prefixCls}-option--disabled`,
+    selected && `${prefixCls}-option--selected`
+  )
 
   return (
-    <ul className={cls} style={style} role={role}>
-      {menu.map((option) => {
-        const eventOption = getItemEventData(option, getItemRequiredProps(option))
-
-        const { selected, loading, active } = eventOption
-        const disabled = disabledContext || option.disabled
-
-        const optionCls = cx(
-          `${prefixCls}-option`,
-          active && `${prefixCls}-option--active`,
-          loading && `${prefixCls}-option--loading`,
-          disabled && `${prefixCls}-option--disabled`,
-          selected && `${prefixCls}-option--selected`
-        )
-
-        return (
-          <li
-            ref={(node) => {
-              if (node && active) {
-                setActiveNode(node)
-              }
-            }}
-            key={option.id}
-            role="menu-item"
-            className={`${prefixCls}-item`}
-          >
-            <div
-              className={optionCls}
-              onClick={() => {
-                if (disabled) return
-                onItemClick(eventOption)
-              }}
-              onMouseEnter={() => {
-                if (disabled) return
-                if (expandTrigger === 'hover') {
-                  onItemHover(eventOption)
-                }
-              }}
-            >
-              {flatted ? (
-                renderFlattedTitle(eventOption, titleRender)
-              ) : (
-                <>
-                  {renderDefaultTitle(eventOption, titleRender)}
-                  {renderSuffix(prefixCls, option, loading, onLoadChildren)}
-                </>
-              )}
-            </div>
-          </li>
-        )
-      })}
-    </ul>
+    <li ref={ref} key={option.id} role="menu-item" className={`${prefixCls}-item`}>
+      <div
+        className={optionCls}
+        onClick={() => {
+          if (disabled) return
+          onItemClick(eventOption)
+        }}
+        onMouseEnter={() => {
+          if (disabled) return
+          if (expandTrigger === 'hover') {
+            onItemHover(eventOption)
+          }
+        }}
+      >
+        {flatted ? (
+          renderFlattedTitle(eventOption, titleRender)
+        ) : (
+          <>
+            {renderDefaultTitle(eventOption, titleRender)}
+            {renderSuffix(prefixCls, option, loading, onLoadChildren)}
+          </>
+        )}
+      </div>
+    </li>
   )
+})
+
+if (__DEV__) {
+  MenuItem.displayName = 'MenuItem'
 }
 
 export interface CascaderMenuProps extends HiBaseHTMLProps {
