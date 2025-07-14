@@ -932,7 +932,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   &__footer {
     display: flex;
     justify-content: space-between;
-    padding: 6px 8px;
+    padding: 10px 8px;
     border-top: 1px solid use-color('gray', 100);
     align-items: center;
     flex-wrap: wrap;
