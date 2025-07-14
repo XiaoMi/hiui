@@ -81,6 +81,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       fieldNames,
       label,
       showOnlyShowChecked,
+      virtual,
       ...rest
     },
     ref
@@ -372,6 +373,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             onChangeData={setCascaderData}
             checkedMode={checkedMode}
             dropdownColumnRender={dropdownColumnRender}
+            virtual={virtual}
           />
         ) : null}
       </Picker>
@@ -525,6 +527,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 是否只展示选中的选项
    */
   showOnlyShowChecked?: boolean
+  /**
+   * 是否开启虚拟滚动
+   */
+  virtual?: boolean
 }
 
 if (__DEV__) {
