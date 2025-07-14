@@ -22,6 +22,7 @@ interface CheckCascaderContext {
   getCascaderItemRequiredProps?: (
     item: FlattedCheckCascaderDataItem
   ) => CheckCascaderDataItemRequiredProps
+  virtual?: boolean
 }
 
 const checkCascaderContext = createContext<CheckCascaderContext>({})
