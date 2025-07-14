@@ -74,6 +74,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     closeOnSelect = true,
     customRender,
     label,
+    virtual,
     ...rest
   } = props
   const i18n = useLocaleContext()
@@ -243,6 +244,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         titleRender: proxyTitleRender,
         menuList: showData,
         dropdownColumnRender,
+        virtual,
       }}
     >
       <Picker
@@ -391,6 +393,10 @@ export interface CascaderProps
    * 点击关闭按钮时触发
    */
   onClear?: () => void
+  /**
+   * 是否开启虚拟滚动
+   */
+  virtual?: boolean
 }
 
 if (__DEV__) {

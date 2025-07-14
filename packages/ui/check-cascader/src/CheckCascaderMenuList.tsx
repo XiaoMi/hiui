@@ -44,6 +44,7 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
       dropdownColumnRender,
       flatted,
       checkedMode = 'ALL',
+      virtual,
       ...rest
     },
     ref
@@ -91,6 +92,7 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
         titleRender,
         onLoadChildren,
         disabled,
+        virtual,
       }),
       [
         expandTrigger,
@@ -101,6 +103,7 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
         titleRender,
         onLoadChildren,
         disabled,
+        virtual,
       ]
     )
 
@@ -229,6 +232,10 @@ export interface CascaderMenusProps {
     item: CheckCascaderItemEventData,
     idPaths: React.ReactText[]
   ) => Promise<CheckCascaderDataItem[] | void> | void
+  /**
+   * 是否开启虚拟滚动
+   */
+  virtual?: boolean
 }
 
 if (__DEV__) {
