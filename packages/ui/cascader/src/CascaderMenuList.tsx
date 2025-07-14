@@ -79,13 +79,13 @@ export const CascaderMenu = ({
   )
 }
 
-const MenuItem = ({
-  option,
-  prefixCls,
-}: {
-  option: FlattedCascaderDataItem
-  prefixCls: string
-}) => {
+const MenuItem = forwardRef<
+  HTMLLIElement,
+  {
+    option: FlattedCascaderDataItem
+    prefixCls: string
+  }
+>(({ option, prefixCls }, ref) => {
   const {
     flatted,
     disabled: disabledContext,
@@ -111,7 +111,7 @@ const MenuItem = ({
   )
 
   return (
-    <li key={option.id} role="menu-item" className={`${prefixCls}-item`}>
+    <li ref={ref} key={option.id} role="menu-item" className={`${prefixCls}-item`}>
       <div
         className={optionCls}
         onClick={() => {
@@ -136,6 +136,10 @@ const MenuItem = ({
       </div>
     </li>
   )
+})
+
+if (__DEV__) {
+  MenuItem.displayName = 'MenuItem'
 }
 
 export interface CascaderMenuProps extends HiBaseHTMLProps {

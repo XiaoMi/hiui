@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import {
   FlattedCheckCascaderDataItem,
@@ -12,6 +12,7 @@ import { useCheckCascaderContext } from './context'
 import { getCascaderItemEventData } from './utils'
 import { getNodeAncestorsWithMe } from '@hi-ui/tree-utils'
 import VirtualList from '@hi-ui/virtual-list'
+import { __DEV__ } from '@hi-ui/env'
 
 const _role = 'check-cascader-menu'
 const _prefix = getPrefixCls(_role)
@@ -63,13 +64,16 @@ export const CheckCascaderMenu = ({
   )
 }
 
-const MenuItem = ({
-  option,
-  prefixCls = _prefix,
-  getCascaderItemRequiredProps,
-}: Pick<CheckCascaderMenuProps, 'prefixCls' | 'getCascaderItemRequiredProps'> & {
-  option: FlattedCheckCascaderDataItem
-}) => {
+const MenuItem = forwardRef<
+  HTMLLIElement,
+  {
+    option: FlattedCheckCascaderDataItem
+    prefixCls?: string
+    getCascaderItemRequiredProps: (
+      option: FlattedCheckCascaderDataItem
+    ) => CheckCascaderDataItemRequiredProps
+  }
+>(({ option, prefixCls = _prefix, getCascaderItemRequiredProps }, ref) => {
   const {
     flatted = false,
     changeOnSelect = false,
@@ -125,7 +129,7 @@ const MenuItem = ({
   )
 
   return (
-    <li role="menu-item" className={`${prefixCls}-item`} key={option.id}>
+    <li ref={ref} role="menu-item" className={`${prefixCls}-item`} key={option.id}>
       <div
         className={optionCls}
         onClick={(evt) => {
@@ -162,6 +166,10 @@ const MenuItem = ({
       </div>
     </li>
   )
+})
+
+if (__DEV__) {
+  MenuItem.displayName = 'MenuItem'
 }
 
 export interface CheckCascaderMenuProps {
