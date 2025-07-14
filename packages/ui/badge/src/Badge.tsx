@@ -9,7 +9,7 @@ const _prefix = getPrefixCls('badge')
 
 // 支持字符串和 number hover 显示，其他过滤
 const getShowContent = (content: ReactNode) => {
-  if (!['number', 'string'].includes(typeof content)) return ""
+  if (!['number', 'string'].includes(typeof content)) return ''
   return `${content}`
 }
 /**
@@ -83,10 +83,22 @@ export const Badge = forwardRef<HTMLSpanElement | null, BadgeProps>(
         })
       }
 
-      return <span className={`${prefixCls}__value`} style={badgeStyle} title={getShowContent(content)} children={count} />
-    }, [type, prefixCls, badgeStyle, count])
+      return (
+        <span
+          className={`${prefixCls}__value`}
+          style={badgeStyle}
+          title={getShowContent(content)}
+          children={count}
+        />
+      )
+    }, [type, count, prefixCls, badgeStyle, content])
 
-    const cls = cx(prefixCls, className, isNullish(children) && `${prefixCls}--independent`)
+    const cls = cx(
+      prefixCls,
+      className,
+      `${prefixCls}--${type}`,
+      isNullish(children) && `${prefixCls}--independent`
+    )
 
     return (
       <span ref={ref} className={cls} style={style} {...rest}>
