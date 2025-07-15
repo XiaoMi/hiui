@@ -51,7 +51,12 @@ export const ArrowPlacement = () => {
           <Collapse.Panel
             title="小米 AI"
             id="4"
-            extra={<PlusOutlined style={{ marginRight: 8 }} />}
+            extra={
+              <PlusOutlined
+                style={{ marginRight: 8, color: '#60636b' }}
+                onClick={(evt) => evt.stopPropagation()}
+              />
+            }
           >
             <div
               style={{

@@ -12,14 +12,7 @@ export const Title = () => {
     { tabId: '2', tabTitle: '小米12' },
   ])
 
-  const [hongmiTabList] = React.useState([
-    { tabId: '0', tabTitle: '红米2' },
-    { tabId: '1', tabTitle: '红米note' },
-    { tabId: '2', tabTitle: '红米note2' },
-  ])
-
   const [xiaomiActiveId, setXiaomiActiveId] = React.useState<React.ReactText>('0')
-  const [hongmiActiveId, setHongmiActiveId] = React.useState<React.ReactText>('0')
 
   return (
     <>
@@ -29,7 +22,8 @@ export const Title = () => {
           <Collapse.Panel
             title={
               <TabList
-                style={{ margin: '-14px 0 -14px -20px' }}
+                style={{ margin: '-14px 0' }}
+                size="md"
                 data={xiaomiTabList}
                 onClick={(evt) => {
                   evt.stopPropagation()
@@ -51,20 +45,7 @@ export const Title = () => {
               我是{xiaomiTabList.find((item) => item.tabId === xiaomiActiveId)?.tabTitle}
             </div>
           </Collapse.Panel>
-          <Collapse.Panel
-            title={
-              <TabList
-                style={{ margin: '-14px 0 -14px -20px' }}
-                data={hongmiTabList}
-                onClick={(evt) => {
-                  evt.stopPropagation()
-                }}
-                activeId={hongmiActiveId}
-                onChange={setHongmiActiveId}
-              />
-            }
-            id="12"
-          >
+          <Collapse.Panel title="红米手机" id="2">
             <div
               style={{
                 backgroundColor: '#f5f7fa',
@@ -73,7 +54,7 @@ export const Title = () => {
                 color: '#1f2733',
               }}
             >
-              我是{hongmiTabList.find((item) => item.tabId === hongmiActiveId)?.tabTitle}
+              我是红米手机的内容
             </div>
           </Collapse.Panel>
         </Collapse>
