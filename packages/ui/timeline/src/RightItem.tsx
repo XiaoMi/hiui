@@ -12,6 +12,8 @@ export const RightItem: React.FC<TimelineDataItem> = ({
   timestamp,
   extraTime,
   icon,
+  dotColor,
+  dotType,
 }) => {
   return (
     <div className={prefixCls}>
@@ -20,7 +22,7 @@ export const RightItem: React.FC<TimelineDataItem> = ({
       <div className={`${prefixCls}__time`}>
         {timestamp} {extraTime}
       </div>
-      <DotIcon prefixCls={prefixCls} icon={icon} />
+      <DotIcon prefixCls={prefixCls} icon={icon} color={dotColor} type={dotType} />
       <div className={`${prefixCls}__line`} />
     </div>
   )

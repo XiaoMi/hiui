@@ -41,7 +41,12 @@ export const HorizontalTimeline = forwardRef<HTMLDivElement | null, HorizontalTi
               </div>
               <div className={`${prefixCls}-item__middle`}>
                 <div className={`${prefixCls}-item__line`}></div>
-                <DotIcon prefixCls={`${prefixCls}-item`} icon={item.icon} />
+                <DotIcon
+                  prefixCls={`${prefixCls}-item`}
+                  icon={item.icon}
+                  color={item.dotColor}
+                  type={item.dotType}
+                />
               </div>
               <div className={`${prefixCls}-item__bottom`}>
                 <div className={`${prefixCls}-item__title`}>{item.title}</div>
