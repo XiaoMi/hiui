@@ -23,6 +23,14 @@ export interface TimelineDataItem extends HiBaseDataItem {
    */
   icon?: React.ReactNode
   /**
+   * 自定义颜色
+   */
+  dotColor?: React.CSSProperties['color']
+  /**
+   * 圆圈类型，实心圆圈或空心圆圈
+   */
+  dotType?: 'solid' | 'hollow'
+  /**
    * 子项配置
    */
   children?: TimelineDataItem[]
