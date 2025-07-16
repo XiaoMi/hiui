@@ -55,7 +55,11 @@ export const useCascader = ({
     item: CascaderItemEventData,
     itemPaths: FlattedCascaderDataItem[]
   ) => {
-    tryChangeValue(itemPaths.map(({ id }) => id))
+    tryChangeValue(
+      itemPaths.map(({ id }) => id),
+      item,
+      itemPaths
+    )
     onSelectProp?.(value, item, itemPaths)
   }
 
@@ -157,10 +161,9 @@ export interface UseCascaderProps {
    * 选中值改变时的回调
    */
   onChange?: (
-    value: React.ReactText[]
-    // @API：暂时不对外
-    // targetOption?: CascaderItemEventData,
-    // optionPaths?: FlattedCascaderDataItem[]
+    value: React.ReactText[],
+    targetOption?: CascaderItemEventData,
+    optionPaths?: FlattedCascaderDataItem[]
   ) => void
   /**
    * 选中选项时触发，仅供内部使用。暂不对外暴露
