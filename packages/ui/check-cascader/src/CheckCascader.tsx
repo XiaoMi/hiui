@@ -130,7 +130,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
           return idPaths || [lastId]
         })
 
-        tryChangeValue(itemsPaths)
+        tryChangeValue(itemsPaths, item, itemsPaths)
       }
     )
 
@@ -338,7 +338,11 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
   /**
    * 多选值改变时的回调
    */
-  onChange?: (values: React.ReactText[][]) => void
+  onChange?: (
+    values: React.ReactText[][],
+    targetOption?: CheckCascaderItemEventData,
+    optionPaths?: FlattedCheckCascaderDataItem[]
+  ) => void
   /**
    * 选项被点击时的回调。暂不对外暴露
    * @private
