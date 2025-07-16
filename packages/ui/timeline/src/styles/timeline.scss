@@ -35,8 +35,6 @@ $prefix: '#{$component-prefix}-timeline' !default;
               .#{$prefix}-item__dot {
                 width: 8px;
                 height: 8px;
-                border: 2px solid use-color-mode('primary');
-                background: use-color-static('white');
                 border-radius: 50%;
                 box-sizing: border-box;
                 position: absolute;
@@ -44,6 +42,15 @@ $prefix: '#{$component-prefix}-timeline' !default;
                 right: -22px;
                 transform: translateX(50%);
                 z-index: 2;
+
+                &--type-hollow {
+                  border: 2px solid use-color-mode('primary');
+                  background: use-color-static('white');
+                }
+
+                &--type-solid {
+                  background: use-color-mode('primary');
+                }
               }
 
               .#{$prefix}-item__icon {
@@ -92,8 +99,6 @@ $prefix: '#{$component-prefix}-timeline' !default;
               .#{$prefix}-item__dot {
                 width: 8px;
                 height: 8px;
-                border: 2px solid use-color-mode('primary');
-                background: use-color-static('white');
                 border-radius: 50%;
                 box-sizing: border-box;
                 position: absolute;
@@ -101,6 +106,15 @@ $prefix: '#{$component-prefix}-timeline' !default;
                 left: -22px;
                 transform: translateX(-50%);
                 z-index: 2;
+
+                &--type-hollow {
+                  border: 2px solid use-color-mode('primary');
+                  background: use-color-static('white');
+                }
+
+                &--type-solid {
+                  background: use-color-mode('primary');
+                }
               }
 
               .#{$prefix}-item__line {
@@ -178,8 +192,6 @@ $prefix: '#{$component-prefix}-timeline' !default;
             .#{$prefix}-item__dot {
               width: 8px;
               height: 8px;
-              border: 2px solid use-color-mode('primary');
-              background: use-color-static('white');
               border-radius: 50%;
               box-sizing: border-box;
               position: absolute;
@@ -187,6 +199,15 @@ $prefix: '#{$component-prefix}-timeline' !default;
               left: -20px;
               transform: translateX(-50%);
               z-index: 2;
+
+              &--type-hollow {
+                border: 2px solid use-color-mode('primary');
+                background: use-color-static('white');
+              }
+
+              &--type-solid {
+                background: use-color-mode('primary');
+              }
             }
 
             .#{$prefix}-item__icon {
@@ -214,9 +235,17 @@ $prefix: '#{$component-prefix}-timeline' !default;
           .#{$prefix}-item__collapse {
             .#{$prefix}-item {
               .#{$prefix}-item__dot {
-                background: use-color-mode('primary');
                 width: 6px;
                 height: 6px;
+
+                &--type-hollow {
+                  border: 2px solid use-color-mode('primary');
+                  background: use-color-static('white');
+                }
+
+                &--type-solid {
+                  background: use-color-mode('primary');
+                }
               }
             }
 
@@ -324,8 +353,6 @@ $prefix: '#{$component-prefix}-timeline' !default;
             .#{$prefix}-item__dot {
               width: 8px;
               height: 8px;
-              border: 2px solid use-color-mode('primary');
-              background: use-color-static('white');
               border-radius: 50%;
               box-sizing: border-box;
               position: absolute;
@@ -333,6 +360,15 @@ $prefix: '#{$component-prefix}-timeline' !default;
               left: 30%;
               transform: translateX(-50%);
               z-index: 2;
+
+              &--type-hollow {
+                border: 2px solid use-color-mode('primary');
+                background: use-color-static('white');
+              }
+
+              &--type-solid {
+                background: use-color-mode('primary');
+              }
             }
 
             .#{$prefix}-item__icon {
@@ -460,9 +496,16 @@ $prefix: '#{$component-prefix}-timeline' !default;
           box-sizing: border-box;
           width: 8px;
           height: 8px;
-          border: 2px solid use-color-mode('primary');
           border-radius: 50%;
-          background-color: use-color-static('white');
+
+          &--type-hollow {
+            border: 2px solid use-color-mode('primary');
+            background: use-color-static('white');
+          }
+
+          &--type-solid {
+            background: use-color-mode('primary');
+          }
         }
 
         &__icon {
