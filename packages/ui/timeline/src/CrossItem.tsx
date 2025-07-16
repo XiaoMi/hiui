@@ -13,6 +13,8 @@ export const CrossItem: React.FC<TimelineDataItem> = ({
   timestamp,
   extraTime,
   icon,
+  dotColor,
+  dotType,
   children,
 }) => {
   return isArrayNonEmpty(children) ? (
@@ -22,7 +24,7 @@ export const CrossItem: React.FC<TimelineDataItem> = ({
           <div className={`${prefixCls}__time`}>{timestamp}</div>
           <div className={`${prefixCls}__extra`}>{extraTime}</div>
         </div>
-        <DotIcon prefixCls={prefixCls} icon={icon} />
+        <DotIcon prefixCls={prefixCls} icon={icon} color={dotColor} type={dotType} />
         <div className={`${prefixCls}__line`} />
         <div className={`${prefixCls}--right`}>
           <div className={`${prefixCls}__title`}>{title}</div>
@@ -31,7 +33,12 @@ export const CrossItem: React.FC<TimelineDataItem> = ({
       </div>
       <div className={`${prefixCls}__collapse`}>
         {children.map((child, idx) => (
-          <CrossItem key={idx} {...child} />
+          <CrossItem
+            key={idx}
+            {...child}
+            dotType={child.dotType || 'solid'}
+            dotColor={child.dotColor}
+          />
         ))}
       </div>
     </>
@@ -41,7 +48,7 @@ export const CrossItem: React.FC<TimelineDataItem> = ({
         <div className={`${prefixCls}__time`}>{timestamp}</div>
         <div className={`${prefixCls}__extra`}>{extraTime}</div>
       </div>
-      <DotIcon prefixCls={prefixCls} icon={icon} />
+      <DotIcon prefixCls={prefixCls} icon={icon} color={dotColor} type={dotType} />
       <div className={`${prefixCls}__line`} />
       <div className={`${prefixCls}--right`}>
         <div className={`${prefixCls}__title`}>{title}</div>
