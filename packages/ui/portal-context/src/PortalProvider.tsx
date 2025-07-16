@@ -11,6 +11,7 @@ export interface PortalProviderProps {
    * 指定 portal 的容器
    */
   portal?: UsePortalContext
+  children?: React.ReactNode
 }
 
 if (__DEV__) {
