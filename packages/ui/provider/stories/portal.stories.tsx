@@ -16,14 +16,17 @@ export const Portal = () => {
   const [modalVisible, setModalVisible] = React.useState(false)
   const [container, setContainer] = React.useState<HTMLElement | null>(null)
 
-  const message = React.useMemo(() => {
-    if (!container) return createMessage()
-    return createMessage({ container })
-  }, [container])
+  const messageRef = React.useRef<ReturnType<typeof createMessage> | null>(null)
+  const notificationRef = React.useRef<ReturnType<typeof createNotification> | null>(null)
 
-  const notification = React.useMemo(() => {
-    if (!container) return createNotification()
-    return createNotification({ container })
+  React.useEffect(() => {
+    if (!container) {
+      messageRef.current = createMessage()
+      notificationRef.current = createNotification()
+    } else {
+      messageRef.current = createMessage({ container })
+      notificationRef.current = createNotification({ container })
+    }
   }, [container])
 
   return (
@@ -41,7 +44,7 @@ export const Portal = () => {
             <Button
               type="secondary"
               onClick={() => {
-                message.open({
+                messageRef.current?.open({
                   title: '欢迎使用 HiUI 组件库',
                   type: 'success',
                 })
@@ -52,7 +55,7 @@ export const Portal = () => {
             <Button
               type="secondary"
               onClick={() => {
-                notification.open({
+                notificationRef.current?.open({
                   size: 'sm',
                   title: '数据备份通知',
                   content:

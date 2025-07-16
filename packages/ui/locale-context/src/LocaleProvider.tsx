@@ -50,6 +50,7 @@ export interface LocaleProviderProps {
    * 自定义语言包，将忽略内置语言包 locale 字段
    */
   languages?: LocaleLanguage
+  children?: React.ReactNode
 }
 
 if (__DEV__) {
