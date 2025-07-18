@@ -15,7 +15,7 @@ $prefix: '#{$component-prefix}-popover' !default;
     margin-bottom: use-spacing(2);
     color: use-color('gray', 700);
     font-size: use-text-size('md');
-    font-weight: use-text-weight('semibold');
+    font-weight: use-text-weight('medium');
     line-height: use-text-lineheight('md');
 
     .#{$prefix}--divided > & {
