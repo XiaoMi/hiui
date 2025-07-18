@@ -30,7 +30,7 @@ export const useColWidth = ({
         let exceedWidth = 0
 
         let _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node, index) => {
-          const realWidth = (node as HTMLElement).getBoundingClientRect().width || 0
+          const realWidth = (node as HTMLElement).getBoundingClientRect().width || 60
           const { fixed } = columns[index] ?? {}
           const width = getGroupItemWidth(columns).colWidths[index]
 
@@ -160,17 +160,11 @@ export const useColWidth = ({
         const resizableHandlerWidth = 4
         const calcMinColWidths = Array.from(headerTableElement.childNodes).map((th, index) => {
           const minColWidth = getGroupItemWidth(columns).minColWidths[index]
-
-          if (minColWidth && minColWidth > 0) {
-            return minColWidth
-          }
-
           const thPaddingLeft = parseFloat(
             window.getComputedStyle(th as Element).getPropertyValue('padding-left')
           )
           const childNodes = Array.from(th.childNodes)
-
-          return (
+          const childNodesWidth =
             childNodes
               .map((child) => (child as HTMLElement).offsetWidth)
               .reduce((prev, next) => {
@@ -178,7 +172,8 @@ export const useColWidth = ({
               }, 0) +
             thPaddingLeft * 2 +
             resizableHandlerWidth
-          )
+
+          return childNodesWidth > minColWidth ? minColWidth : childNodesWidth
         })
 
         setMinColWidths(calcMinColWidths)
