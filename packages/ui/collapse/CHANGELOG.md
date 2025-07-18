@@ -1,5 +1,12 @@
 # @hi-ui/collapse
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- 58e8feea6: style(collapse): 新版样式 (5.0)
+- bf65028e6: style: 修改 UI (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

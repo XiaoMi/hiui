@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/time-picker",
-  "version": "5.0.0-canary.5",
+  "version": "5.0.0-canary.6",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,11 +45,11 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^5.0.0-canary.6",
+    "@hi-ui/button": "^5.0.0-canary.7",
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
     "@hi-ui/icons": "^5.0.0-canary.2",
-    "@hi-ui/popper": "^5.0.0-canary.3",
+    "@hi-ui/popper": "^5.0.0-canary.4",
     "@hi-ui/use-merge-refs": "^5.0.0-canary.0",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-canary.2",
     "dayjs": "^1.10.7"

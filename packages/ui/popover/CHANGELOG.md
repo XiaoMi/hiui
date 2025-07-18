@@ -1,5 +1,13 @@
 # @hi-ui/popover
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- bf65028e6: style: 修改 UI (5.0)
+- Updated dependencies [bf65028e6]
+  - @hi-ui/popper@5.0.0-canary.4
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @hi-ui/timeline
 
+## 5.0.0-canary.3
+
+### Minor Changes
+
+- 7784a76e1: feat(timeline): dataItem 增加 dotColor 和 dotType 参数 (5.0)
+
+### Patch Changes
+
+- bf65028e6: style: 修改 UI (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

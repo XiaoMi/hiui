@@ -1,5 +1,11 @@
 # @hi-ui/provider
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- a39dbe2cd: fix(provider): 显示声明 children 类型 (#3228)
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

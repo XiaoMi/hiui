@@ -1,5 +1,11 @@
 # @hi-ui/button
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- bf65028e6: style: 修改 UI (5.0)
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

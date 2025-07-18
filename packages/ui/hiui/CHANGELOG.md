@@ -1,5 +1,36 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.18
+
+### Minor Changes
+
+- 7784a76e1: feat(timeline): dataItem 增加 dotColor 和 dotType 参数 (5.0)
+- bbba46153: feat(cascader): onChange 回调中增加选中项对象参数返回 (#3230)
+
+### Patch Changes
+
+- a39dbe2cd: fix(provider): 显示声明 children 类型 (#3228)
+- 58e8feea6: style(collapse): 新版样式 (5.0)
+- fix(table): 修复 resizable 模式下列宽计算问题 (5.0)
+- bf65028e6: style: 修改 UI (5.0)
+- Updated dependencies [7784a76e1]
+- Updated dependencies [bbba46153]
+- Updated dependencies [a39dbe2cd]
+- Updated dependencies [58e8feea6]
+- Updated dependencies
+- Updated dependencies [bf65028e6]
+  - @hi-ui/timeline@5.0.0-canary.3
+  - @hi-ui/cascader@5.0.0-canary.8
+  - @hi-ui/check-cascader@5.0.0-canary.8
+  - @hi-ui/provider@5.0.0-canary.4
+  - @hi-ui/collapse@5.0.0-canary.3
+  - @hi-ui/table@5.0.0-canary.9
+  - @hi-ui/alert@5.0.0-canary.4
+  - @hi-ui/button@5.0.0-canary.7
+  - @hi-ui/popover@5.0.0-canary.3
+  - @hi-ui/tabs@5.0.0-canary.8
+  - @hi-ui/time-picker@5.0.0-canary.6
+
 ## 5.0.0-canary.17
 
 ### Minor Changes

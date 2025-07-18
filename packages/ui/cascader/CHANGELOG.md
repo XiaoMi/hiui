@@ -1,5 +1,16 @@
 # @hi-ui/cascader
 
+## 5.0.0-canary.8
+
+### Minor Changes
+
+- bbba46153: feat(cascader): onChange 回调中增加选中项对象参数返回 (#3230)
+
+### Patch Changes
+
+- Updated dependencies [bf65028e6]
+  - @hi-ui/popper@5.0.0-canary.4
+
 ## 5.0.0-canary.7
 
 ### Patch Changes

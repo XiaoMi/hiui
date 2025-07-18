@@ -1,5 +1,14 @@
 # @hi-ui/table
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- fix(table): 修复 resizable 模式下列宽计算问题 (5.0)
+- Updated dependencies [bf65028e6]
+  - @hi-ui/button@5.0.0-canary.7
+  - @hi-ui/popper@5.0.0-canary.4
+
 ## 5.0.0-canary.8
 
 ### Minor Changes

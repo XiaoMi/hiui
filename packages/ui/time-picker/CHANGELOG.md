@@ -1,5 +1,14 @@
 # @hi-ui/time-picker
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- bf65028e6: style: 修改 UI (5.0)
+- Updated dependencies [bf65028e6]
+  - @hi-ui/button@5.0.0-canary.7
+  - @hi-ui/popper@5.0.0-canary.4
+
 ## 5.0.0-canary.5
 
 ### Minor Changes

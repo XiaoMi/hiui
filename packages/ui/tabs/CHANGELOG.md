@@ -1,5 +1,11 @@
 # @hi-ui/tabs
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- bf65028e6: style: 修改 UI (5.0)
+
 ## 5.0.0-canary.7
 
 ### Patch Changes
