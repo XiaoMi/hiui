@@ -6,23 +6,21 @@ $prefix: '#{$component-prefix}-popover' !default;
   @include text-reset();
 
   background: use-color-static('white');
-  padding: use-spacing(10);
-  border-radius: use-border-radius('lg');
-
-  &--divided {
-    padding-top: use-spacing(7);
-  }
+  padding: use-spacing(6) use-spacing(8);
+  border-radius: use-border-radius('xl');
+  border: use-border-size('normal') use-color('gray', 200);
 
   &__title {
     box-sizing: border-box;
-    margin-bottom: use-spacing(8);
+    margin-bottom: use-spacing(2);
     color: use-color('gray', 700);
-    font-size: use-text-size('lg');
+    font-size: use-text-size('md');
     font-weight: use-text-weight('medium');
-    line-height: use-text-lineheight('lg');
+    line-height: use-text-lineheight('md');
 
     .#{$prefix}--divided > & {
-      padding-bottom: use-spacing(7);
+      padding-bottom: use-spacing(6);
+      margin-bottom: use-spacing(6);
       font-size: use-text-size('normal');
       line-height: use-text-lineheight('normal');
       border-bottom: use-border-size('normal') use-color('gray', 200);
@@ -31,9 +29,8 @@ $prefix: '#{$component-prefix}-popover' !default;
 
   &__content {
     box-sizing: border-box;
-    color: use-color('gray', 600);
-    line-height: use-text-lineheight('sm');
+    color: use-color('gray', 700);
+    line-height: use-text-lineheight('normal');
     font-size: use-text-size('normal');
-    font-weight: use-text-weight('medium');
   }
 }
