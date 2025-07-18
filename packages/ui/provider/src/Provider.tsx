@@ -48,7 +48,9 @@ export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc 
 export interface ProviderProps
   extends LocaleProviderProps,
     PortalProviderProps,
-    ThemeProviderProps {}
+    ThemeProviderProps {
+  children?: React.ReactNode
+}
 
 interface ThemeProviderProps {
   /**

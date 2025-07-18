@@ -32,7 +32,7 @@ export const Resizable = () => {
               dataKey: 'type',
               width: 80,
               // 注：当 title 长度过长时，可设置 minWidth 来保证列头最小宽度
-              minWidth: 60,
+              // minWidth: 60,
             },
             {
               title: '规格',

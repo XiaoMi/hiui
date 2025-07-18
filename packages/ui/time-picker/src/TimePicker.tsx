@@ -235,7 +235,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           {type === 'single' && !isInSingleValueFormat && (
             <Button
               className={`${prefixCls}__pop-now-btn`}
-              appearance="link"
+              appearance="text"
               type="primary"
               size="sm"
               onClick={() => {

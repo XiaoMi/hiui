@@ -7,24 +7,22 @@ $icon-class: #{$panel-prefix}__icon !default;
   font-size: use-text-size('normal');
   position: relative;
   z-index: 0;
-  // border-bottom: use-border-size('normal') use-color-static('transparent');
 
   &::after {
     content: '';
     display: block;
     box-sizing: border-box;
-    border-bottom: 1px solid use-color('gray', 200);
 
     .#{$component-prefix}-collapse--size-sm & {
-      margin: 1px use-spacing(6);
+      margin: 0 use-spacing(6);
     }
 
     .#{$component-prefix}-collapse--size-md & {
-      margin: 1px use-spacing(8);
+      margin: 0 use-spacing(8);
     }
 
     .#{$component-prefix}-collapse--size-lg & {
-      margin: 1px use-spacing(10);
+      margin: 0 use-spacing(10);
     }
   }
 
@@ -35,6 +33,12 @@ $icon-class: #{$panel-prefix}__icon !default;
     &::after {
       border-bottom: none;
     }
+
+    .#{$panel-prefix}__head {
+      &::after {
+        border-bottom: none;
+      }
+    }
   }
 
   &:first-of-type {
@@ -43,6 +47,7 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__head {
+    position: relative;
     display: flex;
     align-items: center;
     color: use-color('gray', 700);
@@ -54,7 +59,7 @@ $icon-class: #{$panel-prefix}__icon !default;
     }
 
     .#{$component-prefix}-collapse--size-md & {
-      padding: use-spacing(7) use-spacing(8);
+      padding: calc(#{use-spacing(7)} - 1px) use-spacing(8);
       font-weight: use-text-weight('medium');
     }
 
@@ -66,6 +71,30 @@ $icon-class: #{$panel-prefix}__icon !default;
     &:focus {
       outline: none;
     }
+
+    &::after {
+      content: '';
+      display: block;
+      box-sizing: border-box;
+      position: absolute;
+      bottom: 0;
+      border-bottom: 1px solid use-color('gray', 200);
+
+      .#{$component-prefix}-collapse--size-sm & {
+        left: use-spacing(6);
+        right: use-spacing(6);
+      }
+
+      .#{$component-prefix}-collapse--size-md & {
+        left: use-spacing(8);
+        right: use-spacing(8);
+      }
+
+      .#{$component-prefix}-collapse--size-lg & {
+        left: use-spacing(10);
+        right: use-spacing(10);
+      }
+    }
   }
 
   &__title-container {
@@ -74,8 +103,14 @@ $icon-class: #{$panel-prefix}__icon !default;
     align-items: center;
     justify-content: space-between;
 
+    .#{$component-prefix}-collapse--size-sm & {
+      font-size: use-text-size('sm');
+      line-height: use-text-lineheight('sm');
+    }
+
     .#{$component-prefix}-collapse--size-md & {
-      font-size: use-text-size('normal');
+      font-size: use-text-size('md');
+      line-height: use-text-lineheight('md');
     }
 
     .#{$component-prefix}-collapse--size-lg & {
@@ -118,21 +153,21 @@ $icon-class: #{$panel-prefix}__icon !default;
     color: use-color('gray', 700);
 
     .#{$component-prefix}-collapse--size-sm & {
-      padding: 0 use-spacing(6) use-spacing(6);
+      padding: use-spacing(6);
     }
 
     .#{$component-prefix}-collapse--size-md & {
-      padding: 0 use-spacing(8) use-spacing(8);
+      padding: use-spacing(8);
     }
 
     .#{$component-prefix}-collapse--size-lg & {
-      padding: 0 use-spacing(10) use-spacing(10);
+      padding: use-spacing(10);
     }
   }
 
   &--show {
     &::after {
-      background-color: use-color-static('transparent');
+      border-bottom: 1px solid use-color('gray', 200);
     }
 
     > .#{$panel-prefix}__head {
@@ -151,6 +186,10 @@ $icon-class: #{$panel-prefix}__icon !default;
   &--disabled {
     .#{$panel-prefix}__head {
       cursor: not-allowed;
+      color: use-color('gray', 300);
+    }
+
+    .#{$icon-class} {
       color: use-color('gray', 300);
     }
   }

@@ -77,7 +77,7 @@ export const getGroupItemWidth = (
 
       // 如果没有设置列宽度，css 宽度默认是 `auto`，这里对于非数字 width 均设置为 0
       const colWidth = isNumeric(width) ? Number(width) : 0
-      const minColWidth = isNumeric(minWidth) ? Number(minWidth) : 0
+      const minColWidth = isNumeric(minWidth) ? Number(minWidth) : colWidth || 60
 
       colWidths.push(colWidth < minColWidth ? minColWidth : colWidth)
       minColWidths.push(minColWidth)
