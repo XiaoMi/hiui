@@ -22,7 +22,6 @@ $prefix: '#{$component-prefix}-popper' !default;
     }
 
     &::after {
-      filter: blur(8px);
       z-index: -1;
     }
   }
@@ -43,8 +42,8 @@ $prefix: '#{$component-prefix}-popper' !default;
       &::after {
         left: 0;
         transform: translateX(-6px);
-        top: 1px;
-        border-top-color: rgba(0, 0, 0, 0.1);
+        top: 0;
+        border-top-color: use-color('gray', 200);
       }
     }
   }
@@ -61,8 +60,8 @@ $prefix: '#{$component-prefix}-popper' !default;
       &::after {
         left: 0;
         transform: translateX(-6px);
-        bottom: 1px;
-        border-bottom-color: rgba(0, 0, 0, 0.1);
+        bottom: 0;
+        border-bottom-color: use-color('gray', 200);
       }
     }
   }
@@ -81,8 +80,8 @@ $prefix: '#{$component-prefix}-popper' !default;
       &::after {
         top: 0;
         transform: translateY(-50%);
-        left: 1px;
-        border-left-color: rgba(0, 0, 0, 0.1);
+        left: 0;
+        border-left-color: use-color('gray', 200);
       }
     }
   }
@@ -99,8 +98,8 @@ $prefix: '#{$component-prefix}-popper' !default;
       &::after {
         top: 0;
         transform: translateY(-50%);
-        right: 1px;
-        border-right-color: rgba(0, 0, 0, 0.1);
+        right: 0;
+        border-right-color: use-color('gray', 200);
       }
     }
   }

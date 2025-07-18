@@ -90,7 +90,7 @@ export const Icon = () => {
           <Button
             type="primary"
             icon={[<PlusOutlined key="1" />, <MinusOutlined key="2" />]}
-            appearance="link"
+            appearance="text"
           >
             文本按钮
           </Button>

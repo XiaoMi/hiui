@@ -27,7 +27,7 @@ $prefix: '#{$component-prefix}-alert' !default;
   }
 
   &--size-lg {
-    padding: use-spacing(6) use-spacing(8);
+    padding: calc(#{use-spacing(6)} - 1px) use-spacing(8);
 
     &.#{$prefix}--with-content {
       padding: use-spacing(10);
@@ -43,7 +43,7 @@ $prefix: '#{$component-prefix}-alert' !default;
   }
 
   &--size-md {
-    padding: use-spacing(5) use-spacing(6);
+    padding: calc(#{use-spacing(5)} - 1px) use-spacing(6);
 
     &.#{$prefix}--with-content {
       padding: use-spacing(8);
@@ -59,7 +59,7 @@ $prefix: '#{$component-prefix}-alert' !default;
   }
 
   &--size-sm {
-    padding: use-spacing(4);
+    padding: calc(#{use-spacing(4)} - 1px) use-spacing(4);
 
     &.#{$prefix}--with-content {
       padding: use-spacing(6);

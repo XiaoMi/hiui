@@ -63,13 +63,19 @@ export const WithApi = () => {
             </FormItem>
           </Form>
         </div>
-        <div style={{ display: 'flex' }}>
-          <Button style={{ flex: 1 }} onClick={() => Popover.close(key)}>
+        <div style={{ textAlign: 'right' }}>
+          <Button
+            style={{ flex: 1 }}
+            size="sm"
+            appearance="line"
+            onClick={() => Popover.close(key)}
+          >
             取消
           </Button>
           <Button
             style={{ flex: 1 }}
             type="primary"
+            size="sm"
             loading={loading}
             onClick={() => {
               setLoading(true)
