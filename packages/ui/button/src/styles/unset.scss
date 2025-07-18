@@ -74,42 +74,59 @@ $text-focus-shadow-map: (
 @mixin render-text-button() {
   & {
     // 尺寸
-    &--appearance-text#{&}--size-sm {
+    &--appearance-text#{&}--size-xs {
       height: calc(#{use-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
-      padding: 1px 7px;
+      font-size: use-text-size('sm');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(12);
+        padding: 0 use-spacing(4);
+      }
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
-        padding: 1px 0;
       }
     }
+
+    &--appearance-text#{&}--size-sm {
+      height: calc(#{use-text-lineheight('sm')} + #{3px * 2 + 1px * 2});
+      font-size: use-text-size('sm');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(12);
+        padding: 0 use-spacing(4);
+      }
+
+      &.#{$prefix}--icon-only {
+        width: calc(#{use-text-lineheight('sm')} + #{3px * 2 + 1px * 2});
+      }
+    }
+
     &--appearance-text#{&}--size-md {
       height: calc(#{use-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
-      padding: 4px 11px;
+      font-size: use-text-size('normal');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(18);
+        padding: 0 use-spacing(6);
+      }
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
-        padding: 4px 0;
       }
     }
 
     &--appearance-text#{&}--size-lg {
       height: calc(#{use-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
-      padding: 7px 15px;
+      font-size: use-text-size('lg');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(22);
+        padding: 0 use-spacing(8);
+      }
 
       &.#{$prefix}--icon-only {
         width: calc(#{use-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
-        padding: 7px 0;
-      }
-    }
-
-    &--appearance-text#{&}--size-xl {
-      height: calc(#{use-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
-      padding: 13px 60px;
-
-      &.#{$prefix}--icon-only {
-        width: calc(#{use-text-lineheight('xxl')} + #{13px * 2 + 1px * 2});
-        padding: 13px 0;
       }
     }
 

@@ -22,7 +22,7 @@ export const Title = () => {
           <Collapse.Panel
             title={
               <TabList
-                style={{ margin: '-14px 0' }}
+                style={{ margin: '-12px 0' }}
                 size="md"
                 data={xiaomiTabList}
                 onClick={(evt) => {
