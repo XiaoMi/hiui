@@ -70,6 +70,8 @@ export const Content = () => {
       </div>
       <div style={{ textAlign: 'right' }}>
         <Button
+          size="sm"
+          appearance="line"
           onClick={() => {
             setVisible(false)
             popoverVisibleRef.current = false
@@ -78,6 +80,7 @@ export const Content = () => {
           取消
         </Button>
         <Button
+          size="sm"
           type="primary"
           loading={loading}
           onClick={() => {

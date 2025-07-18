@@ -80,15 +80,14 @@ $prefix: '#{$component-prefix}-timeline' !default;
                 color: use-color('gray', 700);
                 font-size: use-text-size('normal');
                 line-height: use-text-lineheight('normal');
-                font-weight: use-text-weight('medium');
-                margin-bottom: use-spacing(2);
+                font-weight: use-text-weight('normal');
               }
 
               .#{$prefix}-item__content {
                 color: use-color('gray', 600);
                 font-size: use-text-size('sm');
                 line-height: use-text-lineheight('sm');
-                margin-bottom: use-spacing(4);
+                margin-bottom: use-spacing(2);
               }
             }
 
@@ -140,15 +139,15 @@ $prefix: '#{$component-prefix}-timeline' !default;
               .#{$prefix}-item__title {
                 color: use-color('gray', 700);
                 font-size: use-text-size('normal');
-                font-weight: use-text-weight('medium');
+                font-weight: use-text-weight('normal');
                 line-height: use-text-lineheight('normal');
-                margin-bottom: 2px;
               }
 
               .#{$prefix}-item__content {
                 color: use-color('gray', 600);
                 font-size: use-text-size('sm');
                 line-height: use-text-lineheight('sm');
+                margin-bottom: use-spacing(2);
               }
             }
           }
@@ -164,15 +163,14 @@ $prefix: '#{$component-prefix}-timeline' !default;
               color: use-color('gray', 700);
               font-size: use-text-size('normal');
               line-height: use-text-lineheight('normal');
-              font-weight: use-text-weight('medium');
-              margin-bottom: use-spacing(2);
+              font-weight: use-text-weight('normal');
             }
 
             .#{$prefix}-item__content {
               color: use-color('gray', 600);
               font-size: use-text-size('sm');
               line-height: use-text-lineheight('sm');
-              margin-bottom: use-spacing(4);
+              margin-bottom: use-spacing(2);
             }
 
             .#{$prefix}-item__time {
@@ -340,7 +338,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
                 color: use-color('gray', 600);
                 font-size: use-text-size('normal');
                 line-height: use-text-lineheight('normal');
-                font-weight: use-text-weight('medium');
+                font-weight: use-text-weight('normal');
               }
 
               .#{$prefix}-item__extra {
@@ -399,14 +397,14 @@ $prefix: '#{$component-prefix}-timeline' !default;
                 color: use-color('gray', 700);
                 font-size: use-text-size('normal');
                 line-height: use-text-lineheight('normal');
-                font-weight: use-text-weight('medium');
-                margin-bottom: use-spacing(2);
+                font-weight: use-text-weight('normal');
               }
 
               .#{$prefix}-item__content {
                 color: use-color('gray', 600);
                 font-size: use-text-size('sm');
                 line-height: use-text-lineheight('sm');
+                margin-bottom: use-spacing(2);
               }
             }
 
@@ -525,6 +523,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
           font-weight: use-text-weight('normal');
           color: use-color('gray', 600);
           line-height: use-text-lineheight('sm');
+          margin-bottom: use-spacing(2);
           word-break: break-word;
         }
 
