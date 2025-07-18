@@ -59,7 +59,7 @@ $icon-class: #{$panel-prefix}__icon !default;
     }
 
     .#{$component-prefix}-collapse--size-md & {
-      padding: use-spacing(7) use-spacing(8);
+      padding: calc(#{use-spacing(7)} - 1px) use-spacing(8);
       font-weight: use-text-weight('medium');
     }
 
@@ -103,8 +103,14 @@ $icon-class: #{$panel-prefix}__icon !default;
     align-items: center;
     justify-content: space-between;
 
+    .#{$component-prefix}-collapse--size-sm & {
+      font-size: use-text-size('sm');
+      line-height: use-text-lineheight('sm');
+    }
+
     .#{$component-prefix}-collapse--size-md & {
-      font-size: use-text-size('normal');
+      font-size: use-text-size('md');
+      line-height: use-text-lineheight('md');
     }
 
     .#{$component-prefix}-collapse--size-lg & {
@@ -180,6 +186,10 @@ $icon-class: #{$panel-prefix}__icon !default;
   &--disabled {
     .#{$panel-prefix}__head {
       cursor: not-allowed;
+      color: use-color('gray', 300);
+    }
+
+    .#{$icon-class} {
       color: use-color('gray', 300);
     }
   }
