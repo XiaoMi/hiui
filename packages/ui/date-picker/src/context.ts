@@ -63,5 +63,6 @@ export interface DPContextData extends ExtendsType {
   altCalendar?: CalendarItemV3[]
   onPanelChange?: (data: Date) => void
   rangeRef: React.MutableRefObject<CalenderSelectedRange | null>
+  utcOffset?: number
 }
 export default DPContext

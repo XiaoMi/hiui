@@ -4,6 +4,7 @@ import { DAY_MILLISECONDS } from '../utils/constants'
 import { DatePickerTypeEnum, DisabledDate } from '../types'
 import { getBelongWeek, getBelongWeekBoundary } from '../utils/week'
 import { UseLocaleContext } from '@hi-ui/core'
+import { toUtcTime } from '../utils'
 
 const getYearOrMonthRows = ({
   originDate,
@@ -15,6 +16,7 @@ const getYearOrMonthRows = ({
   min,
   max,
   disabledDate,
+  utcOffset,
 }: {
   originDate: moment.Moment | null
   renderDate: moment.Moment | null
@@ -25,12 +27,15 @@ const getYearOrMonthRows = ({
   min: Date | null
   max: Date | null
   disabledDate: DisabledDate
+  utcOffset?: number
 }) => {
   const _date = renderDate ? moment(renderDate) : moment()
   const start = view === 'year' ? _date.year() - 4 : 0
   const trs: CalendarRowInfo[] = [[], [], [], []] as any
   let num = 0
-  const current = moment()
+  // 根据utcOffset计算今天的日期
+  const current =
+    typeof utcOffset === 'number' ? toUtcTime(moment()).add(utcOffset * 60, 'minutes') : moment()
 
   // 格式化范围数据，保证开始永远在结束之前
   const formatRange = range ? { ...range } : ({} as CalenderSelectedRange)
@@ -262,6 +267,7 @@ const getDateRows = ({
   max,
   renderDate,
   disabledDate,
+  utcOffset,
 }: {
   originDate: moment.Moment | null
   range?: CalenderSelectedRange
@@ -271,9 +277,12 @@ const getDateRows = ({
   max: Date | null
   renderDate: moment.Moment | null
   disabledDate: DisabledDate
+  utcOffset?: number
 }) => {
   const rows: CalendarRowInfo[] = [[], [], [], [], [], []] as any
-  const today = moment()
+  // 根据utcOffset计算今天的日期
+  const today =
+    typeof utcOffset === 'number' ? toUtcTime(moment()).add(utcOffset * 60, 'minutes') : moment()
   const _date = moment(renderDate)
   // 格式化范围数据，保证开始永远在结束之前
   const formatRange = range ? { ...range } : ({} as CalenderSelectedRange)
@@ -436,10 +445,16 @@ const getDateRows = ({
 
     // 周选择面板中的周数显示比较特殊，需要特殊处理
     if (firstWeekStartDate.isAfter(secondWeekStartDate)) {
-      rows[0][0].weekNum = getBelongWeek(getBelongWeekBoundary(moment(originDate), weekOffset), weekOffset)
+      rows[0][0].weekNum = getBelongWeek(
+        getBelongWeekBoundary(moment(originDate), weekOffset),
+        weekOffset
+      )
     }
     if (lastWeekStartDate.isBefore(secondLastWeekStartDate)) {
-      rows[rows.length - 1][0].weekNum = getBelongWeek(getBelongWeekBoundary(moment(originDate), weekOffset), weekOffset)
+      rows[rows.length - 1][0].weekNum = getBelongWeek(
+        getBelongWeekBoundary(moment(originDate), weekOffset),
+        weekOffset
+      )
     }
   }
 
@@ -480,6 +495,7 @@ const useDate = ({
   max,
   renderDate,
   disabledDate,
+  utcOffset,
 }: {
   originDate: moment.Moment | null
   renderDate: moment.Moment | null
@@ -491,6 +507,7 @@ const useDate = ({
   view: string
   i18n: UseLocaleContext
   range?: CalenderSelectedRange
+  utcOffset?: number
 }) => {
   const [rows, setRows] = useState<CalendarRowInfo[]>([])
 
@@ -507,6 +524,7 @@ const useDate = ({
             min,
             max,
             disabledDate,
+            utcOffset,
           })
         : getDateRows({
             originDate,
@@ -517,10 +535,23 @@ const useDate = ({
             max,
             renderDate,
             disabledDate,
+            utcOffset,
           })
 
     setRows(_rows)
-  }, [renderDate, view, range, type, disabledDate, i18n, max, min, weekOffset, originDate])
+  }, [
+    renderDate,
+    view,
+    range,
+    type,
+    disabledDate,
+    i18n,
+    max,
+    min,
+    weekOffset,
+    originDate,
+    utcOffset,
+  ])
 
   return [rows]
 }

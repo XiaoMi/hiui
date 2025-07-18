@@ -5,14 +5,13 @@ import Calendar from './calendar'
 import moment from 'moment'
 import DPContext, { DPContextData } from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
-import { getView, genNewDates } from '../utils'
+import { getView, genNewDates, toUtcTime } from '../utils'
 import { useTimePickerData } from '../hooks/useTimePickerData'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
 import { getBelongWeekRange } from '../utils/week'
 import { CalenderSelectedRange } from '../hooks/useCalenderData'
 import { Footer } from './footer'
-
 interface PanelProps {
   onPick: DPContextData['onPick']
   outDate: (moment.Moment | null)[]
@@ -53,6 +52,7 @@ const Panel = (props: PanelProps) => {
     prefixCls,
     showPanel,
     footerRender,
+    utcOffset,
   } = useContext(DPContext)
   const [view, setView] = useState(getView(type))
 
@@ -69,9 +69,16 @@ const Panel = (props: PanelProps) => {
   useEffect(() => {
     const rDate = outDate[0]
       ? moment(outDate[0])
+      : // 当没有设置value时，使用当前时区的今天作为默认日期
+      typeof utcOffset === 'number'
+      ? moment()
+          .add(utcOffset * 60, 'minutes')
+          .set('hour', 0)
+          .set('minute', 0)
+          .set('second', 0)
       : moment().set('hour', 0).set('minute', 0).set('second', 0)
     setCalRenderDates([rDate])
-  }, [outDate])
+  }, [outDate, utcOffset])
 
   const onPick = useCallback(
     (dates: (moment.Moment | null)[], isShowPanel?: boolean) => {
@@ -96,7 +103,7 @@ const Panel = (props: PanelProps) => {
         return
       }
 
-      if (type === 'quarter'  && view === 'quarter') {
+      if (type === 'quarter' && view === 'quarter') {
         onPick([date], false)
         return
       }
