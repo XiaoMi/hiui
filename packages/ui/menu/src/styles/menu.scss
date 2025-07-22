@@ -74,12 +74,10 @@ $disabled-color: use-color('gray', 400) !default;
   box-sizing: border-box;
 
   .#{$prefix}-item {
-    height: 40px;
     margin: 0;
 
     &__inner {
       box-sizing: border-box;
-      height: 40px;
       display: flex;
       align-items: center;
       padding: 0 use-spacing(4) 0 use-spacing(6);
@@ -114,6 +112,24 @@ $disabled-color: use-color('gray', 400) !default;
       white-space: nowrap;
       max-width: 100%;
       padding-right: use-spacing(4);
+    }
+  }
+
+  &.#{$prefix}--size-sm {
+    .#{$prefix}-item__inner {
+      height: use-height-size(8);
+    }
+  }
+
+  &.#{$prefix}--size-md {
+    .#{$prefix}-item__inner {
+      height: use-height-size(9);
+    }
+  }
+
+  &.#{$prefix}--size-lg {
+    .#{$prefix}-item__inner {
+      height: use-height-size(10);
     }
   }
 }
@@ -363,6 +379,39 @@ $disabled-color: use-color('gray', 400) !default;
 
       &--disabled {
         @include menu-item-disabled;
+      }
+    }
+
+    &.#{$prefix}--mini.#{$prefix}--show-title-on-mini {
+      width: 68px;
+
+      .#{$prefix}-item {
+        &__inner {
+          flex-direction: column;
+          justify-content: center;
+          box-sizing: border-box;
+          width: 52px;
+          height: 48px;
+          padding: 6px 6px 0;
+
+          .#{$prefix}-item__icon {
+            margin-inline-end: 0;
+            margin-block-end: 2px;
+            display: inline-flex;
+
+            svg[class^='#{$component-prefix}-icon'] {
+              font-size: 18px;
+            }
+          }
+
+          .#{$prefix}-item__content {
+            transform: scale(0.5);
+            width: 200%;
+            font-size: 20px;
+            text-align: center;
+            text-indent: 0;
+          }
+        }
       }
     }
 

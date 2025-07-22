@@ -11,6 +11,7 @@ export * from './expand-all.stories'
 export * from './footer-render.stories'
 export * from './render.stories'
 export * from './size.stories'
+export * from './show-title-on-mini.stories'
 export * from './sidebar.stories'
 
 export default {
