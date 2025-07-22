@@ -14,6 +14,7 @@ export const Async = () => {
       <h1>Async</h1>
       <div className="pop-confirm-async__wrap">
         <PopConfirm
+          style={{ minWidth: 280 }}
           title="Hello! Are you OK?"
           visible={visible}
           footer={[

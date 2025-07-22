@@ -40,7 +40,9 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
 
     const { rootProps, getPopperProps, getTriggerProps, onCancel, onConfirm } = usePopConfirm(rest)
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, {
+      [`${prefixCls}--icon-less`]: icon === null,
+    })
 
     const hasConfirm = confirmText !== null
     const hasCancel = cancelText !== null
