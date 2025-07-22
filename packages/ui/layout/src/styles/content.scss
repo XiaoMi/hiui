@@ -1,0 +1,11 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$content-prefix: '#{$component-prefix}-content' !default;
+
+.#{$content-prefix} {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+  overflow: auto;
+}
