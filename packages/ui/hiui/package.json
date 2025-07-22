@@ -72,6 +72,7 @@
     "@hi-ui/highlighter": "^4.1.2",
     "@hi-ui/input": "^4.4.0",
     "@hi-ui/input-group": "^4.0.7",
+    "@hi-ui/layout": "^4.0.0",
     "@hi-ui/list": "^4.1.0",
     "@hi-ui/loading": "^4.3.0",
     "@hi-ui/menu": "^4.3.2",
