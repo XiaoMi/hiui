@@ -1,5 +1,5 @@
 import Button from '@hi-ui/button'
-import { AssetMonitorFilled } from '@hi-ui/icons'
+import { CloseCircleFilled } from '@hi-ui/icons'
 import React from 'react'
 import PopConfirm from '../src'
 
@@ -11,7 +11,10 @@ export const customIcon = () => {
     <>
       <h1>customIcon</h1>
       <div className="pop-confirm-custom-icon__wrap">
-        <PopConfirm title="Hello! Are you OK?" icon={<AssetMonitorFilled />}>
+        <PopConfirm
+          title="Hello! Are you OK?"
+          icon={<CloseCircleFilled style={{ color: '#fa4646' }} />}
+        >
           <Button>Trigger</Button>
         </PopConfirm>
       </div>
