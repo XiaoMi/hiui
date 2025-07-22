@@ -1,0 +1,96 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$sider-prefix: '#{$component-prefix}-sider' !default;
+$scrollbar-prefix: '#{$component-prefix}-scrollbar' !default;
+$menu-prefix: '#{$component-prefix}-menu' !default;
+
+.#{$sider-prefix} {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: auto;
+  height: 100%;
+  overflow: auto;
+
+  &--collapsed {
+    transition: width 0.4s;
+  }
+
+  &__resizable-handler {
+    position: absolute;
+    z-index: 9;
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    cursor: col-resize;
+    background-color: #2b64ff;
+    background-clip: content-box;
+    opacity: 0;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .#{$scrollbar-prefix} {
+    &__wrapper {
+      width: auto;
+    }
+  }
+
+  .#{$menu-prefix} {
+    width: auto;
+    height: auto;
+
+    &--vertical {
+      .#{$menu-prefix}-item {
+        &__inner {
+          margin-bottom: use-spacing(4) !important;
+
+          &:not(&--active):hover {
+            background-color: rgba(#7c87a6, 0.15);
+          }
+
+          &--active {
+            background-color: #fff;
+
+            .#{$menu-prefix}-item__icon {
+              color: #2b64ff;
+            }
+
+            &-p {
+              .#{$menu-prefix}-item__icon {
+                color: #2b64ff;
+              }
+            }
+          }
+        }
+
+        &__icon {
+          color: #7c87a6;
+        }
+
+        &__arrow {
+          color: #60636b;
+        }
+      }
+
+      .#{$menu-prefix}-submenu {
+        .#{$menu-prefix}-item {
+          &__inner {
+            margin-bottom: 0 !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.#{$menu-prefix}-popmenu {
+  width: 160px !important;
+}

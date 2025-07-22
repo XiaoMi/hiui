@@ -78,6 +78,9 @@ export { default as Highlighter } from '@hi-ui/highlighter'
 export * from '@hi-ui/input'
 export { default as Input } from '@hi-ui/input'
 
+export * from '@hi-ui/layout'
+export { default as Layout } from '@hi-ui/layout'
+
 export * from '@hi-ui/list'
 export { default as List } from '@hi-ui/list'
 
