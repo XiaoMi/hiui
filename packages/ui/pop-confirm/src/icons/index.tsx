@@ -1,4 +1,4 @@
 import React from 'react'
-import { ExclamationCircleFilled } from '@hi-ui/icons'
+import { InfoCircleFilled } from '@hi-ui/icons'
 
-export const defaultTipIcon = <ExclamationCircleFilled />
+export const defaultTipIcon = <InfoCircleFilled />
