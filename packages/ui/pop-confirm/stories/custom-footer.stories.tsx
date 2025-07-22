@@ -13,6 +13,7 @@ export const CustomFooter = () => {
       <h1>CustomFooter</h1>
       <div className="pop-confirm-custom-footer__wrap">
         <PopConfirm
+          style={{ minWidth: 280 }}
           title="Hello! Are you OK?"
           visible={visible}
           footer={[
