@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
 } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@hi-ui/icons'
@@ -63,6 +64,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       extraHeader,
       onClick,
       size = 'lg',
+      showTitleOnMini = false,
       ...rest
     },
     ref
@@ -89,6 +91,8 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       onExpand
     )
 
+    const expandedIdsRef = useRef(expandedIds)
+
     const clickMenu = useCallback(
       (id: React.ReactText, raw: MenuDataItem) => {
         updateActiveId(id, raw)
@@ -102,6 +106,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
           ? expandedIds.filter((expandedId) => expandedId !== id)
           : expandedIds.concat(id)
         updateExpandedIds(nextExpandedIds)
+        expandedIdsRef.current = nextExpandedIds
         if (onClickSubMenu) {
           onClickSubMenu(id, nextExpandedIds)
         }
@@ -111,7 +116,9 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     const closePopper = useCallback(
       (id: React.ReactText) => {
-        updateExpandedIds(expandedIds.filter((expandedId) => expandedId !== id))
+        const nextExpandedIds = expandedIds.filter((expandedId) => expandedId !== id)
+        updateExpandedIds(nextExpandedIds)
+        expandedIdsRef.current = nextExpandedIds
       },
       [expandedIds, updateExpandedIds]
     )
@@ -144,6 +151,14 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
         setContainerWidth(width)
       },
     })
+
+    useEffect(() => {
+      if (mini) {
+        updateExpandedIds([])
+      } else {
+        updateExpandedIds(expandedIdsRef.current)
+      }
+    }, [mini, updateExpandedIds])
 
     const [tagMaxCount, setTagMaxCount] = useState(0)
 
@@ -210,15 +225,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     const renderFooter = () => {
       const collapseNode = canToggle ? (
-        <div
-          className={cx(`${prefixCls}__toggle`)}
-          onClick={() => {
-            miniToggleAction.not()
-
-            // 关闭所有展开的子菜单，防止切换到 mini 模式后，子菜单还是展开的
-            updateExpandedIds([])
-          }}
-        >
+        <div className={cx(`${prefixCls}__toggle`)} onClick={() => miniToggleAction.not()}>
           {mini ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         </div>
       ) : null
@@ -235,13 +242,13 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const renderItem = useCallback(
       (menuItem: MenuDataItem, level?: number) => {
         // 显示缩略内容
-        if (showMini && level === 1) {
+        if (showMini && level === 1 && !showTitleOnMini) {
           return renderMenuItemMini(menuItem)
         }
 
         return isFunction(render) ? render(menuItem, level) : menuItem.title
       },
-      [render, showMini]
+      [render, showMini, showTitleOnMini]
     )
 
     const cls = cx(
@@ -250,6 +257,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       `${prefixCls}--${placement}`,
       `${prefixCls}--size-${size}`,
       mini && `${prefixCls}--mini`,
+      showTitleOnMini && `${prefixCls}--show-title-on-mini`,
       (expandedType === 'pop' || showAllSubMenus || mini) && `${prefixCls}--popup`
     )
 
@@ -396,6 +404,10 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
    * 设置菜单项的尺寸
    */
   size?: HiBaseSizeEnum
+  /**
+   * 是否在 mini 模式下显示菜单项的标题
+   */
+  showTitleOnMini?: boolean
 }
 
 if (__DEV__) {
