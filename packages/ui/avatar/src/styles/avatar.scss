@@ -8,7 +8,7 @@ $prefix: '#{$component-prefix}-avatar' !default;
   align-items: center;
   vertical-align: middle;
   text-align: center;
-  background-color: use-color-mode('primary');
+  background-color: use-color-mode('primary', 300);
   color: use-color-static('white');
   font-size: use-text-size('xl');
   overflow: hidden;
@@ -20,16 +20,16 @@ $prefix: '#{$component-prefix}-avatar' !default;
   }
 
   &--bordered {
-    border: 1px solid use-color-static('white');
+    border: use-border-size('normal') use-color('gray', 100);
   }
 
   &__content {
+    display: inline-flex;
     text-align: inherit;
     background-color: use-color-static('transparent');
     color: inherit;
     overflow: hidden;
     font-size: inherit;
-    height: 100%;
 
     // 确定层级，避免污染
     & > img {
@@ -65,35 +65,57 @@ $prefix: '#{$component-prefix}-avatar' !default;
     &-md {
       width: use-height-size(10);
       height: use-height-size(10);
-      line-height: use-height-size(10);
     }
 
     &-sm {
       width: use-height-size(8);
       height: use-height-size(8);
-      line-height: use-height-size(8);
       font-size: use-text-size('lg');
     }
 
     &-xs {
       width: use-height-size(6);
       height: use-height-size(6);
-      line-height: use-height-size(6);
       font-size: use-text-size('normal');
     }
 
     &-lg {
       width: use-height-size(12);
       height: use-height-size(12);
-      line-height: use-height-size(12);
       font-size: use-text-size('xxl');
     }
 
     &-xl {
       width: use-height-size(16);
       height: use-height-size(16);
-      line-height: use-height-size(16);
       font-size: use-text-size('xxl');
     }
+  }
+}
+
+.#{$prefix}-group {
+  > *:not(:first-child) {
+    margin-left: calc(#{use-spacing(6)} * -1);
+  }
+
+  .#{$prefix} {
+    border: use-border-size('semibold') use-color-static('white');
+    background-clip: content-box;
+  }
+
+  .#{$prefix}-group__more-button {
+    cursor: pointer;
+    color: use-color('gray', 600);
+    background-color: use-color('gray', 200);
+
+    .#{$prefix}__content {
+      font-size: use-text-size('sm');
+    }
+  }
+
+  &__more-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: use-spacing(4);
   }
 }
