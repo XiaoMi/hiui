@@ -254,12 +254,15 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
             )
           ) : (
             <span className={`${prefixCls}__value`}>
-              {value
-                .map((id) => {
-                  const option = data.find((d) => d.id === id) ?? { id, title: id }
-                  return option.title
-                })
-                .join('、')}
+              {value.map((id, index) => {
+                const option = data.find((d) => d.id === id) ?? { id, title: id }
+                return (
+                  <>
+                    {isFunction(displayRender) ? displayRender(option) : option.title}
+                    {index !== value.length - 1 && '、'}
+                  </>
+                )
+              })}
             </span>
           )}
 
