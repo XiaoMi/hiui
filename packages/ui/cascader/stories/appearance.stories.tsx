@@ -85,11 +85,11 @@ export const Appearance = () => {
             console.log('onChange', ...args)
           }}
         ></Cascader>
-        <h2>Unselected</h2>
+        <h2>Unset</h2>
         <Cascader
           style={{ width: 240 }}
           clearable
-          appearance="unselected"
+          appearance="unset"
           placeholder="请选择品类"
           defaultValue={['手机', '红米', '红米4']}
           data={data}
