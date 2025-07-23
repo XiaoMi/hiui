@@ -1,9 +1,9 @@
 import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { UserFilled } from '@hi-ui/icons'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { useLatestRef } from '@hi-ui/use-latest'
+import { UserIcon } from './UserIcon'
 
 const _role = 'avatar'
 const _prefix = getPrefixCls(_role)
@@ -67,10 +67,10 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
       }
       return (
         <span aria-label={name} className={`${prefixCls}__content ${prefixCls}--empty`}>
-          <UserFilled />
+          <UserIcon size={size} />
         </span>
       )
-    }, [src, initials, icon, name, children, prefixCls, onErrorLatestRef])
+    }, [src, icon, initials, children, name, prefixCls, size, onErrorLatestRef])
 
     const shouldUseSpecialSize = typeof size === 'number'
 
@@ -114,7 +114,7 @@ export interface AvatarProps extends HiBaseHTMLProps<'div'> {
   /**
    * 头像缩写字母
    */
-  initials?: string
+  initials?: React.ReactNode
   /**
    * 设置形状
    */
