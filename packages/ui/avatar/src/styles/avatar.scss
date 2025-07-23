@@ -92,30 +92,3 @@ $prefix: '#{$component-prefix}-avatar' !default;
     }
   }
 }
-
-.#{$prefix}-group {
-  > *:not(:first-child) {
-    margin-left: calc(#{use-spacing(6)} * -1);
-  }
-
-  .#{$prefix} {
-    border: use-border-size('semibold') use-color-static('white');
-    background-clip: content-box;
-  }
-
-  .#{$prefix}-group__more-button {
-    cursor: pointer;
-    color: use-color('gray', 600);
-    background-color: use-color('gray', 200);
-
-    .#{$prefix}__content {
-      font-size: use-text-size('sm');
-    }
-  }
-
-  &__more-content {
-    display: flex;
-    flex-wrap: wrap;
-    gap: use-spacing(4);
-  }
-}
