@@ -19,11 +19,11 @@ export const Size = () => {
             marginBottom: 20,
           }}
         >
-          <Avatar src="https://avatars.githubusercontent.com/u/810438?v=4" initials="P" size="xs" />
-          <Avatar src="https://avatars.githubusercontent.com/u/810438?v=4" initials="P" size="sm" />
-          <Avatar src="https://avatars.githubusercontent.com/u/810438?v=4" initials="P" size="md" />
-          <Avatar src="https://avatars.githubusercontent.com/u/810438?v=4" initials="P" size="lg" />
-          <Avatar src="https://avatars.githubusercontent.com/u/810438?v=4" initials="P" size="xl" />
+          <Avatar size="xs" />
+          <Avatar size="sm" />
+          <Avatar size="md" />
+          <Avatar size="lg" />
+          <Avatar size="xl" />
         </div>
         <div
           style={{
@@ -39,6 +39,21 @@ export const Size = () => {
           <Avatar initials="P" size="md" />
           <Avatar initials="P" size="lg" />
           <Avatar initials="P" size="xl" />
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 24,
+            alignItems: 'center',
+            marginBottom: 20,
+          }}
+        >
+          <Avatar src="https://avatars.githubusercontent.com/u/810438?v=4" initials="P" size="xs" />
+          <Avatar src="https://avatars.githubusercontent.com/u/810438?v=4" initials="P" size="sm" />
+          <Avatar src="https://avatars.githubusercontent.com/u/810438?v=4" initials="P" size="md" />
+          <Avatar src="https://avatars.githubusercontent.com/u/810438?v=4" initials="P" size="lg" />
+          <Avatar src="https://avatars.githubusercontent.com/u/810438?v=4" initials="P" size="xl" />
         </div>
         <div
           style={{

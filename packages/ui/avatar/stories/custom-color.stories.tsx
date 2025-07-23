@@ -14,12 +14,13 @@ export const CustomColor = () => {
         className="avatar-custom-color__wrap"
         style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center' }}
       >
-        <Avatar initials="M" style={{ backgroundColor: '#237ffa' }} />
-        <Avatar initials="H" style={{ backgroundColor: '#9772fb' }} />
-        <Avatar initials="Z" style={{ backgroundColor: '#0daeff' }} />
-        <Avatar initials="Q" style={{ backgroundColor: '#38d677' }} />
-        <Avatar initials="P" style={{ backgroundColor: '#fab007' }} />
-        <Avatar initials="Y" style={{ backgroundColor: '#fe7940' }} />
+        <Avatar style={{ backgroundColor: '#2660ff' }} />
+        <Avatar style={{ backgroundColor: '#24b237' }} />
+        <Avatar style={{ backgroundColor: '#ffbe0a' }} />
+        <Avatar style={{ backgroundColor: '#04C2AC' }} />
+        <Avatar style={{ backgroundColor: '#7F3DF2' }} />
+        <Avatar style={{ backgroundColor: '#4545E6' }} />
+        <Avatar style={{ backgroundColor: '#ABADB2' }} />
       </div>
     </>
   )
