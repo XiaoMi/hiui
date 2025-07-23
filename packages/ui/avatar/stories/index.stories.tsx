@@ -7,6 +7,7 @@ export * from './shape.stories'
 export * from './size.stories'
 export * from './custom-size.stories'
 export * from './custom-color.stories'
+export * from './group.stories'
 
 export default {
   title: 'Data Display/Avatar',
