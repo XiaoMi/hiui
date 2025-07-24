@@ -1,5 +1,11 @@
 # @hi-ui/tag-input
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- 807b7c644: fix(tag-input): 修复 contained 模式下 displayRender 设置无效问题 (5.0)
+
 ## 5.0.0-canary.9
 
 ### Patch Changes

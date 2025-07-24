@@ -1,5 +1,31 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.19
+
+### Minor Changes
+
+- ab2d5625d: feat(input&number-input): add styles and classNames api (5.0)
+- 8fe3fee69: feat(avatar): 增加 AvatarGroup 组件 & 新版样式调整 (5.0)
+- 47334c3e0: feat(menu): add showTitleOnMini api (5.0)
+
+### Patch Changes
+
+- 807b7c644: fix(tag-input): 修复 contained 模式下 displayRender 设置无效问题 (5.0)
+- 7da56a1b9: style(pop-confirm): 新版样式修改 (5.0)
+- Updated dependencies [ab2d5625d]
+- Updated dependencies [807b7c644]
+- Updated dependencies [7da56a1b9]
+- Updated dependencies [8fe3fee69]
+- Updated dependencies [47334c3e0]
+  - @hi-ui/input@5.0.0-canary.8
+  - @hi-ui/number-input@5.0.0-canary.6
+  - @hi-ui/check-cascader@5.0.0-canary.9
+  - @hi-ui/check-select@5.0.0-canary.8
+  - @hi-ui/check-tree-select@5.0.0-canary.7
+  - @hi-ui/pop-confirm@5.0.0-canary.4
+  - @hi-ui/avatar@5.0.0-canary.3
+  - @hi-ui/menu@5.0.0-canary.4
+
 ## 5.0.0-canary.18
 
 ### Minor Changes

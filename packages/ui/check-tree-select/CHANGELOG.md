@@ -1,5 +1,13 @@
 # @hi-ui/check-tree-select
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- 807b7c644: fix(tag-input): 修复 contained 模式下 displayRender 设置无效问题 (5.0)
+- Updated dependencies [807b7c644]
+  - @hi-ui/tag-input@5.0.0-canary.10
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/menu
 
+## 5.0.0-canary.4
+
+### Minor Changes
+
+- 47334c3e0: feat(menu): add showTitleOnMini api (5.0)
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

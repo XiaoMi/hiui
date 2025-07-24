@@ -1,5 +1,11 @@
 # @hi-ui/pop-confirm
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- 7da56a1b9: style(pop-confirm): 新版样式修改 (5.0)
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

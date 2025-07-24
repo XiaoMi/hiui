@@ -1,5 +1,11 @@
 # @hi-ui/avatar
 
+## 5.0.0-canary.3
+
+### Minor Changes
+
+- 8fe3fee69: feat(avatar): 增加 AvatarGroup 组件 & 新版样式调整 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

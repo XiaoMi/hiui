@@ -1,5 +1,11 @@
 # @hi-ui/number-input
 
+## 5.0.0-canary.6
+
+### Minor Changes
+
+- ab2d5625d: feat(input&number-input): add styles and classNames api (5.0)
+
 ## 5.0.0-canary.5
 
 ### Minor Changes
