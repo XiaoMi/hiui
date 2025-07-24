@@ -46,6 +46,8 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       type,
       containerRef,
       waitCompositionEnd,
+      styles,
+      classNames,
       ...rest
     },
     ref
@@ -125,7 +127,11 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
     return (
       <div role={role} className={cls} style={style} ref={containerRef}>
         <div className={outerCls}>
-          {prepend ? <div className={`${prefixCls}__prepend`}>{prepend}</div> : null}
+          {prepend ? (
+            <div className={`${prefixCls}__prepend ${classNames?.prepend}`} style={styles?.prepend}>
+              {prepend}
+            </div>
+          ) : null}
           <div
             className={cx(
               `${prefixCls}__inner`,
@@ -143,17 +149,22 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
               setHover(false)
             }}
           >
-            {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
+            {prefix ? (
+              <span className={`${prefixCls}__prefix ${classNames?.prefix}`} style={styles?.prefix}>
+                {prefix}
+              </span>
+            ) : null}
 
             <input
               ref={mergedRef}
-              className={`${prefixCls}__text`}
+              className={`${prefixCls}__text ${classNames?.input}`}
+              style={styles?.input}
               {...getInputProps()}
               {...rest}
             />
 
             {suffix || showClearableIcon ? (
-              <span className={`${prefixCls}__suffix`}>
+              <span className={`${prefixCls}__suffix ${classNames?.suffix}`} style={styles?.suffix}>
                 {showClearableIcon ? (
                   <span
                     ref={clearElementRef}
@@ -176,7 +187,11 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
               </span>
             ) : null}
           </div>
-          {append ? <div className={`${prefixCls}__append`}>{append}</div> : null}
+          {append ? (
+            <div className={`${prefixCls}__append ${classNames?.append}`} style={styles?.append}>
+              {append}
+            </div>
+          ) : null}
         </div>
       </div>
     )
@@ -271,6 +286,26 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
    * 是否等待文本段落组成完成
    */
   waitCompositionEnd?: boolean
+  /**
+   * 语义化样式设置
+   */
+  styles?: {
+    input?: React.CSSProperties
+    prefix?: React.CSSProperties
+    suffix?: React.CSSProperties
+    prepend?: React.CSSProperties
+    append?: React.CSSProperties
+  }
+  /**
+   * 语义化样式类名设置
+   */
+  classNames?: {
+    input?: string
+    prefix?: string
+    suffix?: string
+    prepend?: string
+    append?: string
+  }
 }
 
 if (__DEV__) {
