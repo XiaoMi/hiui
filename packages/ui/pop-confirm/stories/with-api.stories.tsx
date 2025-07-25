@@ -1,14 +1,49 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PopConfirm from '../src'
 import Button from '@hi-ui/button'
+import Form from '@hi-ui/form'
+import Input from '@hi-ui/input'
 
 /**
  * @title API 方式调用
  */
 export const WithApi = () => {
-  // const FormItem = Form.Item
+  const FormItem = Form.Item
   const key = 'my_key'
 
+  const Content = () => {
+    return (
+      <div style={{ width: 300 }}>
+        <Form
+          initialValues={{ testInput: 1, testInput2: 'testInput2' }}
+          labelWidth={80}
+          labelPlacement="top"
+          rules={{
+            testInput: [
+              {
+                required: true,
+                message: 'testInput1 is required',
+              },
+            ],
+            testInput2: [
+              {
+                required: true,
+                type: 'string',
+                message: 'testInput2 is required',
+              },
+            ],
+          }}
+        >
+          <FormItem field="testInput" valueType="number" label="用户名" required>
+            <Input onChange={console.log} />
+          </FormItem>
+          <FormItem field="testInput2" valueType="string" label="密码" required>
+            <Input />
+          </FormItem>
+        </Form>
+      </div>
+    )
+  }
   return (
     <>
       <h1>WithApi</h1>
@@ -19,7 +54,7 @@ export const WithApi = () => {
             PopConfirm.open(e.target as HTMLElement, {
               key: key,
               title: <div style={{ whiteSpace: 'normal' }}>标题1</div>,
-              content: <div>内容1</div>,
+              content: <Content />,
               arrow: false,
               crossGap: 0,
               placement: 'bottom-start',
@@ -35,7 +70,7 @@ export const WithApi = () => {
             PopConfirm.open(e.target as HTMLElement, {
               key: key,
               title: <div style={{ whiteSpace: 'normal' }}>标题2</div>,
-              content: <div>内容2</div>,
+              content: <Content />,
               arrow: false,
               crossGap: 0,
               placement: 'bottom-start',
