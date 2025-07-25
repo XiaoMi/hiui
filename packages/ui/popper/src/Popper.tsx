@@ -52,6 +52,8 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       container,
       animationType = 'scale',
       disabledPortal = false,
+      styles,
+      classNames,
       ...rest
     },
     ref
@@ -136,7 +138,10 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
           onExited={onExitedLatest}
         >
           <div className={cls} {...getPopperProps(rest, ref)}>
-            <div className={`${prefixCls}__container`}>
+            <div
+              className={cx(`${prefixCls}__container`, classNames?.container)}
+              style={styles?.container}
+            >
               {arrow ? <div className={`${prefixCls}__arrow`} {...getArrowProps()} /> : null}
               <div className={`${prefixCls}__content`}>{children}</div>
             </div>
@@ -192,6 +197,12 @@ export interface PopperProps extends HiBaseHTMLProps<'div'>, UsePopperProps {
    * 动画类型
    */
   animationType?: 'scale' | 'scaleX' | 'scaleY'
+  styles?: {
+    container?: React.CSSProperties
+  }
+  classNames?: {
+    container?: string
+  }
 }
 
 if (__DEV__) {
