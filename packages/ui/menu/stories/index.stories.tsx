@@ -2,6 +2,7 @@ import React from 'react'
 import Menu from '../src'
 
 export * from './basic.stories'
+export * from './menu-search.stories'
 export * from './mini.stories'
 export * from './horizontal.stories'
 export * from './pop.stories'
