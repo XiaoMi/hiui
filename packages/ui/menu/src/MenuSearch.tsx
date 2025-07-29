@@ -1,4 +1,12 @@
-import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { cx, getPrefixCls } from '@hi-ui/classname'
@@ -11,6 +19,7 @@ import Highlighter from '@hi-ui/highlighter'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
+import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { MenuDataItem } from './types'
 import { EnterIcon } from './EnterIcon'
 import { searchMenuWithPath } from './util'
@@ -21,6 +30,7 @@ const _prefix = getPrefixCls(_role)
 export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
   (
     {
+      innerRef,
       prefixCls = _prefix,
       className,
       clearText,
@@ -106,12 +116,13 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
     const handleSelect = useCallback(
       (id: React.ReactText, item: MenuDataItem, index: number) => {
         setCurrentIndex(index)
+        visibleAction.off()
         // 让列表容器获取焦点，确保键盘导航可用
         listRef.current?.focus()
 
         onSelect?.(id, item)
       },
-      [onSelect]
+      [onSelect, visibleAction]
     )
 
     const handleMove = useCallback(
@@ -136,8 +147,10 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
         setCurrentIndex(0)
       }
 
+      visibleAction.off()
+
       onSelect?.(resultMemo[currentIndex].id, resultMemo[currentIndex])
-    }, [resultMemo, currentIndex, onSelect])
+    }, [resultMemo, currentIndex, onSelect, visibleAction])
 
     const handleClear = useCallback(() => {
       tryChangeValue('')
@@ -177,13 +190,33 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
       [handleEnter, handleMove, handleEscape]
     )
 
+    const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null)
+
     useEffect(() => {
-      if (!value) {
+      if (!value || !inputRef) {
         visibleAction.off()
       } else {
         visibleAction.on()
       }
-    }, [value, visibleAction])
+    }, [inputRef, value, visibleAction])
+
+    useOutsideClick(listRef, () => {
+      visibleAction.off()
+    })
+
+    useImperativeHandle(innerRef, () => {
+      return {
+        show: () => {
+          visibleAction.on()
+        },
+        hide: () => {
+          visibleAction.off()
+        },
+        focus: () => {
+          inputRef?.focus()
+        },
+      }
+    })
 
     const cls = cx(prefixCls, className, {
       [`${prefixCls}--open`]: visible,
@@ -216,6 +249,7 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
             onClear={handleClear}
             onClose={handleClose}
             onKeyDown={handleKeyDown}
+            inputRef={setInputRef}
           />
         }
         footer={
@@ -290,7 +324,14 @@ if (__DEV__) {
   MenuSearch.displayName = 'MenuSearch'
 }
 
+export interface MenuSearchHelper {
+  show: () => void
+  hide: () => void
+  focus: () => void
+}
+
 export interface MenuSearchProps extends HiBaseHTMLProps<'div'> {
+  innerRef?: React.RefObject<MenuSearchHelper>
   clearText?: React.ReactNode
   placeholder?: string
   notFoundContent?: React.ReactNode
@@ -312,6 +353,7 @@ export const MenuSearchInput = forwardRef<
   {
     prefixCls: string
     placeholder?: string
+    inputRef?: React.Dispatch<React.SetStateAction<HTMLInputElement | null>>
     width?: React.CSSProperties['width']
     value?: string
     onChange?: (value: string) => void
@@ -321,12 +363,24 @@ export const MenuSearchInput = forwardRef<
   }
 >(
   (
-    { prefixCls, placeholder, width, value, onChange, onClear, onClose, onKeyDown, ...rest },
+    {
+      prefixCls,
+      placeholder,
+      width,
+      value,
+      onChange,
+      onClear,
+      onClose,
+      onKeyDown,
+      inputRef,
+      ...rest
+    },
     ref
   ) => {
     return (
       <div ref={ref} className={`${prefixCls}__input-wrapper`} style={{ width }}>
         <Input
+          ref={inputRef}
           className={`${prefixCls}__input`}
           appearance="unset"
           autoFocus

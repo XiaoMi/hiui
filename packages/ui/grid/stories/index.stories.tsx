@@ -10,7 +10,7 @@ export * from './responsive.stories'
 export * from './order.stories'
 
 export default {
-  title: 'Basic/Grid',
+  title: 'Layout/Grid',
   component: Grid,
   decorators: [(story: Function) => <div>{story()}</div>],
 }
