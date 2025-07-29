@@ -1,5 +1,5 @@
 import React from 'react'
-import { MenuDataItem, MenuSearch } from '../src'
+import { MenuDataItem, MenuSearch, MenuSearchHelper } from '../src'
 import { AppStoreOutlined, UserOutlined, SunOutlined, PadOutlined } from '@hi-ui/icons'
 import Popper from '@hi-ui/popper'
 import Button from '@hi-ui/button'
@@ -104,6 +104,7 @@ export const MenuSearchDemo = () => {
   const [visible, setVisible] = React.useState(false)
   const [value, setValue] = React.useState('')
   const ref = React.useRef<HTMLButtonElement>(null)
+  const searchRef = React.useRef<MenuSearchHelper>(null)
 
   return (
     <>
@@ -117,11 +118,34 @@ export const MenuSearchDemo = () => {
         <br />
         <br />
         <h2>弹出式</h2>
-        <Button ref={ref} onClick={() => setVisible(!visible)}>
+        <Button
+          ref={ref}
+          onClick={() => {
+            setVisible(true)
+          }}
+        >
           打开
         </Button>
-        <Popper visible={visible} attachEl={ref.current} gutterGap={-32}>
+        <Popper
+          visible={visible}
+          attachEl={ref.current}
+          gutterGap={-32}
+          unmountOnClose={false}
+          onOutsideClick={() => {
+            setVisible(false)
+          }}
+          onEntered={() => {
+            if (visible) {
+              searchRef.current?.focus()
+
+              if (value) {
+                searchRef.current?.show()
+              }
+            }
+          }}
+        >
           <MenuSearch
+            innerRef={searchRef}
             width={360}
             value={value}
             onChange={setValue}
@@ -130,18 +154,15 @@ export const MenuSearchDemo = () => {
             onSelect={(id, item) => {
               console.log('select', id, item)
               setVisible(false)
-              setValue('')
             }}
             onClear={() => {
               setValue('')
             }}
             onClose={() => {
               setVisible(false)
-              setValue('')
             }}
             onEsc={() => {
               setVisible(false)
-              setValue('')
             }}
           />
         </Popper>

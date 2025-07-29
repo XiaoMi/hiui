@@ -9,6 +9,54 @@ export const Basic = () => {
   const [collapsed, setCollapsed] = React.useState(false)
   const [activeMenuId, setActiveMenuId] = React.useState<React.ReactText>(1)
 
+  const data = [
+    {
+      title: '首页',
+      id: 1,
+      icon: <AppStoreFilled />,
+    },
+    {
+      title: '小米MIX',
+      id: 2,
+      icon: <UserFilled />,
+    },
+    {
+      title: '手机',
+      id: 3,
+      icon: <SunFilled />,
+      children: [
+        {
+          title: '小米',
+          id: 666,
+          children: [
+            {
+              title: '小米9',
+              id: 'xiaomi9',
+            },
+            {
+              title: '小米8',
+              id: 'xiaomi8',
+              disabled: true,
+            },
+            {
+              title: '小米7',
+              id: 'xiaomi7',
+            },
+          ],
+        },
+        {
+          title: '红米',
+          id: 'hongmi',
+        },
+      ],
+    },
+    {
+      title: '小米平板',
+      id: 4,
+      icon: <PadFilled />,
+    },
+  ]
+
   return (
     <>
       <h1>Basic</h1>
@@ -22,7 +70,7 @@ export const Basic = () => {
             <div style={{ padding: '16px 14px' }}>
               <div style={{ height: 32, backgroundColor: '#f2f4f7' }}></div>
             </div>
-            <SearchTrigger mini={collapsed} />
+            <SearchTrigger mini={collapsed} data={data} />
             <Scrollbar>
               <Menu
                 style={{
@@ -34,53 +82,7 @@ export const Basic = () => {
                 defaultExpandedIds={[3]}
                 activeId={activeMenuId}
                 onClick={setActiveMenuId}
-                data={[
-                  {
-                    title: '首页',
-                    id: 1,
-                    icon: <AppStoreFilled />,
-                  },
-                  {
-                    title: '小米MIX',
-                    id: 2,
-                    icon: <UserFilled />,
-                  },
-                  {
-                    title: '手机',
-                    id: 3,
-                    icon: <SunFilled />,
-                    children: [
-                      {
-                        title: '小米',
-                        id: 666,
-                        children: [
-                          {
-                            title: '小米9',
-                            id: 'xiaomi9',
-                          },
-                          {
-                            title: '小米8',
-                            id: 'xiaomi8',
-                            disabled: true,
-                          },
-                          {
-                            title: '小米7',
-                            id: 'xiaomi7',
-                          },
-                        ],
-                      },
-                      {
-                        title: '红米',
-                        id: 'hongmi',
-                      },
-                    ],
-                  },
-                  {
-                    title: '超长超长超长字符超长超长超长字符',
-                    id: 4,
-                    icon: <PadFilled />,
-                  },
-                ]}
+                data={data}
               />
             </Scrollbar>
             <i
