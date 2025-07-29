@@ -8,6 +8,6 @@ export * from './auto-size.stories'
 export * from './split.stories'
 
 export default {
-  title: 'Basic/Space',
+  title: 'Layout/Space',
   decorators: [(story: Function) => <div>{story()}</div>],
 }
