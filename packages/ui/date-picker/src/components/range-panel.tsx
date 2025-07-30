@@ -6,7 +6,7 @@ import moment from 'moment'
 import DPContext from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
 import { clone as cloneDeep } from '@hi-ui/object-utils'
-import { getView, parseRenderDates, genNewDates } from '../utils'
+import { getView, parseRenderDates, genNewDates, toUtcTime } from '../utils'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
 import { useTimePickerData } from '../hooks/useTimePickerData'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
@@ -41,6 +41,7 @@ const RangePanel = () => {
     strideSelectMode,
     rangeRef,
     footerRender,
+    utcOffset,
     focusIndex,
   } = useContext(DPContext)
   const calendarClickIsEnd = useRef(false)
@@ -71,8 +72,23 @@ const RangePanel = () => {
   }, [outDate])
 
   useEffect(() => {
-    setCalRenderDates(parseRenderDates(outDate, type))
-  }, [outDate, type])
+    // 处理默认日期，确保在没有值时使用正确的时区
+    const processedOutDate = outDate.map((date, index) => {
+      if (date) return date
+      // 如果没有日期值，使用当前时区的今天
+      const defaultDate =
+        typeof utcOffset === 'number'
+          ? toUtcTime(moment())
+              .add(utcOffset * 60, 'minutes')
+              .set('hour', 0)
+              .set('minute', 0)
+              .set('second', 0)
+          : moment().set('hour', 0).set('minute', 0).set('second', 0)
+      return index === 0 ? defaultDate : null
+    }) as (moment.Moment | null)[]
+
+    setCalRenderDates(parseRenderDates(processedOutDate, type))
+  }, [outDate, type, utcOffset])
 
   // 更新视图类型
   useEffect(() => {

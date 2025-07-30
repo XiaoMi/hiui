@@ -14,6 +14,7 @@ export * from './footer-render.stories'
 export * from './custom-render.stories'
 export * from './addon.stories'
 export * from './need-confirm.stories'
+export * from './utc-offset.stories'
 
 export default {
   title: 'Data Input/DatePicker',

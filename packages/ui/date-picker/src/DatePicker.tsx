@@ -64,6 +64,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       disabledDate = DEFAULT_DISABLED_DATE,
       maxDate: max = null,
       minDate: min = null,
+      utcOffset,
       onSelect: propsOnSelectOriginal,
       onPanelChange,
       theme,
@@ -201,6 +202,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       weekOffset: safeWeekOffset,
       locale,
       strideSelectMode,
+      utcOffset,
     })
     const realFormat = useFormat({
       type,
@@ -221,6 +223,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     const inputChangeEvent = (val: moment.Moment, dir: number) => {
       if (val.isValid()) {
         const oData = cloneDeep(outDate)
+        // 不在内部存储时应用 UTC 偏移，保持显示值原样
         oData[dir] = val
         // 位置开始一定小于结束
         if (oData[0] && oData[1] && oData[0]?.isAfter(oData[1])) {
@@ -242,14 +245,37 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         let returnDate = {} as any
         let returnDateStr = '' as any
 
+        // 为 onChange 回调应用时区转换（仅用于回调，不影响显示）
+        const processedDatesForCallback = _dates.map((date) => {
+          if (!date) return date
+          // 完整的时区转换流程：
+          // 1. 将显示的时间理解为 utcOffset 指定时区的时间
+          // 2. 转换为 UTC 标准时间
+          // 3. 转换为当前系统时区的本地时间
+
+          // 第一步：减去 utcOffset，得到 UTC 时间
+          const utcTime =
+            typeof utcOffset === 'number'
+              ? date.clone().subtract(utcOffset * 60, 'minutes')
+              : date.clone()
+
+          // 第二步：获取当前系统时区偏移量并转换为本地时间
+          const currentTimezoneOffset = new Date().getTimezoneOffset()
+
+          return typeof utcOffset === 'number' && utcOffset !== currentTimezoneOffset
+            ? // getTimezoneOffset() 返回 UTC 到本地时间的偏移量（分钟）
+              utcTime.subtract(currentTimezoneOffset, 'minutes')
+            : utcTime
+        })
+
         if (type.includes('range') || type === 'timeperiod') {
           returnDate = {
-            start: _dates[0]?.toDate(),
-            end: _dates[1]?.toDate(),
+            start: processedDatesForCallback[0]?.toDate(),
+            end: processedDatesForCallback[1]?.toDate(),
           }
           returnDateStr = {
-            start: _dates[0]?.format(realFormat).toLocaleUpperCase(),
-            end: _dates[1]?.format(realFormat).toLocaleUpperCase(),
+            start: processedDatesForCallback[0]?.format(realFormat).toLocaleUpperCase(),
+            end: processedDatesForCallback[1]?.format(realFormat).toLocaleUpperCase(),
           }
           compareNumber = 2
         } else if (type.includes('week')) {
@@ -267,18 +293,18 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           }
 
           returnDate = {
-            start: _dates[0]?.toDate(),
-            end: _dates[1]?.toDate(),
+            start: processedDatesForCallback[0]?.toDate(),
+            end: processedDatesForCallback[1]?.toDate(),
           }
           returnDateStr = type.includes('range')
             ? {
-                start: getWeekString(_dates[0]),
-                end: getWeekString(_dates[1]),
+                start: getWeekString(processedDatesForCallback[0]),
+                end: getWeekString(processedDatesForCallback[1]),
               }
-            : getWeekString(_dates[0])
+            : getWeekString(processedDatesForCallback[0])
         } else {
-          returnDate = _dates[0]?.toDate()
-          returnDateStr = _dates[0]?.format(realFormat).toLocaleUpperCase()
+          returnDate = processedDatesForCallback[0]?.toDate()
+          returnDateStr = processedDatesForCallback[0]?.format(realFormat).toLocaleUpperCase()
         }
 
         // 只有发生了改变，才会去通知外部
@@ -295,7 +321,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           emitOnChange && onChange(returnDate as any, returnDateStr)
         }
       },
-      [format, i18n, onChange, realFormat, safeWeekOffset, type, showTime]
+      [format, i18n, onChange, realFormat, safeWeekOffset, type, showTime, utcOffset]
     )
 
     const onPick = useCallback(
@@ -466,6 +492,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           footerRender,
           strideSelectMode,
           rangeRef,
+          utcOffset,
           focusIndex,
           setFocusIndex,
         }}

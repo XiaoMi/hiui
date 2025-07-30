@@ -239,60 +239,6 @@ $prefix: '#{$component-prefix}-tabs' !default;
       }
     }
 
-    &--type-line {
-
-      .#{$prefix}__item {
-        display: flex;
-        align-items: center;
-
-        .#{$prefix}-item__title {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-      }
-
-      &.#{$prefix}__list--size-sm {
-        .#{$prefix}__item {
-          // padding: calc(#{use-spacing(4)} + 1px) 0 calc(#{use-spacing(4)} + 1px) use-spacing(14);
-          height: use-height-size(10);
-          padding: 0 0 0 use-spacing(14);
-          font-size: use-text-size('normal');
-          line-height: use-text-lineheight('normal');
-        }
-      }
-
-      &.#{$prefix}__list--size-md:not(.#{$prefix}__list--placement-vertical) {
-        .#{$prefix}__item {
-          // padding: calc(#{use-spacing(6)} + 1px) 0 calc(#{use-spacing(6)} + 1px) use-spacing(14);
-          height: use-height-size(12);
-          padding: 0 0 0 use-spacing(14);
-          font-size: use-text-size('normal');
-          line-height: use-text-lineheight('normal');
-        }
-      }
-
-      &.#{$prefix}__list--size-lg {
-        .#{$prefix}__item {
-          // padding: use-spacing(9) 0 use-spacing(9) use-spacing(14);
-          height: use-height-size(15);
-          padding: 0 0 0 use-spacing(14);
-          font-size: use-text-size('lg');
-          line-height: use-text-lineheight('lg');
-        }
-      }
-
-      &.#{$prefix}__list--placement-horizontal {
-        .#{$prefix}__item:first-child {
-          padding-left: 0;
-        }
-
-        .#{$prefix}__item:last-child {
-          padding-right: 0;
-        }
-      }
-    }
-
     &--inner {
       display: flex;
       position: relative;
@@ -331,28 +277,6 @@ $prefix: '#{$component-prefix}-tabs' !default;
       &.#{$prefix}__list--show-divider {
         border-bottom: 1px solid use-color('gray', 200);
       }
-    }
-  }
-
-  &--placement-horizontal {
-    .#{$prefix}__list {
-      &.#{$prefix}__list--show-divider {
-        border-bottom: 1px solid use-color('gray', 200);
-      }
-      // &--show-divider {
-      //   .#{$prefix}__list--scroll {
-      //     &::after {
-      //       content: '';
-      //       position: absolute;
-      //       z-index: 0;
-      //       bottom: 0;
-      //       left: 0;
-      //       width: 100%;
-      //       height: 1px;
-      //       background-color: use-color('gray', 200);
-      //     }
-      //   }
-      // }
     }
   }
 

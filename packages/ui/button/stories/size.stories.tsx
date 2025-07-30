@@ -26,6 +26,7 @@ export const Size = () => {
           </Button>
           <Button type="primary" icon={<PlusOutlined />} size="lg" />
         </div>
+
         <div style={{ marginBottom: 24, display: 'flex', alignItems: 'center' }}>
           <Button type="primary" appearance="line" size="xs">
             超小号按钮

@@ -132,6 +132,10 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    */
   maxDate?: Date
   /**
+   * UTC时间偏移量，单位为小时。例如：东八区传入8，西五区传入-5
+   */
+  utcOffset?: number
+  /**
    * 是否禁用
    * @default false
    */

@@ -40,6 +40,7 @@ const Calendar = ({
     dateMarkPresetData,
     prefixCls,
     cellRender,
+    utcOffset,
   } = useContext(DPContext)
 
   // const largeCell = !!(altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset)
@@ -65,6 +66,7 @@ const Calendar = ({
     max,
     // panelPosition,
     disabledDate,
+    utcOffset,
   })
 
   const [calendarCls, setCalenderCls] = useState(`${prefixCls}__calendar`)

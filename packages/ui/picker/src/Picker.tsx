@@ -52,6 +52,9 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       footer,
       onOverlayScroll,
       innerRef,
+      styles,
+      classNames,
+      gutterGap = 4,
       ...rest
     },
     ref
@@ -179,9 +182,15 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
         })}
         <Popper
           ref={popperRef}
+          styles={{
+            container: styles?.container,
+          }}
+          classNames={{
+            container: classNames?.container,
+          }}
           matchWidth={optionWidth === undefined}
           matchWidthStrictly
-          gutterGap={4}
+          gutterGap={gutterGap}
           // @DesignToken zIndex: overlay
           zIndex={1050}
           {...overlay}
@@ -198,8 +207,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
           attachEl={targetElement}
         >
           <div
-            className={`${prefixCls}__panel`}
-            style={{ minWidth: optionWidth, width: optionWidth }}
+            className={cx(`${prefixCls}__panel`, classNames?.panel)}
+            style={{ minWidth: optionWidth, width: optionWidth, ...styles?.panel }}
           >
             {searchable ? (
               <div className={`${prefixCls}__search`}>
@@ -224,8 +233,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
                 4. 动态搜索无结果
             */}
             <div
-              className={`${prefixCls}__body`}
-              style={{ overflowY: scrollable ? 'auto' : 'hidden' }}
+              className={cx(`${prefixCls}__body`, classNames?.body)}
+              style={{ overflowY: scrollable ? 'auto' : 'hidden', ...styles?.body }}
               onScroll={onOverlayScroll}
             >
               {loading ? (
@@ -245,7 +254,14 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
                 ) : null)
               )}
             </div>
-            {footer ? <div className={`${prefixCls}__footer`}>{footer}</div> : null}
+            {footer ? (
+              <div
+                className={cx(`${prefixCls}__footer`, classNames?.footer)}
+                style={styles?.footer}
+              >
+                {footer}
+              </div>
+            ) : null}
           </div>
         </Popper>
       </div>
@@ -357,9 +373,25 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    */
   scrollable?: boolean
   /**
+   * 气泡卡片与触发器的间距
+   */
+  gutterGap?: number
+  /**
    * 提供辅助方法的内部引用
    */
   innerRef?: React.Ref<PickerHelper>
+  styles?: {
+    container?: React.CSSProperties
+    panel?: React.CSSProperties
+    body?: React.CSSProperties
+    footer?: React.CSSProperties
+  }
+  classNames?: {
+    container?: string
+    panel?: string
+    body?: string
+    footer?: string
+  }
 }
 
 if (__DEV__) {
