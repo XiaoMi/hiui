@@ -1,5 +1,17 @@
 # @hi-ui/menu
 
+## 5.0.0-canary.5
+
+### Minor Changes
+
+- 44c862279: chore(menu): 增加变更记录文件 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [7bc790804]
+  - @hi-ui/picker@5.0.0-canary.9
+  - @hi-ui/popper@5.0.0-canary.5
+
 ## 5.0.0-canary.4
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/date-picker",
-  "version": "5.0.0-canary.9",
+  "version": "5.0.0-canary.10",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -49,7 +49,7 @@
     "@hi-ui/env": "^5.0.0-canary.2",
     "@hi-ui/icons": "^5.0.0-canary.2",
     "@hi-ui/object-utils": "^5.0.0-canary.2",
-    "@hi-ui/popper": "^5.0.0-canary.3",
+    "@hi-ui/popper": "^5.0.0-canary.5",
     "@hi-ui/time-picker": "^5.0.0-canary.5",
     "axios": "^1.5.0",
     "moment": "^2.29.4",

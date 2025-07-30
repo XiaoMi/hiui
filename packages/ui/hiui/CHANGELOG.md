@@ -1,5 +1,25 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.20
+
+### Minor Changes
+
+- 7839d421f: feat(layout): 新增 Layout 组件 (5.0)
+- 0d6cec005: feat(date-picker): add utcOffset api (#3232)
+- 7bc790804: feat(picker&popper): 增加 styles 和 classNames 属性以支持自定义样式 & Picker 增加 gutterGap api (5.0)
+- 44c862279: chore(menu): 增加变更记录文件 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [7839d421f]
+- Updated dependencies [0d6cec005]
+- Updated dependencies [7bc790804]
+- Updated dependencies [44c862279]
+  - @hi-ui/layout@4.1.0-canary.0
+  - @hi-ui/date-picker@5.0.0-canary.10
+  - @hi-ui/picker@5.0.0-canary.9
+  - @hi-ui/menu@5.0.0-canary.5
+
 ## 5.0.0-canary.19
 
 ### Minor Changes

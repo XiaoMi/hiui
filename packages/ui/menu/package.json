@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/menu",
-  "version": "5.0.0-canary.4",
+  "version": "5.0.0-canary.5",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -52,8 +52,8 @@
     "@hi-ui/ellipsis-tooltip": "^5.0.0-canary.2",
     "@hi-ui/highlighter": "^5.0.0-canary.2",
     "@hi-ui/input": "^5.0.0-canary.8",
-    "@hi-ui/picker": "^5.0.0-canary.8",
-    "@hi-ui/popper": "^5.0.0-canary.3",
+    "@hi-ui/picker": "^5.0.0-canary.9",
+    "@hi-ui/popper": "^5.0.0-canary.5",
     "@hi-ui/scrollbar": "^5.0.0-canary.2",
     "@hi-ui/times": "^5.0.0-canary.2",
     "@hi-ui/tooltip": "^5.0.0-canary.3",

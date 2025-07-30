@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, ReactText } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
@@ -70,7 +70,7 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
             onChange={setValue}
             data={data}
             placeholder="搜索"
-            onSelect={(id: string, item: MenuDataItem) => {
+            onSelect={(id: ReactText, item: MenuDataItem) => {
               console.log('select', id, item)
               setVisible(false)
             }}

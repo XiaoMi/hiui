@@ -1,5 +1,16 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.10
+
+### Minor Changes
+
+- 0d6cec005: feat(date-picker): add utcOffset api (#3232)
+
+### Patch Changes
+
+- Updated dependencies [7bc790804]
+  - @hi-ui/popper@5.0.0-canary.5
+
 ## 5.0.0-canary.9
 
 ### Patch Changes
