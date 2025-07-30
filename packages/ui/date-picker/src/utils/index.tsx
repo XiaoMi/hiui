@@ -21,6 +21,58 @@ import { CalendarColInfo } from '../hooks/useCalenderData'
 // import { CalendarViewEnum } from '../components/calendar'
 import { getBelongWeekBoundary } from './week'
 
+/**
+ * 应用UTC偏移到moment对象
+ * @param momentDate moment对象
+ * @param utcOffset UTC偏移量（小时）
+ * @returns 应用偏移后的moment对象
+ */
+export const applyUtcOffset = (momentDate: moment.Moment | null, utcOffset?: number) => {
+  if (!momentDate || !momentDate.isValid()) {
+    return momentDate
+  }
+
+  if (typeof utcOffset !== 'number') {
+    return momentDate
+  }
+
+  // 使用 add 方法实际偏移时间值，而不是仅仅设置时区
+  return momentDate.clone().add(utcOffset * 60, 'minutes')
+}
+
+/**
+ * 判断是否是当前时区
+ */
+export const isCurrentTimezone = (utcOffset: number) => {
+  return new Date().getTimezoneOffset() === utcOffset * 60
+}
+
+/**
+ * 转换为国际标准时间
+ */
+export const toUtcTime = (momentDate: moment.Moment) => {
+  const utcTime = momentDate.utc()
+  const newDate = utcTime.format('YYYY-MM-DD HH:mm:ss')
+  return moment(newDate).clone()
+}
+
+/**
+ * 创建应用UTC偏移的moment对象
+ * @param dateValue 日期值
+ * @param format 格式
+ * @param utcOffset UTC偏移量（小时）
+ * @returns 应用偏移后的moment对象
+ */
+export const createMomentWithUtcOffset = (dateValue: any, format?: string, utcOffset?: number) => {
+  const momentDate = moment(dateValue, format)
+
+  if (typeof utcOffset === 'number') {
+    return toUtcTime(momentDate).add(utcOffset * 60, 'minutes')
+  }
+
+  return momentDate.clone()
+}
+
 const holiday = {
   PRCHoliday:
     'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?' + new Date().getFullYear(),
@@ -286,25 +338,35 @@ export const getInRangeDate = (
 }
 
 /**
- * 格式化value
+ * 解析日期数据
  * @param value 格式化的值
  * @param type 类型
  * @param weekOffset 周偏移
  * @param format 日期格式
+ * @param strideSelectMode 跨月选择模式
+ * @param utcOffset UTC偏移量（小时）
  */
 export const parseValue = (
   value: DatePickerValueV3,
   type: DatePickerTypeEnum,
   weekOffset: number,
   format?: string,
-  strideSelectMode?: 'auto' | 'fixed'
+  strideSelectMode?: 'auto' | 'fixed',
+  utcOffset?: number
 ) => {
   if (!value) return [null]
 
   // 暂时无法理解为何此处自行获取了 type
   // const _format = getLocaleTypeFormatMap(locale)[type]
   // const _value = moment(value as any, _format)
-  const _value = moment(value as any, typeof format === 'string' ? format : undefined)
+  const _value =
+    typeof utcOffset === 'number'
+      ? createMomentWithUtcOffset(
+          value as any,
+          typeof format === 'string' ? format : undefined,
+          utcOffset
+        )
+      : moment(value as any, typeof format === 'string' ? format : undefined)
   const isValid = moment(_value).isValid()
 
   if (value && typeof value === 'object' && (type.includes('range') || type === 'timeperiod')) {
@@ -312,20 +374,42 @@ export const parseValue = (
 
     if (type === 'weekrange') {
       if (strideSelectMode === 'fixed') {
-        return [moment(rangeValue.start), moment(rangeValue.end)]
+        return [
+          typeof utcOffset === 'number'
+            ? createMomentWithUtcOffset(rangeValue.start, format, utcOffset)
+            : moment(rangeValue.start),
+          typeof utcOffset === 'number'
+            ? createMomentWithUtcOffset(rangeValue.end, format, utcOffset)
+            : moment(rangeValue.end),
+        ]
       }
 
+      const startMoment =
+        typeof utcOffset === 'number'
+          ? createMomentWithUtcOffset(rangeValue.start, format, utcOffset)
+          : moment(rangeValue.start)
+      const endMoment =
+        typeof utcOffset === 'number'
+          ? createMomentWithUtcOffset(rangeValue.end, format, utcOffset)
+          : moment(rangeValue.end)
+
       return [
-        rangeValue.start ? getBelongWeekBoundary(moment(rangeValue.start), weekOffset) : null,
-        rangeValue.end ? getBelongWeekBoundary(moment(rangeValue.end), weekOffset, false) : null,
+        rangeValue.start ? getBelongWeekBoundary(startMoment, weekOffset) : null,
+        rangeValue.end ? getBelongWeekBoundary(endMoment, weekOffset, false) : null,
       ]
     }
 
     return [
       rangeValue.start && moment(rangeValue.start).isValid()
-        ? moment(rangeValue.start, format)
+        ? typeof utcOffset === 'number'
+          ? createMomentWithUtcOffset(rangeValue.start, format, utcOffset)
+          : moment(rangeValue.start, format)
         : null,
-      rangeValue.end && moment(rangeValue.end).isValid() ? moment(rangeValue.end, format) : null,
+      rangeValue.end && moment(rangeValue.end).isValid()
+        ? typeof utcOffset === 'number'
+          ? createMomentWithUtcOffset(rangeValue.end, format, utcOffset)
+          : moment(rangeValue.end, format)
+        : null,
     ]
   }
 

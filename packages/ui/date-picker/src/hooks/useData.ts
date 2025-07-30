@@ -12,6 +12,7 @@ interface IUseDateConfig {
   type: DatePickerTypeEnum
   weekOffset: number
   strideSelectMode?: 'auto' | 'fixed'
+  utcOffset?: number
 }
 
 export const useDate = (config: IUseDateConfig) => {
@@ -24,11 +25,20 @@ export const useDate = (config: IUseDateConfig) => {
     locale,
     weekOffset,
     strideSelectMode,
+    utcOffset,
   } = config
 
   const [outDate, setOutDate] = useState<(moment.Moment | null)[]>(() => {
     const _value = value || defaultValue
-    const d = parseValue(_value, type, weekOffset, format as any, strideSelectMode) as any
+    // 应用 UTC 偏移，以正确显示时区偏移后的值
+    const d = parseValue(
+      _value,
+      type,
+      weekOffset,
+      format as any,
+      strideSelectMode,
+      utcOffset // 传入 utcOffset 以应用时区偏移
+    ) as any
 
     cacheDate.current = d
 
@@ -47,12 +57,13 @@ export const useDate = (config: IUseDateConfig) => {
   useEffect(() => {
     if (value === undefined) return
 
-    const d = parseValue(value, type, weekOffset, format as any, strideSelectMode) as any
+    // 应用 UTC 偏移，以正确显示时区偏移后的值
+    const d = parseValue(value, type, weekOffset, format as any, strideSelectMode, utcOffset) as any
 
     setOutDate(d)
 
     cacheDate.current = d
-  }, [value, type, weekOffset, format, locale, setOutDate, cacheDate, strideSelectMode])
+  }, [value, type, weekOffset, format, locale, setOutDate, cacheDate, strideSelectMode, utcOffset])
 
   return [outDate, changeOutDate] as const
 }
