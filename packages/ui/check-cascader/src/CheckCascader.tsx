@@ -21,12 +21,12 @@ import {
   useTreeCustomSearch,
   useTreeUpMatchSearch,
 } from '@hi-ui/use-search-mode'
-import { flattenTreeData } from './utils'
+import { flattenTreeData, getAllCheckedStatus, processCheckedIds, allowCheck } from './utils'
 import { filterTree, getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
 import { HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
-
+import Checkbox from '@hi-ui/checkbox'
 import { callAllFuncs } from '@hi-ui/func-utils'
 
 const _prefix = getPrefixCls('check-cascader')
@@ -82,6 +82,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       label,
       showOnlyShowChecked,
       virtual,
+      showCheckAll,
       ...rest
     },
     ref
@@ -233,6 +234,44 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       })
     }, [flattedDataMap, value])
 
+    const toggleCheckAll = useCallback(() => {
+      const [currentAllChecked, hasCheckedAll] = getAllCheckedStatus(flattedData, value)
+
+      const shouldChecked = !currentAllChecked
+
+      // 全选操作
+      if (!currentAllChecked && !hasCheckedAll) {
+        const checkedIds = processCheckedIds(
+          checkedMode as string,
+          flattedData
+            .filter((item) => allowCheck(item as CheckCascaderItemEventData))
+            .map(({ id }) => id),
+          flattedData,
+          allowCheck
+        )
+
+        proxyOnChange(checkedIds, null, shouldChecked)
+      } else {
+        proxyOnChange([], null, shouldChecked)
+      }
+    }, [checkedMode, flattedData, value, proxyOnChange])
+
+    const renderDefaultFooter = useCallback(() => {
+      if (!showCheckAll) return null
+
+      const [showAllChecked, showIndeterminate] = getAllCheckedStatus(flattedData, value)
+
+      return (
+        <Checkbox
+          indeterminate={showIndeterminate}
+          checked={showAllChecked}
+          onChange={toggleCheckAll}
+        >
+          {i18n.get('checkSelect.checkAll')}
+        </Checkbox>
+      )
+    }, [i18n, value, showCheckAll, flattedData, toggleCheckAll])
+
     useEffect(() => {
       if (menuVisible) {
         // 数据改变时更新弹窗显示位置，避免弹窗内容被遮挡
@@ -258,7 +297,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         onClose={menuVisibleAction.off}
         searchable={searchable}
         scrollable={false}
-        footer={isFunction(renderExtraFooter) && renderExtraFooter()}
+        footer={isFunction(renderExtraFooter) ? renderExtraFooter() : renderDefaultFooter()}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
@@ -531,6 +570,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 是否开启虚拟滚动
    */
   virtual?: boolean
+  /**
+   * 是否开启全选功能
+   */
+  showCheckAll?: boolean
 }
 
 if (__DEV__) {

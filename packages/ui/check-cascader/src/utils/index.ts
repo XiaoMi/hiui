@@ -269,3 +269,26 @@ function fillCheck(
 
   return Array.from(checkedIdsSet)
 }
+
+export const allowCheck = (targetItem: CheckCascaderItemEventData) => {
+  if (targetItem.disabled || targetItem.disabledCheckbox || targetItem.checkable === false) {
+    return false
+  }
+  return true
+}
+
+export const getAllCheckedStatus = (flattedData: any[], values: React.ReactText[]) => {
+  const treeIds = flattedData.filter(allowCheck).map(({ id }: CheckCascaderItemEventData) => id)
+
+  const treeIdsSet = new Set(treeIds)
+  let hasValue = false
+
+  values.forEach((id) => {
+    if (treeIdsSet.has(id)) {
+      hasValue = true
+      treeIdsSet.delete(id)
+    }
+  })
+
+  return [hasValue && treeIdsSet.size === 0, hasValue && treeIdsSet.size > 0]
+}
