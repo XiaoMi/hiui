@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
@@ -9,7 +9,7 @@ import { defaultTipIcon } from './icons'
 
 import { isUndef } from '@hi-ui/type-assertion'
 
-const POP_CONFIRM_PREFIX = getPrefixCls('pop-confirm')
+export const POP_CONFIRM_PREFIX = getPrefixCls('pop-confirm')
 
 /**
  * 气泡确认框
@@ -18,6 +18,7 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
   (
     {
       prefixCls = POP_CONFIRM_PREFIX,
+      innerRef,
       role = 'alert-dialog',
       className,
       children,
@@ -38,7 +39,19 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
       ? i18n.get('popConfirm.confirmText')
       : confirmTextProp
 
-    const { rootProps, getPopperProps, getTriggerProps, onCancel, onConfirm } = usePopConfirm(rest)
+    const {
+      rootProps,
+      getPopperProps,
+      getTriggerProps,
+      onCancel,
+      onConfirm,
+      visibleAction,
+    } = usePopConfirm(rest)
+
+    useImperativeHandle(innerRef, () => ({
+      open: visibleAction.on,
+      close: visibleAction.off,
+    }))
 
     const cls = cx(prefixCls, className, {
       [`${prefixCls}--icon-less`]: icon === null,
@@ -105,6 +118,7 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
 )
 
 export interface PopConfirmProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UsePopConfirmProps {
+  innerRef?: React.Ref<{ open: () => void; close: () => void }>
   /**
    * 确认框标题
    */
