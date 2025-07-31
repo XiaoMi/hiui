@@ -14,6 +14,7 @@ export const usePopConfirm = ({
   onConfirm: onConfirmProp,
   onOpen,
   onClose,
+  attachEl,
   ...restProps
 }: UsePopConfirmProps) => {
   // TODO: 移除 popper，使用 hook 重写
@@ -67,10 +68,10 @@ export const usePopConfirm = ({
     return {
       ...popperProps,
       visible,
-      attachEl: targetEl,
+      attachEl: attachEl ?? targetEl,
       onClose: visibleAction.off,
     }
-  }, [visible, targetEl, popper, visibleAction])
+  }, [visible, attachEl, targetEl, popper, visibleAction])
 
   const rootProps = {
     role: 'alert-dialog',
@@ -83,6 +84,7 @@ export const usePopConfirm = ({
     getPopperProps,
     onCancel,
     onConfirm,
+    visibleAction,
   }
 }
 
@@ -121,6 +123,10 @@ export interface UsePopConfirmProps extends PopperOverlayProps {
    * 设置基于 reference 元素的间隙偏移量
    */
   gutterGap?: number
+  /**
+   * 吸附的元素
+   */
+  attachEl?: HTMLElement
   /**
    * 是否开启禁用。暂不对外暴露
    * @private
