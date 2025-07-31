@@ -21,7 +21,13 @@ import {
   useTreeCustomSearch,
   useTreeUpMatchSearch,
 } from '@hi-ui/use-search-mode'
-import { flattenTreeData, getAllCheckedStatus, processCheckedIds, allowCheck } from './utils'
+import {
+  flattenTreeData,
+  getAllCheckedStatus,
+  processCheckedIds,
+  allowCheck,
+  parseCheckDataDirty,
+} from './utils'
 import { filterTree, getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
@@ -234,9 +240,19 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       })
     }, [flattedDataMap, value])
 
-    const toggleCheckAll = useCallback(() => {
-      const [currentAllChecked, hasCheckedAll] = getAllCheckedStatus(flattedData, value)
+    const [currentAllChecked, hasCheckedAll] = useMemo(() => {
+      if (!showCheckAll) return []
+      const parsedCheckedIds = parseCheckDataDirty(
+        checkedMode as string,
+        value,
+        flattedData,
+        allowCheck
+      )
 
+      return getAllCheckedStatus(flattedData, parsedCheckedIds)
+    }, [showCheckAll, value, flattedData, checkedMode])
+
+    const toggleCheckAll = useCallback(() => {
       const shouldChecked = !currentAllChecked
 
       // 全选操作
@@ -254,23 +270,21 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       } else {
         proxyOnChange([], null, shouldChecked)
       }
-    }, [checkedMode, flattedData, value, proxyOnChange])
+    }, [checkedMode, flattedData, currentAllChecked, hasCheckedAll, proxyOnChange])
 
     const renderDefaultFooter = useCallback(() => {
       if (!showCheckAll) return null
 
-      const [showAllChecked, showIndeterminate] = getAllCheckedStatus(flattedData, value)
-
       return (
         <Checkbox
-          indeterminate={showIndeterminate}
-          checked={showAllChecked}
+          indeterminate={hasCheckedAll}
+          checked={currentAllChecked}
           onChange={toggleCheckAll}
         >
           {i18n.get('checkSelect.checkAll')}
         </Checkbox>
       )
-    }, [i18n, value, showCheckAll, flattedData, toggleCheckAll])
+    }, [i18n, showCheckAll, currentAllChecked, hasCheckedAll, toggleCheckAll])
 
     useEffect(() => {
       if (menuVisible) {

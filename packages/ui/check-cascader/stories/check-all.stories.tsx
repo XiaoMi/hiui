@@ -13,7 +13,6 @@ export const CheckAll = () => {
         {
           title: 'Redmi系列',
           id: '0-0',
-          checkable: false,
           children: [
             {
               id: '0-0-1',
@@ -93,7 +92,7 @@ export const CheckAll = () => {
           style={{ width: 240 }}
           data={data}
           showCheckAll
-          checkedMode="CHILD"
+          checkedMode="PARENT"
           onChange={console.log}
         />
       </div>

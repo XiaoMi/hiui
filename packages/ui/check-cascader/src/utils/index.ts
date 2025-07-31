@@ -278,7 +278,7 @@ export const allowCheck = (targetItem: CheckCascaderItemEventData) => {
 }
 
 export const getAllCheckedStatus = (flattedData: any[], values: React.ReactText[]) => {
-  const treeIds = flattedData.filter(allowCheck).map(({ id }: CheckCascaderItemEventData) => id)
+  const treeIds = flattedData.map(({ id }: CheckCascaderItemEventData) => id)
 
   const treeIdsSet = new Set(treeIds)
   let hasValue = false
