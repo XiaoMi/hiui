@@ -119,7 +119,7 @@ export interface UseSearchModeProps<T = any> {
 
 export type UseSearchModeReturn = ReturnType<typeof useSearchMode>
 
-export const useAsyncSearch = ({ dataSource, dataTransform }: any) => {
+export const useAsyncSearch = ({ dataSource, dataTransform, expandAll = false }: any) => {
   // 提到外部
   const { loading, hasError, loadRemoteData } = useDataSource({ dataSource, validate: isArray })
   const dataTransformLatestRef = useLatestRef(dataTransform)
@@ -131,17 +131,33 @@ export const useAsyncSearch = ({ dataSource, dataTransform }: any) => {
         .then((asyncData: any) => {
           // setStatus('fulfilled')
           const dataTransform = dataTransformLatestRef.current
+          const data = dataTransform ? dataTransform(asyncData) : asyncData
+          const expandedIds: React.ReactText[] = []
+
+          if (expandAll) {
+            function getParentIds(data: any[]) {
+              data.forEach((item) => {
+                if (item.children) {
+                  expandedIds.push(item.id)
+                  getParentIds(item.children)
+                }
+              })
+            }
+            getParentIds(data)
+          }
+
+          // 将 data 转换为扁平化数据，并获取所有父节点的 id，存储到变量 arr 中
           dispatch({
-            matched: isArrayNonEmpty(asyncData),
-            data: dataTransform ? dataTransform(asyncData) : asyncData,
-            expandedIds: [],
+            matched: isArrayNonEmpty(data),
+            data,
+            expandedIds,
           })
         })
         .catch(() => {
           // setStatus('rejected')
         })
     },
-    [loadRemoteData, dataTransformLatestRef]
+    [dataTransformLatestRef, loadRemoteData, expandAll]
   )
 
   return { name: 'dataSource', enabled: !!dataSource, run: onAsyncSearch, loading, hasError }
