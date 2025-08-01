@@ -18,6 +18,7 @@ export * from './dropdown-column-render.stories'
 export * from './addon.stories'
 export * from './custom-render.stories'
 export * from './virtual.stories'
+export * from './check-all.stories'
 // export * from './flatted.stories'
 
 export default {
