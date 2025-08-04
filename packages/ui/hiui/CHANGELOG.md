@@ -1,5 +1,42 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.21
+
+### Minor Changes
+
+- f8173e768: feat(progress): 新版样式调整 & 增加 MiniProgress 组件(5.0)
+
+### Patch Changes
+
+- 208182f02: feat(check-cascader): 增加全选功能
+- b3a21e9cd: fix(date-picker): disabledDate 回调的时间参数加上 utcOffset 处理 (5.0)
+- fc1360986: fix(table): 更新 useTable 逻辑以确保滚动位置不超出表格宽度，并添加 @hi-ui/radio 依赖
+- dc1311a91: fix(check-tree-select): 完善 dataSource 功能，支持搜索结果高亮和展开 (#3247)
+- 83b5d790d: chore(number-input): 补充 placeholder 类型
+- b5a1fa3ae: style(search): 下拉列表设置最大高度 & 增加 dropdownClassName 参数 (#3251)
+- 53f5599a8: style(card): 新版样式调整 (5.0)
+- ad5d98fff: style(layout): Sider 组件默认宽度改为 180px (5.0)
+- Updated dependencies [68d31483e]
+- Updated dependencies [f8173e768]
+- Updated dependencies [208182f02]
+- Updated dependencies [b3a21e9cd]
+- Updated dependencies [fc1360986]
+- Updated dependencies [dc1311a91]
+- Updated dependencies [83b5d790d]
+- Updated dependencies [b5a1fa3ae]
+- Updated dependencies [53f5599a8]
+- Updated dependencies [ad5d98fff]
+  - @hi-ui/pop-confirm@5.0.0-canary.5
+  - @hi-ui/progress@5.0.0-canary.4
+  - @hi-ui/check-cascader@5.0.0-canary.10
+  - @hi-ui/date-picker@5.0.0-canary.11
+  - @hi-ui/table@5.0.0-canary.10
+  - @hi-ui/check-tree-select@5.0.0-canary.8
+  - @hi-ui/number-input@5.0.0-canary.7
+  - @hi-ui/search@5.0.0-canary.3
+  - @hi-ui/card@5.0.0-canary.3
+  - @hi-ui/layout@5.0.0-canary.1
+
 ## 5.0.0-canary.20
 
 ### Minor Changes

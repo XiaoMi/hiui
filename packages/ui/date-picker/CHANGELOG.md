@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.11
+
+### Patch Changes
+
+- b3a21e9cd: fix(date-picker): disabledDate 回调的时间参数加上 utcOffset 处理 (5.0)
+
 ## 5.0.0-canary.10
 
 ### Minor Changes

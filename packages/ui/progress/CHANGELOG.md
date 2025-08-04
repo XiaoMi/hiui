@@ -1,5 +1,11 @@
 # @hi-ui/progress
 
+## 5.0.0-canary.4
+
+### Minor Changes
+
+- f8173e768: feat(progress): 新版样式调整 & 增加 MiniProgress 组件(5.0)
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

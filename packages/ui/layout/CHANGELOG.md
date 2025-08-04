@@ -1,5 +1,11 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.1
+
+### Patch Changes
+
+- ad5d98fff: style(layout): Sider 组件默认宽度改为 180px (5.0)
+
 ## 4.1.0-canary.0
 
 ### Minor Changes

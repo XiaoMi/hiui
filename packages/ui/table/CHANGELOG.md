@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- fc1360986: fix(table): 更新 useTable 逻辑以确保滚动位置不超出表格宽度，并添加 @hi-ui/radio 依赖
+
 ## 5.0.0-canary.9
 
 ### Patch Changes

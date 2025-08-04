@@ -1,5 +1,11 @@
 # @hi-ui/number-input
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- 83b5d790d: chore(number-input): 补充 placeholder 类型
+
 ## 5.0.0-canary.6
 
 ### Minor Changes

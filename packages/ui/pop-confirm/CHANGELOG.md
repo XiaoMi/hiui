@@ -1,5 +1,11 @@
 # @hi-ui/pop-confirm
 
+## 5.0.0-canary.5
+
+### Minor Changes
+
+- 68d31483e: feat(pop-confirm): PopConfirm 组件支持以 api 方式调用
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

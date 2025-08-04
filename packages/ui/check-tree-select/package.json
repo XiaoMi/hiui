@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/check-tree-select",
-  "version": "5.0.0-canary.7",
+  "version": "5.0.0-canary.8",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -59,7 +59,7 @@
     "@hi-ui/type-assertion": "^5.0.0-canary.2",
     "@hi-ui/use-check": "^5.0.0-canary.2",
     "@hi-ui/use-data-source": "^5.0.0-canary.2",
-    "@hi-ui/use-search-mode": "^5.0.0-canary.2",
+    "@hi-ui/use-search-mode": "^5.0.0-canary.3",
     "@hi-ui/use-toggle": "^5.0.0-canary.2",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-canary.2"
   },

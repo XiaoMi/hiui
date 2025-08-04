@@ -1,5 +1,13 @@
 # @hi-ui/check-cascader
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- 208182f02: feat(check-cascader): 增加全选功能
+- Updated dependencies [dc1311a91]
+  - @hi-ui/use-search-mode@5.0.0-canary.3
+
 ## 5.0.0-canary.9
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/use-search-mode
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- dc1311a91: fix(check-tree-select): 完善 dataSource 功能，支持搜索结果高亮和展开 (#3247)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

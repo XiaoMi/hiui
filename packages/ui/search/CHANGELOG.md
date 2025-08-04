@@ -1,5 +1,11 @@
 # @hi-ui/search
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- b5a1fa3ae: style(search): 下拉列表设置最大高度 & 增加 dropdownClassName 参数 (#3251)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

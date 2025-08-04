@@ -1,5 +1,11 @@
 # @hi-ui/card
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- 53f5599a8: style(card): 新版样式调整 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes
