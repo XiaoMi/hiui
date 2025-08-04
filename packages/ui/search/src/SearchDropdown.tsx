@@ -20,6 +20,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({
   onSelect,
   keyword,
   popper,
+  className,
 }) => {
   const highlightKeyword = useLatestCallback((title: string) => {
     if (keyword && keyword.length > 0) {
@@ -94,7 +95,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({
   return (
     <Popper {...popper}>
       <Loading visible={loading}>
-        <div className={`${prefixCls}__dropdown`}>{renderItem(data)}</div>
+        <div className={cx(`${prefixCls}__dropdown`, className)}>{renderItem(data)}</div>
       </Loading>
     </Popper>
   )
@@ -125,6 +126,10 @@ export interface SearchDropdownProps extends Pick<SearchProps, 'prefixCls' | 'lo
    * 搜索关键词
    */
   keyword: string
+  /**
+   * 下拉列表的类名称
+   */
+  className?: string
 }
 
 if (__DEV__) {
