@@ -21,13 +21,13 @@ export const Circle = () => {
 
         <CircleProgress
           type="warning"
-          content={<CloseOutlined style={{ fontSize: '20px' }} />}
+          content={<ExclamationOutlined style={{ fontSize: '20px' }} />}
           percent={50}
         />
 
         <CircleProgress
           type="error"
-          content={<ExclamationOutlined style={{ fontSize: '20px' }} />}
+          content={<CloseOutlined style={{ fontSize: '20px' }} />}
           percent={20}
         />
       </div>
