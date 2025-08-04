@@ -4,7 +4,7 @@ import { DAY_MILLISECONDS } from '../utils/constants'
 import { DatePickerTypeEnum, DisabledDate } from '../types'
 import { getBelongWeek, getBelongWeekBoundary } from '../utils/week'
 import { UseLocaleContext } from '@hi-ui/core'
-import { toUtcTime } from '../utils'
+import { createDateWithUTCOffset, toUtcTime } from '../utils'
 
 const getYearOrMonthRows = ({
   originDate,
@@ -319,11 +319,15 @@ const getDateRows = ({
           rangeEnd: false,
         } as CalendarColInfo)
       const currentTime = moment(startTimeByCurrentPanel + DAY_MILLISECONDS * (i * 7 + j))
+      const currentTimeUTC =
+        typeof utcOffset === 'number'
+          ? createDateWithUTCOffset(currentTime, utcOffset)
+          : currentTime
       let isPN = false // is Prev Or Next Month
       const isDisabled =
-        currentTime.isBefore(moment(min)) ||
-        currentTime.isAfter(moment(max)) ||
-        (disabledDate && disabledDate(currentTime.toDate(), 'date')) // isDisabled cell
+        currentTimeUTC.isBefore(moment(min)) ||
+        currentTimeUTC.isAfter(moment(max)) ||
+        (disabledDate && disabledDate(currentTimeUTC.clone().toDate(), 'date'))
       if (i === 0) {
         // 处理第一行的日期数据
         if (j >= firstDayWeek) {
