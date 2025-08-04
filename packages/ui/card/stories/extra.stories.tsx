@@ -11,7 +11,14 @@ export const Extra = () => {
     <>
       <h1>Extra</h1>
       <div className="card-extra__wrap">
-        <Card title="标题" extra={<Button appearance="link">链接</Button>}>
+        <Card
+          title="标题"
+          extra={
+            <Button type="primary" appearance="link">
+              链接
+            </Button>
+          }
+        >
           <div
             style={{
               height: 174,
@@ -26,7 +33,15 @@ export const Extra = () => {
         </Card>
         <br />
         <br />
-        <Card title="标题" showHeaderDivider extra={<Button appearance="link">链接</Button>}>
+        <Card
+          title="标题"
+          showHeaderDivider
+          extra={
+            <Button type="primary" appearance="link">
+              链接
+            </Button>
+          }
+        >
           <div
             style={{
               height: 174,
