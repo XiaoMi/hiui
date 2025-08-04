@@ -47,7 +47,7 @@
     "@hi-ui/classname": "^4.0.5",
     "@hi-ui/env": "^4.0.5",
     "@hi-ui/func-utils": "^4.0.4",
-    "@hi-ui/highlighter": "^4.0.9",
+    "@hi-ui/highlighter": "^4.1.2",
     "@hi-ui/icons": "^4.0.19",
     "@hi-ui/input": "^4.1.1",
     "@hi-ui/loading": "^4.2.1",
