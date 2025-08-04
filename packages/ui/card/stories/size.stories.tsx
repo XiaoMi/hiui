@@ -12,7 +12,15 @@ export const Size = () => {
       <h1>Size</h1>
       <div className="card-size__wrap">
         <h2>常规</h2>
-        <Card title="标题" size="md" extra={<Button appearance="link">链接</Button>}>
+        <Card
+          title="标题"
+          size="md"
+          extra={
+            <Button type="primary" appearance="link">
+              链接
+            </Button>
+          }
+        >
           <div
             style={{
               height: 174,
@@ -27,7 +35,15 @@ export const Size = () => {
         </Card>
         <br />
         <h2>紧凑</h2>
-        <Card title="标题" size="sm" extra={<Button appearance="link">链接</Button>}>
+        <Card
+          title="标题"
+          size="sm"
+          extra={
+            <Button type="primary" appearance="link">
+              链接
+            </Button>
+          }
+        >
           <div
             style={{
               height: 174,

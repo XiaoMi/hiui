@@ -3,7 +3,7 @@
 $prefix: '#{$component-prefix}-card' !default;
 
 .#{$prefix} {
-  border-radius: use-border-radius('lg');
+  border-radius: use-border-radius('xl');
   box-sizing: border-box;
   background: use-color-static('white');
   width: 100%;
@@ -46,7 +46,7 @@ $prefix: '#{$component-prefix}-card' !default;
     margin: 0;
     padding: 0;
     width: 100%;
-    border-radius: use-border-radius('lg') use-border-radius('lg') 0 0;
+    border-radius: use-border-radius('xl') use-border-radius('xl') 0 0;
   }
 
   &__header {
@@ -59,7 +59,7 @@ $prefix: '#{$component-prefix}-card' !default;
     overflow: hidden;
 
     &--divider {
-      border-bottom: 1px solid use-color('gray', 200);
+      border-bottom: use-border-size('normal') use-color('gray', 200);
       margin-bottom: use-spacing(8);
     }
   }
@@ -71,11 +71,10 @@ $prefix: '#{$component-prefix}-card' !default;
   }
 
   &__subhead {
-    margin-top: use-spacing(2);
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');
     line-height: use-text-lineheight('sm');
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
   }
 
   &__cover {
@@ -107,7 +106,7 @@ $prefix: '#{$component-prefix}-card' !default;
     flex: 1;
     color: use-color('gray', 700);
     font-size: use-text-size('lg');
-    font-weight: use-text-weight('semibold');
+    font-weight: use-text-weight('medium');
   }
 
   &__extra {
@@ -117,7 +116,7 @@ $prefix: '#{$component-prefix}-card' !default;
   }
 
   &--bordered {
-    border: 1px solid use-color('gray', 200);
+    border: use-border-size('normal') use-color('gray', 200);
   }
 
   &--hoverable {
