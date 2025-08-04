@@ -36,6 +36,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
       data = NOOP_ARRAY,
       fieldNames,
       overlayClassName,
+      dropdownClassName,
       // input
       onFocus,
       onKeyDown: onKeyDownProp,
@@ -239,6 +240,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
               attachEl: targetElRef.current,
               className: overlayClassName,
             }}
+            className={dropdownClassName}
             loading={loading}
             data={transformedData}
             focusIndex={focusIndex}
@@ -278,6 +280,10 @@ export interface SearchProps extends Omit<InputProps, 'onChange' | 'appearance'>
    * 下拉根元素的类名称
    */
   overlayClassName?: string
+  /**
+   * 下拉列表的类名称
+   */
+  dropdownClassName?: string
   /**
    * 搜索结果的数据
    */

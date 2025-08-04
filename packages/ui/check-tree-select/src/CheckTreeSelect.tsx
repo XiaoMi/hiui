@@ -20,7 +20,7 @@ import { UpOutlined, DownOutlined } from '@hi-ui/icons'
 import { HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import Checkbox from '@hi-ui/checkbox'
-// import { UseDataSource } from '@hi-ui/use-data-source'
+import { UseDataSource } from '@hi-ui/use-data-source'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -131,23 +131,30 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       [fieldNames]
     )
 
+    const flatData = useCallback(
+      (data: any[]) => {
+        return baseFlattenTree({
+          tree: data,
+          childrenFieldName: (node) => getKeyFields(node, 'children'),
+          transform: (node) => {
+            const flattedNode: FlattedCheckTreeSelectDataItem = node as FlattedCheckTreeSelectDataItem
+            const raw = node.raw
+
+            flattedNode.id = getKeyFields(raw, 'id')
+            flattedNode.title = getKeyFields(raw, 'title')
+            flattedNode.disabled = getKeyFields(raw, 'disabled') ?? false
+            flattedNode.isLeaf = getKeyFields(raw, 'isLeaf') ?? false
+
+            return flattedNode
+          },
+        }) as FlattedCheckTreeSelectDataItem[]
+      },
+      [getKeyFields]
+    )
+
     const flattedData = useMemo(() => {
-      return baseFlattenTree({
-        tree: data,
-        childrenFieldName: (node) => getKeyFields(node, 'children'),
-        transform: (node) => {
-          const flattedNode: FlattedCheckTreeSelectDataItem = node as FlattedCheckTreeSelectDataItem
-          const raw = node.raw
-
-          flattedNode.id = getKeyFields(raw, 'id')
-          flattedNode.title = getKeyFields(raw, 'title')
-          flattedNode.disabled = getKeyFields(raw, 'disabled') ?? false
-          flattedNode.isLeaf = getKeyFields(raw, 'isLeaf') ?? false
-
-          return flattedNode
-        },
-      }) as FlattedCheckTreeSelectDataItem[]
-    }, [data, getKeyFields])
+      return flatData(data)
+    }, [data, flatData])
 
     // TODO: 抽离展开hook
     // TODO: onLoadChildren 和 defaultExpandAll 共存时
@@ -163,10 +170,49 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       onExpand
     )
 
+    // ************************** 异步搜索 ************************* //
+
+    // const { loading, hasError, loadRemoteData } = useDataSource({ dataSource, validate: isArray })
+
+    const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({
+      dataSource,
+      expandAll: true,
+    })
+    const customSearchStrategy = useTreeCustomSearch({ data, filterOption })
+    const filterSearchStrategy = useFilterSearch({
+      enabled: searchModeProp === 'filter',
+      data,
+      flattedData,
+      fieldNames,
+    })
+    const highlightSearchStrategy = useHighlightSearch({
+      data,
+      flattedData,
+      searchMode: searchModeProp,
+    })
+
+    const {
+      state: stateInSearch,
+      setStateInSearch,
+      searchable,
+      searchMode,
+      onSearch,
+      keyword: searchValue,
+    } = useSearchMode({
+      searchable: searchableProp,
+      keyword: keywordProp,
+      strategies: [
+        dataSourceStrategy,
+        customSearchStrategy,
+        filterSearchStrategy,
+        highlightSearchStrategy,
+      ],
+    })
+
     const [value, tryChangeValue, onNodeCheck, checkedNodes, parsedCheckedIds] = useCheck(
       checkedMode,
       disabled,
-      flattedData,
+      flatData(stateInSearch.data) || flattedData,
       defaultValue,
       valueProp,
       onChange
@@ -201,42 +247,6 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       [tryChangeValue, onNodeCheck]
     )
 
-    // ************************** 异步搜索 ************************* //
-
-    // const { loading, hasError, loadRemoteData } = useDataSource({ dataSource, validate: isArray })
-
-    const { loading, hasError, ...dataSourceStrategy } = useAsyncSearch({ dataSource })
-    const customSearchStrategy = useTreeCustomSearch({ data, filterOption })
-    const filterSearchStrategy = useFilterSearch({
-      enabled: searchModeProp === 'filter',
-      data,
-      flattedData,
-      fieldNames,
-    })
-    const highlightSearchStrategy = useHighlightSearch({
-      data,
-      flattedData,
-      searchMode: searchModeProp,
-    })
-
-    const {
-      state: stateInSearch,
-      setStateInSearch,
-      searchable,
-      searchMode,
-      onSearch,
-      keyword: searchValue,
-    } = useSearchMode({
-      searchable: searchableProp,
-      keyword: keywordProp,
-      strategies: [
-        dataSourceStrategy,
-        customSearchStrategy,
-        filterSearchStrategy,
-        highlightSearchStrategy,
-      ],
-    })
-
     // 拦截 titleRender，自定义高亮展示
     const proxyTitleRender = useCallback(
       (node: CheckTreeSelectItemEventData) => {
@@ -246,7 +256,8 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         }
 
         // 本地搜索执行默认高亮规则
-        const highlight = !!searchValue && (searchMode === 'highlight' || searchMode === 'filter')
+        const highlight =
+          !!searchValue && (searchMode === 'highlight' || searchMode === 'filter' || dataSource)
 
         const ret = highlight ? (
           <Highlighter keyword={new RegExp(searchValue, 'ig')}>{node.title}</Highlighter>
@@ -256,7 +267,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
 
         return ret
       },
-      [titleRender, searchValue, searchMode]
+      [titleRender, searchValue, searchMode, dataSource]
     )
 
     const shouldUseSearch = !!searchValue && !hasError
@@ -572,7 +583,7 @@ export interface CheckTreeSelectProps
   /**
    * 异步加载数据。暂不对外暴露
    */
-  // dataSource?: UseDataSource<CheckTreeSelectDataItem[]>
+  dataSource?: UseDataSource<CheckTreeSelectDataItem[]>
   /**
    * 没有选项时的提示
    */

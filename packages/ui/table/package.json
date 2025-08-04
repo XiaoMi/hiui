@@ -59,6 +59,7 @@
     "@hi-ui/object-utils": "^5.0.0-canary.2",
     "@hi-ui/pagination": "^5.0.0-canary.4",
     "@hi-ui/popper": "^5.0.0-canary.4",
+    "@hi-ui/radio": "^5.0.0-canary.2",
     "@hi-ui/react-utils": "^5.0.0-canary.2",
     "@hi-ui/scrollbar": "^5.0.0-canary.3",
     "@hi-ui/select": "^5.0.0-canary.7",

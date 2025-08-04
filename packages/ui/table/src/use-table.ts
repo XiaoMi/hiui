@@ -465,7 +465,16 @@ export const useTable = ({
         scrollRight = tableTefRight - right
       }
 
-      setScrollSize({ scrollLeft, scrollRight })
+      let _scrollLeft = scrollLeft
+      if (bodyTableRef.current && scrollBodyElementRef.current) {
+        const { width: tableWidth } = bodyTableRef.current.getBoundingClientRect()
+        const { width: scrollBodyWidth } = scrollBodyElementRef.current.getBoundingClientRect()
+        if (scrollLeft + scrollBodyWidth > tableWidth) {
+          _scrollLeft = tableWidth - scrollBodyWidth
+        }
+      }
+
+      setScrollSize({ scrollLeft: _scrollLeft, scrollRight })
     },
     [rightFrozenColKeys, scrollSize]
   )

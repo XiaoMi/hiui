@@ -50,6 +50,7 @@ export const NumberInput = forwardRef<HTMLDivElement | null, NumberInputProps>(
 
 export interface NumberInputProps extends CounterProps {
   prefix?: React.ReactNode
+  placeholder?: string
   suffix?: React.ReactNode
   styles?: {
     input?: React.CSSProperties

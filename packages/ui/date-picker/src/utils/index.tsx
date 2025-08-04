@@ -73,6 +73,20 @@ export const createMomentWithUtcOffset = (dateValue: any, format?: string, utcOf
   return momentDate.clone()
 }
 
+export function createDateWithUTCOffset(date: moment.Moment, utcOffset: number) {
+  const year = date.year()
+  const month = date.month()
+  const day = date.date()
+  const hours = date.hour()
+  const minutes = date.minute()
+  const seconds = date.second()
+
+  // 根据 utcOffset 获取对应的 UTC 时间
+  const utcDate = Date.UTC(year, month, day, hours - utcOffset, minutes, seconds)
+
+  return moment(utcDate)
+}
+
 const holiday = {
   PRCHoliday:
     'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?' + new Date().getFullYear(),

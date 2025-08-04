@@ -9,6 +9,8 @@ $prefix: '#{$component-prefix}-search' !default;
     font-size: use-text-size('normal');
     // 填充没有选项时 loading 展示空间
     min-height: 48px;
+    max-height: 276px;
+    overflow-y: auto;
 
     &--highlight {
       color: use-color-mode('primary');
