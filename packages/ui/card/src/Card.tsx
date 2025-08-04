@@ -98,7 +98,6 @@ export interface CardProps extends HiBaseHTMLProps<'div'> {
    * 是否展示边框
    */
   bordered?: boolean
-
   /**
    * 是否展示加载状态
    */
