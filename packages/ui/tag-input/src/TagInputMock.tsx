@@ -129,19 +129,21 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       }
 
       // 保底要展示 1 个
-      setTagMaxCount(isArrayNonEmpty(mergedTagList) && tagMaxCount < 1 ? 1 : tagMaxCount)
+      setTagMaxCount(isArrayNonEmpty(mergedTagList) && tagMaxCount < 1 ? 0 : tagMaxCount)
     }, [tagsWidth, suffixWidth, getTagWidth, containerWidth, mergedTagList, suffix])
 
     // mergedTagList 更新后同步更新 tagsWidth
     useEffect(() => {
-      const updatedTagsWidth: { [key: string]: number } = {}
+      setTagsWidth((prev) => {
+        const updatedTagsWidth: { [key: string]: number } = {}
 
-      mergedTagList.forEach((item) => {
-        const { id } = item
-        updatedTagsWidth[id] = tagsWidth[id] ?? 0
+        mergedTagList.forEach((item) => {
+          const { id } = item
+          updatedTagsWidth[id] = prev[id] ?? 0
+        })
+
+        return updatedTagsWidth
       })
-
-      setTagsWidth(updatedTagsWidth)
     }, [mergedTagList])
 
     const onClearLatest = useLatestCallback(onClear)
