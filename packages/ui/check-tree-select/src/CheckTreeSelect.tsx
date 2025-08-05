@@ -208,10 +208,15 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       ],
     })
 
+    const dataMemo = useMemo(() => {
+      const flattedStateData = flatData(stateInSearch.data)
+      return isArrayNonEmpty(flattedStateData) ? flattedStateData : flattedData
+    }, [flatData, stateInSearch.data, flattedData])
+
     const [value, tryChangeValue, onNodeCheck, checkedNodes, parsedCheckedIds] = useCheck(
       checkedMode,
       disabled,
-      flatData(stateInSearch.data) || flattedData,
+      dataMemo,
       defaultValue,
       valueProp,
       onChange
