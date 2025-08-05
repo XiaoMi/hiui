@@ -210,7 +210,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
 
     const dataMemo = useMemo(() => {
       const flattedStateData = flatData(stateInSearch.data)
-      return flattedStateData.length > 0 ? flattedStateData : flattedData
+      return isArrayNonEmpty(flattedStateData) ? flattedStateData : flattedData
     }, [flatData, stateInSearch.data, flattedData])
 
     const [value, tryChangeValue, onNodeCheck, checkedNodes, parsedCheckedIds] = useCheck(
