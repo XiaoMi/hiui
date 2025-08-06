@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.12
+
+### Patch Changes
+
+- fix(date-picker): 修复日期范围无法传时间戳问题 (5.0)
+
 ## 5.0.0-canary.11
 
 ### Patch Changes

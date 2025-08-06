@@ -1,5 +1,11 @@
 # @hi-ui/tag
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- 05b99e260: fix(tag): editable 为 true 时才能触发双击事件 (5.0)
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

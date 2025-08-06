@@ -1,5 +1,11 @@
 # @hi-ui/number-input
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- 7182c7bb8: fix(input): 使用 cx 函数优化样式类名的拼接 (5.0)
+
 ## 5.0.0-canary.7
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @hi-ui/tag-input
 
+## 5.0.0-canary.11
+
+### Patch Changes
+
+- d7d87fb57: style(tag-input): 调整 total 的内边距和最小宽度 (5.0)
+- b8c19048f: fix(tag-input): 修复 TagInputMock 组件中标签最大数量逻辑及更新 tagsWidth 的处理方式 (#3260)
+
 ## 5.0.0-canary.10
 
 ### Patch Changes

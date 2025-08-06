@@ -1,5 +1,13 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- 07e7b975b: style(layout): 修改 Sider 收起时宽度为 60px & 增加 width 参数 (5.0)
+- Updated dependencies [07e7b975b]
+  - @hi-ui/menu@5.0.0-canary.6
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

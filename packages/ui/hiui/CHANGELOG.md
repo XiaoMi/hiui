@@ -1,5 +1,37 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.22
+
+### Patch Changes
+
+- 107a027a3: style(radio): 新版样式调整 (5.0)
+- d7d87fb57: style(tag-input): 调整 total 的内边距和最小宽度 (5.0)
+- 643c0e09f: style(picker): 移除 picker 组件中的 \_\_text 样式定义 (5.0)
+- 05b99e260: fix(tag): editable 为 true 时才能触发双击事件 (5.0)
+- 7182c7bb8: fix(input): 使用 cx 函数优化样式类名的拼接 (5.0)
+- 07e7b975b: style(layout): 修改 Sider 收起时宽度为 60px & 增加 width 参数 (5.0)
+- b8c19048f: fix(tag-input): 修复 TagInputMock 组件中标签最大数量逻辑及更新 tagsWidth 的处理方式 (#3260)
+- fix(date-picker): 修复日期范围无法传时间戳问题 (5.0)
+- Updated dependencies [107a027a3]
+- Updated dependencies [643c0e09f]
+- Updated dependencies [05b99e260]
+- Updated dependencies [7182c7bb8]
+- Updated dependencies [07e7b975b]
+- Updated dependencies
+  - @hi-ui/radio@5.0.0-canary.3
+  - @hi-ui/cascader@5.0.0-canary.9
+  - @hi-ui/check-cascader@5.0.0-canary.11
+  - @hi-ui/check-select@5.0.0-canary.9
+  - @hi-ui/check-tree-select@5.0.0-canary.9
+  - @hi-ui/select@5.0.0-canary.8
+  - @hi-ui/tree-select@5.0.0-canary.7
+  - @hi-ui/tag@5.0.0-canary.6
+  - @hi-ui/input@5.0.0-canary.9
+  - @hi-ui/number-input@5.0.0-canary.8
+  - @hi-ui/layout@5.0.0-canary.2
+  - @hi-ui/menu@5.0.0-canary.6
+  - @hi-ui/date-picker@5.0.0-canary.12
+
 ## 5.0.0-canary.21
 
 ### Minor Changes

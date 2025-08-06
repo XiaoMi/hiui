@@ -1,5 +1,16 @@
 # @hi-ui/check-select
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- 643c0e09f: style(picker): 移除 picker 组件中的 \_\_text 样式定义 (5.0)
+- Updated dependencies [d7d87fb57]
+- Updated dependencies [7182c7bb8]
+- Updated dependencies [b8c19048f]
+  - @hi-ui/tag-input@5.0.0-canary.11
+  - @hi-ui/input@5.0.0-canary.9
+
 ## 5.0.0-canary.8
 
 ### Patch Changes
