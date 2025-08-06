@@ -7,8 +7,8 @@ import { Resizable, ResizeCallbackData } from 'react-resizable'
 
 const SIDER_PREFIX = getPrefixCls('sider')
 
-const SIDER_WIDTH = 180
-const SIDER_WIDTH_MIN = 68
+const DEFAULT_SIDER_WIDTH = 180
+const SIDER_WIDTH_MIN = 60
 const SIDER_WIDTH_MIN_COLLAPSED = 150
 
 /**
@@ -20,6 +20,7 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
       prefixCls = SIDER_PREFIX,
       role = 'sider',
       className,
+      width: widthProp,
       collapsed: collapsedProp,
       onCollapse,
       children,
@@ -28,7 +29,8 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
     ref
   ) => {
     const [collapsed, setCollapsed] = useUncontrolledState(false, collapsedProp, onCollapse)
-    const [width, setWidth] = useState(collapsedProp ? SIDER_WIDTH_MIN : SIDER_WIDTH)
+    const siderWidth = widthProp || DEFAULT_SIDER_WIDTH
+    const [width, setWidth] = useState(collapsedProp ? SIDER_WIDTH_MIN : siderWidth)
 
     const handleResize = (evt: React.SyntheticEvent, options: ResizeCallbackData) => {
       let width = options?.size?.width as number
@@ -39,7 +41,7 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
       }
 
       if (collapsed && width > SIDER_WIDTH_MIN) {
-        width = SIDER_WIDTH
+        width = siderWidth
         setTimeout(() => {
           setCollapsed(false)
         }, 300)
@@ -84,6 +86,7 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
 )
 
 export interface SiderProps extends HiBaseHTMLProps<'div'> {
+  width?: number
   collapsed?: boolean
   onCollapse?: (collapsed: boolean) => void
 }
