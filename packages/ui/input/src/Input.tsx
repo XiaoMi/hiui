@@ -128,7 +128,10 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       <div role={role} className={cls} style={style} ref={containerRef}>
         <div className={outerCls}>
           {prepend ? (
-            <div className={`${prefixCls}__prepend ${classNames?.prepend}`} style={styles?.prepend}>
+            <div
+              className={cx(`${prefixCls}__prepend`, classNames?.prepend)}
+              style={styles?.prepend}
+            >
               {prepend}
             </div>
           ) : null}
@@ -150,21 +153,27 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
             }}
           >
             {prefix ? (
-              <span className={`${prefixCls}__prefix ${classNames?.prefix}`} style={styles?.prefix}>
+              <span
+                className={cx(`${prefixCls}__prefix`, classNames?.prefix)}
+                style={styles?.prefix}
+              >
                 {prefix}
               </span>
             ) : null}
 
             <input
               ref={mergedRef}
-              className={`${prefixCls}__text ${classNames?.input}`}
+              className={cx(`${prefixCls}__text`, classNames?.input)}
               style={styles?.input}
               {...getInputProps()}
               {...rest}
             />
 
             {suffix || showClearableIcon ? (
-              <span className={`${prefixCls}__suffix ${classNames?.suffix}`} style={styles?.suffix}>
+              <span
+                className={cx(`${prefixCls}__suffix`, classNames?.suffix)}
+                style={styles?.suffix}
+              >
                 {showClearableIcon ? (
                   <span
                     ref={clearElementRef}
@@ -188,7 +197,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
             ) : null}
           </div>
           {append ? (
-            <div className={`${prefixCls}__append ${classNames?.append}`} style={styles?.append}>
+            <div className={cx(`${prefixCls}__append`, classNames?.append)} style={styles?.append}>
               {append}
             </div>
           ) : null}
