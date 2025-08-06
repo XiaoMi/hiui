@@ -16,10 +16,10 @@ $label-class: '#{$prefix}__label' !default;
   vertical-align: middle;
 
   &--type-button {
-    height: 32px;
-    padding: 0 12px;
+    height: use-height-size(8);
+    padding: 0 use-spacing(6);
+    border-radius: use-border-radius('md');
     color: use-color('gray', 600);
-    background: use-color('gray', 100);
     cursor: pointer;
     transition: all use-motion-duration('normal');
 
@@ -38,8 +38,11 @@ $label-class: '#{$prefix}__label' !default;
 
     &:hover,
     &[data-checked] {
-      background: use-color-mode('primary', 50);
       color: use-color-mode('primary');
+    }
+
+    &[data-checked] {
+      background: use-color-static('white');
     }
 
     &[data-disabled] {
@@ -60,7 +63,7 @@ $label-class: '#{$prefix}__label' !default;
       &__input {
         &:focus + .#{$prefix}__controller {
           border-color: use-color-mode('primary');
-          box-shadow: 0 0 0 2px use-color-mode('primary', 100);
+          // box-shadow: 0 0 0 2px use-color-mode('primary', 100);
         }
       }
 
@@ -160,8 +163,11 @@ $label-class: '#{$prefix}__label' !default;
   }
 
   &--type-button {
+    padding: use-spacing(1);
     border-radius: use-border-radius('normal');
+    border: use-border-size('normal') use-color('gray', 200);
     overflow: hidden;
+    background-color: use-color('gray', 50);
   }
 
   &--type-default {
@@ -184,16 +190,23 @@ $label-class: '#{$prefix}__label' !default;
       }
     }
 
-    .#{$prefix}--type-button {
-      &::after {
+    .#{$prefix}--type-button:not([data-checked]):not(:first-child) {
+      &::before {
         content: '';
-        background: use-color('gray', 300);
+        background: use-color('gray', 200);
         width: 1px;
-        left: 100%;
+        left: 0;
         top: 8px;
         bottom: 8px;
         position: absolute;
         z-index: use-zindex('absolute');
+      }
+    }
+
+    .#{$prefix}--type-button[data-disabled],
+    .#{$prefix}--type-button[data-checked] + .#{$prefix}--type-button {
+      &::before {
+        display: none;
       }
     }
   }
@@ -201,16 +214,23 @@ $label-class: '#{$prefix}__label' !default;
   &--placement-vertical {
     flex-direction: column;
 
-    .#{$prefix}--type-button {
-      &::after {
+    .#{$prefix}--type-button:not([data-checked]):not(:first-child) {
+      &::before {
         content: '';
-        background: use-color('gray', 300);
+        background: use-color('gray', 200);
         height: 1px;
         left: 8px;
         right: 8px;
-        top: 100%;
+        top: 0;
         position: absolute;
         z-index: use-zindex('absolute');
+      }
+    }
+
+    .#{$prefix}--type-button[data-disabled],
+    .#{$prefix}--type-button[data-checked] + .#{$prefix}--type-button {
+      &::before {
+        display: none;
       }
     }
   }
