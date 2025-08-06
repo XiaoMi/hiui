@@ -53,6 +53,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
       closeAllPopper,
       activeParents,
       overlayClassName,
+      showTitleOnMini,
     } = useContext(MenuContext)
 
     const _parentIds = (parentIds || []).concat(id)
@@ -179,7 +180,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               visible={!!expandedIds?.includes(id)}
               attachEl={itemRef.current}
               placement={'right-start'}
-              gutterGap={16}
+              gutterGap={showTitleOnMini ? 8 : 16}
               className={overlayClassName}
               onClose={() => {
                 closePopper?.(id)
@@ -206,7 +207,7 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               visible={!!expandedIds?.includes(id)}
               attachEl={itemRef.current}
               placement={'right-start'}
-              gutterGap={16}
+              gutterGap={showTitleOnMini ? 12 : 16}
               disabledPortal
               className={overlayClassName}
               onClose={() => {

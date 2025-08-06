@@ -273,6 +273,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
             expandedType,
             showAllSubMenus,
             mini,
+            showTitleOnMini,
             clickMenu,
             clickSubMenu,
             closePopper,
