@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react'
-import { getPrefixCls } from '@hi-ui/classname'
+import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { useCounter, CounterProps } from '@hi-ui/counter'
@@ -21,21 +21,21 @@ export const NumberInput = forwardRef<HTMLDivElement | null, NumberInputProps>(
     return (
       <div ref={ref} {...rootProps}>
         {prefix ? (
-          <span className={`${prefixCls}__prefix ${classNames?.prefix}`} style={styles?.prefix}>
+          <span className={cx(`${prefixCls}__prefix`, classNames?.prefix)} style={styles?.prefix}>
             {prefix}
           </span>
         ) : null}
         <input
           {...getInputProps()}
-          className={`${prefixCls}__input ${classNames?.input}`}
+          className={cx(`${prefixCls}__input`, classNames?.input)}
           style={styles?.input}
         />
         {suffix ? (
-          <span className={`${prefixCls}__suffix ${classNames?.suffix}`} style={styles?.suffix}>
+          <span className={cx(`${prefixCls}__suffix`, classNames?.suffix)} style={styles?.suffix}>
             {suffix}
           </span>
         ) : null}
-        <div className={`${prefixCls}__handler ${classNames?.handler}`} style={styles?.handler}>
+        <div className={cx(`${prefixCls}__handler`, classNames?.handler)} style={styles?.handler}>
           <button {...getPlusButtonProps()} type="button">
             <UpOutlined />
           </button>
