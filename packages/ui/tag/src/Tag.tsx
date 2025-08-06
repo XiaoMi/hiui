@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo, useState, useEffect, useRef } from 'react'
+import React, { forwardRef, useMemo, useState, useEffect, useRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { CloseOutlined } from '@hi-ui/icons'
 import { __DEV__, invariant } from '@hi-ui/env'
@@ -137,6 +137,14 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       [isShowPopover, isInEdit, tooltipProps, render, children, triggerEdit]
     )
 
+    const handleDoubleClick = useCallback(
+      (evt) => {
+        evt.stopPropagation()
+        triggerEdit()
+      },
+      [triggerEdit]
+    )
+
     if (__DEV__) {
       if (editable) {
         invariant(
@@ -153,10 +161,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
             <div
               className={`${prefixCls}__content`}
               ref={contentRef}
-              onDoubleClick={(evt) => {
-                evt.stopPropagation()
-                triggerEdit()
-              }}
+              onDoubleClick={editable ? handleDoubleClick : undefined}
             >
               {isInEdit ? editValueCache : render(children as React.ReactText, triggerEdit)}
             </div>
