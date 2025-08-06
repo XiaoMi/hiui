@@ -139,8 +139,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       } else {
         if (Array.isArray(original)) {
           return {
-            start: original[0],
-            end: original[1],
+            start: new Date(original[0] as any),
+            end: new Date(original[1] as any),
           } as DateRange
         } else {
           return original
