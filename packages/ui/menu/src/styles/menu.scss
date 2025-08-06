@@ -295,6 +295,11 @@ $disabled-color: use-color('gray', 400) !default;
     &.#{$prefix}--mini {
       width: 56px;
       overflow-x: hidden;
+
+      &.#{$prefix}--show-title-on-mini {
+        padding-left: use-spacing(2);
+        padding-right: use-spacing(2);
+      }
     }
 
     &.#{$prefix}--popup {
@@ -383,7 +388,7 @@ $disabled-color: use-color('gray', 400) !default;
     }
 
     &.#{$prefix}--mini.#{$prefix}--show-title-on-mini {
-      width: 68px;
+      width: 60px;
 
       .#{$prefix}-item {
         &__inner {
