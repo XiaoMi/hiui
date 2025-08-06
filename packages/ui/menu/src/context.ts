@@ -6,6 +6,7 @@ const MenuContext = createContext<{
   expandedType?: 'collapse' | 'pop'
   showAllSubMenus?: boolean
   mini?: boolean
+  showTitleOnMini?: boolean
   expandedIds?: React.ReactText[]
   activeId?: React.ReactText
   activeParents?: React.ReactText[]

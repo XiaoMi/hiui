@@ -18,6 +18,7 @@ $menu-prefix: '#{$component-prefix}-menu' !default;
   }
 
   &__resizable-handler {
+    box-sizing: content-box;
     position: absolute;
     z-index: 9;
     top: 0;

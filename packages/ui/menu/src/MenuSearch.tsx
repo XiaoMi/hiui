@@ -383,7 +383,6 @@ export const MenuSearchInput = forwardRef<
           ref={inputRef}
           className={`${prefixCls}__input`}
           appearance="unset"
-          autoFocus
           placeholder={placeholder}
           prefix={<SearchOutlined />}
           suffix={
