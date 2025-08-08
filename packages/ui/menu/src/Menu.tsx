@@ -10,7 +10,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseFieldNames, HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
 import Tooltip from '@hi-ui/tooltip'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { getTreeNodesWithChildren } from '@hi-ui/tree-utils'
@@ -67,6 +67,8 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
     const [activeId, updateActiveId] = useUncontrolledState(defaultActiveId, activeIdProp, onClick)
 
     const [activeParents, updateActiveParents] = useState(() => getAncestorIds(activeId, data))
@@ -292,7 +294,12 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
               )
             })}
             {showVertical || restTagList.length === 0 ? null : (
-              <MenuItem key={MENU_MORE_ID} id={MENU_MORE_ID} title="更多" children={restTagList} />
+              <MenuItem
+                key={MENU_MORE_ID}
+                id={MENU_MORE_ID}
+                title={i18n.tabs.more}
+                children={restTagList}
+              />
             )}
           </ul>
 
