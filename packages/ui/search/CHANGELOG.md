@@ -1,5 +1,11 @@
 # @hi-ui/search
 
+## 4.1.1
+
+### Patch Changes
+
+- [#3255](https://github.com/XiaoMi/hiui/pull/3255) [`b5a1fa3ae`](https://github.com/XiaoMi/hiui/commit/b5a1fa3ae80ba3da4666e0c82a5eac0cf0f908a2) Thanks [@zyprepare](https://github.com/zyprepare)! - style(search): 下拉列表设置最大高度 & 增加 dropdownClassName 参数 (#3251)
+
 ## 4.1.0
 
 ### Minor Changes

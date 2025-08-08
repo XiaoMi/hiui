@@ -1,5 +1,11 @@
 # @hi-ui/use-search-mode
 
+## 4.2.1
+
+### Patch Changes
+
+- [#3249](https://github.com/XiaoMi/hiui/pull/3249) [`dc1311a91`](https://github.com/XiaoMi/hiui/commit/dc1311a917518bc5debef755a9fcd4e33fb58790) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(check-tree-select): 完善 dataSource 功能，支持搜索结果高亮和展开 (#3247)
+
 ## 4.2.0
 
 ### Minor Changes

@@ -1,5 +1,15 @@
 # @hi-ui/check-tree-select
 
+## 4.7.2
+
+### Patch Changes
+
+- [#3249](https://github.com/XiaoMi/hiui/pull/3249) [`dc1311a91`](https://github.com/XiaoMi/hiui/commit/dc1311a917518bc5debef755a9fcd4e33fb58790) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(check-tree-select): 完善 dataSource 功能，支持搜索结果高亮和展开 (#3247)
+
+- Updated dependencies [[`dc1311a91`](https://github.com/XiaoMi/hiui/commit/dc1311a917518bc5debef755a9fcd4e33fb58790), [`b8c19048f`](https://github.com/XiaoMi/hiui/commit/b8c19048fe25147f344be4cd951740593aee8d12)]:
+  - @hi-ui/use-search-mode@4.2.1
+  - @hi-ui/tag-input@4.1.4
+
 ## 4.7.1
 
 ### Patch Changes

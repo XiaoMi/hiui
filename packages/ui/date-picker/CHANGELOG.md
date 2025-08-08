@@ -1,5 +1,15 @@
 # @hi-ui/date-picker
 
+## 4.12.0
+
+### Minor Changes
+
+- [#3246](https://github.com/XiaoMi/hiui/pull/3246) [`0d6cec005`](https://github.com/XiaoMi/hiui/commit/0d6cec005e8ab33f8d3bf7ca0026d54b2e3e6af1) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): add utcOffset api (#3232)
+
+### Patch Changes
+
+- [#3250](https://github.com/XiaoMi/hiui/pull/3250) [`b3a21e9cd`](https://github.com/XiaoMi/hiui/commit/b3a21e9cdc6ec9cd02caefc3cd682bfb49f7a2be) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker): disabledDate 回调的时间参数加上 utcOffset 处理 (5.0)
+
 ## 4.11.1
 
 ### Patch Changes
