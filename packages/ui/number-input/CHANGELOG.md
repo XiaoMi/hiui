@@ -1,5 +1,11 @@
 # @hi-ui/number-input
 
+## 4.2.2
+
+### Patch Changes
+
+- [#3256](https://github.com/XiaoMi/hiui/pull/3256) [`83b5d790d`](https://github.com/XiaoMi/hiui/commit/83b5d790d5d3340cbd8cbfd507e6d3a60a08b05a) Thanks [@zyprepare](https://github.com/zyprepare)! - chore(number-input): 补充 placeholder 类型
+
 ## 4.2.1
 
 ### Patch Changes

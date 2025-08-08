@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/cascader",
-  "version": "4.4.1",
+  "version": "4.5.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -58,7 +58,7 @@
     "@hi-ui/use-check-state": "^4.0.4",
     "@hi-ui/use-data-source": "^4.0.4",
     "@hi-ui/use-latest": "^4.0.4",
-    "@hi-ui/use-search-mode": "^4.1.4",
+    "@hi-ui/use-search-mode": "^4.2.1",
     "@hi-ui/use-toggle": "^4.0.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.4"
   },

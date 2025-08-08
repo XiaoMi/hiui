@@ -1,5 +1,44 @@
 # @hi-ui/hiui
 
+## 4.15.0
+
+### Minor Changes
+
+- [#3231](https://github.com/XiaoMi/hiui/pull/3231) [`bbba46153`](https://github.com/XiaoMi/hiui/commit/bbba4615313cd0618deff633bebc657e7f34ec94) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(cascader): onChange 回调中增加选中项对象参数返回 (#3230)
+
+- [#3219](https://github.com/XiaoMi/hiui/pull/3219) [`ca7a945fe`](https://github.com/XiaoMi/hiui/commit/ca7a945fe1eeaf14b3ffb34375ff613781d7bebd) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): TableColumnItem 类型增加 minWidth 参数 (#3216)
+
+- [#3246](https://github.com/XiaoMi/hiui/pull/3246) [`0d6cec005`](https://github.com/XiaoMi/hiui/commit/0d6cec005e8ab33f8d3bf7ca0026d54b2e3e6af1) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): add utcOffset api (#3232)
+
+### Patch Changes
+
+- [#3250](https://github.com/XiaoMi/hiui/pull/3250) [`b3a21e9cd`](https://github.com/XiaoMi/hiui/commit/b3a21e9cdc6ec9cd02caefc3cd682bfb49f7a2be) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker): disabledDate 回调的时间参数加上 utcOffset 处理 (5.0)
+
+- [#3254](https://github.com/XiaoMi/hiui/pull/3254) [`fc1360986`](https://github.com/XiaoMi/hiui/commit/fc136098659d111d5df8a369a5b305e4be71d46e) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 更新 useTable 逻辑以确保滚动位置不超出表格宽度，并添加 @hi-ui/radio 依赖
+
+- [#3249](https://github.com/XiaoMi/hiui/pull/3249) [`dc1311a91`](https://github.com/XiaoMi/hiui/commit/dc1311a917518bc5debef755a9fcd4e33fb58790) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(check-tree-select): 完善 dataSource 功能，支持搜索结果高亮和展开 (#3247)
+
+- [#3256](https://github.com/XiaoMi/hiui/pull/3256) [`83b5d790d`](https://github.com/XiaoMi/hiui/commit/83b5d790d5d3340cbd8cbfd507e6d3a60a08b05a) Thanks [@zyprepare](https://github.com/zyprepare)! - chore(number-input): 补充 placeholder 类型
+
+- [#3261](https://github.com/XiaoMi/hiui/pull/3261) [`b8c19048f`](https://github.com/XiaoMi/hiui/commit/b8c19048fe25147f344be4cd951740593aee8d12) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(tag-input): 修复 TagInputMock 组件中标签最大数量逻辑及更新 tagsWidth 的处理方式 (#3260)
+
+- [#3270](https://github.com/XiaoMi/hiui/pull/3270) [`9a241f9`](https://github.com/XiaoMi/hiui/commit/9a241f9ace65037a2dc6308566f1b36c2e1856a6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(menu): 添加国际化支持，更新“更多”菜单项的标题为本地化文本
+
+- [#3255](https://github.com/XiaoMi/hiui/pull/3255) [`b5a1fa3ae`](https://github.com/XiaoMi/hiui/commit/b5a1fa3ae80ba3da4666e0c82a5eac0cf0f908a2) Thanks [@zyprepare](https://github.com/zyprepare)! - style(search): 下拉列表设置最大高度 & 增加 dropdownClassName 参数 (#3251)
+
+- [#3229](https://github.com/XiaoMi/hiui/pull/3229) [`a39dbe2cd`](https://github.com/XiaoMi/hiui/commit/a39dbe2cdcddff2bdc06ca6dd68eca1cc52fb671) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(provider): 显示声明 children 类型 (#3228)
+
+- Updated dependencies [[`b3a21e9cd`](https://github.com/XiaoMi/hiui/commit/b3a21e9cdc6ec9cd02caefc3cd682bfb49f7a2be), [`fc1360986`](https://github.com/XiaoMi/hiui/commit/fc136098659d111d5df8a369a5b305e4be71d46e), [`dc1311a91`](https://github.com/XiaoMi/hiui/commit/dc1311a917518bc5debef755a9fcd4e33fb58790), [`83b5d790d`](https://github.com/XiaoMi/hiui/commit/83b5d790d5d3340cbd8cbfd507e6d3a60a08b05a), [`9a241f9`](https://github.com/XiaoMi/hiui/commit/9a241f9ace65037a2dc6308566f1b36c2e1856a6), [`b5a1fa3ae`](https://github.com/XiaoMi/hiui/commit/b5a1fa3ae80ba3da4666e0c82a5eac0cf0f908a2), [`bbba46153`](https://github.com/XiaoMi/hiui/commit/bbba4615313cd0618deff633bebc657e7f34ec94), [`a39dbe2cd`](https://github.com/XiaoMi/hiui/commit/a39dbe2cdcddff2bdc06ca6dd68eca1cc52fb671), [`ca7a945fe`](https://github.com/XiaoMi/hiui/commit/ca7a945fe1eeaf14b3ffb34375ff613781d7bebd), [`0d6cec005`](https://github.com/XiaoMi/hiui/commit/0d6cec005e8ab33f8d3bf7ca0026d54b2e3e6af1)]:
+  - @hi-ui/date-picker@4.12.0
+  - @hi-ui/table@4.11.0
+  - @hi-ui/check-tree-select@4.7.2
+  - @hi-ui/number-input@4.2.2
+  - @hi-ui/menu@4.3.2
+  - @hi-ui/search@4.1.1
+  - @hi-ui/cascader@4.5.0
+  - @hi-ui/check-cascader@4.5.0
+  - @hi-ui/provider@4.1.1
+
 ## 4.14.0
 
 ### Minor Changes

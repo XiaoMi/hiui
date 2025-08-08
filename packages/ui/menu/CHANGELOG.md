@@ -1,5 +1,11 @@
 # @hi-ui/menu
 
+## 4.3.2
+
+### Patch Changes
+
+- [#3270](https://github.com/XiaoMi/hiui/pull/3270) [`9a241f9`](https://github.com/XiaoMi/hiui/commit/9a241f9ace65037a2dc6308566f1b36c2e1856a6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(menu): 添加国际化支持，更新“更多”菜单项的标题为本地化文本
+
 ## 4.3.1
 
 ### Patch Changes

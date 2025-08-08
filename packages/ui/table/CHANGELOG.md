@@ -1,5 +1,15 @@
 # @hi-ui/table
 
+## 4.11.0
+
+### Minor Changes
+
+- [#3219](https://github.com/XiaoMi/hiui/pull/3219) [`ca7a945fe`](https://github.com/XiaoMi/hiui/commit/ca7a945fe1eeaf14b3ffb34375ff613781d7bebd) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): TableColumnItem 类型增加 minWidth 参数 (#3216)
+
+### Patch Changes
+
+- [#3254](https://github.com/XiaoMi/hiui/pull/3254) [`fc1360986`](https://github.com/XiaoMi/hiui/commit/fc136098659d111d5df8a369a5b305e4be71d46e) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 更新 useTable 逻辑以确保滚动位置不超出表格宽度，并添加 @hi-ui/radio 依赖
+
 ## 4.10.0
 
 ### Minor Changes

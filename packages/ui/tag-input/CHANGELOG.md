@@ -1,5 +1,11 @@
 # @hi-ui/tag-input
 
+## 4.1.4
+
+### Patch Changes
+
+- [#3261](https://github.com/XiaoMi/hiui/pull/3261) [`b8c19048f`](https://github.com/XiaoMi/hiui/commit/b8c19048fe25147f344be4cd951740593aee8d12) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(tag-input): 修复 TagInputMock 组件中标签最大数量逻辑及更新 tagsWidth 的处理方式 (#3260)
+
 ## 4.1.3
 
 ### Patch Changes

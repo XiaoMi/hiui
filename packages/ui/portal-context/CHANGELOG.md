@@ -1,5 +1,11 @@
 # @hi-ui/portal-context
 
+## 4.0.1
+
+### Patch Changes
+
+- [#3229](https://github.com/XiaoMi/hiui/pull/3229) [`a39dbe2cd`](https://github.com/XiaoMi/hiui/commit/a39dbe2cdcddff2bdc06ca6dd68eca1cc52fb671) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(provider): 显示声明 children 类型 (#3228)
+
 ## 4.0.0
 
 ### Minor Changes

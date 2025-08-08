@@ -1,5 +1,17 @@
 # @hi-ui/check-cascader
 
+## 4.5.0
+
+### Minor Changes
+
+- [#3231](https://github.com/XiaoMi/hiui/pull/3231) [`bbba46153`](https://github.com/XiaoMi/hiui/commit/bbba4615313cd0618deff633bebc657e7f34ec94) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(cascader): onChange 回调中增加选中项对象参数返回 (#3230)
+
+### Patch Changes
+
+- Updated dependencies [[`dc1311a91`](https://github.com/XiaoMi/hiui/commit/dc1311a917518bc5debef755a9fcd4e33fb58790), [`b8c19048f`](https://github.com/XiaoMi/hiui/commit/b8c19048fe25147f344be4cd951740593aee8d12)]:
+  - @hi-ui/use-search-mode@4.2.1
+  - @hi-ui/tag-input@4.1.4
+
 ## 4.4.1
 
 ### Patch Changes
