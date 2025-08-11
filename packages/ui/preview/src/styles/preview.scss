@@ -26,17 +26,17 @@ $prefix: '#{$component-prefix}-preview' !default;
     }
 
     &-enter-active {
-      opacity: 0.3;
+      opacity: 0.7;
       transition: opacity 0.3s;
     }
 
     &-enter-done {
-      opacity: 0.3;
+      opacity: 0.7;
       transition: opacity 0.3s;
     }
 
     &-exit {
-      opacity: 0.3;
+      opacity: 0.7;
     }
 
     &-exit-active {
@@ -51,16 +51,23 @@ $prefix: '#{$component-prefix}-preview' !default;
   }
 
   &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     position: absolute;
-    height: 48px;
-    line-height: 48px;
-    text-align: center;
-    top: 0;
-    left: 0;
-    width: 100%;
-    color: use-color-static('white');
-    background-color: rgba(0, 0, 0, 0.1);
+    top: 20px;
+    left: 20px;
+    right: 20px;
     z-index: 2;
+  }
+
+  &__title {
+    padding: calc(#{use-spacing(4)} + 1px) use-spacing(8);
+    font-size: use-text-size('normal');
+    line-height: use-text-lineheight('normal');
+    border-radius: 9999px;
+    color: use-color-static('white');
+    background-color: rgba(#1a1d26, 0.7);
   }
 
   &__container {
@@ -83,33 +90,108 @@ $prefix: '#{$component-prefix}-preview' !default;
   }
 
   &__toolbar {
+    display: flex;
+    align-items: center;
     position: absolute;
     bottom: 20px;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background: use-color-static('white');
-    padding: 0 32px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    border-radius: 28px;
+    transform: translateX(-50%);
+    background: rgba(#1a1d26, 0.9);
+    padding: 0 use-spacing(4);
+    height: use-height-size(12);
+    border-radius: use-border-radius('xl');
+    color: use-color-static('white');
 
     svg {
-      margin: 0 12px;
       font-size: 20px;
+    }
+
+    &-index {
+      margin: 0 use-spacing(6);
+      user-select: none;
+    }
+
+    &-scale {
+      margin: 0 use-spacing(1);
+      user-select: none;
+    }
+
+    &-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 use-spacing(5);
+      width: use-height-size(7);
+      height: use-height-size(7);
+      border-radius: use-border-radius('normal');
       cursor: pointer;
+
+      &:hover {
+        background-color: rgba(#fff, 0.2);
+      }
+
+      &__scale1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(#{use-height-size(3)} + 2px);
+        height: calc(#{use-height-size(3)} + 2px);
+        border-radius: 4px;
+        border: use-border-size('semibold') use-color-static('white');
+        user-select: none;
+
+        &-text {
+          font-size: 20px;
+          transform: scale(0.5);
+          transform-origin: center;
+        }
+      }
+    }
+
+    &-divider {
+      width: 1px;
+      height: use-height-size(4);
+      margin: 0 use-spacing(4);
+      background-color: use-color('gray', 600);
     }
   }
 
   &__close-btn {
-    position: absolute;
-    right: 10px;
-    top: 6px;
-    width: 36px;
-    height: 36px;
-    line-height: 36px;
-    font-size: 24px;
+    position: relative;
+    width: use-height-size(10);
+    height: use-height-size(10);
+    border-radius: 50%;
+    background-color: rgba(#1a1d26, 0.7);
     cursor: pointer;
+
+    &:hover {
+      background-color: rgba(#1a1d26, 0.5);
+    }
+
+    &:focus,
+    &:active {
+      background-color: rgba(#1a1d26, 0.3);
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 16px;
+      height: 2px;
+      background-color: use-color-static('white');
+      border-radius: 1px;
+    }
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
   }
 
   &__left-btn {
@@ -147,7 +229,7 @@ $prefix: '#{$component-prefix}-preview' !default;
     max-height: 100%;
     vertical-align: middle;
     transform: scale(1);
-    cursor: grab;
+    cursor: zoom-out;
     transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
     user-select: none;
     pointer-events: auto;
