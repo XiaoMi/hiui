@@ -13,7 +13,7 @@ export const WithApi = () => {
 
   const Content = () => {
     return (
-      <div style={{ width: 300 }}>
+      <div style={{ width: 300, marginTop: 16 }}>
         <Form
           initialValues={{ testInput: 1, testInput2: 'testInput2' }}
           labelWidth={80}
@@ -54,6 +54,7 @@ export const WithApi = () => {
             PopConfirm.open(e.target as HTMLElement, {
               key: key,
               title: <div style={{ whiteSpace: 'normal' }}>标题1</div>,
+              icon: null,
               content: <Content />,
               arrow: false,
               crossGap: 0,
@@ -70,6 +71,7 @@ export const WithApi = () => {
             PopConfirm.open(e.target as HTMLElement, {
               key: key,
               title: <div style={{ whiteSpace: 'normal' }}>标题2</div>,
+              icon: null,
               content: <Content />,
               arrow: false,
               crossGap: 0,

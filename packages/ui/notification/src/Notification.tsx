@@ -4,7 +4,13 @@ import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
 import { IconButton } from '@hi-ui/icon-button'
-import { InfoCircleFilled, CloseCircleFilled, CheckCircleFilled, CloseOutlined } from '@hi-ui/icons'
+import {
+  InfoCircleFilled,
+  CloseCircleFilled,
+  CheckCircleFilled,
+  CloseOutlined,
+  ExclamationCircleFilled,
+} from '@hi-ui/icons'
 
 const _role = 'notification'
 export const notificationPrefix = getPrefixCls(_role)
@@ -12,7 +18,7 @@ export const notificationPrefix = getPrefixCls(_role)
 const notificationIconMap: any = {
   success: <CheckCircleFilled />,
   error: <CloseCircleFilled />,
-  warning: <InfoCircleFilled />,
+  warning: <ExclamationCircleFilled />,
   info: <InfoCircleFilled />,
 }
 
