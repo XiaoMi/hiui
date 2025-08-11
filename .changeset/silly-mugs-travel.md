@@ -3,7 +3,6 @@
 "@hi-ui/hiui": patch
 "@hi-ui/message": patch
 "@hi-ui/notification": patch
-"@hi-ui/pop-confirm": patch
 "@hi-ui/time-picker": patch
 ---
 
