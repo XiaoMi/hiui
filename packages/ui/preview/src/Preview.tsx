@@ -14,7 +14,7 @@ import {
   RotateRightOutlined,
   LeftOutlined,
   RightOutlined,
-  CloseOutlined,
+  DownloadOutlined,
 } from '@hi-ui/icons'
 
 const PREVIEW_PREFIX = getPrefixCls('preview')
@@ -40,9 +40,10 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       current,
       defaultCurrent,
       onPreviewChange,
-      title,
+      title: titleProp,
       onError,
       onClose,
+      onDownload,
       src,
       watermarkProps,
       disabledDownload = false,
@@ -71,6 +72,10 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     const previewRef = useRef<HTMLDivElement>(null)
 
     const isMultiple = useMemo(() => Array.isArray(src) && src.length > 1, [src])
+
+    const title = useMemo(() => {
+      return titleProp ?? getTitle(Array.isArray(src) ? src[active] : src)
+    }, [active, src, titleProp])
 
     // 图片加水印
     const [watermarkContainer, setWatermarkContainer] = useState<HTMLDivElement | null>(null)
@@ -117,6 +122,10 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       },
       [imgTransform]
     )
+
+    const handleZoomTo1 = useCallback(() => {
+      updateImgTransform({ ...imgTransform, scale: 1 })
+    }, [imgTransform])
 
     // 翻转处理
     const handleRotate = useCallback(
@@ -203,6 +212,26 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       [handleClose, isMultiple, selectNext, selectPrev]
     )
 
+    const handleDownload = useCallback(() => {
+      typeof onDownload === 'function'
+        ? onDownload(Array.isArray(src) ? src[active] : src)
+        : downloadImage(Array.isArray(src) ? src[active] : src)
+    }, [active, onDownload, src])
+
+    const handleClick = useCallback(
+      (evt: React.MouseEvent) => {
+        evt.stopPropagation()
+        evt.preventDefault()
+
+        if (imgTransform.scale >= 0.25) {
+          handleZoom('zoomOut')
+        } else {
+          handleClose(evt)
+        }
+      },
+      [handleClose, handleZoom, imgTransform.scale]
+    )
+
     return (
       <Portal container={container} disabled={disabledPortal}>
         <div ref={ref} role={role} className={cls} style={{ ...style, display: 'none' }}>
@@ -226,10 +255,8 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
           {visible && (
             <>
               <div className={`${prefixCls}__header`}>
-                {title}
-                <div className={`${prefixCls}__close-btn`} onClick={handleClose}>
-                  <CloseOutlined />
-                </div>
+                <div className={`${prefixCls}__title`}>{title}</div>
+                <i className={`${prefixCls}__close-btn`} onClick={handleClose} />
               </div>
               <div
                 className={`${prefixCls}__container`}
@@ -237,7 +264,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                 tabIndex={-1}
                 onWheel={handleWheel}
                 ref={previewRef}
-                onMouseMove={onMoving}
+                // onMouseMove={onMoving}
                 onKeyDown={handleKeyDown}
               >
                 <div
@@ -252,58 +279,71 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   <img
                     ref={imgRef}
                     onError={onError}
-                    onMouseDown={onMoveStart}
-                    onMouseUp={onMoveEnd}
+                    // onMouseDown={onMoveStart}
+                    // onMouseUp={onMoveEnd}
+                    onClick={handleClick}
                     onContextMenu={disabledDownload ? handleContextMenu : undefined}
                     src={Array.isArray(src) ? src[active] : src}
                     className={`${prefixCls}__image`}
                   />
                 </div>
                 <div className={`${prefixCls}__toolbar`}>
-                  <ZoomInOutlined
-                    onClick={() => {
-                      handleZoom('zoomIn')
-                    }}
-                  />
-                  <ZoomOutOutlined
+                  {isMultiple && (
+                    <>
+                      <div className={`${prefixCls}__toolbar-action`} onClick={selectPrev}>
+                        <LeftOutlined />
+                      </div>
+                      <span className={`${prefixCls}__toolbar-index`}>
+                        {active + 1}/{src.length}
+                      </span>
+                      <div className={`${prefixCls}__toolbar-action`} onClick={selectNext}>
+                        <RightOutlined />
+                      </div>
+                      <i className={`${prefixCls}__toolbar-divider`} />
+                    </>
+                  )}
+                  <div
+                    className={`${prefixCls}__toolbar-action`}
                     onClick={() => {
                       if (imgTransform.scale >= 0.25) {
                         handleZoom('zoomOut')
                       }
                     }}
-                  />
-                  <RotateLeftOutlined
-                    onClick={() => {
-                      handleRotate('left')
-                    }}
-                  />
-                  <RotateRightOutlined
-                    onClick={() => {
-                      handleRotate('right')
-                    }}
-                  />
+                  >
+                    <ZoomOutOutlined />
+                  </div>
+                  <span className={`${prefixCls}__toolbar-scale`}>
+                    {(imgTransform.scale * 100).toFixed(0)}%
+                  </span>
+                  <div
+                    className={`${prefixCls}__toolbar-action`}
+                    onClick={() => handleZoom('zoomIn')}
+                  >
+                    <ZoomInOutlined />
+                  </div>
+                  <div className={`${prefixCls}__toolbar-action`} onClick={handleZoomTo1}>
+                    <div className={`${prefixCls}__toolbar-action__scale1`}>
+                      <span className={`${prefixCls}__toolbar-action__scale1-text`}>1:1</span>
+                    </div>
+                  </div>
+                  <i className={`${prefixCls}__toolbar-divider`} />
+                  <div
+                    className={`${prefixCls}__toolbar-action`}
+                    onClick={() => handleRotate('right')}
+                  >
+                    <RotateRightOutlined />
+                  </div>
+                  <div
+                    className={`${prefixCls}__toolbar-action`}
+                    onClick={() => handleRotate('left')}
+                  >
+                    <RotateLeftOutlined />
+                  </div>
+                  <i className={`${prefixCls}__toolbar-divider`} />
+                  <div className={`${prefixCls}__toolbar-action`} onClick={handleDownload}>
+                    <DownloadOutlined />
+                  </div>
                 </div>
-
-                {isMultiple && (
-                  <>
-                    <div
-                      className={`${prefixCls}__left-btn`}
-                      onClick={() => {
-                        selectPrev()
-                      }}
-                    >
-                      <LeftOutlined />
-                    </div>
-                    <div
-                      className={`${prefixCls}__right-btn`}
-                      onClick={() => {
-                        selectNext()
-                      }}
-                    >
-                      <RightOutlined />
-                    </div>
-                  </>
-                )}
               </div>
               {watermarkProps && watermarkContainer && (
                 <Watermark {...watermarkProps} container={watermarkContainer} />
@@ -358,6 +398,10 @@ export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
    */
   onPreviewChange?: (current: number) => void
   /**
+   * 下载图片的回调
+   */
+  onDownload?: (url: string) => void
+  /**
    * 指定 portal 的容器
    */
   container?: HTMLElement | null
@@ -369,4 +413,37 @@ export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
 
 if (__DEV__) {
   Preview.displayName = 'Preview'
+}
+
+const getTitle = (url: string) => {
+  return url.split('/').pop()?.split('?')[0]
+}
+
+export const downloadImage = (url: string) => {
+  const filename = Date.now() + (getTitle(url) || 'image.png')
+
+  fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const blobUrl = URL.createObjectURL(new Blob([blob]))
+      const link = document.createElement('a')
+      link.href = blobUrl
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      URL.revokeObjectURL(blobUrl)
+      link.remove()
+    })
+    .catch((err) => {
+      console.error(err)
+      // 如果下载失败，则打开图片
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename
+      a.target = '_blank'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      a.remove()
+    })
 }
