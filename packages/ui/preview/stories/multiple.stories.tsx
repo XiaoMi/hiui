@@ -20,7 +20,6 @@ export const Multiple = () => {
       <h1>Multiple</h1>
       <div className="preview-multiple__wrap">
         <Preview
-          title={`${current + 1}/${images.length}`}
           src={images}
           current={current}
           onPreviewChange={setCurrent}
