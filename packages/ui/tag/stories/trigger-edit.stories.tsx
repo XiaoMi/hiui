@@ -24,10 +24,11 @@ export const TriggerEdit = () => {
                 {children}
                 <Button
                   appearance="link"
-                  icon={<EditFilled color="#237FFA" />}
+                  size="sm"
+                  icon={<EditFilled />}
                   style={{ marginLeft: 4 }}
                   onClick={triggerEdit}
-                ></Button>
+                />
               </div>
             )
           }}

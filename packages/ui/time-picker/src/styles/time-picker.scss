@@ -32,7 +32,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     background: use-color-static('white');
     border-color: use-color('gray', 300);
 
-    &:not(.#{$prefix}--disabled):hover {
+    &:not(.#{$prefix}--disabled):not(.#{$prefix}--input-not-valid):hover {
       border-color: use-color-mode('primary');
     }
   }
@@ -137,11 +137,10 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--input-not-valid {
-    .#{$input-wrapper-class},.#{$input-wrapper-class}:hover {
+    &,
+    &:hover {
       border-color: use-color-mode('danger');
     }
-
-    box-shadow: 0 0 0 2px use-color-mode('danger', 100);
   }
 
   &__pop-function-buttons {

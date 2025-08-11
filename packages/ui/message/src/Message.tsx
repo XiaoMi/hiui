@@ -3,7 +3,12 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
-import { InfoCircleFilled, CloseCircleFilled, CheckCircleFilled } from '@hi-ui/icons'
+import {
+  CloseCircleFilled,
+  CheckCircleFilled,
+  ExclamationCircleFilled,
+  InfoCircleFilled,
+} from '@hi-ui/icons'
 
 const _role = 'message'
 export const _prefix = getPrefixCls(_role)
@@ -11,7 +16,7 @@ export const _prefix = getPrefixCls(_role)
 const messageIconMap: any = {
   success: <CheckCircleFilled />,
   error: <CloseCircleFilled />,
-  warning: <InfoCircleFilled />,
+  warning: <ExclamationCircleFilled />,
   info: <InfoCircleFilled />,
 }
 
