@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useMemo } from 'react'
 import { FormFieldPath, FormRuleModel, FormRuleType } from './types'
 import { useFormContext } from './context'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isNullish } from '@hi-ui/type-assertion'
 import Validater, {
   InternalRuleItem,
   Rules,
@@ -75,14 +75,21 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
           }
       })
       const validater = new Validater({ [fieldMD5]: modifiedFieldRules })
+
+      let valueToValidate = value
+      if (valueType === 'number') {
+        if (isNullish(value) || value === '') {
+          valueToValidate = value
+        } else if (isNaN(value as number)) {
+          valueToValidate = value
+        } else {
+          valueToValidate = Number(value)
+        }
+      }
+
       return validater.validate(
         {
-          [fieldMD5]:
-            valueType !== 'number' || value === ''
-              ? value
-              : isNaN(value as number)
-              ? value
-              : Number(value),
+          [fieldMD5]: valueToValidate,
         },
         { firstFields: true }
       )
