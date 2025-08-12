@@ -40,9 +40,9 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
   }
 
   &__separator {
-    margin: 0 use-spacing(4);
-    padding: 0 use-spacing(2);
-    color: use-color('gray', 300);
+    margin: 0 use-spacing(2);
+    font-size: use-text-size('normal');
+    color: use-color('gray', 500);
   }
 
   &__item {
