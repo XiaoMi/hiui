@@ -23,10 +23,10 @@ export const NumberInput = forwardRef<HTMLDivElement | null, NumberInputProps>(
         {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
         <input {...getInputProps()} />
         <div className={`${prefixCls}__suffix`}>
-          <button {...getPlusButtonProps()}>
+          <button {...getPlusButtonProps()} type="button">
             <UpOutlined />
           </button>
-          <button {...getMinusButtonProps()}>
+          <button {...getMinusButtonProps()} type="button">
             <DownOutlined />
           </button>
         </div>
