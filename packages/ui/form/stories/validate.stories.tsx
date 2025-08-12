@@ -1,6 +1,7 @@
 import React from 'react'
 import Form, { FormHelpers, FormRules } from '../src'
 import Input from '@hi-ui/input'
+import NumberInput from '@hi-ui/number-input'
 import { Select } from '@hi-ui/select'
 import { Cascader } from '@hi-ui/cascader'
 import Radio from '@hi-ui/radio'
@@ -82,7 +83,6 @@ export const Validate = () => {
     ],
     count: [
       {
-        required: true,
         validator: (rule, value, cb) => {
           const count = +value
           if (isNaN(count)) {
@@ -93,6 +93,12 @@ export const Validate = () => {
             cb()
           }
         },
+      },
+    ],
+    count2: [
+      {
+        required: true,
+        message: '请输入数量',
       },
     ],
   })
@@ -112,6 +118,7 @@ export const Validate = () => {
             name: '',
             region: '',
             count: '',
+            count2: null,
             store: '',
           }}
         >
@@ -129,8 +136,12 @@ export const Validate = () => {
           >
             <Input placeholder="请输入" />
           </FormItem>
-          <FormItem label="数量" field="count" valueType="string">
+          <FormItem label="数量" field="count" valueType="number">
             <Input placeholder="请输入" />
+          </FormItem>
+          {/* 注意：使用 NumberInput 组件时，需要设置 validateTrigger 为 ['onChange'] */}
+          <FormItem validateTrigger={['onChange']} label="数量" field="count2" valueType="number">
+            <NumberInput placeholder="请输入" />
           </FormItem>
           <FormItem label="门店" field="store" valueType="string">
             <Select
