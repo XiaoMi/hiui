@@ -46,6 +46,9 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
       // TODO: rules 处理成 Async Validate 的指定结构
       const fieldMD5 = stringify(field as FormFieldPath)
       const modifiedFieldRules = fieldRules.map((rule) => {
+        if (rule.message === null || rule.message === '') {
+          rule.message = undefined
+        }
         // 重写 rule 的 validator 函数，正则匹配 validatorRule 中的 field 和 fullField，消除 field 和 fullField 中的双引号
         // issue：https://github.com/XiaoMi/hiui/issues/2931
         if (rule.validator) {
