@@ -3,6 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { BreadcrumbDataItem, BreadcrumbSizeEnum } from './types'
 import { HiBaseFieldNames, HiBaseHTMLProps } from '@hi-ui/core'
+import { RightOutlined } from '@hi-ui/icons'
 import { transformData } from './util'
 
 const _role = 'breadcrumb'
@@ -50,7 +51,7 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
                   [`${prefixCls}__content--active`]: index === transformedData.length - 1,
                 })}
               >
-                {item.icon}
+                {item.icon ? <span className={`${prefixCls}__icon`}> {item.icon}</span> : null}
                 {item.title}
               </a>
             ) : (
@@ -69,7 +70,9 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
               </span>
             )}
 
-            <span className={`${prefixCls}__separator`}>{separator}</span>
+            <span className={`${prefixCls}__separator`}>
+              <RightOutlined />
+            </span>
           </li>
         ))}
       </ul>
