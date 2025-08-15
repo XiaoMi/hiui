@@ -3,9 +3,11 @@
 $group-menu-prefix: '#{$component-prefix}-group-menu' !default;
 
 .#{$group-menu-prefix} {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: use-spacing(4);
+  height: 100%;
   padding: use-spacing(4) 0;
 
   &-item {
