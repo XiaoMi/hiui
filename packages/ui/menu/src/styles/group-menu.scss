@@ -61,12 +61,18 @@ $group-menu-prefix: '#{$component-prefix}-group-menu' !default;
       gap: use-spacing(4);
 
       > .#{$group-menu-prefix}-item__content {
+        height: use-height-size(7);
         color: use-color('gray', 500);
+
+        .#{$group-menu-prefix}-item__title {
+          font-size: use-text-size('sm');
+          line-height: use-text-lineheight('sm');
+        }
       }
 
       &:not(:first-child) {
         > .#{$group-menu-prefix}-item__content {
-          margin-top: use-spacing(15);
+          margin-top: use-spacing(12);
         }
       }
     }
