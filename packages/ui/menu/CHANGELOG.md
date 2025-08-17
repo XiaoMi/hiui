@@ -1,5 +1,11 @@
 # @hi-ui/menu
 
+## 5.0.0-canary.7
+
+### Minor Changes
+
+- 4075b33da: feat(menu): 增加 GroupMenu 和 SideMenu 组件 (5.0)
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

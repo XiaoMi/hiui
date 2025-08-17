@@ -1,5 +1,48 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.23
+
+### Minor Changes
+
+- 4075b33da: feat(layout): 增加 FloatMenuContainer 组件 (5.0)
+- 4075b33da: feat(menu): 增加 GroupMenu 和 SideMenu 组件 (5.0)
+
+### Patch Changes
+
+- 66efb01d6: style(slider): 新版样式调整 (5.0)
+- 26293f98d: style(preview): 新版样式调整 (5.0)
+- 93df0aaff: fix(form): 处理规则消息为空的情况，将其设置为 undefined (#3276)
+- ecbb91823: style(rating): 更新星星和表情图标的 SVG 设计 (5.0)
+- 3713f874c: style(breadcrumb): 新版样式调整 (5.0)
+- b2b66a9e7: fix(form): 优化 valueType 为 number 情况下的校验逻辑 (#3274)
+- 34fc15f75: style: 修改样式问题 (5.0)
+- e5b589b86: chore(table): export SettingDrawer types (5.0)
+- a5786f533: fix(number-input): 为加减按钮添加 type 属性，确保按钮行为符合标准 (#3278)
+- Updated dependencies [66efb01d6]
+- Updated dependencies [4075b33da]
+- Updated dependencies [26293f98d]
+- Updated dependencies [93df0aaff]
+- Updated dependencies [ecbb91823]
+- Updated dependencies [3713f874c]
+- Updated dependencies [4075b33da]
+- Updated dependencies [b2b66a9e7]
+- Updated dependencies [34fc15f75]
+- Updated dependencies [e5b589b86]
+- Updated dependencies [a5786f533]
+  - @hi-ui/slider@5.0.0-canary.3
+  - @hi-ui/layout@5.0.0-canary.3
+  - @hi-ui/preview@5.0.0-canary.3
+  - @hi-ui/form@5.0.0-canary.5
+  - @hi-ui/rating@5.0.0-canary.3
+  - @hi-ui/breadcrumb@5.0.0-canary.3
+  - @hi-ui/menu@5.0.0-canary.7
+  - @hi-ui/date-picker@5.0.0-canary.13
+  - @hi-ui/message@5.0.0-canary.5
+  - @hi-ui/notification@5.0.0-canary.4
+  - @hi-ui/time-picker@5.0.0-canary.7
+  - @hi-ui/table@5.0.0-canary.11
+  - @hi-ui/number-input@5.0.0-canary.9
+
 ## 5.0.0-canary.22
 
 ### Patch Changes

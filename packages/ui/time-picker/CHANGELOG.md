@@ -1,5 +1,11 @@
 # @hi-ui/time-picker
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- 34fc15f75: style: 修改样式问题 (5.0)
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

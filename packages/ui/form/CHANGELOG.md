@@ -1,5 +1,12 @@
 # @hi-ui/form
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- 93df0aaff: fix(form): 处理规则消息为空的情况，将其设置为 undefined (#3276)
+- b2b66a9e7: fix(form): 优化 valueType 为 number 情况下的校验逻辑 (#3274)
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

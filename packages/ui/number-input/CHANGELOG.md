@@ -1,5 +1,11 @@
 # @hi-ui/number-input
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- a5786f533: fix(number-input): 为加减按钮添加 type 属性，确保按钮行为符合标准 (#3278)
+
 ## 5.0.0-canary.8
 
 ### Patch Changes

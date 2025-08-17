@@ -1,5 +1,16 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.3
+
+### Minor Changes
+
+- 4075b33da: feat(layout): 增加 FloatMenuContainer 组件 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [4075b33da]
+  - @hi-ui/menu@5.0.0-canary.7
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

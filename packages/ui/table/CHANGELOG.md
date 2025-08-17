@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 5.0.0-canary.11
+
+### Patch Changes
+
+- e5b589b86: chore(table): export SettingDrawer types (5.0)
+
 ## 5.0.0-canary.10
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/notification
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- 34fc15f75: style: 修改样式问题 (5.0)
+
 ## 5.0.0-canary.3
 
 ### Patch Changes
