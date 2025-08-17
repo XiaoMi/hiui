@@ -7,7 +7,7 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    border-radius: use-border-radius('normal');
+    border-radius: use-border-radius('xl');
     border: use-border-size('normal') use-color('gray', 100);
     padding: 0 use-spacing(8) 0 calc(#{use-spacing(2)} + 1px);
     height: use-height-size(10);

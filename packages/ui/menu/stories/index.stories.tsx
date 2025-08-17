@@ -2,7 +2,6 @@ import React from 'react'
 import Menu from '../src'
 
 export * from './basic.stories'
-export * from './menu-search.stories'
 export * from './mini.stories'
 export * from './horizontal.stories'
 export * from './pop.stories'
@@ -13,7 +12,10 @@ export * from './footer-render.stories'
 export * from './render.stories'
 export * from './size.stories'
 export * from './show-title-on-mini.stories'
-export * from './sidebar.stories'
+export * from './side-menu.stories'
+export * from './group-menu.stories'
+export * from './menu-search.stories'
+// export * from './sidebar.stories'
 
 export default {
   title: 'Navigation/Menu',
