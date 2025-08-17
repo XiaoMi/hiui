@@ -36,10 +36,10 @@ export const NumberInput = forwardRef<HTMLDivElement | null, NumberInputProps>(
           </span>
         ) : null}
         <div className={cx(`${prefixCls}__handler`, classNames?.handler)} style={styles?.handler}>
-          <button {...getPlusButtonProps()}>
+          <button {...getPlusButtonProps()} type="button">
             <UpOutlined />
           </button>
-          <button {...getMinusButtonProps()}>
+          <button {...getMinusButtonProps()} type="button">
             <DownOutlined />
           </button>
         </div>

@@ -133,6 +133,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
       .#{$prefix}__picker__label {
         white-space: nowrap;
+        color: use-color('gray', 600);
       }
 
       .#{$prefix}__input-selector {
@@ -152,17 +153,12 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       }
 
       background: transparent;
-      // box-shadow: 0 0 0 2px use-color-mode('primary', 100);
     }
 
     &--invalid,
     &--invalid:hover,
     &--invalid#{&}--focus {
       border: use-border-size('normal') use-color-mode('danger', 500);
-    }
-
-    &--invalid#{&}--focus {
-      box-shadow: 0 0 0 2px use-color-mode('danger', 100);
     }
 
     &--disabled {

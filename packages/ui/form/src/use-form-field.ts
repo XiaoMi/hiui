@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useMemo } from 'react'
 import { FormFieldPath, FormRuleModel, FormRuleType } from './types'
 import { useFormContext } from './context'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isNullish } from '@hi-ui/type-assertion'
 import Validater, {
   InternalRuleItem,
   Rules,
@@ -46,6 +46,9 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
       // TODO: rules 处理成 Async Validate 的指定结构
       const fieldMD5 = stringify(field as FormFieldPath)
       const modifiedFieldRules = fieldRules.map((rule) => {
+        if (rule.message === null || rule.message === '') {
+          rule.message = undefined
+        }
         // 重写 rule 的 validator 函数，正则匹配 validatorRule 中的 field 和 fullField，消除 field 和 fullField 中的双引号
         // issue：https://github.com/XiaoMi/hiui/issues/2931
         if (rule.validator) {
@@ -75,14 +78,21 @@ export const useFormField = <Values = any>(props: UseFormFieldProps<Values>) => 
           }
       })
       const validater = new Validater({ [fieldMD5]: modifiedFieldRules })
+
+      let valueToValidate = value
+      if (valueType === 'number') {
+        if (isNullish(value) || value === '') {
+          valueToValidate = value
+        } else if (isNaN(value as number)) {
+          valueToValidate = value
+        } else {
+          valueToValidate = Number(value)
+        }
+      }
+
       return validater.validate(
         {
-          [fieldMD5]:
-            valueType !== 'number' || value === ''
-              ? value
-              : isNaN(value as number)
-              ? value
-              : Number(value),
+          [fieldMD5]: valueToValidate,
         },
         { firstFields: true }
       )
