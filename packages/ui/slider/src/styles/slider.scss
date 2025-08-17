@@ -128,9 +128,9 @@ $prefix: '#{$component-prefix}-slider' !default;
     border-radius: use-border-radius('full');
     transform: translate(-50%, 0%);
     box-sizing: border-box;
-    width: 10px;
-    height: 10px;
-    margin-top: -4px;
+    width: use-height-size(2);
+    height: use-height-size(2);
+    margin-top: calc(#{use-spacing(1)} * -1);
     background-color: use-color-static('white');
     border: use-border-size('semibold') use-color('gray', 200);
     transition-property: background-color;
@@ -169,9 +169,9 @@ $prefix: '#{$component-prefix}-slider' !default;
 
   .#{$prefix}__handle {
     position: absolute;
-    width: 14px;
-    height: 14px;
-    margin-top: -5px;
+    width: use-height-size(4);
+    height: use-height-size(4);
+    margin-top: calc(#{use-spacing(3)} * -1);
     background-color: use-color-static('white');
     border-radius: 50%;
     box-sizing: border-box;
@@ -181,12 +181,6 @@ $prefix: '#{$component-prefix}-slider' !default;
     user-select: none;
     border: use-border-size('semibold') use-color-static('transparent');
     border-color: $color;
-
-    &:focus {
-      // 定制色，抽离变量
-      box-shadow: 0 0 0 4px rgba(#4284f5, 0.2);
-      outline: none;
-    }
   }
 
   .#{$prefix}__track {
