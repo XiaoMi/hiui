@@ -5,6 +5,8 @@ export { Menu as default } from './Menu'
 
 export * from './Sidebar'
 export * from './MenuSearch'
+export * from './GroupMenu'
+export * from './SideMenu'
 
 export { filterTreeData, getParentId, getAncestorIds } from './util'
 
