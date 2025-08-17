@@ -127,6 +127,11 @@ export const MenuSearchDemo = () => {
           打开
         </Button>
         <Popper
+          styles={{
+            container: {
+              borderRadius: 8,
+            },
+          }}
           visible={visible}
           attachEl={ref.current}
           gutterGap={-32}
