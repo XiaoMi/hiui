@@ -194,6 +194,9 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
 )
 
 export interface SettingDrawerProps extends HiBaseHTMLProps<'div'> {
+  /**
+   * 类名前缀
+   */
   prefixCls?: string
   /**
    * 是否显示抽屉
