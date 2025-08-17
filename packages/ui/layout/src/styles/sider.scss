@@ -12,6 +12,7 @@ $menu-prefix: '#{$component-prefix}-menu' !default;
   width: auto;
   height: 100%;
   overflow: auto;
+  box-shadow: 1px 0 0 0 use-color('gray', 200);
 
   &--collapsed {
     transition: width 0.4s;
@@ -22,7 +23,7 @@ $menu-prefix: '#{$component-prefix}-menu' !default;
     position: absolute;
     z-index: 9;
     top: 0;
-    right: 0;
+    right: -2px;
     width: 2px;
     height: 100%;
     border-left: 2px solid transparent;
@@ -67,6 +68,26 @@ $menu-prefix: '#{$component-prefix}-menu' !default;
             &-p {
               .#{$menu-prefix}-item__icon {
                 color: #2b64ff;
+              }
+            }
+          }
+
+          &--mini {
+            .#{$menu-prefix}-item__inner--active-p {
+              background-color: use-color-static('white');
+
+              .#{$menu-prefix}-item__icon {
+                color: #2b64ff;
+              }
+
+              &-p {
+                .#{$menu-prefix}-item__icon {
+                  color: #2b64ff;
+                }
+              }
+
+              &:hover {
+                background-color: use-color-static('white') !important;
               }
             }
           }

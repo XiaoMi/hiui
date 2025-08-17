@@ -46,6 +46,9 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
           {!mini && <span className={`${prefixCls}__placeholder`}>{placeholder}</span>}
         </div>
         <Popper
+          classNames={{
+            container: `${prefixCls}__popper-container`,
+          }}
           visible={visible}
           attachEl={innerRef.current}
           gutterGap={-32}

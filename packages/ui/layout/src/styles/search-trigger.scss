@@ -31,4 +31,8 @@ $search-trigger-prefix: '#{$component-prefix}-search-trigger' !default;
     font-size: use-text-size('md');
     line-height: use-text-lineheight('md');
   }
+
+  &__popper-container {
+    border-radius: use-border-radius('xl') !important;
+  }
 }
