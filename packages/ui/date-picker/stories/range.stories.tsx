@@ -86,7 +86,7 @@ export const Range = () => {
 
         <h2>日期时间范围</h2>
         <DatePicker
-          style={{ width: 420 }}
+          style={{ width: 480 }}
           type="daterange"
           showTime
           onChange={(date, dateStr) => {
