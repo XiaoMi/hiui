@@ -65,6 +65,22 @@ export const Appearance = () => {
         </div>
 
         <div>
+          <h4>borderless</h4>
+          <CheckSelect
+            style={{ width: 240 }}
+            data={data}
+            value={value}
+            clearable
+            appearance="borderless"
+            optionWidth={260}
+            onChange={(value, targetItem) => {
+              console.log('CheckSelect onChange: ', value, targetItem)
+              setValue(value)
+            }}
+          />
+        </div>
+
+        <div>
           <h4>contained</h4>
           <CheckSelect
             data={data}

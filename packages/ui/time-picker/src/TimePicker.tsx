@@ -447,7 +447,7 @@ export interface TimePickerProps extends ExtendType {
    * 选择器外观
    * @default 'line'
    */
-  appearance?: 'line' | 'filled' | 'unset' | 'contained'
+  appearance?: 'line' | 'filled' | 'unset' | 'borderless' | 'contained'
   /**
    * 选择器标签
    */

@@ -21,7 +21,7 @@ $prefix: '#{$component-prefix}-picker' !default;
 
   // 耦合注入
   &--open {
-    .#{$component-prefix}-mock-input {
+    .#{$component-prefix}-mock-input:not(.#{$component-prefix}-mock-input--appearance-borderless) {
       border-color: use-color-mode('primary');
 
       // &__suffix {
@@ -35,7 +35,7 @@ $prefix: '#{$component-prefix}-picker' !default;
       // }
     }
 
-    .#{$component-prefix}-tag-input-mock {
+    .#{$component-prefix}-tag-input-mock:not(.#{$component-prefix}-tag-input-mock--appearance-borderless) {
       border-color: use-color-mode('primary');
 
       // &__suffix {

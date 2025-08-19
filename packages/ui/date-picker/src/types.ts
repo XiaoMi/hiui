@@ -253,7 +253,7 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 不同 UI 外观
    * @default 'line'
    */
-  appearance?: 'line' | 'unset' | 'filled' | 'contained'
+  appearance?: 'line' | 'unset' | 'filled' | 'borderless' | 'contained'
   /**
    * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
    */

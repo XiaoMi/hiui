@@ -97,6 +97,18 @@ export const Appearance = () => {
             console.log('onChange', ...args)
           }}
         ></Cascader>
+        <h2>Borderless</h2>
+        <Cascader
+          style={{ width: 240 }}
+          clearable
+          appearance="borderless"
+          placeholder="请选择品类"
+          defaultValue={['手机', '红米', '红米4']}
+          data={data}
+          onChange={(...args) => {
+            console.log('onChange', ...args)
+          }}
+        ></Cascader>
         <h2>Contained</h2>
         <Cascader
           style={{ width: 'auto' }}

@@ -111,6 +111,17 @@ export const Appearance = () => {
           data={dataOnlyLeafCheckable}
           onChange={console.log}
         ></CheckCascader>
+        <h2>Borderless</h2>
+        <CheckCascader
+          style={{ width: 240 }}
+          appearance="borderless"
+          searchable={false}
+          placeholder="请选择品类"
+          defaultValue={[['手机', '红米', '红米4']]}
+          changeOnSelect
+          data={dataOnlyLeafCheckable}
+          onChange={console.log}
+        ></CheckCascader>
         <h2>Contained</h2>
         <CheckCascader
           style={{ width: 'auto' }}
