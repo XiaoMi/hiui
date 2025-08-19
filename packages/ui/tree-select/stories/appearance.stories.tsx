@@ -136,6 +136,20 @@ export const Appearance = () => {
         </div>
 
         <div>
+          <h2>borderless</h2>
+          <TreeSelect
+            data={data}
+            value={value}
+            clearable
+            appearance="borderless"
+            onChange={(value, selectItems) => {
+              console.log('TreeSelect onChange: ', value, selectItems)
+              setValue(value)
+            }}
+          />
+        </div>
+
+        <div>
           <h2>contained</h2>
           <TreeSelect
             style={{ width: 'auto' }}

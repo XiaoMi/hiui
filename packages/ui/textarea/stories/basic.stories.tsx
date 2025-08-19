@@ -10,6 +10,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="textarea-basic__wrap">
+        <h2>line</h2>
         <TextArea
           value={value}
           onChange={(evt) => setValue(evt.target.value)}
@@ -18,6 +19,7 @@ export const Basic = () => {
         />
         <br />
         <br />
+        <h2>filled</h2>
         <TextArea
           value={value}
           onChange={(evt) => setValue(evt.target.value)}
@@ -27,12 +29,22 @@ export const Basic = () => {
         />
         <br />
         <br />
+        <h2>unset</h2>
         <TextArea
           value={value}
           onChange={(evt) => setValue(evt.target.value)}
           placeholder="请输入"
           rows={3}
           appearance="unset"
+        />
+        <br />
+        <br />
+        <h2>borderless</h2>
+        <TextArea
+          value={value}
+          onChange={(evt) => setValue(evt.target.value)}
+          placeholder="请输入"
+          appearance="borderless"
         />
       </div>
     </>
