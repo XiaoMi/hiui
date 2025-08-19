@@ -42,12 +42,12 @@ export const Appearance = () => {
         ></Input>
         <br />
         <br />
-        <h2>filled</h2>
-        <Input size="md" appearance="filled" placeholder="请输入内容"></Input>
+        <h2>borderless</h2>
+        <Input size="md" appearance="borderless" placeholder="请输入内容"></Input>
         <br />
         <br />
         <Input
-          appearance="filled"
+          appearance="borderless"
           size="md"
           clearable
           placeholder="请输入"

@@ -32,6 +32,14 @@ export const Appearance = () => {
             console.log('onChange', date, dateStr)
           }}
         />
+        <h2>borderless</h2>
+        <DatePicker
+          style={{ width: 240 }}
+          appearance={'borderless'}
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
         <h2>contained</h2>
         <DatePicker
           style={{ width: 'auto' }}
