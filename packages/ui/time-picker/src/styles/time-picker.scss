@@ -127,7 +127,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     padding: 0 use-spacing(8);
   }
 
-  &--active {
+  &--active:not(.#{$prefix}--appearance-borderless) {
     border-color: use-color-mode('primary');
     background: transparent;
 
