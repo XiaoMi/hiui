@@ -138,6 +138,21 @@ export const Appearance = () => {
         </div>
 
         <div>
+          <h2>borderless</h2>
+          <CheckTreeSelect
+            style={{ width: 240 }}
+            data={data}
+            value={value}
+            clearable
+            appearance="borderless"
+            onChange={(value, options) => {
+              console.log('CheckTreeSelect onChange: ', value, options)
+              setValue(value)
+            }}
+          />
+        </div>
+
+        <div>
           <h2>contained</h2>
           <CheckTreeSelect
             style={{ width: 'auto' }}
