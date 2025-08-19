@@ -16,6 +16,8 @@ export const Appearance = () => {
         <TimePicker style={{ width: '240px' }} placeholder={['请选择时间']} appearance={'filled'} />
         <h2>unset</h2>
         <TimePicker placeholder={['请选择时间']} appearance={'unset'} />
+        <h2>borderless</h2>
+        <TimePicker style={{ width: 240 }} placeholder={['请选择时间']} appearance={'borderless'} />
         <h2>contained</h2>
         <TimePicker label="时间" appearance={'contained'} onChange={console.log} />
       </div>

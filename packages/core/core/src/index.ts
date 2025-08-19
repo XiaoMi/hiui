@@ -54,6 +54,7 @@ export const HiBaseAppearanceEnum = {
   LINE: 'line',
   FILLED: 'filled',
   UNSET: 'unset',
+  BORDERLESS: 'borderless',
 } as const
 
 // 对外暴露同名联合类型
