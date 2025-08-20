@@ -13,7 +13,7 @@ $prefix: '#{$component-prefix}-dropdown' !default;
   border-radius: use-border-radius('normal');
   border: use-border-size('normal') use-color('gray', 100);
   font-size: use-text-size('normal');
-  padding: use-spacing(4);
+  padding: use-spacing(2);
   color: use-color('gray', 700);
   // max-height: 260px;
   // 影响计算，如果要支持需要换种方案，不利用内嵌的特性。
@@ -54,7 +54,7 @@ $prefix: '#{$component-prefix}-dropdown' !default;
     width: 100%;
     height: 100%;
     cursor: pointer;
-    border-radius: use-border-radius('md');
+    border-radius: use-border-radius('xl');
     display: flex;
     align-items: center;
     justify-content: space-between;

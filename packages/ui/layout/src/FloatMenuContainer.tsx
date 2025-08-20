@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
 import { CollapseIcon } from './CollapseIcon'
 
 const FLOAT_MENU_CONTAINER_PREFIX = getPrefixCls('float-menu-container')
@@ -25,6 +25,8 @@ export const FloatMenuContainer = forwardRef<HTMLDivElement | null, FloatMenuCon
     ref
   ) => {
     const cls = cx(prefixCls, className)
+
+    const i18n = useLocaleContext()
 
     const [collapsed, setCollapsed] = React.useState(collapsedProp)
 
@@ -62,7 +64,9 @@ export const FloatMenuContainer = forwardRef<HTMLDivElement | null, FloatMenuCon
               <span className={cx(`${prefixCls}-collapse-icon`)}>
                 <CollapseIcon />
               </span>
-              <span className={cx(`${prefixCls}-collapse-text`)}>收起</span>
+              <span className={cx(`${prefixCls}-collapse-text`)}>
+                {collapsed ? i18n.timeline.expand : i18n.timeline.collapse}
+              </span>
             </div>
           </div>
           <div className={cx(`${prefixCls}-content-wrapper`)}>{children}</div>

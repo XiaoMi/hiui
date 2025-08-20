@@ -24,10 +24,6 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
       background-color: use-color('gray', 100);
     }
 
-    &:not(:first-child) {
-      margin-top: use-spacing(4);
-    }
-
     &-wrapper {
       padding: use-spacing(2) use-spacing(4);
     }
@@ -82,7 +78,7 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
 
   &--mini {
     .#{$side-menu-prefix}-item-wrapper {
-      padding: 0 use-spacing(2);
+      padding: use-spacing(2);
     }
   }
 

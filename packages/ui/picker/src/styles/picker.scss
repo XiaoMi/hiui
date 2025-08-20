@@ -68,7 +68,7 @@ $prefix: '#{$component-prefix}-picker' !default;
     box-sizing: content-box;
     max-height: 260px;
     overflow-y: auto;
-    padding: use-spacing(4) use-spacing(4);
+    padding: use-spacing(2);
   }
 
   $top-normal-shadow: 0 -2px 4px 0 rgba(31, 39, 51, 0.1) !default;
@@ -87,7 +87,7 @@ $prefix: '#{$component-prefix}-picker' !default;
   }
 
   &__search {
-    border-bottom: 1px solid use-color('gray', 300);
+    border-bottom: use-border-size('normal') use-color('gray', 200);
 
     .#{$component-prefix}-input {
       font-size: use-text-size('normal');
@@ -116,7 +116,7 @@ $prefix: '#{$component-prefix}-picker' !default;
 
   &__empty,
   &__loading {
-    padding: use-spacing(5) use-spacing(4);
+    padding: calc(#{use-spacing(2)} + 1px) use-spacing(3);
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');
     color: use-color('gray', 500);

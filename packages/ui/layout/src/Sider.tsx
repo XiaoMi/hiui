@@ -10,6 +10,7 @@ const SIDER_PREFIX = getPrefixCls('sider')
 const DEFAULT_SIDER_WIDTH = 180
 const SIDER_WIDTH_MIN = 60
 const SIDER_WIDTH_MIN_COLLAPSED = 150
+const SIDER_WIDTH_MAX = 360
 
 /**
  * 侧边栏组件
@@ -49,6 +50,10 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
 
       if (width < SIDER_WIDTH_MIN) {
         width = SIDER_WIDTH_MIN
+      }
+
+      if (width > SIDER_WIDTH_MAX) {
+        width = SIDER_WIDTH_MAX
       }
 
       setWidth(width)
