@@ -11,10 +11,10 @@
 "@hi-ui/menu": patch
 "@hi-ui/message": patch
 "@hi-ui/picker": patch
+"@hi-ui/preview": patch
 "@hi-ui/radio": patch
 "@hi-ui/rating": patch
 "@hi-ui/select": patch
-"@hi-ui/upload": patch
 ---
 
 fix: 修改 UI 问题 (5.0)
