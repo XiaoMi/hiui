@@ -27,7 +27,7 @@ $prefix: '#{$component-prefix}-check-select' !default;
       align-items: center;
       box-sizing: border-box;
       width: 100%;
-      padding: use-spacing(3) use-spacing(3);
+      padding: calc(#{use-spacing(2)} + 1px) use-spacing(4);
       font-size: inherit;
       text-size-adjust: none;
       font-weight: inherit;

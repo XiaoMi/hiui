@@ -107,7 +107,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
   }
 
   &-option {
-    padding: use-spacing(1) use-spacing(3);
+    padding: use-spacing(1) use-spacing(4);
     box-sizing: border-box;
     height: use-height-size(8);
     width: 100%;

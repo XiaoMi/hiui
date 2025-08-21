@@ -10,7 +10,7 @@ $prefix: '#{$component-prefix}-dropdown' !default;
   @include list-reset();
 
   background-color: use-color-static('white');
-  border-radius: use-border-radius('normal');
+  border-radius: use-border-radius('xl');
   border: use-border-size('normal') use-color('gray', 100);
   font-size: use-text-size('normal');
   padding: use-spacing(2);
@@ -54,7 +54,7 @@ $prefix: '#{$component-prefix}-dropdown' !default;
     width: 100%;
     height: 100%;
     cursor: pointer;
-    border-radius: use-border-radius('xl');
+    border-radius: use-border-radius('md');
     display: flex;
     align-items: center;
     justify-content: space-between;

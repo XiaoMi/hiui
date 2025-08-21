@@ -82,7 +82,7 @@ $prefix: '#{$component-prefix}-picker' !default;
   &__panel {
     padding: 0;
     border: 1px solid use-color('gray', 200);
-    border-radius: use-border-radius('lg');
+    border-radius: use-border-radius('xl');
     overflow: hidden;
   }
 

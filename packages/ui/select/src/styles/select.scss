@@ -3,8 +3,6 @@
 $prefix: '#{$component-prefix}-select' !default;
 
 .#{$prefix}-option {
-  // margin-top: use-spacing(1);
-  // margin-bottom: use-spacing(1);
   box-sizing: border-box;
   width: 100%;
   display: flex;
@@ -14,8 +12,8 @@ $prefix: '#{$component-prefix}-select' !default;
   cursor: pointer;
   font-size: use-text-size('normal');
   font-weight: use-text-weight('normal');
+  line-height: use-text-lineheight('normal');
   color: use-color('gray', 700);
-  line-height: use-text-lineheight('sm');
 
   &__indent {
     display: inline-block;
@@ -27,7 +25,7 @@ $prefix: '#{$component-prefix}-select' !default;
     display: inline-block;
     box-sizing: border-box;
     width: 100%;
-    padding: use-spacing(3);
+    padding: calc(#{use-spacing(2)} + 1px) use-spacing(4);
     font-size: inherit;
     font-weight: inherit;
     color: inherit;
