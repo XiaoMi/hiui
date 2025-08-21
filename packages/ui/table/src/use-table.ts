@@ -614,7 +614,7 @@ export const useTable = ({
       const sortedColumn = getColumnByDataKey(columns, activeSorterColumn)
       const sorter = sortedColumn?.sorter
 
-      if (sorter) {
+      if (typeof sorter === 'function') {
         activeSorterType === 'ascend' ? _data.sort(sorter) : _data.sort(sorter).reverse()
 
         // 平铺的树形结构排序
