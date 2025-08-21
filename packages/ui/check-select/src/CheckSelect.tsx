@@ -652,7 +652,6 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
 
     return (
       <div ref={ref} className={cls} {...rest} onClick={handleOptionCheck}>
-        {renderIndent(prefixCls, depth)}
         {renderTitle(eventNodeRef.current, titleRender)}
       </div>
     )
@@ -676,10 +675,12 @@ export const CheckSelectOptionGroup = forwardRef<
   const cls = cx(prefixCls, className)
 
   return (
-    <div ref={ref} className={cls} {...rest}>
-      {renderIndent(prefixCls, !depth || depth === 0 ? 0 : depth - 1)}
-      <span>{label}</span>
-    </div>
+    <>
+      <div className={`${prefixCls}__divider`} />
+      <div ref={ref} className={cls} {...rest}>
+        <span>{label}</span>
+      </div>
+    </>
   )
 })
 

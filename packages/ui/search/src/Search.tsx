@@ -234,6 +234,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
             popper={{
               matchWidth: true,
               ...overlay,
+              gutterGap: 4,
               autoFocus: false,
               visible: visible,
               onClose: closeDropdown,

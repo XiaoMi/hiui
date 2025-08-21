@@ -16,6 +16,7 @@ import {
   RightOutlined,
   DownloadOutlined,
 } from '@hi-ui/icons'
+import { Scale1Icon } from './scale1Icon'
 
 const PREVIEW_PREFIX = getPrefixCls('preview')
 
@@ -322,9 +323,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                     <ZoomInOutlined />
                   </div>
                   <div className={`${prefixCls}__toolbar-action`} onClick={handleZoomTo1}>
-                    <div className={`${prefixCls}__toolbar-action__scale1`}>
-                      <span className={`${prefixCls}__toolbar-action__scale1-text`}>1:1</span>
-                    </div>
+                    <Scale1Icon />
                   </div>
                   <i className={`${prefixCls}__toolbar-divider`} />
                   <div

@@ -7,9 +7,6 @@ import Layout, { Sider, Content, SearchTrigger, FloatMenuContainer } from '../sr
  * @title 带浮动菜单的侧边栏
  */
 export const FloatMenu = () => {
-  // 侧边栏导航是否折叠
-  const [collapsed, setCollapsed] = React.useState(false)
-
   const [data] = React.useState<MenuDataItem[]>([
     {
       title: '首页',
@@ -134,16 +131,23 @@ export const FloatMenu = () => {
       icon: <PadFilled />,
     },
   ])
-  const [selectId, setSelectId] = React.useState<React.ReactText>('')
-  const [activeId, setActiveId] = React.useState<React.ReactText>('xiaomi3')
+
+  // 侧边栏导航是否折叠
+  const [collapsed, setCollapsed] = React.useState(false)
+
+  // 鼠标悬浮到侧边栏菜单项的 id
+  const [selectMenuId, setSelectMenuId] = React.useState<React.ReactText>('')
+  // 当前激活的菜单项的 id
+  const [activeMenuId, setActiveMenuId] = React.useState<React.ReactText>('xiaomi3')
+  // 浮动菜单是否显示
   const [floatContainerVisible, setFloatContainerVisible] = React.useState(false)
-  const floatContainerRef = React.useRef<HTMLDivElement>(null)
+  // 定时器，用于优化浮动菜单的隐藏时体验
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const { submenuData, activeParentId } = useSideMenuCascade({
     data,
-    selectId,
-    activeId,
+    selectId: selectMenuId,
+    activeId: activeMenuId,
   })
 
   return (
@@ -159,18 +163,25 @@ export const FloatMenu = () => {
             <div style={{ padding: '16px 14px' }}>
               <div style={{ height: 32, backgroundColor: '#f2f4f7' }}></div>
             </div>
-            <SearchTrigger mini={collapsed} data={data} />
+            <SearchTrigger
+              mini={collapsed}
+              data={data}
+              onClick={(evt) => {
+                // 阻止默认行为，设置后不会触发默认的搜索行为
+                // evt.preventDefault()
+              }}
+            />
             <SideMenu
               mini={collapsed}
               activeId={activeParentId}
               onClick={(event, id, item) => {
                 if (!item.children || item.children.length === 0) {
-                  setActiveId(id)
+                  setActiveMenuId(id)
                 }
               }}
               onMouseEnter={(event, id, item) => {
                 if (item.children && item.children.length > 0) {
-                  setSelectId(id)
+                  setSelectMenuId(id)
                   setFloatContainerVisible(true)
                 }
 
@@ -187,7 +198,6 @@ export const FloatMenu = () => {
             />
           </Sider>
           <FloatMenuContainer
-            ref={floatContainerRef}
             visible={floatContainerVisible}
             width={180}
             onMouseEnter={() => {
@@ -202,10 +212,10 @@ export const FloatMenu = () => {
             }}
           >
             <GroupMenu
-              activeId={activeId}
+              activeId={activeMenuId}
               data={submenuData}
               onClick={(evt, id, item) => {
-                setActiveId(id)
+                setActiveMenuId(id)
               }}
             />
           </FloatMenuContainer>
