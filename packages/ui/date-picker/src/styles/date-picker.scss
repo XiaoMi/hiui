@@ -17,7 +17,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   &__popper {
     display: flex;
     flex-direction: column;
-    border-radius: use-border-radius('normal');
+    border-radius: use-border-radius('xl');
     overflow: hidden;
     width: 100%;
   }
@@ -182,11 +182,11 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
         text-align: center;
       }
 
-      &:not(.#{$prefix}__picker--appearance-contained) {
-        &.#{$prefix}__picker--hastime {
-          width: 400px;
-        }
-      }
+      // &:not(.#{$prefix}__picker--appearance-contained) {
+      //   &.#{$prefix}__picker--hastime {
+      //     width: 400px;
+      //   }
+      // }
     }
 
     &--timeperiod {
@@ -310,6 +310,10 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     // overflow: hidden;
 
     &--date-time-range {
+      padding: 0 use-spacing(3);
+      margin-left: calc(#{use-spacing(3)} * -1);
+      margin-right: calc(#{use-spacing(3)} * -1);
+
       &:hover {
         background: use-color-mode('primary', 50);
       }

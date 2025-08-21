@@ -66,7 +66,7 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
     min-width: 20%;
     min-height: 18px;
     background: use-color-static('white');
-    border-radius: use-border-radius('lg');
+    border-radius: use-border-radius('xl');
     box-shadow: use-shadow('normal');
     transition: use-motion-duration('slow') use-motion-bezier('normal');
     display: flex;

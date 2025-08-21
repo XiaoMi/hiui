@@ -1,7 +1,7 @@
 import React, { forwardRef, ReactText } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
 import { SearchOutlined } from '@hi-ui/icons'
 import Popper from '@hi-ui/popper'
 import { MenuDataItem, MenuSearch, MenuSearchHelper } from '@hi-ui/menu'
@@ -18,12 +18,15 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
       role = 'search-trigger',
       className,
       mini,
-      placeholder = '搜索',
+      placeholder,
       data,
+      onClick,
       ...rest
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
     const [visible, setVisible] = React.useState(false)
     const [value, setValue] = React.useState('')
     const innerRef = React.useRef<HTMLDivElement>(null)
@@ -33,17 +36,25 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
       [`${prefixCls}--mini`]: mini,
     })
 
+    const handleClick = (evt: React.MouseEvent<HTMLDivElement>) => {
+      onClick?.(evt)
+
+      if (evt.defaultPrevented) {
+        return
+      }
+
+      setVisible(!visible)
+    }
+
     return (
       <>
-        <div
-          ref={innerRef}
-          role={role}
-          className={cls}
-          {...rest}
-          onClick={() => setVisible(!visible)}
-        >
+        <div ref={innerRef} role={role} className={cls} onClick={handleClick} {...rest}>
           <SearchOutlined />
-          {!mini && <span className={`${prefixCls}__placeholder`}>{placeholder}</span>}
+          {!mini && (
+            <span className={`${prefixCls}__placeholder`}>
+              {placeholder || i18n.menuSearch.search}
+            </span>
+          )}
         </div>
         <Popper
           classNames={{
@@ -72,7 +83,7 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
             value={value}
             onChange={setValue}
             data={data}
-            placeholder="搜索"
+            placeholder={i18n.menuSearch.placeholder}
             onSelect={(id: ReactText, item: MenuDataItem) => {
               console.log('select', id, item)
               setVisible(false)

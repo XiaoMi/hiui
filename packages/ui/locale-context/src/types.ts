@@ -15,6 +15,7 @@ export interface LocaleLanguage {
   upload: Record<string, any>
   modal: Record<string, any>
   zenMode: Record<string, any>
+  menuSearch: Record<string, any>
 }
 
 export const LocaleEnum = {

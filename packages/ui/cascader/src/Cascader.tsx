@@ -75,6 +75,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     customRender,
     label,
     virtual,
+    onItemClick: onItemClickProp,
     ...rest
   } = props
   const i18n = useLocaleContext()
@@ -197,7 +198,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     flattedData,
   })
 
-  const { value, tryChangeValue, reset, menuList, getItemRequiredProps } = context
+  const { value, tryChangeValue, reset, clear, menuList, getItemRequiredProps } = context
 
   const showData = useMemo(() => {
     if (shouldUseSearch) {
@@ -245,6 +246,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         menuList: showData,
         dropdownColumnRender,
         virtual,
+        onItemClickProp,
       }}
     >
       <Picker
@@ -285,6 +287,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
               value={value[value.length - 1]}
               onChange={() => {
                 tryChangeValue([])
+                clear()
               }}
               data={mergedData}
               invalid={invalid}
@@ -397,6 +400,13 @@ export interface CascaderProps
    * 是否开启虚拟滚动
    */
   virtual?: boolean
+  /**
+   * 点击选项时触发
+   */
+  onItemClick?: (
+    event: React.MouseEvent<HTMLDivElement>,
+    eventOption: CascaderItemEventData
+  ) => void
 }
 
 if (__DEV__) {
