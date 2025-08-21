@@ -1,5 +1,16 @@
 # @hi-ui/tabs
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- Updated dependencies [9106dca82]
+  - @hi-ui/core@5.0.0-canary.3
+  - @hi-ui/input@5.0.0-canary.10
+  - @hi-ui/icons@5.0.0-canary.3
+  - @hi-ui/icon-button@5.0.0-canary.3
+  - @hi-ui/tooltip@5.0.0-canary.4
+
 ## 5.0.0-canary.8
 
 ### Patch Changes

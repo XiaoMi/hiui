@@ -1,5 +1,12 @@
 # @hi-ui/anchor
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- Updated dependencies [9106dca82]
+  - @hi-ui/core@5.0.0-canary.3
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

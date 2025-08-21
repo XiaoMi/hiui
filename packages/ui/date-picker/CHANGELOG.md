@@ -1,5 +1,22 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.14
+
+### Minor Changes
+
+- 9106dca82: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+
+### Patch Changes
+
+- efce04a26: fix: 修改 UI 问题 (5.0)
+- Updated dependencies [efce04a26]
+- Updated dependencies [9106dca82]
+  - @hi-ui/popper@5.0.0-canary.6
+  - @hi-ui/core@5.0.0-canary.3
+  - @hi-ui/time-picker@5.0.0-canary.8
+  - @hi-ui/icons@5.0.0-canary.3
+  - @hi-ui/button@5.0.0-canary.8
+
 ## 5.0.0-canary.13
 
 ### Patch Changes

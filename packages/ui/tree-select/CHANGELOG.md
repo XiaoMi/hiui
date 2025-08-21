@@ -1,5 +1,19 @@
 # @hi-ui/tree-select
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- Updated dependencies [efce04a26]
+- Updated dependencies [9106dca82]
+  - @hi-ui/picker@5.0.0-canary.10
+  - @hi-ui/popper@5.0.0-canary.6
+  - @hi-ui/core@5.0.0-canary.3
+  - @hi-ui/input@5.0.0-canary.10
+  - @hi-ui/icons@5.0.0-canary.3
+  - @hi-ui/highlighter@5.0.0-canary.3
+  - @hi-ui/tree@5.0.0-canary.4
+
 ## 5.0.0-canary.7
 
 ### Patch Changes

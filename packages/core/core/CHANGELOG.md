@@ -1,5 +1,16 @@
 # @hi-ui/core
 
+## 5.0.0-canary.3
+
+### Minor Changes
+
+- 9106dca82: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [efce04a26]
+  - @hi-ui/locale-context@5.0.0-canary.5
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @hi-ui/select
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- efce04a26: fix: 修改 UI 问题 (5.0)
+- Updated dependencies [efce04a26]
+- Updated dependencies [9106dca82]
+  - @hi-ui/picker@5.0.0-canary.10
+  - @hi-ui/popper@5.0.0-canary.6
+  - @hi-ui/core@5.0.0-canary.3
+  - @hi-ui/input@5.0.0-canary.10
+  - @hi-ui/icons@5.0.0-canary.3
+  - @hi-ui/highlighter@5.0.0-canary.3
+  - @hi-ui/virtual-list@5.0.0-canary.3
+
 ## 5.0.0-canary.8
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @hi-ui/drawer
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- Updated dependencies [efce04a26]
+- Updated dependencies [9106dca82]
+  - @hi-ui/modal@5.0.0-canary.6
+  - @hi-ui/core@5.0.0-canary.3
+  - @hi-ui/icons@5.0.0-canary.3
+  - @hi-ui/icon-button@5.0.0-canary.3
+  - @hi-ui/portal@5.0.0-canary.3
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.4
+
+### Minor Changes
+
+- efce04a26: feat(layout): Sider 增加 resizable 参数，控制是否可改变宽度 (5.0)
+
+### Patch Changes
+
+- efce04a26: fix: 修改 UI 问题 (5.0)
+- Updated dependencies [efce04a26]
+- Updated dependencies [9106dca82]
+  - @hi-ui/menu@5.0.0-canary.8
+  - @hi-ui/popper@5.0.0-canary.6
+  - @hi-ui/core@5.0.0-canary.3
+
 ## 5.0.0-canary.3
 
 ### Minor Changes

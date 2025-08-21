@@ -1,5 +1,30 @@
 # @hi-ui/table
 
+## 5.0.0-canary.12
+
+### Minor Changes
+
+- a067ee087: feat(table): 支持远程排序 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [efce04a26]
+- Updated dependencies [9106dca82]
+  - @hi-ui/checkbox@5.0.0-canary.3
+  - @hi-ui/popper@5.0.0-canary.6
+  - @hi-ui/radio@5.0.0-canary.4
+  - @hi-ui/select@5.0.0-canary.9
+  - @hi-ui/core@5.0.0-canary.3
+  - @hi-ui/icons@5.0.0-canary.3
+  - @hi-ui/button@5.0.0-canary.8
+  - @hi-ui/drawer@5.0.0-canary.5
+  - @hi-ui/empty-state@5.0.0-canary.3
+  - @hi-ui/icon-button@5.0.0-canary.3
+  - @hi-ui/loading@5.0.0-canary.3
+  - @hi-ui/pagination@5.0.0-canary.5
+  - @hi-ui/scrollbar@5.0.0-canary.4
+  - @hi-ui/spinner@5.0.0-canary.3
+
 ## 5.0.0-canary.11
 
 ### Patch Changes

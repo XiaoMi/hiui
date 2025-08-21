@@ -1,5 +1,11 @@
 # @hi-ui/locale-context
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- efce04a26: fix: 修改 UI 问题 (5.0)
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

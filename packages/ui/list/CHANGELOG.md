@@ -1,5 +1,14 @@
 # @hi-ui/list
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- Updated dependencies [9106dca82]
+  - @hi-ui/core@5.0.0-canary.3
+  - @hi-ui/empty-state@5.0.0-canary.3
+  - @hi-ui/pagination@5.0.0-canary.5
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @hi-ui/tag-input
 
+## 5.0.0-canary.12
+
+### Minor Changes
+
+- 9106dca82: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [9106dca82]
+  - @hi-ui/core@5.0.0-canary.3
+  - @hi-ui/icons@5.0.0-canary.3
+
 ## 5.0.0-canary.11
 
 ### Patch Changes

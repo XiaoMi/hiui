@@ -1,5 +1,18 @@
 # @hi-ui/transfer
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- Updated dependencies [efce04a26]
+- Updated dependencies [9106dca82]
+  - @hi-ui/checkbox@5.0.0-canary.3
+  - @hi-ui/core@5.0.0-canary.3
+  - @hi-ui/input@5.0.0-canary.10
+  - @hi-ui/icons@5.0.0-canary.3
+  - @hi-ui/button@5.0.0-canary.8
+  - @hi-ui/pagination@5.0.0-canary.5
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

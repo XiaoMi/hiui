@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/preview",
-  "version": "5.0.0-canary.3",
+  "version": "5.0.0-canary.4",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -46,20 +46,20 @@
   "dependencies": {
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
-    "@hi-ui/icons": "^5.0.0-canary.2",
-    "@hi-ui/portal": "^5.0.0-canary.2",
+    "@hi-ui/icons": "^5.0.0-canary.3",
+    "@hi-ui/portal": "^5.0.0-canary.3",
     "@hi-ui/use-latest": "^5.0.0-canary.2",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-canary.2",
-    "@hi-ui/watermark": "^5.0.0-canary.2",
+    "@hi-ui/watermark": "^5.0.0-canary.3",
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=5.0.0-canary.2",
+    "@hi-ui/core": ">=5.0.0-canary.3",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^5.0.0-canary.2",
+    "@hi-ui/core": "^5.0.0-canary.3",
     "@hi-ui/core-css": "^5.0.0-canary.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

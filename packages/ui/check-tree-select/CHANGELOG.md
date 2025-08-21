@@ -1,5 +1,24 @@
 # @hi-ui/check-tree-select
 
+## 5.0.0-canary.10
+
+### Minor Changes
+
+- 9106dca82: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [efce04a26]
+- Updated dependencies [9106dca82]
+  - @hi-ui/checkbox@5.0.0-canary.3
+  - @hi-ui/picker@5.0.0-canary.10
+  - @hi-ui/popper@5.0.0-canary.6
+  - @hi-ui/core@5.0.0-canary.3
+  - @hi-ui/tag-input@5.0.0-canary.12
+  - @hi-ui/icons@5.0.0-canary.3
+  - @hi-ui/highlighter@5.0.0-canary.3
+  - @hi-ui/tree@5.0.0-canary.4
+
 ## 5.0.0-canary.9
 
 ### Patch Changes
