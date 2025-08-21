@@ -9,6 +9,10 @@ const cascaderContext = createContext<
       titleRender: (item: CascaderItemEventData) => React.ReactNode
       dropdownColumnRender?: (menu: React.ReactElement, level: number) => React.ReactNode
       virtual?: boolean
+      onItemClickProp?: (
+        event: React.MouseEvent<HTMLDivElement>,
+        option: CascaderItemEventData
+      ) => void
     })
   | null
 >(null)
