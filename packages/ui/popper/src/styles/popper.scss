@@ -3,7 +3,7 @@
 $prefix: '#{$component-prefix}-popper' !default;
 
 .#{$prefix} {
-  border-radius: use-border-radius('normal');
+  border-radius: use-border-radius('xl');
   box-sizing: border-box;
 
   &__arrow {
@@ -109,7 +109,7 @@ $prefix: '#{$component-prefix}-popper' !default;
     box-sizing: border-box;
     background-color: use-color-static('white');
     box-shadow: use-shadow('normal');
-    border-radius: use-border-radius('normal');
+    border-radius: use-border-radius('xl');
     // 为了保证 arrow 三角形可以正常展示
     min-width: 36px;
     min-height: 36px;
