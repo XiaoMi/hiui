@@ -91,6 +91,7 @@ const MenuItem = forwardRef<
     disabled: disabledContext,
     expandTrigger,
     onItemClick,
+    onItemClickProp,
     onItemHover,
     titleRender,
     onLoadChildren,
@@ -114,9 +115,10 @@ const MenuItem = forwardRef<
     <li ref={ref} key={option.id} role="menu-item" className={`${prefixCls}-item`}>
       <div
         className={optionCls}
-        onClick={() => {
+        onClick={(evt) => {
           if (disabled) return
           onItemClick(eventOption)
+          onItemClickProp?.(evt, eventOption)
         }}
         onMouseEnter={() => {
           if (disabled) return
