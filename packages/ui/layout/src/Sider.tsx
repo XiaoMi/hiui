@@ -22,6 +22,7 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
       role = 'sider',
       className,
       width: widthProp,
+      resizable = true,
       collapsed: collapsedProp,
       onCollapse,
       children,
@@ -71,7 +72,13 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
       [`${prefixCls}--collapsed`]: collapsed,
     })
 
-    return (
+    const Content = (
+      <div ref={ref} role={role} className={cls} {...rest} style={{ width, ...rest.style }}>
+        {children}
+      </div>
+    )
+
+    return resizable ? (
       <Resizable
         className={`${prefixCls}__resizable`}
         draggableOpts={{ enableUserSelectHack: false }}
@@ -82,16 +89,17 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
         onResizeStart={handleResizeStart}
         onResizeStop={handleResizeStop}
       >
-        <div ref={ref} role={role} className={cls} {...rest} style={{ width, ...rest.style }}>
-          {children}
-        </div>
+        {Content}
       </Resizable>
+    ) : (
+      Content
     )
   }
 )
 
 export interface SiderProps extends HiBaseHTMLProps<'div'> {
   width?: number
+  resizable?: boolean
   collapsed?: boolean
   onCollapse?: (collapsed: boolean) => void
 }
