@@ -8,7 +8,7 @@ $prefix: '#{$component-prefix}-message' !default;
   padding: use-spacing(6) use-spacing(10);
   margin: use-spacing(6);
   border: use-border-size('normal') use-color('gray', 100);
-  border-radius: use-border-radius('lg');
+  border-radius: use-border-radius('xl');
   pointer-events: auto;
   box-shadow: use-shadow('normal');
   display: flex;

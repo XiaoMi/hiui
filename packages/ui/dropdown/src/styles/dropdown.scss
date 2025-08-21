@@ -10,10 +10,10 @@ $prefix: '#{$component-prefix}-dropdown' !default;
   @include list-reset();
 
   background-color: use-color-static('white');
-  border-radius: use-border-radius('normal');
+  border-radius: use-border-radius('xl');
   border: use-border-size('normal') use-color('gray', 100);
   font-size: use-text-size('normal');
-  padding: use-spacing(4);
+  padding: use-spacing(2);
   color: use-color('gray', 700);
   // max-height: 260px;
   // 影响计算，如果要支持需要换种方案，不利用内嵌的特性。

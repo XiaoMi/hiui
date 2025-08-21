@@ -44,9 +44,7 @@ export const SelectOption = forwardRef<HTMLDivElement | null, SelectOptionProps>
 
     return (
       <div ref={ref} className={cls} onClick={handleClick} {...rest}>
-        {renderIndent(prefixCls, depth)}
         {renderTitle(prefixCls, eventDataRef.current, titleRender)}
-        {/* <span className={`${prefixCls}__title`}>{option.title}</span> */}
       </div>
     )
   }

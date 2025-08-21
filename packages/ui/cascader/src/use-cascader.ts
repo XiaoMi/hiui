@@ -123,9 +123,14 @@ export const useCascader = ({
     setSelectedId(value[value.length - 1])
   }, [setSelectedId, value])
 
+  const clear = useCallback(() => {
+    setSelectedId(value[value.length <= 1 ? 0 : value.length - 2])
+  }, [setSelectedId, value])
+
   return {
     rootProps: rest,
     reset,
+    clear,
     flattedData,
     value,
     tryChangeValue,

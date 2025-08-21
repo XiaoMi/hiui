@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '@hi-ui/button'
 import Upload from '../src'
 
 /**
@@ -38,7 +39,11 @@ export const ActionRender = () => {
             // if(response&&response.status !== 200) return false // 返回 false 则该文件会从列表里删除
           }}
           actionRender={({ file }) => {
-            return <span>{file.uploadState === 'loading' ? '加载中' : '删除'}</span>
+            return (
+              <Button appearance="link" size="sm">
+                {file.uploadState === 'loading' ? '加载中' : '删除'}
+              </Button>
+            )
           }}
         />
       </div>

@@ -16,16 +16,12 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
     font-size: use-text-size('normal');
     line-height: use-text-lineheight('normal');
     color: use-color('gray', 700);
-    border-radius: use-border-radius('xl');
+    border-radius: use-border-radius('lg');
     cursor: pointer;
     position: relative;
 
     &:hover {
       background-color: use-color('gray', 100);
-    }
-
-    &:not(:first-child) {
-      margin-top: use-spacing(4);
     }
 
     &-wrapper {
@@ -82,7 +78,7 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
 
   &--mini {
     .#{$side-menu-prefix}-item-wrapper {
-      padding: 0 use-spacing(2);
+      padding: use-spacing(2);
     }
   }
 

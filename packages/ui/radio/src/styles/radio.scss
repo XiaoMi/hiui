@@ -63,7 +63,6 @@ $label-class: '#{$prefix}__label' !default;
       &__input {
         &:focus + .#{$prefix}__controller {
           border-color: use-color-mode('primary');
-          // box-shadow: 0 0 0 2px use-color-mode('primary', 100);
         }
       }
 
@@ -81,12 +80,12 @@ $label-class: '#{$prefix}__label' !default;
 
         &::after {
           position: absolute;
-          top: 0;
-          left: 0;
+          top: -1px;
+          left: -1px;
           box-sizing: border-box;
           display: inline-block;
-          width: 14px;
-          height: 14px;
+          width: 16px;
+          height: 16px;
           content: '';
           background: use-color-mode('primary');
           border-radius: use-border-radius('full');
@@ -116,7 +115,7 @@ $label-class: '#{$prefix}__label' !default;
 
         &::after {
           opacity: 1;
-          transform: scale(0.3);
+          transform: scale(0.5);
           background-color: use-color-static('white');
         }
       }
@@ -130,7 +129,7 @@ $label-class: '#{$prefix}__label' !default;
 
         &::after {
           opacity: 1;
-          transform: scale(0.3);
+          transform: scale(0.5);
           background-color: use-color-static('white');
         }
       }
@@ -141,7 +140,7 @@ $label-class: '#{$prefix}__label' !default;
 
       .#{$controller-class} {
         border-color: use-color('gray', 300);
-        background: use-color('gray', 100);
+        background: use-color('gray', 50);
 
         &::after {
           background: use-color('gray', 300);

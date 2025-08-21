@@ -5,7 +5,7 @@ $prefix: '#{$component-prefix}-search' !default;
 .#{$prefix} {
   &__dropdown {
     box-sizing: border-box;
-    padding: use-spacing(4);
+    padding: use-spacing(2);
     font-size: use-text-size('normal');
     // 填充没有选项时 loading 展示空间
     min-height: 48px;
@@ -21,7 +21,8 @@ $prefix: '#{$component-prefix}-search' !default;
       box-sizing: border-box;
       display: flex;
       align-items: center;
-      padding: use-spacing(2) use-spacing(6) use-spacing(2) use-spacing(12);
+      padding: use-spacing(2) use-spacing(6) use-spacing(2) use-spacing(10);
+      border-radius: use-border-radius('md');
       color: use-color('gray', 700);
       cursor: pointer;
       transition: all 0.3s;
@@ -40,12 +41,12 @@ $prefix: '#{$component-prefix}-search' !default;
       box-sizing: border-box;
       display: flex;
       align-items: center;
-      padding: use-spacing(2) use-spacing(6);
+      padding: use-spacing(2) use-spacing(4);
       color: use-color('gray', 500);
     }
 
     &-subgroup {
-      padding-left: use-spacing(6);
+      padding-left: use-spacing(4);
     }
 
     &-item {
@@ -58,7 +59,8 @@ $prefix: '#{$component-prefix}-search' !default;
         min-height: use-height-size(8);
         display: flex;
         align-items: center;
-        padding: use-spacing(2) use-spacing(6);
+        padding: use-spacing(2) use-spacing(4);
+        border-radius: use-border-radius('md');
         color: use-color('gray', 700);
         cursor: pointer;
         transition: all 0.3s;

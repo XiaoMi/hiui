@@ -91,6 +91,13 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
     }
   }
 
+  &__empty {
+    padding: calc(#{use-spacing(2)} + 1px) use-spacing(4);
+    font-size: use-text-size('normal');
+    line-height: use-text-lineheight('normal');
+    color: use-color('gray', 400);
+  }
+
   &__footer {
     display: flex;
     align-items: center;
@@ -132,7 +139,6 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
       }
 
       &-body {
-        min-height: 234px;
         max-height: 544px;
       }
 
