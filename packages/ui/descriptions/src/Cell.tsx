@@ -50,7 +50,6 @@ export const Cell: React.FC<CellProps> = ({
     center: 'center',
     bottom: 'end',
   }[contentPositionProp]
-  console.log('contentPosition', contentPosition)
 
   return (
     <Component

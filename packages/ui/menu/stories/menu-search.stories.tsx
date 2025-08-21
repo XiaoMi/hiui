@@ -155,7 +155,6 @@ export const MenuSearchDemo = () => {
             value={value}
             onChange={setValue}
             data={data}
-            placeholder="搜索"
             onSelect={(id, item) => {
               console.log('select', id, item)
               setVisible(false)

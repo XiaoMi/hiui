@@ -13,7 +13,7 @@ export const Hoverable = () => {
           <div
             style={{
               height: 174,
-              backgroundColor: '#F5F7FA',
+              backgroundColor: '#F5F8FC',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',

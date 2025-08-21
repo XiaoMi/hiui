@@ -25,6 +25,7 @@ export interface LocaleLanguage {
   popConfirm: Record<string, any>
   tag: Record<string, any>
   backTop: Record<string, any>
+  menuSearch: Record<string, any>
 }
 
 export const LocaleEnum = {

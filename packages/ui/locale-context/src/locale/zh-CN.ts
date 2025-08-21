@@ -204,4 +204,14 @@ export default {
   backTop: {
     backToTop: '回到顶部',
   },
+  menuSearch: {
+    placeholder: '请输入搜索内容',
+    search: '搜索',
+    clear: '清空',
+    searchResult: '共搜索到 {{count}} 项与“{{keyword}}”相关的菜单',
+    searchEmptyResult: '没有找到相关结果',
+    moveCursor: '移动光标',
+    confirmSelect: '确定选择',
+    hideWindow: '隐藏窗口',
+  },
 }

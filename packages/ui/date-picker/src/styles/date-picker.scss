@@ -17,7 +17,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   &__popper {
     display: flex;
     flex-direction: column;
-    border-radius: use-border-radius('normal');
+    border-radius: use-border-radius('xl');
     overflow: hidden;
     width: 100%;
   }

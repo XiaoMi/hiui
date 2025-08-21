@@ -65,7 +65,7 @@ $disabled-color: use-color('gray', 400) !default;
 
 .#{$prefix}-popmenu {
   background-color: use-color-static('white');
-  border-radius: use-border-radius('normal');
+  border-radius: use-border-radius('xl');
   margin: 0;
   font-size: use-text-size('normal');
   padding: use-spacing(4);

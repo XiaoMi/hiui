@@ -85,14 +85,6 @@ export const WithMenu = () => {
                 data={data}
               />
             </Scrollbar>
-            <i
-              style={{
-                display: 'block',
-                height: 1,
-                margin: '8px 20px',
-                backgroundColor: '#dbdde0',
-              }}
-            />
             <div style={{ padding: '12px 20px' }}>
               <div style={{ height: 32, backgroundColor: '#f2f4f7' }}></div>
             </div>
