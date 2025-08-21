@@ -70,6 +70,9 @@ export const Basic = () => {
           onChange={(...args) => {
             console.log('onChange', ...args)
           }}
+          onItemClick={(...args) => {
+            console.log('onItemClick', ...args)
+          }}
         ></Cascader>
       </div>
     </>
