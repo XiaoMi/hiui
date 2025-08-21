@@ -25,11 +25,6 @@ export const AutoWidth = () => {
       id: 3,
       title: '其它',
     },
-    {
-      id: 4,
-      title: '禁用未选',
-      disabled: true,
-    },
   ])
 
   return (

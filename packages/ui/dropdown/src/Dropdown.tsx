@@ -48,7 +48,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
     const dig = (treeData: DropdownDataItem[]) => {
       return treeData.map((item: any) => {
         const menu = isArrayNonEmpty(item.children) ? (
-          <DropdownMenu overlay={{ gutterGap: 16 }} size={size}>
+          <DropdownMenu overlay={{ gutterGap: 8 }} size={size}>
             {dig(item.children)}
           </DropdownMenu>
         ) : null
@@ -121,6 +121,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
                 overlay: {
                   disabledPortal: false,
                   className: overlayClassName,
+                  gutterGap: 4,
                 },
               })}
               size={size}

@@ -14,7 +14,7 @@ $prefix: '#{$component-prefix}-notification' !default;
   box-sizing: border-box;
   width: 360px;
   margin: use-spacing(8);
-  border-radius: use-border-radius('lg');
+  border-radius: use-border-radius('xl');
   pointer-events: auto;
   box-shadow: use-shadow('normal');
   font-size: use-text-size('normal');

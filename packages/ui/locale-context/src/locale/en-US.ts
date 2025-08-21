@@ -190,4 +190,14 @@ export default {
   backTop: {
     backToTop: 'Back to the top',
   },
+  menuSearch: {
+    placeholder: 'Please enter the search content',
+    search: 'Search',
+    clear: 'Clear',
+    searchResult: 'Found {{count}} items related to "{{keyword}}"',
+    searchEmptyResult: 'No related results found',
+    moveCursor: 'Move',
+    confirmSelect: 'Confirm',
+    hideWindow: 'Hide',
+  },
 }
