@@ -75,6 +75,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     customRender,
     label,
     virtual,
+    onItemClick: onItemClickProp,
     ...rest
   } = props
   const i18n = useLocaleContext()
@@ -245,6 +246,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         menuList: showData,
         dropdownColumnRender,
         virtual,
+        onItemClickProp,
       }}
     >
       <Picker
@@ -398,6 +400,13 @@ export interface CascaderProps
    * 是否开启虚拟滚动
    */
   virtual?: boolean
+  /**
+   * 点击选项时触发
+   */
+  onItemClick?: (
+    event: React.MouseEvent<HTMLDivElement>,
+    eventOption: CascaderItemEventData
+  ) => void
 }
 
 if (__DEV__) {
