@@ -140,9 +140,9 @@ export type TableColumnItem = {
    */
   defaultSortOrder?: TableColumnSortOrder
   /**
-   * 列排序函数
+   * 列排序函数，当设置为 true 时，需结合 sortOrder 和 onChange 使用，一般用于服务端排序
    */
-  sorter?: (a: any, b: any) => number
+  sorter?: boolean | ((a: any, b: any) => number)
   /**
    * 该列是否支持平均值
    */
