@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { SearchOutlined, CloseOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@hi-ui/icons'
@@ -51,6 +51,8 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
     const [visible, visibleAction] = useUncontrolledToggle({
       visible: visibleProp,
     })
@@ -253,67 +255,84 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
           />
         }
         footer={
-          <div className={`${prefixCls}__footer`}>
-            <div className={`${prefixCls}__footer-item`}>
-              <div className={`${prefixCls}__footer-item__icon`}>
-                <ArrowUpOutlined />
-                <ArrowDownOutlined />
+          resultMemo?.length > 0 && (
+            <div className={`${prefixCls}__footer`}>
+              <div className={`${prefixCls}__footer-item`}>
+                <div className={`${prefixCls}__footer-item__icon`}>
+                  <ArrowUpOutlined />
+                  <ArrowDownOutlined />
+                </div>
+                <span className={`${prefixCls}__footer-item__text`}>
+                  {i18n.menuSearch.moveCursor}
+                </span>
               </div>
-              <span className={`${prefixCls}__footer-item__text`}>移动光标</span>
-            </div>
-            <div className={`${prefixCls}__footer-item`}>
-              <div className={`${prefixCls}__footer-item__icon`}>
-                <EnterIcon />
+              <div className={`${prefixCls}__footer-item`}>
+                <div className={`${prefixCls}__footer-item__icon`}>
+                  <EnterIcon />
+                </div>
+                <span className={`${prefixCls}__footer-item__text`}>
+                  {i18n.menuSearch.confirmSelect}
+                </span>
               </div>
-              <span className={`${prefixCls}__footer-item__text`}>确定选择</span>
+              <div className={`${prefixCls}__footer-item`}>
+                <div className={`${prefixCls}__footer-item__icon`}>esc</div>
+                <span className={`${prefixCls}__footer-item__text`}>
+                  {i18n.menuSearch.hideWindow}
+                </span>
+              </div>
             </div>
-            <div className={`${prefixCls}__footer-item`}>
-              <div className={`${prefixCls}__footer-item__icon`}>esc</div>
-              <span className={`${prefixCls}__footer-item__text`}>隐藏窗口</span>
-            </div>
-          </div>
+          )
         }
       >
         <div className={`${prefixCls}__content`}>
-          <div className={`${prefixCls}__header`}>
-            共搜索到 <span className={`${prefixCls}__header-count`}>{resultMemo?.length}</span>{' '}
-            项与“
-            <span className={`${prefixCls}__header-keyword`}>{value}</span>”相关的菜单
-          </div>
-          <div
-            className={`${prefixCls}__list`}
-            ref={listRef}
-            tabIndex={-1}
-            onKeyDown={handleKeyDown}
-          >
-            {resultMemo?.map((item, index) => {
-              return (
-                <div
-                  key={item.id}
-                  className={cx(`${prefixCls}__list-item`, {
-                    [`${prefixCls}__list-item--selected`]: currentIndex === index,
-                  })}
-                  onClick={() => handleSelect(item.id, item, index)}
-                >
-                  <div className={`${prefixCls}__list-item__title`}>
-                    <EllipsisTooltip
-                      tooltipProps={{
-                        style: {
-                          maxWidth: 320,
-                        },
-                      }}
+          {resultMemo?.length > 0 ? (
+            <>
+              <div className={`${prefixCls}__header`}>
+                {i18n.get('menuSearch.searchResult', {
+                  count: resultMemo?.length,
+                  keyword: value,
+                })}
+              </div>
+              <div
+                className={`${prefixCls}__list`}
+                ref={listRef}
+                tabIndex={-1}
+                onKeyDown={handleKeyDown}
+              >
+                {resultMemo?.map((item, index) => {
+                  return (
+                    <div
+                      key={item.id}
+                      className={cx(`${prefixCls}__list-item`, {
+                        [`${prefixCls}__list-item--selected`]: currentIndex === index,
+                      })}
+                      onClick={() => handleSelect(item.id, item, index)}
                     >
-                      {
-                        (
-                          <Highlighter keyword={value}>{item.pathTitles.join('/')}</Highlighter>
-                        ) as any
-                      }
-                    </EllipsisTooltip>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
+                      <div className={`${prefixCls}__list-item__title`}>
+                        <EllipsisTooltip
+                          tooltipProps={{
+                            style: {
+                              maxWidth: 320,
+                            },
+                          }}
+                        >
+                          {
+                            (
+                              <Highlighter keyword={value}>{item.pathTitles.join('/')}</Highlighter>
+                            ) as any
+                          }
+                        </EllipsisTooltip>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </>
+          ) : (
+            <div className={`${prefixCls}__empty`}>
+              <div>{i18n.menuSearch.searchEmptyResult}</div>
+            </div>
+          )}
         </div>
       </Picker>
     )
@@ -377,6 +396,8 @@ export const MenuSearchInput = forwardRef<
     },
     ref
   ) => {
+    const i18n = useLocaleContext()
+
     return (
       <div ref={ref} className={`${prefixCls}__input-wrapper`} style={{ width }}>
         <Input
@@ -392,7 +413,7 @@ export const MenuSearchInput = forwardRef<
               size="xs"
               onClick={onClear}
             >
-              清除
+              {i18n.menuSearch.clear}
             </Button>
           }
           value={value}

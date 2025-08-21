@@ -54,7 +54,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
 
     .#{$prefix}__icon {
       border-color: use-color('gray', 300);
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 50);
 
       &::after {
         border-color: use-color('gray', 300);
