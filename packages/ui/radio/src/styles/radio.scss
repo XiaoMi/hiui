@@ -129,7 +129,7 @@ $label-class: '#{$prefix}__label' !default;
 
         &::after {
           opacity: 1;
-          transform: scale(0.3);
+          transform: scale(0.5);
           background-color: use-color-static('white');
         }
       }
