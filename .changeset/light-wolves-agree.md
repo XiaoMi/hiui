@@ -13,7 +13,6 @@
 "@hi-ui/picker": patch
 "@hi-ui/preview": patch
 "@hi-ui/radio": patch
-"@hi-ui/rating": patch
 "@hi-ui/select": patch
 ---
 
