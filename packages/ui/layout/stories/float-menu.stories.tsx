@@ -135,9 +135,13 @@ export const FloatMenu = () => {
   // 侧边栏导航是否折叠
   const [collapsed, setCollapsed] = React.useState(false)
 
+  // 鼠标悬浮到侧边栏菜单项的 id
   const [selectMenuId, setSelectMenuId] = React.useState<React.ReactText>('')
+  // 当前激活的菜单项的 id
   const [activeMenuId, setActiveMenuId] = React.useState<React.ReactText>('xiaomi3')
+  // 浮动菜单是否显示
   const [floatContainerVisible, setFloatContainerVisible] = React.useState(false)
+  // 定时器，用于优化浮动菜单的隐藏时体验
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const { submenuData, activeParentId } = useSideMenuCascade({

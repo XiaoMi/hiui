@@ -59,16 +59,18 @@ export const FloatMenuContainer = forwardRef<HTMLDivElement | null, FloatMenuCon
           })}
           style={{ width: visible ? width : 0 }}
         >
-          <div className={cx(`${prefixCls}-collapse-wrapper`)}>
-            <div className={cx(`${prefixCls}-collapse`)} onClick={handleCollapse}>
-              <span className={cx(`${prefixCls}-collapse-icon`)}>
-                <CollapseIcon />
-              </span>
-              <span className={cx(`${prefixCls}-collapse-text`)}>
-                {collapsed ? i18n.timeline.expand : i18n.timeline.collapse}
-              </span>
+          {visible && (
+            <div className={cx(`${prefixCls}-collapse-wrapper`)}>
+              <div className={cx(`${prefixCls}-collapse`)} onClick={handleCollapse}>
+                <span className={cx(`${prefixCls}-collapse-icon`)}>
+                  <CollapseIcon />
+                </span>
+                <span className={cx(`${prefixCls}-collapse-text`)}>
+                  {collapsed ? i18n.timeline.expand : i18n.timeline.collapse}
+                </span>
+              </div>
             </div>
-          </div>
+          )}
           <div className={cx(`${prefixCls}-content-wrapper`)}>{children}</div>
         </div>
       </div>
