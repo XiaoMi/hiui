@@ -22,6 +22,7 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
       role = 'sider',
       className,
       width: widthProp,
+      maxWidth: maxWidthProp,
       resizable = true,
       collapsed: collapsedProp,
       onCollapse,
@@ -33,6 +34,7 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
     const [collapsed, setCollapsed] = useUncontrolledState(false, collapsedProp, onCollapse)
     const siderWidth = widthProp || DEFAULT_SIDER_WIDTH
     const [width, setWidth] = useState(collapsedProp ? SIDER_WIDTH_MIN : siderWidth)
+    const maxWidth = maxWidthProp || SIDER_WIDTH_MAX
 
     const handleResize = (evt: React.SyntheticEvent, options: ResizeCallbackData) => {
       let width = options?.size?.width as number
@@ -53,8 +55,8 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
         width = SIDER_WIDTH_MIN
       }
 
-      if (width > SIDER_WIDTH_MAX) {
-        width = SIDER_WIDTH_MAX
+      if (width > maxWidth) {
+        width = maxWidth
       }
 
       setWidth(width)
@@ -98,9 +100,28 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
 )
 
 export interface SiderProps extends HiBaseHTMLProps<'div'> {
+  /**
+   * 宽度
+   */
   width?: number
+  /**
+   * 最大宽度
+   */
+  maxWidth?: number
+  /**
+   * 最小宽度
+   */
+  /**
+   * 是否可调整宽度
+   */
   resizable?: boolean
+  /**
+   * 是否折叠
+   */
   collapsed?: boolean
+  /**
+   * 折叠回调
+   */
   onCollapse?: (collapsed: boolean) => void
 }
 
