@@ -49,13 +49,13 @@ export const GroupMenu = forwardRef<HTMLDivElement | null, GroupMenuProps>(
           return (
             <div
               key={id}
-              className={cx(`${prefixCls}-item`, {
-                [`${prefixCls}-item--parent`]: isParent,
+              className={cx(isParent ? `${prefixCls}-parent-item` : `${prefixCls}-item`, {
                 [`${prefixCls}-item--active`]: activeId === id,
                 [`${prefixCls}-item--disabled`]: disabled,
+                [`${prefixCls}-item--empty`]: !title && !icon,
               })}
               onClick={(evt) => {
-                if (disabled) return
+                if (disabled || isParent) return
                 evt.stopPropagation()
                 handleClick(evt, id, item)
               }}
