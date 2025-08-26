@@ -104,8 +104,17 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
 )
 
 export interface SearchTriggerProps extends HiBaseHTMLProps<'div'> {
+  /**
+   * 迷你模式
+   */
   mini?: boolean
+  /**
+   * 占位符
+   */
   placeholder?: string
+  /**
+   * 菜单数据
+   */
   data?: MenuDataItem[]
 }
 
