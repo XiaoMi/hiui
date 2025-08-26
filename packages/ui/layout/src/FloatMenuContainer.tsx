@@ -20,6 +20,7 @@ export const FloatMenuContainer = forwardRef<HTMLDivElement | null, FloatMenuCon
       width,
       collapsed: collapsedProp = true,
       onCollapse,
+      zIndex,
       ...rest
     },
     ref
@@ -57,7 +58,7 @@ export const FloatMenuContainer = forwardRef<HTMLDivElement | null, FloatMenuCon
             [`${prefixCls}-content--show`]: visible,
             [`${prefixCls}-content--collapsed`]: collapsed,
           })}
-          style={{ width: visible ? width : 0 }}
+          style={{ zIndex, width: visible ? width : 0 }}
         >
           {visible && (
             <div className={cx(`${prefixCls}-collapse-wrapper`)}>
@@ -83,6 +84,10 @@ export interface FloatMenuContainerProps extends HiBaseHTMLProps<'div'> {
    * 浮动宽度
    */
   width?: number
+  /**
+   * 层级
+   */
+  zIndex?: number
   /**
    * 是否显示
    */

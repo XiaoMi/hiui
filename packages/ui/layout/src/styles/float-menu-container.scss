@@ -16,6 +16,7 @@ $float-menu-container-prefix: '#{$component-prefix}-float-menu-container' !defau
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 2000;
     height: 100%;
     padding: use-spacing(6) 0;
     background-color: #f5f8fc;
