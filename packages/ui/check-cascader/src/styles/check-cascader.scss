@@ -5,6 +5,12 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 .#{$prefix} {
   &__popper {
     .#{$component-prefix}-picker {
+      &__panel {
+        box-sizing: border-box;
+        width: min-content;
+        min-width: 160px;
+      }
+
       &__body {
         padding-left: 0;
         padding-right: 0;
