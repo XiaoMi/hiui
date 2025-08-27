@@ -237,6 +237,12 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     }
   }, [menuVisible, showData])
 
+  useEffect(() => {
+    if (!value || value.length === 0) {
+      clear()
+    }
+  }, [value, clear])
+
   return (
     <CascaderProvider
       value={{
@@ -287,7 +293,6 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
               value={value[value.length - 1]}
               onChange={() => {
                 tryChangeValue([])
-                clear()
               }}
               data={mergedData}
               invalid={invalid}
