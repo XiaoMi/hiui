@@ -420,8 +420,8 @@ if (__DEV__) {
   Preview.displayName = 'Preview'
 }
 
-const getTitle = (url: string) => {
-  return url.split('/').pop()?.split('?')[0]
+const getTitle = (url: string = '') => {
+  return url.split('/').pop()?.split('?')[0] || ''
 }
 
 export const downloadImage = (url: string) => {
