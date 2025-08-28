@@ -216,6 +216,11 @@ $upload-state-height: 2px !default;
     font-size: use-text-size('normal');
   }
 
+  &__content-wrapper {
+    flex: 1;
+    overflow: hidden;
+  }
+
   &__upstatus {
     width: 100%;
     height: $upload-state-height;
