@@ -228,6 +228,10 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     return flattedData
   }, [selectedItem, flattedData])
 
+  const mergedDataSelectedItem = useMemo(() => {
+    return mergedData.find((d) => d.id === value[value.length - 1]) as CascaderItemEventData
+  }, [mergedData, value])
+
   const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
   useEffect(() => {
@@ -236,6 +240,12 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
       pickerInnerRef.current?.update()
     }
   }, [menuVisible, showData])
+
+  useEffect(() => {
+    if (!value || value.length === 0) {
+      clear()
+    }
+  }, [value, clear])
 
   return (
     <CascaderProvider
@@ -269,7 +279,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         trigger={
           customRender ? (
             typeof customRender === 'function' ? (
-              customRender(selectedItem)
+              customRender(mergedDataSelectedItem, value)
             ) : (
               customRender
             )
@@ -287,7 +297,6 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
               value={value[value.length - 1]}
               onChange={() => {
                 tryChangeValue([])
-                clear()
               }}
               data={mergedData}
               invalid={invalid}
@@ -391,7 +400,9 @@ export interface CascaderProps
   /**
    * 自定义触发器
    */
-  customRender?: React.ReactNode | ((selectedItem: CascaderItemEventData | null) => React.ReactNode)
+  customRender?:
+    | React.ReactNode
+    | ((selectedItem: CascaderItemEventData | null, value?: React.ReactText[]) => React.ReactNode)
   /**
    * 点击关闭按钮时触发
    */
