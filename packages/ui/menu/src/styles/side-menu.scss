@@ -21,7 +21,7 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
     position: relative;
 
     &:hover {
-      background-color: use-color('gray', 100);
+      background-color: rgba(#7c87a6, 0.15);
     }
 
     &-wrapper {
