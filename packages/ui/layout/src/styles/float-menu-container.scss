@@ -38,7 +38,7 @@ $float-menu-container-prefix: '#{$component-prefix}-float-menu-container' !defau
       box-shadow: 6px 0 18px 6px rgba(#1a1d26, 0.03), 4px 0 4px 0 rgba(#1a1d26, 0.03);
 
       .#{$float-menu-container-prefix}-collapse-icon {
-        transform: rotate(180deg);
+        transform: scaleX(-1);
       }
     }
   }

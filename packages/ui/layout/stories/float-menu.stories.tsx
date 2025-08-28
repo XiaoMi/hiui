@@ -133,14 +133,12 @@ export const FloatMenu = () => {
   ])
 
   // 侧边栏导航是否折叠
-  const [collapsed, setCollapsed] = React.useState(false)
+  const [collapsed, setCollapsed] = React.useState(true)
 
   // 鼠标悬浮到侧边栏菜单项的 id
   const [selectMenuId, setSelectMenuId] = React.useState<React.ReactText>('')
   // 当前激活的菜单项的 id
   const [activeMenuId, setActiveMenuId] = React.useState<React.ReactText>('xiaomi3')
-  // 浮动菜单是否显示
-  const [floatContainerVisible, setFloatContainerVisible] = React.useState(false)
   // 定时器，用于优化浮动菜单的隐藏时体验
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -149,6 +147,13 @@ export const FloatMenu = () => {
     selectId: selectMenuId,
     activeId: activeMenuId,
   })
+
+  // 浮动菜单是否显示
+  const [floatContainerVisible, setFloatContainerVisible] = React.useState(submenuData.length > 0)
+  // 浮动菜单是否折叠
+  const [floatContainerCollapsed, setFloatContainerCollapsed] = React.useState(
+    submenuData.length === 0
+  )
 
   return (
     <>
@@ -177,6 +182,8 @@ export const FloatMenu = () => {
               onClick={(event, id, item) => {
                 if (!item.children || item.children.length === 0) {
                   setActiveMenuId(id)
+                  setFloatContainerVisible(false)
+                  setFloatContainerCollapsed(true)
                 }
               }}
               onMouseEnter={(event, id, item) => {
@@ -189,7 +196,7 @@ export const FloatMenu = () => {
                   clearTimeout(timerRef.current)
                 }
               }}
-              onMouseLeave={() => {
+              onMouseLeave={(event, id, item) => {
                 timerRef.current = setTimeout(() => {
                   setFloatContainerVisible(false)
                 }, 100)
@@ -198,8 +205,10 @@ export const FloatMenu = () => {
             />
           </Sider>
           <FloatMenuContainer
-            visible={floatContainerVisible}
             width={180}
+            visible={floatContainerVisible}
+            collapsed={floatContainerCollapsed}
+            onCollapse={setFloatContainerCollapsed}
             onMouseEnter={() => {
               setFloatContainerVisible(true)
 
