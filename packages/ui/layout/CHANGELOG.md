@@ -1,5 +1,18 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.5
+
+### Minor Changes
+
+- 4798a025c: feat(layout): Sider 组件增加 maxWidth 参数 & FloatMenuContainer 组件增加 zIndex 参数 (5.0)
+
+### Patch Changes
+
+- 282e6c499: perf(layout&menu): 优化 FloatMenuContainer 组件的折叠逻辑 & 修改 SideMenu 组件 hover 样式 (5.0)
+- Updated dependencies [282e6c499]
+- Updated dependencies [4782eb807]
+  - @hi-ui/menu@5.0.0-canary.9
+
 ## 5.0.0-canary.4
 
 ### Minor Changes

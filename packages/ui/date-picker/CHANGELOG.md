@@ -1,5 +1,13 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.15
+
+### Patch Changes
+
+- 19e0da371: style: 修改 appearance 为 unset 和 borderless 模式的样式 (5.0)
+- Updated dependencies [19e0da371]
+  - @hi-ui/time-picker@5.0.0-canary.9
+
 ## 5.0.0-canary.14
 
 ### Minor Changes

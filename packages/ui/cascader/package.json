@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/cascader",
-  "version": "5.0.0-canary.10",
+  "version": "5.0.0-canary.11",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -50,7 +50,7 @@
     "@hi-ui/func-utils": "^5.0.0-canary.2",
     "@hi-ui/highlighter": "^5.0.0-canary.3",
     "@hi-ui/icons": "^5.0.0-canary.3",
-    "@hi-ui/input": "^5.0.0-canary.10",
+    "@hi-ui/input": "^5.0.0-canary.11",
     "@hi-ui/picker": "^5.0.0-canary.10",
     "@hi-ui/popper": "^5.0.0-canary.6",
     "@hi-ui/spinner": "^5.0.0-canary.3",

@@ -1,5 +1,13 @@
 # @hi-ui/upload
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- 05c0b5128: style(upload): 处理文本超出的情况 (5.0)
+- Updated dependencies [f5800c695]
+  - @hi-ui/preview@5.0.0-canary.5
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

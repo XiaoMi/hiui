@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/layout",
-  "version": "5.0.0-canary.4",
+  "version": "5.0.0-canary.5",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,7 +45,7 @@
   "dependencies": {
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
-    "@hi-ui/menu": "^5.0.0-canary.8",
+    "@hi-ui/menu": "^5.0.0-canary.9",
     "@hi-ui/popper": "^5.0.0-canary.6",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-canary.2"
   },

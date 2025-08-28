@@ -1,5 +1,41 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.25
+
+### Minor Changes
+
+- 4798a025c: feat(layout): Sider 组件增加 maxWidth 参数 & FloatMenuContainer 组件增加 zIndex 参数 (5.0)
+
+### Patch Changes
+
+- 19e0da371: style: 修改 appearance 为 unset 和 borderless 模式的样式 (5.0)
+- 282e6c499: perf(layout&menu): 优化 FloatMenuContainer 组件的折叠逻辑 & 修改 SideMenu 组件 hover 样式 (5.0)
+- 4782eb807: style(menu): 优化 GroupMenu 组件的样式和交互逻辑 (5.0)
+- f5800c695: fix(preview): 兼容 src 内容为空的情况 & 优化预览图片的展示 (5.0)
+- 05c0b5128: style(upload): 处理文本超出的情况 (5.0)
+- 648858a22: <br>
+  - fix(cascader): 处理当 value 为空时清空选项的选中态(5.0)
+  - style(cascader&check-cascader): 调整选项容器最小宽度为 160px (5.0)
+  - style(cascader&check-cascader): 优化下拉框宽度，让内容和搜索框默认宽度对齐 (5.0)
+  - perf(cascader&check-cascader): 优化 customRender 函数，支持传递选中项和当前值 (5.0)
+- Updated dependencies [19e0da371]
+- Updated dependencies [282e6c499]
+- Updated dependencies [4782eb807]
+- Updated dependencies [4798a025c]
+- Updated dependencies [f5800c695]
+- Updated dependencies [05c0b5128]
+- Updated dependencies [648858a22]
+  - @hi-ui/date-picker@5.0.0-canary.15
+  - @hi-ui/input@5.0.0-canary.11
+  - @hi-ui/textarea@5.0.0-canary.6
+  - @hi-ui/time-picker@5.0.0-canary.9
+  - @hi-ui/layout@5.0.0-canary.5
+  - @hi-ui/menu@5.0.0-canary.9
+  - @hi-ui/preview@5.0.0-canary.5
+  - @hi-ui/upload@5.0.0-canary.6
+  - @hi-ui/cascader@5.0.0-canary.11
+  - @hi-ui/check-cascader@5.0.0-canary.13
+
 ## 5.0.0-canary.24
 
 ### Minor Changes

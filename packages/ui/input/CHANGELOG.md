@@ -1,5 +1,11 @@
 # @hi-ui/input
 
+## 5.0.0-canary.11
+
+### Patch Changes
+
+- 19e0da371: style: 修改 appearance 为 unset 和 borderless 模式的样式 (5.0)
+
 ## 5.0.0-canary.10
 
 ### Minor Changes

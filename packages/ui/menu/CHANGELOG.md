@@ -1,5 +1,14 @@
 # @hi-ui/menu
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- 282e6c499: perf(layout&menu): 优化 FloatMenuContainer 组件的折叠逻辑 & 修改 SideMenu 组件 hover 样式 (5.0)
+- 4782eb807: style(menu): 优化 GroupMenu 组件的样式和交互逻辑 (5.0)
+- Updated dependencies [19e0da371]
+  - @hi-ui/input@5.0.0-canary.11
+
 ## 5.0.0-canary.8
 
 ### Patch Changes

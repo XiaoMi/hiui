@@ -1,5 +1,11 @@
 # @hi-ui/preview
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- f5800c695: fix(preview): 兼容 src 内容为空的情况 & 优化预览图片的展示 (5.0)
+
 ## 5.0.0-canary.4
 
 ### Patch Changes
