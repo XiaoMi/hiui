@@ -5,7 +5,6 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
 .#{$prefix} {
   box-sizing: border-box;
-  padding: 0 use-spacing(6);
   border: use-border-size('normal') transparent;
   border-radius: use-border-radius('lg');
   box-shadow: 0 0 0 2px transparent;
@@ -49,6 +48,10 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     &:not(.#{$prefix}--disabled):hover {
       background: use-color('gray', 100);
     }
+  }
+
+  &--appearance-borderless {
+    border: none;
   }
 
   &--appearance-contained {
@@ -103,28 +106,40 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     line-height: use-height-size(6);
     font-size: use-text-size('sm');
     height: use-height-size(6);
-    padding: 0 use-spacing(4);
+
+    &:not(.#{$prefix}--appearance-borderless) {
+      padding: 0 use-spacing(4);
+    }
   }
 
   &--size-sm {
     line-height: use-height-size(7);
     font-size: use-text-size('sm');
     height: use-height-size(7);
-    padding: 0 use-spacing(4);
+
+    &:not(.#{$prefix}--appearance-borderless) {
+      padding: 0 use-spacing(4);
+    }
   }
 
   &--size-md {
     line-height: use-height-size(8);
     font-size: use-text-size('normal');
     height: use-height-size(8);
-    padding: 0 use-spacing(6);
+
+    &:not(.#{$prefix}--appearance-borderless) {
+      padding: 0 use-spacing(6);
+    }
   }
 
   &--size-lg {
     line-height: use-height-size(10);
     font-size: use-text-size('lg');
     height: use-height-size(10);
-    padding: 0 use-spacing(8);
+
+    &:not(.#{$prefix}--appearance-borderless) {
+      padding: 0 use-spacing(8);
+    }
   }
 
   &--active:not(.#{$prefix}--appearance-borderless) {
