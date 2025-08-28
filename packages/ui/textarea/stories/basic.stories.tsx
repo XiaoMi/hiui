@@ -24,7 +24,6 @@ export const Basic = () => {
           value={value}
           onChange={(evt) => setValue(evt.target.value)}
           placeholder="请输入"
-          maxRows={3}
           appearance="filled"
         />
         <br />
@@ -34,7 +33,6 @@ export const Basic = () => {
           value={value}
           onChange={(evt) => setValue(evt.target.value)}
           placeholder="请输入"
-          rows={3}
           appearance="unset"
         />
         <br />
