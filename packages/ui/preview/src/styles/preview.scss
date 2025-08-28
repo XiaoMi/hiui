@@ -77,15 +77,10 @@ $prefix: '#{$component-prefix}-preview' !default;
     left: 0;
     text-align: center;
     outline: none;
-
-    // 该伪类用于让图片在容器中垂直居中
-    &::before {
-      content: '';
-      width: 0;
-      height: 100%;
-      vertical-align: middle;
-      display: inline-block;
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   &__toolbar {
@@ -236,6 +231,9 @@ $prefix: '#{$component-prefix}-preview' !default;
   }
 
   &__img-wrapper {
-    display: inline-block;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    background-color: use-color('gray', 700);
   }
 }

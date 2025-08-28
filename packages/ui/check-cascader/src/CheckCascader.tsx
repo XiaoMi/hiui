@@ -317,7 +317,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         trigger={
           customRender ? (
             typeof customRender === 'function' ? (
-              customRender(selectedItems)
+              customRender(selectedItems, value)
             ) : (
               customRender
             )
@@ -575,7 +575,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    */
   customRender?:
     | React.ReactNode
-    | ((selectItems: (FlattedCheckCascaderDataItem | undefined)[]) => React.ReactNode)
+    | ((
+        selectItems: (FlattedCheckCascaderDataItem | undefined)[],
+        value?: React.ReactText[]
+      ) => React.ReactNode)
   /**
    * 是否只展示选中的选项
    */
