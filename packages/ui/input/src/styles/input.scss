@@ -297,11 +297,6 @@ $prefix: '#{$component-prefix}-input' !default;
     }
 
     &-unset {
-      .#{$prefix}__text {
-        padding-left: 0;
-        padding-right: 0;
-      }
-
       &.#{$prefix}__outer--prepend,
       .#{$prefix}__inner--prefix {
         .#{$prefix}__text {
@@ -412,6 +407,13 @@ $prefix: '#{$component-prefix}-input' !default;
             }
           }
         }
+      }
+    }
+
+    &-borderless {
+      .#{$prefix}__text {
+        padding-left: 0;
+        padding-right: 0;
       }
     }
 
