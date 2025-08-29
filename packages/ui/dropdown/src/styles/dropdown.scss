@@ -15,6 +15,8 @@ $prefix: '#{$component-prefix}-dropdown' !default;
   font-size: use-text-size('normal');
   padding: use-spacing(2);
   color: use-color('gray', 700);
+  max-height: 268px;
+  overflow-y: auto;
   // max-height: 260px;
   // 影响计算，如果要支持需要换种方案，不利用内嵌的特性。
   // 而是手动计算每个下拉面板的非outside区域元素然后拦截防菜单操作时关闭收起
