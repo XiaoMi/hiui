@@ -89,6 +89,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     box-sizing: border-box;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     white-space: nowrap;
     overflow: hidden;
     height: 100%;
