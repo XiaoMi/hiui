@@ -34,16 +34,14 @@ export const useColSorter = ({
     setSortColKeys(columns.map((column) => column.dataKey!))
   }, [columns])
 
-  const columnsLatestRef = useLatestRef(columns)
-
   const sortedCols = useMemo(() => {
-    const columnsMap = columnsLatestRef.current.reduce((prev, cur) => {
+    const columnsMap = columns.reduce((prev, cur) => {
       prev[cur.dataKey!] = cur
       return prev
     }, {} as any)
 
     return sortedColKeys.map((colKey) => columnsMap[colKey]).filter(Boolean)
-  }, [sortedColKeys, columnsLatestRef])
+  }, [sortedColKeys, columns])
 
   useEffect(() => {
     if (!cacheKey) return
