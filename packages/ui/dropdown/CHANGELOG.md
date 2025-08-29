@@ -1,5 +1,11 @@
 # @hi-ui/dropdown
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- 1bb79f984: style(dropdown): 增加下拉菜单的最大高度和垂直溢出处理 (5.0)
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

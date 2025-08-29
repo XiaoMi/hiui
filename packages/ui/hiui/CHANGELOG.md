@@ -1,5 +1,24 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.26
+
+### Patch Changes
+
+- 864c3a54e: fix(table): 优化 useColSorter 钩子，移除不必要的 columnsLatestRef 引用，直接使用 columns 进行排序计算 (5.0)
+- 1bb79f984: style(dropdown): 增加下拉菜单的最大高度和垂直溢出处理 (5.0)
+- 53b45cd5d: style(tag-input): 增加 flex-wrap 属性以优化标签换行展示 (5.0)
+- 301e49608: style(layout): 在折叠状态下为 FloatMenuContainer 组件添加 z-index 属性 (5.0)
+- Updated dependencies [864c3a54e]
+- Updated dependencies [1bb79f984]
+- Updated dependencies [53b45cd5d]
+- Updated dependencies [301e49608]
+  - @hi-ui/table@5.0.0-canary.13
+  - @hi-ui/dropdown@5.0.0-canary.7
+  - @hi-ui/check-cascader@5.0.0-canary.14
+  - @hi-ui/check-select@5.0.0-canary.11
+  - @hi-ui/check-tree-select@5.0.0-canary.11
+  - @hi-ui/layout@5.0.0-canary.6
+
 ## 5.0.0-canary.25
 
 ### Minor Changes

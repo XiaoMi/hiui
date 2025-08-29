@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 5.0.0-canary.13
+
+### Patch Changes
+
+- 864c3a54e: fix(table): 优化 useColSorter 钩子，移除不必要的 columnsLatestRef 引用，直接使用 columns 进行排序计算 (5.0)
+
 ## 5.0.0-canary.12
 
 ### Minor Changes

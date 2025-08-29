@@ -1,5 +1,11 @@
 # @hi-ui/tag-input
 
+## 5.0.0-canary.14
+
+### Patch Changes
+
+- 53b45cd5d: style(tag-input): 增加 flex-wrap 属性以优化标签换行展示 (5.0)
+
 ## 5.0.0-canary.13
 
 ### Patch Changes

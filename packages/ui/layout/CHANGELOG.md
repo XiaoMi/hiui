@@ -1,5 +1,11 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- 301e49608: style(layout): 在折叠状态下为 FloatMenuContainer 组件添加 z-index 属性 (5.0)
+
 ## 5.0.0-canary.5
 
 ### Minor Changes

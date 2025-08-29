@@ -1,5 +1,13 @@
 # @hi-ui/check-tree-select
 
+## 5.0.0-canary.11
+
+### Patch Changes
+
+- 53b45cd5d: style(tag-input): 增加 flex-wrap 属性以优化标签换行展示 (5.0)
+- Updated dependencies [53b45cd5d]
+  - @hi-ui/tag-input@5.0.0-canary.14
+
 ## 5.0.0-canary.10
 
 ### Minor Changes
