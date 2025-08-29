@@ -9,7 +9,7 @@ import { isFunction, isObject } from '@hi-ui/type-assertion'
 import { TableBody } from './TableBody'
 import { TableHeader } from './TableHeader'
 import { defaultLoadingIcon } from './icons'
-import { TableExtra, TableColumnItem, TableOnRowReturn } from './types'
+import { TableExtra, TableColumnItem, TableOnRowReturn, TableRowEventData } from './types'
 import { TableProvider } from './context'
 import { checkNeedTotalOrEvg, getTotalOrEvgRowData, uuid } from './utils'
 import { useTable, UseTableProps } from './use-table'
@@ -54,6 +54,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       virtual,
       needDoubleTable,
       onResizeStop,
+      fixedToRow,
       ...rest
     },
     ref
@@ -320,6 +321,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               hasSumColumn,
               virtual,
               onResizeStop,
+              fixedToRow,
             }}
           >
             {renderTable()}
@@ -388,6 +390,13 @@ export interface BaseTableProps
     index: number,
     columnsWidth: number[]
   ) => void
+  /**
+   * 固定行，只有设置 maxHeight 时才生效
+   */
+  fixedToRow?: {
+    top?: number | ((rowData: TableRowEventData, index: number) => boolean)
+    bottom?: number | ((rowData: TableRowEventData, index: number) => boolean)
+  }
 }
 
 if (__DEV__) {

@@ -2,7 +2,7 @@ import { createContext, SyntheticEvent, useContext } from 'react'
 import { UseEmbedExpandReturn } from './hooks/use-embed-expand'
 
 import { UseTableReturn } from './use-table'
-import { TableOnRowReturn } from './types'
+import { TableOnRowReturn, TableRowEventData } from './types'
 import { ResizeCallbackData } from 'react-resizable'
 
 const TableContext = createContext<
@@ -34,6 +34,10 @@ const TableContext = createContext<
           index: number,
           columnsWidth: number[]
         ) => void
+        fixedToRow?: {
+          top?: number | ((rowData: TableRowEventData, index: number) => boolean)
+          bottom?: number | ((rowData: TableRowEventData, index: number) => boolean)
+        }
       })
   | null
 >(null)

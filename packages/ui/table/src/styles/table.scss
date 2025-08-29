@@ -244,6 +244,30 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   }
 
   &-row {
+    &--fixed-top,
+    &--fixed-bottom {
+      position: sticky;
+      z-index: 6;
+    }
+
+    &--fixed-top {
+      top: 0;
+    }
+
+    &--fixed-bottom {
+      bottom: 0;
+
+      .#{$prefix}-cell {
+        border-top: use-border-size('normal') use-color('gray', 300);
+      }
+    }
+
+    &:has(+ .#{$prefix}-row--fixed-bottom) {
+      .#{$prefix}-cell {
+        border-bottom: none;
+      }
+    }
+
     // 表示开启行hover高亮
     &--hover {
       &:hover {
