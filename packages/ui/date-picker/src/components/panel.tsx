@@ -222,6 +222,13 @@ const Panel = (props: PanelProps) => {
                 minuteStep={minuteStep}
                 secondStep={secondStep}
                 type="single"
+                panelType={
+                  type.includes('range')
+                    ? panelIndex === 0
+                      ? 'range-start'
+                      : 'range-end'
+                    : 'single'
+                }
                 format={timePickerFormat}
                 disabledHours={disabledHours}
                 disabledMinutes={disabledMinutes}
