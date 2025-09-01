@@ -1,5 +1,13 @@
 # @hi-ui/time-picker
 
+## 4.1.2
+
+### Patch Changes
+
+- [#3307](https://github.com/XiaoMi/hiui/pull/3307) [`7211244`](https://github.com/XiaoMi/hiui/commit/7211244c035ec21966c42eb5e58134348d97bd2f) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker&time-picker): 修复在日期时间范围选择模式下，disabledHours 回调参数总数返回 single 的问题 (#3289)
+
+- [#3306](https://github.com/XiaoMi/hiui/pull/3306) [`0eaaf1375`](https://github.com/XiaoMi/hiui/commit/0eaaf137524a58744c280c6b462ef9ea43fccd0a) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(time-picker): 优化默认值处理逻辑，确保在没有传值时使用默认值 (#3302)
+
 ## 4.1.1
 
 ### Patch Changes
