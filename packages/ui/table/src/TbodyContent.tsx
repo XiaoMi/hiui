@@ -1,15 +1,16 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useCallback } from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { getPrefixCls } from '@hi-ui/classname'
+import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArrayNonEmpty, isNullish } from '@hi-ui/type-assertion'
 import { EmptyState } from '@hi-ui/empty-state'
 import { TableRow } from './TableRow'
-import { TableRowRequiredProps } from './types'
+import { FlattedTableRowData, TableRowRequiredProps } from './types'
 import { useTableContext } from './context'
 
 const _prefix = getPrefixCls('table-body')
+const _prefixRow = getPrefixCls('table-row')
 
 export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>(
   ({ prefixCls = _prefix, emptyContent }, ref) => {
@@ -24,6 +25,7 @@ export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>
       sumRow,
       measureRowElementRef,
       rowClassName,
+      fixedToRow,
     } = useTableContext()
 
     const getRequiredProps = useLatestCallback(
@@ -40,6 +42,43 @@ export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>
       }
     )
 
+    const fixedToRowTopClassName = useCallback(
+      (row: FlattedTableRowData, index: number): string[] => {
+        const classNames: string[] = []
+
+        if (!isNullish(fixedToRow) && !isNullish(fixedToRow.top)) {
+          if (typeof fixedToRow.top === 'function') {
+            if (fixedToRow.top(row, index)) {
+              classNames.push(`${_prefixRow}--fixed-top`)
+            }
+          }
+
+          if (typeof fixedToRow.top === 'number') {
+            if (index === fixedToRow.top) {
+              classNames.push(`${_prefixRow}--fixed-top`)
+            }
+          }
+        }
+
+        if (!isNullish(fixedToRow) && !isNullish(fixedToRow.bottom)) {
+          if (typeof fixedToRow.bottom === 'function') {
+            if (fixedToRow.bottom(row, index)) {
+              classNames.push(`${_prefixRow}--fixed-bottom`)
+            }
+          }
+
+          if (typeof fixedToRow.bottom === 'number') {
+            if (index === fixedToRow.bottom) {
+              classNames.push(`${_prefixRow}--fixed-bottom`)
+            }
+          }
+        }
+
+        return classNames
+      },
+      [fixedToRow]
+    )
+
     // 外层增加 div 作为滚动容器
     return (
       <tbody>
@@ -51,7 +90,7 @@ export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>
                   ref={index === 0 ? measureRowElementRef : null}
                   // key={depth + index}
                   key={row.id}
-                  className={rowClassName?.(row, index)}
+                  className={cx(rowClassName?.(row, index), ...fixedToRowTopClassName(row, index))}
                   // @ts-ignore
                   rowIndex={index}
                   rowData={row}
