@@ -1,5 +1,30 @@
 # @hi-ui/hiui
 
+## 4.16.0
+
+### Minor Changes
+
+- [#3305](https://github.com/XiaoMi/hiui/pull/3305) [`6316a318e`](https://github.com/XiaoMi/hiui/commit/6316a318efe728b2b9fe21097a5c262ec83bea93) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): 添加 fixedToRow 功能，支持设置行固定到顶部或底部 (#3304)
+
+### Patch Changes
+
+- [#3307](https://github.com/XiaoMi/hiui/pull/3307) [`7211244`](https://github.com/XiaoMi/hiui/commit/7211244c035ec21966c42eb5e58134348d97bd2f) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker&time-picker): 修复在日期时间范围选择模式下，disabledHours 回调参数总数返回 single 的问题 (#3289)
+
+- [#3277](https://github.com/XiaoMi/hiui/pull/3277) [`93df0aaff`](https://github.com/XiaoMi/hiui/commit/93df0aafff09be59faeb4bad0ceea57a00df5ccf) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(form): 处理规则消息为空的情况，将其设置为 undefined (#3276)
+
+- [#3306](https://github.com/XiaoMi/hiui/pull/3306) [`0eaaf1375`](https://github.com/XiaoMi/hiui/commit/0eaaf137524a58744c280c6b462ef9ea43fccd0a) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(time-picker): 优化默认值处理逻辑，确保在没有传值时使用默认值 (#3302)
+
+- [#3275](https://github.com/XiaoMi/hiui/pull/3275) [`b2b66a9e7`](https://github.com/XiaoMi/hiui/commit/b2b66a9e73a1a92d6b0604dc2ad711895154e518) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(form): 优化 valueType 为 number 情况下的校验逻辑 (#3274)
+
+- [#3279](https://github.com/XiaoMi/hiui/pull/3279) [`a5786f533`](https://github.com/XiaoMi/hiui/commit/a5786f53314d1bd953d0af84eee6a7222a305b9e) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(number-input): 为加减按钮添加 type 属性，确保按钮行为符合标准 (#3278)
+
+- Updated dependencies [[`7211244`](https://github.com/XiaoMi/hiui/commit/7211244c035ec21966c42eb5e58134348d97bd2f), [`93df0aaff`](https://github.com/XiaoMi/hiui/commit/93df0aafff09be59faeb4bad0ceea57a00df5ccf), [`6316a318e`](https://github.com/XiaoMi/hiui/commit/6316a318efe728b2b9fe21097a5c262ec83bea93), [`0eaaf1375`](https://github.com/XiaoMi/hiui/commit/0eaaf137524a58744c280c6b462ef9ea43fccd0a), [`b2b66a9e7`](https://github.com/XiaoMi/hiui/commit/b2b66a9e73a1a92d6b0604dc2ad711895154e518), [`a5786f533`](https://github.com/XiaoMi/hiui/commit/a5786f53314d1bd953d0af84eee6a7222a305b9e)]:
+  - @hi-ui/date-picker@4.12.1
+  - @hi-ui/time-picker@4.1.2
+  - @hi-ui/form@4.3.3
+  - @hi-ui/table@4.12.0
+  - @hi-ui/number-input@4.2.3
+
 ## 4.15.0
 
 ### Minor Changes

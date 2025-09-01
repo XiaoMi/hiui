@@ -1,5 +1,11 @@
 # @hi-ui/number-input
 
+## 4.2.3
+
+### Patch Changes
+
+- [#3279](https://github.com/XiaoMi/hiui/pull/3279) [`a5786f533`](https://github.com/XiaoMi/hiui/commit/a5786f53314d1bd953d0af84eee6a7222a305b9e) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(number-input): 为加减按钮添加 type 属性，确保按钮行为符合标准 (#3278)
+
 ## 4.2.2
 
 ### Patch Changes

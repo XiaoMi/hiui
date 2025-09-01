@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 4.12.0
+
+### Minor Changes
+
+- [#3305](https://github.com/XiaoMi/hiui/pull/3305) [`6316a318e`](https://github.com/XiaoMi/hiui/commit/6316a318efe728b2b9fe21097a5c262ec83bea93) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): 添加 fixedToRow 功能，支持设置行固定到顶部或底部 (#3304)
+
 ## 4.11.0
 
 ### Minor Changes
