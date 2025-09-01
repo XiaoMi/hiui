@@ -22,6 +22,7 @@ interface PopContentProps extends ExtendType {
   onChange: (value: string[]) => void
   format: TimePickerFormat
   type: TimePickerType
+  panelType?: TimePickerPanelType
   // itemHeight: number
   // fullDisplayItemNumber: number
   style?: React.CSSProperties
@@ -36,6 +37,7 @@ export const PopContent: FC<PopContentProps> = (props) => {
     onChange,
     format,
     type,
+    panelType,
     // itemHeight,
     // fullDisplayItemNumber,
     hourStep,
@@ -189,7 +191,10 @@ export const PopContent: FC<PopContentProps> = (props) => {
             prefix={prefix}
             format={format}
             value={value[index]}
-            panel={type === 'single' ? 'single' : index === 0 ? 'range-start' : 'range-end'}
+            panel={
+              panelType ??
+              (type === 'single' ? 'single' : index === 0 ? 'range-start' : 'range-end')
+            }
             onChange={(e) => {
               const result = [...value]
               result[index] = e
@@ -200,20 +205,19 @@ export const PopContent: FC<PopContentProps> = (props) => {
       )
     },
     [
+      componentClass,
       hourStep,
-      minuteStep,
       secondStep,
+      minuteStep,
       customDisabledHours,
       customDisabledMinute,
       customDisabledSeconds,
-      format,
       prefix,
-      type,
+      format,
       value,
+      panelType,
+      type,
       onChange,
-      // fullDisplayItemNumber,
-      // itemHeight,
-      componentClass,
     ]
   )
 
