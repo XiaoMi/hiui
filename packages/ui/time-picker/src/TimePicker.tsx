@@ -55,7 +55,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       format = 'HH:mm:ss',
       type = 'single',
       appearance = 'line',
-      defaultValue: uncontrolledValue = DefaultValue,
+      defaultValue: uncontrolledValue,
       disabled = false,
       disabledHours: originalDisabledHours = DefaultDisabledFunc,
       disabledSeconds: originalDisabledSeconds = DefaultDisabledFunc,
@@ -78,10 +78,10 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     const nowText = i18n.get('timePicker.now')
 
     const [attachEl, setAttachEl] = useState<HTMLElement | null>(null)
-    const formatUncontrolledValue = useMemo(() => getValueMatchString(uncontrolledValue, format)!, [
-      format,
-      uncontrolledValue,
-    ])
+    const formatUncontrolledValue = useMemo(
+      () => getValueMatchString(uncontrolledValue || DefaultValue, format)!,
+      [format, uncontrolledValue]
+    )
     const formatControlledValue = useMemo(() => getValueMatchString(controlledValue, format), [
       controlledValue,
       format,
@@ -224,6 +224,19 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
               if (validChecker(cacheValue)) {
                 if (cacheValue.join('') !== value.join('')) {
                   onChange([...cacheValue])
+                } else if (
+                  (controlledValue === undefined || controlledValue === null) &&
+                  (uncontrolledValue === undefined || uncontrolledValue === null)
+                ) {
+                  let defaultValue: string[]
+                  if (['HH', 'mm', 'ss'].includes(format)) {
+                    defaultValue = ['00']
+                  } else if (['HH:mm', 'mm:ss'].includes(format)) {
+                    defaultValue = ['00:00']
+                  } else {
+                    defaultValue = ['00:00:00']
+                  }
+                  onChange(type === 'single' ? defaultValue : [defaultValue[0], defaultValue[0]])
                 }
               }
               showPopperRef.current = false
@@ -260,6 +273,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       validChecker,
       cacheValue,
       value,
+      controlledValue,
+      uncontrolledValue,
       onChange,
       onCacheChange,
       format,
