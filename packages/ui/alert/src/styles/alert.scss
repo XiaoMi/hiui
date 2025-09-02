@@ -114,7 +114,7 @@ $prefix: '#{$component-prefix}-alert' !default;
 
   @each $key in $color-list {
     &--type-#{$key} {
-      background-color: use-color-mode(#{$key}, 50);
+      background-color: use-color-mode(#{$key}, 100);
 
       .#{$prefix}__icon {
         color: use-color-mode(#{$key});
