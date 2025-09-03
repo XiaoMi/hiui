@@ -142,6 +142,10 @@ export const FloatMenu = () => {
   // 定时器，用于优化浮动菜单的隐藏时体验
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  const sideMenuRef = React.useRef<HTMLDivElement>(null)
+  const floatContainerRef = React.useRef<HTMLDivElement>(null)
+  const siderRef = React.useRef<HTMLDivElement>(null)
+
   const { submenuData, activeParentId } = useSideMenuCascade({
     data,
     selectId: selectMenuId,
@@ -161,6 +165,7 @@ export const FloatMenu = () => {
       <div className="layout-float-menu__wrap" style={{ width: 800, height: 600 }}>
         <Layout style={{ height: '100%' }}>
           <Sider
+            ref={siderRef}
             style={{ backgroundColor: '#edf2ff' }}
             collapsed={collapsed}
             onCollapse={setCollapsed}
@@ -177,19 +182,32 @@ export const FloatMenu = () => {
               }}
             />
             <SideMenu
+              ref={sideMenuRef}
               mini={collapsed}
+              selectedId={selectMenuId}
               activeId={activeParentId}
               onClick={(event, id, item) => {
                 if (!item.children || item.children.length === 0) {
                   setActiveMenuId(id)
                   setFloatContainerVisible(false)
                   setFloatContainerCollapsed(true)
+                  setSelectMenuId(id)
                 }
               }}
               onMouseEnter={(event, id, item) => {
+                // hover 到一级菜单时，如果有二级菜单，则显示浮动菜单，并且更新选中的菜单项
                 if (item.children && item.children.length > 0) {
                   setSelectMenuId(id)
                   setFloatContainerVisible(true)
+                }
+                // 如果没有二级菜单，并且激活的一级菜单有二级菜单，则将选中的菜单项设置为激活的一级菜单
+                else if (
+                  (data.find((item) => item.id === activeParentId)?.children?.length || 0) > 0
+                ) {
+                  setSelectMenuId(activeParentId)
+                  if (floatContainerCollapsed) {
+                    setFloatContainerVisible(false)
+                  }
                 }
 
                 if (timerRef.current) {
@@ -197,6 +215,23 @@ export const FloatMenu = () => {
                 }
               }}
               onMouseLeave={(event, id, item) => {
+                // 当鼠标离开菜单时，将当前选中的菜单项设置为父级菜单项
+                if (
+                  !sideMenuRef.current?.contains(event.relatedTarget as Node) &&
+                  !floatContainerRef.current?.contains(event.relatedTarget as Node) &&
+                  !siderRef.current?.contains(event.relatedTarget as Node)
+                ) {
+                  // 如果选中的菜单项不是激活的一级菜单，并且激活的一级菜单有二级菜单，或者浮动菜单折叠，则将选中的菜单项设置为激活的一级菜单
+                  if (
+                    (id !== activeParentId &&
+                      (data.find((item) => item.id === activeParentId)?.children?.length || 0) >
+                        0) ||
+                    floatContainerCollapsed
+                  ) {
+                    setSelectMenuId(activeParentId)
+                  }
+                }
+
                 timerRef.current = setTimeout(() => {
                   setFloatContainerVisible(false)
                 }, 100)
@@ -205,6 +240,7 @@ export const FloatMenu = () => {
             />
           </Sider>
           <FloatMenuContainer
+            ref={floatContainerRef}
             width={180}
             visible={floatContainerVisible}
             collapsed={floatContainerCollapsed}
@@ -216,8 +252,23 @@ export const FloatMenu = () => {
                 clearTimeout(timerRef.current)
               }
             }}
-            onMouseLeave={() => {
+            onMouseLeave={(event) => {
               setFloatContainerVisible(false)
+
+              // 当鼠标离开菜单时，将当前选中的菜单项设置为父级菜单项
+              if (
+                !sideMenuRef.current?.contains(event.relatedTarget as Node) &&
+                !floatContainerRef.current?.contains(event.relatedTarget as Node) &&
+                !siderRef.current?.contains(event.relatedTarget as Node)
+              ) {
+                // 如果激活的一级菜单有二级菜单，或者浮动菜单折叠，则将选中的菜单项设置为激活的一级菜单
+                if (
+                  (data.find((item) => item.id === activeParentId)?.children?.length || 0) > 0 ||
+                  floatContainerCollapsed
+                ) {
+                  setSelectMenuId(activeParentId)
+                }
+              }
             }}
           >
             <GroupMenu

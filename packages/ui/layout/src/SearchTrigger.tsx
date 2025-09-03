@@ -66,6 +66,7 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
           unmountOnClose={false}
           onOutsideClick={() => {
             setVisible(false)
+            searchRef.current?.hide()
           }}
           onEntered={() => {
             if (visible) {
