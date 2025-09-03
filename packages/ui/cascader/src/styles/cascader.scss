@@ -7,8 +7,13 @@ $prefix: '#{$component-prefix}-cascader' !default;
     .#{$component-prefix}-picker {
       &__panel {
         box-sizing: border-box;
-        width: min-content;
         min-width: 160px;
+      }
+
+      &__search {
+        .#{$component-prefix}-input__text {
+          width: 130px;
+        }
       }
 
       &__body {
