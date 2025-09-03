@@ -138,6 +138,7 @@ export const MenuSearchDemo = () => {
           unmountOnClose={false}
           onOutsideClick={() => {
             setVisible(false)
+            searchRef.current?.hide()
           }}
           onEntered={() => {
             if (visible) {

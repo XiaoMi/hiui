@@ -23,6 +23,14 @@ export const Group = () => {
           }}
           data={[
             {
+              id: 71,
+              title: '数码产品',
+            },
+            {
+              id: 81,
+              title: '笔记本',
+            },
+            {
               title: '小米',
               id: 666,
               children: [
@@ -73,6 +81,18 @@ export const Group = () => {
                   id: 'xiaomi note1',
                 },
               ],
+            },
+            {
+              id: 7,
+              title: '数码产品',
+            },
+            {
+              id: 8,
+              title: '笔记本',
+            },
+            {
+              id: 9,
+              title: '智能生活',
             },
           ]}
         />
