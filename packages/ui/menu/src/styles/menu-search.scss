@@ -28,6 +28,10 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
       }
     }
 
+    &-prefix {
+      color: use-color('gray', 600);
+    }
+
     &-clear {
       font-size: use-text-size('sm');
     }

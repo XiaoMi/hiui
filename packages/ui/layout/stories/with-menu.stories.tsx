@@ -4,6 +4,9 @@ import Scrollbar from '@hi-ui/scrollbar'
 import { AppStoreFilled, UserFilled, SunFilled, PadFilled } from '@hi-ui/icons'
 import Layout, { Sider, Content, SearchTrigger } from '../src'
 
+/**
+ * @title 带菜单的布局
+ */
 export const WithMenu = () => {
   // 侧边栏导航是否折叠
   const [collapsed, setCollapsed] = React.useState(false)
