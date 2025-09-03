@@ -88,7 +88,7 @@ export const WithMenu = () => {
                 data={data}
               />
             </Scrollbar>
-            <div style={{ padding: '12px 20px' }}>
+            <div style={{ padding: '16px 14px' }}>
               <div style={{ height: 32, backgroundColor: '#f2f4f7' }}></div>
             </div>
           </Sider>
