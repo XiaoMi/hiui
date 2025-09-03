@@ -88,5 +88,9 @@ $group-menu-prefix: '#{$component-prefix}-group-menu' !default;
         margin-top: use-spacing(12);
       }
     }
+
+    + .#{$group-menu-prefix}-item {
+      margin-top: use-spacing(12);
+    }
   }
 }
