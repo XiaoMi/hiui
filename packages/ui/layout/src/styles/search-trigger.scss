@@ -34,5 +34,6 @@ $search-trigger-prefix: '#{$component-prefix}-search-trigger' !default;
 
   &__popper-container {
     border-radius: use-border-radius('xl') !important;
+    border: use-border-size('normal') use-color('gray', 100);
   }
 }

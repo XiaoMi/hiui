@@ -3,17 +3,17 @@
 $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
 
 .#{$menu-search-prefix} {
+  min-width: 360px;
+  border-radius: use-border-radius('xl');
+  overflow: hidden;
+  background-color: use-color-static('white');
+
   &__input-wrapper {
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    border-radius: use-border-radius('xl');
-    border: use-border-size('normal') use-color('gray', 100);
     padding: 0 use-spacing(8) 0 calc(#{use-spacing(2)} + 1px);
-    height: use-height-size(10);
-    min-width: 360px;
-    box-shadow: 0 8px 16px 0 rgba(#1a1d26, 0.12);
-    background-color: use-color-static('white');
+    height: use-height-size(12);
 
     .#{$menu-search-prefix}--open & {
       border-bottom-left-radius: 0;
@@ -26,6 +26,10 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
       &:hover {
         background-color: transparent !important;
       }
+    }
+
+    &-prefix {
+      color: use-color('gray', 600);
     }
 
     &-clear {
@@ -41,9 +45,16 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
   }
 
   &__content {
-    display: flex;
+    box-sizing: border-box;
+    display: none;
     flex-direction: column;
-    max-height: 544px;
+    padding: use-spacing(4);
+    max-height: 550px;
+    border-top: use-border-size('normal') use-color('gray', 100);
+
+    &--visible {
+      display: flex;
+    }
   }
 
   &__header {
@@ -101,6 +112,8 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
   &__footer {
     display: flex;
     align-items: center;
+    padding: use-spacing(5) use-spacing(8);
+    background-color: #f5f7fa;
 
     &-item {
       display: flex;

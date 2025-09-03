@@ -30,7 +30,6 @@ export const FloatMenuContainer = forwardRef<HTMLDivElement | null, FloatMenuCon
     const i18n = useLocaleContext()
 
     const [collapsed, setCollapsed] = React.useState(collapsedProp)
-    console.log('collapsed', collapsed)
 
     React.useEffect(() => {
       setCollapsed(collapsedProp)

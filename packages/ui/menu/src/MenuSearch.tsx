@@ -37,6 +37,7 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
       placeholder,
       notFoundContent,
       width,
+      style,
       visible: visibleProp,
       data,
       defaultValue = '',
@@ -202,10 +203,6 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
       }
     }, [inputRef, value, visibleAction])
 
-    useOutsideClick(listRef, () => {
-      visibleAction.off()
-    })
-
     useImperativeHandle(innerRef, () => {
       return {
         show: () => {
@@ -225,73 +222,32 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
     })
 
     return (
-      <Picker
-        className={cls}
-        gutterGap={0}
-        overlayClassName={`${prefixCls}__picker-overlay`}
-        classNames={{
-          container: `${prefixCls}__picker-container`,
-          panel: `${prefixCls}__picker-panel`,
-          body: `${prefixCls}__picker-body`,
-          footer: `${prefixCls}__picker-footer`,
-        }}
-        styles={{
-          container: {
-            width,
-          },
-        }}
-        visible={visible}
-        trigger={
-          <MenuSearchInput
-            width={width}
-            prefixCls={prefixCls}
-            placeholder={placeholder}
-            value={value}
-            onChange={handleChange}
-            onClear={handleClear}
-            onClose={handleClose}
-            onKeyDown={handleKeyDown}
-            inputRef={setInputRef}
-          />
-        }
-        footer={
-          resultMemo?.length > 0 && (
-            <div className={`${prefixCls}__footer`}>
-              <div className={`${prefixCls}__footer-item`}>
-                <div className={`${prefixCls}__footer-item__icon`}>
-                  <ArrowUpOutlined />
-                  <ArrowDownOutlined />
-                </div>
-                <span className={`${prefixCls}__footer-item__text`}>
-                  {i18n.menuSearch.moveCursor}
-                </span>
-              </div>
-              <div className={`${prefixCls}__footer-item`}>
-                <div className={`${prefixCls}__footer-item__icon`}>
-                  <EnterIcon />
-                </div>
-                <span className={`${prefixCls}__footer-item__text`}>
-                  {i18n.menuSearch.confirmSelect}
-                </span>
-              </div>
-              <div className={`${prefixCls}__footer-item`}>
-                <div className={`${prefixCls}__footer-item__icon`}>esc</div>
-                <span className={`${prefixCls}__footer-item__text`}>
-                  {i18n.menuSearch.hideWindow}
-                </span>
-              </div>
-            </div>
-          )
-        }
-      >
-        <div className={`${prefixCls}__content`}>
+      <div className={cls} style={style}>
+        <MenuSearchInput
+          width={width}
+          prefixCls={prefixCls}
+          placeholder={placeholder}
+          value={value}
+          onChange={handleChange}
+          onClear={handleClear}
+          onClose={handleClose}
+          onKeyDown={handleKeyDown}
+          inputRef={setInputRef}
+        />
+        <div
+          className={cx(`${prefixCls}__content`, {
+            [`${prefixCls}__content--visible`]: visible,
+          })}
+        >
           {resultMemo?.length > 0 ? (
             <>
               <div className={`${prefixCls}__header`}>
-                {i18n.get('menuSearch.searchResult', {
-                  count: resultMemo?.length,
-                  keyword: value,
-                })}
+                <Highlighter keyword={String(resultMemo?.length ?? 0)}>
+                  {i18n.get('menuSearch.searchResult', {
+                    count: resultMemo?.length ?? 0,
+                    keyword: value,
+                  })}
+                </Highlighter>
               </div>
               <div
                 className={`${prefixCls}__list`}
@@ -334,7 +290,34 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
             </div>
           )}
         </div>
-      </Picker>
+        {resultMemo?.length > 0 && (
+          <div className={`${prefixCls}__footer`}>
+            <div className={`${prefixCls}__footer-item`}>
+              <div className={`${prefixCls}__footer-item__icon`}>
+                <ArrowUpOutlined />
+                <ArrowDownOutlined />
+              </div>
+              <span className={`${prefixCls}__footer-item__text`}>
+                {i18n.menuSearch.moveCursor}
+              </span>
+            </div>
+            <div className={`${prefixCls}__footer-item`}>
+              <div className={`${prefixCls}__footer-item__icon`}>
+                <EnterIcon />
+              </div>
+              <span className={`${prefixCls}__footer-item__text`}>
+                {i18n.menuSearch.confirmSelect}
+              </span>
+            </div>
+            <div className={`${prefixCls}__footer-item`}>
+              <div className={`${prefixCls}__footer-item__icon`}>esc</div>
+              <span className={`${prefixCls}__footer-item__text`}>
+                {i18n.menuSearch.hideWindow}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
     )
   }
 )
@@ -403,6 +386,9 @@ export const MenuSearchInput = forwardRef<
         <Input
           ref={inputRef}
           className={`${prefixCls}__input`}
+          classNames={{
+            prefix: `${prefixCls}__input-prefix`,
+          }}
           appearance="unset"
           placeholder={placeholder}
           prefix={<SearchOutlined />}
