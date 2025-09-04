@@ -1,5 +1,11 @@
 # @hi-ui/alert
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- f418e1adf: style(color-css): 更新颜色 Token (5.0)
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

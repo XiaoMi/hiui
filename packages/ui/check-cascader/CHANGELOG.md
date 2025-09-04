@@ -1,5 +1,13 @@
 # @hi-ui/check-cascader
 
+## 5.0.0-canary.15
+
+### Patch Changes
+
+- a823ed908: style(cascader&check-cascader): 调整下拉框样式，增加搜索框宽度设置 (5.0)
+- Updated dependencies [4dc72a186]
+  - @hi-ui/popper@5.0.0-canary.7
+
 ## 5.0.0-canary.14
 
 ### Patch Changes

@@ -1,5 +1,38 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.27
+
+### Minor Changes
+
+- 6316a318e: feat(table): 添加 fixedToRow 功能，支持设置行固定到顶部或底部 (#3304)
+- 4dc72a186: feat(popper): 增加 PopperOverlayProps 的新事件处理属性 onEnter, onEntered, onExit (5.0)
+
+### Patch Changes
+
+- 3f88c4dca: <br />
+  - perf(layout): 优化导航菜单交互体验 (5.0)
+  - perf(menu): 优化搜索菜单组件的样式和交互逻辑 & 修改分组菜单样式问题 (5.0)
+- 7211244c0: fix(date-picker&time-picker): 修复在日期时间范围选择模式下，disabledHours 回调参数总数返回 single 的问题 (#3289)
+- 0eaaf1375: fix(time-picker): 优化默认值处理逻辑，确保在没有传值时使用默认值 (#3302)
+- f418e1adf: style(color-css): 更新颜色 Token (5.0)
+- a823ed908: style(cascader&check-cascader): 调整下拉框样式，增加搜索框宽度设置 (5.0)
+- Updated dependencies [3f88c4dca]
+- Updated dependencies [7211244c0]
+- Updated dependencies [6316a318e]
+- Updated dependencies [0eaaf1375]
+- Updated dependencies [f418e1adf]
+- Updated dependencies [a823ed908]
+- Updated dependencies [4dc72a186]
+  - @hi-ui/layout@5.0.0-canary.7
+  - @hi-ui/menu@5.0.0-canary.10
+  - @hi-ui/date-picker@5.0.0-canary.16
+  - @hi-ui/time-picker@5.0.0-canary.10
+  - @hi-ui/table@5.0.0-canary.14
+  - @hi-ui/alert@5.0.0-canary.6
+  - @hi-ui/cascader@5.0.0-canary.12
+  - @hi-ui/check-cascader@5.0.0-canary.15
+  - @hi-ui/popover@5.0.0-canary.5
+
 ## 5.0.0-canary.26
 
 ### Patch Changes

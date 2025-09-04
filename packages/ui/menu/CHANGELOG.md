@@ -1,5 +1,15 @@
 # @hi-ui/menu
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- 3f88c4dca: <br />
+  - perf(layout): 优化导航菜单交互体验 (5.0)
+  - perf(menu): 优化搜索菜单组件的样式和交互逻辑 & 修改分组菜单样式问题 (5.0)
+- Updated dependencies [4dc72a186]
+  - @hi-ui/popper@5.0.0-canary.7
+
 ## 5.0.0-canary.9
 
 ### Patch Changes

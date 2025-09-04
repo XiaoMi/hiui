@@ -1,5 +1,14 @@
 # @hi-ui/time-picker
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- 7211244c0: fix(date-picker&time-picker): 修复在日期时间范围选择模式下，disabledHours 回调参数总数返回 single 的问题 (#3289)
+- 0eaaf1375: fix(time-picker): 优化默认值处理逻辑，确保在没有传值时使用默认值 (#3302)
+- Updated dependencies [4dc72a186]
+  - @hi-ui/popper@5.0.0-canary.7
+
 ## 5.0.0-canary.9
 
 ### Patch Changes

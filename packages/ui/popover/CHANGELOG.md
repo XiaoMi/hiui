@@ -1,5 +1,16 @@
 # @hi-ui/popover
 
+## 5.0.0-canary.5
+
+### Minor Changes
+
+- 4dc72a186: feat(popper): 增加 PopperOverlayProps 的新事件处理属性 onEnter, onEntered, onExit (5.0)
+
+### Patch Changes
+
+- Updated dependencies [4dc72a186]
+  - @hi-ui/popper@5.0.0-canary.7
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @hi-ui/core-css
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- 88db7381c: style(color-css): 更新颜色 Token 中的色值以优化配色方案 (5.0)
+- f418e1adf: style(color-css): 更新颜色 Token (5.0)
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

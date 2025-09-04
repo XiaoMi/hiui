@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/date-picker",
-  "version": "5.0.0-canary.15",
+  "version": "5.0.0-canary.16",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -49,8 +49,8 @@
     "@hi-ui/env": "^5.0.0-canary.2",
     "@hi-ui/icons": "^5.0.0-canary.3",
     "@hi-ui/object-utils": "^5.0.0-canary.2",
-    "@hi-ui/popper": "^5.0.0-canary.6",
-    "@hi-ui/time-picker": "^5.0.0-canary.9",
+    "@hi-ui/popper": "^5.0.0-canary.7",
+    "@hi-ui/time-picker": "^5.0.0-canary.10",
     "axios": "^1.5.0",
     "moment": "^2.29.4",
     "react-transition-group": "^4.4.2"
@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@hi-ui/core": "^5.0.0-canary.3",
-    "@hi-ui/core-css": "^5.0.0-canary.6",
+    "@hi-ui/core-css": "^5.0.0-canary.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

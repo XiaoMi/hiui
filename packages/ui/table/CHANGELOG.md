@@ -1,5 +1,16 @@
 # @hi-ui/table
 
+## 5.0.0-canary.14
+
+### Minor Changes
+
+- 6316a318e: feat(table): 添加 fixedToRow 功能，支持设置行固定到顶部或底部 (#3304)
+
+### Patch Changes
+
+- Updated dependencies [4dc72a186]
+  - @hi-ui/popper@5.0.0-canary.7
+
 ## 5.0.0-canary.13
 
 ### Patch Changes

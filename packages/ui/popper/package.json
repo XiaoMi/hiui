@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/popper",
-  "version": "5.0.0-canary.6",
+  "version": "5.0.0-canary.7",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "@hi-ui/core": "^5.0.0-canary.3",
-    "@hi-ui/core-css": "^5.0.0-canary.6",
+    "@hi-ui/core-css": "^5.0.0-canary.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
