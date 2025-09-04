@@ -19,6 +19,9 @@ export type PopperOverlayProps = Pick<
   | 'arrow'
   | 'onOutsideClick'
   | 'closeOnOutsideClick'
+  | 'onEnter'
+  | 'onEntered'
+  | 'onExit'
   | 'onExited'
   | 'crossGap'
   | 'arrow'
@@ -52,6 +55,9 @@ const omitProps = [
   'onOutsideClick',
   'preload',
   'unmountOnClose',
+  'onEnter',
+  'onEntered',
+  'onExit',
   'onExited',
 ]
 
