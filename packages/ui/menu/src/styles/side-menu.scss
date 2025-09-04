@@ -20,7 +20,8 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
     cursor: pointer;
     position: relative;
 
-    &:hover {
+    &:hover,
+    &--selected {
       background-color: rgba(#7c87a6, 0.15);
     }
 

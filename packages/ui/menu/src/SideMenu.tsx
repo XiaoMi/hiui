@@ -22,6 +22,7 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
       className,
       defaultActiveId = null,
       activeId: activeIdProp,
+      selectedId: selectedIdProp,
       data = [],
       mini,
       childrenContainerRef,
@@ -79,6 +80,7 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
                   className={cx(`${prefixCls}-item`, {
                     [`${prefixCls}-item--active`]: activeId === id,
                     [`${prefixCls}-item--mini`]: mini,
+                    [`${prefixCls}-item--selected`]: selectedIdProp === id,
                   })}
                 >
                   <div className={cx(`${prefixCls}-item__icon`)}>{icon}</div>
@@ -113,6 +115,10 @@ export interface SideMenuProps
    * 激活的菜单项
    */
   activeId?: React.ReactText | null
+  /**
+   * 选中的菜单项
+   */
+  selectedId?: React.ReactText | null
   /**
    * 侧边菜单数据
    */

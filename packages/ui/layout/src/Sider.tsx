@@ -51,7 +51,7 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
         }, 300)
       }
 
-      if (width < SIDER_WIDTH_MIN) {
+      if (width <= SIDER_WIDTH_MIN) {
         width = SIDER_WIDTH_MIN
       }
 
