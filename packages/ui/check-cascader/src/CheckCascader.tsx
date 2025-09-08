@@ -125,7 +125,9 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const [_value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
     // 内部实现使用尾部 id
-    const value = _value.map((path) => path[path.length - 1])
+    const value = useMemo(() => {
+      return _value.map((path) => path[path.length - 1])
+    }, [_value])
 
     const proxyOnChange = useLatestCallback(
       (value: React.ReactText[], item: any, shouldChecked: boolean) => {
@@ -297,6 +299,14 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       )
     }, [i18n, showCheckAll, currentAllChecked, hasCheckedAll, toggleCheckAll])
 
+    const customRenderContent = useMemo(() => {
+      return customRender
+        ? typeof customRender === 'function'
+          ? customRender(selectedItems, value)
+          : customRender
+        : null
+    }, [customRender, selectedItems, value])
+
     useEffect(() => {
       if (menuVisible) {
         // 数据改变时更新弹窗显示位置，避免弹窗内容被遮挡
@@ -327,11 +337,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
           customRender ? (
-            typeof customRender === 'function' ? (
-              customRender(selectedItems, value)
-            ) : (
-              customRender
-            )
+            customRenderContent
           ) : (
             <TagInputMock
               style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
