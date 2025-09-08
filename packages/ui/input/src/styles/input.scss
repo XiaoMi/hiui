@@ -35,6 +35,9 @@ $prefix: '#{$component-prefix}-input' !default;
     font-size: inherit;
     line-height: inherit;
     color: use-color('gray', 700);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &::placeholder {
       color: use-color('gray', 400);
