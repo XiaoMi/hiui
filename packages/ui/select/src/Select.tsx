@@ -229,6 +229,16 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       onItemCreate?.(createdItem)
     })
 
+    const customRenderContent = useMemo(() => {
+      return customRender
+        ? typeof customRender === 'function'
+          ? customRender(
+              mergedData.find((d: SelectDataItem) => d.id === value) as SelectItemEventData
+            )
+          : customRender
+        : null
+    }, [customRender, mergedData, value])
+
     // 更新 focused 索引
     useEffect(() => {
       const index = showData.findIndex((item: SelectDataItem) => item.id === value)
@@ -281,13 +291,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           onCreate={handleCreate}
           trigger={
             customRender ? (
-              typeof customRender === 'function' ? (
-                customRender(
-                  mergedData.find((d: SelectDataItem) => d.id === value) as SelectItemEventData
-                )
-              ) : (
-                customRender
-              )
+              customRenderContent
             ) : (
               <MockInput
                 style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}

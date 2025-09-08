@@ -344,6 +344,14 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       }
     }
 
+    const customRenderContent = useMemo(() => {
+      return customRender
+        ? typeof customRender === 'function'
+          ? customRender(checkedNodes)
+          : customRender
+        : null
+    }, [customRender, checkedNodes])
+
     const cls = cx(prefixCls, className)
 
     // 过滤掉未选中的数据
@@ -386,11 +394,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         loading={rest.loading !== undefined ? rest.loading : loading}
         trigger={
           customRender ? (
-            typeof customRender === 'function' ? (
-              customRender(checkedNodes)
-            ) : (
-              customRender
-            )
+            customRenderContent
           ) : (
             <TagInputMock
               style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
