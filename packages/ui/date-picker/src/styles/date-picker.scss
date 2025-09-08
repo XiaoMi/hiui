@@ -340,6 +340,20 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
   }
 
+  &__picker:not(&__picker--appearance-contained):not(&__picker--appearance-unset) {
+    .#{$prefix}__input-selector {
+      overflow: hidden;
+    }
+
+    .#{$prefix}__picker__input {
+      text-overflow: ellipsis;
+
+      &-container {
+        overflow: hidden;
+      }
+    }
+  }
+
   &__panel {
     // width: 288px;
     width: 100%;
