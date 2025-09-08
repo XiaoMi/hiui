@@ -240,6 +240,14 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       return flattedData
     }, [selectedItem, flattedData])
 
+    const customRenderContent = useMemo(() => {
+      return customRender
+        ? typeof customRender === 'function'
+          ? customRender(selectedItem)
+          : customRender
+        : null
+    }, [customRender, selectedItem])
+
     const cls = cx(prefixCls, className)
 
     useEffect(() => {
@@ -268,11 +276,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         loading={rest.loading !== undefined ? rest.loading : loading}
         trigger={
           customRender ? (
-            typeof customRender === 'function' ? (
-              customRender(selectedItem)
-            ) : (
-              customRender
-            )
+            customRenderContent
           ) : (
             <MockInput
               style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}

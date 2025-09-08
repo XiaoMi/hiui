@@ -232,6 +232,14 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     return mergedData.find((d) => d.id === value[value.length - 1]) as CascaderItemEventData
   }, [mergedData, value])
 
+  const customRenderContent = useMemo(() => {
+    return customRender
+      ? typeof customRender === 'function'
+        ? customRender(mergedDataSelectedItem, value)
+        : customRender
+      : null
+  }, [customRender, mergedDataSelectedItem, value])
+
   const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
   useEffect(() => {
@@ -278,11 +286,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         trigger={
           customRender ? (
-            typeof customRender === 'function' ? (
-              customRender(mergedDataSelectedItem, value)
-            ) : (
-              customRender
-            )
+            customRenderContent
           ) : (
             <MockInput
               style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}

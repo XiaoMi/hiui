@@ -141,6 +141,12 @@ const Root = ({
     outDate[0] && `${prefixCls}__picker--has-value`
   )
 
+  const customRenderContent = useMemo(() => {
+    return typeof customRender === 'function'
+      ? customRender(inputData.map((item) => item?.toDate()))
+      : customRender
+  }, [customRender, inputData])
+
   return customRender ? (
     <div
       ref={setAttachEl}
@@ -152,9 +158,7 @@ const Root = ({
         }
       }}
     >
-      {typeof customRender === 'function'
-        ? customRender(inputData.map((item) => item?.toDate()))
-        : customRender}
+      {customRenderContent}
     </div>
   ) : (
     <div className={_cls} ref={setAttachEl}>
