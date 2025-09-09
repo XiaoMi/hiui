@@ -146,6 +146,9 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   }
 
   &__placeholder {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     color: use-color('gray', 400);
 
     .#{$tag-input-mock-prefix}--appearance-unset & {
