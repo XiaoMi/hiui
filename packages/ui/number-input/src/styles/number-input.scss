@@ -77,6 +77,9 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     color: inherit;
     text-align: left;
     padding: 0 use-spacing(6);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &::placeholder {
       color: use-color('gray', 400);

@@ -65,6 +65,9 @@ $wrapper: '#{$input-prefix}__wrapper' !default;
     position: absolute;
     left: 0;
     top: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &:disabled {
       background: transparent;
