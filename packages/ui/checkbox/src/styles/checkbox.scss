@@ -67,7 +67,8 @@ $prefix: '#{$component-prefix}-checkbox' !default;
       }
     }
 
-    .#{$prefix}__icon--checked {
+    .#{$prefix}__icon--checked,
+    .#{$prefix}__icon--indeterminate {
       border-color: use-color-mode('primary');
       background-color: use-color-mode('primary');
       opacity: 0.4;

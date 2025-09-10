@@ -24,7 +24,10 @@
 | title    | 选项标题                                                              | ReactNode               | -             | -      |
 | children | 下一级选项列表                                                        | CheckCascaderDataItem[] | -             | -      |
 | disabled | 是否禁用该节点（将禁用级联点击，展开，如果开启 checkbox，也将被禁用） | boolean                 | true \| false | false  |
-| isLeaf   | 是否为叶子节点，当 children 为空数组也表示为叶子结点                  | boolean                 | true \| false | -      |
+| isLeaf   | 是否为叶子节点，当 children 为空数组也表示为叶子结点               | boolean                 | true \| false | -      |
+| checkable | 是否开启 checkbox 功能                                       | boolean                 | true \| false | -      |
+| disabledCheckbox | 是否禁用该节点 checkbox 功能                           | boolean                 | true \| false | -      |
+| disabledCheckboxCascaded | 是否禁用该节点 checkbox 级联功能，禁用后只能用于展示勾选状态，无法进行操作 | boolean | true \| false | -      |
 
 ### CheckCascaderItemEventData
 
