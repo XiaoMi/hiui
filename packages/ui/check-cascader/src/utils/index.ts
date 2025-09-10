@@ -48,6 +48,7 @@ export const flattenTreeData = (
       flattedNode.isLeaf = getKeyFields(raw, 'isLeaf') ?? false
       flattedNode.checkable = getKeyFields(raw, 'checkable') ?? true
       flattedNode.disabledCheckbox = getKeyFields(raw, 'disabledCheckbox') ?? false
+      flattedNode.disabledCheckboxCascaded = getKeyFields(raw, 'disabledCheckboxCascaded') ?? false
 
       return flattedNode
     },
