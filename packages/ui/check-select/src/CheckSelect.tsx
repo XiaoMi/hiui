@@ -303,6 +303,14 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       return extra
     }
 
+    const customRenderContent = useMemo(() => {
+      return customRender
+        ? typeof customRender === 'function'
+          ? customRender(mergedCheckedItems)
+          : customRender
+        : null
+    }, [customRender, mergedCheckedItems])
+
     const expandedViewRef = useRef<'normal' | 'onlyChecked'>('normal')
 
     const virtualListProps = {
@@ -352,11 +360,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           onCreate={handleCreate}
           trigger={
             customRender ? (
-              typeof customRender === 'function' ? (
-                customRender(mergedCheckedItems)
-              ) : (
-                customRender
-              )
+              customRenderContent
             ) : (
               <TagInputMock
                 style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
