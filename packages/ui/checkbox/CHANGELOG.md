@@ -1,5 +1,11 @@
 # @hi-ui/checkbox
 
+## 5.0.0-canary.4
+
+### Minor Changes
+
+- dddcb76c7: feat(check-cascader): 增加 checkbox 级联禁用功能和相关样式调整 (5.0)
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

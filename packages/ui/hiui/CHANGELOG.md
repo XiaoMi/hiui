@@ -1,5 +1,31 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.28
+
+### Minor Changes
+
+- dddcb76c7: feat(check-cascader): 增加 checkbox 级联禁用功能和相关样式调整 (5.0)
+
+### Patch Changes
+
+- d34906c53: style(date-picker): 增加日期选择器输入框的溢出处理和文本省略样式 (5.0)
+- eba118692: perf: 对下拉选择类组件的 customRender 的内容增加 memoization 以优化性能 (5.0)
+- Updated dependencies [eaf6005e4]
+- Updated dependencies [dddcb76c7]
+- Updated dependencies [d34906c53]
+- Updated dependencies [eba118692]
+  - @hi-ui/input@5.0.0-canary.12
+  - @hi-ui/number-input@5.0.0-canary.11
+  - @hi-ui/time-picker@5.0.0-canary.11
+  - @hi-ui/check-cascader@5.0.0-canary.16
+  - @hi-ui/checkbox@5.0.0-canary.4
+  - @hi-ui/date-picker@5.0.0-canary.17
+  - @hi-ui/cascader@5.0.0-canary.13
+  - @hi-ui/check-select@5.0.0-canary.12
+  - @hi-ui/check-tree-select@5.0.0-canary.12
+  - @hi-ui/select@5.0.0-canary.10
+  - @hi-ui/tree-select@5.0.0-canary.9
+
 ## 5.0.0-canary.27
 
 ### Minor Changes

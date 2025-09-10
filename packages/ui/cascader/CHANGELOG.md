@@ -1,5 +1,13 @@
 # @hi-ui/cascader
 
+## 5.0.0-canary.13
+
+### Patch Changes
+
+- eba118692: perf: 对下拉选择类组件的 customRender 的内容增加 memoization 以优化性能 (5.0)
+- Updated dependencies [eaf6005e4]
+  - @hi-ui/input@5.0.0-canary.12
+
 ## 5.0.0-canary.12
 
 ### Patch Changes

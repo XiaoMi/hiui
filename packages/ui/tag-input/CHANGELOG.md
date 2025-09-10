@@ -1,5 +1,15 @@
 # @hi-ui/tag-input
 
+## 5.0.0-canary.15
+
+### Patch Changes
+
+- eaf6005e4: <br>
+  - style(time-picker): 为占位符增加溢出处理和文本省略样式 (5.0)
+  - style(tag-input): 为占位符增加溢出处理和文本省略样式 (5.0)
+  - style(input): 增加溢出处理和文本省略样式 (5.0)
+  - style(number-input): 增加溢出处理和文本省略样式 (5.0)
+
 ## 5.0.0-canary.14
 
 ### Patch Changes

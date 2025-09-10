@@ -1,5 +1,20 @@
 # @hi-ui/check-cascader
 
+## 5.0.0-canary.16
+
+### Minor Changes
+
+- dddcb76c7: feat(check-cascader): 增加 checkbox 级联禁用功能和相关样式调整 (5.0)
+
+### Patch Changes
+
+- eba118692: perf: 对下拉选择类组件的 customRender 的内容增加 memoization 以优化性能 (5.0)
+- Updated dependencies [eaf6005e4]
+- Updated dependencies [dddcb76c7]
+  - @hi-ui/input@5.0.0-canary.12
+  - @hi-ui/tag-input@5.0.0-canary.15
+  - @hi-ui/checkbox@5.0.0-canary.4
+
 ## 5.0.0-canary.15
 
 ### Patch Changes

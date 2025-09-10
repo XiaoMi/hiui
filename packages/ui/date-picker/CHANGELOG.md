@@ -1,5 +1,14 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.17
+
+### Patch Changes
+
+- d34906c53: style(date-picker): 增加日期选择器输入框的溢出处理和文本省略样式 (5.0)
+- eba118692: perf: 对下拉选择类组件的 customRender 的内容增加 memoization 以优化性能 (5.0)
+- Updated dependencies [eaf6005e4]
+  - @hi-ui/time-picker@5.0.0-canary.11
+
 ## 5.0.0-canary.16
 
 ### Patch Changes

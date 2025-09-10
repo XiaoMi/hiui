@@ -1,5 +1,15 @@
 # @hi-ui/check-tree-select
 
+## 5.0.0-canary.12
+
+### Patch Changes
+
+- eba118692: perf: 对下拉选择类组件的 customRender 的内容增加 memoization 以优化性能 (5.0)
+- Updated dependencies [eaf6005e4]
+- Updated dependencies [dddcb76c7]
+  - @hi-ui/tag-input@5.0.0-canary.15
+  - @hi-ui/checkbox@5.0.0-canary.4
+
 ## 5.0.0-canary.11
 
 ### Patch Changes
