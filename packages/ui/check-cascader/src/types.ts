@@ -29,6 +29,10 @@ export interface CheckCascaderDataItem {
    * 是否禁用该节点 checkbox 功能
    */
   disabledCheckbox?: boolean
+  /**
+   * 是否禁用该节点 checkbox 级联功能，禁用后只能用于展示勾选状态，无法进行操作
+   */
+  disabledCheckboxCascaded?: boolean
 }
 
 // TODO: ts 类型工具函数 将指定属性转为非可选属性
