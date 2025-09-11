@@ -10,7 +10,7 @@ import { CheckOutlined } from '@hi-ui/icons'
 const APP_LIST_PREFIX = getPrefixCls('app-list')
 
 /**
- * 应用列表组件，用于展示应用列表
+ * 应用列表组件
  */
 export const AppList = forwardRef<HTMLDivElement | null, AppListProps>(
   (
@@ -182,7 +182,6 @@ export const AppListPopover = forwardRef<HTMLDivElement | null, AppListPopoverPr
 
     return (
       <Popover
-        {...restProps}
         style={{
           paddingLeft: 12,
           paddingRight: 12,
@@ -205,6 +204,7 @@ export const AppListPopover = forwardRef<HTMLDivElement | null, AppListPopoverPr
         }
         onOpen={handleOpen}
         onClose={handleClose}
+        {...restProps}
       >
         {children}
       </Popover>
