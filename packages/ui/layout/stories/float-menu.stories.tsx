@@ -1,7 +1,9 @@
 import React from 'react'
 import { MenuDataItem, GroupMenu, SideMenu, useSideMenuCascade } from '@hi-ui/menu'
-import { AppStoreFilled, UserFilled, SunFilled, PadFilled } from '@hi-ui/icons'
-import Layout, { Sider, Content, SearchTrigger, FloatMenuContainer } from '../src'
+import { AppStoreFilled, UserFilled, SunFilled, PadFilled, MenuOutlined } from '@hi-ui/icons'
+import Button from '@hi-ui/button'
+import Layout, { Sider, Content, SearchTrigger, FloatMenuContainer, AppListPopover } from '../src'
+import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
 
 /**
  * @title 带浮动菜单的侧边栏
@@ -159,19 +161,107 @@ export const FloatMenu = () => {
     submenuData.length === 0
   )
 
+  // 应用列表是否显示
+  const [appListPopoverVisible, setAppListPopoverVisible] = React.useState(false)
+  // 激活的应用 id
+  const [activeAppId, setActiveAppId] = React.useState<React.ReactText>('')
+
   return (
     <>
       <h1>FloatMenu</h1>
-      <div className="layout-float-menu__wrap" style={{ width: 800, height: 600 }}>
-        <Layout style={{ height: '100%' }}>
+      <div className="layout-float-menu__wrap" style={{ width: '100%', height: 600 }}>
+        <Layout style={{ height: '100%', backgroundColor: '#f5f8fc' }}>
           <Sider
             ref={siderRef}
             style={{ backgroundColor: '#edf2ff' }}
             collapsed={collapsed}
             onCollapse={setCollapsed}
           >
-            <div style={{ padding: '16px 14px' }}>
-              <div style={{ height: 32, backgroundColor: '#f2f4f7' }}></div>
+            <div
+              style={{
+                padding: '16px',
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 8,
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: collapsed ? 'column' : 'row',
+              }}
+            >
+              <div
+                style={{
+                  width: collapsed ? 28 : `calc(100% - ${32}px)`,
+                  height: 28,
+                  borderRadius: 6,
+                  backgroundColor: 'rgba(124, 135, 166, 0.12)',
+                }}
+              ></div>
+              <AppListPopover
+                visible={appListPopoverVisible}
+                activeId={activeAppId}
+                data={[
+                  {
+                    icon: <AppStoreFilled />,
+                    iconBgColor: 'BLUE',
+                    id: 1,
+                    title: '应用1',
+                  },
+                  {
+                    icon: 'Y',
+                    iconBgColor: 'SKYBLUE',
+                    id: 2,
+                    title: '应用2',
+                  },
+                  {
+                    icon: '',
+                    iconBgColor: 'CYAN',
+                    id: 3,
+                    title: '应用3',
+                  },
+                  {
+                    iconBgColor: 'GREEN',
+                    id: 4,
+                    title: '很长很长很长很长很长的应用名称',
+                  },
+                  {
+                    iconBgColor: 'PURPLE',
+                    id: 5,
+                    title: '应用5',
+                  },
+                  {
+                    iconBgColor: 'YELLOW',
+                    id: 6,
+                    title: '应用6',
+                  },
+                  {
+                    iconBgColor: 'ORANGE',
+                    id: 7,
+                    title: '应用7',
+                  },
+                  {
+                    iconBgColor: 'BLUE',
+                    id: 8,
+                    title: '应用8',
+                  },
+                ]}
+                titleRender={(item) => {
+                  return <EllipsisTooltip>{item.title as string}</EllipsisTooltip>
+                }}
+                onItemClick={(item) => {
+                  setActiveAppId(item.id)
+                  setAppListPopoverVisible(false)
+                }}
+                onOutsideClick={() => setAppListPopoverVisible(false)}
+              >
+                <Button
+                  icon={<MenuOutlined />}
+                  appearance="text"
+                  size="xs"
+                  onClick={() => {
+                    setAppListPopoverVisible(!appListPopoverVisible)
+                  }}
+                />
+              </AppListPopover>
             </div>
             <SearchTrigger
               mini={collapsed}
@@ -279,9 +369,29 @@ export const FloatMenu = () => {
               }}
             />
           </FloatMenuContainer>
-          <Content style={{ backgroundColor: '#f7f9fc' }}>
-            <div style={{ height: 32, margin: '14px 0', backgroundColor: '#f2f4f7' }}></div>
-            <div style={{ flex: 1, marginBottom: 16, backgroundColor: '#f2f4f7' }}></div>
+          <Content>
+            <div
+              style={{
+                height: 60,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div style={{ fontSize: 18, fontWeight: 500, color: '#161a2d' }}>标题</div>
+              <div style={{}}>
+                <Button type="primary">操作按钮</Button>
+              </div>
+            </div>
+            <div
+              style={{
+                flex: 1,
+                marginBottom: 16,
+                borderRadius: 12,
+                backgroundColor: '#fff',
+                boxShadow: '0 0 4px rgba(92, 94, 102, 0.06)',
+              }}
+            ></div>
           </Content>
         </Layout>
       </div>
