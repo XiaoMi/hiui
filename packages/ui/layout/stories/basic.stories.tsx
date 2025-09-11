@@ -20,19 +20,6 @@ export const Basic = () => {
             onCollapse={setCollapsed}
           ></Sider>
           <Content>
-            {/* <div
-              style={{
-                height: 60,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div style={{ fontSize: 18, fontWeight: 500, color: '#161a2d' }}>标题</div>
-              <div style={{}}>
-                <Button type="primary">操作按钮</Button>
-              </div>
-            </div> */}
             <div
               style={{
                 flex: 1,
