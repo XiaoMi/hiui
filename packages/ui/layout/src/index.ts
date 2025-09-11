@@ -5,12 +5,14 @@ import { Sider } from './Sider'
 import { Content } from './Content'
 import { SearchTrigger } from './SearchTrigger'
 import { FloatMenuContainer } from './FloatMenuContainer'
+import { AppListPopover } from './AppList'
 
 const Layout = Object.assign(_Layout, {
   Sider,
   Content,
   SearchTrigger,
   FloatMenuContainer,
+  AppListPopover,
 })
 
 export default Layout
@@ -20,3 +22,4 @@ export * from './Sider'
 export * from './Content'
 export * from './SearchTrigger'
 export * from './FloatMenuContainer'
+export * from './AppList'
