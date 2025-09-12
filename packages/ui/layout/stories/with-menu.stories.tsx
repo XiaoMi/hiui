@@ -132,6 +132,7 @@ export const WithMenu = () => {
           <Content>
             <PageHeader
               title="标题"
+              backIcon={false}
               extra={
                 <Space>
                   <Dropdown

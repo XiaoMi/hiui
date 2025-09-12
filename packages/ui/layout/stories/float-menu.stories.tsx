@@ -396,6 +396,7 @@ export const FloatMenu = () => {
           <Content>
             <PageHeader
               title="标题"
+              backIcon={false}
               extra={
                 <Space>
                   <Dropdown
