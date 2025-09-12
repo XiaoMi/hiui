@@ -80,6 +80,7 @@
     "@hi-ui/modal": "^4.4.1",
     "@hi-ui/notification": "^4.2.1",
     "@hi-ui/number-input": "^4.2.2",
+    "@hi-ui/page-header": "^4.0.0",
     "@hi-ui/pagination": "^4.2.0",
     "@hi-ui/picker": "^4.1.8",
     "@hi-ui/pop-confirm": "^4.2.5",

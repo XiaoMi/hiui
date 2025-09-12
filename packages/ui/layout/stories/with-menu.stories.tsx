@@ -1,10 +1,20 @@
 import React from 'react'
 import Menu from '@hi-ui/menu'
 import Scrollbar from '@hi-ui/scrollbar'
-import { AppStoreFilled, UserFilled, SunFilled, PadFilled } from '@hi-ui/icons'
+import {
+  AppStoreFilled,
+  UserFilled,
+  SunFilled,
+  PadFilled,
+  EllipsisOutlined,
+  PlusOutlined,
+} from '@hi-ui/icons'
 import Layout, { Sider, Content, SearchTrigger } from '../src'
 import Button from '@hi-ui/button'
 import Avatar from '@hi-ui/avatar'
+import PageHeader from '@hi-ui/page-header'
+import Space from '@hi-ui/space'
+import Dropdown from '@hi-ui/dropdown'
 
 /**
  * @title 带菜单的布局
@@ -120,19 +130,29 @@ export const WithMenu = () => {
             </div>
           </Sider>
           <Content>
-            <div
-              style={{
-                height: 60,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div style={{ fontSize: 18, fontWeight: 500, color: '#161a2d' }}>标题</div>
-              <div style={{}}>
-                <Button type="primary">操作按钮</Button>
-              </div>
-            </div>
+            <PageHeader
+              title="标题"
+              extra={
+                <Space>
+                  <Dropdown
+                    data={[
+                      { id: 'add', title: '添加' },
+                      { id: 'edit', title: '编辑' },
+                      { id: 'delete', title: '删除' },
+                    ]}
+                    width={80}
+                  >
+                    <Button appearance="line" icon={<EllipsisOutlined />} />
+                  </Dropdown>
+                  <Button type="primary" appearance="line">
+                    次要操作
+                  </Button>
+                  <Button type="primary" icon={<PlusOutlined />}>
+                    主操作
+                  </Button>
+                </Space>
+              }
+            />
             <div
               style={{
                 flex: 1,
