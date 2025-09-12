@@ -114,6 +114,9 @@ export { default as Notification } from '@hi-ui/notification'
 export * from '@hi-ui/number-input'
 export { default as NumberInput } from '@hi-ui/number-input'
 
+export * from '@hi-ui/page-header'
+export { default as PageHeader } from '@hi-ui/page-header'
+
 export * from '@hi-ui/pagination'
 export { default as Pagination } from '@hi-ui/pagination'
 
