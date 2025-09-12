@@ -27,7 +27,7 @@ export const Separator = () => {
       <div className="breadcrumb-separator__wrap">
         <Breadcrumb
           data={data}
-          separator={<RightOutlined style={{ fontSize: 16 }} />}
+          separator={'/'}
           onClick={(evt, item) => {
             console.log('get item: ', item)
           }}

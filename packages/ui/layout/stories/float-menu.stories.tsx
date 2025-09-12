@@ -1,9 +1,21 @@
 import React from 'react'
 import { MenuDataItem, GroupMenu, SideMenu, useSideMenuCascade } from '@hi-ui/menu'
-import { AppStoreFilled, UserFilled, SunFilled, PadFilled, MenuOutlined } from '@hi-ui/icons'
+import {
+  AppStoreFilled,
+  UserFilled,
+  SunFilled,
+  PadFilled,
+  MenuOutlined,
+  EllipsisOutlined,
+  PlusOutlined,
+} from '@hi-ui/icons'
 import Button from '@hi-ui/button'
 import Layout, { Sider, Content, SearchTrigger, FloatMenuContainer, AppListPopover } from '../src'
+import PageHeader from '@hi-ui/page-header'
 import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
+import Space from '@hi-ui/space'
+import Dropdown from '@hi-ui/dropdown'
+import Avatar from '@hi-ui/avatar'
 
 /**
  * @title 带浮动菜单的侧边栏
@@ -328,6 +340,18 @@ export const FloatMenu = () => {
               }}
               data={data}
             />
+            <div
+              style={{
+                padding: '16px',
+                display: 'flex',
+                gap: 4,
+                alignItems: 'center',
+                marginTop: 'auto',
+              }}
+            >
+              <Avatar size="xs" />
+              {collapsed ? null : <span>用户名</span>}
+            </div>
           </Sider>
           <FloatMenuContainer
             ref={floatContainerRef}
@@ -370,19 +394,30 @@ export const FloatMenu = () => {
             />
           </FloatMenuContainer>
           <Content>
-            <div
-              style={{
-                height: 60,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div style={{ fontSize: 18, fontWeight: 500, color: '#161a2d' }}>标题</div>
-              <div style={{}}>
-                <Button type="primary">操作按钮</Button>
-              </div>
-            </div>
+            <PageHeader
+              title="标题"
+              backIcon={false}
+              extra={
+                <Space>
+                  <Dropdown
+                    data={[
+                      { id: 'add', title: '添加' },
+                      { id: 'edit', title: '编辑' },
+                      { id: 'delete', title: '删除' },
+                    ]}
+                    width={80}
+                  >
+                    <Button appearance="line" icon={<EllipsisOutlined />} />
+                  </Dropdown>
+                  <Button type="primary" appearance="line">
+                    次要操作
+                  </Button>
+                  <Button type="primary" icon={<PlusOutlined />}>
+                    主操作
+                  </Button>
+                </Space>
+              }
+            />
             <div
               style={{
                 flex: 1,
