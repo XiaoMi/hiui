@@ -20,7 +20,7 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
       className,
       data,
       fieldNames,
-      separator = '/',
+      separator = <RightOutlined />,
       onClick,
       size = 'md',
       ...rest
@@ -70,9 +70,7 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
               </span>
             )}
 
-            <span className={`${prefixCls}__separator`}>
-              <RightOutlined />
-            </span>
+            <span className={`${prefixCls}__separator`}>{separator}</span>
           </li>
         ))}
       </ul>
