@@ -11,7 +11,7 @@ import {
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { CheckCascaderMenu } from './CheckCascaderMenu'
 import { CheckCascaderProvider } from './context'
-import { getActiveMenus, getFlattedMenus, getActiveMenuIds } from './utils'
+import { getActiveMenus, getFlattedMenus, getActiveMenuIds, getFilteredMenuList } from './utils'
 import { useCheck, useSelect, useAsyncSwitch } from './hooks'
 import { isFunction } from '@hi-ui/type-assertion'
 
@@ -107,7 +107,12 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
       ]
     )
 
-    const menus = flatted ? getFlattedMenus(flattedData) : getActiveMenus(flattedData, selectedId)
+    const filteredMenus = useMemo(() => {
+      const menus = flatted
+        ? getFlattedMenus(originalFlattedData)
+        : getActiveMenus(originalFlattedData, selectedId)
+      return getFilteredMenuList(menus, flattedData)
+    }, [flatted, flattedData, originalFlattedData, selectedId])
 
     const cls = cx(
       prefixCls,
@@ -119,7 +124,7 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
     return (
       <CheckCascaderProvider value={providedValue}>
         <div ref={ref} role={role} className={cls} {...rest}>
-          {menus.map((menu, menuIndex) => {
+          {filteredMenus.map((menu, menuIndex) => {
             const menuContent = (
               <CheckCascaderMenu
                 key={menuIndex}
