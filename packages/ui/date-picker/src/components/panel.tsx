@@ -167,9 +167,10 @@ const Panel = (props: PanelProps) => {
         // d[0].setCalRenderDates(d)
 
         onPick(d, true)
+        onSelect?.(d as any, showPanel, panelIndex)
       }
     },
-    [calRenderDates, onPick, showPanel, timePickerFormat]
+    [calRenderDates, onPick, onSelect, panelIndex, showPanel, timePickerFormat]
   )
 
   const onArrowEvent = (date: moment.Moment) => {
