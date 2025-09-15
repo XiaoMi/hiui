@@ -2,7 +2,6 @@ import React from 'react'
 import { HiBaseFieldNames } from '@hi-ui/core'
 import {
   baseFlattenTree,
-  fFindNodeById,
   findNestedChildren,
   getNodeAncestors,
   getTopDownAncestors,
@@ -292,4 +291,39 @@ export const getAllCheckedStatus = (flattedData: any[], values: React.ReactText[
   })
 
   return [hasValue && treeIdsSet.size === 0, hasValue && treeIdsSet.size > 0]
+}
+
+export const getFilteredMenuList = (
+  menuList: FlattedCheckCascaderDataItem[][],
+  searchedData: any[]
+) => {
+  const result = [] as any[]
+
+  searchedData.forEach((item) => {
+    while (item && item.depth >= 0) {
+      const depth = item.depth
+      let depthResult = result[depth] as Map<React.ReactText, any>
+
+      if (!depthResult) {
+        depthResult = new Map()
+        result[depth] = depthResult
+      }
+
+      depthResult.set(item.id, item)
+      item = item.parent
+    }
+  })
+
+  return menuList.map((depthItems, depth) => {
+    const depthSavedMp = result[depth]
+    if (!depthSavedMp) return depthItems
+
+    return depthItems.filter((item: any) => {
+      const depthSavedMp = result[item.depth]
+
+      if (!depthSavedMp) return true
+      if (depthSavedMp.has(item.id)) return true
+      return false
+    })
+  })
 }
