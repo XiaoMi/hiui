@@ -12,7 +12,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
       &__search {
         .#{$component-prefix}-input__text {
-          width: 130px;
+          width: 100px;
         }
       }
 
@@ -127,6 +127,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     position: relative;
     justify-content: space-between;
     border-radius: use-border-radius('md');
+    white-space: nowrap;
 
     &:hover {
       background-color: use-color('gray', 50);

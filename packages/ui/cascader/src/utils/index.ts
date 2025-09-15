@@ -126,6 +126,8 @@ export const getFilteredMenuList = (menuList: FlattedCascaderDataItem[][], searc
     }
   })
 
+  if (result.length === 0) return result
+
   return menuList.map((depthItems, depth) => {
     const depthSavedMp = result[depth]
     if (!depthSavedMp) return depthItems
