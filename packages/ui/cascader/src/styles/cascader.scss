@@ -12,7 +12,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
 
       &__search {
         .#{$component-prefix}-input__text {
-          width: 130px;
+          width: 100px;
         }
       }
 
