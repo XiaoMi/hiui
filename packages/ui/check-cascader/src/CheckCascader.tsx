@@ -73,6 +73,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       onSearch: onSearchProp,
       overlayClassName,
       type = 'tree',
+      flattedSearchResult = true,
       checkedMode,
       visible,
       onOpen,
@@ -424,7 +425,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             onSelect={onSelect}
             onLoadChildren={onLoadChildren}
             titleRender={proxyTitleRender}
-            flatted={flatted || !!searchValue || activeExpandable}
+            flatted={flatted || (!!searchValue && flattedSearchResult) || activeExpandable}
             // @ts-ignore
             flattedData={selectProps.data}
             originalFlattedData={flattedData}
@@ -515,6 +516,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * @private
    */
   type?: 'flatted' | 'tree'
+  /**
+   * 搜索结果拍平展示
+   */
+  flattedSearchResult?: boolean
   /**
    * 触发器输入框占位符
    */

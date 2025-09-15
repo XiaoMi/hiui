@@ -1,5 +1,5 @@
 import React from 'react'
-import CheckCascader from '../src'
+import CheckCascader, { CheckCascaderDataItem } from '../src'
 
 /**
  * @title 带搜索
@@ -208,8 +208,8 @@ export const Search = () => {
       },
     ]
 
-    const getDataOnlyLeafCheckable = (data: any) => {
-      return data.map((item) => {
+    const getDataOnlyLeafCheckable = (data: CheckCascaderDataItem[]) => {
+      return data.map((item: CheckCascaderDataItem) => {
         if (item.children) {
           item.checkable = item.checkable ?? false
           item.children = getDataOnlyLeafCheckable(item.children)
@@ -232,12 +232,22 @@ export const Search = () => {
     <>
       <h1>Search</h1>
       <div className="cascader-search__wrap">
+        <h2>展示搜索结果：拍平模式（默认）</h2>
         <CheckCascader
           style={{ width: 240 }}
           placeholder="请选择品类"
           searchPlaceholder="请输入搜索内容"
           data={dataOnlyLeafCheckable}
           searchable
+        />
+        <h2>展示搜索结果：级联模式</h2>
+        <CheckCascader
+          style={{ width: 240 }}
+          placeholder="请选择品类"
+          searchPlaceholder="请输入搜索内容"
+          data={dataOnlyLeafCheckable}
+          searchable
+          flattedSearchResult={false}
         />
       </div>
     </>
