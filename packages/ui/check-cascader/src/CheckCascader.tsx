@@ -119,18 +119,29 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const proxyOnChange = useLatestCallback(
       (value: React.ReactText[], item: any, shouldChecked: boolean) => {
+        let dataItemsPaths = [] as FlattedCheckCascaderDataItem[]
+
         const itemsPaths = value.map((lastId) => {
           const item = flattedDataMap.get(lastId)
+
           if (item) {
-            return getTopDownAncestors(item).map(({ id }) => id)
+            dataItemsPaths = getTopDownAncestors(item)
+            return dataItemsPaths.map(({ id }) => id)
           }
 
           // 对于传入的数据未匹配到，保持不变吐出去
           const idPaths = _value.find((item) => item[item.length - 1] === lastId)
-          return idPaths || [lastId]
+          const nextIdPaths = idPaths || [lastId]
+
+          // 对于匹配不到的，将 title 设置为 id 构造一个数据项
+          dataItemsPaths = dataItemsPaths.concat(
+            nextIdPaths.map((id) => ({ id, title: id })) as FlattedCheckCascaderDataItem[]
+          )
+
+          return nextIdPaths
         })
 
-        tryChangeValue(itemsPaths, item, itemsPaths)
+        tryChangeValue(itemsPaths, item, dataItemsPaths)
       }
     )
 
