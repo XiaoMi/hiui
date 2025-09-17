@@ -23,6 +23,9 @@ export const useColWidth = ({
     return getGroupItemWidth(columns).colWidths
   })
 
+  /**
+   * 根据实际内容区（table 的第一行）渲染，再次精确收集并设置每列宽度
+   */
   const getWidths = useCallback(
     (measureRowElement: HTMLTableRowElement | null) => {
       if (measureRowElement && measureRowElement.childNodes) {
@@ -101,16 +104,13 @@ export const useColWidth = ({
   }, [getVirtualWidths, virtual])
 
   useUpdateEffect(() => {
+    // 当列变化时，重新设置列宽
     setColWidths(getGroupItemWidth(columns).colWidths)
-    // setColWidths((prev) => {
-    //   // resizable 模式下通过 measureRowElementRef.current 去更新列宽，防止拖拽后宽度被重置
-    //   // 例如同时设置了 resizable 和 rowSelection，当拖拽某列宽度后再选中某行时，该列宽度会被重置
-    //   return resizable && measureRowElementRef.current?.childNodes.length === prev.length
-    //     ? // 走更新逻辑
-    //       getWidths(measureRowElementRef.current)
-    //     : // 当列数变化时重新走初始化逻辑
-    //       getGroupItemWidth(columns)
-    // })
+
+    // 重新设置列宽后，真实的宽度会发生变化，基于真实的宽度再次重新计算出合适的列宽
+    requestAnimationFrame(() => {
+      setColWidths(getWidths(measureRowElementRef.current))
+    })
   }, [columns])
 
   /**
