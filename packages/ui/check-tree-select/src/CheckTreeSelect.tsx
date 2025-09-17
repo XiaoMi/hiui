@@ -291,7 +291,6 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       const [currentAllChecked, , hasCheckedAll] = getAllCheckedStatus(dataMemo, parsedCheckedIds)
       const shouldChecked = !currentAllChecked
 
-      console.log('currentAllChecked', currentAllChecked, hasCheckedAll, dataMemo, parsedCheckedIds)
       // 全选操作
       if (!currentAllChecked && !hasCheckedAll) {
         tryChangeValue(
