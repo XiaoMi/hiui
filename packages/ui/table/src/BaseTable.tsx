@@ -207,24 +207,42 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     const alwaysFixedColumn = fixedColumnTrigger === 'always'
 
     const renderTable = () => {
+      const tableContent = (
+        <table
+          ref={bodyTableRef}
+          style={{ width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%' }}
+        >
+          <ColGroupContent />
+          <TheadContent />
+          <TbodyContent emptyContent={emptyContent} />
+        </table>
+      )
+
       const singleTableContent = (
         <div
-          ref={scrollBodyElementRef}
           className={`${prefixCls}-content`}
-          onScroll={onTableBodyScroll}
-          style={{
-            // 表格宽度大于div宽度才出现横向滚动条
-            overflowX: canScroll ? 'scroll' : undefined,
-          }}
+          {...(!scrollbar
+            ? {
+                ref: scrollBodyElementRef,
+                onScroll: onTableBodyScroll,
+                style: {
+                  // 表格宽度大于div宽度才出现横向滚动条
+                  overflowX: canScroll ? 'scroll' : undefined,
+                },
+              }
+            : {})}
         >
-          <table
-            ref={bodyTableRef}
-            style={{ width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%' }}
-          >
-            <ColGroupContent />
-            <TheadContent />
-            <TbodyContent emptyContent={emptyContent} />
-          </table>
+          {!scrollbar ? (
+            tableContent
+          ) : (
+            <Scrollbar
+              ref={scrollBodyElementRef}
+              onScroll={onTableBodyScroll}
+              {...(isObject(scrollbar) ? scrollbar : null)}
+            >
+              {tableContent}
+            </Scrollbar>
+          )}
         </div>
       )
 
@@ -245,13 +263,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
         </>
       )
 
-      return needDoubleTable ? (
-        doubleTableContent
-      ) : !scrollbar ? (
-        singleTableContent
-      ) : (
-        <Scrollbar {...(isObject(scrollbar) ? scrollbar : null)}>{singleTableContent}</Scrollbar>
-      )
+      return needDoubleTable ? doubleTableContent : singleTableContent
     }
 
     const renderFreezeShadow = () => {
