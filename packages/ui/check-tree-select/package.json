@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/check-tree-select",
-  "version": "4.7.2",
+  "version": "4.7.3",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -58,7 +58,7 @@
     "@hi-ui/type-assertion": "^4.0.4",
     "@hi-ui/use-check": "^4.0.5",
     "@hi-ui/use-data-source": "^4.0.4",
-    "@hi-ui/use-search-mode": "^4.2.1",
+    "@hi-ui/use-search-mode": "^4.2.2",
     "@hi-ui/use-toggle": "^4.0.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.4"
   },
