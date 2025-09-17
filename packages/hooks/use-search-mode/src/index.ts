@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { isArray, isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { isArray, isArrayNonEmpty, isNullish } from '@hi-ui/type-assertion'
 import { UseDataSource, useDataSource } from '@hi-ui/use-data-source'
 import { invariant } from '@hi-ui/env'
 import { filterTree, getNodeAncestors, cloneTree } from '@hi-ui/tree-utils'
@@ -44,7 +44,7 @@ export const useSearchMode = ({
   const runSearch = useCallback(
     (keyword: string) => {
       if (!searchable) return
-      if ((keyword || searchOnInit) && runSearchStrategy) {
+      if ((!isNullish(keyword) || searchOnInit) && runSearchStrategy) {
         runSearchStrategy(keyword, setStateInSearch)
       }
     },
