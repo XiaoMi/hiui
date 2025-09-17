@@ -1,5 +1,22 @@
 # @hi-ui/hiui
 
+## 4.16.1
+
+### Patch Changes
+
+- [#3324](https://github.com/XiaoMi/hiui/pull/3324) [`8db6414b6`](https://github.com/XiaoMi/hiui/commit/8db6414b635ef561c7487a6f713c21a388d85739) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(check-tree-select): 更新全选逻辑，使用 dataMemo 替代 flattedData，确保状态正确 (#3323)
+
+- [#3328](https://github.com/XiaoMi/hiui/pull/3328) [`6e274310f`](https://github.com/XiaoMi/hiui/commit/6e274310f9545a82090ffa586cf31a7c79b305ba) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 优化列宽设置逻辑，确保在列变化时准确计算并更新列宽 (#3327)
+
+- [#3330](https://github.com/XiaoMi/hiui/pull/3330) [`df35306`](https://github.com/XiaoMi/hiui/commit/df353062b0d0b0cf3bd4e62280df20ba7e7a4774) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复设置 scrollbar 后冻结列失效问题 (#3329)
+
+- [#3326](https://github.com/XiaoMi/hiui/pull/3326) [`c11a132ad`](https://github.com/XiaoMi/hiui/commit/c11a132ad1bb076356752e9d0a6f40cc04c44880) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(check-cascader): 修复 onChange 第三个参数返回的值和类型不匹配问题 (#3325)
+
+- Updated dependencies [[`8db6414b6`](https://github.com/XiaoMi/hiui/commit/8db6414b635ef561c7487a6f713c21a388d85739), [`6e274310f`](https://github.com/XiaoMi/hiui/commit/6e274310f9545a82090ffa586cf31a7c79b305ba), [`df35306`](https://github.com/XiaoMi/hiui/commit/df353062b0d0b0cf3bd4e62280df20ba7e7a4774), [`c11a132ad`](https://github.com/XiaoMi/hiui/commit/c11a132ad1bb076356752e9d0a6f40cc04c44880)]:
+  - @hi-ui/check-tree-select@4.7.3
+  - @hi-ui/table@4.12.1
+  - @hi-ui/check-cascader@4.5.1
+
 ## 4.16.0
 
 ### Minor Changes

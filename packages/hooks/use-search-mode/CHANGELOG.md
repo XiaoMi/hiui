@@ -1,5 +1,11 @@
 # @hi-ui/use-search-mode
 
+## 4.2.2
+
+### Patch Changes
+
+- [#3324](https://github.com/XiaoMi/hiui/pull/3324) [`8db6414b6`](https://github.com/XiaoMi/hiui/commit/8db6414b635ef561c7487a6f713c21a388d85739) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(use-search-mode): 更新搜索逻辑，增加对 nullish 值的处理，确保关键词有效性 (#3323)
+
 ## 4.2.1
 
 ### Patch Changes

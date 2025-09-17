@@ -1,5 +1,14 @@
 # @hi-ui/check-cascader
 
+## 4.5.1
+
+### Patch Changes
+
+- [#3326](https://github.com/XiaoMi/hiui/pull/3326) [`c11a132ad`](https://github.com/XiaoMi/hiui/commit/c11a132ad1bb076356752e9d0a6f40cc04c44880) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(check-cascader): 修复 onChange 第三个参数返回的值和类型不匹配问题 (#3325)
+
+- Updated dependencies [[`8db6414b6`](https://github.com/XiaoMi/hiui/commit/8db6414b635ef561c7487a6f713c21a388d85739)]:
+  - @hi-ui/use-search-mode@4.2.2
+
 ## 4.5.0
 
 ### Minor Changes

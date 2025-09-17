@@ -1,5 +1,13 @@
 # @hi-ui/table
 
+## 4.12.1
+
+### Patch Changes
+
+- [#3328](https://github.com/XiaoMi/hiui/pull/3328) [`6e274310f`](https://github.com/XiaoMi/hiui/commit/6e274310f9545a82090ffa586cf31a7c79b305ba) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 优化列宽设置逻辑，确保在列变化时准确计算并更新列宽 (#3327)
+
+- [#3330](https://github.com/XiaoMi/hiui/pull/3330) [`df35306`](https://github.com/XiaoMi/hiui/commit/df353062b0d0b0cf3bd4e62280df20ba7e7a4774) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复设置 scrollbar 后冻结列失效问题 (#3329)
+
 ## 4.12.0
 
 ### Minor Changes

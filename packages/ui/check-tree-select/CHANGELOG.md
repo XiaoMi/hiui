@@ -1,5 +1,14 @@
 # @hi-ui/check-tree-select
 
+## 4.7.3
+
+### Patch Changes
+
+- [#3324](https://github.com/XiaoMi/hiui/pull/3324) [`8db6414b6`](https://github.com/XiaoMi/hiui/commit/8db6414b635ef561c7487a6f713c21a388d85739) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(check-tree-select): 更新全选逻辑，使用 dataMemo 替代 flattedData，确保状态正确 (#3323)
+
+- Updated dependencies [[`8db6414b6`](https://github.com/XiaoMi/hiui/commit/8db6414b635ef561c7487a6f713c21a388d85739)]:
+  - @hi-ui/use-search-mode@4.2.2
+
 ## 4.7.2
 
 ### Patch Changes
