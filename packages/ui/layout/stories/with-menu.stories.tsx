@@ -1,8 +1,20 @@
 import React from 'react'
 import Menu from '@hi-ui/menu'
 import Scrollbar from '@hi-ui/scrollbar'
-import { AppStoreFilled, UserFilled, SunFilled, PadFilled } from '@hi-ui/icons'
+import {
+  AppStoreFilled,
+  UserFilled,
+  SunFilled,
+  PadFilled,
+  EllipsisOutlined,
+  PlusOutlined,
+} from '@hi-ui/icons'
 import Layout, { Sider, Content, SearchTrigger } from '../src'
+import Button from '@hi-ui/button'
+import Avatar from '@hi-ui/avatar'
+import PageHeader from '@hi-ui/page-header'
+import Space from '@hi-ui/space'
+import Dropdown from '@hi-ui/dropdown'
 
 /**
  * @title 带菜单的布局
@@ -63,15 +75,32 @@ export const WithMenu = () => {
   return (
     <>
       <h1>WithMenu</h1>
-      <div className="layout-with-menu__wrap" style={{ width: 800, height: 600 }}>
-        <Layout style={{ height: '100%' }}>
+      <div className="layout-with-menu__wrap" style={{ width: '100%', height: 600 }}>
+        <Layout style={{ height: '100%', backgroundColor: '#f5f8fc' }}>
           <Sider
             style={{ backgroundColor: '#edf2ff' }}
             collapsed={collapsed}
             onCollapse={setCollapsed}
           >
-            <div style={{ padding: '16px 14px' }}>
-              <div style={{ height: 32, backgroundColor: '#f2f4f7' }}></div>
+            <div
+              style={{
+                padding: '16px',
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 8,
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: collapsed ? 'column' : 'row',
+              }}
+            >
+              <div
+                style={{
+                  width: collapsed ? 28 : `100%`,
+                  height: 28,
+                  borderRadius: 6,
+                  backgroundColor: 'rgba(124, 135, 166, 0.12)',
+                }}
+              ></div>
             </div>
             <SearchTrigger mini={collapsed} data={data} />
             <Scrollbar>
@@ -88,13 +117,52 @@ export const WithMenu = () => {
                 data={data}
               />
             </Scrollbar>
-            <div style={{ padding: '16px 14px' }}>
-              <div style={{ height: 32, backgroundColor: '#f2f4f7' }}></div>
+            <div
+              style={{
+                padding: '16px',
+                display: 'flex',
+                gap: 4,
+                alignItems: 'center',
+              }}
+            >
+              <Avatar size="xs" />
+              {collapsed ? null : <span>用户名</span>}
             </div>
           </Sider>
-          <Content style={{ backgroundColor: '#f7f9fc' }}>
-            <div style={{ height: 32, margin: '14px 0', backgroundColor: '#f2f4f7' }}></div>
-            <div style={{ flex: 1, marginBottom: 16, backgroundColor: '#f2f4f7' }}></div>
+          <Content>
+            <PageHeader
+              title="标题"
+              backIcon={false}
+              extra={
+                <Space>
+                  <Dropdown
+                    data={[
+                      { id: 'add', title: '添加' },
+                      { id: 'edit', title: '编辑' },
+                      { id: 'delete', title: '删除' },
+                    ]}
+                    width={80}
+                  >
+                    <Button appearance="line" icon={<EllipsisOutlined />} />
+                  </Dropdown>
+                  <Button type="primary" appearance="line">
+                    次要操作
+                  </Button>
+                  <Button type="primary" icon={<PlusOutlined />}>
+                    主操作
+                  </Button>
+                </Space>
+              }
+            />
+            <div
+              style={{
+                flex: 1,
+                marginBottom: 16,
+                borderRadius: 12,
+                backgroundColor: '#fff',
+                boxShadow: '0 0 4px rgba(92, 94, 102, 0.06)',
+              }}
+            ></div>
           </Content>
         </Layout>
       </div>

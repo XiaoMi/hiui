@@ -1,0 +1,50 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-page-header' !default;
+
+.#{$prefix} {
+  padding: use-spacing(7) 0;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    // justify-content: space-between;
+  }
+
+  &__breadcrumb {
+    margin-block-end: use-spacing(4);
+  }
+
+  &__back-button {
+    margin-inline-end: use-spacing(4) !important;
+
+    svg {
+      color: use-color('gray', 700);
+      font-size: use-text-size('lg');
+    }
+  }
+
+  &__title-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  &__title {
+    font-size: use-text-size('xl');
+    line-height: use-text-lineheight('lg');
+    font-weight: use-text-weight('medium');
+    color: use-color('gray', 700);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__sub-title {
+    margin-inline-start: use-spacing(4);
+  }
+
+  &__extra {
+    margin-inline-start: use-spacing(20);
+  }
+}

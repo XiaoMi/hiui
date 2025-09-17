@@ -20,7 +20,7 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
       className,
       data,
       fieldNames,
-      separator = '/',
+      separator = <RightOutlined />,
       onClick,
       size = 'md',
       ...rest

@@ -293,16 +293,13 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     }, [checkedNodes, flattedData])
 
     const toggleCheckAll = useCallback(() => {
-      const [currentAllChecked, , hasCheckedAll] = getAllCheckedStatus(
-        flattedData,
-        parsedCheckedIds
-      )
+      const [currentAllChecked, , hasCheckedAll] = getAllCheckedStatus(dataMemo, parsedCheckedIds)
       const shouldChecked = !currentAllChecked
 
       // 全选操作
       if (!currentAllChecked && !hasCheckedAll) {
         tryChangeValue(
-          flattedData
+          dataMemo
             .filter((item) => {
               if (!item.disabled) {
                 // 根据 checkedMode 类型过滤出已选项，保证全选操作下 onChange 回调的值是符合 checkedMode 的规则
@@ -325,11 +322,11 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       } else {
         tryChangeValue([], null, shouldChecked, [])
       }
-    }, [checkedMode, flattedData, parsedCheckedIds, tryChangeValue])
+    }, [checkedMode, dataMemo, parsedCheckedIds, tryChangeValue])
 
     const [showAllChecked, showIndeterminate] = useMemo(() => {
-      return getAllCheckedStatus(flattedData, parsedCheckedIds)
-    }, [flattedData, parsedCheckedIds])
+      return getAllCheckedStatus(dataMemo, parsedCheckedIds)
+    }, [dataMemo, parsedCheckedIds])
 
     const renderDefaultFooter = () => {
       if (showCheckAll) {

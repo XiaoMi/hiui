@@ -80,6 +80,7 @@
     "@hi-ui/modal": "^5.0.0-canary.6",
     "@hi-ui/notification": "^5.0.0-canary.5",
     "@hi-ui/number-input": "^5.0.0-canary.11",
+    "@hi-ui/page-header": "^4.0.0",
     "@hi-ui/pagination": "^5.0.0-canary.5",
     "@hi-ui/picker": "^5.0.0-canary.10",
     "@hi-ui/pop-confirm": "^5.0.0-canary.6",
