@@ -16,6 +16,12 @@ $shadow-base-map: (
     'sm': '2px 0 4px 0 #{$shadow-color-02}, 2px 0 4px 0 #{$shadow-color-02}, 1px 0 2px -2px #{$shadow-color-02}',
     'md': '6px 0 18px 6px #{$shadow-color-03}, 4px 0 4px 0 #{$shadow-color-03}, 4px 0 6px -6px #{$shadow-color-03}',
   ),
+  'top': (
+    'none': 'none',
+    'md': '0 -6px 18px 6px #{$shadow-color-03}, 0 -4px 8px 0 #{$shadow-color-03}, 0 -4px 6px -6px #{$shadow-color-04}',
+    // @Normal
+    'lg': '0 -8px 24px 8px #{$shadow-color-04}, 0 -4px 8px 0 #{$shadow-color-04}, 0 -6px 12px -8px #{$shadow-color-06}',
+  ),
   'down': (
     'none': 'none',
     'sm': '0 1px 2px -2px #{$shadow-color-02}, 0 2px 4px 0 #{$shadow-color-02}, 0 2px 8px 2px #{$shadow-color-02}',
