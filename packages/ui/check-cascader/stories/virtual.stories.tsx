@@ -8,7 +8,7 @@ import CheckCascader from '../src'
 export const Virtual = () => {
   const [dataOnlyLeafCheckable] = React.useState(() => {
     const data = [
-      // 随机生成 100 * 100 * 100 条的级联数据
+      // 随机生成 10 * 100 * 1000 条的级联数据
       ...Array.from({ length: 100 }, (_, index) => ({
         id: `item-${index}`,
         title: `item-${index}`,
