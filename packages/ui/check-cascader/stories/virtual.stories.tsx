@@ -2,8 +2,8 @@ import React from 'react'
 import CheckCascader from '../src'
 
 /**
- * @title 基础用法
- * @desc 展示从多个收起的备选项中选出的多个选项
+ * @title 大数据
+ * @desc 支持大数据下的虚拟滚动
  */
 export const Virtual = () => {
   const [dataOnlyLeafCheckable] = React.useState(() => {
