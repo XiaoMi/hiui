@@ -44,11 +44,11 @@ export const useSearchMode = ({
   const runSearch = useCallback(
     (keyword: string) => {
       if (!searchable) return
-      if ((!isNullish(keyword) || searchOnInit) && runSearchStrategy) {
+      if (!isNullish(keyword) && runSearchStrategy) {
         runSearchStrategy(keyword, setStateInSearch)
       }
     },
-    [searchable, searchOnInit, runSearchStrategy]
+    [searchable, runSearchStrategy]
   )
 
   const onSearch = useCallback(
@@ -67,8 +67,10 @@ export const useSearchMode = ({
 
   // 外部数据或策略改变时，重新触发搜索
   useEffect(() => {
-    runSearch(keywordLatestRef.current)
-  }, [keywordLatestRef, runSearch])
+    if (keywordLatestRef.current || searchOnInit) {
+      runSearch(keywordLatestRef.current)
+    }
+  }, [keywordLatestRef, runSearch, searchOnInit])
 
   const inSearch = !!keyword || searchOnInit
   const isEmpty = inSearch && stateInSearch.data.length === 0
