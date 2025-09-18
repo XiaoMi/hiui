@@ -24,6 +24,7 @@ export const GroupMenu = forwardRef<HTMLDivElement | null, GroupMenuProps>(
       onClick,
       defaultActiveId = '',
       activeId: activeIdProp,
+      titleRender,
       ...rest
     },
     ref
@@ -62,14 +63,16 @@ export const GroupMenu = forwardRef<HTMLDivElement | null, GroupMenuProps>(
             >
               <div className={cx(`${prefixCls}-item__content`)}>
                 <div className={cx(`${prefixCls}-item__icon`)}>{icon}</div>
-                <div className={cx(`${prefixCls}-item__title`)}>{title}</div>
+                <div className={cx(`${prefixCls}-item__title`)}>
+                  {typeof titleRender === 'function' ? titleRender(item) : title}
+                </div>
               </div>
               {isParent && renderItem(children)}
             </div>
           )
         })
       },
-      [activeId, handleClick, prefixCls]
+      [activeId, handleClick, prefixCls, titleRender]
     )
 
     return (
@@ -103,6 +106,10 @@ export interface GroupMenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> 
     menuId: React.ReactText,
     menuItem: MenuDataItem
   ) => void
+  /**
+   * 自定义渲染菜单项标题
+   */
+  titleRender?: (menuItem: MenuDataItem) => React.ReactNode
 }
 
 if (__DEV__) {
