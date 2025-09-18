@@ -1,5 +1,14 @@
 # @hi-ui/table
 
+## 5.0.0-canary.15
+
+### Patch Changes
+
+- 6e274310f: fix(table): 优化列宽设置逻辑，确保在列变化时准确计算并更新列宽 (#3327)
+- df353062b: fix(table): 修复设置 scrollbar 后冻结列失效问题 (#3329)
+- Updated dependencies [75a3d93a9]
+  - @hi-ui/drawer@5.0.0-canary.6
+
 ## 5.0.0-canary.14
 
 ### Minor Changes

@@ -1,5 +1,51 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.29
+
+### Major Changes
+
+- 8d19c4688: feat(layout): 添加 AppListPopover 组件并更新布局样式和示例 (5.0)
+
+### Minor Changes
+
+- 632895aaf: feat(menu): GroupMenu 组件增加 titleRender 参数 (5.0)
+
+### Patch Changes
+
+- 8db6414b6: fix(check-tree-select): 更新全选逻辑，使用 dataMemo 替代 flattedData，确保状态正确 (#3323)
+- ed6205b9d: fix(breadcrumb): 修复 separator 设置无效问题 (5.0)
+- 6e274310f: fix(table): 优化列宽设置逻辑，确保在列变化时准确计算并更新列宽 (#3327)
+- df353062b: fix(table): 修复设置 scrollbar 后冻结列失效问题 (#3329)
+- c11a132ad: fix(check-cascader): 修复 onChange 第三个参数返回的值和类型不匹配问题 (#3325)
+- f7d6b062f: fix(date-picker): 修复在 showTime 模式下，选择时间后没有触发 onSelect 回调的问题 (5.0)
+- 75a3d93a9: style(drawer): 修改投影 (5.0)
+- 7ab615ea5: <br>
+  - style(cascader&check-cascader): 增加 white-space: nowrap; 样式以防止文本换行 (5.0)
+  - style(cascader&check-cascader): 调整搜索框默认宽度为 100px (5.0)
+  - feat(check-cascader): 增加 flattedSearchResult 属性，用于控制搜索结果的展现形式 (5.0)
+  - fix(cascader): 修复当搜索结果为空时，下拉框没有显示空状态问题 (5.0)
+- Updated dependencies [8db6414b6]
+- Updated dependencies [ed6205b9d]
+- Updated dependencies [6e274310f]
+- Updated dependencies [df353062b]
+- Updated dependencies [8d19c4688]
+- Updated dependencies [c11a132ad]
+- Updated dependencies [f7d6b062f]
+- Updated dependencies [75a3d93a9]
+- Updated dependencies [7ab615ea5]
+- Updated dependencies [ed6205b9d]
+- Updated dependencies [632895aaf]
+  - @hi-ui/check-tree-select@5.0.0-canary.13
+  - @hi-ui/breadcrumb@5.0.0-canary.5
+  - @hi-ui/table@5.0.0-canary.15
+  - @hi-ui/layout@5.0.0-canary.8
+  - @hi-ui/check-cascader@5.0.0-canary.17
+  - @hi-ui/date-picker@5.0.0-canary.18
+  - @hi-ui/drawer@5.0.0-canary.6
+  - @hi-ui/cascader@5.0.0-canary.14
+  - @hi-ui/page-header@5.0.0-canary.0
+  - @hi-ui/menu@5.0.0-canary.11
+
 ## 5.0.0-canary.28
 
 ### Minor Changes

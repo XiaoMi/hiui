@@ -1,5 +1,11 @@
 # @hi-ui/core-css
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- 75a3d93a9: style(core-css): 增加 top 投影样式规范 (5.0)
+
 ## 5.0.0-canary.7
 
 ### Patch Changes

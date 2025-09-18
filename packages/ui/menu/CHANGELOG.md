@@ -1,5 +1,11 @@
 # @hi-ui/menu
 
+## 5.0.0-canary.11
+
+### Minor Changes
+
+- 632895aaf: feat(menu): GroupMenu 组件增加 titleRender 参数 (5.0)
+
 ## 5.0.0-canary.10
 
 ### Patch Changes

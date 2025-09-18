@@ -1,5 +1,13 @@
 # @hi-ui/check-tree-select
 
+## 5.0.0-canary.13
+
+### Patch Changes
+
+- 8db6414b6: fix(check-tree-select): 更新全选逻辑，使用 dataMemo 替代 flattedData，确保状态正确 (#3323)
+- Updated dependencies [8db6414b6]
+  - @hi-ui/use-search-mode@5.0.0-canary.4
+
 ## 5.0.0-canary.12
 
 ### Patch Changes

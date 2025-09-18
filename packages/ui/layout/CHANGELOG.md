@@ -1,5 +1,16 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.8
+
+### Major Changes
+
+- 8d19c4688: feat(layout): 添加 AppListPopover 组件并更新布局样式和示例 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [632895aaf]
+  - @hi-ui/menu@5.0.0-canary.11
+
 ## 5.0.0-canary.7
 
 ### Patch Changes

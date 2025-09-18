@@ -1,5 +1,17 @@
 # @hi-ui/cascader
 
+## 5.0.0-canary.14
+
+### Patch Changes
+
+- 7ab615ea5: <br>
+  - style(cascader&check-cascader): 增加 white-space: nowrap; 样式以防止文本换行 (5.0)
+  - style(cascader&check-cascader): 调整搜索框默认宽度为 100px (5.0)
+  - feat(check-cascader): 增加 flattedSearchResult 属性，用于控制搜索结果的展现形式 (5.0)
+  - fix(cascader): 修复当搜索结果为空时，下拉框没有显示空状态问题 (5.0)
+- Updated dependencies [8db6414b6]
+  - @hi-ui/use-search-mode@5.0.0-canary.4
+
 ## 5.0.0-canary.13
 
 ### Patch Changes

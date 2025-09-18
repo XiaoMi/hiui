@@ -1,5 +1,11 @@
 # @hi-ui/breadcrumb
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- ed6205b9d: fix(breadcrumb): 修复 separator 设置无效问题 (5.0)
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

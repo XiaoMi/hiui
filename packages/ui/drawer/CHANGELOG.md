@@ -1,5 +1,11 @@
 # @hi-ui/drawer
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- 75a3d93a9: style(drawer): 修改投影 (5.0)
+
 ## 5.0.0-canary.5
 
 ### Patch Changes
