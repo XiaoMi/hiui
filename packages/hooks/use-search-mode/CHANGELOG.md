@@ -1,5 +1,11 @@
 # @hi-ui/use-search-mode
 
+## 4.2.3
+
+### Patch Changes
+
+- [#3336](https://github.com/XiaoMi/hiui/pull/3336) [`9356e8c`](https://github.com/XiaoMi/hiui/commit/9356e8ca43ae75f2886bd5225723ee9afad501a6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(use-search-mode): 优化初次搜索逻辑 (#3335)
+
 ## 4.2.2
 
 ### Patch Changes
