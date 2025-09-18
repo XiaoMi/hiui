@@ -1,5 +1,15 @@
 # @hi-ui/hiui
 
+## 4.16.2
+
+### Patch Changes
+
+- [#3336](https://github.com/XiaoMi/hiui/pull/3336) [`9356e8c`](https://github.com/XiaoMi/hiui/commit/9356e8ca43ae75f2886bd5225723ee9afad501a6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(use-search-mode): 优化初次搜索逻辑 (#3335)
+
+- Updated dependencies [[`9356e8c`](https://github.com/XiaoMi/hiui/commit/9356e8ca43ae75f2886bd5225723ee9afad501a6)]:
+  - @hi-ui/check-cascader@4.5.2
+  - @hi-ui/check-tree-select@4.7.4
+
 ## 4.16.1
 
 ### Patch Changes
