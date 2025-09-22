@@ -139,7 +139,8 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
 
     const reset = useCallback(() => {
       cropperInstance()?.reset()
-    }, [cropperInstance])
+      updateZoomLevel()
+    }, [cropperInstance, updateZoomLevel])
 
     const previewImage = useCallback((url: string) => {
       setPreviewFile(url)
