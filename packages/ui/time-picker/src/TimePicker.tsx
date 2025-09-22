@@ -68,6 +68,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       invalid = false,
       prefix,
       label,
+      showIndicator = true,
       ...restProps
     },
     ref
@@ -348,9 +349,9 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
                   onChange(['', ''])
                 }}
               />
-            ) : (
+            ) : showIndicator ? (
               <TimeOutlined />
-            )}
+            ) : null}
           </div>
         </div>
         <Popper
@@ -471,6 +472,11 @@ export interface TimePickerProps extends ExtendType {
    * 选择框前置内容
    */
   prefix?: React.ReactNode
+  /**
+   * 是否展示指示器
+   * @default true
+   */
+  showIndicator?: boolean
 }
 
 if (__DEV__) {

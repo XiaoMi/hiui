@@ -55,6 +55,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       clearable = true,
       placeholder: placeholderProp,
       displayRender: displayRenderProp,
+      showIndicator = true,
       // Virtual List
       height,
       itemHeight = 40,
@@ -305,6 +306,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                     : undefined
                 }
                 prefix={prefix}
+                showIndicator={showIndicator}
                 suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
                 focused={menuVisible}
                 value={value}
@@ -461,6 +463,10 @@ export interface SelectProps
    * 创建选项时触发
    */
   onItemCreate?: (item: SelectMergedItem) => void
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
 }
 
 ;(Select as any).HiName = 'Select'

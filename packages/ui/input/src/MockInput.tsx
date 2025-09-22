@@ -42,6 +42,7 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
       onMouseLeave,
       onClear,
       label,
+      showIndicator = true,
       ...rest
     },
     ref
@@ -149,9 +150,9 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
               >
                 <CloseCircleFilled />
               </span>
-            ) : (
+            ) : showIndicator ? (
               suffix[0]
-            )}
+            ) : null}
           </span>
         ) : null}
       </div>
@@ -245,6 +246,10 @@ export type MockInputProps = HiBaseHTMLFieldProps<
      * 设置输入框尺寸
      */
     size?: 'xs' | 'sm' | 'md' | 'lg'
+    /**
+     * 是否展示箭头
+     */
+    showIndicator?: boolean
   }
 >
 

@@ -45,7 +45,8 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--appearance-unset {
-    &:not(.#{$prefix}--disabled):hover {
+    &:not(.#{$prefix}--disabled):hover,
+    &.#{$prefix}--active {
       background: use-color('gray', 100);
     }
   }
@@ -142,12 +143,15 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     }
   }
 
-  &--active:not(.#{$prefix}--appearance-borderless) {
-    border-color: use-color-mode('primary');
-    background: transparent;
-
-    &:not(.#{$prefix}--disabled):hover {
+  &--appearance-line,
+  &--appearance-filled {
+    &.#{$prefix}--active {
+      border-color: use-color-mode('primary');
       background: transparent;
+
+      &:not(.#{$prefix}--disabled):hover {
+        background: transparent;
+      }
     }
   }
 
