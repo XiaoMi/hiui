@@ -91,15 +91,16 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       outputHeight,
       ...restAvatarOptions
     } = avatarOptions
-    const cropperRef = useRef<ReactCropperElement>(null)
 
     const uploadRef = useRef<HTMLLIElement>(null)
+    const cropperRef = useRef<ReactCropperElement>(null)
 
     // TODO: 提取 usePreview hook
     const [visible, setVisible] = useState(false)
     const [previewFile, setPreviewFile] = useState<string>('')
     const [cropperFile, setCropperFile] = useState<UploadFileItem | null>(null)
     const [zoomLevel, setZoomLevel] = useState(1)
+    const [cropperVisible, setCropperVisible] = useState(false)
 
     const closeModal = useCallback(() => {
       setPreviewFile('')
@@ -108,6 +109,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
 
     const cropperInstance = useCallback(() => cropperRef.current?.cropper, [])
 
+    // == cropper toolbar 相关方法 ==
     const updateZoomLevel = useCallback(() => {
       const imageData = cropperInstance()?.getImageData()
       if (imageData) {
@@ -148,8 +150,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       setPreviewFile(url)
       setVisible(true)
     }, [])
-
-    const [cropperVisible, setCropperVisible] = useState(false)
+    // == cropper toolbar 相关方法 ==
 
     const takeCropper = useCallback((file: UploadFileItem) => {
       const fr = new window.FileReader()
