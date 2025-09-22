@@ -36,8 +36,11 @@ export const Avatar = () => {
             guides: false, // 是否在裁剪框上方显示引导线
             center: false, // 是否在裁剪框上方显示中心指示器
             cropBoxMovable: true, // 是否可移动裁剪框
+            aspectRatio: 324 / 220, // 裁剪框比例
             cropBoxResizable: false, // 是否可调整裁剪框大小
             toggleDragModeOnDblclick: false, // 双击时是否切换拖动模式
+            outputWidth: 972, // 输出图像的宽度
+            outputHeight: 660, // 输出图像的高度
           }}
         />
         <h2>md</h2>

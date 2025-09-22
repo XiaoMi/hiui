@@ -87,6 +87,8 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       aspectRatio = 0,
       dragMode = 'move',
       rotatable = true,
+      outputWidth,
+      outputHeight,
       ...restAvatarOptions
     } = avatarOptions
     const cropperRef = useRef<ReactCropperElement>(null)
@@ -187,10 +189,15 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       (filename: string) => {
         // 裁切图片
         if (cropperRef.current) {
-          const canvas = cropperRef.current?.cropper?.getCroppedCanvas()
+          const canvas = cropperRef.current?.cropper?.getCroppedCanvas({
+            ...(typeof outputWidth === 'number' ? { width: outputWidth } : {}),
+            ...(typeof outputHeight === 'number' ? { height: outputHeight } : {}),
+          })
+
           if (typeof canvas === 'undefined') {
             return
           }
+
           const dataUrl = canvas.toDataURL(getImageTypeByFilename(filename))
           const file: UploadFileItem = base2blob(dataUrl, filename)
           file.url = dataUrl
@@ -199,7 +206,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
           setCropperVisible(false)
         }
       },
-      [uploadFiles, base2blob]
+      [uploadFiles, base2blob, outputWidth, outputHeight]
     )
 
     const handleItemKeydown = useCallback(
