@@ -18,7 +18,7 @@ import useUpload from './hooks/use-upload'
 import { useLocaleContext } from '@hi-ui/core'
 import { Preview } from '@hi-ui/preview'
 import { Modal } from '@hi-ui/modal'
-import Cropper from 'react-cropper'
+import Cropper, { ReactCropperElement } from 'react-cropper'
 import { getImageTypeByFilename } from './utils'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
@@ -89,7 +89,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       rotatable = true,
       ...restAvatarOptions
     } = avatarOptions
-    const cropperRef = useRef<HTMLImageElement>(null)
+    const cropperRef = useRef<ReactCropperElement>(null)
 
     const uploadRef = useRef<HTMLLIElement>(null)
 
@@ -104,7 +104,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       setVisible(false)
     }, [])
 
-    const cropperInstance = useCallback(() => (cropperRef.current as any)?.cropper, [])
+    const cropperInstance = useCallback(() => cropperRef.current?.cropper, [])
 
     const updateZoomLevel = useCallback(() => {
       const imageData = cropperInstance()?.getImageData()
@@ -187,7 +187,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       (filename: string) => {
         // 裁切图片
         if (cropperRef.current) {
-          const canvas = (cropperRef.current as any)?.cropper?.getCroppedCanvas()
+          const canvas = cropperRef.current?.cropper?.getCroppedCanvas()
           if (typeof canvas === 'undefined') {
             return
           }
