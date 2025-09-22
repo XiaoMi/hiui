@@ -11,6 +11,7 @@ import {
   ZoomInOutlined,
   ZoomOutOutlined,
   RotateRightOutlined,
+  RotateLeftOutlined,
   ResetOutlined,
 } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
@@ -128,8 +129,12 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       cropperInstance()?.zoom(-0.1)
     }, [cropperInstance])
 
-    const rotate = useCallback(() => {
+    const rotateRight = useCallback(() => {
       cropperInstance()?.rotate(90)
+    }, [cropperInstance])
+
+    const rotateLeft = useCallback(() => {
+      cropperInstance()?.rotate(-90)
     }, [cropperInstance])
 
     const reset = useCallback(() => {
@@ -382,8 +387,11 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                   backgroundColor: 'rgba(255, 255, 255, 0.3)',
                 }}
               />
-              <span onClick={rotate} style={{ cursor: 'pointer', lineHeight: 1 }}>
+              <span onClick={rotateRight} style={{ cursor: 'pointer', lineHeight: 1 }}>
                 <RotateRightOutlined />
+              </span>
+              <span onClick={rotateLeft} style={{ cursor: 'pointer', lineHeight: 1 }}>
+                <RotateLeftOutlined />
               </span>
               <span onClick={reset} style={{ cursor: 'pointer', lineHeight: 1 }}>
                 <ResetOutlined />
