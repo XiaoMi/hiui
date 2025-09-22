@@ -73,7 +73,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     align-items: center;
     width: 16px;
     height: 16px;
-    font-size: use-text-size('normal');
+    font-size: use-text-size('lg');
     text-align: center;
     color: use-color('gray', 500);
     flex-shrink: 0;
