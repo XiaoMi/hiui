@@ -3,7 +3,16 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UploadProps, UploadFileItem } from './types'
 import { FileSelect } from '@hi-ui/file-select'
-import { PlusOutlined, DeleteOutlined, SearchOutlined, InfoCircleFilled } from '@hi-ui/icons'
+import {
+  PlusOutlined,
+  DeleteOutlined,
+  SearchOutlined,
+  InfoCircleFilled,
+  ZoomInOutlined,
+  ZoomOutOutlined,
+  RotateRightOutlined,
+  ResetOutlined,
+} from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
 import { useLocaleContext } from '@hi-ui/core'
 import { Preview } from '@hi-ui/preview'
@@ -73,7 +82,12 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       disabled,
     })
 
-    const { aspectRatio = 0, dragMode = 'move', ...restAvatarOptions } = avatarOptions
+    const {
+      aspectRatio = 0,
+      dragMode = 'move',
+      rotatable = true,
+      ...restAvatarOptions
+    } = avatarOptions
     const cropperRef = useRef<HTMLImageElement>(null)
 
     const uploadRef = useRef<HTMLLIElement>(null)
@@ -82,11 +96,45 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     const [visible, setVisible] = useState(false)
     const [previewFile, setPreviewFile] = useState<string>('')
     const [cropperFile, setCropperFile] = useState<UploadFileItem | null>(null)
+    const [zoomLevel, setZoomLevel] = useState(1)
 
     const closeModal = useCallback(() => {
       setPreviewFile('')
       setVisible(false)
     }, [])
+
+    const cropperInstance = useCallback(() => (cropperRef.current as any)?.cropper, [])
+
+    const updateZoomLevel = useCallback(() => {
+      const imageData = cropperInstance()?.getImageData()
+      if (imageData) {
+        setZoomLevel(imageData.width / imageData.naturalWidth)
+      }
+    }, [cropperInstance])
+
+    const onCropperReady = useCallback(() => {
+      updateZoomLevel()
+    }, [updateZoomLevel])
+
+    const onCropperZoom = useCallback(() => {
+      updateZoomLevel()
+    }, [updateZoomLevel])
+
+    const zoomIn = useCallback(() => {
+      cropperInstance()?.zoom(0.1)
+    }, [cropperInstance])
+
+    const zoomOut = useCallback(() => {
+      cropperInstance()?.zoom(-0.1)
+    }, [cropperInstance])
+
+    const rotate = useCallback(() => {
+      cropperInstance()?.rotate(90)
+    }, [cropperInstance])
+
+    const reset = useCallback(() => {
+      cropperInstance()?.reset()
+    }, [cropperInstance])
 
     const previewImage = useCallback((url: string) => {
       setPreviewFile(url)
@@ -288,15 +336,60 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             setCropperVisible(false)
           }}
         >
-          <Cropper
-            src={cropperFile?.url || ''}
-            aspectRatio={aspectRatio}
-            guides={false}
-            dragMode={dragMode}
-            ref={cropperRef}
-            style={{ height: 400, width: '100%' }}
-            {...restAvatarOptions}
-          />
+          <div style={{ position: 'relative' }}>
+            <Cropper
+              src={cropperFile?.url || ''}
+              aspectRatio={aspectRatio}
+              guides={false}
+              dragMode={dragMode}
+              ref={cropperRef}
+              style={{ height: 400, width: '100%' }}
+              ready={onCropperReady}
+              zoom={onCropperZoom}
+              rotatable={rotatable}
+              {...restAvatarOptions}
+            />
+            <div
+              className={`${prefixCls}-cropper__toolbar`}
+              style={{
+                position: 'absolute',
+                bottom: '16px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                borderRadius: '8px',
+                padding: '8px 16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px',
+                color: 'white',
+                fontSize: 18,
+              }}
+            >
+              <span onClick={zoomOut} style={{ cursor: 'pointer', lineHeight: 1 }}>
+                <ZoomOutOutlined />
+              </span>
+              <span style={{ minWidth: 42, textAlign: 'center' }}>
+                {Math.round(zoomLevel * 100)}%
+              </span>
+              <span onClick={zoomIn} style={{ cursor: 'pointer', lineHeight: 1 }}>
+                <ZoomInOutlined />
+              </span>
+              <span
+                style={{
+                  width: '1px',
+                  height: '16px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                }}
+              />
+              <span onClick={rotate} style={{ cursor: 'pointer', lineHeight: 1 }}>
+                <RotateRightOutlined />
+              </span>
+              <span onClick={reset} style={{ cursor: 'pointer', lineHeight: 1 }}>
+                <ResetOutlined />
+              </span>
+            </div>
+          </div>
         </Modal>
       </div>
     )
