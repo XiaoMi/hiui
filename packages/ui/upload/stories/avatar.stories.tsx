@@ -27,6 +27,18 @@ export const Avatar = () => {
             return new Promise((resolve) => resolve(true))
           }}
           name="uploadAvatar"
+          avatarOptions={{
+            background: false, // 是否显示网格背景
+            viewMode: 1, // 限制裁剪框不能超出图片
+            dragMode: 'move', // 拖动模式，'move' 表示可以拖动图片
+            autoCropArea: 0.5, // 裁剪区域占图片百分比
+            restore: false, // 窗口调整大小后是否恢复裁剪区域
+            guides: false, // 是否在裁剪框上方显示引导线
+            center: false, // 是否在裁剪框上方显示中心指示器
+            cropBoxMovable: true, // 是否可移动裁剪框
+            cropBoxResizable: false, // 是否可调整裁剪框大小
+            toggleDragModeOnDblclick: false, // 双击时是否切换拖动模式
+          }}
         />
         <h2>md</h2>
         <Upload

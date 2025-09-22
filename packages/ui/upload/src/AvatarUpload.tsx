@@ -73,7 +73,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       disabled,
     })
 
-    const { aspectRatio = 0, dragMode = 'move' } = avatarOptions
+    const { aspectRatio = 0, dragMode = 'move', ...restAvatarOptions } = avatarOptions
     const cropperRef = useRef<HTMLImageElement>(null)
 
     const uploadRef = useRef<HTMLLIElement>(null)
@@ -295,6 +295,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             dragMode={dragMode}
             ref={cropperRef}
             style={{ height: 400, width: '100%' }}
+            {...restAvatarOptions}
           />
         </Modal>
       </div>
