@@ -362,46 +362,24 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
               rotatable={rotatable}
               {...restAvatarOptions}
             />
-            <div
-              className={`${prefixCls}-cropper__toolbar`}
-              style={{
-                position: 'absolute',
-                bottom: '16px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                borderRadius: '8px',
-                padding: '8px 16px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                color: 'white',
-                fontSize: 18,
-              }}
-            >
-              <span onClick={zoomOut} style={{ cursor: 'pointer', lineHeight: 1 }}>
+            <div className={`${prefixCls}-cropper__toolbar`}>
+              <span onClick={zoomOut} className={`${prefixCls}-cropper__toolbar-btn`}>
                 <ZoomOutOutlined />
               </span>
-              <span style={{ minWidth: 42, textAlign: 'center' }}>
+              <span className={`${prefixCls}-cropper__toolbar-zoom`}>
                 {Math.round(zoomLevel * 100)}%
               </span>
-              <span onClick={zoomIn} style={{ cursor: 'pointer', lineHeight: 1 }}>
+              <span onClick={zoomIn} className={`${prefixCls}-cropper__toolbar-btn`}>
                 <ZoomInOutlined />
               </span>
-              <span
-                style={{
-                  width: '1px',
-                  height: '16px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                }}
-              />
-              <span onClick={rotateRight} style={{ cursor: 'pointer', lineHeight: 1 }}>
+              <span className={`${prefixCls}-cropper__toolbar-separator`} />
+              <span onClick={rotateRight} className={`${prefixCls}-cropper__toolbar-btn`}>
                 <RotateRightOutlined />
               </span>
-              <span onClick={rotateLeft} style={{ cursor: 'pointer', lineHeight: 1 }}>
+              <span onClick={rotateLeft} className={`${prefixCls}-cropper__toolbar-btn`}>
                 <RotateLeftOutlined />
               </span>
-              <span onClick={reset} style={{ cursor: 'pointer', lineHeight: 1 }}>
+              <span onClick={reset} className={`${prefixCls}-cropper__toolbar-btn`}>
                 <ResetOutlined />
               </span>
             </div>
