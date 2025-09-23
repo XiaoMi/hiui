@@ -81,6 +81,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       suffix,
       customRender,
       label,
+      showIndicator = true,
       ...rest
     },
     ref
@@ -286,6 +287,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
               placeholder={placeholder}
               displayRender={displayRenderProp}
               prefix={prefix}
+              showIndicator={showIndicator}
               suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               value={value}
@@ -458,6 +460,10 @@ export interface TreeSelectProps
    * 自定义触发器
    */
   customRender?: React.ReactNode | ((selectedItem: TreeSelectDataItem | null) => React.ReactNode)
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
 }
 
 if (__DEV__) {

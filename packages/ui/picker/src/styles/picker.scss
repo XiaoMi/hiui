@@ -21,7 +21,7 @@ $prefix: '#{$component-prefix}-picker' !default;
 
   // 耦合注入
   &--open {
-    .#{$component-prefix}-mock-input:not(.#{$component-prefix}-mock-input--appearance-borderless) {
+    .#{$component-prefix}-mock-input:not(.#{$component-prefix}-mock-input--appearance-borderless):not(.#{$component-prefix}-mock-input--appearance-unset) {
       border-color: use-color-mode('primary');
 
       // &__suffix {
@@ -35,7 +35,7 @@ $prefix: '#{$component-prefix}-picker' !default;
       // }
     }
 
-    .#{$component-prefix}-tag-input-mock:not(.#{$component-prefix}-tag-input-mock--appearance-borderless) {
+    .#{$component-prefix}-tag-input-mock:not(.#{$component-prefix}-tag-input-mock--appearance-borderless):not(.#{$component-prefix}-tag-input-mock--appearance-unset) {
       border-color: use-color-mode('primary');
 
       // &__suffix {
