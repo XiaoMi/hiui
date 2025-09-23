@@ -69,6 +69,5 @@ export interface DPContextData extends ExtendsType {
   defaultPickerValue?: DatePickerValueV3
   focusIndex?: 0 | 1
   setFocusIndex?: React.Dispatch<React.SetStateAction<0 | 1>>
-  showIndicator?: boolean
 }
 export default DPContext
