@@ -350,7 +350,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             setCropperVisible(false)
           }}
         >
-          <div style={{ position: 'relative' }}>
+          <div className={`${prefixCls}-cropper__container`}>
             <Cropper
               src={cropperFile?.url || ''}
               aspectRatio={aspectRatio}
