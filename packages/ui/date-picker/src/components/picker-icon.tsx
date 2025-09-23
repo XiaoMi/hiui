@@ -10,6 +10,7 @@ const PickerIcon = ({
   showTime,
   disabled,
   onClick,
+  showIndicator,
 }: {
   focus: boolean
   clearable?: boolean
@@ -17,6 +18,7 @@ const PickerIcon = ({
   disabled?: boolean
   type: DatePickerTypeEnum
   onClick: (status: boolean) => void
+  showIndicator?: boolean
 }) => {
   const cls = cx(
     'hi-icon',
@@ -30,12 +32,18 @@ const PickerIcon = ({
   const MatchIcon = useMemo(() => {
     if (focus && clearable && !disabled) {
       return CloseCircleFilled
-    } else if (type.includes('time') || showTime) {
-      return TimeOutlined
-    } else {
-      return CalendarOutlined
     }
-  }, [clearable, disabled, focus, showTime, type])
+
+    if (showIndicator) {
+      if (type.includes('time') || showTime) {
+        return TimeOutlined
+      } else {
+        return CalendarOutlined
+      }
+    }
+
+    return React.Fragment
+  }, [clearable, disabled, focus, showIndicator, showTime, type])
 
   return (
     <MatchIcon

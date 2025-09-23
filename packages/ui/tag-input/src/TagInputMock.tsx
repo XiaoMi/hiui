@@ -51,6 +51,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       onMouseLeave,
       onClear,
       onExpand,
+      showIndicator = true,
       ...rest
     },
     ref
@@ -257,10 +258,10 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
               {value.map((id, index) => {
                 const option = data.find((d) => d.id === id) ?? { id, title: id }
                 return (
-                  <>
+                  <React.Fragment key={id}>
                     {isFunction(displayRender) ? displayRender(option) : option.title}
                     {index !== value.length - 1 && '、'}
-                  </>
+                  </React.Fragment>
                 )
               })}
             </span>
@@ -299,9 +300,9 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
                   >
                     <CloseCircleFilled />
                   </span>
-                ) : (
+                ) : showIndicator ? (
                   suffix[0]
-                )}
+                ) : null}
               </span>
             ) : null}
           </ResizeDetector>
@@ -401,6 +402,10 @@ export interface TagInputMockProps
    * 展开时回调
    */
   onExpand?: (evt: React.MouseEvent) => void
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
 }
 
 if (__DEV__) {

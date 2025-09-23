@@ -105,7 +105,8 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--appearance-unset {
-      &:hover {
+      &:hover,
+      &.#{$prefix}__picker--focus {
         background: use-color('gray', 100);
       }
 
@@ -159,13 +160,12 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &--focus {
       &#{$line},
-      &#{$filled},
-      &#{$unset} {
+      &#{$filled} {
         border-color: use-color-mode('primary');
-      }
 
-      &:hover {
-        background: transparent;
+        &:hover {
+          background: transparent;
+        }
       }
 
       background: transparent;
