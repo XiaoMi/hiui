@@ -67,6 +67,5 @@ export interface DPContextData extends ExtendsType {
   utcOffset?: number
   focusIndex?: 0 | 1
   setFocusIndex?: React.Dispatch<React.SetStateAction<0 | 1>>
-  showIndicator?: boolean
 }
 export default DPContext
