@@ -130,6 +130,7 @@
     "@hi-ui/page-header": "4.0.0"
   },
   "changesets": [
+    "afraid-cherries-worry",
     "afraid-ducks-destroy",
     "angry-experts-kneel",
     "beige-countries-care",
@@ -206,7 +207,9 @@
     "orange-panthers-sit",
     "plenty-eggs-impress",
     "popular-sloths-fetch",
+    "pretty-dots-invite",
     "proud-pans-raise",
+    "purple-grapes-travel",
     "red-cameras-sparkle",
     "red-rings-grow",
     "rich-bugs-smell",

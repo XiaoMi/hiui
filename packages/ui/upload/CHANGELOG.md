@@ -1,5 +1,11 @@
 # @hi-ui/upload
 
+## 5.0.0-canary.7
+
+### Minor Changes
+
+- 33b14cf95: feat(upload): Upload 组件 type 为 avatar 时展示图片裁剪工具栏 (5.0)
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

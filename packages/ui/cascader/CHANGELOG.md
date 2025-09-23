@@ -1,5 +1,18 @@
 # @hi-ui/cascader
 
+## 5.0.0-canary.15
+
+### Minor Changes
+
+- e97485c24: feat: 下拉选择组件增加 showIndicator 参数 & 修改 appearance 中的 unset 样式 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [e97485c24]
+- Updated dependencies [f0b3272a1]
+  - @hi-ui/input@5.0.0-canary.13
+  - @hi-ui/use-search-mode@5.0.0-canary.5
+
 ## 5.0.0-canary.14
 
 ### Patch Changes

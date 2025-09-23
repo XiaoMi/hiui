@@ -1,5 +1,27 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.30
+
+### Minor Changes
+
+- 33b14cf95: feat(upload): Upload 组件 type 为 avatar 时展示图片裁剪工具栏 (5.0)
+- e97485c24: feat: 下拉选择组件增加 showIndicator 参数 & 修改 appearance 中的 unset 样式 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [33b14cf95]
+- Updated dependencies [e97485c24]
+  - @hi-ui/upload@5.0.0-canary.7
+  - @hi-ui/cascader@5.0.0-canary.15
+  - @hi-ui/check-cascader@5.0.0-canary.18
+  - @hi-ui/check-select@5.0.0-canary.13
+  - @hi-ui/check-tree-select@5.0.0-canary.14
+  - @hi-ui/date-picker@5.0.0-canary.19
+  - @hi-ui/input@5.0.0-canary.13
+  - @hi-ui/select@5.0.0-canary.11
+  - @hi-ui/time-picker@5.0.0-canary.12
+  - @hi-ui/tree-select@5.0.0-canary.10
+
 ## 5.0.0-canary.29
 
 ### Major Changes

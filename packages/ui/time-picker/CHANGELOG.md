@@ -1,5 +1,11 @@
 # @hi-ui/time-picker
 
+## 5.0.0-canary.12
+
+### Minor Changes
+
+- e97485c24: feat: 下拉选择组件增加 showIndicator 参数 & 修改 appearance 中的 unset 样式 (5.0)
+
 ## 5.0.0-canary.11
 
 ### Patch Changes
