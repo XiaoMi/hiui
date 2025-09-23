@@ -654,3 +654,41 @@ $upload-state-height: 2px !default;
     list-style: none;
   }
 }
+
+// cropper 弹窗样式
+.#{$prefix}-cropper {
+  &__container {
+    position: relative;
+  }
+
+  &__toolbar {
+    position: absolute;
+    bottom: use-spacing(8);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #1a1d26e5;
+    border-radius: use-border-radius('xl');
+    padding: use-spacing(6) use-spacing(8);
+    display: flex;
+    align-items: center;
+    gap: use-spacing(8);
+    color: #fff;
+    font-size: 20px;
+
+    &-btn {
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    &-zoom {
+      font-size: 14px;
+      text-align: center;
+    }
+
+    &-separator {
+      width: 1px;
+      height: 16px;
+      background-color: #60636b;
+    }
+  }
+}

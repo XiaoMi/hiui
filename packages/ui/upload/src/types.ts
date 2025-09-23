@@ -1,5 +1,7 @@
-import { HiBaseHTMLProps } from '@hi-ui/core'
 import React from 'react'
+import { ReactCropperProps } from 'react-cropper'
+
+import { HiBaseHTMLProps } from '@hi-ui/core'
 
 export interface UploadFileItem extends Partial<File> {
   /**
@@ -137,9 +139,9 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    */
   loading?: boolean
   /**
-   * 头像裁切配置项
+   * 头像裁切配置项（透传扩展后的 react-cropper props）
    */
-  avatarOptions?: Record<string, any>
+  avatarOptions?: AvatarOptions
   /**
    * 设置上传按钮大小,仅在 type === 'photo' 时有效
    */
@@ -185,4 +187,15 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
 export interface ActionRenderProps {
   file: UploadFileItem
   index: number
+}
+
+export interface AvatarOptions extends ReactCropperProps {
+  /**
+   * 裁剪后生成的图片宽度
+   */
+  outputWidth?: number
+  /**
+   * 裁剪后生成的图片高度
+   */
+  outputHeight?: number
 }

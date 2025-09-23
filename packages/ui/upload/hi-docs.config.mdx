@@ -20,10 +20,24 @@
 
 ### UploadFileItem
 
-| 参数        | 说明         | 类型   | 可选值                              | 默认值 |
-| ----------- | ------------ | ------ | ----------------------------------- | ------ |
-| fileId      | 上传文件 id  | string | -                                   | -      |
-| fileType    | 文件类型     | string | -                                   | -      |
-| name        | 文件名       | string | -                                   | -      |
+| 参数        | 说明         | 类型   | 可选值                            | 默认值 |
+| ----------- | ------------ | ------ | --------------------------------- | ------ |
+| fileId      | 上传文件 id  | string | -                                 | -      |
+| fileType    | 文件类型     | string | -                                 | -      |
+| name        | 文件名       | string | -                                 | -      |
 | uploadState | 上传文件状态 | string | 'success' \| 'loading' \| 'error' | -      |
-| url         | 上传文件地址 | string | -                                   | -      |
+| url         | 上传文件地址 | string | -                                 | -      |
+
+### avatarOptions
+
+avatarOptions 扩展了 react-cropper 的 props，添加了 `outputWidth` 和 `outputHeight` 两个额外属性。更多 props 参考以下文档：
+
+- [ReactCropperProps](https://github.com/react-cropper/react-cropper#readme)
+- [cropperjs v1 Options](https://github.com/fengyuanchen/cropperjs/blob/v1/README.md#options)
+
+| 参数         | 说明                                                     | 类型   | 可选值                     | 默认值 |
+| ------------ | -------------------------------------------------------- | ------ | -------------------------- | ------ |
+| aspectRatio  | 定义裁剪框的固定宽高比（默认情况下，裁剪框具有自由比例） | number | -                          | -      |
+| dragMode     | 定义裁剪器的拖拽模式                                     | string | 'crop' \| 'move' \| 'none' | 'crop' |
+| outputWidth  | 裁剪后生成的图片宽度                                     | number | -                          | -      |
+| outputHeight | 裁剪后生成的图片高度                                     | number | -                          | -      |
