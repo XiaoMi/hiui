@@ -663,15 +663,15 @@ $upload-state-height: 2px !default;
 
   &__toolbar {
     position: absolute;
-    bottom: 16px;
+    bottom: use-spacing(8);
     left: 50%;
     transform: translateX(-50%);
     background-color: #1a1d26e5;
-    border-radius: 8px;
-    padding: 12px 16px;
+    border-radius: use-border-radius('xl');
+    padding: use-spacing(6) use-spacing(8);
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: use-spacing(8);
     color: #fff;
     font-size: 20px;
 
