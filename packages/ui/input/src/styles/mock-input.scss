@@ -39,8 +39,11 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   }
 
   &__suffix {
-    padding-left: use-spacing(4);
     color: use-color('gray', 500);
+
+    &:has(> *) {
+      padding-left: use-spacing(4);
+    }
 
     .#{$mock-input-prefix}--appearance-unset & {
       color: use-color('gray', 500);
@@ -70,7 +73,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     align-items: center;
     width: 16px;
     height: 16px;
-    font-size: use-text-size('normal');
+    font-size: use-text-size('lg');
     text-align: center;
     color: use-color('gray', 500);
     flex-shrink: 0;
@@ -202,13 +205,9 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         justify-content: flex-start;
         border-color: transparent;
 
-        &:not(.disabled):hover {
-          background-color: use-color('gray', 100);
-        }
-
+        &:not(.disabled):hover,
         &:not(.disabled).focused {
-          background-color: use-color-static('white');
-          border-color: use-color-mode('primary');
+          background-color: use-color('gray', 100);
         }
 
         &:not(.disabled).invalid {

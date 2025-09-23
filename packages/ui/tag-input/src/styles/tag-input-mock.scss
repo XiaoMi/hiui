@@ -70,7 +70,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     align-items: center;
     width: 16px;
     height: 16px;
-    font-size: use-text-size('normal');
+    font-size: use-text-size('lg');
     color: use-color('gray', 500);
     text-align: center;
     flex-shrink: 0;
@@ -101,8 +101,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     vertical-align: middle;
     user-select: none;
     cursor: inherit;
-    margin-left: use-spacing(4);
-    margin-right: use-spacing(3);
+    margin-left: use-spacing(2);
     padding: 0 use-spacing(3);
     font-size: use-text-size('sm');
     border-radius: use-border-radius('md');
@@ -114,6 +113,10 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     transition-property: background-color, color;
     transition-duration: use-motion-duration('normal');
     transition-timing-function: use-motion-bezier('normal');
+
+    &:has(+ *) {
+      margin-right: use-spacing(3);
+    }
 
     .#{$tag-input-mock-prefix}--expandable & {
       background-color: use-color-mode('primary', 50);
@@ -375,7 +378,8 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       // border-radius: 0;
       border-color: transparent;
 
-      &:not(.#{$tag-input-mock-prefix}--disabled):hover {
+      &:not(.#{$tag-input-mock-prefix}--disabled):hover,
+      &:not(.#{$tag-input-mock-prefix}--disabled).focused {
         background-color: use-color('gray', 100);
 
         .#{$tag-input-mock-prefix}__tag {
@@ -384,26 +388,6 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
         .#{$tag-input-mock-prefix}__tag--total {
           background-color: use-color-static('white');
-        }
-
-        &.#{$tag-input-mock-prefix}--expandable {
-          .#{$tag-input-mock-prefix}__tag--total {
-            background-color: use-color-mode('primary', 50);
-            color: use-color-mode('primary');
-          }
-        }
-      }
-
-      &:not(.#{$tag-input-mock-prefix}--disabled).focused {
-        background-color: use-color-static('white');
-        border-color: use-color-mode('primary');
-
-        .#{$tag-input-mock-prefix}__tag {
-          background-color: use-color('gray', 100);
-        }
-
-        .#{$tag-input-mock-prefix}__tag--total {
-          background-color: use-color('gray', 100);
         }
 
         &.#{$tag-input-mock-prefix}--expandable {

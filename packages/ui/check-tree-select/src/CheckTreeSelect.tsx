@@ -98,6 +98,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       prefix,
       suffix,
       label,
+      showIndicator = true,
       renderExtraFooter,
       ...rest
     },
@@ -416,6 +417,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
               // @ts-ignore
               displayRender={displayRender}
               prefix={prefix}
+              showIndicator={showIndicator}
               suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               appearance={appearance}
@@ -682,6 +684,10 @@ export interface CheckTreeSelectProps
    * 选择框后置内容
    */
   suffix?: React.ReactNode
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
   /**
    * 自定义下拉菜单底部渲染
    */

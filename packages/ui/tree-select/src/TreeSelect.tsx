@@ -82,6 +82,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       customRender,
       shouldShowSwitcher,
       label,
+      showIndicator = true,
       ...rest
     },
     ref
@@ -287,6 +288,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
               placeholder={placeholder}
               displayRender={displayRenderProp}
               prefix={prefix}
+              showIndicator={showIndicator}
               suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               value={value}
@@ -464,6 +466,11 @@ export interface TreeSelectProps
    * 自定义切换器显示逻辑
    */
   shouldShowSwitcher?: (node: TreeNodeEventData) => boolean
+  /**
+   * 是否展示指示器
+   * @default true
+   */
+  showIndicator?: boolean
 }
 
 if (__DEV__) {
