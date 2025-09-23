@@ -1,5 +1,11 @@
 # @hi-ui/use-search-mode
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- fix(use-search-mode): 修复初始化时会触发搜索的问题 (5.0)
+
 ## 5.0.0-canary.5
 
 ### Patch Changes
