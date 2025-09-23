@@ -90,6 +90,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       showOnlyShowChecked,
       virtual,
       showCheckAll,
+      showIndicator = true,
       ...rest
     },
     ref
@@ -350,6 +351,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
               // @ts-ignore
               displayRender={displayRender}
               prefix={prefix}
+              showIndicator={showIndicator}
               suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               appearance={appearance}
@@ -613,6 +615,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 是否开启全选功能
    */
   showCheckAll?: boolean
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
 }
 
 if (__DEV__) {
