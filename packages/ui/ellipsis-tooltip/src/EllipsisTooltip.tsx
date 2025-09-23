@@ -7,9 +7,9 @@ import Tooltip, { TooltipProps } from '@hi-ui/tooltip'
 const ELLIPSIS_TOOLTIP_PREFIX = getPrefixCls('ellipsis-tooltip')
 
 // 格式化子文本，超出规定字数时展示...
-const formatChildText = (text: string, maxTextCount: number) => {
+const formatChildText = (text: string = '', maxTextCount: number) => {
   const stringText = text?.toString()
-  const canTooltip = maxTextCount > 0 && stringText.length > maxTextCount
+  const canTooltip = maxTextCount > 0 && stringText?.length > maxTextCount
   return canTooltip ? `${stringText.slice(0, maxTextCount)}...` : text
 }
 
@@ -31,16 +31,17 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
   // 检查文本超出省略号
   const handleCheckEllipsis = useCallback(() => {
     if (contentRef.current) {
+      const rect = contentRef.current?.getBoundingClientRect()
+
       // 多行超出
       if (numberOfLines > 1) {
-        const style = window.getComputedStyle(contentRef.current, null)
-        const fontSize = style.fontSize
-        const lineHeight: number = style.lineHeight === 'normal' ? +fontSize : +style.lineHeight
-        const textLines = Math.round(+style.height / lineHeight)
+        const style = globalThis.getComputedStyle(contentRef.current, null)
+        const { height } = rect
+        const lineHeight = style.lineHeight === 'normal' ? style.fontSize : style.lineHeight
+        const textLines = Math.round(height / parseFloat(lineHeight))
         setDisableTooltip(textLines <= numberOfLines)
       } else {
         // 单行超出
-        const rect = contentRef.current?.getBoundingClientRect()
         const parentRect = (contentRef.current?.parentNode as HTMLElement)?.getBoundingClientRect()
         setDisableTooltip(+rect?.width <= parentRect.width)
       }
