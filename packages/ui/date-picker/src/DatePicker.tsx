@@ -86,6 +86,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       onConfirm,
       visible,
       label,
+      showIndicator = true,
       ...otherProps
     },
     ref
@@ -495,6 +496,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           utcOffset,
           focusIndex,
           setFocusIndex,
+          showIndicator,
         }}
       >
         <div

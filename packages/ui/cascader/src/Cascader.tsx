@@ -76,6 +76,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     label,
     virtual,
     onItemClick: onItemClickProp,
+    showIndicator = true,
     ...rest
   } = props
   const i18n = useLocaleContext()
@@ -296,6 +297,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
               placeholder={placeholder}
               displayRender={displayRender as any}
               prefix={prefix}
+              showIndicator={showIndicator}
               suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               value={value[value.length - 1]}
@@ -422,6 +424,10 @@ export interface CascaderProps
     event: React.MouseEvent<HTMLDivElement>,
     eventOption: CascaderItemEventData
   ) => void
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
 }
 
 if (__DEV__) {

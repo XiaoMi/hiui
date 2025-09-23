@@ -86,6 +86,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       onKeyDown: onKeyDownProp,
       keyword: keywordProp,
       label,
+      showIndicator = true,
       ...rest
     },
     ref
@@ -370,6 +371,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
                 placeholder={placeholder}
                 // @ts-ignore
                 displayRender={displayRender}
+                showIndicator={showIndicator}
                 prefix={prefix}
                 suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
                 focused={menuVisible}
@@ -581,6 +583,10 @@ export interface CheckSelectProps
    * 创建选项时触发
    */
   onItemCreate?: (item: CheckSelectMergedItem) => void
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
 }
 
 // @ts-ignore

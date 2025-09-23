@@ -51,6 +51,7 @@ const Root = ({
     size,
     strideSelectMode,
     setFocusIndex,
+    showIndicator,
   } = useContext(DPContext)
   const [inputData, setInputData] = useState(outDate)
 
@@ -240,6 +241,7 @@ const Root = ({
           disabled={disabled}
           clearable={clearable}
           onClick={pickerIconClick}
+          showIndicator={showIndicator}
         />
       </div>
     </div>
