@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { forwardRef, useCallback, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -90,6 +90,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       showOnlyShowChecked,
       virtual,
       showCheckAll,
+      showIndicator = true,
       ...rest
     },
     ref
@@ -308,12 +309,12 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         : null
     }, [customRender, selectedItems, value])
 
-    useEffect(() => {
+    const handleMenuListChange = useCallback(() => {
       if (menuVisible) {
         // 数据改变时更新弹窗显示位置，避免弹窗内容被遮挡
         pickerInnerRef.current?.update()
       }
-    }, [menuVisible, selectProps.data])
+    }, [menuVisible])
 
     return (
       <Picker
@@ -350,6 +351,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
               // @ts-ignore
               displayRender={displayRender}
               prefix={prefix}
+              showIndicator={showIndicator}
               suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               appearance={appearance}
@@ -445,6 +447,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             checkedMode={checkedMode}
             dropdownColumnRender={dropdownColumnRender}
             virtual={virtual}
+            onMenuListChange={handleMenuListChange}
           />
         ) : null}
       </Picker>
@@ -613,6 +616,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 是否开启全选功能
    */
   showCheckAll?: boolean
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
 }
 
 if (__DEV__) {

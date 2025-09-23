@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef, useEffect, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import {
@@ -45,6 +45,7 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
       flatted,
       checkedMode = 'ALL',
       virtual,
+      onMenuListChange,
       ...rest
     },
     ref
@@ -113,6 +114,10 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
         : getActiveMenus(originalFlattedData, selectedId)
       return getFilteredMenuList(menus, flattedData)
     }, [flatted, flattedData, originalFlattedData, selectedId])
+
+    useEffect(() => {
+      onMenuListChange?.(filteredMenus)
+    }, [filteredMenus, onMenuListChange])
 
     const cls = cx(
       prefixCls,
@@ -241,6 +246,10 @@ export interface CascaderMenusProps {
    * 是否开启虚拟滚动
    */
   virtual?: boolean
+  /**
+   * 菜单列表改变时的回调
+   */
+  onMenuListChange?: (menuList: FlattedCheckCascaderDataItem[][]) => void
 }
 
 if (__DEV__) {

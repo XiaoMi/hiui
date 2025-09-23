@@ -319,4 +319,9 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 是否显示日期选择器
    */
   visible?: boolean
+  /**
+   * 是否展示指示器
+   * @default true
+   */
+  showIndicator?: boolean
 }

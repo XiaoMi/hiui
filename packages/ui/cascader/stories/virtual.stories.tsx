@@ -2,12 +2,12 @@ import React from 'react'
 import Cascader from '../src'
 
 /**
- * @title 基础用法
- * @desc 展示从多个收起的备选项中选出的一个选项
+ * @title 大数据
+ * @desc 支持大数据下的虚拟滚动
  */
 export const Virtual = () => {
   const [data] = React.useState([
-    // 随机生成 100 * 100 * 100 条的级联数据
+    // 随机生成 10 * 100 * 1000 条的级联数据
     ...Array.from({ length: 10 }, (_, index) => ({
       id: `item-${index}`,
       title: `item-${index}`,
