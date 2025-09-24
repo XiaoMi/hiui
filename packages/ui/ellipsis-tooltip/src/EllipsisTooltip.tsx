@@ -8,7 +8,7 @@ const ELLIPSIS_TOOLTIP_PREFIX = getPrefixCls('ellipsis-tooltip')
 
 // 格式化子文本，超出规定字数时展示...
 const formatChildText = (text: string, maxTextCount: number) => {
-  const stringText = text?.toString()
+  const stringText = text?.toString() || ''
   const canTooltip = maxTextCount > 0 && stringText.length > maxTextCount
   return canTooltip ? `${stringText.slice(0, maxTextCount)}...` : text
 }
