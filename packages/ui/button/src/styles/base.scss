@@ -64,6 +64,10 @@ $group-gap-color-map: (
     cursor: not-allowed;
   }
 
+  &__icon {
+    line-height: 1em;
+  }
+
   // 尺寸通用
   &--size-sm {
     font-size: use-text-size('sm');
@@ -72,7 +76,6 @@ $group-gap-color-map: (
     .#{$prefix}__icon {
       // 定制大小，非 token
       font-size: 14px;
-      line-height: 1em;
     }
 
     &:not(.#{$prefix}--icon-only) {
@@ -101,7 +104,6 @@ $group-gap-color-map: (
     .#{$prefix}__icon {
       // 定制大小，非 token
       font-size: 16px;
-      line-height: 1em;
     }
 
     &:not(.#{$prefix}--icon-only) {
@@ -130,7 +132,6 @@ $group-gap-color-map: (
     .#{$prefix}__icon {
       // 定制大小，非 token
       font-size: 20px;
-      line-height: 1em;
     }
 
     &:not(.#{$prefix}--icon-only) {
