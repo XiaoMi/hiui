@@ -4,8 +4,17 @@ $prefix: '#{$component-prefix}-layout' !default;
 
 .#{$prefix} {
   box-sizing: border-box;
+  flex: 1;
   display: flex;
   position: relative;
   min-width: 0;
   min-height: 0;
+
+  &--direction-row {
+    flex-direction: row;
+  }
+
+  &--direction-column {
+    flex-direction: column;
+  }
 }
