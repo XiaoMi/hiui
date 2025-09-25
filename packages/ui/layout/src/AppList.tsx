@@ -183,9 +183,10 @@ export const AppListPopover = forwardRef<HTMLDivElement | null, AppListPopoverPr
     return (
       <Popover
         style={{
+          boxSizing: 'border-box',
           paddingLeft: 12,
           paddingRight: 12,
-          maxHeight: 382,
+          maxHeight: 408,
           overflow: 'auto',
         }}
         visible={visible}

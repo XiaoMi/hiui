@@ -8,6 +8,7 @@ import {
   MenuOutlined,
   EllipsisOutlined,
   PlusOutlined,
+  DetailsFilled,
 } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
 import Layout, { Sider, Content, SearchTrigger, FloatMenuContainer, AppListPopover } from '../src'
@@ -18,7 +19,8 @@ import Dropdown from '@hi-ui/dropdown'
 import Avatar from '@hi-ui/avatar'
 
 /**
- * @title 带浮动菜单的侧边栏
+ * @title 侧边栏带浮动菜单
+ * @desc 默认情况下，侧边栏是折叠的，可拖拽展开
  */
 export const FloatMenu = () => {
   const [data] = React.useState<MenuDataItem[]>([
@@ -194,20 +196,23 @@ export const FloatMenu = () => {
                 padding: '16px',
                 display: 'flex',
                 flexWrap: 'wrap',
-                gap: 8,
                 alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: collapsed ? 'column' : 'row',
+                justifyContent: 'space-between',
               }}
             >
-              <div
-                style={{
-                  width: collapsed ? 28 : `calc(100% - ${32}px)`,
-                  height: 28,
-                  borderRadius: 6,
-                  backgroundColor: 'rgba(124, 135, 166, 0.12)',
-                }}
-              ></div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 6,
+                    backgroundColor: 'rgba(124, 135, 166, 0.12)',
+                  }}
+                ></div>
+                {collapsed ? null : (
+                  <div style={{ fontWeight: 500, color: '#1a1d26' }}>系统名称</div>
+                )}
+              </div>
               <AppListPopover
                 visible={appListPopoverVisible}
                 activeId={activeAppId}
@@ -266,6 +271,7 @@ export const FloatMenu = () => {
                 onOutsideClick={() => setAppListPopoverVisible(false)}
               >
                 <Button
+                  style={!collapsed ? { marginInlineStart: 'auto' } : { margin: '16px auto 0' }}
                   icon={<MenuOutlined />}
                   appearance="text"
                   size="xs"
@@ -342,15 +348,45 @@ export const FloatMenu = () => {
             />
             <div
               style={{
-                padding: '16px',
                 display: 'flex',
-                gap: 4,
-                alignItems: 'center',
-                marginTop: 'auto',
+                flexDirection: 'column',
+                gap: 18,
+                margin: '20px 16px',
+                marginBlockStart: 'auto',
               }}
             >
-              <Avatar size="xs" />
-              {collapsed ? null : <span>用户名</span>}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  fontSize: 14,
+                }}
+              >
+                <div
+                  style={{
+                    width: 24,
+                    height: 24,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <DetailsFilled size={18} color="#60636b" />
+                </div>
+                {collapsed ? null : <span>帮助反馈</span>}
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  fontSize: 14,
+                }}
+              >
+                <Avatar size="xs" />
+                {collapsed ? null : <span>用户名</span>}
+              </div>
             </div>
           </Sider>
           <FloatMenuContainer
