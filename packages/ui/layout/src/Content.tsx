@@ -5,17 +5,14 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const CONTENT_PREFIX = getPrefixCls('content')
 
-/**
- * 内容区域组件
- */
 export const Content = forwardRef<HTMLDivElement | null, ContentProps>(
   ({ prefixCls = CONTENT_PREFIX, role = 'content', className, children, ...rest }, ref) => {
     const cls = cx(prefixCls, className)
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
+      <main ref={ref} role={role} className={cls} {...rest}>
         {children}
-      </div>
+      </main>
     )
   }
 )
