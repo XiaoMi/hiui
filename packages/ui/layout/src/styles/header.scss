@@ -1,0 +1,9 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$header-prefix: '#{$component-prefix}-header' !default;
+
+.#{$header-prefix} {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  display: flex;
+}

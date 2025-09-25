@@ -9,8 +9,11 @@ const LAYOUT_PREFIX = getPrefixCls('layout')
  * 布局组件，用于布局页面结构
  */
 export const Layout = forwardRef<HTMLDivElement | null, LayoutProps>(
-  ({ prefixCls = LAYOUT_PREFIX, role = 'layout', className, children, ...rest }, ref) => {
-    const cls = cx(prefixCls, className)
+  (
+    { prefixCls = LAYOUT_PREFIX, role = 'layout', className, children, direction = 'row', ...rest },
+    ref
+  ) => {
+    const cls = cx(prefixCls, className, `${prefixCls}--direction-${direction}`)
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
@@ -20,7 +23,12 @@ export const Layout = forwardRef<HTMLDivElement | null, LayoutProps>(
   }
 )
 
-export interface LayoutProps extends HiBaseHTMLProps<'div'> {}
+export interface LayoutProps extends HiBaseHTMLProps<'div'> {
+  /**
+   * 布局方向
+   */
+  direction?: 'row' | 'column'
+}
 
 if (__DEV__) {
   Layout.displayName = 'Layout'
