@@ -3,6 +3,7 @@ import Menu from '@hi-ui/menu'
 import Scrollbar from '@hi-ui/scrollbar'
 import {
   AppStoreFilled,
+  DetailsFilled,
   UserFilled,
   SunFilled,
   PadFilled,
@@ -17,7 +18,8 @@ import Space from '@hi-ui/space'
 import Dropdown from '@hi-ui/dropdown'
 
 /**
- * @title 带菜单的布局
+ * @title 侧边栏带普通菜单
+ * @desc 默认情况下，侧边栏是展开的，可拖拽收起
  */
 export const WithMenu = () => {
   // 侧边栏导航是否折叠
@@ -86,21 +88,19 @@ export const WithMenu = () => {
               style={{
                 padding: '16px',
                 display: 'flex',
-                flexWrap: 'wrap',
                 gap: 8,
                 alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: collapsed ? 'column' : 'row',
               }}
             >
               <div
                 style={{
-                  width: collapsed ? 28 : `100%`,
+                  width: 28,
                   height: 28,
                   borderRadius: 6,
                   backgroundColor: 'rgba(124, 135, 166, 0.12)',
                 }}
               ></div>
+              {collapsed ? null : <div style={{ fontWeight: 500, color: '#1a1d26' }}>系统名称</div>}
             </div>
             <SearchTrigger mini={collapsed} data={data} />
             <Scrollbar>
@@ -117,16 +117,39 @@ export const WithMenu = () => {
                 data={data}
               />
             </Scrollbar>
-            <div
-              style={{
-                padding: '16px',
-                display: 'flex',
-                gap: 4,
-                alignItems: 'center',
-              }}
-            >
-              <Avatar size="xs" />
-              {collapsed ? null : <span>用户名</span>}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 18, margin: '20px 16px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  fontSize: 14,
+                }}
+              >
+                <div
+                  style={{
+                    width: 24,
+                    height: 24,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <DetailsFilled size={18} color="#60636b" />
+                </div>
+                {collapsed ? null : <span>帮助反馈</span>}
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  fontSize: 14,
+                }}
+              >
+                <Avatar size="xs" />
+                {collapsed ? null : <span>用户名</span>}
+              </div>
             </div>
           </Sider>
           <Content>
