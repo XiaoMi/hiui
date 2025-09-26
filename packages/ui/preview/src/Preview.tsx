@@ -210,7 +210,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
             appear
             classNames={`${prefixCls}__mask--transition`}
             in={visible}
-            timeout={50}
+            timeout={200}
             mountOnEnter
             unmountOnExit={false}
             onEnter={(ele: HTMLElement) => {
