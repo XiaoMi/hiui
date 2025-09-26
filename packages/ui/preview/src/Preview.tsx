@@ -207,9 +207,10 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       <Portal container={container} disabled={disabledPortal}>
         <div ref={ref} role={role} className={cls} style={{ ...style, display: 'none' }}>
           <CSSTransition
+            appear
             classNames={`${prefixCls}__mask--transition`}
             in={visible}
-            timeout={300}
+            timeout={50}
             mountOnEnter
             unmountOnExit={false}
             onEnter={(ele: HTMLElement) => {
