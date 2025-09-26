@@ -3,4 +3,4 @@
 "@hi-ui/hiui": patch
 ---
 
-fix(preview): 修复初始设置可见无效问题 z(#3349)
+fix(preview): 修复初始设置可见无效问题 (#3349)
