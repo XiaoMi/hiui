@@ -106,7 +106,7 @@ export interface TableColumnItemRenderReturn {
 
 export type TableColumnSortOrder = 'ascend' | 'descend' | null
 
-export type TableColumnItem = {
+export type TableColumnItem<T = any> = {
   /**
    * 列标题
    */
@@ -154,7 +154,7 @@ export type TableColumnItem = {
   /**
    * 多级表头
    */
-  children?: TableColumnItem[]
+  children?: TableColumnItem<T>[]
   /**
    * 表头列合并，设置为 0 时，不渲染
    */
@@ -164,7 +164,7 @@ export type TableColumnItem = {
    */
   render?: (
     text: any,
-    rowItem: Record<string, any>,
+    rowItem: T,
     rowIndex: number,
     dataKey: string
   ) => React.ReactNode | TableColumnItemRenderReturn
@@ -195,12 +195,12 @@ export type TableColumnItem = {
   /**
    * 自定义筛选下拉选项显示状态改变时的回调方法
    */
-  onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, item: TableColumnItem) => void
+  onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, item: TableColumnItem<T>) => void
   /**
    * 自定义筛选菜单，此函数只负责渲染图层，需要自行编写各种交互
    */
   filterDropdown?: (props: {
-    columnData: TableColumnItem
+    columnData: TableColumnItem<T>
     setFilterDropdownVisible: Function
   }) => React.ReactNode
 }
