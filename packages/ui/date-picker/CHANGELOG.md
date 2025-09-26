@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 4.12.2
+
+### Patch Changes
+
+- [#3353](https://github.com/XiaoMi/hiui/pull/3353) [`a0789be`](https://github.com/XiaoMi/hiui/commit/a0789be5e6a996a69b0cbf4b105315b22522aeac) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker): 修复日期时间范围下时间禁用问题 (#3352)
+
 ## 4.12.1
 
 ### Patch Changes

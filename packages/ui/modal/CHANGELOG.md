@@ -1,5 +1,11 @@
 # @hi-ui/modal
 
+## 4.4.2
+
+### Patch Changes
+
+- [#3344](https://github.com/XiaoMi/hiui/pull/3344) [`59d9dbafb`](https://github.com/XiaoMi/hiui/commit/59d9dbafb64c8a1d2954a5f2efa280696e0960be) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(modal): 增加 onConfirm 错误处理逻辑 (#3343)
+
 ## 4.4.1
 
 ### Patch Changes
