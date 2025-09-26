@@ -10,6 +10,16 @@ $prefix: '#{$component-prefix}-preview' !default;
   right: 0;
   left: 0;
 
+  &__mask {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: use-color('gray', 700);
+    opacity: 0;
+  }
+
   &__mask--transition {
     &-enter {
       opacity: 0;
@@ -38,15 +48,6 @@ $prefix: '#{$component-prefix}-preview' !default;
       opacity: 0;
       transition: opacity 0.3s;
     }
-  }
-
-  &__mask {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background-color: use-color('gray', 700);
   }
 
   &__header {
