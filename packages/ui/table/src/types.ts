@@ -106,7 +106,7 @@ export interface TableColumnItemRenderReturn {
 
 export type TableColumnSortOrder = 'ascend' | 'descend' | null
 
-export type TableColumnItem<T = any> = {
+export type TableColumnItem<T extends Record<string, any> = any> = {
   /**
    * 列标题
    */
