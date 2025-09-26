@@ -1,5 +1,20 @@
 # @hi-ui/hiui
 
+## 4.16.3
+
+### Patch Changes
+
+- [#3353](https://github.com/XiaoMi/hiui/pull/3353) [`a0789be`](https://github.com/XiaoMi/hiui/commit/a0789be5e6a996a69b0cbf4b105315b22522aeac) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker): 修复日期时间范围下时间禁用问题 (#3352)
+
+- [#3344](https://github.com/XiaoMi/hiui/pull/3344) [`59d9dbafb`](https://github.com/XiaoMi/hiui/commit/59d9dbafb64c8a1d2954a5f2efa280696e0960be) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(modal): 增加 onConfirm 错误处理逻辑 (#3343)
+
+- [#3350](https://github.com/XiaoMi/hiui/pull/3350) [`997208570`](https://github.com/XiaoMi/hiui/commit/9972085705ff9db36a6460a933937c929c90a9c0) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(preview): 修复初始设置可见无效问题 (#3349)
+
+- Updated dependencies [[`a0789be`](https://github.com/XiaoMi/hiui/commit/a0789be5e6a996a69b0cbf4b105315b22522aeac), [`59d9dbafb`](https://github.com/XiaoMi/hiui/commit/59d9dbafb64c8a1d2954a5f2efa280696e0960be), [`997208570`](https://github.com/XiaoMi/hiui/commit/9972085705ff9db36a6460a933937c929c90a9c0)]:
+  - @hi-ui/date-picker@4.12.2
+  - @hi-ui/modal@4.4.2
+  - @hi-ui/preview@4.2.1
+
 ## 4.16.2
 
 ### Patch Changes

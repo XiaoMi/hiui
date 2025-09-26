@@ -1,5 +1,11 @@
 # @hi-ui/preview
 
+## 4.2.1
+
+### Patch Changes
+
+- [#3350](https://github.com/XiaoMi/hiui/pull/3350) [`997208570`](https://github.com/XiaoMi/hiui/commit/9972085705ff9db36a6460a933937c929c90a9c0) Thanks [@fcppddl](https://github.com/fcppddl)! - fix(preview): 修复初始设置可见无效问题 (#3349)
+
 ## 4.2.0
 
 ### Minor Changes
