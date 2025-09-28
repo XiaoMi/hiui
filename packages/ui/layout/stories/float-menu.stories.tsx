@@ -8,9 +8,17 @@ import {
   MenuOutlined,
   EllipsisOutlined,
   PlusOutlined,
+  DetailsFilled,
 } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
-import Layout, { Sider, Content, SearchTrigger, FloatMenuContainer, AppListPopover } from '../src'
+import Layout, {
+  Sider,
+  Content,
+  SearchTrigger,
+  FloatMenuContainer,
+  AppListPopover,
+  ProfilePopover,
+} from '../src'
 import PageHeader from '@hi-ui/page-header'
 import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
 import Space from '@hi-ui/space'
@@ -18,7 +26,8 @@ import Dropdown from '@hi-ui/dropdown'
 import Avatar from '@hi-ui/avatar'
 
 /**
- * @title 带浮动菜单的侧边栏
+ * @title 侧边栏带浮动菜单
+ * @desc 默认情况下，侧边栏是折叠的，可拖拽展开
  */
 export const FloatMenu = () => {
   const [data] = React.useState<MenuDataItem[]>([
@@ -178,6 +187,9 @@ export const FloatMenu = () => {
   // 激活的应用 id
   const [activeAppId, setActiveAppId] = React.useState<React.ReactText>('')
 
+  const [profileVisible, setProfileVisible] = React.useState(false)
+  const [settingsValue, setSettingsValue] = React.useState({})
+
   return (
     <>
       <h1>FloatMenu</h1>
@@ -194,20 +206,23 @@ export const FloatMenu = () => {
                 padding: '16px',
                 display: 'flex',
                 flexWrap: 'wrap',
-                gap: 8,
                 alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: collapsed ? 'column' : 'row',
+                justifyContent: 'space-between',
               }}
             >
-              <div
-                style={{
-                  width: collapsed ? 28 : `calc(100% - ${32}px)`,
-                  height: 28,
-                  borderRadius: 6,
-                  backgroundColor: 'rgba(124, 135, 166, 0.12)',
-                }}
-              ></div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 6,
+                    backgroundColor: 'rgba(124, 135, 166, 0.12)',
+                  }}
+                ></div>
+                {collapsed ? null : (
+                  <div style={{ fontWeight: 500, color: '#1a1d26' }}>系统名称</div>
+                )}
+              </div>
               <AppListPopover
                 visible={appListPopoverVisible}
                 activeId={activeAppId}
@@ -266,6 +281,7 @@ export const FloatMenu = () => {
                 onOutsideClick={() => setAppListPopoverVisible(false)}
               >
                 <Button
+                  style={!collapsed ? { marginInlineStart: 'auto' } : { margin: '16px auto 0' }}
                   icon={<MenuOutlined />}
                   appearance="text"
                   size="xs"
@@ -342,15 +358,91 @@ export const FloatMenu = () => {
             />
             <div
               style={{
-                padding: '16px',
                 display: 'flex',
-                gap: 4,
-                alignItems: 'center',
-                marginTop: 'auto',
+                flexDirection: 'column',
+                gap: 18,
+                margin: '20px 16px',
+                marginBlockStart: 'auto',
               }}
             >
-              <Avatar size="xs" />
-              {collapsed ? null : <span>用户名</span>}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  fontSize: 14,
+                }}
+              >
+                <div
+                  style={{
+                    width: 24,
+                    height: 24,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <DetailsFilled size={18} color="#60636b" />
+                </div>
+                {collapsed ? null : <span>帮助反馈</span>}
+              </div>
+              <ProfilePopover
+                visible={profileVisible}
+                header={
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Avatar size="lg" />
+                    用户名
+                  </div>
+                }
+                footer={<div onClick={() => setProfileVisible(false)}>退出登录</div>}
+                settings={{
+                  value: settingsValue,
+                  data: [
+                    {
+                      id: 'timezone',
+                      title: '时区',
+                      subtitle: 'UTC+08:00',
+                      children: [
+                        { id: 'timezone-1', title: '时区1' },
+                        { id: 'timezone-2', title: '时区2' },
+                        { id: 'timezone-3', title: '时区3' },
+                      ],
+                    },
+                    {
+                      id: 'language',
+                      title: '语言',
+                      subtitle: '中文',
+                      children: [
+                        { id: 'language-1', title: '语言1' },
+                        { id: 'language-2', title: '语言2' },
+                        { id: 'language-3', title: '语言3' },
+                      ],
+                    },
+                  ],
+                  onItemClick: (evt, item) => {
+                    // evt.preventDefault()
+                  },
+                  onChange: (value) => {
+                    setSettingsValue(value)
+                    setProfileVisible(false)
+                  },
+                }}
+                onClose={() => setProfileVisible(false)}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    fontSize: 14,
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => setProfileVisible(!profileVisible)}
+                >
+                  <Avatar size="xs" />
+                  {collapsed ? null : <span>用户名</span>}
+                </div>
+              </ProfilePopover>
             </div>
           </Sider>
           <FloatMenuContainer

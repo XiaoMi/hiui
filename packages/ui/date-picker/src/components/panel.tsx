@@ -180,6 +180,10 @@ const Panel = (props: PanelProps) => {
     onPanelChange?.(date.toDate())
   }
 
+  const panelType = useMemo(() => {
+    return type.includes('range') ? (panelIndex === 0 ? 'range-start' : 'range-end') : 'single'
+  }, [type, panelIndex])
+
   return (
     <>
       <div className={panelCls}>
@@ -223,17 +227,20 @@ const Panel = (props: PanelProps) => {
                 minuteStep={minuteStep}
                 secondStep={secondStep}
                 type="single"
-                panelType={
-                  type.includes('range')
-                    ? panelIndex === 0
-                      ? 'range-start'
-                      : 'range-end'
-                    : 'single'
-                }
                 format={timePickerFormat}
-                disabledHours={disabledHours}
-                disabledMinutes={disabledMinutes}
-                disabledSeconds={disabledSeconds}
+                disabledHours={() =>
+                  typeof disabledHours === 'function' ? disabledHours(panelType) : disabledHours
+                }
+                disabledMinutes={(hour) =>
+                  typeof disabledMinutes === 'function'
+                    ? disabledMinutes(hour, panelType)
+                    : disabledMinutes
+                }
+                disabledSeconds={(hour, minute) =>
+                  typeof disabledSeconds === 'function'
+                    ? disabledSeconds(hour, minute, panelType)
+                    : disabledSeconds
+                }
               />
             </div>
           </div>

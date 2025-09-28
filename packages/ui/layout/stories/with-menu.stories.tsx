@@ -3,13 +3,14 @@ import Menu from '@hi-ui/menu'
 import Scrollbar from '@hi-ui/scrollbar'
 import {
   AppStoreFilled,
+  DetailsFilled,
   UserFilled,
   SunFilled,
   PadFilled,
   EllipsisOutlined,
   PlusOutlined,
 } from '@hi-ui/icons'
-import Layout, { Sider, Content, SearchTrigger } from '../src'
+import Layout, { Sider, Content, SearchTrigger, ProfilePopover } from '../src'
 import Button from '@hi-ui/button'
 import Avatar from '@hi-ui/avatar'
 import PageHeader from '@hi-ui/page-header'
@@ -17,12 +18,16 @@ import Space from '@hi-ui/space'
 import Dropdown from '@hi-ui/dropdown'
 
 /**
- * @title 带菜单的布局
+ * @title 侧边栏带普通菜单
+ * @desc 默认情况下，侧边栏是展开的，可拖拽收起
  */
 export const WithMenu = () => {
   // 侧边栏导航是否折叠
   const [collapsed, setCollapsed] = React.useState(false)
   const [activeMenuId, setActiveMenuId] = React.useState<React.ReactText>(1)
+
+  const [profileVisible, setProfileVisible] = React.useState(false)
+  const [settingsValue, setSettingsValue] = React.useState({})
 
   const data = [
     {
@@ -86,21 +91,19 @@ export const WithMenu = () => {
               style={{
                 padding: '16px',
                 display: 'flex',
-                flexWrap: 'wrap',
                 gap: 8,
                 alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: collapsed ? 'column' : 'row',
               }}
             >
               <div
                 style={{
-                  width: collapsed ? 28 : `100%`,
+                  width: 28,
                   height: 28,
                   borderRadius: 6,
                   backgroundColor: 'rgba(124, 135, 166, 0.12)',
                 }}
               ></div>
+              {collapsed ? null : <div style={{ fontWeight: 500, color: '#1a1d26' }}>系统名称</div>}
             </div>
             <SearchTrigger mini={collapsed} data={data} />
             <Scrollbar>
@@ -117,16 +120,86 @@ export const WithMenu = () => {
                 data={data}
               />
             </Scrollbar>
-            <div
-              style={{
-                padding: '16px',
-                display: 'flex',
-                gap: 4,
-                alignItems: 'center',
-              }}
-            >
-              <Avatar size="xs" />
-              {collapsed ? null : <span>用户名</span>}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 18, margin: '20px 16px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  fontSize: 14,
+                  cursor: 'pointer',
+                }}
+              >
+                <div
+                  style={{
+                    width: 24,
+                    height: 24,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <DetailsFilled size={18} color="#60636b" />
+                </div>
+                {collapsed ? null : <span>帮助反馈</span>}
+              </div>
+              <ProfilePopover
+                visible={profileVisible}
+                header={
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Avatar size="lg" />
+                    用户名
+                  </div>
+                }
+                footer={<div onClick={() => setProfileVisible(false)}>退出登录</div>}
+                settings={{
+                  value: settingsValue,
+                  data: [
+                    {
+                      id: 'timezone',
+                      title: '时区',
+                      subtitle: 'UTC+08:00',
+                      children: [
+                        { id: 'timezone-1', title: '时区1' },
+                        { id: 'timezone-2', title: '时区2' },
+                        { id: 'timezone-3', title: '时区3' },
+                      ],
+                    },
+                    {
+                      id: 'language',
+                      title: '语言',
+                      subtitle: '中文',
+                      children: [
+                        { id: 'language-1', title: '语言1' },
+                        { id: 'language-2', title: '语言2' },
+                        { id: 'language-3', title: '语言3' },
+                      ],
+                    },
+                  ],
+                  onItemClick: (evt, item) => {
+                    // evt.preventDefault()
+                  },
+                  onChange: (value) => {
+                    setSettingsValue(value)
+                    setProfileVisible(false)
+                  },
+                }}
+                onClose={() => setProfileVisible(false)}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    fontSize: 14,
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => setProfileVisible(!profileVisible)}
+                >
+                  <Avatar size="xs" />
+                  {collapsed ? null : <span>用户名</span>}
+                </div>
+              </ProfilePopover>
             </div>
           </Sider>
           <Content>
