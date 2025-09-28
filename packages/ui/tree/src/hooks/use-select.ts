@@ -41,7 +41,7 @@ export const useSelect = (
 
       if (selectedId === selectedNode.id) {
         // 允许取消选中
-        tryChangeSelectedId(null, null)
+        tryChangeSelectedId(null, selectedNode)
       } else {
         tryChangeSelectedId(selectedNode.id, selectedNode)
       }
