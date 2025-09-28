@@ -89,8 +89,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     ])
     const formatNotifyOutside = useCallback(
       (disposeValue: string[]) => {
-        const result = disposeValue.filter((item) => item)
-        notifyOutside && notifyOutside(result.length > 1 ? result : result[0] || '')
+        // const result = disposeValue.filter((item) => item)
+        notifyOutside && notifyOutside(disposeValue)
       },
       [notifyOutside]
     )
@@ -346,7 +346,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
                 onClick={(evt) => {
                   evt.stopPropagation()
                   onCacheChange(type === 'single' ? [''] : ['', ''])
-                  onChange(['', ''])
+                  onChange(type === 'single' ? [''] : ['', ''])
                 }}
               />
             ) : showIndicator ? (
