@@ -1,0 +1,91 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$profile-prefix: '#{$component-prefix}-profile' !default;
+
+.#{$profile-prefix} {
+  width: 240px;
+
+  &__header {
+    padding: use-spacing(8) use-spacing(8) use-spacing(4);
+    font-size: use-text-size('lg');
+    line-height: use-text-lineheight('lg');
+    font-weight: use-text-weight('medium');
+  }
+
+  &__settings {
+    padding: use-spacing(4);
+
+    &-item {
+      box-sizing: border-box;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: use-spacing(4);
+      border-radius: use-border-radius('normal');
+      cursor: pointer;
+
+      &:hover {
+        background-color: use-color('gray', 50);
+      }
+
+      &__title {
+        font-size: use-text-size('normal');
+        line-height: use-text-lineheight('normal');
+      }
+
+      &__subtitle {
+        font-size: use-text-size('sm');
+        line-height: use-text-lineheight('sm');
+        font-weight: use-text-weight('medium');
+        color: use-color('gray', 500);
+      }
+
+      &__arrow {
+        font-size: use-text-size('lg');
+        color: use-color('gray', 500);
+      }
+    }
+
+    &-item-leaf {
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 40px;
+      padding: use-spacing(4);
+      border-radius: use-border-radius('md');
+      cursor: pointer;
+      font-size: use-text-size('normal');
+      line-height: use-text-lineheight('normal');
+
+      &:hover {
+        background-color: use-color('gray', 50);
+      }
+
+      &--checked {
+        color: use-color-mode('primary');
+      }
+    }
+  }
+
+  &__footer {
+    padding: use-spacing(4);
+    border-top: use-border-size('normal') use-color('gray', 200);
+
+    &__content {
+      box-sizing: border-box;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: use-spacing(4);
+      border-radius: use-border-radius('normal');
+      cursor: pointer;
+      font-size: use-text-size('normal');
+      line-height: use-text-lineheight('normal');
+
+      &:hover {
+        background-color: use-color('gray', 50);
+      }
+    }
+  }
+}
