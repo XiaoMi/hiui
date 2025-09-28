@@ -11,7 +11,7 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="layout-basic__wrap" style={{ width: 800 }}>
+      <div className="layout-basic__wrap" style={{ width: '100%' }}>
         <div>
           <div style={{ height: 300, marginBottom: 16 }}>
             <Layout direction="column" style={{ height: '100%', backgroundColor: '#f5f8fc' }}>

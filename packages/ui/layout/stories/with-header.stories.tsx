@@ -4,7 +4,7 @@ import Button from '@hi-ui/button'
 import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
 import Avatar from '@hi-ui/avatar'
 import { TabList } from '@hi-ui/tabs'
-import Layout, { Header, Content, AppListPopover } from '../src'
+import Layout, { Header, Content, AppListPopover, ProfilePopover } from '../src'
 
 /**
  * @title 顶部导航栏
@@ -12,6 +12,8 @@ import Layout, { Header, Content, AppListPopover } from '../src'
 export const WithHeader = () => {
   const [appListPopoverVisible, setAppListPopoverVisible] = React.useState(false)
   const [activeAppId, setActiveAppId] = React.useState<React.ReactText | undefined>(undefined)
+  const [profileVisible, setProfileVisible] = React.useState(false)
+  const [settingsValue, setSettingsValue] = React.useState({})
 
   return (
     <>
@@ -130,7 +132,56 @@ export const WithHeader = () => {
                   }}
                 />
               </AppListPopover>
-              <Avatar style={{ marginInlineStart: 20 }} size="sm" />
+              <ProfilePopover
+                visible={profileVisible}
+                placement="bottom-end"
+                header={
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Avatar size="lg" />
+                    用户名
+                  </div>
+                }
+                footer={<div onClick={() => setProfileVisible(false)}>退出登录</div>}
+                settings={{
+                  value: settingsValue,
+                  data: [
+                    {
+                      id: 'timezone',
+                      title: '时区',
+                      subtitle: 'UTC+08:00',
+                      children: [
+                        { id: 'timezone-1', title: '时区1' },
+                        { id: 'timezone-2', title: '时区2' },
+                        { id: 'timezone-3', title: '时区3' },
+                      ],
+                    },
+                    {
+                      id: 'language',
+                      title: '语言',
+                      subtitle: '中文',
+                      children: [
+                        { id: 'language-1', title: '语言1' },
+                        { id: 'language-2', title: '语言2' },
+                        { id: 'language-3', title: '语言3' },
+                      ],
+                    },
+                  ],
+                  onItemClick: (evt, item) => {
+                    // evt.preventDefault()
+                  },
+                  onChange: (value) => {
+                    setSettingsValue(value)
+                    setProfileVisible(false)
+                  },
+                }}
+                onClose={() => setProfileVisible(false)}
+              >
+                <Avatar
+                  style={{ marginInlineStart: 20, cursor: 'pointer' }}
+                  size="sm"
+                  onClick={() => setProfileVisible(!profileVisible)}
+                />
+              </ProfilePopover>
             </div>
           </Header>
           <Content style={{ backgroundColor: '#fff' }}></Content>

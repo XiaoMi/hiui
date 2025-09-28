@@ -8,6 +8,7 @@ import { Footer } from './Footer'
 import { SearchTrigger } from './SearchTrigger'
 import { FloatMenuContainer } from './FloatMenuContainer'
 import { AppListPopover } from './AppList'
+import { ProfilePopover } from './Profile'
 
 const Layout = Object.assign(_Layout, {
   Header,
@@ -17,6 +18,7 @@ const Layout = Object.assign(_Layout, {
   SearchTrigger,
   FloatMenuContainer,
   AppListPopover,
+  ProfilePopover,
 })
 
 export default Layout
@@ -29,3 +31,4 @@ export * from './Footer'
 export * from './SearchTrigger'
 export * from './FloatMenuContainer'
 export * from './AppList'
+export * from './Profile'
