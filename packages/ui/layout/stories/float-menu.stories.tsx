@@ -11,7 +11,14 @@ import {
   DetailsFilled,
 } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
-import Layout, { Sider, Content, SearchTrigger, FloatMenuContainer, AppListPopover } from '../src'
+import Layout, {
+  Sider,
+  Content,
+  SearchTrigger,
+  FloatMenuContainer,
+  AppListPopover,
+  ProfilePopover,
+} from '../src'
 import PageHeader from '@hi-ui/page-header'
 import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
 import Space from '@hi-ui/space'
@@ -179,6 +186,9 @@ export const FloatMenu = () => {
   const [appListPopoverVisible, setAppListPopoverVisible] = React.useState(false)
   // 激活的应用 id
   const [activeAppId, setActiveAppId] = React.useState<React.ReactText>('')
+
+  const [profileVisible, setProfileVisible] = React.useState(false)
+  const [settingsValue, setSettingsValue] = React.useState({})
 
   return (
     <>
@@ -376,17 +386,63 @@ export const FloatMenu = () => {
                 </div>
                 {collapsed ? null : <span>帮助反馈</span>}
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 4,
-                  fontSize: 14,
+              <ProfilePopover
+                visible={profileVisible}
+                header={
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Avatar size="lg" />
+                    用户名
+                  </div>
+                }
+                footer={<div onClick={() => setProfileVisible(false)}>退出登录</div>}
+                settings={{
+                  value: settingsValue,
+                  data: [
+                    {
+                      id: 'timezone',
+                      title: '时区',
+                      subtitle: 'UTC+08:00',
+                      children: [
+                        { id: 'timezone-1', title: '时区1' },
+                        { id: 'timezone-2', title: '时区2' },
+                        { id: 'timezone-3', title: '时区3' },
+                      ],
+                    },
+                    {
+                      id: 'language',
+                      title: '语言',
+                      subtitle: '中文',
+                      children: [
+                        { id: 'language-1', title: '语言1' },
+                        { id: 'language-2', title: '语言2' },
+                        { id: 'language-3', title: '语言3' },
+                      ],
+                    },
+                  ],
+                  onItemClick: (evt, item) => {
+                    // evt.preventDefault()
+                  },
+                  onChange: (value) => {
+                    setSettingsValue(value)
+                    setProfileVisible(false)
+                  },
                 }}
+                onClose={() => setProfileVisible(false)}
               >
-                <Avatar size="xs" />
-                {collapsed ? null : <span>用户名</span>}
-              </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    fontSize: 14,
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => setProfileVisible(!profileVisible)}
+                >
+                  <Avatar size="xs" />
+                  {collapsed ? null : <span>用户名</span>}
+                </div>
+              </ProfilePopover>
             </div>
           </Sider>
           <FloatMenuContainer
