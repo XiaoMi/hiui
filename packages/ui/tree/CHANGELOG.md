@@ -1,5 +1,11 @@
 # @hi-ui/tree
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- f5dd358d7: fix(tree): onSelect 第二个参数固定返回当前操作的节点对象 (5.0)
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

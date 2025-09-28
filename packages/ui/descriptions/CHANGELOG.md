@@ -1,5 +1,11 @@
 # @hi-ui/descriptions
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- d066abb24: style(descriptions): 更新描述组件样式，调整标签颜色为灰色 600，并增加行高设置 (5.0)
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

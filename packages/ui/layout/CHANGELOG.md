@@ -1,5 +1,12 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.9
+
+### Minor Changes
+
+- 8d7936b56: feat(layout): 增加 Profile 组件 (5.0)
+- e704a964f: feat(layout): 增加 Header 和 Footer 组件 & 完善示例 (5.0)
+
 ## 5.0.0-canary.8
 
 ### Major Changes

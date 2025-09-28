@@ -1,5 +1,38 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.31
+
+### Minor Changes
+
+- 8d7936b56: feat(layout): 增加 Profile 组件 (5.0)
+- e704a964f: feat(layout): 增加 Header 和 Footer 组件 & 完善示例 (5.0)
+- 6160bdc73: feat(table): TableColumnItem 支持泛型 (5.0)
+
+### Patch Changes
+
+- d066abb24: style(descriptions): 更新描述组件样式，调整标签颜色为灰色 600，并增加行高设置 (5.0)
+- 43da85a56: <br>
+  - fix(ellipsis-tooltip): 修复设置 numberOfLines 无效问题 & 兼容 children 为空情况 (5.0)
+  - feat(ellipsis-tooltip): 增强 children 处理逻辑，支持 ReactNode 类型并优化 tooltip 显示 (5.0)
+- 9fa354f31: style(button): 为按钮组件的图标添加行高设置 (5.0)
+- f5dd358d7: fix(tree): onSelect 第二个参数固定返回当前操作的节点对象 (5.0)
+- 967963246: fix(time-picker): 修改 notifyOutside 回调逻辑，修复清空要点击 2 次才生效问题 (5.0)
+- Updated dependencies [d066abb24]
+- Updated dependencies [43da85a56]
+- Updated dependencies [9fa354f31]
+- Updated dependencies [8d7936b56]
+- Updated dependencies [f5dd358d7]
+- Updated dependencies [967963246]
+- Updated dependencies [e704a964f]
+- Updated dependencies [6160bdc73]
+  - @hi-ui/descriptions@5.0.0-canary.5
+  - @hi-ui/ellipsis-tooltip@5.0.0-canary.4
+  - @hi-ui/button@5.0.0-canary.9
+  - @hi-ui/layout@5.0.0-canary.9
+  - @hi-ui/tree@5.0.0-canary.5
+  - @hi-ui/time-picker@5.0.0-canary.13
+  - @hi-ui/table@5.0.0-canary.16
+
 ## 5.0.0-canary.30
 
 ### Minor Changes

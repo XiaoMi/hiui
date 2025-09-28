@@ -1,5 +1,13 @@
 # @hi-ui/time-picker
 
+## 5.0.0-canary.13
+
+### Patch Changes
+
+- 967963246: fix(time-picker): 修改 notifyOutside 回调逻辑，修复清空要点击 2 次才生效问题 (5.0)
+- Updated dependencies [9fa354f31]
+  - @hi-ui/button@5.0.0-canary.9
+
 ## 5.0.0-canary.12
 
 ### Minor Changes

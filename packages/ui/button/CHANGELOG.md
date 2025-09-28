@@ -1,5 +1,11 @@
 # @hi-ui/button
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- 9fa354f31: style(button): 为按钮组件的图标添加行高设置 (5.0)
+
 ## 5.0.0-canary.8
 
 ### Patch Changes

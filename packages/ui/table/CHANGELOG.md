@@ -1,5 +1,16 @@
 # @hi-ui/table
 
+## 5.0.0-canary.16
+
+### Minor Changes
+
+- 6160bdc73: feat(table): TableColumnItem 支持泛型 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [9fa354f31]
+  - @hi-ui/button@5.0.0-canary.9
+
 ## 5.0.0-canary.15
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/table",
-  "version": "5.0.0-canary.15",
+  "version": "5.0.0-canary.16",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@hi-ui/array-utils": "^5.0.0-canary.2",
-    "@hi-ui/button": "^5.0.0-canary.8",
+    "@hi-ui/button": "^5.0.0-canary.9",
     "@hi-ui/checkbox": "^5.0.0-canary.3",
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/dom-utils": "^5.0.0-canary.2",
