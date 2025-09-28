@@ -90,7 +90,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     const formatNotifyOutside = useCallback(
       (disposeValue: string[]) => {
         const result = disposeValue.filter((item) => item)
-        notifyOutside && notifyOutside(result.length > 1 ? result : result[0])
+        notifyOutside && notifyOutside(result.length > 1 ? result : result[0] || '')
       },
       [notifyOutside]
     )
