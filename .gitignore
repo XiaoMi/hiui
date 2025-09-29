@@ -3,6 +3,8 @@
 # Output files
 lib/
 es/
+# locally packed package
+*.tgz
 
 # Editor generate files
 .idea/
