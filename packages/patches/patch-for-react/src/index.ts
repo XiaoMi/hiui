@@ -8,7 +8,7 @@ type ContainerType = Parameters<RenderType>[1] & {
   _reactRoot?: ReturnType<typeof createRoot>
 }
 
-setReactDomRender((node, container: ContainerType) => {
+setReactDomRender((node: any, container: ContainerType) => {
   container._reactRoot ||= createRoot(container)
   const root: ReturnType<typeof createRoot> = container._reactRoot
   root.render(node)
