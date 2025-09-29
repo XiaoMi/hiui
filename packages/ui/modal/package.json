@@ -64,6 +64,7 @@
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.9",
+    "@hi-ui/react-compat": ">=5.0.0",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
