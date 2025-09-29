@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/patch-for-react",
-  "version": "5.0.0-alpha.0",
+  "version": "4.0.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -41,12 +41,12 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "peerDependencies": {
-    "@hi-ui/react-compat": ">=5.0.0",
+    "@hi-ui/react-compat": ">=4.0.0",
     "react": ">=18",
     "react-dom": ">=18"
   },
   "devDependencies": {
-    "@hi-ui/react-compat": ">=5.0.0",
+    "@hi-ui/react-compat": ">=4.0.0",
     "@types/react": ">=18",
     "@types/react-dom": ">=18",
     "react": ">=18",
