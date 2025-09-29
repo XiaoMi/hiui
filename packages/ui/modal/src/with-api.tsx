@@ -1,5 +1,5 @@
 import React, { createRef, createElement } from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import getReactDomRender from '@hi-ui/react-compat'
 import * as Container from '@hi-ui/container'
 import { uuid } from '@hi-ui/use-id'
 
@@ -20,6 +20,7 @@ const open = ({ key, onConfirm, onCancel, content, ...rest }: ModalApiProps = {}
 
   const selectorId = `${selector}__${key}`
   let container: any = Container.getContainer(selectorId)
+  let mockUnmount: any = null
 
   const toastManagerRef = createRef<any>()
 
@@ -34,7 +35,7 @@ const open = ({ key, onConfirm, onCancel, content, ...rest }: ModalApiProps = {}
     onExited: () => {
       // 卸载
       if (container) {
-        unmountComponentAtNode(container)
+        mockUnmount()
         Container.removeContainer(selectorId)
       }
 
@@ -61,7 +62,8 @@ const open = ({ key, onConfirm, onCancel, content, ...rest }: ModalApiProps = {}
   })
 
   requestAnimationFrame(() => {
-    render(ClonedModal, container)
+    const mockRender = getReactDomRender()
+    mockUnmount = mockRender(ClonedModal, container)
   })
 
   const close = () => {
