@@ -1,5 +1,43 @@
 # @hi-ui/tag
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 5de7a848b: feat(tag): 增加 type 值 (5.0)
+
+### Patch Changes
+
+- b59e631fe: fix(tag): 修复添加保存时抖动问题 (5.0)
+- 5de7a848b: fix: 修复 5.0 UI 问题 (5.0)
+- 6ffb439e7: fix(tag): editable 为 true 时才能触发双击事件 (5.0)
+- 67960d871: style: 修改样式问题 (5.0)
+- c3ec579cd: fix: 修改组件问题 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [dfff90e7c]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [67960d871]
+- Updated dependencies [9fa354f31]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [61d132802]
+- Updated dependencies [489b27cb3]
+- Updated dependencies [6eac4b78b]
+- Updated dependencies [c125e4c48]
+- Updated dependencies [b7ad460d8]
+  - @hi-ui/button@5.0.0-alpha.0
+  - @hi-ui/tooltip@5.0.0-alpha.0
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/icons@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+  - @hi-ui/type-assertion@5.0.0-alpha.0
+
 ## 4.3.0
 
 ### Minor Changes

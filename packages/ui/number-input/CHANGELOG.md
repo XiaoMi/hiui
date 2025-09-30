@@ -1,5 +1,37 @@
 # @hi-ui/number-input
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 7bda04e64: feat(input&number-input): add styles and classNames api (5.0)
+- ea686ade7: feat(number-input): add suffix api (5.0)
+
+### Patch Changes
+
+- abebb5eed: styles: 修改样式问题 (5.0)
+- 29541792f: style(number-input): NumberInput 组件新版样式 (5.0)
+- ddd2acc79: <br>
+  - style(time-picker): 为占位符增加溢出处理和文本省略样式 (5.0)
+  - style(tag-input): 为占位符增加溢出处理和文本省略样式 (5.0)
+  - style(input): 增加溢出处理和文本省略样式 (5.0)
+  - style(number-input): 增加溢出处理和文本省略样式 (5.0)
+- eb69f0baa: fix(input): 使用 cx 函数优化样式类名的拼接 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [61d132802]
+- Updated dependencies [6eac4b78b]
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/icons@5.0.0-alpha.0
+  - @hi-ui/counter@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+
 ## 4.2.3
 
 ### Patch Changes

@@ -1,5 +1,26 @@
 # @hi-ui/use-search-mode
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- 2c7c65a5a: fix(use-search-mode): 优化首次触发搜索逻辑 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [61d132802]
+  - @hi-ui/use-data-source@5.0.0-alpha.0
+  - @hi-ui/use-latest@5.0.0-alpha.0
+  - @hi-ui/loading@5.0.0-alpha.0
+  - @hi-ui/dom-utils@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+  - @hi-ui/func-utils@5.0.0-alpha.0
+  - @hi-ui/tree-utils@5.0.0-alpha.0
+  - @hi-ui/type-assertion@5.0.0-alpha.0
+
 ## 4.2.3
 
 ### Patch Changes

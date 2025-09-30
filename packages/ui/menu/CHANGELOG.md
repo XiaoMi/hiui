@@ -1,5 +1,82 @@
 # @hi-ui/menu
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- a1ad318d9: feat(menu): 增加 GroupMenu 和 SideMenu 组件 (5.0)
+- d9b2b928c: feat(menu): GroupMenu 组件增加 titleRender 参数 (5.0)
+- 2fec303ab: feat(menu): add showTitleOnMini api (5.0)
+- 0d2737b09: chore(menu): 增加变更记录文件 (5.0)
+
+### Patch Changes
+
+- 5de7a848b: chore: 将代码中 v4 改为 v5 (5.0)
+- 307f68517: <br />
+  - perf(layout): 优化导航菜单交互体验 (5.0)
+  - perf(menu): 优化搜索菜单组件的样式和交互逻辑 & 修改分组菜单样式问题 (5.0)
+- 8116f0304: fix: 修改 UI 问题 (5.0)
+- 46dbd140f: style(layout): 修改 Sider 收起时宽度为 60px & 增加 width 参数 (5.0)
+- 300d1573a: perf(layout&menu): 优化 FloatMenuContainer 组件的折叠逻辑 & 修改 SideMenu 组件 hover 样式 (5.0)
+- 7f8760993: style(menu): 优化 GroupMenu 组件的样式和交互逻辑 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [abebb5eed]
+- Updated dependencies [7bda04e64]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [ddd2acc79]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [0cd15438e]
+- Updated dependencies [eb69f0baa]
+- Updated dependencies [a01771e8d]
+- Updated dependencies [09451c7d9]
+- Updated dependencies [67960d871]
+- Updated dependencies [43da85a56]
+- Updated dependencies [de7f92b26]
+- Updated dependencies [8116f0304]
+- Updated dependencies [85bb84874]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [632dbda3a]
+- Updated dependencies [36bb992d3]
+- Updated dependencies [1b51c1bbe]
+- Updated dependencies [61d132802]
+- Updated dependencies [6ebf40f96]
+- Updated dependencies [9f2ee08cf]
+- Updated dependencies [6eac4b78b]
+- Updated dependencies [bcd3d08dd]
+- Updated dependencies [4fb586f6f]
+- Updated dependencies [c125e4c48]
+- Updated dependencies [b7ad460d8]
+- Updated dependencies [df25ec39b]
+  - @hi-ui/picker@5.0.0-alpha.0
+  - @hi-ui/input@5.0.0-alpha.0
+  - @hi-ui/tooltip@5.0.0-alpha.0
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/use-id@5.0.0-alpha.0
+  - @hi-ui/use-latest@5.0.0-alpha.0
+  - @hi-ui/use-merge-refs@5.0.0-alpha.0
+  - @hi-ui/use-outside-click@5.0.0-alpha.0
+  - @hi-ui/use-resize-observer@5.0.0-alpha.0
+  - @hi-ui/use-toggle@5.0.0-alpha.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-alpha.0
+  - @hi-ui/icons@5.0.0-alpha.0
+  - @hi-ui/ellipsis-tooltip@5.0.0-alpha.0
+  - @hi-ui/highlighter@5.0.0-alpha.0
+  - @hi-ui/icon-button@5.0.0-alpha.0
+  - @hi-ui/popper@5.0.0-alpha.0
+  - @hi-ui/scrollbar@5.0.0-alpha.0
+  - @hi-ui/array-utils@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+  - @hi-ui/times@5.0.0-alpha.0
+  - @hi-ui/tree-utils@5.0.0-alpha.0
+  - @hi-ui/type-assertion@5.0.0-alpha.0
+
 ## 4.3.2
 
 ### Patch Changes

@@ -1,5 +1,35 @@
 # @hi-ui/checkbox
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- cee645726: feat(check-cascader): 增加 checkbox 级联禁用功能和相关样式调整 (5.0)
+
+### Patch Changes
+
+- b35327262: <br>
+  - fix(checkbox): 修改边框大小为 6px (5.0)
+  - fix(checkbox): 去掉 focus 时的阴影样式 (5.0)
+- 8116f0304: fix: 修改 UI 问题 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [61d132802]
+- Updated dependencies [6eac4b78b]
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/use-check@5.0.0-alpha.0
+  - @hi-ui/use-latest@5.0.0-alpha.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+  - @hi-ui/react-utils@5.0.0-alpha.0
+  - @hi-ui/type-assertion@5.0.0-alpha.0
+
 ## 4.0.10
 
 ### Patch Changes

@@ -1,5 +1,60 @@
 # @hi-ui/tree
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- 85bb84874: style: 统一调整组件 shadow (5.0)
+- 5de7a848b: chore: 将代码中 v4 改为 v5 (5.0)
+- f5dd358d7: fix(tree): onSelect 第二个参数固定返回当前操作的节点对象 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 85bb84874: style: 统一调整选择类组件 hover 时的背景色 (5.0)
+- Updated dependencies [7bda04e64]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [ddd2acc79]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [0cd15438e]
+- Updated dependencies [eb69f0baa]
+- Updated dependencies [a01771e8d]
+- Updated dependencies [cee645726]
+- Updated dependencies [de7f92b26]
+- Updated dependencies [b35327262]
+- Updated dependencies [8116f0304]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [632dbda3a]
+- Updated dependencies [1b51c1bbe]
+- Updated dependencies [61d132802]
+- Updated dependencies [6ebf40f96]
+- Updated dependencies [6eac4b78b]
+- Updated dependencies [bcd3d08dd]
+- Updated dependencies [4fb586f6f]
+- Updated dependencies [c125e4c48]
+- Updated dependencies [b7ad460d8]
+  - @hi-ui/input@5.0.0-alpha.0
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/use-check@5.0.0-alpha.0
+  - @hi-ui/use-data-source@5.0.0-alpha.0
+  - @hi-ui/use-latest@5.0.0-alpha.0
+  - @hi-ui/use-merge-refs@5.0.0-alpha.0
+  - @hi-ui/use-outside-click@5.0.0-alpha.0
+  - @hi-ui/use-toggle@5.0.0-alpha.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-alpha.0
+  - @hi-ui/icons@5.0.0-alpha.0
+  - @hi-ui/checkbox@5.0.0-alpha.0
+  - @hi-ui/popper@5.0.0-alpha.0
+  - @hi-ui/virtual-list@5.0.0-alpha.0
+  - @hi-ui/array-utils@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+  - @hi-ui/times@5.0.0-alpha.0
+  - @hi-ui/tree-utils@5.0.0-alpha.0
+  - @hi-ui/type-assertion@5.0.0-alpha.0
+
 ## 4.6.2
 
 ### Patch Changes

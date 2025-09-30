@@ -1,5 +1,93 @@
 # @hi-ui/cascader
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 77ed66eac: <br>
+  - feat(picker): 下拉选择类组件增加 xs 尺寸 (5.0)
+  - feat(input): 输入框组件增加 xs 尺寸 (5.0)
+- cf982a1d0: feat(cascader): add onItemClick api (5.0)
+- 632dbda3a: feat: 下拉选择组件增加 showIndicator 参数 & 修改 appearance 中的 unset 样式 (5.0)
+- 1b51c1bbe: feat: 下拉选择类组件 appearance 参数增加 contained 类型 (5.0)
+- 6eac4b78b: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+
+### Patch Changes
+
+- eb5506b8d: style(picker): 移除 picker 组件中的 \_\_text 样式定义 (5.0)
+- 5de7a848b: fix: 修复 5.0 UI 问题 (5.0)
+- c3ec579cd: fix: 修改组件问题 (5.0)
+- 8116f0304: fix: 修改 UI 问题 (5.0)
+- cfaf8c48d: perf: 对下拉选择类组件的 customRender 的内容增加 memoization 以优化性能 (5.0)
+- b29639844: style(cascader&check-cascader): 调整下拉框样式，增加搜索框宽度设置 (5.0)
+- eaa96c960: <br>
+  - style(cascader&check-cascader): 增加 white-space: nowrap; 样式以防止文本换行 (5.0)
+  - style(cascader&check-cascader): 调整搜索框默认宽度为 100px (5.0)
+  - feat(check-cascader): 增加 flattedSearchResult 属性，用于控制搜索结果的展现形式 (5.0)
+  - fix(cascader): 修复当搜索结果为空时，下拉框没有显示空状态问题 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 9f2ee08cf: <br>
+  - style(tag-input): 间距调整 (5.0)
+  - style(select): 选择类组件选项圆角改为 4px (5.0)
+  - style(picker): 搜索框样式调整 (5.0)
+- 1fc825e2f: <br>
+  - fix(cascader): 处理当 value 为空时清空选项的选中态(5.0)
+  - style(cascader&check-cascader): 调整选项容器最小宽度为 160px (5.0)
+  - style(cascader&check-cascader): 优化下拉框宽度，让内容和搜索框默认宽度对齐 (5.0)
+  - perf(cascader&check-cascader): 优化 customRender 函数，支持传递选中项和当前值 (5.0)
+- 85bb84874: style: 统一调整选择类组件 hover 时的背景色 (5.0)
+- c125e4c48: fix: 修复 UI 问题 (5.0)
+- Updated dependencies [abebb5eed]
+- Updated dependencies [7bda04e64]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [ddd2acc79]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [0cd15438e]
+- Updated dependencies [eb69f0baa]
+- Updated dependencies [a01771e8d]
+- Updated dependencies [67960d871]
+- Updated dependencies [de7f92b26]
+- Updated dependencies [8116f0304]
+- Updated dependencies [85bb84874]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [632dbda3a]
+- Updated dependencies [2c7c65a5a]
+- Updated dependencies [36bb992d3]
+- Updated dependencies [1b51c1bbe]
+- Updated dependencies [61d132802]
+- Updated dependencies [6ebf40f96]
+- Updated dependencies [9f2ee08cf]
+- Updated dependencies [6eac4b78b]
+- Updated dependencies [bcd3d08dd]
+- Updated dependencies [4fb586f6f]
+- Updated dependencies [c125e4c48]
+- Updated dependencies [b7ad460d8]
+- Updated dependencies [df25ec39b]
+  - @hi-ui/picker@5.0.0-alpha.0
+  - @hi-ui/input@5.0.0-alpha.0
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/use-check-state@5.0.0-alpha.0
+  - @hi-ui/use-data-source@5.0.0-alpha.0
+  - @hi-ui/use-latest@5.0.0-alpha.0
+  - @hi-ui/use-search-mode@5.0.0-alpha.0
+  - @hi-ui/use-toggle@5.0.0-alpha.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-alpha.0
+  - @hi-ui/icons@5.0.0-alpha.0
+  - @hi-ui/highlighter@5.0.0-alpha.0
+  - @hi-ui/popper@5.0.0-alpha.0
+  - @hi-ui/spinner@5.0.0-alpha.0
+  - @hi-ui/array-utils@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+  - @hi-ui/func-utils@5.0.0-alpha.0
+  - @hi-ui/tree-utils@5.0.0-alpha.0
+  - @hi-ui/type-assertion@5.0.0-alpha.0
+
 ## 4.5.0
 
 ### Minor Changes

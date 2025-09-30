@@ -1,5 +1,98 @@
 # @hi-ui/table
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 204efb0c8: feat(table): 支持远程排序 (5.0)
+- 6160bdc73: feat(table): TableColumnItem 支持泛型 (5.0)
+- 7465d37f5: feat(table): add stretchHeight api (5.0)
+
+### Patch Changes
+
+- 85bb84874: style: 统一调整组件 shadow (5.0)
+- 5de7a848b: chore: 将代码中 v4 改为 v5 (5.0)
+- 5de7a848b: fix: 修复 5.0 UI 问题 (5.0)
+- 67960d871: style: 修改样式问题 (5.0)
+- c3ec579cd: fix: 修改组件问题 (5.0)
+- 265e67416: fix(table): 优化 useColSorter 钩子，移除不必要的 columnsLatestRef 引用，直接使用 columns 进行排序计算 (5.0)
+- 36bb992d3: style: 修改 UI 问题 (5.0)
+- 94bd1ec4c: chore(table): export SettingDrawer types (5.0)
+- 00e5a89c6: <br>
+  - fix(table): 标题去掉背景，头部加上边框 (5.0)
+  - fix(table): 单元格间距调整 & 设置最小高度 (5.0)
+  - fix(table): 不同尺寸修改 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [83186fab2]
+- Updated dependencies [85bb84874]
+- Updated dependencies [dfff90e7c]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [eb5506b8d]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [09451c7d9]
+- Updated dependencies [a203070c4]
+- Updated dependencies [7f5badb6a]
+- Updated dependencies [67960d871]
+- Updated dependencies [cee645726]
+- Updated dependencies [c3ec579cd]
+- Updated dependencies [de7f92b26]
+- Updated dependencies [b35327262]
+- Updated dependencies [8116f0304]
+- Updated dependencies [9fa354f31]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [632dbda3a]
+- Updated dependencies [cfaf8c48d]
+- Updated dependencies [1b51c1bbe]
+- Updated dependencies [de9cc749a]
+- Updated dependencies [df395d488]
+- Updated dependencies [61d132802]
+- Updated dependencies [489b27cb3]
+- Updated dependencies [9f2ee08cf]
+- Updated dependencies [6eac4b78b]
+- Updated dependencies [85bb84874]
+- Updated dependencies [bcd3d08dd]
+- Updated dependencies [4fb586f6f]
+- Updated dependencies [c125e4c48]
+- Updated dependencies [b7ad460d8]
+- Updated dependencies [df25ec39b]
+  - @hi-ui/radio@5.0.0-alpha.0
+  - @hi-ui/drawer@5.0.0-alpha.0
+  - @hi-ui/button@5.0.0-alpha.0
+  - @hi-ui/select@5.0.0-alpha.0
+  - @hi-ui/pagination@5.0.0-alpha.0
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/use-cache@5.0.0-alpha.0
+  - @hi-ui/use-check@5.0.0-alpha.0
+  - @hi-ui/use-check-state@5.0.0-alpha.0
+  - @hi-ui/use-drag-sorter@5.0.0-alpha.0
+  - @hi-ui/use-latest@5.0.0-alpha.0
+  - @hi-ui/use-toggle@5.0.0-alpha.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-alpha.0
+  - @hi-ui/use-update-effect@5.0.0-alpha.0
+  - @hi-ui/icons@5.0.0-alpha.0
+  - @hi-ui/checkbox@5.0.0-alpha.0
+  - @hi-ui/empty-state@5.0.0-alpha.0
+  - @hi-ui/icon-button@5.0.0-alpha.0
+  - @hi-ui/loading@5.0.0-alpha.0
+  - @hi-ui/popper@5.0.0-alpha.0
+  - @hi-ui/scrollbar@5.0.0-alpha.0
+  - @hi-ui/spinner@5.0.0-alpha.0
+  - @hi-ui/array-utils@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/dom-utils@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+  - @hi-ui/func-utils@5.0.0-alpha.0
+  - @hi-ui/object-utils@5.0.0-alpha.0
+  - @hi-ui/react-utils@5.0.0-alpha.0
+  - @hi-ui/times@5.0.0-alpha.0
+  - @hi-ui/tree-utils@5.0.0-alpha.0
+  - @hi-ui/type-assertion@5.0.0-alpha.0
+
 ## 4.12.1
 
 ### Patch Changes

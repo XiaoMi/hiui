@@ -1,5 +1,38 @@
 # @hi-ui/popper
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+- de7f92b26: style(dropdown): 下拉框带边框&圆角改为 6px&size 改为只有 md 尺寸 (5.0)
+
+### Minor Changes
+
+- bcd3d08dd: feat(popper): 增加 PopperOverlayProps 的新事件处理属性 onEnter, onEntered, onExit (5.0)
+- 4fb586f6f: feat(picker&popper): 增加 styles 和 classNames 属性以支持自定义样式 & Picker 增加 gutterGap api (5.0)
+
+### Patch Changes
+
+- 8116f0304: fix: 修改 UI 问题 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- b7ad460d8: style: 修改 UI (5.0)
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [61d132802]
+- Updated dependencies [6eac4b78b]
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/use-latest@5.0.0-alpha.0
+  - @hi-ui/use-lazy-render@5.0.0-alpha.0
+  - @hi-ui/use-merge-refs@5.0.0-alpha.0
+  - @hi-ui/use-outside-click@5.0.0-alpha.0
+  - @hi-ui/use-toggle@5.0.0-alpha.0
+  - @hi-ui/portal@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/dom-utils@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+  - @hi-ui/react-utils@5.0.0-alpha.0
+
 ## 4.1.7
 
 ### Patch Changes

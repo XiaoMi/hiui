@@ -1,5 +1,79 @@
 # @hi-ui/tree-select
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 77ed66eac: <br>
+  - feat(picker): 下拉选择类组件增加 xs 尺寸 (5.0)
+  - feat(input): 输入框组件增加 xs 尺寸 (5.0)
+- 632dbda3a: feat: 下拉选择组件增加 showIndicator 参数 & 修改 appearance 中的 unset 样式 (5.0)
+- 1b51c1bbe: feat: 下拉选择类组件 appearance 参数增加 contained 类型 (5.0)
+
+### Patch Changes
+
+- eb5506b8d: style(picker): 移除 picker 组件中的 \_\_text 样式定义 (5.0)
+- c3ec579cd: fix: 修改组件问题 (5.0)
+- cfaf8c48d: perf: 对下拉选择类组件的 customRender 的内容增加 memoization 以优化性能 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 9f2ee08cf: <br>
+  - style(tag-input): 间距调整 (5.0)
+  - style(select): 选择类组件选项圆角改为 4px (5.0)
+  - style(picker): 搜索框样式调整 (5.0)
+- c125e4c48: fix: 修复 UI 问题 (5.0)
+- Updated dependencies [abebb5eed]
+- Updated dependencies [85bb84874]
+- Updated dependencies [7bda04e64]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [ddd2acc79]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [0cd15438e]
+- Updated dependencies [eb69f0baa]
+- Updated dependencies [a01771e8d]
+- Updated dependencies [67960d871]
+- Updated dependencies [de7f92b26]
+- Updated dependencies [8116f0304]
+- Updated dependencies [85bb84874]
+- Updated dependencies [f5dd358d7]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [632dbda3a]
+- Updated dependencies [2c7c65a5a]
+- Updated dependencies [36bb992d3]
+- Updated dependencies [1b51c1bbe]
+- Updated dependencies [61d132802]
+- Updated dependencies [6ebf40f96]
+- Updated dependencies [9f2ee08cf]
+- Updated dependencies [6eac4b78b]
+- Updated dependencies [85bb84874]
+- Updated dependencies [bcd3d08dd]
+- Updated dependencies [4fb586f6f]
+- Updated dependencies [c125e4c48]
+- Updated dependencies [b7ad460d8]
+- Updated dependencies [df25ec39b]
+  - @hi-ui/picker@5.0.0-alpha.0
+  - @hi-ui/tree@5.0.0-alpha.0
+  - @hi-ui/input@5.0.0-alpha.0
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/use-data-source@5.0.0-alpha.0
+  - @hi-ui/use-search-mode@5.0.0-alpha.0
+  - @hi-ui/use-toggle@5.0.0-alpha.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-alpha.0
+  - @hi-ui/icons@5.0.0-alpha.0
+  - @hi-ui/highlighter@5.0.0-alpha.0
+  - @hi-ui/popper@5.0.0-alpha.0
+  - @hi-ui/array-utils@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+  - @hi-ui/func-utils@5.0.0-alpha.0
+  - @hi-ui/tree-utils@5.0.0-alpha.0
+  - @hi-ui/type-assertion@5.0.0-alpha.0
+
 ## 4.3.1
 
 ### Patch Changes

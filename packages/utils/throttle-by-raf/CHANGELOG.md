@@ -1,5 +1,18 @@
 # @hi-ui/throttle-by-raf
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [61d132802]
+  - @hi-ui/raf@5.0.0-alpha.0
+
 ## 4.0.5
 
 ### Patch Changes

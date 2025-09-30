@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/core",
-  "version": "4.0.9",
+  "version": "5.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,8 +45,8 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hi-ui/core-css": "^4.1.5",
-    "@hi-ui/locale-context": "^4.0.11",
-    "@hi-ui/portal-context": "^4.0.0"
+    "@hi-ui/core-css": "^5.0.0-alpha.0",
+    "@hi-ui/locale-context": "^5.0.0-alpha.0",
+    "@hi-ui/portal-context": "^5.0.0-alpha.0"
   }
 }

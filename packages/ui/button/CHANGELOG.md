@@ -1,5 +1,35 @@
 # @hi-ui/button
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- dfff90e7c: <br>
+  - feat(button): 样式更新到 5.0 (5.0)
+  - feat(button): 增加 text 类型 (5.0)
+  - feat(button): 参数 icon 支持数组类型 (5.0)
+
+### Patch Changes
+
+- 5de7a848b: fix: 修复 5.0 UI 问题 (5.0)
+- 67960d871: style: 修改样式问题 (5.0)
+- 9fa354f31: style(button): 为按钮组件的图标添加行高设置 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 489b27cb3: style: 修改样式 (5.0)
+- c125e4c48: fix: 修复 UI 问题 (5.0)
+- b7ad460d8: style: 修改 UI (5.0)
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [61d132802]
+- Updated dependencies [6eac4b78b]
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+
 ## 4.0.10
 
 ### Patch Changes

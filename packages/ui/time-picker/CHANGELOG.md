@@ -1,5 +1,58 @@
 # @hi-ui/time-picker
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 33edf35d2: feat(time-picker): appearance 增加 contained 类型，以及最新风格的样式修改 (5.0)
+- 632dbda3a: feat: 下拉选择组件增加 showIndicator 参数 & 修改 appearance 中的 unset 样式 (5.0)
+- 6eac4b78b: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+
+### Patch Changes
+
+- ddd2acc79: <br>
+  - style(time-picker): 为占位符增加溢出处理和文本省略样式 (5.0)
+  - style(tag-input): 为占位符增加溢出处理和文本省略样式 (5.0)
+  - style(input): 增加溢出处理和文本省略样式 (5.0)
+  - style(number-input): 增加溢出处理和文本省略样式 (5.0)
+- 0cd15438e: style: 修改样式问题 (5.0)
+- a01771e8d: style: 修改 appearance 为 unset 和 borderless 模式的样式 (5.0)
+- 85bb84874: style: 下拉框间距改为 4px (5.0)
+- 967963246: fix(time-picker): 修改 notifyOutside 回调逻辑，修复清空要点击 2 次才生效问题 (5.0)
+- 2bbdebbe4: style: 修改样式问题 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 489b27cb3: style: 修改样式 (5.0)
+- 85bb84874: style: 统一调整选择类组件 hover 时的背景色 (5.0)
+- c125e4c48: fix: 修复 UI 问题 (5.0)
+- b7ad460d8: style: 修改 UI (5.0)
+- Updated dependencies [dfff90e7c]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [67960d871]
+- Updated dependencies [de7f92b26]
+- Updated dependencies [8116f0304]
+- Updated dependencies [9fa354f31]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [61d132802]
+- Updated dependencies [489b27cb3]
+- Updated dependencies [6eac4b78b]
+- Updated dependencies [bcd3d08dd]
+- Updated dependencies [4fb586f6f]
+- Updated dependencies [c125e4c48]
+- Updated dependencies [b7ad460d8]
+  - @hi-ui/button@5.0.0-alpha.0
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/use-merge-refs@5.0.0-alpha.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-alpha.0
+  - @hi-ui/icons@5.0.0-alpha.0
+  - @hi-ui/popper@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+
 ## 4.1.2
 
 ### Patch Changes

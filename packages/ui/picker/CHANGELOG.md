@@ -1,5 +1,67 @@
 # @hi-ui/picker
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 77ed66eac: <br>
+  - feat(picker): 下拉选择类组件增加 xs 尺寸 (5.0)
+  - feat(input): 输入框组件增加 xs 尺寸 (5.0)
+- 6eac4b78b: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+- 4fb586f6f: feat(picker&popper): 增加 styles 和 classNames 属性以支持自定义样式 & Picker 增加 gutterGap api (5.0)
+- df25ec39b: feat(select): 增加 creatableInSearch、createTitle 参数，支持在搜索无结果时可创建选项 (5.0)
+
+### Patch Changes
+
+- abebb5eed: styles: 修改样式问题 (5.0)
+- 5de7a848b: fix: 修复 5.0 UI 问题 (5.0)
+- 0cd15438e: style: 修改样式问题 (5.0)
+- 67960d871: style: 修改样式问题 (5.0)
+- 8116f0304: fix: 修改 UI 问题 (5.0)
+- 85bb84874: style: 下拉框间距改为 4px (5.0)
+- 36bb992d3: style: 修改 UI 问题 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 9f2ee08cf: <br>
+  - style(tag-input): 间距调整 (5.0)
+  - style(select): 选择类组件选项圆角改为 4px (5.0)
+  - style(picker): 搜索框样式调整 (5.0)
+- Updated dependencies [7bda04e64]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [ddd2acc79]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [0cd15438e]
+- Updated dependencies [eb69f0baa]
+- Updated dependencies [a01771e8d]
+- Updated dependencies [de7f92b26]
+- Updated dependencies [8116f0304]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [632dbda3a]
+- Updated dependencies [1b51c1bbe]
+- Updated dependencies [61d132802]
+- Updated dependencies [6ebf40f96]
+- Updated dependencies [6eac4b78b]
+- Updated dependencies [bcd3d08dd]
+- Updated dependencies [4fb586f6f]
+- Updated dependencies [c125e4c48]
+- Updated dependencies [b7ad460d8]
+  - @hi-ui/input@5.0.0-alpha.0
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/use-latest@5.0.0-alpha.0
+  - @hi-ui/use-toggle@5.0.0-alpha.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-alpha.0
+  - @hi-ui/icons@5.0.0-alpha.0
+  - @hi-ui/loading@5.0.0-alpha.0
+  - @hi-ui/popper@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/dom-utils@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+  - @hi-ui/type-assertion@5.0.0-alpha.0
+
 ## 4.1.8
 
 ### Patch Changes

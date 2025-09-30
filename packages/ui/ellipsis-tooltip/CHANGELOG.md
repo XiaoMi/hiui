@@ -1,5 +1,28 @@
 # @hi-ui/ellipsis-tooltip
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- 43da85a56: <br>
+  - fix(ellipsis-tooltip): 修复设置 numberOfLines 无效问题 & 兼容 children 为空情况 (5.0)
+  - feat(ellipsis-tooltip): 增强 children 处理逻辑，支持 ReactNode 类型并优化 tooltip 显示 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [5de7a848b]
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [61d132802]
+- Updated dependencies [6eac4b78b]
+  - @hi-ui/tooltip@5.0.0-alpha.0
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+
 ## 4.2.0
 
 ### Minor Changes

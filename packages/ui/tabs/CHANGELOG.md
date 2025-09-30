@@ -1,5 +1,55 @@
 # @hi-ui/tabs
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- abebb5eed: feat(tabs): 支持拖拽 (5.0)
+- 58bef969c: <br>
+  - feat(tabs): 增加 size 参数 (5.0)
+  - feat(tabs): 修改标签选中下标样式 (5.0)
+- 1517a3349: feat(tabs): 支持编辑功能和设置最大标题宽度 (5.0)
+- 9f2b6bab4: feat(tabs): add editRender api (5.0)
+- 5de7a848b: feat(tabs): 增加 showDivider 参数 (5.0)
+
+### Patch Changes
+
+- 36bb992d3: style: 修改 UI 问题 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- b7ad460d8: style: 修改 UI (5.0)
+- Updated dependencies [7bda04e64]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [ddd2acc79]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [0cd15438e]
+- Updated dependencies [eb69f0baa]
+- Updated dependencies [a01771e8d]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [632dbda3a]
+- Updated dependencies [1b51c1bbe]
+- Updated dependencies [61d132802]
+- Updated dependencies [6ebf40f96]
+- Updated dependencies [6eac4b78b]
+- Updated dependencies [c125e4c48]
+  - @hi-ui/input@5.0.0-alpha.0
+  - @hi-ui/tooltip@5.0.0-alpha.0
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/use-latest@5.0.0-alpha.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-alpha.0
+  - @hi-ui/use-unmount-effect@5.0.0-alpha.0
+  - @hi-ui/icons@5.0.0-alpha.0
+  - @hi-ui/icon-button@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+  - @hi-ui/react-utils@5.0.0-alpha.0
+  - @hi-ui/type-assertion@5.0.0-alpha.0
+
 ## 4.2.0
 
 ### Minor Changes

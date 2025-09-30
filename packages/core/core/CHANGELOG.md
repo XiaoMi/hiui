@@ -1,5 +1,39 @@
 # @hi-ui/core
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+- 77ed66eac: feat(core): 尺寸类型增加 xs 枚举 (5.0)
+
+### Minor Changes
+
+- 6eac4b78b: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+
+### Patch Changes
+
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [85bb84874]
+- Updated dependencies [df395d488]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [67960d871]
+- Updated dependencies [c3ec579cd]
+- Updated dependencies [8116f0304]
+- Updated dependencies [85bb84874]
+- Updated dependencies [81ecf8d6f]
+- Updated dependencies [36bb992d3]
+- Updated dependencies [b61bf8ef8]
+- Updated dependencies [dfff90e7c]
+- Updated dependencies [6a671d1f0]
+- Updated dependencies [61d132802]
+- Updated dependencies [df25ec39b]
+  - @hi-ui/core-css@5.0.0-alpha.0
+  - @hi-ui/locale-context@5.0.0-alpha.0
+  - @hi-ui/portal-context@5.0.0-alpha.0
+
 ## 4.0.9
 
 ### Patch Changes

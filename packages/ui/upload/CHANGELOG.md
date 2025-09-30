@@ -1,5 +1,59 @@
 # @hi-ui/upload
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 21072ecb1: feat(upload): Upload 组件 type 为 avatar 时展示图片裁剪工具栏 (5.0)
+- ed0af33f4: feat(upload): 新增上传成功后显示成功 icon (5.0)
+
+### Patch Changes
+
+- 5de7a848b: chore: 将代码中 v4 改为 v5 (5.0)
+- ed0af33f4: <br>
+  - feat(upload): 新版样式 (5.0)
+  - feat(upload): 增加 size 参数 (5.0)
+  - feat(upload): 上传按钮改为线性 (5.0)
+  - feat(upload): 照片墙上传按钮支持配置文案 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- f42912bb3: style(upload): 处理文本超出的情况 (5.0)
+- 85bb84874: style: 统一调整选择类组件 hover 时的背景色 (5.0)
+- Updated dependencies [abebb5eed]
+- Updated dependencies [85bb84874]
+- Updated dependencies [dfff90e7c]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [0c78c0e30]
+- Updated dependencies [67960d871]
+- Updated dependencies [8116f0304]
+- Updated dependencies [9fa354f31]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [abebb5eed]
+- Updated dependencies [5de7a848b]
+- Updated dependencies [2bbdebbe4]
+- Updated dependencies [c97f7abd6]
+- Updated dependencies [61d132802]
+- Updated dependencies [489b27cb3]
+- Updated dependencies [6eac4b78b]
+- Updated dependencies [bbb0122f6]
+- Updated dependencies [067bd8e0a]
+- Updated dependencies [c125e4c48]
+- Updated dependencies [b7ad460d8]
+  - @hi-ui/message@5.0.0-alpha.0
+  - @hi-ui/button@5.0.0-alpha.0
+  - @hi-ui/modal@5.0.0-alpha.0
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/use-id@5.0.0-alpha.0
+  - @hi-ui/icons@5.0.0-alpha.0
+  - @hi-ui/file-select@5.0.0-alpha.0
+  - @hi-ui/preview@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+
 ## 4.2.5
 
 ### Patch Changes

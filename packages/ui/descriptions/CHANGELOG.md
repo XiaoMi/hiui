@@ -1,5 +1,26 @@
 # @hi-ui/descriptions
 
+## 5.0.0-alpha.0
+
+### Major Changes
+
+- 1b05b44a4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- 5de7a848b: chore: 将代码中 v4 改为 v5 (5.0)
+- d066abb24: style(descriptions): 更新描述组件样式，调整标签颜色为灰色 600，并增加行高设置 (5.0)
+- 8116f0304: fix: 修改 UI 问题 (5.0)
+- 61d132802: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [1b05b44a4]
+- Updated dependencies [77ed66eac]
+- Updated dependencies [61d132802]
+- Updated dependencies [6eac4b78b]
+  - @hi-ui/core@5.0.0-alpha.0
+  - @hi-ui/classname@5.0.0-alpha.0
+  - @hi-ui/env@5.0.0-alpha.0
+  - @hi-ui/type-assertion@5.0.0-alpha.0
+
 ## 4.5.1
 
 ### Patch Changes
