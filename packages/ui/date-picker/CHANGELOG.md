@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.20
+
+### Patch Changes
+
+- fix(date-picker): 修复日期时间范围模式下,滑动选择时间时上面的时间无法选中问题 (5.0)
+
 ## 5.0.0-canary.19
 
 ### Minor Changes
