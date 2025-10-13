@@ -1,5 +1,14 @@
 # @hi-ui/hiui
 
+## 4.16.4
+
+### Patch Changes
+
+- [#3364](https://github.com/XiaoMi/hiui/pull/3364) [`06d6dcf`](https://github.com/XiaoMi/hiui/commit/06d6dcff5282bb702791ab87e0690edc3828da5c) Thanks [@fcppddl](https://github.com/fcppddl)! - feat(check-tree-select): 支持自定义下拉菜单底部渲染 (#3363)
+
+- Updated dependencies [[`06d6dcf`](https://github.com/XiaoMi/hiui/commit/06d6dcff5282bb702791ab87e0690edc3828da5c)]:
+  - @hi-ui/check-tree-select@4.7.5
+
 ## 4.16.3
 
 ### Patch Changes
