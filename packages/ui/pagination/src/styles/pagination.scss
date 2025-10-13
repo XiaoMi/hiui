@@ -49,6 +49,7 @@ $prefix: '#{$component-prefix}-pagination' !default;
     color: use-color('gray', 600);
     background-color: use-color-static('white');
     border: use-border-size('normal') use-color('gray', 300);
+    padding: 0 5px;
 
     &:hover:not(#{&}--break) {
       color: use-color-mode('primary', 400);
