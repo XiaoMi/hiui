@@ -97,6 +97,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       customRender,
       prefix,
       suffix,
+      renderExtraFooter,
       ...rest
     },
     ref
@@ -324,6 +325,8 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     }, [dataMemo, parsedCheckedIds])
 
     const renderDefaultFooter = () => {
+      const extra = renderExtraFooter ? renderExtraFooter() : null
+
       if (showCheckAll) {
         return (
           <>
@@ -334,9 +337,12 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             >
               {i18n.get('checkSelect.checkAll')}
             </Checkbox>
+            {extra}
           </>
         )
       }
+
+      return extra
     }
 
     const cls = cx(prefixCls, className)
@@ -661,6 +667,10 @@ export interface CheckTreeSelectProps
    * 选择框后置内容
    */
   suffix?: React.ReactNode
+  /**
+   * 自定义下拉菜单底部渲染
+   */
+  renderExtraFooter?: () => React.ReactNode
 }
 
 if (__DEV__) {
