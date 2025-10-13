@@ -49,11 +49,12 @@
     "@hi-ui/env": "^4.0.5",
     "@hi-ui/func-utils": "^4.0.4",
     "@hi-ui/portal": "^4.0.8",
+    "@hi-ui/react-utils": "^4.0.4",
     "@hi-ui/spinner": "^4.0.9",
     "@hi-ui/type-assertion": "^4.0.4",
     "@hi-ui/use-id": "^4.0.4",
     "@hi-ui/use-latest": "^4.0.4",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "^4.4.5"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.9",
