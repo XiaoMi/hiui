@@ -137,6 +137,7 @@ $prefix: '#{$component-prefix}-pagination' !default;
     .#{$prefix}__item {
       min-width: use-height-size(6);
       height: use-height-size(6);
+      padding: 0 use-spacing(1);
     }
   }
 
@@ -151,11 +152,16 @@ $prefix: '#{$component-prefix}-pagination' !default;
     .#{$prefix}__item {
       min-width: use-height-size(7);
       height: use-height-size(7);
+      padding: 0 use-spacing(2);
     }
   }
 
   &--size-md {
     font-size: use-text-size('normal');
+
+    .#{$prefix}__item {
+      padding: 0 use-spacing(3);
+    }
   }
 }
 
