@@ -158,7 +158,9 @@ $prefix: '#{$component-prefix}-pagination' !default;
 
   &--size-md {
     font-size: use-text-size('normal');
-    padding: 0 use-spacing(3);
+    .#{$prefix}__item {
+      padding: 0 use-spacing(3);
+    }
   }
 }
 
