@@ -5,6 +5,8 @@ import {
   LocaleProviderProps,
   PortalProvider,
   PortalProviderProps,
+  GlobalProvider,
+  UseGlobalContext,
 } from '@hi-ui/core'
 import { DesignSystemAccentColorEnum, DesignSystemProps } from './types'
 import { createSystem, extendsTheme } from './theme'
@@ -19,6 +21,7 @@ export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc 
   accentColor,
   theme,
   portal,
+  size,
 }) => {
   /**
    * global css var config
@@ -39,7 +42,7 @@ export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc 
   return (
     <PortalProvider portal={portal}>
       <LocaleProvider locale={locale} languages={languages}>
-        {children}
+        <GlobalProvider value={{ size }}>{children}</GlobalProvider>
       </LocaleProvider>
     </PortalProvider>
   )
@@ -48,6 +51,7 @@ export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc 
 export interface ProviderProps
   extends LocaleProviderProps,
     PortalProviderProps,
+    UseGlobalContext,
     ThemeProviderProps {
   children?: React.ReactNode
 }

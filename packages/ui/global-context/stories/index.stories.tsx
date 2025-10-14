@@ -1,10 +1,8 @@
 import React from 'react'
 
 export * from './basic.stories'
-export * from './portal.stories'
-export * from './size.stories'
 
 export default {
-  title: 'Provider',
+  title: 'Private（暂不对外）/GlobalContext',
   decorators: [(story: Function) => <div>{story()}</div>],
 }

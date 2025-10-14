@@ -78,3 +78,6 @@ export type { UseLocaleContext, LocaleProviderProps } from '@hi-ui/locale-contex
 
 export { usePortalContext, PortalProvider } from '@hi-ui/portal-context'
 export type { UsePortalContext, PortalProviderProps } from '@hi-ui/portal-context'
+
+export { useGlobalContext, GlobalProvider } from '@hi-ui/global-context'
+export type { UseGlobalContext, GlobalProviderProps } from '@hi-ui/global-context'
