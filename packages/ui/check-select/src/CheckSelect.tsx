@@ -18,7 +18,7 @@ import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import VirtualList, { ListRef, useCheckInVirtual } from '@hi-ui/virtual-list'
 import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
-import { uniqBy } from '@hi-ui/array-utils'
+import { times, uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -711,4 +711,17 @@ export interface CheckSelectOptionGroupProps extends HiBaseHTMLProps {
 CheckSelectOptionGroup.HiName = 'CheckSelectOptionGroup'
 if (__DEV__) {
   CheckSelectOptionGroup.displayName = 'CheckSelectOptionGroup'
+}
+
+/**
+ * 渲染空白占位
+ */
+const renderIndent = (prefixCls: string, depth: number) => {
+  return times(depth, (index: number) => {
+    return (
+      <span key={index} style={{ alignSelf: 'stretch' }}>
+        <span className={cx(`${prefixCls}__indent`)} />
+      </span>
+    )
+  })
 }
