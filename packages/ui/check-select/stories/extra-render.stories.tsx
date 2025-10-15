@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import CheckSelect from '../src'
 
 /**
- * @title 自定义渲染头部和底部内容
+ * @title 自定义头尾
  */
 export const ExtraRender = () => {
   const [data] = useState([
@@ -21,7 +21,7 @@ export const ExtraRender = () => {
           style={{ width: 240 }}
           clearable={false}
           data={data}
-          renderExtraHeader={() => 'customer header'}
+          renderExtraHeader={() => <div style={{ padding: '10px 14px' }}>customer header</div>}
           renderExtraFooter={() => 'customer footer'}
         />
       </div>

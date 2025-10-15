@@ -1,7 +1,7 @@
 ---
 "@hi-ui/check-select": patch
 "@hi-ui/picker": patch
-"@hi-ui/hi-ui": patch
+"@hi-ui/hiui": patch
 ---
 
-feat(picker): add header pai (5.0)
+feat(picker): add header api (5.0)
