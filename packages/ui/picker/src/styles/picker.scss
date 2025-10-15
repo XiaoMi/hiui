@@ -71,10 +71,8 @@ $prefix: '#{$component-prefix}-picker' !default;
     padding: use-spacing(2);
   }
 
-  $top-normal-shadow: 0 -2px 4px 0 rgba(31, 39, 51, 0.1) !default;
-
   &__footer {
-    box-shadow: $top-normal-shadow;
+    border-top: use-border-size('normal') use-color('gray', 200);
     padding: use-spacing(5) use-spacing(7);
     background-color: use-color-static('white');
   }
