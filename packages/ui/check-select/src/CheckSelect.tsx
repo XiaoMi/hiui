@@ -18,7 +18,7 @@ import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import VirtualList, { ListRef, useCheckInVirtual } from '@hi-ui/virtual-list'
 import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
-import { times, uniqBy } from '@hi-ui/array-utils'
+import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -87,6 +87,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       keyword: keywordProp,
       label,
       showIndicator = true,
+      renderExtraHeader,
       ...rest
     },
     ref
@@ -359,6 +360,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           footer={renderDefaultFooter()}
           creatableInSearch={creatableInSearch}
           onCreate={handleCreate}
+          header={renderExtraHeader?.()}
           trigger={
             customRender ? (
               customRenderContent
@@ -461,7 +463,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 )
 
 export interface CheckSelectProps
-  extends Omit<PickerProps, 'trigger' | 'scrollable'>,
+  extends Omit<PickerProps, 'trigger' | 'scrollable' | 'header' | 'footer'>,
     UseCheckSelectProps {
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
@@ -535,6 +537,10 @@ export interface CheckSelectProps
    * 自定义下拉菜单底部渲染
    */
   renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 选择框前置内容
    */
@@ -705,17 +711,4 @@ export interface CheckSelectOptionGroupProps extends HiBaseHTMLProps {
 CheckSelectOptionGroup.HiName = 'CheckSelectOptionGroup'
 if (__DEV__) {
   CheckSelectOptionGroup.displayName = 'CheckSelectOptionGroup'
-}
-
-/**
- * 渲染空白占位
- */
-const renderIndent = (prefixCls: string, depth: number) => {
-  return times(depth, (index: number) => {
-    return (
-      <span key={index} style={{ alignSelf: 'stretch' }}>
-        <span className={cx(`${prefixCls}__indent`)} />
-      </span>
-    )
-  })
 }

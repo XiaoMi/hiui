@@ -79,6 +79,11 @@ $prefix: '#{$component-prefix}-picker' !default;
     background-color: use-color-static('white');
   }
 
+  &__header {
+    background-color: use-color-static('white');
+    border-bottom: use-border-size('normal') use-color('gray', 200);
+  }
+
   &__panel {
     padding: 0;
     border: 1px solid use-color('gray', 200);

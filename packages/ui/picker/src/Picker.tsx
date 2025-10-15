@@ -6,7 +6,6 @@ import Input from '@hi-ui/input'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { PopperOverlayProps, Popper } from '@hi-ui/popper'
 import { SearchOutlined } from '@hi-ui/icons'
-import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import Loading from '@hi-ui/loading'
 
@@ -55,6 +54,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       styles,
       classNames,
       gutterGap = 4,
+      header,
       ...rest
     },
     ref
@@ -85,8 +85,6 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     // const inSearch = searchable && !!searchValue
     // const isEmpty = inSearch && showEmpty
     const resetSearchOnClosed = keywordProp === undefined
-
-    const onSearchLatest = useLatestCallback(onSearch)
 
     const handleChange = useCallback(
       (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -210,6 +208,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
             className={cx(`${prefixCls}__panel`, classNames?.panel)}
             style={{ minWidth: optionWidth, width: optionWidth, ...styles?.panel }}
           >
+            {header ? <div className={`${prefixCls}__header`}>{header}</div> : null}
             {searchable ? (
               <div className={`${prefixCls}__search`}>
                 <Input
@@ -392,6 +391,10 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
     body?: string
     footer?: string
   }
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  header?: React.ReactNode
 }
 
 if (__DEV__) {
