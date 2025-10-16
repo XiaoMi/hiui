@@ -1,22 +1,32 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { createNotification } from '../src'
 import Button from '@hi-ui/button'
 
-const notificationInstanceForTop = createNotification({
-  placement: 'top',
-})
-
-const notificationInstanceForBottom = createNotification({
-  placement: 'bottom',
-})
 /**
- * @title 基础用法
+ * @title 弹出方向
  */
 export const Direction = () => {
+  const notificationInstanceForTop = useMemo(
+    () =>
+      createNotification({
+        placement: 'top',
+      }),
+    []
+  )
+
+  const notificationInstanceForBottom = useMemo(
+    () =>
+      createNotification({
+        placement: 'bottom',
+      }),
+    []
+  )
+
   return (
     <>
-      <h1>自定义位置 - 顶部</h1>
-      <div className="notification-basic__wrap">
+      <h1>Direction</h1>
+      <div className="notification-direction__wrap">
+        <h2>顶部左侧</h2>
         <Button
           onClick={() => {
             notificationInstanceForTop.open({
@@ -30,7 +40,7 @@ export const Direction = () => {
         >
           top left
         </Button>
-
+        <h2>顶部右侧</h2>
         <Button
           onClick={() => {
             notificationInstanceForTop.open({
@@ -44,10 +54,7 @@ export const Direction = () => {
         >
           top right
         </Button>
-      </div>
-
-      <h1>自定义位置 - 底部</h1>
-      <div className="notification-basic__wrap">
+        <h2>底部左侧</h2>
         <Button
           onClick={() => {
             notificationInstanceForBottom.open({
@@ -61,6 +68,7 @@ export const Direction = () => {
         >
           bottom left
         </Button>
+        <h2>底部右侧</h2>
         <Button
           onClick={() => {
             notificationInstanceForBottom.open({
