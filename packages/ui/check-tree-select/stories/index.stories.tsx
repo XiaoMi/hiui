@@ -20,6 +20,7 @@ export * from './virtual-list.stories'
 export * from './custom-render.stories'
 export * from './addon.stories'
 export * from './only-checked.stories'
+export * from './extra-render.stories'
 
 export default {
   title: 'Data Input/CheckTreeSelect',
