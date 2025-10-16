@@ -1,5 +1,16 @@
 # @hi-ui/pagination
 
+## 5.0.0-canary.6
+
+### Major Changes
+
+- 839ffd6d8: feat(pagination): 优化 pagination 组件，加入 padding 和自定义 total 总数展示样式（5.0）
+
+### Patch Changes
+
+- Updated dependencies [13a222d13]
+  - @hi-ui/select@5.0.0-canary.12
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

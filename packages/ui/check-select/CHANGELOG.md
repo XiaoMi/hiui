@@ -1,5 +1,13 @@
 # @hi-ui/check-select
 
+## 5.0.0-canary.14
+
+### Patch Changes
+
+- 13a222d13: feat(picker): add header api (5.0)
+- Updated dependencies [13a222d13]
+  - @hi-ui/picker@5.0.0-canary.11
+
 ## 5.0.0-canary.13
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/react-compat",
-  "version": "4.0.0",
+  "version": "5.0.0-canary.0",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",

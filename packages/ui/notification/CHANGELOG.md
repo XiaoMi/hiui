@@ -1,5 +1,16 @@
 # @hi-ui/notification
 
+## 5.0.0-canary.6
+
+### Minor Changes
+
+- b415265f1: feat(notification): 支持自定义弹出位置 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [bbb0122f6]
+  - @hi-ui/toast@5.0.0-canary.4
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

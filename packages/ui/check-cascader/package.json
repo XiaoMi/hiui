@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/check-cascader",
-  "version": "5.0.0-canary.18",
+  "version": "5.0.0-canary.19",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -52,7 +52,7 @@
     "@hi-ui/func-utils": "^5.0.0-canary.2",
     "@hi-ui/icons": "^5.0.0-canary.3",
     "@hi-ui/input": "^5.0.0-canary.13",
-    "@hi-ui/picker": "^5.0.0-canary.10",
+    "@hi-ui/picker": "^5.0.0-canary.11",
     "@hi-ui/popper": "^5.0.0-canary.7",
     "@hi-ui/spinner": "^5.0.0-canary.3",
     "@hi-ui/tag-input": "^5.0.0-canary.16",

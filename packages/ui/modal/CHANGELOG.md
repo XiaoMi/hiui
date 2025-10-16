@@ -1,5 +1,16 @@
 # @hi-ui/modal
 
+## 5.0.0-canary.7
+
+### Minor Changes
+
+- bbb0122f6: chore(modal&toast): 使用 react-compat 提供的 React 渲染方法 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [bbb0122f6]
+  - @hi-ui/react-compat@5.0.0-canary.0
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

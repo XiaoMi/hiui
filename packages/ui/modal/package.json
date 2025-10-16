@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/modal",
-  "version": "5.0.0-canary.6",
+  "version": "5.0.0-canary.7",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -53,7 +53,7 @@
     "@hi-ui/icon-button": "^5.0.0-canary.3",
     "@hi-ui/icons": "^5.0.0-canary.3",
     "@hi-ui/portal": "^5.0.0-canary.3",
-    "@hi-ui/react-compat": ">=5.0.0-canary.0",
+    "@hi-ui/react-compat": "^5.0.0-canary.0",
     "@hi-ui/react-utils": "^5.0.0-canary.2",
     "@hi-ui/type-assertion": "^5.0.0-canary.2",
     "@hi-ui/use-id": "^5.0.0-canary.2",

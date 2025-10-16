@@ -1,5 +1,42 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.32
+
+### Major Changes
+
+- 839ffd6d8: feat(pagination): 优化 pagination 组件，加入 padding 和自定义 total 总数展示样式（5.0）
+
+### Minor Changes
+
+- b415265f1: feat(notification): 支持自定义弹出位置 (5.0)
+
+### Patch Changes
+
+- 13a222d13: feat(picker): add header api (5.0)
+- 399ea1f0e: <br>
+  - perf(table): 优化列宽更新逻辑，当 columns 长度和 dataKey、width 发生变化时，重新计算列宽 (5.0)
+  - fix(table): 用于计算真实列宽的行节点，考虑单元格合并的场景 (5.0)
+  - fix(table): 修复 stretchHeight 模式下高度变化时虚拟表格高度没有更新问题 (5.0)
+- 0939010e9: perf(textarea): 优化高度自适应交互体验，解决换行时抖动问题 (5.0)
+- Updated dependencies [b415265f1]
+- Updated dependencies [13a222d13]
+- Updated dependencies [399ea1f0e]
+- Updated dependencies [0939010e9]
+- Updated dependencies [bbb0122f6]
+- Updated dependencies [839ffd6d8]
+  - @hi-ui/notification@5.0.0-canary.6
+  - @hi-ui/check-select@5.0.0-canary.14
+  - @hi-ui/picker@5.0.0-canary.11
+  - @hi-ui/cascader@5.0.0-canary.16
+  - @hi-ui/check-cascader@5.0.0-canary.19
+  - @hi-ui/check-tree-select@5.0.0-canary.15
+  - @hi-ui/select@5.0.0-canary.12
+  - @hi-ui/tree-select@5.0.0-canary.11
+  - @hi-ui/table@5.0.0-canary.17
+  - @hi-ui/textarea@5.0.0-canary.7
+  - @hi-ui/modal@5.0.0-canary.7
+  - @hi-ui/pagination@5.0.0-canary.6
+
 ## 5.0.0-canary.31
 
 ### Minor Changes

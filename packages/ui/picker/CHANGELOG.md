@@ -1,5 +1,11 @@
 https://infra.mioffice.cn/hiui/# @hi-ui/picker
 
+## 5.0.0-canary.11
+
+### Patch Changes
+
+- 13a222d13: feat(picker): add header api (5.0)
+
 ## 5.0.0-canary.10
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @hi-ui/textarea
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- 0939010e9: perf(textarea): 优化高度自适应交互体验，解决换行时抖动问题 (5.0)
+
 ## 5.0.0-canary.6
 
 ### Patch Changes
