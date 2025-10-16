@@ -89,6 +89,7 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
         ) : (
           <Button
             appearance="text"
+            size="sm"
             icon={<EllipsisVerticalOutlined />}
             onClick={menuVisibleAction.not}
           />

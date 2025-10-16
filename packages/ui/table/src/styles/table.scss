@@ -23,6 +23,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     position: relative;
     z-index: 0;
     border-top: use-border-size('normal') use-color('gray', 200);
+    border-bottom: use-border-size('normal') use-color('gray', 200);
   }
 
   // 表格高度自动拉伸样式配置
@@ -31,6 +32,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     overflow: hidden;
 
     .#{$prefix}__wrapper {
+      box-sizing: border-box;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -124,6 +126,15 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   }
 
   &--virtual {
+    width: 100%;
+    overflow: hidden;
+
+    .#{$component-prefix}-table-cell {
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+    }
+
     &.#{$prefix}--size {
       &-sm {
         .#{$prefix}-header {
@@ -170,6 +181,16 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
             min-height: use-height-size(12);
             padding: use-spacing(4) use-spacing(7);
           }
+        }
+      }
+    }
+  }
+
+  &-virtual-row {
+    &:last-child {
+      .#{$prefix}-row {
+        .#{$prefix}-cell {
+          border-bottom: none;
         }
       }
     }
@@ -233,15 +254,6 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &--sticky {
     position: sticky;
     top: 0;
-  }
-
-  &--virtual {
-    width: 100%;
-    overflow: hidden;
-
-    .#{$component-prefix}-table-cell {
-      box-sizing: border-box;
-    }
   }
 
   &-header {
@@ -412,6 +424,12 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
     &--virtual {
       display: flex;
+    }
+
+    &:not(.#{$prefix}-row--virtual):last-child {
+      .#{$prefix}-cell {
+        border-bottom: none;
+      }
     }
   }
 
