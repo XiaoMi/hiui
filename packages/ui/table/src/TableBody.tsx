@@ -34,6 +34,7 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       scrollLeft,
       innerRef,
       rowClassName,
+      stretchHeight,
     } = useTableContext()
     const virtualListRef = useRef(null)
     const listRef = useRef<ListRef>(null)
@@ -64,16 +65,46 @@ export const TableBody = forwardRef<HTMLDivElement | null, TableBodyProps>(
       scrollTo: listRef.current?.scrollTo,
     }))
 
+    const [virtualListHeight, setVirtualListHeight] = React.useState(300)
+
+    React.useEffect(() => {
+      const virtualListWrapper = scrollBodyElementRef.current
+      if (!virtualListWrapper) return
+      const newHeight = virtualListWrapper.clientHeight
+      setVirtualListHeight(newHeight)
+
+      // 虚拟列表且开启拉伸高度时，监听虚拟列表高度变化
+      if (virtual && stretchHeight) {
+        const observer = new ResizeObserver(() => {
+          const newHeight = virtualListWrapper.clientHeight
+
+          // 只在高度真正变化时才更新状态，避免循环
+          setVirtualListHeight((prevHeight) => {
+            // 添加一个小的阈值（如1px）来避免浮点数精度问题导致的循环
+            if (Math.abs(prevHeight - newHeight) > 1) {
+              return newHeight
+            }
+            return prevHeight
+          })
+        })
+
+        observer.observe(virtualListWrapper)
+
+        return () => {
+          observer.disconnect()
+        }
+      }
+    }, [scrollBodyElementRef, stretchHeight, virtual])
+
     if (virtual) {
       // TODO： avg和summay row的逻辑
-      const realHeight = (virtualListRef.current as HTMLTableElement | null)?.getBoundingClientRect()
-        .height
       const maxHeightNumStr = String(maxHeight).replace(/px$/, '')
       const vMaxHeight = maxHeight
         ? !isNaN(Number(maxHeightNumStr))
           ? Number(maxHeightNumStr)
-          : realHeight
-        : 300
+          : virtualListHeight
+        : virtualListHeight
+
       return (
         <div
           ref={scrollBodyElementRef}

@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback } from 'react'
+import React, { forwardRef, useCallback, useRef } from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -8,6 +8,7 @@ import { EmptyState } from '@hi-ui/empty-state'
 import { TableRow } from './TableRow'
 import { FlattedTableRowData, TableRowRequiredProps } from './types'
 import { useTableContext } from './context'
+import { useUpdateEffect } from '@hi-ui/use-update-effect'
 
 const _prefix = getPrefixCls('table-body')
 const _prefixRow = getPrefixCls('table-row')
@@ -79,6 +80,11 @@ export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>
       [fixedToRow]
     )
 
+    const measureRowElementRefNeedUpdate = useRef(true)
+    useUpdateEffect(() => {
+      measureRowElementRefNeedUpdate.current = true
+    }, [columns])
+
     // 外层增加 div 作为滚动容器
     return (
       <tbody>
@@ -87,7 +93,16 @@ export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>
             {transitionData.map((row, index) => {
               return (
                 <TableRow
-                  ref={index === 0 ? measureRowElementRef : null}
+                  ref={(el) => {
+                    // 当 el 的子节点数量和 columns 的数量相等时（考虑单元格合并的情况），并且measureRowElementRefNeedUpdate.current为true时，才更新measureRowElementRef
+                    if (
+                      el?.childNodes.length === columns.length &&
+                      measureRowElementRefNeedUpdate.current
+                    ) {
+                      measureRowElementRef.current = el
+                      measureRowElementRefNeedUpdate.current = false
+                    }
+                  }}
                   // key={depth + index}
                   key={row.id}
                   className={cx(rowClassName?.(row, index), ...fixedToRowTopClassName(row, index))}
