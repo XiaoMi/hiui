@@ -77,6 +77,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     virtual,
     onItemClick: onItemClickProp,
     showIndicator = true,
+    renderExtraHeader,
     ...rest
   } = props
   const i18n = useLocaleContext()
@@ -285,6 +286,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         footer={isFunction(renderExtraFooter) && renderExtraFooter()}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        header={renderExtraHeader?.()}
         trigger={
           customRender ? (
             customRenderContent
@@ -319,7 +321,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
 })
 
 export interface CascaderProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable'>,
+  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable' | 'header' | 'footer'>,
     UseCascaderProps {
   /**
    * 将 check 子项拍平展示。暂不对外暴露
@@ -387,6 +389,10 @@ export interface CascaderProps
    * 自定义下拉菜单底部渲染
    */
   renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 自定义下拉菜单每列渲染
    */

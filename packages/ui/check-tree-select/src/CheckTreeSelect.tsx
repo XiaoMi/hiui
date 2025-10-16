@@ -99,6 +99,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       suffix,
       label,
       showIndicator = true,
+      renderExtraHeader,
       ...rest
     },
     ref
@@ -393,6 +394,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         footer={renderDefaultFooter()}
         loading={rest.loading !== undefined ? rest.loading : loading}
+        header={renderExtraHeader?.()}
         trigger={
           customRender ? (
             customRenderContent
@@ -511,7 +513,10 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
 )
 
 export interface CheckTreeSelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'value' | 'trigger' | 'scrollable'> {
+  extends Omit<
+    PickerProps,
+    'data' | 'onChange' | 'value' | 'trigger' | 'scrollable' | 'header' | 'footer'
+  > {
   /**
    * 展示数据
    */
@@ -682,6 +687,10 @@ export interface CheckTreeSelectProps
    * 是否展示箭头
    */
   showIndicator?: boolean
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
 }
 
 if (__DEV__) {

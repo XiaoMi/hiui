@@ -123,6 +123,9 @@
   "engines": {
     "node": ">=12.22.1 <=14.21.3"
   },
+  "volta": {
+    "node": "14.21.3"
+  },
   "lint-staged": {
     "*.{js,jsx}": [
       "eslint --fix",

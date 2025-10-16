@@ -1,0 +1,58 @@
+{
+  "name": "@hi-ui/patch-for-react",
+  "version": "4.0.0",
+  "description": "A sub-package for @hi-ui/hiui.",
+  "keywords": [],
+  "author": "HiUI <mi-hiui@xiaomi.com>",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/patches/patch-for-react#readme",
+  "license": "MIT",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/types/index.d.ts",
+  "typings": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./lib/cjs/index.js",
+      "default": "./lib/esm/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiaoMi/hiui.git"
+  },
+  "scripts": {
+    "clean": "rimraf lib",
+    "prebuild": "yarn clean",
+    "build:esm": "npx tsc --module es6 --outDir lib/esm --declaration false",
+    "build:cjs": "npx tsc --module commonjs --outDir lib/cjs --declaration false",
+    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
+    "build": "concurrently yarn:build:*"
+  },
+  "bugs": {
+    "url": "https://github.com/XiaoMi/hiui/issues"
+  },
+  "peerDependencies": {
+    "@hi-ui/react-compat": ">=4.0.0",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@hi-ui/react-compat": ">=4.0.0",
+    "@types/react": ">=18",
+    "@types/react-dom": ">=18",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "volta": {
+    "node": "14.21.3"
+  }
+}

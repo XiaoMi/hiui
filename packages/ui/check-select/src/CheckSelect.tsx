@@ -87,6 +87,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       keyword: keywordProp,
       label,
       showIndicator = true,
+      renderExtraHeader,
       ...rest
     },
     ref
@@ -359,6 +360,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           footer={renderDefaultFooter()}
           creatableInSearch={creatableInSearch}
           onCreate={handleCreate}
+          header={renderExtraHeader?.()}
           trigger={
             customRender ? (
               customRenderContent
@@ -461,7 +463,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 )
 
 export interface CheckSelectProps
-  extends Omit<PickerProps, 'trigger' | 'scrollable'>,
+  extends Omit<PickerProps, 'trigger' | 'scrollable' | 'header' | 'footer'>,
     UseCheckSelectProps {
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
@@ -535,6 +537,10 @@ export interface CheckSelectProps
    * 自定义下拉菜单底部渲染
    */
   renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 选择框前置内容
    */

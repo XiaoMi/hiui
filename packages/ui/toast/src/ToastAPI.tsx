@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import getReactDomRender from '@hi-ui/react-compat'
 import * as Container from '@hi-ui/container'
 import { ToastManager, ToastManagerProps, _prefix } from './ToastManager'
 import { ToastEventOptions } from './types'
@@ -15,6 +15,7 @@ export class ToastAPI<T = ToastEventOptions> {
   protected container!: Element | undefined
   protected options!: ToastAPIOptions
   protected id!: string
+  protected mockUnmount: () => void = () => {}
 
   constructor(toastAPIOptions: ToastAPIOptions) {
     this.options = withDefaultProps(toastAPIOptions, ToastAPI.defaultOptions)
@@ -34,7 +35,10 @@ export class ToastAPI<T = ToastEventOptions> {
   initManager(container?: HTMLElement) {
     this.container = Container.getContainer(this.selector, document, container)
     this.toastManager = React.createRef<ToastManager>()
-    render(<ToastManager {...this.options} ref={this.toastManager} />, this.container)
+
+    const node = <ToastManager {...this.options} ref={this.toastManager} />
+    const mockRender = getReactDomRender()
+    this.mockUnmount = mockRender(node, this.container)
   }
 
   open = (props: T) => {
@@ -42,7 +46,7 @@ export class ToastAPI<T = ToastEventOptions> {
       this.initManager(this.options.container as HTMLElement)
     }
 
-    return this.toastManager.current?.open(props)
+    return this.toastManager.current?.open(props as ToastEventOptions)
   }
 
   close = (id: React.ReactText) => {
@@ -57,7 +61,7 @@ export class ToastAPI<T = ToastEventOptions> {
 
   destroy = () => {
     if (this.container) {
-      unmountComponentAtNode(this.container)
+      this.mockUnmount()
       Container.removeContainer(this.selector)
     }
     this.container = undefined

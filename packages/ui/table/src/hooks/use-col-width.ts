@@ -96,14 +96,43 @@ export const useColWidth = ({
     }
   }, [columns])
 
+  // 记录上一轮的列，用于判断列是否发生变化，只有发生变化时才重新计算列宽
+  const prevColumnsRef = React.useRef<TableColumnItem[]>(columns)
+  const hasColumnsChanged = React.useCallback(() => {
+    const prevColumns = prevColumnsRef.current
+
+    // 长度不同
+    if (prevColumns.length !== columns.length) {
+      return true
+    }
+
+    // 检查 dataKey、width 是否有变化
+    for (let i = 0; i < columns.length; i++) {
+      const prev = prevColumns[i]
+      const curr = columns[i]
+
+      if (prev.dataKey !== curr.dataKey || prev.width !== curr.width) {
+        return true
+      }
+    }
+
+    return false
+  }, [columns])
+
   useUpdateEffect(() => {
-    if (virtual) {
+    if (virtual && hasColumnsChanged()) {
       // 虚拟滚动的计算需要根据容器来做分配，不能使用没有width默认设置为0的方式来做表格平均分配
       setColWidths(getVirtualWidths())
     }
   }, [getVirtualWidths, virtual])
 
   useUpdateEffect(() => {
+    if (!hasColumnsChanged()) {
+      return
+    }
+
+    prevColumnsRef.current = columns
+
     // 当列变化时，重新设置列宽
     setColWidths(getGroupItemWidth(columns).colWidths)
 

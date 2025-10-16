@@ -251,7 +251,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
       const doubleTableContent = (
         <>
-          <div {...restTableHeaderProps} style={{ ...style, overflow: 'unset' }}>
+          <div {...restTableHeaderProps} style={{ ...style, overflow: undefined }}>
             <TableHeader />
 
             {/* 不跟随内部 header 横向滚动，固定到右侧 */}
