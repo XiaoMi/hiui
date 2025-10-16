@@ -7,6 +7,12 @@ $prefix: '#{$component-prefix}-notification' !default;
   overflow-x: hidden;
   overflow-y: auto;
   bottom: 0;
+
+  // 底部渲染时，需要反转 flex 方向
+  &--placement-bottom {
+    display: flex;
+    flex-direction: column-reverse;
+  }
 }
 
 .#{$prefix} {
@@ -104,29 +110,64 @@ $prefix: '#{$component-prefix}-notification' !default;
     will-change: transform;
   }
 
-  &--motion {
-    &-enter {
-      transform: translateX(100%);
+  &--placement-left.#{$prefix}-container {
+    align-items: flex-start;
+    transform: translateX(-100%);
+    &.#{$prefix}--left {
+      &-enter {
+        transform: translateX(-100%);
 
-      &-active {
-        transform: translateX(0);
+        &-active {
+          transform: translateX(0);
+        }
+
+        &-done {
+          transform: translateX(0);
+        }
       }
 
-      &-done {
-        transform: none;
+      &-exit {
+        transform: translateX(0);
+
+        &-active {
+          transform: translateX(-100%);
+        }
+
+        &-done {
+          visibility: hidden;
+          opacity: 0;
+        }
       }
     }
+  }
 
-    &-exit {
-      transform: translateX(0%);
-
-      &-active {
+  &--placement-right.#{$prefix}-container {
+    align-items: flex-end;
+    transform: translateX(100%);
+    &.#{$prefix}--right {
+      &-enter {
         transform: translateX(100%);
+
+        &-active {
+          transform: translateX(0);
+        }
+
+        &-done {
+          transform: translateX(0);
+        }
       }
 
-      &-done {
-        visibility: hidden;
-        opacity: 0;
+      &-exit {
+        transform: translateX(0);
+
+        &-active {
+          transform: translateX(100%);
+        }
+
+        &-done {
+          visibility: hidden;
+          opacity: 0;
+        }
       }
     }
   }
