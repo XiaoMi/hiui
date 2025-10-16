@@ -120,7 +120,7 @@ export const AsyncSort = () => {
       key: 17,
     },
   ]
-  const [data, setData] = React.useState([
+  const initialData = [
     {
       key: '1',
       name: 'John Brown',
@@ -221,7 +221,8 @@ export const AsyncSort = () => {
       age: 42,
       address: 'London No. 1 Lake Park',
     },
-  ])
+  ]
+  const [data, setData] = React.useState(initialData)
 
   return (
     <>
@@ -234,8 +235,14 @@ export const AsyncSort = () => {
           onChange={(action, extra) => {
             console.log(action, extra)
 
+            if (!action.sorter?.column) {
+              setData(initialData)
+              setSortOrder((action.sorter?.order ?? null) as TableColumnSortOrder)
+              return
+            }
+
             // 对指定列进行远程排序
-            if (action.sorter?.column.dataKey === 'age') {
+            if (action.sorter?.column?.dataKey === 'age') {
               setLoading(true)
 
               // 模拟远程排序，实际情况是调用接口获取排序后的数据
