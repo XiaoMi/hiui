@@ -82,6 +82,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       customRender,
       label,
       showIndicator = true,
+      renderExtraHeader,
       ...rest
     },
     ref
@@ -274,6 +275,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         loading={rest.loading !== undefined ? rest.loading : loading}
+        header={renderExtraHeader?.()}
         trigger={
           customRender ? (
             customRenderContent
@@ -324,7 +326,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
 )
 
 export interface TreeSelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable'> {
+  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable' | 'header'> {
   /**
    * 展示数据
    */
@@ -464,6 +466,10 @@ export interface TreeSelectProps
    * 是否展示箭头
    */
   showIndicator?: boolean
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
 }
 
 if (__DEV__) {

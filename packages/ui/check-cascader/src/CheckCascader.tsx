@@ -91,6 +91,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       virtual,
       showCheckAll,
       showIndicator = true,
+      renderExtraHeader,
       ...rest
     },
     ref
@@ -337,6 +338,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         footer={isFunction(renderExtraFooter) ? renderExtraFooter() : renderDefaultFooter()}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        header={renderExtraHeader?.()}
         trigger={
           customRender ? (
             customRenderContent
@@ -455,7 +457,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
   }
 )
 
-export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrollable'> {
+export interface CheckCascaderProps
+  extends Omit<PickerProps, 'trigger' | 'scrollable' | 'header' | 'footer'> {
   /**
    * 设置选择项数据源
    */
@@ -591,6 +594,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 自定义下拉菜单底部渲染
    */
   renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 自定义下拉菜单每列渲染
    */
