@@ -43,6 +43,7 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
       destroy,
       size = 'lg',
       onClose,
+      direction = 'right',
       ...rest
     },
     ref
@@ -89,10 +90,12 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
     }, [])
 
     const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`, `${prefixCls}--size-${size}`)
+    const transitionCls = cx(`${prefixCls}--${direction}`)
+    const containerCls = cx(`${prefixCls}-container`, `${prefixCls}--placement-${direction}`)
 
     return (
       <CSSTransition
-        classNames={`${prefixCls}--motion`}
+        classNames={transitionCls}
         in={transitionVisible}
         timeout={410}
         style={{ height }}
@@ -103,7 +106,7 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
           onClose?.()
         }}
       >
-        <div ref={motionElRef} className={`${prefixCls}-container`}>
+        <div ref={motionElRef} className={containerCls}>
           <div ref={ref} role={role} className={cls} {...rest}>
             <div className={`${prefixCls}__header`}>
               <span className={`${prefixCls}__icon`}> {notificationIconMap[type]}</span>
@@ -174,6 +177,8 @@ export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>
    * 通知框尺寸
    */
   size?: HiBaseSizeEnum
+  /** 弹出方向 */
+  direction?: 'left' | 'right'
 }
 
 if (__DEV__) {
