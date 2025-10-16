@@ -21,6 +21,7 @@ export * from './custom-render.stories'
 export * from './virtual.stories'
 export * from './check-all.stories'
 // export * from './flatted.stories'
+export * from './extra-render.stories'
 
 export default {
   title: 'Data Input/CheckCascader',

@@ -86,6 +86,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       label,
       creatableInSearch,
       onItemCreate,
+      renderExtraHeader,
       ...rest
     },
     ref
@@ -290,6 +291,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           scrollable={!inVirtual}
           creatableInSearch={creatableInSearch}
           onCreate={handleCreate}
+          header={renderExtraHeader?.()}
           trigger={
             customRender ? (
               customRenderContent
@@ -361,7 +363,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
 )
 
 export interface SelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable'>,
+  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable' | 'header' | 'footer'>,
     UseSelectProps {
   /**
    * 选项数据
@@ -399,6 +401,10 @@ export interface SelectProps
    * 自定义下拉菜单底部渲染
    */
   renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
    * @private

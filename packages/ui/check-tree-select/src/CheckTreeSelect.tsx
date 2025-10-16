@@ -399,6 +399,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         onSearch={callAllFuncs(onSearchProp, onSearch)}
         footer={renderDefaultFooter()}
         loading={rest.loading !== undefined ? rest.loading : loading}
+        header={renderExtraHeader?.()}
         trigger={
           customRender ? (
             customRenderContent
@@ -517,7 +518,10 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
 )
 
 export interface CheckTreeSelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'value' | 'trigger' | 'scrollable'> {
+  extends Omit<
+    PickerProps,
+    'data' | 'onChange' | 'value' | 'trigger' | 'scrollable' | 'header' | 'footer'
+  > {
   /**
    * 展示数据
    */
