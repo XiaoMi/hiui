@@ -119,6 +119,8 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       return trigger
     }, [children, getTriggerProps, setTriggerElement])
 
+    const transitionNodeRef = React.useRef<HTMLElement>(null)
+
     if (triggerMemo === undefined) return null
 
     const cls = cx(prefixCls, className)
@@ -135,8 +137,10 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
             mountOnEnter={!preload}
             unmountOnExit={unmountOnClose}
             onExited={onExitedLatest}
+            // 参考：https://github.com/reactjs/react-transition-group/issues/918
+            nodeRef={transitionNodeRef}
           >
-            <div className={`${prefixCls}__popper`} {...getPopperProps()}>
+            <div className={`${prefixCls}__popper`} {...getPopperProps({}, [transitionNodeRef])}>
               <div ref={ref} className={cls} {...getTooltipProps()}>
                 {arrow ? <div className={`${prefixCls}__arrow`} {...getArrowProps()} /> : null}
                 <div className={`${prefixCls}__content`}>{title}</div>

@@ -1,5 +1,5 @@
 import { createRef, createElement } from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import getReactDomRender from '@hi-ui/react-compat'
 import * as Container from '@hi-ui/container'
 
 import { _prefix, Tooltip, TooltipProps } from './Tooltip'
@@ -23,6 +23,7 @@ const open = (
   }
 
   let container: any = Container.getContainer(`${selector}__${key}`)
+  let mockUnmount: any = null
 
   const toastManagerRef = createRef<any>()
 
@@ -34,7 +35,7 @@ const open = (
     onExited: () => {
       // 卸载
       if (container) {
-        unmountComponentAtNode(container)
+        mockUnmount()
         Container.removeContainer(selector)
       }
       container = undefined
@@ -45,7 +46,8 @@ const open = (
   })
 
   // TODO：存在弹出时延迟感
-  render(ClonedTooltip, container)
+  const mockRender = getReactDomRender()
+  mockUnmount = mockRender(ClonedTooltip, container)
 
   const close = () => {
     toastManagerRef.current?.close()

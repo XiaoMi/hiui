@@ -152,7 +152,7 @@ export const useModal = ({
   )
 
   const getModalProps = useCallback(
-    (props = {}, ref = null) => {
+    (props = {}, refs = null) => {
       const style = { outline: 'none', ...props.style }
       if (!visible) {
         style.display = 'none'
@@ -162,11 +162,14 @@ export const useModal = ({
         style.zIndex = props.zIndex
       }
 
+      // 合并 refs，同时向前兼容单个 ref 的用法
+      const _refs = Array.isArray(refs) ? refs : [refs]
+
       return {
         role: 'dialog',
         'aria-modal': true,
         ...props,
-        ref: mergeRefs(setModalElement, ref),
+        ref: mergeRefs(setModalElement, ..._refs),
         tabIndex: -1,
         style,
         onMouseDown: mockDefaultHandlers(props.onMouseDown, (evt: React.MouseEvent) => {

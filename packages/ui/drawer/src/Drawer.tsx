@@ -109,6 +109,8 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
           onExited={onExited}
           mountOnEnter={!preload}
           unmountOnExit={unmountOnClose}
+          // 参考：https://github.com/reactjs/react-transition-group/issues/918
+          nodeRef={innerRef}
         >
           <div
             className={cls}
@@ -142,9 +144,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
               {hasHeader ? (
                 <header className={`${prefixCls}__header`} style={styles?.header}>
                   {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
-                  {closeable ? (
-                    <IconButton effect onClick={onClose} icon={closeIcon} />
-                  ) : null}
+                  {closeable ? <IconButton effect onClick={onClose} icon={closeIcon} /> : null}
                 </header>
               ) : null}
               <main className={`${prefixCls}__body`} style={styles?.body}>

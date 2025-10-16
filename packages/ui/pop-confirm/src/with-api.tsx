@@ -1,5 +1,5 @@
 import { createRef, createElement } from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import getReactDomRender from '@hi-ui/react-compat'
 import * as Container from '@hi-ui/container'
 import { uuid } from '@hi-ui/use-id'
 
@@ -23,6 +23,7 @@ const open = (target: HTMLElement, { key, disabledPortal, ...rest }: PopConfirmA
     undefined,
     (disabledPortal ? target.parentNode : undefined) as Element
   )
+  let mockUnmount: any = null
 
   const popConfirmRef = createRef<any>()
 
@@ -34,7 +35,7 @@ const open = (target: HTMLElement, { key, disabledPortal, ...rest }: PopConfirmA
     onExited: () => {
       // 卸载
       if (container) {
-        unmountComponentAtNode(container)
+        mockUnmount()
         Container.removeContainer(selectId)
       }
       container = undefined
@@ -43,8 +44,13 @@ const open = (target: HTMLElement, { key, disabledPortal, ...rest }: PopConfirmA
   })
 
   requestAnimationFrame(() => {
-    render(ClonedPopConfirm, container)
-    popConfirmRef.current.open()
+    const mockRender = getReactDomRender()
+    mockUnmount = mockRender(ClonedPopConfirm, container)
+
+    // NOTE 适配 React19 后，此处可能并非完全标准意义上的同步渲染
+    // 会导致 popConfirmRef 未被正确赋值，因此此处等待一帧后再唤起元素
+    // 一帧的时间是预估的，若收到反馈无法正确唤起，可尝试调整此处等待时间
+    setTimeout(() => popConfirmRef.current.open(), 16)
   })
 
   const close = () => {

@@ -105,6 +105,8 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
           destroy?.()
           onClose?.()
         }}
+        // 参考：https://github.com/reactjs/react-transition-group/issues/918
+        nodeRef={motionElRef}
       >
         <div ref={motionElRef} className={containerCls}>
           <div ref={ref} role={role} className={cls} {...rest}>
