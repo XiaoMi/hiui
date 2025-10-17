@@ -19,17 +19,15 @@ type MockReactDOM = typeof ReactDOM & {
 }
 
 // 引用原始 ReactDOM 对象，但不修改
-const cloneReactDOM = { ...ReactDOM } as MockReactDOM
+const clonedReactDOM = { ...ReactDOM } as MockReactDOM
 
-const { version, render: reactLegacyRender, unmountComponentAtNode } = cloneReactDOM
+const { version, render: reactLegacyRender, unmountComponentAtNode } = clonedReactDOM
 
 let createRoot: CreateRootFn | undefined
 try {
   const mainVersion = Number((version || '').split('.')[0])
   if (mainVersion >= 18) {
-    // React 18+ 中 createRoot 在 react-dom/client 中
-    const ReactDOMClient = require('react-dom/client')
-    createRoot = ReactDOMClient.createRoot
+    ;({ createRoot } = clonedReactDOM)
   }
 } catch (e) {
   // Do nothing;
