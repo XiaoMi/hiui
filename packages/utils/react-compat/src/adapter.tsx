@@ -33,8 +33,22 @@ try {
   // Do nothing;
 }
 
+function ignoreWarning(skip: boolean) {
+  // @ts-expect-error ReactDOM 的私有属性
+  const { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } = clonedReactDOM
+
+  if (
+    __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED &&
+    typeof __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED === 'object'
+  ) {
+    __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.usingClientEntryPoint = skip
+  }
+}
+
 function modernRender(node: React.ReactElement, container: ContainerType) {
+  ignoreWarning(true)
   const root = container[MARK] || createRoot!(container)
+  ignoreWarning(false)
 
   root.render(node)
 
