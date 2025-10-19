@@ -30,6 +30,7 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
       role = _role,
       className,
       children,
+      icon,
       title,
       visible = true,
       duration = 5000,
@@ -99,7 +100,7 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
       >
         <div ref={motionElRef} className={`${prefixCls}-container`}>
           <div ref={ref} role={role} className={cls} {...rest}>
-            {messageIconMap[type]}
+            <div className={`${prefixCls}__icon`}>{icon ?? messageIconMap[type]}</div>
             {title}
           </div>
         </div>
@@ -117,6 +118,10 @@ export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'title'> {
    * 关闭时触发的回调函数
    */
   onClose?: () => void
+  /**
+   * 通知框图标
+   */
+  icon?: React.ReactNode
   /**
    * 通知框标题
    */
