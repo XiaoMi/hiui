@@ -17,7 +17,6 @@ export const Icon = () => {
             message.open({
               icon: <Spinner size="sm" />,
               title: '数据提交中，请勿关闭页面',
-              type: 'success',
             })
           }}
         >

@@ -2,17 +2,25 @@ import React from 'react'
 import Loading from '../src'
 
 /**
- * @title 设置加载类型
+ * @title 文案位置
  */
-export const Type = () => {
+export const ContentPosition = () => {
+  const loadingIdRef = React.useRef<any>(null)
+
+  React.useEffect(() => {
+    return () => {
+      Loading.close(loadingIdRef.current)
+    }
+  }, [])
+
   return (
     <>
-      <h1>Type</h1>
+      <h1>Content Position</h1>
       <div
-        className="loading-basic__wrap"
+        className="loading-content-position__wrap"
         style={{ position: 'relative', width: 500, height: 300 }}
       >
-        <Loading type="dot">
+        <Loading visible size="sm" content="Loading..." contentPosition="right" showMask={false}>
           <div
             style={{
               width: 500,
