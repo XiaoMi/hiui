@@ -20,37 +20,25 @@ $prefix: '#{$component-prefix}-message' !default;
 
   &--type {
     &-info {
-      // background-color: use-color-mode('primary', 100);
-      // color: use-color-mode('primary', 400);
-
-      svg {
+      .#{$prefix}__icon {
         color: use-color-mode('primary');
       }
     }
 
     &-success {
-      // background-color: use-color-mode('success', 100);
-      // color: use-color-mode('success', 400);
-
-      svg {
+      .#{$prefix}__icon {
         color: use-color-mode('success');
       }
     }
 
     &-error {
-      // background-color: use-color-mode('danger', 100);
-      // color: use-color-mode('danger', 400);
-
-      svg {
+      .#{$prefix}__icon {
         color: use-color-mode('danger');
       }
     }
 
     &-warning {
-      // background-color: use-color-mode('warning', 100);
-      // color: use-color-mode('warning', 400);
-
-      svg {
+      .#{$prefix}__icon {
         color: use-color-mode('warning');
       }
     }
@@ -105,7 +93,8 @@ $prefix: '#{$component-prefix}-message' !default;
     }
   }
 
-  svg {
+  &__icon {
+    display: inline-flex;
     margin-inline-end: use-spacing(4);
     font-size: use-text-size('lg');
   }
