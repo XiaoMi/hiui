@@ -1,6 +1,7 @@
 import React from 'react'
-import Result, { RESULT_IMAGE_NET_ERROR } from '../src'
+import Result from '../src'
 import Button from '@hi-ui/button'
+import { EMPTY_STATE_IMAGE_NO_NETWORK } from '@hi-ui/empty-state'
 
 /**
  * @title 带按钮
@@ -12,13 +13,15 @@ export const Complete = () => {
       <h1>完整功能</h1>
       <div className="result-basic__wrap">
         <Result
-          image={RESULT_IMAGE_NET_ERROR}
+          image={<img src={EMPTY_STATE_IMAGE_NO_NETWORK} />}
           title="网络连接失败"
           content="这是对网络连接失败的说明文案"
         >
           <div>
             {[
-              <Button key="refresh">刷新</Button>,
+              <Button key="refresh" appearance="line">
+                刷新
+              </Button>,
               <Button type="primary" key="back">
                 返回
               </Button>,
