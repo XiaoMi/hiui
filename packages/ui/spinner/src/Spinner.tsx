@@ -10,7 +10,15 @@ const SPINNER_PREFIX = getPrefixCls('spinner')
  */
 export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
   (
-    { prefixCls = SPINNER_PREFIX, role = 'spinner', className, children, size = 14, ...rest },
+    {
+      prefixCls = SPINNER_PREFIX,
+      role = 'spinner',
+      className,
+      children,
+      size = 'md',
+      color,
+      ...rest
+    },
     ref
   ) => {
     const cls = cx(prefixCls, className, typeof size === 'string' && prefixCls + `--size-${size}`)
@@ -20,23 +28,16 @@ export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
         ref={ref}
         className={cls}
         {...rest}
-        style={{ ...(typeof size === 'number' ? { fontSize: size } : {}), ...rest.style }}
+        style={{ color, ...(typeof size === 'number' ? { fontSize: size } : {}), ...rest.style }}
       >
         <svg
           className={`${prefixCls}__icon`}
-          viewBox="0 0 18 18"
-          version="1.1"
-          width="0.8em"
-          height="0.8em"
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g>
-            <path
-              d="m9 18c-4.9706 0-9-4.0294-9-9 0-4.9706 4.0294-9 9-9 4.9706 0 9 4.0294 9 9 0 4.9706-4.0294 9-9 9zm0-2c3.866 0 7-3.134 7-7 0-3.866-3.134-7-7-7-3.866 0-7 3.134-7 7 0 3.866 3.134 7 7 7z"
-              opacity=".15"
-            />
-            <path d="m15.547 2.8242c0.37904 0.40168 0.36068 1.0346-0.040996 1.4136-0.40168 0.37904-1.0346 0.36068-1.4136-0.040996-1.315-1.3935-3.1381-2.1969-5.0922-2.1969-3.866 0-7 3.134-7 7 0 0.55228-0.44772 1-1 1s-1-0.44772-1-1c0-4.9706 4.0294-9 9-9 2.5103 0 4.8578 1.0343 6.5468 2.8242z" />
-          </g>
+          <path d="M8.70102 8.58595C8.8867 8.40013 9.10717 8.2527 9.34983 8.15209C9.5925 8.05147 9.8526 7.99964 10.1153 7.99954C10.378 7.99945 10.6381 8.0511 10.8809 8.15154C11.1236 8.25198 11.3442 8.39925 11.53 8.58494C11.7158 8.77062 11.8632 8.99109 11.9639 9.23375C12.0645 9.47642 12.1163 9.73652 12.1164 9.99922C12.1165 10.2619 12.0649 10.5221 11.9644 10.7648C11.864 11.0075 11.7167 11.2281 11.531 11.4139C10.4091 12.5339 9.51951 13.8646 8.91354 15.3295C8.30756 16.7944 7.9971 18.3646 8 19.9499C8 26.607 13.374 31.9999 20 31.9999C26.626 31.9999 32 26.607 32 19.9499C32 19.4195 32.2107 18.9108 32.5858 18.5357C32.9609 18.1607 33.4696 17.9499 34 17.9499C34.5304 17.9499 35.0391 18.1607 35.4142 18.5357C35.7893 18.9108 36 19.4195 36 19.9499C36 28.8129 28.838 35.9999 20 35.9999C11.162 35.9999 4 28.8129 4 19.9499C4 15.6299 5.71199 11.5769 8.70102 8.58595V8.58595Z" />
         </svg>
       </i>
     )
@@ -45,9 +46,13 @@ export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
 
 export interface SpinnerProps extends HiBaseHTMLProps<'i'> {
   /**
-   * 自定义尺寸
+   * 尺寸
    */
-  size?: number | HiBaseSizeEnum
+  size?: number | Omit<HiBaseSizeEnum, 'xs'>
+  /**
+   * 颜色
+   */
+  color?: React.CSSProperties['color']
 }
 
 if (__DEV__) {

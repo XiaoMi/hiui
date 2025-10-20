@@ -14,7 +14,7 @@ const loadingInstanceCache: {
 
 const open = (
   target?: HTMLElement | null,
-  { content, key, duration, size, autoClose = true }: LoadingApiProps = {}
+  { content, key, duration, size = 'lg', autoClose = true }: LoadingApiProps = {}
 ) => {
   if (!key) {
     key = uuid()
