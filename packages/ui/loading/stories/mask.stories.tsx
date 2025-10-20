@@ -2,17 +2,22 @@ import React from 'react'
 import Loading from '../src'
 
 /**
- * @title 设置加载类型
+ * @title 无蒙层
  */
-export const Type = () => {
+export const Mask = () => {
+  const loadingIdRef = React.useRef<any>(null)
+
+  React.useEffect(() => {
+    return () => {
+      Loading.close(loadingIdRef.current)
+    }
+  }, [])
+
   return (
     <>
-      <h1>Type</h1>
-      <div
-        className="loading-basic__wrap"
-        style={{ position: 'relative', width: 500, height: 300 }}
-      >
-        <Loading type="dot">
+      <h1>Mask</h1>
+      <div className="loading-mask__wrap" style={{ position: 'relative', width: 500, height: 300 }}>
+        <Loading content="Loading..." delay={500} showMask={false}>
           <div
             style={{
               width: 500,
