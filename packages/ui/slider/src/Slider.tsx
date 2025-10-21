@@ -27,6 +27,7 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
     ref
   ) => {
     const tooltipRef = useRef<TooltipHelpers>(null)
+    const tooltipRef2 = useRef<TooltipHelpers>(null)
 
     const {
       value,
@@ -34,14 +35,14 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
       max,
       disabled,
       vertical,
-      tooltipVisible,
+      range,
       rootProps,
       getRailProps,
       getTrackProps,
       getHandleProps,
       getMarkProps,
       getMarkLabelProps,
-    } = useSlider(rest, tooltipRef)
+    } = useSlider(rest, [tooltipRef, tooltipRef2])
 
     const cls = cx(
       prefixCls,
@@ -63,27 +64,78 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
       <div role={role} className={cls} {...rootProps} ref={useMergeRefs(rootProps.ref, ref)}>
         <div className={`${prefixCls}__rail`} {...getRailProps()} />
         <div className={`${prefixCls}__track`} {...getTrackProps()} />
-        <div className={`${prefixCls}__handle`} {...getHandleProps()}>
-          <Tooltip
-            innerRef={tooltipRef}
-            visible={tooltipVisible}
-            title={
-              <div style={{ textAlign: 'center' }}>
-                {isFunction(tipFormatter) ? tipFormatter(value) : value}
-              </div>
-            }
-          >
-            <span
-              style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                left: 0,
-                bottom: 0,
-              }}
-            />
-          </Tooltip>
-        </div>
+
+        {range && Array.isArray(value) ? (
+          <>
+            {/* 起始滑块 */}
+            <div className={`${prefixCls}__handle`} {...getHandleProps(0)}>
+              <Tooltip
+                innerRef={tooltipRef}
+                placement={vertical ? 'right' : 'top'}
+                title={
+                  <div style={{ textAlign: 'center' }}>
+                    {isFunction(tipFormatter) ? tipFormatter(value[0]) : value[0]}
+                  </div>
+                }
+              >
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    left: 0,
+                    bottom: 0,
+                  }}
+                />
+              </Tooltip>
+            </div>
+            {/* 结束滑块 */}
+            <div className={`${prefixCls}__handle`} {...getHandleProps(1)}>
+              <Tooltip
+                innerRef={tooltipRef2}
+                placement={vertical ? 'right' : 'top'}
+                title={
+                  <div style={{ textAlign: 'center' }}>
+                    {isFunction(tipFormatter) ? tipFormatter(value[1]) : value[1]}
+                  </div>
+                }
+              >
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    left: 0,
+                    bottom: 0,
+                  }}
+                />
+              </Tooltip>
+            </div>
+          </>
+        ) : (
+          <div className={`${prefixCls}__handle`} {...getHandleProps(0)}>
+            <Tooltip
+              innerRef={tooltipRef}
+              placement={vertical ? 'right' : 'top'}
+              title={
+                <div style={{ textAlign: 'center' }}>
+                  {isFunction(tipFormatter) ? tipFormatter(value as number) : value}
+                </div>
+              }
+            >
+              <span
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                }}
+              />
+            </Tooltip>
+          </div>
+        )}
+
         <div className={`${prefixCls}__marks`}>
           {marksMemo.map((mark, idx) => {
             return <span key={idx} className={`${prefixCls}__mark`} {...getMarkProps(mark)} />
