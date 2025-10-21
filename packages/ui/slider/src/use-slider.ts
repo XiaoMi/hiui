@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { invariant } from '@hi-ui/env'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { useToggle } from '@hi-ui/use-toggle'
@@ -11,17 +10,18 @@ export const useSlider = (
   {
     value: valueProp,
     onChange,
-    defaultValue = 0,
+    defaultValue,
     min: minProp = 0,
     max: maxProp = 100,
     step = 1,
     vertical = false,
     disabled = false,
     reversed = false,
+    range = false,
     color,
     ...rest
   }: UseSliderProps,
-  tooltipRef: React.MutableRefObject<TooltipHelpers | null>
+  tooltipRefs: React.MutableRefObject<TooltipHelpers | null>[]
 ) => {
   /**
    * 边界优化
@@ -35,22 +35,69 @@ export const useSlider = (
     return [minProp, maxProp, maxProp - minProp]
   }, [maxProp, minProp])
 
-  const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange, Object.is)
+  // 根据 range 模式设置默认值
+  const initialDefaultValue = useMemo(() => {
+    if (defaultValue !== undefined) return defaultValue
+    return range ? ([min, max] as [number, number]) : 0
+  }, [defaultValue, range, min, max])
+
+  // 内部状态管理 - 支持滑块交叉
+  const [internalValue, setInternalValue] = useState(() => valueProp ?? initialDefaultValue)
+
+  // 记录是否正在拖动
+  const isDraggingRef = useRef(false)
+
+  // 使用内部状态，只在非拖动状态下同步外部 value
+  useEffect(() => {
+    if (!isDraggingRef.current && valueProp !== undefined) {
+      setInternalValue(valueProp)
+    }
+  }, [valueProp])
+
+  const value = internalValue
+
+  // 手动处理值更新
+  const tryChangeValue = useCallback(
+    (nextValue: number | [number, number]) => {
+      // 更新内部状态
+      setInternalValue(nextValue)
+
+      // 调用外部 onChange，范围模式下返回排序后的值
+      if (onChange) {
+        if (range && Array.isArray(nextValue)) {
+          const sortedValue: [number, number] = [
+            Math.min(nextValue[0], nextValue[1]),
+            Math.max(nextValue[0], nextValue[1]),
+          ]
+          onChange(sortedValue)
+        } else {
+          onChange(nextValue)
+        }
+      }
+    },
+    [onChange, range]
+  )
 
   /**
    * 统一拦截处理值边界
    */
   const proxyTryChangeValue = useCallback(
-    (nextValue: number) => {
+    (nextValue: number | [number, number]) => {
       if (disabled) return
 
-      if (nextValue > max) {
-        nextValue = max
-      } else if (nextValue < min) {
-        nextValue = min
+      if (Array.isArray(nextValue)) {
+        const [val0, val1] = nextValue
+        const clampedVal0 = Math.max(min, Math.min(val0, max))
+        const clampedVal1 = Math.max(min, Math.min(val1, max))
+        tryChangeValue([clampedVal0, clampedVal1])
+      } else {
+        if (nextValue > max) {
+          nextValue = max
+        } else if (nextValue < min) {
+          nextValue = min
+        }
+        tryChangeValue(nextValue)
       }
-
-      tryChangeValue(nextValue)
     },
     [disabled, max, min, tryChangeValue]
   )
@@ -58,12 +105,15 @@ export const useSlider = (
   const [firstTime, setFirstTime] = useState(0)
   const [lastTime, setLastTime] = useState(0)
   const [inMoving, setInMoving] = useState(false)
+  // 跟踪当前拖动的滑块索引，范围模式下使用：0 表示起始滑块，1 表示结束滑块
+  const [activeHandleIndex, setActiveHandleIndex] = useState<number>(0)
 
   const [tooltipVisible, tooltipVisibleAction] = useToggle()
 
   const sliderRef = useRef<HTMLDivElement>(null)
 
   const handleElementRef = useRef<HTMLDivElement>(null)
+  const handleElementRef2 = useRef<HTMLDivElement>(null)
 
   /**
    * 计算 track 滑动长度占总 Slider 长度占比
@@ -76,7 +126,27 @@ export const useSlider = (
     [rangeLength, min]
   )
 
-  const currentPositionOffset = useMemo(() => getTrackPercent(value), [value, getTrackPercent])
+  const rangePositions = useMemo(() => {
+    if (range && Array.isArray(value)) {
+      const pos0 = getTrackPercent(value[0])
+      const pos1 = getTrackPercent(value[1])
+      // 不管滑块相对位置如何，轨道始终显示在两个滑块之间
+      return {
+        start: Math.min(pos0, pos1),
+        end: Math.max(pos0, pos1),
+        handle0Pos: pos0,
+        handle1Pos: pos1,
+      }
+    }
+    return null
+  }, [range, value, getTrackPercent])
+
+  const currentPositionOffset = useMemo(() => {
+    if (range && Array.isArray(value)) {
+      return rangePositions?.start || 0
+    }
+    return getTrackPercent(value as number)
+  }, [value, getTrackPercent, range, rangePositions])
 
   /**
    * 点击滑块
@@ -168,29 +238,56 @@ export const useSlider = (
     (evt) => {
       const nextValue = getValueInDrag(evt)
       if (nextValue != null) {
-        proxyTryChangeValue(nextValue)
+        if (range && Array.isArray(value)) {
+          // 范围模式：根据当前激活的滑块更新相应的值
+          const newValue: [number, number] = [...value]
+          newValue[activeHandleIndex] = nextValue
+          proxyTryChangeValue(newValue)
+        } else {
+          proxyTryChangeValue(nextValue)
+        }
       }
     },
-    [getValueInDrag, proxyTryChangeValue]
+    [getValueInDrag, proxyTryChangeValue, range, value, activeHandleIndex]
   )
 
   /**
    * 手指按下 handle，触发拖动
    */
   const onDragStart = useCallback(
-    (evt) => {
+    (evt, handleIndex: number = 0) => {
       setFirstTime(Date.now())
 
       if (disabled) return
 
       setInMoving(true)
+      setActiveHandleIndex(handleIndex)
+      isDraggingRef.current = true // AIGC: 标记开始拖动
 
       // 点击 handler 滑动器时保持值不变，不触发修改
-      if (!(handleElementRef.current && handleElementRef.current.contains(evt.target))) {
-        setValueByDrag(evt)
+      const isHandle1 = handleElementRef.current && handleElementRef.current.contains(evt.target)
+      const isHandle2 = handleElementRef2.current && handleElementRef2.current.contains(evt.target)
+
+      if (!isHandle1 && !isHandle2) {
+        // 点击轨道：在范围模式下，判断应该移动哪个滑块
+        if (range && Array.isArray(value)) {
+          const nextValue = getValueInDrag(evt)
+          if (nextValue != null) {
+            const [start, end] = value
+            const distToStart = Math.abs(nextValue - start)
+            const distToEnd = Math.abs(nextValue - end)
+            const closerIndex = distToStart <= distToEnd ? 0 : 1
+            setActiveHandleIndex(closerIndex)
+            const newValue: [number, number] = [...value]
+            newValue[closerIndex] = nextValue
+            proxyTryChangeValue(newValue)
+          }
+        } else {
+          setValueByDrag(evt)
+        }
       }
     },
-    [disabled, setValueByDrag]
+    [disabled, setValueByDrag, range, value, getValueInDrag, proxyTryChangeValue]
   )
 
   // 手指控制滑块移动
@@ -199,10 +296,14 @@ export const useSlider = (
       if (inMoving) {
         setValueByDrag(evt)
         // 拖动过程中实时更新 tooltip 显示位置
-        tooltipRef.current?.update()
+        if (activeHandleIndex === 0) {
+          tooltipRefs[0].current?.update()
+        } else if (activeHandleIndex === 1) {
+          tooltipRefs[1].current?.update()
+        }
       }
     },
-    [inMoving, setValueByDrag, tooltipRef]
+    [activeHandleIndex, inMoving, setValueByDrag, tooltipRefs]
   )
 
   /**
@@ -214,9 +315,9 @@ export const useSlider = (
       evt.stopPropagation()
       setLastTime(Date.now())
       setInMoving(false)
-      tooltipVisibleAction.off()
+      isDraggingRef.current = false
     },
-    [tooltipVisibleAction, inMoving]
+    [inMoving]
   )
 
   useEffect(() => {
@@ -247,9 +348,11 @@ export const useSlider = (
    * 键盘事件
    */
   const onKeyDown = useCallback(
-    (evt) => {
+    (evt, handleIndex: number = 0) => {
       const { keyCode } = evt
       let nextValue
+      const currentValue = range && Array.isArray(value) ? value[handleIndex] : (value as number)
+
       switch (keyCode) {
         // home
         case 36:
@@ -257,14 +360,26 @@ export const useSlider = (
           evt.stopPropagation()
 
           nextValue = min
-          proxyTryChangeValue(nextValue)
+          if (range && Array.isArray(value)) {
+            const newValue: [number, number] = [...value]
+            newValue[handleIndex] = nextValue
+            proxyTryChangeValue(newValue)
+          } else {
+            proxyTryChangeValue(nextValue)
+          }
           break
         case 35:
           evt.preventDefault()
           evt.stopPropagation()
 
           nextValue = max
-          proxyTryChangeValue(nextValue)
+          if (range && Array.isArray(value)) {
+            const newValue: [number, number] = [...value]
+            newValue[handleIndex] = nextValue
+            proxyTryChangeValue(newValue)
+          } else {
+            proxyTryChangeValue(nextValue)
+          }
           break
 
         case 37:
@@ -272,20 +387,32 @@ export const useSlider = (
           evt.preventDefault()
           evt.stopPropagation()
 
-          nextValue = value - step
-          proxyTryChangeValue(nextValue)
+          nextValue = currentValue - step
+          if (range && Array.isArray(value)) {
+            const newValue: [number, number] = [...value]
+            newValue[handleIndex] = nextValue
+            proxyTryChangeValue(newValue)
+          } else {
+            proxyTryChangeValue(nextValue)
+          }
           break
         case 39:
         case 40:
           evt.preventDefault()
           evt.stopPropagation()
 
-          nextValue = value + step
-          proxyTryChangeValue(nextValue)
+          nextValue = currentValue + step
+          if (range && Array.isArray(value)) {
+            const newValue: [number, number] = [...value]
+            newValue[handleIndex] = nextValue
+            proxyTryChangeValue(newValue)
+          } else {
+            proxyTryChangeValue(nextValue)
+          }
           break
       }
     },
-    [value, max, min, proxyTryChangeValue, step]
+    [value, max, min, proxyTryChangeValue, step, range]
   )
 
   /**
@@ -297,42 +424,58 @@ export const useSlider = (
     }
   })
 
-  const getHandleProps = useCallback(() => {
-    const style: React.CSSProperties = {
-      position: 'absolute',
-      userSelect: 'none',
-      touchAction: 'none',
-    }
+  const getHandleProps = useCallback(
+    (handleIndex: number = 0) => {
+      const style: React.CSSProperties = {
+        position: 'absolute',
+        userSelect: 'none',
+        touchAction: 'none',
+      }
 
-    if (vertical) {
-      const value = reversed ? `${currentPositionOffset}%` : `${100 - currentPositionOffset}%`
-      style.top = value
-    } else {
-      const value = reversed ? `${100 - currentPositionOffset}%` : `${currentPositionOffset}%`
-      style.left = value
-    }
+      let offset = currentPositionOffset
+      if (range && rangePositions) {
+        // 使用实际的滑块位置，而不是排序后的位置
+        offset = handleIndex === 0 ? rangePositions.handle0Pos : rangePositions.handle1Pos
+      }
 
-    return {
-      ref: handleElementRef,
-      style,
+      if (vertical) {
+        const value = reversed ? `${offset}%` : `${100 - offset}%`
+        style.top = value
+      } else {
+        const value = reversed ? `${100 - offset}%` : `${offset}%`
+        style.left = value
+      }
+
+      return {
+        ref: handleIndex === 0 ? handleElementRef : handleElementRef2,
+        style,
+        onMouseEnter,
+        onMouseLeave,
+        onClick: onHandleClick,
+        tabIndex: 0,
+        onKeyDown: (evt: React.KeyboardEvent) => onKeyDown(evt, handleIndex),
+        onBlur,
+        onPointerDown: (evt: React.PointerEvent) => {
+          evt.stopPropagation()
+          setActiveHandleIndex(handleIndex)
+          onDragStart(evt, handleIndex)
+        },
+      }
+    },
+    [
       onMouseEnter,
       onMouseLeave,
-      onClick: onHandleClick,
-      tabIndex: 0,
+      onHandleClick,
       onKeyDown,
+      currentPositionOffset,
+      vertical,
       onBlur,
-    }
-  }, [
-    // onDragStart,
-    onMouseEnter,
-    onMouseLeave,
-    onHandleClick,
-    onKeyDown,
-    currentPositionOffset,
-    vertical,
-    onBlur,
-    reversed,
-  ])
+      reversed,
+      range,
+      rangePositions,
+      onDragStart,
+    ]
+  )
 
   const getRailProps = useCallback(() => {
     const style: React.CSSProperties = {
@@ -351,14 +494,32 @@ export const useSlider = (
 
     const style: React.CSSProperties = {
       position: 'absolute',
-      [vertical ? 'height' : 'width']: `${currentPositionOffset}%`,
-      [vertical ? verticalAttr : horizontalAttr]: 0,
+    }
+
+    if (range && rangePositions) {
+      // 范围模式：轨道从 start 到 end
+      const trackLength = rangePositions.end - rangePositions.start
+      style[vertical ? 'height' : 'width'] = `${trackLength}%`
+
+      if (vertical) {
+        // 垂直模式：bottom 从 rangePositions.start 开始
+        style[reversed ? 'top' : 'bottom'] = `${rangePositions.start}%`
+      } else {
+        // 水平模式：left 从 rangePositions.start 开始
+        style[reversed ? 'right' : 'left'] = `${
+          reversed ? 100 - rangePositions.end : rangePositions.start
+        }%`
+      }
+    } else {
+      // 单值模式：轨道从起点到当前位置
+      style[vertical ? 'height' : 'width'] = `${currentPositionOffset}%`
+      style[vertical ? verticalAttr : horizontalAttr] = 0
     }
 
     return {
       style,
     }
-  }, [vertical, currentPositionOffset, reversed])
+  }, [vertical, currentPositionOffset, reversed, range, rangePositions])
 
   const getMarkProps = useCallback(
     (props) => {
@@ -367,17 +528,30 @@ export const useSlider = (
       const attr = vertical ? 'bottom' : 'left'
       const attrValue = reversed ? `${100 - dotValue}%` : `${dotValue}%`
 
+      // 判断 mark 是否被选中
+      let isChecked = false
+      if (range && Array.isArray(value)) {
+        const percentValue = ((props.value - min) / rangeLength) * 100
+        const [startPercent, endPercent] = [
+          ((value[0] - min) / rangeLength) * 100,
+          ((value[1] - min) / rangeLength) * 100,
+        ]
+        isChecked = percentValue >= startPercent && percentValue <= endPercent
+      } else {
+        isChecked = dotValue <= getTrackPercent(value as number)
+      }
+
       return {
         style: {
           [attr]: attrValue,
         },
-        'data-checked': setAttrStatus(dotValue <= value),
+        'data-checked': setAttrStatus(isChecked),
         onClick: (evt: React.MouseEvent) => {
           onMarkClick(evt, dotValue)
         },
       }
     },
-    [onMarkClick, vertical, min, rangeLength, value, reversed]
+    [onMarkClick, vertical, min, rangeLength, value, reversed, range, getTrackPercent]
   )
 
   const getMarkLabelProps = useCallback(
@@ -414,7 +588,7 @@ export const useSlider = (
     } as React.CSSProperties,
     ref: sliderRef,
     // 指定某个 slider 被点击时触发，不能挂载到全局
-    onPointerDown: onDragStart,
+    onPointerDown: (evt: React.PointerEvent) => onDragStart(evt, 0),
   }
 
   return {
@@ -424,6 +598,7 @@ export const useSlider = (
     vertical,
     disabled,
     tooltipVisible,
+    range,
     rootProps: rootProps,
     getHandleProps,
     getRailProps,
@@ -437,11 +612,11 @@ export interface UseSliderProps {
   /**
    * 设置初始默认值
    */
-  defaultValue?: number
+  defaultValue?: number | [number, number]
   /**
    * 设置当前值（受控）
    */
-  value?: number
+  value?: number | [number, number]
   /**
    * 最小值
    */
@@ -471,9 +646,13 @@ export interface UseSliderProps {
    */
   color?: string
   /**
+   * 是否为范围选择
+   */
+  range?: boolean
+  /**
    * 当 Slider 的值发生改变时触发，value 为变化后的值
    */
-  onChange?: (value: number) => void
+  onChange?: (value: number | [number, number]) => void
 }
 
 export type UseSliderReturn = ReturnType<typeof useSlider>
