@@ -24,8 +24,9 @@ const clonedReactDOM = { ...ReactDOM } as MockReactDOM
 const { version, render: reactLegacyRender, unmountComponentAtNode } = clonedReactDOM
 
 let createRoot: CreateRootFn | undefined
+let mainVersion = 0
 try {
-  const mainVersion = Number((version || '').split('.')[0])
+  mainVersion = Number((version || '').split('.')[0])
   if (mainVersion >= 18) {
     ;({ createRoot } = clonedReactDOM)
   }
@@ -57,6 +58,13 @@ function modernRender(node: React.ReactElement, container: ContainerType) {
 
 function legacyRender(node: React.ReactElement, container: ContainerType) {
   reactLegacyRender?.(node, container)
+
+  if (mainVersion >= 19) {
+    console.error(
+      // TODO 增加在线文档地址
+      'React19 中无 ReactDOM.render 方法，部分静态API将无法使用，请参照 @hi-ui/patch-for-react 补丁包进行兼容处理！'
+    )
+  }
 }
 
 export function render(node: React.ReactElement, container: ContainerType) {
