@@ -93,6 +93,9 @@ export default {
     searchPlaceholder: 'Please search',
     emptyContent: 'No data',
     limit: 'Reached limit, unable to add',
+    allItems: 'All options',
+    checkedItems: 'Checked',
+    clear: 'Clear',
   },
   upload: {
     buttonText: 'Upload',
