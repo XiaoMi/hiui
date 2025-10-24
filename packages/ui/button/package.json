@@ -45,7 +45,8 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^5.0.0-canary.2",
-    "@hi-ui/env": "^5.0.0-canary.2"
+    "@hi-ui/env": "^5.0.0-canary.2",
+    "@hi-ui/spinner": "^5.0.0-canary.3"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-canary.3",
