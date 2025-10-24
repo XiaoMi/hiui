@@ -23,7 +23,7 @@ import { Highlighter } from '@hi-ui/highlighter'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import { callAllFuncs } from '@hi-ui/func-utils'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -80,7 +80,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       checkedOnEntered = true,
       customRender,
       tagInputProps,
-      size = 'md',
+      size: sizeProp,
       prefix,
       suffix,
       onKeyDown: onKeyDownProp,
@@ -92,6 +92,9 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     // ************************** 国际化 ************************* //
 
     const i18n = useLocaleContext()

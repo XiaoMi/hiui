@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import Spinner from '@hi-ui/spinner'
 
 const _role = 'button'
@@ -18,7 +18,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       className,
       children,
       type = 'default',
-      size = 'md',
+      size: sizeProp,
       appearance = 'filled',
       disabled = false,
       loading = false,
@@ -44,6 +44,9 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       Array.isArray(icon) && icon.length > 1 ? (
         <span className={`${prefixCls}__icon ${prefixCls}__icon--suffix`}>{icon[1]}</span>
       ) : null
+
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
 
     const cls = cx(
       prefixCls,

@@ -1,5 +1,5 @@
 import React, { forwardRef, useMemo, useRef, useImperativeHandle } from 'react'
-import { HiBaseFieldNames, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
@@ -87,12 +87,15 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       fieldNames,
       checkedMode = 'ALL',
       expandOnSelect,
-      size = 'lg',
+      size: sizeProp,
       innerRef,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'lg'
+
     const [treeData, setTreeData] = useCache(data)
 
     const flattedData = useMemo(() => flattedDataProp || flattenTreeData(treeData, fieldNames), [

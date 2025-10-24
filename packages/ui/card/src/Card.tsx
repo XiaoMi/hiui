@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Loading from '@hi-ui/loading'
@@ -26,13 +26,16 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
       loading,
       hoverable = false,
       bordered = true,
-      size = 'md',
+      size: sizeProp,
       showHeaderDivider,
       scrollHeight,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const hasHeader = !!title || !!extra || !!subtitle
 
     const cls = cx(prefixCls, className, {

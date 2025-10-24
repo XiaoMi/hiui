@@ -3,6 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { useCounter, CounterProps } from '@hi-ui/counter'
+import { useGlobalContext } from '@hi-ui/core'
 
 const _role = 'input'
 const _prefix = getPrefixCls('number-input')
@@ -11,10 +12,26 @@ const _prefix = getPrefixCls('number-input')
  * 数字输入框
  */
 export const NumberInput = forwardRef<HTMLDivElement | null, NumberInputProps>(
-  ({ prefixCls = _prefix, role = _role, prefix, suffix, styles, classNames, ...rest }, ref) => {
+  (
+    {
+      prefixCls = _prefix,
+      role = _role,
+      prefix,
+      suffix,
+      styles,
+      classNames,
+      size: sizeProp,
+      ...rest
+    },
+    ref
+  ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize
+
     const { rootProps, getInputProps, getMinusButtonProps, getPlusButtonProps } = useCounter({
       prefixCls,
       role,
+      size,
       ...rest,
     })
 

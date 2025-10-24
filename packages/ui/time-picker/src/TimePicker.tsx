@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import {
   TimePickerStep,
   TimePickerType,
@@ -64,7 +64,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       placeholder: originalPlaceholder = DefaultPlaceholder,
       inputReadonly = false,
       overlay,
-      size = 'md',
+      size: sizeProp,
       invalid = false,
       prefix,
       label,
@@ -73,6 +73,9 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
 
     const confirmText = i18n.get('timePicker.ok')

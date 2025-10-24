@@ -1,7 +1,7 @@
 import React, { forwardRef, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 
 import { AlertTypeEnum } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -32,12 +32,15 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
       closeIcon = defaultCloseIcon,
       // duration小于 0，表示不开启自动关闭
       duration = -1,
-      size = 'lg',
+      size: sizeProp,
       onClose,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'lg'
+
     const [internalVisible, setInternalVisible] = useState(true)
 
     const handleClose = useLatestCallback(() => {
