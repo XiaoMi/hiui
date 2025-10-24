@@ -12,14 +12,11 @@ import { getAccentColorTheme } from './accent-color'
 
 const PREFIX = 'hi-v4'
 
-export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc } = ({
-  children,
-  locale,
-  languages,
-  accentColor,
-  theme,
-  portal,
-}) => {
+export const Provider: React.FC<ProviderProps> & {
+  extends: ProviderExtendsFunc
+  register: ProviderRegisterFunc
+  merge: ProviderMergeFunc
+} = ({ children, locale, languages, accentColor, theme, portal }) => {
   /**
    * global css var config
    */
@@ -67,6 +64,13 @@ if (__DEV__) {
   Provider.displayName = 'Provider'
 }
 
+/**
+ * 从 LocaleProvider 导出的方法
+ */
 Provider.extends = LocaleProvider.extends
+Provider.register = LocaleProvider.register as any
+Provider.merge = LocaleProvider.merge as any
 
 type ProviderExtendsFunc = typeof LocaleProvider.extends
+type ProviderRegisterFunc = typeof LocaleProvider.register
+type ProviderMergeFunc = typeof LocaleProvider.merge

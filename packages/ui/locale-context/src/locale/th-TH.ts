@@ -69,10 +69,10 @@ export default {
   pagination: {
     total: ['ทั้งหมด', 'รายการ'],
     simple: ['', 'หน้า', '', 'หน้า', 'รายการ'],
-    item: '',
+    item: 'รายการ',
     itemPerPage: 'หน้า',
-    goto: 'ไปที่',
-    page: '',
+    goto: 'ไป',
+    page: 'หน้า',
   },
   cascader: {
     placeholder: 'กรุณาเลือก',
