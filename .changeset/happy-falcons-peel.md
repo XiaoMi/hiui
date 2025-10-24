@@ -35,4 +35,4 @@
 "@hi-ui/hiui": patch
 ---
 
-feat: 增加 size api 全局配置 (5.0)
+feat(global-context): 增加 size api 全局配置 (5.0)
