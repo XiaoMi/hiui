@@ -24,7 +24,7 @@ $prefix: '#{$component-prefix}-result' !default;
   }
 
   &__title {
-    margin-top: use-spacing(8);
+    margin-top: use-spacing(6);
     font-size: use-text-size('lg');
     font-weight: use-text-weight('medium');
     color: use-color('gray', 700);
