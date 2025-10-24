@@ -1,5 +1,11 @@
 # @hi-ui/empty-state
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- 98541bb44: style(empty-state): 新版图标替换 & 修改彩色图标命名 (5.0)
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

@@ -1,5 +1,36 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.33
+
+### Minor Changes
+
+- b13b04f51: feat(message): 支持自定义图标 (5.0)
+- bc1d289db: feat(slider): 增加范围选择功能 (5.0)
+- a84ba95dc: feat(loading): 默认效果改为 spin 类型 & 增加 contentPosition、size 和 color 参数 (5.0)
+
+### Patch Changes
+
+- 47a5a480c: fix(layout&page-header): add types export to package.json for layout and page-header
+- 07195196b: style(result): 新版样式 (5.0)
+- a84ba95dc: style(button): loading 改为使用 Spinner 组件 (5.0)
+- 98541bb44: style(empty-state): 新版图标替换 & 修改彩色图标命名 (5.0)
+- Updated dependencies [b13b04f51]
+- Updated dependencies [47a5a480c]
+- Updated dependencies [bc1d289db]
+- Updated dependencies [a84ba95dc]
+- Updated dependencies [07195196b]
+- Updated dependencies [a84ba95dc]
+- Updated dependencies [98541bb44]
+  - @hi-ui/message@5.0.0-canary.7
+  - @hi-ui/layout@5.0.0-canary.10
+  - @hi-ui/page-header@5.0.0-canary.1
+  - @hi-ui/slider@5.0.0-canary.5
+  - @hi-ui/loading@5.0.0-canary.4
+  - @hi-ui/spinner@5.0.0-canary.4
+  - @hi-ui/result@5.0.0-canary.4
+  - @hi-ui/button@5.0.0-canary.10
+  - @hi-ui/empty-state@5.0.0-canary.4
+
 ## 5.0.0-canary.32
 
 ### Major Changes

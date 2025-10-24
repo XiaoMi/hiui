@@ -1,5 +1,11 @@
 # @hi-ui/result
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- 07195196b: style(result): 新版样式 (5.0)
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/spinner
 
+## 5.0.0-canary.4
+
+### Minor Changes
+
+- a84ba95dc: feat(loading): 默认效果改为 spin 类型 & 增加 contentPosition、size 和 color 参数 (5.0)
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

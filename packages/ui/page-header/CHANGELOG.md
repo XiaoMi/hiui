@@ -1,5 +1,11 @@
 # @hi-ui/page-header
 
+## 5.0.0-canary.1
+
+### Patch Changes
+
+- 47a5a480c: fix(layout&page-header): add types export to package.json for layout and page-header
+
 ## 5.0.0-canary.0
 
 ### Major Changes

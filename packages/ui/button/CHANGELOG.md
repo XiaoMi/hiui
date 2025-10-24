@@ -1,5 +1,13 @@
 # @hi-ui/button
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- a84ba95dc: style(button): loading 改为使用 Spinner 组件 (5.0)
+- Updated dependencies [a84ba95dc]
+  - @hi-ui/spinner@5.0.0-canary.4
+
 ## 5.0.0-canary.9
 
 ### Patch Changes

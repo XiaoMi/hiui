@@ -1,5 +1,11 @@
 # @hi-ui/message
 
+## 5.0.0-canary.7
+
+### Minor Changes
+
+- b13b04f51: feat(message): 支持自定义图标 (5.0)
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

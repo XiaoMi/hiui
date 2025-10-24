@@ -1,5 +1,11 @@
 # @hi-ui/slider
 
+## 5.0.0-canary.5
+
+### Minor Changes
+
+- bc1d289db: feat(slider): 增加范围选择功能 (5.0)
+
 ## 5.0.0-canary.4
 
 ### Patch Changes
