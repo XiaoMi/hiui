@@ -11,9 +11,20 @@ export const Vertical = () => {
     <>
       <h1>Vertical</h1>
       <div className="slider-Vertical__wrap">
-        <Slider vertical value={value} onChange={setValue} style={{ height: 300 }} />
+        <Slider
+          vertical
+          value={value}
+          onChange={(v) => setValue(v as number)}
+          style={{ height: 300 }}
+        />
         <br />
-        <Counter value={value} onChange={setValue} step={10} min={0} max={100} />
+        <Counter
+          value={value}
+          onChange={(v) => setValue(v as number)}
+          step={10}
+          min={0}
+          max={100}
+        />
       </div>
     </>
   )
