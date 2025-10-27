@@ -11,7 +11,7 @@ import { TableHeader } from './TableHeader'
 import { defaultLoadingIcon } from './icons'
 import { TableExtra, TableColumnItem, TableOnRowReturn, TableRowEventData } from './types'
 import { TableProvider } from './context'
-import { checkNeedTotalOrEvg, getTotalOrEvgRowData, uuid } from './utils'
+import { checkNeedTotalOrEvg, flattenColumns, getTotalOrEvgRowData, uuid } from './utils'
 import { useTable, UseTableProps } from './use-table'
 import { useEmbedExpand, UseEmbedExpandProps } from './hooks/use-embed-expand'
 import { TheadContent } from './TheadContent'
@@ -129,12 +129,20 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       const avgRow = { id: 'avg', raw: { key: 'avg' } }
       let hasAvgColumn = false
 
-      columns.forEach((column, index) => {
-        // 行选中模式下，index=0是checkbox列，index=1才是第一列 ; fix issue: https://github.com/XiaoMi/hiui/issues/2863
-        if (index === 0 || (index === 1 && columns[0].dataKey === SELECTION_DATA_KEY)) {
+      const flattenedColumns = flattenColumns(columns)
+
+      // 找第一个非选择框列
+      let firstDataColumnIndex = 0
+      if (columns[0]?.dataKey === SELECTION_DATA_KEY) {
+        firstDataColumnIndex = 1
+      }
+
+      flattenedColumns.forEach((column, index) => {
+        if (index === firstDataColumnIndex) {
           // @ts-ignore
           avgRow.raw[column.dataKey] = i18n.get('table.average')
         }
+
         if (checkNeedTotalOrEvg(data, column, 'avg')) {
           hasAvgColumn = true
           // @ts-ignore
@@ -153,14 +161,21 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       const sumRow = { id: 'sum', raw: { key: 'sum' } }
       let hasSumColumn = false
 
-      columns.forEach((column, index) => {
-        if (index === 0 || (index === 1 && columns[0].dataKey === SELECTION_DATA_KEY)) {
+      const flattenedColumns = flattenColumns(columns)
+
+      let firstDataColumnIndex = 0
+      if (columns[0]?.dataKey === SELECTION_DATA_KEY) {
+        firstDataColumnIndex = 1
+      }
+
+      flattenedColumns.forEach((column, index) => {
+        if (index === firstDataColumnIndex) {
           // @ts-ignore
           sumRow.raw[column.dataKey] = i18n.get('table.total')
         }
+
         if (checkNeedTotalOrEvg(data, column, 'total')) {
           hasSumColumn = true
-          // 获取当前数据最大小数点个数，并设置最后总和值小数点
           // @ts-ignore
           sumRow.raw[column.dataKey] = getTotalOrEvgRowData(data, column, false)
         }

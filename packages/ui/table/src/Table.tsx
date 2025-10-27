@@ -214,6 +214,13 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           const checked = isCheckedRowKey(rowKey)
           const disabledCheckbox = checkRowIsDisabledCheckbox(rowItem)
 
+          if (rowItem.key === 'avg' || rowItem.key === 'sum') {
+            return {
+              node: null,
+              checked: false,
+            }
+          }
+
           return {
             node:
               type === 'checkbox' ? (
