@@ -1,5 +1,14 @@
 # @hi-ui/core
 
+## 4.0.10
+
+### Patch Changes
+
+- [#3383](https://github.com/XiaoMi/hiui/pull/3383) [`d5b4363`](https://github.com/XiaoMi/hiui/commit/d5b4363888ebc0869a70482de2eb114326ee4d3c) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(locale-context): 增加泰语
+
+- Updated dependencies [[`d5b4363`](https://github.com/XiaoMi/hiui/commit/d5b4363888ebc0869a70482de2eb114326ee4d3c)]:
+  - @hi-ui/locale-context@4.0.14
+
 ## 4.0.9
 
 ### Patch Changes

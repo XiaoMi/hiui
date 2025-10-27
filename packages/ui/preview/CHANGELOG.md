@@ -1,5 +1,14 @@
 # @hi-ui/preview
 
+## 4.2.2
+
+### Patch Changes
+
+- [#3380](https://github.com/XiaoMi/hiui/pull/3380) [`9808ab271`](https://github.com/XiaoMi/hiui/commit/9808ab27177458431767602538ee52d1f2a3a9e6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(preview): prevent movement on right-click in Preview component (#3379)
+
+- Updated dependencies [[`d5b4363`](https://github.com/XiaoMi/hiui/commit/d5b4363888ebc0869a70482de2eb114326ee4d3c)]:
+  - @hi-ui/core@4.0.10
+
 ## 4.2.1
 
 ### Patch Changes
