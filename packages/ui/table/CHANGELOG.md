@@ -1,5 +1,14 @@
 # @hi-ui/table
 
+## 4.12.2
+
+### Patch Changes
+
+- [#3382](https://github.com/XiaoMi/hiui/pull/3382) [`144de50f5`](https://github.com/XiaoMi/hiui/commit/144de50f528c834942d1d04467f7234c1710f758) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 统计行加上表头分组情况的处理 (#3381)
+
+- Updated dependencies [[`d5b4363`](https://github.com/XiaoMi/hiui/commit/d5b4363888ebc0869a70482de2eb114326ee4d3c)]:
+  - @hi-ui/core@4.0.10
+
 ## 4.12.1
 
 ### Patch Changes
