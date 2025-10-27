@@ -165,6 +165,11 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     // 移动前
     const onMoveStart = useCallback(
       (e: React.MouseEvent) => {
+        // 判断如果是鼠标右键，则不进行移动
+        if (e.button === 2) {
+          return
+        }
+
         e.preventDefault()
         setIsMoving(true)
         movingPosition.current.pageX = e.pageX
