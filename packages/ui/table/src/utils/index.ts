@@ -267,3 +267,18 @@ export const getColumnByDefaultSortOrder = (columns: TableColumnItem[]): TableCo
 
   return {} as TableColumnItem
 }
+
+export const flattenColumns = (columns: TableColumnItem[]): TableColumnItem[] => {
+  const result: TableColumnItem[] = []
+  const traverse = (cols: TableColumnItem[]) => {
+    cols.forEach((col) => {
+      if (col.children?.length) {
+        traverse(col.children)
+      } else {
+        result.push(col)
+      }
+    })
+  }
+  traverse(columns)
+  return result
+}
