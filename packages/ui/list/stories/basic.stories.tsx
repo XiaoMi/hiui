@@ -10,29 +10,50 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="list-basic__wrap">
-        <List
-          data={[
-            {
-              title: '下单量-指标',
-              description: '下单量在交易环节中整体用户下单的数量',
-              extra: '最新使用：2019.12.23 下午07:07',
-              avatar:
-                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
-              action: '编辑',
-            },
-            {
-              title: '下单量-指标',
-              description: '下单量在交易环节中整体用户下单的数量',
-              extra: '最新使用：2019.12.23 下午07:07',
-              avatar:
-                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
-              action: '编辑',
-            },
-          ]}
-          render={(dataItem) => {
-            return <List.Item {...dataItem} />
-          }}
-        />
+        <div style={{ backgroundColor: '#f5f8fc', padding: 16 }}>
+          <List
+            data={[
+              {
+                title: '1、当前这里是标题信息',
+              },
+              {
+                title: '2、当前这里是标题信息',
+              },
+              {
+                title: '3、当前这里是标题信息',
+              },
+            ]}
+            render={(dataItem) => {
+              return <List.Item {...dataItem} />
+            }}
+          />
+          <br />
+          <List
+            data={[
+              {
+                title: '当前这里是标题信息',
+                description:
+                  '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
+                avatar: 'https://xiaomi.github.io/hiui/logo.png',
+              },
+              {
+                title: '当前这里是标题信息',
+                description:
+                  '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
+                avatar: 'https://xiaomi.github.io/hiui/logo.png',
+              },
+              {
+                title: '当前这里是标题信息',
+                description:
+                  '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
+                avatar: 'https://xiaomi.github.io/hiui/logo.png',
+              },
+            ]}
+            render={(dataItem) => {
+              return <List.Item {...dataItem} />
+            }}
+          />
+        </div>
       </div>
     </>
   )

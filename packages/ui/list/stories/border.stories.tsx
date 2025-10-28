@@ -3,14 +3,15 @@ import Button from '@hi-ui/button'
 import List from '../src'
 
 /**
- * @title 带分页
+ * @title 带边框
  */
-export const Pagination = () => {
+export const Bordered = () => {
   return (
     <>
-      <h1>带分页</h1>
-      <div className="list-basic__wrap">
+      <h1>Bordered</h1>
+      <div className="list-bordered__wrap">
         <List
+          bordered
           data={[
             {
               title: '当前这里是标题信息',
@@ -46,11 +47,6 @@ export const Pagination = () => {
               ),
             },
           ]}
-          pagination={{
-            total: 200,
-            pageSize: 10,
-            placement: 'right',
-          }}
           render={(dataItem) => {
             return <List.Item {...dataItem} />
           }}
