@@ -44,7 +44,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
       pagination,
       split = true,
       render,
-      bordered = true,
+      bordered,
       data,
       fieldNames,
       emptyContent,
@@ -60,6 +60,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
     const cls = cx(prefixCls, className, {
       [`${prefixCls}--bordered`]: bordered,
       [`${prefixCls}--with-pagination`]: pagination,
+      [`${prefixCls}-item--split`]: split,
     })
 
     const renderListItem = useCallback(
