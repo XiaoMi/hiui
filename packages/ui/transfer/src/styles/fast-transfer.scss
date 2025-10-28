@@ -37,6 +37,7 @@ $fast-prefix: '#{$component-prefix}-fast-transfer' !default;
       padding: use-spacing(3) use-spacing(4);
       border-radius: use-border-radius('normal');
       overflow: hidden;
+      transition: all 0.3s;
 
       &:not(&--disabled):hover {
         background-color: use-color('gray', 50);
@@ -141,6 +142,12 @@ $fast-prefix: '#{$component-prefix}-fast-transfer' !default;
           border-bottom-width: 1px;
         }
       }
+    }
+  }
+
+  &-tree {
+    .#{$component-prefix}-tree-node {
+      padding: 0;
     }
   }
 }

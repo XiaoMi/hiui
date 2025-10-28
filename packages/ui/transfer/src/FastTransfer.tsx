@@ -433,6 +433,7 @@ function SourcePanel({
             })
           ) : (
             <Tree
+              className={`${_prefix}-tree`}
               checkable
               checkedMode="SEPARATE"
               {...treeProps}
