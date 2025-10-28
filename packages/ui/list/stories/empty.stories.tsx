@@ -1,6 +1,6 @@
 import React from 'react'
 import List from '../src'
-import EmptyState, { EMPTY_STATE_IMAGE_NO_DATA_COLORFUL } from '@hi-ui/empty-state'
+import EmptyState from '@hi-ui/empty-state'
 
 /**
  * @title 数据为空
@@ -15,12 +15,7 @@ export const Empty = () => {
           render={(dataItem) => {
             return <List.Item {...dataItem} />
           }}
-          emptyContent={() => (
-            <EmptyState
-              indicator={EMPTY_STATE_IMAGE_NO_DATA_COLORFUL}
-              style={{ paddingBottom: 16 }}
-            />
-          )}
+          emptyContent={() => <EmptyState />}
         />
       </div>
     </>
