@@ -135,6 +135,9 @@ export default {
     searchPlaceholder: '搜索',
     emptyContent: '暂无数据',
     limit: '数量达上限，无法添加',
+    allItems: '所有选项',
+    checkedItems: '已选',
+    clear: '清空',
   },
   upload: {
     buttonText: '上传',
