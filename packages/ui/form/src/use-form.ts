@@ -39,6 +39,7 @@ export const useForm = <Values = Record<string, any>>({
   validateAfterTouched = false,
   validateTrigger: validateTriggerProp = DEFAULT_VALIDATE_TRIGGER,
   scrollToFirstError,
+  size,
   ...rest
 }: UseFormProps<Values>) => {
   /**
@@ -555,6 +556,7 @@ export const useForm = <Values = Record<string, any>>({
         ),
         onBlur: callAllFuncs(controlProps.onBlur, handleFieldBlur(field, validateOnBlur)),
         invalid: getFieldError(field),
+        size: controlProps.size ?? size,
       }
 
       validateTrigger.forEach((triggerName: string) => {
@@ -575,6 +577,7 @@ export const useForm = <Values = Record<string, any>>({
       validateTriggersMemo,
       handleFieldTrigger,
       getFieldError,
+      size,
     ]
   )
 
@@ -659,6 +662,10 @@ export interface UseFormProps<T = Record<string, any>> {
    * 提交失败自动滚动到第一个错误字段，配置参考：https://github.com/scroll-into-view/scroll-into-view-if-needed?tab=readme-ov-file#options
    */
   scrollToFirstError?: boolean | ScrollOptions
+  /**
+   * 设置表单尺寸
+   */
+  size?: 'sm' | 'md' | 'lg'
 }
 
 export type UseFormReturn = ReturnType<typeof useForm>

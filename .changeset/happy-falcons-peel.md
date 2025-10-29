@@ -13,6 +13,7 @@
 "@hi-ui/descriptions": patch
 "@hi-ui/dropdown": patch
 "@hi-ui/empty-state": patch
+"@hi-ui/form": patch
 "@hi-ui/global-context": patch
 "@hi-ui/input": patch
 "@hi-ui/loading": patch
