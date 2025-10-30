@@ -1,5 +1,6 @@
 import React from 'react'
 import * as Icons from '../src'
+import message from '@hi-ui/message'
 
 /**
  * @title 基础用法
@@ -727,21 +728,48 @@ export const Basic = () => {
   const renderIcon = React.useCallback(({ component: Component, tagName }) => {
     return (
       <div
+        key={tagName}
         style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          width: '200px',
-          padding: '24px 0',
-          margin: '12px',
-          marginLeft: '0px',
-          background: '#f2f4f7',
+          padding: '16px 0',
           borderRadius: '8px',
+        }}
+        onMouseEnter={(evt) => {
+          evt.currentTarget.style.backgroundColor = '#f2f4f7'
+          evt.currentTarget.style.cursor = 'pointer'
+        }}
+        onMouseLeave={(evt) => {
+          evt.currentTarget.style.backgroundColor = 'transparent'
+          evt.currentTarget.style.cursor = 'default'
+        }}
+        onClick={() => {
+          try {
+            const textArea = document.createElement('textarea')
+            textArea.value = `<${tagName} />`
+            textArea.style.position = 'fixed'
+            textArea.style.opacity = '0'
+            document.body.appendChild(textArea)
+            textArea.select()
+            document.execCommand('copy')
+            document.body.removeChild(textArea)
+            message.open({
+              title: `复制成功：\n<${tagName} />`,
+              type: 'success',
+            })
+          } catch (err) {
+            console.error('复制失败:', err)
+            message.open({
+              title: '复制失败',
+              type: 'error',
+            })
+          }
         }}
       >
         <Component style={{ fontSize: '32px' }} />
-        <div style={{ marginTop: '24px', fontSize: '14px' }}>{tagName}</div>
+        <div style={{ marginTop: '16px', fontSize: '12px' }}>{tagName}</div>
       </div>
     )
   }, [])
@@ -749,7 +777,7 @@ export const Basic = () => {
   return (
     <>
       <h1>Icons</h1>
-      <div className="icons-basic__wrap" style={{ marginTop: -24 }}>
+      <div className="icons-basic__wrap">
         {iconGroups.map((groupItem) => {
           return (
             <React.Fragment key={groupItem.id}>
@@ -758,10 +786,16 @@ export const Basic = () => {
               </div>
               {groupItem.children.map((typeItem) => (
                 <React.Fragment key={typeItem.id}>
-                  <div style={{ lineHeight: '22px', fontSize: '16px', marginBottom: 8 }}>
+                  <div style={{ lineHeight: '22px', fontSize: '16px', margin: '8px 0' }}>
                     {typeItem.title}
                   </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gap: 2,
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+                    }}
+                  >
                     {typeItem.children.map(renderIcon)}
                   </div>
                 </React.Fragment>

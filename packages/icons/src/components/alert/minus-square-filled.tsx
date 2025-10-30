@@ -12,7 +12,7 @@ export const MinusSquareFilled = forwardRef<SVGSVGElement | null, IconProps>(
     const style = { fontSize: size, ...styleProp }
 
     return (
-      <svg className={cls} ref={ref} role="icon" style={style} {...rest}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"><path d="M789.333333 106.666667a128 128 0 0 1 128 128v554.666666a128 128 0 0 1-128 128H234.666667a128 128 0 0 1-128-128V234.666667a128 128 0 0 1 128-128z m-85.333333 362.666666H320a42.666667 42.666667 0 1 0 0 85.333334h384a42.666667 42.666667 0 1 0 0-85.333334z" p-id="47591"></path></svg>
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="14395"  ><path d="M810.666667 110.933333a102.4 102.4 0 0 1 102.4 102.4v597.333334a102.4 102.4 0 0 1-102.4 102.4H213.333333A102.4 102.4 0 0 1 110.933333 810.666667V213.333333A102.4 102.4 0 0 1 213.333333 110.933333h597.333334z m-466.56 362.666667a38.4 38.4 0 1 0 0 76.8h335.786666a38.4 38.4 0 0 0 0-76.8H344.106667z" p-id="14396"></path></svg>
     )
   }
 )
