@@ -34,7 +34,7 @@ const getAllSvgComponentFileInfo = () => {
           const type = dirs[dirs.length - 1]
           const belong = dirs[dirs.length - 2]
           // 处理插件带来的数字后缀影响
-          const pureName = fileName.split(' ')[0].trim()
+          const pureName = fileName.split(' ')[0].trim().toLowerCase()
           result.push({
             path: fullPath,
             name: pureName,
@@ -75,6 +75,15 @@ const disposeSvgSourceFile = (file, info) => {
     return source.replace(/(?<=<.*?)fill=".*?"(?=.*?>)/g, '')
   }
 
+  const removeXmlnsXlink = (source) => {
+    return source.replace(/\s*xmlns:xlink=".*?"(?=\s|>)/g, '')
+  }
+
+  // 新增：删除 t 属性（全匹配）
+  const removeTAttribute = (source) => {
+    return source.replace(/\s+t="[^"]*"/g, '')
+  }
+
   const insertReactProps = (source) => {
     return source.replace(
       /<svg/g,
@@ -84,7 +93,9 @@ const disposeSvgSourceFile = (file, info) => {
 
   const pureSvg = removeDoctypeDeclaration(removeXmlDeclaration(file))
 
-  const removeUselessProperty = removeSvgSize(removeSvgClass(pureSvg))
+  const removeUselessProperty = removeSvgSize(
+    removeSvgClass(removeXmlnsXlink(removeTAttribute(pureSvg)))
+  )
 
   const resultSvg = Config.reserveFillColorType.includes(info.type)
     ? removeUselessProperty
