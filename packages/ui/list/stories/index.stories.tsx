@@ -3,6 +3,7 @@ import List from '../src'
 
 export * from './basic.stories'
 export * from './no-split.stories'
+export * from './header.stories'
 export * from './action.stories'
 export * from './pagination.stories'
 export * from './empty.stories'

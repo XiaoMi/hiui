@@ -12,7 +12,17 @@ $prefix: '#{$component-prefix}-list' !default;
   background-color: use-color-static('white');
 
   &:not(.#{$prefix}-item--split) {
-    padding: use-spacing(4);
+    .#{$prefix}__wrapper {
+      padding: use-spacing(4);
+    }
+  }
+
+  &__header {
+    padding: use-spacing(6) use-spacing(8);
+    border-bottom: use-border-size('normal') use-color('gray', 100);
+    font-size: use-text-size('normal');
+    line-height: use-text-lineheight('normal');
+    color: use-color('gray', 700);
   }
 
   &__pagination {
