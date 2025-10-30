@@ -12,7 +12,7 @@ export const BankCardFilled = forwardRef<SVGSVGElement | null, IconProps>(
     const style = { fontSize: size, ...styleProp }
 
     return (
-      <svg className={cls} ref={ref} role="icon" style={style} {...rest}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"><path d="M810.666667 149.333333a128 128 0 0 1 128 128v469.333334a128 128 0 0 1-128 128H213.333333a128 128 0 0 1-128-128V277.333333a128 128 0 0 1 128-128h597.333334z m-21.333334 448h-128a42.666667 42.666667 0 1 0 0 85.333334h128a42.666667 42.666667 0 1 0 0-85.333334z m21.333334-234.666666H213.333333a42.666667 42.666667 0 1 0 0 85.333333h597.333334a42.666667 42.666667 0 1 0 0-85.333333z" p-id="14941"></path></svg>
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6633"  ><path d="M934.4 768a102.4 102.4 0 0 1-102.4 102.4H192A102.4 102.4 0 0 1 89.6 768V422.4h844.8V768zM256 665.6a38.4 38.4 0 1 0 0 76.8h138.666667a38.4 38.4 0 1 0 0-76.8H256z m576-512a102.4 102.4 0 0 1 102.4 102.4v89.6H89.6V256A102.4 102.4 0 0 1 192 153.6h640z" p-id="6634"></path></svg>
     )
   }
 )

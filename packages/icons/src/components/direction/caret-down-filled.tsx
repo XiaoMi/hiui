@@ -12,7 +12,7 @@ export const CaretDownFilled = forwardRef<SVGSVGElement | null, IconProps>(
     const style = { fontSize: size, ...styleProp }
 
     return (
-      <svg className={cls} ref={ref} role="icon" style={style} {...rest}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"><path d="M496.426667 683.498667L244.714667 381.482667a32 32 0 0 1 24.576-52.48H772.693333a32 32 0 0 1 24.576 52.48L545.578667 683.498667a32 32 0 0 1-49.173334 0z" p-id="49646"></path></svg>
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12100"  ><path d="M489.813333 651.946667L262.698667 405.504c-10.218667-11.093333-8.554667-27.541333 3.690666-36.778667 5.184-3.925333 11.733333-6.058667 18.496-6.058666h454.229334c15.957333 0 28.885333 11.690667 28.885333 26.112 0 6.101333-2.368 12.032-6.698667 16.725333L534.186667 651.946667c-10.218667 11.072-28.416 12.565333-40.682667 3.328-1.344-1.002667-2.56-2.133333-3.690667-3.328z" p-id="12101"></path></svg>
     )
   }
 )
