@@ -1,5 +1,11 @@
 # @hi-ui/query-filter
 
+## 5.0.0-canary.1
+
+### Patch Changes
+
+- fix(query-filter): 修改依赖的组件版本为 5.0
+
 ## 5.0.0-canary.0
 
 ### Major Changes
