@@ -193,7 +193,10 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
     .#{$input-wrapper-class} {
       pointer-events: none;
-      opacity: 0.3;
+    }
+
+    .#{$prefix}__function-button {
+      color: use-color('gray', 400);
     }
   }
 
