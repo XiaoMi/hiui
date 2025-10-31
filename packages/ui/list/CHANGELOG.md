@@ -1,5 +1,16 @@
 # @hi-ui/list
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- 32fc08190: <br />
+  - style(list): 新版样式 (5.0)
+  - feat(list): 新增列表头部支持 (5.0)
+  - style(list): 默认不显示边框 (5.0)
+- Updated dependencies [5e44cfd6c]
+  - @hi-ui/core@5.0.0-canary.4
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

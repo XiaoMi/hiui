@@ -1,5 +1,33 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.34
+
+### Major Changes
+
+- 8b326f7db: feat(query-filter): 新增 QueryFilter 组件 (5.0)
+
+### Minor Changes
+
+- 959d80cea: feat: hiui 整包中暴露 Spinner 组件 (5.0)
+- 5e44cfd6c: <br />
+  - style(transfer): 新版样式 (5.0)
+  - feat(transfer): 增加 FastTransfer 组件 (5.0)
+
+### Patch Changes
+
+- 32fc08190: <br />
+  - style(list): 新版样式 (5.0)
+  - feat(list): 新增列表头部支持 (5.0)
+  - style(list): 默认不显示边框 (5.0)
+- Updated dependencies [5e44cfd6c]
+- Updated dependencies [5e44cfd6c]
+- Updated dependencies [8b326f7db]
+- Updated dependencies [32fc08190]
+  - @hi-ui/core@5.0.0-canary.4
+  - @hi-ui/transfer@5.0.0-canary.4
+  - @hi-ui/query-filter@5.0.0-canary.0
+  - @hi-ui/list@5.0.0-canary.4
+
 ## 5.0.0-canary.33
 
 ### Minor Changes

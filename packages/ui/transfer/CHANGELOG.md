@@ -1,5 +1,20 @@
 # @hi-ui/transfer
 
+## 5.0.0-canary.4
+
+### Minor Changes
+
+- 5e44cfd6c: <br />
+  - style(transfer): 新版样式 (5.0)
+  - feat(transfer): 增加 FastTransfer 组件 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [5e44cfd6c]
+- Updated dependencies [45b8fa5fb]
+  - @hi-ui/core@5.0.0-canary.4
+  - @hi-ui/icons@5.0.0-canary.4
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @hi-ui/core
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- 5e44cfd6c: chore(locale-context): Transfer 组件增加文案 (5.0)
+- Updated dependencies [5e44cfd6c]
+  - @hi-ui/locale-context@5.0.0-canary.6
+
 ## 5.0.0-canary.3
 
 ### Minor Changes

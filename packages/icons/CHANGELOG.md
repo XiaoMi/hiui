@@ -1,5 +1,16 @@
 # @hi-ui/icons
 
+## 5.0.0-canary.4
+
+### Major Changes
+
+- 45b8fa5fb: style(icons): 图标整体更新 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [5e44cfd6c]
+  - @hi-ui/core@5.0.0-canary.4
+
 ## 5.0.0-canary.3
 
 ### Patch Changes
