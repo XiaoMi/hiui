@@ -9,6 +9,65 @@ import { withPerformance } from "storybook-addon-performance";
 // import { Title, Subtitle, Description, Primary, ArgsTable, Stories, PRIMARY_STORY } from '@storybook/addon-docs/blocks'
 // import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live'
 import HiUIProvider from '@hi-ui/provider'
+import { LocaleProvider } from '../packages/ui/locale-context/src'
+
+import zhCN from '../packages/ui/locale-context/src/locale/zh-CN'
+import enUS from '../packages/ui/locale-context/src/locale/en-US'
+import zhHK from '../packages/ui/locale-context/src/locale/zh-HK'
+import zhTW from '../packages/ui/locale-context/src/locale/zh-TW'
+import jaJP from '../packages/ui/locale-context/src/locale/ja-JP'
+import koKR from '../packages/ui/locale-context/src/locale/ko-KR'
+import thTH from '../packages/ui/locale-context/src/locale/th-TH'
+import viVN from '../packages/ui/locale-context/src/locale/vi-VN'
+import frFR from '../packages/ui/locale-context/src/locale/fr-FR'
+import deDE from '../packages/ui/locale-context/src/locale/de-DE'
+import esES from '../packages/ui/locale-context/src/locale/es-ES'
+import itIT from '../packages/ui/locale-context/src/locale/it-IT'
+import ptPT from '../packages/ui/locale-context/src/locale/pt-PT'
+import ptBR from '../packages/ui/locale-context/src/locale/pt-BR'
+import ruRU from '../packages/ui/locale-context/src/locale/ru-RU'
+import azAZ from '../packages/ui/locale-context/src/locale/az-AZ'
+import hyAM from '../packages/ui/locale-context/src/locale/hy-AM'
+import kaGE from '../packages/ui/locale-context/src/locale/ka-GE'
+import uzUZ from '../packages/ui/locale-context/src/locale/uz-UZ'
+import bsBA from '../packages/ui/locale-context/src/locale/bs-BA'
+import bgBG from '../packages/ui/locale-context/src/locale/bg-BG'
+import urPK from '../packages/ui/locale-context/src/locale/ur-PK'
+import nlNL from '../packages/ui/locale-context/src/locale/nl-NL'
+import csCZ from '../packages/ui/locale-context/src/locale/cs-CZ'
+import daDK from '../packages/ui/locale-context/src/locale/da-DK'
+import elGR from '../packages/ui/locale-context/src/locale/el-GR'
+import fiFI from '../packages/ui/locale-context/src/locale/fi-FI'
+import trTR from '../packages/ui/locale-context/src/locale/tr-TR'
+
+LocaleProvider.register('zh-CN', zhCN)
+LocaleProvider.register('en-US', enUS)
+LocaleProvider.register('zh-HK', zhHK)
+LocaleProvider.register('zh-TW', zhTW)
+LocaleProvider.register('ja-JP', jaJP)
+LocaleProvider.register('ko-KR', koKR)
+LocaleProvider.register('th-TH', thTH)
+LocaleProvider.register('vi-VN', viVN)
+LocaleProvider.register('fr-FR', frFR)
+LocaleProvider.register('de-DE', deDE)
+LocaleProvider.register('es-ES', esES)
+LocaleProvider.register('it-IT', itIT)
+LocaleProvider.register('pt-PT', ptPT)
+LocaleProvider.register('pt-BR', ptBR)
+LocaleProvider.register('ru-RU', ruRU)
+LocaleProvider.register('az-AZ', azAZ)
+LocaleProvider.register('hy-AM', hyAM)
+LocaleProvider.register('ka-GE', kaGE)
+LocaleProvider.register('uz-UZ', uzUZ)
+LocaleProvider.register('bs-BA', bsBA)
+LocaleProvider.register('bg-BG', bgBG)
+LocaleProvider.register('ur-PK', urPK)
+LocaleProvider.register('nl-NL', nlNL)
+LocaleProvider.register('cs-CZ', csCZ)
+LocaleProvider.register('da-DK', daDK)
+LocaleProvider.register('el-GR', elGR)
+LocaleProvider.register('fi-FI', fiFI)
+LocaleProvider.register('tr-TR', trTR)
 
 // import Popper from '../packages/ui/popper/src/index.js'
 // import Alert from '../packages/ui/alert/es/index.js'
@@ -140,10 +199,41 @@ export const globalTypes = {
     toolbar: {
       icon: "globe",
       items: [
-        { value: "zh-CN", right: "🇨🇳", title: "中文" },
+        // 中文
+        { value: "zh-CN", right: "🇨🇳", title: "简体中文" },
+        { value: "zh-HK", right: "🇭🇰", title: "繁體中文（香港）" },
+        { value: "zh-TW", right: "🇹🇼", title: "繁體中文（台灣）" },
+        // 英语
         { value: "en-US", right: "🇺🇸", title: "English" },
-        { value: "zh-HK", right: "🇨🇳", title: "香港" },
-        { value: "zh-TW", right: "🇨🇳", title: "台湾" },
+        // 亚洲语言
+        { value: "ja-JP", right: "🇯🇵", title: "日本語" },
+        { value: "ko-KR", right: "🇰🇷", title: "한국어" },
+        { value: "th-TH", right: "🇹🇭", title: "ไทย" },
+        { value: "vi-VN", right: "🇻🇳", title: "Tiếng Việt" },
+        // 欧洲语言
+        { value: "fr-FR", right: "🇫🇷", title: "Français" },
+        { value: "de-DE", right: "🇩🇪", title: "Deutsch" },
+        { value: "es-ES", right: "🇪🇸", title: "Español" },
+        { value: "it-IT", right: "🇮🇹", title: "Italiano" },
+        { value: "pt-PT", right: "🇵🇹", title: "Português" },
+        { value: "pt-BR", right: "🇧🇷", title: "Português (Brasil)" },
+        { value: "nl-NL", right: "🇳🇱", title: "Nederlands" },
+        { value: "el-GR", right: "🇬🇷", title: "Ελληνικά" },
+        { value: "cs-CZ", right: "🇨🇿", title: "Čeština" },
+        { value: "da-DK", right: "🇩🇰", title: "Dansk" },
+        { value: "fi-FI", right: "🇫🇮", title: "Suomi" },
+        { value: "tr-TR", right: "🇹🇷", title: "Türkçe" },
+        // 俄语和斯拉夫语
+        { value: "ru-RU", right: "🇷🇺", title: "Русский" },
+        { value: "bg-BG", right: "🇧🇬", title: "Български" },
+        { value: "bs-BA", right: "🇧🇦", title: "Bosanski" },
+        // 高加索和中亚语言
+        { value: "az-AZ", right: "🇦🇿", title: "Azərbaycan" },
+        { value: "hy-AM", right: "🇦🇲", title: "Հայերեն" },
+        { value: "ka-GE", right: "🇬🇪", title: "ქართული" },
+        { value: "uz-UZ", right: "🇺🇿", title: "O'zbek" },
+        // 南亚语言
+        { value: "ur-PK", right: "🇵🇰", title: "اردو" },
       ],
     },
   },

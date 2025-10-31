@@ -1,13 +1,18 @@
 import React, { useMemo } from 'react'
 import { invariant, __DEV__ } from '@hi-ui/env'
 import { LocaleContext, getLanguage } from './LocaleContext'
-import localeMap from './locale'
 import { LocaleEnum, LocaleLanguage } from './types'
+import zhCN from './locale/zh-CN'
 
 const DEFAULT_LOCALE = 'zh-CN'
 
 // 自定义语言包注册表
 const USER_LANGUAGES_TABLES = {} as Record<string, LocaleLanguage>
+
+// 内置的默认语言
+const BUILT_IN_LOCALES: Record<string, LocaleLanguage> = {
+  'zh-CN': zhCN,
+}
 
 export const LocaleProvider: React.FC<LocaleProviderProps> & {
   extends: LocaleExtendsFunc
@@ -16,23 +21,26 @@ export const LocaleProvider: React.FC<LocaleProviderProps> & {
 } = ({ children, locale = DEFAULT_LOCALE, languages }) => {
   const get = useMemo(() => {
     let languageData: LocaleLanguage =
-      typeof languages === 'object' ? languages : USER_LANGUAGES_TABLES[locale] || localeMap[locale]
+      typeof languages === 'object'
+        ? languages
+        : USER_LANGUAGES_TABLES[locale] || BUILT_IN_LOCALES[locale]
 
     if (!languageData) {
       invariant(
         false,
-        `Will use ${DEFAULT_LOCALE} as default locale because of the ${locale} language package is missing.`
+        `Language package for "${locale}" is missing. Please import and pass it via the "languages" prop, or use LocaleProvider.register("${locale}", languagePackage) to register it. Falling back to ${DEFAULT_LOCALE}.`
       )
 
-      languageData = localeMap[DEFAULT_LOCALE]
+      languageData = BUILT_IN_LOCALES[DEFAULT_LOCALE]
     }
 
     return getLanguage(languageData)
   }, [locale, languages])
 
   const providedValue = useMemo(() => {
+    const localeData = USER_LANGUAGES_TABLES[locale] || BUILT_IN_LOCALES[locale] || {}
     return {
-      ...localeMap[locale],
+      ...localeData,
       get,
       locale,
     }
@@ -111,10 +119,16 @@ const mergeLanguage = (
   customLocale: string,
   overrides: Partial<LocaleLanguage>
 ) => {
-  const baseLanguage = localeMap[baseLocale] || localeMap[DEFAULT_LOCALE]
+  const baseLanguage =
+    USER_LANGUAGES_TABLES[baseLocale] ||
+    BUILT_IN_LOCALES[baseLocale] ||
+    BUILT_IN_LOCALES[DEFAULT_LOCALE]
 
   if (!baseLanguage) {
-    invariant(false, `Base locale "${baseLocale}" is not found`)
+    invariant(
+      false,
+      `Base locale "${baseLocale}" is not found. Please register it first using LocaleProvider.register().`
+    )
     return
   }
 
