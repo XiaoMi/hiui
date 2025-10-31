@@ -1,5 +1,11 @@
 # @hi-ui/query-filter
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- chore(query-filter): 误将 5.0.0-canary.1 发布为 latest 版本，重新发布 5.0.0-canary.2
+
 ## 5.0.0-canary.1
 
 ### Patch Changes
