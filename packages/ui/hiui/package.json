@@ -88,6 +88,7 @@
     "@hi-ui/preview": "^4.2.1",
     "@hi-ui/progress": "^4.0.11",
     "@hi-ui/provider": "^4.1.1",
+    "@hi-ui/query-filter": "^4.0.0",
     "@hi-ui/radio": "^4.1.4",
     "@hi-ui/rating": "^4.0.10",
     "@hi-ui/result": "^4.0.8",

@@ -142,6 +142,9 @@ export { default as Progress } from '@hi-ui/progress'
 export * from '@hi-ui/provider'
 export { default as Provider } from '@hi-ui/provider'
 
+export * from '@hi-ui/query-filter'
+export { default as QueryFilter } from '@hi-ui/query-filter'
+
 export * from '@hi-ui/radio'
 export { default as Radio } from '@hi-ui/radio'
 

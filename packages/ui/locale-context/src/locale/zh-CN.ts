@@ -217,4 +217,8 @@ export default {
     confirmSelect: '确定选择',
     hideWindow: '隐藏窗口',
   },
+  queryFilter: {
+    pin: '固定在列表顶部',
+    unpin: '取消固定',
+  },
 }
