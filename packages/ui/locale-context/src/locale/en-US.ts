@@ -204,4 +204,8 @@ export default {
     confirmSelect: 'Confirm',
     hideWindow: 'Hide',
   },
+  queryFilter: {
+    pin: 'Pin to the top of the list',
+    unpin: 'Unpin',
+  },
 }
