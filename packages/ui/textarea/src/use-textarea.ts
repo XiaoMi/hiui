@@ -63,6 +63,14 @@ export const useTextarea = ({
   //   }
   // }, [enabledAutoSize, value, textareaElement, minRows, maxRows])
 
+  useEffect(() => {
+    if (enabledAutoSize && textareaElement) {
+      const styles = calcNodeAutoSizeStyles(textareaElement, minRows, maxRows)
+      resizingRef.current = true
+      setAutoSizeStyles(styles)
+    }
+  }, [enabledAutoSize, maxRows, minRows, textareaElement])
+
   const handleInput = useLatestCallback(() => {
     if (enabledAutoSize && textareaElement) {
       const styles = calcNodeAutoSizeStyles(textareaElement, minRows, maxRows)
