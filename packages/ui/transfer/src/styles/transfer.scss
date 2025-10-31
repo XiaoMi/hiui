@@ -23,9 +23,9 @@ $prefix: '#{$component-prefix}-transfer' !default;
   position: relative;
   width: 240px;
   min-width: 180px;
-  background-color: use-color-statc('white');
-  border: 1px solid use-color('gray', 300);
-  border-radius: use-border-radius('normal');
+  background-color: use-color-static('white');
+  border: use-border-size('normal') use-color('gray', 300);
+  border-radius: use-border-radius('xl');
   overflow: hidden;
   font-size: use-text-size('normal');
 
@@ -42,7 +42,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     @include component-reset;
 
     list-style: none;
-    padding: use-spacing(2) 0;
+    padding: use-spacing(4) 0;
 
     &-scroller {
       height: 312px;
@@ -51,7 +51,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
   }
 
   &__search {
-    padding: use-spacing(4) use-spacing(4) use-spacing(2);
+    padding: use-spacing(4) use-spacing(4) 0;
 
     .#{$component-prefix}-input__prefix {
       padding-left: use-spacing(4);
@@ -79,7 +79,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     display: flex;
     align-items: start;
     box-sizing: border-box;
-    padding: 4px 12px;
+    padding: use-spacing(4) use-spacing(6) 0;
     position: sticky;
     top: 0;
     z-index: 1;
@@ -146,7 +146,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
 .#{$prefix}-item {
   box-sizing: border-box;
   position: relative;
-  margin: use-spacing(4);
+  margin: 0 use-spacing(4);
 
   &__title,
   .#{$component-prefix}-checkbox {
@@ -174,7 +174,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     border-radius: use-border-radius('normal');
 
     &:hover {
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 50);
     }
 
     // 拖拽指示器-小圆球

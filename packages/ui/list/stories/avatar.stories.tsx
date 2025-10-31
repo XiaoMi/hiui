@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '@hi-ui/button'
 import List from '../src'
 import Avatar from '@hi-ui/avatar'
 
@@ -13,32 +14,91 @@ export const CustomAvatar = () => {
         <List
           data={[
             {
-              title: '下单量-指标',
-              description: '下单量在交易环节中整体用户下单的数量',
-              extra: '最新使用：2019.12.23 下午07:07',
-              avatar:
-                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
-              action: '编辑',
+              title: '当前这里是标题信息',
+              description:
+                '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
+              avatar: 'http://i1.mifile.cn/f/i/hiui/docs/card/pic_1.png',
+              action: (
+                <Button type="primary" appearance="text">
+                  操作
+                </Button>
+              ),
             },
             {
-              title: '下单量-指标',
-              description: '下单量在交易环节中整体用户下单的数量',
-              extra: '最新使用：2019.12.23 下午07:07',
-              avatar:
-                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
-              action: '编辑',
+              title: '当前这里是标题信息',
+              description:
+                '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
+              avatar: 'http://i1.mifile.cn/f/i/hiui/docs/card/pic_2.png',
+              action: (
+                <Button type="primary" appearance="text">
+                  操作
+                </Button>
+              ),
+            },
+            {
+              title: '当前这里是标题信息',
+              description:
+                '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
+              avatar: 'http://i1.mifile.cn/f/i/hiui/docs/card/pic_3.png',
+              action: (
+                <Button type="primary" appearance="text">
+                  操作
+                </Button>
+              ),
             },
           ]}
-          render={(dataItem) => {
-            console.log('dataItem', dataItem)
-
-            return (
-              <List.Item
-                {...dataItem}
-                avatar={<Avatar size={'lg'} shape={'square'} src={dataItem.avatar as string} />}
-              />
-            )
-          }}
+          render={(dataItem) => (
+            <List.Item
+              {...dataItem}
+              avatar={
+                <img style={{ maxHeight: 84, borderRadius: 8 }} src={dataItem.avatar as string} />
+              }
+              extra={
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 4,
+                      marginInlineEnd: 8,
+                      paddingInlineEnd: 8,
+                      borderRight: '1px solid #e6e8eb',
+                    }}
+                  >
+                    <Avatar size={20} />
+                    李小米
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 4,
+                      marginInlineEnd: 8,
+                      paddingInlineEnd: 8,
+                      borderRight: '1px solid #e6e8eb',
+                    }}
+                  >
+                    2025年10月28日
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 4,
+                      paddingInlineEnd: 8,
+                    }}
+                  >
+                    <Avatar.Group>
+                      <Avatar size={22} />
+                      <Avatar size={22} />
+                      <Avatar size={22} />
+                    </Avatar.Group>
+                    21 人点赞
+                  </div>
+                </div>
+              }
+            />
+          )}
         />
       </div>
     </>

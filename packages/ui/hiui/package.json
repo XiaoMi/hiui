@@ -88,6 +88,7 @@
     "@hi-ui/preview": "^5.0.0-canary.5",
     "@hi-ui/progress": "^5.0.0-canary.5",
     "@hi-ui/provider": "^5.0.0-canary.5",
+    "@hi-ui/query-filter": "^4.0.0",
     "@hi-ui/radio": "^5.0.0-canary.4",
     "@hi-ui/rating": "^5.0.0-canary.4",
     "@hi-ui/result": "^5.0.0-canary.4",

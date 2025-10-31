@@ -44,6 +44,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/avatar": "^5.0.0-canary.4",
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/empty-state": "^5.0.0-canary.3",
     "@hi-ui/env": "^5.0.0-canary.2",

@@ -1,6 +1,7 @@
 import { HiBaseFieldNameKeys, HiBaseFieldNames } from '@hi-ui/core'
 import { TransferDataItem } from './types'
 import React from 'react'
+import { uuid } from '@hi-ui/use-id'
 
 export const transformData = (
   data: TransferDataItem[],
@@ -16,7 +17,7 @@ export const transformData = (
   const traverseNode = (node: TransferDataItem): TransferDataItem => {
     const newNode = { ...node }
 
-    newNode.id = getKeyFields(newNode, 'id') as React.ReactText
+    newNode.id = (getKeyFields(newNode, 'id') as React.ReactText) ?? uuid()
     newNode.title = getKeyFields(newNode, 'title') as React.ReactNode
     newNode.disabled = (getKeyFields(newNode, 'disabled') ?? false) as boolean
 

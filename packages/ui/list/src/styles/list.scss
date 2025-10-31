@@ -6,9 +6,24 @@ $prefix: '#{$component-prefix}-list' !default;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  color: use-color('gray', 700);
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
+  color: use-color('gray', 700);
+  background-color: use-color-static('white');
+
+  &:not(.#{$prefix}-item--split) {
+    .#{$prefix}__wrapper {
+      padding: use-spacing(4);
+    }
+  }
+
+  &__header {
+    padding: use-spacing(6) use-spacing(8);
+    border-bottom: use-border-size('normal') use-color('gray', 100);
+    font-size: use-text-size('normal');
+    line-height: use-text-lineheight('normal');
+    color: use-color('gray', 700);
+  }
 
   &__pagination {
     display: flex;
@@ -23,27 +38,38 @@ $prefix: '#{$component-prefix}-list' !default;
   &--bordered {
     border: 1px solid use-color('gray', 200);
     border-radius: use-border-radius('normal');
-    padding: 0 use-spacing(10);
+
+    .#{$prefix}-item--split {
+      &:last-of-type {
+        .#{$prefix}-item {
+          border-bottom: none;
+        }
+      }
+    }
   }
 
   &-item {
-    padding: use-spacing(8) 0;
     display: flex;
 
-    &__wrapper {
-      list-style: none;
+    &__title {
+      font-size: use-text-size('normal');
+      line-height: use-text-lineheight('normal');
+
+      &:not(:last-child) {
+        margin-bottom: use-spacing(2);
+        font-weight: use-text-weight('medium');
+      }
     }
 
-    &__title {
-      font-size: use-text-size('lg');
-      line-height: use-text-lineheight('lg');
-      font-weight: use-text-weight('medium');
-      margin-bottom: use-spacing(2);
+    &__desc {
+      font-size: use-text-size('normal');
+      line-height: use-text-lineheight('normal');
+      color: use-color('gray', 600);
     }
 
     &__extra {
       color: use-color('gray', 600);
-      margin-top: use-spacing(2);
+      margin-top: use-spacing(6);
     }
 
     &__content {
@@ -55,31 +81,37 @@ $prefix: '#{$component-prefix}-list' !default;
     }
 
     &__avatar {
-      width: 56px;
-      height: 56px;
-      margin-right: use-spacing(8);
-      border-radius: use-border-radius('normal');
-      overflow: hidden;
-
-      & > img {
-        height: 100%;
-        width: 100%;
-        object-fit: contain;
-        display: inline-block;
-        margin: 0;
-        padding: 0;
-      }
-    }
-
-    &--split:not(:last-of-type) {
-      border-bottom: 1px solid use-color('gray', 200);
+      margin-inline-end: use-spacing(8);
     }
   }
 
-  &.#{$prefix}--with-pagination {
-    .#{$prefix}-item {
-      &--split:last-of-type {
-        border-bottom: 1px solid use-color('gray', 200);
+  &-item__wrapper {
+    list-style: none;
+
+    &:not(.#{$prefix}-item--split) {
+      .#{$prefix}-item {
+        padding: use-spacing(6);
+        border-radius: use-border-radius('lg');
+
+        &:hover {
+          cursor: pointer;
+          background-color: use-color('gray', 50);
+        }
+      }
+    }
+
+    &.#{$prefix}-item--split {
+      .#{$prefix}-item {
+        padding: use-spacing(6) use-spacing(8);
+        border-bottom: 1px solid use-color('gray', 100);
+
+        &:hover {
+          cursor: pointer;
+
+          .#{$prefix}-item__title {
+            color: use-color-mode('primary');
+          }
+        }
       }
     }
   }

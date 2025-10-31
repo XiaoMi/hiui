@@ -131,6 +131,9 @@ export default {
     searchPlaceholder: '搜索',
     emptyContent: '暫無數據',
     limit: '數量達上限，無法添加',
+    allItems: '所有選項',
+    checkedItems: '已選',
+    clear: '清空',
   },
   upload: {
     buttonText: '上傳',
@@ -214,5 +217,9 @@ export default {
     moveCursor: '移動光標',
     confirmSelect: '確定選擇',
     hideWindow: '隱藏窗口',
+  },
+  queryFilter: {
+    pin: '固定在列表頂部',
+    unpin: '取消固定',
   },
 }

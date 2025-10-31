@@ -2,11 +2,12 @@ import React from 'react'
 import List from '../src'
 
 export * from './basic.stories'
-export * from './pagination.stories'
 export * from './no-split.stories'
+export * from './header.stories'
 export * from './action.stories'
+export * from './pagination.stories'
 export * from './empty.stories'
-export * from './no-border.stories'
+// export * from './border.stories'
 export * from './avatar.stories'
 
 export default {
