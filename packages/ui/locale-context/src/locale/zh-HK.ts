@@ -218,4 +218,8 @@ export default {
     confirmSelect: '確定選擇',
     hideWindow: '隱藏窗口',
   },
+  queryFilter: {
+    pin: '固定在列表頂部',
+    unpin: '取消固定',
+  },
 }
