@@ -1,0 +1,190 @@
+import React from 'react'
+import Skeleton from '../src'
+import Avatar from '@hi-ui/avatar'
+import Button from '@hi-ui/button'
+
+/**
+ * @title 骨架屏组
+ * @desc 使用 Skeleton.Group 组织多个骨架屏元素，统一控制加载状态、动画效果和布局方向。通过 content prop 区分骨架屏模板和实际内容。
+ */
+export const Group = () => {
+  const [loading1, setLoading1] = React.useState(true)
+  // const [loading2, setLoading2] = React.useState(true)
+  const [loading3, setLoading3] = React.useState(true)
+
+  return (
+    <>
+      <h1>骨架屏组</h1>
+      <div className="skeleton-group__wrap">
+        <h2>Usage 用法</h2>
+        <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
+          <h3>用法1: 使用content prop传递内容</h3>
+          <Skeleton.Group
+            layout="vertical"
+            gap={12}
+            loading={loading1}
+            content={
+              <div>
+                <h3 style={{ margin: '0 0 8px 0' }}>这是实际的标题</h3>
+                <p style={{ margin: '0 0 8px 0' }}>这是第一段实际内容，已经从服务器加载完成。</p>
+                <p style={{ margin: 0 }}>这是第二段实际内容，包含更多信息。</p>
+              </div>
+            }
+            animation="wave"
+          >
+            {/* 骨架屏模板 */}
+            <Skeleton type="text" style={{ width: '60%', height: 24 }} />
+            <Skeleton type="text" style={{ width: '100%' }} />
+            <Skeleton type="text" style={{ width: '80%' }} />
+          </Skeleton.Group>
+          <h3>用法2: children 传递内容</h3>
+          <Skeleton.Group layout="vertical" gap={12} loading={loading1} animation="wave">
+            {/* 骨架屏模板 */}
+            <Skeleton type="text" style={{ width: '60%', height: 24 }}>
+              <h3 style={{ margin: '0 0 8px 0' }}>这是实际的标题</h3>
+            </Skeleton>
+            <Skeleton type="text" style={{ width: '100%' }}>
+              <p style={{ margin: 0 }}>这是第一段实际内容，已经从服务器加载完成。</p>
+            </Skeleton>
+            <Skeleton type="text" style={{ width: '80%' }}>
+              <p style={{ margin: 0 }}>这是第二段实际内容，包含更多信息。</p>
+            </Skeleton>
+          </Skeleton.Group>
+          <Button
+            onClick={() => setLoading1(!loading1)}
+            style={{ marginTop: 16, padding: '8px 16px' }}
+          >
+            {loading1 ? 'Hide Skeleton' : 'Show Skeleton'}
+          </Button>
+        </div>
+
+        <h2>垂直布局（默认）</h2>
+        <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
+          <Skeleton.Group layout="vertical">
+            <Skeleton type="text" style={{ width: '80%' }} />
+            <Skeleton type="text" style={{ width: '60%' }} />
+            <Skeleton type="text" style={{ width: '70%' }} />
+          </Skeleton.Group>
+        </div>
+
+        <h2>水平布局</h2>
+        <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
+          <Skeleton.Group layout="horizontal">
+            <Skeleton type="avatar" />
+            <Skeleton.Group layout="vertical" style={{ flex: 1 }}>
+              <Skeleton type="text" style={{ width: '60%' }} />
+              <Skeleton type="text" style={{ width: '40%' }} />
+            </Skeleton.Group>
+          </Skeleton.Group>
+        </div>
+
+        <h2>自定义间距</h2>
+        <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
+          <Skeleton.Group layout="vertical" gap={24}>
+            <Skeleton type="text" />
+            <Skeleton type="text" />
+            <Skeleton type="text" />
+          </Skeleton.Group>
+        </div>
+
+        <h2>统一控制动画效果</h2>
+        <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
+          <h4>Pulse 动画</h4>
+          <Skeleton.Group layout="vertical" animation="pulse">
+            <Skeleton type="text" />
+            <Skeleton type="text" style={{ width: '80%' }} />
+            <Skeleton type="text" style={{ width: '60%' }} />
+          </Skeleton.Group>
+
+          <h4 style={{ marginTop: 24 }}>Wave 动画</h4>
+          <Skeleton.Group layout="vertical" animation="wave">
+            <Skeleton type="text" />
+            <Skeleton type="text" style={{ width: '80%' }} />
+            <Skeleton type="text" style={{ width: '60%' }} />
+          </Skeleton.Group>
+        </div>
+
+        <h2>复杂布局</h2>
+        <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
+          <Skeleton.Group
+            layout="vertical"
+            gap={16}
+            loading={loading3}
+            animation="wave"
+            content={
+              <div>
+                {/* 头部 */}
+                <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+                  <Avatar />
+                  <div style={{ flex: 1 }}>
+                    <h4 style={{ margin: '0 0 4px 0' }}>我是标题</h4>
+                    <p style={{ margin: 0, fontSize: 14, color: '#999' }}>
+                      作者名称 · 2025年11月3日
+                    </p>
+                  </div>
+                </div>
+
+                {/* 图片 */}
+                <img
+                  src={
+                    'https://images.unsplash.com/photo-1595923941716-39a9c58a9661?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
+                  }
+                  alt="content"
+                  style={{ width: '100%', height: 200, objectFit: 'cover', marginBottom: 16 }}
+                />
+
+                {/* 内容 */}
+                <div>
+                  <p style={{ margin: '0 0 8px 0' }}>学而时习之，不亦说乎？</p>
+                  <p style={{ margin: '0 0 8px 0' }}>有朋自远方来，不亦乐乎？</p>
+                  <p style={{ margin: 0 }}>人不知而不愠，不亦君子乎？</p>
+                </div>
+              </div>
+            }
+          >
+            {/* 骨架屏模板 */}
+            {/* 头部 */}
+            <Skeleton.Group layout="horizontal" gap={12}>
+              <Skeleton type="avatar" />
+              <Skeleton.Group layout="vertical" gap={8} style={{ flex: 1 }}>
+                <Skeleton type="text" style={{ width: '40%' }} />
+                <Skeleton type="text" style={{ width: '30%' }} />
+              </Skeleton.Group>
+            </Skeleton.Group>
+
+            {/* 图片 */}
+            <Skeleton type="image" style={{ height: 200 }} />
+
+            {/* 内容 */}
+            <Skeleton.Group layout="vertical" gap={8}>
+              <Skeleton type="text" />
+              <Skeleton type="text" style={{ width: '90%' }} />
+              <Skeleton type="text" style={{ width: '60%' }} />
+            </Skeleton.Group>
+          </Skeleton.Group>
+          <Button
+            onClick={() => setLoading3(!loading3)}
+            style={{ marginTop: 16, padding: '8px 16px' }}
+          >
+            {loading1 ? 'Hide Skeleton' : 'Show Skeleton'}
+          </Button>
+        </div>
+
+        <h2>列表骨架屏示例</h2>
+        <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
+          <Skeleton.Group layout="vertical" gap={20} animation="wave">
+            {[1, 2, 3].map((item) => (
+              <Skeleton.Group key={item} layout="horizontal" gap={12}>
+                <Skeleton type="avatar" />
+                <Skeleton.Group layout="vertical" gap={8} style={{ flex: 1 }}>
+                  <Skeleton type="text" style={{ width: '100%' }} />
+                  <Skeleton type="text" style={{ width: '50%' }} />
+                </Skeleton.Group>
+              </Skeleton.Group>
+            ))}
+          </Skeleton.Group>
+        </div>
+      </div>
+    </>
+  )
+}

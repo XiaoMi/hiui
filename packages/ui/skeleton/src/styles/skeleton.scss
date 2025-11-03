@@ -1,0 +1,96 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-skeleton' !default;
+
+.#{$prefix} {
+  background: linear-gradient(96.76deg, #1a1d260d 0%, #1a1d261a 50%, #1a1d260d 100%);
+  background-size: 200% 100%;
+  background-position-x: 180%;
+
+  &--type {
+    &-text {
+      width: 100%;
+      height: 14px;
+      border-radius: 12px;
+    }
+
+    &-text.#{$prefix}--size-sm {
+      height: 12px;
+    }
+
+    &-text.#{$prefix}--size-lg {
+      height: 18px;
+    }
+
+    &-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 100px;
+      flex-shrink: 0;
+    }
+
+    &-avatar.#{$prefix}--size-sm {
+      width: 32px;
+      height: 32px;
+    }
+
+    &-avatar.#{$prefix}--size-lg {
+      width: 48px;
+      height: 48px;
+    }
+
+    &-image {
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+    }
+
+    &-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+
+    &-icon.#{$prefix}--size-sm {
+      width: 42px;
+      height: 42px;
+    }
+
+    &-icon.#{$prefix}--size-lg {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  &--animation {
+    &-wave {
+      background: linear-gradient(96.76deg, #1a1d260d 30%, #1a1d261a 50%, #1a1d260d 70%);
+      background-size: 200% 100%;
+      background-position-x: 180%;
+      animation: skeleton-wave 1s infinite ease-in-out;
+    }
+
+    &-pulse {
+      background: #1a1d26;
+      animation: skeleton-pulse 1.5s infinite ease-in-out;
+    }
+  }
+}
+
+@keyframes skeleton-wave {
+  to {
+    background-position-x: -20%;
+  }
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.05;
+  }
+
+  50% {
+    opacity: 0.1;
+  }
+}
