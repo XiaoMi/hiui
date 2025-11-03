@@ -78,6 +78,93 @@ export const Group = () => {
           </Skeleton.Group>
         </div>
 
+        <h2>混合复杂布局</h2>
+        <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
+          <Skeleton.Group
+            layout="vertical"
+            gap={16}
+            loading={loading3}
+            animation="wave"
+            content={
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ width: '100%' }}>
+                  {/* 头部 */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: 12,
+                      marginBottom: 16,
+                    }}
+                  >
+                    <Avatar />
+                    <div style={{ flex: 1 }}>
+                      <h4 style={{ margin: '0 0 4px 0' }}>我是标题</h4>
+                      <p style={{ margin: 0, fontSize: 14, color: '#999' }}>
+                        我是孔子 · 2025年11月3日
+                      </p>
+                    </div>
+                  </div>
+                  {/* 内容 */}
+                  <div>
+                    <h4 style={{ margin: '0 0 8px 0' }}>学而时习之，不亦说乎？</h4>
+                    <h5 style={{ margin: '0 0 8px 0' }}>有朋自远方来，不亦乐乎？</h5>
+                    <p style={{ fontSize: 14, margin: 0 }}>
+                      【译】孔子说：“学习并且不断温习，不也很愉快吗？远方来了朋友，不也很快乐吗？人家不了解我，我也不怨恨，不也是君子吗？”【译】孔子说：“学习并且不断温习，不也很愉快吗？远方来了朋友，不也很快乐吗？人家不了解我，我也不怨恨，不也是君子吗？”
+                    </p>
+                  </div>
+                </div>
+                {/* 图片 */}
+                <img
+                  src={
+                    'https://images.unsplash.com/photo-1595923941716-39a9c58a9661?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
+                  }
+                  alt="content"
+                  style={{
+                    width: '65%',
+                    height: 200,
+                    objectFit: 'cover',
+                    borderRadius: 6,
+                  }}
+                />
+              </div>
+            }
+          >
+            {/* 骨架屏模板 */}
+            <Skeleton.Group layout="horizontal" gap={16} alignItems="start">
+              {/* 左侧 */}
+              <Skeleton.Group layout="vertical" gap={12}>
+                {/* 头部 */}
+                <Skeleton.Group layout="horizontal" gap={12}>
+                  <Skeleton type="avatar" />
+                  <Skeleton.Group layout="vertical" gap={8} style={{ flex: 1 }}>
+                    <Skeleton type="text" style={{ width: '40%' }} />
+                    <Skeleton type="text" style={{ width: '30%' }} />
+                  </Skeleton.Group>
+                </Skeleton.Group>
+                {/* 内容 */}
+                <Skeleton.Group layout="vertical" gap={8}>
+                  <Skeleton type="text" style={{ width: '60%' }} />
+                  <Skeleton type="text" style={{ width: '40%' }} />
+                  <Skeleton type="text" />
+                  <Skeleton type="text" />
+                  <Skeleton type="text" />
+                  <Skeleton type="text" />
+                  <Skeleton type="text" />
+                </Skeleton.Group>
+              </Skeleton.Group>
+
+              {/* 右侧图片 */}
+              <Skeleton type="image" style={{ width: '65%', height: 200 }} />
+            </Skeleton.Group>
+          </Skeleton.Group>
+          <Button
+            onClick={() => setLoading3(!loading3)}
+            style={{ marginTop: 16, padding: '8px 16px' }}
+          >
+            {loading1 ? 'Hide Skeleton' : 'Show Skeleton'}
+          </Button>
+        </div>
+
         <h2>自定义间距</h2>
         <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
           <Skeleton.Group layout="vertical" gap={24}>
@@ -102,72 +189,6 @@ export const Group = () => {
             <Skeleton type="text" style={{ width: '80%' }} />
             <Skeleton type="text" style={{ width: '60%' }} />
           </Skeleton.Group>
-        </div>
-
-        <h2>复杂布局</h2>
-        <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
-          <Skeleton.Group
-            layout="vertical"
-            gap={16}
-            loading={loading3}
-            animation="wave"
-            content={
-              <div>
-                {/* 头部 */}
-                <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
-                  <Avatar />
-                  <div style={{ flex: 1 }}>
-                    <h4 style={{ margin: '0 0 4px 0' }}>我是标题</h4>
-                    <p style={{ margin: 0, fontSize: 14, color: '#999' }}>
-                      作者名称 · 2025年11月3日
-                    </p>
-                  </div>
-                </div>
-
-                {/* 图片 */}
-                <img
-                  src={
-                    'https://images.unsplash.com/photo-1595923941716-39a9c58a9661?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
-                  }
-                  alt="content"
-                  style={{ width: '100%', height: 200, objectFit: 'cover', marginBottom: 16 }}
-                />
-
-                {/* 内容 */}
-                <div>
-                  <p style={{ margin: '0 0 8px 0' }}>学而时习之，不亦说乎？</p>
-                  <p style={{ margin: '0 0 8px 0' }}>有朋自远方来，不亦乐乎？</p>
-                  <p style={{ margin: 0 }}>人不知而不愠，不亦君子乎？</p>
-                </div>
-              </div>
-            }
-          >
-            {/* 骨架屏模板 */}
-            {/* 头部 */}
-            <Skeleton.Group layout="horizontal" gap={12}>
-              <Skeleton type="avatar" />
-              <Skeleton.Group layout="vertical" gap={8} style={{ flex: 1 }}>
-                <Skeleton type="text" style={{ width: '40%' }} />
-                <Skeleton type="text" style={{ width: '30%' }} />
-              </Skeleton.Group>
-            </Skeleton.Group>
-
-            {/* 图片 */}
-            <Skeleton type="image" style={{ height: 200 }} />
-
-            {/* 内容 */}
-            <Skeleton.Group layout="vertical" gap={8}>
-              <Skeleton type="text" />
-              <Skeleton type="text" style={{ width: '90%' }} />
-              <Skeleton type="text" style={{ width: '60%' }} />
-            </Skeleton.Group>
-          </Skeleton.Group>
-          <Button
-            onClick={() => setLoading3(!loading3)}
-            style={{ marginTop: 16, padding: '8px 16px' }}
-          >
-            {loading1 ? 'Hide Skeleton' : 'Show Skeleton'}
-          </Button>
         </div>
 
         <h2>列表骨架屏示例</h2>

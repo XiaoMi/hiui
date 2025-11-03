@@ -6,7 +6,12 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="skeleton-basic__wrap">
-        <Skeleton></Skeleton>
+        <Skeleton.Group animation="wave">
+          <Skeleton size="lg" style={{ width: '30%' }} />
+          <Skeleton />
+          <Skeleton />
+          <Skeleton style={{ width: '70%' }} />
+        </Skeleton.Group>
       </div>
     </>
   )

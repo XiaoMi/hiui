@@ -59,7 +59,7 @@ export const Animation = () => {
           </Skeleton.Group>
         </Skeleton.Group>
       </div>
-      <h2>false 无动画</h2>
+      <h2>none 无动画</h2>
       <div className="skeleton-basic__wrap">
         <Skeleton.Group loading={true} animation="none">
           <Skeleton.Group layout="horizontal">

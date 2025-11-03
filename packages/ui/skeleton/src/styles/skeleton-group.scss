@@ -15,7 +15,6 @@ $prefix: '#{$component-prefix}-skeleton' !default;
   // 水平布局
   &--layout-horizontal {
     flex-direction: row;
-    align-items: center;
     gap: use-spacing(6); // 默认水平间距 16px
   }
 }

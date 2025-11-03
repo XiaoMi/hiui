@@ -6,14 +6,11 @@ export const Type = () => {
     <>
       <h1>Type 类型</h1>
       <h2>text 文本骨架</h2>
-      <div
-        className="skeleton-basic__wrap"
-        style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}
-      >
-        <Skeleton loading={true} animation="wave" type="text"></Skeleton>
-        <Skeleton loading={true} animation="wave" type="text"></Skeleton>
-        <Skeleton loading={true} animation="wave" type="text"></Skeleton>
-      </div>
+      <Skeleton.Group animation="wave">
+        <Skeleton type="text"></Skeleton>
+        <Skeleton type="text"></Skeleton>
+        <Skeleton type="text"></Skeleton>
+      </Skeleton.Group>
       <h2>avatar 头像骨架</h2>
       <div className="skeleton-basic__wrap">
         <Skeleton loading={true} animation="wave" type="avatar"></Skeleton>

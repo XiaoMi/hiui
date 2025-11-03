@@ -23,6 +23,7 @@ export const SkeletonGroup = forwardRef<HTMLDivElement | null, SkeletonGroupProp
       gap,
       loading = true,
       animation,
+      alignItems = 'center',
       ...rest
     },
     ref
@@ -70,7 +71,17 @@ export const SkeletonGroup = forwardRef<HTMLDivElement | null, SkeletonGroupProp
 
     // loading 状态下，渲染骨架屏模板（children），并注入 loading=true 和 animation
     return (
-      <div ref={ref} role={role} className={cls} style={{ gap, ...style }} {...restProps}>
+      <div
+        ref={ref}
+        role={role}
+        className={cls}
+        style={{
+          gap,
+          ...(layout === 'horizontal' ? { alignItems } : {}),
+          ...style,
+        }}
+        {...restProps}
+      >
         {renderChildren()}
       </div>
     )
@@ -104,6 +115,10 @@ export interface SkeletonGroupProps extends HiBaseHTMLProps<'div'> {
    * 统一设置子组件的动画效果
    */
   animation?: 'pulse' | 'wave' | 'none'
+  /**
+   * 子骨架屏对齐方式
+   */
+  alignItems?: 'start' | 'center' | 'end' | 'stretch'
 }
 
 if (__DEV__) {
