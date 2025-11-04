@@ -7,10 +7,10 @@ export const Basic = () => {
       <h1>Basic</h1>
       <div className="skeleton-basic__wrap">
         <Skeleton.Group animation="wave">
-          <Skeleton size="lg" style={{ width: '30%' }} />
+          <Skeleton size="lg" width={'30%'} />
           <Skeleton />
           <Skeleton />
-          <Skeleton style={{ width: '70%' }} />
+          <Skeleton width={'70%'} />
         </Skeleton.Group>
       </div>
     </>

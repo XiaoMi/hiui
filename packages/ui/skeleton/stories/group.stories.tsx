@@ -33,23 +33,38 @@ export const Group = () => {
             animation="wave"
           >
             {/* 骨架屏模板 */}
-            <Skeleton type="text" style={{ width: '60%', height: 24 }} />
-            <Skeleton type="text" style={{ width: '100%' }} />
-            <Skeleton type="text" style={{ width: '80%' }} />
+            <Skeleton height={24} width={'60%'} />
+            <Skeleton />
+            <Skeleton width={'80%'} />
           </Skeleton.Group>
           <h3>用法2: children 传递内容</h3>
           <Skeleton.Group layout="vertical" gap={12} loading={loading1} animation="wave">
             {/* 骨架屏模板 */}
-            <Skeleton type="text" style={{ width: '60%', height: 24 }}>
+            <Skeleton height={24} width={'60%'}>
               <h3 style={{ margin: '0 0 8px 0' }}>这是实际的标题</h3>
             </Skeleton>
-            <Skeleton type="text" style={{ width: '100%' }}>
+            <Skeleton>
               <p style={{ margin: 0 }}>这是第一段实际内容，已经从服务器加载完成。</p>
             </Skeleton>
-            <Skeleton type="text" style={{ width: '80%' }}>
+            <Skeleton width={'80%'}>
               <p style={{ margin: 0 }}>这是第二段实际内容，包含更多信息。</p>
             </Skeleton>
           </Skeleton.Group>
+          <h3>用法3: 内容放在组件外</h3>
+          {loading1 ? (
+            <Skeleton.Group layout="vertical" gap={12} loading={loading1} animation="wave">
+              {/* 骨架屏模板 */}
+              <Skeleton height={24} width={'60%'} />
+              <Skeleton />
+              <Skeleton width={'80%'} />
+            </Skeleton.Group>
+          ) : (
+            <div>
+              <h3 style={{ margin: '0 0 8px 0' }}>这是实际的标题</h3>
+              <p style={{ margin: '0 0 8px 0' }}>这是第一段实际内容，已经从服务器加载完成。</p>
+              <p style={{ margin: 0 }}>这是第二段实际内容，包含更多信息。</p>
+            </div>
+          )}
           <Button
             onClick={() => setLoading1(!loading1)}
             style={{ marginTop: 16, padding: '8px 16px' }}
@@ -61,9 +76,9 @@ export const Group = () => {
         <h2>垂直布局（默认）</h2>
         <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
           <Skeleton.Group layout="vertical">
-            <Skeleton type="text" style={{ width: '80%' }} />
-            <Skeleton type="text" style={{ width: '60%' }} />
-            <Skeleton type="text" style={{ width: '70%' }} />
+            <Skeleton width={'80%'} />
+            <Skeleton width={'60%'} />
+            <Skeleton width={'70%'} />
           </Skeleton.Group>
         </div>
 
@@ -72,8 +87,8 @@ export const Group = () => {
           <Skeleton.Group layout="horizontal">
             <Skeleton type="avatar" />
             <Skeleton.Group layout="vertical" style={{ flex: 1 }}>
-              <Skeleton type="text" style={{ width: '60%' }} />
-              <Skeleton type="text" style={{ width: '40%' }} />
+              <Skeleton type="text" width={'60%'} />
+              <Skeleton type="text" width={'40%'} />
             </Skeleton.Group>
           </Skeleton.Group>
         </div>
@@ -98,10 +113,8 @@ export const Group = () => {
                   >
                     <Avatar />
                     <div style={{ flex: 1 }}>
-                      <h4 style={{ margin: '0 0 4px 0' }}>我是标题</h4>
-                      <p style={{ margin: 0, fontSize: 14, color: '#999' }}>
-                        我是孔子 · 2025年11月3日
-                      </p>
+                      <h4 style={{ margin: '0 0 4px 0' }}>写代码是一门艺术</h4>
+                      <p style={{ margin: 0, fontSize: 14, color: '#999' }}>孔子 · 2025年11月3日</p>
                     </div>
                   </div>
                   {/* 内容 */}
@@ -121,7 +134,7 @@ export const Group = () => {
                   alt="content"
                   style={{
                     width: '65%',
-                    height: 200,
+                    height: 185,
                     objectFit: 'cover',
                     borderRadius: 6,
                   }}
@@ -137,24 +150,23 @@ export const Group = () => {
                 <Skeleton.Group layout="horizontal" gap={12}>
                   <Skeleton type="avatar" />
                   <Skeleton.Group layout="vertical" gap={8} style={{ flex: 1 }}>
-                    <Skeleton type="text" style={{ width: '40%' }} />
-                    <Skeleton type="text" style={{ width: '30%' }} />
+                    <Skeleton width={'40%'} />
+                    <Skeleton width={'30%'} />
                   </Skeleton.Group>
                 </Skeleton.Group>
                 {/* 内容 */}
                 <Skeleton.Group layout="vertical" gap={8}>
-                  <Skeleton type="text" style={{ width: '60%' }} />
-                  <Skeleton type="text" style={{ width: '40%' }} />
-                  <Skeleton type="text" />
-                  <Skeleton type="text" />
-                  <Skeleton type="text" />
-                  <Skeleton type="text" />
-                  <Skeleton type="text" />
+                  <Skeleton size="lg" width={'60%'} />
+                  <Skeleton size="lg" width={'40%'} />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
                 </Skeleton.Group>
               </Skeleton.Group>
 
               {/* 右侧图片 */}
-              <Skeleton type="image" style={{ width: '65%', height: 200 }} />
+              <Skeleton type="image" width={'65%'} height={185} />
             </Skeleton.Group>
           </Skeleton.Group>
           <Button
@@ -168,9 +180,9 @@ export const Group = () => {
         <h2>自定义间距</h2>
         <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
           <Skeleton.Group layout="vertical" gap={24}>
-            <Skeleton type="text" />
-            <Skeleton type="text" />
-            <Skeleton type="text" />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
           </Skeleton.Group>
         </div>
 
@@ -178,16 +190,16 @@ export const Group = () => {
         <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
           <h4>Pulse 动画</h4>
           <Skeleton.Group layout="vertical" animation="pulse">
-            <Skeleton type="text" />
-            <Skeleton type="text" style={{ width: '80%' }} />
-            <Skeleton type="text" style={{ width: '60%' }} />
+            <Skeleton />
+            <Skeleton width={'80%'} />
+            <Skeleton width={'60%'} />
           </Skeleton.Group>
 
           <h4 style={{ marginTop: 24 }}>Wave 动画</h4>
           <Skeleton.Group layout="vertical" animation="wave">
-            <Skeleton type="text" />
-            <Skeleton type="text" style={{ width: '80%' }} />
-            <Skeleton type="text" style={{ width: '60%' }} />
+            <Skeleton />
+            <Skeleton width={'80%'} />
+            <Skeleton width={'60%'} />
           </Skeleton.Group>
         </div>
 
@@ -198,8 +210,8 @@ export const Group = () => {
               <Skeleton.Group key={item} layout="horizontal" gap={12}>
                 <Skeleton type="avatar" />
                 <Skeleton.Group layout="vertical" gap={8} style={{ flex: 1 }}>
-                  <Skeleton type="text" style={{ width: '100%' }} />
-                  <Skeleton type="text" style={{ width: '50%' }} />
+                  <Skeleton width={'100%'} />
+                  <Skeleton width={'50%'} />
                 </Skeleton.Group>
               </Skeleton.Group>
             ))}

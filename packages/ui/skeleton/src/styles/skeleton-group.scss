@@ -5,6 +5,7 @@ $prefix: '#{$component-prefix}-skeleton' !default;
 .#{$prefix}-group {
   display: flex;
   width: 100%;
+  box-sizing: border-box;
 
   // 垂直布局（默认）
   &--layout-vertical {

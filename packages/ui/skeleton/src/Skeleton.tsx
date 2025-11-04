@@ -19,6 +19,8 @@ export const Skeleton = forwardRef<HTMLDivElement | null, SkeletonProps>(
       type = 'text',
       animation = 'none',
       size = 'md',
+      width,
+      height,
       ...rest
     },
     ref
@@ -32,8 +34,17 @@ export const Skeleton = forwardRef<HTMLDivElement | null, SkeletonProps>(
     )
 
     if (!loading) return <>{children}</>
+    const { style, ...restProps } = rest
 
-    return <div ref={ref} role={role} className={cls} {...rest}></div>
+    return (
+      <div
+        ref={ref}
+        role={role}
+        className={cls}
+        style={{ width, height, ...style }}
+        {...restProps}
+      ></div>
+    )
   }
 )
 
@@ -54,6 +65,14 @@ export interface SkeletonProps extends HiBaseHTMLProps<'div'> {
    * 尺寸，支持三种预设尺寸
    */
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * 宽度，支持自定义宽度
+   */
+  width?: string | number
+  /**
+   * 高度，支持自定义高度
+   */
+  height?: string | number
 }
 
 if (__DEV__) {

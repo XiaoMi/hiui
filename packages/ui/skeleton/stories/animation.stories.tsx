@@ -11,11 +11,11 @@ export const Animation = () => {
           <Skeleton.Group layout="horizontal">
             <Skeleton type="icon"></Skeleton>
             <Skeleton.Group>
-              <Skeleton style={{ width: '30%' }}></Skeleton>
-              <Skeleton style={{ width: '70%' }}></Skeleton>
+              <Skeleton width={'30%'}></Skeleton>
+              <Skeleton width={'70%'}></Skeleton>
             </Skeleton.Group>
           </Skeleton.Group>
-          <Skeleton type="image" style={{ height: '200px' }}></Skeleton>
+          <Skeleton type="image" height={200}></Skeleton>
           <Skeleton.Group layout="horizontal">
             <Skeleton type="avatar" />
             <Skeleton.Group>
@@ -38,11 +38,11 @@ export const Animation = () => {
           <Skeleton.Group layout="horizontal">
             <Skeleton type="icon"></Skeleton>
             <Skeleton.Group>
-              <Skeleton style={{ width: '30%' }}></Skeleton>
-              <Skeleton style={{ width: '70%' }}></Skeleton>
+              <Skeleton width={'30%'}></Skeleton>
+              <Skeleton width={'70%'}></Skeleton>
             </Skeleton.Group>
           </Skeleton.Group>
-          <Skeleton type="image" style={{ height: '200px' }}></Skeleton>
+          <Skeleton type="image" height={200}></Skeleton>
           <Skeleton.Group layout="horizontal">
             <Skeleton type="avatar" />
             <Skeleton.Group>
@@ -65,11 +65,11 @@ export const Animation = () => {
           <Skeleton.Group layout="horizontal">
             <Skeleton type="icon"></Skeleton>
             <Skeleton.Group>
-              <Skeleton style={{ width: '30%' }}></Skeleton>
-              <Skeleton style={{ width: '70%' }}></Skeleton>
+              <Skeleton width={'30%'}></Skeleton>
+              <Skeleton width={'70%'}></Skeleton>
             </Skeleton.Group>
           </Skeleton.Group>
-          <Skeleton type="image" style={{ height: '200px' }}></Skeleton>
+          <Skeleton type="image" height={200}></Skeleton>
           <Skeleton.Group layout="horizontal">
             <Skeleton type="avatar" />
             <Skeleton.Group>

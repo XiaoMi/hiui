@@ -14,15 +14,15 @@ export const Size = () => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div>
           <p style={{ marginBottom: 8, color: '#666' }}>sm</p>
-          <Skeleton type="text" size="sm" style={{ width: '60%' }} />
+          <Skeleton type="text" size="sm" width={'60%'} />
         </div>
         <div>
           <p style={{ marginBottom: 8, color: '#666' }}>md</p>
-          <Skeleton type="text" size="md" style={{ width: '60%' }} />
+          <Skeleton type="text" size="md" width={'60%'} />
         </div>
         <div>
           <p style={{ marginBottom: 8, color: '#666' }}>lg</p>
-          <Skeleton type="text" size="lg" style={{ width: '60%' }} />
+          <Skeleton type="text" size="lg" width={'60%'} />
         </div>
       </div>
 

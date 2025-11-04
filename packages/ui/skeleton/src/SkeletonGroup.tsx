@@ -32,12 +32,12 @@ export const SkeletonGroup = forwardRef<HTMLDivElement | null, SkeletonGroupProp
 
     const { style, ...restProps } = rest
 
-    // 渲染子组件，注入 loading 和 animation props
-    const renderChildren = () => {
-      return React.Children.map(children, (child) => {
+    // 递归渲染子组件，注入 loading 和 animation props 到所有嵌套层级
+    const renderChildren = (nodes: React.ReactNode): React.ReactNode => {
+      return React.Children.map(nodes, (child) => {
         if (React.isValidElement(child)) {
           // 如果子组件是 Skeleton 或 SkeletonGroup，注入 props
-          const childProps: Partial<SkeletonProps> = {}
+          const childProps: Partial<SkeletonProps> & { children?: React.ReactNode } = {}
 
           // 注入 loading（如果子组件没有显式设置）
           if (child.props.loading === undefined) {
@@ -47,6 +47,11 @@ export const SkeletonGroup = forwardRef<HTMLDivElement | null, SkeletonGroupProp
           // 注入 animation（如果父组件设置了 animation 且子组件没有显式设置）
           if (animation !== undefined && child.props.animation === undefined) {
             childProps.animation = animation
+          }
+
+          // 递归处理子组件的 children
+          if (child.props.children) {
+            childProps.children = renderChildren(child.props.children)
           }
 
           // 如果有需要注入的 props，则克隆组件
@@ -66,7 +71,7 @@ export const SkeletonGroup = forwardRef<HTMLDivElement | null, SkeletonGroupProp
         return <>{content}</>
       }
       // 如果没有 content，使用 children（向后兼容），但注入 loading='none'
-      return <>{renderChildren()}</>
+      return <>{renderChildren(children)}</>
     }
 
     // loading 状态下，渲染骨架屏模板（children），并注入 loading=true 和 animation
@@ -82,7 +87,7 @@ export const SkeletonGroup = forwardRef<HTMLDivElement | null, SkeletonGroupProp
         }}
         {...restProps}
       >
-        {renderChildren()}
+        {renderChildren(children)}
       </div>
     )
   }
