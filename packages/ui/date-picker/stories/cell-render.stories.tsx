@@ -44,7 +44,7 @@ export const CellRender = () => {
           cellRender={(info) => {
             const { value, weekNum } = info
 
-            return weekNum ? weekNum + 'W' : value
+            return weekNum ? 'W' + weekNum : value
           }}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)

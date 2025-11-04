@@ -18,7 +18,6 @@ import {
   CalendarItemV3,
   DatePickerProps,
   DatePickerTypeEnum,
-  DatePickerValueV3,
   DateRange,
   DatePickerOnChangeDateString,
   DatePickerOnChangeDate,
@@ -134,20 +133,23 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       [weekOffset, locale]
     )
 
-    const valueAdapter = useCallback((original?: DatePickerValueV3 | DatePickerValueV3[]) => {
-      if (!original) {
-        return original
-      } else {
-        if (Array.isArray(original)) {
-          return {
-            start: new Date(original[0] as any),
-            end: new Date(original[1] as any),
-          } as DateRange
-        } else {
+    const valueAdapter = useCallback(
+      (original) => {
+        if (!original) {
           return original
+        } else {
+          if (Array.isArray(original) && type.includes('range')) {
+            return {
+              start: new Date(original[0] as any),
+              end: new Date(original[1] as any),
+            } as DateRange
+          } else {
+            return original
+          }
         }
-      }
-    }, [])
+      },
+      [type]
+    )
 
     const altCalendar = useMemo<CalendarItemV3[] | undefined>(
       () =>
