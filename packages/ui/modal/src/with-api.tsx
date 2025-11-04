@@ -13,7 +13,7 @@ const modalInstanceCache: {
 } = {}
 
 // TODO： 抽离合并到 Toast API
-const open = ({ key, onConfirm, onCancel, content, ...rest }: ModalApiProps = {}) => {
+const open = ({ key, onConfirm, onCancel, content, width = 400, ...rest }: ModalApiProps = {}) => {
   if (!key) {
     key = uuid()
   }
@@ -25,7 +25,7 @@ const open = ({ key, onConfirm, onCancel, content, ...rest }: ModalApiProps = {}
   const toastManagerRef = createRef<any>()
 
   const ClonedModal = createElement(Modal, {
-    width: 400,
+    width,
     showHeaderDivider: false,
     type: 'info',
     ...rest,
@@ -85,22 +85,7 @@ const close = (key: string) => {
   delete modalInstanceCache[key]
 }
 
-export interface ModalApiProps
-  extends Pick<
-    ModalProps,
-    | 'onConfirm'
-    | 'onCancel'
-    | 'title'
-    | 'cancelText'
-    | 'confirmText'
-    | 'className'
-    | 'type'
-    | 'closeable'
-    | 'showMask'
-    | 'showHeaderDivider'
-    | 'closeOnEsc'
-    | 'maskClosable'
-  > {
+export interface ModalApiProps extends Omit<ModalProps, 'visible' | 'innerRef'> {
   /**
    * 	confirm 的内容
    */
