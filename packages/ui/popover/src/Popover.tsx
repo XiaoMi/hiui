@@ -4,6 +4,7 @@ import React, {
   forwardRef,
   useMemo,
   useImperativeHandle,
+  useRef,
 } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
@@ -43,9 +44,14 @@ export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
       visibleAction,
     } = usePopover(rest)
 
+    const popperRef = useRef<{ update: () => void } | null>(null)
+
     useImperativeHandle(innerRef, () => ({
       open: visibleAction.on,
       close: visibleAction.off,
+      update: () => {
+        popperRef.current?.update()
+      },
     }))
 
     const triggerMemo = useMemo(() => {
@@ -86,7 +92,7 @@ export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
     return (
       <>
         {triggerMemo}
-        <Popper {...getPopperProps()} {...getOverlayProps()} autoFocus={false}>
+        <Popper ref={popperRef} {...getPopperProps()} {...getOverlayProps()} autoFocus={false}>
           <div ref={ref} className={cls} {...rootProps}>
             {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
             <div className={`${prefixCls}__content`}>{content}</div>
@@ -98,7 +104,7 @@ export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
 )
 
 export interface PopoverProps extends HiBaseHTMLProps<'div'>, UsePopoverProps {
-  innerRef?: React.Ref<{ open: () => void; close: () => void }>
+  innerRef?: React.Ref<PopoverHelper>
   /**
    * 气泡卡片标题
    */
@@ -127,6 +133,12 @@ export interface PopoverProps extends HiBaseHTMLProps<'div'>, UsePopoverProps {
    * 显示标题分割线
    */
   showTitleDivider?: boolean
+}
+
+export interface PopoverHelper {
+  open: () => void
+  close: () => void
+  update: () => void
 }
 
 if (__DEV__) {
