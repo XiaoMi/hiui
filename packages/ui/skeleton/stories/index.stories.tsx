@@ -11,7 +11,7 @@ export * from './widthAndHeight.stories'
 export * from './group.stories'
 
 export default {
-  title: 'Data Display/Skeleton',
+  title: 'Feedback/Skeleton',
   component: Skeleton,
   decorators: [(story: Function) => <div>{story()}</div>],
 }
