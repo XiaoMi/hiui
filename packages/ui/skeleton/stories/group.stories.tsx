@@ -18,7 +18,7 @@ export const Group = () => {
       <div className="skeleton-group__wrap">
         <h2>Usage 用法</h2>
         <div style={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
-          <h3>用法1: 使用content prop传递内容</h3>
+          <h3>用法1: 属性式（使用content prop传递内容）</h3>
           <Skeleton.Group
             layout="vertical"
             gap={12}
@@ -37,7 +37,7 @@ export const Group = () => {
             <Skeleton />
             <Skeleton width={'80%'} />
           </Skeleton.Group>
-          <h3>用法2: children 传递内容</h3>
+          <h3>用法2: 包覆式（children 传递内容）</h3>
           <Skeleton.Group layout="vertical" gap={12} loading={loading1} animation="wave">
             {/* 骨架屏模板 */}
             <Skeleton height={24} width={'60%'}>
@@ -50,7 +50,7 @@ export const Group = () => {
               <p style={{ margin: 0 }}>这是第二段实际内容，包含更多信息。</p>
             </Skeleton>
           </Skeleton.Group>
-          <h3>用法3: 内容放在组件外</h3>
+          <h3>用法3: 独立式（内容放在组件外）</h3>
           {loading1 ? (
             <Skeleton.Group layout="vertical" gap={12} loading={loading1} animation="wave">
               {/* 骨架屏模板 */}
