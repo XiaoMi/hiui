@@ -5,13 +5,13 @@ export const Basic = () => {
   return (
     <>
       <h1>Basic</h1>
-      <div className="skeleton-basic__wrap">
-        <Skeleton.Group animation="wave">
-          <Skeleton size="lg" width={'30%'} />
-          <Skeleton />
-          <Skeleton />
-          <Skeleton width={'70%'} />
-        </Skeleton.Group>
+      <div
+        className="skeleton-basic__wrap"
+        style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}
+      >
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
       </div>
     </>
   )

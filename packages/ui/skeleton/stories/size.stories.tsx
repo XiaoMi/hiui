@@ -60,7 +60,7 @@ export const Size = () => {
 
       <h2>image 图像骨架</h2>
       <p style={{ color: '#666', marginBottom: 16 }}>
-        image 类型的骨架屏尺寸由父容器决定，不受 size 属性影响
+        image 类型的骨架屏尺寸由父容器或 width/height 参数决定，不受 size 属性影响
       </p>
       <div style={{ display: 'flex', gap: 16 }}>
         <div style={{ width: 100, height: 100 }}>
