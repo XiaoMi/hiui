@@ -33,7 +33,7 @@ export const useColWidth = ({
         let exceedWidth = 0
 
         let _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node, index) => {
-          const realWidth = (node as HTMLElement).getBoundingClientRect().width || 60
+          const realWidth = (node as HTMLElement).offsetWidth || 60
           const { fixed } = columns[index] ?? {}
           const width = getGroupItemWidth(columns).colWidths[index]
 
