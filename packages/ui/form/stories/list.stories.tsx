@@ -47,6 +47,10 @@ export const List = () => {
               },
             ],
           }}
+          onValuesChange={(changedValues, allValues) => {
+            console.log('changedValues', changedValues)
+            console.log('allValues', allValues)
+          }}
         >
           <FormItem field="testInput" valueType="string" label="供应商">
             <Input />
@@ -82,7 +86,7 @@ export const List = () => {
                         >
                           <Input />
                         </FormItem>
-                        <FormItem field={null} valueType={null}>
+                        <FormItem>
                           <div>
                             <Button
                               size="md"
