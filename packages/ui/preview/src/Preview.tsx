@@ -79,6 +79,9 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       return titleProp ?? getTitle(Array.isArray(src) ? src[active] : src)
     }, [active, src, titleProp])
 
+    // 锁定外部滚动
+    useScrollLock(previewRef, { enabled: visible })
+
     // 图片加水印
     const [watermarkContainer, setWatermarkContainer] = useState<HTMLDivElement | null>(null)
 
