@@ -42,15 +42,13 @@ export const Appearance = () => {
         />
         <h2>contained</h2>
         <DatePicker
-          style={{ width: 'auto' }}
+          style={{ width: 'auto', marginBottom: 16 }}
           appearance="contained"
           label="日期"
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
         />
-        <br />
-        <br />
         <DatePicker
           appearance="contained"
           label="日期范围"
