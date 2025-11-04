@@ -21,7 +21,7 @@ export const SkeletonGroup = forwardRef<HTMLDivElement | null, SkeletonGroupProp
       content,
       layout = 'vertical',
       gap,
-      loading = true,
+      visible = true,
       animation,
       alignItems = 'center',
       ...rest
@@ -32,16 +32,16 @@ export const SkeletonGroup = forwardRef<HTMLDivElement | null, SkeletonGroupProp
 
     const { style, ...restProps } = rest
 
-    // 递归渲染子组件，注入 loading 和 animation props 到所有嵌套层级
+    // 递归渲染子组件，注入 visible 和 animation props 到所有嵌套层级
     const renderChildren = (nodes: React.ReactNode): React.ReactNode => {
       return React.Children.map(nodes, (child) => {
         if (React.isValidElement(child)) {
           // 如果子组件是 Skeleton 或 SkeletonGroup，注入 props
           const childProps: Partial<SkeletonProps> & { children?: React.ReactNode } = {}
 
-          // 注入 loading（如果子组件没有显式设置）
-          if (child.props.loading === undefined) {
-            childProps.loading = loading
+          // 注入 visible（如果子组件没有显式设置）
+          if (child.props.visible === undefined) {
+            childProps.visible = visible
           }
 
           // 注入 animation（如果父组件设置了 animation 且子组件没有显式设置）
@@ -63,18 +63,18 @@ export const SkeletonGroup = forwardRef<HTMLDivElement | null, SkeletonGroupProp
       })
     }
 
-    // 如果不是 loading 状态，渲染实际内容
-    // 如果提供了 content，使用 content；否则使用 children（但会注入 loading='none'）
-    if (!loading) {
+    // 如果不是 visible 状态，渲染实际内容
+    // 如果提供了 content，使用 content；否则使用 children（但会注入 visible='none'）
+    if (!visible) {
       // 优先使用 content
       if (content !== undefined) {
         return <>{content}</>
       }
-      // 如果没有 content，使用 children（向后兼容），但注入 loading='none'
+      // 如果没有 content，使用 children（向后兼容），但注入 visible='none'
       return <>{renderChildren(children)}</>
     }
 
-    // loading 状态下，渲染骨架屏模板（children），并注入 loading=true 和 animation
+    // visible 状态下，渲染骨架屏模板（children），并注入 visible=true 和 animation
     return (
       <div
         ref={ref}
@@ -95,11 +95,11 @@ export const SkeletonGroup = forwardRef<HTMLDivElement | null, SkeletonGroupProp
 
 export interface SkeletonGroupProps extends HiBaseHTMLProps<'div'> {
   /**
-   * 骨架屏模板，loading 为 true 时显示
+   * 骨架屏模板，visible 为 true 时显示
    */
   children?: React.ReactNode
   /**
-   * 加载完成后显示的实际内容，loading 为 false 时显示
+   * 加载完成后显示的实际内容，visible 为 false 时显示
    */
   content?: React.ReactNode
   /**
@@ -115,7 +115,7 @@ export interface SkeletonGroupProps extends HiBaseHTMLProps<'div'> {
    * 加载状态，控制骨架屏与实际内容的切换
    * @default true
    */
-  loading?: boolean
+  visible?: boolean
   /**
    * 统一设置子组件的动画效果
    */

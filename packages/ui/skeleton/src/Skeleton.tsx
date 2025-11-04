@@ -15,7 +15,7 @@ export const Skeleton = forwardRef<HTMLDivElement | null, SkeletonProps>(
       role = 'skeleton',
       className,
       children,
-      loading = true,
+      visible = true,
       type = 'text',
       animation = 'none',
       size = 'md',
@@ -32,9 +32,9 @@ export const Skeleton = forwardRef<HTMLDivElement | null, SkeletonProps>(
       animation && `${prefixCls}--animation-${animation}`,
       size && `${prefixCls}--size-${size}`
     )
-
-    if (!loading) return <>{children}</>
     const { style, ...restProps } = rest
+    // 如果不在加载状态，直接渲染子元素
+    if (!visible) return <>{children}</>
 
     return (
       <div
@@ -52,7 +52,7 @@ export interface SkeletonProps extends HiBaseHTMLProps<'div'> {
   /**
    * 加载状态，控制骨架屏的显示与隐藏
    */
-  loading?: boolean
+  visible?: boolean
   /**
    * 类型，支持文本、头像、图片、图标四种类型
    */

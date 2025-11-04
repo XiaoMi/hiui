@@ -13,15 +13,15 @@ export const Type = () => {
       </Skeleton.Group>
       <h2>avatar 头像骨架</h2>
       <div className="skeleton-basic__wrap">
-        <Skeleton loading={true} animation="wave" type="avatar"></Skeleton>
+        <Skeleton visible={true} animation="wave" type="avatar"></Skeleton>
       </div>
       <h2>image 图像骨架</h2>
       <div className="skeleton-basic__wrap" style={{ width: '150px', height: '100px' }}>
-        <Skeleton loading={true} animation="wave" type="image"></Skeleton>
+        <Skeleton visible={true} animation="wave" type="image"></Skeleton>
       </div>
       <h2>icon 图标骨架</h2>
       <div className="skeleton-basic__wrap">
-        <Skeleton loading={true} animation="wave" type="icon"></Skeleton>
+        <Skeleton visible={true} animation="wave" type="icon"></Skeleton>
       </div>
     </>
   )

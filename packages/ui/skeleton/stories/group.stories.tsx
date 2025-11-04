@@ -8,9 +8,9 @@ import Button from '@hi-ui/button'
  * @desc 使用 Skeleton.Group 组织多个骨架屏元素，统一控制加载状态、动画效果和布局方向。通过 content prop 区分骨架屏模板和实际内容。
  */
 export const Group = () => {
-  const [loading1, setLoading1] = React.useState(true)
-  // const [loading2, setLoading2] = React.useState(true)
-  const [loading3, setLoading3] = React.useState(true)
+  const [visible1, setVisible1] = React.useState(true)
+  // const [visible2, setVisible2] = React.useState(true)
+  const [visible3, setVisible3] = React.useState(true)
 
   return (
     <>
@@ -22,7 +22,7 @@ export const Group = () => {
           <Skeleton.Group
             layout="vertical"
             gap={12}
-            loading={loading1}
+            visible={visible1}
             content={
               <div>
                 <h3 style={{ margin: '0 0 8px 0' }}>这是实际的标题</h3>
@@ -38,7 +38,7 @@ export const Group = () => {
             <Skeleton width={'80%'} />
           </Skeleton.Group>
           <h3>用法2: 包覆式（children 传递内容）</h3>
-          <Skeleton.Group layout="vertical" gap={12} loading={loading1} animation="wave">
+          <Skeleton.Group layout="vertical" gap={12} visible={visible1} animation="wave">
             {/* 骨架屏模板 */}
             <Skeleton height={24} width={'60%'}>
               <h3 style={{ margin: '0 0 8px 0' }}>这是实际的标题</h3>
@@ -51,8 +51,8 @@ export const Group = () => {
             </Skeleton>
           </Skeleton.Group>
           <h3>用法3: 独立式（内容放在组件外）</h3>
-          {loading1 ? (
-            <Skeleton.Group layout="vertical" gap={12} loading={loading1} animation="wave">
+          {visible1 ? (
+            <Skeleton.Group layout="vertical" gap={12} visible={visible1} animation="wave">
               {/* 骨架屏模板 */}
               <Skeleton height={24} width={'60%'} />
               <Skeleton />
@@ -66,10 +66,10 @@ export const Group = () => {
             </div>
           )}
           <Button
-            onClick={() => setLoading1(!loading1)}
+            onClick={() => setVisible1(!visible1)}
             style={{ marginTop: 16, padding: '8px 16px' }}
           >
-            {loading1 ? 'Hide Skeleton' : 'Show Skeleton'}
+            {visible1 ? 'Hide Skeleton' : 'Show Skeleton'}
           </Button>
         </div>
 
@@ -98,7 +98,7 @@ export const Group = () => {
           <Skeleton.Group
             layout="vertical"
             gap={16}
-            loading={loading3}
+            visible={visible3}
             animation="wave"
             content={
               <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -170,10 +170,10 @@ export const Group = () => {
             </Skeleton.Group>
           </Skeleton.Group>
           <Button
-            onClick={() => setLoading3(!loading3)}
+            onClick={() => setVisible3(!visible3)}
             style={{ marginTop: 16, padding: '8px 16px' }}
           >
-            {loading1 ? 'Hide Skeleton' : 'Show Skeleton'}
+            {visible3 ? 'Hide Skeleton' : 'Show Skeleton'}
           </Button>
         </div>
 

@@ -7,7 +7,7 @@ export const Animation = () => {
       <h1>Animation 动画</h1>
       <h2>wave 波浪动画</h2>
       <div className="skeleton-basic__wrap">
-        <Skeleton.Group loading={true} animation="wave">
+        <Skeleton.Group visible={true} animation="wave">
           <Skeleton.Group layout="horizontal">
             <Skeleton type="icon"></Skeleton>
             <Skeleton.Group>
@@ -34,7 +34,7 @@ export const Animation = () => {
       </div>
       <h2>pulse 呼吸动画</h2>
       <div className="skeleton-basic__wrap">
-        <Skeleton.Group loading={true} animation="pulse">
+        <Skeleton.Group visible={true} animation="pulse">
           <Skeleton.Group layout="horizontal">
             <Skeleton type="icon"></Skeleton>
             <Skeleton.Group>
@@ -61,7 +61,7 @@ export const Animation = () => {
       </div>
       <h2>none 无动画</h2>
       <div className="skeleton-basic__wrap">
-        <Skeleton.Group loading={true} animation="none">
+        <Skeleton.Group visible={true} animation="none">
           <Skeleton.Group layout="horizontal">
             <Skeleton type="icon"></Skeleton>
             <Skeleton.Group>

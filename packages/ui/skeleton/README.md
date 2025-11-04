@@ -20,7 +20,7 @@
 
 | 参数      | 说明                                 | 类型              | 可选值                                  | 默认值  |
 | --------- | ------------------------------------ | ----------------- | --------------------------------------- | ------- |
-| loading   | 加载状态，控制骨架屏的显示与隐藏     | boolean           | true \| false                           | true    |
+| visible   | 加载状态，控制骨架屏的显示与隐藏     | boolean           | true \| false                           | true    |
 | type      | 骨架屏类型                           | string            | 'text' \| 'avatar' \| 'image' \| 'icon' | 'text'  |
 | animation | 动画效果                             | string            | 'pulse' \| 'wave' \| 'none'             | 'none'  |
 | size      | 尺寸大小                             | string            | 'sm' \| 'md' \| 'lg'                    | 'md'    |
@@ -31,7 +31,7 @@
 
 | 参数       | 说明                                                     | 类型              | 可选值                                  | 默认值     |
 | ---------- | -------------------------------------------------------- | ----------------- | --------------------------------------- | ---------- |
-| loading    | 加载状态，控制骨架屏与实际内容的切换                     | boolean           | true \| false                           | true       |
+| visible    | 加载状态，控制骨架屏与实际内容的切换                     | boolean           | true \| false                           | true       |
 | content    | 加载完成后显示的实际内容                                 | React.ReactNode   | -                                       | -          |
 | layout     | 布局方向                                                 | string            | 'vertical' \| 'horizontal'              | 'vertical' |
 | gap        | 子元素间距，可以是数字（px）或字符串（如 '12px', '1rem'）| number \| string  | -                                       | -          |
