@@ -7,6 +7,7 @@ import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { HiBaseHTMLProps, usePortalContext } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
+import { useScrollLock } from '@hi-ui/use-scroll-lock'
 import {
   ZoomInOutlined,
   ZoomOutOutlined,
@@ -116,9 +117,33 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     // 缩放处理
     const handleZoom = useCallback(
       (type: 'zoomIn' | 'zoomOut') => {
-        const newScale = Number(
-          (imgTransform.scale + (type === 'zoomIn' ? 1 : -1) * 0.1).toFixed(1)
-        )
+        const currentScale = imgTransform.scale
+        // 动态步长：根据当前缩放比例调整步长
+        let step = 0.1
+        if (currentScale < 0.5) {
+          step = 0.05 // 小比例时使用更小的步长
+        } else if (currentScale < 1) {
+          step = 0.1
+        } else if (currentScale < 2) {
+          step = 0.2
+        } else if (currentScale < 5) {
+          step = 0.5
+        } else {
+          step = 1 // 大比例时使用更大的步长
+        }
+
+        const delta = (type === 'zoomIn' ? 1 : -1) * step
+        const newScale = Number((currentScale + delta).toFixed(2))
+
+        // 边界值检查：最小 0.1，最大 10
+        if (newScale < 0.05) {
+          return
+        }
+        if (newScale > 10) {
+          updateImgTransform({ ...imgTransform, scale: 10 })
+          return
+        }
+
         updateImgTransform({ ...imgTransform, scale: newScale })
       },
       [imgTransform]
