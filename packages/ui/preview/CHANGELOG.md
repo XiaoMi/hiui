@@ -1,5 +1,11 @@
 # @hi-ui/preview
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- d5b78a25b: fix(preview): 修复滚轮缩放缺乏边界&外部滚动锁定问题 (5.0)
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

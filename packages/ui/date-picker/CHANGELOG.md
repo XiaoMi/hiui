@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.21
+
+### Patch Changes
+
+- 07a38d6f8: fix(date-picker): 加强 valueAdapter 逻辑处理，当值是数组并且是范围类型时，再做转换 (5.0)
+
 ## 5.0.0-canary.20
 
 ### Patch Changes

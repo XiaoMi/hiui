@@ -1,5 +1,11 @@
 # @hi-ui/modal
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- 0d0044234: chore(modal): ModalApiProps 暴露更多 Modal 组件参数 (5.0)
+
 ## 5.0.0-canary.7
 
 ### Minor Changes

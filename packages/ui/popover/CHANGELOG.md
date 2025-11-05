@@ -1,5 +1,11 @@
 # @hi-ui/popover
 
+## 5.0.0-canary.6
+
+### Minor Changes
+
+- a267a046f: feat(popover): 暴露 update 方法，支持调用刷新校准弹窗位置 (5.0)
+
 ## 5.0.0-canary.5
 
 ### Minor Changes

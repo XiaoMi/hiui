@@ -1,5 +1,11 @@
 # @hi-ui/form
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- 4424a4b92: fix(form): 修复 FormList 字段变化时没有触发 onValuesChange 回调的问题 (5.0)
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

@@ -1,5 +1,37 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.35
+
+### Minor Changes
+
+- a267a046f: feat(popover): 暴露 update 方法，支持调用刷新校准弹窗位置 (5.0)
+
+### Patch Changes
+
+- e4ac65587: fix(textarea): 修复更新 maxRows 无效的问题 (5.0)
+- 07a38d6f8: fix(date-picker): 加强 valueAdapter 逻辑处理，当值是数组并且是范围类型时，再做转换 (5.0)
+- 4424a4b92: fix(form): 修复 FormList 字段变化时没有触发 onValuesChange 回调的问题 (5.0)
+- 0d0044234: chore(modal): ModalApiProps 暴露更多 Modal 组件参数 (5.0)
+- b265f3a8d: <br />
+  - fix(table): 修改表格在外层是 scale 时导致列宽计算有误的问题 (5.0)
+  - fix(loading): 修改 loading size 类型，移除 xs 尺寸 (5.0)
+- d5b78a25b: fix(preview): 修复滚轮缩放缺乏边界&外部滚动锁定问题 (5.0)
+- Updated dependencies [e4ac65587]
+- Updated dependencies [07a38d6f8]
+- Updated dependencies [4424a4b92]
+- Updated dependencies [0d0044234]
+- Updated dependencies [b265f3a8d]
+- Updated dependencies [a267a046f]
+- Updated dependencies [d5b78a25b]
+  - @hi-ui/textarea@5.0.0-canary.8
+  - @hi-ui/date-picker@5.0.0-canary.21
+  - @hi-ui/form@5.0.0-canary.7
+  - @hi-ui/modal@5.0.0-canary.8
+  - @hi-ui/loading@5.0.0-canary.5
+  - @hi-ui/table@5.0.0-canary.18
+  - @hi-ui/popover@5.0.0-canary.6
+  - @hi-ui/preview@5.0.0-canary.6
+
 ## 5.0.0-canary.34
 
 ### Major Changes

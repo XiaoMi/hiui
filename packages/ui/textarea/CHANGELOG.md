@@ -1,5 +1,11 @@
 # @hi-ui/textarea
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- e4ac65587: fix(textarea): 修复更新 maxRows 无效的问题 (5.0)
+
 ## 5.0.0-canary.7
 
 ### Patch Changes
