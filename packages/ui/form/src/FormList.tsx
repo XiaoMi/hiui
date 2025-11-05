@@ -10,7 +10,7 @@ const fieldListSymbol = Symbol('field-list')
 
 export const FormList = forwardRef<HTMLDivElement | null, FormListProps>(
   ({ children, name: nameProp, innerRef }, ref) => {
-    const { values, setFormState } = useFormContext()
+    const { values, setFormState, onValuesChange } = useFormContext()
 
     // 唯一 id 生成器
     // const listCountRef = React.useRef(0)
@@ -40,6 +40,9 @@ export const FormList = forwardRef<HTMLDivElement | null, FormListProps>(
             fieldTouched = undefined
           }
 
+          const changedValues = setNested({}, name, stateFunc(getNested(prev.values, name)))
+          onValuesChange?.(changedValues, values)
+
           return {
             values,
             errors: alterErrors ? setNested(prev.errors, name, fieldError) : prev.errors,
@@ -47,7 +50,7 @@ export const FormList = forwardRef<HTMLDivElement | null, FormListProps>(
           } as FormState<any>
         })
       },
-      [name, setFormState]
+      [name, onValuesChange, setFormState]
     )
 
     const add = React.useCallback(

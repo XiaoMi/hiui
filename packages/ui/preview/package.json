@@ -50,6 +50,7 @@
     "@hi-ui/portal": "^5.0.0-canary.3",
     "@hi-ui/use-latest": "^5.0.0-canary.2",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-canary.2",
+    "@hi-ui/use-scroll-lock": "^5.0.0-canary.2",
     "@hi-ui/watermark": "^5.0.0-canary.3",
     "react-transition-group": "^4.4.2"
   },

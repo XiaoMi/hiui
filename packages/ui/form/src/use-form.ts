@@ -608,6 +608,7 @@ export const useForm = <Values = Record<string, any>>({
     setFieldsValue,
     getFieldsError,
     formItemsRef,
+    onValuesChange,
   }
 }
 
