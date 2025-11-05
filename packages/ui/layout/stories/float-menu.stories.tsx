@@ -27,7 +27,7 @@ import Avatar from '@hi-ui/avatar'
 
 /**
  * @title 侧边栏带浮动菜单
- * @desc 默认情况下，侧边栏是折叠的，可拖拽展开
+ * @desc 菜单部分联动交互可根据需求自行实现，以下示例实现了一套默认联动交互
  */
 export const FloatMenu = () => {
   const [data] = React.useState<MenuDataItem[]>([
@@ -450,7 +450,14 @@ export const FloatMenu = () => {
             width={180}
             visible={floatContainerVisible}
             collapsed={floatContainerCollapsed}
-            onCollapse={setFloatContainerCollapsed}
+            onCollapse={(collapsed) => {
+              setFloatContainerCollapsed(collapsed)
+              if (collapsed) {
+                setFloatContainerVisible(false)
+              } else {
+                setFloatContainerVisible(true)
+              }
+            }}
             onMouseEnter={() => {
               setFloatContainerVisible(true)
 
