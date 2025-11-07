@@ -5,7 +5,7 @@
 $line-border-color-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 400),
-  'default': use-color('gray', 300),
+  'default': use-color('gray', 400),
   'success': use-color-mode('success'),
   'danger': use-color-mode('danger'),
 ) !default;
@@ -13,7 +13,7 @@ $line-border-color-map: (
 $line-color-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 400),
-  'default': use-color('gray', 700),
+  'default': use-color('gray', 900),
   'success': use-color-mode('success'),
   'danger': use-color-mode('danger'),
 ) !default;
@@ -23,7 +23,7 @@ $line-color-map: (
 $line-hover-border-color-map:(
   'primary': use-color-mode('primary', 400),
   'secondary': use-color-mode('primary', 300),
-  'default': use-color('gray', 300),
+  'default': use-color('gray', 400),
   'success': use-color-mode('success', 400),
   'danger': use-color-mode('danger'),
 ) !default;
@@ -31,7 +31,7 @@ $line-hover-border-color-map:(
 $line-hover-color-map:(
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary', 300),
-  'default': use-color('gray', 700),
+  'default': use-color('gray', 900),
   'success': use-color-mode('success', 400),
   'danger': use-color-mode('danger'),
 ) !default;
@@ -39,7 +39,7 @@ $line-hover-color-map:(
 $line-hover-bg-color-map:(
   'primary': use-color-mode('primary', 50),
   'secondary': use-color-mode('primary', 50),
-  'default': use-color('gray', 50),
+  'default': use-color('gray', 100),
   'success': use-color-mode('success', 50),
   'danger': use-color-mode('danger', 50),
 ) !default;
@@ -49,7 +49,7 @@ $line-hover-bg-color-map:(
 $line-active-border-color-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary'),
-  'default': use-color('gray', 300),
+  'default': use-color('gray', 400),
   'success': use-color-mode('success', 600),
   'danger': use-color-mode('danger'),
 ) !default;
@@ -57,7 +57,7 @@ $line-active-border-color-map: (
 $line-active-color-map: (
   'primary': use-color-mode('primary'),
   'secondary': use-color-mode('primary'),
-  'default': use-color('gray', 700),
+  'default': use-color('gray', 900),
   'success': use-color-mode('success', 600),
   'danger': use-color-mode('danger'),
 ) !default;
@@ -65,7 +65,7 @@ $line-active-color-map: (
 $line-active-bg-color-map:(
   'primary': use-color-mode('primary', 100),
   'secondary': use-color-mode('primary', 100),
-  'default': use-color('gray', 200),
+  'default': use-color('gray', 300),
   'success': use-color-mode('success', 100),
   'danger': use-color-mode('danger', 100),
 ) !default;
@@ -75,7 +75,7 @@ $line-active-bg-color-map:(
 $line-loading-border-color-map: (
   'primary': use-color-mode('primary', 300),
   'secondary': use-color-mode('primary', 200),
-  'default': use-color('gray', 300),
+  'default': use-color('gray', 400),
   'success': use-color-mode('success', 200),
   'danger': use-color-mode('danger', 200),
 ) !default;
@@ -83,7 +83,7 @@ $line-loading-border-color-map: (
 $line-loading-color-map: (
   'primary': use-color-mode('primary', 200),
   'secondary': use-color-mode('primary', 200),
-  'default': use-color('gray', 400),
+  'default': use-color('gray', 500),
   'success': use-color-mode('success', 200),
   'danger': use-color-mode('danger', 300),
 ) !default;
@@ -91,14 +91,6 @@ $line-loading-color-map: (
 // 禁用态
 
 $line-disabled-border-color-map: (
-  'primary': use-color('gray', 300),
-  'secondary': use-color('gray', 300),
-  'default': use-color('gray', 300),
-  'success': use-color('gray', 300),
-  'danger': use-color('gray', 300),
-) !default;
-
-$line-disabled-color-map: (
   'primary': use-color('gray', 400),
   'secondary': use-color('gray', 400),
   'default': use-color('gray', 400),
@@ -106,11 +98,19 @@ $line-disabled-color-map: (
   'danger': use-color('gray', 400),
 ) !default;
 
+$line-disabled-color-map: (
+  'primary': use-color('gray', 500),
+  'secondary': use-color('gray', 500),
+  'default': use-color('gray', 500),
+  'success': use-color('gray', 500),
+  'danger': use-color('gray', 500),
+) !default;
+
 // focus 态
 $line-focus-shadow-map: (
   'primary': use-color-mode('primary', 200),
   'secondary': use-color-mode('primary', 100),
-  'default': use-color('gray', 300),
+  'default': use-color('gray', 400),
   'success': use-color-mode('success', 200),
   'danger': use-color-mode('danger', 200),
 ) !default;
@@ -180,17 +180,17 @@ $line-focus-shadow-map: (
       $prefix: & !default;
       &--appearance-line#{&}--type-#{$key} {
         background-color: use-color-static('white');
-        border: 1px solid map-get($line-border-color-map, $key);
+        border: use-border-size('normal') map-get($line-border-color-map, $key);
         color: map-get($line-color-map, $key);
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):hover {
           background-color: map-get($line-hover-bg-color-map, $key);
-          border: 1px solid map-get($line-hover-border-color-map, $key);
+          border-color: map-get($line-hover-border-color-map, $key);
         }
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):active {
           background-color: map-get($line-active-bg-color-map, $key);
-          border: 1px solid map-get($line-active-border-color-map, $key);
+          border-color: map-get($line-active-border-color-map, $key);
         }
 
         // &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
@@ -199,12 +199,12 @@ $line-focus-shadow-map: (
 
         &.#{$prefix}--disabled {
           color: map-get($line-disabled-color-map, $key);
-          border: 1px solid map-get($line-disabled-border-color-map, $key);
+          border-color: map-get($line-disabled-border-color-map, $key);
         }
 
         &.#{$prefix}--loading {
           color: map-get($line-loading-color-map, $key);
-          border: 1px solid map-get($line-loading-border-color-map, $key);
+          border-color: map-get($line-loading-border-color-map, $key);
         }
       }
     }

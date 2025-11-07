@@ -6,7 +6,7 @@ $prefix: '#{$component-prefix}-pagination' !default;
 .#{$prefix}-mini {
   display: flex;
   align-items: center;
-  color: use-color('gray', 600);
+  color: use-color('gray', 700);
   user-select: none;
 
   &__total {
@@ -44,13 +44,13 @@ $prefix: '#{$component-prefix}-pagination' !default;
     cursor: pointer;
     outline: 0;
     border-radius: use-border-radius('normal');
-    background: use-color('gray', 100);
+    background: use-color('gray', 200);
     transition: all 0.3s;
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     background-color: use-color-static('white');
-    border: use-border-size('normal') use-color('gray', 300);
+    border: use-border-size('normal') use-color('gray', 400);
 
-    &:hover:not(#{&}--break) {
+    &:hover:not(&--break) {
       color: use-color-mode('primary', 400);
       border-color: use-color-mode('primary', 400);
     }
@@ -88,7 +88,7 @@ $prefix: '#{$component-prefix}-pagination' !default;
     &--disabled {
       & > button {
         cursor: not-allowed !important;
-        color: use-color('gray', 400) !important;
+        color: use-color('gray', 500) !important;
       }
     }
 
@@ -99,9 +99,9 @@ $prefix: '#{$component-prefix}-pagination' !default;
     & > button {
       width: 100%;
       height: 100%;
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
       background-color: use-color-static('white');
-      border: use-border-size('normal') use-color('gray', 300);
+      border: use-border-size('normal') use-color('gray', 400);
       border-radius: use-border-radius('normal');
       outline: 0;
       cursor: pointer;
@@ -168,7 +168,7 @@ $prefix: '#{$component-prefix}-pagination' !default;
 $input-pagination-prefix: '#{$component-prefix}-pagination-mini' !default;
 
 .#{$input-pagination-prefix} {
-  color: use-color('gray', 600);
+  color: use-color('gray', 700);
   position: relative;
   display: inline-flex;
   height: auto;

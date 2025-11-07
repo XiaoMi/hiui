@@ -11,7 +11,7 @@ export const Type = () => {
       <h1>Type</h1>
       <div className="notification-type__wrap">
         <Button
-          type="secondary"
+          type="primary"
           onClick={() => {
             notification.open({
               type: 'info',
@@ -51,6 +51,7 @@ export const Type = () => {
         </Button>
         <Button
           type="default"
+          appearance="solid"
           onClick={() => {
             notification.open({
               type: 'warning',

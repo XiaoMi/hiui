@@ -8,12 +8,12 @@ $prefix: '#{$component-prefix}-popover' !default;
   background: use-color-static('white');
   padding: use-spacing(6) use-spacing(8);
   border-radius: use-border-radius('xl');
-  border: use-border-size('normal') use-color('gray', 200);
+  border: use-border-size('normal') use-color('gray', 300);
 
   &__title {
     box-sizing: border-box;
     margin-bottom: use-spacing(2);
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     font-size: use-text-size('md');
     font-weight: use-text-weight('medium');
     line-height: use-text-lineheight('md');
@@ -23,13 +23,13 @@ $prefix: '#{$component-prefix}-popover' !default;
       margin-bottom: use-spacing(6);
       font-size: use-text-size('normal');
       line-height: use-text-lineheight('normal');
-      border-bottom: use-border-size('normal') use-color('gray', 200);
+      border-bottom: use-border-size('normal') use-color('gray', 300);
     }
   }
 
   &__content {
     box-sizing: border-box;
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     line-height: use-text-lineheight('normal');
     font-size: use-text-size('normal');
   }

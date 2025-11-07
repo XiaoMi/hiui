@@ -14,7 +14,7 @@ $prefix: '#{$component-prefix}-check-select' !default;
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');
     line-height: use-text-lineheight('normal');
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
 
     &__indent {
       display: inline-block;
@@ -38,11 +38,11 @@ $prefix: '#{$component-prefix}-check-select' !default;
     $this: &;
 
     // &:not(#{$this}--checked):not(#{$this}--focused):not(#{$this}--disabled):hover {
-    //   background-color: use-color('gray', 100);
+    //   background-color: use-color('gray', 200);
     // }
 
     &:hover {
-      background-color: use-color('gray', 50);
+      background-color: use-color('gray', 100);
     }
 
     &--checked {
@@ -51,12 +51,12 @@ $prefix: '#{$component-prefix}-check-select' !default;
     }
 
     &--focused {
-      background-color: use-color('gray', 50);
+      background-color: use-color('gray', 100);
     }
 
     &--disabled {
       cursor: not-allowed;
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
   }
 
@@ -66,14 +66,14 @@ $prefix: '#{$component-prefix}-check-select' !default;
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');
     line-height: use-text-lineheight('normal');
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
 
     &__divider {
       box-sizing: border-box;
       width: calc(100% + #{use-spacing(4)});
       height: 1px;
       margin: use-spacing(2) calc(#{use-spacing(2)} * -1);
-      background-color: use-color('gray', 200);
+      background-color: use-color('gray', 300);
 
       &:first-child {
         display: none;

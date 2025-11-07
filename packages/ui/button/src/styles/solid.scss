@@ -3,7 +3,7 @@
 // 默认态
 $solid-background-map: (
   'primary': use-color-mode('primary'),
-  'default': use-color('gray', 700),
+  'default': use-color('gray', 800),
   'success': use-color-mode('success'),
   'danger': use-color-mode('danger'),
 ) !default;
@@ -18,7 +18,7 @@ $solid-color-map: (
 // hover 态
 $solid-hover-background-map: (
   'primary': use-color-mode('primary', 400),
-  'default': use-color('gray', 600),
+  'default': use-color('gray', 700),
   'success': use-color-mode('success', 400),
   'danger': use-color-mode('danger', 400),
 ) !default;
@@ -28,7 +28,7 @@ $solid-hover-color-map: $solid-color-map !default;
 // active 态
 $solid-active-background-map: (
   'primary': use-color-mode('primary', 600),
-  'default': use-color('gray', 800),
+  'default': use-color('gray', 900),
   'success': use-color-mode('success', 600),
   'danger': use-color-mode('danger', 600),
 ) !default;
@@ -38,7 +38,7 @@ $solid-active-color-map: $solid-color-map !default;
 // 加载态
 $solid-loading-background-map: (
   'primary': use-color-mode('primary', 200),
-  'default': use-color('gray', 400),
+  'default': use-color('gray', 500),
   'success': use-color-mode('success', 200),
   'danger': use-color-mode('danger', 200),
 ) !default;
@@ -52,10 +52,10 @@ $solid-loading-color-map: (
 
 // 禁用态
 $solid-disabled-background-map: (
-  'primary': use-color('gray', 400),
-  'default': use-color('gray', 400),
-  'success': use-color('gray', 400),
-  'danger': use-color('gray', 400),
+  'primary': use-color('gray', 500),
+  'default': use-color('gray', 500),
+  'success': use-color('gray', 500),
+  'danger': use-color('gray', 500),
 ) !default;
 
 $solid-disabled-color-map: (
@@ -68,7 +68,7 @@ $solid-disabled-color-map: (
 // focus 态
 $solid-focus-shadow-map: (
   'primary': use-color-mode('primary', 200),
-  'default': use-color('gray', 200),
+  'default': use-color('gray', 300),
   'success': use-color-mode('success', 200),
   'danger': use-color-mode('danger', 200),
 ) !default;
@@ -144,13 +144,13 @@ $solid-focus-shadow-map: (
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):hover {
           background-color: map-get($solid-hover-background-map, $key);
-          border: use-border-size('normal') map-get($solid-hover-background-map, $key);
+          border-color: map-get($solid-hover-background-map, $key);
           color: map-get($solid-hover-color-map, $key);
         }
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):active {
           background-color: map-get($solid-active-background-map, $key);
-          border: use-border-size('normal') map-get($solid-active-background-map, $key);
+          border-color: map-get($solid-active-background-map, $key);
           color: map-get($solid-active-color-map, $key);
         }
 
@@ -160,13 +160,13 @@ $solid-focus-shadow-map: (
 
         &.#{$prefix}--disabled {
           background-color: map-get($solid-disabled-background-map, $key);
-          border: use-border-size('normal') map-get($solid-disabled-background-map, $key);
+          border-color: map-get($solid-disabled-background-map, $key);
           color: map-get($solid-disabled-color-map, $key);
         }
 
         &.#{$prefix}--loading {
           background-color: map-get($solid-loading-background-map, $key);
-          border: use-border-size('normal') map-get($solid-loading-background-map, $key);
+          border-color: map-get($solid-loading-background-map, $key);
           color: map-get($solid-loading-color-map, $key);
         }
       }

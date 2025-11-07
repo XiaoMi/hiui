@@ -4,96 +4,104 @@ $dots-class: '#{$component-prefix}-carousel__dots' !default;
 $dots-item-class: '#{$dots-class}__item' !default;
 $dots-content-class: '#{$dots-class}__content' !default;
 
-.#{$dots-class}{
+.#{$dots-class} {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  &--position-bottom,&--position-top{
+  &--position-bottom,
+  &--position-top {
     position: absolute;
     left: 0;
     width: 100%;
     height: 32px;
   }
 
-  &--position-bottom{
+  &--position-bottom {
     bottom: 0;
   }
-  &--position-top{
+
+  &--position-top {
     top: 0;
   }
 
-  &--position-left,&--position-right{
+  &--position-left,
+  &--position-right {
     position: absolute;
     top: 0;
     width: 32px;
     height: 100%;
-    .#{$dots-content-class}{
+    .#{$dots-content-class} {
       transform: rotate(90deg);
     }
   }
 
-  &--position-left{
+  &--position-left {
     left: 0;
   }
-  &--position-right{
+
+  &--position-right {
     right: 0;
   }
 
-
-  &__item{
+  &__item {
     background: use-color-static('white');
     opacity: 0.32;
     margin: 0 2px;
     cursor: pointer;
 
-    &--active,&:hover{
+    &--active,
+    &:hover {
       opacity: 1;
     }
   }
 
-  &__content{
+  &__content {
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  &--type-dot{
-    .#{$dots-item-class}{
+  &--type-dot {
+    .#{$dots-item-class} {
       width: 6px;
       height: 6px;
       border-radius: 3px;
+
+      &--active {
+        width: 12px;
+      }
     }
   }
 
-  &--type-line{
-    .#{$dots-item-class}{
-      width: 12px;
+  &--type-line {
+    .#{$dots-item-class} {
+      width: 20px;
       height: 4px;
       border-radius: 2px;
     }
   }
 
-  &--type-slider{
-    .#{$dots-item-class}{
+  &--type-slider {
+    .#{$dots-item-class} {
       width: 12px;
       height: 4px;
       border-radius: 2px;
-      transition: width 0.15s linear,background 0.2s ease-out;
+      transition: width 0.15s linear, background 0.2s ease-out;
 
-      &--active{
+      &--active {
         width: 24px;
       }
     }
   }
 
-  &--position-outer{
+  &--position-outer {
     position: relative;
     width: 100%;
     height: 32px;
 
-    .#{$dots-item-class}{
-      background: use-color('gray',400);
+    .#{$dots-item-class} {
+      background: use-color('gray', 500);
     }
   }
 }

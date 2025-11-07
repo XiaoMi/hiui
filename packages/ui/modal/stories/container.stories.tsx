@@ -41,7 +41,6 @@ export const Container = () => {
           title="提示"
           style={{ position: 'absolute' }}
           visible={visible}
-          closeable={false}
           onCancel={() => setVisible(false)}
           container={container}
         >

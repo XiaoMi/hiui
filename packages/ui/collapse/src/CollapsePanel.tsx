@@ -5,6 +5,7 @@ import { useCollapseContext } from './context'
 import { RightOutlined, DownOutlined } from '@hi-ui/icons'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { isFunction } from '@hi-ui/type-assertion'
+import { Button } from '@hi-ui/button'
 
 const _role = 'collapse-panel'
 const _prefix = getPrefixCls(_role)
@@ -109,9 +110,11 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
             isFunction(arrowRender) ? (
               arrowRender(active)
             ) : (
-              <span className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--left`)}>
-                <RightOutlined />
-              </span>
+              <Button
+                className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--left`)}
+                appearance="link"
+                icon={<RightOutlined />}
+              />
             )
           ) : null}
           <div className={`${prefixCls}__title-container`}>
@@ -122,9 +125,11 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
             isFunction(arrowRender) ? (
               arrowRender(active)
             ) : (
-              <span className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--right`)}>
-                <DownOutlined />
-              </span>
+              <Button
+                className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--right`)}
+                appearance="link"
+                icon={<DownOutlined />}
+              />
             )
           ) : null}
         </div>

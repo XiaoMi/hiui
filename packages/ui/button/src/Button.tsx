@@ -19,7 +19,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       children,
       type = 'default',
       size: sizeProp,
-      appearance = 'solid',
+      appearance,
       disabled = false,
       loading = false,
       icon = null,
@@ -47,9 +47,26 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
 
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
+
     // 兼容 V4 版本，当 type 是 secondary 类型时，自动转换为 primary 类型，appearance 自动转换为 filled 外观
-    const _type = type === 'secondary' ? 'primary' : type
-    const _appearance = type === 'secondary' ? 'filled' : appearance
+    let _type = type
+    let _appearance = appearance
+    if (type === 'secondary') {
+      _type = 'primary'
+    }
+    if (type === 'secondary') {
+      _appearance = 'filled'
+    }
+
+    // 如果未设置外观，则根据 type 自动设置外观
+    if (!appearance) {
+      if (['primary', 'success', 'danger'].includes(type)) {
+        _appearance = 'solid'
+      } else if (['default'].includes(type)) {
+        // 默认使用灰色 line 外观
+        _appearance = 'line'
+      }
+    }
 
     const cls = cx(
       prefixCls,

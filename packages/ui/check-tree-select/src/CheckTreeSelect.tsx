@@ -269,8 +269,11 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         const highlight =
           !!searchValue && (searchMode === 'highlight' || searchMode === 'filter' || dataSource)
 
+        // 转义正则表达式特殊字符，避免 searchValue 包含 [ 等特殊字符时报错
+        const escapedSearchValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
         const ret = highlight ? (
-          <Highlighter keyword={new RegExp(searchValue, 'ig')}>{node.title}</Highlighter>
+          <Highlighter keyword={new RegExp(escapedSearchValue, 'ig')}>{node.title}</Highlighter>
         ) : (
           true
         )
