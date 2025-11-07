@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { CloseCircleFilled } from '@hi-ui/icons'
-import { HiBaseHTMLFieldProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { useInput } from './use-input'
 import { InputAppearanceEnum, InputTypeEnum } from './types'
 
@@ -19,7 +19,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       role = 'input',
       className,
       style,
-      size = 'md',
+      size: sizeProp,
       appearance = 'line',
       prepend,
       append,
@@ -52,6 +52,9 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     // @TODO: 临时方案，后面迁移至 InputGroup
     const [unsetPrepend, unsetAppend] = useMemo(() => {
       const shouldUnset = [false, false]

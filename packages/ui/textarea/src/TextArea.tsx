@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
-import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps, useGlobalContext } from '@hi-ui/core'
 import ResizeDetector from 'react-resize-detector'
 import { useTextarea, UseTextareaProps } from './use-textarea'
 
@@ -16,7 +16,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
     {
       prefixCls = _prefix,
       className,
-      size = 'md',
+      size: sizeProp,
       appearance = 'line',
       header,
       invalid = false,
@@ -40,6 +40,9 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const { focused, autoSize, value, getTextareaProps, onResize } = useTextarea({
       name,
       autoFocus,

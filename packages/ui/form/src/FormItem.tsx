@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo } from 'react'
 import { __DEV__ } from '@hi-ui/env'
 import { useFiledRules, UseFormFieldProps } from './use-form-field'
 import { FormLabel, FormLabelProps } from './FormLabel'

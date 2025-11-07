@@ -30,7 +30,7 @@ import { useData, useFlattenData } from './hooks'
 import { SelectOption } from './SelectOption'
 import { SelectOptionGroup } from './SelectOptionGroup'
 import { uniqBy } from '@hi-ui/array-utils'
-import { HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { uuid } from '@hi-ui/use-id'
@@ -75,7 +75,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       render: titleRender,
       data: dataProp,
       fieldNames,
-      size = 'md',
+      size: sizeProp,
       prefix,
       suffix,
       onSelect: onSelectProp,
@@ -91,6 +91,9 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
     const pickerInnerRef = useRef<PickerHelper>(null)
     const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp

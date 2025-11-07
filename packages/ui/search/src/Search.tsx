@@ -12,7 +12,7 @@ import { callAllFuncs } from '@hi-ui/func-utils'
 import type { PopperOverlayProps } from '@hi-ui/popper'
 import { SearchDropdown } from './SearchDropdown'
 import { transformData } from './util'
-import { HiBaseFieldNames } from '@hi-ui/core'
+import { HiBaseFieldNames, useGlobalContext } from '@hi-ui/core'
 
 const SEARCH_PREFIX = getPrefixCls('search')
 const NOOP_ARRAY = [] as []
@@ -27,7 +27,7 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
       className,
       disabled = false,
       loading = false,
-      size = 'md',
+      size: sizeProp,
       append: appendProp,
       defaultValue = '',
       value: valueProp,
@@ -45,6 +45,9 @@ export const Search = forwardRef<HTMLInputElement | null, SearchProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const transformedData = useMemo(() => transformData(data, fieldNames), [data, fieldNames])
 
     const [visible, setVisible] = useState<boolean>(false)

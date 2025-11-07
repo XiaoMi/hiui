@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
-import { HiBaseFieldNames, HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { cloneElement, toArray, transformData } from './util'
 import { Row } from './Row'
 import {
@@ -32,12 +32,15 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       labelPlacement = 'left',
       labelWidth,
       columnGap,
-      size = 'md',
+      size: sizeProp,
       contentPosition = 'top',
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const noBackground = appearance === 'unset' && labelPlacement === 'right'
     const vertical = placement === 'vertical'
     const bordered = appearance === 'table' || noBackground

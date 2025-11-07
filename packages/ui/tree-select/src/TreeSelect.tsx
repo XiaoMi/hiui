@@ -12,7 +12,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { MockInput } from '@hi-ui/input'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
-import { HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -76,7 +76,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       virtual,
       itemHeight,
       height,
-      size = 'md',
+      size: sizeProp,
       prefix,
       suffix,
       customRender,
@@ -87,6 +87,9 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
 
     const pickerInnerRef = useRef<PickerHelper>(null)

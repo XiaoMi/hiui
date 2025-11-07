@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 
@@ -15,7 +15,7 @@ export const Switch = forwardRef<HTMLDivElement | null, SwitchProps>(
     {
       prefixCls = _prefix,
       className,
-      size = 'md',
+      size: sizeProp,
       onChange,
       content,
       checked: checkedProp,
@@ -27,6 +27,9 @@ export const Switch = forwardRef<HTMLDivElement | null, SwitchProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const [checked, tryChangeChecked] = useUncontrolledState(defaultChecked, checkedProp, onChange)
 
     const changeSwitch = useCallback(() => {

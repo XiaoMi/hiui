@@ -1,7 +1,7 @@
 import React, { cloneElement, forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseFieldNames, HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { PopperOverlayProps, Popper, PopperProps } from '@hi-ui/popper'
 import { DropDownProvider, useDropDownContext } from './context'
 import { useDropdown, UseDropdownProps } from './use-dropdown'
@@ -32,7 +32,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
       onClick,
       onButtonClick,
       overlayClassName,
-      size = 'md',
+      size: sizeProp,
       ...rest
     },
     ref
@@ -44,6 +44,9 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
     const { getMenuProps, getTriggerProps, disabled, menuVisibleAction } = providedValue
 
     const cls = cx(prefixCls, className, disabled && `${prefixCls}--disabled`)
+
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
 
     const dig = (treeData: DropdownDataItem[]) => {
       return treeData.map((item: any) => {

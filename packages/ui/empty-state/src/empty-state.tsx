@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { useLocaleContext, HiBaseHTMLProps } from '@hi-ui/core'
+import { useLocaleContext, HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { isUndef } from '@hi-ui/type-assertion'
 
 import { IMAGE_NO_DATA } from './icons'
@@ -21,11 +21,14 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
       title: titleProp,
       imageStyle,
       imageClassName,
-      size = 'md',
+      size: sizeProp,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
 
     const title = isUndef(titleProp) ? i18n.get('emptyState.emptyContent') : titleProp
