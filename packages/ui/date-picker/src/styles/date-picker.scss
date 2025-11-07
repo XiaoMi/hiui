@@ -182,7 +182,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       background-color: use-color('gray', 50);
 
       &:hover {
-        background-color: use-color('gray', 50);
+        background-color: use-color('gray', 50) !important;
         border-color: use-color('gray', 300);
       }
     }
@@ -232,6 +232,10 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       &--disabled {
         cursor: not-allowed;
         color: use-color('gray', 400);
+
+        &:hover {
+          color: use-color('gray', 400) !important;
+        }
       }
 
       &.clear {
