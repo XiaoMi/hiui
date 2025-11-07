@@ -16,7 +16,6 @@ const BUILT_IN_LOCALES: Record<string, LocaleLanguage> = {
 
 export const LocaleProvider: React.FC<LocaleProviderProps> & {
   extends: LocaleExtendsFunc
-  register: LocaleRegisterFunc
   merge: LocaleMergeFunc
 } = ({ children, locale = DEFAULT_LOCALE, languages }) => {
   const get = useMemo(() => {
@@ -28,7 +27,7 @@ export const LocaleProvider: React.FC<LocaleProviderProps> & {
     if (!languageData) {
       invariant(
         false,
-        `Language package for "${locale}" is missing. Please import and pass it via the "languages" prop, or use LocaleProvider.register("${locale}", languagePackage) to register it. Falling back to ${DEFAULT_LOCALE}.`
+        `Language package for "${locale}" is missing. Please import and pass it via the "languages" prop. Falling back to ${DEFAULT_LOCALE}.`
       )
 
       languageData = BUILT_IN_LOCALES[DEFAULT_LOCALE]
@@ -87,20 +86,6 @@ const extendsLanguage = (locale: string, languages?: LocaleLanguage) => {
 }
 
 /**
- * 注册新的语言包
- * @param locale - 地区标识
- * @param languages - 完整的语言包对象
- *
- * @example
- * ```tsx
- * LocaleProvider.register('my-LOCALE', customLanguagePackage)
- * ```
- */
-const registerLanguage = (locale: string, languages: LocaleLanguage) => {
-  USER_LANGUAGES_TABLES[locale] = languages
-}
-
-/**
  * 合并默认语言包和自定义翻译
  * 支持基于现有的内置语言包进行部分覆盖
  * @param baseLocale - 基础语言（如 'en-US'）
@@ -127,7 +112,7 @@ const mergeLanguage = (
   if (!baseLanguage) {
     invariant(
       false,
-      `Base locale "${baseLocale}" is not found. Please register it first using LocaleProvider.register().`
+      `Base locale "${baseLocale}" is not found. Please use LocaleProvider.extends() to add it first.`
     )
     return
   }
@@ -167,9 +152,7 @@ function deepMerge(target: any, source: any): any {
 }
 
 export type LocaleExtendsFunc = typeof extendsLanguage
-export type LocaleRegisterFunc = typeof registerLanguage
 export type LocaleMergeFunc = typeof mergeLanguage
 
 LocaleProvider.extends = extendsLanguage
-LocaleProvider.register = registerLanguage
 LocaleProvider.merge = mergeLanguage

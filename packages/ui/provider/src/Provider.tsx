@@ -5,7 +5,6 @@ import {
   LocaleProvider,
   LocaleProviderProps,
   LocaleExtendsFunc,
-  LocaleRegisterFunc,
   LocaleMergeFunc,
 } from '@hi-ui/locale-context'
 import { DesignSystemAccentColorEnum, DesignSystemProps } from './types'
@@ -16,7 +15,6 @@ const PREFIX = 'hi-v4'
 
 export const Provider: React.FC<ProviderProps> & {
   extends: ProviderExtendsFunc
-  register: ProviderRegisterFunc
   merge: ProviderMergeFunc
 } = ({ children, locale, languages, accentColor, theme, portal }) => {
   /**
@@ -70,9 +68,7 @@ if (__DEV__) {
  * 从 LocaleProvider 导出的方法
  */
 Provider.extends = LocaleProvider.extends
-Provider.register = LocaleProvider.register
 Provider.merge = LocaleProvider.merge
 
 type ProviderExtendsFunc = LocaleExtendsFunc
-type ProviderRegisterFunc = LocaleRegisterFunc
 type ProviderMergeFunc = LocaleMergeFunc
